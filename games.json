@@ -1,16 +1,76 @@
 {
   "schemaVersion": 1,
   "categories": [
-    { "id": "reading-phonics",   "title": "Reading & Phonics",                 "order": 1 },
-    { "id": "writing-fine-motor","title": "Writing & Fine Motor",              "order": 2 },
-    { "id": "math-number-sense", "title": "Math & Number Sense",               "order": 3 },
-    { "id": "practical-life",    "title": "Practical Life & Independence",     "order": 4 },
-    { "id": "sensorial-science", "title": "Sensorial & Early Science",         "order": 5 },
-    { "id": "oral-storytelling", "title": "Oral Language & Storytelling",      "order": 6 },
-    { "id": "culture-geography", "title": "Culture, Geography & History",      "order": 7 },
-    { "id": "art-music",         "title": "Art & Music",                       "order": 8 },
-    { "id": "movement-outdoor",  "title": "Movement & Outdoor Learning",       "order": 9 },
-    { "id": "social-emotional",  "title": "Social-Emotional & Self-Regulation","order": 10 }
+    {
+      "id": "reading-phonics",
+      "title": "Reading & Phonics",
+      "order": 1,
+      "color": "#58a945",
+      "emoji": "📖"
+    },
+    {
+      "id": "writing-fine-motor",
+      "title": "Writing & Fine Motor",
+      "order": 2,
+      "color": "#e4587c",
+      "emoji": "✏️"
+    },
+    {
+      "id": "math-number-sense",
+      "title": "Math & Number Sense",
+      "order": 3,
+      "color": "#2d7dd2",
+      "emoji": "🔢"
+    },
+    {
+      "id": "practical-life",
+      "title": "Practical Life & Independence",
+      "order": 4,
+      "color": "#14a08a",
+      "emoji": "🏡"
+    },
+    {
+      "id": "sensorial-science",
+      "title": "Sensorial & Early Science",
+      "order": 5,
+      "color": "#00a2c8",
+      "emoji": "🔬"
+    },
+    {
+      "id": "oral-storytelling",
+      "title": "Oral Language & Storytelling",
+      "order": 6,
+      "color": "#f08a24",
+      "emoji": "💬"
+    },
+    {
+      "id": "culture-geography",
+      "title": "Culture, Geography & History",
+      "order": 7,
+      "color": "#c9503a",
+      "emoji": "🌍"
+    },
+    {
+      "id": "art-music",
+      "title": "Art & Music",
+      "order": 8,
+      "color": "#b84bb0",
+      "emoji": "🎨"
+    },
+    {
+      "id": "movement-outdoor",
+      "title": "Movement & Outdoor Learning",
+      "order": 9,
+      "color": "#7cb518",
+      "emoji": "🤸"
+    },
+    {
+      "id": "social-emotional",
+      "title": "Social-Emotional & Self-Regulation",
+      "order": 10,
+      "color": "#8a5bc4",
+      "emoji": "😊"
+    }
   ],
   "games": [
     {
@@ -19,9 +79,12 @@
       "category": "reading-phonics",
       "path": "games/sound-sprouts/",
       "icon": "games/sound-sprouts/assets/gen/ui/splash/title.png",
-      "age": { "min": 4, "max": 6 },
+      "age": {
+        "min": 4,
+        "max": 6
+      },
       "status": "live",
-      "accent": "#7FB069",
+      "accent": "#58a945",
       "uses": [
         "shared/vendor/three.module.min.js",
         "shared/js/audio.js",
@@ -32,27 +95,48 @@
         "shared/data/words.json"
       ],
       "modes": [
-        { "id": "guided",   "title": "Make a Word",      "skill": "onset-rime blending" },
-        { "id": "mystery",  "title": "Mystery Picture",  "skill": "sound-to-letter matching" },
-        { "id": "freeplay", "title": "Word Mixer",       "skill": "free phonics exploration" }
-      ]
+        {
+          "id": "guided",
+          "title": "Make a Word",
+          "skill": "onset-rime blending"
+        },
+        {
+          "id": "mystery",
+          "title": "Mystery Picture",
+          "skill": "sound-to-letter matching"
+        },
+        {
+          "id": "freeplay",
+          "title": "Word Mixer",
+          "skill": "free phonics exploration"
+        }
+      ],
+      "iconBg": "games/sound-sprouts/assets/gen/bg.jpg",
+      "iconFit": "contain"
     },
     {
       "id": "blend-train",
       "title": "Blend Train",
       "category": "reading-phonics",
       "path": null,
-      "icon": "assets/hub/placeholder-tile.svg",
-      "age": { "min": 5, "max": 6 },
+      "icon": "assets/hub/tiles/blend-train.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "proposed",
-      "accent": "#E8A04C",
+      "accent": "#58a945",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js",
         "shared/assets/letter-tiles/"
       ],
       "modes": [
-        { "id": "couple-up", "title": "Couple Up", "skill": "pushing sound cars together to blend a word" }
+        {
+          "id": "couple-up",
+          "title": "Couple Up",
+          "skill": "pushing sound cars together to blend a word"
+        }
       ]
     },
     {
@@ -60,17 +144,28 @@
       "title": "Pattern Train",
       "category": "math-number-sense",
       "path": null,
-      "icon": "assets/hub/placeholder-tile.svg",
-      "age": { "min": 5, "max": 6 },
+      "icon": "assets/hub/tiles/pattern-train.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "proposed",
-      "accent": "#6FA8DC",
+      "accent": "#2d7dd2",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js"
       ],
       "modes": [
-        { "id": "whats-next",  "title": "What Comes Next?", "skill": "extending an AB / ABC pattern" },
-        { "id": "fix-the-gap", "title": "Fix the Gap",      "skill": "completing a missing pattern step" }
+        {
+          "id": "whats-next",
+          "title": "What Comes Next?",
+          "skill": "extending an AB / ABC pattern"
+        },
+        {
+          "id": "fix-the-gap",
+          "title": "Fix the Gap",
+          "skill": "completing a missing pattern step"
+        }
       ]
     },
     {
@@ -78,17 +173,28 @@
       "title": "Shape Tangram Tales",
       "category": "math-number-sense",
       "path": null,
-      "icon": "assets/hub/placeholder-tile.svg",
-      "age": { "min": 5, "max": 6 },
+      "icon": "assets/hub/tiles/tangram-tales.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "proposed",
-      "accent": "#B387D8",
+      "accent": "#2d7dd2",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js"
       ],
       "modes": [
-        { "id": "fill-it",   "title": "Fill the Shape", "skill": "fitting shapes into an outline" },
-        { "id": "make-tale", "title": "Make a Tale",    "skill": "building a picture from tangram pieces" }
+        {
+          "id": "fill-it",
+          "title": "Fill the Shape",
+          "skill": "fitting shapes into an outline"
+        },
+        {
+          "id": "make-tale",
+          "title": "Make a Tale",
+          "skill": "building a picture from tangram pieces"
+        }
       ]
     },
     {
@@ -96,17 +202,24 @@
       "title": "First, Next, Last",
       "category": "oral-storytelling",
       "path": null,
-      "icon": "assets/hub/placeholder-tile.svg",
-      "age": { "min": 5, "max": 6 },
+      "icon": "assets/hub/tiles/story-sequence.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "proposed",
-      "accent": "#F2B5C4",
+      "accent": "#f08a24",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js",
         "shared/assets/objects/"
       ],
       "modes": [
-        { "id": "order-it", "title": "Put It in Order", "skill": "sequencing a 3-step story" }
+        {
+          "id": "order-it",
+          "title": "Put It in Order",
+          "skill": "sequencing a 3-step story"
+        }
       ]
     },
     {
@@ -114,18 +227,29 @@
       "title": "Feelings Charades",
       "category": "social-emotional",
       "path": null,
-      "icon": "assets/hub/placeholder-tile.svg",
-      "age": { "min": 5, "max": 6 },
+      "icon": "assets/hub/tiles/feelings-charades.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "proposed",
-      "accent": "#F4D35E",
+      "accent": "#8a5bc4",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js",
         "shared/assets/twemoji/"
       ],
       "modes": [
-        { "id": "guess-it",   "title": "Guess the Feeling", "skill": "naming emotions from faces" },
-        { "id": "show-it",    "title": "Show the Feeling",  "skill": "acting out and matching emotions" }
+        {
+          "id": "guess-it",
+          "title": "Guess the Feeling",
+          "skill": "naming emotions from faces"
+        },
+        {
+          "id": "show-it",
+          "title": "Show the Feeling",
+          "skill": "acting out and matching emotions"
+        }
       ]
     }
   ]

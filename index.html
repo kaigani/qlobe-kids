@@ -2,61 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>QLOBE Kids</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#FFF7E8" />
-  <title>QLOBE Kids</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="QLOBE Kids" />
+  <meta name="theme-color" content="#bee3f5" />
   <meta name="description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required — play, learn, and grow one little game at a time." />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="QLOBE Kids" />
-  <meta property="og:title" content="QLOBE Kids" />
+  <meta property="og:title" content="QLOBE Kids — Little games to play and grow!" />
   <meta property="og:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required." />
   <meta property="og:url" content="https://kaigani.github.io/qlobe-kids/" />
-  <meta property="og:image" content="./assets/og-image.png" />
+  <meta property="og:image" content="https://kaigani.github.io/qlobe-kids/assets/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="QLOBE Kids wordmark beside a friendly green globe with a sprout growing from the top, in a sunny garden." />
+  <meta property="og:image:alt" content="The QLOBE Kids game chooser: colorful game tiles under candy-colored category badges on a sky-blue background." />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="QLOBE Kids" />
+  <meta name="twitter:title" content="QLOBE Kids — Little games to play and grow!" />
   <meta name="twitter:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, no reading required." />
-  <meta name="twitter:image" content="./assets/og-image.png" />
+  <meta name="twitter:image" content="https://kaigani.github.io/qlobe-kids/assets/og-image.png" />
 
-  <!-- Icons / home-screen -->
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="QLOBE Kids" />
-
   <link rel="stylesheet" href="./css/hub.css" />
 </head>
 <body>
-  <header>
-    <h1 class="wordmark"><span class="q">QLOBE</span> <span class="k">Kids</span></h1>
-    <p class="tagline" aria-hidden="true">Little games to play and grow 🌱</p>
+
+  <header class="top">
+    <a class="corner-btn corner-grownups" href="./grown-ups/" aria-label="For grown-ups">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="16" r="6.5" fill="#fff"/><path d="M6.5 37c0-6.5 4.7-11 10.5-11s10.5 4.5 10.5 11v1.5h-21z" fill="#fff"/><circle cx="33.5" cy="19.5" r="5" fill="#fff" opacity=".9"/><path d="M27 38.5c.4-5.3 3-9 6.5-9 4 0 7.5 3.7 7.5 9z" fill="#fff" opacity=".9"/></svg>
+    </a>
+
+    <div class="masthead">
+      <img class="wordmark" src="./assets/hub/wordmark.png" alt="QLOBE Kids" draggable="false" />
+      <p class="tagline">Little games to play and grow!</p>
+    </div>
+
+    <a class="corner-btn corner-gear" href="./grown-ups/#contribute" aria-label="About this project — for grown-ups">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3.5l3.2 6.6 7.2-1.5 1 7.3 7.3 1-1.5 7.2 6.6 3.2-6.6 3.2 1.5 7.2-7.3 1-1 7.3-7.2-1.5L24 44.5l-3.2-6.6-7.2 1.5-1-7.3-7.3-1 1.5-7.2L.2 24l6.6-3.2-1.5-7.2 7.3-1 1-7.3 7.2 1.5z" fill="#fff"/><circle cx="24" cy="24" r="7" class="gear-hole"/></svg>
+    </a>
   </header>
 
-  <main>
-    <div id="games" aria-label="Games"></div>
+  <main class="chooser">
+    <button class="arrow arrow-prev" aria-label="Previous games" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
 
-    <noscript>
-      <div class="fallback">
-        <p>Please turn on JavaScript to see all the games. In the meantime you can play:</p>
-        <p><a href="games/sound-sprouts/">Sound Sprouts 🌱</a></p>
-        <p><a href="grown-ups/">For grown-ups</a></p>
-      </div>
-    </noscript>
+    <div class="carousel" id="carousel" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Game categories — swipe or use the arrows">
+      <noscript>
+        <div class="noscript-links">
+          <a href="games/sound-sprouts/">Play Sound Sprouts 🌱</a>
+          <a href="grown-ups/">For grown-ups</a>
+        </div>
+      </noscript>
+    </div>
+
+    <button class="arrow arrow-next" aria-label="More games" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </main>
 
-  <a class="grownups-link" href="./grown-ups/" aria-label="For grown-ups">
-    <img src="./assets/hub/grown-ups.svg" alt="" width="26" height="26" />
-  </a>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+
+  <footer class="bottom">
+    <button class="chooser-pill" id="home-pill" aria-label="Back to the first games">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10.2V20h12v-9.8" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="10.2" y="14.2" width="3.6" height="5.8" rx="1" fill="#fff"/></svg>
+      <span>Game Chooser</span>
+    </button>
+    <div class="ages-badge" aria-label="For ages five and up"><span class="ages-word">Ages</span><span class="ages-num">5+</span></div>
+  </footer>
 
   <script type="module" src="./js/hub.js"></script>
 </body>

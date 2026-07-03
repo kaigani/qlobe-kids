@@ -1,7 +1,8 @@
-/* QLOBE Kids — hub launcher styles.
-   Warm, sunny, garden-adjacent. Kin to Sound Sprouts: cream background, rounded
-   everything, Fredoka display font. The kids' page is always light — we commit
-   to it and do not honor prefers-color-scheme. */
+/* QLOBE Kids — the Game Chooser.
+   Candy-toy aesthetic per the chooser concept: sky-blue doodle background,
+   glossy sticker wordmark, category badge pills over white "sticker sheet"
+   cards, bordered game tiles with label bars, carousel with big glossy arrows.
+   Always light — a kids' page commits to daylight. */
 
 @font-face {
   font-family: 'Fredoka';
@@ -13,205 +14,340 @@
 }
 
 :root {
-  --cream: #FFF7E8;
-  --ink: #4A6B3A;
-  --ink-soft: #7A6A55;
-  --leaf: #7FB069;
+  --sky: #bee3f5;
+  --sky-deep: #a4d3ec;
+  --navy: #17517e;
+  --blue: #2d7dd2;
+  --purple: #7c4fc4;
+  --white: #ffffff;
+  --shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
   --font: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
-  --accent: #7FB069; /* per-tile override set inline from JS */
+  --cat: var(--blue); /* per-slide category color, set inline from JS */
+  --slide-w: min(560px, 88vw);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-}
+html, body { margin: 0; padding: 0; min-height: 100%; }
 
 body {
   font-family: var(--font);
-  color: var(--ink);
-  background-color: var(--cream);
-  background-image: url('../assets/hub/bg.svg');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center top;
-  -webkit-text-size-adjust: 100%;
+  font-weight: 600;
+  color: var(--navy);
+  background-color: var(--sky);
+  /* faint white doodles, like a classroom wall of chalk stickers */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.28' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M38 42l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z'/%3E%3Cpath d='M150 30c8-10 24-8 27 3 12-3 20 8 14 17-3 5-9 6-14 6h-31c-8 0-13-6-13-12 0-8 9-16 17-14z'/%3E%3Crect x='36' y='150' width='44' height='34' rx='6'/%3E%3Cpath d='M42 150v34M58 150v34'/%3E%3Ccircle cx='205' cy='170' r='20'/%3E%3Cpath d='M120 210l24-46 24 46z'/%3E%3Cpath d='M215 82l24 8-16 20-8-28zM222 90l9 12'/%3E%3Cpath d='M96 96q10-12 20 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 260px 260px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding: max(10px, env(safe-area-inset-top)) 0 max(10px, env(safe-area-inset-bottom));
+  user-select: none;
+  -webkit-user-select: none;
   touch-action: manipulation;
 }
 
-/* ---- Wordmark ---- */
-.wordmark {
-  text-align: center;
-  padding: clamp(1.5rem, 5vw, 3rem) 1rem 0.5rem;
-  margin: 0;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  line-height: 1;
-  font-size: clamp(2.5rem, 9vw, 4.5rem);
-}
-.wordmark .q { color: var(--ink); }
-.wordmark .k { color: #E8A04C; }
-.tagline {
-  text-align: center;
-  margin: 0.3rem 0 0;
-  color: var(--ink-soft);
-  font-size: clamp(1rem, 3.4vw, 1.4rem);
-  font-weight: 600;
-}
+/* ---------- header ---------- */
 
-/* ---- Layout ---- */
-main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) 6rem;
-}
-
-.cat { margin: clamp(1.5rem, 5vw, 3rem) 0 0; }
-
-/* Small, soft, decorative category header — kids don't need to read it. */
-.cat-title {
-  margin: 0 0 0.9rem;
-  font-size: clamp(0.9rem, 2.6vw, 1.15rem);
-  font-weight: 600;
-  color: var(--ink-soft);
-  opacity: 0.8;
-  text-align: center;
-  letter-spacing: 0.4px;
-}
-.cat-title::before,
-.cat-title::after {
-  content: '·';
-  margin: 0 0.6em;
-  color: var(--leaf);
-  opacity: 0.7;
-}
-
-/* Responsive grid: 1-up narrow phones, 2-up tablet portrait, 3-up landscape. */
-.grid {
+.top {
   display: grid;
-  gap: clamp(1rem, 3.5vw, 1.75rem);
-  grid-template-columns: 1fr;
-}
-@media (min-width: 560px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 900px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 10px;
+  padding: 8px 16px 0;
 }
 
-/* ---- Tiles ---- */
+.masthead { text-align: center; min-width: 0; }
+
+.wordmark {
+  width: min(340px, 62vw);
+  height: auto;
+  filter: drop-shadow(0 5px 10px rgba(23, 81, 126, .25));
+}
+
+.tagline {
+  margin: 2px 0 0;
+  font-size: clamp(16px, 2.6vw, 22px);
+  color: var(--blue);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .7);
+}
+
+/* glossy circular corner buttons */
+.corner-btn {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  box-shadow: var(--shadow);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0) 45%);
+  touch-action: manipulation;
+}
+.corner-btn svg { width: 30px; height: 30px; }
+.corner-grownups { background-color: var(--purple); }
+.corner-gear { background-color: var(--blue); }
+.corner-gear .gear-hole { fill: var(--blue); }
+.corner-btn:active { transform: scale(.94); }
+
+/* ---------- carousel ---------- */
+
+.chooser {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  margin-top: 6px;
+}
+
+.carousel {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 26px calc((100% - var(--slide-w)) / 2) 30px;
+  width: 100%;
+  outline: none;
+}
+.carousel::-webkit-scrollbar { display: none; }
+.carousel:focus-visible { box-shadow: inset 0 0 0 4px rgba(45, 125, 210, .5); border-radius: 24px; }
+
+.slide {
+  flex: 0 0 var(--slide-w);
+  scroll-snap-align: center;
+  position: relative;
+  padding-top: 24px; /* room for the badge to overlap the card */
+}
+
+/* category badge pill, overlapping the top of the sticker sheet */
+.badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 94%;
+  white-space: nowrap;
+  padding: 8px 20px 9px;
+  border-radius: 999px;
+  border: 3.5px solid var(--white);
+  background-color: var(--cat);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,0) 55%);
+  color: var(--white);
+  font-size: clamp(15px, 2.3vw, 20px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+  box-shadow: 0 4px 0 rgba(23, 81, 126, .16), 0 8px 18px rgba(23, 81, 126, .16);
+}
+.badge-emoji { font-size: 1.15em; filter: drop-shadow(0 1px 1px rgba(0,0,0,.15)); }
+
+/* the white sticker sheet holding this category's tiles */
+.card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  background: var(--white);
+  border-radius: 30px;
+  padding: 30px 14px 14px;
+  box-shadow: var(--shadow);
+}
+.card.single { grid-template-columns: minmax(0, 78%); justify-content: center; }
+
+/* ---------- game tiles ---------- */
+
 .tile {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
+  border-radius: 22px;
+  border: 4px solid var(--cat);
+  background: var(--white);
+  overflow: hidden;
   text-decoration: none;
-  color: var(--ink);
-  min-height: 96px;
-  border-radius: 32px;
-  padding: 0.5rem;
-  transition: transform 160ms ease;
-}
-.tile:active { transform: scale(0.97); }
-
-.tile-frame {
+  box-shadow: 0 4px 0 rgba(23, 81, 126, .12);
+  transition: transform .15s ease;
+  touch-action: manipulation;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 32px;
-  background: color-mix(in srgb, var(--accent) 22%, #fff);
-  border: 5px solid var(--accent);
-  box-shadow: 0 8px 0 color-mix(in srgb, var(--accent) 55%, #000 4%),
-              0 12px 24px rgba(74, 47, 31, 0.12);
+  min-height: 44px;
+}
+a.tile:active { transform: scale(.96); }
+a.tile:focus-visible { outline: 4px solid var(--blue); outline-offset: 3px; }
+
+.tile-art {
+  position: relative;
+  aspect-ratio: 6 / 5;
+  background-color: var(--sky);
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
-.tile-frame img {
+.tile-art > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 12%;
-  -webkit-user-drag: none;
-  user-select: none;
+  object-fit: cover;
+  display: block;
 }
+.tile-art > img.contain { object-fit: contain; padding: 10%; }
 
 .tile-label {
-  font-weight: 600;
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
-  text-align: center;
-  line-height: 1.1;
-}
-
-/* Focus ring for keyboard users */
-.tile:focus-visible {
-  outline: 4px solid #E8A04C;
-  outline-offset: 4px;
-}
-
-/* ---- "Growing…" (proposed) tiles ---- */
-.tile-soon {
-  cursor: default;
-  filter: grayscale(0.55);
-  opacity: 0.72;
-}
-.tile-soon .tile-frame {
-  background: #EFEAE0;
-  border-color: #D8D0C2;
-  box-shadow: 0 6px 0 #D0C7B7;
-}
-.tile-soon .tile-label { color: var(--ink-soft); }
-.tile-badge {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 3px 8px rgba(74, 47, 31, 0.18);
-}
-
-/* ---- Grown-ups corner link ---- */
-.grownups-link {
-  position: fixed;
-  right: max(0.75rem, env(safe-area-inset-right));
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  opacity: 0.45;
-  transition: opacity 160ms ease;
-  z-index: 10;
-}
-.grownups-link:hover,
-.grownups-link:focus-visible { opacity: 0.9; }
-.grownups-link:focus-visible { outline: 3px solid #E8A04C; outline-offset: 3px; }
-.grownups-link img { width: 26px; height: 26px; }
-
-noscript .fallback {
   display: block;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  padding: 8px 6px 9px;
   text-align: center;
-  background: #fff;
-  border-radius: 24px;
+  font-size: clamp(14px, 2.2vw, 19px);
+  color: var(--cat);
+  background: var(--white);
+  border-top: 2px solid rgba(23, 81, 126, .08);
 }
 
-/* Respect reduced-motion: no entrance/press animation. */
+/* still-growing games: full color per the concept, with a sprout chip */
+.tile-soon { cursor: default; }
+.tile-soon .tile-art::after {
+  content: '🌱 growing';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  color: var(--navy);
+  box-shadow: 0 2px 6px rgba(23, 81, 126, .25);
+}
+
+/* ---------- arrows ---------- */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  background-color: var(--blue);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0) 45%);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font: inherit;
+  touch-action: manipulation;
+  transition: opacity .2s ease, transform .15s ease;
+}
+.arrow svg { width: 30px; height: 30px; }
+.arrow-prev { left: max(8px, env(safe-area-inset-left)); }
+.arrow-next { right: max(8px, env(safe-area-inset-right)); }
+.arrow:active { transform: translateY(-50%) scale(.92); }
+.arrow:focus-visible { outline: 4px solid var(--navy); outline-offset: 2px; }
+.arrow.is-off { opacity: 0; pointer-events: none; }
+
+/* ---------- dots ---------- */
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 0 6px;
+}
+.dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2.5px solid var(--white);
+  background: rgba(255, 255, 255, .55);
+  box-shadow: 0 2px 4px rgba(23, 81, 126, .18);
+  padding: 0;
+  cursor: pointer;
+}
+.dot.is-active { background: var(--blue); }
+
+/* ---------- bottom bar ---------- */
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 4px 18px 6px;
+  position: relative;
+}
+
+.chooser-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: inherit;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  background-color: var(--blue);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0) 50%);
+  border: 4px solid var(--white);
+  border-radius: 999px;
+  padding: 12px 34px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.chooser-pill svg { width: 30px; height: 30px; }
+.chooser-pill:active { transform: scale(.96); }
+.chooser-pill:focus-visible { outline: 4px solid var(--navy); outline-offset: 2px; }
+
+.ages-badge {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  background-color: var(--purple);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0) 50%);
+  color: var(--white);
+  box-shadow: var(--shadow);
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+.ages-word { font-size: 16px; }
+.ages-num { font-size: 30px; }
+
+/* ---------- noscript ---------- */
+
+.noscript-links { display: flex; flex-direction: column; gap: 14px; padding: 30px; }
+.noscript-links a { color: var(--navy); font-size: 22px; }
+
+/* ---------- responsive ---------- */
+
+/* wide/landscape tablets: two sticker sheets in view */
+@media (min-width: 1000px) {
+  :root { --slide-w: min(470px, 42vw); }
+}
+
+/* small phones: tighter chrome */
+@media (max-width: 480px) {
+  .corner-btn { width: 48px; height: 48px; border-width: 3px; }
+  .corner-btn svg { width: 24px; height: 24px; }
+  .arrow { width: 52px; height: 52px; }
+  .ages-badge { width: 68px; height: 68px; }
+  .ages-num { font-size: 24px; }
+  .chooser-pill { padding: 10px 24px; }
+}
+
+/* short landscape (e.g. phones): shrink the masthead so tiles fit */
+@media (max-height: 560px) {
+  .wordmark { width: min(220px, 30vw); }
+  .tagline { display: none; }
+  .slide { padding-top: 20px; }
+  .card { padding: 26px 10px 10px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tile, .grownups-link { transition: none; }
-  .tile:active { transform: none; }
+  .tile, .arrow, .chooser-pill, .corner-btn { transition: none; }
 }

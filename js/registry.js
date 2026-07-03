@@ -6,7 +6,7 @@
 // The ten learning categories, in canonical order — used by the fallback so the
 // hub still has structure even offline.
 const FALLBACK_CATEGORIES = [
-  { id: 'reading-phonics',    title: 'Reading & Phonics',                  order: 1 },
+  { id: 'reading-phonics',    title: 'Reading & Phonics',                  order: 1, color: '#58a945', emoji: '📖' },
   { id: 'writing-fine-motor', title: 'Writing & Fine Motor',               order: 2 },
   { id: 'math-number-sense',  title: 'Math & Number Sense',                order: 3 },
   { id: 'practical-life',     title: 'Practical Life & Independence',       order: 4 },
@@ -27,9 +27,11 @@ const FALLBACK_GAMES = [
     category: 'reading-phonics',
     path: 'games/sound-sprouts/',
     icon: 'games/sound-sprouts/assets/gen/ui/splash/title.png',
+    iconBg: 'games/sound-sprouts/assets/gen/bg.jpg',
+    iconFit: 'contain',
     age: { min: 4, max: 6 },
     status: 'live',
-    accent: '#7FB069',
+    accent: '#58a945',
     uses: [],
     modes: [
       { id: 'guided',   title: 'Make a Word',     skill: 'onset-rime blending' },
