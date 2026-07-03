@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF7E8"/>
+      <stop offset="1" stop-color="#FBEFD6"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.82" cy="0.12" r="0.5">
+      <stop offset="0" stop-color="#FFE9AE" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFE9AE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <rect width="1200" height="1600" fill="url(#sun)"/>
+  <!-- soft garden blobs, low contrast -->
+  <g opacity="0.5">
+    <path d="M-40 1360 C 180 1260 360 1420 620 1360 C 900 1300 1040 1420 1260 1350 L1260 1660 L-40 1660 Z" fill="#DCEFC4"/>
+    <path d="M-40 1470 C 220 1400 420 1520 700 1460 C 980 1400 1120 1500 1260 1460 L1260 1660 L-40 1660 Z" fill="#CBE7AC"/>
+  </g>
+  <g opacity="0.35" fill="#B9DE97">
+    <circle cx="150" cy="300" r="70"/>
+    <circle cx="1040" cy="560" r="90"/>
+    <circle cx="250" cy="820" r="60"/>
+    <circle cx="980" cy="1040" r="120"/>
+  </g>
+  <g opacity="0.28" fill="#F6D98A">
+    <circle cx="520" cy="180" r="46"/>
+    <circle cx="880" cy="360" r="34"/>
+    <circle cx="120" cy="620" r="40"/>
+    <circle cx="640" cy="900" r="52"/>
+  </g>
+</svg>

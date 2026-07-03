@@ -1,0 +1,217 @@
+/* QLOBE Kids — hub launcher styles.
+   Warm, sunny, garden-adjacent. Kin to Sound Sprouts: cream background, rounded
+   everything, Fredoka display font. The kids' page is always light — we commit
+   to it and do not honor prefers-color-scheme. */
+
+@font-face {
+  font-family: 'Fredoka';
+  /* css url() resolves relative to this file at /css/, so climb to /shared/ */
+  src: url('../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --cream: #FFF7E8;
+  --ink: #4A6B3A;
+  --ink-soft: #7A6A55;
+  --leaf: #7FB069;
+  --font: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+  --accent: #7FB069; /* per-tile override set inline from JS */
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background-color: var(--cream);
+  background-image: url('../assets/hub/bg.svg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center top;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+/* ---- Wordmark ---- */
+.wordmark {
+  text-align: center;
+  padding: clamp(1.5rem, 5vw, 3rem) 1rem 0.5rem;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
+}
+.wordmark .q { color: var(--ink); }
+.wordmark .k { color: #E8A04C; }
+.tagline {
+  text-align: center;
+  margin: 0.3rem 0 0;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 3.4vw, 1.4rem);
+  font-weight: 600;
+}
+
+/* ---- Layout ---- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) 6rem;
+}
+
+.cat { margin: clamp(1.5rem, 5vw, 3rem) 0 0; }
+
+/* Small, soft, decorative category header — kids don't need to read it. */
+.cat-title {
+  margin: 0 0 0.9rem;
+  font-size: clamp(0.9rem, 2.6vw, 1.15rem);
+  font-weight: 600;
+  color: var(--ink-soft);
+  opacity: 0.8;
+  text-align: center;
+  letter-spacing: 0.4px;
+}
+.cat-title::before,
+.cat-title::after {
+  content: '·';
+  margin: 0 0.6em;
+  color: var(--leaf);
+  opacity: 0.7;
+}
+
+/* Responsive grid: 1-up narrow phones, 2-up tablet portrait, 3-up landscape. */
+.grid {
+  display: grid;
+  gap: clamp(1rem, 3.5vw, 1.75rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 560px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---- Tiles ---- */
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--ink);
+  min-height: 96px;
+  border-radius: 32px;
+  padding: 0.5rem;
+  transition: transform 160ms ease;
+}
+.tile:active { transform: scale(0.97); }
+
+.tile-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 32px;
+  background: color-mix(in srgb, var(--accent) 22%, #fff);
+  border: 5px solid var(--accent);
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--accent) 55%, #000 4%),
+              0 12px 24px rgba(74, 47, 31, 0.12);
+  overflow: hidden;
+}
+.tile-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12%;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.tile-label {
+  font-weight: 600;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* Focus ring for keyboard users */
+.tile:focus-visible {
+  outline: 4px solid #E8A04C;
+  outline-offset: 4px;
+}
+
+/* ---- "Growing…" (proposed) tiles ---- */
+.tile-soon {
+  cursor: default;
+  filter: grayscale(0.55);
+  opacity: 0.72;
+}
+.tile-soon .tile-frame {
+  background: #EFEAE0;
+  border-color: #D8D0C2;
+  box-shadow: 0 6px 0 #D0C7B7;
+}
+.tile-soon .tile-label { color: var(--ink-soft); }
+.tile-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(74, 47, 31, 0.18);
+}
+
+/* ---- Grown-ups corner link ---- */
+.grownups-link {
+  position: fixed;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0.45;
+  transition: opacity 160ms ease;
+  z-index: 10;
+}
+.grownups-link:hover,
+.grownups-link:focus-visible { opacity: 0.9; }
+.grownups-link:focus-visible { outline: 3px solid #E8A04C; outline-offset: 3px; }
+.grownups-link img { width: 26px; height: 26px; }
+
+noscript .fallback {
+  display: block;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 24px;
+}
+
+/* Respect reduced-motion: no entrance/press animation. */
+@media (prefers-reduced-motion: reduce) {
+  .tile, .grownups-link { transition: none; }
+  .tile:active { transform: none; }
+}

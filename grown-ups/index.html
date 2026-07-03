@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#FFF7E8" />
+  <title>QLOBE Kids — For grown-ups</title>
+  <meta name="description" content="What QLOBE Kids is, how the games work, the ten learning categories, and how to build a new game with your kid using Claude Code." />
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../css/hub.css" />
+  <style>
+    /* Grown-ups page: warm but text-first. Overrides the kid grid layout. */
+    body { background-attachment: scroll; }
+    .doc {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 2rem) clamp(1rem, 5vw, 2rem) 4rem;
+      color: #4a3f30;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+    .doc h1 {
+      font-family: var(--font);
+      color: var(--ink);
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      margin: 0.5rem 0 0.25rem;
+    }
+    .doc h2 {
+      font-family: var(--font);
+      color: var(--ink);
+      margin: 2.2rem 0 0.6rem;
+      font-size: 1.5rem;
+    }
+    .doc p, .doc li { color: #4a3f30; }
+    .doc a { color: #B06A1E; }
+    .lede { font-size: 1.15rem; color: #5a4d3b; }
+    .cats { list-style: none; padding: 0; margin: 0; }
+    .cats li {
+      padding: 0.55rem 0.9rem;
+      margin: 0.4rem 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(74, 47, 31, 0.08);
+    }
+    .cats b { color: var(--ink); }
+    .table-wrap { overflow-x: auto; border-radius: 18px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      font-size: 0.98rem;
+    }
+    th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #f0e8d8; }
+    th { background: color-mix(in srgb, var(--leaf) 18%, #fff); color: var(--ink); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 600;
+    }
+    .badge.live { background: #d9efc6; color: #3f6b2c; }
+    .badge.proposed { background: #f3ead6; color: #8a7a58; }
+    .badge.in-design { background: #dceafb; color: #37618d; }
+    .badge.archived { background: #eee; color: #777; }
+    pre {
+      background: #2f2a22; color: #f7efdd; border-radius: 14px;
+      padding: 1rem 1.1rem; overflow-x: auto; font-size: 0.95rem; line-height: 1.5;
+    }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    p code { background: #f3ead6; padding: 0.08em 0.4em; border-radius: 6px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--font); font-weight: 600; text-decoration: none;
+      color: #fff; background: var(--leaf);
+      padding: 0.7rem 1.4rem; border-radius: 999px; font-size: 1.15rem;
+      box-shadow: 0 5px 0 #5e9450; min-height: 44px;
+    }
+    .back-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 #5e9450; }
+    .back-top { margin-bottom: 1rem; }
+    .back-bottom { display: block; text-align: center; margin-top: 3rem; }
+    @media (prefers-reduced-motion: reduce) { .back-btn:active { transform: none; } }
+  </style>
+</head>
+<body>
+  <div class="doc">
+    <p class="back-top"><a class="back-btn" href="../">⬅ Back to the games</a></p>
+
+    <h1>QLOBE Kids — for grown-ups</h1>
+
+    <h2>What is QLOBE Kids?</h2>
+    <p class="lede">QLOBE Kids is a free, open-source library of tiny educational
+    games for children aged 5–6. It runs entirely in the browser — nothing to
+    install, no account, no ads, and no tracking. Every game is tablet-first,
+    audio-rich, and designed so a pre-reader can play it on their own.</p>
+
+    <h2>How it works</h2>
+    <p>Games come in <b>families</b>. Each family holds a few short <b>modes</b>,
+    and every mode teaches exactly one small skill — blending two sounds into a
+    word, extending a pattern, ordering a three-part story. A round lasts about
+    30–90 seconds, there's no harsh "Game Over," and a wrong tap just gets a
+    gentle nudge and another try. The approach blends Montessori concreteness,
+    Kumon-style tiny repetitions, and a play-first spirit: hear it, see it, do it.</p>
+
+    <h2>The ten learning categories</h2>
+    <ul class="cats">
+      <li><b>Reading &amp; Phonics</b> — sounds, letters, and blending toward first words.</li>
+      <li><b>Writing &amp; Fine Motor</b> — tracing, pinching, and hand control.</li>
+      <li><b>Math &amp; Number Sense</b> — counting, patterns, shapes, and quantity.</li>
+      <li><b>Practical Life &amp; Independence</b> — everyday self-care and sequencing tasks.</li>
+      <li><b>Sensorial &amp; Early Science</b> — sorting, matching, cause and effect.</li>
+      <li><b>Oral Language &amp; Storytelling</b> — vocabulary, retelling, and sequencing.</li>
+      <li><b>Culture, Geography &amp; History</b> — places, people, and the wider world.</li>
+      <li><b>Art &amp; Music</b> — color, rhythm, and creative making.</li>
+      <li><b>Movement &amp; Outdoor Learning</b> — body awareness and active play.</li>
+      <li><b>Social-Emotional &amp; Self-Regulation</b> — feelings, calm, and kindness.</li>
+    </ul>
+
+    <h2>The games</h2>
+    <div id="games-table" class="table-wrap">
+      <noscript>
+        <p>Turn on JavaScript to see the full game list. The library currently
+        features <b>Sound Sprouts</b>, a phonics word-builder, plus several games
+        still growing.</p>
+      </noscript>
+    </div>
+
+    <h2>Build a game with your kid and Claude Code</h2>
+    <p>QLOBE Kids is meant to be extended. Point <a href="https://claude.com/claude-code">Claude Code</a>
+    at the repo, tell it what game you want, and build it together — no build step,
+    no framework, just plain files you can read.</p>
+    <pre><code>git clone https://github.com/kaigani/qlobe-kids.git
+cd qlobe-kids
+claude
+
+# then, inside Claude Code:
+/new-game
+# …or just: "build me a counting game about farm animals"</code></pre>
+    <p>To run the site locally, from the repo root: <code>python3 -m http.server</code>
+    then open <code>http://localhost:8000/</code>.</p>
+
+    <h2>Philosophy &amp; curriculum</h2>
+    <p>The design canon lives in the repo (GitHub Pages doesn't render Markdown,
+    so these link to the source):</p>
+    <ul>
+      <li><a href="https://github.com/kaigani/qlobe-kids/blob/main/docs/philosophy.md">Design philosophy</a></li>
+      <li><a href="https://github.com/kaigani/qlobe-kids/blob/main/docs/interaction-patterns.md">Interaction patterns</a></li>
+      <li><a href="https://github.com/kaigani/qlobe-kids/blob/main/docs/game-queue.md">Game idea queue</a></li>
+      <li><a href="https://github.com/kaigani/qlobe-kids/blob/main/CLAUDE.md">Agent onboarding brief</a></li>
+    </ul>
+
+    <h2>Licensing</h2>
+    <p>Code is <a href="https://github.com/kaigani/qlobe-kids/blob/main/LICENSE">MIT</a>.
+    Original assets and documentation are
+    <a href="https://github.com/kaigani/qlobe-kids/blob/main/LICENSE-ASSETS">CC BY 4.0</a>.
+    Free to use, remix, and share — please keep attribution.</p>
+
+    <a class="back-btn back-bottom" href="../">⬅ Back to the games</a>
+  </div>
+
+  <script type="module">
+    const CATS = {
+      'reading-phonics': 'Reading & Phonics',
+      'writing-fine-motor': 'Writing & Fine Motor',
+      'math-number-sense': 'Math & Number Sense',
+      'practical-life': 'Practical Life & Independence',
+      'sensorial-science': 'Sensorial & Early Science',
+      'oral-storytelling': 'Oral Language & Storytelling',
+      'culture-geography': 'Culture, Geography & History',
+      'art-music': 'Art & Music',
+      'movement-outdoor': 'Movement & Outdoor Learning',
+      'social-emotional': 'Social-Emotional & Self-Regulation'
+    };
+    const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+    async function renderTable() {
+      const mount = document.getElementById('games-table');
+      let data;
+      try {
+        const res = await fetch('../games.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        data = await res.json();
+        if (data.schemaVersion !== 1 || !Array.isArray(data.games)) throw new Error('shape');
+      } catch (err) {
+        mount.innerHTML = '<p>Could not load the game list right now. The library ' +
+          'features <b>Sound Sprouts</b>, a phonics word-builder, plus more games growing.</p>';
+        return;
+      }
+      const rows = data.games.map((g) => {
+        const age = g.age ? `${g.age.min}–${g.age.max}` : '—';
+        const cat = CATS[g.category] || g.category;
+        const modes = Array.isArray(g.modes) ? g.modes.length : 0;
+        const status = esc(g.status);
+        return `<tr>
+          <td>${esc(g.title)}</td>
+          <td>${esc(cat)}</td>
+          <td>${age}</td>
+          <td><span class="badge ${status}">${status}</span></td>
+          <td>${modes}</td>
+        </tr>`;
+      }).join('');
+      mount.innerHTML = `<table>
+        <thead><tr><th>Game</th><th>Category</th><th>Ages</th><th>Status</th><th>Modes</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
+    renderTable();
+  </script>
+</body>
+</html>

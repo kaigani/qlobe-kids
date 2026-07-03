@@ -1,0 +1,41 @@
+{
+  "id": "sound-sprouts",
+  "title": "Sound Sprouts",
+  "category": "reading-phonics",
+  "path": "games/sound-sprouts/",
+  "icon": "games/sound-sprouts/assets/gen/ui/splash/title.png",
+  "entry": "index.html",
+  "age": { "min": 4, "max": 6 },
+  "status": "live",
+  "accent": "#7FB069",
+  "description": "A gentle phonics word-builder: tap big sound tiles, hear each sound, blend them into a word, and reveal a picture. 133 illustrated CVC words across three no-pressure modes.",
+  "learningGoals": [
+    "Recognize onset and rime sounds in single-syllable words",
+    "Blend two sound chunks into a spoken CVC word",
+    "Connect written letters to the sounds they make",
+    "Map a decoded word to its meaning through a matching picture",
+    "Build phonemic confidence through low-stakes, self-paced play"
+  ],
+  "interactionModel": "tap letter tiles to build words",
+  "feedbackModel": "gentle retry, modeling, confetti celebration",
+  "uses": [
+    "shared/js/audio",
+    "shared/js/speech",
+    "shared/js/sfx",
+    "shared/assets/letter-tiles",
+    "shared/assets/objects",
+    "shared/assets/audio",
+    "shared/assets/ui",
+    "shared/fonts",
+    "shared/vendor/three"
+  ],
+  "modes": [
+    { "id": "guided", "title": "Make a Word", "skill": "blend CVC sounds into words" },
+    { "id": "mystery", "title": "Mystery Picture", "skill": "decode a word to reveal a picture" },
+    { "id": "freeplay", "title": "Word Mixer", "skill": "free phoneme exploration" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; art + voice generated locally (see ASSETS.md)",
+  "characters": [],
+  "conceptVideo": null
+}

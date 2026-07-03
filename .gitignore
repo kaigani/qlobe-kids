@@ -1,0 +1,20 @@
+# macOS junk
+.DS_Store
+._*
+
+# Windows junk
+Thumbs.db
+
+# Editor junk
+.vscode/
+.idea/
+*.swp
+
+# Node (defensive — this is a no-build static site)
+node_modules/
+
+# Logs
+*.log
+
+# Local Claude Code settings (the shipped skill in .claude/skills/ IS tracked)
+.claude/settings.local.json

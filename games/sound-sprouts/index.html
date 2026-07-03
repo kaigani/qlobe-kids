@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#FFF7E8" />
+  <title>Sound Sprouts 🌱 — Phonics for Little Readers</title>
+  <meta name="description" content="A playful phonics word-builder for early readers — tap sounds, blend them into words, hear them, and reveal a picture. 133 illustrated words across three gentle, no-pressure game modes." />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sound Sprouts" />
+  <meta property="og:title" content="Sound Sprouts 🌱 — Phonics for Little Readers" />
+  <meta property="og:description" content="Tap sounds, blend them into words, hear them, and reveal a picture. A warm, no-pressure phonics toy for ages 4+." />
+  <meta property="og:url" content="https://kaigani.github.io/qlobe-kids/games/sound-sprouts/" />
+  <meta property="og:image" content="https://kaigani.github.io/qlobe-kids/games/sound-sprouts/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sound Sprouts title screen with Make a Word, Mystery Picture, and Word Mixer game modes in a sunny cartoon garden." />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sound Sprouts 🌱 — Phonics for Little Readers" />
+  <meta name="twitter:description" content="Tap sounds, blend them into words, hear them, and reveal a picture. A warm, no-pressure phonics toy for ages 4+." />
+  <meta name="twitter:image" content="https://kaigani.github.io/qlobe-kids/games/sound-sprouts/assets/og-image.jpg" />
+
+  <!-- Icons / home-screen -->
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Sound Sprouts" />
+
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <script type="importmap">
+    { "imports": { "three": "../../shared/vendor/three.module.min.js" } }
+  </script>
+</head>
+<body>
+  <!-- illustrated background plate (podium/garden); sits behind the transparent canvas -->
+  <div id="bg"></div>
+
+  <!-- three.js renders into this transparent canvas, above the bg plate -->
+  <canvas id="scene" touch-action="none"></canvas>
+
+  <!-- ===== Menu overlay ===== -->
+  <div id="menu" class="overlay">
+    <img class="title-img" src="./assets/gen/ui/splash/title.png" alt="Sound Sprouts" draggable="false">
+    <div class="menu-buttons">
+      <button class="big-button" data-mode="guided" aria-label="Make a Word">
+        <img src="./assets/gen/ui/splash/btn-make.png" alt="Make a Word" draggable="false">
+      </button>
+      <button class="big-button" data-mode="mystery" aria-label="Mystery Picture">
+        <img src="./assets/gen/ui/splash/btn-mystery.png" alt="Mystery Picture" draggable="false">
+      </button>
+      <button class="big-button" data-mode="freeplay" aria-label="Word Mixer">
+        <img src="./assets/gen/ui/splash/btn-mixer.png" alt="Word Mixer" draggable="false">
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== In-game HUD ===== -->
+  <div id="hud" class="hidden">
+    <button id="btn-home" class="hud-button hud-img hud-home" aria-label="Home"></button>
+    <button id="btn-speaker" class="hud-button hud-img hud-sound hud-bottom-left" aria-label="Hear it again"></button>
+    <button id="btn-shuffle" class="hud-button hud-img hud-shuffle hud-bottom-right hidden" aria-label="New tiles"></button>
+    <button id="btn-again" class="again-button hud-img hud-play hidden" aria-label="Again"></button>
+  </div>
+
+  <!-- garden row: session collection of found picture words (free play) -->
+  <div id="garden-row" class="hidden"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

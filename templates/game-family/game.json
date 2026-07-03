@@ -1,0 +1,72 @@
+{
+  "_readme": "Per-game manifest and richer source of truth (games.json in the repo root is the lean hub registry that mirrors a subset of this). JSON has no comments, so every field is explained by an adjacent \"_comment_<field>\" key — delete those before shipping. Fill in every real field, keep ids kebab-case and lowercase, keep all paths relative.",
+
+  "_comment_id": "kebab-case, lowercase, unique. Becomes the folder name games/<id>/ and the games.json id.",
+  "id": "game-family",
+
+  "_comment_title": "Human-friendly display name shown in the hub. An emoji is welcome.",
+  "title": "Game Family Template",
+
+  "_comment_category": "One of the 10 kebab-case category ids (see docs/categories.md): reading-phonics, writing-fine-motor, math-number-sense, practical-life, sensorial-science, oral-storytelling, culture-geography, art-music, movement-outdoor, social-emotional.",
+  "category": "reading-phonics",
+
+  "_comment_path": "Relative path to the game folder from the repo root. Always games/<id>/.",
+  "path": "games/game-family/",
+
+  "_comment_icon": "Hub tile icon: an emoji, or a relative path to a PNG inside this game folder.",
+  "icon": "🧩",
+
+  "_comment_age": "Target age band. Platform default is 5–6.",
+  "age": { "min": 5, "max": 6 },
+
+  "_comment_status": "in-design | proposed | live | archived. New games start in-design.",
+  "status": "in-design",
+
+  "_comment_accent": "Hex accent color for this game's hub tile and UI. Match css --accent.",
+  "accent": "#F2A03D",
+
+  "_comment_uses": "Shared library paths this game consumes, relative to the repo root. Helps reviewers see the footprint. See docs/asset-system.md.",
+  "uses": [
+    "shared/js/audio.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+
+  "_comment_modes": "One entry per mini-game mode. Each teaches ONE skill and runs a 30–90s loop. id must match the data-mode on the menu button and the case in main.js.",
+  "modes": [
+    { "id": "mode-a", "title": "Mode A", "skill": "the one skill Mode A practices" },
+    { "id": "mode-b", "title": "Mode B", "skill": "the one skill Mode B practices" }
+  ],
+
+  "_comment_description": "One or two warm sentences for parents. What does a kid do and learn?",
+  "description": "A starter game family. Replace this with a short, warm description of what your child taps, builds, or discovers.",
+
+  "_comment_learningGoals": "3–5 concrete goals. See the game-design.md Learning goals section.",
+  "learningGoals": [
+    "First learning goal",
+    "Second learning goal",
+    "Third learning goal"
+  ],
+
+  "_comment_interactionModel": "How the child interacts: tap, drag, match, sort, trace, pour, tilt... Keep it touch-first, min 96px targets.",
+  "interactionModel": "tap",
+
+  "_comment_feedbackModel": "How success, retry, hint and celebration feel. Never punishment — repeat with variation instead.",
+  "feedbackModel": "Warm voice praise + sound-effect sparkle on success; gentle re-prompt with a hint on a miss; no failure states.",
+
+  "_comment_license": "Code is MIT; original assets/docs are CC BY 4.0. Leave as-is unless a mode ships third-party assets (log those in this game's ASSETS.md).",
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+
+  "_comment_entry": "Relative path to the game's HTML entry point.",
+  "entry": "index.html",
+
+  "_comment_credits": "People and tools to thank. Free text or a short list.",
+  "credits": "Built with Claude Code for QLOBE Kids.",
+
+  "_comment_characters": "Any shared or original characters featured (from shared/characters/ or this game). Empty if none.",
+  "characters": [],
+
+  "_comment_conceptVideo": "Optional. A relative path to concept/*.mp4 (<=15MB) or an external URL. Empty string if none.",
+  "conceptVideo": ""
+}

@@ -1,0 +1,183 @@
+{
+  "_note": "Master content manifest for Sound Sprouts. Drives data.js generation, image generation (objects + tiles), and audio generation. word = onset + rime. img = illustration subject (wrapped in the toy-style template). allowText only for number words. char = emoji fallback.",
+  "onsets": {
+    "b": "buh", "c": "kuh", "d": "duh", "f": "fuh", "g": "guh", "h": "huh",
+    "j": "juh", "k": "kuh", "l": "luh", "m": "muh", "n": "nuh", "p": "puh",
+    "r": "ruh", "s": "suh", "t": "tuh", "v": "vuh", "w": "wuh", "y": "yuh", "z": "zuh"
+  },
+  "rimes": {
+    "at": "at", "an": "an", "ap": "ap", "ag": "ag", "am": "am", "ad": "ad", "ab": "ab", "ax": "acks", "ak": "ack",
+    "ed": "ed", "eg": "egg", "em": "em", "en": "en", "et": "et", "eb": "ebb",
+    "ig": "ig", "in": "in", "ip": "ip", "it": "it", "ix": "icks", "ib": "ib", "id": "id",
+    "og": "og", "op": "op", "ot": "ot", "ox": "ox", "ob": "ob", "od": "odd", "om": "om",
+    "un": "un", "up": "up", "ug": "ug", "ub": "ub", "ud": "udd", "um": "um", "ut": "ut", "us": "us"
+  },
+  "words": [
+    { "word": "cat", "onset": "c", "rime": "at", "type": "noun", "char": "🐈", "img": "a cute sitting orange tabby cat" },
+    { "word": "hat", "onset": "h", "rime": "at", "type": "noun", "char": "🎩", "img": "a cheerful red party hat with a pom-pom" },
+    { "word": "bat", "onset": "b", "rime": "at", "type": "noun", "char": "🦇", "img": "a cute friendly purple bat with round wings" },
+    { "word": "rat", "onset": "r", "rime": "at", "type": "noun", "char": "🐀", "img": "a cute grey rat with a long tail" },
+    { "word": "mat", "onset": "m", "rime": "at", "type": "noun", "char": "🟫", "img": "a colorful woven welcome floor mat" },
+    { "word": "fat", "onset": "f", "rime": "at", "type": "adj", "char": "🐹", "img": "a chubby happy round hamster" },
+    { "word": "pat", "onset": "p", "rime": "at", "type": "verb", "char": "✋", "img": "a child's hand gently patting a happy puppy on the head" },
+    { "word": "sat", "onset": "s", "rime": "at", "type": "verb", "char": "🧎", "img": "a happy child sitting cross-legged on the floor" },
+
+    { "word": "man", "onset": "m", "rime": "an", "type": "noun", "char": "👨", "img": "a friendly smiling man with brown hair waving hello" },
+    { "word": "van", "onset": "v", "rime": "an", "type": "noun", "char": "🚐", "img": "a cheerful light blue camper van" },
+    { "word": "pan", "onset": "p", "rime": "an", "type": "noun", "char": "🍳", "img": "a black frying pan with a wooden handle" },
+    { "word": "fan", "onset": "f", "rime": "an", "type": "noun", "char": "🌀", "img": "a blue electric desk fan" },
+    { "word": "can", "onset": "c", "rime": "an", "type": "noun", "char": "🥫", "img": "a shiny silver tin food can" },
+    { "word": "ran", "onset": "r", "rime": "an", "type": "verb", "char": "🏃", "img": "a happy child running fast with motion lines" },
+
+    { "word": "map", "onset": "m", "rime": "ap", "type": "noun", "char": "🗺️", "img": "an unfolded treasure map with a red dotted path" },
+    { "word": "cap", "onset": "c", "rime": "ap", "type": "noun", "char": "🧢", "img": "a blue baseball cap" },
+    { "word": "nap", "onset": "n", "rime": "ap", "type": "verb", "char": "😴", "img": "a cute kitten napping curled up with little zzz symbols" },
+    { "word": "tap", "onset": "t", "rime": "ap", "type": "noun", "char": "🚰", "img": "a shiny silver faucet tap with a water drip" },
+    { "word": "zap", "onset": "z", "rime": "ap", "type": "verb", "char": "⚡", "img": "a bright yellow lightning bolt zapping" },
+    { "word": "lap", "onset": "l", "rime": "ap", "type": "noun", "char": "🧓", "img": "a grandma sitting with a cat curled up on her lap" },
+    { "word": "yap", "onset": "y", "rime": "ap", "type": "verb", "char": "🐕", "img": "a tiny puppy yapping with little sound lines" },
+
+    { "word": "bag", "onset": "b", "rime": "ag", "type": "noun", "char": "🎒", "img": "a purple backpack with a yellow star" },
+    { "word": "tag", "onset": "t", "rime": "ag", "type": "noun", "char": "🏷️", "img": "a paper price tag on a string" },
+    { "word": "rag", "onset": "r", "rime": "ag", "type": "noun", "char": "🧽", "img": "a folded checkered cleaning rag" },
+    { "word": "wag", "onset": "w", "rime": "ag", "type": "verb", "char": "🐕", "img": "a happy puppy wagging its tail with motion lines" },
+
+    { "word": "ham", "onset": "h", "rime": "am", "type": "noun", "char": "🍖", "img": "a glossy pink cooked ham" },
+    { "word": "jam", "onset": "j", "rime": "am", "type": "noun", "char": "🍓", "img": "an open jar of red strawberry jam" },
+    { "word": "ram", "onset": "r", "rime": "am", "type": "noun", "char": "🐏", "img": "a cute ram with big curly horns" },
+    { "word": "dam", "onset": "d", "rime": "am", "type": "noun", "char": "🦫", "img": "a wooden beaver dam holding back a river" },
+    { "word": "yam", "onset": "y", "rime": "am", "type": "noun", "char": "🍠", "img": "an orange sweet potato yam" },
+
+    { "word": "dad", "onset": "d", "rime": "ad", "type": "noun", "char": "👨", "img": "a friendly smiling dad with glasses" },
+    { "word": "mad", "onset": "m", "rime": "ad", "type": "adj", "char": "😠", "img": "a cartoon child with a funny angry pouting face" },
+    { "word": "sad", "onset": "s", "rime": "ad", "type": "adj", "char": "😢", "img": "a cartoon child with a sad face and one tear" },
+    { "word": "pad", "onset": "p", "rime": "ad", "type": "noun", "char": "📝", "img": "a yellow note pad with a pencil" },
+
+    { "word": "cab", "onset": "c", "rime": "ab", "type": "noun", "char": "🚕", "img": "a bright yellow taxi cab" },
+    { "word": "wax", "onset": "w", "rime": "ax", "type": "noun", "char": "🕯️", "img": "a glowing yellow candle with melting wax" },
+    { "word": "yak", "onset": "y", "rime": "ak", "type": "noun", "char": "🐃", "img": "a fuzzy brown yak with horns" },
+
+    { "word": "bed", "onset": "b", "rime": "ed", "type": "noun", "char": "🛏️", "img": "a cozy bed with a blue blanket and a fluffy pillow" },
+    { "word": "red", "onset": "r", "rime": "ed", "type": "adj", "char": "🍎", "img": "a shiny bright red apple" },
+    { "word": "fed", "onset": "f", "rime": "ed", "type": "verb", "char": "🍼", "img": "a child feeding a baby bird from their hand" },
+    { "word": "wed", "onset": "w", "rime": "ed", "type": "verb", "char": "💒", "img": "two cute cartoon characters getting married at a wedding" },
+
+    { "word": "leg", "onset": "l", "rime": "eg", "type": "noun", "char": "🦵", "img": "a single cartoon leg wearing a sneaker" },
+    { "word": "peg", "onset": "p", "rime": "eg", "type": "noun", "char": "🪵", "img": "a wooden clothespin peg" },
+    { "word": "beg", "onset": "b", "rime": "eg", "type": "verb", "char": "🐶", "img": "a cute puppy sitting up and begging with paws raised" },
+
+    { "word": "gem", "onset": "g", "rime": "em", "type": "noun", "char": "💎", "img": "a sparkling blue cut gemstone" },
+
+    { "word": "hen", "onset": "h", "rime": "en", "type": "noun", "char": "🐔", "img": "a plump brown mother hen" },
+    { "word": "pen", "onset": "p", "rime": "en", "type": "noun", "char": "🖊️", "img": "a blue ballpoint pen with a clip" },
+    { "word": "ten", "onset": "t", "rime": "en", "type": "noun", "char": "🔟", "img": "a big playful number ten", "allowText": true },
+    { "word": "den", "onset": "d", "rime": "en", "type": "noun", "char": "🦊", "img": "a cozy little animal den nest in a tree hollow" },
+
+    { "word": "jet", "onset": "j", "rime": "et", "type": "noun", "char": "✈️", "img": "a small white and blue jet airplane" },
+    { "word": "net", "onset": "n", "rime": "et", "type": "noun", "char": "🥅", "img": "a butterfly net with a wooden handle and white mesh" },
+    { "word": "pet", "onset": "p", "rime": "et", "type": "noun", "char": "🐾", "img": "a happy puppy with a red collar" },
+    { "word": "vet", "onset": "v", "rime": "et", "type": "noun", "char": "🩺", "img": "a friendly animal vet holding a puppy, with a stethoscope" },
+    { "word": "wet", "onset": "w", "rime": "et", "type": "adj", "char": "💦", "img": "a wet happy puppy with water droplets and a splash" },
+
+    { "word": "web", "onset": "w", "rime": "eb", "type": "noun", "char": "🕸️", "img": "a round silver spider web with tiny dewdrops" },
+
+    { "word": "pig", "onset": "p", "rime": "ig", "type": "noun", "char": "🐷", "img": "a cute pink pig" },
+    { "word": "wig", "onset": "w", "rime": "ig", "type": "noun", "char": "👩‍🦰", "img": "a curly orange wig" },
+    { "word": "dig", "onset": "d", "rime": "ig", "type": "verb", "char": "⛏️", "img": "a child digging in the sand with a shovel" },
+    { "word": "fig", "onset": "f", "rime": "ig", "type": "noun", "char": "🟣", "img": "a ripe purple fig fruit" },
+    { "word": "big", "onset": "b", "rime": "ig", "type": "adj", "char": "🐘", "img": "a big friendly grey elephant" },
+    { "word": "rig", "onset": "r", "rime": "ig", "type": "noun", "char": "🚚", "img": "a big red semi truck rig" },
+    { "word": "jig", "onset": "j", "rime": "ig", "type": "verb", "char": "🎶", "img": "a cartoon character doing a happy jig dance" },
+
+    { "word": "pin", "onset": "p", "rime": "in", "type": "noun", "char": "📌", "img": "a red round push pin" },
+    { "word": "fin", "onset": "f", "rime": "in", "type": "noun", "char": "🐟", "img": "a blue fish with a big fin" },
+    { "word": "bin", "onset": "b", "rime": "in", "type": "noun", "char": "🗑️", "img": "a green trash bin" },
+    { "word": "tin", "onset": "t", "rime": "in", "type": "noun", "char": "🥫", "img": "a tin lunch box" },
+    { "word": "win", "onset": "w", "rime": "in", "type": "verb", "char": "🏆", "img": "a happy child holding up a gold trophy" },
+
+    { "word": "lip", "onset": "l", "rime": "ip", "type": "noun", "char": "👄", "img": "a pair of smiling red lips" },
+    { "word": "zip", "onset": "z", "rime": "ip", "type": "noun", "char": "🧥", "img": "a close-up of a metal zipper on a jacket" },
+    { "word": "sip", "onset": "s", "rime": "ip", "type": "verb", "char": "🥤", "img": "a child sipping a drink through a straw" },
+    { "word": "dip", "onset": "d", "rime": "ip", "type": "noun", "char": "🥣", "img": "a tortilla chip dipping into a bowl of dip" },
+    { "word": "rip", "onset": "r", "rime": "ip", "type": "verb", "char": "📄", "img": "a sheet of paper being ripped in two" },
+
+    { "word": "sit", "onset": "s", "rime": "it", "type": "verb", "char": "🪑", "img": "a happy child sitting on a small chair" },
+    { "word": "kit", "onset": "k", "rime": "it", "type": "noun", "char": "🧰", "img": "a red first aid kit" },
+    { "word": "lit", "onset": "l", "rime": "it", "type": "adj", "char": "🕯️", "img": "a brightly lit glowing candle" },
+    { "word": "fit", "onset": "f", "rime": "it", "type": "adj", "char": "💪", "img": "a strong healthy child flexing their arm, exercising" },
+
+    { "word": "six", "onset": "s", "rime": "ix", "type": "noun", "char": "6️⃣", "img": "a big playful number six", "allowText": true },
+    { "word": "mix", "onset": "m", "rime": "ix", "type": "verb", "char": "🥣", "img": "a wooden spoon mixing batter in a bowl" },
+    { "word": "fix", "onset": "f", "rime": "ix", "type": "verb", "char": "🔧", "img": "a wrench fixing a bolt" },
+
+    { "word": "bib", "onset": "b", "rime": "ib", "type": "noun", "char": "🍼", "img": "a cute baby bib with a pattern" },
+    { "word": "lid", "onset": "l", "rime": "id", "type": "noun", "char": "🫙", "img": "a glass jar with a metal lid" },
+    { "word": "kid", "onset": "k", "rime": "id", "type": "noun", "char": "🐐", "img": "a cute baby goat kid" },
+    { "word": "hid", "onset": "h", "rime": "id", "type": "verb", "char": "🙈", "img": "a child hiding behind their hands playing peekaboo" },
+
+    { "word": "dog", "onset": "d", "rime": "og", "type": "noun", "char": "🐕", "img": "a cute happy puppy dog" },
+    { "word": "log", "onset": "l", "rime": "og", "type": "noun", "char": "🪵", "img": "a brown wooden log with tree rings" },
+    { "word": "fog", "onset": "f", "rime": "og", "type": "noun", "char": "🌫️", "img": "a misty grey fog drifting over green hills" },
+    { "word": "hog", "onset": "h", "rime": "og", "type": "noun", "char": "🐗", "img": "a chubby happy pink hog" },
+    { "word": "jog", "onset": "j", "rime": "og", "type": "verb", "char": "🏃", "img": "a person jogging in sporty clothes" },
+    { "word": "cog", "onset": "c", "rime": "og", "type": "noun", "char": "⚙️", "img": "a shiny metal gear cog" },
+
+    { "word": "top", "onset": "t", "rime": "op", "type": "noun", "char": "🔝", "img": "a colorful spinning top toy" },
+    { "word": "mop", "onset": "m", "rime": "op", "type": "noun", "char": "🧹", "img": "a cleaning mop" },
+    { "word": "pop", "onset": "p", "rime": "op", "type": "noun", "char": "🍭", "img": "a colorful round lollipop" },
+    { "word": "hop", "onset": "h", "rime": "op", "type": "verb", "char": "🐰", "img": "a cute bunny hopping in mid-jump" },
+    { "word": "cop", "onset": "c", "rime": "op", "type": "noun", "char": "👮", "img": "a friendly smiling police officer" },
+
+    { "word": "pot", "onset": "p", "rime": "ot", "type": "noun", "char": "🍲", "img": "a cooking pot with a lid" },
+    { "word": "hot", "onset": "h", "rime": "ot", "type": "adj", "char": "🔥", "img": "a glowing hot sun with shimmering heat waves" },
+    { "word": "cot", "onset": "c", "rime": "ot", "type": "noun", "char": "🛏️", "img": "a small baby cot crib" },
+    { "word": "dot", "onset": "d", "rime": "ot", "type": "noun", "char": "⚫", "img": "colorful round polka dots" },
+
+    { "word": "box", "onset": "b", "rime": "ox", "type": "noun", "char": "📦", "img": "a plain brown cardboard box with open flaps" },
+    { "word": "fox", "onset": "f", "rime": "ox", "type": "noun", "char": "🦊", "img": "a cute sitting orange fox with a white-tipped tail" },
+
+    { "word": "cob", "onset": "c", "rime": "ob", "type": "noun", "char": "🌽", "img": "an ear of yellow corn on the cob" },
+    { "word": "sob", "onset": "s", "rime": "ob", "type": "verb", "char": "😭", "img": "a cartoon child crying with big tears" },
+
+    { "word": "pod", "onset": "p", "rime": "od", "type": "noun", "char": "🫛", "img": "a green pea pod with round peas" },
+    { "word": "rod", "onset": "r", "rime": "od", "type": "noun", "char": "🎣", "img": "a fishing rod" },
+    { "word": "cod", "onset": "c", "rime": "od", "type": "noun", "char": "🐟", "img": "a silver cod fish" },
+    { "word": "nod", "onset": "n", "rime": "od", "type": "verb", "char": "🙂", "img": "a happy child nodding their head yes" },
+
+    { "word": "mom", "onset": "m", "rime": "om", "type": "noun", "char": "👩", "img": "a smiling friendly mom with a ponytail" },
+
+    { "word": "sun", "onset": "s", "rime": "un", "type": "noun", "char": "🌞", "img": "a smiling golden sun with soft rounded rays" },
+    { "word": "run", "onset": "r", "rime": "un", "type": "verb", "char": "🏃", "img": "a happy child running with a big smile" },
+    { "word": "bun", "onset": "b", "rime": "un", "type": "noun", "char": "🍞", "img": "a round golden bread bun" },
+    { "word": "fun", "onset": "f", "rime": "un", "type": "adj", "char": "🎉", "img": "happy kids playing together with colorful balloons" },
+
+    { "word": "cup", "onset": "c", "rime": "up", "type": "noun", "char": "☕", "img": "a bright yellow drinking cup" },
+    { "word": "pup", "onset": "p", "rime": "up", "type": "noun", "char": "🐶", "img": "a cute fluffy golden puppy with floppy ears" },
+
+    { "word": "bug", "onset": "b", "rime": "ug", "type": "noun", "char": "🐛", "img": "a cute red ladybug with black spots" },
+    { "word": "rug", "onset": "r", "rime": "ug", "type": "noun", "char": "🟥", "img": "a colorful round woven rug" },
+    { "word": "mug", "onset": "m", "rime": "ug", "type": "noun", "char": "☕", "img": "a cozy mug of hot cocoa with marshmallows" },
+    { "word": "hug", "onset": "h", "rime": "ug", "type": "verb", "char": "🤗", "img": "two cute animals hugging each other warmly" },
+    { "word": "jug", "onset": "j", "rime": "ug", "type": "noun", "char": "🥛", "img": "a jug of milk" },
+    { "word": "pug", "onset": "p", "rime": "ug", "type": "noun", "char": "🐶", "img": "a cute wrinkly pug dog" },
+    { "word": "tug", "onset": "t", "rime": "ug", "type": "noun", "char": "🚢", "img": "a small red tugboat on water" },
+    { "word": "dug", "onset": "d", "rime": "ug", "type": "verb", "char": "🕳️", "img": "a hole dug in the ground with a shovel and a pile of dirt" },
+
+    { "word": "tub", "onset": "t", "rime": "ub", "type": "noun", "char": "🛁", "img": "a bathtub full of bubbles" },
+    { "word": "cub", "onset": "c", "rime": "ub", "type": "noun", "char": "🐻", "img": "a cute baby bear cub" },
+    { "word": "sub", "onset": "s", "rime": "ub", "type": "noun", "char": "🟡", "img": "a cheerful yellow submarine" },
+
+    { "word": "mud", "onset": "m", "rime": "ud", "type": "noun", "char": "🟤", "img": "a brown muddy puddle" },
+    { "word": "bud", "onset": "b", "rime": "ud", "type": "noun", "char": "🌷", "img": "a green flower bud about to bloom" },
+
+    { "word": "gum", "onset": "g", "rime": "um", "type": "noun", "char": "🫧", "img": "a pink bubblegum bubble" },
+    { "word": "hum", "onset": "h", "rime": "um", "type": "verb", "char": "🎵", "img": "a happy child humming with little music notes" },
+    { "word": "yum", "onset": "y", "rime": "um", "type": "adj", "char": "😋", "img": "a child licking their lips happily, yummy" },
+
+    { "word": "nut", "onset": "n", "rime": "ut", "type": "noun", "char": "🥜", "img": "a brown peanut" },
+    { "word": "hut", "onset": "h", "rime": "ut", "type": "noun", "char": "🛖", "img": "a little straw hut" },
+    { "word": "cut", "onset": "c", "rime": "ut", "type": "verb", "char": "✂️", "img": "a pair of scissors cutting a sheet of paper" },
+
+    { "word": "bus", "onset": "b", "rime": "us", "type": "noun", "char": "🚌", "img": "a yellow school bus" }
+  ]
+}

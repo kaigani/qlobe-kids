@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#FFF7E8" />
+  <title>QLOBE Kids</title>
+  <meta name="description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required — play, learn, and grow one little game at a time." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="QLOBE Kids" />
+  <meta property="og:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required." />
+  <meta property="og:url" content="https://kaigani.github.io/qlobe-kids/" />
+  <meta property="og:image" content="./assets/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="QLOBE Kids wordmark beside a friendly green globe with a sprout growing from the top, in a sunny garden." />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="QLOBE Kids" />
+  <meta name="twitter:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, no reading required." />
+  <meta name="twitter:image" content="./assets/og-image.png" />
+
+  <!-- Icons / home-screen -->
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="QLOBE Kids" />
+
+  <link rel="stylesheet" href="./css/hub.css" />
+</head>
+<body>
+  <header>
+    <h1 class="wordmark"><span class="q">QLOBE</span> <span class="k">Kids</span></h1>
+    <p class="tagline" aria-hidden="true">Little games to play and grow 🌱</p>
+  </header>
+
+  <main>
+    <div id="games" aria-label="Games"></div>
+
+    <noscript>
+      <div class="fallback">
+        <p>Please turn on JavaScript to see all the games. In the meantime you can play:</p>
+        <p><a href="games/sound-sprouts/">Sound Sprouts 🌱</a></p>
+        <p><a href="grown-ups/">For grown-ups</a></p>
+      </div>
+    </noscript>
+  </main>
+
+  <a class="grownups-link" href="./grown-ups/" aria-label="For grown-ups">
+    <img src="./assets/hub/grown-ups.svg" alt="" width="26" height="26" />
+  </a>
+
+  <script type="module" src="./js/hub.js"></script>
+</body>
+</html>

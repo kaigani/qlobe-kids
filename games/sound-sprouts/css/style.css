@@ -1,0 +1,263 @@
+/* Sound Sprouts — DOM styling. The three.js canvas is the world; these are the
+   menu overlay, the in-game HUD buttons, and the garden collection strip.
+   Built for a 4-year-old on an iPad: huge touch targets, no reading required. */
+
+@font-face {
+  font-family: 'Fredoka';
+  /* fetched by a separate task; if missing, the stack below falls back cleanly */
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --cream: #FFF7E8;
+  --sky: #BDE8FF;
+  --coral: #FF5A2B;
+  --leaf: #43BE2E;
+  --brown: #4A2F1F;
+  --wood: #D9A05B;
+  --font: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html {
+  /* sky fallback behind the fixed #bg plate; prevents a white flash and stops
+     body-background propagation from covering the z-index:-1 plate. */
+  background-color: var(--sky);
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font);
+  /* suppress long-press callout / selection / context menus on iPad */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+/* illustrated background plate behind the transparent WebGL canvas. cover +
+   center bottom keeps the podium centered & visible in portrait and landscape. */
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url('../assets/gen/bg.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-color: var(--sky);
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  background: transparent;
+}
+
+.hidden { display: none !important; }
+
+/* ===================== Menu overlay ===================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6vh;
+  padding: max(4vh, env(safe-area-inset-top)) 5vw
+           max(4vh, env(safe-area-inset-bottom)) 5vw;
+  pointer-events: auto;
+}
+
+.title-img {
+  display: block;
+  width: min(82vw, 640px);
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  animation: titleBob 3.6s ease-in-out infinite;
+}
+
+@keyframes titleBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4vh;
+  width: min(86vw, 560px);
+}
+
+/* landscape: cap by height so all three stacked buttons + title always fit */
+@media (orientation: landscape) {
+  .title-img   { width: min(70vh, 640px); }
+  .menu-buttons { width: min(62vh, 560px); }
+}
+
+.big-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 0.09s ease-out, filter 0.09s ease-out;
+}
+
+.big-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 7px 12px rgba(74, 47, 31, 0.22));
+}
+
+.big-button:active {
+  transform: translateY(4px) scale(0.99);
+}
+
+/* ===================== In-game HUD ===================== */
+
+.hud-button {
+  position: fixed;
+  width: 84px;
+  height: 84px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cream);
+  font-size: 42px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 rgba(74, 47, 31, 0.12), 0 10px 20px rgba(74, 47, 31, 0.18);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  touch-action: manipulation;
+}
+
+.hud-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 rgba(74, 47, 31, 0.12), 0 6px 12px rgba(74, 47, 31, 0.18);
+}
+
+/* image-based HUD buttons: the PNG is itself a round glossy cream button, so we
+   drop the CSS pill background/shadow and let the artwork carry the look. */
+.hud-img {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-shadow: none;
+  font-size: 0;
+}
+
+.hud-img:active {
+  box-shadow: none;
+}
+
+.hud-home    { background-image: url('../../../shared/assets/ui/btn-home.png'); }
+.hud-sound   { background-image: url('../../../shared/assets/ui/btn-sound.png'); }
+.hud-shuffle { background-image: url('../../../shared/assets/ui/btn-shuffle.png'); }
+.hud-play    { background-image: url('../../../shared/assets/ui/btn-play.png'); }
+
+#btn-home {
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+}
+
+.hud-bottom-left {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: max(16px, env(safe-area-inset-left));
+}
+
+.hud-bottom-right {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: max(16px, env(safe-area-inset-right));
+}
+
+/* big celebratory "Again" (play) button, centered near the bottom. Uses the
+   generated btn-play artwork; kept round + large + with the pop-in animation. */
+.again-button {
+  position: fixed;
+  left: 50%;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: 110px;
+  height: 110px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  background-image: url('../../../shared/assets/ui/btn-play.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  font-size: 0;
+  cursor: pointer;
+  z-index: 25;
+  animation: again-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  touch-action: manipulation;
+}
+
+.again-button:active {
+  transform: translateX(-50%) translateY(4px);
+}
+
+@keyframes again-pop {
+  0%   { transform: translateX(-50%) scale(0.4); opacity: 0; }
+  100% { transform: translateX(-50%) scale(1);   opacity: 1; }
+}
+
+/* ===================== Garden row (free play collection) ===== */
+
+#garden-row {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  padding: 8px 14px;
+  max-width: 92vw;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 28px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.garden-card {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 3px 8px rgba(74, 47, 31, 0.18);
+  animation: again-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}

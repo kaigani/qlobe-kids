@@ -1,0 +1,136 @@
+/* style.css — starter styles for a QLOBE Kids game family.
+   Warm, high-contrast, touch-first. Grow this as your game grows. */
+
+/* ---- Shared display font ------------------------------------------
+   Fredoka SemiBold (weight 600) is the platform display face. The woff2
+   lives in shared/fonts/. Path is relative to THIS css file, so it climbs
+   out of games/<id>/css/ up to shared/fonts/. */
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* NOTE on the ../../../ above: this template sits at
+   templates/game-family/css/style.css (3 levels deep), so it needs three
+   hops to reach shared/. A real game at games/<id>/css/style.css is also 3
+   levels deep from the repo root, so the SAME ../../../shared/ path is
+   correct once you copy the folder into games/. */
+
+:root {
+  --bg: #FFF7E8;          /* warm cream background */
+  --ink: #3A2F1B;         /* soft dark brown text */
+  --accent: #F2A03D;      /* replace with your game's accent color */
+  --btn-min: 96px;        /* minimum touch target — never smaller */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* iPad: no rubber-band scroll, no text selection, no tap highlight */
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* respect the notch / home indicator when viewport-fit=cover is on */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.hidden { display: none !important; }
+
+/* ---- Menu overlay --------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6vh;
+  padding: 4vw;
+}
+
+.title {
+  font-size: clamp(2rem, 8vw, 4rem);
+  margin: 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4vw;
+  justify-content: center;
+}
+
+/* ---- Big touch buttons ---------------------------------------------- */
+.big-button {
+  min-width: var(--btn-min);
+  min-height: var(--btn-min);
+  padding: 1.2rem 2.4rem;
+  font-family: inherit;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  /* touch-first: no double-tap-zoom delay, no long-press callout */
+  touch-action: manipulation;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.big-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+/* ---- In-game stage -------------------------------------------------- */
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+/* ---- HUD ------------------------------------------------------------- */
+#hud {
+  position: fixed;
+  top: env(safe-area-inset-top);
+  left: env(safe-area-inset-left);
+  padding: 1rem;
+}
+
+.hud-button {
+  min-width: var(--btn-min);
+  min-height: var(--btn-min);
+  font-size: 2.5rem;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ---- Motion sensitivity --------------------------------------------
+   Honor the OS "reduce motion" setting — no big transitions/animations. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
