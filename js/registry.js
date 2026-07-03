@@ -6,7 +6,7 @@
 // The ten learning categories, in canonical order — used by the fallback so the
 // hub still has structure even offline.
 const FALLBACK_CATEGORIES = [
-  { id: 'reading-phonics',    title: 'Reading & Phonics',                  order: 1, color: '#58a945', emoji: '📖' },
+  { id: 'reading-phonics',    title: 'Reading & Phonics',                  order: 1, color: '#58a945', emoji: '📖', icon: 'assets/hub/categories/reading-phonics.jpg' },
   { id: 'writing-fine-motor', title: 'Writing & Fine Motor',               order: 2 },
   { id: 'math-number-sense',  title: 'Math & Number Sense',                order: 3 },
   { id: 'practical-life',     title: 'Practical Life & Independence',       order: 4 },
