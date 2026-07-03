@@ -54,13 +54,14 @@ function categorySlide(category, games) {
   const sec = el('section', 'slide slide-cat');
   if (category.color) sec.style.setProperty('--cat', category.color);
 
+  // "1/10 games" — how many are playable today out of everything planned here
+  const live = games.filter((g) => g.status === 'live' && g.path).length;
+  const count = `${live}/${games.length} game${games.length === 1 ? '' : 's'}`;
+
   const a = el('a', 'tile tile-big');
   a.href = `#${category.id}`;
-  a.setAttribute('aria-label', `${category.title} — ${games.length} game${games.length === 1 ? '' : 's'}`);
-  a.append(
-    tileArt(category),
-    tileLabel(`${games.length} game${games.length === 1 ? '' : 's'}`)
-  );
+  a.setAttribute('aria-label', `${category.title} — ${live} of ${games.length} games ready to play`);
+  a.append(tileArt(category), tileLabel(count));
 
   sec.append(badge(category), a);
   return sec;

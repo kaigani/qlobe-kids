@@ -122,7 +122,8 @@
         }
       ],
       "iconBg": "games/sound-sprouts/assets/gen/bg.jpg",
-      "iconFit": "contain"
+      "iconFit": "contain",
+      "summary": "Build simple words like cat, sun, and map with movable letters."
     },
     {
       "id": "blend-train",
@@ -147,7 +148,8 @@
           "title": "Couple Up",
           "skill": "pushing sound cars together to blend a word"
         }
-      ]
+      ],
+      "summary": "Push sound cars together to blend a word like m-a-t."
     },
     {
       "id": "pattern-train",
@@ -176,7 +178,8 @@
           "title": "Fix the Gap",
           "skill": "completing a missing pattern step"
         }
-      ]
+      ],
+      "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
     },
     {
       "id": "tangram-tales",
@@ -205,7 +208,8 @@
           "title": "Make a Tale",
           "skill": "building a picture from tangram pieces"
         }
-      ]
+      ],
+      "summary": "Build animals and pictures from geometric shapes."
     },
     {
       "id": "story-sequence",
@@ -230,7 +234,8 @@
           "title": "Put It in Order",
           "skill": "sequencing a 3-step story"
         }
-      ]
+      ],
+      "summary": "Sequence simple picture stories in order."
     },
     {
       "id": "feelings-charades",
@@ -260,7 +265,1230 @@
           "title": "Show the Feeling",
           "skill": "acting out and matching emotions"
         }
-      ]
+      ],
+      "summary": "Act out proud, frustrated, calm, and worried."
+    },
+    {
+      "id": "sound-basket",
+      "title": "Sound Basket",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/sound-basket.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Match objects to their beginning sounds."
+    },
+    {
+      "id": "mystery-letter-bag",
+      "title": "Mystery Letter Bag",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/mystery-letter-bag.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Feel a hidden letter with your fingers and name its sound."
+    },
+    {
+      "id": "rhyming-detective",
+      "title": "Rhyming Detective",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/rhyming-detective.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Hunt around the room for things that rhyme."
+    },
+    {
+      "id": "letter-treasure-hunt",
+      "title": "Letter Treasure Hunt",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/letter-treasure-hunt.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Find everything that starts with today's sound."
+    },
+    {
+      "id": "silly-swap-words",
+      "title": "Silly Swap Words",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/silly-swap-words.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Change one sound at a time to turn cat into hat into hot."
+    },
+    {
+      "id": "picture-word-match",
+      "title": "Picture-to-Word Match",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/picture-word-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Match picture cards to the words they spell."
+    },
+    {
+      "id": "sound-hopscotch",
+      "title": "Sound Hopscotch",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/sound-hopscotch.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Jump onto letters as their sounds are spoken."
+    },
+    {
+      "id": "tiny-reader-theater",
+      "title": "Tiny Reader Theater",
+      "category": "reading-phonics",
+      "path": null,
+      "icon": "assets/hub/tiles/tiny-reader-theater.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Act out one-page decodable stories."
+    },
+    {
+      "id": "sand-tray-letters",
+      "title": "Sand Tray Letters",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/sand-tray-letters.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Trace letters in sand, salt, or flour with a fingertip."
+    },
+    {
+      "id": "chalkboard-big-strokes",
+      "title": "Chalkboard Big Strokes",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/chalkboard-big-strokes.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Practice giant loops, lines, and curves on a chalkboard."
+    },
+    {
+      "id": "bead-path-builder",
+      "title": "Bead Path Builder",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/bead-path-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "String beads in a left-to-right pattern."
+    },
+    {
+      "id": "tweezer-rescue",
+      "title": "Tweezer Rescue",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/tweezer-rescue.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Move pom-poms by color or sound using tweezers."
+    },
+    {
+      "id": "sticker-line-challenge",
+      "title": "Sticker Line Challenge",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/sticker-line-challenge.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Place stickers along curves and zigzags."
+    },
+    {
+      "id": "name-puzzle",
+      "title": "Name Puzzle",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/name-puzzle.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Reorder the cut-up letters of your own name."
+    },
+    {
+      "id": "letter-road-driving",
+      "title": "Letter Road Driving",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/letter-road-driving.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Drive a toy car along the shape of a letter."
+    },
+    {
+      "id": "scissor-trail-safari",
+      "title": "Scissor Trail Safari",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Cut along winding animal-path lines."
+    },
+    {
+      "id": "playdough-letter-factory",
+      "title": "Playdough Letter Factory",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/playdough-letter-factory.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Roll and shape letters from playdough."
+    },
+    {
+      "id": "secret-message-copy",
+      "title": "Secret Message Copy",
+      "category": "writing-fine-motor",
+      "path": null,
+      "icon": "assets/hub/tiles/secret-message-copy.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Copy one short word or phrase."
+    },
+    {
+      "id": "number-rod-race",
+      "title": "Number Rod Race",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/number-rod-race.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Order rods from shortest to longest."
+    },
+    {
+      "id": "counting-treasure-cups",
+      "title": "Counting Treasure Cups",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/counting-treasure-cups.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Drop the exact number of objects into numbered cups."
+    },
+    {
+      "id": "sandpaper-number-match",
+      "title": "Sandpaper Number Match",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Trace a numeral, then count that many objects."
+    },
+    {
+      "id": "teen-bead-builder",
+      "title": "Teen Bead Builder",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/teen-bead-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Combine a ten and some ones to make eleven through nineteen."
+    },
+    {
+      "id": "snack-addition-stories",
+      "title": "Snack Addition Stories",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/snack-addition-stories.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Tell add-together stories, like three berries plus two berries."
+    },
+    {
+      "id": "subtraction-picnic",
+      "title": "Subtraction Picnic",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/subtraction-picnic.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Animals eat counters away to show taking away."
+    },
+    {
+      "id": "number-line-jump",
+      "title": "Number Line Jump",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/number-line-jump.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Jump forward and backward along floor numbers."
+    },
+    {
+      "id": "block-tower-measure",
+      "title": "Block Tower Measure",
+      "category": "math-number-sense",
+      "path": null,
+      "icon": "assets/hub/tiles/block-tower-measure.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Compare heights by stacking cubes."
+    },
+    {
+      "id": "pouring-station",
+      "title": "Pouring Station",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/pouring-station.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Pour water, beans, or rice between pitchers."
+    },
+    {
+      "id": "table-setting-mission",
+      "title": "Table-Setting Mission",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/table-setting-mission.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Set the places using a visual placemat card."
+    },
+    {
+      "id": "snack-chef",
+      "title": "Snack Chef",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/snack-chef.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Peel, spread, and slice soft foods safely."
+    },
+    {
+      "id": "laundry-sorter",
+      "title": "Laundry Sorter",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/laundry-sorter.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Sort socks, fold cloths, and match pairs."
+    },
+    {
+      "id": "sweep-the-trail",
+      "title": "Sweep the Trail",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/sweep-the-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Sweep crumbs or leaves into a target spot."
+    },
+    {
+      "id": "button-zipper-lab",
+      "title": "Button-Zipper Lab",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/button-zipper-lab.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Practice buttons and zippers on dressing frames or clothes."
+    },
+    {
+      "id": "plant-care-captain",
+      "title": "Plant Care Captain",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/plant-care-captain.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Water, mist, prune, and observe a plant."
+    },
+    {
+      "id": "shelf-reset-game",
+      "title": "Shelf Reset Game",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/shelf-reset-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Choose a tray, use it, then return it neatly."
+    },
+    {
+      "id": "lunchbox-pack",
+      "title": "Lunchbox Pack",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/lunchbox-pack.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Pack items using a picture checklist."
+    },
+    {
+      "id": "cleanup-timer-quest",
+      "title": "Clean-Up Timer Quest",
+      "category": "practical-life",
+      "path": null,
+      "icon": "assets/hub/tiles/cleanup-timer-quest.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Restore a space before the song ends."
+    },
+    {
+      "id": "sink-or-float",
+      "title": "Sink or Float Lab",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/sink-or-float.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Predict, test, and sort what sinks and what floats."
+    },
+    {
+      "id": "magnet-explorer",
+      "title": "Magnet Explorer",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/magnet-explorer.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Find which objects are magnetic and which are not."
+    },
+    {
+      "id": "sound-cylinder-match",
+      "title": "Sound Cylinder Match",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/sound-cylinder-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Pair containers that make the same sound."
+    },
+    {
+      "id": "texture-trail",
+      "title": "Texture Trail",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/texture-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Match rough, smooth, soft, and bumpy surfaces."
+    },
+    {
+      "id": "smell-jars",
+      "title": "Smell Jars",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/smell-jars.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Identify lemon, mint, cinnamon, and pine by scent."
+    },
+    {
+      "id": "color-gradient-cards",
+      "title": "Color Gradient Cards",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/color-gradient-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Order color shades from light to dark."
+    },
+    {
+      "id": "bean-sprout-watch",
+      "title": "Bean Sprout Watch",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/bean-sprout-watch.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Observe and draw a sprout's daily changes."
+    },
+    {
+      "id": "weather-scientist",
+      "title": "Weather Scientist",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/weather-scientist.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Chart sun, clouds, wind, and rain."
+    },
+    {
+      "id": "bug-hotel-observer",
+      "title": "Bug Hotel Observer",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/bug-hotel-observer.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Watch insects up close without disturbing them."
+    },
+    {
+      "id": "melting-race",
+      "title": "Melting Race",
+      "category": "sensorial-science",
+      "path": null,
+      "icon": "assets/hub/tiles/melting-race.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Compare ice melting in sun, shade, hand, and cloth."
+    },
+    {
+      "id": "story-stones",
+      "title": "Story Stones",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/story-stones.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Pick three painted stones and invent a story."
+    },
+    {
+      "id": "puppet-retell",
+      "title": "Puppet Retell",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/puppet-retell.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Act out a favorite book with puppets."
+    },
+    {
+      "id": "question-ball",
+      "title": "Question Ball",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/question-ball.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Toss a ball and answer who, what, why, or how."
+    },
+    {
+      "id": "silly-sentence-builder",
+      "title": "Silly Sentence Builder",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/silly-sentence-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Combine noun, verb, and place cards into silly sentences."
+    },
+    {
+      "id": "picture-narration",
+      "title": "Picture Narration",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/picture-narration.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Describe one detailed illustration out loud."
+    },
+    {
+      "id": "emotion-voice-game",
+      "title": "Emotion Voice Game",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/emotion-voice-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Say the same line happy, scared, then proud."
+    },
+    {
+      "id": "joke-workshop",
+      "title": "Joke Workshop",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/joke-workshop.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Make silly riddles and playful wordplay."
+    },
+    {
+      "id": "family-story-interview",
+      "title": "Family Story Interview",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/family-story-interview.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Ask a grown-up about the long-ago days."
+    },
+    {
+      "id": "story-repair-shop",
+      "title": "Story Repair Shop",
+      "category": "oral-storytelling",
+      "path": null,
+      "icon": "assets/hub/tiles/story-repair-shop.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Fix a story that is missing its ending."
+    },
+    {
+      "id": "puzzle-map-match",
+      "title": "Puzzle Map Match",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/puzzle-map-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Match animals, foods, or landmarks to their places."
+    },
+    {
+      "id": "globe-spin-stories",
+      "title": "Globe Spin Stories",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/globe-spin-stories.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Spin the globe, stop it, and imagine what lives there."
+    },
+    {
+      "id": "land-water-tray",
+      "title": "Land-Water Tray",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/land-water-tray.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Shape an island, lake, peninsula, and bay."
+    },
+    {
+      "id": "then-now-sort",
+      "title": "Then-and-Now Sort",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/then-now-sort.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Sort old and new versions, like candle and lamp."
+    },
+    {
+      "id": "family-timeline",
+      "title": "Family Timeline",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/family-timeline.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Order baby, toddler, now, and future self."
+    },
+    {
+      "id": "community-helper-cards",
+      "title": "Community Helper Cards",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/community-helper-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Match tools to the helpers who use them."
+    },
+    {
+      "id": "mountain-seasons-wheel",
+      "title": "Mountain Seasons Wheel",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/mountain-seasons-wheel.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Explore local weather, clothing, plants, and animals by season."
+    },
+    {
+      "id": "neighborhood-map-walk",
+      "title": "Neighborhood Map Walk",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/neighborhood-map-walk.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Draw home, trail, store, and lake on a map."
+    },
+    {
+      "id": "world-music-dance",
+      "title": "World Music Dance Cards",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/world-music-dance.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Hear music, move to it, and locate it on a map."
+    },
+    {
+      "id": "local-nature-guide",
+      "title": "Local Nature Guide",
+      "category": "culture-geography",
+      "path": null,
+      "icon": "assets/hub/tiles/local-nature-guide.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Identify pinecones, rocks, birds, and animal tracks."
+    },
+    {
+      "id": "color-mixing-lab",
+      "title": "Color Mixing Lab",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/color-mixing-lab.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Discover new colors by mixing the primaries."
+    },
+    {
+      "id": "clay-creature-studio",
+      "title": "Clay Creature Studio",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/clay-creature-studio.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Sculpt animals, monsters, and letters from clay."
+    },
+    {
+      "id": "rhythm-copycat",
+      "title": "Rhythm Copycat",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/rhythm-copycat.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Copy clap, tap, and stomp patterns."
+    },
+    {
+      "id": "sound-painting",
+      "title": "Sound Painting",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/sound-painting.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Draw what the music feels like."
+    },
+    {
+      "id": "loose-parts-collage",
+      "title": "Loose Parts Collage",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/loose-parts-collage.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Arrange leaves, buttons, paper, and yarn into art."
+    },
+    {
+      "id": "instrument-detective",
+      "title": "Instrument Detective",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/instrument-detective.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Guess the shaker, drum, bell, and chime by sound."
+    },
+    {
+      "id": "big-paper-murals",
+      "title": "Big Paper Murals",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/big-paper-murals.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Draw a giant collaborative mural on the floor."
+    },
+    {
+      "id": "pattern-bracelet-band",
+      "title": "Pattern Bracelet Band",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/pattern-bracelet-band.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Make a wearable bracelet with a repeating pattern."
+    },
+    {
+      "id": "shape-to-picture",
+      "title": "Shape-to-Picture Challenge",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/shape-to-picture.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Turn circles into animals or objects."
+    },
+    {
+      "id": "song-story-remix",
+      "title": "Song Story Remix",
+      "category": "art-music",
+      "path": null,
+      "icon": "assets/hub/tiles/song-story-remix.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Change the lyrics to a familiar tune."
+    },
+    {
+      "id": "balance-beam-trail",
+      "title": "Balance Beam Trail",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/balance-beam-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Walk along lines, logs, and tape paths."
+    },
+    {
+      "id": "animal-walk-cards",
+      "title": "Animal Walk Cards",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/animal-walk-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Bear crawl, frog jump, and crab walk."
+    },
+    {
+      "id": "nature-scavenger-hunt",
+      "title": "Nature Scavenger Hunt",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/nature-scavenger-hunt.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Find something smooth, green, round, and tiny."
+    },
+    {
+      "id": "throwing-target-garden",
+      "title": "Throwing Target Garden",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/throwing-target-garden.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Toss beanbags at target circles."
+    },
+    {
+      "id": "obstacle-course-builder",
+      "title": "Obstacle Course Builder",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/obstacle-course-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Crawl, climb, hop, balance, and carry through a course."
+    },
+    {
+      "id": "line-walking-challenge",
+      "title": "Line-Walking Challenge",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/line-walking-challenge.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Walk slowly and carefully along a Montessori line."
+    },
+    {
+      "id": "trail-counting-walk",
+      "title": "Trail Counting Walk",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/trail-counting-walk.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Count stairs, birds, pinecones, and signs on a walk."
+    },
+    {
+      "id": "shadow-chase",
+      "title": "Shadow Chase",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/shadow-chase.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Watch shadows move and shift through the day."
+    },
+    {
+      "id": "garden-delivery-game",
+      "title": "Garden Delivery Game",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/garden-delivery-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Carry water across the yard without spilling."
+    },
+    {
+      "id": "freeze-focus-dance",
+      "title": "Freeze-and-Focus Dance",
+      "category": "movement-outdoor",
+      "path": null,
+      "icon": "assets/hub/tiles/freeze-focus-dance.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Move wildly, then stop fast and hold still."
+    },
+    {
+      "id": "grace-courtesy-theater",
+      "title": "Grace-and-Courtesy Theater",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/grace-courtesy-theater.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Practice greeting, asking, and waiting politely."
+    },
+    {
+      "id": "calm-corner-cards",
+      "title": "Calm Corner Cards",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/calm-corner-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Choose breathing, squeezing, drawing, or resting to calm down."
+    },
+    {
+      "id": "turn-taking-tower",
+      "title": "Turn-Taking Tower",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/turn-taking-tower.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Build a tower one block per turn."
+    },
+    {
+      "id": "waiting-muscle-game",
+      "title": "Waiting Muscle Game",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/waiting-muscle-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Wait ten seconds before grabbing the prize."
+    },
+    {
+      "id": "problem-solving-puppets",
+      "title": "Problem-Solving Puppets",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/problem-solving-puppets.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Puppets argue, and the child suggests a way to make peace."
+    },
+    {
+      "id": "plan-do-review",
+      "title": "Plan-Do-Review Board",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/plan-do-review.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Choose a task, finish it, then reflect on it."
+    },
+    {
+      "id": "kindness-delivery",
+      "title": "Kindness Delivery",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/kindness-delivery.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Make and give helpful notes or drawings."
+    },
+    {
+      "id": "red-green-light",
+      "title": "Red Light, Green Light",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/red-green-light.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Practice impulse control by stopping and going with the lights."
+    },
+    {
+      "id": "board-game-reset",
+      "title": "Board Game Reset Ritual",
+      "category": "social-emotional",
+      "path": null,
+      "icon": "assets/hub/tiles/board-game-reset.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "proposed",
+      "summary": "Play, win or lose, then clean up together."
     }
   ]
 }
