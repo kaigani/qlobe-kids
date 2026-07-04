@@ -105,6 +105,8 @@ export class Game {
     this.speakToken++;
     clearTimeout(this.idleTimer);
     clearTimeout(this.nextTimer);
+    if (this.dragCleanup) this.dragCleanup(); // end any in-flight drag
+    this.sweepStrayClones();
     voice.stop();
     clearConfetti();
     this.els.lid.removeEventListener('click', this.onLidTap);
@@ -387,20 +389,23 @@ export class Game {
 
   onCardDown(e, card, food) {
     if (this.destroyed || this.phase !== 'request') return;
+    // One drag at a time, primary pointer only — kids use both hands, and a
+    // second simultaneous drag is how clones used to get stranded.
+    if (this.dragCleanup || e.isPrimary === false) return;
     e.preventDefault();
     e.stopPropagation();
+    this.sweepStrayClones();
     const pointerId = e.pointerId;
-    try {
-      card.setPointerCapture(pointerId);
-    } catch {
-      /* ignore */
-    }
     const startX = e.clientX;
     const startY = e.clientY;
     let clone = null;
     let dragging = false;
 
+    // Listeners live on window, not the card: if the card is removed from the
+    // DOM mid-drag (multi-touch race, round advance), the stream survives and
+    // finish() still runs — the clone can never be orphaned.
     const onMove = (ev) => {
+      if (ev.pointerId !== pointerId) return;
       if (!dragging && Math.hypot(ev.clientX - startX, ev.clientY - startY) > 10) {
         dragging = true;
         clone = this.makeDragClone(card, food);
@@ -412,9 +417,8 @@ export class Game {
       }
     };
     const finish = (ev, cancelled) => {
-      card.removeEventListener('pointermove', onMove);
-      card.removeEventListener('pointerup', onUp);
-      card.removeEventListener('pointercancel', onCancel);
+      if (ev.pointerId !== pointerId) return;
+      cleanup();
       card.classList.remove('drag-src');
       if (!dragging) {
         if (!cancelled) this.toggleSelect(card, food);
@@ -424,7 +428,13 @@ export class Game {
         this.glideBack(clone, card);
         return;
       }
-      const res = this.attemptPack(food.id, { clone, card });
+      let res;
+      try {
+        res = this.attemptPack(food.id, { clone, card });
+      } catch (err) {
+        console.warn('lunchbox: pack failed', err);
+        res = { ok: false };
+      }
       if (res.ok) {
         clone.remove();
       } else {
@@ -433,9 +443,31 @@ export class Game {
     };
     const onUp = (ev) => finish(ev, false);
     const onCancel = (ev) => finish(ev, true);
-    card.addEventListener('pointermove', onMove);
-    card.addEventListener('pointerup', onUp);
-    card.addEventListener('pointercancel', onCancel);
+    const cleanup = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onCancel);
+      window.removeEventListener('blur', onBlur);
+      this.dragCleanup = null;
+    };
+    // Window blur (system gesture, notification, app switch) can eat the
+    // pointerup entirely — treat it as a cancel so the food glides home.
+    const onBlur = () => {
+      cleanup();
+      card.classList.remove('drag-src');
+      if (dragging) this.glideBack(clone, card);
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onCancel);
+    window.addEventListener('blur', onBlur);
+    this.dragCleanup = onBlur; // doubles as "drag in progress" flag
+  }
+
+  /** Remove any drag clones that lost their event stream (should be
+   *  impossible now, but a stuck food on a kid's screen is never acceptable). */
+  sweepStrayClones() {
+    document.querySelectorAll('.drag-clone').forEach((c) => c.remove());
   }
 
   makeDragClone(card, food) {
