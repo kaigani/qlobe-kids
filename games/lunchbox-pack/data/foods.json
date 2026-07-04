@@ -1,28 +1,193 @@
 {
   "foods": [
-    { "id": "apple",      "name": "Apple",      "group": "fruit",  "color": "red",    "crunchy": true  },
-    { "id": "banana",     "name": "Banana",     "group": "fruit",  "color": "yellow", "crunchy": false },
-    { "id": "grapes",     "name": "Grapes",     "group": "fruit",  "color": "purple", "crunchy": false },
-    { "id": "strawberry", "name": "Strawberry", "group": "fruit",  "color": "red",    "crunchy": false },
-    { "id": "orange",     "name": "Orange",     "group": "fruit",  "color": "orange", "crunchy": false },
-    { "id": "watermelon", "name": "Watermelon", "group": "fruit",  "color": null,     "crunchy": false },
-    { "id": "carrot",     "name": "Carrots",    "group": "veggie", "color": "orange", "crunchy": true  },
-    { "id": "broccoli",   "name": "Broccoli",   "group": "veggie", "color": "green",  "crunchy": false },
-    { "id": "cucumber",   "name": "Cucumber",   "group": "veggie", "color": "green",  "crunchy": true  },
-    { "id": "pepper",     "name": "Peppers",    "group": "veggie", "color": "red",    "crunchy": true  },
-    { "id": "sandwich",   "name": "Sandwich",   "group": "main",   "color": null,     "crunchy": false },
-    { "id": "cheese",     "name": "Cheese",     "group": "main",   "color": "yellow", "crunchy": false },
-    { "id": "crackers",   "name": "Crackers",   "group": "main",   "color": null,     "crunchy": true  },
-    { "id": "yogurt",     "name": "Yogurt",     "group": "main",   "color": null,     "crunchy": false },
-    { "id": "milk",       "name": "Milk",       "group": "drink",  "color": null,     "crunchy": false },
-    { "id": "water",      "name": "Water",      "group": "drink",  "color": null,     "crunchy": false },
-    { "id": "juice",      "name": "Juice",      "group": "drink",  "color": "orange", "crunchy": false },
-    { "id": "cookie",     "name": "Cookie",     "group": "treat",  "color": null,     "crunchy": false }
+    {
+      "id": "apple",
+      "name": "Apple",
+      "group": "fruit",
+      "color": "red",
+      "crunchy": true
+    },
+    {
+      "id": "banana",
+      "name": "Banana",
+      "group": "fruit",
+      "color": "yellow",
+      "crunchy": false
+    },
+    {
+      "id": "grapes",
+      "name": "Grapes",
+      "group": "fruit",
+      "color": "purple",
+      "crunchy": false
+    },
+    {
+      "id": "strawberry",
+      "name": "Strawberry",
+      "group": "fruit",
+      "color": "red",
+      "crunchy": false
+    },
+    {
+      "id": "orange",
+      "name": "Orange",
+      "group": "fruit",
+      "color": "orange",
+      "crunchy": false
+    },
+    {
+      "id": "watermelon",
+      "name": "Watermelon",
+      "group": "fruit",
+      "color": null,
+      "crunchy": false
+    },
+    {
+      "id": "carrot",
+      "name": "Carrots",
+      "group": "veggie",
+      "color": "orange",
+      "crunchy": true
+    },
+    {
+      "id": "broccoli",
+      "name": "Broccoli",
+      "group": "veggie",
+      "color": "green",
+      "crunchy": false
+    },
+    {
+      "id": "cucumber",
+      "name": "Cucumber",
+      "group": "veggie",
+      "color": "green",
+      "crunchy": true
+    },
+    {
+      "id": "pepper",
+      "name": "Peppers",
+      "group": "veggie",
+      "color": "red",
+      "crunchy": true
+    },
+    {
+      "id": "sandwich",
+      "name": "Sandwich",
+      "group": "main",
+      "color": null,
+      "crunchy": false
+    },
+    {
+      "id": "cheese",
+      "name": "Cheese",
+      "group": "main",
+      "color": "yellow",
+      "crunchy": false
+    },
+    {
+      "id": "crackers",
+      "name": "Crackers",
+      "group": "main",
+      "color": null,
+      "crunchy": true
+    },
+    {
+      "id": "yogurt",
+      "name": "Yogurt",
+      "group": "main",
+      "color": null,
+      "crunchy": false
+    },
+    {
+      "id": "milk",
+      "name": "Milk",
+      "group": "drink",
+      "color": null,
+      "crunchy": false
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "group": "drink",
+      "color": null,
+      "crunchy": false
+    },
+    {
+      "id": "juice",
+      "name": "Juice",
+      "group": "drink",
+      "color": "orange",
+      "crunchy": false
+    },
+    {
+      "id": "cookie",
+      "name": "Cookie",
+      "group": "treat",
+      "color": null,
+      "crunchy": false
+    }
   ],
   "characters": [
-    { "id": "maya", "name": "Maya", "favorites": { "groups": ["fruit"],  "attrs": ["red"] } },
-    { "id": "leo",  "name": "Leo",  "favorites": { "groups": ["main"],   "attrs": ["crunchy"] } },
-    { "id": "nia",  "name": "Nia",  "favorites": { "groups": ["veggie"], "attrs": ["green", "purple"] } },
-    { "id": "sam",  "name": "Sam",  "favorites": { "groups": ["drink"],  "attrs": ["orange"] } }
+    {
+      "id": "maya",
+      "name": "Maya",
+      "favorites": {
+        "groups": [
+          "fruit"
+        ],
+        "attrs": [
+          "red"
+        ]
+      }
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "favorites": {
+        "groups": [
+          "main"
+        ],
+        "attrs": [
+          "crunchy"
+        ]
+      }
+    },
+    {
+      "id": "nia",
+      "name": "Nia",
+      "favorites": {
+        "groups": [
+          "veggie"
+        ],
+        "attrs": [
+          "green",
+          "purple"
+        ]
+      }
+    },
+    {
+      "id": "sam",
+      "name": "Sam",
+      "favorites": {
+        "groups": [
+          "drink"
+        ],
+        "attrs": [
+          "orange"
+        ]
+      }
+    },
+    {
+      "id": "ravi",
+      "name": "Ravi",
+      "favorites": {
+        "groups": [
+          "treat"
+        ],
+        "attrs": [
+          "yellow"
+        ]
+      }
+    }
   ]
 }

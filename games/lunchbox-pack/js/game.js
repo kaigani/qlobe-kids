@@ -15,14 +15,16 @@ import {
 } from './requests.js';
 import { burst, clearConfetti } from './confetti.js';
 
-// Compartment slot centers, measured against lunchbox-open.png (532×620).
-// x,y = center as % of the image; s = food scale. THE tunable const.
+// Compartment slot centers, measured against lunchbox-open.png (900×745,
+// layered-extraction art). x,y = center as % of the image; s = food scale.
+// THE tunable const. Slots: green (large, holds 3), pink top-right, yellow
+// bottom-right.
 export const SLOTS = [
-  { x: 30, y: 62, s: 1.0 },
-  { x: 66, y: 54, s: 0.75 },
-  { x: 60, y: 75, s: 0.75 },
-  { x: 22, y: 56, s: 0.65 },
-  { x: 38, y: 68, s: 0.65 },
+  { x: 36, y: 60, s: 1.0 },
+  { x: 62, y: 55, s: 0.75 },
+  { x: 57, y: 76, s: 0.75 },
+  { x: 28, y: 54, s: 0.65 },
+  { x: 44, y: 66, s: 0.65 },
 ];
 
 const BASE_FOOD_PCT = 30; // packed food width at s=1, as % of box width
