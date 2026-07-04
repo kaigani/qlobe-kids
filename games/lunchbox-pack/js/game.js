@@ -29,7 +29,8 @@ export const SLOTS = [
 
 const BASE_FOOD_PCT = 30; // packed food width at s=1, as % of box width
 const IDLE_NUDGE_MS = 10000;
-const CHEER_MS = 1600;
+// lid-drop (~550ms) + confetti/cheer moment; the next kid arrives after
+const CHEER_MS = 2400;
 
 const foodImg = (id) => `../../shared/assets/foods/${id}.png`;
 const portraitImg = (id) => `../../shared/characters/${id}/portrait.png`;
@@ -143,6 +144,7 @@ export class Game {
     this.els.packedLayer.innerHTML = '';
     this.els.lid.classList.add('hidden');
     this.els.lid.classList.remove('dropped');
+    this.els.boxArea.classList.remove('closed', 'lid-ready');
     this.clearSelection();
 
     // character slides in
@@ -306,25 +308,40 @@ export class Game {
   // ---- lid / cheer / session end ----------------------------------------
 
   toLid() {
+    // The box is full. Don't close it yet — invite the tap; closing is the
+    // child's satisfying payoff, not something that happens TO them.
     this.phase = 'lid';
     this.clearIdleNudge();
     this.els.bubble.classList.add('hidden');
-    this.els.lid.classList.remove('hidden');
-    void this.els.lid.offsetWidth;
-    this.els.lid.classList.add('dropped');
+    this.els.boxArea.classList.add('lid-ready');
     // let the yum/count line finish, then ask for the lid
     this.speakLater([['lid']], 900);
   }
 
   onLidTap() {
+    this.closeBox();
+  }
+
+  closeBox() {
     if (this.destroyed || this.phase !== 'lid') return;
     this.phase = 'cheer';
-    sfx.tada();
-    const r = this.els.boxArea.getBoundingClientRect();
-    burst(r.left + r.width / 2, r.top + r.height / 2);
-    this.stars++;
-    this.renderStars();
-    this.speakSeq([[this.mode === 'healthy' ? 'cheer-healthy' : 'cheer']]);
+    this.els.boxArea.classList.remove('lid-ready');
+    // swap open box (+ packed food) for the closed box as the lid drops —
+    // the open art must never stay visible behind the closed art
+    this.els.boxArea.classList.add('closed');
+    this.els.lid.classList.remove('hidden');
+    void this.els.lid.offsetWidth;
+    this.els.lid.classList.add('dropped');
+    sfx.whoosh();
+    setTimeout(() => {
+      if (this.destroyed) return;
+      sfx.tada();
+      const r = this.els.boxArea.getBoundingClientRect();
+      burst(r.left + r.width / 2, r.top + r.height / 2);
+      this.stars++;
+      this.renderStars();
+      this.speakSeq([[this.mode === 'healthy' ? 'cheer-healthy' : 'cheer']]);
+    }, this.reducedMotion ? 0 : 550);
     this.nextTimer = setTimeout(() => {
       if (this.destroyed) return;
       this.boxIndex++;
@@ -528,6 +545,11 @@ export class Game {
 
   /** Tap-tap fallback: tap a lifted food, then tap the box. */
   onBoxTap(e) {
+    if (this.phase === 'lid') {
+      e.stopPropagation();
+      this.closeBox();
+      return;
+    }
     if (this.selected && this.phase === 'request') {
       e.stopPropagation();
       const { card, food } = this.selected;
