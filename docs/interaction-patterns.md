@@ -331,3 +331,32 @@ img.src = `../../shared/assets/objects/${name}.png`;
 Rule of thumb: **shared modules → `new URL(…, import.meta.url)`; game-level
 texture/image loads → `../../shared/…` document-relative.** Never hard-code the
 domain in either case.
+
+## 11. Drag & drop that can never strand a piece
+
+**When to use:** any game where a child drags an item (food, tile, card) to a
+target. Reference implementation: `games/lunchbox-pack/js/game.js`
+(`onCardDown`).
+
+Kids drag with both hands, mid-animation, and while the OS is doing something
+else. The naive version — listeners on the dragged element + pointer capture —
+strands the floating piece the moment that element leaves the DOM or the
+`pointerup` never arrives. Rules learned the hard way:
+
+1. **Listeners on `window`, filtered by `pointerId`** — never on the dragged
+   element. If the source element is removed mid-drag, the stream survives.
+2. **One drag at a time**: keep a "drag in progress" flag and ignore new
+   `pointerdown`s while set; also ignore `e.isPrimary === false` (second
+   finger).
+3. **Handle `pointercancel` AND `window` `blur`** as "glide the piece home" —
+   iOS fires cancel on gesture takeover, and app switches/notifications can
+   eat the `pointerup` entirely.
+4. **Wrap the drop action in try/catch** — an exception between "piece is
+   floating" and "piece is placed" must still end with cleanup.
+5. **Sweep stray clones** (`document.querySelectorAll('.drag-clone')`) on
+   every new drag start and on game destroy. Should be dead code; keep it
+   anyway — a stuck piece on a five-year-old's screen is never acceptable.
+6. `touch-action: none` on draggable elements (or the browser will turn the
+   drag into a scroll), `manipulation` everywhere else.
+7. Offer **tap-tap as an equal path** (tap piece, tap target): easier for
+   some kids, and it exercises the same single "attempt" code path.
