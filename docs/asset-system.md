@@ -105,6 +105,18 @@ const MANIFEST_URL = new URL('../assets/audio/manifest.json', import.meta.url);
 always points at `shared/assets/…` no matter which game imported it. Prefer this
 over bare relative strings in any code that lives under `shared/`.
 
+## Transparent-asset quality bar
+
+Assets that ship with an alpha channel (characters, foods, objects, props)
+must have **clean anti-aliased edges** — no white halos, no jagged fringes,
+no chroma spill. The proven production approach: generate the artwork on a
+perfectly flat chroma-key background (solid green or magenta), then use an
+AI layer-decomposition model to extract the subject layer with true alpha,
+describing the subject explicitly in the extraction prompt so the redraw
+stays faithful. Avoid luminance/flood-fill keying for new assets — it fringes
+on soft edges. Verify every cutout by compositing it over a saturated color
+(magenta) and inspecting the silhouette at 2-4x zoom.
+
 ## Adding to `shared/`
 Contribute via PR, and for every new asset record its **provenance and license**:
 1. Add the file under the right `shared/` subfolder, lowercase kebab-case name.
