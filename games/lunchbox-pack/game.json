@@ -1,0 +1,38 @@
+{
+  "id": "lunchbox-pack",
+  "title": "Lunchbox Pack",
+  "category": "practical-life",
+  "path": "games/lunchbox-pack/",
+  "icon": "🍱",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "live",
+  "accent": "#14a08a",
+  "description": "Four friendly kids line up with empty lunch boxes — pack each one what they ask for! Listen to spoken requests, build a balanced meal from the five food groups, and count foods into the box.",
+  "learningGoals": [
+    "Follow spoken 1–3 step instructions (listening comprehension)",
+    "Sort foods into groups: fruit, veggie, main, drink, treat",
+    "Recognize attributes: colors and \"crunchy\"",
+    "Count 1–5 while packing, with one-to-one correspondence",
+    "Practical independence: what goes in a balanced lunch"
+  ],
+  "interactionModel": "drag foods from the shelf into the lunch box (tap-tap fallback: tap a food, tap the box)",
+  "feedbackModel": "Warm recorded voice praise + pop/sparkle SFX on success; a wrong food wiggles and glides back with a gentle 'try again' — nothing is ever lost or punished. Lid close, confetti, and a star per packed box.",
+  "uses": [
+    "shared/assets/foods/",
+    "shared/characters/",
+    "shared/assets/ui/",
+    "shared/js/sfx.js",
+    "shared/js/speech.js",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "pack", "title": "Pack for Me!", "skill": "listening & following spoken instructions" },
+    { "id": "healthy", "title": "Healthy Helper", "skill": "food groups / healthy choices" },
+    { "id": "count", "title": "Count & Pack", "skill": "counting 1–5 with one-to-one correspondence" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; art + voice generated locally (see ASSETS.md). Built with Claude Code for QLOBE Kids.",
+  "characters": ["maya", "leo", "nia", "sam"],
+  "conceptVideo": ""
+}

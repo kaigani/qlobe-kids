@@ -714,14 +714,40 @@
       "id": "lunchbox-pack",
       "title": "Lunchbox Pack",
       "category": "practical-life",
-      "path": null,
+      "path": "games/lunchbox-pack/",
       "icon": "assets/hub/tiles/lunchbox-pack.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "proposed",
-      "summary": "Pack items using a picture checklist."
+      "status": "live",
+      "summary": "Pack items using a picture checklist.",
+      "accent": "#14a08a",
+      "uses": [
+        "shared/assets/foods/",
+        "shared/characters/",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/fonts/",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "pack",
+          "title": "Pack for Me!",
+          "skill": "following 1-3 step spoken instructions"
+        },
+        {
+          "id": "healthy",
+          "title": "Healthy Helper",
+          "skill": "sorting foods into groups for a balanced lunch"
+        },
+        {
+          "id": "count",
+          "title": "Count & Pack",
+          "skill": "counting 1-5 with one-to-one correspondence"
+        }
+      ]
     },
     {
       "id": "cleanup-timer-quest",
