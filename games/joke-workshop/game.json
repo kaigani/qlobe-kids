@@ -1,0 +1,32 @@
+{
+  "id": "joke-workshop",
+  "title": "Joke Workshop",
+  "category": "oral-storytelling",
+  "path": "games/joke-workshop/",
+  "icon": "🤡",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#ffad7a",
+  "description": "A spoken joke-comprehension game where kids hear a classic setup and tap the picture punchline.",
+  "learningGoals": [
+    "Anticipate a joke punchline from an oral setup",
+    "Connect wordplay to a picture clue",
+    "Build confidence retelling short jokes"
+  ],
+  "interactionModel": "choose-one tap the punchline picture after a spoken joke setup",
+  "feedbackModel": "Correct picks pop and sparkle with spoken praise; misses wiggle gently with the line \"Hmm, that's not it - but it IS silly!\" and replay the setup.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "jokes", "title": "Finish the Joke", "skill": "punchline anticipation and wordplay" },
+    { "id": "knock", "title": "Knock Knock", "skill": "call-and-response joke comprehension" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder joke-card art only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

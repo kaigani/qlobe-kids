@@ -1,0 +1,33 @@
+{
+  "id": "puppet-retell",
+  "title": "Puppet Retell",
+  "category": "oral-storytelling",
+  "path": "games/puppet-retell/",
+  "icon": "🧸",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A spoken retell game where kids correct mixed-up puppet versions of familiar tales.",
+  "learningGoals": [
+    "Recall key moments from familiar stories",
+    "Correct mixed-up narrative details",
+    "Build confidence retelling with toys or puppets"
+  ],
+  "interactionModel": "choose-one tap the picture that fixes a puppet's incorrect story retell",
+  "feedbackModel": "Correct fixes sparkle and invite retelling; misses wiggle gently, get a spoken puppet-mix-up nudge, and replay the prompt.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/objects/pig.png"
+  ],
+  "modes": [
+    { "id": "fix", "title": "Fix the Story", "skill": "story recall and narrative correction" },
+    { "id": "who", "title": "Whose Line?", "skill": "matching famous story lines to characters" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder puppet and story art plus one shared pig card. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

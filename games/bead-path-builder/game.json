@@ -1,0 +1,34 @@
+{
+  "id": "bead-path-builder",
+  "title": "Bead Path Builder",
+  "category": "writing-fine-motor",
+  "path": "games/bead-path-builder/",
+  "icon": "🧵",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A fine-motor build game where kids string beads onto ghost spots along a gentle path.",
+  "learningGoals": [
+    "Practice controlled placement on a path",
+    "Build left-to-right motor sequencing",
+    "Follow simple bead patterns with color and shape cues"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap bead cards onto curved ghost spots",
+  "feedbackModel": "Correct beads pop, sparkle, and speak their count or shape; misses wiggle gently with a spoken nudge and retry. Finished strings celebrate with a short voice line.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "string", "title": "String the Beads", "skill": "left-to-right controlled placement along a curve" },
+    { "id": "fancy", "title": "Fancy Strings", "skill": "placing alternating bead shapes on a curved path" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; placeholder emoji and swatch cards rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

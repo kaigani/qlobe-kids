@@ -1,0 +1,38 @@
+{
+  "id": "tiny-reader-theater",
+  "title": "Tiny Reader Theater",
+  "category": "reading-phonics",
+  "path": "games/tiny-reader-theater/",
+  "icon": "🎭",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A spoken decodable-story game where kids tap the word card or actor card that completes a tiny theater line.",
+  "learningGoals": [
+    "Use oral story context to choose a decodable word",
+    "Connect printed word cards to familiar picture prompts",
+    "Participate physically by acting out story lines"
+  ],
+  "interactionModel": "choose-one tap the word or character card after a spoken theater prompt",
+  "feedbackModel": "Correct cards sparkle and prompt acting; misses wiggle gently, get a spoken nudge, and replay the line.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/objects/cat.png",
+    "shared/assets/objects/sun.png",
+    "shared/assets/objects/bus.png",
+    "shared/assets/objects/dog.png",
+    "shared/assets/objects/hat.png",
+    "shared/assets/objects/mud.png"
+  ],
+  "modes": [
+    { "id": "stories", "title": "Fill the Story", "skill": "context-based decoding of short CVC words" },
+    { "id": "act", "title": "Act It Out", "skill": "story participation and character comprehension" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared QLOBE object cards, text cards, and emoji placeholders. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
