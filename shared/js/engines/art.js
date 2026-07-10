@@ -25,6 +25,23 @@ export function artUrl(ref) {
  * @returns {HTMLElement}
  */
 export function artEl(ref, alt = '') {
+  if (ref.startsWith('text:')) {
+    // letters, words, numerals — rendered big in Fredoka on the card
+    const span = document.createElement('span');
+    span.className = 'qk-art qk-art-text';
+    span.textContent = ref.slice(5);
+    if (alt) span.setAttribute('aria-label', alt);
+    return span;
+  }
+  if (ref.startsWith('swatch:')) {
+    // a solid color chip, e.g. swatch:#f4c53d
+    const span = document.createElement('span');
+    span.className = 'qk-art qk-art-swatch';
+    span.style.background = ref.slice(7);
+    if (alt) { span.setAttribute('role', 'img'); span.setAttribute('aria-label', alt); }
+    else span.setAttribute('aria-hidden', 'true');
+    return span;
+  }
   if (ref.startsWith('emoji:')) {
     const span = document.createElement('span');
     span.className = 'qk-art qk-art-emoji';
@@ -50,6 +67,11 @@ if (!document.getElementById('qk-art-style')) {
     .qk-art { display: block; pointer-events: none; user-select: none; -webkit-user-select: none; }
     .qk-art-emoji { text-align: center; line-height: 1; font-size: var(--qk-art-size, 64px); }
     .qk-art-img { width: 100%; height: 100%; object-fit: contain; }
+    .qk-art-text { text-align: center; line-height: 1.1; font-size: var(--qk-art-size, 64px);
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; font-weight: 600;
+      color: #17517e; }
+    .qk-art-swatch { width: 78%; height: 78%; margin: 11%; border-radius: 22%;
+      border: 3px solid rgba(23, 81, 126, .15); }
   `;
   document.head.appendChild(style);
 }

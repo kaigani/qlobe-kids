@@ -22,7 +22,7 @@ shared/js/engines/
 
 ## Engine module contract
 
-- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js` — nothing else.
+- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js`, `./art.js` — nothing else.
 - Any asset URL inside an engine resolves module-relative:
   `new URL('../../assets/…', import.meta.url)`.
 - Export:
@@ -72,6 +72,8 @@ Config art values are strings the engine resolves via one shared helper:
 | `shared:foods/apple.png` | `shared/assets/foods/apple.png` |
 | `shared:letter-tiles/b.png` | `shared/assets/letter-tiles/b.png` |
 | `char:maya` | `shared/characters/maya/portrait.png` |
+| `text:CAT` | the text big in Fredoka on the card (letters, words, numerals) |
+| `swatch:#f4c53d` | a solid color chip (color games) |
 
 Swapping placeholder → real art later is a config edit, never a code change.
 The resolver lives in `shared/js/engines/art.js` (built once, imported by engines).

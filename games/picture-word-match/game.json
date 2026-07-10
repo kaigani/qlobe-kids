@@ -1,0 +1,33 @@
+{
+  "id": "picture-word-match",
+  "title": "Picture Word Match",
+  "category": "reading-phonics",
+  "path": "games/picture-word-match/",
+  "icon": "🃏",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A first decoding game where kids match real object pictures to written CVC words.",
+  "learningGoals": [
+    "Connect spoken words, pictures, and printed CVC words",
+    "Practice early word recognition",
+    "Use audio support so reading is invited but not required"
+  ],
+  "interactionModel": "match-pairs tap a picture card and its written word card",
+  "feedbackModel": "Correct picture-word pairs sparkle and speak the matched word; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "uses": [
+    "shared/js/engines/match-pairs.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/objects/"
+  ],
+  "modes": [
+    { "id": "easy", "title": "Match the Word", "skill": "picture-to-print matching with familiar CVC words" },
+    { "id": "more", "title": "More Words", "skill": "picture-to-print matching with additional CVC words" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; shared QLOBE Kids object-card art. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

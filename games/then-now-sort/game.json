@@ -1,0 +1,31 @@
+{
+  "id": "then-now-sort",
+  "title": "Then & Now Sort",
+  "category": "culture-geography",
+  "path": "games/then-now-sort/",
+  "icon": "🕰️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A history-for-preschoolers matching game where kids pair an old object with a new object that does the same job.",
+  "learningGoals": [
+    "Notice then-and-now relationships",
+    "Connect objects by their shared function",
+    "Build early history vocabulary through concrete examples"
+  ],
+  "interactionModel": "match-pairs tap cards that share a purpose across time",
+  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken shared-job line; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/match-pairs.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "classic", "title": "Old and New", "skill": "then-and-now comparison and object function" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

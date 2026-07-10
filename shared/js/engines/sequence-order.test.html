@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Sequence Order Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+
+    #app {
+      min-height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script type="module">
+    import { createGame } from './sequence-order.js';
+
+    createGame({
+      id: 'sequence-order-test',
+      engine: 'sequence-order',
+      title: 'First, Next, Last',
+      splashEmoji: '🌻',
+      voice: {
+        intro: 'Put the story in order.',
+        nudge: 'Almost. Try another spot.',
+        cheer: 'Hooray! You put them in order!',
+        yums: [
+          'That goes there!',
+          'Nice ordering!',
+          'You found the spot!',
+        ],
+      },
+      modes: [{
+        id: 'grow',
+        title: 'Grow',
+        rounds: 4,
+        prompt: 'Put the story in order. What happens first?',
+        slotLabels: ['first', 'next', 'last', 'then', 'last'],
+        difficultyRamp: true,
+        sets: [{
+          say: 'Seed, sprout, flower!',
+          items: [
+            { art: 'emoji:🌱', alt: 'seed' },
+            { art: 'emoji:🌿', alt: 'sprout' },
+            { art: 'emoji:🌻', alt: 'flower' },
+          ],
+        }, {
+          say: 'Egg, caterpillar, butterfly!',
+          items: [
+            { art: 'emoji:🥚', alt: 'egg' },
+            { art: 'emoji:🐛', alt: 'caterpillar' },
+            { art: 'emoji:🦋', alt: 'butterfly' },
+            { art: 'emoji:🌼', alt: 'flower landing' },
+          ],
+        }, {
+          say: 'Mix, bake, eat!',
+          items: [
+            { art: 'emoji:🥣', alt: 'mix' },
+            { art: 'emoji:🧁', alt: 'bake' },
+            { art: 'emoji:😋', alt: 'eat' },
+            { art: 'emoji:✨', alt: 'all done' },
+          ],
+        }, {
+          say: 'Cloud, rain, rainbow!',
+          items: [
+            { art: 'emoji:☁️', alt: 'cloud' },
+            { art: 'emoji:🌧️', alt: 'rain' },
+            { art: 'emoji:🌈', alt: 'rainbow' },
+          ],
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

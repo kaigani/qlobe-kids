@@ -1,0 +1,32 @@
+{
+  "id": "color-gradient-cards",
+  "title": "Color Gradient Cards",
+  "category": "sensorial-science",
+  "path": "games/color-gradient-cards/",
+  "icon": "🎨",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f25f5c",
+  "description": "A Montessori-inspired color card game where kids order swatches from light to dark and practice rainbow sequence.",
+  "learningGoals": [
+    "Discriminate between lighter and darker shades",
+    "Order colors within one color family",
+    "Practice the familiar rainbow sequence"
+  ],
+  "interactionModel": "tap or drag swatch cards into sequence slots",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "uses": [
+    "shared/js/engines/sequence-order.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "blues", "title": "Light to Dark", "skill": "shade discrimination and ordering" },
+    { "id": "rainbow", "title": "Rainbow Order", "skill": "rainbow color sequence" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

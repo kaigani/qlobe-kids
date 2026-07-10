@@ -1,0 +1,31 @@
+{
+  "id": "sound-cylinder-match",
+  "title": "Sound Cylinder Match",
+  "category": "sensorial-science",
+  "path": "games/sound-cylinder-match/",
+  "icon": "🔊",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A Montessori-inspired sound-cylinder game where identical shaker cards are matched by listening.",
+  "learningGoals": [
+    "Practice auditory discrimination",
+    "Build auditory memory across multiple mystery shakers",
+    "Match by sound rather than by sight"
+  ],
+  "interactionModel": "match-pairs tap two visually identical shaker cards and compare their spoken sound",
+  "feedbackModel": "Correct same-sound pairs sparkle and speak the matched sound; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "uses": [
+    "shared/js/engines/match-pairs.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "listen", "title": "Same Sound", "skill": "auditory discrimination and auditory memory" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

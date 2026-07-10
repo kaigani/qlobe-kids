@@ -1,0 +1,33 @@
+{
+  "id": "story-sequence",
+  "title": "First, Next, Last",
+  "category": "oral-storytelling",
+  "path": "games/story-sequence/",
+  "icon": "📖",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f25f5c",
+  "description": "Tiny picture stories to put in order, with spoken narration as the reward.",
+  "learningGoals": [
+    "Practice narrative sequencing with first, next, and last",
+    "Connect cause and effect across a short picture story",
+    "Build oral-storytelling vocabulary through spoken narration"
+  ],
+  "interactionModel": "tap-tap or drag picture cards into the story slots in order",
+  "feedbackModel": "correct placements sparkle with gentle praise; mismatches wiggle, speak a warm nudge, and return for another try; completed stories are narrated back",
+  "uses": [
+    "shared/js/engines/sequence-order.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "stories", "title": "First, Next, Last", "skill": "narrative sequencing with first/next/last" },
+    { "id": "daily", "title": "My Day", "skill": "ordering daily routines" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

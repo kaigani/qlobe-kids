@@ -1,0 +1,32 @@
+{
+  "id": "number-rod-race",
+  "title": "Number Rod Race",
+  "category": "math-number-sense",
+  "path": "games/number-rod-race/",
+  "icon": "📏",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A Montessori-inspired rod ordering game where kids compare visible lengths from short to long or long to short.",
+  "learningGoals": [
+    "Compare visible lengths",
+    "Order rods by size",
+    "Build 1-5 quantity intuition"
+  ],
+  "interactionModel": "tap or drag emoji-run rod cards into sequence slots",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "uses": [
+    "shared/js/engines/sequence-order.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "short", "title": "Short to Long", "skill": "length comparison and ascending order" },
+    { "id": "long", "title": "Long to Short", "skill": "length comparison and descending order" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

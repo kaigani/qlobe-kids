@@ -1,0 +1,32 @@
+{
+  "id": "community-helper-cards",
+  "title": "Community Helper Cards",
+  "category": "culture-geography",
+  "path": "games/community-helper-cards/",
+  "icon": "🚒",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#d95f43",
+  "description": "A community vocabulary matching game where kids pair helpers with tools, vehicles, or work buddies.",
+  "learningGoals": [
+    "Name familiar community helpers",
+    "Connect helpers with tools and vehicles",
+    "Build who-helps-how vocabulary through spoken pair sentences"
+  ],
+  "interactionModel": "match-pairs tap cards that connect a helper with what they use or help",
+  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken helper sentence; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/match-pairs.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "helpers", "title": "Who Uses What?", "skill": "community helper tools and roles" },
+    { "id": "places", "title": "Where Do They Work?", "skill": "helper work contexts and vehicles" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

@@ -1,0 +1,31 @@
+{
+  "id": "texture-trail",
+  "title": "Texture Trail",
+  "category": "sensorial-science",
+  "path": "games/texture-trail/",
+  "icon": "🪨",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#8f6f4e",
+  "description": "A sensorial matching game where kids pair two things that feel the same: soft, hard, bumpy, smooth, fluffy, or prickly.",
+  "learningGoals": [
+    "Build texture vocabulary through paired examples",
+    "Connect touch words with familiar objects",
+    "Extend the game into a real-room texture hunt"
+  ],
+  "interactionModel": "match-pairs tap cards that share a texture",
+  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken texture line; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/match-pairs.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "feel", "title": "Feels the Same", "skill": "texture vocabulary and comparison" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

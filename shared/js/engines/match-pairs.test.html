@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Match Pairs Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './match-pairs.js';
+
+    createGame({
+      id: 'match-pairs-test',
+      engine: 'match-pairs',
+      title: 'Match!',
+      splashEmoji: '🔎',
+      voice: {
+        intro: 'Find the two that go together!',
+        nudge: 'Hmm, try another one.',
+        cheer: 'Hooray! You matched them all!',
+        yums: [
+          'Nice match!',
+          'You found a pair!',
+          'That goes together!',
+        ],
+      },
+      modes: [{
+        id: 'classic',
+        title: 'Match!',
+        rounds: 4,
+        pairsPerRound: 3,
+        difficultyRamp: true,
+        prompt: 'Find the two that go together!',
+        pairs: [{
+          say: 'Cat rhymes with hat!',
+          a: { art: 'emoji:🐱', alt: 'cat', say: 'cat' },
+          b: { art: 'emoji:🎩', alt: 'hat', say: 'hat' },
+        }, {
+          say: 'Dog rhymes with log!',
+          a: { art: 'emoji:🐶', alt: 'dog', say: 'dog' },
+          b: { art: 'emoji:🪵', alt: 'log', say: 'log' },
+        }, {
+          say: 'Bee rhymes with tree!',
+          a: { art: 'emoji:🐝', alt: 'bee', say: 'bee' },
+          b: { art: 'emoji:🌳', alt: 'tree', say: 'tree' },
+        }, {
+          say: 'Sun goes with moon!',
+          a: { art: 'emoji:☀️', alt: 'sun', say: 'sun' },
+          b: { art: 'emoji:🌙', alt: 'moon', say: 'moon' },
+        }, {
+          say: 'Sock goes with shoe!',
+          a: { art: 'emoji:🧦', alt: 'sock', say: 'sock' },
+          b: { art: 'emoji:👟', alt: 'shoe', say: 'shoe' },
+        }, {
+          say: 'Cup goes with spoon!',
+          a: { art: 'emoji:🥤', alt: 'cup', say: 'cup' },
+          b: { art: 'emoji:🥄', alt: 'spoon', say: 'spoon' },
+        }, {
+          say: 'Leaf goes with flower!',
+          a: { art: 'emoji:🍃', alt: 'leaf', say: 'leaf' },
+          b: { art: 'emoji:🌸', alt: 'flower', say: 'flower' },
+        }, {
+          say: 'Star goes with rocket!',
+          a: { art: 'emoji:⭐', alt: 'star', say: 'star' },
+          b: { art: 'emoji:🚀', alt: 'rocket', say: 'rocket' },
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

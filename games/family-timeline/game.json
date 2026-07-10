@@ -1,0 +1,33 @@
+{
+  "id": "family-timeline",
+  "title": "Family Timeline",
+  "category": "culture-geography",
+  "path": "games/family-timeline/",
+  "icon": "👶",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "Order people, animals, and everyday things by age or time, from little to grown and long ago to today.",
+  "learningGoals": [
+    "Practice temporal ordering with younger and older examples",
+    "Notice life stages and how living things grow",
+    "Build early long-ago/today vocabulary through pictures and speech"
+  ],
+  "interactionModel": "tap-tap or drag picture cards into timeline slots in order",
+  "feedbackModel": "correct placements sparkle with gentle praise; mismatches wiggle, speak a warm nudge, and return for another try; completed timelines are spoken back",
+  "uses": [
+    "shared/js/engines/sequence-order.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "growing", "title": "Growing Up", "skill": "ordering life stages from younger to older" },
+    { "id": "then-now", "title": "Long Ago to Today", "skill": "ordering simple historical change over time" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
