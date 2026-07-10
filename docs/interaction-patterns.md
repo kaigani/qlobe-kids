@@ -253,6 +253,24 @@ the pill background:
 Always prevent HUD `pointerdown` from reaching the game canvas
 (`e.stopPropagation()`), or a corner tap will also fire a game tap.
 
+**One press path.** Never play feedback on `pointerdown` but act on `click` — a
+touch can tick and then drop the action (movement past the tap slop suppresses
+the synthetic click), which reads as "I tapped it and nothing happened". Wire
+buttons through `shared/js/tap.js`:
+
+```js
+import { onTap } from '../../../shared/js/tap.js';
+
+onTap(btn, () => startMode(btn.dataset.mode), {
+  feedback: (e) => { e.preventDefault(); unlockAudio(); sfx.tick(); },
+});
+```
+
+The action fires on `pointerup` over the element (the same press the feedback
+came from); `click` is kept for keyboard/assistive-tech only. Sliding a finger
+off before lifting still cancels. `onTap` returns a disposer — call it in
+`destroy()` if the control outlives the screen.
+
 ---
 
 ## 9. iPad tuning

@@ -6,6 +6,7 @@ import { Game } from './game.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as audio from '../../../shared/js/audio.js';
 import * as sfx from '../../../shared/js/sfx.js';
+import { onTap } from '../../../shared/js/tap.js';
 
 const canvas = document.getElementById('scene');
 const menu = document.getElementById('menu');
@@ -77,28 +78,27 @@ function startMode(mode) {
   game.start();
 }
 
-// menu buttons
+// menu buttons — feedback and action share one press path (onTap), so a touch
+// can't tick on pointerdown and then drop the action with the synthetic click
 menu.querySelectorAll('.big-button').forEach((btn) => {
-  btn.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    unlockAudio();
-    sfx.tick();
-  });
-  btn.addEventListener('click', () => {
-    const mode = btn.getAttribute('data-mode');
-    startMode(mode);
+  onTap(btn, () => startMode(btn.getAttribute('data-mode')), {
+    feedback: (e) => {
+      e.preventDefault();
+      unlockAudio();
+      sfx.tick();
+    },
   });
 });
 
 // ---- HUD buttons -----------------------------------------------------
 
-hud.btnHome.addEventListener('click', () => {
+onTap(hud.btnHome, () => {
   sfx.tick();
   showMenu();
 });
 
 let lastSpeak = 0;
-hud.btnSpeaker.addEventListener('click', () => {
+onTap(hud.btnSpeaker, () => {
   const now = performance.now();
   if (now - lastSpeak < 600) return; // debounce rapid replay taps
   lastSpeak = now;
@@ -106,12 +106,12 @@ hud.btnSpeaker.addEventListener('click', () => {
   if (game) game.speakPrompt();
 });
 
-hud.btnShuffle.addEventListener('click', () => {
+onTap(hud.btnShuffle, () => {
   sfx.tick();
   if (game && game.mode === 'freeplay') game.dealFreeplay();
 });
 
-hud.btnAgain.addEventListener('click', () => {
+onTap(hud.btnAgain, () => {
   sfx.tick();
   if (game) game.again();
 });

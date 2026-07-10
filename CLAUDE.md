@@ -75,6 +75,10 @@ for it first.
   - **`sfx.js`** — zero-file WebAudio sound effects: `pop`, `unpop`, `whoosh`,
     `sparkle`, `tada`, `silly`, `boing`, `tick`, plus `unlock()`. Synthesized
     live, so they cost no bytes and never 404.
+  - **`tap.js`** — `onTap(el, action, { feedback })`: one press path for
+    buttons (feedback on pointerdown, action on pointerup over the element,
+    `click` reserved for keyboard/AT). Use it instead of splitting feedback
+    across `pointerdown` + `click`. Returns a disposer.
 - **`shared/assets/`**:
   - **`letter-tiles/`** — 56 onset/rime tile PNGs (blue onsets, orange rimes).
   - **`objects/`** — 134 illustrated word picture-cards in one consistent toy style.

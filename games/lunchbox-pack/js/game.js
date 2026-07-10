@@ -3,6 +3,7 @@
 // and programmatic (debug) packing funnel through attemptPack().
 
 import * as sfx from '../../../shared/js/sfx.js';
+import { onTap } from '../../../shared/js/tap.js';
 import * as voice from './voice.js';
 import {
   GROUPS,
@@ -89,10 +90,14 @@ export class Game {
     this.onBoxTap = this.onBoxTap.bind(this);
     this.onBubbleTap = this.onBubbleTap.bind(this);
     this.onStageTap = this.onStageTap.bind(this);
-    this.els.lid.addEventListener('click', this.onLidTap);
+    // lid / bubble / portrait act on the press itself (onTap), not on a
+    // synthetic click the browser may drop after a slightly-moving touch
+    this.tapDisposers = [
+      onTap(this.els.lid, this.onLidTap),
+      onTap(this.els.bubble, this.onBubbleTap),
+      onTap(this.els.portrait, this.onBubbleTap),
+    ];
     this.els.boxArea.addEventListener('pointerdown', this.onBoxTap);
-    this.els.bubble.addEventListener('click', this.onBubbleTap);
-    this.els.portrait.addEventListener('click', this.onBubbleTap);
     this.els.stage.addEventListener('pointerdown', this.onStageTap, true);
   }
 
@@ -115,10 +120,8 @@ export class Game {
     if (this.mouthHook) { this.mouthHook(); this.mouthHook = null; }
     voice.stop();
     clearConfetti();
-    this.els.lid.removeEventListener('click', this.onLidTap);
+    this.tapDisposers.forEach((dispose) => dispose());
     this.els.boxArea.removeEventListener('pointerdown', this.onBoxTap);
-    this.els.bubble.removeEventListener('click', this.onBubbleTap);
-    this.els.portrait.removeEventListener('click', this.onBubbleTap);
     this.els.stage.removeEventListener('pointerdown', this.onStageTap, true);
     this.els.shelf.innerHTML = '';
     this.els.packedLayer.innerHTML = '';
@@ -330,8 +333,14 @@ export class Game {
     this.clearIdleNudge();
     this.els.bubble.classList.add('hidden');
     this.els.boxArea.classList.add('lid-ready');
-    // let the yum/count line finish, then ask for the lid
-    this.speakLater([['lid']], 900);
+    // Ask for the lid AFTER the success line actually finishes — a fixed timer
+    // used to cut off longer grp/count + yum lines mid-word. If the child taps
+    // the lid first, closeBox()'s cheer bumps speakToken and this prompt is
+    // dropped (the tap's audio wins).
+    (this.lastSpeak || Promise.resolve()).then(() => {
+      if (this.destroyed || this.phase !== 'lid') return;
+      this.speakLater([['lid']], 350);
+    });
   }
 
   onLidTap() {
@@ -762,7 +771,15 @@ export class Game {
   // ---- voice sequencing / idle nudge --------------------------------------
 
   /** Speak [key, fallback?] pairs in order; a newer sequence cancels this one. */
-  async speakSeq(items) {
+  speakSeq(items) {
+    // Remember the promise so followers (the lid prompt) can chain after the
+    // line finishes instead of guessing with a timer and cutting it off.
+    const p = this.runSpeakSeq(items);
+    this.lastSpeak = p;
+    return p;
+  }
+
+  async runSpeakSeq(items) {
     const token = ++this.speakToken;
     for (const item of items) {
       if (token !== this.speakToken || this.destroyed) return;

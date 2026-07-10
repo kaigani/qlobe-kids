@@ -27,8 +27,15 @@ const elCache = new Map();
 
 // The clip currently playing through the primary channel (so we can stop it).
 let activeEl = null;
+// Settles the superseded play() promise the moment a newer play()/stop() takes
+// over — without this the old promise lingers until its safety timeout and a
+// stale playSeq() can wake up seconds later and interrupt newer audio.
+let activeCancel = null;
 // Monotonic token so a stop()/new play() invalidates an in-flight resolve.
 let playToken = 0;
+// Sequence token: any new play()/stop() outside a sequence supersedes every
+// in-flight playSeq(), which checks it between items and bails silently.
+let seqToken = 0;
 
 /**
  * Fetch the manifest once. Resolves (never rejects) so callers can `await ready`
@@ -90,6 +97,11 @@ function stopActiveEl() {
     } catch { /* ignore */ }
     activeEl = null;
   }
+  if (activeCancel) {
+    const cancel = activeCancel;
+    activeCancel = null;
+    cancel(); // resolve the superseded play() promise now, not at its timeout
+  }
 }
 
 /**
@@ -133,6 +145,13 @@ export function unlock() {
  * @returns {Promise<void>} resolves when the clip ends (or on error/timeout).
  */
 export function play(category, key, opts = {}) {
+  seqToken++; // a direct play() supersedes any in-flight playSeq()
+  return playOne(category, key, opts);
+}
+
+/** Internal single-clip player — playSeq() calls this so its own items don't
+ *  invalidate the sequence they belong to. */
+function playOne(category, key, opts = {}) {
   const { fallbackText, rate, pitch } = opts;
 
   // Take over the primary channel.
@@ -160,6 +179,7 @@ export function play(category, key, opts = {}) {
       el.removeEventListener('ended', onEnded);
       el.removeEventListener('error', onError);
       if (activeEl === el) activeEl = null;
+      if (activeCancel === finish) activeCancel = null;
       resolve();
     };
     const onEnded = () => finish();
@@ -171,6 +191,7 @@ export function play(category, key, opts = {}) {
       el.removeEventListener('ended', onEnded);
       el.removeEventListener('error', onError);
       if (activeEl === el) activeEl = null;
+      if (activeCancel === finish) activeCancel = null;
       if (token !== playToken) { resolve(); return; }
       if (fallbackText) { speech.speak(fallbackText, { rate, pitch }).then(resolve); }
       else resolve();
@@ -183,6 +204,7 @@ export function play(category, key, opts = {}) {
       el.currentTime = 0;
     } catch { /* ignore — not always seekable before play */ }
     activeEl = el;
+    activeCancel = finish;
 
     const p = el.play();
     if (p && typeof p.then === 'function') {
@@ -203,6 +225,7 @@ export function play(category, key, opts = {}) {
 export async function playSeq(items, opts = {}) {
   const { gap = 250 } = opts;
   if (!items || !items.length) return;
+  const token = ++seqToken; // a newer play()/playSeq()/stop() cancels this one
   for (let i = 0; i < items.length; i++) {
     const raw = items[i];
     let cat, key, rest;
@@ -212,14 +235,19 @@ export async function playSeq(items, opts = {}) {
     } else {
       ({ cat, key, ...rest } = raw);
     }
-    await play(cat, key, rest);
-    if (i < items.length - 1) await wait(gap);
+    await playOne(cat, key, rest);
+    if (token !== seqToken) return;
+    if (i < items.length - 1) {
+      await wait(gap);
+      if (token !== seqToken) return;
+    }
   }
 }
 
-/** Stop the active primary clip and Web Speech. */
+/** Stop the active primary clip, any in-flight sequence, and Web Speech. */
 export function stop() {
   playToken++;
+  seqToken++;
   stopActiveEl();
   speech.stop();
 }

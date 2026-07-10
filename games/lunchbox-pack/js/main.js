@@ -3,6 +3,7 @@
 
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
+import { onTap } from '../../../shared/js/tap.js';
 import * as voice from './voice.js';
 import { Game } from './game.js';
 import { initConfetti, clearConfetti } from './confetti.js';
@@ -37,6 +38,10 @@ const dataReady = (async () => {
 // ---- audio unlock on first gesture ------------------------------------
 
 function unlockAudio() {
+  // voice.unlock() is self-limiting and stays armed until the clip manifest
+  // has loaded, so it runs on every gesture (not just the first) — otherwise
+  // recorded teacher voice can fail on iPad and fall back to Web Speech.
+  voice.unlock();
   if (audioUnlocked) return;
   audioUnlocked = true;
   sfx.unlock();
@@ -78,25 +83,27 @@ async function startMode(mode) {
   starting = false;
 }
 
-// splash mode buttons
+// splash mode buttons — feedback and action share one press path (onTap), so
+// a touch can't tick on pointerdown and then drop the action with the click
 els.splash.querySelectorAll('.mode-button').forEach((btn) => {
-  btn.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    unlockAudio();
-    sfx.tick();
+  onTap(btn, () => startMode(btn.dataset.mode), {
+    feedback: (e) => {
+      e.preventDefault();
+      unlockAudio();
+      sfx.tick();
+    },
   });
-  btn.addEventListener('click', () => startMode(btn.dataset.mode));
 });
 
 // ---- HUD -----------------------------------------------------------------
 
-els.btnHome.addEventListener('click', () => {
+onTap(els.btnHome, () => {
   sfx.tick();
   showSplash();
 });
 
 let lastReplay = 0;
-els.btnSound.addEventListener('click', () => {
+onTap(els.btnSound, () => {
   const now = performance.now();
   if (now - lastReplay < 600) return; // debounce
   lastReplay = now;
@@ -105,11 +112,11 @@ els.btnSound.addEventListener('click', () => {
 });
 
 // end-screen buttons
-els.btnReplay.addEventListener('click', () => {
+onTap(els.btnReplay, () => {
   sfx.tick();
   if (currentMode) startMode(currentMode);
 });
-els.btnMenu.addEventListener('click', () => {
+onTap(els.btnMenu, () => {
   sfx.tick();
   showSplash();
 });

@@ -127,6 +127,42 @@ export function say(key, fallbackText) {
   return speech.speak(text);
 }
 
+/**
+ * Unlock recorded-clip playback on a user gesture (iOS autoplay policy):
+ * play-then-pause a muted real manifest clip so later programmatic play()
+ * calls — which often run after an async break, outside user activation —
+ * are allowed. Mirrors shared/js/audio.js. Self-limiting: stays armed until
+ * it has warmed a real clip (the manifest may not be loaded on the very
+ * first tap; the silent-WAV fallback still satisfies the gesture meanwhile).
+ */
+let unlocked = false;
+export function unlock() {
+  if (unlocked) return;
+  try {
+    let el = null;
+    if (manifest) {
+      const key = Object.keys(manifest).find((k) => manifest[k] && manifest[k].file);
+      if (key) {
+        el = new Audio(baseUrl + manifest[key].file);
+        el.preload = 'auto';
+        unlocked = true;
+      }
+    }
+    if (!el) el = new Audio(SILENT_WAV);
+    el.muted = true;
+    const p = el.play();
+    if (p && typeof p.then === 'function') {
+      p.then(() => {
+        try { el.pause(); el.currentTime = 0; } catch { /* ignore */ }
+      }).catch(() => { /* ignore — a later gesture retries */ });
+    }
+  } catch { /* ignore */ }
+}
+
+// 44-byte silent WAV used only before the manifest arrives. data: URI, no network.
+const SILENT_WAV =
+  'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+
 /** Stop the current clip and any synthesized speech. */
 export function stop() {
   if (currentAudio) {

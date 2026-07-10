@@ -545,7 +545,11 @@ html, body {
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .food-card { min-height: 0; }
+  /* The portrait shelf scrolls horizontally, so horizontal swipes that START
+     on a card must pan the shelf (the in-flight drag gets a pointercancel and
+     the food glides home). Vertical drags — toward the box, which sits above —
+     still deliver full pointer events, so drag-to-pack keeps working. */
+  .food-card { min-height: 0; touch-action: pan-x; }
   .food-card img { width: auto; height: 58%; }
 }
 
