@@ -1,0 +1,65 @@
+export default {
+  id: 'tweezer-rescue',
+  engine: 'sort-into-bins',
+  title: 'Tweezer Rescue',
+  splashEmoji: '🫳',
+  copy: {
+    home: 'Home',
+    replay: 'Hear it again',
+    playAgain: 'Play Again',
+  },
+  voice: {
+    intro: 'Rescue the pom-poms! Pick one up with two fingers, like tiny tweezers.',
+    nudge: 'Almost. Give that pom-pom a tiny wiggle and try another nest.',
+    roundCheer: 'Pom-poms safe in their nests!',
+    cheer: 'You rescued every pom-pom!',
+    yums: [
+      'Tiny tweezer fingers!',
+      'Gentle pinch and place!',
+      'That pom-pom is safe!',
+    ],
+  },
+  modes: [
+    {
+      id: 'colors',
+      title: 'Color Nests',
+      prompt: 'Pick up each pom-pom with two fingers and match its color nest.',
+      rounds: 3,
+      roundCheer: 'All the colors found their nests!',
+      itemsPerRound: 4,
+      bins: [
+        { id: 'red', art: 'swatch:#e23d3d', alt: 'red nest', say: 'the red nest' },
+        { id: 'yellow', art: 'swatch:#f4c53d', alt: 'yellow nest', say: 'the yellow nest' },
+        { id: 'green', art: 'swatch:#58a945', alt: 'green nest', say: 'the green nest' },
+      ],
+      items: [
+        { art: 'emoji:🔴', alt: 'red pom-pom', say: 'A red pom-pom! Put it in the red nest.', bin: 'red' },
+        { art: 'emoji:🔴', alt: 'red pom-pom', say: 'Another red pom-pom! Red nest.', bin: 'red' },
+        { art: 'emoji:🟡', alt: 'yellow pom-pom', say: 'A yellow pom-pom! Put it in the yellow nest.', bin: 'yellow' },
+        { art: 'emoji:🟡', alt: 'yellow pom-pom', say: 'Another yellow pom-pom! Yellow nest.', bin: 'yellow' },
+        { art: 'emoji:🟢', alt: 'green pom-pom', say: 'A green pom-pom! Put it in the green nest.', bin: 'green' },
+        { art: 'emoji:🟢', alt: 'green pom-pom', say: 'Another green pom-pom! Green nest.', bin: 'green' },
+      ],
+    },
+    {
+      id: 'sizes',
+      title: 'Big and Small',
+      prompt: 'Listen for big or small, then tuck the pom-pom into the right nest.',
+      rounds: 3,
+      roundCheer: 'Big and small pom-poms are tucked in!',
+      itemsPerRound: 4,
+      bins: [
+        { id: 'big', art: 'emoji:🪺', alt: 'big nest', say: 'the big nest' },
+        { id: 'small', art: 'emoji:🪺', alt: 'small nest', say: 'the small nest' },
+      ],
+      items: [
+        { art: 'emoji:🔵', alt: 'big pom-pom', say: 'A big pom-pom! It goes in the big nest.', bin: 'big' },
+        { art: 'emoji:🔵', alt: 'big pom-pom', say: 'This pom-pom is big. Big nest.', bin: 'big' },
+        { art: 'emoji:🔵', alt: 'small pom-pom', say: 'A small pom-pom! It goes in the small nest.', bin: 'small' },
+        { art: 'emoji:🔵', alt: 'small pom-pom', say: 'This pom-pom is small. Small nest.', bin: 'small' },
+        { art: 'emoji:🔵', alt: 'big pom-pom', say: 'Big pom-pom. Big nest.', bin: 'big' },
+        { art: 'emoji:🔵', alt: 'small pom-pom', say: 'Small pom-pom. Small nest.', bin: 'small' },
+      ],
+    },
+  ],
+};

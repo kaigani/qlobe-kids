@@ -1,0 +1,32 @@
+{
+  "id": "rhythm-copycat",
+  "title": "Rhythm Copycat",
+  "category": "art-music",
+  "path": "games/rhythm-copycat/",
+  "icon": "👏",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f25f5c",
+  "description": "A body-percussion pattern game where kids continue clap, stomp, pat, and animal beat sequences.",
+  "learningGoals": [
+    "Recognize AB and ABC rhythm patterns",
+    "Hear and extend body-percussion sequences",
+    "Turn screen patterns into real clap-and-stomp play"
+  ],
+  "interactionModel": "pattern-continue tap the next rhythm card to complete the beat",
+  "feedbackModel": "Correct beats replay the full pattern and invite body movement; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/pattern-continue.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "copycat", "title": "Clap and Stomp", "skill": "AB and ABC body-percussion patterns" },
+    { "id": "animals", "title": "Animal Beats", "skill": "auditory pattern recognition with animal sounds" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

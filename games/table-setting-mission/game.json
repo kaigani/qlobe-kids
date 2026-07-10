@@ -1,0 +1,31 @@
+{
+  "id": "table-setting-mission",
+  "title": "Table Setting Mission",
+  "category": "practical-life",
+  "path": "games/table-setting-mission/",
+  "icon": "🍽️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f4a83d",
+  "description": "A Montessori-inspired table-setting game where kids place food, drinks, and cutlery in the right zones.",
+  "learningGoals": [
+    "Practice table-setting order and place-zone vocabulary",
+    "Sort table items by their everyday function",
+    "Build practical-life independence through a short digital rehearsal"
+  ],
+  "interactionModel": "sort-into-bins drag or tap-tap table items into place zones",
+  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/sort-into-bins.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "places", "title": "Set the Table", "skill": "table-setting order and spatial placement vocabulary" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

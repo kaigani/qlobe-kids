@@ -1,0 +1,32 @@
+{
+  "id": "pattern-train",
+  "title": "Pattern Train",
+  "category": "math-number-sense",
+  "path": "games/pattern-train/",
+  "icon": "🚂",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A train-car pattern game where kids continue color and shape sequences.",
+  "learningGoals": [
+    "Recognize AB, ABC, and AAB repeating patterns",
+    "Extend a visual pattern by one or two train cars",
+    "Name colors and simple shapes through spoken playback"
+  ],
+  "interactionModel": "pattern-continue tap the next wagon to fill the train",
+  "feedbackModel": "Correct choices fly into the train and play back the full pattern; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/pattern-continue.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "colors", "title": "Color Cars", "skill": "AB, ABC, and AAB color-pattern extension" },
+    { "id": "shapes", "title": "Shape Cars", "skill": "simple shape-pattern extension" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

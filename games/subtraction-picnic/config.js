@@ -1,0 +1,68 @@
+export default {
+  id: 'subtraction-picnic',
+  engine: 'tap-count',
+  title: 'Subtraction Picnic',
+  splashEmoji: '🐿️',
+  copy: {
+    creature: 'hungry picnic guest',
+    items: 'snacks',
+  },
+  voice: {
+    intro: 'The picnic guests are hungry. Feed them snacks, then count what is left.',
+    leftQuestion: 'Now count how many are left.',
+    noneLeft: 'None left!',
+    cheer: 'The picnic guests are full!',
+    counts: ['One!', 'Two!', 'Three!', 'Four!', 'Five!', 'Six!'],
+  },
+  modes: [
+    {
+      id: 'picnic',
+      title: 'Hungry Guests',
+      type: 'takeaway',
+      rounds: 5,
+      difficultyRamp: true,
+      rounds_spec: [
+        {
+          start: 3,
+          eat: 1,
+          itemArt: 'shared:foods/apple.png',
+          itemAlt: 'apple',
+          creatureArt: 'emoji:🐿️',
+          say: 'There are three apples at the picnic. The squirrel eats one apple. Feed one to the squirrel.',
+        },
+        {
+          start: 4,
+          eat: 2,
+          itemArt: 'shared:foods/strawberry.png',
+          itemAlt: 'strawberry',
+          creatureArt: 'emoji:🐰',
+          say: 'There are four strawberries at the picnic. The bunny eats two strawberries. Feed two to the bunny.',
+        },
+        {
+          start: 5,
+          eat: 2,
+          itemArt: 'shared:foods/crackers.png',
+          itemAlt: 'cracker',
+          creatureArt: 'emoji:🐦',
+          say: 'There are five crackers at the picnic. The bird eats two crackers. Feed two to the bird.',
+        },
+        {
+          start: 6,
+          eat: 3,
+          itemArt: 'shared:foods/grapes.png',
+          itemAlt: 'grape',
+          creatureArt: 'emoji:🐻',
+          say: 'There are six grapes at the picnic. The bear eats three grapes. Feed three to the bear.',
+        },
+        {
+          start: 6,
+          eat: 4,
+          itemArt: 'shared:foods/banana.png',
+          itemAlt: 'banana',
+          creatureArt: 'emoji:🐿️',
+          say: 'There are six bananas at the picnic. The squirrel eats four bananas. Feed four to the squirrel.',
+        },
+      ],
+    },
+  ],
+};

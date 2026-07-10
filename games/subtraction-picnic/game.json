@@ -1,0 +1,36 @@
+{
+  "id": "subtraction-picnic",
+  "title": "Subtraction Picnic",
+  "category": "math-number-sense",
+  "path": "games/subtraction-picnic/",
+  "icon": "🐿️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A friendly take-away picnic game where kids feed guests and count the snacks that remain.",
+  "learningGoals": [
+    "Model subtraction as taking away",
+    "Count remaining snacks after a change",
+    "Reason about how many are left within 6"
+  ],
+  "interactionModel": "tap shared food cards to feed a hungry guest, then count the remaining cards",
+  "feedbackModel": "Each fed snack speaks the count; the tap-count engine asks how many are left and counts the remainder aloud.",
+  "uses": [
+    "shared/js/engines/tap-count.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/foods/apple.png",
+    "shared/assets/foods/strawberry.png",
+    "shared/assets/foods/crackers.png",
+    "shared/assets/foods/grapes.png",
+    "shared/assets/foods/banana.png"
+  ],
+  "modes": [
+    { "id": "picnic", "title": "Hungry Guests", "skill": "informal subtraction stories within 6" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": ["squirrel", "bunny", "bird", "bear"],
+  "conceptVideo": ""
+}

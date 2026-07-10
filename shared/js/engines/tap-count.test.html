@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Tap Count Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './tap-count.js';
+
+    createGame({
+      id: 'tap-count-test',
+      engine: 'tap-count',
+      title: 'Counting Picnic',
+      splashEmoji: '🧺',
+      basketArt: 'emoji:🧺',
+      voice: {
+        intro: 'Tap and count.',
+        cheer: 'Hooray, counting star!',
+        leftQuestion: 'How many are left?',
+        noneLeft: 'None left!',
+        counts: ['One!', 'Two!', 'Three!', 'Four!', 'Five!', 'Six!', 'Seven!', 'Eight!', 'Nine!', 'Ten!'],
+      },
+      modes: [{
+        id: 'collect',
+        title: 'Fill Basket',
+        type: 'collect',
+        rounds: 3,
+        difficultyRamp: true,
+        rounds_spec: [{
+          count: 2,
+          itemArt: 'emoji:🍎',
+          itemAlt: 'apple',
+          say: 'Can you put TWO apples in the basket?',
+        }, {
+          count: 3,
+          itemArt: 'emoji:🍓',
+          itemAlt: 'strawberry',
+          say: 'Can you put THREE strawberries in the basket?',
+        }, {
+          count: 4,
+          itemArt: 'emoji:🥕',
+          itemAlt: 'carrot',
+          say: 'Can you put FOUR carrots in the basket?',
+        }],
+      }, {
+        id: 'takeaway',
+        title: 'Snack Time',
+        type: 'takeaway',
+        rounds: 3,
+        difficultyRamp: true,
+        rounds_spec: [{
+          start: 4,
+          eat: 1,
+          itemArt: 'emoji:🥕',
+          itemAlt: 'carrot',
+          creatureArt: 'emoji:🐰',
+          say: 'The bunny eats ONE carrot!',
+        }, {
+          start: 5,
+          eat: 2,
+          itemArt: 'emoji:🍎',
+          itemAlt: 'apple',
+          creatureArt: 'emoji:🐹',
+          say: 'The hamster eats TWO apples!',
+        }, {
+          start: 6,
+          eat: 3,
+          itemArt: 'emoji:🍓',
+          itemAlt: 'strawberry',
+          creatureArt: 'emoji:🦊',
+          say: 'The fox eats THREE strawberries!',
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

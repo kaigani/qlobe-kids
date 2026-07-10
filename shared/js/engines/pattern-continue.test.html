@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Pattern Continue Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './pattern-continue.js';
+
+    createGame({
+      id: 'pattern-continue-test',
+      engine: 'pattern-continue',
+      title: 'Pattern Train',
+      splashEmoji: '🚂',
+      voice: {
+        intro: 'What comes next?',
+        nudge: 'Listen to the pattern. Try another one.',
+        cheer: 'Hooray! You made every pattern!',
+        yums: [
+          'Yes! The pattern keeps going!',
+          'Nice pattern!',
+          'You heard it!',
+        ],
+      },
+      modes: [{
+        id: 'trains',
+        title: 'Trains',
+        rounds: 5,
+        difficultyRamp: true,
+        prompt: 'What comes next? Watch the pattern!',
+        rounds_spec: [{
+          pattern: ['red', 'blue', 'red', 'blue', 'red'],
+          missing: 1,
+          units: {
+            red: { art: 'emoji:🟥', say: 'red', sfx: 'tick' },
+            blue: { art: 'emoji:🟦', say: 'blue', sfx: 'pop' },
+          },
+          candidates: ['blue', 'red'],
+        }, {
+          pattern: ['sun', 'moon', 'sun', 'moon', 'sun', 'moon'],
+          missing: 1,
+          units: {
+            sun: { art: 'emoji:☀️', say: 'sun', sfx: 'sparkle' },
+            moon: { art: 'emoji:🌙', say: 'moon', sfx: 'tick' },
+          },
+          candidates: ['sun', 'moon'],
+        }, {
+          pattern: ['frog', 'duck', 'fish', 'frog', 'duck', 'fish', 'frog'],
+          missing: 1,
+          units: {
+            frog: { art: 'emoji:🐸', say: 'frog', sfx: 'boing' },
+            duck: { art: 'emoji:🦆', say: 'duck', sfx: 'pop' },
+            fish: { art: 'emoji:🐟', say: 'fish', sfx: 'tick' },
+          },
+          candidates: ['duck', 'fish', 'frog'],
+        }, {
+          pattern: ['big', 'big', 'small', 'big', 'big', 'small', 'big'],
+          missing: 1,
+          units: {
+            big: { art: 'emoji:🔵', say: 'big', sfx: 'pop' },
+            small: { art: 'emoji:🟡', say: 'small', sfx: 'tick' },
+          },
+          candidates: ['small', 'big'],
+        }, {
+          pattern: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
+          missing: 2,
+          units: {
+            apple: { art: 'emoji:🍎', say: 'apple', sfx: 'pop' },
+            banana: { art: 'emoji:🍌', say: 'banana', sfx: 'tick' },
+          },
+          candidates: ['banana', 'apple'],
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

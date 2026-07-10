@@ -1,0 +1,31 @@
+{
+  "id": "pattern-bracelet-band",
+  "title": "Pattern Bracelet Band",
+  "category": "art-music",
+  "path": "games/pattern-bracelet-band/",
+  "icon": "📿",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#8a5bc4",
+  "description": "A bead-stringing pattern game where kids continue color sequences to finish a bracelet.",
+  "learningGoals": [
+    "Recognize AB, ABC, and ABB color patterns",
+    "Extend a craft pattern by one or two beads",
+    "Connect screen patterning to real-world bead and pasta crafts"
+  ],
+  "interactionModel": "pattern-continue tap the next bead color to string it",
+  "feedbackModel": "Correct beads fly into the bracelet and sparkle; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/pattern-continue.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "beads", "title": "String the Beads", "skill": "AB, ABC, and ABB bead-pattern extension" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Swatch placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

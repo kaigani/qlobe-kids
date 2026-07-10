@@ -1,0 +1,32 @@
+{
+  "id": "counting-treasure-cups",
+  "title": "Counting Treasure Cups",
+  "category": "math-number-sense",
+  "path": "games/counting-treasure-cups/",
+  "icon": "🏴‍☠️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#d69b2d",
+  "description": "A pirate treasure counting game where kids tap exactly the asked number of gems or coins into a cup or chest.",
+  "learningGoals": [
+    "Count quantities from 1 to 10",
+    "Practice one-to-one correspondence",
+    "Connect the last counted item with the total amount"
+  ],
+  "interactionModel": "tap-count collect rounds with emoji treasure cards flying into a cup or chest",
+  "feedbackModel": "Each tap speaks the count with pop and whoosh SFX; round success gets sparkle SFX, a spoken total, and automatic progression.",
+  "uses": [
+    "shared/js/engines/tap-count.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "treasure", "title": "Fill the Cup", "skill": "counting 2-6 with one-to-one correspondence" },
+    { "id": "more", "title": "Big Treasure", "skill": "counting larger treasure quantities 6-10" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

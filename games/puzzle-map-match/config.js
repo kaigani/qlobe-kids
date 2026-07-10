@@ -1,0 +1,67 @@
+export default {
+  id: 'puzzle-map-match',
+  engine: 'sort-into-bins',
+  title: 'Puzzle Map Match',
+  splashEmoji: '🗺️',
+  copy: {
+    home: 'Home',
+    replay: 'Hear it again',
+    playAgain: 'Play Again',
+  },
+  voice: {
+    intro: 'Where does each animal live? Find its home place.',
+    nudge: 'Almost. Listen for that animal\'s home and try another place.',
+    roundCheer: 'Every animal found a home!',
+    cheer: 'You matched the animal map!',
+    yums: [
+      'That is its home!',
+      'Animal explorer!',
+      'You found the right place!',
+    ],
+  },
+  modes: [
+    {
+      id: 'homes',
+      title: 'Animal Homes',
+      prompt: 'Sort each animal to its home: icy, hot, or ocean.',
+      rounds: 3,
+      roundCheer: 'Those animals are home!',
+      itemsPerRound: 4,
+      bins: [
+        { id: 'icy', art: 'emoji:❄️', alt: 'icy place', say: 'the icy place' },
+        { id: 'hot', art: 'emoji:🌴', alt: 'hot savanna place', say: 'the hot savanna' },
+        { id: 'ocean', art: 'emoji:🌊', alt: 'ocean place', say: 'the ocean' },
+      ],
+      items: [
+        { art: 'emoji:🐧', alt: 'penguin', say: 'A penguin lives where it is icy cold!', bin: 'icy' },
+        { art: 'emoji:🐻‍❄️', alt: 'polar bear', say: 'A polar bear lives where it is icy cold!', bin: 'icy' },
+        { art: 'emoji:🦁', alt: 'lion', say: 'A lion lives in the hot savanna!', bin: 'hot' },
+        { art: 'emoji:🐘', alt: 'elephant', say: 'An elephant lives in a hot place!', bin: 'hot' },
+        { art: 'emoji:🦒', alt: 'giraffe', say: 'A giraffe lives in the hot savanna!', bin: 'hot' },
+        { art: 'emoji:🐋', alt: 'whale', say: 'A whale lives in the ocean!', bin: 'ocean' },
+        { art: 'emoji:🐙', alt: 'octopus', say: 'An octopus lives in the ocean!', bin: 'ocean' },
+        { art: 'emoji:🐠', alt: 'fish', say: 'A fish lives in the ocean!', bin: 'ocean' },
+      ],
+    },
+    {
+      id: 'farm-wild',
+      title: 'Farm or Wild?',
+      prompt: 'Sort each animal to the farm or the wild woods.',
+      rounds: 3,
+      roundCheer: 'Farm and wild animals are sorted!',
+      itemsPerRound: 4,
+      bins: [
+        { id: 'farm', art: 'emoji:🚜', alt: 'farm place', say: 'the farm' },
+        { id: 'wild', art: 'emoji:🌳', alt: 'wild place', say: 'the wild woods' },
+      ],
+      items: [
+        { art: 'emoji:🐄', alt: 'cow', say: 'A cow lives on a farm.', bin: 'farm' },
+        { art: 'emoji:🐷', alt: 'pig', say: 'A pig lives on a farm.', bin: 'farm' },
+        { art: 'emoji:🐔', alt: 'hen', say: 'A hen lives on a farm.', bin: 'farm' },
+        { art: 'emoji:🦊', alt: 'fox', say: 'A fox lives in the wild.', bin: 'wild' },
+        { art: 'emoji:🦌', alt: 'deer', say: 'A deer lives in the wild.', bin: 'wild' },
+        { art: 'emoji:🦉', alt: 'owl', say: 'An owl lives in the wild.', bin: 'wild' },
+      ],
+    },
+  ],
+};

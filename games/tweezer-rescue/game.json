@@ -1,0 +1,32 @@
+{
+  "id": "tweezer-rescue",
+  "title": "Tweezer Rescue",
+  "category": "writing-fine-motor",
+  "path": "games/tweezer-rescue/",
+  "icon": "🫳",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A fine-motor sorting game where kids pinch-drag pom-poms into color and size nests.",
+  "learningGoals": [
+    "Practice pincer-grip control through short drag motions",
+    "Match pom-poms by color and spoken size",
+    "Build gentle precision with retry-friendly placement"
+  ],
+  "interactionModel": "sort-into-bins drag or tap-tap pom-poms into nests",
+  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/sort-into-bins.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "colors", "title": "Color Nests", "skill": "pincer-grip drag control and color matching" },
+    { "id": "sizes", "title": "Big and Small", "skill": "pincer-grip drag control and size vocabulary" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji and swatch placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

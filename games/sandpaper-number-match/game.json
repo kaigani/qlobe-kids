@@ -1,0 +1,32 @@
+{
+  "id": "sandpaper-number-match",
+  "title": "Sandpaper Number Match",
+  "category": "math-number-sense",
+  "path": "games/sandpaper-number-match/",
+  "icon": "🔢",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A numeral recognition game where kids meet each numeral and tap the matching quantity.",
+  "learningGoals": [
+    "Recognize numerals 1-9",
+    "Connect numerals to spoken number words",
+    "Match each numeral with a counted quantity"
+  ],
+  "interactionModel": "tap-count collect rounds with the engine's large numeral card as the visual anchor",
+  "feedbackModel": "Each tap speaks the count with pop and whoosh SFX; completion gives sparkle feedback and a spoken quantity.",
+  "uses": [
+    "shared/js/engines/tap-count.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "meet", "title": "Meet the Numbers", "skill": "numeral recognition for 1-5 tied to quantity" },
+    { "id": "big", "title": "Bigger Numbers", "skill": "numeral recognition for 6-9 tied to quantity" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji and text placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

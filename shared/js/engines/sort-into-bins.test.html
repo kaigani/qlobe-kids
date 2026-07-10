@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Sort Into Bins Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+
+    #app {
+      min-height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script type="module">
+    import { createGame } from './sort-into-bins.js';
+
+    createGame({
+      id: 'sort-into-bins-test',
+      engine: 'sort-into-bins',
+      title: 'Basket Sort',
+      splashEmoji: '🧺',
+      voice: {
+        intro: 'Where does it go?',
+        nudge: 'Almost. Try another basket.',
+        roundCheer: 'All sorted!',
+        cheer: 'Hooray! You sorted them all!',
+        yums: [
+          'That belongs there!',
+          'Nice sorting!',
+          'You found the basket!',
+        ],
+      },
+      modes: [{
+        id: 'foods',
+        title: 'Foods',
+        rounds: 3,
+        prompt: 'Where does it go? Listen and sort!',
+        bins: [
+          { id: 'fruit', art: 'emoji:🍎', say: 'fruit' },
+          { id: 'veg', art: 'emoji:🥕', say: 'vegetables' },
+          { id: 'treat', art: 'emoji:🧁', say: 'treats' },
+        ],
+        itemsPerRound: 4,
+        items: [
+          { art: 'emoji:🍌', say: 'banana', bin: 'fruit' },
+          { art: 'emoji:🍓', say: 'strawberry', bin: 'fruit' },
+          { art: 'emoji:🍇', say: 'grapes', bin: 'fruit' },
+          { art: 'emoji:🥦', say: 'broccoli', bin: 'veg' },
+          { art: 'emoji:🌽', say: 'corn', bin: 'veg' },
+          { art: 'emoji:🥒', say: 'cucumber', bin: 'veg' },
+          { art: 'emoji:🍪', say: 'cookie', bin: 'treat' },
+          { art: 'emoji:🍩', say: 'donut', bin: 'treat' },
+          { art: 'emoji:🍦', say: 'ice cream', bin: 'treat' },
+        ],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

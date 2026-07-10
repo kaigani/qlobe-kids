@@ -1,0 +1,36 @@
+{
+  "id": "snack-addition-stories",
+  "title": "Snack Addition Stories",
+  "category": "math-number-sense",
+  "path": "games/snack-addition-stories/",
+  "icon": "🍓",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e85d75",
+  "description": "A tap-and-count snack story game where kids collect the total for informal addition within 6.",
+  "learningGoals": [
+    "Model addition as putting together",
+    "Count totals to answer number stories",
+    "Build one-to-one counting confidence within 6"
+  ],
+  "interactionModel": "tap shared food cards to collect the story total in a basket",
+  "feedbackModel": "Each tap speaks the count; completed totals get sparkle SFX and warm spoken celebration from the tap-count engine.",
+  "uses": [
+    "shared/js/engines/tap-count.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/foods/grapes.png",
+    "shared/assets/foods/strawberry.png",
+    "shared/assets/foods/crackers.png",
+    "shared/assets/foods/apple.png",
+    "shared/assets/foods/banana.png"
+  ],
+  "modes": [
+    { "id": "stories", "title": "Snack Stories", "skill": "informal addition stories to 6" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": ["Maya", "Leo", "Nia", "Sam", "Ravi"],
+  "conceptVideo": ""
+}
