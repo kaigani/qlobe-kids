@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Build Assemble Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+
+    #app {
+      min-height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script type="module">
+    import { createGame } from './build-assemble.js';
+
+    createGame({
+      id: 'build-assemble-test',
+      engine: 'build-assemble',
+      title: 'Build It',
+      splashEmoji: '🧩',
+      prompt: 'Build it! Where does each piece go?',
+      rounds: 4,
+      voice: {
+        intro: 'Build it! Where does each piece go?',
+        nudge: 'Almost. Try that piece on its own shadow.',
+        wait: 'That piece comes later.',
+        cheer: 'Hooray! You built them all!',
+      },
+      builds: [{
+        name: 'happy face',
+        say: 'You built a happy face!',
+        parts: [
+          { art: 'emoji:🟡', alt: 'head', say: 'head', x: 500, y: 500, size: 420 },
+          { art: 'emoji:👁️', alt: 'eye', say: 'eye', x: 400, y: 420, size: 110 },
+          { art: 'emoji:👁️', alt: 'eye', say: 'eye', x: 600, y: 420, size: 110 },
+          { art: 'emoji:👄', alt: 'mouth', say: 'mouth', x: 500, y: 640, size: 150 },
+        ],
+      }, {
+        name: 'flower',
+        say: 'You built a flower!',
+        parts: [
+          { art: 'emoji:🌿', alt: 'stem', say: 'stem', x: 500, y: 650, size: 300 },
+          { art: 'emoji:🌻', alt: 'flower', say: 'flower', x: 500, y: 380, size: 260 },
+          { art: 'emoji:🟫', alt: 'soil', say: 'soil', x: 500, y: 830, size: 240 },
+        ],
+      }, {
+        name: 'snow person',
+        say: 'You built a snow person!',
+        ordered: true,
+        parts: [
+          { art: 'emoji:⚪', alt: 'big snowball', say: 'big snowball', x: 500, y: 690, size: 330 },
+          { art: 'emoji:⚪', alt: 'middle snowball', say: 'middle snowball', x: 500, y: 470, size: 250 },
+          { art: 'emoji:⚪', alt: 'small snowball', say: 'small snowball', x: 500, y: 300, size: 180 },
+          { art: 'emoji:🎩', alt: 'hat', say: 'hat', x: 500, y: 160, size: 150 },
+        ],
+      }, {
+        name: 'rocket',
+        say: 'You built a rocket!',
+        parts: [
+          { art: 'emoji:🚀', alt: 'rocket body', say: 'rocket body', x: 500, y: 500, size: 380 },
+          { art: 'emoji:🔥', alt: 'flame', say: 'flame', x: 500, y: 780, size: 160 },
+          { art: 'emoji:⭐', alt: 'star', say: 'star', x: 310, y: 280, size: 120 },
+          { art: 'emoji:⭐', alt: 'star', say: 'star', x: 700, y: 250, size: 120 },
+        ],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

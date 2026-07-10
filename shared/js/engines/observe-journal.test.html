@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Observe Journal Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './observe-journal.js';
+
+    createGame({
+      id: 'observe-journal-test',
+      engine: 'observe-journal',
+      title: 'Weather Watch',
+      splashArt: 'emoji:🪟',
+      voice: {
+        cheer: 'You made a weather journal!',
+        yum: 'Nice observing!',
+      },
+      modes: [{
+        id: 'weather',
+        title: 'Weather',
+        rounds: 4,
+        prompt: 'Be a weather scientist! Look out a real window if you can.',
+        pages: [{
+          scene: 'emoji:🪟',
+          say: 'What is the sky doing today?',
+          stickers: [
+            { art: 'emoji:☀️', alt: 'sunny', say: 'Sunny! Hello sunshine!' },
+            { art: 'emoji:☁️', alt: 'cloudy', say: 'Cloudy, big soft clouds!' },
+            { art: 'emoji:🌧️', alt: 'rainy', say: 'Rainy! Drip drop drip!' },
+            { art: 'emoji:❄️', alt: 'snowy', say: 'Snowy! Brrr and beautiful!' },
+          ],
+        }, {
+          scene: ['emoji:🌳', 'emoji:🍃', 'emoji:🌼'],
+          prompts: [{
+            say: 'What is moving outside?',
+            stickers: [
+              { art: 'emoji:🍃', alt: 'leaf', say: 'A leaf is moving!' },
+              { art: 'emoji:🫧', alt: 'bubble', say: 'A bubble floats by!' },
+              { art: 'emoji:🐦', alt: 'bird', say: 'A bird is flying!' },
+            ],
+          }, {
+            say: 'Pick one more thing you notice.',
+            stickers: [
+              { art: 'emoji:🌼', alt: 'flower', say: 'A flower is bright!' },
+              { art: 'emoji:🌳', alt: 'tree', say: 'A tree is standing tall!' },
+              { art: 'emoji:🪨', alt: 'rock', say: 'A rock is resting there!' },
+            ],
+          }],
+        }, {
+          scene: 'emoji:🏠',
+          say: 'How does outside feel in your imagination?',
+          stickers: [
+            { art: 'emoji:🧣', alt: 'cold', say: 'Cold and cozy!' },
+            { art: 'emoji:🩳', alt: 'warm', say: 'Warm and breezy!' },
+            { art: 'emoji:🌀', alt: 'windy', say: 'Windy, whoosh!' },
+            { art: 'emoji:🌈', alt: 'rainbow', say: 'Rainbow bright!' },
+          ],
+        }, {
+          scene: ['emoji:🪟', 'emoji:🌤️'],
+          say: 'What sticker belongs on your weather page?',
+          stickers: [
+            { art: 'emoji:😄', alt: 'happy', say: 'Happy weather watcher!' },
+            { art: 'emoji:🔎', alt: 'looking', say: 'Careful looking!' },
+            { art: 'emoji:⭐', alt: 'star', say: 'A star observation!' },
+          ],
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>
