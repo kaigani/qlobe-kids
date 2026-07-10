@@ -1,0 +1,33 @@
+{
+  "id": "calm-corner-cards",
+  "title": "Calm Corner Cards",
+  "category": "social-emotional",
+  "path": "games/calm-corner-cards/",
+  "icon": "🧘",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A self-regulation game where kids pick calm-down tools and practice slow balloon breathing.",
+  "learningGoals": [
+    "Identify calming strategies for big feelings",
+    "Practice slow breathing and body settling",
+    "Treat calm tools as helpful choices rather than right-or-wrong answers"
+  ],
+  "interactionModel": "choose-one tap any calm tool or balloon card after a spoken scenario",
+  "feedbackModel": "Every tool card is accepted, sparkles, and plays a brief guided calming practice line.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "tools", "title": "Pick a Calm Tool", "skill": "choosing self-regulation tools" },
+    { "id": "breathe", "title": "Balloon Breathing", "skill": "slow paced breathing" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared character portraits and emoji placeholder tool art. Built with Codex for QLOBE Kids.",
+  "characters": ["leo", "maya", "nia", "ravi"],
+  "conceptVideo": null
+}

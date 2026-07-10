@@ -1,0 +1,33 @@
+{
+  "id": "grace-courtesy-theater",
+  "title": "Grace & Courtesy Theater",
+  "category": "social-emotional",
+  "path": "games/grace-courtesy-theater/",
+  "icon": "🎩",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A tiny manners theater where kids pick kind words and helpful actions from spoken social scenes.",
+  "learningGoals": [
+    "Practice please, thank you, excuse me, and sorry",
+    "Recognize kind actions in common classroom and playground moments",
+    "Connect gentle spoken language with social problem solving"
+  ],
+  "interactionModel": "choose-one tap the kind speech or action card after a spoken scene",
+  "feedbackModel": "Correct answers sparkle and speak warm praise; misses wiggle with a gentle nudge and replay the scene.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "manners", "title": "What Do We Say?", "skill": "kind social phrases" },
+    { "id": "helping", "title": "Kind or Not?", "skill": "recognizing helpful actions" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared character portraits and emoji placeholder answer art. Built with Codex for QLOBE Kids.",
+  "characters": ["leo", "maya", "nia", "ravi", "sam"],
+  "conceptVideo": null
+}

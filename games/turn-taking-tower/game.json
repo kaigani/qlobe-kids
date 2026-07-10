@@ -1,0 +1,34 @@
+{
+  "id": "turn-taking-tower",
+  "title": "Turn-Taking Tower",
+  "category": "social-emotional",
+  "path": "games/turn-taking-tower/",
+  "icon": "🏗️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#8fd3c7",
+  "description": "A cooperative block tower game where spoken turn narration helps kids practice waiting and shared building.",
+  "learningGoals": [
+    "Practice turn-taking rhythm",
+    "Build patience while waiting",
+    "Celebrate shared construction"
+  ],
+  "interactionModel": "build-assemble ordered drag or tap-tap block placement with turn narration",
+  "feedbackModel": "Correct next blocks pop, sparkle, and speak a turn line; out-of-order blocks wiggle gently with a waiting nudge. Finished towers celebrate shared building.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "together", "title": "Our Tower", "skill": "turn-taking rhythm with one friend" },
+    { "id": "tall", "title": "Super Tower", "skill": "turn-taking rhythm with two friends" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder block art only. Built with Codex for QLOBE Kids.",
+  "characters": ["maya", "sam", "nia", "ravi", "leo"],
+  "conceptVideo": null
+}

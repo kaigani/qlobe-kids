@@ -1,0 +1,34 @@
+{
+  "id": "clay-creature-studio",
+  "title": "Clay Creature Studio",
+  "category": "art-music",
+  "path": "games/clay-creature-studio/",
+  "icon": "🐲",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f6c86e",
+  "description": "A clay creature builder where kids place body, eyes, horns, wings, spikes, and feet onto ghost outlines.",
+  "learningGoals": [
+    "Build confidence with part-whole construction",
+    "Explore creative creature design",
+    "Connect screen play to real clay making"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap clay parts onto ghost positions",
+  "feedbackModel": "Correct parts pop, sparkle, and speak the part name; misses wiggle gently with a spoken nudge and retry. Finished creatures speak a playful creature line.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "creatures", "title": "Build a Creature", "skill": "part-whole creature construction" },
+    { "id": "silly", "title": "Mix-Up Creatures", "skill": "creative recombination of mismatched parts" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder clay part art only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

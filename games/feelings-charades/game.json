@@ -1,0 +1,33 @@
+{
+  "id": "feelings-charades",
+  "title": "Feelings Charades",
+  "category": "social-emotional",
+  "path": "games/feelings-charades/",
+  "icon": "🎭",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#ffad7a",
+  "description": "A feelings game where kids listen to acted body clues, pick the matching face, and connect feelings to situations.",
+  "learningGoals": [
+    "Name emotions from spoken body and voice clues",
+    "Match feelings to everyday situations",
+    "Practice acting feelings in a playful, safe way"
+  ],
+  "interactionModel": "choose-one tap the feeling face or situation card after an acted spoken prompt",
+  "feedbackModel": "Correct answers sparkle and speak praise; misses wiggle with a gentle spoken replay cue.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "guess", "title": "Guess the Feeling", "skill": "naming emotions from cues" },
+    { "id": "show", "title": "Show the Feeling", "skill": "matching feelings to situations" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared character portraits and emoji placeholder answer art. Built with Codex for QLOBE Kids.",
+  "characters": ["leo", "maya", "nia", "ravi", "sam"],
+  "conceptVideo": null
+}
