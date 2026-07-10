@@ -1,0 +1,32 @@
+{
+  "id": "question-ball",
+  "title": "Question Ball",
+  "category": "oral-storytelling",
+  "path": "games/question-ball/",
+  "icon": "🏐",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#ffad7a",
+  "description": "A question-comprehension game where kids answer who, what, where, and why prompts from picture clues.",
+  "learningGoals": [
+    "Understand common wh-question words",
+    "Match oral questions to picture answers",
+    "Hear full-sentence models for why questions"
+  ],
+  "interactionModel": "choose-one tap the picture answer after a spoken wh-question",
+  "feedbackModel": "Correct answers sparkle and speak praise; misses wiggle with a playful boing, get a spoken nudge, and replay the question.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "wh", "title": "Catch the Question", "skill": "who, what, and where question comprehension" },
+    { "id": "why", "title": "Why Questions", "skill": "matching why questions to simple reasons" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder scene and answer art. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

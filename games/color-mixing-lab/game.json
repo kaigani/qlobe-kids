@@ -1,0 +1,34 @@
+{
+  "id": "color-mixing-lab",
+  "title": "Color Mixing Lab",
+  "category": "art-music",
+  "path": "games/color-mixing-lab/",
+  "icon": "🧪",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A color prediction game where kids assemble two paint swatches, a pot, and the revealed mixed color.",
+  "learningGoals": [
+    "Explore primary-color mixing",
+    "Predict color outcomes aloud",
+    "Connect two inputs with one visible result"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap color swatches and the result onto ghost positions",
+  "feedbackModel": "Correct swatches pop, sparkle, and speak the color name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the color equation.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "mix", "title": "Mix Two Colors", "skill": "basic color mixing" },
+    { "id": "guess", "title": "What Will It Make?", "skill": "color prediction before reveal" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; swatch and emoji placeholder art only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

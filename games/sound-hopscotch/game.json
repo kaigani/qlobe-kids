@@ -1,0 +1,33 @@
+{
+  "id": "sound-hopscotch",
+  "title": "Sound Hopscotch",
+  "category": "reading-phonics",
+  "path": "games/sound-hopscotch/",
+  "icon": "🦘",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A rapid sound-to-letter game where kids hear a consonant sound and tap the matching hopscotch letter stone.",
+  "learningGoals": [
+    "Map spoken consonant sounds to printed letters",
+    "Build quick sound-letter recall",
+    "Practice tricky contrasts such as b/d, m/n, and c/g"
+  ],
+  "interactionModel": "choose-one tap a letter stone after a spoken sound prompt",
+  "feedbackModel": "Correct stones sparkle and speak praise; misses wiggle gently, get a spoken nudge, and replay the sound prompt.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/letter-tiles/"
+  ],
+  "modes": [
+    { "id": "hop", "title": "Hop to the Sound", "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g" },
+    { "id": "fast", "title": "Quick Hops", "skill": "rapid discrimination of tricky letter-sound pairs" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared QLOBE Kids letter-tile art; emoji placeholder kangaroo art. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

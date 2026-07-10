@@ -1,0 +1,34 @@
+{
+  "id": "silly-sentence-builder",
+  "title": "Silly Sentence Builder",
+  "category": "oral-storytelling",
+  "path": "games/silly-sentence-builder/",
+  "icon": "🤪",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f25f5c",
+  "description": "A sentence structure game where kids assemble who, action, place, and how picture cards into spoken silly sentences.",
+  "learningGoals": [
+    "Practice oral sentence structure",
+    "Hear subject, action, and setting in order",
+    "Rehearse playful complete sentences"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap picture cards onto ghost positions",
+  "feedbackModel": "Correct cards pop, sparkle, and speak their sentence part; misses wiggle gently with a spoken nudge and retry. Finished builds are read aloud as silly full sentences.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "silly", "title": "Make a Silly Sentence", "skill": "subject-action-place sentence structure" },
+    { "id": "sillier", "title": "Even Sillier", "skill": "subject-action-place-adverb sentence expansion" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder card art only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

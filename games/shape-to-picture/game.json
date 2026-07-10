@@ -1,0 +1,34 @@
+{
+  "id": "shape-to-picture",
+  "title": "Shape-to-Picture Challenge",
+  "category": "art-music",
+  "path": "games/shape-to-picture/",
+  "icon": "🖼️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A shape composition game where kids place simple shapes on ghost outlines to reveal pictures and faces.",
+  "learningGoals": [
+    "Compose pictures from simple shapes",
+    "Practice visual imagination",
+    "Explore part-whole relationships in art"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap shape pieces onto ghost positions",
+  "feedbackModel": "Correct shapes pop, sparkle, and speak the shape name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the surprise picture.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "pictures", "title": "Shape Pictures", "skill": "shape recombination into pictures" },
+    { "id": "faces", "title": "Shape Faces", "skill": "shape recombination into faces" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder shape art only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

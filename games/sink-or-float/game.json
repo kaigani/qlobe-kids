@@ -1,0 +1,32 @@
+{
+  "id": "sink-or-float",
+  "title": "Sink or Float",
+  "category": "sensorial-science",
+  "path": "games/sink-or-float/",
+  "icon": "🛁",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A buoyancy prediction game where kids decide whether everyday objects will sink or float.",
+  "learningGoals": [
+    "Predict whether familiar objects sink or float",
+    "Build intuition about weight, shape, air, and water pushing up",
+    "Practice testing ideas through observation"
+  ],
+  "interactionModel": "choose-one tap the sink or float answer card after an object prompt",
+  "feedbackModel": "Correct predictions sparkle and get spoken science praise; misses wiggle gently, get a spoken nudge, and replay the prompt.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "tub", "title": "Sink or Float?", "skill": "predicting buoyancy for familiar objects" },
+    { "id": "tricky", "title": "Tricky Ones", "skill": "reasoning about surprising sink-or-float cases" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder object and bathtub art. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
