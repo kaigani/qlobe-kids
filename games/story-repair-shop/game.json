@@ -1,0 +1,32 @@
+{
+  "id": "story-repair-shop",
+  "title": "Story Repair Shop",
+  "category": "oral-storytelling",
+  "path": "games/story-repair-shop/",
+  "icon": "🔧",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A spoken story-logic game where kids hear a tiny broken story and tap the ending that fixes it, or pick the silly ending on purpose.",
+  "learningGoals": [
+    "Predict logical story endings from cause and effect",
+    "Separate realistic endings from silly endings",
+    "Build oral comprehension through short two-sentence stories"
+  ],
+  "interactionModel": "choose-one tap an ending card after a spoken story prompt",
+  "feedbackModel": "Correct endings get sparkle SFX and spoken praise; misses wiggle gently, get a chuckling spoken nudge, and replay the story.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "repair", "title": "Fix the Ending", "skill": "story prediction and cause-and-effect reasoning" },
+    { "id": "silly", "title": "Silly or Real?", "skill": "identifying intentionally silly story endings" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder story cards only. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

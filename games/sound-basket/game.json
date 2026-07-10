@@ -1,0 +1,34 @@
+{
+  "id": "sound-basket",
+  "title": "Sound Basket",
+  "category": "reading-phonics",
+  "path": "games/sound-basket/",
+  "icon": "🧺",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A first-sound sorting game where kids place picture cards into letter baskets.",
+  "learningGoals": [
+    "Isolate the first sound in a spoken word",
+    "Connect initial sounds to familiar letter baskets",
+    "Build phonemic awareness with picture-first play"
+  ],
+  "interactionModel": "sort-into-bins drag or tap-tap picture cards into first-sound letter baskets",
+  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/sort-into-bins.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/letter-tiles/",
+    "shared/assets/objects/"
+  ],
+  "modes": [
+    { "id": "two", "title": "Two Baskets", "skill": "initial-sound isolation with two contrasting onsets" },
+    { "id": "three", "title": "Three Baskets", "skill": "initial-sound isolation with three contrasting onsets" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; shared QLOBE Kids object and letter-tile art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

@@ -1,0 +1,34 @@
+{
+  "id": "letter-treasure-hunt",
+  "title": "Letter Treasure Hunt",
+  "category": "reading-phonics",
+  "path": "games/letter-treasure-hunt/",
+  "icon": "🏴‍☠️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#d69b2d",
+  "description": "A phonics treasure hunt where kids hear a target starting sound and tap the picture whose word begins with it.",
+  "learningGoals": [
+    "Identify beginning sounds in familiar CVC words",
+    "Connect target letter tiles with real picture words",
+    "Practice discriminating similar initial sounds"
+  ],
+  "interactionModel": "choose-one tap an object card after a spoken initial-sound prompt",
+  "feedbackModel": "Correct object cards get sparkle SFX and spoken praise; misses wiggle gently, get a spoken nudge, and replay the prompt.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/letter-tiles/",
+    "shared/assets/objects/"
+  ],
+  "modes": [
+    { "id": "hunt", "title": "Sound Treasure", "skill": "initial-sound identification for b, s, m, c, p, and t" },
+    { "id": "two", "title": "Two Treasures", "skill": "initial-sound discrimination with plausible distractors" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared QLOBE Kids letter-tile and object-card art; emoji placeholder pirate flag. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

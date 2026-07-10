@@ -1,0 +1,33 @@
+{
+  "id": "mystery-letter-bag",
+  "title": "Mystery Letter Bag",
+  "category": "reading-phonics",
+  "path": "games/mystery-letter-bag/",
+  "icon": "👜",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A sound-to-letter phonics game where kids hear a letter sound from the mystery bag and tap the matching letter tile.",
+  "learningGoals": [
+    "Map spoken letter sounds to printed letter forms",
+    "Discriminate common consonant sounds",
+    "Practice tricky sound contrasts such as b/p, m/n, and c/g"
+  ],
+  "interactionModel": "choose-one tap a letter tile after a spoken sound clue",
+  "feedbackModel": "Correct tiles get sparkle SFX and spoken praise; misses wiggle gently, get a spoken nudge, and replay the sound clue.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/letter-tiles/"
+  ],
+  "modes": [
+    { "id": "bag", "title": "What's in the Bag?", "skill": "sound-to-letter mapping for b, s, m, t, c, and p" },
+    { "id": "tricky", "title": "Tricky Sounds", "skill": "discriminating similar consonant sounds" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Shared QLOBE Kids letter-tile art; emoji placeholder bag art. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Trace Path Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './trace-path.js';
+
+    createGame({
+      id: 'trace-path-test',
+      engine: 'trace-path',
+      title: 'Sparkle Trails',
+      splashEmoji: '⭐',
+      traveler: 'emoji:🚗',
+      strokeColor: '#e8734a',
+      voice: {
+        intro: 'Follow the sparkle with your finger!',
+        nudge: 'Find the dots and keep going.',
+        cheer: 'Hooray, you traced every path!',
+        yums: ['Nice tracing!', 'You followed it!', 'Great path!'],
+      },
+      modes: [{
+        id: 'letters',
+        title: 'Big Letters',
+        rounds: 4,
+        prompt: 'Follow the sparkle with your finger!',
+        traveler: 'emoji:✏️',
+        strokeColor: '#e8734a',
+        paths: [{
+          name: 'letter c',
+          say: 'Cuh! You traced a C!',
+          points: [[700,300],[500,200],[300,350],[300,650],[500,800],[700,700]],
+        }, {
+          name: 'zigzag',
+          say: 'Zig zag zig!',
+          points: [[100,700],[350,300],[600,700],[850,300]],
+        }, {
+          name: 'two roads',
+          say: 'Two bright lines!',
+          points: [
+            [[220,250],[500,250],[780,250]],
+            [[220,720],[500,520],[780,720]],
+          ],
+        }, {
+          name: 'soft loop',
+          say: 'Round and around!',
+          points: [[500,180],[760,320],[740,650],[500,820],[260,650],[240,320],[500,180]],
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

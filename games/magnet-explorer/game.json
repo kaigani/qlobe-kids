@@ -1,0 +1,31 @@
+{
+  "id": "magnet-explorer",
+  "title": "Magnet Explorer",
+  "category": "sensorial-science",
+  "path": "games/magnet-explorer/",
+  "icon": "🧲",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "An early materials-science sorting game where kids test what sticks to a magnet.",
+  "learningGoals": [
+    "Sort objects by magnetic and non-magnetic behavior",
+    "Connect sticking to metal objects in everyday examples",
+    "Practice observation language for early materials science"
+  ],
+  "interactionModel": "sort-into-bins drag or tap-tap object cards into sticks and does-not-stick bins",
+  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "uses": [
+    "shared/js/engines/sort-into-bins.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "explore", "title": "Sticks or Not?", "skill": "magnetic versus non-magnetic sorting" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
