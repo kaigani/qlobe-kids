@@ -14,6 +14,7 @@ import {
   pick,
 } from './requests.js';
 import { burst, clearConfetti } from './confetti.js';
+import { createTalkingMouth } from '../../../shared/js/stage/mouth.js';
 
 // Compartment slot centers, measured against lunchbox-open.png (900×745,
 // layered-extraction art). x,y = center as % of the image; s = food scale.
@@ -110,6 +111,8 @@ export class Game {
     clearTimeout(this.nextTimer);
     if (this.dragCleanup) this.dragCleanup(); // end any in-flight drag
     this.sweepStrayClones();
+    if (this.mouth) { this.mouth.then((m) => m && m.destroy()); this.mouth = null; }
+    if (this.mouthHook) { this.mouthHook(); this.mouthHook = null; }
     voice.stop();
     clearConfetti();
     this.els.lid.removeEventListener('click', this.onLidTap);
@@ -149,6 +152,19 @@ export class Game {
 
     // character slides in
     this.els.portrait.src = portraitImg(box.character.id);
+    // living cast: attach a talking mouth if this character is rigged
+    // (resolves to null and no-ops for unrigged characters)
+    if (this.mouth) { this.mouth.then((m) => m && m.destroy()); }
+    this.mouth = createTalkingMouth(this.els.portrait, box.character.id, '../../shared/');
+    if (!this.mouthHook) {
+      this.mouthHook = voice.onClip(async (key, audioEl) => {
+        const m = this.mouth && (await this.mouth);
+        if (!m) return;
+        if (key === `intro-${this.box().character.id}`) {
+          m.syncTo(audioEl, `./assets/audio/${key}.viseme.json`);
+        }
+      });
+    }
     this.els.portrait.alt = box.character.name;
     this.els.portrait.classList.remove('slide-in');
     // restart the CSS animation

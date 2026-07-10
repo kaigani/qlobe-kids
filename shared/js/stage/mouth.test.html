@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>mouth.js test — talking Maya</title>
+  <style>
+    body { background: #bee3f5; display: grid; place-items: center; height: 100vh; margin: 0; }
+    #wrap { position: relative; width: 320px; }
+    #portrait { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <div id="wrap"><img id="portrait" src="../../characters/maya/portrait.png" alt="Maya" /></div>
+  <script type="module">
+    import { createTalkingMouth } from './mouth.js';
+    const AUDIO = '../../../games/lunchbox-pack/assets/audio/intro-maya.m4a';
+    const VISEME = '../../../games/lunchbox-pack/assets/audio/intro-maya.viseme.json';
+    (async () => {
+      const mouth = await createTalkingMouth(document.getElementById('portrait'), 'maya', '../../');
+      window.__mouth = mouth;
+      window.__talk = async () => {
+        const a = new Audio(AUDIO);
+        window.__audio = a;
+        await mouth.syncTo(a, VISEME);
+        await a.play();
+        return 'playing';
+      };
+      document.title = mouth ? 'ready' : 'no-mouth';
+    })();
+  </script>
+</body>
+</html>

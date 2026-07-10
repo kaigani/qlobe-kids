@@ -564,3 +564,13 @@ html, body {
   .food-card, .mode-button, .hud-button { transition: none; }
   .food-card.vanish { transition: none; }
 }
+
+/* living cast: gentle idle sway on the character (Stage v2 PoC) */
+#portrait { transform-origin: 50% 95%; }
+@media (prefers-reduced-motion: no-preference) {
+  #portrait { animation: qk-idle-sway 4.2s ease-in-out infinite; }
+  @keyframes qk-idle-sway {
+    0%, 100% { transform: rotate(-1.1deg) translateY(0); }
+    50% { transform: rotate(1.1deg) translateY(-4px); }
+  }
+}

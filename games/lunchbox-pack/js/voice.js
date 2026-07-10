@@ -93,6 +93,10 @@ export async function init(
  * @param {string} [fallbackText]
  * @returns {Promise<void>}
  */
+// Optional clip-start listeners (e.g. talking-mouth sync). cb(key, audioEl).
+const clipListeners = new Set();
+export function onClip(cb) { clipListeners.add(cb); return () => clipListeners.delete(cb); }
+
 export function say(key, fallbackText) {
   stop();
   const text = (lines && lines[key]) || fallbackText || DEFAULT_LINES[key] || '';
@@ -101,6 +105,7 @@ export function say(key, fallbackText) {
     return new Promise((resolve) => {
       const a = new Audio(baseUrl + entry.file);
       currentAudio = a;
+      clipListeners.forEach((cb) => { try { cb(key, a); } catch { /* never break voice */ } });
       let done = false;
       const finish = () => {
         if (done) return;
