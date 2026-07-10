@@ -140,3 +140,12 @@ reused, well-optimized assets over large one-off screens.
 Emoji artwork © Twitter, Inc and other contributors, from the Twemoji project
 (https://github.com/jdecked/twemoji), licensed under CC-BY 4.0
 (https://creativecommons.org/licenses/by/4.0/).
+
+## Placeholder assets (beta games)
+
+Games in `beta` status run on placeholder art while their real assets are in
+production: emoji rendered large on soft rounded cards, CSS shapes, and reuse of
+existing shared art. Config art refs (`emoji:🐸`, `shared:objects/cat.png`,
+`char:maya`) are resolved by `shared/js/engines/art.js` — swapping in real art later
+is a config edit, not a code change. Every beta game's `ASSETS.md` carries an
+"Assets needed" list (art subjects + voice lines) that feeds asset production.

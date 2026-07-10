@@ -241,6 +241,20 @@ a.tile:focus-visible { outline: 4px solid var(--blue); outline-offset: 3px; }
   border-top: 2px solid rgba(23, 81, 126, .08);
 }
 
+/* beta games: playable, placeholder-dressed — friendly sprout chip */
+.tile-beta {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 249, 219, 0.95);
+  color: var(--navy);
+  box-shadow: 0 2px 6px rgba(23, 81, 126, 0.25);
+}
+
 /* still-growing games: full color per the concept, with a sprout chip */
 .tile-soon { cursor: default; }
 .tile-soon .tile-art::after {

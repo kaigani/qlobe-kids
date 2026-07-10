@@ -1,0 +1,33 @@
+{
+  "id": "red-green-light",
+  "title": "Red Light, Green Light",
+  "category": "social-emotional",
+  "path": "games/red-green-light/",
+  "icon": "🚦",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "The tablet becomes a traffic light for a whole-body stop-and-go listening game.",
+  "learningGoals": [
+    "Practice impulse control through stop/go movement",
+    "Switch actions in response to spoken cues",
+    "Listen while moving",
+    "Build playful self-regulation with family participation"
+  ],
+  "interactionModel": "the tablet presents timed traffic-light signals; children move, freeze, or wiggle in the room",
+  "feedbackModel": "energetic speech and pop/boing/silly/tada SFX; no failure state, just repeated movement cues and celebration",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "classic", "title": "Classic", "skill": "stop/go impulse control" },
+    { "id": "silly", "title": "Silly Switch", "skill": "three-way self-regulation switching" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

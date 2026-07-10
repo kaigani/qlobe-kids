@@ -1,0 +1,32 @@
+{
+  "id": "instrument-detective",
+  "title": "Instrument Detective",
+  "category": "art-music",
+  "path": "games/instrument-detective/",
+  "icon": "🕵️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A sound detective game where kids hear playful instrument clues and tap the matching instrument. Beta uses spoken sound effects until real instrument clips arrive.",
+  "learningGoals": [
+    "Practice listening discrimination through instrument sound words",
+    "Connect instrument names with visual symbols",
+    "Notice simple sound qualities like loud, soft, jingly, and low"
+  ],
+  "interactionModel": "choose-one tap cards after a spoken prompt",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "listen", "title": "Sound Detective", "skill": "listening discrimination and instrument names" },
+    { "id": "families", "title": "Loud or Soft?", "skill": "sound vocabulary and instrument qualities" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

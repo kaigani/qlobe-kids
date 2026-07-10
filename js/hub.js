@@ -50,17 +50,21 @@ function tileLabel(text) {
 
 // ---------- tier 1: categories ----------
 
+function isPlayable(game) {
+  return (game.status === 'live' || game.status === 'beta') && game.path;
+}
+
 function categorySlide(category, games) {
   const sec = el('section', 'slide slide-cat');
   if (category.color) sec.style.setProperty('--cat', category.color);
 
-  // "1/10 games" — how many are playable today out of everything planned here
-  const live = games.filter((g) => g.status === 'live' && g.path).length;
-  const count = `${live}/${games.length} game${games.length === 1 ? '' : 's'}`;
+  // "3/10 games" — how many are playable today (live or beta) out of the catalog
+  const playable = games.filter(isPlayable).length;
+  const count = `${playable}/${games.length} game${games.length === 1 ? '' : 's'}`;
 
   const a = el('a', 'tile tile-big');
   a.href = `#${category.id}`;
-  a.setAttribute('aria-label', `${category.title} — ${live} of ${games.length} games ready to play`);
+  a.setAttribute('aria-label', `${category.title} — ${playable} of ${games.length} games ready to play`);
   a.append(tileArt(category), tileLabel(count));
 
   sec.append(badge(category), a);
@@ -73,10 +77,17 @@ function gameSlide(game) {
   const sec = el('section', 'slide slide-game');
 
   let tile;
-  if (game.status === 'live' && game.path) {
+  if (isPlayable(game)) {
     tile = el('a', 'tile');
     tile.href = game.path;
     tile.setAttribute('aria-label', game.title);
+    if (game.status === 'beta') {
+      // playable but still placeholder-dressed: a friendly sprout chip, not a warning
+      const chip = el('span', 'tile-beta');
+      chip.setAttribute('aria-hidden', 'true');
+      chip.textContent = '🌱 new!';
+      tile.appendChild(chip);
+    }
   } else {
     tile = el('div', 'tile tile-soon');
     tile.setAttribute('aria-disabled', 'true');
@@ -99,7 +110,11 @@ function currentCategory() {
 }
 
 function gamesIn(category) {
-  return registry.games.filter((g) => g.category === category.id);
+  // polished games lead, then playable betas, then the still-growing catalog
+  const rank = { live: 0, beta: 1 };
+  return registry.games
+    .filter((g) => g.category === category.id)
+    .sort((a, b) => (rank[a.status] ?? 2) - (rank[b.status] ?? 2));
 }
 
 function renderView() {

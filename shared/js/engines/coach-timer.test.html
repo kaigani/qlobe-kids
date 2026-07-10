@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Coach Timer Engine Test</title>
+  <style>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+    #app { min-height: 100dvh; }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script type="module">
+    import { createGame } from './coach-timer.js';
+
+    const stepsMode = {
+      id: 'practice',
+      title: 'Pour!',
+      type: 'steps',
+      praise: 'Nice work.',
+      cheer: 'You did all the steps!',
+      steps: [
+        { art: 'emoji:🫗', say: 'Get a little pitcher and two cups!', timerSec: 0 },
+        { art: 'emoji:💧', say: 'Pour the water slowly into the first cup.', after: 'Nice slow pouring!', timerSec: 3 },
+        { art: 'emoji:🥤', say: 'Now pour into the second cup.', after: 'Careful hands!', timerSec: 2 }
+      ]
+    };
+
+    const signalMode = {
+      id: 'classic',
+      title: 'Red light, green light!',
+      type: 'signal',
+      rounds: 3,
+      cheer: 'Great listening!',
+      states: [
+        { id: 'go', art: 'emoji:🟢', say: 'Green light! Go go go!', color: '#58a945', sfx: 'pop', durSec: [1, 2] },
+        { id: 'stop', art: 'emoji:🔴', say: 'Red light! Freeze!', color: '#c9503a', sfx: 'boing', durSec: [1, 2] }
+      ]
+    };
+
+    createGame({
+      id: 'coach-timer-test',
+      title: 'Coach Timer',
+      splashEmoji: 'emoji:⏱️',
+      voice: {
+        intro: 'Listen and follow along.',
+        praise: 'Nice work.',
+        cheer: 'You did it!'
+      },
+      modes: [stepsMode, signalMode]
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

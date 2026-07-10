@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Choose One Engine Test</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: none;
+      background: #bee3f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    import { createGame } from './choose-one.js';
+
+    createGame({
+      id: 'choose-one-test',
+      engine: 'choose-one',
+      title: 'Instrument Detective',
+      splashEmoji: '👂',
+      copy: {
+        home: 'Home',
+        replay: 'Hear it again',
+        playAgain: 'Play Again',
+      },
+      voice: {
+        intro: 'Listen and choose.',
+        nudge: 'Hmm, try another one.',
+        cheer: 'Hooray, you found them all!',
+        yums: [
+          'Yes, that is it!',
+          'You found it!',
+          'Nice listening!',
+        ],
+      },
+      modes: [{
+        id: 'listen',
+        title: 'Listen',
+        rounds: 4,
+        difficultyRamp: true,
+        items: [{
+          say: 'Boom boom boom! Which one is the drum?',
+          promptArt: 'emoji:👂',
+          answers: [
+            { art: 'emoji:🥁', alt: 'drum', correct: true },
+            { art: 'emoji:🔔', alt: 'bell' },
+            { art: 'emoji:🎺', alt: 'trumpet' },
+            { art: 'emoji:🎻', alt: 'violin' },
+          ],
+        }, {
+          say: 'Ring ring ring! Which one is the bell?',
+          promptArt: 'emoji:👂',
+          answers: [
+            { art: 'emoji:🔔', alt: 'bell', correct: true },
+            { art: 'emoji:🥁', alt: 'drum' },
+            { art: 'emoji:🎸', alt: 'guitar' },
+            { art: 'emoji:🎷', alt: 'saxophone' },
+          ],
+        }, {
+          say: 'Toot toot toot! Which one is the trumpet?',
+          promptArt: 'emoji:👂',
+          answers: [
+            { art: 'emoji:🎺', alt: 'trumpet', correct: true },
+            { art: 'emoji:🎻', alt: 'violin' },
+            { art: 'emoji:🪇', alt: 'maracas' },
+            { art: 'emoji:🥁', alt: 'drum' },
+          ],
+        }, {
+          say: 'Shake shake shake! Which one is the maracas?',
+          promptArt: 'emoji:👂',
+          answers: [
+            { art: 'emoji:🪇', alt: 'maracas', correct: true },
+            { art: 'emoji:🎷', alt: 'saxophone' },
+            { art: 'emoji:🔔', alt: 'bell' },
+            { art: 'emoji:🎸', alt: 'guitar' },
+          ],
+        }],
+      }],
+    }, document.getElementById('app'));
+  </script>
+</body>
+</html>

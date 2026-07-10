@@ -1,0 +1,33 @@
+{
+  "id": "pouring-station",
+  "title": "Pouring Station",
+  "category": "practical-life",
+  "path": "games/pouring-station/",
+  "icon": "🏺",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A calm real-world pouring practice coach: gather cups, pour slowly, and clean up any spills as part of the work.",
+  "learningGoals": [
+    "Practice careful hand control while pouring",
+    "Follow a short spoken sequence of practical-life steps",
+    "Build independence with setup and cleanup",
+    "Treat spills gently as part of the work"
+  ],
+  "interactionModel": "tap the large done button after each real-world pouring step; timed steps coach slow, careful movement",
+  "feedbackModel": "spoken coaching with sparkle/tick/tada SFX; praise focuses on care and cleanup, not perfect results",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "water", "title": "Water Pouring", "skill": "careful water pouring and cleanup" },
+    { "id": "beans", "title": "Bean Pouring", "skill": "careful dry pouring and listening" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
