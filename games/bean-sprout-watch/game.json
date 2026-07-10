@@ -1,0 +1,32 @@
+{
+  "id": "bean-sprout-watch",
+  "title": "Bean Sprout Watch",
+  "category": "sensorial-science",
+  "path": "games/bean-sprout-watch/",
+  "icon": "🌱",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A sprout diary where kids observe pretend bean growth, stamp what changed, and get nudged toward trying a real bean in a jar.",
+  "learningGoals": [
+    "Notice plant growth over time",
+    "Practice daily observation language for roots, sprouts, stems, and leaves",
+    "Connect plant care to water, light, and gentle handling"
+  ],
+  "interactionModel": "observe-journal tap stickers to record what changed or what care the sprout needs",
+  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken plant observation; the recap replays the growth story.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "week", "title": "Sprout Diary", "skill": "observe plant growth over time" },
+    { "id": "care", "title": "What Does It Need?", "skill": "match plant cues to care needs" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

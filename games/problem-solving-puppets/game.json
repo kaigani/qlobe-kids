@@ -1,0 +1,33 @@
+{
+  "id": "problem-solving-puppets",
+  "title": "Problem-Solving Puppets",
+  "category": "social-emotional",
+  "path": "games/problem-solving-puppets/",
+  "icon": "🤝",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "A conflict repair game where kids help puppet friends share, take turns, use words, ask for help, and name mid-conflict feelings.",
+  "learningGoals": [
+    "Practice peaceful repair strategies for common classroom conflicts",
+    "Name feelings during a conflict before choosing what to do",
+    "Hear modeled words for sharing, turn-taking, apologies, and inclusion"
+  ],
+  "interactionModel": "choose-one tap a large repair strategy or feeling card after a performed spoken puppet scene",
+  "feedbackModel": "Constructive repair choices sparkle with spoken modeling; feeling misses wiggle gently and replay the scene.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "peace", "title": "Make Peace", "skill": "choosing conflict repair strategies" },
+    { "id": "feelings", "title": "How Do They Feel?", "skill": "naming feelings during conflict" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder puppet props and shared character portraits. Built with Codex for QLOBE Kids.",
+  "characters": ["maya", "leo", "nia", "sam", "ravi"],
+  "conceptVideo": null
+}

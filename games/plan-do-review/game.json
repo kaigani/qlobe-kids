@@ -1,0 +1,33 @@
+{
+  "id": "plan-do-review",
+  "title": "Plan-Do-Review",
+  "category": "social-emotional",
+  "path": "games/plan-do-review/",
+  "icon": "📋",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f4a83d",
+  "description": "A kid-size HighScope loop where children choose a plan, are sent to do it in the real room, and reflect on how it went.",
+  "learningGoals": [
+    "Connect intention, action, and reflection",
+    "Practice naming a plan before starting work",
+    "Affirm that review can include joy, okay feelings, or trickiness"
+  ],
+  "interactionModel": "choose-one tap an all-valid plan, action, review, or tell-someone card after a spoken prompt",
+  "feedbackModel": "Every card is accepted, sparkles, and plays an affirming spoken reflection line.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "loop", "title": "Plan It, Do It!", "skill": "intention action reflection loop" },
+    { "id": "tomorrow", "title": "Plan for Tomorrow", "skill": "future planning and sharing a plan" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Emoji placeholder planning cards and shared character portraits. Built with Codex for QLOBE Kids.",
+  "characters": ["maya"],
+  "conceptVideo": null
+}

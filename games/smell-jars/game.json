@@ -1,0 +1,32 @@
+{
+  "id": "smell-jars",
+  "title": "Smell Jars",
+  "category": "sensorial-science",
+  "path": "games/smell-jars/",
+  "icon": "👃",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#ffd166",
+  "description": "A grown-up-assisted smell journal where the tablet admits it cannot smell, and kids stamp real kitchen smell guesses and preferences.",
+  "learningGoals": [
+    "Build smell vocabulary through real sensory experiences",
+    "Practice sniffing gently and comparing sensory clues",
+    "Affirm that smell likes and dislikes are personal"
+  ],
+  "interactionModel": "observe-journal tap stickers to record smell guesses, reveal reactions, and like-meter feelings",
+  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken smell note; the recap reads the smell journal back.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "sniff", "title": "Be the Nose", "skill": "connect real smells to vocabulary and preference" },
+    { "id": "guess", "title": "Sniff and Guess", "skill": "make and revise sensory guesses" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
