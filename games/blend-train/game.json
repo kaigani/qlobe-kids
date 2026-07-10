@@ -1,0 +1,35 @@
+{
+  "id": "blend-train",
+  "title": "Blend Train",
+  "category": "reading-phonics",
+  "path": "games/blend-train/",
+  "icon": "🚂",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A phonics build game where kids couple onset and rime train cars to hear a word blend.",
+  "learningGoals": [
+    "Practice onset-rime blending",
+    "Hear how sound parts combine into CVC words",
+    "Use tap-tap or drag placement to build words without required reading"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap sound cars into track positions",
+  "feedbackModel": "Correct cars pop, sparkle, and speak their sound; misses wiggle gently with a spoken nudge and retry. Finished trains speak the slow blend and word.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/letter-tiles/",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "couple", "title": "Couple the Cars", "skill": "onset-rime blending with two sound parts" },
+    { "id": "three", "title": "Three-Car Trains", "skill": "onset-rime blending connected to a whole-word card" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; shared QLOBE Kids letter-tile art and placeholder text cards. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

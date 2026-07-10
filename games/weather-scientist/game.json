@@ -1,0 +1,32 @@
+{
+  "id": "weather-scientist",
+  "title": "Weather Scientist",
+  "category": "sensorial-science",
+  "path": "games/weather-scientist/",
+  "icon": "🌦️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A daily weather journal where kids look out a real window, then stamp the sky, air feel, wind, and weather clothes.",
+  "learningGoals": [
+    "Practice observing real weather",
+    "Build weather vocabulary for sky, temperature feel, and wind",
+    "Record simple data in a playful journal"
+  ],
+  "interactionModel": "observe-journal tap stickers to record weather observations",
+  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken observation line; the recap reads the weather report back.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "today", "title": "Today's Weather", "skill": "weather observation and recording" },
+    { "id": "dress", "title": "What to Wear?", "skill": "connect clothing choices to weather conditions" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

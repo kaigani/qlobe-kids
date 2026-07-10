@@ -50,9 +50,20 @@ export function artEl(ref, alt = '') {
     else span.setAttribute('aria-hidden', 'true');
     return span;
   }
+  const url = artUrl(ref);
+  if (!url) {
+    // Unknown/unprefixed ref (e.g. a raw emoji like '🌦️'): render it as emoji
+    // text rather than a broken <img src="null"> — graceful for every engine.
+    const span = document.createElement('span');
+    span.className = 'qk-art qk-art-emoji';
+    span.textContent = ref.includes(':') ? ref.slice(ref.indexOf(':') + 1) : ref;
+    if (alt) { span.setAttribute('role', 'img'); span.setAttribute('aria-label', alt); }
+    else span.setAttribute('aria-hidden', 'true');
+    return span;
+  }
   const img = document.createElement('img');
   img.className = 'qk-art qk-art-img';
-  img.src = artUrl(ref);
+  img.src = url;
   img.alt = alt;
   img.draggable = false;
   img.decoding = 'async';
