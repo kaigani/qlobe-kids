@@ -1,0 +1,32 @@
+{
+  "id": "chalkboard-big-strokes",
+  "title": "Chalkboard Big Strokes",
+  "category": "writing-fine-motor",
+  "path": "games/chalkboard-big-strokes/",
+  "icon": "🖍️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#4d8068",
+  "description": "A chalkboard tracing gym for big pre-writing loops, lines, waves, zigzags, crosses, and slants.",
+  "learningGoals": [
+    "Practice large-arm pre-writing strokes",
+    "Build control across loops, waves, lines, and zigzags",
+    "Introduce two-part stroke sequencing with cross, T, and X paths"
+  ],
+  "interactionModel": "trace-path finger tracing of single-stroke and multi-stroke chalkboard paths",
+  "feedbackModel": "Completed strokes get sparkle/pop SFX and spoken cheers; wandering off the line triggers a gentle nudge and retry.",
+  "uses": [
+    "shared/js/engines/trace-path.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "strokes", "title": "Big Strokes", "skill": "large pre-writing stroke control" },
+    { "id": "double", "title": "Two-Part Strokes", "skill": "multi-stroke sequencing for crosses and slants" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

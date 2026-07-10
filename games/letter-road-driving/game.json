@@ -1,0 +1,32 @@
+{
+  "id": "letter-road-driving",
+  "title": "Letter Road Driving",
+  "category": "writing-fine-motor",
+  "path": "games/letter-road-driving/",
+  "icon": "🚗",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#8b8f98",
+  "description": "A playful tracing game where each letter becomes a road for a little car to drive.",
+  "learningGoals": [
+    "Explore letter shapes through movement and direction",
+    "Practice crisp straight-road letter forms",
+    "Practice curved-road letter forms with playful racing feedback"
+  ],
+  "interactionModel": "trace-path finger tracing with car emoji travelers on letter-shaped roads",
+  "feedbackModel": "Successful drives get car-themed spoken cheers with sparkle/pop SFX; off-road tracing gets a gentle spoken steering nudge.",
+  "uses": [
+    "shared/js/engines/trace-path.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "roads", "title": "Letter Roads", "skill": "straight and angled uppercase letter shapes" },
+    { "id": "race", "title": "Curvy Roads", "skill": "curved uppercase letter shapes" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

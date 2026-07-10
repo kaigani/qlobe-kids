@@ -185,7 +185,7 @@ class TracePathGame {
     this.screen = 'play';
     this.roundIndex = 0;
 
-    const paths = mode.shuffle === false ? mode.paths.slice() : shuffle(mode.paths.slice(), this.rng);
+    const paths = mode.shuffle ? shuffle(mode.paths.slice(), this.rng) : mode.paths.slice();
     const maxRounds = Math.min(mode.rounds || paths.length, paths.length);
     this.roundPaths = paths.slice(0, maxRounds);
     this.roundsTotal = this.roundPaths.length;
@@ -323,7 +323,7 @@ class TracePathGame {
     else node.type = 'button';
     node.setAttribute('aria-label', label);
     node.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
+      if (!href) e.preventDefault();
       e.stopPropagation();
       this.unlockAudio();
       this.playSfx('tick');
@@ -332,7 +332,7 @@ class TracePathGame {
   }
 
   handleStagePointerDown(e) {
-    if (this.destroyed || !this.awaitingInput || this.inputLocked || this.activeTrace) return;
+    if (!this.hasActiveIncompletePath() || this.activeTrace) return;
     if (e.isPrimary === false) return;
     e.preventDefault();
     this.unlockAudio();
@@ -357,6 +357,10 @@ class TracePathGame {
   handleWindowMove(e) {
     const trace = this.activeTrace;
     if (!trace || e.pointerId !== trace.pointerId) return;
+    if (!this.hasActiveIncompletePath()) {
+      this.cancelTrace();
+      return;
+    }
     e.preventDefault();
     trace.moved = true;
     this.applyTracePoint({ x: e.clientX, y: e.clientY });
@@ -365,6 +369,10 @@ class TracePathGame {
   handleWindowUp(e) {
     const trace = this.activeTrace;
     if (!trace || e.pointerId !== trace.pointerId) return;
+    if (!this.hasActiveIncompletePath()) {
+      this.cancelTrace();
+      return;
+    }
     e.preventDefault();
     this.cancelTrace();
     if (this.awaitingInput) this.scheduleIdlePrompt();
@@ -373,6 +381,10 @@ class TracePathGame {
   handleWindowCancel(e) {
     const trace = this.activeTrace;
     if (!trace || e.pointerId !== trace.pointerId) return;
+    if (!this.hasActiveIncompletePath()) {
+      this.cancelTrace();
+      return;
+    }
     e.preventDefault();
     this.cancelTrace();
     if (this.awaitingInput) this.scheduleIdlePrompt();
@@ -393,24 +405,26 @@ class TracePathGame {
   }
 
   applyTracePoint(point) {
-    if (!this.awaitingInput || this.inputLocked || !this.strokesScreen.length) return false;
-    const stroke = this.strokesScreen[this.strokeIndex];
-    if (!stroke || !stroke.points.length) return false;
+    if (!this.hasActiveIncompletePath() || !point) return false;
+    const stroke = this.currentScreenStroke();
 
     const current = this.strokeProgress[this.strokeIndex] || { index: 0, ratio: 0 };
-    const start = Math.max(0, current.index - SEARCH_BACK);
-    const end = Math.min(stroke.points.length - 1, current.index + SEARCH_AHEAD);
-    let bestIndex = current.index;
+    const currentIndex = Math.min(Math.max(0, Number(current.index) || 0), stroke.points.length - 1);
+    const start = Math.max(0, currentIndex - SEARCH_BACK);
+    const end = Math.min(stroke.points.length - 1, currentIndex + SEARCH_AHEAD);
+    let bestIndex = currentIndex;
     let bestDistance = Infinity;
 
     for (let i = start; i <= end; i++) {
       const candidate = stroke.points[i];
+      if (!candidate) continue;
       const distance = Math.hypot(point.x - candidate.x, point.y - candidate.y);
       if (distance < bestDistance) {
         bestDistance = distance;
         bestIndex = i;
       }
     }
+    if (!Number.isFinite(bestDistance)) return false;
 
     const tolerance = this.mode.tolerance || this.config.tolerance;
     if (bestDistance > tolerance) {
@@ -423,7 +437,7 @@ class TracePathGame {
     if (field) field.classList.add('is-tracing');
     if (field) field.classList.remove('is-wandering');
 
-    if (bestIndex > current.index) {
+    if (bestIndex > currentIndex) {
       const ratio = stroke.totalLength > 0 ? stroke.lengths[bestIndex] / stroke.totalLength : 1;
       this.strokeProgress[this.strokeIndex] = { index: bestIndex, ratio };
       this.updateStrokeFill(this.strokeIndex);
@@ -451,8 +465,8 @@ class TracePathGame {
   }
 
   async completeStroke() {
-    if (!this.awaitingInput || this.inputLocked) return;
-    const stroke = this.strokesScreen[this.strokeIndex];
+    if (!this.hasActiveIncompletePath()) return;
+    const stroke = this.currentScreenStroke();
     if (stroke) {
       this.strokeProgress[this.strokeIndex] = { index: stroke.points.length - 1, ratio: 1 };
       this.updateStrokeFill(this.strokeIndex);
@@ -478,6 +492,7 @@ class TracePathGame {
     this.clearWanderTimer();
     this.cancelDemo();
     this.removeTraceListeners();
+    this.activeTrace = null;
     this.playSfx('sparkle');
     this.playSfx('pop');
 
@@ -660,7 +675,7 @@ class TracePathGame {
   playDemo() {
     if (this.reducedMotion()) return;
     const points = this.tracePoints();
-    if (points.length < 2) return;
+    if (!points || points.length < 2) return;
     const dot = this.mountEl.querySelector('.qk-trace-demo-dot');
     const field = this.mountEl.querySelector('.qk-trace-field');
     if (!dot || !field) return;
@@ -670,13 +685,25 @@ class TracePathGame {
     dot.hidden = false;
 
     const step = (now) => {
+      if (!points || points.length === 0) {
+        dot.hidden = true;
+        this.demoFrame = 0;
+        return;
+      }
       if (this.destroyed || this.screen !== 'play' || this.inputLocked) {
         dot.hidden = true;
+        this.demoFrame = 0;
         return;
       }
       const t = Math.min(1, (now - started) / duration);
       const index = Math.min(points.length - 1, Math.floor(t * (points.length - 1)));
       const point = points[index];
+      // the projected point list can be sparse/mid-rebuild during a round
+      // transition — a missing sample must never crash the demo animation
+      if (!point || typeof point.x !== 'number') {
+        this.demoFrame = window.requestAnimationFrame(step);
+        return;
+      }
       dot.style.left = `${point.x - rect.left}px`;
       dot.style.top = `${point.y - rect.top}px`;
       if (t >= 1) {
@@ -728,13 +755,25 @@ class TracePathGame {
   }
 
   isNearCurrentStart(x, y) {
-    const stroke = this.strokesScreen[this.strokeIndex];
+    const stroke = this.currentScreenStroke();
     const point = stroke && stroke.points[0];
     return point ? Math.hypot(x - point.x, y - point.y) <= TARGET_SIZE / 2 : false;
   }
 
+  hasActiveIncompletePath() {
+    if (this.destroyed || this.screen !== 'play' || !this.awaitingInput || this.inputLocked) return false;
+    if (!this.currentPath || !this.currentStrokes.length || !this.strokesScreen.length) return false;
+    return Boolean(this.currentScreenStroke());
+  }
+
+  currentScreenStroke() {
+    const stroke = this.strokesScreen[this.strokeIndex];
+    if (!stroke || !Array.isArray(stroke.points) || !stroke.points.length) return null;
+    return stroke;
+  }
+
   currentPrompt() {
-    return (this.currentPath && (this.currentPath.prompt || this.currentPath.name)) || this.mode.prompt || this.config.voice.intro;
+    return (this.currentPath && this.currentPath.prompt) || this.mode.prompt || this.config.voice.intro || (this.currentPath && this.currentPath.name);
   }
 
   getState() {
@@ -774,6 +813,7 @@ class TracePathGame {
 
   async winRound() {
     if (this.screen !== 'play' || this.destroyed || !this.awaitingInput) return;
+    const startingRound = this.roundIndex;
     this.clearIdleTimer();
     this.cancelDemo();
     this.clearWanderTimer();
@@ -783,6 +823,7 @@ class TracePathGame {
       this.applyTracePoint(point);
       await wait(this.reducedMotion() ? 1 : 6);
     }
+    await waitUntil(() => this.destroyed || this.screen !== 'play' || this.roundIndex !== startingRound || (this.awaitingInput && !this.inputLocked), 3000);
   }
 
   tracePoints() {
@@ -869,7 +910,7 @@ function normalizeMode(mode = {}, config = {}) {
     rounds: Math.min(mode.rounds || paths.length, paths.length),
     traveler: normalizeArtRef(mode.traveler || config.traveler || 'emoji:✏️'),
     strokeColor: mode.strokeColor || config.strokeColor || '#e8734a',
-    startMarker: mode.startMarker || '⭐',
+    startMarker: mode.startMarker || config.startMarker || '⭐',
     tolerance: Math.max(48, Number(mode.tolerance || config.tolerance || 64)),
     paths,
   };
@@ -1032,6 +1073,14 @@ function nextFrame() {
 
 function wait(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function waitUntil(test, timeoutMs) {
+  const started = performance.now();
+  while (!test()) {
+    if (performance.now() - started > timeoutMs) return;
+    await wait(30);
+  }
 }
 
 function el(tag, className, text) {
@@ -1267,10 +1316,10 @@ function installStyle() {
       position: relative;
       align-self: stretch;
       justify-self: center;
-      width: min(92vw, 920px);
+      width: min(92vw, 70dvh, 920px);
+      height: min(92vw, 70dvh, 920px);
       min-height: 0;
       aspect-ratio: 1;
-      max-height: min(70dvh, 920px);
       border-radius: 8px;
       touch-action: none;
     }
@@ -1457,14 +1506,14 @@ function installStyle() {
       .qk-trace-hud { min-height: 92px; }
       .qk-trace-field {
         width: min(76vw, 82dvh);
-        max-height: 82dvh;
+        height: min(76vw, 82dvh);
       }
       .qk-trace-prompt { font-size: clamp(22px, 5vh, 34px); min-height: 34px; }
     }
 
     @media (max-width: 560px) {
       .qk-trace-start { width: 96px; height: 96px; margin-left: -48px; margin-top: -48px; }
-      .qk-trace-field { width: 94vw; max-height: 68dvh; }
+      .qk-trace-field { width: min(94vw, 68dvh); height: min(94vw, 68dvh); }
       .qk-trace-traveler { width: 76px; height: 76px; margin-left: -38px; margin-top: -38px; --qk-art-size: 50px; }
     }
 
