@@ -1,0 +1,32 @@
+{
+  "id": "song-story-remix",
+  "title": "Song Story Remix",
+  "category": "art-music",
+  "path": "games/song-story-remix/",
+  "icon": "🎤",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#ffad7a",
+  "description": "A song-story remix game where kids choose silly animals and bus riders for familiar tune prompts.",
+  "learningGoals": [
+    "Play with verse structure in familiar songs",
+    "Match sound words to animals and characters",
+    "Practice rhythm and call-and-response listening"
+  ],
+  "interactionModel": "choose-one tap cards after a spoken prompt",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "farm", "title": "Remix the Farm", "skill": "song verse and animal sound play" },
+    { "id": "bus", "title": "Remix the Bus", "skill": "song verse and rider sound play" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

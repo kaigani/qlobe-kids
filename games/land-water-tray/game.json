@@ -1,0 +1,33 @@
+{
+  "id": "land-water-tray",
+  "title": "Land & Water Tray",
+  "category": "culture-geography",
+  "path": "games/land-water-tray/",
+  "icon": "🏝️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A Montessori landform tray game where kids place land and water pieces to make island, lake, peninsula, and bay forms.",
+  "learningGoals": [
+    "Recognize land and water as contrasting parts",
+    "Build simple landforms from spatial arrangements",
+    "Hear concise definitions for island, lake, peninsula, and bay"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap land and water tiles onto tray ghost positions",
+  "feedbackModel": "Correct land or water tiles pop, sparkle, and speak the part name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the landform definition.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "forms", "title": "Make the Landform", "skill": "landform concepts from land and water arrangements" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; placeholder emoji land and water tiles rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

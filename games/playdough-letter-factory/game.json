@@ -1,0 +1,34 @@
+{
+  "id": "playdough-letter-factory",
+  "title": "Playdough Letter Factory",
+  "category": "writing-fine-motor",
+  "path": "games/playdough-letter-factory/",
+  "icon": "🟣",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#8f5bd7",
+  "description": "A squishy build game where kids place playdough-like parts onto ghost spots to construct letters and numbers.",
+  "learningGoals": [
+    "Notice letters and numbers as parts made from strokes",
+    "Practice ordered part placement",
+    "Connect spoken construction language with visual forms"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap dough pieces onto ghost positions",
+  "feedbackModel": "Correct dough pieces pop, sparkle, and speak the stroke name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the completed letter or number.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "letters", "title": "Squish a Letter", "skill": "letter construction from stroke parts" },
+    { "id": "numbers", "title": "Squish a Number", "skill": "number construction from stroke parts" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; placeholder emoji and text-symbol dough pieces rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

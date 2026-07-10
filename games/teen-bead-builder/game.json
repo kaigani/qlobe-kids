@@ -1,0 +1,33 @@
+{
+  "id": "teen-bead-builder",
+  "title": "Teen Bead Builder",
+  "category": "math-number-sense",
+  "path": "games/teen-bead-builder/",
+  "icon": "🔟",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f4c53d",
+  "description": "A Montessori-inspired teen board game where kids combine a ten bar, unit beads, and a numeral card.",
+  "learningGoals": [
+    "See teen numbers as ten plus extra ones",
+    "Connect golden bead quantities with teen numerals",
+    "Hear teen number names after building each quantity"
+  ],
+  "interactionModel": "build-assemble drag or tap-tap ten bar, unit beads, and numeral card onto ghost positions",
+  "feedbackModel": "Correct pieces pop, sparkle, and speak their role; misses wiggle gently with a spoken nudge and retry. Finished builds speak the ten-plus-ones sentence.",
+  "uses": [
+    "shared/js/engines/build-assemble.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "teens", "title": "Build a Teen", "skill": "teen numbers as ten plus ones" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; placeholder emoji bead and text card art rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

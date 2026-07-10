@@ -1,0 +1,32 @@
+{
+  "id": "world-music-dance",
+  "title": "World Music Dance",
+  "category": "culture-geography",
+  "path": "games/world-music-dance/",
+  "icon": "💃",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A world music curiosity game where kids match musical clues to place cards and dance moves.",
+  "learningGoals": [
+    "Notice that music styles can come from different places",
+    "Connect simple music clues with broad place symbols",
+    "Move safely to rhythm words like stomp, sway, spin, and bounce"
+  ],
+  "interactionModel": "choose-one tap cards after a spoken prompt",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "listen", "title": "Where's That Music?", "skill": "music-place awareness" },
+    { "id": "dance", "title": "Dance Along", "skill": "rhythm vocabulary and movement matching" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

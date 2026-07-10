@@ -1,0 +1,32 @@
+{
+  "id": "mountain-seasons-wheel",
+  "title": "Mountain Seasons Wheel",
+  "category": "culture-geography",
+  "path": "games/mountain-seasons-wheel/",
+  "icon": "🏔️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "A seasons game where kids match mountain weather, clothing, and nature clues using the choose-one engine.",
+  "learningGoals": [
+    "Recognize winter, spring, summer, and autumn clues",
+    "Connect seasonal weather with clothing choices",
+    "Sort nature and activity symbols by season"
+  ],
+  "interactionModel": "choose-one tap cards after a spoken prompt",
+  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "uses": [
+    "shared/js/engines/choose-one.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "wheel", "title": "What Season?", "skill": "seasonal nature and activity matching" },
+    { "id": "dress", "title": "Dress for It", "skill": "seasonal clothing and weather matching" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}
