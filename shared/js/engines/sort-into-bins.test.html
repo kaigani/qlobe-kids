@@ -29,7 +29,7 @@
   <script type="module">
     import { createGame } from './sort-into-bins.js';
 
-    createGame({
+    const fixture = {
       id: 'sort-into-bins-test',
       engine: 'sort-into-bins',
       title: 'Basket Sort',
@@ -68,7 +68,45 @@
           { art: 'emoji:🍦', say: 'ice cream', bin: 'treat' },
         ],
       }],
-    }, document.getElementById('app'));
+    };
+
+    // Pass ?config=../../../games/<id>/config.js to exercise a consuming game
+    // without copying its data here. ?qa=1 runs the public debug contract and
+    // leaves a machine-readable result on <body> for a headless smoke test.
+    const params = new URLSearchParams(location.search);
+    const configUrl = params.get('config');
+    const localConfig = /^\.\.\/\.\.\/\.\.\/games\/[a-z0-9-]+\/config\.js$/.test(configUrl || '');
+    const config = localConfig ? (await import(configUrl)).default : fixture;
+    createGame(config, document.getElementById('app'));
+
+    if (params.get('qa') === '1') {
+      try {
+        const debug = window.QLOBE_DEBUG;
+        await debug.ready;
+        debug.mute();
+        debug.seed(27);
+        const mode = debug.listModes()[0];
+        await debug.startMode(mode.id);
+
+        const initial = debug.getTargets();
+        const item = initial.find((target) => target.id === 'item:current');
+        const wrong = initial.find((target) => target.role === 'wrong');
+        if (!item || !wrong) throw new Error('missing item or wrong-bin target');
+        await debug.tap(item.id);
+        const wrongResult = await debug.tap(wrong.id);
+        if (!wrongResult.accepted || !debug.getState().awaitingInput) {
+          throw new Error('wrong-bin retry did not return to input');
+        }
+
+        while (debug.getState().screen === 'play') await debug.winRound();
+        if (debug.getState().screen !== 'end') throw new Error('winRound did not reach end');
+        document.body.dataset.qa = 'passed';
+      } catch (error) {
+        document.body.dataset.qa = 'failed';
+        document.body.dataset.qaError = error && error.message ? error.message : String(error);
+        console.error(error);
+      }
+    }
   </script>
 </body>
 </html>
