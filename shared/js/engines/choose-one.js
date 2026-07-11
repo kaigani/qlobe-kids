@@ -1,10 +1,12 @@
-// choose-one.js — archetype engine for "hear/see a prompt, tap one answer".
-// The game author supplies only config data; this module owns the full loop,
-// touch handling, warm feedback, and the required QLOBE_DEBUG hook.
+// choose-one.js — Stage v2 archetype for "hear/see a prompt, tap one answer".
+// DOM owns the familiar chrome; Pixi owns the playful prompt and answer field.
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
-import { artEl } from './art.js';
+import { createStage } from '../stage/stage.js';
+import { to, ease, popIn, wiggle, sway } from '../stage/tween.js';
+import { burst, sparkle } from '../stage/particles.js';
+import { artObj, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -13,6 +15,9 @@ const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
+const ANSWER_SIZE = 180;
+const PROMPT_SIZE = 166;
+const CARD_COLORS = [0xfff8e8, 0xe9fff1, 0xfff0e6, 0xeef1ff];
 
 let styleInstalled = false;
 let debugOwner = 0;
@@ -52,6 +57,17 @@ class ChooseOneGame {
     this.rng = Math.random;
     this.fxRng = Math.random;
 
+    this.stage = null;
+    this.scene = null;
+    this.promptView = null;
+    this.answerViews = [];
+    this.removeResize = null;
+    this.stopPromptSway = null;
+    this.stageGeneration = 0;
+    this.roundGeneration = 0;
+    this.pendingDelays = new Set();
+    this.activeTweens = new Set();
+
     this.onFirstPointer = () => this.unlockAudio();
     this.onContextMenu = (e) => e.preventDefault();
     this.onGestureStart = (e) => e.preventDefault();
@@ -65,8 +81,10 @@ class ChooseOneGame {
   }
 
   destroy() {
+    if (this.destroyed) return;
     this.destroyed = true;
     this.clearIdleTimer();
+    this.disposeStage();
     speech.stop();
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
@@ -106,6 +124,7 @@ class ChooseOneGame {
 
   renderSplash() {
     this.clearIdleTimer();
+    this.disposeStage();
     this.screen = 'splash';
     this.mode = null;
     this.awaitingInput = false;
@@ -150,6 +169,7 @@ class ChooseOneGame {
     if (!mode) return;
 
     this.clearIdleTimer();
+    this.disposeStage();
     speech.stop();
     this.mode = mode;
     this.screen = 'play';
@@ -164,6 +184,8 @@ class ChooseOneGame {
       await this.finishGame();
       return;
     }
+    const stageReady = await this.createPlayStage();
+    if (!stageReady) return;
     await this.showRound(0);
   }
 
@@ -179,8 +201,7 @@ class ChooseOneGame {
           <div class="qk-choose-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-choose-stage">
-          <button class="qk-choose-prompt" type="button" hidden></button>
-          <div class="qk-choose-answers" aria-live="polite"></div>
+          <div class="qk-choose-canvas" aria-label="${escapeAttr(this.mode.title)}"></div>
         </main>
         <button class="qk-choose-sound qk-choose-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
@@ -191,84 +212,204 @@ class ChooseOneGame {
     sound.addEventListener('click', () => this.replayPromptFromHud());
   }
 
+  async createPlayStage() {
+    const host = this.mountEl.querySelector('.qk-choose-canvas');
+    if (!host) return false;
+    const generation = ++this.stageGeneration;
+    const stage = await createStage(host);
+    if (this.destroyed || this.screen !== 'play' || generation !== this.stageGeneration) {
+      stage.destroy();
+      return false;
+    }
+    this.stage = stage;
+    const scene = new stage.PIXI.Container();
+    this.scene = scene;
+    stage.setScene(scene);
+    this.removeResize = stage.onResize(() => this.layoutField());
+    return true;
+  }
+
+  disposeStage() {
+    this.stageGeneration += 1;
+    this.roundGeneration += 1;
+    this.stopSway();
+    this.cancelTweens();
+    this.clearDelays();
+    if (this.removeResize) this.removeResize();
+    this.removeResize = null;
+    if (this.stage) this.stage.destroy();
+    this.stage = null;
+    this.scene = null;
+    this.promptView = null;
+    this.answerViews = [];
+  }
+
   async showRound(index) {
-    if (this.destroyed || this.screen !== 'play') return;
+    if (this.destroyed || this.screen !== 'play' || !this.stage) return;
     this.clearIdleTimer();
+    this.stopSway();
+    this.cancelTweens();
     this.roundIndex = index;
     this.currentItem = this.roundItems[index];
     this.currentAnswers = this.pickAnswers(this.currentItem);
     this.targetMap.clear();
     this.targetSeq = 0;
-    this.awaitingInput = true;
-    this.inputLocked = false;
+    this.awaitingInput = false;
+    this.inputLocked = true;
     this.idlePrompted = false;
+    this.promptView = null;
+    this.answerViews = [];
+    const generation = ++this.roundGeneration;
 
     this.updateDots();
-    this.renderPrompt();
-    this.renderAnswers();
+    const scene = new this.stage.PIXI.Container();
+    this.scene = scene;
+    this.stage.setScene(scene);
+    await this.buildRoundViews(generation);
+    if (!this.roundIsCurrent(generation)) return;
+    this.layoutField();
+    const { w } = this.stage.size();
+    if (!this.reducedMotion()) {
+      scene.x = Math.min(72, w * 0.08);
+      scene.alpha = 0.65;
+    }
+    await Promise.all([
+      this.popRoundIn(generation),
+      this.runTween(to(scene, { x: 0, alpha: 1 }, { ms: 360, easing: ease.outCubic })),
+    ]);
+    if (!this.roundIsCurrent(generation)) return;
+    this.awaitingInput = true;
+    this.inputLocked = false;
+    if (this.promptView) this.stopPromptSway = sway(this.promptView.motion, { amount: 0.018, ms: 2300 });
     this.speakLine(this.currentItem.say);
     this.scheduleIdlePrompt();
   }
 
-  renderPrompt() {
-    const promptButton = this.mountEl.querySelector('.qk-choose-prompt');
-    promptButton.innerHTML = '';
-    if (!this.currentItem.promptArt) {
-      promptButton.hidden = true;
+  async buildRoundViews(generation) {
+    const tasks = [];
+    if (this.currentItem.promptArt) tasks.push(this.buildPromptView(this.nextTargetId('prompt'), generation));
+    this.currentAnswers.forEach((answer, index) => tasks.push(
+      this.buildAnswerView(answer, index, this.nextTargetId('answer'), generation),
+    ));
+    await Promise.all(tasks);
+  }
+
+  async buildPromptView(id, generation) {
+    const { PIXI } = this.stage;
+    const art = await artObj(PIXI, this.currentItem.promptArt, 116, this.currentItem.promptAlt || '');
+    if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return; }
+    const view = this.makeCardView(PROMPT_SIZE, 0xe7f7ff, art, this.currentItem.promptAlt || '', false);
+    view.on('pointerdown', (event) => {
+      if (event && event.preventDefault) event.preventDefault();
+      this.unlockAudio();
+      this.tapTarget(id);
+    });
+    const target = { id, role: 'neutral', type: 'prompt', view, motion: view.motion, size: PROMPT_SIZE, action: () => this.replayPrompt() };
+    this.promptView = target;
+    this.targetMap.set(id, target);
+    this.scene.addChild(view);
+  }
+
+  async buildAnswerView(answer, index, id, generation) {
+    const { PIXI } = this.stage;
+    const art = await artObj(PIXI, answer.art, 126, answer.alt || '');
+    if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return; }
+    const view = this.makeCardView(ANSWER_SIZE, CARD_COLORS[index % CARD_COLORS.length], art, answer.alt || '', true);
+    view.on('pointerdown', (event) => {
+      if (event && event.preventDefault) event.preventDefault();
+      this.unlockAudio();
+      this.tapTarget(id);
+    });
+    const target = {
+      id, role: answer.correct ? 'correct' : 'wrong', type: 'answer', answer,
+      view, motion: view.motion, size: ANSWER_SIZE, action: () => this.handleAnswer(id),
+    };
+    this.answerViews[index] = target;
+    this.targetMap.set(id, target);
+    this.scene.addChild(view);
+  }
+
+  makeCardView(size, fill, art, alt, answerCard) {
+    const { PIXI } = this.stage;
+    const view = new PIXI.Container();
+    const motion = new PIXI.Container();
+    const shadow = new PIXI.Graphics();
+    shadow.roundRect(-size / 2, -size / 2 + 8, size, size, 25).fill({ color: 0x17517e, alpha: 0.17 });
+    const backing = cardBacking(PIXI, size, size, { fill, stroke: 0xffffff, strokeWidth: answerCard ? 6 : 5, radius: 25 });
+    motion.addChild(shadow, backing, art);
+    view.addChild(motion);
+    view.motion = motion;
+    view.hitArea = new PIXI.Rectangle(-size / 2, -size / 2, size, size);
+    view.eventMode = 'static';
+    view.cursor = 'pointer';
+    view.accessible = true;
+    view.accessibleType = 'button';
+    view.accessibleTitle = alt;
+    motion.scale.set(0.01);
+    return view;
+  }
+
+  async popRoundIn(generation) {
+    if (this.promptView) await this.runTween(popIn(this.promptView.motion, 330));
+    await Promise.all(this.answerViews.filter(Boolean).map(async (target, index) => {
+      await this.delay(this.reducedMotion() ? 0 : index * 65);
+      if (!this.roundIsCurrent(generation)) return;
+      await this.runTween(popIn(target.motion, 340));
+    }));
+  }
+
+  layoutField() {
+    if (!this.stage || !this.scene || !this.answerViews.length) return;
+    const { w, h } = this.stage.size();
+    if (!w || !h) return;
+    const answers = this.answerViews.filter(Boolean);
+    const count = answers.length;
+    const portrait = h >= w;
+    const pad = Math.max(8, Math.min(22, Math.min(w, h) * 0.025));
+    const gap = Math.max(10, Math.min(24, Math.min(w, h) * 0.025));
+    const hasPrompt = Boolean(this.promptView);
+
+    if (!portrait && hasPrompt) {
+      const promptArea = Math.min(w * 0.25, 220);
+      const columns = Math.min(count, 4);
+      const rows = Math.ceil(count / columns);
+      const availableW = w - promptArea - pad * 3;
+      const fitW = (availableW - gap * (columns - 1)) / columns;
+      const fitH = (h - pad * 2 - gap * (rows - 1)) / rows;
+      const size = Math.max(96, Math.min(205, fitW, fitH));
+      this.promptView.view.position.set(pad + promptArea / 2, h / 2);
+      this.promptView.view.scale.set(Math.min(1.1, promptArea / PROMPT_SIZE, (h - pad * 2) / PROMPT_SIZE));
+      this.placeGrid(answers, promptArea + pad * 2, 0, availableW, h, columns, size, gap);
       return;
     }
 
-    promptButton.hidden = false;
-    promptButton.appendChild(artEl(this.currentItem.promptArt, this.currentItem.promptAlt || ''));
-    const id = this.nextTargetId('prompt');
-    promptButton.dataset.targetId = id;
-    this.targetMap.set(id, {
-      id,
-      role: 'neutral',
-      type: 'prompt',
-      el: promptButton,
-      action: () => this.replayPrompt(),
-    });
-
-    promptButton.onpointerdown = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.unlockAudio();
-      this.tapTarget(id);
-    };
+    const promptH = hasPrompt ? Math.min(190, Math.max(106, h * 0.27)) : 0;
+    if (hasPrompt) {
+      this.promptView.view.position.set(w / 2, pad + promptH / 2);
+      this.promptView.view.scale.set(Math.min(1, (promptH - gap) / PROMPT_SIZE, (w - pad * 2) / PROMPT_SIZE));
+    }
+    const top = hasPrompt ? promptH + pad : 0;
+    const areaH = h - top;
+    const columns = count <= 2 ? count : 2;
+    const rows = Math.ceil(count / columns);
+    const fitW = (w - pad * 2 - gap * (columns - 1)) / columns;
+    const fitH = (areaH - pad * 2 - gap * (rows - 1)) / rows;
+    const size = Math.max(96, Math.min(205, fitW, fitH));
+    this.placeGrid(answers, 0, top, w, areaH, columns, size, gap);
   }
 
-  renderAnswers() {
-    const answersEl = this.mountEl.querySelector('.qk-choose-answers');
-    answersEl.innerHTML = '';
-    answersEl.style.setProperty('--answer-count', String(this.currentAnswers.length));
-
-    this.currentAnswers.forEach((answer, index) => {
-      const id = this.nextTargetId('answer');
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'qk-choose-card qk-choose-card-enter';
-      button.style.setProperty('--enter-delay', `${index * 70}ms`);
-      button.dataset.targetId = id;
-      button.setAttribute('aria-label', answer.alt || '');
-      button.appendChild(artEl(answer.art, answer.alt || ''));
-      answersEl.appendChild(button);
-
-      this.targetMap.set(id, {
-        id,
-        role: answer.correct ? 'correct' : 'wrong',
-        type: 'answer',
-        answer,
-        el: button,
-        action: () => this.handleAnswer(id),
-      });
-
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.unlockAudio();
-        this.tapTarget(id);
-      });
+  placeGrid(targets, left, top, width, height, columns, size, gap) {
+    const rows = Math.ceil(targets.length / columns);
+    const totalH = rows * size + (rows - 1) * gap;
+    const firstY = top + (height - totalH) / 2 + size / 2;
+    targets.forEach((target, index) => {
+      const row = Math.floor(index / columns);
+      const col = index % columns;
+      const rowCount = Math.min(columns, targets.length - row * columns);
+      const totalW = rowCount * size + (rowCount - 1) * gap;
+      const firstX = left + (width - totalW) / 2 + size / 2;
+      target.view.position.set(firstX + col * (size + gap), firstY + row * (size + gap));
+      target.view.scale.set(size / ANSWER_SIZE);
     });
   }
 
@@ -291,6 +432,10 @@ class ChooseOneGame {
   async tapTarget(targetId) {
     const target = this.targetMap.get(targetId);
     if (!target || this.destroyed) return { accepted: false };
+    if (target.type === 'answer' && this.awaitingInput && !this.inputLocked && target.motion) {
+      target.motion.scale.set(1.06);
+      target.motion.y = -5;
+    }
     await target.action();
     return { accepted: true };
   }
@@ -310,10 +455,18 @@ class ChooseOneGame {
   async handleCorrect(target) {
     this.inputLocked = true;
     this.awaitingInput = false;
+    this.stopSway();
     this.playSfx('pop');
     this.playSfx('sparkle');
-    animateOnce(target.el, 'qk-choose-bounce');
-    this.createBurst(target.el, 18);
+
+    // Success is layered but short: bounce, sparkle, quiet the distractors,
+    // then let the chosen card take one happy hop before the round changes.
+    const others = this.answerViews.filter((entry) => entry && entry !== target);
+    await Promise.all([
+      this.bounceCard(target),
+      sparkle(this.stage.PIXI, this.scene, target.view.x, target.view.y),
+      ...others.map((entry) => this.runTween(to(entry.view, { alpha: 0.42 }, { ms: 220, easing: ease.outCubic }))),
+    ]);
 
     const yums = this.config.voice.yums;
     if (yums.length) {
@@ -322,18 +475,45 @@ class ChooseOneGame {
       await this.speakLine(line, true);
     }
 
-    await wait(this.reducedMotion() ? 120 : 650);
+    await this.celebrationHop(target);
+    const { w, h } = this.stage.size();
+    await Promise.all([
+      burst(this.stage.PIXI, this.scene, w / 2, h / 2, { count: 34, power: 7, life: 720 }),
+      this.delay(this.reducedMotion() ? 100 : 500),
+    ]);
+    if (this.destroyed || this.screen !== 'play') return;
     const next = this.roundIndex + 1;
     if (next >= this.roundsTotal) await this.finishGame();
     else await this.showRound(next);
   }
 
   async handleWrong(target) {
+    this.inputLocked = true;
     this.playSfx('boing');
-    animateOnce(target.el, 'qk-choose-wiggle');
-    await this.speakLine(this.config.voice.nudge, true);
-    await this.speakLine(this.currentItem.say, true);
+    await Promise.all([
+      wiggle(target.motion),
+      (async () => {
+        await this.speakLine(this.config.voice.nudge, true);
+        await this.speakLine(this.currentItem.say, true);
+      })(),
+    ]);
+    if (this.destroyed || this.screen !== 'play' || !this.awaitingInput) return;
+    target.motion.y = 0;
+    target.motion.rotation = 0;
+    target.motion.scale.set(1);
+    this.inputLocked = false;
     this.scheduleIdlePrompt();
+  }
+
+  async bounceCard(target) {
+    await this.animateMotion(target, { y: -8, scale: { x: 1.14, y: 1.14 } }, { ms: 150, easing: ease.outBack });
+    await this.animateMotion(target, { y: 0, scale: { x: 0.98, y: 0.98 } }, { ms: 115, easing: ease.outQuad });
+    await this.animateMotion(target, { scale: { x: 1, y: 1 } }, { ms: 130, easing: ease.outBack });
+  }
+
+  async celebrationHop(target) {
+    await this.animateMotion(target, { y: -23, rotation: 0.045, scale: { x: 1.05, y: 1.05 } }, { ms: 170, easing: ease.outCubic });
+    await this.animateMotion(target, { y: 0, rotation: 0, scale: { x: 1, y: 1 } }, { ms: 245, easing: ease.outElastic });
   }
 
   replayPromptFromHud() {
@@ -375,6 +555,7 @@ class ChooseOneGame {
     this.inputLocked = false;
     this.targetMap.clear();
     this.playSfx('tada');
+    this.disposeStage();
     await this.renderEnd();
     this.speakLine(this.config.voice.cheer, true);
   }
@@ -435,7 +616,7 @@ class ChooseOneGame {
     }
 
     host.appendChild(burst);
-    window.setTimeout(() => burst.remove(), 900);
+    this.delay(900).then(() => burst.remove());
   }
 
   getState() {
@@ -449,12 +630,42 @@ class ChooseOneGame {
   }
 
   getTargets() {
-    return Array.from(this.targetMap.values()).map((target) => {
-      const rect = target.el.getBoundingClientRect();
+    if (this.screen !== 'play' || !this.stage) return [];
+    const canvasRect = this.stage.app.canvas.getBoundingClientRect();
+    const stageSize = this.stage.size();
+    const scaleX = stageSize.w ? canvasRect.width / stageSize.w : 1;
+    const scaleY = stageSize.h ? canvasRect.height / stageSize.h : 1;
+    const { PIXI } = this.stage;
+    const targets = Array.from(this.targetMap.values())
+      .filter((target) => target.view)
+      .sort((a, b) => targetSequence(a.id) - targetSequence(b.id));
+    return targets.map((target) => {
+      const half = target.size / 2;
+      const corners = [
+        target.view.toGlobal(new PIXI.Point(-half, -half)),
+        target.view.toGlobal(new PIXI.Point(half, -half)),
+        target.view.toGlobal(new PIXI.Point(half, half)),
+        target.view.toGlobal(new PIXI.Point(-half, half)),
+      ];
+      let minX = corners[0].x;
+      let maxX = corners[0].x;
+      let minY = corners[0].y;
+      let maxY = corners[0].y;
+      for (let index = 1; index < corners.length; index++) {
+        minX = Math.min(minX, corners[index].x);
+        maxX = Math.max(maxX, corners[index].x);
+        minY = Math.min(minY, corners[index].y);
+        maxY = Math.max(maxY, corners[index].y);
+      }
       return {
         id: target.id,
         role: target.role,
-        rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height },
+        rect: {
+          x: canvasRect.left + minX * scaleX,
+          y: canvasRect.top + minY * scaleY,
+          w: (maxX - minX) * scaleX,
+          h: (maxY - minY) * scaleY,
+        },
       };
     });
   }
@@ -473,6 +684,7 @@ class ChooseOneGame {
   seed(n) {
     this.seedValue = Number(n) || 0;
     this.rng = mulberry32(this.seedValue);
+    this.fxRng = mulberry32(this.seedValue ^ 0x9E3779B9);
   }
 
   async speakLine(line, cancel = true) {
@@ -492,6 +704,48 @@ class ChooseOneGame {
   nextTargetId(prefix) {
     this.targetSeq += 1;
     return `${prefix}-${this.roundIndex + 1}-${this.targetSeq}`;
+  }
+
+  roundIsCurrent(generation) {
+    return !this.destroyed && this.screen === 'play' && this.stage && generation === this.roundGeneration;
+  }
+
+  async animateMotion(target, props, options) {
+    if (!target || !target.motion) return;
+    if (target.motionTween) target.motionTween.cancel();
+    // The lift makes pointer-down feel physical before the success animation.
+    const tween = to(target.motion, props, options);
+    target.motionTween = tween;
+    await this.runTween(tween);
+    if (target.motionTween === tween) target.motionTween = null;
+  }
+
+  async runTween(tween) {
+    this.activeTweens.add(tween);
+    try { await tween; } finally { this.activeTweens.delete(tween); }
+  }
+
+  cancelTweens() {
+    this.activeTweens.forEach((tween) => tween.cancel && tween.cancel());
+    this.activeTweens.clear();
+  }
+
+  stopSway() {
+    if (this.stopPromptSway) this.stopPromptSway();
+    this.stopPromptSway = null;
+  }
+
+  delay(ms) {
+    return new Promise((resolve) => {
+      const entry = { timer: 0, resolve };
+      entry.timer = window.setTimeout(() => { this.pendingDelays.delete(entry); resolve(); }, ms);
+      this.pendingDelays.add(entry);
+    });
+  }
+
+  clearDelays() {
+    this.pendingDelays.forEach((entry) => { window.clearTimeout(entry.timer); entry.resolve(); });
+    this.pendingDelays.clear();
   }
 }
 
@@ -547,15 +801,8 @@ function mulberry32(seed) {
   };
 }
 
-function animateOnce(el, className) {
-  el.classList.remove(className);
-  void el.offsetWidth;
-  el.classList.add(className);
-  window.setTimeout(() => el.classList.remove(className), 700);
-}
-
-function wait(ms) {
-  return new Promise((resolve) => window.setTimeout(resolve, ms));
+function targetSequence(id) {
+  return Number(String(id).split('-').pop()) || 0;
 }
 
 function escapeHtml(value) {
@@ -601,7 +848,8 @@ function installStyle() {
       --peach: #ffad7a;
       --shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
       position: relative;
-      min-height: 100dvh;
+      height: 100dvh;
+      min-height: 100%;
       width: 100%;
       overflow: hidden;
       color: var(--navy);
@@ -785,12 +1033,24 @@ function installStyle() {
 
     .qk-choose-stage {
       min-height: 0;
-      display: grid;
-      grid-template-rows: minmax(120px, auto) 1fr;
-      align-items: center;
-      gap: clamp(14px, 3vmin, 30px);
+      position: relative;
       width: min(1100px, 100%);
       justify-self: center;
+    }
+
+    .qk-choose-canvas {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 28px;
+      touch-action: none;
+    }
+
+    .qk-choose-canvas canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
     }
 
     .qk-choose-prompt {
@@ -894,9 +1154,6 @@ function installStyle() {
     .qk-choose-wiggle { animation: qk-choose-wiggle .48s ease-in-out; }
 
     @media (orientation: portrait) {
-      .qk-choose-stage {
-        grid-template-rows: minmax(112px, auto) 1fr;
-      }
       .qk-choose-answers {
         grid-template-columns: repeat(2, minmax(120px, min(38vw, 230px)));
         align-content: center;
