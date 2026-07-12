@@ -2,38 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Feelings Charades - QLOBE Kids</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <meta name="description" content="A social-emotional choose-one game where kids name feelings from acted voice clues and situation pictures." />
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* The shared engine owns layout and motion for consistent tablet play. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <title>Feelings Charades</title>
+  <meta name="description" content="Learn emotions, playfully. Act out big feelings with friends, then learn what helps." />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+
+  <!-- ===== Splash ===== -->
+  <div id="splash" class="screen">
+    <a id="splash-home" class="round-btn btn-home" href="../../" aria-label="Back to all games"></a>
+    <div class="splash-center">
+      <div id="host-wrap"><img id="host-portrait" alt="Ravi" draggable="false" /></div>
+      <h1><span class="t-red">Feel</span><span class="t-orange">ings</span> <span class="t-green">Chara</span><span class="t-blue">des</span></h1>
+      <p class="tagline">Learn emotions, playfully.</p>
+      <div class="mode-buttons">
+        <button class="mode-button" data-mode="act">🎭 Act It Out</button>
+        <button class="mode-button" data-mode="guess">👂 Guess the Feeling</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Game ===== -->
+  <div id="game" class="screen hidden">
+    <button id="btn-back" class="round-btn btn-back" aria-label="Back to the game menu"></button>
+    <button id="btn-sound" class="round-btn btn-sound" aria-label="Hear it again"></button>
+
+    <!-- Act It Out: feeling grid -->
+    <div id="grid" class="phase hidden" role="group" aria-label="Choose a feeling"></div>
+
+    <!-- Act It Out: demo -->
+    <div id="demo" class="phase hidden">
+      <div id="demo-title" class="pill"></div>
+      <div id="demo-stage">
+        <video id="demo-video" class="hidden" muted playsinline preload="auto"></video>
+        <img id="demo-art" class="hidden" alt="" draggable="false" />
+      </div>
+      <button id="btn-your-turn" class="big-cta">⭐ Your turn!</button>
+    </div>
+
+    <!-- Act It Out: act-along -->
+    <div id="act" class="phase hidden">
+      <div id="act-title" class="pill"></div>
+      <div id="act-ring-wrap">
+        <svg id="act-ring" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring-bg" cx="100" cy="100" r="88" />
+          <circle class="ring-fg" cx="100" cy="100" r="88" />
+        </svg>
+        <div id="act-emoji" aria-hidden="true"></div>
+      </div>
+      <button id="btn-act-done" class="big-cta">✨ Done!</button>
+    </div>
+
+    <!-- Coping pivot -->
+    <div id="cope" class="phase hidden">
+      <div id="cope-title" class="pill"></div>
+      <div id="breath-wrap" class="hidden" aria-hidden="true">
+        <div class="breath-ring r3"></div>
+        <div class="breath-ring r2"></div>
+        <div class="breath-ring r1"></div>
+        <div id="breath-label"></div>
+      </div>
+      <div id="breath-steps" class="hidden" aria-hidden="true">
+        <span data-step="in">🌬️ Breathe in</span><span data-step="hold">✋ Hold</span><span data-step="out">💨 Breathe out</span>
+      </div>
+      <div id="cope-art-wrap" class="hidden"><img id="cope-art" alt="" draggable="false" /></div>
+      <button id="btn-cope-done" class="big-cta hidden">💚 Done</button>
+    </div>
+
+    <!-- Affirmation -->
+    <div id="affirm" class="phase hidden">
+      <img id="affirm-badge" src="./assets/badge-sun.png" alt="" draggable="false" />
+      <div id="affirm-title">Well done!</div>
+      <div id="affirm-text"></div>
+      <button id="btn-affirm-next" class="big-cta">💛 Try another feeling</button>
+    </div>
+
+    <!-- Guess the Feeling -->
+    <div id="guess" class="phase hidden">
+      <div id="guess-dots" aria-hidden="true"></div>
+      <div id="guess-stage"><img id="guess-art" alt="" draggable="false" /></div>
+      <div id="guess-answers" role="group" aria-label="Feeling faces"></div>
+    </div>
+  </div>
+
+  <!-- ===== End ===== -->
+  <div id="end-screen" class="screen hidden">
+    <button id="btn-end-back" class="round-btn btn-back" aria-label="Back to the game menu"></button>
+    <div class="splash-center">
+      <img id="end-badge" src="./assets/badge-sun.png" alt="" draggable="false" />
+      <h2 id="end-title"></h2>
+      <button id="btn-again" class="mode-button">🔁 Play Again</button>
+    </div>
+  </div>
+
+  <div id="confetti-layer" aria-hidden="true"></div>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

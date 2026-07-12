@@ -5,10 +5,13 @@
   "path": "games/feelings-charades/",
   "icon": "🎭",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": {
+    "min": 5,
+    "max": 6
+  },
   "status": "beta",
   "accent": "#ffad7a",
-  "description": "A feelings game where kids listen to acted body clues, pick the matching face, and connect feelings to situations.",
+  "description": "Learn emotions, playfully. A cast friend demonstrates each feeling, the child acts it out, and big feelings end with a real coping practice.",
   "learningGoals": [
     "Name emotions from spoken body and voice clues",
     "Match feelings to everyday situations",
@@ -17,17 +20,37 @@
   "interactionModel": "choose-one tap the feeling face or situation card after an acted spoken prompt",
   "feedbackModel": "Correct answers sparkle and speak praise; misses wiggle with a gentle spoken replay cue.",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
     "shared/js/sfx.js",
-    "shared/characters/"
+    "shared/js/speech.js",
+    "shared/js/voice-clips.js",
+    "shared/js/tap.js",
+    "shared/js/stage/mouth.js",
+    "shared/characters/",
+    "shared/assets/ui/"
   ],
   "modes": [
-    { "id": "guess", "title": "Guess the Feeling", "skill": "naming emotions from cues" },
-    { "id": "show", "title": "Show the Feeling", "skill": "matching feelings to situations" }
+    {
+      "id": "act",
+      "title": "Act It Out",
+      "skill": "emotional expression and coping strategies"
+    },
+    {
+      "id": "guess",
+      "title": "Guess the Feeling",
+      "skill": "emotion recognition from body clues"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
   "credits": "Shared character portraits and emoji placeholder answer art. Built with Codex for QLOBE Kids.",
-  "characters": ["leo", "maya", "nia", "ravi", "sam"],
+  "characters": [
+    "leo",
+    "maya",
+    "nia",
+    "ravi",
+    "sam"
+  ],
   "conceptVideo": null
 }

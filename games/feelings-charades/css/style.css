@@ -1,0 +1,293 @@
+/* Feelings Charades — story-screen world. Sky, hills, sun. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  background: #aee0f2;
+}
+
+.screen {
+  position: fixed; inset: 0;
+  background: #aee0f2 url('../assets/bg.jpg') center / cover no-repeat;
+}
+.hidden { display: none !important; }
+
+/* ---------- round HUD buttons ---------- */
+.round-btn {
+  position: absolute;
+  width: 96px; height: 96px;
+  border: none; padding: 0;
+  background: transparent center / 84px 84px no-repeat;
+  cursor: pointer;
+  z-index: 20;
+  -webkit-tap-highlight-color: transparent;
+}
+.round-btn:active { transform: scale(0.93); }
+.btn-home  { background-image: url('../../../shared/assets/ui/btn-home.png'); }
+.btn-back  { background-image: url('../../../shared/assets/ui/btn-back.png'); }
+.btn-sound { background-image: url('../../../shared/assets/ui/btn-sound.png'); }
+#splash-home, #btn-back, #btn-end-back {
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+}
+#btn-sound {
+  left: max(12px, env(safe-area-inset-left));
+  bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+/* ---------- splash ---------- */
+.splash-center {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 20px;
+}
+#host-wrap { position: relative; }
+#host-portrait { width: min(24vh, 170px); filter: drop-shadow(0 8px 14px rgba(23,60,90,.25)); }
+h1 {
+  margin: 0;
+  font-size: clamp(34px, 7vw, 62px);
+  letter-spacing: 1px;
+  text-shadow: 0 3px 0 #ffffff, 0 6px 14px rgba(23, 60, 90, 0.2);
+}
+.t-red { color: #e23d3d; } .t-orange { color: #f08a24; }
+.t-green { color: #58a945; } .t-blue { color: #2d7dd2; }
+.tagline { margin: 0 0 8px; color: #17517e; font-size: clamp(16px, 2.6vw, 24px); }
+.mode-buttons { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+.mode-button {
+  min-width: 250px; min-height: 96px;
+  padding: 14px 30px;
+  font-family: inherit; font-size: clamp(20px, 3vw, 28px); font-weight: 600;
+  color: #fff;
+  background: linear-gradient(180deg, #ff8a5c, #e8543a);
+  border: 4px solid #ffffff; border-radius: 48px;
+  box-shadow: 0 6px 0 rgba(160, 50, 25, 0.45), 0 10px 18px rgba(23, 60, 90, 0.25);
+  cursor: pointer;
+}
+.mode-button:nth-child(2) { background: linear-gradient(180deg, #58b7e8, #2d7dd2); box-shadow: 0 6px 0 rgba(20,75,130,.5), 0 10px 18px rgba(23,60,90,.25); }
+.mode-button:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+
+/* ---------- shared phase layout ---------- */
+.phase {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px;
+  padding: max(14px, env(safe-area-inset-top)) 16px max(14px, env(safe-area-inset-bottom));
+}
+.pill {
+  background: #ffffff;
+  color: #17517e;
+  font-size: clamp(22px, 3.4vw, 32px);
+  padding: 10px 34px;
+  border-radius: 40px;
+  border: 4px solid #ffd75e;
+  box-shadow: 0 4px 10px rgba(23, 60, 90, 0.18);
+}
+.big-cta {
+  min-height: 96px; min-width: 260px;
+  padding: 14px 34px;
+  font-family: inherit; font-size: clamp(22px, 3.2vw, 30px); font-weight: 600;
+  color: #fff;
+  background: linear-gradient(180deg, #6cc86e, #43a047);
+  border: 4px solid #ffffff; border-radius: 48px;
+  box-shadow: 0 6px 0 rgba(30, 100, 40, 0.45), 0 10px 18px rgba(23, 60, 90, 0.22);
+  cursor: pointer;
+}
+.big-cta:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+
+/* ---------- feeling grid ---------- */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.8vw, 20px);
+  align-content: center;
+  padding: 90px clamp(16px, 5vw, 70px) 30px;
+}
+.feel-card {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px;
+  min-height: 96px;
+  padding: 10px 6px 8px;
+  background: #ffffff;
+  border: 4px solid var(--accent, #ffd75e);
+  border-radius: 22px;
+  box-shadow: 0 5px 12px rgba(23, 60, 90, 0.18);
+  cursor: pointer;
+  font-family: inherit;
+}
+.feel-card:active { transform: scale(0.96); }
+.feel-card img { width: 100%; max-height: 17vh; object-fit: contain; }
+.feel-card .feel-label {
+  font-size: clamp(15px, 2.2vw, 21px);
+  font-weight: 600;
+  color: #17517e;
+}
+.feel-card .star {
+  position: absolute; top: -14px; right: -10px;
+  font-size: 30px;
+  filter: drop-shadow(0 2px 3px rgba(23,60,90,.3));
+}
+@media (orientation: portrait) {
+  #grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feel-card img { max-height: 13vh; }
+}
+
+/* ---------- demo ---------- */
+#demo-stage {
+  display: grid; place-items: center;
+  max-height: 52vh;
+}
+#demo-video, #demo-art {
+  max-height: 50vh; max-width: min(88vw, 640px);
+  border-radius: 22px;
+  border: 5px solid #ffffff;
+  box-shadow: 0 10px 24px rgba(23, 60, 90, 0.25);
+  background: #eef7fd;
+}
+#demo-art { animation: demo-zoom 7s ease-in-out infinite alternate; }
+@keyframes demo-zoom { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+/* ---------- act-along ---------- */
+#act-ring-wrap { position: relative; width: min(44vh, 340px); height: min(44vh, 340px); }
+#act-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: rgba(255,255,255,.55); stroke: #ffffff; stroke-width: 10; }
+.ring-fg {
+  fill: none; stroke: #f4a93d; stroke-width: 10; stroke-linecap: round;
+  stroke-dasharray: 553; stroke-dashoffset: 553;
+}
+#act-emoji {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-size: min(20vh, 150px);
+  animation: act-pulse 1.6s ease-in-out infinite;
+}
+@keyframes act-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+/* ---------- coping / breathing ---------- */
+#breath-wrap { position: relative; width: min(46vh, 350px); height: min(46vh, 350px); display: grid; place-items: center; }
+.breath-ring {
+  position: absolute; border-radius: 50%;
+  background: rgba(88, 183, 232, 0.28);
+  border: 3px solid rgba(45, 125, 210, 0.4);
+  transition: transform 3.8s ease-in-out;
+}
+.breath-ring.r1 { width: 34%; height: 34%; background: rgba(88,183,232,.55); }
+.breath-ring.r2 { width: 60%; height: 60%; }
+.breath-ring.r3 { width: 86%; height: 86%; background: rgba(88,183,232,.16); }
+#breath-wrap.inhale .r1 { transform: scale(1.55); }
+#breath-wrap.inhale .r2 { transform: scale(1.35); }
+#breath-wrap.inhale .r3 { transform: scale(1.16); }
+#breath-wrap.hold .breath-ring { transition-duration: .6s; }
+#breath-label {
+  position: relative; z-index: 2;
+  font-size: clamp(20px, 3vw, 28px);
+  color: #14486e;
+  background: rgba(255,255,255,.8);
+  padding: 8px 22px; border-radius: 30px;
+}
+#breath-steps { display: flex; gap: 18px; }
+#breath-steps span {
+  font-size: clamp(18px, 2.6vw, 24px); color: #17517e;
+  background: #fff; border: 3px solid #cfe6f5;
+  padding: 14px 20px; border-radius: 20px;
+  opacity: .45;
+}
+#breath-steps span.active { opacity: 1; border-color: #f4a93d; }
+#cope-art-wrap img {
+  max-height: 40vh;
+  filter: drop-shadow(0 8px 16px rgba(23,60,90,.25));
+}
+
+/* ---------- affirmation ---------- */
+#affirm-badge { width: min(30vh, 220px); animation: badge-pop .5s cubic-bezier(.2,1.6,.4,1); }
+@keyframes badge-pop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+#affirm-title {
+  font-size: clamp(38px, 6.5vw, 58px);
+  color: #e23d3d;
+  text-shadow: 0 3px 0 #fff, 0 6px 12px rgba(23,60,90,.2);
+}
+#affirm-text {
+  max-width: 640px;
+  text-align: center;
+  font-size: clamp(20px, 3vw, 27px);
+  color: #17517e;
+  background: rgba(255,255,255,.88);
+  border-radius: 22px;
+  padding: 14px 26px;
+  border: 3px solid #ffd75e;
+}
+
+/* ---------- guess mode ---------- */
+#guess-dots { display: flex; gap: 10px; margin-top: 60px; }
+#guess-dots span { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,.8); border: 2px solid #7db3d6; }
+#guess-dots span.done { background: #f4a93d; border-color: #d98a1d; }
+#guess-stage img {
+  max-height: 34vh;
+  filter: drop-shadow(0 8px 16px rgba(23,60,90,.25));
+}
+#guess-answers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 22px);
+  width: min(92vw, 860px);
+}
+.answer-card {
+  min-height: 120px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: #fff;
+  border: 4px solid #cfe6f5; border-radius: 20px;
+  box-shadow: 0 5px 12px rgba(23,60,90,.16);
+  cursor: pointer;
+  font-family: inherit;
+}
+.answer-card img { max-height: 12vh; }
+.answer-card .a-label { font-size: clamp(14px, 2vw, 19px); font-weight: 600; color: #17517e; }
+.answer-card:active { transform: scale(.95); }
+.answer-card.wrong { animation: shake .4s; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@media (orientation: portrait) {
+  #guess-answers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- end screen ---------- */
+#end-badge { width: min(28vh, 200px); }
+#end-title { color: #17517e; font-size: clamp(26px, 4.5vw, 40px); text-align: center; max-width: 700px; }
+
+/* ---------- confetti ---------- */
+#confetti-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
+.confetti-bit {
+  position: absolute;
+  width: 12px; height: 9px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  from { transform: translateY(-4vh) rotate(0); opacity: 1; }
+  to { transform: translateY(110vh) rotate(720deg); opacity: .7; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #demo-art, #act-emoji, #affirm-badge, .answer-card.wrong { animation: none; }
+  .breath-ring { transition: none; }
+  .confetti-bit { display: none; }
+}
