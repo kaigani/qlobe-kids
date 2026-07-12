@@ -1,0 +1,32 @@
+{
+  "id": "family-story-interview",
+  "title": "Family Story Interview",
+  "category": "oral-storytelling",
+  "path": "games/family-story-interview/",
+  "icon": "🎙️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A newsroom-playful interview where kids repeat spoken questions to a grown-up, listen to long-ago stories, and stamp what they learned.",
+  "learningGoals": [
+    "Practice asking clear spoken questions and listening through an answer",
+    "Retell a memorable detail from a family story",
+    "Compare life in the past with life now"
+  ],
+  "interactionModel": "observe-journal speaks each interview question aloud; after asking a grown-up and listening, the child taps a large sticker that captures what stood out",
+  "feedbackModel": "Every interpretation is accepted with newsroom-playful speech and pop, whoosh, and sparkle SFX; the recap replays the interview pages as a family news story.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "childhood", "title": "When You Were Five", "skill": "ask, listen, and compare childhood stories" },
+    { "id": "places", "title": "Where You Lived", "skill": "retell stories about past homes and journeys" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

@@ -1,0 +1,32 @@
+{
+  "id": "shadow-chase",
+  "title": "Shadow Chase",
+  "category": "movement-outdoor",
+  "path": "games/shadow-chase/",
+  "icon": "🌤️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f4b942",
+  "description": "A sunny-day science walk where kids chase, shape, and revisit real shadows, then stamp their observations into a shadow diary.",
+  "learningGoals": [
+    "Connect sunlight with the shadows made by bodies and objects",
+    "Notice how shadows change across the day",
+    "Practice outdoor observation through whole-body movement"
+  ],
+  "interactionModel": "observe-journal prompts send the child outside to move and observe, then large tap targets stamp one open-ended shadow observation per page",
+  "feedbackModel": "Every observation is welcomed with pop, whoosh, and sparkle SFX plus a playful spoken movement nudge; the recap presents the completed shadow diary.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "morning", "title": "Morning Shadows", "skill": "observe and move with body and object shadows" },
+    { "id": "day", "title": "All-Day Watch", "skill": "compare one shadow across morning, noon, and evening" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

@@ -1,0 +1,32 @@
+{
+  "id": "kindness-delivery",
+  "title": "Kindness Delivery",
+  "category": "social-emotional",
+  "path": "games/kindness-delivery/",
+  "icon": "💌",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e85d8f",
+  "description": "A kindness post office where kids notice how others may feel, choose caring deliveries, and receive nudges to try those acts in real life.",
+  "learningGoals": [
+    "Notice clues about how another person may feel",
+    "Practice choosing generous and helpful responses",
+    "Carry playful kindness ideas into real-world habits"
+  ],
+  "interactionModel": "observe-journal presents a recipient or secret mission, then the child taps a large deliverable sticker to add a heart-worthy act to the journal",
+  "feedbackModel": "Every caring choice is accepted with warm speech and cheerful pop, whoosh, and sparkle SFX; each spoken response ends with an off-tablet real-world nudge.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "deliveries", "title": "Make a Delivery", "skill": "notice feelings and choose a caring response" },
+    { "id": "secret", "title": "Secret Kindness", "skill": "practice generosity without seeking attention" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
