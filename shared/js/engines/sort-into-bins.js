@@ -10,7 +10,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -185,6 +185,8 @@ class SortIntoBinsGame {
       </section>
     `;
 
+    this.applyThemeBackdrop();
+
     this.mountEl.querySelectorAll('.qk-sort-mode').forEach((button) => {
       button.addEventListener('pointerdown', (e) => {
         e.preventDefault();
@@ -193,6 +195,18 @@ class SortIntoBinsGame {
       });
       button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
+  }
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover — the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-sort');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
   }
 
   async startMode(modeId) {
@@ -237,6 +251,7 @@ class SortIntoBinsGame {
         <button class="qk-sort-img-btn qk-sort-sound" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
     const home = this.mountEl.querySelector('.qk-sort-home');
     home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
     home.addEventListener('click', () => speech.stop());
@@ -352,28 +367,39 @@ class SortIntoBinsGame {
 
   async buildBinView(bin, index, generation) {
     const { PIXI } = this.stage;
-    const art = await artObj(PIXI, bin.art, BIN_ART, bin.alt || bin.say || '');
+    // Art-world themes can drop the card chrome entirely (binPanel: 'none'):
+    // the bin art (e.g. a real basket sprite) sits directly on the backdrop.
+    const bare = this.config.theme && this.config.theme.binPanel === 'none';
+    const artSize = bare ? Math.min(BIN_WIDTH, BIN_HEIGHT) * 1.08 : BIN_ART;
+    const art = await artObj(PIXI, bin.art, artSize, bin.alt || bin.say || '');
     if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return; }
     const view = new PIXI.Container();
     const motion = new PIXI.Container();
     const shadow = new PIXI.Graphics();
-    shadow.roundRect(-BIN_WIDTH / 2, -BIN_HEIGHT / 2 + 8, BIN_WIDTH, BIN_HEIGHT, 28)
-      .fill({ color: 0x17517e, alpha: 0.17 });
-    const backing = cardBacking(PIXI, BIN_WIDTH, BIN_HEIGHT, {
-      fill: index % 3 === 0 ? 0xfff8e8 : index % 3 === 1 ? 0xe5f5dc : 0xffe6e2,
-      stroke: 0xffffff,
-      strokeWidth: 6,
-      radius: 28,
-    });
-    const artHalo = new PIXI.Graphics();
-    artHalo.roundRect(-50, -58, 100, 92, 20).fill({ color: 0xffffff, alpha: 0.7 });
-    const mouth = new PIXI.Graphics();
-    mouth.roundRect(-62, 38, 124, 20, 10).fill({ color: 0x17517e, alpha: 0.22 });
-    const lip = new PIXI.Graphics();
-    lip.roundRect(-54, 39, 108, 5, 3).fill({ color: 0xffffff, alpha: 0.42 });
     const pile = new PIXI.Graphics();
-    art.y = -13;
-    motion.addChild(shadow, backing, artHalo, art, mouth, lip, pile);
+    let backing = null;
+    if (bare) {
+      shadow.ellipse(0, BIN_HEIGHT / 2 - 8, BIN_WIDTH * 0.4, 15)
+        .fill({ color: 0x17517e, alpha: 0.2 });
+      motion.addChild(shadow, art, pile);
+    } else {
+      shadow.roundRect(-BIN_WIDTH / 2, -BIN_HEIGHT / 2 + 8, BIN_WIDTH, BIN_HEIGHT, 28)
+        .fill({ color: 0x17517e, alpha: 0.17 });
+      backing = cardBacking(PIXI, BIN_WIDTH, BIN_HEIGHT, {
+        fill: index % 3 === 0 ? 0xfff8e8 : index % 3 === 1 ? 0xe5f5dc : 0xffe6e2,
+        stroke: 0xffffff,
+        strokeWidth: 6,
+        radius: 28,
+      });
+      const artHalo = new PIXI.Graphics();
+      artHalo.roundRect(-50, -58, 100, 92, 20).fill({ color: 0xffffff, alpha: 0.7 });
+      const mouth = new PIXI.Graphics();
+      mouth.roundRect(-62, 38, 124, 20, 10).fill({ color: 0x17517e, alpha: 0.22 });
+      const lip = new PIXI.Graphics();
+      lip.roundRect(-54, 39, 108, 5, 3).fill({ color: 0xffffff, alpha: 0.42 });
+      art.y = -13;
+      motion.addChild(shadow, backing, artHalo, art, mouth, lip, pile);
+    }
     view.addChild(motion);
     view.hitArea = new PIXI.Rectangle(-BIN_WIDTH / 2, -BIN_HEIGHT / 2, BIN_WIDTH, BIN_HEIGHT);
     view.eventMode = 'static';
@@ -426,7 +452,10 @@ class SortIntoBinsGame {
     const item = this.currentItem;
     const itemGeneration = ++this.itemGeneration;
     const { PIXI } = this.stage;
-    const art = await artObj(PIXI, item.art, ITEM_ART, item.alt || item.say || '');
+    const itemArtSize = this.config.theme && this.config.theme.itemPanel === 'none'
+      ? Math.round(ITEM_CARD * 0.88)
+      : ITEM_ART;
+    const art = await artObj(PIXI, item.art, itemArtSize, item.alt || item.say || '');
     if (!this.roundIsCurrent(generation) || itemGeneration !== this.itemGeneration || item !== this.currentItem) {
       art.destroy({ children: true });
       return;
@@ -434,15 +463,25 @@ class SortIntoBinsGame {
     const view = new PIXI.Container();
     const motion = new PIXI.Container();
     const shadow = new PIXI.Graphics();
-    shadow.roundRect(-ITEM_CARD / 2, -ITEM_CARD / 2 + 9, ITEM_CARD, ITEM_CARD, 32)
-      .fill({ color: 0x17517e, alpha: 0.18 });
-    const backing = cardBacking(PIXI, ITEM_CARD, ITEM_CARD, {
-      fill: 0xfff7d9,
-      stroke: 0xffffff,
-      strokeWidth: 6,
-      radius: 32,
-    });
-    motion.addChild(shadow, backing, art);
+    // itemPanel: 'none' — the item sprite floats free over the backdrop
+    const bareItem = this.config.theme && this.config.theme.itemPanel === 'none';
+    let backing;
+    if (bareItem) {
+      shadow.ellipse(0, ITEM_CARD / 2 - 16, ITEM_CARD * 0.34, 13)
+        .fill({ color: 0x17517e, alpha: 0.2 });
+      backing = art; // selection tint lands on the art itself
+      motion.addChild(shadow, art);
+    } else {
+      shadow.roundRect(-ITEM_CARD / 2, -ITEM_CARD / 2 + 9, ITEM_CARD, ITEM_CARD, 32)
+        .fill({ color: 0x17517e, alpha: 0.18 });
+      backing = cardBacking(PIXI, ITEM_CARD, ITEM_CARD, {
+        fill: 0xfff7d9,
+        stroke: 0xffffff,
+        strokeWidth: 6,
+        radius: 32,
+      });
+      motion.addChild(shadow, backing, art);
+    }
     view.addChild(motion);
     view.hitArea = new PIXI.Rectangle(-ITEM_CARD / 2, -ITEM_CARD / 2, ITEM_CARD, ITEM_CARD);
     view.eventMode = 'static';

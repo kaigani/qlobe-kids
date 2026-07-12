@@ -1,6 +1,16 @@
 # Laundry Sorter Assets
 
-All current game art is placeholder emoji and color swatches rendered by the shared engine. No image files, generated art, downloaded art, recorded clips, or network assets are added by this game.
+This game is the pilot of the **Storybook Rooms** art world
+(`docs/art-direction.md`): a full-bleed laundry-room backdrop with cut-out
+clothing and basket sprites.
+
+## Game + shared art (generated)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/room.jpg` (laundry-room backdrop) | Generated locally (text-to-image) | QLOBE Kids project | CC BY 4.0 | No | Downscaled to 1600×1200 JPEG |
+| `shared/assets/storybook/sock-*.png`, `shirt-*.png`, `scarf-red.png`, `cap-blue.png`, `mitten-blue.png`, `jeans-blue.png` (12 clothing sprites) | Generated locally (text-to-image, layer-extracted to alpha PNG) | QLOBE Kids project | CC BY 4.0 | No | Trimmed, 512px, PNG-8 |
+| `shared/assets/storybook/basket-{red,blue,socks,shirts}.png` (4 bins) | Generated locally (same pipeline) | QLOBE Kids project | CC BY 4.0 | No | Trimmed, 512px, PNG-8 |
 
 ## Shared runtime assets
 
@@ -14,20 +24,6 @@ All current game art is placeholder emoji and color swatches rendered by the sha
 | Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
 
 ## Assets needed
-
-Production art:
-
-- Colored sock card art for red, blue, yellow, and green socks.
-- Colored shirt card art for red, blue, yellow, and green shirts.
-- Red scarf card art.
-- Blue cap card art.
-- Blue mitten card art.
-- Blue jeans card art.
-- Basket art for red, blue, sock, and shirt bins.
-
-Notes:
-
-- Emoji glyph colors vary by platform and may not match the intended item color. The current beta relies on spoken `say` lines and `alt` labels to carry color when the glyph color is ambiguous.
 
 Voice lines:
 
