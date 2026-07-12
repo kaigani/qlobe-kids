@@ -1,0 +1,33 @@
+{
+  "id": "throwing-target-garden",
+  "title": "Throwing Target Garden",
+  "category": "movement-outdoor",
+  "path": "games/throwing-target-garden/",
+  "icon": "🎯",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f28c45",
+  "description": "A friendly throwing clinic with homemade targets, underhand lobs, distance practice, and a wacky trick-shot finale.",
+  "learningGoals": [
+    "Practice underhand throwing mechanics before harder throws",
+    "Control aim and throwing force across different distances",
+    "Coordinate an opposite-foot step with a throw",
+    "Celebrate near-misses and take turns warmly"
+  ],
+  "interactionModel": "follow spoken throwing missions with real soft objects and tap the large completed step after each practice station",
+  "feedbackModel": "upbeat spoken coaching with sparkle/tick/tada SFX; hits and near-misses both receive energetic encouragement",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "clinic", "title": "Throwing Clinic", "skill": "throwing mechanics, aim, and force control" },
+    { "id": "wacky", "title": "Trick Shots", "skill": "creative throwing and safe experimentation" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

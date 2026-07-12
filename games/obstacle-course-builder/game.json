@@ -1,0 +1,33 @@
+{
+  "id": "obstacle-course-builder",
+  "title": "Obstacle Course Builder",
+  "category": "movement-outdoor",
+  "path": "games/obstacle-course-builder/",
+  "icon": "🏗️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#d98c2b",
+  "description": "A design-then-run activity that coaches children through building a safe household obstacle course and completing each movement station.",
+  "learningGoals": [
+    "Plan and build before beginning a physical activity",
+    "Practice climbing, crawling, jumping, balancing, and carrying",
+    "Use simple safety checks during creative risk play",
+    "Invent and revise a course using household materials"
+  ],
+  "interactionModel": "follow spoken build and run stations in the real world, using large completed-step controls and individual timers",
+  "feedbackModel": "construction and race-announcer voice coaching with sparkle/tick/tada SFX; safety checks are framed as professional protocols",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "build", "title": "Build It", "skill": "planning, course design, and safety checks" },
+    { "id": "run", "title": "Run It", "skill": "varied gross-motor movement and balance" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

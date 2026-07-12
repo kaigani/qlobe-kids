@@ -1,0 +1,33 @@
+{
+  "id": "nature-scavenger-hunt",
+  "title": "Nature Scavenger Hunt",
+  "category": "movement-outdoor",
+  "path": "games/nature-scavenger-hunt/",
+  "icon": "🔎",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A sensory scavenger hunt that invites children to find real-world treasures by texture, color, shape, size, and sound.",
+  "learningGoals": [
+    "Use sensory vocabulary for texture, color, shape, and size",
+    "Pay close attention to details outdoors",
+    "Categorize real-world objects by observable qualities",
+    "Explain why a find belongs in a category"
+  ],
+  "interactionModel": "follow spoken find missions, explore the real world, then tap the large completed step and show why the treasure counts",
+  "feedbackModel": "hushed spoken encouragement with sparkle/tick/tada SFX; explanations and careful noticing are celebrated over correctness",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "classic", "title": "Five Finds", "skill": "categorizing nature finds by sensory quality" },
+    { "id": "texture", "title": "Feely Hunt", "skill": "texture vocabulary and tactile attention" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
