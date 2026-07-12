@@ -1,0 +1,33 @@
+{
+  "id": "button-zipper-lab",
+  "title": "Button-Zipper Lab",
+  "category": "practical-life",
+  "path": "games/button-zipper-lab/",
+  "icon": "🧥",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#7c4fc4",
+  "description": "A playful getting-dressed laboratory that coaches real buttons and zippers in slow, patient motions before a solo victory lap.",
+  "learningGoals": [
+    "Practice pushing and pulling buttons through buttonholes",
+    "Practice connecting and moving a zipper",
+    "Build fine-motor persistence through slow repeated motions",
+    "Grow independence with getting dressed"
+  ],
+  "interactionModel": "tap the large done row after each real-world dressing experiment; timers make room for patient fine-motor practice",
+  "feedbackModel": "playful lab-scientist speech with sparkle, tick, and tada SFX; every prompt makes patience and resting acceptable",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "buttons", "title": "Button Lab", "skill": "buttoning motions and fine-motor persistence" },
+    { "id": "zippers", "title": "Zipper Lab", "skill": "zipper connection, control, and dressing independence" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

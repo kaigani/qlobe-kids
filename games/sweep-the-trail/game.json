@@ -1,0 +1,33 @@
+{
+  "id": "sweep-the-trail",
+  "title": "Sweep the Trail",
+  "category": "practical-life",
+  "path": "games/sweep-the-trail/",
+  "icon": "🧹",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A cheerful real-world sweeping coach that guides crumbs or leaves into a marked landing zone, then finishes with the dustpan.",
+  "learningGoals": [
+    "Practice whole-arm coordination through sweeping",
+    "Use large strokes and small corner strokes deliberately",
+    "Build thorough rather than hurried work habits",
+    "Care for indoor and outdoor shared spaces"
+  ],
+  "interactionModel": "tap the large done row after each real-world sweeping step; timed steps support steady edge and corner work",
+  "feedbackModel": "cheerful trail-ranger voice with sparkle, tick, and tada SFX; crumbs and leaves become treasure instead of a chore",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "indoor", "title": "Crumb Patrol", "skill": "thorough indoor sweeping and dustpan use" },
+    { "id": "outdoor", "title": "Leaf Trail", "skill": "whole-arm outdoor sweeping and path care" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

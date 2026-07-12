@@ -1,0 +1,33 @@
+{
+  "id": "snack-chef",
+  "title": "Snack Chef",
+  "category": "practical-life",
+  "path": "games/snack-chef/",
+  "icon": "🥪",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f28c45",
+  "description": "A calm real-kitchen coaching session for making banana coins or toast with a grown-up nearby, from clean hands through cleanup.",
+  "learningGoals": [
+    "Follow a short kitchen sequence",
+    "Practice safe handling of a butter knife with grown-up supervision",
+    "Build independence while preparing a simple snack",
+    "Include cleanup as part of cooking"
+  ],
+  "interactionModel": "tap the large done row after each real-world kitchen step; timed steps coach slow, careful work",
+  "feedbackModel": "calm spoken sous-chef coaching with sparkle, tick, and tada SFX; safety reminders are natural and success ends with eating",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "banana", "title": "Banana Coins", "skill": "safe banana preparation, sequencing, and cleanup" },
+    { "id": "toast", "title": "Spread It", "skill": "careful spreading, cutting, and cleanup" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
