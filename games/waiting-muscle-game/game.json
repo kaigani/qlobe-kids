@@ -1,0 +1,33 @@
+{
+  "id": "waiting-muscle-game",
+  "title": "Waiting Muscle Game",
+  "category": "social-emotional",
+  "path": "games/waiting-muscle-game/",
+  "icon": "💪",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A gentle self-control workout that coaches children through longer waits using concrete tricks and celebrates every choice.",
+  "learningGoals": [
+    "Practice delayed gratification in short, achievable intervals",
+    "Use physical and attention-shifting strategies while waiting",
+    "Name self-control as a strength that grows with practice",
+    "Make and celebrate an intentional choice after waiting"
+  ],
+  "interactionModel": "tap the large done step after each real-world waiting exercise; visible timers coach waits from ten seconds to one minute",
+  "feedbackModel": "gentle gym-coach speech with sparkle, tick, and tada SFX; progress is framed as a growing waiting muscle and both final choices are celebrated",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "train", "title": "Waiting Workout", "skill": "delayed gratification using practical waiting tricks" },
+    { "id": "master", "title": "Waiting Master", "skill": "sustained self-control and intentional choice" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

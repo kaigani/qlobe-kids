@@ -1,0 +1,33 @@
+{
+  "id": "freeze-focus-dance",
+  "title": "Freeze Focus Dance",
+  "category": "movement-outdoor",
+  "path": "games/freeze-focus-dance/",
+  "icon": "🕺",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f08a24",
+  "description": "A freeze-dance game with tiny attention missions that make holding still as playful as moving wildly.",
+  "learningGoals": [
+    "Practice stopping the body on a spoken signal",
+    "Build impulse control and body-stop regulation",
+    "Sustain attention during a short still moment",
+    "Release energy through joyful whole-body movement"
+  ],
+  "interactionModel": "follow automatic spoken dance and freeze signals; use the large pause control whenever a break is needed",
+  "feedbackModel": "DJ-style spoken cues with pop, boing, silly, sparkle, and tada SFX; every completed set celebrates both energetic movement and focused stillness",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "classic", "title": "Dance and Freeze", "skill": "impulse control and body-stop regulation" },
+    { "id": "focus", "title": "Freeze Missions", "skill": "attention and balance while holding still" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
