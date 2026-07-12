@@ -1,0 +1,33 @@
+{
+  "id": "balance-beam-trail",
+  "title": "Balance Beam Trail",
+  "category": "movement-outdoor",
+  "path": "games/balance-beam-trail/",
+  "icon": "🤸",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A wobble-positive balance coach for floor lines, low outdoor trails, focused steps, and safe recovery.",
+  "learningGoals": [
+    "Build balance and whole-body control",
+    "Practice focus while moving slowly",
+    "Develop fall-safe confidence with a grown-up spotter",
+    "Treat wobbles and recovery as part of learning"
+  ],
+  "interactionModel": "tap the large done target after each real-world balance challenge; timed passes encourage slow, focused movement",
+  "feedbackModel": "calm spoken coaching with sparkle, tick, and tada SFX; wobble-positive praise celebrates recovery and safe practice",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "floor", "title": "Tape Trail", "skill": "heel-to-toe balance and body control" },
+    { "id": "outdoor", "title": "Log and Curb", "skill": "spotter-supported outdoor balance" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

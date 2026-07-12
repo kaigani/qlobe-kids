@@ -1,0 +1,33 @@
+{
+  "id": "animal-walk-cards",
+  "title": "Animal Walk Cards",
+  "category": "movement-outdoor",
+  "path": "games/animal-walk-cards/",
+  "icon": "🐻",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f4a261",
+  "description": "A playful animal-movement routine with bear crawls, frog jumps, crab walks, flamingo balance, and a family parade.",
+  "learningGoals": [
+    "Build gross-motor strength and coordination",
+    "Imitate distinct animal body shapes",
+    "Practice cardio movement through short playful rounds",
+    "Remember and chain movements into a parade sequence"
+  ],
+  "interactionModel": "tap the large done target after each animal movement; timed rounds coach short bursts and chain the parade sequence",
+  "feedbackModel": "playful zookeeper speech gives every animal a sound moment, layered with sparkle, tick, and tada SFX",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "learn", "title": "Animal School", "skill": "animal body shapes and coordination" },
+    { "id": "parade", "title": "Animal Parade", "skill": "movement memory and cardio play" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

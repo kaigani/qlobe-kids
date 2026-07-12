@@ -1,0 +1,33 @@
+{
+  "id": "big-paper-murals",
+  "title": "Big Paper Murals",
+  "category": "art-music",
+  "path": "games/big-paper-murals/",
+  "icon": "🎨",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e76f51",
+  "description": "A whole-arm mural coach with giant drawing moves, tiny details, kind collaboration, and a gallery-opening finale.",
+  "learningGoals": [
+    "Practice shoulder-led gross-motor drawing before finger details",
+    "Collaborate kindly while sharing a large art space",
+    "Build creative confidence through open-ended prompts",
+    "Notice and celebrate each artist's contribution"
+  ],
+  "interactionModel": "tap the large done target after each real-world mural step; timed steps coach sustained whole-arm drawing",
+  "feedbackModel": "exuberant spoken art coaching with sparkle, tick, and tada SFX; every movement and shared contribution earns warm praise",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "solo", "title": "My Mural", "skill": "gross-motor drawing and creative confidence" },
+    { "id": "together", "title": "Mural Party", "skill": "collaboration and sharing art space" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
