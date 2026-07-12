@@ -9,7 +9,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -176,6 +176,7 @@ class SequenceOrderGame {
         </div>
       </section>
     `;
+    this.applyThemeBackdrop();
     this.mountEl.querySelectorAll('.qk-seq-mode').forEach((button) => {
       button.addEventListener('pointerdown', (e) => {
         e.preventDefault();
@@ -235,6 +236,7 @@ class SequenceOrderGame {
         <button class="qk-seq-img-btn qk-seq-sound" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
     const home = this.mountEl.querySelector('.qk-seq-home');
     home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
     home.addEventListener('click', () => speech.stop());
@@ -928,6 +930,7 @@ class SequenceOrderGame {
         </div>
       </section>
     `;
+    this.applyThemeBackdrop();
     const again = this.mountEl.querySelector('.qk-seq-again');
     again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
     again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
@@ -1078,6 +1081,19 @@ class SequenceOrderGame {
     }
     this.layoutPlacedItems();
     await this.completeRound();
+  }
+
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover -- the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-seq');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
   }
 
   mute() {

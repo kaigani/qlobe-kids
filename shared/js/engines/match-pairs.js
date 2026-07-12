@@ -9,7 +9,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -147,6 +147,8 @@ class MatchPairsGame {
       </section>
     `;
 
+    this.applyThemeBackdrop();
+
     this.mountEl.querySelectorAll('.qk-match-mode').forEach((button) => {
       button.addEventListener('pointerdown', (event) => {
         event.preventDefault();
@@ -155,6 +157,18 @@ class MatchPairsGame {
       });
       button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
+  }
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover — the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-match');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
   }
 
   async startMode(modeId) {
@@ -204,6 +218,7 @@ class MatchPairsGame {
         <button class="qk-match-sound qk-match-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
 
     const home = this.mountEl.querySelector('.qk-match-home');
     home.addEventListener('pointerdown', (event) => {
@@ -644,6 +659,7 @@ class MatchPairsGame {
   }
 
   renderEnd() {
+    // (backdrop re-applied below after innerHTML replaces the section)
     this.mountEl.innerHTML = `
       <section class="qk-match qk-match-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
         <a class="qk-match-home qk-match-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
@@ -658,6 +674,7 @@ class MatchPairsGame {
       </section>
     `;
 
+    this.applyThemeBackdrop();
     const home = this.mountEl.querySelector('.qk-match-home');
     home.addEventListener('pointerdown', (event) => event.stopPropagation());
     home.addEventListener('click', () => speech.stop());

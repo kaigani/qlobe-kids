@@ -22,6 +22,11 @@ export default {
   engine: 'choose-one',
   title: 'Sink or Float',
   splashEmoji: '🛁',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'storybook-rooms',
+    background: './assets/bg.jpg',
+  },
   copy: {
     home: 'Home',
     replay: 'Hear it again',

@@ -11,6 +11,11 @@ export default {
   engine: 'build-assemble',
   title: 'Teen Bead Builder',
   splashEmoji: '🔟',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'toy-table',
+    background: './assets/bg.jpg',
+  },
   voice: {
     intro: 'A ten bar and some ones make a teen number.',
     nudge: 'That bead has another spot. Try again.',

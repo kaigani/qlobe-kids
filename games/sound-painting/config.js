@@ -3,6 +3,11 @@ export default {
   engine: 'observe-journal',
   title: 'Sound Painting',
   splashEmoji: '🎶',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'night-canvas',
+    background: './assets/bg.jpg',
+  },
   copy: {
     home: 'Home',
     replay: 'Hear it again',

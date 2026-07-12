@@ -11,7 +11,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -178,6 +178,8 @@ class BuildAssembleGame {
       </section>
     `;
 
+    this.applyThemeBackdrop();
+
     this.mountEl.querySelectorAll('.qk-build-mode').forEach((button) => {
       button.addEventListener('pointerdown', (e) => {
         e.preventDefault();
@@ -186,6 +188,18 @@ class BuildAssembleGame {
       });
       button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
+  }
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover — the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-build');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
   }
 
   async startMode(modeId) {
@@ -232,6 +246,7 @@ class BuildAssembleGame {
         <button class="qk-build-img-btn qk-build-sound" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
     const home = this.mountEl.querySelector('.qk-build-home');
     home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
     home.addEventListener('click', () => speech.stop());

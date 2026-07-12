@@ -9,6 +9,11 @@ export default {
   engine: 'choose-one',
   title: 'World Music Dance',
   splashEmoji: '💃',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'paper-garden',
+    background: './assets/bg.jpg',
+  },
   copy: {
     home: 'Home',
     replay: 'Hear it again',

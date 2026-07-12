@@ -3,6 +3,11 @@ export default {
   engine: 'trace-path',
   title: 'Letter Road Driving',
   splashEmoji: '🚗',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'storybook-rooms',
+    background: './assets/bg.jpg',
+  },
   endArt: 'emoji:🏁',
   traveler: 'emoji:🚗',
   strokeColor: '#8b8f98',

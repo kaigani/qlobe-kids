@@ -7,7 +7,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, sway } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 import { artEl } from './art.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
@@ -158,6 +158,7 @@ class ObserveJournalGame {
         </div>
       </section>
     `;
+    this.applyThemeBackdrop();
     this.mountEl.querySelector('.qk-observe-splash-art').appendChild(
       artEl(this.config.splashArt, this.config.title),
     );
@@ -217,6 +218,7 @@ class ObserveJournalGame {
         <button class="qk-observe-sound qk-observe-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
     const sound = this.mountEl.querySelector('.qk-observe-sound');
     sound.addEventListener('pointerdown', (event) => event.stopPropagation());
     sound.addEventListener('click', () => this.replayFromHud());
@@ -775,6 +777,7 @@ class ObserveJournalGame {
         </button>
       </section>
     `;
+    this.applyThemeBackdrop();
     const again = this.mountEl.querySelector('.qk-observe-again');
     again.addEventListener('pointerdown', (event) => {
       event.preventDefault();
@@ -936,6 +939,19 @@ class ObserveJournalGame {
         await new Promise((resolve) => setTimeout(resolve, 120));
       }
     }
+  }
+
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover -- the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-observe');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
   }
 
   mute() {

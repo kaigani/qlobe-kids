@@ -9,6 +9,11 @@ export default {
   engine: 'choose-one',
   title: 'Grace & Courtesy Theater',
   splashEmoji: '🎩',
+  // Art-world backdrop (docs/art-direction.md)
+  theme: {
+    world: 'story-screen-stage',
+    background: './assets/bg.jpg',
+  },
   copy: {
     home: 'Home',
     replay: 'Hear it again',
