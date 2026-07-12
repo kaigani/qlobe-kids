@@ -1,0 +1,33 @@
+{
+  "id": "local-nature-guide",
+  "title": "Local Nature Guide",
+  "category": "culture-geography",
+  "path": "games/local-nature-guide/",
+  "icon": "🌲",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "The child studies respectfully collected nature finds, practices descriptions, and gives a family museum tour.",
+  "learningGoals": [
+    "Build knowledge of familiar local nature objects",
+    "Use sensory details in descriptive language",
+    "Grow confidence by teaching observations back",
+    "Practice respectful collecting and curiosity"
+  ],
+  "interactionModel": "tap the large done step after each real-world collecting, study, practice, or presentation activity; timers leave room for close observation",
+  "feedbackModel": "warm park-ranger speech with sparkle, tick, and tada SFX; every ordinary nature find is celebrated as museum-grade",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "collect", "title": "Guide Training", "skill": "study and describe local nature finds" },
+    { "id": "tour", "title": "Give the Tour", "skill": "teach back observations with confidence" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

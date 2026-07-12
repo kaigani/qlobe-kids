@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Local Nature Guide — QLOBE Kids</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#bee3f5" />
+  <meta name="description" content="Collect respectful nature finds, study them, and guide a family museum tour." />
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <style>
+    /* Stub games share the engine's built-in styles; this file stays minimal.
+       The engine injects its own stylesheet (engine-owned look = consistent feel). */
+    @font-face {
+      font-family: 'Fredoka';
+      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+      font-weight: 600; font-display: swap;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+      background: #bee3f5;
+      touch-action: manipulation;
+      user-select: none; -webkit-user-select: none;
+    }
+    #game { height: 100dvh; }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <script type="module">
+    import config from './config.js';
+    import { createGame } from '../../shared/js/engines/coach-timer.js';
+    createGame(config, document.getElementById('game'));
+  </script>
+</body>
+</html>

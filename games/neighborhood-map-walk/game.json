@@ -1,0 +1,33 @@
+{
+  "id": "neighborhood-map-walk",
+  "title": "Neighborhood Map Walk",
+  "category": "culture-geography",
+  "path": "games/neighborhood-map-walk/",
+  "icon": "🗺️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e07a5f",
+  "description": "A young mapmaker studies nearby landmarks on a grown-up walk or from a window, then draws a personal neighborhood map.",
+  "learningGoals": [
+    "Develop spatial thinking around home and nearby streets",
+    "Remember and represent familiar landmarks",
+    "Use simple drawings as map symbols",
+    "Connect a personal place to a wider neighborhood"
+  ],
+  "interactionModel": "tap the large done step after each real-world drawing or spotting mission; timers create roomy observation and mapmaking periods",
+  "feedbackModel": "warm expedition-leader speech with sparkle, tick, and tada SFX; the child's map is treated as authoritative and has no wrong streets",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "map", "title": "Make Your Map", "skill": "draw landmarks and routes as a personal map" },
+    { "id": "walk", "title": "Walk and Spot", "skill": "observe and remember neighborhood features" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

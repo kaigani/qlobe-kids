@@ -1,0 +1,33 @@
+{
+  "id": "melting-race",
+  "title": "Melting Race",
+  "category": "sensorial-science",
+  "path": "games/melting-race/",
+  "icon": "🧊",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "Four ice cubes race under different conditions while the child predicts, waits, observes, and calls the winner.",
+  "learningGoals": [
+    "Connect heat with melting cause and effect",
+    "Predict an outcome before observing it",
+    "Wait patiently through short science check-ins",
+    "Compare ice cubes under different conditions"
+  ],
+  "interactionModel": "tap the large done step after each real-world setup or observation; timed check-ins build the suspense of the melting race",
+  "feedbackModel": "sports-announcer science coaching with sparkle, tick, and tada SFX; every prediction is welcome and observation drives the result",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "race", "title": "The Big Melt", "skill": "compare melting under four conditions" },
+    { "id": "rescue", "title": "Ice Rescue", "skill": "use warmth to melt ice and free a toy" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
