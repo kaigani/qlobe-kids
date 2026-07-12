@@ -1,0 +1,33 @@
+{
+  "id": "plant-care-captain",
+  "title": "Plant Care Captain",
+  "category": "practical-life",
+  "path": "games/plant-care-captain/",
+  "icon": "🪴",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A warm daily coach for close observation and gentle care of a real plant through watering, turning, dusting, and misting routines.",
+  "learningGoals": [
+    "Care for a living thing with gentle hands",
+    "Observe leaves and soil closely before acting",
+    "Build a repeatable plant-care responsibility routine",
+    "Notice when soil and leaves need different kinds of care"
+  ],
+  "interactionModel": "tap the large done row after each real-world plant-care step; calm timers leave room for close observation and gentle handling",
+  "feedbackModel": "warm ship-captain voice with sparkle, tick, and tada SFX; every completed step treats the plant as a valued crew member",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "care", "title": "Care Round", "skill": "daily observation, soil checking, and careful watering" },
+    { "id": "spa", "title": "Plant Spa Day", "skill": "gentle leaf cleaning and occasional plant care" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

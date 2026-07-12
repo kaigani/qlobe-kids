@@ -1,0 +1,33 @@
+{
+  "id": "cleanup-timer-quest",
+  "title": "Cleanup Timer Quest",
+  "category": "practical-life",
+  "path": "games/cleanup-timer-quest/",
+  "icon": "⏱️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f28c45",
+  "description": "A friendly cleanup quest that makes a messy zone feel finishable by sorting toys, clothes, and books before sending each pile home.",
+  "learningGoals": [
+    "Sort a mixed mess into toys, clothes, and books",
+    "Store one category at a time after sorting",
+    "Develop a gentle sense of elapsed time",
+    "Experience cleanup as a short, finishable routine"
+  ],
+  "interactionModel": "tap the large done row after each real-world cleanup step; friendly timers coach sorting and storing without threatening or rushing",
+  "feedbackModel": "gentle game-show voice with sparkle, tick, and tada SFX; timer completion is always encouraging and the clean room is the prize",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "room", "title": "Room Rescue", "skill": "sort first, then store one category at a time" },
+    { "id": "speed", "title": "Five-Minute Wonder", "skill": "time awareness during one bounded cleanup" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

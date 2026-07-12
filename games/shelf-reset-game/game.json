@@ -1,0 +1,33 @@
+{
+  "id": "shelf-reset-game",
+  "title": "Shelf Reset Game",
+  "category": "practical-life",
+  "path": "games/shelf-reset-game/",
+  "icon": "🧺",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#d69e67",
+  "description": "A serene Montessori work-cycle coach where the win is returning one tray or shelf spot exactly as it was found.",
+  "learningGoals": [
+    "Practice the complete choose, use, and return work cycle",
+    "Build order and respect for shared spaces",
+    "Finish one activity before beginning another",
+    "Reset materials so the next person finds them ready"
+  ],
+  "interactionModel": "tap the large done row after each real-world shelf step; timers support sustained attention, sorting, and an unhurried reset",
+  "feedbackModel": "serene spoken coaching with quiet sparkle, tick, and tada SFX; celebration centers the completed reset rather than speed",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "cycle", "title": "One Full Cycle", "skill": "choose, use, reset, and return one tray" },
+    { "id": "inspector", "title": "Shelf Inspector", "skill": "sort misplaced materials and restore shelf order" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
