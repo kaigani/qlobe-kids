@@ -1,0 +1,33 @@
+{
+  "id": "trail-counting-walk",
+  "title": "Trail Counting Walk",
+  "category": "movement-outdoor",
+  "path": "games/trail-counting-walk/",
+  "icon": "🔢",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e9853d",
+  "description": "A number-newsroom walking coach that sends kids outside to count steps, birds, doors, and playful scavenger targets.",
+  "learningGoals": [
+    "Practice counting real objects and events in the wild",
+    "Remember and report numbers at spoken check-ins",
+    "Compare collected numbers to identify more and fewer",
+    "Build observation stamina during an outdoor walk"
+  ],
+  "interactionModel": "follow each spoken outdoor counting mission, remember and say the total at check-in, then tap the large current-step card",
+  "feedbackModel": "excited spoken number-news reports with tick, sparkle, and tada SFX; every reported total becomes a headline",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "walk", "title": "Counting Walk", "skill": "counting, remembering, and comparing outdoor totals" },
+    { "id": "race", "title": "Number Race", "skill": "counting observed categories to target numbers" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

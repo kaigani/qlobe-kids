@@ -1,0 +1,33 @@
+{
+  "id": "garden-delivery-game",
+  "title": "Garden Delivery Game",
+  "category": "movement-outdoor",
+  "path": "games/garden-delivery-game/",
+  "icon": "🚚",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d9b74",
+  "description": "A playful garden dispatch coach for carrying water slowly, navigating obstacles, cleaning spills, and serving thirsty plants.",
+  "learningGoals": [
+    "Practice carrying control with different containers",
+    "Walk with focus while navigating a simple obstacle route",
+    "Regulate force and speed so careful movement leads",
+    "Build pride in serving plants and cleaning up spills"
+  ],
+  "interactionModel": "follow each spoken fill-carry-pour-return mission, watch the calm timer, then tap the large current-step card after the real-world delivery",
+  "feedbackModel": "playful delivery-dispatch speech with grateful plant reviews and tick, sparkle, and tada SFX; spills become friendly cleanup stops",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "delivery", "title": "Water Delivery", "skill": "careful water carrying and obstacle navigation" },
+    { "id": "express", "title": "Express Round", "skill": "repeating the fill-carry-pour-return cycle with control" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}

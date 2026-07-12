@@ -1,0 +1,33 @@
+{
+  "id": "line-walking-challenge",
+  "title": "Line Walking Challenge",
+  "category": "movement-outdoor",
+  "path": "games/line-walking-challenge/",
+  "icon": "🧘",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a945",
+  "description": "A near-whisper coach for heel-to-toe walking, quiet carrying, balance, and calm slow movement.",
+  "learningGoals": [
+    "Build concentration through slow heel-to-toe walking",
+    "Practice balance while changing arm and carrying positions",
+    "Develop graceful, controlled movement",
+    "Use slow movement and breathing for self-calming"
+  ],
+  "interactionModel": "follow each spoken real-world movement prompt, watch the calm timer, then tap the large current-step card when finished",
+  "feedbackModel": "serene spoken coaching with tick, sparkle, and tada SFX; praise celebrates slowness, control, and practice",
+  "uses": [
+    "shared/js/engines/coach-timer.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "line", "title": "The Quiet Line", "skill": "slow heel-to-toe walking and calm balance" },
+    { "id": "carry", "title": "Carry Challenge", "skill": "controlled walking while balancing and carrying" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
