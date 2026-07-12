@@ -1,0 +1,33 @@
+{
+  "id": "sticker-line-challenge",
+  "title": "Sticker Line Challenge",
+  "category": "writing-fine-motor",
+  "path": "games/sticker-line-challenge/",
+  "icon": "⭐",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e873a4",
+  "description": "Trace dotted waves, zigzags, and loops while a cheerful sticker follows every careful stroke.",
+  "learningGoals": [
+    "Follow a line from left to right with controlled movement",
+    "Practice curved, zigzag, circular, and loop pre-writing strokes",
+    "Build finger control that supports later pencil use"
+  ],
+  "interactionModel": "trace each dotted path continuously with one finger",
+  "feedbackModel": "Checkpoints sparkle as the child passes them; wandering gets a gentle spoken nudge, and every finished path earns warm praise and a short celebration.",
+  "uses": [
+    "shared/js/engines/trace-path.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "waves", "title": "Wavy Lines", "skill": "controlled left-to-right curved strokes" },
+    { "id": "zigzags", "title": "Zigzag Trails", "skill": "direction changes and corner control" },
+    { "id": "loops", "title": "Loop-the-Loops", "skill": "circular and loop pre-writing strokes" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "QLOBE Kids contributors; placeholder emoji art (see ASSETS.md).",
+  "characters": [],
+  "conceptVideo": ""
+}

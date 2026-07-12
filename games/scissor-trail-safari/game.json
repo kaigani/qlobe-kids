@@ -1,0 +1,33 @@
+{
+  "id": "scissor-trail-safari",
+  "title": "Scissor Trail Safari",
+  "category": "writing-fine-motor",
+  "path": "games/scissor-trail-safari/",
+  "icon": "✂️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#58a96b",
+  "description": "Guide finger-scissors along straight, curved, and spiral paper trails to free safari animals.",
+  "learningGoals": [
+    "Control movement along straight and gently angled cutting lines",
+    "Practice smooth continuous strokes on curves and spirals",
+    "Strengthen hand-eye steering for real-world scissor practice"
+  ],
+  "interactionModel": "trace each dotted cutting trail continuously with one finger",
+  "feedbackModel": "The cutting trail sparkles as the child advances; wandering gets a gentle spoken reminder, and every completed path frees an animal with named praise.",
+  "uses": [
+    "shared/js/engines/trace-path.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "straight", "title": "Straight Cuts", "skill": "straight and angled line control" },
+    { "id": "curvy", "title": "Curvy Cuts", "skill": "smooth continuous curved strokes" },
+    { "id": "spiral", "title": "Spiral Rescue", "skill": "sustained hand-eye steering on spirals" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "QLOBE Kids contributors; placeholder emoji art (see ASSETS.md).",
+  "characters": [],
+  "conceptVideo": ""
+}

@@ -1,0 +1,113 @@
+export default {
+  id: 'scissor-trail-safari',
+  engine: 'trace-path',
+  title: 'Scissor Trail Safari',
+  splashEmoji: '✂️',
+  // Paper Garden art world (docs/art-direction.md)
+  theme: { world: 'paper-garden', background: './assets/bg.jpg' },
+  endArt: 'emoji:🐘',
+  traveler: 'emoji:✂️',
+  strokeColor: '#58a96b',
+  tolerance: 78,
+  startMarker: '✂️',
+  copy: {
+    home: 'Home',
+    replay: 'Hear it again',
+    playAgain: 'Play Again',
+  },
+  voice: {
+    intro: 'Choose a paper safari trail for your finger-scissors!',
+    nudge: 'Steady scissors. Find the dotted cutting line and keep going.',
+    cheer: 'Safari rescue complete! Every paper animal is free!',
+    yums: [
+      'Steady scissors!',
+      'Smooth cutting!',
+      'You followed the paper trail!',
+    ],
+  },
+  modes: [
+    {
+      id: 'straight',
+      title: 'Straight Cuts',
+      prompt: 'Cut along the straight dotted line.',
+      rounds: 3,
+      paths: [
+        {
+          id: 'lion',
+          name: 'lion trail',
+          prompt: 'Steady scissors. Cut straight across to the lion!',
+          say: 'You freed the lion! Happy hop, lion!',
+          points: [[130, 500], [330, 500], [530, 500], [730, 500], [900, 500]],
+        },
+        {
+          id: 'zebra',
+          name: 'zebra trail',
+          prompt: 'Follow the gentle angle to the zebra!',
+          say: 'You freed the zebra! Happy hop, zebra!',
+          points: [[140, 700], [330, 610], [520, 520], [710, 430], [900, 340]],
+        },
+        {
+          id: 'giraffe',
+          name: 'giraffe trail',
+          prompt: 'Steady scissors. Follow both gentle angles to the giraffe!',
+          say: 'You freed the giraffe! Happy hop, giraffe!',
+          points: [[120, 680], [350, 510], [570, 340], [760, 490], [910, 610]],
+        },
+      ],
+    },
+    {
+      id: 'curvy',
+      title: 'Curvy Cuts',
+      prompt: 'Cut along the curvy dotted trail.',
+      rounds: 3,
+      strokeColor: '#2d9c9b',
+      paths: [
+        {
+          id: 'parrot',
+          name: 'parrot trail',
+          prompt: 'Steady scissors around the S-curve to the parrot!',
+          say: 'You freed the parrot! Happy hop, parrot!',
+          points: [[140, 320], [360, 200], [560, 350], [450, 560], [650, 740], [880, 650]],
+        },
+        {
+          id: 'snake',
+          name: 'snake trail',
+          prompt: 'Snip along the wiggly curve to the snake!',
+          say: 'You freed the snake! Happy wiggle, snake!',
+          points: [[120, 520], [270, 330], [420, 520], [570, 700], [720, 520], [880, 330]],
+        },
+        {
+          id: 'monkey',
+          name: 'monkey trail',
+          prompt: 'Follow the big paper arc to the monkey!',
+          say: 'You freed the monkey! Happy hop, monkey!',
+          points: [[120, 700], [250, 420], [500, 250], [750, 420], [890, 700]],
+        },
+      ],
+    },
+    {
+      id: 'spiral',
+      title: 'Spiral Rescue',
+      prompt: 'Steady scissors around the whole spiral.',
+      rounds: 2,
+      strokeColor: '#d47b49',
+      tolerance: 82,
+      paths: [
+        {
+          id: 'elephant',
+          name: 'elephant spiral',
+          prompt: 'This is a tricky cut. Spiral in to rescue the elephant!',
+          say: 'You freed the elephant! Happy hop, elephant!',
+          points: [[810, 260], [600, 130], [340, 180], [160, 390], [180, 660], [390, 830], [670, 790], [840, 580], [790, 350], [600, 250], [390, 320], [300, 510], [390, 680], [590, 700], [700, 550], [650, 420], [520, 380], [430, 470], [470, 570], [560, 580]],
+        },
+        {
+          id: 'tiger',
+          name: 'tiger spiral',
+          prompt: 'One more tricky spiral. Steady scissors to the tiger!',
+          say: 'You freed the tiger! Happy hop, tiger!',
+          points: [[190, 270], [400, 130], [670, 180], [840, 410], [790, 690], [560, 830], [290, 750], [160, 520], [240, 300], [470, 220], [690, 330], [740, 540], [590, 700], [390, 650], [290, 490], [390, 360], [550, 350], [640, 460], [590, 560], [500, 570]],
+        },
+      ],
+    },
+  ],
+};
