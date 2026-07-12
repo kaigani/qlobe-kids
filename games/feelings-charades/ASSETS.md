@@ -15,7 +15,10 @@ First game through `docs/polish-process.md`. Story Screen art world.
 
 Production lessons recorded: the `sad` vignette needed a retry with explicit
 motion beats (head drop + eye wipe) — subtle "low energy" emotions need
-concrete physical actions in the prompt, not adjectives.
+concrete physical actions in the prompt, not adjectives. And full-body
+generations from bust-only portraits INVENT the lower half — Maya's happy and
+proud art shipped without pants until a user report; always specify the
+complete canonical outfit in the prompt and wardrobe-audit every batch.
 
 ## Shared runtime assets
 
