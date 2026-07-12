@@ -219,6 +219,8 @@ export class Game {
     this.showPhase('act');
     this.els.actTitle.textContent = `Show me ${f.label.toLowerCase()}!`;
     this.els.actEmoji.textContent = f.emoji;
+    this.els.actArt.src = CARD_ART(f.key);
+    this.els.actArt.alt = `${f.label} pose`;
     this.awaitingInput = true;
     this.actToken = (this.actToken || 0) + 1;
     const token = this.actToken;
@@ -295,10 +297,19 @@ export class Game {
     this.els.copeTitle.textContent =
       f.cope === 'breathe' ? "Let's breathe it smaller" :
       f.cope === 'talk' ? 'Tell someone you trust' : 'A hug helps';
+    // the copy block is per-feeling — a hardcoded "frustrated" here once
+    // greeted sad and worried kids with the wrong feeling
+    this.els.copeCopyTitle.textContent = `It's okay to feel ${f.label.toLowerCase()}.`;
+    this.els.copeCopySub.textContent =
+      f.cope === 'breathe' ? "Let's take one slow breath." :
+      f.cope === 'talk' ? 'Talking to someone helps.' : 'A big hug helps.';
 
     if (f.cope === 'breathe') {
-      if (this.reducedMotion) steps.classList.remove('hidden');
-      else wrap.classList.remove('hidden');
+      // Keep both the character/rings and the three-step visual sequence on
+      // screen. Preschoolers can follow the pictograms while the voice guides
+      // each timed phase; reduced-motion simply disables the ring transition.
+      wrap.classList.remove('hidden');
+      steps.classList.remove('hidden');
       await this.speak([`${f.key}-cope-intro`]);
       for (let cycle = 0; cycle < 3 && !this.destroyed && this.phase === 'cope'; cycle++) {
         await this.breathPhase('inhale', 'Breathe in…', 'in', `${f.key}-breathe-in`, 4000);
@@ -384,6 +395,7 @@ export class Game {
       card.type = 'button';
       card.dataset.answer = key;
       card.dataset.index = String(i);
+      card.style.setProperty('--accent', opt.accent);
       card.setAttribute('aria-label', opt.label);
       const img = document.createElement('img');
       img.src = CARD_ART(key);

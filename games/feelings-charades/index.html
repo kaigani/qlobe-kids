@@ -14,13 +14,21 @@
   <!-- ===== Splash ===== -->
   <div id="splash" class="screen">
     <a id="splash-home" class="round-btn btn-home" href="../../" aria-label="Back to all games"></a>
+    <button id="splash-sound" class="round-btn btn-sound" aria-label="Hear the welcome again"></button>
     <div class="splash-center">
-      <div id="host-wrap"><img id="host-portrait" alt="Ravi" draggable="false" /></div>
-      <h1><span class="t-red">Feel</span><span class="t-orange">ings</span> <span class="t-green">Chara</span><span class="t-blue">des</span></h1>
-      <p class="tagline">Learn emotions, playfully.</p>
+      <div class="title-board">
+        <span class="board-star star-one">★</span><span class="board-star star-two">★</span>
+        <h1><span class="t-red">Feel</span><span class="t-orange">ings</span><br><span class="t-green">Chara</span><span class="t-blue">des</span></h1>
+        <p class="tagline">Learn emotions, playfully.</p>
+        <div class="hero-cast" aria-hidden="true">
+          <img src="./assets/cards/happy.png" alt="" draggable="false" />
+          <div id="host-wrap"><img id="host-portrait" alt="Ravi" draggable="false" /></div>
+          <img src="./assets/cards/calm.png" alt="" draggable="false" />
+        </div>
+      </div>
       <div class="mode-buttons">
-        <button class="mode-button" data-mode="act">🎭 Act It Out</button>
-        <button class="mode-button" data-mode="guess">👂 Guess the Feeling</button>
+        <button class="mode-button" data-mode="act"><span aria-hidden="true">🎭</span> Act It Out</button>
+        <button class="mode-button" data-mode="guess"><span aria-hidden="true">👂</span> Guess the Feeling</button>
       </div>
     </div>
   </div>
@@ -39,7 +47,10 @@
       <div id="demo-stage">
         <video id="demo-video" class="hidden" muted playsinline preload="auto"></video>
         <img id="demo-art" class="hidden" alt="" draggable="false" />
+        <span class="guide-corner g1"></span><span class="guide-corner g2"></span>
+        <span class="guide-corner g3"></span><span class="guide-corner g4"></span>
       </div>
+      <div id="demo-instruction"><strong>Watch the feeling</strong><span>Then show it with your face and body</span></div>
       <button id="btn-your-turn" class="big-cta">⭐ Your turn!</button>
     </div>
 
@@ -51,6 +62,7 @@
           <circle class="ring-bg" cx="100" cy="100" r="88" />
           <circle class="ring-fg" cx="100" cy="100" r="88" />
         </svg>
+        <img id="act-art" alt="" draggable="false" />
         <div id="act-emoji" aria-hidden="true"></div>
       </div>
       <button id="btn-act-done" class="big-cta">✨ Done!</button>
@@ -59,10 +71,12 @@
     <!-- Coping pivot -->
     <div id="cope" class="phase hidden">
       <div id="cope-title" class="pill"></div>
+      <div id="cope-copy"><strong id="cope-copy-title"></strong><span id="cope-copy-sub"></span></div>
       <div id="breath-wrap" class="hidden" aria-hidden="true">
         <div class="breath-ring r3"></div>
         <div class="breath-ring r2"></div>
         <div class="breath-ring r1"></div>
+        <img id="breath-art" src="./assets/cards/calm.png" alt="" draggable="false" />
         <div id="breath-label"></div>
       </div>
       <div id="breath-steps" class="hidden" aria-hidden="true">

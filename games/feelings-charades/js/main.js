@@ -14,6 +14,7 @@ const els = {
   game: document.getElementById('game'),
   endScreen: document.getElementById('end-screen'),
   hostPortrait: document.getElementById('host-portrait'),
+  splashSound: document.getElementById('splash-sound'),
   btnBack: document.getElementById('btn-back'),
   btnSound: document.getElementById('btn-sound'),
   btnEndBack: document.getElementById('btn-end-back'),
@@ -34,8 +35,11 @@ const els = {
   actTitle: document.getElementById('act-title'),
   actRing: document.getElementById('act-ring'),
   actEmoji: document.getElementById('act-emoji'),
+  actArt: document.getElementById('act-art'),
   actDone: document.getElementById('btn-act-done'),
   copeTitle: document.getElementById('cope-title'),
+  copeCopyTitle: document.getElementById('cope-copy-title'),
+  copeCopySub: document.getElementById('cope-copy-sub'),
   breathWrap: document.getElementById('breath-wrap'),
   breathSteps: document.getElementById('breath-steps'),
   breathLabel: document.getElementById('breath-label'),
@@ -137,6 +141,10 @@ onTap(els.btnSound, () => {
   lastReplay = now;
   sfx.tick();
   if (game) game.replay();
+});
+onTap(els.splashSound, () => {
+  sfx.tick();
+  voice.say('intro');
 });
 
 // phase CTAs route through the game's real input paths
