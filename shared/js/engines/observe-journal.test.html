@@ -22,10 +22,11 @@
 </head>
 <body>
   <div id="app"></div>
+  <pre id="test-results" hidden></pre>
   <script type="module">
     import { createGame } from './observe-journal.js';
 
-    createGame({
+    const game = createGame({
       id: 'observe-journal-test',
       engine: 'observe-journal',
       title: 'Weather Watch',
@@ -85,6 +86,50 @@
         }],
       }],
     }, document.getElementById('app'));
+
+    // Optional self-driving smoke check for reviewers and headless browsers:
+    // observe-journal.test.html?smoke=1 leaves a machine-readable PASS/FAIL.
+    if (new URLSearchParams(location.search).has('smoke')) {
+      const results = document.getElementById('test-results');
+      results.hidden = false;
+      (async () => {
+        try {
+          const debug = window.QLOBE_DEBUG;
+          await debug.ready;
+          debug.mute();
+          debug.seed(42);
+          await debug.startMode('weather');
+
+          const firstTargets = debug.getTargets();
+          if (!firstTargets.some((target) => target.id === 'scene' && target.role === 'neutral')) {
+            throw new Error('missing neutral scene target');
+          }
+          const stickers = firstTargets.filter((target) => target.id.startsWith('sticker:'));
+          if (stickers.length !== 4 || stickers.some((target) => target.role !== 'correct')) {
+            throw new Error('sticker targets must all be accepted choices');
+          }
+          if (stickers.some((target) => target.rect.w < 95 || target.rect.h < 95)) {
+            throw new Error('sticker target smaller than 96px');
+          }
+          if (!(await debug.tap('sticker:0')).accepted) throw new Error('first sticker was rejected');
+
+          // Restart the same page and prove a different open-ended answer also
+          // follows the exact public input path and is accepted.
+          await debug.startMode('weather');
+          if (!(await debug.tap('sticker:1')).accepted) throw new Error('alternate sticker was rejected');
+
+          await debug.startMode('weather');
+          while (debug.getState().screen === 'play') await debug.winRound();
+          if (debug.getState().screen !== 'end') throw new Error('winRound did not reach recap');
+          results.dataset.status = 'pass';
+          results.textContent = 'PASS';
+          game.destroy();
+        } catch (error) {
+          results.dataset.status = 'fail';
+          results.textContent = `FAIL: ${error && error.stack || error}`;
+        }
+      })();
+    }
   </script>
 </body>
 </html>

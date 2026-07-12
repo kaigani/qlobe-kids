@@ -22,7 +22,9 @@ shared/js/engines/
 
 ## Engine module contract
 
-- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js`, `./art.js` — nothing else.
+- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js`, `./art.js`, and —
+  for Stage v2 (PixiJS) engines — the stage kit: `../stage/stage.js`,
+  `../stage/tween.js`, `../stage/particles.js`, `../stage/art-pixi.js`. Nothing else.
 - Any asset URL inside an engine resolves module-relative:
   `new URL('../../assets/…', import.meta.url)`.
 - Export:
