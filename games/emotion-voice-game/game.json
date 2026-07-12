@@ -1,0 +1,32 @@
+{
+  "id": "emotion-voice-game",
+  "title": "Emotion Voice Game",
+  "category": "oral-storytelling",
+  "path": "games/emotion-voice-game/",
+  "icon": "🎭",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#f25f5c",
+  "description": "Pick a feeling, hear a theatrical model, and perform the same little line with a happy, scared, proud, sleepy, or animal voice.",
+  "learningGoals": [
+    "Recognize feelings from facial and vocal cues",
+    "Change pitch, pace, volume, and rhythm to express emotion",
+    "Build confidence performing short spoken lines"
+  ],
+  "interactionModel": "listen to a line prompt, tap an emotion or animal sticker, hear the modeled performance, and copy it aloud",
+  "feedbackModel": "Every emotion is a valid performance choice; the coach models it broadly, the sticker sparkles into the journal, and the show ends with warm applause.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "lines", "title": "Say It With Feeling", "skill": "expressing the same sentence with different emotions" },
+    { "id": "animals", "title": "Animal Feelings", "skill": "recognizing and copying characterful emotional voices" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "QLOBE Kids contributors; placeholder emoji only (see ASSETS.md).",
+  "characters": [],
+  "conceptVideo": ""
+}

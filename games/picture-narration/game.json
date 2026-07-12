@@ -1,0 +1,32 @@
+{
+  "id": "picture-narration",
+  "title": "Picture Narration",
+  "category": "oral-storytelling",
+  "path": "games/picture-narration/",
+  "icon": "🖼️",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2d7dd2",
+  "description": "Explore a busy park or market picture, name the details you notice, and hear them replayed as a story.",
+  "learningGoals": [
+    "Build descriptive vocabulary through close observation",
+    "Name familiar objects and actions aloud",
+    "Speak observations in complete sentences"
+  ],
+  "interactionModel": "listen to a noticing prompt, tap a matching open-ended sticker, and name the pictured detail aloud",
+  "feedbackModel": "Every valid noticing is repeated in a curious teacher voice, sparkles into the journal, and returns in the spoken recap.",
+  "uses": [
+    "shared/js/engines/observe-journal.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js"
+  ],
+  "modes": [
+    { "id": "park", "title": "At the Park", "skill": "observing and describing details in a park scene" },
+    { "id": "market", "title": "At the Market", "skill": "naming and describing familiar market sights and sounds" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "QLOBE Kids contributors; placeholder emoji only (see ASSETS.md).",
+  "characters": [],
+  "conceptVideo": ""
+}
