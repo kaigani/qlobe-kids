@@ -10,6 +10,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -77,6 +78,14 @@ class PatternContinueGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-pattern-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -199,7 +208,7 @@ class PatternContinueGame {
     this.mountEl.innerHTML = `
       <section class="qk-pattern qk-pattern-play" aria-label="${escapeAttr(this.mode.title)}">
         <header class="qk-pattern-hud">
-          <a class="qk-pattern-home qk-pattern-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-pattern-back qk-pattern-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-pattern-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-pattern-stage">
@@ -209,9 +218,9 @@ class PatternContinueGame {
       </section>`;
     this.applyThemeBackdrop();
 
-    const home = this.mountEl.querySelector('.qk-pattern-home');
+    const home = this.mountEl.querySelector('.qk-pattern-back');
     home.addEventListener('pointerdown', (event) => event.stopPropagation());
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
     const sound = this.mountEl.querySelector('.qk-pattern-sound');
     sound.addEventListener('pointerdown', (event) => event.stopPropagation());
     sound.addEventListener('click', () => this.replayPromptFromHud());
@@ -717,7 +726,7 @@ class PatternContinueGame {
   renderEnd() {
     this.mountEl.innerHTML = `
       <section class="qk-pattern qk-pattern-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-pattern-home qk-pattern-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-pattern-back qk-pattern-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-pattern-end-center">
           <div class="qk-pattern-end-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -1018,8 +1027,10 @@ function installStyle() {
     .qk-pattern-img-btn { display:grid; place-items:center; width:96px; height:96px; border-radius:50%;
       background:transparent center/84px 84px no-repeat; text-decoration:none; box-shadow:none; }
     .qk-pattern-img-btn:active { transform:scale(.93); }
-    .qk-pattern-home { background-image:url('${HOME_IMG}'); position:absolute; top:max(12px,env(safe-area-inset-top));
+    .qk-pattern-home, .qk-pattern-back { position:absolute; top:max(12px,env(safe-area-inset-top));
       left:max(12px,env(safe-area-inset-left)); z-index:4; }
+    .qk-pattern-home { background-image:url('${HOME_IMG}'); }
+    .qk-pattern-back { background-image:url('${BACK_IMG}'); }
     .qk-pattern-sound { background-image:url('${SOUND_IMG}'); position:absolute; left:max(14px,env(safe-area-inset-left));
       bottom:max(12px,env(safe-area-inset-bottom)); z-index:4; }
     .qk-pattern-splash,.qk-pattern-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top))
@@ -1044,7 +1055,7 @@ function installStyle() {
       max(14px,env(safe-area-inset-left)); }
     .qk-pattern-hud { position:relative; z-index:3; display:grid; grid-template-columns:96px 1fr 96px;
       align-items:center; min-height:100px; }
-    .qk-pattern-hud .qk-pattern-home { position:static; grid-column:1; }
+    .qk-pattern-hud .qk-pattern-home,     .qk-pattern-hud .qk-pattern-back { position:static; grid-column:1; }
     .qk-pattern-progress { grid-column:2; justify-self:center; display:flex; align-items:center; justify-content:center;
       gap:11px; min-height:32px; padding:6px 16px; border-radius:999px; background:rgba(255,255,255,.38); }
     .qk-pattern-dot { width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,.9); opacity:.8; }

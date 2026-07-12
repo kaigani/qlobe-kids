@@ -253,6 +253,14 @@ the pill background:
 Always prevent HUD `pointerdown` from reaching the game canvas
 (`e.stopPropagation()`), or a corner tap will also fire a game tap.
 
+**Navigation routing.** Two levels, always: the game **splash** (mode menu) has
+the round **home** button (`btn-home.png`) linking to the catalog (`../../`).
+Every deeper screen — play and end — has the round **back** button
+(`btn-back.png`) instead, returning to the game splash in-page (no navigation).
+A child is never more than two taps from the catalog and never loses a game's
+menu by tapping home mid-round. Engines implement this already; custom games
+must follow it.
+
 **One press path.** Never play feedback on `pointerdown` but act on `click` — a
 touch can tick and then drop the action (movement past the tap slop suppresses
 the synthetic click), which reads as "I tapped it and nothing happened". Wire

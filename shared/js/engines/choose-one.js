@@ -10,6 +10,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -75,6 +76,14 @@ class ChooseOneGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-choose-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -197,7 +206,7 @@ class ChooseOneGame {
     this.mountEl.innerHTML = `
       <section class="qk-choose qk-choose-play" aria-label="${escapeAttr(this.mode.title)}">
         <header class="qk-choose-hud">
-          <a class="qk-choose-home qk-choose-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-choose-back qk-choose-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-choose-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-choose-stage">
@@ -617,7 +626,7 @@ class ChooseOneGame {
   async renderEnd() {
     this.mountEl.innerHTML = `
       <section class="qk-choose qk-choose-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-choose-home qk-choose-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-choose-back qk-choose-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-choose-end-center">
           <div class="qk-choose-end-emoji" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -952,6 +961,7 @@ function installStyle() {
 
     .qk-choose-img-btn:active { transform: scale(.93); }
     .qk-choose-home { background-image: url('${HOME_IMG}'); }
+    .qk-choose-back { background-image: url('${BACK_IMG}'); }
     .qk-choose-sound { background-image: url('${SOUND_IMG}'); }
 
     .qk-choose-splash,
@@ -962,7 +972,7 @@ function installStyle() {
         max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
 
-    .qk-choose-home {
+    .qk-choose-home,     .qk-choose-back {
       position: absolute;
       top: max(12px, env(safe-area-inset-top));
       left: max(12px, env(safe-area-inset-left));
@@ -1047,7 +1057,7 @@ function installStyle() {
       min-height: 100px;
     }
 
-    .qk-choose-hud .qk-choose-home {
+    .qk-choose-hud .qk-choose-home,     .qk-choose-hud .qk-choose-back {
       position: static;
       grid-column: 1;
     }

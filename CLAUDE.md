@@ -82,7 +82,9 @@ for it first.
 - **`shared/assets/`**:
   - **`letter-tiles/`** — 56 onset/rime tile PNGs (blue onsets, orange rimes).
   - **`objects/`** — 134 illustrated word picture-cards in one consistent toy style.
-  - **`ui/`** — `btn-home.png`, `btn-play.png`, `btn-shuffle.png`, `btn-sound.png`.
+  - **`ui/`** — `btn-home.png`, `btn-back.png`, `btn-play.png`,
+    `btn-shuffle.png`, `btn-sound.png`. Navigation rule: **home** (→ catalog)
+    lives ONLY on a game's splash; play/end screens use **back** (→ splash).
   - **`audio/`** — recorded warm preschool-teacher voice library with
     `manifest.json` and `fragments/ words/ prompts/ celebrate/ misc/` clips.
   - **`twemoji/`** — CC-BY 4.0 emoji artwork (defensive fallback set).

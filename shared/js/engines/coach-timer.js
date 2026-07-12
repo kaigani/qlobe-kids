@@ -10,6 +10,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const WAIT_FOR_INPUT = 80;
@@ -76,6 +77,14 @@ class CoachTimerGame {
     window.addEventListener('contextmenu', this.preventGesture);
     document.addEventListener('visibilitychange', this.onVisibility);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-coach-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebug();
@@ -200,7 +209,7 @@ class CoachTimerGame {
     this.mountEl.innerHTML = `
       <section class="qk-coach qk-coach-play qk-coach-steps" aria-label="${escapeAttr(this.mode.title || '')}">
         <header class="qk-coach-hud">
-          <a class="qk-coach-home qk-coach-img-btn" href="../../" aria-label="Home"></a>
+          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-coach-dots" aria-hidden="true"></div>
         </header>
         <main class="qk-coach-workspace">
@@ -315,7 +324,7 @@ class CoachTimerGame {
     this.mountEl.innerHTML = `
       <section class="qk-coach qk-coach-play qk-coach-signal" data-target-id="signal-area" aria-label="${escapeAttr(this.mode.title || '')}">
         <header class="qk-coach-hud">
-          <a class="qk-coach-home qk-coach-img-btn" href="../../" aria-label="Home"></a>
+          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-coach-round-dots" aria-hidden="true"></div>
           <button class="qk-coach-pause" type="button" data-target-id="pause" aria-label="Pause">Ⅱ</button>
         </header>
@@ -685,7 +694,7 @@ class CoachTimerGame {
           <div class="qk-coach-end-art" aria-hidden="true">${escapeHtml(emojiFromRef((mode && mode.endArt) || this.config.splashEmoji || 'emoji:⭐'))}</div>
           <h1>${escapeHtml((mode && (mode.endTitle || mode.title)) || this.config.title || '')}</h1>
           <button class="qk-coach-again" type="button"><span class="qk-coach-play-icon" aria-hidden="true"></span>${escapeHtml((mode && mode.againLabel) || 'PLAY AGAIN')}</button>
-          <a class="qk-coach-home qk-coach-img-btn qk-coach-end-home" href="../../" aria-label="Home"></a>
+          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
         </div>
       </section>`;
     const again = this.mountEl.querySelector('.qk-coach-again');
@@ -827,12 +836,13 @@ function injectStyle() {
     .qk-coach-root, .qk-coach-root * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     .qk-coach { --navy:#17517e; --sky:#bee3f5; position:relative; width:100%; height:100dvh; min-height:100%; overflow:hidden; color:var(--navy); font-family:'Fredoka','Arial Rounded MT Bold',sans-serif; font-weight:600; background-color:var(--sky); background-image:radial-gradient(circle at 20% 20%,rgba(255,255,255,.3) 0 10px,transparent 11px),radial-gradient(circle at 78% 28%,rgba(255,255,255,.23) 0 14px,transparent 15px); background-size:120px 120px,170px 170px; touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
     .qk-coach-img-btn { display:block; width:96px; height:96px; border:0; background:transparent center/contain no-repeat; touch-action:manipulation; cursor:pointer; }
-    .qk-coach-home { background-image:url('${HOME_IMG}'); }
+    .qk-coach-home { background-image: url('${HOME_IMG}'); }
+    .qk-coach-back { background-image: url('${BACK_IMG}'); }
     .qk-coach-sound { position:absolute; z-index:8; left:max(16px,env(safe-area-inset-left)); bottom:max(16px,env(safe-area-inset-bottom)); background-image:url('${SOUND_IMG}'); }
     .qk-coach-hud { position:absolute; z-index:7; inset:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) auto max(14px,env(safe-area-inset-left)); min-height:96px; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
     .qk-coach-hud > * { pointer-events:auto; }
     .qk-coach-splash,.qk-coach-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-coach-splash > .qk-coach-home { position:absolute; left:max(16px,env(safe-area-inset-left)); top:max(16px,env(safe-area-inset-top)); }
+    .qk-coach-splash > .qk-coach-home,     .qk-coach-splash > .qk-coach-back { position:absolute; left:max(16px,env(safe-area-inset-left)); top:max(16px,env(safe-area-inset-top)); }
     .qk-coach-splash-center,.qk-coach-end-center { display:grid; justify-items:center; gap:clamp(14px,2.4vmin,26px); width:min(900px,94vw); text-align:center; }
     .qk-coach-splash-art,.qk-coach-end-art { display:grid; place-items:center; width:min(34vmin,280px); aspect-ratio:1; border:6px solid #fff; border-radius:32px; background:linear-gradient(#fffef8,#f7ecd5); box-shadow:0 8px 0 rgba(23,81,126,.16),0 18px 34px rgba(23,81,126,.14); font-size:min(20vmin,160px); }
     .qk-coach h1 { margin:0; max-width:90vw; font-size:clamp(36px,7vmin,78px); line-height:1; text-shadow:0 4px 0 rgba(255,255,255,.65); }

@@ -14,6 +14,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -105,6 +106,14 @@ class SortIntoBinsGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-sort-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -242,7 +251,7 @@ class SortIntoBinsGame {
     this.mountEl.innerHTML = `
       <section class="qk-sort qk-sort-play" aria-label="${escapeAttr(this.mode.title || this.config.title)}">
         <header class="qk-sort-hud">
-          <a class="qk-sort-img-btn qk-sort-home" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-sort-back qk-sort-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-sort-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-sort-stage">
@@ -252,9 +261,9 @@ class SortIntoBinsGame {
       </section>
     `;
     this.applyThemeBackdrop();
-    const home = this.mountEl.querySelector('.qk-sort-home');
+    const home = this.mountEl.querySelector('.qk-sort-back');
     home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
     const sound = this.mountEl.querySelector('.qk-sort-sound');
     sound.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); });
     sound.addEventListener('click', () => this.replayPromptFromHud());
@@ -1000,7 +1009,7 @@ class SortIntoBinsGame {
     this.disposeStage();
     this.mountEl.innerHTML = `
       <section class="qk-sort qk-sort-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-sort-img-btn qk-sort-home" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-sort-back qk-sort-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-sort-end-center">
           <div class="qk-sort-end-art" aria-hidden="true">${escapeHtml(splashGlyph(this.config.endArt || this.config.splashArt))}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -1383,11 +1392,12 @@ function installStyle() {
       background: transparent center/84px 84px no-repeat; text-decoration: none; box-shadow: none; }
     .qk-sort-img-btn:active { transform: scale(.93); }
     .qk-sort-home { background-image: url('${HOME_IMG}'); }
+    .qk-sort-back { background-image: url('${BACK_IMG}'); }
     .qk-sort-sound { background-image: url('${SOUND_IMG}'); }
     .qk-sort-splash,.qk-sort-end { display: grid; place-items: center;
       padding: max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right))
         max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-sort-home { position: absolute; top: max(12px,env(safe-area-inset-top)); left: max(12px,env(safe-area-inset-left)); z-index: 5; }
+    .qk-sort-home,     .qk-sort-back { position: absolute; top: max(12px,env(safe-area-inset-top)); left: max(12px,env(safe-area-inset-left)); z-index: 5; }
     .qk-sort-splash-center,.qk-sort-end-center { width: min(900px,100%); display: grid; justify-items: center;
       gap: clamp(14px,2.5vmin,24px); text-align: center; padding-top: 54px; }
     .qk-sort-splash-art,.qk-sort-end-art { display: grid; place-items: center; width: clamp(150px,26vmin,230px);
@@ -1408,7 +1418,7 @@ function installStyle() {
         max(112px,calc(100px + env(safe-area-inset-bottom))) max(12px,env(safe-area-inset-left)); }
     .qk-sort-hud { position: relative; z-index: 4; display: grid; grid-template-columns: 96px 1fr 96px;
       align-items: center; min-height: 100px; }
-    .qk-sort-hud .qk-sort-home { position: static; }
+    .qk-sort-hud .qk-sort-home,     .qk-sort-hud .qk-sort-back { position: static; }
     .qk-sort-progress { justify-self: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
       max-width: min(560px,58vw); padding: 8px 15px; border-radius: 999px; background: rgba(255,255,255,.42); }
     .qk-sort-dot { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.88);

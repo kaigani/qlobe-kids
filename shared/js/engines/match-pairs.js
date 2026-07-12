@@ -13,6 +13,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -73,6 +74,14 @@ class MatchPairsGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-match-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -208,7 +217,7 @@ class MatchPairsGame {
     this.mountEl.innerHTML = `
       <section class="qk-match qk-match-play" aria-label="${escapeAttr(this.mode.title)}">
         <header class="qk-match-hud">
-          <a class="qk-match-home qk-match-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-match-back qk-match-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-match-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-match-field">
@@ -220,12 +229,12 @@ class MatchPairsGame {
     `;
     this.applyThemeBackdrop();
 
-    const home = this.mountEl.querySelector('.qk-match-home');
+    const home = this.mountEl.querySelector('.qk-match-back');
     home.addEventListener('pointerdown', (event) => {
       event.stopPropagation();
       this.playSfx('tick');
     });
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
 
     const sound = this.mountEl.querySelector('.qk-match-sound');
     sound.addEventListener('pointerdown', (event) => event.stopPropagation());
@@ -662,7 +671,7 @@ class MatchPairsGame {
     // (backdrop re-applied below after innerHTML replaces the section)
     this.mountEl.innerHTML = `
       <section class="qk-match qk-match-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-match-home qk-match-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-match-back qk-match-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-match-end-center">
           <div class="qk-match-end-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -675,9 +684,9 @@ class MatchPairsGame {
     `;
 
     this.applyThemeBackdrop();
-    const home = this.mountEl.querySelector('.qk-match-home');
+    const home = this.mountEl.querySelector('.qk-match-back');
     home.addEventListener('pointerdown', (event) => event.stopPropagation());
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
 
     const again = this.mountEl.querySelector('.qk-match-again');
     again.addEventListener('pointerdown', (event) => {
@@ -1057,6 +1066,7 @@ function installStyle() {
     }
     .qk-match-img-btn:active { transform: scale(.93); }
     .qk-match-home { background-image: url('${HOME_IMG}'); }
+    .qk-match-back { background-image: url('${BACK_IMG}'); }
     .qk-match-sound { background-image: url('${SOUND_IMG}'); }
 
     .qk-match-splash, .qk-match-end {
@@ -1065,7 +1075,7 @@ function installStyle() {
       padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
         max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
-    .qk-match-home {
+    .qk-match-home,     .qk-match-back {
       position: absolute;
       top: max(12px, env(safe-area-inset-top));
       left: max(12px, env(safe-area-inset-left));
@@ -1135,7 +1145,7 @@ function installStyle() {
       align-items: center;
       min-height: 96px;
     }
-    .qk-match-hud .qk-match-home { position: static; grid-column: 1; }
+    .qk-match-hud .qk-match-home,     .qk-match-hud .qk-match-back { position: static; grid-column: 1; }
     .qk-match-progress {
       grid-column: 2;
       justify-self: center;

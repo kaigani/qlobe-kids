@@ -10,6 +10,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -74,6 +75,14 @@ class TapCountGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-tap-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -208,7 +217,7 @@ class TapCountGame {
     this.mountEl.innerHTML = `
       <section class="qk-tap qk-tap-play" aria-label="${escapeAttr(this.mode.title)}">
         <header class="qk-tap-hud">
-          <a class="qk-tap-home qk-tap-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-tap-back qk-tap-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-tap-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-tap-stage">
@@ -219,12 +228,12 @@ class TapCountGame {
     `;
     this.applyThemeBackdrop();
 
-    const home = this.mountEl.querySelector('.qk-tap-home');
+    const home = this.mountEl.querySelector('.qk-tap-back');
     home.addEventListener('pointerdown', (event) => {
       event.stopPropagation();
       this.playSfx('tick');
     });
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
 
     const sound = this.mountEl.querySelector('.qk-tap-sound');
     sound.addEventListener('pointerdown', (event) => event.stopPropagation());
@@ -723,7 +732,7 @@ class TapCountGame {
   renderEnd() {
     this.mountEl.innerHTML = `
       <section class="qk-tap qk-tap-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-tap-home qk-tap-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-tap-back qk-tap-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-tap-end-center">
           <div class="qk-tap-end-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -1039,13 +1048,14 @@ function installStyle() {
     }
     .qk-tap-img-btn:active { transform: scale(.93); }
     .qk-tap-home { background-image: url('${HOME_IMG}'); }
+    .qk-tap-back { background-image: url('${BACK_IMG}'); }
     .qk-tap-sound { background-image: url('${SOUND_IMG}'); }
     .qk-tap-splash, .qk-tap-end {
       display: grid; place-items: center;
       padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
         max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
-    .qk-tap-home {
+    .qk-tap-home,     .qk-tap-back {
       position: absolute; top: max(12px, env(safe-area-inset-top));
       left: max(12px, env(safe-area-inset-left)); z-index: 4;
     }
@@ -1084,7 +1094,7 @@ function installStyle() {
       position: relative; z-index: 3; display: grid; grid-template-columns: 96px 1fr 96px;
       align-items: center; min-height: 96px;
     }
-    .qk-tap-hud .qk-tap-home { position: static; grid-column: 1; }
+    .qk-tap-hud .qk-tap-home,     .qk-tap-hud .qk-tap-back { position: static; grid-column: 1; }
     .qk-tap-progress {
       grid-column: 2; justify-self: center; display: flex; align-items: center; justify-content: center;
       gap: 11px; min-height: 32px; padding: 6px 16px; border-radius: 999px;

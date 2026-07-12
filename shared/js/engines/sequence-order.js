@@ -13,6 +13,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -96,6 +97,14 @@ class SequenceOrderGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-seq-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -227,7 +236,7 @@ class SequenceOrderGame {
     this.mountEl.innerHTML = `
       <section class="qk-seq qk-seq-play" aria-label="${escapeAttr(this.mode.title || this.config.title)}">
         <header class="qk-seq-hud">
-          <a class="qk-seq-img-btn qk-seq-home" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-seq-back qk-seq-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-seq-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-seq-stage">
@@ -237,9 +246,9 @@ class SequenceOrderGame {
       </section>
     `;
     this.applyThemeBackdrop();
-    const home = this.mountEl.querySelector('.qk-seq-home');
+    const home = this.mountEl.querySelector('.qk-seq-back');
     home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
-    home.addEventListener('click', () => speech.stop());
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
     const sound = this.mountEl.querySelector('.qk-seq-sound');
     sound.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); });
     sound.addEventListener('click', () => this.replayPromptFromHud());
@@ -919,7 +928,7 @@ class SequenceOrderGame {
     this.disposeStage();
     this.mountEl.innerHTML = `
       <section class="qk-seq qk-seq-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <a class="qk-seq-img-btn qk-seq-home" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-seq-back qk-seq-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-seq-end-center">
           <div class="qk-seq-end-art" aria-hidden="true">${escapeHtml(splashGlyph(this.config.endArt || this.config.splashArt))}</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
@@ -1278,11 +1287,12 @@ function installStyle() {
     .qk-seq-img-btn { display:grid; place-items:center; width:96px; height:96px; border-radius:50%;
       background:transparent center/84px 84px no-repeat; text-decoration:none; box-shadow:none; }
     .qk-seq-img-btn:active { transform:scale(.93); }
-    .qk-seq-home { background-image:url('${HOME_IMG}'); }
+    .qk-seq-home { background-image: url('${HOME_IMG}'); }
+    .qk-seq-back { background-image: url('${BACK_IMG}'); }
     .qk-seq-sound { background-image:url('${SOUND_IMG}'); }
     .qk-seq-splash,.qk-seq-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top))
       max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-seq-home { position:absolute; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); z-index:5; }
+    .qk-seq-home,     .qk-seq-back { position:absolute; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); z-index:5; }
     .qk-seq-splash-center,.qk-seq-end-center { width:min(900px,100%); display:grid; justify-items:center;
       gap:clamp(14px,2.5vmin,24px); text-align:center; padding-top:54px; }
     .qk-seq-splash-art,.qk-seq-end-art { display:grid; place-items:center; width:clamp(150px,26vmin,230px); aspect-ratio:1;
@@ -1300,7 +1310,7 @@ function installStyle() {
     .qk-seq-play { display:grid; grid-template-rows:auto 1fr; min-height:100dvh; padding:max(10px,env(safe-area-inset-top))
       max(12px,env(safe-area-inset-right)) max(112px,calc(100px + env(safe-area-inset-bottom))) max(12px,env(safe-area-inset-left)); }
     .qk-seq-hud { position:relative; z-index:4; display:grid; grid-template-columns:96px 1fr 96px; align-items:center; min-height:100px; }
-    .qk-seq-hud .qk-seq-home { position:static; }
+    .qk-seq-hud .qk-seq-home,     .qk-seq-hud .qk-seq-back { position:static; }
     .qk-seq-progress { justify-self:center; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-width:min(560px,58vw);
       padding:8px 15px; border-radius:999px; background:rgba(255,255,255,.42); }
     .qk-seq-dot { width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,.88); box-shadow:inset 0 -2px 0 rgba(23,81,126,.12); }

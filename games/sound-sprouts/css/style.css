@@ -183,10 +183,12 @@ html, body {
 .hud-shuffle { background-image: url('../../../shared/assets/ui/btn-shuffle.png'); }
 .hud-play    { background-image: url('../../../shared/assets/ui/btn-play.png'); }
 
-#btn-home {
+#btn-home,
+#menu-home {
   top: max(16px, env(safe-area-inset-top));
   left: max(16px, env(safe-area-inset-left));
 }
+#menu-home { position: absolute; z-index: 30; }
 
 .hud-bottom-left {
   bottom: max(16px, env(safe-area-inset-bottom));

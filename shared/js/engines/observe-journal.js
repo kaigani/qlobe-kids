@@ -12,6 +12,7 @@ import { artEl } from './art.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
@@ -84,6 +85,14 @@ class ObserveJournalGame {
     window.addEventListener('contextmenu', this.preventGesture);
 
     this.ready = Promise.resolve();
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-observe-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.installDebug();
   }
@@ -208,7 +217,7 @@ class ObserveJournalGame {
     this.mountEl.innerHTML = `
       <section class="qk-observe qk-observe-play" aria-label="${escapeAttr(this.mode.title)}">
         <header class="qk-observe-hud">
-          <a class="qk-observe-home qk-observe-img-btn" href="${HOME_HREF}" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+          <button class="qk-observe-back qk-observe-img-btn" type="button" aria-label="Back to the game menu"></button>
           <div class="qk-observe-dots" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-observe-stage">
@@ -766,7 +775,7 @@ class ObserveJournalGame {
   renderRecap() {
     this.mountEl.innerHTML = `
       <section class="qk-observe qk-observe-end" aria-label="${escapeAttr(this.mode.cheer || this.config.voice.cheer)}">
-        <a class="qk-observe-home qk-observe-img-btn" href="${HOME_HREF}" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+        <button class="qk-observe-back qk-observe-img-btn" type="button" aria-label="Back to the game menu"></button>
         <h1>${escapeHtml(this.mode.endTitle || this.config.copy.recap)}</h1>
         <div class="qk-observe-book" aria-hidden="true">
           <div class="qk-observe-recap-page"><div class="qk-observe-recap-layer"></div></div>
@@ -1200,6 +1209,7 @@ function injectStyle() {
     }
     .qk-observe-img-btn:active { transform: scale(.93); }
     .qk-observe-home { background-image: url('${HOME_IMG}'); }
+    .qk-observe-back { background-image: url('${BACK_IMG}'); }
     .qk-observe-sound { background-image: url('${SOUND_IMG}'); }
 
     .qk-observe-splash, .qk-observe-end {
@@ -1207,7 +1217,7 @@ function injectStyle() {
       padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
         max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
-    .qk-observe-home {
+    .qk-observe-home,     .qk-observe-back {
       position: absolute; left: max(12px, env(safe-area-inset-left)); top: max(12px, env(safe-area-inset-top));
     }
     .qk-observe-splash-center {
@@ -1245,7 +1255,7 @@ function injectStyle() {
       position: relative; z-index: 4; display: grid; grid-template-columns: 96px 1fr 96px;
       align-items: center; min-height: 98px;
     }
-    .qk-observe-hud .qk-observe-home { position: static; grid-column: 1; }
+    .qk-observe-hud .qk-observe-home,     .qk-observe-hud .qk-observe-back { position: static; grid-column: 1; }
     .qk-observe-dots {
       grid-column: 2; display: flex; justify-content: center; align-items: center; gap: 11px;
       min-height: 34px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.34);

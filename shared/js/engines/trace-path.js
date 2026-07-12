@@ -15,6 +15,7 @@ import { artObj, artUrlRef } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
+const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
 const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
 const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const HOME_HREF = '../../';
@@ -133,6 +134,14 @@ class TracePathGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
+    // delegated back-button handling: play/end screens rebuild innerHTML,
+    // so the listener lives on the mount and survives every screen swap
+    this.mountEl.addEventListener('click', (event) => {
+      if (event.target && event.target.closest && event.target.closest('.qk-trace-back')) {
+        speech.stop();
+        this.renderSplash();
+      }
+    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -257,7 +266,8 @@ class TracePathGame {
     this.applyTheme(root);
     root.setAttribute('aria-label', this.mode.title || this.config.title);
     const hud = el('header', 'qk-trace-hud');
-    const home = this.renderImageButton('qk-trace-home', this.config.copy.home, HOME_HREF);
+    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
     const progress = el('div', 'qk-trace-progress');
     progress.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot'));
@@ -904,7 +914,8 @@ class TracePathGame {
     const root = el('section', 'qk-trace qk-trace-end');
     this.applyTheme(root);
     root.setAttribute('aria-label', this.config.voice.cheer);
-    const home = this.renderImageButton('qk-trace-home', this.config.copy.home, HOME_HREF);
+    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
+    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
     const center = el('div', 'qk-trace-end-center');
     const artCard = el('div', 'qk-trace-end-art');
     artCard.appendChild(artEl(this.config.endArt || this.config.splashArt, ''));
@@ -1552,10 +1563,11 @@ function installStyle() {
       background:transparent center/84px 84px no-repeat; text-decoration:none; box-shadow:none; }
     .qk-trace-img-btn:active { transform:scale(.93); }
     .qk-trace-home { background-image:url('${HOME_IMG}'); }
+    .qk-trace-back { background-image:url('${BACK_IMG}'); }
     .qk-trace-sound { background-image:url('${SOUND_IMG}'); }
     .qk-trace-splash,.qk-trace-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top))
       max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-trace-home { position:absolute; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); z-index:5; }
+    .qk-trace-home, .qk-trace-back { position:absolute; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); z-index:5; }
     .qk-trace-splash-center,.qk-trace-end-center { width:min(900px,100%); display:grid; justify-items:center;
       gap:clamp(14px,2.5vmin,24px); text-align:center; padding-top:54px; }
     .qk-trace-splash-art,.qk-trace-end-art { display:grid; place-items:center; width:clamp(150px,26vmin,230px);
@@ -1574,7 +1586,7 @@ function installStyle() {
     .qk-trace-play { display:grid; grid-template-rows:auto minmax(0,1fr); padding:max(12px,env(safe-area-inset-top))
       max(14px,env(safe-area-inset-right)) max(112px,calc(100px + env(safe-area-inset-bottom))) max(14px,env(safe-area-inset-left)); }
     .qk-trace-hud { position:relative; z-index:4; display:grid; grid-template-columns:96px 1fr 96px; align-items:center; min-height:100px; }
-    .qk-trace-hud .qk-trace-home { position:static; grid-column:1; }
+    .qk-trace-hud .qk-trace-home, .qk-trace-hud .qk-trace-back { position:static; grid-column:1; }
     .qk-trace-progress { grid-column:2; justify-self:center; display:flex; align-items:center; justify-content:center; gap:11px; min-height:32px; }
     .qk-trace-dot { width:22px; height:22px; border-radius:50%; border:4px solid var(--white);
       background:rgba(255,255,255,.52); box-shadow:0 3px 0 rgba(23,81,126,.14); }
