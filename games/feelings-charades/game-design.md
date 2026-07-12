@@ -125,7 +125,7 @@ Mode-complete screens follow platform idiom (cheer + Play Again + back), per
 - demo: "Leo feels frustrated! The puzzle piece will not fit. His arms are
   crossed, his eyebrows squeeze together, and he stomps one foot. Hmph!"
 - invite: "Show me YOUR frustrated! Cross your arms and stomp — hmph!"
-- enc-1: "Big stomp! Squeeze those eyebrows!" · enc-2: "One more hmph!"
+- enc-1: "Big stomp! Squeeze those eyebrows!" · enc-2: "One more stomp!"
 - affirm: "Wonderful acting! That looked frustrated!"
 - learn: "It's okay to feel frustrated. Let's learn a trick for it."
 - cope-intro: "When frustration feels too big, we can breathe it smaller.

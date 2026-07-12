@@ -30,7 +30,7 @@ export const DEFAULT_LINES = {
   "frustrated-demo": "Leo feels frustrated! The puzzle piece will not fit. His arms are crossed, his eyebrows squeeze together, and he stomps one foot. Hmph!",
   "frustrated-invite": "Show me YOUR frustrated! Cross your arms and stomp. Hmph!",
   "frustrated-enc1": "Big stomp! Squeeze those eyebrows!",
-  "frustrated-enc2": "One more hmph!",
+  "frustrated-enc2": "One more stomp!",
   "frustrated-affirm": "Wonderful acting! That looked frustrated!",
   "frustrated-learn": "It's okay to feel frustrated. Let's learn a trick for it.",
   "frustrated-cope-intro": "When frustration feels too big, we can breathe it smaller. Let's take three slow breaths together.",
