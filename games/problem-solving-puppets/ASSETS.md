@@ -8,15 +8,19 @@
 | Puppet prop and feeling placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholder only |
 | Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
 | Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+| Story vignettes (`assets/video/{truck,tower,first-turn,bump,left-out}.mp4`) | Generated locally (reference-conditioned text-to-video of the Red & Blue felt puppet cast; Story Screen world per `docs/art-direction.md`) | QLOBE Kids project | CC BY 4.0 | No | Cropped, 800px, h264 CRF 28, muted (~220–350KB each) |
+
+This game pilots the **Story Screen** art world: each Make Peace round opens
+with a felt-puppet conflict vignette; the child picks the repair.
 
 ## Assets needed
 
-### Art
-- Puppet duo art for "both want the red crayon."
-- Puppet duo art for "tower knocked over."
-- Puppet duo art for "both want first turn."
-- Puppet duo art for "accidental bump."
-- Puppet duo art for "one feels left out."
+### Video re-shoots
+- `left-out.mp4`: Blue should read clearly sad (arms down, head bowed). The
+  current reference sheet poses both puppets with cheerful raised arms, which
+  the video model anchors to. Re-shoot the vignette from a NEUTRAL-POSE
+  reference sheet (arms down, calm faces) — and prefer neutral poses for all
+  future character reference sheets used for video.
 
 ### Voice
 - Performed argument lines for every `say` prompt in `config.js`.

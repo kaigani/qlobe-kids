@@ -11,6 +11,9 @@ export default {
   engine: 'choose-one',
   title: 'Problem-Solving Puppets',
   splashEmoji: '🤝',
+  // Story Screen art world (docs/art-direction.md): each Make Peace round
+  // opens with a short felt-puppet vignette (Red and Blue) ending on the
+  // conflict beat — the child picks the repair.
   copy: {
     home: 'Home',
     replay: 'Hear it again',
@@ -34,33 +37,38 @@ export default {
       rounds: 5,
       items: [
         {
-          say: 'Maya puppet says, I had the red crayon first! Leo puppet says, But I need red too! What can make peace?',
-          promptArt: 'emoji:🖍️',
-          promptAlt: 'red crayon conflict',
+          say: 'Red puppet says, I had the truck first! Blue puppet says, But I want a turn! What can make peace?',
+          promptArt: 'emoji:🚚',
+          promptAlt: 'Red holds the truck while Blue asks for a turn',
+          promptVideo: './assets/video/truck.mp4',
           answers: [answer('🤝', 'share'), answer('⏳', 'take turns'), answer('🗣️', 'use words'), answer('🙋', 'ask for help')],
         },
         {
-          say: 'Nia puppet says, My tower fell! Sam puppet says, I bumped it by accident. What can make peace?',
+          say: 'Red puppet says, My tower fell! Blue puppet says, I bumped it by accident. What can make peace?',
           promptArt: 'emoji:🧱',
-          promptAlt: 'fallen block tower',
+          promptAlt: 'the block tower tumbles down',
+          promptVideo: './assets/video/tower.mp4',
           answers: [answer('🗣️', 'use words'), answer('🤝', 'help rebuild'), answer('🙋', 'ask for help'), answer('⏳', 'take turns')],
         },
         {
-          say: 'Ravi puppet says, I want to go first! Maya puppet says, I want first turn too! What can make peace?',
+          say: 'Red puppet says, I want to go first! Blue puppet says, I want first turn too! What can make peace?',
           promptArt: 'emoji:1️⃣',
-          promptAlt: 'both want first turn',
+          promptAlt: 'both puppets rush to the slide',
+          promptVideo: './assets/video/first-turn.mp4',
           answers: [answer('⏳', 'take turns'), answer('🗣️', 'use words'), answer('🤝', 'share the game'), answer('🙋', 'ask for help')],
         },
         {
-          say: 'Leo puppet says, Ouch, you bumped me! Nia puppet says, It was an accident. What can make peace?',
+          say: 'Red puppet says, Ouch, you bumped me! Blue puppet says, It was an accident. What can make peace?',
           promptArt: 'emoji:🩹',
-          promptAlt: 'accidental bump',
+          promptAlt: 'Blue accidentally bumps Red',
+          promptVideo: './assets/video/bump.mp4',
           answers: [answer('🗣️', 'say sorry and ask are you okay'), answer('🤝', 'gentle repair'), answer('🙋', 'ask for help'), answer('⏳', 'pause and wait')],
         },
         {
-          say: 'Sam puppet says, Everyone is playing without me. Ravi puppet says, I did not know you wanted to join. What can make peace?',
+          say: 'Blue puppet says, Red is playing without me. Red puppet says, I did not know you wanted to join. What can make peace?',
           promptArt: 'emoji:🧸',
-          promptAlt: 'puppet feels left out',
+          promptAlt: 'Blue watches sadly from the side',
+          promptVideo: './assets/video/left-out.mp4',
           answers: [answer('🗣️', 'invite with words'), answer('🤝', 'make room'), answer('🙋', 'ask for help'), answer('⏳', 'wait for a turn')],
         },
       ],

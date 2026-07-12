@@ -6,7 +6,7 @@ import * as speech from '../speech.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle, sway } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -201,15 +201,66 @@ class ChooseOneGame {
           <div class="qk-choose-progress" aria-hidden="true">${dots}</div>
         </header>
         <main class="qk-choose-stage">
+          <div class="qk-choose-video hidden" aria-hidden="true">
+            <video muted playsinline preload="auto"></video>
+          </div>
           <div class="qk-choose-canvas" aria-label="${escapeAttr(this.mode.title)}"></div>
         </main>
         <button class="qk-choose-sound qk-choose-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.applyThemeBackdrop();
 
     const sound = this.mountEl.querySelector('.qk-choose-sound');
     sound.addEventListener('pointerdown', (e) => e.stopPropagation());
     sound.addEventListener('click', () => this.replayPromptFromHud());
+    // tapping the story vignette replays it together with the spoken line
+    const videoWrap = this.mountEl.querySelector('.qk-choose-video');
+    videoWrap.addEventListener('pointerdown', () => {
+      this.unlockAudio();
+      this.replayPromptFromHud();
+    });
+  }
+
+  /** Art-world backdrop (docs/art-direction.md): theme.background paints the
+   *  whole section via CSS cover — the Pixi canvas is transparent above it. */
+  applyThemeBackdrop() {
+    const theme = this.config.theme;
+    const section = this.mountEl.querySelector('.qk-choose');
+    if (!theme || !theme.background || !section) return;
+    const ref = String(theme.background);
+    const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
+    if (!url) return;
+    section.style.background = `#bfe3f5 url("${url}") center / cover no-repeat`;
+  }
+
+  /** Story Screen (docs/art-direction.md): an item with promptVideo plays a
+   *  short muted vignette as the round's prompt; the voice line narrates it.
+   *  Playback failure just leaves the poster frame — never blocks the round. */
+  updatePromptVideo() {
+    const wrap = this.mountEl.querySelector('.qk-choose-video');
+    if (!wrap) return;
+    const video = wrap.querySelector('video');
+    const src = this.currentItem && this.currentItem.promptVideo;
+    const canvasHost = this.mountEl.querySelector('.qk-choose-canvas');
+    if (!src) {
+      wrap.classList.add('hidden');
+      if (canvasHost) canvasHost.classList.remove('with-video');
+      if (video) { try { video.pause(); video.removeAttribute('src'); video.load(); } catch { /* ignore */ } }
+      return;
+    }
+    wrap.classList.remove('hidden');
+    if (canvasHost) canvasHost.classList.add('with-video');
+    try {
+      if (video.getAttribute('src') !== src) video.src = src;
+      video.currentTime = 0;
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => { /* poster frame is fine */ });
+    } catch { /* ignore */ }
+    // the canvas shrank under the video — let Pixi re-measure and re-lay-out
+    if (this.stage && this.stage.app && this.stage.app.resize) {
+      try { this.stage.app.resize(); } catch { /* ignore */ }
+    }
   }
 
   async createPlayStage() {
@@ -262,6 +313,7 @@ class ChooseOneGame {
     const generation = ++this.roundGeneration;
 
     this.updateDots();
+    this.updatePromptVideo();
     const scene = new this.stage.PIXI.Container();
     this.scene = scene;
     this.stage.setScene(scene);
@@ -287,7 +339,8 @@ class ChooseOneGame {
 
   async buildRoundViews(generation) {
     const tasks = [];
-    if (this.currentItem.promptArt) tasks.push(this.buildPromptView(this.nextTargetId('prompt'), generation));
+    // a story vignette replaces static prompt art for the round
+    if (this.currentItem.promptArt && !this.currentItem.promptVideo) tasks.push(this.buildPromptView(this.nextTargetId('prompt'), generation));
     this.currentAnswers.forEach((answer, index) => tasks.push(
       this.buildAnswerView(answer, index, this.nextTargetId('answer'), generation),
     ));
@@ -527,6 +580,7 @@ class ChooseOneGame {
   async replayPrompt() {
     if (!this.currentItem || this.screen !== 'play') return;
     this.clearIdleTimer();
+    this.updatePromptVideo(); // replay restarts the story vignette too
     await this.speakLine(this.currentItem.say, true);
     this.scheduleIdlePrompt();
   }
@@ -1045,6 +1099,25 @@ function installStyle() {
       border-radius: 28px;
       touch-action: none;
     }
+
+    .qk-choose-video {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .qk-choose-video.hidden { display: none; }
+    .qk-choose-video video {
+      display: block;
+      height: 32vh;
+      max-width: min(88vw, 680px);
+      border-radius: 20px;
+      border: 5px solid #ffffff;
+      box-shadow: 0 10px 26px rgba(23, 81, 126, 0.22);
+      background: #10283f;
+    }
+    .qk-choose-canvas.with-video { top: calc(32vh + 24px); }
 
     .qk-choose-canvas canvas {
       display: block;
