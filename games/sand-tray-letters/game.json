@@ -3,30 +3,39 @@
   "title": "Sand Tray Letters",
   "category": "writing-fine-motor",
   "path": "games/sand-tray-letters/",
-  "icon": "✍️",
+  "icon": "assets/materials/golden-sand.png",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "beta",
-  "accent": "#d9a05b",
-  "description": "A Montessori-inspired sand tray tracing game where kids write simple letters and shapes with one finger.",
+  "age": {
+    "min": 5,
+    "max": 6
+  },
+  "status": "live",
+  "accent": "#20bfd8",
+  "description": "Choose sand, salt, or flour, then form uppercase letters by revealing a bright blue layer beneath the tactile tray.",
   "learningGoals": [
-    "Practice early letter formation with forgiving single-stroke paths",
-    "Connect letter shapes with spoken letter sounds",
-    "Build pre-writing control through circles, waves, zigzags, and curls"
+    "Practice uppercase letter formation with ordered multi-stroke guidance",
+    "Connect completed letter shapes with spoken letter sounds",
+    "Build controlled one-finger movement through tactile tracing"
   ],
-  "interactionModel": "trace-path finger tracing along large letter and shape paths",
-  "feedbackModel": "Completion gets sparkle/pop SFX plus a spoken letter or shape line; off-path tracing gets a gentle spoken nudge and retry.",
+  "interactionModel": "Choose a sensory material, trace ordered strokes with one finger, then shake or tap to smooth the tray.",
+  "feedbackModel": "Tracing reveals a turquoise underlayer with material-specific sound; success adds confetti, a spoken letter sound, and shake-to-reset guidance.",
   "uses": [
-    "shared/js/engines/trace-path.js",
+    "games/sand-tray-letters/js/game.js",
     "shared/js/speech.js",
     "shared/js/sfx.js"
   ],
   "modes": [
-    { "id": "letters", "title": "Sand Letters", "skill": "lowercase letter formation and letter-sound link" },
-    { "id": "shapes", "title": "Sand Shapes", "skill": "pre-writing curves, waves, zigzags, and curls" }
+    {
+      "id": "letters",
+      "title": "Sand Tray Letters",
+      "skill": "uppercase formation, stroke order, and letter-sound link"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Kaigani; material card artwork generated with the built-in GPT Image 2 workflow (see ASSETS.md). Built with Codex for QLOBE Kids.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "dreamina-2026-07-12-7073-Tablet game demo for ages 5-6. Fast adve....mp4"
 }

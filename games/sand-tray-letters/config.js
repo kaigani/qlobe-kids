@@ -1,115 +1,67 @@
-export default {
-  id: 'sand-tray-letters',
-  engine: 'trace-path',
-  title: 'Sand Tray Letters',
-  splashEmoji: '✍️',
-  endArt: 'emoji:🏖️',
-  traveler: 'emoji:👆',
-  strokeColor: '#d9a05b',
-  tolerance: 74,
-  startMarker: '✨',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
+export const MATERIALS = {
+  sand: {
+    id: 'sand', label: 'Golden Sand', word: 'sand',
+    base: '#edac24', light: '#ffd267', dark: '#9b6414', grain: '#ffe495',
+    swatch: '#edac24', filter: 780, soundGain: 0.055,
   },
-  voice: {
-    intro: 'Trace the sandy path with one finger.',
-    nudge: 'Find the sandy line and keep going.',
-    cheer: 'You made sandy letters and shapes!',
-    yums: [
-      'Soft sand writing!',
-      'Your finger made the path!',
-      'Lovely tracing in the sand!',
+  salt: {
+    id: 'salt', label: 'White Salt', word: 'salt',
+    base: '#e8eef0', light: '#ffffff', dark: '#aeb9bd', grain: '#ffffff',
+    swatch: '#f4f7f7', filter: 1900, soundGain: 0.045,
+  },
+  flour: {
+    id: 'flour', label: 'Soft Flour', word: 'flour',
+    base: '#eee3cf', light: '#fffaf0', dark: '#b8a993', grain: '#ffffff',
+    swatch: '#f4ead9', filter: 420, soundGain: 0.035,
+  },
+};
+
+// Board coordinates are normalized to a 1000 × 700 writing area. Each nested
+// array is one ordered stroke, matching early-handwriting formation cues.
+export const LETTERS = [
+  {
+    id: 'A', sound: 'A says ah.', success: 'Amazing A!',
+    strokes: [
+      [[230,610],[300,485],[365,360],[430,235],[500,95]],
+      [[500,95],[570,235],[635,360],[700,485],[770,610]],
+      [[345,430],[500,430],[655,430]],
     ],
   },
-  modes: [
-    {
-      id: 'letters',
-      title: 'Sand Letters',
-      prompt: 'Trace the letter in the sand.',
-      rounds: 5,
-      strokeColor: '#d9a05b',
-      traveler: 'emoji:👆',
-      startMarker: '✨',
-      // These are friendly, single-stroke approximations; full 26-letter
-      // formation data belongs in a later production pass.
-      paths: [
-        {
-          id: 'c',
-          name: 'letter c',
-          prompt: 'Start at the sparkle. Make a sandy c.',
-          say: 'Cuh! You wrote C!',
-          points: [[720, 250], [560, 150], [360, 210], [250, 390], [270, 610], [420, 770], [650, 760]],
-        },
-        {
-          id: 'o',
-          name: 'letter o',
-          prompt: 'Round and round. Make a sandy o.',
-          say: 'O! You wrote O!',
-          points: [[500, 180], [680, 190], [800, 360], [760, 610], [580, 780], [360, 760], [210, 580], [230, 340], [500, 180]],
-        },
-        {
-          id: 's',
-          name: 'letter s',
-          prompt: 'Curve this way, then that way. Make a sandy s.',
-          say: 'Sss! You wrote S!',
-          points: [[710, 230], [520, 150], [320, 220], [290, 390], [460, 500], [660, 570], [700, 720], [520, 810], [310, 740]],
-        },
-        {
-          id: 'l',
-          name: 'letter l',
-          prompt: 'Slide straight down. Make a sandy l.',
-          say: 'Lll! You wrote L!',
-          points: [[500, 160], [500, 300], [500, 450], [500, 610], [500, 800]],
-        },
-        {
-          id: 'u',
-          name: 'letter u',
-          prompt: 'Down, around, and up. Make a sandy u.',
-          say: 'Uh! You wrote U!',
-          points: [[300, 210], [300, 470], [330, 670], [500, 790], [670, 670], [700, 470], [700, 210]],
-        },
-      ],
-    },
-    {
-      id: 'shapes',
-      title: 'Sand Shapes',
-      prompt: 'Trace the sandy shape.',
-      rounds: 4,
-      strokeColor: '#d9a05b',
-      traveler: 'emoji:👆',
-      startMarker: '✨',
-      paths: [
-        {
-          id: 'circle',
-          name: 'circle',
-          prompt: 'Go all the way around the sandy circle.',
-          say: 'Round circle in the sand!',
-          points: [[500, 170], [700, 210], [820, 410], [760, 650], [560, 810], [320, 760], [180, 540], [230, 300], [500, 170]],
-        },
-        {
-          id: 'wave',
-          name: 'wavy line',
-          prompt: 'Ride the sandy wave.',
-          say: 'You made a wavy line!',
-          points: [[130, 520], [260, 380], [390, 520], [520, 660], [650, 520], [780, 380], [910, 520]],
-        },
-        {
-          id: 'zigzag',
-          name: 'zigzag',
-          prompt: 'Up and down. Trace the sandy zigzag.',
-          say: 'Zigzag in the sand!',
-          points: [[150, 720], [300, 260], [450, 720], [600, 260], [750, 720], [900, 260]],
-        },
-        {
-          id: 'spiral',
-          name: 'spiral arc',
-          prompt: 'Curl around like a shell.',
-          say: 'Curly sandy spiral!',
-          points: [[710, 250], [520, 160], [320, 260], [240, 470], [320, 690], [520, 780], [700, 680], [740, 500], [640, 380], [500, 390], [450, 500], [520, 590]],
-        },
-      ],
-    },
-  ],
-};
+  {
+    id: 'C', sound: 'C says cuh.', success: 'Clever C!',
+    strokes: [[
+      [735,190],[655,120],[535,88],[400,105],[290,175],[220,285],
+      [195,410],[230,525],[315,610],[430,650],[565,642],[675,590],[745,525],
+    ]],
+  },
+  {
+    id: 'L', sound: 'L says lll.', success: 'Lovely L!',
+    strokes: [
+      [[380,95],[380,230],[380,365],[380,500],[380,610]],
+      [[380,610],[520,610],[660,610]],
+    ],
+  },
+  {
+    id: 'O', sound: 'O says oh.', success: 'Outstanding O!',
+    strokes: [[
+      [500,88],[620,105],[710,180],[765,295],[770,420],[720,540],
+      [620,625],[500,650],[375,625],[275,540],[225,420],[230,290],
+      [290,175],[380,105],[500,88],
+    ]],
+  },
+  {
+    id: 'S', sound: 'S says sss.', success: 'Super S!',
+    strokes: [[
+      [710,165],[625,105],[510,88],[390,110],[305,175],[285,265],
+      [335,340],[430,385],[555,420],[665,470],[710,545],[680,610],
+      [590,650],[460,650],[350,620],[285,570],
+    ]],
+  },
+  {
+    id: 'U', sound: 'U says uh.', success: 'Unbelievable U!',
+    strokes: [[
+      [285,105],[285,235],[285,365],[300,500],[360,600],[455,645],
+      [545,645],[640,600],[700,500],[715,365],[715,235],[715,105],
+    ]],
+  },
+];

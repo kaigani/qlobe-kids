@@ -1,60 +1,76 @@
-# Game Design Document - Sand Tray Letters
+# Game Design Document — Sand Tray Letters
 
-## Game title
-Sand Tray Letters ✍️
+## Product summary
 
-## Category
-`writing-fine-motor`
+Sand Tray Letters is a custom, tactile early-writing game for ages 5–6. It
+translates a Montessori-style material tray into a responsive digital surface:
+the child chooses sand, salt, or flour, follows ordered formation cues, and
+reveals a turquoise layer as each groove is traced.
 
-## Age target
-5-6 (platform default).
-
-## Concept video
-_None yet._
+The rebuilt game is based on the July 2026 concept video, brief, and approved
+UI mockups. It no longer uses the shared `trace-path` engine.
 
 ## Learning goals
-1. Practice early letter formation with large forgiving paths.
-2. Link letter shapes to spoken letter sounds.
-3. Build pre-writing control through round, wavy, zigzag, and curling motions.
 
-## Mini-games / modes
+1. Build motor memory for uppercase letter formation.
+2. Practice starting position, direction, and stroke order.
+3. Connect a completed letter shape to its spoken sound.
+4. Encourage controlled one-finger movement with forgiving guidance.
 
-### Mode 1 - Sand Letters
-- **Skill:** Lowercase letter formation and letter-sound link.
-- **Core loop (30-90s):** The child follows a sparkle and finger emoji along one sandy letter path. On completion the game speaks the letter sound and celebrates the written letter.
-- **Rounds:** 5.
-- **Paths:** c, o, s, l, u.
-- **Notes:** These are beta, single-stroke-friendly approximations. The production pass needs reviewed formation data for all 26 letters.
+## Core loop
 
-### Mode 2 - Sand Shapes
-- **Skill:** Pre-writing curves, waves, zigzags, and curls.
-- **Core loop (30-90s):** The child traces one large shape path in the sand, hears a short success line, then moves to the next path.
-- **Rounds:** 4.
-- **Paths:** circle, wavy line, zigzag, spiral-ish arc.
+1. Choose Golden Sand, White Salt, or Soft Flour.
+2. Follow the orange start point and arrow for the current stroke.
+3. Drag near the dotted path to part the material and reveal blue beneath.
+4. Complete every ordered stroke and hear the letter name/sound.
+5. Shake the device to smooth the tray, or tap Next Letter.
 
-## Shared assets used
-- `shared/js/engines/trace-path.js` - splash, mode selection, tracing input, retry, celebration, HUD, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, tick, and tada effects.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
-- `shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png` - engine HUD buttons.
+## Letter sequence
 
-## New assets needed
-- Sand-texture background art.
-- Production-quality letter-formation stroke data for all 26 lowercase letters.
-- Recorded teacher-voice lines matching every line in `config.js`.
+The production set contains six uppercase forms:
 
-## Interaction model
-Finger tracing on a large path. The shared trace-path engine scales coordinates to portrait and landscape, starts each stroke with a large marker, and keeps the path forgiving for small hands.
+- A — three strokes
+- C — one continuous curve
+- L — two strokes
+- O — one continuous loop
+- S — one continuous curve
+- U — one continuous curve
 
-## Feedback model
-- **Success:** sparkle/pop SFX, confetti-style burst, and a spoken completion line.
-- **Retry:** off-path tracing pulses the guide and speaks a gentle nudge.
-- **Hint:** the engine replays the prompt after an idle pause, and the HUD sound button repeats it.
-- **Celebration:** end-of-mode tada and a spoken cheer.
+Formation paths are stored as 1000 × 700 board coordinates in `config.js`.
+The custom engine resamples them into forgiving progress checkpoints at runtime.
 
-## Difficulty progression
-Letter mode starts with rounded and simple letters, then shape mode broadens motor practice with waves, zigzags, and curls.
+## Interaction and feedback
 
-## Replay variation
-Rounds stay short and predictable. Debug seeding remains available through `window.QLOBE_DEBUG.seed(n)` if shuffle is enabled later.
+- A trace must begin near the current orange marker.
+- Progress moves forward along the expected stroke; large deviations gently
+  shake the tray and replay a short cue.
+- Completed grooves use a dark displaced-material rim, turquoise underlayer,
+  highlight, and sparse edge grains.
+- Each material has a procedural grain surface and filtered noise response:
+  smooth sand, crisp salt, and muted flour.
+- The guide becomes more subtle later in the sequence, while the start point
+  and direction arrow remain explicit.
+- Success adds star confetti, a letter-specific affirmation, and the spoken
+  letter sound.
+
+## Shake and reset
+
+`DeviceMotionEvent` is used when available. A deliberate shake on the success
+screen advances to the next letter with a smoothing animation. Because motion
+permission and accelerometers are not universal, Reset and Next Letter remain
+fully equivalent touch controls.
+
+## Accessibility and safety
+
+- Large controls and forgiving path tolerance support early motor skills.
+- Every image has alt text; the canvas and state changes have accessible labels.
+- Visual copy is reinforced by speech.
+- Reduced-motion preferences disable extended animation and confetti.
+- No score, timer, failure state, or judgmental correction is used.
+
+## Debug contract
+
+The game implements `window.QLOBE_DEBUG` v1 with the custom engine identifier
+`custom-sand-canvas`. `winRound()` completes a letter through the same groove
+rendering state and advances to the next round. `tracePoints()` exposes the
+current stroke for pointer-input review automation.

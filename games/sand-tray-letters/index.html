@@ -2,38 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Sand Tray Letters - QLOBE Kids</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#f3d29b" />
-  <meta name="description" content="A Montessori-inspired tracing game where kids write letters and shapes in a soft sand tray." />
+  <meta name="theme-color" content="#2bc2df" />
+  <title>Sand Tray Letters — QLOBE Kids</title>
+  <meta name="description" content="Choose a tactile material and form letters with one finger in a sensory digital tray." />
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the trace-path engine's built-in look and HUD behavior. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; overflow: hidden; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #f3d29b;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/trace-path.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app">
+    <section id="welcome" class="screen welcome-screen" aria-label="Sand Tray Letters">
+      <a class="round-button home-button" href="../../" aria-label="Back to all games"></a>
+      <button class="round-button sound-button" data-action="replay" aria-label="Hear the welcome again"></button>
+      <div class="welcome-card">
+        <h1><span>Sand</span> <b>Tray</b><br><em>Letters</em></h1>
+        <div class="mini-tray" aria-hidden="true"><span>A</span></div>
+        <p>Trace, learn, and play!</p>
+        <button id="start-button" class="primary-button">START</button>
+      </div>
+      <span class="cloud cloud-one"></span><span class="cloud cloud-two"></span>
+      <div class="landscape" aria-hidden="true"><i></i><i></i><i></i></div>
+    </section>
+
+    <section id="materials" class="screen cream-screen hidden" aria-label="Choose your tray">
+      <header class="topbar">
+        <button class="round-button back-button" data-action="welcome" aria-label="Back to welcome"></button>
+        <div class="topbar-title">Sand Tray Letters</div>
+        <button class="round-button sound-button" data-action="replay" aria-label="Hear the instruction again"></button>
+      </header>
+      <div class="material-content">
+        <h2>Choose your tray</h2>
+        <p>What would you like to trace in?</p>
+        <div id="material-list" class="material-list" role="radiogroup" aria-label="Tracing material">
+          <button class="material-card selected" data-material="sand" role="radio" aria-checked="true">
+            <span class="selection-check">✓</span>
+            <img src="./assets/materials/golden-sand.png" alt="A mound of golden sand" draggable="false" />
+            <strong>Golden Sand</strong>
+          </button>
+          <button class="material-card" data-material="salt" role="radio" aria-checked="false">
+            <span class="selection-check">✓</span>
+            <img src="./assets/materials/white-salt.png" alt="A jar of white salt" draggable="false" />
+            <strong>White Salt</strong>
+          </button>
+          <button class="material-card" data-material="flour" role="radio" aria-checked="false">
+            <span class="selection-check">✓</span>
+            <img src="./assets/materials/soft-flour.png" alt="A bowl of soft flour" draggable="false" />
+            <strong>Soft Flour</strong>
+          </button>
+        </div>
+        <button id="trace-button" class="primary-button">LET’S TRACE</button>
+      </div>
+    </section>
+
+    <section id="play" class="screen play-screen hidden" aria-label="Trace a letter">
+      <header class="topbar play-topbar">
+        <button class="round-button back-button" data-action="materials" aria-label="Choose another material"></button>
+        <div id="letter-title" class="topbar-title">Trace the letter <b>A</b></div>
+        <div class="topbar-actions">
+          <button class="round-button sound-button" data-action="replay" aria-label="Hear the instruction again"></button>
+          <button id="material-swatch" class="material-swatch" aria-label="Choose another material"></button>
+        </div>
+      </header>
+      <div id="tray" class="tray" data-material="sand">
+        <canvas id="sand-canvas" aria-label="Letter tracing tray"></canvas>
+        <div id="trace-hint" class="trace-hint">Follow the arrows</div>
+        <div id="stroke-progress" class="stroke-progress hidden">1 of 3 strokes</div>
+        <button id="reset-button" class="reset-button" aria-label="Smooth the tray and start this letter again">↻</button>
+        <div id="success-card" class="success-card hidden" role="dialog" aria-modal="false" aria-live="polite">
+          <div class="shake-icon" aria-hidden="true"><span>▯</span><i></i><i></i></div>
+          <div class="success-copy">
+            <h2 id="success-title">Amazing A!</h2>
+            <p>Shake to smooth the <span id="material-word">sand</span></p>
+            <button id="next-button" class="primary-button">NEXT LETTER</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="finish" class="screen finish-screen hidden" aria-label="Tracing complete">
+      <button class="round-button back-button" data-action="welcome" aria-label="Back to welcome"></button>
+      <div class="finish-card">
+        <div class="finish-stars" aria-hidden="true">★ ✦ ★</div>
+        <div class="finish-tray" aria-hidden="true">A</div>
+        <h2>Terrific tracing!</h2>
+        <p>You made six letters.</p>
+        <button id="play-again-button" class="primary-button">PLAY AGAIN</button>
+      </div>
+    </section>
+  </main>
+  <div id="confetti" aria-hidden="true"></div>
+  <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <script type="module" src="./js/game.js"></script>
 </body>
 </html>
