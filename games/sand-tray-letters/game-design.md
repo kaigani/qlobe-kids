@@ -23,7 +23,7 @@ UI mockups. It no longer uses the shared `trace-path` engine.
 2. Follow the orange start point and arrow for the current stroke.
 3. Drag near the dotted path to part the material and reveal blue beneath.
 4. Complete every ordered stroke and hear the letter name/sound.
-5. Shake the device to smooth the tray, or tap Next Letter.
+5. Tap Next Letter to move on, or the reset button to smooth and retry.
 
 ## Letter sequence
 
@@ -56,12 +56,11 @@ seven without one carry the phonic in their praise clip. See `ASSETS.md`.
 - Success adds star confetti, a letter-specific affirmation, and the spoken
   letter sound.
 
-## Shake and reset
+## Reset
 
-`DeviceMotionEvent` is used when available. A deliberate shake on the success
-screen advances to the next letter with a smoothing animation. Because motion
-permission and accelerometers are not universal, Reset and Next Letter remain
-fully equivalent touch controls.
+A Reset button smooths the current tray and restarts the letter's strokes at any
+time. On the success screen, Next Letter advances to the next letter. Both are
+plain touch controls — the game uses no device-motion input.
 
 ## Accessibility and safety
 

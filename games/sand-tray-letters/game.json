@@ -17,8 +17,8 @@
     "Connect completed letter shapes with spoken letter sounds",
     "Build controlled one-finger movement through tactile tracing"
   ],
-  "interactionModel": "Choose a sensory material, trace ordered strokes with one finger, then shake or tap to smooth the tray.",
-  "feedbackModel": "Tracing reveals a turquoise underlayer with material-specific sound; success adds confetti, a spoken letter sound, and shake-to-reset guidance.",
+  "interactionModel": "Choose a sensory material, then trace ordered strokes with one finger to reveal the letter.",
+  "feedbackModel": "Tracing reveals a turquoise underlayer with material-specific sound; success adds confetti and a spoken letter sound, then a Next Letter tap continues.",
   "uses": [
     "games/sand-tray-letters/js/game.js",
     "shared/js/speech.js",

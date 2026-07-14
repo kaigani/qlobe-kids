@@ -13,6 +13,13 @@
 // speech.js. Spoken fallback text comes from lines.json when present (so
 // recorded and fallback voice always match), else the caller's fallbackText,
 // else the game's defaultLines passed to init().
+//
+// iOS note: Safari only lets an audio element auto-play once it has *already*
+// played during a user gesture. Creating a new Audio() per clip therefore
+// works for the first clip in a sequence but gets the rest blocked — they fall
+// back to Web Speech, so one utterance slips between the recorded voice and the
+// synth voice. The fix is a SINGLE reusable element, unlocked once on the first
+// gesture and then src-swapped for every clip.
 
 import * as speech from './speech.js';
 
@@ -20,7 +27,22 @@ let manifest = null; // { key: { file, dur } }
 let lines = null;    // { key: "spoken text" }
 let defaults = {};   // game-supplied safety net
 let baseUrl = './assets/audio/';
-let currentAudio = null;
+
+// The one reusable audio element. Once it has played during a gesture (unlock),
+// every later src-swap + play() is allowed by iOS without a fresh gesture.
+let channel = null;
+let unlocked = false;
+// Monotonic token: a new say()/stop() supersedes any in-flight clip so its
+// pending fallback can't fire late and double up.
+let playToken = 0;
+
+function getChannel() {
+  if (!channel) {
+    channel = new Audio();
+    channel.preload = 'auto';
+  }
+  return channel;
+}
 
 async function loadJson(url) {
   try {
@@ -53,83 +75,83 @@ export function onClip(cb) { clipListeners.add(cb); return () => clipListeners.d
 /**
  * Speak one line: the recorded clip when the manifest has it, otherwise
  * synthesized speech. Stops whatever was playing first. Resolves when done
- * (bounded — never hangs the game).
+ * (bounded — never hangs the game). Plays every clip through the one unlocked
+ * channel element so a sequence never slips into the synth voice on iOS.
  */
 export function say(key, fallbackText) {
-  stop();
+  const token = ++playToken;
+  pauseChannel();
+  speech.stop();
   const text = (lines && lines[key]) || fallbackText || defaults[key] || '';
   const entry = manifest && manifest[key];
-  if (entry && entry.file) {
-    return new Promise((resolve) => {
-      const a = new Audio(baseUrl + entry.file);
-      currentAudio = a;
-      clipListeners.forEach((cb) => { try { cb(key, a); } catch { /* never break voice */ } });
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        if (currentAudio === a) currentAudio = null;
-        resolve();
-      };
-      const fallback = () => {
-        if (done) return;
-        speech.speak(text).then(finish);
-      };
-      a.addEventListener('ended', finish);
-      a.addEventListener('error', fallback);
-      // safety guard: never hang if the element drops its events
-      setTimeout(finish, (entry.dur ? entry.dur * 1000 : 4000) + 2000);
-      a.play().catch(fallback);
-    });
-  }
-  return speech.speak(text);
+  if (!entry || !entry.file) return speech.speak(text);
+
+  const el = getChannel();
+  return new Promise((resolve) => {
+    let done = false;
+    const cleanup = () => {
+      el.removeEventListener('ended', onEnded);
+      el.removeEventListener('error', onError);
+    };
+    const finish = () => { if (done) return; done = true; cleanup(); resolve(); };
+    const onEnded = () => finish();
+    const onError = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      // superseded by a newer say()/stop() — just resolve, don't speak
+      if (token !== playToken) { resolve(); return; }
+      speech.speak(text).then(resolve);
+    };
+    el.addEventListener('ended', onEnded);
+    el.addEventListener('error', onError);
+    el.muted = false;
+    el.src = baseUrl + entry.file;
+    try { el.currentTime = 0; } catch { /* not always seekable pre-play */ }
+    clipListeners.forEach((cb) => { try { cb(key, el); } catch { /* never break voice */ } });
+    const p = el.play();
+    if (p && typeof p.catch === 'function') p.catch(() => onError());
+    // safety guard: never hang if the element drops its events
+    setTimeout(finish, (entry.dur ? entry.dur * 1000 : 4000) + 2000);
+  });
 }
 
 /**
- * Unlock recorded-clip playback on a user gesture (iOS autoplay policy):
- * play-then-pause a muted real manifest clip so later programmatic play()
- * calls — which often run after an async break, outside user activation —
- * are allowed. Self-limiting: stays armed until it has warmed a real clip
- * (the manifest may not be loaded on the very first tap; the silent-WAV
- * fallback still satisfies the gesture meanwhile).
+ * Unlock recorded-clip playback on the first user gesture (iOS autoplay
+ * policy): play then pause the channel muted so later programmatic src-swaps
+ * are allowed. Runs once; also unlocks Web Speech every call (cheap, idempotent).
  */
-let unlocked = false;
 export function unlock() {
+  speech.unlock();
   if (unlocked) return;
   try {
-    let el = null;
-    if (manifest) {
-      const key = Object.keys(manifest).find((k) => manifest[k] && manifest[k].file);
-      if (key) {
-        el = new Audio(baseUrl + manifest[key].file);
-        el.preload = 'auto';
-        unlocked = true;
-      }
-    }
-    if (!el) el = new Audio(SILENT_WAV);
+    const el = getChannel();
     el.muted = true;
+    if (!el.src) el.src = SILENT_WAV;
     const p = el.play();
+    const settle = () => { try { el.pause(); el.currentTime = 0; } catch { /* ignore */ } el.muted = false; };
     if (p && typeof p.then === 'function') {
-      p.then(() => {
-        try { el.pause(); el.currentTime = 0; } catch { /* ignore */ }
-      }).catch(() => { /* ignore — a later gesture retries */ });
+      p.then(() => { unlocked = true; settle(); }).catch(() => { el.muted = false; });
+    } else {
+      unlocked = true;
+      settle();
     }
-  } catch { /* ignore */ }
+  } catch { /* ignore — a later gesture retries */ }
 }
 
-// 44-byte silent WAV used only before the manifest arrives. data: URI, no network.
+// 44-byte silent WAV used only to prime the channel on the first gesture.
 const SILENT_WAV =
   'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
 
+function pauseChannel() {
+  if (channel) {
+    try { channel.pause(); } catch { /* ignore */ }
+  }
+}
+
 /** Stop the current clip and any synthesized speech. */
 export function stop() {
-  if (currentAudio) {
-    try {
-      currentAudio.pause();
-    } catch {
-      /* ignore */
-    }
-    currentAudio = null;
-  }
+  playToken++; // invalidate any in-flight clip's pending fallback
+  pauseChannel();
   speech.stop();
 }

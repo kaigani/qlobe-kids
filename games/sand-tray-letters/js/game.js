@@ -21,7 +21,7 @@ const DEFAULT_LINES = {
   'next-stroke': 'Next stroke. Start at the orange dot.',
   'start-dot': 'Start at the orange dot.', 'stay-near': 'Stay near the dotted path.',
   'smooth-ready': 'Smooth and ready. Trace this letter.',
-  'shake-next': 'Shake to smooth the tray, or tap next letter.',
+  'shake-next': 'Tap next letter to keep going!',
   finish: 'Terrific tracing! You made all twenty six letters.',
   'mat-sand': 'Golden sand.', 'mat-salt': 'White salt.', 'mat-flour': 'Soft flour.',
 };
@@ -41,7 +41,7 @@ const els = {
   playAgain: $('play-again-button'), list: $('material-list'), tray: $('tray'),
   canvas: $('sand-canvas'), title: $('letter-title'), swatch: $('material-swatch'),
   hint: $('trace-hint'), progress: $('stroke-progress'), reset: $('reset-button'),
-  success: $('success-card'), successTitle: $('success-title'), materialWord: $('material-word'),
+  success: $('success-card'), successTitle: $('success-title'),
   confetti: $('confetti'), announcer: $('announcer'),
 };
 const ctx = els.canvas.getContext('2d', { alpha: false, desynchronized: true });
@@ -70,8 +70,6 @@ let metricsCache = null;
 let resizeFrame = 0;
 let audioContext = null;
 let lastTextureSound = 0;
-let lastMotion = null;
-let lastShake = 0;
 let nudgeTimer = 0;
 let confettiTimer = 0;
 
@@ -101,10 +99,10 @@ function say(keys, announce) {
 
 // Success/replay utterance for a letter: praise, then the reused phonic fragment
 // for the 19 consonants (the 7 vowels/edge letters carry the phonic in praise).
-function letterVoice(letter, withShake) {
+function letterVoice(letter, withNext) {
   const keys = [`praise-${letter.id}`];
   if (FRAGMENT_LETTERS.has(letter.id)) keys.push(`sound-${letter.id}`);
-  if (withShake) keys.push('shake-next');
+  if (withNext) keys.push('shake-next');
   return keys;
 }
 
@@ -168,7 +166,6 @@ function updateLetterUI() {
   els.title.innerHTML = `Trace the letter <b>${letter}</b>`;
   els.canvas.setAttribute('aria-label', `Trace uppercase ${letter}`);
   els.successTitle.textContent = state.letter.success;
-  els.materialWord.textContent = MATERIALS[state.material].word;
   els.success.classList.toggle('hidden', !state.success);
   els.reset.classList.toggle('hidden', state.success);
   const multi = state.letter.strokes.length > 1;
@@ -495,7 +492,7 @@ function showSuccess() {
     sfx.tada();
     burstConfetti(34);
   }
-  say(letterVoice(state.letter, true), `${state.letter.success} ${state.letter.sound} Shake to smooth the ${MATERIALS[state.material].word}, or tap next letter.`);
+  say(letterVoice(state.letter, true), `${state.letter.success} ${state.letter.sound} Tap next letter to keep going!`);
 }
 
 function resetLetter(withVoice = true) {
@@ -615,31 +612,6 @@ function burstConfetti(count) {
   confettiTimer = setTimeout(() => els.confetti.replaceChildren(), 3600);
 }
 
-function onMotion(event) {
-  if (state.screen !== 'play' || !state.success) return;
-  const a = event.accelerationIncludingGravity || event.acceleration;
-  if (!a || a.x == null) return;
-  if (lastMotion) {
-    const delta = Math.abs(a.x - lastMotion.x) + Math.abs(a.y - lastMotion.y) + Math.abs((a.z || 0) - (lastMotion.z || 0));
-    const now = performance.now();
-    if (delta > 16 && now - lastShake > 1300) {
-      lastShake = now;
-      nextLetter();
-    }
-  }
-  lastMotion = { x:a.x, y:a.y, z:a.z || 0 };
-}
-
-function requestMotionPermission() {
-  try {
-    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-      DeviceMotionEvent.requestPermission().then((result) => {
-        if (result === 'granted') window.addEventListener('devicemotion', onMotion);
-      }).catch(() => {});
-    }
-  } catch { /* reset button remains available */ }
-}
-
 function mix(a, b, t) {
   const pa = hex(a), pb = hex(b);
   const value = pa.map((v,i) => Math.round(v + (pb[i] - v) * t));
@@ -669,7 +641,7 @@ function shuffled(items, random) {
 
 // Interaction wiring --------------------------------------------------------
 onTap(els.start, () => { unlockAudio(); sfx.tick(); showMaterials(); });
-onTap(els.trace, () => { unlockAudio(); requestMotionPermission(); sfx.tick(); beginTracing(true); });
+onTap(els.trace, () => { unlockAudio(); sfx.tick(); beginTracing(true); });
 onTap(els.next, () => nextLetter());
 onTap(els.playAgain, () => { state.round = 0; state.order = []; showMaterials(); });
 onTap(els.reset, () => resetLetter());
@@ -686,7 +658,6 @@ els.canvas.addEventListener('pointerdown', pointerDown, { passive:false });
 els.canvas.addEventListener('pointermove', pointerMove, { passive:false });
 els.canvas.addEventListener('pointerup', pointerUp, { passive:false });
 els.canvas.addEventListener('pointercancel', pointerUp, { passive:false });
-window.addEventListener('devicemotion', onMotion);
 window.addEventListener('resize', () => {
   cancelAnimationFrame(resizeFrame);
   resizeFrame = requestAnimationFrame(() => resizeCanvas());
