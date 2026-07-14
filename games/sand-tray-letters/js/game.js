@@ -1,7 +1,33 @@
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
+import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { MATERIALS, LETTERS } from '../config.js';
+
+// Letters whose phonic sound reuses a shared recorded fragment
+// (shared/assets/audio/fragments/*.m4a → copied in as sound-<x>.m4a). The other
+// seven (A E I O Q U X) fold the phonic into their praise clip.
+const FRAGMENT_LETTERS = new Set('BCDFGHJKLMNPRSTVWYZ'.split(''));
+
+// Fixed fallback lines so the first welcome (and any moment before the manifest
+// loads, or if it 404s) still speaks via Web Speech. Per-letter praise falls
+// back through lines.json, loaded by voice.init below.
+const DEFAULT_LINES = {
+  welcome: 'Welcome to Sand Tray Letters. Trace, learn, and play!',
+  'choose-tray': 'Choose your tray. What would you like to trace in?',
+  'choose-short': 'Choose golden sand, white salt, or soft flour.',
+  'trace-this': 'Trace this letter.', 'follow-arrows': 'Follow the arrows.',
+  'next-letter': 'Here is the next letter.',
+  'next-stroke': 'Next stroke. Start at the orange dot.',
+  'start-dot': 'Start at the orange dot.', 'stay-near': 'Stay near the dotted path.',
+  'smooth-ready': 'Smooth and ready. Trace this letter.',
+  'shake-next': 'Shake to smooth the tray, or tap next letter.',
+  finish: 'Terrific tracing! You made all twenty six letters.',
+  'mat-sand': 'Golden sand.', 'mat-salt': 'White salt.', 'mat-flour': 'Soft flour.',
+};
+
+// Voice manifest loads at boot; every play falls back to Web Speech on a miss.
+voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', DEFAULT_LINES);
 
 const $ = (id) => document.getElementById(id);
 const screens = {
@@ -24,6 +50,7 @@ const state = {
   screen: 'welcome',
   material: 'sand',
   round: 0,
+  order: [],
   letter: LETTERS[0],
   stroke: 0,
   progress: [],
@@ -39,6 +66,7 @@ const state = {
 
 let textureCanvas = document.createElement('canvas');
 let textureKey = '';
+let metricsCache = null;
 let resizeFrame = 0;
 let audioContext = null;
 let lastTextureSound = 0;
@@ -51,30 +79,52 @@ function showScreen(name) {
   state.screen = name;
   for (const [key, node] of Object.entries(screens)) node.classList.toggle('hidden', key !== name);
   state.awaitingInput = name === 'play' && !state.success;
-  speech.stop();
+  voice.stop();
 }
 
-function speak(text) {
-  els.announcer.textContent = text;
-  if (!state.muted) speech.speak(text, { rate: .78, pitch: 1.08 });
+// Play a sequence of recorded clips (teacher voice) as one utterance, and mirror
+// the full text into the live-region announcer for screen readers. A newer say()
+// cancels the previous sequence via the token.
+let sayToken = 0;
+function say(keys, announce) {
+  if (announce != null) els.announcer.textContent = announce;
+  voice.stop();
+  const token = ++sayToken;
+  if (state.muted) return;
+  (async () => {
+    for (const key of keys) {
+      if (token !== sayToken || state.muted) return;
+      await voice.say(key);
+    }
+  })();
+}
+
+// Success/replay utterance for a letter: praise, then the reused phonic fragment
+// for the 19 consonants (the 7 vowels/edge letters carry the phonic in praise).
+function letterVoice(letter, withShake) {
+  const keys = [`praise-${letter.id}`];
+  if (FRAGMENT_LETTERS.has(letter.id)) keys.push(`sound-${letter.id}`);
+  if (withShake) keys.push('shake-next');
+  return keys;
 }
 
 function unlockAudio() {
   sfx.unlock();
   speech.unlock();
+  voice.unlock();
 }
 
 function showWelcome(withVoice = true) {
   state.success = false;
   showScreen('welcome');
-  if (withVoice) speak('Welcome to Sand Tray Letters. Trace, learn, and play!');
+  if (withVoice) say(['welcome'], 'Welcome to Sand Tray Letters. Trace, learn, and play!');
 }
 
 function showMaterials() {
   state.success = false;
   showScreen('materials');
   updateMaterialCards();
-  speak('Choose your tray. What would you like to trace in?');
+  say(['choose-tray'], 'Choose your tray. What would you like to trace in?');
 }
 
 function selectMaterial(id, withSound = true) {
@@ -83,7 +133,7 @@ function selectMaterial(id, withSound = true) {
   updateMaterialCards();
   if (withSound) {
     sfx.pop();
-    speak(`${MATERIALS[id].label}.`);
+    say([`mat-${id}`], `${MATERIALS[id].label}.`);
   }
 }
 
@@ -96,8 +146,11 @@ function updateMaterialCards() {
 }
 
 function beginTracing(resetRound = false) {
-  if (resetRound) state.round = 0;
-  state.letter = LETTERS[state.round];
+  if (resetRound || !state.order.length) {
+    state.round = 0;
+    state.order = shuffled(LETTERS, state.rng);
+  }
+  state.letter = state.order[state.round];
   state.success = false;
   showScreen('play');
   els.tray.dataset.material = state.material;
@@ -107,7 +160,7 @@ function beginTracing(resetRound = false) {
   buildSamples();
   updateLetterUI();
   resizeCanvas(true);
-  speak(`Trace the letter ${state.letter.id}. Follow the arrows.`);
+  say(['trace-this', 'follow-arrows'], `Trace the letter ${state.letter.id}. Follow the arrows.`);
 }
 
 function updateLetterUI() {
@@ -146,10 +199,12 @@ function samplePolyline(points, step) {
 }
 
 function canvasMetrics() {
+  if (metricsCache) return metricsCache;
   const width = els.canvas.clientWidth;
   const height = els.canvas.clientHeight;
   const scale = Math.min(width * .82 / 1000, height * .84 / 700);
-  return { width, height, scale, left: (width - 1000 * scale) / 2, top: (height - 700 * scale) / 2 };
+  metricsCache = { width, height, scale, left: (width - 1000 * scale) / 2, top: (height - 700 * scale) / 2 };
+  return metricsCache;
 }
 
 function toScreen(point) {
@@ -164,6 +219,16 @@ function fromEvent(event) {
 
 function resizeCanvas(force = false) {
   const rect = els.canvas.getBoundingClientRect();
+  const cssWidth = Math.max(1, rect.width);
+  const cssHeight = Math.max(1, rect.height);
+  const scale = Math.min(cssWidth * .82 / 1000, cssHeight * .84 / 700);
+  metricsCache = {
+    width: cssWidth,
+    height: cssHeight,
+    scale,
+    left: (cssWidth - 1000 * scale) / 2,
+    top: (cssHeight - 700 * scale) / 2,
+  };
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const width = Math.max(1, Math.round(rect.width * dpr));
   const height = Math.max(1, Math.round(rect.height * dpr));
@@ -349,7 +414,7 @@ function pointerDown(event) {
   const expected = currentExpectedPoint();
   const tolerance = Math.max(48, Math.min(78, Math.min(els.canvas.clientWidth, els.canvas.clientHeight) * .1));
   if (!expected || Math.hypot(point.x - expected.x, point.y - expected.y) > tolerance * 1.15) {
-    nudge('Start at the orange dot.');
+    nudge('start-dot', 'Start at the orange dot.');
     return;
   }
   state.activePointer = event.pointerId;
@@ -392,7 +457,7 @@ function applyPointer(point) {
   }
   const tolerance = Math.max(45, Math.min(72, Math.min(els.canvas.clientWidth, els.canvas.clientHeight) * .09));
   if (distance > tolerance) {
-    nudge('Stay near the dotted path.');
+    nudge('stay-near', 'Stay near the dotted path.');
     return false;
   }
   if (best > current) {
@@ -413,7 +478,7 @@ function completeStroke() {
     state.stroke += 1;
     updateLetterUI();
     render();
-    speak(`Stroke ${state.stroke + 1}. Start at the orange dot.`);
+    say(['next-stroke'], `Stroke ${state.stroke + 1}. Start at the orange dot.`);
     return;
   }
   state.stroke = state.samples.length;
@@ -426,9 +491,11 @@ function showSuccess() {
   state.success = true;
   updateLetterUI();
   render();
-  sfx.tada();
-  burstConfetti(34);
-  speak(`${state.letter.success} ${state.letter.sound} Shake to smooth the ${MATERIALS[state.material].word}, or tap next letter.`);
+  if (!state.fast) {
+    sfx.tada();
+    burstConfetti(34);
+  }
+  say(letterVoice(state.letter, true), `${state.letter.success} ${state.letter.sound} Shake to smooth the ${MATERIALS[state.material].word}, or tap next letter.`);
 }
 
 function resetLetter(withVoice = true) {
@@ -437,31 +504,33 @@ function resetLetter(withVoice = true) {
   state.awaitingInput = false;
   els.success.classList.add('hidden');
   els.tray.classList.add('smoothing');
-  sfx.whoosh();
-  window.setTimeout(() => {
+  if (!state.fast) sfx.whoosh();
+  const finishReset = () => {
     els.tray.classList.remove('smoothing');
     state.stroke = 0;
     state.progress = state.letter.strokes.map(() => 0);
     state.awaitingInput = true;
     updateLetterUI();
     render();
-    if (withVoice) speak(`Smooth and ready. Trace the letter ${state.letter.id}.`);
-  }, state.fast ? 10 : 720);
+    if (withVoice) say(['smooth-ready'], `Smooth and ready. Trace the letter ${state.letter.id}.`);
+  };
+  if (state.fast) finishReset();
+  else window.setTimeout(finishReset, 720);
 }
 
 function nextLetter() {
   if (state.screen !== 'play') return;
-  if (state.round >= LETTERS.length - 1) {
+  if (state.round >= state.order.length - 1) {
     showFinish();
     return;
   }
   els.success.classList.add('hidden');
   els.tray.classList.add('smoothing');
-  sfx.whoosh();
-  window.setTimeout(() => {
+  if (!state.fast) sfx.whoosh();
+  const finishAdvance = () => {
     els.tray.classList.remove('smoothing');
     state.round += 1;
-    state.letter = LETTERS[state.round];
+    state.letter = state.order[state.round];
     state.stroke = 0;
     state.progress = state.letter.strokes.map(() => 0);
     state.success = false;
@@ -469,33 +538,37 @@ function nextLetter() {
     buildSamples();
     updateLetterUI();
     render();
-    speak(`Next is ${state.letter.id}. ${state.letter.sound} Follow the arrows.`);
-  }, state.fast ? 10 : 720);
+    say(['next-letter', 'follow-arrows'], `Next is ${state.letter.id}. Follow the arrows.`);
+  };
+  if (state.fast) finishAdvance();
+  else window.setTimeout(finishAdvance, 720);
 }
 
 function showFinish() {
   state.success = false;
   showScreen('finish');
-  burstConfetti(60);
-  sfx.tada();
-  speak('Terrific tracing! You made six letters.');
+  if (!state.fast) {
+    burstConfetti(60);
+    sfx.tada();
+  }
+  say(['finish'], 'Terrific tracing! You made all twenty-six letters.');
 }
 
-function nudge(message) {
+function nudge(key, message) {
   clearTimeout(nudgeTimer);
   els.tray.classList.remove('nudge');
   void els.tray.offsetWidth;
   els.tray.classList.add('nudge');
   nudgeTimer = setTimeout(() => els.tray.classList.remove('nudge'), 400);
-  if (!state.muted) speak(message);
+  if (!state.muted) say([key], message);
 }
 
 function replay() {
-  if (state.screen === 'welcome') speak('Welcome to Sand Tray Letters. Trace, learn, and play!');
-  else if (state.screen === 'materials') speak('Choose golden sand, white salt, or soft flour.');
-  else if (state.screen === 'play' && state.success) speak(`${state.letter.success} ${state.letter.sound}`);
-  else if (state.screen === 'play') speak(`Trace the letter ${state.letter.id}. Follow the arrows.`);
-  else speak('Terrific tracing! You made six letters.');
+  if (state.screen === 'welcome') say(['welcome'], 'Welcome to Sand Tray Letters. Trace, learn, and play!');
+  else if (state.screen === 'materials') say(['choose-short'], 'Choose golden sand, white salt, or soft flour.');
+  else if (state.screen === 'play' && state.success) say(letterVoice(state.letter, false), `${state.letter.success} ${state.letter.sound}`);
+  else if (state.screen === 'play') say(['trace-this', 'follow-arrows'], `Trace the letter ${state.letter.id}. Follow the arrows.`);
+  else say(['finish'], 'Terrific tracing! You made all twenty-six letters.');
 }
 
 function playTextureSound() {
@@ -585,12 +658,20 @@ function seededRandom(seed) {
   let value = seed >>> 0;
   return () => { value += 0x6D2B79F5; let t=value; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; };
 }
+function shuffled(items, random) {
+  const result = items.slice();
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 // Interaction wiring --------------------------------------------------------
 onTap(els.start, () => { unlockAudio(); sfx.tick(); showMaterials(); });
 onTap(els.trace, () => { unlockAudio(); requestMotionPermission(); sfx.tick(); beginTracing(true); });
 onTap(els.next, () => nextLetter());
-onTap(els.playAgain, () => { state.round = 0; showMaterials(); });
+onTap(els.playAgain, () => { state.round = 0; state.order = []; showMaterials(); });
 onTap(els.reset, () => resetLetter());
 onTap(els.swatch, () => showMaterials());
 
@@ -631,6 +712,10 @@ async function debugTraceLetter() {
   state.stroke = state.samples.length;
   state.awaitingInput = false;
   showSuccess();
+  if (state.fast) {
+    nextLetter();
+    return;
+  }
   await wait(state.fast ? 15 : 240);
   nextLetter();
   await wait(state.fast ? 25 : 760);
@@ -657,7 +742,7 @@ window.QLOBE_DEBUG = {
   engine:'custom-sand-canvas',
   ready:Promise.resolve(),
   listModes:()=>[{id:'letters',title:'Sand Tray Letters'}],
-  startMode:()=>{state.round=0;showMaterials();},
+  startMode:()=>{state.round=0;state.order=[];showMaterials();},
   getState:()=>({
     screen:state.screen,
     mode:state.screen==='welcome'?null:'letters',
@@ -665,12 +750,13 @@ window.QLOBE_DEBUG = {
     material:state.material,
     letter:state.screen==='play'?state.letter.id:null,
     round:state.round,
-    roundsTotal:LETTERS.length,
+    roundsTotal:state.order.length || LETTERS.length,
     stroke:state.stroke,
     strokesTotal:state.screen==='play'?state.letter.strokes.length:0,
     awaitingInput:state.awaitingInput,
   }),
   getTargets,
+  getOrder:()=>state.order.map((letter)=>letter.id),
   tap:(id)=>{
     if(id==='start')showMaterials();
     else if(id==='trace')beginTracing(true);
@@ -689,7 +775,7 @@ window.QLOBE_DEBUG = {
     const r=els.canvas.getBoundingClientRect();
     return state.samples[state.stroke]?.map((s)=>{const p=toScreen(s);return{x:p.x+r.left,y:p.y+r.top};})||[];
   },
-  mute:()=>{state.muted=true;speech.stop();},
+  mute:()=>{state.muted=true;voice.stop();speech.stop();},
   seed:(n)=>{state.rng=seededRandom(Number(n)||1);},
   fastTimers:()=>{state.fast=true;},
 };

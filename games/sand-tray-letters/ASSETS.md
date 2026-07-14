@@ -21,6 +21,24 @@ gradients and thousands of deterministic grain marks on an offscreen canvas,
 then renders dynamic grooves, displaced edge grains, guides, progress points,
 and the turquoise underlayer in real time.
 
+## Recorded voice
+
+`assets/audio/` holds recorded teacher-voice clips (voice-clone of the platform
+teacher reference, whisper-QA'd), played via `shared/js/voice-clips.js` with a
+Web Speech fallback. Set:
+
+- Chrome/prompts (welcome, choose-tray, trace-this, follow-arrows, next-letter,
+  next-stroke, start-dot, stay-near, smooth-ready, shake-next, finish, three
+  material names) — generated for this game.
+- `praise-<A..Z>` (26) — the alliterative success line; for the 19 consonants it
+  ends on "<X> says" and hands off to the phonic clip below.
+- `sound-<X>` (19) — **reused verbatim from the shared phonics library**
+  (`shared/assets/audio/fragments/<x>.m4a`, from Sound Sprouts) as each letter's
+  spoken sound. The seven letters without a fragment (A E I O Q U X) carry the
+  phonic inside their praise clip instead.
+
+`manifest.json` + `lines.json` drive playback and fallback text.
+
 ## Shared assets
 
 | Asset | Source | License |
@@ -28,7 +46,8 @@ and the turquoise underlayer in real time.
 | Fredoka SemiBold | `shared/fonts/fredoka-latin-600-normal.woff2` | SIL OFL 1.1 |
 | Home, back, and sound buttons | `shared/assets/ui/` | QLOBE Kids shared library, CC BY 4.0 |
 | Sound effects | `shared/js/sfx.js` | Synthesized at runtime |
-| Teacher voice fallback | `shared/js/speech.js` | Device speech synthesis |
+| Phonic letter sounds (`sound-<X>.m4a`) | `shared/assets/audio/fragments/` (Sound Sprouts) | QLOBE Kids shared library, CC BY 4.0 |
+| Recorded-voice player + Web Speech fallback | `shared/js/voice-clips.js`, `shared/js/speech.js` | — |
 
 ## External concept reference
 

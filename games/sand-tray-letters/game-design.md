@@ -27,17 +27,20 @@ UI mockups. It no longer uses the shared `trace-path` engine.
 
 ## Letter sequence
 
-The production set contains six uppercase forms:
+The production set contains all 26 uppercase forms, A–Z. Each new run shuffles
+the full deck with Fisher–Yates, then presents every letter exactly once without
+repeats. Starting another run creates a fresh order.
 
-- A — three strokes
-- C — one continuous curve
-- L — two strokes
-- O — one continuous loop
-- S — one continuous curve
-- U — one continuous curve
+Formation paths and their ordered strokes are stored as 1000 × 700 board
+coordinates in `config.js`. The custom engine resamples them into forgiving
+progress checkpoints at runtime.
 
-Formation paths are stored as 1000 × 700 board coordinates in `config.js`.
-The custom engine resamples them into forgiving progress checkpoints at runtime.
+## Voice
+
+Recorded teacher voice via `shared/js/voice-clips.js` (Web Speech fallback).
+Each letter's spoken sound reuses the shared phonics library
+(`shared/assets/audio/fragments/`) where a fragment exists (19 letters); the
+seven without one carry the phonic in their praise clip. See `ASSETS.md`.
 
 ## Interaction and feedback
 
