@@ -14,6 +14,18 @@ workflow on 2026-07-13, then resized to 640 × 640 PNG for game delivery.
 Original built-in outputs remain in Codex’s generated-image store. The project
 copies above are the production assets consumed by `index.html`.
 
+## Prize ceremony assets (shared)
+
+The letter-completion ceremony reveals a prize from a gift box. Both asset sets
+are **shared** (reusable by any alphabet game) and referenced via
+`shared/js/content.js`; emoji fallback covers anything not yet generated.
+
+- `shared/assets/prizes/box-{red,blue,green,yellow,purple}.png` — 5 wrapped gift
+  boxes (transparent PNGs, dark-bg generation → layered extraction).
+- `shared/assets/objects/<word>.png` — 3 curated prize objects per letter
+  (78 total, e.g. turtle/tiger/train), same pipeline; the set is defined in
+  `shared/data/letter-objects.json`. Some reuse existing picture cards.
+
 ## Procedural game visuals
 
 The live tray does not use a static texture. `js/game.js` generates material

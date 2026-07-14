@@ -56,11 +56,23 @@ seven without one carry the phonic in their praise clip. See `ASSETS.md`.
 - Success adds star confetti, a letter-specific affirmation, and the spoken
   letter sound.
 
+## Prize ceremony
+
+Completing a letter opens a reward: one of five coloured gift boxes appears
+(chosen at random). Tapping the box bursts it into confetti and reveals one of
+three prize objects that start with the letter — e.g. tracing T might reveal a
+turtle, tiger, or train — with the voice line "You won a turtle. T is for
+turtle." Then Next Letter advances. Prize objects and the 5 boxes are shared
+transparent PNGs (`shared/assets/objects/`, `shared/assets/prizes/`), pulled via
+`shared/js/content.js` (`letterObjects`); the curated 3-per-letter set lives in
+`shared/data/letter-objects.json`. Emoji fallback covers any object whose PNG is
+not present.
+
 ## Reset
 
 A Reset button smooths the current tray and restarts the letter's strokes at any
-time. On the success screen, Next Letter advances to the next letter. Both are
-plain touch controls — the game uses no device-motion input.
+time. Both Reset and Next Letter are plain touch controls — the game uses no
+device-motion input.
 
 ## Accessibility and safety
 

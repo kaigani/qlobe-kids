@@ -1,8 +1,17 @@
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
+import * as content from '../../../shared/js/content.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { MATERIALS, LETTERS } from '../config.js';
+
+// Curated prize objects per letter load once (shared/data/letter-objects.json).
+content.ready();
+
+// The five gift-box colours the reveal ceremony chooses from.
+const BOX_COLORS = ['red', 'blue', 'green', 'yellow', 'purple'];
+const boxImg = (color) => `../../shared/assets/prizes/box-${color}.png`;
+const prizeName = (p) => p.name || p.word;
 
 // Letters whose phonic sound reuses a shared recorded fragment
 // (shared/assets/audio/fragments/*.m4a → copied in as sound-<x>.m4a). The other
@@ -42,6 +51,9 @@ const els = {
   canvas: $('sand-canvas'), title: $('letter-title'), swatch: $('material-swatch'),
   hint: $('trace-hint'), progress: $('stroke-progress'), reset: $('reset-button'),
   success: $('success-card'), successTitle: $('success-title'),
+  prizeBox: $('prize-box'), prizeBoxImg: $('prize-box-img'), prizeBoxEmoji: $('prize-box-emoji'),
+  prizeReveal: $('prize-reveal'), prizeImg: $('prize-img'), prizeEmoji: $('prize-emoji'),
+  prizeCaption: $('prize-caption'),
   confetti: $('confetti'), announcer: $('announcer'),
 };
 const ctx = els.canvas.getContext('2d', { alpha: false, desynchronized: true });
@@ -58,6 +70,9 @@ const state = {
   activePointer: null,
   awaitingInput: false,
   success: false,
+  prizeBox: 'red',
+  prize: null,
+  prizeOpened: false,
   muted: false,
   reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
   rng: Math.random,
@@ -486,13 +501,72 @@ function completeStroke() {
 
 function showSuccess() {
   state.success = true;
-  updateLetterUI();
+  state.prizeOpened = false;
+  state.prize = null;
+  // pick one of five gift boxes now; the prize object is chosen when it opens
+  state.prizeBox = BOX_COLORS[Math.floor(state.rng() * BOX_COLORS.length)];
+  updateLetterUI();          // reveals the success card
+  setupPrizeBox();
   render();
-  if (!state.fast) {
-    sfx.tada();
-    burstConfetti(34);
-  }
-  say(letterVoice(state.letter, true), `${state.letter.success} ${state.letter.sound} Tap next letter to keep going!`);
+  if (!state.fast) { sfx.tada(); burstConfetti(30); }
+  sayText(`You traced ${state.letter.id}! Tap the box to open your prize.`);
+}
+
+/** Render the closed, tappable gift box (PNG when present, 🎁 emoji until then). */
+function setupPrizeBox() {
+  els.prizeBox.className = `prize-box box-${state.prizeBox}`;
+  els.prizeBox.classList.remove('opening', 'hidden');
+  els.prizeBoxEmoji.style.display = 'none';
+  els.prizeBoxImg.style.display = '';
+  els.prizeBoxImg.onload = () => { els.prizeBoxEmoji.style.display = 'none'; els.prizeBoxImg.style.display = ''; };
+  els.prizeBoxImg.onerror = () => { els.prizeBoxImg.style.display = 'none'; els.prizeBoxEmoji.style.display = ''; };
+  els.prizeBoxImg.src = boxImg(state.prizeBox);
+  els.prizeReveal.classList.add('hidden');
+  els.prizeReveal.classList.remove('pop');
+  els.next.classList.add('hidden');
+  els.prizeCaption.textContent = 'Tap the box to open your prize!';
+}
+
+/** Tap the box: confetti, the box bursts away, the prize pops in, voice names it. */
+function openPrize() {
+  if (!state.success || state.prizeOpened) return;
+  state.prizeOpened = true;
+  const prizes = content.letterObjects(state.letter.id);
+  state.prize = prizes.length ? prizes[Math.floor(state.rng() * prizes.length)] : null;
+  sfx.sparkle();
+  if (!state.fast) burstConfetti(48);
+  els.prizeBox.classList.add('opening');
+  const reveal = () => {
+    if (state.screen !== 'play' || !state.success) return;
+    els.prizeBox.classList.add('hidden');
+    const p = state.prize;
+    if (p) {
+      els.prizeEmoji.textContent = p.char;
+      els.prizeEmoji.style.display = 'none';
+      els.prizeImg.style.display = '';
+      els.prizeImg.onload = () => { els.prizeEmoji.style.display = 'none'; els.prizeImg.style.display = ''; };
+      els.prizeImg.onerror = () => { els.prizeImg.style.display = 'none'; els.prizeEmoji.style.display = ''; };
+      els.prizeImg.src = p.image;
+      els.prizeCaption.textContent = `${state.letter.id} is for ${prizeName(p)}!`;
+    }
+    els.prizeReveal.classList.remove('hidden');
+    void els.prizeReveal.offsetWidth;
+    els.prizeReveal.classList.add('pop');
+    els.next.classList.remove('hidden');
+    if (!state.fast) sfx.tada();
+    if (p) sayText(`You won a ${prizeName(p)}. ${state.letter.id} is for ${prizeName(p)}.`);
+  };
+  if (state.fast) reveal();
+  else window.setTimeout(reveal, 380);
+}
+
+/** Speak a dynamic (non-clip) line via Web Speech, mirrored to the a11y region.
+ *  Supersedes any in-flight recorded-clip sequence. */
+function sayText(text) {
+  els.announcer.textContent = text;
+  voice.stop();
+  sayToken++;
+  if (!state.muted) speech.speak(text, { rate: 0.82, pitch: 1.08 });
 }
 
 function resetLetter(withVoice = true) {
@@ -643,6 +717,7 @@ function shuffled(items, random) {
 onTap(els.start, () => { unlockAudio(); sfx.tick(); showMaterials(); });
 onTap(els.trace, () => { unlockAudio(); sfx.tick(); beginTracing(true); });
 onTap(els.next, () => nextLetter());
+onTap(els.prizeBox, () => openPrize());
 onTap(els.playAgain, () => { state.round = 0; state.order = []; showMaterials(); });
 onTap(els.reset, () => resetLetter());
 onTap(els.swatch, () => showMaterials());
@@ -683,13 +758,14 @@ async function debugTraceLetter() {
   state.stroke = state.samples.length;
   state.awaitingInput = false;
   showSuccess();
+  openPrize();                 // open the gift box to reveal the prize
   if (state.fast) {
     nextLetter();
     return;
   }
-  await wait(state.fast ? 15 : 240);
+  await wait(600);
   nextLetter();
-  await wait(state.fast ? 25 : 760);
+  await wait(760);
 }
 
 function getTargets() {
@@ -702,7 +778,11 @@ function getTargets() {
     ...[...els.list.querySelectorAll('.material-card')].map((node)=>rect(node,`material:${node.dataset.material}`)),
     rect(els.trace,'trace','correct'),
   ];
-  if (state.screen === 'play' && state.success) return [rect(els.next,'next','correct')];
+  if (state.screen === 'play' && state.success) {
+    return state.prizeOpened
+      ? [rect(els.next,'next','correct')]
+      : [rect(els.prizeBox,'prize-box','correct')];
+  }
   if (state.screen === 'play') return [rect(els.canvas,'tray','correct'),rect(els.reset,'reset')];
   return [rect(els.playAgain,'play-again','correct')];
 }
@@ -711,15 +791,17 @@ window.QLOBE_DEBUG = {
   version:1,
   gameId:'sand-tray-letters',
   engine:'custom-sand-canvas',
-  ready:Promise.resolve(),
+  ready:content.ready(),
   listModes:()=>[{id:'letters',title:'Sand Tray Letters'}],
   startMode:()=>{state.round=0;state.order=[];showMaterials();},
   getState:()=>({
     screen:state.screen,
     mode:state.screen==='welcome'?null:'letters',
-    phase:state.screen==='play'?(state.success?'success':'trace'):state.screen,
+    phase:state.screen==='play'?(state.success?(state.prizeOpened?'prize':'box'):'trace'):state.screen,
     material:state.material,
     letter:state.screen==='play'?state.letter.id:null,
+    prize:state.prize?state.prize.word:null,
+    prizeOpened:state.prizeOpened,
     round:state.round,
     roundsTotal:state.order.length || LETTERS.length,
     stroke:state.stroke,
@@ -731,6 +813,7 @@ window.QLOBE_DEBUG = {
   tap:(id)=>{
     if(id==='start')showMaterials();
     else if(id==='trace')beginTracing(true);
+    else if(id==='prize-box')openPrize();
     else if(id==='next')nextLetter();
     else if(id==='reset')resetLetter(false);
     else if(id==='play-again')showMaterials();

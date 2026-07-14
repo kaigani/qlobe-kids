@@ -74,8 +74,18 @@
         <div id="success-card" class="success-card hidden" role="dialog" aria-modal="false" aria-live="polite">
           <div class="success-copy">
             <h2 id="success-title">Amazing A!</h2>
-            <p>Great tracing! Tap Next Letter.</p>
-            <button id="next-button" class="primary-button">NEXT LETTER</button>
+            <div id="prize-stage">
+              <button id="prize-box" class="prize-box" aria-label="Tap to open your prize">
+                <img id="prize-box-img" alt="" draggable="false" />
+                <span id="prize-box-emoji" aria-hidden="true">🎁</span>
+              </button>
+              <div id="prize-reveal" class="prize-reveal hidden">
+                <img id="prize-img" alt="" draggable="false" />
+                <span id="prize-emoji" aria-hidden="true"></span>
+              </div>
+            </div>
+            <p id="prize-caption">Tap the box to open your prize!</p>
+            <button id="next-button" class="primary-button hidden">NEXT LETTER</button>
           </div>
         </div>
       </div>

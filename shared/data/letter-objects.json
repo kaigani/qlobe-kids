@@ -1,0 +1,451 @@
+{
+  "_note": "Curated appealing objects that start with each letter — 3 per letter, chosen to be recognizable, nameable, and fun for ages 5-6. Used by the Sand Tray Letters prize ceremony and available to any alphabet game via shared/js/content.js (letterObjects). `word` doubles as the sprite filename in shared/assets/objects/<word>.png; `char` is the emoji fallback; `img` is the generation prompt subject. Some words reuse existing picture cards.",
+  "objects": {
+    "A": [
+      {
+        "word": "apple",
+        "char": "🍎",
+        "img": "a shiny red apple with a green leaf"
+      },
+      {
+        "word": "ant",
+        "char": "🐜",
+        "img": "a cute friendly black ant"
+      },
+      {
+        "word": "alligator",
+        "char": "🐊",
+        "img": "a cute green cartoon alligator with a big smile"
+      }
+    ],
+    "B": [
+      {
+        "word": "bear",
+        "char": "🐻",
+        "img": "a cuddly brown teddy bear"
+      },
+      {
+        "word": "butterfly",
+        "char": "🦋",
+        "img": "a colorful blue and orange butterfly"
+      },
+      {
+        "word": "banana",
+        "char": "🍌",
+        "img": "a ripe yellow banana"
+      }
+    ],
+    "C": [
+      {
+        "word": "cat",
+        "char": "🐱",
+        "img": "a cute sitting orange tabby cat"
+      },
+      {
+        "word": "car",
+        "char": "🚗",
+        "img": "a cheerful little red toy car"
+      },
+      {
+        "word": "cake",
+        "char": "🍰",
+        "img": "a slice of pink birthday cake with a cherry"
+      }
+    ],
+    "D": [
+      {
+        "word": "dog",
+        "char": "🐶",
+        "img": "a happy brown puppy dog"
+      },
+      {
+        "word": "duck",
+        "char": "🦆",
+        "img": "a cute yellow rubber duck"
+      },
+      {
+        "word": "dinosaur",
+        "char": "🦕",
+        "img": "a friendly green cartoon dinosaur"
+      }
+    ],
+    "E": [
+      {
+        "word": "elephant",
+        "char": "🐘",
+        "img": "a cute grey baby elephant"
+      },
+      {
+        "word": "egg",
+        "char": "🥚",
+        "img": "a smooth white egg"
+      },
+      {
+        "word": "eagle",
+        "char": "🦅",
+        "img": "a proud brown cartoon eagle"
+      }
+    ],
+    "F": [
+      {
+        "word": "frog",
+        "char": "🐸",
+        "img": "a cheerful green frog"
+      },
+      {
+        "word": "fish",
+        "char": "🐟",
+        "img": "a cute orange cartoon fish"
+      },
+      {
+        "word": "flower",
+        "char": "🌸",
+        "img": "a bright pink flower with a yellow center"
+      }
+    ],
+    "G": [
+      {
+        "word": "goat",
+        "char": "🐐",
+        "img": "a cute white baby goat"
+      },
+      {
+        "word": "guitar",
+        "char": "🎸",
+        "img": "a small brown acoustic guitar"
+      },
+      {
+        "word": "grapes",
+        "char": "🍇",
+        "img": "a bunch of purple grapes"
+      }
+    ],
+    "H": [
+      {
+        "word": "horse",
+        "char": "🐴",
+        "img": "a cute brown cartoon pony horse"
+      },
+      {
+        "word": "hat",
+        "char": "🎩",
+        "img": "a cheerful red party hat with a pom-pom"
+      },
+      {
+        "word": "house",
+        "char": "🏠",
+        "img": "a cozy little cartoon house with a red roof"
+      }
+    ],
+    "I": [
+      {
+        "word": "igloo",
+        "char": "🧊",
+        "img": "a rounded white snow igloo"
+      },
+      {
+        "word": "iguana",
+        "char": "🦎",
+        "img": "a cute green iguana lizard"
+      },
+      {
+        "word": "icecream",
+        "char": "🍦",
+        "img": "a swirl of vanilla ice cream in a cone",
+        "name": "ice cream"
+      }
+    ],
+    "J": [
+      {
+        "word": "jellyfish",
+        "char": "🪼",
+        "img": "a cute translucent pink jellyfish"
+      },
+      {
+        "word": "jam",
+        "char": "🍓",
+        "img": "a jar of red strawberry jam"
+      },
+      {
+        "word": "jet",
+        "char": "✈️",
+        "img": "a little blue toy jet airplane"
+      }
+    ],
+    "K": [
+      {
+        "word": "kite",
+        "char": "🪁",
+        "img": "a colorful diamond kite with a tail"
+      },
+      {
+        "word": "kangaroo",
+        "char": "🦘",
+        "img": "a cute brown cartoon kangaroo"
+      },
+      {
+        "word": "key",
+        "char": "🔑",
+        "img": "a shiny golden old-fashioned key"
+      }
+    ],
+    "L": [
+      {
+        "word": "lion",
+        "char": "🦁",
+        "img": "a friendly cartoon lion with a fluffy mane"
+      },
+      {
+        "word": "leaf",
+        "char": "🍃",
+        "img": "a bright green leaf"
+      },
+      {
+        "word": "lemon",
+        "char": "🍋",
+        "img": "a bright yellow lemon"
+      }
+    ],
+    "M": [
+      {
+        "word": "monkey",
+        "char": "🐵",
+        "img": "a cute brown cartoon monkey"
+      },
+      {
+        "word": "moon",
+        "char": "🌙",
+        "img": "a friendly smiling crescent moon"
+      },
+      {
+        "word": "mushroom",
+        "char": "🍄",
+        "img": "a red mushroom with white spots"
+      }
+    ],
+    "N": [
+      {
+        "word": "nest",
+        "char": "🪺",
+        "img": "a cozy bird nest with three little eggs"
+      },
+      {
+        "word": "nut",
+        "char": "🥜",
+        "img": "a brown peanut in its shell"
+      },
+      {
+        "word": "narwhal",
+        "char": "🐳",
+        "img": "a cute grey narwhal with a spiral horn"
+      }
+    ],
+    "O": [
+      {
+        "word": "octopus",
+        "char": "🐙",
+        "img": "a cute purple cartoon octopus"
+      },
+      {
+        "word": "owl",
+        "char": "🦉",
+        "img": "a cute round brown owl"
+      },
+      {
+        "word": "orange",
+        "char": "🍊",
+        "img": "a round orange fruit with a leaf"
+      }
+    ],
+    "P": [
+      {
+        "word": "pig",
+        "char": "🐷",
+        "img": "a cute pink cartoon piglet"
+      },
+      {
+        "word": "penguin",
+        "char": "🐧",
+        "img": "a cute black and white baby penguin"
+      },
+      {
+        "word": "pumpkin",
+        "char": "🎃",
+        "img": "a round orange pumpkin with a green stem"
+      }
+    ],
+    "Q": [
+      {
+        "word": "queen",
+        "char": "👑",
+        "img": "a friendly cartoon queen with a golden crown"
+      },
+      {
+        "word": "quilt",
+        "char": "🧶",
+        "img": "a cozy patchwork quilt blanket"
+      },
+      {
+        "word": "quail",
+        "char": "🐦",
+        "img": "a cute plump brown quail bird with a topknot"
+      }
+    ],
+    "R": [
+      {
+        "word": "rabbit",
+        "char": "🐰",
+        "img": "a cute fluffy white bunny rabbit"
+      },
+      {
+        "word": "robot",
+        "char": "🤖",
+        "img": "a friendly little blue toy robot"
+      },
+      {
+        "word": "rainbow",
+        "char": "🌈",
+        "img": "a bright cheerful rainbow arc"
+      }
+    ],
+    "S": [
+      {
+        "word": "snake",
+        "char": "🐍",
+        "img": "a cute friendly green cartoon snake"
+      },
+      {
+        "word": "star",
+        "char": "⭐",
+        "img": "a glossy golden five-point star with a smile"
+      },
+      {
+        "word": "strawberry",
+        "char": "🍓",
+        "img": "a bright red strawberry with a green top"
+      }
+    ],
+    "T": [
+      {
+        "word": "turtle",
+        "char": "🐢",
+        "img": "a cute green cartoon turtle with a round shell"
+      },
+      {
+        "word": "tiger",
+        "char": "🐯",
+        "img": "a friendly orange cartoon tiger cub"
+      },
+      {
+        "word": "train",
+        "char": "🚂",
+        "img": "a cheerful little blue toy steam train"
+      }
+    ],
+    "U": [
+      {
+        "word": "umbrella",
+        "char": "☂️",
+        "img": "a bright rainbow-striped umbrella"
+      },
+      {
+        "word": "unicorn",
+        "char": "🦄",
+        "img": "a cute white unicorn with a rainbow mane"
+      },
+      {
+        "word": "ukulele",
+        "char": "🎸",
+        "img": "a small brown ukulele"
+      }
+    ],
+    "V": [
+      {
+        "word": "violin",
+        "char": "🎻",
+        "img": "a small brown violin"
+      },
+      {
+        "word": "volcano",
+        "char": "🌋",
+        "img": "a cartoon volcano with a little orange lava"
+      },
+      {
+        "word": "van",
+        "char": "🚐",
+        "img": "a cheerful little blue camper van"
+      }
+    ],
+    "W": [
+      {
+        "word": "whale",
+        "char": "🐳",
+        "img": "a cute blue cartoon whale with a water spout"
+      },
+      {
+        "word": "watermelon",
+        "char": "🍉",
+        "img": "a juicy slice of red watermelon"
+      },
+      {
+        "word": "wagon",
+        "char": "🛒",
+        "img": "a little red toy wagon"
+      }
+    ],
+    "X": [
+      {
+        "word": "xylophone",
+        "char": "🎵",
+        "img": "a colorful toy xylophone with rainbow bars"
+      },
+      {
+        "word": "xray-fish",
+        "char": "🐟",
+        "img": "a cute translucent x-ray fish showing its bones",
+        "name": "x-ray fish"
+      },
+      {
+        "word": "treasure-x",
+        "char": "🗺️",
+        "img": "a rolled treasure map with a big red X mark",
+        "name": "treasure"
+      }
+    ],
+    "Y": [
+      {
+        "word": "yak",
+        "char": "🐃",
+        "img": "a cute shaggy brown yak"
+      },
+      {
+        "word": "yoyo",
+        "char": "🪀",
+        "img": "a bright red yo-yo toy with a string",
+        "name": "yo-yo"
+      },
+      {
+        "word": "yarn",
+        "char": "🧶",
+        "img": "a cozy ball of blue yarn"
+      }
+    ],
+    "Z": [
+      {
+        "word": "zebra",
+        "char": "🦓",
+        "img": "a cute black and white cartoon zebra"
+      },
+      {
+        "word": "zipper",
+        "char": "🤐",
+        "img": "a colorful zipper pull"
+      },
+      {
+        "word": "zeppelin",
+        "char": "🎈",
+        "img": "a friendly silver zeppelin blimp airship"
+      }
+    ]
+  }
+}

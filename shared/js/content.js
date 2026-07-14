@@ -21,22 +21,26 @@ const url = (rel) => new URL(rel, SHARED).href;
 let _words = null;
 let _letters = null;
 let _byLetter = null;
+let _letterObjects = null;
 let _ready = null;
 
-/** Load words.json + letters.json once. Resolves (never rejects). */
+/** Load words.json + letters.json + letter-objects.json once. Never rejects. */
 export function ready() {
   if (!_ready) {
     _ready = (async () => {
       try {
-        const [w, l] = await Promise.all([
+        const [w, l, o] = await Promise.all([
           fetch(url('data/words.json')).then((r) => r.json()),
           fetch(url('data/letters.json')).then((r) => r.json()),
+          fetch(url('data/letter-objects.json')).then((r) => r.json()),
         ]);
         _words = w.words || [];
         _letters = l.letters || [];
+        _letterObjects = o.objects || {};
       } catch {
         _words = _words || [];
         _letters = _letters || [];
+        _letterObjects = _letterObjects || {};
       }
       _byLetter = {};
       for (const word of _words) {
@@ -82,6 +86,23 @@ export function letterSound(letter) {
 export function objectsStartingWith(letter) {
   const key = String(letter).toLowerCase();
   return ((_byLetter && _byLetter[key]) || []).map(enrich);
+}
+
+/**
+ * The curated set of appealing objects for a letter (from letter-objects.json) —
+ * hand-picked, recognizable nouns for prize reveals / alphabet play. Each has a
+ * resolved `image` (shared/assets/objects/<word>.png) and `char` emoji fallback.
+ */
+export function letterObjects(letter) {
+  const list = (_letterObjects && _letterObjects[String(letter).toUpperCase()]) || [];
+  return list.map((o) => ({
+    word: o.word,
+    name: o.name || o.word,  // spoken/display name (word is the sprite filename)
+    char: o.char,            // emoji fallback (until/if the PNG exists)
+    img: o.img,              // generation prompt subject
+    image: objectImage(o.word),
+    audio: wordAudio(o.word),
+  }));
 }
 
 /** One word by name, enriched with asset URLs (or null). */
