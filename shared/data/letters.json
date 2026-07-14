@@ -1,0 +1,391 @@
+{
+  "_note": "Canonical per-letter reference across QLOBE Kids apps. `phonic` is the sound the letter makes; `soundClip` is the shared recording of that phonic (paths are relative to shared/). Objects starting with each letter come from shared/data/words.json (words filtered by onset). Query both through shared/js/content.js. `nameClip` is reserved for letter-NAME recordings, which do not exist yet (a tracked gap).",
+  "letters": [
+    {
+      "letter": "A",
+      "vowel": true,
+      "phonic": "ah",
+      "soundClip": "assets/audio/fragments/a.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "B",
+      "vowel": false,
+      "phonic": "buh",
+      "soundClip": "assets/audio/fragments/b.m4a",
+      "nameClip": null,
+      "objectCount": 12,
+      "objects": [
+        "bag",
+        "bat",
+        "bed",
+        "beg",
+        "bib",
+        "big",
+        "bin",
+        "box",
+        "bud",
+        "bug",
+        "bun",
+        "bus"
+      ]
+    },
+    {
+      "letter": "C",
+      "vowel": false,
+      "phonic": "kuh",
+      "soundClip": "assets/audio/fragments/c.m4a",
+      "nameClip": null,
+      "objectCount": 12,
+      "objects": [
+        "cab",
+        "can",
+        "cap",
+        "cat",
+        "cob",
+        "cod",
+        "cog",
+        "cop",
+        "cot",
+        "cub",
+        "cup",
+        "cut"
+      ]
+    },
+    {
+      "letter": "D",
+      "vowel": false,
+      "phonic": "duh",
+      "soundClip": "assets/audio/fragments/d.m4a",
+      "nameClip": null,
+      "objectCount": 8,
+      "objects": [
+        "dad",
+        "dam",
+        "den",
+        "dig",
+        "dip",
+        "dog",
+        "dot",
+        "dug"
+      ]
+    },
+    {
+      "letter": "E",
+      "vowel": true,
+      "phonic": "eh",
+      "soundClip": "assets/audio/fragments/e.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "F",
+      "vowel": false,
+      "phonic": "fuh",
+      "soundClip": "assets/audio/fragments/f.m4a",
+      "nameClip": null,
+      "objectCount": 10,
+      "objects": [
+        "fan",
+        "fat",
+        "fed",
+        "fig",
+        "fin",
+        "fit",
+        "fix",
+        "fog",
+        "fox",
+        "fun"
+      ]
+    },
+    {
+      "letter": "G",
+      "vowel": false,
+      "phonic": "guh",
+      "soundClip": "assets/audio/fragments/g.m4a",
+      "nameClip": null,
+      "objectCount": 2,
+      "objects": [
+        "gem",
+        "gum"
+      ]
+    },
+    {
+      "letter": "H",
+      "vowel": false,
+      "phonic": "huh",
+      "soundClip": "assets/audio/fragments/h.m4a",
+      "nameClip": null,
+      "objectCount": 10,
+      "objects": [
+        "ham",
+        "hat",
+        "hen",
+        "hid",
+        "hog",
+        "hop",
+        "hot",
+        "hug",
+        "hum",
+        "hut"
+      ]
+    },
+    {
+      "letter": "I",
+      "vowel": true,
+      "phonic": "ih",
+      "soundClip": "assets/audio/fragments/i.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "J",
+      "vowel": false,
+      "phonic": "juh",
+      "soundClip": "assets/audio/fragments/j.m4a",
+      "nameClip": null,
+      "objectCount": 5,
+      "objects": [
+        "jam",
+        "jet",
+        "jig",
+        "jog",
+        "jug"
+      ]
+    },
+    {
+      "letter": "K",
+      "vowel": false,
+      "phonic": "kuh",
+      "soundClip": "assets/audio/fragments/k.m4a",
+      "nameClip": null,
+      "objectCount": 2,
+      "objects": [
+        "kid",
+        "kit"
+      ]
+    },
+    {
+      "letter": "L",
+      "vowel": false,
+      "phonic": "luh",
+      "soundClip": "assets/audio/fragments/l.m4a",
+      "nameClip": null,
+      "objectCount": 6,
+      "objects": [
+        "lap",
+        "leg",
+        "lid",
+        "lip",
+        "lit",
+        "log"
+      ]
+    },
+    {
+      "letter": "M",
+      "vowel": false,
+      "phonic": "muh",
+      "soundClip": "assets/audio/fragments/m.m4a",
+      "nameClip": null,
+      "objectCount": 9,
+      "objects": [
+        "mad",
+        "man",
+        "map",
+        "mat",
+        "mix",
+        "mom",
+        "mop",
+        "mud",
+        "mug"
+      ]
+    },
+    {
+      "letter": "N",
+      "vowel": false,
+      "phonic": "nuh",
+      "soundClip": "assets/audio/fragments/n.m4a",
+      "nameClip": null,
+      "objectCount": 4,
+      "objects": [
+        "nap",
+        "net",
+        "nod",
+        "nut"
+      ]
+    },
+    {
+      "letter": "O",
+      "vowel": true,
+      "phonic": "oh",
+      "soundClip": "assets/audio/fragments/o.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "P",
+      "vowel": false,
+      "phonic": "puh",
+      "soundClip": "assets/audio/fragments/p.m4a",
+      "nameClip": null,
+      "objectCount": 13,
+      "objects": [
+        "pad",
+        "pan",
+        "pat",
+        "peg",
+        "pen",
+        "pet",
+        "pig",
+        "pin",
+        "pod",
+        "pop",
+        "pot",
+        "pug",
+        "pup"
+      ]
+    },
+    {
+      "letter": "Q",
+      "vowel": false,
+      "phonic": "kwuh",
+      "soundClip": "assets/audio/fragments/q.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "R",
+      "vowel": false,
+      "phonic": "ruh",
+      "soundClip": "assets/audio/fragments/r.m4a",
+      "nameClip": null,
+      "objectCount": 10,
+      "objects": [
+        "rag",
+        "ram",
+        "ran",
+        "rat",
+        "red",
+        "rig",
+        "rip",
+        "rod",
+        "rug",
+        "run"
+      ]
+    },
+    {
+      "letter": "S",
+      "vowel": false,
+      "phonic": "suh",
+      "soundClip": "assets/audio/fragments/s.m4a",
+      "nameClip": null,
+      "objectCount": 8,
+      "objects": [
+        "sad",
+        "sat",
+        "sip",
+        "sit",
+        "six",
+        "sob",
+        "sub",
+        "sun"
+      ]
+    },
+    {
+      "letter": "T",
+      "vowel": false,
+      "phonic": "tuh",
+      "soundClip": "assets/audio/fragments/t.m4a",
+      "nameClip": null,
+      "objectCount": 7,
+      "objects": [
+        "tag",
+        "tap",
+        "ten",
+        "tin",
+        "top",
+        "tub",
+        "tug"
+      ]
+    },
+    {
+      "letter": "U",
+      "vowel": true,
+      "phonic": "uh",
+      "soundClip": "assets/audio/fragments/u.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "V",
+      "vowel": false,
+      "phonic": "vuh",
+      "soundClip": "assets/audio/fragments/v.m4a",
+      "nameClip": null,
+      "objectCount": 2,
+      "objects": [
+        "van",
+        "vet"
+      ]
+    },
+    {
+      "letter": "W",
+      "vowel": false,
+      "phonic": "wuh",
+      "soundClip": "assets/audio/fragments/w.m4a",
+      "nameClip": null,
+      "objectCount": 7,
+      "objects": [
+        "wag",
+        "wax",
+        "web",
+        "wed",
+        "wet",
+        "wig",
+        "win"
+      ]
+    },
+    {
+      "letter": "X",
+      "vowel": false,
+      "phonic": "kss",
+      "soundClip": "assets/audio/fragments/x.m4a",
+      "nameClip": null,
+      "objectCount": 0,
+      "objects": []
+    },
+    {
+      "letter": "Y",
+      "vowel": false,
+      "phonic": "yuh",
+      "soundClip": "assets/audio/fragments/y.m4a",
+      "nameClip": null,
+      "objectCount": 4,
+      "objects": [
+        "yak",
+        "yam",
+        "yap",
+        "yum"
+      ]
+    },
+    {
+      "letter": "Z",
+      "vowel": false,
+      "phonic": "zuh",
+      "soundClip": "assets/audio/fragments/z.m4a",
+      "nameClip": null,
+      "objectCount": 2,
+      "objects": [
+        "zap",
+        "zip"
+      ]
+    }
+  ]
+}

@@ -79,6 +79,15 @@ for it first.
     buttons (feedback on pointerdown, action on pointerup over the element,
     `click` reserved for keyboard/AT). Use it instead of splitting feedback
     across `pointerdown` + `click`. Returns a disposer.
+  - **`voice-clips.js`** — recorded-clip voice player for custom games
+    (`init(manifest, lines, defaults)`, `say(key)`, `unlock()`, `onClip(cb)`).
+    Uses one iOS-unlocked audio element so a clip sequence never slips into the
+    synth voice. Web Speech fallback built in.
+  - **`content.js`** — the accessor for shared learning content: letters, their
+    sounds, and picture-word objects. `await content.ready()`, then
+    `content.objectsStartingWith('b')` / `content.letterSound('b')` — returns
+    resolved image + audio URLs. Use this to reference letters/words/sounds;
+    don't re-copy the files. See `docs/shared-assets.md`.
 - **`shared/assets/`**:
   - **`letter-tiles/`** — 56 onset/rime tile PNGs (blue onsets, orange rimes).
   - **`objects/`** — 134 illustrated word picture-cards in one consistent toy style.
@@ -90,6 +99,10 @@ for it first.
   - **`twemoji/`** — CC-BY 4.0 emoji artwork (defensive fallback set).
 - **`shared/data/words.json`** — master word / onset / rime manifest (each word
   has `onset`, `rime`, `type`, `char` emoji, `img` description).
+- **`shared/data/letters.json`** — canonical A–Z index: each letter's `phonic`,
+  its shared `soundClip`, `objectCount`, and the `objects` starting with it.
+  Query via `content.js`; letter *sounds* now cover all 26 (see
+  `docs/shared-assets.md`).
 - **`shared/characters/`** — shared character art (as populated).
 
 **The rule:** if a new tile, card, or sound could plausibly serve another game,
