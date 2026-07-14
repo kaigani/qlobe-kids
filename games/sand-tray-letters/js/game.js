@@ -60,6 +60,7 @@ const ctx = els.canvas.getContext('2d', { alpha: false, desynchronized: true });
 
 const state = {
   screen: 'welcome',
+  pendingWelcome: false,
   material: 'sand',
   round: 0,
   order: [],
@@ -121,16 +122,36 @@ function letterVoice(letter, withNext) {
   return keys;
 }
 
+let audioReady = false;
+const WELCOME_LINE = 'Welcome to Sand Tray Letters. Trace, learn, and play!';
+
 function unlockAudio() {
   sfx.unlock();
   speech.unlock();
   voice.unlock();
+  if (!audioReady) {
+    audioReady = true;
+    // The welcome greeting is deferred to this first gesture: at page load the
+    // clip manifest has not loaded and the audio channel is not unlocked, so
+    // speaking then would fall back to the system voice. Now the recorded clip
+    // plays (synchronously, inside the gesture, so iOS allows it).
+    if (state.pendingWelcome && state.screen === 'welcome') {
+      state.pendingWelcome = false;
+      say(['welcome'], WELCOME_LINE);
+    }
+  }
 }
 
 function showWelcome(withVoice = true) {
   state.success = false;
+  state.pendingWelcome = false;
   showScreen('welcome');
-  if (withVoice) say(['welcome'], 'Welcome to Sand Tray Letters. Trace, learn, and play!');
+  if (withVoice) {
+    // If audio is already live (returning to the splash), greet now with the
+    // recorded clip; otherwise wait for the first gesture (see unlockAudio).
+    if (audioReady) say(['welcome'], WELCOME_LINE);
+    else state.pendingWelcome = true;
+  }
 }
 
 function showMaterials() {
@@ -635,7 +656,7 @@ function nudge(key, message) {
 }
 
 function replay() {
-  if (state.screen === 'welcome') say(['welcome'], 'Welcome to Sand Tray Letters. Trace, learn, and play!');
+  if (state.screen === 'welcome') say(['welcome'], WELCOME_LINE);
   else if (state.screen === 'materials') say(['choose-short'], 'Choose golden sand, white salt, or soft flour.');
   else if (state.screen === 'play' && state.success) say(letterVoice(state.letter, false), `${state.letter.success} ${state.letter.sound}`);
   else if (state.screen === 'play') say(['trace-this', 'follow-arrows'], `Trace the letter ${state.letter.id}. Follow the arrows.`);
