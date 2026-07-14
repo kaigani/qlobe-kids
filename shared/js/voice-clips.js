@@ -54,6 +54,14 @@ async function loadJson(url) {
   }
 }
 
+// A manifest entry's `file` is normally relative to the game's own audio dir
+// (baseUrl). A game may instead point an entry at the SHARED library with a
+// path that escapes its folder (starts with ../ or /) or a full URL — pass
+// those through document-relative so shared clips can be reused, not re-copied.
+function clipUrl(file) {
+  return /^(?:https?:|\/|\.\.\/)/.test(file) ? file : baseUrl + file;
+}
+
 /**
  * Load the clip manifest and the spoken-lines table. Never rejects — a 404 on
  * either just means we run on the speech.js fallback.
@@ -106,7 +114,7 @@ export function say(key, fallbackText) {
     el.addEventListener('ended', onEnded);
     el.addEventListener('error', onError);
     el.muted = false;
-    el.src = baseUrl + entry.file;
+    el.src = clipUrl(entry.file);
     try { el.currentTime = 0; } catch { /* not always seekable pre-play */ }
     clipListeners.forEach((cb) => { try { cb(key, el); } catch { /* never break voice */ } });
     const p = el.play();

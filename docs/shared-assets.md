@@ -73,7 +73,9 @@ category; `_v` bumps on each audio release.
 ## Reuse rule
 
 New games should pull letters/words/sounds through `content.js`, not copy files
-in. One known exception predates this catalog: `games/sand-tray-letters/` copied
-the 19 consonant phonics into its own folder as `sound-<X>.m4a` for
-self-containment — those now duplicate the canonical `fragments/<x>.m4a` and can
-be reconciled to reference shared when convenient.
+in. `voice-clips.js` supports this directly: a manifest entry whose `file` path
+escapes the game's audio dir (starts with `../`) or is a full URL is used as-is,
+so a game can register a shared clip in its manifest — e.g.
+`"sound-B": { "file": "../../shared/assets/audio/fragments/b.m4a" }`.
+`games/sand-tray-letters/` does exactly this for its 19 consonant phonics
+(reconciled 2026-07-14 — no local duplicates remain).
