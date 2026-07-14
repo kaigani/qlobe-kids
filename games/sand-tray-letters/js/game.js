@@ -12,6 +12,15 @@ content.ready();
 const BOX_COLORS = ['red', 'blue', 'green', 'yellow', 'purple'];
 const boxImg = (color) => `../../shared/assets/prizes/box-${color}.png`;
 const prizeName = (p) => p.name || p.word;
+const FORCE_A = new Set(['unicorn', 'ukulele']); // vowel letter, consonant ("yoo") sound
+// The ceremony reveal sentence. Kept identical to the recorded-clip generator
+// (scratchpad/gen-prize-voice.py) so the Web Speech fallback matches the clip.
+function revealLine(letterId, p) {
+  if (p.say) return p.say;
+  const n = prizeName(p);
+  const an = 'aeiou'.includes(n[0].toLowerCase()) && !FORCE_A.has(p.word);
+  return `You won ${an ? 'an' : 'a'} ${n}. ${letterId} is for ${n}.`;
+}
 
 // Letters whose phonic sound reuses a shared recorded fragment
 // (shared/assets/audio/fragments/*.m4a → copied in as sound-<x>.m4a). The other
@@ -530,7 +539,8 @@ function showSuccess() {
   setupPrizeBox();
   render();
   if (!state.fast) { sfx.tada(); burstConfetti(30); }
-  sayText(`You traced ${state.letter.id}! Tap the box to open your prize.`);
+  // Recorded praise (+ reused phonic) then the recorded "tap the box" prompt.
+  say([...letterVoice(state.letter), 'tap-box'], `${state.letter.success} Tap the box to open your prize.`);
 }
 
 /** Render the closed, tappable gift box (PNG when present, 🎁 emoji until then). */
@@ -575,19 +585,19 @@ function openPrize() {
     els.prizeReveal.classList.add('pop');
     els.next.classList.remove('hidden');
     if (!state.fast) sfx.tada();
-    if (p) sayText(`You won a ${prizeName(p)}. ${state.letter.id} is for ${prizeName(p)}.`);
+    if (p) sayPrize(revealLine(state.letter.id, p), p.reveal);
   };
   if (state.fast) reveal();
   else window.setTimeout(reveal, 380);
 }
 
-/** Speak a dynamic (non-clip) line via Web Speech, mirrored to the a11y region.
- *  Supersedes any in-flight recorded-clip sequence. */
-function sayText(text) {
-  els.announcer.textContent = text;
+/** Speak the recorded prize-reveal clip (Web Speech fallback with `line`),
+ *  mirrored to the a11y region. Supersedes any in-flight sequence. */
+function sayPrize(line, fileUrl) {
+  els.announcer.textContent = line;
   voice.stop();
   sayToken++;
-  if (!state.muted) speech.speak(text, { rate: 0.82, pitch: 1.08 });
+  if (!state.muted) voice.sayFile(fileUrl, line);
 }
 
 function resetLetter(withVoice = true) {

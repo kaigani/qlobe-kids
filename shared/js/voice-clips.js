@@ -93,7 +93,24 @@ export function say(key, fallbackText) {
   const text = (lines && lines[key]) || fallbackText || defaults[key] || '';
   const entry = manifest && manifest[key];
   if (!entry || !entry.file) return speech.speak(text);
+  return playClip(clipUrl(entry.file), text, token, key, entry.dur);
+}
 
+/**
+ * Speak one line from a clip file addressed directly (not via the manifest) —
+ * e.g. a shared library clip a game references by path. Same one-channel + Web
+ * Speech fallback behaviour as say(); if the file is missing the fallbackText
+ * is synthesized. `fileRel` may be a shared relative path (`../…`) or a URL.
+ */
+export function sayFile(fileRel, fallbackText, dur) {
+  const token = ++playToken;
+  pauseChannel();
+  speech.stop();
+  if (!fileRel) return speech.speak(fallbackText || '');
+  return playClip(clipUrl(fileRel), fallbackText || '', token, 'file', dur);
+}
+
+function playClip(src, text, token, key, dur) {
   const el = getChannel();
   return new Promise((resolve) => {
     let done = false;
@@ -114,13 +131,13 @@ export function say(key, fallbackText) {
     el.addEventListener('ended', onEnded);
     el.addEventListener('error', onError);
     el.muted = false;
-    el.src = clipUrl(entry.file);
+    el.src = src;
     try { el.currentTime = 0; } catch { /* not always seekable pre-play */ }
     clipListeners.forEach((cb) => { try { cb(key, el); } catch { /* never break voice */ } });
     const p = el.play();
     if (p && typeof p.catch === 'function') p.catch(() => onError());
     // safety guard: never hang if the element drops its events
-    setTimeout(finish, (entry.dur ? entry.dur * 1000 : 4000) + 2000);
+    setTimeout(finish, (dur ? dur * 1000 : 4000) + 2000);
   });
 }
 

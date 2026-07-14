@@ -44,6 +44,13 @@ Web Speech fallback. Set:
   material names) — generated for this game.
 - `praise-<A..Z>` (26) — the alliterative success line; for the 19 consonants it
   ends on "<X> says" and hands off to the phonic clip below.
+- `tap-box` — "Tap the box to open your prize!", played after the praise when
+  the gift box appears.
+- **Prize reveal lines** — "You won a turtle. T is for turtle." style, one
+  recorded sentence per prize object, stored **shared** at
+  `shared/assets/audio/prizes/<word>.m4a` (78, whisper-QA'd) and played by word
+  via `content.prizeAudio` / `voice.sayFile`. Web Speech speaks the identical
+  line for any prize whose clip is not yet present.
 - `sound-<X>` (19) — **referenced directly from the shared phonics library**,
   not copied: the manifest points these entries at
   `../../shared/assets/audio/fragments/<x>.m4a`, so there is one canonical copy.

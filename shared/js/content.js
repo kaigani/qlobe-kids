@@ -64,6 +64,8 @@ export const wordCelebrate = (word) => url(`assets/audio/celebrate/${word}.m4a`)
 export const wordPrompt = (word) => url(`assets/audio/prompts/${word}.m4a`);
 /** The phonic sound a letter makes (e.g. letterSoundUrl('b') → …/fragments/b.m4a). */
 export const letterSoundUrl = (letter) => url(`assets/audio/fragments/${String(letter).toLowerCase()}.m4a`);
+/** Recorded prize-reveal line for an object ("You won a turtle. T is for turtle."). */
+export const prizeAudio = (word) => url(`assets/audio/prizes/${word}.m4a`);
 
 // ---- queries (call after `await ready()`) ----
 
@@ -100,8 +102,10 @@ export function letterObjects(letter) {
     name: o.name || o.word,  // spoken/display name (word is the sprite filename)
     char: o.char,            // emoji fallback (until/if the PNG exists)
     img: o.img,              // generation prompt subject
+    say: o.say || null,      // optional reveal-line override (e.g. treasure-x)
     image: objectImage(o.word),
     audio: wordAudio(o.word),
+    reveal: prizeAudio(o.word),  // recorded "You won a …" ceremony line
   }));
 }
 
