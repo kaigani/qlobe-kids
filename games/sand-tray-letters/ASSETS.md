@@ -26,6 +26,14 @@ are **shared** (reusable by any alphabet game) and referenced via
   (78 total, e.g. turtle/tiger/train), same pipeline; the set is defined in
   `shared/data/letter-objects.json`. Some reuse existing picture cards.
 
+## Splash background
+
+`assets/scene/welcome-bg.jpg` — a soft papercraft/felt rolling-hills scene (blue
+sky, clay clouds, layered green hills, bushes) generated with `krea2-turbo-t2i`
+to match the original welcome mockup, replacing the earlier CSS gradient + CSS
+cloud/hill shapes. 1216×832, JPG ~119 KB. No characters, text, or UI baked in;
+the welcome card and controls sit on top.
+
 ## Procedural game visuals
 
 The live tray does not use a static texture. `js/game.js` generates material
