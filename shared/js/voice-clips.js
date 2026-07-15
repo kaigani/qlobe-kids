@@ -110,6 +110,37 @@ export function sayFile(fileRel, fallbackText, dur) {
   return playClip(clipUrl(fileRel), fallbackText || '', token, 'file', dur);
 }
 
+/**
+ * Attempt a recorded clip without any Web Speech fallback. Resolves `true` if
+ * playback actually started, `false` if the browser blocked it (e.g. a fresh
+ * page load with no in-document gesture yet — user activation does not survive
+ * a navigation). Lets a caller try to greet on load and, if blocked, defer to
+ * the first gesture instead of slipping to the synth voice. `key` may be a
+ * manifest key or, when `isFile`, a direct clip path.
+ */
+export function trySay(key, isFile = false) {
+  ++playToken;
+  pauseChannel();
+  speech.stop();
+  const src = isFile ? key : (manifest && manifest[key] && manifest[key].file);
+  if (!src) return Promise.resolve(false);
+  const el = getChannel();
+  el.muted = false;
+  el.src = clipUrl(src);
+  try { el.currentTime = 0; } catch { /* not always seekable pre-play */ }
+  clipListeners.forEach((cb) => { try { cb(key, el); } catch { /* never break voice */ } });
+  const p = el.play();
+  if (p && typeof p.then === 'function') {
+    return p.then(() => true, () => {
+      // Blocked: reset the channel so a later unlock()/say() starts clean
+      // (a leftover src would be re-primed muted and collide with the replay).
+      try { el.pause(); el.removeAttribute('src'); el.load(); } catch { /* ignore */ }
+      return false;
+    });
+  }
+  return Promise.resolve(true); // older browsers: no promise means it started
+}
+
 function playClip(src, text, token, key, dur) {
   const el = getChannel();
   return new Promise((resolve) => {

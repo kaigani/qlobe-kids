@@ -45,7 +45,7 @@ const DEFAULT_LINES = {
 };
 
 // Voice manifest loads at boot; every play falls back to Web Speech on a miss.
-voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', DEFAULT_LINES);
+const voiceReady = voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', DEFAULT_LINES);
 
 const $ = (id) => document.getElementById(id);
 const screens = {
@@ -155,12 +155,22 @@ function showWelcome(withVoice = true) {
   state.success = false;
   state.pendingWelcome = false;
   showScreen('welcome');
-  if (withVoice) {
-    // If audio is already live (returning to the splash), greet now with the
-    // recorded clip; otherwise wait for the first gesture (see unlockAudio).
-    if (audioReady) say(['welcome'], WELCOME_LINE);
-    else state.pendingWelcome = true;
-  }
+  if (withVoice) greet();
+}
+
+// Greet with the recorded welcome. On the very first load the game page has no
+// user activation (it doesn't survive the navigation from the hub), so a browser
+// may block audio; we try anyway once the clip manifest is ready, and if it's
+// blocked we arm pendingWelcome so the first in-game tap plays it (never TTS).
+async function greet() {
+  if (audioReady) { say(['welcome'], WELCOME_LINE); return; }
+  await voiceReady;
+  if (state.screen !== 'welcome') return;   // moved on during load
+  els.announcer.textContent = WELCOME_LINE;
+  if (audioReady) { say(['welcome'], WELCOME_LINE); return; } // a tap unlocked us mid-load
+  const started = await voice.trySay('welcome');
+  if (started) audioReady = true;      // autoplay allowed here (e.g. desktop)
+  else state.pendingWelcome = true;    // blocked → greet on first gesture
 }
 
 function showMaterials() {
