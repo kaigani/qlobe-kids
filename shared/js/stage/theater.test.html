@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>theater.js test — puppet scene substrate</title>
+  <style>
+    :root { --ink: #17517e; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; height: 100vh; display: grid; grid-template-rows: auto 1fr;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      background: linear-gradient(#dff1fb, #bfe3f5); color: var(--ink);
+      touch-action: none; overflow: hidden;
+    }
+    #bar {
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 12px;
+      background: #fffef7; border-bottom: 3px solid #ecd9a8; align-items: center;
+    }
+    button {
+      font: inherit; font-weight: 600; border: 0; border-radius: 14px;
+      padding: 10px 14px; min-height: 44px; background: #2f6fb0; color: #fff;
+      cursor: pointer;
+    }
+    button.alt { background: #e8863a; }
+    button.warn { background: #b0492f; }
+    #stage { position: relative; }
+    #status {
+      position: absolute; left: 10px; bottom: 8px; font-size: 13px;
+      background: #ffffffcc; padding: 4px 10px; border-radius: 10px;
+      color: #345; white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <button id="scene">play scene</button>
+    <button id="preview" class="alt">preview + snap back</button>
+    <button id="handoff" class="alt">prop handoff</button>
+    <button id="speak" class="alt">both speak</button>
+    <button id="abort" class="warn">interrupt</button>
+    <button id="fast">timeScale ×8</button>
+  </div>
+  <div id="stage"><div id="status">loading…</div></div>
+
+  <script type="module">
+    import { createStage } from './stage.js';
+    import { createTheater } from './theater.js';
+
+    const statusEl = document.getElementById('status');
+    const set = (t) => { statusEl.textContent = t; };
+
+    (async () => {
+      const stage = await createStage(document.getElementById('stage'));
+      const theater = await createTheater(stage, { backdrop: '#cfe8d2', floorY: 0.8 });
+      stage.root.addChild(theater.view);
+
+      const red = await theater.addActor('red', 'bear', { x: 0.3, scale: 0.42, fallbackPitch: 0.9 });
+      const blue = await theater.addActor('blue', 'frog', { x: 0.7, flip: true, scale: 0.42, fallbackPitch: 1.2 });
+      await theater.addProp('truck', { color: '#e8b23a', scale: 0.55, holder: 'red', handOffset: [0, 130] });
+
+      let tableau = null;
+
+      // A miniature setup → problem → preview → resolution arc, greyboxed with
+      // only the 5 shipped clips (wave≈ask, jump≈cheer, idle+pose≈sad).
+      const setupBeats = [
+        { narrator: 'setup', text: 'Bear is playing with the truck. Here comes Frog!' },
+        { actor: 'blue', enter: 'right', to: [0.7], ms: 1800 },
+        { actor: 'blue', say: 'want-truck', text: 'Ooh! I want to play with the truck!' },
+        { actor: 'red', say: 'mine-first', text: 'But I had it first!' },
+        { parallel: [
+          { actor: 'red', pose: { '$spine': { bend: -0.1 } } },
+          { actor: 'blue', pose: { head: { rotation: 0.25 }, '$spine': { squash: 0.05 } } },
+        ]},
+        { narrator: 'problem', text: 'Uh oh. Both friends want the same truck.' },
+      ];
+
+      const previewBeats = [
+        { narrator: 'ask', text: 'Should Frog ask for a turn?' },
+        { actor: 'blue', clip: 'wave' , loop: false },
+        { actor: 'blue', say: 'turn-please', text: 'May I have a turn, please?' },
+        { actor: 'red', clip: 'jump' },
+        { fx: 'sparkle', at: 'blue' },
+      ];
+
+      const resolutionBeats = [
+        { actor: 'red', say: 'sure', text: 'Sure! You can have a turn!' },
+        { prop: 'truck', holder: 'blue' },
+        { actor: 'blue', say: 'thanks', text: 'Thank you, friend!' },
+        { parallel: [
+          { actor: 'red', clip: 'jump' },
+          { actor: 'blue', clip: 'jump' },
+        ]},
+        { fx: 'burst', at: 'truck' },
+        { narrator: 'after', text: 'Asking with kind words worked!' },
+      ];
+
+      document.getElementById('scene').addEventListener('click', async () => {
+        theater.interrupt();
+        set('scene: setup…');
+        const done = await theater.runBeats(setupBeats);
+        tableau = theater.captureTableau();
+        set(done ? 'scene: tableau frozen (captured)' : 'scene: interrupted');
+      });
+
+      document.getElementById('preview').addEventListener('click', async () => {
+        if (!tableau) { set('play scene first'); return; }
+        theater.interrupt();
+        set('preview…');
+        const done = await theater.runBeats(previewBeats);
+        await theater.wait(400);
+        theater.restoreTableau(tableau);
+        set(done ? 'preview done → snapped back to tableau' : 'preview interrupted');
+      });
+
+      document.getElementById('handoff').addEventListener('click', async () => {
+        theater.interrupt();
+        set('resolution…');
+        const done = await theater.runBeats(resolutionBeats);
+        set(done ? 'resolution done (truck handed to frog)' : 'interrupted');
+      });
+
+      document.getElementById('speak').addEventListener('click', async () => {
+        theater.interrupt();
+        await theater.runBeats([
+          { actor: 'red', say: 'hello-a', text: 'Hello! I am Bear.' },
+          { actor: 'blue', say: 'hello-b', text: 'And I am Frog. We are friends!' },
+        ]);
+        set('spoke (recorded if voice manifest has the line, else Web Speech)');
+      });
+
+      document.getElementById('abort').addEventListener('click', () => {
+        theater.interrupt();
+        set('interrupted');
+      });
+
+      document.getElementById('fast').addEventListener('click', (e) => {
+        theater.timeScale = theater.timeScale === 1 ? 8 : 1;
+        e.target.textContent = theater.timeScale === 1 ? 'timeScale ×8' : 'timeScale ×1';
+        set(`timeScale = ${theater.timeScale}`);
+      });
+
+      set('ready — two puppets + greybox prop');
+
+      // Debug hook for headless (Playwright) verification.
+      window.QLOBE_DEBUG = {
+        ready: true,
+        theater,
+        run: (beats) => theater.runBeats(beats),
+        state: () => ({
+          red: red.puppet.getState(),
+          blue: blue.puppet.getState(),
+          truckHolder: theater.props.truck.holder,
+          timeScale: theater.timeScale,
+        }),
+      };
+      document.title = 'ready';
+    })();
+  </script>
+</body>
+</html>

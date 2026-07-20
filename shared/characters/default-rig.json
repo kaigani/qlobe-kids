@@ -1,0 +1,42 @@
+{
+  "_comment": "Default starting POSITIONING template for a standard bipedal plush rig, tuned from Rabbit (Rocky). New character rigs start from these joint positions, part anchors, z-order and spine, then nudge to fit that character's proportions in puppet-studio.html?char=<id> (Rig mode). The head part carries a placeholder viseme map + fit (anchor/scale) that is replaced per-character after the viseme grid is extracted. Clips are the shared baseline in default-clips.json. See docs/puppet-rig-spec.md.",
+  "canvas": 1024,
+  "anchor": { "x": 512, "y": 512 },
+  "ground": 920,
+  "bones": [
+    { "id": "torso", "parent": null, "joint": [512, 615], "z": 10 },
+    { "id": "leg-upper.L", "parent": "torso", "joint": [457, 625], "z": 8 },
+    { "id": "leg-lower.L", "parent": "leg-upper.L", "joint": [434, 713], "z": 13 },
+    { "id": "leg-upper.R", "parent": "torso", "joint": [573, 618], "z": 8 },
+    { "id": "leg-lower.R", "parent": "leg-upper.R", "joint": [604, 715], "z": 13 },
+    { "id": "arm-upper.L", "parent": "torso", "joint": [425, 410], "z": 9 },
+    { "id": "arm-lower.L", "parent": "arm-upper.L", "joint": [380, 498], "z": 21 },
+    { "id": "arm-upper.R", "parent": "torso", "joint": [597, 405], "z": 9 },
+    { "id": "arm-lower.R", "parent": "arm-upper.R", "joint": [640, 490], "z": 21 },
+    { "id": "head", "parent": "torso", "joint": [508, 341], "z": 30 }
+  ],
+  "spine": {
+    "control": [[512, 615], [512, 495], [512, 375]]
+  },
+  "parts": [
+    { "bone": "torso", "z": 10, "art": "parts/torso.png", "anchor": [0.5, 0.92] },
+    { "bone": "leg-upper.L", "z": 8, "art": "parts/leg-upper.L.png", "anchor": [0.62, 0.21] },
+    { "bone": "leg-lower.L", "z": 13, "art": "parts/leg-lower.L.png", "anchor": [0.73, 0.13] },
+    { "bone": "leg-upper.R", "z": 8, "art": "parts/leg-upper.R.png", "anchor": [0.38, 0.2] },
+    { "bone": "leg-lower.R", "z": 13, "art": "parts/leg-lower.R.png", "anchor": [0.28, 0.13] },
+    { "bone": "arm-upper.L", "z": 9, "art": "parts/arm-upper.L.png", "anchor": [0.63, 0.24] },
+    { "bone": "arm-lower.L", "z": 21, "art": "parts/arm-lower.L.png", "anchor": [0.72, 0.17] },
+    { "bone": "arm-upper.R", "z": 9, "art": "parts/arm-upper.R.png", "anchor": [0.36, 0.22] },
+    { "bone": "arm-lower.R", "z": 21, "art": "parts/arm-lower.R.png", "anchor": [0.29, 0.18] },
+    {
+      "bone": "head", "z": 30, "art": "anim/head-rest.png", "anchor": [0.5, 0.834], "scale": 0.878,
+      "visemes": {
+        "rest": "anim/head-rest.png", "a": "anim/head-a.png", "o": "anim/head-o.png",
+        "e": "anim/head-e.png", "wr": "anim/head-wr.png", "ts": "anim/head-ts.png",
+        "ln": "anim/head-ln.png", "uq": "anim/head-uq.png", "mbp": "anim/head-mbp.png",
+        "fv": "anim/head-fv.png"
+      }
+    }
+  ],
+  "outfitSlots": []
+}

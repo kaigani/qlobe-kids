@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>puppet.js test — segmented spline puppet</title>
+  <style>
+    :root { --ink: #17517e; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; height: 100vh; display: grid; grid-template-rows: auto 1fr;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      background: linear-gradient(#dff1fb, #bfe3f5); color: var(--ink);
+      touch-action: none; overflow: hidden;
+    }
+    #bar {
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 12px;
+      background: #fffef7; border-bottom: 3px solid #ecd9a8; align-items: center;
+    }
+    #bar strong { margin: 0 4px 0 8px; }
+    button {
+      font: inherit; font-weight: 600; border: 0; border-radius: 14px;
+      padding: 10px 14px; min-height: 44px; background: #2f6fb0; color: #fff;
+      cursor: pointer;
+    }
+    button.alt { background: #e8863a; }
+    button.slot { background: #4a8b6a; }
+    #stage { position: relative; }
+    #status {
+      position: absolute; left: 10px; bottom: 8px; font-size: 13px;
+      background: #ffffffcc; padding: 4px 10px; border-radius: 10px;
+      color: #345; white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <strong>Clips</strong><span id="clips"></span>
+    <strong>Dress</strong><span id="slots"></span>
+    <strong>Move</strong>
+    <button class="alt" id="walkacross">walk across</button>
+  </div>
+  <div id="stage"><div id="status">loading…</div></div>
+
+  <script type="module">
+    import { createStage } from './stage.js';
+    import { createPuppet, loadRigArt } from './puppet.js';
+    import { catmullRom, cubicPoint } from './spline.js';
+
+    const statusEl = document.getElementById('status');
+    const CHAR_BASE = '../../characters/bear/';
+
+    // spline.js sanity check (logged; verifies the math powering the rig)
+    const mid = cubicPoint({ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 0 }, 0.5);
+    const cr = catmullRom([{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 20, y: 0 }], 0.5);
+    console.log('[spline] cubic mid ~5:', mid.x.toFixed(2), '| catmullRom mid ~10:', cr.x.toFixed(2));
+
+    (async () => {
+      const stage = await createStage(document.getElementById('stage'));
+      const rig = await (await fetch(CHAR_BASE + 'rig.json')).json();
+      const factory = await loadRigArt(stage.PIXI, rig, CHAR_BASE); // real PNG parts
+      const puppet = createPuppet(stage.PIXI, rig, { partFactory: factory });
+      stage.root.addChild(puppet.view);
+
+      function place(w, h) {
+        const k = Math.min(w, h) / (rig.canvas || 1024) * 0.94;
+        puppet.view.scale.set(k);
+        puppet.view.position.set(w / 2, h * 0.54);
+      }
+      stage.onResize(place);
+      puppet.enableDrag(stage.app);
+
+      function refresh() {
+        const s = puppet.getState();
+        statusEl.textContent = `clip: ${s.currentClip || '—'}   reduced-motion: ${s.reduced}`;
+      }
+
+      // build clip buttons from the rig
+      const clipsEl = document.getElementById('clips');
+      for (const name of Object.keys(rig.clips || {})) {
+        const b = document.createElement('button');
+        b.textContent = name; b.dataset.clip = name;
+        b.addEventListener('click', () => { puppet.playClip(name); refresh(); });
+        clipsEl.appendChild(b);
+      }
+
+      // build outfit-cycle buttons from whatever slots the rig defines (none for
+      // the baked-onesie bear; the engine still supports them for layered art)
+      const slotsEl = document.getElementById('slots');
+      const catalog = puppet.listOutfits();
+      const cycle = {};
+      if (!Object.keys(catalog).length) {
+        const note = document.createElement('span');
+        note.style.color = '#789'; note.style.fontSize = '13px';
+        note.textContent = '(no dress-up — each variant is a whole sprite set)';
+        slotsEl.appendChild(note);
+      }
+      for (const slot of Object.keys(catalog)) {
+        const b = document.createElement('button'); b.className = 'slot'; b.textContent = slot;
+        b.addEventListener('click', () => {
+          const opts = ['none', ...catalog[slot]];
+          cycle[slot] = ((cycle[slot] ?? 0) + 1) % opts.length;
+          puppet.setOutfit(slot, opts[cycle[slot]]); refresh();
+        });
+        slotsEl.appendChild(b);
+      }
+
+      document.getElementById('walkacross').addEventListener('click', async () => {
+        puppet.playClip('walk');
+        const { width: w, height: h } = stage.app.screen;
+        await puppet.moveAlong([[w * 0.22, h * 0.54], [w * 0.5, h * 0.46], [w * 0.78, h * 0.54]], { ms: 2200 });
+        puppet.playClip('idle'); refresh();
+      });
+
+      refresh();
+
+      // Debug hook for headless (Playwright) verification.
+      window.QLOBE_DEBUG = {
+        ready: true,
+        playClip: (n) => { puppet.playClip(n); refresh(); return puppet.currentClip; },
+        setOutfit: (slot, id) => { puppet.setOutfit(slot, id); refresh(); return puppet.getState().outfits; },
+        listOutfits: () => puppet.listOutfits(),
+        getState: () => puppet.getState(),
+        spline: { mid: mid.x, cr: cr.x },
+      };
+      document.title = 'ready';
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "id": "puppet-problem-solvers",
+  "title": "Problem-Solving Puppets",
+  "category": "social-emotional",
+  "path": "games/puppet-problem-solvers/",
+  "icon": "🎭",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#2e9f76",
+  "description": "Cast two puppets, watch them hit a real kid-sized problem, watch every idea acted out live on stage, then tap the kind idea you like best.",
+  "learningGoals": [
+    "See each solution to a conflict acted out before choosing — show, don't tell",
+    "Practice sharing, turn-taking, and asking for help with modeled kind words",
+    "Learn that unkind choices make friends sad — and that you can always try again"
+  ],
+  "interactionModel": "puppet-theater: live bone-rig puppets act the problem, act every choice as a preview vignette, then the child taps one large picture card to commit",
+  "feedbackModel": "Kind choices play their acted happy ending with confetti and warm praise; unkind choices play a gentle sad beat, the scene snaps back, and the narrator invites a kinder try. No fail states.",
+  "uses": [
+    "shared/js/engines/puppet-theater.js",
+    "shared/js/stage/theater.js",
+    "shared/js/stage/puppet.js",
+    "shared/js/stage/lipsync.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/speech.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    { "id": "share", "title": "Share", "skill": "sharing and joint play" },
+    { "id": "take-turns", "title": "Take Turns", "skill": "turn-taking and patience" },
+    { "id": "ask-for-help", "title": "Ask for Help", "skill": "asking for and offering help" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "First shipping game on the shared bone-rig puppet engine. Puppet characters, acting clips, and voices from shared/characters/. Built with Claude for QLOBE Kids.",
+  "characters": ["bear", "doggy", "fox", "frog", "rabbit", "unicorn", "princess-lily", "princess-zoe"],
+  "conceptVideo": null
+}

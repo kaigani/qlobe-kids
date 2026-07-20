@@ -18,3 +18,6 @@ node_modules/
 
 # Local Claude Code settings (the shipped skill in .claude/skills/ IS tracked)
 .claude/settings.local.json
+
+# Local python venv for lipsync tooling (machine-specific)
+tools/lipsync/venv/

@@ -1,0 +1,321 @@
+{
+ "schemaVersion": 1,
+ "lines": [
+  {
+   "id": "intro",
+   "label": "Intro",
+   "audio": "intro.m4a",
+   "cues": "intro.cues.json",
+   "cueMap": "identity",
+   "text": "Um, hello. I'm Zoe and I love exploring nature."
+  },
+  {
+   "id": "want-it",
+   "label": "Want It",
+   "audio": "want-it.m4a",
+   "cues": "want-it.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.832,
+   "text": "Ooh! I want to play with that too!"
+  },
+  {
+   "id": "had-it-first",
+   "label": "Had It First",
+   "audio": "had-it-first.m4a",
+   "cues": "had-it-first.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.194,
+   "text": "But I had it first!"
+  },
+  {
+   "id": "mine-no",
+   "label": "Mine, No",
+   "audio": "mine-no.m4a",
+   "cues": "mine-no.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.433,
+   "text": "No! It's mine!"
+  },
+  {
+   "id": "turn-please",
+   "label": "Turn, Please",
+   "audio": "turn-please.m4a",
+   "cues": "turn-please.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.593,
+   "text": "May I have a turn, please?"
+  },
+  {
+   "id": "lets-share",
+   "label": "Let's Share",
+   "audio": "lets-share.m4a",
+   "cues": "lets-share.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.353,
+   "text": "Let's play with it together!"
+  },
+  {
+   "id": "sure-turn",
+   "label": "Sure Turn",
+   "audio": "sure-turn.m4a",
+   "cues": "sure-turn.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.513,
+   "text": "Sure! You can have a turn!"
+  },
+  {
+   "id": "thank-you",
+   "label": "Thank You",
+   "audio": "thank-you.m4a",
+   "cues": "thank-you.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.875,
+   "text": "Thank you, friend!"
+  },
+  {
+   "id": "im-sad",
+   "label": "I'm Sad",
+   "audio": "im-sad.m4a",
+   "cues": "im-sad.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.433,
+   "text": "That makes me feel sad."
+  },
+  {
+   "id": "sorry",
+   "label": "Sorry",
+   "audio": "sorry.m4a",
+   "cues": "sorry.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.875,
+   "text": "I'm sorry."
+  },
+  {
+   "id": "yay",
+   "label": "Yay",
+   "audio": "yay.m4a",
+   "cues": "yay.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.557,
+   "text": "Yay!"
+  },
+  {
+   "id": "me-first",
+   "label": "Me First",
+   "audio": "me-first.m4a",
+   "cues": "me-first.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.114,
+   "text": "I want to go first!"
+  },
+  {
+   "id": "me-too-first",
+   "label": "Me Too First",
+   "audio": "me-too-first.m4a",
+   "cues": "me-too-first.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.593,
+   "text": "But I want to be first too!"
+  },
+  {
+   "id": "you-first",
+   "label": "You First",
+   "audio": "you-first.m4a",
+   "cues": "you-first.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 2.071,
+   "text": "You can go first. Then it's my turn!"
+  },
+  {
+   "id": "take-turns-idea",
+   "label": "Take Turns Idea",
+   "audio": "take-turns-idea.m4a",
+   "cues": "take-turns-idea.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.911,
+   "text": "Let's take turns! You, then me!"
+  },
+  {
+   "id": "your-turn-now",
+   "label": "Your Turn Now",
+   "audio": "your-turn-now.m4a",
+   "cues": "your-turn-now.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.955,
+   "text": "Your turn now!"
+  },
+  {
+   "id": "so-fun",
+   "label": "So Fun",
+   "audio": "so-fun.m4a",
+   "cues": "so-fun.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.034,
+   "text": "This is so fun!"
+  },
+  {
+   "id": "move-it",
+   "label": "Move It",
+   "audio": "move-it.m4a",
+   "cues": "move-it.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.593,
+   "text": "Move! I'm going first!"
+  },
+  {
+   "id": "not-fair",
+   "label": "Not Fair",
+   "audio": "not-fair.m4a",
+   "cues": "not-fair.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.353,
+   "text": "Hey! That's not fair!"
+  },
+  {
+   "id": "too-high",
+   "label": "Too High",
+   "audio": "too-high.m4a",
+   "cues": "too-high.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 2.231,
+   "text": "Oh no, it's too high! I can't reach it."
+  },
+  {
+   "id": "cant-do-it",
+   "label": "Can't Do It",
+   "audio": "cant-do-it.m4a",
+   "cues": "cant-do-it.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.433,
+   "text": "I can't do it all by myself."
+  },
+  {
+   "id": "help-please",
+   "label": "Help, Please",
+   "audio": "help-please.m4a",
+   "cues": "help-please.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.194,
+   "text": "Can you help me, please?"
+  },
+  {
+   "id": "ill-help",
+   "label": "I'll Help",
+   "audio": "ill-help.m4a",
+   "cues": "ill-help.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.513,
+   "text": "Of course! I'll help you!"
+  },
+  {
+   "id": "we-did-it",
+   "label": "We Did It",
+   "audio": "we-did-it.m4a",
+   "cues": "we-did-it.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.034,
+   "text": "We did it together!"
+  },
+  {
+   "id": "no-help",
+   "label": "No Help",
+   "audio": "no-help.m4a",
+   "cues": "no-help.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.832,
+   "text": "No! I can do it myself!"
+  },
+  {
+   "id": "uh-oh",
+   "label": "Uh Oh",
+   "audio": "uh-oh.m4a",
+   "cues": "uh-oh.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.795,
+   "text": "Uh oh!"
+  },
+  {
+   "id": "are-you-ok",
+   "label": "Are You OK",
+   "audio": "are-you-ok.m4a",
+   "cues": "are-you-ok.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 0.716,
+   "text": "Are you okay?"
+  },
+  {
+   "id": "good-idea",
+   "label": "Good Idea",
+   "audio": "good-idea.m4a",
+   "cues": "good-idea.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.034,
+   "text": "That's a good idea!"
+  },
+  {
+   "id": "look-at-this",
+   "label": "Look At This",
+   "audio": "look-at-this.m4a",
+   "cues": "look-at-this.cues.json",
+   "cueMap": "identity",
+   "aligner": "faster-whisper+cmudict",
+   "offsetMs": 0,
+   "dur": 1.274,
+   "text": "Wow! Look at this!"
+  }
+ ]
+}

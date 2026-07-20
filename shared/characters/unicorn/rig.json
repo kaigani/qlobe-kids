@@ -1,0 +1,944 @@
+{
+  "id": "unicorn",
+  "name": "Starlight",
+  "canvas": 1024,
+  "anchor": {
+    "x": 512,
+    "y": 512
+  },
+  "ground": 920,
+  "art": "Plush unicorn (Starlight) sliced from 00-reference/puppet parts/unicorn/sprites-unicorn.png (qwen-layered transparent). Joints roughed in from a composite; fine-tune in puppet-studio.html?char=unicorn (Rig mode). Viseme heads from unicorn/head-visemes.png.",
+  "bones": [
+    {
+      "id": "torso",
+      "parent": null,
+      "joint": [
+        525,
+        620
+      ],
+      "z": 10
+    },
+    {
+      "id": "leg-upper.L",
+      "parent": "torso",
+      "joint": [
+        468,
+        607
+      ],
+      "z": 8
+    },
+    {
+      "id": "leg-lower.L",
+      "parent": "leg-upper.L",
+      "joint": [
+        434,
+        705
+      ],
+      "z": 13
+    },
+    {
+      "id": "leg-upper.R",
+      "parent": "torso",
+      "joint": [
+        589,
+        605
+      ],
+      "z": 8
+    },
+    {
+      "id": "leg-lower.R",
+      "parent": "leg-upper.R",
+      "joint": [
+        622,
+        701
+      ],
+      "z": 13
+    },
+    {
+      "id": "arm-upper.L",
+      "parent": "torso",
+      "joint": [
+        440,
+        401
+      ],
+      "z": 9
+    },
+    {
+      "id": "arm-lower.L",
+      "parent": "arm-upper.L",
+      "joint": [
+        389,
+        499
+      ],
+      "z": 21
+    },
+    {
+      "id": "arm-upper.R",
+      "parent": "torso",
+      "joint": [
+        609,
+        395
+      ],
+      "z": 9
+    },
+    {
+      "id": "arm-lower.R",
+      "parent": "arm-upper.R",
+      "joint": [
+        661,
+        494
+      ],
+      "z": 21
+    },
+    {
+      "id": "head",
+      "parent": "torso",
+      "joint": [
+        512,
+        340
+      ],
+      "z": 30
+    }
+  ],
+  "spine": {
+    "control": [
+      [
+        512,
+        600
+      ],
+      [
+        512,
+        470
+      ],
+      [
+        512,
+        340
+      ]
+    ]
+  },
+  "parts": [
+    {
+      "bone": "torso",
+      "z": 10,
+      "art": "parts/torso.png",
+      "anchor": [
+        0.5,
+        0.92
+      ]
+    },
+    {
+      "bone": "leg-upper.L",
+      "z": 8,
+      "art": "parts/leg-upper.L.png",
+      "anchor": [
+        0.66,
+        0.21
+      ]
+    },
+    {
+      "bone": "leg-lower.L",
+      "z": 13,
+      "art": "parts/leg-lower.L.png",
+      "anchor": [
+        0.68,
+        0.14
+      ]
+    },
+    {
+      "bone": "leg-upper.R",
+      "z": 8,
+      "art": "parts/leg-upper.R.png",
+      "anchor": [
+        0.36,
+        0.2
+      ]
+    },
+    {
+      "bone": "leg-lower.R",
+      "z": 13,
+      "art": "parts/leg-lower.R.png",
+      "anchor": [
+        0.28,
+        0.13
+      ]
+    },
+    {
+      "bone": "arm-upper.L",
+      "z": 9,
+      "art": "parts/arm-upper.L.png",
+      "anchor": [
+        0.72,
+        0.19
+      ]
+    },
+    {
+      "bone": "arm-lower.L",
+      "z": 21,
+      "art": "parts/arm-lower.L.png",
+      "anchor": [
+        0.69,
+        0.16
+      ]
+    },
+    {
+      "bone": "arm-upper.R",
+      "z": 9,
+      "art": "parts/arm-upper.R.png",
+      "anchor": [
+        0.28,
+        0.21
+      ]
+    },
+    {
+      "bone": "arm-lower.R",
+      "z": 21,
+      "art": "parts/arm-lower.R.png",
+      "anchor": [
+        0.32,
+        0.18
+      ]
+    },
+    {
+      "bone": "head",
+      "z": 30,
+      "art": "anim/head-ts.png",
+      "anchor": [
+        0.5,
+        0.8161
+      ],
+      "scale": 0.6976,
+      "visemes": {
+        "rest": "anim/head-ts.png",
+        "a": "anim/head-a.png",
+        "o": "anim/head-o.png",
+        "e": "anim/head-e.png",
+        "wr": "anim/head-wr.png",
+        "ts": "anim/head-ts.png",
+        "ln": "anim/head-ln.png",
+        "uq": "anim/head-uq.png",
+        "mbp": "anim/head-mbp.png",
+        "fv": "anim/head-fv.png"
+      }
+    }
+  ],
+  "outfitSlots": [],
+  "clips": {
+    "idle": {
+      "duration": 3400,
+      "loop": true,
+      "tracks": [
+        {
+          "target": "$spine",
+          "prop": "bend",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 0.04
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "$spine",
+          "prop": "squash",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 0.025
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0.02
+            },
+            {
+              "t": 0.5,
+              "v": 0.07
+            },
+            {
+              "t": 1,
+              "v": 0.02
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": -0.02
+            },
+            {
+              "t": 0.5,
+              "v": -0.07
+            },
+            {
+              "t": 1,
+              "v": -0.02
+            }
+          ]
+        },
+        {
+          "target": "leg-lower.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.539,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "leg-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.539,
+              "v": -0.18
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "leg-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 0.19
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "torso",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0.539,
+              "v": -0.017
+            },
+            {
+              "t": 1,
+              "v": -0.017
+            }
+          ]
+        },
+        {
+          "target": "torso",
+          "prop": "scaleY",
+          "keys": [
+            {
+              "t": 0,
+              "v": 1
+            },
+            {
+              "t": 0.5,
+              "v": 1.04
+            },
+            {
+              "t": 1,
+              "v": 1
+            }
+          ]
+        },
+        {
+          "target": "head",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0.96,
+              "v": 0
+            }
+          ]
+        }
+      ]
+    },
+    "wave": {
+      "duration": 1100,
+      "loop": true,
+      "tracks": [
+        {
+          "target": "arm-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.18,
+              "v": -2.4,
+              "ease": "outCubic"
+            },
+            {
+              "t": 0.5,
+              "v": -1.708
+            },
+            {
+              "t": 0.81,
+              "v": -2.4
+            },
+            {
+              "t": 0.91,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-lower.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.2,
+              "v": -0.2
+            },
+            {
+              "t": 0.4,
+              "v": -0.7
+            },
+            {
+              "t": 0.5,
+              "v": -0.621
+            },
+            {
+              "t": 0.6,
+              "v": 0.05
+            },
+            {
+              "t": 0.8,
+              "v": -0.7
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "head",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": -0.154
+            },
+            {
+              "t": 0.85,
+              "v": -0.15
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-lower.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0.5,
+              "v": -0.217
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 0.22
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        }
+      ]
+    },
+    "walk": {
+      "duration": 820,
+      "loop": true,
+      "tracks": [
+        {
+          "target": "leg-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0.45
+            },
+            {
+              "t": 0.5,
+              "v": -0.45
+            },
+            {
+              "t": 1,
+              "v": 0.45
+            }
+          ]
+        },
+        {
+          "target": "leg-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0.24
+            },
+            {
+              "t": 0.5,
+              "v": -1.125
+            },
+            {
+              "t": 0.75,
+              "v": -0.281
+            },
+            {
+              "t": 1,
+              "v": 0.24
+            }
+          ]
+        },
+        {
+          "target": "leg-lower.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": -1.218
+            },
+            {
+              "t": 0.25,
+              "v": -0.6
+            },
+            {
+              "t": 0.5,
+              "v": 0.163
+            },
+            {
+              "t": 0.55,
+              "v": 0
+            },
+            {
+              "t": 1,
+              "v": -1.218
+            }
+          ]
+        },
+        {
+          "target": "leg-lower.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 1.366
+            },
+            {
+              "t": 0.75,
+              "v": 0.725
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0.06
+            },
+            {
+              "t": 0.5,
+              "v": 0.4
+            },
+            {
+              "t": 1,
+              "v": 0.066
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": -0.06
+            },
+            {
+              "t": 0.5,
+              "v": -0.4
+            },
+            {
+              "t": 1,
+              "v": -0.051
+            }
+          ]
+        },
+        {
+          "target": "$spine",
+          "prop": "bend",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0.03
+            },
+            {
+              "t": 0.5,
+              "v": -0.03
+            },
+            {
+              "t": 1,
+              "v": 0.03
+            }
+          ]
+        },
+        {
+          "target": "$motion",
+          "prop": "y",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.25,
+              "v": -12
+            },
+            {
+              "t": 0.5,
+              "v": 0
+            },
+            {
+              "t": 0.75,
+              "v": -12
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-lower.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 1,
+              "v": 0.637
+            }
+          ]
+        },
+        {
+          "target": "head",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 1,
+              "v": -0.002
+            }
+          ]
+        },
+        {
+          "target": "arm-lower.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 1,
+              "v": -0.838
+            }
+          ]
+        }
+      ]
+    },
+    "jump": {
+      "duration": 950,
+      "loop": false,
+      "tracks": [
+        {
+          "target": "$spine",
+          "prop": "squash",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.18,
+              "v": 0.2
+            },
+            {
+              "t": 0.34,
+              "v": -0.14
+            },
+            {
+              "t": 0.66,
+              "v": -0.05
+            },
+            {
+              "t": 0.84,
+              "v": 0.14
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "$motion",
+          "prop": "y",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.2,
+              "v": 24
+            },
+            {
+              "t": 0.34,
+              "v": -36
+            },
+            {
+              "t": 0.55,
+              "v": -180
+            },
+            {
+              "t": 0.72,
+              "v": -36
+            },
+            {
+              "t": 0.86,
+              "v": 20
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "leg-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.2,
+              "v": 0.35
+            },
+            {
+              "t": 0.55,
+              "v": -0.25
+            },
+            {
+              "t": 0.86,
+              "v": 0.3
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "leg-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.2,
+              "v": -0.35
+            },
+            {
+              "t": 0.55,
+              "v": 0.25
+            },
+            {
+              "t": 0.86,
+              "v": -0.3
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.L",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": 2.3
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "arm-upper.R",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": -2.3
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        }
+      ]
+    },
+    "talk": {
+      "duration": 1600,
+      "loop": true,
+      "tracks": [
+        {
+          "target": "$spine",
+          "prop": "bend",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.3,
+              "v": 0.03
+            },
+            {
+              "t": 0.7,
+              "v": -0.025
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "head",
+          "prop": "rotation",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.3,
+              "v": 0.05
+            },
+            {
+              "t": 0.65,
+              "v": -0.04
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        },
+        {
+          "target": "$motion",
+          "prop": "y",
+          "keys": [
+            {
+              "t": 0,
+              "v": 0
+            },
+            {
+              "t": 0.5,
+              "v": -7
+            },
+            {
+              "t": 1,
+              "v": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

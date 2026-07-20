@@ -1453,7 +1453,7 @@
     },
     {
       "id": "problem-solving-puppets",
-      "title": "Problem-Solving Puppets",
+      "title": "Problem-Solving Puppets (video prototype)",
       "category": "social-emotional",
       "path": "games/problem-solving-puppets/",
       "icon": "assets/hub/tiles/problem-solving-puppets.jpg",
@@ -1461,8 +1461,33 @@
         "min": 5,
         "max": 6
       },
+      "status": "archived",
+      "summary": "Superseded by puppet-problem-solvers, the live puppet-theater rebuild."
+    },
+    {
+      "id": "puppet-problem-solvers",
+      "title": "Problem-Solving Puppets",
+      "category": "social-emotional",
+      "path": "games/puppet-problem-solvers/",
+      "icon": "assets/hub/tiles/puppet-problem-solvers.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "beta",
-      "summary": "Puppets argue, and the child suggests a way to make peace."
+      "accent": "#2e9f76",
+      "uses": [
+        "shared/js/engines/puppet-theater.js",
+        "shared/js/stage/theater.js",
+        "shared/js/stage/puppet.js",
+        "shared/characters/"
+      ],
+      "modes": [
+        { "id": "share", "title": "Share", "skill": "sharing and joint play" },
+        { "id": "take-turns", "title": "Take Turns", "skill": "turn-taking and patience" },
+        { "id": "ask-for-help", "title": "Ask for Help", "skill": "asking for and offering help" }
+      ],
+      "summary": "Cast two puppets, watch every kind idea acted out, then pick your favorite."
     },
     {
       "id": "plan-do-review",

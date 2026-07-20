@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Puppet Studio — rig, animate & speak</title>
+  <style>
+    :root {
+      --ink:#111; --paper:#f7f7f4; --white:#fff; --yellow:#ffd91f;
+      --blue:#3c83e7; --pale-blue:#b9d9ff; --orange:#ff681f; --red:#ff4135;
+      --rule:3px solid var(--ink);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; height:100vh; display:grid; grid-template-columns:minmax(0,1fr) 470px;
+      grid-template-rows:auto 1fr; grid-template-areas:"bar bar" "stage panel";
+      font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+      font-weight:700; color:var(--ink); background:var(--paper); overflow:hidden;
+    }
+    #bar { grid-area:bar; display:flex; gap:0; align-items:stretch; flex-wrap:wrap;
+      min-height:64px; background:var(--white); border-bottom:var(--rule); }
+    .brand { display:flex; align-items:center; gap:12px; padding:10px 18px;
+      border-right:var(--rule); font-family:Impact,'Arial Black',sans-serif;
+      font-size:21px; text-transform:uppercase; letter-spacing:.03em; }
+    .brandmark { display:grid; place-items:center; width:34px; height:34px;
+      border:var(--rule); background:var(--yellow); font:900 14px/1 ui-monospace,monospace; }
+    #stage { grid-area:stage; position:relative; background:#ededeb; }
+    #panel { grid-area:panel; background:var(--paper); border-left:var(--rule);
+      overflow-y:auto; padding:0; }
+    #partpick { padding:12px 14px; border-bottom:var(--rule); background:var(--white); }
+    h3 { margin:12px 0 8px; font:900 15px/1 Impact,'Arial Black',sans-serif;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--ink); }
+    button { font:inherit; font-weight:900; text-transform:uppercase; border:2px solid var(--ink);
+      border-radius:0; padding:7px 11px; min-height:38px; background:var(--blue);
+      color:#fff; cursor:pointer; box-shadow:none; }
+    button:hover { filter:brightness(1.06); transform:translate(-1px,-1px); }
+    button:active { transform:translate(1px,1px); }
+    button.ghost { background:#f3f6fa; color:var(--ink); }
+    button.warn { background:var(--orange); color:var(--ink); }
+    button.save { background:var(--yellow); color:var(--ink); }
+    button.on { background:var(--yellow); color:var(--ink); }
+    button.mini { min-height:30px; padding:4px 9px; border-radius:0; }
+    select, input, textarea { font:inherit; padding:6px 8px; border:2px solid var(--ink);
+      border-radius:0; background:#fff; color:var(--ink); }
+    textarea:disabled, input:disabled { background:#d7d7d4; color:#666; cursor:not-allowed; opacity:1; }
+    button:disabled { background:#b9b9b5; color:#666; cursor:not-allowed; filter:none; transform:none; }
+    input[type=number] { width:88px; padding-right:4px; }
+    input[type=file] { width:100%; font-size:11px; }
+    textarea { width:100%; min-height:72px; resize:vertical; font-size:12px; margin-top:4px; }
+    label { font-size:12px; text-transform:uppercase; display:flex; align-items:center;
+      gap:7px; margin:6px 0; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:4px 0; }
+    .seg { display:flex; border:2px solid var(--ink); border-radius:0; overflow:visible; }
+    .seg button { border:0; border-right:2px solid var(--ink); border-radius:0;
+      background:var(--white); color:var(--ink); }
+    .seg button:last-child { border-right:0; }
+    .seg button.on { background:var(--yellow); color:var(--ink); }
+    #modeseg { border:0; }
+    #modeseg button { min-height:61px; border-right:var(--rule); padding:8px 24px; }
+    #bar > .row { margin:0 10px; gap:8px; align-self:center; }
+    #bar > button { align-self:center; margin:7px 4px; }
+    #time { width:100%; }
+    #ticks { position:relative; height:18px; margin:3px 0 2px; }
+    #ticks .k { position:absolute; top:3px; width:11px; height:11px; background:#ff3b3b;
+      border:1px solid #fff; border-radius:2px; cursor:pointer;
+      transform:translateX(-50%) rotate(45deg); transition:background .1s, transform .1s; }
+    #ticks .k:hover { background:#ff6b6b; transform:translateX(-50%) rotate(45deg) scale(1.25); }
+    #ticks .k.ghost { background:transparent; border:1px dashed #ff3b3b; opacity:.5; }
+    #ticks .k.ghost:hover { background:#ffd6d6; opacity:.95; border-style:solid; }
+    #keylist { display:flex; flex-direction:column; gap:4px; }
+    .key { display:flex; gap:4px; align-items:center; background:#e7eff9;
+      border:2px solid var(--ink); border-radius:0; padding:3px 5px; }
+    .key input[type=number] { width:84px; padding-left:6px; padding-right:3px; }
+    .key select { padding:3px 4px; max-width:74px; }
+    #rigpanel, #animpanel, #speechpanel { padding:4px 14px 14px; }
+    #cue-editor { margin-top:14px; padding-top:2px; border-top:var(--rule); }
+    #cue-wave { display:block; width:100%; height:180px; border:var(--rule); background:#fff;
+      cursor:crosshair; touch-action:none; }
+    #cue-editor .cue-fields { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
+    #cue-editor .cue-fields label { display:block; margin:4px 0; }
+    #cue-editor .cue-fields input, #cue-editor .cue-fields select { width:100%; margin-top:3px; }
+    #cue-editor .cue-actions button { flex:1; min-width:90px; }
+    #cue-readout { min-height:32px; }
+    #status { position:absolute; left:12px; bottom:10px; background:#fff; border:2px solid #111;
+      border-radius:0; padding:5px 9px; font-size:11px; color:#111; white-space:pre; }
+    #toast-host { position:fixed; z-index:1000; top:78px; right:18px; width:min(390px,calc(100vw - 36px));
+      display:flex; flex-direction:column; gap:10px; pointer-events:none; }
+    .toast { border:var(--rule); background:var(--pale-blue); color:var(--ink); padding:12px 14px;
+      box-shadow:6px 6px 0 var(--ink); font-size:12px; line-height:1.35; text-transform:uppercase;
+      pointer-events:auto; cursor:pointer; animation:toast-in .16s ease-out both; }
+    .toast::before { content:'i'; display:inline-grid; place-items:center; width:22px; height:22px;
+      margin-right:9px; border:2px solid var(--ink); background:#fff; font-weight:900; vertical-align:middle; }
+    .toast.success { background:#b9efb3; }
+    .toast.success::before { content:'✓'; }
+    .toast.error { background:#ff9d91; }
+    .toast.error::before { content:'!'; }
+    .toast.out { opacity:0; transform:translateX(18px); transition:opacity .16s,transform .16s; }
+    @keyframes toast-in { from { opacity:0; transform:translateX(18px); } }
+    .hint { font-size:11px; line-height:1.45; color:#222; margin:5px 0; font-weight:600; }
+    .hidden { display:none; }
+    #builderstage { position:absolute; inset:0; z-index:5; overflow:auto; padding:28px 38px;
+      background:var(--paper); }
+    .builder-welcome { max-width:1100px; margin:0 auto; }
+    .builder-welcome h2 { margin:0; color:var(--ink); font:900 34px/1 Impact,'Arial Black',sans-serif;
+      text-transform:uppercase; letter-spacing:.03em; }
+    .builder-welcome > p { color:#124f85; text-transform:uppercase; font-size:16px;
+      letter-spacing:.04em; margin:14px 0 26px; }
+    .build-card { border:0; border-bottom:var(--rule); border-radius:0; padding:7px 18px 13px;
+      margin:0; background:var(--paper); }
+    .build-card h3 { display:flex; align-items:center; gap:10px; margin:0 0 10px; }
+    .step-number { display:grid; place-items:center; width:32px; height:32px;
+      background:var(--yellow); border:var(--rule); font:900 17px/1 ui-monospace,monospace; }
+    .build-summary { margin:0 0 24px; padding:14px 16px; border:var(--rule); border-radius:0;
+      background:var(--pale-blue); color:var(--ink); text-transform:uppercase; }
+    .build-summary.bad { background:#ffb6aa; color:var(--ink); }
+    .build-gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; }
+    .build-gallery figure { margin:0; padding:0; border:var(--rule); border-radius:0;
+      background:#fff; box-shadow:none; }
+    .build-gallery img { display:block; width:100%; aspect-ratio:1; object-fit:contain;
+      background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0/18px 18px; }
+    .build-gallery figcaption { margin:0; padding:7px 9px; border-top:var(--rule);
+      font-size:12px; text-transform:lowercase; overflow-wrap:anywhere; }
+    #builderpanel .row button { flex:1; }
+    @media (max-width:1000px) {
+      body { grid-template-columns:minmax(0,1fr) 390px; }
+      #modeseg button { padding:8px 12px; }
+      #builderstage { padding:22px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="toast-host" aria-live="polite" aria-atomic="false"></div>
+  <div id="bar">
+    <strong class="brand"><span class="brandmark">▦</span> Puppet Studio</strong>
+    <div class="seg" id="modeseg">
+      <button data-mode="rig" class="on">Rig parts</button>
+      <button data-mode="animate">Animate</button>
+      <button data-mode="speech">Speak</button>
+      <button data-mode="build">Build character</button>
+    </div>
+    <span id="animbar" class="row" style="margin:0">
+      <select id="clipsel" title="clip"></select>
+      <button id="play">▶ Play</button>
+      <button id="stop" class="ghost">■</button>
+    </span>
+    <span style="flex:1"></span>
+    <button id="undo" class="ghost" title="Ctrl+Z">⟲ Undo</button>
+    <button id="reset" class="ghost">Reset</button>
+    <button id="copy" class="ghost">Copy JSON</button>
+    <button id="save" class="save">▣ Save rig</button>
+    <button id="export" class="warn">⬇ Export rig.json</button>
+  </div>
+
+  <div id="stage"><div id="status">loading…</div><div id="builderstage" class="hidden"></div></div>
+
+  <div id="panel">
+    <div id="partpick">
+      <h3>Part / bone</h3>
+      <div class="row"><select id="bonesel" style="flex:1"></select><label style="display:flex;align-items:center;gap:4px;white-space:nowrap" title="Lock selection: clicks on the canvas won't switch to an overlapping part — drags stay on the selected part"><input type="checkbox" id="locksel"> 🔒 Lock</label></div>
+    </div>
+
+    <!-- RIG MODE -->
+    <div id="rigpanel">
+      <p class="hint">Drag the part on the canvas to move its joint. Or set exactly:</p>
+      <div class="row"><label>joint x <input type="number" id="jx" step="1"></label>
+        <label>y <input type="number" id="jy" step="1"></label></div>
+      <div class="row"><label>anchor x <input type="number" id="ax" step="0.01"></label>
+        <label>y <input type="number" id="ay" step="0.01"></label></div>
+      <div class="row"><label>scale <input type="number" id="pscale" step="0.02"></label>
+        <label>layer z <input type="number" id="pz" step="1"></label></div>
+      <div class="row"><button id="mirrorpart" class="mini" style="flex:1" title="Reflect this joint position onto its .L/.R counterpart">⇆ Mirror part</button></div>
+      <p class="hint">Mirror part reflects the selected joint onto its .L/.R counterpart. Anchor, scale, and layer stay unchanged.</p>
+      <p class="hint">anchor = where the joint sits inside the art (0–1). Higher z = drawn in front.</p>
+    </div>
+
+    <!-- ANIMATE MODE -->
+    <div id="animpanel" class="hidden">
+      <h3>Timeline</h3>
+      <input type="range" id="time" min="0" max="1000" value="0">
+      <div id="ticks"></div>
+      <div class="row"><span id="tlabel" class="hint">t = 0.000</span>
+        <span style="flex:1"></span>
+        <label>dur ms <input type="number" id="dur" step="50"></label>
+        <label><input type="checkbox" id="loopchk"> loop</label></div>
+      <div class="row"><span class="hint">Drag a limb to pose it →</span>
+        <div class="seg" id="dragseg">
+          <button data-drag="rot" class="on">⟳ rotate</button>
+          <button data-drag="move">✦ move</button>
+        </div></div>
+      <p class="hint">Sets a key at the current frame. Hold Shift to move even in rotate mode.</p>
+
+      <h3>Track — <span id="proplabel"></span></h3>
+      <div class="row"><select id="propsel" style="flex:1"></select></div>
+      <div class="row"><label>value <input type="number" id="val" step="0.01"></label>
+        <button id="setkey" class="mini">Set key @t</button>
+        <button id="delkey" class="mini ghost">Del key @t</button></div>
+      <div id="keylist"></div>
+    </div>
+
+    <!-- SPEECH MODE -->
+    <div id="speechpanel" class="hidden">
+      <h3>Voice line</h3>
+      <div class="row"><select id="voicesel" style="flex:1"></select></div>
+      <div class="row"><button class="warn" id="speak">▶ Speak</button>
+        <button id="speakstop" class="ghost">■</button></div>
+      <h3>Sync offset</h3>
+      <input type="range" id="soffset" min="-100" max="400" step="10" value="0">
+      <div class="row"><span id="sofflbl" class="hint">0 ms</span></div>
+      <p class="hint">Plays the clip, drives the viseme heads (mouth.js followCues) and the
+        <em>talk</em> body clip. Raise the offset if the mouth runs ahead of the voice
+        (≈150–250ms on Bluetooth). Needs viseme heads + a voice clip for this character.</p>
+      <div id="cue-editor">
+        <h3>Waveform cue editor</h3>
+        <canvas id="cue-wave" width="880" height="360" aria-label="Voice waveform and editable viseme cues"></canvas>
+        <div id="cue-readout" class="hint">Choose a voice line to load its cues.</div>
+        <div id="cue-selection-readout" class="hint">Drag across the waveform to select a playback range.</div>
+        <div class="cue-fields">
+          <label>viseme <select id="cue-value"></select></label>
+          <label>start <input id="cue-start" type="number" min="0" step="0.001"></label>
+          <label>end <input id="cue-end" type="number" min="0" step="0.001"></label>
+        </div>
+        <div class="row cue-actions"><button id="cue-add" class="mini ghost">Split cue</button>
+          <button id="cue-delete" class="mini ghost">Delete cue</button>
+          <button id="cue-save" class="mini save">Save cues</button></div>
+        <div class="row cue-actions"><button id="cue-play-selection" class="mini warn">▶ Play selection</button>
+          <button id="cue-clear-selection" class="mini ghost">Clear selection</button></div>
+        <p class="hint">Click to seek and preview the head at that instant. Drag across the waveform to highlight a playback range. In the colored cue band, click a cue or drag a boundary to retime neighbouring shapes. Use the offset above for device latency; saving preserves acoustic cue times.</p>
+      </div>
+    </div>
+    <div id="builderpanel" class="hidden"></div>
+  </div>
+
+  <script type="module">
+    import { createStage } from './stage.js';
+    import { createPuppet, loadRigArt } from './puppet.js';
+    import { sampleTrack } from './spline.js';
+    import { ease } from './tween.js';
+    import { driveLipsync, VISEME_IDENTITY, RHUBARB_TO_VISEME } from './lipsync.js';
+    import { mountPuppetBuilder } from './puppet-builder.js';
+
+    // ?char=bear|unicorn|… (defaults to bear). Loads that character's rig + voices.
+    const CHAR = new URLSearchParams(location.search).get('char') || 'bear';
+    const INITIAL_MODE = new URLSearchParams(location.search).get('mode') || 'rig';
+    const CHAR_BASE = `../../characters/${CHAR}/`;
+    // Voice lines per character (paths relative to CHAR_BASE). Extend as characters get voices.
+    const BUILTIN_VOICES = {
+      bear: [{ label: 'Benny — intro', audio: 'voice/intro.m4a', cues: 'voice/intro.cues.json', map: VISEME_IDENTITY }],
+      unicorn: [{ label: 'Starlight — intro', audio: 'voice/intro.m4a', cues: 'voice/intro.cues.json', map: VISEME_IDENTITY }],
+      rabbit: [{ label: 'Rocky — intro', audio: 'voice/intro.m4a', cues: 'voice/intro.cues.json', map: VISEME_IDENTITY }],
+    };
+    const EASES = ['', 'linear', 'outQuad', 'outCubic', 'inOutSine', 'outBack', 'outElastic'];
+    const EDITOR_VISEMES = ['rest', 'a', 'o', 'e', 'wr', 'ts', 'ln', 'uq', 'mbp', 'fv'];
+    const $ = (id) => document.getElementById(id);
+    const statusEl = $('status');
+    function toast(message, { kind = 'info', duration = 4600 } = {}) {
+      const host = $('toast-host');
+      const item = document.createElement('div');
+      item.className = `toast ${kind}`; item.textContent = message;
+      item.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+      const dismiss = () => {
+        if (!item.isConnected || item.classList.contains('out')) return;
+        item.classList.add('out'); setTimeout(() => item.remove(), 180);
+      };
+      item.onclick = dismiss; host.prepend(item);
+      while (host.children.length > 5) host.lastElementChild.remove();
+      if (duration > 0) setTimeout(dismiss, duration);
+      return item;
+    }
+
+    let stage, PIXI, rig, factory, puppet, overlay, gizmo;
+    let mode = 'rig';
+    let selBone = null;
+    let lockSel = false;      // lock: canvas clicks don't re-select (overlapping parts can't hijack)
+    let clip = null;          // current clip name
+    let time = 0;             // 0..1
+    let prop = 'rotation';
+    let playing = false, playRAF = 0;
+    let audio = null, stopCues = null, speechOffset = 0;   // speech mode
+    const cueEditor = {
+      lineIndex: -1, data: null, cues: [], buffer: null, selected: -1,
+      duration: 0, seekTime: 0, drag: null, pointer: null, renderRAF: 0,
+      selectionStart: null, selectionEnd: null, playEnd: null,
+    };
+    let builder = null;
+    let voiceLines = [];
+    let artVersion = Date.now();
+    const undoStack = [];
+
+    // ---- pose sampling (mirrors the engine, from raw rig clips) ----------------
+    const resolveKeys = (keys) => keys.map((k) => (k.ease ? { ...k, ease: ease[k.ease] || null } : k));
+    function sampleValue(c, target, p, t) {
+      const tr = (c.tracks || []).find((x) => x.target === target && x.prop === p);
+      if (!tr) return p.startsWith('scale') ? 1 : 0;
+      return sampleTrack(resolveKeys(tr.keys), t, ease.inOutSine);
+    }
+    function sampleClip(c, t) {
+      const pose = {};
+      for (const tr of c.tracks || []) {
+        const v = sampleTrack(resolveKeys(tr.keys), t, ease.inOutSine);
+        (pose[tr.target] || (pose[tr.target] = {}))[tr.prop] = v;
+      }
+      return pose;
+    }
+    const propsFor = (t) => t === '$spine' ? ['bend', 'squash']
+      : t === '$motion' ? ['x', 'y', 'rotation', 'scaleX', 'scaleY']
+      : ['rotation', 'x', 'y', 'scaleX', 'scaleY'];
+    const parentContainer = (id) => { const b = getBone(id); return b && b.parent ? puppet.bones[b.parent].container : puppet.motion; };
+    const getPart = (id) => (rig.parts || []).find((p) => p.bone === id);
+    const getBone = (id) => rig.bones.find((b) => b.id === id);
+    function mirrorCounterpartId(id) {
+      if (id?.endsWith('.L')) return id.slice(0, -2) + '.R';
+      if (id?.endsWith('.R')) return id.slice(0, -2) + '.L';
+      return null;
+    }
+    function mirrorAxisX() {
+      const root = rig.bones.find((b) => b.id === 'torso') || rig.bones.find((b) => !b.parent);
+      return root?.joint?.[0] ?? rig.anchor?.x ?? (rig.canvas || 1024) / 2;
+    }
+    function mirrorSelectedPart() {
+      const source = getBone(selBone);
+      const counterpartId = mirrorCounterpartId(selBone);
+      const counterpart = counterpartId && getBone(counterpartId);
+      if (!source || !counterpart) {
+        statusEl.textContent = `${selBone || 'selection'} has no .L/.R counterpart`;
+        return false;
+      }
+      pushUndo();
+      const axisX = mirrorAxisX();
+      const x = Math.round(axisX * 2 - source.joint[0]);
+      const y = Math.round(source.joint[1]);
+      puppet.setJoint(counterpartId, x, y);
+      drawGizmo();
+      statusEl.textContent = `mirrored ${selBone} → ${counterpartId} at ${x}, ${y}`;
+      return true;
+    }
+
+    // ---- build / rebuild -------------------------------------------------------
+    function placePuppet() {
+      const { width: w, height: h } = stage.app.screen;
+      puppet.view.scale.set(Math.min(w, h) / (rig.canvas || 1024) * 0.9);
+      puppet.view.position.set(w / 2, h * 0.54);
+    }
+    function hookBones() {
+      for (const id in puppet.bones) {
+        const c = puppet.bones[id].container;
+        c.eventMode = 'static'; c.cursor = 'pointer';
+        for (const ch of c.children) ch.eventMode = 'static';
+        c.on('pointerdown', (e) => { e.stopPropagation(); onBoneDown(id, e); });
+      }
+    }
+    function rebuild() {
+      if (puppet) puppet.destroy();
+      puppet = createPuppet(PIXI, rig, { partFactory: factory });
+      puppet.stopClip();
+      stage.root.addChildAt(puppet.view, 0);
+      placePuppet();
+      hookBones();
+      applyFrame();
+    }
+
+    // ---- apply current frame to the puppet -------------------------------------
+    function applyFrame() {
+      if (mode === 'animate' && rig.clips[clip]) puppet.previewPose(sampleClip(rig.clips[clip], time));
+      else puppet.previewPose({});
+    }
+
+    // ---- keyframe helpers ------------------------------------------------------
+    function ensureTrack(c, target, p) {
+      let tr = (c.tracks || (c.tracks = [])).find((x) => x.target === target && x.prop === p);
+      if (!tr) { tr = { target, prop: p, keys: [] }; c.tracks.push(tr); }
+      return tr;
+    }
+    function setKey(target, p, t, v) {
+      const c = rig.clips[clip];
+      const tr = ensureTrack(c, target, p);
+      t = Math.round(Math.max(0, Math.min(1, t)) * 1000) / 1000;
+      const k = tr.keys.find((x) => Math.abs(x.t - t) < 0.02);
+      if (k) k.v = round3(v); else tr.keys.push({ t, v: round3(v) });
+      tr.keys.sort((a, b) => a.t - b.t);
+    }
+    function delKeyAt(target, p, t) {
+      const c = rig.clips[clip];
+      const tr = (c.tracks || []).find((x) => x.target === target && x.prop === p);
+      if (!tr) return;
+      let bi = -1, bd = 1;
+      tr.keys.forEach((k, i) => { const d = Math.abs(k.t - t); if (d < bd) { bd = d; bi = i; } });
+      if (bi >= 0 && bd < 0.06) tr.keys.splice(bi, 1);
+      if (!tr.keys.length) c.tracks.splice(c.tracks.indexOf(tr), 1);
+    }
+    const round3 = (v) => Math.round(v * 1000) / 1000;
+
+    // ---- selection & drag ------------------------------------------------------
+    let drag = null;   // { id, kind, ... }
+    let dragMode = 'rot';
+    const dbg = { down: 0, move: 0, rot: 0, joint: 0, mv: 0 };
+    function onBoneDown(id, e) {
+      dbg.down++;
+      // When locked, ignore which part was clicked and act on the currently
+      // selected part — so overlapping parts can't hijack the selection/drag.
+      if (lockSel && selBone && puppet.bones[selBone]) id = selBone;
+      else selectBone(id);
+      pushUndo();
+      if (mode === 'rig') {
+        drag = { id, kind: 'joint' };
+      } else if (dragMode === 'move' || e.shiftKey) {
+        const pc = parentContainer(id);
+        drag = { id, kind: 'move', pc, p0: pc.toLocal(e.global),
+          v0x: sampleValue(rig.clips[clip], id, 'x', time),
+          v0y: sampleValue(rig.clips[clip], id, 'y', time) };
+        prop = 'x'; syncPropSel();
+      } else {
+        const c = puppet.bones[id].container.getGlobalPosition();
+        drag = { id, kind: 'rot',
+          a0: Math.atan2(e.global.y - c.y, e.global.x - c.x),
+          v0: sampleValue(rig.clips[clip], id, 'rotation', time) };
+        prop = 'rotation'; syncPropSel();
+      }
+    }
+    function onMove(e) {
+      dbg.move++;
+      if (!drag) return;
+      if (drag.kind === 'joint') {
+        dbg.joint++;
+        const p = puppet.view.toLocal(e.global);
+        puppet.setJoint(drag.id, Math.round(p.x), Math.round(p.y));
+        syncRigInputs();
+      } else if (drag.kind === 'move') {
+        dbg.mv++;
+        const cur = drag.pc.toLocal(e.global);
+        setKey(drag.id, 'x', time, drag.v0x + (cur.x - drag.p0.x));
+        setKey(drag.id, 'y', time, drag.v0y + (cur.y - drag.p0.y));
+        applyFrame(); renderKeys(); syncVal();
+      } else {
+        dbg.rot++;
+        const c = puppet.bones[drag.id].container.getGlobalPosition();
+        const a = Math.atan2(e.global.y - c.y, e.global.x - c.x);
+        setKey(drag.id, 'rotation', time, drag.v0 + (a - drag.a0));
+        applyFrame(); renderKeys(); syncVal();
+      }
+      drawGizmo();
+    }
+    const onUp = () => { drag = null; };
+
+    // ---- gizmo overlay ---------------------------------------------------------
+    function drawGizmo() {
+      gizmo.clear();
+      const b = selBone && puppet.bones[selBone];
+      if (!b) return;
+      const p = b.container.getGlobalPosition();
+      gizmo.circle(p.x, p.y, 15).stroke({ width: 3, color: 0xffffff });
+      gizmo.circle(p.x, p.y, 15).stroke({ width: 1.5, color: 0xff5252 });
+      gizmo.circle(p.x, p.y, 4).fill(0xff5252);
+    }
+
+    // ---- panel sync ------------------------------------------------------------
+    function selectBone(id) {
+      selBone = id;
+      $('bonesel').value = id;
+      const isSpecial = id === '$spine' || id === '$motion';
+      $('rigpanel').style.opacity = isSpecial ? .4 : 1;
+      $('rigpanel').style.pointerEvents = isSpecial ? 'none' : 'auto';
+      const counterpartId = mirrorCounterpartId(id);
+      $('mirrorpart').disabled = !counterpartId || !getBone(counterpartId);
+      const props = propsFor(id);
+      if (!props.includes(prop)) prop = props[0];
+      syncRigInputs(); syncPropSel();
+      drawGizmo();
+    }
+    function syncRigInputs() {
+      const b = getBone(selBone); const part = getPart(selBone);
+      if (b) { $('jx').value = Math.round(b.joint[0]); $('jy').value = Math.round(b.joint[1]); $('pz').value = b.z ?? 0; }
+      if (part) {
+        $('ax').value = (part.anchor ? part.anchor[0] : 0.5);
+        $('ay').value = (part.anchor ? part.anchor[1] : 0.5);
+        $('pscale').value = part.scale ?? 1;
+      }
+    }
+    function syncPropSel() {
+      const sel = $('propsel'); sel.innerHTML = '';
+      for (const p of propsFor(selBone)) {
+        const o = document.createElement('option'); o.value = o.textContent = p; sel.appendChild(o);
+      }
+      sel.value = prop; $('proplabel').textContent = `${selBone} · ${prop}`;
+      renderKeys(); syncVal();
+    }
+    function syncVal() {
+      if (!rig.clips[clip]) return;
+      $('val').value = round3(sampleValue(rig.clips[clip], selBone, prop, time));
+    }
+    function renderKeys() {
+      const list = $('keylist'); list.innerHTML = '';
+      const c = rig.clips[clip]; if (!c) return;
+      const tr = (c.tracks || []).find((x) => x.target === selBone && x.prop === prop);
+      renderTicks(tr);
+      if (!tr) { list.innerHTML = '<p class="hint">no keys yet — Set key @t to add one.</p>'; return; }
+      tr.keys.forEach((k, i) => {
+        const row = document.createElement('div'); row.className = 'key';
+        const t = document.createElement('input'); t.type = 'number'; t.step = '0.01'; t.value = k.t; t.title = 'time';
+        const v = document.createElement('input'); v.type = 'number'; v.step = '0.01'; v.value = k.v; v.title = 'value';
+        const es = document.createElement('select');
+        for (const e of EASES) { const o = document.createElement('option'); o.value = e; o.textContent = e || 'auto'; es.appendChild(o); }
+        es.value = k.ease || '';
+        const del = document.createElement('button'); del.className = 'mini ghost'; del.textContent = '✕';
+        t.onchange = () => { pushUndo(); k.t = Math.max(0, Math.min(1, +t.value)); tr.keys.sort((a, b) => a.t - b.t); applyFrame(); renderKeys(); };
+        v.onchange = () => { pushUndo(); k.v = +v.value; applyFrame(); syncVal(); renderTicks(tr); };
+        es.onchange = () => { pushUndo(); if (es.value) k.ease = es.value; else delete k.ease; applyFrame(); };
+        del.onclick = () => { pushUndo(); tr.keys.splice(i, 1); if (!tr.keys.length) c.tracks.splice(c.tracks.indexOf(tr), 1); applyFrame(); renderKeys(); syncVal(); };
+        row.append(t, v, es, del); list.appendChild(row);
+      });
+    }
+    function renderTicks(tr) {
+      const el = $('ticks'); el.innerHTML = '';
+      const realTs = new Set((tr ? tr.keys : []).map((k) => k.t));
+      // ghost markers: every keyframe time used anywhere in this clip that this
+      // track lacks — a jump affordance only; never written to the rig/JSON until
+      // you edit a value at that time (which materializes a real key here).
+      const ghostTs = new Set();
+      for (const t of (rig.clips[clip]?.tracks || [])) for (const k of t.keys) if (!realTs.has(k.t)) ghostTs.add(k.t);
+      for (const t of ghostTs) el.appendChild(makeTick(t, false));
+      (tr ? tr.keys : []).forEach((k) => el.appendChild(makeTick(k.t, true, k.v)));
+    }
+    function makeTick(t, real, v) {
+      const d = document.createElement('div');
+      d.className = real ? 'k' : 'k ghost';
+      d.style.left = (t * 100) + '%';
+      d.title = real ? `jump to t=${t}  (v=${v})`
+        : `t=${t} — keyframe on another track. Click to jump; edit the value to add one here.`;
+      d.onclick = () => goToTime(t);
+      return d;
+    }
+    // Jump the scrubber (and the puppet) to an exact keyframe time.
+    function goToTime(t) {
+      stopPlay();
+      time = Math.max(0, Math.min(1, t));
+      $('time').value = Math.round(time * 1000);
+      $('tlabel').textContent = `t = ${time.toFixed(3)}`;
+      applyFrame(); syncVal();
+    }
+
+    // ---- undo / export ---------------------------------------------------------
+    function pushUndo() { undoStack.push(JSON.stringify(rig)); if (undoStack.length > 80) undoStack.shift(); }
+    function undo() {
+      if (!undoStack.length) return;
+      rig = JSON.parse(undoStack.pop());
+      rebuild(); refreshAll();
+    }
+    function exportRig() {
+      const blob = new Blob([JSON.stringify(rig, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'rig.json'; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      toast('Exported rig.json to your downloads.', { kind: 'success' });
+    }
+
+    // ---- playback --------------------------------------------------------------
+    function play() {
+      if (playing || mode !== 'animate') return;
+      playing = true; $('play').classList.add('on');
+      const c = rig.clips[clip]; const dur = c.duration || 1000; const loop = !!c.loop;
+      const start = performance.now();
+      const step = (now) => {
+        let t = (now - start) / dur; if (loop) t = t % 1; else t = Math.min(1, t);
+        time = t; $('time').value = Math.round(t * 1000); $('tlabel').textContent = `t = ${t.toFixed(3)}`;
+        applyFrame(); syncVal();
+        if (!loop && t >= 1) { stopPlay(); return; }
+        if (playing) playRAF = requestAnimationFrame(step);
+      };
+      playRAF = requestAnimationFrame(step);
+    }
+    function stopPlay() { playing = false; $('play').classList.remove('on'); if (playRAF) cancelAnimationFrame(playRAF); }
+
+    // ---- speech cue editor -----------------------------------------------------
+    const CUE_COLORS = {
+      rest: '#b8b8b4', a: '#ef5350', o: '#8bc34a', e: '#ff8a3d', wr: '#26a6a1',
+      ts: '#4f8dcc', ln: '#7468b7', uq: '#27b9ce', mbp: '#d6428d', fv: '#ffd34d',
+    };
+    const selectedVoiceIndex = () => +($('voicesel').value || 0);
+    const selectedVoice = () => voiceLines[selectedVoiceIndex()];
+    const cueLineKey = (line) => line?.id || line?.cues?.split('/').pop()?.replace(/\.cues\.json$/, '') || '';
+
+    function cueCanvasMetrics() {
+      const canvas = $('cue-wave'); const rect = canvas.getBoundingClientRect();
+      const dpr = devicePixelRatio || 1;
+      const width = Math.max(320, Math.round(rect.width * dpr));
+      const height = Math.max(180, Math.round(rect.height * dpr));
+      if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
+      return { canvas, width, height, dpr };
+    }
+
+    function cueTimeAtEvent(event) {
+      const rect = $('cue-wave').getBoundingClientRect();
+      return Math.max(0, Math.min(cueEditor.duration, (event.clientX - rect.left) / rect.width * cueEditor.duration));
+    }
+
+    function cueAtTime(point) {
+      return cueEditor.cues.find((cue) => point >= cue.start && point < cue.end)
+        || (point >= cueEditor.duration ? cueEditor.cues.at(-1) : null);
+    }
+
+    function previewVisemeAt(point) {
+      if (!puppet) return;
+      const cue = cueAtTime(point), map = selectedVoice()?.map || VISEME_IDENTITY;
+      puppet.setViseme(cue ? (map[cue.value] || cue.value || 'rest') : 'rest');
+    }
+
+    function updateSelectionReadout() {
+      const start = cueEditor.selectionStart, end = cueEditor.selectionEnd;
+      const valid = Number.isFinite(start) && Number.isFinite(end) && end - start >= 0.02;
+      $('cue-play-selection').disabled = !valid;
+      $('cue-clear-selection').disabled = !valid;
+      $('cue-selection-readout').textContent = valid
+        ? `Selected ${start.toFixed(3)}–${end.toFixed(3)}s · ${(end - start).toFixed(3)}s`
+        : 'Drag across the waveform to select a playback range.';
+    }
+
+    function setTimelinePoint(point, { select = true } = {}) {
+      cueEditor.seekTime = Math.max(0, Math.min(cueEditor.duration, point));
+      const index = cueEditor.cues.findIndex((cue) => cueEditor.seekTime >= cue.start && cueEditor.seekTime < cue.end);
+      if (select) selectCue(index); else renderCueEditor();
+      previewVisemeAt(cueEditor.seekTime);
+    }
+
+    function renderCueEditor() {
+      const { canvas, width, height, dpr } = cueCanvasMetrics(); const context = canvas.getContext('2d');
+      context.clearRect(0, 0, width, height); context.fillStyle = '#fff'; context.fillRect(0, 0, width, height);
+      const duration = cueEditor.duration || 1;
+      const waveBottom = Math.round(height * 0.62), bandTop = waveBottom + 5 * dpr;
+      context.strokeStyle = '#c5c5c0'; context.lineWidth = Math.max(1, dpr);
+      context.beginPath(); context.moveTo(0, waveBottom / 2); context.lineTo(width, waveBottom / 2); context.stroke();
+      if (cueEditor.buffer) {
+        const samples = cueEditor.buffer.getChannelData(0); const step = Math.max(1, Math.floor(samples.length / width));
+        context.strokeStyle = '#111'; context.lineWidth = Math.max(1, dpr); context.beginPath();
+        for (let x = 0; x < width; x += 1) {
+          let min = 1, max = -1; const start = x * step;
+          for (let i = start; i < Math.min(samples.length, start + step); i += 1) { min = Math.min(min, samples[i]); max = Math.max(max, samples[i]); }
+          const y1 = waveBottom * (0.5 - max * 0.44), y2 = waveBottom * (0.5 - min * 0.44);
+          context.moveTo(x + 0.5, y1); context.lineTo(x + 0.5, y2);
+        }
+        context.stroke();
+      }
+      cueEditor.cues.forEach((cue, index) => {
+        const x = cue.start / duration * width, right = cue.end / duration * width;
+        context.fillStyle = CUE_COLORS[cue.value] || '#ddd'; context.fillRect(x, bandTop, Math.max(1, right - x), height - bandTop);
+        context.strokeStyle = index === cueEditor.selected ? '#111' : 'rgba(17,17,17,.45)';
+        context.lineWidth = index === cueEditor.selected ? 3 * dpr : dpr; context.strokeRect(x, bandTop, Math.max(1, right - x), height - bandTop);
+        if (right - x > 25 * dpr) {
+          context.fillStyle = '#111'; context.font = `900 ${10 * dpr}px ui-monospace,monospace`;
+          context.fillText(cue.value.toUpperCase(), x + 4 * dpr, bandTop + 15 * dpr);
+        }
+      });
+      if (Number.isFinite(cueEditor.selectionStart) && Number.isFinite(cueEditor.selectionEnd)
+          && cueEditor.selectionEnd > cueEditor.selectionStart) {
+        const x = cueEditor.selectionStart / duration * width;
+        const right = cueEditor.selectionEnd / duration * width;
+        context.fillStyle = 'rgba(43,132,255,.20)'; context.fillRect(x, 0, right - x, height);
+        context.strokeStyle = '#176bc1'; context.lineWidth = 2 * dpr; context.strokeRect(x, dpr, right - x, height - 2 * dpr);
+        context.fillStyle = '#176bc1'; context.fillRect(x - 2 * dpr, 0, 4 * dpr, height);
+        context.fillRect(right - 2 * dpr, 0, 4 * dpr, height);
+      }
+      const playTime = audio && !audio.paused ? audio.currentTime : cueEditor.seekTime;
+      const playX = Math.max(0, Math.min(width, playTime / duration * width));
+      context.strokeStyle = '#ff281d'; context.lineWidth = 2 * dpr; context.beginPath();
+      context.moveTo(playX, 0); context.lineTo(playX, height); context.stroke();
+      if (audio && !audio.paused && Number.isFinite(cueEditor.playEnd) && audio.currentTime >= cueEditor.playEnd - 0.005) {
+        stopSpeech({ previewTime: cueEditor.playEnd });
+      } else if (audio && !audio.paused) cueEditor.renderRAF = requestAnimationFrame(renderCueEditor);
+      else cueEditor.renderRAF = 0;
+    }
+
+    function selectCue(index) {
+      cueEditor.selected = Math.max(-1, Math.min(cueEditor.cues.length - 1, index));
+      const cue = cueEditor.cues[cueEditor.selected];
+      $('cue-value').disabled = !cue; $('cue-start').disabled = !cue; $('cue-end').disabled = !cue;
+      $('cue-delete').disabled = !cue; $('cue-add').disabled = !cue;
+      if (cue) {
+        $('cue-value').value = cue.value; $('cue-start').value = cue.start.toFixed(3); $('cue-end').value = cue.end.toFixed(3);
+        $('cue-readout').textContent = `Cue ${cueEditor.selected + 1}/${cueEditor.cues.length} · ${cue.phone || cue.sourceValue || 'edited'} → ${cue.value} · ${(cue.end - cue.start).toFixed(3)}s`;
+      } else $('cue-readout').textContent = cueEditor.cues.length ? 'Click a cue to edit it.' : 'No cues loaded.';
+      renderCueEditor();
+    }
+
+    async function loadCueEditor() {
+      const index = selectedVoiceIndex(), line = voiceLines[index];
+      if (!line) { cueEditor.lineIndex = -1; cueEditor.data = null; cueEditor.cues = []; cueEditor.buffer = null; selectCue(-1); return; }
+      $('cue-readout').textContent = 'Loading waveform and cues…';
+      const [cueResponse, audioResponse] = await Promise.all([
+        fetch(CHAR_BASE + line.cues, { cache: 'no-store' }), fetch(CHAR_BASE + line.audio, { cache: 'no-store' }),
+      ]);
+      if (!cueResponse.ok || !audioResponse.ok) throw new Error('Could not load voice waveform or cues');
+      const data = await cueResponse.json(); const encoded = await audioResponse.arrayBuffer();
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      const context = new AudioContextClass();
+      try { cueEditor.buffer = await context.decodeAudioData(encoded.slice(0)); } finally { context.close(); }
+      cueEditor.lineIndex = index; cueEditor.data = data;
+      cueEditor.cues = (data.mouthCues || []).map((cue) => ({ ...cue }));
+      cueEditor.duration = data.metadata?.duration || cueEditor.buffer.duration || cueEditor.cues.at(-1)?.end || 0;
+      cueEditor.seekTime = 0; cueEditor.selectionStart = null; cueEditor.selectionEnd = null; cueEditor.playEnd = null;
+      updateSelectionReadout(); $('cue-save').disabled = false;
+      selectCue(cueEditor.cues.length ? 0 : -1);
+      previewVisemeAt(0);
+    }
+
+    function updateSelectedCue() {
+      const cue = cueEditor.cues[cueEditor.selected]; if (!cue) return;
+      const previous = cueEditor.cues[cueEditor.selected - 1], next = cueEditor.cues[cueEditor.selected + 1];
+      cue.value = $('cue-value').value;
+      cue.start = Math.max(previous?.end || 0, Math.min(+$('cue-start').value || 0, cue.end - 0.02));
+      cue.end = Math.min(next?.start ?? cueEditor.duration, Math.max(+$('cue-end').value || 0, cue.start + 0.02));
+      $('cue-start').value = cue.start.toFixed(3); $('cue-end').value = cue.end.toFixed(3); selectCue(cueEditor.selected);
+      previewVisemeAt(cueEditor.seekTime);
+    }
+
+    function splitSelectedCue() {
+      const cue = cueEditor.cues[cueEditor.selected]; if (!cue || cue.end - cue.start < 0.05) return;
+      const split = Math.max(cue.start + 0.02, Math.min(cue.end - 0.02,
+        cueEditor.seekTime > cue.start && cueEditor.seekTime < cue.end ? cueEditor.seekTime : (cue.start + cue.end) / 2));
+      const second = { ...cue, start: +split.toFixed(3), sourceValue: 'edited' };
+      cue.end = +split.toFixed(3); cueEditor.cues.splice(cueEditor.selected + 1, 0, second); selectCue(cueEditor.selected + 1);
+      previewVisemeAt(cueEditor.seekTime);
+    }
+
+    function deleteSelectedCue() {
+      const index = cueEditor.selected; if (index < 0) return;
+      const removed = cueEditor.cues[index], previous = cueEditor.cues[index - 1], next = cueEditor.cues[index + 1];
+      cueEditor.cues.splice(index, 1);
+      if (previous) previous.end = next ? next.start : removed.end;
+      else if (next) next.start = removed.start;
+      selectCue(Math.min(index, cueEditor.cues.length - 1));
+      previewVisemeAt(cueEditor.seekTime);
+    }
+
+    async function saveCueEditor() {
+      const line = selectedVoice(); const key = cueLineKey(line);
+      if (!line || !key || cueEditor.lineIndex !== selectedVoiceIndex()) throw new Error('Load a voice line before saving cues.');
+      const payload = { metadata: cueEditor.data?.metadata || { duration: cueEditor.duration }, mouthCues: cueEditor.cues };
+      const response = await fetch(`/api/puppet/cues?id=${encodeURIComponent(CHAR)}&key=${encodeURIComponent(key)}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || response.statusText);
+      cueEditor.data = payload; toast(`Saved ${result.cueCount} edited cues to ${key}.cues.json.`, { kind: 'success' });
+    }
+
+    function cuePointerDown(event) {
+      if (!cueEditor.duration) return;
+      const canvas = $('cue-wave'), rect = canvas.getBoundingClientRect();
+      const timeAtPointer = cueTimeAtEvent(event), canvasWidth = rect.width;
+      const tolerance = cueEditor.duration * 8 / canvasWidth;
+      const inCueBand = (event.clientY - rect.top) / rect.height >= 0.62;
+      let boundary = null;
+      if (inCueBand) cueEditor.cues.forEach((cue, index) => {
+        for (const edge of ['start', 'end']) if (!boundary || Math.abs(cue[edge] - timeAtPointer) < boundary.distance) {
+          boundary = { index, edge, distance: Math.abs(cue[edge] - timeAtPointer) };
+        }
+      });
+      if (audio && !audio.paused) stopSpeech({ previewTime: timeAtPointer });
+      setTimelinePoint(timeAtPointer);
+      if (inCueBand && boundary && boundary.distance <= tolerance) {
+        cueEditor.drag = { index: boundary.index, edge: boundary.edge };
+        canvas.setPointerCapture(event.pointerId);
+      } else if (!inCueBand) {
+        cueEditor.pointer = { anchor: timeAtPointer, moved: false };
+        cueEditor.selectionStart = timeAtPointer; cueEditor.selectionEnd = timeAtPointer;
+        updateSelectionReadout(); canvas.setPointerCapture(event.pointerId);
+      }
+      renderCueEditor();
+    }
+
+    function cuePointerMove(event) {
+      if (cueEditor.pointer) {
+        const point = cueTimeAtEvent(event), anchor = cueEditor.pointer.anchor;
+        cueEditor.pointer.moved ||= Math.abs(point - anchor) >= Math.max(0.01, cueEditor.duration * 3 / $('cue-wave').getBoundingClientRect().width);
+        cueEditor.selectionStart = Math.min(anchor, point); cueEditor.selectionEnd = Math.max(anchor, point);
+        setTimelinePoint(point); updateSelectionReadout(); return;
+      }
+      const drag = cueEditor.drag; if (!drag) return;
+      const cue = cueEditor.cues[drag.index]; if (!cue) return;
+      const timeAtPointer = cueTimeAtEvent(event), previous = cueEditor.cues[drag.index - 1], next = cueEditor.cues[drag.index + 1];
+      if (drag.edge === 'start') {
+        const old = cue.start, minimum = previous ? previous.start + 0.02 : 0;
+        const value = Math.max(minimum, Math.min(timeAtPointer, cue.end - 0.02));
+        cue.start = +value.toFixed(3); if (previous && Math.abs(previous.end - old) < 0.011) previous.end = cue.start;
+      } else {
+        const old = cue.end, maximum = next ? next.end - 0.02 : cueEditor.duration;
+        const value = Math.min(maximum, Math.max(timeAtPointer, cue.start + 0.02));
+        cue.end = +value.toFixed(3); if (next && Math.abs(next.start - old) < 0.011) next.start = cue.end;
+      }
+      cueEditor.seekTime = timeAtPointer; selectCue(drag.index); previewVisemeAt(timeAtPointer);
+    }
+
+    function cuePointerUp(event) {
+      const canvas = $('cue-wave');
+      if (cueEditor.pointer && !cueEditor.pointer.moved) {
+        cueEditor.selectionStart = null; cueEditor.selectionEnd = null;
+      }
+      cueEditor.pointer = null; cueEditor.drag = null;
+      if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+      updateSelectionReadout(); renderCueEditor();
+    }
+
+    function clearCueSelection() {
+      cueEditor.selectionStart = null; cueEditor.selectionEnd = null;
+      updateSelectionReadout(); renderCueEditor();
+    }
+
+    // ---- speech (lip-sync playback) --------------------------------------------
+    function stopSpeech({ previewTime = null } = {}) {
+      const point = Number.isFinite(previewTime) ? previewTime : cueEditor.seekTime;
+      if (stopCues) { stopCues(); stopCues = null; }
+      if (audio) { audio.pause(); audio = null; }
+      cueEditor.playEnd = null;
+      if (cueEditor.renderRAF) { cancelAnimationFrame(cueEditor.renderRAF); cueEditor.renderRAF = 0; }
+      if (Number.isFinite(previewTime)) { cueEditor.seekTime = point; previewVisemeAt(point); }
+      else if (puppet) puppet.setViseme('rest');
+      $('speak')?.classList.remove('on');
+      renderCueEditor();
+    }
+    async function playVoiceRange(start = 0, end = null) {
+      stopSpeech();
+      const lineIndex = selectedVoiceIndex(); const v = voiceLines[lineIndex];
+      if (!v) { statusEl.textContent = 'no voice clip for ' + CHAR; return; }
+      let cues;
+      try {
+        cues = cueEditor.lineIndex === lineIndex && cueEditor.cues.length
+          ? cueEditor.cues : (await (await fetch(CHAR_BASE + v.cues, { cache: 'no-store' })).json()).mouthCues;
+      }
+      catch { statusEl.textContent = 'cues not found: ' + v.cues; return; }
+      audio = new Audio(CHAR_BASE + v.audio); window.__audio = audio;
+      await new Promise((resolve, reject) => {
+        if (audio.readyState >= 1) return resolve();
+        audio.addEventListener('loadedmetadata', resolve, { once: true });
+        audio.addEventListener('error', () => reject(new Error('Could not load voice audio.')), { once: true });
+        audio.load();
+      });
+      cueEditor.seekTime = Math.max(0, Math.min(audio.duration || cueEditor.duration, start));
+      cueEditor.playEnd = Number.isFinite(end) ? Math.max(cueEditor.seekTime, Math.min(end, audio.duration || cueEditor.duration)) : null;
+      if (cueEditor.seekTime > 0.001) {
+        await new Promise((resolve, reject) => {
+          audio.addEventListener('seeked', resolve, { once: true });
+          audio.addEventListener('error', () => reject(new Error('Could not seek voice audio.')), { once: true });
+          audio.currentTime = cueEditor.seekTime;
+        });
+      } else audio.currentTime = 0;
+      $('speak').classList.add('on');
+      if (rig.clips.talk) puppet.playClip('talk');
+      stopCues = driveLipsync(puppet, audio, cues, { offsetMs: speechOffset + (v.offsetMs || 0), map: v.map || VISEME_IDENTITY });
+      audio.addEventListener('ended', () => {
+        $('speak').classList.remove('on'); cueEditor.seekTime = cueEditor.duration; cueEditor.playEnd = null; renderCueEditor();
+        if (rig.clips.idle) puppet.playClip('idle');
+      }, { once: true });
+      await audio.play().then(() => renderCueEditor()).catch((e) => { statusEl.textContent = 'audio blocked: ' + e.message; });
+    }
+
+    async function speak() { return playVoiceRange(0, null); }
+
+    async function playCueSelection() {
+      const start = cueEditor.selectionStart, end = cueEditor.selectionEnd;
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end - start < 0.02) return;
+      return playVoiceRange(start, end);
+    }
+
+    function normalizeVoiceLines(lines) {
+      return (lines || []).map((line) => ({
+        id: line.id || line.cues?.replace(/^voice\//, '').replace(/\.cues\.json$/, ''),
+        label: line.label || line.id || 'Voice line',
+        audio: line.audio.startsWith('voice/') ? line.audio : `voice/${line.audio}`,
+        cues: line.cues.startsWith('voice/') ? line.cues : `voice/${line.cues}`,
+        map: line.cueMap === 'rhubarb' ? RHUBARB_TO_VISEME : VISEME_IDENTITY,
+        offsetMs: Number.isFinite(+line.offsetMs) ? +line.offsetMs : 0,
+      }));
+    }
+
+    async function discoverVoiceLines() {
+      let discovered = [];
+      try {
+        const response = await fetch(CHAR_BASE + 'voice/manifest.json', { cache: 'no-store' });
+        if (response.ok) discovered = normalizeVoiceLines((await response.json()).lines);
+      } catch { /* a static character may not have a voice manifest yet */ }
+      if (!discovered.length) {
+        try {
+          const response = await fetch(`/api/puppet/voices?id=${encodeURIComponent(CHAR)}`, { cache: 'no-store' });
+          if (response.ok) discovered = normalizeVoiceLines((await response.json()).voices);
+        } catch { /* ordinary static server: use built-in compatibility entries */ }
+      }
+      return discovered.length ? discovered : normalizeVoiceLines(BUILTIN_VOICES[CHAR] || []);
+    }
+
+    function setMode(m) {
+      stopPlay(); stopSpeech(); mode = m;
+      for (const b of $('modeseg').children) b.classList.toggle('on', b.dataset.mode === m);
+      $('rigpanel').classList.toggle('hidden', m !== 'rig');
+      $('animpanel').classList.toggle('hidden', m !== 'animate');
+      $('speechpanel').classList.toggle('hidden', m !== 'speech');
+      $('builderpanel').classList.toggle('hidden', m !== 'build');
+      $('builderstage').classList.toggle('hidden', m !== 'build');
+      $('partpick').classList.toggle('hidden', m === 'build');
+      statusEl.classList.toggle('hidden', m === 'build');
+      $('animbar').style.visibility = m === 'animate' ? 'visible' : 'hidden';
+      if (m === 'speech') {
+        puppet.stopClip(); if (rig.clips.idle) puppet.playClip('idle');
+        loadCueEditor().catch((error) => toast(`Could not load cue editor: ${error.message}`, { kind: 'error' }));
+      }
+      else applyFrame();
+      if (m === 'build') builder?.refresh();
+    }
+    function refreshAll() {
+      // rebuild dropdowns from rig, keep selections valid
+      const bs = $('bonesel'); bs.innerHTML = '';
+      for (const b of rig.bones) { const o = document.createElement('option'); o.value = o.textContent = b.id; bs.appendChild(o); }
+      for (const sp of ['$spine', '$motion']) { const o = document.createElement('option'); o.value = o.textContent = sp; bs.appendChild(o); }
+      if (!rig.bones.find((b) => b.id === selBone) && selBone !== '$spine' && selBone !== '$motion') selBone = rig.bones[0].id;
+      const cs = $('clipsel'); cs.innerHTML = '';
+      for (const name of Object.keys(rig.clips || {})) { const o = document.createElement('option'); o.value = o.textContent = name; cs.appendChild(o); }
+      if (!rig.clips[clip]) clip = Object.keys(rig.clips || {})[0];
+      cs.value = clip;
+      $('dur').value = rig.clips[clip]?.duration ?? 1000;
+      $('loopchk').checked = !!rig.clips[clip]?.loop;
+      // voice clips for this character
+      const vs = $('voicesel'); vs.innerHTML = '';
+      const voices = voiceLines;
+      voices.forEach((v, i) => { const o = document.createElement('option'); o.value = i; o.textContent = v.label; vs.appendChild(o); });
+      if (!voices.length) { const o = document.createElement('option'); o.textContent = '(no voice clips yet)'; vs.appendChild(o); }
+      selectBone(selBone);
+    }
+
+    // ---- boot ------------------------------------------------------------------
+    (async () => {
+      stage = await createStage($('stage')); PIXI = stage.PIXI;
+      rig = await (await fetch(`${CHAR_BASE}rig.json?v=${artVersion}`, { cache: 'no-store' })).json();
+      factory = await loadRigArt(PIXI, rig, CHAR_BASE, 1, artVersion);
+      voiceLines = await discoverVoiceLines();
+
+      overlay = new PIXI.Container(); gizmo = new PIXI.Graphics(); overlay.addChild(gizmo);
+      puppet = createPuppet(PIXI, rig, { partFactory: factory }); puppet.stopClip();
+      stage.root.addChild(puppet.view); stage.root.addChild(overlay);
+      placePuppet(); hookBones();
+
+      // drag routing on the stage
+      stage.app.stage.eventMode = 'static';
+      stage.app.stage.hitArea = stage.app.screen;
+      stage.app.stage.on('globalpointermove', onMove);
+      stage.app.stage.on('pointerup', onUp);
+      stage.app.stage.on('pointerupoutside', onUp);
+      stage.app.ticker.add(drawGizmo);
+      stage.onResize(() => { placePuppet(); });
+
+      selBone = 'arm-upper.R'; clip = Object.keys(rig.clips)[0];
+      refreshAll();
+      builder = mountPuppetBuilder({
+        panel: $('builderpanel'), stage: $('builderstage'), currentChar: CHAR,
+        notify: toast,
+        onOpenCharacter: (id) => { location.href = `?char=${encodeURIComponent(id)}&mode=rig`; },
+        onVoiceReady: async (id) => {
+          if (id !== CHAR) return;
+          voiceLines = await discoverVoiceLines();
+          refreshAll(); setMode('speech');
+        },
+      });
+      setMode(['rig', 'animate', 'speech', 'build'].includes(INITIAL_MODE) ? INITIAL_MODE : 'rig');
+
+      // toolbar
+      for (const b of $('modeseg').children) b.onclick = () => setMode(b.dataset.mode);
+      for (const b of $('dragseg').children) b.onclick = () => { dragMode = b.dataset.drag; for (const x of $('dragseg').children) x.classList.toggle('on', x === b); };
+      $('bonesel').onchange = (e) => selectBone(e.target.value);
+      $('locksel').onchange = (e) => { lockSel = e.target.checked; };
+      $('clipsel').onchange = (e) => { clip = e.target.value; $('dur').value = rig.clips[clip].duration || 1000; $('loopchk').checked = !!rig.clips[clip].loop; applyFrame(); renderKeys(); syncVal(); };
+      $('play').onclick = play; $('stop').onclick = stopPlay;
+      $('undo').onclick = undo; $('reset').onclick = async () => {
+        if (!confirm('Reload rig.json from disk and discard edits?')) return;
+        artVersion = Date.now();
+        rig = await (await fetch(`${CHAR_BASE}rig.json?v=${artVersion}`, { cache: 'no-store' })).json();
+        factory = await loadRigArt(PIXI, rig, CHAR_BASE, 1, artVersion);
+        undoStack.length = 0; rebuild(); refreshAll();
+        toast('Reloaded rig and artwork from disk.', { kind: 'success' });
+      };
+      $('export').onclick = exportRig;
+      $('save').onclick = async () => {
+        toast(`Saving ${CHAR}/rig.json to disk…`);
+        try {
+          const response = await fetch(`/api/puppet/file?id=${encodeURIComponent(CHAR)}&kind=rig&overwrite=true`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rig, null, 2) + '\n',
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || response.statusText);
+          flash('saved rig.json to disk');
+          toast(`Saved ${CHAR}/rig.json to disk.`, { kind: 'success' });
+        } catch (error) {
+          flash('save needs Puppet Studio authoring server: ' + error.message);
+          toast(`Could not save rig: ${error.message}`, { kind: 'error', duration: 7000 });
+        }
+      };
+      $('copy').onclick = () => navigator.clipboard.writeText(JSON.stringify(rig, null, 2))
+        .then(() => { flash('copied JSON'); toast('Copied rig JSON to the clipboard.', { kind: 'success' }); })
+        .catch((error) => toast(`Could not copy JSON: ${error.message}`, { kind: 'error' }));
+
+      // rig inputs
+      const rigChange = (fn) => (e) => { pushUndo(); fn(e); };
+      $('jx').onchange = rigChange(() => { getBone(selBone).joint[0] = +$('jx').value; puppet.setJoint(selBone, +$('jx').value, +$('jy').value); drawGizmo(); });
+      $('jy').onchange = rigChange(() => { getBone(selBone).joint[1] = +$('jy').value; puppet.setJoint(selBone, +$('jx').value, +$('jy').value); drawGizmo(); });
+      $('ax').onchange = rigChange(() => { const p = getPart(selBone); p.anchor = [+$('ax').value, p.anchor ? p.anchor[1] : 0.5]; rebuild(); });
+      $('ay').onchange = rigChange(() => { const p = getPart(selBone); p.anchor = [p.anchor ? p.anchor[0] : 0.5, +$('ay').value]; rebuild(); });
+      $('pscale').onchange = rigChange(() => { getPart(selBone).scale = +$('pscale').value; rebuild(); });
+      $('pz').onchange = rigChange(() => { const b = getBone(selBone), p = getPart(selBone); b.z = +$('pz').value; if (p) p.z = b.z; rebuild(); });
+      $('mirrorpart').onclick = mirrorSelectedPart;
+
+      // animate inputs
+      $('time').oninput = (e) => { time = +e.target.value / 1000; $('tlabel').textContent = `t = ${time.toFixed(3)}`; applyFrame(); syncVal(); };
+      $('propsel').onchange = (e) => { prop = e.target.value; $('proplabel').textContent = `${selBone} · ${prop}`; renderKeys(); syncVal(); };
+      $('dur').onchange = () => { pushUndo(); rig.clips[clip].duration = +$('dur').value; };
+      $('loopchk').onchange = () => { pushUndo(); rig.clips[clip].loop = $('loopchk').checked; };
+      $('val').onchange = () => { pushUndo(); setKey(selBone, prop, time, +$('val').value); applyFrame(); renderKeys(); };
+      $('setkey').onclick = () => { pushUndo(); setKey(selBone, prop, time, +$('val').value); applyFrame(); renderKeys(); };
+      $('delkey').onclick = () => { pushUndo(); delKeyAt(selBone, prop, time); applyFrame(); renderKeys(); syncVal(); };
+
+      // speech inputs
+      $('speak').onclick = speak;
+      $('speakstop').onclick = () => stopSpeech({ previewTime: audio?.currentTime ?? cueEditor.seekTime });
+      $('soffset').oninput = (e) => { speechOffset = +e.target.value; $('sofflbl').textContent = speechOffset + ' ms'; };
+      for (const value of EDITOR_VISEMES) {
+        const option = document.createElement('option'); option.value = option.textContent = value; $('cue-value').appendChild(option);
+      }
+      $('voicesel').onchange = () => {
+        stopSpeech(); loadCueEditor().catch((error) => toast(`Could not load cue editor: ${error.message}`, { kind: 'error' }));
+      };
+      $('cue-value').onchange = updateSelectedCue; $('cue-start').onchange = updateSelectedCue; $('cue-end').onchange = updateSelectedCue;
+      $('cue-add').onclick = splitSelectedCue; $('cue-delete').onclick = deleteSelectedCue;
+      $('cue-save').onclick = () => saveCueEditor().catch((error) => toast(`Could not save cues: ${error.message}`, { kind: 'error', duration: 7000 }));
+      $('cue-play-selection').onclick = () => playCueSelection().catch((error) => toast(`Could not play selection: ${error.message}`, { kind: 'error' }));
+      $('cue-clear-selection').onclick = clearCueSelection;
+      $('cue-wave').addEventListener('pointerdown', cuePointerDown);
+      $('cue-wave').addEventListener('pointermove', cuePointerMove);
+      $('cue-wave').addEventListener('pointerup', cuePointerUp);
+      $('cue-wave').addEventListener('pointercancel', cuePointerUp);
+      window.addEventListener('resize', renderCueEditor);
+      selectCue(-1); updateSelectionReadout(); $('cue-save').disabled = true;
+
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undo(); }
+        else if (e.key === ' ' && mode === 'animate') { e.preventDefault(); playing ? stopPlay() : play(); }
+        else if (e.key === ' ' && mode === 'speech' && !$('cue-play-selection').disabled) {
+          e.preventDefault();
+          if (audio && !audio.paused) stopSpeech({ previewTime: audio.currentTime });
+          else playCueSelection().catch((error) => toast(`Could not play selection: ${error.message}`, { kind: 'error' }));
+        }
+      });
+
+      function flash(m) { statusEl.textContent = m; }
+      setInterval(() => { if (!drag) statusEl.textContent = `mode: ${mode}   bone: ${selBone}   clip: ${clip}   t=${time.toFixed(3)}`; }, 200);
+
+      window.QLOBE_DEBUG = {
+        ready: true, char: CHAR,
+        pick: (id) => selectBone(id),
+        setMode, setKey, mirrorSelectedPart, toast, exportJSON: () => JSON.stringify(rig),
+        getRig: () => rig, getState: () => ({ mode, selBone, clip, time, viseme: puppet.getState().viseme }),
+        boneGlobal: (id) => { const c = puppet.bones[id]?.container.getGlobalPosition(); return c ? { x: c.x, y: c.y } : null; },
+        applied: (id) => { const c = puppet.bones[id]?.container; return c ? { sx: c.scale.x, sy: c.scale.y, rot: c.rotation, x: c.position.x, y: c.position.y } : null; },
+        counts: () => ({ ...dbg }),
+        speak, stopSpeech, audioTime: () => (audio ? audio.currentTime : -1),
+        cueEditorState: () => ({
+          duration: cueEditor.duration, seekTime: cueEditor.seekTime, selected: cueEditor.selected,
+          selectionStart: cueEditor.selectionStart, selectionEnd: cueEditor.selectionEnd,
+          playing: !!audio && !audio.paused, playEnd: cueEditor.playEnd,
+        }),
+        setViseme: (k) => { puppet.setViseme(k); return puppet.getState().viseme; },
+      };
+      document.title = 'ready';
+    })();
+  </script>
+</body>
+</html>
