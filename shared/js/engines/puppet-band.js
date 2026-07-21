@@ -87,7 +87,6 @@ class PuppetBandGame {
     this.members = [];             // concert actors [{ actor, instr, target }]
     this.playing = null;           // music controller
     this.removeResize = null;
-    this.badgeTicker = null;
     this.stageGeneration = 0;
     this.songGeneration = 0;
     this.activeBackdrop = null;
@@ -458,10 +457,8 @@ class PuppetBandGame {
     }
     this.layoutBand(false);
     this.renderCarousel();
-    this.badgeTicker = () => this.positionStageInstrumentBadges();
-    stage.app.ticker.add(this.badgeTicker);
     this.positionStageInstrumentBadges();
-    this.removeResize = stage.onResize(() => {});
+    this.removeResize = stage.onResize(() => this.positionStageInstrumentBadges());
 
     await this.playCurrentSong();
     this.scheduleHint();
@@ -535,6 +532,7 @@ class PuppetBandGame {
     button.type = 'button';
     button.className = 'qk-pb-stage-instrument';
     button.dataset.slot = String(member.slot);
+    button.style.visibility = 'hidden';
     button.innerHTML = this.badgeMarkup(member.instr);
     this.updateStageInstrumentBadge(member, button);
     host.appendChild(button);
@@ -569,17 +567,15 @@ class PuppetBandGame {
     if (!host || !canvas) return;
     const hostRect = host.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
-    const { w, h } = this.stage.size();
-    const sx = w ? canvasRect.width / w : 1;
-    const sy = h ? canvasRect.height / h : 1;
     this.members.forEach((member) => {
       const button = member.instrumentBadgeEl;
-      if (!button || !member.actor || !member.actor.puppet) return;
-      const bounds = member.actor.puppet.view.getBounds();
-      const x = canvasRect.left - hostRect.left + (bounds.x + bounds.width / 2) * sx;
-      const y = canvasRect.top - hostRect.top + Math.max(34, bounds.y * sy - 12);
+      if (!button) return;
+      const fx = member.badgeFx == null ? 0.5 : member.badgeFx;
+      const x = canvasRect.left - hostRect.left + fx * canvasRect.width;
+      const y = canvasRect.top - hostRect.top + 36;
       button.style.left = `${x}px`;
       button.style.top = `${y}px`;
+      button.style.visibility = 'visible';
     });
   }
 
@@ -631,12 +627,14 @@ class PuppetBandGame {
     const spread = Math.min(0.21, 0.8 / Math.max(1, n - 1));
     this.members.forEach((m, i) => {
       const fx = 0.5 + (i - (n - 1) / 2) * spread;
+      m.badgeFx = fx;
       m.actor.widthShare = Math.min(0.4, 1.15 / Math.max(1, n));
       if (animate) T.moveActor(m.actor, fx, { ms: 700 });
       else { m.actor.fx = fx; T.placeActor(m.actor); }
       T.placeProp(`s${m.slot}`, fx + 0.005, T.floorY - 0.02, { ms: animate ? 700 : 0 });
       if (m.floor) T.placeProp(`p${m.slot}`, fx, T.floorY + 0.03, { ms: animate ? 700 : 0 });
     });
+    this.positionStageInstrumentBadges();
   }
 
   // --- live roster (carousel) --------------------------------------------------------
@@ -862,8 +860,6 @@ class PuppetBandGame {
     this.activeTweens.clear();
     this.stopConcert();
     this.members.forEach((member) => { if (member.instrumentBadgeEl) member.instrumentBadgeEl.remove(); });
-    if (this.stage && this.badgeTicker) this.stage.app.ticker.remove(this.badgeTicker);
-    this.badgeTicker = null;
     if (this.theater) { this.theater.destroy(); this.theater = null; }
     if (this.removeResize) { this.removeResize(); this.removeResize = null; }
     if (this.stage) { this.stage.destroy(); this.stage = null; }
@@ -1177,12 +1173,6 @@ function installStyle() {
       border: 5px solid #fff; background: linear-gradient(180deg, #fffef2, #dff6ff);
       box-shadow: 0 5px 0 rgba(0,52,135,.24), 0 9px 16px rgba(0,38,122,.24);
       transition: transform .12s ease-out, opacity .12s ease-out;
-    }
-    .qk-pb-stage-instrument::after {
-      content: '↻'; position: absolute; right: -5px; bottom: -4px;
-      width: 23px; height: 23px; display: grid; place-items: center;
-      border: 3px solid #fff; border-radius: 50%; background: #0c8ed8; color: #fff;
-      font: 700 15px/1 system-ui, sans-serif; box-shadow: 0 2px 0 rgba(0,52,135,.28);
     }
     .qk-pb-stage-instrument img { width: 82%; height: 82%; object-fit: contain; pointer-events: none; }
     .qk-pb-stage-instrument:active { transform: translate(-50%, -50%) scale(.9); }
