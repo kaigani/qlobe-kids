@@ -8,8 +8,9 @@
 //   concert — the band stands on the rainbow stage playing a real song
 //             (shared/js/music.js schedules pitch-shifted samples); every
 //             member grooves and accents on their own notes; tapping a member
-//             triggers a beat-quantized solo riff. Next-song button cycles the
-//             set list. No fail states — it's a sandbox.
+//             triggers a beat-quantized solo riff, and the round badge above
+//             each performer cycles their instrument live. Next-song cycles
+//             the set list. No fail states — it's a sandbox.
 //
 // Reuses: theater.js (cast on stage, props pinned to paws), music.js (band
 // audio), voice-clips.js (recorded narrator), sfx/speech unlocks.
@@ -86,6 +87,7 @@ class PuppetBandGame {
     this.members = [];             // concert actors [{ actor, instr, target }]
     this.playing = null;           // music controller
     this.removeResize = null;
+    this.badgeTicker = null;
     this.stageGeneration = 0;
     this.songGeneration = 0;
     this.activeBackdrop = null;
@@ -456,6 +458,9 @@ class PuppetBandGame {
     }
     this.layoutBand(false);
     this.renderCarousel();
+    this.badgeTicker = () => this.positionStageInstrumentBadges();
+    stage.app.ticker.add(this.badgeTicker);
+    this.positionStageInstrumentBadges();
     this.removeResize = stage.onResize(() => {});
 
     await this.playCurrentSong();
@@ -478,13 +483,7 @@ class PuppetBandGame {
       fx: 0.5, fy: T.floorY - 0.02, layer: 'back',
     });
     const instrDef = this.config.instruments.find((x) => x.id === bandEntry.instr) || {};
-    const propDef = {
-      art: this.config.props[bandEntry.instr],
-      color: instrDef.color || '#e8b23a',
-      scale: instrDef.floor ? 0.5 : 0.3,
-    };
-    if (instrDef.floor) { propDef.fx = 0.5; propDef.fy = T.floorY + 0.03; }
-    else { propDef.holder = name; propDef.handBone = 'arm-lower.R'; propDef.handOffset = [0, 110]; }
+    const propDef = this.performancePropDef(name, bandEntry.instr, 0.5);
     await T.addProp(`p${slot}`, propDef);
     if (this.destroyed || generation !== this.stageGeneration) return null;
 
@@ -512,8 +511,111 @@ class PuppetBandGame {
     });
     this.targetMap.set(stoolId, { id: stoolId, member, stool: true, role: 'neutral', action: () => this.toggleSit(member) });
     member.stoolId = stoolId;
+    this.addStageInstrumentBadge(member);
     this.members.push(member);
     return member;
+  }
+
+  performancePropDef(holder, instrId, fx = 0.5) {
+    const def = this.config.instruments.find((instrument) => instrument.id === instrId) || {};
+    const prop = {
+      art: this.config.props[instrId],
+      color: def.color || '#e8b23a',
+      scale: def.floor ? 0.5 : 0.3,
+    };
+    if (def.floor) { prop.fx = fx; prop.fy = this.theater.floorY + 0.03; }
+    else { prop.holder = holder; prop.handBone = 'arm-lower.R'; prop.handOffset = [0, 110]; }
+    return prop;
+  }
+
+  addStageInstrumentBadge(member) {
+    const host = this.mountEl.querySelector('.qk-pb-stagehost');
+    if (!host) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'qk-pb-stage-instrument';
+    button.dataset.slot = String(member.slot);
+    button.innerHTML = this.badgeMarkup(member.instr);
+    this.updateStageInstrumentBadge(member, button);
+    host.appendChild(button);
+    const id = this.nextTargetId('instrument');
+    this.targetMap.set(id, {
+      id, el: button, kind: 'instrument', member, role: 'neutral',
+      action: () => this.cycleStageInstrument(member),
+    });
+    button.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.unlockAudio();
+    });
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.tapTarget(id);
+    });
+    member.instrumentBadgeId = id;
+    member.instrumentBadgeEl = button;
+  }
+
+  updateStageInstrumentBadge(member, button = member.instrumentBadgeEl) {
+    if (!button) return;
+    button.innerHTML = this.badgeMarkup(member.instr);
+    button.setAttribute('aria-label', `Change ${characterName(member.char)}'s instrument. Current: ${member.instr}`);
+  }
+
+  positionStageInstrumentBadges() {
+    if (!this.stage || this.screen !== 'concert') return;
+    const host = this.mountEl.querySelector('.qk-pb-stagehost');
+    const canvas = this.stage.app.canvas;
+    if (!host || !canvas) return;
+    const hostRect = host.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+    const { w, h } = this.stage.size();
+    const sx = w ? canvasRect.width / w : 1;
+    const sy = h ? canvasRect.height / h : 1;
+    this.members.forEach((member) => {
+      const button = member.instrumentBadgeEl;
+      if (!button || !member.actor || !member.actor.puppet) return;
+      const bounds = member.actor.puppet.view.getBounds();
+      const x = canvasRect.left - hostRect.left + (bounds.x + bounds.width / 2) * sx;
+      const y = canvasRect.top - hostRect.top + Math.max(34, bounds.y * sy - 12);
+      button.style.left = `${x}px`;
+      button.style.top = `${y}px`;
+    });
+  }
+
+  async cycleStageInstrument(member) {
+    if (this.screen !== 'concert' || !this.theater || member.instrumentBusy || !this.members.includes(member)) return;
+    const taken = new Set(this.members.filter((item) => item !== member).map((item) => item.instr));
+    const choices = this.config.instruments.map((instrument) => instrument.id).filter((id) => !taken.has(id));
+    const next = choices[(choices.indexOf(member.instr) + 1) % choices.length] || member.instr;
+    if (next === member.instr) return;
+    const generation = this.stageGeneration;
+    member.instrumentBusy = true;
+    if (member.instrumentBadgeEl) member.instrumentBadgeEl.disabled = true;
+    try {
+      this.theater.removeProp(`p${member.slot}`);
+      const fx = member.actor.fx == null ? 0.5 : member.actor.fx;
+      const prop = await this.theater.addProp(`p${member.slot}`, this.performancePropDef(member.name, next, fx));
+      if (this.destroyed || generation !== this.stageGeneration || !this.members.includes(member)) {
+        this.theater && this.theater.removeProp(`p${member.slot}`);
+        return;
+      }
+      const def = this.config.instruments.find((instrument) => instrument.id === next) || {};
+      member.instr = next;
+      member.floor = !!def.floor;
+      prop.sprite.visible = !member.sitting;
+      this.config.defaultInstrumentByChar[member.char] = next;
+      this.updateStageInstrumentBadge(member);
+      member.actor.puppet.playClip(this.playClipFor(member));
+      this.layoutBand(false);
+      this.syncMusic();
+      music.preview(next);
+      this.playSfx('tick');
+      this.theater.playFx('sparkle', member.actor.name);
+    } finally {
+      member.instrumentBusy = false;
+      if (member.instrumentBadgeEl) member.instrumentBadgeEl.disabled = false;
+    }
   }
 
   playClipFor(member) {
@@ -616,6 +718,8 @@ class PuppetBandGame {
     this.members.splice(index, 1);
     this.targetMap.delete(m.id);
     this.targetMap.delete(m.stoolId);
+    this.targetMap.delete(m.instrumentBadgeId);
+    if (m.instrumentBadgeEl) m.instrumentBadgeEl.remove();
     this.syncMusic();               // band shrinks immediately; walk-off is visual
     this.layoutBand(true);
     this.refreshCarousel();
@@ -757,6 +861,9 @@ class PuppetBandGame {
     this.activeTweens.forEach((t) => t.cancel && t.cancel());
     this.activeTweens.clear();
     this.stopConcert();
+    this.members.forEach((member) => { if (member.instrumentBadgeEl) member.instrumentBadgeEl.remove(); });
+    if (this.stage && this.badgeTicker) this.stage.app.ticker.remove(this.badgeTicker);
+    this.badgeTicker = null;
     if (this.theater) { this.theater.destroy(); this.theater = null; }
     if (this.removeResize) { this.removeResize(); this.removeResize = null; }
     if (this.stage) { this.stage.destroy(); this.stage = null; }
@@ -787,9 +894,9 @@ class PuppetBandGame {
       const canvasRect = this.stage.app.canvas.getBoundingClientRect();
       const out = [];
       for (const t of this.targetMap.values()) {
-        if (t.el) {   // carousel tiles (DOM)
+        if (t.el) {   // carousel tiles + stage instrument badges (DOM)
           const r = t.el.getBoundingClientRect();
-          out.push({ id: t.id, role: t.role, kind: 'roster', rect: { x: r.x, y: r.y, w: r.width, h: r.height } });
+          out.push({ id: t.id, role: t.role, kind: t.kind || 'roster', rect: { x: r.x, y: r.y, w: r.width, h: r.height } });
         } else if (t.stool) {
           const s = this.theater && this.theater.props[`s${t.member.slot}`];
           if (!s) continue;
@@ -1063,6 +1170,23 @@ function installStyle() {
     }
     .qk-pb-stagehost { min-height: 0; position: relative; overflow: hidden; border-radius: 34px; border: 5px solid rgba(255,255,255,.8); box-shadow: 0 7px 0 rgba(24,71,149,.2); touch-action: none; }
     .qk-pb-stagehost canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+    .qk-pb-stage-instrument {
+      position: absolute; z-index: 4; transform: translate(-50%, -50%);
+      width: clamp(52px, 7vmin, 72px); height: clamp(52px, 7vmin, 72px);
+      display: grid; place-items: center; padding: 6px; border-radius: 50%;
+      border: 5px solid #fff; background: linear-gradient(180deg, #fffef2, #dff6ff);
+      box-shadow: 0 5px 0 rgba(0,52,135,.24), 0 9px 16px rgba(0,38,122,.24);
+      transition: transform .12s ease-out, opacity .12s ease-out;
+    }
+    .qk-pb-stage-instrument::after {
+      content: '↻'; position: absolute; right: -5px; bottom: -4px;
+      width: 23px; height: 23px; display: grid; place-items: center;
+      border: 3px solid #fff; border-radius: 50%; background: #0c8ed8; color: #fff;
+      font: 700 15px/1 system-ui, sans-serif; box-shadow: 0 2px 0 rgba(0,52,135,.28);
+    }
+    .qk-pb-stage-instrument img { width: 82%; height: 82%; object-fit: contain; pointer-events: none; }
+    .qk-pb-stage-instrument:active { transform: translate(-50%, -50%) scale(.9); }
+    .qk-pb-stage-instrument:disabled { opacity: .62; }
     .qk-pb-sound { position: absolute; left: max(14px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 4; }
     .qk-pb-carousel {
       position: absolute;
