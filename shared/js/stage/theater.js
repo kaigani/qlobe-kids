@@ -19,7 +19,7 @@
 import { createPuppet, loadRigArt } from './puppet.js';
 import { driveLipsync, VISEME_IDENTITY } from './lipsync.js';
 import { catmullRom } from './spline.js';
-import { ease } from './tween.js';
+import { ease, to } from './tween.js';
 import { burst, sparkle } from './particles.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
@@ -104,6 +104,10 @@ function visemeFlap(puppet) {
 export async function createTheater(stage, opts = {}) {
   const { PIXI } = stage;
   const floorY = opts.floorY ?? 0.74;
+  // worldScale scales everything that isn't a puppet view (prop sizes, fx
+  // offsets, flight arcs) so a cast rendered bigger keeps its props/effects
+  // proportionate without re-authoring per-prop scales.
+  const worldScale = opts.worldScale ?? 1;
   const pack = await loadActingClips();
   const gameClips = opts.gameClips || {};
 
@@ -148,19 +152,27 @@ export async function createTheater(stage, opts = {}) {
 
   // --- backdrop ----------------------------------------------------------------
   async function setBackdrop(src) {
-    if (backdropSprite) { backdropSprite.destroy(); backdropSprite = null; }
-    if (!src) return;
-    if (/^#|^0x/.test(src)) {
-      backdropSprite = new PIXI.Graphics();
-      backdropSprite.rect(0, 0, 4, 4).fill(src.replace(/^0x/, '#'));
-      backdropSprite.isColor = true;
-    } else {
-      const tex = await PIXI.Assets.load(new URL(src, document.baseURI).href).catch(() => null);
-      if (!tex) return;
-      backdropSprite = new PIXI.Sprite(tex);
+    const old = backdropSprite;
+    backdropSprite = null;
+    if (src) {
+      if (/^#|^0x/.test(src)) {
+        backdropSprite = new PIXI.Graphics();
+        backdropSprite.rect(0, 0, 4, 4).fill(src.replace(/^0x/, '#'));
+        backdropSprite.isColor = true;
+      } else {
+        const tex = await PIXI.Assets.load(new URL(src, document.baseURI).href).catch(() => null);
+        if (tex) backdropSprite = new PIXI.Sprite(tex);
+      }
+      if (backdropSprite) {
+        bgLayer.addChildAt(backdropSprite, 0);   // beneath the outgoing one
+        layoutBackdrop();
+      }
     }
-    bgLayer.addChild(backdropSprite);
-    layoutBackdrop();
+    if (!old) return;
+    // crossfade the old scene out (a place change mid-show shouldn't hard-cut)
+    if (reduced || theater.timeScale > 1 || !backdropSprite) { old.destroy(); return; }
+    await to(old, { alpha: 0 }, { ms: 450, easing: ease.inOutSine });
+    old.destroy();
   }
   function layoutBackdrop() {
     if (!backdropSprite) return;
@@ -175,7 +187,12 @@ export async function createTheater(stage, opts = {}) {
   // --- actors -------------------------------------------------------------------
   function actorScale(actor) {
     const { w, h } = stage.size();
-    return (Math.min(w, h) / (actor.rig.canvas || 1024)) * actor.scaleFactor;
+    const canvas = actor.rig.canvas || 1024;
+    const k = (Math.min(w, h) / canvas) * actor.scaleFactor;
+    // width cap: two puppets must fit side by side even in portrait — each may
+    // take at most ~45% of stage width (puppet art spans ~0.62 of its canvas)
+    const kMax = (0.45 * w) / (0.62 * canvas);
+    return Math.min(k, kMax);
   }
   // Feet on the floor line: the rig's `ground` sits (ground - anchor.y) below
   // the view pivot, so back the pivot up by that much (scaled).
@@ -268,7 +285,7 @@ export async function createTheater(stage, opts = {}) {
   }
 
   // --- props ---------------------------------------------------------------------
-  const stageK = () => Math.min(stage.size().w, stage.size().h) / 1024;
+  const stageK = () => (Math.min(stage.size().w, stage.size().h) / 1024) * worldScale;
 
   function propTargetGlobal(prop) {
     const holder = actors[prop.holder];
@@ -381,13 +398,23 @@ export async function createTheater(stage, opts = {}) {
   // lip-sync the moment the channel fires onClip with the element.
   let pendingLip = null;
   let lipStop = null;
-  function stopLip() { if (lipStop) { lipStop(); lipStop = null; } pendingLip = null; }
+  let lipGen = 0;   // bumped on every stop/new-line so a stale 'playing' can't arm
+  function stopLip() { lipGen++; if (lipStop) { lipStop(); lipStop = null; } pendingLip = null; }
   const offClip = voiceClips.onClip((key, el) => {
     if (!pendingLip) return;
-    stopLip();
-    lipStop = driveLipsync(pendingLip.puppet, el, pendingLip.cues,
-      { offsetMs: pendingLip.offsetMs, map: VISEME_IDENTITY });
-    pendingLip = null;
+    const lip = pendingLip;
+    stopLip();               // stops any running lip, bumps gen, clears pendingLip
+    const gen = lipGen;
+    // onClip fires BEFORE el.play() — if driveLipsync's cue walker ticks while
+    // the element is still paused it exits instantly and the mouth never moves.
+    // Arm it only once playback has actually begun.
+    const start = () => {
+      if (theater.destroyed || gen !== lipGen) return;
+      lipStop = driveLipsync(lip.puppet, el, lip.cues,
+        { offsetMs: lip.offsetMs, map: VISEME_IDENTITY });
+    };
+    if (!el.paused && !el.ended) start();
+    else el.addEventListener('playing', start, { once: true });
   });
 
   /**
@@ -438,7 +465,7 @@ export async function createTheater(stage, opts = {}) {
     if (!actor) return;
 
     if (beat.enter) {
-      actor.fx = beat.enter === 'left' ? -0.18 : 1.18;
+      actor.fx = beat.enter === 'left' ? -0.3 : 1.3;   // fully offstage even at 2× cast scale
       placeActor(actor);
       actor.puppet.playClip('walk');
       await moveActor(actor, beat.to ? beat.to[0] : 0.5, { ms: beat.ms ?? 1800 });

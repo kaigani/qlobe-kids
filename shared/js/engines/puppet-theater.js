@@ -1,13 +1,16 @@
-// puppet-theater.js — Stage v2 archetype for "watch puppets act out a problem,
-// watch every solution acted out, then pick one".
+// puppet-theater.js — Stage v2 archetype for "watch puppets act out a problem
+// AND a choice, then JUDGE the choice that was made".
 //
-// The pedagogical core is SHOW, DON'T TELL: before input ever opens, each
-// choice is performed by the puppets as a short vignette while its picture
-// card slides into the rail — the card is "born" from its acted moment. A tap
-// on a card is a commit (one press path); a kind pick plays its acted happy
-// resolution and celebrates, an unkind pick plays a gentle sad beat, snaps the
-// scene back to the problem tableau, dims the tried card and re-opens the
-// choice. There is no fail state.
+// The pedagogical core is SHOW, DON'T TELL — and keep the child's hands busy:
+// each scenario acts its problem, then ONE of its authored choices plays out
+// at random (consequence included), the show pauses, and the child judges it
+// with two big buttons — red unhappy face ("I didn't like that") or green
+// happy face ("I liked that"). Kind choice → green is right; unkind → red.
+// A correct judgment of an unkind choice is followed by the puppets acting a
+// kind repair, so every scenario ends warm. A session's scenarios play as one
+// continuous show — the only pauses are the judgment moments; one big
+// celebration at the end. Wrong judgments get a gentle nudge + re-ask; there
+// is no fail state.
 //
 // Structure mirrors choose-one.js (splash/HUD/debug/normalize conventions) on
 // top of the theater substrate (../stage/theater.js) which owns the puppets,
@@ -21,14 +24,17 @@
 //   backdrops: { playroom: './assets/bg/playroom.png', … },
 //   clips: {},                             // extra clip overrides (rarely used)
 //   copy: { home, replay, playAgain, castPrompt },
-//   voice: { intro, castNamed, whatNow, yourTurn, nudgeRetry, cheer, yums:[…] },
+//   voice: { intro, castPrompt, watchWhat, judge, judgeNudge, judgeYesKind,
+//            judgeYesUnkind, tryKinder, andThen, cheer },
 //   modes: [{ id, title, rounds, scenarios: [{
 //     id, backdrop: 'playroom',
 //     props: { truck: { art, scale, holder:'a', handBone, handOffset } },
 //     setup: [beat, …],                    // ends ON the frozen problem tableau
-//     choices: [{ id, kind, card: { art, alt },
-//                 ask: { narrator, text }, preview: [beat,…], resolution: [beat,…] }],
-//   }]}],
+//     choices: [{ id, kind, card: { art, alt },   // card/ask/preview kept as
+//                 ask: { narrator, text },        // authoring data; judge flow
+//                 preview: [beat,…],              // acts `resolution` only and
+//                 resolution: [beat,…] }],        // speaks its final narrator
+//   }]}],                                         // line as the confirmation
 // }
 // Beat grammar is theater.js's: {actor, enter/to/clip/pose/say/text},
 // {narrator, text}, {prop, holder/to}, {fx, at}, {wait}, {parallel:[…]}.
@@ -38,9 +44,10 @@ import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
 import { createStage } from '../stage/stage.js';
 import { createTheater } from '../stage/theater.js';
-import { to, ease, popIn } from '../stage/tween.js';
+import { createPuppet, loadRigArt } from '../stage/puppet.js';
+import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
-import { artObj, card as cardBacking } from '../stage/art-pixi.js';
+import { artObj } from '../stage/art-pixi.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -51,8 +58,11 @@ const CHAR_BASE = new URL('../../characters/', import.meta.url);
 
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
-const CARD_SIZE = 180;
-const CARD_COLORS = [0xe9fff1, 0xfff0e6, 0xeef1ff, 0xfff8e8];
+const JUDGE_SIZE = 170;              // judge button diameter (min 96 enforced in layout)
+const ACTOR_SCALE = 0.88;            // puppets sit large in the room (worldScale below matches)
+const WORLD_SCALE = 2;               // props/fx grow with the cast (theater.js worldScale)
+const MARK_A = 0.28;
+const MARK_B = 0.72;
 const CAST_PITCHES = [0.95, 1.18];   // TTS fallback voices for picks 1 & 2
 
 let styleInstalled = false;
@@ -71,7 +81,7 @@ class PuppetTheaterGame {
     this.previousDebug = window.QLOBE_DEBUG;
 
     this.screen = 'splash';   // splash | cast | play | end
-    this.phase = null;        // setup | previews | choice | resolution | celebrate
+    this.phase = null;        // setup | acting | judge | confirm | repair | celebrate
     this.mode = null;
     this.cast = [];           // [charId, charId] in pick order → roles a, b
     this.roundScenarios = [];
@@ -98,6 +108,9 @@ class PuppetTheaterGame {
     this.removeResize = null;
     this.stageGeneration = 0;
     this.roundGeneration = 0;
+    this.mascotGeneration = 0;
+    this.mascots = null;
+    this.activeTweens = new Set();
 
     this.onFirstPointer = () => this.unlockAudio();
     this.onContextMenu = (e) => e.preventDefault();
@@ -196,17 +209,11 @@ class PuppetTheaterGame {
         </span>
       </button>
     `).join('');
-    const mascots = (this.config.menu?.mascots || []).slice(0, 2).map((id, index) => `
-      <img class="qk-pt-menu-mascot qk-pt-menu-mascot-${index + 1}"
-           src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
-           onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
-           alt="" draggable="false" aria-hidden="true" />
-    `).join('');
-
     this.mountEl.innerHTML = `
       <section class="qk-pt qk-pt-splash" aria-label="${escapeAttr(this.config.title)}">
         ${menuBackdropMarkup(this.config)}
         <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
+        <div class="qk-pt-mascot-stage" aria-hidden="true"></div>
         <a class="qk-pt-home qk-pt-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
         <div class="qk-pt-splash-center">
           <div class="qk-pt-logo" aria-label="${escapeAttr(this.config.title)}">${titleMarkup(this.config.title)}</div>
@@ -214,7 +221,6 @@ class PuppetTheaterGame {
           <div class="qk-pt-mode-list">${buttons}</div>
           <p class="qk-pt-menu-helper">${escapeHtml(this.config.menu?.helper || 'Pick a story for the puppets!')}</p>
         </div>
-        ${mascots}
       </section>
     `;
 
@@ -226,6 +232,80 @@ class PuppetTheaterGame {
       });
       button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
+
+    this.bootMascots();
+  }
+
+  // Live greeter puppets flanking the menu: full rigs standing in idle, each
+  // taking an occasional friendly wave. Pure decoration (pointer-events: none).
+  async bootMascots() {
+    const ids = (this.config.menu?.mascots || []).slice(0, 2);
+    const host = this.mountEl.querySelector('.qk-pt-mascot-stage');
+    if (!ids.length || !host) return;
+    const generation = ++this.mascotGeneration;
+    let stage;
+    try {
+      stage = await createStage(host);
+    } catch { return; }
+    if (this.destroyed || this.screen !== 'splash' || generation !== this.mascotGeneration) {
+      stage.destroy();
+      return;
+    }
+    const puppets = [];
+    const timers = [];
+    this.mascots = {
+      destroy() {
+        timers.forEach(clearTimeout);
+        puppets.forEach((p) => p.puppet.destroy());
+        stage.destroy();
+      },
+    };
+
+    for (let i = 0; i < ids.length; i++) {
+      try {
+        const base = new URL(`${ids[i]}/`, CHAR_BASE);
+        const rig = await (await fetch(new URL('rig.json', base))).json();
+        if (this.destroyed || generation !== this.mascotGeneration) return;
+        const factory = await loadRigArt(stage.PIXI, rig, base.href);
+        if (this.destroyed || generation !== this.mascotGeneration) return;
+        const puppet = createPuppet(stage.PIXI, rig, { partFactory: factory });   // auto-idles
+        stage.root.addChild(puppet.view);
+        puppets.push({ puppet, rig, side: i === 0 ? -1 : 1 });
+      } catch { /* a missing mascot never blocks the menu */ }
+    }
+    if (!puppets.length) return;
+
+    const place = (w, h) => {
+      for (const m of puppets) {
+        // full-size greeters standing at the stage edges, in front of the card
+        // row (the canvas is click-through, so cards stay fully tappable)
+        const k = (Math.min(w, h) / (m.rig.canvas || 1024)) * 0.55;
+        m.puppet.view.scale.set(m.side === 1 ? -k : k, k);
+        const drop = ((m.rig.ground || (m.rig.canvas || 1024) * 0.9) - m.rig.anchor.y) * k;
+        m.puppet.view.position.set(m.side === -1 ? w * 0.06 : w * 0.94, h * 1.0 - drop);
+      }
+    };
+    const offResize = stage.onResize(place);
+    const prevDestroy = this.mascots.destroy;
+    this.mascots.destroy = () => { offResize(); prevDestroy(); };
+
+    // intermittent waves (skipped under reduced motion — puppets hold a calm pose)
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const waveLoop = (m, first) => {
+        const t = setTimeout(() => {
+          if (this.destroyed || generation !== this.mascotGeneration) return;
+          m.puppet.playClip('wave', { loop: false, onDone: () => m.puppet.playClip('idle') });
+          waveLoop(m, false);
+        }, (first ? 1800 : 4200) + Math.random() * 4200);
+        timers.push(t);
+      };
+      puppets.forEach((m, i) => waveLoop(m, i === 0));
+    }
+  }
+
+  disposeMascots() {
+    this.mascotGeneration = (this.mascotGeneration || 0) + 1;
+    if (this.mascots) { this.mascots.destroy(); this.mascots = null; }
   }
 
   // --- cast picker -----------------------------------------------------------------
@@ -346,6 +426,20 @@ class PuppetTheaterGame {
     this.roundScenarios = pool.slice(0, Math.min(mode.rounds || 3, pool.length));
     this.roundsTotal = this.roundScenarios.length;
 
+    // Draw ONE choice per scenario for the puppets to act out. Guarantee the
+    // show has both flavors — at least one kind and one unkind draw — so every
+    // session exercises both judgments.
+    this.drawnChoices = this.roundScenarios.map((sc) => shuffle(sc.choices.slice(), this.rng)[0]);
+    const flavors = this.drawnChoices.map((c) => !!c.kind);
+    const forceFlavor = (wantKind) => {
+      const i = this.roundScenarios.findIndex((sc) => sc.choices.some((c) => !!c.kind === wantKind));
+      if (i >= 0) this.drawnChoices[i] = shuffle(this.roundScenarios[i].choices.filter((c) => !!c.kind === wantKind), this.rng)[0];
+    };
+    if (this.roundsTotal > 1) {
+      if (flavors.every(Boolean)) forceFlavor(false);
+      else if (flavors.every((k) => !k)) forceFlavor(true);
+    }
+
     this.renderPlayShell();
     if (!this.roundsTotal) { await this.finishGame(); return; }
     const ok = await this.createPlayStage();
@@ -385,7 +479,8 @@ class PuppetTheaterGame {
     this.stage = stage;
 
     const theater = await createTheater(stage, {
-      floorY: (this.config.stage && this.config.stage.floorY) || 0.72,
+      floorY: (this.config.stage && this.config.stage.floorY) || 0.84,
+      worldScale: WORLD_SCALE,
       gameClips: this.config.clips,
       narrate: (key, text) => this.speakNarr(key, text),
     });
@@ -397,17 +492,31 @@ class PuppetTheaterGame {
 
     // cast the two chosen puppets as roles a (left) and b (right)
     const [aId, bId] = this.cast;
-    await theater.addActor('a', aId, { x: 0.3, flip: false, scale: 0.44, fallbackPitch: CAST_PITCHES[0] });
-    await theater.addActor('b', bId, { x: 0.7, flip: true, scale: 0.44, fallbackPitch: CAST_PITCHES[1] });
+    await theater.addActor('a', aId, { x: MARK_A, flip: false, scale: ACTOR_SCALE, fallbackPitch: CAST_PITCHES[0] });
+    await theater.addActor('b', bId, { x: MARK_B, flip: true, scale: ACTOR_SCALE, fallbackPitch: CAST_PITCHES[1] });
     if (this.destroyed || generation !== this.stageGeneration) return false;
 
     this.cardLayer = new stage.PIXI.Container();
     stage.root.addChild(this.cardLayer);
-    this.removeResize = stage.onResize(() => this.layoutCards());
+    this.removeResize = stage.onResize(() => this.layoutJudgeButtons());
     return true;
   }
 
+  runTween(tween) {
+    this.activeTweens.add(tween);
+    const done = () => this.activeTweens.delete(tween);
+    tween.then(done, done);
+    return tween;
+  }
+
+  cancelTweens() {
+    this.activeTweens.forEach((t) => t.cancel && t.cancel());
+    this.activeTweens.clear();
+  }
+
   disposeStage() {
+    this.disposeMascots();
+    this.cancelTweens();
     this.stageGeneration += 1;
     this.roundGeneration += 1;
     if (this.theater) { this.theater.destroy(); this.theater = null; }
@@ -434,18 +543,20 @@ class PuppetTheaterGame {
     this.inputLocked = true;
     this.idlePrompted = false;
     this.cardViews = [];
+    this.cancelTweens();
     if (this.cardLayer) this.cardLayer.removeChildren().forEach((c) => c.destroy({ children: true }));
     this.updateDots();
 
     const sc = this.currentScenario;
+    const drawn = this.drawnChoices[index];
 
-    // stage the set: backdrop + this scenario's props
-    await T.setBackdrop(this.config.backdrops[sc.backdrop] || sc.backdrop || null);
-    T.clearProps();
+    // stage the set: backdrop (crossfades between scenarios) + this scenario's props
     T.interrupt();
+    T.clearProps();
+    await T.setBackdrop(this.config.backdrops[sc.backdrop] || sc.backdrop || null);
     for (const [id, def] of Object.entries(sc.props || {})) await T.addProp(id, def);
     // reset actors to their marks
-    for (const [name, snap] of [['a', 0.3], ['b', 0.7]]) {
+    for (const [name, snap] of [['a', MARK_A], ['b', MARK_B]]) {
       const actor = T.actors[name];
       if (!actor) continue;
       T.resetActorPose(actor);
@@ -458,170 +569,204 @@ class PuppetTheaterGame {
     // --- setup: act the problem, freeze on the tableau -------------------------
     this.phase = 'setup';
     if (index === 0) await this.speakNarr('intro', this.config.voice.intro);
+    else await this.speakNarr('and-then', this.config.voice.andThen);
     if (!this.roundIsCurrent(generation)) return;
     await T.runBeats(sc.setup);
     if (!this.roundIsCurrent(generation)) return;
     this.tableau = T.captureTableau();
 
-    // --- previews: act out each choice; its card is born from the vignette ------
-    this.phase = 'previews';
-    await this.speakNarr('what-now', this.config.voice.whatNow);
-    for (let i = 0; i < sc.choices.length; i++) {
-      if (!this.roundIsCurrent(generation)) return;
-      const choice = sc.choices[i];
-      const card = await this.buildCard(choice, i, generation);
-      if (!this.roundIsCurrent(generation)) return;
-      this.layoutCards();
-      this.playSfx('tick');
-      await Promise.all([
-        popIn(card.motion, 330),
-        this.speakNarr(choice.ask && choice.ask.narrator, choice.ask && choice.ask.text),
-      ]);
-      if (!this.roundIsCurrent(generation)) return;
-      card.glow.alpha = 1;                       // glowing = "this idea is playing"
-      await T.runBeats(choice.preview);
-      card.glow.alpha = 0;
-      if (!this.roundIsCurrent(generation)) return;
-      await this.delay(220);
-      T.restoreTableau(this.tableau);
-    }
+    // --- acting: ONE drawn choice plays out, consequence and all ----------------
+    this.phase = 'acting';
+    await this.speakNarr('watch-what', this.config.voice.watchWhat);
+    if (!this.roundIsCurrent(generation)) return;
+    await T.runBeats(actedBeats(drawn.resolution).beats);
+    if (!this.roundIsCurrent(generation)) return;
 
-    // --- choice: cards arm, one tap commits --------------------------------------
-    this.phase = 'choice';
+    // --- judge: the show pauses; red or green? -----------------------------------
+    this.phase = 'judge';
+    await this.buildJudgeButtons(drawn, generation);
+    if (!this.roundIsCurrent(generation)) return;
+    this.layoutJudgeButtons();
+    this.playSfx('tick');
+    await Promise.all(this.cardViews.filter(Boolean).map((b, i) =>
+      this.delay(i * 110).then(() => this.runTween(popIn(b.motion, 320)))));
     this.awaitingInput = true;
     this.inputLocked = false;
     if (this.theater) this.theater.timeScale = this.effectiveTimeScale();  // undo skipToChoice
-    await this.speakNarr('your-turn', this.config.voice.yourTurn);
-    this.cardViews.forEach((card, i) => {
-      if (!card) return;
-      this.delay(i * 120).then(() => {
-        if (this.phase === 'choice') this.bounce(card.motion);
-      });
-    });
+    await this.speakNarr('judge', this.config.voice.judge);
     this.scheduleIdlePrompt();
   }
 
-  async buildCard(choice, index, generation) {
+  // Two round judgment buttons: red unhappy (left) and green happy (right).
+  // Roles are truthful for the drawn choice: green='correct' iff it was kind.
+  async buildJudgeButtons(drawn, generation) {
     const { PIXI } = this.stage;
-    const art = await artObj(PIXI, choice.card.art, 126, choice.card.alt || '');
-    if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return null; }
-    const id = this.nextTargetId('card');
-    const view = new PIXI.Container();
-    const motion = new PIXI.Container();
-    const glow = new PIXI.Graphics();
-    glow.roundRect(-CARD_SIZE / 2 - 10, -CARD_SIZE / 2 - 10, CARD_SIZE + 20, CARD_SIZE + 20, 30)
-      .fill({ color: 0xffd75e, alpha: 0.85 });
-    glow.alpha = 0;
-    const shadow = new PIXI.Graphics();
-    shadow.roundRect(-CARD_SIZE / 2, -CARD_SIZE / 2 + 8, CARD_SIZE, CARD_SIZE, 25)
-      .fill({ color: 0x17517e, alpha: 0.17 });
-    const backing = cardBacking(PIXI, CARD_SIZE, CARD_SIZE,
-      { fill: CARD_COLORS[index % CARD_COLORS.length], stroke: 0xffffff, strokeWidth: 6, radius: 25 });
-    motion.addChild(glow, shadow, backing, art);
-    view.addChild(motion);
-    view.motion = motion;
-    view.hitArea = new PIXI.Rectangle(-CARD_SIZE / 2, -CARD_SIZE / 2, CARD_SIZE, CARD_SIZE);
-    view.eventMode = 'static';
-    view.cursor = 'pointer';
-    view.accessible = true;
-    view.accessibleType = 'button';
-    view.accessibleTitle = choice.card.alt || choice.id;
-    motion.scale.set(0.01);
-    view.on('pointerdown', (event) => {
-      if (event && event.preventDefault) event.preventDefault();
-      this.unlockAudio();
-      this.tapTarget(id);
-    });
-
-    const target = {
-      id, choice, view, motion, glow,
-      role: choice.kind ? 'correct' : 'wrong',
-      size: CARD_SIZE, tried: false,
-      action: () => this.handleChoice(id),
-    };
-    this.cardViews[index] = target;
-    this.targetMap.set(id, target);
-    this.cardLayer.addChild(view);
-    return target;
+    const defs = [
+      { judgment: 'sad', emoji: '😞', fill: 0xe05252, alt: 'I did not like that choice', correct: !drawn.kind },
+      { judgment: 'happy', emoji: '😊', fill: 0x58b368, alt: 'I liked that choice', correct: !!drawn.kind },
+    ];
+    this.cardViews = [];
+    for (let i = 0; i < defs.length; i++) {
+      const def = defs[i];
+      // config.judgeArt supplies full round button images (plush faces); the
+      // drawn circle + emoji remain as the never-404 fallback
+      let art = null;
+      const artSrc = this.config.judgeArt && this.config.judgeArt[def.judgment];
+      if (artSrc) {
+        const tex = await PIXI.Assets.load(new URL(artSrc, document.baseURI).href).catch(() => null);
+        if (tex) {
+          art = new PIXI.Sprite(tex);
+          art.anchor.set(0.5);
+          art.scale.set(JUDGE_SIZE / Math.max(tex.width, tex.height));
+        }
+      }
+      if (!art) art = await artObj(PIXI, `emoji:${def.emoji}`, JUDGE_SIZE * 0.66, def.alt);
+      if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return; }
+      const imageButton = art instanceof PIXI.Sprite;
+      const id = this.nextTargetId('judge');
+      const view = new PIXI.Container();
+      const motion = new PIXI.Container();
+      const r = JUDGE_SIZE / 2;
+      const glow = new PIXI.Graphics();
+      glow.circle(0, 0, r + 12).fill({ color: 0xffd75e, alpha: 0.85 });
+      glow.alpha = 0;
+      const shadow = new PIXI.Graphics();
+      shadow.circle(0, 8, r).fill({ color: 0x17517e, alpha: 0.17 });
+      motion.addChild(glow, shadow);
+      if (!imageButton) {
+        const backing = new PIXI.Graphics();
+        backing.circle(0, 0, r).fill(def.fill).stroke({ width: 7, color: 0xffffff });
+        motion.addChild(backing);
+      }
+      motion.addChild(art);
+      view.addChild(motion);
+      view.motion = motion;
+      view.hitArea = new PIXI.Circle(0, 0, r);
+      view.eventMode = 'static';
+      view.cursor = 'pointer';
+      view.accessible = true;
+      view.accessibleType = 'button';
+      view.accessibleTitle = def.alt;
+      motion.scale.set(0.01);
+      view.on('pointerdown', (event) => {
+        if (event && event.preventDefault) event.preventDefault();
+        this.unlockAudio();
+        this.tapTarget(id);
+      });
+      const target = {
+        id, view, motion, glow,
+        judgment: def.judgment,
+        role: def.correct ? 'correct' : 'wrong',
+        size: JUDGE_SIZE,
+        action: () => this.handleJudgment(id),
+      };
+      this.cardViews[i] = target;
+      this.targetMap.set(id, target);
+      this.cardLayer.addChild(view);
+    }
   }
 
-  layoutCards() {
+  layoutJudgeButtons() {
     if (!this.stage || !this.cardViews.length) return;
     const { w, h } = this.stage.size();
     if (!w || !h) return;
-    const cards = this.cardViews.filter(Boolean);
-    const pad = Math.max(8, Math.min(20, Math.min(w, h) * 0.02));
-    const gap = Math.max(10, Math.min(22, w * 0.02));
-    const fitW = (w - pad * 2 - gap * (cards.length - 1)) / Math.max(1, cards.length);
-    const size = Math.max(96, Math.min(CARD_SIZE, fitW, h * 0.26));
-    const totalW = cards.length * size + (cards.length - 1) * gap;
-    const firstX = (w - totalW) / 2 + size / 2;
+    const buttons = this.cardViews.filter(Boolean);
+    const pad = Math.max(10, Math.min(24, Math.min(w, h) * 0.025));
+    const size = Math.max(96, Math.min(JUDGE_SIZE, w * 0.2, h * 0.24));
+    const gap = Math.max(size * 0.35, w * 0.06);
+    const firstX = w / 2 - gap / 2 - size / 2;
     const y = h - pad - size / 2;
-    cards.forEach((card, i) => {
-      card.view.position.set(firstX + i * (size + gap), y);
-      card.view.scale.set(size / CARD_SIZE);
-      card.layoutSize = size;
+    buttons.forEach((b, i) => {
+      b.view.position.set(firstX + i * (size + gap), y);
+      b.view.scale.set(size / JUDGE_SIZE);
     });
   }
 
-  async handleChoice(targetId) {
-    const target = this.targetMap.get(targetId);
-    if (!target || !this.awaitingInput || this.inputLocked || this.phase !== 'choice') return;
-    const generation = this.roundGeneration;
-    this.clearIdleTimer();
-    this.awaitingInput = false;
-    this.inputLocked = true;
-    this.phase = 'resolution';
-    this.playSfx('pop');
-    target.motion.scale.set(1.06);
-    await this.bounce(target.motion);
-    target.motion.scale.set(1);
-
-    const T = this.theater;
-    await T.runBeats(target.choice.resolution);
-    if (!this.roundIsCurrent(generation)) return;
-
-    if (target.choice.kind) {
-      await this.celebrateRound(target, generation);
-    } else {
-      // gentle path: the sad beat already played inside the resolution —
-      // snap back to the problem, dim the tried card, ask again
-      target.tried = true;
-      await this.delay(300);
-      if (!this.roundIsCurrent(generation)) return;
-      T.restoreTableau(this.tableau);
-      to(target.view, { alpha: 0.42 }, { ms: 260, easing: ease.outCubic });
-      this.playSfx('boing');
-      await this.speakNarr('nudge-retry', this.config.voice.nudgeRetry);
-      if (!this.roundIsCurrent(generation)) return;
-      this.phase = 'choice';
-      this.awaitingInput = true;
-      this.inputLocked = false;
-      this.idlePrompted = false;
-      this.scheduleIdlePrompt();
-    }
+  // Fade the judge buttons away once a judgment lands (they return next pause).
+  dismissJudgeButtons() {
+    this.cardViews.filter(Boolean).forEach((b) => {
+      to(b.view, { alpha: 0 }, { ms: 260, easing: ease.outCubic }).then(() => {
+        if (b.view && !b.view.destroyed) b.view.visible = false;
+      });
+    });
   }
 
-  async celebrateRound(target, generation) {
+  async handleJudgment(targetId) {
+    const target = this.targetMap.get(targetId);
+    if (!target || !this.awaitingInput || this.inputLocked || this.phase !== 'judge') return;
+    const generation = this.roundGeneration;
+    const drawn = this.drawnChoices[this.roundIndex];
+    const sc = this.currentScenario;
+    this.clearIdleTimer();
+
+    if (target.role !== 'correct') {
+      // gentle nudge: point back at the puppets' faces and re-ask
+      this.playSfx('boing');
+      await wiggle(target.motion);
+      await this.speakNarr('judge-nudge', this.config.voice.judgeNudge);
+      if (!this.roundIsCurrent(generation) || this.phase !== 'judge') return;
+      this.idlePrompted = false;
+      this.scheduleIdlePrompt();
+      return;
+    }
+
+    this.awaitingInput = false;
+    this.inputLocked = true;
+    this.phase = 'confirm';
+    this.playSfx('pop');
+    this.playSfx('sparkle');
+    target.motion.scale.set(1.08);
+    await Promise.all([
+      this.bounce(target.motion),
+      sparkle(this.stage.PIXI, this.cardLayer, target.view.x, target.view.y),
+    ]);
+    target.motion.scale.set(1);
+    this.dismissJudgeButtons();
+
+    // confirmation = the drawn choice's own final narrator line (stripped from
+    // the acted resolution), falling back to the generic judge confirmations
+    const { finale } = actedBeats(drawn.resolution);
+    if (finale) await this.speakNarr(finale.narrator, finale.text);
+    else if (drawn.kind) await this.speakNarr('judge-yes-kind', this.config.voice.judgeYesKind);
+    else await this.speakNarr('judge-yes-unkind', this.config.voice.judgeYesUnkind);
+    if (!this.roundIsCurrent(generation)) return;
+
+    // an unkind draw ends with the puppets acting a kind repair, so every
+    // scenario closes warm
+    if (!drawn.kind) {
+      this.phase = 'repair';
+      const T = this.theater;
+      T.restoreTableau(this.tableau);
+      await this.speakNarr('try-kinder', this.config.voice.tryKinder);
+      if (!this.roundIsCurrent(generation)) return;
+      const kind = shuffle(sc.choices.filter((c) => c.kind), this.rng)[0];
+      if (kind) {
+        const repair = actedBeats(kind.resolution);
+        await T.runBeats(repair.beats);
+        if (!this.roundIsCurrent(generation)) return;
+        if (repair.finale) await this.speakNarr(repair.finale.narrator, repair.finale.text);
+      }
+      if (!this.roundIsCurrent(generation)) return;
+    }
+
+    await this.delay(350);
+    const next = this.roundIndex + 1;
+    if (next >= this.roundsTotal) await this.finishShow(generation);
+    else await this.playRound(next);
+  }
+
+  // One big celebration at the end of the whole show (never mid-scene).
+  async finishShow(generation) {
     this.phase = 'celebrate';
     this.playSfx('tada');
     const { w, h } = this.stage.size();
-    const others = this.cardViews.filter((c) => c && c !== target);
     await Promise.all([
-      burst(this.stage.PIXI, this.theater.view, w / 2, h * 0.4, { count: 34, power: 7 }),
-      sparkle(this.stage.PIXI, this.cardLayer, target.view.x, target.view.y),
-      ...others.map((c) => to(c.view, { alpha: 0.35 }, { ms: 240, easing: ease.outCubic })),
+      burst(this.stage.PIXI, this.theater.view, w / 2, h * 0.4, { count: 40, power: 8 }),
+      this.theater.runBeats([{ parallel: [{ actor: 'a', clip: 'cheer' }, { actor: 'b', clip: 'cheer' }] }]),
     ]);
-    const yums = this.config.voice.yums;
-    if (yums.length) {
-      await this.speakNarr(`yum-${(this.yumIndex % yums.length) + 1}`, yums[this.yumIndex % yums.length]);
-      this.yumIndex += 1;
-    }
     if (!this.roundIsCurrent(generation)) return;
-    await this.delay(400);
-    const next = this.roundIndex + 1;
-    if (next >= this.roundsTotal) await this.finishGame();
-    else await this.playRound(next);
+    await this.delay(300);
+    await this.finishGame();
   }
 
   async finishGame() {
@@ -675,19 +820,18 @@ class PuppetTheaterGame {
     this.replayChoices();
   }
 
-  /** Condensed re-ask: narrator question, then each remaining card glows while
-   *  its ask line replays (no re-acting — the acted memory is fresh; this is a
-   *  pointer back to it). */
+  /** Re-ask the judgment question, glancing at each button (no re-acting —
+   *  the acted memory is fresh; this is a pointer back to it). */
   async replayChoices() {
-    if (this.screen !== 'play' || this.phase !== 'choice' || !this.currentScenario) return;
+    if (this.screen !== 'play' || this.phase !== 'judge' || !this.currentScenario) return;
     this.clearIdleTimer();
-    await this.speakNarr('your-turn', this.config.voice.yourTurn);
-    for (const card of this.cardViews) {
-      if (!card || this.phase !== 'choice') break;
-      card.glow.alpha = 0.8;
-      await this.speakNarr(card.choice.ask && card.choice.ask.narrator, card.choice.ask && card.choice.ask.text);
-      card.glow.alpha = 0;
+    for (const b of this.cardViews) {
+      if (!b || this.phase !== 'judge') break;
+      b.glow.alpha = 0.8;
+      await this.delay(260);
+      b.glow.alpha = 0;
     }
+    await this.speakNarr('judge', this.config.voice.judge);
     this.scheduleIdlePrompt();
   }
 
@@ -726,11 +870,13 @@ class PuppetTheaterGame {
       awaitingInput: this.awaitingInput,
       phase: this.phase,
       cast: this.cast.slice(),
+      drawnKind: this.screen === 'play' && this.drawnChoices && this.drawnChoices[this.roundIndex]
+        ? !!this.drawnChoices[this.roundIndex].kind : null,
     };
   }
 
   getTargets() {
-    if (this.screen !== 'play' || !this.stage || this.phase !== 'choice') return [];
+    if (this.screen !== 'play' || !this.stage || this.phase !== 'judge') return [];
     const canvasRect = this.stage.app.canvas.getBoundingClientRect();
     const stageSize = this.stage.size();
     const scaleX = stageSize.w ? canvasRect.width / stageSize.w : 1;
@@ -762,14 +908,14 @@ class PuppetTheaterGame {
   async tapTarget(targetId) {
     const target = this.targetMap.get(targetId);
     if (!target || this.destroyed) return { accepted: false };
-    if (!this.awaitingInput || this.inputLocked || this.phase !== 'choice') return { accepted: false };
+    if (!this.awaitingInput || this.inputLocked || this.phase !== 'judge') return { accepted: false };
     await target.action();
     return { accepted: true };
   }
 
   async winRound() {
     if (this.screen !== 'play') return;
-    if (this.phase !== 'choice') await this.waitForChoice();
+    if (this.phase !== 'judge') await this.waitForChoice();
     const target = Array.from(this.targetMap.values()).find((t) => t.role === 'correct');
     if (target) await this.tapTarget(target.id);
   }
@@ -777,7 +923,7 @@ class PuppetTheaterGame {
   waitForChoice() {
     return new Promise((resolve) => {
       const check = () => {
-        if (this.destroyed || this.screen !== 'play' || (this.phase === 'choice' && this.awaitingInput)) { resolve(); return; }
+        if (this.destroyed || this.screen !== 'play' || (this.phase === 'judge' && this.awaitingInput)) { resolve(); return; }
         setTimeout(check, 120);
       };
       check();
@@ -844,9 +990,13 @@ function normalizeConfig(config) {
   const voice = {
     intro: 'The puppets have a problem! Watch what happens.',
     castPrompt: copy.castPrompt,
-    whatNow: 'What could they do? Watch each idea!',
-    yourTurn: 'Now you choose! Tap the idea you like best.',
-    nudgeRetry: 'Hmm, that made a sad face. Let’s try a kinder way!',
+    watchWhat: 'Watch what they do!',
+    judge: 'Did you like that choice? Tap the happy face or the sad face.',
+    judgeNudge: 'Hmm, look at their faces. Are they happy or sad?',
+    judgeYesKind: 'Yes! That was a kind choice!',
+    judgeYesUnkind: 'You’re right. That choice made their friend feel sad.',
+    tryKinder: 'Let’s watch them try a kinder way!',
+    andThen: 'And then...',
     cheer: 'You are a peace helper!',
     yums: ['Great choice!', 'So kind!', 'What a good idea!'],
     ...(config.voice || {}),
@@ -871,6 +1021,16 @@ function normalizeConfig(config) {
         && s.choices.length >= 2 && s.choices.some((c) => c.kind)),
     })).filter((mode) => mode.scenarios.length),
   };
+}
+
+// A resolution's final narrator beat is the emotional wrap-up line. In judge
+// flow it is NOT acted — it plays as the confirmation after a correct
+// judgment. Split it off here.
+function actedBeats(resolution) {
+  const beats = resolution || [];
+  const last = beats[beats.length - 1];
+  if (last && last.narrator) return { beats: beats.slice(0, -1), finale: last };
+  return { beats, finale: null };
 }
 
 function shuffle(list, rng) {
@@ -1004,6 +1164,18 @@ function installStyle() {
       pointer-events: none;
       background: linear-gradient(90deg, rgba(255,246,210,.18), rgba(255,255,255,.10) 28% 72%, rgba(255,246,210,.16));
     }
+    .qk-pt-mascot-stage {
+      position: absolute;
+      z-index: 4;   /* in front of the card row; canvas is click-through */
+      inset: 0;
+      pointer-events: none;
+    }
+    .qk-pt-mascot-stage canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
     .qk-pt-home, .qk-pt-back {
       position: absolute;
       top: max(12px, env(safe-area-inset-top));
@@ -1129,19 +1301,6 @@ function installStyle() {
       background: rgba(255,251,232,.84);
       font-size: clamp(14px, 1.8vmin, 20px);
     }
-    .qk-pt-menu-mascot {
-      position: absolute;
-      z-index: 2;
-      bottom: -3%;
-      width: clamp(145px, 21vw, 270px);
-      max-height: 42vh;
-      object-fit: contain;
-      pointer-events: none;
-      filter: drop-shadow(0 12px 12px rgba(71,39,7,.28));
-    }
-    .qk-pt-menu-mascot-1 { left: -1.5%; transform: rotate(7deg); }
-    .qk-pt-menu-mascot-2 { right: -1.5%; transform: scaleX(-1) rotate(7deg); }
-
     .qk-pt-cast-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(110px, 1fr));
@@ -1321,7 +1480,7 @@ function installStyle() {
       .qk-pt-progress { justify-self: end; }
       .qk-pt-cast-grid { grid-template-columns: repeat(2, minmax(110px, 1fr)); }
       .qk-pt-mode-list { grid-template-columns: 1fr; width: min(360px, 82%); }
-      .qk-pt-menu-mascot { opacity: .56; width: 155px; }
+      .qk-pt-mascot-stage { opacity: .5; }
       .qk-pt-splash { overflow-y: auto; place-items: start center; }
       .qk-pt-splash-center { padding: 32px 0; }
       .qk-pt-mode { height: 150px; grid-template-columns: 42% 1fr; grid-template-rows: 1fr; align-items: center; }

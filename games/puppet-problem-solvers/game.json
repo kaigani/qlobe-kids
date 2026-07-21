@@ -8,14 +8,14 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#2e9f76",
-  "description": "Cast two puppets, watch them hit a real kid-sized problem, watch every idea acted out live on stage, then tap the kind idea you like best.",
+  "description": "Cast two puppets, watch them hit a real kid-sized problem and try an idea — then judge it: happy face or sad face?",
   "learningGoals": [
-    "See each solution to a conflict acted out before choosing — show, don't tell",
+    "Watch choices and their consequences acted out, then judge them — show, don't tell",
     "Practice sharing, turn-taking, and asking for help with modeled kind words",
     "Learn that unkind choices make friends sad — and that you can always try again"
   ],
-  "interactionModel": "puppet-theater: live bone-rig puppets act the problem, act every choice as a preview vignette, then the child taps one large picture card to commit",
-  "feedbackModel": "Kind choices play their acted happy ending with confetti and warm praise; unkind choices play a gentle sad beat, the scene snaps back, and the narrator invites a kinder try. No fail states.",
+  "interactionModel": "puppet-theater: live bone-rig puppets act the problem, then ONE randomly-drawn choice plays out; the show pauses and the child judges it with a red unhappy-face or green happy-face button",
+  "feedbackModel": "Correct judgments sparkle and are confirmed by the narrator; after judging an unkind choice the puppets act a kind repair so every scene ends warm. Wrong judgments get a gentle nudge and a re-ask. One big celebration ends the show. No fail states.",
   "uses": [
     "shared/js/engines/puppet-theater.js",
     "shared/js/stage/theater.js",

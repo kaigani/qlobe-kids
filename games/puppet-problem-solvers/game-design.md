@@ -1,28 +1,30 @@
 # Problem-Solving Puppets — game design
 
-**One skill:** choosing kind solutions to everyday social problems — after *seeing*
-each solution acted out, never just hearing it described.
+**One skill:** judging whether a choice was kind — after *seeing* it acted out
+with its consequence, never just hearing it described.
 
 **Why puppets:** pre-literate five-year-olds reason about social situations far
 better when they watch them happen than when they hear them summarized. Every
-choice in this game is performed live by two plush puppets before the child is
-asked to pick. Show, don't tell.
+choice the child judges has just been performed live by two plush puppets,
+consequence and all. Show, don't tell — then ask what they think.
 
-## The loop (one round, ~55–70s)
+## The loop (one 3-scenario show, ~2 min; a judgment every ~25-30s)
 
-1. **Setup (~18s)** — the two puppets act out a small conflict (someone won't
+1. **Setup (~15s)** — the two puppets act out a small conflict (someone won't
    share, both want to go first, a job is too big alone) and freeze on the
-   problem tableau. Narrator: "Uh oh! … What could they do?"
-2. **Previews (~5s × 2–3)** — for each choice the narrator asks the option
-   ("Should the friend grab it away?"), the puppets act a 3–4s vignette while
-   that choice's picture card slides into the bottom rail and glows — the card
-   is *born from its acted moment* — then the scene snaps back to the tableau.
-3. **Choice** — "Now you choose!" One tap commits (platform one-press path; the
-   previews already guaranteed every option was seen).
-4. **Resolution** — the chosen idea plays out in full. Kind → acted happy
-   ending + confetti + praise. Unkind → gentle sad beat (sad-puff, "That makes
-   me feel sad."), snap back to the tableau, tried card dims but stays tappable,
-   choice reopens. Repeating a sad choice is allowed — it re-teaches.
+   problem tableau.
+2. **Acting** — narrator: "Watch what they do!" and ONE of the scenario's
+   authored choices plays out at random, consequence included. Every show is
+   guaranteed at least one kind and one unkind draw.
+3. **Judge pause** — "Did you like that choice?" Two big round buttons: red
+   unhappy face (I didn't like it) / green happy face (I liked it). One tap
+   commits. Correct → sparkle + the narrator names what happened. Wrong →
+   gentle nudge ("Look at their faces!") and a re-ask.
+4. **Repair** — after a correctly-judged unkind choice, "Let's watch them try
+   a kinder way!" and a kind choice plays out, so every scene ends warm.
+5. **Bridge** — props swap, the backdrop crossfades if the place changes, and
+   the next scenario flows in ("And then..."). One big celebration after all
+   three scenarios.
 
 No fail states, no scores. Progress dots only.
 

@@ -152,7 +152,7 @@ const scenarios = {
           },
           {
             "narrator": "truck-after-grab",
-            "text": "Oh no. Grabbing made their friend feel sad. Let's pick a kinder idea!"
+            "text": "Oh no. Grabbing made their friend feel sad."
           }
         ]
       },
@@ -463,7 +463,7 @@ const scenarios = {
           },
           {
             "narrator": "red-crayon-after-grab",
-            "text": "Oh no. Grabbing made their friend feel sad. Let's pick a kinder idea!"
+            "text": "Oh no. Grabbing made their friend feel sad."
           }
         ]
       },
@@ -743,7 +743,7 @@ const scenarios = {
           },
           {
             "narrator": "storybook-after-hide",
-            "text": "Oh no. Hiding it made their friend feel sad. Let's try a kinder idea!"
+            "text": "Oh no. Hiding it made their friend feel sad."
           }
         ]
       },
@@ -768,14 +768,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -802,14 +802,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -1051,7 +1051,7 @@ const scenarios = {
           },
           {
             "narrator": "big-ball-after-alone",
-            "text": "Oh no. Playing alone made their friend feel sad. Let's pick a kinder idea!"
+            "text": "Oh no. Playing alone made their friend feel sad."
           }
         ]
       },
@@ -1384,7 +1384,7 @@ const scenarios = {
           },
           {
             "narrator": "slide-after-push",
-            "text": "Oh no. Pushing wasn't kind. Let's try a friendlier idea!"
+            "text": "Oh no. Pushing wasn't kind."
           }
         ]
       },
@@ -1663,7 +1663,7 @@ const scenarios = {
           },
           {
             "narrator": "swing-after-ignore",
-            "text": "Waiting so long felt sad. Let's find a kinder idea!"
+            "text": "Waiting so long felt sad."
           }
         ]
       },
@@ -1780,7 +1780,7 @@ const scenarios = {
           {
             "actor": "a",
             "to": [
-              0.45
+              0.4
             ],
             "ms": 900
           },
@@ -1953,7 +1953,7 @@ const scenarios = {
           },
           {
             "narrator": "drum-after-grab",
-            "text": "Oh no. Grabbing made their friend feel sad. Let's pick a kinder idea!"
+            "text": "Oh no. Grabbing made their friend feel sad."
           }
         ]
       },
@@ -2228,7 +2228,7 @@ const scenarios = {
           },
           {
             "narrator": "telescope-after-keep",
-            "text": "Keeping it all felt unfair. Let's try a kinder idea!"
+            "text": "Keeping it all felt unfair."
           }
         ]
       },
@@ -2487,7 +2487,7 @@ const scenarios = {
           },
           {
             "narrator": "high-shelf-after-jump",
-            "text": "Trying alone again and again is so tiring. Let's pick a kinder idea!"
+            "text": "Trying alone again and again is so tiring."
           }
         ]
       },
@@ -2621,7 +2621,7 @@ const scenarios = {
           },
           {
             "narrator": "high-shelf-after-giveup",
-            "text": "Giving up feels sad. Let's try asking a friend instead!"
+            "text": "Giving up feels sad."
           }
         ]
       }
@@ -2730,7 +2730,7 @@ const scenarios = {
           },
           {
             "narrator": "spilled-blocks-after-run",
-            "text": "Running away leaves the mess and feels sad. Let's pick a kinder idea!"
+            "text": "Running away leaves the mess and feels sad."
           }
         ]
       },
@@ -2796,14 +2796,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -2895,14 +2895,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -2962,7 +2962,7 @@ const scenarios = {
         "actor": "a",
         "enter": "left",
         "to": [
-          0.45
+          0.4
         ],
         "ms": 1800
       },
@@ -3043,7 +3043,7 @@ const scenarios = {
           },
           {
             "narrator": "stuck-wagon-after-yank",
-            "text": "Yanking and stomping is tiring and sad. Let's pick a kinder idea!"
+            "text": "Yanking and stomping is tiring and sad."
           }
         ]
       },
@@ -3116,7 +3116,7 @@ const scenarios = {
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -3212,7 +3212,7 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
@@ -3365,7 +3365,7 @@ const scenarios = {
           },
           {
             "narrator": "tangled-kite-after-pull",
-            "text": "Pulling hard made the tangle worse. Let's pick a kinder idea!"
+            "text": "Pulling hard made the tangle worse."
           }
         ]
       },
@@ -3431,14 +3431,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -3530,14 +3530,14 @@ const scenarios = {
               {
                 "actor": "a",
                 "to": [
-                  0.45
+                  0.4
                 ],
                 "ms": 900
               },
               {
                 "actor": "b",
                 "to": [
-                  0.55
+                  0.6
                 ],
                 "ms": 900
               }
@@ -3602,6 +3602,10 @@ export default {
     playroom: './assets/bg/playroom.png',
     playground: './assets/bg/playground.png',
   },
+  judgeArt: {
+    sad: './assets/ui/judge-sad.png',
+    happy: './assets/ui/judge-happy.png',
+  },
   copy: {
     home: 'Home',
     replay: 'Hear the choices again',
@@ -3611,11 +3615,14 @@ export default {
   voice: {
     intro: 'The puppets have a problem! Watch what happens, then help them find a kind way.',
     castPrompt: 'Pick two puppets for the show!',
-    whatNow: 'What could they do? Watch each idea!',
-    yourTurn: 'Now you choose! Tap the idea you like best.',
-    nudgeRetry: 'Hmm, that made a sad face. Let\'s try a kinder way!',
+    watchWhat: 'Watch what they do!',
+    judge: 'Did you like that choice? Tap the happy face or the sad face.',
+    judgeNudge: 'Hmm, look at their faces. Are they happy or sad?',
+    judgeYesKind: 'Yes! That was a kind choice!',
+    judgeYesUnkind: 'You\'re right. That choice made their friend feel sad.',
+    tryKinder: 'Let\'s watch them try a kinder way!',
+    andThen: 'And then...',
     cheer: 'You are a peace helper!',
-    yums: ['Great choice!', 'So kind!', 'What a good idea!'],
   },
   modes: [
     {
