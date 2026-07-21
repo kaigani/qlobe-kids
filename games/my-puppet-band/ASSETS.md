@@ -18,7 +18,8 @@ All original assets CC BY 4.0 (see LICENSE-ASSETS). Provenance below.
 
 | Asset | Path | Status | Provenance |
 |---|---|---|---|
-| Rainbow stage backdrop | `assets/bg/rainbow-stage.png` | done | local GenAI (krea2, seed 42), center-clear QA, 2026-07-20 |
+| Original rainbow stage reference | `assets/bg/rainbow-stage.png` | retained | local GenAI (krea2, seed 42), center-clear QA, 2026-07-20 |
+| Song stage backdrops ×12 | `assets/bg/stage-*-gpt-image-2.png` | done | GPT Image 2 edits of the original stage reference; song-specific scenery with a consistent empty performance zone, 2026-07-20 |
 | Title-screen music sky | `assets/bg/menu-sky-gpt-image-2.png` | done | GPT Image 2, generated from the approved UI concept as a style/composition reference; no baked UI, text, characters, or instruments, 2026-07-20 |
 | Band-builder blue field | `assets/bg/builder-blue-gpt-image-2.png` | done | GPT Image 2, generated from the approved UI concept as a style/composition reference; peripheral decoration and center-clear grid area, 2026-07-20 |
 | Instrument props ×12 | `assets/props/*.png` | done | local GenAI (krea2 dark-bg seed 42 + qwen-image-layered), edge-flood alpha cleanup, magenta/alpha QA, PNG-8, 2026-07-20. clarinet regenerated sky-blue (black-on-charcoal extracts ambiguously) |

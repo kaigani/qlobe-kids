@@ -16,6 +16,7 @@ const bar = (b) => b * 4;
 
 const rainbowJam = {
   id: 'rainbow-jam', title: 'Rainbow Jam', bpm: 104, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-rainbow-jam-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Here comes Rainbow Jam!',
   parts: {
@@ -51,6 +52,7 @@ const rainbowJam = {
 
 const bubblePop = {
   id: 'bubble-pop', title: 'Bubble Pop', bpm: 112, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-bubble-pop-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Time for Bubble Pop!',
   parts: {
@@ -84,6 +86,7 @@ const bubblePop = {
 
 const sleepyCatSwing = {
   id: 'sleepy-cat', title: 'Sleepy Cat Swing', bpm: 96, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-sleepy-cat-gpt-image-2.png',
   swing: 0.6,
   scale: [57, 60, 62, 64, 67],
   introText: 'Now for Sleepy Cat Swing!',
@@ -118,6 +121,7 @@ const sleepyCatSwing = {
 
 const dinoStomp = {
   id: 'dino-stomp', title: 'Dino Stomp', bpm: 120, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-dino-stomp-gpt-image-2.png',
   scale: [52, 55, 57, 59, 62],
   introText: 'Get ready for Dino Stomp!',
   parts: {
@@ -153,6 +157,7 @@ const dinoStomp = {
 
 const teddyParade = {
   id: 'teddy-parade', title: 'Teddy Bear Parade', bpm: 108, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-teddy-parade-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'March along with Teddy Bear Parade!',
   parts: {
@@ -186,6 +191,7 @@ const teddyParade = {
 
 const cloudWaltz = {
   id: 'cloud-waltz', title: 'Cloud Waltz', bpm: 90, beatsPerBar: 3, bars: 8,
+  backdrop: './assets/bg/stage-cloud-waltz-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Time to twirl! It\'s Cloud Waltz!',
   parts: {
@@ -216,6 +222,7 @@ const cloudWaltz = {
 
 const robotDisco = {
   id: 'robot-disco', title: 'Robot Disco', bpm: 116, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-robot-disco-gpt-image-2.png',
   scale: [57, 60, 62, 64, 67],
   introText: 'Beep boop! Robot Disco!',
   parts: {
@@ -250,6 +257,7 @@ const robotDisco = {
 
 const lullabyMoon = {
   id: 'lullaby-moon', title: 'Lullaby Moon', bpm: 72, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-lullaby-moon-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Shhh... here comes Lullaby Moon.',
   parts: {
@@ -280,6 +288,7 @@ const seoulSparkle = {
   // K-Pop: bright four-on-floor with the classic borrowed-chord lift —
   // bars 5–6 leave C major for Ab and Bb (bVI→bVII→I) before the chorus lands
   id: 'seoul-sparkle', title: 'Seoul Sparkle', bpm: 124, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-seoul-sparkle-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Lights up! It\'s Seoul Sparkle!',
   parts: {
@@ -316,6 +325,7 @@ const gamelanGarden = {
   // between melody and chord parts, shimmering parallel fourths, a low "gong"
   // marking each cycle. No western cadence at all.
   id: 'gamelan-garden', title: 'Gamelan Garden', bpm: 100, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-gamelan-garden-gpt-image-2.png',
   scale: [60, 62, 65, 67, 69],
   introText: 'Ding dong! Welcome to Gamelan Garden!',
   parts: {
@@ -348,6 +358,7 @@ const desertCaravan = {
   // (F → G#), a snaking modal melody, drone-fifth chords rubbing against an
   // F-major cluster, and a maqsum-style drum pattern.
   id: 'desert-caravan', title: 'Desert Caravan', bpm: 108, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-desert-caravan-gpt-image-2.png',
   scale: [52, 53, 56, 57, 59, 60],
   introText: 'Ride along with Desert Caravan!',
   parts: {
@@ -382,6 +393,7 @@ const sambaSunshine = {
   // the harmony floats), anticipated bass, and a syncopated partido-alto
   // groove with hits landing off the grid.
   id: 'samba-sunshine', title: 'Samba Sunshine', bpm: 116, beatsPerBar: 4, bars: 8,
+  backdrop: './assets/bg/stage-samba-sunshine-gpt-image-2.png',
   scale: [60, 62, 64, 67, 69],
   introText: 'Shake it! Samba Sunshine!',
   parts: {
@@ -426,7 +438,7 @@ export default {
     buildBackdrop: './assets/bg/builder-blue-gpt-image-2.png',
     mascots: [],
   },
-  stageBackdrop: './assets/bg/rainbow-stage.png',
+  stageBackdrop: './assets/bg/stage-rainbow-jam-gpt-image-2.png',
   cast: ['bear', 'doggy', 'fox', 'frog', 'rabbit', 'unicorn', 'princess-lily', 'princess-zoe'],
   instruments: [
     { id: 'piano', emoji: '🎹', floor: true, color: '#2d7dd2' },

@@ -76,6 +76,8 @@ class PuppetBandGame {
     this.playing = null;           // music controller
     this.removeResize = null;
     this.stageGeneration = 0;
+    this.songGeneration = 0;
+    this.activeBackdrop = null;
     this.mascotGeneration = 0;
     this.mascots = null;
     this.activeTweens = new Set();
@@ -421,13 +423,15 @@ class PuppetBandGame {
     const stage = await createStage(host);
     if (this.destroyed || this.screen !== 'concert' || generation !== this.stageGeneration) { stage.destroy(); return; }
     this.stage = stage;
+    const initialBackdrop = this.currentSong().backdrop || this.config.stageBackdrop;
     const theater = await createTheater(stage, {
-      backdrop: this.config.stageBackdrop,
+      backdrop: initialBackdrop,
       floorY: 0.8,
       worldScale: 1.4,
     });
     if (this.destroyed || generation !== this.stageGeneration) { theater.destroy(); stage.destroy(); return; }
     this.theater = theater;
+    this.activeBackdrop = initialBackdrop;
     stage.root.addChild(theater.view);
 
     // the band takes the stage
@@ -475,12 +479,20 @@ class PuppetBandGame {
   currentSong() { return this.config.songs[this.songIndex % this.config.songs.length]; }
 
   async playCurrentSong() {
+    const generation = ++this.songGeneration;
     const song = this.currentSong();
     const pill = this.mountEl.querySelector('.qk-pb-songpill');
     if (pill) pill.textContent = song.title;
     music.stopSong();
+    const backdrop = song.backdrop || this.config.stageBackdrop;
+    if (this.theater && backdrop && backdrop !== this.activeBackdrop) {
+      this.activeBackdrop = backdrop;
+      await this.theater.setBackdrop(backdrop);
+    }
+    if (generation !== this.songGeneration || this.destroyed || this.screen !== 'concert') return;
+    this.preloadNextBackdrop();
     await this.speakNarr(`song-${song.id}`, song.introText || `Here comes ${song.title}!`);
-    if (this.destroyed || this.screen !== 'concert') return;
+    if (generation !== this.songGeneration || this.destroyed || this.screen !== 'concert') return;
     this.playing = music.playSong(song, this.band.map((m) => ({ instr: m.instr })), {
       onNote: (memberIndex) => this.accent(memberIndex),
       onLoop: () => this.loopSparkle(),
@@ -490,6 +502,17 @@ class PuppetBandGame {
   nextSong() {
     this.songIndex = (this.songIndex + 1) % this.config.songs.length;
     this.playCurrentSong();
+  }
+
+  preloadNextBackdrop() {
+    const songs = this.config.songs;
+    if (songs.length < 2) return;
+    const next = songs[(this.songIndex + 1) % songs.length];
+    const src = next.backdrop || this.config.stageBackdrop;
+    if (!src) return;
+    const image = new Image();
+    image.decoding = 'async';
+    image.src = new URL(src, document.baseURI).href;
   }
 
   stopConcert() {
@@ -549,6 +572,8 @@ class PuppetBandGame {
   disposeStage() {
     this.disposeMascots();
     this.stageGeneration += 1;
+    this.songGeneration += 1;
+    this.activeBackdrop = null;
     clearTimeout(this.idleTimer);
     this.activeTweens.forEach((t) => t.cancel && t.cancel());
     this.activeTweens.clear();
@@ -567,6 +592,7 @@ class PuppetBandGame {
       roundsTotal: this.config.songs.length,
       awaitingInput: this.screen === 'build' || this.screen === 'concert',
       band: this.band.map((b) => `${b.char}:${b.instr}`),
+      backdrop: this.currentSong().backdrop || this.config.stageBackdrop,
       notesScheduled: music.stats().notesScheduled,
     };
   }
