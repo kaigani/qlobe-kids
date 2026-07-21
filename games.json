@@ -1483,11 +1483,105 @@
         "shared/characters/"
       ],
       "modes": [
-        { "id": "share", "title": "Share", "skill": "sharing and joint play" },
-        { "id": "take-turns", "title": "Take Turns", "skill": "turn-taking and patience" },
-        { "id": "ask-for-help", "title": "Ask for Help", "skill": "asking for and offering help" }
+        {
+          "id": "share",
+          "title": "Share",
+          "skill": "sharing and joint play"
+        },
+        {
+          "id": "take-turns",
+          "title": "Take Turns",
+          "skill": "turn-taking and patience"
+        },
+        {
+          "id": "ask-for-help",
+          "title": "Ask for Help",
+          "skill": "asking for and offering help"
+        }
       ],
       "summary": "Cast two puppets, watch every kind idea acted out, then pick your favorite."
+    },
+    {
+      "id": "my-puppet-band",
+      "title": "My Puppet Band",
+      "category": "art-music",
+      "path": "games/my-puppet-band/",
+      "icon": "assets/hub/tiles/my-puppet-band.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#f08a24",
+      "uses": [
+        "shared/js/engines/puppet-band.js",
+        "shared/js/music.js",
+        "shared/assets/instruments/",
+        "shared/characters/"
+      ],
+      "modes": [
+        {
+          "id": "rainbow-jam",
+          "title": "Rainbow Jam",
+          "skill": "ensemble listening"
+        },
+        {
+          "id": "bubble-pop",
+          "title": "Bubble Pop",
+          "skill": "melody and rhythm"
+        },
+        {
+          "id": "sleepy-cat",
+          "title": "Sleepy Cat Swing",
+          "skill": "swing feel"
+        },
+        {
+          "id": "dino-stomp",
+          "title": "Dino Stomp",
+          "skill": "strong beat"
+        },
+        {
+          "id": "teddy-parade",
+          "title": "Teddy Bear Parade",
+          "skill": "steady march beat"
+        },
+        {
+          "id": "cloud-waltz",
+          "title": "Cloud Waltz",
+          "skill": "waltz time (3/4)"
+        },
+        {
+          "id": "robot-disco",
+          "title": "Robot Disco",
+          "skill": "syncopation"
+        },
+        {
+          "id": "lullaby-moon",
+          "title": "Lullaby Moon",
+          "skill": "gentle listening"
+        },
+        {
+          "id": "seoul-sparkle",
+          "title": "Seoul Sparkle",
+          "skill": "borrowed-chord color (K-Pop)"
+        },
+        {
+          "id": "gamelan-garden",
+          "title": "Gamelan Garden",
+          "skill": "interlocking patterns (Indonesia)"
+        },
+        {
+          "id": "desert-caravan",
+          "title": "Desert Caravan",
+          "skill": "hijaz mode (Middle East)"
+        },
+        {
+          "id": "samba-sunshine",
+          "title": "Samba Sunshine",
+          "skill": "seventh-chord harmony (Brazil)"
+        }
+      ],
+      "summary": "Build a puppet band with real instruments and stage a rainbow concert."
     },
     {
       "id": "plan-do-review",

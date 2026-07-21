@@ -1,0 +1,110 @@
+{
+  "id": "my-puppet-band",
+  "title": "My Puppet Band",
+  "category": "art-music",
+  "path": "games/my-puppet-band/",
+  "icon": "🎺",
+  "entry": "index.html",
+  "age": {
+    "min": 4,
+    "max": 6
+  },
+  "status": "beta",
+  "accent": "#f08a24",
+  "description": "Build a band of puppet friends, give them real instruments, and stage a rainbow concert with songs, grooves, and tap-for-a-solo moments.",
+  "learningGoals": [
+    "Hear how real instruments sound alone and together",
+    "Explore melody, bass, chords, and rhythm through play",
+    "Make musical choices — every band combination sounds good"
+  ],
+  "interactionModel": "puppet-band: tap friends into a band (2-5), tap instrument badges to cycle real-sampled instruments with preview notes, then a live concert where tapping any puppet triggers a beat-quantized solo",
+  "feedbackModel": "Pure sandbox — every tap makes music. Preview notes and sparkles on every choice; grooving puppets accent their own notes; no fail states.",
+  "uses": [
+    "shared/js/engines/puppet-band.js",
+    "shared/js/music.js",
+    "shared/assets/instruments/",
+    "shared/js/stage/theater.js",
+    "shared/js/stage/puppet.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/characters/"
+  ],
+  "modes": [
+    {
+      "id": "rainbow-jam",
+      "title": "Rainbow Jam",
+      "skill": "ensemble listening"
+    },
+    {
+      "id": "bubble-pop",
+      "title": "Bubble Pop",
+      "skill": "melody and rhythm"
+    },
+    {
+      "id": "sleepy-cat",
+      "title": "Sleepy Cat Swing",
+      "skill": "swing feel"
+    },
+    {
+      "id": "dino-stomp",
+      "title": "Dino Stomp",
+      "skill": "strong beat"
+    },
+    {
+      "id": "teddy-parade",
+      "title": "Teddy Bear Parade",
+      "skill": "steady march beat"
+    },
+    {
+      "id": "cloud-waltz",
+      "title": "Cloud Waltz",
+      "skill": "waltz time (3/4)"
+    },
+    {
+      "id": "robot-disco",
+      "title": "Robot Disco",
+      "skill": "syncopation"
+    },
+    {
+      "id": "lullaby-moon",
+      "title": "Lullaby Moon",
+      "skill": "gentle listening"
+    },
+    {
+      "id": "seoul-sparkle",
+      "title": "Seoul Sparkle",
+      "skill": "borrowed-chord color (K-Pop)"
+    },
+    {
+      "id": "gamelan-garden",
+      "title": "Gamelan Garden",
+      "skill": "interlocking patterns (Indonesia)"
+    },
+    {
+      "id": "desert-caravan",
+      "title": "Desert Caravan",
+      "skill": "hijaz mode (Middle East)"
+    },
+    {
+      "id": "samba-sunshine",
+      "title": "Samba Sunshine",
+      "skill": "seventh-chord harmony (Brazil)"
+    }
+  ],
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Second game on the shared bone-rig puppet stack; first on the shared instrument-sample library (user-supplied samples) and the music.js WebAudio band engine. Built with Claude for QLOBE Kids.",
+  "characters": [
+    "bear",
+    "doggy",
+    "fox",
+    "frog",
+    "rabbit",
+    "unicorn",
+    "princess-lily",
+    "princess-zoe"
+  ],
+  "conceptVideo": null
+}

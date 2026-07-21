@@ -189,9 +189,10 @@ export async function createTheater(stage, opts = {}) {
     const { w, h } = stage.size();
     const canvas = actor.rig.canvas || 1024;
     const k = (Math.min(w, h) / canvas) * actor.scaleFactor;
-    // width cap: two puppets must fit side by side even in portrait — each may
-    // take at most ~45% of stage width (puppet art spans ~0.62 of its canvas)
-    const kMax = (0.45 * w) / (0.62 * canvas);
+    // width cap so the whole cast fits side by side: each actor may take at
+    // most widthShare of stage width (puppet art spans ~0.62 of its canvas).
+    // Default 0.45 suits a two-hander; a band of five passes ~0.18 each.
+    const kMax = ((actor.widthShare || 0.45) * w) / (0.62 * canvas);
     return Math.min(k, kMax);
   }
   // Feet on the floor line: the rig's `ground` sits (ground - anchor.y) below
@@ -209,7 +210,7 @@ export async function createTheater(stage, opts = {}) {
    * charId is the shared character folder. Voice manifest is optional —
    * actors without one speak through Web Speech at fallbackPitch.
    */
-  async function addActor(name, charId, { x = 0.5, flip = false, scale = 0.5, fallbackPitch = 1.05 } = {}) {
+  async function addActor(name, charId, { x = 0.5, flip = false, scale = 0.5, fallbackPitch = 1.05, widthShare = 0.45 } = {}) {
     const baseRig = await getRig(charId);
     if (!baseRig) throw new Error(`theater: no rig for character '${charId}'`);
     // merge portable acting clips under the rig's own (rig-tuned clips win)
@@ -225,7 +226,7 @@ export async function createTheater(stage, opts = {}) {
 
     const actor = {
       name, char: charId, puppet, rig, lines, voiceBase,
-      fx: x, flip, scaleFactor: scale, fallbackPitch,
+      fx: x, flip, scaleFactor: scale, fallbackPitch, widthShare,
       poseState: {},
     };
     actors[name] = actor;

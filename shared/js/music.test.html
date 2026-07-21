@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>music.js test — puppet band engine</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h3 { margin: 14px 0 6px; }
+    button { font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 8px 12px;
+             margin: 3px; background: #2f6fb0; color: #fff; cursor: pointer; min-height: 40px; }
+    button.perc { background: #b0762f; }
+    button.on { outline: 4px solid #81d6a3; }
+    #status { margin-top: 12px; font-size: 14px; background: #fff; padding: 8px 12px; border-radius: 8px; white-space: pre; }
+  </style>
+</head>
+<body>
+  <h2>music.js test</h2>
+  <h3>Preview (tap = instrument's own note)</h3>
+  <div id="previews"></div>
+  <h3>Band (toggle members, then Play)</h3>
+  <div id="band"></div>
+  <div>
+    <button id="play">▶ Play Rainbow Jam</button>
+    <button id="stop">■ Stop</button>
+    <button id="solo">🎵 Random solo</button>
+  </div>
+  <div id="status">loading…</div>
+
+  <script type="module">
+    import * as music from './music.js';
+
+    // Rainbow Jam — inline copy for the harness (the game config owns the real one)
+    const SONG = (() => {
+      const melody = [], bass = [], chord = [], perc = [];
+      const M = [72,76,79,76, 74,76,74,null, 72,76,79,81, 79,null,76,null,
+                 72,76,79,76, 74,76,74,null, 79,81,79,76, 72,null,72,null];
+      M.forEach((m, i) => { if (m) melody.push([i, m, i % 4 === 3 ? 2 : 1]); });
+      const BASSROOTS = [48,45,41,43, 48,45,43,48];
+      BASSROOTS.forEach((r, bar) => { bass.push([bar*4, r, 2], [bar*4+2, r+7, 2]); });
+      const CHORDS = [[60,64,67],[57,60,64],[53,57,60],[55,59,62]];
+      for (let bar = 0; bar < 8; bar++) {
+        const c = CHORDS[bar % 4];
+        chord.push([bar*4, c, 2], [bar*4+2, c, 2]);
+      }
+      for (let bar = 0; bar < 8; bar++) for (let b = 0; b < 4; b++)
+        perc.push([bar*4+b, b % 2 ? 'b' : 'a']);
+      return { id: 'rainbow-jam', title: 'Rainbow Jam', bpm: 104, beatsPerBar: 4, bars: 8,
+               scale: [60,62,64,67,69], parts: { melody, bass, chord, perc } };
+    })();
+
+    const statusEl = document.getElementById('status');
+    const band = [];   // [{instr}]
+    let analyser = null, rmsPeak = 0;
+
+    await music.init('../assets/instruments/manifest.json');
+    window.addEventListener('pointerdown', () => music.unlock(), { once: true });
+
+    const prevEl = document.getElementById('previews');
+    const bandEl = document.getElementById('band');
+    for (const id of music.instrumentIds()) {
+      const def = music.instrumentDef(id);
+      const b1 = document.createElement('button');
+      b1.textContent = id + (def.role === 'tonal' ? ` (${def.baseMidi})` : ' 🥁');
+      if (def.role === 'perc') b1.className = 'perc';
+      b1.onclick = () => { music.preview(id); refresh(); };
+      prevEl.appendChild(b1);
+
+      const b2 = document.createElement('button');
+      b2.textContent = id;
+      if (def.role === 'perc') b2.className = 'perc';
+      b2.onclick = () => {
+        const i = band.findIndex((m) => m.instr === id);
+        if (i >= 0) { band.splice(i, 1); b2.classList.remove('on'); }
+        else if (band.length < 5) { band.push({ instr: id }); b2.classList.add('on'); }
+        refresh();
+      };
+      bandEl.appendChild(b2);
+    }
+
+    let noteFlashes = 0;
+    document.getElementById('play').onclick = () => {
+      music.unlock();
+      if (!analyser) { analyser = music.attachAnalyser(); pollRms(); }
+      music.playSong(SONG, band.length ? band : [{instr:'piano'},{instr:'guitar'},{instr:'drum'}],
+        { onNote: () => { noteFlashes++; } });
+      refresh();
+    };
+    document.getElementById('stop').onclick = () => { music.stopSong(); refresh(); };
+    document.getElementById('solo').onclick = () => {
+      const pool = band.length ? band : [{instr:'trumpet'}];
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      music.soloRiff(pick.instr, SONG);
+      refresh();
+    };
+
+    function pollRms() {
+      const data = new Float32Array(analyser.fftSize);
+      const loop = () => {
+        analyser.getFloatTimeDomainData(data);
+        let s = 0; for (let i = 0; i < data.length; i++) s += data[i] * data[i];
+        rmsPeak = Math.max(rmsPeak, Math.sqrt(s / data.length));
+        requestAnimationFrame(loop);
+      };
+      loop();
+    }
+
+    function refresh() {
+      const st = music.stats();
+      statusEl.textContent =
+        `band: ${band.map((m) => m.instr).join(', ') || '(default trio)'}\n` +
+        `playing: ${st.playing}  notesScheduled: ${st.notesScheduled}  noteFlashes: ${noteFlashes}\n` +
+        `rmsPeak: ${rmsPeak.toFixed(4)}`;
+    }
+    setInterval(refresh, 500);
+    refresh();
+
+    window.QLOBE_DEBUG = {
+      ready: true,
+      music,
+      song: SONG,
+      setBand: (ids) => { band.length = 0; ids.forEach((i) => band.push({ instr: i })); },
+      play: () => document.getElementById('play').click(),
+      stopAll: () => music.stopSong(),
+      solo: (instr) => music.soloRiff(instr, SONG),
+      rmsPeak: () => rmsPeak,
+      stats: () => ({ ...music.stats(), noteFlashes }),
+    };
+    document.title = 'ready';
+  </script>
+</body>
+</html>

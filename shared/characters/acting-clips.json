@@ -101,6 +101,18 @@
         { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": 0 }, { "t": 0.45, "v": -0.08 }, { "t": 1, "v": 0 } ] }
       ]
     },
+    "groove": {
+      "duration": 1200,
+      "loop": true,
+      "tracks": [
+        { "target": "$motion", "prop": "y", "keys": [ { "t": 0, "v": 0 }, { "t": 0.25, "v": -16, "ease": "outQuad" }, { "t": 0.5, "v": 0 }, { "t": 0.75, "v": -16, "ease": "outQuad" }, { "t": 1, "v": 0 } ] },
+        { "target": "$spine", "prop": "bend", "keys": [ { "t": 0, "v": 0.05 }, { "t": 0.5, "v": -0.05 }, { "t": 1, "v": 0.05 } ] },
+        { "target": "$spine", "prop": "squash", "keys": [ { "t": 0, "v": 0 }, { "t": 0.25, "v": 0.05 }, { "t": 0.5, "v": 0 }, { "t": 0.75, "v": 0.05 }, { "t": 1, "v": 0 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": -0.08 }, { "t": 0.5, "v": 0.08 }, { "t": 1, "v": -0.08 } ] },
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.12 }, { "t": 0.5, "v": 0.3 }, { "t": 1, "v": 0.12 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.3 }, { "t": 0.5, "v": -0.12 }, { "t": 1, "v": -0.3 } ] }
+      ]
+    },
     "think": {
       "duration": 2000,
       "loop": true,
