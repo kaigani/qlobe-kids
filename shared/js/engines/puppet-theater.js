@@ -73,7 +73,6 @@ class PuppetTheaterGame {
     this.screen = 'splash';   // splash | cast | play | end
     this.phase = null;        // setup | previews | choice | resolution | celebrate
     this.mode = null;
-    this.splashModeId = null;
     this.cast = [];           // [charId, charId] in pick order → roles a, b
     this.roundScenarios = [];
     this.roundIndex = 0;
@@ -185,12 +184,9 @@ class PuppetTheaterGame {
     voiceClips.stop();
     speech.stop();
 
-    if (!this.config.modes.some((mode) => mode.id === this.splashModeId)) {
-      this.splashModeId = this.config.modes[0]?.id || null;
-    }
-    const buttons = this.config.modes.map((mode, index) => `
-      <button class="qk-pt-mode${mode.id === this.splashModeId ? ' is-selected' : ''}" type="button"
-              data-mode="${escapeAttr(mode.id)}" aria-pressed="${mode.id === this.splashModeId}">
+    const buttons = this.config.modes.map((mode) => `
+      <button class="qk-pt-mode" type="button" data-mode="${escapeAttr(mode.id)}"
+              aria-label="${escapeAttr(`${mode.title}: ${mode.menuHint || 'Kind ideas'}`)}">
         <span class="qk-pt-mode-art" aria-hidden="true">
           ${mode.menuArt ? `<img src="${escapeAttr(mode.menuArt)}" alt="" draggable="false" />` : `<span>${escapeHtml(mode.emoji || '⭐')}</span>`}
         </span>
@@ -198,7 +194,6 @@ class PuppetTheaterGame {
           <span class="qk-pt-mode-title">${escapeHtml(mode.title)}</span>
           <span class="qk-pt-mode-hint">${escapeHtml(mode.menuHint || 'Kind ideas')}</span>
         </span>
-        <span class="qk-pt-mode-check" aria-hidden="true">✓</span>
       </button>
     `).join('');
     const mascots = (this.config.menu?.mascots || []).slice(0, 2).map((id, index) => `
@@ -218,10 +213,6 @@ class PuppetTheaterGame {
           <div class="qk-pt-menu-prompt">${escapeHtml(this.config.menu?.prompt || 'Choose a story')}</div>
           <div class="qk-pt-mode-list">${buttons}</div>
           <p class="qk-pt-menu-helper">${escapeHtml(this.config.menu?.helper || 'Pick a story for the puppets!')}</p>
-          <button class="qk-pt-start" type="button">
-            <span class="qk-pt-start-icon" aria-hidden="true"></span>
-            <span>Play</span>
-          </button>
         </div>
         ${mascots}
       </section>
@@ -233,18 +224,8 @@ class PuppetTheaterGame {
         this.unlockAudio();
         this.playSfx('tick');
       });
-      button.addEventListener('click', () => {
-        this.splashModeId = button.dataset.mode;
-        this.mountEl.querySelectorAll('.qk-pt-mode').forEach((item) => {
-          const picked = item === button;
-          item.classList.toggle('is-selected', picked);
-          item.setAttribute('aria-pressed', String(picked));
-        });
-      });
+      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
-    const start = this.mountEl.querySelector('.qk-pt-start');
-    start.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    start.addEventListener('click', () => this.startMode(this.splashModeId));
   }
 
   // --- cast picker -----------------------------------------------------------------
@@ -1117,8 +1098,8 @@ function installStyle() {
       display: grid;
       grid-template-rows: minmax(0, 1fr) auto;
       gap: 5px;
-      overflow: visible;
-      transition: transform .14s ease-out, filter .14s ease-out, border-color .14s ease-out;
+      overflow: hidden;
+      transition: transform .14s ease-out, filter .14s ease-out;
     }
     .qk-pt-mode:nth-child(2) { border-color: #69b63f; color: #36721f; }
     .qk-pt-mode:nth-child(3) { border-color: #f39a31; color: #a7520d; }
@@ -1137,25 +1118,7 @@ function installStyle() {
     .qk-pt-mode-copy { display: grid; gap: 3px; }
     .qk-pt-mode-title { font-size: clamp(23px, 3.5vmin, 36px); }
     .qk-pt-mode-hint { font-size: clamp(13px, 1.7vmin, 18px); opacity: .75; }
-    .qk-pt-mode-check {
-      position: absolute;
-      top: -15px;
-      right: -13px;
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      background: #63b82f;
-      border: 5px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 4px 0 #3c851c;
-      font-size: 27px;
-      transform: scale(0) rotate(-18deg);
-      transition: transform .16s ease-out;
-    }
-    .qk-pt-mode.is-selected { transform: translateY(-6px) scale(1.025); filter: saturate(1.08); }
-    .qk-pt-mode.is-selected .qk-pt-mode-check { transform: scale(1) rotate(0); }
+    .qk-pt-mode:hover { transform: translateY(-3px); filter: saturate(1.08); }
     .qk-pt-mode:active, .qk-pt-again:active { transform: scale(.96); }
 
     .qk-pt-menu-helper {
@@ -1166,26 +1129,6 @@ function installStyle() {
       background: rgba(255,251,232,.84);
       font-size: clamp(14px, 1.8vmin, 20px);
     }
-    .qk-pt-start {
-      min-width: clamp(210px, 30vmin, 330px);
-      min-height: clamp(66px, 9.5vmin, 94px);
-      display: grid;
-      grid-template-columns: 58px auto;
-      place-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 8px 36px 10px;
-      border: 6px solid #fff !important;
-      border-radius: 999px;
-      color: #fff !important;
-      background: linear-gradient(#ffae35, #f07012);
-      box-shadow: 0 7px 0 #bf4b09, 0 14px 24px rgba(91,47,10,.25);
-      font-size: clamp(31px, 5vmin, 54px) !important;
-      text-transform: uppercase;
-      text-shadow: 0 3px 0 rgba(136,55,5,.25);
-    }
-    .qk-pt-start-icon { width: 58px; height: 58px; background: url('${PLAY_IMG}') center / contain no-repeat; }
-    .qk-pt-start:active { transform: translateY(4px) scale(.98); box-shadow: 0 3px 0 #bf4b09; }
     .qk-pt-menu-mascot {
       position: absolute;
       z-index: 2;
@@ -1387,7 +1330,6 @@ function installStyle() {
       .qk-pt-splash-center { gap: 6px; transform: scale(.91); width: min(1080px, 108%); }
       .qk-pt-mode { height: 168px; }
       .qk-pt-menu-helper { display: none; }
-      .qk-pt-start { min-height: 68px; }
       .qk-pt-cast-center { transform: scale(.88); width: min(980px, 110%); }
     }
     @media (prefers-reduced-motion: reduce) {
