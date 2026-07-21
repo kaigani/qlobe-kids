@@ -3591,6 +3591,12 @@ export default {
   engine: 'puppet-theater',
   title: 'Problem-Solving Puppets',
   splashEmoji: '🎭',
+  menu: {
+    backdrop: './assets/ui/menu-classroom-gpt-image-2.png',
+    prompt: 'Choose a story',
+    helper: 'Pick a problem for the puppets to solve together!',
+    mascots: ['fox', 'unicorn'],
+  },
   cast: ['bear', 'doggy', 'fox', 'frog', 'rabbit', 'unicorn', 'princess-lily', 'princess-zoe'],
   backdrops: {
     playroom: './assets/bg/playroom.png',
@@ -3614,14 +3620,20 @@ export default {
   modes: [
     {
       id: 'share', title: 'Share', emoji: '🤝', rounds: 3,
+      menuArt: './assets/props/toy-truck.png',
+      menuHint: 'Play together',
       scenarios: [scenarios['toy-truck'], scenarios['red-crayon'], scenarios['storybook'], scenarios['big-ball']],
     },
     {
       id: 'take-turns', title: 'Take Turns', emoji: '🔄', rounds: 3,
+      menuArt: './assets/props/drum.png',
+      menuHint: 'Wait and swap',
       scenarios: [scenarios['slide'], scenarios['swing'], scenarios['drum'], scenarios['telescope']],
     },
     {
       id: 'ask-for-help', title: 'Ask for Help', emoji: '🙋', rounds: 3,
+      menuArt: './assets/props/wagon.png',
+      menuHint: 'Solve it together',
       scenarios: [scenarios['high-shelf'], scenarios['spilled-blocks'], scenarios['stuck-wagon'], scenarios['tangled-kite']],
     },
   ],

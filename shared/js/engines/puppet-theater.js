@@ -73,6 +73,7 @@ class PuppetTheaterGame {
     this.screen = 'splash';   // splash | cast | play | end
     this.phase = null;        // setup | previews | choice | resolution | celebrate
     this.mode = null;
+    this.splashModeId = null;
     this.cast = [];           // [charId, charId] in pick order → roles a, b
     this.roundScenarios = [];
     this.roundIndex = 0;
@@ -184,21 +185,45 @@ class PuppetTheaterGame {
     voiceClips.stop();
     speech.stop();
 
-    const buttons = this.config.modes.map((mode) => `
-      <button class="qk-pt-mode" type="button" data-mode="${escapeAttr(mode.id)}">
-        <span aria-hidden="true">${escapeHtml(mode.emoji || '⭐')}</span>
-        <span class="qk-pt-mode-title">${escapeHtml(mode.title)}</span>
+    if (!this.config.modes.some((mode) => mode.id === this.splashModeId)) {
+      this.splashModeId = this.config.modes[0]?.id || null;
+    }
+    const buttons = this.config.modes.map((mode, index) => `
+      <button class="qk-pt-mode${mode.id === this.splashModeId ? ' is-selected' : ''}" type="button"
+              data-mode="${escapeAttr(mode.id)}" aria-pressed="${mode.id === this.splashModeId}">
+        <span class="qk-pt-mode-art" aria-hidden="true">
+          ${mode.menuArt ? `<img src="${escapeAttr(mode.menuArt)}" alt="" draggable="false" />` : `<span>${escapeHtml(mode.emoji || '⭐')}</span>`}
+        </span>
+        <span class="qk-pt-mode-copy">
+          <span class="qk-pt-mode-title">${escapeHtml(mode.title)}</span>
+          <span class="qk-pt-mode-hint">${escapeHtml(mode.menuHint || 'Kind ideas')}</span>
+        </span>
+        <span class="qk-pt-mode-check" aria-hidden="true">✓</span>
       </button>
+    `).join('');
+    const mascots = (this.config.menu?.mascots || []).slice(0, 2).map((id, index) => `
+      <img class="qk-pt-menu-mascot qk-pt-menu-mascot-${index + 1}"
+           src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
+           onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
+           alt="" draggable="false" aria-hidden="true" />
     `).join('');
 
     this.mountEl.innerHTML = `
       <section class="qk-pt qk-pt-splash" aria-label="${escapeAttr(this.config.title)}">
+        ${menuBackdropMarkup(this.config)}
+        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
         <a class="qk-pt-home qk-pt-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
         <div class="qk-pt-splash-center">
-          <div class="qk-pt-splash-emoji" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
-          <h1>${escapeHtml(this.config.title)}</h1>
+          <div class="qk-pt-logo" aria-label="${escapeAttr(this.config.title)}">${titleMarkup(this.config.title)}</div>
+          <div class="qk-pt-menu-prompt">${escapeHtml(this.config.menu?.prompt || 'Choose a story')}</div>
           <div class="qk-pt-mode-list">${buttons}</div>
+          <p class="qk-pt-menu-helper">${escapeHtml(this.config.menu?.helper || 'Pick a story for the puppets!')}</p>
+          <button class="qk-pt-start" type="button">
+            <span class="qk-pt-start-icon" aria-hidden="true"></span>
+            <span>Play</span>
+          </button>
         </div>
+        ${mascots}
       </section>
     `;
 
@@ -208,8 +233,18 @@ class PuppetTheaterGame {
         this.unlockAudio();
         this.playSfx('tick');
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
+      button.addEventListener('click', () => {
+        this.splashModeId = button.dataset.mode;
+        this.mountEl.querySelectorAll('.qk-pt-mode').forEach((item) => {
+          const picked = item === button;
+          item.classList.toggle('is-selected', picked);
+          item.setAttribute('aria-pressed', String(picked));
+        });
+      });
     });
+    const start = this.mountEl.querySelector('.qk-pt-start');
+    start.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
+    start.addEventListener('click', () => this.startMode(this.splashModeId));
   }
 
   // --- cast picker -----------------------------------------------------------------
@@ -219,17 +254,30 @@ class PuppetTheaterGame {
     this.pendingCast = [];
     const heads = this.config.cast.map((id) => `
       <button class="qk-pt-puppet" type="button" data-char="${escapeAttr(id)}" aria-label="${escapeAttr(id)}">
-        <img src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
-             onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
-             alt="" draggable="false" />
+        <span class="qk-pt-puppet-portrait">
+          <img src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
+               onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
+               alt="" draggable="false" />
+        </span>
+        <span class="qk-pt-puppet-name">${escapeHtml(characterName(id))}</span>
+        <span class="qk-pt-pick-badge" aria-hidden="true"></span>
       </button>
     `).join('');
 
     this.mountEl.innerHTML = `
       <section class="qk-pt qk-pt-cast" aria-label="${escapeAttr(this.config.copy.castPrompt)}">
+        ${menuBackdropMarkup(this.config)}
+        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
         <button class="qk-pt-back qk-pt-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-pt-cast-center">
-          <h1>${escapeHtml(this.config.copy.castPrompt)}</h1>
+          <div class="qk-pt-cast-title">
+            <span class="qk-pt-cast-kicker">${escapeHtml(mode?.title || 'Puppet show')}</span>
+            <h1>${escapeHtml(this.config.copy.castPrompt)}</h1>
+          </div>
+          <div class="qk-pt-cast-progress" aria-label="Two puppets needed">
+            <span class="is-current" data-cast-step="1">1</span><i aria-hidden="true"></i><span data-cast-step="2">2</span>
+          </div>
+          <p class="qk-pt-cast-status" aria-live="polite">Choose your first puppet</p>
           <div class="qk-pt-cast-grid">${heads}</div>
         </div>
       </section>
@@ -246,6 +294,17 @@ class PuppetTheaterGame {
           if (this.pendingCast.includes(id)) return;
           this.pendingCast.push(id);
           button.classList.add('is-picked');
+          button.querySelector('.qk-pt-pick-badge').textContent = this.pendingCast.length;
+          const firstStep = this.mountEl.querySelector('[data-cast-step="1"]');
+          const secondStep = this.mountEl.querySelector('[data-cast-step="2"]');
+          firstStep.classList.add('is-filled'); firstStep.classList.remove('is-current');
+          if (this.pendingCast.length === 1) {
+            secondStep.classList.add('is-current');
+            this.mountEl.querySelector('.qk-pt-cast-status').textContent = 'Great! Now choose their friend';
+          } else {
+            secondStep.classList.add('is-filled'); secondStep.classList.remove('is-current');
+            this.mountEl.querySelector('.qk-pt-cast-status').textContent = 'Your puppet stars are ready!';
+          }
           this.playSfx('pop');
           // each pick says hello in its own recorded voice (existing intro line)
           this.playIntro(id);
@@ -593,12 +652,21 @@ class PuppetTheaterGame {
     this.targetMap.clear();
     this.playSfx('tada');
     this.disposeStage();
+    const stars = this.cast.map((id) => `
+      <img src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
+           onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
+           alt="${escapeAttr(characterName(id))}" draggable="false" />
+    `).join('');
     this.mountEl.innerHTML = `
       <section class="qk-pt qk-pt-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
+        ${menuBackdropMarkup(this.config)}
+        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
         <button class="qk-pt-back qk-pt-img-btn" type="button" aria-label="Back to the game menu"></button>
         <div class="qk-pt-end-center">
-          <div class="qk-pt-splash-emoji" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+          <div class="qk-pt-finale-stars">${stars}</div>
+          <div class="qk-pt-finale-badge" aria-hidden="true">★</div>
           <h1>${escapeHtml(this.config.voice.cheer)}</h1>
+          <p>Three problems solved with kind ideas!</p>
           <button class="qk-pt-again" type="button">
             <span class="qk-pt-play-icon" aria-hidden="true"></span>
             <span>${escapeHtml(this.config.copy.playAgain)}</span>
@@ -842,6 +910,21 @@ function mulberry32(seed) {
   };
 }
 
+function menuBackdropMarkup(config) {
+  const src = config.menu && config.menu.backdrop;
+  return src ? `<img class="qk-pt-menu-backdrop" src="${escapeAttr(src)}" alt="" draggable="false" aria-hidden="true" />` : '';
+}
+
+function titleMarkup(title) {
+  const words = String(title || 'Puppet Theater').trim().split(/\s+/);
+  const last = words.pop() || '';
+  return `<span>${escapeHtml(words.join(' '))}</span><strong>${escapeHtml(last)}</strong>`;
+}
+
+function characterName(id) {
+  return String(id || '').split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (ch) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -923,32 +1006,82 @@ function installStyle() {
       padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
         max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
+    .qk-pt-menu-backdrop {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+    }
+    .qk-pt-menu-scrim {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255,246,210,.18), rgba(255,255,255,.10) 28% 72%, rgba(255,246,210,.16));
+    }
     .qk-pt-home, .qk-pt-back {
       position: absolute;
       top: max(12px, env(safe-area-inset-top));
       left: max(12px, env(safe-area-inset-left));
-      z-index: 4;
+      z-index: 6;
     }
 
     .qk-pt-splash-center, .qk-pt-cast-center, .qk-pt-end-center {
-      width: min(900px, 100%);
+      position: relative;
+      z-index: 3;
+      width: min(1040px, 100%);
       display: grid;
       justify-items: center;
-      gap: clamp(14px, 2.5vmin, 24px);
+      gap: clamp(8px, 1.6vmin, 16px);
       text-align: center;
-      padding-top: 54px;
+      padding-top: 6px;
     }
 
-    .qk-pt-splash-emoji {
+    .qk-pt-logo {
+      position: relative;
       display: grid;
-      place-items: center;
-      width: clamp(150px, 26vmin, 230px);
-      aspect-ratio: 1;
-      border-radius: 28px;
-      background: linear-gradient(180deg, #ffffff, #fff3d0);
-      border: 5px solid var(--white);
-      box-shadow: var(--shadow);
-      font-size: clamp(82px, 16vmin, 132px);
+      justify-items: center;
+      transform: rotate(-1.5deg);
+      font-size: clamp(38px, 6.7vmin, 76px);
+      line-height: .78;
+      letter-spacing: -.035em;
+      filter: drop-shadow(0 8px 0 rgba(69,48,20,.18)) drop-shadow(0 14px 15px rgba(85,48,9,.18));
+    }
+    .qk-pt-logo::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: -12% -10% -17%;
+      border-radius: 42% 51% 44% 49%;
+      background: #0877c9;
+      border: clamp(4px, .7vmin, 8px) solid #fff5d2;
+      box-shadow: inset 0 -8px 0 rgba(0,52,122,.2), 0 0 0 5px #005199;
+    }
+    .qk-pt-logo span, .qk-pt-logo strong {
+      display: block;
+      -webkit-text-stroke: clamp(2px, .35vmin, 4px) #674413;
+      paint-order: stroke fill;
+      text-shadow: 0 .07em 0 rgba(83,44,4,.22);
+    }
+    .qk-pt-logo span { color: #ffd331; }
+    .qk-pt-logo strong {
+      color: #fffdf4;
+      font-size: 1.08em;
+      margin-top: .16em;
+      -webkit-text-stroke-color: #063d78;
+    }
+    .qk-pt-menu-prompt, .qk-pt-cast-kicker {
+      color: #fff;
+      background: linear-gradient(#31a9ef, #0878cb);
+      border: 4px solid #fff;
+      border-radius: 999px;
+      padding: 7px 34px 8px;
+      box-shadow: 0 5px 0 #075b9d, 0 9px 18px rgba(59,45,16,.18);
+      font-size: clamp(20px, 2.9vmin, 32px);
       line-height: 1;
     }
 
@@ -963,62 +1096,185 @@ function installStyle() {
 
     .qk-pt-mode-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      width: min(760px, 100%);
-      margin-top: 6px;
+      grid-template-columns: repeat(3, minmax(190px, 1fr));
+      gap: clamp(10px, 1.8vmin, 18px);
+      width: min(900px, 92%);
+      margin-top: 2px;
     }
     .qk-pt-mode, .qk-pt-again {
-      min-height: 104px;
-      border-radius: 26px;
-      border: 5px solid var(--white);
-      padding: 18px 24px;
-      color: var(--white);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 50%),
-        var(--purple);
-      box-shadow: var(--shadow);
-      font-size: clamp(23px, 4vmin, 36px);
-      line-height: 1.05;
-      display: grid;
-      justify-items: center;
-      gap: 4px;
+      border-radius: clamp(18px, 2.7vmin, 29px);
+      border: 6px solid #a96bdd;
+      box-shadow: 0 7px 0 rgba(69,48,20,.22), 0 15px 25px rgba(76,46,11,.18);
+      line-height: 1;
     }
-    .qk-pt-mode:nth-child(2n) { background-color: var(--blue); }
-    .qk-pt-mode:nth-child(3n) { background-color: #2e9f76; }
+    .qk-pt-mode {
+      position: relative;
+      height: clamp(178px, 27vh, 230px);
+      min-height: 0;
+      padding: 8px 8px 11px;
+      color: #51336e;
+      background: linear-gradient(180deg, #fff, #fff8eb);
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 5px;
+      overflow: visible;
+      transition: transform .14s ease-out, filter .14s ease-out, border-color .14s ease-out;
+    }
+    .qk-pt-mode:nth-child(2) { border-color: #69b63f; color: #36721f; }
+    .qk-pt-mode:nth-child(3) { border-color: #f39a31; color: #a7520d; }
+    .qk-pt-mode-art {
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: calc(clamp(18px, 2.7vmin, 29px) - 8px);
+      background: radial-gradient(circle at 50% 42%, #fff 0 22%, #dff2ff 72%);
+    }
+    .qk-pt-mode:nth-child(2) .qk-pt-mode-art { background: radial-gradient(circle, #fff 0 22%, #eaffdd 72%); }
+    .qk-pt-mode:nth-child(3) .qk-pt-mode-art { background: radial-gradient(circle, #fff 0 22%, #fff0d7 72%); }
+    .qk-pt-mode-art img { width: auto; height: clamp(72px, 16vh, 120px); max-width: 86%; object-fit: contain; filter: drop-shadow(0 7px 5px rgba(61,42,19,.2)); }
+    .qk-pt-mode-art > span { font-size: clamp(54px, 9vmin, 96px); }
+    .qk-pt-mode-copy { display: grid; gap: 3px; }
+    .qk-pt-mode-title { font-size: clamp(23px, 3.5vmin, 36px); }
+    .qk-pt-mode-hint { font-size: clamp(13px, 1.7vmin, 18px); opacity: .75; }
+    .qk-pt-mode-check {
+      position: absolute;
+      top: -15px;
+      right: -13px;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #63b82f;
+      border: 5px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 4px 0 #3c851c;
+      font-size: 27px;
+      transform: scale(0) rotate(-18deg);
+      transition: transform .16s ease-out;
+    }
+    .qk-pt-mode.is-selected { transform: translateY(-6px) scale(1.025); filter: saturate(1.08); }
+    .qk-pt-mode.is-selected .qk-pt-mode-check { transform: scale(1) rotate(0); }
     .qk-pt-mode:active, .qk-pt-again:active { transform: scale(.96); }
+
+    .qk-pt-menu-helper {
+      margin: -2px 0 0;
+      padding: 4px 16px;
+      border-radius: 999px;
+      color: #5d431d;
+      background: rgba(255,251,232,.84);
+      font-size: clamp(14px, 1.8vmin, 20px);
+    }
+    .qk-pt-start {
+      min-width: clamp(210px, 30vmin, 330px);
+      min-height: clamp(66px, 9.5vmin, 94px);
+      display: grid;
+      grid-template-columns: 58px auto;
+      place-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 36px 10px;
+      border: 6px solid #fff !important;
+      border-radius: 999px;
+      color: #fff !important;
+      background: linear-gradient(#ffae35, #f07012);
+      box-shadow: 0 7px 0 #bf4b09, 0 14px 24px rgba(91,47,10,.25);
+      font-size: clamp(31px, 5vmin, 54px) !important;
+      text-transform: uppercase;
+      text-shadow: 0 3px 0 rgba(136,55,5,.25);
+    }
+    .qk-pt-start-icon { width: 58px; height: 58px; background: url('${PLAY_IMG}') center / contain no-repeat; }
+    .qk-pt-start:active { transform: translateY(4px) scale(.98); box-shadow: 0 3px 0 #bf4b09; }
+    .qk-pt-menu-mascot {
+      position: absolute;
+      z-index: 2;
+      bottom: -3%;
+      width: clamp(145px, 21vw, 270px);
+      max-height: 42vh;
+      object-fit: contain;
+      pointer-events: none;
+      filter: drop-shadow(0 12px 12px rgba(71,39,7,.28));
+    }
+    .qk-pt-menu-mascot-1 { left: -1.5%; transform: rotate(7deg); }
+    .qk-pt-menu-mascot-2 { right: -1.5%; transform: scaleX(-1) rotate(7deg); }
 
     .qk-pt-cast-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(110px, 1fr));
-      gap: clamp(12px, 2.4vmin, 22px);
-      width: min(720px, 100%);
+      gap: clamp(8px, 1.5vmin, 15px);
+      width: min(860px, 100%);
     }
     .qk-pt-puppet {
       min-width: 110px;
-      aspect-ratio: 1;
+      min-height: clamp(130px, 19vmin, 190px);
       display: grid;
+      grid-template-rows: 1fr auto;
       place-items: center;
-      border-radius: 26px;
-      border: 6px solid var(--white);
-      background: linear-gradient(180deg, #ffffff, #eaf6ff);
-      box-shadow: var(--shadow);
-      padding: 10px;
+      border-radius: 24px;
+      border: 5px solid #fff;
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(232,246,255,.96));
+      box-shadow: 0 6px 0 rgba(79,54,24,.2), 0 11px 20px rgba(81,47,12,.15);
+      padding: 7px 7px 10px;
       transition: transform .12s ease-out;
+      position: relative;
     }
+    .qk-pt-puppet-portrait { min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; }
     .qk-pt-puppet img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       pointer-events: none;
     }
+    .qk-pt-puppet-name { font-size: clamp(14px, 2vmin, 21px); line-height: 1; }
+    .qk-pt-pick-badge {
+      position: absolute; top: -10px; right: -10px; width: 40px; height: 40px;
+      display: grid; place-items: center; border-radius: 50%; border: 4px solid #fff;
+      color: #fff; background: #62b631; box-shadow: 0 3px 0 #3f821f; font-size: 22px;
+      transform: scale(0); transition: transform .14s ease-out;
+    }
     .qk-pt-puppet:active { transform: scale(.94); }
     .qk-pt-puppet.is-picked {
-      border-color: var(--mint);
+      border-color: #62b631;
       background: linear-gradient(180deg, #ffffff, #e2ffe9);
       transform: scale(1.06);
     }
+    .qk-pt-puppet.is-picked .qk-pt-pick-badge { transform: scale(1); }
     .qk-pt-puppet:disabled:not(.is-picked) { opacity: .45; }
+
+    .qk-pt-cast-center { gap: clamp(5px, 1vmin, 10px); }
+    .qk-pt-cast-title {
+      display: grid;
+      justify-items: center;
+      gap: 9px;
+      padding: 12px 34px 14px;
+      border: 5px solid #fff;
+      border-radius: 30px;
+      background: rgba(255,252,232,.94);
+      box-shadow: 0 7px 0 rgba(92,57,14,.18), 0 12px 24px rgba(80,47,12,.14);
+    }
+    .qk-pt-cast-title h1 { font-size: clamp(27px, 4.6vmin, 52px); max-width: none; }
+    .qk-pt-cast-kicker {
+      margin-top: -29px;
+      padding: 6px 28px 7px;
+      font-size: clamp(16px, 2.2vmin, 24px);
+    }
+    .qk-pt-cast-progress { display: flex; align-items: center; gap: 8px; }
+    .qk-pt-cast-progress span {
+      width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%;
+      color: #789; background: rgba(255,255,255,.88); border: 3px solid #fff; box-shadow: 0 3px 0 rgba(72,49,20,.16);
+    }
+    .qk-pt-cast-progress span.is-current { color: #fff; background: #ef8b27; transform: scale(1.12); }
+    .qk-pt-cast-progress span.is-filled { color: #fff; background: #62b631; }
+    .qk-pt-cast-progress i { display: block; width: 45px; height: 6px; border-radius: 9px; background: rgba(255,255,255,.82); }
+    .qk-pt-cast-status {
+      margin: 0;
+      color: #60471e;
+      background: rgba(255,252,232,.9);
+      border-radius: 999px;
+      padding: 4px 18px;
+      font-size: clamp(15px, 2vmin, 21px);
+    }
 
     .qk-pt-play {
       display: grid;
@@ -1083,7 +1339,11 @@ function installStyle() {
       align-items: center;
       gap: 14px;
       min-width: min(420px, 100%);
-      background-color: var(--blue);
+      min-height: 92px;
+      padding: 10px 32px 12px;
+      color: #fff;
+      background: linear-gradient(#31a9ef, #0878cb);
+      font-size: clamp(24px, 3.5vmin, 38px);
     }
     .qk-pt-play-icon {
       display: block;
@@ -1091,10 +1351,44 @@ function installStyle() {
       background: transparent url('${PLAY_IMG}') center / contain no-repeat;
     }
 
+    .qk-pt-end-center {
+      width: min(720px, 94%);
+      padding: clamp(24px, 5vmin, 52px);
+      border: 6px solid #fff;
+      border-radius: 42px;
+      background: rgba(255,252,232,.94);
+      box-shadow: 0 9px 0 rgba(91,56,13,.2), 0 18px 35px rgba(74,41,8,.18);
+    }
+    .qk-pt-end-center h1 { color: #3b7f20; max-width: none; }
+    .qk-pt-end-center p { margin: 0; color: #765322; font-size: clamp(18px, 2.6vmin, 27px); }
+    .qk-pt-finale-stars { display: flex; align-items: center; justify-content: center; margin-bottom: -18px; }
+    .qk-pt-finale-stars img {
+      width: clamp(130px, 20vmin, 210px); aspect-ratio: 1; object-fit: contain;
+      filter: drop-shadow(0 8px 8px rgba(68,41,10,.22));
+    }
+    .qk-pt-finale-stars img + img { margin-left: -28px; }
+    .qk-pt-finale-badge {
+      width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%;
+      color: #fff; background: #62b631; border: 5px solid #fff; box-shadow: 0 4px 0 #3c851c;
+      font-size: 34px;
+    }
+
     @media (max-width: 560px) {
       .qk-pt-hud { grid-template-columns: 96px 1fr; }
       .qk-pt-progress { justify-self: end; }
       .qk-pt-cast-grid { grid-template-columns: repeat(2, minmax(110px, 1fr)); }
+      .qk-pt-mode-list { grid-template-columns: 1fr; width: min(360px, 82%); }
+      .qk-pt-menu-mascot { opacity: .56; width: 155px; }
+      .qk-pt-splash { overflow-y: auto; place-items: start center; }
+      .qk-pt-splash-center { padding: 32px 0; }
+      .qk-pt-mode { height: 150px; grid-template-columns: 42% 1fr; grid-template-rows: 1fr; align-items: center; }
+    }
+    @media (max-height: 690px) and (min-width: 700px) {
+      .qk-pt-splash-center { gap: 6px; transform: scale(.91); width: min(1080px, 108%); }
+      .qk-pt-mode { height: 168px; }
+      .qk-pt-menu-helper { display: none; }
+      .qk-pt-start { min-height: 68px; }
+      .qk-pt-cast-center { transform: scale(.88); width: min(980px, 110%); }
     }
     @media (prefers-reduced-motion: reduce) {
       .qk-pt * { transition: none !important; animation: none !important; }
