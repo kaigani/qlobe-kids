@@ -42,6 +42,17 @@ const INSTRUMENTS_MANIFEST = new URL('../../assets/instruments/manifest.json', i
 const MAX_BAND = 5;
 const MIN_BAND = 2;
 const IDLE_HINT_MS = 12000;
+const ACTOR_SCALE = 0.8;          // playtest: puppets ~30% bigger, feet on the floor
+const DEFAULT_FLOOR_Y = 0.88;     // per-song override via song.floorY
+
+// which performance animation each instrument plays (acting-clips pack)
+const PLAY_CLIPS = {
+  drum: 'play-drum', bongos: 'play-drum',
+  guitar: 'play-strum',
+  trumpet: 'play-blow', saxophone: 'play-blow', clarinet: 'play-blow', flute: 'play-blow', horn: 'play-blow',
+  piano: 'play-keys', vibraphone: 'play-keys',
+  maracas: 'play-shake', cymbal: 'play-shake',
+};
 
 let styleInstalled = false;
 
@@ -408,6 +419,7 @@ class PuppetBandGame {
           <button class="qk-pb-next qk-pb-img-btn" type="button" aria-label="Next song"></button>
         </header>
         <main class="qk-pb-stagehost"></main>
+        <div class="qk-pb-carousel" aria-label="Swap band members"></div>
         <button class="qk-pb-sound qk-pb-img-btn" type="button" aria-label="Hear the hint again"></button>
       </section>
     `;
@@ -426,7 +438,7 @@ class PuppetBandGame {
     const initialBackdrop = this.currentSong().backdrop || this.config.stageBackdrop;
     const theater = await createTheater(stage, {
       backdrop: initialBackdrop,
-      floorY: 0.8,
+      floorY: this.currentSong().floorY || DEFAULT_FLOOR_Y,
       worldScale: 1.4,
     });
     if (this.destroyed || generation !== this.stageGeneration) { theater.destroy(); stage.destroy(); return; }
@@ -434,46 +446,208 @@ class PuppetBandGame {
     this.activeBackdrop = initialBackdrop;
     stage.root.addChild(theater.view);
 
-    // the band takes the stage
-    const n = this.band.length;
-    const spread = Math.min(0.19, 0.76 / Math.max(1, n - 1));
+    // the band takes the stage (slot ids stay stable across joins/removals)
     this.members = [];
-    for (let i = 0; i < n; i++) {
-      const m = this.band[i];
-      const fx = 0.5 + (i - (n - 1) / 2) * spread;
-      const actor = await theater.addActor(`m${i}`, m.char, {
-        x: fx, flip: false, scale: 0.62, widthShare: Math.min(0.3, 0.9 / n),
-      });
+    this.memberSlot = 0;
+    music.clearMemberMutes();
+    for (let i = 0; i < this.band.length; i++) {
+      await this.addMemberToStage(this.band[i], generation);
       if (this.destroyed || generation !== this.stageGeneration) return;
-      const instrDef = this.config.instruments.find((x) => x.id === m.instr) || {};
-      const propDef = {
-        art: this.config.props[m.instr],
-        color: instrDef.color || '#e8b23a',
-        scale: instrDef.floor ? 0.5 : 0.3,
-      };
-      if (instrDef.floor) { propDef.fx = fx; propDef.fy = theater.floorY + 0.03; }
-      else { propDef.holder = `m${i}`; propDef.handBone = 'arm-lower.R'; propDef.handOffset = [0, 110]; }
-      await theater.addProp(`p${i}`, propDef);
-      if (this.destroyed || generation !== this.stageGeneration) return;
-      actor.puppet.playClip('groove');
-
-      // tap target on the puppet itself
-      const id = this.nextTargetId('member');
-      actor.puppet.view.eventMode = 'static';
-      actor.puppet.view.cursor = 'pointer';
-      actor.puppet.view.on('pointerdown', (e) => {
-        if (e && e.preventDefault) e.preventDefault();
-        this.unlockAudio();
-        this.tapTarget(id);
-      });
-      const member = { actor, instr: m.instr, index: i, id };
-      this.targetMap.set(id, { id, member, role: 'neutral', action: () => this.solo(member) });
-      this.members.push(member);
     }
+    this.layoutBand(false);
+    this.renderCarousel();
     this.removeResize = stage.onResize(() => {});
 
     await this.playCurrentSong();
     this.scheduleHint();
+  }
+
+  // Mount one band member on stage: puppet + instrument prop + stool (behind).
+  async addMemberToStage(bandEntry, generation, { enter = false } = {}) {
+    const T = this.theater;
+    const slot = ++this.memberSlot;
+    const name = `m${slot}`;
+    const actor = await T.addActor(name, bandEntry.char, {
+      x: enter ? 1.25 : 0.5, flip: false, scale: ACTOR_SCALE,
+      widthShare: Math.min(0.4, 1.15 / Math.max(1, this.band.length)),
+    });
+    if (this.destroyed || generation !== this.stageGeneration) return null;
+
+    await T.addProp(`s${slot}`, {
+      art: this.config.props.stool, color: '#a8763e', scale: 0.34,
+      fx: 0.5, fy: T.floorY - 0.02, layer: 'back',
+    });
+    const instrDef = this.config.instruments.find((x) => x.id === bandEntry.instr) || {};
+    const propDef = {
+      art: this.config.props[bandEntry.instr],
+      color: instrDef.color || '#e8b23a',
+      scale: instrDef.floor ? 0.5 : 0.3,
+    };
+    if (instrDef.floor) { propDef.fx = 0.5; propDef.fy = T.floorY + 0.03; }
+    else { propDef.holder = name; propDef.handBone = 'arm-lower.R'; propDef.handOffset = [0, 110]; }
+    await T.addProp(`p${slot}`, propDef);
+    if (this.destroyed || generation !== this.stageGeneration) return null;
+
+    const id = this.nextTargetId('member');
+    const member = { actor, slot, name, char: bandEntry.char, instr: bandEntry.instr, floor: !!instrDef.floor, sitting: false, id };
+    actor.puppet.playClip(this.playClipFor(member));
+    actor.puppet.view.eventMode = 'static';
+    actor.puppet.view.cursor = 'pointer';
+    actor.puppet.view.on('pointerdown', (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      this.unlockAudio();
+      this.tapTarget(id);
+    });
+    this.targetMap.set(id, { id, member, role: 'neutral', action: () => this.solo(member) });
+
+    // the stool is the sit/stand toggle
+    const stool = T.props[`s${slot}`];
+    const stoolId = this.nextTargetId('stool');
+    stool.sprite.eventMode = 'static';
+    stool.sprite.cursor = 'pointer';
+    stool.sprite.on('pointerdown', (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      this.unlockAudio();
+      this.tapTarget(stoolId);
+    });
+    this.targetMap.set(stoolId, { id: stoolId, member, stool: true, role: 'neutral', action: () => this.toggleSit(member) });
+    member.stoolId = stoolId;
+    this.members.push(member);
+    return member;
+  }
+
+  playClipFor(member) {
+    if (member.sitting) return 'sit-nod';
+    return PLAY_CLIPS[member.instr] || 'groove';
+  }
+
+  // Recompute stage marks for the current band size; puppets/props slide over.
+  layoutBand(animate = true) {
+    const T = this.theater;
+    if (!T) return;
+    const n = this.members.length;
+    const spread = Math.min(0.21, 0.8 / Math.max(1, n - 1));
+    this.members.forEach((m, i) => {
+      const fx = 0.5 + (i - (n - 1) / 2) * spread;
+      m.actor.widthShare = Math.min(0.4, 1.15 / Math.max(1, n));
+      if (animate) T.moveActor(m.actor, fx, { ms: 700 });
+      else { m.actor.fx = fx; T.placeActor(m.actor); }
+      T.placeProp(`s${m.slot}`, fx + 0.005, T.floorY - 0.02, { ms: animate ? 700 : 0 });
+      if (m.floor) T.placeProp(`p${m.slot}`, fx, T.floorY + 0.03, { ms: animate ? 700 : 0 });
+    });
+  }
+
+  // --- live roster (carousel) --------------------------------------------------------
+
+  renderCarousel() {
+    const host = this.mountEl.querySelector('.qk-pb-carousel');
+    if (!host) return;
+    host.innerHTML = this.config.cast.map((id) => `
+      <button class="qk-pb-caro" type="button" data-char="${escapeAttr(id)}" aria-label="${escapeAttr(id)}">
+        <img src="${escapeAttr(new URL(`${id}/anim/head-ts.png`, CHAR_BASE).href)}"
+             onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
+             alt="" draggable="false" />
+        <span class="qk-pb-caro-order" aria-hidden="true"></span>
+      </button>
+    `).join('');
+    host.querySelectorAll('.qk-pb-caro').forEach((btn) => {
+      const id = this.nextTargetId('caro');
+      this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.handleRosterTap(btn.dataset.char) });
+      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); });
+      btn.addEventListener('click', () => this.tapTarget(id));
+    });
+    this.refreshCarousel();
+  }
+
+  refreshCarousel() {
+    this.mountEl.querySelectorAll('.qk-pb-caro').forEach((btn) => {
+      const idx = this.members.findIndex((m) => m.char === btn.dataset.char);
+      btn.classList.toggle('is-in', idx >= 0);
+      btn.querySelector('.qk-pb-caro-order').textContent = idx >= 0 ? String(idx + 1) : '';
+    });
+  }
+
+  async handleRosterTap(char) {
+    if (this.screen !== 'concert' || this.rosterBusy) return;
+    const generation = this.stageGeneration;
+    const existing = this.members.findIndex((m) => m.char === char);
+    this.rosterBusy = true;
+    try {
+      if (existing >= 0) {
+        // tapping an on-stage member's tile removes them (keep at least two)
+        if (this.members.length <= MIN_BAND) { this.playSfx('boing'); return; }
+        this.playSfx('unpop');
+        await this.removeMemberFromStage(existing, generation);
+      } else if (this.members.length < MAX_BAND) {
+        this.playSfx('pop');
+        await this.joinMember(char, generation);
+      } else {
+        // full house: the newcomer swaps in for a random member
+        const r = Math.floor(this.rng() * this.members.length);
+        this.playSfx('whoosh');
+        await this.removeMemberFromStage(r, generation);
+        if (this.destroyed || generation !== this.stageGeneration) return;
+        await this.joinMember(char, generation);
+      }
+    } finally {
+      this.rosterBusy = false;
+    }
+  }
+
+  async joinMember(char, generation) {
+    const taken = new Set(this.members.map((m) => m.instr));
+    let instr = this.config.defaultInstrumentByChar[char];
+    if (!instr || taken.has(instr)) {
+      instr = this.config.instruments.map((i) => i.id).find((id) => !taken.has(id)) || instr;
+    }
+    const entry = { char, instr };
+    const member = await this.addMemberToStage(entry, generation, { enter: true });
+    if (!member || this.destroyed || generation !== this.stageGeneration) return;
+    music.preview(instr);
+    this.layoutBand(true);
+    this.refreshCarousel();
+    this.syncMusic();
+  }
+
+  async removeMemberFromStage(index, generation) {
+    const T = this.theater;
+    const m = this.members[index];
+    if (!m || !T) return;
+    this.members.splice(index, 1);
+    this.targetMap.delete(m.id);
+    this.targetMap.delete(m.stoolId);
+    this.syncMusic();               // band shrinks immediately; walk-off is visual
+    this.layoutBand(true);
+    this.refreshCarousel();
+    const name = m.name, slot = m.slot;
+    await T.moveActor(m.actor, 1.3, { ms: 700 });
+    if (this.destroyed || generation !== this.stageGeneration) return;
+    T.removeActor(name);
+    T.removeProp(`p${slot}`);
+    T.removeProp(`s${slot}`);
+  }
+
+  // Push the CURRENT members into the scheduler without dropping the beat,
+  // and re-derive the per-member mute set from who is sitting.
+  syncMusic() {
+    this.band = this.members.map((m) => ({ char: m.char, instr: m.instr }));
+    music.clearMemberMutes();
+    this.members.forEach((m, i) => { if (m.sitting) music.setMemberMuted(i, true); });
+    music.updateBand(this.members.map((m) => ({ instr: m.instr })));
+  }
+
+  // --- chairs: sit a member down to mute their part ------------------------------------
+
+  toggleSit(member) {
+    if (this.screen !== 'concert' || !this.theater) return;
+    member.sitting = !member.sitting;
+    const idx = this.members.indexOf(member);
+    music.setMemberMuted(idx, member.sitting);
+    const instrProp = this.theater.props[`p${member.slot}`];
+    if (instrProp) instrProp.sprite.visible = !member.sitting;
+    member.actor.puppet.playClip(this.playClipFor(member));
+    this.playSfx(member.sitting ? 'unpop' : 'pop');
+    if (!member.sitting) this.theater.playFx('sparkle', member.actor.name);
   }
 
   currentSong() { return this.config.songs[this.songIndex % this.config.songs.length]; }
@@ -490,10 +664,14 @@ class PuppetBandGame {
       await this.theater.setBackdrop(backdrop);
     }
     if (generation !== this.songGeneration || this.destroyed || this.screen !== 'concert') return;
+    if (this.theater) {
+      this.theater.setFloorY(song.floorY || DEFAULT_FLOOR_Y);
+      this.layoutBand(false);   // stools/floor instruments re-seat on the new floor
+    }
     this.preloadNextBackdrop();
     await this.speakNarr(`song-${song.id}`, song.introText || `Here comes ${song.title}!`);
     if (generation !== this.songGeneration || this.destroyed || this.screen !== 'concert') return;
-    this.playing = music.playSong(song, this.band.map((m) => ({ instr: m.instr })), {
+    this.playing = music.playSong(song, this.members.map((m) => ({ instr: m.instr })), {
       onNote: (memberIndex) => this.accent(memberIndex),
       onLoop: () => this.loopSparkle(),
     });
@@ -522,7 +700,7 @@ class PuppetBandGame {
 
   accent(memberIndex) {
     const m = this.members[memberIndex];
-    if (!m || this.destroyed || !this.theater) return;
+    if (!m || m.sitting || this.destroyed || !this.theater) return;
     this.theater.setActorPose(m.actor, { torso: { scaleY: 1.07 } });
     setTimeout(() => {
       if (!this.destroyed && this.theater && this.members[memberIndex] === m) {
@@ -539,20 +717,21 @@ class PuppetBandGame {
 
   solo(member) {
     if (this.screen !== 'concert') return;
+    if (member.sitting) { this.toggleSit(member); return; }   // tap a sitter → they stand back in
     this.playSfx('sparkle');
     const ms = music.soloRiff(member.instr, this.currentSong());
     this.theater.playFx('sparkle', member.actor.name);
     member.actor.puppet.playClip('cheer', {
       loop: false,
-      onDone: () => { if (!this.destroyed && this.screen === 'concert') member.actor.puppet.playClip('groove'); },
+      onDone: () => { if (!this.destroyed && this.screen === 'concert') member.actor.puppet.playClip(this.playClipFor(member)); },
     });
     // the rest of the band lays out (audio is muted by music.js; visually they
-    // drop to a polite idle and pick the groove back up when the solo ends)
+    // drop to a polite idle and pick their instruments back up after)
     const token = ++this.soloToken;
-    this.members.forEach((m) => { if (m !== member) m.actor.puppet.playClip('idle'); });
+    this.members.forEach((m) => { if (m !== member && !m.sitting) m.actor.puppet.playClip('idle'); });
     setTimeout(() => {
       if (this.destroyed || this.screen !== 'concert' || token !== this.soloToken) return;
-      this.members.forEach((m) => { if (m !== member) m.actor.puppet.playClip('groove'); });
+      this.members.forEach((m) => { if (m !== member) m.actor.puppet.playClip(this.playClipFor(m)); });
       if (this.theater) this.theater.playFx('sparkle', member.actor.name);
     }, ms + 100);
   }
@@ -606,10 +785,22 @@ class PuppetBandGame {
     }
     if (this.screen === 'concert' && this.stage) {
       const canvasRect = this.stage.app.canvas.getBoundingClientRect();
-      return this.members.map((m) => {
-        const b = m.actor.puppet.view.getBounds();
-        return { id: m.id, role: 'neutral', rect: { x: canvasRect.left + b.x, y: canvasRect.top + b.y, w: b.width, h: b.height } };
-      });
+      const out = [];
+      for (const t of this.targetMap.values()) {
+        if (t.el) {   // carousel tiles (DOM)
+          const r = t.el.getBoundingClientRect();
+          out.push({ id: t.id, role: t.role, kind: 'roster', rect: { x: r.x, y: r.y, w: r.width, h: r.height } });
+        } else if (t.stool) {
+          const s = this.theater && this.theater.props[`s${t.member.slot}`];
+          if (!s) continue;
+          const b = s.sprite.getBounds();
+          out.push({ id: t.id, role: t.role, kind: 'stool', rect: { x: canvasRect.left + b.x, y: canvasRect.top + b.y, w: b.width, h: b.height } });
+        } else if (t.member) {
+          const b = t.member.actor.puppet.view.getBounds();
+          out.push({ id: t.id, role: t.role, kind: 'member', rect: { x: canvasRect.left + b.x, y: canvasRect.top + b.y, w: b.width, h: b.height } });
+        }
+      }
+      return out;
     }
     return [];
   }
@@ -873,6 +1064,44 @@ function installStyle() {
     .qk-pb-stagehost { min-height: 0; position: relative; overflow: hidden; border-radius: 34px; border: 5px solid rgba(255,255,255,.8); box-shadow: 0 7px 0 rgba(24,71,149,.2); touch-action: none; }
     .qk-pb-stagehost canvas { display: block; width: 100%; height: 100%; touch-action: none; }
     .qk-pb-sound { position: absolute; left: max(14px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 4; }
+    .qk-pb-carousel {
+      position: absolute;
+      z-index: 5;
+      left: 50%; transform: translateX(-50%);
+      bottom: max(10px, env(safe-area-inset-bottom));
+      display: flex; gap: 8px;
+      max-width: min(96vw, 1000px);
+      overflow-x: auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(4px);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .qk-pb-carousel::-webkit-scrollbar { display: none; }
+    .qk-pb-caro {
+      position: relative;
+      flex: 0 0 auto;
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      border: 5px solid var(--white);
+      background: linear-gradient(180deg, #ffffff, #eaf6ff);
+      box-shadow: 0 4px 0 rgba(23,81,126,.15);
+      display: grid; place-items: center;
+      padding: 6px;
+      opacity: .82;
+    }
+    .qk-pb-caro img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+    .qk-pb-caro:active { transform: scale(.92); }
+    .qk-pb-caro.is-in { border-color: #81d6a3; opacity: 1; background: linear-gradient(180deg, #ffffff, #e2ffe9); }
+    .qk-pb-caro-order {
+      position: absolute; top: -4px; right: -2px;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: #81d6a3; color: #fff; font-size: 16px;
+    }
+    .qk-pb-caro-order:empty { display: none; }
     @media (max-width: 700px) {
       .qk-pb-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
       .qk-pb-mascot-stage { opacity: .5; }

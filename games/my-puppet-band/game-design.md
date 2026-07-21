@@ -17,14 +17,18 @@ seconds, one-press-path everywhere, big grounded puppets, recorded narrator.
    their instrument). Tap the instrument badge on any tile → cycles to the
    next free instrument and plays its note. 2 friends is enough to start
    (cap 5); "Play Show!" arms with a narrator prompt.
-3. **Rainbow concert** — the band stands on stage with their instruments and
-   plays a real song: melody, bass, chords, and percussion parts are mapped
-   automatically to whatever the child picked (the lowest instrument takes
-   bass, percussion splits the drum part, everyone else carries the tune —
-   octave-folded so ANY combination is musical). Puppets groove to the beat
-   and bounce on their own notes. **Tap any puppet → a beat-quantized solo
-   riff** on the song's scale plus a sparkle. Next-song button cycles the set
-   list; back returns to band building instantly.
+3. **Rainbow concert** — the band stands big on stage (feet on the floor of
+   each song's own backdrop) playing a real song. Every song declares a LEAD
+   family (keys / wind / strings / percussion): the melody goes to one
+   matching instrument, the rest take bass and chord pads, so the same band
+   sounds piano-led on one song and drum-driven on another — octave-folded so
+   ANY combination stays musical. Each instrument family has its own
+   performance animation (strumming, drumming, blowing, key-tapping,
+   shaking). **Tap any puppet → a beat-quantized solo riff** (the band lays
+   out). **Tap a stool → that puppet sits and nods while their part goes
+   quiet** — musical segments toggle on and off. A carousel of all 8 friends
+   runs along the bottom: tap to add, remove, or (when full) randomly swap
+   members WHILE the music keeps playing. Next-song cycles the set list.
 
 No fail states, no score. It is an instrument.
 

@@ -101,6 +101,82 @@
         { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": 0 }, { "t": 0.45, "v": -0.08 }, { "t": 1, "v": 0 } ] }
       ]
     },
+    "play-drum": {
+      "duration": 700,
+      "loop": true,
+      "tracks": [
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.9, "ease": "outCubic" }, { "t": 0.25, "v": 0.35 }, { "t": 0.5, "v": 0.9 }, { "t": 1, "v": 0.9 } ] },
+        { "target": "arm-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.5 }, { "t": 0.25, "v": 0.15 }, { "t": 0.5, "v": 0.5 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.35 }, { "t": 0.25, "v": -0.9, "ease": "outCubic" }, { "t": 0.75, "v": -0.35 }, { "t": 1, "v": -0.35 } ] },
+        { "target": "arm-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.15 }, { "t": 0.25, "v": -0.5 }, { "t": 0.75, "v": -0.15 } ] },
+        { "target": "$motion", "prop": "y", "keys": [ { "t": 0, "v": 0 }, { "t": 0.25, "v": -8 }, { "t": 0.5, "v": 0 }, { "t": 0.75, "v": -8 }, { "t": 1, "v": 0 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": -0.06 }, { "t": 0.5, "v": 0.06 }, { "t": 1, "v": -0.06 } ] }
+      ]
+    },
+    "play-strum": {
+      "duration": 900,
+      "loop": true,
+      "tracks": [
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.95 } ] },
+        { "target": "arm-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.55 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.45 }, { "t": 0.25, "v": -0.72, "ease": "outQuad" }, { "t": 0.5, "v": -0.45 }, { "t": 0.75, "v": -0.72, "ease": "outQuad" }, { "t": 1, "v": -0.45 } ] },
+        { "target": "arm-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.2 }, { "t": 0.25, "v": -0.42 }, { "t": 0.5, "v": -0.2 }, { "t": 0.75, "v": -0.42 }, { "t": 1, "v": -0.2 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": 0.08 }, { "t": 0.5, "v": -0.08 }, { "t": 1, "v": 0.08 } ] },
+        { "target": "$spine", "prop": "bend", "keys": [ { "t": 0, "v": 0.04 }, { "t": 0.5, "v": -0.04 }, { "t": 1, "v": 0.04 } ] }
+      ]
+    },
+    "play-blow": {
+      "duration": 1000,
+      "loop": true,
+      "tracks": [
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 1.35 } ] },
+        { "target": "arm-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.85 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -1.35 } ] },
+        { "target": "arm-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.85 } ] },
+        { "target": "$spine", "prop": "bend", "keys": [ { "t": 0, "v": -0.05 }, { "t": 0.5, "v": 0.06 }, { "t": 1, "v": -0.05 } ] },
+        { "target": "$spine", "prop": "squash", "keys": [ { "t": 0, "v": 0.02 }, { "t": 0.5, "v": -0.02 }, { "t": 1, "v": 0.02 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": -0.05 }, { "t": 0.5, "v": 0.05 }, { "t": 1, "v": -0.05 } ] }
+      ]
+    },
+    "play-keys": {
+      "duration": 800,
+      "loop": true,
+      "tracks": [
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.6 }, { "t": 0.25, "v": 0.72 }, { "t": 0.5, "v": 0.6 }, { "t": 0.75, "v": 0.72 }, { "t": 1, "v": 0.6 } ] },
+        { "target": "arm-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.4 }, { "t": 0.25, "v": 0.25 }, { "t": 0.5, "v": 0.4 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.72 }, { "t": 0.25, "v": -0.6 }, { "t": 0.5, "v": -0.72 }, { "t": 0.75, "v": -0.6 }, { "t": 1, "v": -0.72 } ] },
+        { "target": "arm-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.25 }, { "t": 0.5, "v": -0.4 }, { "t": 1, "v": -0.25 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": 0.05 }, { "t": 0.5, "v": -0.05 }, { "t": 1, "v": 0.05 } ] },
+        { "target": "$motion", "prop": "y", "keys": [ { "t": 0, "v": 0 }, { "t": 0.25, "v": -5 }, { "t": 0.5, "v": 0 }, { "t": 0.75, "v": -5 }, { "t": 1, "v": 0 } ] }
+      ]
+    },
+    "play-shake": {
+      "duration": 600,
+      "loop": true,
+      "tracks": [
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 1.0 }, { "t": 0.25, "v": 1.25 }, { "t": 0.5, "v": 1.0 }, { "t": 0.75, "v": 1.25 }, { "t": 1, "v": 1.0 } ] },
+        { "target": "arm-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": 0.7 }, { "t": 0.25, "v": 0.45 }, { "t": 0.5, "v": 0.7 }, { "t": 0.75, "v": 0.45 }, { "t": 1, "v": 0.7 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -1.25 }, { "t": 0.25, "v": -1.0 }, { "t": 0.5, "v": -1.25 }, { "t": 0.75, "v": -1.0 }, { "t": 1, "v": -1.25 } ] },
+        { "target": "arm-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": -0.45 }, { "t": 0.25, "v": -0.7 }, { "t": 0.5, "v": -0.45 }, { "t": 0.75, "v": -0.7 }, { "t": 1, "v": -0.45 } ] },
+        { "target": "$motion", "prop": "x", "keys": [ { "t": 0, "v": -8 }, { "t": 0.5, "v": 8 }, { "t": 1, "v": -8 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": 0.07 }, { "t": 0.5, "v": -0.07 }, { "t": 1, "v": 0.07 } ] }
+      ]
+    },
+    "sit-nod": {
+      "duration": 1600,
+      "loop": true,
+      "tracks": [
+        { "target": "leg-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": 1.35 } ] },
+        { "target": "leg-lower.L", "prop": "rotation", "keys": [ { "t": 0, "v": -1.25 } ] },
+        { "target": "leg-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": -1.35 } ] },
+        { "target": "leg-lower.R", "prop": "rotation", "keys": [ { "t": 0, "v": 1.25 } ] },
+        { "target": "$motion", "prop": "y", "keys": [ { "t": 0, "v": 150 } ] },
+        { "target": "arm-upper.L", "prop": "rotation", "keys": [ { "t": 0, "v": -0.15 } ] },
+        { "target": "arm-upper.R", "prop": "rotation", "keys": [ { "t": 0, "v": 0.15 } ] },
+        { "target": "head", "prop": "rotation", "keys": [ { "t": 0, "v": -0.1 }, { "t": 0.5, "v": 0.12 }, { "t": 1, "v": -0.1 } ] },
+        { "target": "$spine", "prop": "bend", "keys": [ { "t": 0, "v": 0.03 }, { "t": 0.5, "v": -0.03 }, { "t": 1, "v": 0.03 } ] }
+      ]
+    },
     "groove": {
       "duration": 1200,
       "loop": true,

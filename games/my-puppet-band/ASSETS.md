@@ -24,6 +24,7 @@ All original assets CC BY 4.0 (see LICENSE-ASSETS). Provenance below.
 | Band-builder blue field | `assets/bg/builder-blue-gpt-image-2.png` | done | GPT Image 2, generated from the approved UI concept as a style/composition reference; peripheral decoration and center-clear grid area, 2026-07-20 |
 | Instrument props ×12 | `assets/props/*.png` | done | local GenAI (krea2 dark-bg seed 42 + qwen-image-layered), edge-flood alpha cleanup, magenta/alpha QA, PNG-8, 2026-07-20. clarinet regenerated sky-blue (black-on-charcoal extracts ambiguously) |
 | Narrator voice ×12 | `assets/audio/*.m4a` + manifest/lines | done | teacher-voice clone (seed 7), 12/12 whisper-QA first pass, 2026-07-20 |
+| Stool (chair toggle) | `assets/props/stool.png` | done | local GenAI (krea2 dark-bg seed 42 + qwen-image-layered, edge-flood cleanup), 2026-07-21 |
 | Hub tile | `../../assets/hub/tiles/my-puppet-band.jpg` | done | local GenAI (krea2, seed 42), 640×533 JPEG, 2026-07-20 |
 
 Until pending assets land the game runs on documented fallbacks (emoji

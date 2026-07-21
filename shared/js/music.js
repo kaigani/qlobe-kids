@@ -127,24 +127,33 @@ export function note(instr, midi, { when = 0, durBeats = 1, bpm = 100, gain = 1,
 // --- band → parts mapping ---------------------------------------------------------
 
 /**
- * Map band members (array of { instr }) to song parts.
- * Returns per-member assignments: { member, part: 'melody'|'bass'|'chord'|'perc',
- * percSlot } — percussion events round-robin across perc members; the lowest
- * tonal takes bass, a middle one takes chords (3+ tonals), the rest play melody.
+ * Map band members (array of { instr }) to song parts, arrangement-aware.
+ * A song may declare `lead: 'keys'|'wind'|'strings'|'perc'` — the melody goes
+ * to ONE instrument (preferring the lead family), the remaining tonals take
+ * bass (lowest) and chord pads at reduced gain, and a perc-led song boosts
+ * percussion while trimming the tune. This is what makes the same band sound
+ * keyboard-led on one song and drum-driven on another.
  */
-export function mapBand(band) {
-  const out = band.map((m, i) => ({ index: i, instr: m.instr, part: null, percSlot: 0 }));
+export function mapBand(band, song) {
+  const lead = song && song.lead;
+  const fam = (m) => (manifest[m.instr] || {}).family;
+  const out = band.map((m, i) => ({ index: i, instr: m.instr, part: null, percSlot: 0, gain: 1 }));
   const percs = out.filter((m) => (manifest[m.instr] || {}).role === 'perc');
   const tonals = out.filter((m) => (manifest[m.instr] || {}).role === 'tonal')
     .sort((a, b) => manifest[a.instr].baseMidi - manifest[b.instr].baseMidi);
-  percs.forEach((m, i) => { m.part = 'perc'; m.percSlot = i; });
-  if (tonals.length === 1) tonals[0].part = 'melody';
-  else if (tonals.length === 2) { tonals[0].part = 'bass'; tonals[1].part = 'melody'; }
-  else if (tonals.length >= 3) {
-    tonals[0].part = 'bass';
-    tonals[1].part = 'chord';
-    for (let i = 2; i < tonals.length; i++) tonals[i].part = 'melody';
-  }
+
+  percs.forEach((m, i) => { m.part = 'perc'; m.percSlot = i; m.gain = lead === 'perc' ? 1.0 : 0.8; });
+  if (!tonals.length) return out;
+
+  // one melody carrier: the song's lead family if present, else the highest voice
+  let melody = (lead && lead !== 'perc') ? tonals.find((m) => fam(m) === lead) : null;
+  if (!melody) melody = tonals[tonals.length - 1];
+  melody.part = 'melody';
+  melody.gain = lead === 'perc' ? 0.7 : 1.0;
+
+  const rest = tonals.filter((m) => m !== melody);   // still sorted low→high
+  if (rest.length) { rest[0].part = 'bass'; rest[0].gain = 0.8; }
+  for (let i = 1; i < rest.length; i++) { rest[i].part = 'chord'; rest[i].gain = 0.45; }
   return out;
 }
 
@@ -172,14 +181,14 @@ function expandEvents(song, assignments) {
       const [beat, val, dur] = ev;
       const notes = Array.isArray(val) ? val : [val];
       for (const n of notes) {
-        events.push({ beat: swingBeat(beat, song.swing), member: m.index, instr: m.instr, midi: n, durBeats: dur || 1, gain: m.part === 'chord' ? 0.5 : m.part === 'bass' ? 0.85 : 0.9 });
+        events.push({ beat: swingBeat(beat, song.swing), member: m.index, instr: m.instr, midi: n, durBeats: dur || 1, gain: m.gain });
       }
     }
   }
   if (percMembers.length) {
     (song.parts.perc || []).forEach(([beat, hit], i) => {
       const m = percMembers[i % percMembers.length];
-      events.push({ beat: swingBeat(beat, song.swing), member: m.index, instr: m.instr, hit, gain: 0.8, durBeats: 0.9 });
+      events.push({ beat: swingBeat(beat, song.swing), member: m.index, instr: m.instr, hit, gain: m.gain, durBeats: 0.9 });
     });
   }
   events.sort((a, b) => a.beat - b.beat);
@@ -194,7 +203,7 @@ function expandEvents(song, assignments) {
 export function playSong(song, band, cbs = {}) {
   stopSong();
   if (!ctx) ensureCtx();
-  const assignments = mapBand(band);
+  const assignments = mapBand(band, song);
   const events = expandEvents(song, assignments);
   if (!events.length) return { stop() {} };
   const beatDur = 60 / song.bpm;
@@ -211,16 +220,18 @@ export function playSong(song, band, cbs = {}) {
     const horizon = ctx.currentTime + HORIZON_S;
     let guard = 0;
     while (guard++ < 200) {
-      if (state.nextIdx >= events.length) {
+      if (!state.events.length) return;
+      if (state.nextIdx >= state.events.length) {
         state.nextIdx = 0;
         state.loopN += 1;
         if (cbs.onLoop) cbs.onLoop(state.loopN);
       }
-      const ev = events[state.nextIdx];
+      const ev = state.events[state.nextIdx];
       const t = state.startTime + (state.loopN * totalBeats + ev.beat) * beatDur;
       if (t > horizon) break;
       state.nextIdx += 1;
-      if (t < soloUntil) continue;   // spotlight: the band lays out for the solo
+      if (t < soloUntil) continue;          // spotlight: the band lays out for the solo
+      if (mutedMembers.has(ev.member)) continue;   // sitting on their chair
       note(ev.instr, ev.midi, { when: t, durBeats: ev.durBeats, bpm: song.bpm, gain: ev.gain, hit: ev.hit });
       if (cbs.onNote) {
         const delay = Math.max(0, (t - ctx.currentTime) * 1000);
@@ -239,6 +250,36 @@ export function stopSong() {
   clearInterval(current.timer);
   current.timeouts.forEach(clearTimeout);
   current = null;
+}
+
+// --- live band changes -----------------------------------------------------------
+
+const mutedMembers = new Set();
+
+/** Sit a member down (their scheduled events are skipped) or stand them up. */
+export function setMemberMuted(index, muted) {
+  if (muted) mutedMembers.add(index);
+  else mutedMembers.delete(index);
+}
+export function clearMemberMutes() { mutedMembers.clear(); }
+export function mutedMemberCount() { return mutedMembers.size; }
+
+/**
+ * Swap the band mid-song without dropping the beat: recompute the lead-aware
+ * assignments + event list for the CURRENT song and resync the scheduler to
+ * just past its lookahead horizon (so nothing already scheduled double-fires).
+ */
+export function updateBand(band) {
+  if (!current || !ctx) return;
+  const song = current.song;
+  const assignments = mapBand(band, song);
+  current.events = expandEvents(song, assignments);
+  const beatPos = (ctx.currentTime + HORIZON_S - current.startTime) / current.beatDur;
+  const within = ((beatPos % current.totalBeats) + current.totalBeats) % current.totalBeats;
+  current.loopN = Math.max(0, Math.floor(beatPos / current.totalBeats));
+  const idx = current.events.findIndex((e) => e.beat >= within);
+  if (idx >= 0) current.nextIdx = idx;
+  else { current.nextIdx = 0; current.loopN += 1; }
 }
 
 /** Current song beat position (for quantizing solos); null when idle. */

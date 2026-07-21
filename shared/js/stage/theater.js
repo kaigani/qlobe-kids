@@ -103,7 +103,7 @@ function visemeFlap(puppet) {
  */
 export async function createTheater(stage, opts = {}) {
   const { PIXI } = stage;
-  const floorY = opts.floorY ?? 0.74;
+  let floorY = opts.floorY ?? 0.74;
   // worldScale scales everything that isn't a puppet view (prop sizes, fx
   // offsets, flight arcs) so a cast rendered bigger keeps its props/effects
   // proportionate without re-authoring per-prop scales.
@@ -113,10 +113,11 @@ export async function createTheater(stage, opts = {}) {
 
   const view = new PIXI.Container();
   const bgLayer = new PIXI.Container();
+  const backPropLayer = new PIXI.Container();   // behind actors: furniture, scenery
   const actorLayer = new PIXI.Container();
   const propLayer = new PIXI.Container();   // above actors: a held toy reads in front of the paw
   const fxLayer = new PIXI.Container();
-  view.addChild(bgLayer, actorLayer, propLayer, fxLayer);
+  view.addChild(bgLayer, backPropLayer, actorLayer, propLayer, fxLayer);
 
   const actors = {};   // name -> actor
   const props = {};    // id -> prop
@@ -316,7 +317,8 @@ export async function createTheater(stage, opts = {}) {
   };
   stage.app.ticker.add(followProps);
 
-  /** Spawn a prop sprite. Held (holder+handBone+handOffset) or placed (fx/fy). */
+  /** Spawn a prop sprite. Held (holder+handBone+handOffset) or placed (fx/fy).
+   *  def.layer:'back' renders it BEHIND the actors (furniture, scenery). */
   async function addProp(id, def = {}) {
     let sprite;
     if (def.art) {
@@ -328,7 +330,7 @@ export async function createTheater(stage, opts = {}) {
       sprite.roundRect(-70, -50, 140, 100, 24).fill(def.color || '#e8b23a');
     }
     if (sprite.anchor) sprite.anchor.set(0.5);
-    propLayer.addChild(sprite);
+    (def.layer === 'back' ? backPropLayer : propLayer).addChild(sprite);
     const prop = {
       id, sprite,
       scale: def.scale ?? 0.5,
@@ -602,6 +604,13 @@ export async function createTheater(stage, opts = {}) {
   if (opts.backdrop) await setBackdrop(opts.backdrop);
 
   return Object.assign(theater, {
+    // scenes with per-set floor planes (e.g. one backdrop per song) retune the
+    // standing line live; actors and placed props re-seat immediately
+    setFloorY(y) {
+      floorY = theater.floorY = y;
+      Object.values(actors).forEach(placeActor);
+      Object.values(props).forEach(layoutProp);
+    },
     addActor, removeActor, placeActor, moveActor,
     setActorPose, resetActorPose,
     addProp, removeProp, clearProps, handProp, placeProp,
