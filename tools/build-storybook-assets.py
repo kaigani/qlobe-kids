@@ -66,15 +66,24 @@ def build_stones() -> None:
 
 
 def build_backdrop_and_hub() -> None:
+    # In-game backdrop keeps the GPT Image 2 v2 art with its clear performance area.
     source = ASSETS / "source/backdrops/castle-meadow-gpt-image-2-v2.png"
     backdrop = Image.open(source).convert("RGB")
     backdrop.save(ASSETS / "backdrops/castle-meadow-storybook.webp", "WEBP", quality=91, method=6)
 
-    hub = backdrop.resize((900, 506), Image.Resampling.LANCZOS).convert("RGBA")
-    placements = [("orange-cat", 40, 176, 280), ("dragon", 310, 118, 335), ("friendly-monster", 650, 182, 255)]
-    for actor, x, y, size in placements:
-        art = contain_alpha(ASSETS / "pose-actors" / actor / "poses/neutral.webp", size, 3)
-        hub.alpha_composite(art, (x, y))
+    # Hub tile uses the clean Krea seed-42 concept (no translucent performance clearing),
+    # cropped to 16:9 and composited with three neutral cast members standing on the meadow.
+    scene = Image.open(ASSETS / "source/concepts/backdrops/castle-meadow-krea2-seed-42.png").convert("RGB")
+    scene = scene.crop((0, 120, 1536, 984)).resize((900, 506), Image.Resampling.LANCZOS)
+    hub = scene.convert("RGBA")
+    # (actor, target_height, centre_x, feet_y) — feet rest on the meadow, dragon centred and largest
+    placements = [("orange-cat", 250, 150, 470), ("dragon", 300, 455, 478), ("friendly-monster", 250, 745, 470)]
+    for actor, target_h, cx, feet_y in placements:
+        art = Image.open(ASSETS / "pose-actors" / actor / "poses/neutral.webp").convert("RGBA")
+        art = art.crop(art.getbbox())
+        new_w = round(art.width * target_h / art.height)
+        art = art.resize((new_w, target_h), Image.Resampling.LANCZOS)
+        hub.alpha_composite(art, (cx - new_w // 2, feet_y - target_h))
     hub.convert("RGB").save(ROOT / "assets/hub/tiles/story-stones.jpg", quality=90, optimize=True)
 
 
