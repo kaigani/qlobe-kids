@@ -1,86 +1,51 @@
 # Story Stones assets
 
-## Placeholder art
+All new game artwork is project-owned and released under CC BY 4.0 with the
+rest of QLOBE Kids. No third-party character or prop art is used.
 
-All current gameplay art is Unicode emoji rendered by the shared engine on soft rounded cards. No image files were created for these placeholders.
+## Storybook production pipeline
 
-- Splash: 🪨
-- Scenes: 🏰 🌲 🎉 ⛵ 🏝️ 🐠
-- Castle stones: 🐉 👸 🐸 🗝️ 🌟 🍎 🌧️ ☀️
-- Ocean stones: 🐙 🧜 🐢 🗺️ 🌊 ☀️ 🦀 🦜 🥥 🗝️ 🌧️ 🐬 🐚 💎 ⭐
-- Story Screen backdrop: `./assets/bg.jpg` is intentionally referenced but not included; the reviewer supplies it.
+| Asset | Production path | Source / processing |
+|---|---|---|
+| Splash and stone-selection backgrounds | `assets/ui/splash-background.webp`, `assets/ui/select-background.webp` | Native GPT Image generation using the UI concepts for composition and the Castle Meadow source backdrop for storybook style continuity |
+| Splash and stone-selection title art | `assets/ui/splash-title.webp`, `assets/ui/select-title.webp` | Native GPT Image generation on a flat magenta key; local soft-matte alpha extraction and WebP optimization |
+| Castle Meadow stage | `assets/backdrops/castle-meadow-storybook.webp` | Krea 2 concept, then GPT Image 2 composition refinement with a clear performance area |
+| 220 story settings | `assets/backdrops/stories/*.webp` | Local Krea 2 direct generation at 1344×768; one unique environment-only setting per unordered combination |
+| Five pose actors | `assets/pose-actors/<id>/poses/*.webp` | Krea 2 concepts; GPT Image 2 identity masters and six semantic pose variations; local chroma key and fixed-canvas normalization |
+| Seven story props | `assets/props/*.webp` | Krea 2 concepts; GPT Image 2 isolation; local chroma key and deterministic normalization |
+| Twelve stone thumbnails | `assets/stones/*.png` | Deterministic derivatives of neutral actor poses and production prop art |
+| Hub tile | `../../assets/hub/tiles/story-stones.jpg` | Deterministic composite of the production backdrop and neutral poses |
+| Narrator library | `assets/audio/*.m4a`, `manifest.json`, `lines.json` | Local Qwen3-TTS clone of the canonical teacher reference; local Whisper acceptance check |
 
-## Assets needed
+The selected visual anchor is Krea 2 seed `1337`, prompted as “Children's
+storybook dragon in a cosy illustration style.” Character identity was then
+locked with a neutral GPT Image 2 master before producing `neutral`, `enter`,
+`notice`, `interact`, `react`, and `celebrate` poses. The production poses share
+a transparent 1024×1024 canvas, anchor, and baseline so swapping never changes
+the actor's stage mark.
 
-- Art: painted-stone versions of every sticker subject listed above; a velvet pouch; a story rug; six story starter scene cards (castle gate, forest path, celebration, sailboat, tropical island, deep ocean dive); and the supplied Story Screen background at `assets/bg.jpg`.
-- Voice: record every line below in a hushed, campfire-wonder tone. Keep every invitation to speak warm and unhurried.
+The launch and selection UI sources are preserved under
+`assets/source/ui-gpt-image-2/`. The generated title sources use a flat magenta
+key; their `*-alpha.png` derivatives preserve the locally extracted transparency.
+The game's home and replay-audio controls reuse the existing shared QLOBE Kids
+assets at `../../shared/assets/ui/btn-home.png` and `btn-sound.png` unchanged.
 
-## Voice lines (verbatim)
+Character and prop generation inputs remain under `assets/source/`. To keep the
+open repository practical to clone, story settings retain their exact prompt,
+seed, dimensions, steps, and CFG in `story-pack.json` instead of committing 220
+large source PNGs. Their WebP finals can be regenerated resumably with
+`tools/generate-story-stones-scenes.py`.
 
-### Shared
+## Runtime packs
 
-- "Your story stones made a wonderful tale!"
-- "That belongs in your story!"
+- `assets/actors/pack.json` maps five cast members to pose manifests.
+- `assets/pose-actors/<id>/poses.json` defines each actor's six complete-image
+  poses, common anchor, and paper-pop transition.
+- `assets/props/pack.json` defines seven scene props.
+- `story-pack.json` v2 defines pose cue defaults, twelve stones, and all 220
+  complete unordered stories with their cast order, three beats, unique setting,
+  Krea recipe, and review state.
 
-### Castle Tale
-
-- "The story pouch is open. Pick your stones, and tell your grown-up what happens next!"
-- "What a marvelous castle tale! Every stone helped make it yours."
-- "Who walks through the castle gate? Pick a stone and say who it is!"
-- "A dragon walks through the gate! Tell your grown-up what happens next!"
-- "A princess walks through the gate! Tell your grown-up what happens next!"
-- "A frog walks through the gate! Tell your grown-up what happens next!"
-- "What do they find at the gate? Pick a stone, then say it in your story!"
-- "They find a shiny key at the gate! Say the whole story out loud!"
-- "They find a glowing star at the gate! Say the whole story out loud!"
-- "They find a red apple at the gate! Say the whole story out loud!"
-- "Who appears on the forest path? Choose anyone for your tale!"
-- "A dragon appears on the forest path! What does the dragon do?"
-- "A princess appears on the forest path! What does the princess do?"
-- "A frog appears on the forest path! What does the frog do?"
-- "What is the weather in your forest? Pick a weather stone and say it out loud!"
-- "Rain patters on the forest path! Tell your grown-up what happens next!"
-- "Sunshine warms the forest path! Tell your grown-up what happens next!"
-- "A magical star lights the forest path! Tell your grown-up what happens next!"
-- "Who comes to the celebration? Pick the star of your ending!"
-- "The dragon comes to the celebration! Tell why everyone cheers!"
-- "The princess comes to the celebration! Tell why everyone cheers!"
-- "The frog comes to the celebration! Tell why everyone cheers!"
-- "Choose one last treasure for your ending, then tell the whole tale!"
-- "The golden key finishes your castle tale. Tell your grown-up the whole story!"
-- "The bright star finishes your castle tale. Tell your grown-up the whole story!"
-- "The crunchy apple finishes your castle tale. Tell your grown-up the whole story!"
-
-### Ocean Tale
-
-- "The story pouch is open. Pick your ocean stones, and tell your grown-up what happens next!"
-- "What a splashy ocean tale! Every stone helped make it yours."
-- "Who climbs aboard the boat? Pick a stone and introduce them!"
-- "A clever octopus climbs aboard! Tell your grown-up where the boat goes!"
-- "A brave merperson climbs aboard! Tell your grown-up where the boat goes!"
-- "A gentle turtle climbs aboard! Tell your grown-up where the boat goes!"
-- "What travels with the boat? Choose a stone and add it to your story!"
-- "A treasure map travels on the boat! Say what the map shows!"
-- "A giant wave travels beside the boat! Say what happens next!"
-- "Warm sunshine follows the boat! Say what happens next!"
-- "Who waits on the island? Pick any stone for your adventure!"
-- "A dancing crab waits on the island! Show how the crab dances!"
-- "A colorful parrot waits on the island! What does the parrot say?"
-- "A sleepy turtle waits on the island! What wakes the turtle?"
-- "What do they discover there? Choose a stone and tell it out loud!"
-- "They discover a round coconut! Tell your grown-up what is inside!"
-- "They discover a tiny golden key! Tell your grown-up what it opens!"
-- "They discover a warm rain shower! Tell your grown-up what they do!"
-- "Who joins the deep dive? Pick a sea friend and say their name!"
-- "A playful dolphin joins the deep dive! Tell what the dolphin finds!"
-- "A clever octopus joins the deep dive! Tell what the octopus finds!"
-- "A brave merperson joins the deep dive! Tell what the merperson finds!"
-- "Choose the surprise at the bottom of the sea, then tell the whole tale!"
-- "A singing shell finishes your ocean tale. Tell your grown-up the whole story!"
-- "A sparkling gem finishes your ocean tale. Tell your grown-up the whole story!"
-- "A friendly sea star finishes your ocean tale. Tell your grown-up the whole story!"
-
-## Provenance and licensing
-
-- Emoji glyph appearance depends on the device operating system. Unicode emoji are temporary references, not shipped third-party image assets.
-- Production art and recorded voice are not yet present. Document creator, source, license, attribution, and modifications here when the reviewer supplies them.
+The superseded Story Stones rig sheets, part cuts, rig manifests, v1 props, and
+v1 backdrop were removed after migration. Standard QLOBE puppet assets and
+their Rig/Animate workflow are unchanged.

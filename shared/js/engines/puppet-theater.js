@@ -48,6 +48,8 @@ import { createPuppet, loadRigArt } from '../stage/puppet.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj } from '../stage/art-pixi.js';
+import { loadPropPack, propRuntimeDefinition } from '../stage/prop-pack.js';
+import { loadScenePack, applyScenePack } from '../stage/scene-pack.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -76,6 +78,8 @@ export function createGame(config, mountEl) {
 class PuppetTheaterGame {
   constructor(config, mountEl) {
     this.config = normalizeConfig(config);
+    this.propPack = null;
+    this.scenePack = null;
     this.mountEl = mountEl;
     this.destroyed = false;
     this.previousDebug = window.QLOBE_DEBUG;
@@ -128,8 +132,14 @@ class PuppetTheaterGame {
     });
 
     // narrator manifest (recorded teacher voice; missing file = speech fallback)
-    this.ready = voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', {})
-      .catch(() => {});
+    this.ready = Promise.all([
+      voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', {}).catch(() => {}),
+      loadPropPack(this.config.propPack).then((pack) => { this.propPack = pack; }).catch(() => {}),
+      loadScenePack(this.config.scenePack, this.config.id).then((pack) => {
+        this.scenePack = pack;
+        applyScenePack(this.config, pack);
+      }).catch(() => {}),
+    ]).then(() => {});
     this.renderSplash();
     this.installDebugHook();
   }
@@ -553,10 +563,20 @@ class PuppetTheaterGame {
     // stage the set: backdrop (crossfades between scenarios) + this scenario's props
     T.interrupt();
     T.clearProps();
+    T.setFloorY(sc.floorY ?? this.config.stage?.floorY ?? 0.84);
     await T.setBackdrop(this.config.backdrops[sc.backdrop] || sc.backdrop || null);
-    for (const [id, def] of Object.entries(sc.props || {})) await T.addProp(id, def);
+    for (const [id, def] of Object.entries(sc.props || {})) {
+      const charId = def.holder ? T.actors[def.holder]?.char : null;
+      const scenePlacement = this.propPack?.props?.[id] ? {
+        holder: def.holder, fx: def.fx, fy: def.fy,
+        characterSocket: def.characterSocket,
+        handBone: def.handBone, handOffset: def.handOffset,
+        presentation: def.presentation,
+      } : def;
+      await T.addProp(id, propRuntimeDefinition(this.propPack, id, scenePlacement, charId));
+    }
     // reset actors to their marks
-    for (const [name, snap] of [['a', MARK_A], ['b', MARK_B]]) {
+    for (const [name, snap] of [['a', sc.actors?.a?.x ?? MARK_A], ['b', sc.actors?.b?.x ?? MARK_B]]) {
       const actor = T.actors[name];
       if (!actor) continue;
       T.resetActorPose(actor);

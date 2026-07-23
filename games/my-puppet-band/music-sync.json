@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-music-sync",
+  "formatVersion": 1,
+  "id": "my-puppet-band-performance",
+  "profiles": {
+    "drum": { "baseClip": "play-drum", "cycleBeats": 1, "gestures": { "a": "play-drum", "b": "play-drum" } },
+    "bongos": { "baseClip": "play-drum", "cycleBeats": 1, "gestures": { "a": "play-drum", "b": "play-drum" } },
+    "guitar": { "baseClip": "play-strum", "cycleBeats": 1 },
+    "trumpet": { "baseClip": "play-blow", "cycleBeats": 2 },
+    "saxophone": { "baseClip": "play-blow", "cycleBeats": 2 },
+    "clarinet": { "baseClip": "play-blow", "cycleBeats": 2 },
+    "flute": { "baseClip": "play-blow", "cycleBeats": 2 },
+    "horn": { "baseClip": "play-blow", "cycleBeats": 2 },
+    "piano": { "baseClip": "play-keys", "cycleBeats": 1 },
+    "vibraphone": { "baseClip": "play-keys", "cycleBeats": 1 },
+    "maracas": { "baseClip": "play-shake", "cycleBeats": 0.5 },
+    "cymbal": { "baseClip": "play-shake", "cycleBeats": 1 }
+  }
+}

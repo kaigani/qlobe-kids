@@ -50,6 +50,19 @@ python3 -m http.server 8000
 
 Then open **http://localhost:8000/**. That's it — no install, no build.
 
+## Author with QLOBE Studio
+
+The integrated character, prop, scene, and music-performance editor runs from
+the same repository. Start its local authoring server:
+
+```bash
+python3 tools/puppet-studio-server.py
+```
+
+Then open **http://127.0.0.1:8000/shared/js/studio/**. The older Puppet Studio
+URL remains compatible. See [the QLOBE Studio specification](docs/qlobe-studio.md)
+for its data formats and runtime contracts.
+
 ## Project structure
 
 ```

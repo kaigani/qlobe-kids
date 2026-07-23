@@ -3602,6 +3602,8 @@ export default {
     playroom: './assets/bg/playroom.png',
     playground: './assets/bg/playground.png',
   },
+  propPack: './assets/props/pack.json',
+  scenePack: './scene-pack.json',
   judgeArt: {
     sad: './assets/ui/judge-sad.png',
     happy: './assets/ui/judge-happy.png',

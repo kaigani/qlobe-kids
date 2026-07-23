@@ -31,6 +31,8 @@ import { createTheater } from '../stage/theater.js';
 import { createPuppet, loadRigArt } from '../stage/puppet.js';
 import { to, ease } from '../stage/tween.js';
 import { burst } from '../stage/particles.js';
+import { loadPropPack, propRuntimeDefinition } from '../stage/prop-pack.js';
+import { loadMusicSyncProfiles, createMusicSync } from '../stage/music-sync.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -66,6 +68,8 @@ export function createGame(config, mountEl) {
 class PuppetBandGame {
   constructor(config, mountEl) {
     this.config = normalizeConfig(config);
+    this.propPack = null;
+    this.syncProfiles = null;
     this.mountEl = mountEl;
     this.destroyed = false;
     this.previousDebug = window.QLOBE_DEBUG;
@@ -110,6 +114,8 @@ class PuppetBandGame {
     this.ready = Promise.all([
       voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', {}).catch(() => {}),
       music.init(INSTRUMENTS_MANIFEST),
+      loadPropPack(this.config.propPack).then((pack) => { this.propPack = pack; }).catch(() => {}),
+      loadMusicSyncProfiles(this.config.musicSync).then((profiles) => { this.syncProfiles = profiles; }).catch(() => {}),
     ]).then(() => {});
     this.renderSplash();
     this.installDebugHook();
@@ -476,7 +482,9 @@ class PuppetBandGame {
     if (this.destroyed || generation !== this.stageGeneration) return null;
 
     await T.addProp(`s${slot}`, {
-      art: this.config.props.stool, color: '#a8763e', scale: 0.34,
+      ...propRuntimeDefinition(this.propPack, 'stool'),
+      art: this.propPack?.props?.stool?.artUrl || this.config.props.stool, color: '#a8763e',
+      scale: this.propPack?.props?.stool?.presentation?.scale ?? 0.34,
       fx: 0.5, fy: T.floorY - 0.02, layer: 'back',
     });
     const instrDef = this.config.instruments.find((x) => x.id === bandEntry.instr) || {};
@@ -510,18 +518,21 @@ class PuppetBandGame {
     member.stoolId = stoolId;
     this.addStageInstrumentBadge(member);
     this.members.push(member);
+    if (music.songNow()) this.startMemberMusicSync(member);
     return member;
   }
 
   performancePropDef(holder, instrId, fx = 0.5) {
     const def = this.config.instruments.find((instrument) => instrument.id === instrId) || {};
+    const packed = propRuntimeDefinition(this.propPack, instrId, {}, holder && this.theater?.actors?.[holder]?.char);
     const prop = {
-      art: this.config.props[instrId],
+      ...packed,
+      art: packed.art || this.config.props[instrId],
       color: def.color || '#e8b23a',
-      scale: def.floor ? 0.5 : 0.3,
+      scale: packed.scale ?? (def.floor ? 0.5 : 0.3),
     };
     if (def.floor) { prop.fx = fx; prop.fy = this.theater.floorY + 0.03; }
-    else { prop.holder = holder; prop.handBone = 'arm-lower.R'; prop.handOffset = [0, 110]; }
+    else { prop.holder = holder; prop.characterSocket = packed.characterSocket || 'hand.R'; prop.handBone = 'arm-lower.R'; prop.handOffset = [0, 110]; }
     return prop;
   }
 
@@ -603,6 +614,7 @@ class PuppetBandGame {
       this.config.defaultInstrumentByChar[member.char] = next;
       this.updateStageInstrumentBadge(member);
       member.actor.puppet.playClip(this.playClipFor(member));
+      this.startMemberMusicSync(member);
       this.layoutBand(false);
       this.syncMusic();
       music.preview(next);
@@ -617,6 +629,16 @@ class PuppetBandGame {
   playClipFor(member) {
     if (member.sitting) return 'sit-nod';
     return PLAY_CLIPS[member.instr] || 'groove';
+  }
+
+  startMemberMusicSync(member) {
+    member.musicSync?.destroy();
+    member.musicSync = createMusicSync({
+      puppet: member.actor.puppet,
+      profile: this.syncProfiles?.profiles?.[member.instr] || { baseClip: this.playClipFor(member), cycleBeats: 1 },
+    });
+    if (music.songNow()) member.musicSync.start(() => music.songNow());
+    return member.musicSync;
   }
 
   // Recompute stage marks for the current band size; puppets/props slide over.
@@ -714,6 +736,8 @@ class PuppetBandGame {
     const m = this.members[index];
     if (!m || !T) return;
     this.members.splice(index, 1);
+    m.musicSync?.destroy();
+    m.musicSync = null;
     this.targetMap.delete(m.id);
     this.targetMap.delete(m.stoolId);
     this.targetMap.delete(m.instrumentBadgeId);
@@ -748,6 +772,8 @@ class PuppetBandGame {
     const instrProp = this.theater.props[`p${member.slot}`];
     if (instrProp) instrProp.sprite.visible = !member.sitting;
     member.actor.puppet.playClip(this.playClipFor(member));
+    if (member.sitting) { member.musicSync?.destroy(); member.musicSync = null; }
+    else this.startMemberMusicSync(member);
     this.playSfx(member.sitting ? 'unpop' : 'pop');
     if (!member.sitting) this.theater.playFx('sparkle', member.actor.name);
   }
@@ -774,9 +800,10 @@ class PuppetBandGame {
     await this.speakNarr(`song-${song.id}`, song.introText || `Here comes ${song.title}!`);
     if (generation !== this.songGeneration || this.destroyed || this.screen !== 'concert') return;
     this.playing = music.playSong(song, this.members.map((m) => ({ instr: m.instr })), {
-      onNote: (memberIndex) => this.accent(memberIndex),
+      onNote: (memberIndex, atContextTime, event) => this.accent(memberIndex, event, atContextTime),
       onLoop: () => this.loopSparkle(),
     });
+    this.members.forEach((member) => this.startMemberMusicSync(member));
   }
 
   nextSong() {
@@ -797,12 +824,15 @@ class PuppetBandGame {
 
   stopConcert() {
     music.stopSong();
+    this.members.forEach((member) => { member.musicSync?.destroy(); member.musicSync = null; });
     this.playing = null;
   }
 
-  accent(memberIndex) {
+  accent(memberIndex, event = {}, atContextTime = 0) {
     const m = this.members[memberIndex];
     if (!m || m.sitting || this.destroyed || !this.theater) return;
+    if (!m.musicSync) this.startMemberMusicSync(m);
+    m.musicSync.note({ ...event, member: memberIndex, atContextTime });
     this.theater.setActorPose(m.actor, { torso: { scaleY: 1.07 } });
     setTimeout(() => {
       if (!this.destroyed && this.theater && this.members[memberIndex] === m) {
@@ -823,6 +853,7 @@ class PuppetBandGame {
     this.playSfx('sparkle');
     const ms = music.soloRiff(member.instr, this.currentSong());
     this.theater.playFx('sparkle', member.actor.name);
+    this.members.forEach((m) => { m.musicSync?.destroy(); m.musicSync = null; });
     member.actor.puppet.playClip('cheer', {
       loop: false,
       onDone: () => { if (!this.destroyed && this.screen === 'concert') member.actor.puppet.playClip(this.playClipFor(member)); },
@@ -833,7 +864,10 @@ class PuppetBandGame {
     this.members.forEach((m) => { if (m !== member && !m.sitting) m.actor.puppet.playClip('idle'); });
     setTimeout(() => {
       if (this.destroyed || this.screen !== 'concert' || token !== this.soloToken) return;
-      this.members.forEach((m) => { if (m !== member) m.actor.puppet.playClip(this.playClipFor(m)); });
+      this.members.forEach((m) => {
+        if (m !== member) m.actor.puppet.playClip(this.playClipFor(m));
+        if (!m.sitting) this.startMemberMusicSync(m);
+      });
       if (this.theater) this.theater.playFx('sparkle', member.actor.name);
     }, ms + 100);
   }
@@ -962,6 +996,8 @@ function normalizeConfig(config) {
     defaultInstrumentByChar: { ...(config.defaultInstrumentByChar || {}) },
     defaultBand: config.defaultBand || [],
     props: config.props || {},
+    propPack: config.propPack || null,
+    musicSync: config.musicSync || null,
     stageBackdrop: config.stageBackdrop || null,
     songs: config.songs || [],
     ...{},

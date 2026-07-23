@@ -59,6 +59,8 @@
     #modeseg button { min-height:61px; border-right:var(--rule); padding:8px 24px; }
     #bar > .row { margin:0 10px; gap:8px; align-self:center; }
     #bar > button { align-self:center; margin:7px 4px; }
+    body.embedded #bar { min-height:52px; }
+    body.embedded #bar .brand, body.embedded #modeseg, body.embedded #suite-link { display:none; }
     #time { width:100%; }
     #ticks { position:relative; height:18px; margin:3px 0 2px; }
     #ticks .k { position:absolute; top:3px; width:11px; height:11px; background:#ff3b3b;
@@ -144,6 +146,7 @@
       <button id="stop" class="ghost">■</button>
     </span>
     <span style="flex:1"></span>
+    <a id="suite-link" href="../studio/" style="align-self:center;margin:7px 4px;padding:9px 11px;min-height:38px;border:2px solid #111;background:#fff;color:#111;text-decoration:none;text-transform:uppercase">QLOBE Studio ↗</a>
     <button id="undo" class="ghost" title="Ctrl+Z">⟲ Undo</button>
     <button id="reset" class="ghost">Reset</button>
     <button id="copy" class="ghost">Copy JSON</button>
@@ -239,9 +242,14 @@
     import { mountPuppetBuilder } from './puppet-builder.js';
 
     // ?char=bear|unicorn|… (defaults to bear). Loads that character's rig + voices.
-    const CHAR = new URLSearchParams(location.search).get('char') || 'bear';
-    const INITIAL_MODE = new URLSearchParams(location.search).get('mode') || 'rig';
-    const CHAR_BASE = `../../characters/${CHAR}/`;
+    const QUERY = new URLSearchParams(location.search);
+    const CHAR = QUERY.get('char') || 'bear';
+    const INITIAL_MODE = QUERY.get('mode') || 'rig';
+    const RIG_PATH = QUERY.get('rigPath') || '';
+    if (QUERY.get('embedded') === '1') document.body.classList.add('embedded');
+    const CHAR_BASE = QUERY.get('base')
+      ? new URL(QUERY.get('base'), location.href).href
+      : new URL(`../../characters/${CHAR}/`, location.href).href;
     // Voice lines per character (paths relative to CHAR_BASE). Extend as characters get voices.
     const BUILTIN_VOICES = {
       bear: [{ label: 'Benny — intro', audio: 'voice/intro.m4a', cues: 'voice/intro.cues.json', map: VISEME_IDENTITY }],
@@ -948,7 +956,10 @@
       builder = mountPuppetBuilder({
         panel: $('builderpanel'), stage: $('builderstage'), currentChar: CHAR,
         notify: toast,
-        onOpenCharacter: (id) => { location.href = `?char=${encodeURIComponent(id)}&mode=rig`; },
+        onOpenCharacter: (id) => {
+          if (QUERY.get('embedded') === '1') window.parent.postMessage({ type: 'qlobe-studio-character', char: id }, location.origin);
+          location.href = `?char=${encodeURIComponent(id)}&mode=rig${QUERY.get('embedded') === '1' ? '&embedded=1' : ''}`;
+        },
         onVoiceReady: async (id) => {
           if (id !== CHAR) return;
           voiceLines = await discoverVoiceLines();
@@ -976,10 +987,15 @@
       $('save').onclick = async () => {
         toast(`Saving ${CHAR}/rig.json to disk…`);
         try {
-          const response = await fetch(`/api/puppet/file?id=${encodeURIComponent(CHAR)}&kind=rig&overwrite=true`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(rig, null, 2) + '\n',
-          });
+          const response = RIG_PATH
+            ? await fetch(`/api/studio/document?path=${encodeURIComponent(RIG_PATH)}`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(rig, null, 2) + '\n',
+            })
+            : await fetch(`/api/puppet/file?id=${encodeURIComponent(CHAR)}&kind=rig&overwrite=true`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(rig, null, 2) + '\n',
+            });
           const result = await response.json().catch(() => ({}));
           if (!response.ok) throw new Error(result.error || response.statusText);
           flash('saved rig.json to disk');

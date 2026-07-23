@@ -1,0 +1,36 @@
+{
+  "format": "qlobe-studio-projects",
+  "formatVersion": 1,
+  "projects": [
+    {
+      "id": "story-stones",
+      "label": "Story Stones",
+      "gameBase": "../../../games/story-stones/",
+      "workspaces": {
+        "build": { "profile": "pose-library", "label": "Poses", "actorPack": "assets/actors/pack.json", "backdrop": "assets/backdrops/castle-meadow-storybook.webp" },
+        "props": { "pack": "assets/props/pack.json", "document": "games/story-stones/assets/props/pack.json", "backdrop": "assets/backdrops/castle-meadow-storybook.webp", "actorPack": "assets/actors/pack.json" },
+        "stage": { "adapter": "story-stones", "document": "games/story-stones/story-pack.json", "pack": "story-pack.json" }
+      }
+    },
+    {
+      "id": "puppet-problem-solvers",
+      "label": "Problem-Solving Puppets",
+      "gameBase": "../../../games/puppet-problem-solvers/",
+      "workspaces": {
+        "build": { "profile": "canonical-puppet" }, "rig": {}, "animate": {}, "speech": {},
+        "props": { "pack": "assets/props/pack.json", "document": "games/puppet-problem-solvers/assets/props/pack.json", "backdrop": "assets/bg/playroom.png" },
+        "stage": { "adapter": "puppet-problem-solvers", "document": "games/puppet-problem-solvers/scene-pack.json" }
+      }
+    },
+    {
+      "id": "my-puppet-band",
+      "label": "My Puppet Band",
+      "gameBase": "../../../games/my-puppet-band/",
+      "workspaces": {
+        "build": { "profile": "canonical-puppet" }, "rig": {}, "animate": {}, "speech": {},
+        "props": { "pack": "assets/props/pack.json", "document": "games/my-puppet-band/assets/props/pack.json", "backdrop": "assets/bg/stage-rainbow-jam-gpt-image-2.png" },
+        "music": { "document": "games/my-puppet-band/music-sync.json" }
+      }
+    }
+  ]
+}

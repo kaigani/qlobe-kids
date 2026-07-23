@@ -26,8 +26,9 @@ export function burst(PIXI, container, x, y, { count = 26, power = 7, gravity = 
     const start = performance.now();
     const tick = (now) => {
       const t = (now - start) / life;
-      if (t >= 1) { bits.forEach((b) => b.g.destroy()); resolve(); return; }
+      if (t >= 1 || bits.every((b)=>b.g.destroyed)) { bits.forEach((b) => { if(!b.g.destroyed)b.g.destroy(); }); resolve(); return; }
       for (const b of bits) {
+        if(b.g.destroyed)continue;
         b.vy += gravity;
         b.g.x += b.vx; b.g.y += b.vy; b.g.rotation += b.vr;
         b.g.alpha = 1 - t * t;
@@ -54,7 +55,7 @@ export function sparkle(PIXI, container, x, y, color = 0xffd75e) {
     const start = performance.now();
     const tick = (now) => {
       const t = (now - start) / 420;
-      if (t >= 1) { g.destroy(); resolve(); return; }
+      if (t >= 1 || g.destroyed) { if(!g.destroyed)g.destroy(); resolve(); return; }
       g.scale.set(1 + t * 0.8);
       g.alpha = 0.95 * (1 - t);
       g.rotation = t * 0.6;

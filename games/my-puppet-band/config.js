@@ -485,6 +485,8 @@ export default {
     mascots: [],
   },
   stageBackdrop: './assets/bg/stage-rainbow-jam-gpt-image-2.png',
+  propPack: './assets/props/pack.json',
+  musicSync: './music-sync.json',
   cast: ['bear', 'doggy', 'fox', 'frog', 'rabbit', 'unicorn', 'princess-lily', 'princess-zoe'],
   instruments: [
     { id: 'piano', emoji: '🎹', floor: true, color: '#2d7dd2' },

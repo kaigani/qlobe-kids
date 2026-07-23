@@ -196,7 +196,7 @@ function expandEvents(song, assignments) {
 }
 
 /**
- * Start a song with a band. cbs.onNote(memberIndex, atCtxTime) fires (via
+ * Start a song with a band. cbs.onNote(memberIndex, atCtxTime, event) fires (via
  * setTimeout, ~on the beat) for visuals; cbs.onLoop() at each loop point.
  * Returns { stop() }.
  */
@@ -235,7 +235,11 @@ export function playSong(song, band, cbs = {}) {
       note(ev.instr, ev.midi, { when: t, durBeats: ev.durBeats, bpm: song.bpm, gain: ev.gain, hit: ev.hit });
       if (cbs.onNote) {
         const delay = Math.max(0, (t - ctx.currentTime) * 1000);
-        const to = setTimeout(() => { state.timeouts.delete(to); cbs.onNote(ev.member); }, delay);
+        const visualEvent = { ...ev, bpm: song.bpm, atContextTime: t, loop: state.loopN };
+        const to = setTimeout(() => {
+          state.timeouts.delete(to);
+          cbs.onNote(ev.member, t, visualEvent);
+        }, delay);
         state.timeouts.add(to);
       }
     }
@@ -283,10 +287,15 @@ export function updateBand(band) {
 }
 
 /** Current song beat position (for quantizing solos); null when idle. */
-function songNow() {
+export function songNow() {
   if (!current || !ctx) return null;
   const beat = (ctx.currentTime - current.startTime) / current.beatDur;
-  return { beat, beatDur: current.beatDur, song: current.song };
+  const totalBeats = current.totalBeats;
+  const loopBeat = ((beat % totalBeats) + totalBeats) % totalBeats;
+  return {
+    beat, loopBeat, totalBeats, beatDur: current.beatDur,
+    bpm: current.song.bpm, contextTime: ctx.currentTime, song: current.song,
+  };
 }
 
 /**

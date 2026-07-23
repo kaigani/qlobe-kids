@@ -1,0 +1,20 @@
+{
+  "format": "qlobe-prop-pack",
+  "formatVersion": 1,
+  "id": "puppet-problem-solvers-props",
+  "title": "Problem-Solving Puppets props",
+  "props": {
+    "truck": { "art": "toy-truck.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.4, "rotation": 0, "layer": "front" }, "placement": { "mode": "held", "primary": "grip-main" }, "sockets": { "grip-main": { "point": [0, 0] } }, "bindings": { "grip-main": "hand.R" } },
+    "crayon": { "art": "crayon.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.17, "rotation": 0, "layer": "front", "inheritRotation": true }, "placement": { "mode": "held", "primary": "grip-main" }, "sockets": { "grip-main": { "point": [0, 0] }, "tip": { "point": [0, -75] } }, "bindings": { "grip-main": "hand.R" } },
+    "book": { "art": "storybook.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.34, "rotation": 0, "layer": "front" }, "placement": { "mode": "held", "primary": "grip-main" }, "sockets": { "grip-main": { "point": [0, 0] }, "grip-support": { "point": [-70, 0] } }, "bindings": { "grip-main": "hand.R", "grip-support": "hand.L" } },
+    "ball": { "art": "ball.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.36, "rotation": 0, "layer": "front" }, "placement": { "mode": "held", "primary": "grip-main" }, "sockets": { "grip-main": { "point": [0, 0] } }, "bindings": { "grip-main": "hand.R" } },
+    "slide": { "art": "slide.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.65, "rotation": 0, "layer": "back" }, "placement": { "mode": "floor" }, "sockets": {} },
+    "swing": { "art": "swing.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.6, "rotation": 0, "layer": "back" }, "placement": { "mode": "floor" }, "sockets": {} },
+    "drum": { "art": "drum.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.42, "rotation": 0, "layer": "front" }, "placement": { "mode": "floor" }, "sockets": { "head": { "point": [0, -45] } } },
+    "telescope": { "art": "telescope.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.28, "rotation": 0, "layer": "front", "inheritRotation": true }, "placement": { "mode": "held", "primary": "grip-main" }, "sockets": { "grip-main": { "point": [0, 0] }, "eyepiece": { "point": [-100, 0] } }, "bindings": { "grip-main": "hand.R", "eyepiece": "mouth" } },
+    "shelf": { "art": "shelf-tall.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.58, "rotation": 0, "layer": "back" }, "placement": { "mode": "floor" }, "sockets": {} },
+    "blocks": { "art": "blocks-spilled.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.45, "rotation": 0, "layer": "front" }, "placement": { "mode": "floor" }, "sockets": {} },
+    "wagon": { "art": "wagon.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.46, "rotation": 0, "layer": "front" }, "placement": { "mode": "floor" }, "sockets": { "handle": { "point": [100, -25] } }, "bindings": { "handle": "hand.R" } },
+    "kite": { "art": "kite-tangled.png", "presentation": { "anchor": [0.5, 0.5], "scale": 0.42, "rotation": 0, "layer": "front" }, "placement": { "mode": "floor" }, "sockets": { "string": { "point": [0, 90] } }, "bindings": { "string": "hand.R" } }
+  }
+}

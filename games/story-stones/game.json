@@ -5,28 +5,29 @@
   "path": "games/story-stones/",
   "icon": "🪨",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 3, "max": 7 },
   "status": "beta",
-  "accent": "#7c4fc4",
-  "description": "Choose painted story stones, say what happens next, and watch each choice stamp into a one-of-a-kind tale.",
+  "accent": "#25bceb",
+  "description": "Choose any three magical stones and discover one of 220 complete stories in its own illustrated setting.",
   "learningGoals": [
-    "Invent characters, settings, and events for an original narrative",
-    "Use story vocabulary while speaking in full sentences",
-    "Retell a short three-part story aloud"
+    "Invent a beginning, encounter, and ending from visual prompts",
+    "Connect three characters or objects in a complete narrative arc",
+    "Retell and extend a short animated story aloud"
   ],
-  "interactionModel": "listen to a story prompt, tap an open-ended stone choice, and tell that part of the story aloud",
-  "feedbackModel": "Every choice pops and sparkles into the journal, receives a warm spoken story continuation, and returns in the celebratory recap.",
+  "interactionModel": "tap or drag three unique stones into an unordered tray, play their complete story, then edit the group or choose another story",
+  "feedbackModel": "Every combination is valid and unique; each has three recorded narration beats, expressive pose cues, and its own setting.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
+    "shared/js/engines/story-stones.js",
+    "shared/js/stage/theater.js",
+    "shared/js/stage/pose-sprite.js",
+    "shared/js/voice-clips.js",
     "shared/js/sfx.js"
   ],
   "modes": [
-    { "id": "castle", "title": "Castle Tale", "skill": "inventing a beginning, middle, and ending" },
-    { "id": "ocean", "title": "Ocean Tale", "skill": "oral storytelling with character, setting, and event vocabulary" }
+    { "id": "storybook-library", "title": "Storybook Library", "skill": "open-ended combinatorial storytelling" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "QLOBE Kids contributors; placeholder emoji only (see ASSETS.md).",
-  "characters": [],
+  "credits": "QLOBE Kids contributors; original Krea 2 and GPT Image 2 art plus locally generated teacher narration (see ASSETS.md).",
+  "characters": ["dragon", "orange-cat", "white-cat", "friendly-monster", "owl"],
   "conceptVideo": ""
 }

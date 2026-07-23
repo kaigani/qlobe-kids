@@ -23,6 +23,8 @@ import { ease, to } from './tween.js';
 import { burst, sparkle } from './particles.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
+import { characterSockets } from './prop-pack.js';
+import { loadPoseActor } from './pose-sprite.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,8 +45,8 @@ export function loadActingClips() {
 }
 
 // Session caches (rig JSON + art factories are shared across scenes/games).
-const rigCache = new Map();      // charId -> Promise<rig json>
-const artCache = new Map();      // charId -> Promise<partFactory>
+const rigCache = new Map();      // rig URL -> Promise<rig json>
+const artCache = new Map();      // actor base URL -> Promise<partFactory>
 const cueCache = new Map();      // url -> Promise<mouthCues|null>
 
 function fetchJson(url) {
@@ -63,6 +65,29 @@ function getArtFactory(PIXI, charId, rig) {
     artCache.set(charId, loadRigArt(PIXI, rig, new URL(`${charId}/`, CHARACTERS_BASE).href));
   }
   return artCache.get(charId);
+}
+
+// Scene actors may live in a game-local Actor Pack instead of the canonical
+// shared/characters folder.  Strings retain the legacy contract; descriptors
+// are deliberately small and serializable so Studio registries can pass them
+// straight through to the shipping runtime.
+async function resolveActorSource(actorRef) {
+  if (typeof actorRef === 'string') {
+    const baseUrl = new URL(`${actorRef}/`, CHARACTERS_BASE);
+    return { id: actorRef, baseUrl, voiceBase: new URL('voice/', baseUrl), rig: await getRig(actorRef) };
+  }
+  if (!actorRef || typeof actorRef !== 'object') return null;
+  const id = actorRef.id || actorRef.label || 'scene-actor';
+  const baseUrl = new URL(actorRef.baseUrl || actorRef.base || './', document.baseURI);
+  const rigUrl = new URL(actorRef.rigUrl || actorRef.rig || 'rig.json', baseUrl);
+  const key = rigUrl.href;
+  if (!rigCache.has(key)) rigCache.set(key, fetchJson(rigUrl));
+  return {
+    id,
+    baseUrl,
+    voiceBase: actorRef.voice === false ? null : new URL(actorRef.voiceBase || 'voice/', baseUrl),
+    rig: await rigCache.get(key),
+  };
 }
 
 function getCues(url) {
@@ -188,12 +213,14 @@ export async function createTheater(stage, opts = {}) {
   // --- actors -------------------------------------------------------------------
   function actorScale(actor) {
     const { w, h } = stage.size();
-    const canvas = actor.rig.canvas || 1024;
+    const canvasValue = actor.mode === 'pose-sprite' ? actor.poseActor.manifest.canvas : actor.rig.canvas;
+    const canvas = Array.isArray(canvasValue) ? Math.max(...canvasValue) : (canvasValue || 1024);
     const k = (Math.min(w, h) / canvas) * actor.scaleFactor;
     // width cap so the whole cast fits side by side: each actor may take at
     // most widthShare of stage width (puppet art spans ~0.62 of its canvas).
     // Default 0.45 suits a two-hander; a band of five passes ~0.18 each.
-    const kMax = ((actor.widthShare || 0.45) * w) / (0.62 * canvas);
+    const occupied = actor.mode === 'pose-sprite' ? 0.92 : 0.62;
+    const kMax = ((actor.widthShare || 0.45) * w) / (occupied * canvas);
     return Math.min(k, kMax);
   }
   // Feet on the floor line: the rig's `ground` sits (ground - anchor.y) below
@@ -201,9 +228,14 @@ export async function createTheater(stage, opts = {}) {
   function placeActor(actor) {
     const { w, h } = stage.size();
     const k = actorScale(actor);
-    actor.puppet.view.scale.set(actor.flip ? -k : k, k);
+    if (actor.mode === 'pose-sprite') {
+      actor.view.scale.set(actor.flip ? -k : k, k);
+      actor.view.position.set(actor.fx * w, floorY * h);
+      return;
+    }
+    actor.view.scale.set(actor.flip ? -k : k, k);
     const groundDrop = ((actor.rig.ground || actor.rig.canvas * 0.9) - actor.rig.anchor.y) * k;
-    actor.puppet.view.position.set(actor.fx * w, floorY * h - groundDrop);
+    actor.view.position.set(actor.fx * w, floorY * h - groundDrop);
   }
 
   /**
@@ -211,22 +243,25 @@ export async function createTheater(stage, opts = {}) {
    * charId is the shared character folder. Voice manifest is optional —
    * actors without one speak through Web Speech at fallbackPitch.
    */
-  async function addActor(name, charId, { x = 0.5, flip = false, scale = 0.5, fallbackPitch = 1.05, widthShare = 0.45 } = {}) {
-    const baseRig = await getRig(charId);
-    if (!baseRig) throw new Error(`theater: no rig for character '${charId}'`);
+  async function addActor(name, actorRef, { x = 0.5, flip = false, scale = 0.5, fallbackPitch = 1.05, widthShare = 0.45 } = {}) {
+    const source = await resolveActorSource(actorRef);
+    const baseRig = source?.rig;
+    if (!baseRig) throw new Error(`theater: no rig for character '${source?.id || actorRef}'`);
     // merge portable acting clips under the rig's own (rig-tuned clips win)
     const rig = { ...baseRig, clips: { ...pack.clips, ...gameClips, ...baseRig.clips } };
-    const factory = await getArtFactory(PIXI, charId, rig);
+    const artKey = source.baseUrl.href;
+    if (!artCache.has(artKey)) artCache.set(artKey, loadRigArt(PIXI, rig, artKey));
+    const factory = await artCache.get(artKey);
     const puppet = createPuppet(PIXI, rig, { partFactory: factory });
     actorLayer.addChild(puppet.view);
 
-    const voiceBase = new URL(`${charId}/voice/`, CHARACTERS_BASE);
-    const manifest = await fetchJson(new URL('manifest.json', voiceBase));
+    const voiceBase = source.voiceBase;
+    const manifest = voiceBase ? await fetchJson(new URL('manifest.json', voiceBase)) : null;
     const lines = manifest && manifest.lines
       ? Object.fromEntries(manifest.lines.map((l) => [l.id, l])) : {};
 
     const actor = {
-      name, char: charId, puppet, rig, lines, voiceBase,
+      name, char: source.id, mode:'puppet', view:puppet.view, puppet, rig, lines, voiceBase,
       fx: x, flip, scaleFactor: scale, fallbackPitch, widthShare,
       poseState: {},
     };
@@ -235,10 +270,30 @@ export async function createTheater(stage, opts = {}) {
     return actor;
   }
 
+  /** Add a complete-image storybook actor. This is deliberately separate from
+   * addActor so canonical puppet rigs, clips, sockets, and speech stay intact. */
+  async function addPoseActor(name, actorRef, { x=0.5, flip=false, scale=0.9, widthShare=0.32 } = {}) {
+    const baseUrl = new URL(actorRef.baseUrl || actorRef.base || './', document.baseURI);
+    const manifestUrl = new URL(actorRef.manifest || actorRef.poseManifest || 'poses.json', baseUrl);
+    const poseActor = await loadPoseActor(PIXI, manifestUrl);
+    actorLayer.addChild(poseActor.view);
+    const actor = {
+      name, char:actorRef.id || name, mode:'pose-sprite', view:poseActor.view, poseActor,
+      fx:x, flip, scaleFactor:scale, widthShare, poseState:{},
+    };
+    actors[name]=actor; placeActor(actor); return actor;
+  }
+
+  function setSpritePose(actorOrName, pose, options = {}) {
+    const actor = typeof actorOrName === 'string' ? actors[actorOrName] : actorOrName;
+    if (!actor?.poseActor) return Promise.resolve(false);
+    return actor.poseActor.setPose(pose, { instant:theater.timeScale>1 || reduced, ...options });
+  }
+
   function removeActor(name) {
     const a = actors[name];
     if (!a) return;
-    a.puppet.destroy();
+    if (a.mode === 'pose-sprite') a.poseActor.destroy(); else a.puppet.destroy();
     delete actors[name];
   }
 
@@ -291,20 +346,36 @@ export async function createTheater(stage, opts = {}) {
 
   function propTargetGlobal(prop) {
     const holder = actors[prop.holder];
-    if (!holder) return null;
-    const bone = holder.puppet.bones[prop.handBone];
+    if (!holder || holder.mode !== 'puppet') return null;
+    const socket = prop.characterSocket ? characterSockets(holder.rig)[prop.characterSocket] : null;
+    const bone = holder.puppet.bones[socket?.bone || prop.handBone];
     if (!bone) return null;
-    const off = prop.handOffset;
-    return bone.container.toGlobal(new PIXI.Point(off[0], off[1]));
+    const off = socket?.point || prop.handOffset;
+    const point = bone.container.toGlobal(new PIXI.Point(off[0], off[1]));
+    const axis = bone.container.toGlobal(new PIXI.Point(off[0] + 1, off[1]));
+    return { point, rotation: Math.atan2(axis.y - point.y, axis.x - point.x) + (socket?.rotation || 0) };
   }
 
   function layoutProp(prop) {
     const s = prop.scale * stageK();
     const holder = actors[prop.holder];
     prop.sprite.scale.set(holder && holder.flip ? -s : s, s);
+    prop.sprite.rotation = prop.rotation + (prop.inheritRotation && holder ? (propTargetGlobal(prop)?.rotation || 0) : 0);
     if (prop.holder) {
       const g = propTargetGlobal(prop);
-      if (g) prop.sprite.position.copyFrom(propLayer.toLocal(g));
+      if (g) {
+        const target = propLayer.toLocal(g.point);
+        const socketPoint = prop.sockets?.[prop.propSocket]?.point || [0, 0];
+        const sx = (socketPoint[0] || 0) * prop.sprite.scale.x;
+        const sy = (socketPoint[1] || 0) * prop.sprite.scale.y;
+        const cos = Math.cos(prop.sprite.rotation), sin = Math.sin(prop.sprite.rotation);
+        const ox = (prop.offset?.[0] || 0) * s;
+        const oy = (prop.offset?.[1] || 0) * s;
+        prop.sprite.position.set(
+          target.x - (sx * cos - sy * sin) + ox,
+          target.y - (sx * sin + sy * cos) + oy,
+        );
+      }
     } else if (prop.fx != null) {
       const { w, h } = stage.size();
       prop.sprite.position.set(prop.fx * w, prop.fy * h);
@@ -329,12 +400,19 @@ export async function createTheater(stage, opts = {}) {
       sprite = new PIXI.Graphics();
       sprite.roundRect(-70, -50, 140, 100, 24).fill(def.color || '#e8b23a');
     }
-    if (sprite.anchor) sprite.anchor.set(0.5);
+    if (sprite.anchor) sprite.anchor.set(...(def.anchor || [0.5, 0.5]));
+    sprite.alpha = def.alpha ?? 1;
     (def.layer === 'back' ? backPropLayer : propLayer).addChild(sprite);
     const prop = {
       id, sprite,
       scale: def.scale ?? 0.5,
+      rotation: def.rotation || 0,
+      inheritRotation: !!def.inheritRotation,
       holder: def.holder || null,
+      characterSocket: def.characterSocket || null,
+      propSocket: def.propSocket || null,
+      sockets: def.sockets || {},
+      offset: def.offset || [0, 0],
       handBone: def.handBone || 'arm-lower.R',
       handOffset: def.handOffset || [0, 110],
       fx: def.fx ?? null, fy: def.fy ?? null,
@@ -351,6 +429,7 @@ export async function createTheater(stage, opts = {}) {
     const from = prop.sprite.position.clone();
     const to = propLayer.toLocal(targetGlobal);
     const finish = () => { prop.animating = false; if (settle) settle(); layoutProp(prop); };
+    if (ms <= 0) { finish(); return Promise.resolve(); }
     if (reduced || theater.timeScale > 1) { finish(); return wait(reduced ? 0 : ms); }
     prop.animating = true;
     const mid = { x: (from.x + to.x) / 2, y: Math.min(from.y, to.y) - 60 * stageK() };
@@ -384,7 +463,7 @@ export async function createTheater(stage, opts = {}) {
     const holder = actors[holderName];
     if (!prop || !holder) return Promise.resolve();
     const probe = { ...prop, holder: holderName };
-    const g = propTargetGlobal(probe) || prop.sprite.getGlobalPosition();
+    const g = propTargetGlobal(probe)?.point || prop.sprite.getGlobalPosition();
     return flyProp(prop, g, { ms }, () => { prop.holder = holderName; prop.fx = null; prop.fy = null; });
   }
   function placeProp(id, fx, fy, { ms = 500 } = {}) {
@@ -393,6 +472,49 @@ export async function createTheater(stage, opts = {}) {
     const { w, h } = stage.size();
     const g = propLayer.toGlobal(new PIXI.Point(fx * w, fy * h));
     return flyProp(prop, g, { ms }, () => { prop.holder = null; prop.fx = fx; prop.fy = fy; });
+  }
+
+  // General authored prop motion used by Story Stones and future scene packs.
+  // Position is expressed in stage fractions; scale/rotation/alpha retain the
+  // prop pack's native units.  Existing hand-off and `to` beats are unchanged.
+  function transformProp(id, target = {}, { ms = 500 } = {}) {
+    const prop = props[id];
+    if (!prop) return Promise.resolve();
+    const start = {
+      fx: prop.fx ?? prop.sprite.x / Math.max(1, stage.size().w),
+      fy: prop.fy ?? prop.sprite.y / Math.max(1, stage.size().h),
+      scale: prop.scale, rotation: prop.rotation, alpha: prop.sprite.alpha,
+    };
+    const end = {
+      fx: target.x ?? target.fx ?? start.fx,
+      fy: target.y ?? target.fy ?? start.fy,
+      scale: target.scale ?? start.scale,
+      rotation: target.rotation ?? start.rotation,
+      alpha: target.alpha ?? start.alpha,
+    };
+    const apply = (t) => {
+      const k = ease.inOutSine(t);
+      prop.holder = null;
+      prop.fx = start.fx + (end.fx - start.fx) * k;
+      prop.fy = start.fy + (end.fy - start.fy) * k;
+      prop.scale = start.scale + (end.scale - start.scale) * k;
+      prop.rotation = start.rotation + (end.rotation - start.rotation) * k;
+      prop.sprite.alpha = start.alpha + (end.alpha - start.alpha) * k;
+      layoutProp(prop);
+    };
+    if (ms <= 0 || reduced || theater.timeScale > 1) { apply(1); return wait(reduced ? 0 : ms); }
+    return new Promise((resolve) => {
+      const started = performance.now(); let raf = 0;
+      const cancel = () => { if (raf) cancelAnimationFrame(raf); motions.delete(cancel); apply(1); resolve(); };
+      motions.add(cancel);
+      const step = (now) => {
+        const t = Math.min(1, (now - started) / (ms / theater.timeScale));
+        apply(t);
+        if (t < 1) raf = requestAnimationFrame(step);
+        else { motions.delete(cancel); resolve(); }
+      };
+      raf = requestAnimationFrame(step);
+    });
   }
 
   // --- voice ----------------------------------------------------------------------
@@ -459,13 +581,18 @@ export async function createTheater(stage, opts = {}) {
     if (beat.narrator) { await narrate(beat.narrator, beat.text); return; }
     if (beat.fx) { playFx(beat.fx, beat.at); return; }
     if (beat.prop) {
-      if (beat.holder) await handProp(beat.prop, beat.holder, { ms: beat.ms ?? 500 });
+      if (beat.transform) await transformProp(beat.prop, beat.transform, { ms: beat.ms ?? 500 });
+      else if (beat.holder) await handProp(beat.prop, beat.holder, { ms: beat.ms ?? 500 });
       else if (beat.to) await placeProp(beat.prop, beat.to[0], beat.to[1] === 'floor' ? floorY : beat.to[1], { ms: beat.ms ?? 500 });
       return;
     }
 
     const actor = actors[beat.actor];
     if (!actor) return;
+
+    if (beat.spritePose) { await setSpritePose(actor, beat.spritePose); return; }
+    // Bone poses, clips, movement cycles, and character speech remain puppet-only.
+    if (actor.mode === 'pose-sprite') return;
 
     if (beat.enter) {
       actor.fx = beat.enter === 'left' ? -0.3 : 1.3;   // fully offstage even at 2× cast scale
@@ -513,7 +640,7 @@ export async function createTheater(stage, opts = {}) {
     if (props[at]) return props[at].sprite.position;
     const a = actors[at];
     if (a) {
-      const p = a.puppet.view.position;
+      const p = a.view.position;
       return { x: p.x, y: p.y - 40 * stageK() };
     }
     const { w, h } = stage.size();
@@ -553,8 +680,10 @@ export async function createTheater(stage, opts = {}) {
     return {
       actors: Object.fromEntries(Object.entries(actors).map(([name, a]) => [name, {
         fx: a.fx, flip: a.flip,
-        clip: a.puppet.currentClip || 'idle',
-        pose: JSON.parse(JSON.stringify(a.poseState)),
+        mode:a.mode,
+        clip: a.mode === 'puppet' ? (a.puppet.currentClip || 'idle') : null,
+        spritePose:a.mode === 'pose-sprite' ? a.poseActor.pose : null,
+        pose: JSON.parse(JSON.stringify(a.poseState || {})),
       }])),
       props: Object.fromEntries(Object.entries(props).map(([id, p]) => [id, {
         holder: p.holder, fx: p.fx, fy: p.fy,
@@ -570,10 +699,13 @@ export async function createTheater(stage, opts = {}) {
       const a = actors[name];
       if (!a) continue;
       a.fx = snap.fx; a.flip = snap.flip;
-      resetActorPose(a);
-      setActorPose(a, snap.pose);
       placeActor(a);
-      a.puppet.playClip(snap.clip);
+      if (a.mode === 'pose-sprite') setSpritePose(a, snap.spritePose || 'neutral', { instant:true });
+      else {
+        resetActorPose(a);
+        setActorPose(a, snap.pose);
+        a.puppet.playClip(snap.clip);
+      }
     }
     for (const [id, snap] of Object.entries(t.props)) {
       const p = props[id];
@@ -597,7 +729,7 @@ export async function createTheater(stage, opts = {}) {
     offClip();
     offResize();
     stage.app.ticker.remove(followProps);
-    Object.values(actors).forEach((a) => a.puppet.destroy());
+    Object.values(actors).forEach((a) => a.mode === 'pose-sprite' ? a.poseActor.destroy() : a.puppet.destroy());
     view.destroy({ children: true });
   }
 
@@ -611,9 +743,9 @@ export async function createTheater(stage, opts = {}) {
       Object.values(actors).forEach(placeActor);
       Object.values(props).forEach(layoutProp);
     },
-    addActor, removeActor, placeActor, moveActor,
+    addActor, addPoseActor, removeActor, placeActor, moveActor, setSpritePose,
     setActorPose, resetActorPose,
-    addProp, removeProp, clearProps, handProp, placeProp,
+    addProp, removeProp, clearProps, handProp, placeProp, transformProp, layoutProp,
     sayLine, narrate,
     runBeats, interrupt,
     playFx, setBackdrop,

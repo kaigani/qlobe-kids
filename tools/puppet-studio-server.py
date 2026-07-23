@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local authoring server for Puppet Studio.
+"""Local authoring server for QLOBE Studio (and legacy Puppet Studio).
 
 The QLOBE Kids runtime remains a static site.  This optional localhost-only
 server adds the write and long-running inference endpoints needed while building
@@ -10,7 +10,7 @@ Usage (from the qlobe-kids directory):
     python3 tools/puppet-studio-server.py \
       --qwen-url http://YOUR-MODEL-HOST:8100
 
-Then open http://127.0.0.1:8000/shared/js/stage/puppet-studio.html?mode=build
+Then open http://127.0.0.1:8000/shared/js/studio/
 """
 
 from __future__ import annotations
@@ -44,6 +44,7 @@ BONES = (
 )
 ID_RE = re.compile(r"^[a-z][a-z0-9-]{0,39}$")
 MAX_UPLOAD = 32 * 1024 * 1024
+MAX_STUDIO_DOCUMENT = 4 * 1024 * 1024
 RHU_TO_VISEME = {
     # Rhubarb's Preston-Blair meanings mapped to QLOBE's canonical heads.
     # Keep B (generic consonants) distinct from C (E) and F (U).
@@ -110,6 +111,13 @@ def safe_id(value: str) -> str:
     return value
 
 
+def safe_story_id(value: str) -> str:
+    parts = value.split("--")
+    if len(parts) != 3 or len(set(parts)) != 3 or any(not ID_RE.fullmatch(part) for part in parts):
+        raise ValueError("story id must contain three different lowercase stone ids joined by --")
+    return "--".join(sorted(parts))
+
+
 def safe_relative(value: str) -> Path:
     value = unquote(value).replace("\\", "/")
     path = Path(value)
@@ -143,6 +151,44 @@ def destination_for(state: AuthoringState, char_id: str, kind: str) -> Path:
                 break
             return folder / f"{stem}{key}.png"
     raise ValueError(f"unsupported file kind: {kind}")
+
+
+def studio_document_path(state: AuthoringState, value: str) -> Path:
+    """Resolve a Studio JSON document inside one of the explicit authoring roots."""
+    relative = safe_relative(value)
+    parts = relative.parts
+    allowed = False
+    if len(parts) >= 3 and parts[:2] == ("shared", "characters"):
+        safe_id(parts[2]); allowed = True
+    elif len(parts) >= 3 and parts[:2] == ("shared", "props"):
+        safe_id(parts[2]); allowed = True
+    elif len(parts) >= 3 and parts[0] == "games":
+        safe_id(parts[1]); allowed = True
+    if not allowed or relative.suffix.lower() != ".json":
+        raise ValueError("Studio documents must be JSON under shared/characters, shared/props, or games/<id>")
+    destination = (state.root / relative).resolve()
+    if not destination.is_relative_to(state.root):
+        raise ValueError("unsafe Studio document path")
+    return destination
+
+
+def studio_asset_path(state: AuthoringState, value: str) -> Path:
+    """Resolve an image asset inside a registered-style project asset root."""
+    relative = safe_relative(value)
+    parts = relative.parts
+    allowed = False
+    if len(parts) >= 4 and parts[0] == "games" and parts[2] == "assets":
+        safe_id(parts[1]); allowed = True
+    elif len(parts) >= 4 and parts[:2] == ("shared", "characters"):
+        safe_id(parts[2]); allowed = True
+    elif len(parts) >= 3 and parts[:2] == ("shared", "props"):
+        safe_id(parts[2]); allowed = True
+    if not allowed or relative.suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
+        raise ValueError("Studio assets must be PNG, JPEG, or WebP under a game/shared asset root")
+    destination = (state.root / relative).resolve()
+    if not destination.is_relative_to(state.root):
+        raise ValueError("unsafe Studio asset path")
+    return destination
 
 
 def atomic_write(path: Path, data: bytes):
@@ -185,6 +231,76 @@ def multipart_request(url: str, file_path: Path, fields: dict[str, str], timeout
     })
     with urlopen(request, timeout=timeout) as response:
         return json.load(response)
+
+
+def multipart_fields_request(url: str, fields: dict[str, str], timeout=60):
+    boundary = f"----qlobe-{uuid.uuid4().hex}"
+    chunks: list[bytes] = []
+    for name, value in fields.items():
+        chunks.extend([
+            f"--{boundary}\r\n".encode(),
+            f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode(),
+            str(value).encode(), b"\r\n",
+        ])
+    chunks.append(f"--{boundary}--\r\n".encode())
+    body = b"".join(chunks)
+    request = Request(url, data=body, method="POST", headers={
+        "Content-Type": f"multipart/form-data; boundary={boundary}",
+        "Content-Length": str(len(body)),
+    })
+    with urlopen(request, timeout=timeout) as response:
+        return json.load(response)
+
+
+def run_story_scene_job(state: AuthoringState, job_id: str, story_id: str,
+                        prompt: str, seed: int, destination: Path):
+    try:
+        if not state.qwen_url:
+            raise RuntimeError("local workflow URL is not configured; restart with --qwen-url")
+        state.update_job(job_id, status="running", message="Generating Krea scene", progress=1, total=3)
+        submitted = multipart_fields_request(
+            f"{state.qwen_url}/workflows/krea2-turbo-t2i",
+            {"prompt": prompt, "seed": str(seed), "width": "1344", "height": "768", "steps": "8", "cfg": "1"},
+            timeout=120,
+        )
+        remote_id = submitted.get("job_id") or submitted.get("id")
+        if not remote_id:
+            raise RuntimeError(f"Krea did not return a job id: {submitted}")
+        state.update_job(job_id, remoteJob=str(remote_id), message="Waiting for local Krea 2", progress=1)
+        deadline = time.time() + 30 * 60
+        while time.time() < deadline:
+            remote = http_json(f"{state.qwen_url}/jobs/{remote_id}", timeout=20)
+            status = str(remote.get("status", "")).lower()
+            if status in ("completed", "complete", "succeeded", "success"):
+                break
+            if status in ("failed", "error", "cancelled", "canceled"):
+                raise RuntimeError(remote.get("error") or f"Krea job {status}")
+            time.sleep(2)
+        else:
+            raise TimeoutError("Krea scene generation exceeded 30 minutes")
+        state.update_job(job_id, message="Optimizing scene WebP", progress=2)
+        with urlopen(f"{state.qwen_url}/jobs/{remote_id}/result", timeout=180) as response:
+            source_bytes = response.read(MAX_UPLOAD + 1)
+        if len(source_bytes) > MAX_UPLOAD or not source_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+            raise RuntimeError("Krea result was not a valid PNG under 32 MB")
+        with tempfile.TemporaryDirectory(prefix="qlobe-story-scene-") as temp:
+            temp_path = Path(temp)
+            source = temp_path / "source.png"
+            encoded = temp_path / "scene.webp"
+            source.write_bytes(source_bytes)
+            ffmpeg = shutil.which("ffmpeg") or "/usr/local/bin/ffmpeg"
+            run = subprocess.run([
+                ffmpeg, "-y", "-loglevel", "error", "-i", str(source),
+                "-vf", "scale=1344:768:flags=lanczos", "-c:v", "libwebp", "-quality", "86", str(encoded),
+            ], capture_output=True, text=True, timeout=180)
+            if run.returncode or not encoded.is_file():
+                raise RuntimeError(run.stderr.strip() or "ffmpeg could not encode the scene WebP")
+            atomic_write(destination, encoded.read_bytes())
+        relative = str(destination.relative_to(state.root))
+        state.update_job(job_id, status="completed", message="Krea scene saved", progress=3,
+                         outputs=[relative], storyId=story_id)
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Krea scene generation failed")
 
 
 def extract_one(state: AuthoringState, source: Path, destination: Path,
@@ -588,7 +704,7 @@ def validated_cues(payload: dict) -> dict:
 
 
 class PuppetStudioHandler(SimpleHTTPRequestHandler):
-    server_version = "QLOBEPuppetStudio/1.0"
+    server_version = "QLOBEStudio/1.0"
 
     @property
     def state(self) -> AuthoringState:
@@ -621,6 +737,27 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/studio/status":
+                return self.send_json({
+                    "ok": True, "authoringServer": True,
+                    "studio": "QLOBE Studio", "formatVersion": 1,
+                    "root": str(self.state.root),
+                })
+            if parsed.path == "/api/studio/document":
+                query = parse_qs(parsed.query)
+                path = studio_document_path(self.state, query.get("path", [""])[0])
+                if not path.is_file():
+                    return self.send_error_json(404, f"Studio document does not exist: {path.relative_to(self.state.root)}")
+                if path.stat().st_size > MAX_STUDIO_DOCUMENT:
+                    raise ValueError("Studio document exceeds the 4 MB limit")
+                return self.send_json({
+                    "ok": True,
+                    "path": str(path.relative_to(self.state.root)),
+                    "document": json.loads(path.read_text("utf-8")),
+                })
+            if parsed.path.startswith("/api/studio/jobs/"):
+                job = self.state.snapshot_job(parsed.path.rsplit("/", 1)[-1])
+                return self.send_json({"ok": True, "job": job}) if job else self.send_error_json(404, "job not found")
             if parsed.path == "/api/puppet/status":
                 qwen = {"configured": bool(self.state.qwen_url), "reachable": False}
                 if self.state.qwen_url:
@@ -705,6 +842,60 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/studio/document":
+                query = parse_qs(parsed.query)
+                path = studio_document_path(self.state, query.get("path", [""])[0])
+                body = self.read_body()
+                if len(body) > MAX_STUDIO_DOCUMENT:
+                    raise ValueError("Studio document exceeds the 4 MB limit")
+                document = json.loads(body)
+                if not isinstance(document, (dict, list)):
+                    raise ValueError("Studio document root must be an object or array")
+                formatted = json.dumps(document, indent=2, ensure_ascii=False).encode("utf-8") + b"\n"
+                atomic_write(path, formatted)
+                return self.send_json({
+                    "ok": True,
+                    "path": str(path.relative_to(self.state.root)),
+                    "bytes": len(formatted),
+                })
+            if parsed.path == "/api/studio/asset":
+                query = parse_qs(parsed.query)
+                path = studio_asset_path(self.state, query.get("path", [""])[0])
+                body = self.read_body()
+                suffix = path.suffix.lower()
+                valid = ((suffix == ".png" and body.startswith(b"\x89PNG\r\n\x1a\n"))
+                         or (suffix in (".jpg", ".jpeg") and body.startswith(b"\xff\xd8"))
+                         or (suffix == ".webp" and body.startswith(b"RIFF") and body[8:12] == b"WEBP"))
+                if not valid:
+                    raise ValueError(f"uploaded bytes do not match the {suffix} file type")
+                atomic_write(path, body)
+                return self.send_json({"ok": True, "path": str(path.relative_to(self.state.root)), "bytes": len(body)})
+            if parsed.path == "/api/studio/story-scene":
+                payload = self.read_json()
+                story_id = safe_story_id(str(payload.get("storyId", "")))
+                prompt = str(payload.get("prompt", "")).strip()
+                if len(prompt) < 80 or len(prompt) > 8000:
+                    raise ValueError("story scene prompt must be between 80 and 8,000 characters")
+                seed = max(0, min(2**32 - 1, int(payload.get("seed", 0))))
+                overwrite = bool(payload.get("overwrite", False))
+                destination = studio_asset_path(
+                    self.state, f"games/story-stones/assets/backdrops/stories/{story_id}.webp"
+                )
+                if destination.exists() and not overwrite:
+                    return self.send_error_json(409, f"{destination.name} already exists; enable overwrite to replace it")
+                job_id = uuid.uuid4().hex[:12]
+                with self.state.lock:
+                    self.state.jobs[job_id] = {
+                        "id": job_id, "status": "queued", "target": "story-scene",
+                        "storyId": story_id, "seed": seed, "message": "Krea scene queued",
+                        "created": time.time(), "progress": 0, "total": 3,
+                    }
+                threading.Thread(
+                    target=run_story_scene_job,
+                    args=(self.state, job_id, story_id, prompt, seed, destination),
+                    daemon=True,
+                ).start()
+                return self.send_json({"ok": True, "jobId": job_id}, 202)
             if parsed.path == "/api/puppet/file":
                 query = parse_qs(parsed.query)
                 char_id = safe_id(query.get("id", [""])[0])
@@ -839,7 +1030,7 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Serve QLOBE Kids with Puppet Studio authoring APIs")
+    parser = argparse.ArgumentParser(description="Serve QLOBE Kids with QLOBE Studio authoring APIs")
     parser.add_argument("--host", default="127.0.0.1", help="bind host (localhost by default)")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
@@ -866,7 +1057,8 @@ def main():
         root, args.qwen_url, whisper_url,
         args.mfa_bin, args.mfa_dictionary, args.mfa_acoustic_model, args.mfa_root,
     )  # type: ignore[attr-defined]
-    print(f"Puppet Studio authoring server: http://{args.host}:{args.port}/")
+    print(f"QLOBE Studio authoring server: http://{args.host}:{args.port}/shared/js/studio/")
+    print(f"Legacy Puppet Studio: http://{args.host}:{args.port}/shared/js/stage/puppet-studio.html")
     print(f"Repo root: {root}")
     print(f"Qwen API: {args.qwen_url or '(not configured)'}")
     print(f"Whisper API: {whisper_url or '(not configured)'}")

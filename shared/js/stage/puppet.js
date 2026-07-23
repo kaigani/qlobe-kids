@@ -340,6 +340,19 @@ export function createPuppet(PIXI, rig, opts = {}) {
     raf = requestAnimationFrame(tick);
   }
 
+  // Music Sync hook: sample a clip from an external musical clock instead of
+  // letting the clip free-run against performance.now().
+  function setClipPhase(name, phase = 0) {
+    const clip = clips[name];
+    if (!clip) return false;
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    current = name;
+    onDoneCb = null;
+    const wrapped = ((Number(phase) || 0) % 1 + 1) % 1;
+    sampleInto(clip, wrapped);
+    return true;
+  }
+
   function setPose(map) {
     for (const [target, props] of Object.entries(map || {})) {
       staticPose[target] = { ...(staticPose[target] || {}), ...props };
@@ -460,7 +473,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
 
   return {
     view, motion, bones,
-    setPose, playClip, stopClip, get currentClip() { return current; },
+    setPose, playClip, stopClip, setClipPhase, get currentClip() { return current; },
     previewPose, setJoint, setViseme,
     setOutfit, listOutfits,
     setMouthShape, get mouth() { return { setShape: setMouthShape }; },

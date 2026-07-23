@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>QLOBE Studio</title>
+  <link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+  <header class="studio-bar">
+    <a class="studio-brand" href="./" aria-label="QLOBE Studio home">
+      <span class="studio-brandmark">Q</span><span>QLOBE Studio</span>
+    </a>
+    <nav id="workspace-nav" aria-label="Studio workspaces">
+      <span class="nav-group-label">Character</span>
+      <button data-workspace="rig">Rig</button>
+      <button data-workspace="animate">Animate</button>
+      <button data-workspace="speech">Speech</button>
+      <button data-workspace="build">Build</button>
+      <span class="nav-group-label">Stage</span>
+      <button data-workspace="props">Props</button>
+      <button data-workspace="stage">Scenes</button>
+      <button data-workspace="music">Music Sync</button>
+    </nav>
+    <div class="studio-status">
+      <span id="server-status" class="status-pill" aria-live="polite">checking server</span>
+      <a id="legacy-link" class="bar-link" href="../stage/puppet-studio.html">Legacy Studio</a>
+    </div>
+  </header>
+
+  <main id="studio-main">
+    <iframe id="character-workspace" title="Character Studio" hidden></iframe>
+    <section id="native-workspace" hidden></section>
+  </main>
+  <div id="studio-toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./studio.js"></script>
+</body>
+</html>

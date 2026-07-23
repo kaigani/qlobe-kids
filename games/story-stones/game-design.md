@@ -1,21 +1,22 @@
-### Mini-GDD: Story Stones (games/story-stones/)
+# Story Stones — Mini GDD
 
-**Category:** oral-storytelling · **Engine:** observe-journal · **splashEmoji:** 🪨
-**Premise:** a velvet pouch spills painted story stones onto the rug. Each
-round shows a story starter scene; the child picks the stones that belong in
-THEIR version of the story and tells it out loud as the stones stamp into
-their story page. No wrong answers — every stone choice is celebrated and
-woven into the spoken recap.
-**Learning:** narrative invention, character/setting/event vocabulary,
-speaking in full sentences.
-**Modes:**
-1. `castle` "Castle Tale" (3 pages): scenes — a castle gate (emoji:🏰), a
-   forest path (emoji:🌲), a celebration (emoji:🎉). Stones per page mix
-   characters (🐉 👸 🐸), objects (🗝️ 🌟 🍎), weather (🌧️ ☀️).
-   Prompts like "Who walks through the gate? Pick a stone and say who it is!"
-2. `ocean` "Ocean Tale" (3 pages): a boat (⛵), an island (🏝️), a deep dive
-   (🐠) with stone sets to match.
-**Voice tone:** hushed campfire wonder; always invite the child to SAY the
-story out loud ("Tell your grown-up what happens next!").
-**Assets needed:** art — painted-stone versions of every sticker subject,
-velvet pouch, story rug; voice — all config lines.
+**Audience:** ages 3–7 · **Engine:** custom PixiJS unordered story library.
+
+The child chooses three different illustrated stones in any mix of characters
+and objects. The tray is deliberately unordered: the same group always resolves
+to the same complete story, stable cast order, and setting however it was tapped
+or dragged. Tapping a selected stone removes it.
+
+The launch library contains five whole-image pose actors (dragon, orange cat,
+white cat, friendly monster, owl) and seven magical objects (croissant, rose,
+magic rock, treasure chest, golden key, magic bag, wishing star). Every one of
+the 220 three-stone sets has its own beginning, complication, resolution, and
+unique illustrated setting. All 1,320 input permutations resolve to those same
+220 stories, with no wrong answers or compatibility dead ends. Object-only sets
+let the three magical objects drive the action without adding an unseen hero.
+
+Each 25–35 second result uses three recorded teacher-narrator clips and three
+acted phases. Back returns to the tray with the same group for editing. After
+the resolution, one clear **Choose Another Story** action returns to a completely
+empty tray. Runtime is completely static; no model or authoring API is called by
+the shipping game.

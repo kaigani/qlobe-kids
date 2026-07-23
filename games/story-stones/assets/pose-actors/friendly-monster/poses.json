@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-pose-actor",
+  "formatVersion": 1,
+  "id": "friendly-monster",
+  "label": "Friendly Monster",
+  "canvas": [
+    1024,
+    1024
+  ],
+  "anchor": [
+    0.5,
+    0.94921875
+  ],
+  "transition": {
+    "kind": "paper-pop",
+    "durationMs": 220
+  },
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "alt": "Friendly Monster \u2014 neutral pose"
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "alt": "Friendly Monster \u2014 enter pose"
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "alt": "Friendly Monster \u2014 notice pose"
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "alt": "Friendly Monster \u2014 interact pose"
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "alt": "Friendly Monster \u2014 react pose"
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "alt": "Friendly Monster \u2014 celebrate pose"
+    }
+  }
+}

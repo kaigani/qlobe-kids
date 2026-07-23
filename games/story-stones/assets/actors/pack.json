@@ -1,0 +1,12 @@
+{
+  "format": "qlobe-actor-pack",
+  "formatVersion": 1,
+  "id": "story-stones-castle-meadow",
+  "actors": {
+    "dragon": { "label": "Friendly Dragon", "renderMode": "pose-sprite", "base": "../pose-actors/dragon/", "manifest": "poses.json", "thumbnail": "../stones/dragon.png", "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"] },
+    "orange-cat": { "label": "Orange Cat", "renderMode": "pose-sprite", "base": "../pose-actors/orange-cat/", "manifest": "poses.json", "thumbnail": "../stones/orange-cat.png", "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"] },
+    "white-cat": { "label": "White Cat", "renderMode": "pose-sprite", "base": "../pose-actors/white-cat/", "manifest": "poses.json", "thumbnail": "../stones/white-cat.png", "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"] },
+    "friendly-monster": { "label": "Friendly Monster", "renderMode": "pose-sprite", "base": "../pose-actors/friendly-monster/", "manifest": "poses.json", "thumbnail": "../stones/friendly-monster.png", "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"] },
+    "owl": { "label": "Meadow Owl", "renderMode": "pose-sprite", "base": "../pose-actors/owl/", "manifest": "poses.json", "thumbnail": "../stones/owl.png", "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"] }
+  }
+}
