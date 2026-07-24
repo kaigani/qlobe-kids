@@ -18,8 +18,9 @@ whole flow.** The rest of this file is the reference behind that skill.
   TypeScript-to-compile. The site runs exactly as written via
   `python3 -m http.server` from the repo root and deploys to GitHub Pages as-is.
 - **Vanilla ES modules only.** `<script type="module">` and `import` between
-  local files. The only vendored library is three.js r166 (in `shared/vendor/`),
-  loaded through an import map — never from a CDN.
+  local files. The vendored libraries are three.js r166 (for 3D games) and
+  PixiJS (load-bearing for the shared stage/puppet stack), both in
+  `shared/vendor/` — three.js via an import map — never from a CDN.
 - **All paths relative and lowercase.** GitHub Pages is case-sensitive; macOS is
   not, so `Assets/Cat.PNG` works on your machine and 404s in production. Games
   reach the library with `../../shared/…`. Never hard-code the domain.
@@ -39,6 +40,11 @@ whole flow.** The rest of this file is the reference behind that skill.
    `docs/interaction-patterns.md` (how our games feel to touch). Non-negotiable.
 3. **Scaffold.** Copy `templates/game-family/` to `games/<kebab-id>/`
    (e.g. `games/count-critters/`). Keep the id short, lowercase, hyphenated.
+   **New engine games keep their content in `config.json`** and load it through a
+   thin `config.js` shim (see `templates/stub-game/`); `index.html` still does
+   `import config from './config.js'`. This lets the studio read and edit the
+   game's data. Existing `config.js` games (data written directly in the JS
+   module) keep working unchanged and are read-only in the studio.
 4. **Design first.** Write `games/<id>/game-design.md` from
    `docs/game-design-template.md`: the one skill, the 3–4 modes (each teaching a
    single skill), the core 30–90s loop, the shared assets you'll reuse.
@@ -62,7 +68,8 @@ Everything here is already licensed, styled to match, and free to import. Reach
 for it first.
 
 - **`shared/vendor/`** — three.js r166 (`three.module.min.js`, via import map)
-  and `RoundedBoxGeometry.js`. Only needed for 3D games; 2D games skip it.
+  and `RoundedBoxGeometry.js` for 3D games, plus `pixi.min.js` (PixiJS) which the
+  shared stage/puppet stack builds on. Plain 2D DOM/Canvas games skip all of it.
 - **`shared/fonts/`** — `fredoka-latin-600-normal.woff2`, the platform display
   font. `@font-face` it; don't add other fonts.
 - **`shared/js/`** — the audio/interaction toolkit (import via `../../../shared/js/…` from your game's `js/` folder — module imports resolve relative to the importing file, one level deeper than the game root):
@@ -138,7 +145,7 @@ Root `games.json` — one fetch drives the hub:
 }
 ```
 
-`status` is one of `live | in-design | proposed | archived`. Categories are
+`status` is one of `live | beta | in-design | proposed | archived`. Categories are
 **metadata, not folders** — every game lives flat in `games/<id>/`. The ten
 category ids, in order: `reading-phonics`, `writing-fine-motor`,
 `math-number-sense`, `practical-life`, `sensorial-science`, `oral-storytelling`,

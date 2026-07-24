@@ -24,9 +24,10 @@ import musicSync from './validators/music-sync.mjs';
 import storyPack from './validators/story-pack.mjs';
 import studioProjects from './validators/studio-projects.mjs';
 import registry from './validators/registry.mjs';
+import recipe from './validators/recipe.mjs';
 
 const VALIDATORS = [
-  character, voicePack, poseActor, propPack, scenePack, musicSync, storyPack, studioProjects, registry,
+  character, voicePack, poseActor, propPack, scenePack, musicSync, storyPack, studioProjects, registry, recipe,
 ];
 
 const args = process.argv.slice(2);

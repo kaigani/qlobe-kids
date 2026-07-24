@@ -51,6 +51,12 @@ cp -R templates/game-family "games/<id>"
 
 Rename/adjust files inside so nothing references the template name.
 
+**Engine-based games** (the common path) scaffold from `templates/stub-game/`
+instead: put the game's content in `config.json` and keep the thin `config.js`
+shim that loads it — `index.html` still `import`s `./config.js`. Storing content
+as JSON is what lets the studio read and edit the game. (Older `config.js` games
+that hold data directly in the JS module keep working, unchanged.)
+
 ## 5. Design doc
 
 Write `games/<id>/game-design.md` from `docs/game-design-template.md`: the one

@@ -284,6 +284,16 @@ Explicitly not: a media database. Media staging stays on disk under the
 existing conventions (§3.5); the Library shows packs and their referenced
 files, with provenance links to `ASSETS.md` and regen recipes.
 
+**Unassigned media (Phase 5).** `shared/media/` is the Library's staging
+shelf: an allow-listed root where generated (or imported) assets live as
+first-class Library objects before they belong to anything. Each media
+object is the asset file(s) plus a `qlobe-recipe` sidecar (§7.6). Library
+facets include `unassigned`; the **Assign to…** action moves the asset into
+`shared/assets/<category>/`, a game's `assets/`, or a character directory —
+appending the provenance line to the destination's `ASSETS.md` where one
+exists and keeping the recipe sidecar adjacent, so lineage survives
+assignment.
+
 ### 5.2 Modules
 
 Reusable runtime behavior: **Engines**, **Services**, **Stage**, **Templates**
@@ -453,6 +463,39 @@ anyway. Engines are agnostic — they receive the same object either way.
 
 `schemaVersion` stays 1. `beta` is added to the documented status vocabulary
 (matching 97 existing entries). No structural change.
+
+### 7.6 `qlobe-recipe` v1 (Phase 5)
+
+The machine-readable provenance sidecar for generated media — the
+`story-pack.json` regen-recipe pattern (§6, provenance) promoted to a
+standalone format. One `<asset>.recipe.json` next to each generated file:
+
+```json
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "icon-watering-can",
+  "kind": "image",
+  "steps": [
+    { "workflow": "krea2-turbo-t2i", "prompt": "…", "seed": 42,
+      "width": 1024, "height": 1024 },
+    { "workflow": "qwen-image-layered", "output": "layer_2" },
+    { "op": "finalize", "crop": "bbox+12", "maxSize": 640, "encode": "png8" }
+  ],
+  "refs": { "style": "shared:objects/cat.png", "voice": "teacher" },
+  "derivedFrom": null,
+  "qa": { "alpha": { "partialPct": 0.8 }, "status": "accepted" },
+  "created": "2026-07-24"
+}
+```
+
+Rules: the GenAI host is never stored (env only); named refs are symbolic
+(`teacher`, `shared:` art refs), not machine paths; `derivedFrom` points at
+the source media id for extraction/derivation chains (never overwrite
+earlier stages — each derivative is a new file that knows its source);
+`steps[]` must be sufficient for **Regenerate** to re-enqueue the job
+unchanged (a new seed is an explicit edit). Voice recipes record the QA
+transcript comparison; image cutouts record the alpha histogram.
 
 ## 8. Validation, usage index, and reports
 
@@ -655,6 +698,23 @@ complete with Modules browse. Gates: a new game scaffolded via `config.json`
 is hub-registered, studio-editable, passes its engine smoke; `git status`
 clean outside intended paths; hub + `sound-sprouts` + `puppet-problem-solvers`
 play with zero console errors and zero 404s.
+
+**Phase 5 — Media & Generation** (4–6 sessions). The means of production —
+added when the Phase 4 checkpoint surfaced that no phase had built the
+generation surface §5.4 promised: `shared/media/` unassigned bucket (new
+allow-listed root + media objects in Library); `qlobe-recipe` v1 sidecars
+(§7.6) written by every generation job; **+ Generate** flows in the studio
+for the proven recipe kinds (UI icon / object card / prop cutout via
+dark-ground → layered extraction → alpha QA / scene backdrop / voice line
+via teacher clone → whisper QA), queued through the Phase 3 batching
+scheduler with seed-ladder retry; **Regenerate** on any asset carrying a
+recipe (including story-pack backdrops); provenance/lineage view (recipe →
+derivation chain → QA → consumers from the usage index); **Assign to…**
+flow out of the bucket. Gates: mock-host end-to-end chain (generate →
+extract → QA → recipe → appears unassigned in Library → assign moves files
++ provenance) survives restart mid-chain; one real-host smoke generation
+when the LAN host is reachable; recipe validator added to
+`tools/validate/`; no host address in any committed byte.
 
 ## 13. Verification
 

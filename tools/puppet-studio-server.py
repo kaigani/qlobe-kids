@@ -77,11 +77,52 @@ WORKFLOW_FOR_KIND = {
     "extract": "qwen-image-layered",
     "voice": "voice-align",
     "transcription": "whisper-stt",
+    # Phase 5 media generation. generate-image / cutout-chain carry their own
+    # generation workflow per job (params.workflow), so their batch-grouping
+    # workflow is set at enqueue time, not here.
+    "generate-image": None,
+    "cutout-chain": None,
+    "generate-voice": "qwen3-tts-voiceclone",
 }
 # Kinds whose inputs live on disk (reference PNGs, prompt/seed) and are therefore
 # safely re-queueable after a crash. voice/transcription depend on an uploaded
-# temp file that is lost on restart, so they are not resumable.
-RESUMABLE_KINDS = {"story-scene", "extract"}
+# temp file that is lost on restart, so they are not resumable. The Phase 5 media
+# kinds carry their whole recipe (prompt/seed/workflow) in the persisted job
+# dispatch, and generate-voice reads its text + the configured teacher voice from
+# disk — so all three survive a restart mid-chain and re-run reproducibly.
+RESUMABLE_KINDS = {"story-scene", "extract", "generate-image", "cutout-chain", "generate-voice"}
+
+# Phase 5 media constants (spec §5.1, §7.6). The unassigned-media staging shelf.
+MEDIA_ROOT = ("shared", "media")
+# Image-generation workflow allow-list (from the local-genai skill catalog).
+GENERATE_IMAGE_WORKFLOWS = {
+    "krea2-turbo-t2i", "flux2-t2i", "flux2-klein-edit",
+    "ideogram4-t2i", "z-image-base-t2i", "qwen-image-edit",
+}
+# Workflows that consume an input reference image (an edit, not text-to-image).
+EDIT_WORKFLOWS = {"flux2-klein-edit", "qwen-image-edit"}
+LAYERED_WORKFLOW = "qwen-image-layered"
+VOICE_CLONE_WORKFLOW = "qwen3-tts-voiceclone"
+# Resize targets for the cutout finalize, per subject class (spec §5.1 / WP-5a).
+CUTOUT_TARGET_SIZES = {"character": 420, "object": 400, "prop": 640}
+# The flat dark ground the cutout standard generates onto (local-genai skill).
+DARK_GROUND_SUFFIX = (" The background is a perfectly flat, solid, uniform dark charcoal "
+                      "background, no gradient, no texture, no shadows on the background.")
+
+
+def load_local_config(root: Path) -> dict:
+    """Machine-specific settings the server reads once at boot (git-ignored).
+
+    tools/state/local.json holds everything that must NOT live in the public
+    repo — above all the LAN GenAI host address — plus the teacher-voice
+    reference path and named style refs. Flags/env still win over it. Absent or
+    corrupt file => empty config (the server then relies on flags/env)."""
+    path = root / "tools" / "state" / "local.json"
+    try:
+        data = json.loads(path.read_text("utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (ValueError, OSError):
+        return {}
 
 
 def public_job(job: dict | None) -> dict | None:
@@ -237,7 +278,18 @@ class AuthoringState:
         self.root = root.resolve()
         self.reference_root = self.root.parent / "00-reference" / "puppet parts"
         self.character_root = self.root / "shared" / "characters"
+        self.media_root = self.root / Path(*MEDIA_ROOT)
+        # Machine-specifics (git-ignored). Flags/env override every field here.
+        self.local = load_local_config(self.root)
+        qwen_url = qwen_url or self.local.get("qwenUrl")
         self.qwen_url = qwen_url.rstrip("/") if qwen_url else None
+        # The teacher-voice clone reference and the interpreter that runs the
+        # PIL-backed cutout finalize helper — both resolved abstractly here; the
+        # host/paths themselves come from the git-ignored local config, never code.
+        teacher = self.local.get("teacherVoicePath")
+        self.teacher_voice_path = Path(os.path.expanduser(teacher)) if teacher else None
+        self.cutout_python = os.path.expanduser(self.local.get("cutoutPython") or "python3")
+        self.style_refs = self.local.get("styleRefs") if isinstance(self.local.get("styleRefs"), dict) else {}
         self.whisper_url = whisper_url
         requested_mfa = os.path.expanduser(mfa_bin) if mfa_bin else None
         bundled_mfa = Path.home() / ".qlobe-mfa" / "envs" / "aligner" / "bin" / "mfa"
@@ -284,14 +336,17 @@ class AuthoringState:
     def snapshot_job(self, job_id: str):
         return self.store.get(job_id)
 
-    def enqueue(self, kind: str, dispatch: dict, extra: dict, interactive: bool = False) -> str:
+    def enqueue(self, kind: str, dispatch: dict, extra: dict, interactive: bool = False,
+                workflow: str | None = None) -> str:
         """Create a persistent job and hand it to the scheduler.
 
         Non-interactive jobs join the workflow-batched queue; interactive:true
-        one-offs bypass batching and run immediately."""
+        one-offs bypass batching and run immediately. `workflow` overrides the
+        static WORKFLOW_FOR_KIND map for kinds (generate-image / cutout-chain)
+        whose ComfyUI workflow is chosen per job."""
         job_id = uuid.uuid4().hex[:12]
         record = {
-            "id": job_id, "kind": kind, "workflow": WORKFLOW_FOR_KIND[kind],
+            "id": job_id, "kind": kind, "workflow": workflow or WORKFLOW_FOR_KIND.get(kind),
             "status": "queued", "interactive": bool(interactive),
             "resumable": kind in RESUMABLE_KINDS,
             "created": time.time(), "dispatch": dispatch, **extra,
@@ -333,6 +388,12 @@ class AuthoringState:
                                     error="uploaded audio is no longer available (server restart); re-upload it")
                     return
                 run_transcription_job(self, job_id, temp_dir, source)
+            elif kind == "generate-image":
+                run_generate_image_job(self, job_id, d)
+            elif kind == "cutout-chain":
+                run_cutout_chain_job(self, job_id, d)
+            elif kind == "generate-voice":
+                run_generate_voice_job(self, job_id, d)
             else:
                 self.update_job(job_id, status="failed", error=f"unknown job kind: {kind}")
         except Exception as exc:  # a crashing worker must not wedge the queue
@@ -431,10 +492,12 @@ def studio_document_path(state: AuthoringState, value: str) -> Path:
         safe_id(parts[2]); allowed = True
     elif len(parts) >= 3 and parts[:2] == ("shared", "props"):
         safe_id(parts[2]); allowed = True
+    elif len(parts) >= 3 and parts[:2] == MEDIA_ROOT:
+        safe_id(parts[2]); allowed = True
     elif len(parts) >= 3 and parts[0] == "games":
         safe_id(parts[1]); allowed = True
     if not allowed or relative.suffix.lower() != ".json":
-        raise ValueError("Studio documents must be JSON under shared/characters, shared/props, or games/<id>")
+        raise ValueError("Studio documents must be JSON under shared/characters, shared/props, shared/media, or games/<id>")
     destination = (state.root / relative).resolve()
     if not destination.is_relative_to(state.root):
         raise ValueError("unsafe Studio document path")
@@ -490,14 +553,19 @@ def studio_asset_path(state: AuthoringState, value: str) -> Path:
     relative = safe_relative(value)
     parts = relative.parts
     allowed = False
+    media = False
     if len(parts) >= 4 and parts[0] == "games" and parts[2] == "assets":
         safe_id(parts[1]); allowed = True
     elif len(parts) >= 4 and parts[:2] == ("shared", "characters"):
         safe_id(parts[2]); allowed = True
     elif len(parts) >= 3 and parts[:2] == ("shared", "props"):
         safe_id(parts[2]); allowed = True
-    if not allowed or relative.suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
-        raise ValueError("Studio assets must be PNG, JPEG, or WebP under a game/shared asset root")
+    elif len(parts) >= 3 and parts[:2] == MEDIA_ROOT:
+        safe_id(parts[2]); allowed = True; media = True
+    # Media objects additionally carry audio (voice lines) alongside images.
+    suffixes = (".png", ".jpg", ".jpeg", ".webp", ".m4a") if media else (".png", ".jpg", ".jpeg", ".webp")
+    if not allowed or relative.suffix.lower() not in suffixes:
+        raise ValueError("Studio assets must be PNG, JPEG, or WebP under a game/shared asset root (or .m4a under shared/media)")
     destination = (state.root / relative).resolve()
     if not destination.is_relative_to(state.root):
         raise ValueError("unsafe Studio asset path")
@@ -513,6 +581,41 @@ def atomic_write(path: Path, data: bytes):
 
 def json_bytes(value) -> bytes:
     return json.dumps(value, indent=2).encode("utf-8")
+
+
+GAME_STATUSES = ("live", "beta", "in-design", "proposed", "archived")
+
+
+def set_game_status(state: AuthoringState, game_id: str, status: str) -> dict:
+    """Flip a game's status in both registries (root games.json + game.json).
+
+    games.json round-trips byte-identically through json.dumps(indent=2,
+    ensure_ascii=False) with no trailing newline, so a full round-trip is
+    safe; game.json gets a targeted status-line replacement so its
+    formatting is never disturbed.
+    """
+    game_id = safe_id(game_id)
+    if status not in GAME_STATUSES:
+        raise ValueError("status must be one of: " + ", ".join(GAME_STATUSES))
+    registry_path = state.root / "games.json"
+    registry = json.loads(registry_path.read_text("utf-8"))
+    entry = next((g for g in registry.get("games", []) if g.get("id") == game_id), None)
+    if entry is None:
+        raise ValueError(f"{game_id} is not registered in games.json")
+    previous = entry.get("status")
+    entry["status"] = status
+    manifest_path = state.root / "games" / game_id / "game.json"
+    manifest_text = None
+    if manifest_path.is_file():
+        original = manifest_path.read_text("utf-8")
+        manifest_text, count = re.subn(
+            r'("status"\s*:\s*")[a-z-]+(")', rf"\g<1>{status}\g<2>", original, count=1)
+        if count != 1:
+            raise ValueError(f"could not locate a status field in games/{game_id}/game.json")
+    atomic_write(registry_path, json.dumps(registry, indent=2, ensure_ascii=False).encode("utf-8"))
+    if manifest_text is not None:
+        atomic_write(manifest_path, manifest_text.encode("utf-8"))
+    return {"id": game_id, "status": status, "previous": previous}
 
 
 def http_json(url: str, timeout=8):
@@ -1128,6 +1231,465 @@ def validated_cues(payload: dict) -> dict:
     }
 
 
+# =====================================================================
+# Phase 5 — Media & Generation (spec §5.1 unassigned media, §7.6 qlobe-recipe)
+# =====================================================================
+
+def multipart_bytes_request(url: str, file_path: Path, fields: dict, timeout=900,
+                            file_field="image") -> bytes:
+    """Like multipart_request but returns the raw response body (a generated file),
+    for ?sync=true workflows that stream bytes back instead of a job-id JSON."""
+    boundary = f"----qlobe-{uuid.uuid4().hex}"
+    chunks: list[bytes] = []
+    for name, value in fields.items():
+        chunks.extend([
+            f"--{boundary}\r\n".encode(),
+            f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode(),
+            str(value).encode(), b"\r\n",
+        ])
+    chunks.extend([
+        f"--{boundary}\r\n".encode(),
+        f'Content-Disposition: form-data; name="{file_field}"; filename="{file_path.name}"\r\n'.encode(),
+        f"Content-Type: {mimetypes.guess_type(file_path.name)[0] or 'application/octet-stream'}\r\n\r\n".encode(),
+        file_path.read_bytes(), b"\r\n",
+        f"--{boundary}--\r\n".encode(),
+    ])
+    body = b"".join(chunks)
+    request = Request(url, data=body, method="POST", headers={
+        "Content-Type": f"multipart/form-data; boundary={boundary}",
+        "Content-Length": str(len(body)),
+    })
+    with urlopen(request, timeout=timeout) as response:
+        return response.read(MAX_UPLOAD + 1)
+
+
+def submit_and_poll_image(state: AuthoringState, workflow: str, fields: dict,
+                          image: Path | None = None, output: str | None = None,
+                          on_remote_job=None) -> bytes:
+    """Generic async ComfyUI image workflow: POST (fields, optional ref image) ->
+    poll /jobs/<id> -> GET the result bytes. Generalizes run_story_scene_job (t2i)
+    and extract_one (layered) into one path so every Phase 5 image step shares it."""
+    if not state.qwen_url:
+        raise RuntimeError("local workflow URL is not configured; set qwenUrl (local config) or --qwen-url")
+    url = f"{state.qwen_url}/workflows/{workflow}"
+    if image is not None:
+        submitted = multipart_request(url, image, fields, timeout=120, file_field="image")
+    else:
+        submitted = multipart_fields_request(url, fields, timeout=120)
+    remote_id = submitted.get("job_id") or submitted.get("id")
+    if not remote_id:
+        raise RuntimeError(f"{workflow} did not return a job id: {submitted}")
+    if on_remote_job:
+        on_remote_job(str(remote_id))
+    deadline = time.time() + 30 * 60
+    while time.time() < deadline:
+        remote = http_json(f"{state.qwen_url}/jobs/{remote_id}", timeout=20)
+        status = str(remote.get("status", "")).lower()
+        if status in ("completed", "complete", "succeeded", "success"):
+            break
+        if status in ("failed", "error", "cancelled", "canceled"):
+            raise RuntimeError(remote.get("error") or f"{workflow} job {status}")
+        time.sleep(2)
+    else:
+        raise TimeoutError(f"{workflow} exceeded 30 minutes")
+    result_url = f"{state.qwen_url}/jobs/{remote_id}/result" + (f"?output={output}" if output else "")
+    with urlopen(result_url, timeout=180) as response:
+        data = response.read(MAX_UPLOAD + 1)
+    if len(data) > MAX_UPLOAD:
+        raise RuntimeError(f"{workflow} result exceeded 32 MB")
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise RuntimeError(f"{workflow} result was not a PNG")
+    return data
+
+
+def safe_media_id(value: str) -> str:
+    if not ID_RE.fullmatch(value or ""):
+        raise ValueError("media id must be lowercase kebab-case (max 40 characters)")
+    return value
+
+
+def media_dir(state: AuthoringState, media_id: str) -> Path:
+    """The validated shared/media/<id>/ folder for one media object."""
+    destination = (state.media_root / safe_media_id(media_id)).resolve()
+    if not destination.is_relative_to(state.media_root.resolve()):
+        raise ValueError("unsafe media path")
+    return destination
+
+
+def write_recipe(folder: Path, recipe: dict):
+    atomic_write(folder / "recipe.json", json_bytes(recipe) + b"\n")
+
+
+def resolve_style_ref(state: AuthoringState, ref: str) -> Path:
+    """Resolve a SYMBOLIC style ref to a real file for the network call only —
+    the symbolic form ("shared:objects/cat.png" or a named local styleRefs key) is
+    what the recipe stores; the machine path never is."""
+    if not ref:
+        raise ValueError("an edit workflow requires a style ref")
+    if ref in state.style_refs:
+        path = Path(os.path.expanduser(state.style_refs[ref]))
+        if not path.is_file():
+            raise ValueError(f"configured style ref {ref!r} not found on disk")
+        return path
+    if ref.startswith("shared:"):
+        rel = safe_relative(ref[len("shared:"):])
+        path = (state.root / "shared" / "assets" / rel).resolve()
+        if not path.is_relative_to((state.root / "shared" / "assets").resolve()) or not path.is_file():
+            raise ValueError(f"style ref {ref!r} does not resolve under shared/assets")
+        return path
+    raise ValueError(f"unsupported style ref {ref!r} (use 'shared:<path>' or a configured styleRefs key)")
+
+
+def media_summary(recipe: dict, folder: Path) -> dict:
+    """The list-row summary for GET /api/studio/media: recipe digest + QA status."""
+    qa = recipe.get("qa") if isinstance(recipe.get("qa"), dict) else {}
+    alpha = qa.get("alpha") if isinstance(qa.get("alpha"), dict) else None
+    transcript = qa.get("transcript") if isinstance(qa.get("transcript"), dict) else None
+    return {
+        "id": recipe.get("id"),
+        "kind": recipe.get("kind"),
+        "asset": recipe.get("asset"),
+        "created": recipe.get("created"),
+        "derivedFrom": recipe.get("derivedFrom"),
+        "refs": recipe.get("refs") or {},
+        "role": recipe.get("role"),
+        "qa": {
+            "status": qa.get("status"),
+            "flags": qa.get("flags") or [],
+            **({"partialPct": alpha.get("partialPct")} if alpha else {}),
+            **({"transcriptMatch": transcript.get("match"), "transcriptRatio": transcript.get("ratio")} if transcript else {}),
+        },
+        "hasMagenta": (folder / "qa-magenta.png").is_file(),
+        "hasTranscript": (folder / "qa-transcript.json").is_file(),
+        "recipe": recipe,
+    }
+
+
+def list_media(state: AuthoringState) -> list[dict]:
+    if not state.media_root.is_dir():
+        return []
+    out = []
+    for child in sorted(state.media_root.iterdir()):
+        if not child.is_dir() or not ID_RE.fullmatch(child.name):
+            continue
+        recipe_path = child / "recipe.json"
+        if not recipe_path.is_file():
+            continue
+        try:
+            recipe = json.loads(recipe_path.read_text("utf-8"))
+        except (ValueError, OSError):
+            continue
+        out.append(media_summary(recipe, child))
+    return out
+
+
+def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
+    """Single t2i/edit step -> shared/media/<id>/<id>.png + recipe (status review)."""
+    try:
+        media_id = d["id"]
+        workflow = d["workflow"]
+        prompt = d["prompt"]
+        seed = int(d["seed"])
+        width, height = int(d.get("width", 1024)), int(d.get("height", 1024))
+        refs = d.get("refs") or {}
+        folder = media_dir(state, media_id)
+        folder.mkdir(parents=True, exist_ok=True)
+        state.update_job(job_id, status="running", message=f"Generating with {workflow}", progress=1, total=2)
+        fields = {"prompt": prompt, "seed": str(seed), "width": str(width), "height": str(height)}
+        image = None
+        if workflow in EDIT_WORKFLOWS or refs.get("style"):
+            image = resolve_style_ref(state, refs.get("style", ""))
+        png = submit_and_poll_image(state, workflow, fields, image=image,
+                                    on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
+        asset = f"{media_id}.png"
+        atomic_write(folder / asset, png)
+        recipe = {
+            "format": "qlobe-recipe", "formatVersion": 1, "id": media_id, "kind": "image",
+            "asset": asset,
+            "steps": [{"workflow": workflow, "prompt": prompt, "seed": seed, "width": width, "height": height}],
+            "refs": {k: v for k, v in refs.items() if v},
+            "derivedFrom": None,
+            "qa": {"status": "review"},
+            "created": time.strftime("%Y-%m-%d"),
+        }
+        write_recipe(folder, recipe)
+        state.update_job(job_id, status="completed", progress=2, message=f"Generated {asset}",
+                         mediaId=media_id, outputs=[str((folder / asset).relative_to(state.root))])
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Image generation failed")
+
+
+def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
+    """The layered-extraction cutout standard, with seed-ladder retry on QA fail.
+
+    generate on flat dark charcoal -> qwen-image-layered layer_2 -> alpha
+    histogram QA + magenta composite -> bbox-crop+pad -> resize -> PNG. The raw
+    generation is kept as <id>.raw.png (an earlier stage, never overwritten by the
+    cutout); the recipe steps[] record the whole chain so Regenerate reproduces it."""
+    try:
+        media_id = d["id"]
+        gen_workflow = d["workflow"]
+        base_prompt = d["prompt"]
+        target = d.get("target", "object")
+        max_size = int(d.get("maxSize") or CUTOUT_TARGET_SIZES.get(target, 400))
+        pad = int(d.get("pad", 12))
+        width, height = int(d.get("width", 1024)), int(d.get("height", 1024))
+        refs = d.get("refs") or {}
+        extract_prompt = d.get("extractPrompt") or (
+            f"Solid flat green background layer. Top layer: the exact same {base_prompt} from the image. "
+            "Keep it identical to the input image.")
+        requested_seed = int(d.get("seed", 42))
+        ladder = []
+        for s in [requested_seed, 42, 1337, 9001]:
+            if s not in ladder:
+                ladder.append(s)
+        folder = media_dir(state, media_id)
+        folder.mkdir(parents=True, exist_ok=True)
+        gen_prompt = base_prompt + DARK_GROUND_SUFFIX
+
+        finalize_script = state.root / "tools" / "pipeline" / "cutout_finalize.py"
+        raw_path = folder / f"{media_id}.raw.png"
+        layer_path = folder / f"{media_id}.layer2.png"
+        final_path = folder / f"{media_id}.png"
+        magenta_path = folder / "qa-magenta.png"
+
+        state.update_job(job_id, status="running", total=len(ladder) * 3)
+        last_reason = None
+        qa_result = None
+        used_seed = None
+        for attempt, seed in enumerate(ladder):
+            step = attempt * 3
+            state.update_job(job_id, current=f"seed {seed}", progress=step + 1,
+                             message=f"Generating on dark ground (seed {seed})")
+            fields = {"prompt": gen_prompt, "seed": str(seed), "width": str(width), "height": str(height)}
+            image = None
+            if gen_workflow in EDIT_WORKFLOWS or refs.get("style"):
+                image = resolve_style_ref(state, refs.get("style", ""))
+            raw_png = submit_and_poll_image(state, gen_workflow, fields, image=image,
+                                            on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
+            atomic_write(raw_path, raw_png)
+
+            state.update_job(job_id, progress=step + 2, message=f"Extracting layer_2 (seed {seed})")
+            layer_png = submit_and_poll_image(state, LAYERED_WORKFLOW,
+                                              {"prompt": extract_prompt, "layers": "2", "seed": str(seed)},
+                                              image=raw_path, output="layer_2",
+                                              on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
+            atomic_write(layer_path, layer_png)
+
+            state.update_job(job_id, progress=step + 3, message=f"Alpha QA + finalize (seed {seed})")
+            run = subprocess.run(
+                [state.cutout_python, str(finalize_script), "--input", str(layer_path),
+                 "--output", str(final_path), "--magenta", str(magenta_path),
+                 "--max-size", str(max_size), "--pad", str(pad)],
+                capture_output=True, text=True, timeout=300,
+            )
+            try:
+                qa_result = json.loads(run.stdout.strip().splitlines()[-1]) if run.stdout.strip() else {}
+            except (ValueError, IndexError):
+                raise RuntimeError(f"cutout finalize produced no JSON: {(run.stderr or run.stdout)[:400]}")
+            used_seed = seed
+            if qa_result.get("pass"):
+                break
+            last_reason = qa_result.get("reason")
+            state.update_job(job_id, message=f"QA failed on seed {seed}: {last_reason}")
+
+        alpha = (qa_result or {}).get("alpha")
+        flags = (qa_result or {}).get("flags") or []
+        passed = bool((qa_result or {}).get("pass"))
+        steps = [
+            {"workflow": gen_workflow, "prompt": base_prompt, "ground": "dark-charcoal",
+             "seed": used_seed, "width": width, "height": height, "output": f"{media_id}.raw.png"},
+            {"workflow": LAYERED_WORKFLOW, "prompt": extract_prompt, "output": "layer_2",
+             "from": f"{media_id}.raw.png", "seed": used_seed},
+            {"op": "finalize", "crop": f"bbox+{pad}", "maxSize": max_size, "encode": "png",
+             "from": f"{media_id}.layer2.png", "output": f"{media_id}.png"},
+        ]
+        recipe = {
+            "format": "qlobe-recipe", "formatVersion": 1, "id": media_id, "kind": "image",
+            "asset": f"{media_id}.png" if passed else None,
+            "steps": steps,
+            "refs": {k: v for k, v in refs.items() if v},
+            "derivedFrom": None,
+            "qa": {
+                "status": "review" if passed else "failed-qa",
+                "alpha": alpha, "flags": flags,
+                "seedLadder": ladder, "usedSeed": used_seed,
+                **({"reason": last_reason} if not passed else {}),
+            },
+            "created": time.strftime("%Y-%m-%d"),
+        }
+        write_recipe(folder, recipe)
+        if passed:
+            state.update_job(job_id, status="completed", message=f"Cutout ready ({media_id}.png, seed {used_seed})",
+                             mediaId=media_id, outputs=[str(final_path.relative_to(state.root))])
+        else:
+            state.update_job(job_id, status="failed", message=f"Cutout QA failed after seed ladder: {last_reason}",
+                             error=f"seed ladder {ladder} exhausted: {last_reason}", mediaId=media_id)
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Cutout chain failed")
+
+
+def normalize_transcript(text: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", str(text).lower())).strip()
+
+
+def run_generate_voice_job(state: AuthoringState, job_id: str, d: dict):
+    """Teacher-voice clone -> FLAC->m4a -> whisper-stt transcript-diff QA, recorded
+    in the recipe. The teacher reference comes from the git-ignored local config."""
+    temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-media-voice-"))
+    try:
+        media_id = d["id"]
+        text = d["text"]
+        seed = int(d.get("seed", 7))
+        if not state.qwen_url:
+            raise RuntimeError("local workflow URL is not configured; set qwenUrl (local config) or --qwen-url")
+        if not state.teacher_voice_path or not state.teacher_voice_path.is_file():
+            raise RuntimeError("teacher voice reference not configured; set teacherVoicePath in tools/state/local.json")
+        ffmpeg = shutil.which("ffmpeg")
+        if not ffmpeg:
+            raise RuntimeError("ffmpeg is required but was not found on PATH")
+        folder = media_dir(state, media_id)
+        folder.mkdir(parents=True, exist_ok=True)
+
+        state.update_job(job_id, status="running", total=3, progress=1, message="Cloning teacher voice")
+        clone = temp_dir / "clone.flac"
+        audio_bytes = multipart_bytes_request(
+            f"{state.qwen_url}/workflows/{VOICE_CLONE_WORKFLOW}?sync=true",
+            state.teacher_voice_path, {"text": text, "seed": str(seed)},
+            file_field="voice",
+        )
+        clone.write_bytes(audio_bytes)
+
+        state.update_job(job_id, progress=2, message="Encoding m4a")
+        asset = f"{media_id}.m4a"
+        encoded = temp_dir / asset
+        subprocess.run([
+            ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-i", str(clone),
+            "-vn", "-c:a", "aac", "-b:a", "96000", "-movflags", "+faststart", str(encoded),
+        ], check=True, capture_output=True, text=True, timeout=180)
+        atomic_write(folder / asset, encoded.read_bytes())
+
+        # whisper-stt transcript diff QA (spec §7.6: voice recipes record the QA
+        # transcript comparison). Uses the same Whisper endpoint the server already
+        # derives from the qwen host.
+        transcript_qa = {"intended": text}
+        try:
+            state.update_job(job_id, progress=3, message="Whisper transcript QA")
+            result = multipart_request(
+                state.whisper_url or f"{state.qwen_url}/workflows/whisper-stt?sync=true",
+                encoded, {"model_size": "base", "language": "en"},
+                timeout=15 * 60, file_field="audio",
+            )
+            heard = str(result.get("text", "")).strip()
+            a, b = normalize_transcript(text), normalize_transcript(heard)
+            import difflib
+            ratio = round(difflib.SequenceMatcher(None, a, b).ratio(), 3)
+            transcript_qa.update({"heard": heard, "ratio": ratio, "match": ratio >= 0.8})
+            atomic_write(folder / "qa-transcript.json", json_bytes(transcript_qa) + b"\n")
+        except Exception as exc:  # QA is recorded even when the whisper call fails
+            transcript_qa.update({"heard": None, "ratio": None, "match": None, "error": str(exc)})
+            atomic_write(folder / "qa-transcript.json", json_bytes(transcript_qa) + b"\n")
+
+        recipe = {
+            "format": "qlobe-recipe", "formatVersion": 1, "id": media_id, "kind": "voice",
+            "asset": asset,
+            "steps": [{"workflow": VOICE_CLONE_WORKFLOW, "text": text, "seed": seed}],
+            "refs": {"voice": "teacher"},
+            "derivedFrom": None,
+            "qa": {"status": "review", "transcript": transcript_qa},
+            "created": time.strftime("%Y-%m-%d"),
+        }
+        write_recipe(folder, recipe)
+        state.update_job(job_id, status="completed", message=f"Voice line ready ({asset})",
+                         mediaId=media_id, outputs=[str((folder / asset).relative_to(state.root))])
+    except subprocess.CalledProcessError as exc:
+        detail = (exc.stderr or exc.stdout or str(exc)).strip()
+        state.update_job(job_id, status="failed", error=detail, message="Voice generation failed")
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Voice generation failed")
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+def regenerate_dispatch(recipe: dict, media_id: str, new_seed=None) -> tuple[str, dict]:
+    """Rebuild a job (kind, dispatch) from a stored recipe so Regenerate re-runs it
+    verbatim (spec §7.6: steps[] must suffice to re-enqueue unchanged; a new seed is
+    the only permitted edit). The originating generator is inferred from the steps."""
+    steps = recipe.get("steps") or []
+    refs = recipe.get("refs") or {}
+    if recipe.get("kind") == "voice":
+        step = steps[0] if steps else {}
+        return "generate-voice", {
+            "id": media_id, "text": step.get("text", ""),
+            "seed": int(new_seed if new_seed is not None else step.get("seed", 7)),
+        }
+    if any(s.get("workflow") == LAYERED_WORKFLOW for s in steps):
+        gen = next((s for s in steps if s.get("workflow") and s["workflow"] != LAYERED_WORKFLOW), {})
+        extract = next((s for s in steps if s.get("workflow") == LAYERED_WORKFLOW), {})
+        finalize = next((s for s in steps if s.get("op") == "finalize"), {})
+        return "cutout-chain", {
+            "id": media_id, "workflow": gen.get("workflow"), "prompt": gen.get("prompt", ""),
+            "seed": int(new_seed if new_seed is not None else gen.get("seed", 42)),
+            "width": int(gen.get("width", 1024)), "height": int(gen.get("height", 1024)),
+            "refs": refs, "maxSize": finalize.get("maxSize"),
+            "pad": int(str(finalize.get("crop", "bbox+12")).split("+")[-1]) if "+" in str(finalize.get("crop", "")) else 12,
+            "extractPrompt": extract.get("prompt"),
+        }
+    step = steps[0] if steps else {}
+    return "generate-image", {
+        "id": media_id, "workflow": step.get("workflow"), "prompt": step.get("prompt", ""),
+        "seed": int(new_seed if new_seed is not None else step.get("seed", 42)),
+        "width": int(step.get("width", 1024)), "height": int(step.get("height", 1024)),
+        "refs": refs,
+    }
+
+
+ASSIGN_SUBDIR_RE = re.compile(r"^[a-z][a-z0-9-]{0,39}$")
+
+
+def assign_destination_dir(state: AuthoringState, dest: str) -> tuple[Path, str]:
+    """Validate an Assign destination and return (absolute dir, game-id-or-None).
+
+    dest ∈ shared/assets/<subdir>/, games/<id>/assets/<subdir>/,
+    shared/characters/<id>/<subdir>/. Reuses the same discipline as the write
+    allow-list (kebab segments, no traversal, must resolve under the repo root)."""
+    relative = safe_relative(dest)
+    parts = tuple(p for p in relative.parts if p not in ("", "."))
+    game_id = None
+    ok = False
+    if len(parts) == 3 and parts[:2] == ("shared", "assets") and ASSIGN_SUBDIR_RE.fullmatch(parts[2]):
+        ok = True
+    elif len(parts) == 4 and parts[0] == "games" and parts[2] == "assets" \
+            and ID_RE.fullmatch(parts[1]) and ASSIGN_SUBDIR_RE.fullmatch(parts[3]):
+        ok = True; game_id = parts[1]
+    elif len(parts) == 3 and parts[:2] == ("shared", "characters") \
+            and ID_RE.fullmatch(parts[2]):
+        ok = True  # shared/characters/<id>/<subdir> is 4 parts; handle below
+    elif len(parts) == 4 and parts[:2] == ("shared", "characters") \
+            and ID_RE.fullmatch(parts[2]) and ASSIGN_SUBDIR_RE.fullmatch(parts[3]):
+        ok = True
+    if not ok:
+        raise ValueError("Assign destination must be shared/assets/<subdir>/, "
+                         "games/<id>/assets/<subdir>/, or shared/characters/<id>/<subdir>/")
+    destination = (state.root / Path(*parts)).resolve()
+    if not destination.is_relative_to(state.root):
+        raise ValueError("unsafe assign destination")
+    return destination, game_id
+
+
+def append_assets_md(game_dir: Path, asset_name: str, recipe: dict):
+    """Append a provenance line to a game's ASSETS.md when assigning media in."""
+    path = game_dir / "ASSETS.md"
+    steps = recipe.get("steps") or []
+    workflows = " -> ".join(s.get("workflow") or s.get("op") for s in steps if (s.get("workflow") or s.get("op")))
+    kind = recipe.get("kind", "media")
+    line = (f"- `{asset_name}` — generated via QLOBE Studio ({kind}; {workflows or 'recipe'}), "
+            f"recipe `{asset_name}.recipe.json`, CC BY 4.0.\n")
+    header = "" if path.is_file() else "# Assets\n\nProvenance for assets in this game (source, processing, license).\n\n"
+    with open(path, "a", encoding="utf-8") as handle:
+        handle.write(header + line)
+
+
 class PuppetStudioHandler(SimpleHTTPRequestHandler):
     server_version = "QLOBEStudio/1.0"
 
@@ -1291,6 +1853,16 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 return self.send_json({"ok": True, "jobs": jobs})
             if parsed.path == "/api/studio/voices":
                 return self.handle_voices(parse_qs(parsed.query))
+            if parsed.path == "/api/studio/media":
+                return self.send_json({"ok": True, "media": list_media(self.state)})
+            if parsed.path.startswith("/api/studio/media/"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                return self.send_json({"ok": True, "media": media_summary(recipe, folder)})
             if parsed.path.startswith("/api/studio/jobs/"):
                 job = self.state.store.get(parsed.path.rsplit("/", 1)[-1])
                 return self.send_json({"ok": True, "job": public_job(job)}) if job else self.send_error_json(404, "job not found")
@@ -1406,6 +1978,134 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 updated = self.state.store.update(job_id, status="cancelled", message="Cancelled by request")
                 self.state.scheduler.wake()
                 return self.send_json({"ok": True, "job": public_job(updated)})
+            # --- Phase 5 media actions (no request body): accept / reject -------
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/accept"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/accept")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                recipe.setdefault("qa", {})["status"] = "accepted"
+                write_recipe(folder, recipe)
+                return self.send_json({"ok": True, "media": media_summary(recipe, folder)})
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/reject"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/reject")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                if (recipe.get("qa") or {}).get("status") == "accepted":
+                    return self.send_error_json(409, "cannot reject an accepted media object")
+                trash = self.state.root / "tools" / "state" / "trash"
+                trash.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(folder), str(trash / f"{media_id}-{int(time.time())}"))
+                return self.send_json({"ok": True, "rejected": media_id})
+            # --- Phase 5 media actions (JSON body): regenerate / assign --------
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/regenerate"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/regenerate")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                payload = self.read_json() if int(self.headers.get("Content-Length", "0") or 0) else {}
+                new_seed = payload.get("seed")
+                kind, dispatch = regenerate_dispatch(recipe, media_id, new_seed)
+                interactive = bool(payload.get("interactive", False))
+                workflow = dispatch.get("workflow") if kind in ("generate-image", "cutout-chain") else None
+                job_id = self.state.enqueue(
+                    kind, dispatch,
+                    {"target": kind, "mediaId": media_id,
+                     "message": f"Regenerating {media_id}", "progress": 0},
+                    interactive=interactive, workflow=workflow,
+                )
+                return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id}, 202)
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/assign"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/assign")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                asset = recipe.get("asset")
+                if not asset or not (folder / asset).is_file():
+                    return self.send_error_json(409, "media has no shippable asset to assign (QA not passed?)")
+                payload = self.read_json()
+                dest_dir, game_id = assign_destination_dir(self.state, str(payload.get("dest", "")))
+                dest_dir.mkdir(parents=True, exist_ok=True)
+                target_asset = dest_dir / asset
+                sidecar = dest_dir / f"{asset}.recipe.json"
+                if target_asset.exists() or sidecar.exists():
+                    return self.send_error_json(409, f"{asset} already exists at the destination")
+                shutil.move(str(folder / asset), str(target_asset))
+                atomic_write(sidecar, json_bytes(recipe) + b"\n")
+                magenta = folder / "qa-magenta.png"
+                if magenta.is_file():
+                    shutil.move(str(magenta), str(dest_dir / f"{asset}.qa-magenta.png"))
+                assets_md = None
+                if game_id:
+                    append_assets_md(self.state.root / "games" / game_id, asset, recipe)
+                    assets_md = f"games/{game_id}/ASSETS.md"
+                shutil.rmtree(folder, ignore_errors=True)  # leaves the unassigned bucket
+                return self.send_json({
+                    "ok": True, "assigned": media_id,
+                    "dest": str(target_asset.relative_to(self.state.root)),
+                    "recipe": str(sidecar.relative_to(self.state.root)),
+                    "assetsMd": assets_md,
+                })
+            if parsed.path == "/api/studio/generate":
+                payload = self.read_json()
+                kind = str(payload.get("kind", ""))
+                params = payload.get("params") if isinstance(payload.get("params"), dict) else {}
+                if kind not in ("generate-image", "cutout-chain", "generate-voice"):
+                    raise ValueError("kind must be generate-image, cutout-chain, or generate-voice")
+                media_id = safe_media_id(str(params.get("id", "")))
+                interactive = bool(payload.get("interactive", False))
+                folder = media_dir(self.state, media_id)
+                if (folder / "recipe.json").exists() and not bool(payload.get("overwrite", False)):
+                    return self.send_error_json(409, f"media {media_id} already exists; enable overwrite to replace it")
+                if kind in ("generate-image", "cutout-chain"):
+                    workflow = str(params.get("workflow", ""))
+                    if workflow not in GENERATE_IMAGE_WORKFLOWS:
+                        raise ValueError(f"workflow must be one of {sorted(GENERATE_IMAGE_WORKFLOWS)}")
+                    prompt = str(params.get("prompt", "")).strip()
+                    if len(prompt) < 3:
+                        raise ValueError("a prompt is required")
+                    dispatch = {
+                        "id": media_id, "workflow": workflow, "prompt": prompt[:8000],
+                        "seed": int(params.get("seed", 42)),
+                        "width": max(64, min(2048, int(params.get("width", 1024)))),
+                        "height": max(64, min(2048, int(params.get("height", 1024)))),
+                        "refs": {k: str(v) for k, v in (params.get("refs") or {}).items() if v},
+                    }
+                    if kind == "cutout-chain":
+                        target = str(params.get("target", "object"))
+                        if target not in CUTOUT_TARGET_SIZES and not params.get("maxSize"):
+                            raise ValueError(f"target must be one of {sorted(CUTOUT_TARGET_SIZES)} or pass maxSize")
+                        dispatch.update({
+                            "target": target,
+                            "maxSize": int(params["maxSize"]) if params.get("maxSize") else None,
+                            "pad": max(0, min(64, int(params.get("pad", 12)))),
+                            "extractPrompt": (str(params.get("extractPrompt")).strip() or None) if params.get("extractPrompt") else None,
+                        })
+                    job_id = self.state.enqueue(
+                        kind, dispatch,
+                        {"target": kind, "mediaId": media_id, "message": "Queued", "progress": 0},
+                        interactive=interactive, workflow=workflow,
+                    )
+                else:  # generate-voice
+                    text = str(params.get("text", "")).strip()
+                    if not text:
+                        raise ValueError("voice text is required")
+                    dispatch = {"id": media_id, "text": text[:2000], "seed": int(params.get("seed", 7))}
+                    job_id = self.state.enqueue(
+                        kind, dispatch,
+                        {"target": kind, "mediaId": media_id, "message": "Queued", "progress": 0},
+                        interactive=interactive,
+                    )
+                return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id}, 202)
             # Native speech endpoints (/api/studio/*) — same handlers as the frozen
             # /api/puppet/* compat shim below.
             if parsed.path == "/api/studio/voice":
@@ -1449,6 +2149,30 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     excerpt = (result.stderr or result.stdout or "validator produced no output").strip()[:2000]
                     return self.send_error_json(500, excerpt)
                 return self.send_json({"ok": True, "report": report})
+            if parsed.path == "/api/studio/game-status":
+                payload = self.read_json()
+                game_id = safe_id(str(payload.get("id") or ""))
+                status = str(payload.get("status") or "").strip()
+                if status not in GAME_STATUSES:
+                    raise ValueError("status must be one of: " + ", ".join(GAME_STATUSES))
+                validation = None
+                if status in ("live", "beta"):
+                    # Promotion is validation-gated (spec §5.3): errors block, warns don't.
+                    node = shutil.which("node") or "node"
+                    args = [node, "tools/validate/run.mjs", game_id, "--json"]
+                    try:
+                        result = subprocess.run(
+                            args, cwd=self.state.root, capture_output=True, text=True, timeout=120,
+                        )
+                        validation = json.loads(result.stdout)
+                    except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as exc:
+                        return self.send_error_json(500, f"validation run failed: {exc}")
+                    errors = validation.get("counts", {}).get("error", 0)
+                    if errors:
+                        return self.send_error_json(
+                            409, f"{game_id} has {errors} validation error(s); fix them before setting {status}")
+                changed = set_game_status(self.state, game_id, status)
+                return self.send_json({"ok": True, **changed, "validation": validation})
             if parsed.path == "/api/studio/asset":
                 query = parse_qs(parsed.query)
                 path = studio_asset_path(self.state, query.get("path", [""])[0])

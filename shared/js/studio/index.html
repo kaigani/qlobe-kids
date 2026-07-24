@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>QLOBE Studio</title>
-  <link rel="stylesheet" href="./studio.css">
+  <!-- Bump ?v= on every studio.css change — a stale cache once presented a
+       false-broken layout in Phase 2. Keep the query in sync with the CSS. -->
+  <link rel="stylesheet" href="./studio.css?v=3">
 </head>
 <body>
   <header class="studio-bar">
@@ -13,6 +15,8 @@
     </a>
     <nav id="workspace-nav" aria-label="Studio workspaces">
       <button data-workspace="library">Library</button>
+      <button data-workspace="modules">Modules</button>
+      <button data-workspace="games">Games</button>
       <button data-workspace="production">Production</button>
       <span class="nav-group-label">Character</span>
       <button data-workspace="rig">Rig</button>

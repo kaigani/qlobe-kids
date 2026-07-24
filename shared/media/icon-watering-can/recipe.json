@@ -1,0 +1,53 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "icon-watering-can",
+  "kind": "image",
+  "asset": "icon-watering-can.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A friendly toy-style garden watering can with a rounded spout and a chunky handle. Bright, soft 3D cartoon style with rounded simplified forms and cheerful proportions, saturated colors, smooth shading, soft highlights and a toy-like glossy finish. Clean readable silhouette, minimal detail, zero clutter, no text, no UI elements. Premium preschool learning app asset.",
+      "ground": "dark-charcoal",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "icon-watering-can.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same A friendly toy-style garden watering can with a rounded spout and a chunky handle. Bright, soft 3D cartoon style with rounded simplified forms and cheerful proportions, saturated colors, smooth shading, soft highlights and a toy-like glossy finish. Clean readable silhouette, minimal detail, zero clutter, no text, no UI elements. Premium preschool learning app asset. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "icon-watering-can.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 400,
+      "encode": "png",
+      "from": "icon-watering-can.layer2.png",
+      "output": "icon-watering-can.png"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 54.91,
+      "opaquePct": 17.749,
+      "partialPct": 27.342
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 42
+  },
+  "created": "2026-07-24"
+}

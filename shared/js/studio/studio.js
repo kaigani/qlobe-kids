@@ -26,6 +26,8 @@ async function applyProjectNavigation() {
   const available = new Set(Object.keys(project?.workspaces || {}));
   available.add('rig'); // native Rig edits the shared character library — always reachable
   available.add('library'); // native Library browses every object across every project — always reachable
+  available.add('modules'); // native Modules browses engines/services/stage/templates — always reachable
+  available.add('games'); // native Games browses the registry + per-game dashboards — always reachable
   available.add('production'); // native Production (jobs/validate/completeness/usage) — always reachable
   for (const button of nav.querySelectorAll('button[data-workspace]')) {
     button.hidden = !available.has(button.dataset.workspace);
@@ -41,7 +43,7 @@ const toast = (message, { error = false, duration = 4000 } = {}) => {
   toastNode.textContent = message;
   toastNode.className = `show${error ? ' error' : ''}`;
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => { toastNode.className = ''; }, duration);
+  toast.timer = setTimeout(() => { toastNode.className = ''; toastNode.textContent = ''; }, duration);
 };
 
 async function checkServer() {
@@ -61,9 +63,9 @@ function updateUrl(workspace) {
 
 async function openWorkspace(workspace, { update = true } = {}) {
   workspace = canonicalWorkspaceId(workspace); // "build" is a legacy alias for "assemble"
-  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music', 'library', 'production'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
+  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music', 'library', 'modules', 'games', 'production'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
   const { available } = await applyProjectNavigation();
-  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'library', 'production'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
+  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'library', 'modules', 'games', 'production'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
   if (activeCleanup) { activeCleanup(); activeCleanup = null; }
   activeWorkspace = workspace;
   for (const button of nav.querySelectorAll('button')) button.classList.toggle('on', button.dataset.workspace === workspace);

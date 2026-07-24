@@ -20,10 +20,15 @@ const specPath = args.find((a) => !a.startsWith('--')) || join(ROOT, 'docs', 'ql
 // Phase 2 realized tools/validate/, tools/build-usage-index.mjs, and
 // shared/data/usage-index.json. Phase 3 realized tools/pipeline/ (committed, now
 // verified on disk) and tools/state/ (git-ignored, server-managed — allow-listed
-// below like shared/props). Only the config.json shim remains planned (Phase 4).
-const PLANNED = new Set([
-  'games/<id>/config.json', 'config.json',
-]);
+// below like shared/props). Phase 4 realized the config.json + shim pattern
+// (templates/stub-game/config.json + config.js), so `config.json` and
+// `games/<id>/config.json` now verify against the repo like any real path.
+// Phase 5 (Media & Generation) landed: shared/media/ is now an allow-listed
+// server-managed staging root (see ALLOWLISTED_VIRTUAL below — empty on a fresh
+// checkout, verified by presence in the server source), and qlobe-recipe v1 is a
+// real format written by every generation job. Nothing remains planned.
+const PLANNED = new Set([]);
+const PLANNED_FORMATS = [];
 
 // Paths the spec references as RETIRED — the spec (§3.5/§11/Appendix B) still
 // describes tools/content-pipeline/ in the present tense as the dir being
@@ -37,7 +42,10 @@ const RETIRED = new Set(['tools/content-pipeline/', 'tools/content-pipeline']);
 // a fresh checkout (shared/props is an allow-listed write root; tools/state/ is
 // the git-ignored job store the server creates on boot). Verified by presence in
 // the server source rather than by an on-disk directory.
-const ALLOWLISTED_VIRTUAL = new Set(['shared/props', 'shared/props/', 'tools/state', 'tools/state/']);
+const ALLOWLISTED_VIRTUAL = new Set([
+  'shared/props', 'shared/props/', 'tools/state', 'tools/state/',
+  'shared/media', 'shared/media/',
+]);
 
 const spec = readFileSync(specPath, 'utf8');
 const tokens = [...new Set([...spec.matchAll(/`([^`\n]+)`/g)].map((m) => m[1]))];
@@ -59,6 +67,8 @@ function loadFormatHaystack() {
       const p = join(dir, e.name);
       if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, depth + 1); continue; }
       if (!wanted.test(e.name)) continue;
+      // The spec itself must never verify its own format-name claims.
+      if (resolve(p) === resolve(specPath)) continue;
       try { if (statSync(p).size < 2_000_000) chunks.push(readFileSync(p, 'utf8')); } catch {}
     }
   };
@@ -139,12 +149,9 @@ function checkEndpoint(token) {
 }
 
 function checkFormat(token) {
-  // qlobe-voice-pack became real in Phase 2 (speech-data.js adapter + validator);
-  // it is now verified against the repo like any other format name.
-  const plannedFormats = [];
-  if (plannedFormats.includes(token)) { results.planned.push(token); return; }
+  if (PLANNED_FORMATS.includes(token)) { results.planned.push(token); return; }
   if (loadFormatHaystack().includes(token)) results.verified.push(token);
-  else results.failed.push({ token, reason: 'format name not found in repo' });
+  else results.failed.push({ token, reason: 'format name not found in repo (outside the spec itself)' });
 }
 
 for (const token of tokens) {

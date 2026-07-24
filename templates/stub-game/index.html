@@ -32,6 +32,8 @@
 <body>
   <div id="game"></div>
   <script type="module">
+    // config.js is a thin shim that loads content from config.json (see config.js).
+    // Keep this import shape; put your game's data in config.json.
     import config from './config.js';
     import { createGame } from '../../shared/js/engines/ENGINE_NAME.js';
     createGame(config, document.getElementById('game'));

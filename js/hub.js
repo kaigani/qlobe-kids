@@ -58,13 +58,14 @@ function categorySlide(category, games) {
   const sec = el('section', 'slide slide-cat');
   if (category.color) sec.style.setProperty('--cat', category.color);
 
-  // "3/10 games" — how many are playable today (live or beta) out of the catalog
-  const playable = games.filter(isPlayable).length;
-  const count = `${playable}/${games.length} game${games.length === 1 ? '' : 's'}`;
+  // "3/10 games" — how many are finished (live) out of the catalog; in-progress
+  // betas still show in the carousel but don't count until they graduate
+  const live = games.filter((g) => g.status === 'live' && g.path).length;
+  const count = `${live}/${games.length} game${games.length === 1 ? '' : 's'}`;
 
   const a = el('a', 'tile tile-big');
   a.href = `#${category.id}`;
-  a.setAttribute('aria-label', `${category.title} — ${playable} of ${games.length} games ready to play`);
+  a.setAttribute('aria-label', `${category.title} — ${live} of ${games.length} games ready to play`);
   a.append(tileArt(category), tileLabel(count));
 
   sec.append(badge(category), a);
@@ -82,11 +83,12 @@ function gameSlide(game) {
     tile.href = game.path;
     tile.setAttribute('aria-label', game.title);
     if (game.status === 'beta') {
-      // playable but still placeholder-dressed: a friendly sprout chip, not a warning
+      // playable but still being finished: a friendly in-progress chip, not a warning
       const chip = el('span', 'tile-beta');
       chip.setAttribute('aria-hidden', 'true');
-      chip.textContent = '🌱 new!';
+      chip.textContent = '🚧 in progress';
       tile.appendChild(chip);
+      tile.setAttribute('aria-label', `${game.title} — in progress`);
     }
   } else {
     tile = el('div', 'tile tile-soon');

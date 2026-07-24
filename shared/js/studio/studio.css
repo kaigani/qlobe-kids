@@ -1,3 +1,5 @@
+/* When you change this file, bump the ?v= query on its <link> in index.html.
+   A stale browser cache once showed a false-broken layout (Phase 2). Current: v2. */
 :root {
   --ink:#111; --paper:#f7f7f4; --white:#fff; --yellow:#ffd91f;
   --blue:#3c83e7; --pale-blue:#b9d9ff; --orange:#ff681f; --red:#ff4135;
@@ -46,8 +48,8 @@ button:disabled { background:#bbb; color:#666; cursor:not-allowed; transform:non
 #character-workspace[hidden], #native-workspace[hidden] { display:none; }
 #native-workspace { overflow:hidden; }
 #studio-toast { position:fixed; z-index:100; right:18px; bottom:18px; max-width:420px;
-  padding:0; border:0; background:transparent; pointer-events:none; }
-#studio-toast.show { padding:12px 14px; border:var(--rule); background:var(--pale-blue);
+  padding:0; border:0; background:transparent; pointer-events:none; visibility:hidden; }
+#studio-toast.show { visibility:visible; padding:12px 14px; border:var(--rule); background:var(--pale-blue);
   box-shadow:6px 6px 0 var(--ink); text-transform:uppercase; font-size:12px; }
 #studio-toast.error { background:#ff9d91; }
 
@@ -131,6 +133,36 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 @media (max-width:760px) {
   .library-workspace.workspace { grid-template-columns:1fr; }
   .library-grid { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
+}
+
+/* Library workspace media objects + "+ Generate" flow (WP-5c). */
+.library-media-card { position:relative; }
+.library-badge-unassigned { font-size:9px; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 6px; border:2px solid var(--ink); background:var(--orange); color:#fff; }
+.library-media-thumb { display:block; width:100%; aspect-ratio:1; object-fit:contain;
+  background:#e8e4d8; border:2px solid var(--ink); }
+.library-media-thumb-empty { display:grid; place-items:center; aspect-ratio:1; background:#e8e4d8;
+  border:2px solid var(--ink); font-size:10px; text-transform:uppercase; color:#666; text-align:center; }
+.library-media-audio { width:100%; }
+.library-media-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.library-media-actions button { min-height:30px; padding:4px 8px; font-size:9px; }
+.library-media-panel { margin-top:8px; padding:9px; border:2px solid var(--ink); background:var(--paper); }
+.library-media-panel h4 { margin:0 0 6px; font:900 12px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+.library-media-panel .row { margin-top:8px; }
+.library-provenance-step { margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed var(--ink); }
+.library-provenance-step:last-of-type { border-bottom:0; margin-bottom:0; padding-bottom:0; }
+.library-media-qa-thumb { display:block; max-width:140px; margin-top:4px; border:2px solid var(--ink); }
+
+.library-generate-modal { position:fixed; inset:0; z-index:60; display:grid; place-items:center;
+  background:rgba(17,17,17,.55); padding:20px; }
+.library-generate-modal[hidden] { display:none; }
+.library-generate-panel { width:min(480px,100%); max-height:88vh; overflow:auto; background:#fff;
+  border:var(--rule); box-shadow:8px 8px 0 var(--ink); padding:16px; }
+.library-generate-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.library-generate-head h3 { margin:0; font:900 18px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+.library-generate-head button { min-height:32px; padding:4px 10px; }
+@media (max-width:760px) {
+  .library-generate-panel { width:100%; }
 }
 
 /* Production workspace (WP-3c) — job queue, validation, completeness, usage index. */
