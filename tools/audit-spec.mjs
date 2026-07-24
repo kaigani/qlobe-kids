@@ -18,15 +18,26 @@ const specPath = args.find((a) => !a.startsWith('--')) || join(ROOT, 'docs', 'ql
 
 // Artifacts the spec plans to create in later phases — reported, never fatal.
 // Phase 2 realized tools/validate/, tools/build-usage-index.mjs, and
-// shared/data/usage-index.json (now verified on disk); tools/pipeline/,
-// tools/state/, and the config.json shim remain planned (Phase 3/4).
+// shared/data/usage-index.json. Phase 3 realized tools/pipeline/ (committed, now
+// verified on disk) and tools/state/ (git-ignored, server-managed — allow-listed
+// below like shared/props). Only the config.json shim remains planned (Phase 4).
 const PLANNED = new Set([
-  'tools/pipeline/', 'tools/state/',
   'games/<id>/config.json', 'config.json',
 ]);
 
-// Server-allow-listed roots that legitimately may not exist on disk yet.
-const ALLOWLISTED_VIRTUAL = new Set(['shared/props', 'shared/props/']);
+// Paths the spec references as RETIRED — the spec (§3.5/§11/Appendix B) still
+// describes tools/content-pipeline/ in the present tense as the dir being
+// retired, but Phase 3 executed that retirement (keepers ported to tools/pipeline/,
+// rest to git history). Reported like planned artifacts, never fatal. Spec-
+// staleness item: the orchestrator should update the spec's present-tense
+// references to past tense.
+const RETIRED = new Set(['tools/content-pipeline/', 'tools/content-pipeline']);
+
+// Server-managed / allow-listed roots that legitimately may not exist on disk on
+// a fresh checkout (shared/props is an allow-listed write root; tools/state/ is
+// the git-ignored job store the server creates on boot). Verified by presence in
+// the server source rather than by an on-disk directory.
+const ALLOWLISTED_VIRTUAL = new Set(['shared/props', 'shared/props/', 'tools/state', 'tools/state/']);
 
 const spec = readFileSync(specPath, 'utf8');
 const tokens = [...new Set([...spec.matchAll(/`([^`\n]+)`/g)].map((m) => m[1]))];
@@ -87,6 +98,7 @@ function suffixMatch(token) {
 function checkPath(token) {
   const clean = token.replace(/[?#].*$/, '');
   if (PLANNED.has(clean)) { results.planned.push(token); return; }
+  if (RETIRED.has(clean)) { results.planned.push(`${token} (retired Phase 3)`); return; }
   if (ALLOWLISTED_VIRTUAL.has(clean)) {
     if (serverSource.includes(clean.replace(/\/$/, ''))) results.verified.push(`${token} (allow-listed root)`);
     else results.failed.push({ token, reason: 'virtual root not found in server allow-list' });
@@ -117,10 +129,10 @@ function checkPath(token) {
 function checkEndpoint(token) {
   const path = token.replace(/^(GET|POST|PUT|DELETE)\|?[A-Z]*\s+/, '').replace(/[?<].*$/, '').replace(/\/?\*$/, '').replace(/\/$/, '');
   // Planned endpoints — spec marks them by section; treat unknown /api/studio/
-  // additions as planned. Phase 2 landed usage-index/validate/completeness (now
-  // in the server, so they verify directly); the persistent jobs v2 store is
-  // still Phase 3.
-  const plannedEndpoints = ['/api/studio/jobs'];
+  // additions as planned. Phase 2 landed usage-index/validate/completeness and
+  // Phase 3 landed persistent /api/studio/jobs v2 — all now in the server, so
+  // they verify directly. Nothing remains planned.
+  const plannedEndpoints = [];
   if (serverSource.includes(path)) { results.verified.push(token); return; }
   if (plannedEndpoints.some((p) => path.startsWith(p))) { results.planned.push(token); return; }
   results.failed.push({ token, reason: `endpoint ${path} not in puppet-studio-server.py` });

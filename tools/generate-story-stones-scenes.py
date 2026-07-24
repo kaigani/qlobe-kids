@@ -7,6 +7,7 @@ import argparse
 import concurrent.futures
 import json
 import mimetypes
+import os
 import shutil
 import subprocess
 import tempfile
@@ -17,7 +18,9 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK_PATH = ROOT / "games" / "story-stones" / "story-pack.json"
-DEFAULT_API = "http://192.168.1.181:8100"
+# The LAN ComfyUI host is never committed (public repo): pass --api or set
+# QLOBE_QWEN_URL. Same pattern as tools/puppet-studio-server.py and tools/pipeline/.
+DEFAULT_API = os.environ.get("QLOBE_QWEN_URL")
 MAX_IMAGE = 32 * 1024 * 1024
 
 
@@ -102,6 +105,8 @@ def main():
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
+    if not args.api:
+        parser.error("no --api / QLOBE_QWEN_URL set (the ComfyUI host is never committed)")
     pack = json.loads(PACK_PATH.read_text())
     items = list(pack["stories"].items())
     if args.story:

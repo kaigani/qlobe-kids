@@ -6,20 +6,23 @@
 // the DOM-free speech-data.js module.
 //
 // Scope (matches what legacy speech could do, plus a character switcher):
-//   - voice line list per character (from voice/manifest.json, or the existing
-//     /api/puppet/voices fallback), with audio playback;
+//   - voice line list per character (from voice/manifest.json, or the
+//     /api/studio/voices fallback), with audio playback;
 //   - waveform + colored cue band editor: click to seek + preview the head at
 //     that instant, drag a boundary to retime, edit viseme value / start / end,
 //     split + delete cues, offsetMs (device-latency) adjustment;
 //   - playback via the REAL runtime (driveLipsync + puppet.setViseme + talk/idle
 //     body clips), full clip or a dragged selection range;
 //   - transcript display, and (additive) voice upload -> Whisper transcribe ->
-//     MFA/Rhubarb cue generation, wired to the EXISTING /api/puppet/* endpoints
-//     with job polling. Cue edits save through POST /api/puppet/cues, byte-for-
-//     byte the same payload as legacy.
+//     whisper-visemes (default) / MFA / Rhubarb cue generation, wired to the
+//     NATIVE /api/studio/* endpoints with job polling. Cue edits save through
+//     POST /api/studio/cues, byte-for-byte the same payload as legacy.
 //
-// The /api/puppet/* endpoints are frozen after Phase 1 (replaced by /api/studio/*
-// in Phase 3). This workspace adds NO server endpoints — it reuses the legacy set.
+// WP-3e repointed this workspace onto the native /api/studio/* speech surface
+// (voices/voice/cues/transcribe/jobs). The server still answers the identical
+// /api/puppet/* routes as a frozen compat shim for the embedded legacy builder,
+// but native workspaces no longer call them. All endpoint URLs come from
+// speech-data.js helpers, so this file references /api/studio/* only.
 
 import { createStage } from '../../stage/stage.js';
 import { createPuppet, loadRigArt } from '../../stage/puppet.js';
@@ -128,7 +131,7 @@ export async function mount(host, { params, toast }) {
           <label>WAV or MP3<input data-up-file type="file" accept=".wav,.mp3,audio/wav,audio/mpeg"></label>
           <label>Transcript (review & edit)<textarea data-up-text disabled placeholder="Choose audio to transcribe"></textarea></label>
           <div class="row">
-            <label style="flex:1">aligner<select data-up-aligner><option value="mfa">MFA · high quality</option><option value="rhubarb">Rhubarb · fast</option></select></label>
+            <label style="flex:1">aligner<select data-up-aligner><option value="whisper">whisper-visemes · default</option><option value="mfa">MFA · upgrade (if installed)</option><option value="rhubarb">Rhubarb · fallback</option></select></label>
             <label style="flex:1">lead ms<input data-up-lead type="number" value="-40" min="-200" max="400" step="10"></label>
           </div>
           <label class="row"><input type="checkbox" data-up-overwrite style="width:auto"> allow replacing an existing line</label>
@@ -475,7 +478,7 @@ export async function mount(host, { params, toast }) {
     el('[data-badge]').textContent = `Speech · ${charId} · ${voiceLines.length} voice line${voiceLines.length === 1 ? '' : 's'}`;
   }
 
-  // ---- voice upload (additive; existing /api/puppet/* endpoints) -------------
+  // ---- voice upload (additive; native /api/studio/* endpoints) ---------------
   async function pollJob(jobId, onTick, intervalMs) {
     while (true) {
       const response = await fetch(jobEndpoint(jobId), { cache: 'no-store' });

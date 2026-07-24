@@ -201,10 +201,12 @@ committed), and `../00-reference/puppet parts/<id>/` intermediates for rigs.
 
 Honest pain points v2 must fix:
 
-- **Two pipeline generations coexist.** `tools/content-pipeline/` (9 scripts)
-  still hard-codes the predecessor repo path (`260612 phonics game`) and its
-  `sound-sprouts` layout, while current games run ad-hoc scripts from
-  `../02-generated/`. §11 consolidates them.
+- **Two pipeline generations coexisted.** `tools/content-pipeline/` (9
+  scripts) hard-coded the predecessor repo path (`260612 phonics game`) and
+  its `sound-sprouts` layout, while current games ran ad-hoc scripts from
+  `../02-generated/`. *Resolved in Phase 3:* keepers ported to
+  `tools/pipeline/` with root/host parameterized, remainder retired to git
+  history (§11).
 - **The ComfyUI host is one queue that swaps models per request.** Interleaving
   workflow types craters throughput ~25×. Batching by workflow type is a
   design constraint on the job system (§10), not an optimization.
@@ -552,10 +554,13 @@ phase; the three profiles carry over unchanged.
 pip dependencies, same launch, same localhost binding.
 
 - **Namespace**: `/api/studio/*` is the only growing surface. `/api/puppet/*`
-  freezes at Phase 1 (bug fixes only), is removed in Phase 3 after the iframe
-  retires. The capabilities behind it (pipeline file writes, extraction jobs,
-  voice jobs, transcription) re-land as `/api/studio/*` equivalents with the
-  same safety invariants.
+  froze at Phase 1 (bug fixes only). Phase 3 landed the `/api/studio/*`
+  equivalents (voices/voice/cues/transcribe, sharing one implementation) and
+  pointed the native workspaces at them; the frozen `/api/puppet/*` handlers
+  remain as a documented **compat shim** for the embedded canonical-puppet
+  Assemble builder, and are removed once that profile is ported off the
+  legacy iframe (Phase 4 follow-up — amended from the original Phase 3
+  removal plan when porting revealed the remaining dependency).
 - **Persistent jobs**: the in-memory registry is replaced by a JSON job store
   under a git-ignored `tools/state/` directory. Jobs survive restarts; the
   queue **batches by ComfyUI workflow type** (drain all queued jobs of one
@@ -720,12 +725,12 @@ asset loads, ever.
 | Item | Status | Retired |
 |---|---|---|
 | `shared/js/stage/puppet-studio.html` + `puppet-builder.js` as embedded iframe | Port source | Phase 1 (URL archived at parity) |
-| `/api/puppet/*` endpoints + `/__puppet_files__/` bridge | Frozen Phase 1 | Phase 3 |
+| `/api/puppet/*` endpoints + `/__puppet_files__/` bridge | Frozen Phase 1; Phase 3 landed `/api/studio/*` equivalents and retained the frozen handlers as a compat shim for the Assemble canonical-puppet embed | When that Assemble profile is ported off the iframe (Phase 4 follow-up) |
 | `qlobe-studio-projects` formatVersion 1 shape | Read via adapter | Phase 1 (write side) |
 | In-memory job registry | Replaced by `tools/state/` store | Phase 3 |
 | MFA→Rhubarb default aligner chain | Demoted to optional/fallback | Phase 3 |
-| `tools/content-pipeline/` (9 scripts, predecessor-repo paths) | Keepers ported, rest to git history | Phase 3 |
-| Root-level ad-hoc drivers in `../02-generated/` | Conventions promoted into `tools/pipeline/` | Phase 3 |
+| `tools/content-pipeline/` (9 scripts, predecessor-repo paths) | **Retired Phase 3** — keepers ported to `tools/pipeline/` (host from env/args), rest in git history | Done |
+| Root-level ad-hoc drivers in `../02-generated/` | Conventions promoted into `tools/pipeline/`; the in-repo `tools/generate-story-stones-*.py` drivers were host-parameterized in Phase 3, full port pending | Phase 3 (partial) → follow-up |
 | "Build" as a workspace name | Renamed Assemble | Phase 1 |
 | Voice manifests without `format` field | Become `qlobe-voice-pack` v1 at first touch | Phase 2 onward |
 | v1's proposed standalone Set Pack format | Never shipped; folded into scene/story packs (floor lines and marks live inline) | Already effective |

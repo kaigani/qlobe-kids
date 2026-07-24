@@ -65,11 +65,175 @@ ARPA_TO_VISEME = {
 }
 SILENCE_PHONES = {"", "SIL", "SP", "SPN", "<EPS>", "<SIL>", "#"}
 
+JOB_STATUSES = ("queued", "running", "completed", "failed", "interrupted", "cancelled")
+
+# The ComfyUI host is ONE queue that swaps models per request; interleaving
+# workflow types craters throughput ~25x (spec §3.5). Each job kind maps to a
+# ComfyUI workflow type; the scheduler drains all queued jobs of one workflow
+# before switching models. voice-align/whisper-stt are local (ffmpeg + aligner
+# venv / Whisper) but keep the same batch grouping for a single coherent model.
+WORKFLOW_FOR_KIND = {
+    "story-scene": "krea2-turbo-t2i",
+    "extract": "qwen-image-layered",
+    "voice": "voice-align",
+    "transcription": "whisper-stt",
+}
+# Kinds whose inputs live on disk (reference PNGs, prompt/seed) and are therefore
+# safely re-queueable after a crash. voice/transcription depend on an uploaded
+# temp file that is lost on restart, so they are not resumable.
+RESUMABLE_KINDS = {"story-scene", "extract"}
+
+
+def public_job(job: dict | None) -> dict | None:
+    """Strip the internal re-dispatch recipe before a job crosses the HTTP boundary.
+
+    `dispatch` holds prompts and temp upload paths — an implementation detail of
+    the scheduler, never part of the (frozen) job response contract."""
+    if not job:
+        return job
+    return {key: value for key, value in job.items() if key != "dispatch"}
+
+
+class JobStore:
+    """JSON-file-backed job registry under the git-ignored tools/state/ directory.
+
+    Replaces the old in-memory dict: the whole registry is persisted atomically
+    on every mutation and reloaded on boot, so jobs (and their history) survive a
+    server restart or a kill -9. Deep-copies on read so callers never mutate the
+    live store outside the lock."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.lock = threading.RLock()
+        self.jobs: dict[str, dict] = {}
+        self.order: list[str] = []
+        self._load()
+
+    def _load(self):
+        if not self.path.is_file():
+            return
+        try:
+            data = json.loads(self.path.read_text("utf-8"))
+        except (ValueError, OSError):
+            return  # a corrupt store starts empty rather than crashing the server
+        jobs = data.get("jobs") if isinstance(data, dict) else None
+        if not isinstance(jobs, dict):
+            return
+        self.jobs = jobs
+        order = data.get("order") if isinstance(data, dict) else None
+        self.order = [jid for jid in (order or []) if jid in jobs]
+        for jid in jobs:
+            if jid not in self.order:
+                self.order.append(jid)
+
+    def _persist_locked(self):
+        atomic_write(self.path, json_bytes({"jobs": self.jobs, "order": self.order}) + b"\n")
+
+    def create(self, record: dict) -> dict:
+        with self.lock:
+            job_id = record["id"]
+            record.setdefault("created", time.time())
+            record["updated"] = time.time()
+            self.jobs[job_id] = record
+            if job_id not in self.order:
+                self.order.append(job_id)
+            self._persist_locked()
+            return json.loads(json.dumps(record))
+
+    def update(self, job_id: str, **values) -> dict | None:
+        with self.lock:
+            job = self.jobs.get(job_id)
+            if job is None:
+                return None
+            job.update(values)
+            job["updated"] = time.time()
+            self._persist_locked()
+            return json.loads(json.dumps(job))
+
+    def get(self, job_id: str) -> dict | None:
+        with self.lock:
+            job = self.jobs.get(job_id)
+            return json.loads(json.dumps(job)) if job else None
+
+    def list(self, status: str | None = None, kind: str | None = None) -> list[dict]:
+        with self.lock:
+            out = []
+            for job_id in reversed(self.order):  # newest first for the dashboard
+                job = self.jobs.get(job_id)
+                if not job:
+                    continue
+                if status and job.get("status") != status:
+                    continue
+                if kind and kind not in (job.get("kind"), job.get("target"), job.get("workflow")):
+                    continue
+                out.append(json.loads(json.dumps(job)))
+            return out
+
+    def queued_fifo(self) -> list[dict]:
+        """Queued, non-interactive jobs in insertion (FIFO) order."""
+        with self.lock:
+            return [
+                json.loads(json.dumps(self.jobs[job_id]))
+                for job_id in self.order
+                if self.jobs.get(job_id, {}).get("status") == "queued"
+                and not self.jobs[job_id].get("interactive")
+            ]
+
+
+class Scheduler:
+    """Single worker draining the queue, batched by ComfyUI workflow type.
+
+    Drains every queued job of the current workflow (FIFO within the type) before
+    switching to the next workflow — this encodes the single-queue model-swap
+    constraint (spec §3.5/§10). `interactive: true` jobs bypass batching and run
+    immediately in their own thread (interactive one-offs)."""
+
+    def __init__(self, state: "AuthoringState"):
+        self.state = state
+        self.store = state.store
+        self.cv = threading.Condition()
+        self.current_workflow: str | None = None
+
+    def start(self):
+        threading.Thread(target=self._run, name="qlobe-scheduler", daemon=True).start()
+
+    def wake(self):
+        with self.cv:
+            self.cv.notify_all()
+
+    def _pick_locked(self) -> dict | None:
+        queued = self.store.queued_fifo()
+        if not queued:
+            self.current_workflow = None
+            return None
+        if self.current_workflow:
+            same = [job for job in queued if job.get("workflow") == self.current_workflow]
+            if same:
+                return same[0]
+        self.current_workflow = queued[0].get("workflow")
+        return queued[0]
+
+    def _run(self):
+        while True:
+            with self.cv:
+                job = self._pick_locked()
+                while job is None:
+                    self.cv.wait(timeout=5.0)
+                    job = self._pick_locked()
+            self.state.execute_job(job["id"])
+
+    def run_interactive(self, job_id: str):
+        threading.Thread(
+            target=self.state.execute_job, args=(job_id,),
+            name=f"qlobe-interactive-{job_id}", daemon=True,
+        ).start()
+
 
 class AuthoringState:
     def __init__(self, root: Path, qwen_url: str | None, whisper_url: str | None = None,
                  mfa_bin: str | None = None, mfa_dictionary: str = "english_us_arpa",
-                 mfa_acoustic_model: str = "english_us_arpa", mfa_root: str | None = None):
+                 mfa_acoustic_model: str = "english_us_arpa", mfa_root: str | None = None,
+                 whisper_visemes_python: str | None = None, whisper_visemes_script: str | None = None):
         self.root = root.resolve()
         self.reference_root = self.root.parent / "00-reference" / "puppet parts"
         self.character_root = self.root / "shared" / "characters"
@@ -82,8 +246,20 @@ class AuthoringState:
         self.mfa_dictionary = os.path.expanduser(mfa_dictionary)
         self.mfa_acoustic_model = os.path.expanduser(mfa_acoustic_model)
         self.rhubarb_bin = root.parent / "tools-local" / "Rhubarb-Lip-Sync-1.14.0-macOS" / "rhubarb"
-        self.jobs: dict[str, dict] = {}
-        self.lock = threading.Lock()
+        # Canonical speech aligner (spec §10): the whisper-visemes chain runs from
+        # a machine-specific, git-ignored venv (tools/lipsync/venv). Overridable so
+        # the aligner path can be pointed at a stub (or a nonexistent path) for tests.
+        self.whisper_visemes_python = Path(os.path.expanduser(whisper_visemes_python)) if whisper_visemes_python \
+            else (self.root / "tools" / "lipsync" / "venv" / "bin" / "python")
+        self.whisper_visemes_script = Path(os.path.expanduser(whisper_visemes_script)) if whisper_visemes_script \
+            else (self.root / "tools" / "lipsync" / "whisper-visemes.py")
+        self.lock = threading.Lock()  # guards voice-manifest read-modify-write
+        # Persistent, restart-surviving job store under tools/state/ (git-ignored,
+        # server-managed; created on boot). Replaces the old in-memory job dict.
+        self.state_dir = self.root / "tools" / "state"
+        self.state_dir.mkdir(parents=True, exist_ok=True)
+        self.store = JobStore(self.state_dir / "jobs.json")
+        self.scheduler = Scheduler(self)
 
     @property
     def mfa_available(self) -> bool:
@@ -96,14 +272,106 @@ class AuthoringState:
     def rhubarb_available(self) -> bool:
         return self.rhubarb_bin.is_file() and os.access(self.rhubarb_bin, os.X_OK)
 
+    @property
+    def whisper_visemes_available(self) -> bool:
+        return (self.whisper_visemes_python.is_file() and os.access(self.whisper_visemes_python, os.X_OK)
+                and self.whisper_visemes_script.is_file())
+
+    # ---- job store delegates (unchanged signatures for the run_*_job workers) --
     def update_job(self, job_id: str, **values):
-        with self.lock:
-            self.jobs[job_id].update(values)
+        self.store.update(job_id, **values)
 
     def snapshot_job(self, job_id: str):
-        with self.lock:
-            job = self.jobs.get(job_id)
-            return json.loads(json.dumps(job)) if job else None
+        return self.store.get(job_id)
+
+    def enqueue(self, kind: str, dispatch: dict, extra: dict, interactive: bool = False) -> str:
+        """Create a persistent job and hand it to the scheduler.
+
+        Non-interactive jobs join the workflow-batched queue; interactive:true
+        one-offs bypass batching and run immediately."""
+        job_id = uuid.uuid4().hex[:12]
+        record = {
+            "id": job_id, "kind": kind, "workflow": WORKFLOW_FOR_KIND[kind],
+            "status": "queued", "interactive": bool(interactive),
+            "resumable": kind in RESUMABLE_KINDS,
+            "created": time.time(), "dispatch": dispatch, **extra,
+        }
+        self.store.create(record)
+        if interactive:
+            self.scheduler.run_interactive(job_id)
+        else:
+            self.scheduler.wake()
+        return job_id
+
+    def execute_job(self, job_id: str):
+        """Run one job by re-hydrating its dispatch recipe. Called by the worker
+        (batched) or a per-job thread (interactive)."""
+        job = self.store.get(job_id)
+        if not job or job.get("status") != "queued":
+            return  # already running/finished/cancelled — never double-run
+        self.update_job(job_id, status="running", startedAt=time.time())
+        kind = job.get("kind")
+        d = job.get("dispatch", {})
+        try:
+            if kind == "story-scene":
+                run_story_scene_job(self, job_id, d["storyId"], d["prompt"], int(d["seed"]),
+                                    self.root / d["destination"])
+            elif kind == "extract":
+                run_extract_job(self, job_id, d["character"], d["target"], d["prompt"], int(d["seed"]))
+            elif kind == "voice":
+                source, temp_dir = Path(d["source"]), Path(d["tempDir"])
+                if not source.is_file():
+                    self.update_job(job_id, status="failed", message="Voice cue generation failed",
+                                    error="uploaded voice sample is no longer available (server restart); re-upload it")
+                    return
+                run_voice_job(self, job_id, d["character"], d["key"], d["label"], d["transcript"],
+                              d["aligner"], int(d["leadMs"]), temp_dir, source)
+            elif kind == "transcription":
+                source, temp_dir = Path(d["source"]), Path(d["tempDir"])
+                if not source.is_file():
+                    self.update_job(job_id, status="failed", message="Transcription failed",
+                                    error="uploaded audio is no longer available (server restart); re-upload it")
+                    return
+                run_transcription_job(self, job_id, temp_dir, source)
+            else:
+                self.update_job(job_id, status="failed", error=f"unknown job kind: {kind}")
+        except Exception as exc:  # a crashing worker must not wedge the queue
+            self.update_job(job_id, status="failed", error=str(exc))
+        finally:
+            self.scheduler.wake()  # re-evaluate the queue for the next job
+
+    def recover_jobs(self):
+        """Boot recovery. Jobs left `running` when the server died are marked
+        interrupted; resumable ones are re-queued, the rest fail with a reason.
+        Queued jobs simply resume when the scheduler starts (their inputs persist)
+        — except non-resumable ones whose uploaded temp file is now gone."""
+        resumed = interrupted = failed = 0
+        for job in self.store.list():
+            job_id, status = job["id"], job.get("status")
+            resumable = bool(job.get("resumable"))
+            if status == "running":
+                interrupted += 1
+                if resumable:
+                    self.store.update(job_id, status="queued", interrupted=True,
+                                      interruptedReason="server restarted mid-run; re-queued",
+                                      message="Interrupted by restart — re-queued")
+                    resumed += 1
+                else:
+                    self.store.update(job_id, status="failed", interrupted=True,
+                                      message="Interrupted by restart",
+                                      error="interrupted by server restart; not resumable (re-run required)")
+                    failed += 1
+            elif status == "queued":
+                source = job.get("dispatch", {}).get("source")
+                if not resumable and (not source or not Path(source).is_file()):
+                    self.store.update(job_id, status="failed", interrupted=True,
+                                      message="Interrupted by restart",
+                                      error="queued upload is no longer available after restart; re-run required")
+                    failed += 1
+                else:
+                    resumed += 1
+        if interrupted or resumed or failed:
+            print(f"Job recovery: {interrupted} interrupted, {resumed} resumable/queued, {failed} failed")
 
 
 def safe_id(value: str) -> str:
@@ -574,6 +842,40 @@ def run_rhubarb_alignment(state: AuthoringState, pcm: Path, transcript: str,
     return mapped_rhubarb_cues(json.loads(raw_cues.read_text("utf-8")))
 
 
+def run_whisper_visemes_alignment(state: AuthoringState, pcm: Path, temp_dir: Path) -> dict:
+    """Canonical DEFAULT aligner (spec §10): faster-whisper word timestamps +
+    CMUdict phonemes mapped straight to the 9-viseme set + rest — the chain that
+    actually produced the shipping cues (e.g. the bear's). It runs
+    tools/lipsync/whisper-visemes.py inside its machine-specific, git-ignored venv
+    (tools/lipsync/venv); the server adds NO pip dependencies of its own and only
+    invokes the venv as a subprocess. When the venv is absent the aligner is
+    unavailable and run_voice_job falls through to MFA, then Rhubarb.
+
+    (Rhubarb is the last-resort fallback: its prebuilt macOS binary segfaults on
+    macOS 14, which is why whisper-visemes exists and is the default here.)"""
+    if not state.whisper_visemes_available:
+        raise RuntimeError(f"whisper-visemes venv unavailable: {state.whisper_visemes_python}")
+    clip = temp_dir / "whisper-input.wav"          # the script writes cues next to its input
+    shutil.copyfile(pcm, clip)
+    cues_path = temp_dir / "whisper-input.cues.json"
+    result = subprocess.run(
+        [str(state.whisper_visemes_python), str(state.whisper_visemes_script), str(clip)],
+        check=False, capture_output=True, text=True, timeout=15 * 60,
+    )
+    if result.returncode != 0 or not cues_path.is_file():
+        detail = (result.stderr or result.stdout or "no output").strip()[:500]
+        raise RuntimeError(f"whisper-visemes failed: {detail}")
+    raw = json.loads(cues_path.read_text("utf-8"))
+    cues = raw.get("mouthCues") or []
+    if not cues:
+        raise RuntimeError("whisper-visemes produced no cues")
+    duration = float(raw.get("metadata", {}).get("duration", cues[-1].get("end", 0)))
+    return {
+        "metadata": {"duration": round(duration, 3), "source": "faster-whisper+cmudict"},
+        "mouthCues": cues,
+    }
+
+
 def update_voice_manifest(state: AuthoringState, char_id: str, entry: dict):
     path = state.character_root / char_id / "voice" / "manifest.json"
     with state.lock:
@@ -682,12 +984,30 @@ def run_voice_job(state: AuthoringState, job_id: str, char_id: str, key: str,
             "-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le", str(pcm),
         ], check=True, capture_output=True, text=True, timeout=180)
 
-        state.update_job(job_id, message=f"Aligning speech with {requested_aligner.upper()}", progress=2)
+        state.update_job(job_id, message=f"Aligning speech with {requested_aligner}", progress=2)
+        # Aligner chain (spec §10): whisper-visemes is the DEFAULT; MFA is an
+        # optional upgrade when installed; Rhubarb is the last-resort fallback.
+        # Each step records the actual aligner used and any fallback reason.
         fallback_reason = None
-        actual_aligner = requested_aligner
-        if requested_aligner == "mfa":
+        if requested_aligner == "whisper":
+            try:
+                cues = run_whisper_visemes_alignment(state, pcm, temp_dir)
+                actual_aligner = "faster-whisper+cmudict"
+            except Exception as exc:
+                fallback_reason = f"whisper-visemes: {exc}"
+                state.update_job(job_id, message="whisper-visemes unavailable; trying MFA", fallback=fallback_reason)
+                try:
+                    cues = run_mfa_alignment(state, pcm, transcript, temp_dir)
+                    actual_aligner = "mfa"
+                except Exception as mfa_exc:
+                    fallback_reason = f"{fallback_reason}; mfa: {mfa_exc}"
+                    state.update_job(job_id, message="MFA unavailable; using Rhubarb fallback", fallback=fallback_reason)
+                    cues = run_rhubarb_alignment(state, pcm, transcript, temp_dir)
+                    actual_aligner = "rhubarb"
+        elif requested_aligner == "mfa":
             try:
                 cues = run_mfa_alignment(state, pcm, transcript, temp_dir)
+                actual_aligner = "mfa"
             except Exception as exc:
                 fallback_reason = str(exc)
                 actual_aligner = "rhubarb"
@@ -695,6 +1015,7 @@ def run_voice_job(state: AuthoringState, job_id: str, char_id: str, key: str,
                 cues = run_rhubarb_alignment(state, pcm, transcript, temp_dir)
         else:
             cues = run_rhubarb_alignment(state, pcm, transcript, temp_dir)
+            actual_aligner = "rhubarb"
 
         duration = wav_duration(pcm)
         silences = detect_silences(ffmpeg, pcm)
@@ -710,7 +1031,7 @@ def run_voice_job(state: AuthoringState, job_id: str, char_id: str, key: str,
                 "applied": actual_aligner == "rhubarb",
             },
             "suggestedOffsetMs": lead_ms,
-            **({"fallbackFrom": "mfa", "fallbackReason": fallback_reason} if fallback_reason else {}),
+            **({"fallbackFrom": requested_aligner, "fallbackReason": fallback_reason} if fallback_reason else {}),
         })
 
         state.update_job(job_id, message="Encoding browser audio", progress=3)
@@ -838,6 +1159,74 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
     def read_json(self):
         return json.loads(self.read_body())
 
+    # ---- shared speech handlers (served under both /api/studio/* and the frozen
+    #      /api/puppet/* compat shim — one implementation, two routes) -----------
+    def handle_voices(self, query):
+        char_id = safe_id(query.get("id", [""])[0])
+        return self.send_json({"ok": True, "voices": voice_entries(self.state, char_id)})
+
+    def handle_voice_upload(self, query):
+        char_id = safe_id(query.get("id", [""])[0])
+        key = safe_id(query.get("key", [""])[0])
+        label = query.get("label", [key.replace("-", " ").title()])[0].strip()[:100]
+        transcript = query.get("transcript", [""])[0].strip()[:4000]
+        aligner = query.get("aligner", ["whisper"])[0].lower()
+        if aligner not in ("whisper", "mfa", "rhubarb"):
+            raise ValueError("aligner must be whisper, mfa, or rhubarb")
+        lead_ms = max(-200, min(400, int(query.get("leadMs", ["-40"])[0])))
+        audio_format = query.get("format", [""])[0].lower().lstrip(".")
+        overwrite = query.get("overwrite", ["false"])[0].lower() == "true"
+        interactive = query.get("interactive", ["false"])[0].lower() == "true"
+        if audio_format not in ("wav", "mp3"):
+            raise ValueError("voice sample must be a .wav or .mp3 file")
+        voice_dir = self.state.character_root / char_id / "voice"
+        outputs = [voice_dir / f"{key}.m4a", voice_dir / f"{key}.cues.json"]
+        existing = [path.name for path in outputs if path.exists()]
+        if existing and not overwrite:
+            return self.send_error_json(
+                409, f"voice output already exists ({', '.join(existing)}); enable overwrite to replace it",
+            )
+        body = self.read_body()
+        temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-puppet-voice-"))
+        source = temp_dir / f"upload.{audio_format}"
+        source.write_bytes(body)
+        job_id = self.state.enqueue(
+            "voice",
+            {"character": char_id, "key": key, "label": label or key, "transcript": transcript,
+             "aligner": aligner, "leadMs": lead_ms, "tempDir": str(temp_dir), "source": str(source)},
+            {"target": "voice", "character": char_id, "voice": key,
+             "message": "Voice queued", "progress": 0, "total": 4},
+            interactive=interactive,
+        )
+        return self.send_json({"ok": True, "jobId": job_id}, 202)
+
+    def handle_cues_save(self, query):
+        char_id = safe_id(query.get("id", [""])[0])
+        key = safe_id(query.get("key", [""])[0])
+        path = self.state.character_root / char_id / "voice" / f"{key}.cues.json"
+        if not path.exists():
+            return self.send_error_json(404, f"voice cues do not exist: {key}.cues.json")
+        payload = validated_cues(self.read_json())
+        atomic_write(path, json_bytes(payload) + b"\n")
+        return self.send_json({"ok": True, "path": str(path), "cueCount": len(payload["mouthCues"])})
+
+    def handle_transcribe(self, query):
+        audio_format = query.get("format", [""])[0].lower().lstrip(".")
+        if audio_format not in ("wav", "mp3"):
+            raise ValueError("voice sample must be a .wav or .mp3 file")
+        interactive = query.get("interactive", ["false"])[0].lower() == "true"
+        body = self.read_body()
+        temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-puppet-transcribe-"))
+        source = temp_dir / f"upload.{audio_format}"
+        source.write_bytes(body)
+        job_id = self.state.enqueue(
+            "transcription",
+            {"tempDir": str(temp_dir), "source": str(source)},
+            {"target": "transcription", "message": "Transcription queued", "progress": 0, "total": 1},
+            interactive=interactive,
+        )
+        return self.send_json({"ok": True, "jobId": job_id}, 202)
+
     def do_GET(self):
         parsed = urlparse(self.path)
         try:
@@ -892,14 +1281,32 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     for char_id in studio_character_ids(self.state)
                 ]
                 return self.send_json({"ok": True, "type": "character", "characters": characters})
+            if parsed.path == "/api/studio/jobs":
+                query = parse_qs(parsed.query)
+                status = query.get("status", [None])[0]
+                if status and status not in JOB_STATUSES:
+                    raise ValueError(f"unknown status filter: {status}")
+                kind = query.get("type", [None])[0]
+                jobs = [public_job(job) for job in self.state.store.list(status=status, kind=kind)]
+                return self.send_json({"ok": True, "jobs": jobs})
+            if parsed.path == "/api/studio/voices":
+                return self.handle_voices(parse_qs(parsed.query))
             if parsed.path.startswith("/api/studio/jobs/"):
-                job = self.state.snapshot_job(parsed.path.rsplit("/", 1)[-1])
-                return self.send_json({"ok": True, "job": job}) if job else self.send_error_json(404, "job not found")
-            # --- /api/puppet/* is FROZEN (Studio v2 Phase 1, 2026-07-24) ---
-            # Bug fixes only; no new capabilities. The native studio workspaces
-            # still call voices/voice/cues/transcribe/jobs here until their
-            # /api/studio/* equivalents land in Phase 3, then this block is
-            # removed. See docs/qlobe-studio-v2.md Appendix B.
+                job = self.state.store.get(parsed.path.rsplit("/", 1)[-1])
+                return self.send_json({"ok": True, "job": public_job(job)}) if job else self.send_error_json(404, "job not found")
+            # --- /api/puppet/* is a FROZEN COMPAT SHIM (Studio v2, updated Phase 3) ---
+            # Bug fixes only; no new capabilities. The NATIVE studio workspaces now
+            # call the /api/studio/* equivalents (voices/voice/cues/transcribe/jobs).
+            # These /api/puppet/* handlers are RETAINED as a compat shim for the one
+            # remaining embedded legacy builder — the Assemble canonical-puppet
+            # profile loads shared/js/stage/puppet-studio.html?mode=build, whose
+            # puppet-builder.js still calls /api/puppet/file + /api/puppet/qwen/extract
+            # (+ the ?legacy=1 escape hatches use /api/puppet/voices etc.). Removal is
+            # now gated on porting that Assemble profile off the iframe (deferred to
+            # Phase 4 / a dedicated follow-up), NOT on the iframe retirement that
+            # already happened. See docs/qlobe-studio-v2.md Appendix B (spec-staleness
+            # item: Appendix B still schedules Phase 3 removal; reality is a retained
+            # shim — the orchestrator amends the spec).
             if parsed.path == "/api/puppet/status":
                 qwen = {"configured": bool(self.state.qwen_url), "reachable": False}
                 if self.state.qwen_url:
@@ -912,6 +1319,12 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     "ok": True, "authoringServer": True, "qwen": qwen,
                     "whisper": {"configured": bool(self.state.whisper_url)},
                     "aligners": {
+                        "default": "whisper",
+                        "whisperVisemes": {
+                            "available": self.state.whisper_visemes_available,
+                            "python": str(self.state.whisper_visemes_python),
+                            "script": str(self.state.whisper_visemes_script),
+                        },
                         "mfa": {
                             "available": self.state.mfa_available,
                             "binary": self.state.mfa_bin,
@@ -951,12 +1364,10 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     })
                 return self.send_json({"ok": True, "projects": projects})
             if parsed.path == "/api/puppet/voices":
-                query = parse_qs(parsed.query)
-                char_id = safe_id(query.get("id", [""])[0])
-                return self.send_json({"ok": True, "voices": voice_entries(self.state, char_id)})
+                return self.handle_voices(parse_qs(parsed.query))
             if parsed.path.startswith("/api/puppet/jobs/"):
-                job = self.state.snapshot_job(parsed.path.rsplit("/", 1)[-1])
-                return self.send_json({"ok": True, "job": job}) if job else self.send_error_json(404, "job not found")
+                job = self.state.store.get(parsed.path.rsplit("/", 1)[-1])
+                return self.send_json({"ok": True, "job": public_job(job)}) if job else self.send_error_json(404, "job not found")
             if parsed.path.startswith("/__puppet_files__/"):
                 return self.serve_authoring_file(parsed.path)
         except (ValueError, OSError) as exc:
@@ -984,6 +1395,25 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            # Cancel a queued job (no request body — matched before any body read).
+            if parsed.path.startswith("/api/studio/jobs/") and parsed.path.endswith("/cancel"):
+                job_id = parsed.path[len("/api/studio/jobs/"):-len("/cancel")]
+                job = self.state.store.get(job_id)
+                if not job:
+                    return self.send_error_json(404, "job not found")
+                if job.get("status") != "queued":
+                    return self.send_error_json(409, f"job is {job.get('status')}; only queued jobs can be cancelled")
+                updated = self.state.store.update(job_id, status="cancelled", message="Cancelled by request")
+                self.state.scheduler.wake()
+                return self.send_json({"ok": True, "job": public_job(updated)})
+            # Native speech endpoints (/api/studio/*) — same handlers as the frozen
+            # /api/puppet/* compat shim below.
+            if parsed.path == "/api/studio/voice":
+                return self.handle_voice_upload(parse_qs(parsed.query))
+            if parsed.path == "/api/studio/cues":
+                return self.handle_cues_save(parse_qs(parsed.query))
+            if parsed.path == "/api/studio/transcribe":
+                return self.handle_transcribe(parse_qs(parsed.query))
             if parsed.path == "/api/studio/document":
                 query = parse_qs(parsed.query)
                 path = studio_document_path(self.state, query.get("path", [""])[0])
@@ -1044,18 +1474,14 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 )
                 if destination.exists() and not overwrite:
                     return self.send_error_json(409, f"{destination.name} already exists; enable overwrite to replace it")
-                job_id = uuid.uuid4().hex[:12]
-                with self.state.lock:
-                    self.state.jobs[job_id] = {
-                        "id": job_id, "status": "queued", "target": "story-scene",
-                        "storyId": story_id, "seed": seed, "message": "Krea scene queued",
-                        "created": time.time(), "progress": 0, "total": 3,
-                    }
-                threading.Thread(
-                    target=run_story_scene_job,
-                    args=(self.state, job_id, story_id, prompt, seed, destination),
-                    daemon=True,
-                ).start()
+                job_id = self.state.enqueue(
+                    "story-scene",
+                    {"storyId": story_id, "prompt": prompt, "seed": seed,
+                     "destination": str(destination.relative_to(self.state.root))},
+                    {"target": "story-scene", "storyId": story_id, "seed": seed,
+                     "message": "Krea scene queued", "progress": 0, "total": 3},
+                    interactive=bool(payload.get("interactive", False)),
+                )
                 return self.send_json({"ok": True, "jobId": job_id}, 202)
             if parsed.path == "/api/puppet/file":
                 query = parse_qs(parsed.query)
@@ -1093,93 +1519,19 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                         409,
                         f"extraction output already exists ({', '.join(existing[:3])}); enable overwrite to replace it",
                     )
-                job_id = uuid.uuid4().hex[:12]
-                with self.state.lock:
-                    self.state.jobs[job_id] = {
-                        "id": job_id, "status": "queued", "target": target,
-                        "character": char_id, "seed": seed, "message": "Queued",
-                        "created": time.time(),
-                    }
-                thread = threading.Thread(
-                    target=run_extract_job,
-                    args=(self.state, job_id, char_id, target, prompt, seed),
-                    daemon=True,
+                job_id = self.state.enqueue(
+                    "extract",
+                    {"character": char_id, "target": target, "prompt": prompt, "seed": seed},
+                    {"target": target, "character": char_id, "seed": seed, "message": "Queued"},
+                    interactive=bool(payload.get("interactive", False)),
                 )
-                thread.start()
                 return self.send_json({"ok": True, "jobId": job_id}, 202)
-            if parsed.path == "/api/puppet/voice":
-                query = parse_qs(parsed.query)
-                char_id = safe_id(query.get("id", [""])[0])
-                key = safe_id(query.get("key", [""])[0])
-                label = query.get("label", [key.replace("-", " ").title()])[0].strip()[:100]
-                transcript = query.get("transcript", [""])[0].strip()[:4000]
-                aligner = query.get("aligner", ["mfa"])[0].lower()
-                if aligner not in ("mfa", "rhubarb"):
-                    raise ValueError("aligner must be mfa or rhubarb")
-                lead_ms = max(-200, min(400, int(query.get("leadMs", ["-40"])[0])))
-                audio_format = query.get("format", [""])[0].lower().lstrip(".")
-                overwrite = query.get("overwrite", ["false"])[0].lower() == "true"
-                if audio_format not in ("wav", "mp3"):
-                    raise ValueError("voice sample must be a .wav or .mp3 file")
-                voice_dir = self.state.character_root / char_id / "voice"
-                outputs = [voice_dir / f"{key}.m4a", voice_dir / f"{key}.cues.json"]
-                existing = [path.name for path in outputs if path.exists()]
-                if existing and not overwrite:
-                    return self.send_error_json(
-                        409, f"voice output already exists ({', '.join(existing)}); enable overwrite to replace it",
-                    )
-                body = self.read_body()
-                temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-puppet-voice-"))
-                source = temp_dir / f"upload.{audio_format}"
-                source.write_bytes(body)
-                job_id = uuid.uuid4().hex[:12]
-                with self.state.lock:
-                    self.state.jobs[job_id] = {
-                        "id": job_id, "status": "queued", "target": "voice",
-                        "character": char_id, "voice": key, "message": "Voice queued",
-                        "created": time.time(), "progress": 0, "total": 4,
-                    }
-                thread = threading.Thread(
-                    target=run_voice_job,
-                    args=(self.state, job_id, char_id, key, label or key, transcript,
-                          aligner, lead_ms, temp_dir, source),
-                    daemon=True,
-                )
-                thread.start()
-                return self.send_json({"ok": True, "jobId": job_id}, 202)
-            if parsed.path == "/api/puppet/cues":
-                query = parse_qs(parsed.query)
-                char_id = safe_id(query.get("id", [""])[0])
-                key = safe_id(query.get("key", [""])[0])
-                path = self.state.character_root / char_id / "voice" / f"{key}.cues.json"
-                if not path.exists():
-                    return self.send_error_json(404, f"voice cues do not exist: {key}.cues.json")
-                payload = validated_cues(self.read_json())
-                atomic_write(path, json_bytes(payload) + b"\n")
-                return self.send_json({"ok": True, "path": str(path), "cueCount": len(payload["mouthCues"])})
-            if parsed.path == "/api/puppet/transcribe":
-                query = parse_qs(parsed.query)
-                audio_format = query.get("format", [""])[0].lower().lstrip(".")
-                if audio_format not in ("wav", "mp3"):
-                    raise ValueError("voice sample must be a .wav or .mp3 file")
-                body = self.read_body()
-                temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-puppet-transcribe-"))
-                source = temp_dir / f"upload.{audio_format}"
-                source.write_bytes(body)
-                job_id = uuid.uuid4().hex[:12]
-                with self.state.lock:
-                    self.state.jobs[job_id] = {
-                        "id": job_id, "status": "queued", "target": "transcription",
-                        "message": "Transcription queued", "created": time.time(),
-                        "progress": 0, "total": 1,
-                    }
-                thread = threading.Thread(
-                    target=run_transcription_job,
-                    args=(self.state, job_id, temp_dir, source),
-                    daemon=True,
-                )
-                thread.start()
-                return self.send_json({"ok": True, "jobId": job_id}, 202)
+            if parsed.path == "/api/puppet/voice":       # frozen compat shim
+                return self.handle_voice_upload(parse_qs(parsed.query))
+            if parsed.path == "/api/puppet/cues":        # frozen compat shim
+                return self.handle_cues_save(parse_qs(parsed.query))
+            if parsed.path == "/api/puppet/transcribe":  # frozen compat shim
+                return self.handle_transcribe(parse_qs(parsed.query))
         except json.JSONDecodeError:
             return self.send_error_json(400, "invalid JSON")
         except (ValueError, OSError, HTTPError, URLError) as exc:
@@ -1207,6 +1559,10 @@ def main():
                         help="MFA acoustic model name/path")
     parser.add_argument("--mfa-root", default=os.environ.get("QLOBE_MFA_ROOT"),
                         help="MFA model/cache directory (defaults to ~/.qlobe-mfa/data)")
+    parser.add_argument("--whisper-visemes-python", default=os.environ.get("QLOBE_WHISPER_VISEMES_PYTHON"),
+                        help="python for the whisper-visemes aligner venv (default tools/lipsync/venv/bin/python)")
+    parser.add_argument("--whisper-visemes-script", default=os.environ.get("QLOBE_WHISPER_VISEMES_SCRIPT"),
+                        help="whisper-visemes.py path (default tools/lipsync/whisper-visemes.py)")
     args = parser.parse_args()
     root = args.root.resolve()
     whisper_url = args.whisper_url or (
@@ -1214,16 +1570,24 @@ def main():
     )
     os.chdir(root)
     server = ThreadingHTTPServer((args.host, args.port), PuppetStudioHandler)
-    server.state = AuthoringState(
+    state = AuthoringState(
         root, args.qwen_url, whisper_url,
         args.mfa_bin, args.mfa_dictionary, args.mfa_acoustic_model, args.mfa_root,
-    )  # type: ignore[attr-defined]
+        args.whisper_visemes_python, args.whisper_visemes_script,
+    )
+    server.state = state  # type: ignore[attr-defined]
+    state.recover_jobs()     # mark interrupted / re-queue resumable jobs from the store
+    state.scheduler.start()  # single worker draining the workflow-batched queue
+    default_aligner = "whisper-visemes" if state.whisper_visemes_available else (
+        "mfa" if state.mfa_available else "rhubarb")
     print(f"QLOBE Studio authoring server: http://{args.host}:{args.port}/shared/js/studio/")
     print(f"Legacy Puppet Studio: http://{args.host}:{args.port}/shared/js/stage/puppet-studio.html")
     print(f"Repo root: {root}")
     print(f"Qwen API: {args.qwen_url or '(not configured)'}")
     print(f"Whisper API: {whisper_url or '(not configured)'}")
-    print(f"MFA: {server.state.mfa_bin or '(not found; Rhubarb fallback)'}")  # type: ignore[attr-defined]
+    print(f"Job store: {state.store.path} ({len(state.store.jobs)} job(s) loaded)")
+    print(f"Aligner default: whisper-visemes {'(available)' if state.whisper_visemes_available else '(venv missing; will fall through to '+default_aligner+')'}")
+    print(f"MFA: {state.mfa_bin or '(not found; Rhubarb fallback)'}")
     print(f"MFA models: {args.mfa_dictionary} / {args.mfa_acoustic_model}")
     try:
         server.serve_forever()

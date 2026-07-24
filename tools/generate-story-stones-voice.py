@@ -8,6 +8,7 @@ import concurrent.futures
 import difflib
 import hashlib
 import json
+import os
 import re
 import subprocess
 import tempfile
@@ -18,9 +19,12 @@ ROOT = Path(__file__).resolve().parents[1]
 GAME = ROOT / "games" / "story-stones"
 OUT = GAME / "assets" / "audio"
 PACK_PATH = GAME / "story-pack.json"
-VOICE = Path("/Users/kaigani/Documents/PROJECTS/DEVELOPMENT/260612 phonics game/smoke/voice_teacher.wav")
-TTS = "http://192.168.1.181:8100/workflows/qwen3-tts-voiceclone?sync=true"
-WHISPER = "http://192.168.1.181:8100/workflows/whisper-stt?sync=true"
+VOICE = Path(os.environ.get("QLOBE_TEACHER_VOICE", "")) if os.environ.get("QLOBE_TEACHER_VOICE") else None
+# The LAN ComfyUI host is never committed (public repo): set QLOBE_QWEN_URL.
+# Same pattern as tools/puppet-studio-server.py and tools/pipeline/.
+_API_BASE = (os.environ.get("QLOBE_QWEN_URL") or "").rstrip("/")
+TTS = f"{_API_BASE}/workflows/qwen3-tts-voiceclone?sync=true"
+WHISPER = f"{_API_BASE}/workflows/whisper-stt?sync=true"
 SEEDS = (7, 8, 9)
 PREVIOUS_LINES = json.loads((OUT / "lines.json").read_text()) if (OUT / "lines.json").exists() else {}
 PREVIOUS_QA = json.loads((OUT / "qa.json").read_text()) if (OUT / "qa.json").exists() else {}
@@ -97,6 +101,10 @@ def main():
     parser.add_argument("--clean", action="store_true", help="remove obsolete narration clips after a complete successful run")
     parser.add_argument("--benchmark-story", help="render one complete three-beat story to measure batching throughput")
     args = parser.parse_args()
+    if not _API_BASE:
+        raise SystemExit("no QLOBE_QWEN_URL set (the ComfyUI host is never committed)")
+    if not VOICE or not VOICE.is_file():
+        raise SystemExit("set QLOBE_TEACHER_VOICE to the teacher-voice reference .wav")
     OUT.mkdir(parents=True, exist_ok=True)
     if args.benchmark_story:
         pack = json.loads(PACK_PATH.read_text())

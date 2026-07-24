@@ -9,10 +9,11 @@
 // parity harness can load its exact source as a data: URL.
 //
 // The Speech workspace edits ONLY hand-drawn viseme cues, saved per line through
-// POST /api/puppet/cues (NOT /api/studio/document). The voice manifest.json is
-// never rewritten by cue editing — it is upserted server-side by the voice-upload
-// job (update_voice_manifest). So the two parity targets have different write
-// paths but the SAME rule: load -> no-op -> serialize is content-idempotent.
+// POST /api/studio/cues (NOT /api/studio/document; WP-3e repointed this off the
+// frozen /api/puppet/cues shim). The voice manifest.json is never rewritten by cue
+// editing — it is upserted server-side by the voice-upload job (update_voice_
+// manifest). So the two parity targets have different write paths but the SAME
+// rule: load -> no-op -> serialize is content-idempotent.
 
 // ---------------------------------------------------------------------------
 // VISEME SETS — the canonical rig lip-sync shapes. Must match the server's
@@ -35,20 +36,21 @@ export const CUE_COLORS = {
 
 // ---------------------------------------------------------------------------
 // PATHS + ENDPOINTS. Disk paths are what the parity harness deep-compares
-// against; the endpoints are the EXISTING /api/puppet/* surface (frozen after
-// Phase 1, replaced by /api/studio/* in Phase 3 — do not add new endpoints).
+// against. The endpoints are the NATIVE /api/studio/* speech surface (WP-3e).
+// The server still answers the identical /api/puppet/* routes as a frozen compat
+// shim for the embedded legacy builder, but native workspaces use /api/studio/*.
 export const voiceManifestPath = (id) => `shared/characters/${id}/voice/manifest.json`;
 export const voiceCuesPath = (id, key) => `shared/characters/${id}/voice/${key}.cues.json`;
 export const cuesSaveEndpoint = (id, key) =>
-  `/api/puppet/cues?id=${encodeURIComponent(id)}&key=${encodeURIComponent(key)}`;
-export const voicesEndpoint = (id) => `/api/puppet/voices?id=${encodeURIComponent(id)}`;
+  `/api/studio/cues?id=${encodeURIComponent(id)}&key=${encodeURIComponent(key)}`;
+export const voicesEndpoint = (id) => `/api/studio/voices?id=${encodeURIComponent(id)}`;
 export const voiceUploadEndpoint = (id, key, opts = {}) => {
   const params = new URLSearchParams({ id, key, ...opts });
-  return `/api/puppet/voice?${params}`;
+  return `/api/studio/voice?${params}`;
 };
 export const transcribeEndpoint = (format) =>
-  `/api/puppet/transcribe?format=${encodeURIComponent(format)}`;
-export const jobEndpoint = (jobId) => `/api/puppet/jobs/${encodeURIComponent(jobId)}`;
+  `/api/studio/transcribe?format=${encodeURIComponent(format)}`;
+export const jobEndpoint = (jobId) => `/api/studio/jobs/${encodeURIComponent(jobId)}`;
 
 // ---------------------------------------------------------------------------
 // MANIFEST + CUES load/serialize. The legacy editor performs NO normalization on
