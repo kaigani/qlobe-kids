@@ -17,9 +17,11 @@ const asJson = args.includes('--json');
 const specPath = args.find((a) => !a.startsWith('--')) || join(ROOT, 'docs', 'qlobe-studio-v2.md');
 
 // Artifacts the spec plans to create in later phases — reported, never fatal.
+// Phase 2 realized tools/validate/, tools/build-usage-index.mjs, and
+// shared/data/usage-index.json (now verified on disk); tools/pipeline/,
+// tools/state/, and the config.json shim remain planned (Phase 3/4).
 const PLANNED = new Set([
-  'tools/validate/', 'tools/validate/run.mjs', 'tools/build-usage-index.mjs',
-  'tools/pipeline/', 'tools/state/', 'shared/data/usage-index.json',
+  'tools/pipeline/', 'tools/state/',
   'games/<id>/config.json', 'config.json',
 ]);
 
@@ -114,15 +116,20 @@ function checkPath(token) {
 
 function checkEndpoint(token) {
   const path = token.replace(/^(GET|POST|PUT|DELETE)\|?[A-Z]*\s+/, '').replace(/[?<].*$/, '').replace(/\/?\*$/, '').replace(/\/$/, '');
-  // Planned endpoints (Phase 2/3) — spec marks them by section; treat unknown /api/studio/ additions as planned.
-  const plannedEndpoints = ['/api/studio/usage-index', '/api/studio/validate', '/api/studio/objects', '/api/studio/completeness', '/api/studio/jobs'];
+  // Planned endpoints — spec marks them by section; treat unknown /api/studio/
+  // additions as planned. Phase 2 landed usage-index/validate/completeness (now
+  // in the server, so they verify directly); the persistent jobs v2 store is
+  // still Phase 3.
+  const plannedEndpoints = ['/api/studio/jobs'];
   if (serverSource.includes(path)) { results.verified.push(token); return; }
   if (plannedEndpoints.some((p) => path.startsWith(p))) { results.planned.push(token); return; }
   results.failed.push({ token, reason: `endpoint ${path} not in puppet-studio-server.py` });
 }
 
 function checkFormat(token) {
-  const plannedFormats = ['qlobe-voice-pack'];
+  // qlobe-voice-pack became real in Phase 2 (speech-data.js adapter + validator);
+  // it is now verified against the repo like any other format name.
+  const plannedFormats = [];
   if (plannedFormats.includes(token)) { results.planned.push(token); return; }
   if (loadFormatHaystack().includes(token)) results.verified.push(token);
   else results.failed.push({ token, reason: 'format name not found in repo' });

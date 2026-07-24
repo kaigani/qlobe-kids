@@ -25,6 +25,7 @@ async function applyProjectNavigation() {
   const project = projects.find((item) => item.id === params.get('project')) || projects[0];
   const available = new Set(Object.keys(project?.workspaces || {}));
   available.add('rig'); // native Rig edits the shared character library — always reachable
+  available.add('library'); // native Library browses every object across every project — always reachable
   for (const button of nav.querySelectorAll('button[data-workspace]')) {
     button.hidden = !available.has(button.dataset.workspace);
     if (button.dataset.workspace === 'assemble') button.textContent = project?.workspaces?.assemble?.label || 'Assemble';
@@ -59,9 +60,9 @@ function updateUrl(workspace) {
 
 async function openWorkspace(workspace, { update = true } = {}) {
   workspace = canonicalWorkspaceId(workspace); // "build" is a legacy alias for "assemble"
-  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
+  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music', 'library'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
   const { available } = await applyProjectNavigation();
-  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
+  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'library'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
   if (activeCleanup) { activeCleanup(); activeCleanup = null; }
   activeWorkspace = workspace;
   for (const button of nav.querySelectorAll('button')) button.classList.toggle('on', button.dataset.workspace === workspace);

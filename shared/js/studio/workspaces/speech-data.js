@@ -71,6 +71,25 @@ export function loadCues(text) { return parseCues(text); }
 export function manifestLines(manifest) { return (manifest && manifest.lines) || []; }
 
 // ---------------------------------------------------------------------------
+// qlobe-voice-pack v1 ADAPTER (§7.2). Voice manifests carry `schemaVersion` but
+// (until first touch) no `format` field. This adapter READS a manifest's identity
+// in memory — defaulting the format to qlobe-voice-pack v1 and the id from the
+// character — WITHOUT rewriting anything on disk. It is deliberately NOT wired
+// into loadManifest/serializeManifest so those stay identity round-trips (the
+// parity gate). It exists so the studio/library can display and reason about the
+// format, and so first-touch materialization has one canonical shape to write.
+// Both shapes are accepted: a present format/formatVersion/id is preserved as-is.
+export function voicePackIdentity(manifest, id = null) {
+  const m = manifest || {};
+  return {
+    format: typeof m.format === 'string' ? m.format : 'qlobe-voice-pack',
+    formatVersion: Number.isInteger(m.formatVersion) ? m.formatVersion : 1,
+    id: typeof m.id === 'string' ? m.id : id,
+    materialized: !(typeof m.format === 'string'), // true when defaults were supplied
+  };
+}
+
+// ---------------------------------------------------------------------------
 // RUNTIME LINE RESOLUTION — mirrors the legacy normalizeVoiceLines(). Produces
 // the shape the playback UI uses; it is NEVER serialized back (the raw manifest
 // is what parity/save touch). `cueMap` is returned as a string tag ('identity' |

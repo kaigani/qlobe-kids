@@ -43,6 +43,7 @@ BONES = (
     "leg-upper.L", "leg-lower.L", "leg-upper.R", "leg-lower.R",
 )
 ID_RE = re.compile(r"^[a-z][a-z0-9-]{0,39}$")
+VALIDATE_TARGET_RE = re.compile(r"^[a-z][a-z0-9-]{0,64}$")
 MAX_UPLOAD = 32 * 1024 * 1024
 MAX_STUDIO_DOCUMENT = 4 * 1024 * 1024
 RHU_TO_VISEME = {
@@ -606,6 +607,65 @@ def voice_entries(state: AuthoringState, char_id: str) -> list[dict]:
     return entries
 
 
+def studio_character_ids(state: AuthoringState) -> list[str]:
+    """Character ids for the completeness census: registry objects ∪ shared/characters dirs.
+
+    The registry (studio_registry_objects) is the primary source — today it only
+    lists the 8 rigged puppets, since anim-only characters (portrait + voice, no
+    rig) aren't wired into qlobe-studio-projects yet. Unioning in every directory
+    under shared/characters keeps those anim-only characters visible in the
+    census instead of disappearing until someone remembers to register them.
+    """
+    ids = set()
+    try:
+        for obj in studio_registry_objects(state):
+            if obj.get("type") == "character" and isinstance(obj.get("id"), str) and ID_RE.fullmatch(obj["id"]):
+                ids.add(obj["id"])
+    except ValueError:
+        pass
+    if state.character_root.exists():
+        ids.update(p.name for p in state.character_root.iterdir() if p.is_dir() and ID_RE.fullmatch(p.name))
+    return sorted(ids)
+
+
+def studio_character_completeness(state: AuthoringState, char_id: str) -> dict:
+    """One character's build-out census for GET /api/studio/completeness."""
+    char = state.character_root / char_id
+    rig_path = char / "rig.json"
+    rig = rig_path.is_file()
+    tier = "anim-only"
+    if rig:
+        try:
+            rig_doc = json.loads(rig_path.read_text("utf-8"))
+            if isinstance(rig_doc, dict) and isinstance(rig_doc.get("bones"), list) and rig_doc["bones"]:
+                tier = "rigged"
+        except (ValueError, OSError):
+            pass
+    parts_have = sum((char / "parts" / f"{bone}.png").is_file() for bone in BONES)
+    viseme_have = sum((char / "anim" / f"head-{viseme}.png").is_file() for viseme in VISEMES)
+    rest_head = (char / "parts" / "head.png").is_file() or (char / "anim" / "head-rest.png").is_file()
+    voice_lines = len(voice_entries(state, char_id))
+    voice_dir = char / "voice"
+    voice_cues = len(list(voice_dir.glob("*.cues.json"))) if voice_dir.is_dir() else 0
+    portrait = (char / "portrait.png").is_file()
+    if tier == "rigged":
+        complete = rig and parts_have == len(BONES) and viseme_have == len(VISEMES) and voice_lines > 0
+    else:
+        complete = portrait
+    return {
+        "id": char_id,
+        "tier": tier,
+        "rig": rig,
+        "parts": {"have": parts_have, "need": len(BONES)},
+        "visemeHeads": {"have": viseme_have, "need": len(VISEMES)},
+        "restHead": rest_head,
+        "voiceLines": voice_lines,
+        "voiceCues": voice_cues,
+        "portrait": portrait,
+        "complete": complete,
+    }
+
+
 def run_voice_job(state: AuthoringState, job_id: str, char_id: str, key: str,
                   label: str, transcript: str, requested_aligner: str, lead_ms: int,
                   temp_dir: Path, source: Path):
@@ -804,6 +864,34 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     "ok": True, "formatVersion": 2,
                     "objects": studio_registry_objects(self.state),
                 })
+            if parsed.path == "/api/studio/usage-index":
+                query = parse_qs(parsed.query)
+                index_path = self.state.root / "shared" / "data" / "usage-index.json"
+                if query.get("refresh", ["0"])[0] == "1":
+                    node = shutil.which("node") or "node"
+                    try:
+                        result = subprocess.run(
+                            [node, "tools/build-usage-index.mjs"],
+                            cwd=self.state.root, capture_output=True, text=True, timeout=60,
+                        )
+                    except (OSError, subprocess.SubprocessError) as exc:
+                        return self.send_error_json(500, str(exc))
+                    if result.returncode != 0:
+                        detail = (result.stderr or result.stdout or "usage index generator failed").strip()
+                        return self.send_error_json(500, detail)
+                if not index_path.is_file():
+                    return self.send_error_json(404, "usage index not generated; POST ?refresh=1")
+                return self.send_json({"ok": True, "index": json.loads(index_path.read_text("utf-8"))})
+            if parsed.path == "/api/studio/completeness":
+                query = parse_qs(parsed.query)
+                census_type = query.get("type", [""])[0]
+                if census_type != "character":
+                    return self.send_error_json(400, "unsupported completeness type")
+                characters = [
+                    studio_character_completeness(self.state, char_id)
+                    for char_id in studio_character_ids(self.state)
+                ]
+                return self.send_json({"ok": True, "type": "character", "characters": characters})
             if parsed.path.startswith("/api/studio/jobs/"):
                 job = self.state.snapshot_job(parsed.path.rsplit("/", 1)[-1])
                 return self.send_json({"ok": True, "job": job}) if job else self.send_error_json(404, "job not found")
@@ -912,6 +1000,25 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     "path": str(path.relative_to(self.state.root)),
                     "bytes": len(formatted),
                 })
+            if parsed.path == "/api/studio/validate":
+                payload = self.read_json()
+                target = str(payload.get("target") or "").strip()
+                if target and not VALIDATE_TARGET_RE.fullmatch(target):
+                    raise ValueError("validate target must be lowercase kebab-case (max 65 characters)")
+                node = shutil.which("node") or "node"
+                args = [node, "tools/validate/run.mjs"] + ([target] if target else []) + ["--json"]
+                try:
+                    result = subprocess.run(
+                        args, cwd=self.state.root, capture_output=True, text=True, timeout=120,
+                    )
+                except (OSError, subprocess.SubprocessError) as exc:
+                    return self.send_error_json(500, str(exc))
+                try:
+                    report = json.loads(result.stdout)
+                except json.JSONDecodeError:
+                    excerpt = (result.stderr or result.stdout or "validator produced no output").strip()[:2000]
+                    return self.send_error_json(500, excerpt)
+                return self.send_json({"ok": True, "report": report})
             if parsed.path == "/api/studio/asset":
                 query = parse_qs(parsed.query)
                 path = studio_asset_path(self.state, query.get("path", [""])[0])

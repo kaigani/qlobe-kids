@@ -1,0 +1,2464 @@
+{
+  "format": "qlobe-usage-index",
+  "formatVersion": 1,
+  "generatedBy": "tools/build-usage-index.mjs",
+  "generatedFrom": [
+    "games.json",
+    "games/<id>/game.json",
+    "games/<id>/index.html",
+    "games/<id>/config.js",
+    "games/<id>/js/**/*.js"
+  ],
+  "generated": "2026-07-24T13:24:45.982Z",
+  "engines": {
+    "coach-timer": {
+      "count": 21,
+      "games": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "big-paper-murals",
+        "button-zipper-lab",
+        "cleanup-timer-quest",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "melting-race",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "obstacle-course-builder",
+        "plant-care-captain",
+        "pouring-station",
+        "shelf-reset-game",
+        "snack-chef",
+        "sweep-the-trail",
+        "throwing-target-garden",
+        "trail-counting-walk",
+        "waiting-muscle-game"
+      ]
+    },
+    "choose-one": {
+      "count": 18,
+      "games": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "letter-treasure-hunt",
+        "mountain-seasons-wheel",
+        "mystery-letter-bag",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "puppet-retell",
+        "question-ball",
+        "sink-or-float",
+        "song-story-remix",
+        "sound-hopscotch",
+        "story-repair-shop",
+        "tiny-reader-theater",
+        "world-music-dance"
+      ]
+    },
+    "build-assemble": {
+      "count": 15,
+      "games": [
+        "bead-path-builder",
+        "blend-train",
+        "block-tower-measure",
+        "clay-creature-studio",
+        "color-mixing-lab",
+        "land-water-tray",
+        "loose-parts-collage",
+        "playdough-letter-factory",
+        "secret-message-copy",
+        "shape-to-picture",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "tangram-tales",
+        "teen-bead-builder",
+        "turn-taking-tower"
+      ]
+    },
+    "observe-journal": {
+      "count": 11,
+      "games": [
+        "bean-sprout-watch",
+        "bug-hotel-observer",
+        "emotion-voice-game",
+        "family-story-interview",
+        "globe-spin-stories",
+        "kindness-delivery",
+        "picture-narration",
+        "shadow-chase",
+        "smell-jars",
+        "sound-painting",
+        "weather-scientist"
+      ]
+    },
+    "sort-into-bins": {
+      "count": 6,
+      "games": [
+        "laundry-sorter",
+        "magnet-explorer",
+        "puzzle-map-match",
+        "sound-basket",
+        "table-setting-mission",
+        "tweezer-rescue"
+      ]
+    },
+    "match-pairs": {
+      "count": 6,
+      "games": [
+        "community-helper-cards",
+        "picture-word-match",
+        "rhyming-detective",
+        "sound-cylinder-match",
+        "texture-trail",
+        "then-now-sort"
+      ]
+    },
+    "sequence-order": {
+      "count": 5,
+      "games": [
+        "color-gradient-cards",
+        "family-timeline",
+        "name-puzzle",
+        "number-rod-race",
+        "story-sequence"
+      ]
+    },
+    "tap-count": {
+      "count": 5,
+      "games": [
+        "counting-treasure-cups",
+        "number-line-jump",
+        "sandpaper-number-match",
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ]
+    },
+    "trace-path": {
+      "count": 4,
+      "games": [
+        "chalkboard-big-strokes",
+        "letter-road-driving",
+        "scissor-trail-safari",
+        "sticker-line-challenge"
+      ]
+    },
+    "pattern-continue": {
+      "count": 3,
+      "games": [
+        "pattern-bracelet-band",
+        "pattern-train",
+        "rhythm-copycat"
+      ]
+    },
+    "story-stones": {
+      "count": 1,
+      "games": [
+        "story-stones"
+      ]
+    },
+    "puppet-theater": {
+      "count": 1,
+      "games": [
+        "puppet-problem-solvers"
+      ]
+    },
+    "puppet-band": {
+      "count": 1,
+      "games": [
+        "my-puppet-band"
+      ]
+    }
+  },
+  "forward": {
+    "animal-walk-cards": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "balance-beam-trail": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "bead-path-builder": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "bean-sprout-watch": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "big-paper-murals": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "blend-train": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "block-tower-measure": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "board-game-reset": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "nia"
+      ],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "bug-hotel-observer": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "button-zipper-lab": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "calm-corner-cards": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi"
+      ],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "chalkboard-big-strokes": {
+      "engine": "trace-path",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "clay-creature-studio": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "cleanup-timer-quest": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "color-gradient-cards": {
+      "engine": "sequence-order",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sequence-order.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "color-mixing-lab": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "community-helper-cards": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "counting-treasure-cups": {
+      "engine": "tap-count",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/tap-count.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "emotion-voice-game": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "family-story-interview": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "family-timeline": {
+      "engine": "sequence-order",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sequence-order.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "feelings-charades": {
+      "engine": null,
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/stage/mouth.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/feelings-charades/assets/badge-sun.png",
+        "games/feelings-charades/assets/cards/calm.png",
+        "games/feelings-charades/assets/cards/happy.png",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "freeze-focus-dance": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "garden-delivery-game": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "globe-spin-stories": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "grace-courtesy-theater": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "instrument-detective": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "joke-workshop": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "kindness-delivery": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "land-water-tray": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "laundry-sorter": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "letter-road-driving": {
+      "engine": "trace-path",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "letter-treasure-hunt": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles",
+        "shared/assets/objects"
+      ],
+      "packs": []
+    },
+    "line-walking-challenge": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "local-nature-guide": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "loose-parts-collage": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "lunchbox-pack": {
+      "engine": null,
+      "status": "live",
+      "category": "practical-life",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/stage/mouth.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/lunchbox-pack/assets/lunchbox-closed.png",
+        "games/lunchbox-pack/assets/lunchbox-open.png",
+        "shared/assets/foods",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "magnet-explorer": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "melting-race": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "mountain-seasons-wheel": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "my-puppet-band": {
+      "engine": "puppet-band",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [
+        "bear",
+        "doggy",
+        "fox",
+        "frog",
+        "princess-lily",
+        "princess-zoe",
+        "rabbit",
+        "unicorn"
+      ],
+      "modules": [
+        "shared/js/engines/puppet-band.js",
+        "shared/js/music.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/puppet.js",
+        "shared/js/stage/theater.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "shared/assets/instruments"
+      ],
+      "packs": []
+    },
+    "mystery-letter-bag": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles"
+      ],
+      "packs": []
+    },
+    "name-puzzle": {
+      "engine": "sequence-order",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/engines/sequence-order.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "nature-scavenger-hunt": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "neighborhood-map-walk": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "number-line-jump": {
+      "engine": "tap-count",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/tap-count.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "number-rod-race": {
+      "engine": "sequence-order",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sequence-order.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "obstacle-course-builder": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "pattern-bracelet-band": {
+      "engine": "pattern-continue",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/pattern-continue.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "pattern-train": {
+      "engine": "pattern-continue",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/pattern-continue.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "picture-narration": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "picture-word-match": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/objects"
+      ],
+      "packs": []
+    },
+    "plan-do-review": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "maya"
+      ],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "plant-care-captain": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "playdough-letter-factory": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "pouring-station": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "problem-solving-puppets": {
+      "engine": "choose-one",
+      "status": "archived",
+      "category": "social-emotional",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "puppet-problem-solvers": {
+      "engine": "puppet-theater",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "bear",
+        "doggy",
+        "fox",
+        "frog",
+        "princess-lily",
+        "princess-zoe",
+        "rabbit",
+        "unicorn"
+      ],
+      "modules": [
+        "shared/js/engines/puppet-theater.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/stage/lipsync.js",
+        "shared/js/stage/puppet.js",
+        "shared/js/stage/theater.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "puppet-retell": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/objects/pig.png"
+      ],
+      "packs": []
+    },
+    "puzzle-map-match": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "question-ball": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "red-green-light": {
+      "engine": null,
+      "status": "live",
+      "category": "social-emotional",
+      "characters": [
+        "bolt",
+        "ember",
+        "gilly",
+        "growlie",
+        "luna",
+        "pip",
+        "twinkle",
+        "zoom"
+      ],
+      "modules": [
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "games/red-green-light/assets/callers"
+      ],
+      "packs": []
+    },
+    "rhyming-detective": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/objects"
+      ],
+      "packs": []
+    },
+    "rhythm-copycat": {
+      "engine": "pattern-continue",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/pattern-continue.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "sand-tray-letters": {
+      "engine": null,
+      "status": "live",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/content.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/sand-tray-letters/assets/materials/golden-sand.png",
+        "games/sand-tray-letters/assets/materials/soft-flour.png",
+        "games/sand-tray-letters/assets/materials/white-salt.png"
+      ],
+      "packs": []
+    },
+    "sandpaper-number-match": {
+      "engine": "tap-count",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/tap-count.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "scissor-trail-safari": {
+      "engine": "trace-path",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "secret-message-copy": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "shadow-chase": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "shape-to-picture": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "shelf-reset-game": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "silly-sentence-builder": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "silly-swap-words": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "sink-or-float": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "smell-jars": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "snack-addition-stories": {
+      "engine": "tap-count",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [
+        "Leo",
+        "Maya",
+        "Nia",
+        "Ravi",
+        "Sam"
+      ],
+      "modules": [
+        "shared/js/engines/tap-count.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/foods/apple.png",
+        "shared/assets/foods/banana.png",
+        "shared/assets/foods/crackers.png",
+        "shared/assets/foods/grapes.png",
+        "shared/assets/foods/strawberry.png"
+      ],
+      "packs": []
+    },
+    "snack-chef": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "song-story-remix": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "sound-basket": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles",
+        "shared/assets/objects"
+      ],
+      "packs": []
+    },
+    "sound-cylinder-match": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "sound-hopscotch": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/letter-tiles"
+      ],
+      "packs": []
+    },
+    "sound-painting": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "sound-sprouts": {
+      "engine": null,
+      "status": "live",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/audio",
+        "shared/js/audio.js",
+        "shared/js/sfx",
+        "shared/js/sfx.js",
+        "shared/js/speech",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/vendor/three"
+      ],
+      "assets": [
+        "games/sound-sprouts/assets/apple-touch-icon.png",
+        "games/sound-sprouts/assets/favicon.png",
+        "games/sound-sprouts/assets/gen/ui/splash/btn-make.png",
+        "games/sound-sprouts/assets/gen/ui/splash/btn-mixer.png",
+        "games/sound-sprouts/assets/gen/ui/splash/btn-mystery.png",
+        "games/sound-sprouts/assets/gen/ui/splash/title.png",
+        "shared/assets/audio",
+        "shared/assets/letter-tiles",
+        "shared/assets/objects",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "sticker-line-challenge": {
+      "engine": "trace-path",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "story-repair-shop": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "story-sequence": {
+      "engine": "sequence-order",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sequence-order.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "story-stones": {
+      "engine": "story-stones",
+      "status": "beta",
+      "category": "oral-storytelling",
+      "characters": [
+        "dragon",
+        "friendly-monster",
+        "orange-cat",
+        "owl",
+        "white-cat"
+      ],
+      "modules": [
+        "shared/js/engines/story-stones.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/pose-sprite.js",
+        "shared/js/stage/theater.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "subtraction-picnic": {
+      "engine": "tap-count",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [
+        "bear",
+        "bird",
+        "bunny",
+        "squirrel"
+      ],
+      "modules": [
+        "shared/js/engines/tap-count.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/foods/apple.png",
+        "shared/assets/foods/banana.png",
+        "shared/assets/foods/crackers.png",
+        "shared/assets/foods/grapes.png",
+        "shared/assets/foods/strawberry.png"
+      ],
+      "packs": []
+    },
+    "sweep-the-trail": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "table-setting-mission": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "tangram-tales": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "teen-bead-builder": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "texture-trail": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "then-now-sort": {
+      "engine": "match-pairs",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/match-pairs.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "throwing-target-garden": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "tiny-reader-theater": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/objects/bus.png",
+        "shared/assets/objects/cat.png",
+        "shared/assets/objects/dog.png",
+        "shared/assets/objects/hat.png",
+        "shared/assets/objects/mud.png",
+        "shared/assets/objects/sun.png"
+      ],
+      "packs": []
+    },
+    "trail-counting-walk": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "movement-outdoor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "turn-taking-tower": {
+      "engine": "build-assemble",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [
+        "leo",
+        "maya",
+        "nia",
+        "ravi",
+        "sam"
+      ],
+      "modules": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "tweezer-rescue": {
+      "engine": "sort-into-bins",
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/sort-into-bins.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "waiting-muscle-game": {
+      "engine": "coach-timer",
+      "status": "beta",
+      "category": "social-emotional",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/coach-timer.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "weather-scientist": {
+      "engine": "observe-journal",
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/observe-journal.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    },
+    "world-music-dance": {
+      "engine": "choose-one",
+      "status": "beta",
+      "category": "culture-geography",
+      "characters": [],
+      "modules": [
+        "shared/js/engines/choose-one.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js"
+      ],
+      "assets": [],
+      "packs": []
+    }
+  },
+  "reverse": {
+    "modules": {
+      "shared/js/audio": [
+        "sound-sprouts"
+      ],
+      "shared/js/audio.js": [
+        "sound-sprouts"
+      ],
+      "shared/js/content.js": [
+        "sand-tray-letters"
+      ],
+      "shared/js/engines/build-assemble.js": [
+        "bead-path-builder",
+        "blend-train",
+        "block-tower-measure",
+        "clay-creature-studio",
+        "color-mixing-lab",
+        "land-water-tray",
+        "loose-parts-collage",
+        "playdough-letter-factory",
+        "secret-message-copy",
+        "shape-to-picture",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "tangram-tales",
+        "teen-bead-builder",
+        "turn-taking-tower"
+      ],
+      "shared/js/engines/choose-one.js": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "letter-treasure-hunt",
+        "mountain-seasons-wheel",
+        "mystery-letter-bag",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "puppet-retell",
+        "question-ball",
+        "sink-or-float",
+        "song-story-remix",
+        "sound-hopscotch",
+        "story-repair-shop",
+        "tiny-reader-theater",
+        "world-music-dance"
+      ],
+      "shared/js/engines/coach-timer.js": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "big-paper-murals",
+        "button-zipper-lab",
+        "cleanup-timer-quest",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "melting-race",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "obstacle-course-builder",
+        "plant-care-captain",
+        "pouring-station",
+        "shelf-reset-game",
+        "snack-chef",
+        "sweep-the-trail",
+        "throwing-target-garden",
+        "trail-counting-walk",
+        "waiting-muscle-game"
+      ],
+      "shared/js/engines/match-pairs.js": [
+        "community-helper-cards",
+        "picture-word-match",
+        "rhyming-detective",
+        "sound-cylinder-match",
+        "texture-trail",
+        "then-now-sort"
+      ],
+      "shared/js/engines/observe-journal.js": [
+        "bean-sprout-watch",
+        "bug-hotel-observer",
+        "emotion-voice-game",
+        "family-story-interview",
+        "globe-spin-stories",
+        "kindness-delivery",
+        "picture-narration",
+        "shadow-chase",
+        "smell-jars",
+        "sound-painting",
+        "weather-scientist"
+      ],
+      "shared/js/engines/pattern-continue.js": [
+        "pattern-bracelet-band",
+        "pattern-train",
+        "rhythm-copycat"
+      ],
+      "shared/js/engines/puppet-band.js": [
+        "my-puppet-band"
+      ],
+      "shared/js/engines/puppet-theater.js": [
+        "puppet-problem-solvers"
+      ],
+      "shared/js/engines/sequence-order.js": [
+        "color-gradient-cards",
+        "family-timeline",
+        "name-puzzle",
+        "number-rod-race",
+        "story-sequence"
+      ],
+      "shared/js/engines/sort-into-bins.js": [
+        "laundry-sorter",
+        "magnet-explorer",
+        "puzzle-map-match",
+        "sound-basket",
+        "table-setting-mission",
+        "tweezer-rescue"
+      ],
+      "shared/js/engines/story-stones.js": [
+        "story-stones"
+      ],
+      "shared/js/engines/tap-count.js": [
+        "counting-treasure-cups",
+        "number-line-jump",
+        "sandpaper-number-match",
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/js/engines/trace-path.js": [
+        "chalkboard-big-strokes",
+        "letter-road-driving",
+        "scissor-trail-safari",
+        "sticker-line-challenge"
+      ],
+      "shared/js/music.js": [
+        "my-puppet-band"
+      ],
+      "shared/js/sfx": [
+        "sound-sprouts"
+      ],
+      "shared/js/sfx.js": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "bead-path-builder",
+        "bean-sprout-watch",
+        "big-paper-murals",
+        "blend-train",
+        "block-tower-measure",
+        "board-game-reset",
+        "bug-hotel-observer",
+        "button-zipper-lab",
+        "calm-corner-cards",
+        "chalkboard-big-strokes",
+        "clay-creature-studio",
+        "cleanup-timer-quest",
+        "color-gradient-cards",
+        "color-mixing-lab",
+        "community-helper-cards",
+        "counting-treasure-cups",
+        "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
+        "feelings-charades",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "globe-spin-stories",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "kindness-delivery",
+        "land-water-tray",
+        "laundry-sorter",
+        "letter-road-driving",
+        "letter-treasure-hunt",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "loose-parts-collage",
+        "lunchbox-pack",
+        "magnet-explorer",
+        "melting-race",
+        "mountain-seasons-wheel",
+        "my-puppet-band",
+        "mystery-letter-bag",
+        "name-puzzle",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "number-line-jump",
+        "number-rod-race",
+        "obstacle-course-builder",
+        "pattern-bracelet-band",
+        "pattern-train",
+        "picture-narration",
+        "picture-word-match",
+        "plan-do-review",
+        "plant-care-captain",
+        "playdough-letter-factory",
+        "pouring-station",
+        "problem-solving-puppets",
+        "puppet-problem-solvers",
+        "puppet-retell",
+        "puzzle-map-match",
+        "question-ball",
+        "red-green-light",
+        "rhyming-detective",
+        "rhythm-copycat",
+        "sand-tray-letters",
+        "sandpaper-number-match",
+        "scissor-trail-safari",
+        "secret-message-copy",
+        "shadow-chase",
+        "shape-to-picture",
+        "shelf-reset-game",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "sink-or-float",
+        "smell-jars",
+        "snack-addition-stories",
+        "snack-chef",
+        "song-story-remix",
+        "sound-basket",
+        "sound-cylinder-match",
+        "sound-hopscotch",
+        "sound-painting",
+        "sound-sprouts",
+        "sticker-line-challenge",
+        "story-repair-shop",
+        "story-sequence",
+        "story-stones",
+        "subtraction-picnic",
+        "sweep-the-trail",
+        "table-setting-mission",
+        "tangram-tales",
+        "teen-bead-builder",
+        "texture-trail",
+        "then-now-sort",
+        "throwing-target-garden",
+        "tiny-reader-theater",
+        "trail-counting-walk",
+        "turn-taking-tower",
+        "tweezer-rescue",
+        "waiting-muscle-game",
+        "weather-scientist",
+        "world-music-dance"
+      ],
+      "shared/js/speech": [
+        "sound-sprouts"
+      ],
+      "shared/js/speech.js": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "bead-path-builder",
+        "bean-sprout-watch",
+        "big-paper-murals",
+        "blend-train",
+        "block-tower-measure",
+        "board-game-reset",
+        "bug-hotel-observer",
+        "button-zipper-lab",
+        "calm-corner-cards",
+        "chalkboard-big-strokes",
+        "clay-creature-studio",
+        "cleanup-timer-quest",
+        "color-gradient-cards",
+        "color-mixing-lab",
+        "community-helper-cards",
+        "counting-treasure-cups",
+        "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
+        "feelings-charades",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "globe-spin-stories",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "kindness-delivery",
+        "land-water-tray",
+        "laundry-sorter",
+        "letter-road-driving",
+        "letter-treasure-hunt",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "loose-parts-collage",
+        "lunchbox-pack",
+        "magnet-explorer",
+        "melting-race",
+        "mountain-seasons-wheel",
+        "mystery-letter-bag",
+        "name-puzzle",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "number-line-jump",
+        "number-rod-race",
+        "obstacle-course-builder",
+        "pattern-bracelet-band",
+        "pattern-train",
+        "picture-narration",
+        "picture-word-match",
+        "plan-do-review",
+        "plant-care-captain",
+        "playdough-letter-factory",
+        "pouring-station",
+        "problem-solving-puppets",
+        "puppet-problem-solvers",
+        "puppet-retell",
+        "puzzle-map-match",
+        "question-ball",
+        "red-green-light",
+        "rhyming-detective",
+        "rhythm-copycat",
+        "sand-tray-letters",
+        "sandpaper-number-match",
+        "scissor-trail-safari",
+        "secret-message-copy",
+        "shadow-chase",
+        "shape-to-picture",
+        "shelf-reset-game",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "sink-or-float",
+        "smell-jars",
+        "snack-addition-stories",
+        "snack-chef",
+        "song-story-remix",
+        "sound-basket",
+        "sound-cylinder-match",
+        "sound-hopscotch",
+        "sound-painting",
+        "sound-sprouts",
+        "sticker-line-challenge",
+        "story-repair-shop",
+        "story-sequence",
+        "subtraction-picnic",
+        "sweep-the-trail",
+        "table-setting-mission",
+        "tangram-tales",
+        "teen-bead-builder",
+        "texture-trail",
+        "then-now-sort",
+        "throwing-target-garden",
+        "tiny-reader-theater",
+        "trail-counting-walk",
+        "turn-taking-tower",
+        "tweezer-rescue",
+        "waiting-muscle-game",
+        "weather-scientist",
+        "world-music-dance"
+      ],
+      "shared/js/stage/lipsync.js": [
+        "puppet-problem-solvers"
+      ],
+      "shared/js/stage/mouth.js": [
+        "feelings-charades",
+        "lunchbox-pack"
+      ],
+      "shared/js/stage/pose-sprite.js": [
+        "story-stones"
+      ],
+      "shared/js/stage/puppet.js": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/js/stage/theater.js": [
+        "my-puppet-band",
+        "puppet-problem-solvers",
+        "story-stones"
+      ],
+      "shared/js/tap.js": [
+        "feelings-charades",
+        "lunchbox-pack",
+        "sand-tray-letters",
+        "sound-sprouts"
+      ],
+      "shared/js/voice-clips.js": [
+        "feelings-charades",
+        "lunchbox-pack",
+        "my-puppet-band",
+        "puppet-problem-solvers",
+        "sand-tray-letters",
+        "story-stones"
+      ],
+      "shared/vendor/three": [
+        "sound-sprouts"
+      ]
+    },
+    "characters": {
+      "bear": [
+        "my-puppet-band",
+        "puppet-problem-solvers",
+        "subtraction-picnic"
+      ],
+      "bird": [
+        "subtraction-picnic"
+      ],
+      "bolt": [
+        "red-green-light"
+      ],
+      "bunny": [
+        "subtraction-picnic"
+      ],
+      "doggy": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "dragon": [
+        "story-stones"
+      ],
+      "ember": [
+        "red-green-light"
+      ],
+      "fox": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "friendly-monster": [
+        "story-stones"
+      ],
+      "frog": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "gilly": [
+        "red-green-light"
+      ],
+      "growlie": [
+        "red-green-light"
+      ],
+      "leo": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "Leo": [
+        "snack-addition-stories"
+      ],
+      "luna": [
+        "red-green-light"
+      ],
+      "maya": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "Maya": [
+        "snack-addition-stories"
+      ],
+      "nia": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "Nia": [
+        "snack-addition-stories"
+      ],
+      "orange-cat": [
+        "story-stones"
+      ],
+      "owl": [
+        "story-stones"
+      ],
+      "pip": [
+        "red-green-light"
+      ],
+      "princess-lily": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "princess-zoe": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "rabbit": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "ravi": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "Ravi": [
+        "snack-addition-stories"
+      ],
+      "sam": [
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "Sam": [
+        "snack-addition-stories"
+      ],
+      "squirrel": [
+        "subtraction-picnic"
+      ],
+      "twinkle": [
+        "red-green-light"
+      ],
+      "unicorn": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "white-cat": [
+        "story-stones"
+      ],
+      "zoom": [
+        "red-green-light"
+      ]
+    },
+    "assets": {
+      "games/feelings-charades/assets/badge-sun.png": [
+        "feelings-charades"
+      ],
+      "games/feelings-charades/assets/cards/calm.png": [
+        "feelings-charades"
+      ],
+      "games/feelings-charades/assets/cards/happy.png": [
+        "feelings-charades"
+      ],
+      "games/lunchbox-pack/assets/lunchbox-closed.png": [
+        "lunchbox-pack"
+      ],
+      "games/lunchbox-pack/assets/lunchbox-open.png": [
+        "lunchbox-pack"
+      ],
+      "games/red-green-light/assets/callers": [
+        "red-green-light"
+      ],
+      "games/sand-tray-letters/assets/materials/golden-sand.png": [
+        "sand-tray-letters"
+      ],
+      "games/sand-tray-letters/assets/materials/soft-flour.png": [
+        "sand-tray-letters"
+      ],
+      "games/sand-tray-letters/assets/materials/white-salt.png": [
+        "sand-tray-letters"
+      ],
+      "games/sound-sprouts/assets/apple-touch-icon.png": [
+        "sound-sprouts"
+      ],
+      "games/sound-sprouts/assets/favicon.png": [
+        "sound-sprouts"
+      ],
+      "games/sound-sprouts/assets/gen/ui/splash/btn-make.png": [
+        "sound-sprouts"
+      ],
+      "games/sound-sprouts/assets/gen/ui/splash/btn-mixer.png": [
+        "sound-sprouts"
+      ],
+      "games/sound-sprouts/assets/gen/ui/splash/btn-mystery.png": [
+        "sound-sprouts"
+      ],
+      "games/sound-sprouts/assets/gen/ui/splash/title.png": [
+        "sound-sprouts"
+      ],
+      "shared/assets/audio": [
+        "sound-sprouts"
+      ],
+      "shared/assets/foods": [
+        "lunchbox-pack"
+      ],
+      "shared/assets/foods/apple.png": [
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/assets/foods/banana.png": [
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/assets/foods/crackers.png": [
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/assets/foods/grapes.png": [
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/assets/foods/strawberry.png": [
+        "snack-addition-stories",
+        "subtraction-picnic"
+      ],
+      "shared/assets/instruments": [
+        "my-puppet-band"
+      ],
+      "shared/assets/letter-tiles": [
+        "blend-train",
+        "letter-treasure-hunt",
+        "mystery-letter-bag",
+        "silly-swap-words",
+        "sound-basket",
+        "sound-hopscotch",
+        "sound-sprouts"
+      ],
+      "shared/assets/objects": [
+        "letter-treasure-hunt",
+        "picture-word-match",
+        "rhyming-detective",
+        "sound-basket",
+        "sound-sprouts"
+      ],
+      "shared/assets/objects/bus.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/objects/cat.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/objects/dog.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/objects/hat.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/objects/mud.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/objects/pig.png": [
+        "puppet-retell"
+      ],
+      "shared/assets/objects/sun.png": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/ui": [
+        "bead-path-builder",
+        "blend-train",
+        "block-tower-measure",
+        "clay-creature-studio",
+        "color-mixing-lab",
+        "feelings-charades",
+        "land-water-tray",
+        "loose-parts-collage",
+        "lunchbox-pack",
+        "playdough-letter-factory",
+        "secret-message-copy",
+        "shape-to-picture",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "sound-sprouts",
+        "tangram-tales",
+        "teen-bead-builder",
+        "turn-taking-tower"
+      ],
+      "shared/characters/bear": [
+        "my-puppet-band",
+        "puppet-problem-solvers",
+        "subtraction-picnic"
+      ],
+      "shared/characters/doggy": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/fox": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/frog": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/leo": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "shared/characters/Leo": [
+        "snack-addition-stories"
+      ],
+      "shared/characters/maya": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "shared/characters/Maya": [
+        "snack-addition-stories"
+      ],
+      "shared/characters/nia": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "shared/characters/Nia": [
+        "snack-addition-stories"
+      ],
+      "shared/characters/princess-lily": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/princess-zoe": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/rabbit": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ],
+      "shared/characters/ravi": [
+        "calm-corner-cards",
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "shared/characters/Ravi": [
+        "snack-addition-stories"
+      ],
+      "shared/characters/sam": [
+        "feelings-charades",
+        "grace-courtesy-theater",
+        "lunchbox-pack",
+        "name-puzzle",
+        "problem-solving-puppets",
+        "turn-taking-tower"
+      ],
+      "shared/characters/Sam": [
+        "snack-addition-stories"
+      ],
+      "shared/characters/unicorn": [
+        "my-puppet-band",
+        "puppet-problem-solvers"
+      ]
+    }
+  }
+}

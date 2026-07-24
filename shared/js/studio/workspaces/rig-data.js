@@ -82,3 +82,16 @@ export const RIGGED_CHARACTERS = [
 ];
 
 export const rigDocumentPath = (id) => `shared/characters/${id}/rig.json`;
+
+// qlobe-character capability tier ADAPTER (§7.3). Character packs may declare a
+// `tier ∈ rigged | anim-only | pose-actor`; legacy rig.json documents carry none.
+// This reads the tier in memory, accepting an explicit field when present and
+// inferring it otherwise (a rig with a non-empty bones[] is `rigged`). It does
+// NOT mutate or rewrite the rig, so loadRig/serializeRig stay content-idempotent
+// (the parity gate). Validators accept both shapes via this same rule.
+export function rigTier(rig) {
+  if (rig && (rig.tier === 'rigged' || rig.tier === 'anim-only' || rig.tier === 'pose-actor')) return rig.tier;
+  if (rig && Array.isArray(rig.bones) && rig.bones.length) return 'rigged';
+  if (rig && rig.poses && typeof rig.poses === 'object') return 'pose-actor';
+  return 'anim-only';
+}
