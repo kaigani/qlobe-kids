@@ -51,10 +51,10 @@ async function normalizePose(file) {
 
 export async function mount(host,{params,toast,openWorkspace}){
   const projects=await loadStudioProjects();
-  let project=projects.find((item)=>item.id===params.get('project')&&item.workspaces?.build)||projects.find((item)=>item.id==='story-stones');
+  let project=projects.find((item)=>item.id===params.get('project')&&item.workspaces?.assemble)||projects.find((item)=>item.id==='story-stones');
   let actorId=params.get('char')||'dragon', actorPack=null, build=null;
   let poseId=params.get('pose')||'neutral', poseManifest=null, poseStage=null, poseTheater=null, poseActor=null;
-  host.innerHTML=`<div class="workspace" data-workspace="build"><div class="workspace-tools"><label>Project<select data-project>${projectOptions(projects,'build',project.id)}</select></label><span data-profile class="canvas-badge"></span><button data-save class="save">Save build manifest</button></div><div class="workspace-canvas" data-canvas></div><aside class="workspace-inspector" data-inspector></aside></div>`;
+  host.innerHTML=`<div class="workspace" data-workspace="assemble"><div class="workspace-tools"><label>Project<select data-project>${projectOptions(projects,'assemble',project.id)}</select></label><span data-profile class="canvas-badge"></span><button data-save class="save">Save build manifest</button></div><div class="workspace-canvas" data-canvas></div><aside class="workspace-inspector" data-inspector></aside></div>`;
   const canvasHost=host.querySelector('[data-canvas]'), inspector=host.querySelector('[data-inspector]');
   async function loadPoseLibrary(ws){
     host.querySelector('[data-profile]').textContent='Whole-image story poses';
@@ -87,7 +87,7 @@ export async function mount(host,{params,toast,openWorkspace}){
       await savePoseManifest();toast(`${poseManifest.label} ${poseId} pose saved`,{kind:'success'});await load();
     }catch(error){fail(error);}};
   }
-  async function drawPoseInspector(){await loadPoseLibrary(project.workspaces.build);}
+  async function drawPoseInspector(){await loadPoseLibrary(project.workspaces.assemble);}
   function syncPoseFields(){
     if(!poseManifest)return;
     poseManifest.poses[poseId].alt=inspector.querySelector('[data-alt]')?.value||poseManifest.poses[poseId].alt;
@@ -96,7 +96,7 @@ export async function mount(host,{params,toast,openWorkspace}){
   }
   async function savePoseManifest(){syncPoseFields();await saveDocument(`games/${project.id}/assets/pose-actors/${actorId}/poses.json`,poseManifest);build=poseManifest;}
   async function load(){
-    const ws=project.workspaces.build;
+    const ws=project.workspaces.assemble;
     if(ws.profile==='pose-library'){await loadPoseLibrary(ws);return;}
     host.querySelector('[data-profile]').textContent=ws.profile==='scene-actor'?'Flexible Scene Actor':'Canonical 10-part Puppet';
     if(ws.profile!=='scene-actor'){
@@ -127,11 +127,11 @@ export async function mount(host,{params,toast,openWorkspace}){
     const image=canvasHost.querySelector('[data-source]');image.onload=()=>{const boxes=alphaBoxes(image),overlay=canvasHost.querySelector('canvas');overlay.width=image.naturalWidth;overlay.height=image.naturalHeight;const ctx=overlay.getContext('2d');ctx.strokeStyle='#ffd91f';ctx.lineWidth=5;ctx.font='bold 26px sans-serif';ctx.fillStyle='#111';boxes.forEach((entry,index)=>{const [x,y,r,b]=entry.box;ctx.strokeRect(x,y,r-x,b-y);ctx.fillText(String(index+1),x+8,y+30);});inspector.querySelector('[data-qc]').textContent=`PASS · ${boxes.length} alpha-separated parts · source ${image.naturalWidth}×${image.naturalHeight}`;};
   }
   function fail(error){console.error(error);toast(error.message,{error:true,duration:7000});}
-  host.querySelector('[data-project]').onchange=(event)=>{project=projects.find((item)=>item.id===event.target.value);actorId='dragon';params.set('project',project.id);params.delete('char');params.delete('pose');const next=new URL(location.href);next.searchParams.set('project',project.id);next.searchParams.delete('char');next.searchParams.delete('pose');history.replaceState(null,'',next);openWorkspace('build').catch(fail);};
-  host.querySelector('[data-save]').onclick=async()=>{try{if(project.workspaces.build.profile==='pose-library'){await savePoseManifest();toast('Pose manifest saved',{kind:'success'});}else{build=JSON.parse(inspector.querySelector('[data-json]').value);await saveDocument(`games/${project.id}/assets/actors/${actorId}/build.json`,build);toast('Build manifest saved',{kind:'success'});}}catch(error){fail(error);}};
+  host.querySelector('[data-project]').onchange=(event)=>{project=projects.find((item)=>item.id===event.target.value);actorId='dragon';params.set('project',project.id);params.delete('char');params.delete('pose');const next=new URL(location.href);next.searchParams.set('project',project.id);next.searchParams.delete('char');next.searchParams.delete('pose');history.replaceState(null,'',next);openWorkspace('assemble').catch(fail);};
+  host.querySelector('[data-save]').onclick=async()=>{try{if(project.workspaces.assemble.profile==='pose-library'){await savePoseManifest();toast('Pose manifest saved',{kind:'success'});}else{build=JSON.parse(inspector.querySelector('[data-json]').value);await saveDocument(`games/${project.id}/assets/actors/${actorId}/build.json`,build);toast('Build manifest saved',{kind:'success'});}}catch(error){fail(error);}};
   await load();
-  window.QLOBE_STUDIO_DEBUG={workspace:'build',getDocument:()=>build,getState:()=>({project:project.id,actor:actorId,profile:project.workspaces.build.profile})};
-  return()=>{poseTheater?.destroy();poseStage?.destroy();if(window.QLOBE_STUDIO_DEBUG?.workspace==='build')delete window.QLOBE_STUDIO_DEBUG;};
+  window.QLOBE_STUDIO_DEBUG={workspace:'assemble',getDocument:()=>build,getState:()=>({project:project.id,actor:actorId,profile:project.workspaces.assemble.profile})};
+  return()=>{poseTheater?.destroy();poseStage?.destroy();if(window.QLOBE_STUDIO_DEBUG?.workspace==='assemble')delete window.QLOBE_STUDIO_DEBUG;};
 }
 
 export const __test={alphaBoxes,cropPart,normalizePose};

@@ -21,3 +21,7 @@ node_modules/
 
 # Local python venv for lipsync tooling (machine-specific)
 tools/lipsync/venv/
+
+# Python bytecode (server/tool test runs)
+__pycache__/
+*.pyc

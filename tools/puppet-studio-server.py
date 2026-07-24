@@ -172,6 +172,50 @@ def studio_document_path(state: AuthoringState, value: str) -> Path:
     return destination
 
 
+def studio_registry_objects(state: AuthoringState) -> list[dict]:
+    """Resolve the object-centric registry (qlobe-studio-projects fv2).
+
+    Reads shared/js/studio/projects.json. fv2 documents carry objects[]; fv1
+    documents are expanded to their implied objects, mirroring the browser
+    adapter in shared/js/studio/projects.js. Every emitted document path is
+    re-validated through the Studio allow-list, so this endpoint can never
+    surface a path the write APIs would refuse.
+    """
+    registry_path = state.root / "shared" / "js" / "studio" / "projects.json"
+    if not registry_path.is_file():
+        raise ValueError("Studio project registry not found")
+    registry = json.loads(registry_path.read_text("utf-8"))
+    if registry.get("format") != "qlobe-studio-projects" or not isinstance(registry.get("projects"), list):
+        raise ValueError("Studio project registry is invalid")
+
+    raw_objects = registry.get("objects")
+    if not isinstance(raw_objects, list) or not raw_objects:
+        raw_objects = []
+        for project in registry["projects"]:
+            if not isinstance(project, dict) or "id" not in project:
+                continue
+            pid = project["id"]
+            raw_objects.append({"type": "game", "id": pid, "document": f"games/{pid}/game.json", "project": pid})
+            for workspace, config in (project.get("workspaces") or {}).items():
+                doc = config.get("document") if isinstance(config, dict) else None
+                if isinstance(doc, str):
+                    kind = {"stage": "scene-pack", "music": "music-sync"}.get(workspace, workspace)
+                    raw_objects.append({"type": kind, "id": f"{pid}-{workspace}", "document": doc, "project": pid})
+
+    objects = []
+    for obj in raw_objects:
+        if not isinstance(obj, dict) or not isinstance(obj.get("document"), str):
+            continue
+        try:
+            resolved = studio_document_path(state, obj["document"])
+        except ValueError:
+            continue  # never emit a path outside the write allow-list
+        entry = dict(obj)
+        entry["exists"] = resolved.is_file()
+        objects.append(entry)
+    return objects
+
+
 def studio_asset_path(state: AuthoringState, value: str) -> Path:
     """Resolve an image asset inside a registered-style project asset root."""
     relative = safe_relative(value)
@@ -755,9 +799,19 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     "path": str(path.relative_to(self.state.root)),
                     "document": json.loads(path.read_text("utf-8")),
                 })
+            if parsed.path == "/api/studio/objects":
+                return self.send_json({
+                    "ok": True, "formatVersion": 2,
+                    "objects": studio_registry_objects(self.state),
+                })
             if parsed.path.startswith("/api/studio/jobs/"):
                 job = self.state.snapshot_job(parsed.path.rsplit("/", 1)[-1])
                 return self.send_json({"ok": True, "job": job}) if job else self.send_error_json(404, "job not found")
+            # --- /api/puppet/* is FROZEN (Studio v2 Phase 1, 2026-07-24) ---
+            # Bug fixes only; no new capabilities. The native studio workspaces
+            # still call voices/voice/cues/transcribe/jobs here until their
+            # /api/studio/* equivalents land in Phase 3, then this block is
+            # removed. See docs/qlobe-studio-v2.md Appendix B.
             if parsed.path == "/api/puppet/status":
                 qwen = {"configured": bool(self.state.qwen_url), "reachable": False}
                 if self.state.qwen_url:

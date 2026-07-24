@@ -1,9 +1,16 @@
 import { serverStatus } from './api.js';
-import { loadStudioProjects, studioProject } from './projects.js';
+import { loadStudioProjects, studioProject, canonicalWorkspaceId } from './projects.js';
 
 const CHARACTER_WORKSPACES = new Set(['rig', 'animate', 'speech']);
+// Rig (WP-1b), Animate (WP-1c) and Speech (WP-1d) are ported to native
+// workspaces. No character workspace embeds the legacy iframe by default anymore.
+// `?legacy=1` forces a ported workspace back onto the iframe as an escape hatch.
+const IFRAME_WORKSPACES = new Set([]);
+const LEGACY_ESCAPE = new Set(['rig', 'animate', 'speech']); // native workspaces with a ?legacy=1 fallback
 const DEFAULT_WORKSPACE = 'rig';
 const params = new URLSearchParams(location.search);
+const legacyRig = params.get('legacy') === '1';
+const useIframe = (workspace) => IFRAME_WORKSPACES.has(workspace) || (LEGACY_ESCAPE.has(workspace) && legacyRig);
 const nav = document.querySelector('#workspace-nav');
 const iframe = document.querySelector('#character-workspace');
 const nativeHost = document.querySelector('#native-workspace');
@@ -17,12 +24,13 @@ async function applyProjectNavigation() {
   const projects = await loadStudioProjects();
   const project = projects.find((item) => item.id === params.get('project')) || projects[0];
   const available = new Set(Object.keys(project?.workspaces || {}));
+  available.add('rig'); // native Rig edits the shared character library — always reachable
   for (const button of nav.querySelectorAll('button[data-workspace]')) {
     button.hidden = !available.has(button.dataset.workspace);
-    if (button.dataset.workspace === 'build') button.textContent = project?.workspaces?.build?.label || 'Build';
+    if (button.dataset.workspace === 'assemble') button.textContent = project?.workspaces?.assemble?.label || 'Assemble';
   }
   const labels = nav.querySelectorAll('.nav-group-label');
-  if (labels[0]) labels[0].hidden = !['rig', 'animate', 'speech', 'build'].some((id) => available.has(id));
+  if (labels[0]) labels[0].hidden = !['rig', 'animate', 'speech', 'assemble'].some((id) => available.has(id));
   if (labels[1]) labels[1].hidden = !['props', 'stage', 'music'].some((id) => available.has(id));
   return { project, available };
 }
@@ -50,15 +58,16 @@ function updateUrl(workspace) {
 }
 
 async function openWorkspace(workspace, { update = true } = {}) {
-  if (!CHARACTER_WORKSPACES.has(workspace) && !['build', 'props', 'stage', 'music'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
+  workspace = canonicalWorkspaceId(workspace); // "build" is a legacy alias for "assemble"
+  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
   const { available } = await applyProjectNavigation();
-  if (!available.has(workspace)) workspace = ['build', 'props', 'stage', 'music', 'rig', 'animate', 'speech'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
+  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
   if (activeCleanup) { activeCleanup(); activeCleanup = null; }
   activeWorkspace = workspace;
   for (const button of nav.querySelectorAll('button')) button.classList.toggle('on', button.dataset.workspace === workspace);
   if (update) updateUrl(workspace);
 
-  if (CHARACTER_WORKSPACES.has(workspace)) {
+  if (CHARACTER_WORKSPACES.has(workspace) && useIframe(workspace)) {
     nativeHost.hidden = true; iframe.hidden = false;
     const project = await studioProject(params.get('project'), workspace);
     let char = params.get('char') || 'bear';
@@ -78,6 +87,10 @@ async function openWorkspace(workspace, { update = true } = {}) {
   }
 
   iframe.hidden = true; nativeHost.hidden = false; nativeHost.innerHTML = '';
+  // For a ported native workspace, point "Legacy Studio" at its ?legacy=1 escape hatch.
+  legacyLink.href = LEGACY_ESCAPE.has(workspace)
+    ? `?workspace=${workspace}&legacy=1${params.get('char') ? `&char=${encodeURIComponent(params.get('char'))}` : ''}`
+    : '../stage/puppet-studio.html';
   try {
     const module = await import(`./workspaces/${workspace}.js`);
     const result = await module.mount(nativeHost, { params, toast, openWorkspace });
@@ -111,5 +124,5 @@ window.QLOBE_STUDIO = {
   version: 1,
   ready: true,
   openWorkspace,
-  getState: () => ({ workspace: activeWorkspace, embedded: CHARACTER_WORKSPACES.has(activeWorkspace) }),
+  getState: () => ({ workspace: activeWorkspace, embedded: useIframe(activeWorkspace) }),
 };

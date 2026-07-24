@@ -1,8 +1,10 @@
 # Puppet Studio character pipeline
 
-Puppet Studio's **Build character** mode turns the two author-supplied sheets
-into a rig-ready character project. It is an authoring tool: the shipped QLOBE
-Kids site remains static and never calls a model.
+Puppet Studio's **Assemble character** mode (named "Build" in Studio v1) turns
+the two author-supplied sheets into a rig-ready character project. It is an
+authoring tool: the shipped QLOBE Kids site remains static and never calls a
+model. The legacy `puppet-studio.html?mode=build` URL keeps that query value for
+backward compatibility.
 
 ## Start the authoring server
 
@@ -22,7 +24,7 @@ The server binds to localhost, serves the static repo, writes only validated
 puppet-pipeline paths, and proxies long Qwen jobs so browser CORS and request
 timeouts are not part of the workflow. The model host is supplied at launch and
 is deliberately not committed to this public repo. Without `--qwen-url`, the
-Build UI can still inspect and assemble existing extraction outputs.
+Assemble UI can still inspect and assemble existing extraction outputs.
 
 ## End-to-end flow
 
