@@ -6,28 +6,31 @@
   "icon": "🚦",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "beta",
+  "status": "live",
   "accent": "#58a945",
-  "description": "The tablet becomes a traffic light for a whole-body stop-and-go listening game.",
+  "description": "Pick a muppet-style video caller who says the cues in their own voice for a whole-body stop-and-go listening game.",
   "learningGoals": [
     "Practice impulse control through stop/go movement",
     "Switch actions in response to spoken cues",
     "Listen while moving",
     "Build playful self-regulation with family participation"
   ],
-  "interactionModel": "the tablet presents timed traffic-light signals; children move, freeze, or wiggle in the room",
-  "feedbackModel": "energetic speech and pop/boing/silly/tada SFX; no failure state, just repeated movement cues and celebration",
+  "interactionModel": "the child picks a video-puppet caller; the caller bops and calls Green Light to run, then freezes on Red Light — children move, freeze, or wiggle in the room",
+  "feedbackModel": "each caller's own recorded voice plus a bold red/green frame color cue and pop/boing/silly/tada SFX; no failure state, just repeated movement cues and celebration",
+  "engine": "caller-cues (game-local js/game.js)",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "games/red-green-light/js/game.js",
+    "games/red-green-light/js/callers.js",
+    "games/red-green-light/assets/callers/",
+    "shared/js/sfx.js",
+    "shared/js/speech.js"
   ],
   "modes": [
     { "id": "classic", "title": "Classic", "skill": "stop/go impulse control" },
     { "id": "silly", "title": "Silly Switch", "skill": "three-way self-regulation switching" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani. Original video-puppet callers (art, voice, and talking video) generated locally with LTX-2.3 + Qwen TTS; see ASSETS.md. Built for QLOBE Kids.",
+  "characters": ["growlie", "twinkle", "bolt", "gilly", "ember", "pip", "zoom", "luna"],
   "conceptVideo": null
 }
