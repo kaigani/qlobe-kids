@@ -368,6 +368,7 @@ export async function mount(host, { params, toast, openWorkspace }) {
       if (currentDashboard?.manifest) currentDashboard.manifest.status = status;
       const listed = games.find((g) => g.id === id);
       if (listed) listed.status = status;
+      buildRows(); // browse cards render from the enriched copies — rebuild them
       toast(`${id} is now ${status}.`);
     } catch (error) {
       toast(error.message, { error: true, duration: 7000 });
@@ -492,6 +493,11 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   function backToBrowse() {
     currentDashboard = null;
+    // Drop the game param everywhere — otherwise a remount (e.g. clicking the
+    // GAMES nav tab) reads the stale ?game= and reopens the dashboard.
+    params.delete('game');
+    const next = new URL(location.href); next.searchParams.delete('game');
+    history.replaceState(null, '', next);
     setView('browse');
   }
 
