@@ -24,6 +24,11 @@
 //   --force             re-capture games that already have an og-image.jpg
 //                       (default: skip existing, so curated shots survive)
 //   --settle <ms>       extra wait after network-idle  (default 2500)
+//   --layout-scale <n>  lay the page out at n× the og size and shrink the shot
+//                       back down (default 2: 2400×1260 CSS px → 1200×630 px).
+//                       1 captures at natural size — that reads as a zoomed,
+//                       cropped "fullscreen" shot, not a reduced tile (the
+//                       2026-07-25 batch-1 mistake); 2 shows the whole splash.
 //   --concurrency <n>   parallel pages                 (default 3)
 //   --quality <n>       starting JPEG quality          (default 82)
 //   --max-kb <n>        re-encode softer above this    (default 200)
@@ -66,6 +71,10 @@ const JSON_OUT = flag('json');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
+// Lay out at LAYOUT_SCALE× and emulate deviceScaleFactor 1/LAYOUT_SCALE so the
+// screenshot buffer stays exactly WIDTH×HEIGHT physical pixels while the page
+// sees a larger viewport — the whole splash lands in frame, reduced.
+const LAYOUT_SCALE = Math.max(1, Number(flag('layout-scale', '2')));
 const BLANK_STDDEV = 2.0; // luma stddev at or below this = the page never rendered
 
 // ---- playwright ------------------------------------------------------------
@@ -209,8 +218,8 @@ async function captureOne(context, scratchPage, game) {
 // ---- run -------------------------------------------------------------------
 const browser = await chromium.launch();
 const context = await browser.newContext({
-  viewport: { width: WIDTH, height: HEIGHT },
-  deviceScaleFactor: 1,
+  viewport: { width: WIDTH * LAYOUT_SCALE, height: HEIGHT * LAYOUT_SCALE },
+  deviceScaleFactor: 1 / LAYOUT_SCALE,
   reducedMotion: 'reduce',
 });
 const scratchPage = await context.newPage();
