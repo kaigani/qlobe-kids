@@ -50,7 +50,7 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
             <button data-reset class="ghost">Reset</button>
             <button data-copy class="ghost">Copy JSON</button>
             <button data-save class="save">▣ Save rig</button>
-            <button data-export class="warn">⬇ Export rig.json</button>
+            <button data-export class="ghost">⬇ Export rig.json</button>
           </div>
         </div>
         <div class="panel-section">

@@ -1,9 +1,95 @@
 /* When you change this file, bump the ?v= query on its <link> in index.html.
-   A stale browser cache once showed a false-broken layout (Phase 2). Current: v9. */
+   A stale browser cache once showed a false-broken layout (Phase 2). Current: v11. */
+
+/* ===========================================================================
+   DESIGN TOKENS (Phase 6.2, Feature I)
+   Every downstream feature reads these instead of literals. Three rules govern
+   them, and breaking one is what made the pre-6.2 studio read as cognitively
+   flat even though it was structurally correct:
+
+   1. TYPE has three faces, four roles. --font-display (condensed bold) for
+      the brand and page titles ONLY — it is unreadable small (user ruling
+      2026-07-25); --font-label (bold mono, aliased below) for nav, segments,
+      section headings, card titles and uppercase micro-labels; --font-body
+      (neutral sans) for prose, help text, warnings, field values; --font-mono
+      for IDs, seeds, paths, provenance. Prose in mono is what made the right
+      rail read as a system log.
+   2. COLOUR is semantic, not decorative. --sel (yellow) marks the current
+      location or selection and NOTHING else. --action (blue) marks an
+      executable primary action. --ok (green) = connected/complete/approved.
+      --warn (orange) = needs review. Grey = inactive/secondary. If two things
+      on screen are yellow, one of them is wrong.
+   3. BORDERS are tiered. --rule (3px ink) only for major app regions, the
+      selected nav level, primary buttons and key generated assets. --rule-med
+      (2px ink) for cards and controls. --rule-hair (1px divider) plus a surface
+      tone for field groups, metadata and secondary panels. Everything at 3px is
+      everything at the same weight.
+
+   FONTS: system stacks only — nothing is vendored and nothing is fetched. The
+   platform bans CDNs and build steps, and shared/fonts/ is reserved for the
+   games' display face (Fredoka). Impact/Haettenschweiler (Win+mac), Arial
+   Narrow Bold and Avenir Next Condensed (mac) between them cover the condensed
+   bold look the mockups call for on every machine this studio runs on, so
+   vendoring a woff2 would have bought nothing but bytes and a licence file.
+   =========================================================================== */
 :root {
-  --ink:#111; --paper:#f7f7f4; --white:#fff; --yellow:#ffd91f;
-  --blue:#3c83e7; --pale-blue:#b9d9ff; --orange:#ff681f; --red:#ff4135;
-  --green:#92df80; --rule:3px solid var(--ink);
+  /* --- type ------------------------------------------------------------- */
+  --font-display:Impact,'Haettenschweiler','Franklin Gothic Heavy','Arial Narrow Bold','Avenir Next Condensed','Arial Black',sans-serif;
+  --font-body:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --font-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  /* Display is reserved for the brand and page titles ONLY (user ruling
+     2026-07-25: Impact is unreadable at small sizes). Every other former
+     display usage — nav, segments, card titles, labels, pills — uses the
+     label face, the pre-refresh bold mono. */
+  --font-label:var(--font-mono);
+  --tracking-display:.035em; /* condensed faces need air at display sizes */
+  --tracking-label:.08em;    /* uppercase micro-labels need more */
+  --fs-page:30px;   /* workspace / page title */
+  --fs-nav:17px;    /* global domain tab */
+  --fs-h2:18px;     /* panel heading */
+  --fs-h3:14px;     /* sub-heading */
+  --fs-seg:12px;    /* segmented control, breadcrumb */
+  --fs-body:14px;   /* prose, field values */
+  --fs-small:12px;  /* help text, captions */
+  --fs-micro:10px;  /* pills, eyebrows */
+
+  /* --- colour: semantics first, legacy names aliased below --------------- */
+  --ink:#111;
+  --sel:#ffd91f;        /* CURRENT LOCATION / SELECTION ONLY */
+  --sel-soft:#fff3bd;   /* selected row/card wash */
+  --action:#3c83e7;     /* executable primary action */
+  --action-soft:#b9d9ff;
+  --ok:#2f9e4f;         /* connected / complete / approved */
+  --ok-soft:#c8ecbe;
+  --warn:#ff681f;       /* warning / needs manual review */
+  --warn-soft:#ffe3d1;
+  --danger:#ff4135;
+  --danger-soft:#ff9d91;
+  --muted:#6b6b64;      /* secondary text */
+  --muted-soft:#9c9c94; /* tertiary text, separators */
+  --disabled-bg:#bbb; --disabled-ink:#666;
+
+  /* --- surfaces: the alternative to another border ----------------------- */
+  --paper:#f7f7f4;   /* app background */
+  --card:#fff;       /* raised card / form / bar */
+  --surface:#f1f1ed; /* working canvas a card sits ON */
+  --sunken:#e9e9e6;  /* inset well: previews, viewports */
+  --divider:#d8d8d1; /* hairline inside a surface */
+
+  /* --- borders & elevation ---------------------------------------------- */
+  --rule:3px solid var(--ink);          /* major regions, selected nav, key assets */
+  --rule-med:2px solid var(--ink);      /* cards, controls, buttons */
+  --rule-hair:1px solid var(--divider); /* quiet divider inside one surface */
+  --shadow:4px 4px 0 var(--ink);
+  --shadow-lg:8px 8px 0 var(--ink);
+
+  /* --- chrome metrics ---------------------------------------------------- */
+  --bar-h:61px; --subbar-h:46px; --seg-h:32px; --crumb-h:34px;
+
+  /* --- legacy aliases: pre-6.2 names, kept so nothing had to be renamed --- */
+  --white:var(--card); --yellow:var(--sel); --blue:var(--action);
+  --pale-blue:var(--action-soft); --orange:var(--warn); --red:var(--danger);
+  --green:#92df80;
 }
 * { box-sizing:border-box; }
 /* Author display rules (flex/grid) silently beat the UA's [hidden] style —
@@ -11,78 +97,146 @@
    four production tab-tool clusters rendered at once). */
 [hidden] { display:none !important; }
 html, body { width:100%; height:100%; }
+/* Base text is now NEUTRAL SANS, not bold monospace. Mono is a deliberate signal
+   (IDs, seeds, paths) — when it was the default, every explanation in the studio
+   read as terminal output. Anything that still needs mono asks for it via
+   --font-mono or the .mono utility. */
 body { margin:0; display:grid; grid-template-rows:auto auto auto 1fr; color:var(--ink);
   background:var(--paper); overflow:hidden;
-  font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace; font-weight:700; }
+  font:400 var(--fs-body)/1.45 var(--font-body); }
+/* Only h1 (page titles) keeps the display face; lower headings use the label
+   face so Impact never renders below page-title size. Workspace rules that set
+   an explicit font shorthand still win on specificity. */
+h1 { font-family:var(--font-display); font-weight:900;
+  letter-spacing:var(--tracking-display); line-height:1.08; }
+h2, h3, h4, h5, h6 { font-family:var(--font-label); font-weight:700;
+  letter-spacing:var(--tracking-label); line-height:1.08; }
+.mono, code, kbd, samp { font-family:var(--font-mono); }
+/* The three type levels, assigned once for the classes that already existed
+   across the workspaces. Declared HERE, above the per-workspace rules, so any
+   rule that sets a size or colour later still wins — only the family and
+   tracking are being claimed.
+   Level 1 (display): uppercase eyebrows, badges and micro-labels. */
+.library-type, .library-tier, .library-badge-unassigned, .gen-form-badge,
+.gen-ref-label, .canvas-badge, .pose-slot-label, .studio-gallery-advanced summary,
+.production-table thead, .generate-rail-item span {
+  font-family:var(--font-label); font-weight:900; letter-spacing:var(--tracking-label); }
+/* Level 3 (mono): identifiers, filenames and provenance — nothing else. */
+.pose-slot-id, .studio-preview-caption, .library-provenance-step {
+  font-family:var(--font-mono); font-weight:400; }
 button, select, input, textarea { font:inherit; color:inherit; }
-button, .bar-link { border:2px solid var(--ink); border-radius:0; min-height:38px;
-  padding:7px 11px; background:var(--blue); color:#fff; font-weight:900;
+/* Buttons keep the display face: in the mockups every action label is condensed
+   uppercase, and it is what keeps the neo-brutalist voice. Body sans is for
+   prose, not for controls. */
+button, .bar-link { border:var(--rule-med); border-radius:0; min-height:38px;
+  padding:7px 11px; background:var(--action); color:#fff;
+  font:700 var(--fs-small)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
   text-transform:uppercase; text-decoration:none; cursor:pointer; }
 button:hover, .bar-link:hover { filter:brightness(1.05); transform:translate(-1px,-1px); }
 button:active, .bar-link:active { transform:translate(1px,1px); }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
 textarea:focus-visible { outline:4px solid rgba(60,131,231,.55); outline-offset:2px; }
-button.on { background:var(--yellow); color:var(--ink); }
-button.save { background:var(--yellow); color:var(--ink); }
-button.warn { background:var(--orange); color:var(--ink); }
-button.ghost { background:var(--white); color:var(--ink); }
-button:disabled { background:#bbb; color:#666; cursor:not-allowed; transform:none; filter:none; }
+button.on { background:var(--sel); color:var(--ink); }        /* selection */
+/* Primary action: blue + the thick border tier. It reads as the commit control
+   without borrowing yellow, which now means "you are here" and nothing else. */
+button.save, button.primary { border:var(--rule); background:var(--action); color:#fff; }
+button.warn { background:var(--warn); color:var(--ink); }     /* needs review */
+button.ghost { background:var(--card); color:var(--ink); }    /* secondary */
+button:disabled { background:var(--disabled-bg); color:var(--disabled-ink); cursor:not-allowed; transform:none; filter:none; }
+/* ---------------------------------------------------------------------------
+   ROW 1 — global domains. The only nav level that keeps the loud treatment:
+   full-height bordered tabs, 3px ink rules, yellow when current.
+   --------------------------------------------------------------------------- */
 .studio-bar { z-index:20; display:flex; min-height:64px; align-items:stretch;
-  background:var(--white); border-bottom:var(--rule); }
+  background:var(--card); border-bottom:var(--rule); }
 .studio-brand { display:flex; align-items:center; gap:12px; flex:0 0 auto;
   padding:9px 17px; border-right:var(--rule); color:var(--ink); text-decoration:none;
-  font:900 21px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; letter-spacing:.035em; }
+  font:900 21px/1 var(--font-display); text-transform:uppercase; letter-spacing:var(--tracking-display); }
 .studio-brandmark { display:grid; place-items:center; width:35px; height:35px;
-  border:var(--rule); background:var(--yellow); font:900 17px/1 ui-monospace,monospace; }
+  border:var(--rule); background:var(--sel); font:900 17px/1 var(--font-mono); }
 #workspace-nav { display:flex; align-items:stretch; min-width:0; overflow-x:auto; }
-#workspace-nav button { min-height:61px; border:0; border-right:var(--rule);
-  padding:8px 16px; background:var(--white); color:var(--ink); white-space:nowrap; }
-#workspace-nav button.on { background:var(--yellow); }
-.nav-group-label { display:flex; align-items:center; padding:0 7px; background:var(--ink);
-  color:#fff; writing-mode:vertical-rl; transform:rotate(180deg); font-size:9px;
-  text-transform:uppercase; letter-spacing:.1em; }
+#workspace-nav button { min-height:var(--bar-h); border:0; border-right:var(--rule);
+  padding:8px 20px; background:var(--card); color:var(--ink); white-space:nowrap;
+  font-size:var(--fs-nav); letter-spacing:var(--tracking-display); }
+#workspace-nav button.on { background:var(--sel); }
 .studio-status { margin-left:auto; display:flex; align-items:center; gap:10px; padding:7px 10px; }
-.status-pill { padding:6px 8px; border:2px solid var(--ink); background:#eee;
-  font-size:10px; text-transform:uppercase; white-space:nowrap; }
+.status-pill { padding:6px 8px; border:var(--rule-med); background:#eee;
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; white-space:nowrap; }
 .status-pill.good { background:var(--green); }
-.status-pill.bad { background:#ff9d91; }
-.bar-link { display:flex; align-items:center; background:var(--white); color:var(--ink); font-size:10px; }
+.status-pill.bad { background:var(--danger-soft); }
+.bar-link { display:flex; align-items:center; background:var(--card); color:var(--ink); font-size:var(--fs-micro); }
+
+/* ---------------------------------------------------------------------------
+   ROW 2 — context band. One row, two segmented controls: the mounted
+   workspace's views on the left (published via ctx.setNav) and the character /
+   stage workspaces on the right. Deliberately QUIETER than row 1 — hairline
+   segment borders on a white bar, ink only on the selected segment — because
+   the whole point of the restructure is that these are not domains.
+
+   .nav-segmented is the reusable contract for Features J/K: any container with
+   the class turns its direct `button` children (and the buttons inside a
+   `.nav-group`) into segments. `.on` = selected.
+   --------------------------------------------------------------------------- */
+#studio-subbar { z-index:19; display:flex; align-items:center; gap:14px;
+  min-height:var(--subbar-h); padding:6px 12px; background:var(--card);
+  border-bottom:var(--rule-hair); overflow-x:auto; }
+#studio-subnav[hidden] { display:none; }
+#workspace-tools { margin-left:auto; }
+.nav-segmented { display:flex; align-items:stretch; flex:0 0 auto; }
+.nav-segmented .nav-group { display:flex; align-items:stretch; }
+/* The old rotated black "Character" / "Stage" plates are gone; groups now read
+   as one control split by a single ink hairline. */
+.nav-segmented .nav-group + .nav-group:not([hidden]) { margin-left:-1px; border-left:2px solid var(--ink); }
+.nav-segmented button { min-height:var(--seg-h); padding:5px 14px; margin-right:-1px;
+  border:1px solid var(--divider); background:var(--card); color:var(--muted);
+  font-size:var(--fs-seg); letter-spacing:var(--tracking-label); white-space:nowrap; }
+.nav-segmented button:last-child { margin-right:0; }
+.nav-segmented button:hover { background:var(--surface); color:var(--ink);
+  filter:none; transform:none; }
+.nav-segmented button:active { transform:none; }
+/* Selected segment: yellow + an ink outline drawn INSIDE, so promoting a segment
+   never nudges its neighbours by a pixel. */
+.nav-segmented button.on { position:relative; z-index:1; background:var(--sel);
+  color:var(--ink); border-color:var(--ink); box-shadow:inset 0 0 0 2px var(--ink); }
 #studio-main { min-height:0; position:relative; }
 #character-workspace, #native-workspace { display:block; width:100%; height:100%; border:0; }
 #character-workspace[hidden], #native-workspace[hidden] { display:none; }
 #native-workspace { overflow:hidden; }
 #studio-toast { position:fixed; z-index:100; right:18px; bottom:18px; max-width:420px;
   padding:0; border:0; background:transparent; pointer-events:none; visibility:hidden; }
-#studio-toast.show { visibility:visible; padding:12px 14px; border:var(--rule); background:var(--pale-blue);
+#studio-toast.show { visibility:visible; padding:12px 14px; border:var(--rule); background:var(--card);
   box-shadow:6px 6px 0 var(--ink); text-transform:uppercase; font-size:12px; }
 #studio-toast.error { background:#ff9d91; }
 
-/* Secondary nav (workspace internal views) — same nav language as #workspace-nav:
-   flat white tabs, ink rules, yellow active. Collapses when a workspace sets no
-   tabs (the [hidden] row folds to a 0-height grid track). */
-#studio-subnav { z-index:19; display:flex; align-items:stretch; min-height:44px;
-  background:var(--white); border-bottom:var(--rule); overflow-x:auto; }
-#studio-subnav[hidden] { display:none; }
-#studio-subnav button[role="tab"] { min-height:44px; border:0; border-right:var(--rule);
-  padding:6px 16px; background:var(--white); color:var(--ink); white-space:nowrap; }
-#studio-subnav button[role="tab"].on { background:var(--yellow); color:var(--ink); }
-
-/* Breadcrumb row — paper background, always visible while a workspace is mounted.
-   ▸ separators, a removable ?project chip, and a right-aligned count pill. */
-#studio-crumbs { z-index:18; display:flex; align-items:center; gap:7px; min-height:38px;
-  padding:5px 12px; background:var(--paper); border-bottom:var(--rule); overflow-x:auto; }
+/* ---------------------------------------------------------------------------
+   ROW 3 — location. PLAIN TEXT, never boxed buttons: this is the quietest of
+   the three levels, and boxing it was what made four nav levels compete. The
+   ink rule under this row is the chrome/workspace boundary — the last thick
+   border before a workspace owns the screen.
+   --------------------------------------------------------------------------- */
+#studio-crumbs { z-index:18; display:flex; align-items:center; gap:8px;
+  min-height:var(--crumb-h); padding:5px 14px; background:var(--surface);
+  border-bottom:var(--rule-med); overflow-x:auto; }
 #studio-crumbs[hidden] { display:none; }
-.crumb { display:inline-flex; align-items:center; min-height:26px; padding:3px 9px;
-  border:2px solid var(--ink); background:var(--white); color:var(--ink);
-  font-size:11px; font-weight:900; text-transform:uppercase; white-space:nowrap; }
-.crumb-current { border-color:transparent; background:transparent; }
-.crumb-sep { color:var(--ink); opacity:.45; font-size:12px; }
-.crumb-chip { display:inline-flex; align-items:center; gap:6px; min-height:26px;
-  padding:3px 3px 3px 9px; border:2px solid var(--ink); background:var(--pale-blue);
-  font-size:10px; font-weight:900; text-transform:uppercase; white-space:nowrap; }
-.crumb-chip .crumb-chip-x { min-height:20px; padding:0 6px; border:0; border-radius:0;
+.crumb { display:inline-flex; align-items:center; min-height:0; padding:0;
+  border:0; border-radius:0; background:none; color:var(--muted);
+  font:700 var(--fs-seg)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; white-space:nowrap; }
+button.crumb:hover { background:none; color:var(--ink); filter:none; transform:none;
+  text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:2px; }
+button.crumb:active { transform:none; }
+.crumb-current { color:var(--ink); }
+.crumb-sep { color:var(--muted-soft); font-size:15px; line-height:1; }
+/* The ?project chip is an identifier, so it is set in mono — and it is a filter
+   the shell applied, not a location, so it sits apart from the crumb text. */
+.crumb-chip { display:inline-flex; align-items:center; gap:6px; min-height:24px;
+  padding:2px 2px 2px 8px; border:var(--rule-med); background:var(--card);
+  font:600 var(--fs-micro)/1 var(--font-mono); white-space:nowrap; }
+.crumb-chip .crumb-chip-x { min-height:18px; padding:0 6px; border:0; border-radius:0;
   background:var(--ink); color:#fff; font-size:12px; line-height:1; }
-.crumb-count { margin-left:auto; }
+.crumb-chip .crumb-chip-x:hover { filter:none; transform:none; background:var(--danger); }
+.crumb-count { margin-left:auto; background:var(--card); }
 
 /* Shared authoring classes consumed by the per-workspace migrations (WP-B/C/D):
    the sidebar filter/session panels and the canvas transport overlay. Defined
@@ -98,7 +252,7 @@ button:disabled { background:#bbb; color:#666; cursor:not-allowed; transform:non
 .workspace { height:100%; display:grid; grid-template-columns:minmax(0,1fr) 430px;
   grid-template-rows:1fr; grid-template-areas:"canvas inspector"; }
 .workspace-canvas { grid-area:canvas; position:relative; min-width:0; min-height:0;
-  background:#e9e9e6; overflow:hidden; }
+  background:var(--sunken); overflow:hidden; }
 .workspace-canvas canvas { display:block; width:100%; height:100%; }
 .build-legacy { width:100%; height:100%; border:0; background:#eee; }
 .flex-build-preview { position:absolute; inset:24px; display:grid; place-items:center; }
@@ -114,15 +268,21 @@ button:disabled { background:#bbb; color:#666; cursor:not-allowed; transform:non
   border-left:var(--rule); background:var(--paper); }
 .panel-section { padding:12px 14px; border-bottom:var(--rule); }
 .panel-section h2, .panel-section h3 { margin:0 0 10px;
-  font:900 18px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; letter-spacing:.05em; }
-.panel-section h3 { font-size:14px; }
+  font:700 var(--fs-h2)/1 var(--font-label); text-transform:uppercase; letter-spacing:.05em; }
+.panel-section h3 { font-size:var(--fs-h3); }
 .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-label { display:flex; flex-direction:column; gap:4px; margin:4px 0; font-size:10px;
+/* Field labels are uppercase micro-labels → display face. The VALUE inside the
+   control is prose → body sans (inherited). */
+label { display:flex; flex-direction:column; gap:4px; margin:4px 0;
+  font:700 var(--fs-micro)/1.3 var(--font-label); letter-spacing:var(--tracking-label);
   text-transform:uppercase; }
-input, select, textarea { width:100%; border:2px solid var(--ink); border-radius:0;
-  padding:7px 8px; background:#fff; }
-textarea { min-height:92px; resize:vertical; font-size:11px; }
-.hint { margin:6px 0; font-size:11px; line-height:1.45; font-weight:600; }
+input, select, textarea { width:100%; border:var(--rule-med); border-radius:0;
+  padding:7px 8px; background:var(--card);
+  font:400 var(--fs-body)/1.4 var(--font-body); letter-spacing:0; text-transform:none; }
+textarea { min-height:92px; resize:vertical; }
+/* Explanations, guidance and warnings. Body sans, muted, comfortable leading —
+   this is the rule that stops the right rail reading as terminal output. */
+.hint { margin:6px 0; font:400 var(--fs-small)/1.55 var(--font-body); color:var(--muted); }
 .row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .row > label { flex:1; min-width:110px; }
 .canvas-badge { position:absolute; left:12px; bottom:12px; padding:6px 9px;
@@ -130,15 +290,16 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .list { display:flex; flex-direction:column; gap:6px; }
 .list-item { display:grid; grid-template-columns:auto 1fr auto; gap:7px; align-items:center;
   border:2px solid var(--ink); background:#fff; color:var(--ink); padding:6px; font-size:11px; }
-.list-item.selected { background:var(--pale-blue); }
+/* Selected row: pale-yellow wash + a yellow stripe, not a saturated block. */
+.list-item.selected { background:var(--sel-soft); box-shadow:inset 4px 0 0 var(--sel); }
 .story-library-list { max-height:310px; overflow:auto; padding-right:3px; }
 .story-library-list .list-item strong, .story-library-list .list-item small { display:block; text-align:left; }
 .scene-preview { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border:var(--rule); border-radius:8px; background:#eee; margin:0 0 10px; }
 .meter { height:18px; border:2px solid var(--ink); background:#fff; overflow:hidden; }
 .meter > i { display:block; height:100%; width:0; background:var(--blue); }
 .empty-state { display:grid; place-items:center; height:100%; padding:30px; text-align:center; }
-.empty-state > div { max-width:600px; border:var(--rule); background:#fff; padding:28px; box-shadow:8px 8px 0 var(--ink); }
-.empty-state h1 { font:900 36px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+.empty-state > div { max-width:600px; border:var(--rule); background:var(--card); padding:28px; box-shadow:var(--shadow-lg); }
+.empty-state h1 { font:900 36px/1 var(--font-display); text-transform:uppercase; }
 @media (max-width:1050px) {
   .studio-status .status-pill { display:none; }
   .workspace { grid-template-columns:minmax(0,1fr) 360px; }
@@ -146,9 +307,14 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 @media (max-width:760px) {
   .studio-bar { overflow-x:auto; }
   .studio-brand span:last-child, .studio-status { display:none; }
-  /* Shell rows keep their horizontal scroll and tighten up; the count pill drops. */
-  #studio-subnav { min-height:40px; }
-  #studio-subnav button[role="tab"] { min-height:40px; }
+  /* Portrait/narrow: the context row WRAPS rather than scrolling sideways — two
+     segmented clusters plus 12 workspaces never fit on one line, and a hidden
+     horizontal scroll would bury the character workspaces off-screen. The right
+     cluster loses its margin-left:auto so it stacks flush left on the new line. */
+  #studio-subbar { flex-wrap:wrap; gap:6px 10px; overflow-x:visible; padding:6px 10px; }
+  #workspace-tools { margin-left:0; }
+  .nav-segmented, .nav-segmented .nav-group { flex-wrap:wrap; }
+  .nav-segmented button { padding:5px 10px; }
   #studio-crumbs { min-height:32px; }
   .crumb-count { display:none; }
   .workspace { grid-template-columns:1fr; grid-template-rows:minmax(45%,1fr) minmax(260px,45%);
@@ -156,27 +322,227 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
   .workspace-inspector { border-left:0; border-top:var(--rule); }
 }
 
-/* Library workspace (WP-2c) — facet toolbar + card grid over every studio object. */
-.library-workspace.workspace { grid-template-columns:minmax(0,1fr) 320px; }
-.library-search { min-width:140px; flex:1 1 160px; }
-.library-search input { min-height:38px; }
-.library-canvas { overflow:auto; background:var(--paper); padding:14px; }
-.library-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; align-content:start; }
-.library-card { display:flex; flex-direction:column; gap:6px; border:var(--rule); background:#fff;
-  padding:10px; cursor:pointer; box-shadow:4px 4px 0 var(--ink); text-align:left; }
-.library-card:hover, .library-card:focus-visible { transform:translate(-1px,-1px); }
-.library-card-head { display:flex; align-items:center; justify-content:space-between; gap:6px; }
-.library-type { font-size:9px; text-transform:uppercase; letter-spacing:.06em; padding:3px 6px;
-  border:2px solid var(--ink); background:var(--pale-blue); }
-.library-tier { font-size:9px; text-transform:uppercase; letter-spacing:.06em; padding:3px 6px;
-  border:2px solid var(--ink); background:var(--yellow); }
-.library-card-title { margin:0; font-size:14px; overflow-wrap:anywhere; }
-.library-card-foot { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:auto; }
-.library-card-foot .status-pill { font-size:9px; }
-.library-check { min-height:30px; padding:4px 9px; font-size:9px; }
+/* ---------------------------------------------------------------------------
+   LIBRARY WORKSPACE (Phase 6.2, Feature K)
+
+   Four regions, not two: a full-width title band and toolbar sit ABOVE the
+   canvas/inspector split, because every control that drives the grid belongs
+   over the grid, not beside it. The right rail is a contextual inspector that
+   opens on selection and carries the library explainer as its empty state.
+
+   Weight budget (design note §3): a 30-card grid is not a "major app region",
+   so cards are hairline + surface, NOT the 3px ink + hard-shadow treatment that
+   made every element read at the same volume. Ink is spent on the region
+   boundaries, the selected card and the two primary buttons — nothing else.
+   --------------------------------------------------------------------------- */
+.library-workspace.workspace {
+  grid-template-columns:minmax(0,1fr) 340px;
+  grid-template-rows:auto auto minmax(0,1fr);
+  grid-template-areas:"head head" "toolbar toolbar" "canvas inspector"; }
+
+/* --- title band ---------------------------------------------------------- */
+.library-head { grid-area:head; display:flex; align-items:baseline; gap:14px;
+  padding:14px 16px 6px; background:var(--card); }
+.library-title { margin:0; font:900 var(--fs-page)/1 var(--font-display);
+  text-transform:uppercase; letter-spacing:var(--tracking-display); }
+.library-lede { margin:0; flex:1 1 auto; min-width:0; color:var(--muted);
+  font:400 var(--fs-body)/1.4 var(--font-body); }
+.library-count { flex:0 0 auto; font:700 var(--fs-h3)/1 var(--font-label);
+  text-transform:uppercase; letter-spacing:var(--tracking-label); }
+
+/* --- toolbar ------------------------------------------------------------- */
+.library-toolbar { grid-area:toolbar; padding:8px 16px 10px; background:var(--card);
+  border-bottom:var(--rule-med); }
+.library-toolbar-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+/* .library-search is a <label>, so it has to unwind the column/uppercase base. */
+.library-search { position:relative; flex:1 1 280px; min-width:200px; margin:0;
+  display:block; text-transform:none; letter-spacing:0; }
+.library-search input { min-height:38px; padding-left:32px; }
+.library-search-icon { position:absolute; left:9px; top:50%; transform:translateY(-50%);
+  width:15px; height:15px; color:var(--muted); pointer-events:none; }
+.library-search-icon svg { display:block; width:100%; height:100%; }
+.library-toolbar-row select { flex:0 0 auto; width:auto; min-width:132px; min-height:38px; }
+.library-density { flex:0 0 auto; }
+.library-density button { min-height:38px; }
+/* "+ New asset" and "Open asset" are the two yellow controls in the Library.
+   Yellow still means "the thing you are pointing at": both of them take you TO
+   an asset (the one you selected, or the one you are about to make) rather than
+   committing a change, which is what --action is reserved for. */
+.library-new { flex:0 0 auto; margin-left:auto; border:var(--rule);
+  background:var(--sel); color:var(--ink); padding:7px 15px; }
+.library-new:hover { background:var(--sel); filter:brightness(1.03); }
+
+.library-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.library-chip { display:inline-flex; align-items:center; gap:7px; min-height:26px;
+  padding:2px 8px; border:var(--rule-hair); background:var(--sunken); color:var(--ink);
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label); }
+.library-chip:hover { background:var(--warn-soft); filter:none; transform:none; }
+.library-chip-x { font-size:13px; line-height:1; color:var(--muted); }
+.library-chip:hover .library-chip-x { color:var(--ink); }
+.library-views { margin-top:8px; flex-wrap:wrap; }
+
+/* --- canvas -------------------------------------------------------------- */
+.library-canvas { grid-area:canvas; overflow:auto; background:var(--surface); padding:14px; }
+.library-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(196px,1fr));
+  gap:12px; align-content:start; }
+
+/* --- card ---------------------------------------------------------------- */
+.library-card { display:flex; flex-direction:column; min-width:0;
+  border:var(--rule-hair); background:var(--card); cursor:pointer; text-align:left; }
+.library-card:hover { box-shadow:0 0 0 2px var(--ink); }
+.library-card:focus-visible { outline:4px solid rgba(60,131,231,.55); outline-offset:2px; }
+/* Selection is the Feature I contract: pale wash + a yellow stripe, never a
+   saturated block — a filled card would out-shout its own preview. */
+.library-card[data-selected] { background:var(--sel-soft);
+  box-shadow:inset 5px 0 0 var(--sel), 0 0 0 2px var(--ink); }
+
+.library-thumb { position:relative; display:block; aspect-ratio:4/3; overflow:hidden;
+  background:var(--sunken); border-bottom:var(--rule-hair); }
+.library-thumb-img { display:block; width:100%; height:100%; object-fit:contain; padding:6px; }
+/* Photographic previews (hub tiles, backdrops) fill the well; cut-out art with
+   transparency is contained so nothing crops through a character's ears. */
+.library-card[data-type="game"] .library-thumb-img,
+.library-card[data-type="scene-pack"] .library-thumb-img,
+.library-card[data-type="story-pack"] .library-thumb-img { object-fit:cover; padding:0; }
+.library-thumb-collage { display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr;
+  gap:2px; width:100%; height:100%; padding:4px; }
+.library-thumb-collage img { display:block; width:100%; height:100%; object-fit:contain;
+  background:var(--card); }
+.library-thumb-fill { display:grid; place-items:center; width:100%; height:100%; padding:10px; }
+.library-thumb-svg { display:block; width:100%; height:100%; max-height:96px; }
+
+/* The one place colour still encodes a TAXONOMY rather than a state: the mockup
+   colour-codes type badges, and a browsing grid genuinely reads faster for it.
+   Kept to pale, low-saturation tints so they never compete with a status dot,
+   and yellow is not among them. */
+.library-type { position:absolute; top:6px; left:6px; z-index:2; padding:3px 6px;
+  border:var(--rule-med); background:var(--action-soft); color:var(--ink);
+  font-size:var(--fs-micro); text-transform:uppercase; }
+.library-card[data-type="pose-actor"] .library-type { background:#ddd0f2; }
+.library-card[data-type="prop-pack"] .library-type,
+.library-card[data-type="scene-pack"] .library-type,
+.library-card[data-type="story-pack"] .library-type,
+.library-card[data-type="music-sync"] .library-type { background:#ecdcc0; }
+.library-card[data-type="game"] .library-type { background:#c9e6d2; }
+.library-card[data-type="media"] .library-type { background:var(--divider); }
+
+.library-more { position:absolute; top:6px; right:6px; z-index:2; min-height:24px;
+  padding:0 6px; border:var(--rule-hair); background:var(--card); color:var(--muted);
+  font-size:12px; line-height:1; letter-spacing:0; }
+.library-more:hover { background:var(--card); color:var(--ink); border-color:var(--ink);
+  filter:none; transform:none; }
+.library-menu { position:absolute; top:32px; right:6px; z-index:6; display:flex;
+  flex-direction:column; min-width:150px; border:var(--rule-med); background:var(--card);
+  box-shadow:var(--shadow); }
+.library-menu button { min-height:32px; border:0; border-bottom:var(--rule-hair);
+  background:var(--card); color:var(--ink); text-align:left; font-size:var(--fs-micro); }
+.library-menu button:last-child { border-bottom:0; }
+.library-menu button:hover { background:var(--sunken); filter:none; transform:none; }
+
+.library-card-body { display:flex; flex-direction:column; gap:2px; padding:8px 10px 6px; }
+.library-card-title { margin:0; font:700 var(--fs-h3)/1.15 var(--font-label);
+  letter-spacing:var(--tracking-display); overflow-wrap:anywhere; }
+.library-scope { margin:0; color:var(--muted); font:400 var(--fs-small)/1.35 var(--font-body); }
+.library-caps { margin:2px 0 0; color:var(--muted-soft);
+  font:400 var(--fs-micro)/1.4 var(--font-body); overflow-wrap:anywhere; }
+.library-card-foot { display:flex; align-items:center; justify-content:space-between;
+  gap:8px; margin-top:auto; padding:7px 10px; border-top:var(--rule-hair); }
+
+/* --- status: one dot, one word ------------------------------------------- */
+.library-status { display:inline-flex; align-items:center; gap:6px; min-width:0;
+  font:400 var(--fs-small)/1.2 var(--font-body); color:var(--ink); white-space:nowrap; }
+.library-dot { flex:0 0 auto; width:9px; height:9px; border-radius:50%; background:var(--muted); }
+.library-status[data-tone="ok"] .library-dot { background:var(--ok); }
+.library-status[data-tone="warn"] .library-dot { background:var(--warn); }
+.library-status[data-tone="warn-hollow"] .library-dot { background:transparent;
+  box-shadow:inset 0 0 0 2.5px var(--warn); }
+.library-status[data-tone="danger"] .library-dot { background:var(--danger); }
+.library-used { color:var(--muted); font:400 var(--fs-small)/1.2 var(--font-body); white-space:nowrap; }
+
+/* --- list density: the audit view ---------------------------------------- */
+.library-list { display:flex; flex-direction:column; border:var(--rule-hair);
+  background:var(--card); }
+.library-list-head, .library-row { display:grid; align-items:center; gap:10px;
+  grid-template-columns:38px minmax(120px,2fr) 96px minmax(90px,1fr) 132px 84px 96px 34px;
+  padding:6px 10px; }
+.library-list-head { border-bottom:var(--rule-med); background:var(--sunken);
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; color:var(--muted); }
+.library-row { border-bottom:var(--rule-hair); cursor:pointer; }
+.library-row:last-child { border-bottom:0; }
+.library-row:hover { background:var(--surface); }
+.library-row[data-selected] { background:var(--sel-soft); box-shadow:inset 5px 0 0 var(--sel); }
+.library-row-thumb { position:relative; display:block; width:38px; height:38px;
+  background:var(--sunken); border:var(--rule-hair); overflow:hidden; }
+.library-row-thumb .library-thumb-img,
+.library-row-thumb .library-thumb-collage img { padding:1px; }
+.library-row-thumb .library-thumb-svg { max-height:100%; }
+.library-row-name { font:700 var(--fs-body)/1.2 var(--font-label);
+  letter-spacing:var(--tracking-display); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.library-row .library-type { position:static; justify-self:start; }
+.library-row-project, .library-row-date { color:var(--muted);
+  font:400 var(--fs-small)/1.2 var(--font-body); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.library-row-date { font-size:var(--fs-micro); }
+.library-row-more { position:relative; justify-self:end; }
+.library-row-more .library-more { position:static; }
+.library-row-more .library-menu { top:26px; }
+
+/* --- contextual inspector ------------------------------------------------ */
+.library-inspector { grid-area:inspector; }
+.library-detail-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.library-detail-head h2 { margin:0; overflow-wrap:anywhere; }
+.library-close { flex:0 0 auto; min-height:26px; padding:0 8px; border:var(--rule-hair);
+  background:var(--card); color:var(--muted); font-size:15px; line-height:1; }
+.library-close:hover { background:var(--card); color:var(--ink); border-color:var(--ink);
+  filter:none; transform:none; }
+.library-detail-preview { position:relative; aspect-ratio:4/3; max-height:200px; margin:10px 0 12px;
+  background:var(--sunken); border:var(--rule-med); overflow:hidden; }
+.library-detail-preview .library-thumb-img { display:block; width:100%; height:100%;
+  object-fit:contain; padding:8px; }
+.library-detail-preview .library-thumb-collage { display:grid; grid-template-columns:1fr 1fr;
+  width:100%; height:100%; gap:3px; padding:6px; }
+.library-detail-preview .library-thumb-svg { max-height:none; }
+.library-details { margin:0 0 12px; display:flex; flex-direction:column; }
+.library-detail { display:grid; grid-template-columns:96px minmax(0,1fr); gap:10px;
+  align-items:baseline; padding:4px 0; border-bottom:var(--rule-hair); }
+.library-detail:last-child { border-bottom:0; }
+.library-detail dt { font:700 var(--fs-micro)/1.3 var(--font-label);
+  letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--muted); }
+.library-detail dd { margin:0; font:400 var(--fs-small)/1.4 var(--font-body); overflow-wrap:anywhere; }
+.library-detail dd.mono { font-family:var(--font-mono); font-size:var(--fs-micro); }
+.library-cap-chips { display:flex; flex-wrap:wrap; gap:5px; }
+.library-cap { padding:2px 7px; border:var(--rule-hair); background:var(--sunken);
+  color:var(--muted); font:700 var(--fs-micro)/1.4 var(--font-label);
+  letter-spacing:var(--tracking-label); text-transform:uppercase; }
+.library-detail-actions { display:flex; flex-direction:column; gap:8px; }
+.library-open { width:100%; border:var(--rule); background:var(--sel); color:var(--ink); min-height:42px; }
+.library-open:hover { background:var(--sel); filter:brightness(1.03); }
+.library-detail-actions .wide { width:100%; }
+.library-about h2 { margin-bottom:8px; }
+.library-inspector .library-media-panel { margin-top:12px; }
+
+@media (max-width:1050px) {
+  .library-workspace.workspace { grid-template-columns:minmax(0,1fr) 300px; }
+}
 @media (max-width:760px) {
-  .library-workspace.workspace { grid-template-columns:1fr; }
-  .library-grid { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
+  /* Single column: title, toolbar, grid, then the inspector underneath. The
+     toolbar wraps rather than scrolling sideways so nothing hides off-screen. */
+  .library-workspace.workspace { grid-template-columns:1fr;
+    grid-template-rows:auto auto minmax(45%,1fr) minmax(220px,45%);
+    grid-template-areas:"head" "toolbar" "canvas" "inspector"; }
+  .library-inspector { border-left:0; border-top:var(--rule); }
+  .library-head { flex-wrap:wrap; gap:4px 12px; padding:10px 12px 4px; }
+  .library-lede { flex:1 1 100%; order:3; }
+  .library-toolbar { padding:8px 12px 10px; }
+  .library-search { flex:1 1 100%; }
+  .library-toolbar-row select { flex:1 1 132px; min-width:0; }
+  .library-new { margin-left:0; flex:1 1 100%; }
+  .library-canvas { padding:10px; }
+  .library-grid { grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); }
+  /* The audit table is the one thing that cannot reflow — it scrolls INSIDE the
+     canvas, never taking the page with it. */
+  .library-list { min-width:760px; }
+  .library-canvas:has(.library-list) { overflow-x:auto; }
 }
 
 /* Media cards — rendered by lib/generate-core.js createMediaController(), so the
@@ -186,6 +552,16 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .library-media-card { position:relative; }
 .library-badge-unassigned { font-size:9px; text-transform:uppercase; letter-spacing:.06em;
   padding:3px 6px; border:2px solid var(--ink); background:var(--orange); color:#fff; }
+/* Integrator seam-fix: mediaCardHtml() still emits the pre-K head/title/foot
+   markup. Inside media cards the type badge flows in the head row instead of
+   pinning to the card corner. */
+.library-media-card .library-card-head { display:flex; align-items:center;
+  justify-content:space-between; gap:6px; margin-bottom:6px; }
+.library-media-card .library-type { position:static; }
+.library-media-card .library-card-title { margin:0 0 6px;
+  font:700 var(--fs-h3)/1.2 var(--font-label); overflow-wrap:anywhere; }
+.library-media-card .library-card-foot { display:flex; flex-wrap:wrap; gap:6px;
+  align-items:center; margin:6px 0; }
 .library-media-thumb { display:block; width:100%; aspect-ratio:1; object-fit:contain;
   background:#e8e4d8; border:2px solid var(--ink); }
 .library-media-thumb-empty { display:grid; place-items:center; aspect-ratio:1; background:#e8e4d8;
@@ -194,7 +570,7 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .library-media-actions { display:flex; flex-wrap:wrap; gap:6px; }
 .library-media-actions button { min-height:30px; padding:4px 8px; font-size:9px; }
 .library-media-panel { margin-top:8px; padding:9px; border:2px solid var(--ink); background:var(--paper); }
-.library-media-panel h4 { margin:0 0 6px; font:900 12px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+.library-media-panel h4 { margin:0 0 6px; font:700 12px/1 var(--font-label); text-transform:uppercase; }
 .library-media-panel .row { margin-top:8px; }
 .library-provenance-step { margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed var(--ink); }
 .library-provenance-step:last-of-type { border-bottom:0; margin-bottom:0; padding-bottom:0; }
@@ -208,31 +584,107 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .library-media-stages { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
 .library-media-stage-link { min-height:26px; padding:3px 8px; font-size:9px; }
 
-/* Template form (Phase 6) — rendered by workspaces/lib/generate-core.js
-   templateFormHtml(). One renderer for every template, so these classes are the
-   only form styling the Generate workspace needs. */
-.gen-form { display:flex; flex-direction:column; gap:2px; }
-.gen-form-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
-.gen-form-head h3 { margin:0; font:900 16px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
-.gen-form-head .status-pill { font-size:9px; }
-.gen-form-warn { border-left:4px solid var(--orange); padding-left:8px; }
-.gen-form-badge { display:inline-block; padding:2px 5px; border:2px solid var(--ink);
-  background:var(--orange); color:#fff; font-size:9px; text-transform:uppercase; letter-spacing:.06em; }
-.gen-form-refs { margin-top:4px; }
+/* ---------------------------------------------------------------------------
+   TEMPLATE FORM (Phase 6.2, Feature J) — rendered by lib/generate-core.js
+   templateFormHtml(). ONE white card on the grey canvas, laid out in reading
+   order: art world → the one big creative field → reference choosers → the
+   remaining fields → example chips → Generate → Advanced settings → the review
+   warning.
+
+   Borders INSIDE the card are hairlines. The card's own 3px rule is what says
+   "this is the working surface"; repeating that weight on every input is what
+   made the pre-6.2 form read as fourteen equally important boxes. The only
+   things allowed to shout in here are the primary field and Generate.
+   --------------------------------------------------------------------------- */
+.gen-form { display:block; padding:20px 22px 22px; border:var(--rule); background:var(--card); }
+.gen-form-block { margin:0 0 16px; }
+.gen-form > .gen-form-block:last-child { margin-bottom:0; }
+.gen-form .gen-form-field { margin:0; gap:6px; }
+.gen-form :is(input,select,textarea) { border:var(--rule-hair); background:var(--card); }
+.gen-form :is(input,select,textarea):hover:not(:disabled) { border-color:var(--muted-soft); }
+.gen-form :is(input,select,textarea):focus { border-color:var(--ink); }
+.gen-form :is(input,select,textarea):disabled { background:var(--surface); color:var(--muted); }
+.gen-form-help { margin:8px 0 0; max-width:70ch; }
+
+/* The primary field — bigger box, bigger type, more room to breathe. It is the
+   only control on the page that gets to be loud, because it is the only one the
+   operator actually composes. */
+.gen-form-primary .gen-form-field { gap:8px; }
+.gen-form-primary textarea { min-height:132px; padding:12px 13px; font-size:16px; line-height:1.5; }
+.gen-form-primary input[type="text"] { min-height:48px; padding:11px 13px; font-size:16px; }
+.gen-form-primary select { min-height:44px; font-size:16px; }
+
+.gen-form-style-block { max-width:340px; }
+.gen-form-style-line { margin:0 0 16px; color:var(--muted); font-size:var(--fs-small); }
+.gen-form-style-line strong { color:var(--ink); }
+.gen-form-secondary { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px 18px; margin:0 0 16px; }
+.gen-form-secondary .gen-form-block { margin:0; }
+
 /* A refSlot with declared gallery sources: read-only value + "Choose…". The div
-   has to reproduce the plain <label> stack it replaced (label rule, :120). */
-.gen-ref-slot { display:flex; flex-direction:column; gap:4px; margin:4px 0; font-size:10px; }
-.gen-ref-label { text-transform:uppercase; letter-spacing:.06em; }
-.gen-ref-row { display:flex; align-items:center; gap:6px; }
+   has to reproduce the plain <label> stack it replaced (label rule, :266). */
+.gen-ref-slot { display:flex; flex-direction:column; gap:6px; margin:0; font-size:var(--fs-micro); }
+.gen-ref-label { text-transform:uppercase; letter-spacing:var(--tracking-label); }
+.gen-ref-row { display:flex; align-items:center; gap:8px; }
 .gen-ref-row input { flex:1 1 auto; min-width:0; }
 .gen-ref-thumb-slot:empty { display:none; }
-.gen-ref-thumb { display:block; width:38px; height:38px; object-fit:contain;
-  border:2px solid var(--ink); background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/12px 12px repeat; }
-.gen-ref-choose { flex:0 0 auto; min-height:30px; padding:4px 9px; font-size:9px; }
-.gen-form-examples { margin-top:8px; }
-.gen-form-chips { display:flex; flex-wrap:wrap; gap:6px; }
-.gen-form-chip { min-height:28px; max-width:100%; padding:4px 8px; font-size:9px;
+.gen-ref-thumb { display:block; width:40px; height:40px; object-fit:contain;
+  border:var(--rule-hair); background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/12px 12px repeat; }
+.gen-ref-choose { flex:0 0 auto; min-height:34px; padding:5px 11px; font-size:var(--fs-micro);
+  border:var(--rule-med); background:var(--card); color:var(--ink); }
+
+/* Example chips are SUGGESTIONS, so they are the lightest control in the card:
+   hairline, sentence case, body sans. Uppercasing an example would make the very
+   copy it is proposing unreadable as copy. */
+.gen-form-examples { margin:0 0 18px; }
+.gen-form-examples-label { margin:0 0 8px; color:var(--muted);
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; }
+.gen-form-chips { display:flex; flex-wrap:wrap; gap:7px; }
+.gen-form-chip { min-height:30px; max-width:100%; padding:5px 10px; border:var(--rule-hair);
+  background:var(--card); color:var(--muted);
+  font:400 var(--fs-small)/1.3 var(--font-body); letter-spacing:0; text-transform:none;
   text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.gen-form-chip:hover { border-color:var(--ink); color:var(--ink); filter:none; }
+
+/* Generate: the commit control, directly under the thing it commits. */
+.gen-form-submit { margin:0 0 18px; }
+.gen-form-generate { display:inline-flex; align-items:center; justify-content:center;
+  min-width:164px; min-height:46px; padding:10px 20px; border:var(--rule);
+  background:var(--action); color:#fff; font-size:var(--fs-h3); }
+
+/* Advanced settings: id and seed are plumbing — the run has to carry them, but
+   nobody composes them. Closed by default; wireTemplateForm()'s capture-phase
+   `invalid` handler is what keeps the required id inside validating from here. */
+.gen-form-advanced { margin:0; border:var(--rule-hair); background:var(--card); }
+.gen-form-advanced > summary { display:flex; align-items:center; justify-content:space-between;
+  gap:10px; padding:11px 13px; background:var(--surface); color:var(--muted);
+  cursor:pointer; list-style:none;
+  font:700 var(--fs-small)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; }
+.gen-form-advanced > summary::-webkit-details-marker { display:none; }
+.gen-form-advanced > summary::after { content:"▾"; font-size:12px; line-height:1; }
+.gen-form-advanced > summary:hover { color:var(--ink); }
+.gen-form-advanced[open] > summary { color:var(--ink); border-bottom:var(--rule-hair); }
+.gen-form-advanced[open] > summary::after { content:"▴"; }
+.gen-form-advanced-body { padding:14px 13px; }
+.gen-form-advanced-body .field-grid { gap:14px; }
+.gen-form-advanced-body .gen-form-block { margin:14px 0 0; }
+
+/* Two callouts, and neither is another bordered box: the wash is what sets them
+   apart from the fields above without adding a fourth rule weight. Orange = a
+   decision the operator owes this asset before it ships. Grey = context. */
+.gen-form-warn { display:flex; align-items:flex-start; gap:10px; margin:18px 0 0;
+  padding:12px 14px; border:0; border-left:4px solid var(--warn); background:var(--warn-soft);
+  color:var(--ink); font:400 var(--fs-small)/1.55 var(--font-body); }
+.gen-form-warn::before { content:"\26A0\FE0E"; flex:0 0 auto; color:var(--warn);
+  font-size:15px; line-height:1.4; }
+.gen-form-note { display:flex; align-items:flex-start; gap:10px; margin:0 0 18px;
+  padding:11px 13px; border-left:4px solid var(--muted-soft); background:var(--sunken);
+  color:var(--muted); font:400 var(--fs-small)/1.55 var(--font-body); }
+.gen-form-badge { display:inline-block; padding:2px 6px; border:var(--rule-hair);
+  background:var(--warn-soft); color:var(--ink); font-size:var(--fs-micro);
+  text-transform:uppercase; letter-spacing:var(--tracking-label); }
 
 /* Full-screen overlay (Phase 6, E/F) — ONE singleton in lib/generate-core.js with
    two content modes: an asset preview (with the cutout chain's stage tabs) and the
@@ -245,7 +697,7 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
   background:var(--white); box-shadow:9px 9px 0 rgba(17,17,17,.35); }
 .studio-overlay-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 .studio-overlay-titles { min-width:0; }
-.studio-overlay-titles h2 { margin:0; font:900 18px/1.15 Impact,'Arial Black',sans-serif;
+.studio-overlay-titles h2 { margin:0; font:700 18px/1.15 var(--font-label);
   text-transform:uppercase; letter-spacing:.03em; overflow-wrap:anywhere; }
 .studio-overlay-titles .hint { margin:4px 0 0; }
 .studio-overlay-close { flex:0 0 auto; min-width:38px; padding:6px 10px; font-size:14px; line-height:1; }
@@ -281,46 +733,190 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .studio-gallery-freetext { display:flex; gap:6px; margin-top:8px; }
 .studio-gallery-freetext input { flex:1 1 auto; min-width:0; }
 
-/* Generate workspace (Phase 6) — a template rail beside a form pane, the outputs
-   that template has made, and the Review queue. Media cards reuse the
-   .library-media-* language above; the form reuses .gen-form-*. */
-.generate-workspace.workspace { grid-template-columns:minmax(0,1fr) 320px; }
-.generate-canvas { background:var(--paper); }
-.generate-body { height:100%; display:grid; grid-template-columns:230px minmax(0,1fr); }
+/* ---------------------------------------------------------------------------
+   GENERATE WORKSPACE (Phase 6.2, Feature J) — a template BROWSER on the left, a
+   three-zone working canvas in the middle, a contextual inspector on the right.
+
+   The centre is a light grey canvas, never a white page: zone 1 (title +
+   one-line description) sits directly on it, zone 2 (the form) is the one white
+   3px-ruled card, zone 3 (Recent outputs) is a quieter 2px panel below. That
+   ordering is the whole point — what am I making, what should it say, generate,
+   review the output — and it only reads as an order because the three zones do
+   not share a surface.
+   --------------------------------------------------------------------------- */
+.generate-workspace.workspace { grid-template-columns:minmax(0,1fr) 300px; }
+.generate-canvas { background:var(--surface); }
+.generate-body { height:100%; display:grid; grid-template-columns:248px minmax(0,1fr); }
 /* Review hides the rail; a display:none grid item is not placed, so without this
-   the main pane would drop into the 230px rail track. */
+   the main pane would drop into the 248px rail track. */
 .generate-body[data-rail="off"] { grid-template-columns:minmax(0,1fr); }
-.generate-rail { min-width:0; overflow:auto; display:flex; flex-direction:column; gap:12px;
-  padding:10px; background:var(--white); border-right:var(--rule); }
+
+/* --- template browser ------------------------------------------------------
+   Card = the group's mark + the template name in the display face + the
+   operation type as a quiet micro-label. The GROUP heading above carries the
+   category, so the card never repeats it. Selected is a pale wash and a solid
+   yellow stripe, not a saturated block — see .list-item.selected. */
+.generate-rail { min-width:0; overflow:auto; display:flex; flex-direction:column; gap:18px;
+  padding:14px 12px 22px; background:var(--card); border-right:var(--rule); }
 .generate-rail-head { display:flex; align-items:center; justify-content:space-between; gap:6px; }
-.generate-rail-head strong { font:900 14px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; letter-spacing:.05em; }
-.generate-rail-head button { min-height:26px; padding:3px 8px; font-size:9px; }
-.generate-rail-group { display:flex; flex-direction:column; gap:5px; }
-.generate-rail-group h3 { margin:0; font-size:9px; text-transform:uppercase; letter-spacing:.1em; opacity:.55; }
-.generate-rail-item { display:flex; flex-direction:column; align-items:flex-start; gap:2px;
-  min-height:0; padding:6px 8px; border:2px solid var(--ink); background:var(--white);
-  color:var(--ink); text-align:left; text-transform:none; }
-.generate-rail-item strong { font-size:11px; overflow-wrap:anywhere; }
-.generate-rail-item span { font-size:9px; text-transform:uppercase; opacity:.6; }
-.generate-rail-item.on { background:var(--yellow); }
+.generate-rail-head strong { font:700 var(--fs-h3)/1 var(--font-label);
+  text-transform:uppercase; letter-spacing:var(--tracking-display); }
+.generate-rail-head button { min-height:26px; padding:3px 8px; font-size:var(--fs-micro);
+  border:var(--rule-hair); background:var(--card); color:var(--muted); }
+.generate-rail-head button:hover { border-color:var(--ink); color:var(--ink); filter:none; }
+.generate-rail-group { display:flex; flex-direction:column; gap:7px; }
+.generate-rail-group h3 { margin:0 0 1px; color:var(--muted-soft); opacity:1;
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; }
+.generate-rail-item { display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px;
+  align-items:start; min-height:0; padding:9px 10px; border:var(--rule-hair);
+  background:var(--card); color:var(--ink); text-align:left; text-transform:none; }
+.generate-rail-item:hover { border-color:var(--ink); background:var(--card); filter:none; }
+/* The base layer claims every span in here for the display face + label
+   tracking (that rule is meant for the operation-type label); the two structural
+   spans opt back out. */
+.generate-rail-item-body, .generate-rail-glyph {
+  font-family:inherit; font-weight:inherit; letter-spacing:normal; }
+.generate-rail-glyph { display:block; width:21px; height:21px; margin-top:1px; color:var(--muted-soft); }
+.generate-rail-glyph svg { display:block; width:100%; height:100%; }
+.generate-rail-item-body { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.generate-rail-item strong { font:700 15px/1.15 var(--font-label);
+  letter-spacing:.02em; overflow-wrap:anywhere; }
+.generate-rail-op { font-size:var(--fs-micro); text-transform:uppercase; color:var(--muted); }
+.generate-rail-item.on { padding-left:15px; border-color:var(--sel); background:var(--sel-soft);
+  box-shadow:inset 5px 0 0 var(--sel); }
+.generate-rail-item.on .generate-rail-glyph { color:var(--ink); }
+
+/* --- the three zones ------------------------------------------------------- */
 .generate-main { min-width:0; overflow:auto; }
-.generate-pane { display:flex; flex-direction:column; gap:12px; padding:14px; }
-.generate-pane [data-form-host] { max-width:760px; }
-.generate-pane .empty-state { min-height:240px; }
-.generate-job-status { margin:0; padding-left:8px; border-left:4px solid var(--blue); }
-.generate-outputs h3 { margin:0 0 8px; font:900 14px/1 Impact,'Arial Black',sans-serif;
-  text-transform:uppercase; letter-spacing:.05em; }
+.generate-pane { padding:20px 22px 34px; }
+.generate-stack { display:flex; flex-direction:column; gap:16px; max-width:900px; }
+.generate-head { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+.generate-head-titles { min-width:0; }
+.generate-head h1 { margin:0; font:900 var(--fs-page)/1.05 var(--font-display);
+  text-transform:uppercase; letter-spacing:var(--tracking-display); overflow-wrap:anywhere; }
+.generate-head-desc { margin:8px 0 0; max-width:70ch; color:var(--muted);
+  font:400 var(--fs-body)/1.5 var(--font-body); }
+/* The kind, demoted from a heading to a tag: outlined, quiet, and beside the
+   title where it belongs. */
+.generate-kind-badge { flex:0 0 auto; margin-top:5px; padding:4px 9px;
+  border:1px solid var(--muted-soft); background:transparent; color:var(--muted);
+  font:700 var(--fs-micro)/1.2 var(--font-label); letter-spacing:var(--tracking-label);
+  text-transform:uppercase; white-space:nowrap; }
+.generate-empty { padding:26px 24px; border:var(--rule-hair); background:var(--card); }
+.generate-empty h2 { margin:0 0 8px; font:700 var(--fs-h2)/1.1 var(--font-label);
+  text-transform:uppercase; letter-spacing:var(--tracking-display); }
+.generate-empty p { margin:0; max-width:66ch; color:var(--muted);
+  font:400 var(--fs-body)/1.5 var(--font-body); }
+.generate-job-status { margin:0; padding:11px 14px; border:var(--rule-hair);
+  border-left:4px solid var(--action); background:var(--card); color:var(--ink);
+  font:400 var(--fs-small)/1.5 var(--font-body); }
+/* Zone 3 and the pose strip: panels on the canvas, one border tier quieter than
+   the form card so the form stays the focal point. */
+.generate-panel { padding:16px 18px 18px; border:var(--rule-med); background:var(--card); }
+.generate-panel-title { display:flex; align-items:center; gap:9px; margin:0 0 12px;
+  font:700 var(--fs-h2)/1 var(--font-label); text-transform:uppercase;
+  letter-spacing:var(--tracking-display); }
+.generate-panel-count { padding:3px 7px; border:var(--rule-hair); background:var(--surface);
+  color:var(--muted); font:700 var(--fs-micro)/1 var(--font-label);
+  letter-spacing:var(--tracking-label); }
+.generate-panel-empty { margin:0; color:var(--muted); font:400 var(--fs-body)/1.5 var(--font-body); }
 .generate-media-item { display:flex; flex-direction:column; gap:6px; }
 .generate-assign-hint { margin:0; }
+
+/* --- contextual inspector --------------------------------------------------
+   Two collapsible panels, prose in body sans, mono kept for the identifier line
+   alone. The right rail used to read as a system log because everything in it
+   was monospaced; it is now the place the studio explains itself. */
+.generate-inspector { display:flex; flex-direction:column; gap:12px; padding:14px;
+  background:var(--paper); }
+.gen-inspector-panel { border:var(--rule-med); background:var(--card); }
+.gen-inspector-panel > summary { display:flex; align-items:center; gap:9px; padding:12px 14px;
+  cursor:pointer; list-style:none; color:var(--ink);
+  font:700 var(--fs-h3)/1 var(--font-label); text-transform:uppercase;
+  letter-spacing:var(--tracking-display); }
+.gen-inspector-panel > summary::-webkit-details-marker { display:none; }
+.gen-inspector-panel > summary::after { content:"▾"; margin-left:auto; color:var(--muted-soft); font-size:12px; }
+.gen-inspector-panel[open] > summary::after { content:"▴"; }
+.gen-inspector-icon { flex:0 0 auto; display:block; width:19px; height:19px; color:var(--muted); }
+.gen-inspector-icon svg { display:block; width:100%; height:100%; }
+.gen-inspector-body { padding:0 14px 15px; }
+.gen-inspector-body p { margin:0 0 10px; color:var(--ink);
+  font:400 var(--fs-body)/1.55 var(--font-body); }
+.gen-inspector-body p:last-child { margin-bottom:0; }
+.gen-inspector-body .gen-detail-ids { color:var(--muted); overflow-wrap:anywhere;
+  font:400 var(--fs-small)/1.55 var(--font-mono); }
+.gen-inspector-body .gen-detail-world { color:var(--muted); font-size:var(--fs-small); }
+.gen-inspector-body .gen-detail-world strong { color:var(--ink); }
+
+@media (max-width:1050px) {
+  .generate-workspace.workspace { grid-template-columns:minmax(0,1fr) 280px; }
+  .generate-body { grid-template-columns:212px minmax(0,1fr); }
+}
 @media (max-width:760px) {
   .generate-workspace.workspace { grid-template-columns:1fr; }
   .generate-body { grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr); }
   .generate-rail { max-height:190px; border-right:0; border-bottom:var(--rule); }
+  .generate-pane { padding:14px 14px 26px; }
+  .generate-head { flex-wrap:wrap; gap:10px; }
 }
+
+/* Pose-set panel (Phase 6.1) — sits between the template form and Recent
+   outputs, only for the two pose templates. Rebuilt from the media list on
+   every repaint (workspaces/generate.js computePoseSet()), so nothing here
+   ever needs its own loading/empty state beyond "no set chosen yet".
+   Feature J restyled it onto .generate-panel: same canvas language as Recent
+   outputs, slot state carried by the semantic colours rather than a heavier
+   border. Behaviour is untouched. */
+.pose-set { display:flex; flex-direction:column; gap:12px; }
+.pose-set-head { display:flex; flex-wrap:wrap; align-items:flex-end; gap:10px; }
+.pose-set-head .gen-form-field { flex:0 0 220px; margin:0; }
+.pose-set-head .gen-form-field input { border:var(--rule-hair); }
+.pose-set-head .gen-form-field input:focus { border-color:var(--ink); }
+.pose-set-chips { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+/* A set id is an identifier, so the chip that names one is set in mono. */
+.pose-set-chip { min-height:32px; padding:5px 10px; border:var(--rule-hair);
+  background:var(--card); color:var(--muted);
+  font:400 var(--fs-small)/1.2 var(--font-mono); letter-spacing:0; text-transform:none; }
+.pose-set-chip:hover { border-color:var(--ink); color:var(--ink); filter:none; }
+.pose-set-chip.on { border-color:var(--sel); background:var(--sel-soft); color:var(--ink);
+  box-shadow:inset 4px 0 0 var(--sel); padding-left:14px; }
+.pose-set-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.pose-set .hint { margin:0; }
+/* Six cards that wrap on narrow widths — never the page body — so the strip
+   scrolls internally nowhere; it just reflows. */
+.pose-set-strip { list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:10px; }
+.pose-slot { display:flex; flex-direction:column; gap:6px; min-width:0;
+  border:var(--rule-hair); background:var(--card); padding:9px; }
+.pose-slot-label { font-size:var(--fs-micro); text-transform:uppercase;
+  letter-spacing:var(--tracking-label); overflow-wrap:anywhere; }
+.pose-slot-id { font-size:var(--fs-micro); color:var(--muted); overflow-wrap:anywhere; }
+.pose-slot-thumb-btn { display:block; width:100%; min-height:0; padding:0; border:0;
+  background:none; cursor:zoom-in; }
+.pose-slot-thumb-btn:hover, .pose-slot-thumb-btn:active { filter:none; transform:none; }
+.pose-slot-thumb { display:block; width:100%; aspect-ratio:1; background:var(--sunken);
+  border:var(--rule-hair); }
+.pose-slot-thumb img { display:block; width:100%; height:100%; object-fit:contain; }
+/* Extracted (transparent) thumbs sit on the same checkerboard the overlay's
+   cutout/final stages use, so partial transparency reads the same everywhere. */
+.pose-slot-thumb[data-checker="on"] {
+  background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/16px 16px repeat; }
+.pose-slot-placeholder { display:grid; place-items:center; aspect-ratio:1; padding:6px;
+  font-size:var(--fs-micro); text-transform:uppercase; color:var(--muted); text-align:center; }
+.pose-slot-empty { background:var(--surface); }
+.pose-slot-actions { display:flex; flex-wrap:wrap; gap:5px; margin-top:auto; }
+.pose-slot-actions button { min-height:28px; padding:3px 8px; font-size:var(--fs-micro); }
+/* Slot state = the semantic colours, carried as a left stripe so six cards in six
+   states still read as one strip. */
+.pose-slot[data-state="running"] { border-color:var(--action); box-shadow:inset 4px 0 0 var(--action); }
+.pose-slot[data-state="accepted"], .pose-slot[data-state="extracted"] {
+  border-color:var(--ok); box-shadow:inset 4px 0 0 var(--ok); }
+.pose-slot[data-state="failed-qa"] { border-color:var(--danger); box-shadow:inset 4px 0 0 var(--danger); }
 
 /* Production workspace (WP-3c) — job queue, validation, completeness, usage index. */
 .production-workspace.workspace { grid-template-columns:minmax(0,1fr) 360px; }
-.production-canvas { overflow:auto; background:var(--paper); padding:14px; display:flex; flex-direction:column; gap:10px; }
+.production-canvas { overflow:auto; background:var(--surface); padding:14px; display:flex; flex-direction:column; gap:10px; }
 .production-canvas [data-panel] { display:flex; flex-direction:column; gap:10px; }
 .production-canvas [data-panel][hidden] { display:none; }
 .production-job-list, .production-triage-list { display:flex; flex-direction:column; gap:6px; }
@@ -334,7 +930,7 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .production-table-wrap { overflow-x:auto; }
 .production-table { width:100%; border-collapse:collapse; font-size:11px; background:#fff; }
 .production-table th, .production-table td { border:2px solid var(--ink); padding:5px 7px; text-align:left; }
-.production-table thead { background:var(--pale-blue); text-transform:uppercase; font-size:9px; }
+.production-table thead { background:var(--sunken); text-transform:uppercase; font-size:9px; }
 @media (max-width:760px) {
   .production-workspace.workspace { grid-template-columns:1fr; }
 }

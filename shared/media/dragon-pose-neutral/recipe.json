@@ -1,0 +1,56 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "dragon-pose-neutral",
+  "kind": "image",
+  "asset": "dragon-pose-neutral.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a cheerful mint-green baby dragon, tiny rounded wings, a pale gold tummy patch, big friendly eyes and stubby legs. Standing at rest: upright and still, facing the viewer, weight even on both feet, arms hanging down and a little away from the body, calm friendly expression. The whole figure is in frame, from the top of the head to the soles of the feet, centred, one character only and unmistakably the subject. The background is a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "dragon-pose-neutral.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a cheerful mint-green baby dragon, tiny rounded wings, a pale gold tummy patch, big friendly eyes and stubby legs. Standing at rest: upright and still, facing the viewer, weight even on both feet, arms hanging down and a little away from the body, calm friendly expression. The whole figure is in frame, from the top of the head to the soles of the feet, centred, one character only and unmistakably the subject. The background is a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "dragon-pose-neutral.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 420,
+      "encode": "png",
+      "from": "dragon-pose-neutral.layer2.png",
+      "output": "dragon-pose-neutral.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "character-pose",
+    "style": "toy-table",
+    "fields": {
+      "character": "a cheerful mint-green baby dragon",
+      "description": "tiny rounded wings, a pale gold tummy patch, big friendly eyes and stubby legs"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 61.647,
+      "opaquePct": 22.763,
+      "partialPct": 15.59
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-07-25"
+}

@@ -1,0 +1,63 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "dragon-pose-enter",
+  "kind": "image",
+  "asset": "dragon-pose-enter.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Redraw the character from the reference image in one new pose: stepping in from the side mid-stride, leading foot forward, body turning to face the viewer. Same character throughout (a cheerful mint-green baby dragon): keep its colours, markings, proportions, outfit, face and rendering style exactly as the reference has them, and keep it the same size in the frame. The whole figure stays in frame, from the top of the head to the soles of the feet, centred, one character only. Keep the background exactly as the reference has it: a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts.",
+      "ground": null,
+      "seed": 1337,
+      "width": 1024,
+      "height": 1024,
+      "output": "dragon-pose-enter.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same Redraw the character from the reference image in one new pose: stepping in from the side mid-stride, leading foot forward, body turning to face the viewer. Same character throughout (a cheerful mint-green baby dragon): keep its colours, markings, proportions, outfit, face and rendering style exactly as the reference has them, and keep it the same size in the frame. The whole figure stays in frame, from the top of the head to the soles of the feet, centred, one character only. Keep the background exactly as the reference has it: a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "dragon-pose-enter.raw.png",
+      "seed": 1337
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 420,
+      "encode": "png",
+      "from": "dragon-pose-enter.layer2.png",
+      "output": "dragon-pose-enter.png"
+    }
+  ],
+  "refs": {
+    "style": "media:dragon-pose-neutral"
+  },
+  "template": {
+    "id": "character-pose-derive",
+    "fields": {
+      "pose": "enter",
+      "action": "stepping in from the side mid-stride, leading foot forward, body turning to face the viewer",
+      "character": "a cheerful mint-green baby dragon"
+    }
+  },
+  "derivedFrom": "dragon-pose-neutral",
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 66.755,
+      "opaquePct": 21.207,
+      "partialPct": 12.038
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      1337,
+      42,
+      9001
+    ],
+    "usedSeed": 1337
+  },
+  "created": "2026-07-25"
+}

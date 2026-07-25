@@ -17,7 +17,7 @@ const USAGE_INDEX_URL = new URL('../../../data/usage-index.json', import.meta.ur
 
 const JOB_STATUSES = ['queued', 'running', 'completed', 'failed', 'interrupted', 'cancelled'];
 // Phase 6 added the three GENERATE kinds the template registry dispatches.
-const JOB_KINDS = ['story-scene', 'extract', 'voice', 'transcription', 'generate-image', 'cutout-chain', 'generate-voice'];
+const JOB_KINDS = ['story-scene', 'extract', 'voice', 'transcription', 'generate-image', 'cutout-chain', 'generate-voice', 'extract-media'];
 const SEVERITY_RANK = { error: 0, warn: 1, info: 2 };
 const TAB_ORDER = ['jobs', 'validate', 'completeness', 'usage'];
 const TAB_LABEL = { jobs: 'Job Queue', validate: 'Validation', completeness: 'Completeness', usage: 'Usage Index' };

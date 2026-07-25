@@ -881,12 +881,23 @@ function refThumbHtml(ref) {
 // Purely presentational: no listeners, no state. Render it into any container and
 // read it back with readTemplateForm(container).
 //
+// LAYOUT (Phase 6.2, Feature J — one focal point per page). The card answers
+// "what should it say?" in reading order and nothing else:
+//   art world → PRIMARY field (the one big creative input) + its help →
+//   reference choosers → the remaining fields → example chips → Generate →
+//   Advanced settings (id, seed, typed refs) → the review warning.
+// The primary field is whatever exampleFieldName() picks — the same field the
+// example chips fill, which is by construction the template's big free-text
+// slot. Everything the operator does not compose (id, seed) is demoted into a
+// collapsed <details>; the creative pickers (style, gallery-backed refSlots)
+// stay above the fold because they change what comes out, not where it lands.
+//
 // opts:
 //   styles        registry.styles (for style labels + the unproven badge)
 //   refs          {slotName: value} overrides for the refSlot inputs
 //   id            the media id input's value
 //   seed          the seed input's value (defaults to template.seed)
-//   exampleField  which field the example chips fill
+//   exampleField  which field the example chips fill (and so the primary field)
 //   disabled      renders every control disabled (static preview)
 //   canBrowse     false disables the refSlot "Choose…" buttons — the gallery
 //                 reads GET /api/studio/ref-candidates, which only the authoring
@@ -895,11 +906,13 @@ function refThumbHtml(ref) {
 //                 read-only and free text lives in the chooser's advanced row.
 //   submitLabel   default "Generate"; showSubmit=false drops the button row
 //   status        an extra hint line under the button (job progress)
+//   note          a caller-supplied advisory rendered as a quiet callout at the
+//                 top of the card (Generate uses it for the cosmetic-style note)
 export function templateFormHtml(template, styleId = null, fieldValues = {}, opts = {}) {
   if (!template) return '<p class="hint">No template selected.</p>';
   const {
     styles = {}, refs = {}, id = '', seed = null, exampleField, disabled = false,
-    canBrowse = true, submitLabel = 'Generate', showSubmit = true, status = '',
+    canBrowse = true, submitLabel = 'Generate', showSubmit = true, status = '', note = '',
   } = opts;
   const choices = stylesFor({ styles }, template);
   const activeStyle = choices.find((choice) => choice.id === styleId)
@@ -908,93 +921,128 @@ export function templateFormHtml(template, styleId = null, fieldValues = {}, opt
   const off = disabled ? ' disabled' : '';
   const fields = Array.isArray(template.fields) ? template.fields : [];
   const examples = Array.isArray(template.examples) ? template.examples : [];
-  const chipTarget = examples.length ? exampleFieldName(template, exampleField) : null;
+  const primaryName = exampleFieldName(template, exampleField);
+  const chipTarget = examples.length ? primaryName : null;
+
+  const noteHtml = note ? `<p class="gen-form-note">${escapeHtml(note)}</p>` : '';
 
   const styleHtml = choices.length > 1 ? `
-      <label class="gen-form-style">Style
-        <select data-gen-style${off}>${choices.map((choice) => `
-          <option value="${escapeHtml(choice.id)}"${choice.id === activeStyle?.id ? ' selected' : ''}>${escapeHtml(choice.label)}${choice.unproven ? ' — unproven' : ''}</option>`).join('')}
-        </select>
-      </label>
-      ${activeStyle?.unproven ? '<p class="hint gen-form-warn"><span class="gen-form-badge">unproven</span> This world has never produced an accepted asset. Expect to iterate.</p>' : ''}`
-    : (activeStyle ? `<p class="hint">style: <strong>${escapeHtml(activeStyle.label)}</strong>${activeStyle.unproven ? ' <span class="gen-form-badge">unproven</span>' : ''}</p>` : '');
+      <div class="gen-form-block gen-form-style-block">
+        <label class="gen-form-field gen-form-style">Art world
+          <select data-gen-style${off}>${choices.map((choice) => `
+            <option value="${escapeHtml(choice.id)}"${choice.id === activeStyle?.id ? ' selected' : ''}>${escapeHtml(choice.label)}${choice.unproven ? ' — unproven' : ''}</option>`).join('')}
+          </select>
+        </label>
+        ${activeStyle?.unproven ? '<p class="gen-form-warn"><span class="gen-form-badge">unproven</span> This world has never produced an accepted asset. Expect to iterate.</p>' : ''}
+      </div>`
+    : (activeStyle ? `<p class="gen-form-style-line">Art world <strong>${escapeHtml(activeStyle.label)}</strong>${activeStyle.unproven ? ' <span class="gen-form-badge">unproven</span>' : ''}</p>` : '');
 
-  const fieldsHtml = fields.map((field) => {
+  const fieldBlockHtml = (field, primary) => {
     const raw = fieldValues[field.name];
     const value = raw === undefined || raw === null || raw === '' ? (field.default ?? '') : raw;
     const placeholder = field.name === chipTarget ? examples[0] : field.placeholder;
     return `
-      <label class="gen-form-field">${escapeHtml(field.label || field.name)}${field.required ? ' *' : ''}
-        ${fieldControlHtml(field, value, placeholder, off)}
-      </label>
-      ${field.help ? `<p class="hint">${escapeHtml(field.help)}</p>` : ''}`;
-  }).join('');
+      <div class="gen-form-block${primary ? ' gen-form-primary' : ''}">
+        <label class="gen-form-field">${escapeHtml(field.label || field.name)}${field.required ? ' *' : ''}
+          ${fieldControlHtml(field, value, placeholder, off)}
+        </label>
+        ${field.help ? `<p class="hint gen-form-help">${escapeHtml(field.help)}</p>` : ''}
+      </div>`;
+  };
+
+  const primaryField = fields.find((field) => field.name === primaryName) || null;
+  const primaryHtml = primaryField ? fieldBlockHtml(primaryField, true) : '';
+  const restFields = fields.filter((field) => field !== primaryField);
+  const restHtml = restFields.length
+    ? `<div class="gen-form-secondary">${restFields.map((field) => fieldBlockHtml(field, false)).join('')}</div>`
+    : '';
 
   const slots = Array.isArray(template.refSlots) ? template.refSlots : [];
   const chooseOff = (disabled || !canBrowse) ? ' disabled title="needs the authoring server"' : '';
-  const refsHtml = slots.length ? `
-      <div class="gen-form-refs">${slots.map((slot) => {
-    const value = refs[slot.name] ?? template.refs?.[slot.name] ?? slot.default ?? '';
-    const gallery = (Array.isArray(slot.gallery) ? slot.gallery : []).filter((source) => typeof source === 'string' && source);
-    const help = slot.help ? `<p class="hint">${escapeHtml(slot.help)}</p>` : '';
-    // A slot that declares gallery sources is CHOSEN, not typed: the value goes
-    // read-only and "Choose…" opens the gallery overlay. Free text is not lost —
-    // it moves to the chooser's advanced row. A slot with no gallery is
-    // unchanged from Phase 6: a plain symbolic-ref input.
-    if (!gallery.length) {
-      return `
-        <label class="gen-form-field">${escapeHtml(slot.label || slot.name)}${slot.required ? ' *' : ''}
-          <input type="text" data-gen-ref="${escapeHtml(slot.name)}" value="${escapeHtml(value)}"
-            placeholder="shared:refs/bus.png"${slot.required ? ' required' : ''}${off} autocomplete="off">
-        </label>
-        ${help}`;
-    }
+  // A slot that declares gallery sources is CHOSEN, not typed: the value goes
+  // read-only and "Choose…" opens the gallery overlay. Free text is not lost —
+  // it moves to the chooser's advanced row. A slot with no gallery is unchanged
+  // from Phase 6 (a plain symbolic-ref input) and, being plumbing rather than a
+  // creative pick, it rides down into Advanced settings.
+  const chosenSlots = slots.filter((slot) => (Array.isArray(slot.gallery) ? slot.gallery : []).some((source) => typeof source === 'string' && source));
+  const typedSlots = slots.filter((slot) => !chosenSlots.includes(slot));
+
+  const slotValue = (slot) => refs[slot.name] ?? template.refs?.[slot.name] ?? slot.default ?? '';
+  const slotHelp = (slot) => (slot.help ? `<p class="hint gen-form-help">${escapeHtml(slot.help)}</p>` : '');
+
+  const chosenSlotsHtml = chosenSlots.length ? `
+      <div class="gen-form-refs">${chosenSlots.map((slot) => {
+    const value = slotValue(slot);
+    const gallery = slot.gallery.filter((source) => typeof source === 'string' && source);
     return `
-        <div class="gen-form-field gen-ref-slot" data-ref-slot="${escapeHtml(slot.name)}">
-          <span class="gen-ref-label">${escapeHtml(slot.label || slot.name)}${slot.required ? ' *' : ''}</span>
-          <div class="gen-ref-row">
-            <span class="gen-ref-thumb-slot" data-ref-thumb>${refThumbHtml(value)}</span>
-            <input type="text" data-gen-ref="${escapeHtml(slot.name)}" value="${escapeHtml(value)}"
-              ${canBrowse ? 'readonly placeholder="nothing chosen yet"' : 'placeholder="shared:refs/bus.png"'}${slot.required ? ' required' : ''}${off} autocomplete="off">
-            <button type="button" class="ghost gen-ref-choose" data-gen-ref-choose="${escapeHtml(slot.name)}"
-              data-gen-ref-gallery="${escapeHtml(gallery.join(','))}"
-              data-gen-ref-label="${escapeHtml(slot.label || slot.name)}"${chooseOff}>Choose…</button>
+        <div class="gen-form-block">
+          <div class="gen-form-field gen-ref-slot" data-ref-slot="${escapeHtml(slot.name)}">
+            <span class="gen-ref-label">${escapeHtml(slot.label || slot.name)}${slot.required ? ' *' : ''}</span>
+            <div class="gen-ref-row">
+              <span class="gen-ref-thumb-slot" data-ref-thumb>${refThumbHtml(value)}</span>
+              <input type="text" data-gen-ref="${escapeHtml(slot.name)}" value="${escapeHtml(value)}"
+                ${canBrowse ? 'readonly placeholder="nothing chosen yet"' : 'placeholder="shared:refs/bus.png"'}${slot.required ? ' required' : ''}${off} autocomplete="off">
+              <button type="button" class="ghost gen-ref-choose" data-gen-ref-choose="${escapeHtml(slot.name)}"
+                data-gen-ref-gallery="${escapeHtml(gallery.join(','))}"
+                data-gen-ref-label="${escapeHtml(slot.label || slot.name)}"${chooseOff}>Choose…</button>
+            </div>
           </div>
-        </div>
-        ${help}`;
+          ${slotHelp(slot)}
+        </div>`;
   }).join('')}</div>` : '';
+
+  const typedSlotsHtml = typedSlots.map((slot) => `
+        <div class="gen-form-block">
+          <label class="gen-form-field">${escapeHtml(slot.label || slot.name)}${slot.required ? ' *' : ''}
+            <input type="text" data-gen-ref="${escapeHtml(slot.name)}" value="${escapeHtml(slotValue(slot))}"
+              placeholder="shared:refs/bus.png"${slot.required ? ' required' : ''}${off} autocomplete="off">
+          </label>
+          ${slotHelp(slot)}
+        </div>`).join('');
 
   const examplesHtml = examples.length ? `
       <div class="gen-form-examples">
-        <p class="hint">Examples${chipTarget ? ` — fills “${escapeHtml(fields.find((field) => field.name === chipTarget)?.label || chipTarget)}”` : ''}</p>
+        <p class="gen-form-examples-label">Examples${chipTarget ? ` — fills “${escapeHtml(fields.find((field) => field.name === chipTarget)?.label || chipTarget)}”` : ''}</p>
         <div class="gen-form-chips">${examples.map((example, index) => `
           <button type="button" class="ghost gen-form-chip" data-gen-example="${index}"${chipTarget ? ` data-gen-target="${escapeHtml(chipTarget)}"` : ''}
             title="${escapeHtml(example)}"${off}>${escapeHtml(truncate(example))}</button>`).join('')}
         </div>
       </div>` : '';
 
+  // Advanced stays CLOSED by default and still holds a `required` control (the
+  // id). A closed <details> is display:none, so the browser cannot focus that
+  // control to report a constraint violation — wireTemplateForm() listens for
+  // `invalid` in the capture phase and opens the panel, which is what keeps
+  // native validation working from a collapsed state.
+  const advancedHtml = `
+      <details class="gen-form-advanced" data-gen-advanced>
+        <summary>Advanced settings</summary>
+        <div class="gen-form-advanced-body">
+          <div class="field-grid">
+            <label class="gen-form-field">Id (kebab-case)
+              <input type="text" data-gen-param="id" value="${escapeHtml(id)}" placeholder="e.g. ${escapeHtml(template.id)}-1"
+                pattern="[a-z0-9]+(-[a-z0-9]+)*" required${off} autocomplete="off">
+            </label>
+            <label class="gen-form-field">Seed
+              <input type="number" data-gen-param="seed" value="${escapeHtml(seed ?? template.seed ?? '')}"${off}>
+            </label>
+          </div>
+          ${typedSlotsHtml}
+        </div>
+      </details>`;
+
   return `
     <form class="gen-form" data-template-form data-template-id="${escapeHtml(template.id)}" data-style-id="${escapeHtml(activeStyle?.id || '')}">
-      <div class="gen-form-head">
-        <h3>${escapeHtml(template.label || template.id)}</h3>
-        <span class="status-pill">${escapeHtml(template.kind || '')}</span>
-      </div>
+      ${noteHtml}
       ${styleHtml}
-      ${fieldsHtml}
-      ${refsHtml}
-      <div class="field-grid">
-        <label class="gen-form-field">Id (kebab-case)
-          <input type="text" data-gen-param="id" value="${escapeHtml(id)}" placeholder="e.g. ${escapeHtml(template.id)}-1"
-            pattern="[a-z0-9]+(-[a-z0-9]+)*" required${off} autocomplete="off">
-        </label>
-        <label class="gen-form-field">Seed
-          <input type="number" data-gen-param="seed" value="${escapeHtml(seed ?? template.seed ?? '')}"${off}>
-        </label>
-      </div>
+      ${primaryHtml}
+      ${chosenSlotsHtml}
+      ${restHtml}
       ${examplesHtml}
-      ${template.assignHint ? `<p class="hint gen-form-warn">${escapeHtml(template.assignHint)}</p>` : ''}
-      ${status ? `<p class="hint">${escapeHtml(status)}</p>` : ''}
-      ${showSubmit ? `<div class="row"><button type="submit"${off}>${escapeHtml(submitLabel)}</button></div>` : ''}
+      ${showSubmit ? `<div class="gen-form-submit"><button type="submit" class="gen-form-generate"${off}>${escapeHtml(submitLabel)}</button></div>` : ''}
+      ${advancedHtml}
+      ${template.assignHint ? `<p class="gen-form-warn">${escapeHtml(template.assignHint)}</p>` : ''}
+      ${status ? `<p class="hint gen-form-help">${escapeHtml(status)}</p>` : ''}
     </form>`;
 }
 
@@ -1081,10 +1129,26 @@ export function wireTemplateForm(container, { onChange } = {}) {
     if (form) form.dataset.styleId = select.value;
     onChange?.({ reason: 'style', styleId: select.value });
   };
+  // The id field is `required` and lives inside the collapsed Advanced panel.
+  // A closed <details> is display:none, so the browser would refuse to submit
+  // AND refuse to report why ("An invalid form control … is not focusable").
+  // `invalid` does not bubble, so this listens in the capture phase and opens
+  // every ancestor <details> — the element is focusable again by the time the
+  // form reports validity, and native validation behaves exactly as it did
+  // when id and seed were rendered inline.
+  const onInvalid = (event) => {
+    let node = event.target?.parentElement;
+    while (node && node !== container) {
+      if (node.tagName === 'DETAILS') node.open = true;
+      node = node.parentElement;
+    }
+  };
   container.addEventListener('click', onClick);
   container.addEventListener('change', onSelectChange);
+  container.addEventListener('invalid', onInvalid, true);
   return () => {
     container.removeEventListener('click', onClick);
     container.removeEventListener('change', onSelectChange);
+    container.removeEventListener('invalid', onInvalid, true);
   };
 }

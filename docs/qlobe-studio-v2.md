@@ -626,7 +626,13 @@ Rules:
   `shared:` path or a bare styleRefs key — that the server applies to the slot
   when a run supplies no value, the way `menu-ui-button`'s `style` slot
   defaults to the shared home-button icon so a restyle run starts from a
-  sensible button rather than an empty slot.
+  sensible button rather than an empty slot. A slot named `identity` is the
+  optional SECOND reference an edit workflow accepts — dispatched as the
+  workflow's `image2`, resolved exactly like `style` — so a layout picture and
+  a character picture no longer have to fight over one slot; a template that
+  declares no such slot is unaffected. A `select` field's option may also carry
+  extra presentation keys the studio reads and the expander ignores (the pose
+  enum's `action` holds the wording each derived pose is generated with).
 - **Prompts are transcribed verbatim**, never referenced by path. The corpus
   they came from is private, so a template that cites its source instead of
   carrying it is a template that stops working when that directory moves. Where
@@ -708,15 +714,28 @@ being edited) and `api` (document/asset/jobs client). `window.QLOBE_STUDIO`
 debug hooks remain mandatory for every workspace (browser automation is a
 verification gate).
 
-The shell is a **three-row chrome**: the primary nav (the five domains, §5),
-a **secondary nav** row for a workspace's internal views, and a **breadcrumb**
-row beneath it. The shell owns both new rows' DOM outright; workspaces drive
+The shell is a **three-row chrome**, one row per level of the hierarchy
+(Phase 6.2 tuned the visual weight of each so they stop competing):
+
+1. **Domain row** — the five domains (§5) as large bordered tabs, plus the
+   brand, the server-status pill and the Legacy Studio link.
+2. **Context row** — a workspace's internal views on the left (a quiet
+   segmented control the shell paints from `ctx.setNav`), and the character /
+   stage workspaces on the right as a second segmented cluster. Those seven
+   buttons were demoted out of the domain row in Phase 6.2: they are global
+   workspaces, not domains, so they stay permanently visible but never carry
+   domain weight. Their `?project` availability filtering hides a whole
+   `[data-nav-group]` structurally once every workspace inside it is
+   unavailable.
+3. **Breadcrumb row** — plain text, never boxed buttons.
+
+The shell owns both lower rows' DOM outright; workspaces drive
 them only through two more `ctx` functions:
 
 - `ctx.setNav({tabs, activeTab, crumbs, count})` — full-replace render. The
   shell paints the secondary-nav tabs (managing `.on` / `aria-selected`), hides
   that row when `tabs` is empty, renders the breadcrumb trail (interactive
-  segments, a non-interactive current segment, `▸` separators) plus a
+  segments, a non-interactive current segment, `›` separators) plus a
   right-aligned count pill. The shell resets both rows to a default root crumb
   (labelled from the primary-nav button) on **every** `openWorkspace`, including
   the iframe path, and a **mount-generation guard** makes a late `setNav` from a
@@ -741,7 +760,10 @@ serializable) so browser automation can assert the shell state per workspace.
    string directly.
 
 Top nav becomes the five domains (§5); the v1 two-cluster character/stage nav
-retires with the registry migration. The header keeps the server-status pill
+moved down to the context row in Phase 6.2 (its rotated "Character" / "Stage"
+plates replaced by a single hairline between the two `[data-nav-group]`
+clusters) and retires entirely with the registry migration. The header keeps
+the server-status pill
 ("authoring server" / "static preview") — static preview stays functional for
 browse and JSON export, exactly as v1 promised.
 
@@ -810,7 +832,20 @@ pip dependencies, same launch, same localhost binding.
   `/api/puppet/projects` counts — Phase 2);
   persistent `/api/studio/jobs` v2 — Phase 3;
   `GET /api/studio/templates` (the whole `shared/data/generate-templates.json`
-  document, lazily loaded and mtime-cached — Phase 6).
+  document, lazily loaded and mtime-cached — Phase 6);
+  `POST /api/studio/media/<id>/extract` (remove the background from an
+  already-generated media object — Phase 6.1).
+- **Extract on existing media**: the cutout chain generates and extracts in one
+  job, which suits a prop but not a review-gated set. The `extract-media` job
+  kind is the other half: it keeps the pre-extraction original as
+  `<id>.raw.png`, runs the same layered → alpha-QA → finalize tail as the
+  chain (one shared implementation, not a copy), replaces `<id>.png` with the
+  transparent asset, and APPENDS the extraction and finalize steps to the
+  existing `qlobe-recipe` `steps[]` so the object stays regenerable as one
+  chain. It is resumable and batches with every other `qwen-image-layered` job.
+  A second run on the same object is a 409 unless it passes `force`. This is
+  what the pose set is built on: a resting pose is reviewed opaque, five poses
+  are edited from it, and only the accepted six lose their backgrounds.
 - **Template expansion**: `POST /api/studio/generate` gains a template branch
   (§7.7). A body of `{template, styleId, fields, params}` is expanded
   server-side — slot substitution, per-style `variants` shallow merge, style

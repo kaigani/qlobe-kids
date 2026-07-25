@@ -83,6 +83,9 @@ WORKFLOW_FOR_KIND = {
     "generate-image": None,
     "cutout-chain": None,
     "generate-voice": "qwen3-tts-voiceclone",
+    # Phase 6.1: background removal over an already-generated media object. It is
+    # only ever the layered workflow, so it batches with every other extraction.
+    "extract-media": "qwen-image-layered",
 }
 # Kinds whose inputs live on disk (reference PNGs, prompt/seed) and are therefore
 # safely re-queueable after a crash. voice/transcription depend on an uploaded
@@ -90,7 +93,8 @@ WORKFLOW_FOR_KIND = {
 # kinds carry their whole recipe (prompt/seed/workflow) in the persisted job
 # dispatch, and generate-voice reads its text + the configured teacher voice from
 # disk — so all three survive a restart mid-chain and re-run reproducibly.
-RESUMABLE_KINDS = {"story-scene", "extract", "generate-image", "cutout-chain", "generate-voice"}
+RESUMABLE_KINDS = {"story-scene", "extract", "generate-image", "cutout-chain", "generate-voice",
+                   "extract-media"}
 
 # Phase 5 media constants (spec §5.1, §7.6). The unassigned-media staging shelf.
 MEDIA_ROOT = ("shared", "media")
@@ -402,6 +406,8 @@ class AuthoringState:
                 run_generate_image_job(self, job_id, d)
             elif kind == "cutout-chain":
                 run_cutout_chain_job(self, job_id, d)
+            elif kind == "extract-media":
+                run_extract_media_job(self, job_id, d)
             elif kind == "generate-voice":
                 run_generate_voice_job(self, job_id, d)
             else:
@@ -634,7 +640,12 @@ def http_json(url: str, timeout=8):
 
 
 def multipart_request(url: str, file_path: Path, fields: dict[str, str], timeout=60,
-                      file_field="image"):
+                      file_field="image", extra_files: dict[str, Path] | None = None):
+    """Multipart POST of one (or more) files plus plain fields.
+
+    `extra_files` is how a workflow's SECOND reference travels — qwen-image-edit
+    accepts image2/image3 beside image, which is what a template's `identity`
+    refSlot dispatches to (spec §7.7)."""
     boundary = f"----qlobe-{uuid.uuid4().hex}"
     chunks: list[bytes] = []
     for name, value in fields.items():
@@ -643,11 +654,14 @@ def multipart_request(url: str, file_path: Path, fields: dict[str, str], timeout
             f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode(),
             str(value).encode(), b"\r\n",
         ])
+    for name, path in [(file_field, file_path), *sorted((extra_files or {}).items())]:
+        chunks.extend([
+            f"--{boundary}\r\n".encode(),
+            f'Content-Disposition: form-data; name="{name}"; filename="{path.name}"\r\n'.encode(),
+            f"Content-Type: {mimetypes.guess_type(path.name)[0] or 'application/octet-stream'}\r\n\r\n".encode(),
+            path.read_bytes(), b"\r\n",
+        ])
     chunks.extend([
-        f"--{boundary}\r\n".encode(),
-        f'Content-Disposition: form-data; name="{file_field}"; filename="{file_path.name}"\r\n'.encode(),
-        f"Content-Type: {mimetypes.guess_type(file_path.name)[0] or 'application/octet-stream'}\r\n\r\n".encode(),
-        file_path.read_bytes(), b"\r\n",
         f"--{boundary}--\r\n".encode(),
     ])
     body = b"".join(chunks)
@@ -1275,15 +1289,20 @@ def multipart_bytes_request(url: str, file_path: Path, fields: dict, timeout=900
 
 def submit_and_poll_image(state: AuthoringState, workflow: str, fields: dict,
                           image: Path | None = None, output: str | None = None,
-                          on_remote_job=None) -> bytes:
+                          on_remote_job=None, image2: Path | None = None) -> bytes:
     """Generic async ComfyUI image workflow: POST (fields, optional ref image) ->
     poll /jobs/<id> -> GET the result bytes. Generalizes run_story_scene_job (t2i)
-    and extract_one (layered) into one path so every Phase 5 image step shares it."""
+    and extract_one (layered) into one path so every Phase 5 image step shares it.
+
+    `image2` is the optional second reference an edit workflow accepts (structure
+    in one picture, identity in the other) — only ever sent when a template
+    declares an `identity` refSlot and the run fills it."""
     if not state.qwen_url:
         raise RuntimeError("local workflow URL is not configured; set qwenUrl (local config) or --qwen-url")
     url = f"{state.qwen_url}/workflows/{workflow}"
     if image is not None:
-        submitted = multipart_request(url, image, fields, timeout=120, file_field="image")
+        submitted = multipart_request(url, image, fields, timeout=120, file_field="image",
+                                      extra_files={"image2": image2} if image2 is not None else None)
     else:
         submitted = multipart_fields_request(url, fields, timeout=120)
     remote_id = submitted.get("job_id") or submitted.get("id")
@@ -1652,6 +1671,91 @@ def ref_candidates(state: AuthoringState, source: str) -> list[dict]:
     raise ValueError(f"unsupported source {source!r} (use 'shared:<subdir>' or 'media')")
 
 
+# --- shared image-worker plumbing -------------------------------------------
+# One place each for the three things every image job does the same way: resolve
+# its reference image(s), work out its lineage, and remove a background.
+
+def resolve_ref_images(state: AuthoringState, workflow: str, refs: dict) -> tuple[Path | None, Path | None]:
+    """(image, image2) for one dispatch.
+
+    `style` is the workflow's single input reference. `identity` is the optional
+    SECOND one (qwen-image-edit's image2), which resolves the structure-vs-identity
+    trade-off a one-image edit forces: pass the layout in `style` and the character
+    in `identity`. Both are symbolic refs resolved through resolve_style_ref, so a
+    template that declares no `identity` slot behaves exactly as before."""
+    refs = refs or {}
+    image = None
+    if workflow in EDIT_WORKFLOWS or refs.get("style"):
+        image = resolve_style_ref(state, refs.get("style", ""))
+    image2 = resolve_style_ref(state, refs["identity"]) if refs.get("identity") else None
+    return image, image2
+
+
+def derived_from_refs(refs: dict) -> str | None:
+    """The media object this run was conditioned on, if any (spec §7.6 derivedFrom).
+
+    `media:<id>` is the only ref form that names another media object, so it is
+    the only one that can be a parent — a pose derived from an accepted resting
+    pose records the resting pose here, and the studio groups the set by it."""
+    for key in ("style", "identity"):
+        value = str((refs or {}).get(key) or "")
+        if value.startswith("media:"):
+            return value[len("media:"):] or None
+    return None
+
+
+def default_extract_prompt(base_prompt: str) -> str:
+    """The layered-extraction prompt the cutout standard derives from a generation
+    prompt: green ground underneath, the same subject untouched on top."""
+    return (f"Solid flat green background layer. Top layer: the exact same {base_prompt} from the image. "
+            "Keep it identical to the input image.")
+
+
+def extract_and_finalize(state: AuthoringState, job_id: str, media_id: str, folder: Path,
+                         source: Path, extract_prompt: str, seed: int, max_size: int, pad: int,
+                         on_stage=None) -> tuple[dict, list[dict]]:
+    """The shared tail of every background removal: qwen-image-layered layer_2 ->
+    alpha histogram QA + magenta composite -> bbox-crop + pad -> resize -> PNG.
+
+    run_cutout_chain_job calls it once per seed in its ladder; run_extract_media_job
+    calls it once over an already-reviewed raw. Writes <id>.layer2.png, qa-magenta.png
+    and (on QA pass only — the finalize helper withholds a failed cutout) <id>.png.
+    Returns (qa_result, steps) where steps[] are the two recipe steps the caller
+    appends, so a recipe written either way regenerates as one chain."""
+    layer_path = folder / f"{media_id}.layer2.png"
+    final_path = folder / f"{media_id}.png"
+    magenta_path = folder / "qa-magenta.png"
+    finalize_script = state.root / "tools" / "pipeline" / "cutout_finalize.py"
+
+    if on_stage:
+        on_stage("extract")
+    layer_png = submit_and_poll_image(state, LAYERED_WORKFLOW,
+                                      {"prompt": extract_prompt, "layers": "2", "seed": str(seed)},
+                                      image=source, output="layer_2",
+                                      on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
+    atomic_write(layer_path, layer_png)
+
+    if on_stage:
+        on_stage("finalize")
+    run = subprocess.run(
+        [state.cutout_python, str(finalize_script), "--input", str(layer_path),
+         "--output", str(final_path), "--magenta", str(magenta_path),
+         "--max-size", str(max_size), "--pad", str(pad)],
+        capture_output=True, text=True, timeout=300,
+    )
+    try:
+        qa_result = json.loads(run.stdout.strip().splitlines()[-1]) if run.stdout.strip() else {}
+    except (ValueError, IndexError):
+        raise RuntimeError(f"cutout finalize produced no JSON: {(run.stderr or run.stdout)[:400]}")
+    steps = [
+        {"workflow": LAYERED_WORKFLOW, "prompt": extract_prompt, "output": "layer_2",
+         "from": source.name, "seed": seed},
+        {"op": "finalize", "crop": f"bbox+{pad}", "maxSize": max_size, "encode": "png",
+         "from": f"{media_id}.layer2.png", "output": f"{media_id}.png"},
+    ]
+    return qa_result, steps
+
+
 def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
     """Single t2i/edit step -> shared/media/<id>/<id>.png + recipe (status review)."""
     try:
@@ -1665,10 +1769,8 @@ def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
         folder.mkdir(parents=True, exist_ok=True)
         state.update_job(job_id, status="running", message=f"Generating with {workflow}", progress=1, total=2)
         fields = {"prompt": prompt, "seed": str(seed), "width": str(width), "height": str(height)}
-        image = None
-        if workflow in EDIT_WORKFLOWS or refs.get("style"):
-            image = resolve_style_ref(state, refs.get("style", ""))
-        png = submit_and_poll_image(state, workflow, fields, image=image,
+        image, image2 = resolve_ref_images(state, workflow, refs)
+        png = submit_and_poll_image(state, workflow, fields, image=image, image2=image2,
                                     on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
         asset = f"{media_id}.png"
         atomic_write(folder / asset, png)
@@ -1679,7 +1781,7 @@ def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
             "refs": {k: v for k, v in refs.items() if v},
             # Which registry template produced this, when one did (spec §7.7).
             **({"template": d["template"]} if d.get("template") else {}),
-            "derivedFrom": None,
+            "derivedFrom": derived_from_refs(refs),
             "qa": {"status": "review"},
             "created": time.strftime("%Y-%m-%d"),
         }
@@ -1706,9 +1808,7 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
         pad = int(d.get("pad", 12))
         width, height = int(d.get("width", 1024)), int(d.get("height", 1024))
         refs = d.get("refs") or {}
-        extract_prompt = d.get("extractPrompt") or (
-            f"Solid flat green background layer. Top layer: the exact same {base_prompt} from the image. "
-            "Keep it identical to the input image.")
+        extract_prompt = d.get("extractPrompt") or default_extract_prompt(base_prompt)
         requested_seed = int(d.get("seed", 42))
         ladder = []
         for s in [requested_seed, 42, 1337, 9001]:
@@ -1716,13 +1816,16 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
                 ladder.append(s)
         folder = media_dir(state, media_id)
         folder.mkdir(parents=True, exist_ok=True)
-        gen_prompt = base_prompt + DARK_GROUND_SUFFIX
+        # The chain owns the flat dark ground (a template must never write it into
+        # its prompt — §7.7). `ground: null` in a replayed recipe means the ground
+        # was already in the generation prompt (an extract-on-existing-media chain,
+        # whose generation step was a plain generate-image), so it is not appended
+        # twice; a legacy recipe with no key at all keeps the old behaviour.
+        ground = d.get("ground", "dark-charcoal")
+        gen_prompt = base_prompt + (DARK_GROUND_SUFFIX if ground else "")
 
-        finalize_script = state.root / "tools" / "pipeline" / "cutout_finalize.py"
         raw_path = folder / f"{media_id}.raw.png"
-        layer_path = folder / f"{media_id}.layer2.png"
         final_path = folder / f"{media_id}.png"
-        magenta_path = folder / "qa-magenta.png"
 
         state.update_job(job_id, status="running", total=len(ladder) * 3)
         last_reason = None
@@ -1733,31 +1836,21 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
             state.update_job(job_id, current=f"seed {seed}", progress=step + 1,
                              message=f"Generating on dark ground (seed {seed})")
             fields = {"prompt": gen_prompt, "seed": str(seed), "width": str(width), "height": str(height)}
-            image = None
-            if gen_workflow in EDIT_WORKFLOWS or refs.get("style"):
-                image = resolve_style_ref(state, refs.get("style", ""))
-            raw_png = submit_and_poll_image(state, gen_workflow, fields, image=image,
+            image, image2 = resolve_ref_images(state, gen_workflow, refs)
+            raw_png = submit_and_poll_image(state, gen_workflow, fields, image=image, image2=image2,
                                             on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
             atomic_write(raw_path, raw_png)
 
-            state.update_job(job_id, progress=step + 2, message=f"Extracting layer_2 (seed {seed})")
-            layer_png = submit_and_poll_image(state, LAYERED_WORKFLOW,
-                                              {"prompt": extract_prompt, "layers": "2", "seed": str(seed)},
-                                              image=raw_path, output="layer_2",
-                                              on_remote_job=lambda rid: state.update_job(job_id, remoteJob=rid))
-            atomic_write(layer_path, layer_png)
+            def stage_message(stage, _step=step, _seed=seed):
+                state.update_job(
+                    job_id,
+                    progress=_step + (2 if stage == "extract" else 3),
+                    message=(f"Extracting layer_2 (seed {_seed})" if stage == "extract"
+                             else f"Alpha QA + finalize (seed {_seed})"))
 
-            state.update_job(job_id, progress=step + 3, message=f"Alpha QA + finalize (seed {seed})")
-            run = subprocess.run(
-                [state.cutout_python, str(finalize_script), "--input", str(layer_path),
-                 "--output", str(final_path), "--magenta", str(magenta_path),
-                 "--max-size", str(max_size), "--pad", str(pad)],
-                capture_output=True, text=True, timeout=300,
-            )
-            try:
-                qa_result = json.loads(run.stdout.strip().splitlines()[-1]) if run.stdout.strip() else {}
-            except (ValueError, IndexError):
-                raise RuntimeError(f"cutout finalize produced no JSON: {(run.stderr or run.stdout)[:400]}")
+            qa_result, chain_steps = extract_and_finalize(
+                state, job_id, media_id, folder, raw_path, extract_prompt, seed,
+                max_size, pad, on_stage=stage_message)
             used_seed = seed
             if qa_result.get("pass"):
                 break
@@ -1768,12 +1861,9 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
         flags = (qa_result or {}).get("flags") or []
         passed = bool((qa_result or {}).get("pass"))
         steps = [
-            {"workflow": gen_workflow, "prompt": base_prompt, "ground": "dark-charcoal",
+            {"workflow": gen_workflow, "prompt": base_prompt, "ground": ground,
              "seed": used_seed, "width": width, "height": height, "output": f"{media_id}.raw.png"},
-            {"workflow": LAYERED_WORKFLOW, "prompt": extract_prompt, "output": "layer_2",
-             "from": f"{media_id}.raw.png", "seed": used_seed},
-            {"op": "finalize", "crop": f"bbox+{pad}", "maxSize": max_size, "encode": "png",
-             "from": f"{media_id}.layer2.png", "output": f"{media_id}.png"},
+            *chain_steps,
         ]
         recipe = {
             "format": "qlobe-recipe", "formatVersion": 1, "id": media_id, "kind": "image",
@@ -1781,7 +1871,7 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
             "steps": steps,
             "refs": {k: v for k, v in refs.items() if v},
             **({"template": d["template"]} if d.get("template") else {}),
-            "derivedFrom": None,
+            "derivedFrom": derived_from_refs(refs),
             "qa": {
                 "status": "review" if passed else "failed-qa",
                 "alpha": alpha, "flags": flags,
@@ -1799,6 +1889,94 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
                              error=f"seed ladder {ladder} exhausted: {last_reason}", mediaId=media_id)
     except Exception as exc:
         state.update_job(job_id, status="failed", error=str(exc), message="Cutout chain failed")
+
+
+def run_extract_media_job(state: AuthoringState, job_id: str, d: dict):
+    """Remove the background from an ALREADY GENERATED media object (spec §10).
+
+    The staged-image counterpart of the cutout chain, for the review-gated flows
+    where the raw is looked at BEFORE any transparency exists (the pose set: a
+    resting pose is accepted, five poses are derived from it, and only then does
+    the whole set lose its background in one batch).
+
+    The pre-extraction original is preserved as <id>.raw.png — copied from the
+    reviewed asset the first time, never overwritten afterwards — then run through
+    the same layered -> alpha QA -> finalize tail as the chain. The extraction and
+    finalize steps are APPENDED to the recipe, so the object stays regenerable as
+    one chain (generation + extraction), and qa is rewritten from the QA result."""
+    try:
+        media_id = d["id"]
+        folder = media_dir(state, media_id)
+        recipe_path = folder / "recipe.json"
+        if not recipe_path.is_file():
+            raise RuntimeError(f"media {media_id} has no recipe to extend")
+        recipe = json.loads(recipe_path.read_text("utf-8"))
+        if recipe.get("kind") != "image":
+            raise RuntimeError(f"media {media_id} is not an image")
+        steps = [s for s in (recipe.get("steps") or []) if isinstance(s, dict)]
+        gen = next((s for s in steps if s.get("workflow") and s["workflow"] != LAYERED_WORKFLOW), {})
+        # A re-extraction (force) replaces the previous extraction tail rather than
+        # stacking a second one — the recipe stays a single coherent chain.
+        steps = [s for s in steps if s.get("workflow") != LAYERED_WORKFLOW and s.get("op") != "finalize"]
+
+        target = str(d.get("target") or "character")
+        max_size = int(d.get("maxSize") or CUTOUT_TARGET_SIZES.get(target, CUTOUT_TARGET_SIZES["character"]))
+        pad = max(0, min(64, int(d.get("pad", 12))))
+        seed = int(d.get("seed") or gen.get("seed") or 42)
+        extract_prompt = str(d.get("extractPrompt") or "").strip() \
+            or default_extract_prompt(str(gen.get("prompt") or media_id))
+
+        raw_path = folder / f"{media_id}.raw.png"
+        state.update_job(job_id, status="running", total=2, progress=1,
+                         message=f"Removing the background from {media_id}")
+        if not raw_path.is_file():
+            current = folder / str(recipe.get("asset") or f"{media_id}.png")
+            if not current.is_file():
+                raise RuntimeError(f"media {media_id} has no image on disk to extract from")
+            atomic_write(raw_path, current.read_bytes())
+
+        qa_result, chain_steps = extract_and_finalize(
+            state, job_id, media_id, folder, raw_path, extract_prompt, seed, max_size, pad,
+            on_stage=lambda stage: state.update_job(
+                job_id, progress=1 if stage == "extract" else 2,
+                message=(f"Extracting layer_2 (seed {seed})" if stage == "extract"
+                         else f"Alpha QA + finalize (seed {seed})")))
+        passed = bool(qa_result.get("pass"))
+
+        # The generation step becomes the head of a chain: name its output and mark
+        # that its ground is already in its own prompt, so a Regenerate replay does
+        # not append the cutout standard's dark ground a second time.
+        if gen:
+            gen.setdefault("output", f"{media_id}.raw.png")
+            gen.setdefault("ground", None)
+        recipe["steps"] = steps + chain_steps
+        if passed:
+            recipe["asset"] = f"{media_id}.png"
+        qa = recipe.get("qa") if isinstance(recipe.get("qa"), dict) else {}
+        qa.update({
+            # The asset changed under the reviewer's feet, so it goes back to review
+            # even if it had been accepted opaque.
+            "status": "review" if passed else "failed-qa",
+            "alpha": qa_result.get("alpha"), "flags": qa_result.get("flags") or [],
+            "extractSeed": seed,
+        })
+        if passed:
+            qa.pop("reason", None)
+        else:
+            qa["reason"] = qa_result.get("reason")
+        recipe["qa"] = qa
+        write_recipe(folder, recipe)
+
+        if passed:
+            state.update_job(job_id, status="completed", progress=2, mediaId=media_id,
+                             message=f"Background removed ({media_id}.png)",
+                             outputs=[str((folder / f"{media_id}.png").relative_to(state.root))])
+        else:
+            state.update_job(job_id, status="failed", mediaId=media_id,
+                             message=f"Extraction QA failed: {qa_result.get('reason')}",
+                             error=str(qa_result.get("reason") or "extraction QA failed"))
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Background removal failed")
 
 
 def normalize_transcript(text: str) -> str:
@@ -1910,6 +2088,9 @@ def regenerate_dispatch(recipe: dict, media_id: str, new_seed=None) -> tuple[str
             "id": media_id, "workflow": gen.get("workflow"), "prompt": gen.get("prompt", ""),
             "seed": int(new_seed if new_seed is not None else gen.get("seed", 42)),
             "width": int(gen.get("width", 1024)), "height": int(gen.get("height", 1024)),
+            # Whether the dark ground is the chain's to append or already sits in
+            # the recorded prompt (an extract-on-existing-media chain, §10).
+            "ground": gen.get("ground", "dark-charcoal"),
             "refs": refs, "maxSize": finalize.get("maxSize"),
             "pad": int(str(finalize.get("crop", "bbox+12")).split("+")[-1]) if "+" in str(finalize.get("crop", "")) else 12,
             "extractPrompt": extract.get("prompt"),
@@ -2311,6 +2492,53 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     {"target": kind, "mediaId": media_id,
                      "message": f"Regenerating {media_id}", "progress": 0},
                     interactive=interactive, workflow=workflow,
+                )
+                return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id}, 202)
+            # Background removal over an already-generated media object. The
+            # review-gated counterpart of the cutout chain (spec §10): the raw is
+            # reviewed opaque first, and only an accepted set loses its background.
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/extract"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/extract")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                if recipe.get("kind") != "image":
+                    return self.send_error_json(409, f"media {media_id} is not an image")
+                payload = self.read_json() if int(self.headers.get("Content-Length", "0") or 0) else {}
+                if (folder / f"{media_id}.layer2.png").is_file() and not bool(payload.get("force", False)):
+                    return self.send_error_json(409, f"media {media_id} has already been extracted; "
+                                                     "pass force to run it again")
+                target = str(payload.get("target") or "")
+                if target and target not in CUTOUT_TARGET_SIZES and not payload.get("maxSize"):
+                    raise ValueError(f"target must be one of {sorted(CUTOUT_TARGET_SIZES)} or pass maxSize")
+                # Sizing precedence: what the request asks for, else what the
+                # registry template that made this object declares, else the
+                # character target (the pose sprites this exists for).
+                template = recipe.get("template") if isinstance(recipe.get("template"), dict) else {}
+                declared = {}
+                if template.get("id"):
+                    try:
+                        registry = load_generate_templates(self.state)
+                        declared = next((t for t in (registry.get("templates") or [])
+                                         if isinstance(t, dict) and t.get("id") == template["id"]), {}) or {}
+                    except ValueError:
+                        declared = {}
+                dispatch = {
+                    "id": media_id,
+                    "target": target or str(declared.get("target") or "character"),
+                    "maxSize": int(payload["maxSize"]) if payload.get("maxSize") else declared.get("maxSize"),
+                    "pad": max(0, min(64, int(payload.get("pad", declared.get("pad", 12))))),
+                    "seed": int(payload["seed"]) if payload.get("seed") is not None else None,
+                    "extractPrompt": (str(payload.get("extractPrompt")).strip() or None)
+                                     if payload.get("extractPrompt") else None,
+                }
+                job_id = self.state.enqueue(
+                    "extract-media", dispatch,
+                    {"target": "extract-media", "mediaId": media_id,
+                     "message": f"Queued background removal for {media_id}", "progress": 0},
+                    interactive=bool(payload.get("interactive", False)),
                 )
                 return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id}, 202)
             if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/assign"):

@@ -25,7 +25,7 @@
 // generation (bad shape, leaked path/host, dangling slot/style, missing ref
 // file, unknown workflow). `warn` = a soft issue — a bare named styleRefs key
 // (machine-local by design, unverifiable from the repo), an unproven style, a
-// missing example or provenance note.
+// missing example, provenance note or one-line description.
 
 import { readJSON, isFile, isDir, isKebabId } from '../lib.mjs';
 
@@ -141,6 +141,12 @@ function validate(subject, r) {
     else seen.add(t.id);
 
     if (typeof t.label !== 'string' || !t.label.trim()) r.error(`template "${label}" needs a label`);
+    // description — the one-line "what am I making?" the Generate page prints
+    // under the template title (Phase 6.2, Feature J). Presentation only; the
+    // server never reads it, so a missing one is a warning, not a break.
+    if (t.description != null && (typeof t.description !== 'string' || !t.description.trim()))
+      r.error(`template "${label}" description must be a non-empty string`);
+    else if (t.description == null) r.warn(`template "${label}" has no one-line description`);
     if (!isKebabId(t.section)) r.error(`template "${label}" needs a kebab section`);
     if (!isKebabId(t.group)) r.error(`template "${label}" needs a kebab group`);
     if (typeof t.provenance !== 'string' || !t.provenance.trim()) r.warn(`template "${label}" has no provenance note`);

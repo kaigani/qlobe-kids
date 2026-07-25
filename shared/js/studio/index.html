@@ -6,28 +6,21 @@
   <title>QLOBE Studio</title>
   <!-- Bump ?v= on every studio.css change — a stale cache once presented a
        false-broken layout in Phase 2. Keep the query in sync with the CSS. -->
-  <link rel="stylesheet" href="./studio.css?v=9">
+  <link rel="stylesheet" href="./studio.css?v=13">
 </head>
 <body>
+  <!-- Row 1 — global domains only. The five domains are the top of the
+       hierarchy and are the only nav that keeps the big bordered-tab treatment. -->
   <header class="studio-bar">
     <a class="studio-brand" href="./" aria-label="QLOBE Studio home">
       <span class="studio-brandmark">Q</span><span>QLOBE Studio</span>
     </a>
-    <nav id="workspace-nav" aria-label="Studio workspaces">
+    <nav id="workspace-nav" aria-label="Studio domains">
       <button data-workspace="generate">Generate</button>
       <button data-workspace="library">Library</button>
       <button data-workspace="modules">Modules</button>
       <button data-workspace="games">Games</button>
       <button data-workspace="production">Production</button>
-      <span class="nav-group-label">Character</span>
-      <button data-workspace="rig">Rig</button>
-      <button data-workspace="animate">Animate</button>
-      <button data-workspace="speech">Speech</button>
-      <button data-workspace="assemble">Assemble</button>
-      <span class="nav-group-label">Stage</span>
-      <button data-workspace="props">Props</button>
-      <button data-workspace="stage">Scenes</button>
-      <button data-workspace="music">Music Sync</button>
     </nav>
     <div class="studio-status">
       <span id="server-status" class="status-pill" aria-live="polite">checking server</span>
@@ -35,7 +28,31 @@
     </div>
   </header>
 
-  <nav id="studio-subnav" role="tablist" aria-label="Workspace views" hidden></nav>
+  <!-- Row 2 — context band. LEFT: the mounted workspace's own views, published
+       through ctx.setNav and painted by the shell into #studio-subnav. RIGHT:
+       the character/stage workspaces, demoted out of the header into a compact
+       always-visible cluster. Both are quiet segmented controls (.nav-segmented)
+       so row 1 stays the loudest level. Groups carry data-nav-group so
+       applyProjectNavigation can hide an empty group structurally — never by
+       index (the old positional .nav-group-label lookup died with this markup). -->
+  <div id="studio-subbar">
+    <nav id="studio-subnav" class="nav-segmented" role="tablist" aria-label="Workspace views" hidden></nav>
+    <nav id="workspace-tools" class="nav-segmented" aria-label="Character and stage workspaces">
+      <span class="nav-group" data-nav-group="character" role="group" aria-label="Character workspaces">
+        <button data-workspace="rig">Rig</button>
+        <button data-workspace="animate">Animate</button>
+        <button data-workspace="speech">Speech</button>
+        <button data-workspace="assemble">Assemble</button>
+      </span>
+      <span class="nav-group" data-nav-group="stage" role="group" aria-label="Stage workspaces">
+        <button data-workspace="props">Props</button>
+        <button data-workspace="stage">Scenes</button>
+        <button data-workspace="music">Music Sync</button>
+      </span>
+    </nav>
+  </div>
+
+  <!-- Row 3 — location. Plain text, never boxed buttons. -->
   <div id="studio-crumbs" aria-label="Location" hidden></div>
 
   <main id="studio-main">

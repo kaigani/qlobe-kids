@@ -48,6 +48,46 @@ network service baked into the runtime.
 License: **CC BY 4.0**, matching the rest of the QLOBE Kids original asset
 library (`LICENSE-ASSETS`).
 
+## Layout references — the puppet sheets
+
+Two further references were added for the puppet templates. They are a different
+kind of anchor from the five above: those fix a **style**, these fix a
+**layout**. The puppet pipeline slices its input by geometry — the body-sheet
+extractor needs exactly ten alpha-separated components in a fixed 2 / 4 / 4 grid,
+and the viseme extractor reads a 3 × 3 grid of cells — so a generated sheet is
+only usable if it lands parts in the right cells. Prose could not do that
+reliably; conditioning `qwen-image-edit` on a sheet that already has the right
+geometry can.
+
+| File | Role | Size |
+|---|---|---|
+| `puppet-parts-template.png` | The ten-part body-sheet layout: head and torso on the top row, four arm pieces on the middle row, four leg pieces on the bottom row, each a separate floating piece on flat grey. `character-body-sheet` edits this, so the new character inherits the cell positions the slicer expects. | 1024 × 1024 PNG |
+| `viseme-grid-template.png` | The labelled 3 × 3 viseme grid: nine mutually registered heads, identical but for the mouth, each with its mouth-shape label below it. The structural default for `character-viseme-grid`. | 1024 × 1024 PNG |
+
+**`puppet-parts-template.png` is deliberately desaturated.** It began as a
+finished colour sheet, and in testing the edit workflow inherited that sheet's
+palette piece for piece — a new character came back wearing the old one's
+coloured bands, and no wording in the prompt reliably stopped it. Draining the
+colour while keeping the silhouettes, joint caps and shading solved it: the
+reference now carries geometry only, and the prompt says so in as many words.
+Keep it neutral if it is ever regenerated.
+
+Both are exemplar sheets of a real character rather than abstract diagrams,
+because an empty grid of blank cells gives an edit workflow nothing to preserve —
+the model needs to see a plausible head, a plausible torso and plausible limb
+segments in order to put the new character's versions in the same places.
+
+### Provenance
+
+Both were authored during the puppet pipeline builds (2026) with the same local
+GenAI stack as the style anchors, then kept as production records: the body sheet
+is the flattened, background-keyed form of a character's parts breakout, and the
+viseme grid is a nine-head lip-sync sheet downscaled from its 2048 master. Both
+were re-encoded on the way in, so no source metadata travels with them. Self-
+generated, no third-party source, no network service in the runtime.
+
+License: **CC BY 4.0**, as above.
+
 ## Adding a reference
 
 Only add a file here if a template needs it. Keep names lowercase and hyphenated,

@@ -1,0 +1,58 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "dragon-pose-react",
+  "kind": "image",
+  "asset": "dragon-pose-react.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Redraw the character from the reference image in one new pose: rocking back a step, hands up and open, mouth open in a delighted gasp. Same character throughout (a cheerful mint-green baby dragon): keep its colours, markings, proportions, outfit, face and rendering style exactly as the reference has them, and keep it the same size in the frame. The whole figure stays in frame, from the top of the head to the soles of the feet, centred, one character only. Keep the background exactly as the reference has it: a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts.",
+      "seed": 1337,
+      "width": 1024,
+      "height": 1024,
+      "output": "dragon-pose-react.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same Redraw the character from the reference image in one new pose: rocking back a step, hands up and open, mouth open in a delighted gasp. Same character throughout (a cheerful mint-green baby dragon): keep its colours, markings, proportions, outfit, face and rendering style exactly as the reference has them, and keep it the same size in the frame. The whole figure stays in frame, from the top of the head to the soles of the feet, centred, one character only. Keep the background exactly as the reference has it: a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "dragon-pose-react.raw.png",
+      "seed": 1337
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 420,
+      "encode": "png",
+      "from": "dragon-pose-react.layer2.png",
+      "output": "dragon-pose-react.png"
+    }
+  ],
+  "refs": {
+    "style": "media:dragon-pose-neutral"
+  },
+  "template": {
+    "id": "character-pose-derive",
+    "fields": {
+      "pose": "react",
+      "action": "rocking back a step, hands up and open, mouth open in a delighted gasp",
+      "character": "a cheerful mint-green baby dragon"
+    }
+  },
+  "derivedFrom": "dragon-pose-neutral",
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 63.628,
+      "opaquePct": 21.325,
+      "partialPct": 15.047
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 1337
+  },
+  "created": "2026-07-25"
+}

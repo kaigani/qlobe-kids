@@ -4,7 +4,7 @@ import { loadStudioProjects, studioProject, canonicalWorkspaceId } from './proje
 // Bump when any workspaces/*.js changes — same discipline as studio.css?v=.
 // Without it Chrome's heuristic disk cache can serve stale workspace modules
 // for hours after a deploy (bit us during the nav refactor verification).
-const WORKSPACE_VERSION = 9;
+const WORKSPACE_VERSION = 12;
 
 const CHARACTER_WORKSPACES = new Set(['rig', 'animate', 'speech']);
 // Rig (WP-1b), Animate (WP-1c) and Speech (WP-1d) are ported to native
@@ -16,7 +16,18 @@ const DEFAULT_WORKSPACE = 'rig';
 const params = new URLSearchParams(location.search);
 const legacyRig = params.get('legacy') === '1';
 const useIframe = (workspace) => IFRAME_WORKSPACES.has(workspace) || (LEGACY_ESCAPE.has(workspace) && legacyRig);
-const nav = document.querySelector('#workspace-nav');
+// Two nav roots since Phase 6.2: #workspace-nav holds the five global domains in
+// the header, #workspace-tools holds the demoted character/stage workspaces in
+// the context row. Both publish `data-workspace` buttons and behave identically —
+// every lookup below goes through navButtons()/navButton() rather than one root,
+// so moving a button between the rows is a markup-only change.
+const domainNav = document.querySelector('#workspace-nav');
+const toolsNav = document.querySelector('#workspace-tools');
+const navRoots = [domainNav, toolsNav];
+const navButtons = () => navRoots.flatMap((root) => [...root.querySelectorAll('button[data-workspace]')]);
+const navButton = (workspace) => navRoots
+  .map((root) => root.querySelector(`button[data-workspace="${CSS.escape(workspace ?? '')}"]`))
+  .find(Boolean) || null;
 const subnav = document.querySelector('#studio-subnav');
 const crumbBar = document.querySelector('#studio-crumbs');
 const iframe = document.querySelector('#character-workspace');
@@ -47,13 +58,18 @@ async function applyProjectNavigation() {
   available.add('games'); // native Games browses the registry + per-game dashboards — always reachable
   available.add('production'); // native Production (jobs/validate/completeness/usage) — always reachable
   available.add('generate'); // native Generate (template registry + review queue) — always reachable
-  for (const button of nav.querySelectorAll('button[data-workspace]')) {
+  for (const button of navButtons()) {
     button.hidden = !available.has(button.dataset.workspace);
     if (button.dataset.workspace === 'assemble') button.textContent = project?.workspaces?.assemble?.label || 'Assemble';
   }
-  const labels = nav.querySelectorAll('.nav-group-label');
-  if (labels[0]) labels[0].hidden = !['rig', 'animate', 'speech', 'assemble'].some((id) => available.has(id));
-  if (labels[1]) labels[1].hidden = !['props', 'stage', 'music'].some((id) => available.has(id));
+  // Group visibility is derived STRUCTURALLY from each group's own buttons — a
+  // [data-nav-group] hides once every workspace inside it is unavailable. The
+  // pre-6.2 code indexed `.nav-group-label` positionally (labels[0]/labels[1])
+  // against a hard-coded id list, which silently desynced whenever the markup
+  // moved. Add a workspace to a group in index.html and this keeps working.
+  const visible = (root) => [...root.querySelectorAll('button[data-workspace]')].some((button) => !button.hidden);
+  for (const group of toolsNav.querySelectorAll('[data-nav-group]')) group.hidden = !visible(group);
+  toolsNav.hidden = !visible(toolsNav);
   return { project, available };
 }
 
@@ -90,8 +106,7 @@ function updateUrl(workspace) {
 // Root crumb label = the primary-nav button's text (picks up the project
 // relabel of "Assemble" applied by applyProjectNavigation).
 function rootLabel(workspace) {
-  const button = nav.querySelector(`button[data-workspace="${workspace}"]`);
-  return (button?.textContent || workspace).trim();
+  return (navButton(workspace)?.textContent || workspace).trim();
 }
 
 // Full-replace render of the two shell rows from navState. Called by the shell
@@ -135,7 +150,7 @@ function renderNav() {
       const sep = document.createElement('span');
       sep.className = 'crumb-sep';
       sep.setAttribute('aria-hidden', 'true');
-      sep.textContent = '▸';
+      sep.textContent = '›';
       crumbBar.appendChild(sep);
     }
   });
@@ -195,7 +210,7 @@ async function openWorkspace(workspace, { update = true } = {}) {
   if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'generate', 'library', 'modules', 'games', 'production'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
   if (activeCleanup) { activeCleanup(); activeCleanup = null; }
   activeWorkspace = workspace;
-  for (const button of nav.querySelectorAll('button')) button.classList.toggle('on', button.dataset.workspace === workspace);
+  for (const button of navButtons()) button.classList.toggle('on', button.dataset.workspace === workspace);
   if (update) updateUrl(workspace);
 
   // Bump the mount generation and build this mount's shell-owned ctx closures.
@@ -255,10 +270,12 @@ async function openWorkspace(workspace, { update = true } = {}) {
   }
 }
 
-nav.addEventListener('click', (event) => {
-  const button = event.target.closest('button[data-workspace]');
-  if (button) openWorkspace(button.dataset.workspace);
-});
+for (const root of navRoots) {
+  root.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-workspace]');
+    if (button) openWorkspace(button.dataset.workspace);
+  });
+}
 window.addEventListener('popstate', () => openWorkspace(new URLSearchParams(location.search).get('workspace'), { update: false }));
 window.addEventListener('message', (event) => {
   if (event.origin !== location.origin || event.data?.type !== 'qlobe-studio-character') return;

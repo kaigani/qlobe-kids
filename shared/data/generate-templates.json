@@ -38,6 +38,7 @@
     {
       "id": "menu-category-tile",
       "label": "Category tile",
+      "description": "Draw the hub tile that stands for one category shelf.",
       "section": "menu",
       "group": "game-chooser",
       "kind": "generate-image",
@@ -75,6 +76,7 @@
     {
       "id": "menu-game-tile",
       "label": "Game tile",
+      "description": "Draw the hub tile that stands for one game.",
       "section": "menu",
       "group": "game-chooser",
       "kind": "generate-image",
@@ -108,6 +110,7 @@
     {
       "id": "menu-splash-title",
       "label": "Splash title art",
+      "description": "Draw the title lettering for a game's splash screen.",
       "section": "menu",
       "group": "game-splash",
       "kind": "generate-image",
@@ -146,6 +149,7 @@
     {
       "id": "menu-splash-background",
       "label": "Splash background",
+      "description": "Draw the full-bleed picture behind a game's splash screen.",
       "section": "menu",
       "group": "game-splash",
       "kind": "generate-image",
@@ -176,6 +180,7 @@
     {
       "id": "menu-ui-button",
       "label": "Shared UI button",
+      "description": "Draw one button glyph for the shared UI set.",
       "section": "menu",
       "group": "shared-ui",
       "kind": "generate-image",
@@ -222,6 +227,7 @@
     {
       "id": "character-body-sheet",
       "label": "Puppet body sheet",
+      "description": "Draw the flat body sheet a puppet rig is cut from.",
       "section": "character",
       "group": "puppet",
       "kind": "generate-image",
@@ -261,6 +267,7 @@
     {
       "id": "character-viseme-grid",
       "label": "Puppet viseme grid",
+      "description": "Draw the mouth-shape grid that drives a puppet's lip sync.",
       "section": "character",
       "group": "puppet",
       "kind": "generate-image",
@@ -269,7 +276,7 @@
       "refs": {
         "style": "shared:refs/viseme-grid-template.png"
       },
-      "prompt": "Redraw the character in this reference image as a labelled 3 by 3 grid of nine puppet heads. Keep the character exactly as the reference shows it — same colours, same fur or skin texture, same eyes, same ears, same muzzle, same headwear, same art style — and change nothing but the mouth. Nine cells in three even rows of three on one flat uniform mid-grey ground: the same head at the same size, upright, front-facing and centred in every cell, with clear grey between the cells so that no two heads touch. Each head differs from the others only in the shape of its mouth. Under each head, in the empty grey below it and clear of the ears, print that cell's short mouth-shape label in plain grey capitals. The nine mouth shapes, in reading order left to right and top to bottom, are: {visemes}. Those codes are phonetic, and no two of the nine may look alike: a is a wide open jaw, o is a small tight round pucker, e is a wide open smile shape, wr is rounded and pushed forward, ts is a narrow slit showing the teeth, ln shows the tongue tip up behind open teeth, uq is a very small tight pucker, mbp is the lips fully pressed shut with no opening at all, and fv is the top teeth resting on the lower lip. Flat solid uniform grey background, no gradient, no drop shadows, no cell borders or grid lines, no other text.",
+      "prompt": "Redraw the character in this reference image as a labelled 3 by 3 grid of nine puppet heads. Keep the character exactly as the reference shows it — same colours, same fur or skin texture, same eyes, same ears, same muzzle, same headwear, same art style — and change nothing but the mouth. Nine cells in three even rows of three on one flat uniform mid-grey ground: the same head at the same size, upright, front-facing and centred in every cell, with clear grey between the cells so that no two heads touch. Each head differs from the others only in the shape of its mouth. Under each head, in the empty grey below it and clear of the ears, print that cell's short mouth-shape label in plain grey capitals. The nine mouth shapes, in reading order left to right and top to bottom, are: {visemes}. Those codes are phonetic and no two of the nine may look alike: mbp is the one mouth that is fully closed, lips pressed together with no opening at all; a and e are open jaws of different widths; o, wr and uq are rounded puckers of decreasing size; ts and fv are narrow, nearly closed mouths; ln is open with the tongue just visible inside. Every mouth stays small and inside the muzzle, and the head, ears and eyes are identical in all nine cells. Flat solid uniform grey background, no gradient, no drop shadows, no cell borders or grid lines, no other text.",
       "fields": [
         {
           "name": "visemes",
@@ -286,7 +293,7 @@
           "required": false,
           "from": "media",
           "gallery": ["media", "shared:refs"],
-          "help": "The accepted body sheet or head for this character — this is what the grid takes its identity from, so supply it for any real run. Left empty it falls back to the committed layout reference, which only demonstrates the nine-cell structure."
+          "help": "A single head of this character on flat grey — the head crop the pipeline keeps as head-base, not the ten-part body sheet. Pass the body sheet and the edit keeps the sheet's own two-four-four layout instead of building a grid. Supplying a head puts the right character in the cells but loosens their registration; leaving this empty falls back to the committed layout reference, which gives the cleanest nine-cell structure. Generate both and keep the better one."
         }
       ],
       "styles": ["toy-table", "storybook"],
@@ -295,21 +302,22 @@
         "a, o, e, wr, ts, ln, uq, mbp, fv"
       ],
       "assignHint": "Slice the accepted grid with the studio's nine-head extraction — the slicer locates the largest component per cell and excludes the label, so the labels never reach a shipped tile.",
-      "provenance": "The puppet pipeline's viseme stage: a labelled 3x3 grid generated against the body sheet, then sliced 1:1 onto 1024 square tiles and layer-extracted. Like the splash title, this edit inherits its world from the reference image, so no style suffix is appended — the grid's labels would fight one. Reworked in Phase 6 to name the nine-cell layout the slicer expects and to default the reference to shared:refs/viseme-grid-template.png, the committed labelled grid. Note the one-image constraint: the edit workflow takes a single reference through refs.style, so structure and identity cannot both be passed as pictures — the run-time slot supersedes the layout default, and the layout then lives in the prompt alone."
+      "provenance": "The puppet pipeline's viseme stage: a labelled 3x3 grid generated against the body sheet, then sliced 1:1 onto 1024 square tiles and layer-extracted. Like the splash title, this edit inherits its world from the reference image, so no style suffix is appended — the grid's labels would fight one. Reworked in Phase 6 to name the nine-cell layout the slicer expects and to default the reference to shared:refs/viseme-grid-template.png, the committed labelled grid. Note the one-image constraint: the edit workflow takes a single reference through refs.style, so structure and identity cannot both be passed as pictures — the run-time slot supersedes the layout default, and the layout then lives in the prompt alone. Real runs showed the trade plainly: against the layout reference the nine heads come out mutually registered with only the mouths moving, which is exactly what the head-swap lip-sync needs; against a character head the identity is right but the heads drift in size; against a ten-part body sheet the edit preserves that sheet's layout and no grid appears at all. The phonetic gloss on the viseme codes is there because without it mbp generates open-mouthed, and it is deliberately vague about teeth and tongue because naming them makes the model draw them stuck out."
     },
     {
       "id": "character-pose",
-      "label": "Character pose sprite",
+      "label": "Pose sprite — resting pose",
+      "description": "Draw the resting pose the other five poses are edited from.",
       "section": "character",
       "group": "pose",
-      "kind": "cutout-chain",
+      "kind": "generate-image",
       "workflow": "krea2-turbo-t2i",
       "target": "character",
       "width": 1024,
       "height": 1024,
       "seed": 42,
       "pad": 12,
-      "prompt": "{character}, {description}, in the {pose} pose: {action}. Show the complete character as the clear central subject in a natural, readable full-body silhouette, with enough separation from the environment to isolate it as a sprite. Original character design. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. {style.suffix}",
+      "prompt": "{character}, {description}. Standing at rest: upright and still, facing the viewer, weight even on both feet, arms hanging down and a little away from the body, calm friendly expression. The whole figure is in frame, from the top of the head to the soles of the feet, centred, one character only and unmistakably the subject. The background is a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. {style.suffix}",
       "fields": [
         {
           "name": "character",
@@ -322,47 +330,90 @@
           "label": "Description",
           "type": "textarea",
           "required": true,
-          "help": "Keep this byte-identical across all six poses or the sprites will not read as one character."
-        },
+          "help": "Everything that makes this character itself — colour, shape, markings, clothes, eyes. The other five poses are edits of this picture, so whatever lands here is what the whole set will look like."
+        }
+      ],
+      "styles": ["storybook", "toy-table"],
+      "defaultStyle": "storybook",
+      "exampleField": "description",
+      "examples": [
+        "a cheerful mint-green baby dragon with tiny rounded wings, a pale gold tummy patch and big friendly eyes",
+        "a small round yellow bird with a tuft on its head and orange stick legs",
+        "a shaggy teal monster with three eyes, a wide grin and stubby arms",
+        "a purple puppet with long floppy ears and a chunky knitted scarf"
+      ],
+      "assignHint": "Name this one <character>-neutral: the five derived poses take <character>-<pose>, and the studio groups the set by that. Generate and review the whole set before assigning any of it — the six sprites share a baseline and an anchor, and a set assembled piecemeal visibly jumps when the paper-pop swaps.",
+      "provenance": "Stage one of the pose-set pipeline (Phase 6.1, user-specified): the resting pose is generated on its own, reviewed as a RAW opaque image before any transparency exists, and only then used as the reference every other pose is edited from. Reworked from the Phase 6 cutout-chain entry, whose pose enum generated each of the six independently and let them drift apart. The six semantic poses come from the storybook pose builder (neutral, enter, notice, interact, react, celebrate); the flat dark charcoal ground is the cutout standard's, written into the prompt here because the extraction is a later, separately reviewed stage rather than part of a chain."
+    },
+    {
+      "id": "character-pose-derive",
+      "label": "Pose sprite — derived from the resting pose",
+      "description": "Redraw the resting pose as one of the five acting poses.",
+      "section": "character",
+      "group": "pose",
+      "kind": "generate-image",
+      "workflow": "qwen-image-edit",
+      "target": "character",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "pad": 12,
+      "prompt": "Redraw the character from the reference image in one new pose: {action}. Same character throughout ({character}): keep its colours, markings, proportions, outfit, face and rendering style exactly as the reference has them, and keep it the same size in the frame. The whole figure stays in frame, from the top of the head to the soles of the feet, centred, one character only. Keep the background exactly as the reference has it: a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no shadows on the background. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts.",
+      "fields": [
         {
           "name": "pose",
           "label": "Pose",
           "type": "select",
-          "default": "neutral",
+          "default": "enter",
           "options": [
-            { "value": "neutral", "label": "Neutral — the resting pose" },
-            { "value": "enter", "label": "Enter — arriving on stage" },
-            { "value": "notice", "label": "Notice — something caught its eye" },
-            { "value": "interact", "label": "Interact — reaching for something" },
-            { "value": "react", "label": "React — surprised or delighted" },
-            { "value": "celebrate", "label": "Celebrate — the win" }
-          ]
+            { "value": "enter", "label": "Enter — arriving on stage", "action": "stepping in from the side mid-stride, leading foot forward, body turning to face the viewer" },
+            { "value": "notice", "label": "Notice — something caught its eye", "action": "head up and turned, eyebrows raised, looking off to one side at something just out of frame" },
+            { "value": "interact", "label": "Interact — reaching for something", "action": "leaning in with both hands reaching out toward something at chest height" },
+            { "value": "react", "label": "React — surprised or delighted", "action": "rocking back a step, hands up and open, mouth open in a delighted gasp" },
+            { "value": "celebrate", "label": "Celebrate — the win", "action": "both arms thrown up, up on the toes, mid-jump with a wide open smile" }
+          ],
+          "help": "Which of the five derived poses this is. Picking one fills the direction below with the wording the set uses."
         },
         {
           "name": "action",
           "label": "Pose direction",
           "type": "text",
-          "default": "standing relaxed, facing the viewer, weight even on both feet",
-          "help": "What the body is actually doing. The examples below are the six that match the pose list."
+          "required": true,
+          "help": "What the body is actually doing. Describe the whole body, never a part of the reference by position — an edit applies a positional instruction to everything."
+        },
+        {
+          "name": "character",
+          "label": "Character",
+          "type": "text",
+          "default": "unchanged from the reference",
+          "help": "Optional. The reference carries the identity; a short description here only reinforces it. Leave it alone unless a pose keeps losing something specific."
         }
       ],
-      "styles": ["storybook", "toy-table"],
-      "defaultStyle": "storybook",
+      "refSlots": [
+        {
+          "name": "style",
+          "label": "Resting pose",
+          "required": true,
+          "from": "media",
+          "gallery": ["media"],
+          "help": "The accepted resting pose this set derives from. Identity, palette, ground and rendering style all come out of this one image."
+        }
+      ],
       "exampleField": "action",
       "examples": [
-        "standing relaxed, facing the viewer, weight even on both feet",
         "stepping in from the side mid-stride, leading foot forward, body turning to face the viewer",
         "head up and turned, eyebrows raised, looking off to one side at something just out of frame",
         "leaning in with both hands reaching out toward something at chest height",
         "rocking back a step, hands up and open, mouth open in a delighted gasp",
         "both arms thrown up, up on the toes, mid-jump with a wide open smile"
       ],
-      "assignHint": "All six poses of one character share a baseline and an anchor — generate the whole set before assigning any of them, or the paper-pop swap will visibly jump.",
-      "provenance": "The six semantic poses the storybook pose builder normalises (neutral, enter, notice, interact, react, celebrate) and the approved storybook character concept language. The pose builder is a deterministic post-process over existing alpha cutouts and carries no prompt of its own; the generation half is reconstructed from the concept gate that produced its source art."
+      "assignHint": "Name each one <character>-<pose> against the <character>-neutral it came from — that is how the studio reconstructs the set after a reload. Remove the backgrounds only once all six have been reviewed: the derives read this set's resting pose off disk, so extracting it early changes what the remaining poses are conditioned on.",
+      "provenance": "Stage two of the pose-set pipeline (Phase 6.1, user-specified): the accepted resting pose is the identity reference and every other pose is a qwen-image-edit of it, which is what keeps a set on-model where six independent text-to-image runs did not. It declares NO styles deliberately — the world arrives in the reference image, and the resting pose is where that choice was made and recorded, so a second style tag here could only contradict it. The prompt follows the edit-conditioning findings from the puppet-sheet study: the reference carries the geometry and the palette (which is the point here — identity is meant to transfer), invariants are described generically rather than positionally, and no constraint trails a style suffix because there is none."
     },
     {
       "id": "character-video-key",
       "label": "Video key image",
+      "description": "Draw the key frame a video caller's loop is generated from.",
       "section": "character",
       "group": "video",
       "kind": "generate-image",
@@ -399,6 +450,7 @@
     {
       "id": "character-voice-line",
       "label": "Character voice line",
+      "description": "Create dialogue audio for a character line and queue it for production review.",
       "section": "character",
       "group": "voice",
       "kind": "generate-voice",
@@ -428,6 +480,7 @@
     {
       "id": "prop-cutout",
       "label": "Prop cutout",
+      "description": "Render one object and cut it out onto a transparent background.",
       "section": "prop",
       "group": "image",
       "kind": "cutout-chain",
@@ -468,6 +521,7 @@
     {
       "id": "scene-backdrop",
       "label": "Scene backdrop",
+      "description": "Paint a full-bleed 16:9 backdrop for sprites to perform in front of.",
       "section": "scene",
       "group": "backdrop",
       "kind": "generate-image",
