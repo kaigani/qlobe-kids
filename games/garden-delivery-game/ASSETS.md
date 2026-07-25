@@ -34,3 +34,9 @@ Voice lines:
 - Delivery three received. The plant says, two-hand service is five-star service!
 - Any spills get a friendly cleanup pit stop. Wipe them, then roll on.
 - Delivery Star badge awarded for careful garden service!
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

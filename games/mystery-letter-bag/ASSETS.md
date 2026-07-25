@@ -29,3 +29,9 @@
 - "Something in the bag says puh... puh. Which letter is hiding?"
 - "Something in the bag says nnn... nnn. Which letter is hiding?"
 - "Something in the bag says guh... guh. Which letter is hiding?"
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

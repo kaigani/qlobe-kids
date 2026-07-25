@@ -33,3 +33,9 @@
 - "There are five crackers at the picnic. The bird eats two crackers. Feed two to the bird."
 - "There are six grapes at the picnic. The bear eats three grapes. Feed three to the bear."
 - "There are six bananas at the picnic. The squirrel eats four bananas. Feed four to the squirrel."
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

@@ -22,3 +22,9 @@ runtime makes no network calls to any model or service.
 | Kitchen background (`assets/bg.jpg`) | Qwen Image Edit + Krea2 image models | Generated for this project | CC BY 4.0 | No | Soft-focus toy-style kitchen, 1280×800 |
 | Splash art (`assets/splash.jpg`) | Qwen Image Edit + Krea2 image models | Generated for this project | CC BY 4.0 | No | Title art baked in; bottom-center kept clear for the HTML mode buttons |
 | Voice clips (`assets/audio/*.m4a`, 60 + `manifest.json`) | Qwen3-TTS voice clone of the platform teacher voice | Generated for this project | CC BY 4.0 | No | One consistent warm teacher voice: intros, requests, yums, counts, cheers; every line QA round-tripped with Whisper transcription. Spoken text lives in `data/lines.json` |
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

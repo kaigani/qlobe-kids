@@ -27,3 +27,9 @@
 - "That one makes a funny song too. Listen again and tap this singer."
 - "Remix concert complete!"
 - Every praise line and `say` line in `config.js`.
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

@@ -33,3 +33,9 @@ Voice lines:
 - Slow and focused! Wobbles helped your balance learn.
 - Stop in the middle and balance for five slow breaths.
 - Hop off to a safe landing and say ta-da!
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

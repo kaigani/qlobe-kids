@@ -55,3 +55,9 @@
 - "Short shadow! Your evening shadow stays close. Make your body tall and check again!"
 - "Wiggly shadow! Your evening shadow bends with you. Wiggle together!"
 - "Hiding shadow! Your evening shadow is hard to find. Move to a sunnier spot with a grown-up!"
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

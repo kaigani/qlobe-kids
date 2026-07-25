@@ -18,6 +18,15 @@ pack.
 4. **Staged raws are never overwritten.** Each derivative is a new file that knows
    its source; a later pipeline stage never clobbers an earlier one.
 
+**`games/<id>/assets/og-image.jpg` is generated, not drawn.** It is the 1200×630
+link-preview shot of that game's own splash screen, produced by
+`tools/pipeline/capture_og_images.mjs` against a locally served copy of the repo
+(the tool rejects a blank render rather than writing a grey rectangle). It is
+committed, logged in the game's `ASSETS.md`, CC BY 4.0 like the art it shows, and
+pointed at by the game's `og:image` meta and by the Studio Games workspace.
+Regenerate it with the tool — never retouch it by hand:
+`node tools/pipeline/capture_og_images.mjs --only <id> --force`.
+
 ## The regen-recipe rule
 
 > Generated media that is **not committed** to the repository must carry a

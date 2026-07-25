@@ -34,3 +34,9 @@
 - "An orange has a light peel and air spaces. Does it sink or float?"
 - "A metal spoon is packed tight and heavy for its size. Does it sink or float?"
 - "A boat can be heavy, but its wide shape holds air and pushes lots of water. Does it sink or float?"
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

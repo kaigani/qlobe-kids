@@ -19,3 +19,9 @@ Teen Bead Builder adds no image files, recorded clips, downloaded assets, genera
 - golden unit bead art
 - Montessori teen board/numeral card art
 - recorded count-on voice lines
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

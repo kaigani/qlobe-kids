@@ -66,3 +66,9 @@ All current gameplay art is Unicode emoji rendered by the shared engine on soft 
 
 - Emoji glyph appearance depends on the device operating system. Unicode emoji are temporary references, not shipped third-party image assets.
 - Production art and recorded voice are not yet present. Document creator, source, license, attribution, and modifications here when the reviewer supplies them.
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

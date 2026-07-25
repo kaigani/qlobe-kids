@@ -85,3 +85,9 @@ white-outlined treatment to match the title art.
 - `shared/assets/ui/` — btn-home, btn-back, btn-sound, btn-play.
 - `shared/fonts/fredoka-latin-600-normal.woff2`.
 - `shared/js/sfx.js` (pop/boing/silly/tada/tick), `shared/js/speech.js` (fallback voice).
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

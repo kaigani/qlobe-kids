@@ -37,3 +37,9 @@
 - "Now pick the SILLY one. The baby was sleepy. Then the baby..."
 - "Now pick the SILLY one. Dad opened an umbrella in the rain. Then he..."
 - "Now pick the SILLY one. The child brushed their teeth. Then the teeth..."
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

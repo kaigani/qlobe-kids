@@ -4,6 +4,16 @@
 // consumes (reverse usage), a playtest link, and — for config.json games only
 // — a small editable Content panel.
 //
+// PREVIEWS (Feature L): a game's card and its dashboard header show the same
+// picture a shared link shows — `games/<id>/assets/og-image.jpg`, the 1200×630
+// splash shot produced by tools/pipeline/capture_og_images.mjs — plus the
+// `shareTitle`/`description` link copy from that game's game.json. This is
+// deliberately NOT the hub tile (that stays the catalog's job, in Library);
+// the Games workspace previews what the world sees when the link is shared.
+// The image path is deterministic, so cards render it optimistically and swap
+// in a designed placeholder on error; descriptions are hydrated from the
+// per-game manifests in a lazy, cancellable pass after the grid paints.
+//
 // mount(host, ctx) -> cleanup, matching the shell contract in studio.js and
 // the pattern established by workspaces/library.js and workspaces/production.js.
 // Games owns its own dashboard (a second in-workspace view, not openWorkspace)
@@ -23,6 +33,26 @@ const SEVERITY_RANK = { error: 0, warn: 1, info: 2 };
 const escapeHtml = (value) => {
   const node = document.createElement('span'); node.textContent = String(value ?? ''); return node.innerHTML;
 };
+
+// ---- link preview (og:image) ------------------------------------------------
+// Same file the game's own <meta property="og:image"> points at.
+const REPO_ROOT_URL = new URL('../../../../', import.meta.url);
+const ogImageUrl = (id) => new URL(`games/${id}/assets/og-image.jpg`, REPO_ROOT_URL).href;
+
+// Designed fallback for a game with no capture yet — inline SVG in the same
+// idiom as Library's placeholders, so it re-tones with the token block instead
+// of showing a broken-image box.
+const OG_PLACEHOLDER = `<div class="library-thumb-fill" data-placeholder>
+  <svg class="library-thumb-svg" viewBox="0 0 120 63" role="img" aria-hidden="true" focusable="false">
+    <rect x="6" y="8" width="108" height="47" fill="var(--sunken)" stroke="var(--muted-soft)" stroke-width="2"/>
+    <rect x="30" y="24" width="60" height="15" rx="7" fill="var(--muted-soft)"/>
+    <g fill="var(--card)"><rect x="41" y="30" width="12" height="3"/><rect x="45.5" y="25.5" width="3" height="12"/>
+    <circle cx="72" cy="29" r="3"/><circle cx="79" cy="35" r="3"/></g>
+  </svg></div>`;
+
+const previewHtml = (game) => `<img class="games-preview-img" loading="lazy" decoding="async"
+  src="${escapeHtml(ogImageUrl(game.id))}" data-og="${escapeHtml(game.id)}"
+  alt="${escapeHtml(`${game.title || game.id} splash screen`)}">`;
 
 function statusPill(status) {
   const value = String(status || '').toLowerCase();
@@ -53,6 +83,8 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
   let view = 'browse';    // 'browse' | 'dashboard'
   let currentDashboard = null; // the assembled dashboard record for the open game
   const validationCache = new Map(); // gameId -> {status:'idle'|'loading'|'done'|'error', report?, error?}
+  const manifestCache = new Map();   // gameId -> game.json object (or null when unreadable)
+  let hydrateToken = 0;              // guards the lazy description pass against a re-render
 
   const activeFacets = { category: 'all', status: 'all', engine: 'all', q: '' };
 
@@ -170,14 +202,31 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     }
   }
 
+  // ---- per-game manifest ------------------------------------------------------
+  // game.json is the canonical home of a game's link copy (shareTitle +
+  // description), so browse reads it too. Cached per id; the dashboard asks for
+  // a fresh copy so a server-side write (status flip, config save) is never read
+  // back stale.
+  async function loadManifest(id, { fresh = false } = {}) {
+    if (!fresh && manifestCache.has(id)) return manifestCache.get(id);
+    try {
+      const response = await fetch(new URL(`../../../../games/${id}/game.json`, import.meta.url), { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const manifest = await response.json();
+      manifestCache.set(id, manifest);
+      return manifest;
+    } catch (error) {
+      if (!manifestCache.has(id)) manifestCache.set(id, null);
+      throw error;
+    }
+  }
+
   // ---- per-game dashboard assembly -------------------------------------------
   async function buildDashboard(id) {
     const registryEntry = games.find((g) => g.id === id) || null;
     let manifest = null, manifestError = null;
     try {
-      const response = await fetch(new URL(`../../../../games/${id}/game.json`, import.meta.url), { cache: 'no-store' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      manifest = await response.json();
+      manifest = await loadManifest(id, { fresh: true });
     } catch (error) {
       manifestError = error.message;
     }
@@ -402,13 +451,18 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     const modes = Array.isArray(m.modes) ? m.modes : [];
 
     canvas.innerHTML = `
-      <div class="panel-section">
-        <h3>${escapeHtml(m.title || d.id)} <span class="hint">${escapeHtml(d.id)}</span></h3>
-        <p class="hint">category: ${escapeHtml(categoryTitle(m.category))} ·
-          <span class="status-pill${status.className ? ` ${status.className}` : ''}">${escapeHtml(status.text)}</span> ·
-          age ${escapeHtml(age)}</p>
-        ${m.description ? `<p class="hint">${escapeHtml(m.description)}</p>` : ''}
-        ${goals.length ? `<p class="hint"><strong>learning goals:</strong></p><ul>${goals.map((g) => `<li class="hint">${escapeHtml(g)}</li>`).join('')}</ul>` : ''}
+      <div class="panel-section games-hero">
+        <div class="games-hero-thumb">
+          ${previewHtml({ id: d.id, title: m.title || d.id })}
+        </div>
+        <div class="games-hero-body">
+          <h3 class="games-hero-title">${escapeHtml(m.shareTitle || m.title || d.id)}</h3>
+          <p class="hint">${escapeHtml(d.id)} · ${escapeHtml(categoryTitle(m.category))} ·
+            <span class="status-pill${status.className ? ` ${status.className}` : ''}">${escapeHtml(status.text)}</span> ·
+            age ${escapeHtml(age)}</p>
+          ${m.description ? `<p class="games-hero-desc">${escapeHtml(m.description)}</p>` : ''}
+          ${goals.length ? `<p class="hint"><strong>learning goals:</strong></p><ul>${goals.map((g) => `<li class="hint">${escapeHtml(g)}</li>`).join('')}</ul>` : ''}
+        </div>
       </div>
       ${statusSectionHtml(d)}
       <div class="panel-section">
@@ -436,32 +490,75 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
         <a class="button-link" href="/games/${encodeURIComponent(d.id)}/" target="_blank" rel="noopener">Play ▸</a>
       </div>
       ${contentSectionHtml(d)}`;
+    wirePreviewFallbacks();
   }
 
   // ---- browse rendering -----------------------------------------------------
+  // Image-led, matching Library's card anatomy: preview well (og splash shot +
+  // category badge), body (title, id, link description), foot (status, engine).
+  // data-type="game" borrows Library's green type badge and cover-fit rule.
   function cardHtml(game) {
     const pill = statusPill(game.status);
     return `
-      <article class="library-card" data-card="${escapeHtml(game.id)}" tabindex="0" role="button"
+      <article class="library-card" data-type="game" data-card="${escapeHtml(game.id)}" tabindex="0" role="button"
         aria-label="Open ${escapeHtml(game.title || game.id)}">
-        <div class="library-card-head">
+        <div class="library-thumb games-thumb">
           <span class="library-type">${escapeHtml(categoryTitle(game.category))}</span>
-          <span class="status-pill${pill.className ? ` ${pill.className}` : ''}">${escapeHtml(pill.text)}</span>
+          ${previewHtml(game)}
         </div>
-        <h3 class="library-card-title">${escapeHtml(game.title || game.id)}</h3>
-        <p class="hint">${escapeHtml(game.id)}</p>
+        <div class="library-card-body">
+          <h3 class="library-card-title">${escapeHtml(game.title || game.id)}</h3>
+          <p class="library-scope">${escapeHtml(game.id)}</p>
+          <p class="games-card-desc" data-desc="${escapeHtml(game.id)}"></p>
+        </div>
         <div class="library-card-foot">
+          <span class="status-pill${pill.className ? ` ${pill.className}` : ''}">${escapeHtml(pill.text)}</span>
           <span class="status-pill">${escapeHtml(game.engine || 'no engine')}</span>
         </div>
       </article>`;
   }
 
+  // A game whose splash has never been captured degrades to the designed
+  // placeholder rather than a broken-image box (Library's rule, same shape).
+  function wirePreviewFallbacks() {
+    for (const image of canvas.querySelectorAll('[data-og]')) {
+      image.addEventListener('error', () => {
+        const well = image.closest('.library-thumb, .games-hero-thumb');
+        if (!well) return;
+        image.remove();
+        well.insertAdjacentHTML('beforeend', OG_PLACEHOLDER);
+      }, { once: true });
+    }
+  }
+
+  // Lazy, cancellable description pass: the grid paints immediately from the
+  // registry, then each card's game.json fills in its link copy.
+  async function hydrateDescriptions(rows) {
+    const token = ++hydrateToken;
+    const queue = rows.slice();
+    const worker = async () => {
+      while (queue.length) {
+        if (destroyed || token !== hydrateToken) return;
+        const game = queue.shift();
+        let manifest = null;
+        try { manifest = await loadManifest(game.id); } catch { manifest = null; }
+        if (destroyed || token !== hydrateToken) return;
+        const node = canvas.querySelector(`[data-desc="${game.id}"]`);
+        if (node) node.textContent = manifest?.description || '';
+      }
+    };
+    await Promise.all(Array.from({ length: 6 }, worker));
+  }
+
   function renderBrowse() {
     const filtered = filter();
     if (!filtered.length) {
+      hydrateToken++;   // nothing on screen to fill in
       canvas.innerHTML = `<div class="empty-state"><div><h1>No matches</h1><p class="hint">Try clearing a facet or the search box.</p></div></div>`;
     } else {
       canvas.innerHTML = `<div class="library-grid">${filtered.map(cardHtml).join('')}</div>`;
+      wirePreviewFallbacks();
+      hydrateDescriptions(filtered).catch((error) => console.warn('Games: description hydration failed', error));
     }
     browseNav();
   }
@@ -614,6 +711,9 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     filterGames: (facets) => filter({ ...activeFacets, ...facets }),
     openGame: (id) => openGame(id),
     getDashboard: async (id) => ({ ...(await buildDashboard(id)), validation: validationCache.get(id) || null }),
+    // Feature L: link-preview surface (og splash shot + game.json link copy).
+    previewUrl: (id) => ogImageUrl(id),
+    getManifest: (id) => loadManifest(id).catch(() => null),
   };
 
   return () => {

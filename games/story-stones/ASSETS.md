@@ -49,3 +49,9 @@ large source PNGs. Their WebP finals can be regenerated resumably with
 The superseded Story Stones rig sheets, part cuts, rig manifests, v1 props, and
 v1 backdrop were removed after migration. Standard QLOBE puppet assets and
 their Rig/Animate workflow are unchanged.
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

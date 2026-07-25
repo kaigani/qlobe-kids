@@ -31,3 +31,9 @@ Voice lines:
 - Rescue round two! Ask a grown-up for warm water, then drip it slowly over the ice.
 - Rescue check! Look for cracks and wiggle the toy gently.
 - Victory! When the toy pops free, give your rescue team a giant cheer!
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

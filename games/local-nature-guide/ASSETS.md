@@ -34,3 +34,9 @@ Voice lines:
 - What a tour! Every treasure got its museum moment.
 - Ask your visitor for one question. It is okay to say, I do not know yet. Let us wonder together!
 - Guide badge ceremony! Ask your visitor to place an imaginary badge on your shirt and cheer, Nature Guide!
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

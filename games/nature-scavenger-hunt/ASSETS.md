@@ -36,3 +36,9 @@ Voice lines:
 - Find something soft. Touch it gently.
 - Find something cold. Touch it for just a moment.
 - Find something tickly. Now close your eyes and feel-test all your treasures.
+
+## Link preview (og:image)
+
+| Asset | Source | Creator | License | Attribution required | Modifications |
+|---|---|---|---|---|---|
+| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |

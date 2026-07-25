@@ -8,7 +8,7 @@
 // only hard breaks (missing folder/manifest, id/path disagreement, a referenced
 // runtime module that does not exist) are ERROR. Data is reported, never fixed.
 
-import { loadGamesRegistry, listGameIds, isFile, isDir, exists, tryReadJSON, isKebabId } from '../lib.mjs';
+import { loadGamesRegistry, listGameIds, isFile, isDir, exists, readText, tryReadJSON, isKebabId } from '../lib.mjs';
 
 const STATUS_VOCAB = new Set(['live', 'beta', 'in-design', 'proposed', 'archived']);
 
@@ -42,6 +42,33 @@ function validateRegistryWide(r) {
   r.info(`${games.length} registered game(s), ${categories.size} categories`);
 }
 
+// Feature L: per-game link metadata completeness, warn-level only.
+//   game.json  shareTitle + description  (the canonical link copy)
+//   index.html og:title/og:description/og:url + a twitter card
+//   assets/og-image.jpg + og:image        (the 1200×630 splash shot)
+// Only live/beta games are checked — in-design/proposed/archived games are not
+// shareable yet, and warning about them would be noise.
+const SHAREABLE = new Set(['live', 'beta']);
+
+function validateLinkMetadata(id, gj, r) {
+  const status = gj.status || null;
+  if (!SHAREABLE.has(status)) return;
+
+  if (typeof gj.shareTitle !== 'string' || !gj.shareTitle.trim()) r.warn('game.json has no shareTitle (link copy)');
+  if (typeof gj.description !== 'string' || !gj.description.trim()) r.warn('game.json has no description (link copy)');
+
+  const hasImage = isFile(`games/${id}/assets/og-image.jpg`);
+  if (!hasImage) r.warn('assets/og-image.jpg is missing (regen: tools/pipeline/capture_og_images.mjs)');
+
+  if (!isFile(`games/${id}/index.html`)) return; // already warned above
+  let html = '';
+  try { html = readText(`games/${id}/index.html`); } catch { return; }
+  const missing = ['og:title', 'og:description', 'og:url'].filter((tag) => !html.includes(`property="${tag}"`));
+  if (missing.length) r.warn(`index.html <head> is missing ${missing.join(', ')}`);
+  if (!html.includes('name="twitter:card"')) r.warn('index.html <head> is missing the twitter:card meta');
+  if (hasImage && !html.includes('property="og:image"')) r.warn('assets/og-image.jpg exists but index.html has no og:image');
+}
+
 function validatePerGame(subject, r) {
   const id = subject.id;
   const entry = subject.entry || {};
@@ -73,6 +100,12 @@ function validatePerGame(subject, r) {
   for (const c of Array.isArray(gj.characters) ? gj.characters : []) {
     if (typeof c === 'string' && isKebabId(c) && !isDir(`shared/characters/${c}`)) r.warn(`characters[] references unknown character "${c}"`);
   }
+
+  // Link metadata (Feature L). A game that is live or beta is shareable, so it
+  // owes the world a title, a description, a splash shot and the meta block that
+  // points at them. All WARN — copy and captures are authored work, and a
+  // missing one must never break the sweep or block an unrelated change.
+  validateLinkMetadata(id, gj, r);
   r.info(`${uses.length} uses[] entr${uses.length === 1 ? 'y' : 'ies'}, status ${gj.status || '?'}`);
 }
 
