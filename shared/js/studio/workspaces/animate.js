@@ -40,7 +40,7 @@ const optionList = (items, selected) =>
 // Ease names offered per key (mirrors the legacy EASES list; '' = auto/spline).
 const EASES = ['', 'linear', 'outQuad', 'outCubic', 'inOutSine', 'outBack', 'outElastic'];
 
-export async function mount(host, { params, toast }) {
+export async function mount(host, { params, toast, setNav, setParam }) {
   // Roster from the registry (type: character), falling back to the shared 8.
   let characterIds = RIGGED_CHARACTERS;
   try {
@@ -85,20 +85,25 @@ export async function mount(host, { params, toast }) {
         [data-workspace="animate"] .inherited-note { background:#fff3cf; border:2px solid var(--ink); padding:6px 8px; }
         [data-workspace="animate"] optgroup { font-weight:900; }
       </style>
-      <div class="workspace-tools">
-        <label style="flex-direction:row;align-items:center;gap:6px">Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
-        <label style="flex-direction:row;align-items:center;gap:6px">Clip<select data-clip style="min-width:150px"></select></label>
-        <button data-play class="save" title="Space">▶ Play</button>
-        <button data-stop class="ghost" title="Stop">■</button>
-        <span style="flex:1"></span>
-        <button data-undo class="ghost" title="Ctrl+Z">⟲ Undo</button>
-        <button data-reset class="ghost">Reset</button>
-        <button data-copy class="ghost">Copy JSON</button>
-        <button data-save class="save">▣ Save rig</button>
-        <button data-export class="warn">⬇ Export rig.json</button>
+      <div class="workspace-canvas" data-stage>
+        <div class="canvas-transport">
+          <button data-play class="save" title="Space">▶ Play</button>
+          <button data-stop class="ghost" title="Stop">■</button>
+          <span class="canvas-badge" data-badge>Animate · live puppet</span>
+        </div>
       </div>
-      <div class="workspace-canvas" data-stage><span class="canvas-badge" data-badge>Animate · live puppet</span></div>
       <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-session">
+            <label>Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
+            <label>Clip<select data-clip style="min-width:150px"></select></label>
+            <button data-undo class="ghost" title="Ctrl+Z">⟲ Undo</button>
+            <button data-reset class="ghost">Reset</button>
+            <button data-copy class="ghost">Copy JSON</button>
+            <button data-save class="save">▣ Save rig</button>
+            <button data-export class="warn">⬇ Export rig.json</button>
+          </div>
+        </div>
         <div class="panel-section" data-inherited hidden>
           <p class="inherited-note hint" style="margin:0">Inherited from a shared clip pack — read-only. Acting-pack clips resolve at runtime via theater.js. Editing them here is intentionally not offered (a rig-tuned copy already wins at runtime); duplicating one into rig.json would break reuse.</p>
         </div>
@@ -141,6 +146,8 @@ export async function mount(host, { params, toast }) {
   const stageHost = host.querySelector('[data-stage]');
   const el = (sel) => host.querySelector(sel);
   const fail = (error) => { console.error(error); toast(error.message, { error: true, duration: 7000 }); };
+  // Breadcrumbs: ANIMATE ▸ <char>, updated whenever the character switches.
+  const syncNav = () => setNav({ crumbs: [{ label: 'Animate' }, { label: charId }] });
 
   // ---- clip helpers ----------------------------------------------------------
   const currentClip = () => resolved[clip] || null;      // may be local OR inherited
@@ -470,8 +477,8 @@ export async function mount(host, { params, toast }) {
     stopPlay();
     charId = characterIds.includes(id) ? id : characterIds[0];
     el('[data-char]').value = charId;
-    params.set('char', charId);
-    const next = new URL(location.href); next.searchParams.set('char', charId); history.replaceState(null, '', next);
+    setParam('char', charId);       // shell choke point: syncs params + replaceState
+    syncNav();                      // crumbs track the selected character
     if (!keepUndo) undoStack.length = 0;
     artVersion = artVersion || Date.now();
     const base = charBase(charId);

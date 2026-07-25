@@ -44,7 +44,7 @@ const optionList = (items, selected) =>
   items.map(([value, label = value]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function mount(host, { params, toast }) {
+export async function mount(host, { params, toast, setNav, setParam }) {
   // Roster from the registry (type: character), falling back to the shared 8.
   let characterIds = RIGGED_CHARACTERS;
   try {
@@ -85,18 +85,23 @@ export async function mount(host, { params, toast }) {
         [data-workspace="speech"] .upload-panel { border-top:3px solid var(--ink); }
         [data-workspace="speech"] .job-line { font:600 12px ui-monospace,monospace; min-height:1.2em; }
       </style>
-      <div class="workspace-tools">
-        <label style="flex-direction:row;align-items:center;gap:6px">Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
-        <label style="flex-direction:row;align-items:center;gap:6px">Voice line<select data-voice style="min-width:170px"></select></label>
-        <button data-speak class="save" title="Space">▶ Speak</button>
-        <button data-stop class="ghost" title="Stop">■</button>
-        <span style="flex:1"></span>
-        <label style="flex-direction:row;align-items:center;gap:6px">Offset
-          <input type="range" data-offset min="-100" max="400" step="10" value="0" style="width:120px">
-          <span class="hint" data-offlabel>0 ms</span></label>
+      <div class="workspace-canvas" data-stage>
+        <div class="canvas-transport">
+          <button data-speak class="save" title="Space">▶ Speak</button>
+          <button data-stop class="ghost" title="Stop">■</button>
+          <span class="canvas-badge" data-badge>Speech · live puppet · viseme heads follow the cues</span>
+        </div>
       </div>
-      <div class="workspace-canvas" data-stage><span class="canvas-badge" data-badge>Speech · live puppet · viseme heads follow the cues</span></div>
       <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-session">
+            <label>Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
+            <label>Voice line<select data-voice style="min-width:170px"></select></label>
+            <label style="flex-direction:row;align-items:center;gap:6px">Offset
+              <input type="range" data-offset min="-100" max="400" step="10" value="0" style="width:120px">
+              <span class="hint" data-offlabel>0 ms</span></label>
+          </div>
+        </div>
         <div class="panel-section">
           <h2>Transcript</h2>
           <p class="transcript" data-transcript>—</p>
@@ -145,6 +150,8 @@ export async function mount(host, { params, toast }) {
   const el = (sel) => host.querySelector(sel);
   const stageHost = el('[data-stage]');
   const fail = (error) => { console.error(error); toast(error.message, { error: true, duration: 7000 }); };
+  // Breadcrumbs: SPEECH ▸ <char>, updated whenever the character switches.
+  const syncNav = () => setNav({ crumbs: [{ label: 'Speech' }, { label: charId }] });
   const currentLine = () => voiceLines[lineIndex] || null;
   const lineMap = (line) => (line?.cueMap === 'rhubarb' ? RHUBARB_TO_VISEME : VISEME_IDENTITY);
 
@@ -456,8 +463,8 @@ export async function mount(host, { params, toast }) {
     stopSpeech();
     charId = characterIds.includes(id) ? id : characterIds[0];
     el('[data-char]').value = charId;
-    params.set('char', charId);
-    const next = new URL(location.href); next.searchParams.set('char', charId); history.replaceState(null, '', next);
+    setParam('char', charId);       // shell choke point: syncs params + replaceState
+    syncNav();                      // crumbs track the selected character
     const base = charBase(charId);
     const text = await (await fetch(`${base}rig.json?v=${artVersion}`, { cache: 'no-store' })).text();
     rig = JSON.parse(text);

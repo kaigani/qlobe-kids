@@ -115,7 +115,7 @@ function renderMarkdownLite(markdown) {
     .map((para) => `<p class="hint">${escapeHtml(para).replace(/\n/g, '<br>')}</p>`).join('');
 }
 
-export async function mount(host, { params, toast, openWorkspace }) {
+export async function mount(host, { params, toast, openWorkspace, setNav, setParam }) {
   let destroyed = false;
   let modules = [];          // the enriched flat list of {id, kind, count, harness?, source, ...}
   let usageIndex = null;     // shared/data/usage-index.json
@@ -127,19 +127,20 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   host.innerHTML = `
     <div class="workspace library-workspace" data-workspace="modules">
-      <div class="workspace-tools">
-        <label>Kind<select data-facet="kind">
-          <option value="all">All kinds</option>
-          <option value="engine">Engines</option>
-          <option value="service">Services</option>
-          <option value="stage">Stage</option>
-          <option value="template">Templates</option>
-        </select></label>
-        <label class="library-search">Search<input type="search" data-facet="q" placeholder="search by module name…" autocomplete="off"></label>
-        <span class="status-pill" data-count>0 modules</span>
-      </div>
       <div class="workspace-canvas library-canvas" data-grid></div>
       <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-filters">
+            <label>Kind<select data-facet="kind">
+              <option value="all">All kinds</option>
+              <option value="engine">Engines</option>
+              <option value="service">Services</option>
+              <option value="stage">Stage</option>
+              <option value="template">Templates</option>
+            </select></label>
+            <label class="library-search">Search<input type="search" data-facet="q" placeholder="search by module name…" autocomplete="off"></label>
+          </div>
+        </div>
         <div class="panel-section">
           <h2>Modules</h2>
           <p class="hint">Engines, services, stage modules and templates — the shared code every game is built
@@ -152,7 +153,6 @@ export async function mount(host, { params, toast, openWorkspace }) {
     </div>`;
 
   const grid = host.querySelector('[data-grid]');
-  const countPill = host.querySelector('[data-count]');
   const serverHint = host.querySelector('[data-server-hint]');
   const detailHost = host.querySelector('[data-detail]');
   const facetEl = (name) => host.querySelector(`[data-facet="${name}"]`);
@@ -301,11 +301,19 @@ export async function mount(host, { params, toast, openWorkspace }) {
       </article>`;
   }
 
+  function updateNav() {
+    const n = filter().length;
+    const crumbs = selectedId
+      ? [{ label: 'Modules', onClick: () => selectModule(null) }, { label: selectedId }]
+      : [{ label: 'Modules' }];
+    setNav({ crumbs, count: `${n} module${n === 1 ? '' : 's'}` });
+  }
+
   function render() {
     const filtered = filter();
-    countPill.textContent = `${filtered.length} module${filtered.length === 1 ? '' : 's'}`;
     if (!filtered.length) {
       grid.innerHTML = '<div class="empty-state"><div><h1>No matches</h1><p class="hint">Try a different kind or search term.</p></div></div>';
+      updateNav();
       return;
     }
     grid.innerHTML = `<div class="library-grid">${filtered.map(cardHtml).join('')}</div>`;
@@ -318,6 +326,7 @@ export async function mount(host, { params, toast, openWorkspace }) {
         if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectModule(card.dataset.card); }
       });
     }
+    updateNav();
   }
 
   // ---- detail (selection only — never an editor) ---------------------------
@@ -351,8 +360,9 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   function selectModule(id) {
     selectedId = id;
-    const mod = modules.find((item) => item.id === id) || null;
+    const mod = id ? modules.find((item) => item.id === id) : null;
     detailHost.innerHTML = detailHtml(mod);
+    updateNav();
   }
 
   // ---- facet wiring ------------------------------------------------------

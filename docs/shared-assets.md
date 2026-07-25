@@ -52,7 +52,7 @@ Path resolvers (the single home for these conventions):
 | Word — celebratory | `shared/assets/audio/celebrate/` | `<word>.m4a` | 133 |
 | Word — prompt | `shared/assets/audio/prompts/` | `<word>.m4a` | 133 |
 | Misc chrome | `shared/assets/audio/misc/` | named clips | 8 |
-| Teacher voice | warm preschool-teacher clone; ref lives in the private production notes | — | — |
+| Teacher voice | warm preschool-teacher clone; ref committed at `shared/assets/refs/voice-teacher.wav` | — | — |
 
 `shared/assets/audio/manifest.json` indexes every clip (`{file, dur}`), keyed by
 category; `_v` bumps on each audio release.

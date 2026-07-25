@@ -1,0 +1,517 @@
+{
+  "format": "qlobe-generate-templates",
+  "formatVersion": 1,
+  "styles": {
+    "toy-table": {
+      "label": "Toy Table",
+      "status": "proven",
+      "suffix": "Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "refs": { "style": "shared:refs/bus.png" },
+      "provenance": "The shared hub STYLE constant, unchanged across the category-tile, game-tile, hub-asset and puppet-band production runs (2026). bus.png is the object-card anchor the 134-piece shared object library was matched against."
+    },
+    "storybook": {
+      "label": "Storybook",
+      "status": "proven",
+      "suffix": "cosy children's picture-book illustration, hand-painted gouache and coloured-pencil texture on warm paper, chunky charcoal contours, charming imperfect brush marks, warm muted palette, gentle and emotionally warm.",
+      "provenance": "Distilled from the Story Stones backdrop corpus (the constant Style/medium clause across every setting prompt) and the approved dragon concept gate; the game-specific \"matching the approved Story Stones seed 1337 art direction\" tail is dropped so the suffix travels."
+    },
+    "story-screen": {
+      "label": "Story Screen (video key)",
+      "status": "proven",
+      "suffix": "preschool-TV warmth, a soft rounded muppet-style character with visible felt and fur texture, static camera, warm even key light, shallow depth so the character reads first. Premium preschool learning app asset, no text, no letters, no words.",
+      "provenance": "The key-image half of the video-caller pipeline: camera-facing muppet busts generated as talking source frames, then driven to video offline."
+    },
+    "field-journal": {
+      "label": "Field Journal",
+      "status": "unproven",
+      "suffix": "soft gouache and watercolour nature illustration on warm cream paper #f7f1e3, the look of a naturalist's notebook; leaf greens, sky blues and earth browns; visible paper grain, light pencil under-drawing showing through, quieter and more textured than the other worlds. No text, no letters, no words.",
+      "provenance": "Drafted from the Field Journal world description in the art-direction doc. Never run — flip status to proven after the first accepted generation."
+    },
+    "paper-garden": {
+      "label": "Paper Garden",
+      "status": "unproven",
+      "suffix": "cut-paper collage: construction-paper shapes with visible fibre texture, slightly imperfect torn and scissor-cut edges, layered like a classroom wall display with soft shadows between the layers; saturated kraft-paper brights on a warm cream field; handmade warmth. No text, no letters, no words.",
+      "provenance": "Drafted from the Paper Garden world description in the art-direction doc. Never run — flip status to proven after the first accepted generation."
+    }
+  },
+  "templates": [
+    {
+      "id": "menu-category-tile",
+      "label": "Category tile",
+      "section": "menu",
+      "group": "game-chooser",
+      "kind": "generate-image",
+      "workflow": "krea2-turbo-t2i",
+      "width": 768,
+      "height": 640,
+      "seed": 42,
+      "prompt": "{subject} {style.suffix}",
+      "fields": [
+        {
+          "name": "subject",
+          "label": "Tile subject",
+          "type": "textarea",
+          "required": true,
+          "help": "One cheerful still-life that stands for the whole category. Objects only, no children, no lettering."
+        }
+      ],
+      "styles": ["toy-table"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "An open picture book lying on sunny green grass with big glossy toy alphabet blocks stacked beside it, blue sky with puffy clouds behind.",
+        "A giant friendly red crayon drawing a wavy rainbow line across white paper, with colorful playdough balls and a chunky pencil nearby.",
+        "Chunky glossy toy counting blocks with colorful counting beads and a small wooden abacus, arranged playfully on a soft pale blue background.",
+        "A cheerful yellow watering can sprinkling water on a small potted green plant, with neatly folded cloths and a little broom beside it.",
+        "A big round magnifying glass examining a cute red ladybug on a green leaf, with smooth pebbles and a seashell nearby, soft background.",
+        "A magical open storybook with a tiny fairytale castle, sparkling stars and a crescent moon popping up from its pages, warm sunset clouds behind.",
+        "A friendly smiling toy globe of the earth with a little red airplane flying around it and tiny landmarks, on a soft sky-blue background.",
+        "A colorful painter's palette with a paintbrush, a small red drum and a yellow tambourine, with floating musical notes, soft background.",
+        "A happy green frog hopping over a colorful hopscotch path on sunny grass, with a red ball and orange cones nearby, blue sky.",
+        "Two cute round fluffy monsters, one pink and one teal, sharing a warm hug with a small glossy heart floating above them, soft lavender background."
+      ],
+      "assignHint": "Hub tiles are curated by hand. Generation stages into the media bucket only — never assign a tile into the hub tile folder; hand the accepted file to the maintainer instead.",
+      "provenance": "The ten category-art prompts and the shared hub STYLE suffix, transcribed from the category-art production run (2026)."
+    },
+    {
+      "id": "menu-game-tile",
+      "label": "Game tile",
+      "section": "menu",
+      "group": "game-chooser",
+      "kind": "generate-image",
+      "workflow": "krea2-turbo-t2i",
+      "width": 768,
+      "height": 640,
+      "seed": 42,
+      "prompt": "{subject} {style.suffix}",
+      "fields": [
+        {
+          "name": "subject",
+          "label": "Tile subject",
+          "type": "textarea",
+          "required": true,
+          "help": "The single most recognisable moment of the game, staged as objects. A child should guess the game from the picture alone."
+        }
+      ],
+      "styles": ["toy-table"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "A child's hand reaching into a soft polka-dot drawstring bag, feeling a chunky wooden letter shape hidden inside.",
+        "A stubby yellow chalk piece sweeping a big loopy swirl across a dark green chalkboard, dust flying.",
+        "A springy green frog leaping between round lily-pad stepping stones stretched in a line across a pond.",
+        "A child-safe wooden knife spreading jam on toast beside a peeled banana on a wooden cutting board.",
+        "Two friendly felt hand puppets, a fox and a rabbit, chatting above a tiny cardboard stage.",
+        "A child's long blue shadow stretched across sunny pavement, reaching toward a bright chalk sun."
+      ],
+      "assignHint": "Hub tiles are curated by hand. Generation stages into the media bucket only — never assign a tile into the hub tile folder; hand the accepted file to the maintainer instead.",
+      "provenance": "The 100-entry game-tile catalogue run (2026): one prompt per game, the shared hub STYLE suffix appended. Six representative prompts kept as examples."
+    },
+    {
+      "id": "menu-splash-title",
+      "label": "Splash title art",
+      "section": "menu",
+      "group": "game-splash",
+      "kind": "generate-image",
+      "workflow": "qwen-image-edit",
+      "seed": 42,
+      "prompt": "Remove everything except the large glossy title lettering that reads '{title}'. Show ONLY that logo text, enlarged and centered on a pure solid white background. Keep the exact same colorful glossy 3D bubble-letter style and the same letter colors as the reference. No tagline, no game tiles, no buttons, no icons, no background pattern.",
+      "fields": [
+        {
+          "name": "title",
+          "label": "Title text",
+          "type": "text",
+          "required": true,
+          "help": "Exactly as it is lettered on the concept screen, including capitalisation."
+        }
+      ],
+      "refs": { "style": "shared:refs/concept-screen.png" },
+      "refSlots": [
+        {
+          "name": "style",
+          "label": "Concept screen",
+          "required": true,
+          "from": "media",
+          "gallery": ["media", "shared:refs"],
+          "help": "The concept screen carrying the title art. Defaults to the shared concept-screen anchor; point it at the game's own concept for a real splash."
+        }
+      ],
+      "styles": ["toy-table", "storybook"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "QLOBE Kids",
+        "Lunchbox Pack",
+        "Sound Sprouts"
+      ],
+      "provenance": "The wordmark isolation edit from the hub-asset run, plus the splash-cleanup edit from the Lunchbox concept run. This template deliberately does not append a style suffix: it is a reference-driven edit, so the world comes from the concept screen, and a suffix ending in \"no text\" would fight a wordmark."
+    },
+    {
+      "id": "menu-splash-background",
+      "label": "Splash background",
+      "section": "menu",
+      "group": "game-splash",
+      "kind": "generate-image",
+      "workflow": "krea2-turbo-t2i",
+      "width": 1344,
+      "height": 768,
+      "seed": 42,
+      "prompt": "{subject} A full-bleed game splash background. No characters, no text and no UI baked in — the welcome card and the controls sit on top. {style.suffix}",
+      "fields": [
+        {
+          "name": "subject",
+          "label": "Scene",
+          "type": "textarea",
+          "required": true,
+          "help": "The mood the game opens on. Keep the middle of the frame calm — the welcome card lands there."
+        }
+      ],
+      "styles": ["toy-table", "storybook", "field-journal", "paper-garden"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "A soft papercraft and felt rolling-hills scene: blue sky, clay clouds, layered green hills and low bushes.",
+        "A sunlit classroom corner seen from across the room, a low shelf of trays and a rug, everything soft and out of the way.",
+        "A wide meadow at golden hour, long grass, a few round trees on the horizon, nothing in the middle of the frame."
+      ],
+      "assignHint": "Splash backgrounds are full-bleed and load on first paint — keep the accepted file under about 300 KB.",
+      "provenance": "The Sand Tray Letters welcome background run. The source run generated at 1216x832; this template uses the platform 16:9 backdrop size instead so splash and scene art share one shape."
+    },
+    {
+      "id": "menu-ui-button",
+      "label": "Shared UI button",
+      "section": "menu",
+      "group": "shared-ui",
+      "kind": "generate-image",
+      "workflow": "qwen-image-edit",
+      "seed": 42,
+      "prompt": "Replace the icon on this button with {glyph}. Keep the ringed glossy button exactly as it is: the same round ring, the same glossy highlight, the same thickness and proportions, the same soft shadow. Recolor the ring and face to {color}. Centered, isolated on a pure solid white background. {style.suffix}",
+      "fields": [
+        {
+          "name": "glyph",
+          "label": "Icon",
+          "type": "text",
+          "required": true,
+          "help": "One simple shape a pre-reader recognises instantly — a house, a speaker, two arrows."
+        },
+        {
+          "name": "color",
+          "label": "Button color",
+          "type": "text",
+          "default": "warm orange"
+        }
+      ],
+      "refSlots": [
+        {
+          "name": "style",
+          "label": "Existing button to restyle",
+          "required": true,
+          "gallery": ["shared:ui"],
+          "default": "shared:ui/btn-home.png",
+          "help": "Which button in the shared UI set the edit runs against. Its ring weight, gloss and proportions are what the new icon inherits — pick the one closest in shape to what you want."
+        }
+      ],
+      "styles": ["toy-table"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "a simple house with a pitched roof",
+        "a speaker with two sound waves",
+        "two arrows crossing in a shuffle",
+        "a right-pointing play triangle",
+        "a left-pointing back arrow"
+      ],
+      "assignHint": "The shared UI set is platform furniture. Match the existing ring weight exactly or the button row will look uneven; assign into the shared UI folder only after comparing side by side.",
+      "provenance": "The ringed glossy HUD button style established for Sound Sprouts (orange home, blue sound, purple shuffle, green play) and carried by the shared UI set. No literal prompt string survives in the game's asset log — this is the closest proven language, rebuilt around the existing button as the reference."
+    },
+    {
+      "id": "character-body-sheet",
+      "label": "Puppet body sheet",
+      "section": "character",
+      "group": "puppet",
+      "kind": "generate-image",
+      "workflow": "qwen-image-edit",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "refs": {
+        "style": "shared:refs/puppet-parts-template.png"
+      },
+      "prompt": "Replace the teddy bear in this puppet parts sheet with {character}: {description}. Keep this parts sheet exactly as it is and change only who it is a sheet of. The same ten separate pieces stay in the same ten positions, at the same sizes, with the same outlines and the same silhouettes: the head, the torso, the four arm pieces in the middle row and the four leg pieces in the bottom row. Every piece keeps the shape of the piece it replaces, so a bare limb tube stays a bare limb tube and a piece that ends in a hand or a foot keeps that hand or foot. The head piece is only a head. Nothing is added, moved, resized, merged or left out, and no two pieces touch. Recolour all ten pieces, the bottom row included, into the new character — its colours, its texture, its face and its costume — and leave no piece in the old character's colours. Flat solid uniform grey background, no gradient, no texture, no drop shadows, no grid lines, no labels, no text. {style.suffix} The reference sheet is drawn in flat neutral grey on purpose: it carries the layout and nothing else, so take every shape from it and every colour from the description above.",
+      "fields": [
+        {
+          "name": "character",
+          "label": "Character",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "textarea",
+          "required": true,
+          "help": "Species, colours, costume, and the one detail that makes this character recognisable at thumbnail size. Describe the whole character — the sheet's ten pieces are cut from it, so anything you leave out gets invented per part."
+        }
+      ],
+      "styles": ["toy-table", "storybook"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "a friendly young green dragon with warm orange wing membranes and back spines, expressive gentle eyes, rounded preschool proportions and a distinct curled tail",
+        "a soft honey-brown teddy bear in a red knitted scarf, round muzzle, small rounded ears",
+        "a slim orange fox in a blue dungaree, white chest and tail tip, alert upright ears"
+      ],
+      "assignHint": "The sheet is a source image, not a shipped asset. Run the studio's body-sheet extraction over the accepted file — QC requires exactly ten connected subject components before the parts are sliced. Check by eye which pieces carry an extremity: only the two inner pieces of the middle row may end in a hand and only the 2nd and 4th of the bottom row may end in a foot. That is the one thing this edit gets wrong often enough to matter, and it is a reroll (seed 42 then 1337 then 9001), not a fixable crop.",
+      "provenance": "The puppet rig spec's canvas and A-pose contract plus the pipeline's ten-part QC gate, reworked in Phase 6 from a text-to-image description into an edit against a committed layout reference. Written text could not put ten parts in the slicer's ten cells, so shared:refs/puppet-parts-template.png carries the structure and the style suffix carries only the rendering; the layout reference governs where the parts sit and the style governs how they are painted, which is why both styles stay selectable on that footing. Two findings paid for from real runs: naming the parts positionally (\"1st a plain upper arm, 2nd a lower arm with a hand\") makes the model apply one answer to a whole row and is worse than the generic \"a bare limb tube stays a bare limb tube\" sentence kept here; and the reference's own palette is inherited piece for piece, so the committed sheet is desaturated to neutral grey and the prompt says so."
+    },
+    {
+      "id": "character-viseme-grid",
+      "label": "Puppet viseme grid",
+      "section": "character",
+      "group": "puppet",
+      "kind": "generate-image",
+      "workflow": "qwen-image-edit",
+      "seed": 42,
+      "refs": {
+        "style": "shared:refs/viseme-grid-template.png"
+      },
+      "prompt": "Redraw the character in this reference image as a labelled 3 by 3 grid of nine puppet heads. Keep the character exactly as the reference shows it — same colours, same fur or skin texture, same eyes, same ears, same muzzle, same headwear, same art style — and change nothing but the mouth. Nine cells in three even rows of three on one flat uniform mid-grey ground: the same head at the same size, upright, front-facing and centred in every cell, with clear grey between the cells so that no two heads touch. Each head differs from the others only in the shape of its mouth. Under each head, in the empty grey below it and clear of the ears, print that cell's short mouth-shape label in plain grey capitals. The nine mouth shapes, in reading order left to right and top to bottom, are: {visemes}. Those codes are phonetic, and no two of the nine may look alike: a is a wide open jaw, o is a small tight round pucker, e is a wide open smile shape, wr is rounded and pushed forward, ts is a narrow slit showing the teeth, ln shows the tongue tip up behind open teeth, uq is a very small tight pucker, mbp is the lips fully pressed shut with no opening at all, and fv is the top teeth resting on the lower lip. Flat solid uniform grey background, no gradient, no drop shadows, no cell borders or grid lines, no other text.",
+      "fields": [
+        {
+          "name": "visemes",
+          "label": "Viseme order",
+          "type": "text",
+          "default": "a, o, e, wr, ts, ln, uq, mbp, fv",
+          "help": "The canonical nine, in the order the slicer reads cells. Change this only if the rig's viseme set changes."
+        }
+      ],
+      "refSlots": [
+        {
+          "name": "style",
+          "label": "Body sheet",
+          "required": false,
+          "from": "media",
+          "gallery": ["media", "shared:refs"],
+          "help": "The accepted body sheet or head for this character — this is what the grid takes its identity from, so supply it for any real run. Left empty it falls back to the committed layout reference, which only demonstrates the nine-cell structure."
+        }
+      ],
+      "styles": ["toy-table", "storybook"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "a, o, e, wr, ts, ln, uq, mbp, fv"
+      ],
+      "assignHint": "Slice the accepted grid with the studio's nine-head extraction — the slicer locates the largest component per cell and excludes the label, so the labels never reach a shipped tile.",
+      "provenance": "The puppet pipeline's viseme stage: a labelled 3x3 grid generated against the body sheet, then sliced 1:1 onto 1024 square tiles and layer-extracted. Like the splash title, this edit inherits its world from the reference image, so no style suffix is appended — the grid's labels would fight one. Reworked in Phase 6 to name the nine-cell layout the slicer expects and to default the reference to shared:refs/viseme-grid-template.png, the committed labelled grid. Note the one-image constraint: the edit workflow takes a single reference through refs.style, so structure and identity cannot both be passed as pictures — the run-time slot supersedes the layout default, and the layout then lives in the prompt alone."
+    },
+    {
+      "id": "character-pose",
+      "label": "Character pose sprite",
+      "section": "character",
+      "group": "pose",
+      "kind": "cutout-chain",
+      "workflow": "krea2-turbo-t2i",
+      "target": "character",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "pad": 12,
+      "prompt": "{character}, {description}, in the {pose} pose: {action}. Show the complete character as the clear central subject in a natural, readable full-body silhouette, with enough separation from the environment to isolate it as a sprite. Original character design. No words, letters, logo, watermark, UI, border, collage, extra characters, or cropped body parts. {style.suffix}",
+      "fields": [
+        {
+          "name": "character",
+          "label": "Character",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "textarea",
+          "required": true,
+          "help": "Keep this byte-identical across all six poses or the sprites will not read as one character."
+        },
+        {
+          "name": "pose",
+          "label": "Pose",
+          "type": "select",
+          "default": "neutral",
+          "options": [
+            { "value": "neutral", "label": "Neutral — the resting pose" },
+            { "value": "enter", "label": "Enter — arriving on stage" },
+            { "value": "notice", "label": "Notice — something caught its eye" },
+            { "value": "interact", "label": "Interact — reaching for something" },
+            { "value": "react", "label": "React — surprised or delighted" },
+            { "value": "celebrate", "label": "Celebrate — the win" }
+          ]
+        },
+        {
+          "name": "action",
+          "label": "Pose direction",
+          "type": "text",
+          "default": "standing relaxed, facing the viewer, weight even on both feet",
+          "help": "What the body is actually doing. The examples below are the six that match the pose list."
+        }
+      ],
+      "styles": ["storybook", "toy-table"],
+      "defaultStyle": "storybook",
+      "exampleField": "action",
+      "examples": [
+        "standing relaxed, facing the viewer, weight even on both feet",
+        "stepping in from the side mid-stride, leading foot forward, body turning to face the viewer",
+        "head up and turned, eyebrows raised, looking off to one side at something just out of frame",
+        "leaning in with both hands reaching out toward something at chest height",
+        "rocking back a step, hands up and open, mouth open in a delighted gasp",
+        "both arms thrown up, up on the toes, mid-jump with a wide open smile"
+      ],
+      "assignHint": "All six poses of one character share a baseline and an anchor — generate the whole set before assigning any of them, or the paper-pop swap will visibly jump.",
+      "provenance": "The six semantic poses the storybook pose builder normalises (neutral, enter, notice, interact, react, celebrate) and the approved storybook character concept language. The pose builder is a deterministic post-process over existing alpha cutouts and carries no prompt of its own; the generation half is reconstructed from the concept gate that produced its source art."
+    },
+    {
+      "id": "character-video-key",
+      "label": "Video key image",
+      "section": "character",
+      "group": "video",
+      "kind": "generate-image",
+      "workflow": "krea2-turbo-t2i",
+      "width": 1280,
+      "height": 720,
+      "seed": 42,
+      "prompt": "{character}, {setting}. A camera-facing bust: head and shoulders filling the frame, looking straight down the lens, mouth open mid-word as a talking source frame. {style.suffix}",
+      "fields": [
+        {
+          "name": "character",
+          "label": "Character",
+          "type": "textarea",
+          "required": true,
+          "help": "The puppet and everything that makes it itself — colour, texture, eyes, headwear."
+        },
+        {
+          "name": "setting",
+          "label": "Setting",
+          "type": "text",
+          "default": "in its own setting, softly out of focus behind it"
+        }
+      ],
+      "styles": ["story-screen"],
+      "defaultStyle": "story-screen",
+      "examples": [
+        "a shaggy teal monster with big friendly eyes and a wide grin, in a cluttered workshop",
+        "a small round yellow bird with a tuft on its head, on a sunny balcony rail",
+        "a purple puppet with floppy ears and a knitted scarf, in a cosy reading nook"
+      ],
+      "assignHint": "This is the first frame of a talking clip, not a shipped picture. The image-to-video and post-process steps run offline; pin the first and last frame to this image so cue clips loop back to rest.",
+      "provenance": "The portrait step of the video-caller pipeline: camera-facing muppet busts in-setting with the mouth open, used as the talking source frame for image-to-video with baked audio."
+    },
+    {
+      "id": "character-voice-line",
+      "label": "Character voice line",
+      "section": "character",
+      "group": "voice",
+      "kind": "generate-voice",
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "prompt": "{text}",
+      "fields": [
+        {
+          "name": "text",
+          "label": "Line to speak",
+          "type": "textarea",
+          "required": true,
+          "help": "Write it the way it should sound, punctuation and all. End on a full stop or an exclamation mark — a trailing comma clips the last word."
+        }
+      ],
+      "refs": { "voice": "shared:refs/voice-teacher.wav" },
+      "examples": [
+        "Can you make cat?",
+        "You made cat!",
+        "Ooh, that's a real word too!",
+        "Tap the box to open your prize!",
+        "Let's try that one again."
+      ],
+      "assignHint": "Transcribe every clip back with speech-to-text and compare it against this text before accepting. A clip that fails the comparison is a retry on the next seed, not a fix in the game.",
+      "provenance": "The platform voice conventions: the teacher voice clone at seed 7, with 8 and 9 as the retry ladder, rendered to FLAC and converted to AAC for delivery. Clips outside roughly 0.2 to 9 seconds are rejected."
+    },
+    {
+      "id": "prop-cutout",
+      "label": "Prop cutout",
+      "section": "prop",
+      "group": "image",
+      "kind": "cutout-chain",
+      "workflow": "krea2-turbo-t2i",
+      "target": "prop",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "pad": 12,
+      "prompt": "{prop}, isolated, centered. {style.suffix}",
+      "fields": [
+        {
+          "name": "prop",
+          "label": "Prop",
+          "type": "textarea",
+          "required": true,
+          "help": "One object, described plainly. No hands holding it, no surface under it — the chain cuts it out."
+        }
+      ],
+      "styles": ["toy-table", "storybook", "field-journal", "paper-garden"],
+      "defaultStyle": "toy-table",
+      "examples": [
+        "a toy clarinet, black with silver keys, held-at-angle",
+        "a small golden toy saxophone",
+        "a shiny golden toy trumpet",
+        "a silver toy flute, held at a slight angle",
+        "a cute rounded golden french horn",
+        "a small wooden acoustic toy guitar",
+        "a small toy keyboard piano with rainbow keys on a little stand",
+        "a rainbow xylophone on a small wooden stand",
+        "a pair of toy bongo drums on a little stand",
+        "a small marching drum with two drumsticks resting on top",
+        "a pair of shiny golden toy cymbals",
+        "a pair of colorful painted maracas"
+      ],
+      "provenance": "The twelve-prop instrument run: subject, then \"isolated, centered\", then the world suffix. The dark charcoal ground the extraction needs is appended by the server for every cutout chain, so it is deliberately absent here — writing it into the prompt would double it."
+    },
+    {
+      "id": "scene-backdrop",
+      "label": "Scene backdrop",
+      "section": "scene",
+      "group": "backdrop",
+      "kind": "generate-image",
+      "workflow": "krea2-turbo-t2i",
+      "width": 1344,
+      "height": 768,
+      "seed": 42,
+      "prompt": "Use case: illustration-story. Asset type: 16:9 game backdrop. Primary request: {setting}. Style/medium: {style.suffix} Composition/framing: {framing}. Lighting/mood: {mood}. Constraints: environment only; preserve a clear open floor for separately composited sprites. Avoid: characters, creatures, people, food or loose hero objects in the performance area, text, letters, logo, watermark, UI, border, collage, photorealism, 3D.",
+      "fields": [
+        {
+          "name": "setting",
+          "label": "Setting",
+          "type": "textarea",
+          "required": true,
+          "help": "The place, then one detail that makes this variant of it different from the others."
+        },
+        {
+          "name": "framing",
+          "label": "Composition / framing",
+          "type": "text",
+          "default": "wide 16:9 view with a broad uncluttered lower-centre performance clearing and environmental detail around the edges"
+        },
+        {
+          "name": "mood",
+          "label": "Lighting / mood",
+          "type": "text",
+          "default": "honey-gold light, gentle, magical, welcoming for ages 3-7"
+        }
+      ],
+      "styles": ["storybook", "toy-table", "field-journal", "paper-garden"],
+      "defaultStyle": "storybook",
+      "variants": {
+        "toy-table": {
+          "prompt": "{setting}, {mood}, THE CENTER OF THE FRAME IS OPEN EMPTY STAGE (sprites will stand there), no characters, no loose objects in the middle. {style.suffix}"
+        }
+      },
+      "examples": [
+        "Amber Acorn Village, a tiny woodland village of acorn-roof cottages, winding paths, mossy fences, and a broad empty village green; amber leaves twinkling at the edges.",
+        "Bluebell Acorn Village, a tiny woodland village of acorn-roof cottages, winding paths, mossy fences, and a broad empty village green; bluebells nodding beside the path.",
+        "Bubble Acorn Village, a tiny woodland village of acorn-roof cottages, winding paths, mossy fences, and a broad empty village green; round dewdrops shining like bubbles.",
+        "a cheerful concert stage for a puppet show, a big soft rainbow arching across the sky behind the stage, fluffy 3D clouds, warm stage lights from above, round pastel stage floor"
+      ],
+      "assignHint": "Backdrops are full-bleed and the heaviest thing a game loads — keep the accepted file under about 300 KB.",
+      "provenance": "The Story Stones backdrop slot template, label for label, with the three varying clauses opened up as fields; the Toy Table variant is the puppet-band stage background, whose open-centre instruction is shouted in the original and kept that way."
+    }
+  ]
+}

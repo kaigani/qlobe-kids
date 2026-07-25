@@ -49,13 +49,17 @@ async function normalizePose(file) {
   return new Promise((resolve,reject)=>canvas.toBlob((blob)=>blob?resolve(blob):reject(new Error('Could not encode the pose WebP.')),'image/webp',.92));
 }
 
-export async function mount(host,{params,toast,openWorkspace}){
+export async function mount(host,{params,toast,openWorkspace,setNav,setParam}){
   const projects=await loadStudioProjects();
   let project=projects.find((item)=>item.id===params.get('project')&&item.workspaces?.assemble)||projects.find((item)=>item.id==='story-stones');
   let actorId=params.get('char')||'dragon', actorPack=null, build=null;
   let poseId=params.get('pose')||'neutral', poseManifest=null, poseStage=null, poseTheater=null, poseActor=null;
-  host.innerHTML=`<div class="workspace" data-workspace="assemble"><div class="workspace-tools"><label>Project<select data-project>${projectOptions(projects,'assemble',project.id)}</select></label><span data-profile class="canvas-badge"></span><button data-save class="save">Save build manifest</button></div><div class="workspace-canvas" data-canvas></div><aside class="workspace-inspector" data-inspector></aside></div>`;
+  // The session panel lives OUTSIDE [data-inspector] so load()'s inspector.innerHTML
+  // rebuilds never wipe the project select / Save button.
+  host.innerHTML=`<div class="workspace" data-workspace="assemble"><div class="workspace-canvas" data-canvas></div><aside class="workspace-inspector"><div class="panel-section"><div class="sidebar-session"><label>Project<select data-project>${projectOptions(projects,'assemble',project.id)}</select></label><span data-profile class="status-pill"></span><button data-save class="save">Save build manifest</button></div></div><div data-inspector></div></aside></div>`;
   const canvasHost=host.querySelector('[data-canvas]'), inspector=host.querySelector('[data-inspector]');
+  // Breadcrumbs: <Assemble label> ▸ <project>, refreshed whenever the project changes.
+  const syncNav=()=>setNav({crumbs:[{label:project.workspaces?.assemble?.label||'Assemble'},{label:project.label||project.id}]});
   async function loadPoseLibrary(ws){
     host.querySelector('[data-profile]').textContent='Whole-image story poses';
     host.querySelector('[data-save]').hidden=false;
@@ -64,8 +68,7 @@ export async function mount(host,{params,toast,openWorkspace}){
     const actorDef=actorPack.actors[actorId], actorBase=new URL(actorDef.base,packUrl), manifestUrl=new URL(actorDef.manifest||'poses.json',actorBase);
     poseManifest=await fetch(manifestUrl,{cache:'no-store'}).then(r=>r.json());
     poseId=poseManifest.poses[poseId]?poseId:Object.keys(poseManifest.poses)[0]; build=poseManifest;
-    params.set('project',project.id);params.set('char',actorId);params.set('pose',poseId);
-    const next=new URL(location.href);next.searchParams.set('project',project.id);next.searchParams.set('char',actorId);next.searchParams.set('pose',poseId);history.replaceState(null,'',next);
+    setParam('project',project.id);setParam('char',actorId);setParam('pose',poseId);
 
     poseTheater?.destroy(); poseStage?.destroy(); poseTheater=poseStage=poseActor=null;
     canvasHost.innerHTML='<span class="canvas-badge">Runtime preview · paper-pop transition</span>';
@@ -78,7 +81,7 @@ export async function mount(host,{params,toast,openWorkspace}){
     const poseEntries=Object.entries(poseManifest.poses);
     inspector.innerHTML=`<div class="panel-section"><h2>Pose Library</h2><p class="hint">Each semantic pose is a complete illustration. Story cues swap the image with the exact runtime paper-pop transition shown at left.</p><label>Actor<select data-actor>${optionList(Object.entries(actorPack.actors).map(([id,a])=>[id,a.label]),actorId)}</select></label><div class="pose-grid">${poseEntries.map(([id,def])=>`<button class="pose-card${id===poseId?' selected':''}" data-pose="${id}"><img src="${new URL(def.art,manifestUrl).href}" alt="${def.alt||id}"><span>${id}</span></button>`).join('')}</div></div><div class="panel-section"><h3>${poseId} pose</h3><label>Replace transparent pose image<input type="file" accept="image/png,image/webp" data-file></label><button data-upload>Normalize + replace pose</button><label>Accessible description<input data-alt value="${poseManifest.poses[poseId].alt||''}"></label><div class="field-grid"><label>Anchor X<input type="number" step="0.01" data-anchor-x value="${poseManifest.anchor?.[0]??.5}"></label><label>Anchor Y<input type="number" step="0.01" data-anchor-y value="${poseManifest.anchor?.[1]??.95}"></label></div><label>Paper-pop duration (ms)<input type="number" min="0" step="10" data-duration value="${poseManifest.transition?.durationMs||220}"></label><p class="hint">Images are normalized to a fixed 1024×1024 canvas and a shared baseline before saving.</p></div>`;
     inspector.querySelector('[data-actor]').onchange=(event)=>{actorId=event.target.value;poseId='neutral';load().catch(fail);};
-    inspector.querySelectorAll('[data-pose]').forEach((button)=>button.onclick=async()=>{poseId=button.dataset.pose;params.set('pose',poseId);await poseTheater.setSpritePose(poseActor,poseId);drawPoseInspector().catch(fail);});
+    inspector.querySelectorAll('[data-pose]').forEach((button)=>button.onclick=async()=>{poseId=button.dataset.pose;setParam('pose',poseId);await poseTheater.setSpritePose(poseActor,poseId);drawPoseInspector().catch(fail);});
     inspector.querySelector('[data-upload]').onclick=async()=>{try{
       const file=inspector.querySelector('[data-file]').files[0];if(!file)throw new Error('Choose a transparent PNG or WebP first.');
       const blob=await normalizePose(file), artPath=`games/${project.id}/assets/pose-actors/${actorId}/poses/${poseId}.webp`;
@@ -96,6 +99,7 @@ export async function mount(host,{params,toast,openWorkspace}){
   }
   async function savePoseManifest(){syncPoseFields();await saveDocument(`games/${project.id}/assets/pose-actors/${actorId}/poses.json`,poseManifest);build=poseManifest;}
   async function load(){
+    syncNav();
     const ws=project.workspaces.assemble;
     if(ws.profile==='pose-library'){await loadPoseLibrary(ws);return;}
     host.querySelector('[data-profile]').textContent=ws.profile==='scene-actor'?'Flexible Scene Actor':'Canonical 10-part Puppet';
@@ -109,8 +113,7 @@ export async function mount(host,{params,toast,openWorkspace}){
     actorId=actorPack.actors[actorId]?actorId:Object.keys(actorPack.actors)[0];
     const actor=actorPack.actors[actorId], actorBase=new URL(actor.base,packUrl);
     build=await fetch(new URL('build.json',actorBase),{cache:'no-store'}).then(r=>r.json());
-    params.set('project',project.id);params.set('char',actorId);
-    const next=new URL(location.href);next.searchParams.set('project',project.id);next.searchParams.set('char',actorId);history.replaceState(null,'',next);
+    setParam('project',project.id);setParam('char',actorId);
     const sourceUrl=new URL(build.source,actorBase).href;
     canvasHost.innerHTML=`<div class="flex-build-preview"><img data-source src="${sourceUrl}?v=${Date.now()}" alt="${build.label} separated source sheet"><canvas data-overlay></canvas></div>`;
     inspector.innerHTML=`<div class="panel-section"><h2>Flexible Scene Actor</h2><p class="hint">Ingest any alpha-separated part sheet, inspect detected islands, then fine-tune its arbitrary hierarchy and animation in Rig/Animate.</p><label>Actor<select data-actor>${optionList(Object.entries(actorPack.actors).map(([id,a])=>[id,a.label]),actorId)}</select></label><label>Replace transparent source PNG<input type="file" accept="image/png" data-file></label><button data-upload>Save source + labeled cuts</button><div class="row"><a class="button-link" href="?workspace=rig&project=${project.id}&char=${actorId}">Open Rig</a><a class="button-link" href="?workspace=animate&project=${project.id}&char=${actorId}">Open Animate</a></div></div><div class="panel-section"><h3>Detected build manifest</h3><p class="hint" data-qc>Analyzing alpha islands…</p><textarea data-json>${JSON.stringify(build,null,2)}</textarea></div>`;
@@ -127,7 +130,7 @@ export async function mount(host,{params,toast,openWorkspace}){
     const image=canvasHost.querySelector('[data-source]');image.onload=()=>{const boxes=alphaBoxes(image),overlay=canvasHost.querySelector('canvas');overlay.width=image.naturalWidth;overlay.height=image.naturalHeight;const ctx=overlay.getContext('2d');ctx.strokeStyle='#ffd91f';ctx.lineWidth=5;ctx.font='bold 26px sans-serif';ctx.fillStyle='#111';boxes.forEach((entry,index)=>{const [x,y,r,b]=entry.box;ctx.strokeRect(x,y,r-x,b-y);ctx.fillText(String(index+1),x+8,y+30);});inspector.querySelector('[data-qc]').textContent=`PASS · ${boxes.length} alpha-separated parts · source ${image.naturalWidth}×${image.naturalHeight}`;};
   }
   function fail(error){console.error(error);toast(error.message,{error:true,duration:7000});}
-  host.querySelector('[data-project]').onchange=(event)=>{project=projects.find((item)=>item.id===event.target.value);actorId='dragon';params.set('project',project.id);params.delete('char');params.delete('pose');const next=new URL(location.href);next.searchParams.set('project',project.id);next.searchParams.delete('char');next.searchParams.delete('pose');history.replaceState(null,'',next);openWorkspace('assemble').catch(fail);};
+  host.querySelector('[data-project]').onchange=(event)=>{project=projects.find((item)=>item.id===event.target.value);actorId='dragon';setParam('project',project.id);setParam('char',null);setParam('pose',null);openWorkspace('assemble').catch(fail);};
   host.querySelector('[data-save]').onclick=async()=>{try{if(project.workspaces.assemble.profile==='pose-library'){await savePoseManifest();toast('Pose manifest saved',{kind:'success'});}else{build=JSON.parse(inspector.querySelector('[data-json]').value);await saveDocument(`games/${project.id}/assets/actors/${actorId}/build.json`,build);toast('Build manifest saved',{kind:'success'});}}catch(error){fail(error);}};
   await load();
   window.QLOBE_STUDIO_DEBUG={workspace:'assemble',getDocument:()=>build,getState:()=>({project:project.id,actor:actorId,profile:project.workspaces.assemble.profile})};

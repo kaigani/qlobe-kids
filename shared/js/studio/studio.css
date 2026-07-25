@@ -1,13 +1,17 @@
 /* When you change this file, bump the ?v= query on its <link> in index.html.
-   A stale browser cache once showed a false-broken layout (Phase 2). Current: v2. */
+   A stale browser cache once showed a false-broken layout (Phase 2). Current: v9. */
 :root {
   --ink:#111; --paper:#f7f7f4; --white:#fff; --yellow:#ffd91f;
   --blue:#3c83e7; --pale-blue:#b9d9ff; --orange:#ff681f; --red:#ff4135;
   --green:#92df80; --rule:3px solid var(--ink);
 }
 * { box-sizing:border-box; }
+/* Author display rules (flex/grid) silently beat the UA's [hidden] style —
+   this guard makes the hidden attribute always win (bit us in WP-C when all
+   four production tab-tool clusters rendered at once). */
+[hidden] { display:none !important; }
 html, body { width:100%; height:100%; }
-body { margin:0; display:grid; grid-template-rows:auto 1fr; color:var(--ink);
+body { margin:0; display:grid; grid-template-rows:auto auto auto 1fr; color:var(--ink);
   background:var(--paper); overflow:hidden;
   font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace; font-weight:700; }
 button, select, input, textarea { font:inherit; color:inherit; }
@@ -53,11 +57,46 @@ button:disabled { background:#bbb; color:#666; cursor:not-allowed; transform:non
   box-shadow:6px 6px 0 var(--ink); text-transform:uppercase; font-size:12px; }
 #studio-toast.error { background:#ff9d91; }
 
+/* Secondary nav (workspace internal views) — same nav language as #workspace-nav:
+   flat white tabs, ink rules, yellow active. Collapses when a workspace sets no
+   tabs (the [hidden] row folds to a 0-height grid track). */
+#studio-subnav { z-index:19; display:flex; align-items:stretch; min-height:44px;
+  background:var(--white); border-bottom:var(--rule); overflow-x:auto; }
+#studio-subnav[hidden] { display:none; }
+#studio-subnav button[role="tab"] { min-height:44px; border:0; border-right:var(--rule);
+  padding:6px 16px; background:var(--white); color:var(--ink); white-space:nowrap; }
+#studio-subnav button[role="tab"].on { background:var(--yellow); color:var(--ink); }
+
+/* Breadcrumb row — paper background, always visible while a workspace is mounted.
+   ▸ separators, a removable ?project chip, and a right-aligned count pill. */
+#studio-crumbs { z-index:18; display:flex; align-items:center; gap:7px; min-height:38px;
+  padding:5px 12px; background:var(--paper); border-bottom:var(--rule); overflow-x:auto; }
+#studio-crumbs[hidden] { display:none; }
+.crumb { display:inline-flex; align-items:center; min-height:26px; padding:3px 9px;
+  border:2px solid var(--ink); background:var(--white); color:var(--ink);
+  font-size:11px; font-weight:900; text-transform:uppercase; white-space:nowrap; }
+.crumb-current { border-color:transparent; background:transparent; }
+.crumb-sep { color:var(--ink); opacity:.45; font-size:12px; }
+.crumb-chip { display:inline-flex; align-items:center; gap:6px; min-height:26px;
+  padding:3px 3px 3px 9px; border:2px solid var(--ink); background:var(--pale-blue);
+  font-size:10px; font-weight:900; text-transform:uppercase; white-space:nowrap; }
+.crumb-chip .crumb-chip-x { min-height:20px; padding:0 6px; border:0; border-radius:0;
+  background:var(--ink); color:#fff; font-size:12px; line-height:1; }
+.crumb-count { margin-left:auto; }
+
+/* Shared authoring classes consumed by the per-workspace migrations (WP-B/C/D):
+   the sidebar filter/session panels and the canvas transport overlay. Defined
+   here in the shell so every workspace inherits one visual language. */
+.sidebar-filters { display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:end; }
+.sidebar-filters .wide { grid-column:1 / -1; }
+.sidebar-session { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.canvas-transport { position:absolute; left:12px; bottom:12px; z-index:5;
+  display:flex; align-items:center; gap:8px; }
+.canvas-transport .canvas-badge { position:static; left:auto; bottom:auto; }
+
 /* Native workspace primitives shared by Props, Stage and Music Sync. */
 .workspace { height:100%; display:grid; grid-template-columns:minmax(0,1fr) 430px;
-  grid-template-rows:auto 1fr; grid-template-areas:"tools tools" "canvas inspector"; }
-.workspace-tools { grid-area:tools; min-height:52px; display:flex; align-items:center;
-  gap:8px; padding:6px 10px; border-bottom:var(--rule); background:var(--white); overflow-x:auto; }
+  grid-template-rows:1fr; grid-template-areas:"canvas inspector"; }
 .workspace-canvas { grid-area:canvas; position:relative; min-width:0; min-height:0;
   background:#e9e9e6; overflow:hidden; }
 .workspace-canvas canvas { display:block; width:100%; height:100%; }
@@ -107,8 +146,13 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 @media (max-width:760px) {
   .studio-bar { overflow-x:auto; }
   .studio-brand span:last-child, .studio-status { display:none; }
-  .workspace { grid-template-columns:1fr; grid-template-rows:auto minmax(45%,1fr) minmax(260px,45%);
-    grid-template-areas:"tools" "canvas" "inspector"; }
+  /* Shell rows keep their horizontal scroll and tighten up; the count pill drops. */
+  #studio-subnav { min-height:40px; }
+  #studio-subnav button[role="tab"] { min-height:40px; }
+  #studio-crumbs { min-height:32px; }
+  .crumb-count { display:none; }
+  .workspace { grid-template-columns:1fr; grid-template-rows:minmax(45%,1fr) minmax(260px,45%);
+    grid-template-areas:"canvas" "inspector"; }
   .workspace-inspector { border-left:0; border-top:var(--rule); }
 }
 
@@ -135,7 +179,10 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
   .library-grid { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
 }
 
-/* Library workspace media objects + "+ Generate" flow (WP-5c). */
+/* Media cards — rendered by lib/generate-core.js createMediaController(), so the
+   Library (read-only) and the Generate workspace (full review queue) share one
+   card language. The "library-" prefix is historical: the markup was extracted
+   from library.js in Phase 6 and kept its class names. */
 .library-media-card { position:relative; }
 .library-badge-unassigned { font-size:9px; text-transform:uppercase; letter-spacing:.06em;
   padding:3px 6px; border:2px solid var(--ink); background:var(--orange); color:#fff; }
@@ -152,23 +199,127 @@ textarea { min-height:92px; resize:vertical; font-size:11px; }
 .library-provenance-step { margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed var(--ink); }
 .library-provenance-step:last-of-type { border-bottom:0; margin-bottom:0; padding-bottom:0; }
 .library-media-qa-thumb { display:block; max-width:140px; margin-top:4px; border:2px solid var(--ink); }
+/* The thumbnail is a button (it opens the preview overlay) but must look exactly
+   like the bare <img> it replaced — no chrome, no lift on hover. */
+.library-media-thumb-btn { display:block; width:100%; min-height:0; padding:0; border:0;
+  background:none; cursor:zoom-in; }
+.library-media-thumb-btn:hover, .library-media-thumb-btn:active { filter:none; transform:none; }
+.library-media-thumb-btn:hover .library-media-thumb { border-color:var(--blue); }
+.library-media-stages { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+.library-media-stage-link { min-height:26px; padding:3px 8px; font-size:9px; }
 
-.library-generate-modal { position:fixed; inset:0; z-index:60; display:grid; place-items:center;
-  background:rgba(17,17,17,.55); padding:20px; }
-.library-generate-modal[hidden] { display:none; }
-.library-generate-panel { width:min(480px,100%); max-height:88vh; overflow:auto; background:#fff;
-  border:var(--rule); box-shadow:8px 8px 0 var(--ink); padding:16px; }
-.library-generate-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-.library-generate-head h3 { margin:0; font:900 18px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
-.library-generate-head button { min-height:32px; padding:4px 10px; }
+/* Template form (Phase 6) — rendered by workspaces/lib/generate-core.js
+   templateFormHtml(). One renderer for every template, so these classes are the
+   only form styling the Generate workspace needs. */
+.gen-form { display:flex; flex-direction:column; gap:2px; }
+.gen-form-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+.gen-form-head h3 { margin:0; font:900 16px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; }
+.gen-form-head .status-pill { font-size:9px; }
+.gen-form-warn { border-left:4px solid var(--orange); padding-left:8px; }
+.gen-form-badge { display:inline-block; padding:2px 5px; border:2px solid var(--ink);
+  background:var(--orange); color:#fff; font-size:9px; text-transform:uppercase; letter-spacing:.06em; }
+.gen-form-refs { margin-top:4px; }
+/* A refSlot with declared gallery sources: read-only value + "Choose…". The div
+   has to reproduce the plain <label> stack it replaced (label rule, :120). */
+.gen-ref-slot { display:flex; flex-direction:column; gap:4px; margin:4px 0; font-size:10px; }
+.gen-ref-label { text-transform:uppercase; letter-spacing:.06em; }
+.gen-ref-row { display:flex; align-items:center; gap:6px; }
+.gen-ref-row input { flex:1 1 auto; min-width:0; }
+.gen-ref-thumb-slot:empty { display:none; }
+.gen-ref-thumb { display:block; width:38px; height:38px; object-fit:contain;
+  border:2px solid var(--ink); background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/12px 12px repeat; }
+.gen-ref-choose { flex:0 0 auto; min-height:30px; padding:4px 9px; font-size:9px; }
+.gen-form-examples { margin-top:8px; }
+.gen-form-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.gen-form-chip { min-height:28px; max-width:100%; padding:4px 8px; font-size:9px;
+  text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Full-screen overlay (Phase 6, E/F) — ONE singleton in lib/generate-core.js with
+   two content modes: an asset preview (with the cutout chain's stage tabs) and the
+   refSlot reference-gallery chooser. Above the shell chrome (bar z-20) but under
+   the toast (z-100), so an error raised while it is open still reads. */
+.studio-overlay { position:fixed; inset:0; z-index:60; display:grid; place-items:center; padding:24px; }
+.studio-overlay-backdrop { position:absolute; inset:0; background:rgba(17,17,17,.72); }
+.studio-overlay-panel { position:relative; display:flex; flex-direction:column; gap:10px;
+  width:min(1100px,100%); max-height:100%; padding:14px; border:var(--rule);
+  background:var(--white); box-shadow:9px 9px 0 rgba(17,17,17,.35); }
+.studio-overlay-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.studio-overlay-titles { min-width:0; }
+.studio-overlay-titles h2 { margin:0; font:900 18px/1.15 Impact,'Arial Black',sans-serif;
+  text-transform:uppercase; letter-spacing:.03em; overflow-wrap:anywhere; }
+.studio-overlay-titles .hint { margin:4px 0 0; }
+.studio-overlay-close { flex:0 0 auto; min-width:38px; padding:6px 10px; font-size:14px; line-height:1; }
+.studio-overlay-body { min-height:0; overflow:auto; display:flex; flex-direction:column; gap:10px; }
+
+/* Preview mode: stage tabs, a contain-fit image, a filename caption. Stages that
+   carry alpha sit on a checkerboard so transparency is visible, not guessed. */
+.studio-preview-tabs { display:flex; flex-wrap:wrap; gap:6px; }
+/* .ghost is declared after button.on in the base layer, so the active tab needs
+   its own rule to win. */
+.studio-preview-tab { min-height:30px; padding:4px 10px; font-size:10px; }
+.studio-preview-tab.on { background:var(--yellow); color:var(--ink); }
+.studio-preview-figure { margin:0; min-height:0; display:grid; place-items:center;
+  padding:8px; border:2px solid var(--ink); background:var(--paper); }
+.studio-preview-figure[data-checker="on"] {
+  background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/22px 22px repeat; }
+.studio-preview-figure img { display:block; max-width:100%; max-height:64vh; object-fit:contain; }
+.studio-preview-caption { margin:0; overflow-wrap:anywhere; }
+
+/* Gallery mode: one grid per declared source. */
+.studio-gallery-group { display:flex; flex-direction:column; gap:6px; }
+.studio-gallery-group h3 { margin:0; font-size:9px; text-transform:uppercase; letter-spacing:.1em; opacity:.55; }
+.studio-gallery-grid { display:grid; gap:8px; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); }
+.studio-gallery-item { display:flex; flex-direction:column; align-items:center; gap:4px;
+  min-height:0; padding:6px; border:2px solid var(--ink); background:var(--white);
+  color:var(--ink); text-transform:none; font-size:9px; }
+.studio-gallery-item img { display:block; width:100%; aspect-ratio:1; object-fit:contain;
+  background:conic-gradient(#d7d3c6 0 25%, #f4f1e8 0 50%) 0 0/14px 14px repeat; }
+.studio-gallery-item span { overflow-wrap:anywhere; text-align:center; }
+.studio-gallery-item.on { background:var(--yellow); }
+.studio-gallery-advanced { border:2px solid var(--ink); background:var(--paper); padding:8px; }
+.studio-gallery-advanced summary { cursor:pointer; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+.studio-gallery-freetext { display:flex; gap:6px; margin-top:8px; }
+.studio-gallery-freetext input { flex:1 1 auto; min-width:0; }
+
+/* Generate workspace (Phase 6) — a template rail beside a form pane, the outputs
+   that template has made, and the Review queue. Media cards reuse the
+   .library-media-* language above; the form reuses .gen-form-*. */
+.generate-workspace.workspace { grid-template-columns:minmax(0,1fr) 320px; }
+.generate-canvas { background:var(--paper); }
+.generate-body { height:100%; display:grid; grid-template-columns:230px minmax(0,1fr); }
+/* Review hides the rail; a display:none grid item is not placed, so without this
+   the main pane would drop into the 230px rail track. */
+.generate-body[data-rail="off"] { grid-template-columns:minmax(0,1fr); }
+.generate-rail { min-width:0; overflow:auto; display:flex; flex-direction:column; gap:12px;
+  padding:10px; background:var(--white); border-right:var(--rule); }
+.generate-rail-head { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.generate-rail-head strong { font:900 14px/1 Impact,'Arial Black',sans-serif; text-transform:uppercase; letter-spacing:.05em; }
+.generate-rail-head button { min-height:26px; padding:3px 8px; font-size:9px; }
+.generate-rail-group { display:flex; flex-direction:column; gap:5px; }
+.generate-rail-group h3 { margin:0; font-size:9px; text-transform:uppercase; letter-spacing:.1em; opacity:.55; }
+.generate-rail-item { display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  min-height:0; padding:6px 8px; border:2px solid var(--ink); background:var(--white);
+  color:var(--ink); text-align:left; text-transform:none; }
+.generate-rail-item strong { font-size:11px; overflow-wrap:anywhere; }
+.generate-rail-item span { font-size:9px; text-transform:uppercase; opacity:.6; }
+.generate-rail-item.on { background:var(--yellow); }
+.generate-main { min-width:0; overflow:auto; }
+.generate-pane { display:flex; flex-direction:column; gap:12px; padding:14px; }
+.generate-pane [data-form-host] { max-width:760px; }
+.generate-pane .empty-state { min-height:240px; }
+.generate-job-status { margin:0; padding-left:8px; border-left:4px solid var(--blue); }
+.generate-outputs h3 { margin:0 0 8px; font:900 14px/1 Impact,'Arial Black',sans-serif;
+  text-transform:uppercase; letter-spacing:.05em; }
+.generate-media-item { display:flex; flex-direction:column; gap:6px; }
+.generate-assign-hint { margin:0; }
 @media (max-width:760px) {
-  .library-generate-panel { width:100%; }
+  .generate-workspace.workspace { grid-template-columns:1fr; }
+  .generate-body { grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr); }
+  .generate-rail { max-height:190px; border-right:0; border-bottom:var(--rule); }
 }
 
 /* Production workspace (WP-3c) — job queue, validation, completeness, usage index. */
 .production-workspace.workspace { grid-template-columns:minmax(0,1fr) 360px; }
-.production-tabs { display:flex; gap:4px; }
-.production-tabs button { min-height:36px; padding:6px 10px; font-size:11px; }
 .production-canvas { overflow:auto; background:var(--paper); padding:14px; display:flex; flex-direction:column; gap:10px; }
 .production-canvas [data-panel] { display:flex; flex-direction:column; gap:10px; }
 .production-canvas [data-panel][hidden] { display:none; }

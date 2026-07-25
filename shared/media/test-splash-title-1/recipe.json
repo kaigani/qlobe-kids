@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "test-splash-title-1",
+  "kind": "image",
+  "asset": "test-splash-title-1.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Remove everything except the large glossy title lettering that reads 'Sound Sprouts'. Show ONLY that logo text, enlarged and centered on a pure solid white background. Keep the exact same colorful glossy 3D bubble-letter style and the same letter colors as the reference. No tagline, no game tiles, no buttons, no icons, no background pattern.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "shared:refs/concept-screen.png"
+  },
+  "template": {
+    "id": "menu-splash-title",
+    "style": "toy-table",
+    "fields": {
+      "title": "Sound Sprouts"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-07-25"
+}

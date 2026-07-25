@@ -4,9 +4,9 @@
 //   node tools/validate/run.mjs [target] [--json] [--assets] [--audio]
 //
 // target = a format name (character, voice-pack, pose-actor, prop-pack,
-//   scene-pack, music-sync, story-pack, studio-projects, registry) or one of
-//   their aliases, OR a game id / character id / object id, OR omitted for a
-//   full sweep.
+//   scene-pack, music-sync, story-pack, studio-projects, registry,
+//   generate-templates) or one of their aliases, OR a game id / character id /
+//   object id, OR omitted for a full sweep.
 //
 // Output: grouped human findings + a summary, or a machine report with --json
 // (consumed by POST /api/studio/validate → the Production dashboard). Exit code
@@ -25,9 +25,11 @@ import storyPack from './validators/story-pack.mjs';
 import studioProjects from './validators/studio-projects.mjs';
 import registry from './validators/registry.mjs';
 import recipe from './validators/recipe.mjs';
+import generateTemplates from './validators/generate-templates.mjs';
 
 const VALIDATORS = [
   character, voicePack, poseActor, propPack, scenePack, musicSync, storyPack, studioProjects, registry, recipe,
+  generateTemplates,
 ];
 
 const args = process.argv.slice(2);

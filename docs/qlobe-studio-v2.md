@@ -252,12 +252,12 @@ One legacy naming wart, kept for compatibility: `POST /api/studio/asset`
 uploads **Media** (raw image bytes) in this glossary's terms — the endpoint
 name predates the glossary and keeps its path.
 
-## 5. Information architecture — four domains
+## 5. Information architecture — five domains
 
 Primary navigation for Studio v2:
 
 ```
-LIBRARY     MODULES     GAMES     PRODUCTION
+GENERATE     LIBRARY     MODULES     GAMES     PRODUCTION
 ```
 
 Each domain is a stable map of one part of the platform; opening an object
@@ -335,13 +335,60 @@ tools under `tools/`, and the staging conventions in `../02-generated/`.
 
 The studio provides: the job queue (persistent, batched by workflow type,
 §10), validation dashboard (§8), completeness/usage reports, and the pipeline
-runbook. "Generate" is an action available wherever media can be supplied
-(character workspace, game dashboard), queued through this domain — not a
-separate wizard.
+runbook. Generate is its own domain (§5.5), owning the template catalogue and
+the review loop; Production keeps the queue those jobs run through and
+reports their status. Inline "generate this" affordances on an object remain
+legitimate — they enqueue through the same endpoint — but they are no
+longer the only route in.
 
 Explicitly not: builds or release channels. Publishing is a `games.json`
 status flip; deployment is git push to GitHub Pages. The studio reports
 status; it does not push.
+
+### 5.5 Generate
+
+The means of production: every generative call the studio can make is a
+registry template (§7.7), and this domain is where a template is picked,
+filled in, and run.
+
+Maps to: `shared/data/generate-templates.json` (the template + style
+registry), `shared/media/` (where a run lands before it is assigned), and
+the authoring server's generate endpoint (`POST /api/studio/generate`,
+`GET /api/studio/templates`) feeding the same job system Production
+displays.
+
+The studio provides five tabs. **Menu**, **Character**, **Prop**, and
+**Scene** each hold a left rail of that section's groups and templates plus
+a form pane: the selected template's fields, its style picker, `examples[]`
+chips that fill the big field, an id and seed, and a Generate button, with a
+"Recent outputs" strip of what that template has already produced beneath
+it. **Review** is the whole unassigned-media queue, independent of section:
+provenance, accept, reject, assign, regenerate, over everything sitting in
+`shared/media/` waiting for a home.
+
+The review loop is the domain's other half. **Provenance** opens the full
+recipe — every step, prompt, seed, and QA result. **Regenerate** re-enqueues
+the frozen recipe, not the live template (§7.7). **Accept** marks QA
+approved; **Reject** moves the folder to a git-ignored trash. **Assign
+to…** moves the asset and its recipe sidecar into `shared/assets/…`, a
+game's `assets/`, or a character folder, appending the provenance line to
+the destination's `ASSETS.md`.
+
+`DEFAULT_WORKSPACE` deliberately stays `rig`, not Generate: Generate is
+first in presentation, but it needs both the authoring server and the LAN
+GenAI host reachable, which makes it a poor no-server landing default.
+
+Under static preview (no authoring server), Generate still browses the
+registry and renders every form from the committed
+`shared/data/generate-templates.json` — only the actions that would enqueue
+a job disable.
+
+Explicitly not: a prompt scratchpad. The client supplies field values and a
+style choice, never prompt material — the server expands the committed
+template at enqueue, so the registry's transcribed prompts are the only
+prompts that ever run (§7.7). Hub tiles are never auto-assigned out of
+Review; the menu-tile templates carry an `assignHint` routing the accepted
+file to the maintainer by hand instead.
 
 ## 6. Data-model conventions
 
@@ -497,6 +544,110 @@ earlier stages — each derivative is a new file that knows its source);
 unchanged (a new seed is an explicit edit). Voice recipes record the QA
 transcript comparison; image cutouts record the alpha histogram.
 
+### 7.7 `qlobe-generate-templates` v1 (Phase 6)
+
+The committed registry of generation recipes at
+`shared/data/generate-templates.json` — one file, one static fetch, one
+validator subject. A year of proven prompts previously lived in throwaway
+shell scripts, per-game asset logs, and agent memory; this format is where
+they live now. The name deliberately avoids "templates" alone, which already
+means the game scaffolds under `templates/`.
+
+A **style** is an art world (§ art-direction): a label, a status, and the
+prompt suffix that makes an image belong to that world. A **template** is a
+prompt with holes in it, plus the workflow, dimensions, seed, and references
+needed to run it. The two are orthogonal — one scene backdrop template
+crossed with four styles is four looks, not four templates.
+
+```json
+{
+  "format": "qlobe-generate-templates", "formatVersion": 1,
+  "styles": {
+    "toy-table": { "label": "Toy Table", "status": "proven",
+                   "suffix": "Bright, soft 3D cartoon style…, no text.",
+                   "refs": { "style": "shared:refs/bus.png" } },
+    "field-journal": { "label": "Field Journal", "status": "unproven",
+                       "suffix": "soft gouache and watercolour…" }
+  },
+  "templates": [{
+    "id": "scene-backdrop", "label": "Scene backdrop",
+    "section": "scene", "group": "backdrop",
+    "kind": "generate-image", "workflow": "krea2-turbo-t2i",
+    "width": 1344, "height": 768, "seed": 42,
+    "prompt": "Use case: illustration-story. Primary request: {setting}. Style/medium: {style.suffix} Lighting/mood: {mood}. Avoid: text, watermark, UI.",
+    "fields": [
+      { "name": "setting", "label": "Setting", "type": "textarea", "required": true },
+      { "name": "mood", "label": "Lighting / mood", "type": "text", "default": "honey-gold light, gentle" }
+    ],
+    "styles": ["storybook", "toy-table", "field-journal"],
+    "defaultStyle": "storybook",
+    "variants": { "toy-table": { "prompt": "{setting}, open empty stage. {style.suffix}" } },
+    "examples": ["Amber Acorn Village, a tiny woodland village…"],
+    "assignHint": "keep the accepted file under about 300 KB",
+    "provenance": "the Story Stones backdrop slot template; the puppet-band stage background"
+  }]
+}
+```
+
+Rules:
+
+- **Slots** are `{fieldName}`, naming a declared field, plus the one reserved
+  slot `{style.suffix}`. A slot that matches neither is a validation error, not
+  a literal brace — there is no escape syntax, because a prompt has no reason
+  to contain one.
+- **Fields** are `text`, `textarea`, `select` (with `options[]`), or `number`.
+  A `required` field has no default; everything else does. Field names are the
+  contract the server expansion and the studio form both read.
+- **Variants** are keyed by style id and shallow-override `prompt`, `workflow`,
+  `width`, `height`, `seed`, and `refs` — no deep merge, no inheritance chain.
+  A style whose look needs a different prompt gets a variant; a style that only
+  needs a different suffix does not.
+- **`kind`** is `generate-image`, `cutout-chain`, or `generate-voice`, and
+  `workflow` must be one the server will dispatch. A cutout chain also declares
+  its `target` so the finalize step knows what size to resize to; it must *not*
+  write the dark charcoal ground into its prompt, because the server appends
+  that to every cutout.
+- **Refs are symbolic**, exactly as in §7.6: `shared:<path>` under
+  `shared/assets/`, or a named key configured on the operator's machine. The
+  style anchors themselves are committed under `shared/assets/refs/`, so a
+  `shared:` ref resolves on any checkout and the validator can prove it. A
+  style's own refs are merged only when the resolved workflow is an edit
+  workflow — a text-to-image workflow has nothing to do with a reference image.
+  A template's refs win over a style's; a `refSlots[]` entry declares a
+  reference the operator supplies per run (a body sheet, a concept screen).
+- **`gallery` and `default`** are two additive optional keys on a `refSlots[]`
+  entry. `gallery` is an array of candidate sources for the studio's reference
+  gallery chooser: each entry is either the literal `media` (the operator's
+  current `shared/media/` staging objects) or `shared:<dir>`, naming a
+  directory directly under `shared/assets/` (`shared:ui`, `shared:refs`,
+  `shared:objects`); it is presentation-only, since the server never reads it,
+  and instead backs `GET /api/studio/ref-candidates`. `default` is a
+  registry-declared fallback in the same symbolic-ref grammar as `refs` — a
+  `shared:` path or a bare styleRefs key — that the server applies to the slot
+  when a run supplies no value, the way `menu-ui-button`'s `style` slot
+  defaults to the shared home-button icon so a restyle run starts from a
+  sensible button rather than an empty slot.
+- **Prompts are transcribed verbatim**, never referenced by path. The corpus
+  they came from is private, so a template that cites its source instead of
+  carrying it is a template that stops working when that directory moves. Where
+  a proven prompt was game-specific, the subject is opened up as a field and the
+  concrete past values are kept in `examples[]` — which is what the studio
+  offers as suggestion chips, so examples are field values, not whole prompts.
+  No absolute path, host, or URL may appear anywhere in the registry;
+  `tools/validate/validators/generate-templates.mjs` sweeps every string.
+- **Status** is `proven` (harvested from a run whose output was accepted) or
+  `unproven` (drafted from the art direction and never run). A proven style must
+  carry a suffix. Unproven styles are selectable and badged as such; promoting
+  one after its first accepted generation is a one-word edit.
+- **Regenerate replays frozen steps.** A template is expanded once, at enqueue,
+  and the expanded prompt is written into the media object's `qlobe-recipe`
+  `steps[]`. Regenerate re-runs *that*, not the template. So editing the
+  registry changes future runs only, and an asset generated last month keeps
+  reproducing exactly as it was made. This is the intended semantics, not a
+  staleness bug: the recipe is the provenance record, and provenance that
+  rewrites itself is worthless. The recipe's `template` block records which
+  template and style produced it, so the link back survives.
+
 ## 8. Validation, usage index, and reports
 
 The platform's answer to "what breaks?" — replacing the rejected dependency
@@ -557,17 +708,53 @@ being edited) and `api` (document/asset/jobs client). `window.QLOBE_STUDIO`
 debug hooks remain mandatory for every workspace (browser automation is a
 verification gate).
 
-Top nav becomes the four domains (§5); the v1 two-cluster character/stage nav
+The shell is a **three-row chrome**: the primary nav (the five domains, §5),
+a **secondary nav** row for a workspace's internal views, and a **breadcrumb**
+row beneath it. The shell owns both new rows' DOM outright; workspaces drive
+them only through two more `ctx` functions:
+
+- `ctx.setNav({tabs, activeTab, crumbs, count})` — full-replace render. The
+  shell paints the secondary-nav tabs (managing `.on` / `aria-selected`), hides
+  that row when `tabs` is empty, renders the breadcrumb trail (interactive
+  segments, a non-interactive current segment, `▸` separators) plus a
+  right-aligned count pill. The shell resets both rows to a default root crumb
+  (labelled from the primary-nav button) on **every** `openWorkspace`, including
+  the iframe path, and a **mount-generation guard** makes a late `setNav` from a
+  workspace the user already left a no-op — the "stuck breadcrumb / stale
+  `?project`" bug class dies here. The removable `?project` chip is rendered
+  automatically from the query string, not by the workspace.
+- `ctx.setParam(key, value)` (value `null` deletes) — the single choke point
+  that syncs the shared `URLSearchParams` and `history.replaceState`, ending the
+  double-bookkeeping that let a workspace and the shell disagree about the URL.
+
+`window.QLOBE_STUDIO.getState()` gains `{tabs, activeTab, crumbs}` (labels only,
+serializable) so browser automation can assert the shell state per workspace.
+
+**Param hygiene** (every query param obeys these; the shell enforces the last):
+
+1. **One owner** — exactly one workspace owns each param.
+2. **Set on enter / delete on in-workspace return** — an owner sets its param
+   when it drills in and deletes it when it returns to its own root view.
+3. **Validate on mount, delete on failure** — an owner validates its param on
+   mount and deletes an invalid value rather than carrying it.
+4. **Mutate only via `setParam`** — no workspace touches `history` or the query
+   string directly.
+
+Top nav becomes the five domains (§5); the v1 two-cluster character/stage nav
 retires with the registry migration. The header keeps the server-status pill
 ("authoring server" / "static preview") — static preview stays functional for
 browse and JSON export, exactly as v1 promised.
 
 ### 9.2 Contextual workspaces per object type
 
+The secondary-nav row (§9.1) is the structural landing zone for these tab sets:
+a workspace publishes them through `ctx.setNav` and the shell renders the row.
+
 Workspace tabs derive from object type + declared capabilities:
 
 | Object | Tabs |
 |---|---|
+| Generate | Menu · Character · Prop · Scene · Review |
 | Character (rigged) | Overview · Assemble · Rig · Animate · Speech · Preview · Usage |
 | Character (anim-only / pose-actor) | Overview · Poses (or Portraits) · Preview · Usage |
 | Prop pack | Overview · Props · Preview · Usage |
@@ -576,7 +763,10 @@ Workspace tabs derive from object type + declared capabilities:
 | Game | Overview · Content* · Validate · Playtest |
 | Engine / Service / Stage module | Overview · Contract · Harness · Consumers |
 
-\* Content tab is editable only for `config.json` games (§5.3).
+\* Content tab is editable only for `config.json` games (§5.3). The table is
+otherwise per object type; the domain-level workspaces (Generate, Production)
+publish their own tab sets through this same row rather than deriving them
+from an object.
 
 No Versions tab (git), no Owner field (single-author platform). Usage tabs
 read the usage index.
@@ -618,7 +808,20 @@ pip dependencies, same launch, same localhost binding.
   report — Phase 2, consumed by the dashboard in Phase 3);
   `GET /api/studio/completeness?type=character` (generalizing the old
   `/api/puppet/projects` counts — Phase 2);
-  persistent `/api/studio/jobs` v2 — Phase 3.
+  persistent `/api/studio/jobs` v2 — Phase 3;
+  `GET /api/studio/templates` (the whole `shared/data/generate-templates.json`
+  document, lazily loaded and mtime-cached — Phase 6).
+- **Template expansion**: `POST /api/studio/generate` gains a template branch
+  (§7.7). A body of `{template, styleId, fields, params}` is expanded
+  server-side — slot substitution, per-style `variants` shallow merge, style
+  refs merged only for edit workflows — into the same worker dispatch the
+  existing raw-params body already uses, which is unchanged. Expansion runs
+  once, at enqueue; `params` may carry only `id`, `seed`, `overwrite`, and
+  values for the template's declared `refSlots` (symbolic refs, resolved like
+  every other ref), so the client never builds a prompt and cannot drift from
+  the registry. The expanded prompt is frozen into the media object's
+  `qlobe-recipe` `steps[]`, alongside a `template` block recording
+  `{id, style, fields}` (§7.7 "Regenerate replays frozen steps").
 - **Canonical speech alignment**: the `whisper-visemes` chain
   (faster-whisper + cmudict → the 9-viseme set `a o e wr ts ln uq mbp fv` +
   `rest`) becomes the server's default aligner, matching how shipping cues
@@ -716,6 +919,22 @@ extract → QA → recipe → appears unassigned in Library → assign moves fil
 when the LAN host is reachable; recipe validator added to
 `tools/validate/`; no host address in any committed byte.
 
+**Phase 6 — GENERATE domain** (delivered). Style refs (the anchor images and
+the teacher-voice clone) committed under `shared/assets/refs/`;
+`qlobe-generate-templates` v1 (§7.7) written to
+`shared/data/generate-templates.json` with 12 templates across 5 art
+worlds; server-side expansion at enqueue — the `POST /api/studio/generate`
+template branch plus `GET /api/studio/templates` to list the registry;
+shared machinery pulled out to `shared/js/studio/workspaces/lib/generate-core.js`;
+the Generate workspace promoted to the first primary-nav domain with its own
+Menu · Character · Prop · Scene · Review tabs, the Review tab absorbing the
+whole unassigned-media queue; the Library's `+ Generate` modal retired in
+favor of a read-only `Media (unassigned)` facet with an "Open in Generate"
+deep link. Gates: full validator sweep green including the new
+`generate-templates` subject; path audit green; a real generation per kind
+lands a `recipe.json` carrying its `template` block; browser drive across
+all five Generate tabs; static preview degrades to browse-only.
+
 ## 13. Verification
 
 1. **Path audit** (`tools/audit-spec.mjs`, built in Phase 0): extracts
@@ -777,7 +996,7 @@ asset loads, ever.
 | Global action bar (`+ CREATE  SEARCH  PLAYTEST  PUBLISH`) | **Reject bar, keep actions contextually** | Create/playtest live on objects and game dashboards; publish is a validation-gated status flip (§5.3); search/facets live in each domain's browse (§8.3) |
 | Curriculum Map view; curriculum-area facets | **Adapt, deferred** | Curriculum metadata today is `games.json` categories + `game.json` `learningGoals[]`/`age`, all facetable (§8.3); a dedicated curriculum-map view is a saved facet query, promoted to a nav item only if real curriculum data (objectives per mode) ever gets authored |
 | Platform services incl. analytics, parental controls, localization, save/resume | **Reject list, keep layer** | Real services are `shared/js/*`; analytics/parental-controls violate the no-tracking rule (§14) |
-| "Generate" as a contextual action, not a top-level section | **Keep** | §5.4 |
+| "Generate" as a contextual action, not a top-level section | **Kept, then reversed (Phase 6)** | Phase 6 promoted Generate to the first primary-nav domain (§5.5) at the user's direction (2026-07-24): the contextual-action framing left no home for the template catalogue or the review queue. Inline generate affordances on an object survive as shortcuts into it |
 | Every object: stable ID, type, version, status, owner, tags, dependencies, reverse refs, provenance, schema, preview, manifest | **Adapt** | Kept: id/format/formatVersion/tags/provenance/validation. Dropped: owner, live dependency+reverse-ref storage (computed instead), separate runtime manifest |
 
 ## Appendix B — Deprecation register

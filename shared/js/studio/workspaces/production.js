@@ -16,8 +16,11 @@ import { serverStatus } from '../api.js';
 const USAGE_INDEX_URL = new URL('../../../data/usage-index.json', import.meta.url);
 
 const JOB_STATUSES = ['queued', 'running', 'completed', 'failed', 'interrupted', 'cancelled'];
-const JOB_KINDS = ['story-scene', 'extract', 'voice', 'transcription'];
+// Phase 6 added the three GENERATE kinds the template registry dispatches.
+const JOB_KINDS = ['story-scene', 'extract', 'voice', 'transcription', 'generate-image', 'cutout-chain', 'generate-voice'];
 const SEVERITY_RANK = { error: 0, warn: 1, info: 2 };
+const TAB_ORDER = ['jobs', 'validate', 'completeness', 'usage'];
+const TAB_LABEL = { jobs: 'Job Queue', validate: 'Validation', completeness: 'Completeness', usage: 'Usage Index' };
 const TAB_HINT = {
   jobs: 'Every generation job the authoring server has queued or run — story scenes, extractions, voice takes, transcriptions. Polls every ~2s while this workspace is open.',
   validate: 'Runs the validator suite (tools/validate/run.mjs) over one target id or the whole repo, and groups findings by subject the way the CLI does.',
@@ -43,7 +46,7 @@ function serverRequiredEmptyState(title, detail) {
     authoring server to use it.</p></div></div>`;
 }
 
-export async function mount(host, { toast }) {
+export async function mount(host, { toast, params, setNav, setParam }) {
   let destroyed = false;
   let serverAvailable = false;
   let activeTab = 'jobs';
@@ -72,35 +75,6 @@ export async function mount(host, { toast }) {
 
   host.innerHTML = `
     <div class="workspace production-workspace" data-workspace="production">
-      <div class="workspace-tools">
-        <div class="production-tabs" role="tablist">
-          <button type="button" data-tab="jobs" class="on" aria-selected="true">Job Queue</button>
-          <button type="button" data-tab="validate" aria-selected="false">Validation</button>
-          <button type="button" data-tab="completeness" aria-selected="false">Completeness</button>
-          <button type="button" data-tab="usage" aria-selected="false">Usage Index</button>
-        </div>
-        <div class="row" data-tab-tools="jobs">
-          <label>Status<select data-job-status>
-            <option value="all">All statuses</option>
-            ${JOB_STATUSES.map((s) => `<option value="${s}">${s}</option>`).join('')}
-          </select></label>
-          <label>Type<select data-job-kind>
-            <option value="all">All types</option>
-            ${JOB_KINDS.map((k) => `<option value="${k}">${k}</option>`).join('')}
-          </select></label>
-          <span class="status-pill" data-job-count>0 jobs</span>
-        </div>
-        <div class="row" data-tab-tools="validate" hidden>
-          <label>Target<input type="text" data-validate-target placeholder="blank = full sweep" autocomplete="off"></label>
-          <button type="button" data-action="run-validate">Run validation</button>
-        </div>
-        <div class="row" data-tab-tools="completeness" hidden>
-          <button type="button" class="ghost" data-action="refresh-completeness">Refresh</button>
-        </div>
-        <div class="row" data-tab-tools="usage" hidden>
-          <button type="button" class="ghost" data-action="refresh-usage">Refresh</button>
-        </div>
-      </div>
       <div class="workspace-canvas production-canvas" data-canvas>
         <section data-panel="jobs"></section>
         <section data-panel="validate" hidden></section>
@@ -109,14 +83,33 @@ export async function mount(host, { toast }) {
       </div>
       <aside class="workspace-inspector">
         <div class="panel-section">
+          <div class="row" data-tab-tools="jobs">
+            <label>Status<select data-job-status>
+              <option value="all">All statuses</option>
+              ${JOB_STATUSES.map((s) => `<option value="${s}">${s}</option>`).join('')}
+            </select></label>
+            <label>Type<select data-job-kind>
+              <option value="all">All types</option>
+              ${JOB_KINDS.map((k) => `<option value="${k}">${k}</option>`).join('')}
+            </select></label>
+          </div>
+          <div class="row" data-tab-tools="validate" hidden>
+            <label>Target<input type="text" data-validate-target placeholder="blank = full sweep" autocomplete="off"></label>
+            <button type="button" data-action="run-validate">Run validation</button>
+          </div>
+          <div class="row" data-tab-tools="completeness" hidden>
+            <button type="button" class="ghost" data-action="refresh-completeness">Refresh</button>
+          </div>
+          <div class="row" data-tab-tools="usage" hidden>
+            <button type="button" class="ghost" data-action="refresh-usage">Refresh</button>
+          </div>
+          <p class="hint" data-tab-hint></p>
+        </div>
+        <div class="panel-section">
           <h2>Production</h2>
           <p class="hint">Processes and status, not content categories — the job queue, the validation
           dashboard, completeness/usage reports, and the pipeline runbook.</p>
           <p class="hint" data-server-hint></p>
-        </div>
-        <div class="panel-section">
-          <h3>This tab</h3>
-          <p class="hint" data-tab-hint></p>
         </div>
       </aside>
     </div>`;
@@ -128,7 +121,6 @@ export async function mount(host, { toast }) {
     completeness: host.querySelector('[data-panel="completeness"]'),
     usage: host.querySelector('[data-panel="usage"]'),
   };
-  const jobCountPill = host.querySelector('[data-job-count]');
   const jobStatusSelect = host.querySelector('[data-job-status]');
   const jobKindSelect = host.querySelector('[data-job-kind]');
   const validateTargetInput = host.querySelector('[data-validate-target]');
@@ -136,17 +128,27 @@ export async function mount(host, { toast }) {
   const tabHint = host.querySelector('[data-tab-hint]');
 
   // ---- tabs ---------------------------------------------------------------
+  function navConfig() {
+    const tabs = TAB_ORDER.map((id) => ({ id, label: TAB_LABEL[id], onClick: () => setTab(id) }));
+    const crumbs = [
+      { label: 'Production', onClick: () => setTab('jobs') },
+      { label: TAB_LABEL[activeTab] },
+    ];
+    const count = activeTab === 'jobs'
+      ? `${filteredJobs().length} job${filteredJobs().length === 1 ? '' : 's'}`
+      : null;
+    return { tabs, activeTab, crumbs, count };
+  }
+  function syncNav() { setNav(navConfig()); }
+
   function setTab(tab) {
     if (!panels[tab]) return;
     activeTab = tab;
-    for (const button of host.querySelectorAll('[data-tab]')) {
-      const on = button.dataset.tab === activeTab;
-      button.classList.toggle('on', on);
-      button.setAttribute('aria-selected', String(on));
-    }
     for (const [name, panel] of Object.entries(panels)) panel.hidden = name !== activeTab;
     for (const tools of host.querySelectorAll('[data-tab-tools]')) tools.hidden = tools.dataset.tabTools !== activeTab;
     tabHint.textContent = TAB_HINT[activeTab] || '';
+    setParam('tab', tab === 'jobs' ? null : tab); // jobs is the default → keep URL clean; others persist
+    syncNav();
   }
 
   // ---- job queue ------------------------------------------------------------
@@ -193,18 +195,18 @@ export async function mount(host, { toast }) {
 
   function renderJobs() {
     const list = filteredJobs();
-    jobCountPill.textContent = `${list.length} job${list.length === 1 ? '' : 's'}`;
     if (!serverAvailable) {
       panels.jobs.innerHTML = serverRequiredEmptyState('Job queue', "The job queue is served by the authoring server's job system.");
-      return;
+    } else {
+      const errorBanner = jobsError ? `<p class="hint production-error">${escapeHtml(jobsError)}</p>` : '';
+      if (!list.length) {
+        panels.jobs.innerHTML = `${errorBanner}<div class="empty-state"><div><h1>No jobs</h1>
+          <p class="hint">${jobs.length ? 'Nothing matches the current filters.' : 'Nothing queued yet.'}</p></div></div>`;
+      } else {
+        panels.jobs.innerHTML = `${errorBanner}<div class="list production-job-list">${list.map(jobRowHtml).join('')}</div>`;
+      }
     }
-    const errorBanner = jobsError ? `<p class="hint production-error">${escapeHtml(jobsError)}</p>` : '';
-    if (!list.length) {
-      panels.jobs.innerHTML = `${errorBanner}<div class="empty-state"><div><h1>No jobs</h1>
-        <p class="hint">${jobs.length ? 'Nothing matches the current filters.' : 'Nothing queued yet.'}</p></div></div>`;
-      return;
-    }
-    panels.jobs.innerHTML = `${errorBanner}<div class="list production-job-list">${list.map(jobRowHtml).join('')}</div>`;
+    if (activeTab === 'jobs') syncNav();
   }
 
   // POST /api/studio/jobs/<id>/cancel (no body) -> refetch on success.
@@ -433,9 +435,6 @@ export async function mount(host, { toast }) {
     jobKindSelect.onchange = (e) => { jobFilters.kind = e.target.value; renderJobs(); };
 
     host.addEventListener('click', (event) => {
-      const tabButton = event.target.closest('[data-tab]');
-      if (tabButton) { setTab(tabButton.dataset.tab); return; }
-
       const cancelButton = event.target.closest('[data-cancel-job]');
       if (cancelButton) {
         cancelButton.disabled = true; cancelButton.textContent = '…';
@@ -458,7 +457,8 @@ export async function mount(host, { toast }) {
   try {
     try { await serverStatus(); serverAvailable = true; } catch { serverAvailable = false; }
     wire();
-    setTab('jobs');
+    const requested = params.get('tab');
+    setTab((requested && panels[requested]) ? requested : 'jobs');
     serverHint.textContent = serverAvailable
       ? 'Authoring server connected — job queue, validation and completeness are live.'
       : 'Static preview — job queue, validation, completeness and the usage-index refresh need the authoring server. The usage index still reads from disk, read-only.';

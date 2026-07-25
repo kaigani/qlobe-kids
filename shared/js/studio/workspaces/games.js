@@ -41,8 +41,9 @@ function serverRequiredHint(title, detail) {
   return `<p class="hint">${escapeHtml(title)} needs the authoring server. ${escapeHtml(detail)}</p>`;
 }
 
-export async function mount(host, { params, toast, openWorkspace }) {
+export async function mount(host, { params, toast, openWorkspace, setNav, setParam }) {
   let destroyed = false;
+  let openToken = 0; // guards openGame() against a superseded resolution (backToBrowse or a newer openGame)
   let games = [];        // the raw games.json games[] array, unmodified
   let gameRows = [];      // games + a computed `engine` field, used for browse/facets
   let categories = [];    // games.json categories[]
@@ -57,22 +58,19 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   host.innerHTML = `
     <div class="workspace games-workspace" data-workspace="games">
-      <div class="workspace-tools" data-browse-tools>
-        <label>Category<select data-facet="category"><option value="all">All categories</option></select></label>
-        <label>Status<select data-facet="status">
-          <option value="all">All statuses</option>
-          ${STATUS_OPTIONS.map((s) => `<option value="${s}">${s}</option>`).join('')}
-        </select></label>
-        <label>Engine<select data-facet="engine"><option value="all">All engines</option></select></label>
-        <label class="library-search">Search<input type="search" data-facet="q" placeholder="search id or title…" autocomplete="off"></label>
-        <span class="status-pill" data-count>0 games</span>
-      </div>
-      <div class="workspace-tools" data-dashboard-tools hidden>
-        <button type="button" class="ghost" data-action="back">◂ Registry</button>
-        <span class="status-pill" data-dash-title></span>
-      </div>
       <div class="workspace-canvas library-canvas" data-canvas></div>
       <aside class="workspace-inspector">
+        <div class="panel-section" data-browse-filters>
+          <div class="sidebar-filters">
+            <label>Category<select data-facet="category"><option value="all">All categories</option></select></label>
+            <label>Status<select data-facet="status">
+              <option value="all">All statuses</option>
+              ${STATUS_OPTIONS.map((s) => `<option value="${s}">${s}</option>`).join('')}
+            </select></label>
+            <label>Engine<select data-facet="engine"><option value="all">All engines</option></select></label>
+            <label class="library-search">Search<input type="search" data-facet="q" placeholder="search id or title…" autocomplete="off"></label>
+          </div>
+        </div>
         <div class="panel-section">
           <h2>Games</h2>
           <p class="hint">Browse the games.json registry — filter by category, status or engine, or search by
@@ -84,11 +82,8 @@ export async function mount(host, { params, toast, openWorkspace }) {
     </div>`;
 
   const canvas = host.querySelector('[data-canvas]');
-  const countPill = host.querySelector('[data-count]');
   const serverHint = host.querySelector('[data-server-hint]');
-  const browseTools = host.querySelector('[data-browse-tools]');
-  const dashboardTools = host.querySelector('[data-dashboard-tools]');
-  const dashTitlePill = host.querySelector('[data-dash-title]');
+  const browseFilters = host.querySelector('[data-browse-filters]');
   const facetEl = (name) => host.querySelector(`[data-facet="${name}"]`);
 
   // ---- data loading -------------------------------------------------------
@@ -344,7 +339,7 @@ export async function mount(host, { params, toast, openWorkspace }) {
     return `<div class="panel-section"><h3>Status</h3>
       <p class="hint">Setting live or beta runs validation first — errors block the change.
         Live games count on the hub; beta games appear with an in-progress chip.</p>
-      <div class="workspace-tools">
+      <div class="sidebar-session">
         <select data-status-select>${GAME_STATUSES.map((s) =>
           `<option value="${s}"${s === current ? ' selected' : ''}>${s}</option>`).join('')}</select>
         <button type="button" data-action="set-status" data-game="${escapeHtml(d.id)}">Set status</button>
@@ -395,7 +390,6 @@ export async function mount(host, { params, toast, openWorkspace }) {
   function renderDashboard() {
     const d = currentDashboard;
     if (!d) { canvas.innerHTML = `<div class="empty-state"><div><h1>No game open</h1></div></div>`; return; }
-    dashTitlePill.textContent = d.manifest?.title || d.registryEntry?.title || d.id;
     if (!d.manifest) {
       canvas.innerHTML = `<div class="empty-state"><div><h1>Could not load game.json</h1>
         <p class="hint">${escapeHtml(d.manifestError || 'Unknown error')}</p></div></div>`;
@@ -464,40 +458,63 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   function renderBrowse() {
     const filtered = filter();
-    countPill.textContent = `${filtered.length} game${filtered.length === 1 ? '' : 's'}`;
     if (!filtered.length) {
       canvas.innerHTML = `<div class="empty-state"><div><h1>No matches</h1><p class="hint">Try clearing a facet or the search box.</p></div></div>`;
-      return;
+    } else {
+      canvas.innerHTML = `<div class="library-grid">${filtered.map(cardHtml).join('')}</div>`;
     }
-    canvas.innerHTML = `<div class="library-grid">${filtered.map(cardHtml).join('')}</div>`;
+    browseNav();
+  }
+
+  // ---- shell nav (tabs/crumbs/count) --------------------------------------
+  function browseNav() {
+    const n = filter().length;
+    setNav({
+      tabs: [{ id: 'registry', label: 'Registry', onClick: () => { if (view !== 'browse') backToBrowse(); } }],
+      activeTab: 'registry',
+      crumbs: [{ label: 'Games' }],
+      count: `${n} game${n === 1 ? '' : 's'}`,
+    });
+  }
+
+  function dashboardNav() {
+    const title = currentDashboard?.manifest?.title || currentDashboard?.registryEntry?.title || currentDashboard?.id || '';
+    setNav({
+      tabs: [
+        { id: 'registry', label: 'Registry', onClick: () => backToBrowse() },
+        { id: 'game', label: title, onClick: () => { if (currentDashboard) openGame(currentDashboard.id).catch(fail); } },
+      ],
+      activeTab: 'game',
+      crumbs: [
+        { label: 'Games', onClick: () => backToBrowse() },
+        { label: title },
+      ],
+    });
   }
 
   function setView(next) {
     view = next;
-    browseTools.hidden = view !== 'browse';
-    dashboardTools.hidden = view !== 'dashboard';
-    if (view === 'browse') renderBrowse(); else renderDashboard();
+    browseFilters.hidden = view !== 'browse';
+    if (view === 'browse') renderBrowse();      // renderBrowse() calls browseNav()
+    else { renderDashboard(); dashboardNav(); }
   }
 
   // ---- open a game's dashboard ------------------------------------------------
   async function openGame(id) {
+    const token = ++openToken;
     const record = await buildDashboard(id);
-    if (destroyed) return record;
+    if (destroyed || token !== openToken) return record; // superseded by backToBrowse or another openGame
     currentDashboard = record;
     if (!validationCache.has(id)) validationCache.set(id, { status: 'idle' });
-    params.set('game', id);
-    const next = new URL(location.href); next.searchParams.set('game', id); history.replaceState(null, '', next);
+    setParam('game', id);
     setView('dashboard');
     return record;
   }
 
   function backToBrowse() {
+    openToken++;               // supersede any pending openGame
     currentDashboard = null;
-    // Drop the game param everywhere — otherwise a remount (e.g. clicking the
-    // GAMES nav tab) reads the stale ?game= and reopens the dashboard.
-    params.delete('game');
-    const next = new URL(location.href); next.searchParams.delete('game');
-    history.replaceState(null, '', next);
+    setParam('game', null);    // drop ?game so a remount won't reopen the dashboard
     setView('browse');
   }
 
@@ -513,8 +530,6 @@ export async function mount(host, { params, toast, openWorkspace }) {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { activeFacets.q = e.target.value; renderBrowse(); }, 120);
     };
-
-    dashboardTools.querySelector('[data-action="back"]').onclick = backToBrowse;
 
     canvas.addEventListener('click', (event) => {
       const card = event.target.closest('[data-card]');
@@ -585,7 +600,7 @@ export async function mount(host, { params, toast, openWorkspace }) {
     wire();
     const initialGame = params.get('game');
     if (initialGame && games.some((g) => g.id === initialGame)) await openGame(initialGame);
-    else setView('browse');
+    else { if (initialGame) setParam('game', null); setView('browse'); }
   } catch (error) {
     console.error(error);
     canvas.innerHTML = `<div class="empty-state"><div><h1>Games unavailable</h1><p>${escapeHtml(error.message)}</p></div></div>`;

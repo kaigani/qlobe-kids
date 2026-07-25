@@ -288,6 +288,16 @@ class AuthoringState:
         # host/paths themselves come from the git-ignored local config, never code.
         teacher = self.local.get("teacherVoicePath")
         self.teacher_voice_path = Path(os.path.expanduser(teacher)) if teacher else None
+        if self.teacher_voice_path is None:
+            # Fall back to the committed anchor so a fresh checkout can run the
+            # voice templates with no local config. The file is FLAC data under a
+            # .wav name — deliberate: it is the exact byte stream the clone
+            # workflow has always been fed, and nothing here parses it (it is
+            # posted verbatim by run_generate_voice_job; the `wave` module is
+            # only ever pointed at aligner PCM).
+            committed = self.root / "shared" / "assets" / "refs" / "voice-teacher.wav"
+            if committed.is_file():
+                self.teacher_voice_path = committed
         self.cutout_python = os.path.expanduser(self.local.get("cutoutPython") or "python3")
         self.style_refs = self.local.get("styleRefs") if isinstance(self.local.get("styleRefs"), dict) else {}
         self.whisper_url = whisper_url
@@ -1337,7 +1347,212 @@ def resolve_style_ref(state: AuthoringState, ref: str) -> Path:
         if not path.is_relative_to((state.root / "shared" / "assets").resolve()) or not path.is_file():
             raise ValueError(f"style ref {ref!r} does not resolve under shared/assets")
         return path
-    raise ValueError(f"unsupported style ref {ref!r} (use 'shared:<path>' or a configured styleRefs key)")
+    if ref.startswith("media:"):
+        # A staged shared/media/ object used as a per-run reference — what the
+        # gallery chooser's "media" source offers, and the only way a concept
+        # screen or a body sheet that has not been assigned yet can feed an edit
+        # workflow. Symbolic like shared:, and resolved through the object's own
+        # recipe: a cutout chain's final asset is not always <id>.png.
+        folder = media_dir(state, ref[len("media:"):])
+        asset = ""
+        try:
+            asset = str(json.loads((folder / "recipe.json").read_text("utf-8")).get("asset") or "")
+        except (ValueError, OSError):
+            asset = ""
+        path = (folder / (asset or f"{folder.name}.png")).resolve()
+        if not path.is_relative_to(state.media_root.resolve()) or not path.is_file():
+            raise ValueError(f"media ref {ref!r} does not resolve to a staged asset")
+        return path
+    raise ValueError(f"unsupported style ref {ref!r} (use 'shared:<path>', 'media:<id>' or a configured styleRefs key)")
+
+
+# --- generate templates (spec §7.7) -----------------------------------------
+# The committed registry of generation recipes. The server is the ONLY place a
+# template is expanded into a prompt (spec §10): the studio posts a template id +
+# field values, never a prompt, so the client cannot drift from the registry.
+GENERATE_TEMPLATES_REL = ("shared", "data", "generate-templates.json")
+# {fieldName} plus the one reserved slot {style.suffix}; there is no escape
+# syntax, so anything brace-wrapped that is neither is a client-visible error.
+SLOT_RE = re.compile(r"\{([^{}]*)\}")
+STYLE_SUFFIX_SLOT = "style.suffix"
+# Only these template keys may be overridden by a variants.<styleId> block
+# (shallow merge, no inheritance chain — spec §7.7).
+VARIANT_KEYS = ("prompt", "workflow", "width", "height", "seed", "refs")
+_templates_cache: dict = {"mtime": None, "size": None, "doc": None}
+_templates_lock = threading.Lock()
+
+
+def load_generate_templates(state: AuthoringState) -> dict:
+    """Lazy, mtime-cached read of shared/data/generate-templates.json.
+
+    Cached so the per-request GET and every enqueue share one parse, invalidated
+    on mtime/size so editing the registry takes effect without a restart."""
+    path = state.root / Path(*GENERATE_TEMPLATES_REL)
+    try:
+        stat = path.stat()
+    except OSError:
+        raise ValueError("generate template registry not found at shared/data/generate-templates.json")
+    with _templates_lock:
+        if _templates_cache["doc"] is not None and _templates_cache["mtime"] == stat.st_mtime_ns \
+                and _templates_cache["size"] == stat.st_size:
+            return _templates_cache["doc"]
+        doc = json.loads(path.read_text("utf-8"))
+        if not isinstance(doc, dict) or doc.get("format") != "qlobe-generate-templates":
+            raise ValueError("shared/data/generate-templates.json is not a qlobe-generate-templates document")
+        _templates_cache.update(mtime=stat.st_mtime_ns, size=stat.st_size, doc=doc)
+        return doc
+
+
+def substitute_slots(text: str, values: dict) -> str:
+    """Fill {slot}s from values in ONE pass (field values are never re-scanned,
+    so a prompt cannot be injected through a field). Unknown slot -> ValueError."""
+    def replace(match):
+        name = match.group(1).strip()
+        if name not in values or values[name] is None:
+            raise ValueError(f"unresolved slot {{{match.group(1)}}} — no such field"
+                             if name != STYLE_SUFFIX_SLOT else
+                             "prompt uses {style.suffix} but no style was resolved")
+        return str(values[name])
+    return SLOT_RE.sub(replace, text)
+
+
+def values_block(values: dict) -> dict:
+    """The field values a recipe records — the reserved style slot is not a field."""
+    return {k: v for k, v in values.items() if k != STYLE_SUFFIX_SLOT}
+
+
+def expand_template(state: AuthoringState, template_id: str, style_id: str | None,
+                    fields: dict | None, overrides: dict | None = None) -> tuple[str, dict, dict]:
+    """Expand a registry template into (kind, params, template_block).
+
+    `params` is the SAME shape POST /api/studio/generate already accepts as a raw
+    body, so an expanded template falls into the existing validation + enqueue
+    branches unchanged; `template_block` is what the recipe records (spec §7.7).
+    Pure apart from the registry read and ref resolution — unit-testable without
+    HTTP. Every failure here is a client mistake and must surface as a 4xx."""
+    registry = load_generate_templates(state)
+    templates = registry.get("templates") if isinstance(registry.get("templates"), list) else []
+    styles = registry.get("styles") if isinstance(registry.get("styles"), dict) else {}
+    template = next((t for t in templates if isinstance(t, dict) and t.get("id") == template_id), None)
+    if template is None:
+        raise ValueError(f"unknown template {template_id!r}")
+
+    # --- style ---------------------------------------------------------------
+    declared = [s for s in (template.get("styles") or []) if isinstance(s, str)]
+    style_id = (style_id or "").strip() or None
+    if declared:
+        style_id = style_id or template.get("defaultStyle") or declared[0]
+        if style_id not in declared:
+            raise ValueError(f"style {style_id!r} is not available for template {template_id!r} "
+                             f"(choose one of {declared})")
+    elif style_id:
+        raise ValueError(f"template {template_id!r} declares no styles; omit styleId")
+    style = styles.get(style_id) if style_id else None
+    if style_id and not isinstance(style, dict):
+        raise ValueError(f"style {style_id!r} is not declared in the registry")
+    # Unproven styles are deliberately runnable (user decision): status is a
+    # badge in the picker, not a gate.
+
+    # --- variant shallow merge ----------------------------------------------
+    merged = dict(template)
+    variant = (template.get("variants") or {}).get(style_id) if style_id else None
+    if isinstance(variant, dict):
+        for key in VARIANT_KEYS:
+            if key in variant:
+                merged[key] = variant[key]
+
+    # --- fields --------------------------------------------------------------
+    supplied = dict(fields or {})
+    declared_fields = [f for f in (template.get("fields") or []) if isinstance(f, dict)]
+    known = {f.get("name") for f in declared_fields}
+    unknown = sorted(k for k in supplied if k not in known)
+    if unknown:
+        raise ValueError(f"unknown field(s) for template {template_id!r}: {', '.join(unknown)}")
+    values: dict = {}
+    for field in declared_fields:
+        name = field.get("name")
+        raw = supplied.get(name, None)
+        value = "" if raw is None else str(raw).strip()
+        if not value:
+            default = field.get("default")
+            value = "" if default is None else str(default)
+        if not value:
+            if field.get("required"):
+                raise ValueError(f"field {name!r} is required by template {template_id!r}")
+            raise ValueError(f"field {name!r} has no value and no default")
+        if field.get("type") == "select":
+            options = [str(o.get("value")) for o in (field.get("options") or []) if isinstance(o, dict)]
+            if options and value not in options:
+                raise ValueError(f"field {name!r} must be one of {options}")
+        values[name] = value
+    if style:
+        values[STYLE_SUFFIX_SLOT] = str(style.get("suffix") or "")
+
+    prompt = substitute_slots(str(merged.get("prompt") or ""), values).strip()
+    if len(prompt) < 3:
+        raise ValueError(f"template {template_id!r} expanded to an empty prompt")
+
+    kind = str(merged.get("kind") or "")
+    workflow = str(merged.get("workflow") or "")
+    overrides = overrides or {}
+
+    # --- refs ----------------------------------------------------------------
+    # A style's refs are its art anchor and belong to an EDIT workflow only —
+    # handing bus.png to a text-to-image call would be meaningless. Template refs
+    # (and a variant's) win over the style's; refSlots are the per-run references
+    # the operator supplies, symbolic only, resolved through resolve_style_ref.
+    slots = [s for s in (template.get("refSlots") or []) if isinstance(s, dict)]
+    slot_names = {s.get("name") for s in slots}
+    requested = overrides.get("refs") if isinstance(overrides.get("refs"), dict) else {}
+    bad = sorted(k for k in requested if k not in slot_names)
+    if bad:
+        raise ValueError(f"template {template_id!r} declares no reference slot(s): {', '.join(bad)}")
+    refs: dict = {}
+    if isinstance(style, dict) and isinstance(style.get("refs"), dict):
+        # A declared slot is operator-supplied per run; the style's art anchor
+        # must never stand in for it (bus.png is not somebody's body sheet).
+        refs.update({k: str(v) for k, v in style["refs"].items() if v and k not in slot_names})
+    template_refs = {k: str(v) for k, v in (merged.get("refs") or {}).items() if v} \
+        if isinstance(merged.get("refs"), dict) else {}
+    refs.update(template_refs)
+    for slot in slots:
+        name = slot.get("name")
+        # A slot's own `default` is a registry-declared fallback (spec §7.7) so a
+        # curl POST need not repeat it; the caller's value still wins when given.
+        value = str(requested.get(name, "")).strip() or str(slot.get("default") or "").strip()
+        if value:
+            refs[name] = value  # symbolic; resolved (and rejected if not) below
+        elif slot.get("required") and not template_refs.get(name):
+            raise ValueError(f"reference slot {name!r} is required by template {template_id!r} "
+                             f"(pass params.refs.{name} as 'shared:<path>' or a configured styleRefs key)")
+    for name, value in refs.items():
+        resolve_style_ref(state, value)  # proves it is symbolic AND on disk, before enqueue
+
+    if kind == "generate-voice":
+        # The voice worker takes `text`, not `prompt`, and reads the teacher
+        # reference from the server config — the template's voice ref is
+        # documentation of which voice, not a dispatched file.
+        params = {"id": overrides.get("id"), "text": prompt,
+                  "seed": int(overrides.get("seed", merged.get("seed", 7)))}
+    else:
+        if kind not in ("generate-image", "cutout-chain"):
+            raise ValueError(f"template {template_id!r} has unsupported kind {kind!r}")
+        params = {
+            "id": overrides.get("id"), "workflow": workflow, "prompt": prompt,
+            "seed": int(overrides.get("seed", merged.get("seed", 42))),
+            "width": int(merged.get("width", 1024)), "height": int(merged.get("height", 1024)),
+            # Only an edit workflow consumes a reference image.
+            "refs": refs if workflow in EDIT_WORKFLOWS else {},
+        }
+        if kind == "cutout-chain":
+            # The dark charcoal ground is appended by run_cutout_chain_job for
+            # every chain; a template must not write it into its prompt (§7.7).
+            params.update({"target": str(merged.get("target", "object")),
+                           "maxSize": merged.get("maxSize"),
+                           "pad": int(merged.get("pad", 12))})
+    template_block = {"id": template_id, **({"style": style_id} if style_id else {}),
+                      "fields": values_block(values)}
+    return kind, params, template_block
 
 
 def media_summary(recipe: dict, folder: Path) -> dict:
@@ -1383,6 +1598,60 @@ def list_media(state: AuthoringState) -> list[dict]:
     return out
 
 
+# A candidate subdir under shared/assets/ is one kebab path segment — no slashes,
+# no dots, no leading hyphen — so "shared:ui" is fine and "shared:../.." never
+# parses far enough to touch is_relative_to.
+REF_CANDIDATE_SUBDIR_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+REF_CANDIDATE_EXTS = (".png", ".jpg", ".jpeg", ".webp")
+
+
+def ref_candidates(state: AuthoringState, source: str) -> list[dict]:
+    """Candidate reference images for the studio's reference-gallery chooser.
+
+    `source="shared:<subdir>"` lists shared/assets/<subdir>/*.{png,jpg,jpeg,webp}
+    (top level only); `source="media"` lists staged shared/media/ images from
+    list_media(). Every failure here is a client mistake and must surface as a
+    4xx (mirrors expand_template)."""
+    source = (source or "").strip()
+    if not source:
+        raise ValueError("source is required (use 'shared:<subdir>' or 'media')")
+    if source == "media":
+        items = [
+            {
+                "ref": f"media:{m['id']}",
+                "url": f"/shared/media/{m['id']}/{m['asset']}",
+                "name": m["id"],
+                "status": (m.get("qa") or {}).get("status") or "",
+                "resolvable": True,  # resolve_style_ref understands media:<id>
+            }
+            for m in list_media(state)
+            if m.get("kind") == "image" and m.get("asset")
+        ]
+        return sorted(items, key=lambda item: item["name"])
+    if source.startswith("shared:"):
+        subdir = source[len("shared:"):]
+        if not REF_CANDIDATE_SUBDIR_RE.fullmatch(subdir):
+            raise ValueError(f"source {source!r} must be 'shared:<subdir>' (a single kebab-case path segment)")
+        assets_root = (state.root / "shared" / "assets").resolve()
+        directory = (assets_root / subdir).resolve()
+        if not directory.is_relative_to(assets_root) or not directory.is_dir():
+            raise ValueError(f"source {source!r} does not resolve under shared/assets")
+        items = []
+        for child in directory.iterdir():
+            if child.name.startswith(".") or not child.is_file():
+                continue
+            if child.suffix.lower() not in REF_CANDIDATE_EXTS:
+                continue
+            items.append({
+                "ref": f"shared:{subdir}/{child.name}",
+                "url": f"/shared/assets/{subdir}/{child.name}",
+                "name": child.stem,
+                "resolvable": True,
+            })
+        return sorted(items, key=lambda item: item["name"])
+    raise ValueError(f"unsupported source {source!r} (use 'shared:<subdir>' or 'media')")
+
+
 def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
     """Single t2i/edit step -> shared/media/<id>/<id>.png + recipe (status review)."""
     try:
@@ -1408,6 +1677,8 @@ def run_generate_image_job(state: AuthoringState, job_id: str, d: dict):
             "asset": asset,
             "steps": [{"workflow": workflow, "prompt": prompt, "seed": seed, "width": width, "height": height}],
             "refs": {k: v for k, v in refs.items() if v},
+            # Which registry template produced this, when one did (spec §7.7).
+            **({"template": d["template"]} if d.get("template") else {}),
             "derivedFrom": None,
             "qa": {"status": "review"},
             "created": time.strftime("%Y-%m-%d"),
@@ -1509,6 +1780,7 @@ def run_cutout_chain_job(state: AuthoringState, job_id: str, d: dict):
             "asset": f"{media_id}.png" if passed else None,
             "steps": steps,
             "refs": {k: v for k, v in refs.items() if v},
+            **({"template": d["template"]} if d.get("template") else {}),
             "derivedFrom": None,
             "qa": {
                 "status": "review" if passed else "failed-qa",
@@ -1595,6 +1867,7 @@ def run_generate_voice_job(state: AuthoringState, job_id: str, d: dict):
             "asset": asset,
             "steps": [{"workflow": VOICE_CLONE_WORKFLOW, "text": text, "seed": seed}],
             "refs": {"voice": "teacher"},
+            **({"template": d["template"]} if d.get("template") else {}),
             "derivedFrom": None,
             "qa": {"status": "review", "transcript": transcript_qa},
             "created": time.strftime("%Y-%m-%d"),
@@ -1617,11 +1890,17 @@ def regenerate_dispatch(recipe: dict, media_id: str, new_seed=None) -> tuple[str
     the only permitted edit). The originating generator is inferred from the steps."""
     steps = recipe.get("steps") or []
     refs = recipe.get("refs") or {}
+    # The template block travels with the rerun so the new recipe keeps its link
+    # back to the registry — but the steps are replayed FROZEN, never re-expanded
+    # (spec §7.7: a registry edit changes future runs only).
+    template = recipe.get("template") if isinstance(recipe.get("template"), dict) else None
+    carry = {"template": template} if template else {}
     if recipe.get("kind") == "voice":
         step = steps[0] if steps else {}
         return "generate-voice", {
             "id": media_id, "text": step.get("text", ""),
             "seed": int(new_seed if new_seed is not None else step.get("seed", 7)),
+            **carry,
         }
     if any(s.get("workflow") == LAYERED_WORKFLOW for s in steps):
         gen = next((s for s in steps if s.get("workflow") and s["workflow"] != LAYERED_WORKFLOW), {})
@@ -1634,6 +1913,7 @@ def regenerate_dispatch(recipe: dict, media_id: str, new_seed=None) -> tuple[str
             "refs": refs, "maxSize": finalize.get("maxSize"),
             "pad": int(str(finalize.get("crop", "bbox+12")).split("+")[-1]) if "+" in str(finalize.get("crop", "")) else 12,
             "extractPrompt": extract.get("prompt"),
+            **carry,
         }
     step = steps[0] if steps else {}
     return "generate-image", {
@@ -1641,6 +1921,7 @@ def regenerate_dispatch(recipe: dict, media_id: str, new_seed=None) -> tuple[str
         "seed": int(new_seed if new_seed is not None else step.get("seed", 42)),
         "width": int(step.get("width", 1024)), "height": int(step.get("height", 1024)),
         "refs": refs,
+        **carry,
     }
 
 
@@ -1853,6 +2134,11 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 return self.send_json({"ok": True, "jobs": jobs})
             if parsed.path == "/api/studio/voices":
                 return self.handle_voices(parse_qs(parsed.query))
+            if parsed.path == "/api/studio/templates":
+                # The whole qlobe-generate-templates registry (spec §7.7). The
+                # studio renders its forms from this; the static preview falls
+                # back to fetching the same file directly.
+                return self.send_json({"ok": True, "registry": load_generate_templates(self.state)})
             if parsed.path == "/api/studio/media":
                 return self.send_json({"ok": True, "media": list_media(self.state)})
             if parsed.path.startswith("/api/studio/media/"):
@@ -1863,6 +2149,11 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     return self.send_error_json(404, f"media not found: {media_id}")
                 recipe = json.loads(recipe_path.read_text("utf-8"))
                 return self.send_json({"ok": True, "media": media_summary(recipe, folder)})
+            if parsed.path == "/api/studio/ref-candidates":
+                query = parse_qs(parsed.query)
+                source = query.get("source", [""])[0]
+                return self.send_json({"ok": True, "source": source,
+                                       "items": ref_candidates(self.state, source)})
             if parsed.path.startswith("/api/studio/jobs/"):
                 job = self.state.store.get(parsed.path.rsplit("/", 1)[-1])
                 return self.send_json({"ok": True, "job": public_job(job)}) if job else self.send_error_json(404, "job not found")
@@ -2059,6 +2350,27 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 payload = self.read_json()
                 kind = str(payload.get("kind", ""))
                 params = payload.get("params") if isinstance(payload.get("params"), dict) else {}
+                # Template branch (spec §7.7/§10): {template, styleId, fields,
+                # params:{id, seed?, overwrite?, refs?}}. The server expands the
+                # registry entry into exactly the params shape the raw body below
+                # already validates, so both paths share one enqueue. The client
+                # may not pass a prompt/workflow/dimension — that is the whole
+                # point: prompts cannot drift from the registry.
+                template_block = None
+                if payload.get("template") is not None:
+                    allowed = {"id", "seed", "overwrite", "refs"}
+                    extra = sorted(k for k in params if k not in allowed)
+                    if extra:
+                        raise ValueError("a template run may only pass params "
+                                         f"{sorted(allowed)}; remove: {', '.join(extra)}")
+                    if "overwrite" in params:
+                        payload["overwrite"] = params["overwrite"]
+                    kind, params, template_block = expand_template(
+                        self.state, str(payload.get("template") or ""),
+                        payload.get("styleId") or payload.get("style"),
+                        payload.get("fields") if isinstance(payload.get("fields"), dict) else {},
+                        params,
+                    )
                 if kind not in ("generate-image", "cutout-chain", "generate-voice"):
                     raise ValueError("kind must be generate-image, cutout-chain, or generate-voice")
                 media_id = safe_media_id(str(params.get("id", "")))
@@ -2090,6 +2402,8 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                             "pad": max(0, min(64, int(params.get("pad", 12)))),
                             "extractPrompt": (str(params.get("extractPrompt")).strip() or None) if params.get("extractPrompt") else None,
                         })
+                    if template_block:
+                        dispatch["template"] = template_block
                     job_id = self.state.enqueue(
                         kind, dispatch,
                         {"target": kind, "mediaId": media_id, "message": "Queued", "progress": 0},
@@ -2100,6 +2414,8 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     if not text:
                         raise ValueError("voice text is required")
                     dispatch = {"id": media_id, "text": text[:2000], "seed": int(params.get("seed", 7))}
+                    if template_block:
+                        dispatch["template"] = template_block
                     job_id = self.state.enqueue(
                         kind, dispatch,
                         {"target": kind, "mediaId": media_id, "message": "Queued", "progress": 0},

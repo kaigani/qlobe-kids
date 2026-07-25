@@ -1,6 +1,11 @@
 import { serverStatus } from './api.js';
 import { loadStudioProjects, studioProject, canonicalWorkspaceId } from './projects.js';
 
+// Bump when any workspaces/*.js changes — same discipline as studio.css?v=.
+// Without it Chrome's heuristic disk cache can serve stale workspace modules
+// for hours after a deploy (bit us during the nav refactor verification).
+const WORKSPACE_VERSION = 9;
+
 const CHARACTER_WORKSPACES = new Set(['rig', 'animate', 'speech']);
 // Rig (WP-1b), Animate (WP-1c) and Speech (WP-1d) are ported to native
 // workspaces. No character workspace embeds the legacy iframe by default anymore.
@@ -12,6 +17,8 @@ const params = new URLSearchParams(location.search);
 const legacyRig = params.get('legacy') === '1';
 const useIframe = (workspace) => IFRAME_WORKSPACES.has(workspace) || (LEGACY_ESCAPE.has(workspace) && legacyRig);
 const nav = document.querySelector('#workspace-nav');
+const subnav = document.querySelector('#studio-subnav');
+const crumbBar = document.querySelector('#studio-crumbs');
 const iframe = document.querySelector('#character-workspace');
 const nativeHost = document.querySelector('#native-workspace');
 const serverPill = document.querySelector('#server-status');
@@ -19,16 +26,27 @@ const legacyLink = document.querySelector('#legacy-link');
 const toastNode = document.querySelector('#studio-toast');
 let activeCleanup = null;
 let activeWorkspace = null;
+// Mount-generation guard: bumped on every openWorkspace. The per-mount ctx
+// closures (setNav/setParam) capture the generation live at mount and no-op
+// once a newer workspace has mounted, so a late async setNav from a workspace
+// the user already navigated away from can never repaint the shell.
+let mountGeneration = 0;
+// Shell-owned navigation state. Crumb/tab items may carry onClick handlers
+// (not serializable); getState() exposes labels only.
+let navState = { tabs: [], activeTab: null, crumbs: [], count: null };
 
 async function applyProjectNavigation() {
   const projects = await loadStudioProjects();
   const project = projects.find((item) => item.id === params.get('project')) || projects[0];
   const available = new Set(Object.keys(project?.workspaces || {}));
   available.add('rig'); // native Rig edits the shared character library — always reachable
+  available.add('animate'); // native Animate edits shared character clips — always reachable, like Rig
+  available.add('speech'); // native Speech edits shared character voice cues — always reachable, like Rig
   available.add('library'); // native Library browses every object across every project — always reachable
   available.add('modules'); // native Modules browses engines/services/stage/templates — always reachable
   available.add('games'); // native Games browses the registry + per-game dashboards — always reachable
   available.add('production'); // native Production (jobs/validate/completeness/usage) — always reachable
+  available.add('generate'); // native Generate (template registry + review queue) — always reachable
   for (const button of nav.querySelectorAll('button[data-workspace]')) {
     button.hidden = !available.has(button.dataset.workspace);
     if (button.dataset.workspace === 'assemble') button.textContent = project?.workspaces?.assemble?.label || 'Assemble';
@@ -55,21 +73,153 @@ async function checkServer() {
   }
 }
 
-function updateUrl(workspace) {
+// The shared `params` object is the single source of truth for the URL query;
+// every writer (updateUrl, setParam, the char message handler) mutates it and
+// then mirrors it onto the address bar via replaceState.
+function syncUrl() {
   const next = new URL(location.href);
-  next.searchParams.set('workspace', workspace);
+  next.search = params.toString();
   history.replaceState(null, '', next);
 }
 
+function updateUrl(workspace) {
+  params.set('workspace', workspace);
+  syncUrl();
+}
+
+// Root crumb label = the primary-nav button's text (picks up the project
+// relabel of "Assemble" applied by applyProjectNavigation).
+function rootLabel(workspace) {
+  const button = nav.querySelector(`button[data-workspace="${workspace}"]`);
+  return (button?.textContent || workspace).trim();
+}
+
+// Full-replace render of the two shell rows from navState. Called by the shell
+// (openWorkspace reset) and by ctx.setNav. Shell owns all DOM and the .on /
+// aria-selected / aria-current bookkeeping; workspaces never touch these rows.
+function renderNav() {
+  const tabs = Array.isArray(navState.tabs) ? navState.tabs : [];
+  subnav.hidden = tabs.length === 0;
+  subnav.replaceChildren();
+  for (const tab of tabs) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('role', 'tab');
+    button.dataset.tabId = tab.id;
+    button.textContent = tab.label;
+    const active = tab.id === navState.activeTab;
+    button.classList.toggle('on', active);
+    button.setAttribute('aria-selected', active ? 'true' : 'false');
+    subnav.appendChild(button);
+  }
+
+  const crumbs = (Array.isArray(navState.crumbs) && navState.crumbs.length)
+    ? navState.crumbs : [{ label: rootLabel(activeWorkspace) }];
+  crumbBar.hidden = false; // always visible while a workspace is mounted
+  crumbBar.replaceChildren();
+  crumbs.forEach((crumb, index) => {
+    const isLast = index === crumbs.length - 1;
+    if (isLast) {
+      const current = document.createElement('span');
+      current.className = 'crumb crumb-current';
+      current.setAttribute('aria-current', 'page');
+      current.textContent = crumb.label;
+      crumbBar.appendChild(current);
+    } else {
+      const clickable = typeof crumb.onClick === 'function';
+      const el = document.createElement(clickable ? 'button' : 'span');
+      el.className = 'crumb';
+      el.textContent = crumb.label;
+      if (clickable) { el.type = 'button'; el.dataset.crumbIndex = String(index); }
+      crumbBar.appendChild(el);
+      const sep = document.createElement('span');
+      sep.className = 'crumb-sep';
+      sep.setAttribute('aria-hidden', 'true');
+      sep.textContent = '▸';
+      crumbBar.appendChild(sep);
+    }
+  });
+
+  // Project chip: shell-automatic from ?project, with an × that clears the
+  // param and remounts the current workspace.
+  const project = params.get('project');
+  if (project) {
+    const chip = document.createElement('span');
+    chip.className = 'crumb-chip';
+    const label = document.createElement('span');
+    label.textContent = project;
+    chip.appendChild(label);
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'crumb-chip-x';
+    remove.dataset.crumbChipRemove = '1';
+    remove.setAttribute('aria-label', `Clear project ${project}`);
+    remove.textContent = '×';
+    chip.appendChild(remove);
+    crumbBar.appendChild(chip);
+  }
+
+  if (navState.count != null && navState.count !== '') {
+    const count = document.createElement('span');
+    count.className = 'status-pill crumb-count';
+    count.textContent = navState.count;
+    crumbBar.appendChild(count);
+  }
+}
+
+// Event delegation lives on the shell rows, added once. Tab / crumb items look
+// their handler up out of the live navState so a re-render never orphans a
+// listener.
+subnav.addEventListener('click', (event) => {
+  const button = event.target.closest('button[data-tab-id]');
+  if (!button) return;
+  const tab = (navState.tabs || []).find((item) => item.id === button.dataset.tabId);
+  tab?.onClick?.(tab.id);
+});
+crumbBar.addEventListener('click', (event) => {
+  if (event.target.closest('[data-crumb-chip-remove]')) {
+    params.delete('project');
+    syncUrl();
+    openWorkspace(activeWorkspace);
+    return;
+  }
+  const button = event.target.closest('button[data-crumb-index]');
+  if (!button) return;
+  (navState.crumbs || [])[Number(button.dataset.crumbIndex)]?.onClick?.();
+});
+
 async function openWorkspace(workspace, { update = true } = {}) {
   workspace = canonicalWorkspaceId(workspace); // "build" is a legacy alias for "assemble"
-  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music', 'library', 'modules', 'games', 'production'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
+  if (!CHARACTER_WORKSPACES.has(workspace) && !['assemble', 'props', 'stage', 'music', 'generate', 'library', 'modules', 'games', 'production'].includes(workspace)) workspace = DEFAULT_WORKSPACE;
   const { available } = await applyProjectNavigation();
-  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'library', 'modules', 'games', 'production'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
+  if (!available.has(workspace)) workspace = ['assemble', 'props', 'stage', 'music', 'rig', 'animate', 'speech', 'generate', 'library', 'modules', 'games', 'production'].find((id) => available.has(id)) || DEFAULT_WORKSPACE;
   if (activeCleanup) { activeCleanup(); activeCleanup = null; }
   activeWorkspace = workspace;
   for (const button of nav.querySelectorAll('button')) button.classList.toggle('on', button.dataset.workspace === workspace);
   if (update) updateUrl(workspace);
+
+  // Bump the mount generation and build this mount's shell-owned ctx closures.
+  const generation = ++mountGeneration;
+  const setNav = (config = {}) => {
+    if (generation !== mountGeneration) return; // stale call from a prior mount
+    navState = {
+      tabs: Array.isArray(config.tabs) ? config.tabs : [],
+      activeTab: config.activeTab ?? null,
+      crumbs: (Array.isArray(config.crumbs) && config.crumbs.length)
+        ? config.crumbs : [{ label: rootLabel(workspace) }],
+      count: config.count ?? null,
+    };
+    renderNav();
+  };
+  const setParam = (key, value) => {
+    if (generation !== mountGeneration) return; // stale call from a prior mount
+    if (value === null || value === undefined) params.delete(key);
+    else params.set(key, String(value));
+    syncUrl();
+  };
+  // Reset both shell rows to the default root crumb on EVERY openWorkspace,
+  // including the iframe/legacy early-return path below.
+  setNav({});
 
   if (CHARACTER_WORKSPACES.has(workspace) && useIframe(workspace)) {
     nativeHost.hidden = true; iframe.hidden = false;
@@ -96,8 +246,8 @@ async function openWorkspace(workspace, { update = true } = {}) {
     ? `?workspace=${workspace}&legacy=1${params.get('char') ? `&char=${encodeURIComponent(params.get('char'))}` : ''}`
     : '../stage/puppet-studio.html';
   try {
-    const module = await import(`./workspaces/${workspace}.js`);
-    const result = await module.mount(nativeHost, { params, toast, openWorkspace });
+    const module = await import(`./workspaces/${workspace}.js?v=${WORKSPACE_VERSION}`);
+    const result = await module.mount(nativeHost, { params, toast, openWorkspace, setNav, setParam });
     activeCleanup = typeof result === 'function' ? result : result?.destroy || null;
   } catch (error) {
     nativeHost.innerHTML = `<div class="empty-state"><div><h1>Workspace error</h1><p>${escapeHtml(error.message)}</p></div></div>`;
@@ -113,8 +263,7 @@ window.addEventListener('popstate', () => openWorkspace(new URLSearchParams(loca
 window.addEventListener('message', (event) => {
   if (event.origin !== location.origin || event.data?.type !== 'qlobe-studio-character') return;
   params.set('char', event.data.char);
-  const next = new URL(location.href); next.searchParams.set('char', event.data.char);
-  history.replaceState(null, '', next);
+  syncUrl();
 });
 
 function escapeHtml(value) {
@@ -128,5 +277,11 @@ window.QLOBE_STUDIO = {
   version: 1,
   ready: true,
   openWorkspace,
-  getState: () => ({ workspace: activeWorkspace, embedded: useIframe(activeWorkspace) }),
+  getState: () => ({
+    workspace: activeWorkspace,
+    embedded: useIframe(activeWorkspace),
+    tabs: (navState.tabs || []).map((tab) => tab.label),
+    activeTab: navState.activeTab,
+    crumbs: (navState.crumbs || []).map((crumb) => crumb.label),
+  }),
 };

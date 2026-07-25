@@ -10,7 +10,7 @@ const CLIPS = ['idle', 'play-keys', 'play-strum', 'play-blow', 'play-drum', 'pla
 const optionList = (items, selected) => items.map(([value, label = value]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
 const number = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
-export async function mount(host, { params, toast }) {
+export async function mount(host, { params, toast, setNav, setParam }) {
   const projects = await loadStudioProjects();
   const GAMES = Object.fromEntries(projects.filter((project) => project.workspaces?.props).map((project) => {
     const ws = project.workspaces.props;
@@ -25,19 +25,23 @@ export async function mount(host, { params, toast }) {
 
   host.innerHTML = `
     <div class="workspace" data-workspace="props">
-      <div class="workspace-tools">
-        <label>Pack<select data-control="game">${optionList(Object.entries(GAMES).map(([id, value]) => [id, value.label]), gameId)}</select></label>
-        <label>Prop<select data-control="prop"></select></label>
-        <label>Character<select data-control="char"></select></label>
-        <label>Pose<select data-control="clip">${optionList(CLIPS.map((id) => [id, id]), clip)}</select></label>
-        <button data-action="save" class="save">Save pack</button><button data-action="export" class="ghost">Export JSON</button>
-      </div>
       <div class="workspace-canvas" data-stage><span class="canvas-badge">Prop Pack · socket-aligned preview</span></div>
-      <aside class="workspace-inspector"><div class="panel-section"><h2>Prop Studio</h2><p class="hint">Tune reusable art, scale and semantic attachment sockets. The game consumes this same pack.</p></div><div data-inspector></div></aside>
+      <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-session">
+            <label>Pack<select data-control="game">${optionList(Object.entries(GAMES).map(([id, value]) => [id, value.label]), gameId)}</select></label>
+            <label>Prop<select data-control="prop"></select></label>
+            <label>Character<select data-control="char"></select></label>
+            <label>Pose<select data-control="clip">${optionList(CLIPS.map((id) => [id, id]), clip)}</select></label>
+            <button data-action="save" class="save">Save pack</button><button data-action="export" class="ghost">Export JSON</button>
+          </div>
+        </div>
+        <div class="panel-section"><h2>Prop Studio</h2><p class="hint">Tune reusable art, scale and semantic attachment sockets. The game consumes this same pack.</p></div><div data-inspector></div></aside>
     </div>`;
   const stageHost = host.querySelector('[data-stage]');
   const inspector = host.querySelector('[data-inspector]');
   const control = (name) => host.querySelector(`[data-control="${name}"]`);
+  const syncNav = () => setNav({ crumbs: [{ label: 'Props' }, { label: gameId }] });
 
   async function loadGame() {
     const game = GAMES[gameId];
@@ -168,7 +172,7 @@ export async function mount(host, { params, toast }) {
     else return;
     drawInspector(); refreshPack(); renderProp();
   });
-  control('game').addEventListener('change', async (event) => { gameId = event.target.value; propId = null; charId = ''; params.set('project', gameId); const next = new URL(location.href); next.searchParams.set('project', gameId); history.replaceState(null, '', next); await loadGame(); });
+  control('game').addEventListener('change', async (event) => { gameId = event.target.value; propId = null; charId = ''; setParam('project', gameId); syncNav(); await loadGame(); });
   control('prop').addEventListener('change', (event) => { propId = event.target.value; selectedSocket = null; drawInspector(); renderProp(); });
   control('char').addEventListener('change', async (event) => { charId = event.target.value; await buildStage(); });
   control('clip').addEventListener('change', (event) => { clip = event.target.value; if(actor?.mode==='pose-sprite')theater.setSpritePose(actor,clip);else actor?.puppet.playClip(clip); });
@@ -176,6 +180,7 @@ export async function mount(host, { params, toast }) {
   host.querySelector('[data-action="export"]').addEventListener('click', () => downloadDocument(`${raw.id}.json`, raw));
 
   await loadGame();
+  syncNav();
   window.QLOBE_STUDIO_DEBUG = { workspace: 'props', getDocument: () => raw, selectProp: (id) => { if (raw.props[id]) { propId = id; control('prop').value = id; drawInspector(); renderProp(); } } };
   return () => { destroyed = true; renderToken += 1; if (guideTick && stage) stage.app.ticker.remove(guideTick); theater?.destroy(); stage?.destroy(); if (window.QLOBE_STUDIO_DEBUG?.workspace === 'props') delete window.QLOBE_STUDIO_DEBUG; };
 }

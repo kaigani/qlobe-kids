@@ -23,7 +23,7 @@ const charBase = (id) => new URL(`shared/characters/${id}/`, REPO).href;
 const optionList = (items, selected) =>
   items.map(([value, label = value]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
 
-export async function mount(host, { params, toast, openWorkspace }) {
+export async function mount(host, { params, toast, openWorkspace, setNav, setParam }) {
   // Roster from the registry (type: character), falling back to the shared 8.
   let characterIds = RIGGED_CHARACTERS;
   try {
@@ -41,16 +41,18 @@ export async function mount(host, { params, toast, openWorkspace }) {
 
   host.innerHTML = `
     <div class="workspace" data-workspace="rig">
-      <div class="workspace-tools">
-        <label>Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
-        <button data-undo class="ghost" title="Ctrl+Z">⟲ Undo</button>
-        <button data-reset class="ghost">Reset</button>
-        <button data-copy class="ghost">Copy JSON</button>
-        <button data-save class="save">▣ Save rig</button>
-        <button data-export class="warn">⬇ Export rig.json</button>
-      </div>
       <div class="workspace-canvas" data-stage><span class="canvas-badge">Rig · live puppet · drag a part to move its joint</span></div>
       <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-session">
+            <label>Character<select data-char>${optionList(characterIds.map((id) => [id, id]), charId)}</select></label>
+            <button data-undo class="ghost" title="Ctrl+Z">⟲ Undo</button>
+            <button data-reset class="ghost">Reset</button>
+            <button data-copy class="ghost">Copy JSON</button>
+            <button data-save class="save">▣ Save rig</button>
+            <button data-export class="warn">⬇ Export rig.json</button>
+          </div>
+        </div>
         <div class="panel-section">
           <h2>Rig Parts</h2>
           <label>Part / bone<select data-bone></select></label>
@@ -77,6 +79,8 @@ export async function mount(host, { params, toast, openWorkspace }) {
   const stageHost = host.querySelector('[data-stage]');
   const el = (sel) => host.querySelector(sel);
   const fail = (error) => { console.error(error); toast(error.message, { error: true, duration: 7000 }); };
+  // Breadcrumbs: RIG ▸ <char>, updated whenever the character switches.
+  const syncNav = () => setNav({ crumbs: [{ label: 'Rig' }, { label: charId }] });
 
   // ---- undo + live-puppet helpers --------------------------------------------
   function pushUndo() { undoStack.push(JSON.stringify(rig)); if (undoStack.length > 80) undoStack.shift(); }
@@ -255,8 +259,8 @@ export async function mount(host, { params, toast, openWorkspace }) {
   async function loadCharacter(id, { keepUndo = false } = {}) {
     charId = characterIds.includes(id) ? id : characterIds[0];
     el('[data-char]').value = charId;
-    params.set('char', charId);
-    const next = new URL(location.href); next.searchParams.set('char', charId); history.replaceState(null, '', next);
+    setParam('char', charId);       // shell choke point: syncs params + replaceState
+    syncNav();                      // crumbs track the selected character
     if (!keepUndo) undoStack.length = 0;
     artVersion = artVersion || Date.now();
     const base = charBase(charId);

@@ -13,10 +13,12 @@ const clone = (value) => structuredClone(value);
 const options = (values, selected) => values.map(([value, label = value]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
 const num = (value, fallback) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
-export async function mount(host, { toast, params }) {
+export async function mount(host, { toast, params, setNav, setParam }) {
   if (params?.get('project') === 'story-stones') {
-    const module = await import('./stage-story-stones.js');
-    return module.mount(host, { toast, params });
+    // Inherit our own ?v= so the delegate can never be cache-stale relative to us.
+    const module = await import(`./stage-story-stones.js${new URL(import.meta.url).search}`);
+    // Forward the shell-owned nav functions so the delegate can drive crumbs/params too.
+    return module.mount(host, { toast, params, setNav, setParam });
   }
   const sourceConfig = clone((await import(CONFIG_URL.href)).default);
   const packResponse = await fetch(PACK_URL, { cache: 'no-store' });
@@ -29,16 +31,26 @@ export async function mount(host, { toast, params }) {
 
   host.innerHTML = `
     <div class="workspace" data-workspace="stage">
-      <div class="workspace-tools">
-        <label>Scene<select data-control="scene"></select></label><label>Role A<select data-control="a">${options(CHARACTERS.map((id) => [id,id]), castA)}</select></label><label>Role B<select data-control="b">${options(CHARACTERS.map((id) => [id,id]), castB)}</select></label>
-        <label>Sequence<select data-control="sequence"></select></label>
-        <button data-action="play">Play sequence</button><button data-action="stop" class="warn">Stop</button><button data-action="save" class="save">Save scene</button><button data-action="export" class="ghost">Export JSON</button>
+      <div class="workspace-canvas" data-stage>
+        <div class="canvas-transport">
+          <button data-action="play">Play sequence</button><button data-action="stop" class="warn">Stop</button>
+          <span class="canvas-badge">Puppet Problem Solvers · shipping runtime</span>
+        </div>
       </div>
-      <div class="workspace-canvas" data-stage><span class="canvas-badge">Puppet Problem Solvers · shipping runtime</span></div>
-      <aside class="workspace-inspector"><div class="panel-section"><h2>Stage Studio</h2><p class="hint">Block actors and props, reorder beats, and preview the exact theater runtime.</p></div><div data-inspector></div></aside>
+      <aside class="workspace-inspector">
+        <div class="panel-section"><div class="sidebar-session">
+          <label>Scene<select data-control="scene"></select></label><label>Role A<select data-control="a">${options(CHARACTERS.map((id) => [id,id]), castA)}</select></label><label>Role B<select data-control="b">${options(CHARACTERS.map((id) => [id,id]), castB)}</select></label>
+          <label>Sequence<select data-control="sequence"></select></label>
+          <button data-action="save" class="save">Save scene</button><button data-action="export" class="ghost">Export JSON</button>
+        </div></div>
+        <div class="panel-section"><h2>Stage Studio</h2><p class="hint">Block actors and props, reorder beats, and preview the exact theater runtime.</p></div>
+        <div data-inspector></div>
+      </aside>
     </div>`;
   const stageHost = host.querySelector('[data-stage]'), inspector = host.querySelector('[data-inspector]');
   const ctl = (name) => host.querySelector(`[data-control="${name}"]`);
+  // Breadcrumbs: SCENES ▸ <scene>, refreshed whenever the scene changes.
+  const syncNav = () => setNav({ crumbs: [{ label: 'Scenes' }, { label: sceneId }] });
 
   function currentEntry() { return scenes.find((entry) => entry.scene.id === sceneId) || scenes[0]; }
   function currentSequence() {
@@ -148,12 +160,12 @@ export async function mount(host, { toast, params }) {
     }
     await buildStage();
   });
-  ctl('scene').addEventListener('change', async (event) => { sceneId = event.target.value; sequenceKey = 'setup'; beatIndex = 0; fillControls(); await buildStage(); });
+  ctl('scene').addEventListener('change', async (event) => { sceneId = event.target.value; sequenceKey = 'setup'; beatIndex = 0; fillControls(); syncNav(); await buildStage(); });
   ctl('sequence').addEventListener('change', (event) => { sequenceKey = event.target.value; beatIndex = 0; drawInspector(); });
   ctl('a').addEventListener('change', async (event) => { castA = event.target.value; await buildStage(); });
   ctl('b').addEventListener('change', async (event) => { castB = event.target.value; await buildStage(); });
 
-  fillControls(); await buildStage();
+  fillControls(); syncNav(); await buildStage();
   window.QLOBE_STUDIO_DEBUG = { workspace: 'stage', getDocument: () => rawPack, getScene: () => currentEntry().scene, play: playSequence };
   return () => { destroyed = true; generation += 1; theater?.destroy(); stage?.destroy(); if (window.QLOBE_STUDIO_DEBUG?.workspace === 'stage') delete window.QLOBE_STUDIO_DEBUG; };
 }

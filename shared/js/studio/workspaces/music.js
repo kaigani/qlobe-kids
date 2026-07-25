@@ -14,7 +14,7 @@ const CHARACTERS = ['bear', 'doggy', 'fox', 'frog', 'rabbit', 'unicorn', 'prince
 const options = (values, selected) => values.map(([value, label = value]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`).join('');
 const num = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
-export async function mount(host, { toast }) {
+export async function mount(host, { toast, setNav, setParam }) {
   const config = (await import(CONFIG_URL.href)).default;
   const response = await fetch(SYNC_URL, { cache: 'no-store' });
   let raw = response.ok ? await response.json() : { format: 'qlobe-music-sync', formatVersion: 1, id: 'my-puppet-band-performance', profiles: {} };
@@ -27,18 +27,27 @@ export async function mount(host, { toast }) {
 
   host.innerHTML = `
     <div class="workspace" data-workspace="music">
-      <div class="workspace-tools">
-        <label>Song<select data-control="song">${options(config.songs.map((song) => [song.id, song.title]), songId)}</select></label><label>Instrument<select data-control="instrument">${options(config.instruments.map((item) => [item.id,item.id]), instrument)}</select></label><label>Character<select data-control="char">${options(CHARACTERS.map((id) => [id,id]), charId)}</select></label>
-        <button data-action="play">Play synced</button><button data-action="note" class="ghost">Preview note</button><button data-action="stop" class="warn">Stop</button><button data-action="save" class="save">Save profile</button><button data-action="export" class="ghost">Export JSON</button>
+      <div class="workspace-canvas" data-stage>
+        <div class="canvas-transport">
+          <button data-action="play">Play synced</button><button data-action="note" class="ghost">Preview note</button><button data-action="stop" class="warn">Stop</button>
+          <span class="canvas-badge">My Puppet Band · score + analyser hooks</span>
+        </div>
       </div>
-      <div class="workspace-canvas" data-stage><span class="canvas-badge">My Puppet Band · score + analyser hooks</span></div>
-      <aside class="workspace-inspector"><div class="panel-section"><h2>Music Sync</h2><p class="hint">Lock a performance clip to musical time and inspect scheduled note and audio-energy hooks.</p></div><div data-inspector></div></aside>
+      <aside class="workspace-inspector">
+        <div class="panel-section">
+          <div class="sidebar-session">
+            <label>Song<select data-control="song">${options(config.songs.map((song) => [song.id, song.title]), songId)}</select></label><label>Instrument<select data-control="instrument">${options(config.instruments.map((item) => [item.id,item.id]), instrument)}</select></label><label>Character<select data-control="char">${options(CHARACTERS.map((id) => [id,id]), charId)}</select></label>
+            <button data-action="save" class="save">Save profile</button><button data-action="export" class="ghost">Export JSON</button>
+          </div>
+        </div>
+        <div class="panel-section"><h2>Music Sync</h2><p class="hint">Lock a performance clip to musical time and inspect scheduled note and audio-energy hooks.</p></div><div data-inspector></div></aside>
     </div>`;
   const stageHost = host.querySelector('[data-stage]'), inspector = host.querySelector('[data-inspector]');
   const ctl = (name) => host.querySelector(`[data-control="${name}"]`);
   const song = () => config.songs.find((item) => item.id === songId) || config.songs[0];
   const instrumentDef = () => config.instruments.find((item) => item.id === instrument) || {};
   const rawProfile = () => (raw.profiles[instrument] ||= { baseClip: 'idle', cycleBeats: 1, gestures: {} });
+  const syncNav = () => setNav({ crumbs: [{ label: 'Music Sync' }, { label: song().title }] });
 
   function drawInspector() {
     const profile = rawProfile();
@@ -104,7 +113,7 @@ export async function mount(host, { toast }) {
     sync?.setProfile(profiles.profiles[instrument]);
     if (!playing && field === 'baseClip') actor?.puppet.playClip(profile.baseClip);
   });
-  ctl('song').addEventListener('change', async (event) => { songId = event.target.value; await buildStage(); });
+  ctl('song').addEventListener('change', async (event) => { songId = event.target.value; syncNav(); await buildStage(); });
   ctl('instrument').addEventListener('change', async (event) => { instrument = event.target.value; profiles = normalizeMusicSyncProfiles(raw, SYNC_URL.href); drawInspector(); await buildStage(); });
   ctl('char').addEventListener('change', async (event) => { charId = event.target.value; await buildStage(); });
   host.addEventListener('click', async (event) => {
@@ -117,6 +126,7 @@ export async function mount(host, { toast }) {
   });
 
   drawInspector(); await buildStage();
+  syncNav();
   window.QLOBE_STUDIO_DEBUG = { workspace: 'music', getDocument: () => raw, play, stop, getState: () => ({ instrument, songId, eventCount, playing: !!playing }) };
   return () => { destroyed = true; generation += 1; stop(); theater?.destroy(); stage?.destroy(); if (window.QLOBE_STUDIO_DEBUG?.workspace === 'music') delete window.QLOBE_STUDIO_DEBUG; };
 }

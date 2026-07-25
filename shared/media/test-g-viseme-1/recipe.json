@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "test-g-viseme-1",
+  "kind": "image",
+  "asset": "test-g-viseme-1.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Redraw the character in this reference image as a labelled 3 by 3 grid of nine puppet heads. Keep the character exactly as the reference shows it \u2014 same colours, same fur or skin texture, same eyes, same ears, same muzzle, same headwear, same art style \u2014 and change nothing but the mouth. Nine cells in three even rows of three on one flat uniform mid-grey ground: the same head at the same size, upright, front-facing and centred in every cell, with clear grey between the cells so that no two heads touch. Each head differs from the others only in the shape of its mouth. Under each head, in the empty grey below it and clear of the ears, print that cell's short mouth-shape label in plain grey capitals. The nine mouth shapes, in reading order left to right and top to bottom, are: a, o, e, wr, ts, ln, uq, mbp, fv. Flat solid uniform grey background, no gradient, no drop shadows, no cell borders or grid lines, no other text.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "shared:refs/viseme-grid-template.png"
+  },
+  "template": {
+    "id": "character-viseme-grid",
+    "style": "toy-table",
+    "fields": {
+      "visemes": "a, o, e, wr, ts, ln, uq, mbp, fv"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-07-25"
+}

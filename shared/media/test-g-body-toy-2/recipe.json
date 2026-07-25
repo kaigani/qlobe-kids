@@ -1,0 +1,32 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "test-g-body-toy-2",
+  "kind": "image",
+  "asset": "test-g-body-toy-2.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Replace the teddy bear in this puppet parts sheet with Axel the axolotl: a friendly purple axolotl with soft lilac skin, a pale cream belly, three feathery magenta gills on each side of the head, big round black eyes, a wide gentle smile, and a small teal dungaree. Keep this parts sheet exactly as it is and change only who it is a sheet of. The same ten separate pieces stay in the same ten positions, at the same sizes, with the same outlines and the same silhouettes: the head, the torso, the four arm pieces in the middle row and the four leg pieces in the bottom row. Every piece keeps the shape of the piece it replaces, so a bare limb tube stays a bare limb tube and a piece that ends in a hand or a foot keeps that hand or foot. The head piece is only a head. Nothing is added, moved, resized, merged or left out, and no two pieces touch. Recolour all ten pieces, the bottom row included, into the new character \u2014 its colours, its texture, its face and its costume \u2014 and leave no piece in the old character's colours. Flat solid uniform grey background, no gradient, no texture, no drop shadows, no grid lines, no labels, no text. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words. The reference sheet is drawn in flat neutral grey on purpose: it carries the layout and nothing else, so take every shape from it and every colour from the description above.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "shared:refs/puppet-parts-template.png"
+  },
+  "template": {
+    "id": "character-body-sheet",
+    "style": "toy-table",
+    "fields": {
+      "character": "Axel the axolotl",
+      "description": "a friendly purple axolotl with soft lilac skin, a pale cream belly, three feathery magenta gills on each side of the head, big round black eyes, a wide gentle smile, and a small teal dungaree"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-07-25"
+}
