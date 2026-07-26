@@ -465,6 +465,10 @@ export function mediaToObject(item) {
     id: item.id, type: 'media', kind: item.kind, asset: item.asset, created: item.created,
     derivedFrom: item.derivedFrom || null, refs: item.refs || {}, role: item.role || null,
     qa: item.qa || {}, hasMagenta: !!item.hasMagenta, hasTranscript: !!item.hasTranscript,
+    // preview/poses ride along so the Library shows the same thumbnail (a pose
+    // actor's asset is poses.json — the contact strip is the visual) and can
+    // open the same pose-flip overlay Generate uses.
+    preview: item.preview || null, poses: item.poses || null,
     recipe: item.recipe || null, project: null, tier: null, usageCount: 0, completeness: null,
   };
 }

@@ -31,7 +31,8 @@ import { serverStatus } from '../api.js';
 import { loadStudioObjects } from '../projects.js';
 import { RIGGED_CHARACTERS } from './rig-data.js';
 import {
-  createMediaController, mediaToObject, mediaAssetUrl, escapeHtml, closeOverlay,
+  createMediaController, mediaToObject, mediaAssetUrl, mediaPreviewUrl,
+  openMediaPreview, openPreviewOverlay, escapeHtml, closeOverlay,
 } from './lib/generate-core.js';
 
 const USAGE_INDEX_URL = new URL('../../../data/usage-index.json', import.meta.url);
@@ -161,7 +162,10 @@ function displayName(object) {
 // The badge names what the thing IS. A media record's type is its kind — the
 // mockup badges them "IMAGE" / "VOICE", and "Media" tells a reader nothing.
 function typeLabel(object) {
-  if (object.type === 'media') return object.kind === 'voice' ? 'Voice' : 'Image';
+  if (object.type === 'media') {
+    return object.kind === 'voice' ? 'Voice'
+      : object.kind === 'pose-actor' ? 'Pose actor' : 'Image';
+  }
   return TYPE_LABEL[object.type] || object.type;
 }
 
@@ -276,9 +280,12 @@ async function resolveMeta(object, { completeness, usageIndex }) {
     if (entry?.engine) meta.caps.push(entry.engine);
     if (entry?.status) meta.caps.push(entry.status);
   } else if (object.type === 'media') {
-    const url = mediaAssetUrl(object);
-    if (object.kind === 'image' && url) meta.thumbs = [url];
-    meta.caps.push(object.kind === 'voice' ? 'Voice' : 'Image');
+    // Same visual Generate shows: the server-named preview (a pose actor's
+    // contact strip) wins over the asset itself, which may not be an image.
+    const url = mediaPreviewUrl(object) || (object.kind !== 'voice' ? mediaAssetUrl(object) : '');
+    if (url && object.kind !== 'voice') meta.thumbs = [url];
+    meta.caps.push(object.kind === 'voice' ? 'Voice'
+      : object.kind === 'pose-actor' ? 'Pose actor' : 'Image');
     if (object.hasMagenta) meta.caps.push('Alpha QA');
     if (object.hasTranscript) meta.caps.push('Transcript');
   }
@@ -758,7 +765,8 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
           <h2>${escapeHtml(displayName(object))}</h2>
           <button type="button" class="library-close" data-action="close-inspector" aria-label="Close details">×</button>
         </div>
-        <div class="library-detail-preview">${thumbHtml(object)}</div>
+        <button type="button" class="library-detail-preview library-detail-zoom" data-action="zoom-preview"
+          title="Open full-size preview">${thumbHtml(object)}</button>
         <dl class="library-details">
           ${detailRow('Type', escapeHtml(typeLabel(object)))}
           ${detailRow('ID', escapeHtml(object.id), { mono: true })}
@@ -901,6 +909,22 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
       const action = event.target.closest('[data-action]')?.dataset.action;
       if (action === 'new-asset') { newAsset().catch(fail); return; }
       if (action === 'close-inspector') { selectedId = null; inspectorPanel = null; render(); return; }
+      if (action === 'zoom-preview') {
+        const object = objectById(selectedId);
+        if (!object) return;
+        // Media (incl. pose actors) get the full Generate overlay — stage tabs
+        // and pose flip; everything else zooms its resolved preview image.
+        if (object.type === 'media') {
+          const item = mediaController.get(object.id) || object;
+          openMediaPreview(item).catch(fail);
+          return;
+        }
+        const img = inspector.querySelector('.library-detail-preview img');
+        if (img?.getAttribute('src')) {
+          openPreviewOverlay({ src: img.getAttribute('src'), title: displayName(object) });
+        }
+        return;
+      }
       if (action === 'open-asset') { openObject(selectedId).catch(fail); return; }
       if (action === 'edit-in-generate') {
         const object = objectById(selectedId);
