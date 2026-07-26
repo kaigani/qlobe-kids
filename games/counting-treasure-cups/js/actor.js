@@ -84,7 +84,10 @@ export class Actor {
    */
   preload() {
     if (!this.manifest) return;
+    // Skip whatever is on screen: the live <img> is already fetching it, and a
+    // second concurrent request for the same URL just races the first.
     const names = Object.keys(this.manifest.poses)
+      .filter((n) => n !== this.pose)
       .sort((a, b) => order(a) - order(b));
     const idle = window.requestIdleCallback
       || ((fn) => setTimeout(fn, 400));

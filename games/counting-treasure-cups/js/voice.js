@@ -9,13 +9,29 @@
 
 import * as clips from '../../../shared/js/voice-clips.js';
 
+const MANIFEST_URL = './assets/audio/manifest.json';
+
 let lines = {};
+let durations = {};
 let muted = false;
 
 /** @param {Record<string,string>} voiceLines config.voice */
 export async function init(voiceLines) {
   lines = voiceLines || {};
-  await clips.init('./assets/audio/manifest.json', './assets/audio/lines.json', lines);
+  await clips.init(MANIFEST_URL, './assets/audio/lines.json', lines);
+  // Keep the per-clip durations so callers can wait for a line to actually
+  // finish instead of guessing. Swapping a voice changes every length, and a
+  // hard-coded timeout silently starts clipping the ends off.
+  try {
+    const res = await fetch(MANIFEST_URL);
+    if (res.ok) durations = await res.json();
+  } catch { /* fine — callers fall back to their own minimum */ }
+}
+
+/** Recorded length of a line in seconds, or 0 when it isn't recorded. */
+export function duration(key) {
+  const entry = durations[key];
+  return entry && entry.dur ? entry.dur : 0;
 }
 
 /**

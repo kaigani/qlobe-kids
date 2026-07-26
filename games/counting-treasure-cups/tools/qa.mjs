@@ -115,10 +115,15 @@ async function newPage(browser, opts = {}) {
   const failed = [];
   const aborted = [];
   const page = await ctx.newPage();
-  // Interrupting a clip is how the voice channel works: say() src-swaps the one
-  // unlocked <audio> element, which aborts the previous load. Those show up as
-  // ERR_ABORTED on .m4a and are expected — counted separately, never ignored.
-  const isExpectedAbort = (url, err) => /\.m4a$/.test(url) && /ABORTED/i.test(err || '');
+  // Two kinds of abort are by design, counted separately rather than ignored:
+  //   .m4a  — say() src-swaps the one unlocked <audio> element, cancelling the
+  //           clip it superseded. That IS the voice channel working.
+  //   .webp — a pose swap can land while the idle preloader is fetching the same
+  //           pose; one of the two identical requests is cancelled and the other
+  //           completes. Verified: actors still end up with real art.
+  // Anything else failing is a genuine broken asset and fails the run.
+  const isExpectedAbort = (url, err) =>
+    /\.(m4a|webp)$/.test(url) && /ABORTED/i.test(err || '');
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('requestfailed', (r) => {

@@ -308,7 +308,9 @@ export class Game {
     for (let i = 0; i < items.length; i++) {
       if (this.finished) return;
       items[i].classList.add('is-counting');
-      await Promise.race([voice.say(`par-${i + 1}`), this.wait(COUNT_TAIL_MS)]);
+      // The count-along is the teaching beat in How Many?, so never clip a number
+      // word — COUNT_TAIL_MS is only the rhythm floor.
+      await this.speakFully(`par-${i + 1}`, null, COUNT_TAIL_MS);
       await this.wait(90);
     }
     await this.wait(240);
@@ -386,9 +388,9 @@ export class Game {
     this.speakAs(this.rng() < 0.5 ? 'par-squawk-1' : 'par-squawk-2', 'react');
     await this.wait(520);
     card.classList.remove('is-wobble', 'is-right');
-    await Promise.race([this.speakAs('cap-nudge-count', 'interact'), this.wait(2600)]);
+    await this.speakFully('cap-nudge-count', 'interact', 2600);
     await this.countAlong();
-    await Promise.race([this.speakAs(this.promptKey, 'interact'), this.wait(3000)]);
+    await this.speakFully(this.promptKey, 'interact', 3000);
     this.busy = false;
     this.awaitingInput = true;
     this.armIdle();
@@ -480,9 +482,9 @@ export class Game {
     burst(p.x, p.y, 110);
     this.actors.parrot?.show('celebrate');
     this.actors.captain?.show('celebrate');
-    await Promise.race([voice.say('par-full'), this.wait(1400)]);
+    await this.speakFully('par-full', 'celebrate', 1400);
     const cheer = CHEERS[Math.floor(this.rng() * CHEERS.length)];
-    await Promise.race([this.speakAs(cheer, 'celebrate'), this.wait(3200)]);
+    await this.speakFully(cheer, 'celebrate', 3200);
     if (this.finished) return;
     this.showAgain();
     this.autoNext = this.after(AUTO_NEXT_MS, () => this.nextRound());
@@ -547,11 +549,26 @@ export class Game {
    */
   async openRound() {
     if (this.roundIndex === 0) {
-      await Promise.race([this.speakAs(this.mode.introKey, 'enter'), this.wait(4500)]);
+      await this.speakFully(this.mode.introKey, 'enter', 4500);
       if (this.finished || !this.awaitingInput) return;
     }
     this.speakAs(this.promptKey, 'interact');
     this.armIdle();
+  }
+
+  /**
+   * Speak a line and wait for it to finish, bounded.
+   *
+   * The bound is the line's own recorded length plus a beat, never less than
+   * `minMs` — which still covers the Web Speech fallback, where no duration is
+   * known. A fixed timeout would start cutting lines off the moment a voice is
+   * re-recorded slower, which is exactly what happened when the Captain's
+   * reference changed.
+   */
+  speakFully(key, pose, minMs) {
+    const cap = Math.max(minMs, voice.duration(key) * 1000 + 400);
+    const said = pose ? this.speakAs(key, pose) : voice.say(key);
+    return Promise.race([said, this.wait(cap)]);
   }
 
   replayPrompt() {

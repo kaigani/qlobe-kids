@@ -161,10 +161,16 @@ reproduce byte-for-byte.
 
 ## Voice
 
-| Voice | Reference | Designed with | Lines |
+| Voice | Reference | Origin | Lines |
 |---|---|---|---|
-| Captain Goldie | `assets/audio/ref/captain-goldie.flac` | `qwen3-tts-voicedesign`, seed 7 | 27 |
+| Captain Goldie | `assets/audio/ref/captain-goldie.flac` | Supplied recording, `01-game-concepts/counting-treasure-cups/assets/pirate-voice.mp3` ("Arr me hearty, here be me treasure!") — converted to mono 24 kHz, trimmed and levelled | 27 |
 | Skipper | `assets/audio/ref/skipper.flac` | `qwen3-tts-voicedesign`, seed 7 | 14 |
+
+The Captain originally used a designed voice (`qwen3-tts-voicedesign`, seed 7,
+a warm storyteller). It was replaced with the supplied pirate recording; all 27
+lines regenerated from it, every one accepted on the first seed. The change also
+closed a level imbalance — the two characters previously sat 3.5 dB apart and now
+sit within 0.2 dB (−18.3 / −18.1 dB mean).
 
 Every line is cloned from its character reference with `qwen3-tts-voiceclone` by
 `tools/gen-voice.py`, which is idempotent and re-runnable:
@@ -198,6 +204,12 @@ committed so a future pirate game matches.
   vocabulary and normalizes digits to words before comparing; without that, good
   count clips were being rejected.
 - Output is FLAC despite the `.wav` naming in the API docs.
+- **Never race a spoken line against a hard-coded timeout.** Swapping the
+  Captain's reference made every line longer, and a fixed 3200 ms cap started
+  cutting the end off a cheer. `Game.speakFully()` now bounds each wait by the
+  clip's own recorded duration (from `manifest.json`) with the old constant as a
+  floor, so the fallback path still can't hang and a re-recorded voice can't be
+  clipped.
 
 ## Budget
 
