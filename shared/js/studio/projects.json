@@ -15,6 +15,8 @@
     { "type": "pose-actor", "id": "orange-cat", "document": "games/story-stones/assets/pose-actors/orange-cat/poses.json", "project": "story-stones", "assembleProfile": "pose-library" },
     { "type": "pose-actor", "id": "owl", "document": "games/story-stones/assets/pose-actors/owl/poses.json", "project": "story-stones", "assembleProfile": "pose-library" },
     { "type": "pose-actor", "id": "white-cat", "document": "games/story-stones/assets/pose-actors/white-cat/poses.json", "project": "story-stones", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "captain-goldie", "document": "games/counting-treasure-cups/assets/pose-actors/captain-goldie/poses.json", "project": "counting-treasure-cups", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "skipper", "document": "games/counting-treasure-cups/assets/pose-actors/skipper/poses.json", "project": "counting-treasure-cups", "assembleProfile": "pose-library" },
     { "type": "prop-pack", "id": "story-stones-castle-meadow-props", "document": "games/story-stones/assets/props/pack.json", "project": "story-stones" },
     { "type": "prop-pack", "id": "puppet-problem-solvers-props", "document": "games/puppet-problem-solvers/assets/props/pack.json", "project": "puppet-problem-solvers" },
     { "type": "prop-pack", "id": "my-puppet-band-props", "document": "games/my-puppet-band/assets/props/pack.json", "project": "my-puppet-band" },
@@ -23,7 +25,8 @@
     { "type": "music-sync", "id": "my-puppet-band-performance", "document": "games/my-puppet-band/music-sync.json", "project": "my-puppet-band" },
     { "type": "game", "id": "story-stones", "document": "games/story-stones/game.json" },
     { "type": "game", "id": "puppet-problem-solvers", "document": "games/puppet-problem-solvers/game.json" },
-    { "type": "game", "id": "my-puppet-band", "document": "games/my-puppet-band/game.json" }
+    { "type": "game", "id": "my-puppet-band", "document": "games/my-puppet-band/game.json" },
+    { "type": "game", "id": "counting-treasure-cups", "document": "games/counting-treasure-cups/game.json" }
   ],
   "projects": [
     {
@@ -54,6 +57,14 @@
         "assemble": { "profile": "canonical-puppet" }, "rig": {}, "animate": {}, "speech": {},
         "props": { "pack": "assets/props/pack.json", "document": "games/my-puppet-band/assets/props/pack.json", "backdrop": "assets/bg/stage-rainbow-jam-gpt-image-2.png" },
         "music": { "document": "games/my-puppet-band/music-sync.json" }
+      }
+    },
+    {
+      "id": "counting-treasure-cups",
+      "label": "Counting Treasure Cups",
+      "gameBase": "../../../games/counting-treasure-cups/",
+      "workspaces": {
+        "assemble": { "profile": "pose-library", "label": "Poses", "backdrop": "assets/beach-poster.jpg" }
       }
     }
   ]

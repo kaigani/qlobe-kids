@@ -5,29 +5,38 @@
   "path": "games/counting-treasure-cups/",
   "icon": "🏴‍☠️",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 6 },
   "status": "beta",
   "accent": "#d69b2d",
-  "shareTitle": "Counting Treasure Cups 🪙 — Counting Coins and Gems",
-  "description": "Tap gems and coins one at a time into a pirate cup or chest, counting up to the requested amount and hearing the total spoken aloud. A one-to-one counting game for ages 5–6.",
+  "shareTitle": "Counting Treasure Cups 🏴‍☠️ — Count Gems and Gold with Captain Goldie",
+  "description": "Sail with Captain Goldie and Skipper the parrot: count gems into the golden treasure cup, sort gold coins into the chest on the beach, and work out how many treasures are hiding inside. Three counting modes for ages 4–6, driven entirely by voice, pictures and touch.",
   "learningGoals": [
-    "Count quantities from 1 to 10",
-    "Practice one-to-one correspondence",
-    "Connect the last counted item with the total amount"
+    "Count 1 to 8 with one-to-one correspondence — one number word per object",
+    "Count out a set of a requested size, and stop at the right place",
+    "Keep counting accurately while sorting by kind (coins, not gems)",
+    "Cardinality: count a set that is already there and name the total"
   ],
-  "interactionModel": "tap-count collect rounds with emoji treasure cards flying into a cup or chest",
-  "feedbackModel": "Each tap speaks the count with pop and whoosh SFX; round success gets sparkle SFX, a spoken total, and automatic progression.",
+  "interactionModel": "The child taps or drags treasure tiles from a tray; each accepted piece arcs into a cup or chest and is visibly added to the heap while the parrot counts it aloud. In How Many? the container starts full and the child taps the matching numeral card instead. Input locks during each short flight, so rapid tapping can never over-count.",
+  "feedbackModel": "Every correct piece gets pop + whoosh SFX and a spoken count; a filled pip row tracks progress without text. A wrong-kind pick wobbles in place with a parrot squawk and a spoken model of the rule — nothing is lost and nothing is scored. Completing a target glows the container, fires confetti and a spoken cheer, then offers a big play button plus a gentle auto-advance. There is no failure state and no timer.",
+  "engine": "treasure-count (game-local js/game.js)",
   "uses": [
-    "shared/js/engines/tap-count.js",
+    "games/counting-treasure-cups/js/game.js",
+    "games/counting-treasure-cups/assets/video/",
+    "games/counting-treasure-cups/assets/pose-actors/",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "treasure", "title": "Fill the Cup", "skill": "counting 2-6 with one-to-one correspondence" },
-    { "id": "more", "title": "Big Treasure", "skill": "counting larger treasure quantities 6-10" }
+    { "id": "cup", "title": "Fill the Cup", "skill": "counting out a set of a given size" },
+    { "id": "chest", "title": "Big Treasure", "skill": "counting while sorting by kind" },
+    { "id": "howmany", "title": "How Many?", "skill": "cardinality — counting a set and naming the total" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani. Original pirate art, looping backdrops and the Captain Goldie / Skipper character voices generated locally; see ASSETS.md.",
+  "characters": ["captain-goldie", "skipper"],
   "conceptVideo": null
 }

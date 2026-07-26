@@ -1,46 +1,17 @@
-export default {
-  id: 'counting-treasure-cups',
-  engine: 'tap-count',
-  title: 'Counting Treasure Cups',
-  splashEmoji: '🏴‍☠️',
-  basketArt: 'emoji:🏆',
-  copy: {
-    basket: 'treasure cup',
-    items: 'treasures',
-  },
-  voice: {
-    intro: 'Pirate treasure! Put exactly the number in the cup.',
-    cheer: 'Treasure counted! Yo ho ho!',
-    counts: ['One!', 'Two!', 'Three!', 'Four!', 'Five!', 'Six!', 'Seven!', 'Eight!', 'Nine!', 'Ten!'],
-  },
-  modes: [
-    {
-      id: 'treasure',
-      title: 'Fill the Cup',
-      type: 'collect',
-      rounds: 5,
-      difficultyRamp: true,
-      basketArt: 'emoji:🏆',
-      rounds_spec: [
-        { count: 2, itemArt: 'emoji:💎', itemAlt: 'gem', say: 'Can you put two gems in the treasure cup?' },
-        { count: 3, itemArt: 'emoji:💎', itemAlt: 'gem', say: 'Can you put three gems in the treasure cup?' },
-        { count: 4, itemArt: 'emoji:💎', itemAlt: 'gem', say: 'Can you put four gems in the treasure cup?' },
-        { count: 5, itemArt: 'emoji:💎', itemAlt: 'gem', say: 'Can you put five gems in the treasure cup?' },
-        { count: 6, itemArt: 'emoji:💎', itemAlt: 'gem', say: 'Can you put six gems in the treasure cup?' },
-      ],
-    },
-    {
-      id: 'more',
-      title: 'Big Treasure',
-      type: 'collect',
-      rounds: 4,
-      basketArt: 'emoji:🧰',
-      rounds_spec: [
-        { count: 6, itemArt: 'emoji:🪙', itemAlt: 'coin', say: 'Big treasure! Put six coins in the chest.' },
-        { count: 7, itemArt: 'emoji:🪙', itemAlt: 'coin', say: 'Big treasure! Put seven coins in the chest.' },
-        { count: 8, itemArt: 'emoji:🪙', itemAlt: 'coin', say: 'Big treasure! Put eight coins in the chest.' },
-        { count: 10, itemArt: 'emoji:🪙', itemAlt: 'coin', say: 'Big treasure! Put ten coins in the chest.' },
-      ],
-    },
-  ],
-};
+// config.js — thin shim so index.html keeps a single import shape.
+//
+// New engine games keep their content in config.json (plain data the studio can
+// read and edit) and load it through this shim, so index.html always does the
+// same `import config from './config.js'` whether a game is data-in-JS or
+// data-in-JSON. Existing config.js games (data written directly in this file as
+// `export default { ... }`) are unchanged — engines receive the same object
+// either way.
+//
+// The shim uses fetch + top-level await unconditionally. JSON import attributes
+// (`import config from './config.json' with { type: 'json' }`) were considered
+// and REJECTED: they need iOS Safari 17.2+ / Firefox 138+, too new for a
+// tablet-first audience on hand-me-down devices. Top-level await has been safe
+// since Safari 15 / Chrome 89 / Firefox 89, so this form runs everywhere we ship.
+const config = await fetch(new URL('./config.json', import.meta.url))
+  .then((r) => r.json());
+export default config;

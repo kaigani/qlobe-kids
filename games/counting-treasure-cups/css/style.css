@@ -1,0 +1,512 @@
+/* Counting Treasure Cups — tablet-first, no framework.
+   Sizing is clamp()-on-vmin throughout so the same rules serve a phone, a
+   portrait iPad and a landscape iPad without a pile of breakpoints. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ink: #14304a;
+  --cream: #fdf3dd;
+  --cream-edge: #fffdf6;
+  --gold: #d69b2d;
+  --sea: #1c7fc4;
+  --hud: clamp(64px, 11vmin, 104px);   /* artwork size; target is padded to >=96px */
+  --tile: clamp(80px, 14vmin, 132px);
+  --radius: clamp(14px, 2.6vmin, 26px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  background: #0d4f7d;
+  color: var(--ink);
+}
+
+#game { position: relative; height: 100dvh; width: 100vw; overflow: hidden; }
+
+.hidden { display: none !important; }
+
+.ctc-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ---- HUD ---------------------------------------------------------------- */
+
+.hud-button {
+  position: absolute;
+  z-index: 40;
+  width: var(--hud);
+  height: var(--hud);
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 90ms ease-out;
+}
+.hud-button:active { transform: scale(0.92); }
+
+.hud-home, .hud-back {
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+}
+.hud-sound {
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: max(12px, env(safe-area-inset-left));
+}
+
+/* ---- Splash ------------------------------------------------------------- */
+
+.ctc-splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(12px, 3vmin, 30px);
+  padding: 0 4vmin max(5vmin, env(safe-area-inset-bottom));
+  background: linear-gradient(#7fd0ff, #1c7fc4);
+}
+.ctc-splash-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.ctc-splash-art[src=''], .ctc-splash-art:not([src]) { display: none; }
+
+.ctc-title {
+  position: relative;
+  margin: 0;
+  font-size: clamp(28px, 6.4vmin, 62px);
+  color: var(--cream);
+  text-shadow: 0 0.35vmin 0 #8a4b12, 0 1vmin 2.4vmin rgba(0, 30, 60, 0.55);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.ctc-modes {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(10px, 2.4vmin, 26px);
+  width: 100%;
+  max-width: 1100px;
+}
+
+.ctc-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6vmin;
+  flex: 1 1 clamp(150px, 26vmin, 300px);
+  min-width: 150px;
+  min-height: 96px;
+  padding: clamp(10px, 2vmin, 22px);
+  border: none;
+  border-radius: var(--radius);
+  background: linear-gradient(var(--cream-edge), var(--cream));
+  box-shadow: 0 0.7vmin 0 #c8a878, 0 1.4vmin 2.6vmin rgba(0, 30, 60, 0.35);
+  color: var(--ink);
+  font: inherit;
+  font-size: clamp(15px, 2.8vmin, 27px);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.ctc-mode:active { transform: translateY(0.5vmin); box-shadow: 0 0.2vmin 0 #c8a878; }
+.ctc-mode-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 7.6vmin, 76px);
+  height: clamp(38px, 7.6vmin, 76px);
+  font-size: clamp(30px, 6.4vmin, 62px);
+  line-height: 1;
+}
+.ctc-mode-icon img { width: 100%; height: 100%; object-fit: contain; }
+.ctc-mode-icon-text {
+  position: absolute;
+  font-size: clamp(26px, 5.6vmin, 56px);
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0.2vmin 0 #8a5a12;
+}
+.ctc-mode-title { font-weight: 600; }
+
+/* ---- Play field: the layer stack ---------------------------------------- */
+
+.ctc-play { background: #0d4f7d; }
+
+.ctc-stage { position: absolute; inset: 0; }
+
+/* The backdrop always covers the whole field… */
+.ctc-stage > .ctc-poster,
+.ctc-stage > .ctc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+}
+/* …while the plates are placed in px by Stage.measure(), so the treasure layer
+   can share their exact transform. */
+.ctc-stage > .ctc-plate {
+  position: absolute;
+  pointer-events: none;
+}
+.ctc-video { opacity: 0; transition: opacity 400ms ease-out; }
+.ctc-video.is-on { opacity: 1; }
+
+.ctc-treasure { position: absolute; inset: 0; }
+
+.ctc-treasure-item {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 0.5vmin 0.8vmin rgba(0, 20, 40, 0.4));
+}
+.ctc-treasure-item.is-tappable { pointer-events: auto; cursor: pointer; touch-action: manipulation; }
+
+/* the container lights up when the round is complete */
+.ctc-stage.is-won .ctc-plate-back,
+.ctc-stage.is-won .ctc-plate-front {
+  filter: drop-shadow(0 0 3vmin rgba(255, 226, 120, 0.95)) brightness(1.06);
+  transition: filter 320ms ease-out;
+}
+
+/* ---- Banner ------------------------------------------------------------- */
+
+.ctc-banner {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vmin, 18px);
+  padding: clamp(6px, 1.2vmin, 14px) clamp(14px, 2.6vmin, 30px);
+  border-radius: 999px;
+  background: linear-gradient(var(--cream-edge), var(--cream));
+  box-shadow: 0 0.6vmin 0 #c8a878, 0 1.2vmin 2.4vmin rgba(0, 30, 60, 0.4);
+}
+.ctc-target {
+  font-size: clamp(30px, 6vmin, 60px);
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0.22vmin 0 #8a5a12;
+}
+.ctc-pips { display: flex; gap: clamp(4px, 0.9vmin, 10px); }
+.ctc-pip {
+  width: clamp(12px, 2.2vmin, 24px);
+  height: clamp(12px, 2.2vmin, 24px);
+  border-radius: 50%;
+  background: #e6d5b0;
+  box-shadow: inset 0 0.2vmin 0.4vmin rgba(120, 90, 40, 0.45);
+  transition: background 180ms ease-out, transform 180ms ease-out;
+}
+.ctc-pip.is-on { background: var(--gold); transform: scale(1.12); }
+
+/* ---- Tile tray ---------------------------------------------------------- */
+
+.ctc-tray {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(6px, 1.4vmin, 18px);
+  padding: clamp(6px, 1.4vmin, 16px)
+           max(calc(var(--hud) + 18px), env(safe-area-inset-right))
+           max(10px, env(safe-area-inset-bottom))
+           max(calc(var(--hud) + 18px), env(safe-area-inset-left));
+}
+
+.ctc-tile {
+  position: relative;
+  width: var(--tile);
+  height: var(--tile);
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: none;              /* or the browser turns the drag into a scroll */
+  transition: transform 110ms ease-out, opacity 160ms ease-out;
+}
+.ctc-tile:active { transform: translateY(-0.8vmin) scale(1.04); }
+.ctc-tile-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.5vmin 0.7vmin rgba(0, 20, 40, 0.45));
+}
+.ctc-tile-art {
+  position: absolute;
+  inset: 14%;
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+}
+.ctc-tile.is-held .ctc-tile-art { opacity: 0.25; }
+.ctc-tile.is-spent { opacity: 0; transform: scale(0.7); }
+.ctc-tile.is-fresh { animation: ctc-drop-in 260ms ease-out; }
+
+@keyframes ctc-drop-in {
+  from { transform: translateY(-2.4vmin) scale(0.82); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* ---- Numeral choice cards (mode 3) -------------------------------------- */
+
+.ctc-choices {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2.6vmin, 34px);
+  padding: clamp(6px, 1.4vmin, 16px)
+           max(calc(var(--hud) + 18px), env(safe-area-inset-right))
+           max(10px, env(safe-area-inset-bottom))
+           max(calc(var(--hud) + 18px), env(safe-area-inset-left));
+}
+
+.ctc-choice {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(96px, 17vmin, 168px);
+  height: clamp(96px, 17vmin, 168px);
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 110ms ease-out;
+}
+.ctc-choice:active { transform: translateY(-0.8vmin) scale(1.05); }
+.ctc-choice-num {
+  position: relative;
+  font-size: clamp(42px, 9vmin, 92px);
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0.3vmin 0 #8a5a12;
+}
+.ctc-choice.is-right { animation: ctc-grow 480ms ease-out; }
+
+@keyframes ctc-grow {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.22); }
+  100% { transform: scale(1.1); }
+}
+
+/* ---- Flying + landing treasure ------------------------------------------ */
+
+.ctc-flier {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  filter: drop-shadow(0 0.6vmin 1vmin rgba(0, 20, 40, 0.45));
+}
+
+.ctc-treasure-item.is-landing { animation: ctc-land 300ms ease-out; }
+@keyframes ctc-land {
+  0%   { transform: scale(1.18) translateY(-1.4vmin); }
+  60%  { transform: scale(0.94) translateY(0.3vmin); }
+  100% { transform: none; }
+}
+
+.ctc-treasure-item.is-bounce { animation: ctc-bounce 380ms ease-out; }
+@keyframes ctc-bounce {
+  0%   { transform: none; }
+  40%  { transform: translateY(-1.6vmin) scale(1.12); }
+  100% { transform: none; }
+}
+
+.ctc-treasure-item.is-counting {
+  filter: drop-shadow(0 0 1.6vmin rgba(255, 236, 150, 1)) brightness(1.22);
+  transform: scale(1.1);
+  transition: transform 160ms ease-out, filter 160ms ease-out;
+}
+
+.is-wobble { animation: ctc-wobble 460ms ease-in-out; }
+@keyframes ctc-wobble {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-7deg); }
+  45% { transform: rotate(6deg); }
+  70% { transform: rotate(-4deg); }
+}
+
+/* ---- Again / end -------------------------------------------------------- */
+
+.ctc-again {
+  position: absolute;
+  left: 50%;
+  bottom: max(16vmin, calc(env(safe-area-inset-bottom) + 15vmin));
+  transform: translateX(-50%);
+  z-index: 50;
+  width: clamp(96px, 18vmin, 168px);
+  height: clamp(96px, 18vmin, 168px);
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: ctc-pop-in 300ms ease-out;
+}
+.ctc-again:active { transform: translateX(-50%) scale(0.92); }
+
+@keyframes ctc-pop-in {
+  from { transform: translateX(-50%) scale(0.4); opacity: 0; }
+  to   { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+.ctc-end { display: grid; place-items: center; background: #1c7fc4; }
+/* Same beach the chest was filled on, warmed with a sunburst — the reward should
+   feel like the place the child just played, not a separate screen. */
+.ctc-end-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+.ctc-end::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 42%,
+    rgba(255, 236, 150, 0.55), rgba(255, 196, 90, 0.18) 45%, transparent 70%);
+  pointer-events: none;
+}
+.ctc-end-art {
+  position: relative;
+  z-index: 1;
+  width: min(74vw, 66vh);
+  height: auto;
+  margin-bottom: 6vmin;
+  filter: drop-shadow(0 2vmin 3vmin rgba(0, 30, 60, 0.45));
+  animation: ctc-pop-in 420ms ease-out;
+}
+.ctc-end-buttons { position: absolute; bottom: max(6vmin, env(safe-area-inset-bottom)); }
+.ctc-end-again { position: static; transform: none; }
+.ctc-end-again:active { transform: scale(0.92); }
+
+/* ---- Pose actors -------------------------------------------------------- */
+
+.ctc-actors { position: absolute; inset: 0; z-index: 35; pointer-events: none; }
+
+.ctc-actor {
+  position: absolute;
+  --actor-scale: 1;
+  --actor-w: min(calc(clamp(170px, 32vmin, 360px) * var(--actor-scale)), 46vw);
+  /* Stand on the scene's ground plane. Stage.publishFootLine() sets --actor-foot
+     from the stage's own `footY`; the fallback covers the splash and end screens,
+     which have no stage. The pose canvas puts the feet at 94.92% of its height,
+     so the element sits that much lower than the foot line itself — otherwise
+     every character hovers by the empty strip beneath its feet. */
+  bottom: calc(var(--actor-foot, 12vmin) - var(--actor-w) * 0.0508);
+  width: var(--actor-w);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(.2,.9,.3,1.2), opacity 240ms ease-out;
+  filter: drop-shadow(0 1vmin 1.4vmin rgba(0, 20, 40, 0.35));
+}
+.ctc-actor img { width: 100%; height: auto; display: block; }
+.ctc-actor.is-broken { display: none; }
+
+.ctc-actor-left  { left: clamp(2px, 1vmin, 16px);  transform: translateX(-110%); }
+.ctc-actor-right { right: clamp(2px, 1vmin, 16px); transform: translateX(110%); }
+.ctc-actor.is-in { opacity: 1; transform: translateX(0); }
+
+.ctc-actor img.pop { animation: ctc-paper-pop 220ms ease-out; }
+@keyframes ctc-paper-pop {
+  0%   { transform: scale(0.92); opacity: 0.5; }
+  62%  { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ---- Confetti ----------------------------------------------------------- */
+
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+
+/* ---- Portrait / short-landscape ----------------------------------------- */
+
+@media (orientation: portrait) {
+  /* Narrower field: shrink the tiles so six still fit on ONE row between the
+     corner HUD buttons. A wrapped second row reads as a different control. */
+  :root { --tile: clamp(96px, 12vmin, 112px); }
+  .ctc-modes { flex-direction: column; align-items: stretch; }
+  /* Six 96px tiles plus two full HUD-width insets do not fit 834 px, which left
+     the sound button touching the first tile. Narrow the inset — the corner
+     buttons still keep their own ≥96 px target. */
+  .ctc-tray, .ctc-choices {
+    flex-wrap: nowrap;
+    gap: clamp(4px, 1vmin, 10px);
+    padding-left: max(calc(var(--hud) * 0.72 + 10px), env(safe-area-inset-left));
+    padding-right: max(calc(var(--hud) * 0.72 + 10px), env(safe-area-inset-right));
+  }
+  /* Override the WIDTH SOURCE, not `width` — setting width directly here threw
+     away var(--actor-scale) and rendered the whole cast at one size. */
+  .ctc-actor { --actor-w: min(calc(clamp(120px, 24vmin, 260px) * var(--actor-scale)), 46vw); }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  :root { --tile: clamp(72px, 20vmin, 112px); --hud: clamp(56px, 15vmin, 84px); }
+  .ctc-title { font-size: clamp(22px, 7vmin, 40px); }
+  .ctc-again { bottom: max(20vmin, calc(env(safe-area-inset-bottom) + 18vmin)); }
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ctc-video { display: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

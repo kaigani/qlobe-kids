@@ -522,11 +522,37 @@
       "path": "games/counting-treasure-cups/",
       "icon": "assets/hub/tiles/counting-treasure-cups.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
       "status": "beta",
-      "summary": "Drop the exact number of objects into numbered cups."
+      "summary": "Count gems into a pirate treasure cup, sort gold coins into the chest, and work out how many treasures are inside.",
+      "accent": "#d69b2d",
+      "modes": [
+        {
+          "id": "cup",
+          "title": "Fill the Cup",
+          "skill": "counting out a set of a given size"
+        },
+        {
+          "id": "chest",
+          "title": "Big Treasure",
+          "skill": "counting while sorting by kind"
+        },
+        {
+          "id": "howmany",
+          "title": "How Many?",
+          "skill": "cardinality — counting a set and naming the total"
+        }
+      ],
+      "uses": [
+        "games/counting-treasure-cups/js/game.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/"
+      ]
     },
     {
       "id": "sandpaper-number-match",

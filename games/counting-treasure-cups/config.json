@@ -1,0 +1,265 @@
+{
+  "id": "counting-treasure-cups",
+  "title": "Counting Treasure Cups",
+  "engine": "treasure-count (game-local js/game.js)",
+  "splashEmoji": "🏴‍☠️",
+  "accent": "#d69b2d",
+  "copy": {
+    "home": "All games",
+    "back": "Back",
+    "replay": "Hear it again",
+    "playAgain": "Play again"
+  },
+  "voice": {
+    "cap-welcome": "Ahoy there, matey! I'm Captain Goldie. Shall we count some treasure?",
+    "cap-mode-cup": "Let's fill my golden treasure cup!",
+    "cap-mode-chest": "Big treasure time! Let's load up the chest!",
+    "cap-mode-howmany": "Let's find out how many treasures we've got!",
+    "cap-cup-1": "Can you put one gem in the treasure cup?",
+    "cap-cup-2": "Can you put two gems in the treasure cup?",
+    "cap-cup-3": "Can you put three gems in the treasure cup?",
+    "cap-cup-4": "Can you put four gems in the treasure cup?",
+    "cap-cup-5": "Can you put five gems in the treasure cup?",
+    "cap-chest-4": "Big treasure! Put four gold coins in the chest.",
+    "cap-chest-5": "Big treasure! Put five gold coins in the chest.",
+    "cap-chest-6": "Big treasure! Put six gold coins in the chest.",
+    "cap-chest-8": "Big treasure! Put eight gold coins in the chest.",
+    "cap-howmany-gems": "How many gems are in the treasure cup?",
+    "cap-howmany-coins": "How many coins are in the treasure chest?",
+    "cap-nudge-coin": "Ooh, that's a shiny coin. We're hunting gems!",
+    "cap-nudge-gem": "That's a sparkly gem. We need gold coins!",
+    "cap-nudge-count": "Let's count them together.",
+    "cap-nudge-again": "Have another try, matey.",
+    "cap-idle-1": "Tap a treasure to pop it in.",
+    "cap-idle-2": "Your turn, matey!",
+    "cap-cheer-1": "Yo ho ho! You did it!",
+    "cap-cheer-2": "Shiver me timbers, that's perfect!",
+    "cap-cheer-3": "Wonderful counting, matey!",
+    "cap-cheer-4": "That's exactly right! Well done!",
+    "cap-end": "What a haul! You're a real treasure counter.",
+    "cap-again": "Shall we count some more?",
+    "par-1": "One!",
+    "par-2": "Two!",
+    "par-3": "Three!",
+    "par-4": "Four!",
+    "par-5": "Five!",
+    "par-6": "Six!",
+    "par-7": "Seven!",
+    "par-8": "Eight!",
+    "par-ready": "Squawk! Count 'em up!",
+    "par-full": "That's the lot! Squawk!",
+    "par-squawk-1": "Squawk! Not that one!",
+    "par-squawk-2": "Awk! Try again!",
+    "par-yay-1": "Squawk! Treasure!",
+    "par-yay-2": "Yo ho ho!"
+  },
+  "treasures": {
+    "gem": [
+      "./assets/gem-red.png",
+      "./assets/gem-blue.png",
+      "./assets/gem-green.png",
+      "./assets/gem-purple.png"
+    ],
+    "coin": [
+      "./assets/coin.png"
+    ]
+  },
+  "tileArt": "./assets/tile.png",
+  "stages": {
+    "ship": {
+      "video": "./assets/video/sea.mp4",
+      "poster": "./assets/sea-poster.jpg",
+      "back": "./assets/ship-back.png",
+      "front": "./assets/ship-front.png",
+      "plate": [
+        1544,
+        768
+      ],
+      "fit": "width",
+      "anchorY": 180,
+      "anchorAt": 0.44,
+      "dropPoint": [
+        782,
+        180
+      ],
+      "itemScale": 0.064,
+      "slots": [
+        [
+          782,
+          190
+        ],
+        [
+          722,
+          192
+        ],
+        [
+          842,
+          192
+        ],
+        [
+          752,
+          168
+        ],
+        [
+          812,
+          168
+        ],
+        [
+          694,
+          172
+        ],
+        [
+          870,
+          172
+        ],
+        [
+          782,
+          148
+        ]
+      ],
+      "aperture": {
+        "kind": "ellipse",
+        "cx": 782,
+        "cy": 177,
+        "rx": 157,
+        "ry": 20
+      },
+      "footY": 600
+    },
+    "beach": {
+      "video": "./assets/video/beach.mp4",
+      "poster": "./assets/beach-poster.jpg",
+      "back": "./assets/beach-back.png",
+      "front": "./assets/beach-front.png",
+      "plate": [
+        1024,
+        792
+      ],
+      "fit": "height",
+      "fitScale": 1.32,
+      "dropPoint": [
+        520,
+        340
+      ],
+      "itemScale": 0.09,
+      "slots": [
+        [
+          520,
+          359
+        ],
+        [
+          432,
+          361
+        ],
+        [
+          608,
+          361
+        ],
+        [
+          478,
+          334
+        ],
+        [
+          562,
+          334
+        ],
+        [
+          392,
+          336
+        ],
+        [
+          648,
+          336
+        ],
+        [
+          520,
+          310
+        ]
+      ],
+      "anchorY": 330,
+      "anchorAt": 0.5,
+      "aperture": {
+        "kind": "above",
+        "y": 368
+      },
+      "footY": 690
+    }
+  },
+  "actors": {
+    "captain": {
+      "pack": "./assets/pose-actors/captain-goldie/poses.json",
+      "side": "right",
+      "keyPrefix": "cap-",
+      "scale": 2
+    },
+    "parrot": {
+      "pack": "./assets/pose-actors/skipper/poses.json",
+      "side": "left",
+      "keyPrefix": "par-",
+      "scale": 1.5
+    }
+  },
+  "modes": [
+    {
+      "id": "cup",
+      "title": "Fill the Cup",
+      "skill": "counting out a set of a given size",
+      "icon": "🏆",
+      "stage": "ship",
+      "want": "gem",
+      "rounds": [
+        2,
+        3,
+        1,
+        4,
+        5
+      ],
+      "trayCount": 6,
+      "distractorRate": 0.34,
+      "distractorFromRound": 4,
+      "introKey": "cap-mode-cup",
+      "promptPrefix": "cap-cup-",
+      "nudgeKey": "cap-nudge-coin",
+      "iconArt": "./assets/gem-red.png"
+    },
+    {
+      "id": "chest",
+      "title": "Big Treasure",
+      "skill": "counting while sorting by kind",
+      "icon": "🧰",
+      "stage": "beach",
+      "want": "coin",
+      "rounds": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "trayCount": 6,
+      "distractorRate": 0.4,
+      "distractorFromRound": 1,
+      "introKey": "cap-mode-chest",
+      "promptPrefix": "cap-chest-",
+      "nudgeKey": "cap-nudge-gem",
+      "iconArt": "./assets/coin.png"
+    },
+    {
+      "id": "howmany",
+      "title": "How Many?",
+      "skill": "cardinality — counting a set and naming the total",
+      "icon": "🔢",
+      "stage": "alternate",
+      "rounds": [
+        2,
+        4,
+        3,
+        6,
+        5
+      ],
+      "choices": 3,
+      "introKey": "cap-mode-howmany",
+      "iconArt": "./assets/tile.png",
+      "iconText": "?"
+    }
+  ]
+}

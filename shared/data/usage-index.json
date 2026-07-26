@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-24T13:24:45.982Z",
+  "generated": "2026-07-26T07:04:58.787Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -128,16 +128,6 @@
         "story-sequence"
       ]
     },
-    "tap-count": {
-      "count": 5,
-      "games": [
-        "counting-treasure-cups",
-        "number-line-jump",
-        "sandpaper-number-match",
-        "snack-addition-stories",
-        "subtraction-picnic"
-      ]
-    },
     "trace-path": {
       "count": 4,
       "games": [
@@ -145,6 +135,15 @@
         "letter-road-driving",
         "scissor-trail-safari",
         "sticker-line-challenge"
+      ]
+    },
+    "tap-count": {
+      "count": 4,
+      "games": [
+        "number-line-jump",
+        "sandpaper-number-match",
+        "snack-addition-stories",
+        "subtraction-picnic"
       ]
     },
     "pattern-continue": {
@@ -415,16 +414,24 @@
       "packs": []
     },
     "counting-treasure-cups": {
-      "engine": "tap-count",
+      "engine": null,
       "status": "beta",
       "category": "math-number-sense",
-      "characters": [],
-      "modules": [
-        "shared/js/engines/tap-count.js",
-        "shared/js/sfx.js",
-        "shared/js/speech.js"
+      "characters": [
+        "captain-goldie",
+        "skipper"
       ],
-      "assets": [],
+      "modules": [
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/counting-treasure-cups/assets/pose-actors",
+        "games/counting-treasure-cups/assets/video",
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "emotion-voice-game": {
@@ -753,7 +760,7 @@
     },
     "my-puppet-band": {
       "engine": "puppet-band",
-      "status": "beta",
+      "status": "live",
       "category": "art-music",
       "characters": [
         "bear",
@@ -1008,7 +1015,7 @@
     },
     "puppet-problem-solvers": {
       "engine": "puppet-theater",
-      "status": "beta",
+      "status": "live",
       "category": "social-emotional",
       "characters": [
         "bear",
@@ -1460,7 +1467,7 @@
     },
     "story-stones": {
       "engine": "story-stones",
-      "status": "beta",
+      "status": "live",
       "category": "oral-storytelling",
       "characters": [
         "dragon",
@@ -1827,7 +1834,6 @@
         "story-stones"
       ],
       "shared/js/engines/tap-count.js": [
-        "counting-treasure-cups",
         "number-line-jump",
         "sandpaper-number-match",
         "snack-addition-stories",
@@ -2074,12 +2080,14 @@
         "story-stones"
       ],
       "shared/js/tap.js": [
+        "counting-treasure-cups",
         "feelings-charades",
         "lunchbox-pack",
         "sand-tray-letters",
         "sound-sprouts"
       ],
       "shared/js/voice-clips.js": [
+        "counting-treasure-cups",
         "feelings-charades",
         "lunchbox-pack",
         "my-puppet-band",
@@ -2105,6 +2113,9 @@
       ],
       "bunny": [
         "subtraction-picnic"
+      ],
+      "captain-goldie": [
+        "counting-treasure-cups"
       ],
       "doggy": [
         "my-puppet-band",
@@ -2217,6 +2228,9 @@
       "Sam": [
         "snack-addition-stories"
       ],
+      "skipper": [
+        "counting-treasure-cups"
+      ],
       "squirrel": [
         "subtraction-picnic"
       ],
@@ -2235,6 +2249,12 @@
       ]
     },
     "assets": {
+      "games/counting-treasure-cups/assets/pose-actors": [
+        "counting-treasure-cups"
+      ],
+      "games/counting-treasure-cups/assets/video": [
+        "counting-treasure-cups"
+      ],
       "games/feelings-charades/assets/badge-sun.png": [
         "feelings-charades"
       ],
@@ -2352,6 +2372,7 @@
         "block-tower-measure",
         "clay-creature-studio",
         "color-mixing-lab",
+        "counting-treasure-cups",
         "feelings-charades",
         "land-water-tray",
         "loose-parts-collage",
