@@ -2155,6 +2155,19 @@ def append_assets_md(game_dir: Path, asset_name: str, recipe: dict):
 class PuppetStudioHandler(SimpleHTTPRequestHandler):
     server_version = "QLOBEStudio/1.0"
 
+    def end_headers(self):
+        # Authoring is local: never let the browser cache HTML/CSS/JS. Chrome's
+        # heuristic cache has repeatedly served stale studio shells (index.html
+        # has no ?v= of its own, and lib/ modules sit outside the workspace
+        # buster) — "stale cache looks like broken layout" bit the user on
+        # 2026-07-25. no-cache still allows conditional revalidation, so
+        # assets stay fast; images keep default caching.
+        path = getattr(self, "path", "") or ""
+        clean = path.split("?", 1)[0].lower()
+        if clean.endswith((".html", ".css", ".js", ".mjs", ".json")) or clean.endswith("/"):
+            self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
+
     @property
     def state(self) -> AuthoringState:
         return self.server.state  # type: ignore[attr-defined]

@@ -4,7 +4,7 @@ import { loadStudioProjects, studioProject, canonicalWorkspaceId } from './proje
 // Bump when any workspaces/*.js changes — same discipline as studio.css?v=.
 // Without it Chrome's heuristic disk cache can serve stale workspace modules
 // for hours after a deploy (bit us during the nav refactor verification).
-const WORKSPACE_VERSION = 13;
+const WORKSPACE_VERSION = 14;
 
 const CHARACTER_WORKSPACES = new Set(['rig', 'animate', 'speech']);
 // Rig (WP-1b), Animate (WP-1c) and Speech (WP-1d) are ported to native
@@ -290,10 +290,47 @@ function escapeHtml(value) {
 checkServer();
 openWorkspace(params.get('workspace') || DEFAULT_WORKSPACE, { update: false });
 
+// Design-QC gate: flags visibly overlapping text elements (badge-over-title
+// class of bug) and elements poking past the viewport. Overflow-clipped
+// geometry is intersected away so scrolled-out list rows don't false-positive.
+// Run after mounting any workspace; an empty `overlaps` is the pass bar.
+function auditOverlaps() {
+  const clip = (el) => {
+    let r = el.getBoundingClientRect();
+    for (let p = el.parentElement; p; p = p.parentElement) {
+      const s = getComputedStyle(p);
+      if (/(auto|hidden|scroll|clip)/.test(s.overflow + s.overflowX + s.overflowY)) {
+        const pr = p.getBoundingClientRect();
+        r = {
+          left: Math.max(r.left, pr.left), top: Math.max(r.top, pr.top),
+          right: Math.min(r.right, pr.right), bottom: Math.min(r.bottom, pr.bottom),
+        };
+      }
+    }
+    return { ...r, width: r.right - r.left, height: r.bottom - r.top };
+  };
+  const leaves = [...document.querySelectorAll('#native-workspace *, #studio-subbar *, #studio-crumbs *')]
+    .filter((el) => el.children.length === 0 && el.textContent.trim() && el.offsetParent);
+  const boxes = leaves.map((el) => ({ el, r: clip(el) })).filter((x) => x.r.width > 2 && x.r.height > 2);
+  const overlaps = [];
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const a = boxes[i], b = boxes[j];
+    if (a.el.contains(b.el) || b.el.contains(a.el)) continue;
+    const ox = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left);
+    const oy = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
+    if (ox > 4 && oy > 4 && ox * oy > Math.min(a.r.width * a.r.height, b.r.width * b.r.height) * 0.25) {
+      overlaps.push(`${a.el.className || a.el.tagName} <-> ${b.el.className || b.el.tagName} @${Math.round(a.r.left)},${Math.round(a.r.top)}`);
+    }
+  }
+  const offscreen = boxes.filter((x) => x.r.right > window.innerWidth + 2 || x.r.left < -2).length;
+  return { overlaps, offscreen, scanned: boxes.length };
+}
+
 window.QLOBE_STUDIO = {
   version: 1,
   ready: true,
   openWorkspace,
+  auditOverlaps,
   getState: () => ({
     workspace: activeWorkspace,
     embedded: useIframe(activeWorkspace),

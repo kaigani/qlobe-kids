@@ -294,6 +294,11 @@ textarea { min-height:92px; resize:vertical; }
 .list-item.selected { background:var(--sel-soft); box-shadow:inset 4px 0 0 var(--sel); }
 .story-library-list { max-height:310px; overflow:auto; padding-right:3px; }
 .story-library-list .list-item strong, .story-library-list .list-item small { display:block; text-align:left; }
+/* Rows are fixed-height; a wrapped subtitle used to spill 6px into the next
+   row (design-QC catch, 2026-07-25). One line + ellipsis keeps 220 rows
+   scannable; min-width:0 lets ellipsis work inside the 1fr grid column. */
+.story-library-list .list-item > * { min-width:0; }
+.story-library-list .list-item small { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .scene-preview { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border:var(--rule); border-radius:8px; background:#eee; margin:0 0 10px; }
 .meter { height:18px; border:2px solid var(--ink); background:#fff; overflow:hidden; }
 .meter > i { display:block; height:100%; width:0; background:var(--blue); }
@@ -415,9 +420,15 @@ textarea { min-height:92px; resize:vertical; }
    colour-codes type badges, and a browsing grid genuinely reads faster for it.
    Kept to pale, low-saturation tints so they never compete with a status dot,
    and yellow is not among them. */
-.library-type { position:absolute; top:6px; left:6px; z-index:2; padding:3px 6px;
+/* The type badge is a normal in-flow chip by default. It pins over the top-left
+   of the preview ONLY on cards that actually have a thumb well — absolute
+   positioning on thumb-less cards (Modules' old anatomy, media head rows) let
+   every badge escape its unpositioned card and stack at the grid corner
+   (design-QC catch, 2026-07-25). */
+.library-type { padding:3px 6px;
   border:var(--rule-med); background:var(--action-soft); color:var(--ink);
   font-size:var(--fs-micro); text-transform:uppercase; }
+.library-card:has(.library-thumb) .library-type { position:absolute; top:6px; left:6px; z-index:2; }
 .library-card[data-type="pose-actor"] .library-type { background:#ddd0f2; }
 .library-card[data-type="prop-pack"] .library-type,
 .library-card[data-type="scene-pack"] .library-type,
@@ -580,15 +591,14 @@ textarea { min-height:92px; resize:vertical; }
 .library-media-card { position:relative; }
 .library-badge-unassigned { font-size:9px; text-transform:uppercase; letter-spacing:.06em;
   padding:3px 6px; border:2px solid var(--ink); background:var(--orange); color:#fff; }
-/* Integrator seam-fix: mediaCardHtml() still emits the pre-K head/title/foot
-   markup. Inside media cards the type badge flows in the head row instead of
-   pinning to the card corner. */
-.library-media-card .library-card-head { display:flex; align-items:center;
+/* Pre-K card anatomy (head/title/foot rows) — still emitted by
+   mediaCardHtml() and modules.js. The head is a flex row with the type chip
+   in flow; K's new visual cards don't use these classes at all. */
+.library-card-head { display:flex; align-items:center;
   justify-content:space-between; gap:6px; margin-bottom:6px; }
-.library-media-card .library-type { position:static; }
-.library-media-card .library-card-title { margin:0 0 6px;
-  font:700 var(--fs-h3)/1.2 var(--font-label); overflow-wrap:anywhere; }
-.library-media-card .library-card-foot { display:flex; flex-wrap:wrap; gap:6px;
+.library-media-card .library-card-title, .library-card-head + .library-card-title {
+  margin:0 0 6px; font:700 var(--fs-h3)/1.2 var(--font-label); overflow-wrap:anywhere; }
+.library-card-foot { display:flex; flex-wrap:wrap; gap:6px;
   align-items:center; margin:6px 0; }
 .library-media-thumb { display:block; width:100%; aspect-ratio:1; object-fit:contain;
   background:#e8e4d8; border:2px solid var(--ink); }
