@@ -511,6 +511,21 @@ anyway. Engines are agnostic — they receive the same object either way.
 `schemaVersion` stays 1. `beta` is added to the documented status vocabulary
 (matching 97 existing entries). No structural change.
 
+Ownership is split. `game.json` is canonical for `title`, `status`,
+`category`, `age`, `accent`, and `modes` (the `{id, title, skill}` subset);
+`games.json` mirrors those six fields and alone owns `path`, `icon`, `uses[]`,
+`iconBg`, `iconFit`, `summary`, entry ordering, `categories[]`, and
+`schemaVersion`. `tools/pipeline/sync-games-registry.mjs` regenerates the
+mirrored fields — `--check` reports drift (exit 1 if any), `--write` applies
+it, `--only <ids>` scopes either to specific games. `games.json` round-trips
+byte-identically through `JSON.stringify(value, null, 2)` and Python's
+`json.dumps(indent=2, ensure_ascii=False)`, with no trailing newline, so the
+sync tool and the authoring server's `set_game_status()` (which dual-writes
+`game.json` and `games.json` on `POST /api/studio/game-status`) produce
+identical bytes. Note the `icon` naming collision: in `games.json` it's the
+curated hub tile path (`assets/hub/tiles/<id>.jpg`, hands-off); in `game.json`
+it's an emoji glyph. Same key, different field, never synced.
+
 ### 7.6 `qlobe-recipe` v1 (Phase 5)
 
 The machine-readable provenance sidecar for generated media — the
@@ -681,7 +696,9 @@ exhaustive, exit-code + JSON output) into `tools/validate/`:
   monotonicity, viseme-set membership).
 - **Per-game completeness**: manifest ↔ folder agreement, `uses[]` ↔ actual
   imports, audio manifest ↔ files, `ASSETS.md` present, registry entry
-  consistent with `game.json`.
+  consistent with `game.json` — the six mirrored fields (`title`, `status`,
+  `category`, `age`, `accent`, `modes`) are ERROR-level agreement checks,
+  fixed by running `tools/pipeline/sync-games-registry.mjs --write`.
 - **Cross-cutting checks**: lowercase-relative paths, no CDN/model URLs in
   runtime code, orphaned assets, characters missing viseme heads or voice
   lines for their tier.

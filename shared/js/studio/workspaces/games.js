@@ -376,6 +376,68 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     </div>`;
   }
 
+  // ---- registry / game.json sync check ---------------------------------------
+  // game.json is now canonical for six mirrored descriptive fields; games.json
+  // mirrors them via tools/pipeline/sync-games-registry.mjs (or the server's
+  // dual-write on a status flip). Both are already loaded for the dashboard, so
+  // this is a pure client-side diff — no new fetch, no endpoint.
+  const MIRRORED_FIELDS = ['title', 'status', 'category', 'age', 'accent', 'modes'];
+
+  function ageEqual(a, b) {
+    const an = a || {}, bn = b || {};
+    return (an.min ?? null) === (bn.min ?? null) && (an.max ?? null) === (bn.max ?? null);
+  }
+
+  function modesEqual(a, b) {
+    const norm = (list) => (Array.isArray(list) ? list : [])
+      .map((m) => `${m?.id ?? ''} ${m?.title ?? ''} ${m?.skill ?? ''}`);
+    const an = norm(a), bn = norm(b);
+    return an.length === bn.length && an.every((v, i) => v === bn[i]);
+  }
+
+  function fieldsEqual(field, registryValue, manifestValue) {
+    if (field === 'age') return ageEqual(registryValue, manifestValue);
+    if (field === 'modes') return modesEqual(registryValue, manifestValue);
+    return (registryValue ?? null) === (manifestValue ?? null);
+  }
+
+  function fieldValueText(field, value) {
+    if (field === 'age') return value ? `${value.min ?? '?'}–${value.max ?? '?'}` : '—';
+    return value === undefined || value === null || value === '' ? '—' : String(value);
+  }
+
+  // A registry entry missing entirely (shouldn't happen — the dashboard is
+  // opened from a registry row) or a manifest that failed to load means there's
+  // nothing to compare; stay silent rather than guess.
+  function syncDrift(registryEntry, manifest) {
+    if (!registryEntry || !manifest) return [];
+    const drift = [];
+    for (const field of MIRRORED_FIELDS) {
+      const registryValue = registryEntry[field];
+      const manifestValue = manifest[field];
+      if (fieldsEqual(field, registryValue, manifestValue)) continue;
+      drift.push({ field, registryValue, manifestValue });
+    }
+    return drift;
+  }
+
+  function syncNoticeHtml(d) {
+    const drift = syncDrift(d.registryEntry, d.manifest);
+    if (!drift.length) return ''; // agrees on everything — render nothing at all
+    const lines = drift.map(({ field, registryValue, manifestValue }) => {
+      if (field === 'modes') return `<p class="hint">modes: mode lists differ.</p>`;
+      return `<p class="hint">${escapeHtml(field)}: registry ${escapeHtml(fieldValueText(field, registryValue))}
+        -> game.json ${escapeHtml(fieldValueText(field, manifestValue))}</p>`;
+    }).join('');
+    return `<div class="panel-section">
+      <h3>Registry out of sync</h3>
+      <p class="hint">game.json is canonical — run
+        <code>node tools/pipeline/sync-games-registry.mjs --write --only ${escapeHtml(d.id)}</code>
+        (or flip status from this screen; the server writes both).</p>
+      ${lines}
+    </div>`;
+  }
+
   // ---- status flip (registry + game.json, validation-gated server-side) --------
   const GAME_STATUSES = ['live', 'beta', 'in-design', 'proposed', 'archived'];
 
@@ -464,6 +526,7 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
           ${goals.length ? `<p class="hint"><strong>learning goals:</strong></p><ul>${goals.map((g) => `<li class="hint">${escapeHtml(g)}</li>`).join('')}</ul>` : ''}
         </div>
       </div>
+      ${syncNoticeHtml(d)}
       ${statusSectionHtml(d)}
       <div class="panel-section">
         <h3>Modes</h3>

@@ -94,7 +94,7 @@
         "max": 6
       },
       "status": "live",
-      "accent": "#58a945",
+      "accent": "#7FB069",
       "uses": [
         "shared/vendor/three.module.min.js",
         "shared/js/audio.js",
@@ -108,17 +108,17 @@
         {
           "id": "guided",
           "title": "Make a Word",
-          "skill": "onset-rime blending"
+          "skill": "blend CVC sounds into words"
         },
         {
           "id": "mystery",
           "title": "Mystery Picture",
-          "skill": "sound-to-letter matching"
+          "skill": "decode a word to reveal a picture"
         },
         {
           "id": "freeplay",
           "title": "Word Mixer",
-          "skill": "free phonics exploration"
+          "skill": "free phoneme exploration"
         }
       ],
       "iconBg": "games/sound-sprouts/assets/gen/bg.jpg",
@@ -136,7 +136,7 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#58a945",
+      "accent": "#2d7dd2",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js",
@@ -144,9 +144,14 @@
       ],
       "modes": [
         {
-          "id": "couple-up",
-          "title": "Couple Up",
-          "skill": "pushing sound cars together to blend a word"
+          "id": "couple",
+          "title": "Couple the Cars",
+          "skill": "onset-rime blending with two sound parts"
+        },
+        {
+          "id": "three",
+          "title": "Three-Car Trains",
+          "skill": "onset-rime blending connected to a whole-word card"
         }
       ],
       "summary": "Push sound cars together to blend a word like m-a-t."
@@ -169,14 +174,14 @@
       ],
       "modes": [
         {
-          "id": "whats-next",
-          "title": "What Comes Next?",
-          "skill": "extending an AB / ABC pattern"
+          "id": "colors",
+          "title": "Color Cars",
+          "skill": "AB, ABC, and AAB color-pattern extension"
         },
         {
-          "id": "fix-the-gap",
-          "title": "Fix the Gap",
-          "skill": "completing a missing pattern step"
+          "id": "shapes",
+          "title": "Shape Cars",
+          "skill": "simple shape-pattern extension"
         }
       ],
       "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
@@ -192,21 +197,21 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#2d7dd2",
+      "accent": "#58a945",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js"
       ],
       "modes": [
         {
-          "id": "fill-it",
-          "title": "Fill the Shape",
-          "skill": "fitting shapes into an outline"
+          "id": "animals",
+          "title": "Build the Animal",
+          "skill": "shape composition with animal figures"
         },
         {
-          "id": "make-tale",
-          "title": "Make a Tale",
-          "skill": "building a picture from tangram pieces"
+          "id": "things",
+          "title": "Build the Thing",
+          "skill": "shape composition with familiar objects"
         }
       ],
       "summary": "Build animals and pictures from geometric shapes."
@@ -222,7 +227,7 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#f08a24",
+      "accent": "#f25f5c",
       "uses": [
         "shared/js/audio.js",
         "shared/js/sfx.js",
@@ -230,9 +235,14 @@
       ],
       "modes": [
         {
-          "id": "order-it",
-          "title": "Put It in Order",
-          "skill": "sequencing a 3-step story"
+          "id": "stories",
+          "title": "First, Next, Last",
+          "skill": "narrative sequencing with first/next/last"
+        },
+        {
+          "id": "daily",
+          "title": "My Day",
+          "skill": "ordering daily routines"
         }
       ],
       "summary": "Sequence simple picture stories in order."
@@ -256,14 +266,14 @@
       ],
       "modes": [
         {
-          "id": "guess-it",
-          "title": "Guess the Feeling",
-          "skill": "naming emotions from faces"
+          "id": "act",
+          "title": "Act It Out",
+          "skill": "emotional expression and coping strategies"
         },
         {
-          "id": "show-it",
-          "title": "Show the Feeling",
-          "skill": "acting out and matching emotions"
+          "id": "guess",
+          "title": "Guess the Feeling",
+          "skill": "emotion recognition from body clues"
         }
       ],
       "summary": "Act out proud, frustrated, calm, and worried."
@@ -279,6 +289,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "two",
+          "title": "Two Baskets",
+          "skill": "initial-sound isolation with two contrasting onsets"
+        },
+        {
+          "id": "three",
+          "title": "Three Baskets",
+          "skill": "initial-sound isolation with three contrasting onsets"
+        }
+      ],
       "summary": "Match objects to their beginning sounds."
     },
     {
@@ -292,6 +315,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "bag",
+          "title": "What's in the Bag?",
+          "skill": "sound-to-letter mapping for b, s, m, t, c, and p"
+        },
+        {
+          "id": "tricky",
+          "title": "Tricky Sounds",
+          "skill": "discriminating similar consonant sounds"
+        }
+      ],
       "summary": "Feel a hidden letter with your fingers and name its sound."
     },
     {
@@ -305,6 +341,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Find the Rhymes",
+          "skill": "rhyme awareness with familiar CVC pictures"
+        },
+        {
+          "id": "tricky",
+          "title": "Tricky Rhymes",
+          "skill": "rhyme discrimination with less obvious CVC pictures"
+        }
+      ],
       "summary": "Hunt around the room for things that rhyme."
     },
     {
@@ -318,6 +367,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#d69b2d",
+      "modes": [
+        {
+          "id": "hunt",
+          "title": "Sound Treasure",
+          "skill": "initial-sound identification for b, s, m, c, p, and t"
+        },
+        {
+          "id": "two",
+          "title": "Two Treasures",
+          "skill": "initial-sound discrimination with plausible distractors"
+        }
+      ],
       "summary": "Find everything that starts with today's sound."
     },
     {
@@ -331,11 +393,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "swap",
+          "title": "Swap a Sound",
+          "skill": "phoneme substitution with one changed sound"
+        },
+        {
+          "id": "chain",
+          "title": "Word Chains",
+          "skill": "hearing a sequence of small word changes"
+        }
+      ],
       "summary": "Change one sound at a time to turn cat into hat into hot."
     },
     {
       "id": "picture-word-match",
-      "title": "Picture-to-Word Match",
+      "title": "Picture Word Match",
       "category": "reading-phonics",
       "path": "games/picture-word-match/",
       "icon": "assets/hub/tiles/picture-word-match.jpg",
@@ -344,6 +419,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "easy",
+          "title": "Match the Word",
+          "skill": "picture-to-print matching with familiar CVC words"
+        },
+        {
+          "id": "more",
+          "title": "More Words",
+          "skill": "picture-to-print matching with additional CVC words"
+        }
+      ],
       "summary": "Match picture cards to the words they spell."
     },
     {
@@ -357,6 +445,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "hop",
+          "title": "Hop to the Sound",
+          "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g"
+        },
+        {
+          "id": "fast",
+          "title": "Quick Hops",
+          "skill": "rapid discrimination of tricky letter-sound pairs"
+        }
+      ],
       "summary": "Jump onto letters as their sounds are spoken."
     },
     {
@@ -370,6 +471,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "stories",
+          "title": "Fill the Story",
+          "skill": "context-based decoding of short CVC words"
+        },
+        {
+          "id": "act",
+          "title": "Act It Out",
+          "skill": "story participation and character comprehension"
+        }
+      ],
       "summary": "Act out one-page decodable stories."
     },
     {
@@ -383,6 +497,14 @@
         "max": 6
       },
       "status": "live",
+      "accent": "#20bfd8",
+      "modes": [
+        {
+          "id": "letters",
+          "title": "Sand Tray Letters",
+          "skill": "uppercase formation, stroke order, and letter-sound link"
+        }
+      ],
       "summary": "Trace letters in sand, salt, or flour with a fingertip."
     },
     {
@@ -396,6 +518,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#4d8068",
+      "modes": [
+        {
+          "id": "strokes",
+          "title": "Big Strokes",
+          "skill": "large pre-writing stroke control"
+        },
+        {
+          "id": "double",
+          "title": "Two-Part Strokes",
+          "skill": "multi-stroke sequencing for crosses and slants"
+        }
+      ],
       "summary": "Practice giant loops, lines, and curves on a chalkboard."
     },
     {
@@ -409,6 +544,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "string",
+          "title": "String the Beads",
+          "skill": "left-to-right controlled placement along a curve"
+        },
+        {
+          "id": "fancy",
+          "title": "Fancy Strings",
+          "skill": "placing alternating bead shapes on a curved path"
+        }
+      ],
       "summary": "String beads in a left-to-right pattern."
     },
     {
@@ -422,6 +570,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "colors",
+          "title": "Color Nests",
+          "skill": "pincer-grip drag control and color matching"
+        },
+        {
+          "id": "sizes",
+          "title": "Big and Small",
+          "skill": "pincer-grip drag control and size vocabulary"
+        }
+      ],
       "summary": "Move pom-poms by color or sound using tweezers."
     },
     {
@@ -435,6 +596,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e873a4",
+      "modes": [
+        {
+          "id": "waves",
+          "title": "Wavy Lines",
+          "skill": "controlled left-to-right curved strokes"
+        },
+        {
+          "id": "zigzags",
+          "title": "Zigzag Trails",
+          "skill": "direction changes and corner control"
+        },
+        {
+          "id": "loops",
+          "title": "Loop-the-Loops",
+          "skill": "circular and loop pre-writing strokes"
+        }
+      ],
       "summary": "Place stickers along curves and zigzags."
     },
     {
@@ -448,6 +627,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "friends",
+          "title": "Fix the Names",
+          "skill": "letter order and name recognition"
+        },
+        {
+          "id": "words",
+          "title": "Fix the Words",
+          "skill": "left-to-right order in simple words"
+        }
+      ],
       "summary": "Reorder the cut-up letters of your own name."
     },
     {
@@ -461,6 +653,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#8b8f98",
+      "modes": [
+        {
+          "id": "roads",
+          "title": "Letter Roads",
+          "skill": "straight and angled uppercase letter shapes"
+        },
+        {
+          "id": "race",
+          "title": "Curvy Roads",
+          "skill": "curved uppercase letter shapes"
+        }
+      ],
       "summary": "Drive a toy car along the shape of a letter."
     },
     {
@@ -474,6 +679,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a96b",
+      "modes": [
+        {
+          "id": "straight",
+          "title": "Straight Cuts",
+          "skill": "straight and angled line control"
+        },
+        {
+          "id": "curvy",
+          "title": "Curvy Cuts",
+          "skill": "smooth continuous curved strokes"
+        },
+        {
+          "id": "spiral",
+          "title": "Spiral Rescue",
+          "skill": "sustained hand-eye steering on spirals"
+        }
+      ],
       "summary": "Cut along winding animal-path lines."
     },
     {
@@ -487,6 +710,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#8f5bd7",
+      "modes": [
+        {
+          "id": "letters",
+          "title": "Squish a Letter",
+          "skill": "letter construction from stroke parts"
+        },
+        {
+          "id": "numbers",
+          "title": "Squish a Number",
+          "skill": "number construction from stroke parts"
+        }
+      ],
       "summary": "Roll and shape letters from playdough."
     },
     {
@@ -500,6 +736,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "secret",
+          "title": "Copy the Code",
+          "skill": "letter-by-letter copying of three-letter words"
+        },
+        {
+          "id": "long",
+          "title": "Longer Codes",
+          "skill": "letter-by-letter copying of four-letter words"
+        }
+      ],
       "summary": "Copy one short word or phrase."
     },
     {
@@ -513,6 +762,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "short",
+          "title": "Short to Long",
+          "skill": "length comparison and ascending order"
+        },
+        {
+          "id": "long",
+          "title": "Long to Short",
+          "skill": "length comparison and descending order"
+        }
+      ],
       "summary": "Order rods from shortest to longest."
     },
     {
@@ -565,6 +827,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "meet",
+          "title": "Meet the Numbers",
+          "skill": "numeral recognition for 1-5 tied to quantity"
+        },
+        {
+          "id": "big",
+          "title": "Bigger Numbers",
+          "skill": "numeral recognition for 6-9 tied to quantity"
+        }
+      ],
       "summary": "Trace a numeral, then count that many objects."
     },
     {
@@ -578,6 +853,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f4c53d",
+      "modes": [
+        {
+          "id": "teens",
+          "title": "Build a Teen",
+          "skill": "teen numbers as ten plus ones"
+        }
+      ],
       "summary": "Combine a ten and some ones to make eleven through nineteen."
     },
     {
@@ -591,6 +874,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e85d75",
+      "modes": [
+        {
+          "id": "stories",
+          "title": "Snack Stories",
+          "skill": "informal addition stories to 6"
+        }
+      ],
       "summary": "Tell add-together stories, like three berries plus two berries."
     },
     {
@@ -604,6 +895,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "picnic",
+          "title": "Hungry Guests",
+          "skill": "informal subtraction stories within 6"
+        }
+      ],
       "summary": "Animals eat counters away to show taking away."
     },
     {
@@ -617,6 +916,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "hops",
+          "title": "Frog Hops",
+          "skill": "movement-linked counting 2-6"
+        },
+        {
+          "id": "back",
+          "title": "Hop Home",
+          "skill": "takeaway from five and counting remaining pads"
+        }
+      ],
       "summary": "Jump forward and backward along floor numbers."
     },
     {
@@ -630,6 +942,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f59f36",
+      "modes": [
+        {
+          "id": "stack",
+          "title": "Stack It Tall",
+          "skill": "size ordering and counting tower height"
+        },
+        {
+          "id": "compare",
+          "title": "Two Towers",
+          "skill": "height comparison between two towers"
+        }
+      ],
       "summary": "Compare heights by stacking cubes."
     },
     {
@@ -643,11 +968,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "water",
+          "title": "Water Pouring",
+          "skill": "careful water pouring and cleanup"
+        },
+        {
+          "id": "beans",
+          "title": "Bean Pouring",
+          "skill": "careful dry pouring and listening"
+        }
+      ],
       "summary": "Pour water, beans, or rice between pitchers."
     },
     {
       "id": "table-setting-mission",
-      "title": "Table-Setting Mission",
+      "title": "Table Setting Mission",
       "category": "practical-life",
       "path": "games/table-setting-mission/",
       "icon": "assets/hub/tiles/table-setting-mission.jpg",
@@ -656,6 +994,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f4a83d",
+      "modes": [
+        {
+          "id": "places",
+          "title": "Set the Table",
+          "skill": "table-setting order and spatial placement vocabulary"
+        }
+      ],
       "summary": "Set the places using a visual placemat card."
     },
     {
@@ -669,6 +1015,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f28c45",
+      "modes": [
+        {
+          "id": "banana",
+          "title": "Banana Coins",
+          "skill": "safe banana preparation, sequencing, and cleanup"
+        },
+        {
+          "id": "toast",
+          "title": "Spread It",
+          "skill": "careful spreading, cutting, and cleanup"
+        }
+      ],
       "summary": "Peel, spread, and slice soft foods safely."
     },
     {
@@ -682,6 +1041,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "colors",
+          "title": "Sort by Color",
+          "skill": "color sorting and categorizing"
+        },
+        {
+          "id": "kinds",
+          "title": "Socks and Shirts",
+          "skill": "clothing-kind categorizing"
+        }
+      ],
       "summary": "Sort socks, fold cloths, and match pairs."
     },
     {
@@ -695,6 +1067,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "indoor",
+          "title": "Crumb Patrol",
+          "skill": "thorough indoor sweeping and dustpan use"
+        },
+        {
+          "id": "outdoor",
+          "title": "Leaf Trail",
+          "skill": "whole-arm outdoor sweeping and path care"
+        }
+      ],
       "summary": "Sweep crumbs or leaves into a target spot."
     },
     {
@@ -708,6 +1093,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "buttons",
+          "title": "Button Lab",
+          "skill": "buttoning motions and fine-motor persistence"
+        },
+        {
+          "id": "zippers",
+          "title": "Zipper Lab",
+          "skill": "zipper connection, control, and dressing independence"
+        }
+      ],
       "summary": "Practice buttons and zippers on dressing frames or clothes."
     },
     {
@@ -721,6 +1119,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "care",
+          "title": "Care Round",
+          "skill": "daily observation, soil checking, and careful watering"
+        },
+        {
+          "id": "spa",
+          "title": "Plant Spa Day",
+          "skill": "gentle leaf cleaning and occasional plant care"
+        }
+      ],
       "summary": "Water, mist, prune, and observe a plant."
     },
     {
@@ -734,6 +1145,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#d69e67",
+      "modes": [
+        {
+          "id": "cycle",
+          "title": "One Full Cycle",
+          "skill": "choose, use, reset, and return one tray"
+        },
+        {
+          "id": "inspector",
+          "title": "Shelf Inspector",
+          "skill": "sort misplaced materials and restore shelf order"
+        }
+      ],
       "summary": "Choose a tray, use it, then return it neatly."
     },
     {
@@ -743,7 +1167,7 @@
       "path": "games/lunchbox-pack/",
       "icon": "assets/hub/tiles/lunchbox-pack.jpg",
       "age": {
-        "min": 4,
+        "min": 5,
         "max": 6
       },
       "status": "live",
@@ -761,23 +1185,23 @@
         {
           "id": "pack",
           "title": "Pack for Me!",
-          "skill": "following 1-3 step spoken instructions"
+          "skill": "listening & following spoken instructions"
         },
         {
           "id": "healthy",
           "title": "Healthy Helper",
-          "skill": "sorting foods into groups for a balanced lunch"
+          "skill": "food groups / healthy choices"
         },
         {
           "id": "count",
           "title": "Count & Pack",
-          "skill": "counting 1-5 with one-to-one correspondence"
+          "skill": "counting 1–5 with one-to-one correspondence"
         }
       ]
     },
     {
       "id": "cleanup-timer-quest",
-      "title": "Clean-Up Timer Quest",
+      "title": "Cleanup Timer Quest",
       "category": "practical-life",
       "path": "games/cleanup-timer-quest/",
       "icon": "assets/hub/tiles/cleanup-timer-quest.jpg",
@@ -786,11 +1210,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f28c45",
+      "modes": [
+        {
+          "id": "room",
+          "title": "Room Rescue",
+          "skill": "sort first, then store one category at a time"
+        },
+        {
+          "id": "speed",
+          "title": "Five-Minute Wonder",
+          "skill": "time awareness during one bounded cleanup"
+        }
+      ],
       "summary": "Restore a space before the song ends."
     },
     {
       "id": "sink-or-float",
-      "title": "Sink or Float Lab",
+      "title": "Sink or Float",
       "category": "sensorial-science",
       "path": "games/sink-or-float/",
       "icon": "assets/hub/tiles/sink-or-float.jpg",
@@ -799,6 +1236,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "tub",
+          "title": "Sink or Float?",
+          "skill": "predicting buoyancy for familiar objects"
+        },
+        {
+          "id": "tricky",
+          "title": "Tricky Ones",
+          "skill": "reasoning about surprising sink-or-float cases"
+        }
+      ],
       "summary": "Predict, test, and sort what sinks and what floats."
     },
     {
@@ -812,6 +1262,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "explore",
+          "title": "Sticks or Not?",
+          "skill": "magnetic versus non-magnetic sorting"
+        }
+      ],
       "summary": "Find which objects are magnetic and which are not."
     },
     {
@@ -825,6 +1283,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "listen",
+          "title": "Same Sound",
+          "skill": "auditory discrimination and auditory memory"
+        }
+      ],
       "summary": "Pair containers that make the same sound."
     },
     {
@@ -838,6 +1304,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#8f6f4e",
+      "modes": [
+        {
+          "id": "feel",
+          "title": "Feels the Same",
+          "skill": "texture vocabulary and comparison"
+        }
+      ],
       "summary": "Match rough, smooth, soft, and bumpy surfaces."
     },
     {
@@ -851,6 +1325,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#ffd166",
+      "modes": [
+        {
+          "id": "sniff",
+          "title": "Be the Nose",
+          "skill": "connect real smells to vocabulary and preference"
+        },
+        {
+          "id": "guess",
+          "title": "Sniff and Guess",
+          "skill": "make and revise sensory guesses"
+        }
+      ],
       "summary": "Identify lemon, mint, cinnamon, and pine by scent."
     },
     {
@@ -864,6 +1351,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "blues",
+          "title": "Light to Dark",
+          "skill": "shade discrimination and ordering"
+        },
+        {
+          "id": "rainbow",
+          "title": "Rainbow Order",
+          "skill": "rainbow color sequence"
+        }
+      ],
       "summary": "Order color shades from light to dark."
     },
     {
@@ -877,6 +1377,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "week",
+          "title": "Sprout Diary",
+          "skill": "observe plant growth over time"
+        },
+        {
+          "id": "care",
+          "title": "What Does It Need?",
+          "skill": "match plant cues to care needs"
+        }
+      ],
       "summary": "Observe and draw a sprout's daily changes."
     },
     {
@@ -890,6 +1403,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "today",
+          "title": "Today's Weather",
+          "skill": "weather observation and recording"
+        },
+        {
+          "id": "dress",
+          "title": "What to Wear?",
+          "skill": "connect clothing choices to weather conditions"
+        }
+      ],
       "summary": "Chart sun, clouds, wind, and rain."
     },
     {
@@ -903,6 +1429,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "guests",
+          "title": "Who's Home?",
+          "skill": "identify common tiny garden guests"
+        },
+        {
+          "id": "doing",
+          "title": "What Are They Doing?",
+          "skill": "observe simple animal behaviors"
+        }
+      ],
       "summary": "Watch insects up close without disturbing them."
     },
     {
@@ -916,6 +1455,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "race",
+          "title": "The Big Melt",
+          "skill": "compare melting under four conditions"
+        },
+        {
+          "id": "rescue",
+          "title": "Ice Rescue",
+          "skill": "use warmth to melt ice and free a toy"
+        }
+      ],
       "summary": "Compare ice melting in sun, shade, hand, and cloth."
     },
     {
@@ -929,6 +1481,14 @@
         "max": 7
       },
       "status": "live",
+      "accent": "#25bceb",
+      "modes": [
+        {
+          "id": "storybook-library",
+          "title": "Storybook Library",
+          "skill": "open-ended combinatorial storytelling"
+        }
+      ],
       "summary": "Choose any three magical stones and discover one of 220 unique illustrated stories."
     },
     {
@@ -942,6 +1502,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "fix",
+          "title": "Fix the Story",
+          "skill": "story recall and narrative correction"
+        },
+        {
+          "id": "who",
+          "title": "Whose Line?",
+          "skill": "matching famous story lines to characters"
+        }
+      ],
       "summary": "Act out a favorite book with puppets."
     },
     {
@@ -955,6 +1528,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "wh",
+          "title": "Catch the Question",
+          "skill": "who, what, and where question comprehension"
+        },
+        {
+          "id": "why",
+          "title": "Why Questions",
+          "skill": "matching why questions to simple reasons"
+        }
+      ],
       "summary": "Toss a ball and answer who, what, why, or how."
     },
     {
@@ -968,6 +1554,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "silly",
+          "title": "Make a Silly Sentence",
+          "skill": "subject-action-place sentence structure"
+        },
+        {
+          "id": "sillier",
+          "title": "Even Sillier",
+          "skill": "subject-action-place-adverb sentence expansion"
+        }
+      ],
       "summary": "Combine noun, verb, and place cards into silly sentences."
     },
     {
@@ -981,6 +1580,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "park",
+          "title": "At the Park",
+          "skill": "observing and describing details in a park scene"
+        },
+        {
+          "id": "market",
+          "title": "At the Market",
+          "skill": "naming and describing familiar market sights and sounds"
+        }
+      ],
       "summary": "Describe one detailed illustration out loud."
     },
     {
@@ -994,6 +1606,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "lines",
+          "title": "Say It With Feeling",
+          "skill": "expressing the same sentence with different emotions"
+        },
+        {
+          "id": "animals",
+          "title": "Animal Feelings",
+          "skill": "recognizing and copying characterful emotional voices"
+        }
+      ],
       "summary": "Say the same line happy, scared, then proud."
     },
     {
@@ -1007,6 +1632,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "jokes",
+          "title": "Finish the Joke",
+          "skill": "punchline anticipation and wordplay"
+        },
+        {
+          "id": "knock",
+          "title": "Knock Knock",
+          "skill": "call-and-response joke comprehension"
+        }
+      ],
       "summary": "Make silly riddles and playful wordplay."
     },
     {
@@ -1020,6 +1658,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "childhood",
+          "title": "When You Were Five",
+          "skill": "ask, listen, and compare childhood stories"
+        },
+        {
+          "id": "places",
+          "title": "Where You Lived",
+          "skill": "retell stories about past homes and journeys"
+        }
+      ],
       "summary": "Ask a grown-up about the long-ago days."
     },
     {
@@ -1033,6 +1684,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "repair",
+          "title": "Fix the Ending",
+          "skill": "story prediction and cause-and-effect reasoning"
+        },
+        {
+          "id": "silly",
+          "title": "Silly or Real?",
+          "skill": "identifying intentionally silly story endings"
+        }
+      ],
       "summary": "Fix a story that is missing its ending."
     },
     {
@@ -1046,6 +1710,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2f9bb3",
+      "modes": [
+        {
+          "id": "homes",
+          "title": "Animal Homes",
+          "skill": "habitat matching and hot-cold-ocean vocabulary"
+        },
+        {
+          "id": "farm-wild",
+          "title": "Farm or Wild?",
+          "skill": "farm and wild animal classification"
+        }
+      ],
       "summary": "Match animals, foods, or landmarks to their places."
     },
     {
@@ -1059,11 +1736,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "spin",
+          "title": "Where Did We Land?",
+          "skill": "habitat imagination and place vocabulary"
+        }
+      ],
       "summary": "Spin the globe, stop it, and imagine what lives there."
     },
     {
       "id": "land-water-tray",
-      "title": "Land-Water Tray",
+      "title": "Land & Water Tray",
       "category": "culture-geography",
       "path": "games/land-water-tray/",
       "icon": "assets/hub/tiles/land-water-tray.jpg",
@@ -1072,11 +1757,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "forms",
+          "title": "Make the Landform",
+          "skill": "landform concepts from land and water arrangements"
+        }
+      ],
       "summary": "Shape an island, lake, peninsula, and bay."
     },
     {
       "id": "then-now-sort",
-      "title": "Then-and-Now Sort",
+      "title": "Then & Now Sort",
       "category": "culture-geography",
       "path": "games/then-now-sort/",
       "icon": "assets/hub/tiles/then-now-sort.jpg",
@@ -1085,6 +1778,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Old and New",
+          "skill": "then-and-now comparison and object function"
+        }
+      ],
       "summary": "Sort old and new versions, like candle and lamp."
     },
     {
@@ -1098,6 +1799,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "growing",
+          "title": "Growing Up",
+          "skill": "ordering life stages from younger to older"
+        },
+        {
+          "id": "then-now",
+          "title": "Long Ago to Today",
+          "skill": "ordering simple historical change over time"
+        }
+      ],
       "summary": "Order baby, toddler, now, and future self."
     },
     {
@@ -1111,6 +1825,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#d95f43",
+      "modes": [
+        {
+          "id": "helpers",
+          "title": "Who Uses What?",
+          "skill": "community helper tools and roles"
+        },
+        {
+          "id": "places",
+          "title": "Where Do They Work?",
+          "skill": "helper work contexts and vehicles"
+        }
+      ],
       "summary": "Match tools to the helpers who use them."
     },
     {
@@ -1124,6 +1851,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "wheel",
+          "title": "What Season?",
+          "skill": "seasonal nature and activity matching"
+        },
+        {
+          "id": "dress",
+          "title": "Dress for It",
+          "skill": "seasonal clothing and weather matching"
+        }
+      ],
       "summary": "Explore local weather, clothing, plants, and animals by season."
     },
     {
@@ -1137,11 +1877,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e07a5f",
+      "modes": [
+        {
+          "id": "map",
+          "title": "Make Your Map",
+          "skill": "draw landmarks and routes as a personal map"
+        },
+        {
+          "id": "walk",
+          "title": "Walk and Spot",
+          "skill": "observe and remember neighborhood features"
+        }
+      ],
       "summary": "Draw home, trail, store, and lake on a map."
     },
     {
       "id": "world-music-dance",
-      "title": "World Music Dance Cards",
+      "title": "World Music Dance",
       "category": "culture-geography",
       "path": "games/world-music-dance/",
       "icon": "assets/hub/tiles/world-music-dance.jpg",
@@ -1150,6 +1903,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "listen",
+          "title": "Where's That Music?",
+          "skill": "music-place awareness"
+        },
+        {
+          "id": "dance",
+          "title": "Dance Along",
+          "skill": "rhythm vocabulary and movement matching"
+        }
+      ],
       "summary": "Hear music, move to it, and locate it on a map."
     },
     {
@@ -1163,6 +1929,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "collect",
+          "title": "Guide Training",
+          "skill": "study and describe local nature finds"
+        },
+        {
+          "id": "tour",
+          "title": "Give the Tour",
+          "skill": "teach back observations with confidence"
+        }
+      ],
       "summary": "Identify pinecones, rocks, birds, and animal tracks."
     },
     {
@@ -1176,6 +1955,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "mix",
+          "title": "Mix Two Colors",
+          "skill": "basic color mixing"
+        },
+        {
+          "id": "guess",
+          "title": "What Will It Make?",
+          "skill": "color prediction before reveal"
+        }
+      ],
       "summary": "Discover new colors by mixing the primaries."
     },
     {
@@ -1189,6 +1981,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f6c86e",
+      "modes": [
+        {
+          "id": "creatures",
+          "title": "Build a Creature",
+          "skill": "part-whole creature construction"
+        },
+        {
+          "id": "silly",
+          "title": "Mix-Up Creatures",
+          "skill": "creative recombination of mismatched parts"
+        }
+      ],
       "summary": "Sculpt animals, monsters, and letters from clay."
     },
     {
@@ -1202,6 +2007,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "copycat",
+          "title": "Clap and Stomp",
+          "skill": "AB and ABC body-percussion patterns"
+        },
+        {
+          "id": "animals",
+          "title": "Animal Beats",
+          "skill": "auditory pattern recognition with animal sounds"
+        }
+      ],
       "summary": "Copy clap, tap, and stomp patterns."
     },
     {
@@ -1215,6 +2033,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "feelings",
+          "title": "Paint the Sound",
+          "skill": "emotional response to musical mood"
+        }
+      ],
       "summary": "Draw what the music feels like."
     },
     {
@@ -1228,6 +2054,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#b7d97b",
+      "modes": [
+        {
+          "id": "nature",
+          "title": "Nature Pictures",
+          "skill": "composition from found loose parts"
+        }
+      ],
       "summary": "Arrange leaves, buttons, paper, and yarn into art."
     },
     {
@@ -1241,6 +2075,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "listen",
+          "title": "Sound Detective",
+          "skill": "listening discrimination and instrument names"
+        },
+        {
+          "id": "families",
+          "title": "Loud or Soft?",
+          "skill": "sound vocabulary and instrument qualities"
+        }
+      ],
       "summary": "Guess the shaker, drum, bell, and chime by sound."
     },
     {
@@ -1254,6 +2101,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e76f51",
+      "modes": [
+        {
+          "id": "solo",
+          "title": "My Mural",
+          "skill": "gross-motor drawing and creative confidence"
+        },
+        {
+          "id": "together",
+          "title": "Mural Party",
+          "skill": "collaboration and sharing art space"
+        }
+      ],
       "summary": "Draw a giant collaborative mural on the floor."
     },
     {
@@ -1267,6 +2127,14 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#8a5bc4",
+      "modes": [
+        {
+          "id": "beads",
+          "title": "String the Beads",
+          "skill": "AB, ABC, and ABB bead-pattern extension"
+        }
+      ],
       "summary": "Make a wearable bracelet with a repeating pattern."
     },
     {
@@ -1280,6 +2148,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "pictures",
+          "title": "Shape Pictures",
+          "skill": "shape recombination into pictures"
+        },
+        {
+          "id": "faces",
+          "title": "Shape Faces",
+          "skill": "shape recombination into faces"
+        }
+      ],
       "summary": "Turn circles into animals or objects."
     },
     {
@@ -1293,6 +2174,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "farm",
+          "title": "Remix the Farm",
+          "skill": "song verse and animal sound play"
+        },
+        {
+          "id": "bus",
+          "title": "Remix the Bus",
+          "skill": "song verse and rider sound play"
+        }
+      ],
       "summary": "Change the lyrics to a familiar tune."
     },
     {
@@ -1306,6 +2200,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "floor",
+          "title": "Tape Trail",
+          "skill": "heel-to-toe balance and body control"
+        },
+        {
+          "id": "outdoor",
+          "title": "Log and Curb",
+          "skill": "spotter-supported outdoor balance"
+        }
+      ],
       "summary": "Walk along lines, logs, and tape paths."
     },
     {
@@ -1319,6 +2226,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f4a261",
+      "modes": [
+        {
+          "id": "learn",
+          "title": "Animal School",
+          "skill": "animal body shapes and coordination"
+        },
+        {
+          "id": "parade",
+          "title": "Animal Parade",
+          "skill": "movement memory and cardio play"
+        }
+      ],
       "summary": "Bear crawl, frog jump, and crab walk."
     },
     {
@@ -1332,6 +2252,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Five Finds",
+          "skill": "categorizing nature finds by sensory quality"
+        },
+        {
+          "id": "texture",
+          "title": "Feely Hunt",
+          "skill": "texture vocabulary and tactile attention"
+        }
+      ],
       "summary": "Find something smooth, green, round, and tiny."
     },
     {
@@ -1345,6 +2278,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f28c45",
+      "modes": [
+        {
+          "id": "clinic",
+          "title": "Throwing Clinic",
+          "skill": "throwing mechanics, aim, and force control"
+        },
+        {
+          "id": "wacky",
+          "title": "Trick Shots",
+          "skill": "creative throwing and safe experimentation"
+        }
+      ],
       "summary": "Toss beanbags at target circles."
     },
     {
@@ -1358,11 +2304,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#d98c2b",
+      "modes": [
+        {
+          "id": "build",
+          "title": "Build It",
+          "skill": "planning, course design, and safety checks"
+        },
+        {
+          "id": "run",
+          "title": "Run It",
+          "skill": "varied gross-motor movement and balance"
+        }
+      ],
       "summary": "Crawl, climb, hop, balance, and carry through a course."
     },
     {
       "id": "line-walking-challenge",
-      "title": "Line-Walking Challenge",
+      "title": "Line Walking Challenge",
       "category": "movement-outdoor",
       "path": "games/line-walking-challenge/",
       "icon": "assets/hub/tiles/line-walking-challenge.jpg",
@@ -1371,6 +2330,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "line",
+          "title": "The Quiet Line",
+          "skill": "slow heel-to-toe walking and calm balance"
+        },
+        {
+          "id": "carry",
+          "title": "Carry Challenge",
+          "skill": "controlled walking while balancing and carrying"
+        }
+      ],
       "summary": "Walk slowly and carefully along a Montessori line."
     },
     {
@@ -1384,6 +2356,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e9853d",
+      "modes": [
+        {
+          "id": "walk",
+          "title": "Counting Walk",
+          "skill": "counting, remembering, and comparing outdoor totals"
+        },
+        {
+          "id": "race",
+          "title": "Number Race",
+          "skill": "counting observed categories to target numbers"
+        }
+      ],
       "summary": "Count stairs, birds, pinecones, and signs on a walk."
     },
     {
@@ -1397,6 +2382,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f4b942",
+      "modes": [
+        {
+          "id": "morning",
+          "title": "Morning Shadows",
+          "skill": "observe and move with body and object shadows"
+        },
+        {
+          "id": "day",
+          "title": "All-Day Watch",
+          "skill": "compare one shadow across morning, noon, and evening"
+        }
+      ],
       "summary": "Watch shadows move and shift through the day."
     },
     {
@@ -1410,11 +2408,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2d9b74",
+      "modes": [
+        {
+          "id": "delivery",
+          "title": "Water Delivery",
+          "skill": "careful water carrying and obstacle navigation"
+        },
+        {
+          "id": "express",
+          "title": "Express Round",
+          "skill": "repeating the fill-carry-pour-return cycle with control"
+        }
+      ],
       "summary": "Carry water across the yard without spilling."
     },
     {
       "id": "freeze-focus-dance",
-      "title": "Freeze-and-Focus Dance",
+      "title": "Freeze Focus Dance",
       "category": "movement-outdoor",
       "path": "games/freeze-focus-dance/",
       "icon": "assets/hub/tiles/freeze-focus-dance.jpg",
@@ -1423,11 +2434,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f08a24",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Dance and Freeze",
+          "skill": "impulse control and body-stop regulation"
+        },
+        {
+          "id": "focus",
+          "title": "Freeze Missions",
+          "skill": "attention and balance while holding still"
+        }
+      ],
       "summary": "Move wildly, then stop fast and hold still."
     },
     {
       "id": "grace-courtesy-theater",
-      "title": "Grace-and-Courtesy Theater",
+      "title": "Grace & Courtesy Theater",
       "category": "social-emotional",
       "path": "games/grace-courtesy-theater/",
       "icon": "assets/hub/tiles/grace-courtesy-theater.jpg",
@@ -1436,6 +2460,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "manners",
+          "title": "What Do We Say?",
+          "skill": "kind social phrases"
+        },
+        {
+          "id": "helping",
+          "title": "Kind or Not?",
+          "skill": "recognizing helpful actions"
+        }
+      ],
       "summary": "Practice greeting, asking, and waiting politely."
     },
     {
@@ -1449,6 +2486,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "tools",
+          "title": "Pick a Calm Tool",
+          "skill": "choosing self-regulation tools"
+        },
+        {
+          "id": "breathe",
+          "title": "Balloon Breathing",
+          "skill": "slow paced breathing"
+        }
+      ],
       "summary": "Choose breathing, squeezing, drawing, or resting to calm down."
     },
     {
@@ -1462,6 +2512,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#8fd3c7",
+      "modes": [
+        {
+          "id": "together",
+          "title": "Our Tower",
+          "skill": "turn-taking rhythm with one friend"
+        },
+        {
+          "id": "tall",
+          "title": "Super Tower",
+          "skill": "turn-taking rhythm with two friends"
+        }
+      ],
       "summary": "Build a tower one block per turn."
     },
     {
@@ -1475,11 +2538,24 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "train",
+          "title": "Waiting Workout",
+          "skill": "delayed gratification using practical waiting tricks"
+        },
+        {
+          "id": "master",
+          "title": "Waiting Master",
+          "skill": "sustained self-control and intentional choice"
+        }
+      ],
       "summary": "Wait ten seconds before grabbing the prize."
     },
     {
       "id": "problem-solving-puppets",
-      "title": "Problem-Solving Puppets (video prototype)",
+      "title": "Problem-Solving Puppets",
       "category": "social-emotional",
       "path": "games/problem-solving-puppets/",
       "icon": "assets/hub/tiles/problem-solving-puppets.jpg",
@@ -1488,6 +2564,19 @@
         "max": 6
       },
       "status": "archived",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "peace",
+          "title": "Make Peace",
+          "skill": "choosing conflict repair strategies"
+        },
+        {
+          "id": "feelings",
+          "title": "How Do They Feel?",
+          "skill": "naming feelings during conflict"
+        }
+      ],
       "summary": "Superseded by puppet-problem-solvers, the live puppet-theater rebuild."
     },
     {
@@ -1611,7 +2700,7 @@
     },
     {
       "id": "plan-do-review",
-      "title": "Plan-Do-Review Board",
+      "title": "Plan-Do-Review",
       "category": "social-emotional",
       "path": "games/plan-do-review/",
       "icon": "assets/hub/tiles/plan-do-review.jpg",
@@ -1620,6 +2709,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#f4a83d",
+      "modes": [
+        {
+          "id": "loop",
+          "title": "Plan It, Do It!",
+          "skill": "intention action reflection loop"
+        },
+        {
+          "id": "tomorrow",
+          "title": "Plan for Tomorrow",
+          "skill": "future planning and sharing a plan"
+        }
+      ],
       "summary": "Choose a task, finish it, then reflect on it."
     },
     {
@@ -1633,6 +2735,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#e85d8f",
+      "modes": [
+        {
+          "id": "deliveries",
+          "title": "Make a Delivery",
+          "skill": "notice feelings and choose a caring response"
+        },
+        {
+          "id": "secret",
+          "title": "Secret Kindness",
+          "skill": "practice generosity without seeking attention"
+        }
+      ],
       "summary": "Make and give helpful notes or drawings."
     },
     {
@@ -1646,11 +2761,24 @@
         "max": 6
       },
       "status": "live",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Classic",
+          "skill": "stop/go impulse control"
+        },
+        {
+          "id": "silly",
+          "title": "Silly Switch",
+          "skill": "three-way self-regulation switching"
+        }
+      ],
       "summary": "Pick a muppet-style video caller who says the lights in their own voice — run on green, freeze on red."
     },
     {
       "id": "board-game-reset",
-      "title": "Board Game Reset Ritual",
+      "title": "Board Game Reset",
       "category": "social-emotional",
       "path": "games/board-game-reset/",
       "icon": "assets/hub/tiles/board-game-reset.jpg",
@@ -1659,6 +2787,19 @@
         "max": 6
       },
       "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "sport",
+          "title": "Good Sport",
+          "skill": "winning and losing graciously"
+        },
+        {
+          "id": "reset",
+          "title": "Clean-Up Crew",
+          "skill": "cleanup sequence for board games"
+        }
+      ],
       "summary": "Play, win or lose, then clean up together."
     }
   ]

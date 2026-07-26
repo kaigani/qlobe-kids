@@ -7,10 +7,78 @@
 // Legacy data reality across 102 games is expected: soft disagreements are WARN,
 // only hard breaks (missing folder/manifest, id/path disagreement, a referenced
 // runtime module that does not exist) are ERROR. Data is reported, never fixed.
+//
+// One class of disagreement is NOT soft: the mirrored descriptive fields (§7.5).
+// game.json is canonical for title/status/category/age/accent/modes and games.json
+// mirrors them, so a mismatch means the hub is showing something the game does not
+// do. Those are ERROR and name their own fix.
 
 import { loadGamesRegistry, listGameIds, isFile, isDir, exists, readText, tryReadJSON, isKebabId } from '../lib.mjs';
 
 const STATUS_VOCAB = new Set(['live', 'beta', 'in-design', 'proposed', 'archived']);
+
+// The descriptive fields games.json mirrors from game.json (§7.5). `icon` is
+// deliberately absent: it is a NAMING COLLISION, not a mirrored field — the
+// registry's icon is the curated hub tile (assets/hub/tiles/<id>.jpg, hands-off),
+// game.json's icon is an emoji glyph. They are never compared.
+const MIRRORED = ['title', 'status', 'category', 'age', 'accent', 'modes'];
+// Mirrored fields a game may legitimately not carry.
+const OPTIONAL_MIRRORED = new Set(['accent', 'modes']);
+// The subset of each mode object the registry carries.
+const MODE_KEYS = ['id', 'title', 'skill'];
+
+const FIX = 'run tools/pipeline/sync-games-registry.mjs --write, or POST /api/studio/game-status';
+
+const shown = (v) => (v === undefined ? '(absent)' : JSON.stringify(v));
+
+// The registry-shaped value of a mirrored field, read from game.json.
+function projectMirrored(field, gj) {
+  const value = gj[field];
+  if (field !== 'modes' || !Array.isArray(value)) return value;
+  return value.map((mode) => {
+    if (!mode || typeof mode !== 'object') return mode;
+    const out = {};
+    for (const key of MODE_KEYS) if (mode[key] !== undefined) out[key] = mode[key];
+    return out;
+  });
+}
+
+// modes[] disagreements are dumped as a readable summary rather than two JSON
+// blobs: which mode ids each side lists, and — when the ids line up — the first
+// title/skill that actually differs.
+function describeModes(registryModes, canonicalModes) {
+  const a = Array.isArray(registryModes) ? registryModes : [];
+  const b = Array.isArray(canonicalModes) ? canonicalModes : [];
+  const idsA = a.map((m) => m?.id);
+  const idsB = b.map((m) => m?.id);
+  if (JSON.stringify(idsA) !== JSON.stringify(idsB)) {
+    return `registry lists ${JSON.stringify(idsA)}, game.json lists ${JSON.stringify(idsB)}`;
+  }
+  for (let i = 0; i < b.length; i++) {
+    for (const key of MODE_KEYS) {
+      if (JSON.stringify(a[i]?.[key]) === JSON.stringify(b[i]?.[key])) continue;
+      return `mode "${idsB[i]}" ${key} is ${shown(a[i]?.[key])} in the registry, ${shown(b[i]?.[key])} in game.json`;
+    }
+  }
+  return `registry ${shown(registryModes)} vs game.json ${shown(canonicalModes)}`;
+}
+
+// games.json must agree with game.json on every mirrored field. Reported per
+// field so a sweep names exactly what to regenerate.
+function validateMirroredFields(id, entry, gj, r) {
+  for (const field of MIRRORED) {
+    const canonical = projectMirrored(field, gj);
+    if (JSON.stringify(entry[field]) === JSON.stringify(canonical)) continue;
+    if (canonical === undefined && !OPTIONAL_MIRRORED.has(field)) {
+      r.error(`game.json has no "${field}" but games.json claims ${shown(entry[field])} — game.json is canonical, so fix the manifest`);
+      continue;
+    }
+    const detail = field === 'modes'
+      ? describeModes(entry.modes, canonical)
+      : `registry ${shown(entry[field])} vs game.json ${shown(canonical)}`;
+    r.error(`${field} disagrees: ${detail} — game.json is canonical; ${FIX}`);
+  }
+}
 
 function subjects() {
   const registry = loadGamesRegistry();
@@ -77,10 +145,11 @@ function validatePerGame(subject, r) {
   if (!gj) { r.error('game.json is missing or not valid JSON'); return; }
 
   if (gj.id !== undefined && gj.id !== id) r.error(`game.json id "${gj.id}" does not match folder "${id}"`);
-  if (entry.status && gj.status && entry.status !== gj.status) r.warn(`status differs: registry "${entry.status}" vs game.json "${gj.status}"`);
   if (gj.status && !STATUS_VOCAB.has(gj.status)) r.error(`game.json status "${gj.status}" is not in the vocabulary`);
-  if (entry.category && gj.category && entry.category !== gj.category) r.warn(`category differs: registry "${entry.category}" vs game.json "${gj.category}"`);
   if (entry.path && entry.path !== `games/${id}/`) r.warn(`registry path "${entry.path}" is not "games/${id}/"`);
+
+  // Mirrored descriptive fields — ERROR, because the hub reads the registry copy.
+  validateMirroredFields(id, entry, gj, r);
 
   if (!isFile(`games/${id}/ASSETS.md`)) r.warn('ASSETS.md is missing');
   if (!isFile(`games/${id}/index.html`)) r.warn('index.html is missing');

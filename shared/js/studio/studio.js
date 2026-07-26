@@ -4,7 +4,7 @@ import { loadStudioProjects, studioProject, canonicalWorkspaceId } from './proje
 // Bump when any workspaces/*.js changes — same discipline as studio.css?v=.
 // Without it Chrome's heuristic disk cache can serve stale workspace modules
 // for hours after a deploy (bit us during the nav refactor verification).
-const WORKSPACE_VERSION = 17;
+const WORKSPACE_VERSION = 18;
 
 const CHARACTER_WORKSPACES = new Set(['rig', 'animate', 'speech']);
 // Rig (WP-1b), Animate (WP-1c) and Speech (WP-1d) are ported to native

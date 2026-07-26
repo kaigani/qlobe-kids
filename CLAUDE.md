@@ -50,10 +50,14 @@ whole flow.** The rest of this file is the reference behind that skill.
    single skill), the core 30–90s loop, the shared assets you'll reuse.
 5. **Build modes one at a time.** Ship **one** mode end-to-end and playtest it
    before starting the next. Reuse `shared/` modules and assets (inventory below).
-6. **Fill `game.json`.** The per-game manifest is the richer source of truth
-   (title, modes, assets used, credits).
-7. **Register.** Add one entry to the root `games.json` `games` array
-   (schema below). This is what makes the hub show your game.
+6. **Fill `game.json`.** The per-game manifest is canonical for title, status,
+   category, age, accent, and modes (plus assets used, credits).
+7. **Register.** Add one entry to the root `games.json` `games` array by hand —
+   its own fields (`path`, `icon` tile, `uses`, `summary`; schema below). Then
+   run `node tools/pipeline/sync-games-registry.mjs --write --only <id>` to
+   pull title/status/category/age/accent/modes over from `game.json`.
+   Registration itself stays deliberate and by hand — the tool never invents
+   entries. This is what makes the hub show your game.
 8. **Test locally.** From the repo root run `python3 -m http.server 8000`, open
    `http://localhost:8000/`, confirm the hub lists your game, launch it, play
    every mode. Watch the console: **zero errors, zero 404s.** Test with touch
@@ -150,6 +154,17 @@ Root `games.json` — one fetch drives the hub:
 category ids, in order: `reading-phonics`, `writing-fine-motor`,
 `math-number-sense`, `practical-life`, `sensorial-science`, `oral-storytelling`,
 `culture-geography`, `art-music`, `movement-outdoor`, `social-emotional`.
+
+`title`, `status`, `category`, `age`, `accent`, and `modes` (the `{id, title,
+skill}` subset) are mirrored from `game.json`, which is canonical for them.
+`games.json` alone owns `path`, `icon`, `uses[]`, `iconBg`, `iconFit`,
+`summary`, entry ordering, `categories[]`, and `schemaVersion`. Never hand-edit
+a mirrored field in `games.json` — regenerate it with
+`node tools/pipeline/sync-games-registry.mjs --write` (or `--check` to report
+drift, `--only <ids>` to scope). Note the `icon` naming collision: here it's
+the curated hub tile path (`assets/hub/tiles/<id>.jpg`, hands-off — the user
+curates those); in `game.json`, `icon` is an emoji glyph. Same key, different
+field, never synced.
 
 ---
 

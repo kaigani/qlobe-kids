@@ -31,12 +31,14 @@ const FALLBACK_GAMES = [
     iconFit: 'contain',
     age: { min: 4, max: 6 },
     status: 'live',
-    accent: '#58a945',
+    // Mirrored fields below track games/sound-sprouts/game.json (canonical) —
+    // keep in step with it when that manifest changes.
+    accent: '#7FB069',
     uses: [],
     modes: [
-      { id: 'guided',   title: 'Make a Word',     skill: 'onset-rime blending' },
-      { id: 'mystery',  title: 'Mystery Picture', skill: 'sound-to-letter matching' },
-      { id: 'freeplay', title: 'Word Mixer',      skill: 'free phonics exploration' }
+      { id: 'guided',   title: 'Make a Word',     skill: 'blend CVC sounds into words' },
+      { id: 'mystery',  title: 'Mystery Picture', skill: 'decode a word to reveal a picture' },
+      { id: 'freeplay', title: 'Word Mixer',      skill: 'free phoneme exploration' }
     ]
   }
 ];
