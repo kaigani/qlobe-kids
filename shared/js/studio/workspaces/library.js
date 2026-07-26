@@ -919,6 +919,28 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
           openMediaPreview(item).catch(fail);
           return;
         }
+        // Committed pose-actor packs get the same pose flip as staged ones —
+        // their tabs come straight from the pack's own poses.json.
+        if (object.type === 'pose-actor' && object.document) {
+          (async () => {
+            const doc = await loadDoc(object.document);
+            const poses = doc?.poses && typeof doc.poses === 'object' ? doc.poses : {};
+            const stages = Object.entries(poses)
+              .filter(([, pose]) => pose?.art)
+              .map(([name, pose]) => ({
+                id: name, label: name, src: repoUrl(dirOf(object.document) + pose.art),
+                checker: true, file: pose.art,
+                hint: 'One pose of the committed pack, on its shared canvas and baseline.',
+              }));
+            if (stages.length) {
+              openPreviewOverlay({
+                src: stages[0].src, stages, title: displayName(object),
+                subtitle: `${stages.length} pose${stages.length === 1 ? '' : 's'} — click a tab to flip through the pack.`,
+              });
+            }
+          })().catch(fail);
+          return;
+        }
         const img = inspector.querySelector('.library-detail-preview img');
         if (img?.getAttribute('src')) {
           openPreviewOverlay({ src: img.getAttribute('src'), title: displayName(object) });
