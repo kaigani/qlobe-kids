@@ -544,6 +544,18 @@ earlier stages — each derivative is a new file that knows its source);
 unchanged (a new seed is an explicit edit). Voice recipes record the QA
 transcript comparison; image cutouts record the alpha histogram.
 
+**`kind: "pose-actor"` (Phase 6.3)** — the one recipe kind that is an
+ASSEMBLY rather than a generation. Six already-reviewed pose media objects
+are normalized into a `qlobe-pose-actor` pack, so there is no prompt and no
+workflow: one local `op: "assemble-pose-actor"` step records the canvas,
+baseline, shared scale and encoding, and names its six sources. Because the
+shippable artifact is a FOLDER, two keys are specific to it: `asset` is the
+pack's `poses.json` (what **Assign to…** moves, with the `poses/` directory
+beside it) and `preview` names a flat image in the media folder for the
+Review card to thumbnail. Lineage keeps `derivedFrom` as the single root
+(the set's neutral, so the provenance chain still walks) and adds
+`derivedFromSet` listing all six.
+
 ### 7.7 `qlobe-generate-templates` v1 (Phase 6)
 
 The committed registry of generation recipes at
@@ -834,7 +846,33 @@ pip dependencies, same launch, same localhost binding.
   `GET /api/studio/templates` (the whole `shared/data/generate-templates.json`
   document, lazily loaded and mtime-cached — Phase 6);
   `POST /api/studio/media/<id>/extract` (remove the background from an
-  already-generated media object — Phase 6.1).
+  already-generated media object — Phase 6.1);
+  `POST /api/studio/media/<id>/send-to-assemble` (feed an accepted source
+  sheet into the canonical-puppet build pipeline — Phase 6.3);
+  `POST /api/studio/pose-actor/assemble` (six extracted pose sprites → one
+  `qlobe-pose-actor` pack — Phase 6.3).
+- **Send to Assemble**: the build pipeline reads its two author-supplied
+  sheets off disk under the reference root, which is what the frozen
+  `/api/puppet/file` writes as `kind=raw-base` / `kind=head-visemes`. The
+  bridge COPIES an accepted body-sheet or viseme-grid media object to exactly
+  those names for a validated kebab character id — the media object stays in
+  staging and gains a symbolic `sentToAssemble` provenance note (character +
+  slot, never the machine path). A second send is a 409 unless it passes
+  `force`. Generate then deep-links into Assemble on that character, which is
+  what makes the canonical-puppet profile REACHABLE from the means of
+  production; porting that profile off the legacy iframe is still the open
+  follow-up.
+- **Pose-actor assembly**: the `assemble-pose-actor` job kind is local image
+  work only — it shells out to `tools/pipeline/pose_actor_assemble.py` (PIL,
+  the same subprocess discipline as `tools/pipeline/cutout_finalize.py`), so
+  it carries no ComfyUI workflow and never waits behind the model queue. It
+  normalizes each pose off the full-resolution layered extraction rather than
+  the downsized cutout, and — unlike the per-pose fit in
+  `tools/build-storybook-poses.py` — gives all six sprites ONE shared scale
+  (`maxArt` over the largest subject dimension in the set) on one baseline, so
+  a paper-pop swap cannot change how big the character is. The pack lands in
+  `shared/media/` as a reviewable media object; **Assign to…** then moves the
+  whole folder into a game's `pose-actors/` root.
 - **Extract on existing media**: the cutout chain generates and extracts in one
   job, which suits a prop but not a review-gated set. The `extract-media` job
   kind is the other half: it keeps the pre-extraction original as

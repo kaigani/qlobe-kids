@@ -16,7 +16,11 @@ import { listSubdirs, isFile, isDir, tryReadJSON, isKebabId } from '../lib.mjs';
 
 const MEDIA_ROOT = 'shared/media';
 const TEMPLATE_REGISTRY = 'shared/data/generate-templates.json';
-const KINDS = new Set(['image', 'voice']);
+// `pose-actor` (Feature N) is an ASSEMBLY, not a generation: six already-reviewed
+// pose media objects normalized onto one stage canvas and encoded as a
+// qlobe-pose-actor pack. Its asset is that pack's poses.json and its single step
+// is a local `op`, so the image/voice generation-step rules below never apply.
+const KINDS = new Set(['image', 'voice', 'pose-actor']);
 const QA_STATUSES = new Set(['review', 'accepted', 'failed-qa']);
 const IMAGE_WORKFLOWS = new Set([
   'krea2-turbo-t2i', 'flux2-t2i', 'flux2-klein-edit',
@@ -122,6 +126,28 @@ function validate(subject, r) {
     if (!isKebabId(doc.derivedFrom)) r.error(`derivedFrom ${JSON.stringify(doc.derivedFrom)} is not a kebab media id`);
     else if (!isFile(`${MEDIA_ROOT}/${doc.derivedFrom}/recipe.json`))
       r.error(`derivedFrom target media ${JSON.stringify(doc.derivedFrom)} does not exist in the bucket`);
+  }
+  // An assembly derives from a SET. derivedFrom stays the single lineage root so
+  // the provenance chain still walks; derivedFromSet lists every source. Each
+  // entry is checked the same way — but a source assigned out of the bucket
+  // after assembly is a warn, not an error: the pack is already built.
+  if (doc.derivedFromSet != null) {
+    if (!Array.isArray(doc.derivedFromSet)) r.error('derivedFromSet must be an array of media ids');
+    else {
+      for (const id of doc.derivedFromSet) {
+        if (!isKebabId(id)) r.error(`derivedFromSet entry ${JSON.stringify(id)} is not a kebab media id`);
+        else if (!isFile(`${MEDIA_ROOT}/${id}/recipe.json`))
+          r.warn(`derivedFromSet source ${JSON.stringify(id)} is no longer in the bucket`);
+      }
+    }
+  }
+  // --- pose-actor assemblies name a real pack ---
+  if (doc.kind === 'pose-actor') {
+    if (doc.asset !== 'poses.json') r.error('a pose-actor recipe must name poses.json as its asset');
+    const actor = doc.actor && typeof doc.actor === 'object' ? doc.actor : null;
+    if (!actor || !isKebabId(actor.id)) r.error('a pose-actor recipe needs actor.id (kebab)');
+    if (doc.preview && !isFile(`${MEDIA_ROOT}/${subject.id}/${doc.preview}`))
+      r.error(`recipe.preview ${JSON.stringify(doc.preview)} is missing on disk`);
   }
 
   // --- QA block coherence ---

@@ -32,6 +32,42 @@ import {
   closeOverlay, isCutoutChain, qaPillFor, mediaAssetUrl,
 } from './lib/generate-core.js';
 
+// ============================================================================
+// Send to Assemble (Feature M) — the bridge from an accepted source sheet to the
+// canonical-puppet build pipeline.
+//
+// The build steps (docs/puppet-pipeline.md) read their two author-supplied
+// sheets off disk: raw-base.png and head-visemes.png under the reference root,
+// which is what POST /api/puppet/file?kind=raw-base|head-visemes writes. So the
+// bridge is a server-side COPY into exactly those names — the media object stays
+// in staging untouched — plus a deep link into Assemble with the character
+// selected. The author then drives slice / extract / QC / register as always,
+// skipping only the builder's own "Save both sources" upload step.
+// ============================================================================
+
+const ASSEMBLE_SLOTS = {
+  'character-body-sheet': { slot: 'raw-base', file: 'raw-base.png', label: 'body sheet' },
+  'character-viseme-grid': { slot: 'head-visemes', file: 'head-visemes.png', label: 'viseme grid' },
+};
+// Which project owns the canonical ten-part puppet builder. The deep link needs
+// a project whose Assemble workspace runs that profile; anything else opens the
+// pose library instead.
+const CANONICAL_PUPPET_PROJECT = 'puppet-problem-solvers';
+
+const assembleSlotFor = (item) => ASSEMBLE_SLOTS[item?.recipe?.template?.id] || null;
+const canSendToAssemble = (item) => !!assembleSlotFor(item) && item?.qa?.status === 'accepted';
+
+// A sensible character id to prefill: the media id with the sheet's own naming
+// noise trimmed off, so `bear-body-sheet-2` proposes `bear`. Never authoritative
+// — the field is editable and the server validates it.
+function proposeCharacterId(item) {
+  let id = String(item?.id || '');
+  for (const suffix of ['-body-sheet', '-viseme-grid', '-visemes', '-body', '-sheet', '-grid']) {
+    if (id.endsWith(suffix)) { id = id.slice(0, -suffix.length); break; }
+  }
+  return id.replace(/-\d+$/, '') || String(item?.id || '');
+}
+
 // The four catalogue sections plus Review, in nav order. `section` here is the
 // registry field of the same name; a template with an unknown section simply
 // never appears in a rail (the validator is what keeps that from happening).
@@ -226,10 +262,21 @@ function computePoseSet(mediaList, setId, registry, poseJobs) {
     anyRunning,
     canDerive: !!neutral.item && neutral.item.qa?.status === 'accepted' && !anyRunning,
     canExtract: allExist && !anyRunning && notExtractedCount > 0,
+    // Assembly is the END of the pose pipeline: six sprites, every one of them
+    // through the background removal, because the pack is normalized off the
+    // extracted alpha. Review status is deliberately NOT part of the gate — the
+    // assembled pack is itself reviewed, and that is where the decision lands.
+    canAssemble: allExist && !anyRunning && notExtractedCount === 0,
     notExtractedCount,
     missing: slots.filter((slot) => !slot.item).map((slot) => slot.pose),
   };
 }
+
+// The set id minus its `-pose` tail: `dragon-pose` -> `dragon`, which is the
+// actor id the game's pose-actor folder wants.
+const proposeActorId = (setId) => String(setId || '').replace(/-poses?$/, '') || String(setId || '');
+const titleCase = (id) => String(id || '').split('-').filter(Boolean)
+  .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1)).join(' ');
 
 // One slot card: a thumbnail button (the shell's existing [data-media-action]
 // delegation opens the preview overlay), a QA pill, and the buttons this slot's
@@ -278,7 +325,7 @@ function poseSlotHtml(slot, serverAvailable) {
 // be named. Neither the Use button nor the chips touch the network, so they
 // stay live even in a static preview; only the two set actions and the
 // per-slot buttons carry the "needs the authoring server" guard.
-function poseSetPanelHtml({ sets, activeSetId, data, serverAvailable }) {
+function poseSetPanelHtml({ sets, activeSetId, data, serverAvailable, assembleOpen = false, assembleSeed = {} }) {
   const chipsHtml = sets.length
     ? sets.map((id) => `<button type="button" class="ghost pose-set-chip${id === activeSetId ? ' on' : ''}" data-pose-set-chip="${escapeHtml(id)}">${escapeHtml(id)}</button>`).join('')
     : '<p class="hint">No pose sets yet — generate a resting pose to start one.</p>';
@@ -310,15 +357,52 @@ function poseSetPanelHtml({ sets, activeSetId, data, serverAvailable }) {
         : data.anyRunning ? 'a pose job is already running'
           : 'every pose is already extracted';
 
+  const assembleDisabled = !serverAvailable || !data.canAssemble;
+  const assembleTitle = !serverAvailable ? 'needs the authoring server'
+    : data.canAssemble ? ''
+      : !allExist ? 'generate all six poses first'
+        : data.anyRunning ? 'a pose job is already running'
+          : `remove the background from ${data.notExtractedCount} more pose${data.notExtractedCount === 1 ? '' : 's'} first`;
+
   const actionsHtml = `
     <div class="pose-set-actions">
       <button type="button" data-pose-action="generate-remaining"${deriveDisabled ? ` disabled title="${escapeHtml(deriveTitle)}"` : ''}>Generate remaining 5 poses</button>
       <button type="button" data-pose-action="extract-set"${extractDisabled ? ` disabled title="${escapeHtml(extractTitle)}"` : ''}>Remove backgrounds (${data.notExtractedCount})</button>
+      <button type="button" data-pose-action="assemble-open"${assembleDisabled ? ` disabled title="${escapeHtml(assembleTitle)}"` : ''}>Assemble pose actor</button>
     </div>`;
+
+  // The assembly form: three plain fields and one verb. It appears under the
+  // actions rather than in an overlay so the six-slot strip stays in view — the
+  // strip IS the evidence that the set is ready.
+  const assembleFormHtml = (assembleOpen && data.canAssemble) ? `
+    <form class="pose-assemble" data-pose-assemble>
+      <p class="hint">Normalizes all six sprites onto one 1024² canvas with a shared baseline and a
+      single shared scale, then writes a qlobe-pose-actor pack into Review.</p>
+      <div class="field-grid">
+        <label class="gen-form-field">Actor id
+          <input type="text" data-assemble-actor value="${escapeHtml(assembleSeed.actorId || proposeActorId(activeSetId))}"
+            pattern="[a-z0-9]+(-[a-z0-9]+)*" required autocomplete="off">
+        </label>
+        <label class="gen-form-field">Display label
+          <input type="text" data-assemble-label value="${escapeHtml(assembleSeed.label || titleCase(proposeActorId(activeSetId)))}"
+            autocomplete="off">
+        </label>
+        <label class="gen-form-field">Transition
+          <select data-assemble-transition>
+            <option value="paper-pop"${assembleSeed.transition === 'cut' ? '' : ' selected'}>Paper-pop (220 ms)</option>
+            <option value="cut"${assembleSeed.transition === 'cut' ? ' selected' : ''}>Cut — no transition</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <button type="submit" data-pose-action="assemble-confirm">Assemble</button>
+        <button type="button" class="ghost" data-pose-action="assemble-close">Cancel</button>
+      </div>
+    </form>` : '';
 
   const stripHtml = `<ol class="pose-set-strip">${data.slots.map((slot) => poseSlotHtml(slot, serverAvailable)).join('')}</ol>`;
 
-  return `<h2 class="generate-panel-title">Pose set — ${escapeHtml(activeSetId)}</h2>${headHtml}${actionsHtml}${stripHtml}`;
+  return `<h2 class="generate-panel-title">Pose set — ${escapeHtml(activeSetId)}</h2>${headHtml}${actionsHtml}${assembleFormHtml}${stripHtml}`;
 }
 
 export async function mount(host, { params, toast, openWorkspace, setNav, setParam }) {
@@ -334,6 +418,8 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
   let submitting = false;
   let jobStatus = '';
   let activeSet = null;                  // pose-set panel — the set currently on the strip
+  let assembleOpen = false;              // pose-set panel — the assembly form's disclosure
+  let assembleSeed = {};                 // …and what was typed into it, across repaints
 
   const templatesIn = (section) => (registry.templates || []).filter((template) => template.section === section);
   const selected = () => (selectedId ? templateById(registry, selectedId) : null);
@@ -383,10 +469,46 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     serverAvailable: () => serverAvailable,
     destroyed: () => destroyed,
     usageIndex: () => null,
-    extraActions: (item) => (item.recipe?.template?.id && templateById(registry, item.recipe.template.id)
-      ? `<button type="button" class="ghost" data-media-action="open-template" data-media-id="${escapeHtml(item.id)}">Open template</button>`
-      : ''),
+    extraActions: (item) => [
+      (item.recipe?.template?.id && templateById(registry, item.recipe.template.id)
+        ? `<button type="button" class="ghost" data-media-action="open-template" data-media-id="${escapeHtml(item.id)}">Open template</button>`
+        : ''),
+      // The bridge only appears once the sheet is ACCEPTED: sending an
+      // unreviewed sheet into the build pipeline is how a rig gets cut from art
+      // nobody looked at (the server refuses it too).
+      (canSendToAssemble(item)
+        ? `<button type="button" data-media-action="send-to-assemble" data-media-id="${escapeHtml(item.id)}"${serverAvailable ? '' : ' disabled title="needs the authoring server"'}>Send to Assemble</button>`
+        : ''),
+    ].filter(Boolean).join(''),
+    extraPanels: (item, mode) => (mode === 'send-to-assemble' ? sendToAssemblePanelHtml(item) : ''),
   });
+
+  // The bridge's inline panel: one field (the character id the build pipeline
+  // will file these sources under) and the two ways to leave — straight into
+  // Assemble, or stay put to send this sheet's partner next.
+  function sendToAssemblePanelHtml(item) {
+    const slot = assembleSlotFor(item);
+    if (!slot) return '';
+    const sent = Array.isArray(item.recipe?.sentToAssemble) ? item.recipe.sentToAssemble : [];
+    const sentLine = sent.length
+      ? `<p class="hint">already sent as ${sent.map((entry) => `${escapeHtml(entry.character)}/${escapeHtml(entry.slot)}`).join(', ')}</p>`
+      : '';
+    return `
+      <div class="library-media-panel" data-panel="send-to-assemble">
+        <h4>Send to Assemble</h4>
+        <p class="hint">Copies this ${escapeHtml(slot.label)} to the build pipeline's
+        <code>${escapeHtml(slot.file)}</code> source for a character. The media object stays here.</p>
+        ${sentLine}
+        <label>Character id<input type="text" data-assemble-char value="${escapeHtml(proposeCharacterId(item))}"
+          pattern="[a-z0-9]+(-[a-z0-9]+)*" autocomplete="off"></label>
+        <label class="pose-assemble-force"><input type="checkbox" data-assemble-force> Replace an existing source</label>
+        <div class="row">
+          <button type="button" data-media-action="send-to-assemble-open" data-media-id="${escapeHtml(item.id)}">Send &amp; open Assemble</button>
+          <button type="button" class="ghost" data-media-action="send-to-assemble-stay" data-media-id="${escapeHtml(item.id)}">Send only</button>
+          <button type="button" class="ghost" data-media-action="close-panel" data-media-id="${escapeHtml(item.id)}">Cancel</button>
+        </div>
+      </div>`;
+  }
 
   // Three zones down the centre (Feature J): the page head answers "what am I
   // making?", the form card "what should it say?", and Recent outputs "what came
@@ -696,11 +818,26 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     const input = poseSetHost.querySelector('[data-pose-set-input]');
     const typed = input ? input.value : null;
     const hadFocus = !!input && document.activeElement === input;
+    captureAssembleForm();
     const data = activeSet ? computePoseSet(mediaList, activeSet, registry, poseJobs) : null;
-    poseSetHost.innerHTML = poseSetPanelHtml({ sets, activeSetId: activeSet, data, serverAvailable });
+    poseSetHost.innerHTML = poseSetPanelHtml({
+      sets, activeSetId: activeSet, data, serverAvailable, assembleOpen, assembleSeed,
+    });
     const next = poseSetHost.querySelector('[data-pose-set-input]');
     if (next && typed) next.value = typed;
     if (next && hadFocus) next.focus();
+  }
+
+  // The assembly form survives the 2s poll repaint the same way the set input
+  // does — by snapshotting what is in it before the innerHTML is replaced.
+  function captureAssembleForm() {
+    const form = poseSetHost.querySelector('[data-pose-assemble]');
+    if (!form) return;
+    assembleSeed = {
+      actorId: form.querySelector('[data-assemble-actor]')?.value || '',
+      label: form.querySelector('[data-assemble-label]')?.value || '',
+      transition: form.querySelector('[data-assemble-transition]')?.value || 'paper-pop',
+    };
   }
 
   // Repaint everything media-shaped. Safe to call from the poll loop — it never
@@ -883,6 +1020,78 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     return { ok: errors.length === 0, queued, skipped, errors };
   }
 
+  // Assemble the active set into a qlobe-pose-actor pack. Local image work on
+  // the server, so it settles in seconds and lands in Review like every other
+  // media object — Accept and Assign to… take it from there.
+  async function assemblePoseActor(options = {}) {
+    if (!serverAvailable) { toast('Assemble needs the authoring server.'); return { ok: false, error: 'no authoring server' }; }
+    const set = (options.set || activeSet || '').trim();
+    if (!set) return { ok: false, error: 'no active set' };
+    const actorId = (options.actorId || assembleSeed.actorId || proposeActorId(set)).trim();
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(actorId)) {
+      toast('Give the actor a kebab-case id.', { error: true });
+      return { ok: false, error: 'actor id must be kebab-case' };
+    }
+    const body = {
+      set, actorId,
+      label: (options.label ?? assembleSeed.label ?? titleCase(actorId)) || titleCase(actorId),
+      transition: options.transition || assembleSeed.transition || 'paper-pop',
+    };
+    if (options.overwrite) body.overwrite = true;
+    try {
+      const response = await fetch('/api/studio/pose-actor/assemble', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      });
+      const parsed = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(parsed.error || `Could not assemble ${actorId}`);
+      tracker.track(parsed.jobId, { label: `Assemble ${actorId}`, mediaId: parsed.mediaId });
+      jobStatus = `${parsed.mediaId} queued (job ${parsed.jobId}).`;
+      paintJobStatus();
+      toast(`Assembling ${actorId} from ${set}…`);
+      assembleOpen = false;
+      renderPoseSet();
+      return { ok: true, jobId: parsed.jobId, mediaId: parsed.mediaId, actorId };
+    } catch (error) {
+      toast(error.message, { error: true, duration: 7000 });
+      return { ok: false, error: error.message };
+    }
+  }
+
+  // Copy an accepted source sheet into the build pipeline's on-disk sources, and
+  // (unless told to stay) hand the author straight to the builder with that
+  // character selected.
+  async function sendToAssemble(mediaId, characterId, { force = false, open = true } = {}) {
+    if (!serverAvailable) { toast('Send to Assemble needs the authoring server.'); return { ok: false, error: 'no authoring server' }; }
+    const item = mediaController.get(mediaId);
+    const slot = assembleSlotFor(item);
+    if (!slot) return { ok: false, error: 'not a build source sheet' };
+    const character = String(characterId || proposeCharacterId(item)).trim();
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(character)) {
+      toast('Give the character a kebab-case id.', { error: true });
+      return { ok: false, error: 'character id must be kebab-case' };
+    }
+    try {
+      const response = await fetch(`/api/studio/media/${encodeURIComponent(mediaId)}/send-to-assemble`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(force ? { characterId: character, force: true } : { characterId: character }),
+      });
+      const parsed = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(parsed.error || `Could not send ${mediaId}`);
+      mediaController.closePanel(mediaId);
+      toast(`${mediaId} → ${character}/${parsed.file}`);
+      await mediaController.refresh();
+      if (open) {
+        setParam('project', CANONICAL_PUPPET_PROJECT);
+        setParam('char', character);
+        await openWorkspace('assemble');
+      }
+      return { ok: true, character, slot: parsed.slot, file: parsed.file };
+    } catch (error) {
+      toast(error.message, { error: true, duration: 7000 });
+      return { ok: false, error: error.message };
+    }
+  }
+
   // ---- wiring --------------------------------------------------------------
   // `host` is the shell's persistent #native-workspace node (studio.js only
   // clears its innerHTML between mounts), so BOTH listeners below must come off
@@ -907,6 +1116,10 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
         extractSet(activeSet).catch(fail);
       } else if (kind === 'extract-one') {
         extractOne(poseAction.dataset.poseSlotId).catch(fail);
+      } else if (kind === 'assemble-open') {
+        assembleOpen = true; renderPoseSet();
+      } else if (kind === 'assemble-close') {
+        assembleOpen = false; renderPoseSet();
       }
       return;
     }
@@ -914,7 +1127,24 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     const mediaButton = event.target.closest('[data-media-action]');
     if (!mediaButton) return;
     const id = mediaButton.dataset.mediaId;
-    if (mediaButton.dataset.mediaAction === 'open-template') {
+    const mediaAction = mediaButton.dataset.mediaAction;
+    if (mediaAction === 'send-to-assemble') {
+      // The controller knows nothing about this mode; it just holds it open and
+      // asks extraPanels() to draw it.
+      if (mediaController.panelMode(id) === 'send-to-assemble') mediaController.closePanel(id);
+      else mediaController.openPanel(id, 'send-to-assemble');
+      renderMedia();
+      return;
+    }
+    if (mediaAction === 'send-to-assemble-open' || mediaAction === 'send-to-assemble-stay') {
+      const card = mediaButton.closest('[data-media-card]');
+      sendToAssemble(id, card?.querySelector('[data-assemble-char]')?.value, {
+        force: !!card?.querySelector('[data-assemble-force]')?.checked,
+        open: mediaAction === 'send-to-assemble-open',
+      }).catch(fail);
+      return;
+    }
+    if (mediaAction === 'open-template') {
       const item = mediaController.get(id);
       const template = item?.recipe?.template?.id ? templateById(registry, item.recipe.template.id) : null;
       if (!template) { toast('That media object carries no registry template.'); return; }
@@ -926,6 +1156,15 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
   };
 
   const onHostSubmit = (event) => {
+    // The pose panel's assembly form submits too — it is a real <form> so the
+    // kebab `pattern` on the actor id is enforced natively before anything is
+    // posted.
+    if (event.target.closest('[data-pose-assemble]')) {
+      event.preventDefault();
+      captureAssembleForm();
+      assemblePoseActor().catch(fail);
+      return;
+    }
     if (!event.target.closest('[data-template-form]')) return;
     event.preventDefault();
     submitGenerate().catch(fail);
@@ -1064,6 +1303,13 @@ export async function mount(host, { params, toast, openWorkspace, setNav, setPar
     generateRemaining: (setId) => generateRemaining(setId || activeSet),
     extractSet: (setId) => extractSet(setId || activeSet),
     extractOne: (mediaId, opts) => extractOne(mediaId, opts),
+    // Feature M+N. Both return the same serializable {ok, …} shape the other
+    // pose actions do, so a browser drive can assert on them directly.
+    assemblePoseActor: (options) => assemblePoseActor(options || {}),
+    sendToAssemble: (mediaId, characterId, opts) => sendToAssemble(mediaId, characterId, { open: false, ...(opts || {}) }),
+    canSendToAssemble: () => mediaController.list().filter(canSendToAssemble).map((item) => ({
+      id: item.id, template: item.recipe?.template?.id, slot: assembleSlotFor(item)?.slot,
+    })),
   };
 
   return () => {

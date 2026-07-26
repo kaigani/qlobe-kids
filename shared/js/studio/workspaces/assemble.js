@@ -91,6 +91,48 @@ export async function mount(host,{params,toast,openWorkspace,setNav,setParam}){
     }catch(error){fail(error);}};
   }
   async function drawPoseInspector(){await loadPoseLibrary(project.workspaces.assemble);}
+
+  // ---- canonical 10-part puppet (still the legacy embedded builder) ---------
+  // Feature M made this profile REACHABLE and FED: Generate's "Send to Assemble"
+  // writes the two source sheets to the build pipeline's on-disk locations and
+  // deep-links here with ?char=<id>. Porting the builder itself off the iframe
+  // remains the long-standing follow-up (spec §10 compat-shim note).
+  async function puppetProject(charId){
+    try{
+      const body=await fetch('/api/puppet/projects',{cache:'no-store'}).then((r)=>r.ok?r.json():null);
+      const list=body?.projects||[];
+      return {entry:list.find((p)=>p.id===charId)||null, rigged:list.find((p)=>p.rig)?.id||null};
+    }catch{ return {entry:null, rigged:null}; }
+  }
+  // The legacy page loads <base>rig.json BEFORE it mounts the build panel, so a
+  // character that has sources but no rig yet — exactly what Send to Assemble
+  // creates — would leave it blank. Build mode reads the id field, not the base,
+  // so pointing the art boot at any already-rigged character keeps the panel up.
+  async function buildSrc(charId,rigged){
+    const query=new URLSearchParams({mode:'build',embedded:'1'});
+    if(charId)query.set('char',charId);
+    if(charId){
+      const hasRig=await fetch(`/shared/characters/${encodeURIComponent(charId)}/rig.json`,{cache:'no-store'})
+        .then((r)=>r.ok).catch(()=>false);
+      if(!hasRig&&rigged)query.set('base',`/shared/characters/${rigged}/`);
+    }
+    return `../stage/puppet-studio.html?${query}`;
+  }
+  async function loadCanonicalPuppet(){
+    const charId=params.get('char')||null;
+    const {entry,rigged}=await puppetProject(charId);
+    canvasHost.innerHTML=`<iframe class="build-legacy" src="${await buildSrc(charId,rigged)}"></iframe>`;
+    setParam('char',charId);
+    const sources=entry?`<p class="hint">On disk for <strong>${charId}</strong>: body sheet ${entry.rawBase?'✓':'—'} ·
+      viseme grid ${entry.visemeSheet?'✓':'—'} · parts ${entry.parts}/10 · heads ${entry.anim}/10 · rig ${entry.rig?'✓':'—'}</p>`
+      :(charId?`<p class="hint">Nothing on disk for <strong>${charId}</strong> yet.</p>`:'');
+    inspector.innerHTML=`<div class="panel-section"><h2>Canonical Puppet Builder</h2>
+      <p class="hint">The ten-part body and nine-viseme pipeline for shared speaking puppets.</p>
+      ${sources}
+      <p class="hint">Sources arriving from <strong>Generate ▸ Send to Assemble</strong> are already written to disk,
+      so skip <em>Save both sources</em> — it only exists to upload files by hand — and start at
+      <em>Slice 9 visemes</em>. Every later step reads the sheets off disk too.</p></div>`;
+  }
   function syncPoseFields(){
     if(!poseManifest)return;
     poseManifest.poses[poseId].alt=inspector.querySelector('[data-alt]')?.value||poseManifest.poses[poseId].alt;
@@ -104,8 +146,7 @@ export async function mount(host,{params,toast,openWorkspace,setNav,setParam}){
     if(ws.profile==='pose-library'){await loadPoseLibrary(ws);return;}
     host.querySelector('[data-profile]').textContent=ws.profile==='scene-actor'?'Flexible Scene Actor':'Canonical 10-part Puppet';
     if(ws.profile!=='scene-actor'){
-      canvasHost.innerHTML=`<iframe class="build-legacy" src="../stage/puppet-studio.html?mode=build&embedded=1"></iframe>`;
-      inspector.innerHTML=`<div class="panel-section"><h2>Canonical Puppet Builder</h2><p class="hint">The existing ten-part body and nine-viseme pipeline remains available unchanged for shared speaking puppets.</p></div>`;
+      await loadCanonicalPuppet();
       host.querySelector('[data-save]').hidden=true; return;
     }
     host.querySelector('[data-save]').hidden=false;

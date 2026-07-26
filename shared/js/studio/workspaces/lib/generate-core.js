@@ -116,6 +116,10 @@ const STAGE_DEFS = [
 ];
 
 const mediaFileUrl = (id, file) => `/shared/media/${encodeURIComponent(id)}/${encodeURIComponent(file)}`;
+// Same, for a file NESTED inside a media folder (a pose actor's poses/<x>.webp):
+// each segment is encoded separately so the slashes survive.
+const mediaPathUrl = (id, rel) => `/shared/media/${encodeURIComponent(id)}/${String(rel || '')
+  .split('/').filter(Boolean).map(encodeURIComponent).join('/')}`;
 
 // Probing is idempotent and cheap, but a Review repaint can ask for the same
 // four URLs every 2s — cache the answers for the life of the page.
@@ -147,7 +151,21 @@ export function isCutoutChain(item) {
 // mediaStages(item) -> [{id, label, src, checker, hint}] for the stage files that
 // actually exist, in pipeline order. A plain generate-image media object has only
 // its final asset, so the overlay shows no tabs.
+//
+// A pose actor has no pipeline stages — it has SIX POSES, and the same tab strip
+// is exactly the right control for flipping between them, so its poses ride the
+// stage machinery unchanged (server order: neutral first, which is what the
+// overlay opens on).
 export async function mediaStages(item) {
+  if (item?.kind === 'pose-actor') {
+    return (Array.isArray(item.poses) ? item.poses : [])
+      .filter((entry) => entry?.art)
+      .map((entry) => ({
+        id: entry.pose, label: entry.pose, src: mediaPathUrl(item.id, entry.art),
+        checker: true, file: entry.art,
+        hint: 'One pose of the assembled pack, on the shared 1024² canvas and baseline.',
+      }));
+  }
   if (!item?.id || item.kind !== 'image') return [];
   const defs = isCutoutChain(item) ? STAGE_DEFS : STAGE_DEFS.filter((def) => def.id === 'final');
   const found = await Promise.all(defs.map(async (def) => {
@@ -203,15 +221,14 @@ export function openPreviewOverlay({ src, title = '', subtitle = '', stages = nu
 
 // Convenience for a media card / provenance link: probe the stages, then open.
 export async function openMediaPreview(item, stage = null) {
-  if (!item || item.kind !== 'image') return null;
+  if (!item || item.kind === 'voice') return null;
   const stages = await mediaStages(item);
-  const src = mediaAssetUrl(item);
+  const src = mediaPreviewUrl(item);
   if (!stages.length && !src) return null;
-  return openPreviewOverlay({
-    src, stages, stage,
-    title: item.id,
-    subtitle: stages.length > 1 ? 'Every step the cutout chain wrote, in order.' : (item.asset || ''),
-  });
+  const subtitle = item.kind === 'pose-actor'
+    ? `${stages.length} pose${stages.length === 1 ? '' : 's'} — click a tab to flip through the pack.`
+    : (stages.length > 1 ? 'Every step the cutout chain wrote, in order.' : (item.asset || ''));
+  return openPreviewOverlay({ src, stages, stage, title: item.id, subtitle });
 }
 
 // --- gallery mode (F1) ------------------------------------------------------
@@ -456,6 +473,18 @@ export function mediaAssetUrl(item) {
   return item?.asset ? `/shared/media/${encodeURIComponent(item.id)}/${encodeURIComponent(item.asset)}` : '';
 }
 
+// What a card should SHOW. Usually the asset itself; a pose actor's asset is its
+// poses.json manifest, so the server names a flat `preview` (the contact strip)
+// beside it and this returns that instead.
+export function mediaPreviewUrl(item) {
+  if (item?.preview) return mediaFileUrl(item.id, item.preview);
+  return mediaAssetUrl(item);
+}
+
+// The card's type chip. Anything unknown reads as "Image", which is what every
+// media object was before the bucket held anything else.
+const KIND_LABEL = { voice: 'Voice', image: 'Image', 'pose-actor': 'Pose actor' };
+
 export function qaPillFor(status) {
   const value = String(status || '').toLowerCase();
   if (value === 'accepted') return { text: 'accepted', className: 'good' };
@@ -479,6 +508,8 @@ export function qaPillFor(status) {
 //                     provenance panel stays. Mutating methods still exist but the
 //                     UI never offers them.
 //   extraActions(item)-> html appended to the action row (Library's "Open in Generate").
+//   extraPanels(item, mode)-> html for a host-owned inline panel mode opened with
+//                     openPanel(id, mode). Ignored in readOnly.
 export function createMediaController({
   render = () => {},
   toast = () => {},
@@ -488,6 +519,7 @@ export function createMediaController({
   tracker = null,
   readOnly = false,
   extraActions = null,
+  extraPanels = null,
 } = {}) {
   let media = [];                   // GET /api/studio/media summaries
   const busy = new Set();           // ids with a regenerate/accept/reject in flight
@@ -616,6 +648,10 @@ export function createMediaController({
     const mode = openPanels.get(item.id);
     if (mode === 'provenance') return provenancePanelHtml(item);
     if (mode === 'assign' && !readOnly) return assignPanelHtml(item);
+    // A host can own panel modes of its own (generate.js's send-to-assemble
+    // form): openPanel(id, mode) sets it, extraPanels(item, mode) draws it, and
+    // the shared close-panel action clears it. Read-only hosts never get one.
+    if (mode && !readOnly && extraPanels) return extraPanels(item, mode) || '';
     return '';
   }
 
@@ -623,8 +659,10 @@ export function createMediaController({
     const qa = item.qa || {};
     const pill = qaPillFor(qa.status);
     const isBusy = busy.has(item.id);
-    const isImage = item.kind === 'image';
-    const src = mediaAssetUrl(item);
+    // Everything that is not a voice line is looked at, not listened to — a pose
+    // actor included, whose thumbnail is its contact strip.
+    const isImage = item.kind !== 'voice';
+    const src = mediaPreviewUrl(item);
     // The thumbnail is a button so the shell's existing [data-media-action]
     // delegation opens the preview overlay — no host wiring changes, and it works
     // in the Library's read-only mode too. A voice card stays inert: its inline
@@ -655,7 +693,7 @@ export function createMediaController({
     return `
       <article class="library-card library-media-card" data-media-card="${escapeHtml(item.id)}" data-type="media">
         <div class="library-card-head">
-          <span class="library-type">${escapeHtml(item.kind === 'voice' ? 'Voice' : 'Image')}</span>
+          <span class="library-type">${escapeHtml(KIND_LABEL[item.kind] || 'Image')}</span>
           <span class="library-badge-unassigned">Unassigned</span>
         </div>
         <h3 class="library-card-title">${escapeHtml(item.id)}</h3>

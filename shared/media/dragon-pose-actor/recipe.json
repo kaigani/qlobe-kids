@@ -1,0 +1,103 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "dragon-pose-actor",
+  "kind": "pose-actor",
+  "asset": "poses.json",
+  "preview": "contact.webp",
+  "actor": {
+    "id": "dragon",
+    "label": "Friendly Dragon",
+    "set": "dragon-pose"
+  },
+  "steps": [
+    {
+      "op": "assemble-pose-actor",
+      "from": [
+        "dragon-pose-neutral",
+        "dragon-pose-enter",
+        "dragon-pose-notice",
+        "dragon-pose-interact",
+        "dragon-pose-react",
+        "dragon-pose-celebrate"
+      ],
+      "canvas": [
+        1024,
+        1024
+      ],
+      "maxArt": 900,
+      "baseline": 972,
+      "scale": 1.115242,
+      "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+      "encode": "webp q90 method6",
+      "output": "poses/<pose>.webp + poses.json"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": "dragon-pose-neutral",
+  "derivedFromSet": [
+    "dragon-pose-neutral",
+    "dragon-pose-enter",
+    "dragon-pose-notice",
+    "dragon-pose-interact",
+    "dragon-pose-react",
+    "dragon-pose-celebrate"
+  ],
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "bytes": 67798,
+      "artSize": [
+        674,
+        900
+      ]
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "bytes": 60148,
+      "artSize": [
+        584,
+        889
+      ]
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "bytes": 59040,
+      "artSize": [
+        549,
+        897
+      ]
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "bytes": 57764,
+      "artSize": [
+        675,
+        889
+      ]
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "bytes": 66574,
+      "artSize": [
+        656,
+        890
+      ]
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "bytes": 62404,
+      "artSize": [
+        603,
+        766
+      ]
+    }
+  },
+  "qa": {
+    "status": "review",
+    "poses": 6,
+    "scale": 1.115242,
+    "bytes": 373728
+  },
+  "created": "2026-07-25"
+}

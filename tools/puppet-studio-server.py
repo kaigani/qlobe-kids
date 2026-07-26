@@ -86,6 +86,10 @@ WORKFLOW_FOR_KIND = {
     # Phase 6.1: background removal over an already-generated media object. It is
     # only ever the layered workflow, so it batches with every other extraction.
     "extract-media": "qwen-image-layered",
+    # Phase 6.3 (Feature N): pose-actor assembly is purely local image work (PIL
+    # via tools/pipeline/pose_actor_assemble.py) — no ComfyUI, so no workflow to
+    # batch by. It never contends with the model queue and can run alongside it.
+    "assemble-pose-actor": None,
 }
 # Kinds whose inputs live on disk (reference PNGs, prompt/seed) and are therefore
 # safely re-queueable after a crash. voice/transcription depend on an uploaded
@@ -94,7 +98,7 @@ WORKFLOW_FOR_KIND = {
 # dispatch, and generate-voice reads its text + the configured teacher voice from
 # disk — so all three survive a restart mid-chain and re-run reproducibly.
 RESUMABLE_KINDS = {"story-scene", "extract", "generate-image", "cutout-chain", "generate-voice",
-                   "extract-media"}
+                   "extract-media", "assemble-pose-actor"}
 
 # Phase 5 media constants (spec §5.1, §7.6). The unassigned-media staging shelf.
 MEDIA_ROOT = ("shared", "media")
@@ -112,6 +116,28 @@ CUTOUT_TARGET_SIZES = {"character": 420, "object": 400, "prop": 640}
 # The flat dark ground the cutout standard generates onto (local-genai skill).
 DARK_GROUND_SUFFIX = (" The background is a perfectly flat, solid, uniform dark charcoal "
                       "background, no gradient, no texture, no shadows on the background.")
+
+# --- pose actors (spec §7.6 pose-actor recipes / §10, Feature N) -------------
+# The six semantic poses of the storybook pose builder, in the order the pose set
+# is generated and the contact strip is laid out. `neutral` is load-bearing: the
+# runtime (shared/js/stage/pose-sprite.js) requires poses.neutral and falls back
+# to it for any unknown pose name.
+POSE_SET = ("neutral", "enter", "notice", "interact", "react", "celebrate")
+# The normalized stage canvas the qlobe-pose-actor format describes. Kept in one
+# place and passed to the PIL helper, which owns the actual pixel math.
+POSE_CANVAS = 1024
+POSE_MAX_ART = 900
+POSE_BASELINE = 972
+POSE_TRANSITIONS = ("paper-pop", "cut")
+# The media-object suffix an assembled actor takes: <actorId>-pose-actor.
+POSE_ACTOR_SUFFIX = "-pose-actor"
+# Which accepted media a "Send to Assemble" can feed into the canonical-puppet
+# build pipeline, and the /api/puppet/file `kind` (i.e. the on-disk source name)
+# it lands as. Both are the two author-supplied sheets of docs/puppet-pipeline.md.
+SEND_TO_ASSEMBLE_SLOTS = {
+    "character-body-sheet": "raw-base",
+    "character-viseme-grid": "head-visemes",
+}
 
 
 def load_local_config(root: Path) -> dict:
@@ -408,6 +434,8 @@ class AuthoringState:
                 run_cutout_chain_job(self, job_id, d)
             elif kind == "extract-media":
                 run_extract_media_job(self, job_id, d)
+            elif kind == "assemble-pose-actor":
+                run_assemble_pose_actor_job(self, job_id, d)
             elif kind == "generate-voice":
                 run_generate_voice_job(self, job_id, d)
             else:
@@ -1579,10 +1607,18 @@ def media_summary(recipe: dict, folder: Path) -> dict:
     qa = recipe.get("qa") if isinstance(recipe.get("qa"), dict) else {}
     alpha = qa.get("alpha") if isinstance(qa.get("alpha"), dict) else None
     transcript = qa.get("transcript") if isinstance(qa.get("transcript"), dict) else None
+    # A pose-actor's shippable asset is its poses.json manifest, which is not an
+    # image — `preview` names the flat file the Review card should thumbnail
+    # (the contact strip), and `poses` gives the overlay its pose flip. Both are
+    # absent for every other kind, so the card falls back to `asset` unchanged.
+    poses = recipe.get("poses") if isinstance(recipe.get("poses"), dict) else None
     return {
         "id": recipe.get("id"),
         "kind": recipe.get("kind"),
         "asset": recipe.get("asset"),
+        **({"preview": recipe["preview"]} if recipe.get("preview") else {}),
+        **({"poses": [{"pose": name, "art": (entry or {}).get("art")}
+                      for name, entry in poses.items()]} if poses else {}),
         "created": recipe.get("created"),
         "derivedFrom": recipe.get("derivedFrom"),
         "refs": recipe.get("refs") or {},
@@ -1979,6 +2015,136 @@ def run_extract_media_job(state: AuthoringState, job_id: str, d: dict):
         state.update_job(job_id, status="failed", error=str(exc), message="Background removal failed")
 
 
+def pose_source_for(folder: Path, media_id: str, recipe: dict) -> Path:
+    """The best available pixels for one extracted pose sprite.
+
+    Preference order, highest fidelity first:
+      1. <id>.layer2.png — the qwen-image-layered extraction at full 1024 source
+         resolution. This is what the reviewer looked at; the finalize step only
+         bbox-crops and downsizes it to the 420px character cutout target, which
+         is far too small to fill a 900px stage canvas without softening.
+      2. recipe.asset (<id>.png) — the finalized cutout, for a media object that
+         somehow has no layer2 on disk.
+    """
+    layer2 = folder / f"{media_id}.layer2.png"
+    if layer2.is_file():
+        return layer2
+    asset = folder / str(recipe.get("asset") or f"{media_id}.png")
+    if asset.is_file():
+        return asset
+    raise RuntimeError(f"pose {media_id} has no extracted image on disk")
+
+
+def run_assemble_pose_actor_job(state: AuthoringState, job_id: str, d: dict):
+    """Six extracted pose sprites -> one qlobe-pose-actor pack in shared/media/.
+
+    Local image work only (PIL through tools/pipeline/pose_actor_assemble.py, the
+    same shell-out discipline as the cutout finalize) — no model call, so this
+    never contends with the single ComfyUI queue. Writes
+    shared/media/<actorId>-pose-actor/ with poses/<pose>.webp, poses.json
+    (qlobe-pose-actor v1), contact.webp (the Review thumbnail) and a qlobe-recipe
+    of kind pose-actor whose steps[] name every source media object.
+    """
+    temp_dir = Path(tempfile.mkdtemp(prefix="qlobe-pose-actor-"))
+    try:
+        set_id = d["set"]
+        actor_id = d["actorId"]
+        label = d.get("label") or actor_id.replace("-", " ").title()
+        transition = d.get("transition") or "paper-pop"
+        duration_ms = int(d.get("durationMs") or 220)
+        media_id = d["id"]
+        folder = media_dir(state, media_id)
+        poses_dir = folder / "poses"
+        poses_dir.mkdir(parents=True, exist_ok=True)
+
+        state.update_job(job_id, status="running", total=2, progress=1,
+                         message=f"Normalizing {len(POSE_SET)} poses for {actor_id}")
+
+        entries = []
+        sources = {}
+        for pose in POSE_SET:
+            source_id = f"{set_id}-{pose}"
+            source_folder = media_dir(state, source_id)
+            source_recipe_path = source_folder / "recipe.json"
+            if not source_recipe_path.is_file():
+                raise RuntimeError(f"pose media {source_id} is missing")
+            source_recipe = json.loads(source_recipe_path.read_text("utf-8"))
+            source = pose_source_for(source_folder, source_id, source_recipe)
+            sources[pose] = source_id
+            entries.append({"pose": pose, "source": str(source),
+                            "output": str(poses_dir / f"{pose}.webp")})
+
+        spec_path = temp_dir / "spec.json"
+        spec_path.write_bytes(json_bytes({
+            "canvas": POSE_CANVAS, "maxArt": POSE_MAX_ART, "baseline": POSE_BASELINE,
+            "contact": str(folder / "contact.webp"), "poses": entries,
+        }))
+        helper = state.root / "tools" / "pipeline" / "pose_actor_assemble.py"
+        run = subprocess.run([state.cutout_python, str(helper), "--spec", str(spec_path)],
+                             capture_output=True, text=True, timeout=600)
+        try:
+            result = json.loads(run.stdout.strip().splitlines()[-1]) if run.stdout.strip() else {}
+        except (ValueError, IndexError):
+            raise RuntimeError(f"pose assembly produced no JSON: {(run.stderr or run.stdout)[:400]}")
+        if not result.get("ok"):
+            raise RuntimeError(str(result.get("reason") or "pose assembly failed"))
+
+        state.update_job(job_id, progress=2, message=f"Writing the {actor_id} pose pack")
+        manifest = {
+            "format": "qlobe-pose-actor",
+            "formatVersion": 1,
+            "id": actor_id,
+            "label": label,
+            "canvas": result.get("canvas") or [POSE_CANVAS, POSE_CANVAS],
+            "anchor": result.get("anchor") or [0.5, POSE_BASELINE / POSE_CANVAS],
+            "transition": {"kind": transition, "durationMs": duration_ms},
+            "poses": {pose: {"art": f"poses/{pose}.webp", "alt": f"{label} — {pose} pose"}
+                      for pose in POSE_SET},
+        }
+        atomic_write(folder / "poses.json", json_bytes(manifest) + b"\n")
+
+        metrics = result.get("poses") or {}
+        recipe = {
+            "format": "qlobe-recipe", "formatVersion": 1, "id": media_id, "kind": "pose-actor",
+            # The pack manifest IS the shippable artifact; Assign moves it and the
+            # poses/ folder beside it. `preview` is the Review card's thumbnail.
+            "asset": "poses.json",
+            "preview": "contact.webp",
+            "actor": {"id": actor_id, "label": label, "set": set_id},
+            "steps": [{
+                "op": "assemble-pose-actor",
+                "from": [sources[pose] for pose in POSE_SET],
+                "canvas": [POSE_CANVAS, POSE_CANVAS],
+                "maxArt": POSE_MAX_ART,
+                "baseline": POSE_BASELINE,
+                "scale": result.get("scale"),
+                "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+                "encode": "webp q90 method6",
+                "output": "poses/<pose>.webp + poses.json",
+            }],
+            "refs": {},
+            # The lineage root stays a single media id so the provenance chain
+            # walks; the whole six-object set is recorded alongside it.
+            "derivedFrom": sources["neutral"],
+            "derivedFromSet": [sources[pose] for pose in POSE_SET],
+            "poses": {pose: {"art": f"poses/{pose}.webp",
+                             "bytes": (metrics.get(pose) or {}).get("bytes"),
+                             "artSize": (metrics.get(pose) or {}).get("artSize")}
+                      for pose in POSE_SET},
+            "qa": {"status": "review", "poses": len(POSE_SET),
+                   "scale": result.get("scale"), "bytes": result.get("totalBytes")},
+            "created": time.strftime("%Y-%m-%d"),
+        }
+        write_recipe(folder, recipe)
+        state.update_job(job_id, status="completed", progress=2, mediaId=media_id,
+                         message=f"Assembled {actor_id} ({len(POSE_SET)} poses)",
+                         outputs=[str((folder / "poses.json").relative_to(state.root))])
+    except Exception as exc:
+        state.update_job(job_id, status="failed", error=str(exc), message="Pose-actor assembly failed")
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+
 def normalize_transcript(text: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", str(text).lower())).strip()
 
@@ -2113,14 +2279,21 @@ def assign_destination_dir(state: AuthoringState, dest: str) -> tuple[Path, str]
     """Validate an Assign destination and return (absolute dir, game-id-or-None).
 
     dest ∈ shared/assets/<subdir>/, games/<id>/assets/<subdir>/,
-    shared/characters/<id>/<subdir>/. Reuses the same discipline as the write
-    allow-list (kebab segments, no traversal, must resolve under the repo root)."""
+    games/<id>/assets/pose-actors/<actorId>/, shared/characters/<id>/<subdir>/.
+    Reuses the same discipline as the write allow-list (kebab segments, no
+    traversal, must resolve under the repo root)."""
     relative = safe_relative(dest)
     parts = tuple(p for p in relative.parts if p not in ("", "."))
     game_id = None
     ok = False
     if len(parts) == 3 and parts[:2] == ("shared", "assets") and ASSIGN_SUBDIR_RE.fullmatch(parts[2]):
         ok = True
+    # A pose actor is a FOLDER, not a file: games/<id>/assets/pose-actors/<actorId>/
+    # holds poses.json plus a poses/ directory. One extra allow-listed segment,
+    # under the same kebab discipline as everything above.
+    elif len(parts) == 5 and parts[0] == "games" and parts[2] == "assets" \
+            and parts[3] == "pose-actors" and ID_RE.fullmatch(parts[1]) and ID_RE.fullmatch(parts[4]):
+        ok = True; game_id = parts[1]
     elif len(parts) == 4 and parts[0] == "games" and parts[2] == "assets" \
             and ID_RE.fullmatch(parts[1]) and ASSIGN_SUBDIR_RE.fullmatch(parts[3]):
         ok = True; game_id = parts[1]
@@ -2139,14 +2312,18 @@ def assign_destination_dir(state: AuthoringState, dest: str) -> tuple[Path, str]
     return destination, game_id
 
 
-def append_assets_md(game_dir: Path, asset_name: str, recipe: dict):
-    """Append a provenance line to a game's ASSETS.md when assigning media in."""
+def append_assets_md(game_dir: Path, asset_name: str, recipe: dict, recipe_name: str | None = None):
+    """Append a provenance line to a game's ASSETS.md when assigning media in.
+
+    `recipe_name` names the sidecar when it is not simply <asset_name>.recipe.json
+    — a pose actor is listed as the folder it ships as, but its sidecar still sits
+    beside the manifest inside it."""
     path = game_dir / "ASSETS.md"
     steps = recipe.get("steps") or []
     workflows = " -> ".join(s.get("workflow") or s.get("op") for s in steps if (s.get("workflow") or s.get("op")))
     kind = recipe.get("kind", "media")
     line = (f"- `{asset_name}` — generated via QLOBE Studio ({kind}; {workflows or 'recipe'}), "
-            f"recipe `{asset_name}.recipe.json`, CC BY 4.0.\n")
+            f"recipe `{recipe_name or f'{asset_name}.recipe.json'}`, CC BY 4.0.\n")
     header = "" if path.is_file() else "# Assets\n\nProvenance for assets in this game (source, processing, license).\n\n"
     with open(path, "a", encoding="utf-8") as handle:
         handle.write(header + line)
@@ -2554,6 +2731,91 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                     interactive=bool(payload.get("interactive", False)),
                 )
                 return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id}, 202)
+            # Feed an ACCEPTED body sheet / viseme grid into the canonical-puppet
+            # build pipeline (Feature M). The build steps read their sources from
+            # the reference root docs/puppet-pipeline.md describes — the same two
+            # files /api/puppet/file writes as kind=raw-base / kind=head-visemes —
+            # so this COPIES the staged PNG there and leaves the media object
+            # untouched in staging, with a provenance note on its recipe.
+            if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/send-to-assemble"):
+                media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/send-to-assemble")].strip("/"))
+                folder = media_dir(self.state, media_id)
+                recipe_path = folder / "recipe.json"
+                if not recipe_path.is_file():
+                    return self.send_error_json(404, f"media not found: {media_id}")
+                recipe = json.loads(recipe_path.read_text("utf-8"))
+                payload = self.read_json()
+                char_id = safe_id(str(payload.get("characterId") or ""))
+                template_id = str((recipe.get("template") or {}).get("id") or "")
+                slot = SEND_TO_ASSEMBLE_SLOTS.get(template_id)
+                if not slot:
+                    return self.send_error_json(
+                        409, "only a body sheet or a viseme grid can be sent to Assemble "
+                             f"(this ran {template_id or 'no registry template'})")
+                if (recipe.get("qa") or {}).get("status") != "accepted":
+                    return self.send_error_json(409, f"accept {media_id} before sending it to Assemble")
+                asset = recipe.get("asset")
+                source = folder / str(asset or "")
+                if not asset or not source.is_file():
+                    return self.send_error_json(409, "media has no image on disk to send")
+                body = source.read_bytes()
+                if not body.startswith(b"\x89PNG\r\n\x1a\n"):
+                    return self.send_error_json(409, "the build pipeline's source sheets must be PNG")
+                destination = destination_for(self.state, char_id, slot)
+                if destination.exists() and not bool(payload.get("force", False)):
+                    return self.send_error_json(
+                        409, f"{char_id}/{destination.name} already exists; pass force to replace it")
+                atomic_write(destination, body)
+                # Provenance stays SYMBOLIC (character + slot), never the machine
+                # path — the reference root lives outside the repo (§7.6 rules).
+                sent = [entry for entry in (recipe.get("sentToAssemble") or [])
+                        if isinstance(entry, dict) and not (entry.get("character") == char_id and entry.get("slot") == slot)]
+                sent.append({"character": char_id, "slot": slot, "at": time.strftime("%Y-%m-%d")})
+                recipe["sentToAssemble"] = sent
+                write_recipe(folder, recipe)
+                return self.send_json({
+                    "ok": True, "mediaId": media_id, "character": char_id, "slot": slot,
+                    "file": destination.name, "bytes": len(body),
+                })
+            # Assemble six extracted pose sprites into one qlobe-pose-actor pack
+            # (Feature N). Local PIL work, so it is enqueued with no ComfyUI
+            # workflow and never waits behind the model queue.
+            if parsed.path == "/api/studio/pose-actor/assemble":
+                payload = self.read_json()
+                set_id = safe_media_id(str(payload.get("set") or ""))
+                actor_id = safe_id(str(payload.get("actorId") or ""))
+                label = str(payload.get("label") or "").strip()[:100] or actor_id.replace("-", " ").title()
+                transition = str(payload.get("transition") or "paper-pop")
+                if transition not in POSE_TRANSITIONS:
+                    raise ValueError(f"transition must be one of {sorted(POSE_TRANSITIONS)}")
+                duration_ms = max(0, min(2000, int(payload.get("durationMs", 220))))
+                missing = []
+                unextracted = []
+                for pose in POSE_SET:
+                    source_id = f"{set_id}-{pose}"
+                    source_folder = media_dir(self.state, source_id)
+                    if not (source_folder / "recipe.json").is_file():
+                        missing.append(pose)
+                    elif not (source_folder / f"{source_id}.layer2.png").is_file():
+                        unextracted.append(pose)
+                if missing:
+                    return self.send_error_json(409, f"pose set {set_id} is incomplete; missing: {', '.join(missing)}")
+                if unextracted:
+                    return self.send_error_json(
+                        409, f"remove the background from every pose first; still opaque: {', '.join(unextracted)}")
+                media_id = safe_media_id(f"{actor_id}{POSE_ACTOR_SUFFIX}")
+                folder = media_dir(self.state, media_id)
+                if (folder / "recipe.json").exists() and not bool(payload.get("overwrite", False)):
+                    return self.send_error_json(409, f"media {media_id} already exists; enable overwrite to replace it")
+                job_id = self.state.enqueue(
+                    "assemble-pose-actor",
+                    {"id": media_id, "set": set_id, "actorId": actor_id, "label": label,
+                     "transition": transition, "durationMs": duration_ms},
+                    {"target": "assemble-pose-actor", "mediaId": media_id,
+                     "message": f"Queued pose-actor assembly for {actor_id}", "progress": 0},
+                    interactive=bool(payload.get("interactive", False)),
+                )
+                return self.send_json({"ok": True, "jobId": job_id, "mediaId": media_id, "actorId": actor_id}, 202)
             if parsed.path.startswith("/api/studio/media/") and parsed.path.endswith("/assign"):
                 media_id = safe_media_id(parsed.path[len("/api/studio/media/"):-len("/assign")].strip("/"))
                 folder = media_dir(self.state, media_id)
@@ -2571,14 +2833,29 @@ class PuppetStudioHandler(SimpleHTTPRequestHandler):
                 sidecar = dest_dir / f"{asset}.recipe.json"
                 if target_asset.exists() or sidecar.exists():
                     return self.send_error_json(409, f"{asset} already exists at the destination")
+                # A pose actor ships as a FOLDER — poses.json plus the poses/
+                # directory it names — so the whole structure moves together or
+                # the destination is left untouched.
+                pose_pack = recipe.get("kind") == "pose-actor"
+                source_poses = folder / "poses"
+                if pose_pack:
+                    if not source_poses.is_dir():
+                        return self.send_error_json(409, "pose actor has no poses/ folder to assign")
+                    if (dest_dir / "poses").exists():
+                        return self.send_error_json(409, "poses/ already exists at the destination")
                 shutil.move(str(folder / asset), str(target_asset))
+                if pose_pack:
+                    shutil.move(str(source_poses), str(dest_dir / "poses"))
                 atomic_write(sidecar, json_bytes(recipe) + b"\n")
                 magenta = folder / "qa-magenta.png"
                 if magenta.is_file():
                     shutil.move(str(magenta), str(dest_dir / f"{asset}.qa-magenta.png"))
                 assets_md = None
                 if game_id:
-                    append_assets_md(self.state.root / "games" / game_id, asset, recipe)
+                    label = (f"pose-actors/{(recipe.get('actor') or {}).get('id') or media_id}/"
+                             if pose_pack else asset)
+                    append_assets_md(self.state.root / "games" / game_id, label, recipe,
+                                     f"{label}{asset}.recipe.json" if pose_pack else None)
                     assets_md = f"games/{game_id}/ASSETS.md"
                 shutil.rmtree(folder, ignore_errors=True)  # leaves the unassigned bucket
                 return self.send_json({
