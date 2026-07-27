@@ -285,10 +285,11 @@ export function layoutLetters(n, rng, config, transform) {
 // an unrelated small dark blob, not a redraw of the van at all. Both ship
 // unmodified, truecolour RGB, no alpha — so this flood-fill fallback stays
 // in place for exactly those two. It is self-detecting (see the corner check
-// below), so it costs nothing on the 76 sprites that already have alpha and
-// only actually does work on cat.png and van.png. If a future re-export
-// fixes those two in shared/, this whole block becomes dead code and can be
-// deleted along with the corner check.
+// below), so it costs nothing on sprites that already have alpha. As of the
+// cat/van re-export it does no work at all on the current library — all 78
+// letter-object sprites now carry real alpha. It is kept as a safety net,
+// not as dead code: raw art gets dropped into this repo opaque fairly often,
+// and a white box on a dark background is a silent, ugly failure.
 //
 // The fix: flood-fill the near-white background inwards from the border and
 // knock it out. A flood fill, not a threshold — the whale's belly and the

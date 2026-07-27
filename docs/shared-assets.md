@@ -52,7 +52,7 @@ Path resolvers (the single home for these conventions):
 | Picture-word cards | `shared/assets/objects/` | `<word>.png` | 134 |
 | Letter/onset tiles | `shared/assets/letter-tiles/` | onset/rime tiles | 56 |
 | **Letter phonic sounds** | `shared/assets/audio/fragments/` | `<letter>.m4a` (a–z) + rimes | **26/26 letters** |
-| **Letter NAME sounds** | `shared/assets/audio/letters/` | `<letter>.m4a` (a–z) | **25/26 letters** (no `l`) |
+| **Letter NAME sounds** | `shared/assets/audio/letters/` | `<letter>.m4a` (a–z) | **26/26 letters** |
 | **"[Letter] is for [word]" pairings** | `shared/assets/audio/isfor/` | `<word>.m4a` | 78 |
 | Spoken words | `shared/assets/audio/words/` | `<word>.m4a` | 133 |
 | Word — celebratory | `shared/assets/audio/celebrate/` | `<word>.m4a` | 133 |
@@ -73,12 +73,19 @@ category; `_v` bumps on each audio release.
   (image + 3 audio variants, 100% covered). The 7 non-onset letters have no
   objects (no vowel-/Q-/X-initial words in the CVC set) — an intentional gap,
   visible as `objectCount: 0`.
-- **Letter *names*** (saying "bee", "see"): **25/26 recorded**, promoted from
-  `games/flashlight-cave` — `nameClip` in `letters.json` now holds the path
-  for every letter except `L`. `letter-l` stays `null`: 20 takes across 4
-  spellings were all mistranscribed by whisper QA, so a game asking for L's
-  name gets a clean Web Speech fallback instead of a bad clip — not a
-  regression, just the one letter still open.
+- **Letter *names*** (saying "bee", "see"): **all 26 recorded**, promoted from
+  `games/flashlight-cave` — `nameClip` in `letters.json` holds a path for
+  every letter. `L` took a different route worth remembering: 20 takes across
+  4 spellings all failed QA out of the voice clone, because the clone's
+  grapheme-to-phoneme step kept turning "ell" into something whisper heard as
+  "owl". The fix was to bypass g2p entirely — `geeky-kokoro-tts` in **phoneme
+  mode** (`use_phonemes=true`, text `ˈɛl`) to get the articulation exactly
+  right, then `chatterbox-v2v` to convert that take into the platform teacher
+  voice using the same reference clip the clone uses. Reach for that pair
+  whenever a short, phonetically awkward utterance resists the clone.
+  Note also that `whisper-base` returns a degenerate repeat loop on very
+  short isolated clips where `whisper-small` reads them correctly — QA a
+  sub-second clip at `small` before believing it failed.
 - **"[Letter] is for [word]" pairings** (`isforAudio(word)`, e.g. "A is for
   apple."): 78 clips, one per curated `letterObjects()` entry, promoted from
   `games/flashlight-cave`. These are a **different line** from the existing

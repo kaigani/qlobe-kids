@@ -530,9 +530,11 @@ async function main() {
   await shot(A.page, 'land-01-splash');
 
   // --- recorded clips actually PLAY ---------------------------------------
-  // A control key that IS recorded must fire onClip; letter-l (20 takes, all
-  // mistranscribed — accepted, documented in ASSETS.md) must NOT, and must not
-  // cost a failed request on the way down to Web Speech.
+  // Every letter name is recorded, including letter-l — it was the one that
+  // resisted the voice clone (20 takes, all mistranscribed) until it was made
+  // via kokoro phoneme mode + chatterbox voice conversion. It is checked
+  // explicitly rather than folded into the control, because it is the clip most
+  // likely to regress: any re-run of gen-voice.py goes back through the clone.
   const failedBefore = A.bag.failed.length;
   const clipProbe = await A.page.evaluate(async () => {
     const v = await import('./js/voice.js');
@@ -549,9 +551,9 @@ async function main() {
   });
   check('recorded control clip plays (onClip fired for letter-a)',
     clipProbe.afterControl.includes('letter-a'), clipProbe.afterControl.join(','));
-  check('letter-l degrades to Web Speech (no clip fired)',
-    clipProbe.afterL.length === 0, clipProbe.afterL.join(','));
-  check('letter-l degrades without a failed request',
+  check('letter-l plays its recording (kokoro→chatterbox take)',
+    clipProbe.afterL.includes('letter-l'), clipProbe.afterL.join(','));
+  check('no failed request while playing the letter clips',
     A.bag.failed.length === failedBefore,
     A.bag.failed.slice(failedBefore).join(' | '));
 

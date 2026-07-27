@@ -272,8 +272,8 @@ full, in **Voice — production and repair, in full** under "Rejected retries
 
 | status | count |
 |---|---|
-| Recorded + whisper-QA accepted | **130 / 131** |
-| Unrecorded (Web Speech fallback, logged in `qa.json`) | **1 / 131** (`letter-l`) |
+| Recorded + whisper-QA accepted | **131 / 131** |
+| Unrecorded (Web Speech fallback) | **0 / 131** — `letter-l` was closed in a later pass, see below |
 | Reused (registered, 0 new files) | 26 letter phonics — `phonic-a`…`phonic-z`, real measured durations from the shared `.m4a` files |
 | Total `.m4a` bytes (130 clips) | 2,098,175 bytes ≈ **2.00 MB** |
 | All filenames lowercase | verified |
@@ -633,3 +633,65 @@ whichever of these 9 words came up as a prize. It gets the fix automatically
 — no `sand-tray-letters` files were touched — and was re-verified after the
 fact (see `docs/asset-provenance.md` and the Stage 6 task notes for the
 `QLOBE_DEBUG`-driven confirmation).
+
+
+## Post-ship pass — `letter-l`, and the last two opaque sprites
+
+Both of these closed gaps this game shipped with. Techniques suggested by the
+project owner; recorded here and in `.claude/skills/local-genai/SKILL.md`.
+
+### `letter-l` — bypass the clone's g2p entirely
+
+`qwen3-tts-voiceclone` mis-articulated "ell" identically on every seed: 20
+takes across 4 spellings (`Ell.`, `El.`, `Elle.`, `L.`) x 5 seeds, every one
+transcribed "owl". The clone runs its own grapheme-to-phoneme step, and no
+respelling reached past it. Two-stage fix:
+
+| step | workflow | inputs |
+|---|---|---|
+| 1 | `geeky-kokoro-tts` | `text=ˈɛl`, `use_phonemes=true`, `voice=🇺🇸 🚺 Heart ❤️`, `speed=0.95` |
+| 2 | `chatterbox-v2v` | `source_audio=` step 1, `target_voice=assets/audio/ref/ari.flac` (defaults otherwise) |
+| 3 | encode | the project `encode()` — ffmpeg trim/loudnorm, then `afconvert -f m4af -d aac -b 64000` |
+
+Phoneme mode puts the articulation under direct control (misaki's set, not raw
+IPA — capital `O` for "oh", lowercase `o` is silently dropped). Result: 0.64s,
+8,231 bytes, transcribes `"ell"`. Duration matches `letter-m` exactly.
+
+**Second lesson, arguably the bigger one:** `whisper-stt` at `model_size=base`
+returns a degenerate repeat loop (`"ee ee ee ee …"`) on this clip, while
+`small` reads it correctly. Some share of the original 20 rejections were the
+QA model, not the audio. Re-QA sub-second clips at `small` before believing a
+failure.
+
+Shipped to `shared/assets/audio/letters/l.m4a`; `nameClip` filled in
+`shared/data/letters.json`. **All 26 letter names are now recorded.**
+
+### `cat.png` / `van.png` — the two the one-step extractor could not do
+
+Stage 6 fixed 7 of 9 opaque sprites; these two failed every seed (near-blank
+alpha maxing at 2-3/255 for the cat, a redrawn unrelated subject for the van).
+Feeding an opaque white-background image straight to `qwen-image-layered` is
+the mistake. Normalise the background first:
+
+| step | workflow | prompt |
+|---|---|---|
+| 1 | `qwen-image-edit` | `Change to a plain grey background` (seed 1337) |
+| 2 | `qwen-image-layered` (async job flow, `layers=2`, seed 1337) | `Background layer: Plain dark grey background` / `Top layer: <Subject> on a transparent background` |
+
+| file | one-step MAE | two-step MAE | px differing >30 | final alpha (transp/opaque/partial) |
+|---|---|---|---|---|
+| `cat.png` | 24.6 | **2.78** | 25.5% -> **0.00%** | 73.1 / 26.4 / 0.5 |
+| `van.png` | 35.1 | **5.65** | ~36% -> **3.40%** | 60.4 / 38.7 / 0.8 |
+
+**Do not add "with drop shadow" to the top-layer prompt.** It gave the cat a
+light sticker rim that reads as a white outline on the dark cave plate and does
+not match the shipped `yak`. Dropping the phrase gave the same fidelity with a
+clean edge. Judge the result composited on the *actual* dark backdrop, not only
+over magenta.
+
+Dimensions preserved per file (`cat` 1024x1024, `van` 512x512) — fixing alpha,
+not resizing. Originals remain at `assets/source/objects-rgb-originals/`.
+
+All 78 letter-object sprites now carry real alpha, so `cave.js`'s runtime
+white-key does no work on the current library. It is kept as a safety net for
+raw art dropped in opaque later, not as dead code.
