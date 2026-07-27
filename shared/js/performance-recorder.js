@@ -14,6 +14,7 @@ const memoryShows = new Map();
 export function createPerformanceRecorder({
   gameId,
   maxDurationMs = DEFAULT_MAX_MS,
+  microphoneTimeoutMs = 6_000,
   onLimit = null,
   now = () => performance.now(),
 } = {}) {
@@ -34,7 +35,7 @@ export function createPerformanceRecorder({
     stopStream();
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') return false;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
+      const request = navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
@@ -43,6 +44,21 @@ export function createPerformanceRecorder({
         },
         video: false,
       });
+      let timeout = 0;
+      const result = await Promise.race([
+        request.then((candidate) => ({ candidate })).catch(() => null),
+        new Promise((resolve) => {
+          timeout = setTimeout(() => resolve(null), microphoneTimeoutMs);
+        }),
+      ]);
+      clearTimeout(timeout);
+      if (!result?.candidate) {
+        // A permission sheet can remain unanswered indefinitely. If it later
+        // resolves after our movement-only fallback, immediately release it.
+        request.then((candidate) => candidate.getTracks().forEach((track) => track.stop())).catch(() => {});
+        return false;
+      }
+      stream = result.candidate;
       return true;
     } catch {
       stream = null;
