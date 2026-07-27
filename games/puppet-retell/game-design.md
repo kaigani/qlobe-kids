@@ -1,57 +1,77 @@
-# Game Design Document - Puppet Retell
+# Puppet Retell
 
-## Game title
-Puppet Retell 🧸
+## Product promise
 
-## Category
-`oral-storytelling`
+Puppet Retell turns the shared rigged-character system into a child-directed
+puppet theater. A child chooses two stars, a stage, and small costume props;
+then moves the puppets, triggers expressive actions, and tells a story in her
+own voice. The complete show can be replayed from a private on-device shelf.
 
-## Age target
-5-6 (platform default).
+## Audience and learning goals
 
-## Concept video
-_None yet._
+Designed for ages 4–7, with no reading required for the core interaction.
 
-## Learning goals
-1. Recall familiar story moments.
-2. Correct mixed-up narrative details.
-3. Practice confident oral retelling with real toys.
+1. Tell a story with a beginning, middle, and ending.
+2. Build confidence speaking and improvising aloud.
+3. Coordinate character movement, gesture, and dialogue.
+4. Revisit a performance and notice story sequence.
 
-## Mini-games / modes
+## Modes
 
-### Mode 1 - Fix the Story
-- **Skill:** Story recall and narrative correction.
-- **Core loop (30-90s):** A puppet retells a famous tale badly, and the child taps what really happened.
-- **Rounds:** 5.
+### Story Starters
 
-### Mode 2 - Whose Line?
-- **Skill:** Matching famous story lines to characters.
-- **Core loop (30-90s):** The child hears a familiar line or clue and taps the character who said or did it.
-- **Rounds:** 4.
+The child chooses one of three original prompts or three public-domain classic
+tales. A large illustrated beat card guides the beginning, middle, and ending.
+The child advances the beats at her own pace while the performance recorder
+captures puppet actions and, when permission is granted, microphone audio.
 
-## Shared assets used
-- `shared/js/engines/choose-one.js` - choose-one interaction loop, splash, HUD, retry, celebration, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, boing, tick, and tada effects.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
-- `shared/assets/objects/pig.png` - existing shared pig card.
+### Free Show
 
-## New assets needed
-- Puppet character art.
-- Story scene cards for Goldilocks, Three Pigs, Red Riding Hood, Gingerbread Man, and Three Bears.
-- Recorded puppet voices with comic retell performances.
+The same stage tools are available without story-beat prompts. The child makes
+up any story and ends the recording when ready.
 
-## Interaction model
-Tap one large picture card after a spoken puppet prompt. The prompt and card pictures carry the interaction, so reading is not required.
+### My Shows
 
-## Feedback model
-- **Success:** pop/sparkle SFX, bounce, and spoken praise inviting retell.
-- **Retry:** gentle wiggle, boing SFX, spoken puppet-mix-up nudge, and the same prompt again.
-- **Hint:** idle replay after a pause, plus the HUD sound button.
-- **Celebration:** end-of-mode tada, confetti-style burst, and spoken cheer inviting toy retelling.
+Up to 24 performances are stored in IndexedDB on the current device. Each item
+has a stage thumbnail, title, date, duration, replay control, and an explicit
+delete confirmation. Nothing is uploaded or exported.
 
-## Difficulty progression
-`Fix the Story` asks for concrete story events with silly distractors. `Whose Line?` asks the child to match short oral lines to characters.
+## Interaction
 
-## Replay variation
-The engine shuffles round order and answer order on each play. Debug seeding remains available through `window.QLOBE_DEBUG.seed(n)` for review automation.
+- Tap two character portraits to cast the show.
+- Tap one of three stage paintings.
+- Tap either cast member, then give that puppet one optional costume prop.
+- On stage, drag near a puppet to move it horizontally.
+- Tap Wave, Jump, Talk, Think, Hug, or Cheer to animate the selected puppet.
+- Microphone permission is requested only after the child taps Record.
+- If permission is denied or unavailable, the action timeline still saves and
+  replays as a silent movement-only show.
+
+## Content
+
+Original starters: Forest Rescue, Moon Surprise, Royal Picnic.
+
+Public-domain classics: The Three Little Pigs, Goldilocks and the Three Bears,
+and Little Red Riding Hood. Prompts deliberately encourage the child to retell
+rather than reproduce any modern adaptation.
+
+## Systems made more robust
+
+- Shared Pixi stage + rigged-puppet theater used as a child-directed sandbox.
+- Reusable `shared/js/performance-recorder.js` serializes an initial tableau,
+  timestamped semantic events, and an optional audio Blob.
+- Reusable local show storage with format versioning and a bounded shelf.
+- Graceful microphone-denied and recorded-voice-missing fallbacks.
+- `QLOBE_DEBUG` v1 coverage for setup, performance, save, shelf, and replay.
+
+## Privacy and safety
+
+The recorder has no upload or export path. Audio and action data are written
+only to the browser's IndexedDB for this game. The UI repeats “stays on this
+device” beside Record and after saving. A recording is limited to 90 seconds.
+
+## Release gate
+
+The game stays `beta` until it has been played successfully on the target iPad
+by the child it was made for. Automated validation and production browser QC
+are necessary but do not substitute for that final playtest.

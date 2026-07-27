@@ -5,30 +5,48 @@
   "path": "games/puppet-retell/",
   "icon": "🧸",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 7 },
   "status": "beta",
-  "accent": "#2e9f76",
-  "shareTitle": "Puppet Retell 🧸 — Fix the Mixed-Up Tale",
-  "description": "Listen to a puppet's mixed-up version of a familiar tale, tap the picture that fixes it, and practice retelling the story yourself. A spoken storytelling game for ages 5–6.",
+  "accent": "#0d9fa5",
+  "shareTitle": "Puppet Retell 🎭 — Make Your Own Puppet Show",
+  "description": "Choose two puppet stars, dress the cast, tell an original or classic story in your own voice, and replay the whole performance. Shows stay on this device.",
   "learningGoals": [
-    "Recall key moments from familiar stories",
-    "Correct mixed-up narrative details",
-    "Build confidence retelling with toys or puppets"
+    "Tell a story with a clear beginning, middle, and ending",
+    "Build confident imaginative oral storytelling",
+    "Coordinate character movement, expression, and dialogue"
   ],
-  "interactionModel": "choose-one tap the picture that fixes a puppet's incorrect story retell",
-  "feedbackModel": "Correct fixes sparkle and invite retelling; misses wiggle gently, get a spoken puppet-mix-up nudge, and replay the prompt.",
+  "interactionModel": "two-puppet direct manipulation with large action buttons, optional guided story beats, local microphone recording, and on-device replay",
+  "feedbackModel": "spoken stage directions, responsive rigged-puppet actions, story-beat prompts, local-save confirmation, and replay celebration",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/stage/stage.js",
+    "shared/js/stage/theater.js",
+    "shared/js/performance-recorder.js",
+    "shared/js/voice-clips.js",
     "shared/js/sfx.js",
-    "shared/assets/objects/pig.png"
+    "shared/characters/bear/",
+    "shared/characters/doggy/",
+    "shared/characters/fox/",
+    "shared/characters/frog/",
+    "shared/characters/rabbit/",
+    "shared/characters/unicorn/",
+    "shared/characters/princess-lily/",
+    "shared/characters/princess-zoe/"
   ],
   "modes": [
-    { "id": "fix", "title": "Fix the Story", "skill": "story recall and narrative correction" },
-    { "id": "who", "title": "Whose Line?", "skill": "matching famous story lines to characters" }
+    { "id": "guided", "title": "Story Starters", "skill": "telling a beginning, middle, and ending" },
+    { "id": "free", "title": "Free Show", "skill": "confident imaginative oral storytelling" }
   ],
+  "privacy": {
+    "recording": "optional microphone audio plus puppet-action timeline",
+    "storage": "IndexedDB on the current device only",
+    "uploads": false,
+    "exports": false,
+    "maximumSavedShows": 24
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder puppet and story art plus one shared pig card. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Original QLOBE Kids game art produced with GPT Image 2, Krea 2, and Qwen Image Layered; shared rigged QLOBE puppet cast; runtime voice uses Qwen-cloned clips when present with device speech fallback.",
+  "characters": [
+    "bear", "doggy", "fox", "frog", "rabbit", "unicorn", "princess-lily", "princess-zoe"
+  ],
   "conceptVideo": null
 }

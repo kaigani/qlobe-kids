@@ -1,0 +1,197 @@
+{
+  "id": "puppet-retell",
+  "title": "Puppet Retell",
+  "engine": "puppet-retell-custom",
+  "accent": "#0d9fa5",
+  "cast": [
+    "bear",
+    "doggy",
+    "fox",
+    "frog",
+    "rabbit",
+    "unicorn",
+    "princess-lily",
+    "princess-zoe"
+  ],
+  "modes": [
+    {
+      "id": "guided",
+      "title": "Story Starters",
+      "emoji": "📖",
+      "skill": "telling a beginning, middle, and ending"
+    },
+    {
+      "id": "free",
+      "title": "Free Show",
+      "emoji": "🎭",
+      "skill": "confident imaginative oral storytelling"
+    }
+  ],
+  "stages": [
+    {
+      "id": "cozy-room",
+      "title": "Cozy Room",
+      "emoji": "🛋️",
+      "backdrop": "./assets/bg/cozy-room.jpg",
+      "floorY": 0.83
+    },
+    {
+      "id": "sunny-meadow",
+      "title": "Sunny Meadow",
+      "emoji": "🌼",
+      "backdrop": "./assets/bg/sunny-meadow.jpg",
+      "floorY": 0.82
+    },
+    {
+      "id": "puppet-theater",
+      "title": "Puppet Theater",
+      "emoji": "🎪",
+      "backdrop": "./assets/bg/puppet-theater.jpg",
+      "floorY": 0.82
+    }
+  ],
+  "accessories": [
+    {
+      "id": "crown",
+      "title": "Crown",
+      "emoji": "👑",
+      "art": "./assets/props/crown.png",
+      "slot": "head",
+      "characterSocket": "mouth",
+      "anchor": [0.5, 0.5],
+      "scale": 0.28,
+      "offset": [0, -520],
+      "rotation": 0
+    },
+    {
+      "id": "explorer-hat",
+      "title": "Explorer Hat",
+      "emoji": "🧭",
+      "art": "./assets/props/explorer-hat.png",
+      "slot": "head",
+      "characterSocket": "mouth",
+      "anchor": [0.5, 0.5],
+      "scale": 0.31,
+      "offset": [0, -500],
+      "rotation": 0
+    },
+    {
+      "id": "magic-wand",
+      "title": "Magic Wand",
+      "emoji": "🪄",
+      "art": "./assets/props/magic-wand.png",
+      "slot": "hand",
+      "characterSocket": "hand.R",
+      "anchor": [0.28, 0.74],
+      "scale": 0.26,
+      "offset": [0, 0],
+      "rotation": -0.35,
+      "inheritRotation": true
+    },
+    {
+      "id": "story-basket",
+      "title": "Story Basket",
+      "emoji": "🧺",
+      "art": "./assets/props/story-basket.png",
+      "slot": "hand",
+      "characterSocket": "hand.R",
+      "anchor": [0.5, 0.2],
+      "scale": 0.3,
+      "offset": [0, 22],
+      "rotation": 0,
+      "inheritRotation": true
+    }
+  ],
+  "stories": [
+    {
+      "id": "forest-rescue",
+      "collection": "original",
+      "title": "Forest Rescue",
+      "emoji": "🌲",
+      "stage": "sunny-meadow",
+      "beats": [
+        { "id": "beginning", "emoji": "🐾", "line": "Once upon a time, two friends found tiny footprints in the forest. Who made them?" },
+        { "id": "middle", "emoji": "🌉", "line": "Then they heard a little cry across the stream. Show how the friends helped." },
+        { "id": "ending", "emoji": "🏡", "line": "At last, everyone was safe. How does your forest story end?" }
+      ]
+    },
+    {
+      "id": "moon-surprise",
+      "collection": "original",
+      "title": "Moon Surprise",
+      "emoji": "🚀",
+      "stage": "puppet-theater",
+      "beats": [
+        { "id": "beginning", "emoji": "🗺️", "line": "Once upon a time, two friends found a glowing map to the moon." },
+        { "id": "middle", "emoji": "⭐", "line": "Then a little star needed their help. What did the friends do?" },
+        { "id": "ending", "emoji": "🌙", "line": "At last, the moon began to sparkle. How does your space story end?" }
+      ]
+    },
+    {
+      "id": "royal-picnic",
+      "collection": "original",
+      "title": "Royal Picnic",
+      "emoji": "🧺",
+      "stage": "sunny-meadow",
+      "beats": [
+        { "id": "beginning", "emoji": "🍓", "line": "Once upon a time, two friends prepared a royal picnic." },
+        { "id": "middle", "emoji": "💨", "line": "Then a gust of wind sent everything flying. Show what happened next." },
+        { "id": "ending", "emoji": "🎉", "line": "At last, everyone helped. How does your picnic story end?" }
+      ]
+    },
+    {
+      "id": "three-little-pigs",
+      "collection": "classic",
+      "title": "Three Little Pigs",
+      "emoji": "🐷",
+      "stage": "sunny-meadow",
+      "beats": [
+        { "id": "beginning", "emoji": "🏠", "line": "The three little pigs each built a house. Show what they used." },
+        { "id": "middle", "emoji": "🐺", "line": "Then the wolf huffed and puffed. What happened to the houses?" },
+        { "id": "ending", "emoji": "🧱", "line": "The brick house stayed strong. How does your pig story end?" }
+      ]
+    },
+    {
+      "id": "goldilocks",
+      "collection": "classic",
+      "title": "Goldilocks",
+      "emoji": "🥣",
+      "stage": "cozy-room",
+      "beats": [
+        { "id": "beginning", "emoji": "🏡", "line": "Goldilocks found a little cottage in the woods. Who lived there?" },
+        { "id": "middle", "emoji": "🪑", "line": "She tried the porridge, chairs, and beds. Show what happened." },
+        { "id": "ending", "emoji": "🐻", "line": "Then the bear family came home. How does your gentle Goldilocks story end?" }
+      ]
+    },
+    {
+      "id": "little-red",
+      "collection": "classic",
+      "title": "Little Red Riding Hood",
+      "emoji": "🧣",
+      "stage": "sunny-meadow",
+      "beats": [
+        { "id": "beginning", "emoji": "🧺", "line": "Little Red carried a basket through the woods to Grandma's house." },
+        { "id": "middle", "emoji": "🐺", "line": "Then she met a tricky wolf on the path. What did she do?" },
+        { "id": "ending", "emoji": "👵", "line": "At last, Little Red reached Grandma safely. How does your story end?" }
+      ]
+    }
+  ],
+  "voice": {
+    "intro": "Welcome to Puppet Retell! Pick a story, dress your puppets, and make a show with your own voice.",
+    "guided": "Story Starters. Pick a picture, then tell the beginning, middle, and ending.",
+    "free": "Free Show. Pick your puppets and make up any story you like.",
+    "shows": "My Shows. Your stories stay right here on this tablet.",
+    "pickStory": "Pick a story to act out.",
+    "pickCast": "Pick two puppet stars.",
+    "pickStage": "Choose a stage and add something fun to wear or hold.",
+    "ready": "Your stage is ready. Tap the red circle when you are ready to tell your story.",
+    "micOkay": "Your voice stays on this tablet.",
+    "micNo": "The microphone is resting. Your puppet moves will still be saved.",
+    "recording": "Three, two, one, show time!",
+    "nextBeat": "Wonderful. Here comes the next part.",
+    "saved": "Your puppet show is saved on this tablet!",
+    "shelfFull": "Your show shelf is full. Erase one old show before saving another.",
+    "deleted": "That show is gone.",
+    "cheer": "What a wonderful puppet story!"
+  }
+}

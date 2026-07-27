@@ -1,43 +1,53 @@
-# Asset Log - Puppet Retell
+# Puppet Retell asset log
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Pig object card (`shared/assets/objects/pig.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified |
-| Puppet and story placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+## Production lifecycle
 
-## Assets needed
+Assets follow the QLOBE Studio lifecycle:
 
-### Art
-- Puppet character art for the main reteller
-- Goldilocks story cards: porridge, chairs, Goldilocks
-- Three Pigs story cards: straw, sticks, bricks, wolf
-- Red Riding Hood story cards: basket, woods, wolf, grandmother
-- Gingerbread Man story cards: running cookie and pursuers
-- Three Bears story cards: chairs, beds, Baby Bear moment
+`brief → generate → source candidates → extract → visual/alpha QA → deterministic finalize → runtime asset → validate`
 
-### Voice
-- "The puppets mixed up the story! Listen, then tap what really happened."
-- "That is a funny puppet mix-up. Listen again and fix the story."
-- "The puppets remember now! Retell it your way with a real toy."
-- "Yes! That fixes the story."
-- "Good retelling!"
-- "Now retell it your way with a real toy!"
-- Puppet performance: "The puppet said Goldilocks ate the three chairs. What really happened?"
-- Puppet performance: "The puppet said the three pigs built houses from clouds. What really happened?"
-- Puppet performance: "The puppet said Red Riding Hood visited a dragon. What really happened?"
-- Puppet performance: "The puppet said the Gingerbread Man slowly took a nap. What really happened?"
-- Puppet performance: "The puppet said Baby Bear found a giant shoe in his chair. What really happened?"
-- "Who said, I'll huff and I'll puff?"
-- "Who said, run, run, as fast as you can?"
-- "Who said, someone has been sitting in my chair?"
-- "Who carried a basket through the woods?"
+The model host is never stored in the repository. Local generators read it
+from `QLOBE_QWEN_URL`.
 
-## Link preview (og:image)
+## Runtime art
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+| Asset | Production source | Finalization |
+|---|---|---|
+| `assets/bg/splash.jpg` | GPT Image 2, guided by the concept overview mockup | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `assets/bg/cozy-room.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `assets/bg/sunny-meadow.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `assets/bg/puppet-theater.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `assets/props/crown.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
+| `assets/props/explorer-hat.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
+| `assets/props/magic-wand.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
+| `assets/props/story-basket.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
+
+GPT Image 2 originals are retained under
+`assets/source/gpt-image-2/`. Krea originals, layered outputs, and magenta QC
+composites are retained under `assets/source/local-api/`.
+
+## Shared assets
+
+- Eight canonical rigged characters under `shared/characters/`.
+- Portable gesture clips under `shared/characters/acting-clips.json`.
+- Fredoka SemiBold under `shared/fonts/` (SIL OFL 1.1).
+- QLOBE HUD buttons under `shared/assets/ui/`.
+- Runtime synthesized effects from `shared/js/sfx.js`.
+
+## Voice
+
+Narrator clips in `assets/audio/` are generated from the existing QLOBE guide
+reference with Qwen3 TTS Voice Clone (seed 7 first), converted from model FLAC
+to AAC/M4A, and checked by Whisper STT. `data/lines.json` is always the
+authoring/fallback source; a missing or rejected clip uses device speech.
+
+## Reproduction
+
+```sh
+export QLOBE_QWEN_URL=http://YOUR-MODEL-HOST:8100
+python3 games/puppet-retell/tools/gen-props.py
+python3 games/puppet-retell/tools/gen-voice.py
+```
+
+Generated files are owned by QLOBE Kids and released under the asset license
+declared in `game.json`.

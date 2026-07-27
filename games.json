@@ -1553,24 +1553,24 @@
       "path": "games/puppet-retell/",
       "icon": "assets/hub/tiles/puppet-retell.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
       "status": "beta",
-      "accent": "#2e9f76",
+      "accent": "#0d9fa5",
       "modes": [
         {
-          "id": "fix",
-          "title": "Fix the Story",
-          "skill": "story recall and narrative correction"
+          "id": "guided",
+          "title": "Story Starters",
+          "skill": "telling a beginning, middle, and ending"
         },
         {
-          "id": "who",
-          "title": "Whose Line?",
-          "skill": "matching famous story lines to characters"
+          "id": "free",
+          "title": "Free Show",
+          "skill": "confident imaginative oral storytelling"
         }
       ],
-      "summary": "Act out a favorite book with puppets."
+      "summary": "Cast two puppets, tell a story in your own voice, and replay the locally saved show."
     },
     {
       "id": "question-ball",
