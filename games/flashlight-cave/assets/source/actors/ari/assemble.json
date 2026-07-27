@@ -1,0 +1,43 @@
+{
+ "canvas": 440,
+ "maxArt": 386,
+ "baseline": 418,
+ "alphaFloor": 8,
+ "bboxThreshold": 24,
+ "quality": 88,
+ "method": 6,
+ "maxUpscale": 2.0,
+ "contact": "games/flashlight-cave/assets/source/actors/ari/contact.webp",
+ "poses": [
+  {
+   "pose": "neutral",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/neutral.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/neutral.webp"
+  },
+  {
+   "pose": "enter",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/enter.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/enter.webp"
+  },
+  {
+   "pose": "notice",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/notice.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/notice.webp"
+  },
+  {
+   "pose": "interact",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/interact.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/interact.webp"
+  },
+  {
+   "pose": "react",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/react.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/react.webp"
+  },
+  {
+   "pose": "celebrate",
+   "source": "games/flashlight-cave/assets/source/actors/ari/alpha/celebrate.png",
+   "output": "games/flashlight-cave/assets/pose-actors/ari/poses/celebrate.webp"
+  }
+ ]
+}

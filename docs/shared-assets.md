@@ -25,18 +25,22 @@ content.letterInfo('b');    // → full letter record + resolved soundUrl
 content.allLetters();       // → 26 letter records
 content.word('cat');        // → one enriched word, or null
 content.allWords();         // → all 133 enriched words
+content.isforAudio('apple'); // → '…/audio/isfor/apple.m4a' ("A is for apple.")
 ```
 
 Path resolvers (the single home for these conventions):
 `objectImage(word)`, `wordAudio(word)`, `wordCelebrate(word)`, `wordPrompt(word)`,
-`letterSoundUrl(letter)`.
+`letterSoundUrl(letter)`, `isforAudio(word)`.
 
 ## Data — the sources of truth
 
 - **`shared/data/letters.json`** — canonical A–Z. Each letter: `phonic` (the
   sound it makes), `soundClip` (the shared recording of that phonic),
-  `nameClip` (letter-name recording — **not produced yet**, a tracked gap),
-  `vowel`, `objectCount`, and the `objects` starting with it.
+  `nameClip` (the shared recording of the letter's NAME — "ay", "bee", …;
+  **25/26 recorded**, promoted from `games/flashlight-cave`; `letter-l`'s
+  stays `null`, a tracked gap — 20 takes across 4 spellings were all
+  mistranscribed, so L falls back to Web Speech for its name), `vowel`,
+  `objectCount`, and the `objects` starting with it.
 - **`shared/data/words.json`** — 133 words as `onset + rime`, each with `img`
   (illustration subject), `char` (emoji fallback), `type`. `onsets`/`rimes`
   map each part to its spoken form. This drives image + audio generation.
@@ -48,9 +52,12 @@ Path resolvers (the single home for these conventions):
 | Picture-word cards | `shared/assets/objects/` | `<word>.png` | 134 |
 | Letter/onset tiles | `shared/assets/letter-tiles/` | onset/rime tiles | 56 |
 | **Letter phonic sounds** | `shared/assets/audio/fragments/` | `<letter>.m4a` (a–z) + rimes | **26/26 letters** |
+| **Letter NAME sounds** | `shared/assets/audio/letters/` | `<letter>.m4a` (a–z) | **25/26 letters** (no `l`) |
+| **"[Letter] is for [word]" pairings** | `shared/assets/audio/isfor/` | `<word>.m4a` | 78 |
 | Spoken words | `shared/assets/audio/words/` | `<word>.m4a` | 133 |
 | Word — celebratory | `shared/assets/audio/celebrate/` | `<word>.m4a` | 133 |
 | Word — prompt | `shared/assets/audio/prompts/` | `<word>.m4a` | 133 |
+| Prize-reveal ("You won a …") | `shared/assets/audio/prizes/` | `<word>.m4a` | 78 |
 | Misc chrome | `shared/assets/audio/misc/` | named clips | 8 |
 | Teacher voice | warm preschool-teacher clone; ref committed at `shared/assets/refs/voice-teacher.wav` | — | — |
 
@@ -66,9 +73,19 @@ category; `_v` bumps on each audio release.
   (image + 3 audio variants, 100% covered). The 7 non-onset letters have no
   objects (no vowel-/Q-/X-initial words in the CVC set) — an intentional gap,
   visible as `objectCount: 0`.
-- **Letter *names*** (saying "bee", "see"): not recorded yet. `nameClip` is
-  `null` across the board — the next thing to produce if a game needs spoken
-  letter names rather than sounds.
+- **Letter *names*** (saying "bee", "see"): **25/26 recorded**, promoted from
+  `games/flashlight-cave` — `nameClip` in `letters.json` now holds the path
+  for every letter except `L`. `letter-l` stays `null`: 20 takes across 4
+  spellings were all mistranscribed by whisper QA, so a game asking for L's
+  name gets a clean Web Speech fallback instead of a bad clip — not a
+  regression, just the one letter still open.
+- **"[Letter] is for [word]" pairings** (`isforAudio(word)`, e.g. "A is for
+  apple."): 78 clips, one per curated `letterObjects()` entry, promoted from
+  `games/flashlight-cave`. These are a **different line** from the existing
+  `shared/assets/audio/prizes/` clips (`prizeAudio(word)`), which open with
+  "You won a [word]." — prize-ceremony wording specific to a reward reveal.
+  Use `isforAudio` for plain letter/word pairing in any context, `prizeAudio`
+  only when the game actually stages a win.
 
 ## Reuse rule
 

@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-26T07:04:58.787Z",
+  "generated": "2026-07-27T02:52:18.974Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -415,7 +415,7 @@
     },
     "counting-treasure-cups": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "math-number-sense",
       "characters": [
         "captain-goldie",
@@ -495,6 +495,33 @@
         "games/feelings-charades/assets/badge-sun.png",
         "games/feelings-charades/assets/cards/calm.png",
         "games/feelings-charades/assets/cards/happy.png",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
+    "flashlight-cave": {
+      "engine": null,
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [
+        "ari"
+      ],
+      "modules": [
+        "shared/js/content.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/spotlight.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/tween.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/vendor/pixi.min.js"
+      ],
+      "assets": [
+        "games/flashlight-cave/assets/pose-actors/ari",
+        "shared/assets/audio/fragments",
+        "shared/assets/objects",
         "shared/assets/ui"
       ],
       "packs": []
@@ -639,7 +666,7 @@
     },
     "letter-treasure-hunt": {
       "engine": "choose-one",
-      "status": "beta",
+      "status": "archived",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
@@ -1721,6 +1748,7 @@
         "sound-sprouts"
       ],
       "shared/js/content.js": [
+        "flashlight-cave",
         "sand-tray-letters"
       ],
       "shared/js/engines/build-assemble.js": [
@@ -1874,6 +1902,7 @@
         "family-story-interview",
         "family-timeline",
         "feelings-charades",
+        "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
@@ -1981,6 +2010,7 @@
         "family-story-interview",
         "family-timeline",
         "feelings-charades",
+        "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
@@ -2067,6 +2097,9 @@
         "feelings-charades",
         "lunchbox-pack"
       ],
+      "shared/js/stage/particles.js": [
+        "flashlight-cave"
+      ],
       "shared/js/stage/pose-sprite.js": [
         "story-stones"
       ],
@@ -2074,14 +2107,24 @@
         "my-puppet-band",
         "puppet-problem-solvers"
       ],
+      "shared/js/stage/spotlight.js": [
+        "flashlight-cave"
+      ],
+      "shared/js/stage/stage.js": [
+        "flashlight-cave"
+      ],
       "shared/js/stage/theater.js": [
         "my-puppet-band",
         "puppet-problem-solvers",
         "story-stones"
       ],
+      "shared/js/stage/tween.js": [
+        "flashlight-cave"
+      ],
       "shared/js/tap.js": [
         "counting-treasure-cups",
         "feelings-charades",
+        "flashlight-cave",
         "lunchbox-pack",
         "sand-tray-letters",
         "sound-sprouts"
@@ -2089,17 +2132,24 @@
       "shared/js/voice-clips.js": [
         "counting-treasure-cups",
         "feelings-charades",
+        "flashlight-cave",
         "lunchbox-pack",
         "my-puppet-band",
         "puppet-problem-solvers",
         "sand-tray-letters",
         "story-stones"
       ],
+      "shared/vendor/pixi.min.js": [
+        "flashlight-cave"
+      ],
       "shared/vendor/three": [
         "sound-sprouts"
       ]
     },
     "characters": {
+      "ari": [
+        "flashlight-cave"
+      ],
       "bear": [
         "my-puppet-band",
         "puppet-problem-solvers",
@@ -2264,6 +2314,9 @@
       "games/feelings-charades/assets/cards/happy.png": [
         "feelings-charades"
       ],
+      "games/flashlight-cave/assets/pose-actors/ari": [
+        "flashlight-cave"
+      ],
       "games/lunchbox-pack/assets/lunchbox-closed.png": [
         "lunchbox-pack"
       ],
@@ -2303,6 +2356,9 @@
       "shared/assets/audio": [
         "sound-sprouts"
       ],
+      "shared/assets/audio/fragments": [
+        "flashlight-cave"
+      ],
       "shared/assets/foods": [
         "lunchbox-pack"
       ],
@@ -2339,6 +2395,7 @@
         "sound-sprouts"
       ],
       "shared/assets/objects": [
+        "flashlight-cave",
         "letter-treasure-hunt",
         "picture-word-match",
         "rhyming-detective",
@@ -2374,6 +2431,7 @@
         "color-mixing-lab",
         "counting-treasure-cups",
         "feelings-charades",
+        "flashlight-cave",
         "land-water-tray",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -2386,6 +2444,9 @@
         "tangram-tales",
         "teen-bead-builder",
         "turn-taking-tower"
+      ],
+      "shared/characters/ari": [
+        "flashlight-cave"
       ],
       "shared/characters/bear": [
         "my-puppet-band",

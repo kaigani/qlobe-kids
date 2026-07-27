@@ -1,0 +1,442 @@
+/* Flashlight Cave — tablet-first, no framework.
+   Sizing is clamp()-on-vmin throughout so the same rules serve a phone, a
+   portrait iPad and a landscape iPad without a pile of breakpoints.
+
+   Palette from game-design.md §5 (sampled off mockup 02):
+     navy rock #151d3b · deep shadow / veil #0a1436 · warm beam #ffc46b ·
+     lit rock ochre #c9913f · crystal violet #8b5cf6 · crystal cyan #38d6d0 ·
+     letter cream #fff3d0 · letter gold #ffc04a · accent (registry) #f0a53c.
+
+   The dark/lit compositing itself (the veil + hole + glow) is owned entirely
+   by shared/js/stage/spotlight.js, rendered into the Pixi canvas — this file
+   never draws darkness. Everything here is chrome: splash, HUD, mode tiles,
+   the reveal card and Ari's DOM actor layer. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ink: #fff3d0;
+  --navy: #151d3b;
+  --navy-deep: #0a1436;
+  --cream: #fff3d0;
+  --cream-edge: #fffaef;
+  --gold: #ffc04a;
+  --beam: #ffc46b;
+  --ochre: #c9913f;
+  --violet: #8b5cf6;
+  --cyan: #38d6d0;
+  --accent: #f0a53c;
+  /* §15 asks for 112 px HUD buttons, and 11vmin only reaches 90 px on a 820 px
+     tall landscape iPad — the min-width below then floored it at the platform
+     minimum of 96 instead of the size the design asked for. */
+  --hud: clamp(112px, 13vmin, 128px);
+  --tile: clamp(300px, 30vmin, 380px);
+  --radius: clamp(20px, 3.2vmin, 32px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  background: var(--navy-deep);
+  color: var(--ink);
+}
+
+#game { position: relative; height: 100dvh; width: 100vw; overflow: hidden; }
+
+.hidden { display: none !important; }
+
+/* Visually hidden but present for assistive tech — the aria-live prompt
+   mirror of game-design.md §15. It is never rendered as a banner: the
+   audience cannot read, and the mockup's cream prompt banner is a deliberate
+   departure (§9.9). This is the "prompt banner top-centre" landing spot in
+   the DOM, kept out of sight on purpose. */
+.fc-sr-only {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.fc-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ---- HUD ------------------------------------------------------------------
+   Same shape as every other engine game (counting-treasure-cups): one
+   `.hud-button` base, `.hud-img` carries a per-instance background-image set
+   inline by main.js, and a position class says which corner. */
+
+.hud-button {
+  position: absolute;
+  z-index: 40;
+  width: var(--hud);
+  height: var(--hud);
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 90ms ease-out;
+}
+.hud-button:active { transform: scale(0.92); }
+
+.hud-home, .hud-back {
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+}
+.hud-sound {
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: max(12px, env(safe-area-inset-left));
+}
+
+/* Three progress pips, top-right — the "1 of 3" replacement (§9.10). */
+.fc-pips {
+  position: absolute;
+  z-index: 40;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  gap: clamp(6px, 1.4vmin, 14px);
+  padding: clamp(8px, 1.6vmin, 16px);
+  border-radius: 999px;
+  background: linear-gradient(rgba(21, 29, 59, 0.72), rgba(10, 20, 54, 0.72));
+  box-shadow: 0 0.5vmin 0 rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(255, 243, 208, 0.25);
+}
+.fc-pip {
+  width: clamp(14px, 2.4vmin, 26px);
+  height: clamp(14px, 2.4vmin, 26px);
+  border-radius: 50%;
+  background: rgba(255, 243, 208, 0.18);
+  box-shadow: inset 0 0.2vmin 0.4vmin rgba(0, 0, 0, 0.4);
+  transition: background 180ms ease-out, transform 180ms ease-out, box-shadow 180ms ease-out;
+}
+.fc-pip.is-on {
+  background: var(--gold);
+  transform: scale(1.12);
+  box-shadow: 0 0 1.4vmin rgba(255, 196, 74, 0.85);
+}
+
+/* ---- Splash ---------------------------------------------------------------
+   Full-bleed cave-splash.jpg; the title is DOM Fredoka over the plate, never
+   baked into the art (§3.1, §9.11), so it stays editable and localizable. */
+
+.fc-splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(14px, 3vmin, 32px);
+  padding: clamp(16px, 4vmin, 40px) 4vmin max(5vmin, env(safe-area-inset-bottom));
+  background: linear-gradient(#1a2550, var(--navy-deep));
+}
+.fc-splash-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+.fc-splash-art[src=''], .fc-splash-art:not([src]) { display: none; }
+
+.fc-title {
+  position: relative;
+  margin: 0;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(30px, 7vmin, 68px);
+  line-height: 1.05;
+  text-align: center;
+  color: var(--cream);
+  background: linear-gradient(180deg, var(--cream-edge) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0.3vmin 0 #7a4a12) drop-shadow(0 1vmin 2.4vmin rgba(0, 10, 30, 0.65));
+  letter-spacing: 0.01em;
+}
+.fc-title span { display: block; }
+
+.fc-modes {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(12px, 2.6vmin, 28px);
+  width: 100%;
+  max-width: 1200px;
+}
+
+.fc-mode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.4vmin, 14px);
+  flex: 1 1 clamp(220px, 28vmin, 320px);
+  width: var(--tile);
+  height: var(--tile);
+  min-width: 220px;
+  min-height: 220px;
+  padding: clamp(14px, 2.6vmin, 26px);
+  border: 4px solid var(--cream);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #1c2757 0%, var(--navy) 100%);
+  box-shadow:
+    0 0.8vmin 0 #0a1030,
+    0 1.6vmin 3vmin rgba(0, 0, 0, 0.5),
+    inset 0 0 3vmin rgba(255, 196, 106, 0.18);
+  color: var(--cream);
+  font: inherit;
+  font-size: clamp(16px, 2.8vmin, 26px);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.fc-mode:active {
+  transform: translateY(0.6vmin);
+  box-shadow: 0 0.2vmin 0 #0a1030, inset 0 0 3vmin rgba(255, 196, 106, 0.18);
+}
+
+/* The shared "circle of light" motif every tile face sits inside, so the
+   three tiles read as one family. */
+.fc-mode-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(96px, 15vmin, 150px);
+  height: clamp(96px, 15vmin, 150px);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 196, 106, 0.9) 0%,
+    rgba(255, 176, 71, 0.45) 45%,
+    rgba(255, 176, 71, 0) 72%);
+}
+.fc-mode-letter {
+  position: relative;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(48px, 9vmin, 92px);
+  line-height: 1;
+  color: var(--cream);
+  text-shadow: 0 0 1.4vmin var(--gold), 0 0.2vmin 0 #8a5a12;
+}
+/* Mode 2 (Sound Cave): three arcs radiating right of the letter, standing
+   in for "the letter that makes this sound" — no bespoke art, just SVG. */
+.fc-mode-waves {
+  position: absolute;
+  left: 62%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60%;
+  height: 90%;
+  pointer-events: none;
+}
+.fc-mode-waves path {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+.fc-mode-icon img {
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.3vmin 0.5vmin rgba(0, 0, 0, 0.4));
+}
+
+/* ---- Play field: the layer stack -------------------------------------------
+   z0 plate / z1 scene / z2 veil / z3 glow / z4 above all live INSIDE the Pixi
+   canvas, owned by cave.js + spotlight.js (game-design.md §4.1). This file
+   only positions the canvas host and the DOM layers stacked on top of it. */
+
+.fc-play { background: var(--navy-deep); }
+
+.fc-stage {
+  position: absolute;
+  inset: 0;
+  touch-action: none;   /* the beam surface — never a scroll gesture */
+}
+.fc-stage canvas { display: block; width: 100%; height: 100%; }
+
+/* picture-mode ledge sprite — always visible, drawn into spotlight.above by
+   cave.js so the veil never dims it; this just reserves the DOM fallback
+   position for the no-WebGL screen (§3.5). */
+.fc-ledge {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(96px, 17vmin, 180px);
+  filter: drop-shadow(0 0 2vmin rgba(255, 196, 106, 0.8));
+  pointer-events: none;
+}
+.fc-ledge img { width: 100%; height: auto; display: block; }
+
+/* No-WebGL / context-lost fallback screen (§3.5): the same plate at 55% dark,
+   letters as absolutely-positioned Fredoka DOM text, wired through the same
+   onTap()/attempt() path as everything else. */
+.fc-fallback-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.55);
+  pointer-events: none;
+}
+.fc-fallback-letter {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  color: var(--cream);
+  -webkit-text-stroke: 6px var(--gold);
+  paint-order: stroke fill;
+  cursor: pointer;
+  touch-action: manipulation;
+  min-width: 96px;
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+}
+
+/* ---- Reveal -----------------------------------------------------------------
+   The reveal is an overlay STATE of the play screen (§3.3), not a new page, and
+   it has no DOM chrome of its own: the flood, the burst and the object are all
+   drawn in the Pixi scene. There is deliberately no cream word-card here — §9.9
+   removes the prompt banner because the audience cannot read, and a reveal label
+   would reintroduce exactly the text the design took out. */
+
+@keyframes fc-pop-in {
+  from { transform: translateX(-50%) scale(0.6); opacity: 0; }
+  to   { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* The big round advance button — same shared art/position on reveal (next)
+   and end (again), per §9.8: every advance control is btn-play.png,
+   centre-bottom, because a child who learned it in one QLOBE game already
+   knows it here. */
+.fc-round-btn {
+  position: absolute;
+  left: 50%;
+  bottom: max(10vmin, calc(env(safe-area-inset-bottom) + 8vmin));
+  transform: translateX(-50%);
+  z-index: 50;
+  width: clamp(112px, 18vmin, 172px);
+  height: clamp(112px, 18vmin, 172px);
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: fc-pop-in 300ms ease-out;
+}
+.fc-round-btn:active { transform: translateX(-50%) scale(0.92); }
+
+/* ---- End screen -------------------------------------------------------------
+   The end screen is an overlay STATE of the play screen too (§3.4): the same
+   canvas, the same HUD, the veil animated toward transparent by spotlight.js so
+   the whole cave is finally lit. It needs no rules of its own. */
+
+/* ---- Ari — DOM pose-actor layer ---------------------------------------------
+   Rendered by js/actor.js (verbatim adaptation of counting-treasure-cups'
+   renderer) — a DOM <img> so Ari can live on the Pixi-free splash and in HUD
+   space above the veil (game-design.md §10.3). Ari's bottom-anchored slide-in
+   IS the "hint strip": there is no separate text strip anywhere in this game
+   (the audience cannot read), so every nudge/hint/cheer surfaces here, as a
+   pose and a spoken line, never as words on screen. */
+.fc-actors { position: absolute; inset: 0; z-index: 46; pointer-events: none; }
+
+.fc-actor {
+  position: absolute;
+  --actor-scale: 1;
+  --actor-w: min(calc(clamp(190px, 34vmin, 380px) * var(--actor-scale)), 48vw);
+  bottom: calc(var(--actor-foot, 4vmin) - var(--actor-w) * 0.0508);
+  width: var(--actor-w);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(.2,.9,.3,1.2), opacity 240ms ease-out;
+  filter: drop-shadow(0 1vmin 1.4vmin rgba(0, 0, 0, 0.45));
+}
+.fc-actor img { width: 100%; height: auto; display: block; }
+.fc-actor.is-broken { display: none; }
+
+.fc-actor-left  { left: clamp(2px, 1vmin, 16px);  transform: translateX(-110%); }
+.fc-actor-right { right: clamp(2px, 1vmin, 16px); transform: translateX(110%); }
+.fc-actor.is-in { opacity: 1; transform: translateX(0); }
+
+.fc-actor img.pop { animation: fc-paper-pop 220ms ease-out; }
+@keyframes fc-paper-pop {
+  0%   { transform: scale(0.92); opacity: 0.5; }
+  62%  { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ---- Portrait / short-landscape --------------------------------------------- */
+
+@media (orientation: portrait) {
+  /* A column of three, but not three full-width bars: capped so each tile still
+     reads as a tile (the icon centred in a 767 px letterbox reads as a divider,
+     not a button), and so the splash keeps side gutters. Both dimensions stay
+     far above the 96 px floor and the tile's area beats the authored 300 × 300. */
+  .fc-modes { flex-direction: column; align-items: center; }
+  .fc-mode {
+    width: min(100%, 520px);
+    height: clamp(150px, 21vmin, 220px);
+    flex: 0 0 auto;
+    flex-direction: row;
+  }
+  .fc-mode-icon { width: clamp(96px, 14vmin, 130px); height: clamp(96px, 14vmin, 130px); }
+  .fc-actor { --actor-w: min(calc(clamp(130px, 24vmin, 260px) * var(--actor-scale)), 30vw); }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  /* A phone in landscape: shrink toward the 96 px platform floor, never below. */
+  :root { --hud: clamp(96px, 18vmin, 112px); --tile: clamp(190px, 22vmin, 260px); }
+  .fc-title { font-size: clamp(22px, 6vmin, 40px); }
+  .fc-round-btn { bottom: max(6vmin, calc(env(safe-area-inset-bottom) + 4vmin)); }
+}
+
+/* ---- Reduced motion ---------------------------------------------------------
+   §15: the beam snaps instead of lerping, the burst becomes one sparkle(),
+   Ari's pose swap skips the paper-pop, the veil is set directly — all of that
+   is game-logic (cave.js/beam.js/game.js), not CSS. This block only kills the
+   decorative CSS animations/transitions so nothing here fights that contract. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

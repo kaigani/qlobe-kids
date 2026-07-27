@@ -1,12 +1,12 @@
 {
-  "_note": "Canonical per-letter reference across QLOBE Kids apps. `phonic` is the sound the letter makes; `soundClip` is the shared recording of that phonic (paths are relative to shared/). Objects starting with each letter come from shared/data/words.json (words filtered by onset). Query both through shared/js/content.js. `nameClip` is reserved for letter-NAME recordings, which do not exist yet (a tracked gap).",
+  "_note": "Canonical per-letter reference across QLOBE Kids apps. `phonic` is the sound the letter makes; `soundClip` is the shared recording of that phonic (paths are relative to shared/). Objects starting with each letter come from shared/data/words.json (words filtered by onset). Query both through shared/js/content.js. `nameClip` is the shared recording of the letter NAME (e.g. \"ay\", \"bee\") — 25/26 recorded (promoted from games/flashlight-cave); `letter-l`'s nameClip stays null: 20 takes across 4 spellings were all mistranscribed, so L still falls back to Web Speech for its name.",
   "letters": [
     {
       "letter": "A",
       "vowel": true,
       "phonic": "ah",
       "soundClip": "assets/audio/fragments/a.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/a.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -15,7 +15,7 @@
       "vowel": false,
       "phonic": "buh",
       "soundClip": "assets/audio/fragments/b.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/b.m4a",
       "objectCount": 12,
       "objects": [
         "bag",
@@ -37,7 +37,7 @@
       "vowel": false,
       "phonic": "kuh",
       "soundClip": "assets/audio/fragments/c.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/c.m4a",
       "objectCount": 12,
       "objects": [
         "cab",
@@ -59,7 +59,7 @@
       "vowel": false,
       "phonic": "duh",
       "soundClip": "assets/audio/fragments/d.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/d.m4a",
       "objectCount": 8,
       "objects": [
         "dad",
@@ -77,7 +77,7 @@
       "vowel": true,
       "phonic": "eh",
       "soundClip": "assets/audio/fragments/e.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/e.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -86,7 +86,7 @@
       "vowel": false,
       "phonic": "fuh",
       "soundClip": "assets/audio/fragments/f.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/f.m4a",
       "objectCount": 10,
       "objects": [
         "fan",
@@ -106,7 +106,7 @@
       "vowel": false,
       "phonic": "guh",
       "soundClip": "assets/audio/fragments/g.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/g.m4a",
       "objectCount": 2,
       "objects": [
         "gem",
@@ -118,7 +118,7 @@
       "vowel": false,
       "phonic": "huh",
       "soundClip": "assets/audio/fragments/h.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/h.m4a",
       "objectCount": 10,
       "objects": [
         "ham",
@@ -138,7 +138,7 @@
       "vowel": true,
       "phonic": "ih",
       "soundClip": "assets/audio/fragments/i.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/i.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -147,7 +147,7 @@
       "vowel": false,
       "phonic": "juh",
       "soundClip": "assets/audio/fragments/j.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/j.m4a",
       "objectCount": 5,
       "objects": [
         "jam",
@@ -162,7 +162,7 @@
       "vowel": false,
       "phonic": "kuh",
       "soundClip": "assets/audio/fragments/k.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/k.m4a",
       "objectCount": 2,
       "objects": [
         "kid",
@@ -190,7 +190,7 @@
       "vowel": false,
       "phonic": "muh",
       "soundClip": "assets/audio/fragments/m.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/m.m4a",
       "objectCount": 9,
       "objects": [
         "mad",
@@ -209,7 +209,7 @@
       "vowel": false,
       "phonic": "nuh",
       "soundClip": "assets/audio/fragments/n.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/n.m4a",
       "objectCount": 4,
       "objects": [
         "nap",
@@ -223,7 +223,7 @@
       "vowel": true,
       "phonic": "oh",
       "soundClip": "assets/audio/fragments/o.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/o.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -232,7 +232,7 @@
       "vowel": false,
       "phonic": "puh",
       "soundClip": "assets/audio/fragments/p.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/p.m4a",
       "objectCount": 13,
       "objects": [
         "pad",
@@ -255,7 +255,7 @@
       "vowel": false,
       "phonic": "kwuh",
       "soundClip": "assets/audio/fragments/q.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/q.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -264,7 +264,7 @@
       "vowel": false,
       "phonic": "ruh",
       "soundClip": "assets/audio/fragments/r.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/r.m4a",
       "objectCount": 10,
       "objects": [
         "rag",
@@ -284,7 +284,7 @@
       "vowel": false,
       "phonic": "suh",
       "soundClip": "assets/audio/fragments/s.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/s.m4a",
       "objectCount": 8,
       "objects": [
         "sad",
@@ -302,7 +302,7 @@
       "vowel": false,
       "phonic": "tuh",
       "soundClip": "assets/audio/fragments/t.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/t.m4a",
       "objectCount": 7,
       "objects": [
         "tag",
@@ -319,7 +319,7 @@
       "vowel": true,
       "phonic": "uh",
       "soundClip": "assets/audio/fragments/u.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/u.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -328,7 +328,7 @@
       "vowel": false,
       "phonic": "vuh",
       "soundClip": "assets/audio/fragments/v.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/v.m4a",
       "objectCount": 2,
       "objects": [
         "van",
@@ -340,7 +340,7 @@
       "vowel": false,
       "phonic": "wuh",
       "soundClip": "assets/audio/fragments/w.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/w.m4a",
       "objectCount": 7,
       "objects": [
         "wag",
@@ -357,7 +357,7 @@
       "vowel": false,
       "phonic": "kss",
       "soundClip": "assets/audio/fragments/x.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/x.m4a",
       "objectCount": 0,
       "objects": []
     },
@@ -366,7 +366,7 @@
       "vowel": false,
       "phonic": "yuh",
       "soundClip": "assets/audio/fragments/y.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/y.m4a",
       "objectCount": 4,
       "objects": [
         "yak",
@@ -380,7 +380,7 @@
       "vowel": false,
       "phonic": "zuh",
       "soundClip": "assets/audio/fragments/z.m4a",
-      "nameClip": null,
+      "nameClip": "assets/audio/letters/z.m4a",
       "objectCount": 2,
       "objects": [
         "zap",

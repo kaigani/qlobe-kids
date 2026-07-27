@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>spotlight.js test — drag the beam</title>
+  <style>
+    :root { --ink: #17517e; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; display: grid; grid-template-rows: auto 1fr;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      background: #0a1436; color: var(--ink);
+      touch-action: none; overflow: hidden;
+      -webkit-user-select: none; user-select: none;
+    }
+    #bar {
+      display: flex; flex-wrap: wrap; gap: 10px 14px; padding: 10px 12px;
+      background: #fffef7; border-bottom: 3px solid #ecd9a8; align-items: center;
+    }
+    #bar strong { font-size: 14px; opacity: 0.75; }
+    .group { display: flex; align-items: center; gap: 8px; }
+    button {
+      font: inherit; font-weight: 600; border: 0; border-radius: 14px;
+      padding: 12px 18px; min-height: 48px; min-width: 96px;
+      background: #2f6fb0; color: #fff; cursor: pointer;
+    }
+    button.on { background: #e8863a; }
+    button.alt { background: #4a8b6a; }
+    input[type=range] { width: 160px; height: 48px; accent-color: #e8863a; }
+    label { font-size: 13px; min-width: 116px; }
+    #stage { position: relative; touch-action: none; }
+    #stage canvas { display: block; touch-action: none; }
+    #metrics {
+      position: absolute; left: 10px; top: 10px; font-size: 14px; line-height: 1.5;
+      background: #000c; color: #ffe6b8; padding: 8px 12px; border-radius: 12px;
+      white-space: pre; pointer-events: none; font-variant-numeric: tabular-nums;
+    }
+    #report {
+      position: absolute; left: 10px; bottom: 10px; right: 10px; font-size: 15px;
+      background: #ffe6b8; color: #3a2a10; padding: 10px 14px; border-radius: 12px;
+      pointer-events: none; display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <div class="group">
+      <strong>quality</strong>
+      <button data-q="high" class="on">high</button>
+      <button data-q="low">low</button>
+      <button data-q="flat">flat</button>
+    </div>
+    <div class="group"><label for="rad">radius <b id="rad-v">220</b></label>
+      <input id="rad" type="range" min="60" max="520" step="5" value="220" /></div>
+    <div class="group"><label for="veil">veilAlpha <b id="veil-v">0.90</b></label>
+      <input id="veil" type="range" min="0" max="1" step="0.01" value="0.9" /></div>
+    <div class="group"><label for="glow">glowAlpha <b id="glow-v">0.34</b></label>
+      <input id="glow" type="range" min="0" max="1" step="0.01" value="0.34" /></div>
+    <div class="group">
+      <button id="stress" class="alt">stress 10s</button>
+      <button id="auto">autoQuality off</button>
+    </div>
+    <div class="group">
+      <strong>renderer</strong>
+      <button id="aa">MSAA ?</button>
+      <button id="res">res ?</button>
+    </div>
+  </div>
+
+  <div id="stage">
+    <div id="metrics">loading…</div>
+    <div id="report"></div>
+  </div>
+
+  <script type="module">
+    import { loadPixi } from './stage.js';
+    import { createSpotlight } from './spotlight.js';
+
+    const PLATE_URL = '../../../games/flashlight-cave/assets/cave-play.jpg';
+    const metricsEl = document.getElementById('metrics');
+    const reportEl = document.getElementById('report');
+
+    // This harness boots Pixi itself rather than calling createStage(), because
+    // the two knobs that decide whether a tablet can run the veil at 60 fps —
+    // MSAA and render resolution — are hard-coded inside createStage. Everything
+    // else here mirrors it exactly. Defaults ARE createStage's defaults, so the
+    // plain URL measures what a game gets today; ?aa=0 and ?res=1 measure the
+    // two escape hatches.
+    const params = new URLSearchParams(location.search);
+    const AA = params.get('aa') !== '0';
+    const RES = params.has('res') ? parseFloat(params.get('res'))
+                                  : Math.min(2, window.devicePixelRatio || 1);
+
+    /** Cave-ish placeholder so the harness runs before the real plate exists. */
+    function placeholderCanvas(PIXI) {
+      const c = document.createElement('canvas');
+      c.width = 1600; c.height = 1200;
+      const ctx = c.getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, 0, 1200);
+      g.addColorStop(0, '#1d2a55'); g.addColorStop(0.55, '#151d3b'); g.addColorStop(1, '#2a3161');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 1600, 1200);
+      // rock + crystal shapes, so the veil has real texture to darken
+      for (let i = 0; i < 90; i++) {
+        const x = Math.random() * 1600, y = Math.random() * 1200;
+        const r = 24 + Math.random() * 130;
+        ctx.fillStyle = ['#c9913f33', '#8b5cf644', '#38d6d033', '#ffffff14'][i % 4];
+        ctx.beginPath(); ctx.ellipse(x, y, r, r * (0.5 + Math.random()), Math.random() * 3, 0, 7); ctx.fill();
+      }
+      ctx.strokeStyle = '#ffc46b55'; ctx.lineWidth = 6;
+      for (let i = 0; i < 14; i++) {
+        ctx.beginPath(); ctx.moveTo(i * 120, 0); ctx.lineTo(i * 120 + 80, 1200); ctx.stroke();
+      }
+      return PIXI.Texture.from(c);
+    }
+
+    /**
+     * Use the real cave plate when it exists, the placeholder when it doesn't.
+     * Attempted directly rather than probed first: a HEAD probe is an extra
+     * request that Chrome reports as ERR_ABORTED even on success, so it makes
+     * the console dirty in exactly the case that should be clean.
+     */
+    async function plateTexture(PIXI) {
+      try {
+        return { tex: await PIXI.Assets.load(PLATE_URL), real: true };
+      } catch (e) { /* not generated yet — fall through to the placeholder */ }
+      return { tex: placeholderCanvas(PIXI), real: false };
+    }
+
+    (async () => {
+      const stageEl = document.getElementById('stage');
+      const PIXI = await loadPixi();
+      const app = new PIXI.Application();
+      await app.init({
+        resizeTo: stageEl, backgroundAlpha: 0,
+        antialias: AA, resolution: RES, autoDensity: true,
+      });
+      stageEl.appendChild(app.canvas);
+      app.canvas.style.touchAction = 'none';
+      const root = new PIXI.Container();
+      app.stage.addChild(root);
+
+      const { tex, real } = await plateTexture(PIXI);
+      const plate = new PIXI.Sprite(tex);           // z0 — under the spotlight
+      root.addChild(plate);
+
+      const spot = createSpotlight(PIXI, {
+        width: app.screen.width, height: app.screen.height, radius: 220,
+      });
+      root.addChild(spot.view);
+
+      // --- targets: a grid of discs in .scene (darkened) + labels in .above ---
+      const TARGETS = 9;
+      const discs = [];
+      const LETTERS = 'ABCDEFGHI';
+      for (let i = 0; i < TARGETS; i++) {
+        const g = new PIXI.Graphics();
+        g.circle(0, 0, 54).fill(0xfff3d0).stroke({ width: 6, color: 0xffc04a });
+        spot.scene.addChild(g);
+        const label = new PIXI.Text({
+          text: '', style: { fontSize: 20, fontWeight: '600', fill: 0xffe6b8, align: 'center' },
+        });
+        label.anchor.set(0.5, 0);
+        spot.above.addChild(label);
+        discs.push({ id: LETTERS[i], g, label });
+      }
+
+      function place(w, h) {
+        const k = Math.max(w / plate.texture.width, h / plate.texture.height);
+        plate.scale.set(k);
+        plate.position.set((w - plate.texture.width * k) / 2, (h - plate.texture.height * k) / 2);
+        spot.setSize(w, h);
+        spot.clearTargets();
+        discs.forEach((d, i) => {
+          const x = w * (0.2 + 0.3 * (i % 3));
+          const y = h * (0.22 + 0.28 * Math.floor(i / 3));
+          d.g.position.set(x, y);
+          d.label.position.set(x, y + 60);
+          spot.register(d.id, { x, y, r: 54, obj: d.g });
+        });
+      }
+      app.renderer.on('resize', (w, h) => place(w, h));
+      place(app.screen.width, app.screen.height);
+      spot.moveTo(app.screen.width / 2, app.screen.height / 2);
+
+      // --- reactive surface: the ONLY place target visuals are driven ---------
+      let labelsOn = true;
+      let lastLabel = 0;
+      spot.onChange((s) => {
+        for (const d of discs) {
+          const L = s.litness(d.id);
+          d.g.alpha = 0.06 + 0.94 * L;              // unlit letters are invisible
+          d.g.scale.set(1 + 0.06 * L);
+        }
+        // Pixi re-bakes a Text texture on every .text write, so throttle the
+        // numbers — otherwise the harness measures its own labels, not the beam.
+        const now = performance.now();
+        if (!labelsOn || now - lastLabel < 100) return;
+        lastLabel = now;
+        for (const d of discs) d.label.text = `${d.id}  ${s.litness(d.id).toFixed(2)}`;
+      });
+
+      // --- drag: mouse AND touch, one pointer ---------------------------------
+      let dragId = null;
+      const at = (e) => {
+        const r = app.canvas.getBoundingClientRect();
+        return [e.clientX - r.left, e.clientY - r.top];
+      };
+      stageEl.addEventListener('pointerdown', (e) => {
+        if (dragId !== null || e.isPrimary === false) return;
+        dragId = e.pointerId;
+        stageEl.setPointerCapture(dragId);
+        spot.moveTo(...at(e));
+      });
+      stageEl.addEventListener('pointermove', (e) => {
+        if (e.pointerId !== dragId) return;
+        spot.moveTo(...at(e));
+      });
+      const end = (e) => { if (e.pointerId === dragId) dragId = null; };
+      stageEl.addEventListener('pointerup', end);
+      stageEl.addEventListener('pointercancel', end);
+
+      // --- controls ------------------------------------------------------------
+      const qBtns = [...document.querySelectorAll('[data-q]')];
+      qBtns.forEach((b) => b.addEventListener('click', () => {
+        spot.setQuality(b.dataset.q);
+        qBtns.forEach((o) => o.classList.toggle('on', o.dataset.q === spot.quality));
+      }));
+
+      const bind = (id, fn) => {
+        const el = document.getElementById(id), out = document.getElementById(id + '-v');
+        const run = () => { const v = parseFloat(el.value); out.textContent = v.toFixed(el.step < 1 ? 2 : 0); fn(v); };
+        el.addEventListener('input', run);
+        return run;
+      };
+      bind('rad', (v) => spot.setRadius(v));
+      bind('veil', (v) => spot.setVeil({ alpha: v }));
+      bind('glow', (v) => spot.setGlow({ alpha: v }));
+
+      // The two renderer knobs the perf spike exists to answer. Both reload —
+      // antialias and resolution are fixed at Application.init().
+      const reloadWith = (k, v) => {
+        const p = new URLSearchParams(location.search);
+        p.set(k, v);
+        location.search = p.toString();
+      };
+      const aaBtn = document.getElementById('aa');
+      aaBtn.textContent = AA ? 'MSAA on' : 'MSAA off';
+      aaBtn.classList.toggle('on', !AA);
+      aaBtn.addEventListener('click', () => reloadWith('aa', AA ? '0' : '1'));
+      const resBtn = document.getElementById('res');
+      resBtn.textContent = `res ${RES}`;
+      resBtn.classList.toggle('on', RES < 2);
+      resBtn.addEventListener('click', () => reloadWith('res', RES >= 2 ? '1' : '2'));
+
+      let autoOff = null;
+      const autoBtn = document.getElementById('auto');
+      autoBtn.addEventListener('click', () => {
+        if (autoOff) { autoOff(); autoOff = null; autoBtn.textContent = 'autoQuality off'; autoBtn.classList.remove('on'); }
+        else { autoOff = spot.autoQuality(app); autoBtn.textContent = 'autoQuality ON'; autoBtn.classList.add('on'); }
+      });
+
+      // --- metrics readout -----------------------------------------------------
+      setInterval(() => {
+        const m = spot.metrics();
+        // ms 0 means "no frames sampled yet" (a backgrounded tab gets no rAF) —
+        // showing it as 0 fps would read as a catastrophe rather than no data.
+        const rate = m.ms > 0 ? `fps ${String(m.fps).padStart(3)}   frame ${m.ms.toFixed(2)} ms`
+                              : 'fps   —   frame — ms  (no frames yet)';
+        metricsEl.textContent =
+          `${rate}\n` +
+          `quality ${m.quality}   spotlight draws ${m.draws}\n` +
+          `beam ${spot.x.toFixed(0)}, ${spot.y.toFixed(0)}   R ${spot.radius.toFixed(0)}\n` +
+          `lit ${spot.litTargets().join(' ') || '—'}\n` +
+          `plate ${real ? 'cave-play.jpg' : 'placeholder'}   dpr ${(window.devicePixelRatio || 1).toFixed(2)}\n` +
+          `canvas ${app.canvas.width}×${app.canvas.height}  res ${RES}  MSAA ${AA ? 'on' : 'off'}`;
+      }, 200);
+
+      // --- stress: a scripted 10 s drag, reporting the mean frame time ---------
+      async function stress(ms = 10000) {
+        labelsOn = false;
+        reportEl.style.display = 'block';
+        reportEl.textContent = 'running…';
+        const { width: w, height: h } = app.screen;
+        const t0 = performance.now();
+        const frames = [];
+        let last = 0;
+        await new Promise((resolve) => {
+          const tick = (now) => {
+            const t = now - t0;
+            if (last) frames.push(now - last);
+            last = now;
+            // a Lissajous sweep — crosses every target, hugs every edge
+            spot.moveTo(
+              w * (0.5 + 0.46 * Math.sin(t / 900)),
+              h * (0.5 + 0.42 * Math.sin(t / 640 + 1.1)),
+            );
+            if (t >= ms) resolve(); else requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        });
+        frames.sort((a, b) => a - b);
+        const mean = frames.reduce((a, b) => a + b, 0) / frames.length;
+        const p95 = frames[Math.floor(frames.length * 0.95)];
+        const median = frames[frames.length >> 1];
+        const out = { frames: frames.length, mean: +mean.toFixed(2), median: +median.toFixed(2),
+                      p95: +p95.toFixed(2), worst: +frames[frames.length - 1].toFixed(2),
+                      quality: spot.quality, dpr: window.devicePixelRatio || 1,
+                      res: RES, msaa: AA, canvas: [app.canvas.width, app.canvas.height], w, h };
+        reportEl.textContent =
+          `stress ${(ms / 1000)}s @ ${spot.quality} · ${w}×${h} · res ${RES} · MSAA ${AA ? 'on' : 'off'}\n` +
+          `median ${out.median} ms · ` +
+          `mean ${out.mean} ms (${Math.round(1000 / mean)} fps) · p95 ${out.p95} ms · worst ${out.worst} ms · ${out.frames} frames`;
+        reportEl.style.whiteSpace = 'pre';
+        labelsOn = true;
+        console.log('[spotlight stress]', out);
+        return out;
+      }
+      document.getElementById('stress').addEventListener('click', () => stress());
+
+      // Debug hook for headless (Playwright) verification.
+      window.QLOBE_DEBUG = {
+        ready: true,
+        spotlight: spot,
+        app, plate,        // the dpr-seam screenshots need to swap the plate out
+        getBeam: () => ({ x: spot.x, y: spot.y, radius: spot.radius, quality: spot.quality }),
+        moveBeam: (x, y) => { spot.moveTo(x, y); return spot.litTargets(); },
+        getTargets: () => discs.map((d) => ({ id: d.id, lit: spot.isLit(d.id), litness: spot.litness(d.id) })),
+        illumination: (x, y) => spot.illumination(x, y),
+        setQuality: (q) => { spot.setQuality(q); return spot.metrics(); },
+        perf: () => spot.metrics(),
+        stress,
+      };
+      document.title = 'ready';
+    })();
+  </script>
+</body>
+</html>

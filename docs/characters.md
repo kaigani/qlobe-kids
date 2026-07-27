@@ -11,6 +11,19 @@ This system is intentionally slow and small. Read alongside the [design philosop
 - **Voice-consistent.** A character sounds the same everywhere — same tone, same kind of phrasing, same warmth — whether it appears in a phonics game or a counting game.
 - **Reusable across games.** Any game may feature a character via its `game.json` `characters` field. Characters belong to the platform, not to one game.
 
+## Cast (adopted)
+
+| Character | Role | Appears in |
+|---|---|---|
+| Maya | friend (lunch kid #1) | Lunchbox Pack |
+| Leo | friend (lunch kid #2) | Lunchbox Pack |
+| Nia | friend (lunch kid #3) | Lunchbox Pack |
+| Sam | friend (lunch kid #4) | Lunchbox Pack |
+| Ravi | friend (lunch kid #5) | Lunchbox Pack |
+| Ari | guide (cave companion) | Flashlight Cave |
+
+Full design detail for each lives in its `shared/characters/<id>/character-sheet.md`.
+
 ## When a character gets designed
 
 **First character gets designed when a game needs it — not before.** We do not build a cast in the abstract. When a game's design calls for a guide or companion, propose the character then, so it is grounded in a real use.

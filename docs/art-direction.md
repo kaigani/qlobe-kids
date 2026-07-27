@@ -55,6 +55,23 @@ responds. Used as intros and round set-ups, never as passive viewing: watch a
   splash tap satisfies autoplay rules).
 - **Home categories:** social-emotional, oral-storytelling.
 
+## Lighting variants are not new worlds
+
+A game can be moody, dark, or lit-by-flashlight without inventing a sixth
+world — that's a **lighting variant**, a legal per-game modifier of an
+existing art world, not a new one. It qualifies only when both hold: (a) the
+effect is applied at **runtime by a shared module** (e.g.
+`shared/js/stage/spotlight.js` masking the play-field to a beam/pool of
+light), not baked into per-game art; and (b) the **art plate itself stays in
+the world's palette** — same outline weight, same hue family, same rendering
+style, just seen through less light. Flashlight Cave is Storybook Rooms (an
+interior, cut-out sprites belonging to a full-bleed background) plus a
+runtime night/spotlight pass — explicitly **not** a sixth world. If a new
+game's mood tempts you to propose "Nighttime" or "Shadow World" as its own
+entry in this doc, reach for a lighting variant on its home world's plate
+style first; only propose a new world when the geometry and rendering style
+genuinely differ, not just the lighting.
+
 ## Assignment rules
 
 - Each game declares its world once; the category default applies unless the

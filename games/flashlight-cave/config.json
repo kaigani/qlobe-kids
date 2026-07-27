@@ -1,0 +1,493 @@
+{
+  "id": "flashlight-cave",
+  "engine": "flashlight-cave (game-local js/game.js)",
+  "title": "Flashlight Cave",
+  "accent": "#f0a53c",
+  "splashEmoji": "🔦",
+  "copy": {
+    "home": "All games",
+    "back": "Back",
+    "replay": "Hear it again",
+    "playAgain": "Play again"
+  },
+  "voice": {
+    "ari-welcome": "Hello! I'm Ari. Come and explore my cave with me.",
+    "ari-mode-find": "Let's find some letters in the dark!",
+    "ari-mode-sound": "Listen carefully. We're hunting for letter sounds.",
+    "ari-mode-picture": "I found something! Let's see which letter it starts with.",
+    "ari-dark": "Ooh… it's dark in here. Good thing we brought a flashlight!",
+    "ari-hint-move": "Move your finger to move the light.",
+    "ari-hint-dark": "It's hiding in the dark. Let's look over this way.",
+    "ari-hint-tap": "You found one! Give it a tap.",
+    "ari-listen": "Listen.",
+    "ari-look": "Look what I found!",
+    "ari-nudge-1": "Ooh, not that one. Keep looking!",
+    "ari-nudge-2": "That's a different letter. Let's hear it again.",
+    "ari-nudge-3": "Let me help. I'll shine the light closer.",
+    "ari-found": "You found it!",
+    "ari-cheer-1": "Yes! That's the one!",
+    "ari-cheer-2": "Wonderful looking!",
+    "ari-cheer-3": "You've got sharp eyes!",
+    "ari-cheer-4": "That's exactly right. Well done!",
+    "ari-idle-1": "Shine the light around and see what you can find.",
+    "ari-idle-2": "Take your time. It's in here somewhere.",
+    "ari-next": "Let's find another one.",
+    "ari-end": "We lit up the whole cave! Look at all our friends.",
+    "ari-replay-tip": "Play again — the letters bring different friends every time.",
+    "ari-again": "Shall we explore some more?",
+    "find-intro": "Find the letter…",
+    "says-intro": "Find the letter that says…",
+    "starts-intro": "Which letter does this start with?",
+    "letter-a": "ay",
+    "letter-b": "bee",
+    "letter-c": "see",
+    "letter-d": "dee",
+    "letter-e": "ee",
+    "letter-f": "eff",
+    "letter-g": "gee",
+    "letter-h": "aitch",
+    "letter-i": "eye",
+    "letter-j": "jay",
+    "letter-k": "kay",
+    "letter-l": "ell",
+    "letter-m": "emm",
+    "letter-n": "enn",
+    "letter-o": "oh",
+    "letter-p": "pee",
+    "letter-q": "cue",
+    "letter-r": "arr",
+    "letter-s": "ess",
+    "letter-t": "tee",
+    "letter-u": "you",
+    "letter-v": "vee",
+    "letter-w": "double-you",
+    "letter-x": "ex",
+    "letter-y": "why",
+    "letter-z": "zee",
+    "isfor-apple": "A is for apple!",
+    "isfor-ant": "A is for ant!",
+    "isfor-alligator": "A is for alligator!",
+    "isfor-bear": "B is for bear!",
+    "isfor-butterfly": "B is for butterfly!",
+    "isfor-banana": "B is for banana!",
+    "isfor-cat": "C is for cat!",
+    "isfor-car": "C is for car!",
+    "isfor-cake": "C is for cake!",
+    "isfor-dog": "D is for dog!",
+    "isfor-duck": "D is for duck!",
+    "isfor-dinosaur": "D is for dinosaur!",
+    "isfor-elephant": "E is for elephant!",
+    "isfor-egg": "E is for egg!",
+    "isfor-eagle": "E is for eagle!",
+    "isfor-frog": "F is for frog!",
+    "isfor-fish": "F is for fish!",
+    "isfor-flower": "F is for flower!",
+    "isfor-goat": "G is for goat!",
+    "isfor-guitar": "G is for guitar!",
+    "isfor-grapes": "G is for grapes!",
+    "isfor-horse": "H is for horse!",
+    "isfor-hat": "H is for hat!",
+    "isfor-house": "H is for house!",
+    "isfor-igloo": "I is for igloo!",
+    "isfor-iguana": "I is for iguana!",
+    "isfor-icecream": "I is for ice cream!",
+    "isfor-jellyfish": "J is for jellyfish!",
+    "isfor-jam": "J is for jam!",
+    "isfor-jet": "J is for jet!",
+    "isfor-kite": "K is for kite!",
+    "isfor-kangaroo": "K is for kangaroo!",
+    "isfor-key": "K is for key!",
+    "isfor-lion": "L is for lion!",
+    "isfor-leaf": "L is for leaf!",
+    "isfor-lemon": "L is for lemon!",
+    "isfor-monkey": "M is for monkey!",
+    "isfor-moon": "M is for moon!",
+    "isfor-mushroom": "M is for mushroom!",
+    "isfor-nest": "N is for nest!",
+    "isfor-nut": "N is for nut!",
+    "isfor-narwhal": "N is for narwhal!",
+    "isfor-octopus": "O is for octopus!",
+    "isfor-owl": "O is for owl!",
+    "isfor-orange": "O is for orange!",
+    "isfor-pig": "P is for pig!",
+    "isfor-penguin": "P is for penguin!",
+    "isfor-pumpkin": "P is for pumpkin!",
+    "isfor-queen": "Q is for queen!",
+    "isfor-quilt": "Q is for quilt!",
+    "isfor-quail": "Q is for quail!",
+    "isfor-rabbit": "R is for rabbit!",
+    "isfor-robot": "R is for robot!",
+    "isfor-rainbow": "R is for rainbow!",
+    "isfor-snake": "S is for snake!",
+    "isfor-star": "S is for star!",
+    "isfor-strawberry": "S is for strawberry!",
+    "isfor-turtle": "T is for turtle!",
+    "isfor-tiger": "T is for tiger!",
+    "isfor-train": "T is for train!",
+    "isfor-umbrella": "U is for umbrella!",
+    "isfor-unicorn": "U is for unicorn!",
+    "isfor-ukulele": "U is for ukulele!",
+    "isfor-violin": "V is for violin!",
+    "isfor-volcano": "V is for volcano!",
+    "isfor-van": "V is for van!",
+    "isfor-whale": "W is for whale!",
+    "isfor-watermelon": "W is for watermelon!",
+    "isfor-wagon": "W is for wagon!",
+    "isfor-xylophone": "X is for xylophone!",
+    "isfor-xray-fish": "X is for x-ray fish!",
+    "isfor-treasure-x": "X marks the spot on the treasure map!",
+    "isfor-yak": "Y is for yak!",
+    "isfor-yoyo": "Y is for yo-yo!",
+    "isfor-yarn": "Y is for yarn!",
+    "isfor-zebra": "Z is for zebra!",
+    "isfor-zipper": "Z is for zipper!",
+    "isfor-zeppelin": "Z is for zeppelin!"
+  },
+  "phonics": {
+    "_note": "letter (lowercase) -> voice-clips key. Resolved through assets/audio/manifest.json, which registers e.g. \"phonic-a\": { \"file\": \"../../shared/assets/audio/fragments/a.m4a\" } -- the shared clip, registered not recorded (game-design.md §7.1). voice-clips.js:clipUrl() passes the ../-prefixed path straight through, so there is exactly one copy on disk.",
+    "map": {
+      "a": "phonic-a",
+      "b": "phonic-b",
+      "c": "phonic-c",
+      "d": "phonic-d",
+      "e": "phonic-e",
+      "f": "phonic-f",
+      "g": "phonic-g",
+      "h": "phonic-h",
+      "i": "phonic-i",
+      "j": "phonic-j",
+      "k": "phonic-k",
+      "l": "phonic-l",
+      "m": "phonic-m",
+      "n": "phonic-n",
+      "o": "phonic-o",
+      "p": "phonic-p",
+      "q": "phonic-q",
+      "r": "phonic-r",
+      "s": "phonic-s",
+      "t": "phonic-t",
+      "u": "phonic-u",
+      "v": "phonic-v",
+      "w": "phonic-w",
+      "x": "phonic-x",
+      "y": "phonic-y",
+      "z": "phonic-z"
+    }
+  },
+  "letterObjects": {
+    "_note": "NOT duplicated here. Loaded at runtime via shared/js/content.js: await content.ready(); content.letterObjects(letter) -> [{word, name, char, image, audio, say}, ...], 3 entries per letter, 78 total. Source of truth: shared/data/letter-objects.json (game-design.md §9.13).",
+    "source": "shared/data/letter-objects.json",
+    "accessor": "shared/js/content.js:letterObjects(letter)"
+  },
+  "confusables": {
+    "A": [
+      "V",
+      "R",
+      "H"
+    ],
+    "B": [
+      "D",
+      "P",
+      "R"
+    ],
+    "C": [
+      "G",
+      "O",
+      "Q"
+    ],
+    "D": [
+      "B",
+      "O",
+      "P"
+    ],
+    "E": [
+      "F",
+      "B",
+      "L"
+    ],
+    "F": [
+      "E",
+      "T",
+      "P"
+    ],
+    "G": [
+      "C",
+      "O",
+      "Q"
+    ],
+    "H": [
+      "N",
+      "M",
+      "A"
+    ],
+    "I": [
+      "L",
+      "T",
+      "J"
+    ],
+    "J": [
+      "I",
+      "U",
+      "L"
+    ],
+    "K": [
+      "X",
+      "R",
+      "Y"
+    ],
+    "L": [
+      "I",
+      "J",
+      "E"
+    ],
+    "M": [
+      "N",
+      "W",
+      "H"
+    ],
+    "N": [
+      "M",
+      "W",
+      "Z"
+    ],
+    "O": [
+      "Q",
+      "C",
+      "G"
+    ],
+    "P": [
+      "B",
+      "R",
+      "D"
+    ],
+    "Q": [
+      "O",
+      "G",
+      "C"
+    ],
+    "R": [
+      "B",
+      "P",
+      "K"
+    ],
+    "S": [
+      "Z",
+      "G",
+      "C"
+    ],
+    "T": [
+      "I",
+      "F",
+      "L"
+    ],
+    "U": [
+      "V",
+      "J",
+      "O"
+    ],
+    "V": [
+      "U",
+      "W",
+      "Y"
+    ],
+    "W": [
+      "M",
+      "V",
+      "N"
+    ],
+    "X": [
+      "K",
+      "Y",
+      "Z"
+    ],
+    "Y": [
+      "V",
+      "X",
+      "T"
+    ],
+    "Z": [
+      "S",
+      "N",
+      "X"
+    ]
+  },
+  "phonicNeighbours": [
+    [
+      "A",
+      "E",
+      "I",
+      "O",
+      "U"
+    ]
+  ],
+  "rounds": [
+    {
+      "letters": 3,
+      "radius": 230,
+      "confusableDecoys": 0
+    },
+    {
+      "letters": 4,
+      "radius": 195,
+      "confusableDecoys": 1
+    },
+    {
+      "letters": 5,
+      "radius": 165,
+      "confusableDecoys": 2
+    }
+  ],
+  "nonConfusableDecoysPerRound": 2,
+  "art": {
+    "play": "./assets/cave-play.jpg",
+    "splash": "./assets/cave-splash.jpg",
+    "flashlight": "./assets/flashlight.png",
+    "space": {
+      "w": 1600,
+      "h": 1200
+    }
+  },
+  "layout": {
+    "playableBand": {
+      "x": [
+        220,
+        1380
+      ],
+      "y": [
+        300,
+        980
+      ]
+    },
+    "beamClamp": {
+      "x": [
+        120,
+        1480
+      ],
+      "y": [
+        200,
+        1080
+      ]
+    },
+    "beamStart": {
+      "x": 800,
+      "y": 640
+    },
+    "columns": [
+      365,
+      655,
+      945,
+      1235
+    ],
+    "rows": [
+      470,
+      810
+    ],
+    "cellJitter": {
+      "x": 45,
+      "y": 55
+    },
+    "minSeparation": 235,
+    "maxJitterAttempts": 12,
+    "letterCapHeight": 170,
+    "hitRadius": 110,
+    "_hudReserveNote": "Screen-space (CSS px) strips kept clear of letters, converted to art space per viewport. The art-space HUD bands of game-design.md §4.3 only hold on a 4:3 viewport: cover-fit on 1180x820 leaves just 115 css px below art y 1000, and the 148 px centre-bottom play button then lands on the bottom row of letters. top clears back + pips; bottom clears the play button and the sound button.",
+    "hudReserveCss": {
+      "top": 145,
+      "bottom": 250
+    }
+  },
+  "nests": [
+    {
+      "id": "nest-1",
+      "x": 365,
+      "y": 470,
+      "r": 145
+    },
+    {
+      "id": "nest-2",
+      "x": 655,
+      "y": 470,
+      "r": 145
+    },
+    {
+      "id": "nest-3",
+      "x": 945,
+      "y": 470,
+      "r": 145
+    },
+    {
+      "id": "nest-4",
+      "x": 1235,
+      "y": 470,
+      "r": 145
+    },
+    {
+      "id": "nest-5",
+      "x": 365,
+      "y": 810,
+      "r": 145
+    },
+    {
+      "id": "nest-6",
+      "x": 655,
+      "y": 810,
+      "r": 145
+    },
+    {
+      "id": "nest-7",
+      "x": 945,
+      "y": 810,
+      "r": 145
+    },
+    {
+      "id": "nest-8",
+      "x": 1235,
+      "y": 810,
+      "r": 145
+    }
+  ],
+  "spotlight": {
+    "veilColor": "#0a1436",
+    "veilAlpha": 0.9,
+    "glowColor": "#ffc46b",
+    "glowAlpha": 0.34
+  },
+  "pictureLedge": {
+    "x": 800,
+    "y": 190,
+    "heightArt": 280
+  },
+  "modes": [
+    {
+      "id": "find",
+      "title": "Find the Letter",
+      "skill": "recognizing an uppercase letter by name",
+      "icon": "🔤",
+      "introKey": "ari-mode-find",
+      "promptStemKey": "find-intro",
+      "eligibleLetters": "all"
+    },
+    {
+      "id": "sound",
+      "title": "Sound Cave",
+      "skill": "matching a spoken sound to its letter",
+      "icon": "🔊",
+      "introKey": "ari-mode-sound",
+      "listenKey": "ari-listen",
+      "promptStemKey": "says-intro",
+      "eligibleLetters": "all",
+      "phonicNeighboursRound1Only": true
+    },
+    {
+      "id": "picture",
+      "title": "Whose Letter?",
+      "skill": "identifying the letter a word starts with",
+      "icon": "🖼️",
+      "introKey": "ari-mode-picture",
+      "lookKey": "ari-look",
+      "skipLookOnRound1": true,
+      "promptStemKey": "starts-intro",
+      "eligibleLetters": "all-except-x"
+    }
+  ]
+}

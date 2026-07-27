@@ -366,7 +366,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "archived",
       "accent": "#d69b2d",
       "modes": [
         {
@@ -380,7 +380,62 @@
           "skill": "initial-sound discrimination with plausible distractors"
         }
       ],
-      "summary": "Find everything that starts with today's sound."
+      "summary": "Superseded by flashlight-cave, the live spotlight rebuild."
+    },
+    {
+      "id": "flashlight-cave",
+      "title": "Flashlight Cave",
+      "category": "reading-phonics",
+      "path": "games/flashlight-cave/",
+      "icon": "assets/hub/tiles/flashlight-cave.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#f0a53c",
+      "uses": [
+        "games/flashlight-cave/js/main.js",
+        "games/flashlight-cave/js/game.js",
+        "games/flashlight-cave/js/cave.js",
+        "games/flashlight-cave/js/letters.js",
+        "games/flashlight-cave/js/beam.js",
+        "games/flashlight-cave/js/actor.js",
+        "games/flashlight-cave/js/voice.js",
+        "games/flashlight-cave/assets/pose-actors/ari/",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/stage/spotlight.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/tween.js",
+        "shared/js/content.js",
+        "shared/assets/ui/",
+        "shared/assets/objects/",
+        "shared/assets/audio/fragments/",
+        "shared/fonts/fredoka-latin-600-normal.woff2",
+        "shared/vendor/pixi.min.js"
+      ],
+      "modes": [
+        {
+          "id": "find",
+          "title": "Find the Letter",
+          "skill": "recognizing an uppercase letter by name"
+        },
+        {
+          "id": "sound",
+          "title": "Sound Cave",
+          "skill": "matching a spoken sound to its letter"
+        },
+        {
+          "id": "picture",
+          "title": "Whose Letter?",
+          "skill": "identifying the letter a word starts with"
+        }
+      ],
+      "summary": "Sweep a flashlight through a dark cave to find glowing letters and meet their alphabet friends."
     },
     {
       "id": "silly-swap-words",

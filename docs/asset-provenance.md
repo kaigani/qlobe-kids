@@ -73,3 +73,29 @@ by `tools/validate/validators/story-pack.mjs`) checks every recipe's shape, and
 
 Committed media does not need a recipe — `ASSETS.md` covers it. The recipe rule
 applies specifically to the media the repo deliberately does **not** carry.
+
+## Shared-asset repairs (editing something already in `shared/`)
+
+`shared/assets/` is normally hands-off for a single game's build (CLAUDE.md).
+When a game's own polish process surfaces a genuine defect in a **canonical**
+shared asset — not new content, a fix to something already shipping — and the
+user explicitly approves touching `shared/` for it, the provenance trail is
+the same as any other asset, just logged in the *fixing* game's `ASSETS.md`
+rather than a new game's:
+
+- The precedent: `games/flashlight-cave/ASSETS.md` §"Shared-asset repair —
+  Stage 6" re-exported 9 of `shared/assets/objects/`'s truecolour-RGB (no
+  alpha) sprites with `qwen-image-layered`, after a screenshot caught one of
+  them rendering as a solid white box on a dark background. 7 of 9 were fixed
+  and shipped **directly to the shared file**; 2 (`cat`, `van`) exhausted the
+  full retry ladder and were left unmodified rather than shipped as a
+  redrawn-and-wrong asset — logged as failures, not silently dropped.
+- Keep the pre-fix original somewhere reversible — that game's
+  `assets/source/<...>-originals/` is the convention — even though the
+  shared file itself is what changed.
+- Note in the fixing game's `ASSETS.md` which *other* games/consumers of the
+  shared asset benefit automatically (found via `shared/js/content.js` and
+  `shared/data/*.json` cross-references, or a repo-wide grep for the asset
+  path) — they don't need their own edit, but they do need a mention so a
+  later reader knows why their output changed without a commit to their own
+  folder.

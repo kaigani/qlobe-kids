@@ -66,6 +66,13 @@ export const wordPrompt = (word) => url(`assets/audio/prompts/${word}.m4a`);
 export const letterSoundUrl = (letter) => url(`assets/audio/fragments/${String(letter).toLowerCase()}.m4a`);
 /** Recorded prize-reveal line for an object ("You won a turtle. T is for turtle."). */
 export const prizeAudio = (word) => url(`assets/audio/prizes/${word}.m4a`);
+/**
+ * Recorded "[Letter] is for [word]" pairing line for an object (e.g.
+ * isforAudio('apple') → "A is for apple."). Distinct from prizeAudio: these
+ * clips carry no prize-ceremony wording ("You won a …"), so any game can use
+ * them for plain letter/word pairing, not just a reward reveal.
+ */
+export const isforAudio = (word) => url(`assets/audio/isfor/${word}.m4a`);
 
 // ---- queries (call after `await ready()`) ----
 
