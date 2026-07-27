@@ -17,14 +17,20 @@ from `QLOBE_QWEN_URL`.
 | `assets/bg/cozy-room.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
 | `assets/bg/sunny-meadow.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
 | `assets/bg/puppet-theater.jpg` | GPT Image 2 in the approved soft painted puppet-workshop style | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `assets/story/*.jpg` | GPT Image 2, six-scene story-card contact sheet guided by the finished stage art | deterministic 3×2 crop, 640×400 progressive JPEG |
+| `assets/ui/mode-*.png` | GPT Image 2, mode/action contact sheet guided by the finished stage art | chroma-key extraction, deterministic 3×3 crop, 320px transparent PNG |
+| `assets/ui/action-*.png` | GPT Image 2, mode/action contact sheet guided by the finished stage art | chroma-key extraction, deterministic 3×3 crop, 320px transparent PNG |
+| `assets/ui/{no-prop,privacy-lock,delete,curtain-loading,show-saved,replay}.png` | GPT Image 2 utility contact sheet guided by the finished stage art | chroma-key extraction, deterministic 3×2 crop, 320px transparent PNG |
 | `assets/props/crown.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
 | `assets/props/explorer-hat.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
 | `assets/props/magic-wand.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
 | `assets/props/story-basket.png` | Krea 2 seed 42, Qwen Image Layered subject extraction | alpha-QC on magenta, tight crop, 384px transparent PNG |
 
 GPT Image 2 originals are retained under
-`assets/source/gpt-image-2/`. Krea originals, layered outputs, and magenta QC
-composites are retained under `assets/source/local-api/`.
+`assets/source/gpt-image-2/`. The final visual-pass sheets and generation
+briefs are retained under `assets/source/gpt-image-2-polish/`. Krea originals,
+layered outputs, and magenta QC composites are retained under
+`assets/source/local-api/`.
 
 ## Shared assets
 
@@ -47,6 +53,7 @@ authoring/fallback source; a missing or rejected clip uses device speech.
 export QLOBE_QWEN_URL=http://YOUR-MODEL-HOST:8100
 python3 games/puppet-retell/tools/gen-props.py
 python3 games/puppet-retell/tools/gen-voice.py
+python3 games/puppet-retell/tools/finalize-polish-art.py
 ```
 
 Generated files are owned by QLOBE Kids and released under the asset license

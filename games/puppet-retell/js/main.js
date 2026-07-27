@@ -16,13 +16,24 @@ const names = {
   'princess-lily': 'Lily', 'princess-zoe': 'Zoe',
 };
 const actions = [
-  ['wave', '👋', 'Wave'],
-  ['jump', '⬆️', 'Jump'],
-  ['talk', '💬', 'Talk'],
-  ['think', '💭', 'Think'],
-  ['hug', '🤗', 'Hug'],
-  ['cheer', '🎉', 'Cheer'],
+  ['wave', './assets/ui/action-wave.png', 'Wave'],
+  ['jump', './assets/ui/action-jump.png', 'Jump'],
+  ['talk', './assets/ui/action-talk.png', 'Talk'],
+  ['think', './assets/ui/action-think.png', 'Think'],
+  ['hug', './assets/ui/action-hug.png', 'Hug'],
+  ['cheer', './assets/ui/action-cheer.png', 'Cheer'],
 ];
+const uiArt = {
+  storyStarters: './assets/ui/mode-story-starters.png',
+  freeShow: './assets/ui/mode-free-show.png',
+  myShows: './assets/ui/mode-my-shows.png',
+  noProp: './assets/ui/no-prop.png',
+  privacy: './assets/ui/privacy-lock.png',
+  delete: './assets/ui/delete.png',
+  loading: './assets/ui/curtain-loading.png',
+  saved: './assets/ui/show-saved.png',
+  replay: './assets/ui/replay.png',
+};
 const defaultLines = {
   ...config.voice,
   ...Object.fromEntries(config.stories.flatMap((story) =>
@@ -132,9 +143,9 @@ async function renderSplash({ announce = true } = {}) {
       <h1 class="logo">Puppet Retell</h1>
       <p class="tagline">Pick two stars. Tell it your way!</p>
       <div class="splash-actions">
-        <button class="mode-button" data-action="mode" data-value="guided" data-target="mode-guided"><span class="mode-emoji">📖</span><span class="mode-label">Story Starters</span></button>
-        <button class="mode-button" data-action="mode" data-value="free" data-target="mode-free"><span class="mode-emoji">🎭</span><span class="mode-label">Free Show</span></button>
-        <button class="mode-button" data-action="shows" data-target="my-shows"><span class="mode-emoji">📼</span><span class="mode-label">My Shows</span></button>
+        <button class="mode-button" data-action="mode" data-value="guided" data-target="mode-guided"><img class="mode-art" src="${uiArt.storyStarters}" alt=""><span class="mode-label">Story Starters</span></button>
+        <button class="mode-button" data-action="mode" data-value="free" data-target="mode-free"><img class="mode-art" src="${uiArt.freeShow}" alt=""><span class="mode-label">Free Show</span></button>
+        <button class="mode-button" data-action="shows" data-target="my-shows"><img class="mode-art" src="${uiArt.myShows}" alt=""><span class="mode-label">My Shows</span></button>
       </div>
     </div>
   </section>`);
@@ -152,9 +163,8 @@ function renderStories() {
     <div class="content-scroll">
       ${groups.map(([collection, label]) => `<h2 class="section-label">${label}</h2>
         <div class="card-grid">${config.stories.filter((story) => story.collection === collection).map((story) => {
-          const scene = getStage(story.stage);
-          return `<button class="choice-card story-card" style="background-image:url('${scene.backdrop}')" data-action="story" data-value="${story.id}" data-target="story-${story.id}">
-            <span class="big-emoji">${story.emoji}</span><span class="choice-title">${esc(story.title)}</span>
+          return `<button class="choice-card story-card" data-action="story" data-value="${story.id}" data-target="story-${story.id}">
+            <img class="story-illustration" src="${story.art}" alt=""><span class="choice-title">${esc(story.title)}</span>
           </button>`;
         }).join('')}</div>`).join('')}
     </div>
@@ -182,21 +192,22 @@ function renderCast() {
 function renderSetup() {
   state.screen = 'setup';
   const stageCards = config.stages.map((stage) =>
-    `<button class="choice-card stage-card ${stage.id === state.stageId ? 'selected' : ''}" style="background-image:url('${stage.backdrop}')" data-action="stage" data-value="${stage.id}" data-target="stage-${stage.id}"><span class="choice-title">${stage.emoji} ${esc(stage.title)}</span></button>`).join('');
+    `<button class="choice-card stage-card ${stage.id === state.stageId ? 'selected' : ''}" style="background-image:url('${stage.backdrop}')" data-action="stage" data-value="${stage.id}" data-target="stage-${stage.id}"><span class="choice-title">${esc(stage.title)}</span></button>`).join('');
   const puppetCards = roles.map((role, index) => {
     const character = state.cast[index];
+    const selectedAccessory = config.accessories.find((item) => item.id === state.accessories[role]);
     return `<button class="dress-puppet ${state.activeRole === role ? 'active' : ''}" data-action="role" data-value="${role}" data-target="dress-${role}">
       <img src="${face(character)}" alt="" /><strong>${esc(names[character] || character)}</strong>
-      <small>${state.accessories[role] ? ` · ${config.accessories.find((a) => a.id === state.accessories[role])?.emoji}` : ''}</small>
+      <small class="chosen-prop">${selectedAccessory ? `<img src="${selectedAccessory.art}" alt=""><span>${esc(selectedAccessory.title)}</span>` : '<span>No prop</span>'}</small>
     </button>`;
   }).join('');
   const accessories = config.accessories.map((item) =>
-    `<button class="accessory ${state.accessories[state.activeRole] === item.id ? 'selected' : ''}" data-action="accessory" data-value="${item.id}" data-target="prop-${item.id}" aria-label="${esc(item.title)}">${item.emoji}</button>`).join('');
+    `<button class="accessory ${state.accessories[state.activeRole] === item.id ? 'selected' : ''}" data-action="accessory" data-value="${item.id}" data-target="prop-${item.id}" aria-label="${esc(item.title)}"><img src="${item.art}" alt=""></button>`).join('');
   setHtml(`<section class="screen">
     ${header('Build Your Show', 'cast')}
     <div class="setup-layout">
       <div class="setup-panel"><h2>1. Pick a Stage</h2><div class="stage-grid">${stageCards}</div></div>
-      <div class="setup-panel"><h2>2. Dress a Puppet</h2><div class="dress-cast">${puppetCards}</div><div class="accessory-grid"><button class="accessory ${!state.accessories[state.activeRole] ? 'selected' : ''}" data-action="accessory" data-value="" data-target="prop-none" aria-label="No prop">✋</button>${accessories}</div></div>
+      <div class="setup-panel"><h2>2. Dress a Puppet</h2><div class="dress-cast">${puppetCards}</div><div class="accessory-grid"><button class="accessory ${!state.accessories[state.activeRole] ? 'selected' : ''}" data-action="accessory" data-value="" data-target="prop-none" aria-label="No prop"><img src="${uiArt.noProp}" alt=""></button>${accessories}</div></div>
     </div>
     <div class="continue-bar"><span>Tap a puppet, then a prop</span><button class="primary-button" data-action="perform" data-target="stage-ready">Open the Curtain →</button></div>
   </section>`);
@@ -215,10 +226,10 @@ function performanceHtml({ replay = false } = {}) {
         ${roles.map((role, index) => `<button class="role-button ${state.activeRole === role ? 'active' : ''}" data-action="active-role" data-value="${role}" data-target="active-${role}" aria-label="Choose ${esc(names[state.cast[index]] || state.cast[index])}"><img src="${face(state.cast[index])}" alt="" /></button>`).join('')}
       </div>
       <div class="record-status ${state.recording ? 'live' : ''}" id="record-status">${state.recording ? '<span class="record-dot"></span><span id="record-time">0:00</span>' : loading ? 'Opening curtain…' : replay ? '▶ Replaying' : 'Ready!'}</div>
-      ${beat ? `<div class="beat-card" id="beat-card"><span class="beat-emoji">${beat.emoji}</span><span>${esc(beat.line)}</span>${state.recording && state.beat < story.beats.length - 1 ? '<button class="next-beat" data-action="next-beat" data-target="next-beat" aria-label="Next story part">→</button>' : ''}</div>` : ''}
-      <div class="privacy-pill">🔒 Stays on this device</div>
+      ${beat ? `<div class="beat-card" id="beat-card"><img class="beat-art" src="${beat.art}" alt=""><span>${esc(beat.line)}</span>${state.recording && state.beat < story.beats.length - 1 ? '<button class="next-beat" data-action="next-beat" data-target="next-beat" aria-label="Next story part">→</button>' : ''}</div>` : ''}
+      <div class="privacy-pill"><img src="${uiArt.privacy}" alt=""> <span>Stays on this device</span></div>
       <div class="action-tray" id="action-tray">
-        ${loading ? '<span class="curtain-loader" aria-label="Loading the stage">🎭</span>' : state.recording ? actions.map(([id, emoji, label]) => `<button class="action-button" data-action="puppet-action" data-value="${id}" data-target="action-${id}" aria-label="${label}">${emoji}</button>`).join('') + '<button class="done-button" data-action="stop-recording" data-target="record-stop">Save<br>Show</button>' : replay ? '<button class="done-button" data-action="stop-replay" data-target="replay-stop">Stop</button>' : '<button class="record-button" data-action="start-recording" data-target="record-start" aria-label="Start recording">●</button>'}
+        ${loading ? `<span class="curtain-loader" aria-label="Loading the stage"><img src="${uiArt.loading}" alt=""></span>` : state.recording ? actions.map(([id, art, label]) => `<button class="action-button" data-action="puppet-action" data-value="${id}" data-target="action-${id}" aria-label="${label}"><img src="${art}" alt=""><span>${label}</span></button>`).join('') + '<button class="done-button" data-action="stop-recording" data-target="record-stop">Save<br>Show</button>' : replay ? '<button class="done-button" data-action="stop-replay" data-target="replay-stop">Stop</button>' : '<button class="record-button" data-action="start-recording" data-target="record-start" aria-label="Start recording">●</button>'}
       </div>
     </div>
   </section>`;
@@ -328,7 +339,7 @@ async function startRecording() {
   await speak('recording');
   current.recorder.start(initialShowState(), {
     title: state.mode === 'guided' ? getStory().title : 'Free Show',
-    storyEmoji: state.mode === 'guided' ? getStory().emoji : '🎭',
+    storyArt: state.mode === 'guided' ? getStory().art : uiArt.freeShow,
     microphone: mic,
   });
   state.recording = true;
@@ -453,10 +464,10 @@ async function finishRecording() {
 function showSaved(showId) {
   appEl.insertAdjacentHTML('beforeend', `<div class="saved-overlay">
     <div class="celebration-card">
-      <div style="font-size:80px">🌟🎭🌟</div><h2>Show Saved!</h2>
+      <img class="saved-art" src="${uiArt.saved}" alt=""><h2>Show Saved!</h2>
       <p>Your voice and puppet moves stay right here on this device.</p>
       <div class="celebration-actions">
-        <button class="secondary-button" data-action="play-show" data-value="${showId}" data-target="replay-saved">▶ Replay</button>
+        <button class="secondary-button replay-button" data-action="play-show" data-value="${showId}" data-target="replay-saved"><img src="${uiArt.replay}" alt="">Replay</button>
         <button class="primary-button" data-action="again" data-target="make-another">Make Another</button>
         <button class="secondary-button" data-action="shows" data-target="saved-shows">My Shows</button>
       </div>
@@ -479,13 +490,13 @@ async function renderShows() {
     const date = new Date(show.createdAt);
     const length = Math.max(1, Math.round((show.durationMs || 0) / 1000));
     return `<article class="choice-card show-card" data-target="show-${show.id}">
-      <button class="show-thumb" style="${url ? `background-image:url('${url}')` : ''}" data-action="play-show" data-value="${show.id}" aria-label="Play ${esc(show.metadata?.title || 'puppet show')}">${url ? '' : esc(show.metadata?.storyEmoji || '🎭')}</button>
-      <div class="show-meta"><span>${esc(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show">🗑️</button></div>
+      <button class="show-thumb" style="${url ? `background-image:url('${url}')` : ''}" data-action="play-show" data-value="${show.id}" aria-label="Play ${esc(show.metadata?.title || 'puppet show')}">${url ? '' : `<img src="${esc(show.metadata?.storyArt || uiArt.freeShow)}" alt="">`}</button>
+      <div class="show-meta"><span>${esc(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show"><img src="${uiArt.delete}" alt=""></button></div>
     </article>`;
   }).join('');
   setHtml(`<section class="screen">
     ${header('My Shows')}
-    <div class="content-scroll">${shows.length ? `<p class="section-label">${shows.length} of ${store.maxShows} saved on this device</p><div class="shows-grid">${cards}</div>` : '<div class="empty-shelf"><div class="big">🎭</div><h2>Your stage is waiting!</h2><p>Make a show and it will appear here.</p><button class="primary-button" data-action="splash">Make a Show</button></div>'}</div>
+    <div class="content-scroll">${shows.length ? `<p class="section-label">${shows.length} of ${store.maxShows} saved on this device</p><div class="shows-grid">${cards}</div>` : `<div class="empty-shelf"><img class="empty-art" src="${uiArt.freeShow}" alt=""><h2>Your stage is waiting!</h2><p>Make a show and it will appear here.</p><button class="primary-button" data-action="splash">Make a Show</button></div>`}</div>
   </section>`);
   current = { urls };
   speak('shows');
@@ -723,6 +734,6 @@ window.QLOBE_DEBUG = {
 
 init().catch((error) => {
   console.error(error);
-  setHtml('<section class="screen"><div class="empty-shelf"><div class="big">🎭</div><h1>The puppets need a quick rest.</h1><p>Reload the page to open the curtain.</p></div></section>');
+  setHtml(`<section class="screen"><div class="empty-shelf"><img class="empty-art" src="${uiArt.loading}" alt=""><h1>The puppets need a quick rest.</h1><p>Reload the page to open the curtain.</p></div></section>`);
   readyResolve();
 });

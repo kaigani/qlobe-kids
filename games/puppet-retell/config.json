@@ -17,13 +17,13 @@
     {
       "id": "guided",
       "title": "Story Starters",
-      "emoji": "📖",
+      "art": "./assets/ui/mode-story-starters.png",
       "skill": "telling a beginning, middle, and ending"
     },
     {
       "id": "free",
       "title": "Free Show",
-      "emoji": "🎭",
+      "art": "./assets/ui/mode-free-show.png",
       "skill": "confident imaginative oral storytelling"
     }
   ],
@@ -31,21 +31,18 @@
     {
       "id": "cozy-room",
       "title": "Cozy Room",
-      "emoji": "🛋️",
       "backdrop": "./assets/bg/cozy-room.jpg",
       "floorY": 0.83
     },
     {
       "id": "sunny-meadow",
       "title": "Sunny Meadow",
-      "emoji": "🌼",
       "backdrop": "./assets/bg/sunny-meadow.jpg",
       "floorY": 0.82
     },
     {
       "id": "puppet-theater",
       "title": "Puppet Theater",
-      "emoji": "🎪",
       "backdrop": "./assets/bg/puppet-theater.jpg",
       "floorY": 0.82
     }
@@ -54,7 +51,6 @@
     {
       "id": "crown",
       "title": "Crown",
-      "emoji": "👑",
       "art": "./assets/props/crown.png",
       "slot": "head",
       "characterSocket": "mouth",
@@ -66,7 +62,6 @@
     {
       "id": "explorer-hat",
       "title": "Explorer Hat",
-      "emoji": "🧭",
       "art": "./assets/props/explorer-hat.png",
       "slot": "head",
       "characterSocket": "mouth",
@@ -78,7 +73,6 @@
     {
       "id": "magic-wand",
       "title": "Magic Wand",
-      "emoji": "🪄",
       "art": "./assets/props/magic-wand.png",
       "slot": "hand",
       "characterSocket": "hand.R",
@@ -91,7 +85,6 @@
     {
       "id": "story-basket",
       "title": "Story Basket",
-      "emoji": "🧺",
       "art": "./assets/props/story-basket.png",
       "slot": "hand",
       "characterSocket": "hand.R",
@@ -107,72 +100,72 @@
       "id": "forest-rescue",
       "collection": "original",
       "title": "Forest Rescue",
-      "emoji": "🌲",
+      "art": "./assets/story/forest-rescue.jpg",
       "stage": "sunny-meadow",
       "beats": [
-        { "id": "beginning", "emoji": "🐾", "line": "Once upon a time, two friends found tiny footprints in the forest. Who made them?" },
-        { "id": "middle", "emoji": "🌉", "line": "Then they heard a little cry across the stream. Show how the friends helped." },
-        { "id": "ending", "emoji": "🏡", "line": "At last, everyone was safe. How does your forest story end?" }
+        { "id": "beginning", "art": "./assets/story/forest-rescue.jpg", "line": "Once upon a time, two friends found tiny footprints in the forest. Who made them?" },
+        { "id": "middle", "art": "./assets/story/forest-rescue.jpg", "line": "Then they heard a little cry across the stream. Show how the friends helped." },
+        { "id": "ending", "art": "./assets/story/forest-rescue.jpg", "line": "At last, everyone was safe. How does your forest story end?" }
       ]
     },
     {
       "id": "moon-surprise",
       "collection": "original",
       "title": "Moon Surprise",
-      "emoji": "🚀",
+      "art": "./assets/story/moon-surprise.jpg",
       "stage": "puppet-theater",
       "beats": [
-        { "id": "beginning", "emoji": "🗺️", "line": "Once upon a time, two friends found a glowing map to the moon." },
-        { "id": "middle", "emoji": "⭐", "line": "Then a little star needed their help. What did the friends do?" },
-        { "id": "ending", "emoji": "🌙", "line": "At last, the moon began to sparkle. How does your space story end?" }
+        { "id": "beginning", "art": "./assets/story/moon-surprise.jpg", "line": "Once upon a time, two friends found a glowing map to the moon." },
+        { "id": "middle", "art": "./assets/story/moon-surprise.jpg", "line": "Then a little star needed their help. What did the friends do?" },
+        { "id": "ending", "art": "./assets/story/moon-surprise.jpg", "line": "At last, the moon began to sparkle. How does your space story end?" }
       ]
     },
     {
       "id": "royal-picnic",
       "collection": "original",
       "title": "Royal Picnic",
-      "emoji": "🧺",
+      "art": "./assets/story/royal-picnic.jpg",
       "stage": "sunny-meadow",
       "beats": [
-        { "id": "beginning", "emoji": "🍓", "line": "Once upon a time, two friends prepared a royal picnic." },
-        { "id": "middle", "emoji": "💨", "line": "Then a gust of wind sent everything flying. Show what happened next." },
-        { "id": "ending", "emoji": "🎉", "line": "At last, everyone helped. How does your picnic story end?" }
+        { "id": "beginning", "art": "./assets/story/royal-picnic.jpg", "line": "Once upon a time, two friends prepared a royal picnic." },
+        { "id": "middle", "art": "./assets/story/royal-picnic.jpg", "line": "Then a gust of wind sent everything flying. Show what happened next." },
+        { "id": "ending", "art": "./assets/story/royal-picnic.jpg", "line": "At last, everyone helped. How does your picnic story end?" }
       ]
     },
     {
       "id": "three-little-pigs",
       "collection": "classic",
       "title": "Three Little Pigs",
-      "emoji": "🐷",
+      "art": "./assets/story/three-little-pigs.jpg",
       "stage": "sunny-meadow",
       "beats": [
-        { "id": "beginning", "emoji": "🏠", "line": "The three little pigs each built a house. Show what they used." },
-        { "id": "middle", "emoji": "🐺", "line": "Then the wolf huffed and puffed. What happened to the houses?" },
-        { "id": "ending", "emoji": "🧱", "line": "The brick house stayed strong. How does your pig story end?" }
+        { "id": "beginning", "art": "./assets/story/three-little-pigs.jpg", "line": "The three little pigs each built a house. Show what they used." },
+        { "id": "middle", "art": "./assets/story/three-little-pigs.jpg", "line": "Then the wolf huffed and puffed. What happened to the houses?" },
+        { "id": "ending", "art": "./assets/story/three-little-pigs.jpg", "line": "The brick house stayed strong. How does your pig story end?" }
       ]
     },
     {
       "id": "goldilocks",
       "collection": "classic",
       "title": "Goldilocks",
-      "emoji": "🥣",
+      "art": "./assets/story/goldilocks.jpg",
       "stage": "cozy-room",
       "beats": [
-        { "id": "beginning", "emoji": "🏡", "line": "Goldilocks found a little cottage in the woods. Who lived there?" },
-        { "id": "middle", "emoji": "🪑", "line": "She tried the porridge, chairs, and beds. Show what happened." },
-        { "id": "ending", "emoji": "🐻", "line": "Then the bear family came home. How does your gentle Goldilocks story end?" }
+        { "id": "beginning", "art": "./assets/story/goldilocks.jpg", "line": "Goldilocks found a little cottage in the woods. Who lived there?" },
+        { "id": "middle", "art": "./assets/story/goldilocks.jpg", "line": "She tried the porridge, chairs, and beds. Show what happened." },
+        { "id": "ending", "art": "./assets/story/goldilocks.jpg", "line": "Then the bear family came home. How does your gentle Goldilocks story end?" }
       ]
     },
     {
       "id": "little-red",
       "collection": "classic",
       "title": "Little Red Riding Hood",
-      "emoji": "🧣",
+      "art": "./assets/story/little-red.jpg",
       "stage": "sunny-meadow",
       "beats": [
-        { "id": "beginning", "emoji": "🧺", "line": "Little Red carried a basket through the woods to Grandma's house." },
-        { "id": "middle", "emoji": "🐺", "line": "Then she met a tricky wolf on the path. What did she do?" },
-        { "id": "ending", "emoji": "👵", "line": "At last, Little Red reached Grandma safely. How does your story end?" }
+        { "id": "beginning", "art": "./assets/story/little-red.jpg", "line": "Little Red carried a basket through the woods to Grandma's house." },
+        { "id": "middle", "art": "./assets/story/little-red.jpg", "line": "Then she met a tricky wolf on the path. What did she do?" },
+        { "id": "ending", "art": "./assets/story/little-red.jpg", "line": "At last, Little Red reached Grandma safely. How does your story end?" }
       ]
     }
   ],
