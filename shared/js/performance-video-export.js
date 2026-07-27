@@ -2,12 +2,15 @@
 // The canvas and recorded voice never leave the device.
 
 const MP4_TYPES = [
-  // avc3 repeats codec configuration when a responsive canvas changes size.
-  // Safari falls through to avc1/video-mp4 when avc3 is unavailable.
-  'video/mp4;codecs=avc3.42E01E,mp4a.40.2',
-  'video/mp4;codecs=avc3.42E01E',
+  // Prefer avc1: its out-of-band codec configuration is accepted by QuickTime
+  // and other native players commonly used for family keepsake videos. The export
+  // canvas is fixed at 1280×720, so avc3's mid-stream reconfiguration is not
+  // useful here.
   'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
   'video/mp4;codecs=avc1.42E01E',
+  // Keep avc3 as a browser fallback when an MP4 recorder exposes no avc1 mode.
+  'video/mp4;codecs=avc3.42E01E,mp4a.40.2',
+  'video/mp4;codecs=avc3.42E01E',
   'video/mp4',
 ];
 

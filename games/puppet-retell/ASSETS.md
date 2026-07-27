@@ -61,10 +61,12 @@ authoring/fallback source; a missing or rejected clip uses device speech.
 
 `shared/js/performance-video-export.js` replays the saved action timeline into
 a fixed 1280×720 Pixi canvas and records it with the browser's native MP4
-encoder. When a saved voice track exists, Web Audio routes it directly into the
-capture stream as AAC; movement-only shows export as silent H.264 MP4. The
-finished file is offered through Save and, where supported, the device share
-sheet. No performance data is uploaded.
+encoder. It prefers the QuickTime-compatible `avc1` H.264 sample format and
+falls back to `avc3` only when the browser exposes no `avc1` recorder. When a
+saved voice track exists, Web Audio routes it directly into the capture stream
+as AAC; movement-only shows export as silent H.264 MP4. The finished file is
+offered through Save and, where supported, the device share sheet. No
+performance data is uploaded.
 
 ## Reproduction
 
