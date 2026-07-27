@@ -20,6 +20,7 @@ from `QLOBE_QWEN_URL`.
 | `assets/bg/enchanted-castle.jpg` | GPT Image 2, guided by the finished stage backdrops | 4:3 cover crop, 1400×1050 progressive JPEG |
 | `assets/bg/moon-adventure.jpg` | GPT Image 2, guided by the finished stage backdrops | 4:3 cover crop, 1400×1050 progressive JPEG |
 | `assets/bg/forest-cottage.jpg` | GPT Image 2, guided by the finished stage backdrops | 4:3 cover crop, 1400×1050 progressive JPEG |
+| `../../assets/hub/tiles/puppet-retell.jpg` | Krea 2 Turbo text-to-image, seed 42, generated through QLOBE Studio | 6:5 resize, 640×533 JPEG; no text baked into art |
 | `assets/story/*.jpg` | GPT Image 2, six-scene story-card contact sheet guided by the finished stage art | deterministic 3×2 crop, 640×400 progressive JPEG |
 | `assets/ui/mode-*.png` | GPT Image 2, mode/action contact sheet guided by the finished stage art | chroma-key extraction, deterministic 3×3 crop, 320px transparent PNG |
 | `assets/ui/action-*.png` | GPT Image 2, mode/action contact sheet guided by the finished stage art | chroma-key extraction, deterministic 3×3 crop, 320px transparent PNG |
@@ -34,6 +35,9 @@ GPT Image 2 originals are retained under
 briefs are retained under `assets/source/gpt-image-2-polish/`. Krea originals,
 layered outputs, and magenta QC composites are retained under
 `assets/source/local-api/`.
+
+The selected Krea 2 Turbo hub-tile source and its reproducible QLOBE recipe are
+retained under `assets/source/local-api/hub-tile/`.
 
 The three-stage expansion sources and prompts are retained under
 `assets/source/gpt-image-2-stage-expansion/`.
