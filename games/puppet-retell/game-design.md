@@ -42,9 +42,10 @@ nothing is uploaded.
 - Tap two character portraits to cast the show.
 - Tap one of six stage paintings.
 - Tap either cast member, then give that puppet one optional costume prop.
-- On stage, drag near a puppet to move it horizontally. Its segmented arms and
-  legs trail, swing, and settle with bounded soft-ragdoll physics, so changing
-  direction becomes part of the performance.
+- On stage, drag near a puppet to move it freely in two dimensions. Its
+  segmented arms and legs trail with dramatic bounded soft-ragdoll physics;
+  releasing it triggers a gravity drop, upward limb flare, and small landing
+  bounce back to the stage floor.
 - Tap Wave, Jump, Talk, Think, Hug, or Cheer to animate the selected puppet.
 - Microphone permission is requested only after the child taps Record.
 - If permission is denied or unavailable, the action timeline still saves and

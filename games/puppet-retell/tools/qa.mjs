@@ -140,29 +140,39 @@ async function main() {
   const box = await canvas.boundingBox();
   await page.mouse.move(box.x + box.width * .32, box.y + box.height * .65);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * .45, box.y + box.height * .65, { steps: 4 });
+  await page.mouse.move(box.x + box.width * .50, box.y + box.height * .27, { steps: 5 });
   await page.waitForTimeout(90);
   const dragMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().a);
   const dragAngle = Math.max(...Object.values(dragMotion.angles).map(Math.abs));
-  check('dragging drives segmented ragdoll limbs',
-    dragMotion.active && dragAngle > 0.025,
+  check('puppet can be lifted freely around the stage',
+    dragMotion.active && dragMotion.fy < -.18,
+    `vertical offset ${dragMotion.fy.toFixed(3)}`);
+  check('2D dragging drives dramatic segmented limbs',
+    dragAngle > .25,
     `max angle ${dragAngle.toFixed(3)} rad`);
   await page.screenshot({ path: path.join(shots, '05a-ragdoll-drag.png') });
   await page.mouse.up();
+  await page.waitForTimeout(420);
+  const fallingMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().a);
+  const fallingAngle = Math.max(...Object.values(fallingMotion.angles).map(Math.abs));
+  check('release drops the puppet with limbs flying up',
+    fallingMotion.fy > dragMotion.fy && fallingAngle > .70,
+    `offset ${fallingMotion.fy.toFixed(3)}, max angle ${fallingAngle.toFixed(3)} rad`);
+  await page.screenshot({ path: path.join(shots, '05b-ragdoll-drop.png') });
   await page.waitForTimeout(800);
   const settledMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().a);
   const settledAngle = Math.max(...Object.values(settledMotion.angles).map(Math.abs));
-  check('released ragdoll settles toward its authored pose',
-    !settledMotion.active && settledAngle < dragAngle,
-    `max angle ${settledAngle.toFixed(3)} rad`);
+  check('released puppet lands back on the stage',
+    !settledMotion.active && Math.abs(settledMotion.fy) < .002,
+    `offset ${settledMotion.fy.toFixed(3)}, max angle ${settledAngle.toFixed(3)} rad`);
   await page.mouse.move(box.x + box.width * .68, box.y + box.height * .65);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * .56, box.y + box.height * .65, { steps: 4 });
+  await page.mouse.move(box.x + box.width * .50, box.y + box.height * .47, { steps: 4 });
   await page.waitForTimeout(90);
   const mirroredMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().b);
   const mirroredAngle = Math.max(...Object.values(mirroredMotion.angles).map(Math.abs));
   check('mirrored puppet receives the same ragdoll response',
-    mirroredMotion.active && mirroredAngle > 0.025,
+    mirroredMotion.active && mirroredMotion.fy < -.08 && mirroredAngle > .25,
     `max angle ${mirroredAngle.toFixed(3)} rad`);
   await page.mouse.up();
   await tap(page, 'next-beat');

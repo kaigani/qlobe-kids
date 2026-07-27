@@ -22,10 +22,22 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // most of the body's impulse; distal segments are looser and keep swinging a
 // little longer. Rotation limits stop a hard swipe from tangling the artwork.
 const RAGDOLL_LIMBS = {
-  'arm-upper': { drive: 0.72, spring: 22, damping: 7.2, coupling: 0, max: 1.05 },
-  'arm-lower': { drive: 0.28, spring: 14, damping: 5.1, coupling: 2.8, max: 0.82 },
-  'leg-upper': { drive: 0.44, spring: 24, damping: 8.0, coupling: 0, max: 0.70 },
-  'leg-lower': { drive: 0.18, spring: 16, damping: 5.8, coupling: 2.2, max: 0.62 },
+  'arm-upper': {
+    driveX: 1.00, driveY: 1.60, spring: 20, damping: 6.0,
+    impulseX: 1.6, impulseY: 2.4, coupling: 0, max: 2.00,
+  },
+  'arm-lower': {
+    driveX: 0.50, driveY: 1.00, spring: 11, damping: 4.2,
+    impulseX: 2.2, impulseY: 2.7, coupling: 3.4, max: 1.60,
+  },
+  'leg-upper': {
+    driveX: 0.70, driveY: 1.35, spring: 21, damping: 6.5,
+    impulseX: 1.3, impulseY: 2.2, coupling: 0, max: 1.65,
+  },
+  'leg-lower': {
+    driveX: 0.35, driveY: 0.90, spring: 13, damping: 4.7,
+    impulseX: 1.9, impulseY: 2.6, coupling: 2.8, max: 1.35,
+  },
 };
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -235,6 +247,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
   const ragdoll = {
     active: false,
     driveX: 0,
+    driveY: 0,
     lastInput: 0,
     lastFrame: 0,
     raf: 0,
@@ -246,6 +259,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
       angle: 0,
       velocity: 0,
       family,
+      side: bone.id.endsWith('.L') ? 1 : -1,
       parent: bone.parent && RAGDOLL_LIMBS[bone.parent.split('.')[0]] ? bone.parent : null,
     };
   }
@@ -265,7 +279,11 @@ export function createPuppet(PIXI, rig, opts = {}) {
       const c = bones[b.id].container;
       const base = bones[b.id].base;
       c.position.set(base.x + val(b.id, 'x', 0), base.y + val(b.id, 'y', 0));
-      c.rotation = val(b.id, 'rotation', 0) + (ragdoll.joints[b.id]?.angle || 0);
+      const authoredRotation = val(b.id, 'rotation', 0);
+      const ragdollAngle = ragdoll.joints[b.id]?.angle || 0;
+      c.rotation = ragdoll.joints[b.id]
+        ? clamp(authoredRotation + ragdollAngle, -3.05, 3.05)
+        : authoredRotation;
       c.scale.set(val(b.id, 'scaleX', 1), val(b.id, 'scaleY', 1));
     }
     // $motion: whole-body hop / drift
@@ -305,15 +323,28 @@ export function createPuppet(PIXI, rig, opts = {}) {
   }
 
   // --- soft ragdoll ----------------------------------------------------------
-  // The game supplies horizontal body speed normalized to roughly [-1, 1].
-  // Limbs trail that drive through damped angular springs, then return to their
-  // authored hanging pose. Because this is an additive layer, speaking and
-  // action clips can keep animating beneath the child's physical performance.
+  // The game supplies body speed normalized to roughly [-1, 1] on each axis.
+  // Horizontal speed trails every limb; downward speed splays left/right limbs
+  // in opposite directions so they visibly fly up around a falling torso.
+  // Because this is additive, speaking and action clips keep animating beneath
+  // the child's physical performance.
   function setRagdollMotion(input = 0) {
     if (reduced || !Object.keys(ragdoll.joints).length) return;
     const x = typeof input === 'object' ? input.x : input;
+    const y = typeof input === 'object' ? input.y : 0;
+    const nextX = clamp(Number(x) || 0, -1.75, 1.75);
+    const nextY = clamp(Number(y) || 0, -1.5, 1.75);
+    const deltaX = nextX - ragdoll.driveX;
+    const deltaY = nextY - ragdoll.driveY;
+    for (const joint of Object.values(ragdoll.joints)) {
+      const profile = RAGDOLL_LIMBS[joint.family];
+      joint.velocity +=
+        deltaX * profile.impulseX
+        + deltaY * joint.side * profile.impulseY;
+    }
     ragdoll.active = true;
-    ragdoll.driveX = clamp(Number(x) || 0, -1.5, 1.5);
+    ragdoll.driveX = nextX;
+    ragdoll.driveY = nextY;
     ragdoll.lastInput = performance.now();
     startRagdoll();
   }
@@ -330,6 +361,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
     ragdoll.raf = 0;
     ragdoll.active = false;
     ragdoll.driveX = 0;
+    ragdoll.driveY = 0;
     ragdoll.lastFrame = 0;
     for (const joint of Object.values(ragdoll.joints)) {
       joint.angle = 0;
@@ -353,13 +385,21 @@ export function createPuppet(PIXI, rig, opts = {}) {
     const stale = now - ragdoll.lastInput > 72;
     if (!ragdoll.active || stale) {
       ragdoll.driveX *= Math.exp(-dt * (ragdoll.active ? 9 : 5.2));
+      ragdoll.driveY *= Math.exp(-dt * (ragdoll.active ? 9 : 5.2));
     }
 
-    let unsettled = Math.abs(ragdoll.driveX) > 0.002;
+    let unsettled = Math.abs(ragdoll.driveX) > 0.002 || Math.abs(ragdoll.driveY) > 0.002;
     for (const joint of Object.values(ragdoll.joints)) {
       const profile = RAGDOLL_LIMBS[joint.family];
       const parentVelocity = joint.parent ? (ragdoll.joints[joint.parent]?.velocity || 0) : 0;
-      const target = clamp(ragdoll.driveX * profile.drive, -profile.max, profile.max);
+      // Upward travel mostly lets limbs hang; downward travel produces the
+      // dramatic symmetric flare requested for a dropped puppet.
+      const verticalDrive = ragdoll.driveY >= 0 ? ragdoll.driveY : ragdoll.driveY * 0.18;
+      const target = clamp(
+        ragdoll.driveX * profile.driveX + verticalDrive * joint.side * profile.driveY,
+        -profile.max,
+        profile.max,
+      );
       const acceleration =
         (target - joint.angle) * profile.spring
         - joint.velocity * profile.damping
@@ -373,6 +413,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
     if (!ragdoll.active && !unsettled) {
       ragdoll.raf = 0;
       ragdoll.driveX = 0;
+      ragdoll.driveY = 0;
       for (const joint of Object.values(ragdoll.joints)) {
         joint.angle = 0;
         joint.velocity = 0;
@@ -572,6 +613,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
       ragdoll: {
         active: ragdoll.active,
         driveX: ragdoll.driveX,
+        driveY: ragdoll.driveY,
         angles: Object.fromEntries(Object.entries(ragdoll.joints).map(([id, joint]) => [id, joint.angle])),
       },
     };

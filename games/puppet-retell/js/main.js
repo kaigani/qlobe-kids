@@ -296,59 +296,174 @@ function bindDragging(stage, theater, actors) {
   const canvas = stage.app.canvas;
   let dragging = null;
   let lastRecorded = 0;
-  let lastX = 0;
+  let lastPoint = { x: 0, y: 0 };
   let lastMoveAt = 0;
+  let releaseVelocity = { x: 0, y: 0 };
+  const settling = new Map();
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const round = (value) => Math.round(value * 1000) / 1000;
+  const topFy = Object.fromEntries(roles.map((role) => {
+    const actor = actors[role];
+    const { h } = stage.size();
+    const bounds = actor.view.getBounds();
+    // Derive each character's fly-space ceiling from its actual rendered art,
+    // keeping a small strip visible even when the center HUD overlaps it.
+    return [role, Math.min(0, (h * .025 - bounds.minY) / h)];
+  }));
   const point = (event) => {
     const rect = canvas.getBoundingClientRect();
-    return Math.max(.1, Math.min(.9, (event.clientX - rect.left) / rect.width));
+    return {
+      x: clamp((event.clientX - rect.left) / rect.width, .02, .98),
+      y: clamp((event.clientY - rect.top) / rect.height, .04, .96),
+    };
   };
-  const localSwing = (actor, swing) => actor.flip ? -swing : swing;
+  const ragdollInput = (actor, x, y) => ({ x: actor.flip ? -x : x, y });
+  const recordMove = (role, actor, {
+    swingX = 0, swingY = 0, dragging: isDragging = false, falling = false,
+  } = {}) => {
+    current?.recorder.record('move', {
+      role,
+      x: round(actor.fx),
+      y: round(actor.fy || 0),
+      swingX: round(swingX),
+      swingY: round(swingY),
+      dragging: isDragging,
+      falling,
+    });
+  };
+  const cancelSettle = (role) => {
+    const active = settling.get(role);
+    if (active) cancelAnimationFrame(active.raf);
+    settling.delete(role);
+  };
+  const settle = (role, velocity) => {
+    cancelSettle(role);
+    const actor = actors[role];
+    if (!actor) return;
+    const ceiling = topFy[role] ?? -.28;
+    let y = clamp(Number(actor.fy) || 0, ceiling, .025);
+    let vy = clamp(Number(velocity.y) || 0, -1.3, 1.45);
+    let driftX = clamp(Number(velocity.x) || 0, -.7, .7);
+    let bounce = 0;
+    let last = performance.now();
+    let lastRecord = 0;
+    // Dropping from the floor still gets a small theatrical hop and limb flare.
+    if (y > -.015 && vy < .72) vy = .72;
+    const state = { raf: 0 };
+    settling.set(role, state);
+
+    const step = (now) => {
+      if (settling.get(role) !== state) return;
+      const dt = clamp((now - last) / 1000 || 1 / 60, 1 / 240, 1 / 30);
+      last = now;
+      vy += 3.15 * dt;
+      y += vy * dt;
+      driftX *= Math.exp(-dt * 4.8);
+      // Keep an upward toss inside the visible fly space; gravity takes over
+      // from the ceiling rather than allowing the puppet to disappear above it.
+      if (y < ceiling) {
+        y = ceiling;
+        if (vy < 0) vy = 0;
+      }
+      let landed = false;
+      let impact = 0;
+      if (y >= 0) {
+        impact = vy;
+        y = 0;
+        if (bounce < 1 && impact > .34) {
+          vy = -Math.min(.34, impact * .20);
+          bounce += 1;
+        } else {
+          landed = true;
+        }
+      }
+
+      actor.fy = y;
+      theater.placeActor(actor);
+      const swingX = clamp(driftX / .8, -1.2, 1.2);
+      const swingY = impact > 0
+        ? clamp(Math.max(impact, .75) / .8, .75, 1.75)
+        : clamp(vy / .8, -1.5, 1.75);
+      actor.puppet.setRagdollMotion(ragdollInput(actor, swingX, swingY));
+
+      if (now - lastRecord > 55 || landed) {
+        recordMove(role, actor, {
+          swingX,
+          swingY,
+          dragging: false,
+          falling: !landed,
+        });
+        lastRecord = now;
+      }
+      if (landed) {
+        actor.fy = 0;
+        theater.placeActor(actor);
+        actor.puppet.releaseRagdoll();
+        settling.delete(role);
+        return;
+      }
+      state.raf = requestAnimationFrame(step);
+    };
+    recordMove(role, actor, {
+      swingX: clamp(driftX / .8, -1.2, 1.2),
+      swingY: clamp(vy / .8, -1.5, 1.75),
+      dragging: false,
+      falling: true,
+    });
+    state.raf = requestAnimationFrame(step);
+  };
   const down = (event) => {
     if (!state.recording || state.replaying) return;
-    const x = point(event);
-    dragging = Math.abs(x - actors.a.fx) <= Math.abs(x - actors.b.fx) ? 'a' : 'b';
+    const p = point(event);
+    const { h } = stage.size();
+    dragging = roles.reduce((best, role) => {
+      const actor = actors[role];
+      const actorY = actor.view.position.y / h;
+      const score = (p.x - actor.fx) ** 2 + (p.y - actorY) ** 2 * .7;
+      return !best || score < best.score ? { role, score } : best;
+    }, null).role;
+    cancelSettle(dragging);
     setActiveRole(dragging);
-    lastX = x;
+    lastPoint = p;
     lastMoveAt = performance.now();
     lastRecorded = 0;
-    actors[dragging].puppet.setRagdollMotion(0);
+    releaseVelocity = { x: 0, y: 0 };
+    actors[dragging].puppet.setRagdollMotion({ x: 0, y: 0 });
     canvas.setPointerCapture?.(event.pointerId);
   };
   const move = (event) => {
     if (!dragging) return;
-    const x = point(event);
+    const p = point(event);
     const actor = actors[dragging];
     const now = performance.now();
     const elapsed = Math.max(8, now - lastMoveAt);
-    const speed = (x - lastX) / (elapsed / 1000);
-    const swing = Math.max(-1.5, Math.min(1.5, speed / 1.35));
-    actor.fx = x;
+    const previousX = actor.fx;
+    const previousY = actor.fy || 0;
+    actor.fx = clamp(actor.fx + (p.x - lastPoint.x), .08, .92);
+    actor.fy = clamp(previousY + (p.y - lastPoint.y), topFy[dragging] ?? -.28, .025);
+    const speedX = (actor.fx - previousX) / (elapsed / 1000);
+    const speedY = (actor.fy - previousY) / (elapsed / 1000);
+    const swingX = clamp(speedX / .82, -1.75, 1.75);
+    const swingY = clamp(speedY / .82, -1.5, 1.75);
     theater.placeActor(actor);
-    actor.puppet.setRagdollMotion(localSwing(actor, swing));
-    if (now - lastRecorded > 70) {
-      current?.recorder.record('move', {
-        role: dragging,
-        x: Math.round(x * 1000) / 1000,
-        swing: Math.round(swing * 1000) / 1000,
+    actor.puppet.setRagdollMotion(ragdollInput(actor, swingX, swingY));
+    if (now - lastRecorded > 55) {
+      recordMove(dragging, actor, {
+        swingX,
+        swingY,
         dragging: true,
       });
       lastRecorded = now;
     }
-    lastX = x;
+    releaseVelocity = { x: speedX, y: speedY };
+    lastPoint = p;
     lastMoveAt = now;
   };
   const up = () => {
     if (!dragging) return;
     const role = dragging;
-    const actor = actors[role];
-    actor?.puppet.releaseRagdoll();
-    current?.recorder.record('move', {
-      role,
-      x: Math.round((actor?.fx || .5) * 1000) / 1000,
-      swing: 0,
-      dragging: false,
-    });
     dragging = null;
+    settle(role, releaseVelocity);
   };
   canvas.addEventListener('pointerdown', down);
   canvas.addEventListener('pointermove', move);
@@ -356,6 +471,8 @@ function bindDragging(stage, theater, actors) {
   canvas.addEventListener('pointercancel', up);
   return () => {
     if (dragging) actors[dragging]?.puppet.releaseRagdoll();
+    settling.forEach(({ raf }) => cancelAnimationFrame(raf));
+    settling.clear();
     canvas.removeEventListener('pointerdown', down);
     canvas.removeEventListener('pointermove', move);
     canvas.removeEventListener('pointerup', up);
@@ -549,22 +666,38 @@ function applyShowEvent(event, { showBeat = false, sound = true } = {}) {
     const actor = current?.actors?.[event.payload.role];
     if (actor) {
       const x = Math.max(.1, Math.min(.9, Number(event.payload.x) || .5));
+      const payloadY = Number(event.payload.y);
+      const y = Number.isFinite(payloadY)
+        ? Math.max(-.42, Math.min(.025, payloadY))
+        : 0;
       const motion = current.replayMotion[event.payload.role] || null;
       const eventTime = Number(event.t);
       const elapsed = motion && Number.isFinite(eventTime)
         ? Math.max(8, eventTime - motion.t)
         : 70;
-      const derivedSwing = motion ? (x - motion.x) / (elapsed / 1000) / 1.35 : 0;
-      const recordedSwing = Number(event.payload.swing);
-      const swing = Number.isFinite(recordedSwing)
-        ? recordedSwing
-        : Math.max(-1.5, Math.min(1.5, derivedSwing));
+      const derivedSwingX = motion ? (x - motion.x) / (elapsed / 1000) / .82 : 0;
+      const derivedSwingY = motion ? (y - motion.y) / (elapsed / 1000) / .82 : 0;
+      const recordedSwingX = Number(event.payload.swingX);
+      const legacySwing = Number(event.payload.swing);
+      const recordedSwingY = Number(event.payload.swingY);
+      const swingX = Number.isFinite(recordedSwingX)
+        ? recordedSwingX
+        : Number.isFinite(legacySwing)
+          ? legacySwing
+          : Math.max(-1.75, Math.min(1.75, derivedSwingX));
+      const swingY = Number.isFinite(recordedSwingY)
+        ? recordedSwingY
+        : Math.max(-1.5, Math.min(1.75, derivedSwingY));
       actor.fx = x;
+      actor.fy = y;
       current.theater.placeActor(actor);
-      actor.puppet.setRagdollMotion(actor.flip ? -swing : swing);
-      if (event.payload.dragging === false) actor.puppet.releaseRagdoll();
+      actor.puppet.setRagdollMotion({ x: actor.flip ? -swingX : swingX, y: swingY });
+      if (event.payload.dragging === false && event.payload.falling !== true) {
+        actor.puppet.releaseRagdoll();
+      }
       current.replayMotion[event.payload.role] = {
         x,
+        y,
         t: Number.isFinite(eventTime) ? eventTime : (motion?.t || 0) + elapsed,
       };
     }
@@ -915,7 +1048,11 @@ window.QLOBE_DEBUG = {
   }),
   getPuppetMotion: () => Object.fromEntries(Object.entries(current?.actors || {}).map(([role, actor]) => [
     role,
-    actor.puppet?.getState().ragdoll || null,
+    actor.puppet ? {
+      ...actor.puppet.getState().ragdoll,
+      fx: actor.fx,
+      fy: actor.fy || 0,
+    } : null,
   ])),
   tap: async (id) => {
     const el = document.querySelector(`[data-target="${CSS.escape(id)}"]`);

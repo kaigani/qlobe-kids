@@ -230,12 +230,12 @@ export async function createTheater(stage, opts = {}) {
     const k = actorScale(actor);
     if (actor.mode === 'pose-sprite') {
       actor.view.scale.set(actor.flip ? -k : k, k);
-      actor.view.position.set(actor.fx * w, floorY * h);
+      actor.view.position.set(actor.fx * w, (floorY + (Number(actor.fy) || 0)) * h);
       return;
     }
     actor.view.scale.set(actor.flip ? -k : k, k);
     const groundDrop = ((actor.rig.ground || actor.rig.canvas * 0.9) - actor.rig.anchor.y) * k;
-    actor.view.position.set(actor.fx * w, floorY * h - groundDrop);
+    actor.view.position.set(actor.fx * w, (floorY + (Number(actor.fy) || 0)) * h - groundDrop);
   }
 
   /**
@@ -262,7 +262,7 @@ export async function createTheater(stage, opts = {}) {
 
     const actor = {
       name, char: source.id, mode:'puppet', view:puppet.view, puppet, rig, lines, voiceBase,
-      fx: x, flip, scaleFactor: scale, fallbackPitch, widthShare,
+      fx: x, fy:0, flip, scaleFactor: scale, fallbackPitch, widthShare,
       poseState: {},
     };
     actors[name] = actor;
@@ -279,7 +279,7 @@ export async function createTheater(stage, opts = {}) {
     actorLayer.addChild(poseActor.view);
     const actor = {
       name, char:actorRef.id || name, mode:'pose-sprite', view:poseActor.view, poseActor,
-      fx:x, flip, scaleFactor:scale, widthShare, poseState:{},
+      fx:x, fy:0, flip, scaleFactor:scale, widthShare, poseState:{},
     };
     actors[name]=actor; placeActor(actor); return actor;
   }
@@ -679,7 +679,7 @@ export async function createTheater(stage, opts = {}) {
   function captureTableau() {
     return {
       actors: Object.fromEntries(Object.entries(actors).map(([name, a]) => [name, {
-        fx: a.fx, flip: a.flip,
+        fx: a.fx, fy:a.fy || 0, flip: a.flip,
         mode:a.mode,
         clip: a.mode === 'puppet' ? (a.puppet.currentClip || 'idle') : null,
         spritePose:a.mode === 'pose-sprite' ? a.poseActor.pose : null,
@@ -698,7 +698,7 @@ export async function createTheater(stage, opts = {}) {
     for (const [name, snap] of Object.entries(t.actors)) {
       const a = actors[name];
       if (!a) continue;
-      a.fx = snap.fx; a.flip = snap.flip;
+      a.fx = snap.fx; a.fy = snap.fy || 0; a.flip = snap.flip;
       placeActor(a);
       if (a.mode === 'pose-sprite') setSpritePose(a, snap.spritePose || 'neutral', { instant:true });
       else {
