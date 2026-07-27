@@ -386,3 +386,68 @@ strands the floating piece the moment that element leaves the DOM or the
    drag into a scroll), `manipulation` everywhere else.
 7. Offer **tap-tap as an equal path** (tap piece, tap target): easier for
    some kids, and it exercises the same single "attempt" code path.
+
+## 12. An on-demand render pump must be driven, not poked
+
+**When to use:** any game that calls `app.ticker.stop()` and renders only when
+something asks — the battery-friendly default for a mostly-still play field.
+Reference implementation: `games/flashlight-cave/js/cave.js` (`requestRender`,
+`track`) and its `showLedge` caller in `js/game.js`.
+
+Stopping the ticker means you get **no free repaints**, and that turns an
+invisible detail of texture loading into a visible bug. A single
+`requestRender()` after adding a sprite is not enough: the frame that first
+draws a newly created texture is the frame that performs its **GPU upload**,
+and it draws before the pixels are resident. Unless another frame follows, the
+sprite is invisible — and in a still scene "another frame" may never come, so
+the art appears only when the child happens to touch something.
+
+This shipped in Flashlight Cave: the picture-mode prompt object was invisible
+until the child first moved the light.
+
+1. **Register every animation with `track()`** — including a one-shot `popIn`.
+   A tween registered only with the game's own tracker (for teardown safety)
+   cancels correctly but drives nothing.
+2. **`await img.decode()` before building a texture from an `<img>`.** An image
+   that has fired `onload` may still be undecoded, and it cannot be uploaded
+   until it is. Sprites that go through a canvas (a white-key pass, say) are
+   immune, because `drawImage` forces the decode — so this bites exactly the
+   assets that looked fine.
+3. **Schedule a couple of settle renders** after creating any texture, as the
+   safety net for callers that draw into an otherwise-still scene.
+4. Remember the shared pumps are separate: `stage/tween.js` and
+   `stage/particles.js` each run their own `requestAnimationFrame` loop and
+   never call `app.render()` for you. `stage.js:createStage()` also installs a
+   `visibilitychange` handler that restarts the ticker — install your own after
+   it, or a tab switch silently undoes the stop.
+
+**The QA consequence, which is the real lesson:** state assertions cannot see
+this. The sprite exists, its texture reports valid dimensions, its alpha is 1,
+its bounds are exactly right — and nothing is drawn. Only pixels can catch it.
+Screenshot the element's screen rect before and after and compare
+(`page.screenshot({ clip })` composites the canvas correctly; `drawImage` /
+`getImageData` on a WebGL canvas returns all zeroes, because
+`preserveDrawingBuffer` is false).
+
+## 13. Safe-area clamping for anything outside the playable band
+
+**When to use:** prompts, banners, ledges and mascots authored "above" or
+"below" the play area. Reference implementation:
+`games/flashlight-cave/js/cave.js` (`safeBand`, `ledgeSpot`).
+
+Cover-fit crops art space differently in every aspect ratio. Targets usually
+get a `safeBand()`-style clamp because they must stay tappable — but the
+decorative furniture authored just outside that band is exactly what quietly
+walks off a wide, short window, and it is the part nobody thinks to clamp.
+
+- Clamp against **what the viewport actually shows**, not the authored band,
+  and keep the HUD reserve in **screen** px rather than art px — the HUD is
+  screen furniture, so an art-space reserve only works on one aspect ratio.
+- **Re-clamp on resize**, not only at creation: an orientation change moves
+  where the element may legally sit.
+- Test at **1180×520**. A 4:3-ish viewport and portrait both fail to reproduce
+  the crop, so a gate that only checks those two will pass while the element
+  sits off screen.
+- Assert the element's **painted bounds**, not just its computed slot. A slot
+  derived from the clamp stays healthy even when the sprite it positions was
+  never moved.
