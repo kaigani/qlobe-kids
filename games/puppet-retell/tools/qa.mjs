@@ -72,7 +72,10 @@ async function buildCast(page, mode = 'guided') {
   await tap(page, 'prop-magic-wand');
   await tap(page, 'stage-puppet-theater');
   await tap(page, 'stage-ready');
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'performance');
+  await page.waitForFunction(() => {
+    const state = window.QLOBE_DEBUG.getState();
+    return state.screen === 'performance' && state.phase === 'ready';
+  }, null, { timeout: 30000 });
   await page.waitForTimeout(1000);
 }
 
@@ -117,7 +120,10 @@ async function main() {
   await tap(page, 'stage-puppet-theater');
   await page.screenshot({ path: path.join(shots, '04-build-show.png') });
   await tap(page, 'stage-ready');
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'performance');
+  await page.waitForFunction(() => {
+    const state = window.QLOBE_DEBUG.getState();
+    return state.screen === 'performance' && state.phase === 'ready';
+  }, null, { timeout: 30000 });
   await page.waitForTimeout(1300);
   check('two rigged actors loaded', await page.evaluate(() => document.querySelectorAll('#stage-host canvas').length === 1));
   await page.screenshot({ path: path.join(shots, '05-stage-ready.png') });

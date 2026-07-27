@@ -206,6 +206,7 @@ function renderSetup() {
 function performanceHtml({ replay = false } = {}) {
   const story = state.mode === 'guided' ? getStory() : null;
   const beat = story?.beats[state.beat];
+  const loading = state.phase === 'loading';
   return `<section class="screen performance-screen">
     <div class="stage-host" id="stage-host"></div>
     <div class="performance-hud">
@@ -213,11 +214,11 @@ function performanceHtml({ replay = false } = {}) {
       <div class="role-picker" aria-label="Puppet for the next action">
         ${roles.map((role, index) => `<button class="role-button ${state.activeRole === role ? 'active' : ''}" data-action="active-role" data-value="${role}" data-target="active-${role}" aria-label="Choose ${esc(names[state.cast[index]] || state.cast[index])}"><img src="${face(state.cast[index])}" alt="" /></button>`).join('')}
       </div>
-      <div class="record-status ${state.recording ? 'live' : ''}" id="record-status">${state.recording ? '<span class="record-dot"></span><span id="record-time">0:00</span>' : replay ? '▶ Replaying' : 'Ready!'}</div>
+      <div class="record-status ${state.recording ? 'live' : ''}" id="record-status">${state.recording ? '<span class="record-dot"></span><span id="record-time">0:00</span>' : loading ? 'Opening curtain…' : replay ? '▶ Replaying' : 'Ready!'}</div>
       ${beat ? `<div class="beat-card" id="beat-card"><span class="beat-emoji">${beat.emoji}</span><span>${esc(beat.line)}</span>${state.recording && state.beat < story.beats.length - 1 ? '<button class="next-beat" data-action="next-beat" data-target="next-beat" aria-label="Next story part">→</button>' : ''}</div>` : ''}
       <div class="privacy-pill">🔒 Stays on this device</div>
       <div class="action-tray" id="action-tray">
-        ${state.recording ? actions.map(([id, emoji, label]) => `<button class="action-button" data-action="puppet-action" data-value="${id}" data-target="action-${id}" aria-label="${label}">${emoji}</button>`).join('') + '<button class="done-button" data-action="stop-recording" data-target="record-stop">Save<br>Show</button>' : replay ? '<button class="done-button" data-action="stop-replay" data-target="replay-stop">Stop</button>' : '<button class="record-button" data-action="start-recording" data-target="record-start" aria-label="Start recording">●</button>'}
+        ${loading ? '<span class="curtain-loader" aria-label="Loading the stage">🎭</span>' : state.recording ? actions.map(([id, emoji, label]) => `<button class="action-button" data-action="puppet-action" data-value="${id}" data-target="action-${id}" aria-label="${label}">${emoji}</button>`).join('') + '<button class="done-button" data-action="stop-recording" data-target="record-stop">Save<br>Show</button>' : replay ? '<button class="done-button" data-action="stop-replay" data-target="replay-stop">Stop</button>' : '<button class="record-button" data-action="start-recording" data-target="record-start" aria-label="Start recording">●</button>'}
       </div>
     </div>
   </section>`;
@@ -233,7 +234,7 @@ async function mountPerformance(initial = null, { replay = false } = {}) {
     state.accessories = { a: initial.accessories?.a || null, b: initial.accessories?.b || null };
   }
   state.screen = 'performance';
-  state.phase = replay ? 'replay' : 'ready';
+  state.phase = 'loading';
   state.replaying = replay;
   state.beat = 0;
   setHtml(performanceHtml({ replay }));
@@ -265,6 +266,8 @@ async function mountPerformance(initial = null, { replay = false } = {}) {
     onLimit: () => finishRecording(),
   });
   current = { stage, theater, actors, recorder, urls: [], recordTimer: 0, dragCleanup: bindDragging(stage, theater, actors) };
+  state.phase = replay ? 'replay' : 'ready';
+  refreshPerformanceHud();
   if (!replay) speak('ready');
 }
 
