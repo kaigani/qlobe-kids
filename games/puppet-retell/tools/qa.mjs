@@ -18,6 +18,7 @@ const require = createRequire(path.join(playwrightRoot, 'noop.js'));
 const { chromium } = require('playwright');
 
 const results = [];
+const CHROME_AVC1_DIAGNOSTIC = 'When using "avc1" for mp4 encoding, the codec description is not supposed to change';
 function check(name, value, detail = '') {
   const ok = !!value;
   results.push({ name, ok, detail });
@@ -40,10 +41,13 @@ async function monitoredPage(browser, viewport, { denyMicrophone = false } = {})
     });
   }
   const errors = [];
+  const diagnostics = [];
   const failed = [];
   page.on('pageerror', (error) => errors.push(String(error)));
   page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+    if (message.type() !== 'error') return;
+    if (message.text().includes(CHROME_AVC1_DIAGNOSTIC)) diagnostics.push(message.text());
+    else errors.push(message.text());
   });
   page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
   page.on('response', (response) => {
@@ -52,7 +56,7 @@ async function monitoredPage(browser, viewport, { denyMicrophone = false } = {})
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.evaluate(() => window.QLOBE_DEBUG.ready);
   await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
-  return { context, page, errors, failed };
+  return { context, page, errors, diagnostics, failed };
 }
 
 async function tap(page, id) {
@@ -136,7 +140,30 @@ async function main() {
   const box = await canvas.boundingBox();
   await page.mouse.move(box.x + box.width * .32, box.y + box.height * .65);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * .45, box.y + box.height * .65, { steps: 8 });
+  await page.mouse.move(box.x + box.width * .45, box.y + box.height * .65, { steps: 4 });
+  await page.waitForTimeout(90);
+  const dragMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().a);
+  const dragAngle = Math.max(...Object.values(dragMotion.angles).map(Math.abs));
+  check('dragging drives segmented ragdoll limbs',
+    dragMotion.active && dragAngle > 0.025,
+    `max angle ${dragAngle.toFixed(3)} rad`);
+  await page.screenshot({ path: path.join(shots, '05a-ragdoll-drag.png') });
+  await page.mouse.up();
+  await page.waitForTimeout(800);
+  const settledMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().a);
+  const settledAngle = Math.max(...Object.values(settledMotion.angles).map(Math.abs));
+  check('released ragdoll settles toward its authored pose',
+    !settledMotion.active && settledAngle < dragAngle,
+    `max angle ${settledAngle.toFixed(3)} rad`);
+  await page.mouse.move(box.x + box.width * .68, box.y + box.height * .65);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * .56, box.y + box.height * .65, { steps: 4 });
+  await page.waitForTimeout(90);
+  const mirroredMotion = await page.evaluate(() => window.QLOBE_DEBUG.getPuppetMotion().b);
+  const mirroredAngle = Math.max(...Object.values(mirroredMotion.angles).map(Math.abs));
+  check('mirrored puppet receives the same ragdoll response',
+    mirroredMotion.active && mirroredAngle > 0.025,
+    `max angle ${mirroredAngle.toFixed(3)} rad`);
   await page.mouse.up();
   await tap(page, 'next-beat');
   await page.waitForTimeout(400);
@@ -165,6 +192,9 @@ async function main() {
   const mp4Bytes = await readFile(mp4Path);
   check('MP4 export downloads', (await stat(mp4Path)).size > 20_000, `${(await stat(mp4Path)).size} bytes`);
   check('export is an MP4 container', mp4Bytes.subarray(4, 8).toString('ascii') === 'ftyp');
+  if (landscape.diagnostics.length) {
+    console.log(`info Chrome reported ${landscape.diagnostics.length} known avc1 MediaRecorder diagnostic`);
+  }
   await page.getByRole('button', { name: 'My Shows' }).click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'shows');
   await page.locator('.show-thumb').first().click();

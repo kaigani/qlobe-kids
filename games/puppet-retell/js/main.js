@@ -283,7 +283,10 @@ async function mountPerformance(initial = null, { replay = false } = {}) {
     maxDurationMs: 90_000,
     onLimit: () => finishRecording(),
   });
-  current = { stage, theater, actors, recorder, urls: [], recordTimer: 0, dragCleanup: bindDragging(stage, theater, actors) };
+  current = {
+    stage, theater, actors, recorder, urls: [], recordTimer: 0, replayMotion: {},
+    dragCleanup: bindDragging(stage, theater, actors),
+  };
   state.phase = replay ? 'replay' : 'ready';
   refreshPerformanceHud();
   if (!replay) speak('ready');
@@ -293,35 +296,66 @@ function bindDragging(stage, theater, actors) {
   const canvas = stage.app.canvas;
   let dragging = null;
   let lastRecorded = 0;
+  let lastX = 0;
+  let lastMoveAt = 0;
   const point = (event) => {
     const rect = canvas.getBoundingClientRect();
     return Math.max(.1, Math.min(.9, (event.clientX - rect.left) / rect.width));
   };
+  const localSwing = (actor, swing) => actor.flip ? -swing : swing;
   const down = (event) => {
     if (!state.recording || state.replaying) return;
     const x = point(event);
     dragging = Math.abs(x - actors.a.fx) <= Math.abs(x - actors.b.fx) ? 'a' : 'b';
     setActiveRole(dragging);
+    lastX = x;
+    lastMoveAt = performance.now();
+    lastRecorded = 0;
+    actors[dragging].puppet.setRagdollMotion(0);
     canvas.setPointerCapture?.(event.pointerId);
   };
   const move = (event) => {
     if (!dragging) return;
     const x = point(event);
     const actor = actors[dragging];
+    const now = performance.now();
+    const elapsed = Math.max(8, now - lastMoveAt);
+    const speed = (x - lastX) / (elapsed / 1000);
+    const swing = Math.max(-1.5, Math.min(1.5, speed / 1.35));
     actor.fx = x;
     theater.placeActor(actor);
-    const now = performance.now();
+    actor.puppet.setRagdollMotion(localSwing(actor, swing));
     if (now - lastRecorded > 70) {
-      current?.recorder.record('move', { role: dragging, x: Math.round(x * 1000) / 1000 });
+      current?.recorder.record('move', {
+        role: dragging,
+        x: Math.round(x * 1000) / 1000,
+        swing: Math.round(swing * 1000) / 1000,
+        dragging: true,
+      });
       lastRecorded = now;
     }
+    lastX = x;
+    lastMoveAt = now;
   };
-  const up = () => { dragging = null; };
+  const up = () => {
+    if (!dragging) return;
+    const role = dragging;
+    const actor = actors[role];
+    actor?.puppet.releaseRagdoll();
+    current?.recorder.record('move', {
+      role,
+      x: Math.round((actor?.fx || .5) * 1000) / 1000,
+      swing: 0,
+      dragging: false,
+    });
+    dragging = null;
+  };
   canvas.addEventListener('pointerdown', down);
   canvas.addEventListener('pointermove', move);
   canvas.addEventListener('pointerup', up);
   canvas.addEventListener('pointercancel', up);
   return () => {
+    if (dragging) actors[dragging]?.puppet.releaseRagdoll();
     canvas.removeEventListener('pointerdown', down);
     canvas.removeEventListener('pointermove', move);
     canvas.removeEventListener('pointerup', up);
@@ -514,8 +548,25 @@ function applyShowEvent(event, { showBeat = false, sound = true } = {}) {
   if (event.type === 'move') {
     const actor = current?.actors?.[event.payload.role];
     if (actor) {
-      actor.fx = Math.max(.1, Math.min(.9, Number(event.payload.x) || .5));
+      const x = Math.max(.1, Math.min(.9, Number(event.payload.x) || .5));
+      const motion = current.replayMotion[event.payload.role] || null;
+      const eventTime = Number(event.t);
+      const elapsed = motion && Number.isFinite(eventTime)
+        ? Math.max(8, eventTime - motion.t)
+        : 70;
+      const derivedSwing = motion ? (x - motion.x) / (elapsed / 1000) / 1.35 : 0;
+      const recordedSwing = Number(event.payload.swing);
+      const swing = Number.isFinite(recordedSwing)
+        ? recordedSwing
+        : Math.max(-1.5, Math.min(1.5, derivedSwing));
+      actor.fx = x;
       current.theater.placeActor(actor);
+      actor.puppet.setRagdollMotion(actor.flip ? -swing : swing);
+      if (event.payload.dragging === false) actor.puppet.releaseRagdoll();
+      current.replayMotion[event.payload.role] = {
+        x,
+        t: Number.isFinite(eventTime) ? eventTime : (motion?.t || 0) + elapsed,
+      };
     }
   } else if (event.type === 'action') {
     applyPuppetAction(event.payload.role, event.payload.action, { record: false, sound });
@@ -568,6 +619,10 @@ async function exportShow(id) {
     state.phase = 'exporting';
     document.querySelector('.performance-hud')?.remove();
     const renderer = current.stage.app.renderer;
+    // Detach Pixi's responsive ResizePlugin before fixing the capture surface.
+    // Otherwise it can restore the onscreen CSS size after this resize, which
+    // changes H.264 codec description mid-recording and invalidates avc1 MP4s.
+    current.stage.app.resizeTo = null;
     renderer.resolution = 1;
     renderer.resize(1280, 720);
     current.stage.app.canvas.style.width = '100%';
@@ -858,6 +913,10 @@ window.QLOBE_DEBUG = {
     const rect = el.getBoundingClientRect();
     return { id: el.dataset.target, x: rect.x, y: rect.y, width: rect.width, height: rect.height, disabled: !!el.disabled };
   }),
+  getPuppetMotion: () => Object.fromEntries(Object.entries(current?.actors || {}).map(([role, actor]) => [
+    role,
+    actor.puppet?.getState().ragdoll || null,
+  ])),
   tap: async (id) => {
     const el = document.querySelector(`[data-target="${CSS.escape(id)}"]`);
     if (!el) throw new Error(`No target: ${id}`);

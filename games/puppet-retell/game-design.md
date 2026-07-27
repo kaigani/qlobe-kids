@@ -34,14 +34,17 @@ up any story and ends the recording when ready.
 
 Up to 24 performances are stored in IndexedDB on the current device. Each item
 has a stage thumbnail, title, date, duration, replay control, and an explicit
-delete confirmation. Nothing is uploaded or exported.
+delete confirmation. A grown-up can save or share a locally rendered MP4;
+nothing is uploaded.
 
 ## Interaction
 
 - Tap two character portraits to cast the show.
-- Tap one of three stage paintings.
+- Tap one of six stage paintings.
 - Tap either cast member, then give that puppet one optional costume prop.
-- On stage, drag near a puppet to move it horizontally.
+- On stage, drag near a puppet to move it horizontally. Its segmented arms and
+  legs trail, swing, and settle with bounded soft-ragdoll physics, so changing
+  direction becomes part of the performance.
 - Tap Wave, Jump, Talk, Think, Hug, or Cheer to animate the selected puppet.
 - Microphone permission is requested only after the child taps Record.
 - If permission is denied or unavailable, the action timeline still saves and
@@ -58,6 +61,8 @@ rather than reproduce any modern adaptation.
 ## Systems made more robust
 
 - Shared Pixi stage + rigged-puppet theater used as a child-directed sandbox.
+- Additive soft-ragdoll limb springs coexist with authored poses and preserve
+  their motion during saved-show replay and MP4 export.
 - Reusable `shared/js/performance-recorder.js` serializes an initial tableau,
   timestamped semantic events, and an optional audio Blob.
 - Reusable local show storage with format versioning and a bounded shelf.
@@ -66,9 +71,10 @@ rather than reproduce any modern adaptation.
 
 ## Privacy and safety
 
-The recorder has no upload or export path. Audio and action data are written
-only to the browser's IndexedDB for this game. The UI repeats “stays on this
-device” beside Record and after saving. A recording is limited to 90 seconds.
+The recorder has no upload path. Audio and action data are written only to the
+browser's IndexedDB for this game; an MP4 is rendered locally only when the
+grown-up chooses Save or Share. The UI repeats “stays on this device” beside
+Record and after saving. A recording is limited to 90 seconds.
 
 ## Release gate
 

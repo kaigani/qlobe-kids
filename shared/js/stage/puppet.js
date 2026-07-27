@@ -18,6 +18,18 @@ import { catmullRom, sampleTrack } from './spline.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Soft-body joint tuning for child-driven puppet motion. Upper segments carry
+// most of the body's impulse; distal segments are looser and keep swinging a
+// little longer. Rotation limits stop a hard swipe from tangling the artwork.
+const RAGDOLL_LIMBS = {
+  'arm-upper': { drive: 0.72, spring: 22, damping: 7.2, coupling: 0, max: 1.05 },
+  'arm-lower': { drive: 0.28, spring: 14, damping: 5.1, coupling: 2.8, max: 0.82 },
+  'leg-upper': { drive: 0.44, spring: 24, damping: 8.0, coupling: 0, max: 0.70 },
+  'leg-lower': { drive: 0.18, spring: 16, damping: 5.8, coupling: 2.2, max: 0.62 },
+};
+
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
 // Default art factory: draw each part/outfit as a flat tinted shape centered at
 // its own origin. Swap this out (opts.partFactory) to return real PNG sprites —
 // the engine positions whatever object it gets, so no engine change is needed.
@@ -99,6 +111,7 @@ export async function loadRigArt(PIXI, rig, baseUrl, scale = 1, cacheKey = null)
  *   setPose, playClip, stopClip, currentClip,
  *   setOutfit, listOutfits,
  *   setMouthShape, mouth,
+ *   setRagdollMotion, releaseRagdoll, resetRagdoll,
  *   enableDrag, moveAlong,
  *   getState, destroy
  * }}
@@ -219,6 +232,24 @@ export function createPuppet(PIXI, rig, opts = {}) {
   // targets fall back to rest (rotation 0, scale 1). staticPose holds setPose().
   const staticPose = {};
   let dynamicPose = {};
+  const ragdoll = {
+    active: false,
+    driveX: 0,
+    lastInput: 0,
+    lastFrame: 0,
+    raf: 0,
+    joints: {},
+  };
+  for (const bone of rig.bones) {
+    const family = Object.keys(RAGDOLL_LIMBS).find((prefix) => bone.id.startsWith(`${prefix}.`));
+    if (family) ragdoll.joints[bone.id] = {
+      angle: 0,
+      velocity: 0,
+      family,
+      parent: bone.parent && RAGDOLL_LIMBS[bone.parent.split('.')[0]] ? bone.parent : null,
+    };
+  }
+
   function get(pose, target, prop, fallback) {
     return pose[target] && pose[target][prop] != null ? pose[target][prop] : fallback;
   }
@@ -234,7 +265,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
       const c = bones[b.id].container;
       const base = bones[b.id].base;
       c.position.set(base.x + val(b.id, 'x', 0), base.y + val(b.id, 'y', 0));
-      c.rotation = val(b.id, 'rotation', 0);
+      c.rotation = val(b.id, 'rotation', 0) + (ragdoll.joints[b.id]?.angle || 0);
       c.scale.set(val(b.id, 'scaleX', 1), val(b.id, 'scaleY', 1));
     }
     // $motion: whole-body hop / drift
@@ -271,6 +302,85 @@ export function createPuppet(PIXI, rig, opts = {}) {
       head.container.position.set(head.container.position.x + dx, head.container.position.y + dy);
       head.container.rotation += bend;
     }
+  }
+
+  // --- soft ragdoll ----------------------------------------------------------
+  // The game supplies horizontal body speed normalized to roughly [-1, 1].
+  // Limbs trail that drive through damped angular springs, then return to their
+  // authored hanging pose. Because this is an additive layer, speaking and
+  // action clips can keep animating beneath the child's physical performance.
+  function setRagdollMotion(input = 0) {
+    if (reduced || !Object.keys(ragdoll.joints).length) return;
+    const x = typeof input === 'object' ? input.x : input;
+    ragdoll.active = true;
+    ragdoll.driveX = clamp(Number(x) || 0, -1.5, 1.5);
+    ragdoll.lastInput = performance.now();
+    startRagdoll();
+  }
+
+  function releaseRagdoll() {
+    if (reduced || !Object.keys(ragdoll.joints).length) return;
+    ragdoll.active = false;
+    ragdoll.lastInput = performance.now();
+    startRagdoll();
+  }
+
+  function resetRagdoll() {
+    if (ragdoll.raf) cancelAnimationFrame(ragdoll.raf);
+    ragdoll.raf = 0;
+    ragdoll.active = false;
+    ragdoll.driveX = 0;
+    ragdoll.lastFrame = 0;
+    for (const joint of Object.values(ragdoll.joints)) {
+      joint.angle = 0;
+      joint.velocity = 0;
+    }
+    applyPose();
+  }
+
+  function startRagdoll() {
+    if (ragdoll.raf) return;
+    ragdoll.lastFrame = performance.now();
+    ragdoll.raf = requestAnimationFrame(stepRagdoll);
+  }
+
+  function stepRagdoll(now) {
+    const dt = clamp((now - ragdoll.lastFrame) / 1000 || 1 / 60, 1 / 240, 1 / 30);
+    ragdoll.lastFrame = now;
+
+    // A held-but-still pointer should let the limbs hang again. On release the
+    // last swipe decays a little more slowly, preserving a satisfying follow-through.
+    const stale = now - ragdoll.lastInput > 72;
+    if (!ragdoll.active || stale) {
+      ragdoll.driveX *= Math.exp(-dt * (ragdoll.active ? 9 : 5.2));
+    }
+
+    let unsettled = Math.abs(ragdoll.driveX) > 0.002;
+    for (const joint of Object.values(ragdoll.joints)) {
+      const profile = RAGDOLL_LIMBS[joint.family];
+      const parentVelocity = joint.parent ? (ragdoll.joints[joint.parent]?.velocity || 0) : 0;
+      const target = clamp(ragdoll.driveX * profile.drive, -profile.max, profile.max);
+      const acceleration =
+        (target - joint.angle) * profile.spring
+        - joint.velocity * profile.damping
+        + parentVelocity * profile.coupling;
+      joint.velocity += acceleration * dt;
+      joint.angle = clamp(joint.angle + joint.velocity * dt, -profile.max, profile.max);
+      if (Math.abs(joint.angle) > 0.002 || Math.abs(joint.velocity) > 0.004) unsettled = true;
+    }
+    applyPose();
+
+    if (!ragdoll.active && !unsettled) {
+      ragdoll.raf = 0;
+      ragdoll.driveX = 0;
+      for (const joint of Object.values(ragdoll.joints)) {
+        joint.angle = 0;
+        joint.velocity = 0;
+      }
+      applyPose();
+      return;
+    }
+    ragdoll.raf = requestAnimationFrame(stepRagdoll);
   }
 
   // --- clip playback ----------------------------------------------------------
@@ -459,10 +569,16 @@ export function createPuppet(PIXI, rig, opts = {}) {
       pos: { x: view.x, y: view.y },
       viseme: currentViseme,
       reduced,
+      ragdoll: {
+        active: ragdoll.active,
+        driveX: ragdoll.driveX,
+        angles: Object.fromEntries(Object.entries(ragdoll.joints).map(([id, joint]) => [id, joint.angle])),
+      },
     };
   }
   function destroy() {
     stopClip();
+    if (ragdoll.raf) cancelAnimationFrame(ragdoll.raf);
     if (dragCleanup) dragCleanup();
     view.destroy({ children: true });
   }
@@ -477,6 +593,7 @@ export function createPuppet(PIXI, rig, opts = {}) {
     previewPose, setJoint, setViseme,
     setOutfit, listOutfits,
     setMouthShape, get mouth() { return { setShape: setMouthShape }; },
+    setRagdollMotion, releaseRagdoll, resetRagdoll,
     enableDrag, moveAlong,
     getState, destroy,
   };
