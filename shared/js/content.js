@@ -7,7 +7,7 @@
 //   import * as content from '../../../shared/js/content.js';
 //   await content.ready();
 //   content.objectsStartingWith('b');
-//     // → [{ word:'bat', char:'🦇', image:'…/objects/bat.png',
+//     // → [{ word:'bat', char:'🦇', image:'…/objects/bat.webp',
 //     //      audio:'…/audio/words/bat.m4a', onsetSound:'…/fragments/b.m4a', … }, …]
 //   content.letterSound('b');   // → { phonic:'buh', url:'…/fragments/b.m4a' }
 //
@@ -54,8 +54,16 @@ export function ready() {
 
 // ---- asset path resolvers (the one place these conventions are written) ----
 
-/** Illustrated picture-card for a word (e.g. objectImage('cat')). */
-export const objectImage = (word) => url(`assets/objects/${word}.png`);
+/**
+ * Illustrated picture-card for a word (e.g. objectImage('cat')).
+ *
+ * WebP, not PNG: every sprite in the library carries a real alpha channel now,
+ * and WebP gives that at roughly two-thirds the bytes. The whole directory was
+ * converted at once — there is deliberately no per-word fallback to `.png`,
+ * because a resolver that silently tries two extensions hides a missing asset
+ * instead of 404-ing loudly.
+ */
+export const objectImage = (word) => url(`assets/objects/${word}.webp`);
 /** Spoken word clip. */
 export const wordAudio = (word) => url(`assets/audio/words/${word}.m4a`);
 /** Word said with celebration prosody. */
@@ -100,7 +108,7 @@ export function objectsStartingWith(letter) {
 /**
  * The curated set of appealing objects for a letter (from letter-objects.json) —
  * hand-picked, recognizable nouns for prize reveals / alphabet play. Each has a
- * resolved `image` (shared/assets/objects/<word>.png) and `char` emoji fallback.
+ * resolved `image` (shared/assets/objects/<word>.webp) and `char` emoji fallback.
  */
 export function letterObjects(letter) {
   const list = (_letterObjects && _letterObjects[String(letter).toUpperCase()]) || [];

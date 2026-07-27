@@ -1379,7 +1379,7 @@ def write_recipe(folder: Path, recipe: dict):
 
 def resolve_style_ref(state: AuthoringState, ref: str) -> Path:
     """Resolve a SYMBOLIC style ref to a real file for the network call only —
-    the symbolic form ("shared:objects/cat.png" or a named local styleRefs key) is
+    the symbolic form ("shared:objects/cat.webp" or a named local styleRefs key) is
     what the recipe stores; the machine path never is."""
     if not ref:
         raise ValueError("an edit workflow requires a style ref")

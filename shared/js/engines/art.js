@@ -3,7 +3,7 @@
 // Swapping placeholder emoji for real art later is a config edit only.
 //
 //   emoji:🐸                    big emoji on a soft rounded card
-//   shared:objects/cat.png      shared/assets/objects/cat.png
+//   shared:objects/cat.webp      shared/assets/objects/cat.webp
 //   shared:foods/apple.png      shared/assets/foods/apple.png
 //   shared:letter-tiles/b.png   shared/assets/letter-tiles/b.png
 //   char:maya                   shared/characters/maya/portrait.png

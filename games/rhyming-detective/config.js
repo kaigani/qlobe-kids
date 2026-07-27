@@ -1,5 +1,5 @@
 const word = (name) => ({
-  art: `shared:objects/${name}.png`,
+  art: `shared:objects/${name}.webp`,
   alt: name,
   say: name,
 });
