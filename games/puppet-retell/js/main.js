@@ -2,6 +2,10 @@ import config from '../config.js';
 import { createStage } from '../../../shared/js/stage/stage.js';
 import { createTheater } from '../../../shared/js/stage/theater.js';
 import { createPerformanceRecorder, openPerformanceStore } from '../../../shared/js/performance-recorder.js';
+import {
+  canExportPerformanceMp4,
+  renderPerformanceMp4,
+} from '../../../shared/js/performance-video-export.js';
 import { onTap } from '../../../shared/js/tap.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as speech from '../../../shared/js/speech.js';
@@ -42,6 +46,8 @@ const defaultLines = {
 
 let current = null;
 let store = null;
+let pendingExport = null;
+let exportController = null;
 let readyResolve;
 const ready = new Promise((resolve) => { readyResolve = resolve; });
 
@@ -58,6 +64,7 @@ const state = {
   recording: false,
   replaying: false,
   showCount: 0,
+  exporting: false,
   muted: false,
   seed: 1,
   fastTimers: false,
@@ -379,7 +386,7 @@ async function nextBeat() {
   speak(`story.${story.id}.${beat.id}`, beat.line);
 }
 
-function applyPuppetAction(role, action, { record = true } = {}) {
+function applyPuppetAction(role, action, { record = true, sound = true } = {}) {
   if (!current?.actors?.[role] || !current.theater) return;
   const actor = current.actors[role];
   if (record) current.recorder.record('action', { role, action });
@@ -395,8 +402,8 @@ function applyPuppetAction(role, action, { record = true } = {}) {
   }
   if (action === 'cheer') {
     current.theater.playFx('burst', role);
-    if (!state.muted) sfx.sparkle();
-  } else if (!state.muted) {
+    if (sound && !state.muted) sfx.sparkle();
+  } else if (sound && !state.muted) {
     action === 'jump' ? sfx.boing() : sfx.pop();
   }
   const delay = state.fastTimers ? 60 : 1050;
@@ -468,6 +475,7 @@ function showSaved(showId) {
       <p>Your voice and puppet moves stay right here on this device.</p>
       <div class="celebration-actions">
         <button class="secondary-button replay-button" data-action="play-show" data-value="${showId}" data-target="replay-saved"><img src="${uiArt.replay}" alt="">Replay</button>
+        <button class="secondary-button export-button" data-action="export-show" data-value="${showId}" data-target="export-saved">Export MP4</button>
         <button class="primary-button" data-action="again" data-target="make-another">Make Another</button>
         <button class="secondary-button" data-action="shows" data-target="saved-shows">My Shows</button>
       </div>
@@ -491,7 +499,7 @@ async function renderShows() {
     const length = Math.max(1, Math.round((show.durationMs || 0) / 1000));
     return `<article class="choice-card show-card" data-target="show-${show.id}">
       <button class="show-thumb" style="${url ? `background-image:url('${url}')` : ''}" data-action="play-show" data-value="${show.id}" aria-label="Play ${esc(show.metadata?.title || 'puppet show')}">${url ? '' : `<img src="${esc(show.metadata?.storyArt || uiArt.freeShow)}" alt="">`}</button>
-      <div class="show-meta"><span>${esc(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show"><img src="${uiArt.delete}" alt=""></button></div>
+      <div class="show-meta"><span>${esc(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><div class="show-card-actions"><button class="show-export" data-action="export-show" data-value="${show.id}" aria-label="Export ${esc(show.metadata?.title || 'puppet show')} as MP4">MP4</button><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show"><img src="${uiArt.delete}" alt=""></button></div></div>
     </article>`;
   }).join('');
   setHtml(`<section class="screen">
@@ -502,6 +510,21 @@ async function renderShows() {
   speak('shows');
 }
 
+function applyShowEvent(event, { showBeat = false, sound = true } = {}) {
+  if (event.type === 'move') {
+    const actor = current?.actors?.[event.payload.role];
+    if (actor) {
+      actor.fx = Math.max(.1, Math.min(.9, Number(event.payload.x) || .5));
+      current.theater.placeActor(actor);
+    }
+  } else if (event.type === 'action') {
+    applyPuppetAction(event.payload.role, event.payload.action, { record: false, sound });
+  } else if (event.type === 'beat' && state.mode === 'guided') {
+    state.beat = Number(event.payload.index) || 0;
+    if (showBeat) refreshPerformanceHud();
+  }
+}
+
 async function playShow(id) {
   const show = await store.get(id);
   if (!show) return;
@@ -509,20 +532,7 @@ async function playShow(id) {
   state.phase = 'replay';
   state.replaying = true;
   current.recorder.play(show, {
-    applyEvent: (event) => {
-      if (event.type === 'move') {
-        const actor = current?.actors?.[event.payload.role];
-        if (actor) {
-          actor.fx = Math.max(.1, Math.min(.9, Number(event.payload.x) || .5));
-          current.theater.placeActor(actor);
-        }
-      } else if (event.type === 'action') {
-        applyPuppetAction(event.payload.role, event.payload.action, { record: false });
-      } else if (event.type === 'beat' && state.mode === 'guided') {
-        state.beat = Number(event.payload.index) || 0;
-        refreshPerformanceHud();
-      }
-    },
+    applyEvent: (event) => applyShowEvent(event, { showBeat: true }),
     onEnd: () => {
       state.replaying = false;
       state.phase = 'replay-done';
@@ -534,6 +544,138 @@ async function playShow(id) {
       speak('cheer');
     },
   });
+}
+
+async function exportShow(id) {
+  if (state.exporting) return;
+  const capabilityCanvas = document.createElement('canvas');
+  if (!canExportPerformanceMp4(capabilityCanvas)) {
+    showModal('MP4 Export Needs a Newer Browser', 'This show is still safe on this device. Open QLOBE Kids in a current version of Safari or Chrome to export it.', [
+      ['Okay', 'close-modal', '', 'primary-button'],
+    ]);
+    return;
+  }
+  const show = await store.get(id);
+  if (!show) return;
+
+  exportController?.abort();
+  exportController = new AbortController();
+  state.exporting = true;
+  confettiEl.innerHTML = '';
+  try {
+    await mountPerformance(show.initialState, { replay: true });
+    state.replaying = false;
+    state.phase = 'exporting';
+    document.querySelector('.performance-hud')?.remove();
+    const renderer = current.stage.app.renderer;
+    renderer.resolution = 1;
+    renderer.resize(1280, 720);
+    current.stage.app.canvas.style.width = '100%';
+    current.stage.app.canvas.style.height = '100%';
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    showExportProgress(show.metadata?.title || 'Puppet Show');
+    const blob = await renderPerformanceMp4({
+      canvas: current.stage.app.canvas,
+      show,
+      applyEvent: (event) => applyShowEvent(event, { sound: false }),
+      onProgress: updateExportProgress,
+      signal: exportController.signal,
+    });
+    const filename = exportFilename(show);
+    pendingExport = { blob, filename };
+    state.phase = 'export-ready';
+    showExportReady();
+  } catch (error) {
+    if (error?.code === 'EXPORT_CANCELLED') {
+      await renderShows();
+    } else {
+      console.error(error);
+      await renderShows();
+      showModal('Could Not Export MP4', 'Your saved show is still safe. Please try the export again.', [
+        ['Okay', 'close-modal', '', 'primary-button'],
+      ]);
+    }
+  } finally {
+    exportController = null;
+    state.exporting = false;
+  }
+}
+
+function showExportProgress(title) {
+  document.querySelector('.export-progress')?.remove();
+  appEl.insertAdjacentHTML('beforeend', `<div class="export-progress modal">
+    <div class="modal-card export-card">
+      <img class="export-art" src="${uiArt.replay}" alt="">
+      <h2>Making Your MP4</h2>
+      <p>${esc(title)} is playing into a shareable video right here on this device.</p>
+      <div class="export-meter" role="progressbar" aria-label="MP4 export progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="export-meter-fill"></i></div>
+      <strong id="export-percent">0%</strong>
+      <button class="secondary-button compact-button" data-action="cancel-export">Cancel</button>
+    </div>
+  </div>`);
+  tapAll(appEl.querySelector('.export-progress'));
+}
+
+function updateExportProgress(value) {
+  const percent = Math.max(0, Math.min(100, Math.round(Number(value) * 100)));
+  const meter = document.querySelector('.export-meter');
+  const fill = document.querySelector('#export-meter-fill');
+  const label = document.querySelector('#export-percent');
+  meter?.setAttribute('aria-valuenow', String(percent));
+  if (fill) fill.style.width = `${percent}%`;
+  if (label) label.textContent = `${percent}%`;
+}
+
+function showExportReady() {
+  document.querySelector('.export-progress')?.remove();
+  const actions = [
+    ['Save MP4', 'save-export', '', 'primary-button'],
+  ];
+  if (pendingExport && typeof navigator.share === 'function' && typeof File !== 'undefined') {
+    const file = new File([pendingExport.blob], pendingExport.filename, { type: 'video/mp4' });
+    if (navigator.canShare?.({ files: [file] })) actions.push(['Share', 'share-export', '', 'secondary-button']);
+  }
+  actions.push(['My Shows', 'shows', '', 'secondary-button']);
+  showModal('Your MP4 Is Ready!', 'Save it for posterity or open the device share sheet. Nothing was uploaded.', actions);
+}
+
+function exportFilename(show) {
+  const title = String(show.metadata?.title || 'puppet-show')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') || 'puppet-show';
+  const date = String(show.createdAt || new Date().toISOString()).slice(0, 10);
+  return `puppet-retell-${title}-${date}.mp4`;
+}
+
+function savePendingExport() {
+  if (!pendingExport) return;
+  const url = URL.createObjectURL(pendingExport.blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = pendingExport.filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+async function sharePendingExport() {
+  if (!pendingExport) return;
+  const file = new File([pendingExport.blob], pendingExport.filename, { type: 'video/mp4' });
+  if (!navigator.canShare?.({ files: [file] })) {
+    savePendingExport();
+    return;
+  }
+  try {
+    await navigator.share({
+      files: [file],
+      title: 'My Puppet Retell Show',
+      text: 'A puppet story made with QLOBE Kids',
+    });
+  } catch (error) {
+    if (error?.name !== 'AbortError') savePendingExport();
+  }
 }
 
 function showModal(title, message, buttons) {
@@ -652,6 +794,13 @@ async function handleAction(action, value, el) {
     document.querySelector('.modal')?.remove();
     return playShow(value);
   }
+  if (action === 'export-show') {
+    document.querySelector('.modal')?.remove();
+    return exportShow(value);
+  }
+  if (action === 'cancel-export') { exportController?.abort(); return; }
+  if (action === 'save-export') { savePendingExport(); return; }
+  if (action === 'share-export') return sharePendingExport();
   if (action === 'stop-replay') {
     current?.recorder?.cancelPlayback();
     return renderShows();
@@ -676,6 +825,7 @@ async function init() {
 }
 
 window.addEventListener('pagehide', () => {
+  exportController?.abort();
   current?.recorder?.destroy();
   voice.stop();
   speech.stop();
@@ -699,6 +849,7 @@ window.QLOBE_DEBUG = {
     recording: state.recording,
     replaying: state.replaying,
     showCount: state.showCount,
+    exporting: state.exporting,
     round: state.mode === 'guided' ? state.beat + 1 : 1,
     roundsTotal: state.mode === 'guided' ? 3 : 1,
     awaitingInput: !['saving'].includes(state.phase),

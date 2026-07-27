@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Real-Chrome smoke + visual-QC driver for Puppet Retell.
 
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
@@ -66,11 +66,12 @@ async function buildCast(page, mode = 'guided') {
   await tap(page, 'cast-bear');
   await tap(page, 'cast-rabbit');
   await tap(page, 'cast-next');
+  check('six stage backgrounds available', (await page.locator('.stage-card').count()) === 6);
   await tap(page, 'dress-a');
   await tap(page, 'prop-crown');
   await tap(page, 'dress-b');
   await tap(page, 'prop-magic-wand');
-  await tap(page, 'stage-puppet-theater');
+  await tap(page, mode === 'free' ? 'stage-moon-adventure' : 'stage-forest-cottage');
   await tap(page, 'stage-ready');
   await page.waitForFunction(() => {
     const state = window.QLOBE_DEBUG.getState();
@@ -117,7 +118,7 @@ async function main() {
   await tap(page, 'prop-crown');
   await tap(page, 'dress-b');
   await tap(page, 'prop-magic-wand');
-  await tap(page, 'stage-puppet-theater');
+  await tap(page, 'stage-forest-cottage');
   await page.screenshot({ path: path.join(shots, '04-build-show.png') });
   await tap(page, 'stage-ready');
   await page.waitForFunction(() => {
@@ -150,6 +151,22 @@ async function main() {
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'shows');
   check('saved show appears on shelf', (await page.locator('.show-card').count()) >= 1);
   await page.screenshot({ path: path.join(shots, '08-my-shows.png') });
+  await page.locator('.show-export').first().click();
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().exporting === true);
+  await page.waitForSelector('.export-progress');
+  await page.screenshot({ path: path.join(shots, '08a-export-progress.png') });
+  await page.waitForSelector('text=Your MP4 Is Ready!', { timeout: 20000 });
+  await page.screenshot({ path: path.join(shots, '08b-export-ready.png') });
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Save MP4' }).click();
+  const download = await downloadPromise;
+  const mp4Path = path.join(shots, 'puppet-retell-export.mp4');
+  await download.saveAs(mp4Path);
+  const mp4Bytes = await readFile(mp4Path);
+  check('MP4 export downloads', (await stat(mp4Path)).size > 20_000, `${(await stat(mp4Path)).size} bytes`);
+  check('export is an MP4 container', mp4Bytes.subarray(4, 8).toString('ascii') === 'ftyp');
+  await page.getByRole('button', { name: 'My Shows' }).click();
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'shows');
   await page.locator('.show-thumb').first().click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'replay');
   await page.waitForTimeout(700);
@@ -187,6 +204,17 @@ async function main() {
   await tap(denied.page, 'record-stop');
   await denied.page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'saved', null, { timeout: 15000 });
   check('movement-only show saves', (await denied.page.evaluate(() => window.QLOBE_DEBUG.getState().showCount)) === 1);
+  await tap(denied.page, 'export-saved');
+  await denied.page.waitForSelector('text=Your MP4 Is Ready!', { timeout: 20000 });
+  const silentDownloadPromise = denied.page.waitForEvent('download');
+  await denied.page.getByRole('button', { name: 'Save MP4' }).click();
+  const silentDownload = await silentDownloadPromise;
+  const silentMp4Path = path.join(shots, 'puppet-retell-movement-only-export.mp4');
+  await silentDownload.saveAs(silentMp4Path);
+  const silentMp4Bytes = await readFile(silentMp4Path);
+  check('movement-only MP4 exports',
+    silentMp4Bytes.length > 20_000 && silentMp4Bytes.subarray(4, 8).toString('ascii') === 'ftyp',
+    `${silentMp4Bytes.length} bytes`);
   check('no errors in microphone-denied fallback', denied.errors.length === 0, denied.errors.join(' | '));
   await denied.page.close({ runBeforeUnload: false });
   await Promise.race([

@@ -9,18 +9,19 @@
   "status": "beta",
   "accent": "#0d9fa5",
   "shareTitle": "Puppet Retell — Make Your Own Puppet Show",
-  "description": "Choose two puppet stars, dress the cast, tell an original or classic story in your own voice, and replay the whole performance. Shows stay on this device.",
+  "description": "Choose two puppet stars, dress the cast, tell a story in your own voice, replay it, and export the finished performance as a private on-device MP4.",
   "learningGoals": [
     "Tell a story with a clear beginning, middle, and ending",
     "Build confident imaginative oral storytelling",
     "Coordinate character movement, expression, and dialogue"
   ],
-  "interactionModel": "two-puppet direct manipulation with large action buttons, optional guided story beats, local microphone recording, and on-device replay",
-  "feedbackModel": "spoken stage directions, responsive rigged-puppet actions, story-beat prompts, local-save confirmation, and replay celebration",
+  "interactionModel": "two-puppet direct manipulation with large action buttons, six selectable stages, optional guided story beats, local microphone recording, on-device replay, and local MP4 export",
+  "feedbackModel": "spoken stage directions, responsive rigged-puppet actions, story-beat prompts, local-save confirmation, replay celebration, and MP4 render progress",
   "uses": [
     "shared/js/stage/stage.js",
     "shared/js/stage/theater.js",
     "shared/js/performance-recorder.js",
+    "shared/js/performance-video-export.js",
     "shared/js/voice-clips.js",
     "shared/js/sfx.js",
     "shared/characters/bear/",
@@ -40,7 +41,7 @@
     "recording": "optional microphone audio plus puppet-action timeline",
     "storage": "IndexedDB on the current device only",
     "uploads": false,
-    "exports": false,
+    "exports": "H.264/AAC MP4 rendered locally on explicit user action",
     "maximumSavedShows": 24
   },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },

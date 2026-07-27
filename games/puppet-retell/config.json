@@ -45,6 +45,24 @@
       "title": "Puppet Theater",
       "backdrop": "./assets/bg/puppet-theater.jpg",
       "floorY": 0.82
+    },
+    {
+      "id": "enchanted-castle",
+      "title": "Enchanted Castle",
+      "backdrop": "./assets/bg/enchanted-castle.jpg",
+      "floorY": 0.82
+    },
+    {
+      "id": "moon-adventure",
+      "title": "Moon Adventure",
+      "backdrop": "./assets/bg/moon-adventure.jpg",
+      "floorY": 0.83
+    },
+    {
+      "id": "forest-cottage",
+      "title": "Forest Cottage",
+      "backdrop": "./assets/bg/forest-cottage.jpg",
+      "floorY": 0.84
     }
   ],
   "accessories": [
@@ -101,7 +119,7 @@
       "collection": "original",
       "title": "Forest Rescue",
       "art": "./assets/story/forest-rescue.jpg",
-      "stage": "sunny-meadow",
+      "stage": "forest-cottage",
       "beats": [
         { "id": "beginning", "art": "./assets/story/forest-rescue.jpg", "line": "Once upon a time, two friends found tiny footprints in the forest. Who made them?" },
         { "id": "middle", "art": "./assets/story/forest-rescue.jpg", "line": "Then they heard a little cry across the stream. Show how the friends helped." },
@@ -113,7 +131,7 @@
       "collection": "original",
       "title": "Moon Surprise",
       "art": "./assets/story/moon-surprise.jpg",
-      "stage": "puppet-theater",
+      "stage": "moon-adventure",
       "beats": [
         { "id": "beginning", "art": "./assets/story/moon-surprise.jpg", "line": "Once upon a time, two friends found a glowing map to the moon." },
         { "id": "middle", "art": "./assets/story/moon-surprise.jpg", "line": "Then a little star needed their help. What did the friends do?" },
@@ -125,7 +143,7 @@
       "collection": "original",
       "title": "Royal Picnic",
       "art": "./assets/story/royal-picnic.jpg",
-      "stage": "sunny-meadow",
+      "stage": "enchanted-castle",
       "beats": [
         { "id": "beginning", "art": "./assets/story/royal-picnic.jpg", "line": "Once upon a time, two friends prepared a royal picnic." },
         { "id": "middle", "art": "./assets/story/royal-picnic.jpg", "line": "Then a gust of wind sent everything flying. Show what happened next." },
@@ -161,7 +179,7 @@
       "collection": "classic",
       "title": "Little Red Riding Hood",
       "art": "./assets/story/little-red.jpg",
-      "stage": "sunny-meadow",
+      "stage": "forest-cottage",
       "beats": [
         { "id": "beginning", "art": "./assets/story/little-red.jpg", "line": "Little Red carried a basket through the woods to Grandma's house." },
         { "id": "middle", "art": "./assets/story/little-red.jpg", "line": "Then she met a tricky wolf on the path. What did she do?" },
