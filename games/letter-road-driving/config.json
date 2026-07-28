@@ -10,6 +10,7 @@
   "orientTraveler": true,
   "ghostTrace": true,
   "driveReplay": true,
+  "mapSprites": true,
   "strokeColor": "#ffd166",
   "tolerance": 82,
   "startMarker": "★",
@@ -202,6 +203,86 @@
           "destinationColor": "#147de1",
           "destinationPosition": [150, 760],
           "points": [[650, 170], [650, 430], [650, 690], [560, 810], [380, 830], [250, 720]]
+        },
+        {
+          "id": "b-road",
+          "name": "Letter B",
+          "prompt": "Drive Benny to the bakery! B is for Bakery.",
+          "promptKey": "prompt-b",
+          "say": "Brilliant bends! You made the letter B.",
+          "sayKey": "done-b",
+          "traveler": "game:assets/cars/benny-blue.png",
+          "carName": "Benny",
+          "carColor": "Blue",
+          "destination": "Bakery",
+          "word": "Bakery",
+          "destinationColor": "#147de1",
+          "destinationPosition": [855, 820],
+          "points": [[280, 820], [280, 500], [280, 180], [500, 170], [680, 250], [620, 420], [300, 500], [560, 500], [730, 640], [650, 800], [350, 820]]
+        },
+        {
+          "id": "d-road",
+          "name": "Letter D",
+          "prompt": "Drive Gigi to the dance studio! D is for Dance.",
+          "promptKey": "prompt-d",
+          "say": "Dazzling drive! You made the letter D.",
+          "sayKey": "done-d",
+          "traveler": "game:assets/cars/gigi-green.png",
+          "carName": "Gigi",
+          "carColor": "Green",
+          "destination": "Dance Studio",
+          "word": "Dance",
+          "destinationColor": "#69c629",
+          "destinationPosition": [150, 820],
+          "points": [[280, 820], [280, 500], [280, 180], [500, 180], [720, 310], [780, 500], [720, 690], [500, 820], [280, 820]]
+        },
+        {
+          "id": "g-road",
+          "name": "Letter G",
+          "prompt": "Drive Gigi to the grocery market! G is for Grocery.",
+          "promptKey": "prompt-g",
+          "say": "Great going! You made the letter G.",
+          "sayKey": "done-g",
+          "traveler": "game:assets/cars/gigi-green.png",
+          "carName": "Gigi",
+          "carColor": "Green",
+          "destination": "Grocery Market",
+          "word": "Grocery",
+          "destinationColor": "#69c629",
+          "destinationPosition": [850, 600],
+          "points": [[730, 250], [570, 150], [350, 180], [210, 360], [220, 620], [390, 800], [650, 780], [780, 620], [780, 520], [600, 520]]
+        },
+        {
+          "id": "p-road",
+          "name": "Letter P",
+          "prompt": "Drive Pippa to the pet store! P is for Pets.",
+          "promptKey": "prompt-p",
+          "say": "Perfect path! You made the letter P.",
+          "sayKey": "done-p",
+          "traveler": "game:assets/cars/pippa-purple.png",
+          "carName": "Pippa",
+          "carColor": "Purple",
+          "destination": "Pet Store",
+          "word": "Pets",
+          "destinationColor": "#a43de0",
+          "destinationPosition": [790, 500],
+          "points": [[280, 830], [280, 500], [280, 180], [510, 170], [710, 250], [700, 410], [520, 500], [300, 500]]
+        },
+        {
+          "id": "q-road",
+          "name": "Letter Q",
+          "prompt": "Drive Pippa to the quilt shop! Q is for Quilt.",
+          "promptKey": "prompt-q",
+          "say": "Quick and smooth! You made the letter Q.",
+          "sayKey": "done-q",
+          "traveler": "game:assets/cars/pippa-purple.png",
+          "carName": "Pippa",
+          "carColor": "Purple",
+          "destination": "Quilt Shop",
+          "word": "Quilt",
+          "destinationColor": "#a43de0",
+          "destinationPosition": [850, 830],
+          "points": [[500, 160], [300, 190], [190, 410], [240, 660], [470, 800], [700, 720], [800, 490], [720, 250], [500, 160], [560, 580], [690, 720], [800, 830]]
         }
       ]
     },
@@ -395,6 +476,87 @@
             [[190, 180], [350, 360], [500, 560]],
             [[500, 560], [650, 360], [810, 180]],
             [[810, 180], [810, 500], [810, 820]]
+          ]
+        },
+        {
+          "id": "n-road",
+          "name": "Letter N",
+          "prompt": "Drive Gigi to the nature center! N is for Nature.",
+          "promptKey": "prompt-n",
+          "say": "Nice navigating! You built the letter N.",
+          "sayKey": "done-n",
+          "traveler": "game:assets/cars/gigi-green.png",
+          "carName": "Gigi",
+          "carColor": "Green",
+          "destination": "Nature Center",
+          "word": "Nature",
+          "destinationColor": "#69c629",
+          "destinationPosition": [855, 830],
+          "points": [
+            [[230, 820], [230, 500], [230, 180]],
+            [[230, 180], [500, 500], [770, 820]],
+            [[770, 820], [770, 500], [770, 180]]
+          ]
+        },
+        {
+          "id": "r-road",
+          "name": "Letter R",
+          "prompt": "Drive Herbie to robot repair! R is for Robot.",
+          "promptKey": "prompt-r",
+          "say": "Road-ready! You built the letter R.",
+          "sayKey": "done-r",
+          "traveler": "game:assets/cars/herbie-red.png",
+          "carName": "Herbie",
+          "carColor": "Red",
+          "destination": "Robot Repair",
+          "word": "Robot",
+          "destinationColor": "#ef3e31",
+          "destinationPosition": [855, 830],
+          "points": [
+            [[260, 830], [260, 500], [260, 180]],
+            [[260, 180], [500, 170], [700, 260], [680, 420], [500, 500], [260, 500]],
+            [[500, 500], [640, 650], [780, 830]]
+          ]
+        },
+        {
+          "id": "w-road",
+          "name": "Letter W",
+          "prompt": "Drive Benny to the water park! W is for Water.",
+          "promptKey": "prompt-w",
+          "say": "Wonderful waves! You built the letter W.",
+          "sayKey": "done-w",
+          "traveler": "game:assets/cars/benny-blue.png",
+          "carName": "Benny",
+          "carColor": "Blue",
+          "destination": "Water Park",
+          "word": "Water",
+          "destinationColor": "#147de1",
+          "destinationPosition": [855, 830],
+          "points": [
+            [[170, 180], [250, 500], [340, 820]],
+            [[340, 820], [420, 560], [500, 340]],
+            [[500, 340], [580, 560], [660, 820]],
+            [[660, 820], [750, 500], [830, 180]]
+          ]
+        },
+        {
+          "id": "y-road",
+          "name": "Letter Y",
+          "prompt": "Drive Sunny to the yarn shop! Y is for Yarn.",
+          "promptKey": "prompt-y",
+          "say": "Yes, you did it! You built the letter Y.",
+          "sayKey": "done-y",
+          "traveler": "game:assets/cars/sunny-yellow.png",
+          "carName": "Sunny",
+          "carColor": "Yellow",
+          "destination": "Yarn Shop",
+          "word": "Yarn",
+          "destinationColor": "#ffd21f",
+          "destinationPosition": [500, 855],
+          "points": [
+            [[190, 180], [350, 340], [500, 500]],
+            [[810, 180], [650, 340], [500, 500]],
+            [[500, 500], [500, 660], [500, 830]]
           ]
         }
       ]

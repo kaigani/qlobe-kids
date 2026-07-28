@@ -39,45 +39,90 @@
     "match": 1.0,
     "transcript": "Now find number three."
   },
+  "next-four": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "One more road. Find number four."
+  },
   "cruise-intro": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "drive each easy road from start to finish."
+  },
+  "prompt-l": {
+    "status": "ok seed 7",
+    "match": 0.944,
+    "transcript": "Drive Herbie to the Library. Alice for Library."
   },
   "done-l": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Lovely driving! You made the letter L!"
   },
+  "prompt-u": {
+    "status": "ok seed 7",
+    "match": 0.98,
+    "transcript": "Drive sunny to the umbrella shop. You is for umbrella."
+  },
   "done-u": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Up! You go! You made the letter U!"
+  },
+  "prompt-c": {
+    "status": "ok seed 7",
+    "match": 0.959,
+    "transcript": "Drive Benny to the cupcake cafe! See is for cupcake!"
   },
   "done-c": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Cool curve! You made the letter C!"
   },
+  "prompt-o": {
+    "status": "ok seed 7",
+    "match": 0.98,
+    "transcript": "Drive GG to the Observatory. O is for Observatory."
+  },
   "done-o": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Oh, what a loop! You made the letter O!"
+  },
+  "prompt-v": {
+    "status": "ok seed 7",
+    "match": 0.988,
+    "transcript": "Drive PIPA to the vet clinic. V is for vet."
   },
   "done-v": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Very nice! You made the letter V!"
   },
+  "prompt-z": {
+    "status": "ok seed 7",
+    "match": 0.958,
+    "transcript": "Drive herby to the zoo. Z is for zoo."
+  },
   "done-z": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Zoom! You made the letter Z!"
   },
+  "prompt-s": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Drive Sunny to the Sweet Shop. S is for sweets."
+  },
   "done-s": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Super swooping! You made the letter S!"
+  },
+  "prompt-j": {
+    "status": "ok seed 7",
+    "match": 0.977,
+    "transcript": "Drive Benny to the juice bar. Jay is for juice."
   },
   "done-j": {
     "status": "ok seed 7",
@@ -89,130 +134,85 @@
     "match": 1.0,
     "transcript": "Drive the numbered roads in order."
   },
-  "done-a": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Amazing! You built the letter A!"
-  },
-  "done-t": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Terrific turns, you built the letter T."
-  },
-  "done-h": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Happy Honk! You built the letter H!"
-  },
-  "done-k": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Keep on cruising! You built the letter K!"
-  },
-  "done-e": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Excellent! You built the letter E!"
-  },
-  "done-f": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Fantastic! You built the letter F!"
-  },
-  "done-i": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Incredible! You built the letter I-"
-  },
-  "done-x": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Extra special! You built the letter X."
-  },
-  "next-four": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "One more road. Find number four."
-  },
-  "prompt-l": {
-    "status": "ok seed 7",
-    "match": 0.944,
-    "transcript": "Drive Herbie to the Library. Alice for Library."
-  },
-  "prompt-u": {
-    "status": "ok seed 7",
-    "match": 0.98,
-    "transcript": "Drive sunny to the umbrella shop. You is for umbrella."
-  },
-  "prompt-c": {
-    "status": "ok seed 7",
-    "match": 0.959,
-    "transcript": "Drive Benny to the cupcake cafe! See is for cupcake!"
-  },
-  "prompt-o": {
-    "status": "ok seed 7",
-    "match": 0.98,
-    "transcript": "Drive GG to the Observatory. O is for Observatory."
-  },
-  "prompt-v": {
-    "status": "ok seed 7",
-    "match": 0.988,
-    "transcript": "Drive PIPA to the vet clinic. V is for vet."
-  },
-  "prompt-z": {
-    "status": "ok seed 7",
-    "match": 0.958,
-    "transcript": "Drive herby to the zoo. Z is for zoo."
-  },
-  "prompt-s": {
-    "status": "ok seed 7",
-    "match": 1.0,
-    "transcript": "Drive Sunny to the Sweet Shop. S is for sweets."
-  },
-  "prompt-j": {
-    "status": "ok seed 7",
-    "match": 0.977,
-    "transcript": "Drive Benny to the juice bar. Jay is for juice."
-  },
   "prompt-a": {
     "status": "ok seed 7",
     "match": 0.975,
     "transcript": "Drive GG to the art studio. A is for art."
+  },
+  "done-a": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Amazing! You built the letter A!"
   },
   "prompt-t": {
     "status": "ok seed 7",
     "match": 0.976,
     "transcript": "Drive Pippa to the Toy Shop. Tee is for toys."
   },
+  "done-t": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Terrific turns, you built the letter T."
+  },
   "prompt-h": {
     "status": "ok seed 7",
     "match": 0.977,
     "transcript": "Drive Herbie to the Hatch shop. H is for hats."
+  },
+  "done-h": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Happy Honk! You built the letter H!"
   },
   "prompt-k": {
     "status": "ok seed 7",
     "match": 0.959,
     "transcript": "Drive Sunny to Kipark. K is for kite."
   },
+  "done-k": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Keep on cruising! You built the letter K!"
+  },
   "prompt-e": {
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Drive Benny to the engine garage. E is for engine."
+  },
+  "done-e": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Excellent! You built the letter E!"
   },
   "prompt-f": {
     "status": "ok seed 7",
     "match": 0.977,
     "transcript": "Drive GG to the flower shop. F is for flower."
   },
+  "done-f": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Fantastic! You built the letter F!"
+  },
   "prompt-i": {
     "status": "ok seed 7",
     "match": 0.99,
     "transcript": "Drive PIPA to the ice cream shop. I is for ice cream."
   },
+  "done-i": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Incredible! You built the letter I-"
+  },
   "prompt-x": {
     "status": "ok seed 7",
     "match": 0.902,
     "transcript": "Drive Herbie to Silophone Hall. X is for X-Wylaw Phone."
+  },
+  "done-x": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Extra special! You built the letter X."
   },
   "prompt-m": {
     "status": "ok seed 7",
@@ -223,5 +223,95 @@
     "status": "ok seed 7",
     "match": 1.0,
     "transcript": "Marvelous music, you built the letter M."
+  },
+  "prompt-b": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Drive Benny to the bakery. B is for bakery."
+  },
+  "done-b": {
+    "status": "ok seed 7",
+    "match": 0.959,
+    "transcript": "Brilliant Benz! You made the letter B."
+  },
+  "prompt-d": {
+    "status": "ok seed 7",
+    "match": 0.977,
+    "transcript": "Drive GG to the dance studio. D is for dance."
+  },
+  "done-d": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "dazzling drive! You made the letter D!"
+  },
+  "prompt-g": {
+    "status": "ok seed 7",
+    "match": 0.979,
+    "transcript": "Drive GG to the grocery market. G is for grocery!"
+  },
+  "done-g": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Great! Going! You made the letter G!"
+  },
+  "prompt-p": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Drive Pippa to the pet store. P is for pets."
+  },
+  "done-p": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Perfect Path, you made the letter P."
+  },
+  "prompt-q": {
+    "status": "ok seed 7",
+    "match": 0.989,
+    "transcript": "Drive PIPA to the quilt shop. Q is for quilt."
+  },
+  "done-q": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Quick and smooth! You made the letter Q!"
+  },
+  "prompt-n": {
+    "status": "ok seed 7",
+    "match": 0.957,
+    "transcript": "Drive GG to the Nature Center and is for Nature."
+  },
+  "done-n": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Nice navigating, you built the letter N!"
+  },
+  "prompt-r": {
+    "status": "ok seed 7",
+    "match": 0.965,
+    "transcript": "Drive herby to robot repair. R is for robot."
+  },
+  "done-r": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Road ready! You built the letter R!"
+  },
+  "prompt-w": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Drive Benny to the Water Park. W is for water."
+  },
+  "done-w": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Wonderful waves! You built the letter W."
+  },
+  "prompt-y": {
+    "status": "ok seed 7",
+    "match": 0.977,
+    "transcript": "Drive sunny to the yarn shop? Why is for yarn?"
+  },
+  "done-y": {
+    "status": "ok seed 7",
+    "match": 1.0,
+    "transcript": "Yes, you did it! You built the letter Y!"
   }
 }

@@ -416,7 +416,8 @@ class TracePathGame {
     this.demoLayer = demo;
     this.guideGraphics = [];
     this.inkGraphics = [];
-    this.buildTownDecorations(decor, destination);
+    await this.buildTownDecorations(decor, destination, generation);
+    if (!this.roundIsCurrent(generation)) return;
 
     for (let i = 0; i < this.currentStrokes.length; i++) {
       const guideGraphic = new PIXI.Graphics();
@@ -475,8 +476,12 @@ class TracePathGame {
     this.stage.setScene(scene);
   }
 
-  buildTownDecorations(container, destinationContainer) {
+  async buildTownDecorations(container, destinationContainer, generation) {
     if (!container || !this.stage || !this.currentPath) return;
+    // Generated map sprites are an opt-in theme capability. Other trace-path
+    // games keep their original undecorated boards and never request
+    // Letter Road-specific assets.
+    if (!this.config.mapSprites) return;
     const { PIXI } = this.stage;
     const destination = Array.isArray(this.currentPath.destinationPosition)
       ? {
@@ -484,11 +489,24 @@ class TracePathGame {
         y: clamp(Number(this.currentPath.destinationPosition[1]) || 820, 120, 880),
       }
       : { x: 830, y: 820 };
+    const destinationName = this.currentPath.destination || 'Letter Stop';
+    const destinationId = this.currentPath.destinationArtId || slugify(destinationName);
+    const destinationArt = await artObj(
+      PIXI,
+      this.currentPath.destinationArt || mapArtRef('destinations', destinationId),
+      230,
+      destinationName,
+    );
+    if (!this.roundIsCurrent(generation)) {
+      destinationArt.destroy({ children: true });
+      return;
+    }
     const destinationView = townDestination(
       PIXI,
-      this.currentPath.destination || 'Letter Stop',
+      destinationName,
       letterFromPath(this.currentPath),
       colorNumber(this.currentPath.destinationColor, 0xef5b45),
+      destinationArt,
     );
     destinationView.position.set(destination.x, destination.y);
     (destinationContainer || container).addChild(destinationView);
@@ -502,26 +520,51 @@ class TracePathGame {
     const safe = candidates.filter((point) =>
       Math.hypot(point.x - destination.x, point.y - destination.y) > 190
       && distanceToStrokes(point, this.currentStrokes) > 125);
-    const kinds = ['tree', 'flowers', 'lamp', 'bench', 'fountain', 'house', 'mailbox'];
+    const kinds = [
+      ['tree', 152], ['flower-bed', 138], ['lamp', 118], ['bench', 134],
+      ['fountain', 158], ['cottage', 170], ['mailbox', 112],
+      ['picket-fence', 132], ['topiary', 118], ['hydrant', 102],
+      ['signpost', 112], ['pond', 142], ['swings', 152],
+      ['gazebo', 162], ['picnic-table', 148],
+    ];
     const offset = hashString(this.currentPath.id || '') % kinds.length;
     const placed = safe.slice(0, 5);
+    const propSpecs = placed.map((_, index) => kinds[(index + offset) % kinds.length]);
+    const props = await Promise.all(propSpecs.map(([kind, size]) =>
+      artObj(PIXI, mapArtRef('props', kind), size, kind)));
+    if (!this.roundIsCurrent(generation)) {
+      props.forEach((prop) => prop.destroy({ children: true }));
+      return;
+    }
     placed.forEach((point, index) => {
-      const prop = townProp(PIXI, kinds[(index + offset) % kinds.length]);
+      const prop = props[index];
       prop.position.set(point.x, point.y);
+      prop.alpha = 0.98;
       container.addChild(prop);
     });
     const random = mulberry32(hashString(this.currentPath.id || '') + 911);
+    const detailKinds = [['flowers', 40], ['pebbles', 34], ['grass', 38]];
     let sprinkled = 0;
+    const sprinklePoints = [];
     for (let attempt = 0; attempt < 40 && sprinkled < 10; attempt++) {
       const point = { x: 78 + random() * 844, y: 92 + random() * 800 };
       if (Math.hypot(point.x - destination.x, point.y - destination.y) < 145) continue;
       if (distanceToStrokes(point, this.currentStrokes) < 104) continue;
       if (placed.some((item) => Math.hypot(point.x - item.x, point.y - item.y) < 82)) continue;
-      const detail = townSprinkle(PIXI, sprinkled % 3);
-      detail.position.set(point.x, point.y);
-      container.addChild(detail);
+      sprinklePoints.push({ ...point, spec: detailKinds[sprinkled % detailKinds.length] });
       sprinkled += 1;
     }
+    const details = await Promise.all(sprinklePoints.map(({ spec: [kind, size] }) =>
+      artObj(PIXI, mapArtRef('props', kind), size, kind)));
+    if (!this.roundIsCurrent(generation)) {
+      details.forEach((detail) => detail.destroy({ children: true }));
+      return;
+    }
+    details.forEach((detail, index) => {
+      detail.position.set(sprinklePoints[index].x, sprinklePoints[index].y);
+      detail.alpha = 0.92;
+      container.addChild(detail);
+    });
   }
 
   buildCheckpointViews(strokeIndex) {
@@ -1781,23 +1824,15 @@ function boundsFromPoints(points, pad) {
   return { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 };
 }
 
-function townDestination(PIXI, name, letter, accent) {
+function townDestination(PIXI, name, letter, accent, art) {
   const wrap = new PIXI.Container();
-  const building = new PIXI.Graphics();
-  building.roundRect(-82, -42, 164, 112, 18).fill(0xfff4cf)
-    .stroke({ width: 6, color: 0xffffff, alpha: 0.96 });
-  building.moveTo(-92, -40).lineTo(0, -102).lineTo(92, -40).closePath()
-    .fill(accent).stroke({ width: 6, color: 0xffffff, join: 'round' });
-  building.rect(-84, -24, 168, 22).fill(0xffffff);
-  for (let x = -72; x <= 52; x += 31) {
-    building.roundRect(x, -24, 24, 30, 7).fill(x % 2 ? accent : 0xffffff);
+  if (art) {
+    art.position.set(0, -2);
+    wrap.addChild(art);
   }
-  building.roundRect(-20, 26, 40, 44, 10).fill(0x2275c8)
-    .stroke({ width: 4, color: 0xffffff });
-  wrap.addChild(building);
 
   const badge = new PIXI.Graphics();
-  badge.circle(0, -55, 34).fill(0xffd739).stroke({ width: 5, color: 0xffffff });
+  badge.circle(0, -103, 32).fill(0xffd739).stroke({ width: 5, color: 0xffffff });
   wrap.addChild(badge);
   const letterText = new PIXI.Text({
     text: letter,
@@ -1810,7 +1845,7 @@ function townDestination(PIXI, name, letter, accent) {
     },
   });
   letterText.anchor.set(0.5);
-  letterText.position.set(0, -56);
+  letterText.position.set(0, -104);
   wrap.addChild(letterText);
   const label = new PIXI.Text({
     text: name,
@@ -1825,79 +1860,24 @@ function townDestination(PIXI, name, letter, accent) {
     },
   });
   label.anchor.set(0.5);
-  label.position.set(0, 91);
+  label.position.set(0, 126);
   const pill = new PIXI.Graphics();
-  pill.roundRect(-80, 73, 160, 38, 18).fill({ color: 0xffffff, alpha: 0.94 })
+  pill.roundRect(-92, 107, 184, 40, 19).fill({ color: 0xffffff, alpha: 0.96 })
     .stroke({ width: 4, color: accent, alpha: 0.55 });
   wrap.addChild(pill, label);
   return wrap;
 }
 
-function townProp(PIXI, kind) {
-  const wrap = new PIXI.Container();
-  const g = new PIXI.Graphics();
-  if (kind === 'tree') {
-    g.roundRect(-15, 8, 30, 68, 8).fill(0x9d632f);
-    g.circle(-28, -10, 40).fill(0x79cf35);
-    g.circle(22, -20, 46).fill(0x8bdc39);
-    g.circle(0, -48, 44).fill(0xa1e33d);
-    g.ellipse(0, 75, 56, 14).fill({ color: 0x70b62b, alpha: 0.5 });
-  } else if (kind === 'flowers') {
-    g.roundRect(-58, 12, 116, 42, 14).fill(0xb9783f).stroke({ width: 5, color: 0xffffff });
-    g.ellipse(0, 9, 62, 28).fill(0x6fc63a);
-    [[-36, -3, 0xff7eb3], [-12, 2, 0xffd83d], [14, -8, 0xffffff], [38, 4, 0xff78a9]].forEach(([x, y, color]) => {
-      g.circle(x, y, 12).fill(color);
-      g.circle(x, y, 4).fill(0xffbd2f);
-    });
-  } else if (kind === 'lamp') {
-    g.roundRect(-8, -46, 16, 114, 8).fill(0x28527f);
-    g.moveTo(-28, -42).lineTo(0, -72).lineTo(28, -42).closePath().fill(0x28527f);
-    g.roundRect(-23, -42, 46, 50, 9).fill(0xffe778).stroke({ width: 6, color: 0x28527f });
-    g.ellipse(0, 70, 30, 9).fill(0x28527f);
-  } else if (kind === 'bench') {
-    g.roundRect(-60, -30, 120, 28, 8).fill(0xb86c35).stroke({ width: 4, color: 0xffffff });
-    g.roundRect(-60, 8, 120, 22, 7).fill(0xc87a3c).stroke({ width: 4, color: 0xffffff });
-    g.roundRect(-46, 27, 12, 42, 5).fill(0x6f553d);
-    g.roundRect(34, 27, 12, 42, 5).fill(0x6f553d);
-  } else if (kind === 'fountain') {
-    g.ellipse(0, 35, 62, 34).fill(0xdacfb6).stroke({ width: 5, color: 0xffffff });
-    g.ellipse(0, 25, 50, 24).fill(0x58c9f2);
-    g.roundRect(-10, -20, 20, 52, 8).fill(0xe8ddc5);
-    g.circle(0, -25, 14).fill(0x75daf7);
-    g.circle(0, -52, 8).fill({ color: 0x75daf7, alpha: 0.75 });
-  } else if (kind === 'house') {
-    g.roundRect(-52, -18, 104, 84, 14).fill(0xffe5a8).stroke({ width: 5, color: 0xffffff });
-    g.moveTo(-66, -16).lineTo(0, -68).lineTo(66, -16).closePath()
-      .fill(0xe95f3d).stroke({ width: 5, color: 0xffffff, join: 'round' });
-    g.roundRect(-14, 20, 28, 46, 9).fill(0x4d8bd5);
-    g.circle(-28, 10, 12).fill(0x79c9ef).stroke({ width: 4, color: 0xffffff });
-  } else {
-    g.roundRect(-8, -20, 16, 90, 7).fill(0x8f623d);
-    g.roundRect(-45, -58, 90, 62, 16).fill(0x4aa8e8).stroke({ width: 5, color: 0xffffff });
-    g.moveTo(45, -48).lineTo(67, -34).lineTo(45, -20).closePath().fill(0xe94747);
-    g.roundRect(-34, -42, 28, 9, 4).fill(0x23598c);
-  }
-  wrap.addChild(g);
-  wrap.alpha = 0.96;
-  return wrap;
+function mapArtRef(folder, id) {
+  return `game:assets/map/${folder}/${id}.png`;
 }
 
-function townSprinkle(PIXI, kind) {
-  const g = new PIXI.Graphics();
-  if (kind === 0) {
-    g.circle(-7, 0, 7).fill(0xff8db2);
-    g.circle(7, 0, 7).fill(0xffffff);
-    g.circle(0, -7, 7).fill(0xffd84a);
-    g.circle(0, 2, 4).fill(0xf0a52c);
-  } else if (kind === 1) {
-    g.ellipse(0, 2, 13, 8).fill(0xd8b889);
-    g.ellipse(-3, -1, 7, 3).fill({ color: 0xffffff, alpha: 0.35 });
-  } else {
-    g.moveTo(-12, 9).quadraticCurveTo(-4, -12, 0, 7).quadraticCurveTo(8, -12, 12, 9)
-      .fill(0x78bd2f);
-  }
-  g.alpha = 0.88;
-  return g;
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function distanceToStrokes(point, strokes) {

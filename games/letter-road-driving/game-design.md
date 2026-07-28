@@ -48,10 +48,11 @@ Back from play/end returns to the splash; only splash Home returns to catalog.
 
 ### Easy Roads
 
-**One skill:** continuous left-to-right/top-to-bottom control on a single stroke.
+**One skill:** continuous ordered control on a single connected road.
 
-Eight roads: L, U, C, O, V, Z, S, J. A new four-road deck is shuffled and
-selected on every play. Each begins with one large star and a direction arrow.
+Thirteen roads: B, C, D, G, J, L, O, P, Q, S, U, V, Z. A new four-road deck is
+shuffled and selected on every play. Each begins with one large star and a
+direction arrow.
 The ghost car stays where the child touches but progress only advances along
 the ordered centerline, so wandering does not accidentally skip the letter.
 
@@ -59,10 +60,11 @@ the ordered centerline, so wandering does not accidentally skip the letter.
 
 **One skill:** uppercase multi-stroke order.
 
-Nine letters: A, T, H, K, E, F, I, X, M. A new four-letter deck is shuffled and
-selected on every play. Every stroke start remains visible and numbered. Only
-the current start is fully bright. Completing a stroke prompts the next number,
-moves the car there, and preserves the golden road already driven.
+Thirteen letters: A, E, F, H, I, K, M, N, R, T, W, X, Y. A new four-letter deck
+is shuffled and selected on every play. Every stroke start remains visible and
+numbered. Only the current start is fully bright. Completing a stroke prompts
+the next number, moves the car there, and preserves the golden road already
+driven. Together the two modes provide complete A–Z coverage.
 
 ## Spoken script
 
@@ -81,8 +83,14 @@ voice and falls back to the exact same line through Web Speech.
 - `assets/cars/*.png`: five new gpt-image-2 expressive character cars derived
   from the supplied scenario direction. Red/yellow/blue/purple use reviewed
   chroma cutouts; green uses Qwen Image Layered to preserve dark and cream parts.
-- Town props and destination buildings are procedural Pixi illustrations,
-  selected around each path without blocking the road.
+- `assets/map/destinations/*.png`: 26 unique letter-linked destinations plus a
+  bonus Town Hall, generated as three yellow-ground 3×3 gpt-image-2 sheets,
+  separated as whole sheets with Qwen Image Layered, then deterministically
+  sliced and alpha-QC'd.
+- `assets/map/props/*.png`: 18 matching map details from two more 3×3 sheets,
+  including cottage, fountain, swings, gazebo, plants, street furniture, and
+  small ground details. Props are selected around each path without blocking
+  the road.
 - Roads, start markers, progress glow, and celebrations are procedural Pixi
   graphics so geometry always matches the trace target.
 - `vroom`, sustained `motor`, and `honk` are audible zero-file WebAudio effects.
@@ -104,10 +112,11 @@ voice and falls back to the exact same line through Web Speech.
 
 ## Replay variation and difficulty
 
-Each run samples four roads from an eight-road Easy pool or nine-road Town pool,
-giving replay variety while keeping a small, learnable set. Difficulty changes
-by mode: single continuous road first, then two- to four-stroke letters. A future pack can add
-lowercase forms as data without engine changes.
+Each run samples four roads from a thirteen-road Easy pool or thirteen-road
+Town pool. Difficulty changes by mode: one connected road first, then two- to
+four-stroke letters. The full alphabet is available without forcing a
+26-round session. A future pack can add lowercase forms as data without engine
+changes.
 
 ## Privacy, persistence, and fallback
 

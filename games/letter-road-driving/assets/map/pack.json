@@ -1,0 +1,962 @@
+{
+  "format": "qlobe-map-sprite-pack",
+  "formatVersion": 1,
+  "generated": "2026-07-28",
+  "sourceModel": "gpt-image-2",
+  "extractionWorkflow": "qwen-image-layered",
+  "seed": 42,
+  "sheets": [
+    "destinations-a-i",
+    "destinations-j-r",
+    "destinations-s-z",
+    "props-town",
+    "props-play"
+  ],
+  "sprites": [
+    {
+      "id": "art-studio",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/map/destinations/art-studio.png",
+      "bboxInCell": [
+        55,
+        40,
+        327,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 58.005,
+        "opaquePct": 29.458,
+        "partialPct": 12.537
+      }
+    },
+    {
+      "id": "bakery",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/map/destinations/bakery.png",
+      "bboxInCell": [
+        36,
+        44,
+        306,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 57.799,
+        "opaquePct": 28.754,
+        "partialPct": 13.447
+      }
+    },
+    {
+      "id": "cupcake-cafe",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/map/destinations/cupcake-cafe.png",
+      "bboxInCell": [
+        17,
+        19,
+        270,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 61.855,
+        "opaquePct": 28.377,
+        "partialPct": 9.768
+      }
+    },
+    {
+      "id": "dance-studio",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/map/destinations/dance-studio.png",
+      "bboxInCell": [
+        41,
+        0,
+        325,
+        322
+      ],
+      "alpha": {
+        "transparentPct": 58.455,
+        "opaquePct": 34.269,
+        "partialPct": 7.275
+      }
+    },
+    {
+      "id": "engine-garage",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/map/destinations/engine-garage.png",
+      "bboxInCell": [
+        22,
+        0,
+        341,
+        328
+      ],
+      "alpha": {
+        "transparentPct": 60.076,
+        "opaquePct": 29.045,
+        "partialPct": 10.879
+      }
+    },
+    {
+      "id": "flower-shop",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/map/destinations/flower-shop.png",
+      "bboxInCell": [
+        0,
+        0,
+        289,
+        335
+      ],
+      "alpha": {
+        "transparentPct": 55.325,
+        "opaquePct": 26.474,
+        "partialPct": 18.201
+      }
+    },
+    {
+      "id": "grocery-market",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/map/destinations/grocery-market.png",
+      "bboxInCell": [
+        36,
+        22,
+        319,
+        308
+      ],
+      "alpha": {
+        "transparentPct": 57.583,
+        "opaquePct": 23.905,
+        "partialPct": 18.513
+      }
+    },
+    {
+      "id": "hat-shop",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/map/destinations/hat-shop.png",
+      "bboxInCell": [
+        12,
+        17,
+        292,
+        312
+      ],
+      "alpha": {
+        "transparentPct": 57.267,
+        "opaquePct": 29.681,
+        "partialPct": 13.051
+      }
+    },
+    {
+      "id": "ice-cream-shop",
+      "kind": "destination",
+      "sheet": "destinations-a-i",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/map/destinations/ice-cream-shop.png",
+      "bboxInCell": [
+        1,
+        13,
+        286,
+        326
+      ],
+      "alpha": {
+        "transparentPct": 55.976,
+        "opaquePct": 34.701,
+        "partialPct": 9.323
+      }
+    },
+    {
+      "id": "juice-bar",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/map/destinations/juice-bar.png",
+      "bboxInCell": [
+        54,
+        34,
+        338,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 55.145,
+        "opaquePct": 29.365,
+        "partialPct": 15.491
+      }
+    },
+    {
+      "id": "kite-park",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/map/destinations/kite-park.png",
+      "bboxInCell": [
+        20,
+        41,
+        339,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 60.388,
+        "opaquePct": 23.1,
+        "partialPct": 16.512
+      }
+    },
+    {
+      "id": "library",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/map/destinations/library.png",
+      "bboxInCell": [
+        0,
+        58,
+        280,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 56.293,
+        "opaquePct": 32.766,
+        "partialPct": 10.941
+      }
+    },
+    {
+      "id": "music-shop",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/map/destinations/music-shop.png",
+      "bboxInCell": [
+        47,
+        3,
+        334,
+        327
+      ],
+      "alpha": {
+        "transparentPct": 57.67,
+        "opaquePct": 23.237,
+        "partialPct": 19.093
+      }
+    },
+    {
+      "id": "nature-center",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/map/destinations/nature-center.png",
+      "bboxInCell": [
+        26,
+        1,
+        309,
+        328
+      ],
+      "alpha": {
+        "transparentPct": 57.751,
+        "opaquePct": 21.975,
+        "partialPct": 20.274
+      }
+    },
+    {
+      "id": "observatory",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/map/destinations/observatory.png",
+      "bboxInCell": [
+        9,
+        1,
+        267,
+        324
+      ],
+      "alpha": {
+        "transparentPct": 62.234,
+        "opaquePct": 22.374,
+        "partialPct": 15.392
+      }
+    },
+    {
+      "id": "pet-store",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/map/destinations/pet-store.png",
+      "bboxInCell": [
+        46,
+        12,
+        325,
+        291
+      ],
+      "alpha": {
+        "transparentPct": 59.19,
+        "opaquePct": 26.557,
+        "partialPct": 14.253
+      }
+    },
+    {
+      "id": "quilt-shop",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/map/destinations/quilt-shop.png",
+      "bboxInCell": [
+        15,
+        28,
+        340,
+        290
+      ],
+      "alpha": {
+        "transparentPct": 60.111,
+        "opaquePct": 29.524,
+        "partialPct": 10.365
+      }
+    },
+    {
+      "id": "robot-repair",
+      "kind": "destination",
+      "sheet": "destinations-j-r",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/map/destinations/robot-repair.png",
+      "bboxInCell": [
+        0,
+        0,
+        277,
+        293
+      ],
+      "alpha": {
+        "transparentPct": 60.13,
+        "opaquePct": 27.576,
+        "partialPct": 12.293
+      }
+    },
+    {
+      "id": "sweet-shop",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/map/destinations/sweet-shop.png",
+      "bboxInCell": [
+        58,
+        41,
+        338,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 57.423,
+        "opaquePct": 31.013,
+        "partialPct": 11.564
+      }
+    },
+    {
+      "id": "toy-shop",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/map/destinations/toy-shop.png",
+      "bboxInCell": [
+        23,
+        49,
+        339,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 57.637,
+        "opaquePct": 25.704,
+        "partialPct": 16.659
+      }
+    },
+    {
+      "id": "umbrella-shop",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/map/destinations/umbrella-shop.png",
+      "bboxInCell": [
+        0,
+        46,
+        271,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 57.213,
+        "opaquePct": 26.125,
+        "partialPct": 16.662
+      }
+    },
+    {
+      "id": "vet-clinic",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/map/destinations/vet-clinic.png",
+      "bboxInCell": [
+        60,
+        0,
+        338,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 60.878,
+        "opaquePct": 27.738,
+        "partialPct": 11.384
+      }
+    },
+    {
+      "id": "water-park",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/map/destinations/water-park.png",
+      "bboxInCell": [
+        21,
+        0,
+        342,
+        324
+      ],
+      "alpha": {
+        "transparentPct": 60.476,
+        "opaquePct": 24.041,
+        "partialPct": 15.483
+      }
+    },
+    {
+      "id": "xylophone-hall",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/map/destinations/xylophone-hall.png",
+      "bboxInCell": [
+        0,
+        0,
+        270,
+        339
+      ],
+      "alpha": {
+        "transparentPct": 60.451,
+        "opaquePct": 24.26,
+        "partialPct": 15.289
+      }
+    },
+    {
+      "id": "yarn-shop",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/map/destinations/yarn-shop.png",
+      "bboxInCell": [
+        54,
+        0,
+        331,
+        279
+      ],
+      "alpha": {
+        "transparentPct": 60.961,
+        "opaquePct": 26.257,
+        "partialPct": 12.783
+      }
+    },
+    {
+      "id": "zoo",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/map/destinations/zoo.png",
+      "bboxInCell": [
+        15,
+        14,
+        341,
+        280
+      ],
+      "alpha": {
+        "transparentPct": 67.626,
+        "opaquePct": 15.791,
+        "partialPct": 16.583
+      }
+    },
+    {
+      "id": "town-hall",
+      "kind": "destination",
+      "sheet": "destinations-s-z",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/map/destinations/town-hall.png",
+      "bboxInCell": [
+        0,
+        0,
+        271,
+        292
+      ],
+      "alpha": {
+        "transparentPct": 62.56,
+        "opaquePct": 25.035,
+        "partialPct": 12.406
+      }
+    },
+    {
+      "id": "cottage",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/map/props/cottage.png",
+      "bboxInCell": [
+        53,
+        71,
+        338,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 45.781,
+        "opaquePct": 30.355,
+        "partialPct": 23.863
+      }
+    },
+    {
+      "id": "tree",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/map/props/tree.png",
+      "bboxInCell": [
+        69,
+        61,
+        342,
+        336
+      ],
+      "alpha": {
+        "transparentPct": 57.693,
+        "opaquePct": 17.166,
+        "partialPct": 25.141
+      }
+    },
+    {
+      "id": "flower-bed",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/map/props/flower-bed.png",
+      "bboxInCell": [
+        0,
+        132,
+        274,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 60.835,
+        "opaquePct": 21.864,
+        "partialPct": 17.301
+      }
+    },
+    {
+      "id": "mailbox",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/map/props/mailbox.png",
+      "bboxInCell": [
+        99,
+        0,
+        264,
+        319
+      ],
+      "alpha": {
+        "transparentPct": 74.392,
+        "opaquePct": 14.663,
+        "partialPct": 10.945
+      }
+    },
+    {
+      "id": "lamp",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/map/props/lamp.png",
+      "bboxInCell": [
+        99,
+        26,
+        341,
+        316
+      ],
+      "alpha": {
+        "transparentPct": 80.099,
+        "opaquePct": 10.383,
+        "partialPct": 9.519
+      }
+    },
+    {
+      "id": "bench",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/map/props/bench.png",
+      "bboxInCell": [
+        0,
+        0,
+        249,
+        316
+      ],
+      "alpha": {
+        "transparentPct": 69.402,
+        "opaquePct": 15.832,
+        "partialPct": 14.766
+      }
+    },
+    {
+      "id": "fountain",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/map/props/fountain.png",
+      "bboxInCell": [
+        45,
+        9,
+        335,
+        256
+      ],
+      "alpha": {
+        "transparentPct": 57.925,
+        "opaquePct": 28.838,
+        "partialPct": 13.237
+      }
+    },
+    {
+      "id": "picket-fence",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/map/props/picket-fence.png",
+      "bboxInCell": [
+        26,
+        59,
+        308,
+        251
+      ],
+      "alpha": {
+        "transparentPct": 67.728,
+        "opaquePct": 22.813,
+        "partialPct": 9.459
+      }
+    },
+    {
+      "id": "topiary",
+      "kind": "prop",
+      "sheet": "props-town",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/map/props/topiary.png",
+      "bboxInCell": [
+        43,
+        6,
+        218,
+        253
+      ],
+      "alpha": {
+        "transparentPct": 66.871,
+        "opaquePct": 13.596,
+        "partialPct": 19.533
+      }
+    },
+    {
+      "id": "flowers",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/map/props/flowers.png",
+      "bboxInCell": [
+        61,
+        105,
+        316,
+        285
+      ],
+      "alpha": {
+        "transparentPct": 71.118,
+        "opaquePct": 17.579,
+        "partialPct": 11.303
+      }
+    },
+    {
+      "id": "grass",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/map/props/grass.png",
+      "bboxInCell": [
+        40,
+        72,
+        289,
+        340
+      ],
+      "alpha": {
+        "transparentPct": 66.496,
+        "opaquePct": 13.357,
+        "partialPct": 20.146
+      }
+    },
+    {
+      "id": "pebbles",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/map/props/pebbles.png",
+      "bboxInCell": [
+        37,
+        121,
+        249,
+        285
+      ],
+      "alpha": {
+        "transparentPct": 76.897,
+        "opaquePct": 20.303,
+        "partialPct": 2.8
+      }
+    },
+    {
+      "id": "hydrant",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/map/props/hydrant.png",
+      "bboxInCell": [
+        86,
+        16,
+        264,
+        278
+      ],
+      "alpha": {
+        "transparentPct": 67.942,
+        "opaquePct": 16.275,
+        "partialPct": 15.782
+      }
+    },
+    {
+      "id": "signpost",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/map/props/signpost.png",
+      "bboxInCell": [
+        66,
+        0,
+        339,
+        340
+      ],
+      "alpha": {
+        "transparentPct": 76.215,
+        "opaquePct": 14.556,
+        "partialPct": 9.229
+      }
+    },
+    {
+      "id": "pond",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/map/props/pond.png",
+      "bboxInCell": [
+        0,
+        83,
+        289,
+        265
+      ],
+      "alpha": {
+        "transparentPct": 57.47,
+        "opaquePct": 33.98,
+        "partialPct": 8.55
+      }
+    },
+    {
+      "id": "swings",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/map/props/swings.png",
+      "bboxInCell": [
+        45,
+        9,
+        314,
+        246
+      ],
+      "alpha": {
+        "transparentPct": 70.269,
+        "opaquePct": 14.573,
+        "partialPct": 15.158
+      }
+    },
+    {
+      "id": "gazebo",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/map/props/gazebo.png",
+      "bboxInCell": [
+        17,
+        0,
+        342,
+        271
+      ],
+      "alpha": {
+        "transparentPct": 55.926,
+        "opaquePct": 22.38,
+        "partialPct": 21.694
+      }
+    },
+    {
+      "id": "picnic-table",
+      "kind": "prop",
+      "sheet": "props-play",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/map/props/picnic-table.png",
+      "bboxInCell": [
+        0,
+        11,
+        297,
+        277
+      ],
+      "alpha": {
+        "transparentPct": 58.766,
+        "opaquePct": 19.311,
+        "partialPct": 21.924
+      }
+    }
+  ]
+}

@@ -17,9 +17,11 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **24/24 checks passed** in real Google Chrome.
+Result: **26/26 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
+- runtime data contains A–Z exactly once with 26 unique generated destinations;
+- all 45 transparent sprite-pack assets load from committed offline paths;
 - runtime makes no remote requests;
 - mode targets and trace starts meet the touch minimum;
 - first real gesture starts the matching recorded teacher clip;
@@ -30,7 +32,7 @@ Result: **24/24 checks passed** in real Google Chrome.
 - Easy Roads has real trace geometry and advances through the engine input path;
 - different seeds produce different four-letter decks from the expanded pool;
 - Letter Town exposes and completes ordered multi-stroke letters;
-- seeded M exposes all four strokes and the Music Shop scenario;
+- dynamically selected M exposes all four strokes and the Music Shop scenario;
 - both complete modes reach the end screen;
 - portrait road board is 792×863 CSS px and remains usable;
 - reduced-motion trace completes;
@@ -46,8 +48,9 @@ Reviewed at 1180×820 landscape and 820×1180 portrait:
 - white button labels pass visual contrast on blue and green;
 - expressive three-quarter character faces remain readable while rotating;
 - ghost and solid cars are visually distinct at mid-trace;
-- destination labels sit above the road and remain readable;
-- house, tree, flowers, mailbox, lamp, bench, and fountain props enrich maps;
+- generated destination art and live labels sit above the road and remain readable;
+- generated cottage, tree, flowers, mailbox, lamp, bench, fountain, fence,
+  topiary, hydrant, signpost, pond, swings, gazebo, and picnic table enrich maps;
 - road border, dark asphalt, and white dashes remain distinct;
 - inactive stroke numbers 2 and 3 stay visible while the car marks stroke 1;
 - prompts, progress dots, Back, and Voice avoid the road board;
@@ -62,9 +65,14 @@ The production Open Graph shot was regenerated from the approved splash with
 - Five new expressive gpt-image-2 character-car composites were reviewed.
 - Red/yellow/blue/purple chroma cutouts and green Qwen Layered extraction passed.
 - Alpha finalizer passed after applying the recorded floor of 4.
-- 45/45 cloned teacher clips exist.
-- 45/45 Whisper transcript checks passed; all remain above the 0.72 gate.
-- Clip durations: 1.118–4.234 seconds; 130.833 seconds total.
+- Five gpt-image-2 yellow-ground 3×3 sheets were visually reviewed.
+- Five Qwen Image Layered `layer_2` sheets produced 45 production sprites:
+  27 destinations and 18 map details.
+- Per-cell alpha checks passed; 45/45 magenta composites and all five labeled
+  contact sheets were visually reviewed after border-fragment cleanup.
+- 63/63 cloned teacher clips exist.
+- 63/63 Whisper transcript checks passed; minimum match 0.902.
+- Clip durations: 1.118–4.234 seconds; 186.335 seconds total.
 
 ## Repository gates
 

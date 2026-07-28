@@ -61,6 +61,41 @@ async function main() {
   const page = landscape.page;
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
   check('two modes registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).length === 2);
+  const coverage = await page.evaluate(async () => {
+    const config = await fetch('./config.json').then((response) => response.json());
+    const paths = config.modes.flatMap((mode) => mode.paths);
+    return {
+      routes: paths.length,
+      letters: [...new Set(paths.map((item) => item.id[0]))].sort().join(''),
+      destinations: new Set(paths.map((item) => item.destination)).size,
+      mapSprites: config.mapSprites,
+    };
+  });
+  check('A–Z routes have 26 unique generated destinations',
+    coverage.routes === 26
+      && coverage.letters === 'abcdefghijklmnopqrstuvwxyz'
+      && coverage.destinations === 26
+      && coverage.mapSprites,
+    JSON.stringify(coverage));
+  const spritePack = await page.evaluate(async () => {
+    const pack = await fetch('./assets/map/pack.json').then((response) => response.json());
+    const results = await Promise.all(pack.sprites.map(async (sprite) => {
+      const response = await fetch(`./${sprite.asset.replace(/^assets\//, 'assets/')}`);
+      return response.ok;
+    }));
+    return {
+      total: pack.sprites.length,
+      destinations: pack.sprites.filter((sprite) => sprite.kind === 'destination').length,
+      props: pack.sprites.filter((sprite) => sprite.kind === 'prop').length,
+      loaded: results.filter(Boolean).length,
+    };
+  });
+  check('complete transparent sprite pack loads offline',
+    spritePack.total === 45
+      && spritePack.destinations === 27
+      && spritePack.props === 18
+      && spritePack.loaded === 45,
+    JSON.stringify(spritePack));
   check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
   const modeSizes = await page.locator('.qk-trace-mode').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
@@ -138,12 +173,18 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   check('multi-stroke letter completes', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
 
-  await page.evaluate(() => window.QLOBE_DEBUG.seed(19));
-  await page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
-  const music = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  const music = await page.evaluate(async () => {
+    for (let seed = 0; seed < 100; seed += 1) {
+      window.QLOBE_DEBUG.seed(seed);
+      await window.QLOBE_DEBUG.startMode('town');
+      const state = window.QLOBE_DEBUG.getState();
+      if (state.path === 'm-road') return { ...state, seed };
+    }
+    return window.QLOBE_DEBUG.getState();
+  });
   check('Music Shop scenario exposes four-stroke M',
-    music.path === 'm-road' && music.strokesTotal === 4);
+    music.path === 'm-road' && music.strokesTotal === 4,
+    `seed ${music.seed ?? 'not found'} path ${music.path}`);
   await page.screenshot({ path: path.join(shots, '03b-music-shop-m.png') });
 
   await completeMode(page, 'cruise');
