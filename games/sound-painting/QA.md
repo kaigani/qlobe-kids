@@ -84,3 +84,6 @@ Date: 2026-07-27
 - Ribbon, bounce, and sparkle note gains increased to `0.09`, `0.115`, and
   `0.075`; the existing dynamics compressor continues to protect polyphonic
   passages.
+- Production commit: `536c460` (`Raise Sound Painting music volume`).
+- GitHub Pages run: `30325336679`, successful.
+- Production real-Chrome/iPad-density suite: **30/30**.
