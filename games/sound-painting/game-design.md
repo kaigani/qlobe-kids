@@ -61,6 +61,17 @@ splash.
 A satisfying painting takes 30–90 seconds. Nothing times out and no action is
 judged.
 
+### Color tracks
+
+Each palette color is a separate musical track with its own consonant register,
+gentle instrument color, and stereo position. Selecting a swatch previews that
+track's sound. On replay, the first phrase of every used color begins together,
+like an orchestra entering at once. Later strokes of that same color retain
+their exact recorded offsets: a two-second orange stroke, three-second rest,
+and second two-second orange stroke replays with that full three-second silence.
+This makes casual scribbles immediately musical while allowing older children
+to discover phrasing, rests, layering, and sequencing.
+
 ## Complete spoken script
 
 - `welcome`: “Welcome to Sound Painting. Pick a sound, then paint what you hear!”

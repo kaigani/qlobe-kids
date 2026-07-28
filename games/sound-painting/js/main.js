@@ -177,6 +177,7 @@ async function startMode(modeId) {
   canvas = createMusicalCanvas(document.getElementById('paint-canvas'), {
     brush: mode.brush,
     color: mode.colors[0],
+    palette: mode.colors,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     onStrokeStart: () => {
       mount.querySelector('.canvas-hint')?.classList.add('fade');
@@ -189,6 +190,7 @@ async function startMode(modeId) {
     },
   });
   canvas.setMuted(state.muted);
+  canvas.unlock();
   wireActions();
   nudgeTimer = setTimeout(() => {
     if (state.screen === 'paint' && !canvas?.hasStrokes()) say('empty');
@@ -278,6 +280,7 @@ function showKeepsake(saved) {
   keepsakeCanvas = createMusicalCanvas(document.getElementById('keepsake-canvas'), {
     brush: mode.brush,
     color: mode.colors[0],
+    palette: mode.colors,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
   });
   keepsakeCanvas.load(saved.painting);
@@ -318,7 +321,7 @@ async function route(action, value) {
       button.classList.toggle('selected', selected);
       button.setAttribute('aria-checked', String(selected));
     }
-    if (!state.muted) sfx.pop();
+    if (!state.muted) canvas?.previewColor(value);
     return true;
   }
   if (action === 'undo') {
@@ -382,6 +385,15 @@ window.QLOBE_DEBUG = {
     if (state.screen !== 'paint' || !canvas) return false;
     canvas.debugStroke(points);
     return true;
+  },
+  loadPainting: (painting) => {
+    if (state.screen !== 'paint' || !canvas) return false;
+    canvas.load(painting);
+    return true;
+  },
+  replayPainting: (options) => {
+    if (state.screen !== 'paint' || !canvas) return Promise.resolve(false);
+    return canvas.replay(options);
   },
   winRound: async () => {
     if (state.screen === 'splash') await startMode(config.modes[0].id);

@@ -51,3 +51,22 @@ recordings both transcribed with singular “star” instead of scripted “star
 - Production landscape splash, painted canvas, keepsake, all three brush
   states, portrait splash, and portrait paint screen visually reviewed at full
   useful detail: pass.
+
+## Color-track orchestra revision
+
+Date: 2026-07-27
+
+- Every palette color resolves to a distinct consonant register:
+  `-12, -5, 0, +7, +12` semitones.
+- Selecting a swatch previews that color's track voice: pass.
+- The first phrase of each color track begins at replay time zero: pass.
+- Same-color phrases retain their exact recorded offsets and rests: pass.
+- Regression example `2s orange + 3s rest + 2s orange`: second phrase begins
+  at 5 seconds, preserving the full 3-second silence.
+- Three real WebAudio color voices entered within 1.3 ms in Chrome and produced
+  distinct measured pitches: 123 Hz, 247 Hz, and 440 Hz.
+- Touch-enabled 1024×768 iPad layout at 2× density records Calm River pointer
+  input on a 1676×1048 backing canvas: pass.
+- Expanded local real-Chrome suite: **29/29**.
+- Page errors: 0.
+- Failed requests / 404s: 0.

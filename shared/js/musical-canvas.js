@@ -6,41 +6,47 @@
 
 const SCALE = [0, 2, 4, 7, 9, 12, 14, 16];
 const MAX_POINTS = 1800;
+const COLOR_VOICES = [
+  { semitones: -12, wave: 'sine',     brightness: .72, gain: 1.08, pan: -.52 },
+  { semitones: -5,  wave: 'triangle', brightness: .86, gain: .92, pan: -.26 },
+  { semitones: 0,   wave: 'sine',     brightness: 1,   gain: 1,   pan: 0 },
+  { semitones: 7,   wave: 'triangle', brightness: 1.2, gain: .86, pan: .26 },
+  { semitones: 12,  wave: 'sine',     brightness: 1.4, gain: .8,  pan: .52 },
+];
 
-export function buildReplayTimeline(strokes, {
-  minGapMs = 120,
-  maxGapMs = 1200,
-} = {}) {
+export function buildReplayTimeline(strokes) {
   const source = Array.isArray(strokes) ? strokes : [];
-  const timeline = [];
+  const trackOrigins = new Map();
 
-  for (let index = 0; index < source.length; index++) {
-    const stroke = source[index];
-    if (index === 0) {
-      timeline.push({ ...stroke, start: 0 });
-      continue;
+  for (const stroke of source) {
+    const track = colorKey(stroke?.color);
+    const start = recordedStart(stroke);
+    if (!trackOrigins.has(track) || start < trackOrigins.get(track)) {
+      trackOrigins.set(track, start);
     }
-
-    const previousSource = source[index - 1];
-    const previousReplay = timeline[index - 1];
-    const previousDuration = Math.max(0, previousSource.points?.at(-1)?.t || 0);
-    const previousSourceEnd = (previousSource.start || 0) + previousDuration;
-    const recordedGap = (stroke.start || 0) - previousSourceEnd;
-    const safeGap = Number.isFinite(recordedGap) ? recordedGap : minGapMs;
-    const replayGap = Math.max(minGapMs, Math.min(maxGapMs, safeGap));
-
-    timeline.push({
-      ...stroke,
-      start: previousReplay.start + previousDuration + replayGap,
-    });
   }
 
-  return timeline;
+  return source.map((stroke) => ({
+    ...stroke,
+    // Every color is an independent track. Its first phrase begins at the
+    // orchestra's zero point; later phrases keep their exact recorded offset,
+    // including intentional silence between strokes.
+    start: Math.max(0, recordedStart(stroke) - trackOrigins.get(colorKey(stroke?.color))),
+  }));
+}
+
+export function getColorVoice(color, palette = []) {
+  const normalized = palette.map(colorKey);
+  const key = colorKey(color);
+  let index = normalized.indexOf(key);
+  if (index < 0) index = colorHash(key) % COLOR_VOICES.length;
+  return { index, ...COLOR_VOICES[index % COLOR_VOICES.length] };
 }
 
 export function createMusicalCanvas(canvas, {
   brush = 'ribbon',
   color = '#35d6e8',
+  palette = [],
   reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches,
   onChange = () => {},
   onStrokeStart = () => {},
@@ -52,7 +58,7 @@ export function createMusicalCanvas(canvas, {
 
   const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
   const state = {
-    brush, color, reducedMotion, muted: false, activePointer: null,
+    brush, color, palette: [...palette], reducedMotion, muted: false, activePointer: null,
     strokes: [], redo: null, current: null, particles: [], replay: null,
     sessionStart: performance.now(), width: 1, height: 1, dpr: 1,
   };
@@ -61,7 +67,7 @@ export function createMusicalCanvas(canvas, {
   let master = null;
   let resizeObserver = null;
   let frame = 0;
-  let lastSoundAt = 0;
+  const lastSoundAt = new Map();
 
   function ensureAudio() {
     if (audioContext) return audioContext;
@@ -69,8 +75,15 @@ export function createMusicalCanvas(canvas, {
     if (!AC) return null;
     audioContext = new AC();
     master = audioContext.createGain();
-    master.gain.value = state.muted ? 0 : .72;
-    master.connect(audioContext.destination);
+    master.gain.value = state.muted ? 0 : .62;
+    const limiter = audioContext.createDynamicsCompressor();
+    limiter.threshold.value = -12;
+    limiter.knee.value = 12;
+    limiter.ratio.value = 8;
+    limiter.attack.value = .003;
+    limiter.release.value = .18;
+    master.connect(limiter);
+    limiter.connect(audioContext.destination);
     return audioContext;
   }
 
@@ -81,36 +94,47 @@ export function createMusicalCanvas(canvas, {
 
   function setMuted(value) {
     state.muted = !!value;
-    if (master) master.gain.setTargetAtTime(state.muted ? 0 : .72, audioContext.currentTime, .02);
+    if (master) master.gain.setTargetAtTime(state.muted ? 0 : .62, audioContext.currentTime, .02);
   }
 
   function note(point, stroke, force = false) {
     const now = performance.now();
     const wait = stroke.brush === 'ribbon' ? 92 : stroke.brush === 'bounce' ? 68 : 48;
-    if (!force && now - lastSoundAt < wait) return;
-    lastSoundAt = now;
+    const track = colorKey(stroke.color);
+    const previous = lastSoundAt.get(track) || 0;
+    if (!force && now - previous < wait) return;
+    lastSoundAt.set(track, now);
     const ac = ensureAudio();
-    if (!ac || state.muted || ac.state !== 'running') return;
+    if (!ac || state.muted) return;
 
     const index = Math.max(0, Math.min(SCALE.length - 1, Math.floor((1 - point.y) * SCALE.length)));
-    const midi = 55 + SCALE[index];
+    const voice = getColorVoice(stroke.color, state.palette);
+    const midi = 55 + SCALE[index] + voice.semitones;
     const hz = 440 * Math.pow(2, (midi - 69) / 12);
     const osc = ac.createOscillator();
     const gain = ac.createGain();
     const filter = ac.createBiquadFilter();
     const duration = stroke.brush === 'ribbon' ? .38 : stroke.brush === 'bounce' ? .18 : .28;
-    const amount = stroke.brush === 'ribbon' ? .055 : stroke.brush === 'bounce' ? .085 : .045;
-    osc.type = stroke.brush === 'ribbon' ? 'sine' : stroke.brush === 'bounce' ? 'triangle' : 'sine';
+    const baseAmount = stroke.brush === 'ribbon' ? .055 : stroke.brush === 'bounce' ? .085 : .045;
+    const amount = baseAmount * voice.gain;
+    osc.type = voice.wave;
     osc.frequency.value = hz;
     if (stroke.brush === 'sparkle') {
       osc.frequency.setValueAtTime(hz * 2, ac.currentTime);
       osc.frequency.exponentialRampToValueAtTime(hz, ac.currentTime + duration);
     }
     filter.type = 'lowpass';
-    filter.frequency.value = stroke.brush === 'ribbon' ? 1100 : 2600;
+    filter.frequency.value = (stroke.brush === 'ribbon' ? 1100 : 2600) * voice.brightness;
     osc.connect(filter);
     filter.connect(gain);
-    gain.connect(master);
+    if (typeof ac.createStereoPanner === 'function') {
+      const panner = ac.createStereoPanner();
+      panner.pan.value = voice.pan;
+      gain.connect(panner);
+      panner.connect(master);
+    } else {
+      gain.connect(master);
+    }
     gain.gain.setValueAtTime(.0001, ac.currentTime);
     gain.gain.exponentialRampToValueAtTime(amount, ac.currentTime + .015);
     gain.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + duration);
@@ -216,6 +240,13 @@ export function createMusicalCanvas(canvas, {
 
   function setColor(next) {
     if (/^#[0-9a-f]{6}$/i.test(next)) state.color = next;
+  }
+
+  function previewColor(next = state.color) {
+    if (!/^#[0-9a-f]{6}$/i.test(next)) return false;
+    unlock();
+    note({ x: .5, y: .5 }, { brush: state.brush, color: next }, true);
+    return true;
   }
 
   function undo() {
@@ -396,7 +427,7 @@ export function createMusicalCanvas(canvas, {
   resize();
 
   return {
-    unlock, setMuted, setBrush, setColor, undo, clear, restoreLastClear,
+    unlock, setMuted, setBrush, setColor, previewColor, undo, clear, restoreLastClear,
     snapshot, load, replay, cancelReplay, debugStroke, exportPng, resize,
     hasStrokes: () => state.strokes.length > 0,
     strokeCount: () => state.strokes.length,
@@ -565,6 +596,23 @@ function validStroke(stroke) {
 
 function totalPointCount(strokes) {
   return strokes.reduce((sum, stroke) => sum + stroke.points.length, 0);
+}
+
+function colorKey(color) {
+  return typeof color === 'string' ? color.toLowerCase() : '__uncolored__';
+}
+
+function recordedStart(stroke) {
+  const start = Number(stroke?.start);
+  return Number.isFinite(start) ? Math.max(0, start) : 0;
+}
+
+function colorHash(color) {
+  let hash = 0;
+  for (let index = 0; index < color.length; index++) {
+    hash = ((hash << 5) - hash + color.charCodeAt(index)) | 0;
+  }
+  return Math.abs(hash);
 }
 
 function clone(value) {
