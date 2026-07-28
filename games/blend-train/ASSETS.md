@@ -17,14 +17,14 @@ below.
 
 | Asset | Workflow | Seed | Source / prompt | License | Modifications |
 |---|---|---|---|---|---|
-| `assets/art/car-{m,a,t}.webp` | `qwen-image-edit` | 42 | image `02-blend-mat.png`; prompt `Isolate the blue 'm' train car on a white background` (and the green `a`, red `t`) | CC BY 4.0 | White ground removed by border flood fill (`finalize_cars.py`); shared crop box; WebP q92. |
-| `assets/art/car-{c,s,d,p}.webp` | `qwen-image-edit` | 42 | derived from `car-m` | CC BY 4.0 | Letter-swap edit only — "Change the letter shown on the cream panel… Keep the car body, its colour, the cream panel, the gold trim, the couplers, the wheels, the lighting and the white background exactly the same." |
-| `assets/art/car-{u,o,i}.webp` | `qwen-image-edit` | 42 | derived from `car-a` | CC BY 4.0 | As above. |
-| `assets/art/car-{n,g,un,og,ig}.webp` | `qwen-image-edit` | 42 | derived from `car-t` | CC BY 4.0 | As above. |
-| `assets/art/car-at.webp` | `qwen-image-edit` | **1337** | derived from `car-t` | CC BY 4.0 | Seed 42 rendered only the `a` and dropped the `t`; reprompted naming both letters explicitly, seed 1337 correct. |
-| `assets/art/track.webp` (1600×884, ~110 KB) | `qwen-image-edit` | 42 | image `02-blend-mat.png`; prompt removed the locomotive, every letter car, all buttons, banners and text, keeping only the landscape and the empty rail | CC BY 4.0 | Cropped to the 1.81 play aspect keeping the rail with grass beneath, resized to 1600×884, locomotive (extracted the same way, keyed, 430px wide) composited at the left with its wheels on the rail. |
+| `assets/art/car-{m,a,t}.webp` | `qwen-image-edit` then `qwen-image-layered` | 42 | image `02-blend-mat.png`; prompt `Isolate the blue 'm' train car on a white background` (and the green `a`, red `t`) | CC BY 4.0 | Normalised to a flat magenta ground, then background removed with the async layered job (`output=layer_2`). Registered against the family median core and re-encoded 460x474 WebP q80. |
+| `assets/art/car-{c,s,d,p}.webp` | `qwen-image-edit` then `qwen-image-layered` | 42 | derived from `car-m` | CC BY 4.0 | Letter-swap edit only — "Change the letter shown on the cream panel… Keep the car body, its colour, the cream panel, the gold trim, the couplers, the wheels, the lighting and the white background exactly the same." Then keyed as above. |
+| `assets/art/car-{u,o,i}.webp` | as above | 42 | derived from `car-a` | CC BY 4.0 | As above. |
+| `assets/art/car-{n,g,un,og,ig}.webp` | as above | 42 | derived from `car-t` | CC BY 4.0 | As above. |
+| `assets/art/car-at.webp` | as above | **1337** | derived from `car-t` | CC BY 4.0 | Seed 42 rendered only the `a` and dropped the `t`; reprompted naming both letters explicitly. |
+| `assets/art/track.webp` (1600×884, ~100 KB) | `qwen-image-edit` + composite | 42 | image `02-blend-mat.png`; prompt removed the locomotive, every letter car, all buttons, banners and text, keeping only the landscape and the empty rail | CC BY 4.0 | Cropped to the 1.81 play aspect keeping the rail with grass beneath, resized 1600×884; the locomotive (extracted and keyed the same way, 400px wide) composited at the left with its wheels on the rail. |
 | `assets/art/splash.webp` (1280×951) | `qwen-image-edit` | 42 | image `01-title.png`; prompt removed all text, letters and the orange button, keeping the train, sunburst sky, clouds and stars | CC BY 4.0 | Resized, WebP q86. The engine renders the real title as HTML — spelling has to stay correct and an image model is not a typography engine. |
-| `assets/art/mode-{couple,sounds}.webp` (420²) | derived | — | composed from the final cars | CC BY 4.0 | The mode's own cars overlapped 10% so they read as coupled, padded square for the engine's contain-fit. These exist because the engine's splash mode buttons were text-only, which a pre-reader cannot use. |
+| `assets/art/mode-{couple,sounds}.webp` (420²) | derived | — | composed from the final cars | CC BY 4.0 | The mode's own cars overlapped 14% so they read as coupled, padded square for the engine's contain-fit. These exist because the engine's splash mode buttons were text-only, which a pre-reader cannot use. |
 | `assets/audio/{greet,intro,prompt-couple,prompt-sounds,nudge,wait,cheer}.m4a` | `qwen3-tts-voiceclone` | 7 | Voice reference `shared/assets/refs/voice-teacher.wav`; verbatim lines in `game-design.md` §6 and `assets/audio/lines.json` | CC BY 4.0 | Model emits FLAC despite the filename; converted `afconvert -f m4af -d aac -b 64000`. Durations measured with `afinfo` into `manifest.json`. |
 
 ### Extract from the mockup; do not re-imagine it
@@ -43,13 +43,30 @@ geometric consistency is what makes a row of them read as one train.
 Colour carries meaning, taken from the mockup's own scheme: **blue onset, green vowel,
 red coda / rime chunk**.
 
-### Keying, not `qwen-image-layered`
+### Background removal: `qwen-image-layered`, and the colour it must not be
 
-The cars are keyed off their white ground with a border flood fill. A *global* white key
-would punch holes through the cream signboard; a flood fill from the edge cannot reach
-interior pixels, so the panel survives. `qwen-image-layered` was not used because it is a
-generative decomposition — a redraw — and a redraw of each car would break the geometric
-register that the letter-swap derivation exists to preserve.
+Alpha is produced with the async `qwen-image-layered` job (`output=layer_2`), never a
+flood fill or colour key. An earlier pass here did flood-fill these cars and was wrong to:
+it is not the house pipeline, and the reasoning behind it (a redraw might disturb geometry
+the runtime depends on) was solved properly by registering the family after extraction.
+
+**The ground colour matters more than it looks.** The sprites arrive opaque on near-white,
+which the extractor handles badly, so they are normalised to a flat ground first. Doing
+that in *grey* silently deleted every car's **dark grey wheels** — the extractor classifies
+by description, so a subject part matching the background description is assigned to the
+background. It failed identically on every seed with the body extracted perfectly, which
+reads as a prompt problem and is not one; naming the wheels explicitly did not help.
+Normalising to **magenta**, a colour that appears nowhere in the car palette, fixed it
+immediately. Pick a ground that clashes with the whole subject.
+
+### Registration
+
+Each car is extracted independently, so the extractor frames and scales them slightly
+differently (cores measured 355–416px wide across the 16). Cropping each to its own ink
+would leave a row of cars with mismatched sizes and wheels at different heights. Instead
+every car is scaled so its solid core matches the family **median** core, then cropped to
+that box plus an 11% margin so roofs and wheel shadows are not clipped flush to the sprite
+edge. The wheels then land on the rail together and the row reads as one train.
 
 ## Added to the shared library by this game
 

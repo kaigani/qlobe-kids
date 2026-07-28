@@ -1,7 +1,7 @@
 {
  "game": "blend-train",
  "base": "http://localhost:8199",
- "when": "2026-07-28T19:22:01.065Z",
+ "when": "2026-07-28T20:06:10.983Z",
  "results": [
   {
    "name": "both modes registered",
@@ -266,7 +266,7 @@
   {
    "name": "sounds: the mode prompt is a recorded clip",
    "ok": true,
-   "detail": "first line {\"t\":1785266509732,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-sounds\",\"url\":\"prompt-sounds\"}"
+   "detail": "first line {\"t\":1785269159600,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-sounds\",\"url\":\"prompt-sounds\"}"
   },
   {
    "name": "sounds: the placed car speaks its own sound as a CLIP, not speech",
@@ -281,7 +281,7 @@
   {
    "name": "couple: the mode prompt is a recorded clip",
    "ok": true,
-   "detail": "first line {\"t\":1785266516413,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-couple\",\"url\":\"prompt-couple\"}"
+   "detail": "first line {\"t\":1785269166348,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-couple\",\"url\":\"prompt-couple\"}"
   },
   {
    "name": "couple: the placed car speaks its own sound as a CLIP, not speech",
@@ -296,7 +296,7 @@
   {
    "name": "the voice channel really decoded and played an .m4a",
    "ok": true,
-   "detail": "src=audio/prompt-couple.m4a played=0.060032 dur=3.370667 err=null starts=34"
+   "detail": "src=audio/prompt-couple.m4a played=0.05973 dur=3.370667 err=null starts=34"
   },
   {
    "name": "audio pass: no console errors",
@@ -429,7 +429,7 @@
    "ok": true,
    "error": null,
    "src": "http://localhost:8199/games/blend-train/assets/audio/prompt-couple.m4a",
-   "played": 0.060032,
+   "played": 0.05973,
    "duration": 3.370667,
    "starts": 34
   }
