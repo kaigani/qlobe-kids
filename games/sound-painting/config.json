@@ -1,0 +1,52 @@
+{
+  "id": "sound-painting",
+  "title": "Sound Painting",
+  "theme": {
+    "world": "paper-garden",
+    "lighting": "night-studio"
+  },
+  "voice": {
+    "welcome": "Welcome to Sound Painting. Pick a sound, then paint what you hear!",
+    "choose": "Which sound shall we paint?",
+    "calm-label": "Calm River.",
+    "calm-prompt": "Glide slowly. Make a peaceful river of color.",
+    "bounce-label": "Bouncy Beat.",
+    "bounce-prompt": "Hop, loop, and tap to make a bouncy beat!",
+    "sparkle-label": "Star Sparkles.",
+    "sparkle-prompt": "Swish fast and make the stars sing!",
+    "empty": "Touch the dark canvas and let your finger make music.",
+    "replay": "Now watch your painting play itself!",
+    "clear": "A fresh canvas, ready for a new song.",
+    "saved": "Your painting is safe on this device.",
+    "done": "Beautiful! You made music we can see."
+  },
+  "modes": [
+    {
+      "id": "calm",
+      "title": "Calm River",
+      "symbol": "〰",
+      "brush": "ribbon",
+      "promptKey": "calm-prompt",
+      "labelKey": "calm-label",
+      "colors": ["#35d6e8", "#27a9e8", "#83e6c1", "#f9df72", "#c79cff"]
+    },
+    {
+      "id": "bounce",
+      "title": "Bouncy Beat",
+      "symbol": "●",
+      "brush": "bounce",
+      "promptKey": "bounce-prompt",
+      "labelKey": "bounce-label",
+      "colors": ["#ff9f1c", "#ff5d73", "#ffd23f", "#2ec4b6", "#7b61ff"]
+    },
+    {
+      "id": "sparkle",
+      "title": "Star Sparkles",
+      "symbol": "✦",
+      "brush": "sparkle",
+      "promptKey": "sparkle-prompt",
+      "labelKey": "sparkle-label",
+      "colors": ["#ff4fb3", "#ba5cff", "#55e8ff", "#ffdf5d", "#8c7bff"]
+    }
+  ]
+}

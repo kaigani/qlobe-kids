@@ -2088,15 +2088,32 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#f25f5c",
+      "accent": "#9f64ff",
+      "uses": [
+        "shared/js/musical-canvas.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/"
+      ],
       "modes": [
         {
-          "id": "feelings",
-          "title": "Paint the Sound",
-          "skill": "emotional response to musical mood"
+          "id": "calm",
+          "title": "Calm River",
+          "skill": "slow continuous expressive movement"
+        },
+        {
+          "id": "bounce",
+          "title": "Bouncy Beat",
+          "skill": "rhythmic looping and tapping movement"
+        },
+        {
+          "id": "sparkle",
+          "title": "Star Sparkles",
+          "skill": "quick light expressive movement"
         }
       ],
-      "summary": "Draw what the music feels like."
+      "summary": "Paint glowing paper ribbons with your finger, hear every color, then replay the picture as music."
     },
     {
       "id": "loose-parts-collage",
