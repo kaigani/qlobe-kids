@@ -68,7 +68,8 @@ export function createGame(config, mountEl) {
  *            tray:{left:number,top:number,w:number,h:number},
  *            trayAtBottom:boolean}}
  */
-export function computeFieldLayout({ w, h, spaceW = BUILD_SPACE, spaceH = BUILD_SPACE, portrait }) {
+export function computeFieldLayout({ w, h, spaceW = BUILD_SPACE, spaceH = BUILD_SPACE, portrait,
+                                     trayReserve = null, trayOverlay = false }) {
   const sw = spaceW > 0 ? spaceW : BUILD_SPACE;
   const sh = spaceH > 0 ? spaceH : BUILD_SPACE;
   const isPortrait = portrait == null ? h >= w : !!portrait;
@@ -91,9 +92,23 @@ export function computeFieldLayout({ w, h, spaceW = BUILD_SPACE, spaceH = BUILD_
   let trayH;
 
   if (trayAtBottom) {
-    const reserve = Math.max(112, Math.min(h * 0.29, 255));
+    // How much height the tray takes from the board. The default is generous, which is
+    // right for a square build whose board cannot use the extra height anyway — but a
+    // wide build is height-starved, and every pixel the tray gives back makes the board
+    // (and therefore the pieces a child has to read) meaningfully bigger. `trayReserve`
+    // lets a game buy that back: a value < 1 is a fraction of the viewport height, >= 1
+    // is a pixel count. Omitted => the original formula, so every existing game is
+    // numerically untouched.
+    const reserve = trayReserve == null
+      ? Math.max(112, Math.min(h * 0.29, 255))
+      : Math.max(112, trayReserve < 1 ? h * trayReserve : trayReserve);
     const boxW = w - pad * 2;
-    const boxH = h - reserve - pad * 3;
+    // trayOverlay: the tray floats ON the board instead of taking a slice out of it. For
+    // a game whose backdrop is a full scene, reserving a strip leaves the scene as a
+    // letterboxed rectangle sitting in dead space; overlaying lets the board fill the
+    // play area and puts the tray cards on the scenery, the way the concept art composes
+    // it. The board owner is responsible for keeping its pieces clear of the tray strip.
+    const boxH = trayOverlay ? (h - pad * 2) : (h - reserve - pad * 3);
     // Both extents come from ONE span, exactly as the pre-generalisation code
     // derived width and height from a single `boardSize`. Deriving them
     // independently from a scale would break bit-equality (a/b*b !== a).
@@ -112,9 +127,9 @@ export function computeFieldLayout({ w, h, spaceW = BUILD_SPACE, spaceH = BUILD_
     const slackY = Math.max(0, boxH - boardH);
     boardTop = pad + (wideBuild ? slackY * 0.34 : 0);
     trayLeft = pad;
-    trayTop = boardTop + boardH + pad;
+    trayTop = trayOverlay ? (h - reserve - pad) : (boardTop + boardH + pad);
     trayW = w - pad * 2;
-    trayH = Math.max(96, h - trayTop - pad);
+    trayH = trayOverlay ? Math.max(96, reserve) : Math.max(96, h - trayTop - pad);
     return {
       pad, boardScale, boardLeft, boardTop, boardW, boardH,
       tray: { left: trayLeft, top: trayTop, w: trayW, h: trayH },
@@ -771,7 +786,8 @@ class BuildAssembleGame {
     if (!w || !h) return;
     this.clearHoveredSlot();
     const [spaceW, spaceH] = this.currentSpace();
-    const layout = computeFieldLayout({ w, h, spaceW, spaceH, portrait: h >= w });
+    const layout = computeFieldLayout({ w, h, spaceW, spaceH, portrait: h >= w,
+      trayReserve: this.config.trayReserve, trayOverlay: this.config.trayOverlay });
     this.fieldLayout = layout;
     this.boardScale = layout.boardScale;
     this.boardLeft = layout.boardLeft;

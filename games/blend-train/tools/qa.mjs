@@ -39,7 +39,7 @@
 //   7. navigation: a.qk-build-home exists ONLY on the splash
 //   8. touch targets: every slot and tray-part rect is >= 96px on both axes
 //   9. layout sanity via getLayout(): the board rect carries the build space's
-//      aspect (1600/700) in BOTH orientations, so the backdrop maps 1:1 and no
+//      aspect (read from config.json) in BOTH orientations, so the backdrop maps 1:1 and no
 //      car floats off the rails
 //  10. screenshots for human review in landscape, portrait and reduced motion,
 //      plus qa.json
@@ -54,6 +54,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
@@ -75,7 +76,13 @@ const { chromium } = require('playwright');
 
 const LANDSCAPE = { width: 1180, height: 820 };
 const PORTRAIT = { width: 820, height: 1180 };
-const SPACE_ASPECT = 1600 / 700;
+// Read the authored build space from config.json rather than hardcoding it: the space
+// is a design decision that gets retuned during polish, and a test that pins it to one
+// literal fails for the wrong reason every time the art is recomposed.
+const GAME_CONFIG = JSON.parse(
+  readFileSync(new URL('../config.json', import.meta.url), 'utf8'));
+const [SPACE_W, SPACE_H] = GAME_CONFIG.space;
+const SPACE_ASPECT = SPACE_W / SPACE_H;
 const MIN_TOUCH = 96;
 
 const results = [];
@@ -351,7 +358,7 @@ async function checkBoardAspect(page, label) {
   if (!snap) return check(`${label}: layout snapshot available`, false, 'getLayout() returned null');
   const aspect = snap.boardW / snap.boardH;
   const drift = Math.abs(aspect - SPACE_ASPECT) / SPACE_ASPECT;
-  check(`${label}: space is 1600x700`, snap.space[0] === 1600 && snap.space[1] === 700, snap.space.join('x'));
+  check(`${label}: space matches config (${SPACE_W}x${SPACE_H})`, snap.space[0] === SPACE_W && snap.space[1] === SPACE_H, snap.space.join('x'));
   return check(`${label}: board aspect matches the build space (backdrop maps 1:1)`,
     drift < 0.005,
     `board ${snap.boardW.toFixed(1)}x${snap.boardH.toFixed(1)} = ${aspect.toFixed(4)} vs ${SPACE_ASPECT.toFixed(4)} (${(drift * 100).toFixed(3)}% off)`);

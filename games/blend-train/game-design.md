@@ -104,45 +104,58 @@ child who cannot yet drag reliably is never locked out.
 
 ## 5. Art world
 
-The mockups' bright toy-train look, reconciled with the platform's glossy 3D tile family.
+**The art is the mockup's art, lifted out of it** — not a from-scratch reinterpretation.
+`qwen-image-edit` with `Isolate the <element> on a white background` returns a mockup
+element cleanly extracted in its exact style; the 16-car family is then derived by editing
+only the *letter* on an already-extracted car, so body, couplers, wheels and panel
+geometry stay identical across the set. See `ASSETS.md` for the full recipe and for why
+the first pass (generate-alongside, composite a tile in) was the wrong call.
 
-**One colour system, and it means something.** A car's livery matches the tile it
-carries, and the tile colour encodes the phonics role:
+**Colour carries the phonics role**, straight from the mockup's own scheme:
 
-| role | colour | tiles |
+| role | colour | cars |
 |---|---|---|
-| consonant | blue | the existing 19-tile set |
-| vowel | green | the five new tiles |
-| rime chunk | orange | the existing 40-rime set |
+| onset consonant | blue | m c s d p |
+| vowel | green | a u o i |
+| coda consonant / rime chunk | red | t n g · at un og ig |
 
-So in `sounds` mode `mat` is blue-green-blue and the vowel is visibly the odd one out —
-which is exactly the thing a blending child needs to notice. In `couple` mode it is
-blue-orange: one sound, one ending.
+So `mat` in `sounds` mode is blue-green-red and the vowel is visibly a different kind of
+sound — the thing a blending child needs to notice. In `couple` mode it is blue-red: one
+sound, one ending.
 
-**Layer stack per car** (this is what the new layered art ref is for):
+The letter is **baked into the car**, as the mockup draws it. That is simpler than the
+first pass's layered composite and it looks considerably better, at the cost of one image
+per letter rather than one per car colour.
 
-```
-[ 'game:assets/art/car-<colour>.webp',
-  { ref: 'shared:letter-tiles/<x>.png', scale: 0.70, dx: 0.003, dy: -0.110 } ]
-```
-
-`dx`/`dy` are fractions of the part size, so the tile stays welded into the car's cream
-signboard through every rescale — tray card, drag lift, and the tween into the coupling.
-All three cars are the *same* car hue-rotated, so one offset is correct for all of them.
-
-**Board geometry** — `space: [1600, 700]`, matching the backdrop's aspect exactly, so the
-backdrop maps 1:1 with no crop in either orientation.
+**Board geometry** — `space: [1600, 884]`, matching the track plate exactly so the
+backdrop maps 1:1 onto space coordinates and a car positioned at the rail really sits on
+the rail.
 
 | | value |
 |---|---|
-| car size | 420 |
-| car baseline `y` | 367 (wheels sit on the near rail) |
-| `couple` x | 570, 970 |
-| `sounds` x | 570, 950, 1330 |
+| car size | 380 (`sounds`), 420 (`couple`) |
+| car baseline `y` | 458 / 438 — wheels on the rail at space y=645 |
+| `couple` x | 700, 1140 |
+| `sounds` x | 620, 980, 1340 |
 
-Cars are anchored at the same starting x in both modes so the locomotive always couples
-to the first car. The locomotive is **baked into the backdrop** — it is scenery, never
-interactive, and baking guarantees it stays aligned to the rail at every scale.
+The locomotive is **baked into the track plate**. It is scenery, never interactive, and
+baking guarantees it stays aligned to the rail at every scale.
+
+### Filling the screen
+
+Two engine additions, both opt-in, exist because the first pass shipped a letterboxed
+strip floating in dead space:
+
+- **`trayOverlay`** — the tray floats *on* the scene instead of taking a slice out of it.
+  Reserving a strip left the board unable to use the height, so the scene rendered as a
+  framed picture on a coloured mat. Overlaying lets the board fill the play area (1144×632
+  of a 1180×820 tablet in landscape) with the tray cards sitting on the grass.
+- **`trayReserve`** — how much height the tray strip takes. A wide build is height-starved
+  and every pixel handed back makes the cars a child has to read meaningfully bigger.
+
+Blend Train also ships `css/style.css`, a game-local sheet scoped under `#game` that
+overrides the engine's shared chrome: full-bleed scene, hidden thumbnail plate, chunky
+wordmark, fat cream/orange buttons. No other game loads it.
 
 ## 6. Voice script — this IS the recording manifest
 
@@ -251,15 +264,20 @@ v1 contract plus the extensions the Playwright suite needs:
 
 ## 12. Known risks carried into beta
 
-1. The green vowel tiles are slightly brighter than the blue consonant family. Deliberate
-   (they must read as a different category) but worth a look on the real iPad.
-2. `couple` and `sounds` share all five words. If the child finds the repetition dull
-   rather than reinforcing, `sounds` should get its own word list.
-3. Snap radii for adjacent couplings overlap slightly in portrait. The engine resolves to
-   the *nearest* coupling, so this is forgiving rather than ambiguous — but it means a
-   drop roughly between two couplings will pick one rather than refusing.
-4. The locomotive is baked into the backdrop, so it cannot react to a completed train.
-   A puff of steam on completion would need it promoted to a sprite.
+1. **Portrait is the weak orientation.** A 1.81 scene cannot fill a 0.83 viewport, so the
+   board renders as a wide band with sky above and grass below. The page gradient is
+   sampled from the plate's own sky and grass so it continues rather than clashes, and
+   every touch target still clears 96px — but it is not the composition the mockup shows.
+   A portrait-specific taller plate is the fix if the child actually plays it that way.
+2. `couple` and `sounds` share all five words. If the repetition reads as dull rather than
+   reinforcing, `sounds` should get its own word list.
+3. Snap radii for adjacent couplings overlap slightly. The engine resolves to the *nearest*
+   coupling, so this is forgiving rather than ambiguous — but a drop roughly between two
+   couplings will pick one rather than refusing.
+4. The locomotive is baked into the plate, so it cannot react to a completed train. A puff
+   of steam on completion would need it promoted to a sprite.
+5. The five shared vowel tiles this game added are no longer used by it — the cars carry
+   their letters now. They stay as a contribution to the shared set, not a dependency.
 
 ## 13. Release gate
 

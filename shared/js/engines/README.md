@@ -130,6 +130,18 @@ into a non-square canvas. These three keys are inherited config → mode → bui
                                     // supposed to be standing on.
   panel: false,                    // default true; false removes the cream
                                     // rounded-rect board panel entirely
+  trayReserve: 0.21,               // optional: height the bottom tray takes. < 1 is a
+                                    // fraction of viewport height, >= 1 is pixels.
+                                    // Omitted => the original formula. A wide build is
+                                    // height-starved, so handing pixels back here makes
+                                    // the pieces a child must read meaningfully bigger.
+  trayOverlay: true,               // optional: float the tray ON the board instead of
+                                    // slicing a strip out of it. For a game whose
+                                    // backdrop is a full scene this is the difference
+                                    // between a full-bleed world and a letterboxed
+                                    // picture sitting on a coloured mat. The game is
+                                    // responsible for keeping its parts clear of the
+                                    // tray strip.
 }
 ```
 

@@ -48,6 +48,11 @@
     }
     #game { min-height: 100dvh; }
   </style>
+  <!-- Game-local styling. The engine injects its shared stylesheet at runtime, so this
+       link lands earlier in the cascade; every rule inside is scoped under #game so it
+       still outranks the engine's. Only this game loads it — the other 14
+       build-assemble games are untouched. -->
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div id="game"></div>

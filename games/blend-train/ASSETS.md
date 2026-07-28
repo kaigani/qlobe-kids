@@ -9,28 +9,47 @@ here; it lives in git-ignored `tools/state/local.json`.
 
 ## Generated for this game
 
-| Asset | Workflow | Seed | Prompt / reference | License | Modifications |
+**Every visual element here was lifted out of the approved UI mockups**
+(`01-game-concepts/blend-train/output/ui-mockups/`) with `qwen-image-edit`, rather than
+generated from scratch "in the style of" them. That is the difference between a game that
+looks like the concept and a game that looks like a weaker cousin of it — see the note
+below.
+
+| Asset | Workflow | Seed | Source / prompt | License | Modifications |
 |---|---|---|---|---|---|
-| `assets/art/track.webp` (1600×700, 45 KB) | `krea2-turbo-t2i` at 1536×672, then a deterministic composite | 42 | "A cheerful sunny toy railway landscape seen from the side… wide empty railway track with wooden sleepers running straight across the lower third… The centre of the picture is calm, open and uncluttered with no objects on the track." | CC BY 4.0 | Locomotive cutout flipped horizontally and composited in at the left (380px wide, right edge x=396, baseline y=558) so it faces the direction of travel and its coupler meets the first car. Encoded WebP q86. |
-| `assets/art/car-blue.webp` (512², 22 KB) | `krea2-turbo-t2i` | **1337** | "A single toy train wagon seen directly from the side… Its side is one very large blank SQUARE cream-white signboard panel with softly rounded corners… completely empty and plain" on flat dark charcoal | CC BY 4.0 | Background keyed with `cut_dark.py` (border flood fill on the charcoal ground), downscaled 1024→512, WebP q90. |
-| `assets/art/car-green.webp` (512², 22 KB) | derived | — | derived from `car-blue` | CC BY 4.0 | Hue rotation of the saturated blue body to 110°, `recolor_car.py`. Cream panel, grey wheels and gold couplers fall outside the hue window and are untouched. |
-| `assets/art/car-orange.webp` (512², 22 KB) | derived | — | derived from `car-blue` | CC BY 4.0 | Hue rotation to 28°, as above. |
-| `assets/art/splash.webp` (1200×900, 54 KB) | `krea2-turbo-t2i` at 1536×1152 | 42 | "A cheerful little red toy steam locomotive pulling three empty colourful wagons… Each wagon has a large blank cream-white signboard panel on its side with nothing written on it." | CC BY 4.0 | Resized, WebP q85. |
-| `assets/art/mode-couple.webp`, `assets/art/mode-sounds.webp` (384², ~20 KB each) | derived | — | composed from `car-*.webp` + the shared letter tiles | CC BY 4.0 | Deterministic composite: the mode's own cars rendered at the runtime inset offsets, overlapped 6% so they read as coupled, padded to a square canvas so the engine's contain-fit centres them. These exist because the engine's splash mode buttons were text-only, which a pre-reader cannot use. |
+| `assets/art/car-{m,a,t}.webp` | `qwen-image-edit` | 42 | image `02-blend-mat.png`; prompt `Isolate the blue 'm' train car on a white background` (and the green `a`, red `t`) | CC BY 4.0 | White ground removed by border flood fill (`finalize_cars.py`); shared crop box; WebP q92. |
+| `assets/art/car-{c,s,d,p}.webp` | `qwen-image-edit` | 42 | derived from `car-m` | CC BY 4.0 | Letter-swap edit only — "Change the letter shown on the cream panel… Keep the car body, its colour, the cream panel, the gold trim, the couplers, the wheels, the lighting and the white background exactly the same." |
+| `assets/art/car-{u,o,i}.webp` | `qwen-image-edit` | 42 | derived from `car-a` | CC BY 4.0 | As above. |
+| `assets/art/car-{n,g,un,og,ig}.webp` | `qwen-image-edit` | 42 | derived from `car-t` | CC BY 4.0 | As above. |
+| `assets/art/car-at.webp` | `qwen-image-edit` | **1337** | derived from `car-t` | CC BY 4.0 | Seed 42 rendered only the `a` and dropped the `t`; reprompted naming both letters explicitly, seed 1337 correct. |
+| `assets/art/track.webp` (1600×884, ~110 KB) | `qwen-image-edit` | 42 | image `02-blend-mat.png`; prompt removed the locomotive, every letter car, all buttons, banners and text, keeping only the landscape and the empty rail | CC BY 4.0 | Cropped to the 1.81 play aspect keeping the rail with grass beneath, resized to 1600×884, locomotive (extracted the same way, keyed, 430px wide) composited at the left with its wheels on the rail. |
+| `assets/art/splash.webp` (1280×951) | `qwen-image-edit` | 42 | image `01-title.png`; prompt removed all text, letters and the orange button, keeping the train, sunburst sky, clouds and stars | CC BY 4.0 | Resized, WebP q86. The engine renders the real title as HTML — spelling has to stay correct and an image model is not a typography engine. |
+| `assets/art/mode-{couple,sounds}.webp` (420²) | derived | — | composed from the final cars | CC BY 4.0 | The mode's own cars overlapped 10% so they read as coupled, padded square for the engine's contain-fit. These exist because the engine's splash mode buttons were text-only, which a pre-reader cannot use. |
 | `assets/audio/{greet,intro,prompt-couple,prompt-sounds,nudge,wait,cheer}.m4a` | `qwen3-tts-voiceclone` | 7 | Voice reference `shared/assets/refs/voice-teacher.wav`; verbatim lines in `game-design.md` §6 and `assets/audio/lines.json` | CC BY 4.0 | Model emits FLAC despite the filename; converted `afconvert -f m4af -d aac -b 64000`. Durations measured with `afinfo` into `manifest.json`. |
 
-### Why the cars were keyed rather than run through `qwen-image-layered`
+### Extract from the mockup; do not re-imagine it
 
-The platform standard for transparent cutouts is generate-on-charcoal then extract with
-`qwen-image-layered`. That was used for the **locomotive**, which has near-black parts
-(funnel, wheels) touching the ground that a dark key would eat.
+The first production pass generated the cars from scratch with `krea2-turbo-t2i` and
+composited a shared letter tile into a blank panel. It was competent and it was wrong: the
+result was *adjacent* to the concept art rather than the concept art, and the shipped
+screens read as a weaker version of a design that had already been approved.
 
-It was deliberately **not** used for the cars. The extractor is a *generative
-decomposition* — a faithful redraw, not a crop — and the letter tile is composited into
-the car's cream panel at fixed fractional coordinates that all three cars share. A redraw
-would give each colour a slightly different panel, so no single inset offset could be
-correct for all of them. A border flood fill on the flat charcoal ground is exact, and the
-cars have no near-charcoal colours, so it is safe here.
+Feeding the mockup itself to `qwen-image-edit` with `Isolate the <element> on a white
+background` returns that element cleanly lifted, in the mockup's exact style. The whole
+16-car family is then derived by editing only the **letter** on an already-extracted car,
+which keeps body, couplers, wheels and panel geometry identical across the set — that
+geometric consistency is what makes a row of them read as one train.
+
+Colour carries meaning, taken from the mockup's own scheme: **blue onset, green vowel,
+red coda / rime chunk**.
+
+### Keying, not `qwen-image-layered`
+
+The cars are keyed off their white ground with a border flood fill. A *global* white key
+would punch holes through the cream signboard; a flood fill from the edge cannot reach
+interior pixels, so the panel survives. `qwen-image-layered` was not used because it is a
+generative decomposition — a redraw — and a redraw of each car would break the geometric
+register that the letter-swap derivation exists to preserve.
 
 ## Added to the shared library by this game
 
@@ -41,6 +60,12 @@ cars have no near-charcoal colours, so it is safe here.
 The tile set previously had 19 consonants and 40 rimes but **no vowels at all**, so no
 letter-level CVC game could be built from shared art. Green marks them as vowels, against
 the existing blue-consonant / orange-rime convention.
+
+**Blend Train no longer consumes these.** The visual pass replaced the tile-in-a-panel
+composite with cars that carry their letter baked in, lifted from the mockup. The tiles
+are kept anyway: they close a real gap in the shared set and unblock the next letter-level
+CVC game. They are listed here as a contribution, not as a dependency, and the game's
+`uses[]` no longer claims them.
 
 Family match, measured against `m.png`: opaque 38.0% vs 37.9%, content bbox identical to
 within 1px. The soft edge band is slightly tighter than the family's (1.5% vs 3.6%) —
