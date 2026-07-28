@@ -70,6 +70,27 @@ async function main() {
   const page = landscape.page;
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
   check('three musical brushes registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).length === 3);
+  const lateStrokeTimeline = await page.evaluate(async () => {
+    const { buildReplayTimeline } = await import('../../../shared/js/musical-canvas.js');
+    const stroke = (start, duration) => ({
+      start,
+      points: [{ t: 0 }, { t: duration }],
+    });
+    return buildReplayTimeline([
+      stroke(0, 5000),
+      stroke(10500, 600),
+      stroke(15000, 400),
+      stroke(22000, 200),
+    ]).map(({ start }) => start);
+  });
+  check('late strokes keep distinct sequential replay times',
+    lateStrokeTimeline.length === 4
+      && new Set(lateStrokeTimeline).size === lateStrokeTimeline.length
+      && lateStrokeTimeline.every((start, index) => index === 0 || start > lateStrokeTimeline[index - 1]),
+    lateStrokeTimeline.join(', '));
+  check('replay preserves the first continuous stroke before later strokes',
+    lateStrokeTimeline[1] > 5000,
+    lateStrokeTimeline.join(', '));
   check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
   const modeSizes = await page.locator('.mode-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));

@@ -7,6 +7,37 @@
 const SCALE = [0, 2, 4, 7, 9, 12, 14, 16];
 const MAX_POINTS = 1800;
 
+export function buildReplayTimeline(strokes, {
+  minGapMs = 120,
+  maxGapMs = 1200,
+} = {}) {
+  const source = Array.isArray(strokes) ? strokes : [];
+  const timeline = [];
+
+  for (let index = 0; index < source.length; index++) {
+    const stroke = source[index];
+    if (index === 0) {
+      timeline.push({ ...stroke, start: 0 });
+      continue;
+    }
+
+    const previousSource = source[index - 1];
+    const previousReplay = timeline[index - 1];
+    const previousDuration = Math.max(0, previousSource.points?.at(-1)?.t || 0);
+    const previousSourceEnd = (previousSource.start || 0) + previousDuration;
+    const recordedGap = (stroke.start || 0) - previousSourceEnd;
+    const safeGap = Number.isFinite(recordedGap) ? recordedGap : minGapMs;
+    const replayGap = Math.max(minGapMs, Math.min(maxGapMs, safeGap));
+
+    timeline.push({
+      ...stroke,
+      start: previousReplay.start + previousDuration + replayGap,
+    });
+  }
+
+  return timeline;
+}
+
 export function createMusicalCanvas(canvas, {
   brush = 'ribbon',
   color = '#35d6e8',
@@ -237,11 +268,7 @@ export function createMusicalCanvas(canvas, {
     if (!state.strokes.length || state.replay) return Promise.resolve(false);
     unlock();
     const strokes = clone(state.strokes);
-    const first = Math.min(...strokes.map((stroke) => stroke.start || 0));
-    const normalizedStrokes = strokes.map((stroke, index) => ({
-      ...stroke,
-      start: Math.min(9000, Math.max(index * 90, (stroke.start || 0) - first)),
-    }));
+    const normalizedStrokes = buildReplayTimeline(strokes);
     const duration = Math.max(...normalizedStrokes.map((stroke) =>
       stroke.start + (stroke.points.at(-1)?.t || 0))) / Math.max(.1, speed) + 450;
     const replayState = {
