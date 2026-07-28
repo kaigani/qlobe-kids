@@ -43,7 +43,7 @@
   {
    "name": "found a patch of empty dark to tap",
    "ok": true,
-   "detail": "616 art px clear of every letter"
+   "detail": "574 art px clear of every letter"
   },
   {
    "name": "tap on empty dark moves the beam there (§6.4)",
@@ -63,7 +63,7 @@
   {
    "name": "tapping an UNLIT letter moves the beam instead",
    "ok": true,
-   "detail": "beam moved 1101 art px"
+   "detail": "beam moved 1183 art px"
   },
   {
    "name": "a lit WRONG tap is refused, gently",
@@ -123,7 +123,7 @@
   {
    "name": "perf: mean frame interval under a 3 s scripted drag < 24 ms",
    "ok": true,
-   "detail": "16.65 ms mean, 60 fps, quality high, 3 spotlight draws"
+   "detail": "16.66 ms mean, 60 fps, quality high, 3 spotlight draws"
   },
   {
    "name": "landscape: every letter target ≥ 96 px",
@@ -293,7 +293,7 @@
   {
    "name": "canvas still repaints after a hide/show cycle",
    "ok": true,
-   "detail": "1573673 vs 1552422 bytes"
+   "detail": "1582887 vs 1468764 bytes"
   },
   {
    "name": "every request path is lowercase",
@@ -318,7 +318,7 @@
   {
    "name": "the sweep actually put C and K on screen as targets in `sound`",
    "ok": true,
-   "detail": "saw C/K across 14 distinct targets"
+   "detail": "saw C/K across 15 distinct targets"
   },
   {
    "name": "the sweep actually put C and K on screen as targets in `picture`",
@@ -333,7 +333,7 @@
   {
    "name": "X is never a target in `picture` (§9.12)",
    "ok": true,
-   "detail": "27 picture rounds: VEGCKRKNWPCFDRCIVKOYCJEDBIT"
+   "detail": "27 picture rounds: NQTCKRKNWPCFDRCIVKOYCJEDBIT"
   },
   {
    "name": "seeded sweep: no console errors",
@@ -368,12 +368,12 @@
   {
    "name": "portrait/picture: the ledge object is fully on screen",
    "ok": true,
-   "detail": "slot 278,145 279×279, painted 284,151 267×267 in 834×1194"
+   "detail": "slot 278,145 279×279, painted 276,143 282×282 in 834×1194"
   },
   {
    "name": "portrait/picture: the ledge carries an actual picture, not just a halo",
    "ok": true,
-   "detail": "word elephant, alpha 1, tex 512×512 valid=true"
+   "detail": "word whale, alpha 1, tex 512×512 valid=true"
   },
   {
    "name": "portrait/picture: every letter target ≥ 96 px",
@@ -388,7 +388,7 @@
   {
    "name": "portrait: a mode still completes",
    "ok": true,
-   "detail": "r2 K(RBTK) -> r3 play | r3 S(MZGST) -> r3 end"
+   "detail": "r2 T(TBHF) -> r3 play | r3 I(ILCTV) -> r3 end"
   },
   {
    "name": "portrait: no console errors",
@@ -413,7 +413,7 @@
   {
    "name": "reduced motion: a mode still completes",
    "ok": true,
-   "detail": "r2 M(MHTB) -> r3 play | r3 F(FDCPE) -> r3 end"
+   "detail": "r2 J(XMUJ) -> r3 play | r3 V(ZVWRY) -> r3 end"
   },
   {
    "name": "reduced motion: no console errors",
@@ -498,12 +498,12 @@
   {
    "name": "landscape: the ledge object is fully on screen",
    "ok": true,
-   "detail": "slot 487,145 207×207, painted 490,149 199×199 in 1180×820"
+   "detail": "slot 487,145 207×207, painted 487,145 206×206 in 1180×820"
   },
   {
    "name": "landscape: the ledge carries an actual picture, not just a halo",
    "ok": true,
-   "detail": "word ant, alpha 1, tex 512×512 valid=true"
+   "detail": "word owl, alpha 1, tex 512×512 valid=true"
   },
   {
    "name": "the ledge survives a resize to 1180×520 mid-round",
@@ -533,12 +533,12 @@
   {
    "name": "wide-short 1180×520: the ledge object is fully on screen",
    "ok": true,
-   "detail": "slot 487,157 207×207, painted 487,157 205×205 in 1180×520"
+   "detail": "slot 487,157 207×207, painted 486,156 208×208 in 1180×520"
   },
   {
    "name": "wide-short 1180×520: the ledge carries an actual picture, not just a halo",
    "ok": true,
-   "detail": "word nest, alpha 1, tex 512×512 valid=true"
+   "detail": "word watermelon, alpha 1, tex 512×512 valid=true"
   },
   {
    "name": "wide-short 1180×520: no console errors",
@@ -558,7 +558,7 @@
   {
    "name": "the object is genuinely PAINTED with no interaction at all",
    "ok": true,
-   "detail": "66503 → 141137 bytes over the same clip"
+   "detail": "66714 → 133442 bytes over the same clip"
   },
   {
    "name": "nothing was touched: the beam never moved between baseline and paint",
@@ -583,7 +583,7 @@
   {
    "name": "the object is on the ledge BEFORE the prompt names it (§3.2)",
    "ok": true,
-   "detail": "ledge at 7886 ms, \"starts-intro\" at 8265 ms"
+   "detail": "ledge at 7801 ms, \"starts-intro\" at 8185 ms"
   },
   {
    "name": "clip-order probe: no console errors",
@@ -592,39 +592,39 @@
   }
  ],
  "notes": [
-  "1 interrupted clip/pose load(s) — expected, see isExpectedAbort",
+  "0 interrupted clip/pose load(s) — expected, see isExpectedAbort",
   "dpr-1x/2x/3x-seam.png are for HUMAN review of the hole↔strip join — no automated assertion"
  ],
  "perf": {
   "fps": 60,
-  "ms": 16.65,
+  "ms": 16.66,
   "quality": "high",
   "draws": 3
  },
  "runs": {
   "find": {
    "log": [
-    "r1 T(TRV) -> r2 play",
-    "r2 I(IOLY) -> r3 play",
-    "r3 O(CIOAG) -> r3 end"
+    "r1 E(NEJ) -> r2 play",
+    "r2 Z(ZSQD) -> r3 play",
+    "r3 J(UJLEM) -> r3 end"
    ],
    "rounds": [
     {
      "mode": "find",
      "seed": null,
      "round": 1,
-     "target": "T",
+     "target": "E",
      "chars": [
       {
-       "char": "T",
-       "role": "correct"
-      },
-      {
-       "char": "R",
+       "char": "N",
        "role": "wrong"
       },
       {
-       "char": "V",
+       "char": "E",
+       "role": "correct"
+      },
+      {
+       "char": "J",
        "role": "wrong"
       }
      ]
@@ -633,22 +633,22 @@
      "mode": "find",
      "seed": null,
      "round": 2,
-     "target": "I",
+     "target": "Z",
      "chars": [
       {
-       "char": "I",
+       "char": "Z",
        "role": "correct"
       },
       {
-       "char": "O",
+       "char": "S",
        "role": "wrong"
       },
       {
-       "char": "L",
+       "char": "Q",
        "role": "wrong"
       },
       {
-       "char": "Y",
+       "char": "D",
        "role": "wrong"
       }
      ]
@@ -657,26 +657,26 @@
      "mode": "find",
      "seed": null,
      "round": 3,
-     "target": "O",
+     "target": "J",
      "chars": [
       {
-       "char": "C",
+       "char": "U",
        "role": "wrong"
       },
       {
-       "char": "I",
-       "role": "wrong"
-      },
-      {
-       "char": "O",
+       "char": "J",
        "role": "correct"
       },
       {
-       "char": "A",
+       "char": "L",
        "role": "wrong"
       },
       {
-       "char": "G",
+       "char": "E",
+       "role": "wrong"
+      },
+      {
+       "char": "M",
        "role": "wrong"
       }
      ]
@@ -692,27 +692,27 @@
   },
   "sound": {
    "log": [
-    "r1 U(UFH) -> r2 play",
-    "r2 R(RAPQ) -> r3 play",
-    "r3 T(UTILP) -> r3 end"
+    "r1 B(BWT) -> r2 play",
+    "r2 N(NIHZ) -> r3 play",
+    "r3 R(QBSKR) -> r3 end"
    ],
    "rounds": [
     {
      "mode": "sound",
      "seed": null,
      "round": 1,
-     "target": "U",
+     "target": "B",
      "chars": [
       {
-       "char": "U",
+       "char": "B",
        "role": "correct"
       },
       {
-       "char": "F",
+       "char": "W",
        "role": "wrong"
       },
       {
-       "char": "H",
+       "char": "T",
        "role": "wrong"
       }
      ]
@@ -721,22 +721,22 @@
      "mode": "sound",
      "seed": null,
      "round": 2,
-     "target": "R",
+     "target": "N",
      "chars": [
       {
-       "char": "R",
+       "char": "N",
        "role": "correct"
       },
       {
-       "char": "A",
+       "char": "I",
        "role": "wrong"
       },
       {
-       "char": "P",
+       "char": "H",
        "role": "wrong"
       },
       {
-       "char": "Q",
+       "char": "Z",
        "role": "wrong"
       }
      ]
@@ -745,27 +745,27 @@
      "mode": "sound",
      "seed": null,
      "round": 3,
-     "target": "T",
+     "target": "R",
      "chars": [
       {
-       "char": "U",
+       "char": "Q",
        "role": "wrong"
       },
       {
-       "char": "T",
+       "char": "B",
+       "role": "wrong"
+      },
+      {
+       "char": "S",
+       "role": "wrong"
+      },
+      {
+       "char": "K",
+       "role": "wrong"
+      },
+      {
+       "char": "R",
        "role": "correct"
-      },
-      {
-       "char": "I",
-       "role": "wrong"
-      },
-      {
-       "char": "L",
-       "role": "wrong"
-      },
-      {
-       "char": "P",
-       "role": "wrong"
       }
      ]
     }
@@ -780,27 +780,27 @@
   },
   "picture": {
    "log": [
-    "r1 V(VHO) -> r2 play",
-    "r2 E(ZKLE) -> r3 play",
-    "r3 G(CGEHO) -> r3 end"
+    "r1 N(VNA) -> r2 play",
+    "r2 Q(QOYT) -> r3 play",
+    "r3 T(IJGLT) -> r3 end"
    ],
    "rounds": [
     {
      "mode": "picture",
      "seed": null,
      "round": 1,
-     "target": "V",
+     "target": "N",
      "chars": [
       {
        "char": "V",
-       "role": "correct"
-      },
-      {
-       "char": "H",
        "role": "wrong"
       },
       {
-       "char": "O",
+       "char": "N",
+       "role": "correct"
+      },
+      {
+       "char": "A",
        "role": "wrong"
       }
      ]
@@ -809,23 +809,23 @@
      "mode": "picture",
      "seed": null,
      "round": 2,
-     "target": "E",
+     "target": "Q",
      "chars": [
       {
-       "char": "Z",
-       "role": "wrong"
-      },
-      {
-       "char": "K",
-       "role": "wrong"
-      },
-      {
-       "char": "L",
-       "role": "wrong"
-      },
-      {
-       "char": "E",
+       "char": "Q",
        "role": "correct"
+      },
+      {
+       "char": "O",
+       "role": "wrong"
+      },
+      {
+       "char": "Y",
+       "role": "wrong"
+      },
+      {
+       "char": "T",
+       "role": "wrong"
       }
      ]
     },
@@ -833,27 +833,27 @@
      "mode": "picture",
      "seed": null,
      "round": 3,
-     "target": "G",
+     "target": "T",
      "chars": [
       {
-       "char": "C",
+       "char": "I",
+       "role": "wrong"
+      },
+      {
+       "char": "J",
        "role": "wrong"
       },
       {
        "char": "G",
+       "role": "wrong"
+      },
+      {
+       "char": "L",
+       "role": "wrong"
+      },
+      {
+       "char": "T",
        "role": "correct"
-      },
-      {
-       "char": "E",
-       "role": "wrong"
-      },
-      {
-       "char": "H",
-       "role": "wrong"
-      },
-      {
-       "char": "O",
-       "role": "wrong"
       }
      ]
     }
@@ -872,18 +872,18 @@
    "mode": "find",
    "seed": null,
    "round": 1,
-   "target": "T",
+   "target": "E",
    "chars": [
     {
-     "char": "T",
-     "role": "correct"
-    },
-    {
-     "char": "R",
+     "char": "N",
      "role": "wrong"
     },
     {
-     "char": "V",
+     "char": "E",
+     "role": "correct"
+    },
+    {
+     "char": "J",
      "role": "wrong"
     }
    ]
@@ -892,110 +892,82 @@
    "mode": "find",
    "seed": null,
    "round": 2,
-   "target": "I",
+   "target": "Z",
    "chars": [
     {
-     "char": "I",
+     "char": "Z",
      "role": "correct"
     },
     {
-     "char": "O",
-     "role": "wrong"
-    },
-    {
-     "char": "L",
-     "role": "wrong"
-    },
-    {
-     "char": "Y",
-     "role": "wrong"
-    }
-   ]
-  },
-  {
-   "mode": "find",
-   "seed": null,
-   "round": 3,
-   "target": "O",
-   "chars": [
-    {
-     "char": "C",
-     "role": "wrong"
-    },
-    {
-     "char": "I",
-     "role": "wrong"
-    },
-    {
-     "char": "O",
-     "role": "correct"
-    },
-    {
-     "char": "A",
-     "role": "wrong"
-    },
-    {
-     "char": "G",
-     "role": "wrong"
-    }
-   ]
-  },
-  {
-   "mode": "sound",
-   "seed": null,
-   "round": 1,
-   "target": "U",
-   "chars": [
-    {
-     "char": "U",
-     "role": "correct"
-    },
-    {
-     "char": "F",
-     "role": "wrong"
-    },
-    {
-     "char": "H",
-     "role": "wrong"
-    }
-   ]
-  },
-  {
-   "mode": "sound",
-   "seed": null,
-   "round": 2,
-   "target": "R",
-   "chars": [
-    {
-     "char": "R",
-     "role": "correct"
-    },
-    {
-     "char": "A",
-     "role": "wrong"
-    },
-    {
-     "char": "P",
+     "char": "S",
      "role": "wrong"
     },
     {
      "char": "Q",
      "role": "wrong"
+    },
+    {
+     "char": "D",
+     "role": "wrong"
     }
    ]
   },
   {
-   "mode": "sound",
+   "mode": "find",
    "seed": null,
    "round": 3,
-   "target": "T",
+   "target": "J",
    "chars": [
     {
      "char": "U",
      "role": "wrong"
     },
     {
+     "char": "J",
+     "role": "correct"
+    },
+    {
+     "char": "L",
+     "role": "wrong"
+    },
+    {
+     "char": "E",
+     "role": "wrong"
+    },
+    {
+     "char": "M",
+     "role": "wrong"
+    }
+   ]
+  },
+  {
+   "mode": "sound",
+   "seed": null,
+   "round": 1,
+   "target": "B",
+   "chars": [
+    {
+     "char": "B",
+     "role": "correct"
+    },
+    {
+     "char": "W",
+     "role": "wrong"
+    },
+    {
      "char": "T",
+     "role": "wrong"
+    }
+   ]
+  },
+  {
+   "mode": "sound",
+   "seed": null,
+   "round": 2,
+   "target": "N",
+   "chars": [
+    {
+     "char": "N",
      "role": "correct"
     },
     {
@@ -1003,43 +975,31 @@
      "role": "wrong"
     },
     {
-     "char": "L",
-     "role": "wrong"
-    },
-    {
-     "char": "P",
-     "role": "wrong"
-    }
-   ]
-  },
-  {
-   "mode": "picture",
-   "seed": null,
-   "round": 1,
-   "target": "V",
-   "chars": [
-    {
-     "char": "V",
-     "role": "correct"
-    },
-    {
      "char": "H",
      "role": "wrong"
     },
     {
-     "char": "O",
+     "char": "Z",
      "role": "wrong"
     }
    ]
   },
   {
-   "mode": "picture",
+   "mode": "sound",
    "seed": null,
-   "round": 2,
-   "target": "E",
+   "round": 3,
+   "target": "R",
    "chars": [
     {
-     "char": "Z",
+     "char": "Q",
+     "role": "wrong"
+    },
+    {
+     "char": "B",
+     "role": "wrong"
+    },
+    {
+     "char": "S",
      "role": "wrong"
     },
     {
@@ -1047,11 +1007,7 @@
      "role": "wrong"
     },
     {
-     "char": "L",
-     "role": "wrong"
-    },
-    {
-     "char": "E",
+     "char": "R",
      "role": "correct"
     }
    ]
@@ -1059,28 +1015,72 @@
   {
    "mode": "picture",
    "seed": null,
-   "round": 3,
-   "target": "G",
+   "round": 1,
+   "target": "N",
    "chars": [
     {
-     "char": "C",
+     "char": "V",
      "role": "wrong"
     },
     {
-     "char": "G",
+     "char": "N",
      "role": "correct"
     },
     {
-     "char": "E",
+     "char": "A",
      "role": "wrong"
-    },
+    }
+   ]
+  },
+  {
+   "mode": "picture",
+   "seed": null,
+   "round": 2,
+   "target": "Q",
+   "chars": [
     {
-     "char": "H",
-     "role": "wrong"
+     "char": "Q",
+     "role": "correct"
     },
     {
      "char": "O",
      "role": "wrong"
+    },
+    {
+     "char": "Y",
+     "role": "wrong"
+    },
+    {
+     "char": "T",
+     "role": "wrong"
+    }
+   ]
+  },
+  {
+   "mode": "picture",
+   "seed": null,
+   "round": 3,
+   "target": "T",
+   "chars": [
+    {
+     "char": "I",
+     "role": "wrong"
+    },
+    {
+     "char": "J",
+     "role": "wrong"
+    },
+    {
+     "char": "G",
+     "role": "wrong"
+    },
+    {
+     "char": "L",
+     "role": "wrong"
+    },
+    {
+     "char": "T",
+     "role": "correct"
     }
    ]
   },

@@ -1,7 +1,7 @@
 const pictureWordPair = (name) => ({
   say: `${capitalize(name)} matches ${name}.`,
   a: {
-    art: `shared:objects/${name}.png`,
+    art: `shared:objects/${name}.webp`,
     alt: `${name} picture`,
     say: name,
   },

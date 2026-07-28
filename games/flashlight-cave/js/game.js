@@ -677,7 +677,7 @@ export class Game {
   objectUrl(word) {
     // Document-relative, per §12.1: Pixi Assets.load and <img> resolve against
     // /games/flashlight-cave/index.html, not against this module.
-    return `../../shared/assets/objects/${word}.png`;
+    return `../../shared/assets/objects/${word}.webp`;
   }
 
   async domReveal(rec, word) {

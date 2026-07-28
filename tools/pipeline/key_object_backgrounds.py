@@ -143,6 +143,98 @@ def extract(base: str, png: bytes, subject: str, seed: int) -> bytes | None:
     return None
 
 
+def matte(path: pathlib.Path, white: int = 246, feather: float = 1.2) -> "Image.Image":
+    """CPU fallback: alpha from the border-connected near-white background.
+
+    The generative extractor keys ~82% of the library and fails hard on the
+    rest — small, simple, metallic or transparent subjects (a tin can, a glass
+    jar, a wrench) come back as an opaque plate or a blank. For those, this.
+
+    It is NOT the naive white-key that was rejected earlier. Two things make
+    the difference:
+
+      · CONNECTIVITY. Only background reachable by flooding in from the frame
+        edge is removed, so interior whites survive — a jar's highlight, a
+        white bib field, a can's lid. A plain threshold eats all of them.
+      · FEATHER. The mask is blurred and re-curved before use, so the
+        anti-aliased rim fades instead of leaving the hard white halo a binary
+        cut leaves on a dark backdrop.
+
+    And unlike the extractor it never redraws: the subject's pixels are the
+    original's pixels, exactly.
+
+    Deliberately white-only. A pass that also absorbed desaturated greys (to
+    take the drop shadow with it) punched holes straight through silver and
+    white SUBJECTS — the tin can and the milk jug — because a shadow and a
+    metallic object are both grey. A faint shadow residue on a few sprites is
+    the cheaper mistake.
+    """
+    im = Image.open(path).convert("RGB")
+    W, H = im.size
+    px = im.load()
+    seen = bytearray(W * H)
+    stack: list[int] = []
+
+    def push(x: int, y: int) -> None:
+        k = y * W + x
+        if seen[k]:
+            return
+        seen[k] = 1
+        r, g, b = px[x, y]
+        if r >= white and g >= white and b >= white:
+            stack.append(k)
+
+    for x in range(W):
+        push(x, 0); push(x, H - 1)
+    for y in range(H):
+        push(0, y); push(W - 1, y)
+
+    bg = bytearray(W * H)
+    while stack:
+        k = stack.pop()
+        bg[k] = 1
+        x, y = k % W, k // W
+        if x:          push(x - 1, y)
+        if x < W - 1:  push(x + 1, y)
+        if y:          push(x, y - 1)
+        if y < H - 1:  push(x, y + 1)
+
+    from PIL import ImageFilter
+    a = Image.frombytes("L", (W, H), bytes(0 if v else 255 for v in bg))
+    a = a.filter(ImageFilter.GaussianBlur(feather))
+    a = a.point(lambda v: 0 if v < 24 else min(255, int(v * 1.25)))
+    out = im.convert("RGBA")
+    out.putalpha(a)
+    return out
+
+
+def save_reject(cut: bytes, original: pathlib.Path, out: pathlib.Path,
+                word: str, seed: int, why: str) -> None:
+    """Write a rejected take next to a side-by-side so a human can overrule.
+
+    MAE cannot tell "the ladybug lost its legs" (fine at play size) from "the
+    bed lost its frame, headboard and pillow" (not fine) — those measured 14.9
+    and 20.4, only 5.5 apart. So the number stays a SORTING key and the verdict
+    stays human. Throwing rejects away made that impossible.
+    """
+    d = out / "rejects"
+    d.mkdir(exist_ok=True)
+    (d / f"{word}-seed{seed}.png").write_bytes(cut)
+    try:
+        old = Image.open(original).convert("RGBA")
+        W, H = old.size
+        new = Image.open(io.BytesIO(cut)).convert("RGBA").resize((W, H), Image.LANCZOS)
+        panel = Image.new("RGB", (W * 3, H), (255, 255, 255))
+        a = Image.new("RGB", (W, H), (255, 255, 255)); a.paste(old, (0, 0), old)
+        b = Image.new("RGB", (W, H), (255, 255, 255)); b.paste(new, (0, 0), new)
+        c = Image.new("RGB", (W, H), (10, 20, 54)); c.paste(new, (0, 0), new)
+        for i, im in enumerate((a, b, c)):
+            panel.paste(im, (i * W, 0))
+        panel.save(d / f"{word}-seed{seed}-panel.png")
+    except Exception:
+        pass  # a panel is a convenience; never let it break the batch
+
+
 def judge(cut: bytes, original: pathlib.Path) -> tuple[bool, str]:
     """Same art minus its background, or different art? Refuse the latter."""
     new = Image.open(io.BytesIO(cut)).convert("RGBA")
@@ -257,12 +349,17 @@ def main() -> None:
                 ok, why = judge(cut, src)
                 if not ok:
                     print(f"    seed {seed}: rejected — {why}")
+                    save_reject(cut, src, out, word, seed, why)
+                    log.setdefault(word, {}).setdefault("rejects", []).append(
+                        {"seed": seed, "why": why})
                     continue
                 new = Image.open(io.BytesIO(cut)).convert("RGBA").resize(im.size, Image.LANCZOS)
                 new.save(dst, lossless=True, method=6)
                 (out / "source" / f"{word}-grey-{seed}.png").write_bytes(grey)
                 print(f"    seed {seed}: OK — {why} -> {dst.stat().st_size:,}B")
-                log[word] = {"action": "keyed", "seed": seed,
+                # Keep any earlier rejects for this word — a sprite that failed
+                # seed 42 and passed on 1337 is worth knowing about later.
+                log[word] = {**log.get(word, {}), "action": "keyed", "seed": seed,
                              "bytes": dst.stat().st_size, "note": why}
                 keyed += 1
                 done = True
@@ -271,7 +368,8 @@ def main() -> None:
                 print(f"    seed {seed}: {type(exc).__name__}: {exc}")
         if not done:
             failed += 1
-            log[word] = {"action": "FAILED"}
+            # The rejects are the whole point of a failure record — keep them.
+            log[word] = {**log.get(word, {}), "action": "FAILED"}
         report.write_text(json.dumps(log, indent=2, sort_keys=True))
 
     print(f"\ndone: {keyed} keyed, {passthru} passed through, "

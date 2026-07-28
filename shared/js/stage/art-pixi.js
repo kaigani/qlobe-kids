@@ -2,7 +2,7 @@
 // Resolves the SAME config art refs into Pixi display objects, so game configs
 // work unchanged on Stage v2 engines:
 //
-//   emoji:🐸 | shared:objects/cat.png | char:maya | text:CAT | swatch:#f4c53d
+//   emoji:🐸 | shared:objects/cat.webp | char:maya | text:CAT | swatch:#f4c53d
 //
 // Every returned object is sized to fit a `size` box (contain), centered pivot.
 

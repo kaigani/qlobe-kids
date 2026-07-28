@@ -544,7 +544,7 @@ standalone format. One `<asset>.recipe.json` next to each generated file:
     { "workflow": "qwen-image-layered", "output": "layer_2" },
     { "op": "finalize", "crop": "bbox+12", "maxSize": 640, "encode": "png8" }
   ],
-  "refs": { "style": "shared:objects/cat.png", "voice": "teacher" },
+  "refs": { "style": "shared:objects/cat.webp", "voice": "teacher" },
   "derivedFrom": null,
   "qa": { "alpha": { "partialPct": 0.8 }, "status": "accepted" },
   "created": "2026-07-24"

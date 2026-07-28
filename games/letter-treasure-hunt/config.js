@@ -1,5 +1,5 @@
 const objectCard = (word, correct = false) => ({
-  art: `shared:objects/${word}.png`,
+  art: `shared:objects/${word}.webp`,
   alt: word,
   ...(correct ? { correct: true } : {}),
 });

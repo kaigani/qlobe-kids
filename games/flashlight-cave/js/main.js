@@ -35,7 +35,7 @@ const UI = {
   sound: new URL('../../../shared/assets/ui/btn-sound.png', import.meta.url).href,
   play: new URL('../../../shared/assets/ui/btn-play.png', import.meta.url).href,
 };
-const APPLE = '../../shared/assets/objects/apple.png';
+const APPLE = '../../shared/assets/objects/apple.webp';
 
 const SPLASH_IDLE_1 = 15000;
 const SPLASH_IDLE_2 = 35000;
