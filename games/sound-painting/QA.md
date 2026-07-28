@@ -70,3 +70,8 @@ Date: 2026-07-27
 - Expanded local real-Chrome suite: **29/29**.
 - Page errors: 0.
 - Failed requests / 404s: 0.
+- Production commit: `56d8451` (`Turn Sound Painting colors into music tracks`).
+- GitHub Pages run: `30323033612`, successful.
+- Production real-Chrome suite: **29/29**, with 1.1 ms measured three-track
+  entry spread.
+- Production iPad-density Calm River capture visually reviewed: pass.
