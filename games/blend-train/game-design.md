@@ -99,6 +99,16 @@ child who cannot yet drag reliably is never locked out.
   the car does not squirt out from under a small finger. The snap test uses the *car's*
   projected centre, not the fingertip, because the finger is underneath the car and the
   child aims with the car's silhouette.
+- **Every car speaks its own sound, and sound never blocks play.** On round start the
+  cars introduce themselves in build order — each pops, bounces, and says its sound — so a
+  child hears "m … at" before touching anything. Tapping a tray car or an already-coupled
+  car replays that sound. All of it is fire-and-forget: children tap fast and repeatedly,
+  so a tap must be able to interrupt the previous sound and must never delay a drag. The
+  single clip channel means rapid taps chase each other rather than queueing, and the
+  introduction stops the moment the child picks a car up.
+- **Audio can never strand the game.** Anywhere the round loop waits on a spoken line it
+  races a ceiling, so a clip that fails to decode or a speech synth that never reports back
+  costs the line, not the game. See §12 for the bug that made this rule non-negotiable.
 - **Touch targets** — a car renders at ~187px in landscape and ~151px in portrait, tray
   cards at 132px. All comfortably over the 96px floor.
 
@@ -278,6 +288,27 @@ v1 contract plus the extensions the Playwright suite needs:
    of steam on completion would need it promoted to a sprite.
 5. The five shared vowel tiles this game added are no longer used by it — the cars carry
    their letters now. They stay as a contribution to the shared set, not a dependency.
+
+### The round-advance bug, and what it changed
+
+Completing a round changed the round while the last car's drag was still settling. The
+layout pass then called `drag.reproject()`, which wrote to a Pixi display object the round
+change had already destroyed — a destroyed object is still a truthy reference but nulls
+its `position` and `scale`. The throw propagated into the drop handler and was swallowed
+by the `try/catch` that exists to stop a drag stranding a piece, so there was no console
+error and no rejection: the next round dealt its cars and never armed input. A
+finished-looking board a child could not play.
+
+Three things came out of it:
+
+1. `reproject()` now bails on a destroyed view (`shared/js/stage/drag-to-slot.js`).
+2. `voice-clips.playClip` could never settle when its error path awaited a blocked speech
+   fallback — a separate latent hang in shared code used by nine games, fixed with
+   separate `settled`/`handled` flags so the safety timeout always resolves.
+3. The QA suite gained the check that would have caught it: **every round assertion drove
+   `winRound()`**, a debug shortcut that bypasses the real placement path entirely. There
+   is now a check that finishes a round with real pointer drags and asserts the next one
+   deals with fresh cars.
 
 ## 13. Release gate
 

@@ -32,6 +32,11 @@ const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const SHARED_ASSETS = new URL('../../assets/', import.meta.url); // -> shared/assets/
 
 const IDLE_MS = 10000;
+// Longest the round loop will wait on a spoken line before moving on regardless.
+// The longest authored line is a 4-clip blend readout with gaps: comfortably under this.
+const VOICE_CEILING_MS = 9000;
+// A single piece sound is one short fragment; cap it tightly so rapid tapping stays snappy.
+const PIECE_VOICE_CEILING_MS = 2500;
 const REPLAY_DEBOUNCE_MS = 600;
 const WAIT_FOR_INPUT_MS = 80;
 const MIN_TOUCH = 96;
@@ -574,7 +579,9 @@ class BuildAssembleGame {
     if (!this.roundIsCurrent(generation)) return;
     this.awaitingInput = true;
     this.inputLocked = false;
-    this.speakLine(this.mode.prompt || this.config.voice.intro);
+    // Deliberately NOT awaited: input is already live, and a child who wants to grab a
+    // car straight away must never be made to sit through the audio first.
+    this.introduceRound(generation);
     this.scheduleIdlePrompt();
     await this.delay(WAIT_FOR_INPUT_MS);
   }
@@ -744,6 +751,67 @@ class BuildAssembleGame {
       view,
       action: () => this.selectPart(part.id),
     });
+  }
+
+  /**
+   * Speak the prompt, then walk the build in order popping each piece and playing its
+   * own sound, so a child hears "m ... at" before touching anything.
+   *
+   * Detached on purpose (see the call site): it must never gate input. Every step is
+   * guarded by the round generation AND the voice generation, so a tap, a drag, Back, or
+   * the next round all cut it off mid-sequence rather than talking over the child.
+   */
+  async introduceRound(generation) {
+    await this.speakCapped(this.mode.prompt || this.config.voice.intro, true, VOICE_CEILING_MS, 'prompt');
+    const voice = this.voiceGeneration;
+    const build = this.roundBuilds[this.roundIndex];
+    const pieces = (build && build.parts) || [];
+    for (let i = 0; i < pieces.length; i++) {
+      if (!this.roundIsCurrent(generation) || voice !== this.voiceGeneration) return;
+      if (this.selectedId || (this.drag && this.drag.active)) return;  // child took over
+      const part = this.parts.find((p) => p.partIndex === i);
+      if (part) this.bouncePiece(part);
+      await this.speakCapped(pieces[i].say, false, PIECE_VOICE_CEILING_MS, 'piece');
+      if (i < pieces.length - 1) await this.delay(this.ms(160));
+    }
+  }
+
+  /** A small squash-and-pop so the piece that is speaking is the one being looked at. */
+  bouncePiece(part) {
+    const node = part.location === 'slot' ? part.view : part.motion;
+    if (!node || this.reducedMotion()) { this.playSfx('pop'); return; }
+    this.playSfx('pop');
+    // The bounce outlives the tap that started it, and the LAST piece of a round is placed
+    // milliseconds before that round tears its display objects down. A tween still
+    // pointing at a destroyed object throws from inside the ticker ("cannot read
+    // properties of null (reading '_x')") -- and because that throw lands mid-await in the
+    // round-advance chain, the next round deals its cars but never arms input, stranding
+    // the child just as surely as a hang. So only animate a node that is still attached,
+    // and only while this round is still the current one.
+    const generation = this.roundGeneration;
+    const alive = () => !this.destroyed
+      && this.roundGeneration === generation
+      && node.parent != null
+      && node.scale != null;
+    if (!alive()) return;
+    const base = part.location === 'slot' ? node.scale.x : 1;
+    this.runTween(to(node.scale, { x: base * 1.12, y: base * 1.12 }, { ms: this.ms(110), easing: ease.outCubic }))
+      .then(() => (alive()
+        ? this.runTween(to(node.scale, { x: base, y: base }, { ms: this.ms(180), easing: ease.outBack }))
+        : null))
+      .catch(() => { /* a round change mid-bounce is fine */ });
+  }
+
+  /**
+   * Play a piece's own sound on tap. FIRE AND FORGET, never awaited: children tap fast
+   * and repeatedly, and every tap must be able to interrupt the last one and must never
+   * block a drag. voice-clips supersedes the previous clip on its single channel, so
+   * rapid taps chase each other instead of queueing.
+   */
+  speakPiece(part) {
+    if (!part) return;
+    this.bouncePiece(part);
+    this.speakCapped(part.say, true, PIECE_VOICE_CEILING_MS, 'piece');
   }
 
   async popRoundIn(generation) {
@@ -933,8 +1001,8 @@ class BuildAssembleGame {
       return { accepted: false };
     }
     this.selectedId = partId;
-    this.playSfx('pop');
     this.refreshSelection();
+    this.speakPiece(part);
     return { accepted: true };
   }
 
@@ -1016,7 +1084,26 @@ class BuildAssembleGame {
       ),
       this.acknowledgeTray(part.id),
     ]);
-    await this.speakLine(part.say || part.alt, true);
+    // A coupled car stays tappable so a child can replay its sound while building the
+    // word. It is re-registered as its own target (the placement target was consumed
+    // above); the slot underneath is occupied, so this cannot steal a drop.
+    part.view.eventMode = 'static';
+    part.view.cursor = 'pointer';
+    part.view.removeAllListeners('pointerdown');
+    part.view.on('pointerdown', (event) => {
+      if (event && event.stopPropagation) event.stopPropagation();
+      this.speakPiece(part);
+    });
+    this.targetMap.set(`placed:${part.partIndex}`, {
+      id: `placed:${part.partIndex}`,
+      type: 'placed',
+      part,
+      view: part.view,
+      action: () => { this.speakPiece(part); return { accepted: true }; },
+    });
+    // Not awaited: the placement sound must not hold the round-complete check, and a
+    // child tapping other cars meanwhile should interrupt it, not queue behind it.
+    this.speakPiece(part);
     if (this.isRoundComplete()) await this.completeRound();
     else {
       this.inputLocked = false;
@@ -1091,7 +1178,12 @@ class BuildAssembleGame {
       burst(this.stage.PIXI, this.scene, centerX, centerY, { count: 36, power: 7, life: this.ms(760) }),
     ]);
     const build = this.roundBuilds[this.roundIndex];
-    await this.speakLine(build && build.say, true);
+    // Belt and braces: the round advance must NEVER be hostage to audio. The blend line
+    // is the best moment in the game and worth waiting for, but if a clip fails to decode,
+    // autoplay is blocked, or a device's speech synth never reports back, the child would
+    // be stranded on a finished round with an empty tray and no way forward. Wait for the
+    // voice OR a generous ceiling, whichever lands first, then carry on.
+    await this.speakCapped(build && build.say, true, VOICE_CEILING_MS, 'blend');
     await this.delay(this.ms(this.reducedMotion() ? 120 : 420));
     if (this.destroyed || this.screen !== 'play') return;
     const next = this.roundIndex + 1;
@@ -1260,6 +1352,14 @@ class BuildAssembleGame {
       const target = this.targetRect(part.id, 'neutral', part.view, TRAY_CARD);
       if (target) targets.push(target);
     }
+    // Coupled cars are tappable (they replay their own sound), so they are real targets.
+    // They keep a distinct `placed:` id: a QA driver counting the tray by `part:` prefix
+    // would otherwise see a placed car as still being in the tray.
+    for (const part of this.parts) {
+      if (part.location !== 'slot' || !part.view) continue;
+      const target = this.targetRect(`placed:${part.partIndex}`, 'neutral', part.view, ART_SIZE);
+      if (target) targets.push(target);
+    }
     return targets;
   }
 
@@ -1396,10 +1496,16 @@ class BuildAssembleGame {
     return this.clipsLoading;
   }
 
-  logAudio(kind, ref, url) {
+  logAudio(kind, ref, url, tag) {
     this.audioLog.push({
       t: Date.now(),
       kind,
+      // Why this line played, passed down the call chain rather than parked on `this`.
+      // Several things speak concurrently -- the round's blend readout awaits each clip,
+      // and a child tapping cars mid-readout speaks over it -- so a single mutable
+      // instance field gets overwritten between the awaits of one sequence and the log
+      // ends up attributing half a blend readout to a tap.
+      tag: tag || 'other',
       ref: ref == null ? null : String(ref),
       url: url || null,
     });
@@ -1415,13 +1521,32 @@ class BuildAssembleGame {
    * the audio element's `ended`), never a hardcoded guess — only `gap` is
    * authored.
    */
-  async speakLine(line, cancel = false) {
+  /**
+   * speakLine, but it always settles. Used anywhere the game LOOP waits on a line:
+   * a stuck voice may cost the line, never the game.
+   * The ceiling is real time, not scaled by fastTimers -- a real clip sequence must be
+   * allowed to finish, and QA mutes rather than racing it.
+   */
+  async speakCapped(line, cancel = false, ceilingMs = VOICE_CEILING_MS, tag = 'other') {
+    if (this.muted || !line) return;
+    let timer = null;
+    try {
+      await Promise.race([
+        this.speakLine(line, cancel, tag),
+        new Promise((resolve) => { timer = window.setTimeout(resolve, ceilingMs); }),
+      ]);
+    } finally {
+      if (timer) window.clearTimeout(timer);
+    }
+  }
+
+  async speakLine(line, cancel = false, tag = null) {
     if (this.muted || !line) return;
     if (cancel) this.bumpVoice();
     const generation = this.voiceGeneration;
 
     if (typeof line === 'string') {
-      this.logAudio('speech', line, null);
+      this.logAudio('speech', line, null, tag);
       await speech.speak(line, { rate: 0.8, pitch: 1.05, cancel });
       return;
     }
@@ -1434,7 +1559,7 @@ class BuildAssembleGame {
 
     if (!seq.length) {
       if (!text) return;
-      this.logAudio('speech', text, null);
+      this.logAudio('speech', text, null, tag);
       await speech.speak(text, { rate: 0.8, pitch: 1.05, cancel });
       return;
     }
@@ -1445,7 +1570,7 @@ class BuildAssembleGame {
     for (let i = 0; i < seq.length; i++) {
       if (this.destroyed || generation !== this.voiceGeneration) return;
       const fallback = single ? (text || clipFallbackText(seq[i])) : clipFallbackText(seq[i]);
-      if (await this.speakOne(seq[i], fallback)) spoke = true;
+      if (await this.speakOne(seq[i], fallback, tag)) spoke = true;
       if (this.destroyed || generation !== this.voiceGeneration) return;
       if (gap && i < seq.length - 1) await this.delay(gap);
     }
@@ -1463,27 +1588,27 @@ class BuildAssembleGame {
    * manifest (shared/assets/audio/manifest.json) is nested by category and
    * clips.init() on it would silently no-op.
    */
-  async speakOne(ref, fallbackText) {
+  async speakOne(ref, fallbackText, tag) {
     if (typeof ref !== 'string' || !ref) {
       if (!fallbackText) return false;
-      this.logAudio('speech', ref, null);
+      this.logAudio('speech', ref, null, tag);
       await speech.speak(fallbackText, { rate: 0.8, pitch: 1.05 });
       return true;
     }
     if (ref.startsWith('clip:')) {
       const key = ref.slice(5);
-      this.logAudio('clip', ref, key);
+      this.logAudio('clip', ref, key, tag);
       await clips.say(key, fallbackText);
       return true;
     }
     const url = clipUrlFor(ref, this.config.assetBase);
     if (!url) {
       if (!fallbackText) return false;
-      this.logAudio('speech', ref, null);
+      this.logAudio('speech', ref, null, tag);
       await speech.speak(fallbackText, { rate: 0.8, pitch: 1.05 });
       return true;
     }
-    this.logAudio('clip', ref, url);
+    this.logAudio('clip', ref, url, tag);
     await clips.sayFile(url, fallbackText);
     return true;
   }

@@ -409,7 +409,15 @@ export function createDragToSlot({
   function reproject() {
     if (!drag) return;
     const piece = drag.piece;
-    if (!piece || !piece.view) return;
+    // A destroyed Pixi display object is still a truthy reference, but it nulls its
+    // `position` and `scale`, so the writes below would throw. That matters far more
+    // than it looks: reproject() is called from the engine's layout pass, the layout
+    // pass runs when a round changes, and a round changes on the very placement whose
+    // drag is still settling. The throw then propagates into the drop handler, gets
+    // swallowed by the try/catch that exists to stop a drag stranding a piece, and the
+    // new round never arms its input — a finished-looking board a child cannot play.
+    if (!piece || !piece.view || piece.view.destroyed
+        || !piece.view.position || !piece.view.scale) return;
 
     const point = project(drag.lastX, drag.lastY);
     drag.pointerStageX = point.x;

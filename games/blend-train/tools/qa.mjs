@@ -497,7 +497,69 @@ async function main() {
     && after5e.dragging == null && after5e.consistent && after5e.strayClones === 0
     && after5e.awaitingInput, JSON.stringify(after5e));
 
+  // ---- 5f. a round completed BY HAND deals the next one ---------------------
+  // This is the check that was missing, and a real bug lived in the gap: every other
+  // round assertion drives winRound(), which is a debug shortcut. Real play finishes a
+  // round through handleCorrectPlacement, which used to AWAIT the placed car's sound —
+  // so when that promise never settled the round never completed, and the child was left
+  // looking at a finished train with an empty tray and no way forward. Complete a whole
+  // round with real pointer drags and assert the next one actually deals.
+  await startMode(A.page, 'sounds', 7);
+  const roundBefore = (await inventory(A.page)).round;
+  for (let guard = 0; guard < 8; guard++) {
+    const st = await inventory(A.page);
+    if (st.round !== roundBefore) break;
+    const tt = await targets(A.page);
+    const trayCars = tt.filter((x) => x.id.startsWith('part:'));
+    if (!trayCars.length) { await A.page.waitForTimeout(400); continue; }
+    // The build is ordered, so only ONE tray car is live. Select each in turn until the
+    // engine accepts one, then drag that car to the coupling it lit up.
+    let live = null;
+    for (const car of trayCars) {
+      const res = await A.page.evaluate((id) => window.QLOBE_DEBUG.tap(id), car.id);
+      if (res && res.accepted) { live = car; break; }
+    }
+    if (!live) { await A.page.waitForTimeout(300); continue; }
+    const after = await targets(A.page);
+    const slot = after.find((x) => x.role === 'correct');
+    if (!slot) { await A.page.waitForTimeout(300); continue; }
+    await drag(A.page, centre(live), centre(slot));
+    await A.page.waitForTimeout(600);
+  }
+  // Wait for the next round to be READY rather than guessing a duration: the celebration,
+  // the blend readout and the deal animation all take real time, and a fixed sleep either
+  // samples mid-deal (a false failure) or hides a genuine stall behind a generous pad.
+  // Wait for THIS round to be superseded and the next one to be ready to play. Naming the
+  // previous round explicitly matters: a condition like "awaiting && placed === 0" is also
+  // true of the round we started from, so it can be satisfied before anything advanced.
+  await A.page.waitForFunction((prev) => {
+    const s = window.QLOBE_DEBUG.getState();
+    return s.screen === 'end' || (s.round > prev && s.awaitingInput);
+  }, roundBefore, { timeout: 30000 }).catch(() => { /* let the assertion report reality */ });
+  const dealt = await inventory(A.page);
+  const roundAfter = (await inventory(A.page)).round;
+  check('a round finished by hand deals the next round with fresh cars',
+    roundAfter === roundBefore + 1 && dealt.tray > 0 && dealt.placed === 0
+    && dealt.awaitingInput,
+    `round ${roundBefore} -> ${roundAfter}, tray ${dealt.tray}, placed ${dealt.placed}, awaiting ${dealt.awaitingInput}`);
+
+  // ---- 5g. tapping a coupled car replays its sound -------------------------
+  const tPlaced = await targets(A.page);
+  const anyPlaced = tPlaced.find((x) => x.id.startsWith('placed:'));
+  if (anyPlaced) {
+    await A.page.evaluate(() => window.QLOBE_DEBUG.clearAudioLog());
+    await A.page.evaluate((id) => window.QLOBE_DEBUG.tap(id), anyPlaced.id);
+    await A.page.waitForTimeout(700);
+    const tapLog = await A.page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+    check('tapping a coupled car replays its sound', tapLog.length > 0,
+      JSON.stringify(tapLog.slice(-2)));
+  }
+
   // ---- 6. resize mid-drag --------------------------------------------------
+  // Start a fresh round first. The checks above deliberately finish a round, so without
+  // this the resize test inherits a half-played or just-dealt board and grabs a car that
+  // is not there — a failure that says nothing about resizing.
+  await startMode(A.page, 'sounds', 7);
   t = await targets(A.page);
   const before6 = await inventory(A.page);
   const grabCar = centre(t.find((x) => x.id === `part:${before6.placed}`));
@@ -632,9 +694,13 @@ async function main() {
     const cheerRef = expectSeq[expectSeq.length - 1];
     await V.page.waitForFunction((ref) => window.QLOBE_DEBUG.getAudioLog().some((e) => e.ref === ref),
       cheerRef, { timeout: 30000 });
+    // Filter by tag, not by position. Cars now speak their own sound when they are
+    // introduced, tapped and coupled, so the tail of the log is full of legitimate
+    // 'piece' entries; only the entries the engine tagged 'blend' are the readout.
     const full = await V.page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
-    const end = full.map((e) => e.ref).lastIndexOf(cheerRef);
-    const readout = full.slice(Math.max(0, end - expectSeq.length + 1), end + 1);
+    const blend = full.filter((e) => e.tag === 'blend');
+    const end = blend.map((e) => e.ref).lastIndexOf(cheerRef);
+    const readout = blend.slice(Math.max(0, end - expectSeq.length + 1), end + 1);
     const refs = readout.map((e) => e.ref);
     check(`${modeId}: the blend readout plays in order, every line a clip`,
       refs.join(' -> ') === expectSeq.join(' -> ') && readout.every((e) => e.kind === 'clip'),
