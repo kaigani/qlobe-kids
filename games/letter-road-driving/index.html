@@ -45,6 +45,182 @@
       user-select: none; -webkit-user-select: none;
     }
     #game { height: 100dvh; }
+
+    /* Letter Road's production theme deliberately stays local to this game. */
+    #game .qk-trace {
+      --navy: #0754b6;
+      --blue: #0878ed;
+      --green: #53cf0d;
+      --yellow: #ffd51f;
+      --shadow: 0 7px 0 rgba(104, 67, 17, .16), 0 18px 42px rgba(59, 99, 86, .22);
+      background-color: #75d6ff;
+      background-position: center;
+    }
+
+    #game .qk-trace-splash,
+    #game .qk-trace-end {
+      align-items: center;
+      padding: max(14px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(14px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    }
+
+    #game .qk-trace-splash-center {
+      width: min(1000px, 100%);
+      gap: clamp(8px, 1.5vmin, 16px);
+      padding-top: 0;
+      transform: translateY(clamp(0px, 1.5vh, 14px));
+    }
+
+    #game .qk-trace-splash-art,
+    #game .qk-trace-end-art {
+      width: clamp(150px, 28vmin, 270px);
+      border-radius: clamp(28px, 4vmin, 46px);
+      border: clamp(7px, 1vmin, 11px) solid rgba(255, 255, 255, .96);
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,.92), transparent 28%),
+        linear-gradient(145deg, #fff5b5, #ffd970);
+      box-shadow:
+        0 0 0 3px rgba(255, 255, 255, .55),
+        0 10px 0 rgba(123, 83, 31, .13),
+        0 20px 45px rgba(82, 104, 80, .25);
+      --qk-art-size: clamp(126px, 23vmin, 230px);
+    }
+
+    #game .qk-trace-splash-art::before,
+    #game .qk-trace-end-art::before {
+      content: "";
+      position: absolute;
+      inset: -14%;
+      z-index: -1;
+      background: radial-gradient(circle, rgba(255,244,132,.75), transparent 67%);
+      pointer-events: none;
+    }
+
+    #game .qk-trace-splash-art,
+    #game .qk-trace-end-art { position: relative; }
+
+    #game .qk-trace h1 {
+      display: grid;
+      justify-items: center;
+      max-width: none;
+      font-size: 0;
+      line-height: .88;
+      letter-spacing: -0.045em;
+      filter: drop-shadow(0 7px 0 rgba(255, 248, 211, .96))
+        drop-shadow(0 10px 1px rgba(118, 72, 20, .17));
+      text-shadow: none;
+    }
+
+    #game .qk-trace h1::before,
+    #game .qk-trace h1::after {
+      -webkit-text-stroke: clamp(2px, .45vmin, 5px) #fff;
+      paint-order: stroke fill;
+    }
+
+    #game .qk-trace h1::before {
+      content: "Letter Road";
+      color: #075ccc;
+      font-size: clamp(38px, 7.4vmin, 76px);
+    }
+
+    #game .qk-trace h1::after {
+      content: "Driving";
+      color: #ff680d;
+      font-size: clamp(42px, 7.8vmin, 80px);
+    }
+
+    #game .qk-trace-mode-list {
+      width: min(780px, 94vw);
+      grid-template-columns: repeat(2, minmax(210px, 1fr));
+      gap: clamp(12px, 2.1vmin, 22px);
+      margin-top: clamp(2px, 1vmin, 10px);
+    }
+
+    #game .qk-trace-mode,
+    #game .qk-trace-again {
+      position: relative;
+      overflow: hidden;
+      min-height: clamp(92px, 14vmin, 140px);
+      border: clamp(6px, .85vmin, 9px) solid #fff;
+      border-radius: clamp(28px, 4vmin, 42px);
+      padding: 16px 24px;
+      font-size: clamp(26px, 4.6vmin, 46px);
+      text-shadow: 0 4px 0 rgba(0, 62, 142, .28);
+      background:
+        radial-gradient(circle at 14% 82%, rgba(255,255,255,.12) 0 8%, transparent 9%),
+        linear-gradient(180deg, rgba(255,255,255,.38), transparent 48%),
+        #0782ee;
+      box-shadow:
+        0 7px 0 rgba(8, 74, 168, .48),
+        0 12px 24px rgba(65, 79, 59, .23);
+    }
+
+    #game .qk-trace-mode:nth-child(2n),
+    #game .qk-trace-again {
+      background-color: #52d20b;
+      box-shadow:
+        0 7px 0 rgba(38, 145, 4, .48),
+        0 12px 24px rgba(65, 79, 59, .23);
+      text-shadow: 0 4px 0 rgba(20, 114, 0, .28);
+    }
+
+    #game .qk-trace-img-btn {
+      filter: drop-shadow(0 5px 3px rgba(65, 74, 42, .25));
+    }
+
+    #game .qk-trace-play {
+      background-position: center;
+    }
+
+    #game .qk-trace-prompt {
+      min-height: 58px;
+      padding: 8px 26px 10px;
+      border: 5px solid rgba(255,255,255,.95);
+      border-radius: 999px;
+      color: #0754b6;
+      background: rgba(255, 249, 221, .9);
+      box-shadow: 0 6px 0 rgba(122, 91, 45, .12), 0 10px 28px rgba(75, 94, 66, .16);
+      text-shadow: 0 2px 0 #fff;
+    }
+
+    #game .qk-trace-canvas {
+      border-radius: 44px;
+      filter: drop-shadow(0 15px 22px rgba(62, 88, 63, .18));
+    }
+
+    #game .qk-trace-dot {
+      width: 28px;
+      height: 28px;
+      border-width: 5px;
+      box-shadow: 0 4px 0 rgba(17, 87, 148, .18);
+    }
+
+    @media (orientation: portrait) {
+      #game .qk-trace { background-position: center top; }
+      #game .qk-trace-splash-center { gap: clamp(10px, 1.5vh, 18px); }
+      #game .qk-trace-splash-art { width: clamp(160px, 30vw, 260px); }
+      #game .qk-trace-mode-list { width: min(680px, 92vw); }
+    }
+
+    @media (max-width: 620px) {
+      #game .qk-trace-mode-list { grid-template-columns: 1fr; width: min(390px, 88vw); }
+      #game .qk-trace-mode { min-height: 86px; }
+    }
+
+    @media (orientation: landscape) and (max-height: 700px) {
+      #game .qk-trace-splash-center {
+        grid-template-columns: auto minmax(420px, 1fr);
+        grid-template-areas: "art title" "art modes";
+        column-gap: clamp(20px, 4vw, 60px);
+        align-items: center;
+      }
+      #game .qk-trace-splash-art { grid-area: art; width: clamp(170px, 36vh, 250px); }
+      #game .qk-trace-splash-center h1 { grid-area: title; align-self: end; }
+      #game .qk-trace-mode-list { grid-area: modes; align-self: start; width: 100%; }
+      #game .qk-trace-mode { min-height: clamp(82px, 18vh, 112px); }
+    }
   </style>
 </head>
 <body>

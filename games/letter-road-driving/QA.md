@@ -17,16 +17,17 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **18/18 checks passed** in real Google Chrome.
+Result: **19/19 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime makes no remote requests;
 - mode targets and trace starts meet the touch minimum;
-- first real gesture starts the recorded `prompt-l` teacher clip;
+- first real gesture starts the matching recorded teacher clip;
 - Easy Roads has real trace geometry and advances through the engine input path;
-- Letter Town exposes and completes three ordered strokes for A;
+- different seeds produce different four-letter decks from the expanded pool;
+- Letter Town exposes and completes ordered multi-stroke letters;
 - both complete modes reach the end screen;
-- portrait road board is 792×899 CSS px and remains usable;
+- portrait road board is 792×846 CSS px and remains usable;
 - reduced-motion trace completes;
 - zero page errors, failed requests, or 404s;
 - legacy `scissor-trail-safari` dotted rendering still advances with no errors.
@@ -35,27 +36,28 @@ Result: **18/18 checks passed** in real Google Chrome.
 
 Reviewed at 1180×820 landscape and 820×1180 portrait:
 
-- hero car cutout is crisp and readable against the storybook backdrop;
+- new soft-3D countryside plate closely matches the supplied visual direction;
+- hero car cutout is crisp and readable against the bright center;
 - white button labels pass visual contrast on blue and green;
 - top-down driver is large enough to track and rotates with the lane;
 - road border, dark asphalt, and white dashes remain distinct;
 - inactive stroke numbers 2 and 3 stay visible while the car marks stroke 1;
 - prompts, progress dots, Back, and Voice avoid the road board;
-- A fits without clipping in both orientations;
+- sampled single- and multi-stroke letters fit without clipping;
 - end screen hierarchy and replay control are clear.
 
 The production Open Graph shot was regenerated from the approved splash with
-`tools/pipeline/capture_og_images.mjs` at 1200×630 (45 KB, JPEG quality 82).
+`tools/pipeline/capture_og_images.mjs` at 1200×630 (102 KB, JPEG quality 82).
 
 ## Asset QA
 
 - Both gpt-image-2 car sources were separated with Qwen Image Layered.
 - Studio magenta composites were visually reviewed.
 - Alpha finalizer passed after applying the recorded floor of 4.
-- 26/26 cloned teacher clips exist.
-- 26/26 Whisper transcript checks passed; 25 normalized matches were exact and
-  `prompt-a` scored 0.909.
-- Clip durations: 1.118–3.914 seconds; 68.1 seconds total.
+- 42/42 cloned teacher clips exist.
+- 42/42 Whisper transcript checks passed; 40 normalized matches were exact and
+  the two retained non-exact checks remain above threshold.
+- Clip durations: 1.118–3.914 seconds; 115.907 seconds total.
 
 ## Repository gates
 

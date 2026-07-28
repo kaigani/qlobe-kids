@@ -76,7 +76,7 @@ async function main() {
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
   await page.waitForFunction(() => window.__letterRoadVoice.length > 0);
   check('first real gesture starts recorded teacher voice',
-    (await page.evaluate(() => window.__letterRoadVoice)).includes('prompt-l'),
+    (await page.evaluate(() => window.__letterRoadVoice)).some((key) => key.startsWith('prompt-')),
     (await page.evaluate(() => window.__letterRoadVoice.join(', '))));
   await page.evaluate(() => window.QLOBE_DEBUG.mute());
   const easy = await page.evaluate(() => ({
@@ -91,13 +91,26 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
 
+  const decks = await page.evaluate(async () => {
+    window.QLOBE_DEBUG.seed(101);
+    await window.QLOBE_DEBUG.startMode('cruise');
+    const first = window.QLOBE_DEBUG.getState().sequence;
+    window.QLOBE_DEBUG.seed(202);
+    await window.QLOBE_DEBUG.startMode('cruise');
+    const second = window.QLOBE_DEBUG.getState().sequence;
+    return { first, second };
+  });
+  check('new runs select fresh shuffled letters',
+    decks.first.length === 4 && decks.second.length === 4 && decks.first.join() !== decks.second.join(),
+    `${decks.first.join(', ')} / ${decks.second.join(', ')}`);
+
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
   const town = await page.evaluate(() => window.QLOBE_DEBUG.getState());
-  check('Letter Town exposes ordered multi-strokes', town.mode === 'town' && town.strokesTotal === 3);
+  check('Letter Town exposes ordered multi-strokes', town.mode === 'town' && town.strokesTotal >= 2);
   await page.screenshot({ path: path.join(shots, '03-letter-town-a.png') });
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
-  check('multi-stroke A completes', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+  check('multi-stroke letter completes', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
 
   await completeMode(page, 'cruise');
   check('Easy Roads reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');
@@ -106,13 +119,14 @@ async function main() {
   check('Letter Town reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');
 
   const portrait = await openPage(browser, { width: 820, height: 1180 });
+  await portrait.page.screenshot({ path: path.join(shots, '05-splash-portrait.png') });
   await portrait.page.evaluate(() => window.QLOBE_DEBUG.mute());
   await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
   await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
   const portraitCanvas = await portrait.page.locator('.qk-trace-canvas').boundingBox();
   check('portrait road board remains usable', portraitCanvas.width >= 600 && portraitCanvas.height >= 600,
     `${Math.round(portraitCanvas.width)}×${Math.round(portraitCanvas.height)}`);
-  await portrait.page.screenshot({ path: path.join(shots, '05-letter-town-portrait.png') });
+  await portrait.page.screenshot({ path: path.join(shots, '06-letter-town-portrait.png') });
 
   const reduced = await openPage(browser, { width: 1180, height: 820 }, 'reduce');
   await reduced.page.evaluate(() => window.QLOBE_DEBUG.mute());

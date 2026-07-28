@@ -45,7 +45,8 @@ Back from play/end returns to the splash; only splash Home returns to catalog.
 
 **One skill:** continuous left-to-right/top-to-bottom control on a single stroke.
 
-Four roads: L, U, C, O. Each begins with one large star and a direction arrow.
+Eight roads: L, U, C, O, V, Z, S, J. A new four-road deck is shuffled and
+selected on every play. Each begins with one large star and a direction arrow.
 The car stays where the child touches but progress only advances along the
 ordered centerline, so wandering does not accidentally skip the letter.
 
@@ -53,9 +54,10 @@ ordered centerline, so wandering does not accidentally skip the letter.
 
 **One skill:** uppercase multi-stroke order.
 
-Four letters: A, T, H, K. Every stroke start remains visible and numbered.
-Only the current start is fully bright. Completing a stroke prompts the next
-number, moves the car there, and preserves the golden road already driven.
+Eight letters: A, T, H, K, E, F, I, X. A new four-letter deck is shuffled and
+selected on every play. Every stroke start remains visible and numbered. Only
+the current start is fully bright. Completing a stroke prompts the next number,
+moves the car there, and preserves the golden road already driven.
 
 ## Spoken script
 
@@ -67,8 +69,8 @@ voice and falls back to the exact same line through Web Speech.
 
 ## Art and sound
 
-- Existing 1600×1200 storybook-neighborhood backdrop is reused as the open play
-  world.
+- `letter-road-world-v2.jpg`: gpt-image-2 16:9 countryside plate generated from
+  the supplied visual direction, with UI kept live and accessible above it.
 - `hero-car.png`: gpt-image-2 tactile three-quarter character render, separated
   with Qwen Image Layered, alpha-QA composite checked, cropped to 640 px.
 - `driver-car.png`: gpt-image-2 top-down identity-preserving variant, separated
@@ -93,9 +95,10 @@ voice and falls back to the exact same line through Web Speech.
 
 ## Replay variation and difficulty
 
-The road set stays stable so motor memory can form. Difficulty changes by mode:
-single continuous road first, then two- and three-stroke letters. A future pack
-can add lowercase forms as data without engine changes.
+Each run samples four roads from an eight-road mode pool, giving replay variety
+while keeping a small, learnable set. Difficulty changes by mode: single
+continuous road first, then two- to four-stroke letters. A future pack can add
+lowercase forms as data without engine changes.
 
 ## Privacy, persistence, and fallback
 
@@ -118,7 +121,7 @@ generated art degrades through the shared art resolver without blocking input.
 ## Debug and QA contract
 
 `window.QLOBE_DEBUG` exposes engine `trace-path`, `ready`, both modes,
-truthful targets, current screen/round/stroke, tap, `tracePoints()`,
+truthful targets, current screen/round/stroke/path/deck sequence, tap, `tracePoints()`,
 `winRound()`, mute, and deterministic seed. Production gate:
 
 - repository validator has zero errors;

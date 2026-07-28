@@ -16,10 +16,10 @@
   "finishSfx": "honk",
   "theme": {
     "world": "storybook-rooms",
-    "background": "./assets/bg.jpg",
-    "accent": "#1677d2",
+    "background": "./assets/letter-road-world-v2.jpg",
+    "accent": "#1267ce",
     "panel": {
-      "fill": 16777215,
+      "fill": 16775912,
       "stroke": 16777215
     }
   },
@@ -65,6 +65,7 @@
       "prompt": "Drive each easy road from start to finish.",
       "promptKey": "cruise-intro",
       "rounds": 4,
+      "shuffle": true,
       "guideStyle": "road",
       "traveler": "game:assets/driver-car.png",
       "orientTraveler": true,
@@ -105,6 +106,42 @@
           "say": "Oh, what a loop! You made the letter O.",
           "sayKey": "done-o",
           "points": [[510, 160], [300, 190], [180, 410], [230, 670], [470, 830], [720, 740], [820, 490], [740, 240], [510, 160]]
+        },
+        {
+          "id": "v-road",
+          "name": "Letter V",
+          "prompt": "Start at the top. Drive down to the point, then back up.",
+          "promptKey": "prompt-v",
+          "say": "Very nice! You made the letter V.",
+          "sayKey": "done-v",
+          "points": [[210, 180], [330, 440], [500, 820], [670, 440], [790, 180]]
+        },
+        {
+          "id": "z-road",
+          "name": "Letter Z",
+          "prompt": "Drive across, slant down, then drive across again.",
+          "promptKey": "prompt-z",
+          "say": "Zoom! You made the letter Z.",
+          "sayKey": "done-z",
+          "points": [[210, 200], [500, 200], [790, 200], [590, 420], [410, 620], [210, 820], [500, 820], [790, 820]]
+        },
+        {
+          "id": "s-road",
+          "name": "Letter S",
+          "prompt": "Start at the top. Swoop around one curve, then the other.",
+          "promptKey": "prompt-s",
+          "say": "Super swooping! You made the letter S.",
+          "sayKey": "done-s",
+          "points": [[720, 220], [560, 140], [340, 190], [240, 350], [330, 480], [650, 540], [760, 680], [650, 820], [390, 840], [250, 760]]
+        },
+        {
+          "id": "j-road",
+          "name": "Letter J",
+          "prompt": "Drive down, then curve around the bottom.",
+          "promptKey": "prompt-j",
+          "say": "Joyful driving! You made the letter J.",
+          "sayKey": "done-j",
+          "points": [[650, 170], [650, 430], [650, 690], [560, 810], [380, 830], [250, 720]]
         }
       ]
     },
@@ -114,6 +151,7 @@
       "prompt": "Drive the numbered roads in order.",
       "promptKey": "town-intro",
       "rounds": 4,
+      "shuffle": true,
       "guideStyle": "road",
       "traveler": "game:assets/driver-car.png",
       "orientTraveler": true,
@@ -168,6 +206,58 @@
             [[260, 170], [260, 500], [260, 830]],
             [[740, 180], [520, 380], [260, 500]],
             [[260, 500], [520, 620], [760, 830]]
+          ]
+        },
+        {
+          "id": "e-road",
+          "name": "Letter E",
+          "prompt": "Drive down the tall road, then make three roads across.",
+          "promptKey": "prompt-e",
+          "say": "Excellent! You built the letter E.",
+          "sayKey": "done-e",
+          "points": [
+            [[270, 180], [270, 500], [270, 820]],
+            [[270, 190], [500, 190], [760, 190]],
+            [[270, 500], [480, 500], [660, 500]],
+            [[270, 820], [500, 820], [760, 820]]
+          ]
+        },
+        {
+          "id": "f-road",
+          "name": "Letter F",
+          "prompt": "Drive down the tall road, then make two roads across.",
+          "promptKey": "prompt-f",
+          "say": "Fantastic! You built the letter F.",
+          "sayKey": "done-f",
+          "points": [
+            [[280, 180], [280, 500], [280, 830]],
+            [[280, 190], [510, 190], [770, 190]],
+            [[280, 500], [480, 500], [670, 500]]
+          ]
+        },
+        {
+          "id": "i-road",
+          "name": "Letter I",
+          "prompt": "Drive across the top, down the middle, then across the bottom.",
+          "promptKey": "prompt-i",
+          "say": "Incredible! You built the letter I.",
+          "sayKey": "done-i",
+          "points": [
+            [[250, 190], [500, 190], [750, 190]],
+            [[500, 190], [500, 500], [500, 820]],
+            [[250, 820], [500, 820], [750, 820]]
+          ]
+        },
+        {
+          "id": "x-road",
+          "name": "Letter X",
+          "prompt": "Drive one slanting road, then cross it with another.",
+          "promptKey": "prompt-x",
+          "say": "Extra special! You built the letter X.",
+          "sayKey": "done-x",
+          "points": [
+            [[250, 190], [500, 500], [750, 820]],
+            [[750, 190], [500, 500], [250, 820]]
           ]
         }
       ]

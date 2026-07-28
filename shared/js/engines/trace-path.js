@@ -1207,6 +1207,8 @@ class TracePathGame {
       stroke: this.screen === 'play' ? this.strokeIndex : null,
       strokesTotal: this.screen === 'play' ? this.currentStrokes.length : 0,
       awaitingInput: this.awaitingInput,
+      path: this.currentPath ? this.currentPath.id : null,
+      sequence: this.roundPaths.map((path) => path.id),
     };
   }
 

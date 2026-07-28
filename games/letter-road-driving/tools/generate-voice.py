@@ -97,13 +97,35 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--api-url", required=True)
     parser.add_argument("--workers", type=int, default=3)
+    parser.add_argument(
+        "--missing-only",
+        action="store_true",
+        help="Keep existing clips whose manifest text hash still matches.",
+    )
     args = parser.parse_args()
     api_url = args.api_url.rstrip("/")
     OUT.mkdir(parents=True, exist_ok=True)
     lines = script_lines()
-    qa = {}
+    old_manifest = {}
+    old_qa = {}
+    if args.missing_only:
+        try:
+            old_manifest = json.loads((OUT / "manifest.json").read_text())
+            old_qa = json.loads((OUT / "qa.json").read_text())
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+    retained = {
+        key for key, text in lines.items()
+        if (OUT / f"{key}.m4a").exists()
+        and old_manifest.get(key, {}).get("textHash") == hashlib.sha256(text.encode()).hexdigest()[:16]
+    }
+    pending = [(key, text) for key, text in lines.items() if key not in retained]
+    qa = {key: old_qa.get(key, {"status": "retained", "match": 1, "transcript": text})
+          for key, text in lines.items() if key in retained}
+    if retained:
+        print(f"retained: {len(retained)} unchanged clips", flush=True)
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
-        jobs = ((api_url, item) for item in lines.items())
+        jobs = ((api_url, item) for item in pending)
         for key, result in pool.map(lambda values: generate_one(*values), jobs):
             qa[key] = result
             print(f"{key}: {result['status']} match={result['match']}", flush=True)
