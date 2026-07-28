@@ -41,8 +41,8 @@ number-formation, and route-following games.
    only the translucent planning car to follow the finger.
 4. **Road payoff** — the solid car drives the completed gold road with a
    sustained motor, honks at the destination, and the teacher names the letter.
-   The matching full-body destination scene then pops into the center as the
-   visual reward.
+   The matching full-body destination pose actor then pops in from the left,
+   frameless and overlapping the road board as the visual reward.
 5. **Drive complete** — hero car, spoken celebration, replay this mode.
 
 Back from play/end returns to the splash; only splash Home returns to catalog.
@@ -94,10 +94,11 @@ voice and falls back to the exact same line through Web Speech.
   including cottage, fountain, swings, gazebo, plants, street furniture, and
   small ground details. Props are selected around each path without blocking
   the road.
-- `assets/rewards/final/{a..z}.png`: 26 Maya-style full-body destination-action
-  rewards, generated as three yellow-ground 3×3 gpt-image-2 sheets, separated
-  with Qwen Image Layered, deterministically sliced, and alpha-QC'd. A bonus
-  golden-star character is retained for future alphabet celebration use.
+- `assets/rewards/pose/final/{a..z}.png`: 26 Maya-style full-body
+  destination-action rewards, generated separately with gpt-image-2 so each
+  actor fills its canvas. The accepted individual renders were assembled only
+  for efficient Qwen Image Layered separation, then normalized to 512 px and
+  alpha-QC'd. The former sheet-cell reward set remains as unused lineage.
 - Roads, start markers, progress glow, and celebrations are procedural Pixi
   graphics so geometry always matches the trace target.
 - `vroom`, sustained `motor`, and `honk` are audible zero-file WebAudio effects.
@@ -113,8 +114,10 @@ voice and falls back to the exact same line through Web Speech.
 - A translucent ghost car moves during tracing. The opaque car disappears on
   the first drawing touch, then reappears at the route start only after the
   full letter is complete and drives every finished stroke.
-- After the arrival, the ghost stays hidden and the letter’s full-body
-  destination-action illustration pops in over the road as the visual reward.
+- After the arrival, the ghost stays hidden and the letter’s frameless
+  destination-action pose actor pops in at roughly board height. In landscape
+  it enters from beyond the board’s left edge; portrait moves it inward so the
+  complete silhouette remains visible.
 - The full named destination mission is spoken once when a round begins.
   Beginning a stroke never repeats it; later strokes use only their short
   numbered cue. The Voice button remains an intentional replay control.

@@ -97,7 +97,7 @@ async function main() {
       && spritePack.loaded === 45,
     JSON.stringify(spritePack));
   const rewardPack = await page.evaluate(async () => {
-    const pack = await fetch('./assets/rewards/pack.json').then((response) => response.json());
+    const pack = await fetch('./assets/rewards/pose/pack.json').then((response) => response.json());
     const results = await Promise.all(pack.rewards.map(async (reward) => {
       const response = await fetch(`./${reward.asset}`);
       return response.ok;
@@ -109,15 +109,13 @@ async function main() {
         .map((reward) => reward.id)
         .sort()
         .join(''),
-      bonus: pack.rewards.some((reward) => reward.id === 'bonus'),
       loaded: results.filter(Boolean).length,
     };
   });
-  check('A–Z destination reward pack loads offline',
-    rewardPack.total === 27
+  check('26 individual A–Z pose-actor rewards load offline',
+    rewardPack.total === 26
       && rewardPack.letters === 'abcdefghijklmnopqrstuvwxyz'
-      && rewardPack.bonus
-      && rewardPack.loaded === 27,
+      && rewardPack.loaded === 26,
     JSON.stringify(rewardPack));
   check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
   const modeSizes = await page.locator('.qk-trace-mode').evaluateAll((nodes) =>
@@ -183,6 +181,12 @@ async function main() {
   const rewardState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('destination action reward pops in after the drive',
     rewardState.rewardVisible && rewardState.actualVisible && !rewardState.ghostVisible);
+  check('reward is a large frameless pose actor overlapping the board edge',
+    rewardState.rewardBounds
+      && rewardState.rewardBounds.w >= rewardState.boardBounds.w * 0.72
+      && rewardState.rewardBounds.h >= rewardState.boardBounds.h * 0.72
+      && rewardState.rewardBounds.x < rewardState.boardBounds.x,
+    JSON.stringify({ reward: rewardState.rewardBounds, board: rewardState.boardBounds }));
   await page.screenshot({ path: path.join(shots, '02d-destination-reward.png') });
   await page.evaluate(() => window.__letterRoadWin);
   check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
@@ -242,6 +246,15 @@ async function main() {
   check('portrait road board remains usable', portraitCanvas.width >= 600 && portraitCanvas.height >= 600,
     `${Math.round(portraitCanvas.width)}×${Math.round(portraitCanvas.height)}`);
   await portrait.page.screenshot({ path: path.join(shots, '06-letter-town-portrait.png') });
+  await portrait.page.evaluate(() => { window.__portraitReward = window.QLOBE_DEBUG.winRound(); });
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().rewardVisible);
+  const portraitReward = await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('portrait pose actor remains fully on canvas',
+    portraitReward.rewardBounds
+      && portraitReward.rewardBounds.x >= -8
+      && portraitReward.rewardBounds.x + portraitReward.rewardBounds.w <= portraitCanvas.width + 8,
+    JSON.stringify(portraitReward.rewardBounds));
+  await portrait.page.screenshot({ path: path.join(shots, '06b-reward-portrait.png') });
 
   const reduced = await openPage(browser, { width: 1180, height: 820 }, 'reduce');
   await reduced.page.evaluate(() => window.QLOBE_DEBUG.mute());

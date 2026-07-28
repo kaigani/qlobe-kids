@@ -436,8 +436,9 @@ class TracePathGame {
     const travelerRef = this.currentPath.traveler || this.mode.traveler || this.config.traveler;
     const travelerSize = this.currentPath.travelerSize || this.mode.travelerSize || this.config.travelerSize;
     const rewardLetter = String(this.currentPath.id || '').charAt(0).toLowerCase();
+    const rewardArtBase = this.config.rewardArtBase || 'game:assets/rewards/final/';
     const rewardRef = this.currentPath.rewardArt
-      || (rewardLetter ? `game:assets/rewards/final/${rewardLetter}.png` : null);
+      || (rewardLetter ? `${rewardArtBase}${rewardLetter}.png` : null);
     const [actualArt, ghostArt, rewardArt] = await Promise.all([
       artObj(PIXI, travelerRef, travelerSize, this.currentPath.carName || ''),
       this.config.ghostTrace
@@ -447,7 +448,7 @@ class TracePathGame {
         ? artObj(
           PIXI,
           rewardRef,
-          this.currentPath.rewardSize || 430,
+          this.currentPath.rewardSize || this.config.rewardSize || 430,
           `${this.currentPath.destination || 'Destination'} reward`,
         )
         : Promise.resolve(null),
@@ -483,20 +484,14 @@ class TracePathGame {
 
     if (rewardArt) {
       const rewardWrap = new PIXI.Container();
-      const rewardGlow = new PIXI.Graphics();
-      rewardGlow.circle(0, 0, 244).fill({ color: 0xffe470, alpha: 0.3 });
-      const rewardCard = new PIXI.Graphics();
-      rewardCard.roundRect(-220, -232, 440, 464, 54)
-        .fill({ color: 0xfffdf2, alpha: 0.97 })
-        .stroke({ width: 10, color: 0xffd34e, alpha: 0.98 });
-      rewardWrap.addChild(rewardGlow, rewardCard, rewardArt);
-      rewardWrap.position.set(BOARD_SIZE / 2, BOARD_SIZE / 2);
+      rewardWrap.addChild(rewardArt);
       rewardWrap.visible = false;
       rewardWrap.alpha = 0;
       rewardWrap.scale.set(0.28);
       fx.addChild(rewardWrap);
       this.rewardVisual = rewardWrap;
       this.rewardRevealed = false;
+      this.positionRewardVisual();
     }
 
     const trail = new PIXI.Graphics();
@@ -659,6 +654,7 @@ class TracePathGame {
     this.updateCheckpointStates(false);
     this.positionTravelerAtCurrentProgress();
     this.positionActualTravelerAtRouteStart();
+    this.positionRewardVisual();
   }
 
   rebuildProjectedStrokes() {
@@ -1358,26 +1354,52 @@ class TracePathGame {
     if (!this.rewardVisual || this.rewardRevealed) return;
     this.rewardRevealed = true;
     const reward = this.rewardVisual;
+    const target = this.rewardVisualTarget();
     reward.visible = true;
-    reward.position.set(BOARD_SIZE / 2, BOARD_SIZE / 2);
     if (this.reducedMotion()) {
+      reward.position.set(target.x, target.y);
       reward.alpha = 1;
       reward.rotation = 0;
       reward.scale.set(1);
       return;
     }
+    reward.position.set(target.x - 150, target.y + 56);
     reward.alpha = 0;
     reward.rotation = -0.04;
-    reward.scale.set(0.28);
+    reward.scale.set(0.38);
     await Promise.all([
-      this.runTween(to(reward, { alpha: 1, rotation: 0 }, { ms: 360, easing: ease.outCubic })),
-      this.runTween(to(reward, { scale: { x: 1.08, y: 1.08 } }, { ms: 360, easing: ease.outBack })),
+      this.runTween(to(
+        reward,
+        { x: target.x, y: target.y, alpha: 1, rotation: 0 },
+        { ms: 440, easing: ease.outCubic },
+      )),
+      this.runTween(to(
+        reward,
+        { scale: { x: 1.06, y: 1.06 } },
+        { ms: 440, easing: ease.outBack },
+      )),
     ]);
     await this.runTween(to(
       reward,
       { scale: { x: 1, y: 1 } },
       { ms: 150, easing: ease.inOutSine },
     ));
+  }
+
+  rewardVisualTarget() {
+    if (!this.stage) return { x: BOARD_SIZE / 2, y: 590 };
+    const { w, h } = this.stage.size();
+    const wide = w > h * 1.15;
+    return {
+      x: wide ? -70 : 465,
+      y: wide ? 610 : 600,
+    };
+  }
+
+  positionRewardVisual() {
+    if (!this.rewardVisual || this.rewardRevealed) return;
+    const target = this.rewardVisualTarget();
+    this.rewardVisual.position.set(target.x, target.y);
   }
 
   positionTravelerScreen(x, y) {
@@ -1454,6 +1476,9 @@ class TracePathGame {
   }
 
   getState() {
+    const rewardBounds = this.rewardVisual && this.rewardVisual.visible
+      ? this.rewardVisual.getBounds()
+      : null;
     return {
       screen: this.screen,
       mode: this.mode ? this.mode.id : null,
@@ -1476,8 +1501,22 @@ class TracePathGame {
       rewardVisible: Boolean(
         this.rewardVisual
           && this.rewardVisual.visible
-          && this.rewardVisual.alpha > 0.5,
+          && this.rewardVisual.alpha > 0.98,
       ),
+      rewardBounds: rewardBounds
+        ? {
+          x: rewardBounds.x,
+          y: rewardBounds.y,
+          w: rewardBounds.width,
+          h: rewardBounds.height,
+        }
+        : null,
+      boardBounds: {
+        x: this.boardLeft,
+        y: this.boardTop,
+        w: BOARD_SIZE * this.boardScale,
+        h: BOARD_SIZE * this.boardScale,
+      },
     };
   }
 

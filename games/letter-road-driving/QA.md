@@ -17,13 +17,13 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **30/30 checks passed** in real Google Chrome.
+Result: **32/32 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime data contains A–Z exactly once with 26 unique generated destinations;
 - all 45 transparent sprite-pack assets load from committed offline paths;
-- all 26 A–Z reward cutouts plus the bonus cutout load from committed offline
-  paths;
+- all 26 separately generated A–Z pose-actor rewards load from committed
+  offline paths;
 - runtime makes no remote requests;
 - mode targets and trace starts meet the touch minimum;
 - first real gesture starts the matching recorded teacher clip;
@@ -35,6 +35,9 @@ Result: **30/30 checks passed** in real Google Chrome.
 - completing the trace hides the ghost and restarts the solid-car drive replay
   from the beginning of the route;
 - the matching destination-action reward appears after the replay;
+- the frameless reward is at least 72% of the board in both dimensions and
+  overlaps the board edge in landscape;
+- the portrait reward remains fully within the canvas;
 - trace, replay, and arrival invoke `vroom`, sustained `motor`, and `honk`;
 - Easy Roads has real trace geometry and advances through the engine input path;
 - different seeds produce different four-letter decks from the expanded pool;
@@ -56,8 +59,8 @@ Reviewed at 1180×820 landscape and 820×1180 portrait:
 - expressive three-quarter character faces remain readable while rotating;
 - ghost and solid cars are visually distinct at mid-trace;
 - no duplicate solid car remains visible once finger tracing begins;
-- the full-body Cupcake Cafe action reward is crisp, centered, and clearly
-  separated from the completed road in the captured completion frame;
+- the full-body Cupcake Cafe actor is crisp, frameless, nearly board-height,
+  and overlaps the board from the left in the captured completion frame;
 - generated destination art and live labels sit above the road and remain readable;
 - generated cottage, tree, flowers, mailbox, lamp, bench, fountain, fence,
   topiary, hydrant, signpost, pond, swings, gazebo, and picnic table enrich maps;
@@ -87,6 +90,13 @@ The production Open Graph shot was regenerated from the approved splash with
 - Per-cell reward alpha checks passed; all three labeled contact sheets and
   representative magenta composites were visually reviewed with complete
   bodies and destination props intact.
+- The replacement pose-actor pass contains 26 independent gpt-image-2
+  generations; all 26 sources were reviewed at full-canvas scale.
+- Three Qwen Image Layered extraction passes produced the 26 replacement
+  transparent actors. All three replacement contact sheets were reviewed on
+  magenta with complete bodies, faces, animals, instruments, and props.
+- Replacement runtime assets are normalized to 512 px and the manifest
+  records 26/26 valid alpha distributions.
 - 63/63 cloned teacher clips exist.
 - 63/63 Whisper transcript checks passed; minimum match 0.902.
 - Clip durations: 1.118–4.234 seconds; 186.335 seconds total.

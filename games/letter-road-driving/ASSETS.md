@@ -19,10 +19,15 @@ offline. Authoring recipes and QA artifacts are retained under `assets/source/`,
 | `assets/map/destinations/*.png` | `tools/process-map-sheets.py` deterministic 3×3 slicer | QLOBE Kids | CC BY 4.0 project assets | 27 normalized 384 px cutouts: A–Z destinations plus Town Hall |
 | `assets/map/props/*.png` | `tools/process-map-sheets.py` deterministic 3×3 slicer | QLOBE Kids | CC BY 4.0 project assets | 18 normalized 320 px reusable town/play details |
 | `assets/map/qa/*-contact.png`, `*-magenta.png`, `pack.json` | deterministic alpha/component QA | QLOBE Kids | CC BY 4.0 project assets | Small border fragments removed; every sprite visually reviewed on magenta; manifest records source cell and alpha statistics |
-| `assets/rewards/source/*.png` | Three exact 3×3 gpt-image-2 sheets using Maya’s supplied portrait as the QLOBE character-style reference; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | 26 full-body destination actions plus one bonus celebration on flat yellow authoring grounds |
+| `assets/rewards/source/*.png` | Former three-sheet gpt-image-2 reward pass using Maya’s supplied portrait as the QLOBE character-style reference | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | Retained as regeneration lineage; superseded because the sheet cells read too small in the completion scene |
 | `assets/rewards/layered/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project assets | Whole-sheet semantic background separation; retained true-alpha intermediates |
-| `assets/rewards/final/{a..z}.png`, `bonus.png` | `tools/process-reward-sheets.py` deterministic 3×3 slicer and normalizer | QLOBE Kids | CC BY 4.0 project assets | 27 normalized 512 px transparent cutouts; detached border fragments removed |
+| `assets/rewards/final/{a..z}.png`, `bonus.png` | `tools/process-reward-sheets.py` deterministic 3×3 slicer and normalizer | QLOBE Kids | CC BY 4.0 project assets | Former card-size cutouts retained for lineage; no longer loaded at runtime |
 | `assets/rewards/qa/*-contact.png`, `*-magenta.png`, `pack.json` | deterministic alpha/component QA | QLOBE Kids | CC BY 4.0 project assets | All three contact sheets and every character silhouette visually reviewed; manifest records destination, action, source cell, and alpha statistics |
+| `assets/rewards/pose/source/{a..z}-yellow.png` | 26 separate built-in gpt-image-2 generations using the supplied large quilt-shop payoff as the composition/scale reference and Maya as the character-style anchor | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | One near-full-canvas pose actor per letter on flat yellow; no sheet-cell composition constraints; project copies normalized to max 1024 px |
+| `assets/rewards/pose/source/*-individuals-yellow.png` | deterministic temporary authoring assembly from the 26 separate accepted renders | QLOBE Kids | CC BY 4.0 project assets | Rebuilt on demand by the processor and intentionally not committed; used only to make Qwen extraction efficient |
+| `assets/rewards/pose/layered/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project assets | Three true-alpha extraction sheets preserving the separately authored large actors |
+| `assets/rewards/pose/final/{a..z}.png` | `tools/process-reward-poses.py` deterministic slicer and normalizer | QLOBE Kids | CC BY 4.0 project assets | 26 normalized 512 px transparent pose actors used at runtime; this matches the Qwen cell detail and their maximum production display size |
+| `assets/rewards/pose/qa/*-contact.png`, `*-magenta.png`, `pack.json` | deterministic alpha/component QA | QLOBE Kids | CC BY 4.0 project assets | Every silhouette visually reviewed; manifest records individual source, extraction cell, destination action, and alpha statistics |
 | `assets/source/*-gpt-image-2.png` | Raw gpt-image-2 dark-ground renders | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Retained as regeneration lineage |
 | `assets/production/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project asset | True-alpha intermediate |
 | `assets/production/*.qa-magenta.png` | `tools/pipeline/cutout_finalize.py` | QLOBE Kids | CC BY 4.0 project asset | Human silhouette review composite |
@@ -127,6 +132,31 @@ The entire canvas and all negative space must be perfectly flat, uniform pure
 yellow `#FFFF00`, with no grid, panel, floor, scenery, text, letters, labels,
 cars, roads, shadows, or watermark.
 
+This first pass is retained but superseded by the individual pose-actor pass
+below.
+
+### Individual A–Z pose-actor rewards
+
+Use the supplied quilt-shop completion mockup as the composition and scale
+reference only: the reward must be a large frameless actor that overlaps the
+road board, not a sticker, card, or small sprite. Use Maya’s supplied portrait
+as the QLOBE character-design anchor. Generate each of the 26 destination
+actions separately. One complete front-three-quarter, full-body character and
+action-prop grouping should fill roughly 88% of the source canvas height and
+most of its width, with a large readable face and minimal padding.
+
+The subject varies per destination: painter/easel, baker/bread, cupcake chef,
+dancer/ribbon, mechanic/engine, florist/bouquet, grocery helper/produce,
+giant-hat shopper, ice-cream helper, juice maker, kite flyer, reader,
+keyboard player, nature explorer/butterfly, astronomer/telescope, pet helper,
+quilt grandmother, robot mechanic, sweet-shop helper, toy builder, umbrella
+dancer, veterinarian/kitten, water-park splash, xylophone player, yarn
+grandmother, and zoo helper/baby giraffe.
+
+Use a perfectly flat uniform pure-yellow `#FFFF00` authoring ground. No shadow,
+floor, scenery, building, road, car, UI, card, frame, text, letter, label, logo,
+or watermark. Keep every body part and action prop fully visible.
+
 ## Qwen Layered extraction prompt
 
 Car: “Separate the exact friendly red cartoon car from the dark charcoal
@@ -147,6 +177,13 @@ the exact nine full-body character action scenes in their original cells on
 true transparent alpha. Preserve every character, prop, facial expression,
 pose, color, scale, spacing, and clean antialiased silhouette exactly. Do not
 move, redraw, combine, replace, omit, crop, or add anything.”
+
+Individual pose actors: “Bottom layer: only the complete yellow background.
+Top layer: only the exact large full-body QLOBE pose-actor groups in their
+original 3×3 cells on true transparent alpha. Preserve every face, body part,
+finger, foot, prop, animal, liquid splash, color, detail, scale, spacing, and
+silhouette exactly. Keep detached but intentional props. Do not crop, move,
+combine, redraw, replace, omit, or add anything.”
 
 ## Optional sourced sound replacements
 
