@@ -75,3 +75,12 @@ Date: 2026-07-27
 - Production real-Chrome suite: **29/29**, with 1.1 ms measured three-track
   entry spread.
 - Production iPad-density Calm River capture visually reviewed: pass.
+
+## Music/narrator balance revision
+
+- Recorded Calm River prompt reference: −17.9 dB mean, −3.8 dB peak.
+- Musical solo-track target: approximately −19 dB before orchestral limiting.
+- Master gain increased from `0.62` to `0.85`.
+- Ribbon, bounce, and sparkle note gains increased to `0.09`, `0.115`, and
+  `0.075`; the existing dynamics compressor continues to protect polyphonic
+  passages.

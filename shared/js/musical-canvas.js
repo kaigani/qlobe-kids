@@ -6,6 +6,10 @@
 
 const SCALE = [0, 2, 4, 7, 9, 12, 14, 16];
 const MAX_POINTS = 1800;
+export const MUSIC_MIX = Object.freeze({
+  master: .85,
+  brushGain: Object.freeze({ ribbon: .09, bounce: .115, sparkle: .075 }),
+});
 const COLOR_VOICES = [
   { semitones: -12, wave: 'sine',     brightness: .72, gain: 1.08, pan: -.52 },
   { semitones: -5,  wave: 'triangle', brightness: .86, gain: .92, pan: -.26 },
@@ -75,7 +79,7 @@ export function createMusicalCanvas(canvas, {
     if (!AC) return null;
     audioContext = new AC();
     master = audioContext.createGain();
-    master.gain.value = state.muted ? 0 : .62;
+    master.gain.value = state.muted ? 0 : MUSIC_MIX.master;
     const limiter = audioContext.createDynamicsCompressor();
     limiter.threshold.value = -12;
     limiter.knee.value = 12;
@@ -94,7 +98,7 @@ export function createMusicalCanvas(canvas, {
 
   function setMuted(value) {
     state.muted = !!value;
-    if (master) master.gain.setTargetAtTime(state.muted ? 0 : .62, audioContext.currentTime, .02);
+    if (master) master.gain.setTargetAtTime(state.muted ? 0 : MUSIC_MIX.master, audioContext.currentTime, .02);
   }
 
   function note(point, stroke, force = false) {
@@ -115,7 +119,7 @@ export function createMusicalCanvas(canvas, {
     const gain = ac.createGain();
     const filter = ac.createBiquadFilter();
     const duration = stroke.brush === 'ribbon' ? .38 : stroke.brush === 'bounce' ? .18 : .28;
-    const baseAmount = stroke.brush === 'ribbon' ? .055 : stroke.brush === 'bounce' ? .085 : .045;
+    const baseAmount = MUSIC_MIX.brushGain[stroke.brush] || MUSIC_MIX.brushGain.ribbon;
     const amount = baseAmount * voice.gain;
     osc.type = voice.wave;
     osc.frequency.value = hz;

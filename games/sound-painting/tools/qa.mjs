@@ -96,7 +96,8 @@ async function main() {
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
   check('three musical brushes registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).length === 3);
   const orchestra = await page.evaluate(async () => {
-    const { buildReplayTimeline, getColorVoice } = await import('../../../shared/js/musical-canvas.js');
+    const { buildReplayTimeline, getColorVoice, MUSIC_MIX } =
+      await import('../../../shared/js/musical-canvas.js');
     const orange = '#ff9f1c';
     const blue = '#27a9e8';
     const green = '#83e6c1';
@@ -116,6 +117,7 @@ async function main() {
     return {
       starts: timeline.map(({ start }) => start),
       voices: palette.map((color) => getColorVoice(color, palette).semitones),
+      mix: MUSIC_MIX,
     };
   });
   check('each color begins as a simultaneous orchestra track',
@@ -128,6 +130,12 @@ async function main() {
   check('five palette colors have distinct harmonic registers',
     new Set(orchestra.voices).size === 5,
     orchestra.voices.join(', '));
+  check('solo music tracks are balanced near narrator loudness',
+    orchestra.mix.master >= .8
+      && orchestra.mix.brushGain.ribbon >= .085
+      && orchestra.mix.brushGain.bounce >= .11
+      && orchestra.mix.brushGain.sparkle >= .07,
+    `master ${orchestra.mix.master}, brushes ${Object.values(orchestra.mix.brushGain).join(', ')}`);
   check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
   const modeSizes = await page.locator('.mode-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
