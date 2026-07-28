@@ -41,4 +41,13 @@ recordings both transcribed with singular “star” instead of scripted “star
 
 ## Production
 
-Pending deployment and the same real-Chrome suite against `https://qlo.be`.
+- Runtime commit: `e07256e` (`Build papercraft Sound Painting`).
+- GitHub Pages run: `30318674234`, successful.
+- Production URL: `https://qlo.be/games/sound-painting/`.
+- The complete real-Google-Chrome suite against production: **22/22**.
+- Production page errors: 0.
+- Production failed requests / 404s: 0.
+- Production remote runtime requests: 0.
+- Production landscape splash, painted canvas, keepsake, all three brush
+  states, portrait splash, and portrait paint screen visually reviewed at full
+  useful detail: pass.
