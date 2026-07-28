@@ -175,14 +175,37 @@
     }
 
     #game .qk-trace-prompt {
-      min-height: 58px;
-      padding: 8px 26px 10px;
-      border: 5px solid rgba(255,255,255,.95);
-      border-radius: 999px;
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+      min-height: 76px;
+      max-width: min(1060px, 92vw);
+      padding: 0 18px;
+      border: 0;
       color: #0754b6;
-      background: rgba(255, 249, 221, .9);
-      box-shadow: 0 6px 0 rgba(122, 91, 45, .12), 0 10px 28px rgba(75, 94, 66, .16);
+      background: transparent;
+      box-shadow: none;
+      text-shadow: none;
+    }
+
+    #game .qk-trace-mission {
+      display: block;
+      padding: 7px 24px 9px;
+      border: 5px solid rgba(255,255,255,.96);
+      border-radius: 999px;
+      background: rgba(255, 249, 221, .92);
+      box-shadow: 0 5px 0 rgba(122, 91, 45, .12), 0 10px 28px rgba(75, 94, 66, .15);
+      font-size: clamp(23px, 3.5vmin, 39px);
+      line-height: 1.03;
       text-shadow: 0 2px 0 #fff;
+    }
+
+    #game .qk-trace-letter-cue {
+      display: block;
+      color: #3176ad;
+      font-size: clamp(18px, 2.3vmin, 27px);
+      line-height: 1;
+      text-shadow: 0 2px 0 rgba(255,255,255,.9);
     }
 
     #game .qk-trace-canvas {

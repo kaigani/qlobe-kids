@@ -3,6 +3,16 @@
 
 let ctx = null;
 let master = null;
+const playCounts = Object.create(null);
+
+function mark(name) {
+  playCounts[name] = (playCounts[name] || 0) + 1;
+}
+
+/** Lightweight QA telemetry; contains counts only, never child/user data. */
+export function stats() {
+  return { ...playCounts };
+}
 
 /** Lazily build the AudioContext + master gain. Safe to call repeatedly. */
 function ensure() {
@@ -165,6 +175,7 @@ export function tick() {
 
 /** Friendly toy-car rev: a short rising motor burble, never a harsh engine roar. */
 export function vroom() {
+  mark('vroom');
   if (!ensure()) return;
   const start = now();
   const osc = ctx.createOscillator();
@@ -180,18 +191,63 @@ export function vroom() {
   wobble.connect(wobbleGain);
   wobbleGain.connect(osc.frequency);
   g.gain.setValueAtTime(0.0001, start);
-  g.gain.exponentialRampToValueAtTime(0.09, start + 0.025);
-  g.gain.exponentialRampToValueAtTime(0.0001, start + 0.32);
+  g.gain.exponentialRampToValueAtTime(0.16, start + 0.025);
+  g.gain.exponentialRampToValueAtTime(0.0001, start + 0.52);
   osc.connect(g);
   g.connect(master);
   osc.start(start);
   wobble.start(start);
-  osc.stop(start + 0.35);
-  wobble.stop(start + 0.35);
+  osc.stop(start + 0.55);
+  wobble.stop(start + 0.55);
+}
+
+/** Sustained friendly motor for an animated drive-along payoff. */
+export function motor(durationMs = 2200) {
+  mark('motor');
+  if (!ensure()) return;
+  const start = now();
+  const dur = Math.max(0.8, Math.min(4.2, Number(durationMs) / 1000 || 2.2));
+  const engine = ctx.createOscillator();
+  const purr = ctx.createOscillator();
+  const wobble = ctx.createOscillator();
+  const wobbleGain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+  const g = ctx.createGain();
+  engine.type = 'sawtooth';
+  engine.frequency.setValueAtTime(92, start);
+  engine.frequency.exponentialRampToValueAtTime(142, start + Math.min(0.45, dur * 0.25));
+  engine.frequency.setValueAtTime(128, start + Math.min(0.65, dur * 0.32));
+  engine.frequency.exponentialRampToValueAtTime(108, start + dur);
+  purr.type = 'triangle';
+  purr.frequency.setValueAtTime(184, start);
+  purr.frequency.exponentialRampToValueAtTime(220, start + dur);
+  wobble.type = 'sine';
+  wobble.frequency.value = 17;
+  wobbleGain.gain.value = 11;
+  wobble.connect(wobbleGain);
+  wobbleGain.connect(engine.frequency);
+  filter.type = 'lowpass';
+  filter.frequency.value = 620;
+  filter.Q.value = 0.8;
+  g.gain.setValueAtTime(0.0001, start);
+  g.gain.exponentialRampToValueAtTime(0.18, start + 0.08);
+  g.gain.setValueAtTime(0.16, start + Math.max(0.12, dur - 0.22));
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  engine.connect(filter);
+  purr.connect(filter);
+  filter.connect(g);
+  g.connect(master);
+  engine.start(start);
+  purr.start(start);
+  wobble.start(start);
+  engine.stop(start + dur + 0.05);
+  purr.stop(start + dur + 0.05);
+  wobble.stop(start + dur + 0.05);
 }
 
 /** Soft two-note toy horn for a finished road. */
 export function honk() {
-  note({ type: 'triangle', f0: 392, dur: 0.16, gain: 0.2 });
-  note({ type: 'triangle', f0: 523.25, dur: 0.2, gain: 0.2, t0: 0.14 });
+  mark('honk');
+  note({ type: 'triangle', f0: 392, dur: 0.2, gain: 0.34 });
+  note({ type: 'triangle', f0: 523.25, dur: 0.26, gain: 0.34, t0: 0.18 });
 }

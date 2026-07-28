@@ -78,7 +78,6 @@ async function main() {
   check('first real gesture starts recorded teacher voice',
     (await page.evaluate(() => window.__letterRoadVoice)).some((key) => key.startsWith('prompt-')),
     (await page.evaluate(() => window.__letterRoadVoice.join(', '))));
-  await page.evaluate(() => window.QLOBE_DEBUG.mute());
   const easy = await page.evaluate(() => ({
     state: window.QLOBE_DEBUG.getState(),
     targets: window.QLOBE_DEBUG.getTargets(),
@@ -87,9 +86,36 @@ async function main() {
   check('Easy Roads starts with trace geometry', easy.state.mode === 'cruise' && easy.points > 20);
   check('trace start target is at least 104px',
     easy.targets.some(({ role, rect }) => role === 'correct' && rect.w >= 104 && rect.h >= 104));
+  const mission = await page.locator('.qk-trace-prompt').innerText();
+  check('letter round has a named car mission and destination',
+    mission.includes('Drive ') && mission.includes(' is for ') && mission.includes('Trace the letter'),
+    mission.replace(/\n/g, ' / '));
   await page.screenshot({ path: path.join(shots, '02-easy-road.png') });
-  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+
+  const route = await page.evaluate(() => window.QLOBE_DEBUG.tracePoints());
+  const partial = route.slice(0, Math.max(4, Math.floor(route.length * 0.42)));
+  await page.mouse.move(partial[0].x, partial[0].y);
+  await page.mouse.down();
+  for (const point of partial.slice(1)) await page.mouse.move(point.x, point.y);
+  await page.mouse.up();
+  const partialState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('finger tracing moves a separate translucent ghost car',
+    partialState.travelerGap > 80 && partialState.ghostVisible,
+    `gap ${Math.round(partialState.travelerGap)}px`);
+  await page.screenshot({ path: path.join(shots, '02b-ghost-trace.png') });
+
+  await page.evaluate(() => { window.__letterRoadWin = window.QLOBE_DEBUG.winRound(); });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().replaying);
+  check('solid character car drives the completed route',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState())).replaying);
+  await page.screenshot({ path: path.join(shots, '02c-drive-replay.png') });
+  await page.evaluate(() => window.__letterRoadWin);
   check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+  const carSfx = await page.evaluate(async () => (await import('../../../shared/js/sfx.js')).stats());
+  check('trace, replay, and arrival trigger audible car effects',
+    carSfx.vroom >= 1 && carSfx.motor >= 1 && carSfx.honk >= 1,
+    JSON.stringify(carSfx));
+  await page.evaluate(() => window.QLOBE_DEBUG.mute());
 
   const decks = await page.evaluate(async () => {
     window.QLOBE_DEBUG.seed(101);
@@ -111,6 +137,14 @@ async function main() {
   await page.screenshot({ path: path.join(shots, '03-letter-town-a.png') });
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   check('multi-stroke letter completes', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+
+  await page.evaluate(() => window.QLOBE_DEBUG.seed(19));
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  const music = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('Music Shop scenario exposes four-stroke M',
+    music.path === 'm-road' && music.strokesTotal === 4);
+  await page.screenshot({ path: path.join(shots, '03b-music-shop-m.png') });
 
   await completeMode(page, 'cruise');
   check('Easy Roads reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');

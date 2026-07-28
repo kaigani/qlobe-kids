@@ -9,14 +9,14 @@
   "status": "beta",
   "accent": "#1677d2",
   "shareTitle": "Letter Road Driving 🚗 — Letter Shapes on Wheels",
-  "description": "Drive a cheerful little car along single- and multi-stroke roads shaped like uppercase letters, following each numbered start in order.",
+  "description": "Help five cheerful car friends reach letter-linked destinations by tracing uppercase roads, then watch them drive the finished route.",
   "learningGoals": [
     "Explore letter shapes through movement and direction",
     "Control one continuous stroke through straight and curved letter forms",
     "Follow numbered starts to learn uppercase multi-stroke order"
   ],
-  "interactionModel": "strand-proof finger tracing with a top-down car that turns along procedural letter roads",
-  "feedbackModel": "Driven lanes glow gold, the car gives a soft toy honk, cloned teacher voice names the letter, and off-road movement gets a gentle spoken steering cue.",
+  "interactionModel": "strand-proof finger tracing with a translucent planning car, followed by an expressive solid-car drive replay",
+  "feedbackModel": "Named missions, decorated destinations, gold lanes, sustained toy motor, arrival horn, cloned teacher voice, and gentle spoken off-road guidance.",
   "uses": [
     "shared/js/engines/trace-path.js",
     "shared/js/voice-clips.js",

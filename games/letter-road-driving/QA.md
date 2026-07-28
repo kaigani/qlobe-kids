@@ -1,6 +1,6 @@
 # Letter Road Driving — production QA
 
-Date: 2026-07-27
+Date: 2026-07-28
 
 Branch: `letter-road-production`
 
@@ -17,17 +17,22 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **19/19 checks passed** in real Google Chrome.
+Result: **24/24 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime makes no remote requests;
 - mode targets and trace starts meet the touch minimum;
 - first real gesture starts the matching recorded teacher clip;
+- every round presents a named car, destination, and letter-linked word;
+- partial tracing separates the translucent ghost car from the waiting solid car;
+- completing the trace starts the solid-car drive replay;
+- trace, replay, and arrival invoke `vroom`, sustained `motor`, and `honk`;
 - Easy Roads has real trace geometry and advances through the engine input path;
 - different seeds produce different four-letter decks from the expanded pool;
 - Letter Town exposes and completes ordered multi-stroke letters;
+- seeded M exposes all four strokes and the Music Shop scenario;
 - both complete modes reach the end screen;
-- portrait road board is 792×846 CSS px and remains usable;
+- portrait road board is 792×863 CSS px and remains usable;
 - reduced-motion trace completes;
 - zero page errors, failed requests, or 404s;
 - legacy `scissor-trail-safari` dotted rendering still advances with no errors.
@@ -39,7 +44,10 @@ Reviewed at 1180×820 landscape and 820×1180 portrait:
 - new soft-3D countryside plate closely matches the supplied visual direction;
 - hero car cutout is crisp and readable against the bright center;
 - white button labels pass visual contrast on blue and green;
-- top-down driver is large enough to track and rotates with the lane;
+- expressive three-quarter character faces remain readable while rotating;
+- ghost and solid cars are visually distinct at mid-trace;
+- destination labels sit above the road and remain readable;
+- house, tree, flowers, mailbox, lamp, bench, and fountain props enrich maps;
 - road border, dark asphalt, and white dashes remain distinct;
 - inactive stroke numbers 2 and 3 stay visible while the car marks stroke 1;
 - prompts, progress dots, Back, and Voice avoid the road board;
@@ -51,13 +59,12 @@ The production Open Graph shot was regenerated from the approved splash with
 
 ## Asset QA
 
-- Both gpt-image-2 car sources were separated with Qwen Image Layered.
-- Studio magenta composites were visually reviewed.
+- Five new expressive gpt-image-2 character-car composites were reviewed.
+- Red/yellow/blue/purple chroma cutouts and green Qwen Layered extraction passed.
 - Alpha finalizer passed after applying the recorded floor of 4.
-- 42/42 cloned teacher clips exist.
-- 42/42 Whisper transcript checks passed; 40 normalized matches were exact and
-  the two retained non-exact checks remain above threshold.
-- Clip durations: 1.118–3.914 seconds; 115.907 seconds total.
+- 45/45 cloned teacher clips exist.
+- 45/45 Whisper transcript checks passed; all remain above the 0.72 gate.
+- Clip durations: 1.118–4.234 seconds; 130.833 seconds total.
 
 ## Repository gates
 

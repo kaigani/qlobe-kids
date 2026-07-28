@@ -8,6 +8,11 @@ and `assets/production/`.
 |---|---|---|---|---|
 | `assets/hero-car.png` | gpt-image-2 built-in generation; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Qwen Image Layered `layer_2`; Studio cutout finalizer; alpha floor 4; bbox + 16 px; max 640; magenta composite checked |
 | `assets/driver-car.png` | gpt-image-2 edit from hero identity/style; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Top-down game variant; Qwen Image Layered; same cutout QA |
+| `assets/cars/{herbie-red,sunny-yellow,benny-blue,gigi-green,pippa-purple}.png` | gpt-image-2 built-in generation/edit using the supplied scenario mockup as the character/camera/style reference; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | Expressive elevated three-quarter car family; 640 px; alpha-floor 4; all five magenta composites visually checked |
+| `assets/cars/source/*-gpt-image-2.png` | Accepted raw character renders on removable authoring backgrounds | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | Retained as regeneration lineage |
+| `assets/cars/production/gigi-green.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project asset | Semantic extraction preserved green body, dark wheels/eyes, and cream trim |
+| `assets/cars/production/*-keyed.png` | Built-in imagegen chroma-key removal helper | QLOBE Kids | CC BY 4.0 project asset | Accepted keyed intermediates for red/yellow/blue/purple |
+| `assets/cars/production/*-qa-magenta.png` | `tools/pipeline/cutout_finalize.py` | QLOBE Kids | CC BY 4.0 project asset | Human silhouette/edge review composites |
 | `assets/source/*-gpt-image-2.png` | Raw gpt-image-2 dark-ground renders | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Retained as regeneration lineage |
 | `assets/production/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project asset | True-alpha intermediate |
 | `assets/production/*.qa-magenta.png` | `tools/pipeline/cutout_finalize.py` | QLOBE Kids | CC BY 4.0 project asset | Human silhouette review composite |
@@ -34,6 +39,20 @@ Preserve the hero car’s identity, palette, materials, and tactile style; rende
 one complete symmetrical 90-degree bird’s-eye view pointing upward on uniform
 `#202428`, with no perspective angle, shadow, floor, road, text, or watermark.
 
+This former top-down runtime asset is retained for lineage but is no longer used
+in play.
+
+### Expressive scenario car family
+
+The supplied scenario mockup is a style, character-appeal, and camera reference.
+Create one complete cute compact car with large windshield eyes, a happy smiling
+bumper mouth, yellow lamps, cream bumper, tiny amber beacon, visible wheels, and
+premium soft-3D toy rendering. Use an elevated front three-quarter game-sprite
+view—not an overhead roof view—so the face stays readable while the sprite
+rotates along a road. One centered car, no shadow, road, scenery, text, logo, or
+watermark. The red anchor becomes Herbie; change only body paint for sunshine
+yellow Sunny, cobalt-blue Benny, leaf-green Gigi, and grape-purple Pippa.
+
 ### Storybook countryside world v2
 
 Premium soft-3D preschool driving-game countryside, closely following the
@@ -54,10 +73,11 @@ added objects.”
 
 ## Optional sourced sound replacements
 
-The game currently uses synthesized `vroom` and `honk` effects. If sourced clips
-are added later, use:
+The game currently uses a synthesized finger-trace `vroom`, sustained replay
+`motor`, and louder two-note arrival `honk`. If sourced clips are added later,
+use:
 
-- a warm toy-motor rise shorter than 350 ms, mono, no brand-identifiable engine;
+- a warm toy-motor loop around 2–4 seconds, mono, no brand-identifiable engine;
 - a soft two-note “beep-beep” shorter than 500 ms, no traffic aggression.
 
 Log creator, source URL, license, and edits here before shipping either file.
