@@ -7,26 +7,39 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#f25f5c",
-  "shareTitle": "Sound Painting 🎶 — Painting How Music Feels",
-  "description": "Stamp colors and pictures to show how a slow, boomy, or tickly sound makes you feel, with no wrong answers. A gentle music-and-feelings journal for ages 5–6.",
+  "accent": "#9f64ff",
+  "shareTitle": "Sound Painting — Paint What You Hear",
+  "description": "Choose a musical brush, paint glowing paper ribbons with your finger, then replay the colors and notes together. A creative music-and-art game for ages 5–6.",
   "learningGoals": [
-    "Notice emotional responses to musical qualities",
-    "Build vocabulary for slow, soft, boomy, fast, tickly, gentle, and sleepy sounds",
-    "Connect sound, color, and image through creative choice"
+    "Connect audible pitch and rhythm with color, shape, and movement",
+    "Explore slow, bouncy, and quick expressive gesture qualities",
+    "Practice free mark-making and fine-motor control without a right answer"
   ],
-  "interactionModel": "observe-journal tap color swatches and picture stickers to record sound feelings",
-  "feedbackModel": "Every feeling choice is accepted with pop and sparkle SFX plus an affirming spoken line; the recap replays the painting choices.",
+  "interactionModel": "three musical brush modes with one-finger free drawing, color choice, undo, clear, semantic replay, local save, and PNG keepsake export",
+  "feedbackModel": "Every mark paints immediately and emits a coordinated synthesized note; recorded teacher prompts model movement, while replay and a brief celebration affirm the complete painting.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
+    "shared/js/musical-canvas.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "feelings", "title": "Paint the Sound", "skill": "emotional response to musical mood" }
+    { "id": "calm", "title": "Calm River", "skill": "slow continuous expressive movement" },
+    { "id": "bounce", "title": "Bouncy Beat", "skill": "rhythmic looping and tapping movement" },
+    { "id": "sparkle", "title": "Star Sparkles", "skill": "quick light expressive movement" }
   ],
+  "privacy": {
+    "network": "none at runtime",
+    "microphone": false,
+    "camera": false,
+    "storage": "up to six semantic paintings in localStorage on the current device",
+    "export": "local PNG download only"
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji and swatch placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; GPT Image 2 and local Krea art directed for QLOBE Kids; Qwen teacher-voice clone with Whisper QA; built with Codex.",
   "characters": [],
   "conceptVideo": null
 }

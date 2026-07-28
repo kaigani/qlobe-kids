@@ -34,9 +34,15 @@ are cut-out sprites that visibly belong to the room.
 
 ### 3. Paper Garden
 Cut-paper collage: construction-paper shapes with visible texture, slightly
-imperfect edges, layered like a classroom wall display. Handmade warmth.
+imperfect edges, layered like a classroom wall display. Cardstock, felt, and
+paper may mix when their edges and fibers remain visible; small stitched
+details and soft physical shadows can clarify the layers. Handmade warmth.
 - **Palette:** saturated kraft-paper brights on a warm cream field.
 - **Home categories:** art-music, crafting/building games, pattern play.
+- **Production anchor:** Sound Painting proves the world with an approved
+  nighttime studio variant: ink-blue cardstock replaces the cream field while
+  the cut edges, fibers, stacked layers, and saturated paper colors stay
+  unchanged.
 
 ### 4. Field Journal
 Soft gouache/watercolor nature illustration on warm paper — the look of a

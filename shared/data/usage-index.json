@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-27T02:52:18.974Z",
+  "generated": "2026-07-28T00:46:07.281Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -38,7 +38,7 @@
       ]
     },
     "choose-one": {
-      "count": 18,
+      "count": 17,
       "games": [
         "board-game-reset",
         "calm-corner-cards",
@@ -50,7 +50,6 @@
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
-        "puppet-retell",
         "question-ball",
         "sink-or-float",
         "song-story-remix",
@@ -81,7 +80,7 @@
       ]
     },
     "observe-journal": {
-      "count": 11,
+      "count": 10,
       "games": [
         "bean-sprout-watch",
         "bug-hotel-observer",
@@ -92,7 +91,6 @@
         "picture-narration",
         "shadow-chase",
         "smell-jars",
-        "sound-painting",
         "weather-scientist"
       ]
     },
@@ -501,7 +499,7 @@
     },
     "flashlight-cave": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "reading-phonics",
       "characters": [
         "ari"
@@ -521,6 +519,8 @@
       "assets": [
         "games/flashlight-cave/assets/pose-actors/ari",
         "shared/assets/audio/fragments",
+        "shared/assets/audio/isfor",
+        "shared/assets/audio/letters",
         "shared/assets/objects",
         "shared/assets/ui"
       ],
@@ -1067,17 +1067,38 @@
       "packs": []
     },
     "puppet-retell": {
-      "engine": "choose-one",
+      "engine": null,
       "status": "beta",
       "category": "oral-storytelling",
-      "characters": [],
+      "characters": [
+        "bear",
+        "doggy",
+        "fox",
+        "frog",
+        "princess-lily",
+        "princess-zoe",
+        "rabbit",
+        "unicorn"
+      ],
       "modules": [
-        "shared/js/engines/choose-one.js",
+        "shared/js/performance-recorder.js",
+        "shared/js/performance-video-export.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/theater.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
-        "shared/assets/objects/pig.png"
+        "shared/characters/bear",
+        "shared/characters/doggy",
+        "shared/characters/fox",
+        "shared/characters/frog",
+        "shared/characters/princess-lily",
+        "shared/characters/princess-zoe",
+        "shared/characters/rabbit",
+        "shared/characters/unicorn"
       ],
       "packs": []
     },
@@ -1412,16 +1433,20 @@
       "packs": []
     },
     "sound-painting": {
-      "engine": "observe-journal",
+      "engine": null,
       "status": "beta",
       "category": "art-music",
       "characters": [],
       "modules": [
-        "shared/js/engines/observe-journal.js",
+        "shared/js/musical-canvas.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "sound-sprouts": {
@@ -1779,7 +1804,6 @@
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
-        "puppet-retell",
         "question-ball",
         "sink-or-float",
         "song-story-remix",
@@ -1829,7 +1853,6 @@
         "picture-narration",
         "shadow-chase",
         "smell-jars",
-        "sound-painting",
         "weather-scientist"
       ],
       "shared/js/engines/pattern-continue.js": [
@@ -1875,6 +1898,15 @@
       ],
       "shared/js/music.js": [
         "my-puppet-band"
+      ],
+      "shared/js/musical-canvas.js": [
+        "sound-painting"
+      ],
+      "shared/js/performance-recorder.js": [
+        "puppet-retell"
+      ],
+      "shared/js/performance-video-export.js": [
+        "puppet-retell"
       ],
       "shared/js/sfx": [
         "sound-sprouts"
@@ -2111,11 +2143,13 @@
         "flashlight-cave"
       ],
       "shared/js/stage/stage.js": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "puppet-retell"
       ],
       "shared/js/stage/theater.js": [
         "my-puppet-band",
         "puppet-problem-solvers",
+        "puppet-retell",
         "story-stones"
       ],
       "shared/js/stage/tween.js": [
@@ -2126,7 +2160,9 @@
         "feelings-charades",
         "flashlight-cave",
         "lunchbox-pack",
+        "puppet-retell",
         "sand-tray-letters",
+        "sound-painting",
         "sound-sprouts"
       ],
       "shared/js/voice-clips.js": [
@@ -2136,7 +2172,9 @@
         "lunchbox-pack",
         "my-puppet-band",
         "puppet-problem-solvers",
+        "puppet-retell",
         "sand-tray-letters",
+        "sound-painting",
         "story-stones"
       ],
       "shared/vendor/pixi.min.js": [
@@ -2153,6 +2191,7 @@
       "bear": [
         "my-puppet-band",
         "puppet-problem-solvers",
+        "puppet-retell",
         "subtraction-picnic"
       ],
       "bird": [
@@ -2169,7 +2208,8 @@
       ],
       "doggy": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "dragon": [
         "story-stones"
@@ -2179,14 +2219,16 @@
       ],
       "fox": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "friendly-monster": [
         "story-stones"
       ],
       "frog": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "gilly": [
         "red-green-light"
@@ -2246,15 +2288,18 @@
       ],
       "princess-lily": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "princess-zoe": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "rabbit": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "ravi": [
         "calm-corner-cards",
@@ -2289,7 +2334,8 @@
       ],
       "unicorn": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "white-cat": [
         "story-stones"
@@ -2359,6 +2405,12 @@
       "shared/assets/audio/fragments": [
         "flashlight-cave"
       ],
+      "shared/assets/audio/isfor": [
+        "flashlight-cave"
+      ],
+      "shared/assets/audio/letters": [
+        "flashlight-cave"
+      ],
       "shared/assets/foods": [
         "lunchbox-pack"
       ],
@@ -2417,9 +2469,6 @@
       "shared/assets/objects/mud.png": [
         "tiny-reader-theater"
       ],
-      "shared/assets/objects/pig.png": [
-        "puppet-retell"
-      ],
       "shared/assets/objects/sun.png": [
         "tiny-reader-theater"
       ],
@@ -2440,6 +2489,7 @@
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
+        "sound-painting",
         "sound-sprouts",
         "tangram-tales",
         "teen-bead-builder",
@@ -2451,19 +2501,23 @@
       "shared/characters/bear": [
         "my-puppet-band",
         "puppet-problem-solvers",
+        "puppet-retell",
         "subtraction-picnic"
       ],
       "shared/characters/doggy": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/fox": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/frog": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/leo": [
         "calm-corner-cards",
@@ -2505,15 +2559,18 @@
       ],
       "shared/characters/princess-lily": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/princess-zoe": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/rabbit": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ],
       "shared/characters/ravi": [
         "calm-corner-cards",
@@ -2539,7 +2596,8 @@
       ],
       "shared/characters/unicorn": [
         "my-puppet-band",
-        "puppet-problem-solvers"
+        "puppet-problem-solvers",
+        "puppet-retell"
       ]
     }
   }

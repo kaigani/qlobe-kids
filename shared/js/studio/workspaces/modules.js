@@ -51,7 +51,10 @@ const ENGINES = [
 ];
 
 // shared/js/*.js top-level services.
-const SERVICES = ['audio', 'speech', 'sfx', 'tap', 'voice-clips', 'content', 'music'];
+const SERVICES = [
+  'audio', 'speech', 'sfx', 'tap', 'voice-clips', 'content', 'music',
+  'musical-canvas',
+];
 
 // shared/js/stage/*.js stage modules.
 const STAGE_MODULES = [
