@@ -97,6 +97,7 @@ class TracePathGame {
     this.ghostTraveler = null;
     this.rewardVisual = null;
     this.rewardRevealed = false;
+    this.destinationView = null;
     this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
@@ -343,6 +344,7 @@ class TracePathGame {
     this.ghostTraveler = null;
     this.rewardVisual = null;
     this.rewardRevealed = false;
+    this.destinationView = null;
     this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
@@ -372,6 +374,7 @@ class TracePathGame {
     this.brushReady = false;
     this.awaitingInput = false;
     this.inputLocked = true;
+    this.destinationView = null;
     this.idlePrompted = false;
     this.wanderNudged = false;
     const generation = ++this.roundGeneration;
@@ -539,6 +542,7 @@ class TracePathGame {
     );
     destinationView.position.set(destination.x, destination.y);
     (destinationContainer || container).addChild(destinationView);
+    this.destinationView = destinationView;
 
     const candidates = [
       { x: 125, y: 145 }, { x: 500, y: 125 }, { x: 875, y: 145 },
@@ -1375,7 +1379,7 @@ class TracePathGame {
       )),
       this.runTween(to(
         reward,
-        { scale: { x: 1.06, y: 1.06 } },
+        { scale: { x: 1.03, y: 1.03 } },
         { ms: 440, easing: ease.outBack },
       )),
     ]);
@@ -1387,12 +1391,12 @@ class TracePathGame {
   }
 
   rewardVisualTarget() {
-    if (!this.stage) return { x: BOARD_SIZE / 2, y: 590 };
+    if (!this.stage) return { x: BOARD_SIZE / 2, y: 530 };
     const { w, h } = this.stage.size();
     const wide = w > h * 1.15;
     return {
       x: wide ? -70 : 465,
-      y: wide ? 610 : 600,
+      y: wide ? 530 : 520,
     };
   }
 
@@ -1509,6 +1513,13 @@ class TracePathGame {
           y: rewardBounds.y,
           w: rewardBounds.width,
           h: rewardBounds.height,
+        }
+        : null,
+      destinationLabel: this.destinationView && this.destinationView.destinationLabel
+        ? {
+          text: this.destinationView.destinationLabel.text,
+          w: this.destinationView.destinationLabel.width,
+          h: this.destinationView.destinationLabel.height,
         }
         : null,
       boardBounds: {
@@ -1971,16 +1982,20 @@ function townDestination(PIXI, name, letter, accent, art) {
       fontSize: 22,
       fill: 0x17517e,
       align: 'center',
-      wordWrap: true,
-      wordWrapWidth: 150,
+      wordWrap: false,
     },
   });
   label.anchor.set(0.5);
   label.position.set(0, 126);
+  const maxLabelWidth = 158;
+  if (label.width > maxLabelWidth) {
+    label.scale.set(maxLabelWidth / label.width);
+  }
   const pill = new PIXI.Graphics();
   pill.roundRect(-92, 107, 184, 40, 19).fill({ color: 0xffffff, alpha: 0.96 })
     .stroke({ width: 4, color: accent, alpha: 0.55 });
   wrap.addChild(pill, label);
+  wrap.destinationLabel = label;
   return wrap;
 }
 

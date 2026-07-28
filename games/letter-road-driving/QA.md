@@ -17,7 +17,7 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **32/32 checks passed** in real Google Chrome.
+Result: **34/34 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime data contains A–Z exactly once with 26 unique generated destinations;
@@ -37,12 +37,14 @@ Result: **32/32 checks passed** in real Google Chrome.
 - the matching destination-action reward appears after the replay;
 - the frameless reward is at least 72% of the board in both dimensions and
   overlaps the board edge in landscape;
-- the portrait reward remains fully within the canvas;
+- landscape and portrait rewards remain fully within the canvas, including
+  their bottom edge;
 - trace, replay, and arrival invoke `vroom`, sustained `motor`, and `honk`;
 - Easy Roads has real trace geometry and advances through the engine input path;
 - different seeds produce different four-letter decks from the expanded pool;
 - Letter Town exposes and completes ordered multi-stroke letters;
 - dynamically selected M exposes all four strokes and the Music Shop scenario;
+- the longest destination title, Xylophone Hall, remains fitted on one line;
 - both complete modes reach the end screen;
 - portrait road board is 792×863 CSS px and remains usable;
 - reduced-motion trace completes;

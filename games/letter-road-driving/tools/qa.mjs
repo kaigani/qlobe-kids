@@ -179,6 +179,7 @@ async function main() {
   await page.screenshot({ path: path.join(shots, '02c-drive-replay.png') });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().rewardVisible, null, { timeout: 15000 });
   const rewardState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  const rewardCanvas = await page.locator('.qk-trace-canvas').boundingBox();
   check('destination action reward pops in after the drive',
     rewardState.rewardVisible && rewardState.actualVisible && !rewardState.ghostVisible);
   check('reward is a large frameless pose actor overlapping the board edge',
@@ -187,6 +188,10 @@ async function main() {
       && rewardState.rewardBounds.h >= rewardState.boardBounds.h * 0.72
       && rewardState.rewardBounds.x < rewardState.boardBounds.x,
     JSON.stringify({ reward: rewardState.rewardBounds, board: rewardState.boardBounds }));
+  check('landscape pose actor clears the canvas bottom edge',
+    rewardState.rewardBounds
+      && rewardState.rewardBounds.y + rewardState.rewardBounds.h <= rewardCanvas.height + 2,
+    JSON.stringify({ reward: rewardState.rewardBounds, canvasHeight: rewardCanvas.height }));
   await page.screenshot({ path: path.join(shots, '02d-destination-reward.png') });
   await page.evaluate(() => window.__letterRoadWin);
   check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
@@ -231,6 +236,28 @@ async function main() {
     `seed ${music.seed ?? 'not found'} path ${music.path}`);
   await page.screenshot({ path: path.join(shots, '03b-music-shop-m.png') });
 
+  const longDestination = await page.evaluate(async () => {
+    for (let seed = 0; seed < 100; seed += 1) {
+      window.QLOBE_DEBUG.seed(seed);
+      await window.QLOBE_DEBUG.startMode('town');
+      const state = window.QLOBE_DEBUG.getState();
+      if (state.path === 'x-road') return { ...state, seed };
+    }
+    return window.QLOBE_DEBUG.getState();
+  });
+  check('long destination title stays fitted on one line',
+    longDestination.path === 'x-road'
+      && longDestination.destinationLabel
+      && longDestination.destinationLabel.text === 'Xylophone Hall'
+      && longDestination.destinationLabel.w <= 159
+      && longDestination.destinationLabel.h <= 28,
+    JSON.stringify({
+      seed: longDestination.seed,
+      path: longDestination.path,
+      label: longDestination.destinationLabel,
+    }));
+  await page.screenshot({ path: path.join(shots, '03c-xylophone-hall-label.png') });
+
   await completeMode(page, 'cruise');
   check('Easy Roads reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');
   await page.screenshot({ path: path.join(shots, '04-finish.png') });
@@ -252,7 +279,9 @@ async function main() {
   check('portrait pose actor remains fully on canvas',
     portraitReward.rewardBounds
       && portraitReward.rewardBounds.x >= -8
-      && portraitReward.rewardBounds.x + portraitReward.rewardBounds.w <= portraitCanvas.width + 8,
+      && portraitReward.rewardBounds.x + portraitReward.rewardBounds.w <= portraitCanvas.width + 8
+      && portraitReward.rewardBounds.y >= -8
+      && portraitReward.rewardBounds.y + portraitReward.rewardBounds.h <= portraitCanvas.height + 8,
     JSON.stringify(portraitReward.rewardBounds));
   await portrait.page.screenshot({ path: path.join(shots, '06b-reward-portrait.png') });
 
