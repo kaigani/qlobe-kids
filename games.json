@@ -708,20 +708,27 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#8b8f98",
+      "accent": "#1677d2",
+      "uses": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/voice-clips.js",
+        "shared/js/stage/",
+        "shared/js/sfx.js",
+        "games/letter-road-driving/assets/audio/"
+      ],
       "modes": [
         {
-          "id": "roads",
-          "title": "Letter Roads",
-          "skill": "straight and angled uppercase letter shapes"
+          "id": "cruise",
+          "title": "Easy Roads",
+          "skill": "continuous control on single-stroke uppercase letter shapes"
         },
         {
-          "id": "race",
-          "title": "Curvy Roads",
-          "skill": "curved uppercase letter shapes"
+          "id": "town",
+          "title": "Letter Town",
+          "skill": "numbered multi-stroke uppercase letter formation"
         }
       ],
-      "summary": "Drive a toy car along the shape of a letter."
+      "summary": "Steer a cheerful car along glowing letter roads, then follow numbered starts to build multi-stroke capitals."
     },
     {
       "id": "scissor-trail-safari",

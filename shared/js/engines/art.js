@@ -7,6 +7,7 @@
 //   shared:foods/apple.png      shared/assets/foods/apple.png
 //   shared:letter-tiles/b.png   shared/assets/letter-tiles/b.png
 //   char:maya                   shared/characters/maya/portrait.png
+//   game:assets/hero.png        current game's own asset
 
 const SHARED = new URL('../../', import.meta.url); // -> shared/
 
@@ -14,6 +15,7 @@ const SHARED = new URL('../../', import.meta.url); // -> shared/
 export function artUrl(ref) {
   if (ref.startsWith('shared:')) return new URL('assets/' + ref.slice(7), SHARED).href;
   if (ref.startsWith('char:')) return new URL('characters/' + ref.slice(5) + '/portrait.png', SHARED).href;
+  if (ref.startsWith('game:')) return new URL(ref.slice(5), document.baseURI).href;
   return null;
 }
 

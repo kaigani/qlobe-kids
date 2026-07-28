@@ -162,3 +162,36 @@ export function boing() {
 export function tick() {
   note({ type: 'square', f0: 880, dur: 0.04, gain: 0.18 });
 }
+
+/** Friendly toy-car rev: a short rising motor burble, never a harsh engine roar. */
+export function vroom() {
+  if (!ensure()) return;
+  const start = now();
+  const osc = ctx.createOscillator();
+  const wobble = ctx.createOscillator();
+  const wobbleGain = ctx.createGain();
+  const g = ctx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(78, start);
+  osc.frequency.exponentialRampToValueAtTime(150, start + 0.28);
+  wobble.type = 'sine';
+  wobble.frequency.value = 19;
+  wobbleGain.gain.value = 9;
+  wobble.connect(wobbleGain);
+  wobbleGain.connect(osc.frequency);
+  g.gain.setValueAtTime(0.0001, start);
+  g.gain.exponentialRampToValueAtTime(0.09, start + 0.025);
+  g.gain.exponentialRampToValueAtTime(0.0001, start + 0.32);
+  osc.connect(g);
+  g.connect(master);
+  osc.start(start);
+  wobble.start(start);
+  osc.stop(start + 0.35);
+  wobble.stop(start + 0.35);
+}
+
+/** Soft two-note toy horn for a finished road. */
+export function honk() {
+  note({ type: 'triangle', f0: 392, dur: 0.16, gain: 0.2 });
+  note({ type: 'triangle', f0: 523.25, dur: 0.2, gain: 0.2, t0: 0.14 });
+}

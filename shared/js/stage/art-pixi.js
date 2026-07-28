@@ -2,7 +2,8 @@
 // Resolves the SAME config art refs into Pixi display objects, so game configs
 // work unchanged on Stage v2 engines:
 //
-//   emoji:🐸 | shared:objects/cat.png | char:maya | text:CAT | swatch:#f4c53d
+//   emoji:🐸 | shared:objects/cat.png | char:maya | game:assets/hero.png
+//   text:CAT | swatch:#f4c53d
 //
 // Every returned object is sized to fit a `size` box (contain), centered pivot.
 
@@ -11,6 +12,7 @@ const SHARED = new URL('../../', import.meta.url); // -> shared/
 export function artUrlRef(ref) {
   if (ref.startsWith('shared:')) return new URL('assets/' + ref.slice(7), SHARED).href;
   if (ref.startsWith('char:')) return new URL('characters/' + ref.slice(5) + '/portrait.png', SHARED).href;
+  if (ref.startsWith('game:')) return new URL(ref.slice(5), document.baseURI).href;
   return null;
 }
 

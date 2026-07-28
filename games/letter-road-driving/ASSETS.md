@@ -1,35 +1,52 @@
-# Asset Log - Letter Road Driving
+# Asset log — Letter Road Driving
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/trace-path.js` |
-| Road and car placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Tracing paths | N/A - authored as simple coordinates in `config.js` | Kaigani | MIT for code/data | No | Stub uppercase road paths |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All original QLOBE game art and dialogue assets are CC BY 4.0. Runtime is fully
+offline. Authoring recipes and QA artifacts are retained under `assets/source/`
+and `assets/production/`.
 
-## Assets needed
+| Asset | Source / workflow | Creator | License | Modifications / QA |
+|---|---|---|---|---|
+| `assets/hero-car.png` | gpt-image-2 built-in generation; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Qwen Image Layered `layer_2`; Studio cutout finalizer; alpha floor 4; bbox + 16 px; max 640; magenta composite checked |
+| `assets/driver-car.png` | gpt-image-2 edit from hero identity/style; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Top-down game variant; Qwen Image Layered; same cutout QA |
+| `assets/source/*-gpt-image-2.png` | Raw gpt-image-2 dark-ground renders | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Retained as regeneration lineage |
+| `assets/production/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project asset | True-alpha intermediate |
+| `assets/production/*.qa-magenta.png` | `tools/pipeline/cutout_finalize.py` | QLOBE Kids | CC BY 4.0 project asset | Human silhouette review composite |
+| `assets/bg.jpg` | Existing QLOBE storybook-neighborhood backdrop | QLOBE Kids | CC BY 4.0 | Reused unmodified |
+| `assets/audio/*.m4a` | `qwen3-tts-voiceclone`, seeds 7→9, committed teacher reference | QLOBE Kids local pipeline | CC BY 4.0 project asset | AAC 96 kbps; each line transcribed with `whisper-stt`; results in `qa.json` |
+| `shared/assets/refs/voice-teacher.wav` | Shared committed teacher reference | QLOBE Kids | CC BY 4.0 | Authoring input only; not duplicated |
+| Fredoka SemiBold | Fontsource / Google Fonts | Milena Brandão & Hafontia | SIL OFL 1.1 | Reused unmodified |
+| Shared HUD buttons | QLOBE shared UI library | QLOBE Kids | CC BY 4.0 | Reused unmodified |
+| Road geometry and effects | Procedural Pixi/WebAudio code | QLOBE Kids | MIT | No external files |
 
-### Art
-- Road-texture stroke art or a trace-path engine option for road-style strokes.
-- Tiny car sprites for regular and race modes.
-- Optional start/finish markers once the road art exists.
+## gpt-image-2 prompts
 
-### Voice
-- "Drive along the letter road. Beep beep!"
-- "Steer back to the road and keep driving."
-- "You drove every letter road!"
-- "Beep beep! Nice driving!"
-- "You stayed on the road!"
-- "Letter road complete!"
-- Letter-road prompts and completion lines from `config.js`.
+### Hero car
 
-### Future notes
-- Engine noises are intentionally omitted in beta because the allowed SFX set does not include recorded or file-based car sounds.
+Single friendly compact rounded red cartoon car on uniform `#202428`, expressive
+windshield eyes and grille smile, yellow lights, tactile painted 3D papercraft
+finish, three-quarter front view facing right, generous padding, no shadow,
+floor, scenery, road, text, logo, or watermark.
 
-## Link preview (og:image)
+### Driver car variant
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+Preserve the hero car’s identity, palette, materials, and tactile style; render
+one complete symmetrical 90-degree bird’s-eye view pointing upward on uniform
+`#202428`, with no perspective angle, shadow, floor, road, text, or watermark.
+
+## Qwen Layered extraction prompt
+
+“Separate the exact friendly red cartoon car from the dark charcoal background.
+Layer 1 is only a solid background. Layer 2 is only the complete car with true
+transparent alpha, including every tire, mirror, roof light, and clean
+antialiased edge. Keep the car identical to the input. No shadow, no floor, no
+added objects.”
+
+## Optional sourced sound replacements
+
+The game currently uses synthesized `vroom` and `honk` effects. If sourced clips
+are added later, use:
+
+- a warm toy-motor rise shorter than 350 ms, mono, no brand-identifiable engine;
+- a soft two-note “beep-beep” shorter than 500 ms, no traffic aggression.
+
+Log creator, source URL, license, and edits here before shipping either file.

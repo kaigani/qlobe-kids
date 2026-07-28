@@ -1,0 +1,155 @@
+#!/usr/bin/env node
+// Real-Chrome smoke and visual-QC driver for Letter Road Driving.
+
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+
+const argv = process.argv.slice(2);
+const value = (name, fallback) => {
+  const index = argv.indexOf(`--${name}`);
+  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
+};
+const base = value('base', 'http://127.0.0.1:8000').replace(/\/$/, '');
+const shots = path.resolve(value('shots', 'qa-shots/letter-road-driving'));
+const require = createRequire('/private/tmp/pw/node_modules/noop.js');
+const { chromium } = require('playwright');
+const results = [];
+
+function check(name, condition, detail = '') {
+  const ok = Boolean(condition);
+  results.push({ name, ok });
+  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
+}
+
+async function openPage(browser, viewport, reducedMotion = 'no-preference') {
+  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  const errors = [];
+  const failed = [];
+  const remote = [];
+  page.on('pageerror', (error) => errors.push(String(error)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
+  page.on('request', (request) => {
+    if (!request.url().startsWith(base)) remote.push(request.url());
+  });
+  page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
+  page.on('response', (response) => {
+    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
+  });
+  await page.goto(`${base}/games/letter-road-driving/`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => window.QLOBE_DEBUG.ready);
+  await page.evaluate(() => window.QLOBE_DEBUG.seed(42));
+  return { context, page, errors, failed, remote };
+}
+
+async function completeMode(page, mode) {
+  await page.evaluate((id) => window.QLOBE_DEBUG.startMode(id), mode);
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  while ((await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'play') {
+    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  }
+}
+
+async function main() {
+  await mkdir(shots, { recursive: true });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+
+  const landscape = await openPage(browser, { width: 1180, height: 820 });
+  const page = landscape.page;
+  check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
+  check('two modes registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).length === 2);
+  check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
+  const modeSizes = await page.locator('.qk-trace-mode').evaluateAll((nodes) =>
+    nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
+  check('mode targets meet 96px minimum', modeSizes.every(({ w, h }) => w >= 96 && h >= 96));
+  await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
+
+  await page.evaluate(async () => {
+    const clips = await import('../../../shared/js/voice-clips.js');
+    window.__letterRoadVoice = [];
+    clips.onClip((key) => window.__letterRoadVoice.push(key));
+  });
+  await page.locator('.qk-trace-mode').first().click();
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  await page.waitForFunction(() => window.__letterRoadVoice.length > 0);
+  check('first real gesture starts recorded teacher voice',
+    (await page.evaluate(() => window.__letterRoadVoice)).includes('prompt-l'),
+    (await page.evaluate(() => window.__letterRoadVoice.join(', '))));
+  await page.evaluate(() => window.QLOBE_DEBUG.mute());
+  const easy = await page.evaluate(() => ({
+    state: window.QLOBE_DEBUG.getState(),
+    targets: window.QLOBE_DEBUG.getTargets(),
+    points: window.QLOBE_DEBUG.tracePoints().length,
+  }));
+  check('Easy Roads starts with trace geometry', easy.state.mode === 'cruise' && easy.points > 20);
+  check('trace start target is at least 104px',
+    easy.targets.some(({ role, rect }) => role === 'correct' && rect.w >= 104 && rect.h >= 104));
+  await page.screenshot({ path: path.join(shots, '02-easy-road.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  const town = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('Letter Town exposes ordered multi-strokes', town.mode === 'town' && town.strokesTotal === 3);
+  await page.screenshot({ path: path.join(shots, '03-letter-town-a.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  check('multi-stroke A completes', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+
+  await completeMode(page, 'cruise');
+  check('Easy Roads reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');
+  await page.screenshot({ path: path.join(shots, '04-finish.png') });
+  await completeMode(page, 'town');
+  check('Letter Town reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');
+
+  const portrait = await openPage(browser, { width: 820, height: 1180 });
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.mute());
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('town'));
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  const portraitCanvas = await portrait.page.locator('.qk-trace-canvas').boundingBox();
+  check('portrait road board remains usable', portraitCanvas.width >= 600 && portraitCanvas.height >= 600,
+    `${Math.round(portraitCanvas.width)}×${Math.round(portraitCanvas.height)}`);
+  await portrait.page.screenshot({ path: path.join(shots, '05-letter-town-portrait.png') });
+
+  const reduced = await openPage(browser, { width: 1180, height: 820 }, 'reduce');
+  await reduced.page.evaluate(() => window.QLOBE_DEBUG.mute());
+  await reduced.page.evaluate(() => window.QLOBE_DEBUG.startMode('cruise'));
+  await reduced.page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  await reduced.page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  check('reduced-motion trace completes', (await reduced.page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+
+  const errors = [...landscape.errors, ...portrait.errors, ...reduced.errors];
+  const failed = [...landscape.failed, ...portrait.failed, ...reduced.failed];
+  check('zero page errors', errors.length === 0, errors.join(' | '));
+  check('zero failed requests or 404s', failed.length === 0, failed.join(' | '));
+
+  const legacy = await landscape.context.newPage();
+  const legacyErrors = [];
+  legacy.on('pageerror', (error) => legacyErrors.push(String(error)));
+  await legacy.goto(`${base}/games/scissor-trail-safari/`, { waitUntil: 'networkidle' });
+  await legacy.evaluate(() => window.QLOBE_DEBUG.ready);
+  const legacyMode = await legacy.evaluate(() => window.QLOBE_DEBUG.listModes()[0].id);
+  await legacy.evaluate(() => window.QLOBE_DEBUG.mute());
+  await legacy.evaluate((id) => window.QLOBE_DEBUG.startMode(id), legacyMode);
+  await legacy.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  await legacy.evaluate(() => window.QLOBE_DEBUG.winRound());
+  check('legacy dotted trace game still advances', (await legacy.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
+  check('legacy trace game has no page errors', legacyErrors.length === 0, legacyErrors.join(' | '));
+  await legacy.close();
+
+  await landscape.context.close();
+  await portrait.context.close();
+  await reduced.context.close();
+  await browser.close();
+  const failures = results.filter(({ ok }) => !ok).length;
+  console.log(`\n${results.length - failures}/${results.length} checks passed`);
+  process.exitCode = failures ? 1 : 0;
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

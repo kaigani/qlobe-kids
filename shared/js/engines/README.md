@@ -22,7 +22,8 @@ shared/js/engines/
 
 ## Engine module contract
 
-- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js`, `./art.js`, and —
+- Pure ES module. Imports allowed: `../sfx.js`, `../speech.js`,
+  `../voice-clips.js`, `./art.js`, and —
   for Stage v2 (PixiJS) engines — the stage kit: `../stage/stage.js`,
   `../stage/tween.js`, `../stage/particles.js`, `../stage/art-pixi.js`. Nothing else.
 - Any asset URL inside an engine resolves module-relative:
@@ -74,6 +75,7 @@ Config art values are strings the engine resolves via one shared helper:
 | `shared:foods/apple.png` | `shared/assets/foods/apple.png` |
 | `shared:letter-tiles/b.png` | `shared/assets/letter-tiles/b.png` |
 | `char:maya` | `shared/characters/maya/portrait.png` |
+| `game:assets/hero.png` | the current game's `assets/hero.png` |
 | `text:CAT` | the text big in Fredoka on the card (letters, words, numerals) |
 | `swatch:#f4c53d` | a solid color chip (color games) |
 

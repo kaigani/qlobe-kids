@@ -7,27 +7,30 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#8b8f98",
+  "accent": "#1677d2",
   "shareTitle": "Letter Road Driving 🚗 — Letter Shapes on Wheels",
-  "description": "Trace each letter like a road, steering a little car along every curve and corner. A playful pre-writing game for ages 5–6.",
+  "description": "Drive a cheerful little car along single- and multi-stroke roads shaped like uppercase letters, following each numbered start in order.",
   "learningGoals": [
     "Explore letter shapes through movement and direction",
-    "Practice crisp straight-road letter forms",
-    "Practice curved-road letter forms with playful racing feedback"
+    "Control one continuous stroke through straight and curved letter forms",
+    "Follow numbered starts to learn uppercase multi-stroke order"
   ],
-  "interactionModel": "trace-path finger tracing with car emoji travelers on letter-shaped roads",
-  "feedbackModel": "Successful drives get car-themed spoken cheers with sparkle/pop SFX; off-road tracing gets a gentle spoken steering nudge.",
+  "interactionModel": "strand-proof finger tracing with a top-down car that turns along procedural letter roads",
+  "feedbackModel": "Driven lanes glow gold, the car gives a soft toy honk, cloned teacher voice names the letter, and off-road movement gets a gentle spoken steering cue.",
   "uses": [
     "shared/js/engines/trace-path.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/stage/",
+    "games/letter-road-driving/assets/audio/"
   ],
   "modes": [
-    { "id": "roads", "title": "Letter Roads", "skill": "straight and angled uppercase letter shapes" },
-    { "id": "race", "title": "Curvy Roads", "skill": "curved uppercase letter shapes" }
+    { "id": "cruise", "title": "Easy Roads", "skill": "continuous control on single-stroke uppercase letter shapes" },
+    { "id": "town", "title": "Letter Town", "skill": "numbered multi-stroke uppercase letter formation" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; gpt-image-2 car art with Qwen Layered extraction; local Qwen teacher-voice clone; shared QLOBE Stage and UI.",
   "characters": [],
   "conceptVideo": null
 }

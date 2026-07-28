@@ -17,7 +17,11 @@ gets a clear non-zero exit, the same failure discipline as a missing aligner.
 Usage:
   python3 tools/pipeline/cutout_finalize.py \
     --input layer_2.png --output final.png --magenta qa-magenta.png \
-    --max-size 640 --pad 12
+    --max-size 640 --pad 12 --alpha-floor 4
+
+`--alpha-floor` is optional. Use it when a layered model leaves a faint
+near-transparent film at the frame edge; the threshold is applied before the
+alpha histogram and bbox crop, so the QA report records the exact cleanup.
 
 Emits a single JSON object on stdout describing the QA result:
   { "pass": bool, "reason": str|null, "flags": [str],
@@ -43,7 +47,7 @@ PARTIAL_FLAG_PCT = 2.0      # halo / fringe warning threshold (spec: flag >2%)
 MAGENTA = (255, 0, 255)
 
 
-def finalize(input_path, output_path, magenta_path, max_size, pad):
+def finalize(input_path, output_path, magenta_path, max_size, pad, alpha_floor=0):
     try:
         from PIL import Image
     except Exception as exc:  # noqa: BLE001 — surfaced verbatim to the caller
@@ -53,6 +57,9 @@ def finalize(input_path, output_path, magenta_path, max_size, pad):
 
     img = Image.open(input_path).convert("RGBA")
     w, h = img.size
+    if alpha_floor:
+        alpha = img.getchannel("A").point(lambda value: 0 if value <= alpha_floor else value)
+        img.putalpha(alpha)
     alpha = img.getchannel("A")
     hist = alpha.histogram()
     total = w * h
@@ -87,6 +94,7 @@ def finalize(input_path, output_path, magenta_path, max_size, pad):
         "bbox": list(bbox) if bbox else None,
         "sourceSize": [w, h],
         "finalSize": None,
+        "alphaFloor": alpha_floor,
     }
 
     # Build a review image: the bbox crop + pad (when a subject exists), else the
@@ -124,8 +132,21 @@ def main():
     ap.add_argument("--magenta", required=True)
     ap.add_argument("--max-size", type=int, default=640)
     ap.add_argument("--pad", type=int, default=12)
+    ap.add_argument(
+        "--alpha-floor",
+        type=int,
+        default=0,
+        help="set alpha values at or below this threshold to zero before QA/crop",
+    )
     args = ap.parse_args()
-    result = finalize(args.input, args.output, args.magenta, args.max_size, args.pad)
+    result = finalize(
+        args.input,
+        args.output,
+        args.magenta,
+        args.max_size,
+        args.pad,
+        max(0, min(254, args.alpha_floor)),
+    )
     print(json.dumps(result))
     sys.exit(0 if result.get("pass") else 3)
 

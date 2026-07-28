@@ -7,6 +7,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import * as voiceClips from '../voice-clips.js';
 import { artEl } from './art.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease } from '../stage/tween.js';
@@ -138,12 +139,18 @@ class TracePathGame {
     // so the listener lives on the mount and survives every screen swap
     this.mountEl.addEventListener('click', (event) => {
       if (event.target && event.target.closest && event.target.closest('.qk-trace-back')) {
-        speech.stop();
+        this.stopVoice();
         this.renderSplash();
       }
     });
     this.renderSplash();
-    this.ready = Promise.resolve();
+    this.ready = this.config.voiceClips
+      ? voiceClips.init(
+        this.config.voiceClips.manifest,
+        this.config.voiceClips.lines,
+        voiceDefaults(this.config),
+      )
+      : Promise.resolve();
     this.installDebugHook();
   }
 
@@ -155,7 +162,7 @@ class TracePathGame {
     this.cancelDemo();
     this.removeTraceListeners();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
@@ -172,6 +179,7 @@ class TracePathGame {
     this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
+    if (this.config.voiceClips) voiceClips.unlock();
   }
 
   installDebugHook() {
@@ -203,7 +211,7 @@ class TracePathGame {
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
-    speech.stop();
+    this.stopVoice();
 
     this.mountEl.replaceChildren();
     const root = el('section', 'qk-trace qk-trace-splash');
@@ -242,7 +250,7 @@ class TracePathGame {
     this.cancelDemo();
     this.removeTraceListeners();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
     this.mode = mode;
     this.screen = 'play';
     this.roundIndex = 0;
@@ -267,7 +275,7 @@ class TracePathGame {
     root.setAttribute('aria-label', this.mode.title || this.config.title);
     const hud = el('header', 'qk-trace-hud');
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
     const progress = el('div', 'qk-trace-progress');
     progress.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot'));
@@ -366,7 +374,7 @@ class TracePathGame {
     this.positionTravelerAtCurrentStart();
     this.awaitingInput = true;
     this.inputLocked = false;
-    this.speakLine(this.currentPrompt());
+    this.speakLine(this.currentPrompt(), this.currentPromptKey());
     this.scheduleIdlePrompt();
     this.playDemo();
     await this.delay(WAIT_FOR_INPUT_MS);
@@ -409,13 +417,20 @@ class TracePathGame {
       this.buildCheckpointViews(i);
     }
 
-    const traveler = await artObj(PIXI, this.mode.traveler || this.config.traveler, 62, '');
+    const traveler = await artObj(
+      PIXI,
+      this.mode.traveler || this.config.traveler,
+      this.mode.travelerSize || this.config.travelerSize,
+      '',
+    );
     if (!this.roundIsCurrent(generation)) {
       traveler.destroy({ children: true });
       return;
     }
+    const travelerSize = this.mode.travelerSize || this.config.travelerSize;
+    const travelerHaloRadius = Math.max(43, travelerSize * 0.54);
     const travelerHalo = new PIXI.Graphics();
-    travelerHalo.circle(0, 0, 43).fill({ color: 0xffffff, alpha: 0.8 })
+    travelerHalo.circle(0, 0, travelerHaloRadius).fill({ color: 0xffffff, alpha: 0.8 })
       .stroke({ width: 4, color: 0xffffff, alpha: 0.96 });
     const travelerWrap = new PIXI.Container();
     travelerWrap.addChild(travelerHalo, traveler);
@@ -454,7 +469,9 @@ class TracePathGame {
           dot.addChild(pointer);
         }
         const arrow = new PIXI.Text({
-          text: this.reducedMotion() ? String(strokeIndex + 1) : this.mode.startMarker,
+          text: (this.mode.numberedStarts || this.reducedMotion())
+            ? String(strokeIndex + 1)
+            : this.mode.startMarker,
           style: { fontFamily: 'Fredoka, sans-serif', fontSize: 46, fill: 0x17517e, align: 'center' },
         });
         arrow.anchor.set(0.5);
@@ -517,6 +534,18 @@ class TracePathGame {
       const local = this.strokesScreen[strokeIndex].local;
       if (!graphic) continue;
       graphic.clear();
+      if ((this.mode.guideStyle || this.config.guideStyle) === 'road') {
+        drawPolyline(graphic, local);
+        graphic.stroke({ width: 118, color: 0xd7dce1, alpha: 1, cap: 'round', join: 'round' });
+        drawPolyline(graphic, local);
+        graphic.stroke({ width: 94, color: 0x505963, alpha: 1, cap: 'round', join: 'round' });
+        const dashStride = Math.max(3, Math.round(58 / Math.max(1, SAMPLE_STEP_PX)));
+        for (let i = 0; i < local.length; i += dashStride) {
+          const point = local[i];
+          if (point) graphic.circle(point.x, point.y, 7).fill({ color: 0xffffff, alpha: 0.94 });
+        }
+        continue;
+      }
       // Pixi Graphics has no portable dash primitive; rounded beads create the
       // same forgiving dotted road while keeping geometry very cheap.
       const stride = Math.max(1, Math.round(24 / Math.max(1, SAMPLE_STEP_PX)));
@@ -573,6 +602,7 @@ class TracePathGame {
     this.clearIdleTimer();
     const targetId = this.isNearCurrentStart(e.clientX, e.clientY) ? `start:${this.strokeIndex}` : 'path';
     this.handleTargetAction(targetId);
+    this.playSfx(this.mode.driveSfx || this.config.driveSfx);
     this.activeTrace = { pointerId: e.pointerId, offPath: false };
     this.queuePointer(e.clientX, e.clientY);
     this.brushReady = false;
@@ -763,7 +793,7 @@ class TracePathGame {
       this.wanderTimer = 0;
       if (!this.activeTrace || this.destroyed || !this.awaitingInput || this.wanderNudged) return;
       this.wanderNudged = true;
-      this.speakLine(this.config.voice.nudge, true);
+      this.speakLine(this.config.voice.nudge, this.config.voice.nudgeKey, true);
     }, WANDER_NUDGE_MS);
   }
 
@@ -813,9 +843,11 @@ class TracePathGame {
       const list = this.checkpoints[strokeIndex] || [];
       for (const checkpoint of list) {
         const wasLit = checkpoint.lit;
-        checkpoint.lit = strokeIndex < this.strokeIndex || checkpoint.sampleIndex <= progress.index;
+        checkpoint.lit = strokeIndex < this.strokeIndex
+          || (!checkpoint.isStart && checkpoint.sampleIndex <= progress.index)
+          || (checkpoint.isStart && strokeIndex === this.strokeIndex && progress.ratio > 0);
         checkpoint.view.alpha = checkpoint.isStart
-          ? (strokeIndex === this.strokeIndex ? 1 : checkpoint.lit ? 0.34 : 0.72)
+          ? (strokeIndex === this.strokeIndex ? 1 : checkpoint.lit ? 0.34 : 0.9)
           : (checkpoint.lit ? 1 : 0.82);
         checkpoint.view.tint = checkpoint.lit ? 0xffef9a : 0xffffff;
         if (playFx && checkpoint.lit && !wasLit) {
@@ -842,6 +874,12 @@ class TracePathGame {
       this.brushReady = false;
       this.updateCheckpointStates(false);
       this.positionTravelerAtCurrentStart();
+      const lineIndex = Math.min(this.strokeIndex - 1, this.config.voice.nextStroke.length - 1);
+      this.speakLine(
+        this.config.voice.nextStroke[lineIndex],
+        this.config.voice.nextStrokeKeys[lineIndex],
+        true,
+      );
       return;
     }
     await this.completeRound();
@@ -858,6 +896,7 @@ class TracePathGame {
     this.activeTrace = null;
     this.playSfx('sparkle');
     this.playSfx('pop');
+    this.playSfx(this.mode.finishSfx || this.config.finishSfx);
 
     const generation = this.roundGeneration;
     const shimmer = this.reducedMotion() ? Promise.resolve() : this.shimmerInk();
@@ -866,9 +905,10 @@ class TracePathGame {
       ? burst(this.stage.PIXI, this.scene, center.stageX, center.stageY, { count: 36, power: 7, life: 780 })
       : Promise.resolve();
     await Promise.all([shimmer, confetti]);
+    const yumIndex = this.roundIndex % this.config.voice.yums.length;
     await this.speakLine(
-      (this.currentPath && this.currentPath.say)
-        || this.config.voice.yums[this.roundIndex % this.config.voice.yums.length],
+      (this.currentPath && this.currentPath.say) || this.config.voice.yums[yumIndex],
+      (this.currentPath && this.currentPath.sayKey) || this.config.voice.yumKeys[yumIndex],
       true,
     );
     await this.delay(this.reducedMotion() ? 100 : 320);
@@ -915,7 +955,7 @@ class TracePathGame {
     this.applyTheme(root);
     root.setAttribute('aria-label', this.config.voice.cheer);
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
     const center = el('div', 'qk-trace-end-center');
     const artCard = el('div', 'qk-trace-end-art');
     artCard.appendChild(artEl(this.config.endArt || this.config.splashArt, ''));
@@ -934,7 +974,7 @@ class TracePathGame {
     root.append(home, center);
     this.mountEl.appendChild(root);
     this.createDomBurst(artCard, 34);
-    await this.speakLine(this.config.voice.cheer, true);
+    await this.speakLine(this.config.voice.cheer, this.config.voice.cheerKey, true);
   }
 
   playDemo() {
@@ -1037,7 +1077,7 @@ class TracePathGame {
     if (this.screen !== 'play' || !this.mode) return;
     this.clearIdleTimer();
     this.playSfx('tick');
-    await this.speakLine(this.currentPrompt(), true);
+    await this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
     this.scheduleIdlePrompt();
   }
 
@@ -1048,7 +1088,7 @@ class TracePathGame {
       this.idleTimer = 0;
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
-      this.speakLine(this.currentPrompt(), true);
+      this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
     }, IDLE_MS);
   }
 
@@ -1084,7 +1124,18 @@ class TracePathGame {
   }
 
   positionTravelerLocal(point) {
-    if (this.traveler && point) this.traveler.position.set(point.x, point.y);
+    if (!this.traveler || !point) return;
+    this.traveler.position.set(point.x, point.y);
+    if (!(this.mode.orientTraveler ?? this.config.orientTraveler)) return;
+    const stroke = this.currentScreenStroke();
+    const local = stroke && stroke.local;
+    if (!local || local.length < 2) return;
+    const index = nearestPointIndex(local, point);
+    const before = local[Math.max(0, index - 2)];
+    const after = local[Math.min(local.length - 1, index + 2)];
+    if (!before || !after) return;
+    this.traveler.rotation = Math.atan2(after.y - before.y, after.x - before.x)
+      + (this.mode.travelerRotationOffset ?? this.config.travelerRotationOffset ?? 0);
   }
 
   positionTravelerScreen(x, y) {
@@ -1141,12 +1192,20 @@ class TracePathGame {
       || (this.currentPath && this.currentPath.name);
   }
 
+  currentPromptKey() {
+    return (this.currentPath && this.currentPath.promptKey)
+      || this.mode.promptKey
+      || this.config.voice.introKey;
+  }
+
   getState() {
     return {
       screen: this.screen,
       mode: this.mode ? this.mode.id : null,
       round: this.screen === 'play' ? this.roundIndex : this.roundsTotal,
       roundsTotal: this.roundsTotal,
+      stroke: this.screen === 'play' ? this.strokeIndex : null,
+      strokesTotal: this.screen === 'play' ? this.currentStrokes.length : 0,
       awaitingInput: this.awaitingInput,
     };
   }
@@ -1175,7 +1234,7 @@ class TracePathGame {
   async handleTargetAction(targetId) {
     if (targetId === 'path') return { accepted: true };
     if (targetId === `start:${this.strokeIndex}`) {
-      await this.speakLine(this.currentPrompt(), true);
+      await this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
       return { accepted: true };
     }
     return { accepted: false };
@@ -1261,7 +1320,7 @@ class TracePathGame {
 
   mute() {
     this.muted = true;
-    speech.stop();
+    this.stopVoice();
   }
 
   seed(n) {
@@ -1270,9 +1329,18 @@ class TracePathGame {
     this.fxRng = mulberry32(value + 73);
   }
 
-  async speakLine(line, cancel = false) {
+  async speakLine(line, key, cancel = false) {
     if (this.muted || !line) return;
+    if (this.config.voiceClips && key) {
+      await voiceClips.say(key, line);
+      return;
+    }
     await speech.speak(line, { rate: 0.8, pitch: 1.05, cancel });
+  }
+
+  stopVoice() {
+    if (this.config.voiceClips) voiceClips.stop();
+    else speech.stop();
   }
 
   playSfx(name) {
@@ -1322,12 +1390,23 @@ function normalizeConfig(config = {}) {
   const copy = { home: 'Home', replay: 'Hear it again', playAgain: 'Play Again', ...(config.copy || {}) };
   const voice = {
     intro: 'Follow the sparkle with your finger.',
+    introKey: null,
     nudge: 'Find the path and keep going.',
+    nudgeKey: null,
     cheer: 'You traced them all!',
+    cheerKey: null,
     yums: ['Nice tracing!', 'You did it!', 'Great path!'],
+    yumKeys: [],
+    nextStroke: ['Great! Find the next start.'],
+    nextStrokeKeys: [],
     ...(config.voice || {}),
   };
   if (!Array.isArray(voice.yums)) voice.yums = [String(voice.yums || 'Nice tracing!')];
+  if (!Array.isArray(voice.yumKeys)) voice.yumKeys = [];
+  if (!Array.isArray(voice.nextStroke) || !voice.nextStroke.length) {
+    voice.nextStroke = ['Great! Find the next start.'];
+  }
+  if (!Array.isArray(voice.nextStrokeKeys)) voice.nextStrokeKeys = [];
   return {
     ...config,
     id: config.id || 'trace-path',
@@ -1335,13 +1414,46 @@ function normalizeConfig(config = {}) {
     splashArt: normalizeArtRef(config.splashArt || config.splashEmoji || 'emoji:⭐'),
     endArt: config.endArt ? normalizeArtRef(config.endArt) : null,
     traveler: normalizeArtRef(config.traveler || 'emoji:✏️'),
+    travelerSize: Math.max(48, Number(config.travelerSize || 72)),
     strokeColor: config.strokeColor || '#e8734a',
     tolerance: Math.max(48, Number(config.tolerance || 64)),
+    orientTraveler: Boolean(config.orientTraveler),
+    travelerRotationOffset: Number(config.travelerRotationOffset || 0),
+    guideStyle: config.guideStyle || 'dots',
+    driveSfx: config.driveSfx || null,
+    finishSfx: config.finishSfx || null,
+    voiceClips: config.voiceClips && config.voiceClips.manifest
+      ? {
+        manifest: config.voiceClips.manifest,
+        lines: config.voiceClips.lines || './assets/audio/lines.json',
+      }
+      : null,
     theme: { ...(config.theme || {}) },
     copy,
     voice,
     modes: (config.modes || []).map((mode) => normalizeMode(mode, config)).filter((mode) => mode.paths.length),
   };
+}
+
+function voiceDefaults(config) {
+  const result = {};
+  const add = (key, text) => {
+    if (key && text) result[key] = text;
+  };
+  const voice = config.voice || {};
+  add(voice.introKey, voice.intro);
+  add(voice.nudgeKey, voice.nudge);
+  add(voice.cheerKey, voice.cheer);
+  (voice.yums || []).forEach((text, index) => add((voice.yumKeys || [])[index], text));
+  (voice.nextStroke || []).forEach((text, index) => add((voice.nextStrokeKeys || [])[index], text));
+  for (const mode of config.modes || []) {
+    add(mode.promptKey, mode.prompt);
+    for (const path of mode.paths || []) {
+      add(path.promptKey, path.prompt);
+      add(path.sayKey, path.say);
+    }
+  }
+  return result;
 }
 
 function normalizeMode(mode = {}, config = {}) {
@@ -1358,6 +1470,13 @@ function normalizeMode(mode = {}, config = {}) {
     prompt: mode.prompt || (config.voice && config.voice.intro) || '',
     rounds: Math.min(mode.rounds || paths.length, paths.length),
     traveler: normalizeArtRef(mode.traveler || config.traveler || 'emoji:✏️'),
+    travelerSize: Math.max(48, Number(mode.travelerSize || config.travelerSize || 72)),
+    orientTraveler: mode.orientTraveler ?? Boolean(config.orientTraveler),
+    travelerRotationOffset: Number(mode.travelerRotationOffset ?? config.travelerRotationOffset ?? 0),
+    guideStyle: mode.guideStyle || config.guideStyle || 'dots',
+    driveSfx: mode.driveSfx || config.driveSfx || null,
+    finishSfx: mode.finishSfx || config.finishSfx || null,
+    numberedStarts: Boolean(mode.numberedStarts),
     strokeColor: mode.strokeColor || config.strokeColor || '#e8734a',
     startMarker: mode.startMarker || config.startMarker || '⭐',
     tolerance: Math.max(48, Number(mode.tolerance || config.tolerance || 64)),
@@ -1439,6 +1558,12 @@ function appendLineSamples(result, a, b, step) {
     const t = i / count;
     result.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
   }
+}
+
+function drawPolyline(graphic, points) {
+  if (!graphic || !points || points.length < 2) return;
+  graphic.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) graphic.lineTo(points[i].x, points[i].y);
 }
 
 function appendQuadraticSamples(result, a, control, b, step) {
@@ -1580,6 +1705,7 @@ function installStyle() {
     .qk-trace-mode,.qk-trace-again { min-height:104px; border-radius:26px; border:5px solid var(--white); padding:18px 24px;
       color:var(--white); background:linear-gradient(180deg,rgba(255,255,255,.34),transparent 50%),var(--blue);
       box-shadow:var(--shadow); font-size:clamp(23px,4vmin,36px); line-height:1.05; }
+    .qk-trace button.qk-trace-mode,.qk-trace button.qk-trace-again { color:var(--white); }
     .qk-trace-mode:nth-child(2n) { background-color:var(--green); }
     .qk-trace-mode:nth-child(3n) { background-color:var(--coral); }
     .qk-trace-mode:active,.qk-trace-again:active { transform:scale(.96); }
