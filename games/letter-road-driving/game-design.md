@@ -21,6 +21,7 @@ shared trace system:
 - expressive elevated three-quarter character cars that rotate with the path;
 - data-driven named-car missions, destinations, and town scenery;
 - a separate ghost-planning traveler and solid drive-along replay traveler;
+- a matching full-body character-action reward for every A–Z destination;
 - explicit numbered multi-stroke formation;
 - cloned teacher voice with Web Speech fallback;
 - optional named drive/finish SFX;
@@ -36,10 +37,12 @@ number-formation, and route-following games.
    catalog Home.
 2. **Road** — Back, progress dots, named mission, letter cue, decorated town
    board, destination, and replay Voice button.
-3. **Plan route** — translucent car follows the child while the solid car waits
-   at the start.
+3. **Plan route** — the solid car disappears on the child’s first touch, leaving
+   only the translucent planning car to follow the finger.
 4. **Road payoff** — the solid car drives the completed gold road with a
    sustained motor, honks at the destination, and the teacher names the letter.
+   The matching full-body destination scene then pops into the center as the
+   visual reward.
 5. **Drive complete** — hero car, spoken celebration, replay this mode.
 
 Back from play/end returns to the splash; only splash Home returns to catalog.
@@ -91,6 +94,10 @@ voice and falls back to the exact same line through Web Speech.
   including cottage, fountain, swings, gazebo, plants, street furniture, and
   small ground details. Props are selected around each path without blocking
   the road.
+- `assets/rewards/final/{a..z}.png`: 26 Maya-style full-body destination-action
+  rewards, generated as three yellow-ground 3×3 gpt-image-2 sheets, separated
+  with Qwen Image Layered, deterministically sliced, and alpha-QC'd. A bonus
+  golden-star character is retained for future alphabet celebration use.
 - Roads, start markers, progress glow, and celebrations are procedural Pixi
   graphics so geometry always matches the trace target.
 - `vroom`, sustained `motor`, and `honk` are audible zero-file WebAudio effects.
@@ -103,8 +110,11 @@ voice and falls back to the exact same line through Web Speech.
   earned progress but releases the active trace.
 - Start position and forward progress are ordered; a child can reverse slightly
   without losing progress but cannot jump far ahead.
-- A translucent ghost car moves during tracing. The opaque car stays at the
-  start, then drives every completed stroke before the round celebrates.
+- A translucent ghost car moves during tracing. The opaque car disappears on
+  the first drawing touch, then reappears at the route start only after the
+  full letter is complete and drives every finished stroke.
+- After the arrival, the ghost stays hidden and the letter’s full-body
+  destination-action illustration pops in over the road as the visual reward.
 - The full named destination mission is spoken once when a round begins.
   Beginning a stroke never repeats it; later strokes use only their short
   numbered cue. The Voice button remains an intentional replay control.
@@ -143,7 +153,7 @@ generated art degrades through the shared art resolver without blocking input.
 
 `window.QLOBE_DEBUG` exposes engine `trace-path`, `ready`, both modes,
 truthful targets, current screen/round/stroke/path/deck sequence, ghost/solid
-traveler gap, replay state, tap, `tracePoints()`,
+visibility and traveler gap, replay/reward state, tap, `tracePoints()`,
 `winRound()`, mute, and deterministic seed. Production gate:
 
 - repository validator has zero errors;

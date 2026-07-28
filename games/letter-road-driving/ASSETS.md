@@ -2,7 +2,8 @@
 
 All original QLOBE game art and dialogue assets are CC BY 4.0. Runtime is fully
 offline. Authoring recipes and QA artifacts are retained under `assets/source/`,
-`assets/production/`, and `assets/map/{source,layered,qa}/`.
+`assets/production/`, `assets/map/{source,layered,qa}/`, and
+`assets/rewards/{source,layered,qa}/`.
 
 | Asset | Source / workflow | Creator | License | Modifications / QA |
 |---|---|---|---|---|
@@ -18,6 +19,10 @@ offline. Authoring recipes and QA artifacts are retained under `assets/source/`,
 | `assets/map/destinations/*.png` | `tools/process-map-sheets.py` deterministic 3×3 slicer | QLOBE Kids | CC BY 4.0 project assets | 27 normalized 384 px cutouts: A–Z destinations plus Town Hall |
 | `assets/map/props/*.png` | `tools/process-map-sheets.py` deterministic 3×3 slicer | QLOBE Kids | CC BY 4.0 project assets | 18 normalized 320 px reusable town/play details |
 | `assets/map/qa/*-contact.png`, `*-magenta.png`, `pack.json` | deterministic alpha/component QA | QLOBE Kids | CC BY 4.0 project assets | Small border fragments removed; every sprite visually reviewed on magenta; manifest records source cell and alpha statistics |
+| `assets/rewards/source/*.png` | Three exact 3×3 gpt-image-2 sheets using Maya’s supplied portrait as the QLOBE character-style reference; prompt below | OpenAI + QLOBE Kids direction | CC BY 4.0 project assets | 26 full-body destination actions plus one bonus celebration on flat yellow authoring grounds |
+| `assets/rewards/layered/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project assets | Whole-sheet semantic background separation; retained true-alpha intermediates |
+| `assets/rewards/final/{a..z}.png`, `bonus.png` | `tools/process-reward-sheets.py` deterministic 3×3 slicer and normalizer | QLOBE Kids | CC BY 4.0 project assets | 27 normalized 512 px transparent cutouts; detached border fragments removed |
+| `assets/rewards/qa/*-contact.png`, `*-magenta.png`, `pack.json` | deterministic alpha/component QA | QLOBE Kids | CC BY 4.0 project assets | All three contact sheets and every character silhouette visually reviewed; manifest records destination, action, source cell, and alpha statistics |
 | `assets/source/*-gpt-image-2.png` | Raw gpt-image-2 dark-ground renders | OpenAI + QLOBE Kids direction | CC BY 4.0 project asset | Retained as regeneration lineage |
 | `assets/production/*.layer2.png` | `qwen-image-layered`, seed 42 | Local Qwen workflow | CC BY 4.0 project asset | True-alpha intermediate |
 | `assets/production/*.qa-magenta.png` | `tools/pipeline/cutout_finalize.py` | QLOBE Kids | CC BY 4.0 project asset | Human silhouette review composite |
@@ -97,6 +102,31 @@ pebbles, hydrant, signpost, pond, swings, gazebo, and picnic table. One isolated
 fully visible prop per cell; no text, roads, characters, shadows, dividers, or
 background scenery.
 
+### A–Z destination reward sprite sheets
+
+Use Maya’s supplied portrait as the character-design reference: the same
+rounded soft-3D QLOBE proportions, warm expressive faces, tactile materials,
+bright preschool palette, and polished toy-like rendering. Create exact 3×3
+sheets of isolated, complete full-body characters performing clear
+destination-linked actions, one scene per cell at consistent scale with
+generous separation:
+
+- A–I: painting at an easel, carrying bread, presenting a cupcake, dancing,
+  holding a toy wrench, carrying flowers, carrying produce, trying on a big
+  hat, and holding an ice-cream cone;
+- J–R: squeezing an orange, flying a kite, reading a book, playing a keyboard,
+  watching a butterfly with binoculars, using a telescope, holding a puppy,
+  an older lady presenting a patchwork quilt beside yarn, and repairing a
+  friendly robot;
+- S–Z plus bonus: holding a spiral lollipop, building blocks beside a teddy,
+  twirling a rainbow umbrella, a young vet checking a kitten, splashing with a
+  swim ring, playing a rainbow xylophone, an older lady knitting a scarf,
+  feeding a baby giraffe, and holding a golden celebration star.
+
+The entire canvas and all negative space must be perfectly flat, uniform pure
+yellow `#FFFF00`, with no grid, panel, floor, scenery, text, letters, labels,
+cars, roads, shadows, or watermark.
+
 ## Qwen Layered extraction prompt
 
 Car: “Separate the exact friendly red cartoon car from the dark charcoal
@@ -110,6 +140,13 @@ layer: the exact same nine [destination buildings / town scenery props] in
 their original 3 by 3 positions on transparent background. Preserve every
 object’s identity, colors, details, scale, spacing, and silhouette exactly. Do
 not combine, move, replace, omit, or redraw any object.”
+
+Reward sheets: “Separate this exact 3×3 sprite sheet into semantic layers.
+Bottom layer: only the complete flat pure-yellow background. Top layer: only
+the exact nine full-body character action scenes in their original cells on
+true transparent alpha. Preserve every character, prop, facial expression,
+pose, color, scale, spacing, and clean antialiased silhouette exactly. Do not
+move, redraw, combine, replace, omit, crop, or add anything.”
 
 ## Optional sourced sound replacements
 

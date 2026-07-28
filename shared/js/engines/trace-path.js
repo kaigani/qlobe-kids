@@ -95,6 +95,8 @@ class TracePathGame {
     this.traveler = null;
     this.actualTraveler = null;
     this.ghostTraveler = null;
+    this.rewardVisual = null;
+    this.rewardRevealed = false;
     this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
@@ -339,6 +341,8 @@ class TracePathGame {
     this.traveler = null;
     this.actualTraveler = null;
     this.ghostTraveler = null;
+    this.rewardVisual = null;
+    this.rewardRevealed = false;
     this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
@@ -431,15 +435,27 @@ class TracePathGame {
 
     const travelerRef = this.currentPath.traveler || this.mode.traveler || this.config.traveler;
     const travelerSize = this.currentPath.travelerSize || this.mode.travelerSize || this.config.travelerSize;
-    const [actualArt, ghostArt] = await Promise.all([
+    const rewardLetter = String(this.currentPath.id || '').charAt(0).toLowerCase();
+    const rewardRef = this.currentPath.rewardArt
+      || (rewardLetter ? `game:assets/rewards/final/${rewardLetter}.png` : null);
+    const [actualArt, ghostArt, rewardArt] = await Promise.all([
       artObj(PIXI, travelerRef, travelerSize, this.currentPath.carName || ''),
       this.config.ghostTrace
         ? artObj(PIXI, travelerRef, travelerSize, this.currentPath.carName || '')
+        : Promise.resolve(null),
+      this.config.rewardVisuals && rewardRef
+        ? artObj(
+          PIXI,
+          rewardRef,
+          this.currentPath.rewardSize || 430,
+          `${this.currentPath.destination || 'Destination'} reward`,
+        )
         : Promise.resolve(null),
     ]);
     if (!this.roundIsCurrent(generation)) {
       actualArt.destroy({ children: true });
       if (ghostArt) ghostArt.destroy({ children: true });
+      if (rewardArt) rewardArt.destroy({ children: true });
       return;
     }
     const travelerHaloRadius = Math.max(43, travelerSize * 0.54);
@@ -463,6 +479,24 @@ class TracePathGame {
       this.traveler = ghostWrap;
     } else {
       this.traveler = actualWrap;
+    }
+
+    if (rewardArt) {
+      const rewardWrap = new PIXI.Container();
+      const rewardGlow = new PIXI.Graphics();
+      rewardGlow.circle(0, 0, 244).fill({ color: 0xffe470, alpha: 0.3 });
+      const rewardCard = new PIXI.Graphics();
+      rewardCard.roundRect(-220, -232, 440, 464, 54)
+        .fill({ color: 0xfffdf2, alpha: 0.97 })
+        .stroke({ width: 10, color: 0xffd34e, alpha: 0.98 });
+      rewardWrap.addChild(rewardGlow, rewardCard, rewardArt);
+      rewardWrap.position.set(BOARD_SIZE / 2, BOARD_SIZE / 2);
+      rewardWrap.visible = false;
+      rewardWrap.alpha = 0;
+      rewardWrap.scale.set(0.28);
+      fx.addChild(rewardWrap);
+      this.rewardVisual = rewardWrap;
+      this.rewardRevealed = false;
     }
 
     const trail = new PIXI.Graphics();
@@ -720,6 +754,10 @@ class TracePathGame {
     this.unlockAudio();
     this.cancelDemo();
     this.clearIdleTimer();
+    if (this.config.ghostTrace && this.actualTraveler && this.ghostTraveler) {
+      this.actualTraveler.visible = false;
+      this.ghostTraveler.visible = true;
+    }
     const targetId = this.isNearCurrentStart(e.clientX, e.clientY) ? `start:${this.strokeIndex}` : 'path';
     this.handleTargetAction(targetId);
     this.playSfx(this.mode.driveSfx || this.config.driveSfx);
@@ -1026,7 +1064,8 @@ class TracePathGame {
     const confetti = center
       ? burst(this.stage.PIXI, this.scene, center.stageX, center.stageY, { count: 36, power: 7, life: 780 })
       : Promise.resolve();
-    await Promise.all([shimmer, confetti]);
+    const reward = this.revealRewardVisual();
+    await Promise.all([shimmer, confetti, reward]);
     const yumIndex = this.roundIndex % this.config.voice.yums.length;
     await this.speakLine(
       (this.currentPath && this.currentPath.say) || this.config.voice.yums[yumIndex],
@@ -1285,6 +1324,7 @@ class TracePathGame {
     const route = this.strokesScreen.filter((stroke) =>
       stroke && Array.isArray(stroke.local) && stroke.local.length > 1);
     if (!route.length) return;
+    this.positionDisplayAlongStroke(this.actualTraveler, route[0].local[0], route[0].local);
     if (this.ghostTraveler) this.ghostTraveler.visible = false;
     this.actualTraveler.visible = true;
     this.drivingReplay = true;
@@ -1312,6 +1352,32 @@ class TracePathGame {
     } finally {
       this.drivingReplay = false;
     }
+  }
+
+  async revealRewardVisual() {
+    if (!this.rewardVisual || this.rewardRevealed) return;
+    this.rewardRevealed = true;
+    const reward = this.rewardVisual;
+    reward.visible = true;
+    reward.position.set(BOARD_SIZE / 2, BOARD_SIZE / 2);
+    if (this.reducedMotion()) {
+      reward.alpha = 1;
+      reward.rotation = 0;
+      reward.scale.set(1);
+      return;
+    }
+    reward.alpha = 0;
+    reward.rotation = -0.04;
+    reward.scale.set(0.28);
+    await Promise.all([
+      this.runTween(to(reward, { alpha: 1, rotation: 0 }, { ms: 360, easing: ease.outCubic })),
+      this.runTween(to(reward, { scale: { x: 1.08, y: 1.08 } }, { ms: 360, easing: ease.outBack })),
+    ]);
+    await this.runTween(to(
+      reward,
+      { scale: { x: 1, y: 1 } },
+      { ms: 150, easing: ease.inOutSine },
+    ));
   }
 
   positionTravelerScreen(x, y) {
@@ -1406,6 +1472,12 @@ class TracePathGame {
         )
         : 0,
       ghostVisible: Boolean(this.ghostTraveler && this.ghostTraveler.visible),
+      actualVisible: Boolean(this.actualTraveler && this.actualTraveler.visible),
+      rewardVisible: Boolean(
+        this.rewardVisual
+          && this.rewardVisual.visible
+          && this.rewardVisual.alpha > 0.5,
+      ),
     };
   }
 

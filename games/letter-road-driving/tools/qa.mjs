@@ -96,6 +96,29 @@ async function main() {
       && spritePack.props === 18
       && spritePack.loaded === 45,
     JSON.stringify(spritePack));
+  const rewardPack = await page.evaluate(async () => {
+    const pack = await fetch('./assets/rewards/pack.json').then((response) => response.json());
+    const results = await Promise.all(pack.rewards.map(async (reward) => {
+      const response = await fetch(`./${reward.asset}`);
+      return response.ok;
+    }));
+    return {
+      total: pack.rewards.length,
+      letters: pack.rewards
+        .filter((reward) => reward.id.length === 1)
+        .map((reward) => reward.id)
+        .sort()
+        .join(''),
+      bonus: pack.rewards.some((reward) => reward.id === 'bonus'),
+      loaded: results.filter(Boolean).length,
+    };
+  });
+  check('A–Z destination reward pack loads offline',
+    rewardPack.total === 27
+      && rewardPack.letters === 'abcdefghijklmnopqrstuvwxyz'
+      && rewardPack.bonus
+      && rewardPack.loaded === 27,
+    JSON.stringify(rewardPack));
   check('runtime makes no remote requests', landscape.remote.length === 0, landscape.remote.join(', '));
   const modeSizes = await page.locator('.qk-trace-mode').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
@@ -137,6 +160,8 @@ async function main() {
   check('finger tracing moves a separate translucent ghost car',
     partialState.travelerGap > 80 && partialState.ghostVisible,
     `gap ${Math.round(partialState.travelerGap)}px`);
+  check('solid car hides as soon as tracing starts',
+    !partialState.actualVisible && partialState.ghostVisible);
   const missionVoice = await page.evaluate(() => {
     const state = window.QLOBE_DEBUG.getState();
     const promptKey = `prompt-${state.path[0]}`;
@@ -150,9 +175,15 @@ async function main() {
 
   await page.evaluate(() => { window.__letterRoadWin = window.QLOBE_DEBUG.winRound(); });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().replaying);
+  const replayState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('solid character car drives the completed route',
-    (await page.evaluate(() => window.QLOBE_DEBUG.getState())).replaying);
+    replayState.replaying && replayState.actualVisible && !replayState.ghostVisible);
   await page.screenshot({ path: path.join(shots, '02c-drive-replay.png') });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().rewardVisible, null, { timeout: 15000 });
+  const rewardState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('destination action reward pops in after the drive',
+    rewardState.rewardVisible && rewardState.actualVisible && !rewardState.ghostVisible);
+  await page.screenshot({ path: path.join(shots, '02d-destination-reward.png') });
   await page.evaluate(() => window.__letterRoadWin);
   check('real trace path advances a round', (await page.evaluate(() => window.QLOBE_DEBUG.getState().round)) === 1);
   const carSfx = await page.evaluate(async () => (await import('../../../shared/js/sfx.js')).stats());
