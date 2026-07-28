@@ -105,6 +105,9 @@ voice and falls back to the exact same line through Web Speech.
   without losing progress but cannot jump far ahead.
 - A translucent ghost car moves during tracing. The opaque car stays at the
   start, then drives every completed stroke before the round celebrates.
+- The full named destination mission is spoken once when a round begins.
+  Beginning a stroke never repeats it; later strokes use only their short
+  numbered cue. The Voice button remains an intentional replay control.
 - A moving demo comet models the route once, then disappears on touch.
 - Off-road movement softens the gold trail and pulses the lane. After a gentle
   delay the teacher says, “Oops, a little off road. Follow the white dashes.”

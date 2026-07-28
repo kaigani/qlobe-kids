@@ -137,6 +137,15 @@ async function main() {
   check('finger tracing moves a separate translucent ghost car',
     partialState.travelerGap > 80 && partialState.ghostVisible,
     `gap ${Math.round(partialState.travelerGap)}px`);
+  const missionVoice = await page.evaluate(() => {
+    const state = window.QLOBE_DEBUG.getState();
+    const promptKey = `prompt-${state.path[0]}`;
+    const heard = window.__letterRoadVoice.filter((key) => key === promptKey);
+    return { promptKey, count: heard.length };
+  });
+  check('destination mission is spoken only once when tracing starts',
+    missionVoice.count === 1,
+    `${missionVoice.promptKey} played ${missionVoice.count} time(s)`);
   await page.screenshot({ path: path.join(shots, '02b-ghost-trace.png') });
 
   await page.evaluate(() => { window.__letterRoadWin = window.QLOBE_DEBUG.winRound(); });

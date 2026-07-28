@@ -1210,7 +1210,10 @@ class TracePathGame {
       this.idleTimer = 0;
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
-      this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
+      // The destination mission is announced once when the round loads. Idle
+      // support stays visual so it never restarts a long instruction while the
+      // child is thinking or moving between numbered strokes.
+      this.playDemo();
     }, IDLE_MS);
   }
 
@@ -1430,7 +1433,9 @@ class TracePathGame {
   async handleTargetAction(targetId) {
     if (targetId === 'path') return { accepted: true };
     if (targetId === `start:${this.strokeIndex}`) {
-      await this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
+      // Starting a stroke should begin driving immediately. The full mission
+      // has already played at round start; later strokes receive their concise
+      // numbered cue from completeStroke().
       return { accepted: true };
     }
     return { accepted: false };

@@ -17,7 +17,7 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **26/26 checks passed** in real Google Chrome.
+Result: **27/27 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime data contains A–Z exactly once with 26 unique generated destinations;
@@ -27,6 +27,8 @@ Result: **26/26 checks passed** in real Google Chrome.
 - first real gesture starts the matching recorded teacher clip;
 - every round presents a named car, destination, and letter-linked word;
 - partial tracing separates the translucent ghost car from the waiting solid car;
+- the full destination mission plays once at round start and does not repeat
+  when the child begins tracing;
 - completing the trace starts the solid-car drive replay;
 - trace, replay, and arrival invoke `vroom`, sustained `motor`, and `honk`;
 - Easy Roads has real trace geometry and advances through the engine input path;
