@@ -30,16 +30,25 @@
 // Design notes on a few non-obvious choices:
 //
 //   - mid-fall / settled-float / settled-sink screenshots are captured from
-//     POND mode, not from the predict round. Predict mode's 6 rounds are dealt
-//     from a SEEDED SHUFFLE of the 12 "classic" objects (6 float + 6 sink), so
-//     a fixed seed's first 6 could — with vanishingly small but nonzero
-//     odds — turn out to be all one truth value. Pond mode carries the whole
-//     18-object pool and lets us choose one known float object and one known
-//     sink object by name, so those three screenshots are deterministic
-//     regardless of any seed. Pond's own physics tick is driven by the Pixi
-//     ticker, not by state.fast-gated JS delays, so it takes real wall-clock
-//     time to fall and settle either way — that's what gives us an actual
-//     mid-fall frame to catch.
+//     POND mode, not from the predict round. A predict round is a seeded
+//     BALANCED draw of 6 from the mode's pool (3 floaters, 3 sinkers), so which
+//     six objects turn up is a property of the seed, not something to hard-code;
+//     pond mode deals a 16-object shelf and this script picks one known floater
+//     and one known sinker OFF THAT SHELF by asking the engine what it dealt
+//     (QLOBE_DEBUG.getRound().shelf) — so those three screenshots are
+//     deterministic without either pass assuming a fixed object list. Pond's own
+//     physics tick is driven by the Pixi ticker, not by state.fast-gated JS
+//     delays, so it takes real wall-clock time to fall and settle either way —
+//     that's what gives us an actual mid-fall frame to catch.
+//
+//   - The object catalogue is 54 strong and its art/voice are produced in
+//     parallel with the code, so a plate or clip that is not on disk YET must
+//     not be reported as a broken game. Requests under assets/objects/ and
+//     assets/audio/ are matched against the real directory listing: a 404 for a
+//     file that does not exist yet is counted as "pending production" and
+//     noted; a 404 for anything that DOES exist, or for any other path, is a
+//     failure exactly as before. The exemption disappears on its own the moment
+//     the asset lands.
 //
 //   - The "warm surprise path" after a deliberately wrong prediction is
 //     verified with a MutationObserver on #announcer, installed BEFORE the
@@ -67,7 +76,7 @@
 // Exit code is non-zero if any check fails.
 
 import { mkdir, writeFile } from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -78,6 +87,9 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..', '..');
 const GAME_DIR = path.resolve(HERE, '..');
 const SHOTS = path.join(GAME_DIR, 'qa-shots');
+// Shots for the v2 feature pass (spoken badge order, pop-sync, 54-object pools)
+// land in their own folder so the original review set stays comparable.
+const SHOTS_V2 = path.join(SHOTS, 'v2');
 
 const argv = process.argv.slice(2);
 const flag = (name, dflt) => {
@@ -102,6 +114,28 @@ const LANDSCAPE = { width: 1200, height: 900 };
 const PORTRAIT = { width: 800, height: 1067 };
 const SEED = 11;
 const WRONG_ROUND_INDEX = 1; // deliberately mis-predict the second object of the round
+const ROUND_SIZE = (PREDICT_MODE && PREDICT_MODE.rounds) || 6;
+const POND_SHELF = ((MODES.find((m) => m.id === 'pond') || {}).shelf) || 16;
+const SEEDS = [11, 7, 1234, 99, 20260728]; // the seeded-draw balance sweep
+
+// What is actually on disk right now, so a not-yet-produced plate or clip can
+// be told apart from a broken path. See the header note.
+const onDisk = (dir) => {
+  try { return new Set(readdirSync(path.join(GAME_DIR, 'assets', dir))); } catch { return new Set(); }
+};
+const HAVE_OBJECT_ART = onDisk('objects');
+const HAVE_AUDIO = onDisk('audio');
+
+// One asset can be reported twice (a console error AND a 404 response), so
+// pending lists are always counted by file name.
+const pendingNames = (lines) => [...new Set(lines.map((line) => line.replace(/^.*\//, '')))].sort();
+
+function isPendingAsset(url) {
+  const m = /\/assets\/(objects|audio)\/([^/?#]+)/.exec(url);
+  if (!m) return false;
+  const have = m[1] === 'objects' ? HAVE_OBJECT_ART : HAVE_AUDIO;
+  return !have.has(decodeURIComponent(m[2]));
+}
 
 let GAME_URL = ''; // filled in once BASE is known
 
@@ -118,6 +152,10 @@ const note = (line) => { notes.push(line); console.log(`  note  ${line}`); };
 
 async function shot(page, name) {
   await page.screenshot({ path: path.join(SHOTS, `${name}.png`) });
+}
+
+async function shotV2(page, name) {
+  await page.screenshot({ path: path.join(SHOTS_V2, `${name}.png`) });
 }
 
 function waitForNodeCondition(fn, timeout = 8000, interval = 100) {
@@ -186,11 +224,20 @@ async function openPage(browser, viewport, reducedMotion = 'no-preference') {
   const failed = [];
   const foreign = [];
   const aborted = [];
+  const pending = []; // assets still in production — noted, never a failure
   // A recorded line that supersedes another mid-flight src-swaps the one
   // unlocked <audio> element, which cancels the clip it interrupted — that IS
   // the voice channel working, not a bug. Counted separately, never as a fail.
   const isExpectedAbort = (url, err) => /\.m4a(\?|$)/.test(url) && /ABORTED/i.test(err || '');
-  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  // Chromium reports a failed resource load as a console error as well as a
+  // failed response, so the pending-asset rule has to be applied here too or
+  // one unproduced plate shows up as "the game is throwing".
+  page.on('console', (m) => {
+    if (m.type() !== 'error') return;
+    const from = (m.location() && m.location().url) || '';
+    if (isPendingAsset(from)) { pending.push(`console ${from}`); return; }
+    errors.push(`${m.text()} @ ${from}`);
+  });
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('request', (r) => {
     const url = r.url();
@@ -199,10 +246,14 @@ async function openPage(browser, viewport, reducedMotion = 'no-preference') {
   });
   page.on('requestfailed', (r) => {
     const err = r.failure()?.errorText;
+    if (isPendingAsset(r.url())) { pending.push(r.url()); return; }
     (isExpectedAbort(r.url(), err) ? aborted : failed).push(`${r.url()} ${err}`);
   });
-  page.on('response', (r) => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`); });
-  return { ctx, page, errors, failed, foreign, aborted };
+  page.on('response', (r) => {
+    if (r.status() < 400) return;
+    (isPendingAsset(r.url()) ? pending : failed).push(`${r.status()} ${r.url()}`);
+  });
+  return { ctx, page, errors, failed, foreign, aborted, pending };
 }
 
 async function bootBasic(page, { mute = true, seed = SEED, fast = true } = {}) {
@@ -306,6 +357,36 @@ async function predictRoundPass(browser, tag, viewport) {
   const roundsTotal = await page.evaluate(() => window.QLOBE_DEBUG.getState().roundsTotal);
   check(`${tag}: predict mode deals ${PREDICT_MODE.rounds} rounds`,
     roundsTotal === PREDICT_MODE.rounds, String(roundsTotal));
+
+  // Spoken order, read off real layout geometry rather than DOM order — a
+  // stray `row-reverse` would still have to fail this.
+  const badges = await page.evaluate(() => Array.from(document.querySelectorAll('.guess-row .badge'))
+    .map((el) => ({ guess: el.dataset.guess, left: Math.round(el.getBoundingClientRect().left) })));
+  const sinkBadge = badges.find((b) => b.guess === 'sink');
+  const floatBadge = badges.find((b) => b.guess === 'float');
+  check(`${tag}: guess badges sit in spoken order — SINK left, FLOAT right`,
+    !!sinkBadge && !!floatBadge && sinkBadge.left < floatBadge.left, JSON.stringify(badges));
+
+  const targetIds = await page.evaluate(() => window.QLOBE_DEBUG.getTargets().map((t) => t.id));
+  check(`${tag}: getTargets lists the badges in that same order`,
+    targetIds.join(',') === 'guess-sink,guess-float', targetIds.join(','));
+
+  const dealt = await page.evaluate(() => window.QLOBE_DEBUG.getRound());
+  check(`${tag}: the round is dealt 3 floaters and 3 sinkers, no repeats`,
+    dealt.floats === ROUND_SIZE / 2 && dealt.sinks === ROUND_SIZE / 2
+      && new Set(dealt.queue.map((o) => o.id)).size === ROUND_SIZE,
+    dealt.queue.map((o) => `${o.id}:${o.truth}`).join(' '));
+  check(`${tag}: the shelf shows exactly this round's objects`,
+    dealt.shelf.join(',') === dealt.queue.map((o) => o.id).join(','), dealt.shelf.join(','));
+
+  // The two pops must have fired, sink first, before the child can answer.
+  const popped = await page.waitForFunction(() => window.QLOBE_DEBUG.getPrompt().pops.length >= 2,
+    null, { timeout: 6000 }).then(() => true).catch(() => false);
+  const prompt = await page.evaluate(() => window.QLOBE_DEBUG.getPrompt());
+  const pops = prompt.pops.slice(-2);
+  check(`${tag}: the prompt pops the sink badge, then the float badge`,
+    popped && pops.length === 2 && pops[0].guess === 'sink' && pops[1].guess === 'float',
+    JSON.stringify(prompt));
 
   for (let i = 0; i < roundsTotal; i += 1) {
     const screenNow = await page.evaluate(() => window.QLOBE_DEBUG.getState().screen);
@@ -419,9 +500,21 @@ async function pondPass(browser, tag, viewport) {
   }, null, { timeout: 8000 }).then(() => true).catch(() => false);
   check(`${tag}: pond mode starts awaiting input`, started);
 
-  const floatObj = OBJECTS.find((o) => o.truth === 'float');
-  const sinkObj = OBJECTS.find((o) => o.truth === 'sink');
-  const thirdObj = OBJECTS.find((o) => o.truth === 'float' && o.id !== floatObj.id) || OBJECTS[2];
+  // The shelf is a seeded draw of 16 from all 54, so the objects to play with
+  // are whatever THIS visit dealt — ask the engine rather than assuming.
+  const dealt = await page.evaluate(() => window.QLOBE_DEBUG.getRound());
+  const shelf = dealt.shelf.map((id) => OBJECTS.find((o) => o.id === id)).filter(Boolean);
+  check(`${tag} pond: the shelf shows ${POND_SHELF} of the ${OBJECTS.length} objects, no repeats`,
+    shelf.length === POND_SHELF && new Set(dealt.shelf).size === POND_SHELF, dealt.shelf.join(','));
+  const shelfChips = await page.locator('.shelf .obj-chip').count();
+  check(`${tag} pond: every dealt object is on the rail`, shelfChips === POND_SHELF, String(shelfChips));
+  check(`${tag} pond: the shelf mixes floaters and sinkers`,
+    shelf.some((o) => o.truth === 'float') && shelf.some((o) => o.truth === 'sink'),
+    shelf.map((o) => o.truth).join(','));
+
+  const floatObj = shelf.find((o) => o.truth === 'float');
+  const sinkObj = shelf.find((o) => o.truth === 'sink');
+  const thirdObj = shelf.find((o) => o.id !== floatObj.id && o.id !== sinkObj.id);
 
   async function canvasBox() {
     return page.locator('.jar-slot canvas').boundingBox();
@@ -569,10 +662,138 @@ async function idleAndAudioPass(browser) {
   await ctx.close();
 }
 
+// ------------------------------------------- pass: badge pop-sync + v2 shots
+//
+// The pop has to land WITH the words, so it is captured the way a reviewer
+// would see it: fire the prompt, wait for the engine to report each pop, then
+// take the frame ~180ms later — inside the .35s badge-pop animation, close to
+// its peak. Runs UNMUTED with the clause path forced on, so each half of the
+// question is a separate utterance and the two pops are seconds apart even
+// before the clause clips exist.
+async function promptPopPass(browser, tag, viewport, reduced = false) {
+  const { ctx, page, errors, failed, pending } = await openPage(
+    browser, viewport, reduced ? 'reduce' : 'no-preference',
+  );
+  await bootBasic(page, { mute: false, fast: false });
+  await page.mouse.click(viewport.width / 2, 60); // real gesture: unlock audio
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('predict'));
+  await waitForPredictReady(page);
+
+  const forced = await page.evaluate(() => window.QLOBE_DEBUG.forcePromptParts(true));
+  check(`${tag}: the two-clause prompt path can be driven`, forced === true, String(forced));
+  const prompt0 = await page.evaluate(() => window.QLOBE_DEBUG.getPrompt());
+  note(`${tag}: clause clips recorded = [${prompt0.recorded.join(', ')}] (${prompt0.keys.join(', ')})`);
+
+  await shotV2(page, `predict-step-${tag}${reduced ? '-reduced' : ''}`);
+
+  await page.evaluate(() => {
+    window.__popMark = window.QLOBE_DEBUG.getPrompt().pops.length;
+    window.QLOBE_DEBUG.sayPrompt();          // deliberately not awaited
+  });
+
+  for (const [index, guess] of ['sink', 'float'].entries()) {
+    const seen = await page.waitForFunction((want) => {
+      const pops = window.QLOBE_DEBUG.getPrompt().pops;
+      return pops.length >= window.__popMark + want;
+    }, index + 1, { timeout: 9000 }).then(() => true).catch(() => false);
+    check(`${tag}: pop ${index + 1} ("${guess}") fires with its clause`, seen);
+    if (!seen) break;
+    await page.waitForTimeout(180);
+    const state = await page.evaluate((want) => {
+      const badge = document.querySelector(`.guess-row .badge[data-guess="${want}"]`);
+      return badge ? { cls: badge.className, rect: badge.getBoundingClientRect().width } : null;
+    }, guess);
+    check(`${tag}: the ${guess} badge is mid-${reduced ? 'cue' : 'pop'} when captured`,
+      !!state && /is-(pop|cued)/.test(state.cls), JSON.stringify(state));
+    check(`${tag}: reduced motion swaps the scale for an outline cue`,
+      !reduced || (state && state.cls.includes('is-cued')), state ? state.cls : '(none)');
+    await shotV2(page, `pop-${guess}-${tag}${reduced ? '-reduced' : ''}`);
+  }
+
+  check(`${tag} pop-sync pass: no console errors`, errors.length === 0, errors.slice(0, 3).join(' | '));
+  check(`${tag} pop-sync pass: no failed requests`, failed.length === 0, failed.slice(0, 5).join(' | '));
+  if (pending.length) note(`${tag} pop-sync: ${pendingNames(pending).length} asset(s) still in production`);
+  await ctx.close();
+}
+
+// ------------------------------------------------- pass: seeded balanced draw
+//
+// Five seeds × both predict modes. Every draw must be six distinct objects,
+// three floaters and three sinkers, all from the mode's own pool; a replay in
+// the same session must not repeat the set; and setSeed(n) must make the whole
+// thing reproducible.
+async function seededDrawPass(browser) {
+  const { ctx, page, errors, failed, pending } = await openPage(browser, LANDSCAPE);
+  await bootBasic(page);
+
+  const draws = [];
+  for (const modeId of ['predict', 'tricky']) {
+    const poolIds = new Set(OBJECTS.filter((o) => o.pool === (modeId === 'predict' ? 'classic' : 'tricky'))
+      .map((o) => o.id));
+    for (const seed of SEEDS) {
+      const dealt = await page.evaluate(async ([id, s]) => {
+        window.QLOBE_DEBUG.setSeed(s);
+        await window.QLOBE_DEBUG.startMode(id);
+        return window.QLOBE_DEBUG.getRound();
+      }, [modeId, seed]);
+      const ids = dealt.queue.map((o) => o.id);
+      draws.push({ mode: modeId, seed, ids, floats: dealt.floats, sinks: dealt.sinks });
+      console.log(`  draw  ${modeId} seed ${seed}: ${dealt.floats}F/${dealt.sinks}S — ${ids.join(', ')}`);
+      check(`draw ${modeId}/${seed}: 3 floaters + 3 sinkers, 6 distinct, all in pool`,
+        dealt.floats === ROUND_SIZE / 2 && dealt.sinks === ROUND_SIZE / 2
+        && new Set(ids).size === ROUND_SIZE && ids.every((id) => poolIds.has(id)),
+        `${dealt.floats}F/${dealt.sinks}S ${ids.join(',')}`);
+    }
+  }
+  notes.push(`seeded draws: ${draws.map((d) => `${d.mode}/${d.seed}=[${d.ids.join('|')}]`).join(' ')}`);
+
+  // Same seed, fresh: the draw reproduces exactly.
+  const repeat = await page.evaluate(async () => {
+    window.QLOBE_DEBUG.setSeed(11);
+    await window.QLOBE_DEBUG.startMode('predict');
+    return window.QLOBE_DEBUG.getRound().queue.map((o) => o.id);
+  });
+  const first = draws.find((d) => d.mode === 'predict' && d.seed === 11);
+  check('setSeed(n) makes the draw reproducible',
+    repeat.join(',') === first.ids.join(','), `${repeat.join(',')} vs ${first.ids.join(',')}`);
+
+  // Play again WITHOUT re-seeding: a genuinely different experiment set.
+  const again = await page.evaluate(async () => {
+    await window.QLOBE_DEBUG.startMode('predict');
+    return window.QLOBE_DEBUG.getRound().queue.map((o) => o.id);
+  });
+  const same = again.slice().sort().join(',') === repeat.slice().sort().join(',');
+  check('playing again in the same session deals a different set', !same,
+    `${repeat.join(',')} -> ${again.join(',')}`);
+
+  // The playground shelf: 16 of the 54, mixed, per visit.
+  const pond = await page.evaluate(async () => {
+    await window.QLOBE_DEBUG.startMode('pond');
+    return window.QLOBE_DEBUG.getRound().shelf;
+  });
+  const pondTruths = pond.map((id) => (OBJECTS.find((o) => o.id === id) || {}).truth);
+  check(`pond: the shelf is a mixed ${POND_SHELF} of ${OBJECTS.length}`,
+    pond.length === POND_SHELF && new Set(pond).size === POND_SHELF
+    && pondTruths.includes('float') && pondTruths.includes('sink'),
+    `${pond.length}: ${pond.join(',')}`);
+
+  check('seeded-draw pass: no console errors', errors.length === 0, errors.slice(0, 3).join(' | '));
+  check('seeded-draw pass: no failed requests', failed.length === 0, failed.slice(0, 5).join(' | '));
+  // This pass touches every mode, so its pending list is the whole picture:
+  // print the file names once, so a reviewer can see that the ONLY things
+  // missing are plates for objects added ahead of their art.
+  const stillMissing = pendingNames(pending);
+  if (stillMissing.length) {
+    note(`assets still in production (${stillMissing.length}): ${stillMissing.join(', ')}`);
+  }
+  await ctx.close();
+}
+
 // -------------------------------------------------------------------- main
 
 async function main() {
   await mkdir(SHOTS, { recursive: true });
+  await mkdir(SHOTS_V2, { recursive: true });
 
   let base = explicitBase;
   let stopServer = null;
@@ -600,6 +821,10 @@ async function main() {
     ['predict round (portrait)', async () => { runs.predictPortrait = await predictRoundPass(browser, 'portrait', PORTRAIT); }],
     ['pond (portrait)', () => pondPass(browser, 'portrait', PORTRAIT)],
     ['reduced motion', () => reducedMotionPass(browser)],
+    ['seeded balanced draw', () => seededDrawPass(browser)],
+    ['badge pop-sync (landscape)', () => promptPopPass(browser, 'landscape', LANDSCAPE)],
+    ['badge pop-sync (portrait)', () => promptPopPass(browser, 'portrait', PORTRAIT)],
+    ['badge pop-sync (reduced motion)', () => promptPopPass(browser, 'landscape', LANDSCAPE, true)],
     ['audio + idle nudge', () => idleAndAudioPass(browser)],
   ];
 

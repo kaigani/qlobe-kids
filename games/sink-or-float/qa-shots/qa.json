@@ -1,7 +1,7 @@
 {
   "game": "sink-or-float",
-  "base": "http://127.0.0.1:53809",
-  "when": "2026-07-29T17:35:23.260Z",
+  "base": "http://127.0.0.1:63643",
+  "when": "2026-07-29T21:35:07.639Z",
   "results": [
     {
       "name": "hub: lists exactly one Sink or Float tile",
@@ -11,7 +11,7 @@
     {
       "name": "hub: launches the game at its route",
       "ok": true,
-      "detail": "http://127.0.0.1:53809/games/sink-or-float/"
+      "detail": "http://127.0.0.1:63643/games/sink-or-float/"
     },
     {
       "name": "hub boot: no console errors",
@@ -74,6 +74,31 @@
       "detail": "6"
     },
     {
+      "name": "landscape: guess badges sit in spoken order — SINK left, FLOAT right",
+      "ok": true,
+      "detail": "[{\"guess\":\"sink\",\"left\":364},{\"guess\":\"float\",\"left\":550}]"
+    },
+    {
+      "name": "landscape: getTargets lists the badges in that same order",
+      "ok": true,
+      "detail": "guess-sink,guess-float"
+    },
+    {
+      "name": "landscape: the round is dealt 3 floaters and 3 sinkers, no repeats",
+      "ok": true,
+      "detail": "dice:sink shell:sink button:sink pinecone:float wooden-block:float toy-boat:float"
+    },
+    {
+      "name": "landscape: the shelf shows exactly this round's objects",
+      "ok": true,
+      "detail": "dice,shell,button,pinecone,wooden-block,toy-boat"
+    },
+    {
+      "name": "landscape: the prompt pops the sink badge, then the float badge",
+      "ok": true,
+      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1328},{\"guess\":\"float\",\"at\":1343}]}"
+    },
+    {
       "name": "landscape round 0: predict(\"sink\") accepted",
       "ok": true,
       "detail": "true"
@@ -96,20 +121,20 @@
     {
       "name": "landscape: the wrong prediction is recorded honestly",
       "ok": true,
-      "detail": "{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
+      "detail": "{\"id\":\"shell\",\"name\":\"seashell\",\"emoji\":\"🐚\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
     },
     {
       "name": "landscape: a miss gets the warm \"surprise\" line, not an error",
       "ok": true,
-      "detail": "What do you think? Will it sink, or will it float? / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A wooden block! / What do you think? Will it sink, or will it float?"
+      "detail": "Will it sink, / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A button! / Will it sink,"
     },
     {
       "name": "landscape: the journal stamps the TRUTH, not the child's guess",
       "ok": true,
-      "detail": "zone=sink obj=coin count=1"
+      "detail": "zone=sink obj=shell count=1"
     },
     {
-      "name": "landscape round 2: predict(\"float\") accepted",
+      "name": "landscape round 2: predict(\"sink\") accepted",
       "ok": true,
       "detail": "true"
     },
@@ -151,7 +176,7 @@
     {
       "name": "landscape: the full predict round reaches the end screen",
       "ok": true,
-      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"apple\",\"name\":\"apple\",\"emoji\":\"🍎\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"sponge\",\"name\":\"sponge\",\"emoji\":\"🧽\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"duck\",\"name\":\"rubber duck\",\"emoji\":\"🦆\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"dice\",\"name\":\"dice\",\"emoji\":\"🎲\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"shell\",\"name\":\"seashell\",\"emoji\":\"🐚\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"button\",\"name\":\"button\",\"emoji\":\"🔘\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"pinecone\",\"name\":\"pinecone\",\"emoji\":\"🌲\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"toy-boat\",\"name\":\"toy boat\",\"emoji\":\"⛵\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
     },
     {
       "name": "landscape: the journal carries one stamp per round played",
@@ -174,12 +199,27 @@
       "detail": ""
     },
     {
-      "name": "landscape pond: chip \"duck\" selects",
+      "name": "landscape pond: the shelf shows 16 of the 54 objects, no repeats",
+      "ok": true,
+      "detail": "avocado,rock,fork,bean,candle,bolt,coconut,padlock,pineapple,egg,apple,duck,leaf,toy-car,lemon,spoon"
+    },
+    {
+      "name": "landscape pond: every dealt object is on the rail",
+      "ok": true,
+      "detail": "16"
+    },
+    {
+      "name": "landscape pond: the shelf mixes floaters and sinkers",
+      "ok": true,
+      "detail": "float,sink,sink,sink,float,sink,float,sink,float,sink,float,float,float,sink,float,sink"
+    },
+    {
+      "name": "landscape pond: chip \"avocado\" selects",
       "ok": true,
       "detail": "{\"accepted\":true}"
     },
     {
-      "name": "landscape pond: \"duck\" lands in the jar",
+      "name": "landscape pond: \"avocado\" lands in the jar",
       "ok": true,
       "detail": "inJar before=0"
     },
@@ -194,12 +234,12 @@
       "detail": "inJar before=1"
     },
     {
-      "name": "landscape pond: chip \"wooden-block\" selects",
+      "name": "landscape pond: chip \"fork\" selects",
       "ok": true,
       "detail": "{\"accepted\":true}"
     },
     {
-      "name": "landscape pond: \"wooden-block\" lands in the jar",
+      "name": "landscape pond: \"fork\" lands in the jar",
       "ok": true,
       "detail": "inJar before=2"
     },
@@ -211,7 +251,7 @@
     {
       "name": "landscape pond: the float object is findable in the water state",
       "ok": true,
-      "detail": "[\"duck\",\"rock\",\"wooden-block\"]"
+      "detail": "[\"avocado\",\"rock\",\"fork\"]"
     },
     {
       "name": "landscape pond: lifting an object back out removes it from the jar",
@@ -231,7 +271,7 @@
     {
       "name": "tricky: deals an object from the tricky pool",
       "ok": true,
-      "detail": "watermelon in [watermelon,pebble,log,paperclip,orange,egg]"
+      "detail": "pineapple in [watermelon,log,orange,pumpkin,coconut,pineapple,avocado,bell-pepper,corn-cob,pebble,paperclip,egg,grape,cherry,raisin,bean,screw,pearl]"
     },
     {
       "name": "tricky: predict() is accepted",
@@ -264,6 +304,31 @@
       "detail": "6"
     },
     {
+      "name": "portrait: guess badges sit in spoken order — SINK left, FLOAT right",
+      "ok": true,
+      "detail": "[{\"guess\":\"sink\",\"left\":268},{\"guess\":\"float\",\"left\":412}]"
+    },
+    {
+      "name": "portrait: getTargets lists the badges in that same order",
+      "ok": true,
+      "detail": "guess-sink,guess-float"
+    },
+    {
+      "name": "portrait: the round is dealt 3 floaters and 3 sinkers, no repeats",
+      "ok": true,
+      "detail": "dice:sink shell:sink button:sink pinecone:float wooden-block:float toy-boat:float"
+    },
+    {
+      "name": "portrait: the shelf shows exactly this round's objects",
+      "ok": true,
+      "detail": "dice,shell,button,pinecone,wooden-block,toy-boat"
+    },
+    {
+      "name": "portrait: the prompt pops the sink badge, then the float badge",
+      "ok": true,
+      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1288},{\"guess\":\"float\",\"at\":1300}]}"
+    },
+    {
       "name": "portrait round 0: predict(\"sink\") accepted",
       "ok": true,
       "detail": "true"
@@ -286,20 +351,20 @@
     {
       "name": "portrait: the wrong prediction is recorded honestly",
       "ok": true,
-      "detail": "{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
+      "detail": "{\"id\":\"shell\",\"name\":\"seashell\",\"emoji\":\"🐚\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
     },
     {
       "name": "portrait: a miss gets the warm \"surprise\" line, not an error",
       "ok": true,
-      "detail": "What do you think? Will it sink, or will it float? / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A wooden block! / What do you think? Will it sink, or will it float?"
+      "detail": "Will it sink, / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A button! / Will it sink,"
     },
     {
       "name": "portrait: the journal stamps the TRUTH, not the child's guess",
       "ok": true,
-      "detail": "zone=sink obj=coin count=1"
+      "detail": "zone=sink obj=shell count=1"
     },
     {
-      "name": "portrait round 2: predict(\"float\") accepted",
+      "name": "portrait round 2: predict(\"sink\") accepted",
       "ok": true,
       "detail": "true"
     },
@@ -341,7 +406,7 @@
     {
       "name": "portrait: the full predict round reaches the end screen",
       "ok": true,
-      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"apple\",\"name\":\"apple\",\"emoji\":\"🍎\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"sponge\",\"name\":\"sponge\",\"emoji\":\"🧽\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"duck\",\"name\":\"rubber duck\",\"emoji\":\"🦆\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"dice\",\"name\":\"dice\",\"emoji\":\"🎲\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"shell\",\"name\":\"seashell\",\"emoji\":\"🐚\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"button\",\"name\":\"button\",\"emoji\":\"🔘\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"pinecone\",\"name\":\"pinecone\",\"emoji\":\"🌲\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"toy-boat\",\"name\":\"toy boat\",\"emoji\":\"⛵\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
     },
     {
       "name": "portrait: the journal carries one stamp per round played",
@@ -364,12 +429,27 @@
       "detail": ""
     },
     {
-      "name": "portrait pond: chip \"duck\" selects",
+      "name": "portrait pond: the shelf shows 16 of the 54 objects, no repeats",
+      "ok": true,
+      "detail": "avocado,rock,fork,bean,candle,bolt,coconut,padlock,pineapple,egg,apple,duck,leaf,toy-car,lemon,spoon"
+    },
+    {
+      "name": "portrait pond: every dealt object is on the rail",
+      "ok": true,
+      "detail": "16"
+    },
+    {
+      "name": "portrait pond: the shelf mixes floaters and sinkers",
+      "ok": true,
+      "detail": "float,sink,sink,sink,float,sink,float,sink,float,sink,float,float,float,sink,float,sink"
+    },
+    {
+      "name": "portrait pond: chip \"avocado\" selects",
       "ok": true,
       "detail": "{\"accepted\":true}"
     },
     {
-      "name": "portrait pond: \"duck\" lands in the jar",
+      "name": "portrait pond: \"avocado\" lands in the jar",
       "ok": true,
       "detail": "inJar before=0"
     },
@@ -384,12 +464,12 @@
       "detail": "inJar before=1"
     },
     {
-      "name": "portrait pond: chip \"wooden-block\" selects",
+      "name": "portrait pond: chip \"fork\" selects",
       "ok": true,
       "detail": "{\"accepted\":true}"
     },
     {
-      "name": "portrait pond: \"wooden-block\" lands in the jar",
+      "name": "portrait pond: \"fork\" lands in the jar",
       "ok": true,
       "detail": "inJar before=2"
     },
@@ -401,7 +481,7 @@
     {
       "name": "portrait pond: the float object is findable in the water state",
       "ok": true,
-      "detail": "[\"duck\",\"rock\",\"wooden-block\"]"
+      "detail": "[\"avocado\",\"rock\",\"fork\"]"
     },
     {
       "name": "portrait pond: lifting an object back out removes it from the jar",
@@ -426,7 +506,7 @@
     {
       "name": "reduced motion: one drop completes with no exceptions and the round advances",
       "ok": true,
-      "detail": "{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":1,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":true,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+      "detail": "{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":1,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"dice\",\"name\":\"dice\",\"emoji\":\"🎲\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":true,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
     },
     {
       "name": "reduced motion: no console/page errors",
@@ -439,9 +519,219 @@
       "detail": ""
     },
     {
+      "name": "draw predict/11: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S dice,shell,button,pinecone,wooden-block,toy-boat"
+    },
+    {
+      "name": "draw predict/7: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S cork,tennis-ball,beach-ball,domino,dice,hammer"
+    },
+    {
+      "name": "draw predict/1234: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S beach-ball,lemon,golf-ball,pinecone,dice,marble"
+    },
+    {
+      "name": "draw predict/99: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S flip-flop,rock,stick,golf-ball,leaf,toy-car"
+    },
+    {
+      "name": "draw predict/20260728: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S banana,flip-flop,padlock,shell,button,toy-boat"
+    },
+    {
+      "name": "draw tricky/11: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S pineapple,watermelon,paperclip,pebble,bean,log"
+    },
+    {
+      "name": "draw tricky/7: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S bean,pineapple,pearl,screw,pumpkin,bell-pepper"
+    },
+    {
+      "name": "draw tricky/1234: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S bean,log,pebble,raisin,orange,pumpkin"
+    },
+    {
+      "name": "draw tricky/99: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S screw,pearl,log,corn-cob,cherry,pineapple"
+    },
+    {
+      "name": "draw tricky/20260728: 3 floaters + 3 sinkers, 6 distinct, all in pool",
+      "ok": true,
+      "detail": "3F/3S raisin,log,pineapple,pearl,avocado,cherry"
+    },
+    {
+      "name": "setSeed(n) makes the draw reproducible",
+      "ok": true,
+      "detail": "dice,shell,button,pinecone,wooden-block,toy-boat vs dice,shell,button,pinecone,wooden-block,toy-boat"
+    },
+    {
+      "name": "playing again in the same session deals a different set",
+      "ok": true,
+      "detail": "dice,shell,button,pinecone,wooden-block,toy-boat -> key,banana,padlock,lemon,flip-flop,shell"
+    },
+    {
+      "name": "pond: the shelf is a mixed 16 of 54",
+      "ok": true,
+      "detail": "16: avocado,rock,fork,bean,candle,bolt,coconut,padlock,pineapple,egg,apple,duck,leaf,toy-car,lemon,spoon"
+    },
+    {
+      "name": "seeded-draw pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "seeded-draw pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the two-clause prompt path can be driven",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape: pop 1 (\"sink\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the sink badge is mid-pop when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":176.72677612304688}"
+    },
+    {
+      "name": "landscape: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-pop"
+    },
+    {
+      "name": "landscape: pop 2 (\"float\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the float badge is mid-pop when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":165.4049072265625}"
+    },
+    {
+      "name": "landscape: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-pop"
+    },
+    {
+      "name": "landscape pop-sync pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape pop-sync pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait: the two-clause prompt path can be driven",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait: pop 1 (\"sink\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait: the sink badge is mid-pop when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":122.2408447265625}"
+    },
+    {
+      "name": "portrait: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-pop"
+    },
+    {
+      "name": "portrait: pop 2 (\"float\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait: the float badge is mid-pop when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":126.0771484375}"
+    },
+    {
+      "name": "portrait: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-pop"
+    },
+    {
+      "name": "portrait pop-sync pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait pop-sync pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the two-clause prompt path can be driven",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape: pop 1 (\"sink\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the sink badge is mid-cue when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-cued\",\"rect\":150}"
+    },
+    {
+      "name": "landscape: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-cued"
+    },
+    {
+      "name": "landscape: pop 2 (\"float\") fires with its clause",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: the float badge is mid-cue when captured",
+      "ok": true,
+      "detail": "{\"cls\":\"badge is-cued\",\"rect\":150}"
+    },
+    {
+      "name": "landscape: reduced motion swaps the scale for an outline cue",
+      "ok": true,
+      "detail": "badge is-cued"
+    },
+    {
+      "name": "landscape pop-sync pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape pop-sync pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "name": "audio: a synthetic first gesture triggers a recorded-clip network request",
       "ok": true,
-      "detail": "http://127.0.0.1:53809/games/sink-or-float/assets/audio/intro.m4a"
+      "detail": "http://127.0.0.1:63643/games/sink-or-float/assets/audio/intro.m4a"
     },
     {
       "name": "idle nudge: a silent child gets the prompt repeated after IDLE_MS (real timers)",
@@ -464,5 +754,10 @@
       "detail": ""
     }
   ],
-  "notes": []
+  "notes": [
+    "seeded draws: predict/11=[dice|shell|button|pinecone|wooden-block|toy-boat] predict/7=[cork|tennis-ball|beach-ball|domino|dice|hammer] predict/1234=[beach-ball|lemon|golf-ball|pinecone|dice|marble] predict/99=[flip-flop|rock|stick|golf-ball|leaf|toy-car] predict/20260728=[banana|flip-flop|padlock|shell|button|toy-boat] tricky/11=[pineapple|watermelon|paperclip|pebble|bean|log] tricky/7=[bean|pineapple|pearl|screw|pumpkin|bell-pepper] tricky/1234=[bean|log|pebble|raisin|orange|pumpkin] tricky/99=[screw|pearl|log|corn-cob|cherry|pineapple] tricky/20260728=[raisin|log|pineapple|pearl|avocado|cherry]",
+    "landscape: clause clips recorded = [true, true] (predict-sink, predict-float)",
+    "portrait: clause clips recorded = [true, true] (predict-sink, predict-float)",
+    "landscape: clause clips recorded = [true, true] (predict-sink, predict-float)"
+  ]
 }

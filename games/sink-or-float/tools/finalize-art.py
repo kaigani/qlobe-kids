@@ -18,7 +18,13 @@ os.makedirs(QA, exist_ok=True)
 
 OBJECTS = ["duck", "rock", "wooden-block", "sponge", "cork", "apple", "leaf",
            "key", "coin", "marble", "spoon", "shell", "watermelon", "pebble",
-           "log", "paperclip", "orange", "egg"]
+           "log", "paperclip", "orange", "egg",
+           "banana", "lemon", "tennis-ball", "beach-ball", "pencil", "ice-cube",
+           "candle", "pinecone", "toy-boat", "flip-flop", "balloon", "stick",
+           "fork", "hammer", "magnet", "button", "dice", "toy-car",
+           "golf-ball", "crayon", "domino", "teacup", "padlock", "bolt",
+           "pumpkin", "coconut", "pineapple", "avocado", "bell-pepper",
+           "corn-cob", "grape", "cherry", "raisin", "bean", "screw", "pearl"]
 UI = ["badge-sink", "badge-float"]
 # Mode icons are opaque framed-painting tiles from the *-cream anchors, not cutouts.
 MODE_ICONS = {"icon-predict-cream": "mode-predict", "icon-tricky-cream": "mode-tricky",
@@ -26,8 +32,10 @@ MODE_ICONS = {"icon-predict-cream": "mode-predict", "icon-tricky-cream": "mode-t
 
 
 def trim_pad(im, pad_frac=0.04):
+    # >40: layered extraction can leave the background at a ghost alpha of
+    # ~16-31, which a low threshold mistakes for content (cork, 2026-07-29).
     a = im.getchannel("A")
-    bbox = a.point(lambda p: 255 if p > 8 else 0).getbbox()
+    bbox = a.point(lambda p: 255 if p > 40 else 0).getbbox()
     if bbox:
         im = im.crop(bbox)
     w, h = im.size

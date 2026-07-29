@@ -6,6 +6,7 @@
 //   await voiceClips.init(manifestUrl, linesUrl, defaultLines);  // never rejects
 //   voiceClips.say(key, fallbackText)  // recorded clip if present, else speech
 //   voiceClips.onClip(cb)              // cb(key, audioEl) when a clip starts
+//   voiceClips.clipInfo(key)           // { file, dur } if recorded, else null
 //   voiceClips.unlock()                // call on every pointerdown (iOS)
 //   voiceClips.stop()
 //
@@ -81,6 +82,29 @@ const clipListeners = new Set();
 export function onClip(cb) { clipListeners.add(cb); return () => clipListeners.delete(cb); }
 
 /**
+ * The manifest entry for a key — `{ file, dur }` — or null when this game ships
+ * no recording for it. Read-only and additive: it exists so a game can PLAN a
+ * spoken sequence around what was actually recorded instead of guessing. (Sink
+ * or Float speaks its predict prompt as two clips, "Will it sink," / "or will
+ * it float?", popping a guess badge as each one starts; when those two clips
+ * are missing it must fall back to the single whole-sentence clip and time the
+ * pops off that clip's own `dur`. Neither decision is possible from say()
+ * alone, which silently swaps in Web Speech.)
+ */
+export function clipInfo(key) {
+  return (manifest && manifest[key]) || null;
+}
+
+// A game's lines.json is normally { key: "spoken text" }. At least one game's
+// voice pipeline writes { key: { text: "…" } } instead, and an object dropped
+// into an utterance is read to a five-year-old as "object Object". Accept both
+// shapes — strictly widening, no existing caller changes behaviour.
+function lineText(value) {
+  if (typeof value === 'string') return value;
+  return value && typeof value.text === 'string' ? value.text : '';
+}
+
+/**
  * Speak one line: the recorded clip when the manifest has it, otherwise
  * synthesized speech. Stops whatever was playing first. Resolves when done
  * (bounded — never hangs the game). Plays every clip through the one unlocked
@@ -90,7 +114,7 @@ export function say(key, fallbackText) {
   const token = ++playToken;
   pauseChannel();
   speech.stop();
-  const text = (lines && lines[key]) || fallbackText || defaults[key] || '';
+  const text = lineText(lines && lines[key]) || fallbackText || defaults[key] || '';
   const entry = manifest && manifest[key];
   if (!entry || !entry.file) return speech.speak(text);
   return playClip(clipUrl(entry.file), text, token, key, entry.dur);

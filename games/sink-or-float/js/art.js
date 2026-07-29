@@ -81,14 +81,34 @@ export function isRealTexture(ref) {
 const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;')
   .replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// The DOM half of the same rule preload() keeps for textures: a plate that is
+// not there yet must degrade to EXACTLY what placeholder mode shows — the
+// object's emoji — and never to a browser broken-image icon. The object list
+// grew to 54 while the art is still being produced, so this is a live path, not
+// a theoretical one. `error` does not bubble, so the listener is installed once
+// on the document in the CAPTURE phase; the glyph a given <img> falls back to
+// travels with it in `data-glyph`.
+if (typeof document !== 'undefined') {
+  document.addEventListener('error', (event) => {
+    const img = event.target;
+    if (!img || img.tagName !== 'IMG' || !img.dataset || !img.dataset.glyph) return;
+    const glyph = document.createElement('span');
+    glyph.className = 'obj-glyph';
+    glyph.textContent = img.dataset.glyph;
+    img.replaceWith(glyph);
+  }, true);
+}
+
 /**
  * The face of an object inside a chip / focus slot / drag ghost / journal
- * stamp: the painted cutout in production, its emoji in placeholder mode.
+ * stamp: the painted cutout in production, its emoji in placeholder mode (or
+ * when that one cutout fails to load — see the capture listener above).
  */
 export function objFace(obj, cls = 'obj-art') {
   const url = live ? artUrl(obj.art) : '';
   if (!url) return `<span class="obj-glyph">${obj.emoji}</span>`;
-  return `<img class="${cls}" src="${esc(url)}" alt="" draggable="false" decoding="async">`;
+  return `<img class="${cls}" src="${esc(url)}" alt="" draggable="false" decoding="async"
+    data-glyph="${esc(obj.emoji)}">`;
 }
 
 /** A painted guess emblem (cork on the water line / pebble on the floor). */

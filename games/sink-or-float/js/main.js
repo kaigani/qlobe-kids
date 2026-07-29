@@ -74,6 +74,8 @@ const state = {
 
 let mode = null;
 let queue = [];          // the round's objects, in order
+let shelfItems = [];     // what the shelf shows (the round's 6 / the pond's 16)
+let lastRoundKey = '';   // the previous round's set, so "again" deals a new one
 let current = null;      // the object under test
 let currentItem = null;  // its lab handle once dropped
 let rng = mulberry32(state.seed);
@@ -181,6 +183,7 @@ function clearScreen() {
   clearTimeout(idleTimer);
   idleTimer = 0;
   idleUsed = false;
+  cancelPops();
   voice.stop();
   cancelDrag();
   // Never leave a drop awaiting a settle that can no longer happen — the
@@ -268,6 +271,65 @@ function poolFor(item) {
   return OBJECTS.filter((obj) => obj.pool === item.pool);
 }
 
+/**
+ * Deal one round: `count` objects from `pool`, balanced exactly half floaters
+ * and half sinkers, never the same object twice, and never the same SET twice
+ * running (playing again in the same session gets a genuinely new experiment).
+ *
+ * The balance is the pedagogy, not decoration. An unbalanced draw teaches the
+ * child a shortcut — after four sinkers in a row the right move is to stop
+ * thinking and keep saying "sink" — which is the exact opposite of the skill.
+ * Three and three means the guess is always worth making.
+ *
+ * Every draw comes off the mode's seeded generator, so QLOBE_DEBUG.setSeed(n)
+ * still makes an entire session reproducible for QA.
+ */
+function drawBalancedRound(pool, count, random) {
+  const floats = pool.filter((obj) => obj.truth === 'float');
+  const sinks = pool.filter((obj) => obj.truth === 'sink');
+  // With 27 of each in the catalogue both halves are always deep enough; the
+  // clamps only bite on a hand-cut pool, where "balanced" degrades to "as
+  // balanced as this pool can be" rather than dealing short.
+  let wantFloat = Math.min(Math.ceil(count / 2), floats.length);
+  let wantSink = Math.min(count - wantFloat, sinks.length);
+  wantFloat = Math.min(floats.length, count - wantSink);
+  let picked = [];
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    picked = shuffle([
+      ...shuffle(floats, random).slice(0, wantFloat),
+      ...shuffle(sinks, random).slice(0, wantSink),
+    ], random);
+    if (setKey(picked) !== lastRoundKey) break;
+  }
+  lastRoundKey = setKey(picked);
+  return picked;
+}
+
+/**
+ * The playground shelf: a seeded draw of `count` from everything we have, half
+ * floaters and half sinkers so no visit is accidentally all one answer, then
+ * shuffled together so the two are interleaved rather than sorted. The rail
+ * already scrolls, so this is about variety per visit, not about fitting.
+ */
+function drawShelf(pool, count, random) {
+  const total = Math.min(count, pool.length);
+  const floats = shuffle(pool.filter((obj) => obj.truth === 'float'), random);
+  const sinks = shuffle(pool.filter((obj) => obj.truth === 'sink'), random);
+  const takeFloat = Math.min(Math.ceil(total / 2), floats.length);
+  const takeSink = Math.min(total - takeFloat, sinks.length);
+  const picked = [...floats.slice(0, takeFloat), ...sinks.slice(0, takeSink)];
+  // Only reachable with a lopsided custom pool: top up from whatever is left.
+  if (picked.length < total) {
+    const rest = [...floats.slice(takeFloat), ...sinks.slice(takeSink)];
+    picked.push(...rest.slice(0, total - picked.length));
+  }
+  return shuffle(picked, random);
+}
+
+function setKey(objects) {
+  return objects.map((obj) => obj.id).sort().join(',');
+}
+
 async function startMode(modeId) {
   const next = modeById(modeId);
   if (!next) return false;
@@ -287,8 +349,17 @@ async function startMode(modeId) {
   // One object under test wants to fill the glass; eight in the playground want
   // to fit in it. Same jar, two readings of "life size".
   if (lab) lab.setBodyScale(mode.kind === 'sandbox' ? 1.3 : 1.5);
-  queue = shuffle(poolFor(mode), rng);
-  state.roundsTotal = mode.kind === 'predict' ? Math.min(mode.rounds || 6, queue.length) : 0;
+  const pool = poolFor(mode);
+  if (mode.kind === 'predict') {
+    state.roundsTotal = Math.min(mode.rounds || 6, pool.length);
+    queue = drawBalancedRound(pool, state.roundsTotal, rng);
+    state.roundsTotal = queue.length;
+    shelfItems = queue.slice();
+  } else {
+    queue = [];
+    state.roundsTotal = 0;
+    shelfItems = drawShelf(pool, mode.shelf || 16, rng);
+  }
   current = null;
   currentItem = null;
 
@@ -306,9 +377,7 @@ async function startMode(modeId) {
 }
 
 function renderPlay() {
-  const shelf = mode.kind === 'predict'
-    ? queue.slice(0, state.roundsTotal)
-    : OBJECTS;
+  const shelf = shelfItems;
   mount.innerHTML = `
     <section class="screen play-screen" data-mode="${mode.id}" data-kind="${mode.kind}"
              aria-label="${mode.title}">
@@ -323,11 +392,18 @@ function renderPlay() {
           <div class="focus-slot" data-target="focus-slot"></div>
           <div class="jar-slot"></div>
           <div class="badge-well">
+            <!-- SPOKEN ORDER, and it is not cosmetic: the prompt says "Will it
+                 sink, or will it float?", so sink is on the LEFT and float on
+                 the RIGHT. A pre-reader maps the two badges by hearing them in
+                 the order they are laid out (each one pops as its own clause is
+                 spoken — see speakPrompt), and a row that contradicts the
+                 sentence teaches the mapping backwards. One row serves both
+                 orientations; portrait only restyles it. -->
             <div class="guess-row" data-target="guess-row" hidden>
-              <button class="badge" type="button" data-guess="float" data-target="guess-float"
-                      aria-label="${config.badges.float.alt}">${art.badgeFace('float', config.badges)}</button>
               <button class="badge" type="button" data-guess="sink" data-target="guess-sink"
                       aria-label="${config.badges.sink.alt}">${art.badgeFace('sink', config.badges)}</button>
+              <button class="badge" type="button" data-guess="float" data-target="guess-float"
+                      aria-label="${config.badges.float.alt}">${art.badgeFace('float', config.badges)}</button>
             </div>
           </div>
         </div>
@@ -432,15 +508,125 @@ function askPrediction() {
   state.awaitingInput = true;
   idleUsed = false;
   setBadgesVisible(true);
-  say(mode.promptLine);
+  speakPrompt();
   scheduleIdle();
 }
 
 function setBadgesVisible(on) {
+  cancelPops();
   const row = mount.querySelector('.guess-row');
   if (!row) return;
   row.hidden = !on;
-  row.querySelectorAll('.badge').forEach((badge) => badge.classList.remove('is-chosen'));
+  row.querySelectorAll('.badge').forEach((badge) => {
+    badge.classList.remove('is-chosen', 'is-pop', 'is-cued');
+  });
+}
+
+// -------------------------------------------------- the prompt, badge-synced
+//
+// "Will it sink," → "or will it float?" is spoken as TWO lines, and each guess
+// badge pops as its own line starts. That pairing is the whole point: a child
+// who cannot read learns which button is which by hearing one and watching the
+// other move, in the order they are laid out (sink left, float right).
+//
+// Three ways the words can arrive, one way the pops are driven:
+//   1. Both clause clips recorded — the pop fires from voice-clips' onClip hook
+//      at the exact frame the clip starts.
+//   2. A clause falls through to Web Speech (or QA has muted the game) — the
+//      pop fires as that utterance is handed over, which is the same instant.
+//   3. Neither clause is recorded yet — we keep the ONE recorded sentence
+//      ("What do you think? Will it sink, or will it float?") rather than drop
+//      into the synth voice mid-round, and place the two pops inside it from
+//      the clip's own manifest duration. Approximate by construction; it is the
+//      transitional path while those two clips are in production.
+// The idle re-prompt always takes path 3 on purpose — the nudge stays one clip.
+const PROMPT_PARTS = [
+  { key: 'predict-sink', guess: 'sink' },
+  { key: 'predict-float', guess: 'float' },
+];
+const PART_BY_KEY = new Map(PROMPT_PARTS.map((part) => [part.key, part]));
+const POP_MS = 360;          // must outlast the CSS badge-pop animation (.35s)
+const CUE_MS = 900;          // reduced motion: how long the outline cue holds
+const PART_GAP_MS = 120;     // a breath between "will it sink," and "or…"
+// Where the two clauses fall inside the whole-sentence fallback clip, as a
+// fraction of its duration, and the estimates used when there is no clip to
+// measure (Web Speech reads it in a shade over three seconds).
+const WHOLE_SPLIT = [0.32, 0.62];
+const WHOLE_ESTIMATE_MS = [1150, 2350];
+
+let promptRun = 0;       // bumped by cancelPops(); every pending pop checks it
+let popTimers = [];
+let clipStarted = null;  // set synchronously by the onClip hook inside say()
+let partsForced = null;  // QLOBE_DEBUG override so QA can drive either path
+const popLog = [];       // last few pops, for QA to assert the pairing
+
+voice.onClip((key) => {
+  clipStarted = key;
+  const part = PART_BY_KEY.get(key);
+  if (part) popBadge(part.guess);
+});
+
+function cancelPops() {
+  promptRun += 1;
+  popTimers.forEach((timer) => clearTimeout(timer));
+  popTimers = [];
+}
+
+/**
+ * "This one." A short scale-up and settle on one badge. Under reduced motion
+ * the scale is replaced by a brief painted outline — same message, nothing
+ * moves.
+ */
+function popBadge(guess) {
+  const badge = mount.querySelector(`.guess-row .badge[data-guess="${guess}"]`);
+  if (!badge) return;
+  const reduced = reducedMotion();
+  const cls = reduced ? 'is-cued' : 'is-pop';
+  badge.classList.remove('is-pop', 'is-cued');
+  void badge.offsetWidth;   // restart the animation when the prompt repeats
+  badge.classList.add(cls);
+  popTimers.push(setTimeout(() => badge.classList.remove(cls), reduced ? CUE_MS : POP_MS));
+  popLog.push({ guess, at: Math.round(performance.now()) });
+  if (popLog.length > 8) popLog.shift();
+}
+
+/** Do we have both clause clips, so the exact per-clip path is available? */
+function promptPartsReady() {
+  if (partsForced !== null) return partsForced;
+  return PROMPT_PARTS.every((part) => !!voice.clipInfo(part.key));
+}
+
+/** Ask the question and light the badges up with it. */
+async function speakPrompt() {
+  cancelPops();
+  const run = promptRun;
+  if (!promptPartsReady()) return speakWholePrompt(run);
+  for (const part of PROMPT_PARTS) {
+    if (run !== promptRun || state.screen !== 'play' || state.step !== 'predict') return undefined;
+    clipStarted = null;
+    const spoken = say(part.key);
+    // onClip fires synchronously from inside say() when a recorded clip starts,
+    // so this only pops the paths where it did not: Web Speech, or muted QA.
+    if (clipStarted !== part.key) popBadge(part.guess);
+    await spoken;
+    if (run !== promptRun) return undefined;
+    await delay(PART_GAP_MS);
+  }
+  return undefined;
+}
+
+/** The one-clip line, with both pops placed inside it. Also the idle nudge. */
+function speakWholePrompt(run) {
+  const info = state.muted ? null : voice.clipInfo(mode ? mode.promptLine : 'predict-prompt');
+  const dur = info && info.dur ? info.dur * 1000 : 0;
+  PROMPT_PARTS.forEach((part, index) => {
+    const at = dur ? dur * WHOLE_SPLIT[index] : WHOLE_ESTIMATE_MS[index];
+    popTimers.push(setTimeout(() => {
+      if (run !== promptRun || state.screen !== 'play' || state.step !== 'predict') return;
+      popBadge(part.guess);
+    }, state.fast ? 12 * (index + 1) : at));
+  });
+  return say(mode ? mode.promptLine : 'predict-prompt');
 }
 
 async function predict(guess) {
@@ -450,6 +636,10 @@ async function predict(guess) {
     return false;
   }
   state.guess = guess;
+  // The question has been answered — no pop may land on a badge the child has
+  // already chosen (it would read as the game correcting them).
+  cancelPops();
+  voice.stop();
   playSfx('pop');
   const chosen = mount.querySelector(`.badge[data-guess="${guess}"]`);
   if (chosen) chosen.classList.add('is-chosen');
@@ -866,7 +1056,9 @@ function repeatPrompt() {
   if (state.screen === 'end') { say('again-prompt'); return; }
   if (!mode) return;
   if (mode.kind === 'sandbox') { say(mode.promptLine); return; }
-  if (state.step === 'predict') say(mode.promptLine);
+  // The nudge stays ONE clip — a child who has gone quiet gets the whole
+  // question back in a single breath, not two clauses with a gap in them.
+  if (state.step === 'predict') { cancelPops(); speakWholePrompt(promptRun); }
   else if (state.step === 'drop') say('drop-cue');
   else if (current) say(current.voice);
 }
@@ -970,14 +1162,15 @@ function getTargets() {
   if (state.screen === 'end') return [targetFor('again', 'correct'), targetFor('back', 'neutral')].filter(Boolean);
   if (state.screen !== 'play') return [];
   if (mode.kind === 'sandbox') {
-    return OBJECTS.map((obj) => targetFor(`chip-${obj.id}`, 'neutral')).filter(Boolean);
+    return shelfItems.map((obj) => targetFor(`chip-${obj.id}`, 'neutral')).filter(Boolean);
   }
   if (state.step === 'predict') {
     // Both guesses are legal moves. `correct` marks the one the water will
-    // agree with, so a reviewer can drive either the praise or the surprise path.
+    // agree with, so a reviewer can drive either the praise or the surprise
+    // path. Listed in the order they are laid out and spoken: sink, then float.
     return [
-      targetFor('guess-float', current && current.truth === 'float' ? 'correct' : 'wrong'),
       targetFor('guess-sink', current && current.truth === 'sink' ? 'correct' : 'wrong'),
+      targetFor('guess-float', current && current.truth === 'float' ? 'correct' : 'wrong'),
     ].filter(Boolean);
   }
   if (state.step === 'drop') return [targetFor('focus', 'correct')].filter(Boolean);
@@ -1015,7 +1208,7 @@ function waitFor(test, timeout = 8000) {
 async function winRound() {
   if (state.screen !== 'play' || !mode) return false;
   if (mode.kind === 'sandbox') {
-    for (const obj of OBJECTS.slice(0, mode.maxInJar || 8)) dropInPond(obj);
+    for (const obj of shelfItems.slice(0, mode.maxInJar || 8)) dropInPond(obj);
     lab.settleNow();
     return true;
   }
@@ -1062,13 +1255,36 @@ window.QLOBE_DEBUG = {
     ? { id: current.id, name: current.name, density: current.density, truth: current.truth, guess: state.guess, step: state.step }
     : null),
   getTargets,
+  // What this run was dealt, so QA can assert the 3-and-3 balance and the shelf
+  // size without scraping the DOM.
+  getRound: () => ({
+    queue: queue.map((obj) => ({ id: obj.id, truth: obj.truth })),
+    shelf: shelfItems.map((obj) => obj.id),
+    floats: queue.filter((obj) => obj.truth === 'float').length,
+    sinks: queue.filter((obj) => obj.truth === 'sink').length,
+  }),
+  // The prompt sequence: which path is live, and the badge pops it has fired.
+  getPrompt: () => ({
+    parts: promptPartsReady(),
+    keys: PROMPT_PARTS.map((part) => part.key),
+    recorded: PROMPT_PARTS.map((part) => !!voice.clipInfo(part.key)),
+    pops: popLog.slice(),
+  }),
+  // Force the two-clip path on/off (null = follow the manifest), so a reviewer
+  // can drive both the clause-by-clause and the whole-sentence timing before
+  // the clause clips have landed.
+  forcePromptParts: (on) => { partsForced = on === null ? null : !!on; return promptPartsReady(); },
+  sayPrompt: () => speakPrompt(),
   tap: debugTap,
   predict,
   drop: (x, y) => dropCurrent(x, y),
   settleNow: () => { if (lab) lab.settleNow(); if (settleWaiter) settleWaiter.resolve(); return true; },
   winRound,
-  setSeed: (n) => { state.seed = Number(n) >>> 0; rng = mulberry32(state.seed); return state.seed; },
-  seed: (n) => { state.seed = Number(n) >>> 0; rng = mulberry32(state.seed); return state.seed; },
+  // Re-seeding also forgets the previous round's set — otherwise the
+  // don't-repeat-yourself rule would make the FIRST draw after a fresh seed
+  // depend on what the session had already dealt, and QA could not reproduce it.
+  setSeed: setSeed,
+  seed: setSeed,
   mute: () => {
     state.muted = true;
     voice.stop();
@@ -1095,6 +1311,13 @@ function shuffle(values, random) {
     [result[index], result[next]] = [result[next], result[index]];
   }
   return result;
+}
+
+function setSeed(n) {
+  state.seed = Number(n) >>> 0;
+  rng = mulberry32(state.seed);
+  lastRoundKey = '';
+  return state.seed;
 }
 
 function mulberry32(seed) {

@@ -52,13 +52,18 @@ back on play/end.
 
 ### 1. `predict` — Predict & Test (flagship, build first)
 Skill: making and testing a prediction.
-Round = 6 objects drawn from the 12-object classic pool (rotating sets).
+Round = 6 objects drawn from the 36-object classic pool, balanced 3 floaters /
+3 sinkers (see Objects below).
 
 Core loop (~12s per object, ~75s per round):
 1. Object pops onto the focus spot; teacher names it ("A rubber duck!").
-2. Predict prompt: "Will it sink, or will it float?" Two big guess badges
-   (≥120px): SINK (pebble resting on jar floor) / FLOAT (cork riding the
-   surface line). Tap one — badge glows, gentle pop.
+2. Predict prompt, spoken as a sequence: "What do you think?" → "Will it
+   sink," → "or will it float?" Two big guess badges (≥120px) in spoken
+   order — SINK on the left (pebble resting on jar floor), FLOAT on the
+   right (cork riding the surface line). As each choice clip starts, its
+   badge pops slightly larger (~1.18x then settle) so the child hears AND
+   sees which button is which. Tap one — badge glows, gentle pop. The Web
+   Speech fallback speaks the same three parts and drives the same pops.
 3. Drop: the object dangles over the jar. Child drags it over the water and
    releases (or taps it) — it falls from the release point. The child causes
    the experiment.
@@ -81,18 +86,33 @@ and tiny things can sink!" Watermelon floats *low* (density 0.95) and the egg
 sinks *slowly* (1.15) — the sim itself teaches nuance.
 
 ### 3. `pond` — Water Playground
-Skill: open observation. All 18 objects on the shelf, no prompts, no rounds.
+Skill: open observation. A random 16-object shelf drawn from all 54 per visit,
+no prompts, no rounds.
 Drop as many as you like (up to 8 in the jar), scoop them back to the shelf
 by dragging them out. Pure sensorial play; also our multi-body stress test.
 
-## Objects (18) — truthful physics only
+## Objects (54) — truthful physics only
 
-Classic pool (mode 1): float — duck 0.25, wooden-block 0.55, sponge 0.15,
-cork 0.20, apple 0.85, leaf 0.10; sink — rock 2.6, key 4.0, coin 6.0,
-marble 2.5, spoon 5.0, shell 2.2.
+Rounds are a seeded random draw of 6 from the mode's pool, balanced 3
+floaters / 3 sinkers, so every replay is a different experiment set.
+Water Playground shows a random 16-object shelf per visit.
 
-Tricky pool (mode 2): watermelon 0.95 (floats low), pebble 2.6, log 0.50,
-paperclip 5.0, orange 0.90, egg 1.15 (slow sinker).
+Classic pool (mode 1, 36):
+float — duck 0.25, wooden-block 0.55, sponge 0.15, cork 0.20, apple 0.85,
+leaf 0.10, banana 0.94, lemon 0.90, tennis-ball 0.40, beach-ball 0.08,
+pencil 0.50, ice-cube 0.92, candle 0.90, pinecone 0.50, toy-boat 0.30,
+flip-flop 0.25, balloon 0.05, stick 0.45;
+sink — rock 2.6, key 4.0, coin 6.0, marble 2.5, spoon 5.0, shell 2.2,
+fork 5.0, hammer 6.0, magnet 7.0, button 1.35, dice 1.2, toy-car 3.5,
+golf-ball 1.15, crayon 1.05 (very slow sinker), domino 1.5, teacup 2.4,
+padlock 7.0, bolt 7.0.
+
+Tricky pool (mode 2, 18) — size betrays intuition:
+float — watermelon 0.95, log 0.50, orange 0.90, pumpkin 0.90,
+coconut 0.85, pineapple 0.95, avocado 0.95, bell-pepper 0.85,
+corn-cob 0.70 (big things float);
+sink — pebble 2.6, paperclip 5.0, egg 1.15, grape 1.05, cherry 1.05,
+raisin 1.4, bean 1.3, screw 6.0, pearl 2.7 (tiny things sink).
 
 Density < 1 floats with equilibrium submersion ≈ density (apple bobs deep,
 leaf rests on top); density > 1 sinks with speed scaled by density. Every
@@ -126,7 +146,7 @@ trim/resize → webp. Provenance in `ASSETS.md`, sources under `assets/source/`.
 | Splash hero | `assets/splash.webp` | 1600×1200 ≤300KB | jar + journal + scattered objects tableau, clear title zone |
 | Glass jar | `assets/jar.png` | ~900×1100 | empty glass jar cutout, interior mostly transparent |
 | Jar highlights | `assets/jar-front.png` | ~900×1100 | glass streak highlights, overlays water |
-| Objects ×18 | `assets/objects/<name>.webp` | 400px | gouache style, consistent via style-anchor + qwen-image-edit |
+| Objects ×54 | `assets/objects/<id>.webp` | 400px | gouache style, consistent via style-anchor + qwen-image-edit. A plate that has not landed yet falls back to the object's emoji — never a broken image |
 | Guess badge sink | `assets/ui/badge-sink.png` | 300px | pebble below painted waterline |
 | Guess badge float | `assets/ui/badge-float.png` | 300px | cork above painted waterline |
 | Journal | `assets/journal.png` | ~800×1000 | open notebook page, painted water line splitting float/sink zones |
@@ -150,7 +170,9 @@ Teacher voice clone, seed 7 first, whisper-QA every clip, m4a + manifest.
 | mode-pond | Water playground! Drop in anything you like. |
 | tricky-intro | These ones are tricky! Big things can float, and tiny things can sink. |
 | pond-intro | This is your water playground. Drop things in, and watch what happens! |
-| predict-prompt | What do you think? Will it sink, or will it float? |
+| predict-prompt | What do you think? Will it sink, or will it float? (whole sentence — the idle re-prompt, and the fallback until the two clauses below exist) |
+| predict-sink | Will it sink, |
+| predict-float | or will it float? |
 | drop-cue | Drop it in! Watch closely. |
 | result-float | It floats! It stays on top of the water. |
 | result-sink | It sinks! Down, down, to the bottom. |
@@ -163,7 +185,7 @@ Teacher voice clone, seed 7 first, whisper-QA every clip, m4a + manifest.
 | nudge-drop | Drag it over the water and let go! |
 | end-cheer | Your journal page is full! What wonderful watching. |
 | again-prompt | Want to test more things? |
-| obj-duck … obj-egg (18) | A rubber duck! / A rock! / A wooden block! / A sponge! / A cork! / An apple! / A leaf! / A key! / A coin! / A marble! / A spoon! / A seashell! / A watermelon! / A pebble! / A log! / A paperclip! / An orange! / An egg! |
+| obj-&lt;id&gt; (54) | One naming line per object, `config.json` → `voice.lines` is the verbatim list ("A rubber duck!", "A rock!", … "A pearl!"). A missing clip falls through to Web Speech with the same words |
 
 Fallback: `voice-clips.js` Web Speech path with the same lines. No clip ships
 without a passing transcript.
