@@ -1,4 +1,4 @@
-# Blend Train — Game Design
+# Word Train — Game Design
 
 Concept: `01-game-concepts/blend-train/` (brief, concept video, four 4:3 mockups).
 Engine: `build-assemble` (Stage v2 / PixiJS). Status: `beta` until the iPad child playtest.
@@ -41,7 +41,7 @@ Chosen capability-first. `build-assemble` backs **15 games and had no produced
 flagship**, and its drag controller was copy-pasted near-byte-identically into
 `sequence-order` and `sort-into-bins` — 27 stub games resting on unproven code.
 
-Blend Train was the cheapest possible probe of that engine because its *content* is
+Word Train was the cheapest possible probe of that engine because its *content* is
 already free: every phoneme it needs is a recorded teacher-voice clip
 (`shared/assets/audio/fragments/`, 63 files covering every letter and every rime) and
 every celebration word exists (`shared/assets/audio/celebrate/`). So the whole budget
@@ -210,7 +210,7 @@ strip floating in dead space:
 - **`trayReserve`** — how much height the tray strip takes. A wide build is height-starved
   and every pixel handed back makes the cars a child has to read meaningfully bigger.
 
-Blend Train also ships `css/style.css`, a game-local sheet scoped under `#game` that
+Word Train also ships `css/style.css`, a game-local sheet scoped under `#game` that
 overrides the engine's shared chrome: full-bleed scene, hidden thumbnail plate, chunky
 wordmark, fat cream/orange buttons. No other game loads it.
 
@@ -221,13 +221,13 @@ wordmark, fat cream/orange buttons. No other game loads it.
 
 | key | line |
 |---|---|
-| `greet` | All aboard the Blend Train! |
+| `greet` | All aboard the Word Train! |
 | `intro` | Push the sound cars together to make a word. |
 | `prompt-couple` | First the sound, then the ending. Put them together! |
 | `prompt-sounds` | Put the sound cars in order to build the word. |
 | `nudge` | That car goes on another track. Try again. |
 | `wait` | Listen for the first car. |
-| `cheer` | The blend train is rolling! |
+| `cheer` | The word train is rolling! |
 
 **Everything else is a shared-library clip and was not regenerated** — that is the point
 of the clip-ref grammar:

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Real-Chrome smoke + visual-QC driver for Puppet Retell.
+// Real-Chrome smoke + visual-QC driver for Puppet Tales.
 
 import { mkdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
@@ -266,7 +266,7 @@ async function main() {
     new Promise((resolve) => setTimeout(resolve, 5000)),
   ]);
   const failed = results.filter((item) => !item.ok);
-  console.log(`\nPuppet Retell QA: ${results.length - failed.length}/${results.length} checks passed`);
+  console.log(`\nPuppet Tales QA: ${results.length - failed.length}/${results.length} checks passed`);
   process.exit(failed.length ? 1 : 0);
 }
 

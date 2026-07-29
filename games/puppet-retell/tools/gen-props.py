@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Puppet Retell costume props through Krea 2 + Qwen Layered.
+"""Generate Puppet Tales costume props through Krea 2 + Qwen Layered.
 
 Raw candidates and magenta alpha-QC sheets stay in assets/source/local-api/.
 Runtime PNGs are tightly cropped, normalized to a 384px canvas, and written

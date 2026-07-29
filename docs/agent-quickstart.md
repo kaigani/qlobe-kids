@@ -1,6 +1,6 @@
 # QLOBE Kids — agent quickstart: concept to production
 
-Last grounded against the repository and the Puppet Retell production pass on
+Last grounded against the repository and the Puppet Tales production pass on
 2026-07-27.
 
 This is the clean-context runbook for an agent asked to choose, build, polish,
@@ -115,7 +115,7 @@ incomplete shared system real and reusable. Useful questions:
 - Can it replace a stub/prototype without breaking the registered route?
 - Will the new capability clearly benefit at least one future game?
 
-Puppet Retell was a strong choice because it converted the existing rigged
+Puppet Tales was a strong choice because it converted the existing rigged
 puppet/stage stack from directed scenarios into a child-controlled theater,
 then added reusable performance recording, local storage, replay, MP4 export,
 and additive ragdoll motion.
@@ -501,7 +501,7 @@ If a game offers keepsake export,
 `shared/js/performance-video-export.js` replays into a fixed 1280 × 720 canvas
 and records locally. No upload is required.
 
-Compatibility rules learned from Puppet Retell:
+Compatibility rules learned from Puppet Tales:
 
 - Prefer H.264 `avc1`; use `avc3` only as a capability fallback.
 - Audio exports should be AAC; movement-only exports must also work.
@@ -540,7 +540,7 @@ For stage actors, normalized horizontal and vertical offsets belong in theater
 state so playback and export can reproduce them. The floor line remains the
 settled baseline.
 
-Puppet Retell's final movement pass exposed an important design truth:
+Puppet Tales' final movement pass exposed an important design truth:
 physically plausible but subtle motion can be invisible to a young child.
 Tune animation at the rendered tablet size and review screenshots at the peak
 of motion. Its production QA measured roughly 45° while dragging and 70° during
@@ -724,7 +724,7 @@ wants to repeat the game. Keep a game `beta` until the target child succeeds on
 the real iPad. Record the resulting interaction fixes in the GDD so they become
 platform knowledge.
 
-## Lessons from Puppet Retell
+## Lessons from Puppet Tales
 
 The production sequence was:
 

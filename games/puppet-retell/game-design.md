@@ -1,8 +1,8 @@
-# Puppet Retell
+# Puppet Tales
 
 ## Product promise
 
-Puppet Retell turns the shared rigged-character system into a child-directed
+Puppet Tales turns the shared rigged-character system into a child-directed
 puppet theater. A child chooses two stars, a stage, and small costume props;
 then moves the puppets, triggers expressive actions, and tells a story in her
 own voice. The complete show can be replayed from a private on-device shelf.

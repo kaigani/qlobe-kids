@@ -1,6 +1,6 @@
 # Bear — puppet rig character sheet
 
-The "Forest Friends" bear puppet for **Puppet Retell**, rigged for the segmented
+The "Forest Friends" bear puppet for **Puppet Tales**, rigged for the segmented
 spline-puppet engine (`shared/js/stage/puppet.js`). See `docs/puppet-rig-spec.md`
 for the authoring contract and `rig.json` for the skeleton/clips.
 

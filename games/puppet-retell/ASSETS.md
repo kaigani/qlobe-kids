@@ -1,4 +1,4 @@
-# Puppet Retell asset log
+# Puppet Tales asset log
 
 ## Production lifecycle
 

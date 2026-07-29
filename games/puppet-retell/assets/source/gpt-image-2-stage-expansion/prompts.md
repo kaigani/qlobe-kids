@@ -1,4 +1,4 @@
-# Puppet Retell stage-expansion prompts
+# Puppet Tales stage-expansion prompts
 
 Model: GPT Image 2, built-in image generation.
 

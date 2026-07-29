@@ -36,7 +36,7 @@ Roughly a quarter of the bank is off-screen, and that is fine. QLOBE Kids is dig
 
 These five match the `proposed` entries already in `games.json`.
 
-### `blend-train` — Blend Train (Reading & Phonics)
+### `blend-train` — Word Train (Reading & Phonics)
 Sound cars roll on a track, each showing one phoneme (/m/ /a/ /t/). The child drags them together; as cars couple, the teacher voice blends the sounds faster until the whole word snaps out — "mat!" — and the matching picture card pops up. Reuses `assets/letter-tiles/`, `assets/audio/fragments/` + `words/`, and `assets/objects/`. Core loop: hear segments → couple cars → hear the blend → see the word.
 
 ### `pattern-train` — Pattern Train (Math & Number Sense)
@@ -61,7 +61,7 @@ A character on screen acts out an emotion (proud, frustrated, calm, worried); th
 | Mystery Letter Bag | A hidden tile inside a bag plays its sound on tap; child guesses the letter, then it's revealed. Reuse `assets/letter-tiles/`, `audio/fragments/`, `audio/misc/mystery-intro`. | great fit |
 | CVC Word Builder | Drag onset + rime tiles onto slots to build cat, sun, map; teacher voice reads the result. Reuse `assets/letter-tiles/`, `data/words.json`, `audio/words/`. | great fit |
 | Rhyming Detective | Tap the two picture cards that rhyme out of a scattered set. Reuse `assets/objects/` + `data/words.json` rime data. | great fit |
-| **Blend Train** | See Up next — couple phoneme cars to blend a word. | great fit |
+| **Word Train** | See Up next — couple phoneme cars to blend a word. | great fit |
 | Letter Treasure Hunt | Find every "b" hiding across a busy scene; tap them before time runs out. Reuse `assets/letter-tiles/`, `audio/fragments/`. | great fit |
 | Silly Swap Words | Change one tile to morph cat → hat → hot; each swap re-reads the new word. Reuse `assets/letter-tiles/`, `audio/words/`, `audio/misc/silly-*`. | great fit |
 | Picture-to-Word Match | Match a picture card to its decodable spelling. Reuse `assets/objects/`, `data/words.json`. | great fit |
@@ -133,7 +133,7 @@ A character on screen acts out an emotion (proud, frustrated, calm, worried); th
 | Idea | Digital adaptation | Fit |
 |---|---|---|
 | Story Stones | Shuffle and tap three picture stones, then the child tells a story about them (open-ended, no scoring). Reuse `assets/twemoji/`, `js/speech.js`. | great fit |
-| Puppet Retell | Tap puppets to speak a familiar story; child voices along. Reuse `assets/twemoji/`, `js/speech.js`. | adaptable |
+| Puppet Tales | Tap puppets to speak a familiar story; child voices along. Reuse `assets/twemoji/`, `js/speech.js`. | adaptable |
 | **First-Next-Last Cards** | See Up next — sequence a 3-card picture story. | great fit |
 | Question Ball | A spinning ball lands on who/what/why/how; teacher voice asks, child answers aloud. Reuse `js/speech.js`, `js/sfx.js`. | great fit |
 | Silly Sentence Builder | Combine noun + verb + place cards into a sentence the tablet reads back. Reuse `assets/objects/`, `assets/twemoji/`, `js/speech.js`. | great fit |

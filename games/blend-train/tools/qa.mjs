@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// tools/qa.mjs — the QA gate for Blend Train.
+// tools/qa.mjs — the QA gate for Word Train.
 //
 // Drives both modes end to end through window.QLOBE_DEBUG in REAL Chrome
 // (channel 'chrome' — headless-shell cannot decode AAC, so every recorded .m4a

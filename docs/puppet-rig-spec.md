@@ -4,7 +4,7 @@ How to describe a QLOBE Kids character so the puppet engine
 (`shared/js/stage/puppet.js`) can (a) animate it with a segmented bone rig +
 spline-eased poses and (b) dress it in swappable outfits that follow the limbs.
 
-This is the authoring contract behind **Puppet Retell**. It generalises the
+This is the authoring contract behind **Puppet Tales**. It generalises the
 lip-sync anchor convention already in `shared/characters/<id>/anim/mouths.json`
 (a rect in reference-canvas pixels, scaled to render size) to a whole skeleton.
 

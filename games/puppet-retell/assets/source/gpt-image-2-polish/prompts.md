@@ -1,8 +1,8 @@
-# Puppet Retell final visual-pass prompts
+# Puppet Tales final visual-pass prompts
 
 Model: GPT Image 2
 
-Style references: the finished Puppet Retell splash background and production
+Style references: the finished Puppet Tales splash background and production
 puppet-stage screen. All sheets use the same warm, tactile children’s
 story-theater language: soft felt, painted wood, plush shapes, rounded
 silhouettes, friendly faces, rich but gentle color, and no text.

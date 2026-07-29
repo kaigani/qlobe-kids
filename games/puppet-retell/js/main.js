@@ -147,7 +147,7 @@ async function renderSplash({ announce = true } = {}) {
     <img class="mascot right" src="${face('rabbit')}" alt="" />
     <div class="splash-card">
       <div class="logo-kicker">Make your own</div>
-      <h1 class="logo">Puppet Retell</h1>
+      <h1 class="logo">${esc(config.title)}</h1>
       <p class="tagline">Pick two stars. Tell it your way!</p>
       <div class="splash-actions">
         <button class="mode-button" data-action="mode" data-value="guided" data-target="mode-guided"><img class="mode-art" src="${uiArt.storyStarters}" alt=""><span class="mode-label">Story Starters</span></button>
@@ -858,7 +858,7 @@ async function sharePendingExport() {
   try {
     await navigator.share({
       files: [file],
-      title: 'My Puppet Retell Show',
+      title: `My ${config.title} Show`,
       text: 'A puppet story made with QLOBE Kids',
     });
   } catch (error) {

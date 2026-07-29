@@ -1,4 +1,4 @@
-# Blend Train Assets
+# Word Train Assets
 
 All original art and voice for this game was generated locally on the project's
 ComfyUI wrapper. Nothing is fetched at runtime: the shipped game runs entirely from its
@@ -116,7 +116,7 @@ The tile set previously had 19 consonants and 40 rimes but **no vowels at all**,
 letter-level CVC game could be built from shared art. Green marks them as vowels, against
 the existing blue-consonant / orange-rime convention.
 
-**Blend Train no longer consumes these.** The visual pass replaced the tile-in-a-panel
+**Word Train no longer consumes these.** The visual pass replaced the tile-in-a-panel
 composite with cars that carry their letter baked in, lifted from the mockup. The tiles
 are kept anyway: they close a real gap in the shared set and unblock the next letter-level
 CVC game. They are listed here as a contribution, not as a dependency, and the game's
