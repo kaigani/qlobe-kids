@@ -1,7 +1,7 @@
 {
   "game": "sink-or-float",
-  "base": "http://127.0.0.1:63643",
-  "when": "2026-07-29T21:35:07.639Z",
+  "base": "https://qlo.be",
+  "when": "2026-07-29T21:43:46.375Z",
   "results": [
     {
       "name": "hub: lists exactly one Sink or Float tile",
@@ -11,7 +11,7 @@
     {
       "name": "hub: launches the game at its route",
       "ok": true,
-      "detail": "http://127.0.0.1:63643/games/sink-or-float/"
+      "detail": "https://qlo.be/games/sink-or-float/"
     },
     {
       "name": "hub boot: no console errors",
@@ -96,7 +96,7 @@
     {
       "name": "landscape: the prompt pops the sink badge, then the float badge",
       "ok": true,
-      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1328},{\"guess\":\"float\",\"at\":1343}]}"
+      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1528},{\"guess\":\"float\",\"at\":1541}]}"
     },
     {
       "name": "landscape round 0: predict(\"sink\") accepted",
@@ -326,7 +326,7 @@
     {
       "name": "portrait: the prompt pops the sink badge, then the float badge",
       "ok": true,
-      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1288},{\"guess\":\"float\",\"at\":1300}]}"
+      "detail": "{\"parts\":true,\"keys\":[\"predict-sink\",\"predict-float\"],\"recorded\":[true,true],\"pops\":[{\"guess\":\"sink\",\"at\":1481},{\"guess\":\"float\",\"at\":1498}]}"
     },
     {
       "name": "portrait round 0: predict(\"sink\") accepted",
@@ -356,7 +356,7 @@
     {
       "name": "portrait: a miss gets the warm \"surprise\" line, not an error",
       "ok": true,
-      "detail": "Will it sink, / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A button! / Will it sink,"
+      "detail": "or will it float? / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A button! / Will it sink,"
     },
     {
       "name": "portrait: the journal stamps the TRUTH, not the child's guess",
@@ -606,7 +606,7 @@
     {
       "name": "landscape: the sink badge is mid-pop when captured",
       "ok": true,
-      "detail": "{\"cls\":\"badge is-pop\",\"rect\":176.72677612304688}"
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":165.3721923828125}"
     },
     {
       "name": "landscape: reduced motion swaps the scale for an outline cue",
@@ -621,7 +621,7 @@
     {
       "name": "landscape: the float badge is mid-pop when captured",
       "ok": true,
-      "detail": "{\"cls\":\"badge is-pop\",\"rect\":165.4049072265625}"
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":165.404296875}"
     },
     {
       "name": "landscape: reduced motion swaps the scale for an outline cue",
@@ -651,7 +651,7 @@
     {
       "name": "portrait: the sink badge is mid-pop when captured",
       "ok": true,
-      "detail": "{\"cls\":\"badge is-pop\",\"rect\":122.2408447265625}"
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":141.39593505859375}"
     },
     {
       "name": "portrait: reduced motion swaps the scale for an outline cue",
@@ -666,7 +666,7 @@
     {
       "name": "portrait: the float badge is mid-pop when captured",
       "ok": true,
-      "detail": "{\"cls\":\"badge is-pop\",\"rect\":126.0771484375}"
+      "detail": "{\"cls\":\"badge is-pop\",\"rect\":132.28857421875}"
     },
     {
       "name": "portrait: reduced motion swaps the scale for an outline cue",
@@ -731,7 +731,7 @@
     {
       "name": "audio: a synthetic first gesture triggers a recorded-clip network request",
       "ok": true,
-      "detail": "http://127.0.0.1:63643/games/sink-or-float/assets/audio/intro.m4a"
+      "detail": "https://qlo.be/games/sink-or-float/assets/audio/intro.m4a"
     },
     {
       "name": "idle nudge: a silent child gets the prompt repeated after IDLE_MS (real timers)",
