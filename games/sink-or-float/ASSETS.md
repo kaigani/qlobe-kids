@@ -24,6 +24,7 @@ qwen3-tts-voiceclone (platform teacher voice ref via QLOBE_VOICE_REF, seeds 7/8/
 |---|---|---|
 | `assets/bg.webp` 1600×1200 | `assets/source/anchors/bg.png` | krea2-turbo-t2i seed 1337 — Field Journal garden porch table |
 | `assets/splash.webp` 1600×1200 | `assets/source/anchors/splash.png` | krea2-turbo-t2i seed 1337 — jar/journal/duck tableau |
+| `assets/title.png` 620×560 | `01-game-concepts/_completed/sink-or-float-lab/title-asset-alpha.png` | approved concept title artwork; transparent canvas alpha-trimmed with 20px side padding for responsive placement |
 | `assets/og-image.jpg` 1200×630 | center-crop of splash source | deterministic (`tools/finalize-art.py`) |
 | `assets/objects/*.webp` ×18, 400px | `assets/source/raw-edit/`, `assets/source/cutouts/` | duck: krea2 seed 1337; others: qwen-image-edit from duck anchor, seed 42; all extracted with qwen-image-layered |
 | `assets/jar.png` | `assets/source/anchors/jar.png` | krea2-turbo-t2i (seed noted in source dir) + layered extraction |

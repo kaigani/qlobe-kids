@@ -20,7 +20,6 @@ import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createLab } from './lab.js';
-import { jarSvg } from './placeholder.js';
 import * as art from './art.js';
 
 const REAL_ART = !config.placeholderArt;
@@ -239,8 +238,9 @@ function showSplash() {
       <a class="round-button home-button" href="../../index.html" aria-label="Back to all games"
          style="background-image:url('${UI.home}')"></a>
       <header class="title-lockup">
-        ${REAL_ART ? '' : `<span class="title-jar" aria-hidden="true">${jarSvg()}</span>`}
-        <h1><span class="title-top">Sink or Float</span><span class="title-bottom">Lab</span></h1>
+        <h1 class="visually-hidden">Sink or Float Lab</h1>
+        <img class="title-art" src="./assets/title.png" width="620" height="560"
+             alt="" aria-hidden="true" decoding="async">
       </header>
       <div class="mode-grid" role="list" aria-label="Choose an experiment">
         ${MODES.map((item) => `

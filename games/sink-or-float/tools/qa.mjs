@@ -303,6 +303,19 @@ async function splashModesPass(browser) {
   check('splash: boots to the splash screen',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
 
+  const title = await page.locator('.title-art').evaluate((img) => ({
+    complete: img.complete,
+    naturalWidth: img.naturalWidth,
+    naturalHeight: img.naturalHeight,
+  }));
+  check('splash: approved graphic title is loaded',
+    title.complete && title.naturalWidth === 620 && title.naturalHeight === 560,
+    `${title.naturalWidth}x${title.naturalHeight}`);
+  check('splash: title remains an accessible heading',
+    (await page.locator('.title-lockup h1').textContent())?.trim() === 'Sink or Float Lab');
+  check('splash: legacy HTML wordmark is absent',
+    (await page.locator('.title-top, .title-bottom').count()) === 0);
+
   const modes = await page.evaluate(() => window.QLOBE_DEBUG.listModes());
   const expectedIds = MODES.map((m) => m.id);
   check('splash: three distinct modes registered',

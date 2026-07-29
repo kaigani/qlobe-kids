@@ -144,6 +144,7 @@ trim/resize → webp. Provenance in `ASSETS.md`, sources under `assets/source/`.
 | --- | --- | --- | --- |
 | Play backdrop | `assets/bg.webp` | 1600×1200 ≤300KB | porch table bottom third, calm center for jar, garden hints at edges |
 | Splash hero | `assets/splash.webp` | 1600×1200 ≤300KB | jar + journal + scattered objects tableau, clear title zone |
+| Graphic title | `assets/title.png` | 620×560 | approved transparent concept title, alpha-trimmed and placed over the splash title zone |
 | Glass jar | `assets/jar.png` | ~900×1100 | empty glass jar cutout, interior mostly transparent |
 | Jar highlights | `assets/jar-front.png` | ~900×1100 | glass streak highlights, overlays water |
 | Objects ×54 | `assets/objects/<id>.webp` | 400px | gouache style, consistent via style-anchor + qwen-image-edit. A plate that has not landed yet falls back to the object's emoji — never a broken image |

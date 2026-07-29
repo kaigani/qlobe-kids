@@ -130,35 +130,13 @@ body {
 }
 
 .title-lockup {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 2vw, 22px);
-  text-align: left;
+  width: min(76vw, 560px);
 }
 
-.title-jar {
+.title-art {
   display: block;
-  width: clamp(58px, 9vh, 104px);
-}
-
-.title-jar svg { width: 100%; height: auto; display: block; }
-
-.title-lockup h1 {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  line-height: .94;
-  letter-spacing: .01em;
-}
-
-.title-top {
-  font-size: clamp(30px, 6.4vh, 62px);
-  color: var(--sky);
-}
-
-.title-bottom {
-  font-size: clamp(38px, 8vh, 78px);
-  color: var(--leaf);
+  width: 100%;
+  height: auto;
 }
 
 .mode-grid {
@@ -678,23 +656,13 @@ body.real-art { background-image: none; }
 
 /* ------------------------------------------------------------ splash title */
 
-/* splash.webp keeps its upper right deliberately empty (cream sky) — the title
-   is real HTML text set there, not baked into the plate, so it stays crisp at
-   every density and the words can still be changed. */
+/* splash.webp keeps its upper right deliberately empty (cream sky). The
+   approved transparent title plate sits there as a separate asset so the
+   background remains reusable and the accessible heading stays real text. */
 .real-art .title-lockup {
   align-self: flex-end;
-  margin: clamp(0px, 1vh, 12px) clamp(8px, 3vw, 44px) 0 0;
-  text-align: right;
-  max-width: min(56%, 520px);
-}
-
-.real-art .title-lockup h1 { align-items: flex-end; }
-
-.real-art .title-top,
-.real-art .title-bottom {
-  text-shadow:
-    0 2px 0 rgba(255, 253, 246, .85),
-    0 0 18px rgba(255, 251, 240, .9);
+  width: min(47vw, 540px);
+  margin: clamp(0px, 1vh, 10px) clamp(8px, 2vw, 30px) 0 0;
 }
 
 .real-art .mode-grid {
@@ -992,6 +960,11 @@ body.real-art { background-image: none; }
 /* ------------------------------------------------- painted plates: portrait */
 
 @media (orientation: portrait) {
+  .real-art .title-lockup {
+    width: min(72vw, 540px);
+    margin-right: clamp(4px, 1vw, 12px);
+  }
+
   .real-art .focus-slot { height: clamp(84px, 12vh, 138px); }
 
   /* `.real-art .journal-page` and the base `.journal .journal-page` hide-rule
