@@ -7,7 +7,7 @@
   "steps": [
     {
       "workflow": "qwen3-tts-voiceclone",
-      "text": "One more fold.",
+      "text": "Keep going. Follow the next fold.",
       "seed": 7
     }
   ],
@@ -17,18 +17,18 @@
   "template": {
     "id": "character-voice-line",
     "fields": {
-      "text": "One more fold."
+      "text": "Keep going. Follow the next fold."
     }
   },
   "derivedFrom": null,
   "qa": {
     "status": "accepted",
     "transcript": {
-      "intended": "One more fold.",
-      "heard": "One more fold.",
+      "intended": "Keep going. Follow the next fold.",
+      "heard": "Keep going. Follow the next fold.",
       "ratio": 1.0,
       "match": true
     }
   },
-  "created": "2026-07-28"
+  "created": "2026-07-29"
 }

@@ -7,7 +7,7 @@
   "steps": [
     {
       "workflow": "qwen3-tts-voiceclone",
-      "text": "Every sock found its basket!",
+      "text": "Every piece found its basket!",
       "seed": 7
     }
   ],
@@ -17,18 +17,18 @@
   "template": {
     "id": "character-voice-line",
     "fields": {
-      "text": "Every sock found its basket!"
+      "text": "Every piece found its basket!"
     }
   },
   "derivedFrom": null,
   "qa": {
     "status": "accepted",
     "transcript": {
-      "intended": "Every sock found its basket!",
-      "heard": "Every sock found its basket.",
+      "intended": "Every piece found its basket!",
+      "heard": "Every piece found its basket.",
       "ratio": 1.0,
       "match": true
     }
   },
-  "created": "2026-07-28"
+  "created": "2026-07-29"
 }

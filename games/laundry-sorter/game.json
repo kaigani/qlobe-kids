@@ -8,15 +8,15 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#7b35d0",
-  "shareTitle": "Laundry Sorter — Sort, Fold, and Match",
-  "description": "Sort colorful socks, fold soft towels with broad swipes, and find matching pairs in a cheerful storybook laundry room for ages 5–6.",
+  "shareTitle": "Laundry Sorter — Sort It, Fold It, Find the Pairs",
+  "description": "Sort a changing mix of colorful clothes, fold shirts, pants, and towels step by step, and find matching pairs in a cheerful storybook laundry room for ages 5–6.",
   "learningGoals": [
     "Sort clothing by color",
-    "Follow a two-step folding sequence with broad directional swipes",
+    "Follow realistic three-step clothing-fold sequences with directional swipes",
     "Match identical visual pairs",
     "Build helping-at-home pride through a short laundry routine"
   ],
-  "interactionModel": "strand-proof drag plus tap-tap sorting, broad swipe or tap folding, and face-up pair matching",
+  "interactionModel": "finger-tracked drag plus tap-tap sorting, staged directional folding swipes, and face-up pair matching",
   "feedbackModel": "Correct chores use soft fabric motion, sparkles, bubbles, basket counts, and warm recorded praise; misses wobble gently and replay a spoken model.",
   "uses": [
     "shared/js/tap.js",
@@ -26,12 +26,12 @@
     "shared/assets/storybook/"
   ],
   "modes": [
-    { "id": "sort", "title": "Sort the Socks", "skill": "color categorization" },
-    { "id": "fold", "title": "Fold the Towels", "skill": "directional swipes and sequencing" },
+    { "id": "sort", "title": "Sort It", "skill": "color categorization" },
+    { "id": "fold", "title": "Fold It", "skill": "directional swipes and sequencing" },
     { "id": "pairs", "title": "Find the Pairs", "skill": "visual matching and working memory" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; QLOBE Kids; GPT Image 2 room art; local Krea 2, Qwen Image Layered, and Qwen voice-clone production (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; QLOBE Kids; GPT Image 2 room and physical fold-stage art; local Krea 2, Qwen Image Layered, and Qwen voice-clone production (see ASSETS.md). Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

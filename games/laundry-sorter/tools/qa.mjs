@@ -78,6 +78,8 @@ async function main() {
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
   check('three distinct chores are registered',
     (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).map((item) => item.id).join(',') === 'sort,fold,pairs');
+  check('broader chore labels are visible',
+    (await page.locator('.mode-title').allTextContents()).join('|') === 'Sort It|Fold It|Find the Pairs');
   const modeSizes = await page.locator('.mode-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
   check('splash mode targets meet 96px minimum',
@@ -97,6 +99,10 @@ async function main() {
     await page.evaluate(() => window.__laundryVoice.join(', ')));
   await page.evaluate(() => window.QLOBE_DEBUG.mute());
   const sortTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  const firstSortDeal = await page.locator('.sock-piece').evaluateAll((nodes) =>
+    nodes.map((node) => node.dataset.item).sort().join('|'));
+  const firstSortColors = await page.locator('.basket').evaluateAll((nodes) =>
+    nodes.map((node) => node.dataset.bin).sort().join('|'));
   check('sort exposes six clothing targets and two baskets',
     sortTargets.filter((item) => item.id.startsWith('sock-')).length === 6
       && sortTargets.filter((item) => item.id.startsWith('bin-')).length === 2);
@@ -107,13 +113,23 @@ async function main() {
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().progress)) === 0);
 
   const firstSock = page.locator('.sock-piece:not(.is-sorted)').first();
-  const sockData = await firstSock.getAttribute('data-item');
-  const color = sockData.split('-')[0];
+  const color = await firstSock.getAttribute('data-color');
   const from = await firstSock.boundingBox();
   const to = await page.locator(`[data-bin="${color}"]`).boundingBox();
   await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
   await page.mouse.down();
-  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 8 });
+  const mid = {
+    x: (from.x + from.width / 2 + to.x + to.width / 2) / 2,
+    y: (from.y + from.height / 2 + to.y + to.height / 2) / 2,
+  };
+  await page.mouse.move(mid.x, mid.y, { steps: 5 });
+  const ghost = await page.locator('.drag-ghost').boundingBox();
+  check('dragged clothing tracks under the pointer before drop',
+    ghost && Math.abs(ghost.x + ghost.width / 2 - mid.x) < 90
+      && Math.abs(ghost.y + ghost.height / 2 - mid.y) < 90,
+    JSON.stringify({ ghost, mid }));
+  await page.screenshot({ path: path.join(shots, '02a-sort-dragging.png') });
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 5 });
   await page.mouse.up();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().progress === 1);
   check('real pointer drag sorts through the same path', true);
@@ -122,6 +138,17 @@ async function main() {
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
   check('sort completes to its celebration', true);
   await page.screenshot({ path: path.join(shots, '03-sort-celebration.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('again'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  const replaySortDeal = await page.locator('.sock-piece').evaluateAll((nodes) =>
+    nodes.map((node) => node.dataset.item).sort().join('|'));
+  const replaySortColors = await page.locator('.basket').evaluateAll((nodes) =>
+    nodes.map((node) => node.dataset.bin).sort().join('|'));
+  check('Sort It replay deals a different garment mix', replaySortDeal !== firstSortDeal,
+    JSON.stringify({ firstSortDeal, replaySortDeal }));
+  check('Sort It replay changes the active color pair', replaySortColors !== firstSortColors,
+    JSON.stringify({ firstSortColors, replaySortColors }));
+  await page.screenshot({ path: path.join(shots, '03a-sort-replay-colors.png') });
 
   await page.evaluate(() => window.QLOBE_DEBUG.tap('back'));
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('fold'));
@@ -129,23 +156,48 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.wrong());
   check('gentle wrong fold keeps the first step',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().foldStep)) === 0);
-  const towel = await page.locator('.towel-zone').boundingBox();
-  await page.mouse.move(towel.x + towel.width * .25, towel.y + towel.height / 2);
+  const shirt = await page.locator('.fold-zone').boundingBox();
+  const initialArt = await page.locator('.fold-image').getAttribute('src');
+  await page.mouse.move(shirt.x + shirt.width * .25, shirt.y + shirt.height / 2);
   await page.mouse.down();
-  await page.mouse.move(towel.x + towel.width * .78, towel.y + towel.height / 2, { steps: 8 });
+  await page.mouse.move(shirt.x + shirt.width * .78, shirt.y + shirt.height / 2, { steps: 8 });
   await page.mouse.up();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().foldStep === 1);
+  check('first shirt fold swaps to a genuinely folded intermediate',
+    (await page.locator('.fold-image').getAttribute('src')) !== initialArt);
   await page.screenshot({ path: path.join(shots, '04-fold-second-step.png') });
-  const towel2 = await page.locator('.towel-zone').boundingBox();
-  await page.mouse.move(towel2.x + towel2.width / 2, towel2.y + towel2.height * .22);
+  const shirt2 = await page.locator('.fold-zone').boundingBox();
+  await page.mouse.move(shirt2.x + shirt2.width * .78, shirt2.y + shirt2.height / 2);
   await page.mouse.down();
-  await page.mouse.move(towel2.x + towel2.width / 2, towel2.y + towel2.height * .78, { steps: 8 });
+  await page.mouse.move(shirt2.x + shirt2.width * .22, shirt2.y + shirt2.height / 2, { steps: 8 });
+  await page.mouse.up();
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().foldStep === 2);
+  await page.screenshot({ path: path.join(shots, '04b-fold-third-step.png') });
+  const shirt3 = await page.locator('.fold-zone').boundingBox();
+  await page.mouse.move(shirt3.x + shirt3.width / 2, shirt3.y + shirt3.height * .78);
+  await page.mouse.down();
+  await page.mouse.move(shirt3.x + shirt3.width / 2, shirt3.y + shirt3.height * .22, { steps: 8 });
   await page.mouse.up();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().progress === 1);
-  check('two real directional swipes fold one towel', true);
+  check('three real directional swipes fold one shirt', true);
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().foldIndex === 1);
+  check('pants become the second folding item',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().foldIndex)) === 1);
+  await page.screenshot({ path: path.join(shots, '04c-pants-flat.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('fold-zone'));
+  await page.screenshot({ path: path.join(shots, '04d-pants-folded-once.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('fold-zone'));
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('fold-zone'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().progress === 2);
+  check('pants use three staged folds before the towel', true);
+  await page.screenshot({ path: path.join(shots, '04e-towel-flat.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('fold-zone'));
+  await page.screenshot({ path: path.join(shots, '04f-towel-folded-once.png') });
+  check('towel first fold is a layered half-fold',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().foldStep)) === 1);
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
-  check('fold completes all three towels', true);
+  check('fold completes a shirt, pants, and towel', true);
 
   await page.evaluate(() => window.QLOBE_DEBUG.tap('back'));
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('pairs'));
@@ -167,7 +219,7 @@ async function main() {
     portraitCards.every((rect) => rect.left >= 0 && rect.right <= 820 && rect.bottom <= 1180));
   await portrait.evaluate(() => window.QLOBE_DEBUG.startMode('fold'));
   await portrait.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
-  const portraitFold = await portrait.locator('.towel-zone').boundingBox();
+  const portraitFold = await portrait.locator('.fold-zone').boundingBox();
   check('portrait fold target remains large and visible',
     portraitFold && portraitFold.width >= 300 && portraitFold.height >= 220
       && portraitFold.y >= 0 && portraitFold.y + portraitFold.height <= 1180,
