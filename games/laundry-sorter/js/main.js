@@ -27,7 +27,7 @@ const state = {
   selected: null,
   foldIndex: 0,
   foldStep: 0,
-  matchedColors: [],
+  matchedDesigns: [],
   muted: false,
   fast: false,
   seed: 42,
@@ -38,6 +38,8 @@ let sortItems = [];
 let activeBins = [];
 let previousSortColors = '';
 let pairCards = [];
+let pairDeckCursor = 0;
+let activePairDeck = null;
 let rng = mulberry32(state.seed);
 let roundSerial = 0;
 let disposers = [];
@@ -59,7 +61,7 @@ function preloadCriticalImages() {
       ...(item.items || []).map((entry) => entry.art),
       ...(item.bins || []).map((entry) => entry.art),
       ...(item.foldItems || []).flatMap((entry) => entry.stages.map((stage) => stage.art)),
-      ...(item.colors || []).filter((entry) => typeof entry === 'object').map((entry) => entry.art),
+      ...(item.designs || []).map((entry) => entry.art),
     ]),
   ]);
   return Promise.all([...urls].map((url) => new Promise((resolve) => {
@@ -188,12 +190,14 @@ function showSplash({ greet = true } = {}) {
   state.selected = null;
   state.foldIndex = 0;
   state.foldStep = 0;
-  state.matchedColors = [];
+  state.matchedDesigns = [];
   mode = null;
 
   const sortMode = config.modes.find((item) => item.id === 'sort');
   const foldMode = config.modes.find((item) => item.id === 'fold');
   const pairMode = config.modes.find((item) => item.id === 'pairs');
+  const splashPair = pairMode.designs.find((item) => item.id === 'purple-moons')
+    || pairMode.designs[0];
   const cards = [
     {
       mode: sortMode,
@@ -206,8 +210,8 @@ function showSplash({ greet = true } = {}) {
     },
     {
       mode: pairMode,
-      art: `<img class="art-left" src="${YELLOW_SOCK}" alt="">
-            <img class="art-right" src="${YELLOW_SOCK}" alt="">`,
+      art: `<img class="art-left" src="${splashPair.art}" alt="">
+            <img class="art-right" src="${splashPair.art}" alt="">`,
     },
   ];
 
@@ -264,7 +268,7 @@ async function startMode(modeId) {
   state.selected = null;
   state.foldIndex = 0;
   state.foldStep = 0;
-  state.matchedColors = [];
+  state.matchedDesigns = [];
   rng = mulberry32((state.seed + Math.imul(roundSerial, 0x9e3779b9)) >>> 0);
   roundSerial += 1;
 
@@ -764,20 +768,26 @@ async function swapFoldStage(image, direction, nextArt) {
 
 function renderPairs() {
   clearScreen();
-  const colors = shuffle(mode.colors.slice(), rng).slice(0, 3);
-  pairCards = makePairDeck(colors);
+  activePairDeck = mode.decks[pairDeckCursor % mode.decks.length];
+  pairDeckCursor += 1;
+  const designsById = new Map(mode.designs.map((design) => [design.id, design]));
+  const designs = activePairDeck.designs.map((id) => designsById.get(id)).filter(Boolean);
+  pairCards = makePairDeck(designs);
   state.progress = 0;
   state.selected = null;
-  state.matchedColors = [];
+  state.matchedDesigns = [];
   mount.innerHTML = `
     <section class="screen play-screen pairs-screen" aria-label="Find the matching sock pairs">
       ${hudMarkup(0)}
       <div class="play-layout">
-        <div class="pairs-board">
+        <div class="pairs-board" data-deck="${activePairDeck.id}"
+             data-difficulty="${activePairDeck.difficulty}">
           <div class="pair-line" aria-label="Matched sock pairs"></div>
           <div class="pair-grid">
             ${pairCards.map((card) => `
               <button class="pair-card" type="button" data-card="${card.instance}"
+                      data-design="${card.id}" data-family="${card.family}"
+                      data-pattern="${card.pattern}"
                       data-target="pair-${card.instance}" aria-label="${card.alt}">
                 <img src="${card.art}" alt="">
               </button>`).join('')}
@@ -793,16 +803,16 @@ function renderPairs() {
   updateProgress(0);
 }
 
-function makePairDeck(colors) {
-  // Deal one of each colour per row, then rotate the second row so a matching
+function makePairDeck(designs) {
+  // Deal one of each design per row, then rotate the second row so a matching
   // pair can never land directly above/below itself (an accidentally trivial
   // board at seed 42 exposed why a plain six-card shuffle was not enough).
-  const top = shuffle(colors.slice(), rng)
-    .map((color) => ({ ...color, instance: `${color.id}-a`, matched: false }));
+  const top = shuffle(designs.slice(), rng)
+    .map((design) => ({ ...design, instance: `${design.id}-a`, matched: false }));
   const shift = rng() < .5 ? 1 : 2;
   const bottom = top.map((_, index) => {
-    const color = top[(index + shift) % top.length];
-    return { ...color, instance: `${color.id}-b`, matched: false };
+    const design = top[(index + shift) % top.length];
+    return { ...design, instance: `${design.id}-b`, matched: false };
   });
   return [...top, ...bottom];
 }
@@ -854,7 +864,7 @@ async function attemptPair(cardId) {
   element?.classList.add('is-matched');
   playSfx('whoosh');
   await delay(340);
-  state.matchedColors.push(card.id);
+  state.matchedDesigns.push(card.id);
   state.progress += 1;
   const line = mount.querySelector('.pair-line');
   line?.insertAdjacentHTML('beforeend', `
@@ -908,7 +918,7 @@ function showCelebration() {
   state.inputLocked = false;
   const art = finishedMode.id === 'fold'
     ? finishedMode.foldItems[0].stages.at(-1).art
-    : finishedMode.id === 'pairs' ? YELLOW_SOCK : BASKET;
+    : finishedMode.id === 'pairs' ? (pairCards[0]?.art || YELLOW_SOCK) : BASKET;
   mount.innerHTML = `
     <section class="screen celebration" aria-label="${finishedMode.title} complete">
       ${bubbleMarkup(16)}
@@ -1060,6 +1070,8 @@ window.QLOBE_DEBUG = {
     state.seed = Number(number) >>> 0;
     roundSerial = 0;
     previousSortColors = '';
+    pairDeckCursor = 0;
+    activePairDeck = null;
     rng = mulberry32(state.seed);
     return state.seed;
   },

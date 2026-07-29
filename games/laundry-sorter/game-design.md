@@ -15,7 +15,7 @@ Each mode has one skill:
 
 1. **Sort It** — visual colour categorisation across varied garments.
 2. **Fold It** — broad directional swipes and three-step physical sequencing.
-3. **Find the Pairs** — visual matching and working memory.
+3. **Find the Pairs** — color-and-pattern matching and working memory.
 
 There are no scores, timers, locked content, ratings, or failure states.
 
@@ -78,7 +78,9 @@ physical intermediate after every successful swipe:
 
 - shirt: left side in → right side in → bottom up;
 - pants: one leg over → legs up → up once more;
-- towel: left side in → right side in → bottom up.
+- towel: left side in → right side in → bottom up. The second-fold sprite
+  mirrors the layered edge to the left, so the visible overlap agrees with the
+  right-to-left gesture that created it.
 
 Every intermediate shows layered fabric edges and a new silhouette; no step is
 represented by scaling or squashing the flat garment. The finished item joins
@@ -86,10 +88,17 @@ the tidy stack. A shirt, pants, and towel complete the round.
 
 ### Find the Pairs (35–70 seconds)
 
-Six face-up socks form three colour pairs. The child taps one, then another.
-Matching socks clip onto the window line together. Different socks wobble
-playfully, remain visible, and are ready for another choice. Three pairs complete
-the round.
+Six face-up socks form three exact color-and-pattern pairs. The child taps one,
+then another. Matching socks clip onto the window line together. Different
+socks wobble playfully, remain visible, and are ready for another choice. Three
+pairs complete the round.
+
+Twelve sock designs support eight curated decks. The first rounds use
+high-contrast colors and large, distinct motifs. Later rounds deliberately
+place two socks from the same color family together—dots versus hearts, stars
+versus zigzags, stripes versus diamonds, flowers versus stripes, or moons
+versus checks—so replay adds perceptual difficulty instead of merely
+rearranging the same four choices.
 
 ## Spoken script (verbatim)
 
@@ -103,8 +112,8 @@ the round.
 | `fold-again` | “Keep going. Follow the next fold.” |
 | `fold-nudge` | “Start on the clothing, and follow the arrow.” |
 | `fold-cheer` | “A shirt, pants, and towel, folded and tidy!” |
-| `pairs-prompt` | “Find two socks that match.” |
-| `pairs-nudge` | “Those are different. Find the same color.” |
+| `pairs-prompt` | “Find two socks with the same color and pattern.” |
+| `pairs-nudge` | “Those are different. Match both the color and pattern.” |
 | `pairs-cheer` | “You found every matching pair!” |
 
 Recorded teacher-voice clips are the primary channel. Web Speech uses these
@@ -116,6 +125,7 @@ exact lines when a clip is missing or cannot play.
 | --- | --- | --- |
 | `assets/room.webp` | Full-bleed play/splash plate | GPT Image 2, 4:3, optimized WebP |
 | `assets/fold/{shirt,pants,towel}-{0..3}.webp` | Twelve physical fold stages | GPT Image 2 reference-guided sprite sheets → chroma extraction → lossless alpha WebP |
+| `assets/pairs/*.webp` | Eight additional patterned socks | GPT Image 2 reference-guided sprites → chroma extraction → lossless alpha WebP |
 | shared Storybook clothes | Expanded sorting pool and pair cards | Existing QLOBE cutouts; authoring-time colour variants use deterministic CSS filters |
 | shared Storybook baskets | Four colour sort targets and splash set dressing | Existing QLOBE cutouts; deterministic colour variants |
 | `assets/hub/tiles/laundry-sorter.jpg` | Catalog tile | Studio `menu-game-tile`, Krea 2 Toy Table |
@@ -149,7 +159,9 @@ controls are HTML/CSS, never baked into generated art.
 - Sort and pair layouts use deterministic seeded shuffles.
 - Sort chooses two of four colours per round and six pieces from a seventeen-item
   garment pool. Replay advances the seed stream so both colours and shapes vary.
-- Pair mode chooses three colours from four on each round.
+- Pair mode cycles through eight curated three-design decks from a twelve-sock
+  library. Replay always changes the full set before repeating, while later
+  decks introduce same-color/different-pattern distractors.
 - Fold progresses from shirt to pants to towel, but each item has its own
   physically meaningful three-direction sequence.
 
@@ -212,19 +224,21 @@ Debug taps use the same handlers as real child input.
 
 ## Production QA evidence
 
-2026-07-29 revised local production candidate:
+2026-07-29 patterned-pairs playtest revision:
 
-- real Chrome game-local suite: **41/41** checks;
+- real Chrome game-local suite: **46/46** checks;
 - hub launch, all three renamed modes, live finger-tracked drag, continuous
   drop-to-basket travel, a different colour/garment deal on replay, all shirt,
-  pants, and towel fold stages, gentle-retry branches, celebrations, recorded
-  AAC teacher voice, portrait, 1180×520 short landscape, and reduced motion
-  covered;
+  pants, and towel fold stages (including the corrected left-facing second
+  towel fold), three exact visual pairs per deck, a completely changed sock set
+  on replay, ten distinct designs observed over four rounds, same-color pattern
+  distractors, gentle-retry branches, celebrations, recorded AAC teacher
+  voice, portrait, 1180×520 short landscape, and reduced motion covered;
 - zero unexpected page errors, failed requests, HTTP errors, remote runtime
   requests, or 404s;
 - full validator: 154 subjects, 0 errors (23 pre-existing catalog warnings);
 - registry sync and usage-index drift checks pass;
 - full-detail screenshots reviewed for splash, each play field, success, portrait,
-  and short landscape. This revision additionally caught and fixed the moving
-  clone's missing fixed-position origin, colour-filter loss on dragged variants,
-  first-fold sprite ambiguity, and towel/ribbon crowding before release.
+  short landscape, the first pattern replay, the same-color advanced deck, and
+  both towel intermediate stages. Alpha contact-sheet review covered all eight
+  new generated socks.

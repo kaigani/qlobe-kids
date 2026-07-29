@@ -9,6 +9,7 @@ All model calls are authoring-time only. Runtime is static and offline.
 | --- | --- | --- | --- |
 | `assets/room.webp` | GPT Image 2 via the built-in image generation tool, using the concept's `02-sort-socks.png` only as a style/composition reference | Source retained at `assets/source/room-gpt-image-2.png`; resized to 1600×1200 and encoded as quality-88 WebP (64 KB) | CC BY 4.0 |
 | `assets/fold/{shirt,pants,towel}-{0..3}.webp` | GPT Image 2 via the built-in image generation tool, reference-guided from the existing Storybook shirt, pants, and towel | Three 2×2 source sheets retained under `assets/source/gpt-image-2-fold/`; split, chroma extracted with the imagegen helper, edge-contracted/despilled, and encoded as lossless exact-alpha WebP | CC BY 4.0 |
+| `assets/pairs/*.webp` | GPT Image 2 via the built-in image generation tool, reference-guided from the existing Storybook socks | Eight individual sources retained under `assets/source/gpt-image-2-pairs/`; chroma extracted with the imagegen helper, edge-contracted/despilled, resized to 512×512, and encoded as lossless exact-alpha WebP | CC BY 4.0 |
 | `../../assets/hub/tiles/laundry-sorter.jpg` | Studio `menu-game-tile`: Krea 2 Toy Table, seed 42 | 640×533 JPEG (52 KB), replacing the previous beta tile | CC BY 4.0 |
 | Shared Storybook socks, shirts, scarf, mitten, cap, pants, and baskets | Existing QLOBE Kids `shared/assets/storybook/` pilot set | Reused with deterministic runtime colour transforms to make a seventeen-piece, four-colour sorting pool | CC BY 4.0 |
 
@@ -64,7 +65,36 @@ extra clothing, and decoration.
 
 The generated sheets and every extracted PNG are retained next to the runtime
 WebPs so the fold sequence can be re-cut or re-encoded without another model
-call.
+call. Following the 2026-07-29 playtest, the separated towel stage 2 was
+mirrored horizontally (without regenerating or altering its shape) so its
+left-facing layered seam agrees with the right-side-in gesture.
+
+## GPT Image 2 patterned sock prompt set
+
+Use case: `illustration-story`. Built-in image generation mode.
+
+Each of eight calls used the matching shared Storybook sock as a style and
+silhouette reference and requested one original chunky ankle sock, toe pointing
+right, with crisp dark-navy outlines, rounded preschool geometry, subtle
+painted fabric texture, glossy highlights, generous square-canvas padding, and
+a perfectly flat removable chroma background. Every prompt prohibited extra
+socks, clothing, people, hands, feet, shadows, text, logos, watermarks, panels,
+photorealism, and 3D rendering.
+
+- coral red with large cream hearts;
+- cobalt blue with broad aqua zigzags;
+- sunny yellow with large orange diamonds;
+- grassy green with cream flowers and yellow centers;
+- grape purple with pale-yellow crescent moons;
+- grape purple with lavender-and-aqua checks;
+- bright aqua with coral/yellow/deep-blue rainbow arches;
+- bright aqua with broad navy waves.
+
+The red, blue, yellow, green, and aqua sprites used flat `#ff00ff`; the purple
+sprites used flat `#00ff00`. All eight alpha mattes have transparent corners,
+closed silhouettes, and no visible key-color fringe on a dark QA composite.
+They join the four existing dot, star, stripe, and green-stripe socks to form
+the twelve-design runtime library.
 
 ## Studio recipes and image QA
 
@@ -101,15 +131,16 @@ Studio converted the model result to AAC/M4A and ran `whisper-stt` QA.
 | `fold-again` | 7 | 2.396 s | exact normalized match |
 | `fold-nudge` | 7 | 2.237 s | exact normalized match |
 | `fold-cheer` | 7 | 2.956 s | exact normalized match |
-| `pairs-prompt` | 8 | 2.077 s | exact normalized match |
-| `pairs-nudge` | 7 | 2.476 s | exact normalized match |
+| `pairs-prompt` | 7 | 2.396 s | exact normalized match |
+| `pairs-nudge` | 7 | 3.435 s | exact normalized match |
 | `pairs-cheer` | 7 | 2.556 s | exact normalized match |
 
-The first `pairs-prompt` take at seed 7 was rejected because Whisper heard
-“Find two socks **at** match.” Seed 8 heard “Find two socks **that** match” and
-is the shipped take. Every recipe and `qa-transcript.json` is retained in the
-matching `assets/source/studio/laundry-voice-*` folder. Web Speech uses the same
-verbatim script as a runtime fallback.
+The earlier short `pairs-prompt` needed seed 8 because Whisper heard “Find two
+socks **at** match” at seed 7. The expanded color-and-pattern prompt and nudge
+both passed at seed 7 with exact normalized matches; their accepted v2 recipes
+are retained beside the earlier takes. Every recipe and `qa-transcript.json` is
+retained in a matching `assets/source/studio/laundry-voice-*` folder. Web
+Speech uses the same verbatim script as a runtime fallback.
 
 ## Shared runtime assets
 

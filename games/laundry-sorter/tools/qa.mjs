@@ -195,6 +195,11 @@ async function main() {
   await page.screenshot({ path: path.join(shots, '04f-towel-folded-once.png') });
   check('towel first fold is a layered half-fold',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().foldStep)) === 1);
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('fold-zone'));
+  await page.screenshot({ path: path.join(shots, '04g-towel-folded-twice.png') });
+  check('towel second fold uses its corrected left-facing layered stage',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().foldStep)) === 2
+      && (await page.locator('.fold-image').getAttribute('src')).endsWith('/assets/fold/towel-2.webp'));
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
   check('fold completes a shirt, pants, and towel', true);
@@ -202,6 +207,31 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.tap('back'));
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('pairs'));
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  const pairDeal = async () => {
+    const board = page.locator('.pairs-board');
+    const cards = await page.locator('.pair-card').evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        design: node.dataset.design,
+        family: node.dataset.family,
+        pattern: node.dataset.pattern,
+      })));
+    return {
+      deck: await board.getAttribute('data-deck'),
+      difficulty: await board.getAttribute('data-difficulty'),
+      cards,
+      signature: [...new Set(cards.map((card) => card.design))].sort().join('|'),
+    };
+  };
+  const firstPairDeal = await pairDeal();
+  const firstPairCounts = Object.values(firstPairDeal.cards.reduce((counts, card) => {
+    counts[card.design] = (counts[card.design] || 0) + 1;
+    return counts;
+  }, {}));
+  check('pair round deals three exact visual pairs',
+    firstPairDeal.cards.length === 6
+      && firstPairCounts.length === 3
+      && firstPairCounts.every((count) => count === 2),
+    JSON.stringify(firstPairDeal));
   await page.evaluate(() => window.QLOBE_DEBUG.wrong());
   check('different socks stay available after a gentle mismatch',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().progress)) === 0);
@@ -210,6 +240,39 @@ async function main() {
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
   check('pairs completes to its celebration', true);
   await page.screenshot({ path: path.join(shots, '06-pairs-celebration.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('again'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  const secondPairDeal = await pairDeal();
+  check('pair replay changes all three sock designs',
+    secondPairDeal.signature !== firstPairDeal.signature,
+    JSON.stringify({ first: firstPairDeal.signature, second: secondPairDeal.signature }));
+  await page.screenshot({ path: path.join(shots, '05a-pairs-replay-new-patterns.png') });
+
+  const seenPairDesigns = new Set([
+    ...firstPairDeal.cards.map((card) => card.design),
+    ...secondPairDeal.cards.map((card) => card.design),
+  ]);
+  let trickyPairDeal = null;
+  for (let round = 0; round < 2; round += 1) {
+    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
+    await page.evaluate(() => window.QLOBE_DEBUG.tap('again'));
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+    trickyPairDeal = await pairDeal();
+    trickyPairDeal.cards.forEach((card) => seenPairDesigns.add(card.design));
+  }
+  const familyPatterns = trickyPairDeal.cards.reduce((families, card) => {
+    if (!families[card.family]) families[card.family] = new Set();
+    families[card.family].add(card.pattern);
+    return families;
+  }, {});
+  check('four pair rounds expose at least ten distinct sock designs',
+    seenPairDesigns.size >= 10, [...seenPairDesigns].sort().join(', '));
+  check('advanced pair round distinguishes patterns within one color',
+    trickyPairDeal.difficulty === 'tricky'
+      && Object.values(familyPatterns).some((patterns) => patterns.size >= 2),
+    JSON.stringify(trickyPairDeal));
+  await page.screenshot({ path: path.join(shots, '05b-pairs-tricky-same-color.png') });
 
   const portrait = await openGame(browser, { width: 820, height: 1180 });
   await portrait.screenshot({ path: path.join(shots, '07-splash-portrait.png') });

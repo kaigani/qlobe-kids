@@ -16,8 +16,8 @@
     "fold-again": "Keep going. Follow the next fold.",
     "fold-nudge": "Start on the clothing, and follow the arrow.",
     "fold-cheer": "A shirt, pants, and towel, folded and tidy!",
-    "pairs-prompt": "Find two socks that match.",
-    "pairs-nudge": "Those are different. Find the same color.",
+    "pairs-prompt": "Find two socks with the same color and pattern.",
+    "pairs-nudge": "Those are different. Match both the color and pattern.",
     "pairs-cheer": "You found every matching pair!"
   },
   "modes": [
@@ -103,15 +103,33 @@
       "id": "pairs",
       "title": "Find the Pairs",
       "shortTitle": "Pairs",
-      "skill": "visual matching and working memory",
+      "skill": "color-and-pattern matching and working memory",
       "prompt": "pairs-prompt",
       "nudge": "pairs-nudge",
       "cheer": "pairs-cheer",
-      "colors": [
-        { "id": "red", "art": "../../shared/assets/storybook/sock-red.png", "alt": "red sock" },
-        { "id": "blue", "art": "../../shared/assets/storybook/sock-blue.png", "alt": "blue sock" },
-        { "id": "yellow", "art": "../../shared/assets/storybook/sock-yellow.png", "alt": "yellow sock" },
-        { "id": "green", "art": "../../shared/assets/storybook/sock-green.png", "alt": "green sock" }
+      "designs": [
+        { "id": "red-dots", "family": "red", "pattern": "dots", "art": "../../shared/assets/storybook/sock-red.png", "alt": "red sock with white dots" },
+        { "id": "red-hearts", "family": "red", "pattern": "hearts", "art": "./assets/pairs/red-hearts.webp", "alt": "red sock with white hearts" },
+        { "id": "blue-stars", "family": "blue", "pattern": "stars", "art": "../../shared/assets/storybook/sock-blue.png", "alt": "blue sock with yellow stars" },
+        { "id": "blue-zigzags", "family": "blue", "pattern": "zigzags", "art": "./assets/pairs/blue-zigzags.webp", "alt": "blue sock with aqua zigzags" },
+        { "id": "yellow-stripes", "family": "yellow", "pattern": "stripes", "art": "../../shared/assets/storybook/sock-yellow.png", "alt": "yellow sock with orange stripes" },
+        { "id": "yellow-diamonds", "family": "yellow", "pattern": "diamonds", "art": "./assets/pairs/yellow-diamonds.webp", "alt": "yellow sock with orange diamonds" },
+        { "id": "green-stripes", "family": "green", "pattern": "stripes", "art": "../../shared/assets/storybook/sock-green.png", "alt": "green sock with light stripes" },
+        { "id": "green-flowers", "family": "green", "pattern": "flowers", "art": "./assets/pairs/green-flowers.webp", "alt": "green sock with white flowers" },
+        { "id": "purple-moons", "family": "purple", "pattern": "moons", "art": "./assets/pairs/purple-moons.webp", "alt": "purple sock with yellow moons" },
+        { "id": "purple-checks", "family": "purple", "pattern": "checks", "art": "./assets/pairs/purple-checks.webp", "alt": "purple sock with aqua checks" },
+        { "id": "aqua-rainbows", "family": "aqua", "pattern": "rainbows", "art": "./assets/pairs/aqua-rainbows.webp", "alt": "aqua sock with rainbows" },
+        { "id": "aqua-waves", "family": "aqua", "pattern": "waves", "art": "./assets/pairs/aqua-waves.webp", "alt": "aqua sock with navy waves" }
+      ],
+      "decks": [
+        { "id": "first-colors", "difficulty": "easy", "designs": ["red-dots", "blue-stars", "yellow-stripes"] },
+        { "id": "new-colors", "difficulty": "easy", "designs": ["green-stripes", "purple-moons", "aqua-rainbows"] },
+        { "id": "bold-patterns", "difficulty": "medium", "designs": ["red-hearts", "yellow-diamonds", "green-flowers"] },
+        { "id": "red-details", "difficulty": "tricky", "designs": ["red-dots", "red-hearts", "aqua-waves"] },
+        { "id": "blue-details", "difficulty": "tricky", "designs": ["blue-stars", "blue-zigzags", "purple-checks"] },
+        { "id": "yellow-details", "difficulty": "tricky", "designs": ["yellow-stripes", "yellow-diamonds", "green-flowers"] },
+        { "id": "green-details", "difficulty": "tricky", "designs": ["green-stripes", "green-flowers", "aqua-rainbows"] },
+        { "id": "purple-details", "difficulty": "tricky", "designs": ["purple-moons", "purple-checks", "aqua-waves"] }
       ]
     }
   ]
