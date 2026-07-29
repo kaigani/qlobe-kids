@@ -9,13 +9,13 @@
   },
   "voice": {
     "welcome": "It is laundry day! Choose a chore.",
-    "sort-prompt": "Match each sock to the basket with the same color.",
+    "sort-prompt": "Sort each piece into the basket with the same color.",
     "sort-nudge": "Almost. Find the basket with the same color.",
-    "sort-cheer": "Every sock found its basket!",
-    "fold-prompt": "Swipe across the towel to fold it.",
-    "fold-again": "One more fold.",
-    "fold-nudge": "Start on the towel, and follow the arrow.",
-    "fold-cheer": "Three towels, folded and tidy!",
+    "sort-cheer": "Every piece found its basket!",
+    "fold-prompt": "Follow the arrow to fold each item.",
+    "fold-again": "Keep going. Follow the next fold.",
+    "fold-nudge": "Start on the clothing, and follow the arrow.",
+    "fold-cheer": "A shirt, pants, and towel, folded and tidy!",
     "pairs-prompt": "Find two socks that match.",
     "pairs-nudge": "Those are different. Find the same color.",
     "pairs-cheer": "You found every matching pair!"
@@ -23,52 +23,79 @@
   "modes": [
     {
       "id": "sort",
-      "title": "Sort the Socks",
+      "title": "Sort It",
       "shortTitle": "Sort",
       "skill": "color categorization",
       "prompt": "sort-prompt",
       "nudge": "sort-nudge",
       "cheer": "sort-cheer",
-      "colors": ["red", "blue"],
       "items": [
-        { "id": "red-1", "color": "red", "art": "../../shared/assets/storybook/sock-red.png", "alt": "red sock" },
-        { "id": "red-2", "color": "red", "art": "../../shared/assets/storybook/sock-red.png", "alt": "red sock" },
-        { "id": "red-3", "color": "red", "art": "../../shared/assets/storybook/shirt-red.png", "alt": "red shirt" },
-        { "id": "blue-1", "color": "blue", "art": "../../shared/assets/storybook/sock-blue.png", "alt": "blue sock" },
-        { "id": "blue-2", "color": "blue", "art": "../../shared/assets/storybook/sock-blue.png", "alt": "blue sock" },
-        { "id": "blue-3", "color": "blue", "art": "../../shared/assets/storybook/shirt-blue.png", "alt": "blue shirt" }
+        { "id": "red-sock", "color": "red", "art": "../../shared/assets/storybook/sock-red.png", "alt": "red sock" },
+        { "id": "red-shirt", "color": "red", "art": "../../shared/assets/storybook/shirt-red.png", "alt": "red shirt" },
+        { "id": "red-scarf", "color": "red", "art": "../../shared/assets/storybook/scarf-red.png", "alt": "red scarf" },
+        { "id": "red-mitten", "color": "red", "art": "../../shared/assets/storybook/mitten-blue.png", "filter": "hue-rotate(155deg) saturate(1.35)", "alt": "red mitten" },
+
+        { "id": "blue-sock", "color": "blue", "art": "../../shared/assets/storybook/sock-blue.png", "alt": "blue sock" },
+        { "id": "blue-shirt", "color": "blue", "art": "../../shared/assets/storybook/shirt-blue.png", "alt": "blue shirt" },
+        { "id": "blue-mitten", "color": "blue", "art": "../../shared/assets/storybook/mitten-blue.png", "alt": "blue mitten" },
+        { "id": "blue-cap", "color": "blue", "art": "../../shared/assets/storybook/cap-blue.png", "alt": "blue cap" },
+        { "id": "blue-pants", "color": "blue", "art": "../../shared/assets/storybook/jeans-blue.png", "alt": "blue pants" },
+
+        { "id": "orange-sock", "color": "orange", "art": "../../shared/assets/storybook/sock-yellow.png", "alt": "orange sock" },
+        { "id": "orange-shirt", "color": "orange", "art": "../../shared/assets/storybook/shirt-yellow.png", "alt": "orange shirt" },
+        { "id": "orange-cap", "color": "orange", "art": "../../shared/assets/storybook/cap-blue.png", "filter": "grayscale(1) sepia(1) saturate(8) hue-rotate(5deg) brightness(1.18)", "alt": "orange cap" },
+        { "id": "orange-pants", "color": "orange", "art": "../../shared/assets/storybook/jeans-blue.png", "filter": "grayscale(1) sepia(1) saturate(8) hue-rotate(5deg) brightness(1.18)", "alt": "orange pants" },
+
+        { "id": "green-sock", "color": "green", "art": "../../shared/assets/storybook/sock-green.png", "alt": "green sock" },
+        { "id": "green-shirt", "color": "green", "art": "../../shared/assets/storybook/shirt-green.png", "alt": "green shirt" },
+        { "id": "green-mitten", "color": "green", "art": "../../shared/assets/storybook/mitten-blue.png", "filter": "hue-rotate(285deg) saturate(1.15)", "alt": "green mitten" },
+        { "id": "green-cap", "color": "green", "art": "../../shared/assets/storybook/cap-blue.png", "filter": "hue-rotate(285deg) saturate(1.15)", "alt": "green cap" }
       ],
       "bins": [
         { "id": "red", "art": "../../shared/assets/storybook/basket-red.png", "alt": "red laundry basket" },
-        { "id": "blue", "art": "../../shared/assets/storybook/basket-blue.png", "alt": "blue laundry basket" }
+        { "id": "blue", "art": "../../shared/assets/storybook/basket-blue.png", "alt": "blue laundry basket" },
+        { "id": "orange", "art": "../../shared/assets/storybook/basket-red.png", "filter": "grayscale(1) sepia(1) saturate(8) hue-rotate(5deg) brightness(1.18)", "alt": "orange laundry basket" },
+        { "id": "green", "art": "../../shared/assets/storybook/basket-blue.png", "filter": "hue-rotate(275deg) saturate(1.1)", "alt": "green laundry basket" }
       ]
     },
     {
       "id": "fold",
-      "title": "Fold the Towels",
+      "title": "Fold It",
       "shortTitle": "Fold",
       "skill": "directional swipes and sequencing",
       "prompt": "fold-prompt",
       "nudge": "fold-nudge",
       "cheer": "fold-cheer",
-      "towels": [
+      "foldItems": [
         {
-          "id": "orange",
-          "flat": "./assets/towels/orange-flat.webp",
-          "folded": "./assets/towels/orange-folded.webp",
-          "alt": "orange towel"
+          "id": "shirt",
+          "alt": "aqua shirt",
+          "stages": [
+            { "art": "./assets/fold/shirt-0.webp", "direction": "right", "label": "Fold the left side in" },
+            { "art": "./assets/fold/shirt-1.webp", "direction": "left", "label": "Fold the right side in" },
+            { "art": "./assets/fold/shirt-2.webp", "direction": "up", "label": "Fold the bottom up" },
+            { "art": "./assets/fold/shirt-3.webp" }
+          ]
         },
         {
-          "id": "aqua",
-          "flat": "./assets/towels/aqua-flat.webp",
-          "folded": "./assets/towels/aqua-folded.webp",
-          "alt": "aqua towel"
+          "id": "pants",
+          "alt": "blue pants",
+          "stages": [
+            { "art": "./assets/fold/pants-0.webp", "direction": "right", "label": "Fold one leg over" },
+            { "art": "./assets/fold/pants-1.webp", "direction": "up", "label": "Fold the legs up" },
+            { "art": "./assets/fold/pants-2.webp", "direction": "up", "label": "Fold up once more" },
+            { "art": "./assets/fold/pants-3.webp" }
+          ]
         },
         {
-          "id": "purple",
-          "flat": "./assets/towels/purple-flat.webp",
-          "folded": "./assets/towels/purple-folded.webp",
-          "alt": "purple towel"
+          "id": "towel",
+          "alt": "orange towel",
+          "stages": [
+            { "art": "./assets/fold/towel-0.webp", "direction": "right", "label": "Fold the left side in" },
+            { "art": "./assets/fold/towel-1.webp", "direction": "left", "label": "Fold the right side in" },
+            { "art": "./assets/fold/towel-2.webp", "direction": "up", "label": "Fold the bottom up" },
+            { "art": "./assets/fold/towel-3.webp" }
+          ]
         }
       ]
     },

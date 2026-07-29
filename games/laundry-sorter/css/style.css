@@ -444,7 +444,7 @@ img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 7px 4px rgba(11,64,108,.23));
+  filter: var(--item-filter, hue-rotate(0deg)) drop-shadow(0 7px 4px rgba(11,64,108,.23));
 }
 
 .sock-piece:nth-child(2n) { transform: rotate(5deg); }
@@ -487,7 +487,7 @@ img {
 
 .basket img {
   width: 100%;
-  filter: drop-shadow(0 15px 10px rgba(16,74,119,.24));
+  filter: var(--bin-filter, hue-rotate(0deg)) drop-shadow(0 15px 10px rgba(16,74,119,.24));
 }
 
 .basket::before {
@@ -535,6 +535,8 @@ img {
 .drag-ghost {
   position: fixed;
   z-index: 1000;
+  top: 0;
+  left: 0;
   width: var(--ghost-size, 138px);
   height: var(--ghost-size, 138px);
   object-fit: contain;
@@ -563,12 +565,12 @@ img {
   box-shadow: 0 14px 0 rgba(12,95,166,.22), 0 25px 40px rgba(11,76,132,.18), inset 0 4px 0 rgba(255,255,255,.6);
 }
 
-.towel-zone {
+.fold-zone {
   position: relative;
   z-index: 2;
   display: grid;
-  width: min(540px, 60vw);
-  height: min(390px, 42vh);
+  width: min(500px, 56vw);
+  height: min(340px, 38vh);
   place-items: center;
   border: 0;
   background: transparent;
@@ -576,9 +578,9 @@ img {
   touch-action: none;
 }
 
-.towel-image {
-  width: 100%;
-  height: 100%;
+.fold-image {
+  width: 86%;
+  height: 86%;
   object-fit: contain;
   filter: drop-shadow(0 18px 14px rgba(14,72,119,.25));
   transition:
@@ -586,11 +588,6 @@ img {
     height .58s cubic-bezier(.2,1.15,.35,1),
     transform .58s cubic-bezier(.2,1.15,.35,1),
     opacity .2s ease;
-}
-
-.towel-zone[data-step="1"] .towel-image {
-  width: 56%;
-  transform: rotate(2deg);
 }
 
 .fold-guide {
@@ -602,7 +599,8 @@ img {
   pointer-events: none;
 }
 
-.fold-guide.horizontal {
+.fold-guide.right,
+.fold-guide.left {
   top: 50%;
   right: 12%;
   left: 12%;
@@ -611,7 +609,8 @@ img {
   border-top: 8px dashed rgba(255,255,255,.96);
 }
 
-.fold-guide.vertical {
+.fold-guide.up,
+.fold-guide.down {
   top: 11%;
   bottom: 11%;
   left: 50%;
@@ -630,16 +629,28 @@ img {
   filter: drop-shadow(0 3px 0 rgba(18,88,151,.35));
 }
 
-.fold-guide.horizontal::after {
+.fold-guide.right::after {
   right: 2%;
   transform: rotate(-45deg);
   animation: guide-right 1.35s ease-in-out infinite;
 }
 
-.fold-guide.vertical::after {
+.fold-guide.left::after {
+  left: 2%;
+  transform: rotate(135deg);
+  animation: guide-left 1.35s ease-in-out infinite;
+}
+
+.fold-guide.down::after {
   bottom: 2%;
   transform: rotate(45deg);
   animation: guide-down 1.35s ease-in-out infinite;
+}
+
+.fold-guide.up::after {
+  top: 2%;
+  transform: rotate(-135deg);
+  animation: guide-up 1.35s ease-in-out infinite;
 }
 
 @keyframes guide-right {
@@ -649,6 +660,16 @@ img {
 
 @keyframes guide-down {
   0%, 100% { translate: 0 -72px; opacity: .55; }
+  55% { translate: 0 0; opacity: 1; }
+}
+
+@keyframes guide-left {
+  0%, 100% { translate: 72px 0; opacity: .55; }
+  55% { translate: 0 0; opacity: 1; }
+}
+
+@keyframes guide-up {
+  0%, 100% { translate: 0 72px; opacity: .55; }
   55% { translate: 0 0; opacity: 1; }
 }
 
@@ -999,9 +1020,9 @@ img {
     width: 88vw;
   }
 
-  .towel-zone {
-    width: min(72vw, 540px);
-    height: min(42vh, 410px);
+  .fold-zone {
+    width: min(68vw, 520px);
+    height: min(38vh, 380px);
   }
 
   .fold-stack {
@@ -1109,7 +1130,7 @@ img {
     height: 100%;
   }
 
-  .towel-zone {
+  .fold-zone {
     height: 80%;
   }
 

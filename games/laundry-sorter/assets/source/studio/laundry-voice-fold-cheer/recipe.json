@@ -7,7 +7,7 @@
   "steps": [
     {
       "workflow": "qwen3-tts-voiceclone",
-      "text": "Three towels, folded and tidy!",
+      "text": "A shirt, pants, and towel, folded and tidy!",
       "seed": 7
     }
   ],
@@ -17,18 +17,18 @@
   "template": {
     "id": "character-voice-line",
     "fields": {
-      "text": "Three towels, folded and tidy!"
+      "text": "A shirt, pants, and towel, folded and tidy!"
     }
   },
   "derivedFrom": null,
   "qa": {
     "status": "accepted",
     "transcript": {
-      "intended": "Three towels, folded and tidy!",
-      "heard": "Three towels folded and tidy.",
+      "intended": "A shirt, pants, and towel, folded and tidy!",
+      "heard": "A shirt, pants, and towel folded and tidy.",
       "ratio": 1.0,
       "match": true
     }
   },
-  "created": "2026-07-28"
+  "created": "2026-07-29"
 }

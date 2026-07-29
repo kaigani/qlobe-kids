@@ -7,7 +7,7 @@
   "steps": [
     {
       "workflow": "qwen3-tts-voiceclone",
-      "text": "Start on the towel, and follow the arrow.",
+      "text": "Start on the clothing, and follow the arrow.",
       "seed": 7
     }
   ],
@@ -17,18 +17,18 @@
   "template": {
     "id": "character-voice-line",
     "fields": {
-      "text": "Start on the towel, and follow the arrow."
+      "text": "Start on the clothing, and follow the arrow."
     }
   },
   "derivedFrom": null,
   "qa": {
     "status": "accepted",
     "transcript": {
-      "intended": "Start on the towel, and follow the arrow.",
-      "heard": "Start on the towel and follow the arrow.",
+      "intended": "Start on the clothing, and follow the arrow.",
+      "heard": "Start on the clothing and follow the arrow.",
       "ratio": 1.0,
       "match": true
     }
   },
-  "created": "2026-07-28"
+  "created": "2026-07-29"
 }

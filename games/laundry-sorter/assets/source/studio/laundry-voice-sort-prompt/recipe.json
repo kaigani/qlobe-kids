@@ -7,7 +7,7 @@
   "steps": [
     {
       "workflow": "qwen3-tts-voiceclone",
-      "text": "Match each sock to the basket with the same color.",
+      "text": "Sort each piece into the basket with the same color.",
       "seed": 7
     }
   ],
@@ -17,18 +17,18 @@
   "template": {
     "id": "character-voice-line",
     "fields": {
-      "text": "Match each sock to the basket with the same color."
+      "text": "Sort each piece into the basket with the same color."
     }
   },
   "derivedFrom": null,
   "qa": {
     "status": "accepted",
     "transcript": {
-      "intended": "Match each sock to the basket with the same color.",
-      "heard": "Match each sock to the basket with the same color.",
+      "intended": "Sort each piece into the basket with the same color.",
+      "heard": "sort each piece into the basket with the same color.",
       "ratio": 1.0,
       "match": true
     }
   },
-  "created": "2026-07-28"
+  "created": "2026-07-29"
 }

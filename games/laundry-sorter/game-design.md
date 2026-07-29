@@ -6,14 +6,15 @@ Category: practical life · Ages 5–6 · Art world: Storybook Rooms
 ## Product promise
 
 Laundry Sorter turns three familiar household chores into short, satisfying
-touch games. A child can sort socks by colour, fold large towels with broad
-swipes, or find matching sock pairs. The fantasy is being a capable home
-helper: every action makes the bright laundry room calmer and tidier.
+touch games. A child can sort a changing mix of clothes by colour, fold a
+shirt, pants, and towel through realistic stages, or find matching sock pairs.
+The fantasy is being a capable home helper: every action makes the bright
+laundry room calmer and tidier.
 
 Each mode has one skill:
 
-1. **Sort the Socks** — visual colour categorisation.
-2. **Fold the Towels** — broad directional swipes and two-step sequencing.
+1. **Sort It** — visual colour categorisation across varied garments.
+2. **Fold It** — broad directional swipes and three-step physical sequencing.
 3. **Find the Pairs** — visual matching and working memory.
 
 There are no scores, timers, locked content, ratings, or failure states.
@@ -45,8 +46,8 @@ unchanged.
 
 ```text
 catalog → splash / chore chooser
-             ├─ Sort the Socks → mode celebration ─┐
-             ├─ Fold the Towels → mode celebration ├─ again / another chore
+             ├─ Sort It → mode celebration ────────┐
+             ├─ Fold It → mode celebration ────────┤─ again / another chore
              └─ Find the Pairs → mode celebration ─┘
 ```
 
@@ -58,21 +59,30 @@ catalog → splash / chore chooser
 
 ## Core loops
 
-### Sort the Socks (45–75 seconds)
+### Sort It (45–75 seconds)
 
-Six socks sit on the shelf. Red and blue baskets sit on the floor. A child may
-drag a sock into a basket or tap the sock and then tap the basket. A correct
-sock arcs and shrinks into the basket; a wrong basket gives a soft wiggle and
-returns the sock without changing progress. Three progress bubbles fill after
-two, four, and six socks.
+Six garments sit on the shelf and two colour baskets sit on the floor. Each
+round chooses two colours from red, blue, orange, and green, then deals three
+different garment shapes per colour from socks, shirts, scarves, mittens, caps,
+and pants. A child may drag a garment into a basket or tap the garment and then
+tap the basket. During drag, the garment remains under the finger and continues
+from its exact release point into the basket. A wrong basket returns the same
+moving garment to its shelf position without changing progress. Three progress
+bubbles fill after two, four, and six pieces.
 
-### Fold the Towels (35–60 seconds)
+### Fold It (55–90 seconds)
 
-One large towel fills the clear work area. A bright dotted fold guide and moving
-arrow model a broad horizontal swipe. The towel halves with a soft fabric squash,
-then a vertical guide asks for one more fold. The finished towel flies to the
-dresser stack. The same large guide is tappable as an equal path. Three towels
-complete the round.
+One large garment fills the clear work area. A bright dotted fold guide and
+moving arrow model each real fold, and the artwork swaps to a purpose-drawn
+physical intermediate after every successful swipe:
+
+- shirt: left side in → right side in → bottom up;
+- pants: one leg over → legs up → up once more;
+- towel: left side in → right side in → bottom up.
+
+Every intermediate shows layered fabric edges and a new silhouette; no step is
+represented by scaling or squashing the flat garment. The finished item joins
+the tidy stack. A shirt, pants, and towel complete the round.
 
 ### Find the Pairs (35–70 seconds)
 
@@ -86,13 +96,13 @@ the round.
 | Key | Line |
 | --- | --- |
 | `welcome` | “It is laundry day! Choose a chore.” |
-| `sort-prompt` | “Match each sock to the basket with the same color.” |
+| `sort-prompt` | “Sort each piece into the basket with the same color.” |
 | `sort-nudge` | “Almost. Find the basket with the same color.” |
-| `sort-cheer` | “Every sock found its basket!” |
-| `fold-prompt` | “Swipe across the towel to fold it.” |
-| `fold-again` | “One more fold.” |
-| `fold-nudge` | “Start on the towel, and follow the arrow.” |
-| `fold-cheer` | “Three towels, folded and tidy!” |
+| `sort-cheer` | “Every piece found its basket!” |
+| `fold-prompt` | “Follow the arrow to fold each item.” |
+| `fold-again` | “Keep going. Follow the next fold.” |
+| `fold-nudge` | “Start on the clothing, and follow the arrow.” |
+| `fold-cheer` | “A shirt, pants, and towel, folded and tidy!” |
 | `pairs-prompt` | “Find two socks that match.” |
 | `pairs-nudge` | “Those are different. Find the same color.” |
 | `pairs-cheer` | “You found every matching pair!” |
@@ -105,10 +115,9 @@ exact lines when a clip is missing or cannot play.
 | Asset | Runtime role | Intended production |
 | --- | --- | --- |
 | `assets/room.webp` | Full-bleed play/splash plate | GPT Image 2, 4:3, optimized WebP |
-| `assets/towels/*-flat.webp` | Three fold-start towels | Krea 2 Storybook prop → Qwen Image Layered `layer_2` → deterministic WebP |
-| `assets/towels/*-folded.webp` | Three finished towels | Same pipeline |
-| shared Storybook socks | Sorting and pair cards | Existing QLOBE cutouts |
-| shared Storybook baskets | Sort targets and splash set dressing | Existing QLOBE cutouts |
+| `assets/fold/{shirt,pants,towel}-{0..3}.webp` | Twelve physical fold stages | GPT Image 2 reference-guided sprite sheets → chroma extraction → lossless alpha WebP |
+| shared Storybook clothes | Expanded sorting pool and pair cards | Existing QLOBE cutouts; authoring-time colour variants use deterministic CSS filters |
+| shared Storybook baskets | Four colour sort targets and splash set dressing | Existing QLOBE cutouts; deterministic colour variants |
 | `assets/hub/tiles/laundry-sorter.jpg` | Catalog tile | Studio `menu-game-tile`, Krea 2 Toy Table |
 | CSS bubbles, fold guides, clothespins | Feedback and instructional overlays | Deterministic runtime graphics |
 | shared Home, Back, Sound, Play buttons | Navigation | Existing QLOBE UI |
@@ -126,8 +135,10 @@ controls are HTML/CSS, never baked into generated art.
 - White/cream control surfaces use chunky navy outlines, layered blue/coral
   shadows, and Fredoka.
 - Touch targets are at least 96 px. Gameplay never depends on small text.
-- Dragging uses one active pointer, a retained grip offset, window-level move/up
-  listeners, pointer-cancel/blur cleanup, and a tap-tap alternative.
+- Dragging uses one active pointer, a retained grip offset, a fixed zero-origin
+  moving cutout under the finger, window-level move/up listeners, continuous
+  release-to-basket animation, pointer-cancel/blur cleanup, and a tap-tap
+  alternative.
 - Reduced motion removes bobbing, flying arcs, bubbles, and repeated guide motion
   while preserving immediate state changes and all feedback.
 - Wrong actions use a soft wobble and spoken model. No red X, buzzer, score loss,
@@ -136,10 +147,11 @@ controls are HTML/CSS, never baked into generated art.
 ## Difficulty and replay variation
 
 - Sort and pair layouts use deterministic seeded shuffles.
+- Sort chooses two of four colours per round and six pieces from a seventeen-item
+  garment pool. Replay advances the seed stream so both colours and shapes vary.
 - Pair mode chooses three colours from four on each round.
-- Fold order rotates orange, aqua, and purple towels.
-- The interaction itself stays constant; variation comes from arrangement, not
-  surprise rules.
+- Fold progresses from shirt to pants to towel, but each item has its own
+  physically meaningful three-direction sequence.
 
 ## Privacy, permissions, persistence, and fallback
 
@@ -200,17 +212,19 @@ Debug taps use the same handlers as real child input.
 
 ## Production QA evidence
 
-2026-07-28 local production candidate:
+2026-07-29 revised local production candidate:
 
-- real Chrome game-local suite: **33/33** checks;
-- hub launch, all three modes, real pointer drag, real directional swipes,
-  gentle-retry branches, celebrations, recorded AAC teacher voice, replay
-  navigation, portrait, 1180×520 short landscape, and reduced motion covered;
+- real Chrome game-local suite: **41/41** checks;
+- hub launch, all three renamed modes, live finger-tracked drag, continuous
+  drop-to-basket travel, a different colour/garment deal on replay, all shirt,
+  pants, and towel fold stages, gentle-retry branches, celebrations, recorded
+  AAC teacher voice, portrait, 1180×520 short landscape, and reduced motion
+  covered;
 - zero unexpected page errors, failed requests, HTTP errors, remote runtime
   requests, or 404s;
 - full validator: 154 subjects, 0 errors (23 pre-existing catalog warnings);
 - registry sync and usage-index drift checks pass;
 - full-detail screenshots reviewed for splash, each play field, success, portrait,
-  and short landscape. QC fixed pair-board clipping, trivial same-column pair
-  dealing, celebration text overlap, and a debug fast-path readiness race before
-  release.
+  and short landscape. This revision additionally caught and fixed the moving
+  clone's missing fixed-position origin, colour-filter loss on dragged variants,
+  first-fold sprite ambiguity, and towel/ribbon crowding before release.
