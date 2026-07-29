@@ -143,6 +143,10 @@ The two sounds play from their own audio elements, never the voice channel, so t
 layers under the spoken blend line instead of cancelling it — and both are fire-and-forget,
 because nothing in the round loop may wait on a sound effect.
 
+Both play at **20% volume**. At full level they were mastered to be heard on their own
+and simply buried the thing the child is actually listening for; the arriving train
+should be felt under the word, not over it.
+
 ### The picture reward
 
 When a build completes, the word's object card pops up above the train — a mat for `mat`,

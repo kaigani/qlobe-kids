@@ -1,7 +1,7 @@
 {
  "game": "blend-train",
- "base": "http://localhost:8231",
- "when": "2026-07-29T05:43:41.213Z",
+ "base": "http://localhost:8241",
+ "when": "2026-07-29T06:04:23.444Z",
  "results": [
   {
    "name": "both modes registered",
@@ -271,7 +271,7 @@
   {
    "name": "sounds: the mode prompt is a recorded clip",
    "ok": true,
-   "detail": "first line {\"t\":1785303810770,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-sounds\",\"url\":\"prompt-sounds\"}"
+   "detail": "first line {\"t\":1785305053124,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-sounds\",\"url\":\"prompt-sounds\"}"
   },
   {
    "name": "sounds: the placed car speaks its own sound as a CLIP, not speech",
@@ -291,7 +291,7 @@
   {
    "name": "couple: the mode prompt is a recorded clip",
    "ok": true,
-   "detail": "first line {\"t\":1785303816937,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-couple\",\"url\":\"prompt-couple\"}"
+   "detail": "first line {\"t\":1785305059235,\"kind\":\"clip\",\"tag\":\"prompt\",\"ref\":\"clip:prompt-couple\",\"url\":\"prompt-couple\"}"
   },
   {
    "name": "couple: the placed car speaks its own sound as a CLIP, not speech",
@@ -306,7 +306,7 @@
   {
    "name": "the voice channel really decoded and played an .m4a",
    "ok": true,
-   "detail": "src=audio/prompt-couple.m4a played=0.063342 dur=3.370667 err=null starts=26"
+   "detail": "src=audio/prompt-couple.m4a played=0.063942 dur=3.370667 err=null starts=24"
   },
   {
    "name": "audio pass: no console errors",
@@ -437,8 +437,6 @@
     "clip:letter:og",
     "clip:letter:og",
     "clip:letter:d",
-    "clip:letter:d",
-    "clip:letter:og",
     "clip:letter:og",
     "clip:cheer:dog",
     "clip:clip:prompt-couple"
@@ -447,10 +445,10 @@
   "proof": {
    "ok": true,
    "error": null,
-   "src": "http://localhost:8231/games/blend-train/assets/audio/prompt-couple.m4a",
-   "played": 0.063342,
+   "src": "http://localhost:8241/games/blend-train/assets/audio/prompt-couple.m4a",
+   "played": 0.063942,
    "duration": 3.370667,
-   "starts": 26
+   "starts": 24
   }
  },
  "notes": []

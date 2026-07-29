@@ -155,9 +155,13 @@ into a non-square canvas. These three keys are inherited config → mode → bui
                                     // this closes a gap by proportion rather than
                                     // pretending to compute a perfect joint.
   sound: {                          // optional game-supplied sound FILES, played by key.
-    roll: 'game:assets/audio/train-roll.m4a',   // played as the pieces slide together
-    horn: 'game:assets/audio/train-horn.m4a',   // played as they arrive
-  },                                // Same ref grammar as clips. These use their own
+    roll: { src: 'game:assets/audio/train-roll.m4a', volume: 0.2 },  // pieces sliding
+    horn: { src: 'game:assets/audio/train-horn.m4a', volume: 0.2 },  // arrival
+  },                                // An entry is a bare ref or { src, volume }. SET THE
+                                    // VOLUME: a recording mastered for its own sake sits
+                                    // far too loud next to synthesised SFX and a spoken
+                                    // line, and it has to sit UNDER the word the child is
+                                    // listening for. Same ref grammar as clips. Own
                                     // audio elements, NOT the voice channel, so a sound
                                     // effect layers under a spoken line instead of
                                     // cancelling it, and they are always fire-and-forget.

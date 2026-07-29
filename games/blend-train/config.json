@@ -7670,8 +7670,14 @@
   "trayReserve": 0.21,
   "trayOverlay": true,
   "sound": {
-    "roll": "game:assets/audio/train-roll.m4a",
-    "horn": "game:assets/audio/train-horn.m4a"
+    "roll": {
+      "src": "game:assets/audio/train-roll.m4a",
+      "volume": 0.2
+    },
+    "horn": {
+      "src": "game:assets/audio/train-horn.m4a",
+      "volume": 0.2
+    }
   },
   "coupleUp": {
     "close": 0.86,

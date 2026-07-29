@@ -1720,7 +1720,16 @@ class BuildAssembleGame {
    */
   playSound(key) {
     if (this.muted) return;
-    const ref = this.config.sound && this.config.sound[key];
+    const entry = this.config.sound && this.config.sound[key];
+    if (!entry) return;
+    // An entry is either a bare ref or { src, volume }. Volume matters: these are real
+    // recordings sitting next to a synthesised SFX bed and a spoken voice line, and a
+    // sound mastered for its own sake is almost always too loud in the mix — it has to
+    // sit UNDER the word the child is listening for, not compete with it.
+    const ref = typeof entry === 'string' ? entry : entry.src;
+    const volume = typeof entry === 'object' && Number.isFinite(entry.volume)
+      ? Math.max(0, Math.min(1, entry.volume))
+      : 1;
     if (!ref) return;
     const url = clipUrlFor(ref, this.config.assetBase);
     if (!url) return;
@@ -1729,6 +1738,8 @@ class BuildAssembleGame {
       let el = this.soundEls.get(url);
       if (!el) { el = new Audio(); el.preload = 'auto'; this.soundEls.set(url, el); }
       el.src = url;
+      el.muted = false;      // cleared here because stopSounds() mutes on the way out
+      el.volume = volume;
       el.currentTime = 0;
       const p = el.play();
       if (p && typeof p.catch === 'function') p.catch(() => { /* blocked before a gesture */ });
@@ -1738,7 +1749,12 @@ class BuildAssembleGame {
   /** Stop any game sounds — used by mute() and teardown. */
   stopSounds() {
     if (!this.soundEls) return;
-    this.soundEls.forEach((el) => { try { el.pause(); } catch { /* ignore */ } });
+    // Mute as well as pause. These elements are detached `new Audio()` objects, so the
+    // `document.querySelectorAll('audio, video')` sweep in mute() cannot reach them —
+    // pausing here is what actually silences a train that is mid-roll.
+    this.soundEls.forEach((el) => {
+      try { el.pause(); el.muted = true; } catch { /* ignore */ }
+    });
   }
 
   playSfx(name) {
