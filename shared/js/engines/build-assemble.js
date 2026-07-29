@@ -37,6 +37,8 @@ const IDLE_MS = 10000;
 const VOICE_CEILING_MS = 9000;
 // A single piece sound is one short fragment; cap it tightly so rapid tapping stays snappy.
 const PIECE_VOICE_CEILING_MS = 2500;
+// Minimum time a build's picture reward stays on screen, independent of the voice.
+const REVEAL_HOLD_MS = 1600;
 const REPLAY_DEBOUNCE_MS = 600;
 const WAIT_FOR_INPUT_MS = 80;
 const MIN_TOUCH = 96;
@@ -932,7 +934,13 @@ class BuildAssembleGame {
       part.homeX = firstX + col * (this.trayCardSize + gap);
       part.homeY = firstY + row * (this.trayCardSize + gap);
       part.homeScale = scale;
-      if (!part.view || (active && active.id === part.id && active.moved)) return;
+      // Identity, not id. Part ids are positional (`part:0`, `part:1`, …) so every round
+      // reuses them, and a drag record can outlive its round: the drop that completes a
+      // round is still settling when the next round is built. Matching on the id then
+      // makes the NEW round's car look like the one being dragged, so its layout is
+      // skipped and it is left at the tray layer's origin at the wrong scale — a car
+      // stranded in the top-left corner. Comparing the object itself cannot alias.
+      if (!part.view || (active && active.piece === part && active.moved)) return;
       part.view.position.set(part.homeX, part.homeY);
       part.view.scale.set(scale);
     });
@@ -1160,6 +1168,49 @@ class BuildAssembleGame {
     this.speakLine(this.config.voice.wait || this.config.voice.nudge, true);
   }
 
+  /**
+   * Optional picture reveal: when a build names `reveal`, the finished word's object card
+   * pops up above the assembly while the blend line plays, so the child sees a sun at the
+   * same moment they hear "sun". Lives on the board layer in space coordinates, so it
+   * scales and positions with everything else and is torn down with the round scene.
+   */
+  async showReveal(build, generation) {
+    const ref = build && build.reveal;
+    if (!ref || !this.assemblyLayer || !this.stage) return null;
+    const { PIXI } = this.stage;
+    const [spaceW, spaceH] = this.currentSpace();
+    const size = Number.isFinite(build.revealSize)
+      ? build.revealSize
+      : Math.round(Math.min(spaceW, spaceH) * 0.30);
+    // Shared object cards carry their own transparent margin, and how much varies with
+    // the subject (a mat is genuinely wide and flat; a cat is tall). Render the art a
+    // little larger than the plate's inner box so a typical object reads at a good size,
+    // but only a little — enough to overflow the widest of them would clip it.
+    const art = await artObj(PIXI, normalizeArtRef(ref), Math.round(size * 1.15), '',
+      { base: this.config.assetBase });
+    if (!this.roundIsCurrent(generation)) { art.destroy({ children: true }); return null; }
+
+    const card = new PIXI.Container();
+    const pad = size * 0.06;   // thin frame: the picture is the point, not the plate
+    const w = size + pad * 2;
+    const h = size + pad * 2;
+    const plate = new PIXI.Graphics();
+    plate.roundRect(-w / 2, -h / 2, w, h, size * 0.17)
+      .fill({ color: 0xfdf6e3 })
+      .stroke({ width: Math.max(3, size * 0.045), color: 0xffffff });
+    card.addChild(plate, art);
+    const at = Array.isArray(build.revealAt)
+      ? build.revealAt
+      // High enough to clear the assembly below it — a card that overlaps the very
+      // pieces the child just placed hides the thing it is celebrating.
+      : [spaceW / 2, Math.round(spaceH * 0.17)];
+    card.position.set(at[0], at[1]);
+    card.scale.set(0.01);
+    this.assemblyLayer.addChild(card);
+    await this.runTween(popIn(card, this.ms(360)));
+    return card;
+  }
+
   async completeRound() {
     this.awaitingInput = false;
     this.inputLocked = true;
@@ -1178,12 +1229,23 @@ class BuildAssembleGame {
       burst(this.stage.PIXI, this.scene, centerX, centerY, { count: 36, power: 7, life: this.ms(760) }),
     ]);
     const build = this.roundBuilds[this.roundIndex];
+    const revealed = await this.showReveal(build, this.roundGeneration);
+    const revealedAt = Date.now();
     // Belt and braces: the round advance must NEVER be hostage to audio. The blend line
     // is the best moment in the game and worth waiting for, but if a clip fails to decode,
     // autoplay is blocked, or a device's speech synth never reports back, the child would
     // be stranded on a finished round with an empty tray and no way forward. Wait for the
     // voice OR a generous ceiling, whichever lands first, then carry on.
     await this.speakCapped(build && build.say, true, VOICE_CEILING_MS, 'blend');
+    // Hold the picture for its own sake, not the voice's. Normally the blend readout
+    // keeps it on screen for seconds, but with audio muted or a clip missing the line
+    // returns instantly and the reward would flash past unseen. The picture IS the
+    // reward for a child who cannot read the word, so it gets a floor of its own.
+    if (revealed) {
+      const held = Date.now() - revealedAt;
+      const floor = this.ms(this.reducedMotion() ? 700 : REVEAL_HOLD_MS);
+      if (held < floor) await this.delay(floor - held);
+    }
     await this.delay(this.ms(this.reducedMotion() ? 120 : 420));
     if (this.destroyed || this.screen !== 'play') return;
     const next = this.roundIndex + 1;

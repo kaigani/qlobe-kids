@@ -136,6 +136,16 @@ into a non-square canvas. These three keys are inherited config → mode → bui
                                     // Omitted => the original formula. A wide build is
                                     // height-starved, so handing pixels back here makes
                                     // the pieces a child must read meaningfully bigger.
+  reveal: 'shared:objects/sun.webp', // optional, PER BUILD: a picture that pops above the
+                                    // assembly when the build completes, held while the
+                                    // completion line plays. For a pre-reading audience
+                                    // this is the payoff — finishing otherwise produces a
+                                    // row of pieces and a sound, and nothing that says
+                                    // what was made. It holds for a minimum time of its
+                                    // own, so a muted or missing voice line cannot make
+                                    // the reward flash past unseen.
+  revealAt: [800, 150],            // optional [x, y] in build-space coords
+  revealSize: 265,                 // optional; defaults to 0.30 of the space's short side
   trayOverlay: true,               // optional: float the tray ON the board instead of
                                     // slicing a strip out of it. For a game whose
                                     // backdrop is a full scene this is the difference

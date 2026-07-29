@@ -90,9 +90,11 @@ Cars are dragged from a tray onto coupling positions on the track. Both input pa
 drag, and tap-tap (tap a car, then tap a coupling) — the engine supports both, and a
 child who cannot yet drag reliably is never locked out.
 
-- **Ordered builds.** Every build sets `ordered: true`; the train couples left to right,
-  which is the same direction the word is read. Grabbing a car that comes later gets a
-  gentle wiggle and *"Listen for the first car."* — never a failure state.
+- **Any order, but every car has its own coupling.** Builds are unordered: a child can
+  grab whichever car they notice first. What is enforced is *where* it goes — a car only
+  couples at its own position, so the word still comes out spelled correctly. Forcing
+  left-to-right was tidier for the engine and worse for the child: a five-year-old who has
+  spotted the `at` car should be able to act on that, not be told to wait.
 - **Wrong coupling** → boing, the car wiggles, the coupling wiggles, the car glides home,
   and the nudge line plays. The round never resets and nothing is lost.
 - **Drag feel** — the grab offset is preserved (capped at 0.35 of the card half-size), so
@@ -111,6 +113,18 @@ child who cannot yet drag reliably is never locked out.
   costs the line, not the game. See §12 for the bug that made this rule non-negotiable.
 - **Touch targets** — a car renders at ~187px in landscape and ~151px in portrait, tray
   cards at 132px. All comfortably over the 96px floor.
+
+### The picture reward
+
+When a build completes, the word's object card pops up above the train — a mat for `mat`,
+a sun for `sun` — while the blend readout plays, so the child sees the thing at the moment
+they hear the word. This is the payoff for a player who cannot read: without it, finishing
+a word produces a row of letters and a sound, and nothing that says what was made.
+
+It is an opt-in engine feature (`build.reveal`, an art ref, with optional `revealAt` and
+`revealSize`) and it holds for a minimum time of its own rather than however long the
+voice happens to take — with audio muted or a clip missing, the blend line returns
+instantly and the reward would otherwise flash past unseen.
 
 ## 5. Art world
 
@@ -281,12 +295,15 @@ v1 contract plus the extensions the Playwright suite needs:
    A portrait-specific taller plate is the fix if the child actually plays it that way.
 2. `couple` and `sounds` share all five words. If the repetition reads as dull rather than
    reinforcing, `sounds` should get its own word list.
-3. Snap radii for adjacent couplings overlap slightly. The engine resolves to the *nearest*
+3. `voice.wait` ("Listen for the first car.") is now unused — it existed for the
+   out-of-order nudge that unordered builds removed. Left in the config and recorded here
+   rather than deleted, in case a future mode wants ordered builds back.
+4. Snap radii for adjacent couplings overlap slightly. The engine resolves to the *nearest*
    coupling, so this is forgiving rather than ambiguous — but a drop roughly between two
    couplings will pick one rather than refusing.
-4. The locomotive is baked into the plate, so it cannot react to a completed train. A puff
+5. The locomotive is baked into the plate, so it cannot react to a completed train. A puff
    of steam on completion would need it promoted to a sprite.
-5. The five shared vowel tiles this game added are no longer used by it — the cars carry
+6. The five shared vowel tiles this game added are no longer used by it — the cars carry
    their letters now. They stay as a contribution to the shared set, not a dependency.
 
 ### The round-advance bug, and what it changed

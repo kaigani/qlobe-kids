@@ -320,12 +320,16 @@ async function captureRun(page, tag) {
     const s = window.QLOBE_DEBUG.getState();
     return s.placed === s.slotsTotal;
   }, null, { timeout: 15000, polling: 20 });
-  await page.waitForTimeout(260);
-  await shot('05-completed-train');
+  // Assert on the state at the MOMENT completion was detected, not after a sleep. The
+  // celebration is a race by nature — reveal hold, blend line, then the next deal — so a
+  // fixed wait can re-read once the next round has already reset `placed` and report a
+  // failure that never happened.
   const filled = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check(`${tag}: the completed-train frame really shows a full train`,
     filled.placed === filled.slotsTotal && filled.screen === 'play',
     `${filled.placed}/${filled.slotsTotal} on ${filled.screen}`);
+  await page.waitForTimeout(260);
+  await shot('05-completed-train');
   await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(0.05));
   await page.waitForFunction(() => {
     const s = window.QLOBE_DEBUG.getState();
@@ -407,12 +411,20 @@ async function main() {
     && afterWrong.consistent && afterWrong.dragging == null,
     JSON.stringify(afterWrong));
 
-  const outOfOrder = await tap(A.page, `part:${afterWrong.slotsTotal - 1}`);
-  check('gentle retry: a car that couples later is refused (accepted === false)',
-    outOfOrder.accepted === false, JSON.stringify(outOfOrder));
+  // Builds are UNORDERED by design: a child may pick up whichever car they notice first,
+  // so every tray car must be selectable. What stays enforced is the destination — a car
+  // only couples at its own position — which the wrong-coupling check above covers.
+  const anyCar = await tap(A.page, `part:${afterWrong.slotsTotal - 1}`);
+  check('any car in the tray can be picked up, whatever its position in the word',
+    anyCar.accepted === true, JSON.stringify(anyCar));
+  const lateTargets = await targets(A.page);
+  const ownCoupling = lateTargets.find((x) => x.role === 'correct');
+  check('a later car lights up its OWN coupling, not the leftmost one',
+    !!ownCoupling && ownCoupling.id === `slot:${afterWrong.slotsTotal - 1}`,
+    lateTargets.filter((x) => x.id.startsWith('slot:')).map((x) => `${x.id}:${x.role}`).join(' '));
   await waitSettled(A.page);
   const afterLate = await inventory(A.page);
-  check('gentle retry: the round survives an out-of-order car',
+  check('the round survives selecting a later car',
     afterLate.screen === 'play' && afterLate.awaitingInput && afterLate.placed === beforeWrong.placed
     && afterLate.consistent, JSON.stringify(afterLate));
 
