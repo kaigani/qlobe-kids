@@ -10,6 +10,10 @@ this repo and asked to build a game. Your job is to make that session succeed.
 **The fastest path is the `/new-game` skill — type `/new-game` and it walks the
 whole flow.** The rest of this file is the reference behind that skill.
 
+For the full clean-context path from the external concept library through local
+GenAI production, QLOBE Studio integration, visual QA, and GitHub Pages release,
+read **[`docs/agent-quickstart.md`](docs/agent-quickstart.md)**.
+
 ---
 
 ## Hard constraints (do not violate — these keep the platform shippable)

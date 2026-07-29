@@ -28,3 +28,9 @@ tools/state/
 # Python bytecode (server/tool test runs)
 __pycache__/
 *.pyc
+
+# Scratch dumps from asset-production passes. Intermediates live here while a batch is
+# being generated and QA'd; the finished assets are copied into shared/assets/ or the
+# game's own assets/ and THOSE are what ship. A 200 MB tmp/objects-webp/ dump duplicating
+# shared/assets/objects/ byte-for-byte nearly went into history from here.
+tmp/
