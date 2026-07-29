@@ -17,7 +17,7 @@ node games/letter-road-driving/tools/qa.mjs \
   --shots /private/tmp/letter-road-qa-shots/final
 ```
 
-Result: **34/34 checks passed** in real Google Chrome.
+Result: **36/36 checks passed** in real Google Chrome.
 
 - splash boots and both modes register;
 - runtime data contains A–Z exactly once with 26 unique generated destinations;
@@ -45,6 +45,8 @@ Result: **34/34 checks passed** in real Google Chrome.
 - Letter Town exposes and completes ordered multi-stroke letters;
 - dynamically selected M exposes all four strokes and the Music Shop scenario;
 - the longest destination title, Xylophone Hall, remains fitted on one line;
+- the three-stroke I route ends each pointer gesture cleanly and resets the car
+  exactly onto the third numbered start;
 - both complete modes reach the end screen;
 - portrait road board is 792×863 CSS px and remains usable;
 - reduced-motion trace completes;

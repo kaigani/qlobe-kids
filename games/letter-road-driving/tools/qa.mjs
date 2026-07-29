@@ -53,6 +53,14 @@ async function completeMode(page, mode) {
   }
 }
 
+async function drawStroke(page, points) {
+  if (!points || points.length < 2) return;
+  await page.mouse.move(points[0].x, points[0].y);
+  await page.mouse.down();
+  for (const point of points.slice(1)) await page.mouse.move(point.x, point.y);
+  await page.mouse.up();
+}
+
 async function main() {
   await mkdir(shots, { recursive: true });
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -257,6 +265,45 @@ async function main() {
       label: longDestination.destinationLabel,
     }));
   await page.screenshot({ path: path.join(shots, '03c-xylophone-hall-label.png') });
+
+  const letterI = await page.evaluate(async () => {
+    for (let seed = 0; seed < 100; seed += 1) {
+      window.QLOBE_DEBUG.seed(seed);
+      await window.QLOBE_DEBUG.startMode('town');
+      const state = window.QLOBE_DEBUG.getState();
+      if (state.path === 'i-road') {
+        return { ...state, seed, strokes: window.QLOBE_DEBUG.traceStrokes() };
+      }
+    }
+    return { ...window.QLOBE_DEBUG.getState(), strokes: [] };
+  });
+  check('Ice Cream Shop scenario exposes three-stroke I',
+    letterI.path === 'i-road' && letterI.strokes.length === 3,
+    `seed ${letterI.seed ?? 'not found'} path ${letterI.path}`);
+  if (letterI.strokes.length === 3) {
+    await drawStroke(page, letterI.strokes[0]);
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().stroke === 1);
+    await drawStroke(page, letterI.strokes[1]);
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().stroke === 2);
+  }
+  const iThirdStart = await page.evaluate(() => {
+    const state = window.QLOBE_DEBUG.getState();
+    const target = window.QLOBE_DEBUG.getTargets().find((item) => item.id === 'start:2');
+    const center = target
+      ? { x: target.rect.x + target.rect.w / 2, y: target.rect.y + target.rect.h / 2 }
+      : null;
+    return { state, center };
+  });
+  const iStartGap = iThirdStart.center && iThirdStart.state.travelerScreen
+    ? Math.hypot(
+      iThirdStart.center.x - iThirdStart.state.travelerScreen.x,
+      iThirdStart.center.y - iThirdStart.state.travelerScreen.y,
+    )
+    : Infinity;
+  check('third leg of I resets the car to its numbered start',
+    iThirdStart.state.path === 'i-road' && iThirdStart.state.stroke === 2 && iStartGap <= 3,
+    `car/start gap ${Number.isFinite(iStartGap) ? iStartGap.toFixed(1) : 'unavailable'}px`);
+  await page.screenshot({ path: path.join(shots, '03d-letter-i-third-start.png') });
 
   await completeMode(page, 'cruise');
   check('Easy Roads reaches end screen', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'end');

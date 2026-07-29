@@ -202,6 +202,7 @@ class TracePathGame {
       tap: (targetId) => this.debugTap(targetId),
       winRound: () => this.winRound(),
       tracePoints: () => this.tracePoints(),
+      traceStrokes: () => this.traceStrokes(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
     };
@@ -830,8 +831,10 @@ class TracePathGame {
   consumePointer() {
     const count = this.pointerQueueCount;
     if (!count) return;
+    const strokeIndex = this.strokeIndex;
     this.pointerQueueCount = 0;
     for (let i = 0; i < count; i++) {
+      if (this.strokeIndex !== strokeIndex) break;
       this.applyTracePointXY(this.pointerQueue[i * 2], this.pointerQueue[i * 2 + 1], true);
     }
   }
@@ -1028,6 +1031,11 @@ class TracePathGame {
     }
     this.playSfx('pop');
     if (this.strokeIndex < this.currentStrokes.length - 1) {
+      // A completed stroke ends the current drag. Otherwise its final
+      // pointer sample can also land on the next stroke (the middle and
+      // bottom bars of I intersect), immediately pulling the car away from
+      // the newly numbered start.
+      this.cancelTrace();
       this.strokeIndex += 1;
       this.brushReady = false;
       this.updateCheckpointStates(false);
@@ -1483,6 +1491,9 @@ class TracePathGame {
     const rewardBounds = this.rewardVisual && this.rewardVisual.visible
       ? this.rewardVisual.getBounds()
       : null;
+    const travelerScreen = this.traveler && this.stage
+      ? this.screenPointFor(this.traveler, 0, 0)
+      : null;
     return {
       screen: this.screen,
       mode: this.mode ? this.mode.id : null,
@@ -1502,6 +1513,9 @@ class TracePathGame {
         : 0,
       ghostVisible: Boolean(this.ghostTraveler && this.ghostTraveler.visible),
       actualVisible: Boolean(this.actualTraveler && this.actualTraveler.visible),
+      travelerScreen: travelerScreen
+        ? { x: travelerScreen.x, y: travelerScreen.y }
+        : null,
       rewardVisible: Boolean(
         this.rewardVisual
           && this.rewardVisual.visible
@@ -1605,6 +1619,13 @@ class TracePathGame {
       for (const point of stroke.points) if (point) points.push({ x: point.x, y: point.y });
     }
     return points;
+  }
+
+  traceStrokes() {
+    if (this.screen !== 'play') return [];
+    return this.strokesScreen.map((stroke) => (
+      stroke.points.filter(Boolean).map((point) => ({ x: point.x, y: point.y }))
+    ));
   }
 
   createDomBurst(anchor, count) {
