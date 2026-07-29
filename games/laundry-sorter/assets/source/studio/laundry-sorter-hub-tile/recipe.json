@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "laundry-sorter-hub-tile",
+  "kind": "image",
+  "asset": "laundry-sorter-hub-tile.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Three cheerful colorful toy socks and one neatly folded orange towel popping playfully from a glossy purple laundry basket, with a smaller aqua basket beside it and a few shiny soap bubbles floating around them. One clear toy-object scene, no room, no people, no hands, no text. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "Three cheerful colorful toy socks and one neatly folded orange towel popping playfully from a glossy purple laundry basket, with a smaller aqua basket beside it and a few shiny soap bubbles floating around them. One clear toy-object scene, no room, no people, no hands, no text."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-07-28"
+}

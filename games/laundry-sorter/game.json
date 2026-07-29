@@ -7,27 +7,31 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#2d7dd2",
-  "shareTitle": "Laundry Sorter 🧦 — Sorting Socks and Shirts",
-  "description": "Sort laundry cards into baskets by color or by clothing kind, building a proud little helping-at-home routine. A practical-life sorting game for ages 5–6.",
+  "accent": "#7b35d0",
+  "shareTitle": "Laundry Sorter — Sort, Fold, and Match",
+  "description": "Sort colorful socks, fold soft towels with broad swipes, and find matching pairs in a cheerful storybook laundry room for ages 5–6.",
   "learningGoals": [
-    "Sort objects by color",
-    "Sort clothing by category",
+    "Sort clothing by color",
+    "Follow a two-step folding sequence with broad directional swipes",
+    "Match identical visual pairs",
     "Build helping-at-home pride through a short laundry routine"
   ],
-  "interactionModel": "sort-into-bins drag or tap-tap clothing cards into laundry baskets",
-  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "strand-proof drag plus tap-tap sorting, broad swipe or tap folding, and face-up pair matching",
+  "feedbackModel": "Correct chores use soft fabric motion, sparkles, bubbles, basket counts, and warm recorded praise; misses wobble gently and replay a spoken model.",
   "uses": [
-    "shared/js/engines/sort-into-bins.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/assets/storybook/"
   ],
   "modes": [
-    { "id": "colors", "title": "Sort by Color", "skill": "color sorting and categorizing" },
-    { "id": "kinds", "title": "Socks and Shirts", "skill": "clothing-kind categorizing" }
+    { "id": "sort", "title": "Sort the Socks", "skill": "color categorization" },
+    { "id": "fold", "title": "Fold the Towels", "skill": "directional swipes and sequencing" },
+    { "id": "pairs", "title": "Find the Pairs", "skill": "visual matching and working memory" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; QLOBE Kids; GPT Image 2 room art; local Krea 2, Qwen Image Layered, and Qwen voice-clone production (see ASSETS.md). Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

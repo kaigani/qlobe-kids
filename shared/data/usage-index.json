@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-28T12:01:55.144Z",
+  "generated": "2026-07-29T05:17:12.235Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -94,17 +94,6 @@
         "weather-scientist"
       ]
     },
-    "sort-into-bins": {
-      "count": 6,
-      "games": [
-        "laundry-sorter",
-        "magnet-explorer",
-        "puzzle-map-match",
-        "sound-basket",
-        "table-setting-mission",
-        "tweezer-rescue"
-      ]
-    },
     "match-pairs": {
       "count": 6,
       "games": [
@@ -124,6 +113,16 @@
         "name-puzzle",
         "number-rod-race",
         "story-sequence"
+      ]
+    },
+    "sort-into-bins": {
+      "count": 5,
+      "games": [
+        "magnet-explorer",
+        "puzzle-map-match",
+        "sound-basket",
+        "table-setting-mission",
+        "tweezer-rescue"
       ]
     },
     "trace-path": {
@@ -245,12 +244,17 @@
       "category": "reading-phonics",
       "characters": [],
       "modules": [
+        "shared/js/content.js",
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/art-pixi.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
-        "shared/assets/letter-tiles",
+        "shared/assets/audio/celebrate",
+        "shared/assets/audio/fragments",
         "shared/assets/ui"
       ],
       "packs": []
@@ -639,29 +643,36 @@
       "packs": []
     },
     "laundry-sorter": {
-      "engine": "sort-into-bins",
+      "engine": null,
       "status": "beta",
       "category": "practical-life",
       "characters": [],
       "modules": [
-        "shared/js/engines/sort-into-bins.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/storybook"
+      ],
       "packs": []
     },
     "letter-road-driving": {
       "engine": "trace-path",
-      "status": "beta",
+      "status": "live",
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
         "shared/js/engines/trace-path.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "games/letter-road-driving/assets/audio"
+      ],
       "packs": []
     },
     "letter-treasure-hunt": {
@@ -1068,7 +1079,7 @@
     },
     "puppet-retell": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "oral-storytelling",
       "characters": [
         "bear",
@@ -1434,7 +1445,7 @@
     },
     "sound-painting": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "art-music",
       "characters": [],
       "modules": [
@@ -1773,6 +1784,7 @@
         "sound-sprouts"
       ],
       "shared/js/content.js": [
+        "blend-train",
         "flashlight-cave",
         "sand-tray-letters"
       ],
@@ -1874,7 +1886,6 @@
         "story-sequence"
       ],
       "shared/js/engines/sort-into-bins.js": [
-        "laundry-sorter",
         "magnet-explorer",
         "puzzle-map-match",
         "sound-basket",
@@ -2122,6 +2133,15 @@
         "weather-scientist",
         "world-music-dance"
       ],
+      "shared/js/stage": [
+        "letter-road-driving"
+      ],
+      "shared/js/stage/art-pixi.js": [
+        "blend-train"
+      ],
+      "shared/js/stage/drag-to-slot.js": [
+        "blend-train"
+      ],
       "shared/js/stage/lipsync.js": [
         "puppet-problem-solvers"
       ],
@@ -2159,6 +2179,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "laundry-sorter",
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
@@ -2166,9 +2187,12 @@
         "sound-sprouts"
       ],
       "shared/js/voice-clips.js": [
+        "blend-train",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "laundry-sorter",
+        "letter-road-driving",
         "lunchbox-pack",
         "my-puppet-band",
         "puppet-problem-solvers",
@@ -2363,6 +2387,9 @@
       "games/flashlight-cave/assets/pose-actors/ari": [
         "flashlight-cave"
       ],
+      "games/letter-road-driving/assets/audio": [
+        "letter-road-driving"
+      ],
       "games/lunchbox-pack/assets/lunchbox-closed.png": [
         "lunchbox-pack"
       ],
@@ -2402,7 +2429,11 @@
       "shared/assets/audio": [
         "sound-sprouts"
       ],
+      "shared/assets/audio/celebrate": [
+        "blend-train"
+      ],
       "shared/assets/audio/fragments": [
+        "blend-train",
         "flashlight-cave"
       ],
       "shared/assets/audio/isfor": [
@@ -2438,7 +2469,6 @@
         "my-puppet-band"
       ],
       "shared/assets/letter-tiles": [
-        "blend-train",
         "letter-treasure-hunt",
         "mystery-letter-bag",
         "silly-swap-words",
@@ -2471,6 +2501,9 @@
       ],
       "shared/assets/objects/sun.webp": [
         "tiny-reader-theater"
+      ],
+      "shared/assets/storybook": [
+        "laundry-sorter"
       ],
       "shared/assets/ui": [
         "bead-path-builder",

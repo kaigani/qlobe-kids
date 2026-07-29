@@ -5,55 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Laundry Sorter 🧦 — Sorting Socks and Shirts</title>
-  <meta name="description" content="Sort laundry cards into baskets by color or by clothing kind, building a proud little helping-at-home routine. A practical-life sorting game for ages 5–6." />
+  <meta name="theme-color" content="#39aef3" />
+  <title>Laundry Sorter — Sort, Fold, and Match</title>
+  <meta name="description" content="Sort colorful socks, fold soft towels, and find matching pairs in a cheerful storybook laundry room for ages 5–6." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Laundry Sorter" />
-  <meta property="og:title" content="Laundry Sorter 🧦 — Sorting Socks and Shirts" />
-  <meta property="og:description" content="Sort laundry cards into baskets by color or by clothing kind, building a proud little helping-at-home routine. A practical-life sorting game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Laundry Sorter — Sort, Fold, and Match" />
+  <meta property="og:description" content="Three playful laundry chores for little home helpers." />
   <meta property="og:url" content="https://qlo.be/games/laundry-sorter/" />
   <meta property="og:image" content="https://qlo.be/games/laundry-sorter/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Laundry Sorter title screen with Sort by Color and Socks and Shirts buttons in a cartoon laundry room with folded towels on a dresser." />
+  <meta property="og:image:alt" content="Laundry Sorter in a bright storybook laundry room with colorful socks, baskets, and towels." />
 
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Laundry Sorter 🧦 — Sorting Socks and Shirts" />
-  <meta name="twitter:description" content="Sort laundry cards into baskets by color or by clothing kind, building a proud little helping-at-home routine. A practical-life sorting game for ages 5–6." />
+  <meta name="twitter:title" content="Laundry Sorter — Sort, Fold, and Match" />
+  <meta name="twitter:description" content="Three playful laundry chores for little home helpers." />
   <meta name="twitter:image" content="https://qlo.be/games/laundry-sorter/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sort-into-bins.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off"></main>
+  <p id="announcer" class="visually-hidden" aria-live="polite"></p>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

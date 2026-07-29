@@ -1107,20 +1107,32 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#2d7dd2",
+      "accent": "#7b35d0",
       "modes": [
         {
-          "id": "colors",
-          "title": "Sort by Color",
-          "skill": "color sorting and categorizing"
+          "id": "sort",
+          "title": "Sort the Socks",
+          "skill": "color categorization"
         },
         {
-          "id": "kinds",
-          "title": "Socks and Shirts",
-          "skill": "clothing-kind categorizing"
+          "id": "fold",
+          "title": "Fold the Towels",
+          "skill": "directional swipes and sequencing"
+        },
+        {
+          "id": "pairs",
+          "title": "Find the Pairs",
+          "skill": "visual matching and working memory"
         }
       ],
-      "summary": "Sort socks, fold cloths, and match pairs."
+      "uses": [
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/assets/storybook/"
+      ],
+      "summary": "Sort colorful socks, fold soft towels, and find matching pairs in a cheerful storybook laundry room."
     },
     {
       "id": "sweep-the-trail",

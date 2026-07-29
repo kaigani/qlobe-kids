@@ -1,0 +1,60 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "laundry-towel-purple-folded",
+  "kind": "image",
+  "asset": "laundry-towel-purple-folded.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a single rich purple bath towel folded into one tidy thick rectangular stack, plush rounded fabric, subtle woven edge bands, front three-quarter view, isolated, centered. cosy children's picture-book illustration, hand-painted gouache and coloured-pencil texture on warm paper, chunky charcoal contours, charming imperfect brush marks, warm muted palette, gentle and emotionally warm.",
+      "ground": "dark-charcoal",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "laundry-towel-purple-folded.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a single rich purple bath towel folded into one tidy thick rectangular stack, plush rounded fabric, subtle woven edge bands, front three-quarter view, isolated, centered. cosy children's picture-book illustration, hand-painted gouache and coloured-pencil texture on warm paper, chunky charcoal contours, charming imperfect brush marks, warm muted palette, gentle and emotionally warm. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "laundry-towel-purple-folded.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 640,
+      "encode": "png",
+      "from": "laundry-towel-purple-folded.layer2.png",
+      "output": "laundry-towel-purple-folded.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "prop-cutout",
+    "style": "storybook",
+    "fields": {
+      "prop": "a single rich purple bath towel folded into one tidy thick rectangular stack, plush rounded fabric, subtle woven edge bands, front three-quarter view"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 48.666,
+      "opaquePct": 28.056,
+      "partialPct": 23.277
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 42
+  },
+  "created": "2026-07-28"
+}

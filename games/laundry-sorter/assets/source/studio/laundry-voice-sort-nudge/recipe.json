@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "laundry-voice-sort-nudge",
+  "kind": "voice",
+  "asset": "laundry-voice-sort-nudge.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Almost. Find the basket with the same color.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Almost. Find the basket with the same color."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Almost. Find the basket with the same color.",
+      "heard": "Almost find the basket with the same color.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-28"
+}
