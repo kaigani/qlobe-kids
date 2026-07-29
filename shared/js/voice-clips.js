@@ -144,20 +144,35 @@ export function trySay(key, isFile = false) {
 function playClip(src, text, token, key, dur) {
   const el = getChannel();
   return new Promise((resolve) => {
-    let done = false;
+    // `settled` guards the promise; `handled` guards the listeners. They are SEPARATE on
+    // purpose. Previously one flag did both, so the error path marked itself done before
+    // awaiting the speech fallback — and the safety timeout below then saw "done" and
+    // returned without resolving. If that fallback never settled (Web Speech is blocked
+    // until a gesture, and silently does nothing when it is), this promise hung forever.
+    // Anything awaiting it hung with it: build-assemble gates its round advance on the
+    // spoken blend line, so a child was left on a finished round with an empty tray and
+    // no way forward. Audio must never be able to strand a game.
+    let settled = false;
+    let handled = false;
     const cleanup = () => {
       el.removeEventListener('ended', onEnded);
       el.removeEventListener('error', onError);
     };
-    const finish = () => { if (done) return; done = true; cleanup(); resolve(); };
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      handled = true;   // a late 'error' after we finished must not fire a stray fallback
+      cleanup();
+      resolve();
+    };
     const onEnded = () => finish();
     const onError = () => {
-      if (done) return;
-      done = true;
+      if (handled) return;
+      handled = true;
       cleanup();
       // superseded by a newer say()/stop() — just resolve, don't speak
-      if (token !== playToken) { resolve(); return; }
-      speech.speak(text).then(resolve);
+      if (token !== playToken) { finish(); return; }
+      speech.speak(text).then(finish, finish);
     };
     el.addEventListener('ended', onEnded);
     el.addEventListener('error', onError);

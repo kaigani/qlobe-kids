@@ -361,8 +361,21 @@ domain in either case.
 ## 11. Drag & drop that can never strand a piece
 
 **When to use:** any game where a child drags an item (food, tile, card) to a
-target. Reference implementation: `games/lunchbox-pack/js/game.js`
-(`onCardDown`).
+target. Canonical implementation: `shared/js/stage/drag-to-slot.js` — a Stage
+v2 (Pixi) drag controller extracted from three near-identical copies of this
+pattern so there is one place to fix a stranded-piece bug. `build-assemble.js`
+adopts it today; `sequence-order.js` and `sort-into-bins.js` are the intended
+next adopters. The module owns everything below (window listeners, the slop
+gate, the lift, client→stage projection, the follow/tilt easing) and reports
+only the dragged card's centre back to the engine in stage coordinates — hit
+testing (which slot, which bin) stays engine-side, since that's the one thing
+that differs per archetype. It defaults to `grabOffset: 0.35` (the card stays
+under the finger's *grip point* rather than snapping its centre to the
+pointer); pass `grabOffset: 0` to reproduce today's centre-on-finger feel
+bit-for-bit, which is how a new adopter should land before opting into the
+offset feel as a separate, separately-verifiable change. The pre-extraction
+reference, `games/lunchbox-pack/js/game.js` (`onCardDown`), still shows the
+pattern for a game that hasn't adopted the module.
 
 Kids drag with both hands, mid-animation, and while the OS is doing something
 else. The naive version — listeners on the dragged element + pointer capture —

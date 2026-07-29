@@ -1,0 +1,611 @@
+{
+  "format": "qlobe-pose-reward-pack",
+  "formatVersion": 1,
+  "generated": "2026-07-28",
+  "sourceModel": "gpt-image-2",
+  "generationMode": "26 individual built-in generations",
+  "compositionReference": "user-supplied large quilt-shop pose-actor mockup",
+  "styleReference": "shared/characters/maya/portrait.png",
+  "extractionWorkflow": "qwen-image-layered",
+  "seed": 42,
+  "rewards": [
+    {
+      "id": "a",
+      "destination": "Art Studio",
+      "action": "painting at an easel",
+      "source": "assets/rewards/pose/source/a-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/a.png",
+      "bboxInCell": [
+        28,
+        17,
+        322,
+        318
+      ],
+      "alpha": {
+        "transparentPct": 43.417,
+        "opaquePct": 33.838,
+        "partialPct": 22.744
+      }
+    },
+    {
+      "id": "b",
+      "destination": "Bakery",
+      "action": "presenting bread",
+      "source": "assets/rewards/pose/source/b-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/b.png",
+      "bboxInCell": [
+        52,
+        12,
+        287,
+        328
+      ],
+      "alpha": {
+        "transparentPct": 70.523,
+        "opaquePct": 18.551,
+        "partialPct": 10.926
+      }
+    },
+    {
+      "id": "c",
+      "destination": "Cupcake Cafe",
+      "action": "presenting a giant cupcake",
+      "source": "assets/rewards/pose/source/c-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/c.png",
+      "bboxInCell": [
+        32,
+        9,
+        309,
+        327
+      ],
+      "alpha": {
+        "transparentPct": 59.726,
+        "opaquePct": 21.94,
+        "partialPct": 18.334
+      }
+    },
+    {
+      "id": "d",
+      "destination": "Dance Studio",
+      "action": "dancing with a ribbon",
+      "source": "assets/rewards/pose/source/d-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/d.png",
+      "bboxInCell": [
+        47,
+        8,
+        296,
+        332
+      ],
+      "alpha": {
+        "transparentPct": 69.788,
+        "opaquePct": 15.224,
+        "partialPct": 14.989
+      }
+    },
+    {
+      "id": "e",
+      "destination": "Engine Garage",
+      "action": "repairing a toy engine",
+      "source": "assets/rewards/pose/source/e-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/e.png",
+      "bboxInCell": [
+        50,
+        17,
+        292,
+        323
+      ],
+      "alpha": {
+        "transparentPct": 57.524,
+        "opaquePct": 23.567,
+        "partialPct": 18.909
+      }
+    },
+    {
+      "id": "f",
+      "destination": "Flower Shop",
+      "action": "hugging a bouquet",
+      "source": "assets/rewards/pose/source/f-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/f.png",
+      "bboxInCell": [
+        40,
+        8,
+        302,
+        332
+      ],
+      "alpha": {
+        "transparentPct": 61.168,
+        "opaquePct": 19.066,
+        "partialPct": 19.766
+      }
+    },
+    {
+      "id": "g",
+      "destination": "Grocery Market",
+      "action": "carrying produce",
+      "source": "assets/rewards/pose/source/g-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/g.png",
+      "bboxInCell": [
+        68,
+        10,
+        289,
+        328
+      ],
+      "alpha": {
+        "transparentPct": 66.097,
+        "opaquePct": 17.443,
+        "partialPct": 16.459
+      }
+    },
+    {
+      "id": "h",
+      "destination": "Hat Shop",
+      "action": "trying on a giant hat",
+      "source": "assets/rewards/pose/source/h-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/h.png",
+      "bboxInCell": [
+        65,
+        6,
+        267,
+        333
+      ],
+      "alpha": {
+        "transparentPct": 67.203,
+        "opaquePct": 20.004,
+        "partialPct": 12.793
+      }
+    },
+    {
+      "id": "i",
+      "destination": "Ice Cream Shop",
+      "action": "holding a giant ice-cream cone",
+      "source": "assets/rewards/pose/source/i-yellow.png",
+      "layer": "assets/rewards/pose/layered/a-i.layer2.png",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/i.png",
+      "bboxInCell": [
+        42,
+        6,
+        285,
+        330
+      ],
+      "alpha": {
+        "transparentPct": 61.915,
+        "opaquePct": 21.987,
+        "partialPct": 16.098
+      }
+    },
+    {
+      "id": "j",
+      "destination": "Juice Bar",
+      "action": "squeezing an orange",
+      "source": "assets/rewards/pose/source/j-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/j.png",
+      "bboxInCell": [
+        76,
+        10,
+        278,
+        327
+      ],
+      "alpha": {
+        "transparentPct": 67.852,
+        "opaquePct": 18.613,
+        "partialPct": 13.535
+      }
+    },
+    {
+      "id": "k",
+      "destination": "Kite Park",
+      "action": "flying a kite",
+      "source": "assets/rewards/pose/source/k-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/k.png",
+      "bboxInCell": [
+        37,
+        12,
+        301,
+        325
+      ],
+      "alpha": {
+        "transparentPct": 74.563,
+        "opaquePct": 13.139,
+        "partialPct": 12.298
+      }
+    },
+    {
+      "id": "l",
+      "destination": "Library",
+      "action": "reading a picture book",
+      "source": "assets/rewards/pose/source/l-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/l.png",
+      "bboxInCell": [
+        48,
+        31,
+        314,
+        327
+      ],
+      "alpha": {
+        "transparentPct": 51.685,
+        "opaquePct": 24.863,
+        "partialPct": 23.452
+      }
+    },
+    {
+      "id": "m",
+      "destination": "Music Shop",
+      "action": "playing a keyboard",
+      "source": "assets/rewards/pose/source/m-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/m.png",
+      "bboxInCell": [
+        56,
+        8,
+        286,
+        334
+      ],
+      "alpha": {
+        "transparentPct": 67.115,
+        "opaquePct": 17.131,
+        "partialPct": 15.755
+      }
+    },
+    {
+      "id": "n",
+      "destination": "Nature Center",
+      "action": "watching a butterfly",
+      "source": "assets/rewards/pose/source/n-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/n.png",
+      "bboxInCell": [
+        48,
+        20,
+        294,
+        320
+      ],
+      "alpha": {
+        "transparentPct": 64.59,
+        "opaquePct": 15.192,
+        "partialPct": 20.218
+      }
+    },
+    {
+      "id": "o",
+      "destination": "Observatory",
+      "action": "using a telescope",
+      "source": "assets/rewards/pose/source/o-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/o.png",
+      "bboxInCell": [
+        40,
+        16,
+        302,
+        321
+      ],
+      "alpha": {
+        "transparentPct": 58.704,
+        "opaquePct": 18.018,
+        "partialPct": 23.278
+      }
+    },
+    {
+      "id": "p",
+      "destination": "Pet Store",
+      "action": "cuddling a puppy",
+      "source": "assets/rewards/pose/source/p-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/p.png",
+      "bboxInCell": [
+        67,
+        11,
+        281,
+        327
+      ],
+      "alpha": {
+        "transparentPct": 64.859,
+        "opaquePct": 18.828,
+        "partialPct": 16.313
+      }
+    },
+    {
+      "id": "q",
+      "destination": "Quilt Shop",
+      "action": "holding a patchwork quilt",
+      "source": "assets/rewards/pose/source/q-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/q.png",
+      "bboxInCell": [
+        44,
+        15,
+        295,
+        328
+      ],
+      "alpha": {
+        "transparentPct": 62.793,
+        "opaquePct": 23.639,
+        "partialPct": 13.567
+      }
+    },
+    {
+      "id": "r",
+      "destination": "Robot Repair",
+      "action": "repairing a friendly robot",
+      "source": "assets/rewards/pose/source/r-yellow.png",
+      "layer": "assets/rewards/pose/layered/j-r.layer2.png",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/r.png",
+      "bboxInCell": [
+        35,
+        24,
+        304,
+        317
+      ],
+      "alpha": {
+        "transparentPct": 46.949,
+        "opaquePct": 24.281,
+        "partialPct": 28.771
+      }
+    },
+    {
+      "id": "s",
+      "destination": "Sweet Shop",
+      "action": "holding a giant lollipop",
+      "source": "assets/rewards/pose/source/s-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/s.png",
+      "bboxInCell": [
+        46,
+        21,
+        295,
+        321
+      ],
+      "alpha": {
+        "transparentPct": 57.116,
+        "opaquePct": 26.326,
+        "partialPct": 16.557
+      }
+    },
+    {
+      "id": "t",
+      "destination": "Toy Shop",
+      "action": "building with blocks",
+      "source": "assets/rewards/pose/source/t-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/t.png",
+      "bboxInCell": [
+        38,
+        7,
+        306,
+        334
+      ],
+      "alpha": {
+        "transparentPct": 54.57,
+        "opaquePct": 26.092,
+        "partialPct": 19.338
+      }
+    },
+    {
+      "id": "u",
+      "destination": "Umbrella Shop",
+      "action": "twirling a rainbow umbrella",
+      "source": "assets/rewards/pose/source/u-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/u.png",
+      "bboxInCell": [
+        74,
+        16,
+        295,
+        322
+      ],
+      "alpha": {
+        "transparentPct": 66.798,
+        "opaquePct": 19.731,
+        "partialPct": 13.471
+      }
+    },
+    {
+      "id": "v",
+      "destination": "Vet Clinic",
+      "action": "checking a kitten",
+      "source": "assets/rewards/pose/source/v-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/v.png",
+      "bboxInCell": [
+        46,
+        7,
+        296,
+        320
+      ],
+      "alpha": {
+        "transparentPct": 58.45,
+        "opaquePct": 21.496,
+        "partialPct": 20.054
+      }
+    },
+    {
+      "id": "w",
+      "destination": "Water Park",
+      "action": "leaping through a splash",
+      "source": "assets/rewards/pose/source/w-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/w.png",
+      "bboxInCell": [
+        30,
+        15,
+        316,
+        332
+      ],
+      "alpha": {
+        "transparentPct": 52.01,
+        "opaquePct": 32.798,
+        "partialPct": 15.192
+      }
+    },
+    {
+      "id": "x",
+      "destination": "Xylophone Hall",
+      "action": "playing a rainbow xylophone",
+      "source": "assets/rewards/pose/source/x-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/pose/final/x.png",
+      "bboxInCell": [
+        54,
+        14,
+        309,
+        337
+      ],
+      "alpha": {
+        "transparentPct": 62.641,
+        "opaquePct": 20.321,
+        "partialPct": 17.038
+      }
+    },
+    {
+      "id": "y",
+      "destination": "Yarn Shop",
+      "action": "knitting a rainbow scarf",
+      "source": "assets/rewards/pose/source/y-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/pose/final/y.png",
+      "bboxInCell": [
+        55,
+        17,
+        259,
+        316
+      ],
+      "alpha": {
+        "transparentPct": 66.693,
+        "opaquePct": 22.478,
+        "partialPct": 10.828
+      }
+    },
+    {
+      "id": "z",
+      "destination": "Zoo",
+      "action": "feeding a baby giraffe",
+      "source": "assets/rewards/pose/source/z-yellow.png",
+      "layer": "assets/rewards/pose/layered/s-z.layer2.png",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/pose/final/z.png",
+      "bboxInCell": [
+        41,
+        41,
+        327,
+        299
+      ],
+      "alpha": {
+        "transparentPct": 57.056,
+        "opaquePct": 22.466,
+        "partialPct": 20.478
+      }
+    }
+  ]
+}

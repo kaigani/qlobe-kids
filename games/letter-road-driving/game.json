@@ -5,29 +5,46 @@
   "path": "games/letter-road-driving/",
   "icon": "🚗",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": {
+    "min": 5,
+    "max": 6
+  },
   "status": "live",
-  "accent": "#8b8f98",
+  "accent": "#1677d2",
   "shareTitle": "Letter Road Driving 🚗 — Letter Shapes on Wheels",
-  "description": "Trace each letter like a road, steering a little car along every curve and corner. A playful pre-writing game for ages 5–6.",
+  "description": "Help five cheerful car friends reach letter-linked destinations by tracing uppercase roads, then watch them drive the finished route.",
   "learningGoals": [
     "Explore letter shapes through movement and direction",
-    "Practice crisp straight-road letter forms",
-    "Practice curved-road letter forms with playful racing feedback"
+    "Control one continuous stroke through straight and curved letter forms",
+    "Follow numbered starts to learn uppercase multi-stroke order"
   ],
-  "interactionModel": "trace-path finger tracing with car emoji travelers on letter-shaped roads",
-  "feedbackModel": "Successful drives get car-themed spoken cheers with sparkle/pop SFX; off-road tracing gets a gentle spoken steering nudge.",
+  "interactionModel": "strand-proof finger tracing with a translucent planning car, followed by an expressive solid-car drive replay",
+  "feedbackModel": "Named missions, decorated destinations, gold lanes, sustained toy motor, arrival horn, A–Z full-body destination-action rewards, cloned teacher voice, and gentle spoken off-road guidance.",
   "uses": [
     "shared/js/engines/trace-path.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/stage/",
+    "games/letter-road-driving/assets/audio/"
   ],
   "modes": [
-    { "id": "roads", "title": "Letter Roads", "skill": "straight and angled uppercase letter shapes" },
-    { "id": "race", "title": "Curvy Roads", "skill": "curved uppercase letter shapes" }
+    {
+      "id": "cruise",
+      "title": "Easy Roads",
+      "skill": "continuous control on single-stroke uppercase letter shapes"
+    },
+    {
+      "id": "town",
+      "title": "Letter Town",
+      "skill": "numbered multi-stroke uppercase letter formation"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Kaigani; gpt-image-2 countryside and car art with Qwen Layered extraction; local Qwen teacher-voice clone; shared QLOBE Stage and UI.",
   "characters": [],
   "conceptVideo": null
 }

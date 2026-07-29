@@ -138,23 +138,27 @@
       "status": "beta",
       "accent": "#2d7dd2",
       "uses": [
-        "shared/js/audio.js",
+        "shared/js/engines/build-assemble.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/voice-clips.js",
+        "shared/js/content.js",
         "shared/js/sfx.js",
-        "shared/assets/letter-tiles/"
+        "shared/assets/audio/fragments/",
+        "shared/assets/audio/celebrate/"
       ],
       "modes": [
         {
           "id": "couple",
           "title": "Couple the Cars",
-          "skill": "onset-rime blending with two sound parts"
+          "skill": "onset-rime blending with two sound cars"
         },
         {
-          "id": "three",
-          "title": "Three-Car Trains",
-          "skill": "onset-rime blending connected to a whole-word card"
+          "id": "sounds",
+          "title": "Sound Cars",
+          "skill": "phoneme-by-phoneme blending with three sound cars"
         }
       ],
-      "summary": "Push sound cars together to blend a word like m-a-t."
+      "summary": "Push sound cars together on the track and hear them blend into a word."
     },
     {
       "id": "pattern-train",
@@ -708,20 +712,27 @@
         "max": 6
       },
       "status": "live",
-      "accent": "#8b8f98",
+      "accent": "#1677d2",
+      "uses": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/voice-clips.js",
+        "shared/js/stage/",
+        "shared/js/sfx.js",
+        "games/letter-road-driving/assets/audio/"
+      ],
       "modes": [
         {
-          "id": "roads",
-          "title": "Letter Roads",
-          "skill": "straight and angled uppercase letter shapes"
+          "id": "cruise",
+          "title": "Easy Roads",
+          "skill": "continuous control on single-stroke uppercase letter shapes"
         },
         {
-          "id": "race",
-          "title": "Curvy Roads",
-          "skill": "curved uppercase letter shapes"
+          "id": "town",
+          "title": "Letter Town",
+          "skill": "numbered multi-stroke uppercase letter formation"
         }
       ],
-      "summary": "Drive a toy car along the shape of a letter."
+      "summary": "Steer a cheerful car along glowing letter roads, then follow numbered starts to build multi-stroke capitals."
     },
     {
       "id": "scissor-trail-safari",

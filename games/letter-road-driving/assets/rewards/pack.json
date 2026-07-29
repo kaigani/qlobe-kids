@@ -1,0 +1,605 @@
+{
+  "format": "qlobe-reward-pack",
+  "formatVersion": 1,
+  "generated": "2026-07-28",
+  "sourceModel": "gpt-image-2",
+  "styleReference": "shared/characters/maya/portrait.png",
+  "extractionWorkflow": "qwen-image-layered",
+  "seed": 42,
+  "rewards": [
+    {
+      "id": "a",
+      "destination": "Art Studio",
+      "action": "painting at an easel",
+      "sheet": "rewards-a-i",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/final/a.png",
+      "bboxInCell": [
+        93,
+        34,
+        334,
+        335
+      ],
+      "alpha": {
+        "transparentPct": 82.01,
+        "opaquePct": 9.733,
+        "partialPct": 8.257
+      }
+    },
+    {
+      "id": "b",
+      "destination": "Bakery",
+      "action": "holding a tray of bread",
+      "sheet": "rewards-a-i",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/final/b.png",
+      "bboxInCell": [
+        49,
+        26,
+        253,
+        335
+      ],
+      "alpha": {
+        "transparentPct": 86.671,
+        "opaquePct": 8.839,
+        "partialPct": 4.49
+      }
+    },
+    {
+      "id": "c",
+      "destination": "Cupcake Cafe",
+      "action": "presenting a cupcake",
+      "sheet": "rewards-a-i",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/final/c.png",
+      "bboxInCell": [
+        3,
+        46,
+        248,
+        337
+      ],
+      "alpha": {
+        "transparentPct": 86.45,
+        "opaquePct": 10.617,
+        "partialPct": 2.933
+      }
+    },
+    {
+      "id": "d",
+      "destination": "Dance Studio",
+      "action": "performing a dance pose",
+      "sheet": "rewards-a-i",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/final/d.png",
+      "bboxInCell": [
+        82,
+        13,
+        327,
+        338
+      ],
+      "alpha": {
+        "transparentPct": 89.094,
+        "opaquePct": 7.587,
+        "partialPct": 3.319
+      }
+    },
+    {
+      "id": "e",
+      "destination": "Engine Garage",
+      "action": "holding a toy wrench",
+      "sheet": "rewards-a-i",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/final/e.png",
+      "bboxInCell": [
+        68,
+        19,
+        294,
+        339
+      ],
+      "alpha": {
+        "transparentPct": 85.586,
+        "opaquePct": 9.608,
+        "partialPct": 4.806
+      }
+    },
+    {
+      "id": "f",
+      "destination": "Flower Shop",
+      "action": "carrying a bouquet",
+      "sheet": "rewards-a-i",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/final/f.png",
+      "bboxInCell": [
+        22,
+        14,
+        253,
+        317
+      ],
+      "alpha": {
+        "transparentPct": 86.094,
+        "opaquePct": 6.945,
+        "partialPct": 6.961
+      }
+    },
+    {
+      "id": "g",
+      "destination": "Grocery Market",
+      "action": "holding a produce basket",
+      "sheet": "rewards-a-i",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/final/g.png",
+      "bboxInCell": [
+        107,
+        0,
+        305,
+        308
+      ],
+      "alpha": {
+        "transparentPct": 86.069,
+        "opaquePct": 6.664,
+        "partialPct": 7.266
+      }
+    },
+    {
+      "id": "h",
+      "destination": "Hat Shop",
+      "action": "trying on a big hat",
+      "sheet": "rewards-a-i",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/final/h.png",
+      "bboxInCell": [
+        52,
+        0,
+        257,
+        309
+      ],
+      "alpha": {
+        "transparentPct": 86.021,
+        "opaquePct": 9.957,
+        "partialPct": 4.023
+      }
+    },
+    {
+      "id": "i",
+      "destination": "Ice Cream Shop",
+      "action": "holding an ice-cream cone",
+      "sheet": "rewards-a-i",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/rewards/final/i.png",
+      "bboxInCell": [
+        25,
+        5,
+        223,
+        306
+      ],
+      "alpha": {
+        "transparentPct": 85.776,
+        "opaquePct": 8.341,
+        "partialPct": 5.883
+      }
+    },
+    {
+      "id": "j",
+      "destination": "Juice Bar",
+      "action": "squeezing an orange",
+      "sheet": "rewards-j-r",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/final/j.png",
+      "bboxInCell": [
+        120,
+        20,
+        319,
+        330
+      ],
+      "alpha": {
+        "transparentPct": 85.956,
+        "opaquePct": 7.566,
+        "partialPct": 6.479
+      }
+    },
+    {
+      "id": "k",
+      "destination": "Kite Park",
+      "action": "flying a kite",
+      "sheet": "rewards-j-r",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/final/k.png",
+      "bboxInCell": [
+        43,
+        21,
+        332,
+        331
+      ],
+      "alpha": {
+        "transparentPct": 87.284,
+        "opaquePct": 7.427,
+        "partialPct": 5.289
+      }
+    },
+    {
+      "id": "l",
+      "destination": "Library",
+      "action": "reading an open book",
+      "sheet": "rewards-j-r",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/final/l.png",
+      "bboxInCell": [
+        53,
+        31,
+        238,
+        329
+      ],
+      "alpha": {
+        "transparentPct": 87.117,
+        "opaquePct": 8.895,
+        "partialPct": 3.988
+      }
+    },
+    {
+      "id": "m",
+      "destination": "Music Shop",
+      "action": "playing a keyboard",
+      "sheet": "rewards-j-r",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/final/m.png",
+      "bboxInCell": [
+        102,
+        8,
+        313,
+        338
+      ],
+      "alpha": {
+        "transparentPct": 85.65,
+        "opaquePct": 8.587,
+        "partialPct": 5.764
+      }
+    },
+    {
+      "id": "n",
+      "destination": "Nature Center",
+      "action": "watching a butterfly",
+      "sheet": "rewards-j-r",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/final/n.png",
+      "bboxInCell": [
+        59,
+        13,
+        276,
+        342
+      ],
+      "alpha": {
+        "transparentPct": 87.449,
+        "opaquePct": 4.775,
+        "partialPct": 7.776
+      }
+    },
+    {
+      "id": "o",
+      "destination": "Observatory",
+      "action": "looking through a telescope",
+      "sheet": "rewards-j-r",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/final/o.png",
+      "bboxInCell": [
+        9,
+        22,
+        273,
+        307
+      ],
+      "alpha": {
+        "transparentPct": 85.082,
+        "opaquePct": 8.95,
+        "partialPct": 5.967
+      }
+    },
+    {
+      "id": "p",
+      "destination": "Pet Store",
+      "action": "holding a puppy",
+      "sheet": "rewards-j-r",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/final/p.png",
+      "bboxInCell": [
+        67,
+        0,
+        304,
+        296
+      ],
+      "alpha": {
+        "transparentPct": 84.117,
+        "opaquePct": 9.655,
+        "partialPct": 6.229
+      }
+    },
+    {
+      "id": "q",
+      "destination": "Quilt Shop",
+      "action": "holding a patchwork quilt",
+      "sheet": "rewards-j-r",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/final/q.png",
+      "bboxInCell": [
+        23,
+        0,
+        273,
+        301
+      ],
+      "alpha": {
+        "transparentPct": 83.06,
+        "opaquePct": 12.574,
+        "partialPct": 4.366
+      }
+    },
+    {
+      "id": "r",
+      "destination": "Robot Repair",
+      "action": "repairing a toy robot",
+      "sheet": "rewards-j-r",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/rewards/final/r.png",
+      "bboxInCell": [
+        6,
+        2,
+        254,
+        296
+      ],
+      "alpha": {
+        "transparentPct": 81.865,
+        "opaquePct": 8.824,
+        "partialPct": 9.312
+      }
+    },
+    {
+      "id": "s",
+      "destination": "Sweet Shop",
+      "action": "holding a spiral lollipop",
+      "sheet": "rewards-s-z",
+      "cell": [
+        0,
+        0
+      ],
+      "asset": "assets/rewards/final/s.png",
+      "bboxInCell": [
+        76,
+        20,
+        319,
+        341
+      ],
+      "alpha": {
+        "transparentPct": 85.898,
+        "opaquePct": 6.677,
+        "partialPct": 7.425
+      }
+    },
+    {
+      "id": "t",
+      "destination": "Toy Shop",
+      "action": "building with toy blocks",
+      "sheet": "rewards-s-z",
+      "cell": [
+        0,
+        1
+      ],
+      "asset": "assets/rewards/final/t.png",
+      "bboxInCell": [
+        41,
+        65,
+        304,
+        323
+      ],
+      "alpha": {
+        "transparentPct": 85.56,
+        "opaquePct": 8.049,
+        "partialPct": 6.391
+      }
+    },
+    {
+      "id": "u",
+      "destination": "Umbrella Shop",
+      "action": "twirling a rainbow umbrella",
+      "sheet": "rewards-s-z",
+      "cell": [
+        0,
+        2
+      ],
+      "asset": "assets/rewards/final/u.png",
+      "bboxInCell": [
+        10,
+        16,
+        274,
+        317
+      ],
+      "alpha": {
+        "transparentPct": 84.871,
+        "opaquePct": 11.095,
+        "partialPct": 4.034
+      }
+    },
+    {
+      "id": "v",
+      "destination": "Vet Clinic",
+      "action": "checking a kitten",
+      "sheet": "rewards-s-z",
+      "cell": [
+        1,
+        0
+      ],
+      "asset": "assets/rewards/final/v.png",
+      "bboxInCell": [
+        84,
+        0,
+        307,
+        339
+      ],
+      "alpha": {
+        "transparentPct": 83.722,
+        "opaquePct": 9.884,
+        "partialPct": 6.393
+      }
+    },
+    {
+      "id": "w",
+      "destination": "Water Park",
+      "action": "splashing with a swim ring",
+      "sheet": "rewards-s-z",
+      "cell": [
+        1,
+        1
+      ],
+      "asset": "assets/rewards/final/w.png",
+      "bboxInCell": [
+        19,
+        4,
+        308,
+        319
+      ],
+      "alpha": {
+        "transparentPct": 80.77,
+        "opaquePct": 11.632,
+        "partialPct": 7.598
+      }
+    },
+    {
+      "id": "x",
+      "destination": "Xylophone Hall",
+      "action": "playing a rainbow xylophone",
+      "sheet": "rewards-s-z",
+      "cell": [
+        1,
+        2
+      ],
+      "asset": "assets/rewards/final/x.png",
+      "bboxInCell": [
+        32,
+        10,
+        254,
+        340
+      ],
+      "alpha": {
+        "transparentPct": 84.392,
+        "opaquePct": 8.923,
+        "partialPct": 6.685
+      }
+    },
+    {
+      "id": "y",
+      "destination": "Yarn Shop",
+      "action": "knitting a colorful scarf",
+      "sheet": "rewards-s-z",
+      "cell": [
+        2,
+        0
+      ],
+      "asset": "assets/rewards/final/y.png",
+      "bboxInCell": [
+        56,
+        0,
+        300,
+        304
+      ],
+      "alpha": {
+        "transparentPct": 81.813,
+        "opaquePct": 13.1,
+        "partialPct": 5.087
+      }
+    },
+    {
+      "id": "z",
+      "destination": "Zoo",
+      "action": "feeding a baby giraffe",
+      "sheet": "rewards-s-z",
+      "cell": [
+        2,
+        1
+      ],
+      "asset": "assets/rewards/final/z.png",
+      "bboxInCell": [
+        33,
+        4,
+        342,
+        301
+      ],
+      "alpha": {
+        "transparentPct": 80.462,
+        "opaquePct": 12.072,
+        "partialPct": 7.465
+      }
+    },
+    {
+      "id": "bonus",
+      "destination": "Alphabet Celebration",
+      "action": "holding a golden star",
+      "sheet": "rewards-s-z",
+      "cell": [
+        2,
+        2
+      ],
+      "asset": "assets/rewards/final/bonus.png",
+      "bboxInCell": [
+        0,
+        0,
+        230,
+        316
+      ],
+      "alpha": {
+        "transparentPct": 87.886,
+        "opaquePct": 7.424,
+        "partialPct": 4.691
+      }
+    }
+  ]
+}

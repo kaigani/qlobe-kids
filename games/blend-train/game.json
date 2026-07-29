@@ -5,32 +5,51 @@
   "path": "games/blend-train/",
   "icon": "🚂",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": {
+    "min": 5,
+    "max": 6
+  },
   "status": "beta",
   "accent": "#2d7dd2",
-  "shareTitle": "Blend Train 🚂 — Onset-Rime Word Blending",
-  "description": "Couple onset and rime train cars, hear each sound spoken, and listen as the finished train blends them into a word. A playful phonics ride for ages 5–6.",
+  "shareTitle": "Blend Train 🚂 — Sound Cars & Word Blending",
+  "description": "Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5-6.",
   "learningGoals": [
-    "Practice onset-rime blending",
-    "Hear how sound parts combine into CVC words",
-    "Use tap-tap or drag placement to build words without required reading"
+    "Blend onset and rime chunks into a word (m + at)",
+    "Blend a word sound by sound (m + a + t)",
+    "Notice that the vowel is a different kind of sound from the consonants"
   ],
-  "interactionModel": "build-assemble drag or tap-tap sound cars into track positions",
-  "feedbackModel": "Correct cars pop, sparkle, and speak their sound; misses wiggle gently with a spoken nudge and retry. Finished trains speak the slow blend and word.",
+  "interactionModel": "build-assemble: drag or tap-tap sound cars onto couplings along the track, left to right in reading order",
+  "feedbackModel": "Coupled cars lock on, sparkle and speak their own recorded sound; a wrong coupling wiggles gently and glides the car home with a spoken nudge, never a failure. A finished train blends the sounds slowly and then celebrates the word.",
   "uses": [
     "shared/js/engines/build-assemble.js",
+    "shared/js/stage/drag-to-slot.js",
+    "shared/js/stage/art-pixi.js",
+    "shared/js/voice-clips.js",
+    "shared/js/content.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
-    "shared/assets/letter-tiles/",
+    "shared/assets/audio/fragments/",
+    "shared/assets/audio/celebrate/",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "couple", "title": "Couple the Cars", "skill": "onset-rime blending with two sound parts" },
-    { "id": "three", "title": "Three-Car Trains", "skill": "onset-rime blending connected to a whole-word card" }
+    {
+      "id": "couple",
+      "title": "Couple the Cars",
+      "skill": "onset-rime blending with two sound cars"
+    },
+    {
+      "id": "sounds",
+      "title": "Sound Cars",
+      "skill": "phoneme-by-phoneme blending with three sound cars"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; shared QLOBE Kids letter-tile art and placeholder text cards. Built with Codex for QLOBE Kids.",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Kaigani. Train art generated locally (krea2-turbo-t2i, qwen-image-layered); letter tiles and teacher voice from the shared QLOBE Kids library. Built with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

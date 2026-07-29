@@ -6,25 +6,25 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
-  <title>Blend Train 🚂 — Onset-Rime Word Blending</title>
-  <meta name="description" content="Couple onset and rime train cars, hear each sound spoken, and listen as the finished train blends them into a word. A playful phonics ride for ages 5–6." />
+  <title>Blend Train 🚂 — Sound Cars & Word Blending</title>
+  <meta name="description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Blend Train" />
-  <meta property="og:title" content="Blend Train 🚂 — Onset-Rime Word Blending" />
-  <meta property="og:description" content="Couple onset and rime train cars, hear each sound spoken, and listen as the finished train blends them into a word. A playful phonics ride for ages 5–6." />
+  <meta property="og:title" content="Blend Train 🚂 — Sound Cars & Word Blending" />
+  <meta property="og:description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/blend-train/" />
   <meta property="og:image" content="https://qlo.be/games/blend-train/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Blend Train title screen with Couple the Cars and Three-Car Trains modes and a toy steam train icon." />
+  <meta property="og:image:alt" content="Blend Train title screen showing a toy steam train pulling blank letter cars, with the Couple the Cars and Sound Cars modes." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Blend Train 🚂 — Onset-Rime Word Blending" />
-  <meta name="twitter:description" content="Couple onset and rime train cars, hear each sound spoken, and listen as the finished train blends them into a word. A playful phonics ride for ages 5–6." />
+  <meta name="twitter:title" content="Blend Train 🚂 — Sound Cars & Word Blending" />
+  <meta name="twitter:description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/blend-train/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
@@ -48,6 +48,11 @@
     }
     #game { min-height: 100dvh; }
   </style>
+  <!-- Game-local styling. The engine injects its shared stylesheet at runtime, so this
+       link lands earlier in the cascade; every rule inside is scoped under #game so it
+       still outranks the engine's. Only this game loads it — the other 14
+       build-assemble games are untouched. -->
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div id="game"></div>

@@ -7,6 +7,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import * as voiceClips from '../voice-clips.js';
 import { artEl } from './art.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease } from '../stage/tween.js';
@@ -74,6 +75,7 @@ class TracePathGame {
     this.idlePrompted = false;
     this.wanderTimer = 0;
     this.wanderNudged = false;
+    this.drivingReplay = false;
     this.rng = Math.random;
     this.fxRng = Math.random;
     this.motionReduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -91,6 +93,12 @@ class TracePathGame {
     this.checkpoints = [];
     this.startMarkers = [];
     this.traveler = null;
+    this.actualTraveler = null;
+    this.ghostTraveler = null;
+    this.rewardVisual = null;
+    this.rewardRevealed = false;
+    this.destinationView = null;
+    this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
     this.demo = null;
@@ -138,12 +146,18 @@ class TracePathGame {
     // so the listener lives on the mount and survives every screen swap
     this.mountEl.addEventListener('click', (event) => {
       if (event.target && event.target.closest && event.target.closest('.qk-trace-back')) {
-        speech.stop();
+        this.stopVoice();
         this.renderSplash();
       }
     });
     this.renderSplash();
-    this.ready = Promise.resolve();
+    this.ready = this.config.voiceClips
+      ? voiceClips.init(
+        this.config.voiceClips.manifest,
+        this.config.voiceClips.lines,
+        voiceDefaults(this.config),
+      )
+      : Promise.resolve();
     this.installDebugHook();
   }
 
@@ -155,7 +169,7 @@ class TracePathGame {
     this.cancelDemo();
     this.removeTraceListeners();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
@@ -172,6 +186,7 @@ class TracePathGame {
     this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
+    if (this.config.voiceClips) voiceClips.unlock();
   }
 
   installDebugHook() {
@@ -187,6 +202,7 @@ class TracePathGame {
       tap: (targetId) => this.debugTap(targetId),
       winRound: () => this.winRound(),
       tracePoints: () => this.tracePoints(),
+      traceStrokes: () => this.traceStrokes(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
     };
@@ -203,7 +219,7 @@ class TracePathGame {
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
-    speech.stop();
+    this.stopVoice();
 
     this.mountEl.replaceChildren();
     const root = el('section', 'qk-trace qk-trace-splash');
@@ -242,7 +258,7 @@ class TracePathGame {
     this.cancelDemo();
     this.removeTraceListeners();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
     this.mode = mode;
     this.screen = 'play';
     this.roundIndex = 0;
@@ -267,7 +283,7 @@ class TracePathGame {
     root.setAttribute('aria-label', this.mode.title || this.config.title);
     const hud = el('header', 'qk-trace-hud');
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
     const progress = el('div', 'qk-trace-progress');
     progress.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot'));
@@ -325,6 +341,12 @@ class TracePathGame {
     this.fxLayer = null;
     this.demoLayer = null;
     this.traveler = null;
+    this.actualTraveler = null;
+    this.ghostTraveler = null;
+    this.rewardVisual = null;
+    this.rewardRevealed = false;
+    this.destinationView = null;
+    this.decorLayer = null;
     this.demoDot = null;
     this.demoTrail = null;
     this.completionShimmer = null;
@@ -353,20 +375,21 @@ class TracePathGame {
     this.brushReady = false;
     this.awaitingInput = false;
     this.inputLocked = true;
+    this.destinationView = null;
     this.idlePrompted = false;
     this.wanderNudged = false;
     const generation = ++this.roundGeneration;
 
     this.updateDots();
-    const prompt = this.mountEl.querySelector('.qk-trace-prompt');
-    if (prompt) prompt.textContent = this.currentPrompt();
+    this.renderCurrentPrompt();
     await this.createRoundScene(generation);
     if (!this.roundIsCurrent(generation)) return;
     this.layoutField();
     this.positionTravelerAtCurrentStart();
+    this.positionActualTravelerAtRouteStart();
     this.awaitingInput = true;
     this.inputLocked = false;
-    this.speakLine(this.currentPrompt());
+    this.speakLine(this.currentPrompt(), this.currentPromptKey());
     this.scheduleIdlePrompt();
     this.playDemo();
     await this.delay(WAIT_FOR_INPUT_MS);
@@ -376,6 +399,8 @@ class TracePathGame {
     const { PIXI } = this.stage;
     const scene = new PIXI.Container();
     const field = new PIXI.Container();
+    const decor = new PIXI.Container();
+    const destination = new PIXI.Container();
     const guide = new PIXI.Container();
     const checkpoints = new PIXI.Container();
     const ink = new PIXI.Container();
@@ -387,10 +412,11 @@ class TracePathGame {
     panel.roundRect(0, 0, BOARD_SIZE, BOARD_SIZE, 42)
       .fill({ color: panelTheme.fill ?? 0xfffbef, alpha: hasPanelTheme ? 0.9 : 0 })
       .stroke({ width: hasPanelTheme ? 9 : 0, color: panelTheme.stroke ?? 0xffffff, alpha: 0.96 });
-    field.addChild(panel, guide, checkpoints, ink, fx, demo);
+    field.addChild(panel, decor, guide, checkpoints, ink, destination, fx, demo);
     scene.addChild(field);
     this.scene = scene;
     this.fieldLayer = field;
+    this.decorLayer = decor;
     this.guideLayer = guide;
     this.checkpointLayer = checkpoints;
     this.inkLayer = ink;
@@ -398,6 +424,8 @@ class TracePathGame {
     this.demoLayer = demo;
     this.guideGraphics = [];
     this.inkGraphics = [];
+    await this.buildTownDecorations(decor, destination, generation);
+    if (!this.roundIsCurrent(generation)) return;
 
     for (let i = 0; i < this.currentStrokes.length; i++) {
       const guideGraphic = new PIXI.Graphics();
@@ -409,18 +437,66 @@ class TracePathGame {
       this.buildCheckpointViews(i);
     }
 
-    const traveler = await artObj(PIXI, this.mode.traveler || this.config.traveler, 62, '');
+    const travelerRef = this.currentPath.traveler || this.mode.traveler || this.config.traveler;
+    const travelerSize = this.currentPath.travelerSize || this.mode.travelerSize || this.config.travelerSize;
+    const rewardLetter = String(this.currentPath.id || '').charAt(0).toLowerCase();
+    const rewardArtBase = this.config.rewardArtBase || 'game:assets/rewards/final/';
+    const rewardRef = this.currentPath.rewardArt
+      || (rewardLetter ? `${rewardArtBase}${rewardLetter}.png` : null);
+    const [actualArt, ghostArt, rewardArt] = await Promise.all([
+      artObj(PIXI, travelerRef, travelerSize, this.currentPath.carName || ''),
+      this.config.ghostTrace
+        ? artObj(PIXI, travelerRef, travelerSize, this.currentPath.carName || '')
+        : Promise.resolve(null),
+      this.config.rewardVisuals && rewardRef
+        ? artObj(
+          PIXI,
+          rewardRef,
+          this.currentPath.rewardSize || this.config.rewardSize || 430,
+          `${this.currentPath.destination || 'Destination'} reward`,
+        )
+        : Promise.resolve(null),
+    ]);
     if (!this.roundIsCurrent(generation)) {
-      traveler.destroy({ children: true });
+      actualArt.destroy({ children: true });
+      if (ghostArt) ghostArt.destroy({ children: true });
+      if (rewardArt) rewardArt.destroy({ children: true });
       return;
     }
-    const travelerHalo = new PIXI.Graphics();
-    travelerHalo.circle(0, 0, 43).fill({ color: 0xffffff, alpha: 0.8 })
-      .stroke({ width: 4, color: 0xffffff, alpha: 0.96 });
-    const travelerWrap = new PIXI.Container();
-    travelerWrap.addChild(travelerHalo, traveler);
-    fx.addChild(travelerWrap);
-    this.traveler = travelerWrap;
+    const travelerHaloRadius = Math.max(43, travelerSize * 0.54);
+    const actualHalo = new PIXI.Graphics();
+    actualHalo.circle(0, 0, travelerHaloRadius).fill({ color: 0xffdc4a, alpha: 0.28 })
+      .stroke({ width: 5, color: 0xffffff, alpha: 0.92 });
+    const actualWrap = new PIXI.Container();
+    actualWrap.addChild(actualHalo, actualArt);
+    fx.addChild(actualWrap);
+    this.actualTraveler = actualWrap;
+
+    if (ghostArt) {
+      const ghostHalo = new PIXI.Graphics();
+      ghostHalo.circle(0, 0, travelerHaloRadius).fill({ color: 0xffffff, alpha: 0.28 })
+        .stroke({ width: 5, color: 0xffffff, alpha: 0.72 });
+      const ghostWrap = new PIXI.Container();
+      ghostWrap.addChild(ghostHalo, ghostArt);
+      ghostWrap.alpha = 0.48;
+      fx.addChild(ghostWrap);
+      this.ghostTraveler = ghostWrap;
+      this.traveler = ghostWrap;
+    } else {
+      this.traveler = actualWrap;
+    }
+
+    if (rewardArt) {
+      const rewardWrap = new PIXI.Container();
+      rewardWrap.addChild(rewardArt);
+      rewardWrap.visible = false;
+      rewardWrap.alpha = 0;
+      rewardWrap.scale.set(0.28);
+      fx.addChild(rewardWrap);
+      this.rewardVisual = rewardWrap;
+      this.rewardRevealed = false;
+      this.positionRewardVisual();
+    }
 
     const trail = new PIXI.Graphics();
     const dotGlow = new PIXI.Graphics();
@@ -431,6 +507,98 @@ class TracePathGame {
     this.demoDot = dotGlow;
     this.demoDot.visible = false;
     this.stage.setScene(scene);
+  }
+
+  async buildTownDecorations(container, destinationContainer, generation) {
+    if (!container || !this.stage || !this.currentPath) return;
+    // Generated map sprites are an opt-in theme capability. Other trace-path
+    // games keep their original undecorated boards and never request
+    // Letter Road-specific assets.
+    if (!this.config.mapSprites) return;
+    const { PIXI } = this.stage;
+    const destination = Array.isArray(this.currentPath.destinationPosition)
+      ? {
+        x: clamp(Number(this.currentPath.destinationPosition[0]) || 820, 110, 890),
+        y: clamp(Number(this.currentPath.destinationPosition[1]) || 820, 120, 880),
+      }
+      : { x: 830, y: 820 };
+    const destinationName = this.currentPath.destination || 'Letter Stop';
+    const destinationId = this.currentPath.destinationArtId || slugify(destinationName);
+    const destinationArt = await artObj(
+      PIXI,
+      this.currentPath.destinationArt || mapArtRef('destinations', destinationId),
+      230,
+      destinationName,
+    );
+    if (!this.roundIsCurrent(generation)) {
+      destinationArt.destroy({ children: true });
+      return;
+    }
+    const destinationView = townDestination(
+      PIXI,
+      destinationName,
+      letterFromPath(this.currentPath),
+      colorNumber(this.currentPath.destinationColor, 0xef5b45),
+      destinationArt,
+    );
+    destinationView.position.set(destination.x, destination.y);
+    (destinationContainer || container).addChild(destinationView);
+    this.destinationView = destinationView;
+
+    const candidates = [
+      { x: 125, y: 145 }, { x: 500, y: 125 }, { x: 875, y: 145 },
+      { x: 120, y: 430 }, { x: 500, y: 390 }, { x: 875, y: 430 },
+      { x: 125, y: 790 }, { x: 500, y: 860 }, { x: 875, y: 790 },
+      { x: 340, y: 520 }, { x: 660, y: 520 }, { x: 500, y: 670 },
+    ];
+    const safe = candidates.filter((point) =>
+      Math.hypot(point.x - destination.x, point.y - destination.y) > 190
+      && distanceToStrokes(point, this.currentStrokes) > 125);
+    const kinds = [
+      ['tree', 152], ['flower-bed', 138], ['lamp', 118], ['bench', 134],
+      ['fountain', 158], ['cottage', 170], ['mailbox', 112],
+      ['picket-fence', 132], ['topiary', 118], ['hydrant', 102],
+      ['signpost', 112], ['pond', 142], ['swings', 152],
+      ['gazebo', 162], ['picnic-table', 148],
+    ];
+    const offset = hashString(this.currentPath.id || '') % kinds.length;
+    const placed = safe.slice(0, 5);
+    const propSpecs = placed.map((_, index) => kinds[(index + offset) % kinds.length]);
+    const props = await Promise.all(propSpecs.map(([kind, size]) =>
+      artObj(PIXI, mapArtRef('props', kind), size, kind)));
+    if (!this.roundIsCurrent(generation)) {
+      props.forEach((prop) => prop.destroy({ children: true }));
+      return;
+    }
+    placed.forEach((point, index) => {
+      const prop = props[index];
+      prop.position.set(point.x, point.y);
+      prop.alpha = 0.98;
+      container.addChild(prop);
+    });
+    const random = mulberry32(hashString(this.currentPath.id || '') + 911);
+    const detailKinds = [['flowers', 40], ['pebbles', 34], ['grass', 38]];
+    let sprinkled = 0;
+    const sprinklePoints = [];
+    for (let attempt = 0; attempt < 40 && sprinkled < 10; attempt++) {
+      const point = { x: 78 + random() * 844, y: 92 + random() * 800 };
+      if (Math.hypot(point.x - destination.x, point.y - destination.y) < 145) continue;
+      if (distanceToStrokes(point, this.currentStrokes) < 104) continue;
+      if (placed.some((item) => Math.hypot(point.x - item.x, point.y - item.y) < 82)) continue;
+      sprinklePoints.push({ ...point, spec: detailKinds[sprinkled % detailKinds.length] });
+      sprinkled += 1;
+    }
+    const details = await Promise.all(sprinklePoints.map(({ spec: [kind, size] }) =>
+      artObj(PIXI, mapArtRef('props', kind), size, kind)));
+    if (!this.roundIsCurrent(generation)) {
+      details.forEach((detail) => detail.destroy({ children: true }));
+      return;
+    }
+    details.forEach((detail, index) => {
+      detail.position.set(sprinklePoints[index].x, sprinklePoints[index].y);
+      detail.alpha = 0.92;
+      container.addChild(detail);
+    });
   }
 
   buildCheckpointViews(strokeIndex) {
@@ -454,7 +622,9 @@ class TracePathGame {
           dot.addChild(pointer);
         }
         const arrow = new PIXI.Text({
-          text: this.reducedMotion() ? String(strokeIndex + 1) : this.mode.startMarker,
+          text: (this.mode.numberedStarts || this.reducedMotion())
+            ? String(strokeIndex + 1)
+            : this.mode.startMarker,
           style: { fontFamily: 'Fredoka, sans-serif', fontSize: 46, fill: 0x17517e, align: 'center' },
         });
         arrow.anchor.set(0.5);
@@ -488,6 +658,8 @@ class TracePathGame {
     this.drawAllInk();
     this.updateCheckpointStates(false);
     this.positionTravelerAtCurrentProgress();
+    this.positionActualTravelerAtRouteStart();
+    this.positionRewardVisual();
   }
 
   rebuildProjectedStrokes() {
@@ -517,6 +689,18 @@ class TracePathGame {
       const local = this.strokesScreen[strokeIndex].local;
       if (!graphic) continue;
       graphic.clear();
+      if ((this.mode.guideStyle || this.config.guideStyle) === 'road') {
+        drawPolyline(graphic, local);
+        graphic.stroke({ width: 118, color: 0xd7dce1, alpha: 1, cap: 'round', join: 'round' });
+        drawPolyline(graphic, local);
+        graphic.stroke({ width: 94, color: 0x505963, alpha: 1, cap: 'round', join: 'round' });
+        const dashStride = Math.max(3, Math.round(58 / Math.max(1, SAMPLE_STEP_PX)));
+        for (let i = 0; i < local.length; i += dashStride) {
+          const point = local[i];
+          if (point) graphic.circle(point.x, point.y, 7).fill({ color: 0xffffff, alpha: 0.94 });
+        }
+        continue;
+      }
       // Pixi Graphics has no portable dash primitive; rounded beads create the
       // same forgiving dotted road while keeping geometry very cheap.
       const stride = Math.max(1, Math.round(24 / Math.max(1, SAMPLE_STEP_PX)));
@@ -571,8 +755,13 @@ class TracePathGame {
     this.unlockAudio();
     this.cancelDemo();
     this.clearIdleTimer();
+    if (this.config.ghostTrace && this.actualTraveler && this.ghostTraveler) {
+      this.actualTraveler.visible = false;
+      this.ghostTraveler.visible = true;
+    }
     const targetId = this.isNearCurrentStart(e.clientX, e.clientY) ? `start:${this.strokeIndex}` : 'path';
     this.handleTargetAction(targetId);
+    this.playSfx(this.mode.driveSfx || this.config.driveSfx);
     this.activeTrace = { pointerId: e.pointerId, offPath: false };
     this.queuePointer(e.clientX, e.clientY);
     this.brushReady = false;
@@ -642,8 +831,10 @@ class TracePathGame {
   consumePointer() {
     const count = this.pointerQueueCount;
     if (!count) return;
+    const strokeIndex = this.strokeIndex;
     this.pointerQueueCount = 0;
     for (let i = 0; i < count; i++) {
+      if (this.strokeIndex !== strokeIndex) break;
       this.applyTracePointXY(this.pointerQueue[i * 2], this.pointerQueue[i * 2 + 1], true);
     }
   }
@@ -763,7 +954,7 @@ class TracePathGame {
       this.wanderTimer = 0;
       if (!this.activeTrace || this.destroyed || !this.awaitingInput || this.wanderNudged) return;
       this.wanderNudged = true;
-      this.speakLine(this.config.voice.nudge, true);
+      this.speakLine(this.config.voice.nudge, this.config.voice.nudgeKey, true);
     }, WANDER_NUDGE_MS);
   }
 
@@ -813,9 +1004,11 @@ class TracePathGame {
       const list = this.checkpoints[strokeIndex] || [];
       for (const checkpoint of list) {
         const wasLit = checkpoint.lit;
-        checkpoint.lit = strokeIndex < this.strokeIndex || checkpoint.sampleIndex <= progress.index;
+        checkpoint.lit = strokeIndex < this.strokeIndex
+          || (!checkpoint.isStart && checkpoint.sampleIndex <= progress.index)
+          || (checkpoint.isStart && strokeIndex === this.strokeIndex && progress.ratio > 0);
         checkpoint.view.alpha = checkpoint.isStart
-          ? (strokeIndex === this.strokeIndex ? 1 : checkpoint.lit ? 0.34 : 0.72)
+          ? (strokeIndex === this.strokeIndex ? 1 : checkpoint.lit ? 0.34 : 0.9)
           : (checkpoint.lit ? 1 : 0.82);
         checkpoint.view.tint = checkpoint.lit ? 0xffef9a : 0xffffff;
         if (playFx && checkpoint.lit && !wasLit) {
@@ -838,10 +1031,21 @@ class TracePathGame {
     }
     this.playSfx('pop');
     if (this.strokeIndex < this.currentStrokes.length - 1) {
+      // A completed stroke ends the current drag. Otherwise its final
+      // pointer sample can also land on the next stroke (the middle and
+      // bottom bars of I intersect), immediately pulling the car away from
+      // the newly numbered start.
+      this.cancelTrace();
       this.strokeIndex += 1;
       this.brushReady = false;
       this.updateCheckpointStates(false);
       this.positionTravelerAtCurrentStart();
+      const lineIndex = Math.min(this.strokeIndex - 1, this.config.voice.nextStroke.length - 1);
+      this.speakLine(
+        this.config.voice.nextStroke[lineIndex],
+        this.config.voice.nextStrokeKeys[lineIndex],
+        true,
+      );
       return;
     }
     await this.completeRound();
@@ -860,15 +1064,20 @@ class TracePathGame {
     this.playSfx('pop');
 
     const generation = this.roundGeneration;
+    await this.driveCompletedRoute();
+    if (!this.roundIsCurrent(generation)) return;
+    this.playSfx(this.mode.finishSfx || this.config.finishSfx);
     const shimmer = this.reducedMotion() ? Promise.resolve() : this.shimmerInk();
     const center = this.screenPointFor(this.fieldLayer, BOARD_SIZE / 2, BOARD_SIZE / 2);
     const confetti = center
       ? burst(this.stage.PIXI, this.scene, center.stageX, center.stageY, { count: 36, power: 7, life: 780 })
       : Promise.resolve();
-    await Promise.all([shimmer, confetti]);
+    const reward = this.revealRewardVisual();
+    await Promise.all([shimmer, confetti, reward]);
+    const yumIndex = this.roundIndex % this.config.voice.yums.length;
     await this.speakLine(
-      (this.currentPath && this.currentPath.say)
-        || this.config.voice.yums[this.roundIndex % this.config.voice.yums.length],
+      (this.currentPath && this.currentPath.say) || this.config.voice.yums[yumIndex],
+      (this.currentPath && this.currentPath.sayKey) || this.config.voice.yumKeys[yumIndex],
       true,
     );
     await this.delay(this.reducedMotion() ? 100 : 320);
@@ -915,7 +1124,7 @@ class TracePathGame {
     this.applyTheme(root);
     root.setAttribute('aria-label', this.config.voice.cheer);
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
     const center = el('div', 'qk-trace-end-center');
     const artCard = el('div', 'qk-trace-end-art');
     artCard.appendChild(artEl(this.config.endArt || this.config.splashArt, ''));
@@ -934,7 +1143,7 @@ class TracePathGame {
     root.append(home, center);
     this.mountEl.appendChild(root);
     this.createDomBurst(artCard, 34);
-    await this.speakLine(this.config.voice.cheer, true);
+    await this.speakLine(this.config.voice.cheer, this.config.voice.cheerKey, true);
   }
 
   playDemo() {
@@ -1037,7 +1246,7 @@ class TracePathGame {
     if (this.screen !== 'play' || !this.mode) return;
     this.clearIdleTimer();
     this.playSfx('tick');
-    await this.speakLine(this.currentPrompt(), true);
+    await this.speakLine(this.currentPrompt(), this.currentPromptKey(), true);
     this.scheduleIdlePrompt();
   }
 
@@ -1048,7 +1257,10 @@ class TracePathGame {
       this.idleTimer = 0;
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
-      this.speakLine(this.currentPrompt(), true);
+      // The destination mission is announced once when the round loads. Idle
+      // support stays visual so it never restarts a long instruction while the
+      // child is thinking or moving between numbered strokes.
+      this.playDemo();
     }, IDLE_MS);
   }
 
@@ -1076,6 +1288,14 @@ class TracePathGame {
     if (stroke && stroke.local.length) this.positionTravelerLocal(stroke.local[0]);
   }
 
+  positionActualTravelerAtRouteStart() {
+    if (!this.actualTraveler || !this.strokesScreen.length) return;
+    const stroke = this.strokesScreen[0];
+    if (stroke && stroke.local.length) {
+      this.positionDisplayAlongStroke(this.actualTraveler, stroke.local[0], stroke.local);
+    }
+  }
+
   positionTravelerAtCurrentProgress() {
     const stroke = this.currentScreenStroke();
     if (!stroke || !stroke.local.length) return;
@@ -1084,7 +1304,114 @@ class TracePathGame {
   }
 
   positionTravelerLocal(point) {
-    if (this.traveler && point) this.traveler.position.set(point.x, point.y);
+    if (!this.traveler || !point) return;
+    const stroke = this.currentScreenStroke();
+    this.positionDisplayAlongStroke(this.traveler, point, stroke && stroke.local);
+  }
+
+  positionDisplayAlongStroke(display, point, local) {
+    if (!display || !point) return;
+    display.position.set(point.x, point.y);
+    this.orientDisplayAlongStroke(display, point, local);
+  }
+
+  orientDisplayAlongStroke(display, point, local) {
+    if (!display || !point) return;
+    if (!(this.mode.orientTraveler ?? this.config.orientTraveler)) return;
+    if (!local || local.length < 2) return;
+    const index = nearestPointIndex(local, point);
+    const before = local[Math.max(0, index - 2)];
+    const after = local[Math.min(local.length - 1, index + 2)];
+    if (!before || !after) return;
+    display.rotation = Math.atan2(after.y - before.y, after.x - before.x)
+      + (this.mode.travelerRotationOffset ?? this.config.travelerRotationOffset ?? 0);
+  }
+
+  async driveCompletedRoute() {
+    if (!this.config.driveReplay || !this.actualTraveler || this.actualTraveler === this.traveler) return;
+    const route = this.strokesScreen.filter((stroke) =>
+      stroke && Array.isArray(stroke.local) && stroke.local.length > 1);
+    if (!route.length) return;
+    this.positionDisplayAlongStroke(this.actualTraveler, route[0].local[0], route[0].local);
+    if (this.ghostTraveler) this.ghostTraveler.visible = false;
+    this.actualTraveler.visible = true;
+    this.drivingReplay = true;
+    const samples = route.reduce((sum, stroke) => sum + stroke.local.length, 0);
+    if (!this.muted && typeof sfx.motor === 'function') {
+      sfx.motor(clamp(samples * 22, 1200, 3600));
+    }
+    try {
+      for (let strokeIndex = 0; strokeIndex < route.length; strokeIndex++) {
+        const local = route[strokeIndex].local;
+        this.positionDisplayAlongStroke(this.actualTraveler, local[0], local);
+        if (strokeIndex) await this.delay(this.reducedMotion() ? 0 : 120);
+        const stride = Math.max(1, Math.floor(local.length / 30));
+        for (let i = stride; i < local.length; i += stride) {
+          const point = local[Math.min(i, local.length - 1)];
+          this.orientDisplayAlongStroke(this.actualTraveler, point, local);
+          await this.runTween(to(
+            this.actualTraveler.position,
+            { x: point.x, y: point.y },
+            { ms: this.reducedMotion() ? 0 : 42, easing: ease.linear },
+          ));
+        }
+        this.positionDisplayAlongStroke(this.actualTraveler, local[local.length - 1], local);
+      }
+    } finally {
+      this.drivingReplay = false;
+    }
+  }
+
+  async revealRewardVisual() {
+    if (!this.rewardVisual || this.rewardRevealed) return;
+    this.rewardRevealed = true;
+    const reward = this.rewardVisual;
+    const target = this.rewardVisualTarget();
+    reward.visible = true;
+    if (this.reducedMotion()) {
+      reward.position.set(target.x, target.y);
+      reward.alpha = 1;
+      reward.rotation = 0;
+      reward.scale.set(1);
+      return;
+    }
+    reward.position.set(target.x - 150, target.y + 56);
+    reward.alpha = 0;
+    reward.rotation = -0.04;
+    reward.scale.set(0.38);
+    await Promise.all([
+      this.runTween(to(
+        reward,
+        { x: target.x, y: target.y, alpha: 1, rotation: 0 },
+        { ms: 440, easing: ease.outCubic },
+      )),
+      this.runTween(to(
+        reward,
+        { scale: { x: 1.03, y: 1.03 } },
+        { ms: 440, easing: ease.outBack },
+      )),
+    ]);
+    await this.runTween(to(
+      reward,
+      { scale: { x: 1, y: 1 } },
+      { ms: 150, easing: ease.inOutSine },
+    ));
+  }
+
+  rewardVisualTarget() {
+    if (!this.stage) return { x: BOARD_SIZE / 2, y: 530 };
+    const { w, h } = this.stage.size();
+    const wide = w > h * 1.15;
+    return {
+      x: wide ? -70 : 465,
+      y: wide ? 530 : 520,
+    };
+  }
+
+  positionRewardVisual() {
+    if (!this.rewardVisual || this.rewardRevealed) return;
+    const target = this.rewardVisualTarget();
+    this.rewardVisual.position.set(target.x, target.y);
   }
 
   positionTravelerScreen(x, y) {
@@ -1141,13 +1468,80 @@ class TracePathGame {
       || (this.currentPath && this.currentPath.name);
   }
 
+  renderCurrentPrompt() {
+    const prompt = this.mountEl.querySelector('.qk-trace-prompt');
+    if (!prompt) return;
+    prompt.replaceChildren(el('span', 'qk-trace-mission', this.currentPrompt()));
+    if (this.currentPath && this.currentPath.destination) {
+      prompt.appendChild(el(
+        'span',
+        'qk-trace-letter-cue',
+        `★  Trace the letter ${letterFromPath(this.currentPath)}.  ★`,
+      ));
+    }
+  }
+
+  currentPromptKey() {
+    return (this.currentPath && this.currentPath.promptKey)
+      || this.mode.promptKey
+      || this.config.voice.introKey;
+  }
+
   getState() {
+    const rewardBounds = this.rewardVisual && this.rewardVisual.visible
+      ? this.rewardVisual.getBounds()
+      : null;
+    const travelerScreen = this.traveler && this.stage
+      ? this.screenPointFor(this.traveler, 0, 0)
+      : null;
     return {
       screen: this.screen,
       mode: this.mode ? this.mode.id : null,
       round: this.screen === 'play' ? this.roundIndex : this.roundsTotal,
       roundsTotal: this.roundsTotal,
+      stroke: this.screen === 'play' ? this.strokeIndex : null,
+      strokesTotal: this.screen === 'play' ? this.currentStrokes.length : 0,
       awaitingInput: this.awaitingInput,
+      replaying: this.drivingReplay,
+      path: this.currentPath ? this.currentPath.id : null,
+      sequence: this.roundPaths.map((path) => path.id),
+      travelerGap: this.actualTraveler && this.ghostTraveler
+        ? Math.hypot(
+          this.actualTraveler.position.x - this.ghostTraveler.position.x,
+          this.actualTraveler.position.y - this.ghostTraveler.position.y,
+        )
+        : 0,
+      ghostVisible: Boolean(this.ghostTraveler && this.ghostTraveler.visible),
+      actualVisible: Boolean(this.actualTraveler && this.actualTraveler.visible),
+      travelerScreen: travelerScreen
+        ? { x: travelerScreen.x, y: travelerScreen.y }
+        : null,
+      rewardVisible: Boolean(
+        this.rewardVisual
+          && this.rewardVisual.visible
+          && this.rewardVisual.alpha > 0.98,
+      ),
+      rewardBounds: rewardBounds
+        ? {
+          x: rewardBounds.x,
+          y: rewardBounds.y,
+          w: rewardBounds.width,
+          h: rewardBounds.height,
+        }
+        : null,
+      destinationLabel: this.destinationView && this.destinationView.destinationLabel
+        ? {
+          text: this.destinationView.destinationLabel.text,
+          w: this.destinationView.destinationLabel.width,
+          h: this.destinationView.destinationLabel.height,
+        }
+        : null,
+      boardBounds: {
+        x: this.boardLeft,
+        y: this.boardTop,
+        w: BOARD_SIZE * this.boardScale,
+        h: BOARD_SIZE * this.boardScale,
+      },
     };
   }
 
@@ -1175,7 +1569,9 @@ class TracePathGame {
   async handleTargetAction(targetId) {
     if (targetId === 'path') return { accepted: true };
     if (targetId === `start:${this.strokeIndex}`) {
-      await this.speakLine(this.currentPrompt(), true);
+      // Starting a stroke should begin driving immediately. The full mission
+      // has already played at round start; later strokes receive their concise
+      // numbered cue from completeStroke().
       return { accepted: true };
     }
     return { accepted: false };
@@ -1225,6 +1621,13 @@ class TracePathGame {
     return points;
   }
 
+  traceStrokes() {
+    if (this.screen !== 'play') return [];
+    return this.strokesScreen.map((stroke) => (
+      stroke.points.filter(Boolean).map((point) => ({ x: point.x, y: point.y }))
+    ));
+  }
+
   createDomBurst(anchor, count) {
     if (!anchor || this.reducedMotion()) return;
     const host = this.mountEl.querySelector('.qk-trace') || this.mountEl;
@@ -1261,7 +1664,7 @@ class TracePathGame {
 
   mute() {
     this.muted = true;
-    speech.stop();
+    this.stopVoice();
   }
 
   seed(n) {
@@ -1270,9 +1673,18 @@ class TracePathGame {
     this.fxRng = mulberry32(value + 73);
   }
 
-  async speakLine(line, cancel = false) {
+  async speakLine(line, key, cancel = false) {
     if (this.muted || !line) return;
+    if (this.config.voiceClips && key) {
+      await voiceClips.say(key, line);
+      return;
+    }
     await speech.speak(line, { rate: 0.8, pitch: 1.05, cancel });
+  }
+
+  stopVoice() {
+    if (this.config.voiceClips) voiceClips.stop();
+    else speech.stop();
   }
 
   playSfx(name) {
@@ -1322,12 +1734,23 @@ function normalizeConfig(config = {}) {
   const copy = { home: 'Home', replay: 'Hear it again', playAgain: 'Play Again', ...(config.copy || {}) };
   const voice = {
     intro: 'Follow the sparkle with your finger.',
+    introKey: null,
     nudge: 'Find the path and keep going.',
+    nudgeKey: null,
     cheer: 'You traced them all!',
+    cheerKey: null,
     yums: ['Nice tracing!', 'You did it!', 'Great path!'],
+    yumKeys: [],
+    nextStroke: ['Great! Find the next start.'],
+    nextStrokeKeys: [],
     ...(config.voice || {}),
   };
   if (!Array.isArray(voice.yums)) voice.yums = [String(voice.yums || 'Nice tracing!')];
+  if (!Array.isArray(voice.yumKeys)) voice.yumKeys = [];
+  if (!Array.isArray(voice.nextStroke) || !voice.nextStroke.length) {
+    voice.nextStroke = ['Great! Find the next start.'];
+  }
+  if (!Array.isArray(voice.nextStrokeKeys)) voice.nextStrokeKeys = [];
   return {
     ...config,
     id: config.id || 'trace-path',
@@ -1335,13 +1758,46 @@ function normalizeConfig(config = {}) {
     splashArt: normalizeArtRef(config.splashArt || config.splashEmoji || 'emoji:⭐'),
     endArt: config.endArt ? normalizeArtRef(config.endArt) : null,
     traveler: normalizeArtRef(config.traveler || 'emoji:✏️'),
+    travelerSize: Math.max(48, Number(config.travelerSize || 72)),
     strokeColor: config.strokeColor || '#e8734a',
     tolerance: Math.max(48, Number(config.tolerance || 64)),
+    orientTraveler: Boolean(config.orientTraveler),
+    travelerRotationOffset: Number(config.travelerRotationOffset || 0),
+    guideStyle: config.guideStyle || 'dots',
+    driveSfx: config.driveSfx || null,
+    finishSfx: config.finishSfx || null,
+    voiceClips: config.voiceClips && config.voiceClips.manifest
+      ? {
+        manifest: config.voiceClips.manifest,
+        lines: config.voiceClips.lines || './assets/audio/lines.json',
+      }
+      : null,
     theme: { ...(config.theme || {}) },
     copy,
     voice,
     modes: (config.modes || []).map((mode) => normalizeMode(mode, config)).filter((mode) => mode.paths.length),
   };
+}
+
+function voiceDefaults(config) {
+  const result = {};
+  const add = (key, text) => {
+    if (key && text) result[key] = text;
+  };
+  const voice = config.voice || {};
+  add(voice.introKey, voice.intro);
+  add(voice.nudgeKey, voice.nudge);
+  add(voice.cheerKey, voice.cheer);
+  (voice.yums || []).forEach((text, index) => add((voice.yumKeys || [])[index], text));
+  (voice.nextStroke || []).forEach((text, index) => add((voice.nextStrokeKeys || [])[index], text));
+  for (const mode of config.modes || []) {
+    add(mode.promptKey, mode.prompt);
+    for (const path of mode.paths || []) {
+      add(path.promptKey, path.prompt);
+      add(path.sayKey, path.say);
+    }
+  }
+  return result;
 }
 
 function normalizeMode(mode = {}, config = {}) {
@@ -1358,6 +1814,13 @@ function normalizeMode(mode = {}, config = {}) {
     prompt: mode.prompt || (config.voice && config.voice.intro) || '',
     rounds: Math.min(mode.rounds || paths.length, paths.length),
     traveler: normalizeArtRef(mode.traveler || config.traveler || 'emoji:✏️'),
+    travelerSize: Math.max(48, Number(mode.travelerSize || config.travelerSize || 72)),
+    orientTraveler: mode.orientTraveler ?? Boolean(config.orientTraveler),
+    travelerRotationOffset: Number(mode.travelerRotationOffset ?? config.travelerRotationOffset ?? 0),
+    guideStyle: mode.guideStyle || config.guideStyle || 'dots',
+    driveSfx: mode.driveSfx || config.driveSfx || null,
+    finishSfx: mode.finishSfx || config.finishSfx || null,
+    numberedStarts: Boolean(mode.numberedStarts),
     strokeColor: mode.strokeColor || config.strokeColor || '#e8734a',
     startMarker: mode.startMarker || config.startMarker || '⭐',
     tolerance: Math.max(48, Number(mode.tolerance || config.tolerance || 64)),
@@ -1441,6 +1904,12 @@ function appendLineSamples(result, a, b, step) {
   }
 }
 
+function drawPolyline(graphic, points) {
+  if (!graphic || !points || points.length < 2) return;
+  graphic.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) graphic.lineTo(points[i].x, points[i].y);
+}
+
 function appendQuadraticSamples(result, a, control, b, step) {
   const estimate = Math.hypot(control.x - a.x, control.y - a.y)
     + Math.hypot(b.x - control.x, b.y - control.y);
@@ -1501,6 +1970,104 @@ function boundsFromPoints(points, pad) {
   }
   if (!Number.isFinite(minX)) return null;
   return { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 };
+}
+
+function townDestination(PIXI, name, letter, accent, art) {
+  const wrap = new PIXI.Container();
+  if (art) {
+    art.position.set(0, -2);
+    wrap.addChild(art);
+  }
+
+  const badge = new PIXI.Graphics();
+  badge.circle(0, -103, 32).fill(0xffd739).stroke({ width: 5, color: 0xffffff });
+  wrap.addChild(badge);
+  const letterText = new PIXI.Text({
+    text: letter,
+    style: {
+      fontFamily: 'Fredoka, Arial Rounded MT Bold, sans-serif',
+      fontWeight: '600',
+      fontSize: 40,
+      fill: 0x6a2dbb,
+      align: 'center',
+    },
+  });
+  letterText.anchor.set(0.5);
+  letterText.position.set(0, -104);
+  wrap.addChild(letterText);
+  const label = new PIXI.Text({
+    text: name,
+    style: {
+      fontFamily: 'Fredoka, Arial Rounded MT Bold, sans-serif',
+      fontWeight: '600',
+      fontSize: 22,
+      fill: 0x17517e,
+      align: 'center',
+      wordWrap: false,
+    },
+  });
+  label.anchor.set(0.5);
+  label.position.set(0, 126);
+  const maxLabelWidth = 158;
+  if (label.width > maxLabelWidth) {
+    label.scale.set(maxLabelWidth / label.width);
+  }
+  const pill = new PIXI.Graphics();
+  pill.roundRect(-92, 107, 184, 40, 19).fill({ color: 0xffffff, alpha: 0.96 })
+    .stroke({ width: 4, color: accent, alpha: 0.55 });
+  wrap.addChild(pill, label);
+  wrap.destinationLabel = label;
+  return wrap;
+}
+
+function mapArtRef(folder, id) {
+  return `game:assets/map/${folder}/${id}.png`;
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function distanceToStrokes(point, strokes) {
+  let best = Infinity;
+  for (const stroke of strokes || []) {
+    for (let i = 1; i < stroke.length; i++) {
+      best = Math.min(best, pointSegmentDistance(point, stroke[i - 1], stroke[i]));
+    }
+  }
+  return best;
+}
+
+function pointSegmentDistance(point, a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const lengthSq = dx * dx + dy * dy;
+  const t = lengthSq
+    ? clamp(((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSq, 0, 1)
+    : 0;
+  return Math.hypot(point.x - (a.x + dx * t), point.y - (a.y + dy * t));
+}
+
+function hashString(value) {
+  let hash = 2166136261;
+  for (const char of String(value)) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function letterFromPath(path) {
+  const match = String(path && (path.name || path.id) || '').match(/\b([A-Z])\b/i);
+  return match ? match[1].toUpperCase() : '★';
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
 
 function colorNumber(value, fallback) {
@@ -1580,6 +2147,7 @@ function installStyle() {
     .qk-trace-mode,.qk-trace-again { min-height:104px; border-radius:26px; border:5px solid var(--white); padding:18px 24px;
       color:var(--white); background:linear-gradient(180deg,rgba(255,255,255,.34),transparent 50%),var(--blue);
       box-shadow:var(--shadow); font-size:clamp(23px,4vmin,36px); line-height:1.05; }
+    .qk-trace button.qk-trace-mode,.qk-trace button.qk-trace-again { color:var(--white); }
     .qk-trace-mode:nth-child(2n) { background-color:var(--green); }
     .qk-trace-mode:nth-child(3n) { background-color:var(--coral); }
     .qk-trace-mode:active,.qk-trace-again:active { transform:scale(.96); }
