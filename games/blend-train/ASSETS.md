@@ -25,8 +25,8 @@ below.
 | `assets/art/track.webp` (1600×884, ~100 KB) | `qwen-image-edit` + composite | 42 | image `02-blend-mat.png`; prompt removed the locomotive, every letter car, all buttons, banners and text, keeping only the landscape and the empty rail | CC BY 4.0 | Cropped to the 1.81 play aspect keeping the rail with grass beneath, resized 1600×884; the locomotive (extracted and keyed the same way, 400px wide) composited at the left with its wheels on the rail. |
 | `assets/art/splash.webp` (1280×951) | `qwen-image-edit` | 42 | image `01-title.png`; prompt removed all text, letters and the orange button, keeping the train, sunburst sky, clouds and stars | CC BY 4.0 | Resized, WebP q86. The engine renders the real title as HTML — spelling has to stay correct and an image model is not a typography engine. |
 | `assets/art/mode-{couple,sounds}.webp` (420²) | derived | — | composed from the final cars | CC BY 4.0 | The mode's own cars overlapped 14% so they read as coupled, padded square for the engine's contain-fit. These exist because the engine's splash mode buttons were text-only, which a pre-reader cannot use. |
-| `assets/audio/train-roll.m4a` (22.7 KB, 1.50s) | none — supplied | — | `00-reference/sounds/train_passing_#2-...mp3`, provided by the project owner | **see note** | Converted `afconvert -f m4af -d aac -b 96000`. Played as the finished train closes its couplings. |
-| `assets/audio/train-horn.m4a` (31.7 KB, 2.68s) | none — supplied | — | `00-reference/sounds/Steam Engine Train Chugs Into The Stop And Blows Its Choo Choo Horn.mp3`, provided by the project owner | **see note** | Converted as above. Played as the train arrives. |
+| `assets/audio/train-roll.m4a` (70.6 KB, 5.83s) | none — supplied | — | `00-reference/sounds/01-train-chugging.wav`, provided by the project owner | **see note** | Raised 11 dB before AAC 96 kb/s encode (−25.3 LUFS, −11.0 dBTP). Runtime gain 1.0. Plays through the coupling motion and underneath the spoken blend. |
+| `assets/audio/train-horn.m4a` (13.2 KB, 1.14s) | none — supplied | — | `00-reference/sounds/02-train-choo-choo.wav`, provided by the project owner | **see note** | Attenuated 18 dB before AAC 96 kb/s encode (−25.3 LUFS, −18.8 dBTP). Runtime gain 1.0. Starts when the cars finish coupling and stays beneath the spoken blend. |
 | `assets/audio/{greet,intro,prompt-couple,prompt-sounds,nudge,wait,cheer}.m4a` | `qwen3-tts-voiceclone` | 7 | Voice reference `shared/assets/refs/voice-teacher.wav`; verbatim lines in `game-design.md` §6 and `assets/audio/lines.json` | CC BY 4.0 | Model emits FLAC despite the filename; converted `afconvert -f m4af -d aac -b 64000`. Durations measured with `afinfo` into `manifest.json`. |
 
 ### Licence note on the two train sounds
@@ -36,10 +36,10 @@ generated locally — they were supplied from `00-reference/sounds/`. Everything
 is CC BY 4.0 by construction because this project made it.
 
 Their origin and licence terms are not recorded anywhere I can see, so I have not marked
-them CC BY 4.0. If they came from a stock library, the licence should be captured here
-before the game leaves beta; if they are not clearable, they are cleanly replaceable —
-they are referenced only through `config.sound`, and the game degrades to silence on that
-one beat without any code change.
+them CC BY 4.0. If they came from a stock library, the licence should be captured here;
+if they are not clearable, they are cleanly replaceable — they are referenced only
+through `config.sound`, and the game degrades to silence on that one beat without any
+code change.
 
 ### The car family
 

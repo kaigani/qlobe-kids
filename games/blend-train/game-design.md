@@ -139,13 +139,16 @@ toward the locomotive (`coupleUp.roll`, 46 space units) rather than pretending t
 a perfect butt joint. Measured on a 1180x820 tablet: gaps close from 258px to 222px and
 the train advances about 33px.
 
-The two sounds play from their own audio elements, never the voice channel, so the roll
-layers under the spoken blend line instead of cancelling it — and both are fire-and-forget,
-because nothing in the round loop may wait on a sound effect.
+The two sounds play from their own audio elements, never the voice channel, so the chug
+layers under the spoken blend line instead of cancelling it — and both are
+fire-and-forget, because nothing in the round loop may wait on a sound effect.
 
-Both play at **20% volume**. At full level they were mastered to be heard on their own
-and simply buried the thing the child is actually listening for; the arriving train
-should be felt under the word, not over it.
+Both shipped effects target **−25.3 LUFS** at runtime gain 1.0: the supplied chug is
+raised 11 dB, while the supplied −7.2 LUFS horn is attenuated 18 dB. Representative
+phoneme and word narration is about −20 LUFS, leaving the train approximately 5 dB
+beneath the learning audio during overlap. Peaks remain conservative at −11.0 dBTP for
+the chug and −18.8 dBTP for the horn. The train should be clearly present under the word,
+not compete with it.
 
 ### The picture reward
 

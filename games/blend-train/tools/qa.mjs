@@ -101,11 +101,26 @@ const DRIVER = `
 window.__qa = {
   clipStarts: [],
   channel: null,
+  soundStarts: [],
+  soundEls: {},
   lastPointerId: null,
   config: null,
 
   init: async function () {
     window.addEventListener('pointerdown', (e) => { window.__qa.lastPointerId = e.pointerId; }, true);
+    if (!window.__qa.soundPlayWrapped) {
+      const originalPlay = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function (...args) {
+        const src = this.currentSrc || this.src || '';
+        const match = src.match(/train-(roll|horn)\\.m4a(?:\\?|$)/);
+        if (match) {
+          window.__qa.soundStarts.push({ key: match[1], src, volume: this.volume });
+          window.__qa.soundEls[match[1]] = this;
+        }
+        return originalPlay.apply(this, args);
+      };
+      window.__qa.soundPlayWrapped = true;
+    }
     const voice = await import('../../shared/js/voice-clips.js');
     voice.onClip((key, el) => {
       window.__qa.clipStarts.push({ key: key, src: (el && el.currentSrc) || '' });
@@ -204,6 +219,25 @@ window.__qa = {
       duration: Number.isFinite(el.duration) ? el.duration : null,
       starts: window.__qa.clipStarts.length,
     };
+  },
+
+  /** Did each separate train-effect element decode and play at its authored gain? */
+  soundProof: function () {
+    return ['roll', 'horn'].map((key) => {
+      const el = window.__qa.soundEls[key];
+      const starts = window.__qa.soundStarts.filter((item) => item.key === key);
+      const played = el && el.played && el.played.length ? el.played.end(el.played.length - 1) : 0;
+      return {
+        key,
+        ok: !!el && !el.error && played > 0 && Number.isFinite(el.duration) && el.duration > 0,
+        error: el && el.error ? el.error.code : null,
+        src: el ? (el.currentSrc || '') : '',
+        played,
+        duration: el && Number.isFinite(el.duration) ? el.duration : null,
+        volume: starts.length ? starts[starts.length - 1].volume : null,
+        starts: starts.length,
+      };
+    });
   },
 };
 `;
@@ -734,7 +768,14 @@ async function main() {
   check('the voice channel really decoded and played an .m4a',
     proof.ok && /\.m4a$/.test(proof.src),
     `src=${proof.src.split('/').slice(-2).join('/')} played=${proof.played} dur=${proof.duration} err=${proof.error} starts=${proof.starts}`);
-  audio = { seed: AUDIO_SEED, sounds, couple, proof };
+  const soundProof = await V.page.evaluate(() => window.__qa.soundProof());
+  for (const expected of [{ key: 'roll', volume: 1 }, { key: 'horn', volume: 1 }]) {
+    const item = soundProof.find((entry) => entry.key === expected.key) || {};
+    check(`train ${expected.key} effect decodes and plays at gain ${expected.volume}`,
+      item.ok && Math.abs(item.volume - expected.volume) < 0.001,
+      `src=${String(item.src || '').split('/').slice(-2).join('/')} played=${item.played} dur=${item.duration} volume=${item.volume} err=${item.error} starts=${item.starts}`);
+  }
+  audio = { seed: AUDIO_SEED, sounds, couple, proof, soundProof };
 
   check('audio pass: no console errors', V.errors.length === 0, V.errors.slice(0, 3).join(' | '));
   check('audio pass: no failed requests', V.failed.length === 0, V.failed.slice(0, 5).join(' | '));
