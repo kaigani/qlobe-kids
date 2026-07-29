@@ -254,6 +254,7 @@ class BuildAssembleGame {
     this.detachDrag();
     this.disposeStage();
     this.stopVoice();
+    this.stopSounds();
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
@@ -530,6 +531,7 @@ class BuildAssembleGame {
   async showRound(index) {
     if (this.destroyed || this.screen !== 'play' || !this.stage) return;
     this.clearIdleTimer();
+    this.stopSounds();
     this.detachDrag();
     this.cancelTweens();
     this.bumpVoice();
@@ -1211,6 +1213,34 @@ class BuildAssembleGame {
     return card;
   }
 
+  /**
+   * The finished train rolls forward and closes its couplings. This replaces a board-wide
+   * pop, which drew the eye to the whole screen at the moment the interesting thing was
+   * the WORD: the cars sliding together read as the pieces becoming one thing.
+   *
+   * The sprites are not precision-cut, so this closes the gap by a configured fraction of
+   * the authored spacing rather than pretending to compute a perfect butt joint.
+   */
+  async coupleUpTrain(build, generation) {
+    const cfg = (build && build.coupleUp) || this.config.coupleUp;
+    if (!cfg || !this.slots.length) return;
+    const cars = this.slots
+      .filter((slot) => slot.occupantId)
+      .map((slot) => ({ slot, part: this.findPart(slot.occupantId) }))
+      .filter((entry) => entry.part && entry.part.view && !entry.part.view.destroyed);
+    if (cars.length < 2) return;
+    const close = Number.isFinite(cfg.close) ? cfg.close : 0.86;
+    const roll = Number.isFinite(cfg.roll) ? cfg.roll : 0;
+    const step = (cars[1].slot.x - cars[0].slot.x) * close;
+    const startX = cars[0].slot.x - roll;
+    this.playSound('roll');
+    await Promise.all(cars.map((entry, index) => this.runTween(
+      to(entry.part.view, { x: startX + index * step },
+        { ms: this.ms(720), easing: ease.outCubic }))));
+    if (!this.roundIsCurrent(generation)) return;
+    this.playSound('horn');
+  }
+
   async completeRound() {
     this.awaitingInput = false;
     this.inputLocked = true;
@@ -1220,16 +1250,22 @@ class BuildAssembleGame {
     const [spaceW, spaceH] = this.currentSpace();
     const centerX = this.boardLeft + spaceW * this.boardScale / 2;
     const centerY = this.boardTop + spaceH * this.boardScale / 2;
+    const build = this.roundBuilds[this.roundIndex];
+    const generation = this.roundGeneration;
+    // A game that defines coupleUp gets the roll-together; everything else keeps the
+    // board pulse it has always had.
+    const rolls = !!((build && build.coupleUp) || this.config.coupleUp);
     const originalScale = this.boardScale;
     await Promise.all([
-      (async () => {
-        await this.runTween(to(this.boardLayer.scale, { x: originalScale * 1.045, y: originalScale * 1.045 }, { ms: this.ms(180), easing: ease.outBack }));
-        await this.runTween(to(this.boardLayer.scale, { x: originalScale, y: originalScale }, { ms: this.ms(220), easing: ease.outElastic }));
-      })(),
+      rolls
+        ? this.coupleUpTrain(build, generation)
+        : (async () => {
+            await this.runTween(to(this.boardLayer.scale, { x: originalScale * 1.045, y: originalScale * 1.045 }, { ms: this.ms(180), easing: ease.outBack }));
+            await this.runTween(to(this.boardLayer.scale, { x: originalScale, y: originalScale }, { ms: this.ms(220), easing: ease.outElastic }));
+          })(),
       burst(this.stage.PIXI, this.scene, centerX, centerY, { count: 36, power: 7, life: this.ms(760) }),
     ]);
-    const build = this.roundBuilds[this.roundIndex];
-    const revealed = await this.showReveal(build, this.roundGeneration);
+    const revealed = await this.showReveal(build, generation);
     const revealedAt = Date.now();
     // Belt and braces: the round advance must NEVER be hostage to audio. The blend line
     // is the best moment in the game and worth waiting for, but if a clip fails to decode,
@@ -1673,6 +1709,36 @@ class BuildAssembleGame {
     this.logAudio('clip', ref, url, tag);
     await clips.sayFile(url, fallbackText);
     return true;
+  }
+
+  /**
+   * Play a game-supplied sound FILE (config.sound.*), as distinct from playSfx()'s
+   * synthesised blips. Deliberately not the voice channel: a train rolling in should
+   * layer under the spoken word, not cancel it. One element per url so a short roll can
+   * still be ringing out when the horn starts over the top of it.
+   * Fire and forget — nothing in the round loop may ever wait on a sound effect.
+   */
+  playSound(key) {
+    if (this.muted) return;
+    const ref = this.config.sound && this.config.sound[key];
+    if (!ref) return;
+    const url = clipUrlFor(ref, this.config.assetBase);
+    if (!url) return;
+    try {
+      if (!this.soundEls) this.soundEls = new Map();
+      let el = this.soundEls.get(url);
+      if (!el) { el = new Audio(); el.preload = 'auto'; this.soundEls.set(url, el); }
+      el.src = url;
+      el.currentTime = 0;
+      const p = el.play();
+      if (p && typeof p.catch === 'function') p.catch(() => { /* blocked before a gesture */ });
+    } catch { /* a missing sound must never break a round */ }
+  }
+
+  /** Stop any game sounds — used by mute() and teardown. */
+  stopSounds() {
+    if (!this.soundEls) return;
+    this.soundEls.forEach((el) => { try { el.pause(); } catch { /* ignore */ } });
   }
 
   playSfx(name) {

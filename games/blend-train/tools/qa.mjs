@@ -606,7 +606,12 @@ async function main() {
     console.log(`\n[${mode}]`);
     run.log.forEach((l) => console.log('     ' + l));
     check(`${mode}: reaches the end screen`, run.screen === 'end', run.screen);
-    check(`${mode}: plays all five rounds`, run.roundsPlayed === 5 && run.roundsTotal === 5,
+    // Assert against the CONFIGURED round count, not a literal. A sitting now draws a
+    // handful of words from a 133-word pool, and that number is a tuning decision that
+    // will move again; a test naming "five" was asserting last month's config.
+    const wantRounds = GAME_CONFIG.modes.find((m) => m.id === mode).rounds;
+    check(`${mode}: plays every round it dealt (${wantRounds})`,
+      run.roundsPlayed === wantRounds && run.roundsTotal === wantRounds,
       `${run.roundsPlayed}/${run.roundsTotal}`);
     check(`${mode}: no stuck round`, !run.log.some((l) => /NO PROGRESS/.test(l)));
     check(`${mode}: end screen has NO catalog link`, run.catalogLinks === 0, String(run.catalogLinks));
@@ -664,21 +669,23 @@ async function main() {
   const V = await newPage(browser, { viewport: LANDSCAPE });
   await boot(V.page, { mute: false });
 
-  // Round order is shuffled from seed(n); find the seed that deals 'mat' first
-  // so the assertions below can name the exact expected sequence.
-  let matSeed = null;
-  for (let n = 1; n <= 12 && matSeed == null; n++) {
-    await V.page.evaluate(() => window.QLOBE_DEBUG.home());
-    await startMode(V.page, 'sounds', n);
-    const s = await inventory(V.page);
-    if (s.build === 'mat-sounds') matSeed = n;
-  }
-  check('a seed deals mat first (deterministic audio assertions)', matSeed != null, `seed ${matSeed}`);
+  // Assert on WHATEVER word the seed deals, rather than hunting for a seed that deals one
+  // specific word. The word list is derived from the shared library and now runs to 133
+  // entries, so "find the seed that deals mat" was a check on the shuffle, not on the
+  // audio — and it started failing the moment the list grew past a handful.
+  const AUDIO_SEED = 5;
 
-  const audioRun = async (modeId, expectPrompt, expectSeq, expectFirstCar) => {
+  const audioRun = async (modeId, expectPrompt) => {
     await V.page.evaluate(() => window.QLOBE_DEBUG.home());
     await V.page.evaluate(() => window.QLOBE_DEBUG.clearAudioLog());
-    await startMode(V.page, modeId, matSeed);
+    await startMode(V.page, modeId, AUDIO_SEED);
+    // Derive the expected sequence from the build this seed actually dealt.
+    const dealt = (await inventory(V.page)).build || '';
+    const word = dealt.split('-')[0];
+    const pieces = modeId === 'couple' ? [word[0], word.slice(1)] : word.split('');
+    const expectSeq = [...pieces.map((p) => `letter:${p}`), `cheer:${word}`];
+    const expectFirstCar = `letter:${pieces[0]}`;
+    check(`${modeId}: dealt a word to assert against`, /^[a-z]{3}$/.test(word), `build ${dealt}`);
     const promptLog = await V.page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
     const prompt = promptLog[0] || {};
     check(`${modeId}: the mode prompt is a recorded clip`,
@@ -720,16 +727,14 @@ async function main() {
     return { build: inv.build, log: full.map((e) => e.kind + ':' + e.ref) };
   };
 
-  const sounds = await audioRun('sounds', 'clip:prompt-sounds',
-    ['letter:m', 'letter:a', 'letter:t', 'cheer:mat'], 'letter:m');
-  const couple = await audioRun('couple', 'clip:prompt-couple',
-    ['letter:m', 'letter:at', 'cheer:mat'], 'letter:m');
+  const sounds = await audioRun('sounds', 'clip:prompt-sounds');
+  const couple = await audioRun('couple', 'clip:prompt-couple');
 
   const proof = await V.page.evaluate(() => window.__qa.decodeProof());
   check('the voice channel really decoded and played an .m4a',
     proof.ok && /\.m4a$/.test(proof.src),
     `src=${proof.src.split('/').slice(-2).join('/')} played=${proof.played} dur=${proof.duration} err=${proof.error} starts=${proof.starts}`);
-  audio = { matSeed, sounds, couple, proof };
+  audio = { seed: AUDIO_SEED, sounds, couple, proof };
 
   check('audio pass: no console errors', V.errors.length === 0, V.errors.slice(0, 3).join(' | '));
   check('audio pass: no failed requests', V.failed.length === 0, V.failed.slice(0, 5).join(' | '));

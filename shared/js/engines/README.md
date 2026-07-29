@@ -146,6 +146,21 @@ into a non-square canvas. These three keys are inherited config → mode → bui
                                     // the reward flash past unseen.
   revealAt: [800, 150],            // optional [x, y] in build-space coords
   revealSize: 265,                 // optional; defaults to 0.30 of the space's short side
+  coupleUp: { close: 0.86, roll: 46 }, // optional: on completion the placed pieces slide
+                                    // together instead of the board pulsing. `close` is
+                                    // the fraction of the authored spacing to shut the
+                                    // gaps to; `roll` shifts the whole assembly that many
+                                    // build-space units toward the start. Per build or
+                                    // per config. Sprites are rarely precision-cut, so
+                                    // this closes a gap by proportion rather than
+                                    // pretending to compute a perfect joint.
+  sound: {                          // optional game-supplied sound FILES, played by key.
+    roll: 'game:assets/audio/train-roll.m4a',   // played as the pieces slide together
+    horn: 'game:assets/audio/train-horn.m4a',   // played as they arrive
+  },                                // Same ref grammar as clips. These use their own
+                                    // audio elements, NOT the voice channel, so a sound
+                                    // effect layers under a spoken line instead of
+                                    // cancelling it, and they are always fire-and-forget.
   trayOverlay: true,               // optional: float the tray ON the board instead of
                                     // slicing a strip out of it. For a game whose
                                     // backdrop is a full scene this is the difference

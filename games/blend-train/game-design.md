@@ -18,10 +18,22 @@ Two modes give the same skill two grain sizes:
 | Couple the Cars | `couple` | 2 | onset + rime chunking — `m` + `at` |
 | Sound Cars | `sounds` | 3 | phoneme-by-phoneme — `m` + `a` + `t` |
 
-`couple` is the gentler entry: two chunks, and the rime is a unit the child already
-hears as one thing. `sounds` breaks the rime apart. Both use the same five words —
-**mat, cat, sun, dog, pig** — so the second mode re-decodes words the child already
-built, which is the point rather than a shortcut.
+### The word list is derived, not authored
+
+Every three-letter object card in `shared/assets/objects/` that is a strict
+consonant-vowel-consonant word **and** has the complete recorded audio the game needs — a
+fragment clip for each of its three sounds, plus a celebration clip for the whole word.
+That is currently **133 words**, and `tools/build-config.py` regenerates the config from
+that rule.
+
+Deriving it matters for two reasons. The list grows by itself as the shared library grows,
+and it can never drift into naming a word whose sound is missing — the game would
+otherwise happily ask a child to build a word it cannot say.
+
+A sitting plays **8 words drawn from the 133** rather than the whole list, so the variety
+lives across sessions instead of turning one session into a marathon. The generator also
+self-limits to words whose car art exists, so an art batch landing half-finished narrows
+the playable list instead of rendering a missing car.
 
 ## 2. Why this concept, and what it makes more robust
 
@@ -113,6 +125,23 @@ child who cannot yet drag reliably is never locked out.
   costs the line, not the game. See §12 for the bug that made this rule non-negotiable.
 - **Touch targets** — a car renders at ~187px in landscape and ~151px in portrait, tray
   cards at 132px. All comfortably over the 96px floor.
+
+### Coupling up
+
+When the word is finished the cars **roll forward and close their couplings** while a
+train rolls in and blows its horn. This replaced a board-wide pop, which pulled the eye to
+the whole screen at the exact moment the interesting thing was the word: the pieces
+sliding into one train is the word becoming one word.
+
+The sprites are not precision-cut, so the engine closes each gap to a proportion of the
+authored spacing (`coupleUp.close`, 0.86 here) and rolls the whole train a little further
+toward the locomotive (`coupleUp.roll`, 46 space units) rather than pretending to compute
+a perfect butt joint. Measured on a 1180x820 tablet: gaps close from 258px to 222px and
+the train advances about 33px.
+
+The two sounds play from their own audio elements, never the voice channel, so the roll
+layers under the spoken blend line instead of cancelling it — and both are fire-and-forget,
+because nothing in the round loop may wait on a sound effect.
 
 ### The picture reward
 
