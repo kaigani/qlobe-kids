@@ -239,7 +239,7 @@ function showSplash() {
          style="background-image:url('${UI.home}')"></a>
       <header class="title-lockup">
         <h1 class="visually-hidden">Sink or Float Lab</h1>
-        <img class="title-art" src="./assets/title.png" width="620" height="560"
+        <img class="title-art" src="./assets/title.webp" width="620" height="560"
              alt="" aria-hidden="true" decoding="async">
       </header>
       <div class="mode-grid" role="list" aria-label="Choose an experiment">

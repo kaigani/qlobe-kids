@@ -407,8 +407,18 @@ visual system. Replace:
 - props and rewards;
 - any child-facing symbol whose platform renders inconsistently.
 
-Keep text as real HTML when exact spelling matters. AI image models are not a
-reliable typography engine.
+**Game titles are generated graphic lockups, not HTML text** (maintainer
+preference, 2026-07-29). A splash title is brand art: generate a fun painted
+lockup in the game's art world (decorative lettering, ornaments, a ribbon or
+splash motif — see `games/sink-or-float/assets/title.webp` for the reference
+example), alpha-trim it, optimize to roughly ≤150 KB, and keep an accessible
+name on the element. Because AI image models are not a reliable typography
+engine, visually spell-check every generated title at full size and reroll on
+any malformed letter.
+
+Functional text a child or parent must actually parse — instructions, labels,
+buttons, anything where exact spelling matters at runtime — stays real HTML
+(and, for children, audio-first).
 
 Contact sheets are efficient for a coordinated icon family, but only when the
 cells have an explicit grid and the final crop is deterministic. Inspect the

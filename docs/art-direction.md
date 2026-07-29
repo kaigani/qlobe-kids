@@ -84,6 +84,10 @@ genuinely differ, not just the lighting.
   game's design doc argues otherwise. Never mix worlds inside one game.
 - The HUD, splash idioms, end screens, and interaction patterns are
   world-independent — worlds restyle the play-field only.
+- Splash titles are **generated graphic lockups in the game's world style**,
+  not HTML type — decorative painted lettering with world-appropriate
+  ornaments (reference: Sink or Float Lab's watercolor title). Spell-check
+  the art at full size; functional runtime text stays HTML.
 - Cast characters (Maya, Leo, Nia, Sam, Ravi) appear in every world in their
   canonical designs; worlds restyle environments and props, not people.
 
