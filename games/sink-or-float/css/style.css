@@ -1,0 +1,1000 @@
+/* Sink or Float Lab — Field Journal art world (docs/art-direction.md §4):
+   soft gouache on warm cream paper, leaf greens, sky blues, earth browns.
+
+   Two skins live here. The base rules are code-drawn (gradients, emoji, inline
+   SVG) and fetch nothing — that is the dev fallback, kept alive behind
+   `config.placeholderArt`. Everything under `.real-art` (set on <body> by
+   main.js) swaps in the painted plates. Water tints in the canvas are sampled
+   from these same plates; see config.json theme.water. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #fdf8ec;
+  --ink: #3d5a44;
+  --ink-soft: rgba(61, 90, 68, .34);
+  --leaf: #6f9f5c;
+  --earth: #a9784f;
+  --sky: #2d7dd2;
+  --water: #59a9d8;
+  --foam: #c6e8f8;
+  --safe-top: max(14px, env(safe-area-inset-top));
+  --safe-right: max(14px, env(safe-area-inset-right));
+  --safe-bottom: max(14px, env(safe-area-inset-bottom));
+  --safe-left: max(14px, env(safe-area-inset-left));
+  --chip: 104px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  /* the sunny garden porch, painted in gradients until bg.webp lands */
+  background-image:
+    radial-gradient(120% 78% at 50% -14%, #fdfaf0 0%, rgba(253, 250, 240, 0) 62%),
+    radial-gradient(70% 42% at 8% 6%, rgba(111, 159, 92, .3) 0%, rgba(111, 159, 92, 0) 70%),
+    radial-gradient(66% 40% at 96% 10%, rgba(111, 159, 92, .24) 0%, rgba(111, 159, 92, 0) 72%),
+    linear-gradient(to bottom, var(--paper) 0%, #f2e9d5 63%, #e2cfae 100%);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+}
+
+/* Parking bay for the persistent Pixi host between screens. Offscreen but
+   SIZED — a zero-size host makes Pixi resize its renderer down to nothing. */
+.lab-park {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  width: 320px;
+  height: 420px;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------- HUD */
+
+.round-button {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
+  border: 0;
+  padding: 0;
+  background: transparent center/contain no-repeat;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 6;
+  transition: transform .12s ease;
+}
+
+.round-button:active { transform: scale(.92); }
+
+.home-button,
+.back-button { top: var(--safe-top); left: var(--safe-left); }
+.sound-button { bottom: var(--safe-bottom); left: var(--safe-left); }
+
+/* ---------------------------------------------------------------- splash */
+
+.splash {
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 3vh, 30px);
+}
+
+.title-lockup {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 22px);
+  text-align: left;
+}
+
+.title-jar {
+  display: block;
+  width: clamp(58px, 9vh, 104px);
+}
+
+.title-jar svg { width: 100%; height: auto; display: block; }
+
+.title-lockup h1 {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: .94;
+  letter-spacing: .01em;
+}
+
+.title-top {
+  font-size: clamp(30px, 6.4vh, 62px);
+  color: var(--sky);
+}
+
+.title-bottom {
+  font-size: clamp(38px, 8vh, 78px);
+  color: var(--leaf);
+}
+
+.mode-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(12px, 2.6vw, 26px);
+  width: 100%;
+  max-width: 900px;
+}
+
+.mode-card {
+  flex: 0 1 clamp(150px, 25vw, 236px);
+  min-width: 150px;
+  min-height: 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(12px, 2vh, 22px) 12px;
+  border: 3px solid var(--ink-soft);
+  border-radius: 26px;
+  background: var(--panel);
+  box-shadow: 0 8px 0 rgba(61, 90, 68, .13);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.mode-card:active {
+  transform: translateY(5px);
+  box-shadow: 0 3px 0 rgba(61, 90, 68, .13);
+}
+
+.mode-art { font-size: clamp(42px, 8vh, 72px); line-height: 1; }
+.mode-title { font-size: clamp(16px, 2.4vh, 23px); text-align: center; }
+
+/* ------------------------------------------------------------------ play */
+
+.play-screen[data-kind='predict'] { --chip: 66px; }
+.play-screen[data-kind='sandbox'] { --chip: 100px; }
+
+.lab-layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  gap: clamp(6px, 1.4vw, 16px);
+  grid-template-columns: calc(var(--chip) + 22px) minmax(0, 1fr) minmax(132px, 21%);
+  padding: 0 0 0 calc(96px + 10px);
+}
+
+.shelf {
+  min-height: 0;
+  border-radius: 22px;
+  background: rgba(253, 248, 236, .74);
+  border: 3px solid var(--ink-soft);
+  padding: 8px 6px;
+  overflow: hidden;
+}
+
+.shelf-rail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  touch-action: pan-y;
+  scrollbar-width: none;
+}
+
+.shelf-rail::-webkit-scrollbar { display: none; }
+
+.obj-chip {
+  flex: 0 0 auto;
+  width: var(--chip);
+  height: var(--chip);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--ink-soft);
+  border-radius: 24px;
+  background: var(--panel);
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: none;
+  transition: transform .14s ease, opacity .2s ease, border-color .14s ease;
+}
+
+/* Anything a finger is meant to find keeps the 96px floor whatever the shelf
+   does with its visual size. (Predict-mode chips are inert `span`s — a picture
+   of what is coming, not a control — so they are allowed to be smaller.) */
+.obj-chip:not(.is-static) {
+  min-width: 96px;
+  min-height: 96px;
+}
+
+.obj-chip.is-static { cursor: default; }
+.obj-glyph { font-size: calc(var(--chip) * .56); line-height: 1; }
+.obj-chip.is-done { opacity: .34; }
+.obj-chip.is-selected { border-color: var(--sky); transform: scale(1.06); box-shadow: 0 0 0 5px rgba(45, 125, 210, .22); }
+.obj-chip.is-drag-source { opacity: .28; }
+
+.jar-col {
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.focus-slot {
+  flex: 0 0 auto;
+  /* The named object is the star of the predict step, so it gets real size:
+     ~160px on a 768px-tall tablet in landscape. */
+  height: clamp(104px, 21vh, 172px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-chip {
+  --chip: clamp(76px, 13vh, 118px);
+  border-width: 4px;
+  box-shadow: 0 6px 0 rgba(61, 90, 68, .14);
+}
+
+.focus-chip.is-live {
+  border-color: var(--sky);
+  animation: dangle 1.9s ease-in-out infinite;
+}
+
+@keyframes dangle {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(9px) rotate(3deg); }
+}
+
+.jar-slot {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  border-radius: 20px;
+  transition: box-shadow .16s ease;
+}
+
+.jar-slot.is-target { box-shadow: inset 0 0 0 4px rgba(45, 125, 210, .5); }
+
+.jar-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.jar-stage canvas {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+/* The badges come and go every round, and the jar is sized to whatever height
+   is left over — so without a permanent well for them the jar would grow and
+   shrink between "guess" and "drop", resizing the water mid-experiment and
+   lifting the glass off the painted table. The well always holds their space. */
+.badge-well {
+  flex: 0 0 auto;
+  height: clamp(120px, 16vh, 142px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guess-row {
+  flex: 0 0 auto;
+  display: flex;
+  gap: clamp(14px, 3vw, 40px);
+  padding: 4px 0 2px;
+}
+
+.guess-row[hidden] { display: none; }
+
+.badge {
+  width: clamp(120px, 17vh, 150px);
+  height: clamp(120px, 17vh, 150px);
+  min-width: 120px;
+  min-height: 120px;
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  filter: drop-shadow(0 6px 0 rgba(61, 90, 68, .16));
+  transition: transform .14s ease, filter .14s ease;
+}
+
+.badge svg { width: 100%; height: 100%; display: block; }
+.badge:active { transform: scale(.94); }
+
+.badge.is-chosen {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px rgba(255, 215, 94, .95)) drop-shadow(0 6px 0 rgba(61, 90, 68, .16));
+}
+
+/* --------------------------------------------------------------- journal */
+
+.journal {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.journal-tab { display: none; }
+
+.journal-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--ink-soft);
+  border-radius: 20px;
+  background:
+    repeating-linear-gradient(to bottom, rgba(61, 90, 68, .07) 0 1px, rgba(61, 90, 68, 0) 1px 26px),
+    var(--panel);
+  overflow: hidden;
+}
+
+.journal-zone {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.zone-sink { align-content: flex-end; }
+
+.journal-water {
+  flex: 0 0 auto;
+  height: 12px;
+  background:
+    radial-gradient(closest-side, var(--foam) 92%, transparent) repeat-x 0 2px / 22px 12px,
+    linear-gradient(to bottom, rgba(89, 169, 216, .85), rgba(89, 169, 216, .3));
+}
+
+.journal-stamp {
+  font-size: clamp(24px, 3.6vh, 38px);
+  line-height: 1;
+  filter: drop-shadow(0 2px 1px rgba(61, 90, 68, .22));
+}
+
+.journal-stamp.is-new { animation: stamp-in .42s cubic-bezier(.2, 1.5, .4, 1) both; }
+
+@keyframes stamp-in {
+  from { transform: scale(2.2) rotate(-14deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* -------------------------------------------------------------- progress */
+
+.progress {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0 0;
+}
+
+.progress-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(61, 90, 68, .2);
+  transition: background .2s ease, transform .2s ease;
+}
+
+.progress-dot.is-done { background: var(--leaf); transform: scale(1.14); }
+
+/* ------------------------------------------------------------------- end */
+
+.end-screen { align-items: center; justify-content: center; }
+
+.end-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2.4vh, 22px);
+  width: min(560px, 88vw);
+  height: min(78vh, 620px);
+  padding: clamp(12px, 2.4vh, 22px);
+  border-radius: 30px;
+  background: rgba(253, 248, 236, .92);
+  border: 3px solid var(--ink-soft);
+  box-shadow: 0 10px 0 rgba(61, 90, 68, .12);
+  overflow: hidden;
+}
+
+.end-card .journal-page { width: 100%; }
+.end-card .journal-stamp { font-size: clamp(30px, 5.4vh, 52px); }
+
+.again-button {
+  flex: 0 0 auto;
+  width: 118px;
+  height: 118px;
+  min-width: 96px;
+  min-height: 96px;
+  border: 3px solid var(--ink-soft);
+  border-radius: 50%;
+  background: var(--leaf);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 7px 0 rgba(61, 90, 68, .2);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.again-button:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(61, 90, 68, .2); }
+.again-glyph { font-size: 54px; line-height: 1; }
+
+.confetti {
+  position: absolute;
+  top: -24px;
+  left: var(--x);
+  width: 13px;
+  height: 17px;
+  border-radius: 4px;
+  /* Painted paper, not party plastic: the tints come from main.js's CONFETTI
+     palette, which is the same paintbox as the plates. */
+  background: var(--tint, #7fbcd2);
+  opacity: .92;
+  animation: fall 2.1s linear var(--delay) forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to { transform: translateY(96vh) rotate(560deg); opacity: .15; }
+}
+
+/* ------------------------------------------------------------ drag ghost */
+
+.drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--ghost-size, 96px);
+  height: var(--ghost-size, 96px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--ghost-size, 96px) * .56);
+  border: 3px solid var(--ink-soft);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: 0 10px 18px rgba(61, 90, 68, .25);
+  transform: translate(var(--ghost-x, 0), var(--ghost-y, 0)) rotate(var(--ghost-tilt, 0deg)) scale(1.08);
+  pointer-events: none;
+  z-index: 40;
+}
+
+.drag-ghost.is-over { box-shadow: 0 10px 18px rgba(61, 90, 68, .25), 0 0 0 6px rgba(45, 125, 210, .34); }
+
+/* -------------------------------------------------------------- feedback */
+
+.is-wiggle { animation: wiggle .5s ease; }
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px) rotate(-2deg); }
+  45% { transform: translateX(9px) rotate(2deg); }
+  70% { transform: translateX(-5px); }
+}
+
+/* ---------------------------------------------------------- orientation */
+
+@media (orientation: portrait) {
+  .badge-well { height: 120px; }
+  .lab-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: calc(var(--chip) + 22px) minmax(0, 1fr) auto;
+    padding: 0;
+    padding-top: calc(96px + 6px);
+  }
+
+  .shelf { padding: 6px 8px; }
+
+  /* Portrait is height-starved and the jar has to stay the hero, so every
+     piece of furniture gives back what it can: a shorter dangle slot, badges
+     at their 120px floor, and no progress dots (the shelf already dims each
+     object as it is tested, which says the same thing without a second row). */
+  .focus-slot { height: clamp(68px, 9vh, 92px); }
+  .badge { width: 120px; height: 120px; }
+  .progress { display: none; }
+  .journal:not(.is-open) { height: 56px; }
+
+  .shelf-rail {
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    touch-action: pan-x;
+  }
+
+  .journal {
+    justify-content: flex-end;
+    height: 62px;
+    transition: height .22s ease;
+  }
+
+  .journal.is-open { height: min(38vh, 260px); }
+
+  .journal .journal-page { display: none; }
+  .journal.is-open .journal-page { display: flex; }
+
+  .journal-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 120px;
+    height: 56px;
+    min-height: 48px;
+    margin-bottom: 4px;
+    border: 3px solid var(--ink-soft);
+    border-radius: 18px 18px 6px 6px;
+    background: var(--panel);
+    font-size: 30px;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .journal-page { flex-direction: row; }
+  .journal-zone { align-content: center; }
+  .zone-sink { align-content: center; }
+
+  .journal-water {
+    height: auto;
+    width: 12px;
+    background:
+      radial-gradient(closest-side, var(--foam) 92%, transparent) repeat-y 2px 0 / 12px 22px,
+      linear-gradient(to right, rgba(89, 169, 216, .85), rgba(89, 169, 216, .3));
+  }
+
+  .sound-button { bottom: auto; top: var(--safe-top); right: var(--safe-right); left: auto; }
+}
+
+/* Short landscape (phones held sideways): give the jar the height back. */
+@media (orientation: landscape) and (max-height: 460px) {
+  .focus-slot { height: clamp(62px, 15vh, 86px); }
+  /* 120px is the GDD floor for a guess badge — never trade it for headroom. */
+  .badge { width: 120px; height: 120px; }
+  .progress { display: none; }
+}
+
+/* ============================================================ PAINTED PLATES
+
+   Everything below only applies once main.js has confirmed the real art is in
+   play (`body.real-art`). Rules are grouped by what they replace, and each one
+   turns OFF a code-drawn stand-in as well as turning ON a plate — a cream card
+   frame left around a trimmed gouache cutout is the single thing that makes a
+   painted game look like a mockup. */
+
+/* The gradient porch was the stand-in for bg.webp; with the plates in, it would
+   only ever be seen for the split second before they decode. */
+body.real-art { background-image: none; }
+
+/* ---------------------------------------------------------------- backdrops */
+
+.real-art .splash {
+  background: url('../assets/splash.webp') center / cover no-repeat;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: clamp(6px, 2vh, 18px);
+}
+
+/* Anchored to the BOTTOM, not the centre. bg.webp puts the porch table in its
+   lower third, and on any viewport wider than the plate's 4:3 `cover` crops the
+   height — centred, that crop eats the bottom and the table sinks below the jar
+   the game just stood on it. Anchoring bottom keeps the table line where the
+   furniture expects it and spends the crop on empty sky instead. */
+.real-art .play-screen,
+.real-art .end-screen {
+  background: url('../assets/bg.webp') center bottom / cover no-repeat;
+}
+
+/* ------------------------------------------------------------ splash title */
+
+/* splash.webp keeps its upper right deliberately empty (cream sky) — the title
+   is real HTML text set there, not baked into the plate, so it stays crisp at
+   every density and the words can still be changed. */
+.real-art .title-lockup {
+  align-self: flex-end;
+  margin: clamp(0px, 1vh, 12px) clamp(8px, 3vw, 44px) 0 0;
+  text-align: right;
+  max-width: min(56%, 520px);
+}
+
+.real-art .title-lockup h1 { align-items: flex-end; }
+
+.real-art .title-top,
+.real-art .title-bottom {
+  text-shadow:
+    0 2px 0 rgba(255, 253, 246, .85),
+    0 0 18px rgba(255, 251, 240, .9);
+}
+
+.real-art .mode-grid {
+  align-self: center;
+  margin-bottom: clamp(2px, 1.6vh, 20px);
+}
+
+/* --------------------------------------------------------------- mode cards */
+
+.real-art .mode-card {
+  gap: 6px;
+  padding: clamp(7px, 1.2vh, 12px) clamp(7px, 1.2vh, 12px) clamp(5px, 1vh, 10px);
+  min-height: 0;
+  border-width: 2px;
+  border-color: rgba(61, 90, 68, .22);
+  background: rgba(253, 248, 236, .93);
+  box-shadow: 0 7px 14px rgba(61, 90, 68, .22);
+  flex: 0 1 clamp(118px, 17vw, 178px);
+  min-width: 118px;
+}
+
+.real-art .mode-card:active { box-shadow: 0 3px 8px rgba(61, 90, 68, .22); }
+
+/* The mode plates are OPAQUE framed paintings, not cutouts: they get a card
+   crop, never a transparent-background treatment. */
+.real-art .mode-art { width: 100%; font-size: 0; line-height: 0; }
+
+.real-art .mode-tile {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.real-art .mode-title { font-size: clamp(14px, 2.1vh, 20px); }
+
+/* -------------------------------------------------------- objects on paper */
+
+/* Half the shelf is painted white — a spoon, a shell, an egg. On a cream plate
+   at 88% opacity those simply were not there. The cutouts get their own soft
+   ink edge so a pale object still has an outline to read, and the plate goes
+   fully opaque so the shelf reads as a row of things rather than a ghost of one. */
+.real-art .obj-art {
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 1px rgba(61, 90, 68, .5))
+    drop-shadow(0 2px 2px rgba(61, 90, 68, .22));
+}
+
+.real-art .obj-chip {
+  border-width: 2px;
+  border-color: rgba(61, 90, 68, .34);
+  background:
+    radial-gradient(78% 66% at 50% 34%, #fffdf6 0%, rgba(255, 253, 246, 0) 72%),
+    #fbf3e2;
+  box-shadow: 0 3px 0 rgba(61, 90, 68, .14);
+}
+
+/* Tested: faded, and checked off. The fade alone reads as "broken" on a plate
+   that never had much contrast to lose; the tick is what says "done". */
+.real-art .obj-chip.is-done {
+  position: relative;
+  opacity: 1;                      /* the chip stays; what fades is its object */
+  border-color: rgba(61, 90, 68, .16);
+  background: rgba(247, 241, 227, .6);
+  box-shadow: none;
+}
+
+.real-art .obj-chip.is-done .obj-art { opacity: .42; filter: none; }
+
+.real-art .obj-chip.is-done::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 26%;
+  height: 26%;
+  min-width: 16px;
+  min-height: 16px;
+  background: no-repeat center / contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%236f9f5c'/%3E%3Cpath d='M6.5 12.4l3.6 3.6 7.2-7.6' fill='none' stroke='%23fdf8ec' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.real-art .play-screen[data-kind='predict'] { --chip: 78px; }
+
+.real-art .shelf { background: rgba(253, 248, 236, .7); border-width: 2px; }
+
+/* The notebook plate is landscape (800×564): give the column enough width that
+   a round's six stamps still land at a readable size, and drop it to the same
+   baseline as the jar so both are lying on the painted table rather than one
+   floating in the hedge. Landscape only — portrait stacks the journal into a
+   drawer and must keep its single-column grid. */
+@media (orientation: landscape) {
+  .real-art .lab-layout {
+    grid-template-columns: calc(var(--chip) + 22px) minmax(0, 1fr) minmax(200px, 32%);
+  }
+
+  /* Exactly the badge well's height, so the notebook and the jar share a
+     baseline: both are lying on the same painted table. */
+  .real-art .journal {
+    justify-content: flex-end;
+    padding-bottom: clamp(120px, 16vh, 142px);
+  }
+}
+
+/* ------------------------------------------------------------- focus object */
+
+/* No card: the painted thing itself, big, with the porch light behind it. */
+.real-art .focus-chip {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  min-width: 96px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.real-art .focus-art {
+  display: block;
+  height: calc(100% * var(--focus-fit, 1));
+  width: auto;
+  max-width: min(100%, 40vw);
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 9px 7px rgba(61, 90, 68, .26));
+}
+
+.real-art .focus-chip.is-live { border: 0; }
+
+/* ------------------------------------------------------------ guess badges */
+
+.real-art .badge { border-radius: 50%; filter: drop-shadow(0 6px 7px rgba(61, 90, 68, .24)); }
+
+.real-art .badge-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.real-art .badge.is-chosen {
+  filter: drop-shadow(0 0 16px rgba(255, 214, 92, 1)) drop-shadow(0 6px 7px rgba(61, 90, 68, .24));
+}
+
+/* ---------------------------------------------------------------- journal */
+
+/* One painted plate: air above the water line, underwater below it. The zones
+   are PERCENTAGES of the same box, so however the panel is squeezed a floater's
+   stamp still lands in the air and a sinker's still lands in the water. */
+.real-art .journal-page {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 800 / 564;
+  max-height: 100%;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: url('../assets/journal.png') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 7px 9px rgba(61, 90, 68, .2));
+}
+
+.real-art .journal-water { display: none; }
+
+.real-art .journal-zone {
+  position: absolute;
+  left: 9%;
+  right: 13%;          /* the plate's painted pencil lies along the right edge */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(2px, .55vw, 9px);
+  padding: 0;
+}
+
+/* Measured off journal.png (800×564): the painted waterline runs at y ≈ 276–288
+   (49%) and the sandy bed with its rocks lies at y ≈ 450–500 (80–89%). The two
+   zones are anchored to those two facts — floaters bottom out ON the line, so
+   each stamp is half in the air and half in the water like a real floating
+   thing; sinkers bottom out DOWN among the rocks, where a sunk thing ends up.
+   Anything in between reads as one crowd of stickers around the middle. */
+.real-art .zone-float { top: 8%; height: 41.5%; align-content: flex-end; }
+.real-art .zone-sink { top: 55%; height: 30%; align-content: flex-end; }
+
+/* Pressed into the page by a small hand: tilted, seated a little off the line,
+   with a soft shadow. Tilt and offset are derived from the object id in
+   main.js so they never change under a relayout. */
+.real-art .journal-stamp {
+  width: clamp(28px, 5.2vh, 50px);
+  height: clamp(28px, 5.2vh, 50px);
+  display: block;
+  /* visible, so the tilt does not crop the corners off a near-square cutout */
+  overflow: visible;
+  transform: translateY(var(--dy, 0));
+  filter: drop-shadow(0 3px 2px rgba(61, 90, 68, .32));
+}
+
+.real-art .stamp-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(var(--rot, 0deg));
+}
+
+.real-art .journal-stamp.is-new { animation: stamp-in-real .42s cubic-bezier(.2, 1.5, .4, 1) both; }
+
+@keyframes stamp-in-real {
+  from { transform: translateY(var(--dy, 0)) scale(2.4); opacity: 0; }
+  to { transform: translateY(var(--dy, 0)) scale(1); opacity: 1; }
+}
+
+/* No card. The finished page is the celebration — a big notebook lying open on
+   the same porch table the jar was standing on, not a panel pasted over it. */
+.real-art .end-card {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  width: min(680px, 94vw);
+  height: auto;
+  max-height: 100%;
+  justify-content: center;
+}
+
+.real-art .end-card .journal-page {
+  filter: drop-shadow(0 12px 16px rgba(61, 90, 68, .3));
+}
+
+/* The shared play button, so "again" matches the home / back / sound set. */
+.real-art .again-button {
+  border: 0;
+  background: transparent center / contain no-repeat;
+  background-image: var(--again-art);
+  box-shadow: none;
+  filter: drop-shadow(0 5px 6px rgba(61, 90, 68, .3));
+}
+
+.real-art .again-button:active { transform: translateY(4px); box-shadow: none; }
+.real-art .again-glyph { display: none; }
+
+/* The end screen IS the journal page — its stamps are the thing the child
+   spent the round making, so they get the full 60–70px. */
+.real-art .end-card .journal-stamp {
+  width: clamp(44px, 7.4vh, 70px);
+  height: clamp(44px, 7.4vh, 70px);
+}
+
+/* ------------------------------------------------------------- drag ghost */
+
+/* "Let go here." The code-drawn skin outlines the drop zone, which over a
+   painting reads as a stray UI rectangle across the porch — so the painted skin
+   uses warm afternoon light blooming around the jar instead, and lets the
+   ghost's own blue rim carry the precision. */
+.real-art .jar-slot.is-target {
+  box-shadow: none;
+  background: radial-gradient(58% 46% at 50% 62%, rgba(255, 236, 168, .55), rgba(255, 236, 168, 0) 72%);
+}
+
+.real-art .drag-ghost {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 10px 12px rgba(61, 90, 68, .34));
+}
+
+.real-art .drag-ghost.is-over {
+  box-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(45, 125, 210, .8)) drop-shadow(0 10px 12px rgba(61, 90, 68, .34));
+}
+
+.real-art .ghost-art { width: 100%; height: 100%; object-fit: contain; }
+
+/* ------------------------------------------------- painted plates: portrait */
+
+@media (orientation: portrait) {
+  .real-art .focus-slot { height: clamp(84px, 12vh, 138px); }
+
+  /* `.real-art .journal-page` and the base `.journal .journal-page` hide-rule
+     have equal specificity, and the painted one is written later — so the
+     closed drawer needs saying again, or a strip of notebook stays on screen. */
+  .real-art .journal:not(.is-open) .journal-page { display: none; }
+
+  /* Portrait's journal is a short, wide drawer: size the plate by HEIGHT there
+     so the notebook keeps its shape instead of stretching to the full width. */
+  .real-art .journal.is-open .journal-page {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .real-art .journal-stamp { width: clamp(18px, 3vh, 34px); height: clamp(18px, 3vh, 34px); }
+}
+
+@media (orientation: landscape) and (max-height: 460px) {
+  .real-art .focus-slot { height: clamp(72px, 18vh, 104px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .confetti { display: none; }
+  .focus-chip.is-live { animation: none; border-color: var(--sky); }
+  .real-art .focus-chip.is-live { animation: none; }
+}

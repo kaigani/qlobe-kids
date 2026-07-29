@@ -1305,7 +1305,7 @@
     },
     {
       "id": "sink-or-float",
-      "title": "Sink or Float",
+      "title": "Sink or Float Lab",
       "category": "sensorial-science",
       "path": "games/sink-or-float/",
       "icon": "assets/hub/tiles/sink-or-float.jpg",
@@ -1317,17 +1317,33 @@
       "accent": "#2d7dd2",
       "modes": [
         {
-          "id": "tub",
-          "title": "Sink or Float?",
-          "skill": "predicting buoyancy for familiar objects"
+          "id": "predict",
+          "title": "Predict & Test",
+          "skill": "making and testing a prediction"
         },
         {
           "id": "tricky",
           "title": "Tricky Ones",
-          "skill": "reasoning about surprising sink-or-float cases"
+          "skill": "reasoning past the big-things-sink misconception"
+        },
+        {
+          "id": "pond",
+          "title": "Water Playground",
+          "skill": "open observation of what water does"
         }
       ],
-      "summary": "Predict, test, and sort what sinks and what floats."
+      "summary": "Drop real things into a big jar of water, test your guess, and stamp what happened into your field journal.",
+      "uses": [
+        "shared/js/stage/stage.js",
+        "shared/js/stage/water.js",
+        "shared/js/stage/particles.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/",
+        "shared/fonts/"
+      ]
     },
     {
       "id": "magnet-explorer",

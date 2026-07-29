@@ -1,42 +1,45 @@
-# Asset Log - Sink or Float
+# Asset Log — Sink or Float Lab
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Object and answer placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholder only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All new art and voice for this game were generated on the local GenAI API
+(ComfyUI wrapper on the LAN; host configured via `QLOBE_QWEN_URL`, never
+committed) and finalized deterministically by the scripts in `tools/`.
+Original generations are retained under `assets/source/`. New assets:
+CC BY 4.0, created for QLOBE Kids.
 
-## Assets needed
+## Pipeline
 
-### Art
-- Bathtub scene production art to replace `emoji:🛁`.
-- Production sink and float answer cards if emoji cards are replaced.
+```
+krea2-turbo-t2i (style anchors, seeds 42/1337/9001)
+  → qwen-image-edit (17 objects from the approved duck anchor, seed 42)
+  → qwen-image-layered (async job, layer_2 = true-alpha cutout, seed 42)
+  → tools/finalize-art.py (alpha-trim, pad 4%, resize, webp/png, magenta QA)
+qwen3-tts-voiceclone (platform teacher voice ref via QLOBE_VOICE_REF, seeds 7/8/9)
+  → whisper-stt QA (model small, language en; transcript must match script)
+  → ffmpeg AAC 64k m4a +faststart → manifest.json  (tools/gen-voice.py)
+```
 
-### Audio
-- Optional splash/plop sound clips if the shared SFX set is extended for water play.
+## Generated for this game (CC BY 4.0)
 
-### Voice
-- "Bathtub test! Look at the object, make a prediction, then tap sink or float."
-- "Hmm, think about the water pushing up and try the other card."
-- "You tested your ideas! Try it in the sink tonight!"
-- "Good prediction! Water pushes up on things."
-- "Yes! Shape, air, and weight can change what happens."
-- "You are thinking like a scientist!"
-- "A rock is packed tight and heavy for its size. Does it sink or float?"
-- "A leaf is light and spreads out on top of the water. Does it sink or float?"
-- "A metal key is small, hard, and heavy for its size. Does it sink or float?"
-- "A rubber duck is light and has air inside. Does it sink or float?"
-- "A coin is metal and packed tight. Does it sink or float?"
-- "A piece of cork or wood has tiny spaces that hold air. Does it sink or float?"
-- "An apple can feel heavy, but it has air spaces inside. Does it sink or float?"
-- "An orange has a light peel and air spaces. Does it sink or float?"
-- "A metal spoon is packed tight and heavy for its size. Does it sink or float?"
-- "A boat can be heavy, but its wide shape holds air and pushes lots of water. Does it sink or float?"
+| Asset | Source | Recipe |
+|---|---|---|
+| `assets/bg.webp` 1600×1200 | `assets/source/anchors/bg.png` | krea2-turbo-t2i seed 1337 — Field Journal garden porch table |
+| `assets/splash.webp` 1600×1200 | `assets/source/anchors/splash.png` | krea2-turbo-t2i seed 1337 — jar/journal/duck tableau |
+| `assets/og-image.jpg` 1200×630 | center-crop of splash source | deterministic (`tools/finalize-art.py`) |
+| `assets/objects/*.webp` ×18, 400px | `assets/source/raw-edit/`, `assets/source/cutouts/` | duck: krea2 seed 1337; others: qwen-image-edit from duck anchor, seed 42; all extracted with qwen-image-layered |
+| `assets/jar.png` | `assets/source/anchors/jar.png` | krea2-turbo-t2i (seed noted in source dir) + layered extraction |
+| `assets/journal.png` | `assets/source/anchors/journal.png` | krea2-turbo-t2i seed 42 + layered extraction |
+| `assets/ui/badge-*.png`, `assets/ui/icon-*.png` 300px | `assets/source/anchors/` | krea2-turbo-t2i seed 42 + layered extraction |
+| `assets/audio/*.m4a` + `manifest.json` + `lines.json` | `assets/source/voice/` | qwen3-tts-voiceclone seed ladder 7/8/9, whisper-QA'd; failing lines omitted (Web Speech fallback) |
+| `assets/source/hub/tile-candidate.jpg` 640×533 | `assets/source/anchors/hub-tile.png` | krea2-turbo-t2i seed 42, Toy Table hub grammar. Staged only — `assets/hub/tiles/` is hand-curated by the maintainer |
 
-## Link preview (og:image)
+Alpha QA composites (magenta) for every cutout: `assets/source/qa/`.
+
+## Reused shared assets
 
 | Asset | Source | Creator | License | Attribution required | Modifications |
 |---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
+| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified |
+| PixiJS (`shared/vendor/pixi.min.js`) | vendored platform library | PixiJS team | MIT | No | Reused unmodified |
+| Sound effects | N/A — synthesized at runtime via WebAudio (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
+| Web Speech fallback voice | N/A — device built-in voices via `shared/js/speech.js` | N/A | N/A | N/A | Fallback when a recorded clip is absent |

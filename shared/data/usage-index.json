@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-29T14:33:20.512Z",
+  "generated": "2026-07-29T17:34:23.762Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -38,7 +38,7 @@
       ]
     },
     "choose-one": {
-      "count": 17,
+      "count": 16,
       "games": [
         "board-game-reset",
         "calm-corner-cards",
@@ -51,7 +51,6 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "sink-or-float",
         "song-story-remix",
         "sound-hopscotch",
         "story-repair-shop",
@@ -240,7 +239,7 @@
     },
     "blend-train": {
       "engine": "build-assemble",
-      "status": "beta",
+      "status": "live",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
@@ -1323,16 +1322,22 @@
       "packs": []
     },
     "sink-or-float": {
-      "engine": "choose-one",
+      "engine": null,
       "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
-        "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/water.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "smell-jars": {
@@ -1817,7 +1822,6 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "sink-or-float",
         "song-story-remix",
         "sound-hopscotch",
         "story-repair-shop",
@@ -2150,7 +2154,8 @@
         "lunchbox-pack"
       ],
       "shared/js/stage/particles.js": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "sink-or-float"
       ],
       "shared/js/stage/pose-sprite.js": [
         "story-stones"
@@ -2164,7 +2169,8 @@
       ],
       "shared/js/stage/stage.js": [
         "flashlight-cave",
-        "puppet-retell"
+        "puppet-retell",
+        "sink-or-float"
       ],
       "shared/js/stage/theater.js": [
         "my-puppet-band",
@@ -2175,6 +2181,9 @@
       "shared/js/stage/tween.js": [
         "flashlight-cave"
       ],
+      "shared/js/stage/water.js": [
+        "sink-or-float"
+      ],
       "shared/js/tap.js": [
         "counting-treasure-cups",
         "feelings-charades",
@@ -2183,6 +2192,7 @@
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
+        "sink-or-float",
         "sound-painting",
         "sound-sprouts"
       ],
@@ -2198,6 +2208,7 @@
         "puppet-problem-solvers",
         "puppet-retell",
         "sand-tray-letters",
+        "sink-or-float",
         "sound-painting",
         "story-stones"
       ],
@@ -2522,6 +2533,7 @@
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
+        "sink-or-float",
         "sound-painting",
         "sound-sprouts",
         "tangram-tales",

@@ -1,0 +1,468 @@
+{
+  "game": "sink-or-float",
+  "base": "http://127.0.0.1:53809",
+  "when": "2026-07-29T17:35:23.260Z",
+  "results": [
+    {
+      "name": "hub: lists exactly one Sink or Float tile",
+      "ok": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "hub: launches the game at its route",
+      "ok": true,
+      "detail": "http://127.0.0.1:53809/games/sink-or-float/"
+    },
+    {
+      "name": "hub boot: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hub boot: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "splash: boots to the splash screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "splash: three distinct modes registered",
+      "ok": true,
+      "detail": "predict,tricky,pond"
+    },
+    {
+      "name": "splash: mode titles match config",
+      "ok": true,
+      "detail": "Predict & Test|Tricky Ones|Water Playground"
+    },
+    {
+      "name": "mode \"predict\" starts into play with input awaited",
+      "ok": true,
+      "detail": "{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":0,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "mode \"tricky\" starts into play with input awaited",
+      "ok": true,
+      "detail": "{\"screen\":\"play\",\"mode\":\"tricky\",\"step\":\"predict\",\"round\":0,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "mode \"pond\" starts into play with input awaited",
+      "ok": true,
+      "detail": "{\"screen\":\"play\",\"mode\":\"pond\",\"step\":\"play\",\"round\":0,\"roundsTotal\":0,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "splash/modes pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "splash/modes pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: startMode(\"predict\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape: predict mode deals 6 rounds",
+      "ok": true,
+      "detail": "6"
+    },
+    {
+      "name": "landscape round 0: predict(\"sink\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 0: the round advances after the drop",
+      "ok": true,
+      "detail": "round 0 -> 1, screen play"
+    },
+    {
+      "name": "landscape round 1: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 1: the round advances after the drop",
+      "ok": true,
+      "detail": "round 1 -> 2, screen play"
+    },
+    {
+      "name": "landscape: the wrong prediction is recorded honestly",
+      "ok": true,
+      "detail": "{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
+    },
+    {
+      "name": "landscape: a miss gets the warm \"surprise\" line, not an error",
+      "ok": true,
+      "detail": "What do you think? Will it sink, or will it float? / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A wooden block! / What do you think? Will it sink, or will it float?"
+    },
+    {
+      "name": "landscape: the journal stamps the TRUTH, not the child's guess",
+      "ok": true,
+      "detail": "zone=sink obj=coin count=1"
+    },
+    {
+      "name": "landscape round 2: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 2: the round advances after the drop",
+      "ok": true,
+      "detail": "round 2 -> 3, screen play"
+    },
+    {
+      "name": "landscape round 3: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 3: the round advances after the drop",
+      "ok": true,
+      "detail": "round 3 -> 4, screen play"
+    },
+    {
+      "name": "landscape round 4: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 4: the round advances after the drop",
+      "ok": true,
+      "detail": "round 4 -> 5, screen play"
+    },
+    {
+      "name": "landscape round 5: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "landscape round 5: the round advances after the drop",
+      "ok": true,
+      "detail": "round 5 -> 6, screen end"
+    },
+    {
+      "name": "landscape: the full predict round reaches the end screen",
+      "ok": true,
+      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"apple\",\"name\":\"apple\",\"emoji\":\"🍎\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"sponge\",\"name\":\"sponge\",\"emoji\":\"🧽\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"duck\",\"name\":\"rubber duck\",\"emoji\":\"🦆\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "landscape: the journal carries one stamp per round played",
+      "ok": true,
+      "detail": "6 stamps, 6 results"
+    },
+    {
+      "name": "landscape predict pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape predict pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape: pond mode starts awaiting input",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape pond: chip \"duck\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "landscape pond: \"duck\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=0"
+    },
+    {
+      "name": "landscape pond: chip \"rock\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "landscape pond: \"rock\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=1"
+    },
+    {
+      "name": "landscape pond: chip \"wooden-block\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "landscape pond: \"wooden-block\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=2"
+    },
+    {
+      "name": "landscape pond: three objects are in the jar",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "landscape pond: the float object is findable in the water state",
+      "ok": true,
+      "detail": "[\"duck\",\"rock\",\"wooden-block\"]"
+    },
+    {
+      "name": "landscape pond: lifting an object back out removes it from the jar",
+      "ok": true,
+      "detail": "inJar 3 -> 2, dragging=false"
+    },
+    {
+      "name": "landscape pond pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landscape pond pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tricky: deals an object from the tricky pool",
+      "ok": true,
+      "detail": "watermelon in [watermelon,pebble,log,paperclip,orange,egg]"
+    },
+    {
+      "name": "tricky: predict() is accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "tricky: the round advances after a drop",
+      "ok": true,
+      "detail": "round 0 -> 1"
+    },
+    {
+      "name": "tricky pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tricky pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait: startMode(\"predict\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait: predict mode deals 6 rounds",
+      "ok": true,
+      "detail": "6"
+    },
+    {
+      "name": "portrait round 0: predict(\"sink\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 0: the round advances after the drop",
+      "ok": true,
+      "detail": "round 0 -> 1, screen play"
+    },
+    {
+      "name": "portrait round 1: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 1: the round advances after the drop",
+      "ok": true,
+      "detail": "round 1 -> 2, screen play"
+    },
+    {
+      "name": "portrait: the wrong prediction is recorded honestly",
+      "ok": true,
+      "detail": "{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false}"
+    },
+    {
+      "name": "portrait: a miss gets the warm \"surprise\" line, not an error",
+      "ok": true,
+      "detail": "What do you think? Will it sink, or will it float? / Drop it in! Watch closely. / It sinks! Down, down, to the bottom. / Interesting! Now we know something new. / A wooden block! / What do you think? Will it sink, or will it float?"
+    },
+    {
+      "name": "portrait: the journal stamps the TRUTH, not the child's guess",
+      "ok": true,
+      "detail": "zone=sink obj=coin count=1"
+    },
+    {
+      "name": "portrait round 2: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 2: the round advances after the drop",
+      "ok": true,
+      "detail": "round 2 -> 3, screen play"
+    },
+    {
+      "name": "portrait round 3: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 3: the round advances after the drop",
+      "ok": true,
+      "detail": "round 3 -> 4, screen play"
+    },
+    {
+      "name": "portrait round 4: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 4: the round advances after the drop",
+      "ok": true,
+      "detail": "round 4 -> 5, screen play"
+    },
+    {
+      "name": "portrait round 5: predict(\"float\") accepted",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "portrait round 5: the round advances after the drop",
+      "ok": true,
+      "detail": "round 5 -> 6, screen end"
+    },
+    {
+      "name": "portrait: the full predict round reaches the end screen",
+      "ok": true,
+      "detail": "{\"screen\":\"end\",\"mode\":\"predict\",\"step\":\"idle\",\"round\":6,\"roundsTotal\":6,\"guess\":\"float\",\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true},{\"id\":\"coin\",\"name\":\"coin\",\"emoji\":\"🪙\",\"truth\":\"sink\",\"guess\":\"float\",\"hit\":false},{\"id\":\"wooden-block\",\"name\":\"wooden block\",\"emoji\":\"🟫\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"apple\",\"name\":\"apple\",\"emoji\":\"🍎\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"sponge\",\"name\":\"sponge\",\"emoji\":\"🧽\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true},{\"id\":\"duck\",\"name\":\"rubber duck\",\"emoji\":\"🦆\",\"truth\":\"float\",\"guess\":\"float\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "portrait: the journal carries one stamp per round played",
+      "ok": true,
+      "detail": "6 stamps, 6 results"
+    },
+    {
+      "name": "portrait predict pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait predict pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait: pond mode starts awaiting input",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait pond: chip \"duck\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "portrait pond: \"duck\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=0"
+    },
+    {
+      "name": "portrait pond: chip \"rock\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "portrait pond: \"rock\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=1"
+    },
+    {
+      "name": "portrait pond: chip \"wooden-block\" selects",
+      "ok": true,
+      "detail": "{\"accepted\":true}"
+    },
+    {
+      "name": "portrait pond: \"wooden-block\" lands in the jar",
+      "ok": true,
+      "detail": "inJar before=2"
+    },
+    {
+      "name": "portrait pond: three objects are in the jar",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "portrait pond: the float object is findable in the water state",
+      "ok": true,
+      "detail": "[\"duck\",\"rock\",\"wooden-block\"]"
+    },
+    {
+      "name": "portrait pond: lifting an object back out removes it from the jar",
+      "ok": true,
+      "detail": "inJar 3 -> 2, dragging=false"
+    },
+    {
+      "name": "portrait pond pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait pond pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced motion: the engine reports reducedMotion true",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced motion: one drop completes with no exceptions and the round advances",
+      "ok": true,
+      "detail": "{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":1,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[{\"id\":\"key\",\"name\":\"key\",\"emoji\":\"🔑\",\"truth\":\"sink\",\"guess\":\"sink\",\"hit\":true}],\"muted\":true,\"fast\":true,\"reducedMotion\":true,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}"
+    },
+    {
+      "name": "reduced motion: no console/page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced motion: no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audio: a synthetic first gesture triggers a recorded-clip network request",
+      "ok": true,
+      "detail": "http://127.0.0.1:53809/games/sink-or-float/assets/audio/intro.m4a"
+    },
+    {
+      "name": "idle nudge: a silent child gets the prompt repeated after IDLE_MS (real timers)",
+      "ok": true,
+      "detail": "m4a requests 3 -> 4"
+    },
+    {
+      "name": "idle nudge: the round survives — still awaiting the same prediction",
+      "ok": true,
+      "detail": "{\"before\":{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":0,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[],\"muted\":false,\"fast\":false,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true},\"after\":{\"screen\":\"play\",\"mode\":\"predict\",\"step\":\"predict\",\"round\":0,\"roundsTotal\":6,\"guess\":null,\"selected\":null,\"inJar\":0,\"results\":[],\"muted\":false,\"fast\":false,\"reducedMotion\":false,\"placeholderArt\":false,\"dragging\":false,\"awaitingInput\":true}}"
+    },
+    {
+      "name": "audio/idle pass: no console errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audio/idle pass: no failed requests",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "notes": []
+}

@@ -1,33 +1,41 @@
 {
   "id": "sink-or-float",
-  "title": "Sink or Float",
+  "title": "Sink or Float Lab",
   "category": "sensorial-science",
   "path": "games/sink-or-float/",
-  "icon": "🛁",
+  "icon": "🫙",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#2d7dd2",
-  "shareTitle": "Sink or Float 🛁 — Buoyancy Prediction Game",
-  "description": "Guess whether an everyday object will sink or float, tap your answer, then watch and compare what really happens in the water. A hands-on science guessing game for ages 5–6.",
+  "shareTitle": "Sink or Float Lab 🫙 — Predict, Drop, Discover",
+  "description": "Guess what each object will do, drop it into a big jar of real water yourself, and watch a live buoyancy simulation answer. Eighteen everyday objects with honest, repeatable densities, stamped into your own field journal. For ages 5–6.",
   "learningGoals": [
-    "Predict whether familiar objects sink or float",
-    "Build intuition about weight, shape, air, and water pushing up",
-    "Practice testing ideas through observation"
+    "Make a prediction, test it, and observe the result — the scientific method, felt physically",
+    "Discover that whether something floats depends on what it is made of, not how big it is",
+    "Notice degrees of floating and sinking: an apple rides deep, a leaf sits on top, an egg sinks slowly",
+    "Record an observation and read it back from a picture journal"
   ],
-  "interactionModel": "choose-one tap the sink or float answer card after an object prompt",
-  "feedbackModel": "Correct predictions sparkle and get spoken science praise; misses wiggle gently, get a spoken nudge, and replay the prompt.",
+  "interactionModel": "Tap a pictorial sink-or-float guess badge, then drag (or tap) the object over the jar and let go — the release point is where it really falls into a live water simulation.",
+  "feedbackModel": "The water is the teacher: splash, bobbing float or bubbling descent, then a spoken result and a journal stamp. A correct prediction is praised; a missed one is framed as a surprise with identical warmth and celebration. Wrong input or idling gets a gentle wiggle plus one spoken nudge, never an error.",
   "uses": [
-    "shared/js/engines/choose-one.js",
+    "shared/js/stage/stage.js",
+    "shared/js/stage/water.js",
+    "shared/js/stage/particles.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/assets/ui/",
+    "shared/fonts/"
   ],
   "modes": [
-    { "id": "tub", "title": "Sink or Float?", "skill": "predicting buoyancy for familiar objects" },
-    { "id": "tricky", "title": "Tricky Ones", "skill": "reasoning about surprising sink-or-float cases" }
+    { "id": "predict", "title": "Predict & Test", "skill": "making and testing a prediction" },
+    { "id": "tricky", "title": "Tricky Ones", "skill": "reasoning past the big-things-sink misconception" },
+    { "id": "pond", "title": "Water Playground", "skill": "open observation of what water does" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder object and bathtub art. Built with Codex for QLOBE Kids.",
+  "credits": "Water simulation, glass jar and object placeholders drawn in code (shared/js/stage/water.js). Field Journal art plates in production on the local GenAI API. Built with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

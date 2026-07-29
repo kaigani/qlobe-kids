@@ -5,55 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sink or Float 🛁 — Buoyancy Prediction Game</title>
-  <meta name="description" content="Guess whether an everyday object will sink or float, tap your answer, then watch and compare what really happens in the water. A hands-on science guessing game for ages 5–6." />
+  <meta name="theme-color" content="#f7f1e3" />
+  <title>Sink or Float Lab — Predict, Drop, Discover</title>
+  <meta name="description" content="Guess what each object will do, drop it into a big jar of real water, and watch what really happens. A hands-on buoyancy science lab for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Sink or Float" />
-  <meta property="og:title" content="Sink or Float 🛁 — Buoyancy Prediction Game" />
-  <meta property="og:description" content="Guess whether an everyday object will sink or float, tap your answer, then watch and compare what really happens in the water. A hands-on science guessing game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Sink or Float Lab — Predict, Drop, Discover" />
+  <meta property="og:description" content="Predict, drop it in, and watch the water answer. Eighteen everyday objects with honest, repeatable physics." />
   <meta property="og:url" content="https://qlo.be/games/sink-or-float/" />
   <meta property="og:image" content="https://qlo.be/games/sink-or-float/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sink or Float title screen with Sink or Float? and Tricky Ones game modes and a bathtub icon." />
+  <meta property="og:image:alt" content="A big glass jar of water on a sunny garden porch table, with a field journal and everyday objects to test." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sink or Float 🛁 — Buoyancy Prediction Game" />
-  <meta name="twitter:description" content="Guess whether an everyday object will sink or float, tap your answer, then watch and compare what really happens in the water. A hands-on science guessing game for ages 5–6." />
+  <meta name="twitter:title" content="Sink or Float Lab — Predict, Drop, Discover" />
+  <meta name="twitter:description" content="Predict, drop it in, and watch the water answer. Eighteen everyday objects with honest, repeatable physics." />
   <meta name="twitter:image" content="https://qlo.be/games/sink-or-float/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off"></main>
+  <p id="announcer" class="visually-hidden" aria-live="polite"></p>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

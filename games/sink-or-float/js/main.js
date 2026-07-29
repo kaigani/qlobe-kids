@@ -1,0 +1,1121 @@
+// main.js — Sink or Float Lab.
+//
+// Screen map (games/sink-or-float/game-design.md):
+//   splash (home → catalog) → mode picker → play → journal celebration → again/back
+//
+// The play screen is a DOM shell (shelf / journal / badges / HUD) with ONE
+// persistent Pixi canvas host carrying the jar and the live water. The host is
+// moved between screens instead of being rebuilt, so a session never leaks a
+// WebGL context.
+//
+// Two rules this file exists to keep:
+//   1. Nothing is ever spoken before the first real gesture. `intro` is queued
+//      at boot and only released by unlockAudio().
+//   2. A missed prediction is not an error. Same sparkle, same energy, warm
+//      "surprise" framing — the truth is what gets celebrated.
+
+import config from '../config.js';
+import * as sfx from '../../../shared/js/sfx.js';
+import * as speech from '../../../shared/js/speech.js';
+import * as voice from '../../../shared/js/voice-clips.js';
+import { onTap } from '../../../shared/js/tap.js';
+import { createLab } from './lab.js';
+import { jarSvg } from './placeholder.js';
+import * as art from './art.js';
+
+const REAL_ART = !config.placeholderArt;
+art.useRealArt(REAL_ART);
+// One class drives every "painted plate vs. code-drawn stand-in" rule in the
+// stylesheet, so the dev fallback stays one flag away and stays 404-free.
+document.body.classList.toggle('real-art', REAL_ART);
+
+const mount = document.getElementById('game');
+const announcer = document.getElementById('announcer');
+const LINES = config.voice.lines || {};
+const OBJECTS = config.objects || [];
+const MODES = config.modes || [];
+const BY_ID = new Map(OBJECTS.map((obj) => [obj.id, obj]));
+
+const UI = {
+  home: new URL('../../../shared/assets/ui/btn-home.png', import.meta.url).href,
+  back: new URL('../../../shared/assets/ui/btn-back.png', import.meta.url).href,
+  sound: new URL('../../../shared/assets/ui/btn-sound.png', import.meta.url).href,
+  play: new URL('../../../shared/assets/ui/btn-play.png', import.meta.url).href,
+};
+
+// The end screen's "again" button borrows the shared play plate, so the four
+// round buttons in the game are one family. Handed to CSS as a custom property
+// because the stylesheet can't resolve a shared/ path from a game folder.
+document.documentElement.style.setProperty('--again-art', `url('${UI.play}')`);
+
+const DRAG_SLOP = 8;
+const IDLE_MS = 11000;
+// Headless sweep of all 18 densities settles in 1.3–3.2s; this is the safety
+// net for a stalled ticker (backgrounded tab), not the expected path.
+const SETTLE_TIMEOUT_MS = 4600;
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const state = {
+  screen: 'splash',
+  mode: null,
+  step: 'idle',        // name | predict | drop | falling | result (predict modes)
+  round: 0,
+  roundsTotal: 0,
+  guess: null,
+  awaitingInput: false,
+  inputLocked: false,
+  selected: null,      // playground: the shelf chip waiting for a jar tap
+  results: [],
+  muted: false,
+  fast: false,
+  seed: 42,
+};
+
+let mode = null;
+let queue = [];          // the round's objects, in order
+let current = null;      // the object under test
+let currentItem = null;  // its lab handle once dropped
+let rng = mulberry32(state.seed);
+let disposers = [];
+let idleTimer = 0;
+let idleUsed = false;
+let audioUnlocked = false;
+let pendingIntro = true;
+let drag = null;
+let lab = null;
+let labReady = null;
+let settleWaiter = null;
+
+// The Pixi host outlives every screen. Parked offscreen (not display:none —
+// a zero-sized host makes Pixi resize the renderer to nothing).
+const labHost = document.createElement('div');
+labHost.className = 'jar-stage';
+const labPark = document.createElement('div');
+labPark.className = 'lab-park';
+labPark.setAttribute('aria-hidden', 'true');
+labPark.appendChild(labHost);
+document.body.appendChild(labPark);
+
+// --------------------------------------------------------------------- boot
+
+function ensureLab() {
+  if (!labReady) {
+    labReady = createLab(labHost, {
+      theme: config.theme,
+      reducedMotion: reducedMotion(),
+      artRefs: OBJECTS.map((obj) => obj.art),
+    })
+      .then((made) => {
+        lab = made;
+        lab.canvas.addEventListener('pointerdown', onCanvasDown, { passive: false });
+        lab.onSettle(onItemSettled);
+        return lab;
+      });
+  }
+  return labReady;
+}
+
+const ready = (async () => {
+  // 37 recorded teacher-voice clips ship in assets/audio/. `hasClips` gates the
+  // two manifest fetches so the flag can be dropped back to false (and the game
+  // falls through to Web Speech with ZERO fetches) if the clips ever come out.
+  // Nothing is SPOKEN here — the intro stays queued until the first gesture.
+  if (config.voice.hasClips) {
+    await voice.init(config.voice.manifest, config.voice.linesFile, LINES);
+  }
+  await ensureLab();
+})();
+
+// ------------------------------------------------------------------- audio
+
+function unlockAudio(event) {
+  voice.unlock();
+  if (!audioUnlocked) {
+    audioUnlocked = true;
+    sfx.unlock();
+    speech.unlock();
+  }
+  if (!pendingIntro || state.screen !== 'splash') return;
+  // Don't talk over the tap that is already leaving the splash.
+  if (event && event.target && event.target.closest && event.target.closest('.mode-card, .home-button')) {
+    pendingIntro = false;
+    return;
+  }
+  pendingIntro = false;
+  say('intro');
+}
+
+window.addEventListener('pointerdown', unlockAudio, { passive: true });
+window.addEventListener('contextmenu', (event) => event.preventDefault());
+window.addEventListener('gesturestart', (event) => event.preventDefault());
+window.addEventListener('blur', cancelDrag);
+window.addEventListener('pointercancel', onPointerCancel, { passive: true });
+
+function say(key, text) {
+  const line = text || LINES[key] || '';
+  announcer.textContent = line;
+  if (state.muted || !line) return Promise.resolve(false);
+  return voice.say(key, line);
+}
+
+function playSfx(name) {
+  if (state.muted) return;
+  if (typeof sfx[name] === 'function') sfx[name]();
+}
+
+function feedback(event) {
+  if (event && event.preventDefault) event.preventDefault();
+  if (event && event.stopPropagation) event.stopPropagation();
+  unlockAudio(event);
+  playSfx('tick');
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, state.fast ? Math.min(12, ms) : ms));
+}
+
+// ------------------------------------------------------------------ screens
+
+function clearScreen() {
+  clearTimeout(idleTimer);
+  idleTimer = 0;
+  idleUsed = false;
+  voice.stop();
+  cancelDrag();
+  // Never leave a drop awaiting a settle that can no longer happen — the
+  // awaiting call checks `state.screen` and bails, but only once it resumes.
+  if (settleWaiter) settleWaiter.resolve();
+  document.querySelectorAll('.drag-ghost').forEach((node) => node.remove());
+  disposers.forEach((dispose) => dispose());
+  disposers = [];
+  if (labHost.parentElement !== labPark) labPark.appendChild(labHost);
+}
+
+function parkLab() {
+  if (lab) lab.clear();
+  currentItem = null;
+}
+
+function hudMarkup({ back = true, sound = true } = {}) {
+  return `
+    ${back ? `<button class="round-button back-button" type="button" data-action="back"
+            data-target="back" aria-label="Back to the lab menu"
+            style="background-image:url('${UI.back}')"></button>` : ''}
+    ${sound ? `<button class="round-button sound-button" type="button" data-action="sound"
+            data-target="sound" aria-label="Hear that again"
+            style="background-image:url('${UI.sound}')"></button>` : ''}`;
+}
+
+function wireCommon() {
+  const back = mount.querySelector('[data-action="back"]');
+  const sound = mount.querySelector('[data-action="sound"]');
+  if (back) disposers.push(onTap(back, () => showSplash(), { feedback }));
+  if (sound) disposers.push(onTap(sound, () => { repeatPrompt(); scheduleIdle(); }, { feedback }));
+}
+
+function showSplash() {
+  clearScreen();
+  parkLab();
+  state.screen = 'splash';
+  state.mode = null;
+  state.step = 'idle';
+  state.round = 0;
+  state.roundsTotal = 0;
+  state.guess = null;
+  state.selected = null;
+  state.results = [];
+  state.awaitingInput = true;
+  state.inputLocked = false;
+  mode = null;
+  current = null;
+  queue = [];
+
+  mount.innerHTML = `
+    <section class="screen splash" aria-label="Sink or Float Lab">
+      <a class="round-button home-button" href="../../index.html" aria-label="Back to all games"
+         style="background-image:url('${UI.home}')"></a>
+      <header class="title-lockup">
+        ${REAL_ART ? '' : `<span class="title-jar" aria-hidden="true">${jarSvg()}</span>`}
+        <h1><span class="title-top">Sink or Float</span><span class="title-bottom">Lab</span></h1>
+      </header>
+      <div class="mode-grid" role="list" aria-label="Choose an experiment">
+        ${MODES.map((item) => `
+          <button class="mode-card" type="button" role="listitem"
+                  data-mode="${item.id}" data-target="mode-${item.id}"
+                  aria-label="${item.title}">
+            <span class="mode-art" aria-hidden="true">${art.modeFace(item)}</span>
+            <span class="mode-title">${item.title}</span>
+          </button>`).join('')}
+      </div>
+    </section>`;
+
+  mount.querySelectorAll('.mode-card').forEach((button) => {
+    disposers.push(onTap(button, () => startMode(button.dataset.mode), {
+      feedback: (event) => { feedback(event); say(modeById(button.dataset.mode).menuLine); },
+    }));
+  });
+  const home = mount.querySelector('.home-button');
+  if (home) home.addEventListener('pointerdown', feedback, { passive: false });
+}
+
+function modeById(id) {
+  return MODES.find((item) => item.id === id) || null;
+}
+
+function poolFor(item) {
+  if (item.pool === 'all') return OBJECTS.slice();
+  return OBJECTS.filter((obj) => obj.pool === item.pool);
+}
+
+async function startMode(modeId) {
+  const next = modeById(modeId);
+  if (!next) return false;
+  await ready;
+  clearScreen();
+  parkLab();
+  mode = next;
+  state.mode = mode.id;
+  state.screen = 'play';
+  state.round = 0;
+  state.guess = null;
+  state.selected = null;
+  state.results = [];
+  state.inputLocked = false;
+  state.awaitingInput = false;
+  rng = mulberry32(state.seed);
+  // One object under test wants to fill the glass; eight in the playground want
+  // to fit in it. Same jar, two readings of "life size".
+  if (lab) lab.setBodyScale(mode.kind === 'sandbox' ? 1.3 : 1.5);
+  queue = shuffle(poolFor(mode), rng);
+  state.roundsTotal = mode.kind === 'predict' ? Math.min(mode.rounds || 6, queue.length) : 0;
+  current = null;
+  currentItem = null;
+
+  renderPlay();
+  if (mode.introLine) say(mode.introLine);
+  await delay(mode.introLine ? 1500 : 120);
+  if (state.screen !== 'play') return true;
+  if (mode.kind === 'predict') await nextObject();
+  else {
+    state.step = 'play';
+    state.awaitingInput = true;
+    scheduleIdle();
+  }
+  return true;
+}
+
+function renderPlay() {
+  const shelf = mode.kind === 'predict'
+    ? queue.slice(0, state.roundsTotal)
+    : OBJECTS;
+  mount.innerHTML = `
+    <section class="screen play-screen" data-mode="${mode.id}" data-kind="${mode.kind}"
+             aria-label="${mode.title}">
+      ${hudMarkup()}
+      <div class="lab-layout">
+        <aside class="shelf" aria-label="${mode.kind === 'predict' ? 'Things to test this round' : 'Things you can drop in'}">
+          <div class="shelf-rail">
+            ${shelf.map((obj) => chipMarkup(obj, mode.kind === 'sandbox')).join('')}
+          </div>
+        </aside>
+        <div class="jar-col">
+          <div class="focus-slot" data-target="focus-slot"></div>
+          <div class="jar-slot"></div>
+          <div class="badge-well">
+            <div class="guess-row" data-target="guess-row" hidden>
+              <button class="badge" type="button" data-guess="float" data-target="guess-float"
+                      aria-label="${config.badges.float.alt}">${art.badgeFace('float', config.badges)}</button>
+              <button class="badge" type="button" data-guess="sink" data-target="guess-sink"
+                      aria-label="${config.badges.sink.alt}">${art.badgeFace('sink', config.badges)}</button>
+            </div>
+          </div>
+        </div>
+        <aside class="journal ${mode.kind === 'sandbox' ? 'is-quiet' : ''}" aria-label="Your field journal">
+          <button class="journal-tab" type="button" data-action="journal" data-target="journal-tab"
+                  aria-label="Open or close your field journal"><span aria-hidden="true">📔</span></button>
+          ${journalMarkup()}
+        </aside>
+      </div>
+      ${mode.kind === 'predict' ? `<div class="progress" aria-label="0 of ${state.roundsTotal} tested">
+        ${Array.from({ length: state.roundsTotal }, () => '<span class="progress-dot"></span>').join('')}
+      </div>` : ''}
+    </section>`;
+
+  mount.querySelector('.jar-slot').appendChild(labHost);
+  if (lab) lab.refit();
+  wireCommon();
+
+  mount.querySelectorAll('.guess-row .badge').forEach((badge) => {
+    disposers.push(onTap(badge, () => predict(badge.dataset.guess), { feedback }));
+  });
+  const tab = mount.querySelector('.journal-tab');
+  if (tab) {
+    disposers.push(onTap(tab, () => {
+      const panel = mount.querySelector('.journal');
+      panel.classList.toggle('is-open');
+      if (lab) lab.refit();
+    }, { feedback }));
+  }
+  if (mode.kind === 'sandbox') {
+    mount.querySelectorAll('.obj-chip').forEach((chip) => {
+      chip.addEventListener('pointerdown', onChipDown, { passive: false });
+    });
+  }
+  redrawJournal();
+}
+
+function chipMarkup(obj, interactive) {
+  const tag = interactive ? 'button' : 'span';
+  const attrs = interactive
+    ? `type="button" data-target="chip-${obj.id}" aria-label="${obj.name}"`
+    : 'aria-hidden="true"';
+  return `<${tag} class="obj-chip${interactive ? '' : ' is-static'}" data-obj="${obj.id}" ${attrs}>
+      ${art.objFace(obj)}
+    </${tag}>`;
+}
+
+/**
+ * The field journal panel. In production it is one painted plate — an open
+ * notebook whose upper half is air and lower half is underwater — carried as a
+ * CSS background so the two stamp zones can be positioned as PERCENTAGES of the
+ * same box. That is the point: however the panel is squeezed, a floater's stamp
+ * still lands above the painted water line and a sinker's still lands below it.
+ * (`.journal-water` is the code-drawn water line; the plate replaces it.)
+ */
+function journalMarkup() {
+  return `<div class="journal-page">
+      <div class="journal-zone zone-float" data-zone="float"></div>
+      <div class="journal-water" aria-hidden="true"></div>
+      <div class="journal-zone zone-sink" data-zone="sink"></div>
+    </div>`;
+}
+
+// ------------------------------------------------------------- predict loop
+
+async function nextObject() {
+  if (state.screen !== 'play') return;
+  if (state.round >= state.roundsTotal) { showEnd(); return; }
+  current = queue[state.round];
+  currentItem = null;
+  state.guess = null;
+  state.step = 'name';
+  state.awaitingInput = false;
+  idleUsed = false;
+  if (lab) lab.clear();
+
+  const slot = mount.querySelector('.focus-slot');
+  if (slot) {
+    // The star of the predict step: shown BIG (~150–170px on a tablet), as the
+    // bare painted cutout rather than a card, so the child is looking at the
+    // thing itself when they decide what the water will do with it.
+    // A gentle nod to the object's real size — a whole watermelon shows bigger
+    // than a pebble, which is half of what Tricky Ones is teaching. Floored well
+    // above the 96px target rule so the smallest object is still easy to grab.
+    const fit = clamp(0.62 + 0.3 * (current.scale || 1), 0.74, 1);
+    slot.innerHTML = `<button class="obj-chip focus-chip" type="button" data-obj="${current.id}"
+        data-target="focus" aria-label="${current.name}"
+        style="--focus-fit:${fit.toFixed(2)}">${art.objFace(current, 'focus-art')}</button>`;
+    const chip = slot.querySelector('.obj-chip');
+    chip.addEventListener('pointerdown', onChipDown, { passive: false });
+  }
+  setBadgesVisible(false);
+  playSfx('pop');
+  say(current.voice);
+  await delay(1100);
+  if (state.screen !== 'play' || state.step !== 'name') return;
+  askPrediction();
+}
+
+function askPrediction() {
+  state.step = 'predict';
+  state.awaitingInput = true;
+  idleUsed = false;
+  setBadgesVisible(true);
+  say(mode.promptLine);
+  scheduleIdle();
+}
+
+function setBadgesVisible(on) {
+  const row = mount.querySelector('.guess-row');
+  if (!row) return;
+  row.hidden = !on;
+  row.querySelectorAll('.badge').forEach((badge) => badge.classList.remove('is-chosen'));
+}
+
+async function predict(guess) {
+  if (state.screen !== 'play' || !mode || mode.kind !== 'predict') return false;
+  if (state.step !== 'predict' || state.inputLocked) {
+    nudge(state.step === 'drop' ? 'nudge-drop' : mode.nudgeLine, '.focus-chip');
+    return false;
+  }
+  state.guess = guess;
+  playSfx('pop');
+  const chosen = mount.querySelector(`.badge[data-guess="${guess}"]`);
+  if (chosen) chosen.classList.add('is-chosen');
+  await delay(420);
+  if (state.screen !== 'play') return true;
+  setBadgesVisible(false);
+  state.step = 'drop';
+  state.awaitingInput = true;
+  idleUsed = false;
+  const chip = mount.querySelector('.focus-chip');
+  if (chip) chip.classList.add('is-live');
+  say('drop-cue');
+  scheduleIdle();
+  return true;
+}
+
+/**
+ * The child performs the experiment: release point becomes the fall point.
+ * Called from a drag release over the jar, from a tap on the dangling object,
+ * and from QLOBE_DEBUG.drop().
+ */
+async function dropCurrent(clientX, clientY) {
+  if (state.screen !== 'play' || !mode || mode.kind !== 'predict' || !current || !lab) return false;
+  if (state.step !== 'drop' || state.inputLocked) {
+    if (state.step === 'predict') nudge(mode.nudgeLine, '.guess-row');
+    return false;
+  }
+  state.inputLocked = true;
+  state.awaitingInput = false;
+  state.step = 'falling';
+  clearTimeout(idleTimer);
+  const slot = mount.querySelector('.focus-slot');
+  const chip = slot ? slot.querySelector('.obj-chip') : null;
+  let point = { x: clientX, y: clientY };
+  if (clientX === undefined && chip) {
+    const rect = chip.getBoundingClientRect();
+    point = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  }
+  if (slot) slot.innerHTML = '';
+  playSfx('whoosh');
+  currentItem = lab.addObject(current, point.x, point.y, { vy: 260 });
+  await waitForSettle(currentItem);
+  if (state.screen !== 'play') return true;
+  await revealResult();
+  return true;
+}
+
+function waitForSettle(item) {
+  if (!item) return Promise.resolve();
+  if (state.fast) { lab.settleNow(); return Promise.resolve(); }
+  return new Promise((resolve) => {
+    const done = () => {
+      if (!settleWaiter) return;
+      clearTimeout(settleWaiter.timer);
+      settleWaiter = null;
+      resolve();
+    };
+    settleWaiter = { item, resolve: done, timer: setTimeout(() => { lab.settleNow(); done(); }, SETTLE_TIMEOUT_MS) };
+  });
+}
+
+function onItemSettled(item) {
+  if (settleWaiter && settleWaiter.item === item) settleWaiter.resolve();
+}
+
+async function revealResult() {
+  state.step = 'result';
+  const truth = current.truth;
+  const hit = state.guess === truth;
+  state.results.push({ id: current.id, name: current.name, emoji: current.emoji, truth, guess: state.guess, hit });
+  playSfx(truth === 'float' ? 'sparkle' : 'boing');
+  lab.celebrate(currentItem);
+  await say(truth === 'float' ? 'result-float' : 'result-sink');
+  if (state.screen !== 'play') return;
+  await delay(260);
+  // A miss is a SURPRISE, never a failure: identical sfx, identical pacing.
+  playSfx('sparkle');
+  const key = hit
+    ? (state.round % 2 === 0 ? 'praise-1' : 'praise-2')
+    : (state.round % 2 === 0 ? 'surprise-1' : 'surprise-2');
+  await say(key);
+  if (state.screen !== 'play') return;
+  stampJournal(current, truth);
+  playSfx('pop');
+  await delay(500);
+  if (state.screen !== 'play') return;
+  state.round += 1;
+  updateProgress();
+  state.inputLocked = false;
+  await nextObject();
+}
+
+function updateProgress() {
+  mount.querySelectorAll('.progress-dot').forEach((dot, index) => {
+    dot.classList.toggle('is-done', index < state.round);
+  });
+  const bar = mount.querySelector('.progress');
+  if (bar) bar.setAttribute('aria-label', `${state.round} of ${state.roundsTotal} tested`);
+  mount.querySelectorAll('.shelf .obj-chip').forEach((chip, index) => {
+    chip.classList.toggle('is-done', mode.kind === 'predict' && index < state.round);
+  });
+}
+
+// ----------------------------------------------------------------- journal
+
+/**
+ * Press one discovery into the notebook: a small painted mini of the object,
+ * dropped into the plate's air zone if it floated and its underwater zone if it
+ * sank. The tilt and the nudge are derived from the object's own id, so a
+ * relayout (or the end-screen redraw) puts every stamp back exactly where the
+ * child last saw it — jitter that changes on redraw reads as a glitch, not as
+ * a hand.
+ */
+function stampJournal(obj, truth) {
+  const zone = mount.querySelector(`.journal-zone[data-zone="${truth}"]`);
+  if (!zone) return;
+  const stamp = document.createElement('span');
+  stamp.className = 'journal-stamp';
+  stamp.dataset.obj = obj.id;
+  stamp.setAttribute('aria-hidden', 'true');
+  const jitter = hashOf(obj.id || '');
+  stamp.style.setProperty('--rot', `${(jitter % 19) - 9}deg`);
+  // A floater is pressed onto the painted waterline, so its bob offset is what
+  // keeps six of them from reading as a ruled row of icons.
+  stamp.style.setProperty('--dy', `${((jitter >> 5) % 15) - 7}px`);
+  const objArt = BY_ID.get(obj.id);
+  stamp.innerHTML = art.objFace(objArt || obj, 'stamp-art');
+  zone.appendChild(stamp);
+  if (!reducedMotion()) stamp.classList.add('is-new');
+}
+
+function hashOf(text) {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i += 1) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) % 4096;
+}
+
+function redrawJournal() {
+  ['float', 'sink'].forEach((truth) => {
+    const zone = mount.querySelector(`.journal-zone[data-zone="${truth}"]`);
+    if (zone) zone.innerHTML = '';
+  });
+  state.results.forEach((entry) => stampJournal(BY_ID.get(entry.id) || entry, entry.truth));
+}
+
+// ---------------------------------------------------------------- playground
+
+function selectChip(objId) {
+  if (mode.kind !== 'sandbox') return false;
+  const obj = BY_ID.get(objId);
+  if (!obj) return false;
+  state.selected = state.selected === objId ? null : objId;
+  playSfx(state.selected ? 'pop' : 'unpop');
+  mount.querySelectorAll('.shelf .obj-chip').forEach((chip) => {
+    chip.classList.toggle('is-selected', chip.dataset.obj === state.selected);
+  });
+  if (state.selected) say(obj.voice);
+  scheduleIdle();
+  return true;
+}
+
+function dropInPond(obj, clientX, clientY) {
+  if (!lab || !obj) return false;
+  if (lab.count() >= (mode.maxInJar || 8)) {
+    // The jar is full. No scolding line for it — a full jar is a fine thing to
+    // have made. Just a soft bump so the tap did something.
+    playSfx('unpop');
+    wiggle(mount.querySelector('.jar-slot'));
+    return false;
+  }
+  const item = lab.addObject(obj, clientX, clientY, { vy: 220 });
+  if (!item) return false;
+  playSfx('whoosh');
+  state.results.push({ id: obj.id, name: obj.name, emoji: obj.emoji, truth: obj.truth, guess: null, hit: null });
+  stampJournal(obj, obj.truth);
+  state.selected = null;
+  mount.querySelectorAll('.shelf .obj-chip').forEach((chip) => chip.classList.remove('is-selected'));
+  scheduleIdle();
+  return true;
+}
+
+// ------------------------------------------------------------- drag & taps
+
+function sweepGhosts() {
+  document.querySelectorAll('.drag-ghost').forEach((node) => node.remove());
+}
+
+function onChipDown(event) {
+  if (drag || event.isPrimary === false || state.inputLocked) return;
+  const source = event.currentTarget;
+  const obj = BY_ID.get(source.dataset.obj);
+  if (!obj) return;
+  if (source.classList.contains('is-static')) return;
+  event.preventDefault();
+  unlockAudio(event);
+  sweepGhosts();
+  const rect = source.getBoundingClientRect();
+  // Every chip is draggable, so it carries `touch-action: none` — which also
+  // kills the browser's native scroll of the 18-object playground shelf. The
+  // rail would be unscrollable unless the child happened to press an 8px gap.
+  // So the first movement decides: along the rail = scroll it ourselves,
+  // across the rail = pick the object up.
+  const rail = source.closest('.shelf-rail');
+  let scrollAxis = null;
+  if (rail && rail.scrollHeight > rail.clientHeight + 2) scrollAxis = 'y';
+  else if (rail && rail.scrollWidth > rail.clientWidth + 2) scrollAxis = 'x';
+  drag = {
+    kind: 'chip',
+    pointerId: event.pointerId,
+    obj,
+    source,
+    rect,
+    rail,
+    scrollAxis,
+    scrollFrom: scrollAxis === 'y' ? rail.scrollTop : (scrollAxis === 'x' ? rail.scrollLeft : 0),
+    scrolling: false,
+    startX: event.clientX,
+    startY: event.clientY,
+    offsetX: event.clientX - rect.left,
+    offsetY: event.clientY - rect.top,
+    moved: false,
+    ghost: null,
+  };
+  addDragListeners();
+}
+
+function onCanvasDown(event) {
+  if (drag || event.isPrimary === false) return;
+  event.preventDefault();
+  unlockAudio(event);
+  const item = lab ? lab.itemAt(event.clientX, event.clientY) : null;
+  if (item && mode && mode.kind === 'sandbox') {
+    sweepGhosts();
+    lab.lift(item);
+    drag = {
+      kind: 'body',
+      pointerId: event.pointerId,
+      item,
+      obj: item.obj,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+    };
+    playSfx('pop');
+    addDragListeners();
+    return;
+  }
+  // A tap on the water itself: the tap-tap half of every interaction.
+  if (mode && mode.kind === 'sandbox' && state.selected) {
+    dropInPond(BY_ID.get(state.selected), event.clientX, event.clientY);
+    return;
+  }
+  if (mode && mode.kind === 'predict') {
+    if (state.step === 'drop') dropCurrent(event.clientX, event.clientY);
+    else if (state.step === 'predict') nudge(mode.nudgeLine, '.guess-row');
+  }
+  if (lab) lab.disturb(event.clientX, 220);
+}
+
+function addDragListeners() {
+  window.addEventListener('pointermove', onDragMove, { passive: false });
+  window.addEventListener('pointerup', onDragUp, { passive: false });
+}
+
+function removeDragListeners() {
+  window.removeEventListener('pointermove', onDragMove);
+  window.removeEventListener('pointerup', onDragUp);
+}
+
+function onDragMove(event) {
+  if (!drag || event.pointerId !== drag.pointerId) return;
+  event.preventDefault();
+  const dx = event.clientX - drag.startX;
+  const dy = event.clientY - drag.startY;
+  if (drag.scrollAxis && !drag.moved) {
+    const along = drag.scrollAxis === 'y' ? dy : dx;
+    const across = drag.scrollAxis === 'y' ? dx : dy;
+    if (!drag.scrolling && Math.abs(along) >= DRAG_SLOP && Math.abs(along) > Math.abs(across) * 1.4) {
+      drag.scrolling = true;
+    }
+    if (drag.scrolling) {
+      if (drag.scrollAxis === 'y') drag.rail.scrollTop = drag.scrollFrom - dy;
+      else drag.rail.scrollLeft = drag.scrollFrom - dx;
+      return;
+    }
+  }
+  const distance = Math.hypot(dx, dy);
+  if (!drag.moved && distance >= DRAG_SLOP) beginDragVisual();
+  if (!drag.moved) return;
+  if (drag.kind === 'body') {
+    lab.moveLifted(drag.item, event.clientX, event.clientY);
+    return;
+  }
+  const left = event.clientX - drag.offsetX;
+  const top = event.clientY - drag.offsetY;
+  const tilt = clamp((event.clientX - drag.startX) * 0.06, -11, 11);
+  drag.ghost.style.setProperty('--ghost-x', `${left}px`);
+  drag.ghost.style.setProperty('--ghost-y', `${top}px`);
+  drag.ghost.style.setProperty('--ghost-tilt', `${tilt}deg`);
+  const over = lab && lab.overWater(event.clientX, event.clientY);
+  drag.ghost.classList.toggle('is-over', !!over);
+  const slot = mount.querySelector('.jar-slot');
+  if (slot) slot.classList.toggle('is-target', !!over);
+}
+
+function beginDragVisual() {
+  if (!drag || drag.moved) return;
+  drag.moved = true;
+  if (drag.kind === 'body') return;
+  const ghost = document.createElement('span');
+  ghost.className = 'drag-ghost';
+  ghost.setAttribute('aria-hidden', 'true');
+  ghost.innerHTML = art.objFace(drag.obj, 'ghost-art');
+  ghost.style.setProperty('--ghost-size', `${drag.rect.width}px`);
+  ghost.style.setProperty('--ghost-x', `${drag.rect.left}px`);
+  ghost.style.setProperty('--ghost-y', `${drag.rect.top}px`);
+  document.body.appendChild(ghost);
+  drag.ghost = ghost;
+  drag.source.classList.add('is-drag-source');
+  playSfx('pop');
+}
+
+function onDragUp(event) {
+  if (!drag || event.pointerId !== drag.pointerId) return;
+  event.preventDefault();
+  const held = drag;
+  const x = event.clientX;
+  const y = event.clientY;
+  finishDrag();
+  if (held.scrolling || !mode || !lab) return;
+  try {
+    if (held.kind === 'body') {
+      // A tap (no movement) on something already in the jar just names it —
+      // but the body was lifted out of the sim on pointerdown, so it MUST go
+      // back or it hangs there frozen for the rest of the session.
+      if (!held.moved) { lab.releaseInPlace(held.item); say(held.obj.voice); return; }
+      const kept = lab.dropLifted(held.item, x, y);
+      if (!kept) { lab.removeItem(held.item); playSfx('unpop'); }
+      return;
+    }
+    if (!held.moved) {
+      // tap-tap path
+      if (mode.kind === 'sandbox') selectChip(held.obj.id);
+      else if (state.step === 'drop') dropCurrent();
+      else if (state.step === 'predict') nudge(mode.nudgeLine, '.guess-row');
+      else say(held.obj.voice);
+      return;
+    }
+    const over = lab && lab.overWater(x, y);
+    if (!over) {
+      wiggle(held.source);
+      say('nudge-drop');
+      return;
+    }
+    if (mode.kind === 'sandbox') dropInPond(held.obj, x, y);
+    else dropCurrent(x, y);
+  } catch (error) {
+    // Rule 4 of pattern #11: an exception mid-drop still ends with cleanup.
+    console.error('[sink-or-float] drop failed', error);
+  }
+}
+
+function onPointerCancel(event) {
+  if (!drag || event.pointerId !== drag.pointerId) return;
+  cancelDrag();
+}
+
+function cancelDrag() {
+  if (!drag) return;
+  const held = drag;
+  finishDrag();
+  // Pattern #11 rule 3: blur / pointercancel must land the piece somewhere
+  // sane, never strand it. Inside the jar it simply resumes floating; dragged
+  // clear of the jar when the OS took over, it goes back to the shelf.
+  if (held.kind === 'body' && lab) {
+    if (lab.insideJar(held.item)) lab.releaseInPlace(held.item);
+    else lab.removeItem(held.item);
+  }
+}
+
+function finishDrag() {
+  if (!drag) return;
+  if (drag.ghost) drag.ghost.remove();
+  if (drag.source) drag.source.classList.remove('is-drag-source');
+  drag = null;
+  removeDragListeners();
+  sweepGhosts();
+  const slot = mount.querySelector('.jar-slot');
+  if (slot) slot.classList.remove('is-target');
+}
+
+// ------------------------------------------------------------ nudges & idle
+
+function wiggle(node) {
+  if (!node || reducedMotion() || state.fast) return;
+  node.classList.remove('is-wiggle');
+  void node.offsetWidth;
+  node.classList.add('is-wiggle');
+  setTimeout(() => node.classList.remove('is-wiggle'), 520);
+}
+
+function nudge(key, selector) {
+  playSfx('silly');
+  wiggle(mount.querySelector(selector));
+  say(key);
+  scheduleIdle();
+}
+
+function repeatPrompt() {
+  if (state.screen === 'splash') { say('intro'); return; }
+  if (state.screen === 'end') { say('again-prompt'); return; }
+  if (!mode) return;
+  if (mode.kind === 'sandbox') { say(mode.promptLine); return; }
+  if (state.step === 'predict') say(mode.promptLine);
+  else if (state.step === 'drop') say('drop-cue');
+  else if (current) say(current.voice);
+}
+
+function scheduleIdle() {
+  clearTimeout(idleTimer);
+  if (state.fast || state.screen !== 'play') return;
+  idleTimer = setTimeout(() => {
+    if (idleUsed || state.screen !== 'play' || !state.awaitingInput) return;
+    idleUsed = true;   // one re-prompt per step, then we leave the child alone
+    repeatPrompt();
+  }, IDLE_MS);
+}
+
+// ---------------------------------------------------------------- end screen
+
+function recapText() {
+  const floats = state.results.filter((entry) => entry.truth === 'float').map((entry) => entry.name);
+  const sinks = state.results.filter((entry) => entry.truth === 'sink').map((entry) => entry.name);
+  const parts = [];
+  if (floats.length) parts.push(`The ${listOf(floats)} floated.`);
+  if (sinks.length) parts.push(`The ${listOf(sinks)} sank.`);
+  return parts.join(' ');
+}
+
+function listOf(names) {
+  if (names.length === 1) return names[0];
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
+async function showEnd() {
+  const finished = mode;
+  const results = state.results.slice();
+  clearScreen();
+  parkLab();
+  state.screen = 'end';
+  state.step = 'idle';
+  state.awaitingInput = true;
+  state.inputLocked = false;
+
+  mount.innerHTML = `
+    <section class="screen end-screen" aria-label="${finished.title} — your journal page">
+      ${hudMarkup()}
+      <div class="end-card">
+        ${journalMarkup()}
+        <button class="again-button" type="button" data-action="again" data-target="again"
+                aria-label="Test more things">
+          <span class="again-glyph" aria-hidden="true">🔁</span>
+        </button>
+      </div>
+    </section>`;
+
+  results.forEach((entry) => stampJournal(BY_ID.get(entry.id) || entry, entry.truth));
+  wireCommon();
+  const again = mount.querySelector('[data-action="again"]');
+  if (again) disposers.push(onTap(again, () => startMode(finished.id), { feedback }));
+
+  playSfx('tada');
+  if (!reducedMotion() && !state.fast) burstConfetti();
+  await say(finished.cheerLine);
+  if (state.screen !== 'end') return;
+  const recap = recapText();
+  if (recap) await say('recap', recap);
+  if (state.screen !== 'end') return;
+  say('again-prompt');
+}
+
+// Confetti in the game's own paintbox. A hue wheel gives you neon magentas and
+// electric limes, which is a different game landing on top of this one — these
+// are the watercolours the plates are actually painted in.
+const CONFETTI = [
+  '#7fbcd2', '#4f95b8', '#a9cfd0', '#8fb06a',
+  '#6f9f5c', '#e8956f', '#d9c16a', '#c6e0e6',
+];
+
+function burstConfetti() {
+  const host = mount.querySelector('.end-card');
+  if (!host) return;
+  for (let i = 0; i < 22; i += 1) {
+    const bit = document.createElement('span');
+    bit.className = 'confetti';
+    bit.style.setProperty('--x', `${6 + (i * 37) % 88}%`);
+    bit.style.setProperty('--delay', `${(i % 7) * 0.08}s`);
+    bit.style.setProperty('--tint', CONFETTI[i % CONFETTI.length]);
+    host.appendChild(bit);
+    setTimeout(() => bit.remove(), 2400);
+  }
+}
+
+// -------------------------------------------------------------- QLOBE_DEBUG
+
+function targetFor(id, role) {
+  const element = mount.querySelector(`[data-target="${cssEscape(id)}"]`);
+  if (!element) return null;
+  const rect = element.getBoundingClientRect();
+  return { id, role, rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height } };
+}
+
+function getTargets() {
+  if (state.screen === 'splash') return MODES.map((item) => targetFor(`mode-${item.id}`, 'neutral')).filter(Boolean);
+  if (state.screen === 'end') return [targetFor('again', 'correct'), targetFor('back', 'neutral')].filter(Boolean);
+  if (state.screen !== 'play') return [];
+  if (mode.kind === 'sandbox') {
+    return OBJECTS.map((obj) => targetFor(`chip-${obj.id}`, 'neutral')).filter(Boolean);
+  }
+  if (state.step === 'predict') {
+    // Both guesses are legal moves. `correct` marks the one the water will
+    // agree with, so a reviewer can drive either the praise or the surprise path.
+    return [
+      targetFor('guess-float', current && current.truth === 'float' ? 'correct' : 'wrong'),
+      targetFor('guess-sink', current && current.truth === 'sink' ? 'correct' : 'wrong'),
+    ].filter(Boolean);
+  }
+  if (state.step === 'drop') return [targetFor('focus', 'correct')].filter(Boolean);
+  return [];
+}
+
+async function debugTap(targetId) {
+  if (typeof targetId !== 'string') return { accepted: false };
+  if (targetId.startsWith('mode-')) return { accepted: await startMode(targetId.slice(5)) };
+  if (targetId === 'back') { showSplash(); return { accepted: true }; }
+  if (targetId === 'again' && state.screen === 'end') return { accepted: await startMode(mode.id) };
+  if (targetId === 'guess-float') return { accepted: await predict('float') };
+  if (targetId === 'guess-sink') return { accepted: await predict('sink') };
+  if (targetId === 'focus') return { accepted: await dropCurrent() };
+  if (targetId.startsWith('chip-')) {
+    const objId = targetId.slice(5);
+    if (mode && mode.kind === 'sandbox') return { accepted: selectChip(objId) };
+    return { accepted: false };
+  }
+  return { accepted: false };
+}
+
+function waitFor(test, timeout = 8000) {
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const tick = () => {
+      if (test()) { resolve(true); return; }
+      if (Date.now() - start > timeout) { resolve(false); return; }
+      setTimeout(tick, 24);
+    };
+    tick();
+  });
+}
+
+async function winRound() {
+  if (state.screen !== 'play' || !mode) return false;
+  if (mode.kind === 'sandbox') {
+    for (const obj of OBJECTS.slice(0, mode.maxInJar || 8)) dropInPond(obj);
+    lab.settleNow();
+    return true;
+  }
+  const guard = Date.now() + 30000;
+  while (state.screen === 'play' && Date.now() < guard) {
+    await waitFor(() => state.step === 'predict' && state.awaitingInput, 6000);
+    if (state.screen !== 'play' || state.step !== 'predict') break;
+    const truth = current.truth;
+    await predict(truth);
+    await waitFor(() => state.step === 'drop' && state.awaitingInput, 4000);
+    if (state.step !== 'drop') break;
+    const before = state.round;
+    await dropCurrent();
+    await waitFor(() => state.round > before || state.screen !== 'play', 12000);
+  }
+  return state.screen === 'end';
+}
+
+window.QLOBE_DEBUG = {
+  version: 1,
+  gameId: config.id,
+  engine: 'custom-water-lab',
+  ready,
+  listModes: () => MODES.map(({ id, title }) => ({ id, title })),
+  startMode,
+  getState: () => ({
+    screen: state.screen,
+    mode: state.mode,
+    step: state.step,
+    round: state.round,
+    roundsTotal: state.roundsTotal,
+    guess: state.guess,
+    selected: state.selected,
+    inJar: lab ? lab.count() : 0,
+    results: state.results.slice(),
+    muted: state.muted,
+    fast: state.fast,
+    reducedMotion: reducedMotion(),
+    placeholderArt: !!config.placeholderArt,
+    dragging: !!drag,
+    awaitingInput: state.awaitingInput && !state.inputLocked,
+  }),
+  getTarget: () => (current
+    ? { id: current.id, name: current.name, density: current.density, truth: current.truth, guess: state.guess, step: state.step }
+    : null),
+  getTargets,
+  tap: debugTap,
+  predict,
+  drop: (x, y) => dropCurrent(x, y),
+  settleNow: () => { if (lab) lab.settleNow(); if (settleWaiter) settleWaiter.resolve(); return true; },
+  winRound,
+  setSeed: (n) => { state.seed = Number(n) >>> 0; rng = mulberry32(state.seed); return state.seed; },
+  seed: (n) => { state.seed = Number(n) >>> 0; rng = mulberry32(state.seed); return state.seed; },
+  mute: () => {
+    state.muted = true;
+    voice.stop();
+    speech.stop();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.querySelectorAll('audio, video').forEach((el) => { el.muted = true; });
+    return true;
+  },
+  fastTimers: (on = true) => { state.fast = !!on; return state.fast; },
+  water: () => (lab ? lab.state() : null),
+  home: () => { showSplash(); return true; },
+};
+
+// ------------------------------------------------------------------ helpers
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function shuffle(values, random) {
+  const result = values.slice();
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const next = Math.floor(random() * (index + 1));
+    [result[index], result[next]] = [result[next], result[index]];
+  }
+  return result;
+}
+
+function mulberry32(seed) {
+  let value = seed >>> 0;
+  return () => {
+    value += 0x6D2B79F5;
+    let result = value;
+    result = Math.imul(result ^ (result >>> 15), result | 1);
+    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
+    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function cssEscape(value) {
+  return window.CSS && window.CSS.escape
+    ? window.CSS.escape(String(value))
+    : String(value).replace(/["\\]/g, '\\$&');
+}
+
+window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (event) => {
+  if (lab) lab.setReducedMotion(event.matches);
+});
+
+showSplash();
