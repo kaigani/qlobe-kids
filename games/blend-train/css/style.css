@@ -1,0 +1,162 @@
+/* Blend Train — game-local styling.
+ *
+ * WHY THIS FILE EXISTS
+ * --------------------
+ * build-assemble injects one generic stylesheet shared by all 15 of its games. That
+ * chrome is deliberately plain, and a plain splash is fine for a stub — but this game
+ * has an approved mockup with a specific look, and the first pass shipped the engine's
+ * default chrome instead: a postage-stamp thumbnail in a white card, floating on flat
+ * pale blue. The mockup promises a full-bleed sunny railway world.
+ *
+ * index.html is game-owned, so a game-local sheet can restyle that chrome with zero
+ * risk to the other 14 games — none of them load this file.
+ *
+ * SPECIFICITY NOTE: the engine appends its <style id="qk-build-style"> to <head> at
+ * runtime, i.e. AFTER this <link>. Equal-specificity rules would therefore lose. Every
+ * override below is scoped under `#game` to outrank it without resorting to !important.
+ */
+
+:root {
+  --bt-navy: #17517e;
+  --bt-navy-deep: #0f3a5c;
+  --bt-cream: #fdf6e3;
+  --bt-orange: #f47b20;
+  --bt-orange-deep: #d4600c;
+}
+
+/* ---- Full-bleed world -------------------------------------------------- */
+/* Per-screen backgrounds live here rather than in config.theme.background, because that
+   field paints ONE image across splash, play and end — and these three screens want
+   different things. Colours below are sampled from the plates themselves. */
+
+/* Splash and end: the mockup's sunburst title scene, edge to edge. */
+#game .qk-build-splash,
+#game .qk-build-end {
+  background: #feaf06 url('../assets/art/splash.webp') center / cover no-repeat;
+}
+
+/* Play: the board draws the railway plate itself, 1:1 with the build space, and with
+   trayOverlay it fills the landscape play area almost exactly. The page behind therefore
+   only has to cover the sliver — and, in portrait, the bands a wide scene cannot fill.
+   NOT the same image again: painting track.webp here as a cover background produced a
+   visible double exposure, a second offset locomotive and a doubled horizon showing past
+   the board's edges. A two-stop gradient sampled from the plate's own sky and grass
+   continues the scene instead of competing with it. */
+#game .qk-build-play {
+  background: linear-gradient(180deg,
+    #23cdf8 0%, #23cdf8 52%, #7ec93c 60%, #629c07 100%);
+}
+
+/* ---- Splash ------------------------------------------------------------ */
+/* The engine's art plate is a thumbnail card, and here the SCENE is already the hero —
+   showing the same train again inside a floating card just reads as a duplicate. Hide
+   the plate and let the background carry the image, exactly as the mockup does. */
+#game .qk-build-splash-art,
+#game .qk-build-end-art { display: none; }
+
+/* A soft scrim so the title and buttons stay legible wherever the cover-crop lands.
+   Without it the wordmark sits on top of the locomotive and neither reads. */
+#game .qk-build-splash::before,
+#game .qk-build-end::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(24, 62, 96, 0) 0%,
+    rgba(24, 62, 96, 0) 58%,
+    rgba(24, 62, 96, .16) 78%,
+    rgba(24, 62, 96, .30) 100%);
+}
+#game .qk-build-splash,
+#game .qk-build-end { position: relative; align-content: end; }
+
+#game .qk-build-splash-center,
+#game .qk-build-end-center {
+  position: relative;      /* above the scrim */
+  z-index: 1;
+  width: min(1080px, 100%);
+  gap: clamp(12px, 2vmin, 24px);
+  padding-top: 0;
+  padding-bottom: clamp(10px, 2.4vmin, 30px);
+}
+
+/* Chunky wordmark, after the mockup's 3D lettering. Real HTML text, not baked art —
+   spelling has to stay correct and an image model is not a typography engine. */
+#game .qk-build h1 {
+  max-width: none;
+  font-size: clamp(46px, 9.5vmin, 104px);
+  letter-spacing: .01em;
+  color: var(--bt-cream);
+  text-shadow:
+     4px  4px 0 var(--bt-navy),  -4px  4px 0 var(--bt-navy),
+     4px -4px 0 var(--bt-navy),  -4px -4px 0 var(--bt-navy),
+     0  6px 0 var(--bt-navy),     0 -6px 0 var(--bt-navy),
+     6px 0 0 var(--bt-navy),     -6px  0 0 var(--bt-navy),
+     0 14px 0 var(--bt-navy-deep),
+     0 20px 26px rgba(15, 58, 92, .34);
+}
+
+/* ---- Buttons ----------------------------------------------------------- */
+/* The mockup's control is a fat orange pill. The engine's blue/green rectangles read as
+   a settings menu next to it. */
+#game .qk-build-mode-list {
+  width: min(920px, 100%);
+  gap: clamp(14px, 2.4vmin, 26px);
+  margin-top: clamp(6px, 1.4vmin, 14px);
+}
+#game .qk-build-mode,
+#game .qk-build-again {
+  min-height: clamp(132px, 21vmin, 196px);
+  border-radius: clamp(28px, 4.4vmin, 44px);
+  border: 6px solid #fff;
+  color: var(--bt-navy);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 46%),
+    var(--bt-cream);
+  box-shadow: 0 10px 0 rgba(15, 58, 92, .18), 0 18px 30px rgba(15, 58, 92, .2);
+  text-shadow: none;
+}
+#game .qk-build-again {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .48), rgba(255, 255, 255, 0) 46%),
+    var(--bt-orange);
+  border-color: #fff;
+  color: #fff;
+  text-shadow: 0 3px 0 var(--bt-orange-deep);
+}
+/* The engine tints every 2nd/3rd mode button; both of ours share the cream plate so the
+   car pictures inside them carry the colour instead. */
+#game .qk-build-mode:nth-child(2n),
+#game .qk-build-mode:nth-child(3n) { background-color: var(--bt-cream); }
+
+#game .qk-build-mode-art { gap: clamp(4px, .9vmin, 10px); padding: clamp(12px, 2vmin, 22px); }
+#game .qk-build-mode-art-slot {
+  height: clamp(104px, 15vmin, 158px);
+}
+#game .qk-build-mode-art .qk-build-mode-label {
+  font-size: clamp(20px, 3.1vmin, 32px);
+  color: var(--bt-navy);
+}
+
+/* ---- Play screen ------------------------------------------------------- */
+/* Drop the engine's side and bottom padding. The scene is meant to run to the edges;
+   with padding the plate reads as a framed picture sitting on a coloured mat rather than
+   as the world the train is in. The engine keeps its own ~17px internal pad, which is
+   enough to stop the art butting hard into the screen edge. */
+#game .qk-build-play {
+  padding: max(6px, env(safe-area-inset-top)) env(safe-area-inset-right)
+           max(8px, env(safe-area-inset-bottom)) env(safe-area-inset-left);
+}
+#game .qk-build-hud { min-height: clamp(76px, 11vmin, 100px); }
+#game .qk-build-stage { width: 100%; }
+
+/* Round dots: on a bright scene the engine's translucent white pill disappears. */
+#game .qk-build-progress {
+  background: rgba(255, 255, 255, .74);
+  box-shadow: 0 4px 0 rgba(15, 58, 92, .12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #game .qk-build-mode, #game .qk-build-again { transition: none; }
+}

@@ -14,7 +14,7 @@ await content.ready();                     // loads the data once
 content.objectsStartingWith('b');
 //   → [{ word:'bat', char:'🦇', img:'a cute friendly purple bat…',
 //        type:'noun', onset:'b', rime:'at',
-//        image:'…/objects/bat.png',
+//        image:'…/objects/bat.webp',
 //        audio:'…/audio/words/bat.m4a',
 //        celebrate:'…/audio/celebrate/bat.m4a',
 //        prompt:'…/audio/prompts/bat.m4a',
@@ -37,9 +37,7 @@ Path resolvers (the single home for these conventions):
 - **`shared/data/letters.json`** — canonical A–Z. Each letter: `phonic` (the
   sound it makes), `soundClip` (the shared recording of that phonic),
   `nameClip` (the shared recording of the letter's NAME — "ay", "bee", …;
-  **25/26 recorded**, promoted from `games/flashlight-cave`; `letter-l`'s
-  stays `null`, a tracked gap — 20 takes across 4 spellings were all
-  mistranscribed, so L falls back to Web Speech for its name), `vowel`,
+  **all 26 recorded**, promoted from `games/flashlight-cave`), `vowel`,
   `objectCount`, and the `objects` starting with it.
 - **`shared/data/words.json`** — 133 words as `onset + rime`, each with `img`
   (illustration subject), `char` (emoji fallback), `type`. `onsets`/`rimes`
@@ -49,7 +47,7 @@ Path resolvers (the single home for these conventions):
 
 | What | Location | Naming | Count |
 |---|---|---|---|
-| Picture-word cards | `shared/assets/objects/` | `<word>.png` | 134 |
+| Picture-word cards | `shared/assets/objects/` | `<word>.webp` | 203 |
 | Letter/onset tiles | `shared/assets/letter-tiles/` | onset/rime tiles | 56 |
 | **Letter phonic sounds** | `shared/assets/audio/fragments/` | `<letter>.m4a` (a–z) + rimes | **26/26 letters** |
 | **Letter NAME sounds** | `shared/assets/audio/letters/` | `<letter>.m4a` (a–z) | **26/26 letters** |
@@ -93,6 +91,24 @@ category; `_v` bumps on each audio release.
   "You won a [word]." — prize-ceremony wording specific to a reward reveal.
   Use `isforAudio` for plain letter/word pairing in any context, `prizeAudio`
   only when the game actually stages a win.
+
+## Sprite format
+
+Every picture-word sprite carries a **real alpha channel** and ships as
+**lossless WebP**. Both were true of only a handful of them until 2026-07-27:
+125 of the 203 were opaque PNGs with a painted white background, which is
+invisible on a light play-field and renders as a white box on a dark one.
+
+Backgrounds were removed with the two-step in
+`tools/pipeline/key_object_backgrounds.py` — `qwen-image-edit` to a plain grey
+ground, then `qwen-image-layered` with an explicit two-layer prompt naming the
+subject. Not a flood fill: a border fill leaves halos and eats interior whites
+it can reach (a whale's belly, a duck's highlight). The artwork itself was not
+regenerated; only the background changed, and every result was diffed against
+its original before being accepted.
+
+`objectImage(word)` resolves `.webp` with **no `.png` fallback**, deliberately —
+a resolver that tries two extensions hides a missing asset instead of 404-ing.
 
 ## Reuse rule
 

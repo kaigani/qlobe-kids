@@ -1,0 +1,502 @@
+{
+  "id": "blend-train",
+  "engine": "build-assemble",
+  "title": "Blend Train",
+  "accent": "#2d7dd2",
+  "splashArt": "game:assets/art/splash.webp",
+  "space": [
+    1600,
+    884
+  ],
+  "backdrop": "game:assets/art/track.webp",
+  "panel": false,
+  "copy": {
+    "home": "Home",
+    "replay": "Hear it again",
+    "playAgain": "Play Again"
+  },
+  "voice": {
+    "clips": {
+      "manifest": "./assets/audio/manifest.json",
+      "lines": "./assets/audio/lines.json"
+    },
+    "greet": {
+      "clip": "clip:greet",
+      "text": "All aboard the Blend Train!"
+    },
+    "intro": {
+      "clip": "clip:intro",
+      "text": "Push the sound cars together to make a word."
+    },
+    "nudge": {
+      "clip": "clip:nudge",
+      "text": "That car goes on another track. Try again."
+    },
+    "wait": {
+      "clip": "clip:wait",
+      "text": "Listen for the first car."
+    },
+    "cheer": {
+      "clip": "clip:cheer",
+      "text": "The blend train is rolling!"
+    }
+  },
+  "modes": [
+    {
+      "id": "couple",
+      "title": "Couple the Cars",
+      "rounds": 5,
+      "prompt": {
+        "clip": "clip:prompt-couple",
+        "text": "First the sound, then the ending. Put them together!"
+      },
+      "builds": [
+        {
+          "name": "mat-couple",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:m",
+              "letter:at",
+              "cheer:mat"
+            ],
+            "gap": 240,
+            "text": "mmm... at... mat!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-m.webp",
+              "alt": "m sound car",
+              "say": {
+                "clip": "letter:m",
+                "text": "mmm"
+              },
+              "x": 700,
+              "y": 492,
+              "size": 420
+            },
+            {
+              "art": "game:assets/art/car-at.webp",
+              "alt": "at sound car",
+              "say": {
+                "clip": "letter:at",
+                "text": "at"
+              },
+              "x": 1140,
+              "y": 492,
+              "size": 420
+            }
+          ]
+        },
+        {
+          "name": "cat-couple",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:c",
+              "letter:at",
+              "cheer:cat"
+            ],
+            "gap": 240,
+            "text": "kuh... at... cat!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-c.webp",
+              "alt": "c sound car",
+              "say": {
+                "clip": "letter:c",
+                "text": "kuh"
+              },
+              "x": 700,
+              "y": 492,
+              "size": 420
+            },
+            {
+              "art": "game:assets/art/car-at.webp",
+              "alt": "at sound car",
+              "say": {
+                "clip": "letter:at",
+                "text": "at"
+              },
+              "x": 1140,
+              "y": 492,
+              "size": 420
+            }
+          ]
+        },
+        {
+          "name": "sun-couple",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:s",
+              "letter:un",
+              "cheer:sun"
+            ],
+            "gap": 240,
+            "text": "sss... un... sun!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-s.webp",
+              "alt": "s sound car",
+              "say": {
+                "clip": "letter:s",
+                "text": "sss"
+              },
+              "x": 700,
+              "y": 492,
+              "size": 420
+            },
+            {
+              "art": "game:assets/art/car-un.webp",
+              "alt": "un sound car",
+              "say": {
+                "clip": "letter:un",
+                "text": "un"
+              },
+              "x": 1140,
+              "y": 492,
+              "size": 420
+            }
+          ]
+        },
+        {
+          "name": "dog-couple",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:d",
+              "letter:og",
+              "cheer:dog"
+            ],
+            "gap": 240,
+            "text": "duh... og... dog!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-d.webp",
+              "alt": "d sound car",
+              "say": {
+                "clip": "letter:d",
+                "text": "duh"
+              },
+              "x": 700,
+              "y": 492,
+              "size": 420
+            },
+            {
+              "art": "game:assets/art/car-og.webp",
+              "alt": "og sound car",
+              "say": {
+                "clip": "letter:og",
+                "text": "og"
+              },
+              "x": 1140,
+              "y": 492,
+              "size": 420
+            }
+          ]
+        },
+        {
+          "name": "pig-couple",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:p",
+              "letter:ig",
+              "cheer:pig"
+            ],
+            "gap": 240,
+            "text": "puh... ig... pig!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-p.webp",
+              "alt": "p sound car",
+              "say": {
+                "clip": "letter:p",
+                "text": "puh"
+              },
+              "x": 700,
+              "y": 492,
+              "size": 420
+            },
+            {
+              "art": "game:assets/art/car-ig.webp",
+              "alt": "ig sound car",
+              "say": {
+                "clip": "letter:ig",
+                "text": "ig"
+              },
+              "x": 1140,
+              "y": 492,
+              "size": 420
+            }
+          ]
+        }
+      ],
+      "art": "game:assets/art/mode-couple.webp"
+    },
+    {
+      "id": "sounds",
+      "title": "Sound Cars",
+      "rounds": 5,
+      "prompt": {
+        "clip": "clip:prompt-sounds",
+        "text": "Put the sound cars in order to build the word."
+      },
+      "builds": [
+        {
+          "name": "mat-sounds",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:m",
+              "letter:a",
+              "letter:t",
+              "cheer:mat"
+            ],
+            "gap": 240,
+            "text": "mmm... aaa... t... mat!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-m.webp",
+              "alt": "m sound car",
+              "say": {
+                "clip": "letter:m",
+                "text": "mmm"
+              },
+              "x": 620,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-a.webp",
+              "alt": "a sound car",
+              "say": {
+                "clip": "letter:a",
+                "text": "aaa"
+              },
+              "x": 980,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-t.webp",
+              "alt": "t sound car",
+              "say": {
+                "clip": "letter:t",
+                "text": "t"
+              },
+              "x": 1340,
+              "y": 506,
+              "size": 380
+            }
+          ]
+        },
+        {
+          "name": "cat-sounds",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:c",
+              "letter:a",
+              "letter:t",
+              "cheer:cat"
+            ],
+            "gap": 240,
+            "text": "kuh... aaa... t... cat!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-c.webp",
+              "alt": "c sound car",
+              "say": {
+                "clip": "letter:c",
+                "text": "kuh"
+              },
+              "x": 620,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-a.webp",
+              "alt": "a sound car",
+              "say": {
+                "clip": "letter:a",
+                "text": "aaa"
+              },
+              "x": 980,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-t.webp",
+              "alt": "t sound car",
+              "say": {
+                "clip": "letter:t",
+                "text": "t"
+              },
+              "x": 1340,
+              "y": 506,
+              "size": 380
+            }
+          ]
+        },
+        {
+          "name": "sun-sounds",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:s",
+              "letter:u",
+              "letter:n",
+              "cheer:sun"
+            ],
+            "gap": 240,
+            "text": "sss... uh... nnn... sun!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-s.webp",
+              "alt": "s sound car",
+              "say": {
+                "clip": "letter:s",
+                "text": "sss"
+              },
+              "x": 620,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-u.webp",
+              "alt": "u sound car",
+              "say": {
+                "clip": "letter:u",
+                "text": "uh"
+              },
+              "x": 980,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-n.webp",
+              "alt": "n sound car",
+              "say": {
+                "clip": "letter:n",
+                "text": "nnn"
+              },
+              "x": 1340,
+              "y": 506,
+              "size": 380
+            }
+          ]
+        },
+        {
+          "name": "dog-sounds",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:d",
+              "letter:o",
+              "letter:g",
+              "cheer:dog"
+            ],
+            "gap": 240,
+            "text": "duh... oh... guh... dog!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-d.webp",
+              "alt": "d sound car",
+              "say": {
+                "clip": "letter:d",
+                "text": "duh"
+              },
+              "x": 620,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-o.webp",
+              "alt": "o sound car",
+              "say": {
+                "clip": "letter:o",
+                "text": "oh"
+              },
+              "x": 980,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-g.webp",
+              "alt": "g sound car",
+              "say": {
+                "clip": "letter:g",
+                "text": "guh"
+              },
+              "x": 1340,
+              "y": 506,
+              "size": 380
+            }
+          ]
+        },
+        {
+          "name": "pig-sounds",
+          "ordered": true,
+          "say": {
+            "seq": [
+              "letter:p",
+              "letter:i",
+              "letter:g",
+              "cheer:pig"
+            ],
+            "gap": 240,
+            "text": "puh... ih... guh... pig!"
+          },
+          "parts": [
+            {
+              "art": "game:assets/art/car-p.webp",
+              "alt": "p sound car",
+              "say": {
+                "clip": "letter:p",
+                "text": "puh"
+              },
+              "x": 620,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-i.webp",
+              "alt": "i sound car",
+              "say": {
+                "clip": "letter:i",
+                "text": "ih"
+              },
+              "x": 980,
+              "y": 506,
+              "size": 380
+            },
+            {
+              "art": "game:assets/art/car-g.webp",
+              "alt": "g sound car",
+              "say": {
+                "clip": "letter:g",
+                "text": "guh"
+              },
+              "x": 1340,
+              "y": 506,
+              "size": 380
+            }
+          ]
+        }
+      ],
+      "art": "game:assets/art/mode-sounds.webp"
+    }
+  ],
+  "trayReserve": 0.21,
+  "trayOverlay": true
+}

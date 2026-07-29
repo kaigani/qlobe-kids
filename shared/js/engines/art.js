@@ -3,30 +3,86 @@
 // Swapping placeholder emoji for real art later is a config edit only.
 //
 //   emoji:🐸                    big emoji on a soft rounded card
-//   shared:objects/cat.png      shared/assets/objects/cat.png
+//   shared:objects/cat.webp      shared/assets/objects/cat.webp
 //   shared:foods/apple.png      shared/assets/foods/apple.png
 //   shared:letter-tiles/b.png   shared/assets/letter-tiles/b.png
 //   char:maya                   shared/characters/maya/portrait.png
-//   game:assets/hero.png        current game's own asset
+//   game:assets/engine.webp     game-local file, resolved against `base`
+//                               (default document.baseURI — same convention as
+//                                the raw './assets/bg.jpg' paths configs already use)
+//
+// A ref may also be an ARRAY of layers, painted bottom-to-top:
+//
+//   [ 'game:assets/car.webp',
+//     { ref: 'text:A', scale: 0.42, dx: 0.06, dy: -0.08 } ]
+//
+// Layer offsets dx/dy are FRACTIONS OF THE BOX (rendered as % translate),
+// never pixels, so a composed stack survives every rescale without drifting.
 
 const SHARED = new URL('../../', import.meta.url); // -> shared/
 
-/** Resolve an art ref to a URL string, or null for emoji refs. */
-export function artUrl(ref) {
+/**
+ * Resolve an art ref to a URL string, or null for emoji/text/swatch refs.
+ * @param {string} ref
+ * @param {string} [base] base URL for `game:` refs (default: document.baseURI)
+ * @returns {string|null}
+ */
+export function artUrl(ref, base) {
+  if (typeof ref !== 'string') return null; // arrays/objects have no single URL
   if (ref.startsWith('shared:')) return new URL('assets/' + ref.slice(7), SHARED).href;
   if (ref.startsWith('char:')) return new URL('characters/' + ref.slice(5) + '/portrait.png', SHARED).href;
-  if (ref.startsWith('game:')) return new URL(ref.slice(5), document.baseURI).href;
+  if (ref.startsWith('game:')) return new URL(ref.slice(5), base || document.baseURI).href;
   return null;
+}
+
+/** Normalise a layer entry: a bare ref string, or { ref, scale, dx, dy, alpha, tint }. */
+function layerSpec(entry) {
+  return (entry && typeof entry === 'object' && !Array.isArray(entry)) ? entry : { ref: entry };
 }
 
 /**
  * Build a DOM element for an art ref. Emoji render as text scaled to the
  * container; images render contained. The caller sizes the returned element.
- * @param {string} ref
+ * @param {string|Array} ref string ref, or array of layers (index 0 = bottom)
  * @param {string} [alt] accessible name (empty = decorative)
+ * @param {{base?: string}} [opts] base URL for `game:` refs
  * @returns {HTMLElement}
  */
-export function artEl(ref, alt = '') {
+export function artEl(ref, alt = '', opts = {}) {
+  const base = opts && opts.base;
+
+  // --- composed / layered ref ------------------------------------------
+  if (Array.isArray(ref)) {
+    const stack = document.createElement('span');
+    stack.className = 'qk-art qk-art-stack';
+    // One label for the whole stack: a screen reader hears one thing, not three.
+    if (alt) { stack.setAttribute('role', 'img'); stack.setAttribute('aria-label', alt); }
+    else stack.setAttribute('aria-hidden', 'true');
+    for (const entry of ref) {
+      const s = layerSpec(entry);
+      const layer = document.createElement('span');
+      layer.className = 'qk-art-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      // dx/dy are fractions of the box → % translate, scale-invariant.
+      layer.style.setProperty('--dx', ((s.dx ?? 0) * 100) + '%');
+      layer.style.setProperty('--dy', ((s.dy ?? 0) * 100) + '%');
+      layer.style.setProperty('--s', String(s.scale ?? 1));
+      if (s.alpha != null) layer.style.opacity = String(s.alpha);
+      const inner = artEl(s.ref, '', opts);
+      inner.setAttribute('aria-hidden', 'true');
+      layer.appendChild(inner);
+      stack.appendChild(layer); // painter order = array order
+    }
+    return stack;
+  }
+
+  if (typeof ref !== 'string') { // nothing to draw — never a broken node
+    const span = document.createElement('span');
+    span.className = 'qk-art qk-art-emoji';
+    span.setAttribute('aria-hidden', 'true');
+    return span;
+  }
+
   if (ref.startsWith('text:')) {
     // letters, words, numerals — rendered big in Fredoka on the card
     const span = document.createElement('span');
@@ -52,7 +108,7 @@ export function artEl(ref, alt = '') {
     else span.setAttribute('aria-hidden', 'true');
     return span;
   }
-  const url = artUrl(ref);
+  const url = artUrl(ref, base);
   if (!url) {
     // Unknown/unprefixed ref (e.g. a raw emoji like '🌦️'): render it as emoji
     // text rather than a broken <img src="null"> — graceful for every engine.
@@ -85,6 +141,9 @@ if (!document.getElementById('qk-art-style')) {
       color: #17517e; }
     .qk-art-swatch { width: 78%; height: 78%; margin: 11%; border-radius: 22%;
       border: 3px solid rgba(23, 81, 126, .15); }
+    .qk-art-stack { position: relative; width: 100%; height: 100%; }
+    .qk-art-layer { position: absolute; inset: 0; display: grid; place-items: center;
+                    transform: translate(var(--dx), var(--dy)) scale(var(--s)); }
   `;
   document.head.appendChild(style);
 }

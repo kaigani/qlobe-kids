@@ -46,7 +46,7 @@ export default {
       items: [
         {
           say: 'The blank sat on the mat. Which word completes the story?',
-          promptArt: 'shared:objects/cat.png',
+          promptArt: 'shared:objects/cat.webp',
           promptAlt: 'cat story card',
           answers: [
             answer('text:cat', 'cat', true, 'The cat sat on the mat. Now YOU sit like the cat!'),
@@ -56,7 +56,7 @@ export default {
         },
         {
           say: 'The blank is hot in the sky. Which word completes the story?',
-          promptArt: 'shared:objects/sun.png',
+          promptArt: 'shared:objects/sun.webp',
           promptAlt: 'sun story card',
           answers: [
             answer('text:sun', 'sun', true, 'The sun is hot in the sky. Now YOU shine like the sun!'),
@@ -66,7 +66,7 @@ export default {
         },
         {
           say: 'The blank went down the road. Which word completes the story?',
-          promptArt: 'shared:objects/bus.png',
+          promptArt: 'shared:objects/bus.webp',
           promptAlt: 'bus story card',
           answers: [
             answer('text:bus', 'bus', true, 'The bus went down the road. Now YOU roll like the bus!'),
@@ -76,7 +76,7 @@ export default {
         },
         {
           say: 'The blank ran in the mud. Which word completes the story?',
-          promptArt: 'shared:objects/dog.png',
+          promptArt: 'shared:objects/dog.webp',
           promptAlt: 'dog story card',
           answers: [
             answer('text:dog', 'dog', true, 'The dog ran in the mud. Now YOU stomp like the big dog!'),
@@ -86,7 +86,7 @@ export default {
         },
         {
           say: 'The blank sat on my head. Which word completes the story?',
-          promptArt: 'shared:objects/hat.png',
+          promptArt: 'shared:objects/hat.webp',
           promptAlt: 'hat story card',
           answers: [
             answer('text:hat', 'hat', true, 'The hat sat on my head. Now YOU tip your fancy hat!'),
@@ -103,7 +103,7 @@ export default {
       items: [
         {
           say: 'Who stomped through the mud? Pick who to act out.',
-          promptArt: 'shared:objects/mud.png',
+          promptArt: 'shared:objects/mud.webp',
           promptAlt: 'mud action card',
           answers: [
             answer('emoji:🐕', 'big dog', true, 'The big dog stomped through the mud. Now YOU stomp like the big dog!'),
@@ -113,7 +113,7 @@ export default {
         },
         {
           say: 'Who tiptoed past the sleeping cat? Pick who to act out.',
-          promptArt: 'shared:objects/cat.png',
+          promptArt: 'shared:objects/cat.webp',
           promptAlt: 'sleeping cat action card',
           answers: [
             answer('emoji:🦊', 'fox', true, 'The fox tiptoed past the sleeping cat. Now YOU tiptoe like the fox!'),
@@ -123,7 +123,7 @@ export default {
         },
         {
           say: 'Who flapped up to the red bus? Pick who to act out.',
-          promptArt: 'shared:objects/bus.png',
+          promptArt: 'shared:objects/bus.webp',
           promptAlt: 'bus action card',
           answers: [
             answer('emoji:🐔', 'hen', true, 'The hen flapped up to the red bus. Now YOU flap like the hen!'),
@@ -133,7 +133,7 @@ export default {
         },
         {
           say: 'Who splashed in the sunny puddle? Pick who to act out.',
-          promptArt: 'shared:objects/sun.png',
+          promptArt: 'shared:objects/sun.webp',
           promptAlt: 'sunny puddle action card',
           answers: [
             answer('emoji:🐷', 'pig', true, 'The pig splashed in the sunny puddle. Now YOU splash like the pig!'),

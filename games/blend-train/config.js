@@ -1,97 +1,17 @@
-export default {
-  id: 'blend-train',
-  engine: 'build-assemble',
-  title: 'Blend Train',
-  splashEmoji: '🚂',
-  voice: {
-    intro: 'Push the sound cars together. Listen to the word!',
-    nudge: 'That car goes on another track. Try again.',
-    wait: 'Listen for the first car.',
-    cheer: 'The blend train is rolling!',
-  },
-  modes: [
-    {
-      id: 'couple',
-      title: 'Couple the Cars',
-      rounds: 5,
-      prompt: 'Couple the sound cars. First sound, then word ending.',
-      builds: [
-        wordBuild('mat', 'm', 'at', 'mmm... aaat... MAT!'),
-        wordBuild('cat', 'c', 'at', 'kuh... aaat... CAT!'),
-        wordBuild('sun', 's', 'un', 'sss... uuun... SUN!'),
-        wordBuild('dog', 'd', 'og', 'duh... aaag... DOG!'),
-        wordBuild('pig', 'p', 'ig', 'puh... iiig... PIG!'),
-      ],
-    },
-    {
-      id: 'three',
-      title: 'Three-Car Trains',
-      rounds: 4,
-      prompt: 'Build the three-car train. First sound, ending, then the whole word.',
-      builds: [
-        wordBuild('mat', 'm', 'at', 'mmm... aaat... MAT!', true),
-        wordBuild('cat', 'c', 'at', 'kuh... aaat... CAT!', true),
-        wordBuild('sun', 's', 'un', 'sss... uuun... SUN!', true),
-        wordBuild('pig', 'p', 'ig', 'puh... iiig... PIG!', true),
-      ],
-    },
-  ],
-};
-
-function wordBuild(word, onset, rime, say, includeWordCard = false) {
-  const parts = [
-    {
-      art: `shared:letter-tiles/${onset}.png`,
-      alt: `${onset} sound train car`,
-      say: onsetSound(onset),
-      x: 315,
-      y: 500,
-      size: 190,
-    },
-    {
-      art: `shared:letter-tiles/${rime}.png`,
-      alt: `${rime} sound train car`,
-      say: rimeSound(rime),
-      x: 500,
-      y: 500,
-      size: 190,
-    },
-  ];
-
-  if (includeWordCard) {
-    parts.push({
-      art: `text:${word.toUpperCase()}`,
-      alt: `${word} whole word caboose`,
-      say: word,
-      x: 685,
-      y: 500,
-      size: 190,
-    });
-  }
-
-  return {
-    name: `${word}-train`,
-    ordered: true,
-    say,
-    parts,
-  };
-}
-
-function onsetSound(onset) {
-  return {
-    c: 'kuh',
-    d: 'duh',
-    m: 'mmm',
-    p: 'puh',
-    s: 'sss',
-  }[onset] || onset;
-}
-
-function rimeSound(rime) {
-  return {
-    at: 'aat',
-    ig: 'ig',
-    og: 'og',
-    un: 'un',
-  }[rime] || rime;
-}
+// config.js — thin shim so index.html keeps a single import shape.
+//
+// New engine games keep their content in config.json (plain data the studio can
+// read and edit) and load it through this shim, so index.html always does the
+// same `import config from './config.js'` whether a game is data-in-JS or
+// data-in-JSON. Existing config.js games (data written directly in this file as
+// `export default { ... }`) are unchanged — engines receive the same object
+// either way.
+//
+// The shim uses fetch + top-level await unconditionally. JSON import attributes
+// (`import config from './config.json' with { type: 'json' }`) were considered
+// and REJECTED: they need iOS Safari 17.2+ / Firefox 138+, too new for a
+// tablet-first audience on hand-me-down devices. Top-level await has been safe
+// since Safari 15 / Chrome 89 / Firefox 89, so this form runs everywhere we ship.
+const config = await fetch(new URL('./config.json', import.meta.url))
+  .then((r) => r.json());
+export default config;
