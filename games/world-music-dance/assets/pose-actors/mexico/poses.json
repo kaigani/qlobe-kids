@@ -1,0 +1,40 @@
+{
+ "format": "qlobe-pose-actor",
+ "formatVersion": 1,
+ "id": "mexico",
+ "label": "Mexico Folkl\u00f3rico dancer",
+ "canvas": [
+  1024,
+  1024
+ ],
+ "anchor": [
+  0.5,
+  0.94921875
+ ],
+ "transition": {
+  "kind": "paper-pop",
+  "durationMs": 220
+ },
+ "poses": {
+  "neutral": {
+   "art": "poses/neutral.webp",
+   "alt": "Mexico Folkl\u00f3rico dancer \u2014 neutral pose"
+  },
+  "move-1": {
+   "art": "poses/move-1.webp",
+   "alt": "Mexico Folkl\u00f3rico dancer \u2014 move-1 pose"
+  },
+  "move-2": {
+   "art": "poses/move-2.webp",
+   "alt": "Mexico Folkl\u00f3rico dancer \u2014 move-2 pose"
+  },
+  "move-3": {
+   "art": "poses/move-3.webp",
+   "alt": "Mexico Folkl\u00f3rico dancer \u2014 move-3 pose"
+  },
+  "celebrate": {
+   "art": "poses/celebrate.webp",
+   "alt": "Mexico Folkl\u00f3rico dancer \u2014 celebrate pose"
+  }
+ }
+}

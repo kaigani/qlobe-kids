@@ -8,26 +8,36 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#7c4fc4",
-  "shareTitle": "World Music Dance 💃 — Music from Around the World",
-  "description": "Match musical clues to places around the world, then move to rhythm words like stomp, sway, spin, and bounce. A joyful discovery game for ages 5–6.",
+  "shareTitle": "World Music Dance 💃 — Dance Around the World",
+  "description": "Pick a lantern on a cut-paper night map, meet a dancer, copy three real dance moves to the beat, and pin the dance card home on the world map. Six cultures, six dances, six songs.",
   "learningGoals": [
-    "Notice that music styles can come from different places",
-    "Connect simple music clues with broad place symbols",
-    "Move safely to rhythm words like stomp, sway, spin, and bounce"
+    "Meet music and dance traditions from six world cultures",
+    "Match dance poses by careful watching (visual discrimination)",
+    "Find countries on a world map",
+    "Feel and move to different beats, scales, and tempos"
   ],
-  "interactionModel": "choose-one tap cards after a spoken prompt",
-  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "interactionModel": "Tap a map lantern to visit a culture; watch a beat-synced dancer; tap the matching pose card in a 3-step copy loop; drag the earned dance card onto its country.",
+  "feedbackModel": "Warm recorded praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and a re-demonstration — after a second miss the correct card glows. No fail states.",
   "uses": [
-    "shared/js/engines/choose-one.js",
+    "shared/js/music.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/tap.js",
+    "shared/js/stage/stage.js",
+    "shared/js/stage/pose-sprite.js",
+    "shared/js/stage/pose-conductor.js",
+    "shared/js/stage/music-sync.js",
+    "shared/js/stage/drag-to-slot.js",
+    "shared/js/stage/particles.js",
+    "shared/js/stage/tween.js",
+    "shared/assets/instruments/"
   ],
   "modes": [
-    { "id": "listen", "title": "Where's That Music?", "skill": "music-place awareness" },
-    { "id": "dance", "title": "Dance Along", "skill": "rhythm vocabulary and movement matching" }
+    { "id": "festival", "title": "World Dance Festival", "skill": "culture, geography, beat, and pose matching in one loop" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Built with Codex for QLOBE Kids.",
+  "credits": "Rebuilt with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": ""
 }

@@ -5,32 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
+  <meta name="theme-color" content="#141c33" />
   <title>World Music Dance 💃 — Music from Around the World</title>
-  <meta name="description" content="Match musical clues to places around the world, then move to rhythm words like stomp, sway, spin, and bounce. A joyful discovery game for ages 5–6." />
+  <meta name="description" content="Dance around the world at a lantern-lit paper festival: hear each country's music, copy the dancer's three moves, and pin the dance card home on the map. Ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="World Music Dance" />
   <meta property="og:title" content="World Music Dance 💃 — Music from Around the World" />
-  <meta property="og:description" content="Match musical clues to places around the world, then move to rhythm words like stomp, sway, spin, and bounce. A joyful discovery game for ages 5–6." />
+  <meta property="og:description" content="Dance around the world at a lantern-lit paper festival: hear each country's music, copy the dancer's three moves, and pin the dance card home on the map. Ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/world-music-dance/" />
   <meta property="og:image" content="https://qlo.be/games/world-music-dance/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="World Music Dance title screen with Where's That Music? and Dance Along buttons below a flamenco dancer icon." />
+  <meta property="og:image:alt" content="World Music Dance title screen: a cut-paper festival-night world map lit by golden paper lanterns, with a big Dance button." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="World Music Dance 💃 — Music from Around the World" />
-  <meta name="twitter:description" content="Match musical clues to places around the world, then move to rhythm words like stomp, sway, spin, and bounce. A joyful discovery game for ages 5–6." />
+  <meta name="twitter:description" content="Dance around the world at a lantern-lit paper festival: hear each country's music, copy the dancer's three moves, and pin the dance card home on the map. Ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/world-music-dance/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <style>
-    /* The engine injects the full game UI. This shell only sets page basics. */
+    /* The game injects its own UI. This shell only sets page basics. */
     @font-face {
       font-family: 'Fredoka';
       src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
@@ -38,13 +38,14 @@
       font-display: swap;
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
+    html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
     body {
       font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
+      background: #141c33;
       touch-action: manipulation;
       user-select: none;
       -webkit-user-select: none;
+      -webkit-touch-callout: none;
     }
     #game { height: 100dvh; }
   </style>
@@ -52,9 +53,7 @@
 <body>
   <div id="game"></div>
   <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
+    import './js/main.js';
   </script>
 </body>
 </html>

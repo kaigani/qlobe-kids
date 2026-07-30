@@ -1,0 +1,404 @@
+{
+  "id": "world-music-dance",
+  "engine": "custom",
+  "title": "World Music Dance",
+  "theme": {
+    "world": "paper-garden",
+    "variant": "festival-night",
+    "night": "#141c33",
+    "panel": "#223052",
+    "glow": "#ffd98a",
+    "cream": "#fff3d6"
+  },
+  "assets": {
+    "mapBackground": "./assets/bg/map-night.webp",
+    "stageBackground": "./assets/bg/stage-night.webp",
+    "title": "./assets/ui/title.webp",
+    "cardBacking": "./assets/ui/card-backing.webp",
+    "lantern": "./assets/ui/lantern.webp"
+  },
+  "map": {
+    "space": [
+      2048,
+      1280
+    ],
+    "pinRadiusArt": 150,
+    "pinMinScreenPx": 120
+  },
+  "sync": {
+    "latencyMs": 80
+  },
+  "listen": {
+    "minLoops": 1,
+    "autoAdvanceLoops": 3,
+    "barsPerPose": 2
+  },
+  "voice": {
+    "clips": {
+      "manifest": "./assets/audio/manifest.json",
+      "lines": "./data/lines.json"
+    }
+  },
+  "cultures": [
+    {
+      "id": "india",
+      "label": "India",
+      "dance": "Kathak",
+      "accent": "#e2793d",
+      "pin": {
+        "x": 1385,
+        "y": 700
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/india/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "twirl-wheel"
+        },
+        {
+          "pose": "move-2",
+          "name": "stamp-bells"
+        },
+        {
+          "pose": "move-3",
+          "name": "lotus-wave"
+        }
+      ],
+      "song": "india-kathak",
+      "band": [
+        {
+          "instr": "sitar"
+        },
+        {
+          "instr": "flute"
+        },
+        {
+          "instr": "tabla"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "guitar"
+        },
+        {
+          "instr": "flute"
+        },
+        {
+          "instr": "bongos"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    },
+    {
+      "id": "brazil",
+      "label": "Brazil",
+      "dance": "Samba",
+      "accent": "#f5c518",
+      "pin": {
+        "x": 505,
+        "y": 920
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/brazil/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "bounce-feet"
+        },
+        {
+          "pose": "move-2",
+          "name": "wide-sway"
+        },
+        {
+          "pose": "move-3",
+          "name": "feather-spin"
+        }
+      ],
+      "song": "brazil-samba",
+      "band": [
+        {
+          "instr": "guitar"
+        },
+        {
+          "instr": "agogo"
+        },
+        {
+          "instr": "djembe"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "guitar"
+        },
+        {
+          "instr": "maracas"
+        },
+        {
+          "instr": "bongos"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    },
+    {
+      "id": "japan",
+      "label": "Japan",
+      "dance": "Bon Odori",
+      "accent": "#e8555f",
+      "pin": {
+        "x": 1955,
+        "y": 610
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/japan/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "moon-reach"
+        },
+        {
+          "pose": "move-2",
+          "name": "clap-step"
+        },
+        {
+          "pose": "move-3",
+          "name": "fan-sweep"
+        }
+      ],
+      "song": "japan-bon-odori",
+      "band": [
+        {
+          "instr": "koto"
+        },
+        {
+          "instr": "flute"
+        },
+        {
+          "instr": "taiko"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "vibraphone"
+        },
+        {
+          "instr": "flute"
+        },
+        {
+          "instr": "drum"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    },
+    {
+      "id": "ghana",
+      "label": "Ghana",
+      "dance": "Kpanlogo",
+      "accent": "#f0b428",
+      "pin": {
+        "x": 840,
+        "y": 740
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/ghana/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "stomp-clap"
+        },
+        {
+          "pose": "move-2",
+          "name": "row-low"
+        },
+        {
+          "pose": "move-3",
+          "name": "arm-circles"
+        }
+      ],
+      "song": "ghana-kpanlogo",
+      "band": [
+        {
+          "instr": "vibraphone"
+        },
+        {
+          "instr": "djembe"
+        },
+        {
+          "instr": "agogo"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "vibraphone"
+        },
+        {
+          "instr": "bongos"
+        },
+        {
+          "instr": "drum"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    },
+    {
+      "id": "mexico",
+      "label": "Mexico",
+      "dance": "Folklórico",
+      "accent": "#e0509a",
+      "pin": {
+        "x": 385,
+        "y": 720
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/mexico/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "skirt-swish"
+        },
+        {
+          "pose": "move-2",
+          "name": "heel-taps"
+        },
+        {
+          "pose": "move-3",
+          "name": "flower-twirl"
+        }
+      ],
+      "song": "mexico-folklorico",
+      "band": [
+        {
+          "instr": "trumpet"
+        },
+        {
+          "instr": "guitar"
+        },
+        {
+          "instr": "maracas"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "trumpet"
+        },
+        {
+          "instr": "guitar"
+        },
+        {
+          "instr": "maracas"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    },
+    {
+      "id": "ireland",
+      "label": "Ireland",
+      "dance": "Jig",
+      "accent": "#4bb04f",
+      "pin": {
+        "x": 815,
+        "y": 460
+      },
+      "dancer": {
+        "base": "./assets/pose-actors/ireland/",
+        "manifest": "poses.json"
+      },
+      "moves": [
+        {
+          "pose": "move-1",
+          "name": "hop-kick"
+        },
+        {
+          "pose": "move-2",
+          "name": "toe-point"
+        },
+        {
+          "pose": "move-3",
+          "name": "quick-feet"
+        }
+      ],
+      "song": "ireland-jig",
+      "band": [
+        {
+          "instr": "tin-whistle"
+        },
+        {
+          "instr": "fiddle"
+        },
+        {
+          "instr": "guitar"
+        }
+      ],
+      "bandFallback": [
+        {
+          "instr": "flute"
+        },
+        {
+          "instr": "clarinet"
+        },
+        {
+          "instr": "guitar"
+        }
+      ],
+      "poseSchedule": {
+        "order": [
+          "neutral",
+          "move-1",
+          "move-2",
+          "move-3"
+        ],
+        "celebrateOnLoop": true
+      }
+    }
+  ]
+}

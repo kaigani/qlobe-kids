@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-29T22:43:14.488Z",
+  "generated": "2026-07-30T04:50:21.199Z",
   "engines": {
     "coach-timer": {
       "count": 21,
@@ -37,27 +37,6 @@
         "waiting-muscle-game"
       ]
     },
-    "choose-one": {
-      "count": 16,
-      "games": [
-        "board-game-reset",
-        "calm-corner-cards",
-        "grace-courtesy-theater",
-        "instrument-detective",
-        "joke-workshop",
-        "letter-treasure-hunt",
-        "mountain-seasons-wheel",
-        "mystery-letter-bag",
-        "plan-do-review",
-        "problem-solving-puppets",
-        "question-ball",
-        "song-story-remix",
-        "sound-hopscotch",
-        "story-repair-shop",
-        "tiny-reader-theater",
-        "world-music-dance"
-      ]
-    },
     "build-assemble": {
       "count": 15,
       "games": [
@@ -76,6 +55,26 @@
         "tangram-tales",
         "teen-bead-builder",
         "turn-taking-tower"
+      ]
+    },
+    "choose-one": {
+      "count": 15,
+      "games": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "letter-treasure-hunt",
+        "mountain-seasons-wheel",
+        "mystery-letter-bag",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "question-ball",
+        "song-story-remix",
+        "sound-hopscotch",
+        "story-repair-shop",
+        "tiny-reader-theater"
       ]
     },
     "observe-journal": {
@@ -1767,16 +1766,27 @@
       "packs": []
     },
     "world-music-dance": {
-      "engine": "choose-one",
+      "engine": null,
       "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
-        "shared/js/engines/choose-one.js",
+        "shared/js/music.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/stage/music-sync.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/pose-conductor.js",
+        "shared/js/stage/pose-sprite.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/tween.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/instruments"
+      ],
       "packs": []
     }
   },
@@ -1825,8 +1835,7 @@
         "song-story-remix",
         "sound-hopscotch",
         "story-repair-shop",
-        "tiny-reader-theater",
-        "world-music-dance"
+        "tiny-reader-theater"
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
@@ -1912,7 +1921,8 @@
         "sticker-line-challenge"
       ],
       "shared/js/music.js": [
-        "my-puppet-band"
+        "my-puppet-band",
+        "world-music-dance"
       ],
       "shared/js/musical-canvas.js": [
         "sound-painting"
@@ -2144,7 +2154,8 @@
         "blend-train"
       ],
       "shared/js/stage/drag-to-slot.js": [
-        "blend-train"
+        "blend-train",
+        "world-music-dance"
       ],
       "shared/js/stage/lipsync.js": [
         "puppet-problem-solvers"
@@ -2153,12 +2164,20 @@
         "feelings-charades",
         "lunchbox-pack"
       ],
+      "shared/js/stage/music-sync.js": [
+        "world-music-dance"
+      ],
       "shared/js/stage/particles.js": [
         "flashlight-cave",
-        "sink-or-float"
+        "sink-or-float",
+        "world-music-dance"
+      ],
+      "shared/js/stage/pose-conductor.js": [
+        "world-music-dance"
       ],
       "shared/js/stage/pose-sprite.js": [
-        "story-stones"
+        "story-stones",
+        "world-music-dance"
       ],
       "shared/js/stage/puppet.js": [
         "my-puppet-band",
@@ -2170,7 +2189,8 @@
       "shared/js/stage/stage.js": [
         "flashlight-cave",
         "puppet-retell",
-        "sink-or-float"
+        "sink-or-float",
+        "world-music-dance"
       ],
       "shared/js/stage/theater.js": [
         "my-puppet-band",
@@ -2179,7 +2199,8 @@
         "story-stones"
       ],
       "shared/js/stage/tween.js": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "world-music-dance"
       ],
       "shared/js/stage/water.js": [
         "sink-or-float"
@@ -2194,7 +2215,8 @@
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
-        "sound-sprouts"
+        "sound-sprouts",
+        "world-music-dance"
       ],
       "shared/js/voice-clips.js": [
         "blend-train",
@@ -2210,7 +2232,8 @@
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
-        "story-stones"
+        "story-stones",
+        "world-music-dance"
       ],
       "shared/vendor/pixi.min.js": [
         "flashlight-cave"
@@ -2477,7 +2500,8 @@
         "subtraction-picnic"
       ],
       "shared/assets/instruments": [
-        "my-puppet-band"
+        "my-puppet-band",
+        "world-music-dance"
       ],
       "shared/assets/letter-tiles": [
         "letter-treasure-hunt",

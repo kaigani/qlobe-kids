@@ -2000,17 +2000,28 @@
       "accent": "#7c4fc4",
       "modes": [
         {
-          "id": "listen",
-          "title": "Where's That Music?",
-          "skill": "music-place awareness"
-        },
-        {
-          "id": "dance",
-          "title": "Dance Along",
-          "skill": "rhythm vocabulary and movement matching"
+          "id": "festival",
+          "title": "World Dance Festival",
+          "skill": "culture, geography, beat, and pose matching in one loop"
         }
       ],
-      "summary": "Hear music, move to it, and locate it on a map."
+      "summary": "Pick a lantern on the night map, copy a real dance to its music, and pin the card home.",
+      "uses": [
+        "shared/js/music.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/pose-sprite.js",
+        "shared/js/stage/pose-conductor.js",
+        "shared/js/stage/music-sync.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/tween.js",
+        "shared/assets/instruments/",
+        "shared/assets/ui/"
+      ]
     },
     {
       "id": "local-nature-guide",
