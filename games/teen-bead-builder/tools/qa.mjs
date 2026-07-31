@@ -150,11 +150,61 @@ async function main() {
   await drag(page, page.locator('[data-bead-source]'), page.locator('[data-drop-zone]'));
   check('real drag places the first bead',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 1);
-  for (let index = 1; index < 9; index += 1) {
+  const coralSource = await page.locator('[data-bead-source]').evaluate((button) => ({
+    color: button.dataset.beadColor,
+    image: getComputedStyle(button.querySelector('.bead')).backgroundImage,
+    label: button.getAttribute('aria-label'),
+  }));
+  check('source preview advances to the next bead color after a drop',
+    coralSource.color === 'coral'
+      && coralSource.image.includes('bead-coral.webp')
+      && coralSource.label.includes('coral'),
+    JSON.stringify(coralSource));
+
+  const coralBox = await page.locator('[data-bead-source]').boundingBox();
+  const trayBox = await page.locator('[data-drop-zone]').boundingBox();
+  await page.mouse.move(coralBox.x + coralBox.width / 2, coralBox.y + coralBox.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(trayBox.x + trayBox.width + 20, trayBox.y + trayBox.height / 2, { steps: 6 });
+  check('drag ghost matches the bead color being carried',
+    await page.locator('.drag-ghost.coral').count() === 1);
+  await page.mouse.move(trayBox.x + trayBox.width - 12, trayBox.y + trayBox.height - 12, { steps: 8 });
+  await page.mouse.up();
+  const edgeDrop = await page.evaluate(() => ({
+    placed: window.QLOBE_DEBUG.getState().placed,
+    nextColor: document.querySelector('[data-bead-source]')?.dataset.beadColor,
+  }));
+  check('window-level drag reaches the tray edge and advances color',
+    edgeDrop.placed === 2 && edgeDrop.nextColor === 'teal', JSON.stringify(edgeDrop));
+
+  for (let index = 2; index < 6; index += 1) {
+    await drag(page, page.locator('[data-bead-source]'), page.locator('[data-drop-zone]'));
+  }
+  const repeatedDragState = await page.evaluate(() => ({
+    placed: window.QLOBE_DEBUG.getState().placed,
+    nextColor: document.querySelector('[data-bead-source]')?.dataset.beadColor,
+  }));
+  check('repeated drags survive source rerenders through a full color cycle',
+    repeatedDragState.placed === 6 && repeatedDragState.nextColor === 'gold',
+    JSON.stringify(repeatedDragState));
+  for (let index = 6; index < 9; index += 1) {
     await page.evaluate(() => window.QLOBE_DEBUG.tap('bead-source'));
   }
   check('tap fallback fills the same ten-frame',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 9);
+  const beadArtSizes = await page.locator('.bead-slot .bead').evaluateAll((beads) =>
+    Object.fromEntries(beads.map((bead) => [
+      [...bead.classList].find((name) => ['gold', 'coral', 'teal', 'green', 'blue', 'cream'].includes(name)),
+      getComputedStyle(bead).backgroundSize,
+    ])));
+  check('small atlas crops are normalized to the same apparent bead diameter',
+    beadArtSizes.gold.includes('125%')
+      && beadArtSizes.green.includes('127%')
+      && beadArtSizes.cream.includes('126%')
+      && beadArtSizes.coral.includes('100%')
+      && beadArtSizes.teal.includes('100%')
+      && beadArtSizes.blue.includes('100%'),
+    JSON.stringify(beadArtSizes));
   await page.screenshot({ path: path.join(shots, '03-bundle-nine.png') });
 
   const sourceBox = await page.locator('[data-bead-source]').boundingBox();

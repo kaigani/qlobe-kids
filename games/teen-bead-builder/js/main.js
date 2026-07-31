@@ -41,6 +41,9 @@ const ready = voice.init(
 ).then(() => true);
 
 window.addEventListener('pointerdown', unlockAudio, { passive: true });
+window.addEventListener('pointermove', moveDrag, { passive: false });
+window.addEventListener('pointerup', finishDrag, { passive: false });
+window.addEventListener('pointercancel', cancelDrag);
 window.addEventListener('contextmenu', (event) => event.preventDefault());
 window.addEventListener('gesturestart', (event) => event.preventDefault());
 window.addEventListener('blur', cancelDrag);
@@ -221,6 +224,7 @@ function renderBuildRound() {
   const label = isBundle ? 'TEN FRAME' : 'ONES';
   const slotCount = isBundle ? 10 : 9;
   const frameClass = isBundle ? 'ten-frame' : 'ones-frame';
+  const sourceColor = beadColors[state.placed % beadColors.length];
   const showingBundleResult = isBundle && state.transition && state.tutorialDone;
   const filled = Array.from({ length: slotCount }, (_, index) => {
     const full = index < state.placed;
@@ -250,8 +254,9 @@ function renderBuildRound() {
         <span class="equation-chip">${isBundle ? `${state.placed} / 10` : `10 + ${state.placed}`}</span>
       </section>`;
   const source = showingBundleResult ? '' : `
-    <button class="bead-source" type="button" data-bead-source aria-label="Add one golden bead">
-      ${bead('gold')}
+    <button class="bead-source" type="button" data-bead-source data-bead-color="${sourceColor}"
+      aria-label="Add one ${sourceColor} bead">
+      ${bead(sourceColor)}
     </button>`;
   const prompt = showingBundleResult
     ? 'Ten ones made one ten!'
@@ -283,8 +288,9 @@ function wireBeadSource(source) {
     event.preventDefault();
     unlockAudio();
     playSfx('pop');
+    const color = source.dataset.beadColor || beadColors[state.placed % beadColors.length];
     const ghost = document.createElement('span');
-    ghost.className = 'bead drag-ghost gold';
+    ghost.className = `bead drag-ghost ${color}`;
     ghost.style.left = `${event.clientX}px`;
     ghost.style.top = `${event.clientY}px`;
     document.body.append(ghost);
@@ -300,9 +306,6 @@ function wireBeadSource(source) {
     };
     try { source.setPointerCapture(event.pointerId); } catch { /* window listeners still cover it */ }
   });
-  source.addEventListener('pointermove', moveDrag);
-  source.addEventListener('pointerup', finishDrag);
-  source.addEventListener('pointercancel', cancelDrag);
 }
 
 function moveDrag(event) {
@@ -325,7 +328,13 @@ function finishDrag(event) {
   event.preventDefault();
   const current = drag;
   const zone = app.querySelector('[data-drop-zone]');
-  const valid = !current.moved || (zone && pointInRect(event.clientX, event.clientY, zone.getBoundingClientRect(), 45));
+  const upX = Number.isFinite(event.clientX) ? event.clientX : current.x;
+  const upY = Number.isFinite(event.clientY) ? event.clientY : current.y;
+  const zoneRect = zone?.getBoundingClientRect();
+  const valid = !current.moved || (zoneRect && (
+    pointInRect(upX, upY, zoneRect, 45)
+      || pointInRect(current.x, current.y, zoneRect, 45)
+  ));
   cancelDrag();
   if (valid) addBead();
   else {
@@ -340,8 +349,8 @@ function finishDrag(event) {
   }
 }
 
-function cancelDrag() {
-  if (!drag) return;
+function cancelDrag(event) {
+  if (!drag || (event?.pointerId != null && event.pointerId !== drag.pointerId)) return;
   drag.ghost?.remove();
   try { drag.source?.releasePointerCapture(drag.pointerId); } catch { /* ignore */ }
   app.querySelector('[data-drop-zone]')?.classList.remove('drag-over');
