@@ -597,9 +597,10 @@ export function createPlayfield({ mount, config, voice, sfx, ctx, on }) {
     startedCorrect += 1;
     const isThird = ordinal >= caseDef.rhymes.length - 1;
     sfx.pop();
+    let praiseDone = Promise.resolve();
     later(40, () => {
       if (mine !== caseToken) return;
-      voice.seq([voice.keyForWord(word), ...(isThird ? [] : [{ key: ctx.yesKey(), gap: 110 }])],
+      praiseDone = voice.seq([voice.keyForWord(word), ...(isThird ? [] : [{ key: ctx.yesKey(), gap: 110 }])],
         ctx.timeScale());
       handle.bubble(bubbleFor(word, 'neutral'));
     });
@@ -633,11 +634,16 @@ export function createPlayfield({ mount, config, voice, sfx, ctx, on }) {
       if (on.complete) on.complete(word, found.slice());
       return;
     }
-    later(260, () => {
+    // The counter must not interrupt the praise line: say() supersedes the
+    // seq, and hat's 1.04 s word clip leaves only ~170 ms of margin if this
+    // fires on the clock alone.
+    (async () => {
+      await wait(T(260));
+      await praiseDone;
       if (mine !== caseToken) return;
       const remaining = caseDef.rhymes.length - found.length;
       voice.say(remaining === 2 ? 'two-more' : 'one-more');
-    });
+    })();
   }
 
   // §9.4 — boing -> wiggle -> grey bubble -> fade. Nothing is consumed.
