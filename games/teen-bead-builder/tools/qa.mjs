@@ -75,6 +75,19 @@ async function main() {
     (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).map((mode) => mode.id).join(',') === 'build,match');
   check('graphic title has the exact accessible name',
     (await page.locator('.title-lockup').getAttribute('alt')) === 'Teen Bead Builder');
+  const missingArtPreloads = await page.evaluate(() => {
+    const expected = [
+      'bead-gold.webp', 'bead-coral.webp', 'bead-teal.webp',
+      'bead-green.webp', 'bead-blue.webp', 'bead-cream.webp',
+      'rack-cord.webp', 'tray.webp',
+      'card-orange.webp', 'card-teal.webp', 'card-blue.webp',
+    ];
+    const declared = [...document.querySelectorAll('link[rel="preload"][as="image"]')]
+      .map((link) => link.href.split('/').pop());
+    return expected.filter((file) => !declared.includes(file));
+  });
+  check('every foreground clay sprite is preloaded before play',
+    missingArtPreloads.length === 0, missingArtPreloads.join(', '));
   const cardSizes = await page.locator('.mode-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
   check('splash mode cards meet the 96px target',
@@ -180,9 +193,10 @@ async function main() {
   await page.screenshot({ path: path.join(shots, '06-build-teen.png') });
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'celebration');
-  await page.screenshot({ path: path.join(shots, '07-build-success.png') });
+  const buildEquation = await page.locator('.celebrate-equation').textContent();
   check('build success shows a complete ten-plus-ones equation',
-    (await page.locator('.celebrate-equation').textContent()).includes('='));
+    buildEquation.includes('='), buildEquation);
+  await page.screenshot({ path: path.join(shots, '07-build-success.png') });
 
   await page.evaluate(() => window.QLOBE_DEBUG.home());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'splash');
