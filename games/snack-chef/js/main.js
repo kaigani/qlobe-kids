@@ -3,7 +3,7 @@ import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
-import { coverageGesture, ingredientDrag, pathGestures } from './gesture-surface.js';
+import { coverageGesture, holdPour, ingredientDrag, pathGestures } from './gesture-surface.js';
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
@@ -14,28 +14,46 @@ const els = {
   back: $('#back'),
   sound: $('#sound'),
   rail: $('#step-rail'),
+  prompt: $('.prompt-card'),
   promptIcon: $('#prompt-icon'),
   promptText: $('#prompt-text'),
   board: $('#workboard'),
   tray: $('#ingredient-tray'),
   revealBack: $('#reveal-back'),
   finished: $('#finished-art'),
+  ribbon: $('#ribbon'),
+  stars: $('#stars'),
+  recap: $('#recap'),
   again: $('#again'),
   recipes: $('#recipes'),
   confetti: $('#confetti'),
 };
 
 const ICONS = {
-  cut: '╱',
-  face: '☺',
-  spread: '↻',
-  flower: '✿',
-  peel: '⇣',
-  boat: '⌣',
+  cut: './assets/ui/icon-cut.webp',
+  spread: './assets/ui/icon-spread.webp',
+  peel: './assets/ui/icon-peel.webp',
+  arrange: './assets/ui/icon-arrange.webp',
+  pour: './assets/ui/icon-pour.webp',
 };
 
-const COLORS = ['#d94d62', '#405aa5', '#f4cc54'];
-const BADGES = ['☺', '✿', '⌣'];
+const FOOD = './assets/food/';
+const STAGE_ART = {
+  plate: `${FOOD}plate-large.webp`,
+  toast: `${FOOD}toast.webp`,
+  boat: `${FOOD}banana-boat-base.webp`,
+  'kiwi-whole': `${FOOD}kiwi-whole.webp`,
+  'apple-whole': `${FOOD}apple-whole.webp`,
+  'apple-round': `${FOOD}apple-round.webp`,
+  'banana-whole': `${FOOD}banana-whole.webp`,
+  'banana-peeled': `${FOOD}banana-peeled.webp`,
+  'peel-strip': `${FOOD}peel-strip.webp`,
+  'parfait-glass': `${FOOD}parfait-glass.webp`,
+  'pour-stream': `${FOOD}pour-stream.webp`,
+};
+const JAM_ART = { toast: `${FOOD}jam-blob.webp`, 'apple-round': `${FOOD}nut-butter-blob.webp` };
+const BADGE_KINDS = { fruit: 'kiwi', toast: 'banana', boat: 'berry', apple: 'lid', rainbow: 'orange', parfait: 'strawberry' };
+
 const SHORT_PROMPTS = {
   'fruit-cut': 'Swipe the dotted lines',
   'fruit-arrange': 'Build a silly face',
@@ -44,6 +62,16 @@ const SHORT_PROMPTS = {
   'boat-peel': 'Pull the peels down',
   'boat-cut': 'Swipe the dotted lines',
   'boat-arrange': 'Fill the banana boat',
+  'apple-cut': 'Swipe the dotted lines',
+  'apple-spread': 'Spread to the edges',
+  'apple-arrange': 'Stack the sandwich',
+  'rainbow-cut': 'Swipe the dotted lines',
+  'rainbow-warm': 'Make a fruit rainbow',
+  'rainbow-cool': 'Add green and purple',
+  'parfait-pour': 'Hold the cup to pour',
+  'parfait-sprinkle': 'Drop in the berries',
+  'parfait-pour2': 'Pour one more layer',
+  'parfait-top': 'Decorate the top',
 };
 
 const state = {
@@ -58,18 +86,27 @@ const state = {
   timeScale: 1,
   seed: 42,
   advancing: false,
+  spreadDabs: [],
+  placedHistory: [],
+  fillLevel: 0,
 };
 
 let mode = null;
 let gestureDispose = null;
 let dragDispose = null;
 let coverage = null;
+let pour = null;
 let stepTapDisposers = [];
 let transitionPromise = Promise.resolve();
 let lastStartNudge = 0;
+let lastPourNudge = 0;
 let movementDemoToken = 0;
+let revealToken = 0;
 
 const ready = voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
+
+document.documentElement.style.setProperty('--accent', config.theme.accent);
+document.documentElement.style.setProperty('--bg-image', `url('${new URL(config.theme.background, document.baseURI).href}')`);
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, Math.max(1, ms * state.timeScale)));
@@ -98,13 +135,32 @@ function showScreen(name) {
   els.reveal.classList.toggle('hidden', name !== 'reveal');
 }
 
+function img(src, className = '') {
+  const image = document.createElement('img');
+  image.src = src;
+  image.alt = '';
+  image.draggable = false;
+  if (className) image.className = className;
+  return image;
+}
+
+function ingredientArt(kind) {
+  return config.ingredients[kind]?.art || '';
+}
+
+function ingredientColor(kind) {
+  return config.ingredients[kind]?.color || '#efc64d';
+}
+
 function clearStep() {
   gestureDispose?.();
   dragDispose?.();
   coverage?.destroy?.();
+  pour?.destroy?.();
   gestureDispose = null;
   dragDispose = null;
   coverage = null;
+  pour = null;
   stepTapDisposers.forEach((dispose) => dispose());
   stepTapDisposers = [];
   state.selectedPiece = null;
@@ -131,15 +187,13 @@ function renderCards() {
     const button = document.createElement('button');
     button.className = 'recipe-card';
     button.dataset.mode = item.id;
-    button.dataset.badge = BADGES[index];
-    button.style.setProperty('--card-color', COLORS[index]);
-    button.style.setProperty('--tilt', `${[-2, 1.5, -1][index]}deg`);
+    button.style.setProperty('--card-color', item.accent || config.theme.accent);
+    button.style.setProperty('--tilt', `${[-2, 1.5, -1, 1.8, -1.4, 1][index % 6]}deg`);
     button.style.setProperty('--i', index);
     button.setAttribute('aria-label', item.title);
-    const image = document.createElement('img');
-    image.src = item.art;
-    image.alt = '';
-    button.append(image);
+    button.append(img(item.art));
+    const badge = img(ingredientArt(BADGE_KINDS[item.id] || 'strawberry'), 'card-badge');
+    button.append(badge);
     els.cards.append(button);
     onTap(button, () => startMode(item.id), {
       feedback: () => {
@@ -157,7 +211,7 @@ function renderRail() {
     bead.className = 'step-bead';
     if (index < state.step) bead.classList.add('done');
     if (index === state.step) bead.classList.add('active');
-    bead.textContent = index < state.step ? '✓' : ICONS[step.icon];
+    bead.append(img(ICONS[step.icon], 'bead-icon'));
     els.rail.append(bead);
   });
 }
@@ -167,15 +221,12 @@ function currentStep() {
 }
 
 function setPrompt(step) {
-  els.promptIcon.textContent = ICONS[step.icon];
-  els.promptText.textContent = SHORT_PROMPTS[step.prompt] || config.voice[step.prompt];
+  els.promptIcon.replaceChildren(img(ICONS[step.icon]));
+  els.promptText.textContent = SHORT_PROMPTS[step.prompt] || '';
 }
 
 function makeMovementDemo(kind) {
-  const finger = document.createElement('img');
-  finger.className = `gesture-demo-finger demo-${kind}`;
-  finger.src = './assets/gesture-finger.webp';
-  finger.alt = '';
+  const finger = img('./assets/gesture-finger.webp', `gesture-demo-finger demo-${kind}`);
   finger.setAttribute('aria-hidden', 'true');
   return finger;
 }
@@ -199,9 +250,9 @@ function dismissMovementDemo() {
   els.board.querySelector('.gesture-demo-finger')?.classList.remove('is-demonstrating');
 }
 
-function makeGestureCue(axis = 'x') {
+function makeGestureCue() {
   const cue = document.createElement('span');
-  cue.className = `gesture-cue gesture-cue-${axis}`;
+  cue.className = 'gesture-cue gesture-cue-x';
   cue.setAttribute('aria-hidden', 'true');
   const start = document.createElement('i');
   start.className = 'gesture-start';
@@ -223,18 +274,14 @@ function nudgeStart() {
   }
 }
 
-function makeGuideLine(index, total, axis = 'x') {
+function makeGuideLine(index, total, positions = null) {
   const line = document.createElement('div');
-  line.className = `guide-line${axis === 'y' ? ' vertical' : ''}${index === 0 ? ' is-current' : ''}`;
+  line.className = `guide-line${index === 0 ? ' is-current' : ''}`;
   line.dataset.gesture = 'path';
-  line.dataset.axis = axis;
+  line.dataset.axis = 'x';
   line.dataset.targetId = `gesture-${index}`;
-  if (axis === 'y') {
-    line.style.left = `${18 + index * (64 / Math.max(1, total - 1))}%`;
-  } else {
-    line.style.top = `${20 + index * (60 / Math.max(1, total - 1))}%`;
-  }
-  line.append(makeGestureCue(axis));
+  line.style.top = `${positions?.[index] ?? (20 + index * (60 / Math.max(1, total - 1)))}%`;
+  line.append(makeGestureCue());
   return line;
 }
 
@@ -242,6 +289,7 @@ function finishGuide(el) {
   if (!el || el.classList.contains('done') || !el.classList.contains('is-current') || state.advancing) return false;
   el.classList.add('done');
   el.classList.remove('is-current');
+  el.closest('.cut-item')?.classList.add('cut-done');
   state.completed += 1;
   sfx.pop();
   const next = els.board.querySelector('[data-gesture]:not(.done)');
@@ -259,17 +307,34 @@ function finishFreeGuide(el) {
   return true;
 }
 
-function renderPathStep(step, kind) {
-  const food = document.createElement('div');
-  food.className = kind;
-  for (let i = 0; i < step.count; i += 1) {
-    const axis = step.id === 'peel' ? 'y' : 'x';
-    food.append(makeGuideLine(i, step.count, axis));
-  }
-  els.board.append(food);
+function renderPathStep(step) {
   state.total = step.count;
+  if (step.target === 'strawberry-row') {
+    const row = document.createElement('div');
+    row.className = 'cut-row';
+    for (let i = 0; i < step.count; i += 1) {
+      const item = document.createElement('div');
+      item.className = 'cut-item';
+      item.append(img(ingredientArt('strawberry'), 'cut-food'));
+      const line = makeGuideLine(i, 1);
+      line.style.top = '46%';
+      if (i !== 0) line.classList.remove('is-current');
+      if (i === 0) line.classList.add('is-current');
+      item.append(line);
+      row.append(item);
+    }
+    els.board.append(row);
+  } else {
+    const stage = document.createElement('div');
+    stage.className = `cut-stage target-${step.target}`;
+    stage.append(img(STAGE_ART[step.target], 'cut-food'));
+    for (let i = 0; i < step.count; i += 1) {
+      stage.append(makeGuideLine(i, step.count, step.lines));
+    }
+    els.board.append(stage);
+  }
   gestureDispose = pathGestures(els.board, {
-    threshold: step.id === 'peel' ? 64 : 76,
+    threshold: 76,
     onComplete: finishGuide,
     onWrongStart: nudgeStart,
   });
@@ -277,13 +342,15 @@ function renderPathStep(step, kind) {
 
 function renderPeelStep(step) {
   const banana = document.createElement('div');
-  banana.className = 'banana-whole';
+  banana.className = 'peel-stage';
+  banana.append(img(STAGE_ART['banana-whole'], 'peel-banana'));
   for (let i = 0; i < step.count; i += 1) {
     const strip = document.createElement('div');
-    strip.className = 'peel-strip free-gesture';
+    strip.className = `peel-strip free-gesture strip-${i}`;
     strip.dataset.gesture = 'path';
     strip.dataset.axis = 'y';
     strip.dataset.targetId = `gesture-${i}`;
+    strip.append(img(STAGE_ART['peel-strip'], 'peel-art'));
     banana.append(strip);
   }
   banana.append(makeMovementDemo('peel'));
@@ -297,28 +364,41 @@ function renderPeelStep(step) {
   });
 }
 
+function makeDab(step, xPct, yPct, spec = null) {
+  const dab = img(JAM_ART[step?.base || step?.target] || JAM_ART.toast, 'spread-dab');
+  const rot = spec?.rot ?? Math.floor(((xPct * 7 + yPct * 13) % 60) - 30);
+  const scale = spec?.scale ?? (0.85 + ((xPct + yPct) % 30) / 100);
+  dab.style.left = `${xPct}%`;
+  dab.style.top = `${yPct}%`;
+  dab.style.setProperty('--rot', `${rot}deg`);
+  dab.style.setProperty('--scale', scale);
+  return dab;
+}
+
 function renderSpreadStep(step) {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.dataset.targetId = 'spread';
+  const stage = document.createElement('div');
+  stage.className = `spread-stage target-${step.target}`;
+  stage.dataset.targetId = 'spread';
+  stage.append(img(STAGE_ART[step.target], 'spread-food'));
   const finger = makeMovementDemo('spread');
   const meter = document.createElement('div');
   meter.className = 'spread-meter';
   meter.innerHTML = '<span></span>';
-  toast.append(finger, meter);
-  els.board.append(toast);
+  stage.append(finger, meter);
+  els.board.append(stage);
   state.total = step.count;
+  state.spreadDabs = [];
 
-  coverage = coverageGesture(toast, {
+  coverage = coverageGesture(stage, {
     cell: 54,
     needed: step.count,
     onDab: (x, y) => {
       dismissMovementDemo();
-      const dot = document.createElement('i');
-      dot.className = 'spread-dot';
-      dot.style.left = `${x}px`;
-      dot.style.top = `${y}px`;
-      toast.insertBefore(dot, meter);
+      const r = stage.getBoundingClientRect();
+      const xPct = Math.round((x / r.width) * 100);
+      const yPct = Math.round((y / r.height) * 100);
+      if (state.spreadDabs.length < 40) state.spreadDabs.push({ x: xPct, y: yPct });
+      stage.insertBefore(makeDab(step, xPct, yPct), meter);
       sfx.tick();
     },
     onProgress: (progress, count) => {
@@ -332,33 +412,72 @@ function renderSpreadStep(step) {
   });
 }
 
-function slotPositions(modeId) {
-  if (modeId === 'fruit') {
-    return [
-      { kind: 'kiwi', x: 22, y: 18 },
-      { kind: 'kiwi', x: 55, y: 18 },
-      { kind: 'strawberry', x: 39, y: 44 },
-      { kind: 'smile', x: 30, y: 70, shape: 'smile' },
-    ];
+function nudgePour() {
+  const now = performance.now();
+  sfx.silly();
+  if (now - lastPourNudge > 1200) {
+    lastPourNudge = now;
+    speak('hold-pour');
   }
-  if (modeId === 'toast') {
-    return [
-      { kind: 'banana', x: 15, y: 20 },
-      { kind: 'banana', x: 41, y: 11 },
-      { kind: 'banana', x: 67, y: 20 },
-      { kind: 'berry', x: 22, y: 58 },
-      { kind: 'berry', x: 45, y: 61 },
-      { kind: 'berry', x: 68, y: 58 },
-    ];
-  }
-  return [
-    { kind: 'banana', x: 5, y: 31, shape: 'coin' },
-    { kind: 'banana', x: 23, y: 25, shape: 'coin' },
-    { kind: 'banana', x: 41, y: 25, shape: 'coin' },
-    { kind: 'banana', x: 59, y: 31, shape: 'coin' },
-    { kind: 'berry', x: 32, y: 60, shape: 'coin' },
-    { kind: 'berry', x: 52, y: 60, shape: 'coin' },
-  ];
+}
+
+function renderPourStep(step) {
+  const stage = document.createElement('div');
+  stage.className = 'pour-stage';
+  const glassWrap = document.createElement('div');
+  glassWrap.className = 'glass-wrap';
+  const glass = img(STAGE_ART['parfait-glass'], 'glass-art');
+  const fill = document.createElement('div');
+  fill.className = 'glass-fill';
+  const [from, to] = step.fill || [0, 60];
+  const startLevel = Math.max(state.fillLevel, from);
+  fill.style.setProperty('--fill', `${startLevel}%`);
+  glassWrap.append(glass, fill);
+  state.placedHistory.forEach((spec) => {
+    const piece = img(ingredientArt(spec.kind), 'placed-static');
+    piece.style.left = `${spec.x}%`;
+    piece.style.top = `${spec.y}%`;
+    piece.classList.add(`shape-${spec.shape || 'round'}`);
+    glassWrap.append(piece);
+  });
+  const stream = img(STAGE_ART['pour-stream'], 'pour-stream-art');
+  glassWrap.append(stream);
+  const cup = document.createElement('button');
+  cup.className = 'pour-cup';
+  cup.dataset.targetId = 'pour';
+  cup.setAttribute('aria-label', 'Hold to pour');
+  cup.append(img(`${FOOD}yogurt-pot.webp`, 'pour-cup-art'));
+  stage.append(glassWrap, cup, makeMovementDemo('pour'));
+  els.board.append(stage);
+  state.total = step.count;
+
+  const setLevel = (progress) => {
+    state.fillLevel = Math.round(startLevel + (to - startLevel) * progress);
+    fill.style.setProperty('--fill', `${state.fillLevel}%`);
+  };
+
+  pour = holdPour(stage, {
+    cupEl: cup,
+    needed: step.count,
+    onHoldStart: () => {
+      dismissMovementDemo();
+      stage.classList.add('pouring');
+    },
+    onHoldEnd: () => stage.classList.remove('pouring'),
+    onTick: (ticks) => {
+      if (ticks % 2 === 0) sfx.tick();
+    },
+    onProgress: (progress, ticks) => {
+      state.completed = ticks;
+      setLevel(progress);
+    },
+    onComplete: () => {
+      stage.classList.remove('pouring');
+      sfx.sparkle();
+      transitionPromise = completeStep();
+    },
+    onWrongStart: nudgePour,
+  });
 }
 
 function makeSlot(spec, index) {
@@ -369,23 +488,19 @@ function makeSlot(spec, index) {
   slot.dataset.shape = spec.shape || 'round';
   slot.style.left = `${spec.x}%`;
   slot.style.top = `${spec.y}%`;
-  slot.style.setProperty('--slot-color', {
-    kiwi: '#7cab42',
-    strawberry: '#dd4d51',
-    smile: '#efc64d',
-    banana: '#efc64d',
-    berry: '#4359a3',
-  }[spec.kind]);
+  slot.style.setProperty('--slot-color', ingredientColor(spec.kind));
   slot.setAttribute('aria-label', `Place ${spec.kind} here`);
   return slot;
 }
 
 function makeIngredient(spec, index) {
   const piece = document.createElement('button');
-  piece.className = `ingredient food ${spec.kind}`;
+  piece.className = 'ingredient';
   piece.dataset.kind = spec.kind;
   piece.dataset.targetId = `piece-${index}`;
+  piece.style.setProperty('--slot-color', ingredientColor(spec.kind));
   piece.setAttribute('aria-label', spec.kind);
+  piece.append(img(ingredientArt(spec.kind), 'ingredient-art'));
   return piece;
 }
 
@@ -426,7 +541,13 @@ function attemptPlace(piece, slot) {
   piece.classList.add('placed');
   piece.classList.remove('selected');
   slot.classList.add('filled');
-  slot.dataset.kind = piece.dataset.kind;
+  slot.append(img(ingredientArt(piece.dataset.kind), 'slot-art'));
+  state.placedHistory.push({
+    kind: slot.dataset.kind,
+    x: parseFloat(slot.style.left),
+    y: parseFloat(slot.style.top),
+    shape: slot.dataset.shape,
+  });
   state.selectedPiece = null;
   state.completed += 1;
   sfx.pop();
@@ -435,24 +556,31 @@ function attemptPlace(piece, slot) {
 }
 
 function renderArrangeStep(step) {
-  let base;
-  if (mode.id === 'fruit') {
-    base = document.createElement('div');
-    base.className = 'plate';
-  } else if (mode.id === 'toast') {
-    base = document.createElement('div');
-    base.className = 'toast';
-    const spread = document.createElement('div');
-    spread.className = 'spread-dot';
-    spread.style.cssText = 'left:50%;top:50%;width:88%;height:82%;animation:none;';
-    base.append(spread);
+  const base = document.createElement('div');
+  base.className = `arrange-stage base-${step.base}`;
+  base.append(img(STAGE_ART[step.base], 'arrange-food'));
+  if (step.base === 'parfait-glass') {
+    const fill = document.createElement('div');
+    fill.className = 'glass-fill';
+    fill.style.setProperty('--fill', `${step.keepPour ? state.fillLevel : 0}%`);
+    base.append(fill);
+  }
+  if (step.keepSpread) {
+    state.spreadDabs.forEach((spec) => base.append(makeDab(step, spec.x, spec.y, spec)));
+  }
+  if (step.keepPlaced) {
+    state.placedHistory.forEach((spec) => {
+      const piece = img(ingredientArt(spec.kind), 'placed-static');
+      piece.style.left = `${spec.x}%`;
+      piece.style.top = `${spec.y}%`;
+      piece.classList.add(`shape-${spec.shape || 'round'}`);
+      base.append(piece);
+    });
   } else {
-    base = document.createElement('div');
-    base.className = 'banana-boat-base';
+    state.placedHistory = [];
   }
 
-  const specs = slotPositions(mode.id);
-  specs.forEach((spec, index) => {
+  step.slots.forEach((spec, index) => {
     const slot = makeSlot(spec, index);
     base.append(slot);
     stepTapDisposers.push(onTap(slot, () => {
@@ -463,7 +591,7 @@ function renderArrangeStep(step) {
     els.tray.append(piece);
   });
   els.board.append(base);
-  state.total = specs.length;
+  state.total = step.slots.length;
 
   dragDispose = ingredientDrag(els.tray, {
     getSlot: slotAt,
@@ -483,7 +611,8 @@ function setupStep({ speakPrompt = true } = {}) {
 
   if (step.id === 'spread') renderSpreadStep(step);
   else if (step.id === 'peel') renderPeelStep(step);
-  else if (step.id === 'cut') renderPathStep(step, mode.id === 'fruit' ? 'kiwi-whole' : 'banana-whole');
+  else if (step.id === 'cut') renderPathStep(step);
+  else if (step.id === 'pour') renderPourStep(step);
   else renderArrangeStep(step);
 
   requestAnimationFrame(() => els.board.classList.add('step-in'));
@@ -507,24 +636,54 @@ async function completeStep() {
 
 function fillConfetti() {
   els.confetti.replaceChildren();
-  const colors = ['#d94d62', '#405aa5', '#f4cc54', '#75a93c', '#ee8b38'];
-  for (let i = 0; i < 26; i += 1) {
+  const colors = ['#d94d62', '#405aa5', '#f4cc54', '#75a93c', '#ee8b38', '#7b4fa0'];
+  for (let i = 0; i < 34; i += 1) {
     const bit = document.createElement('i');
     bit.style.left = `${(i * 37 + state.seed * 11) % 100}%`;
     bit.style.setProperty('--c', colors[i % colors.length]);
-    bit.style.setProperty('--d', `${2.5 + (i % 5) * .35}s`);
+    bit.style.setProperty('--d', `${2.2 + (i % 6) * .4}s`);
     bit.style.setProperty('--delay', `${-(i % 9) * .28}s`);
+    bit.style.setProperty('--sway', `${18 + (i % 4) * 12}px`);
     els.confetti.append(bit);
   }
 }
 
+function renderRecap() {
+  els.recap.replaceChildren();
+  mode.steps.forEach((step) => {
+    const tile = document.createElement('span');
+    tile.className = 'recap-tile';
+    tile.append(img(ICONS[step.icon], 'recap-icon'));
+    els.recap.append(tile);
+  });
+}
+
 async function revealSnack() {
   clearStep();
+  const token = ++revealToken;
   showScreen('reveal');
-  els.finished.src = mode.art;
+  els.finished.src = mode.reveal || mode.art;
   els.finished.alt = mode.title;
-  fillConfetti();
+  els.ribbon.classList.remove('show');
+  els.stars.querySelectorAll('.star').forEach((star) => star.classList.remove('show'));
+  els.recap.classList.remove('show');
+  els.confetti.replaceChildren();
+  renderRecap();
   sfx.tada();
+  await wait(320);
+  if (token !== revealToken) return;
+  els.ribbon.classList.add('show');
+  const stars = [...els.stars.querySelectorAll('.star')];
+  for (let i = 0; i < stars.length; i += 1) {
+    if (token !== revealToken) return;
+    stars[i].classList.add('show');
+    if (i < stars.length - 1) sfx.pop();
+    else sfx.tada();
+    await wait(260);
+  }
+  if (token !== revealToken) return;
+  fillConfetti();
+  els.recap.classList.add('show');
   await speak(mode.cheer);
 }
 
@@ -537,6 +696,9 @@ async function startMode(id) {
   state.mode = id;
   state.step = 0;
   state.advancing = false;
+  state.spreadDabs = [];
+  state.placedHistory = [];
+  state.fillLevel = 0;
   showScreen('play');
   await speak(mode.intro);
   setupStep();
@@ -555,6 +717,10 @@ onTap(els.sound, () => {
   sfx.tick();
   demonstrateMovement(speak(state.currentPrompt));
 });
+onTap(els.prompt, () => {
+  sfx.tick();
+  demonstrateMovement(speak(state.currentPrompt));
+});
 onTap(els.again, () => {
   sfx.tick();
   startMode(mode.id);
@@ -564,7 +730,7 @@ onTap(els.recipes, () => {
   showSplash({ speakPrompt: true });
 });
 
-for (const button of [els.back, els.revealBack, els.sound, els.again, els.recipes]) {
+for (const button of [els.back, els.revealBack, els.sound, els.prompt, els.again, els.recipes]) {
   button.addEventListener('pointerdown', (event) => event.stopPropagation());
 }
 
@@ -612,6 +778,11 @@ async function debugTap(id) {
     await transitionPromise;
     return { accepted: true };
   }
+  if (id === 'pour' && pour) {
+    pour.addProgress(state.total);
+    await transitionPromise;
+    return { accepted: true };
+  }
   if (el.classList.contains('ingredient')) return { accepted: selectPiece(el) };
   if (el.classList.contains('slot')) {
     return { accepted: attemptPlace(state.selectedPiece, el) };
@@ -621,7 +792,7 @@ async function debugTap(id) {
 
 async function debugWinRound() {
   let guard = 0;
-  while (state.screen === 'play' && guard < 40) {
+  while (state.screen === 'play' && guard < 60) {
     guard += 1;
     if (state.advancing) {
       await transitionPromise;
@@ -631,6 +802,8 @@ async function debugWinRound() {
     if (!step) break;
     if (step.id === 'spread') {
       coverage?.addProgress(state.total);
+    } else if (step.id === 'pour') {
+      pour?.addProgress(state.total);
     } else if (step.id === 'arrange') {
       const slot = els.board.querySelector('.slot:not(.filled)');
       if (!slot) {

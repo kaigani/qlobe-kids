@@ -64,8 +64,14 @@ async function main() {
 
   const page = await openGame(browser, { width: 1180, height: 820 });
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
-  check('three recipes are registered',
-    (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).map((item) => item.id).join(',') === 'fruit,toast,boat');
+  check('six recipes are registered',
+    (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).map((item) => item.id).join(',') === 'fruit,toast,boat,apple,rainbow,parfait');
+  const voiceCoverage = await page.evaluate(async () => {
+    const manifest = await (await fetch('./assets/audio/manifest.json')).json();
+    const config = (await import('./config.js')).default;
+    return Object.keys(config.voice).filter((key) => !manifest[key]);
+  });
+  check('every spoken line has a recorded teacher clip', voiceCoverage.length === 0, voiceCoverage.join(', '));
   const cardSizes = await page.locator('.recipe-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
   check('recipe cards meet the 96px target', cardSizes.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(cardSizes));
@@ -173,7 +179,7 @@ async function main() {
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().step === 'spread');
   const spreadFinger = page.locator('.demo-spread');
   check('spreading has no precise orange start cue',
-    await page.locator('.toast .gesture-start').count() === 0);
+    await page.locator('.spread-stage .gesture-start').count() === 0);
   await page.waitForTimeout(220);
   const spreadFingerBefore = await spreadFinger.boundingBox();
   const spreadOpacity = Number(await spreadFinger.evaluate((el) => getComputedStyle(el).opacity));
@@ -189,7 +195,7 @@ async function main() {
     JSON.stringify({ spreadOpacity, spreadFingerBefore, spreadFingerAfter }));
   await page.screenshot({ path: path.join(shots, '05-toast-spread-demo.png') });
 
-  const toastBox = await page.locator('.toast').boundingBox();
+  const toastBox = await page.locator('.spread-stage').boundingBox();
   await page.mouse.move(toastBox.x + toastBox.width * .72, toastBox.y + toastBox.height * .68);
   await page.mouse.down();
   await page.mouse.move(toastBox.x + toastBox.width * .78, toastBox.y + toastBox.height * .72, { steps: 3 });
@@ -245,6 +251,65 @@ async function main() {
   check('Banana Boat completes peel, cut, arrange, and reveal', true);
   await page.waitForTimeout(900);
   await page.screenshot({ path: path.join(shots, '09-boat-reveal.png') });
+
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+  await page.evaluate(() => {
+    window.QLOBE_DEBUG.mute();
+    return window.QLOBE_DEBUG.startMode('apple');
+  });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  await page.screenshot({ path: path.join(shots, '13-apple-cut.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
+  check('Apple Sandwich completes cut, spread, arrange, and reveal', true);
+  await page.waitForTimeout(900);
+  await page.screenshot({ path: path.join(shots, '14-apple-reveal.png') });
+
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('rainbow'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
+  const rowLines = await page.locator('.cut-row .guide-line').count();
+  check('rainbow cut presents one guide line per strawberry', rowLines === 3);
+  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
+  check('Rainbow Plate completes both color arcs and reveals', true);
+  await page.waitForTimeout(900);
+  await page.screenshot({ path: path.join(shots, '15-rainbow-reveal.png') });
+
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+  await page.evaluate(() => {
+    window.QLOBE_DEBUG.mute(false);
+    return window.QLOBE_DEBUG.startMode('parfait');
+  });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().step === 'pour');
+  const cupBox = await page.locator('.pour-cup').boundingBox();
+  check('pour cup meets the 96px target', cupBox.width >= 96 && cupBox.height >= 96, JSON.stringify(cupBox));
+  const stageBox = await page.locator('.pour-stage').boundingBox();
+  await page.mouse.move(stageBox.x + 40, stageBox.y + stageBox.height - 40);
+  await page.mouse.down();
+  await page.mouse.up();
+  check('tapping away from the cup asks for a hold instead of pouring',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().completed)) === 0
+      && (await page.evaluate(() => window.QLOBE_DEBUG.getState().prompt)) === 'hold-pour');
+  await page.evaluate(() => window.QLOBE_DEBUG.mute());
+  await page.mouse.move(cupBox.x + cupBox.width / 2, cupBox.y + cupBox.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(750);
+  const midTicks = await page.evaluate(() => window.QLOBE_DEBUG.getState().completed);
+  const pouringClass = await page.evaluate(() => document.querySelector('.pour-stage').classList.contains('pouring'));
+  await page.mouse.up();
+  const pausedTicks = await page.evaluate(() => window.QLOBE_DEBUG.getState().completed);
+  check('holding the cup pours and releasing pauses without losing progress',
+    midTicks > 0 && pouringClass && pausedTicks >= midTicks,
+    JSON.stringify({ midTicks, pouringClass, pausedTicks }));
+  await page.screenshot({ path: path.join(shots, '16-parfait-pour.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
+  check('Yogurt Parfait completes pour, sprinkle, pour, top, and reveal', true);
+  await page.waitForTimeout(900);
+  await page.screenshot({ path: path.join(shots, '17-parfait-reveal.png') });
+  const starCount = await page.locator('.star.show').count();
+  check('reveal celebration pops three stars', starCount === 3);
 
   const portrait = await openGame(browser, { width: 820, height: 1180 });
   await portrait.screenshot({ path: path.join(shots, '10-splash-portrait.png') });

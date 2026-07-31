@@ -9,14 +9,14 @@
   "status": "live",
   "accent": "#d94d62",
   "shareTitle": "Snack Chef — Make playful fruit snacks",
-  "description": "Spread, peel, slice, and arrange fruit faces, toast gardens, and banana boats in a warm storybook kitchen.",
+  "description": "Spread, peel, slice, pour, and arrange six playful snacks — from fruit faces to rainbow plates and yogurt parfaits — in a warm storybook kitchen.",
   "learningGoals": [
     "Follow a short picture recipe from beginning to end",
-    "Practice controlled circular and directional finger movements",
-    "Arrange ingredients with spatial planning and simple symmetry",
+    "Practice controlled circular, directional, and sustained-hold finger movements",
+    "Arrange ingredients with spatial planning, color grouping, and simple symmetry",
     "Build positive familiarity with food preparation"
   ],
-  "interactionModel": "broad scrub, swipe, peel, and strand-proof drag gestures with tap-to-place alternatives",
+  "interactionModel": "broad scrub, swipe, peel, hold-to-pour, and strand-proof drag gestures with tap-to-place alternatives",
   "feedbackModel": "food changes directly under the finger, gentle spoken modeling, warm tactile sound effects, and a plated storybook reveal",
   "uses": [
     "shared/js/tap.js",
@@ -24,15 +24,19 @@
     "shared/js/speech.js",
     "shared/js/voice-clips.js",
     "shared/assets/ui/",
+    "shared/assets/foods-storybook/",
     "shared/characters/maya/portrait.png"
   ],
   "modes": [
     { "id": "fruit", "title": "Fruit Face", "skill": "spatial arrangement and facial symmetry" },
     { "id": "toast", "title": "Toast Garden", "skill": "controlled circular spreading" },
-    { "id": "boat", "title": "Banana Boat", "skill": "directional preparation sequencing" }
+    { "id": "boat", "title": "Banana Boat", "skill": "directional preparation sequencing" },
+    { "id": "apple", "title": "Apple Sandwich", "skill": "layered assembly and lid alignment" },
+    { "id": "rainbow", "title": "Rainbow Plate", "skill": "color sorting and arc arrangement" },
+    { "id": "parfait", "title": "Yogurt Parfait", "skill": "controlled pouring and layering" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; original game art produced with GPT Image 2 and Krea 2; teacher dialogue produced with Qwen voice clone and transcript-checked with Whisper; Maya and platform UI by QLOBE Kids.",
+  "credits": "Kaigani; original game art produced with GPT Image 2, Krea 2, and Qwen image edit; teacher dialogue produced with Qwen voice clone and transcript-checked with Whisper; Maya and platform UI by QLOBE Kids.",
   "characters": ["maya"],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/snack-chef/"
 }

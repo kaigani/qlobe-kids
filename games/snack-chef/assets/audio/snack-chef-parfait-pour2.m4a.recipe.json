@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "snack-chef-parfait-pour2",
+  "kind": "voice",
+  "asset": "snack-chef-parfait-pour2.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Pour one more creamy layer, nice and slow.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Pour one more creamy layer, nice and slow."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Pour one more creamy layer, nice and slow.",
+      "heard": "Pour one more creamy layer, nice and slow.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-30"
+}

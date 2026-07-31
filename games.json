@@ -1111,9 +1111,33 @@
           "id": "boat",
           "title": "Banana Boat",
           "skill": "directional preparation sequencing"
+        },
+        {
+          "id": "apple",
+          "title": "Apple Sandwich",
+          "skill": "layered assembly and lid alignment"
+        },
+        {
+          "id": "rainbow",
+          "title": "Rainbow Plate",
+          "skill": "color sorting and arc arrangement"
+        },
+        {
+          "id": "parfait",
+          "title": "Yogurt Parfait",
+          "skill": "controlled pouring and layering"
         }
       ],
-      "summary": "Spread, peel, slice, and arrange three playful storybook snacks."
+      "summary": "Spread, peel, slice, pour, and arrange six playful storybook snacks.",
+      "uses": [
+        "shared/js/tap.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/voice-clips.js",
+        "shared/assets/ui/",
+        "shared/assets/foods-storybook/",
+        "shared/characters/maya/portrait.png"
+      ]
     },
     {
       "id": "laundry-sorter",

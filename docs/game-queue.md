@@ -104,7 +104,7 @@ A character on screen acts out an emotion (proud, frustrated, calm, worried); th
 |---|---|---|
 | Pouring Station | Best done with real water/beans; tablet can time and cheer the real activity. | grown-up led, off-screen (coach mode candidate) |
 | Table-Setting Mission | Drag plate/cup/fork onto their spots from a visual placemat card. Reuse `assets/twemoji/`, `js/speech.js`. | great fit |
-| Snack Chef | Real peeling/spreading; a picture recipe card on the tablet can guide steps. | grown-up led, off-screen (coach mode candidate) |
+| Snack Chef | **Shipped live** as screen-native pretend prep: spread, peel, slice, pour, and arrange six painted snacks (`games/snack-chef/`). | built — live |
 | Laundry Sorter | Drag socks into matching pairs and colors on screen. Reuse `assets/twemoji/`, `js/sfx.js`. | great fit |
 | Sweep the Trail | Real broom work; tablet can play the timer song. | grown-up led, off-screen |
 | Button-Zipper Lab | Real dressing frames; hard to convey the motor skill on glass. | grown-up led, off-screen |

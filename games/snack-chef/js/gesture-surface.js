@@ -170,6 +170,91 @@ export function coverageGesture(surface, {
   };
 }
 
+export function holdPour(surface, {
+  cupEl = null,
+  needed = 12,
+  tickMs = 220,
+  onHoldStart = () => {},
+  onHoldEnd = () => {},
+  onTick = () => {},
+  onProgress = () => {},
+  onComplete = () => {},
+  onWrongStart = () => {},
+} = {}) {
+  let active = null;
+  let raf = 0;
+  let held = 0;
+  let ticks = 0;
+  let complete = false;
+
+  const emit = () => {
+    onProgress(Math.min(1, ticks / needed), ticks);
+    if (ticks >= needed && !complete) {
+      complete = true;
+      stopHold();
+      onComplete();
+    }
+  };
+
+  const frame = (now) => {
+    if (!active || complete) return;
+    if (now - held >= tickMs) {
+      held = now;
+      ticks += 1;
+      onTick(ticks);
+      emit();
+    }
+    if (active) raf = requestAnimationFrame(frame);
+  };
+
+  const stopHold = () => {
+    if (!active) return;
+    cancelAnimationFrame(raf);
+    window.removeEventListener('pointerup', up);
+    window.removeEventListener('pointercancel', up);
+    active = null;
+    onHoldEnd();
+  };
+
+  // Release, leave, or cancel all pause the pour — fill persists, never fails.
+  const up = (e) => {
+    if (!active || (e?.pointerId != null && e.pointerId !== active.id)) return;
+    stopHold();
+  };
+
+  const down = (e) => {
+    if (active || complete || e.isPrimary === false) return;
+    const target = cupEl || surface;
+    if (!pointInside(target, e.clientX, e.clientY, 26)) {
+      onWrongStart();
+      return;
+    }
+    e.preventDefault();
+    active = { id: e.pointerId };
+    held = performance.now();
+    onHoldStart();
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    raf = requestAnimationFrame(frame);
+  };
+
+  const blur = () => stopHold();
+  surface.addEventListener('pointerdown', down);
+  window.addEventListener('blur', blur);
+
+  return {
+    addProgress(count = 1) {
+      ticks = Math.min(needed, ticks + count);
+      emit();
+    },
+    destroy() {
+      stopHold();
+      surface.removeEventListener('pointerdown', down);
+      window.removeEventListener('blur', blur);
+    },
+  };
+}
+
 export function ingredientDrag(tray, {
   getSlot = () => null,
   onSelect = () => {},

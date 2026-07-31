@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "snack-chef-apple-spread",
+  "kind": "voice",
+  "asset": "snack-chef-apple-spread.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Spread the nutty butter all the way to the edges.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Spread the nutty butter all the way to the edges."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Spread the nutty butter all the way to the edges.",
+      "heard": "Spread the nutty butter all the way to the edges.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-30"
+}

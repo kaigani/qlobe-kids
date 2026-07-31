@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-30T06:36:49.303Z",
+  "generated": "2026-07-31T05:06:02.679Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -36,26 +36,6 @@
         "waiting-muscle-game"
       ]
     },
-    "build-assemble": {
-      "count": 15,
-      "games": [
-        "bead-path-builder",
-        "blend-train",
-        "block-tower-measure",
-        "clay-creature-studio",
-        "color-mixing-lab",
-        "land-water-tray",
-        "loose-parts-collage",
-        "playdough-letter-factory",
-        "secret-message-copy",
-        "shape-to-picture",
-        "silly-sentence-builder",
-        "silly-swap-words",
-        "tangram-tales",
-        "teen-bead-builder",
-        "turn-taking-tower"
-      ]
-    },
     "choose-one": {
       "count": 15,
       "games": [
@@ -74,6 +54,25 @@
         "sound-hopscotch",
         "story-repair-shop",
         "tiny-reader-theater"
+      ]
+    },
+    "build-assemble": {
+      "count": 14,
+      "games": [
+        "bead-path-builder",
+        "blend-train",
+        "block-tower-measure",
+        "clay-creature-studio",
+        "color-mixing-lab",
+        "land-water-tray",
+        "loose-parts-collage",
+        "secret-message-copy",
+        "shape-to-picture",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "tangram-tales",
+        "teen-bead-builder",
+        "turn-taking-tower"
       ]
     },
     "observe-journal": {
@@ -1002,16 +1001,21 @@
       "packs": []
     },
     "playdough-letter-factory": {
-      "engine": "build-assemble",
+      "engine": null,
       "status": "beta",
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
-        "shared/js/engines/build-assemble.js",
+        "shared/js/content.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
+        "games/playdough-letter-factory/assets/ui/mascot.webp",
+        "games/playdough-letter-factory/assets/ui/title.webp",
+        "shared/assets/objects",
         "shared/assets/ui"
       ],
       "packs": []
@@ -1391,6 +1395,9 @@
       ],
       "assets": [
         "games/snack-chef/assets/title.webp",
+        "games/snack-chef/assets/ui/banner-ribbon.webp",
+        "games/snack-chef/assets/ui/star-gold.webp",
+        "shared/assets/foods-storybook",
         "shared/assets/ui",
         "shared/characters/maya/portrait.png"
       ],
@@ -1477,12 +1484,12 @@
       "characters": [],
       "modules": [
         "shared/js/audio",
-        "shared/js/audio.js",
         "shared/js/sfx",
         "shared/js/sfx.js",
         "shared/js/speech",
         "shared/js/speech.js",
         "shared/js/tap.js",
+        "shared/js/voice-clips.js",
         "shared/vendor/three"
       ],
       "assets": [
@@ -1801,12 +1808,10 @@
       "shared/js/audio": [
         "sound-sprouts"
       ],
-      "shared/js/audio.js": [
-        "sound-sprouts"
-      ],
       "shared/js/content.js": [
         "blend-train",
         "flashlight-cave",
+        "playdough-letter-factory",
         "sand-tray-letters"
       ],
       "shared/js/engines/build-assemble.js": [
@@ -1817,7 +1822,6 @@
         "color-mixing-lab",
         "land-water-tray",
         "loose-parts-collage",
-        "playdough-letter-factory",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
@@ -2216,6 +2220,7 @@
         "flashlight-cave",
         "laundry-sorter",
         "lunchbox-pack",
+        "playdough-letter-factory",
         "puppet-retell",
         "sand-tray-letters",
         "sink-or-float",
@@ -2233,12 +2238,14 @@
         "letter-road-driving",
         "lunchbox-pack",
         "my-puppet-band",
+        "playdough-letter-factory",
         "puppet-problem-solvers",
         "puppet-retell",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "sound-painting",
+        "sound-sprouts",
         "story-stones",
         "world-music-dance"
       ],
@@ -2438,6 +2445,12 @@
       "games/lunchbox-pack/assets/lunchbox-open.png": [
         "lunchbox-pack"
       ],
+      "games/playdough-letter-factory/assets/ui/mascot.webp": [
+        "playdough-letter-factory"
+      ],
+      "games/playdough-letter-factory/assets/ui/title.webp": [
+        "playdough-letter-factory"
+      ],
       "games/red-green-light/assets/callers": [
         "red-green-light"
       ],
@@ -2451,6 +2464,12 @@
         "sand-tray-letters"
       ],
       "games/snack-chef/assets/title.webp": [
+        "snack-chef"
+      ],
+      "games/snack-chef/assets/ui/banner-ribbon.webp": [
+        "snack-chef"
+      ],
+      "games/snack-chef/assets/ui/star-gold.webp": [
         "snack-chef"
       ],
       "games/sound-sprouts/assets/apple-touch-icon.png": [
@@ -2490,6 +2509,9 @@
       "shared/assets/foods": [
         "lunchbox-pack"
       ],
+      "shared/assets/foods-storybook": [
+        "snack-chef"
+      ],
       "shared/assets/foods/apple.png": [
         "snack-addition-stories",
         "subtraction-picnic"
@@ -2526,6 +2548,7 @@
         "flashlight-cave",
         "letter-treasure-hunt",
         "picture-word-match",
+        "playdough-letter-factory",
         "rhyming-detective",
         "sound-basket",
         "sound-sprouts"

@@ -48,6 +48,7 @@ Path resolvers (the single home for these conventions):
 | What | Location | Naming | Count |
 |---|---|---|---|
 | Picture-word cards | `shared/assets/objects/` | `<word>.webp` | 203 |
+| Painted storybook foods | `shared/assets/foods-storybook/` | `<food>.webp` (400 px alpha cutouts, gouache Storybook world — do not mix with the glossy Toy-Table `foods/`) | 15 |
 | Letter/onset tiles | `shared/assets/letter-tiles/` | onset/rime tiles | 56 |
 | **Letter phonic sounds** | `shared/assets/audio/fragments/` | `<letter>.m4a` (a–z) + rimes | **26/26 letters** |
 | **Letter NAME sounds** | `shared/assets/audio/letters/` | `<letter>.m4a` (a–z) | **26/26 letters** |

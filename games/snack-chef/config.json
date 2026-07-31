@@ -7,10 +7,22 @@
     "accent": "#d94d62",
     "background": "./assets/kitchen.webp"
   },
+  "ingredients": {
+    "kiwi": { "art": "../../shared/assets/foods-storybook/kiwi-slice.webp", "color": "#7cab42" },
+    "strawberry": { "art": "../../shared/assets/foods-storybook/strawberry-whole.webp", "color": "#dd4d51" },
+    "berry": { "art": "../../shared/assets/foods-storybook/blueberry.webp", "color": "#4359a3" },
+    "banana": { "art": "../../shared/assets/foods-storybook/banana-coin.webp", "color": "#efc64d" },
+    "smile": { "art": "../../shared/assets/foods-storybook/banana-crescent.webp", "color": "#efc64d" },
+    "orange": { "art": "../../shared/assets/foods-storybook/orange-slice.webp", "color": "#ee8b38" },
+    "grape": { "art": "../../shared/assets/foods-storybook/grape-purple.webp", "color": "#7b4fa0" },
+    "granola": { "art": "../../shared/assets/foods-storybook/granola-cluster.webp", "color": "#c98d4b" },
+    "lid": { "art": "../../shared/assets/foods-storybook/apple-round.webp", "color": "#dd4d51" }
+  },
   "voice": {
     "welcome": "Welcome to Snack Chef! Tap a yummy picture and let us make it.",
     "nudge": "Almost! Put it on the glowing spot.",
     "start-dot": "Start at the orange dot.",
+    "hold-pour": "Touch and hold the cup to pour.",
     "again": "What shall we make next?",
     "fruit-intro": "Let us make a silly fruit face!",
     "fruit-cut": "Swipe across each dotted line to slice the kiwi.",
@@ -24,17 +36,43 @@
     "boat-peel": "Pull each peel strip down, down, down.",
     "boat-cut": "Swipe across the four dotted lines to make banana coins.",
     "boat-arrange": "Fill the boat from left to right, then sprinkle the berries.",
-    "boat-cheer": "All aboard the banana boat. Bon voyage, chef!"
+    "boat-cheer": "All aboard the banana boat. Bon voyage, chef!",
+    "apple-intro": "Let us build a crunchy apple sandwich!",
+    "apple-cut": "Swipe across the dotted lines to slice the apple.",
+    "apple-spread": "Spread the nutty butter all the way to the edges.",
+    "apple-arrange": "Add the banana coins, then put the apple lid on top.",
+    "apple-cheer": "Crunch, crunch! Your apple sandwich looks amazing.",
+    "rainbow-intro": "Let us make a fruity rainbow plate!",
+    "rainbow-cut": "Swipe each dotted line to slice the strawberries.",
+    "rainbow-warm": "Place the red, orange, and yellow fruit in a rainbow.",
+    "rainbow-cool": "Now add the green and purple fruit underneath.",
+    "rainbow-cheer": "Wow! You made a rainbow you can eat!",
+    "parfait-intro": "Let us pour a creamy berry parfait!",
+    "parfait-pour": "Touch and hold the cup. Pour the yogurt to the line.",
+    "parfait-sprinkle": "Drop the berries and granola onto the yogurt.",
+    "parfait-pour2": "Pour one more creamy layer, nice and slow.",
+    "parfait-top": "Now decorate the top with sweet berries.",
+    "parfait-cheer": "What a beautiful parfait! Layer by layer, chef!"
   },
   "modes": [
     {
       "id": "fruit",
       "title": "Fruit Face",
       "art": "./assets/fruit-face.webp",
+      "reveal": "./assets/reveal/fruit-face.webp",
+      "accent": "#d94d62",
       "skill": "spatial arrangement and facial symmetry",
       "steps": [
-        { "id": "cut", "icon": "cut", "prompt": "fruit-cut", "count": 3 },
-        { "id": "arrange", "icon": "face", "prompt": "fruit-arrange", "count": 4 }
+        { "id": "cut", "icon": "cut", "prompt": "fruit-cut", "count": 3, "target": "kiwi-whole", "lines": [26, 48, 70] },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "fruit-arrange", "base": "plate",
+          "slots": [
+            { "kind": "kiwi", "x": 22, "y": 18 },
+            { "kind": "kiwi", "x": 55, "y": 18 },
+            { "kind": "strawberry", "x": 39, "y": 44 },
+            { "kind": "smile", "x": 30, "y": 70, "shape": "smile" }
+          ]
+        }
       ],
       "intro": "fruit-intro",
       "cheer": "fruit-cheer"
@@ -43,10 +81,22 @@
       "id": "toast",
       "title": "Toast Garden",
       "art": "./assets/toast-garden.webp",
+      "reveal": "./assets/reveal/toast-garden.webp",
+      "accent": "#405aa5",
       "skill": "controlled circular spreading",
       "steps": [
-        { "id": "spread", "icon": "spread", "prompt": "toast-spread", "count": 18 },
-        { "id": "arrange", "icon": "flower", "prompt": "toast-arrange", "count": 6 }
+        { "id": "spread", "icon": "spread", "prompt": "toast-spread", "count": 18, "target": "toast", "color": "#f2c3cb" },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "toast-arrange", "base": "toast", "keepSpread": true,
+          "slots": [
+            { "kind": "banana", "x": 15, "y": 20 },
+            { "kind": "banana", "x": 41, "y": 11 },
+            { "kind": "banana", "x": 67, "y": 20 },
+            { "kind": "berry", "x": 22, "y": 58 },
+            { "kind": "berry", "x": 45, "y": 61 },
+            { "kind": "berry", "x": 68, "y": 58 }
+          ]
+        }
       ],
       "intro": "toast-intro",
       "cheer": "toast-cheer"
@@ -55,14 +105,112 @@
       "id": "boat",
       "title": "Banana Boat",
       "art": "./assets/banana-boat.webp",
+      "reveal": "./assets/reveal/banana-boat.webp",
+      "accent": "#f4cc54",
       "skill": "directional preparation sequencing",
       "steps": [
         { "id": "peel", "icon": "peel", "prompt": "boat-peel", "count": 3 },
-        { "id": "cut", "icon": "cut", "prompt": "boat-cut", "count": 4 },
-        { "id": "arrange", "icon": "boat", "prompt": "boat-arrange", "count": 6 }
+        { "id": "cut", "icon": "cut", "prompt": "boat-cut", "count": 4, "target": "banana-peeled", "lines": [24, 42, 60, 78] },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "boat-arrange", "base": "boat",
+          "slots": [
+            { "kind": "banana", "x": 5, "y": 31, "shape": "coin" },
+            { "kind": "banana", "x": 23, "y": 25, "shape": "coin" },
+            { "kind": "banana", "x": 41, "y": 25, "shape": "coin" },
+            { "kind": "banana", "x": 59, "y": 31, "shape": "coin" },
+            { "kind": "berry", "x": 32, "y": 60, "shape": "coin" },
+            { "kind": "berry", "x": 52, "y": 60, "shape": "coin" }
+          ]
+        }
       ],
       "intro": "boat-intro",
       "cheer": "boat-cheer"
+    },
+    {
+      "id": "apple",
+      "title": "Apple Sandwich",
+      "art": "./assets/apple-sandwich.webp",
+      "reveal": "./assets/reveal/apple-sandwich.webp",
+      "accent": "#c9453a",
+      "skill": "layered assembly and lid alignment",
+      "steps": [
+        { "id": "cut", "icon": "cut", "prompt": "apple-cut", "count": 2, "target": "apple-whole", "lines": [38, 62] },
+        { "id": "spread", "icon": "spread", "prompt": "apple-spread", "count": 12, "target": "apple-round", "color": "#c98d4b" },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "apple-arrange", "base": "apple-round", "keepSpread": true,
+          "slots": [
+            { "kind": "banana", "x": 18, "y": 48, "shape": "coin" },
+            { "kind": "banana", "x": 41, "y": 52, "shape": "coin" },
+            { "kind": "banana", "x": 64, "y": 48, "shape": "coin" },
+            { "kind": "lid", "x": 22, "y": 12, "shape": "lid" }
+          ]
+        }
+      ],
+      "intro": "apple-intro",
+      "cheer": "apple-cheer"
+    },
+    {
+      "id": "rainbow",
+      "title": "Rainbow Plate",
+      "art": "./assets/rainbow-plate.webp",
+      "reveal": "./assets/reveal/rainbow-plate.webp",
+      "accent": "#7b4fa0",
+      "skill": "color sorting and arc arrangement",
+      "steps": [
+        { "id": "cut", "icon": "cut", "prompt": "rainbow-cut", "count": 3, "target": "strawberry-row" },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "rainbow-warm", "base": "plate",
+          "slots": [
+            { "kind": "strawberry", "x": 24, "y": 14 },
+            { "kind": "strawberry", "x": 53, "y": 14 },
+            { "kind": "orange", "x": 12, "y": 32 },
+            { "kind": "orange", "x": 65, "y": 32 },
+            { "kind": "banana", "x": 22, "y": 47, "shape": "coin" },
+            { "kind": "banana", "x": 58, "y": 47, "shape": "coin" }
+          ]
+        },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "rainbow-cool", "base": "plate", "keepPlaced": true,
+          "slots": [
+            { "kind": "kiwi", "x": 26, "y": 63 },
+            { "kind": "kiwi", "x": 52, "y": 63 },
+            { "kind": "grape", "x": 31, "y": 79, "shape": "coin" },
+            { "kind": "grape", "x": 51, "y": 79, "shape": "coin" }
+          ]
+        }
+      ],
+      "intro": "rainbow-intro",
+      "cheer": "rainbow-cheer"
+    },
+    {
+      "id": "parfait",
+      "title": "Yogurt Parfait",
+      "art": "./assets/yogurt-parfait.webp",
+      "reveal": "./assets/reveal/yogurt-parfait.webp",
+      "accent": "#5b8fc7",
+      "skill": "controlled pouring and layering",
+      "steps": [
+        { "id": "pour", "icon": "pour", "prompt": "parfait-pour", "count": 12, "fill": [0, 44] },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "parfait-sprinkle", "base": "parfait-glass", "keepPour": true,
+          "slots": [
+            { "kind": "berry", "x": 26, "y": 48, "shape": "coin" },
+            { "kind": "berry", "x": 54, "y": 51, "shape": "coin" },
+            { "kind": "granola", "x": 40, "y": 57, "shape": "coin" }
+          ]
+        },
+        { "id": "pour", "icon": "pour", "prompt": "parfait-pour2", "count": 10, "fill": [44, 78] },
+        {
+          "id": "arrange", "icon": "arrange", "prompt": "parfait-top", "base": "parfait-glass", "keepPour": true, "keepPlaced": true,
+          "slots": [
+            { "kind": "strawberry", "x": 39, "y": 8 },
+            { "kind": "berry", "x": 24, "y": 16, "shape": "coin" },
+            { "kind": "berry", "x": 58, "y": 16, "shape": "coin" }
+          ]
+        }
+      ],
+      "intro": "parfait-intro",
+      "cheer": "parfait-cheer"
     }
   ]
 }

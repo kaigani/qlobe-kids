@@ -7,19 +7,19 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#f7dfb5">
   <title>Snack Chef — Make playful fruit snacks</title>
-  <meta name="description" content="Spread, peel, slice, and arrange three cheerful pretend snacks in a warm storybook kitchen. A tactile practical-life game for ages 5–6.">
+  <meta name="description" content="Spread, peel, slice, pour, and arrange six cheerful pretend snacks in a warm storybook kitchen. A tactile practical-life game for ages 5–6.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="QLOBE Kids">
   <meta property="og:title" content="Snack Chef">
-  <meta property="og:description" content="Make fruit faces, toast gardens, and banana boats with playful finger gestures.">
+  <meta property="og:description" content="Make fruit faces, rainbow plates, yogurt parfaits, and more with playful finger gestures.">
   <meta property="og:url" content="https://qlo.be/games/snack-chef/">
   <meta property="og:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Snack Chef storybook kitchen with three playful fruit recipe cards.">
+  <meta property="og:image:alt" content="Snack Chef storybook kitchen with six playful fruit recipe cards.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Snack Chef">
-  <meta name="twitter:description" content="Make fruit faces, toast gardens, and banana boats with playful finger gestures.">
+  <meta name="twitter:description" content="Make fruit faces, rainbow plates, yogurt parfaits, and more with playful finger gestures.">
   <meta name="twitter:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg">
   <link rel="icon" type="image/png" href="../../assets/favicon.png">
   <link rel="stylesheet" href="./css/style.css">
@@ -37,10 +37,10 @@
       <button id="back" class="hud hud-back" aria-label="Back to recipes"></button>
       <button id="sound" class="hud hud-sound" aria-label="Hear the instruction again"></button>
       <div id="step-rail" class="step-rail" aria-hidden="true"></div>
-      <div class="prompt-card">
+      <button class="prompt-card" aria-label="Hear the instruction again">
         <span id="prompt-icon" class="prompt-icon"></span>
         <span id="prompt-text"></span>
-      </div>
+      </button>
       <div id="workboard" class="workboard" aria-label="Kitchen work board"></div>
       <div id="ingredient-tray" class="ingredient-tray" aria-label="Ingredients"></div>
     </section>
@@ -48,15 +48,18 @@
     <section id="reveal" class="screen hidden">
       <button id="reveal-back" class="hud hud-back" aria-label="Back to recipes"></button>
       <div id="confetti" class="confetti" aria-hidden="true"></div>
+      <img id="ribbon" class="ribbon" src="./assets/ui/banner-ribbon.webp" alt="" aria-hidden="true">
+      <div id="stars" class="stars" aria-hidden="true">
+        <img class="star" src="./assets/ui/star-gold.webp" alt="">
+        <img class="star star-mid" src="./assets/ui/star-gold.webp" alt="">
+        <img class="star" src="./assets/ui/star-gold.webp" alt="">
+      </div>
       <img class="maya maya-reveal" src="../../shared/characters/maya/portrait.png" alt="Maya">
       <img id="finished-art" class="finished-art" alt="">
+      <div id="recap" class="recap" aria-hidden="true"></div>
       <div class="reveal-actions">
-        <button id="again" class="big-button replay-button" aria-label="Make this snack again">
-          <span aria-hidden="true">↻</span>
-        </button>
-        <button id="recipes" class="big-button recipes-button" aria-label="Choose another snack">
-          <span aria-hidden="true">▦</span>
-        </button>
+        <button id="again" class="big-button replay-button" aria-label="Make this snack again"></button>
+        <button id="recipes" class="big-button recipes-button" aria-label="Choose another snack"></button>
       </div>
     </section>
   </main>
