@@ -1,0 +1,246 @@
+{
+  "workflow": "qwen-image-edit -> qwen-image-layered -> cutout_finalize",
+  "reference": "assets/source/qwen-beads/coral-reference-charcoal.png",
+  "colors": {
+    "gold": {
+      "editSeed": 42,
+      "layeredSeed": 42,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to warm golden-yellow. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete warm golden-yellow hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 80.82,
+          "opaquePct": 18.07,
+          "partialPct": 1.11
+        },
+        "bbox": [
+          260,
+          251,
+          764,
+          772
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          496,
+          512
+        ],
+        "alphaFloor": 4,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          213,
+          220
+        ]
+      }
+    },
+    "coral": {
+      "editSeed": 42,
+      "layeredSeed": 42,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to vivid coral-red. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete vivid coral-red hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 80.789,
+          "opaquePct": 16.203,
+          "partialPct": 3.008
+        },
+        "bbox": [
+          260,
+          251,
+          765,
+          771
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          498,
+          512
+        ],
+        "alphaFloor": 4,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          213,
+          220
+        ]
+      }
+    },
+    "teal": {
+      "editSeed": 42,
+      "layeredSeed": 1337,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to rich turquoise-teal. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete rich turquoise-teal hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 81.044,
+          "opaquePct": 10.385,
+          "partialPct": 8.571
+        },
+        "bbox": [
+          262,
+          253,
+          763,
+          771
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          496,
+          512
+        ],
+        "alphaFloor": 64,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          213,
+          220
+        ]
+      }
+    },
+    "green": {
+      "editSeed": 42,
+      "layeredSeed": 1337,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to fresh olive-green. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete fresh olive-green hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 80.94,
+          "opaquePct": 13.921,
+          "partialPct": 5.139
+        },
+        "bbox": [
+          261,
+          252,
+          764,
+          771
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          497,
+          512
+        ],
+        "alphaFloor": 64,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          213,
+          220
+        ]
+      }
+    },
+    "blue": {
+      "editSeed": 42,
+      "layeredSeed": 42,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to medium cornflower-blue. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete medium cornflower-blue hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 80.962,
+          "opaquePct": 18.08,
+          "partialPct": 0.958
+        },
+        "bbox": [
+          261,
+          252,
+          764,
+          771
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          497,
+          512
+        ],
+        "alphaFloor": 4,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          213,
+          220
+        ]
+      }
+    },
+    "cream": {
+      "editSeed": 1337,
+      "layeredSeed": 1337,
+      "editPrompt": "Use case: precise-object-edit. Asset type: clay bead game sprite source. Change only the clay color of the single bead to warm pale cream-beige. Keep the exact same hand-formed donut-bead shape, outer silhouette, round center hole, camera angle, scale, lighting, fingerprints, small dents, and stop-motion clay texture as the reference. Keep one complete bead centered with generous uninterrupted dark-charcoal margin on all four sides. The entire outer edge must remain visible and must not touch or cross the image boundary. Preserve the perfectly flat uniform dark-charcoal background. The clay color is uniform: no dots, speckles, seeds, inclusions, painted marks, or food-like decoration. No crop, no sliced or flat edge, no extra object, no text, no UI, no plastic, no vector art.",
+      "layeredPrompt": "Background layer: the plain dark-charcoal background only.\nTop layer: the exact single complete warm pale cream-beige hand-formed clay donut bead from the image on a transparent background, including its full outer silhouette and center hole. Keep the bead identical to the input. Do not crop, redraw, add a rim, or add a shadow.",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 81.269,
+          "opaquePct": 18.006,
+          "partialPct": 0.725
+        },
+        "bbox": [
+          260,
+          257,
+          763,
+          766
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          506,
+          512
+        ],
+        "alphaFloor": 4,
+        "runtimeCanvas": [
+          240,
+          240
+        ],
+        "runtimeSubject": [
+          217,
+          220
+        ]
+      }
+    }
+  }
+}

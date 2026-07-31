@@ -112,7 +112,7 @@ Core lines:
 | Clay workshop plate | 1600 px WebP, 97 KB, full-bleed | GPT Image 2 source → deterministic WebP |
 | Graphic title lockup | transparent WebP, 75 KB | GPT Image 2 magenta source → chroma removal → alpha QA |
 | Hub tile | 640×533 JPEG, 46 KB | Studio `menu-game-tile`, Krea 2 seed 42 |
-| Six loose-bead colors | six transparent WebP cutouts, 8–16 KB each | GPT Image 2 clay atlas → chroma removal → split → alpha QA |
+| Six loose-bead colors | six lossless-alpha 240×240 WebP cutouts, 32–48 KB each | accepted coral bead → individual Qwen color edits → Qwen Layered extraction → shared 220 px subject registration; no runtime crop enlargement |
 | Empty cord-and-knot rack | transparent 60×900 WebP, 20 KB | GPT Image 2 cutout; exactly ten bead sprites are composed over it at runtime |
 | Turquoise work tray | transparent 900×625 WebP, 64 KB | GPT Image 2 cutout; reused behind ten-frame, ones-frame, and model layouts |
 | Blank numeral tablets | three transparent WebP cutouts, 24–28 KB each | GPT Image 2 clay atlas; HTML numerals remain crisp and accessible above them |

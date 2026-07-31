@@ -355,28 +355,20 @@ button:focus-visible {
 
 .bead {
   --bead-art: url('../assets/manipulatives/bead-gold.webp');
-  --bead-art-size: 100%;
   position: relative;
   display: block;
   width: var(--bead-size, 62px);
   height: var(--bead-size, 62px);
   flex: 0 0 auto;
-  background: var(--bead-art) center / auto var(--bead-art-size) no-repeat;
+  background: var(--bead-art) center / contain no-repeat;
   filter: drop-shadow(0 .09em .06em rgba(63, 42, 18, .24));
 }
 
-.bead.gold { --bead-art-size: 125%; }
 .bead.coral { --bead-art: url('../assets/manipulatives/bead-coral.webp'); }
 .bead.teal { --bead-art: url('../assets/manipulatives/bead-teal.webp'); }
-.bead.green {
-  --bead-art: url('../assets/manipulatives/bead-green.webp');
-  --bead-art-size: 127%;
-}
+.bead.green { --bead-art: url('../assets/manipulatives/bead-green.webp'); }
 .bead.blue { --bead-art: url('../assets/manipulatives/bead-blue.webp'); }
-.bead.cream {
-  --bead-art: url('../assets/manipulatives/bead-cream.webp');
-  --bead-art-size: 126%;
-}
+.bead.cream { --bead-art: url('../assets/manipulatives/bead-cream.webp'); }
 
 .bead-button {
   display: grid;
@@ -556,7 +548,7 @@ button:focus-visible {
   height: var(--bar-bead, 30px);
   background: url('../assets/manipulatives/bead-gold.webp') center / contain no-repeat;
   filter: drop-shadow(0 2px 1px rgba(73, 47, 13, .18));
-  transform: scale(1.35);
+  transform: scale(1.08);
 }
 
 .mini-bar {

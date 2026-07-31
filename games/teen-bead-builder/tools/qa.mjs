@@ -192,19 +192,21 @@ async function main() {
   }
   check('tap fallback fills the same ten-frame',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 9);
-  const beadArtSizes = await page.locator('.bead-slot .bead').evaluateAll((beads) =>
-    Object.fromEntries(beads.map((bead) => [
-      [...bead.classList].find((name) => ['gold', 'coral', 'teal', 'green', 'blue', 'cream'].includes(name)),
-      getComputedStyle(bead).backgroundSize,
-    ])));
-  check('small atlas crops are normalized to the same apparent bead diameter',
-    beadArtSizes.gold.includes('125%')
-      && beadArtSizes.green.includes('127%')
-      && beadArtSizes.cream.includes('126%')
-      && beadArtSizes.coral.includes('100%')
-      && beadArtSizes.teal.includes('100%')
-      && beadArtSizes.blue.includes('100%'),
-    JSON.stringify(beadArtSizes));
+  const beadMetrics = await page.evaluate(async () => {
+    const colors = ['gold', 'coral', 'teal', 'green', 'blue', 'cream'];
+    const dimensions = Object.fromEntries(await Promise.all(colors.map(async (color) => {
+      const response = await fetch(`./assets/manipulatives/bead-${color}.webp`);
+      const bitmap = await createImageBitmap(await response.blob());
+      return [color, [bitmap.width, bitmap.height]];
+    })));
+    const backgroundSizes = [...document.querySelectorAll('.bead-slot .bead')]
+      .map((bead) => getComputedStyle(bead).backgroundSize);
+    return { dimensions, backgroundSizes };
+  });
+  check('Qwen-derived beads share one complete 240px canvas without CSS enlargement',
+    Object.values(beadMetrics.dimensions).every(([width, height]) => width === 240 && height === 240)
+      && beadMetrics.backgroundSizes.every((size) => size === 'contain'),
+    JSON.stringify(beadMetrics));
   await page.screenshot({ path: path.join(shots, '03-bundle-nine.png') });
 
   const sourceBox = await page.locator('[data-bead-source]').boundingBox();

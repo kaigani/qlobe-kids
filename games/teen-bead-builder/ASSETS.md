@@ -7,13 +7,13 @@ BY 4.0 unless a shared asset's row states otherwise.
 ## GPT Image 2 claymation art
 
 The built-in GPT Image 2 workflow produced the environment, exact-spelling
-graphic title, and every primary child-facing manipulative.
+graphic title, rack cord, tray, and numeral tablets. The original bead atlas
+was superseded by the matched Qwen color set documented below.
 
 | Runtime asset | Source | Processing | QA |
 |---|---|---|---|
 | `assets/workshop.webp` | `assets/source/clay-workshop-gpt-image-2.png` | resized to 1600 px; WebP q82 | 97 KB; calm central workspace; no text/UI/characters |
 | `assets/title.webp` | `assets/source/title-chroma-magenta-gpt-image-2.png` | magenta removed with imagegen helper; alpha floor 4; tight crop + 18 px pad; resized to 1000×574; WebP q82 alpha q93 | exact “Teen Bead Builder” spelling checked at full size; alpha pass; 50.676% transparent, 0.319% partial; 75 KB |
-| `assets/manipulatives/bead-{gold,coral,teal,green,blue,cream}.webp` | `assets/source/bead-atlas-chroma-gpt-image-2.png` | exact 3×2 atlas split; chroma removal; alpha floor 4; 240 px max; WebP q84 | six tactile donut beads; 8–16 KB each; every cutout passed alpha QA with 0.609–0.709% partial alpha |
 | `assets/manipulatives/rack-cord.webp` | `assets/source/rack-cord-chroma-gpt-image-2.png` | chroma removal; alpha floor 4; 900 px max; WebP q84 | 60×900, 20 KB; empty cream double cord with two physical knots; alpha pass, 0.446% partial |
 | `assets/manipulatives/tray.webp` | `assets/source/tray-chroma-gpt-image-2.png` | chroma removal; alpha floor 4; 900 px max; WebP q84 | 900×625, 64 KB; empty turquoise-and-cream clay tray; alpha pass, 0.276% partial |
 | `assets/manipulatives/card-{orange,teal,blue}.webp` | `assets/source/card-atlas-chroma-gpt-image-2.png` | exact three-cell atlas split; chroma removal; alpha floor 4; 360 px max; WebP q84 | blank clay numeral tablets, 24–28 KB each; all alpha passes, 0.305–0.347% partial |
@@ -59,7 +59,30 @@ Most magenta sources use the standard auto-border matte shown above. The bead
 atlas uses an explicit `#ff00ff` key with thresholds 32/100 because the sampled
 near-magenta border was slightly red-dominant and falsely classified the gold,
 coral, and cream clay as key-colored. The corrected matte passed all six alpha
-gates without visible fringe.
+gates without visible fringe, but its unequal cell crops were later rejected
+for runtime use because enlargement revealed hard sliced edges.
+
+## Qwen matched bead color set
+
+| Runtime asset | Identity reference | Workflow | QA |
+|---|---|---|---|
+| `assets/manipulatives/bead-{gold,coral,teal,green,blue,cream}.webp` | accepted coral bead, centered on `assets/source/qwen-beads/coral-reference-charcoal.png` | one `qwen-image-edit` per color → async `qwen-image-layered` layer 2 → `cutout_finalize.py` → deterministic 240×240 canvas with a 220 px subject | all six complete silhouettes inspected on `qa/layered-contact.png`; 32–48 KB lossless alpha WebP; no CSS enlargement |
+
+Every color edit uses the same coral/red bead as its primary geometry and
+material reference. Prompts change only the clay color while preserving the
+outer silhouette, center hole, camera, lighting, fingerprints, dents, and
+charcoal margin. The full prompt set and alpha reports are committed in
+`assets/source/qwen-beads/prompts.json`; accepted raw edits, layer-2 outputs,
+tight cutouts, and magenta composites are retained beside it.
+
+Seed 42 supplied accepted gold, coral, teal, green, and blue edits. Its cream
+edit was rejected because dark speckles read as food inclusions; the accepted
+seed-1337 cream edit adds an explicit uniform-clay/no-speckles constraint.
+Seed-42 teal and green layered extractions were rejected for a full-frame
+low-alpha film. Seed 1337 reproduced the film at alpha 29–37 while preserving
+an opaque 254–255 bead core, so the documented layered-extraction recovery uses
+`--alpha-floor 64` for those two colors only. The rejected intermediates remain
+under `assets/source/qwen-beads/rejected/` and are never referenced by runtime.
 
 ## QLOBE Studio / Krea hub tile
 
