@@ -1,7 +1,7 @@
 # QLOBE Kids — agent quickstart: concept to production
 
-Last grounded against the repository and the Puppet Tales production pass on
-2026-07-27.
+Last grounded against the repository, the Puppet Tales production pass, and
+the Teen Bead Builder style-fidelity correction on 2026-07-31.
 
 This is the clean-context runbook for an agent asked to choose, build, polish,
 or extend a QLOBE Kids game. It connects the concept library, static game
@@ -241,6 +241,58 @@ For a serious replacement or live-quality game, `game-design.md` should answer:
 Write spoken lines before voice generation. Write the art list before generating
 images. This avoids expensive production work for controls or content that later
 disappear.
+
+### Keep visible art separate from the interaction substrate
+
+The selected art world applies to the **entire child-facing play field**, not
+only its backdrop, title, hub tile, and characters. Primary manipulatives and
+props—beads, blocks, cards, racks, trays, tools, bins, rewards, and comparable
+objects—must visibly belong to the same material and rendering language as the
+world around them.
+
+Do not let implementation convenience turn a raster-style game into an
+illustrated shell around a generic vector UI:
+
+- Runtime HTML text should stay HTML, but that rule does not make the physical
+  object carrying the text an HTML/CSS illustration. A numeral may be HTML on
+  top of an authored clay, felt, watercolor, or paper card sprite.
+- CSS, SVG, canvas, and DOM geometry are appropriate for layout, hit areas,
+  focus states, masks, slot guides, responsive transforms, particles, and
+  invisible interaction logic. They are not automatic substitutes for the
+  visible identity of a primary raster-style object.
+- `docs/asset-system.md` permits emoji and CSS shapes as **beta placeholders
+  while real art is in production**. A game remaining `beta` for a child
+  playtest does not make placeholder art acceptable after its production-art
+  pass.
+- “Code-native clay,” “CSS watercolor,” and similar labels are not evidence of
+  style fidelity. Gradients, rounded corners, highlights, and box shadows still
+  read as vector UI unless the chosen world itself calls for that treatment.
+- Dynamic quantities do not require procedural-looking art. Compose exact
+  educational state from authored sprites—for example, an authored empty cord
+  rack behind exactly ten authored bead instances—so code controls count and
+  interaction while the asset controls material appearance.
+
+The GDD art list must therefore distinguish two things for every primary
+object:
+
+1. **Visible renderer:** the authored sprite, pose, texture, video, or genuinely
+   world-appropriate procedural treatment the child sees.
+2. **Interaction substrate:** the DOM/Pixi/canvas element that supplies size,
+   placement, state, accessibility, and input behavior.
+
+Before asset production, inventory every child-facing object on every screen.
+If the art direction is raster/material-based, give each primary object an
+asset or an explicit, reviewed reason why a procedural renderer is faithful to
+that world. Do not spend the image budget only on the background and splash.
+
+At visual QA, review **foreground material fidelity separately from layout and
+usability**. Compare backdrop, manipulatives, containers, choice objects, and
+rewards at full size. Reject the pass when their texture, lighting, edge
+treatment, dimensionality, or medium disagree—even if the game is responsive,
+the targets are large, and every automated interaction test passes. A useful
+code audit is to inspect primary-object selectors for gradient/border/box-shadow
+illustrations; in a raster-style game, those declarations require deliberate
+justification or replacement with authored art.
 
 ## QLOBE Studio
 

@@ -1,0 +1,103 @@
+{
+  "workflow": "built-in imagegen / GPT Image 2",
+  "styleReference": "clay-workshop-gpt-image-2.png",
+  "assets": [
+    {
+      "id": "bead-atlas",
+      "status": "accepted",
+      "source": "bead-atlas-chroma-gpt-image-2.png",
+      "runtime": [
+        "../manipulatives/bead-gold.webp",
+        "../manipulatives/bead-coral.webp",
+        "../manipulatives/bead-teal.webp",
+        "../manipulatives/bead-green.webp",
+        "../manipulatives/bead-blue.webp",
+        "../manipulatives/bead-cream.webp"
+      ],
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: production game sprite atlas",
+        "Input images: Image 1 is a STYLE REFERENCE ONLY for the handmade claymation material, fingerprint texture, soft studio lighting, and rounded imperfect modeling. Do not copy its scene or props.",
+        "Primary request: Create exactly six separate large tactile counting beads as claymation cutout sprites.",
+        "Subject: six thick hand-formed round clay beads, each like a softly flattened donut with one clearly visible central threading hole. Arrange them in an exact 3-column by 2-row grid, one bead centered in each equal cell, identical scale and viewing angle. Top row left-to-right: golden yellow, coral orange, turquoise teal. Bottom row left-to-right: leaf green, sky blue, warm cream.",
+        "Style/medium: real stop-motion clay miniature photographed in a studio; visibly hand-shaped edges, subtle fingerprints and tiny clay surface irregularities; soft dimensional highlights; match Image 1.",
+        "Composition/framing: perfectly front-facing, orthographic product-sprite view; generous equal padding around every bead; no overlap; each bead wholly contained in its cell.",
+        "Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.",
+        "Lighting/mood: soft upper-left studio light on each bead, internal form shading only.",
+        "Constraints: background must be one uniform #ff00ff color with no shadows, gradients, texture, reflections, floor plane, or lighting variation; no cast shadows; crisp silhouettes; no labels; no numbers; no text; no borders; no tray; no rack; no extra objects; do not use magenta anywhere in the beads; no watermark.",
+        "Avoid: glossy vector graphics, perfect geometric circles, plastic, 2D illustration, UI icon styling, outlines, bevel effects, synthetic gradients."
+      ]
+    },
+    {
+      "id": "complete-rack-first-take",
+      "status": "rejected-wrong-count-12",
+      "promptSummary": "One vertical cream-cord rack containing exactly ten golden clay beads; the generated result visibly contained twelve."
+    },
+    {
+      "id": "complete-rack-count-edit",
+      "status": "rejected-wrong-count-11",
+      "promptSummary": "Correct only the first rack's count to exactly ten while preserving its material and composition; the edit visibly contained eleven."
+    },
+    {
+      "id": "empty-rack-cord",
+      "status": "accepted",
+      "source": "rack-cord-chroma-gpt-image-2.png",
+      "runtime": "../manipulatives/rack-cord.webp",
+      "prompt": [
+        "Use case: precise-object-edit",
+        "Asset type: production game cutout sprite",
+        "Input images: Image 1 is the clay material style reference. Image 2 is a composition reference for the cream double cord and hand-tied knots only.",
+        "Primary request: Create an EMPTY vertical bead-bundling rack: exactly two slim parallel warm-cream clay cords, tied together with one small hand-formed knot at the top and one at the bottom. There must be a long clear empty space between the knots where bead sprites can be layered at runtime.",
+        "Subject: cream double cord and two knots only. ZERO beads.",
+        "Style/medium: real stop-motion clay miniature photographed in a studio; hand-shaped edges, subtle fingerprints and tiny clay irregularities; match the references.",
+        "Composition/framing: front-facing orthographic; tall narrow 1:3 silhouette; centered; cords perfectly vertical; generous padding.",
+        "Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.",
+        "Lighting/mood: soft upper-left studio light; internal object shading only.",
+        "Constraints: ZERO beads; no bead shapes; background one uniform #ff00ff with no shadows, gradients, texture, floor, reflection, or lighting variation; no cast shadow; crisp silhouette; no labels; no numbers; no text; no tray; no extra objects; no magenta in the subject; no watermark.",
+        "Avoid: rope realism, glossy vector graphics, plastic, 2D illustration, UI icon styling, geometric perfection, synthetic gradients."
+      ]
+    },
+    {
+      "id": "empty-tray",
+      "status": "accepted",
+      "source": "tray-chroma-gpt-image-2.png",
+      "runtime": "../manipulatives/tray.webp",
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: production game cutout sprite",
+        "Input images: Image 1 is a STYLE REFERENCE ONLY for handmade claymation material, fingerprint texture, soft studio lighting, turquoise palette, and rounded imperfect modeling.",
+        "Primary request: Create one large empty tactile counting tray made from pale turquoise clay.",
+        "Subject: a broad rounded-rectangle Montessori work tray with a thick hand-rolled warm-cream clay outer rim, a slightly raised turquoise inner rim, and a calm shallow pale-aqua clay work surface. The interior is completely empty and unmarked so runtime bead slots and manipulatives can be layered above it.",
+        "Style/medium: real stop-motion clay miniature photographed in a studio; visible finger-smoothed clay texture, subtly uneven hand-built edges, tiny surface irregularities; physically thick material; match Image 1. This must read as a tangible clay prop, not a UI panel.",
+        "Composition/framing: front-facing with a very slight top-down view; landscape 4:3 silhouette; centered with generous padding; symmetrical enough for gameplay but visibly handmade.",
+        "Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.",
+        "Lighting/mood: soft upper-left studio light; dimensional form shading contained within the tray.",
+        "Constraints: background must be one uniform #ff00ff with no shadows, gradients, texture, floor plane, reflection, or lighting variation; no cast shadow outside the tray; crisp silhouette; empty interior; no wells, grid, holes, beads, rack, labels, numbers, text, icons, extra props, or watermark; no magenta in the tray.",
+        "Avoid: glossy vector panel, translucent glass, plastic, 2D illustration, UI card styling, perfect computer geometry, hard outlines, synthetic CSS-gradient look."
+      ]
+    },
+    {
+      "id": "numeral-card-atlas",
+      "status": "accepted",
+      "source": "card-atlas-chroma-gpt-image-2.png",
+      "runtime": [
+        "../manipulatives/card-orange.webp",
+        "../manipulatives/card-teal.webp",
+        "../manipulatives/card-blue.webp"
+      ],
+      "prompt": [
+        "Use case: stylized-concept",
+        "Asset type: production game sprite atlas",
+        "Input images: Image 1 is a STYLE REFERENCE ONLY for handmade claymation material, fingerprint texture, soft studio lighting, and rounded imperfect modeling.",
+        "Primary request: Create exactly three separate blank tactile numeral tablets as claymation cutout sprites.",
+        "Subject: three thick hand-formed rounded-square clay cards with slightly irregular edges and a shallow smooth center reserved for runtime HTML numerals. Arrange in one exact horizontal row of three equal cells, one tablet centered in each cell, identical size and front-facing angle. Left tablet warm orange, center tablet turquoise teal, right tablet sky blue.",
+        "Style/medium: real stop-motion clay miniatures photographed in a studio; visibly hand-shaped edges, subtle fingerprints, tiny clay surface irregularities, soft dimensional form; match Image 1. They must read as physical clay tablets, not UI panels.",
+        "Composition/framing: perfectly front-facing orthographic product-sprite view; generous equal padding; no overlap; each tablet wholly within its equal cell.",
+        "Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.",
+        "Lighting/mood: soft upper-left studio light; internal form shading only.",
+        "Constraints: blank centers; background one uniform #ff00ff with no shadows, gradients, texture, floor, reflection, or lighting variation; no cast shadows; crisp silhouettes; no labels, numbers, letters, text, icons, beads, racks, trays, borders outside the clay objects, extra objects, or watermark; no magenta in the tablets.",
+        "Avoid: glossy vector cards, plastic, 2D illustration, UI card styling, perfect geometry, white outlines, CSS-gradient look."
+      ]
+    }
+  ]
+}

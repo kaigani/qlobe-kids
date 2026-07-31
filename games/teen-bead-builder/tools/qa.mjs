@@ -118,6 +118,14 @@ async function main() {
   const source = initialTargets.find(({ id }) => id === 'bead-source');
   check('bead source is a 96px touch target',
     source?.rect?.w >= 96 && source?.rect?.h >= 96, JSON.stringify(source));
+  const bundleMaterials = await page.evaluate(() => ({
+    bead: getComputedStyle(document.querySelector('.bead-source .bead')).backgroundImage,
+    tray: getComputedStyle(document.querySelector('.place-tray')).backgroundImage,
+  }));
+  check('primary build objects use authored clay sprites',
+    bundleMaterials.bead.includes('bead-gold.webp')
+      && bundleMaterials.tray.includes('tray.webp'),
+    JSON.stringify(bundleMaterials));
   await page.screenshot({ path: path.join(shots, '02-bundle-empty.png') });
 
   await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(.2));
@@ -148,6 +156,17 @@ async function main() {
     && window.QLOBE_DEBUG.getState().screen === 'play');
   check('the bundle resolves to one visible tied ten bar',
     await page.locator('.place-tray .bundle-result').count() === 1);
+  const rackMaterials = await page.locator('.place-tray .bundle-result').evaluate((rack) => ({
+    beadCount: rack.querySelectorAll('.bar-bead').length,
+    rack: getComputedStyle(rack).backgroundImage,
+    beads: [...rack.querySelectorAll('.bar-bead')]
+      .map((bead) => getComputedStyle(bead).backgroundImage),
+  }));
+  check('the authored rack composes exactly ten authored bead sprites',
+    rackMaterials.beadCount === 10
+      && rackMaterials.rack.includes('rack-cord.webp')
+      && rackMaterials.beads.every((image) => image.includes('bead-gold.webp')),
+    JSON.stringify(rackMaterials));
   await page.screenshot({ path: path.join(shots, '04b-one-ten-bar.png') });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'celebration');
   check('ten loose ones become the ten celebration', true);
@@ -174,6 +193,15 @@ async function main() {
   });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'match');
   const matchTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  const matchMaterials = await page.evaluate(() => ({
+    tray: getComputedStyle(document.querySelector('.model-card')).backgroundImage,
+    cards: [...document.querySelectorAll('.number-choice')]
+      .map((card) => getComputedStyle(card).backgroundImage),
+  }));
+  check('detective tray and choices use authored clay sprites',
+    matchMaterials.tray.includes('tray.webp')
+      && matchMaterials.cards.every((image) => image.includes('card-')),
+    JSON.stringify(matchMaterials));
   const wrong = matchTargets.find(({ role }) => role === 'wrong');
   const correct = matchTargets.find(({ role }) => role === 'correct');
   check('detective exposes one correct and two nearby alternatives',

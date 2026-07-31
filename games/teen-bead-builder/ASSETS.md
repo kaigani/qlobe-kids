@@ -6,13 +6,17 @@ BY 4.0 unless a shared asset's row states otherwise.
 
 ## GPT Image 2 claymation art
 
-The built-in GPT Image 2 workflow produced the environment and exact-spelling
-graphic title.
+The built-in GPT Image 2 workflow produced the environment, exact-spelling
+graphic title, and every primary child-facing manipulative.
 
 | Runtime asset | Source | Processing | QA |
 |---|---|---|---|
 | `assets/workshop.webp` | `assets/source/clay-workshop-gpt-image-2.png` | resized to 1600 px; WebP q82 | 97 KB; calm central workspace; no text/UI/characters |
 | `assets/title.webp` | `assets/source/title-chroma-magenta-gpt-image-2.png` | magenta removed with imagegen helper; alpha floor 4; tight crop + 18 px pad; resized to 1000×574; WebP q82 alpha q93 | exact “Teen Bead Builder” spelling checked at full size; alpha pass; 50.676% transparent, 0.319% partial; 75 KB |
+| `assets/manipulatives/bead-{gold,coral,teal,green,blue,cream}.webp` | `assets/source/bead-atlas-chroma-gpt-image-2.png` | exact 3×2 atlas split; chroma removal; alpha floor 4; 240 px max; WebP q84 | six tactile donut beads; 8–16 KB each; every cutout passed alpha QA with 0.609–0.709% partial alpha |
+| `assets/manipulatives/rack-cord.webp` | `assets/source/rack-cord-chroma-gpt-image-2.png` | chroma removal; alpha floor 4; 900 px max; WebP q84 | 60×900, 20 KB; empty cream double cord with two physical knots; alpha pass, 0.446% partial |
+| `assets/manipulatives/tray.webp` | `assets/source/tray-chroma-gpt-image-2.png` | chroma removal; alpha floor 4; 900 px max; WebP q84 | 900×625, 64 KB; empty turquoise-and-cream clay tray; alpha pass, 0.276% partial |
+| `assets/manipulatives/card-{orange,teal,blue}.webp` | `assets/source/card-atlas-chroma-gpt-image-2.png` | exact three-cell atlas split; chroma removal; alpha floor 4; 360 px max; WebP q84 | blank clay numeral tablets, 24–28 KB each; all alpha passes, 0.305–0.347% partial |
 
 The environment prompt describes a full-bleed warm claymation toy workshop:
 turquoise hand-formed wall, honey-birch worktable, perimeter-only clay
@@ -37,6 +41,25 @@ cutout_finalize.py --max-size 1000 --pad 18 --alpha-floor 4
 
 The magenta QA composite was inspected at full size; edges are continuous with
 no key-color holes or fringe.
+
+The complete prompt and retry record for the foreground correction is committed
+as `assets/source/manipulative-gpt-image-2-prompts.json`. The workshop image is
+the style reference: hand-shaped clay, fine fingerprint texture, softly uneven
+edges, and upper-left studio light. All cutouts were inspected on magenta at
+full size before integration.
+
+Two complete-rack attempts were rejected even though their material styling was
+good: the initial generation contained twelve beads, and a count-only edit
+contained eleven. Neither is referenced or shipped. The accepted solution is an
+empty authored cord-and-knot sprite with exactly ten authored golden bead
+instances layered over it by runtime layout. Code controls the educational
+quantity; bitmap art controls the visible material.
+
+Most magenta sources use the standard auto-border matte shown above. The bead
+atlas uses an explicit `#ff00ff` key with thresholds 32/100 because the sampled
+near-magenta border was slightly red-dominant and falsely classified the gold,
+coral, and cream clay as key-colored. The corrected matte passed all six alpha
+gates without visible fringe.
 
 ## QLOBE Studio / Krea hub tile
 
@@ -83,11 +106,11 @@ Rejected takes moved to Studio's recoverable, git-ignored trash.
 `voice-clips.js` uses one iOS-unlocked audio element and supplies the exact
 script through Web Speech when a recorded clip is unavailable.
 
-## Code-native and shared assets
+## Interaction substrate and shared assets
 
 | Asset | Creator/source | License | Use/modification |
 |---|---|---|---|
-| Clay beads, ten-frame, ones-frame, tied ten bar, numeral cards, confetti | local HTML/CSS in this game | MIT code / CC BY 4.0 visual design | responsive code-native visual system; no raster placeholder or emoji |
+| Responsive tray geometry, ten/ones slot guides, hit areas, drag ghost placement, animation, labels, equations, confetti | local HTML/CSS in this game | MIT code / CC BY 4.0 visual design | interaction/state substrate only; primary visible objects are the authored clay WebP assets above |
 | Fredoka SemiBold | Milena Brandão & Hafontia via Fontsource | SIL OFL 1.1 | runtime text, unmodified |
 | `shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png` | QLOBE Kids shared UI | CC BY 4.0 | navigation and prompt replay, unmodified |
 | Runtime SFX | `shared/js/sfx.js` WebAudio synthesis | N/A | no file asset |

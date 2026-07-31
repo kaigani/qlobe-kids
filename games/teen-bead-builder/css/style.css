@@ -207,7 +207,7 @@ button:focus-visible {
   position: absolute;
   top: 50%;
   left: 34%;
-  transform: translate(-50%, -50%) scale(.4) rotate(-7deg);
+  transform: translate(-50%, -50%) scale(.48) rotate(-7deg);
   transform-origin: center;
 }
 
@@ -222,10 +222,8 @@ button:focus-visible {
 .mini-ones i {
   width: 19px;
   height: 19px;
-  border: 3px solid rgba(117, 62, 6, .4);
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 24%, #fff3a5 0 9%, #ffc735 24%, #d67a0b 78%);
-  box-shadow: 0 3px 0 rgba(100, 50, 4, .3);
+  background: url('../assets/manipulatives/bead-gold.webp') center / contain no-repeat;
+  filter: drop-shadow(0 2px 1px rgba(75, 47, 16, .25));
 }
 
 .mini-card {
@@ -236,12 +234,11 @@ button:focus-visible {
   place-items: center;
   width: 54px;
   height: 68px;
-  border: 5px solid white;
-  border-radius: 20px;
-  background: linear-gradient(150deg, #fff7db, #f3d996);
-  color: var(--navy);
+  background: url('../assets/manipulatives/card-teal.webp') center / contain no-repeat;
+  color: white;
   font-size: 34px;
-  box-shadow: 0 6px 0 rgba(19, 65, 99, .26);
+  filter: drop-shadow(0 5px 2px rgba(19, 65, 99, .26));
+  text-shadow: 0 3px 1px rgba(13, 70, 90, .42);
   transform: translateY(-50%) rotate(5deg);
 }
 
@@ -357,30 +354,21 @@ button:focus-visible {
 /* Bead models */
 
 .bead {
-  --bead: var(--gold);
+  --bead-art: url('../assets/manipulatives/bead-gold.webp');
   position: relative;
   display: block;
   width: var(--bead-size, 62px);
   height: var(--bead-size, 62px);
   flex: 0 0 auto;
-  border: clamp(3px, .45vmin, 5px) solid color-mix(in srgb, var(--bead), #6a3600 35%);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 27%, rgba(255, 255, 255, .95) 0 8%, rgba(255, 255, 255, .25) 9% 17%, transparent 18%),
-    radial-gradient(circle at 51% 53%, color-mix(in srgb, var(--bead), black 26%) 0 8%, transparent 9%),
-    radial-gradient(circle at 46% 40%, color-mix(in srgb, var(--bead), white 30%), var(--bead) 56%, color-mix(in srgb, var(--bead), black 24%) 100%);
-  box-shadow:
-    inset 3px 4px 7px rgba(255, 255, 255, .28),
-    inset -5px -6px 9px rgba(78, 39, 7, .18),
-    0 5px 0 rgba(94, 47, 5, .27),
-    0 8px 11px rgba(64, 47, 24, .16);
+  background: var(--bead-art) center / contain no-repeat;
+  filter: drop-shadow(0 .09em .06em rgba(63, 42, 18, .24));
 }
 
-.bead.coral { --bead: var(--coral); }
-.bead.teal { --bead: var(--teal); }
-.bead.green { --bead: var(--green); }
-.bead.blue { --bead: var(--blue); }
-.bead.cream { --bead: #f7dca0; }
+.bead.coral { --bead-art: url('../assets/manipulatives/bead-coral.webp'); }
+.bead.teal { --bead-art: url('../assets/manipulatives/bead-teal.webp'); }
+.bead.green { --bead-art: url('../assets/manipulatives/bead-green.webp'); }
+.bead.blue { --bead-art: url('../assets/manipulatives/bead-blue.webp'); }
+.bead.cream { --bead-art: url('../assets/manipulatives/bead-cream.webp'); }
 
 .bead-button {
   display: grid;
@@ -463,17 +451,8 @@ button:focus-visible {
   justify-items: center;
   min-height: clamp(285px, 44vh, 430px);
   padding: clamp(40px, 5vh, 58px) 18px 18px;
-  border: 8px solid rgba(255, 253, 240, .95);
-  border-radius: 40px;
-  background:
-    linear-gradient(rgba(255, 255, 255, .21), rgba(255, 255, 255, .08)),
-    repeating-linear-gradient(0deg, transparent 0 58px, rgba(22, 94, 133, .18) 59px 62px),
-    repeating-linear-gradient(90deg, transparent 0 58px, rgba(22, 94, 133, .18) 59px 62px),
-    rgba(151, 220, 238, .82);
-  box-shadow:
-    inset 0 0 0 5px rgba(32, 117, 151, .25),
-    inset 0 8px 16px rgba(255, 255, 255, .55),
-    var(--panel-shadow);
+  background: url('../assets/manipulatives/tray.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 10px 5px rgba(35, 54, 50, .22));
 }
 
 .place-tray.active {
@@ -503,8 +482,8 @@ button:focus-visible {
 }
 
 .ten-frame {
-  grid-template-columns: repeat(2, clamp(58px, 7.4vmin, 74px));
-  grid-template-rows: repeat(5, clamp(58px, 7.4vmin, 74px));
+  grid-template-columns: repeat(2, clamp(48px, 6.2vmin, 60px));
+  grid-template-rows: repeat(5, clamp(48px, 6.2vmin, 60px));
 }
 
 .ones-frame {
@@ -528,7 +507,7 @@ button:focus-visible {
 }
 
 .bead-slot .bead {
-  --bead-size: 84%;
+  --bead-size: 110%;
 }
 
 .bead-slot button {
@@ -555,49 +534,25 @@ button:focus-visible {
   position: relative;
   display: grid;
   grid-template-rows: repeat(10, var(--bar-bead, 30px));
-  padding: 8px 12px;
-  border: 5px solid #b86308;
-  border-radius: 24px;
-  background: linear-gradient(90deg, #e89912, #ffe56c 46%, #d77c08);
-  box-shadow:
-    inset 5px 0 8px rgba(255, 255, 255, .25),
-    inset -5px 0 8px rgba(83, 40, 0, .18),
-    0 7px 0 rgba(99, 50, 5, .24),
-    0 11px 18px rgba(60, 43, 20, .18);
+  width: calc(var(--bar-bead, 30px) * 1.55);
+  padding: calc(var(--bar-bead, 30px) * .34) 0;
+  background: url('../assets/manipulatives/rack-cord.webp') center / 38% 100% no-repeat;
+  filter: drop-shadow(0 7px 4px rgba(66, 42, 15, .24));
 }
 
 .ten-bar .bar-bead {
   position: relative;
+  z-index: 1;
+  justify-self: center;
   width: var(--bar-bead, 30px);
   height: var(--bar-bead, 30px);
-  border: 2px solid #b66a0a;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 25%, #fff4aa 0 10%, transparent 11%),
-    radial-gradient(circle at 46% 40%, #ffd84d, #e99310 72%);
-  box-shadow: inset -3px -3px 5px rgba(109, 53, 0, .15);
+  background: url('../assets/manipulatives/bead-gold.webp') center / contain no-repeat;
+  filter: drop-shadow(0 2px 1px rgba(73, 47, 13, .18));
+  transform: scale(1.35);
 }
-
-.ten-bar::before,
-.ten-bar::after {
-  position: absolute;
-  top: -8px;
-  bottom: -8px;
-  width: 5px;
-  border-radius: 6px;
-  background: #fff3cf;
-  box-shadow: 0 0 0 2px #bb7a3d;
-  content: "";
-}
-
-.ten-bar::before { left: 8px; }
-.ten-bar::after { right: 8px; }
 
 .mini-bar {
   --bar-bead: 19px;
-  padding: 5px 8px;
-  border-width: 3px;
-  border-radius: 15px;
 }
 
 .bundling .bead-slot {
@@ -605,7 +560,7 @@ button:focus-visible {
 }
 
 .bundle-result {
-  --bar-bead: clamp(26px, 3.5vmin, 34px);
+  --bar-bead: clamp(30px, 3.7vmin, 38px);
   animation: bar-pop .65s cubic-bezier(.18, .88, .25, 1.22) both;
 }
 
@@ -638,16 +593,12 @@ button:focus-visible {
   align-items: center;
   min-height: clamp(340px, 52vh, 480px);
   padding: 38px 28px;
-  border: 8px solid white;
-  border-radius: 44px;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .65), transparent 28%),
-    linear-gradient(155deg, rgba(216, 247, 252, .96), rgba(116, 205, 228, .95));
-  box-shadow: var(--panel-shadow);
+  background: url('../assets/manipulatives/tray.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 10px 5px rgba(35, 54, 50, .22));
 }
 
 .model-card .ten-bar {
-  --bar-bead: clamp(24px, 3.2vmin, 33px);
+  --bar-bead: clamp(30px, 3.7vmin, 38px);
   justify-self: center;
 }
 
@@ -671,23 +622,23 @@ button:focus-visible {
 }
 
 .number-choice {
+  --card-art: url('../assets/manipulatives/card-orange.webp');
   display: grid;
   place-items: center;
   min-width: 112px;
   min-height: 132px;
   padding: 10px;
-  border: 7px solid white;
-  border-radius: 32px;
-  background:
-    radial-gradient(circle at 24% 14%, rgba(255, 255, 255, .72), transparent 26%),
-    linear-gradient(150deg, var(--choice-a), var(--choice-b));
-  box-shadow: 0 7px 0 color-mix(in srgb, var(--choice-b), black 27%), 0 12px 22px rgba(42, 36, 25, .17);
+  background: var(--card-art) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 8px 3px rgba(42, 36, 25, .24));
   color: white;
   font-size: clamp(52px, 7vmin, 78px);
   text-shadow: 0 4px 0 rgba(21, 57, 89, .35);
   cursor: pointer;
   transition: transform .14s ease;
 }
+
+.number-choice:nth-child(2) { --card-art: url('../assets/manipulatives/card-teal.webp'); }
+.number-choice:nth-child(3) { --card-art: url('../assets/manipulatives/card-blue.webp'); }
 
 .number-choice:last-child:nth-child(3) {
   grid-column: 1 / -1;
@@ -808,18 +759,20 @@ button:focus-visible {
 }
 
 .end-number-arch span {
+  --card-art: url('../assets/manipulatives/card-orange.webp');
   display: grid;
   place-items: center;
   width: clamp(46px, 6vw, 70px);
   height: clamp(58px, 8vw, 86px);
-  border: 5px solid white;
-  border-radius: 21px;
   color: white;
-  background: var(--c);
-  box-shadow: 0 6px 0 color-mix(in srgb, var(--c), black 30%);
+  background: var(--card-art) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 5px 2px rgba(45, 39, 25, .24));
   font-size: clamp(28px, 4vw, 46px);
   transform: translateY(var(--y));
 }
+
+.end-number-arch span:nth-child(3n + 2) { --card-art: url('../assets/manipulatives/card-teal.webp'); }
+.end-number-arch span:nth-child(3n) { --card-art: url('../assets/manipulatives/card-blue.webp'); }
 
 .end-card h2 {
   margin: 0 0 20px;
@@ -867,7 +820,11 @@ button:focus-visible {
 }
 
 @keyframes tray-glow {
-  50% { box-shadow: inset 0 0 0 5px rgba(32, 117, 151, .25), inset 0 8px 16px rgba(255,255,255,.55), 0 0 0 9px rgba(255, 209, 46, .38), var(--panel-shadow); }
+  50% {
+    filter:
+      drop-shadow(0 10px 5px rgba(35, 54, 50, .22))
+      drop-shadow(0 0 12px rgba(255, 209, 46, .74));
+  }
 }
 
 @keyframes bead-land {
@@ -961,8 +918,8 @@ button:focus-visible {
   }
 
   .ten-frame {
-    grid-template-columns: repeat(2, clamp(50px, 7.5vw, 70px));
-    grid-template-rows: repeat(5, clamp(50px, 7.5vw, 70px));
+    grid-template-columns: repeat(2, clamp(48px, 6vw, 58px));
+    grid-template-rows: repeat(5, clamp(48px, 6vw, 58px));
   }
 
   .ones-frame {

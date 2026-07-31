@@ -112,13 +112,24 @@ Core lines:
 | Clay workshop plate | 1600 px WebP, 97 KB, full-bleed | GPT Image 2 source → deterministic WebP |
 | Graphic title lockup | transparent WebP, 75 KB | GPT Image 2 magenta source → chroma removal → alpha QA |
 | Hub tile | 640×533 JPEG, 46 KB | Studio `menu-game-tile`, Krea 2 seed 42 |
-| Loose beads, frames, corded ten bar, cards | responsive HTML/CSS | deterministic code-native clay components |
+| Six loose-bead colors | six transparent WebP cutouts, 8–16 KB each | GPT Image 2 clay atlas → chroma removal → split → alpha QA |
+| Empty cord-and-knot rack | transparent 60×900 WebP, 20 KB | GPT Image 2 cutout; exactly ten bead sprites are composed over it at runtime |
+| Turquoise work tray | transparent 900×625 WebP, 64 KB | GPT Image 2 cutout; reused behind ten-frame, ones-frame, and model layouts |
+| Blank numeral tablets | three transparent WebP cutouts, 24–28 KB each | GPT Image 2 clay atlas; HTML numerals remain crisp and accessible above them |
 | Teacher voice | AAC/M4A clips + manifest | Qwen voice clone + Whisper QA |
 | Tactile SFX | runtime WebAudio | shared `sfx.js` |
 
 The background deliberately keeps the center and lower-middle calm. All
 functional numerals, equations, labels, and controls remain runtime HTML instead
-of baked image text.
+of baked image text. DOM/CSS supplies responsive geometry, hit areas, slot
+guides, animation, and state; the authored WebP cutouts supply the visible
+material identity of every primary manipulative.
+
+Two generated complete-rack candidates were rejected because they showed twelve
+and eleven beads. The production rack deliberately separates art from quantity:
+one authored empty cord sprite sits behind exactly ten authored bead instances.
+This keeps the claymation appearance while making the base-ten relationship
+mathematically deterministic.
 
 ## Interaction and feedback rules
 
@@ -152,9 +163,9 @@ of baked image text.
 - The old prototype's numeral-card placement was removed. Bead Detective gives
   the numeral-symbol connection its own focused loop instead of mixing it into
   quantity construction.
-- Claymation replaces the mockup's generic glossy-vector rendering while
-  retaining its bright blue field, white tray contrast, and large central
-  target.
+- Asset-authored claymation replaces the mockup's generic glossy-vector
+  rendering across the foreground manipulatives as well as the environment.
+  The bright blue field, cream tray contrast, and large central target remain.
 
 ## Shared systems and offline behavior
 
@@ -188,5 +199,8 @@ Format version 1 exposes:
   reduced motion, and zero unexpected errors/failed requests
 - full-size visual review of splash, bundling, teen build, wrong choice,
   celebration, end, portrait, and compact landscape captures
+- foreground material-fidelity review: beads, cord rack, tray, and numeral
+  tablets must match the backdrop's clay texture, lighting, dimensionality, and
+  edge treatment; responsive correctness alone cannot pass this gate
 - production deployment and the same smoke/visual suite against `https://qlo.be`
 - real iPad child playtest before changing beta to live
