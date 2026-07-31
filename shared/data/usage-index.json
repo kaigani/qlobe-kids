@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-31T05:06:02.679Z",
+  "generated": "2026-07-31T13:55:50.239Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -57,7 +57,7 @@
       ]
     },
     "build-assemble": {
-      "count": 14,
+      "count": 13,
       "games": [
         "bead-path-builder",
         "blend-train",
@@ -71,7 +71,6 @@
         "silly-sentence-builder",
         "silly-swap-words",
         "tangram-tales",
-        "teen-bead-builder",
         "turn-taking-tower"
       ]
     },
@@ -1632,14 +1631,15 @@
       "packs": []
     },
     "teen-bead-builder": {
-      "engine": "build-assemble",
+      "engine": null,
       "status": "beta",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
-        "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1827,7 +1827,6 @@
         "silly-sentence-builder",
         "silly-swap-words",
         "tangram-tales",
-        "teen-bead-builder",
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
@@ -2227,6 +2226,7 @@
         "snack-chef",
         "sound-painting",
         "sound-sprouts",
+        "teen-bead-builder",
         "world-music-dance"
       ],
       "shared/js/voice-clips.js": [
@@ -2247,6 +2247,7 @@
         "sound-painting",
         "sound-sprouts",
         "story-stones",
+        "teen-bead-builder",
         "world-music-dance"
       ],
       "shared/vendor/pixi.min.js": [

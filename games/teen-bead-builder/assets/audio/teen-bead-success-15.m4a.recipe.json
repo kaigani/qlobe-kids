@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-success-15",
+  "kind": "voice",
+  "asset": "teen-bead-success-15.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ten and five more make fifteen!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Ten and five more make fifteen!"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Ten and five more make fifteen!",
+      "heard": "10 and 5 more make 15.",
+      "ratio": 0.627,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "ten and five more make fifteen",
+      "normalizedHeard": "ten and five more make fifteen",
+      "numericEquivalent": true,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

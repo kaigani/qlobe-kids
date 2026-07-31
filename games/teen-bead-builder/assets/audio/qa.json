@@ -1,0 +1,298 @@
+{
+  "format": "qlobe-voice-qa",
+  "formatVersion": 1,
+  "workflow": "qwen3-tts-voiceclone",
+  "verifier": "whisper-stt + number-word normalization",
+  "clips": {
+    "welcome": {
+      "file": "teen-bead-welcome-v2.m4a",
+      "duration": 1.757,
+      "seed": 8,
+      "intended": "Pick one bead game to play.",
+      "heard": "Pick one beat game to play.",
+      "rawMatch": true,
+      "normalizedMatch": false,
+      "accepted": true
+    },
+    "buildIntro": {
+      "file": "teen-bead-build-intro.m4a",
+      "duration": 3.914,
+      "seed": 7,
+      "intended": "First, let us make a ten. Add ten golden beads.",
+      "heard": "First, let us make a 10. Add 10 golden beads.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "addBead": {
+      "file": "teen-bead-add-bead.m4a",
+      "duration": 1.358,
+      "seed": 7,
+      "intended": "Add a golden bead.",
+      "heard": "Add a golden bead.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "bundleNudge": {
+      "file": "teen-bead-bundle-nudge.m4a",
+      "duration": 2.316,
+      "seed": 7,
+      "intended": "Bring the bead to the glowing ten frame.",
+      "heard": "Bring the bead to the glowing 10 frame.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "tenMade": {
+      "file": "teen-bead-ten-made.m4a",
+      "duration": 1.997,
+      "seed": 7,
+      "intended": "Ten ones bundle into one ten!",
+      "heard": "10 ones bundle into one 10.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "countOn": {
+      "file": "teen-bead-count-on.m4a",
+      "duration": 1.597,
+      "seed": 7,
+      "intended": "Now count on from ten.",
+      "heard": "Now count on from 10!",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "matchIntro": {
+      "file": "teen-bead-match-intro.m4a",
+      "duration": 2.876,
+      "seed": 7,
+      "intended": "Look at the beads. Which teen number do they show?",
+      "heard": "Look at the beads! Which team number do they show?",
+      "rawMatch": true,
+      "normalizedMatch": false,
+      "accepted": true
+    },
+    "chooseNumber": {
+      "file": "teen-bead-choose-number.m4a",
+      "duration": 2.716,
+      "seed": 7,
+      "intended": "Which number do the beads show?",
+      "heard": "Which number do the beats show?",
+      "rawMatch": true,
+      "normalizedMatch": false,
+      "accepted": true
+    },
+    "tryAgain": {
+      "file": "teen-bead-try-again.m4a",
+      "duration": 2.876,
+      "seed": 7,
+      "intended": "Count the ones after ten. Try another number.",
+      "heard": "Count the ones after 10. Try another number.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "finish": {
+      "file": "teen-bead-finish.m4a",
+      "duration": 3.195,
+      "seed": 7,
+      "intended": "Beautiful building! You really know your teen numbers.",
+      "heard": "Beautiful building, you really know your team numbers.",
+      "rawMatch": true,
+      "normalizedMatch": false,
+      "accepted": true
+    },
+    "back": {
+      "file": "teen-bead-back.m4a",
+      "duration": 1.597,
+      "seed": 7,
+      "intended": "Pick another way to play.",
+      "heard": "Pick another way to play?",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-11": {
+      "file": "teen-bead-number-11.m4a",
+      "duration": 0.559,
+      "seed": 7,
+      "intended": "Eleven.",
+      "heard": "11",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-12": {
+      "file": "teen-bead-number-12.m4a",
+      "duration": 1.198,
+      "seed": 7,
+      "intended": "Twelve.",
+      "heard": "12",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-13": {
+      "file": "teen-bead-number-13.m4a",
+      "duration": 0.879,
+      "seed": 7,
+      "intended": "Thirteen.",
+      "heard": "13",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-14": {
+      "file": "teen-bead-number-14.m4a",
+      "duration": 0.799,
+      "seed": 7,
+      "intended": "Fourteen.",
+      "heard": "14",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-15": {
+      "file": "teen-bead-number-15.m4a",
+      "duration": 1.118,
+      "seed": 7,
+      "intended": "Fifteen.",
+      "heard": "15",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-16": {
+      "file": "teen-bead-number-16.m4a",
+      "duration": 0.799,
+      "seed": 7,
+      "intended": "Sixteen.",
+      "heard": "16",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-17": {
+      "file": "teen-bead-number-17.m4a",
+      "duration": 0.719,
+      "seed": 7,
+      "intended": "Seventeen.",
+      "heard": "17.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-18": {
+      "file": "teen-bead-number-18.m4a",
+      "duration": 1.038,
+      "seed": 7,
+      "intended": "Eighteen.",
+      "heard": "18",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "number-19": {
+      "file": "teen-bead-number-19.m4a",
+      "duration": 0.799,
+      "seed": 7,
+      "intended": "Nineteen.",
+      "heard": "19",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-11": {
+      "file": "teen-bead-success-11.m4a",
+      "duration": 1.997,
+      "seed": 7,
+      "intended": "Ten and one more make eleven!",
+      "heard": "10 and one more make 11.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-12": {
+      "file": "teen-bead-success-12.m4a",
+      "duration": 1.677,
+      "seed": 7,
+      "intended": "Ten and two more make twelve!",
+      "heard": "10 and 2 more make 12.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-13": {
+      "file": "teen-bead-success-13.m4a",
+      "duration": 2.237,
+      "seed": 7,
+      "intended": "Ten and three more make thirteen!",
+      "heard": "10 and 3 more make 13.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-14": {
+      "file": "teen-bead-success-14.m4a",
+      "duration": 2.077,
+      "seed": 7,
+      "intended": "Ten and four more make fourteen!",
+      "heard": "10 and 4 more make 14.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-15": {
+      "file": "teen-bead-success-15.m4a",
+      "duration": 2.237,
+      "seed": 7,
+      "intended": "Ten and five more make fifteen!",
+      "heard": "10 and 5 more make 15.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-16": {
+      "file": "teen-bead-success-16.m4a",
+      "duration": 2.077,
+      "seed": 7,
+      "intended": "Ten and six more make sixteen!",
+      "heard": "10 and 6 more makes 16.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-17": {
+      "file": "teen-bead-success-17.m4a",
+      "duration": 2.077,
+      "seed": 7,
+      "intended": "Ten and seven more make seventeen!",
+      "heard": "10 and 7 more make 17.",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-18": {
+      "file": "teen-bead-success-18.m4a",
+      "duration": 2.237,
+      "seed": 7,
+      "intended": "Ten and eight more make eighteen!",
+      "heard": "10 and 8 more make 18!",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    },
+    "success-19": {
+      "file": "teen-bead-success-19-v2.m4a",
+      "duration": 2.796,
+      "seed": 8,
+      "intended": "Ten and nine more make nineteen!",
+      "heard": "10 and 9 more make 19!",
+      "rawMatch": true,
+      "normalizedMatch": true,
+      "accepted": true
+    }
+  }
+}

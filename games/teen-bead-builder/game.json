@@ -7,28 +7,31 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#f4c53d",
-  "shareTitle": "Teen Bead Builder 🧮 — Building Teen Numbers",
-  "description": "Combine a ten bar, unit beads, and a numeral card to build teen numbers as ten plus extra ones, hearing each quantity named. A Montessori-style number game for ages 5–6.",
+  "accent": "#159ca6",
+  "shareTitle": "Teen Bead Builder — Build Teen Numbers",
+  "description": "Bundle ten loose clay beads into one ten, count on with extra ones, and match base-ten bead models to every teen numeral from 11 to 19.",
   "learningGoals": [
-    "See teen numbers as ten plus extra ones",
-    "Connect golden bead quantities with teen numerals",
-    "Hear teen number names after building each quantity"
+    "See ten loose ones regroup into one bundled ten",
+    "Compose every teen number as one ten plus additional ones",
+    "Count on from ten instead of recounting the whole quantity",
+    "Connect base-ten bead models with written teen numerals"
   ],
-  "interactionModel": "build-assemble drag or tap-tap ten bar, unit beads, and numeral card onto ghost positions",
-  "feedbackModel": "Correct pieces pop, sparkle, and speak their role; misses wiggle gently with a spoken nudge and retry. Finished builds speak the ten-plus-ones sentence.",
+  "interactionModel": "tap-or-drag an infinite clay bead into forgiving ten and ones frames; remove placed beads before completion; tap large nearby numeral cards to match a bead model",
+  "feedbackModel": "beads pop into visible grid positions, the tenth bead bundles into a tied ten bar, off-tray drags return gently, wrong numeral cards wiggle, and every success speaks and shows the complete ten-plus-ones equation",
   "uses": [
-    "shared/js/engines/build-assemble.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
+    "shared/js/tap.js",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "teens", "title": "Build a Teen", "skill": "teen numbers as ten plus ones" }
+    { "id": "build", "title": "Bundle & Build", "skill": "compose teen numbers as one ten and some ones" },
+    { "id": "match", "title": "Bead Detective", "skill": "match a base-ten bead model to its teen numeral" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; placeholder emoji bead and text card art rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "credits": "Designed and built for QLOBE Kids with GPT Image 2 claymation art, Krea 2 hub art through QLOBE Studio, and Qwen teacher-voice production with Whisper transcript QA.",
   "characters": [],
   "conceptVideo": null
 }

@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-number-11",
+  "kind": "voice",
+  "asset": "teen-bead-number-11.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Eleven.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Eleven."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Eleven.",
+      "heard": "11",
+      "ratio": 0,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "eleven",
+      "normalizedHeard": "eleven",
+      "numericEquivalent": true,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

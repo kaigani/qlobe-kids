@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-bundle-nudge",
+  "kind": "voice",
+  "asset": "teen-bead-bundle-nudge.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Bring the bead to the glowing ten frame.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Bring the bead to the glowing ten frame."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Bring the bead to the glowing ten frame.",
+      "heard": "Bring the bead to the glowing 10 frame.",
+      "ratio": 0.935,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "bring the bead to the glowing ten frame",
+      "normalizedHeard": "bring the bead to the glowing ten frame",
+      "numericEquivalent": true,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

@@ -1,0 +1,25 @@
+{
+  "workflow": "built-in imagegen / GPT Image 2",
+  "assets": [
+    {
+      "id": "clay-workshop",
+      "status": "accepted",
+      "source": "clay-workshop-gpt-image-2.png",
+      "runtime": "../workshop.webp",
+      "prompt": "Use case: stylized-concept\nAsset type: 4:3 tablet game background plate for a preschool math game\nPrimary request: a warm claymation toy workshop for building teen numbers with beads\nScene/backdrop: full-bleed tabletop scene, a softly mottled turquoise-blue clay wall in the upper two thirds and a pale honey birch worktable across the lower third; tiny clay bead garlands and rounded peg shapes decorate only the far left and far right edges; a subtle arched workshop shelf silhouette near the top edge\nStyle/medium: premium stop-motion claymation, visibly hand-formed polymer clay with tiny fingerprints, rounded child-safe shapes, soft studio lighting, tactile handcrafted depth\nComposition/framing: landscape 4:3; keep the entire center and lower-middle calm, open, and uncluttered for large interactive trays and cards; decorative detail only at perimeter; usable in landscape and center-cropped portrait\nLighting/mood: sunny, cozy, celebratory, gentle dimensional shadows\nColor palette: turquoise, sky blue, honey wood, golden yellow, coral, leaf green, violet accents\nConstraints: environment only; no characters; no beads or number rods in the center; no text, no letters, no numbers, no logos, no UI, no watermark; no hard perspective lines through the central interaction area\nAvoid: glossy generic 3D render, photorealism, classroom worksheets, busy central details, dark mood"
+    },
+    {
+      "id": "title-green-key",
+      "status": "rejected-alpha-contamination",
+      "source": "title-chroma-gpt-image-2.png",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent-ready splash title lockup for a preschool tablet game\nPrimary request: hand-sculpted clay title lettering reading exactly \"Teen Bead Builder\"\nSubject: the exact three words TEEN BEAD BUILDER arranged in two balanced lines, \"Teen Bead\" on the first line and \"Builder\" on the second; chunky rounded clay letters, every letter fully visible, with a small curved string of six glossy clay beads tucked beneath the second line as an ornament\nStyle/medium: premium stop-motion claymation, handmade polymer clay with subtle fingerprints and softly rounded edges, joyful preschool game brand art\nComposition/framing: centered, wide 3:2 lockup, generous padding, clean silhouette, no crop\nLighting/mood: warm soft studio light, cheerful and dimensional\nColor palette: alternating golden yellow, coral, teal, leaf green, sky blue, and violet letters with a thin cream clay outline and a soft navy clay outer edge\nText (verbatim): \"Teen Bead Builder\"\nConstraints: spell all three words exactly; no extra words; no tagline; no character; no UI; no watermark; place the entire lockup on a perfectly flat solid #00ff00 chroma-key background; the background must be one uniform color with no shadows, gradients, texture, reflections, floor plane, or lighting variation; do not use #00ff00 anywhere in the title; no cast shadow or contact shadow outside the lockup\nAvoid: malformed letters, duplicated letters, cursive, tiny text, generic vector art, photorealistic plastic"
+    },
+    {
+      "id": "title-magenta-key",
+      "status": "accepted",
+      "source": "title-chroma-magenta-gpt-image-2.png",
+      "runtime": "../title.webp",
+      "prompt": "Use case: stylized-concept\nAsset type: transparent-ready splash title lockup for a preschool tablet game\nPrimary request: hand-sculpted clay title lettering reading exactly \"Teen Bead Builder\"\nSubject: the exact three words TEEN BEAD BUILDER arranged in two balanced lines, \"Teen Bead\" on the first line and \"Builder\" on the second; chunky rounded clay letters, every letter fully visible, with a small curved string of six glossy clay beads tucked beneath the second line as an ornament\nStyle/medium: premium stop-motion claymation, handmade polymer clay with subtle fingerprints and softly rounded edges, joyful preschool game brand art\nComposition/framing: centered, wide 3:2 lockup, generous padding, clean silhouette, no crop\nLighting/mood: warm soft studio light, cheerful and dimensional\nColor palette: alternating golden yellow, coral orange, turquoise teal, leaf green, sky blue, and cream letters with a thin cream clay outline and a soft navy clay outer edge; absolutely no purple or magenta anywhere in the subject\nText (verbatim): \"Teen Bead Builder\"\nConstraints: spell all three words exactly; no extra words; no tagline; no character; no UI; no watermark; place the entire lockup on a perfectly flat solid #ff00ff chroma-key background; the background must be one uniform color with no shadows, gradients, texture, reflections, floor plane, or lighting variation; do not use #ff00ff, magenta, violet, or purple anywhere in the title; no cast shadow or contact shadow outside the lockup\nAvoid: malformed letters, duplicated letters, cursive, tiny text, generic vector art, photorealistic plastic"
+    }
+  ]
+}

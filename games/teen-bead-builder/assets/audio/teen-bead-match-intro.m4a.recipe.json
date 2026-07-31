@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-match-intro",
+  "kind": "voice",
+  "asset": "teen-bead-match-intro.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Look at the beads. Which teen number do they show?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Look at the beads. Which teen number do they show?"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Look at the beads. Which teen number do they show?",
+      "heard": "Look at the beads! Which team number do they show?",
+      "ratio": 0.958,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "look at the beads which teen number do they show",
+      "normalizedHeard": "look at the beads which team number do they show",
+      "numericEquivalent": false,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

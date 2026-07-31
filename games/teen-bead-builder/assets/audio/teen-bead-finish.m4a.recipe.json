@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-finish",
+  "kind": "voice",
+  "asset": "teen-bead-finish.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Beautiful building! You really know your teen numbers.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Beautiful building! You really know your teen numbers."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Beautiful building! You really know your teen numbers.",
+      "heard": "Beautiful building, you really know your team numbers.",
+      "ratio": 0.962,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "beautiful building you really know your teen numbers",
+      "normalizedHeard": "beautiful building you really know your team numbers",
+      "numericEquivalent": false,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

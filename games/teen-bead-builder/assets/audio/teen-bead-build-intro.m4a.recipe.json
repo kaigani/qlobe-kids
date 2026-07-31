@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-build-intro",
+  "kind": "voice",
+  "asset": "teen-bead-build-intro.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "First, let us make a ten. Add ten golden beads.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "First, let us make a ten. Add ten golden beads."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "First, let us make a ten. Add ten golden beads.",
+      "heard": "First, let us make a 10. Add 10 golden beads.",
+      "ratio": 0.884,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "first let us make a ten add ten golden beads",
+      "normalizedHeard": "first let us make a ten add ten golden beads",
+      "numericEquivalent": true,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

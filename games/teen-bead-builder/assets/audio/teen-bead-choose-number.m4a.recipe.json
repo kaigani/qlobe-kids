@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-choose-number",
+  "kind": "voice",
+  "asset": "teen-bead-choose-number.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Which number do the beads show?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Which number do the beads show?"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Which number do the beads show?",
+      "heard": "Which number do the beats show?",
+      "ratio": 0.967,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "which number do the beads show",
+      "normalizedHeard": "which number do the beats show",
+      "numericEquivalent": false,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}

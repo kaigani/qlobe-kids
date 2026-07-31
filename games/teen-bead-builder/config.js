@@ -1,84 +1,56 @@
-const NUMBER_WORDS = {
+const numberWords = {
+  1: 'one',
+  2: 'two',
+  3: 'three',
+  4: 'four',
+  5: 'five',
+  6: 'six',
+  7: 'seven',
+  8: 'eight',
+  9: 'nine',
+  10: 'ten',
   11: 'eleven',
   12: 'twelve',
   13: 'thirteen',
   14: 'fourteen',
   15: 'fifteen',
+  16: 'sixteen',
+  17: 'seventeen',
+  18: 'eighteen',
+  19: 'nineteen',
 };
 
 export default {
   id: 'teen-bead-builder',
-  engine: 'build-assemble',
   title: 'Teen Bead Builder',
-  splashEmoji: '🔟',
-  // Art-world backdrop (docs/art-direction.md)
-  theme: {
-    world: 'toy-table',
-    background: './assets/bg.jpg',
-  },
-  voice: {
-    intro: 'A ten bar and some ones make a teen number.',
-    nudge: 'That bead has another spot. Try again.',
-    wait: 'Pick a golden bead or the number card.',
-    cheer: 'You built the teen numbers!',
-  },
+  artWorld: 'toy-table / claymation workshop',
+  numberWords,
+  colors: ['gold', 'coral', 'teal', 'green', 'blue', 'cream'],
   modes: [
     {
-      id: 'teens',
-      title: 'Build a Teen',
-      rounds: 5,
-      prompt: 'Put the ten bar with the ones to make a teen.',
-      builds: [
-        teenBuild(11),
-        teenBuild(13),
-        teenBuild(15),
-        teenBuild(12),
-        teenBuild(14),
-      ],
+      id: 'build',
+      title: 'Bundle & Build',
+      skill: 'compose teen numbers as one ten and some ones',
+      rounds: [11, 14, 17, 19],
+    },
+    {
+      id: 'match',
+      title: 'Bead Detective',
+      skill: 'match a base-ten bead model to its teen numeral',
+      rounds: [12, 15, 18, 13, 16],
     },
   ],
+  voice: {
+    welcome: 'Pick one bead game to play.',
+    buildIntro: 'First, let us make a ten. Add ten golden beads.',
+    addBead: 'Add a golden bead.',
+    bundleNudge: 'Bring the bead to the glowing ten frame.',
+    tenMade: 'Ten ones bundle into one ten!',
+    countOn: 'Now count on from ten.',
+    matchIntro: 'Look at the beads. Which teen number do they show?',
+    chooseNumber: 'Which number do the beads show?',
+    tryAgain: 'Count the ones after ten. Try another number.',
+    finish: 'Beautiful building! You really know your teen numbers.',
+    back: 'Pick another way to play.',
+  },
 };
-
-function teenBuild(number) {
-  const ones = number - 10;
-  const parts = [
-    {
-      art: 'emoji:🟨',
-      alt: `golden ten bar for ${number}`,
-      say: 'ten',
-      matchKey: 'ten-bar',
-      x: 300,
-      y: 510,
-      size: 280,
-    },
-  ];
-
-  for (let i = 0; i < ones; i++) {
-    parts.push({
-      art: 'emoji:🟡',
-      alt: `golden one bead ${i + 1} for ${number}`,
-      say: 'one more',
-      matchKey: 'one-bead',
-      x: 505 + (i % 3) * 105,
-      y: 455 + Math.floor(i / 3) * 120,
-      size: 105,
-    });
-  }
-
-  parts.push({
-    art: `text:${number}`,
-    alt: `number card ${number}`,
-    say: NUMBER_WORDS[number],
-    matchKey: `card-${number}`,
-    x: 785,
-    y: 510,
-    size: 165,
-  });
-
-  return {
-    name: `teen-${number}`,
-    say: `Ten and ${ones} more. ${NUMBER_WORDS[number]}!`,
-    ordered: false,
-    parts,
-  };
-}

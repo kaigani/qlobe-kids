@@ -5,53 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Teen Bead Builder 🧮 — Building Teen Numbers</title>
-  <meta name="description" content="Combine a ten bar, unit beads, and a numeral card to build teen numbers as ten plus extra ones, hearing each quantity named. A Montessori-style number game for ages 5–6." />
+  <meta name="theme-color" content="#159ca6" />
+  <title>Teen Bead Builder — Build Teen Numbers</title>
+  <meta name="description" content="Bundle ten loose clay beads into one ten, count on with extra ones, and match bead models to teen numerals. A tactile base-ten game for ages 5–6." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Teen Bead Builder" />
-  <meta property="og:title" content="Teen Bead Builder 🧮 — Building Teen Numbers" />
-  <meta property="og:description" content="Combine a ten bar, unit beads, and a numeral card to build teen numbers as ten plus extra ones, hearing each quantity named. A Montessori-style number game for ages 5–6." />
+  <meta property="og:title" content="Teen Bead Builder — Build Teen Numbers" />
+  <meta property="og:description" content="Bundle ten loose clay beads into one ten, then build and match all the teen numbers from 11 to 19." />
   <meta property="og:url" content="https://qlo.be/games/teen-bead-builder/" />
   <meta property="og:image" content="https://qlo.be/games/teen-bead-builder/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Teen Bead Builder title screen with a single Build a Teen button and a number 10 icon over a cloudy blue sky background." />
+  <meta property="og:image:alt" content="Teen Bead Builder clay title above two colorful bead-building activity cards." />
 
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Teen Bead Builder 🧮 — Building Teen Numbers" />
-  <meta name="twitter:description" content="Combine a ten bar, unit beads, and a numeral card to build teen numbers as ten plus extra ones, hearing each quantity named. A Montessori-style number game for ages 5–6." />
+  <meta name="twitter:title" content="Teen Bead Builder — Build Teen Numbers" />
+  <meta name="twitter:description" content="Bundle ten loose clay beads into one ten, then build and match teen numbers." />
   <meta name="twitter:image" content="https://qlo.be/games/teen-bead-builder/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app" aria-live="polite"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -933,15 +933,20 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#f4c53d",
+      "accent": "#159ca6",
       "modes": [
         {
-          "id": "teens",
-          "title": "Build a Teen",
-          "skill": "teen numbers as ten plus ones"
+          "id": "build",
+          "title": "Bundle & Build",
+          "skill": "compose teen numbers as one ten and some ones"
+        },
+        {
+          "id": "match",
+          "title": "Bead Detective",
+          "skill": "match a base-ten bead model to its teen numeral"
         }
       ],
-      "summary": "Combine a ten and some ones to make eleven through nineteen."
+      "summary": "Bundle ten ones into one ten, build teen numbers, and match bead models to numerals."
     },
     {
       "id": "snack-addition-stories",

@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "teen-bead-ten-made",
+  "kind": "voice",
+  "asset": "teen-bead-ten-made.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ten ones bundle into one ten!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Ten ones bundle into one ten!"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Ten ones bundle into one ten!",
+      "heard": "10 ones bundle into one 10.",
+      "ratio": 0.815,
+      "match": true,
+      "rawMatch": true,
+      "normalizedIntended": "ten ones bundle into one ten",
+      "normalizedHeard": "ten ones bundle into one ten",
+      "numericEquivalent": true,
+      "normalizer": "lowercase; digits 0–19 → words; punctuation/spacing ignored; make/makes equivalent"
+    }
+  },
+  "created": "2026-07-31"
+}
