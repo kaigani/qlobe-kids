@@ -1,59 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Snack Chef 🥪 — Cooking a Simple Snack</title>
-  <meta name="description" content="Follow a calm kitchen sequence to make banana coins or toast with a grown-up nearby, from clean hands through cleanup. A real-kitchen coaching game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Snack Chef" />
-  <meta property="og:title" content="Snack Chef 🥪 — Cooking a Simple Snack" />
-  <meta property="og:description" content="Follow a calm kitchen sequence to make banana coins or toast with a grown-up nearby, from clean hands through cleanup. A real-kitchen coaching game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/snack-chef/" />
-  <meta property="og:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Snack Chef title screen with Banana Coins and Spread It buttons and a sandwich icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Snack Chef 🥪 — Cooking a Simple Snack" />
-  <meta name="twitter:description" content="Follow a calm kitchen sequence to make banana coins or toast with a grown-up nearby, from clean hands through cleanup. A real-kitchen coaching game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#f7dfb5">
+  <title>Snack Chef — Make playful fruit snacks</title>
+  <meta name="description" content="Spread, peel, slice, and arrange three cheerful pretend snacks in a warm storybook kitchen. A tactile practical-life game for ages 5–6.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Snack Chef">
+  <meta property="og:description" content="Make fruit faces, toast gardens, and banana boats with playful finger gestures.">
+  <meta property="og:url" content="https://qlo.be/games/snack-chef/">
+  <meta property="og:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Snack Chef storybook kitchen with three playful fruit recipe cards.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Snack Chef">
+  <meta name="twitter:description" content="Make fruit faces, toast gardens, and banana boats with playful finger gestures.">
+  <meta name="twitter:image" content="https://qlo.be/games/snack-chef/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app" aria-live="polite">
+    <section id="splash" class="screen">
+      <a class="hud hud-home" href="../../" aria-label="Back to all games"></a>
+      <img class="title-art" src="./assets/title.webp" alt="Snack Chef">
+      <img class="maya maya-splash" src="../../shared/characters/maya/portrait.png" alt="Maya">
+      <div id="recipe-cards" class="recipe-cards" aria-label="Choose a snack"></div>
+    </section>
+
+    <section id="play" class="screen hidden">
+      <button id="back" class="hud hud-back" aria-label="Back to recipes"></button>
+      <button id="sound" class="hud hud-sound" aria-label="Hear the instruction again"></button>
+      <div id="step-rail" class="step-rail" aria-hidden="true"></div>
+      <div class="prompt-card">
+        <span id="prompt-icon" class="prompt-icon"></span>
+        <span id="prompt-text"></span>
+      </div>
+      <div id="workboard" class="workboard" aria-label="Kitchen work board"></div>
+      <div id="ingredient-tray" class="ingredient-tray" aria-label="Ingredients"></div>
+    </section>
+
+    <section id="reveal" class="screen hidden">
+      <button id="reveal-back" class="hud hud-back" aria-label="Back to recipes"></button>
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
+      <img class="maya maya-reveal" src="../../shared/characters/maya/portrait.png" alt="Maya">
+      <img id="finished-art" class="finished-art" alt="">
+      <div class="reveal-actions">
+        <button id="again" class="big-button replay-button" aria-label="Make this snack again">
+          <span aria-hidden="true">↻</span>
+        </button>
+        <button id="recipes" class="big-button recipes-button" aria-label="Choose another snack">
+          <span aria-hidden="true">▦</span>
+        </button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

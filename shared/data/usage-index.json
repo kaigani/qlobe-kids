@@ -9,10 +9,10 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-30T04:50:21.199Z",
+  "generated": "2026-07-30T06:36:49.303Z",
   "engines": {
     "coach-timer": {
-      "count": 21,
+      "count": 20,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
@@ -30,7 +30,6 @@
         "plant-care-captain",
         "pouring-station",
         "shelf-reset-game",
-        "snack-chef",
         "sweep-the-trail",
         "throwing-target-garden",
         "trail-counting-walk",
@@ -1378,16 +1377,23 @@
       "packs": []
     },
     "snack-chef": {
-      "engine": "coach-timer",
-      "status": "beta",
+      "engine": null,
+      "status": "live",
       "category": "practical-life",
-      "characters": [],
-      "modules": [
-        "shared/js/engines/coach-timer.js",
-        "shared/js/sfx.js",
-        "shared/js/speech.js"
+      "characters": [
+        "maya"
       ],
-      "assets": [],
+      "modules": [
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/snack-chef/assets/title.webp",
+        "shared/assets/ui",
+        "shared/characters/maya/portrait.png"
+      ],
       "packs": []
     },
     "song-story-remix": {
@@ -1854,7 +1860,6 @@
         "plant-care-captain",
         "pouring-station",
         "shelf-reset-game",
-        "snack-chef",
         "sweep-the-trail",
         "throwing-target-garden",
         "trail-counting-walk",
@@ -2214,6 +2219,7 @@
         "puppet-retell",
         "sand-tray-letters",
         "sink-or-float",
+        "snack-chef",
         "sound-painting",
         "sound-sprouts",
         "world-music-dance"
@@ -2231,6 +2237,7 @@
         "puppet-retell",
         "sand-tray-letters",
         "sink-or-float",
+        "snack-chef",
         "sound-painting",
         "story-stones",
         "world-music-dance"
@@ -2317,6 +2324,7 @@
         "name-puzzle",
         "plan-do-review",
         "problem-solving-puppets",
+        "snack-chef",
         "turn-taking-tower"
       ],
       "Maya": [
@@ -2442,6 +2450,9 @@
       "games/sand-tray-letters/assets/materials/white-salt.png": [
         "sand-tray-letters"
       ],
+      "games/snack-chef/assets/title.webp": [
+        "snack-chef"
+      ],
       "games/sound-sprouts/assets/apple-touch-icon.png": [
         "sound-sprouts"
       ],
@@ -2558,6 +2569,7 @@
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
+        "snack-chef",
         "sound-painting",
         "sound-sprouts",
         "tangram-tales",
@@ -2608,10 +2620,14 @@
         "name-puzzle",
         "plan-do-review",
         "problem-solving-puppets",
+        "snack-chef",
         "turn-taking-tower"
       ],
       "shared/characters/Maya": [
         "snack-addition-stories"
+      ],
+      "shared/characters/maya/portrait.png": [
+        "snack-chef"
       ],
       "shared/characters/nia": [
         "board-game-reset",

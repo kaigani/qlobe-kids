@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "snack-chef-boat-peel",
+  "kind": "voice",
+  "asset": "snack-chef-boat-peel.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Pull each peel strip down, down, down.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Pull each peel strip down, down, down."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Pull each peel strip down, down, down.",
+      "heard": "Pull each peel strip down, down, down, down.",
+      "ratio": 0.933,
+      "match": true
+    }
+  },
+  "created": "2026-07-29"
+}

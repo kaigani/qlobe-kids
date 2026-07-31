@@ -3,32 +3,36 @@
   "title": "Snack Chef",
   "category": "practical-life",
   "path": "games/snack-chef/",
-  "icon": "🥪",
+  "icon": "🍓",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "beta",
-  "accent": "#f28c45",
-  "shareTitle": "Snack Chef 🥪 — Cooking a Simple Snack",
-  "description": "Follow a calm kitchen sequence to make banana coins or toast with a grown-up nearby, from clean hands through cleanup. A real-kitchen coaching game for ages 5–6.",
+  "status": "live",
+  "accent": "#d94d62",
+  "shareTitle": "Snack Chef — Make playful fruit snacks",
+  "description": "Spread, peel, slice, and arrange fruit faces, toast gardens, and banana boats in a warm storybook kitchen.",
   "learningGoals": [
-    "Follow a short kitchen sequence",
-    "Practice safe handling of a butter knife with grown-up supervision",
-    "Build independence while preparing a simple snack",
-    "Include cleanup as part of cooking"
+    "Follow a short picture recipe from beginning to end",
+    "Practice controlled circular and directional finger movements",
+    "Arrange ingredients with spatial planning and simple symmetry",
+    "Build positive familiarity with food preparation"
   ],
-  "interactionModel": "tap the large done row after each real-world kitchen step; timed steps coach slow, careful work",
-  "feedbackModel": "calm spoken sous-chef coaching with sparkle, tick, and tada SFX; safety reminders are natural and success ends with eating",
+  "interactionModel": "broad scrub, swipe, peel, and strand-proof drag gestures with tap-to-place alternatives",
+  "feedbackModel": "food changes directly under the finger, gentle spoken modeling, warm tactile sound effects, and a plated storybook reveal",
   "uses": [
-    "shared/js/engines/coach-timer.js",
+    "shared/js/tap.js",
+    "shared/js/sfx.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/voice-clips.js",
+    "shared/assets/ui/",
+    "shared/characters/maya/portrait.png"
   ],
   "modes": [
-    { "id": "banana", "title": "Banana Coins", "skill": "safe banana preparation, sequencing, and cleanup" },
-    { "id": "toast", "title": "Spread It", "skill": "careful spreading, cutting, and cleanup" }
+    { "id": "fruit", "title": "Fruit Face", "skill": "spatial arrangement and facial symmetry" },
+    { "id": "toast", "title": "Toast Garden", "skill": "controlled circular spreading" },
+    { "id": "boat", "title": "Banana Boat", "skill": "directional preparation sequencing" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; original game art produced with GPT Image 2 and Krea 2; teacher dialogue produced with Qwen voice clone and transcript-checked with Whisper; Maya and platform UI by QLOBE Kids.",
+  "characters": ["maya"],
   "conceptVideo": null
 }

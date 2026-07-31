@@ -1,0 +1,68 @@
+{
+  "id": "snack-chef",
+  "title": "Snack Chef",
+  "engine": "custom-gesture-kitchen",
+  "theme": {
+    "world": "storybook",
+    "accent": "#d94d62",
+    "background": "./assets/kitchen.webp"
+  },
+  "voice": {
+    "welcome": "Welcome to Snack Chef! Tap a yummy picture and let us make it.",
+    "nudge": "Almost! Put it on the glowing spot.",
+    "start-dot": "Start at the orange dot.",
+    "again": "What shall we make next?",
+    "fruit-intro": "Let us make a silly fruit face!",
+    "fruit-cut": "Swipe across each dotted line to slice the kiwi.",
+    "fruit-arrange": "Give our snack two kiwi eyes, a berry nose, and a banana smile.",
+    "fruit-cheer": "Hello, fruit face! You made a delicious smile.",
+    "toast-intro": "Let us paint a tiny toast garden!",
+    "toast-spread": "Move in big circles and spread to every corner.",
+    "toast-arrange": "Plant the banana flowers and add bright berry centers.",
+    "toast-cheer": "Your toast garden is blooming. Beautiful chef work!",
+    "boat-intro": "Let us build a crunchy banana boat!",
+    "boat-peel": "Pull each peel strip down, down, down.",
+    "boat-cut": "Swipe across the four dotted lines to make banana coins.",
+    "boat-arrange": "Fill the boat from left to right, then sprinkle the berries.",
+    "boat-cheer": "All aboard the banana boat. Bon voyage, chef!"
+  },
+  "modes": [
+    {
+      "id": "fruit",
+      "title": "Fruit Face",
+      "art": "./assets/fruit-face.webp",
+      "skill": "spatial arrangement and facial symmetry",
+      "steps": [
+        { "id": "cut", "icon": "cut", "prompt": "fruit-cut", "count": 3 },
+        { "id": "arrange", "icon": "face", "prompt": "fruit-arrange", "count": 4 }
+      ],
+      "intro": "fruit-intro",
+      "cheer": "fruit-cheer"
+    },
+    {
+      "id": "toast",
+      "title": "Toast Garden",
+      "art": "./assets/toast-garden.webp",
+      "skill": "controlled circular spreading",
+      "steps": [
+        { "id": "spread", "icon": "spread", "prompt": "toast-spread", "count": 18 },
+        { "id": "arrange", "icon": "flower", "prompt": "toast-arrange", "count": 6 }
+      ],
+      "intro": "toast-intro",
+      "cheer": "toast-cheer"
+    },
+    {
+      "id": "boat",
+      "title": "Banana Boat",
+      "art": "./assets/banana-boat.webp",
+      "skill": "directional preparation sequencing",
+      "steps": [
+        { "id": "peel", "icon": "peel", "prompt": "boat-peel", "count": 3 },
+        { "id": "cut", "icon": "cut", "prompt": "boat-cut", "count": 4 },
+        { "id": "arrange", "icon": "boat", "prompt": "boat-arrange", "count": 6 }
+      ],
+      "intro": "boat-intro",
+      "cheer": "boat-cheer"
+    }
+  ]
+}
