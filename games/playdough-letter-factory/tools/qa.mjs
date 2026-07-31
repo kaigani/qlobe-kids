@@ -149,7 +149,7 @@ async function main() {
   await traceActiveLetter(page);
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('real guided tracing reaches the phonics reveal', true);
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(680);
   await page.screenshot({ path: path.join(shots, '05-letter-reveal.png') });
 
   await page.locator('#reveal-back').click();
@@ -175,6 +175,7 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('Word Maker reaches a complete word reveal', true);
+  await page.waitForTimeout(680);
   await page.screenshot({ path: path.join(shots, '07-word-reveal.png') });
 
   await page.evaluate(() => {
