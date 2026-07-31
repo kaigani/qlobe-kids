@@ -37,8 +37,11 @@ all layered → all TTS → all whisper).
 
 `CUTOUT` (qwen-image-layered, async, fetch `output=layer_2`):
 
-> Solid flat green background layer. Top layer: the exact same cut-paper
-> dancer from the image. Keep it identical to the input image.
+> Background layer: Plain grey background. Top layer: the complete full-body
+> exact same cut-paper dancer from the image on a transparent background,
+> including the head, hair, costume, both complete arms and hands, both
+> complete legs and feet, every accessory, and the figure's soft cut-paper
+> edge shadows. Keep every part identical to the input image.
 
 ## Scenes (krea2-turbo-t2i)
 
@@ -124,6 +127,42 @@ Review a 3×2 contact strip per culture BEFORE cutout: identity (face, costume,
 colours), anatomy (hands, feet, limbs), readability of the pose at card size.
 Any drift or malformed anatomy = reroll on the seed ladder, never repaired
 downstream.
+
+## Pose remediation (GPT Image 2, 2026-07-30)
+
+Shared repair prompt:
+
+> Recreate the referenced full-body dancer while preserving the exact
+> character identity, friendly face, costume, colours, proportions, cultural
+> details, and pose. Render as premium handmade cut-paper collage: layered
+> construction paper, cardstock and felt, visible fibres, rounded cut edges,
+> subtle stacked-paper depth, and soft tactile shadows confined to the figure.
+> Use one centred character with generous padding on a perfectly plain neutral
+> grey background. Exactly one head, two anatomically connected arms and
+> hands, and two anatomically connected legs and feet; no extra, missing,
+> fused, detached, hidden, or cropped limbs. No text or watermark.
+
+Pose-specific constraints:
+
+| asset | constraint |
+|---|---|
+| Ghana `neutral` | upright at rest; both arms and hands visible outside the wrap |
+| Ghana `move-1` | stomp one foot; clap both hands at chest height |
+| Ghana `move-2` | knees bent low; both arms rowing forward |
+| Ghana `move-3` | one knee lifted; exactly two arms making a circle overhead; no literal ring |
+| Ghana `celebrate` | jump with two arms raised and both feet visible |
+| Ireland `move-1` | one leg kicked straight forward; both arms straight down; complete white socks and black shoes |
+| Japan `move-1` | exactly two raised arms; fan tucked into the obi with no extra hand |
+| Mexico `neutral` | both arms relaxed; no hand holding the balanced semicircle skirt |
+| Mexico `move-1` | one hand holds the swished skirt; the other arm hangs down |
+| India `move-3` | exactly two arms flowing together toward one side |
+
+Ireland extraction-prep retry:
+
+> Preserve the accepted character and pose. Put both complete white socks and
+> black dance shoes against light neutral grey with no contact shadow; add a
+> very thin warm-white cut-paper sole edge so Qwen retains both shoe
+> silhouettes.
 
 ## Assembly
 

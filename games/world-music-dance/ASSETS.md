@@ -16,7 +16,20 @@ rejected takes kept alongside the accepted sources under `assets/source/gen/`.
 | `assets/ui/title.webp` (1004×454, 89 KB) | krea2-turbo-t2i → local chroma key | `gen/ui/title-lockup.png`, seed 1337 (seed 42 rejected: rainbow ground) | corner-sampled distance key, median despeckle, component filter ≥1200 px, alpha-trim, WebP q88; spelling visually verified at full size |
 | `assets/ui/card-backing.webp` (512×708, 34 KB) | krea2-turbo-t2i → qwen-image-layered (layer_2) | `gen/ui/card-backing.png`, seed 42 | alpha-trim, WebP q88 |
 | `assets/ui/lantern.webp` (320×372, 31 KB) | krea2-turbo-t2i → qwen-image-layered | `gen/ui/lantern.png`, seed 42 | alpha-trim, WebP q88; runtime-tinted per culture accent |
-| `assets/pose-actors/<culture>/` ×6 (5 poses each, WebP q90, ~90–130 KB/pose) | krea2 identity master → qwen-image-edit charcoal re-ground → qwen-image-edit pose derives (from re-grounded neutral) → qwen-image-layered cutouts → `tools/pipeline/pose_actor_assemble.py` (canvas 1024, maxArt 900, baseline 972, shared scale) | masters seed 42 (india, ghana, mexico) / 1337 (brazil, japan, ireland — rerolled for open eyes); derives seed 42; ghana move-3 seed 9001 (42: literal ring artifact, 1337: literal beach ball); cutouts seed 42, retries seed 1337 (ghana-celebrate subject deletion; mexico ×4 kept background) | magenta-composite alpha QA on every cutout (`gen/cutouts/*-qa-magenta.jpg`), per-culture contact strips in `gen/contact/` |
+| `assets/pose-actors/<culture>/` ×6 (5 poses each, WebP q90, ~81–240 KB/pose) | krea2 identity master → qwen-image-edit charcoal re-ground → qwen-image-edit pose derives (from re-grounded neutral) → qwen-image-layered cutouts → `tools/pipeline/pose_actor_assemble.py` (canvas 1024, maxArt 900, baseline 972, shared scale) | masters seed 42 (india, ghana, mexico) / 1337 (brazil, japan, ireland — rerolled for open eyes); derives seed 42; ghana move-3 seed 9001 (42: literal ring artifact, 1337: literal beach ball); cutouts seed 42, retries seed 1337 (ghana-celebrate subject deletion; mexico ×4 kept background) | magenta-composite alpha QA on every cutout, per-culture contact strips in `gen/contact/` |
+
+Pose remediation (2026-07-30): Ghana `neutral`, `move-1`, `move-2`,
+`move-3`, and `celebrate`; Ireland `move-1`; Japan `move-1`; Mexico
+`neutral` and `move-1`; and India `move-3` were recreated with GPT Image 2
+on neutral grey to correct style, missing-limb, extra-limb, and anatomy
+defects. Each accepted source then ran through the local
+`qwen-image-layered` async workflow (seed 42, `layer_2`) with an explicit
+complete-full-body retention prompt and was assembled to 1024×1024
+transparent WebP q90. Ireland `move-1` required a second GPT Image 2 source
+pass adding a thin pale paper edge around the black shoes before Qwen would
+retain both complete legs and shoes. All 30 final WebPs passed dimension,
+manifest, alpha-range, nonempty-bounds, and edge-clearance validation; the
+five affected culture contact sheets were visually reviewed.
 
 Dancer roster (original characters, no real-person likeness): India — Kathak
 girl (marigold/pink lehenga); Brazil — samba girl (yellow/green carnival

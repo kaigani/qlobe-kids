@@ -15,7 +15,7 @@ paraphrase them here.
             call per (culture, move-1|move-2|move-3|celebrate) ->
             assets/source/gen/derives/<culture>-<pose>.png
   cutouts   qwen-image-layered (ASYNC job flow — sync=true would return the
-            green composite, not the alpha cutout) on all 30 dancer poses
+            background composite, not the alpha cutout) on all 30 dancer poses
             (5 poses x 6 cultures: neutral + move-1..3 + celebrate) plus
             title-lockup, card-backing and lantern -> assets/source/gen/cutouts/*.png,
             with a magenta-composite QA jpg written next to every cutout for
@@ -115,8 +115,11 @@ DERIVE_TMPL = (
 # mirroring how games/flashlight-cave/tools/gen-actors.py parameterizes
 # `subject` through its cutout() helper.
 CUTOUT_TMPL = (
-    "Solid flat green background layer. Top layer: the exact same {subject} from "
-    "the image. Keep it identical to the input image."
+    "Background layer: Plain grey background. Top layer: the complete full-body exact "
+    "same {subject} from the image on a transparent background, including the head, "
+    "hair, costume, both complete arms and hands, both complete legs and feet, every "
+    "accessory, and the figure's soft cut-paper edge shadows. Keep every part identical "
+    "to the input image."
 )
 
 MASTER_INTRO = (
