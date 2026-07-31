@@ -26,6 +26,7 @@ let manifest = null;
 let buffers = {};        // instr -> [AudioBuffer]
 let baseUrl = '';
 let muted = false;
+let duckGain = 1;        // duck() target — persists across mute toggles
 let notesScheduled = 0;
 let selfHealAttached = false;
 
@@ -115,7 +116,25 @@ export function unlock() {
 
 export function setMuted(m) {
   muted = m;
-  if (master) master.gain.value = m ? 0 : 1;
+  if (master) {
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.value = m ? 0 : duckGain;
+  }
+}
+
+/**
+ * Duck the whole music bus (e.g. under a spoken line) and restore it:
+ * duck(0.25) before the voice, duck(1) after. Ramps over `ms`; respects
+ * setMuted (a muted bus stays silent, but the level is remembered).
+ */
+export function duck(level = 1, ms = 200) {
+  duckGain = Math.max(0, Math.min(1, level));
+  if (!master || muted) return;
+  const g = master.gain;
+  const now = ctx.currentTime;
+  g.cancelScheduledValues(now);
+  g.setValueAtTime(g.value, now);
+  g.linearRampToValueAtTime(duckGain, now + Math.max(0.01, ms / 1000));
 }
 
 export function instrumentIds() { return Object.keys(manifest || {}); }

@@ -51,10 +51,24 @@ existing 12 shared samples; the game resolves at boot against
 LTX-generated world-instrument one-shot candidates (experiment, 2026-07-29)
 live under `assets/source/gen/instruments/` with waveform QA
 (`final/waveforms.png`): most candidates rendered as rhythmic phrases rather
-than single hits; tabla-a / djembe-a / koto are plausible one-shots but ship
-NOTHING unheard — the game runs on `bandFallback` (the proven shared 12) until
-a human auditions and merges accepted samples into
-`shared/assets/instruments/`.
+than single hits and were rejected.
+
+**World instrument samples — accepted 2026-07-30** into
+`shared/assets/instruments/` via
+`tools/ingest-sourced-instruments.py` (onset trim, 30 ms fade, −18 dBFS RMS
+normalize, autocorrelation baseMidi, AAC m4a — same constants as
+gen-instruments.py):
+
+- Auditioned & approved from the LTX experiment (CC BY 4.0, project-generated):
+  `agogo-b`, `djembe-b`, `tabla-a`, `taiko` (all role perc).
+- Project-owner sourced clean single-note recordings
+  (`00-reference/instruments/world/`, same provenance/rights as the original
+  12 — see my-puppet-band ASSETS.md): berimbau, bodhrán, fiddle, fontomfrom,
+  guitarrón, koto, sarangi, shamisen, sitar, tin-whistle, uilleann pipes,
+  vihuela.
+
+With these merged, every culture's preferred `band` resolves fully;
+`bandFallback` (the proven 12) remains as the safety net.
 
 ## Voice
 

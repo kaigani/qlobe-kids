@@ -158,6 +158,10 @@ function logAudio(kind, key) {
 
 voiceClips.onClip((key) => logAudio('clip', key));
 
+// How far the band drops while a voice line plays (1 = full volume).
+const VOICE_DUCK_LEVEL = 0.25;
+let voiceDuckToken = 0;
+
 /**
  * Speak one line. Recorded clip when the manifest has it, else Web Speech with
  * the frozen script text. Resolves when the line finishes (bounded).
@@ -176,12 +180,21 @@ function say(key, fallback) {
     return Promise.resolve();
   }
   const text = fallback || LINES[key] || '';
-  return voiceClips.say(key, text);
+  // The band sits back while the teacher talks: duck under the line, restore
+  // when it resolves — unless a newer line (or stopVoice) took the bus over.
+  const token = ++voiceDuckToken;
+  music.duck(VOICE_DUCK_LEVEL, 120);
+  const line = voiceClips.say(key, text);
+  const restore = () => { if (token === voiceDuckToken) music.duck(1, 350); };
+  line.then(restore, restore);
+  return line;
 }
 
 function stopVoice() {
   voiceClips.stop();
   speech.stop();
+  ++voiceDuckToken;   // orphan any pending restore; it must not double-fire
+  music.duck(1, 200);
 }
 
 function playSfx(name) {
