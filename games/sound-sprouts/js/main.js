@@ -4,7 +4,7 @@
 import { initScene } from './scene.js';
 import { Game } from './game.js';
 import * as speech from '../../../shared/js/speech.js';
-import * as audio from '../../../shared/js/audio.js';
+import * as voice from './voice.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
 
@@ -21,7 +21,6 @@ const hud = {
 };
 
 let game = null;
-let audioUnlocked = false;
 let starting = false; // guards against rapid menu taps spawning multiple games
 
 // Wait for the font so canvas-texture letters render in Fredoka (if available).
@@ -39,18 +38,22 @@ ready().then(() => {
 });
 
 // Kick off manifest loading at boot (non-blocking — fallbacks cover the gap).
-audio.ready.catch(() => {});
+voice.ready.catch(() => {});
 
 // ---- audio unlock on first gesture -----------------------------------
 
+// Every unlock/resume call runs on every qualifying gesture — iPadOS can
+// suspend the AudioContext after an app switch, notification, lock, or media
+// interruption, and a stale "unlocked once" guard would leave later touches
+// resuming nothing (this is also what let the first-gesture speak abort the
+// pending muted prime and never re-run). There is no genuinely one-time work
+// left to gate here.
 function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
   sfx.unlock();
   speech.unlock();
-  audio.unlock();
+  voice.unlock();
 }
-// any first interaction unlocks
+// every interaction re-unlocks (see comment above)
 window.addEventListener('pointerdown', unlockAudio, { once: false });
 
 // ---- screen routing --------------------------------------------------
@@ -62,7 +65,7 @@ function showMenu() {
   }
   starting = false;
   speech.stop();
-  audio.stop();
+  voice.stop();
   menu.classList.remove('hidden');
   hudRoot.classList.add('hidden');
 }

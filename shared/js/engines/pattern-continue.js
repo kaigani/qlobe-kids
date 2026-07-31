@@ -7,6 +7,7 @@ import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
+import { onTap } from '../tap.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -49,7 +50,6 @@ class PatternContinueGame {
     this.currentCandidates = [];
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.yumIndex = 0;
     this.lastReplay = 0;
@@ -78,14 +78,6 @@ class PatternContinueGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-pattern-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
-    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -109,8 +101,9 @@ class PatternContinueGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // Called on every qualifying gesture, not gated behind a first-touch flag:
+    // iPadOS can suspend the AudioContext later (app switch, lock), and these
+    // resume calls are cheap and idempotent.
     sfx.unlock();
     speech.unlock();
   }
@@ -160,12 +153,13 @@ class PatternContinueGame {
     this.applyThemeBackdrop();
 
     this.mountEl.querySelectorAll('.qk-pattern-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (event) => {
-        event.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (event) => {
+          if (event && event.preventDefault) event.preventDefault();
+          this.unlockAudio();
+          this.playSfx('tick');
+        },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
   }
 
@@ -219,11 +213,9 @@ class PatternContinueGame {
     this.applyThemeBackdrop();
 
     const home = this.mountEl.querySelector('.qk-pattern-back');
-    home.addEventListener('pointerdown', (event) => event.stopPropagation());
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    onTap(home, () => { speech.stop(); this.renderSplash(); });
     const sound = this.mountEl.querySelector('.qk-pattern-sound');
-    sound.addEventListener('pointerdown', (event) => event.stopPropagation());
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    onTap(sound, () => this.replayPromptFromHud());
   }
 
   async createPlayStage() {
@@ -737,13 +729,16 @@ class PatternContinueGame {
         </div>
       </section>`;
     this.applyThemeBackdrop();
+    const back = this.mountEl.querySelector('.qk-pattern-back');
+    onTap(back, () => { speech.stop(); this.renderSplash(); });
     const again = this.mountEl.querySelector('.qk-pattern-again');
-    again.addEventListener('pointerdown', (event) => {
-      event.preventDefault();
-      this.unlockAudio();
-      this.playSfx('tick');
+    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
+      feedback: (event) => {
+        if (event && event.preventDefault) event.preventDefault();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
     });
-    again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
   }
 
   updateDots() {

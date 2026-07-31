@@ -8,6 +8,7 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
+import { onTap } from '../tap.js';
 import { artEl } from './art.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease } from '../stage/tween.js';
@@ -68,7 +69,6 @@ class TracePathGame {
 
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.lastReplay = 0;
     this.idleTimer = 0;
@@ -142,14 +142,6 @@ class TracePathGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-trace-back')) {
-        this.stopVoice();
-        this.renderSplash();
-      }
-    });
     this.renderSplash();
     this.ready = this.config.voiceClips
       ? voiceClips.init(
@@ -182,8 +174,9 @@ class TracePathGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // Every qualifying gesture re-runs these — iPadOS can suspend the
+    // AudioContext after app switch/lock, and a one-shot gate would leave
+    // audio dead for the rest of the session. unlock() calls are idempotent.
     sfx.unlock();
     speech.unlock();
     if (this.config.voiceClips) voiceClips.unlock();
@@ -234,12 +227,13 @@ class TracePathGame {
       const button = el('button', 'qk-trace-mode', mode.title || mode.id);
       button.type = 'button';
       button.dataset.mode = mode.id;
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(mode.id), {
+        feedback: (e) => {
+          e.preventDefault();
+          this.unlockAudio();
+          this.playSfx('tick');
+        },
       });
-      button.addEventListener('click', () => this.startMode(mode.id));
       modeList.appendChild(button);
     }
     center.append(artCard, el('h1', '', this.config.title), modeList);
@@ -282,8 +276,10 @@ class TracePathGame {
     this.applyTheme(root);
     root.setAttribute('aria-label', this.mode.title || this.config.title);
     const hud = el('header', 'qk-trace-hud');
-    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
+    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu', null, () => {
+      this.stopVoice();
+      this.renderSplash();
+    });
     const progress = el('div', 'qk-trace-progress');
     progress.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot'));
@@ -296,8 +292,12 @@ class TracePathGame {
     canvasHost.addEventListener('pointerdown', (e) => this.handleStagePointerDown(e), { passive: false });
     stage.append(prompt, canvasHost);
 
-    const sound = this.renderImageButton('qk-trace-sound', this.config.copy.replay);
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    const sound = this.renderImageButton(
+      'qk-trace-sound',
+      this.config.copy.replay,
+      null,
+      () => this.replayPromptFromHud(),
+    );
     root.append(hud, stage, sound);
     this.mountEl.appendChild(root);
   }
@@ -735,16 +735,20 @@ class TracePathGame {
     graphic.stroke({ width: INK_WIDTH, color, alpha: 0.94, cap: 'round', join: 'round' });
   }
 
-  renderImageButton(className, label, href) {
+  renderImageButton(className, label, href, action) {
     const node = href ? el('a', `qk-trace-img-btn ${className}`) : el('button', `qk-trace-img-btn ${className}`);
     if (href) node.href = href;
     else node.type = 'button';
     node.setAttribute('aria-label', label);
-    node.addEventListener('pointerdown', (e) => {
-      if (!href) e.preventDefault();
-      e.stopPropagation();
-      this.unlockAudio();
-      this.playSfx('tick');
+    // href buttons (e.g. home) navigate natively on click; action is a no-op
+    // and onTap never calls preventDefault, so that navigation still fires.
+    onTap(node, action || (() => {}), {
+      feedback: (e) => {
+        if (!href) e.preventDefault();
+        e.stopPropagation();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
     });
     return node;
   }
@@ -1123,8 +1127,10 @@ class TracePathGame {
     const root = el('section', 'qk-trace qk-trace-end');
     this.applyTheme(root);
     root.setAttribute('aria-label', this.config.voice.cheer);
-    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu');
-    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
+    const home = this.renderImageButton('qk-trace-back', 'Back to the game menu', null, () => {
+      this.stopVoice();
+      this.renderSplash();
+    });
     const center = el('div', 'qk-trace-end-center');
     const artCard = el('div', 'qk-trace-end-art');
     artCard.appendChild(artEl(this.config.endArt || this.config.splashArt, ''));
@@ -1133,12 +1139,13 @@ class TracePathGame {
     const icon = el('span', 'qk-trace-play-icon');
     icon.setAttribute('aria-hidden', 'true');
     again.append(icon, el('span', '', this.config.copy.playAgain));
-    again.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      this.unlockAudio();
-      this.playSfx('tick');
+    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
+      feedback: (e) => {
+        e.preventDefault();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
     });
-    again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
     center.append(artCard, el('h1', '', this.config.voice.cheer), again);
     root.append(home, center);
     this.mountEl.appendChild(root);

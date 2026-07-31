@@ -83,14 +83,24 @@ function installStoneInput(button) {
       }
       if (drag) { drag.style.left=`${e.clientX}px`; drag.style.top=`${e.clientY}px`; }
     };
+    const cleanup = () => {
+      button.removeEventListener('pointermove',move); button.removeEventListener('pointerup',up); button.removeEventListener('pointercancel',cancel);
+    };
     const up = (e) => {
-      button.removeEventListener('pointermove',move); button.removeEventListener('pointerup',up); button.removeEventListener('pointercancel',up);
+      cleanup();
       if (drag) {
         const target = document.elementFromPoint(e.clientX,e.clientY)?.closest?.('[data-slot]');
         drag.remove(); drag = null; if (target) addStone(button.dataset.stone);
       }
     };
-    button.addEventListener('pointermove',move); button.addEventListener('pointerup',up); button.addEventListener('pointercancel',up);
+    // A cancelled drag (OS gesture takeover, palm reject, …) is not a drop —
+    // snap the ghost stone away and leave the tray untouched, rather than
+    // committing whatever slot happened to be under the cancel coordinates.
+    const cancel = () => {
+      cleanup();
+      if (drag) { drag.remove(); drag = null; }
+    };
+    button.addEventListener('pointermove',move); button.addEventListener('pointerup',up); button.addEventListener('pointercancel',cancel);
   };
 }
 

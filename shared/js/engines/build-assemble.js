@@ -17,6 +17,7 @@ import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as clips from '../voice-clips.js';
 import * as content from '../content.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
@@ -180,7 +181,6 @@ class BuildAssembleGame {
     this.selectedId = null;
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.lastReplay = 0;
     this.idleTimer = 0;
@@ -224,6 +224,14 @@ class BuildAssembleGame {
     this.clipsReady = false;
     this.audioLog = [];
 
+    // config.sound.* effect elements, one per url, and which of them have
+    // already played inside a gesture (see blessSounds)
+    this.soundEls = new Map();
+    this.blessedSounds = new Set();
+    // elements with a playSound() play() in flight — el.paused can still read true here
+    // (iOS), so blessSounds() must not treat these as unprimed and prime over them
+    this.soundsRequested = new Set();
+
     this.onFirstPointer = () => this.unlockAudio();
     this.onContextMenu = (e) => e.preventDefault();
     this.onGestureStart = (e) => e.preventDefault();
@@ -234,13 +242,24 @@ class BuildAssembleGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-build-back')) {
-        this.stopVoice();
-        this.renderSplash();
-      }
+    // Delegated back-button handling: play/end screens rebuild innerHTML, so the
+    // listener lives on the mount and survives every screen swap. Delegating a
+    // tap means checking BOTH ends of the press — the mount also covers the drag
+    // surface, and releasing a dragged part over the button is not a back tap.
+    this.backDownEl = null;
+    this.removeBackTap = onTap(this.mountEl, (event) => {
+      const el = backButtonFor(event.target);
+      const startedOn = this.backDownEl;
+      this.backDownEl = null;
+      // a keyboard/AT click has no preceding pointerdown, so it only checks the target
+      if (!el || (event.type !== 'click' && el !== startedOn)) return;
+      this.stopVoice();
+      this.renderSplash();
+    }, {
+      feedback: (event) => {
+        this.backDownEl = backButtonFor(event.target);
+        if (this.backDownEl) this.playSfx('tick');
+      },
     });
     this.renderSplash();
     this.ready = Promise.resolve();
@@ -259,6 +278,9 @@ class BuildAssembleGame {
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
     window.removeEventListener('blur', this.onWindowBlur);
+    // the mount outlives this instance — leaving the delegated tap on it would let
+    // a destroyed game answer the next one's back button
+    if (this.removeBackTap) { this.removeBackTap(); this.removeBackTap = null; }
     this.mountEl.replaceChildren();
     this.targetMap.clear();
     if (window.QLOBE_DEBUG === this.debugHook) {
@@ -268,17 +290,55 @@ class BuildAssembleGame {
   }
 
   /**
-   * iPad trap: voice-clips.unlock() self-guards and only latches once the clip
-   * channel has genuinely played, so it must run on EVERY gesture. Returning
-   * early on this.audioUnlocked would permanently strand the clip channel when
-   * the very first gesture happens to fail to unlock it.
+   * iPad trap: every unlock below self-guards and only latches once the channel
+   * has genuinely played, so they all run on EVERY gesture. Latching this on a
+   * "first touch" flag strands a channel whose very first unlock failed, and
+   * again whenever iPadOS suspends the context later (app switch, notification,
+   * lock) — the resume would then never be reached. They are cheap and idempotent.
    */
   unlockAudio() {
     clips.unlock();
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
+    this.blessSounds();
+  }
+
+  /**
+   * config.sound.* effects are fired BY the round loop (the train's roll and horn
+   * play out of the completion animation, long after the touch that finished the
+   * build), and iOS refuses an element that has never played inside a gesture.
+   * Prime the very elements playSound() will reuse, the way voice-clips.unlock()
+   * primes its channel: muted play, then pause and rewind. Each element latches
+   * only once its play() actually resolved, so a refused gesture is retried on
+   * the next one. A game with no `sound` block does nothing here.
+   */
+  blessSounds() {
+    const sounds = this.config.sound;
+    if (!sounds) return;
+    Object.keys(sounds).forEach((key) => {
+      const el = this.soundElFor(key);
+      if (!el || this.blessedSounds.has(el)) return;
+      // one already sounding, or a real playSound() play() still in flight (el.paused can
+      // lag true past the play() call — see soundsRequested), is plainly headed for unlocked;
+      // priming over it here would cut the real effect short
+      if (!el.paused || this.soundsRequested.has(el)) { this.blessedSounds.add(el); return; }
+      try {
+        el.muted = true;
+        const p = el.play();
+        const settle = () => {
+          // a real playSound() started while this muted prime was settling: leave it alone
+          if (!el.muted) return;
+          try { el.pause(); el.currentTime = 0; } catch { /* ignore */ }
+          el.muted = false;
+        };
+        if (p && typeof p.then === 'function') {
+          p.then(() => { this.blessedSounds.add(el); settle(); }).catch(() => { el.muted = false; });
+        } else {
+          this.blessedSounds.add(el);
+          settle();
+        }
+      } catch { /* a later gesture retries */ }
+    });
   }
 
   installDebugHook() {
@@ -351,12 +411,13 @@ class BuildAssembleGame {
     this.applyThemeBackdrop();
 
     this.mountEl.querySelectorAll('.qk-build-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => {
+          e.preventDefault();
+          this.unlockAudio();
+          this.playSfx('tick');
+        },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
   }
 
@@ -428,12 +489,11 @@ class BuildAssembleGame {
       </section>
     `;
     this.applyThemeBackdrop();
-    const home = this.mountEl.querySelector('.qk-build-back');
-    home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
-    home.addEventListener('click', () => { this.stopVoice(); this.renderSplash(); });
+    // .qk-build-back is wired once, delegated on the mount (see the constructor).
     const sound = this.mountEl.querySelector('.qk-build-sound');
-    sound.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); });
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    onTap(sound, () => this.replayPromptFromHud(), {
+      feedback: (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); },
+    });
   }
 
   async createPlayStage() {
@@ -1316,8 +1376,9 @@ class BuildAssembleGame {
     `;
     this.renderScreenArt('.qk-build-end-art', this.config.endArt || this.config.splashArt);
     const again = this.mountEl.querySelector('.qk-build-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
+    onTap(again, () => this.mode ? this.startMode(this.mode.id) : this.renderSplash(), {
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+    });
     this.createDomBurst(this.mountEl.querySelector('.qk-build-end-art'), 32);
     await this.speakLine(this.config.voice.cheer, true);
   }
@@ -1712,43 +1773,73 @@ class BuildAssembleGame {
   }
 
   /**
+   * The one element behind a config.sound.* key, created on demand and kept for the
+   * life of the game. It has to be the SAME element every time: the only element iOS
+   * will let the round loop play unprompted is one that already played inside a
+   * gesture, and blessSounds() primes exactly these. One element per url, so a short
+   * roll can still be ringing out when the horn starts over the top of it.
+   */
+  soundElFor(key) {
+    const entry = this.config.sound && this.config.sound[key];
+    if (!entry) return null;
+    const ref = typeof entry === 'string' ? entry : entry.src;
+    if (!ref) return null;
+    const url = clipUrlFor(ref, this.config.assetBase);
+    if (!url) return null;
+    let el = this.soundEls.get(url);
+    if (!el) {
+      el = new Audio();
+      el.preload = 'auto';
+      el.src = url;
+      this.soundEls.set(url, el);
+    }
+    return el;
+  }
+
+  /**
    * Play a game-supplied sound FILE (config.sound.*), as distinct from playSfx()'s
    * synthesised blips. Deliberately not the voice channel: a train rolling in should
-   * layer under the spoken word, not cancel it. One element per url so a short roll can
-   * still be ringing out when the horn starts over the top of it.
+   * layer under the spoken word, not cancel it.
    * Fire and forget — nothing in the round loop may ever wait on a sound effect.
    */
   playSound(key) {
     if (this.muted) return;
     const entry = this.config.sound && this.config.sound[key];
     if (!entry) return;
+    const el = this.soundElFor(key);
+    if (!el) return;
     // An entry is either a bare ref or { src, volume }. Volume matters: these are real
     // recordings sitting next to a synthesised SFX bed and a spoken voice line, and a
     // sound mastered for its own sake is almost always too loud in the mix — it has to
     // sit UNDER the word the child is listening for, not compete with it.
-    const ref = typeof entry === 'string' ? entry : entry.src;
     const volume = typeof entry === 'object' && Number.isFinite(entry.volume)
       ? Math.max(0, Math.min(1, entry.volume))
       : 1;
-    if (!ref) return;
-    const url = clipUrlFor(ref, this.config.assetBase);
-    if (!url) return;
     try {
-      if (!this.soundEls) this.soundEls = new Map();
-      let el = this.soundEls.get(url);
-      if (!el) { el = new Audio(); el.preload = 'auto'; this.soundEls.set(url, el); }
-      el.src = url;
       el.muted = false;      // cleared here because stopSounds() mutes on the way out
       el.volume = volume;
       el.currentTime = 0;
+      // latch before play() so blessSounds() sees the in-flight request even while
+      // el.paused still reads true; cleared once play() settles either way
+      this.soundsRequested.add(el);
       const p = el.play();
-      if (p && typeof p.catch === 'function') p.catch(() => { /* blocked before a gesture */ });
-    } catch { /* a missing sound must never break a round */ }
+      if (p && typeof p.then === 'function') {
+        p.then(
+          () => { this.soundsRequested.delete(el); this.blessedSounds.add(el); },
+          () => { this.soundsRequested.delete(el); /* blocked before a gesture */ },
+        );
+      } else {
+        this.soundsRequested.delete(el);
+        this.blessedSounds.add(el);
+      }
+    } catch {
+      this.soundsRequested.delete(el);
+      /* a missing sound must never break a round */
+    }
   }
 
   /** Stop any game sounds — used by mute() and teardown. */
   stopSounds() {
-    if (!this.soundEls) return;
     // Mute as well as pause. These elements are detached `new Audio()` objects, so the
     // `document.querySelectorAll('audio, video')` sweep in mute() cannot reach them —
     // pausing here is what actually silences a train that is mid-roll.
@@ -2025,6 +2116,13 @@ function escapeHtml(value) {
 
 function escapeAttr(value) {
   return escapeHtml(value);
+}
+
+/** The back button an event landed on, if any — null for anything else, including
+ *  a target that is not an Element and so has no .closest. */
+function backButtonFor(target) {
+  if (!target || typeof target.closest !== 'function') return null;
+  return target.closest('.qk-build-back');
 }
 
 function installStyle() {

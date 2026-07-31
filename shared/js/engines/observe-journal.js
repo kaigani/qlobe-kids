@@ -4,6 +4,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, sway } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
@@ -54,7 +55,6 @@ class ObserveJournalGame {
     this.journal = [];
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.destroyed = false;
     this.seeded = false;
@@ -85,13 +85,24 @@ class ObserveJournalGame {
     window.addEventListener('contextmenu', this.preventGesture);
 
     this.ready = Promise.resolve();
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-observe-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
+    // delegated back-button handling: play/end screens rebuild innerHTML, so the
+    // listener lives on the mount and survives every screen swap. Delegating a
+    // tap means checking BOTH ends of the press — the mount also covers the
+    // gameplay surface, and releasing over the button after a press that
+    // started elsewhere is not a back tap.
+    this.backDownEl = null;
+    this.removeBackTap = onTap(this.mountEl, (event) => {
+      const el = backButtonFor(event.target);
+      const startedOn = this.backDownEl;
+      this.backDownEl = null;
+      // a keyboard/AT click has no preceding pointerdown, so it only checks the target
+      if (!el || (event.type !== 'click' && el !== startedOn)) return;
+      speech.stop();
+      this.renderSplash();
+    }, {
+      feedback: (event) => {
+        this.backDownEl = backButtonFor(event.target);
+      },
     });
     this.renderSplash();
     this.installDebug();
@@ -106,6 +117,9 @@ class ObserveJournalGame {
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('gesturestart', this.preventGesture);
     window.removeEventListener('contextmenu', this.preventGesture);
+    // the mount outlives this instance — leaving the delegated tap on it would let
+    // a destroyed game answer the next one's back button
+    if (this.removeBackTap) { this.removeBackTap(); this.removeBackTap = null; }
     this.targetMap.clear();
     this.mountEl.replaceChildren();
     if (window.QLOBE_DEBUG === this.debug) {
@@ -115,8 +129,6 @@ class ObserveJournalGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
   }
@@ -172,12 +184,13 @@ class ObserveJournalGame {
       artEl(this.config.splashArt, this.config.title),
     );
     this.mountEl.querySelectorAll('.qk-observe-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.unlockAudio();
-        this.playSfx('tick');
-        this.startMode(button.dataset.mode);
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          this.unlockAudio();
+          this.playSfx('tick');
+        },
       });
     });
   }
@@ -229,8 +242,9 @@ class ObserveJournalGame {
     `;
     this.applyThemeBackdrop();
     const sound = this.mountEl.querySelector('.qk-observe-sound');
-    sound.addEventListener('pointerdown', (event) => event.stopPropagation());
-    sound.addEventListener('click', () => this.replayFromHud());
+    onTap(sound, () => this.replayFromHud(), {
+      feedback: (event) => event.stopPropagation(),
+    });
   }
 
   async createPlayStage() {
@@ -788,13 +802,16 @@ class ObserveJournalGame {
     `;
     this.applyThemeBackdrop();
     const again = this.mountEl.querySelector('.qk-observe-again');
-    again.addEventListener('pointerdown', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.unlockAudio();
-      this.playSfx('tick');
+    onTap(again, () => {
       if (this.mode) this.startMode(this.mode.id);
       else this.renderSplash();
+    }, {
+      feedback: (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
     });
     this.recapEls = {
       page: this.mountEl.querySelector('.qk-observe-recap-page'),
@@ -1139,6 +1156,13 @@ function escapeHtml(value) {
 
 function escapeAttr(value) {
   return escapeHtml(value);
+}
+
+/** The back button an event landed on, if any — null for anything else, including
+ *  a target that is not an Element and so has no .closest. */
+function backButtonFor(target) {
+  if (!target || typeof target.closest !== 'function') return null;
+  return target.closest('.qk-observe-back');
 }
 
 function targetOrder(a, b) {

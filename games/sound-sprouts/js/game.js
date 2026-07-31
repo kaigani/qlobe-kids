@@ -15,7 +15,7 @@ import {
   hideCard,
 } from './tiles.js';
 import * as speech from '../../../shared/js/speech.js';
-import * as audio from '../../../shared/js/audio.js';
+import * as voice from './voice.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { burst } from './confetti.js';
 
@@ -82,7 +82,7 @@ export class Game {
     this.destroyed = true;
     clearTimeout(this.advanceTimer);
     speech.stop();
-    audio.stop();
+    voice.stop();
     if (this.idleStop) this.idleStop();
     for (const t of this.tiles) disposeTile(t);
     this.tiles = [];
@@ -270,16 +270,16 @@ export class Game {
     const p = this.prompt;
     if (!p) return;
     if (p.kind === 'guided') {
-      audio.play('prompts', p.word, { fallbackText: 'Can you make ' + p.word + '?', rate: 0.8, pitch: 1.05 });
+      voice.play('prompts', p.word, { fallbackText: 'Can you make ' + p.word + '?', rate: 0.8, pitch: 1.05 });
     } else if (p.kind === 'mystery') {
-      audio.playSeq([
+      voice.playSeq([
         { cat: 'misc', key: 'mystery-intro', fallbackText: 'Mystery word! Listen.', rate: 0.8, pitch: 1.05 },
         { cat: 'fragments', key: p.onsetKey, fallbackText: p.onsetSpoken, rate: 0.8, pitch: 1.05 },
         { cat: 'fragments', key: p.rimeKey, fallbackText: p.rimeSpoken, rate: 0.8, pitch: 1.05 },
         { cat: 'misc', key: 'mystery-outro', fallbackText: 'What does it make?', rate: 0.8, pitch: 1.05 },
       ], { gap: 300 });
     } else if (p.kind === 'mixer') {
-      audio.play('misc', 'mixer-intro', { fallbackText: 'Mix the sounds! What can you make?', rate: 0.8, pitch: 1.05 });
+      voice.play('misc', 'mixer-intro', { fallbackText: 'Mix the sounds! What can you make?', rate: 0.8, pitch: 1.05 });
     }
   }
 
@@ -319,7 +319,7 @@ export class Game {
     d.busy = true; // pause idle so the bounce isn't overwritten
     sfx.pop();
     await bounceTile(tile);
-    audio.play('fragments', d.text, { fallbackText: d.spoken });
+    voice.play('fragments', d.text, { fallbackText: d.spoken });
     sfx.whoosh();
     d.slotted = true;
     slot.tile = tile;
@@ -346,7 +346,7 @@ export class Game {
     d.slotted = false;
     if (speakIt) {
       sfx.unpop();
-      audio.play('fragments', d.text, { fallbackText: d.spoken });
+      voice.play('fragments', d.text, { fallbackText: d.spoken });
     }
     await flyTo(tile, d.home.x, d.home.y, d.home.z);
     this.busy = false;
@@ -383,7 +383,7 @@ export class Game {
       tween(left.position, { x: -0.85 }, 220, Ease.inOut),
       tween(right.position, { x: 0.85 }, 220, Ease.inOut),
     ]);
-    await audio.play('words', wordObj.word, { fallbackText: wordObj.word, rate: 0.7, pitch: 1.05 });
+    await voice.play('words', wordObj.word, { fallbackText: wordObj.word, rate: 0.7, pitch: 1.05 });
 
     sfx.tada();
     const cardY = this.benchY() + 2.6;
@@ -402,7 +402,7 @@ export class Game {
     await popCard(this.card, 0, cardY, 1.0, this.mode === 'mystery' ? 1.05 : 1);
 
     if (wordObj.animal) sfx.boing();
-    audio.play('celebrate', wordObj.word, {
+    voice.play('celebrate', wordObj.word, {
       fallbackText: fill(rand(PHRASES.celebrate), { word: wordObj.word }),
       rate: 0.85, pitch: 1.1,
     });
@@ -431,7 +431,7 @@ export class Game {
     // bonus words have no picture and no per-word recording — voice the specific
     // word via TTS, then play the recorded generic "real word!" praise on top.
     await speech.speak(blend, { rate: 0.8, pitch: 1.1 });
-    await audio.play('misc', 'realword', {
+    await voice.play('misc', 'realword', {
       fallbackText: fill(rand(PHRASES.bonus), { word: blend }),
       rate: 0.85, pitch: 1.1,
     });
@@ -448,7 +448,7 @@ export class Game {
     // then play a recorded silly phrase on top.
     await speech.speak(blend, { rate: 0.7, pitch: 1.0 });
     const sillyKey = 'silly-' + (1 + ((Math.random() * 3) | 0));
-    audio.play('misc', sillyKey, {
+    voice.play('misc', sillyKey, {
       fallbackText: fill(rand(PHRASES.silly), { blend }),
       rate: 0.85, pitch: 1.1,
     });

@@ -226,16 +226,36 @@ export function createMusicalCanvas(canvas, {
     finishStroke();
   }
 
+  // A cancelled stroke was never completed by the child — discard it instead
+  // of saving, and forget its track's throttle timer so it can't skew the
+  // pacing of the next stroke in that color.
+  function discardStroke() {
+    if (!state.current) return;
+    const stroke = state.current.stroke;
+    const index = state.strokes.indexOf(stroke);
+    if (index !== -1) state.strokes.splice(index, 1);
+    lastSoundAt.delete(colorKey(stroke.color));
+    state.current = null;
+    render();
+  }
+
+  function pointerCancel(event) {
+    if (event.pointerId !== state.activePointer) return;
+    event.preventDefault();
+    state.activePointer = null;
+    discardStroke();
+  }
+
   function cancelPointer() {
     if (state.activePointer === null) return;
     state.activePointer = null;
-    finishStroke();
+    discardStroke();
   }
 
   canvas.addEventListener('pointerdown', pointerDown, { passive: false });
   window.addEventListener('pointermove', pointerMove, { passive: false });
   window.addEventListener('pointerup', pointerUp, { passive: false });
-  window.addEventListener('pointercancel', pointerUp, { passive: false });
+  window.addEventListener('pointercancel', pointerCancel, { passive: false });
   window.addEventListener('blur', cancelPointer);
 
   function setBrush(next) {
@@ -420,7 +440,7 @@ export function createMusicalCanvas(canvas, {
     canvas.removeEventListener('pointerdown', pointerDown);
     window.removeEventListener('pointermove', pointerMove);
     window.removeEventListener('pointerup', pointerUp);
-    window.removeEventListener('pointercancel', pointerUp);
+    window.removeEventListener('pointercancel', pointerCancel);
     window.removeEventListener('blur', cancelPointer);
     resizeObserver?.disconnect();
     audioContext?.close().catch(() => {});

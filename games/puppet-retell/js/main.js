@@ -414,6 +414,7 @@ function bindDragging(stage, theater, actors) {
   };
   const down = (event) => {
     if (!state.recording || state.replaying) return;
+    event.preventDefault();
     const p = point(event);
     const { h } = stage.size();
     dragging = roles.reduce((best, role) => {
@@ -433,6 +434,7 @@ function bindDragging(stage, theater, actors) {
   };
   const move = (event) => {
     if (!dragging) return;
+    event.preventDefault();
     const p = point(event);
     const actor = actors[dragging];
     const now = performance.now();
@@ -465,10 +467,19 @@ function bindDragging(stage, theater, actors) {
     dragging = null;
     settle(role, releaseVelocity);
   };
+  const cancel = () => {
+    if (!dragging) return;
+    const role = dragging;
+    dragging = null;
+    // A gesture takeover (iPad app-switch swipe, etc.) interrupts the drag
+    // mid-motion; settle straight down instead of launching with whatever
+    // velocity the interrupted gesture happened to record last.
+    settle(role, { x: 0, y: 0 });
+  };
   canvas.addEventListener('pointerdown', down);
   canvas.addEventListener('pointermove', move);
   canvas.addEventListener('pointerup', up);
-  canvas.addEventListener('pointercancel', up);
+  canvas.addEventListener('pointercancel', cancel);
   return () => {
     if (dragging) actors[dragging]?.puppet.releaseRagdoll();
     settling.forEach(({ raf }) => cancelAnimationFrame(raf));
@@ -476,7 +487,7 @@ function bindDragging(stage, theater, actors) {
     canvas.removeEventListener('pointerdown', down);
     canvas.removeEventListener('pointermove', move);
     canvas.removeEventListener('pointerup', up);
-    canvas.removeEventListener('pointercancel', up);
+    canvas.removeEventListener('pointercancel', cancel);
   };
 }
 
@@ -1018,6 +1029,9 @@ window.addEventListener('pagehide', () => {
   voice.stop();
   speech.stop();
 });
+
+window.addEventListener('contextmenu', (event) => event.preventDefault());
+window.addEventListener('gesturestart', (event) => event.preventDefault());
 
 window.QLOBE_DEBUG = {
   version: 1,

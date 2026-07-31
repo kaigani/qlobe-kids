@@ -299,7 +299,7 @@ button:focus-visible, a:focus-visible { outline: 5px solid #fff; outline-offset:
 
 .performance-screen { background: #0b2438; }
 .stage-host { position: absolute; inset: 0; z-index: 1; }
-.stage-host canvas { display: block; width: 100%; height: 100%; }
+.stage-host canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 .performance-hud { pointer-events: none; position: absolute; inset: 0; z-index: 5; }
 .performance-hud button { pointer-events: auto; }
 .role-picker {

@@ -488,6 +488,16 @@ function pointerUp(event) {
   els.canvas.releasePointerCapture?.(event.pointerId);
 }
 
+// A cancelled pointer (palm reject, OS gesture takeover, …) isn't a deliberate
+// lift — drop the pending point and end the stroke without applying it, so it
+// can never advance progress or trigger completeStroke().
+function pointerCancel(event) {
+  if (event.pointerId !== state.activePointer) return;
+  event.preventDefault();
+  state.activePointer = null;
+  els.canvas.releasePointerCapture?.(event.pointerId);
+}
+
 function currentExpectedPoint() {
   const samples = state.samples[state.stroke];
   if (!samples) return null;
@@ -773,7 +783,7 @@ for (const button of document.querySelectorAll('[data-action="replay"]')) onTap(
 els.canvas.addEventListener('pointerdown', pointerDown, { passive:false });
 els.canvas.addEventListener('pointermove', pointerMove, { passive:false });
 els.canvas.addEventListener('pointerup', pointerUp, { passive:false });
-els.canvas.addEventListener('pointercancel', pointerUp, { passive:false });
+els.canvas.addEventListener('pointercancel', pointerCancel, { passive:false });
 window.addEventListener('resize', () => {
   cancelAnimationFrame(resizeFrame);
   resizeFrame = requestAnimationFrame(() => resizeCanvas());

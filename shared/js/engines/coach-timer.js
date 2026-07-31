@@ -3,6 +3,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { popIn } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
@@ -44,7 +45,6 @@ class CoachTimerGame {
     this.paused = false;
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.destroyed = false;
     this.seeded = false;
@@ -77,14 +77,6 @@ class CoachTimerGame {
     window.addEventListener('contextmenu', this.preventGesture);
     document.addEventListener('visibilitychange', this.onVisibility);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-coach-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
-    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebug();
@@ -110,8 +102,9 @@ class CoachTimerGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // unlock/resume run on every gesture, not just the first: iPadOS can
+    // suspend the AudioContext later (app switch, notification, lock), and
+    // these calls are cheap and idempotent
     sfx.unlock();
     speech.unlock();
   }
@@ -162,12 +155,9 @@ class CoachTimerGame {
         </div>
       </section>`;
     this.mountEl.querySelectorAll('.qk-coach-mode-button').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
   }
 
@@ -219,6 +209,7 @@ class CoachTimerGame {
         <button class="qk-coach-sound qk-coach-img-btn" type="button" aria-label="Hear it again"></button>
       </section>`;
     this.applyThemeBackdrop();
+    this.wireBack();
     this.wireReplay();
     await this.createPlayStage();
   }
@@ -335,6 +326,7 @@ class CoachTimerGame {
         <button class="qk-coach-sound qk-coach-img-btn" type="button" aria-label="Hear it again"></button>
       </section>`;
     this.applyThemeBackdrop();
+    this.wireBack();
     this.wireReplay();
     const pause = this.mountEl.querySelector('.qk-coach-pause');
     const pauseAction = () => { this.togglePause(); return { accepted: true }; };
@@ -629,8 +621,17 @@ class CoachTimerGame {
   wireReplay() {
     const sound = this.mountEl.querySelector('.qk-coach-sound');
     if (!sound) return;
-    sound.addEventListener('pointerdown', (e) => e.stopPropagation());
-    sound.addEventListener('click', () => this.replayPrompt());
+    onTap(sound, () => this.replayPrompt(), {
+      feedback: (e) => { e.stopPropagation(); this.unlockAudio(); },
+    });
+  }
+
+  // play/end screens rebuild innerHTML, so the back button is rewired at
+  // each render rather than relying on a delegated listener
+  wireBack() {
+    const back = this.mountEl.querySelector('.qk-coach-back');
+    if (!back) return;
+    onTap(back, () => { speech.stop(); this.renderSplash(); });
   }
 
   replayPrompt() {
@@ -697,9 +698,11 @@ class CoachTimerGame {
           <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
         </div>
       </section>`;
+    this.wireBack();
     const again = this.mountEl.querySelector('.qk-coach-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    again.addEventListener('click', () => mode && this.startMode(mode.id));
+    onTap(again, () => { if (mode) this.startMode(mode.id); }, {
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+    });
   }
 
   getState() {

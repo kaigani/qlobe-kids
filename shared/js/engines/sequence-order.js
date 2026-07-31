@@ -10,6 +10,7 @@ import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
+import { onTap } from '../tap.js';
 
 const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
 const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
@@ -53,7 +54,6 @@ class SequenceOrderGame {
     this.selectedId = null;
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.lastReplay = 0;
     this.idleTimer = 0;
@@ -97,14 +97,6 @@ class SequenceOrderGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-seq-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
-    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -132,8 +124,9 @@ class SequenceOrderGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // Called on every qualifying gesture, not gated behind a first-touch flag:
+    // iPadOS can suspend the AudioContext later (app switch, lock), and these
+    // resume calls are cheap and idempotent.
     sfx.unlock();
     speech.unlock();
   }
@@ -187,12 +180,13 @@ class SequenceOrderGame {
     `;
     this.applyThemeBackdrop();
     this.mountEl.querySelectorAll('.qk-seq-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => {
+          if (e && e.preventDefault) e.preventDefault();
+          this.unlockAudio();
+          this.playSfx('tick');
+        },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
   }
 
@@ -247,11 +241,11 @@ class SequenceOrderGame {
     `;
     this.applyThemeBackdrop();
     const home = this.mountEl.querySelector('.qk-seq-back');
-    home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    onTap(home, () => { speech.stop(); this.renderSplash(); }, { feedback: () => this.playSfx('tick') });
     const sound = this.mountEl.querySelector('.qk-seq-sound');
-    sound.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); });
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    onTap(sound, () => this.replayPromptFromHud(), {
+      feedback: (e) => { if (e && e.preventDefault) e.preventDefault(); this.unlockAudio(); },
+    });
   }
 
   async createPlayStage() {
@@ -940,9 +934,12 @@ class SequenceOrderGame {
       </section>
     `;
     this.applyThemeBackdrop();
+    const back = this.mountEl.querySelector('.qk-seq-back');
+    onTap(back, () => { speech.stop(); this.renderSplash(); });
     const again = this.mountEl.querySelector('.qk-seq-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
+    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
+      feedback: (e) => { if (e && e.preventDefault) e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+    });
     this.createDomBurst(this.mountEl.querySelector('.qk-seq-end-art'), 32);
     await this.speakLine(this.config.voice.cheer, true);
   }

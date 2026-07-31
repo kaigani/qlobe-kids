@@ -127,13 +127,20 @@ function seed(n) {
 
 // --------------------------------------------------------------------- audio
 
+/**
+ * Every unlock/resume call runs on every qualifying gesture — iPadOS can
+ * suspend the AudioContext after an app switch, notification, lock, or media
+ * interruption, and a stale `audioUnlocked` guard would leave later touches
+ * resuming nothing. Only the genuinely one-time load (the instrument library)
+ * stays behind the boolean.
+ */
 function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
   sfx.unlock();
   speech.unlock();
   voiceClips.unlock();
   music.unlock();
+  if (audioUnlocked) return;
+  audioUnlocked = true;
   ensureInstruments();
 }
 

@@ -3,6 +3,7 @@
 
 let ctx = null;
 let master = null;
+let selfHealAttached = false;
 const playCounts = Object.create(null);
 
 function mark(name) {
@@ -23,13 +24,36 @@ function ensure() {
   master = ctx.createGain();
   master.gain.value = 0.5;
   master.connect(ctx.destination);
+  attachSelfHeal();
   return ctx;
 }
 
-/** Resume the context — call from the first user gesture (iOS unlock). */
+// iPadOS parks the context on 'interrupted' (non-standard) after a call, Siri,
+// or another app taking the audio session, and on 'suspended' when the page is
+// backgrounded — neither state recovers on its own, so resume on anything that
+// isn't 'running'.
+function resume() {
+  if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
+}
+
+// Try to recover as soon as the page is back in front, so effects work again
+// before the next touch rather than because of it. Attached once, with the
+// context.
+function attachSelfHeal() {
+  if (selfHealAttached) return;
+  selfHealAttached = true;
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) resume(); });
+  window.addEventListener('pageshow', () => resume());
+  // catches an interruption that happens while the page stays foregrounded
+  if (ctx.addEventListener) {
+    ctx.addEventListener('statechange', () => { if (!document.hidden) resume(); });
+  }
+}
+
+/** Resume the context — cheap, call from every user gesture (iOS unlock). */
 export function unlock() {
   ensure();
-  if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+  resume();
 }
 
 /** Current audio time, or 0 if no context. */

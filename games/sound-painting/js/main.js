@@ -33,6 +33,9 @@ let latestPainting = null;
 let nudgeTimer = 0;
 let disposers = [];
 let audioUnlocked = false;
+// Monotonic: every speech start/stop claims a new token so an in-flight
+// sequence can tell it was superseded once its own clip promise settles.
+let speechToken = 0;
 
 const ready = (async () => {
   await voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
@@ -57,14 +60,25 @@ window.addEventListener('pointerdown', unlockAudio, { passive: true });
 function say(key) {
   const line = config.voice[key] || '';
   announcer.textContent = line;
+  speechToken += 1;
   if (state.muted) return Promise.resolve();
   return voice.say(key, line);
+}
+
+function stopSpeech() {
+  speechToken += 1;
+  voice.stop();
 }
 
 async function saySequence(keys) {
   for (const key of keys) {
     if (state.muted) return;
-    await say(key);
+    const pending = say(key);
+    const token = speechToken;
+    await pending;
+    // A newer say()/stop() bumped the token while this clip was playing — the
+    // clip was already cut off, so advancing would talk over the newer audio.
+    if (token !== speechToken) return;
   }
 }
 
@@ -76,7 +90,7 @@ function feedback(event) {
 
 function clearScreen() {
   clearTimeout(nudgeTimer);
-  voice.stop();
+  stopSpeech();
   canvas?.destroy();
   keepsakeCanvas?.destroy();
   canvas = null;
@@ -117,6 +131,7 @@ function showSplash({ greet = true } = {}) {
   if (!greet) return;
   ready.then(async () => {
     if (state.screen !== 'splash') return;
+    speechToken += 1;
     const played = await voice.trySay('welcome');
     state.pendingWelcome = !played;
     if (played) audioUnlocked = true;
@@ -218,7 +233,18 @@ async function playPainting(target = canvas) {
   }
   state.replaying = true;
   updatePaintControls();
-  await say('replay');
+  const pending = say('replay');
+  const token = speechToken;
+  await pending;
+  // A newer say()/stop() bumped the token while 'replay' was playing — the
+  // screen has moved on, so starting the stroke replay now would talk/draw
+  // over whatever superseded it (see saySequence()). Release the replaying
+  // flag on the way out or the play/finish buttons stay disabled for good.
+  if (token !== speechToken) {
+    state.replaying = false;
+    updatePaintControls();
+    return false;
+  }
   if (state.screen === 'paint') await target.replay({ speed: state.fast ? 5 : 1 });
   else await target.replay({ speed: state.fast ? 5 : 1 });
   state.replaying = false;
@@ -402,7 +428,7 @@ window.QLOBE_DEBUG = {
   },
   mute: (value = true) => {
     state.muted = !!value;
-    voice.stop();
+    stopSpeech();
     canvas?.setMuted(state.muted);
     keepsakeCanvas?.setMuted(state.muted);
     return state.muted;

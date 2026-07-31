@@ -42,6 +42,7 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { createTheater } from '../stage/theater.js';
 import { createPuppet, loadRigArt } from '../stage/puppet.js';
@@ -94,7 +95,6 @@ class PuppetTheaterGame {
     this.currentScenario = null;
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.timeScaleWanted = 1;
     this.yumIndex = 0;
@@ -122,14 +122,6 @@ class PuppetTheaterGame {
     window.addEventListener('pointerdown', this.onFirstPointer);
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
-
-    // delegated back button — screens rebuild innerHTML, the listener survives
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-pt-back')) {
-        voiceClips.stop();
-        this.renderSplash();
-      }
-    });
 
     // narrator manifest (recorded teacher voice; missing file = speech fallback)
     this.ready = Promise.all([
@@ -162,12 +154,19 @@ class PuppetTheaterGame {
     }
   }
 
+  // sfx/speech/voiceClips unlock (or resume, if iPadOS suspended the
+  // AudioContext under an app switch/lock) — cheap and idempotent, so it runs
+  // on every gesture, not just the first.
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
     voiceClips.unlock();
+  }
+
+  // every screen rebuilds innerHTML, so its own back button needs rewiring
+  wireBackButton() {
+    const back = this.mountEl.querySelector('.qk-pt-back');
+    if (back) onTap(back, () => { voiceClips.stop(); this.renderSplash(); });
   }
 
   installDebugHook() {
@@ -235,12 +234,9 @@ class PuppetTheaterGame {
     `;
 
     this.mountEl.querySelectorAll('.qk-pt-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
 
     this.bootMascots();
@@ -354,12 +350,12 @@ class PuppetTheaterGame {
       </section>
     `;
 
+    this.wireBackButton();
     this.speakNarr('cast-prompt', this.config.voice.castPrompt);
 
     return new Promise((resolve) => {
       this.mountEl.querySelectorAll('.qk-pt-puppet').forEach((button) => {
-        button.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); });
-        button.addEventListener('click', async () => {
+        onTap(button, async () => {
           if (this.screen !== 'cast') return;
           const id = button.dataset.char;
           if (this.pendingCast.includes(id)) return;
@@ -386,7 +382,7 @@ class PuppetTheaterGame {
             this.cast = this.pendingCast.slice(0, 2);
             resolve(true);
           }
-        });
+        }, { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
       });
     });
   }
@@ -472,9 +468,9 @@ class PuppetTheaterGame {
         <button class="qk-pt-sound qk-pt-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
       </section>
     `;
+    this.wireBackButton();
     const sound = this.mountEl.querySelector('.qk-pt-sound');
-    sound.addEventListener('pointerdown', (e) => e.stopPropagation());
-    sound.addEventListener('click', () => this.replayFromHud());
+    onTap(sound, () => this.replayFromHud(), { feedback: (e) => e.stopPropagation() });
   }
 
   async createPlayStage() {
@@ -820,13 +816,13 @@ class PuppetTheaterGame {
         </div>
       </section>
     `;
+    this.wireBackButton();
     const again = this.mountEl.querySelector('.qk-pt-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    again.addEventListener('click', () => {
+    onTap(again, () => {
       this.cast = [];                       // fresh show, fresh casting
       if (this.mode) this.startMode(this.mode.id);
       else this.renderSplash();
-    });
+    }, { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
     this.speakNarr('cheer', this.config.voice.cheer);
   }
 

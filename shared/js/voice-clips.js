@@ -33,6 +33,7 @@ let baseUrl = './assets/audio/';
 // every later src-swap + play() is allowed by iOS without a fresh gesture.
 let channel = null;
 let unlocked = false;
+let unlockPending = false;
 // Monotonic token: a new say()/stop() supersedes any in-flight clip so its
 // pending fallback can't fire late and double up.
 let playToken = 0;
@@ -215,23 +216,43 @@ function playClip(src, text, token, key, dur) {
  * Unlock recorded-clip playback on the first user gesture (iOS autoplay
  * policy): play then pause the channel muted so later programmatic src-swaps
  * are allowed. Runs once; also unlocks Web Speech every call (cheap, idempotent).
+ *
+ * One attempt at a time: games unlock from a target handler AND a bubbling
+ * window handler within the same first gesture, and start the welcome line in
+ * between. Without the pending flag both attempts install a settle() that
+ * pauses and rewinds the SHARED channel — and the second one lands on the real
+ * greeting and cuts it off.
  */
 export function unlock() {
   speech.unlock();
-  if (unlocked) return;
+  if (unlocked || unlockPending) return;
   try {
     const el = getChannel();
+    // a real clip already holds the channel — that playback IS the unlock
+    if (el.src && el.src !== SILENT_WAV && !el.paused) { unlocked = true; return; }
     el.muted = true;
-    if (!el.src) el.src = SILENT_WAV;
+    // Prime on silence, never on whatever clip last held the channel: a retry
+    // (the first attempt was refused, or a clip has since played and paused)
+    // would otherwise prime with a REAL src, settle()'s "a real clip started"
+    // guard would early-return, and the element would be left muted with the
+    // old line queued up to replay.
+    if (!el.src || (el.paused && el.src !== SILENT_WAV)) el.src = SILENT_WAV;
+    unlockPending = true;
     const p = el.play();
-    const settle = () => { try { el.pause(); el.currentTime = 0; } catch { /* ignore */ } el.muted = false; };
+    const settle = () => {
+      unlockPending = false;
+      // a real clip started while the muted prime was settling: leave it alone
+      if (!el.muted || el.src !== SILENT_WAV) return;
+      try { el.pause(); el.currentTime = 0; } catch { /* ignore */ }
+      el.muted = false;
+    };
     if (p && typeof p.then === 'function') {
-      p.then(() => { unlocked = true; settle(); }).catch(() => { el.muted = false; });
+      p.then(() => { unlocked = true; settle(); }, () => { unlockPending = false; el.muted = false; });
     } else {
       unlocked = true;
       settle();
     }
-  } catch { /* ignore — a later gesture retries */ }
+  } catch { unlockPending = false; /* ignore — a later gesture retries */ }
 }
 
 // 44-byte silent WAV used only to prime the channel on the first gesture.

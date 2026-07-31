@@ -26,6 +26,7 @@ import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
 import * as music from '../music.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { createTheater } from '../stage/theater.js';
 import { createPuppet, loadRigArt } from '../stage/puppet.js';
@@ -77,7 +78,6 @@ class PuppetBandGame {
     this.screen = 'splash';        // splash | build | concert
     this.band = [];                // [{ char, instr }] in stage order
     this.songIndex = 0;
-    this.audioUnlocked = false;
     this.muted = false;
     this.targetMap = new Map();
     this.targetSeq = 0;
@@ -104,12 +104,6 @@ class PuppetBandGame {
     window.addEventListener('pointerdown', this.onFirstPointer);
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
-
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-pb-back')) {
-        this.renderBuild();
-      }
-    });
 
     this.ready = Promise.all([
       voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', {}).catch(() => {}),
@@ -139,9 +133,10 @@ class PuppetBandGame {
     }
   }
 
+  // sfx/speech/voiceClips/music unlock (or resume, if iPadOS suspended the
+  // AudioContext under an app switch/lock) — cheap and idempotent, so it runs
+  // on every gesture, not just the first.
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
     sfx.unlock();
     speech.unlock();
     voiceClips.unlock();
@@ -209,8 +204,7 @@ class PuppetBandGame {
       </section>
     `;
     const play = this.mountEl.querySelector('.qk-pb-play-big');
-    play.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    play.addEventListener('click', () => this.renderBuild());
+    onTap(play, () => this.renderBuild(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
     this.bootMascots();
   }
 
@@ -313,33 +307,26 @@ class PuppetBandGame {
       </section>
     `;
 
-    // back on build goes to splash (delegated handler targets qk-pb-back → build; override here)
-    this.mountEl.querySelector('.qk-pb-back').addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.renderSplash();
-    }, { capture: true });
-    this.mountEl.querySelector('.qk-pb-build-sound').addEventListener('click', () => {
-      this.unlockAudio();
+    // back on build goes to splash
+    onTap(this.mountEl.querySelector('.qk-pb-back'), () => this.renderSplash());
+    onTap(this.mountEl.querySelector('.qk-pb-build-sound'), () => {
       this.speakNarr('build-join', this.config.voice.buildJoin);
-    });
+    }, { feedback: () => this.unlockAudio() });
 
     this.mountEl.querySelectorAll('.qk-pb-puppet').forEach((btn) => {
       const id = this.nextTargetId('puppet');
       this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.toggleMember(btn.dataset.char) });
-      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); });
-      btn.addEventListener('click', () => this.tapTarget(id));
+      onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
     });
     this.mountEl.querySelectorAll('.qk-pb-badge').forEach((btn) => {
       const id = this.nextTargetId('badge');
       this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.cycleInstrument(btn.dataset.char) });
-      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); });
-      btn.addEventListener('click', () => this.tapTarget(id));
+      onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
     });
     const show = this.mountEl.querySelector('.qk-pb-show');
     const showId = this.nextTargetId('show');
     this.targetMap.set(showId, { id: showId, el: show, role: 'correct', action: () => this.startShow() });
-    show.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    show.addEventListener('click', () => this.tapTarget(showId));
+    onTap(show, () => this.tapTarget(showId), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
 
     this.refreshBuild();
     this.speakNarr('build-join', this.config.voice.buildJoin);
@@ -430,12 +417,11 @@ class PuppetBandGame {
         <button class="qk-pb-sound qk-pb-img-btn" type="button" aria-label="Hear the hint again"></button>
       </section>
     `;
+    onTap(this.mountEl.querySelector('.qk-pb-back'), () => this.renderBuild());
     const next = this.mountEl.querySelector('.qk-pb-next');
-    next.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    next.addEventListener('click', () => this.nextSong());
+    onTap(next, () => this.nextSong(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
     const sound = this.mountEl.querySelector('.qk-pb-sound');
-    sound.addEventListener('pointerdown', (e) => e.stopPropagation());
-    sound.addEventListener('click', () => this.speakNarr('solo-hint', this.config.voice.soloHint));
+    onTap(sound, () => this.speakNarr('solo-hint', this.config.voice.soloHint), { feedback: (e) => e.stopPropagation() });
 
     const host = this.mountEl.querySelector('.qk-pb-stagehost');
     const generation = ++this.stageGeneration;
@@ -552,14 +538,15 @@ class PuppetBandGame {
       id, el: button, kind: 'instrument', member, role: 'neutral',
       action: () => this.cycleStageInstrument(member),
     });
-    button.addEventListener('pointerdown', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.unlockAudio();
-    });
-    button.addEventListener('click', (event) => {
+    onTap(button, (event) => {
       event.stopPropagation();
       this.tapTarget(id);
+    }, {
+      feedback: (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.unlockAudio();
+      },
     });
     member.instrumentBadgeId = id;
     member.instrumentBadgeEl = button;
@@ -675,8 +662,7 @@ class PuppetBandGame {
     host.querySelectorAll('.qk-pb-caro').forEach((btn) => {
       const id = this.nextTargetId('caro');
       this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.handleRosterTap(btn.dataset.char) });
-      btn.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); });
-      btn.addEventListener('click', () => this.tapTarget(id));
+      onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
     });
     this.refreshCarousel();
   }

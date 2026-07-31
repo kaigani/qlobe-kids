@@ -3,6 +3,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle, sway } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
@@ -46,7 +47,6 @@ class ChooseOneGame {
     this.currentAnswers = [];
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.yumIndex = 0;
     this.lastReplay = 0;
@@ -76,14 +76,6 @@ class ChooseOneGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-choose-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
-    });
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
@@ -107,8 +99,9 @@ class ChooseOneGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // unlock/resume run on every gesture, not just the first: iPadOS can
+    // suspend the AudioContext later (app switch, notification, lock), and
+    // these calls are cheap and idempotent
     sfx.unlock();
     speech.unlock();
   }
@@ -159,15 +152,18 @@ class ChooseOneGame {
     `;
 
     this.mountEl.querySelectorAll('.qk-choose-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
-      });
-      button.addEventListener('click', () => {
-        this.startMode(button.dataset.mode);
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
       });
     });
+  }
+
+  // play/end screens rebuild innerHTML, so the back button is rewired at
+  // each render rather than relying on a delegated listener
+  wireBack() {
+    const back = this.mountEl.querySelector('.qk-choose-back');
+    if (!back) return;
+    onTap(back, () => { speech.stop(); this.renderSplash(); });
   }
 
   async startMode(modeId) {
@@ -219,10 +215,12 @@ class ChooseOneGame {
       </section>
     `;
     this.applyThemeBackdrop();
+    this.wireBack();
 
     const sound = this.mountEl.querySelector('.qk-choose-sound');
-    sound.addEventListener('pointerdown', (e) => e.stopPropagation());
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    onTap(sound, () => this.replayPromptFromHud(), {
+      feedback: (e) => { e.stopPropagation(); this.unlockAudio(); },
+    });
     // tapping the story vignette replays it together with the spoken line
     const videoWrap = this.mountEl.querySelector('.qk-choose-video');
     videoWrap.addEventListener('pointerdown', () => {
@@ -637,15 +635,13 @@ class ChooseOneGame {
         </div>
       </section>
     `;
+    this.wireBack();
     const again = this.mountEl.querySelector('.qk-choose-again');
-    again.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      this.unlockAudio();
-      this.playSfx('tick');
-    });
-    again.addEventListener('click', () => {
+    onTap(again, () => {
       if (this.mode) this.startMode(this.mode.id);
       else this.renderSplash();
+    }, {
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
     });
     this.createBurst(this.mountEl.querySelector('.qk-choose-end-emoji'), 30);
   }

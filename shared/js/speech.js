@@ -41,18 +41,46 @@ if (synth) {
   });
 }
 
+let unlocked = false;
+let unlockPending = false;
+
 /**
  * Unlock speech on the first user gesture (iOS requires an in-gesture utterance).
+ *
+ * Idempotent on purpose: engines call this from EVERY pointerdown (often twice
+ * per tap — directly and via voiceClips.unlock()), and pushing another utterance
+ * into a queue that is already speaking is a known way to wedge speechSynthesis
+ * on iOS. The latch only closes once a prime actually started, so an attempt the
+ * engine refused still retries on a later gesture.
  */
 export function unlock() {
-  if (!synth) return;
+  if (!synth || unlocked || unlockPending) return;
   try {
     if (!voicesReady) pickVoice();
+    // already speaking: the engine is primed, and speaking into it is the
+    // wedge. `pending` alone is NOT proof — a pre-gesture utterance can sit
+    // withheld in the queue, so latching on it would skip the prime forever.
+    if (synth.speaking) { unlocked = true; return; }
+    if (synth.pending) return;
+
     const u = new SpeechSynthesisUtterance(' ');
     u.volume = 0;
     if (chosenVoice) u.voice = chosenVoice;
+
+    unlockPending = true;
+    const release = () => {
+      unlockPending = false;
+      liveUtterances.delete(u);
+    };
+    u.onstart = () => { unlocked = true; };   // it really spoke — stop trying
+    u.onend = release;
+    u.onerror = release;
+    // engines that drop the events must not leave the latch stuck half-open
+    setTimeout(release, 1200);
+
+    liveUtterances.add(u);
     synth.speak(u);
-  } catch { /* ignore */ }
+  } catch { unlockPending = false; }
 }
 
 /**

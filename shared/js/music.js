@@ -27,9 +27,14 @@ let buffers = {};        // instr -> [AudioBuffer]
 let baseUrl = '';
 let muted = false;
 let notesScheduled = 0;
+let selfHealAttached = false;
 
 const LOOKAHEAD_MS = 25;
 const HORIZON_S = 0.14;
+// How far past its last lookahead horizon the scheduler has to be before a wake
+// re-anchors the song. Comfortably above a few missed lookahead ticks and normal
+// main-thread jank, well under the ~1s a throttled background tab drifts.
+const BACKLOG_S = 0.35;
 
 export const ready = { loaded: false };
 
@@ -39,8 +44,51 @@ function ensureCtx() {
     ctx = new AC();
     master = ctx.createGain();
     master.connect(ctx.destination);
+    attachSelfHeal();
   }
   return ctx;
+}
+
+// iPadOS parks the context on 'interrupted' (non-standard) after a call, Siri,
+// or another app taking the audio session, and on 'suspended' when the page is
+// backgrounded — neither recovers on its own, so resume on anything that isn't
+// 'running'. Once the resume lands, re-anchor only if the scheduler is actually
+// behind (below): every wake path funnels through here, so this is the single
+// place a song gets re-anchored.
+function resumeCtx() {
+  if (!ctx) return;
+  if (ctx.state === 'running') { reanchorIfBehind(); return; }
+  const p = ctx.resume();
+  if (p && typeof p.then === 'function') p.then(reanchorIfBehind, () => {});
+  else reanchorIfBehind();
+}
+
+// A song that was parked (or whose lookahead timer was throttled by a hidden
+// tab) can come back holding events whose time has already passed; scheduling
+// them dumps a bar of music into one chord. Skip to the next event still ahead
+// of the horizon instead — but ONLY then. A plain resume (the statechange
+// listener fires on every one) usually leaves no backlog at all, because a
+// suspended context's currentTime stops with it and the song's timeline is in
+// context time; re-anchoring anyway would throw away the HORIZON_S of notes
+// sitting in front of the playhead each time.
+function reanchorIfBehind() {
+  if (!current || !ctx || ctx.state !== 'running') return;
+  if (ctx.currentTime - current.horizon > BACKLOG_S) resync(current);
+}
+
+// Attached once, with the context: recover as soon as the page is back in
+// front, so the band plays again before the next touch rather than because
+// of it.
+function attachSelfHeal() {
+  if (selfHealAttached) return;
+  selfHealAttached = true;
+  const wake = () => resumeCtx();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) wake(); });
+  window.addEventListener('pageshow', wake);
+  // catches an interruption that happens while the page stays foregrounded
+  if (ctx.addEventListener) {
+    ctx.addEventListener('statechange', () => { if (!document.hidden) wake(); });
+  }
 }
 
 /** Load the instrument manifest + decode every sample. Never rejects. */
@@ -59,10 +107,10 @@ export async function init(manifestUrl) {
   } catch { manifest = manifest || {}; }
 }
 
-/** Resume the context from the first user gesture (iOS autoplay policy). */
+/** Resume the context — cheap, call from every user gesture (iOS autoplay policy). */
 export function unlock() {
   if (!ctx) ensureCtx();
-  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  resumeCtx();
 }
 
 export function setMuted(m) {
@@ -211,13 +259,16 @@ export function playSong(song, band, cbs = {}) {
   const state = {
     song, events, beatDur, totalBeats, cbs,
     startTime: ctx.currentTime + 0.15,
-    loopN: 0, nextIdx: 0, timer: 0, timeouts: new Set(),
+    // horizon: how far ahead the last tick scheduled — how far behind we are
+    // after a park or a throttled timer is measured against it
+    loopN: 0, nextIdx: 0, timer: 0, timeouts: new Set(), horizon: ctx.currentTime,
   };
   current = state;
 
   const tick = () => {
     if (current !== state) return;
     const horizon = ctx.currentTime + HORIZON_S;
+    state.horizon = horizon;
     let guard = 0;
     while (guard++ < 200) {
       if (!state.events.length) return;
@@ -268,6 +319,28 @@ export function setMemberMuted(index, muted) {
 export function clearMemberMutes() { mutedMembers.clear(); }
 export function mutedMemberCount() { return mutedMembers.size; }
 
+// Point the scheduler at the first event past its lookahead horizon, keeping the
+// song's own timeline (startTime/beatDur) intact. Anything already scheduled sits
+// before that horizon, so nothing double-fires and nothing overdue back-fires.
+function resync(state) {
+  const beatPos = (ctx.currentTime + HORIZON_S - state.startTime) / state.beatDur;
+  // The song hasn't started yet (playSong anchors startTime 0.15s out, and a
+  // context parked between the two can leave the horizon further back still):
+  // the first event is already the next one. Wrapping a negative position would
+  // land near the END of the loop, miss every event, and skip a whole loop.
+  if (beatPos < 0) { state.loopN = 0; state.nextIdx = 0; return; }
+
+  const prevLoop = state.loopN;
+  const within = ((beatPos % state.totalBeats) + state.totalBeats) % state.totalBeats;
+  state.loopN = Math.floor(beatPos / state.totalBeats);
+  const idx = state.events.findIndex((e) => e.beat >= within);
+  if (idx >= 0) state.nextIdx = idx;
+  else { state.nextIdx = 0; state.loopN += 1; }
+  // resync owns the wrap here, so tick's own loop branch won't fire for it —
+  // tell the visuals about it instead of swallowing the loop point.
+  if (state.loopN !== prevLoop && state.cbs && state.cbs.onLoop) state.cbs.onLoop(state.loopN);
+}
+
 /**
  * Swap the band mid-song without dropping the beat: recompute the lead-aware
  * assignments + event list for the CURRENT song and resync the scheduler to
@@ -278,12 +351,7 @@ export function updateBand(band) {
   const song = current.song;
   const assignments = mapBand(band, song);
   current.events = expandEvents(song, assignments);
-  const beatPos = (ctx.currentTime + HORIZON_S - current.startTime) / current.beatDur;
-  const within = ((beatPos % current.totalBeats) + current.totalBeats) % current.totalBeats;
-  current.loopN = Math.max(0, Math.floor(beatPos / current.totalBeats));
-  const idx = current.events.findIndex((e) => e.beat >= within);
-  if (idx >= 0) current.nextIdx = idx;
-  else { current.nextIdx = 0; current.loopN += 1; }
+  resync(current);
 }
 
 /** Current song beat position (for quantizing solos); null when idle. */

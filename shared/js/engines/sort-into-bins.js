@@ -7,6 +7,7 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+import { onTap } from '../tap.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
@@ -56,7 +57,6 @@ class SortIntoBinsGame {
     this.selected = false;
     this.awaitingInput = false;
     this.inputLocked = false;
-    this.audioUnlocked = false;
     this.muted = false;
     this.lastReplay = 0;
     this.idleTimer = 0;
@@ -106,13 +106,27 @@ class SortIntoBinsGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
-    // delegated back-button handling: play/end screens rebuild innerHTML,
-    // so the listener lives on the mount and survives every screen swap
-    this.mountEl.addEventListener('click', (event) => {
-      if (event.target && event.target.closest && event.target.closest('.qk-sort-back')) {
-        speech.stop();
-        this.renderSplash();
-      }
+    // delegated back-button handling: play/end screens rebuild innerHTML, so the
+    // listener lives on the mount and survives every screen swap. Delegating a
+    // tap means checking BOTH ends of the press — the mount also covers the
+    // drag surface, and dropping a dragged item over the button is not a back tap.
+    this.backDownEl = null;
+    this.removeBackTap = onTap(this.mountEl, (event) => {
+      const el = backButtonFor(event.target);
+      const startedOn = this.backDownEl;
+      this.backDownEl = null;
+      // a keyboard/AT click has no preceding pointerdown, so it only checks the target
+      if (!el || (event.type !== 'click' && el !== startedOn)) return;
+      speech.stop();
+      this.renderSplash();
+    }, {
+      feedback: (event) => {
+        this.backDownEl = backButtonFor(event.target);
+        if (this.backDownEl) {
+          this.unlockAudio();
+          this.playSfx('tick');
+        }
+      },
     });
     this.renderSplash();
     this.ready = Promise.resolve();
@@ -131,6 +145,9 @@ class SortIntoBinsGame {
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
     window.removeEventListener('blur', this.onWindowBlur);
+    // the mount outlives this instance — leaving the delegated tap on it would let
+    // a destroyed game answer the next one's back button
+    if (this.removeBackTap) { this.removeBackTap(); this.removeBackTap = null; }
     this.mountEl.replaceChildren();
     this.targetMap.clear();
     if (window.QLOBE_DEBUG === this.debugHook) {
@@ -140,8 +157,8 @@ class SortIntoBinsGame {
   }
 
   unlockAudio() {
-    if (this.audioUnlocked) return;
-    this.audioUnlocked = true;
+    // cheap and idempotent — must run on every gesture, not just the first,
+    // since iPadOS can suspend the AudioContext after a backgrounding
     sfx.unlock();
     speech.unlock();
   }
@@ -197,12 +214,9 @@ class SortIntoBinsGame {
     this.applyThemeBackdrop();
 
     this.mountEl.querySelectorAll('.qk-sort-mode').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
+      onTap(button, () => this.startMode(button.dataset.mode), {
+        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
       });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
     });
   }
 
@@ -261,12 +275,11 @@ class SortIntoBinsGame {
       </section>
     `;
     this.applyThemeBackdrop();
-    const home = this.mountEl.querySelector('.qk-sort-back');
-    home.addEventListener('pointerdown', (e) => { e.stopPropagation(); this.playSfx('tick'); });
-    home.addEventListener('click', () => { speech.stop(); this.renderSplash(); });
+    // .qk-sort-back is handled by the delegated onTap wired in the constructor
     const sound = this.mountEl.querySelector('.qk-sort-sound');
-    sound.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); });
-    sound.addEventListener('click', () => this.replayPromptFromHud());
+    onTap(sound, () => this.replayPromptFromHud(), {
+      feedback: (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); },
+    });
   }
 
   async createPlayStage() {
@@ -1021,8 +1034,9 @@ class SortIntoBinsGame {
       </section>
     `;
     const again = this.mountEl.querySelector('.qk-sort-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); });
-    again.addEventListener('click', () => this.mode ? this.startMode(this.mode.id) : this.renderSplash());
+    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+    });
     this.createDomBurst(this.mountEl.querySelector('.qk-sort-end-art'), 34);
     await this.speakLine(this.config.voice.cheer, true);
   }
@@ -1353,6 +1367,13 @@ function escapeHtml(value) {
 
 function escapeAttr(value) {
   return escapeHtml(value);
+}
+
+/** The back button an event landed on, if any — null for anything else, including
+ *  a target that is not an Element and so has no .closest. */
+function backButtonFor(target) {
+  if (!target || typeof target.closest !== 'function') return null;
+  return target.closest('.qk-sort-back');
 }
 
 function installStyle() {
