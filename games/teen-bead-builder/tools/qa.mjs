@@ -126,6 +126,9 @@ async function main() {
   check('first child gesture unlocks the recorded teacher voice',
     await page.evaluate(() => window.__teenVoice.includes('buildIntro')),
     await page.evaluate(() => window.__teenVoice.join(', ')));
+  // The unlock assertion above covers real recorded playback. Keep the rest of
+  // the state-machine suite independent of browser/audio-device completion timing.
+  await page.evaluate(() => window.QLOBE_DEBUG.mute());
 
   const initialTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
   const source = initialTargets.find(({ id }) => id === 'bead-source');
@@ -141,7 +144,9 @@ async function main() {
     JSON.stringify(bundleMaterials));
   await page.screenshot({ path: path.join(shots, '02-bundle-empty.png') });
 
-  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(.2));
+  // Keep the tutorial celebration visible long enough for a production screenshot;
+  // remote Chrome can spend longer than the accelerated 780ms window encoding it.
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(20));
   await drag(page, page.locator('[data-bead-source]'), page.locator('[data-drop-zone]'));
   check('real drag places the first bead',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 1);
@@ -164,9 +169,10 @@ async function main() {
   await page.waitForTimeout(100);
   check('the tenth bead enters the visible bundling transition',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().transition)) === true);
+  const tutorialCelebration = page.waitForFunction(
+    () => window.QLOBE_DEBUG.getState().screen === 'celebration', null, { timeout: 120000 });
   await page.screenshot({ path: path.join(shots, '04-bundling-ten.png') });
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().tutorialDone
-    && window.QLOBE_DEBUG.getState().screen === 'play');
+  await tutorialCelebration;
   check('the bundle resolves to one visible tied ten bar',
     await page.locator('.place-tray .bundle-result').count() === 1);
   const rackMaterials = await page.locator('.place-tray .bundle-result').evaluate((rack) => ({
@@ -180,12 +186,14 @@ async function main() {
       && rackMaterials.rack.includes('rack-cord.webp')
       && rackMaterials.beads.every((image) => image.includes('bead-gold.webp')),
     JSON.stringify(rackMaterials));
+  await page.locator('.celebration').evaluate((overlay) => { overlay.style.visibility = 'hidden'; });
   await page.screenshot({ path: path.join(shots, '04b-one-ten-bar.png') });
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'celebration');
+  await page.locator('.celebration').evaluate((overlay) => { overlay.style.visibility = ''; });
   check('ten loose ones become the ten celebration', true);
   await page.screenshot({ path: path.join(shots, '05-ten-made.png') });
 
   await page.evaluate(() => window.QLOBE_DEBUG.tap('next'));
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(.2));
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'build');
   const buildState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('teen build starts with a target from 11 to 19',
