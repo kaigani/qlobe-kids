@@ -3,33 +3,38 @@
   "title": "Playdough Letter Factory",
   "category": "writing-fine-motor",
   "path": "games/playdough-letter-factory/",
-  "icon": "🟣",
+  "icon": "🟠",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 6 },
   "status": "beta",
-  "accent": "#8f5bd7",
-  "shareTitle": "Playdough Letter Factory 🟣 — Building Letters and Numbers",
-  "description": "Press squishy dough pieces onto ghost outlines to build letters and numbers stroke by stroke, hearing each part named aloud. A hands-on shape-building game for ages 5–6.",
+  "accent": "#118f87",
+  "shareTitle": "Playdough Letter Factory — Roll, Shape, and Spell",
+  "description": "Choose a bright dough color, roll it with real swipes, trace giant uppercase letters, build picture words, and make free-form clay art in a warm stop-motion factory.",
   "learningGoals": [
-    "Notice letters and numbers as parts made from strokes",
-    "Practice ordered part placement",
-    "Connect spoken construction language with visual forms"
+    "Practice the motor sequence and direction of uppercase letter strokes",
+    "Connect printed letters with their sounds and familiar picture words",
+    "Assemble three-letter words in order with a concrete picture clue",
+    "Explore pressure-free fine-motor mark making and symbol stamping"
   ],
-  "interactionModel": "build-assemble drag or tap-tap dough pieces onto ghost positions",
-  "feedbackModel": "Correct dough pieces pop, sparkle, and speak the stroke name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the completed letter or number.",
+  "interactionModel": "large color choices, repeated horizontal swipes, forgiving guided path tracing, tap-or-drag letter placement, and free pointer drawing",
+  "feedbackModel": "dough stretches and pops under the finger; correct actions fill tactile progress beads; wrong starts wiggle gently and replay a spoken cue; completed letters come alive with a phonics card and confetti",
   "uses": [
-    "shared/js/engines/build-assemble.js",
+    "shared/js/voice-clips.js",
+    "shared/js/content.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/assets/objects/",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "letters", "title": "Squish a Letter", "skill": "letter construction from stroke parts" },
-    { "id": "numbers", "title": "Squish a Number", "skill": "number construction from stroke parts" }
+    { "id": "letters", "title": "Make a Letter", "skill": "guided uppercase letter formation" },
+    { "id": "words", "title": "Build a Word", "skill": "ordered letter assembly with a picture clue" },
+    { "id": "free", "title": "Free Dough", "skill": "open-ended fine-motor mark making" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; placeholder emoji and text-symbol dough pieces rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "credits": "Designed and built for QLOBE Kids with GPT Image 2 claymation art, Krea 2 hub art through QLOBE Studio, and Qwen teacher-voice production with Whisper transcript QA.",
   "characters": [],
   "conceptVideo": null
 }

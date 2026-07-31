@@ -1,26 +1,62 @@
-# Playdough Letter Factory Assets
+# Playdough Letter Factory assets
 
-Playdough Letter Factory adds no image files, recorded clips, downloaded assets, generated art, or network assets. The current beta uses emoji and text-symbol dough placeholders rendered by the build-assemble engine.
+All shipped media is committed and runs offline. Original generated sources are retained under `assets/source/`; generated assets and documentation are CC BY 4.0 unless a shared asset's own row says otherwise.
 
-## Shared runtime assets
+## GPT Image 2 claymation system
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified for UI and text cards |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/build-assemble.js` |
-| Placeholder dough parts (`emoji:🟣`, `emoji:🟠`, `emoji:➖`, `emoji:▮`, `emoji:◖`, `emoji:◗`, `emoji:◜`, `emoji:◟`, `emoji:╲`) | Rendered by local system fonts and emoji through `shared/js/engines/art.js` | Platform/browser font vendors | Varies by device | No in-game attribution required for placeholder use | Used as temporary art refs only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+The built-in GPT Image 2 workflow produced the environment, exact-spelling title art, and original factory guide. Full final prompts and deterministic processing notes are recorded in `assets/source/gpt-image-2/prompts.json`.
 
-## Assets needed
+| Runtime asset | Source | Processing | QA |
+|---|---|---|---|
+| `assets/scenes/factory.webp` | `assets/source/gpt-image-2/factory-backdrop.png` | resized 1448×1086 → 1280×960; WebP q88 | 114 KB; no text/UI/characters; calm overlay center |
+| `assets/ui/title.webp` | `assets/source/gpt-image-2/title-chroma.png` | magenta removed with installed imagegen helper; WebP q90 | exact “Playdough Letter Factory” spelling checked at full size; alpha edge checked |
+| `assets/ui/mascot.webp` | `assets/source/gpt-image-2/mascot-chroma.png` | magenta removed with installed imagegen helper; resized to 720 px wide; WebP q88 | one complete character; anatomy, crop, and alpha edge checked |
 
-- playdough snake art
-- playdough ball art
-- playdough curve art with squish textures
-- recorded voice lines
+For both transparent assets, background removal used `remove_chroma_key.py --auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill`. The shipped WebPs preserve alpha; their larger `title-alpha.png` and `mascot-alpha.png` masters remain beside the sources in `assets/source/gpt-image-2/`.
 
-## Link preview (og:image)
+## QLOBE Studio / Krea hub tile
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+| Runtime asset | Source/recipe | Workflow | QA |
+|---|---|---|---|
+| `../../assets/hub/tiles/playdough-letter-factory.jpg` | `assets/source/krea/hub-seed42.png`; `hub-seed42.recipe.json` | Studio `menu-game-tile`, `krea2-turbo-t2i`, Toy Table style, seed 42, 768×640 → curated 640×533 JPEG | accepted in Studio; no title/UI/text; visually recognizable tubs, roller, press, conveyor, and dough rope |
+
+The source recipe freezes this prompt:
+
+> A charming miniature clay playdough workshop staged as toy objects: five open tubs of bright red, yellow, blue, green, and purple dough on a mint conveyor belt, a chunky cream rolling pin, a small teal dough press, rounded gears, and one freshly rolled red dough rope curling across a cream work tray. No people and no interface.
+
+Studio appends the proven Toy Table style suffix. Assignment into the hub tile folder was hand-curated, per the template's `assignHint`.
+
+## Recorded guide voice
+
+Every clip was created by QLOBE Studio with `qwen3-tts-voiceclone`, encoded to 96 kbps AAC/M4A with `+faststart`, and transcribed by `whisper-stt`. Each `<key>.m4a.recipe.json` records the frozen text, seed, symbolic approved teacher-voice reference, and transcript QA.
+
+| Key | Duration | Seed | Transcript QA |
+|---|---:|---:|---|
+| `welcome` | 3.115 s | 7 | 0.974, accepted (“Play Doh” normalization only) |
+| `color` | 1.677 s | 7 | 1.000 |
+| `roll` | 2.316 s | 7 | 1.000 |
+| `trace` | 1.677 s | 7 | 1.000 |
+| `nudge` | 2.157 s | 7 | 1.000 |
+| `letter-done` | 2.077 s | 7 | 1.000 |
+| `word-cat` | 3.675 s | 8 | 1.000; seed 7 rejected because Whisper heard “it” instead of “cat” |
+| `word-dog` | 2.876 s | 7 | 1.000 |
+| `word-sun` | 2.556 s | 7 | 0.952, intended word and letter sequence preserved |
+| `word-done` | 3.355 s | 7 | 1.000 |
+| `free` | 3.035 s | 7 | 1.000 |
+| `again` | 1.837 s | 7 | 1.000 |
+
+`assets/audio/manifest.json` provides durations and `assets/audio/lines.json` is the spoken source of truth. `voice-clips.js` supplies Web Speech fallback.
+
+## Shared assets
+
+| Asset | Creator/source | License | Use/modification |
+|---|---|---|---|
+| Fredoka SemiBold | Milena Brandão & Hafontia via Fontsource | SIL OFL 1.1 | UI/runtime text, unmodified |
+| `shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png` | QLOBE Kids shared UI | CC BY 4.0 | platform navigation, unmodified |
+| `shared/assets/objects/apple.webp`, `cat.webp`, `dog.webp`, `lion.webp`, `octopus.webp`, `sun.webp`, `turtle.webp` | QLOBE Kids shared object library | CC BY 4.0 | phonics/word picture clues, unmodified |
+| shared phonics and “is for” recordings resolved by `content.js` | QLOBE Kids shared audio library | project-recorded / CC BY 4.0 | letter payoff, unmodified |
+| Runtime SFX | WebAudio synthesis in `shared/js/sfx.js` | N/A | no file asset |
+
+## Link preview
+
+`assets/og-image.jpg` is a generated screenshot of the game's own splash at 1200×630. Regenerate it with `node tools/pipeline/capture_og_images.mjs --only playdough-letter-factory --force`; do not retouch it.

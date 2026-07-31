@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "playdough-again",
+  "kind": "voice",
+  "asset": "playdough-again.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ready for another squishy creation?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Ready for another squishy creation?"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Ready for another squishy creation?",
+      "heard": "Ready for another squishy creation?",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-30"
+}

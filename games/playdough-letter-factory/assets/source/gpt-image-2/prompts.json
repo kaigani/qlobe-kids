@@ -1,0 +1,28 @@
+{
+  "workflow": "built-in-gpt-image-2",
+  "generated": "2026-07-30",
+  "assets": [
+    {
+      "id": "factory-backdrop",
+      "source": "factory-backdrop.png",
+      "final": "../../scenes/factory.webp",
+      "prompt": "Use case: stylized-concept. Asset type: production game environment backdrop for a 4:3 landscape preschool tablet game. Create the empty interior of a whimsical playdough letter factory, matching the concept's claymation art direction but containing no interface, no mascot, and no letters. A cozy toy factory workshop built entirely from rounded mint-teal, cream, warm orange, coral, mustard, and aqua clay forms; chunky pipes, softly turning-looking gears, small presses, rounded cabinets, and two tiny high windows around the edges; a broad uncluttered warm golden workbench zone across the lower half and a calm teal wall area near the upper center for runtime UI overlays. Premium stop-motion claymation set, visibly hand-sculpted polymer clay and playdough, tactile fingerprints, tiny dents, subtle tool marks and hairline clay cracks, rounded preschool-safe geometry, polished production game art. Straight-on 4:3 landscape environment plate with strong depth at the edges and a calm center; warm honey studio light. Environment only; no text, letters, numbers, symbols, controls, UI, panels, buttons, people, characters, faces, hands, logos, trademarked elements, or watermark."
+    },
+    {
+      "id": "title-lockup",
+      "source": "title-chroma.png",
+      "final": "../../ui/title.webp",
+      "prompt": "Use case: logo-brand. Asset type: splash-screen title lockup for a preschool claymation game. Create a delightful hand-sculpted clay title reading exactly “Playdough Letter Factory”. Chunky rounded cream-white clay letters with deep teal clay edging and subtle warm orange accents; playful but highly legible; one small gear, one soft dough curl, and two tiny bubbles around—not replacing—letters. Premium stop-motion claymation title art with tactile fingerprints, tiny dents, handmade imperfections, soft bevels, and cheerful preschool branding. Centered compact two-line lockup, “Playdough Letter” then “Factory”, on a perfectly flat solid #ff00ff chroma-key background. Spell all three words exactly; no added words, letters, slogans, characters, UI, border, plaque, logos, trademarks, or watermark; no cast or contact shadow outside the title."
+    },
+    {
+      "id": "factory-guide",
+      "source": "mascot-chroma.png",
+      "final": "../../ui/mascot.webp",
+      "prompt": "Use case: stylized-concept. Asset type: production mascot sprite for a preschool tablet game. Create one friendly full-body playdough factory guide, a tiny childlike space-mechanic mascot, waving and inviting the player to make letters. Original gender-neutral preschool mascot with warm medium-brown skin, short dark-brown hair, huge friendly brown eyes, rosy cheeks, and a joyful open smile; cream clay spacesuit with chunky teal gloves and boots, an orange belt and star badge, clear round teal-edged bubble helmet with one tiny orange antenna ball; left hand waving, right hand pointing gently toward the play area; feet fully visible. Premium stop-motion claymation character sprite, hand-sculpted polymer clay, rounded proportions, fingerprints, tiny dents, soft bevels, coherent with a mint/cream/orange clay toy factory. Single isolated full-body character on a perfectly flat solid #ff00ff chroma-key background; no text, letters, numbers, props, machines, UI, speech bubbles, logos, trademarks, or watermark; crisp anatomically consistent silhouette."
+    }
+  ],
+  "processing": {
+    "backgroundRemoval": "Built-in imagegen chroma source processed with the installed imagegen remove_chroma_key.py helper using border auto-key, soft matte, thresholds 12/220, and despill.",
+    "encoding": "Opaque backdrop encoded to WebP at quality 88 and 1280x960. Transparent title and mascot encoded to WebP at quality 90/88."
+  }
+}

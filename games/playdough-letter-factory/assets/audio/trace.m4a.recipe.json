@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "playdough-trace",
+  "kind": "voice",
+  "asset": "playdough-trace.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Now follow the dotted line.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Now follow the dotted line."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Now follow the dotted line.",
+      "heard": "Now follow the dotted line.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-30"
+}

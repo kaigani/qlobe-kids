@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "playdough-roll",
+  "kind": "voice",
+  "asset": "playdough-roll.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Roll the dough! Swipe back and forth.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Roll the dough! Swipe back and forth."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Roll the dough! Swipe back and forth.",
+      "heard": "Roll the dough, swipe back and forth.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-07-30"
+}

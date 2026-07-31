@@ -1,0 +1,72 @@
+{
+  "id": "playdough-letter-factory",
+  "title": "Playdough Letter Factory",
+  "colors": [
+    { "id": "coral", "label": "coral red", "value": "#ef5b4f", "dark": "#b93737" },
+    { "id": "sunny", "label": "sunny yellow", "value": "#f4ba38", "dark": "#c87818" },
+    { "id": "blue", "label": "ocean blue", "value": "#408ed8", "dark": "#205ea7" },
+    { "id": "green", "label": "leaf green", "value": "#79b950", "dark": "#3e852f" },
+    { "id": "purple", "label": "grape purple", "value": "#9164c7", "dark": "#5c3b9b" }
+  ],
+  "letters": [
+    {
+      "id": "a",
+      "letter": "A",
+      "word": "apple",
+      "object": "../../shared/assets/objects/apple.webp",
+      "paths": ["M170 500 L300 105", "M300 105 L430 500", "M225 350 L375 350"]
+    },
+    {
+      "id": "l",
+      "letter": "L",
+      "word": "lion",
+      "object": "../../shared/assets/objects/lion.webp",
+      "paths": ["M205 105 L205 500", "M205 500 L445 500"]
+    },
+    {
+      "id": "t",
+      "letter": "T",
+      "word": "turtle",
+      "object": "../../shared/assets/objects/turtle.webp",
+      "paths": ["M135 125 L465 125", "M300 125 L300 505"]
+    },
+    {
+      "id": "c",
+      "letter": "C",
+      "word": "cat",
+      "object": "../../shared/assets/objects/cat.webp",
+      "paths": ["M450 175 C382 82 196 92 145 285 C103 450 252 548 450 450"]
+    },
+    {
+      "id": "o",
+      "letter": "O",
+      "word": "octopus",
+      "object": "../../shared/assets/objects/octopus.webp",
+      "paths": ["M300 105 C435 105 475 198 475 300 C475 440 395 505 300 505 C165 505 125 410 125 300 C125 165 205 105 300 105 Z"]
+    }
+  ],
+  "words": [
+    { "id": "cat", "word": "CAT", "object": "../../shared/assets/objects/cat.webp" },
+    { "id": "dog", "word": "DOG", "object": "../../shared/assets/objects/dog.webp" },
+    { "id": "sun", "word": "SUN", "object": "../../shared/assets/objects/sun.webp" }
+  ],
+  "modes": [
+    { "id": "letters", "title": "Make a Letter", "skill": "guided uppercase letter formation" },
+    { "id": "words", "title": "Build a Word", "skill": "ordered letter assembly with a picture clue" },
+    { "id": "free", "title": "Free Dough", "skill": "open-ended fine-motor mark making" }
+  ],
+  "voice": {
+    "welcome": "Welcome to the Playdough Letter Factory! Pick a way to play.",
+    "color": "Pick a squishy dough color.",
+    "roll": "Roll the dough! Swipe back and forth.",
+    "trace": "Now follow the dotted line.",
+    "nudge": "Start at the glowing dot and follow the line.",
+    "letter-done": "Amazing! You made a letter!",
+    "word-cat": "Can you make cat? C, A, T.",
+    "word-dog": "Can you make dog? D, O, G.",
+    "word-sun": "Can you make sun? S, U, N.",
+    "word-done": "You made a word! Fantastic factory work!",
+    "free": "Squish, stamp, and draw anything you can imagine!",
+    "again": "Ready for another squishy creation?"
+  }
+}

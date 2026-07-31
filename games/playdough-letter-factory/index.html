@@ -1,57 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Playdough Letter Factory 🟣 — Building Letters and Numbers</title>
-  <meta name="description" content="Press squishy dough pieces onto ghost outlines to build letters and numbers stroke by stroke, hearing each part named aloud. A hands-on shape-building game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Playdough Letter Factory" />
-  <meta property="og:title" content="Playdough Letter Factory 🟣 — Building Letters and Numbers" />
-  <meta property="og:description" content="Press squishy dough pieces onto ghost outlines to build letters and numbers stroke by stroke, hearing each part named aloud. A hands-on shape-building game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/playdough-letter-factory/" />
-  <meta property="og:image" content="https://qlo.be/games/playdough-letter-factory/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Playdough Letter Factory title screen with Squish a Letter and Squish a Number buttons on a dotted blue background." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Playdough Letter Factory 🟣 — Building Letters and Numbers" />
-  <meta name="twitter:description" content="Press squishy dough pieces onto ghost outlines to build letters and numbers stroke by stroke, hearing each part named aloud. A hands-on shape-building game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/playdough-letter-factory/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#128f87">
+  <title>Playdough Letter Factory — Roll, shape, and spell</title>
+  <meta name="description" content="Roll colorful dough, trace big letters, and build simple picture words in a warm claymation factory for ages 4–6.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Playdough Letter Factory">
+  <meta property="og:description" content="Roll, squish, and shape colorful playdough letters.">
+  <meta property="og:url" content="https://qlo.be/games/playdough-letter-factory/">
+  <meta property="og:image" content="https://qlo.be/games/playdough-letter-factory/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A clay playdough factory with colorful dough tubs and letter-making tools.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Playdough Letter Factory">
+  <meta name="twitter:description" content="Roll, squish, and shape colorful playdough letters.">
+  <meta name="twitter:image" content="https://qlo.be/games/playdough-letter-factory/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app" aria-live="polite">
+    <section id="splash" class="screen splash-screen">
+      <a class="hud hud-home" href="../../" aria-label="Back to all games"></a>
+      <button class="hud hud-sound splash-sound" type="button" aria-label="Hear the welcome"></button>
+      <img class="title-art" src="./assets/ui/title.webp" alt="Playdough Letter Factory">
+      <img class="mascot mascot-splash" src="./assets/ui/mascot.webp" alt="The friendly factory guide">
+      <div id="mode-cards" class="mode-cards" aria-label="Choose a way to play"></div>
+      <div class="splash-bubbles" aria-hidden="true"><i></i><i></i><i></i></div>
+    </section>
+
+    <section id="game-screen" class="screen hidden">
+      <button id="back" class="hud hud-back" type="button" aria-label="Back to ways to play"></button>
+      <button id="sound" class="hud hud-sound" type="button" aria-label="Hear the instruction again"></button>
+      <header class="factory-header">
+        <div id="phase-dots" class="phase-dots" aria-hidden="true"></div>
+        <div id="prompt" class="prompt-pill">
+          <span id="prompt-icon" class="prompt-icon" aria-hidden="true"></span>
+          <span id="prompt-text"></span>
+        </div>
+      </header>
+      <div id="playfield" class="playfield"></div>
+    </section>
+
+    <section id="reveal" class="screen reveal-screen hidden">
+      <button id="reveal-back" class="hud hud-back" type="button" aria-label="Back to ways to play"></button>
+      <button id="reveal-sound" class="hud hud-sound" type="button" aria-label="Hear it again"></button>
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
+      <img class="mascot mascot-reveal" src="./assets/ui/mascot.webp" alt="">
+      <div id="reveal-card" class="reveal-card"></div>
+      <div class="reveal-actions">
+        <button id="again" class="clay-action replay-action" type="button" aria-label="Play this one again"><span aria-hidden="true">↻</span></button>
+        <button id="next" class="clay-action next-action" type="button" aria-label="Make another"><span aria-hidden="true">➜</span></button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

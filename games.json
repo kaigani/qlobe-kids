@@ -772,24 +772,38 @@
       "path": "games/playdough-letter-factory/",
       "icon": "assets/hub/tiles/playdough-letter-factory.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
       "status": "beta",
-      "accent": "#8f5bd7",
+      "accent": "#118f87",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/content.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/objects/",
+        "shared/assets/ui/"
+      ],
       "modes": [
         {
           "id": "letters",
-          "title": "Squish a Letter",
-          "skill": "letter construction from stroke parts"
+          "title": "Make a Letter",
+          "skill": "guided uppercase letter formation"
         },
         {
-          "id": "numbers",
-          "title": "Squish a Number",
-          "skill": "number construction from stroke parts"
+          "id": "words",
+          "title": "Build a Word",
+          "skill": "ordered letter assembly with a picture clue"
+        },
+        {
+          "id": "free",
+          "title": "Free Dough",
+          "skill": "open-ended fine-motor mark making"
         }
       ],
-      "summary": "Roll and shape letters from playdough."
+      "summary": "Roll colorful dough, trace giant letters, build picture words, and make free-form clay art."
     },
     {
       "id": "secret-message-copy",
