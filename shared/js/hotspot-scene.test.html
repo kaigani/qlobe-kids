@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>hotspot-scene.js test — tap the lattice</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; overflow: hidden; background: #0b1a3a; color: #17517e;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      -webkit-user-select: none; user-select: none;
+    }
+
+    /* The scene fills the WHOLE viewport, so a Playwright viewport of
+       1194x834 is exactly the scene's view box and rects() can be asserted
+       against the numbers in GDD 4.7 with no chrome to subtract. Every panel
+       floats above it. */
+    #stage { position: fixed; inset: 0; }
+
+    #bar {
+      position: fixed; left: 0; top: 0; right: 0; z-index: 9000;
+      display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px;
+      background: #fffef7ee; border-bottom: 3px solid #ecd9a8; align-items: center;
+      max-height: 46vh; overflow: auto;
+    }
+    #bar.hidden { display: none; }
+    .group { display: flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 12px; background: #eef4fb; }
+    .group > strong { font-size: 11px; text-transform: uppercase; opacity: .6; letter-spacing: .04em; }
+    button {
+      font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px;
+      padding: 8px 11px; min-height: 34px; background: #2f6fb0; color: #fff; cursor: pointer;
+    }
+    button.on { background: #e8863a; }
+    button.alt { background: #4a8b6a; }
+    button.warn { background: #a8453a; }
+    select { font: inherit; font-size: 13px; padding: 7px 8px; border-radius: 10px;
+      border: 2px solid #cfdcea; background: #fff; }
+
+    #toggle-bar {
+      position: fixed; right: 8px; top: 8px; z-index: 9500; background: #123a6b;
+    }
+
+    #readout {
+      position: fixed; left: 8px; bottom: 8px; z-index: 9000; max-width: 46vw;
+      max-height: 42vh; overflow: auto; font-size: 12px; line-height: 1.45;
+      background: #000c; color: #ffe6b8; padding: 8px 11px; border-radius: 12px;
+      white-space: pre; pointer-events: none; font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    #log {
+      position: fixed; right: 8px; bottom: 8px; z-index: 9000; width: 320px;
+      max-height: 34vh; overflow: hidden; font-size: 12px; line-height: 1.5;
+      background: #123a6bdd; color: #d9ecff; padding: 8px 11px; border-radius: 12px;
+      white-space: pre-wrap; pointer-events: none;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+
+    /* HUD stand-ins. These are what setReserve() reports; they are drawn so the
+       keep-out push is visible rather than inferred. */
+    .hud { position: fixed; z-index: 8000; display: none; pointer-events: none;
+      border: 3px dashed #ff6b6b; background: #ff6b6b22; border-radius: 14px; }
+    body.reserve-on .hud { display: block; }
+    #hud-banner { left: 12px; right: 12px; top: 56px; height: 92px; }
+    #hud-tray { left: 50%; transform: translateX(-50%); bottom: 16px; width: 420px; height: 130px; }
+    #tray-slot { position: fixed; z-index: 8100; left: 50%; transform: translateX(-50%);
+      bottom: 40px; width: 96px; height: 96px; border: 3px solid #ffd24a;
+      border-radius: 16px; background: #ffd24a22; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="stage"></div>
+
+  <div id="hud-banner" class="hud"></div>
+  <div id="hud-tray" class="hud"></div>
+  <div id="tray-slot"></div>
+
+  <button id="toggle-bar">hide panel</button>
+
+  <div id="bar">
+    <div class="group">
+      <strong>target</strong>
+      <select id="who"></select>
+    </div>
+    <div class="group">
+      <strong>state</strong>
+      <button data-state="idle">idle</button>
+      <button data-state="lit">lit</button>
+      <button data-state="found">found</button>
+      <button data-state="declined">declined</button>
+      <button data-state="bogus" class="warn">bogus</button>
+    </div>
+    <div class="group">
+      <strong>bubble</strong>
+      <button data-tone="neutral">neutral</button>
+      <button data-tone="yes">yes</button>
+      <button data-tone="no">no</button>
+      <button id="b-glyph">sound glyph</button>
+      <select id="side">
+        <option value="auto">auto</option>
+        <option value="top">top</option>
+        <option value="bottom">bottom</option>
+        <option value="left">left</option>
+        <option value="right">right</option>
+      </select>
+      <button id="b-hide">hide</button>
+      <button id="b-all" class="alt">all</button>
+    </div>
+    <div class="group">
+      <strong>motion</strong>
+      <button data-motion="pulse">pulse</button>
+      <button data-motion="wiggle">wiggle</button>
+      <button data-motion="pop">pop</button>
+      <button id="m-fly">flyTo tray</button>
+      <button id="m-sweep" class="alt">pulse sweep</button>
+      <button id="m-pops" class="alt">pop sweep</button>
+    </div>
+    <div class="group">
+      <strong>input</strong>
+      <button id="i-one">disable one</button>
+      <button id="i-scene">scene off</button>
+    </div>
+    <div class="group">
+      <strong>layout</strong>
+      <button id="l-seed">reseed jitter</button>
+      <button id="l-home">home</button>
+      <button id="l-reserve">reserve off</button>
+      <button id="l-reflow">reflow</button>
+    </div>
+    <div class="group">
+      <strong>scene</strong>
+      <button id="s-rm">reducedMotion: live</button>
+      <button id="s-bg">swap plate</button>
+      <button id="s-sprite">setSprite</button>
+      <button id="s-destroy" class="warn">destroy</button>
+      <button id="s-recreate" class="alt">recreate</button>
+    </div>
+  </div>
+
+  <div id="readout">booting…</div>
+  <div id="log">log</div>
+
+  <script type="module">
+    import { createScene } from './hotspot-scene.js';
+
+    const ART_W = 1600;
+    const ART_H = 1200;
+
+    /** GDD 4.3 — the wide lattice, verbatim. `{x,y,w,h}` is the allowed BOX
+     *  (top-left + size); the hotspot itself is placed at the box centre,
+     *  because hotspot-scene takes centres. */
+    const ZONES = [
+      { name: 'shelf-left',  x: 230,  y: 200, w: 250, h: 230 },
+      { name: 'wall-hook',   x: 500,  y: 210, w: 240, h: 190 },
+      { name: 'windowsill',  x: 940,  y: 210, w: 240, h: 190 },
+      { name: 'shelf-right', x: 1240, y: 200, w: 250, h: 230 },
+      { name: 'plant-nook',  x: 150,  y: 560, w: 260, h: 250 },
+      { name: 'dresser-top', x: 1220, y: 520, w: 260, h: 250 },
+      { name: 'floor-left',  x: 290,  y: 830, w: 240, h: 240 },
+      { name: 'floor-right', x: 1060, y: 830, w: 230, h: 230 },
+    ].map((z) => ({ ...z, cx: z.x + z.w / 2, cy: z.y + z.h / 2 }));
+
+    /** GDD 4.4 sizes, one per zone, so the harness exercises the whole
+     *  140–260 art px band (and therefore both sides of the minHit floor). */
+    const WORDS = [
+      { id: 'hat', size: 200, tint: '#e8863a' },
+      { id: 'bat', size: 200, tint: '#5b4b8a' },
+      { id: 'mat', size: 170, tint: '#4a8b6a' },
+      { id: 'sun', size: 200, tint: '#f0b429' },
+      { id: 'mop', size: 170, tint: '#2f6fb0' },
+      { id: 'pen', size: 150, tint: '#a8453a' },
+      { id: 'fig', size: 150, tint: '#7a3f8a' },
+      { id: 'van', size: 240, tint: '#1f7a8c' },
+    ];
+
+    // --- baked stand-ins ------------------------------------------------------
+    // The module loads no assets of its own, so the harness bakes everything it
+    // needs. That also keeps this page runnable before any art exists.
+
+    /** A flat plate with the lattice drawn on it, so a misplaced hotspot is
+     *  obvious at a glance instead of needing a rect readout. */
+    function platePng(base, label) {
+      const c = document.createElement('canvas');
+      c.width = ART_W; c.height = ART_H;
+      const g = c.getContext('2d');
+      g.fillStyle = base; g.fillRect(0, 0, ART_W, ART_H);
+      g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2;
+      for (let x = 100; x < ART_W; x += 100) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, ART_H); g.stroke(); }
+      for (let y = 100; y < ART_H; y += 100) { g.beginPath(); g.moveTo(0, y); g.lineTo(ART_W, y); g.stroke(); }
+      g.strokeStyle = 'rgba(255,255,255,.42)'; g.lineWidth = 4;
+      g.font = '600 30px system-ui'; g.fillStyle = 'rgba(255,255,255,.62)';
+      ZONES.forEach((z, i) => {
+        g.strokeRect(z.x, z.y, z.w, z.h);
+        g.fillText(`${i} ${z.name}`, z.x + 6, z.y - 10);
+      });
+      // the 834x1194 portrait crop, so the compact-layout claim is visible
+      g.strokeStyle = 'rgba(255,120,120,.75)'; g.lineWidth = 5;
+      g.strokeRect(381, 0, 838, ART_H);
+      g.fillStyle = 'rgba(255,255,255,.85)'; g.font = '700 44px system-ui';
+      g.fillText(label, 40, 70);
+      return c.toDataURL('image/png');
+    }
+
+    /** A blobby sprite: enough shape that scale, rotation and the state halo
+     *  all read, with a transparent surround so drop-shadow behaves like it
+     *  will on real cut-outs. */
+    function spritePng(tint, letter) {
+      const S = 256;
+      const c = document.createElement('canvas');
+      c.width = S; c.height = S;
+      const g = c.getContext('2d');
+      g.fillStyle = tint;
+      g.strokeStyle = '#0b1a3a'; g.lineWidth = 12;
+      g.beginPath();
+      g.moveTo(S * 0.5, S * 0.08);
+      g.lineTo(S * 0.92, S * 0.40);
+      g.lineTo(S * 0.76, S * 0.92);
+      g.lineTo(S * 0.24, S * 0.92);
+      g.lineTo(S * 0.08, S * 0.40);
+      g.closePath();
+      g.fill(); g.stroke();
+      g.fillStyle = '#fffdf6'; g.font = '700 96px system-ui';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(letter, S / 2, S * 0.58);
+      return c.toDataURL('image/png');
+    }
+
+    const PLATES = [
+      platePng('#2b3d6b', 'plate A'),
+      platePng('#3d5b2b', 'plate B'),
+    ];
+    const SPRITES = Object.fromEntries(WORDS.map((w) => [w.id, spritePng(w.tint, w.id[0].toUpperCase())]));
+    const ALT_SPRITE = spritePng('#c93c7a', '?');
+
+    // --- seeded jitter (GDD 4.4) ---------------------------------------------
+
+    function fnv1a(str) {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+      }
+      return h >>> 0;
+    }
+    const jitter = (seed, id, axis) => (fnv1a(`${seed}|case1|${id}|${axis}`) % 41) - 20;
+
+    // --- the scene ------------------------------------------------------------
+
+    const stage = document.getElementById('stage');
+    const logEl = document.getElementById('log');
+    const readoutEl = document.getElementById('readout');
+    const whoSel = document.getElementById('who');
+    const sideSel = document.getElementById('side');
+
+    let scene = null;
+    let seed = 1;
+    let plateIdx = 0;
+    let rmMode = 'live';          // 'live' | 'on' | 'off'
+    let reserveOn = false;
+    let sceneOn = true;
+    let taps = 0;
+    const lines = [];
+
+    function log(msg) {
+      lines.unshift(msg);
+      if (lines.length > 14) lines.pop();
+      logEl.textContent = lines.join('\n');
+    }
+
+    /** Centre + size for one zone at the current seed. GDD 4.4: longest edge
+     *  = size, clamped into the zone with a 10 px margin, then jittered. */
+    function placement(i, useJitter) {
+      const z = ZONES[i];
+      const wdef = WORDS[i];
+      const box = Math.min(wdef.size, z.w - 20, z.h - 20);
+      const jx = useJitter ? jitter(seed, wdef.id, 'x') : 0;
+      const jy = useJitter ? jitter(seed, wdef.id, 'y') : 0;
+      const half = box / 2;
+      const cx = Math.min(Math.max(z.cx + jx, z.x + 10 + half), z.x + z.w - 10 - half);
+      const cy = Math.min(Math.max(z.cy + jy, z.y + 10 + half), z.y + z.h - 10 - half);
+      return { x: cx, y: cy, w: box, h: box };
+    }
+
+    function reserveRects() {
+      if (!reserveOn) return [];
+      return [
+        document.getElementById('hud-banner').getBoundingClientRect(),
+        document.getElementById('hud-tray').getBoundingClientRect(),
+      ];
+    }
+
+    function build() {
+      scene = createScene(stage, {
+        artW: ART_W, artH: ART_H,
+        background: PLATES[plateIdx],
+        minHit: 96,
+        bubbleMinHit: 0,
+        reducedMotion: rmMode === 'live' ? null : rmMode === 'on',
+        ariaLabel: 'test room',
+        className: 'hs-test',
+      });
+
+      WORDS.forEach((w, i) => {
+        const p = placement(i, true);
+        scene.addHotspot({
+          id: w.id, x: p.x, y: p.y, w: p.w, h: p.h,
+          sprite: SPRITES[w.id], alt: w.id, z: i, hitPad: 0,
+        });
+      });
+
+      scene.setReserve(reserveRects);
+      scene.onTap((id, h, ev) => {
+        taps++;
+        log(`tap ${taps}: ${id} (${ev.type})`);
+        h.bubble({ text: id, tone: 'neutral', side: sideSel.value });
+      });
+      scene.onReflow((info) => {
+        lastReflow = info;
+        paintReadout();
+      });
+      scene.setEnabled(sceneOn);
+
+      whoSel.innerHTML = '<option value="*">all</option>' +
+        WORDS.map((w) => `<option value="${w.id}">${w.id}</option>`).join('');
+      log(`scene built · ${scene.size} hotspots`);
+    }
+
+    let lastReflow = null;
+
+    function targets() {
+      if (!scene) return [];
+      const v = whoSel.value;
+      if (v === '*') return WORDS.map((w) => scene.get(w.id)).filter(Boolean);
+      const h = scene.get(v);
+      return h ? [h] : [];
+    }
+
+    // --- readout --------------------------------------------------------------
+
+    function paintReadout() {
+      if (!scene) { readoutEl.textContent = 'scene destroyed'; return; }
+      const v = scene.visibleArt();
+      const rs = scene.rects();
+      const minW = Math.min(...rs.map((r) => r.rect.w));
+      const minH = Math.min(...rs.map((r) => r.rect.h));
+      const head =
+        `viewport   ${innerWidth} x ${innerHeight}\n` +
+        `scale      ${scene.scale.toFixed(4)}\n` +
+        `visibleArt x ${v.x.toFixed(1)} y ${v.y.toFixed(1)} w ${v.w.toFixed(1)} h ${v.h.toFixed(1)}\n` +
+        `layout     ${lastReflow ? lastReflow.layoutHint : '?'}   reducedMotion ${scene.reducedMotion}\n` +
+        `minHit obs ${minW.toFixed(1)} x ${minH.toFixed(1)}  (floor 96)   taps ${taps}\n` +
+        `id      x       y       w      h     state     on\n`;
+      const rows = rs.map((r) =>
+        `${r.id.padEnd(7)} ${r.rect.x.toFixed(0).padStart(6)} ${r.rect.y.toFixed(0).padStart(6)}` +
+        ` ${r.rect.w.toFixed(0).padStart(6)} ${r.rect.h.toFixed(0).padStart(5)}` +
+        `  ${r.state.padEnd(9)} ${r.enabled ? 'y' : 'n'}`).join('\n');
+      readoutEl.textContent = head + rows;
+    }
+    setInterval(paintReadout, 400);
+
+    // --- controls -------------------------------------------------------------
+
+    const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+
+    document.querySelectorAll('[data-state]').forEach((b) => {
+      b.addEventListener('click', () => {
+        targets().forEach((h) => h.setState(b.dataset.state));
+        log(`setState ${b.dataset.state} x${targets().length}`);
+      });
+    });
+
+    document.querySelectorAll('[data-tone]').forEach((b) => {
+      b.addEventListener('click', () => {
+        targets().forEach((h) => h.bubble({ text: h.id, tone: b.dataset.tone, side: sideSel.value }));
+        log(`bubble ${b.dataset.tone} / ${sideSel.value}`);
+      });
+    });
+
+    on('b-glyph', () => {
+      targets().forEach((h) => h.bubble({ text: '', glyph: 'sound', side: sideSel.value }));
+      log('bubble glyph sound');
+    });
+    on('b-hide', () => { targets().forEach((h) => h.hideBubble()); log('hideBubble'); });
+    on('b-all', () => {
+      const tones = ['neutral', 'yes', 'no'];
+      WORDS.forEach((w, i) => scene.get(w.id).bubble({ text: w.id, tone: tones[i % 3], side: sideSel.value }));
+      log('bubble all tones');
+    });
+
+    document.querySelectorAll('[data-motion]').forEach((b) => {
+      b.addEventListener('click', async () => {
+        const t0 = performance.now();
+        await Promise.all(targets().map((h) => h[b.dataset.motion]()));
+        log(`${b.dataset.motion} resolved in ${Math.round(performance.now() - t0)} ms`);
+      });
+    });
+
+    on('m-fly', async () => {
+      const slot = document.getElementById('tray-slot').getBoundingClientRect();
+      const t0 = performance.now();
+      await Promise.all(targets().map((h) => h.flyTo(slot, { ms: 620, arc: 120 })));
+      log(`flyTo resolved in ${Math.round(performance.now() - t0)} ms`);
+    });
+
+    on('m-sweep', async () => {
+      const list = WORDS.map((w) => scene.get(w.id));
+      list.forEach((h, i) => setTimeout(() => h.pulse({ ms: 900, scale: 1.06 }), i * 90));
+      log('pulse sweep (90 ms stagger)');
+    });
+    on('m-pops', () => {
+      WORDS.forEach((w, i) => setTimeout(() => scene.get(w.id).pop(), i * 70));
+      log('pop sweep (70 ms stagger)');
+    });
+
+    on('i-one', (e) => {
+      const list = targets();
+      const nowOn = list.every((h) => scene.rects().find((r) => r.id === h.id)?.enabled);
+      list.forEach((h) => h.setEnabled(!nowOn));
+      e.target.textContent = nowOn ? 'enable one' : 'disable one';
+      e.target.classList.toggle('on', nowOn);
+      log(`setEnabled ${!nowOn} x${list.length}`);
+    });
+
+    on('i-scene', (e) => {
+      sceneOn = !sceneOn;
+      scene.setEnabled(sceneOn);
+      e.target.textContent = sceneOn ? 'scene off' : 'scene ON';
+      e.target.classList.toggle('on', !sceneOn);
+      log(`scene.setEnabled(${sceneOn})`);
+    });
+
+    on('l-seed', () => {
+      seed++;
+      WORDS.forEach((w, i) => scene.get(w.id).setRect(placement(i, true)));
+      paintReadout();
+      log(`reseed -> ${seed}`);
+    });
+    on('l-home', () => {
+      WORDS.forEach((w, i) => scene.get(w.id).setRect(placement(i, false)));
+      paintReadout();
+      log('un-jittered zone centres');
+    });
+    on('l-reserve', (e) => {
+      reserveOn = !reserveOn;
+      document.body.classList.toggle('reserve-on', reserveOn);
+      scene.reflow();
+      e.target.textContent = reserveOn ? 'reserve ON' : 'reserve off';
+      e.target.classList.toggle('on', reserveOn);
+      log(`reserve ${reserveOn ? 'on' : 'off'}`);
+    });
+    on('l-reflow', () => { scene.reflow(); log('reflow()'); });
+
+    on('s-rm', (e) => {
+      rmMode = rmMode === 'live' ? 'on' : rmMode === 'on' ? 'off' : 'live';
+      e.target.textContent = `reducedMotion: ${rmMode}`;
+      e.target.classList.toggle('on', rmMode === 'on');
+      log(`reducedMotion ${rmMode} — rebuilding (constructor option)`);
+      rebuild();
+    });
+
+    on('s-bg', async () => {
+      plateIdx = 1 - plateIdx;
+      const ok = await scene.setBackground(PLATES[plateIdx], { ms: 420 });
+      log(`setBackground -> ${ok}`);
+    });
+
+    on('s-sprite', async () => {
+      const list = targets();
+      const ok = await Promise.all(list.map((h) => h.setSprite(ALT_SPRITE)));
+      const bad = await list[0].setSprite('does-not-exist.webp');
+      log(`setSprite ${ok.join(',')} · missing-url -> ${bad}`);
+    });
+
+    on('s-destroy', () => {
+      const kids = stage.childElementCount;
+      scene.destroy();
+      scene = null;
+      log(`destroy() · stage children ${kids} -> ${stage.childElementCount}`);
+      paintReadout();
+    });
+    on('s-recreate', () => { rebuild(); });
+
+    function rebuild() {
+      if (scene) scene.destroy();
+      taps = 0;
+      build();
+      paintReadout();
+    }
+
+    on('toggle-bar', (e) => {
+      const bar = document.getElementById('bar');
+      bar.classList.toggle('hidden');
+      e.target.textContent = bar.classList.contains('hidden') ? 'show panel' : 'hide panel';
+    });
+
+    build();
+    paintReadout();
+
+    // --- headless verification hook -------------------------------------------
+    window.QLOBE_DEBUG = {
+      ready: true,
+      get scene() { return scene; },
+      zones: ZONES,
+      getTargets: () => (scene ? scene.rects() : []),
+      getVisibleArt: () => (scene ? scene.visibleArt() : null),
+      getLayout: () => (lastReflow ? lastReflow.layoutHint : null),
+      getReflow: () => lastReflow,
+      tapCount: () => taps,
+      /** Fire a real press on a hotspot: pointerdown then pointerup over the
+       *  element, which is the only path tap.js counts as a tap. */
+      tap: (id) => {
+        const el = stage.querySelector(`.hs-hotspot[data-id="${id}"]`);
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        const init = { bubbles: true, cancelable: true, pointerId: 1, isPrimary: true,
+          pointerType: 'touch', clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+        el.dispatchEvent(new PointerEvent('pointerdown', init));
+        el.dispatchEvent(new PointerEvent('pointerup', init));
+        return true;
+      },
+      /** pointerdown then pointercancel — must NOT count. */
+      tapCancel: (id) => {
+        const el = stage.querySelector(`.hs-hotspot[data-id="${id}"]`);
+        if (!el) return false;
+        const init = { bubbles: true, cancelable: true, pointerId: 2, isPrimary: true, pointerType: 'touch' };
+        el.dispatchEvent(new PointerEvent('pointerdown', init));
+        el.dispatchEvent(new PointerEvent('pointercancel', init));
+        return true;
+      },
+      setReserve: (v) => { reserveOn = !!v; document.body.classList.toggle('reserve-on', reserveOn); scene.reflow(); },
+      rebuild,
+    };
+    document.title = 'ready';
+  </script>
+</body>
+</html>

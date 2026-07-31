@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-31T18:25:49.313Z",
+  "generated": "2026-07-31T21:41:38.971Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -89,17 +89,6 @@
         "weather-scientist"
       ]
     },
-    "match-pairs": {
-      "count": 6,
-      "games": [
-        "community-helper-cards",
-        "picture-word-match",
-        "rhyming-detective",
-        "sound-cylinder-match",
-        "texture-trail",
-        "then-now-sort"
-      ]
-    },
     "sequence-order": {
       "count": 5,
       "games": [
@@ -118,6 +107,16 @@
         "sound-basket",
         "table-setting-mission",
         "tweezer-rescue"
+      ]
+    },
+    "match-pairs": {
+      "count": 5,
+      "games": [
+        "community-helper-cards",
+        "picture-word-match",
+        "sound-cylinder-match",
+        "texture-trail",
+        "then-now-sort"
       ]
     },
     "trace-path": {
@@ -1163,17 +1162,22 @@
       "packs": []
     },
     "rhyming-detective": {
-      "engine": "match-pairs",
+      "engine": null,
       "status": "beta",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
-        "shared/js/engines/match-pairs.js",
+        "shared/js/hotspot-scene.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
-        "shared/assets/objects"
+        "shared/assets/audio/words",
+        "shared/assets/objects",
+        "shared/assets/ui",
+        "shared/data/words.json"
       ],
       "packs": []
     },
@@ -1642,7 +1646,15 @@
         "shared/js/voice-clips.js"
       ],
       "assets": [
+        "games/teen-bead-builder/assets/manipulatives/bead-blue.webp",
+        "games/teen-bead-builder/assets/manipulatives/bead-coral.webp",
+        "games/teen-bead-builder/assets/manipulatives/bead-cream.webp",
         "games/teen-bead-builder/assets/manipulatives/bead-gold.webp",
+        "games/teen-bead-builder/assets/manipulatives/bead-green.webp",
+        "games/teen-bead-builder/assets/manipulatives/bead-teal.webp",
+        "games/teen-bead-builder/assets/manipulatives/card-blue.webp",
+        "games/teen-bead-builder/assets/manipulatives/card-orange.webp",
+        "games/teen-bead-builder/assets/manipulatives/card-teal.webp",
         "games/teen-bead-builder/assets/manipulatives/rack-cord.webp",
         "games/teen-bead-builder/assets/manipulatives/tray.webp",
         "shared/assets/ui"
@@ -1874,7 +1886,6 @@
       "shared/js/engines/match-pairs.js": [
         "community-helper-cards",
         "picture-word-match",
-        "rhyming-detective",
         "sound-cylinder-match",
         "texture-trail",
         "then-now-sort"
@@ -1930,6 +1941,9 @@
         "letter-road-driving",
         "scissor-trail-safari",
         "sticker-line-challenge"
+      ],
+      "shared/js/hotspot-scene.js": [
+        "rhyming-detective"
       ],
       "shared/js/music.js": [
         "my-puppet-band",
@@ -2224,6 +2238,7 @@
         "lunchbox-pack",
         "playdough-letter-factory",
         "puppet-retell",
+        "rhyming-detective",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
@@ -2244,6 +2259,7 @@
         "playdough-letter-factory",
         "puppet-problem-solvers",
         "puppet-retell",
+        "rhyming-detective",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
@@ -2494,7 +2510,31 @@
       "games/sound-sprouts/assets/gen/ui/splash/title.png": [
         "sound-sprouts"
       ],
+      "games/teen-bead-builder/assets/manipulatives/bead-blue.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/bead-coral.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/bead-cream.webp": [
+        "teen-bead-builder"
+      ],
       "games/teen-bead-builder/assets/manipulatives/bead-gold.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/bead-green.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/bead-teal.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/card-blue.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/card-orange.webp": [
+        "teen-bead-builder"
+      ],
+      "games/teen-bead-builder/assets/manipulatives/card-teal.webp": [
         "teen-bead-builder"
       ],
       "games/teen-bead-builder/assets/manipulatives/rack-cord.webp": [
@@ -2518,6 +2558,9 @@
       ],
       "shared/assets/audio/letters": [
         "flashlight-cave"
+      ],
+      "shared/assets/audio/words": [
+        "rhyming-detective"
       ],
       "shared/assets/foods": [
         "lunchbox-pack"
@@ -2600,6 +2643,7 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
+        "rhyming-detective",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
@@ -2719,6 +2763,9 @@
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell"
+      ],
+      "shared/data/words.json": [
+        "rhyming-detective"
       ]
     }
   }

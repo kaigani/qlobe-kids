@@ -341,21 +341,21 @@
       "path": "games/rhyming-detective/",
       "icon": "assets/hub/tiles/rhyming-detective.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
       "status": "beta",
-      "accent": "#2d7dd2",
+      "accent": "#2f6fd0",
       "modes": [
         {
-          "id": "classic",
-          "title": "Find the Rhymes",
-          "skill": "rhyme awareness with familiar CVC pictures"
+          "id": "rhyme-hunt",
+          "title": "Rhyme Hunt",
+          "skill": "finding words that rhyme with a target word, with the words printed"
         },
         {
-          "id": "tricky",
-          "title": "Tricky Rhymes",
-          "skill": "rhyme discrimination with less obvious CVC pictures"
+          "id": "sound-detective",
+          "title": "Sound Detective",
+          "skill": "finding rhymes by ear alone, with no printed words"
         }
       ],
       "summary": "Hunt around the room for things that rhyme."

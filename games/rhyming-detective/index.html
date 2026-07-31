@@ -5,55 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Rhyming Detective 🔍 — Rhyme Matching for Little Sleuths</title>
-  <meta name="description" content="Listen closely and tap two picture cards that rhyme, training an ear for matching ending sounds. A playful rhyme-detection game for ages 5–6." />
+  <meta name="theme-color" content="#2f6fd0" />
+  <title>Rhyming Detective — Hidden-Object Rhyme Hunt for Little Sleuths</title>
+  <meta name="description" content="Search a cosy room for the words that rhyme with the target word. Tap anything and it says its name; find all three rhymes to close the case. Five cases, two modes, no reading required. Ages 3-6." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Rhyming Detective" />
-  <meta property="og:title" content="Rhyming Detective 🔍 — Rhyme Matching for Little Sleuths" />
-  <meta property="og:description" content="Listen closely and tap two picture cards that rhyme, training an ear for matching ending sounds. A playful rhyme-detection game for ages 5–6." />
+  <meta property="og:title" content="Rhyming Detective — Hidden-Object Rhyme Hunt for Little Sleuths" />
+  <meta property="og:description" content="Search a cosy room for the words that rhyme with the target word. Tap anything and it says its name; find all three rhymes to close the case. Ages 3-6." />
   <meta property="og:url" content="https://qlo.be/games/rhyming-detective/" />
   <meta property="og:image" content="https://qlo.be/games/rhyming-detective/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Rhyming Detective title screen with Find the Rhymes and Tricky Rhymes modes over a cozy brick room with a window and plant." />
+  <meta property="og:image:alt" content="Rhyming Detective title screen with a detective cat and a bat over a warm storybook room." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Rhyming Detective 🔍 — Rhyme Matching for Little Sleuths" />
-  <meta name="twitter:description" content="Listen closely and tap two picture cards that rhyme, training an ear for matching ending sounds. A playful rhyme-detection game for ages 5–6." />
+  <meta name="twitter:title" content="Rhyming Detective — Hidden-Object Rhyme Hunt for Little Sleuths" />
+  <meta name="twitter:description" content="Search a cosy room for the words that rhyme with the target word. Tap anything and it says its name; find all three rhymes to close the case. Ages 3-6." />
   <meta name="twitter:image" content="https://qlo.be/games/rhyming-detective/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="preload" as="font" type="font/woff2" href="../../shared/fonts/fredoka-latin-600-normal.woff2" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/match-pairs.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <div id="app" data-screen="splash">
+
+    <!-- z0-z4: the room. shared/js/hotspot-scene.js mounts itself in here. -->
+    <div id="stage"></div>
+    <div id="dim" aria-hidden="true"></div>
+
+    <!-- h1/h2: the HUD, CSS px, above the scene (game-design.md 2.5) -->
+    <div id="hud" hidden>
+      <button id="btn-back" class="corner-btn back" type="button" aria-label="Back"></button>
+      <button id="btn-sound" class="corner-btn sound" type="button" aria-label="Hear it again"></button>
+      <div id="banner" role="status" aria-live="polite"></div>
+      <div id="bottom-stack">
+        <button id="word-card" type="button" aria-label="Hear the word again"></button>
+        <div id="tray" aria-hidden="true"></div>
+      </div>
+      <div id="dots" aria-hidden="true"></div>
+    </div>
+
+    <!-- SPLASH (2.3) -->
+    <section id="splash" class="screen" aria-label="Rhyming Detective">
+      <button id="splash-home" class="corner-btn home" type="button" aria-label="All games"></button>
+      <button id="splash-sound" class="corner-btn sound" type="button" aria-label="Hear it again"></button>
+      <img id="splash-title" class="lockup title" src="assets/title.webp" alt="Rhyming Detective" />
+      <div id="mascot-band">
+        <img class="mascot cat" src="assets/mascots/cat-present.webp" alt="" />
+        <button id="btn-play" class="play-pill" type="button">Play</button>
+        <img class="mascot bat" src="assets/mascots/bat-fly.webp" alt="" />
+      </div>
+      <div id="mode-row" hidden></div>
+    </section>
+
+    <!-- CELEBRATION (2.6) — an overlay; the play screen stays underneath -->
+    <section id="celebration" class="screen" aria-label="Case closed" hidden>
+      <div id="confetti" aria-hidden="true"></div>
+      <button id="celebration-back" class="corner-btn back" type="button" aria-label="Back"></button>
+      <img id="great-job" class="lockup" src="assets/lockups/great-job.webp" alt="Great job, detective" />
+      <div id="pair">
+        <span id="pair-left" class="pair-bubble"></span>
+        <span id="pair-plus" aria-hidden="true">+</span>
+        <span id="pair-right" class="pair-bubble"></span>
+      </div>
+      <img id="they-rhyme" class="lockup ribbon" src="assets/lockups/they-rhyme.webp" alt="They rhyme" />
+      <div id="cheer-row">
+        <img id="cat-cheer" class="mascot" src="assets/mascots/cat-cheer.webp" alt="" />
+        <div id="finds" class="find-shelf"></div>
+        <img id="bat-cheer" class="mascot" src="assets/mascots/bat-cheer.webp" alt="" />
+      </div>
+      <button id="btn-next" class="label-pill next" type="button" aria-label="Next case"><span>Next Case</span></button>
+      <div id="celebration-dots" aria-hidden="true"></div>
+    </section>
+
+    <!-- END (2.7) -->
+    <section id="end" class="screen" aria-label="Every case solved" hidden>
+      <button id="end-back" class="corner-btn back" type="button" aria-label="Back"></button>
+      <img class="lockup" src="assets/lockups/great-job.webp" alt="Great job, detective" />
+      <div id="end-stage">
+        <img id="end-cat" class="mascot" src="assets/mascots/cat-cheer.webp" alt="" />
+        <div id="end-row"></div>
+        <img id="end-bat" class="mascot" src="assets/mascots/bat-cheer.webp" alt="" />
+      </div>
+      <button id="btn-again" class="label-pill again" type="button" aria-label="Play again"><span>Play Again</span></button>
+      <div id="end-dots" aria-hidden="true"></div>
+    </section>
+
+  </div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

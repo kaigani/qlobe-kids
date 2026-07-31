@@ -1,0 +1,7 @@
+{
+  "workflow": "qwen-image-edit",
+  "prompt": "Redraw as a brown wooden toy baseball bat, standing alone, sports equipment, NOT an animal, NOT a flying mammal, NOT a bat creature, keeping the same core identity/colors as the reference image, in Storybook Rooms illustration style: rounded geometry, bold navy outline (#123a6b), glossy storybook depth with one soft highlight and one soft contact shadow, warm saturated color, toy-like glossy finish, clean readable silhouette, no text, no UI elements, floating alone with nothing else in the scene, on a perfectly flat, solid, uniform dark charcoal background, no gradient, no texture, no walls, no corner, no room, no other lines or shapes.",
+  "seed": 42,
+  "source": "shared/assets/objects/bat.webp",
+  "note": "Regenerated to replace bat-raw-42.png, which staged the bat leaning in a room corner; the corner lines survived qwen-image-layered extraction at both seed 42 (hollow fill) and seed 1337 (filled but corner lines opaque). This version drops the corner staging entirely and extracted clean at seed 42."
+}

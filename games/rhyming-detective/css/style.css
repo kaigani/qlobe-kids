@@ -1,0 +1,1076 @@
+/* Rhyming Detective — screens, HUD and choreography.
+   game-design.md 2 (screen map), 2.5 (the mockup-02 composition) and 9.
+   The room itself is styled by shared/js/hotspot-scene.js's own injected
+   <style id="hs-style">; everything here is either the HUD (CSS px, above the
+   scene) or a screen that sits over it.
+
+   --ts is the fastTimers scale (QLOBE_DEBUG.fastTimers). Every duration in
+   this file is written as calc(<ms> * var(--ts, 1)) so the debug hook slows
+   and speeds the visuals exactly as it does the JS beats (9, preamble). */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ts: 1;
+  --cream: #fffdf6;
+  --cream-warm: #fff6dc;
+  --navy: #123a6b;
+  --blue: #2f6fd0;
+  --green: #7ac043;
+  --gold: #e8b64a;
+  --safe-t: max(16px, env(safe-area-inset-top));
+  --safe-b: max(16px, env(safe-area-inset-bottom));
+  --safe-l: max(16px, env(safe-area-inset-left));
+  --safe-r: max(16px, env(safe-area-inset-right));
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+  background: #0b1a3a;
+  color: var(--navy);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* --- the room ----------------------------------------------------------- */
+
+/* The room plate is the scene's own .hs-bg; #stage carries no plate of its own.
+   The one frame before a plate decodes is the dim navy of the case-intro, which
+   is what the crossfade fades FROM (9.6) — a flat cream stand-in here would
+   flash a colour the game never otherwise shows. */
+#stage {
+  position: absolute;
+  inset: 0;
+  background: #0b1a3a;
+}
+
+/* THE ONE STACKING CONTEXT (Phase 3).
+   The scene root used to be `z-index: 1`, which made it a stacking context and
+   sealed EVERY hotspot and every speech bubble underneath #hud (z 5). A yes
+   bubble rides its sprite to the tray (9.3) and the tray is HUD, so the bubble
+   spent the whole flight painted behind the word card — present, animating,
+   invisible. Flattening the root (z-index: auto) lets the scene's own layers
+   take their place in #app's single stack, and the module's inline
+   `zIndex = 1000 + i` on each hotspot is overridden back down to 3 so that
+   flattening cannot lift the objects over the HUD as well. The module still
+   owns the ORDER (it re-appends in sorted order, and equal z-index paints in
+   tree order); this only owns which band each layer lands in.
+
+     0  room plate .hs-bg
+     2  magnifier prop           <- now UNDER the objects, so it may be large
+     3  hotspots  |  3  .rd-fx sparkles (later sibling, so above)
+     4  #dim
+     5  #hud
+     7  speech bubbles           <- above the HUD, the whole flight long
+     9+ celebration / end / splash screens */
+#stage > .hs-root { z-index: auto; }
+.rd-scene .hs-bg { z-index: 0; }
+.rd-scene .hs-hotspot { z-index: 3 !important; }
+.rd-scene .hs-bubble { z-index: 7; }
+
+/* 2.5 z1 — decoration only, never a control. It sits below the hotspot layer,
+   so the big bottom-right lens of mockup 02 can overlap a zone's slack without
+   ever hiding something tappable. */
+.rd-magnifier {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.rd-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* --- grounding + findability (Phase 3) ----------------------------------- */
+
+/* Two pseudo-elements on the module's own hotspot button, both behind the
+   sprite. The module owns `filter` on the <img> (state) and on the button
+   (pulse halo) — both inline — so neither of those properties is available to
+   a game; a pseudo-element is the one surface that cannot collide with it.
+   --rd-sw / --rd-sh are the sprite's live on-screen size, published by
+   js/game.js paintSpriteVars() on every reflow. */
+
+/* ::before — the persistent findable halo (mockup 02's white glow). Only ever
+   on `idle`: `lit` has the module's gold glow, `found` is spent, `declined` is
+   being refused. */
+.rd-scene .hs-hotspot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--rd-sw, 120px) * 1.16);
+  height: calc(var(--rd-sh, 120px) * 1.16);
+  margin-left: calc(var(--rd-sw, 120px) * -0.58);
+  margin-top: calc(var(--rd-sh, 120px) * -0.58);
+  border-radius: 50%;
+  /* WARM, not white. A white halo is invisible on the kitchen's mint cabinets
+     and the bedroom's pale lilac — two of the three rooms — and it was only
+     ever legible on the study's red brick. 8.1's glow gold reads against every
+     plate in the game, and it is the same warm light the `lit` state uses, so
+     "touchable" and "correct" are one family instead of two. */
+  background: radial-gradient(closest-side,
+    rgba(255, 252, 226, .92) 0%,
+    rgba(255, 230, 142, .62) 42%,
+    rgba(255, 210, 74, .28) 66%,
+    rgba(255, 196, 74, 0) 82%);
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity calc(240ms * var(--ts, 1)) ease;
+  animation: rd-halo-breathe 3.4s ease-in-out infinite;
+}
+.rd-scene .hs-hotspot.is-idle::before { opacity: 1; }
+/* The target sprite is the question, not an answer — it never advertises. */
+.rd-scene .hs-hotspot.rd-target::before { content: none; }
+
+@keyframes rd-halo-breathe {
+  0%, 100% { transform: scale(.95); }
+  50%      { transform: scale(1.05); }
+}
+
+/* ::after — the contact shadow. A wall object casts DOWN-RIGHT onto the wall;
+   anything resting on a surface gets a flattened ellipse at its foot, which is
+   what actually reads as "this is on the floor" rather than "this is in the
+   air". Both are sized from the sprite, so a 150 px pen and a 240 px van get
+   proportionate shadows. */
+.rd-scene .hs-hotspot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  width: calc(var(--rd-sw, 120px) * 0.66);
+  height: calc(var(--rd-sw, 120px) * 0.19);
+  margin-left: calc(var(--rd-sw, 120px) * -0.33);
+  margin-top: calc(var(--rd-sh, 120px) * 0.5 - var(--rd-sw, 120px) * 0.115);
+  background: radial-gradient(closest-side,
+    rgba(46, 26, 12, .40) 0%,
+    rgba(46, 26, 12, .26) 52%,
+    rgba(46, 26, 12, 0) 80%);
+  transition: opacity calc(180ms * var(--ts, 1)) ease;
+}
+.rd-scene .hs-hotspot.rd-surf-floor::after {
+  width: calc(var(--rd-sw, 120px) * 0.78);
+  height: calc(var(--rd-sw, 120px) * 0.20);
+  margin-left: calc(var(--rd-sw, 120px) * -0.39);
+}
+/* Hung, not standing: a soft blob offset down and right, behind the object. */
+.rd-scene .hs-hotspot.rd-surf-wall::after {
+  width: calc(var(--rd-sw, 120px) * 0.82);
+  height: calc(var(--rd-sh, 120px) * 0.82);
+  margin-left: calc(var(--rd-sw, 120px) * -0.34);
+  margin-top: calc(var(--rd-sh, 120px) * -0.33);
+  background: radial-gradient(closest-side,
+    rgba(46, 26, 12, .26) 0%,
+    rgba(46, 26, 12, .16) 46%,
+    rgba(46, 26, 12, 0) 78%);
+}
+/* Found objects are spent: the sprite desaturates, so its shadow must too. */
+.rd-scene .hs-hotspot.is-found::after { opacity: .3; }
+/* 4.7 compact — the grid is a derived lattice over the room, not the room's own
+   furniture, so nothing there is standing on anything. Every object gets the
+   soft cast blob instead of a contact ellipse it has not earned. */
+#app.compact .rd-scene .hs-hotspot::after {
+  width: calc(var(--rd-sw, 120px) * 0.82);
+  height: calc(var(--rd-sh, 120px) * 0.82);
+  margin-left: calc(var(--rd-sw, 120px) * -0.34);
+  margin-top: calc(var(--rd-sh, 120px) * -0.33);
+  background: radial-gradient(closest-side,
+    rgba(46, 26, 12, .26) 0%,
+    rgba(46, 26, 12, .16) 46%,
+    rgba(46, 26, 12, 0) 78%);
+}
+
+/* 9.3 — the sparkle ring: 12 gold dots on a circle, 1.0 -> 1.45, 420 ms */
+.rd-sparkle { position: absolute; width: 0; height: 0; }
+.rd-sparkle i {
+  position: absolute;
+  left: 0; top: 0;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: #ffd24a;
+  box-shadow: 0 0 10px rgba(255, 210, 74, .9);
+  animation: sparkle-ring calc(420ms * var(--ts, 1)) ease-out forwards;
+}
+
+@keyframes sparkle-ring {
+  from { transform: rotate(var(--a)) translateX(var(--radius)) scale(1); opacity: 1; }
+  to   { transform: rotate(var(--a)) translateX(calc(var(--radius) * 1.45)) scale(.55); opacity: 0; }
+}
+
+/* 2.4 — the case-intro dim layer */
+#dim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #0b1a3a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity calc(300ms * var(--ts, 1)) ease-out;
+}
+#dim.on { opacity: .38; }
+
+/* --- HUD (2.5) ---------------------------------------------------------- */
+
+#hud {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.corner-btn {
+  position: absolute;
+  width: 112px;
+  height: 112px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform calc(120ms * var(--ts, 1)) ease;
+}
+.corner-btn:active { transform: scale(.94); }
+.corner-btn:focus-visible { outline: 4px solid #ffd24a; outline-offset: 3px; border-radius: 50%; }
+.corner-btn.back { background-image: url('../../../shared/assets/ui/btn-back.png'); }
+.corner-btn.home { background-image: url('../../../shared/assets/ui/btn-home.png'); }
+.corner-btn.sound { background-image: url('../../../shared/assets/ui/btn-sound.png'); }
+
+/* 8.7.9 — back top-left, sound bottom-left (interaction-patterns 8) */
+#btn-back, #celebration-back, #end-back, #splash-home { top: var(--safe-t); left: var(--safe-l); }
+#btn-sound { bottom: var(--safe-b); left: var(--safe-l); }
+#splash-sound { top: var(--safe-t); right: var(--safe-r); }
+
+#banner {
+  position: absolute;
+  top: max(18px, calc(env(safe-area-inset-top) + 8px));
+  left: 50%;
+  transform: translateX(-50%);
+  /* 940 px wide at 1194 CSS px would put the banner's left edge on the back
+     button. Never let it reach either corner control — and 124 (the button's
+     112 plus 12) left a gap too thin to read as one, so the banner looked
+     welded to the back arrow. 140 = the button plus a real 28 px alley. */
+  width: min(84vw, 940px, calc(100vw - 2 * (var(--safe-l) + 140px)));
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .16em;
+  padding: 10px 30px;
+  background: var(--cream-warm);
+  border: 5px solid var(--gold);
+  border-radius: 44px;
+  box-shadow: 0 8px 0 rgba(184, 140, 42, .26);
+  font-size: 40px;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--navy);
+  pointer-events: none;
+}
+.banner-word { color: var(--blue); font-weight: 600; }
+.banner-glyph { width: 44px; height: 44px; color: var(--blue); flex: none; }
+
+#bottom-stack {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--safe-b) + 46px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+#word-card {
+  width: min(46vw, 430px);
+  height: 118px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  background: var(--cream);
+  border: 8px solid var(--blue);
+  border-radius: 32px;
+  color: var(--blue);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 84px;
+  line-height: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(60px);
+  transition:
+    transform calc(280ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1),
+    opacity calc(240ms * var(--ts, 1)) ease;
+}
+#word-card.in { opacity: 1; transform: none; }
+#word-card:active { filter: brightness(.97); }
+#word-card:focus-visible { outline: 4px solid #ffd24a; outline-offset: 3px; }
+.card-word { display: block; }
+/* 10.1 wants the magnifier to READ at 88 px. props/magnifier.webp is 780 x 582
+   of canvas whose lens is only ~57 % of the width — the rest is the prop's own
+   soft cast shadow, which is right for the big floor prop and wrong here: in an
+   88 px box the lens drew at 50 px and a 430 px card looked empty with a
+   thumbnail floating in it. The BOX is sized so the LENS lands on 88 px, and
+   `contain` keeps the shipped ratio. The inline-SVG fallback has no such
+   padding, so it keeps the authored 88. */
+.card-glyph { width: 88px; height: 88px; color: var(--blue); }
+.card-glyph-img { width: 148px; height: 100px; object-fit: contain; }
+
+#tray { display: flex; gap: 16px; }
+/* An empty slot has to read as a slot on a WOOD FLOOR. The old translucent
+   navy wash with a white dashed rule vanished into the planks — the tray
+   looked like three faint scratches. Cream fill plus a warm dark dash is
+   mockup 02's own label-card contrast, and it survives every room plate. */
+#tray .slot {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px dashed #9a6a2c;
+  border-radius: 22px;
+  background: rgba(255, 250, 232, .82);
+  box-shadow: 0 5px 12px rgba(11, 26, 58, .22);
+}
+#tray .slot.filled {
+  border-style: solid;
+  border-color: var(--cream);
+  background: var(--cream);
+  box-shadow: 0 6px 14px rgba(11, 26, 58, .28);
+}
+.slot-sprite { max-width: 84%; max-height: 84%; object-fit: contain; }
+.slot.pop { animation: slot-pop calc(180ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes slot-pop { from { transform: scale(.7); } 60% { transform: scale(1.08); } to { transform: scale(1); } }
+
+#dots, #celebration-dots, #end-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: var(--safe-b);
+  display: flex;
+  gap: 18px;
+}
+/* The dots sit straight on the art on three of the five screens — a wood
+   floor, a gold field and a dimmed kitchen. A drop shadow is what stops them
+   dissolving into whatever is behind: on the end screen the kitchen's cabinet
+   knobs are round, brown and the same size, and the row read as seven dots
+   until the real five got an edge of their own. */
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff3dd;
+  box-shadow: inset 0 0 0 3px #e2c690, 0 3px 8px rgba(11, 26, 58, .45);
+}
+.dot.filled { background: var(--green); box-shadow: inset 0 0 0 3px #5f9c31, 0 3px 8px rgba(11, 26, 58, .45); }
+.dot.pop { animation: dot-pop calc(260ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes dot-pop { from { transform: scale(.6); } 62% { transform: scale(1.15); } to { transform: scale(1); } }
+
+/* HUD stages — 2.4 shows back + card + dots; 2.5 adds the banner, tray, sound */
+#banner, #tray, #btn-sound {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity calc(240ms * var(--ts, 1)) ease, visibility 0s linear calc(240ms * var(--ts, 1));
+}
+#hud.stage-play #banner,
+#hud.stage-play #tray,
+#hud.stage-play #btn-sound {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity calc(240ms * var(--ts, 1)) ease;
+}
+
+/* 4.7 compact — the card and tray become one row under the banner.
+   That is right for a SHORT-and-WIDE crop (a landscape phone), where the only
+   spare space is the top band. It was wrong in portrait: the HUD stack landed
+   in the window, the dashed tray floated in the painted sky, the grid was
+   squeezed into the band just under it and the whole lower half of the room
+   sat empty. So the row form is kept for short-and-wide and portrait gets the
+   landscape anchoring back — see the portrait override below. 4.7's mechanism
+   (grid derived from visible art minus the HUD reserve) is untouched; only
+   where the reserve happens to be changes. */
+#app.compact #bottom-stack {
+  bottom: auto;
+  top: calc(max(18px, env(safe-area-inset-top)) + 116px);
+  flex-direction: row;
+  gap: 14px;
+}
+/* 100, not 84: the word card is a CONTROL — tapping it re-speaks the target
+   (2.5) — so the platform's 96 px minimum binds it in every layout, not just
+   in `wide`. A control that shrinks below the floor in one layout is the same
+   bug as a control that is missing there. */
+#app.compact #word-card { width: min(40vw, 260px); height: 100px; font-size: 54px; border-width: 6px; }
+#app.compact #tray .slot { width: 76px; height: 76px; }
+/* The 28 px alley the wide banner keeps beside the back button is a luxury a
+   834 px-wide tablet cannot pay for: at 32 px "Find a word that rhymes with
+   cat" needs every one of those px, and one px short it wraps and drops the
+   target word onto a line of its own, right-aligned, reading as a second
+   sentence. Compact keeps the tighter 124 px clearance. */
+#app.compact #banner {
+  width: min(84vw, 940px, calc(100vw - 2 * (var(--safe-l) + 124px)));
+  font-size: 32px;
+  min-height: 76px;
+}
+#app.compact .card-glyph { width: 60px; height: 60px; }
+#app.compact .card-glyph-img { width: 106px; height: 72px; }
+
+/* PORTRAIT compact — the HUD goes back where it is in landscape: the word card
+   above the tray, the tray above the dots, all of it bottom-centred. The room
+   then owns everything from under the banner to the top of the card, and the
+   4x2 grid spreads through the lower two thirds instead of hiding in a strip.
+   Nothing here is a new mechanism: the reserve rects move, and 4.7's derived
+   box follows them. */
+@media (orientation: portrait) {
+  #app.compact #bottom-stack {
+    top: auto;
+    bottom: calc(var(--safe-b) + 44px);
+    flex-direction: column;
+    gap: 12px;
+  }
+  #app.compact #word-card { width: min(56vw, 330px); height: 104px; font-size: 60px; }
+  #app.compact #tray { gap: 14px; }
+  #app.compact #tray .slot { width: 88px; height: 88px; }
+  #app.compact .card-glyph { width: 68px; height: 68px; }
+  #app.compact .card-glyph-img { width: 122px; height: 82px; }
+}
+
+/* --- screens ------------------------------------------------------------ */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* SPLASH (2.3) */
+/* The column is CENTRED, not top-anchored. The mode row is in the flow even
+   while it is hidden (it slides up from under the band, so it has to keep its
+   box), which means the pre-Play state balances slightly high — title near the
+   top third, band on the centre line — and the post-Play state fills the
+   screen. Top-anchored, portrait left 470 px of empty sky under the tiles and
+   the whole game read as if it had failed to finish loading.
+   `safe center` degrades to the flex-start above it in any engine that does
+   not know the keyword, so a short viewport can never centre-clip both ends. */
+#splash {
+  z-index: 11;
+  justify-content: flex-start;
+  justify-content: safe center;
+  background:
+    url('../assets/splash-bg.jpg') center / cover no-repeat,
+    radial-gradient(circle at 50% 34%, #cfe6fb 0%, #8fbdec 58%, #5f98d8 100%);
+}
+
+.lockup { display: block; object-fit: contain; }
+/* Every lockup box is authored at the SHIPPED file's own ratio, and the height
+   cap is folded into the width via that ratio rather than applied as a
+   max-height. A cap on the height of a fixed-width box does not shrink the box
+   — object-fit just letterboxes the art inside it, so the lockup draws far
+   smaller than its slot and floats in dead space. Capping the width by
+   `<cap> * ratio` keeps the box exactly the art's shape at every viewport.
+   title.webp is 1400 x 735. The cap itself is not 2.3's: without it the
+   title + band + mode row stack overflows a 834 px-tall landscape iPad. */
+/* 2.3 authors the title at min(72vw, 900px). The vh cap is what actually binds
+   on a landscape iPad, so it IS the title's size, and at 24vh it resolved to
+   381 px on a 1194 px screen — a third of mockup 01's wordmark, floating over a
+   half-empty cream band. Raised to 29vh (460 px), paid for out of the band and
+   the tile row below, which were both above their authored minimum. */
+.lockup.title {
+  width: min(72vw, 900px, calc(29vh * 1400 / 735));
+  margin-top: 0;
+  aspect-ratio: 1400 / 735;
+}
+
+#mascot-band {
+  margin-top: 2.2vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: min(6vw, 60px);
+  padding: 14px min(5vw, 54px);
+  background: var(--cream);
+  border: 6px solid var(--blue);
+  border-radius: 44px;
+  box-shadow: 0 14px 30px rgba(11, 26, 58, .24);
+}
+/* 2.3 asks for a ~300 px detective cat. The old `18vh` cap resolved to 150 px
+   on a landscape iPad — half the intended size — and the two mascots read as
+   stickers on a blank card rather than the pair presenting the game. The cap
+   is now generous enough to reach the authored size on a tall screen and the
+   stack below was trimmed to pay for it. */
+#mascot-band .cat { height: min(300px, 23vh); }
+/* The bat FLIES. Lifting it out of the band's top edge, level with the bottom
+   of the title lockup, is what makes it read as airborne instead of perched. */
+#mascot-band .bat {
+  height: min(250px, 19vh);
+  align-self: flex-start;
+  margin-top: calc(-1 * min(46px, 4.6vh));
+  margin-bottom: min(18px, 2vh);
+}
+
+/* The band is `align-items: flex-end` so the cat stands on its floor and the
+   bat can be lifted out of the top. The BUTTON is not standing on anything: in
+   mockup 01 it is centred on the cat's chest, and bottom-aligned it read as if
+   it had slid down the card, worst in portrait where the cat is 250 px tall. */
+#btn-play { align-self: center; }
+
+/* mockup 01's Play is a glossy capsule inside a cream ring, lit from the top —
+   not a flat blue slab. The ring is what separates it from the cream band it
+   sits on; the inset highlight is the "one soft highlight per form" of 8.1.
+   box-sizing: border-box is global, so the ring is inside the 300 x 132. */
+.play-pill {
+  min-width: 300px;
+  min-height: 132px;
+  padding: 0 46px;
+  border: 6px solid var(--cream);
+  border-radius: 66px;
+  background: linear-gradient(#7ab2f7 0%, #4f8ce6 44%, #2f6fd0 100%);
+  color: var(--cream);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1;
+  cursor: pointer;
+  text-shadow: 0 3px 0 rgba(20, 62, 128, .45);
+  box-shadow:
+    inset 0 7px 0 rgba(255, 255, 255, .34),
+    inset 0 -9px 0 rgba(20, 62, 128, .28),
+    0 10px 0 #1f4d94, 0 18px 28px rgba(11, 26, 58, .32);
+  transition: transform calc(120ms * var(--ts, 1)) ease, box-shadow calc(120ms * var(--ts, 1)) ease;
+}
+.play-pill:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 7px 0 rgba(255, 255, 255, .34),
+    inset 0 -9px 0 rgba(20, 62, 128, .28),
+    0 4px 0 #1f4d94, 0 8px 16px rgba(11, 26, 58, .3);
+}
+.play-pill:focus-visible { outline: 4px solid #ffd24a; outline-offset: 4px; }
+
+#mode-row {
+  margin-top: 2.2vh;
+  display: flex;
+  gap: min(6vw, 54px);
+  opacity: 0;
+  transform: translateY(46px);
+  transition:
+    transform calc(240ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1),
+    opacity calc(240ms * var(--ts, 1)) ease;
+}
+#mode-row.show { opacity: 1; transform: none; }
+
+.mode-tile {
+  min-width: 320px;
+  min-height: 248px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 18px;
+  background: var(--cream);
+  border: 6px solid var(--navy);
+  border-radius: 40px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 34px;
+  color: var(--navy);
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(11, 26, 58, .22);
+  transition: transform calc(120ms * var(--ts, 1)) ease;
+}
+.mode-tile:active { transform: scale(.96); }
+.mode-tile:focus-visible { outline: 4px solid #ffd24a; outline-offset: 4px; }
+.tile-face {
+  width: 156px;
+  height: 156px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffeab4 0%, #ffd06a 72%, #f5b93c 100%);
+  color: var(--blue);
+}
+.tile-face .glyph { width: 96px; height: 96px; }
+.tile-art { width: 112px; height: 112px; object-fit: contain; }
+
+@media (orientation: portrait) {
+  #mascot-band { flex-direction: row; gap: min(3vw, 22px); padding: 14px 20px; }
+  #mascot-band .cat { height: min(270px, 21vh); }
+  #mascot-band .bat { height: min(220px, 17vh); margin-top: calc(-1 * min(56px, 4.5vh)); }
+  .play-pill { min-width: 220px; min-height: 108px; font-size: 48px; padding: 0 26px; border-width: 5px; }
+  .mode-tile { min-width: 200px; min-height: 236px; font-size: 27px; gap: 12px; }
+  .tile-face { width: 120px; height: 120px; }
+  .tile-face .glyph { width: 72px; height: 72px; }
+  .tile-art { width: 84px; height: 84px; }
+  /* A tablet held upright has ~480 px of sky the landscape crop does not, and
+     mockup 01 is a portrait plate — this is the orientation the wordmark was
+     drawn for, so it gets the widest cap in the game. */
+  .lockup.title { margin-top: 0; width: min(86vw, 820px, calc(30vh * 1400 / 735)); }
+}
+
+
+/* CELEBRATION (2.6, 9.5) — above the bubble band (z 7), see the stack note. */
+#celebration {
+  z-index: 9;
+  justify-content: center;
+  gap: 1.1vh;
+  padding: var(--safe-t) 2vw calc(var(--safe-b) + 48px);
+  opacity: 0;
+  transition: opacity calc(260ms * var(--ts, 1)) ease;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 44%,
+      rgba(255, 255, 255, .06) 0deg 7deg, rgba(255, 255, 255, 0) 7deg 14deg),
+    radial-gradient(circle at 50% 44%, #ffc93c 0%, #f8b431 52%, #f5a623 100%);
+}
+#celebration.show { opacity: 1; }
+
+#confetti { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+#confetti i {
+  position: absolute;
+  top: -8vh;
+  width: 22px;
+  height: 30px;
+  border-radius: 50% 50% 45% 45%;
+  background: var(--c);
+  animation: fall var(--d) var(--delay) linear infinite;
+}
+#confetti i.static {
+  top: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff3c4;
+  box-shadow: 0 0 12px rgba(255, 240, 180, .9);
+  animation: fade-in calc(200ms * var(--ts, 1)) ease both;
+}
+@keyframes fall { 50% { margin-left: var(--sway, 22px); } to { transform: translateY(126vh) rotate(420deg); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Everything but the confetti paints above it. The absolutely-positioned
+   children keep their own position; only the in-flow ones need one. */
+#great-job, #pair, #they-rhyme, #cheer-row, #btn-next { position: relative; z-index: 2; }
+#celebration-back, #celebration-dots { z-index: 2; }
+
+/* great-job.webp is 1083 x 300; they-rhyme.webp is 634 x 200. */
+/* The vh caps on this column are a BUDGET, not a taste call: #celebration is an
+   overflow:hidden flex column and Next Case is its last child, so every px the
+   lockups take is a px the button can be pushed off the fold by. The mascots
+   grew to mockup-03 scale in Phase 3 and the lockups paid for it. */
+#great-job {
+  width: min(56vw, 620px, calc(16.4vh * 1083 / 300));
+  aspect-ratio: 1083 / 300;
+  opacity: 0;
+  transform: translateY(-140px) scale(.8);
+  transition:
+    opacity calc(200ms * var(--ts, 1)) ease,
+    transform calc(420ms * var(--ts, 1)) cubic-bezier(.22, 1.2, .36, 1);
+}
+#great-job.in { opacity: 1; transform: none; }
+
+#pair {
+  display: flex;
+  align-items: center;
+  gap: min(6vw, 60px);
+  font-size: 62px;
+  color: #8a4b0d;
+}
+.pair-bubble {
+  min-width: 220px;
+  padding: 8px 32px;
+  background: var(--cream);
+  border: 7px solid var(--blue);
+  border-radius: 34px;
+  color: var(--blue);
+  font-size: 56px;
+  line-height: 1.25;
+  text-align: center;
+  opacity: 0;
+  transform: scale(.6);
+  transition:
+    opacity calc(160ms * var(--ts, 1)) ease,
+    transform calc(320ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1);
+}
+.pair-bubble.in { opacity: 1; transform: none; }
+/* mockup 03's plus is a chunky purple mark, not a text operator between two
+   cards — it has to hold its own against two 62 px bubbles. */
+#pair-plus {
+  flex: none;
+  font-size: 84px;
+  line-height: .8;
+  color: #7b4fa0;
+  text-shadow: 0 5px 0 #4e2c6b, 0 8px 16px rgba(11, 26, 58, .3);
+  opacity: 0;
+  transition: opacity calc(200ms * var(--ts, 1)) ease;
+}
+#pair-plus.in { opacity: 1; }
+
+#they-rhyme {
+  width: min(40vw, 440px, calc(12.2vh * 634 / 200));
+  aspect-ratio: 634 / 200;
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity calc(200ms * var(--ts, 1)) ease,
+    transform calc(380ms * var(--ts, 1)) cubic-bezier(.22, 1.2, .36, 1);
+}
+#they-rhyme.in { opacity: 1; transform: none; }
+
+#cheer-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: min(4vw, 44px);
+  width: 100%;
+}
+/* mockup 03: the two mascots are the biggest things on the screen after the
+   lockup, and they FLANK the find shelf. At 22vh they were the same size as
+   the found sprites and the whole row read as one loose scatter. */
+#cheer-row .mascot {
+  height: min(300px, 27vh);
+  flex: 0 1 auto;
+  min-width: 0;
+  object-fit: contain;
+  opacity: 0;
+}
+#cat-cheer { transform: translateX(-160px); transition: opacity calc(200ms * var(--ts, 1)) ease, transform calc(480ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1); }
+#bat-cheer { transform: translateX(160px); transition: opacity calc(200ms * var(--ts, 1)) ease, transform calc(480ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1); }
+#cat-cheer.in, #bat-cheer.in { opacity: 1; transform: none; animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+
+/* THE FIND SHELF. The three solved objects used to sit on the celebration's
+   bare orange rays, in one row with the mascots — five unrelated cut-outs at
+   five sizes. They are the evidence, so they get a piece of furniture: a cream
+   shelf strip between the ribbon and the button, which also gives the mascots
+   something to flank. */
+#finds {
+  display: flex;
+  align-items: flex-end;
+  gap: min(4vw, 34px);
+  padding: 16px min(3.4vw, 34px) 20px;
+  background: var(--cream);
+  border: 5px solid #f0dcae;
+  border-radius: 38px;
+  box-shadow: 0 9px 0 rgba(168, 122, 34, .34), 0 18px 32px rgba(11, 26, 58, .22);
+  opacity: 0;
+  transition: opacity calc(300ms * var(--ts, 1)) ease;
+}
+#finds.in { opacity: 1; }
+.find { display: flex; flex-direction: column; align-items: center; gap: 6px; animation: find-lift calc(300ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1) both; }
+.find-sprite { width: min(140px, 10.5vh); height: min(140px, 10.5vh); object-fit: contain; }
+.find-label { font-size: 38px; color: var(--navy); animation: fade-in calc(200ms * var(--ts, 1)) ease both; }
+@keyframes find-lift { from { transform: translateY(46px) scale(.7); } to { transform: none; } }
+
+/* THE TWO ADVANCE BUTTONS ARE LABELLED PILLS, not bare play discs.
+   A green circle with a triangle in it is a media control: it says "resume",
+   not "next case", and at 128 px it was also the smallest thing on a screen
+   whose whole job is to be pressed. mockup 03 draws a wide blue pill with the
+   words on it; a 3-6 year old cannot read them, but the adult beside them can,
+   and the pill is a far bigger target. The aria-label is unchanged.
+
+   flex: none is load-bearing, not cosmetic. Both buttons are flex items in an
+   overflow:hidden column, and at a short viewport the default flex-shrink: 1
+   collapsed Next Case to 0 x 0 — present in the DOM, focusable, and completely
+   untappable. A control the child must press can never be allowed to shrink. */
+.label-pill {
+  flex: none;
+  min-width: min(78vw, 420px);
+  min-height: 116px;
+  padding: 0 min(6vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* the same cream ring and top-lit gloss as the splash Play pill: mockup 03's
+     Next Case and mockup 01's Play are one control drawn twice, and the ring is
+     what lifts a blue capsule off a gold field as well as off a cream band. */
+  border: 6px solid var(--cream);
+  border-radius: 60px;
+  background: linear-gradient(#7ab2f7 0%, #4f8ce6 44%, #2f6fd0 100%);
+  color: var(--cream);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 58px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  text-shadow: 0 3px 0 rgba(20, 62, 128, .45);
+  box-shadow:
+    inset 0 6px 0 rgba(255, 255, 255, .32),
+    inset 0 -8px 0 rgba(20, 62, 128, .26),
+    0 9px 0 #1f4d94, 0 16px 26px rgba(11, 26, 58, .34);
+}
+.label-pill:focus-visible { outline: 4px solid #ffd24a; outline-offset: 4px; border-radius: 60px; }
+/* The shelf strip carries a 9 px hard drop shadow; at the column's 1.1vh gap
+   that shadow landed ON the button and the two read as one stuck-together
+   slab. The margin is bought back out of the two lockup caps above. */
+#btn-next {
+  margin-top: max(14px, 1.7vh);
+  opacity: 0;
+  transform: scale(.5);
+  transition:
+    opacity calc(200ms * var(--ts, 1)) ease,
+    transform calc(320ms * var(--ts, 1)) cubic-bezier(.34, 1.56, .64, 1);
+}
+#btn-next.in { opacity: 1; transform: none; }
+/* The press-down must COMPOSE with the centring translate. Replacing it makes
+   the button jump half its width under the finger, and the pointerup then
+   lands outside it — the exact "I heard the tick but nothing happened" split
+   that shared/js/tap.js exists to prevent. */
+#btn-next:active,
+#btn-again:active {
+  box-shadow:
+    inset 0 6px 0 rgba(255, 255, 255, .32),
+    inset 0 -8px 0 rgba(20, 62, 128, .26),
+    0 4px 0 #1f4d94, 0 8px 14px rgba(11, 26, 58, .3);
+}
+#btn-next:active { transform: translateY(5px); }
+#btn-again:active { transform: translateX(-50%) translateY(5px); }
+
+/* END (2.7) */
+/* 2.7 is "the celebration palette softened", and at a 42 % gold wash it was not
+   the celebration palette at all — it was a photograph of a kitchen with the
+   colour drained out, every cabinet, knob and tile still legible and competing
+   with five 130 px trophies. The gold now leads and the room is the ghost
+   behind it, with the celebration's own sunburst rays on top so the two screens
+   read as one place. */
+#end {
+  z-index: 10;
+  justify-content: center;
+  gap: 2.6vh;
+  padding: var(--safe-t) 2vw calc(var(--safe-b) + 176px);
+  background:
+    repeating-conic-gradient(from 0deg at 50% 40%,
+      rgba(255, 255, 255, .05) 0deg 7deg, rgba(255, 255, 255, 0) 7deg 14deg),
+    radial-gradient(circle at 50% 46%, rgba(255, 201, 60, .70) 0%, rgba(245, 166, 35, .74) 100%),
+    linear-gradient(rgba(11, 26, 58, .34), rgba(11, 26, 58, .34));
+}
+#end .lockup { width: min(52vw, 560px, calc(18vh * 1083 / 300)); aspect-ratio: 1083 / 300; }
+/* 2.7 — the end screen is the celebration palette softened: the same two
+   cheering mascots flank the five case targets. */
+#end-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: min(3vw, 30px);
+  width: 100%;
+}
+/* The whole row — mascot, five cells, mascot — has to fit the viewport WIDTH:
+   #end is overflow:hidden and centred, so anything over budget is sliced off
+   both ends, and the ends are the mascots. object-fit + a shrink allowance is
+   the safety net, the sizes below are the budget. */
+#end-stage { gap: min(3vw, 40px); }
+#end-stage .mascot {
+  height: min(200px, 20vh);
+  flex: 0 1 auto;
+  min-width: 0;
+  object-fit: contain;
+  animation: bob 2.4s ease-in-out infinite;
+}
+#end-bat { animation-delay: -1.2s; }
+/* One row of five, never wrapped: 2.7's composition is a row, and a wrapped
+   fifth target reads as a leftover rather than the last case solved. The cells
+   shrink instead. */
+#end-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: min(2vw, 20px);
+  min-width: 0;
+}
+/* ONE CELL = ONE SPRITE + ITS WORD. The cell now has a WIDTH, so the sprite
+   box and the label share a centre line; before, the cell was as wide as
+   whichever of the two happened to be wider, and a wide sprite (`pan`, handle
+   and all) or a wide word slid the pair apart by half a slot. The label also
+   gets its own cream chip, which is what makes the pairing unambiguous at a
+   glance instead of leaving five words floating under seven pictures. */
+.end-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  width: min(132px, 11vw);
+  animation: find-lift calc(320ms * var(--ts, 1)) cubic-bezier(.22, 1.2, .36, 1) both;
+}
+.end-sprite { width: 100%; height: min(132px, 11vw); object-fit: contain; }
+.end-label {
+  display: block;
+  max-width: 100%;
+  padding: 4px 14px;
+  background: var(--cream);
+  border-radius: 18px;
+  box-shadow: 0 4px 0 rgba(11, 26, 58, .22);
+  font-size: 34px;
+  line-height: 1.2;
+  color: var(--navy);
+  text-align: center;
+}
+/* the dot strip rides in the flex flow under the row; the button keeps the
+   shared centre-bottom position, and the column's bottom padding is what keeps
+   the two apart at any height. The margin is the "breathing room" — at 2.2vh
+   gap the filled dots sat straight on the word chips. */
+#end-dots { position: static; transform: none; bottom: auto; margin-top: 2.4vh; }
+#btn-again { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 22px); }
+
+/* Fallback sprites (8.5): the shared Toy Table cut-out standing in for a
+   room-style sprite. Tinted only where the module is not driving `filter`
+   itself — on a hotspot the state filter is inline and must win. */
+img.rd-fallback-sprite { filter: saturate(1.06) drop-shadow(0 5px 9px rgba(11, 26, 58, .26)); }
+.hs-hotspot.rd-fallback-sprite .hs-sprite { filter: none; }
+
+/* --- portrait: the celebration and end rows are WIDTH-bound -------------- */
+
+/* Both screens are one horizontal row of mascot + content + mascot inside an
+   overflow:hidden column. On a 834 px-wide tablet the landscape sizes add up
+   past the viewport, and the overflow is split evenly — so the two mascots,
+   the outermost items, are the ones that get sliced. Everything here is the
+   same composition at a width the row actually has. */
+@media (orientation: portrait) {
+  /* Portrait is WIDTH-bound and HEIGHT-rich: the celebration column had ~480 px
+     of spare gold, so the row grows until the width runs out instead of
+     shrinking to the landscape budget it does not need. */
+  /* This row is a WIDTH budget: cat + shelf + bat share 834 px, so every px the
+     shelf takes is a px the two mascots lose. And they lose it twice over —
+     `object-fit: contain` in a box whose width shrank but whose height did not
+     letterboxes the art, so a 250 px-tall mascot box can draw a 160 px mascot
+     floating in dead space. The heights below are set to the width the row
+     actually leaves, which is what keeps the box and the drawing the same size. */
+  #cheer-row { gap: min(2vw, 16px); }
+  #cheer-row .mascot { height: min(190px, 16vh); }
+  #finds { gap: min(2.4vw, 20px); padding: 12px min(2vw, 18px) 16px; border-radius: 32px; }
+  .find-sprite { width: min(118px, 10vh); height: min(118px, 10vh); }
+  .find-label { font-size: 32px; }
+
+  /* THE END ROW IS THE WIDTH PROBLEM. Five cells plus two mascots on one
+     834 px line left the cells at 88 px — the smallest the trophies are on any
+     screen, on the screen whose whole subject they are. The mascots come OUT of
+     the row and flank the Play Again button instead (they are decoration; the
+     five targets are the content), and the row spends the whole width. */
+  #end-stage { gap: 0; position: static; }
+  #end-stage .mascot {
+    position: absolute;
+    bottom: calc(var(--safe-b) + 132px);
+    height: min(200px, 17vh);
+  }
+  #end-cat { left: max(6px, 1.5vw); }
+  #end-bat { right: max(6px, 1.5vw); }
+  #end-row { gap: min(2.2vw, 20px); width: 100%; }
+  .end-cell { width: min(140px, 15.4vw); gap: 8px; }
+  .end-sprite { height: min(140px, 15.4vw); }
+  .end-label { font-size: 32px; padding: 3px 12px; border-radius: 16px; }
+}
+
+/* --- short viewports ---------------------------------------------------- */
+
+/* The 1180 x 520 QA aspect, and any landscape phone. Three of this game's
+   screens are overflow:hidden flex COLUMNS (splash, celebration, end), and at
+   520 px tall each one runs past the bottom of the viewport: the mode tiles,
+   the Next Case button and Play Again all fall off the fold, which makes the
+   game unstartable and then unadvanceable. Shrink the stacks rather than let
+   them clip; every control below still clears the 96 px floor.
+   THIS BLOCK MUST STAY LAST (before reduced motion): it competes with the base
+   rules at equal specificity, so source order is the only thing that makes it
+   win. Placed up with the splash rules, `.round-btn { width: 128px }` further
+   down silently beat it and Next Case rendered off-screen at full size. */
+@media (max-height: 640px) {
+  /* A 520 px band has no dead space to redistribute, and centring it costs
+     real px: #mode-row mounts translated +46 and would then start its reveal
+     from BELOW the fold. Top-anchored is right here — this is the one crop
+     where the splash column nearly fills the screen already. */
+  #splash { justify-content: flex-start; }
+  .lockup.title { margin-top: max(12px, 2.5vh); width: min(60vw, 520px, calc(21vh * 1400 / 735)); }
+  #mascot-band { margin-top: 1.4vh; padding: 8px min(4vw, 30px); gap: min(4vw, 34px); }
+  #mascot-band .cat { height: min(136px, 26vh); }
+  #mascot-band .bat { height: min(110px, 21vh); margin-top: -14px; margin-bottom: 6px; }
+  .play-pill { min-width: 220px; min-height: 96px; font-size: 44px; padding: 0 30px; border-width: 5px; }
+  #mode-row { margin-top: 1.2vh; gap: min(4vw, 36px); }
+  .mode-tile { min-width: 250px; min-height: 168px; font-size: 28px; gap: 10px; padding: 12px; }
+  .tile-face { width: 88px; height: 88px; }
+  .tile-face .glyph { width: 56px; height: 56px; }
+  .tile-art { width: 64px; height: 64px; }
+
+  #celebration { gap: .6vh; padding-top: 6px; padding-bottom: calc(var(--safe-b) + 44px); }
+  #great-job { width: min(46vw, 400px, calc(13vh * 1083 / 300)); }
+  /* At 10vh the ribbon resolved to 164 px — a postage stamp under two 34 px
+     word bubbles, when it is the line that says WHY the case closed. */
+  #they-rhyme { width: min(34vw, 320px, calc(13.5vh * 634 / 200)); }
+  #pair { font-size: 34px; gap: min(4vw, 30px); }
+  .pair-bubble { min-width: 132px; padding: 4px 20px; font-size: 34px; border-width: 5px; }
+  #pair-plus { font-size: 48px; text-shadow: 0 3px 0 #4e2c6b; }
+  #cheer-row { gap: min(3vw, 26px); }
+  #cheer-row .mascot { height: min(150px, 29vh); }
+  #finds { padding: 8px min(2vw, 18px) 10px; border-radius: 26px; border-width: 4px; box-shadow: 0 6px 0 rgba(168, 122, 34, .34); }
+  .find-sprite { width: min(80px, 15vh); height: min(80px, 15vh); }
+  .find-label { font-size: 24px; }
+  .label-pill { min-width: min(60vw, 330px); min-height: 96px; font-size: 42px; padding: 0 min(5vw, 34px); border-radius: 48px; border-width: 5px; }
+  #btn-next { margin-top: 8px; }
+
+  #end { gap: 1vh; padding-bottom: calc(var(--safe-b) + 118px); }
+  #end .lockup { width: min(44vw, 400px, calc(13vh * 1083 / 300)); }
+  #end-stage { gap: min(3vw, 26px); }
+  #end-stage .mascot { height: min(132px, 26vh); }
+  .end-cell { width: min(104px, 8.6vw); gap: 6px; }
+  .end-sprite { height: min(96px, 8.6vw); }
+  .end-label { font-size: 24px; padding: 2px 10px; border-radius: 12px; }
+  #end-dots { margin-top: .8vh; }
+  #btn-again { bottom: calc(var(--safe-b) + 8px); }
+}
+
+/* --- reduced motion (5.7, and every 9.x "RM:" row) ---------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #word-card, #mode-row, #great-job, .pair-bubble, #they-rhyme,
+  #cat-cheer, #bat-cheer, #btn-next {
+    transition-duration: calc(180ms * var(--ts, 1)) !important;
+    transform: none !important;
+  }
+  #word-card { transform: none !important; }
+  #cat-cheer.in, #bat-cheer.in, #end-stage .mascot { animation: none; }
+  .find, .end-cell { animation: fade-in calc(180ms * var(--ts, 1)) ease both; }
+  .slot.pop, .dot.pop { animation: none; }
+  .rd-sparkle { display: none; }
+  .play-pill:active, .corner-btn:active, .mode-tile:active { transform: none; }
+  .label-pill:active { transform: none; }
+  #btn-again:active { transform: translateX(-50%); }
+  /* The findable halo STAYS — it is an affordance, not decoration; a child who
+     needs reduced motion still needs to know what is touchable. Only its
+     breathing stops. */
+  .rd-scene .hs-hotspot::before { animation: none; transform: scale(1); }
+}

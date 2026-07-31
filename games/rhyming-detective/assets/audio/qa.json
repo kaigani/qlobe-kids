@@ -1,0 +1,463 @@
+{
+  "voice_reference": "shared/assets/refs/voice-teacher.wav",
+  "clone_workflow": "qwen3-tts-voiceclone",
+  "seed_ladder": [
+    7,
+    8,
+    9
+  ],
+  "reject_policy": "reject -> next seed; after seed 9 with no match, omit the clip (fallback text speaks it)",
+  "loudness_reference": {
+    "file": "shared/assets/audio/words/cat.m4a",
+    "measured_lufs": -19.2,
+    "method": "ffmpeg -af loudnorm=print_format=summary (single-pass measurement, not two-pass normalization)"
+  },
+  "gain_corrections": [
+    {
+      "key": "next-case",
+      "measured_lufs_before": -23.7,
+      "applied_gain_db": 4.5,
+      "measured_lufs_after": -19.2
+    },
+    {
+      "key": "they-rhyme",
+      "measured_lufs_before": -16.1,
+      "applied_gain_db": -3.1,
+      "measured_lufs_after": -19.1
+    }
+  ],
+  "clips": {
+    "welcome": {
+      "text": "Hello, detective! Let's find some words that rhyme.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.195167,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Hello Detective, let's find some words that rhyme.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "mode-rhyme-hunt": {
+      "text": "Rhyme Hunt! Look around the room and find the rhyming words.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.354958,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "rhyme hunt, look around the room and find the rhyming words.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "mode-sound-detective": {
+      "text": "Sound Detective. This time you have to listen very carefully.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.834417,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "sound detective? This time you have to listen very carefully.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "again": {
+      "text": "Shall we solve some more cases?",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.757083,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Shall we solve some more cases?",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "case-stem": {
+      "text": "Find the words that rhyme with...",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.517417,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Find the words that rhyme with...",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "sound-listen": {
+      "text": "Listen closely. Which words rhyme with...",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.275042,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Listen closely. Which words rhyme with-",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "yes-1": {
+      "text": "Yes! That's a rhyme.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.677167,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Yes! That's a rhyme!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "yes-2": {
+      "text": "You found one! Great listening.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.236375,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "You found one! Great listening!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "yes-3": {
+      "text": "That's it, they sound the same at the end.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.476042,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "That's it! They sound the same at the end.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "they-rhyme": {
+      "text": "They rhyme!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 0.958292,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "They rhyme!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "no-1": {
+      "text": "Ooh, that one doesn't rhyme. Keep looking!",
+      "verdict": "accepted",
+      "accepted_seed": 9,
+      "duration_s": 2.795625,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Oh, that one doesn't rhyme. Keep looking.",
+          "match": false,
+          "biased_recheck_transcript": "Oh, that one doesn't rhyme. Keep looking!",
+          "biased_match": false,
+          "verdict": "rejected"
+        },
+        {
+          "seed": 8,
+          "model_size": "base",
+          "transcript": "Oh! That one doesn't rhyme! Keep looking!",
+          "match": false,
+          "biased_recheck_transcript": "Oh, that one doesn't rhyme. Keep looking!",
+          "biased_match": false,
+          "verdict": "rejected"
+        },
+        {
+          "seed": 9,
+          "model_size": "base",
+          "transcript": "Ooh, that one doesn't rhyme! Keep looking!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "no-2": {
+      "text": "Not quite, listen to the ending sound.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.875542,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Not quite. Listen to the ending sound.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "no-3": {
+      "text": "Let's listen again. We want a word that ends the same way.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.514792,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Let's listen again. We want a word that ends the same way.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "two-more": {
+      "text": "Two more to find!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.118042,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "Two more to find?",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "one-more": {
+      "text": "Just one more!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.118042,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "Just one more.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "great-job": {
+      "text": "Great job, detective!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.437542,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "Great job, Detective!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "case-closed": {
+      "text": "Case closed!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.118042,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "Case closed!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "next-case": {
+      "text": "On to the next case!",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.197917,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "On to the next case!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "idle-1": {
+      "text": "Take your time. Have a good look around.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.71575,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Take your time! Have a good look around!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "idle-2": {
+      "text": "Anything in this room could be a clue.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.916833,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Anything in this room could be a clue.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "hint-look": {
+      "text": "Tap something in the room and I'll tell you what it is.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.316292,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Tap something in the room and I'll tell you what it is.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "end": {
+      "text": "You solved every case! What a detective.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 2.875542,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "You solved every case! What a detective!",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "end-tip": {
+      "text": "Play again, the clues hide in new places each time.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 3.7545,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "base",
+          "transcript": "Play again! The clues hide in new places each time.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    },
+    "sound-again": {
+      "text": "Here it is one more time.",
+      "verdict": "accepted",
+      "accepted_seed": 7,
+      "duration_s": 1.437542,
+      "attempts": [
+        {
+          "seed": 7,
+          "model_size": "small",
+          "transcript": "Here it is one more time.",
+          "match": true,
+          "biased_recheck_transcript": null,
+          "biased_match": false,
+          "verdict": "accepted"
+        }
+      ]
+    }
+  },
+  "reused_prompts_transcriptions": {
+    "note": "GDD 3.3: three shared prompts/<w>.m4a clips transcribed for the record only. Nothing in this game depends on this result -- the composed case-stem + word-<target> is the primary design, not a fallback. Confirms the known finding: these are per-word 'Can you make <word>?' prompts, unusable as a rhyme-prompt substitute.",
+    "cat": "Can you make cat?",
+    "pan": "Can you make pan?",
+    "bug": "Can you make bug?"
+  }
+}

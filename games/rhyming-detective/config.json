@@ -1,0 +1,217 @@
+{
+  "id": "rhyming-detective",
+  "art": { "w": 1600, "h": 1200 },
+
+  "modes": [
+    { "id": "rhyme-hunt",      "title": "Rhyme Hunt",      "intro": "mode-rhyme-hunt",
+      "labels": true,  "shuffle": false, "revealAtCelebration": false },
+    { "id": "sound-detective", "title": "Sound Detective", "intro": "mode-sound-detective",
+      "labels": false, "shuffle": true,  "revealAtCelebration": true }
+  ],
+
+  "_zoneNotes": [
+    "Every zone carries a `surface` and, for anything that rests on something,",
+    "a `base`: the art y of the CONTACT LINE it stands on, read off the room",
+    "plate at full size. An object is drawn so its foot lands on `base`, which is",
+    "what makes a 150 px pen and a 240 px van both sit on the same shelf edge.",
+    "`surface: wall` has no base — it hangs, and gets a cast shadow instead of a",
+    "contact ellipse. x/y/w/h stay the allowed box: x still centres and clamps,",
+    "y is only used when there is no base.",
+    "Phase 3 re-tuned every rect against the plates; the §4.3 table in",
+    "game-design.md is the older, un-grounded lattice.",
+    "",
+    "NO ZONE MAY INTERSECT THE TARGET SPRITE'S BOX. The target is pinned at",
+    "tuning.targetSpriteArt and is 340 art px tall, so it owns roughly art",
+    "(630..970, 410..760) after the HUD reserve lifts it clear of the word card.",
+    "The kitchen and bedroom both used to put a sill zone straight through it —",
+    "case 3's hen stood on the ladybug's back and case 5's net crossed the jet's",
+    "nose. Both are now `window-front`: a wall hang over the upper glass, above",
+    "the target and below the prompt banner. If a zone is ever re-tuned, the QC",
+    "screenshot pass has to re-check every case that uses it, in both modes —",
+    "sound-detective shuffles all five objects across all eight zones, so a bad",
+    "zone is a bug in five cases, not in the one that happens to name it."
+  ],
+
+  "rooms": {
+    "study": {
+      "bg": "assets/bg-study.jpg",
+      "zones": [
+        { "name": "shelf-left",  "x":  200, "y": 170, "w": 240, "h": 250, "surface": "wall" },
+        { "name": "wall-hook",   "x":  200, "y": 500, "w": 240, "h": 240, "surface": "wall" },
+        { "name": "windowsill",  "x":  940, "y": 205, "w": 235, "h": 235, "surface": "wall" },
+        { "name": "shelf-right", "x": 1200, "y": 195, "w": 265, "h": 245, "surface": "shelf", "base":  430 },
+        { "name": "plant-nook",  "x":  180, "y": 770, "w": 250, "h": 240, "surface": "floor", "base":  990 },
+        { "name": "dresser-top", "x": 1195, "y": 380, "w": 270, "h": 250, "surface": "shelf", "base":  622 },
+        { "name": "floor-left",  "x":  380, "y": 880, "w": 250, "h": 240, "surface": "floor", "base": 1110 },
+        { "name": "floor-right", "x": 1040, "y": 860, "w": 245, "h": 240, "surface": "floor", "base": 1090 }
+      ]
+    },
+    "kitchen": {
+      "bg": "assets/bg-kitchen.jpg",
+      "zones": [
+        { "name": "upper-shelf-left",  "x":   95, "y": 205, "w": 245, "h": 245, "surface": "shelf", "base":  440 },
+        { "name": "hood-wall",         "x":  350, "y": 400, "w": 245, "h": 250, "surface": "shelf", "base":  645 },
+        { "name": "window-front",      "x":  620, "y": 190, "w": 235, "h": 225, "surface": "wall" },
+        { "name": "upper-shelf-right", "x": 1315, "y": 215, "w": 245, "h": 245, "surface": "shelf", "base":  458 },
+        { "name": "counter-left",      "x":   35, "y": 400, "w": 245, "h": 250, "surface": "shelf", "base":  648 },
+        { "name": "counter-right",     "x": 1170, "y": 400, "w": 245, "h": 250, "surface": "shelf", "base":  648 },
+        { "name": "floor-left",        "x":  280, "y": 875, "w": 245, "h": 245, "surface": "floor", "base": 1120 },
+        { "name": "floor-right",       "x": 1040, "y": 850, "w": 245, "h": 240, "surface": "floor", "base": 1090 }
+      ]
+    },
+    "bedroom": {
+      "bg": "assets/bg-bedroom.jpg",
+      "zones": [
+        { "name": "wall-shelf",   "x":  150, "y": 320, "w": 220, "h": 230, "surface": "wall" },
+        { "name": "poster-wall",  "x":  365, "y": 200, "w": 220, "h": 220, "surface": "wall" },
+        { "name": "window-front", "x":  630, "y": 190, "w": 225, "h": 220, "surface": "wall" },
+        { "name": "toy-shelf",    "x": 1120, "y": 200, "w": 220, "h": 230, "surface": "shelf", "base":  362 },
+        { "name": "nightstand",   "x":  165, "y": 790, "w": 220, "h": 230, "surface": "floor", "base": 1000 },
+        { "name": "bed-side",     "x": 1215, "y": 520, "w": 230, "h": 240, "surface": "shelf", "base":  745 },
+        { "name": "rug-centre",   "x":  350, "y": 850, "w": 220, "h": 230, "surface": "floor", "base": 1060 },
+        { "name": "toy-box",      "x": 1040, "y": 900, "w": 220, "h": 240, "surface": "floor", "base": 1140 }
+      ]
+    }
+  },
+
+  "cases": [
+    {
+      "id": "case-1",
+      "room": "study",
+      "target": "cat",
+      "rime": "at",
+      "rhymes": ["hat", "bat", "mat"],
+      "distractors": ["sun", "mop"],
+      "placements": {
+        "hat": "wall-hook",
+        "bat": "floor-right",
+        "mat": "floor-left",
+        "sun": "windowsill",
+        "mop": "plant-nook"
+      }
+    },
+    {
+      "id": "case-2",
+      "room": "kitchen",
+      "target": "pan",
+      "rime": "an",
+      "rhymes": ["can", "fan", "van"],
+      "distractors": ["dog", "bed"],
+      "placements": {
+        "can": "upper-shelf-left",
+        "fan": "hood-wall",
+        "van": "counter-right",
+        "dog": "floor-left",
+        "bed": "counter-left"
+      }
+    },
+    {
+      "id": "case-3",
+      "room": "bedroom",
+      "target": "bug",
+      "rime": "ug",
+      "rhymes": ["jug", "mug", "rug"],
+      "distractors": ["hen", "cap"],
+      "placements": {
+        "jug": "nightstand",
+        "mug": "wall-shelf",
+        "rug": "rug-centre",
+        "hen": "window-front",
+        "cap": "toy-shelf"
+      }
+    },
+    {
+      "id": "case-4",
+      "room": "study",
+      "target": "hat",
+      "rime": "at",
+      "rhymes": ["rat", "mat", "bat"],
+      "distractors": ["pen", "log"],
+      "placements": {
+        "rat": "floor-right",
+        "mat": "plant-nook",
+        "bat": "shelf-right",
+        "pen": "dresser-top",
+        "log": "floor-left"
+      }
+    },
+    {
+      "id": "case-5",
+      "room": "kitchen",
+      "target": "jet",
+      "rime": "et",
+      "rhymes": ["net", "vet", "pet"],
+      "distractors": ["ten", "fig"],
+      "placements": {
+        "net": "window-front",
+        "vet": "upper-shelf-right",
+        "pet": "floor-left",
+        "ten": "hood-wall",
+        "fig": "counter-left"
+      }
+    }
+  ],
+
+  "sizes": {
+    "fig": 150, "pen": 150, "cap": 150, "ten": 150,
+    "mat": 170, "mop": 170, "rug": 170, "can": 170, "mug": 170, "jug": 170, "net": 170, "hen": 170, "rat": 170,
+    "hat": 200, "bat": 200, "sun": 200, "bed": 200, "dog": 200, "log": 200, "cat": 200, "pet": 200, "vet": 200,
+    "pan": 240, "fan": 240, "van": 240, "jet": 240, "bug": 240
+  },
+
+  "_footPadNotes": [
+    "hotspot-scene.js draws every sprite inside a SQUARE art box (wideBox's",
+    "`s x s`) with CSS object-fit:contain, centred on both axes. A sprite whose",
+    "raster aspect is wider than it is tall (a flat mat, a squat fruit) is",
+    "width-constrained inside that square, which leaves vertical slack split",
+    "evenly above and below — so its drawn foot lands `slack/2` art px ABOVE the",
+    "zone's grounding `base` line instead of on it, i.e. it visibly floats.",
+    "`footPad[word]` is that half-slack in art px, computed once from the",
+    "shipped sprite's own pixel aspect at its configured `sizes[word]`:",
+    "  slackHalf = (s - s * (imgH / imgW)) / 2   -- only when imgW > imgH",
+    "wideBox adds it to the grounded y so the RASTER's foot (not the box's)",
+    "sits on `base`. Only zones with a `base` (floor/shelf) are affected; wall",
+    "zones centre the sprite regardless, so a word only needs an entry here if",
+    "some case actually places it in a grounded zone. Re-measure and update",
+    "this map whenever mat.webp or fig.webp (or any future flat/wide sprite) is",
+    "regenerated at a different aspect ratio."
+  ],
+  "footPad": {
+    "mat": 47,
+    "fig": 18
+  },
+
+  "sprites": {
+    "dir": "assets/sprites/",
+    "fallbackDir": "../../shared/assets/objects/"
+  },
+
+  "voice": {
+    "manifest": "assets/audio/manifest.json",
+    "lines":    "data/lines.json",
+    "wordKey":  "word-",
+    "decks":    { "yes": ["yes-1", "yes-2", "yes-3"], "idle": ["idle-1", "idle-2"] },
+    "noLadder": ["no-1", "no-2", "no-3"]
+  },
+
+  "tuning": {
+    "dotCount": 5,
+    "jitterArtPx": 20,
+    "targetSpriteArtH": 340,
+    "targetSpriteArt": { "x": 800, "y": 700 },
+    "magnifierArt": { "x": 1117, "y": 783, "w": 588, "h": 439 },
+    "minHitCssPx": 96,
+    "idleMs": 8000,
+    "hintMs": 18000,
+    "repromptMs": 30000,
+    "idleRepeatMs": 15000,
+    "celebrationAutoAdvanceMs": 12000,
+    "caseIntroTailMs": 350,
+    "bubbleHoldMs": 1400,
+    "declinedHoldMs": 900,
+    "soundDebounceMs": 600,
+    "clipGapMs": 120,
+    "compactMinArtW": 1300,
+    "compactMinArtH": 950
+  }
+}

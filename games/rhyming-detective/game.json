@@ -5,30 +5,38 @@
   "path": "games/rhyming-detective/",
   "icon": "🔍",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 3, "max": 6 },
   "status": "beta",
-  "accent": "#2d7dd2",
-  "shareTitle": "Rhyming Detective 🔍 — Rhyme Matching for Little Sleuths",
-  "description": "Listen closely and tap two picture cards that rhyme, training an ear for matching ending sounds. A playful rhyme-detection game for ages 5–6.",
+  "accent": "#2f6fd0",
+  "engine": "rhyming-detective (game-local js/game.js + shared/js/hotspot-scene.js)",
+  "shareTitle": "Rhyming Detective — Hidden-Object Rhyme Hunt for Little Sleuths",
+  "description": "Search a cosy room for the words that rhyme with the target word. Tap anything and it says its name; find all three rhymes to close the case. Five cases, two modes, no reading required. Ages 3–6.",
   "learningGoals": [
-    "Practice rhyme awareness through spoken CVC word pairs",
-    "Listen for shared ending sounds",
-    "Build phonological awareness without requiring reading"
+    "Hear that two spoken words share an ending sound",
+    "Reject a word that does not rhyme, not just recognize one that does",
+    "Meet the -at, -an, -ug and -et rhyming families as whole word groups",
+    "Connect a spoken word to its printed form, then do it again without the print"
   ],
-  "interactionModel": "match-pairs tap two picture cards that rhyme",
-  "feedbackModel": "Matching rhymes get sparkle SFX and a spoken rhyme line; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "interactionModel": "tap hidden objects in an illustrated room; every tap speaks the object's name in a speech bubble; three rhymes close the case",
+  "feedbackModel": "A rhyme sparkles, turns green, flies into the evidence tray and earns a spoken cheer. A non-rhyme gets a soft boing, a wiggle, a gentle spoken line, and stays tappable — nothing is ever removed and nothing can be failed.",
   "uses": [
-    "shared/js/engines/match-pairs.js",
+    "shared/js/hotspot-scene.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
-    "shared/assets/objects/"
+    "shared/js/tap.js",
+    "shared/assets/audio/words/",
+    "shared/assets/objects/",
+    "shared/assets/ui/",
+    "shared/data/words.json",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "classic", "title": "Find the Rhymes", "skill": "rhyme awareness with familiar CVC pictures" },
-    { "id": "tricky", "title": "Tricky Rhymes", "skill": "rhyme discrimination with less obvious CVC pictures" }
+    { "id": "rhyme-hunt", "title": "Rhyme Hunt", "skill": "finding words that rhyme with a target word, with the words printed" },
+    { "id": "sound-detective", "title": "Sound Detective", "skill": "finding rhymes by ear alone, with no printed words" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; shared QLOBE Kids object-card art. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; shared QLOBE Kids object-card art and teacher voice. Built with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }
