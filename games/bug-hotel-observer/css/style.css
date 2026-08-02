@@ -534,10 +534,10 @@ body {
   /* Sized by HEIGHT, so the aspect ratio is what decides the width and the
      spread can never be pushed past its own bottom edge by a long fact. */
   flex: 0 1 auto;
-  height: min(29vh, 244px);
+  height: min(37vh, 330px);
   aspect-ratio: 1100 / 760;
   width: auto;
-  max-width: min(560px, 100%);
+  max-width: min(720px, 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -562,15 +562,17 @@ body {
    on the child resolve against the card itself, which is what was meant. */
 #fact-text {
   margin: 0;
-  width: 64%;
-  max-height: 56%;
+  /* The rule's INNER area is ~61% x 52% of the card; the old 64%/56% let long
+     facts poke past the dashed rule (2026-08-02 playtest). */
+  width: 58%;
+  max-height: 50%;
   overflow: hidden;
   /* Tied to the VIEWPORT HEIGHT and CAPPED, because the card is: its height is
      min(29vh, 244px), so past a 840 px viewport the card stops growing and type
      that kept growing simply ran out of the dashed rule. The cap is set so the
      longest fact in tools/lines.json (103 characters) still fits in four lines
      at every viewport this game supports. */
-  font-size: clamp(14px, 2.4vh, 19px);
+  font-size: clamp(14px, 2.9vh, 24px);
   line-height: 1.26;
   text-align: center;
   color: var(--ink);
@@ -839,7 +841,7 @@ body {
   #fact-row { flex-direction: row; gap: 14px; }
   #fact-bug { width: 104px; height: 104px; }
   #fact-card { height: min(52vh, 210px); }
-  #fact-text { width: 66%; max-height: 62%; font-size: 13px; }
+  #fact-text { width: 58%; max-height: 50%; font-size: 13px; }
   .sticker-grid { --cell: min(calc((min(560px, 76vw) - 3 * var(--gap)) / 4), 16vh); }
   #spread:not(.is-journal):not(.is-celebration) .sticker-grid {
     --cell: min(calc((min(420px, 40vw) - 3 * var(--gap)) / 4), 9vh);
