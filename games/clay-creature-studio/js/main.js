@@ -34,11 +34,24 @@ let disposers = [];
 let trayDrag = null;
 let wakeAudio = null;
 let stopMouth = null;
+const mouthRigLoads = new Map();
 
 const creatureById = (id) => config.creatures.find((item) => item.id === id);
 const partById = (id) => config.parts.find((item) => item.id === id);
 const pieceById = (id) => partById(id) || config.blobBalls.find((item) => item.id === id);
 const resolve = (path) => new URL(path, import.meta.url).href;
+
+function preloadMouthRig(rig) {
+  if (!mouthRigLoads.has(rig)) {
+    const visemes = ['a', 'o', 'e', 'wr', 'ts', 'ln', 'uq', 'mbp', 'fv'];
+    mouthRigLoads.set(rig, Promise.all(visemes.map((viseme) => new Promise((done) => {
+      const image = new Image();
+      image.onload = image.onerror = done;
+      image.src = resolve(`../assets/mouths/${rig}/${viseme}.webp`);
+    }))));
+  }
+  return mouthRigLoads.get(rig);
+}
 
 const ready = Promise.allSettled([
   resolve('../assets/workshop.webp'), resolve('../assets/title.webp'), resolve('../assets/alive.webp'),
@@ -573,12 +586,12 @@ async function playMouthVoice(saved) {
     const audio = new Audio(resolve(`../${phrase.audio.replace(/^\.\//, '')}`));
     wakeAudio = audio;
     const cuesPromise = fetch(resolve(`../${phrase.cues.replace(/^\.\//, '')}`)).then((response) => response.json());
-    await new Promise((done, reject) => {
+    const audioReady = new Promise((done, reject) => {
       audio.addEventListener('canplaythrough', done, { once: true });
       audio.addEventListener('error', reject, { once: true });
-      audio.load();
     });
-    const cues = await cuesPromise;
+    audio.load();
+    const [cues] = await Promise.all([cuesPromise, preloadMouthRig(mouth.rig), audioReady]);
     if (image) {
       const puppet = {
         setViseme(viseme) {
