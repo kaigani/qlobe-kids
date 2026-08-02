@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-01T20:32:19.590Z",
+  "generated": "2026-08-02T02:11:56.899Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -74,10 +74,9 @@
       ]
     },
     "observe-journal": {
-      "count": 10,
+      "count": 9,
       "games": [
         "bean-sprout-watch",
-        "bug-hotel-observer",
         "emotion-voice-game",
         "family-story-interview",
         "globe-spin-stories",
@@ -283,16 +282,25 @@
       "packs": []
     },
     "bug-hotel-observer": {
-      "engine": "observe-journal",
+      "engine": null,
       "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
-        "shared/js/engines/observe-journal.js",
+        "shared/js/hotspot-scene.js",
+        "shared/js/journal.js",
+        "shared/js/magnifier-lens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/ui/btn-back.png",
+        "shared/assets/ui/btn-home.png",
+        "shared/assets/ui/btn-play.png",
+        "shared/assets/ui/btn-sound.png"
+      ],
       "packs": []
     },
     "button-zipper-lab": {
@@ -348,6 +356,7 @@
         "shared/js/freeform-board.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/lipsync.js",
         "shared/js/tap.js"
       ],
       "assets": [
@@ -1891,7 +1900,6 @@
       ],
       "shared/js/engines/observe-journal.js": [
         "bean-sprout-watch",
-        "bug-hotel-observer",
         "emotion-voice-game",
         "family-story-interview",
         "globe-spin-stories",
@@ -1945,7 +1953,14 @@
         "clay-creature-studio"
       ],
       "shared/js/hotspot-scene.js": [
+        "bug-hotel-observer",
         "rhyming-detective"
+      ],
+      "shared/js/journal.js": [
+        "bug-hotel-observer"
+      ],
+      "shared/js/magnifier-lens.js": [
+        "bug-hotel-observer"
       ],
       "shared/js/music.js": [
         "my-puppet-band",
@@ -2185,6 +2200,7 @@
         "world-music-dance"
       ],
       "shared/js/stage/lipsync.js": [
+        "clay-creature-studio",
         "puppet-problem-solvers"
       ],
       "shared/js/stage/mouth.js": [
@@ -2233,6 +2249,7 @@
         "sink-or-float"
       ],
       "shared/js/tap.js": [
+        "bug-hotel-observer",
         "clay-creature-studio",
         "counting-treasure-cups",
         "feelings-charades",
@@ -2252,6 +2269,7 @@
       ],
       "shared/js/voice-clips.js": [
         "blend-train",
+        "bug-hotel-observer",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
@@ -2658,6 +2676,18 @@
         "tangram-tales",
         "teen-bead-builder",
         "turn-taking-tower"
+      ],
+      "shared/assets/ui/btn-back.png": [
+        "bug-hotel-observer"
+      ],
+      "shared/assets/ui/btn-home.png": [
+        "bug-hotel-observer"
+      ],
+      "shared/assets/ui/btn-play.png": [
+        "bug-hotel-observer"
+      ],
+      "shared/assets/ui/btn-sound.png": [
+        "bug-hotel-observer"
       ],
       "shared/characters/ari": [
         "flashlight-cave"

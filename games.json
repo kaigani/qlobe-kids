@@ -1571,20 +1571,36 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#f25f5c",
+      "accent": "#5f8f3a",
+      "uses": [
+        "shared/js/hotspot-scene.js",
+        "shared/js/magnifier-lens.js",
+        "shared/js/journal.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/",
+        "shared/fonts/"
+      ],
       "modes": [
         {
-          "id": "guests",
-          "title": "Who's Home?",
-          "skill": "identify common tiny garden guests"
+          "id": "bug-hunt",
+          "title": "Bug Hunt",
+          "skill": "finding and naming a bug that has been named out loud, by searching a natural scene with a magnifying glass"
         },
         {
-          "id": "doing",
-          "title": "What Are They Doing?",
-          "skill": "observe simple animal behaviors"
+          "id": "bug-detective",
+          "title": "Bug Detective",
+          "skill": "matching a spoken description of a bug to the right bug, with no name given"
+        },
+        {
+          "id": "my-bug-book",
+          "title": "My Bug Book",
+          "skill": "recalling the bugs already collected and re-hearing each one's name and fact from its sticker"
         }
       ],
-      "summary": "Watch insects up close without disturbing them."
+      "summary": "Drag a paper magnifying glass across a bug hotel to discover twelve tiny garden guests, then keep their stickers and facts in your own bug book."
     },
     {
       "id": "melting-race",
