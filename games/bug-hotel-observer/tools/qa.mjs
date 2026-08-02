@@ -509,11 +509,17 @@ async function browserGate(base) {
     ok('the sound button on the hotel screen speaks pick-room from the recorded pack',
       pickRoomLog.some((l) => l.id === 'pick-room' && l.source === 'clip' && /\.m4a$/.test(l.file || '')),
       JSON.stringify(pickRoomLog));
+    // Poll: over a real network the <audio> can still be buffering at the
+    // instant the audio-log entry lands (readyState < 2), even though the
+    // clip is playing. Local runs pass on the first poll either way.
+    const pickRoomDecoded = await page.waitForFunction(() => {
+      const m = window.QLOBE_DEBUG.getClipMedia();
+      return Boolean(m) && m.key === 'pick-room' && /pick-room\.m4a(\?|$)/.test(m.src)
+        && m.readyState >= 2 && Number.isFinite(m.duration) && m.duration > 0;
+    }, null, { timeout: 10000 }).then(() => true).catch(() => false);
     const pickRoomMedia = await page.evaluate(() => window.QLOBE_DEBUG.getClipMedia());
     ok('the pick-room clip actually decoded in the page (readyState >= 2, real duration)',
-      Boolean(pickRoomMedia) && pickRoomMedia.key === 'pick-room' && /pick-room\.m4a(\?|$)/.test(pickRoomMedia.src)
-        && pickRoomMedia.readyState >= 2 && Number.isFinite(pickRoomMedia.duration) && pickRoomMedia.duration > 0,
-      JSON.stringify(pickRoomMedia));
+      pickRoomDecoded, JSON.stringify(pickRoomMedia));
     await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
   }
 
