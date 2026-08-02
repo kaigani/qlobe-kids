@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-07-31T21:41:38.971Z",
+  "generated": "2026-08-01T20:32:19.590Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -57,12 +57,11 @@
       ]
     },
     "build-assemble": {
-      "count": 13,
+      "count": 12,
       "games": [
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
-        "clay-creature-studio",
         "color-mixing-lab",
         "land-water-tray",
         "loose-parts-collage",
@@ -341,14 +340,15 @@
       "packs": []
     },
     "clay-creature-studio": {
-      "engine": "build-assemble",
-      "status": "beta",
+      "engine": null,
+      "status": "live",
       "category": "art-music",
       "characters": [],
       "modules": [
-        "shared/js/engines/build-assemble.js",
+        "shared/js/freeform-board.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1833,7 +1833,6 @@
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
-        "clay-creature-studio",
         "color-mixing-lab",
         "land-water-tray",
         "loose-parts-collage",
@@ -1941,6 +1940,9 @@
         "letter-road-driving",
         "scissor-trail-safari",
         "sticker-line-challenge"
+      ],
+      "shared/js/freeform-board.js": [
+        "clay-creature-studio"
       ],
       "shared/js/hotspot-scene.js": [
         "rhyming-detective"
@@ -2231,6 +2233,7 @@
         "sink-or-float"
       ],
       "shared/js/tap.js": [
+        "clay-creature-studio",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",

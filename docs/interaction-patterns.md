@@ -464,3 +464,44 @@ walks off a wide, short window, and it is the part nobody thinks to clamp.
 - Assert the element's **painted bounds**, not just its computed slot. A slot
   derived from the clamp stays healthy even when the sprite it positions was
   never moved.
+
+## 14. Freeform composition that survives rotation and reload
+
+**When to use:** open-ended creation games where a child places decorations,
+props, collage pieces, or course objects without a single correct slot.
+Canonical implementation: `shared/js/freeform-board.js`; production reference:
+`games/clay-creature-studio/`.
+
+Free placement is not ordinary drag-to-slot. The final position is the product,
+so the controller must preserve it across viewport changes and local saves:
+
+1. Store the **piece center as normalized coordinates** in the board, plus its
+   kind, size, rotation, mirror state, z-order, and semantic metadata.
+2. Keep the pointer-to-object offset. A grabbed eye must not jump its center
+   under a child's finger.
+3. Let the piece center reach the **full creative surface**, with a small
+   overscan. Do not inset the legal center by half the rendered piece: that
+   makes horns, hats, antennae, and edge collage pieces mysteriously stop short.
+   Use one active pointer with window-level move/up/cancel listeners.
+4. Treat pointer cancel or blur as a cancelled edit: restore the before-drag
+   snapshot so a notification cannot leave an object half moved.
+5. Raise the selected piece's z-order, provide a visible selection halo, and
+   serialize only data—never DOM or pixels.
+6. For a direct-manipulation tray, require **drag from source to surface**. A
+   press-and-release on the tray must not create an object. Render a lightweight
+   drag ghost, preserve its pointer stream at `window`, and call `board.add()`
+   only after a valid surface drop.
+7. Make deletion spatial too: expose a large, legible trash drop zone and call
+   `board.remove()` only when a placed piece is released over it. Highlight the
+   zone during hover; do not hide discard behind an edit toolbar.
+8. Mark asymmetric pieces with semantic direction metadata. Recompute their
+   mirror state on every `pointermove` as the center crosses the figure median—
+   never only on drop—so wings, arms, feet, and tails visibly turn outward while
+   the child is still dragging, without separate left/right sprites.
+9. Save semantic snapshots to a bounded local gallery. A storage failure must
+   degrade to session play; persistence is never required to finish a loop.
+
+The module exposes `add`, `remove`, `clear`, `undo`, `load`, `move`, `select`,
+`snapshot`, `getItems`, and `destroy`. A snapshot has format
+`qlobe-freeform-board` version 1 and can be rendered by the real game at any
+size, which makes saved miniatures and production QA use the same composition.
