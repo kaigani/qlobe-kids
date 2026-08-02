@@ -297,16 +297,27 @@
       "modes": [
         {
           "id": "two",
-          "title": "Two Baskets",
-          "skill": "initial-sound isolation with two contrasting onsets"
+          "title": "Two Sounds",
+          "skill": "initial-sound isolation with two randomized contrasting onsets"
         },
         {
           "id": "three",
-          "title": "Three Baskets",
-          "skill": "initial-sound isolation with three contrasting onsets"
+          "title": "Three Sounds",
+          "skill": "initial-sound isolation across three randomized contrasting onsets"
         }
       ],
-      "summary": "Match objects to their beginning sounds."
+      "uses": [
+        "shared/js/audio.js",
+        "shared/js/voice-clips.js",
+        "shared/js/tap.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/assets/audio/",
+        "shared/assets/ui/",
+        "shared/assets/letter-tiles/",
+        "shared/assets/objects/"
+      ],
+      "summary": "Hear a picture word, then tap or drag matching first sounds into a woven basket."
     },
     {
       "id": "mystery-letter-bag",
@@ -932,7 +943,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#159ca6",
       "modes": [
         {
@@ -1154,7 +1165,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#7b35d0",
       "modes": [
         {

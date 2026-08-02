@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-02T02:11:56.899Z",
+  "generated": "2026-08-02T05:38:14.983Z",
   "engines": {
     "coach-timer": {
       "count": 20,
@@ -97,16 +97,6 @@
         "story-sequence"
       ]
     },
-    "sort-into-bins": {
-      "count": 5,
-      "games": [
-        "magnet-explorer",
-        "puzzle-map-match",
-        "sound-basket",
-        "table-setting-mission",
-        "tweezer-rescue"
-      ]
-    },
     "match-pairs": {
       "count": 5,
       "games": [
@@ -124,6 +114,15 @@
         "letter-road-driving",
         "scissor-trail-safari",
         "sticker-line-challenge"
+      ]
+    },
+    "sort-into-bins": {
+      "count": 4,
+      "games": [
+        "magnet-explorer",
+        "puzzle-map-match",
+        "table-setting-mission",
+        "tweezer-rescue"
       ]
     },
     "tap-count": {
@@ -647,7 +646,7 @@
     },
     "laundry-sorter": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "practical-life",
       "characters": [],
       "modules": [
@@ -1429,18 +1428,27 @@
       "packs": []
     },
     "sound-basket": {
-      "engine": "sort-into-bins",
+      "engine": null,
       "status": "beta",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
-        "shared/js/engines/sort-into-bins.js",
+        "shared/js/audio.js",
+        "shared/js/content.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
-        "shared/assets/letter-tiles",
-        "shared/assets/objects"
+        "games/sound-basket/assets/art/backdrop.webp",
+        "games/sound-basket/assets/art/basket.png",
+        "games/sound-basket/assets/art/title.webp",
+        "shared/assets/audio",
+        "shared/assets/objects",
+        "shared/assets/objects/cat.webp",
+        "shared/assets/objects/sun.webp",
+        "shared/assets/ui"
       ],
       "packs": []
     },
@@ -1645,7 +1653,7 @@
     },
     "teen-bead-builder": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
@@ -1832,11 +1840,15 @@
       "shared/js/audio": [
         "sound-sprouts"
       ],
+      "shared/js/audio.js": [
+        "sound-basket"
+      ],
       "shared/js/content.js": [
         "blend-train",
         "flashlight-cave",
         "playdough-letter-factory",
-        "sand-tray-letters"
+        "sand-tray-letters",
+        "sound-basket"
       ],
       "shared/js/engines/build-assemble.js": [
         "bead-path-builder",
@@ -1930,7 +1942,6 @@
       "shared/js/engines/sort-into-bins.js": [
         "magnet-explorer",
         "puzzle-map-match",
-        "sound-basket",
         "table-setting-mission",
         "tweezer-rescue"
       ],
@@ -2262,6 +2273,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "sound-basket",
         "sound-painting",
         "sound-sprouts",
         "teen-bead-builder",
@@ -2284,6 +2296,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "sound-basket",
         "sound-painting",
         "sound-sprouts",
         "story-stones",
@@ -2513,6 +2526,15 @@
       "games/snack-chef/assets/ui/star-gold.webp": [
         "snack-chef"
       ],
+      "games/sound-basket/assets/art/backdrop.webp": [
+        "sound-basket"
+      ],
+      "games/sound-basket/assets/art/basket.png": [
+        "sound-basket"
+      ],
+      "games/sound-basket/assets/art/title.webp": [
+        "sound-basket"
+      ],
       "games/sound-sprouts/assets/apple-touch-icon.png": [
         "sound-sprouts"
       ],
@@ -2565,6 +2587,7 @@
         "teen-bead-builder"
       ],
       "shared/assets/audio": [
+        "sound-basket",
         "sound-sprouts"
       ],
       "shared/assets/audio/celebrate": [
@@ -2617,7 +2640,6 @@
         "letter-treasure-hunt",
         "mystery-letter-bag",
         "silly-swap-words",
-        "sound-basket",
         "sound-hopscotch",
         "sound-sprouts"
       ],
@@ -2634,6 +2656,7 @@
         "tiny-reader-theater"
       ],
       "shared/assets/objects/cat.webp": [
+        "sound-basket",
         "tiny-reader-theater"
       ],
       "shared/assets/objects/dog.webp": [
@@ -2646,6 +2669,7 @@
         "tiny-reader-theater"
       ],
       "shared/assets/objects/sun.webp": [
+        "sound-basket",
         "tiny-reader-theater"
       ],
       "shared/assets/storybook": [
@@ -2671,6 +2695,7 @@
         "silly-swap-words",
         "sink-or-float",
         "snack-chef",
+        "sound-basket",
         "sound-painting",
         "sound-sprouts",
         "tangram-tales",

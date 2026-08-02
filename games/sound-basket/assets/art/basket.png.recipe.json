@@ -1,0 +1,60 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "sound-basket-basket",
+  "kind": "image",
+  "asset": "basket.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a large empty honey-gold woven wicker basket with a thick braided rim and a rounded rope handle, front three-quarter view, wide oval opening clearly visible, no contents, no letters, no characters, isolated, centered. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "ground": "dark-charcoal",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "sound-basket-basket.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a large empty honey-gold woven wicker basket with a thick braided rim and a rounded rope handle, front three-quarter view, wide oval opening clearly visible, no contents, no letters, no characters, isolated, centered. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "sound-basket-basket.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 640,
+      "encode": "png",
+      "from": "sound-basket-basket.layer2.png",
+      "output": "basket.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "prop-cutout",
+    "style": "toy-table",
+    "fields": {
+      "prop": "a large empty honey-gold woven wicker basket with a thick braided rim and a rounded rope handle, front three-quarter view, wide oval opening clearly visible, no contents, no letters, no characters"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 49.428,
+      "opaquePct": 29.914,
+      "partialPct": 20.658
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 42
+  },
+  "created": "2026-08-01"
+}

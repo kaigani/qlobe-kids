@@ -1,0 +1,32 @@
+{
+  "id": "sound-basket",
+  "title": "Sound Basket",
+  "voice": {
+    "welcome": "Come fill a sound basket! Listen for the first sound.",
+    "two-sounds": "Two sounds. Ready to listen!",
+    "three-sounds": "Three sounds. Ready for a challenge?",
+    "find": "Listen. Find the pictures that start with this sound.",
+    "nudge": "That starts with a different sound. Try another picture.",
+    "round-cheer": "Great listening! The basket is full.",
+    "final-cheer": "You filled every sound basket!",
+    "idle": "Tap a picture to hear its word."
+  },
+  "modes": [
+    {
+      "id": "two",
+      "title": "Two Sounds",
+      "skill": "initial-sound isolation with two randomized contrasting onsets",
+      "letterCount": 2,
+      "rounds": 3,
+      "itemsPerRound": 4
+    },
+    {
+      "id": "three",
+      "title": "Three Sounds",
+      "skill": "initial-sound isolation across three randomized contrasting onsets",
+      "letterCount": 3,
+      "rounds": 3,
+      "itemsPerRound": 4
+    }
+  ]
+}

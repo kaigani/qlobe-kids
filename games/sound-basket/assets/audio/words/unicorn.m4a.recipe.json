@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "sound-basket-word-unicorn",
+  "kind": "voice",
+  "asset": "words/unicorn.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "unicorn.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "unicorn."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "unicorn",
+      "heard": "Unicorn.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-01"
+}

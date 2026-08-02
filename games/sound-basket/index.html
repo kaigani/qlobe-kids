@@ -1,59 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sound Basket 🧺 — Sorting Sounds into Letters</title>
-  <meta name="description" content="Sort picture cards into letter baskets by listening for the first sound in each word. A simple phonemic-awareness game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="theme-color" content="#25c3e8" />
+  <title>Sound Basket 🧺 — Listen for First Sounds</title>
+  <meta name="description" content="Listen to picture words and tuck matching first sounds into a bright woven basket. A playful phonemic-awareness game for ages 5–6." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Sound Basket" />
-  <meta property="og:title" content="Sound Basket 🧺 — Sorting Sounds into Letters" />
-  <meta property="og:description" content="Sort picture cards into letter baskets by listening for the first sound in each word. A simple phonemic-awareness game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Sound Basket 🧺 — Listen for First Sounds" />
+  <meta property="og:description" content="Listen to picture words and fill a basket with matching first sounds." />
   <meta property="og:url" content="https://qlo.be/games/sound-basket/" />
   <meta property="og:image" content="https://qlo.be/games/sound-basket/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sound Basket title screen with Two Baskets and Three Baskets modes and a woven basket icon." />
-
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sound Basket 🧺 — Sorting Sounds into Letters" />
-  <meta name="twitter:description" content="Sort picture cards into letter baskets by listening for the first sound in each word. A simple phonemic-awareness game for ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/sound-basket/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="icon" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="preload" as="image" href="./assets/art/backdrop.webp" />
+  <link rel="preload" as="image" href="./assets/art/title.webp" />
+  <link rel="preload" as="image" href="./assets/art/basket.png" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sort-into-bins.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app">
+    <section id="splash" class="screen splash" aria-label="Sound Basket">
+      <button id="splash-home" class="hud-button hud-home" aria-label="Back to QLOBE Kids"></button>
+      <button id="splash-sound" class="hud-button hud-sound" aria-label="Hear the welcome again"></button>
+      <img class="title-lockup" src="./assets/art/title.webp" alt="Sound Basket" />
+      <div class="splash-scene" aria-hidden="true">
+        <div class="hero-glow"></div>
+        <div class="splash-letters">
+          <span>C</span><span>A</span><span>T</span>
+        </div>
+        <img class="splash-basket" src="./assets/art/basket.png" alt="" />
+        <img class="splash-object splash-cat" src="../../shared/assets/objects/cat.webp" alt="" />
+        <img class="splash-object splash-sun" src="../../shared/assets/objects/sun.webp" alt="" />
+        <i class="hero-spark hero-spark-one">★</i>
+        <i class="hero-spark hero-spark-two">✦</i>
+        <i class="hero-spark hero-spark-three">★</i>
+      </div>
+      <div class="splash-actions">
+        <div class="mode-row" aria-label="Choose a sound challenge">
+          <button class="mode-button" data-mode="two" aria-label="Two sounds">
+            <span class="mode-graphic mode-graphic-two" aria-hidden="true">
+              <i>A</i><i>M</i><img src="./assets/art/basket.png" alt="" />
+            </span>
+            <span class="mode-copy"><strong>2</strong><small>sounds</small></span>
+          </button>
+          <button id="play-default" class="play-button" aria-label="Play with two sounds"></button>
+          <button class="mode-button" data-mode="three" aria-label="Three sounds">
+            <span class="mode-graphic mode-graphic-three" aria-hidden="true">
+              <i>C</i><i>P</i><i>T</i><img src="./assets/art/basket.png" alt="" />
+            </span>
+            <span class="mode-copy"><strong>3</strong><small>sounds</small></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="play" class="screen play" hidden aria-label="Sound Basket round">
+      <button id="play-back" class="hud-button hud-back" aria-label="Back to Sound Basket"></button>
+      <button id="play-sound" class="hud-button hud-sound" aria-label="Hear the sound again"></button>
+      <div class="round-dots" id="round-dots" aria-label="Round progress"></div>
+      <div class="prompt-ribbon"><span>Find</span><strong id="prompt-letter">C</strong><span>sounds!</span></div>
+      <div id="basket-target" class="basket-target" aria-label="Sound basket">
+        <div id="basket-letter" class="basket-letter" aria-hidden="true">C</div>
+        <img class="basket-base" src="./assets/art/basket.png" alt="" />
+        <div id="play-basket-finds" class="play-basket-finds" aria-hidden="true"></div>
+        <img class="basket-front" src="./assets/art/basket.png" alt="" />
+        <div id="basket-catch" class="basket-catch" aria-hidden="true"></div>
+      </div>
+      <div id="card-shelf" class="card-shelf" aria-label="Picture choices"></div>
+      <div id="sparkles" class="sparkles" aria-hidden="true"></div>
+    </section>
+
+    <section id="celebration" class="screen celebration" hidden aria-label="Great listening">
+      <button id="celebration-back" class="hud-button hud-back" aria-label="Back to Sound Basket"></button>
+      <div class="celebration-panel">
+        <div class="star-row" aria-hidden="true">★ ★ ★</div>
+        <h2>Great listening!</h2>
+        <div class="celebration-basket" aria-hidden="true">
+          <strong id="celebration-letter">C</strong>
+          <img class="basket-base" src="./assets/art/basket.png" alt="" />
+          <div id="celebration-finds" class="basket-finds"></div>
+          <img class="basket-front" src="./assets/art/basket.png" alt="" />
+        </div>
+        <button id="next-round" class="next-button" aria-label="Next round"><span aria-hidden="true">▶</span></button>
+      </div>
+    </section>
+
+    <section id="end" class="screen end" hidden aria-label="Sound Basket complete">
+      <button id="end-back" class="hud-button hud-back" aria-label="Back to Sound Basket"></button>
+      <div class="end-panel">
+        <div class="star-row" aria-hidden="true">★ ★ ★</div>
+        <h2>Basket full!</h2>
+        <div class="end-basket" aria-label="A full woven sound basket">
+          <div id="end-letters" class="end-letters" aria-hidden="true"></div>
+          <img src="./assets/art/basket.png" alt="" />
+        </div>
+        <button id="play-again" class="play-button" aria-label="Play again"><span aria-hidden="true">↻</span></button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "sound-basket-welcome",
+  "kind": "voice",
+  "asset": "sound-basket-welcome.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Come fill a sound basket! Listen for the first sound.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Come fill a sound basket! Listen for the first sound."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Come fill a sound basket! Listen for the first sound.",
+      "heard": "Come fill a sound basket! Listen for the first sound!",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-01"
+}

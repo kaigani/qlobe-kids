@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "sound-basket-round-cheer",
+  "kind": "voice",
+  "asset": "sound-basket-round-cheer.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Great listening! The basket is full.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Great listening! The basket is full."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Great listening! The basket is full.",
+      "heard": "Great listening! The basket is full!",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-01"
+}
