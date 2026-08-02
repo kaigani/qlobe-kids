@@ -5,55 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Bug Hotel Observer 🐞 — Tiny Garden Guest Watching</title>
-  <meta name="description" content="Stamp tiny bug guests and their behaviors into a quiet observation journal, practicing slow, gentle looking at small living things. A patient nature journal for ages 5–6." />
+  <meta name="theme-color" content="#5f8f3a" />
+  <title>Bug Hotel Observer 🐞 — A Papercraft Magnifying-Glass Bug Hunt</title>
+  <meta name="description" content="Drag a paper magnifying glass across a handmade bug hotel to discover twelve tiny guests hiding in the leaves, bark, bamboo and logs. Tap a bug to hear its name and one true fact, and keep its sticker in your own bug book. Ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Bug Hotel Observer" />
-  <meta property="og:title" content="Bug Hotel Observer 🐞 — Tiny Garden Guest Watching" />
-  <meta property="og:description" content="Stamp tiny bug guests and their behaviors into a quiet observation journal, practicing slow, gentle looking at small living things. A patient nature journal for ages 5–6." />
+  <meta property="og:title" content="Bug Hotel Observer 🐞 — A Papercraft Magnifying-Glass Bug Hunt" />
+  <meta property="og:description" content="Drag a paper magnifying glass across a handmade bug hotel to discover twelve tiny guests hiding in the leaves, bark, bamboo and logs. Tap a bug to hear its name and one true fact, and keep its sticker in your own bug book. Ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/bug-hotel-observer/" />
   <meta property="og:image" content="https://qlo.be/games/bug-hotel-observer/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Bug Hotel Observer title screen with Who's Home? and What Are They Doing? game modes and a ladybug icon." />
+  <meta property="og:image:alt" content="Bug Hotel Observer title screen: a papercraft bug hotel in a paper garden with a magnifying glass and a ladybug." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bug Hotel Observer 🐞 — Tiny Garden Guest Watching" />
-  <meta name="twitter:description" content="Stamp tiny bug guests and their behaviors into a quiet observation journal, practicing slow, gentle looking at small living things. A patient nature journal for ages 5–6." />
+  <meta name="twitter:title" content="Bug Hotel Observer 🐞 — A Papercraft Magnifying-Glass Bug Hunt" />
+  <meta name="twitter:description" content="Drag a paper magnifying glass across a handmade bug hotel to discover twelve tiny guests hiding in the leaves, bark, bamboo and logs. Tap a bug to hear its name and one true fact, and keep its sticker in your own bug book. Ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/bug-hotel-observer/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
-  </style>
+  <link rel="preload" as="font" type="font/woff2" href="../../shared/fonts/fredoka-latin-600-normal.woff2" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <!-- game-design.md §2. Seven screens, one #app. Nothing here holds a word a
+       CHILD has to read: every label in this file is either an aria-label, the
+       adult caption in #banner, or the grown-up "Play" affordance of §2.3. -->
+  <div id="app" data-screen="splash">
+
+    <!-- z0–z4: the hotel and the rooms. shared/js/hotspot-scene.js mounts
+         itself in here, and shared/js/magnifier-lens.js mounts inside that. -->
+    <div id="stage"></div>
+
+    <!-- h1/h2: the HUD, CSS px, above the scene (§2.5) -->
+    <div id="hud" hidden>
+      <button id="btn-back" class="corner-btn back" type="button" aria-label="Back"></button>
+      <button id="btn-sound" class="corner-btn sound" type="button" aria-label="Hear it again"></button>
+      <!-- An adult caption, never a control: pointer-events are off in CSS. -->
+      <div id="banner" role="status" aria-live="polite" hidden></div>
+      <img id="target-plaque" alt="" hidden />
+      <button id="btn-journal" class="journal-tab" type="button" aria-label="My bug book"></button>
+      <div id="pips" aria-hidden="true"></div>
+    </div>
+
+    <!-- SPLASH (§2.3) -->
+    <section id="splash" class="screen" aria-label="Bug Hotel Observer">
+      <button id="splash-home" class="corner-btn home" type="button" aria-label="All games"></button>
+      <button id="splash-sound" class="corner-btn sound" type="button" aria-label="Hear it again"></button>
+      <img id="splash-title" class="lockup title" alt="Bug Hotel Observer" />
+      <div id="play-stack">
+        <button id="btn-play" class="play-btn" type="button" aria-label="Play"></button>
+        <span id="play-label">Play</span>
+      </div>
+      <div id="mode-row" hidden></div>
+    </section>
+
+    <!-- REWARD (§2.6) / MY BUG BOOK (§2.7) / CELEBRATION (§2.8) are ONE spread:
+         the same paper, opened over whatever screen the child came from. -->
+    <section id="spread" class="screen" aria-label="My bug book" hidden>
+      <div id="spread-paper">
+        <button id="spread-back" class="corner-btn back" type="button" aria-label="Back"></button>
+        <img id="fact-found" class="lockup" alt="Fact found" hidden />
+        <div id="fact-row" hidden>
+          <img id="fact-bug" alt="" />
+          <div id="fact-card"><p id="fact-text"></p></div>
+        </div>
+        <!-- §2.6's foot: "[ sticker grid, 4 × 3 ]      ( Next Room )". On the
+             book and the celebration the fact row above is gone and the grid
+             takes the whole spread. -->
+        <div id="spread-foot">
+          <div id="sticker-grid" class="sticker-grid"></div>
+          <button id="btn-next" class="play-btn" type="button" aria-label="Next room"></button>
+        </div>
+      </div>
+      <div id="fly-layer" aria-hidden="true"></div>
+      <div id="confetti" aria-hidden="true"></div>
+    </section>
+
+    <!-- END (§2.8) -->
+    <section id="end" class="screen" aria-label="Every bug found" hidden>
+      <button id="end-back" class="corner-btn back" type="button" aria-label="Back"></button>
+      <div id="end-inner">
+        <div id="end-grid" class="sticker-grid"></div>
+        <button id="btn-again" class="play-btn" type="button" aria-label="Play again"></button>
+      </div>
+    </section>
+
+  </div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

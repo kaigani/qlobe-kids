@@ -1,0 +1,300 @@
+{
+  "id": "bug-hotel-observer",
+  "art": { "w": 1600, "h": 1200 },
+
+  "_note": [
+    "Canonical data for Bug Hotel Observer. game-design.md §6 is the schema",
+    "contract; nothing here changes shape without editing that section too.",
+    "Every path is relative and lowercase (CLAUDE.md rule). All geometry is in",
+    "ART px against art.w x art.h and is mapped by shared/js/hotspot-scene.js's",
+    "single cover-fit transform.",
+    "P6 AUTHORED EVERY NUMBER BELOW AGAINST THE REAL 1600x1200 PLATES, read at",
+    "full size with a 100 px coordinate grid laid over them. exteriorHotspot",
+    "rects are the four compartments of assets/bg-hotel.jpg; zone centres are",
+    "the arched hollows / tube mouths of the four interiors; the lens frame",
+    "numbers are MEASURED from assets/props/magnifier.webp by",
+    "tools/fix-cutouts.py's glass_aperture() and must be re-measured if that",
+    "sprite is ever regenerated."
+  ],
+
+  "modes": [
+    {
+      "id": "bug-hunt",
+      "title": "Bug Hunt",
+      "intro": "mode-bug-hunt",
+      "prompt": "find",
+      "showsTargetPlaque": true,
+      "wrongTapRepeatsPrompt": false,
+      "default": true
+    },
+    {
+      "id": "bug-detective",
+      "title": "Bug Detective",
+      "intro": "mode-bug-detective",
+      "prompt": "clue",
+      "showsTargetPlaque": false,
+      "wrongTapRepeatsPrompt": true,
+      "default": false
+    },
+    {
+      "id": "my-bug-book",
+      "title": "My Bug Book",
+      "intro": "mode-my-bug-book",
+      "prompt": "none",
+      "showsTargetPlaque": false,
+      "wrongTapRepeatsPrompt": false,
+      "default": false,
+      "review": true
+    }
+  ],
+
+  "_lensNotes": [
+    "frame.scale = 900 / 372 and frame.anchor = (366/900, 396/900): the glass",
+    "hole of magnifier.webp is a circle of radius 186 px centred on (366, 396)",
+    "of a 900x900 sprite. With these two numbers the module draws the frame so",
+    "the authored hole lands EXACTLY on the clip circle — the ring's opaque",
+    "inner edge and the edge of the magnified world are the same pixel.",
+    "gripOffset/gripDir put the invisible drag button on the HANDLE (the",
+    "handle leaves the ring at 0.768, 0.641 of a unit vector). At gripOffset",
+    "205 with gripSize 0.62 the button never contains the glass CENTRE, so a",
+    "bug that has just been revealed under the glass is still tappable, and",
+    "the child's finger rests beside the glass instead of on top of it.",
+    "startArt parks the glass in the one place that is >295 ART px (glass",
+    "radius + half a bug) from EVERY zone of EVERY room, so no bug is ever",
+    "half-visible inside the glass before the search begins."
+  ],
+
+  "lens": {
+    "zoom": 1.6,
+    "glassD": 360,
+    "dwellMs": 600,
+    "dwellRadiusArt": 150,
+    "gripOffset": 205,
+    "gripDir": { "x": 0.768, "y": 0.641 },
+    "gripSize": 0.62,
+    "gripMinCssPx": 140,
+    "sprite": "assets/props/magnifier.webp",
+    "frame": { "scale": 2.4194, "anchor": { "x": 0.4067, "y": 0.44 } },
+    "startArt": { "x": 860, "y": 330 },
+    "glintMs": 900
+  },
+
+  "_zoneNotes": [
+    "Four authored nooks per room; exactly three carry a bug in any given round,",
+    "chosen by a seeded FNV-1a draw so the empty nook moves between rounds.",
+    "Every centre sits inside the portrait-safe band x in [420, 1180] and the",
+    "HUD-clear band y in [300, 1000] (see game-design.md §4.4 keep-out table).",
+    "A zone centre is where the bug's sprite box is CENTRED; the sprite is drawn",
+    "at bugs[].artSize on its longest edge.",
+    "P6: leaf, bark and log share one shadowbox composition (one arch top-left,",
+    "three along the lower shelf), so they share one zone table read off the",
+    "plates; bamboo is a different build and has its own four tube mouths. Every",
+    "pair of centres in a room is >= 290 ART px apart, comfortably past the 150",
+    "px dwell radius, so the glass can never be inside two nooks at once.",
+    "The right-hand nooks sit at x ~1150 rather than dead centre in their arch",
+    "(~1196): PORTRAIT only shows art x in [381, 1219], and a bug centred in the",
+    "arch lost a quarter of itself off the right edge of an upright iPad."
+  ],
+
+  "rooms": [
+    {
+      "id": "leaf",
+      "title": "Leaf Room",
+      "bg": "assets/bg-room-leaf.jpg",
+      "plaque": "assets/props/plaque-leaf.webp",
+      "exteriorHotspot": { "x": 660, "y": 585, "w": 236, "h": 236 },
+      "zones": [
+        { "name": "leaf-arch-upper-left",  "x":  478, "y": 380 },
+        { "name": "leaf-arch-lower-left",  "x":  466, "y": 790 },
+        { "name": "leaf-arch-centre",      "x":  831, "y": 795 },
+        { "name": "leaf-arch-right",       "x": 1150, "y": 790 }
+      ],
+      "bugs": ["ladybug", "caterpillar", "snail"],
+      "voice": { "intro": "room-leaf" }
+    },
+    {
+      "id": "bark",
+      "title": "Bark Room",
+      "bg": "assets/bg-room-bark.jpg",
+      "plaque": "assets/props/plaque-bark.webp",
+      "exteriorHotspot": { "x": 948, "y": 585, "w": 236, "h": 236 },
+      "zones": [
+        { "name": "bark-arch-upper-left", "x":  478, "y": 380 },
+        { "name": "bark-arch-lower-left", "x":  466, "y": 790 },
+        { "name": "bark-arch-centre",     "x":  831, "y": 795 },
+        { "name": "bark-arch-right",      "x": 1150, "y": 790 }
+      ],
+      "bugs": ["ant", "roly-poly", "worm"],
+      "voice": { "intro": "room-bark" }
+    },
+    {
+      "id": "bamboo",
+      "title": "Bamboo Room",
+      "bg": "assets/bg-room-bamboo.jpg",
+      "plaque": "assets/props/plaque-bamboo.webp",
+      "exteriorHotspot": { "x": 660, "y": 918, "w": 236, "h": 236 },
+      "zones": [
+        { "name": "bamboo-tube-upper-left",   "x":  555, "y": 490 },
+        { "name": "bamboo-tube-lower-left",   "x":  545, "y": 900 },
+        { "name": "bamboo-tube-lower-centre", "x":  890, "y": 890 },
+        { "name": "bamboo-tube-mid-right",    "x": 1060, "y": 650 }
+      ],
+      "bugs": ["bee", "butterfly", "grasshopper"],
+      "voice": { "intro": "room-bamboo" }
+    },
+    {
+      "id": "log",
+      "title": "Log Room",
+      "bg": "assets/bg-room-log.jpg",
+      "plaque": "assets/props/plaque-log.webp",
+      "exteriorHotspot": { "x": 948, "y": 918, "w": 236, "h": 236 },
+      "zones": [
+        { "name": "log-ring-upper-left",  "x":  485, "y": 378 },
+        { "name": "log-ring-lower-left",  "x":  472, "y": 793 },
+        { "name": "log-ring-centre",      "x":  835, "y": 795 },
+        { "name": "log-arch-right",       "x": 1152, "y": 786 }
+      ],
+      "bugs": ["beetle", "spider", "cricket"],
+      "voice": { "intro": "room-log" }
+    }
+  ],
+
+  "bugs": [
+    {
+      "id": "ladybug",
+      "room": "leaf",
+      "artSize": 180,
+      "sprites": { "idle": "assets/bugs/ladybug-idle.webp", "happy": "assets/bugs/ladybug-happy.webp" },
+      "voice": { "find": "bug-ladybug-find", "name": "bug-ladybug-name", "fact": "bug-ladybug-fact", "clue": "bug-ladybug-clue" }
+    },
+    {
+      "id": "caterpillar",
+      "room": "leaf",
+      "artSize": 210,
+      "sprites": { "idle": "assets/bugs/caterpillar-idle.webp", "happy": "assets/bugs/caterpillar-happy.webp" },
+      "voice": { "find": "bug-caterpillar-find", "name": "bug-caterpillar-name", "fact": "bug-caterpillar-fact", "clue": "bug-caterpillar-clue" }
+    },
+    {
+      "id": "snail",
+      "room": "leaf",
+      "artSize": 200,
+      "sprites": { "idle": "assets/bugs/snail-idle.webp", "happy": "assets/bugs/snail-happy.webp" },
+      "voice": { "find": "bug-snail-find", "name": "bug-snail-name", "fact": "bug-snail-fact", "clue": "bug-snail-clue" }
+    },
+    {
+      "id": "ant",
+      "room": "bark",
+      "artSize": 165,
+      "sprites": { "idle": "assets/bugs/ant-idle.webp", "happy": "assets/bugs/ant-happy.webp" },
+      "voice": { "find": "bug-ant-find", "name": "bug-ant-name", "fact": "bug-ant-fact", "clue": "bug-ant-clue" }
+    },
+    {
+      "id": "roly-poly",
+      "room": "bark",
+      "artSize": 150,
+      "sprites": { "idle": "assets/bugs/roly-poly-idle.webp", "happy": "assets/bugs/roly-poly-happy.webp" },
+      "voice": { "find": "bug-roly-poly-find", "name": "bug-roly-poly-name", "fact": "bug-roly-poly-fact", "clue": "bug-roly-poly-clue" }
+    },
+    {
+      "id": "worm",
+      "room": "bark",
+      "artSize": 200,
+      "sprites": { "idle": "assets/bugs/worm-idle.webp", "happy": "assets/bugs/worm-happy.webp" },
+      "voice": { "find": "bug-worm-find", "name": "bug-worm-name", "fact": "bug-worm-fact", "clue": "bug-worm-clue" }
+    },
+    {
+      "id": "bee",
+      "room": "bamboo",
+      "artSize": 185,
+      "sprites": { "idle": "assets/bugs/bee-idle.webp", "happy": "assets/bugs/bee-happy.webp" },
+      "voice": { "find": "bug-bee-find", "name": "bug-bee-name", "fact": "bug-bee-fact", "clue": "bug-bee-clue" }
+    },
+    {
+      "id": "butterfly",
+      "room": "bamboo",
+      "artSize": 230,
+      "sprites": { "idle": "assets/bugs/butterfly-idle.webp", "happy": "assets/bugs/butterfly-happy.webp" },
+      "voice": { "find": "bug-butterfly-find", "name": "bug-butterfly-name", "fact": "bug-butterfly-fact", "clue": "bug-butterfly-clue" }
+    },
+    {
+      "id": "grasshopper",
+      "room": "bamboo",
+      "artSize": 215,
+      "sprites": { "idle": "assets/bugs/grasshopper-idle.webp", "happy": "assets/bugs/grasshopper-happy.webp" },
+      "voice": { "find": "bug-grasshopper-find", "name": "bug-grasshopper-name", "fact": "bug-grasshopper-fact", "clue": "bug-grasshopper-clue" }
+    },
+    {
+      "id": "beetle",
+      "room": "log",
+      "artSize": 190,
+      "sprites": { "idle": "assets/bugs/beetle-idle.webp", "happy": "assets/bugs/beetle-happy.webp" },
+      "voice": { "find": "bug-beetle-find", "name": "bug-beetle-name", "fact": "bug-beetle-fact", "clue": "bug-beetle-clue" }
+    },
+    {
+      "id": "spider",
+      "room": "log",
+      "artSize": 200,
+      "sprites": { "idle": "assets/bugs/spider-idle.webp", "happy": "assets/bugs/spider-happy.webp" },
+      "voice": { "find": "bug-spider-find", "name": "bug-spider-name", "fact": "bug-spider-fact", "clue": "bug-spider-clue" }
+    },
+    {
+      "id": "cricket",
+      "room": "log",
+      "artSize": 185,
+      "sprites": { "idle": "assets/bugs/cricket-idle.webp", "happy": "assets/bugs/cricket-happy.webp" },
+      "voice": { "find": "bug-cricket-find", "name": "bug-cricket-name", "fact": "bug-cricket-fact", "clue": "bug-cricket-clue" }
+    }
+  ],
+
+  "journal": {
+    "storageKey": "qlobe:journal:bug-hotel-observer",
+    "version": 1,
+    "bg": "assets/bg-journal.jpg",
+    "stickerBacking": "assets/props/sticker-backing.webp",
+    "factCard": "assets/props/fact-card.webp",
+    "factFoundLockup": "assets/lockups/fact-found.webp",
+    "tabSprite": "assets/props/mode-book.webp",
+    "slots": 12,
+    "grid": { "cols": 4, "rows": 3 }
+  },
+
+  "voice": {
+    "manifest": "assets/audio/manifest.json",
+    "lines": "tools/lines.json",
+    "decks": {
+      "yes": ["yes-1", "yes-2", "yes-3"],
+      "idle": ["idle-1", "idle-2"]
+    }
+  },
+
+  "splash": {
+    "bg": "assets/bg-hotel.jpg",
+    "title": "assets/title.webp"
+  },
+
+  "tuning": {
+    "roomsPerRound": 4,
+    "bugsPerRoom": 3,
+    "zonesPerRoom": 4,
+    "placedPerRoom": 3,
+    "targetCycle": 3,
+    "minHitCssPx": 96,
+    "roomIntroTailMs": 350,
+    "promptGapMs": 260,
+    "clipGapMs": 140,
+    "soundDebounceMs": 600,
+    "idleMs": 12000,
+    "idleRepeatMs": 15000,
+    "gettingCloserRadiusArt": 320,
+    "gettingCloserCooldownMs": 6000,
+    "happyHoldMs": 900,
+    "factOpenMs": 520,
+    "stickerFlyMs": 700,
+    "rewardAutoAdvanceMs": 14000,
+    "celebrationAutoAdvanceMs": 16000,
+    "wiggleMs": 420,
+    "popMs": 340,
+    "compactMinArtW": 1300,
+    "compactMinArtH": 950
+  }
+}

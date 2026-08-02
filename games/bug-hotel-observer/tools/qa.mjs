@@ -1,0 +1,858 @@
+#!/usr/bin/env node
+// games/bug-hotel-observer/tools/qa.mjs — the P7 gate.
+//
+// Two halves: a STATIC gate that needs no browser (config invariants, every
+// config/manifest path exists on disk CASE-SENSITIVELY, byte budgets, voice
+// coverage, no emoji in shipped runtime strings, registration in games.json)
+// and a real-Chrome DRIVE of all three modes, the lens drag + dwell reveal,
+// the strand probes, the wrong-input probe, journal persistence, the
+// recorded-clip proof, the nav loop and three viewports x reduced-motion.
+//
+//   node games/bug-hotel-observer/tools/qa.mjs
+//   node games/bug-hotel-observer/tools/qa.mjs --base http://127.0.0.1:8000
+//   node games/bug-hotel-observer/tools/qa.mjs --base https://qlo.be
+//   node games/bug-hotel-observer/tools/qa.mjs --shots /tmp/shots --headed
+//
+// **channel: 'chrome' is load-bearing.** Playwright's bundled Chromium ships
+// without an AAC decoder, so every .m4a in assets/audio silently fails to
+// decode there and the recorded-clip assertions below would quietly pass
+// against the Web Speech fallback instead of the real teacher clip. Run under
+// `caffeinate -dims` — a Mac that sleeps mid-run freezes Chrome without
+// failing the run.
+//
+// Playwright is deliberately NOT a repo dependency (no-build repo): it is
+// loaded out of tree from /private/tmp/pw/node_modules.
+//
+// Shots go OUTSIDE the repo by default — a QA run must never leave PNGs in a
+// worktree.
+
+import { readFile, readdir, stat, access, mkdir } from 'node:fs/promises';
+import { constants as FS, createReadStream } from 'node:fs';
+import http from 'node:http';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import pw from '/private/tmp/pw/node_modules/playwright-core/index.js';
+
+const { chromium } = pw;
+
+// ---------------------------------------------------------------- arguments
+
+const argv = process.argv.slice(2);
+const flag = (name, fallback = null) => {
+  const i = argv.indexOf(`--${name}`);
+  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : fallback;
+};
+const has = (name) => argv.includes(`--${name}`);
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const GAME = path.resolve(HERE, '..');
+const ROOT = path.resolve(GAME, '..', '..');
+const SHOTS = path.resolve(flag('shots') || process.env.QLOBE_SHOTS || '/private/tmp/qlobe-bho-shots');
+
+// ---------------------------------------------------------------- reporting
+
+let pass = 0;
+let fail = 0;
+const failures = [];
+function ok(name, cond, detail = '') {
+  const truthy = Boolean(cond);
+  if (truthy) { pass += 1; console.log(`  ok   ${name}`); }
+  else {
+    fail += 1;
+    const text = String(detail).replace(/\s+/g, ' ').slice(0, 300);
+    console.log(`  FAIL ${name}${text ? ` — ${text}` : ''}`);
+    failures.push(name);
+  }
+}
+
+const rel = (...p) => path.join(GAME, ...p);
+const kb = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
+const exists = async (p) => { try { await access(p, FS.F_OK); return true; } catch { return false; } };
+const sizeOf = async (p) => { try { return (await stat(p)).size; } catch { return -1; } };
+const readJSON = async (p) => JSON.parse(await readFile(p, 'utf8'));
+
+/** True only when every path SEGMENT matches an on-disk directory entry
+ *  byte-for-byte, not merely "resolves" on a case-insensitive filesystem
+ *  (macOS APFS is the trap: `Bg-Hotel.JPG` would still stat() successfully). */
+async function existsCaseSensitive(absPath) {
+  const relToGame = path.relative(GAME, absPath);
+  if (relToGame.startsWith('..')) return false;
+  const parts = relToGame.split(path.sep).filter(Boolean);
+  let dir = GAME;
+  for (const part of parts) {
+    let entries;
+    try { entries = await readdir(dir); } catch { return false; }
+    if (!entries.includes(part)) return false;
+    dir = path.join(dir, part);
+  }
+  return true;
+}
+
+const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;
+
+// =========================================================================
+// STATIC GATE
+// =========================================================================
+
+async function staticGate() {
+  console.log('\n=== static gate ===');
+
+  const config = await readJSON(rel('config.json'));
+  ok('config.json parses and is this game', config.id === 'bug-hotel-observer');
+
+  const art = config.art || {};
+  ok('art is the authored 1600x1200 plate size', art.w === 1600 && art.h === 1200, JSON.stringify(art));
+
+  const rooms = config.rooms || [];
+  const bugs = config.bugs || [];
+  const modes = config.modes || [];
+  const roomIds = rooms.map((r) => r.id);
+  const bugIds = bugs.map((b) => b.id);
+
+  // -- rooms -----------------------------------------------------------------
+  ok('exactly 4 rooms', rooms.length === 4, String(rooms.length));
+  ok('room ids are the 4 designed rooms',
+    new Set(roomIds).size === 4 && ['leaf', 'bark', 'bamboo', 'log'].every((id) => roomIds.includes(id)),
+    roomIds.join(','));
+
+  const roomProblems = [];
+  for (const room of rooms) {
+    const h = room.exteriorHotspot || {};
+    if (!(Number(h.w) > 0 && Number(h.h) > 0)) roomProblems.push(`${room.id}: exteriorHotspot has no size`);
+    if (!(Number(h.x) >= 0 && Number(h.x) + Number(h.w) <= art.w)) roomProblems.push(`${room.id}: exteriorHotspot x out of bounds`);
+    if (!(Number(h.y) >= 0 && Number(h.y) + Number(h.h) <= art.h)) roomProblems.push(`${room.id}: exteriorHotspot y out of bounds`);
+    const zones = room.zones || [];
+    if (zones.length !== 4) roomProblems.push(`${room.id}: ${zones.length} zones (want 4)`);
+    const names = zones.map((z) => z.name);
+    if (new Set(names).size !== names.length) roomProblems.push(`${room.id}: duplicate zone names`);
+    for (const z of zones) {
+      // §4.4 keep-out table: portrait-safe x band, HUD-clear y band.
+      if (!(z.x >= 420 && z.x <= 1180)) roomProblems.push(`${room.id}/${z.name}: x ${z.x} outside portrait-safe [420,1180]`);
+      if (!(z.y >= 300 && z.y <= 1000)) roomProblems.push(`${room.id}/${z.name}: y ${z.y} outside HUD-clear [300,1000]`);
+    }
+    // every pair of centres in a room must clear the 150px dwell radius by a
+    // wide margin, per game-design.md's ">= 290 ART px apart" claim.
+    for (let i = 0; i < zones.length; i += 1) {
+      for (let j = i + 1; j < zones.length; j += 1) {
+        const d = Math.hypot(zones[i].x - zones[j].x, zones[i].y - zones[j].y);
+        if (d < 290) roomProblems.push(`${room.id}: ${zones[i].name}<->${zones[j].name} only ${d.toFixed(0)}px apart`);
+      }
+    }
+    const roomBugs = room.bugs || [];
+    if (roomBugs.length !== 3) roomProblems.push(`${room.id}: ${roomBugs.length} bugs (want 3)`);
+    for (const bId of roomBugs) {
+      const b = bugs.find((x) => x.id === bId);
+      if (!b) roomProblems.push(`${room.id}: names unknown bug ${bId}`);
+      else if (b.room !== room.id) roomProblems.push(`${room.id}: bug ${bId} declares room ${b.room}`);
+    }
+    if (!room.voice || !room.voice.intro) roomProblems.push(`${room.id}: no voice.intro`);
+  }
+  ok('every room has a bounded exteriorHotspot, 4 unique HUD/portrait-safe zones >=290px apart, and 3 of its own bugs',
+    roomProblems.length === 0, roomProblems.join('; '));
+
+  // -- bugs --------------------------------------------------------------------
+  ok('exactly 12 bugs', bugs.length === 12, String(bugs.length));
+  ok('bug ids are unique', new Set(bugIds).size === bugIds.length);
+  const roomBugTotals = new Map();
+  for (const b of bugs) roomBugTotals.set(b.room, (roomBugTotals.get(b.room) || 0) + 1);
+  ok('bugs split 3/3/3/3 across the 4 rooms',
+    roomIds.every((id) => roomBugTotals.get(id) === 3), JSON.stringify([...roomBugTotals]));
+
+  const bugProblems = [];
+  for (const b of bugs) {
+    if (!(Number(b.artSize) > 0)) bugProblems.push(`${b.id}: no artSize`);
+    if (!roomIds.includes(b.room)) bugProblems.push(`${b.id}: unknown room ${b.room}`);
+    for (const frame of ['idle', 'happy']) {
+      if (!(b.sprites && b.sprites[frame])) bugProblems.push(`${b.id}: no ${frame} sprite`);
+    }
+    for (const key of ['find', 'name', 'fact', 'clue']) {
+      if (!(b.voice && b.voice[key])) bugProblems.push(`${b.id}: no voice.${key}`);
+    }
+  }
+  ok('every bug declares a size, its room, two sprites and four voice keys',
+    bugProblems.length === 0, bugProblems.join('; '));
+
+  // -- modes ---------------------------------------------------------------
+  ok('exactly 3 modes: bug-hunt, bug-detective, my-bug-book',
+    modes.length === 3 && ['bug-hunt', 'bug-detective', 'my-bug-book'].every((id) => modes.map((m) => m.id).includes(id)),
+    modes.map((m) => m.id).join(','));
+  ok('exactly one default mode', modes.filter((m) => m.default).length === 1);
+  const detective = modes.find((m) => m.id === 'bug-detective');
+  ok('bug-detective hides the target plaque and repeats the clue on a wrong tap',
+    detective && detective.showsTargetPlaque === false && detective.wrongTapRepeatsPrompt === true);
+  const book = modes.find((m) => m.id === 'my-bug-book');
+  ok('my-bug-book is a review mode', book && book.review === true);
+
+  // -- lens ------------------------------------------------------------------
+  const lens = config.lens || {};
+  ok('lens.zoom/glassD/dwellMs are sane',
+    Number(lens.zoom) >= 1 && Number(lens.glassD) > 0 && Number(lens.dwellMs) > 0, JSON.stringify(lens));
+  ok('lens.frame carries a MEASURED scale + anchor (not the module defaults)',
+    lens.frame && Number(lens.frame.scale) > 0
+    && Number.isFinite(lens.frame.anchor?.x) && Number.isFinite(lens.frame.anchor?.y));
+  ok('lens.gripSize keeps the grip clear of the glass centre (gripOffset > 0)',
+    Number(lens.gripOffset) > 0 && Number(lens.gripSize) > 0);
+  const start = lens.startArt || {};
+  ok('lens.startArt is inside the plate', Number(start.x) > 0 && Number(start.x) < art.w
+    && Number(start.y) > 0 && Number(start.y) < art.h);
+
+  // -- journal -----------------------------------------------------------------
+  const journalCfg = config.journal || {};
+  ok('journal.slots holds exactly the 12 bugs in a 4x3 grid',
+    journalCfg.slots === 12 && journalCfg.grid && journalCfg.grid.cols === 4 && journalCfg.grid.rows === 3,
+    JSON.stringify(journalCfg));
+
+  // -- registration: game.json + games.json ------------------------------------
+  const manifestJson = await readJSON(rel('game.json'));
+  ok('game.json declares the identity used by the registry',
+    manifestJson.id === 'bug-hotel-observer' && manifestJson.title === 'Bug Hotel Observer'
+    && manifestJson.category === 'sensorial-science'
+    && manifestJson.age.min === 5 && manifestJson.age.max === 6
+    && manifestJson.status === 'beta' && manifestJson.accent === '#5f8f3a',
+    JSON.stringify({ age: manifestJson.age, status: manifestJson.status, accent: manifestJson.accent }));
+  ok('game.json declares all 3 modes with a real one-skill description',
+    manifestJson.modes.map((m) => m.id).join(',') === 'bug-hunt,bug-detective,my-bug-book'
+    && manifestJson.modes.every((m) => m.skill && m.skill.length > 10));
+  const wantUses = ['shared/js/hotspot-scene.js', 'shared/js/magnifier-lens.js', 'shared/js/journal.js',
+    'shared/js/voice-clips.js', 'shared/js/sfx.js', 'shared/js/tap.js'];
+  const missingUses = wantUses.filter((u) => !manifestJson.uses.includes(u));
+  ok('game.json uses[] names every shared module this build actually consumes',
+    missingUses.length === 0, missingUses.join(', '));
+  const badUses = [];
+  for (const u of manifestJson.uses) {
+    const p = u.endsWith('/') ? path.join(ROOT, u) : path.join(ROOT, u);
+    if (!(await exists(p))) badUses.push(u);
+  }
+  ok('every game.json uses[] path exists in the repo', badUses.length === 0, badUses.join(', '));
+
+  const registry = await readJSON(path.join(ROOT, 'games.json'));
+  const entry = registry.games.find((g) => g.id === 'bug-hotel-observer');
+  ok('games.json carries the bug-hotel-observer entry', Boolean(entry));
+  if (entry) {
+    ok('games.json mirrors game.json\'s title/category/age/status/accent/modes',
+      entry.title === manifestJson.title && entry.category === manifestJson.category
+      && entry.age.min === manifestJson.age.min && entry.age.max === manifestJson.age.max
+      && entry.status === manifestJson.status && entry.accent === manifestJson.accent
+      && entry.modes.map((m) => m.id).join(',') === manifestJson.modes.map((m) => m.id).join(','),
+      JSON.stringify({ registry: entry, manifest: manifestJson.title }));
+    ok('games.json path points at this game folder', entry.path === 'games/bug-hotel-observer/');
+    ok('games.json uses[] names the shared modules this build consumes',
+      Array.isArray(entry.uses) && wantUses.every((u) => entry.uses.includes(u)),
+      JSON.stringify(entry.uses));
+    ok('the curated hub tile is on disk (hands-off — never written by this build)',
+      await exists(path.join(ROOT, entry.icon)), entry.icon);
+  }
+
+  // -- every config/manifest path exists, case-sensitively ----------------------
+  const artPaths = new Set();
+  for (const room of rooms) { artPaths.add(room.bg); artPaths.add(room.plaque); }
+  for (const b of bugs) { artPaths.add(b.sprites?.idle); artPaths.add(b.sprites?.happy); }
+  artPaths.add(lens.sprite);
+  artPaths.add(journalCfg.bg); artPaths.add(journalCfg.stickerBacking);
+  artPaths.add(journalCfg.factCard); artPaths.add(journalCfg.factFoundLockup); artPaths.add(journalCfg.tabSprite);
+  artPaths.add((config.splash || {}).bg); artPaths.add((config.splash || {}).title);
+  artPaths.add((config.voice || {}).manifest); artPaths.add((config.voice || {}).lines);
+  artPaths.delete(undefined);
+
+  const missingPaths = [];
+  const caseMismatch = [];
+  for (const p of artPaths) {
+    const abs = rel(p);
+    if (!(await exists(abs))) { missingPaths.push(p); continue; }
+    if (!(await existsCaseSensitive(abs))) caseMismatch.push(p);
+  }
+  ok(`all ${artPaths.size} config-referenced asset/data paths exist on disk`,
+    missingPaths.length === 0, missingPaths.join(', '));
+  ok('every one of those paths matches on-disk case exactly (case-sensitive check)',
+    caseMismatch.length === 0, caseMismatch.join(', '));
+
+  // -- byte budgets --------------------------------------------------------------
+  const PLATES = ['assets/bg-hotel.jpg', 'assets/bg-room-leaf.jpg', 'assets/bg-room-bark.jpg',
+    'assets/bg-room-bamboo.jpg', 'assets/bg-room-log.jpg', 'assets/bg-journal.jpg'];
+  const plateOver = [];
+  const plateMissing = [];
+  for (const f of PLATES) {
+    const bytes = await sizeOf(rel(f));
+    if (bytes < 0) { plateMissing.push(f); continue; }
+    if (bytes > 300 * 1024) plateOver.push(`${f} ${kb(bytes)} > 300 KB`);
+  }
+  ok('every plate is on disk', plateMissing.length === 0, plateMissing.join(', '));
+  ok('every plate is <= 300 KB', plateOver.length === 0, plateOver.join('; '));
+
+  const titleBytes = await sizeOf(rel('assets/title.webp'));
+  ok('assets/title.webp exists and is <= 150 KB',
+    titleBytes >= 0 && titleBytes <= 150 * 1024, kb(Math.max(titleBytes, 0)));
+
+  const spriteOver = [];
+  const spriteUnder = [];
+  const spriteMissing = [];
+  for (const b of bugs) {
+    for (const frame of ['idle', 'happy']) {
+      const f = b.sprites?.[frame];
+      const bytes = await sizeOf(rel(f));
+      if (bytes < 0) { spriteMissing.push(f); continue; }
+      if (bytes > 80 * 1024) spriteOver.push(`${f} ${kb(bytes)} > 80 KB`);
+      if (bytes < 30 * 1024) spriteUnder.push(`${f} ${kb(bytes)} < 30 KB`);
+    }
+  }
+  ok('all 24 bug sprites are on disk', spriteMissing.length === 0, spriteMissing.join(', '));
+  ok('all 24 bug sprites are inside the 30-80 KB budget',
+    spriteOver.length === 0 && spriteUnder.length === 0,
+    [...spriteOver, ...spriteUnder].join('; '));
+
+  // -- voice coverage -----------------------------------------------------------
+  const manifest = await readJSON(rel('assets/audio/manifest.json'));
+  const lines = await readJSON(rel('tools/lines.json'));
+  const wantKeys = new Set([
+    'welcome', 'mode-bug-hunt', 'mode-bug-detective', 'mode-my-bug-book',
+    'prompt-look', 'prompt-lens', 'prompt-again', 'getting-closer', 'found-tap',
+    'idle-1', 'idle-2', 'nudge-wrong', 'yes-1', 'yes-2', 'yes-3', 'sticker',
+    'next-room', 'round-done', 'cheer-end', 'journal-open', 'journal-empty', 'journal-tap',
+    'room-leaf', 'room-bark', 'room-bamboo', 'room-log',
+  ]);
+  for (const b of bugs) for (const key of ['find', 'name', 'fact', 'clue']) wantKeys.add(b.voice[key]);
+  ok('exactly 74 voice keys are named by config + the fixed global script',
+    wantKeys.size === 74, String(wantKeys.size));
+
+  const missingManifest = [...wantKeys].filter((k) => !manifest[k]);
+  const missingLines = [...wantKeys].filter((k) => !lines[k] || !String(lines[k]).trim());
+  const strayManifest = Object.keys(manifest).filter((k) => !k.startsWith('_') && !wantKeys.has(k));
+  ok('every voice key has a manifest entry (assets/audio/manifest.json)',
+    missingManifest.length === 0, missingManifest.join(', '));
+  ok('every voice key has script text (tools/lines.json)',
+    missingLines.length === 0, missingLines.join(', '));
+  ok('the manifest carries no stray keys', strayManifest.length === 0, strayManifest.join(', '));
+
+  const badClips = [];
+  for (const [key, e] of Object.entries(manifest)) {
+    if (key.startsWith('_')) continue;
+    if (!e || !e.file) { badClips.push(`${key}: no file`); continue; }
+    if (!(await exists(rel('assets/audio', e.file)))) badClips.push(`${key} -> ${e.file}`);
+    if (!(Number(e.dur) > 0)) badClips.push(`${key}: no duration`);
+  }
+  ok('every manifest {file,dur} entry resolves to a real, timed clip on disk',
+    badClips.length === 0, badClips.join('; '));
+
+  // -- no emoji in shipped runtime strings ---------------------------------------
+  const indexHtml = await readFile(rel('index.html'), 'utf8');
+  const bodyOnly = indexHtml.slice(indexHtml.indexOf('<body'));
+  const bodyEmoji = [];
+  bodyOnly.split('\n').forEach((line, i) => { if (EMOJI.test(line)) bodyEmoji.push(`index.html body:${i + 1}`); });
+  ok('index.html <body> carries no emoji (head/meta share cards may)',
+    bodyEmoji.length === 0, bodyEmoji.join(', '));
+
+  const jsFiles = ['js/main.js', 'js/game.js', 'js/voice.js', 'js/journal-ui.js', 'js/ambience.js', 'js/art.js'];
+  const jsEmoji = [];
+  for (const f of jsFiles) {
+    const text = await readFile(rel(f), 'utf8');
+    text.split('\n').forEach((line, i) => { if (EMOJI.test(line)) jsEmoji.push(`${f}:${i + 1}`); });
+  }
+  ok('no emoji anywhere in js/*.js', jsEmoji.length === 0, jsEmoji.join(', '));
+
+  const lineEmoji = Object.entries(lines).filter(([, v]) => EMOJI.test(String(v))).map(([k]) => k);
+  ok('no emoji in any spoken/printed line (tools/lines.json)', lineEmoji.length === 0, lineEmoji.join(', '));
+
+  // -- relative, lowercase paths --------------------------------------------------
+  const pathHits = [];
+  for (const p of artPaths) {
+    if (/^(https?:)?\/\//.test(p) || p.startsWith('/')) pathHits.push(`absolute: ${p}`);
+    else if (p !== p.toLowerCase()) pathHits.push(`uppercase: ${p}`);
+  }
+  ok('every config-referenced path is relative and lowercase', pathHits.length === 0, pathHits.join('; '));
+}
+
+// =========================================================================
+// a tiny static server, so the browser gate needs no external process
+// =========================================================================
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.gif': 'image/gif',
+  '.m4a': 'audio/mp4', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg',
+  '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.txt': 'text/plain; charset=utf-8',
+  '.mp4': 'video/mp4', '.webm': 'video/webm',
+};
+
+async function serveRepo() {
+  const server = http.createServer(async (req, res) => {
+    try {
+      let pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+      let file = path.join(ROOT, pathname);
+      if (!path.resolve(file).startsWith(ROOT)) { res.writeHead(403).end(); return; }
+      let info = null;
+      try { info = await stat(file); } catch { /* 404 below */ }
+      if (info && info.isDirectory()) {
+        file = path.join(file, 'index.html');
+        try { info = await stat(file); } catch { info = null; }
+      }
+      if (!info) { res.writeHead(404, { 'content-type': 'text/plain' }).end('not found'); return; }
+      res.writeHead(200, {
+        'content-type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream',
+        'content-length': info.size,
+        'cache-control': 'no-store',
+      });
+      createReadStream(file).pipe(res);
+    } catch (error) {
+      res.writeHead(500, { 'content-type': 'text/plain' }).end(String(error));
+    }
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  return { server, base: `http://127.0.0.1:${server.address().port}` };
+}
+
+// =========================================================================
+// BROWSER GATE
+// =========================================================================
+
+async function browserGate(base) {
+  const URL_ = `${base}/games/bug-hotel-observer/`;
+  console.log(`\n=== browser gate (${URL_}) ===`);
+
+  const browser = await chromium.launch({ channel: 'chrome', headless: !has('headed') });
+  const ctx = await browser.newContext({ viewport: { width: 1194, height: 834 }, deviceScaleFactor: 1 });
+  const page = await ctx.newPage();
+
+  const consoleErrors = [];
+  const pageErrors = [];
+  const failedRequests = [];
+  page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
+  page.on('pageerror', (e) => pageErrors.push(String(e)));
+  page.on('requestfailed', (r) => {
+    // "Interruption is always allowed" (voice.js: a new say()/seq() supersedes
+    // whatever was playing). A sped-up harness that taps through a sequence
+    // faster than a clip can load aborts that clip's own fetch on purpose —
+    // that is the design working, not a missing asset. See rhyming-detective's
+    // tools/qa.mjs for the identical carve-out.
+    const reason = r.failure()?.errorText || '';
+    if (reason === 'net::ERR_ABORTED' && /\.m4a(\?|$)/.test(r.url())) return;
+    failedRequests.push(`${r.url()} ${reason}`);
+  });
+  page.on('response', (r) => { if (r.status() >= 400) failedRequests.push(`${r.status()} ${r.url()}`); });
+
+  await page.goto(URL_, { waitUntil: 'networkidle' });
+  await page.evaluate(() => window.QLOBE_DEBUG.ready);
+
+  console.log('\n-- boot --');
+  ok('QLOBE_DEBUG v1', await page.evaluate(() => window.QLOBE_DEBUG.version === 1));
+  ok('screen is splash', await page.evaluate(() => window.QLOBE_DEBUG.getState().screen === 'splash'));
+  ok('three modes', await page.evaluate(() => window.QLOBE_DEBUG.listModes().length === 3));
+  ok('nothing spoke before a gesture', await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog().length === 0),
+    JSON.stringify(await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog())));
+  ok('no emoji in the live body DOM',
+    await page.evaluate(() => !/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(document.body.innerText)));
+
+  await page.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimer(20); });
+  ok('fastTimer scales', await page.evaluate(() => window.QLOBE_DEBUG.getState().timeScale === 0.05));
+
+  console.log('\n-- splash controls --');
+  await page.click('#btn-play');
+  ok('mode row opens', await page.evaluate(() => !document.getElementById('mode-row').hidden));
+  ok('home button targets the catalog', await page.evaluate(() => document.getElementById('splash-home') !== null));
+
+  // =======================================================================
+  // MODE 1 — bug-hunt, end to end: hotel -> room -> lens drag -> reveal ->
+  // greet -> reward -> 3 more rooms -> celebration -> end -> nav loop.
+  // =======================================================================
+  console.log('\n-- mode 1/3 (bug-hunt): the hotel --');
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+    && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+  const hotelTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  ok('4 room targets, role room', hotelTargets.length === 4 && hotelTargets.every((t) => t.role === 'room'),
+    JSON.stringify(hotelTargets.map((t) => [t.id, t.role])));
+  ok('round derives to 0', await page.evaluate(() => window.QLOBE_DEBUG.getState().round === 0));
+
+  console.log('\n-- a room, the lens and the reveal --');
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('leaf'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'room'
+    && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+  const st = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  ok('3 bugs placed in 3 of 4 nooks', st.placements.length === 3, JSON.stringify(st.placements));
+  ok('target is ladybug at round 0', st.targetId === 'ladybug', st.targetId);
+  ok('distinct zones', new Set(st.placements.map((p) => p.zone)).size === 3);
+  const roomTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  ok('roles are truthful', roomTargets.filter((t) => t.role === 'target').length === 1
+    && roomTargets.filter((t) => t.role === 'bug').length === 2,
+    JSON.stringify(roomTargets.map((t) => [t.id, t.role])));
+  ok('nothing revealed yet', st.revealed.length === 0);
+  const lens0 = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+  ok('lens exists and is enabled', Boolean(lens0 && lens0.enabled), JSON.stringify(lens0));
+  ok('lens holds 3 hidden sprites', lens0.sprites.length === 3 && lens0.sprites.every((s) => s.visible));
+
+  const targetArt = st.placements.find((p) => p.bugId === st.targetId);
+  await page.evaluate(([x, y]) => window.QLOBE_DEBUG.setLens(x, y), [targetArt.artX, targetArt.artY]);
+  await page.waitForFunction((id) => window.QLOBE_DEBUG.getState().revealed.includes(id), st.targetId, { timeout: 8000 });
+  ok('dwell revealed the target through the real move path', true);
+  const afterReveal = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+  {
+    const s = afterReveal.sprites.find((x) => x.id === targetArt.bugId);
+    ok('the found bug stays in the glass but stops arming the dwell',
+      s.visible === true && s.found === true, JSON.stringify(s));
+  }
+  const revealedTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  ok('revealed bug is enabled in the base scene',
+    revealedTargets.find((t) => t.id === targetArt.bugId).enabled === true);
+
+  console.log('\n-- P6 lens geometry --');
+  {
+    const geo = await page.evaluate(() => {
+      const l = document.querySelector('.ml-lens').getBoundingClientRect();
+      const f = document.querySelector('.ml-frame').getBoundingClientRect();
+      const g = document.querySelector('.ml-grip').getBoundingClientRect();
+      const cx = l.x + l.width / 2;
+      const cy = l.y + l.height / 2;
+      const holeX = f.x + 0.4067 * f.width;
+      const holeY = f.y + 0.44 * f.height;
+      const holeD = (2 * 186 / 900) * f.width;
+      return {
+        dx: Math.abs(holeX - cx), dy: Math.abs(holeY - cy), dd: Math.abs(holeD - l.width),
+        gripHasCentre: cx >= g.x && cx <= g.x + g.width && cy >= g.y && cy <= g.y + g.height,
+        gripMin: Math.min(g.width, g.height),
+      };
+    });
+    ok('the authored glass hole lands on the clip circle (< 1 px)',
+      geo.dx < 1 && geo.dy < 1 && geo.dd < 1, JSON.stringify(geo));
+    ok('the grip never contains the glass centre', geo.gripHasCentre === false);
+    ok('the grip is at least 140 css px', geo.gripMin >= 140, String(geo.gripMin));
+  }
+
+  console.log('\n-- a real finger on the grip --');
+  const grip = await page.$('.ml-grip');
+  const box = await grip.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + 90, box.y + box.height / 2 + 40, { steps: 8 });
+  await page.mouse.up();
+  const dragged = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+  ok('a real drag moved the lens and left it draggable',
+    !dragged.dragging && (Math.abs(dragged.x - lens0.x) > 5 || Math.abs(dragged.y - lens0.y) > 5),
+    JSON.stringify([lens0.x, lens0.y, dragged.x, dragged.y]));
+
+  // -----------------------------------------------------------------------
+  // STRAND PROBES (interaction-patterns.md #11) — a drag that never ends
+  // normally must still leave the lens visible, settled, and re-draggable.
+  // -----------------------------------------------------------------------
+  console.log('\n-- strand probe: pointercancel mid-drag --');
+  {
+    const before = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    const g = await page.$('.ml-grip');
+    const b = await g.boundingBox();
+    await page.evaluate(([x, y]) => {
+      const el = document.elementFromPoint(x, y);
+      el.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 77, clientX: x, clientY: y, isPrimary: true, bubbles: true }));
+    }, [b.x + b.width / 2, b.y + b.height / 2]);
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getLens().dragging === true, null, { timeout: 2000 });
+    await page.evaluate(([x, y]) => {
+      window.dispatchEvent(new PointerEvent('pointermove', { pointerId: 77, clientX: x + 120, clientY: y - 60, bubbles: true }));
+    }, [b.x + b.width / 2, b.y + b.height / 2]);
+    await page.evaluate(() => {
+      window.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 77, bubbles: true }));
+    });
+    const after = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('a pointercancel mid-drag settles the lens: visible, not dragging',
+      after.visible === true && after.dragging === false, JSON.stringify(after));
+    ok('the lens actually moved before the cancel (the gesture was live)',
+      Math.abs(after.x - before.x) > 5 || Math.abs(after.y - before.y) > 5,
+      JSON.stringify([before.x, before.y, after.x, after.y]));
+    // re-draggable: a fresh real mouse drag still works afterwards.
+    const g2box = await (await page.$('.ml-grip')).boundingBox();
+    await page.mouse.move(g2box.x + g2box.width / 2, g2box.y + g2box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(g2box.x + g2box.width / 2 - 60, g2box.y + g2box.height / 2 + 30, { steps: 6 });
+    await page.mouse.up();
+    const redragged = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('the lens is re-draggable after a pointercancel',
+      !redragged.dragging && (Math.abs(redragged.x - after.x) > 3 || Math.abs(redragged.y - after.y) > 3),
+      JSON.stringify([after.x, after.y, redragged.x, redragged.y]));
+  }
+
+  console.log('\n-- strand probe: window blur mid-drag --');
+  {
+    const before = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    const g = await page.$('.ml-grip');
+    const b = await g.boundingBox();
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(b.x + b.width / 2 + 70, b.y + b.height / 2 + 20, { steps: 6 });
+    const midDrag = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('the lens is genuinely mid-drag before the blur', midDrag.dragging === true, JSON.stringify(midDrag));
+    await page.evaluate(() => window.dispatchEvent(new Event('blur')));
+    const afterBlur = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('a window blur mid-drag settles the lens: visible, not dragging',
+      afterBlur.visible === true && afterBlur.dragging === false, JSON.stringify(afterBlur));
+    // the OS-level mouseup never arrives after a real blur; release it so the
+    // harness itself does not leave a phantom button down for the next probe.
+    await page.mouse.up();
+    const g2 = await page.$('.ml-grip');
+    const b2 = await g2.boundingBox();
+    await page.mouse.move(b2.x + b2.width / 2, b2.y + b2.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(b2.x + b2.width / 2 - 50, b2.y + b2.height / 2 - 40, { steps: 6 });
+    await page.mouse.up();
+    const redragged = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('the lens is re-draggable after a window blur',
+      !redragged.dragging && (Math.abs(redragged.x - afterBlur.x) > 3 || Math.abs(redragged.y - afterBlur.y) > 3),
+      JSON.stringify([afterBlur.x, afterBlur.y, redragged.x, redragged.y]));
+    void before;
+  }
+
+  console.log('\n-- the reward --');
+  await page.evaluate((id) => window.QLOBE_DEBUG.tap(id), targetArt.bugId);
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 12000 });
+  ok('the target opens the spread', true);
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getJournal().length === 1, null, { timeout: 12000 });
+  const entry = (await page.evaluate(() => window.QLOBE_DEBUG.getJournal()))[0];
+  ok('sticker persisted with room + round', entry.id === 'ladybug' && entry.room === 'leaf' && entry.round === 0,
+    JSON.stringify(entry));
+  const stickerTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
+  ok('sticker role on the spread', stickerTargets.length === 1 && stickerTargets[0].role === 'sticker');
+  ok('fact card prints the spoken sentence', (await page.textContent('#fact-text')).length > 20);
+
+  await page.screenshot({ path: path.join(SHOTS, 'landscape-reward.png') });
+
+  console.log('\n-- three more rooms to the celebration --');
+  for (let i = 0; i < 3; i += 1) {
+    await page.evaluate(() => window.QLOBE_DEBUG.nextRoom());
+    await page.waitForFunction(() => {
+      const s = window.QLOBE_DEBUG.getState();
+      return s.screen === 'celebration' || (s.screen === 'room' && s.roomReady);
+    }, null, { timeout: 12000 });
+    if (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen === 'celebration')) break;
+    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 12000 });
+  }
+  await page.evaluate(() => window.QLOBE_DEBUG.nextRoom());
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'celebration', null, { timeout: 12000 });
+  ok('room 4 ends the round in a celebration', true);
+  ok('all four pips filled', await page.evaluate(() => document.querySelectorAll('#pips .pip.filled').length === 4));
+  ok('four stickers earned', await page.evaluate(() => window.QLOBE_DEBUG.getJournal().length === 4));
+  await page.screenshot({ path: path.join(SHOTS, 'landscape-celebration.png') });
+
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end', null, { timeout: 12000 });
+  ok('celebration auto-advances to the end', true);
+  await page.screenshot({ path: path.join(SHOTS, 'landscape-end.png') });
+
+  console.log('\n-- nav loop and My Bug Book --');
+  await page.click('#btn-again');
+  ok('play again returns to the splash', await page.evaluate(() => window.QLOBE_DEBUG.getState().screen === 'splash'));
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('my-bug-book'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'journal', null, { timeout: 8000 });
+  ok('my-bug-book opens the book (mode 3/3)', true);
+  ok('12 slots, 4 filled', await page.evaluate(() =>
+    document.querySelectorAll('#sticker-grid .sticker').length === 12
+    && document.querySelectorAll('#sticker-grid .sticker:not(.is-empty)').length === 4));
+  await page.evaluate(() => window.QLOBE_DEBUG.clearAudioLog());
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(false));
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('ladybug'));
+  await page.waitForTimeout(400);
+  const log = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+  ok('tapping a sticker speaks name then fact',
+    log.length >= 2 && log[0].id === 'bug-ladybug-name' && log[1].id === 'bug-ladybug-fact',
+    JSON.stringify(log.map((l) => l.id)));
+  ok('audio log records the source', log.every((l) => l.source === 'clip' || l.source === 'speech'));
+  ok('both lines came from the RECORDED pack, not the speech fallback',
+    log.slice(0, 2).every((l) => l.source === 'clip' && /\.m4a$/.test(l.file || '')),
+    JSON.stringify(log.slice(0, 2)));
+  {
+    const media = await page.evaluate(() => window.QLOBE_DEBUG.getClipMedia());
+    ok('a recorded m4a actually decoded in the page (readyState >= 2, real duration)',
+      Boolean(media) && /\.m4a(\?|$)/.test(media.src) && media.readyState >= 2
+        && Number.isFinite(media.duration) && media.duration > 0,
+      JSON.stringify(media));
+  }
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
+  await page.screenshot({ path: path.join(SHOTS, 'landscape-book.png') });
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+
+  // =======================================================================
+  // MODE 2/3 — bug-detective, end to end, with the wrong-input probe.
+  // =======================================================================
+  console.log('\n-- mode 2/3 (bug-detective): portrait, wrong-input probe, full round --');
+  await page.setViewportSize({ width: 834, height: 1194 });
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.QLOBE_DEBUG.resetJournal());
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('bug-detective'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+    && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+  await page.evaluate(() => window.QLOBE_DEBUG.tap('bamboo'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'room'
+    && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+  const detSt = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  ok('detective places differently from hunt', detSt.mode === 'bug-detective');
+  ok('no target plaque in detective', await page.evaluate(() => document.getElementById('target-plaque').hidden));
+  const zonesInBand = detSt.placements.every((p) => p.artX >= 420 && p.artX <= 1180 && p.artY >= 300 && p.artY <= 1000);
+  ok('every placement inside the portrait-safe band', zonesInBand, JSON.stringify(detSt.placements));
+  await page.screenshot({ path: path.join(SHOTS, 'portrait-room.png') });
+
+  const hud = await page.evaluate(() => {
+    const ids = ['btn-back', 'btn-sound', 'btn-journal'];
+    return ids.map((id) => { const r = document.getElementById(id).getBoundingClientRect(); return [id, r.width, r.height]; });
+  });
+  ok('every HUD target >= 96 css px (measured live, in the room screen)',
+    hud.every(([, w, h]) => w >= 96 && h >= 96), JSON.stringify(hud));
+
+  // Wrong-input probe: reveal every bug in this room (fast, deterministic —
+  // the same move-path a dwell reveal uses), then tap the wrong one and
+  // assert the game state is UNCHANGED: no sticker, still awaiting input,
+  // wrongTaps incremented, and the detective's clue is repeated rather than
+  // the round ending.
+  for (const p of detSt.placements) {
+    await page.evaluate(([x, y]) => window.QLOBE_DEBUG.setLens(x, y), [p.artX, p.artY]);
+    await page.waitForFunction((id) => window.QLOBE_DEBUG.getState().revealed.includes(id), p.bugId, { timeout: 8000 });
+  }
+  const beforeWrong = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  const wrongBug = detSt.placements.find((p) => p.bugId !== beforeWrong.targetId).bugId;
+  // Un-mute for this probe (mode 1's My Bug Book pass muted at its end) — the
+  // audio LOG is only written while unmuted (voice.js:sayInternal short-
+  // circuits before push() when muted), so a muted probe would report a false
+  // "nothing spoke" no matter what the game actually does.
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(false));
+  await page.evaluate(() => window.QLOBE_DEBUG.clearAudioLog());
+  const wrongResult = await page.evaluate((id) => window.QLOBE_DEBUG.tap(id), wrongBug);
+  ok('a wrong (non-target) tap in bug-detective is accepted as a greeting but not as the answer',
+    wrongResult.accepted === false && wrongResult.role === 'bug', JSON.stringify(wrongResult));
+  // wrongTaps/found/screen are written SYNCHRONOUSLY in greet() before any
+  // voice awaits, so these are already true the instant tap() resolves.
+  const afterWrong = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  ok('a wrong tap leaves the game state unchanged: still in the room, no sticker awarded',
+    afterWrong.screen === 'room' && afterWrong.found.length === 0
+      && afterWrong.wrongTaps === (beforeWrong.wrongTaps || 0) + 1,
+    JSON.stringify({ screen: afterWrong.screen, found: afterWrong.found, wrongTaps: afterWrong.wrongTaps }));
+  ok('no sticker/reward screen resulted from the wrong tap', afterWrong.screen !== 'reward');
+  // The sequence itself (name -> nudge-wrong -> clue) is fire-and-forget from
+  // greet()'s point of view, and each step AWAITS THE CLIP'S OWN PLAYBACK,
+  // which runs at real wall-clock speed — fastTimer only scales the gaps
+  // between steps, never decoded audio duration. So this waits on the log
+  // itself, generously, rather than sampling it after a fixed pause.
+  const wrongLog = await page.waitForFunction(() => {
+    const l = window.QLOBE_DEBUG.getAudioLog();
+    return l.some((e) => /-clue$/.test(e.id) || e.id === 'nudge-wrong') ? l : false;
+  }, null, { timeout: 15000 }).then((h) => h.jsonValue()).catch(async () => page.evaluate(() => window.QLOBE_DEBUG.getAudioLog()));
+  ok('a wrong tap in bug-detective repeats the clue (wrongTapRepeatsPrompt)',
+    wrongLog.some((l) => /-clue$/.test(l.id) || l.id === 'nudge-wrong'),
+    JSON.stringify(wrongLog.map((l) => l.id)));
+
+  // Drive the whole round to completion via winRound() so mode 2 is really
+  // exercised end-to-end, the same way mode 1 was.
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimer(20));
+  await page.evaluate((id) => window.QLOBE_DEBUG.tap(id), beforeWrong.targetId);
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 12000 });
+  ok('the real target still completes the case after a wrong tap', true);
+  for (let i = 0; i < 4; i += 1) {
+    await page.evaluate(() => window.QLOBE_DEBUG.nextRoom());
+    await page.waitForFunction(() => {
+      const s = window.QLOBE_DEBUG.getState();
+      return s.screen === 'celebration' || (s.screen === 'room' && s.roomReady);
+    }, null, { timeout: 12000 });
+    if (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen === 'celebration')) break;
+    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 12000 });
+  }
+  ok('bug-detective runs a full round to celebration (mode 2/3 end-to-end)',
+    await page.evaluate(() => window.QLOBE_DEBUG.getState().screen === 'celebration')
+    || await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'celebration', null, { timeout: 12000 }).then(() => true));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end', null, { timeout: 12000 });
+  ok('bug-detective reaches the end screen', true);
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+
+  console.log('\n-- persistence --');
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.evaluate(() => window.QLOBE_DEBUG.ready);
+  const persistedCount = await page.evaluate(() => window.QLOBE_DEBUG.getJournal().length);
+  ok('the book survives a reload', persistedCount > 0, String(persistedCount));
+  ok('round derives correctly after a full round', await page.evaluate(() => window.QLOBE_DEBUG.getState().round >= 1));
+  ok('resetJournal clears and re-derives', await page.evaluate(() => window.QLOBE_DEBUG.resetJournal() === 0)
+    && await page.evaluate(() => window.QLOBE_DEBUG.getJournal().length === 0));
+
+  console.log('\n-- reduced motion --');
+  const ctx2 = await browser.newContext({ viewport: { width: 1194, height: 834 }, reducedMotion: 'reduce' });
+  const page2 = await ctx2.newPage();
+  const rmErrors = [];
+  page2.on('pageerror', (e) => rmErrors.push(String(e)));
+  page2.on('console', (m) => { if (m.type() === 'error') rmErrors.push(m.text()); });
+  await page2.goto(URL_, { waitUntil: 'networkidle' });
+  await page2.evaluate(() => window.QLOBE_DEBUG.ready);
+  await page2.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimer(20); });
+  ok('reduced motion is observed', await page2.evaluate(() => window.QLOBE_DEBUG.getState().reducedMotion === true));
+  await page2.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
+  await page2.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+    && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+  await page2.evaluate(() => window.QLOBE_DEBUG.winRound());
+  await page2.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 15000 });
+  ok('a whole room completes under reduced motion', true);
+  await page2.screenshot({ path: path.join(SHOTS, 'reduced-motion-reward.png') });
+  ok('reduced-motion run is clean', rmErrors.length === 0, JSON.stringify(rmErrors.slice(0, 3)));
+  await ctx2.close();
+
+  console.log('\n-- tablet portrait (834x1194) and phone (390x844) screenshots --');
+  await page.setViewportSize({ width: 834, height: 1194 });
+  await page.evaluate(() => window.QLOBE_DEBUG.home());
+  await page.waitForTimeout(200);
+  await page.screenshot({ path: path.join(SHOTS, 'portrait-splash.png') });
+
+  const ctx3 = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  const page3 = await ctx3.newPage();
+  const phoneErrors = [];
+  page3.on('pageerror', (e) => phoneErrors.push(String(e)));
+  page3.on('console', (m) => { if (m.type() === 'error') phoneErrors.push(m.text()); });
+  await page3.goto(URL_, { waitUntil: 'networkidle' });
+  await page3.evaluate(() => window.QLOBE_DEBUG.ready);
+  await page3.screenshot({ path: path.join(SHOTS, 'phone-390x844-splash.png') });
+  ok('phone viewport (390x844) boots clean', phoneErrors.length === 0, JSON.stringify(phoneErrors.slice(0, 3)));
+  await ctx3.close();
+
+  const ctx4 = await browser.newContext({ viewport: { width: 1180, height: 520 } });
+  const page4 = await ctx4.newPage();
+  const wideErrors = [];
+  page4.on('pageerror', (e) => wideErrors.push(String(e)));
+  page4.on('console', (m) => { if (m.type() === 'error') wideErrors.push(m.text()); });
+  await page4.goto(URL_, { waitUntil: 'networkidle' });
+  await page4.evaluate(() => window.QLOBE_DEBUG.ready);
+  await page4.screenshot({ path: path.join(SHOTS, 'compact-1180x520-splash.png') });
+  ok('compact landscape viewport (1180x520) boots clean', wideErrors.length === 0, JSON.stringify(wideErrors.slice(0, 3)));
+  await ctx4.close();
+
+  console.log('\n-- console hygiene --');
+  ok('zero page errors', pageErrors.length === 0, JSON.stringify(pageErrors.slice(0, 4)));
+  ok('zero console errors', consoleErrors.length === 0, JSON.stringify(consoleErrors.slice(0, 4)));
+  const realFails = failedRequests.filter((f) => !/favicon|apple-touch/.test(f));
+  ok('ZERO 404s — every authored path resolves', realFails.length === 0,
+    JSON.stringify([...new Set(realFails)].slice(0, 8)));
+
+  await browser.close();
+}
+
+// =========================================================================
+
+async function main() {
+  await mkdir(SHOTS, { recursive: true });
+  await staticGate();
+
+  let server = null;
+  let base;
+  if (flag('base')) {
+    base = flag('base').replace(/\/$/, '');
+  } else {
+    const served = await serveRepo();
+    server = served.server;
+    base = served.base;
+  }
+
+  await browserGate(base);
+
+  if (server) server.close();
+
+  console.log(`\n${pass} pass, ${fail} fail`);
+  if (fail) {
+    console.log('\nFAILED:');
+    for (const f of failures) console.log(`  - ${f}`);
+  }
+  process.exit(fail ? 1 : 0);
+}
+
+main().catch((err) => {
+  console.error('\nqa.mjs crashed:', err);
+  process.exit(1);
+});

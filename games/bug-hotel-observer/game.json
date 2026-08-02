@@ -7,27 +7,58 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#f25f5c",
-  "shareTitle": "Bug Hotel Observer 🐞 — Tiny Garden Guest Watching",
-  "description": "Stamp tiny bug guests and their behaviors into a quiet observation journal, practicing slow, gentle looking at small living things. A patient nature journal for ages 5–6.",
+  "accent": "#5f8f3a",
+  "engine": "bug-hotel-observer (game-local js/game.js on shared/js/hotspot-scene.js + shared/js/magnifier-lens.js + shared/js/journal.js)",
+  "shareTitle": "Bug Hotel Observer 🐞 — A Papercraft Magnifying-Glass Bug Hunt",
+  "description": "Tap a room in a handmade paper bug hotel, then drag a magnifying glass across the leaves, bark, bamboo and old logs to discover the tiny guests hiding inside. Tap a bug to say hello, hear a real bug fact, and keep its sticker in your own Explorer Journal. Twelve bugs, three modes, no timers and nothing to get wrong. Ages 5–6.",
   "learningGoals": [
-    "Practice patient observation of small living things",
-    "Build vocabulary for common bug guests and behaviors",
-    "Reinforce gentle, slow looking around insects and other tiny creatures"
+    "Search a busy natural scene carefully and systematically instead of at random",
+    "Name twelve common garden minibeasts and tell them apart by sight",
+    "Match a spoken description to the creature it describes",
+    "Learn one true fact about how each bug lives, and recall it later from its sticker",
+    "Practise slow, gentle, patient observation of small living things"
   ],
-  "interactionModel": "observe-journal tap stickers to record bug guests and actions",
-  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a gentle bug fact; the recap reads the bug hotel notes back.",
+  "interactionModel": "tap a room on the hotel exterior, then drag a papercraft magnifying lens across the room plate; bugs are visible only inside the glass until a 600 ms dwell pops them into the scene, and a tap on a found bug plays its name, its animation and its fact card",
+  "feedbackModel": "Finding a bug pops it into the scene with a spring and a soft chime; tapping it swaps to a happy frame, wiggles, speaks its name and slides a journal spread up with a voiced fact and a sticker that flies into place. A tap on the wrong bug is greeted warmly by name and the prompt is simply offered again — nothing is removed, nothing is scored, nothing can be failed.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
+    "shared/js/hotspot-scene.js",
+    "shared/js/magnifier-lens.js",
+    "shared/js/journal.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/assets/ui/btn-home.png",
+    "shared/assets/ui/btn-back.png",
+    "shared/assets/ui/btn-sound.png",
+    "shared/assets/ui/btn-play.png",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "guests", "title": "Who's Home?", "skill": "identify common tiny garden guests" },
-    { "id": "doing", "title": "What Are They Doing?", "skill": "observe simple animal behaviors" }
+    {
+      "id": "bug-hunt",
+      "title": "Bug Hunt",
+      "skill": "finding and naming a bug that has been named out loud, by searching a natural scene with a magnifying glass"
+    },
+    {
+      "id": "bug-detective",
+      "title": "Bug Detective",
+      "skill": "matching a spoken description of a bug to the right bug, with no name given"
+    },
+    {
+      "id": "my-bug-book",
+      "title": "My Bug Book",
+      "skill": "recalling the bugs already collected and re-hearing each one's name and fact from its sticker"
+    }
   ],
+  "assets": {
+    "art": "All plates, sprites, props and lockups are authored papercraft, generated on the local GenAI API in the Paper Garden art world and finalized deterministically by tools/finalize-art.py. CSS draws no child-facing object — see ASSETS.md and game-design.md §8.",
+    "voice": "74 teacher-voice clips cloned from shared/assets/refs/voice-teacher.wav, whisper-QA'd; tools/lines.json is the single source for both the recording script and the Web Speech fallback text.",
+    "ambience": "Synthesized at runtime via WebAudio (js/ambience.js) — zero audio files.",
+    "hubTile": "A hub tile candidate is staged at assets/source/hub/tile-candidate.jpg only. assets/hub/tiles/ is hand-curated by the maintainer and is never written by this game's build."
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; papercraft art and teacher voice generated for QLOBE Kids on the local GenAI API. Concept brief, mockups and concept video by Kaigani. Built with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

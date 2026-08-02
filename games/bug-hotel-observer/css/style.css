@@ -1,0 +1,825 @@
+/* Bug Hotel Observer — screens, HUD and choreography.
+   game-design.md §2 (screen map), §2.5 (HUD geometry), §8 (what CSS may draw)
+   and §9 (the choreography).
+
+   THE RULE THIS FILE OBEYS (§8): CSS does layout, state and effects — shadow,
+   clip, transform, opacity. It never draws a thing the child is meant to look
+   at. Every bug, plaque, lens, sticker, lockup and title in this game is
+   authored papercraft art. The only things styled here that a child SEES and
+   that are not art are the banner pill (an adult caption), the four room pips
+   (a progress marker) and the confetti (a particle) — §8.2 rows 21–23, which
+   is the complete list.
+
+   The play field itself is styled by shared/js/hotspot-scene.js's injected
+   <style id="hs-style"> and the lens by magnifier-lens.js's <style id="ml-style">.
+   Nothing here overrides either: they own the room, this owns everything over it.
+
+   --ts is the QLOBE_DEBUG.fastTimer scale. Every duration below is written as
+   calc(<ms> * var(--ts, 1)) so the debug hook speeds the visuals exactly as it
+   speeds the JS beats. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ts: 1;
+  --paper: #fbf3e2;          /* cut cream paper */
+  --paper-warm: #f6e8cb;
+  --kraft: #c9b590;          /* the torn kraft edge */
+  --kraft-dark: #a58f66;
+  --ink: #3f2b18;            /* warm dark brown — every word in the game */
+  --leaf: #5f8f3a;           /* the accent from game.json */
+  --leaf-deep: #3f5c22;
+  --gold: #e8b64a;
+  --safe-t: max(16px, env(safe-area-inset-top));
+  --safe-b: max(16px, env(safe-area-inset-bottom));
+  --safe-l: max(16px, env(safe-area-inset-left));
+  --safe-r: max(16px, env(safe-area-inset-right));
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+  background: #6f8a4a;
+  color: var(--ink);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* --- the play field ------------------------------------------------------ */
+
+/* THE ONE STACKING DECISION IN THIS FILE.
+   hotspot-scene.js paints hotspots at z-index 1000+i and magnifier-lens.js
+   paints the lens at 4000 — both deliberate, both internal to the modules, and
+   neither is ours to override. Giving #stage its own stacking context
+   (positioned + z-index: 0) contains the whole range in one band, so the HUD at
+   5 and the screens at 9 sit above all of it without a single !important and
+   without either module's own layering being touched.
+
+     #stage   0   plate 0 · hotspots 1000+ · lens 4000 · bubbles 5000
+     #hud     5   banner, plaque, pips, corner buttons, journal tab
+     screens  9   splash · spread (reward / book / celebration) · end */
+#stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #6f8a4a;
+}
+
+/* The done-room badges of §2.4 — authored happy frames, never hit targets. */
+.bh-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 4500;               /* over the plaques, under the lens frame */
+  pointer-events: none;
+}
+
+.bh-badge {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(40, 32, 18, .3));
+  animation: bh-badge-in calc(320ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1) both;
+}
+
+@keyframes bh-badge-in {
+  from { transform: scale(.4) rotate(-12deg); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* --- shared controls ----------------------------------------------------- */
+
+/* §8.2 rows 19–20: one shared authored face per control, sized in CSS. */
+.corner-btn {
+  position: absolute;
+  width: 112px;
+  height: 112px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform calc(120ms * var(--ts, 1)) ease;
+}
+.corner-btn:active { transform: scale(.94); }
+.corner-btn:focus-visible { outline: 4px solid var(--gold); outline-offset: 3px; border-radius: 50%; }
+.corner-btn.back { background-image: url('../../../shared/assets/ui/btn-back.png'); }
+.corner-btn.home { background-image: url('../../../shared/assets/ui/btn-home.png'); }
+.corner-btn.sound { background-image: url('../../../shared/assets/ui/btn-sound.png'); }
+
+/* Play / Next Room / Keep Exploring / Play Again — one face, four aria-labels
+   (§8.2 row 19). No visible words: the only text-labelled control in the game
+   is the splash's Play, and that label is a separate element aimed at the
+   grown-up handing the tablet over. */
+.play-btn {
+  width: 132px;
+  height: 132px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  background-image: url('../../../shared/assets/ui/btn-play.png');
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform calc(140ms * var(--ts, 1)) ease;
+}
+.play-btn:active { transform: scale(.94); }
+.play-btn:focus-visible { outline: 4px solid var(--gold); outline-offset: 4px; border-radius: 50%; }
+
+/* --- HUD (§2.5) ---------------------------------------------------------- */
+
+#hud {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+#hud > * { pointer-events: auto; }
+
+#btn-back { top: var(--safe-t); left: var(--safe-l); }
+#btn-sound { bottom: var(--safe-b); left: var(--safe-l); }
+
+/* THE BANNER IS A CAPTION, NOT A CONTROL (§2.5, §8.2 row 21). It prints the
+   sentence the child is hearing so an adult across the table can follow. It is
+   never the instruction — the voice is — and it never takes a tap. */
+#banner {
+  position: absolute;
+  top: max(18px, calc(env(safe-area-inset-top) + 8px));
+  left: 50%;
+  transform: translateX(-50%);
+  /* Never let it reach either corner control: 112 px of button plus a real
+     28 px alley on each side, or the banner reads as welded to the arrow. */
+  width: min(84vw, 900px, calc(100vw - 2 * (var(--safe-l) + 140px)));
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 30px;
+  background: var(--paper);
+  border: 5px solid var(--kraft);
+  border-radius: 40px;
+  box-shadow: 0 8px 0 rgba(140, 116, 70, .22);
+  font-size: 38px;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--ink);
+  pointer-events: none !important;
+}
+
+/* The target's own picture, top-right — `bug-hunt` only (§2.5). */
+#target-plaque {
+  position: absolute;
+  top: var(--safe-t);
+  right: var(--safe-r);
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  pointer-events: none !important;
+  filter: drop-shadow(0 6px 10px rgba(40, 32, 18, .28));
+  animation: bh-plaque-in calc(300ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1) both;
+}
+
+@keyframes bh-plaque-in {
+  from { transform: scale(.6) rotate(-8deg); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* §8.2 row 16 — the tab's face is the authored cutout, set as a background by
+   js/main.js once it has resolved. */
+.journal-tab {
+  position: absolute;
+  bottom: var(--safe-b);
+  left: calc(var(--safe-l) + 132px);
+  width: 128px;
+  height: 128px;
+  padding: 0;
+  border: 0;
+  background: transparent center / contain no-repeat;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform calc(140ms * var(--ts, 1)) ease;
+}
+.journal-tab:active { transform: scale(.94); }
+.journal-tab:focus-visible { outline: 4px solid var(--gold); outline-offset: 3px; border-radius: 18px; }
+
+/* §2.5 — four pips: ROOMS visited this round, the mockup's "1 of 4" with the
+   numeral taken out (§11). A progress marker, not content. */
+#pips {
+  position: absolute;
+  bottom: var(--safe-b);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  padding: 12px 20px;
+  border-radius: 40px;
+  background: rgba(251, 243, 226, .72);
+  pointer-events: none !important;
+}
+
+.pip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 3px var(--kraft);
+  transition: background calc(240ms * var(--ts, 1)) ease,
+              transform calc(240ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1);
+}
+.pip.filled {
+  background: var(--leaf);
+  box-shadow: inset 0 0 0 3px var(--leaf-deep);
+  transform: scale(1.12);
+}
+
+/* --- screens ------------------------------------------------------------- */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- SPLASH (§2.3) ------------------------------------------------------- */
+
+/* THE SPLASH IS ONE COLUMN THAT MUST NEVER OVERFLOW.
+   It has two states — closed (title + Play) and open (title + Play + three
+   mode tiles) — and the open state is 300 px of tile taller than the closed
+   one. Laying it out from the top and hoping meant the tiles fell off the
+   bottom of a 834 px iPad. So: centre the column, size every part from vh, and
+   let `.modes-open` (set by js/main.js when the row appears) hand the title and
+   the Play button some of their height back. Nothing here scrolls, because a
+   five-year-old will not scroll. */
+#splash {
+  justify-content: center;
+  gap: clamp(8px, 2vh, 22px);
+  padding: calc(var(--safe-t) + 8px) var(--safe-r) calc(var(--safe-b) + 8px) var(--safe-l);
+  background: #cfe0aa;
+}
+
+/* The hotel plate itself, blurred 6 px and lifted in brightness — depth of
+   field, not a second picture (§2.3). --splash-plate is set by main.js from the
+   RESOLVED url, so it can never disagree with the plate the hotel screen uses. */
+#splash::before {
+  content: '';
+  position: absolute;
+  inset: -24px;                       /* the blur must not show a soft edge */
+  background: var(--splash-plate, none) center / cover no-repeat;
+  filter: blur(6px) brightness(1.08) saturate(.96);
+  z-index: -1;
+}
+
+#splash-home { top: var(--safe-t); left: var(--safe-l); }
+#splash-sound { top: var(--safe-t); right: var(--safe-r); }
+
+#splash-title {
+  flex: 0 0 auto;                     /* never let the column shrink the lockup */
+  width: min(86vw, 1040px);
+  height: min(38vh, 42vw);
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(40, 32, 18, .28));
+  animation: bh-title-in calc(520ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1) both;
+  transition: height calc(240ms * var(--ts, 1)) ease;
+}
+#splash.modes-open #splash-title { height: min(26vh, 32vw); }
+
+@keyframes bh-title-in {
+  from { transform: translateY(-18px) scale(.96); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+#play-stack {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+#btn-play { width: min(168px, 20vh); height: min(168px, 20vh); }
+#splash.modes-open #btn-play { width: min(116px, 14vh); height: min(116px, 14vh); }
+
+/* The ONE piece of visible type aimed at a reader, and it is aimed at the
+   grown-up holding the tablet (§2.3). */
+#play-label {
+  font-size: clamp(28px, 4.4vh, 44px);
+  color: var(--leaf-deep);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .6);
+}
+
+#mode-row {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 26px);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity calc(240ms * var(--ts, 1)) ease,
+              transform calc(240ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1);
+}
+#mode-row.show { opacity: 1; transform: none; }
+
+/* The cream card is furniture (CSS); its FACE is authored art (§8.2 row 18). */
+.mode-tile {
+  /* Three across at every aspect ratio, and never taller than the room the
+     column has left: the tile is the thing that gives height back. */
+  width: min(300px, 27vw, 34vh);
+  height: min(300px, 27vw, 34vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 1vh, 10px);
+  padding: clamp(8px, 1.6vh, 18px);
+  border: 5px solid var(--kraft);
+  border-radius: 34px;
+  background: var(--paper);
+  box-shadow: 0 10px 0 rgba(140, 116, 70, .24), 0 18px 30px rgba(40, 32, 18, .18);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform calc(140ms * var(--ts, 1)) ease;
+}
+.mode-tile:active { transform: scale(.96); }
+.mode-tile:focus-visible { outline: 4px solid var(--gold); outline-offset: 4px; }
+
+.tile-face {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.tile-art { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.tile-label {
+  flex: 0 0 auto;
+  font-size: clamp(20px, 3.2vh, 34px);
+  line-height: 1.1;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* --- the SPREAD: reward (§2.6), My Bug Book (§2.7), celebration (§2.8) ---- */
+
+/* Not a new page. The paper slides UP over the room, which stays mounted
+   underneath and is still faintly visible at the edges — which is what makes it
+   feel like a book opened on top of the world. */
+#spread {
+  justify-content: center;
+  background: rgba(40, 32, 18, .34);
+  opacity: 0;
+  transition: opacity calc(260ms * var(--ts, 1)) ease;
+}
+#spread.show { opacity: 1; }
+
+#spread-paper {
+  position: relative;
+  width: min(94vw, 1180px);
+  max-height: calc(100vh - var(--safe-t) - var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(18px, 3vh, 40px) clamp(20px, 4vw, 56px);
+  border-radius: 30px;
+  /* §8.2 row 11 — the spiral-kraft spread is AUTHORED ART, set as a background
+     by main.js once resolved. The warm cream underneath is only what shows
+     while it decodes (and all that shows if it never ships). */
+  background-color: var(--paper-warm);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 0 24px 60px rgba(40, 32, 18, .42);
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform calc(520ms * var(--ts, 1)) cubic-bezier(.22, 1, .36, 1);
+}
+#spread.show #spread-paper { transform: none; }
+
+/* THE LEFT INSET IS CONDITIONAL, because the plate's crop is.
+   The spread is painted `cover`, so on a wide box the whole authored spread
+   shows — including the spiral binding down its left eighth, which a ladybug
+   printed over read as a mistake at full size. On a TALL box the same `cover`
+   crops the binding away entirely, and the same inset would only shove the fact
+   card off-centre. So the inset arrives with the binding. */
+@media (min-aspect-ratio: 6 / 5) {
+  #spread-paper { padding-left: clamp(30px, 12vw, 150px); }
+}
+
+#spread-back { position: absolute; top: 14px; left: 14px; width: 96px; height: 96px; }
+
+#fact-found {
+  flex: 0 0 auto;
+  width: min(64vw, 620px);
+  max-height: 16vh;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(-40px);
+  transition: opacity calc(260ms * var(--ts, 1)) ease,
+              transform calc(320ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1);
+}
+#fact-found.in { opacity: 1; transform: none; }
+
+#fact-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 40px);
+  width: 100%;
+  min-height: 0;
+  flex: 0 1 auto;
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity calc(280ms * var(--ts, 1)) ease,
+              transform calc(320ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1);
+}
+#fact-row.in { opacity: 1; transform: none; }
+
+#fact-bug {
+  width: clamp(140px, 18vw, 240px);
+  height: clamp(140px, 18vw, 240px);
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px rgba(40, 32, 18, .3));
+}
+/* While the sticker is in flight the flyer IS the sprite; the source hides so
+   the child never sees two of the same bug. */
+#fact-bug.flying { opacity: 0; }
+
+/* §8.2 row 13 — the plate is authored art (set by main.js); the border and the
+   shadow are the CSS furniture that survives if it has not shipped yet.
+
+   THE CARD KEEPS THE PLATE'S OWN PROPORTIONS. The plate is a 1100x760 cut-paper
+   card with a dashed inner rule and two pressed sprigs, and the first build
+   stretched it across a 4:1 text box: the dashed rule stopped agreeing with the
+   words inside it and a sprig grew across the middle of the sentence. Fixing
+   the card's aspect ratio and centring the type inside it costs some height and
+   buys a card that looks made rather than scaled. */
+#fact-card {
+  /* Sized by HEIGHT, so the aspect ratio is what decides the width and the
+     spread can never be pushed past its own bottom edge by a long fact. */
+  flex: 0 1 auto;
+  height: min(29vh, 244px);
+  aspect-ratio: 1100 / 760;
+  width: auto;
+  max-width: min(560px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 5px solid var(--kraft);
+  border-radius: 26px;
+  background-color: var(--paper);
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0 6px 0 rgba(140, 116, 70, .2);
+}
+#fact-card.has-plate { border-color: transparent; box-shadow: none; background-color: transparent; }
+
+/* §8.2 row 14 — HTML type on purpose: the child HEARS the fact, the grown-up
+   reads it. It is never a thing a child has to read to play. */
+/* THE TYPE LIVES INSIDE THE PLATE'S DASHED RULE, and the rule is at 19.5 % /
+   24 % of the CARD. Percentage PADDING could not express that — CSS resolves
+   percentage padding against the containing block's WIDTH, which here is the
+   whole fact row, so `padding: 20%` blew the text column down to 89 px and
+   wrapped the sentence into eight words-per-line. A percentage WIDTH and HEIGHT
+   on the child resolve against the card itself, which is what was meant. */
+#fact-text {
+  margin: 0;
+  width: 64%;
+  max-height: 56%;
+  overflow: hidden;
+  /* Tied to the VIEWPORT HEIGHT and CAPPED, because the card is: its height is
+     min(29vh, 244px), so past a 840 px viewport the card stops growing and type
+     that kept growing simply ran out of the dashed rule. The cap is set so the
+     longest fact in tools/lines.json (103 characters) still fits in four lines
+     at every viewport this game supports. */
+  font-size: clamp(14px, 2.4vh, 19px);
+  line-height: 1.26;
+  text-align: center;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+/* --- the sticker grid (§2.7, §8.2 row 15) -------------------------------- */
+
+/* THE GRID IS SIZED FROM THE VIEWPORT'S HEIGHT, NOT ITS WIDTH.
+   Twelve square slots in three rows is the one block in this game that can
+   outgrow the screen, and a spread whose Next Room button has slid off the
+   bottom is a dead end for a child who cannot scroll. So the CELL is the
+   smaller of "a quarter of the paper's width" and a fixed slice of the viewport
+   height — which makes three rows plus the button fit by construction at every
+   aspect ratio, instead of by hoping. The reward gets a small grid (the fact is
+   the point there); the book and the celebration get a big one. */
+.sticker-grid {
+  --gap: clamp(6px, 1.2vw, 16px);
+  --cell: min(calc((min(880px, 78vw) - 3 * var(--gap)) / 4), 21vh);
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), var(--cell));
+  /* Explicit rows, not `auto`. An auto row is content-sized and a content-sized
+     row is the first thing a squeezed flex column takes height back from —
+     which turned every square sticker into an ellipse. */
+  grid-auto-rows: var(--cell);
+  gap: var(--gap);
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+/* The foot never shrinks: it carries the only way forward. If the paper runs
+   out of room the FACT ROW gives its height back instead (it is a picture and a
+   caption; the button is the exit). */
+#spread-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 36px);
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+/* On the reward the grid is a glance at the book, not the book itself — and it
+   is the block that decides whether all three rows land on the DRAWN PAGE or
+   spill onto the book's kraft cover below it. 9.4vh is the largest cell that
+   keeps row three on the paper on a 1194x834 iPad. */
+#spread:not(.is-journal):not(.is-celebration) .sticker-grid {
+  --cell: min(calc((min(560px, 46vw) - 3 * var(--gap)) / 4), 9.4vh);
+}
+/* On the book and the celebration there is no fact row, so the grid leads and
+   the button steps under it. */
+#spread.is-journal #spread-foot,
+#spread.is-celebration #spread-foot {
+  flex-direction: column;
+  gap: 12px;
+}
+/* With no banner and no fact row above it, the grid starts at the top of the
+   paper — where the Back button lives. The top row of stickers was landing on
+   top of the one control that gets a child out of the book. */
+#spread.is-journal #spread-paper,
+#spread.is-celebration #spread-paper {
+  justify-content: center;
+  padding-top: clamp(96px, 13vh, 128px);
+}
+/* The celebration lifts four stickers 40 px out of their slots; the grid gives
+   that height back so the top row does not rise off the paper. */
+#spread.is-celebration .sticker-grid {
+  --cell: min(calc((min(880px, 78vw) - 3 * var(--gap)) / 4), 18vh);
+}
+/* §2.7 — the book has no forward. It is a place to look at what you have, and
+   the only way out is back. Only the celebration keeps the button (as
+   "Keep exploring"). */
+#spread.is-journal #btn-next { display: none; }
+
+.sticker {
+  position: relative;
+  width: var(--cell);
+  height: var(--cell);
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform calc(160ms * var(--ts, 1)) ease;
+}
+.sticker:active { transform: scale(.94); }
+.sticker:focus-visible { outline: 4px solid var(--gold); outline-offset: 3px; border-radius: 18px; }
+
+/* An empty slot is quiet: 26 % of the backing and a dashed cut-paper outline.
+   It has no handler at all — an empty slot that wiggled or spoke would be a
+   scold for not having found something yet. */
+/* An empty slot has to be VISIBLE to be a gap worth filling. At 26 % over the
+   authored kraft spread it was invisible at full size — the book looked empty
+   rather than half-full. It is still quiet: no handler, no animation, no
+   sound. */
+.sticker.is-empty {
+  cursor: default;
+  border-radius: 18px;
+  outline: 3px dashed rgba(118, 94, 54, .7);
+  outline-offset: -6px;
+}
+.sticker.is-empty .sticker-backing { opacity: .5; }
+
+.sticker-backing,
+.sticker-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.sticker-face {
+  padding: 12%;
+  filter: drop-shadow(0 3px 5px rgba(40, 32, 18, .26));
+}
+
+.sticker.pulse { animation: bh-sticker-pulse calc(220ms * var(--ts, 1)) ease-out 2; }
+@keyframes bh-sticker-pulse {
+  50% { transform: scale(1.12); }
+}
+
+.sticker.land { animation: bh-sticker-land calc(140ms * var(--ts, 1)) ease-out both; }
+@keyframes bh-sticker-land {
+  0%   { transform: scale(1.18, .84); }
+  100% { transform: none; }
+}
+
+/* §9.8 — the round's four stickers rise out of the grid, 120 ms apart. */
+.sticker.rise {
+  animation: bh-sticker-rise calc(620ms * var(--ts, 1)) cubic-bezier(.22, 1.1, .36, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+  z-index: 2;
+}
+@keyframes bh-sticker-rise {
+  from { transform: none; }
+  to   { transform: translateY(-40px) scale(1.18); }
+}
+
+#btn-next { margin-top: 4px; }
+
+/* The flying sticker lives in its own layer so it is never clipped by the
+   paper's overflow, and never disturbs the grid it is landing in. */
+#fly-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.sticker-flyer {
+  position: absolute;
+  object-fit: contain;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 8px 14px rgba(40, 32, 18, .3));
+}
+
+/* --- confetti (§8.2 row 23 — a particle, the last non-art thing here) ---- */
+
+#confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+#confetti i {
+  position: absolute;
+  top: -8%;
+  width: 18px;
+  height: 26px;
+  background: var(--c, #e8b64a);
+  border-radius: 3px;
+  animation: bh-confetti var(--d, 2.6s) linear var(--delay, 0s) infinite;
+}
+@keyframes bh-confetti {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate3d(var(--sway, 20px), 110vh, 0) rotate(540deg); opacity: 1; }
+}
+
+/* --- END (§2.8) ---------------------------------------------------------- */
+
+#end { background: rgba(60, 50, 30, .30); }
+
+/* The hotel plate, softened but still THE HOTEL — a resting place, not a void.
+   The first pass stacked a .55 brightness filter, a 42 % cream veil and a 90 %
+   cream panel on top of each other and the plate disappeared into fog; the
+   child could no longer see the place they had just been. */
+#end::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--splash-plate, none) center / cover no-repeat;
+  filter: brightness(.86) saturate(.95) blur(2px);
+  z-index: -2;
+}
+#end::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(251, 243, 226, .18);
+  z-index: -1;
+}
+
+#end-back { top: var(--safe-t); left: var(--safe-l); }
+
+/* The book, closed on the table: the same authored spread the reward and My Bug
+   Book are printed on, so the end screen is the same object rather than a plain
+   cream rectangle. main.js sets --journal-plate from the resolved url. */
+#end-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2vh, 22px);
+  width: min(92vw, 940px);
+  padding: clamp(16px, 3vh, 34px) clamp(20px, 4vw, 48px)
+           clamp(16px, 3vh, 34px) clamp(28px, 11vw, 140px);
+  border-radius: 30px;
+  background: var(--paper-warm) var(--journal-plate, none) center / cover no-repeat;
+  box-shadow: 0 20px 50px rgba(40, 32, 18, .35);
+  overflow: hidden;
+}
+
+/* Twelve slots AND the play-again button have to sit inside one book, so the
+   end screen's cell is a notch smaller than My Bug Book's. */
+#end-grid { --cell: min(calc((min(880px, 78vw) - 3 * var(--gap)) / 4), 18vh); }
+
+/* --- portrait / short-landscape ------------------------------------------ */
+
+/* The scene handles its own cover-fit at every aspect ratio; only the HUD and
+   the screens need to fold. */
+@media (max-width: 900px), (max-height: 620px) {
+  #banner { font-size: 30px; min-height: 72px; border-radius: 32px; }
+  .corner-btn { width: 96px; height: 96px; }         /* still ≥ 96 px (§9.1) */
+  .journal-tab { width: 108px; height: 108px; left: calc(var(--safe-l) + 112px); }
+  #target-plaque { width: 104px; height: 104px; }
+  .play-btn { width: 112px; height: 112px; }
+  #btn-play { width: 132px; height: 132px; }
+  #play-label { font-size: 34px; }
+  .mode-tile { border-radius: 26px; }
+  #fact-row { flex-direction: column; gap: 10px; }
+  #fact-bug { width: 152px; height: 152px; }
+  #spread-back { width: 84px; height: 84px; }
+}
+
+/* A TABLET HELD UPRIGHT is the one narrow viewport with room to keep the bug
+   beside its card. Stacking them there cost 160 px of page and pushed the last
+   row of stickers off the paper and onto the book's cover; a phone still
+   stacks, because a phone genuinely has no width to spare. */
+@media (min-width: 700px) and (max-width: 900px) and (min-height: 900px) {
+  #fact-row { flex-direction: row; gap: clamp(12px, 2vw, 28px); }
+  #fact-bug { width: 150px; height: 150px; }
+}
+
+/* A phone on its side: the spread has to become a scroll-free single column
+   with the grid doing the compressing, and the fact card leads. */
+@media (max-height: 520px) {
+  #spread-paper { gap: 8px; padding: 12px 20px; }
+  #fact-found { max-height: 10vh; }
+  /* A phone on its side has no vertical room at all: stacked, the bug and the
+     card together needed more height than the whole spread had, the column
+     shrank the card, and the fact was clipped mid-sentence inside its own
+     dashed rule. Side by side they cost one card's height between them. */
+  #fact-row { flex-direction: row; gap: 14px; }
+  #fact-bug { width: 104px; height: 104px; }
+  #fact-card { height: min(52vh, 210px); }
+  #fact-text { width: 66%; max-height: 62%; font-size: 13px; }
+  .sticker-grid { --cell: min(calc((min(560px, 76vw) - 3 * var(--gap)) / 4), 16vh); }
+  #spread:not(.is-journal):not(.is-celebration) .sticker-grid {
+    --cell: min(calc((min(420px, 40vw) - 3 * var(--gap)) / 4), 9vh);
+  }
+  #pips { gap: 12px; padding: 8px 14px; }
+  .pip { width: 22px; height: 22px; }
+}
+
+/* --- reduced motion (§9.10) ---------------------------------------------- */
+
+/* No glint (the module's own rule), no confetti, no sticker arc, no wiggle.
+   Every timing, every sound and every state change is otherwise identical:
+   what is removed is decoration, never information. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  #confetti { display: none; }
+  /* `animation: none`, not just `transform: none`: the rise keyframes are
+     `both`-filled, so their end state (translateY(-40px) scale(1.18)) is an
+     ANIMATION value and outranks any declaration this block could make. The
+     four stickers of the round still arrive — they simply arrive flat. */
+  .sticker.rise { animation: none; transform: none; }
+  .corner-btn:active, .play-btn:active, .mode-tile:active,
+  .journal-tab:active, .sticker:active { transform: none; }
+  /* The spread still ARRIVES — it just arrives instantly rather than sliding,
+     because a spread that never appeared would remove the reward itself. */
+  #spread.show #spread-paper { transform: none; }
+}

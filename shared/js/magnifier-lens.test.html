@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>magnifier-lens.js test — drag the glass</title>
+  <!-- An empty inline icon. Without it the browser asks for /favicon.ico and the
+       404 lands in the console, which would make "zero console errors" a claim
+       QA has to caveat rather than assert. -->
+  <link rel="icon" href="data:," />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; overflow: hidden; background: #0b1a3a; color: #17517e;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      -webkit-user-select: none; user-select: none;
+    }
+
+    /* The scene fills the WHOLE viewport, so the art transform under test is
+       the same one a game gets, with no chrome to subtract. Every panel floats. */
+    #stage { position: fixed; inset: 0; }
+
+    #bar {
+      position: fixed; left: 0; top: 0; right: 0; z-index: 9000;
+      display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px;
+      background: #fffef7ee; border-bottom: 3px solid #ecd9a8; align-items: center;
+      max-height: 46vh; overflow: auto;
+    }
+    #bar.hidden { display: none; }
+    .group { display: flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 12px; background: #eef4fb; }
+    .group > strong { font-size: 11px; text-transform: uppercase; opacity: .6; letter-spacing: .04em; }
+    button {
+      font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px;
+      padding: 8px 11px; min-height: 34px; background: #2f6fb0; color: #fff; cursor: pointer;
+    }
+    button.on { background: #e8863a; }
+    button.alt { background: #4a8b6a; }
+    button.warn { background: #a8453a; }
+
+    #toggle-bar { position: fixed; right: 8px; top: 8px; z-index: 9500; background: #123a6b; }
+
+    #readout {
+      position: fixed; left: 8px; bottom: 8px; z-index: 9000; max-width: 46vw;
+      max-height: 44vh; overflow: auto; font-size: 12px; line-height: 1.45;
+      background: #000c; color: #ffe6b8; padding: 8px 11px; border-radius: 12px;
+      white-space: pre; pointer-events: none; font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    #log {
+      position: fixed; right: 8px; bottom: 8px; z-index: 9000; width: 340px;
+      max-height: 36vh; overflow: hidden; font-size: 12px; line-height: 1.5;
+      background: #123a6bdd; color: #d9ecff; padding: 8px 11px; border-radius: 12px;
+      white-space: pre-wrap; pointer-events: none;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+
+    /* HUD stand-ins — what setReserve() reports, drawn so the parked-lens push
+       is visible rather than inferred. */
+    .hud { position: fixed; z-index: 8000; display: none; pointer-events: none;
+      border: 3px dashed #ff6b6b; background: #ff6b6b22; border-radius: 14px; }
+    body.reserve-on .hud { display: block; }
+    #hud-banner { left: 12px; right: 12px; top: 56px; height: 110px; }
+    #hud-tray { left: 50%; transform: translateX(-50%); bottom: 16px; width: 460px; height: 140px; }
+
+    /* Harness-only overlay, appended to lens.el, proving `el` is addressable and
+       showing the exact point that must magnify IN PLACE when zoom changes. */
+    .probe-cross { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px;
+      margin: -17px 0 0 -17px; pointer-events: none; z-index: 4;
+      background:
+        linear-gradient(#ff2d55, #ff2d55) center/2px 100% no-repeat,
+        linear-gradient(#ff2d55, #ff2d55) center/100% 2px no-repeat; }
+    /* Harness-only: make the invisible grip visible so its size and its offset
+       down the handle can be eyeballed. The module never paints it. */
+    body.show-grip .ml-grip { background: rgba(255, 45, 85, .18); border-radius: 50%;
+      box-shadow: inset 0 0 0 3px rgba(255, 45, 85, .55); }
+  </style>
+</head>
+<body>
+  <div id="stage"></div>
+
+  <div id="hud-banner" class="hud"></div>
+  <div id="hud-tray" class="hud"></div>
+
+  <button id="toggle-bar">hide panel</button>
+
+  <div id="bar">
+    <div class="group">
+      <strong>lens</strong>
+      <button id="l-enabled">enabled</button>
+      <button id="l-visible">visible</button>
+      <button id="l-glint">glint</button>
+      <button id="l-resync">resync</button>
+      <button id="l-centre">moveTo centre</button>
+      <button id="l-tour" class="alt">tour bugs</button>
+    </div>
+    <div class="group">
+      <strong>dwell</strong>
+      <button id="d-fast">dwell 600 ms</button>
+      <button id="d-radius">radius 150</button>
+    </div>
+    <div class="group">
+      <strong>world</strong>
+      <button id="w-zoom">zoom 1.6</button>
+      <button id="w-plate">swap plate</button>
+      <button id="w-reset" class="alt">re-hide bugs</button>
+      <button id="w-frame">frame on</button>
+      <button id="w-handoff">reveal: markFound</button>
+    </div>
+    <div class="group">
+      <strong>probes</strong>
+      <button id="p-strand" class="warn">strand: blur mid-drag</button>
+      <button id="p-cancel" class="warn">strand: pointercancel</button>
+      <button id="p-drag" class="alt">synthetic drag</button>
+    </div>
+    <div class="group">
+      <strong>view</strong>
+      <button id="v-reserve">reserve off</button>
+      <button id="v-cross">crosshair</button>
+      <button id="v-grip">show grip</button>
+      <button id="v-rm">reducedMotion: live</button>
+    </div>
+    <div class="group">
+      <strong>life</strong>
+      <button id="s-destroy" class="warn">destroy lens</button>
+      <button id="s-rebuild" class="alt">rebuild all</button>
+    </div>
+  </div>
+
+  <div id="readout">booting…</div>
+  <div id="log">log</div>
+
+  <script type="module">
+    import { createScene } from './hotspot-scene.js';
+    import { createLens } from './magnifier-lens.js';
+
+    const ART_W = 1600;
+    const ART_H = 1200;
+
+    /** Four hidden "bugs". Centres are ART px, well clear of the lens's own
+     *  start point (800, 600) so nothing dwells at boot. */
+    const BUGS = [
+      { id: 'red',   tint: '#c9433a', x: 520,  y: 430, size: 190 },
+      { id: 'blue',  tint: '#2f6fb0', x: 1080, y: 430, size: 190 },
+      { id: 'green', tint: '#4a8b6a', x: 560,  y: 880, size: 190 },
+      { id: 'gold',  tint: '#e0a02a', x: 1120, y: 860, size: 190 },
+    ];
+
+    // --- baked stand-ins ------------------------------------------------------
+    // The module loads no assets of its own, so the harness bakes everything,
+    // which also keeps this page runnable before any art exists.
+
+    /** A checkerboard with a fine grid: at zoom 1.6 the square under the glass
+     *  centre must stay put, and the grid makes any drift obvious. */
+    function platePng(a, b, label) {
+      const c = document.createElement('canvas');
+      c.width = ART_W; c.height = ART_H;
+      const g = c.getContext('2d');
+      const CELL = 100;
+      for (let y = 0; y < ART_H; y += CELL) {
+        for (let x = 0; x < ART_W; x += CELL) {
+          g.fillStyle = ((x / CELL + y / CELL) % 2 === 0) ? a : b;
+          g.fillRect(x, y, CELL, CELL);
+        }
+      }
+      g.strokeStyle = 'rgba(255,255,255,.22)'; g.lineWidth = 1;
+      for (let x = 0; x <= ART_W; x += 20) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, ART_H); g.stroke(); }
+      for (let y = 0; y <= ART_H; y += 20) { g.beginPath(); g.moveTo(0, y); g.lineTo(ART_W, y); g.stroke(); }
+      g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '600 26px system-ui';
+      for (let y = 100; y < ART_H; y += 200) {
+        for (let x = 100; x < ART_W; x += 200) g.fillText(`${x},${y}`, x + 6, y + 30);
+      }
+      // the 834x1194 portrait crop, so the clamp band is visible
+      g.strokeStyle = 'rgba(255,120,120,.75)'; g.lineWidth = 5;
+      g.strokeRect(381, 0, 838, ART_H);
+      g.fillStyle = 'rgba(255,255,255,.9)'; g.font = '700 46px system-ui';
+      g.fillText(label, 40, 70);
+      return c.toDataURL('image/png');
+    }
+
+    /** A coloured square with a letter — a "bug" that is unmistakable at zoom. */
+    function bugPng(tint, letter) {
+      const S = 256;
+      const c = document.createElement('canvas');
+      c.width = S; c.height = S;
+      const g = c.getContext('2d');
+      g.fillStyle = tint;
+      g.strokeStyle = '#0b1a3a'; g.lineWidth = 14;
+      g.beginPath();
+      const r = 34;
+      g.moveTo(24 + r, 24);
+      g.arcTo(S - 24, 24, S - 24, S - 24, r);
+      g.arcTo(S - 24, S - 24, 24, S - 24, r);
+      g.arcTo(24, S - 24, 24, 24, r);
+      g.arcTo(24, 24, S - 24, 24, r);
+      g.closePath();
+      g.fill(); g.stroke();
+      g.fillStyle = '#fffdf6'; g.font = '700 110px system-ui';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(letter, S / 2, S / 2 + 4);
+      return c.toDataURL('image/png');
+    }
+
+    /**
+     * A stand-in for `assets/props/magnifier.webp`: a cream ring with a handle
+     * and a TRUE ALPHA hole (punched with destination-out), because a pale disc
+     * where the glass should be is the exact failure this harness has to be able
+     * to show. Geometry matches the module's frame defaults — box 900, hole
+     * centre at (0.42, 0.38), box edge = 1.9 x hole diameter.
+     */
+    function framePng() {
+      const S = 900;
+      const HX = Math.round(S * 0.42);
+      const HY = Math.round(S * 0.38);
+      const HR = Math.round(S / 1.9 / 2);          // hole radius
+      const OR = Math.round(HR * 1.28);            // outer ring radius
+      const c = document.createElement('canvas');
+      c.width = S; c.height = S;
+      const g = c.getContext('2d');
+      // Handle first, so the ring overlaps it. It leaves the ring DOWN-RIGHT,
+      // matching the module's default `gripDir` — the drawn handle and the
+      // invisible grip have to be in the same place or "show grip" lies.
+      g.save();
+      g.translate(HX, HY);
+      g.rotate(-Math.PI / 4);
+      g.fillStyle = '#8a5a34';
+      g.fillRect(-34, OR - 18, 68, 300);
+      g.fillStyle = '#6f4526';
+      g.fillRect(-34, OR - 18, 68, 40);
+      g.restore();
+      // ring
+      g.beginPath(); g.arc(HX, HY, OR, 0, Math.PI * 2);
+      g.fillStyle = '#f6efdd'; g.fill();
+      g.beginPath(); g.arc(HX, HY, (HR + OR) / 2, 0, Math.PI * 2);
+      g.strokeStyle = '#cbb994'; g.lineWidth = 10; g.stroke();
+      // the hole — true alpha, nothing behind it
+      g.globalCompositeOperation = 'destination-out';
+      g.beginPath(); g.arc(HX, HY, HR, 0, Math.PI * 2); g.fill();
+      g.globalCompositeOperation = 'source-over';
+      return c.toDataURL('image/png');
+    }
+
+    const PLATES = [platePng('#2b3d6b', '#22315a', 'plate A'), platePng('#3d5b2b', '#31491f', 'plate B')];
+    const BUG_PNG = Object.fromEntries(BUGS.map((b) => [b.id, bugPng(b.tint, b.id[0].toUpperCase())]));
+    const FRAME_PNG = framePng();
+
+    // --- harness state --------------------------------------------------------
+
+    const stage = document.getElementById('stage');
+    const logEl = document.getElementById('log');
+    const readoutEl = document.getElementById('readout');
+
+    let scene = null;
+    let lens = null;
+    let plateIdx = 0;
+    let zoomIdx = 1;
+    const ZOOMS = [1.0, 1.6, 2.4];
+    let rmMode = 'live';            // 'live' | 'on' | 'off'
+    let reserveOn = false;
+    let frameOn = true;
+    let crossOn = false;
+    let dwellFast = false;
+    let dwellWide = false;
+    let dwells = 0;
+    let taps = 0;
+    let keepInGlass = true;         // markFound (default) vs hideSprite
+    let found = new Set();
+    let lastDwell = '—';
+    let lastMove = { x: 0, y: 0 };
+    let crossEl = null;
+
+    const lines = [];
+    function log(msg) {
+      lines.unshift(msg);
+      if (lines.length > 15) lines.pop();
+      logEl.textContent = lines.join('\n');
+    }
+
+    function reserveRects() {
+      if (!reserveOn) return [];
+      return [
+        document.getElementById('hud-banner').getBoundingClientRect(),
+        document.getElementById('hud-tray').getBoundingClientRect(),
+      ];
+    }
+
+    // --- build ----------------------------------------------------------------
+
+    function build() {
+      scene = createScene(stage, {
+        artW: ART_W, artH: ART_H,
+        background: PLATES[plateIdx],
+        minHit: 96,
+        reducedMotion: rmMode === 'live' ? null : rmMode === 'on',
+        ariaLabel: 'lens test room',
+        className: 'ml-test',
+      });
+
+      // Base hotspots start EMPTY and DISABLED: a bug lives only in the lens
+      // world until it is found. This is the reveal hand-off from game-design
+      // §5.2.7, rehearsed here so the module is proven against the real flow.
+      for (const b of BUGS) {
+        scene.addHotspot({
+          id: b.id, x: b.x, y: b.y, w: b.size, h: b.size,
+          sprite: null, enabled: false, alt: b.id, z: 1,
+        });
+      }
+      scene.setReserve(reserveRects);
+      scene.onTap((id) => { taps++; log(`tap ${taps}: ${id} (base scene)`); });
+
+      buildLens();
+      log(`built · scene ${scene.size} hotspots · lens zoom ${ZOOMS[zoomIdx]}`);
+    }
+
+    function buildLens() {
+      lens = createLens(scene, {
+        zoom: ZOOMS[zoomIdx],
+        glassD: 320,
+        gripOffset: 44,
+        gripMinCssPx: 140,
+        frame: frameOn ? { url: FRAME_PNG } : null,
+        background: PLATES[plateIdx],
+        start: { x: 800, y: 600 },
+        dwellMs: dwellFast ? 60 : 600,
+        dwellRadiusArt: dwellWide ? 260 : 150,
+        reducedMotion: rmMode === 'live' ? null : rmMode === 'on',
+        ariaLabel: 'magnifying glass',
+      });
+      lens.setSprites(BUGS
+        .filter((b) => !found.has(b.id))
+        .map((b) => ({ id: b.id, url: BUG_PNG[b.id], x: b.x, y: b.y, w: b.size, h: b.size })));
+      lens.setReserve(reserveRects);
+      lens.onMove((c) => { lastMove = c; });
+      lens.onDwell((d) => {
+        dwells++;
+        lastDwell = `${d.id} @ ${Math.round(d.x)},${Math.round(d.y)} (${Math.round(d.dist)} px)`;
+        log(`dwell ${dwells}: ${lastDwell}`);
+        reveal(d.id);
+      });
+      if (crossOn) addCross();
+    }
+
+    /**
+     * §5.2.7: into the base world. WHICH of the two hand-offs is used is the
+     * `reveal:` toggle. `markFound` leaves the sprite in the magnified world
+     * and only retires it as a dwell candidate — what Bug Hotel Observer ships,
+     * because the glass paints its own OPAQUE copy of the world and a sprite
+     * removed from it vanishes under the child's own hand. `hideSprite` takes
+     * it out of the glass entirely. Both are supported; flip the button and
+     * watch the difference with the glass parked on a found bug.
+     */
+    async function reveal(id) {
+      if (found.has(id)) return;
+      found.add(id);
+      if (keepInGlass) lens.markFound(id);
+      else lens.hideSprite(id);
+      const h = scene.get(id);
+      if (!h) return;
+      await h.setSprite(BUG_PNG[id]);
+      h.setEnabled(true);
+      h.pop();
+      log(`reveal ${id} -> base scene (${found.size}/${BUGS.length})`);
+    }
+
+    function addCross() {
+      if (!lens || crossEl) return;
+      crossEl = document.createElement('div');
+      crossEl.className = 'probe-cross';
+      lens.el.appendChild(crossEl);
+    }
+    function removeCross() {
+      if (crossEl) { crossEl.remove(); crossEl = null; }
+    }
+
+    function rebuildLens() {
+      removeCross();
+      if (lens) lens.destroy();
+      buildLens();
+    }
+
+    function rebuildAll() {
+      removeCross();
+      if (lens) { lens.destroy(); lens = null; }
+      if (scene) { scene.destroy(); scene = null; }
+      found = new Set();
+      dwells = 0; taps = 0; lastDwell = '—';
+      build();
+      paintReadout();
+    }
+
+    // --- readout --------------------------------------------------------------
+
+    function paintReadout() {
+      if (!scene) { readoutEl.textContent = 'scene destroyed'; return; }
+      if (!lens) {
+        readoutEl.textContent = `lens destroyed · lens nodes in scene: ${scene.el.querySelectorAll('.ml-lens').length}`;
+        return;
+      }
+      const s = lens.getState();
+      const v = scene.visibleArt();
+      readoutEl.textContent =
+        `viewport   ${innerWidth} x ${innerHeight}\n` +
+        `scene      scale ${scene.scale.toFixed(4)}   reducedMotion ${scene.reducedMotion}\n` +
+        `visibleArt x ${v.x.toFixed(0)} y ${v.y.toFixed(0)} w ${v.w.toFixed(0)} h ${v.h.toFixed(0)}\n` +
+        `lens art   x ${s.x.toFixed(1)}  y ${s.y.toFixed(1)}\n` +
+        `lens css   glass ${s.glassPx.toFixed(1)} px   zoom ${s.zoom}\n` +
+        `onMove     x ${lastMove.x.toFixed(1)}  y ${lastMove.y.toFixed(1)}\n` +
+        `state      enabled ${s.enabled}  visible ${s.visible}  dragging ${s.dragging}\n` +
+        `dwell      ms ${s.dwell.ms}  radius ${s.dwell.radiusArt}  armed ${s.dwell.id ?? '—'}  fired ${s.dwell.fired}\n` +
+        `dwells     ${dwells}   last ${lastDwell}\n` +
+        `found      ${found.size}/${BUGS.length}   taps ${taps}\n` +
+        `sprites    ${s.sprites.map((sp) => `${sp.id}:${sp.visible ? 'in' : 'out'}`).join('  ')}`;
+    }
+    setInterval(paintReadout, 300);
+
+    // --- synthetic pointer helpers -------------------------------------------
+    // The strand probes must go through the REAL listeners: pointerdown on the
+    // grip, then window-level moves, then the terminal event under test.
+
+    const nextId = (() => { let n = 100; return () => ++n; })();
+
+    function gripCentre() {
+      const r = lens.gripEl.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+
+    function pe(type, id, x, y) {
+      return new PointerEvent(type, {
+        bubbles: true, cancelable: true, pointerId: id, isPrimary: true,
+        pointerType: 'touch', clientX: x, clientY: y, buttons: type === 'pointerup' ? 0 : 1,
+      });
+    }
+
+    function dragTo(id, from, to, steps = 8) {
+      lens.gripEl.dispatchEvent(pe('pointerdown', id, from.x, from.y));
+      for (let i = 1; i <= steps; i++) {
+        const t = i / steps;
+        window.dispatchEvent(pe('pointermove', id,
+          from.x + (to.x - from.x) * t, from.y + (to.y - from.y) * t));
+      }
+    }
+
+    /** Drive the lens to an art point with a real synthetic gesture. */
+    function syntheticDragToArt(ax, ay, terminal = 'pointerup') {
+      const id = nextId();
+      const from = gripCentre();
+      const target = scene.toScreen(ax, ay);
+      // aim the GRIP, not the glass: the glass sits gripOffset up the handle
+      const c = lens.getCentre();
+      const g = scene.toScreen(c.x, c.y);
+      const to = { x: target.x + (from.x - g.x), y: target.y + (from.y - g.y) };
+      dragTo(id, from, to);
+      if (terminal === 'blur') window.dispatchEvent(new Event('blur'));
+      else if (terminal === 'pointercancel') window.dispatchEvent(pe('pointercancel', id, to.x, to.y));
+      else window.dispatchEvent(pe('pointerup', id, to.x, to.y));
+      return { id, to };
+    }
+
+    /**
+     * The probe that matters: a drag interrupted by the OS. After it the lens
+     * must be (a) not dragging, (b) parked where it was when the finger went
+     * away, and (c) immediately draggable again.
+     */
+    function strandProbe(terminal) {
+      const before = lens.getCentre();
+      syntheticDragToArt(1080, 430, terminal);
+      const mid = lens.getCentre();
+      const settled = !lens.dragging;
+      const moved = Math.hypot(mid.x - before.x, mid.y - before.y) > 10;
+      // …and can it still be dragged?
+      syntheticDragToArt(560, 880, 'pointerup');
+      const after = lens.getCentre();
+      const again = Math.hypot(after.x - mid.x, after.y - mid.y) > 10 && !lens.dragging;
+      const pass = settled && moved && again;
+      log(`${pass ? 'PASS' : 'FAIL'} strand[${terminal}] settled=${settled} moved=${moved} draggable-again=${again}`);
+      return { pass, settled, moved, again, mid, after };
+    }
+
+    // --- controls -------------------------------------------------------------
+
+    const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+    /** Every control that touches the lens goes through here, so clicking one
+     *  after `destroy lens` logs a line instead of throwing into the console —
+     *  "zero console errors" has to survive QA poking the buttons in any order. */
+    const onLens = (id, fn) => on(id, (e) => {
+      if (!lens) { log(`"${id}" ignored — lens is destroyed; press "rebuild all"`); return; }
+      return fn(e);
+    });
+
+    onLens('l-enabled', (e) => {
+      const next = !lens.enabled;
+      lens.setEnabled(next);
+      e.target.textContent = next ? 'enabled' : 'DISABLED';
+      e.target.classList.toggle('on', !next);
+      log(`setEnabled(${next})`);
+    });
+    onLens('l-visible', (e) => {
+      const next = !lens.visible;
+      lens.setVisible(next);
+      e.target.textContent = next ? 'visible' : 'HIDDEN';
+      e.target.classList.toggle('on', !next);
+      log(`setVisible(${next})`);
+    });
+    onLens('l-glint', async () => {
+      const t0 = performance.now();
+      const ran = await lens.glint();
+      log(`glint -> ${ran} in ${Math.round(performance.now() - t0)} ms${ran ? '' : ' (reduced motion)'}`);
+    });
+    onLens('l-resync', () => { lens.resync(); log('resync()'); });
+    onLens('l-centre', async () => {
+      await lens.moveTo(ART_W / 2, ART_H / 2, { animate: true });
+      log(`moveTo centre -> ${JSON.stringify(lens.getCentre())}`);
+    });
+    onLens('l-tour', async () => {
+      for (const b of BUGS) {
+        await lens.moveTo(b.x, b.y, { animate: true, ms: 420 });
+        await new Promise((r) => setTimeout(r, 260));
+      }
+      log('tour done');
+    });
+
+    onLens('d-fast', (e) => {
+      dwellFast = !dwellFast;
+      const d = lens.setDwell({ ms: dwellFast ? 60 : 600 });
+      e.target.textContent = `dwell ${d.ms} ms`;
+      e.target.classList.toggle('on', dwellFast);
+      log(`setDwell ms -> ${d.ms}`);
+    });
+    onLens('d-radius', (e) => {
+      dwellWide = !dwellWide;
+      const d = lens.setDwell({ radiusArt: dwellWide ? 260 : 150 });
+      e.target.textContent = `radius ${d.radiusArt}`;
+      e.target.classList.toggle('on', dwellWide);
+      log(`setDwell radius -> ${d.radiusArt}`);
+    });
+
+    onLens('w-zoom', (e) => {
+      zoomIdx = (zoomIdx + 1) % ZOOMS.length;
+      e.target.textContent = `zoom ${ZOOMS[zoomIdx]}`;
+      rebuildLens();
+      log(`zoom -> ${ZOOMS[zoomIdx]} (lens rebuilt; zoom is a constructor option)`);
+    });
+    onLens('w-plate', async () => {
+      plateIdx = 1 - plateIdx;
+      const [a, b] = await Promise.all([
+        scene.setBackground(PLATES[plateIdx], { ms: 300 }),
+        lens.setBackground(PLATES[plateIdx]),
+      ]);
+      log(`swap plate -> scene ${a} · lens ${b}`);
+    });
+    onLens('w-reset', () => {
+      found = new Set();
+      for (const b of BUGS) {
+        lens.showSprite(b.id);
+        lens.markFound(b.id, false);
+        const h = scene.get(b.id);
+        if (h) { h.setSprite(null); h.setEnabled(false); }
+      }
+      log('bugs re-hidden into the lens world');
+    });
+    onLens('w-handoff', (e) => {
+      keepInGlass = !keepInGlass;
+      e.target.textContent = keepInGlass ? 'reveal: markFound' : 'reveal: hideSprite';
+      e.target.classList.toggle('on', !keepInGlass);
+      log(`reveal hand-off -> ${keepInGlass ? 'markFound (stays in the glass)' : 'hideSprite (leaves the glass)'}`);
+    });
+    onLens('w-frame', async (e) => {
+      frameOn = !frameOn;
+      const ok = await lens.setFrame(frameOn ? FRAME_PNG : null);
+      e.target.textContent = frameOn ? 'frame on' : 'frame OFF';
+      e.target.classList.toggle('on', !frameOn);
+      log(`setFrame -> ${ok} (${frameOn ? 'authored ring' : 'CSS stand-in ring'})`);
+    });
+
+    onLens('p-strand', () => strandProbe('blur'));
+    onLens('p-cancel', () => strandProbe('pointercancel'));
+    onLens('p-drag', () => {
+      syntheticDragToArt(520, 430);
+      log(`synthetic drag -> ${JSON.stringify(lens.getCentre())}`);
+    });
+
+    onLens('v-reserve', (e) => {
+      reserveOn = !reserveOn;
+      document.body.classList.toggle('reserve-on', reserveOn);
+      scene.reflow();
+      lens.setReserve(reserveRects);
+      e.target.textContent = reserveOn ? 'reserve ON' : 'reserve off';
+      e.target.classList.toggle('on', reserveOn);
+      log(`reserve ${reserveOn ? 'on — parked lens pushed clear' : 'off'}`);
+    });
+    onLens('v-cross', (e) => {
+      crossOn = !crossOn;
+      if (crossOn) addCross(); else removeCross();
+      e.target.classList.toggle('on', crossOn);
+      log(`crosshair ${crossOn ? 'on — the point under it must not drift when zoom changes' : 'off'}`);
+    });
+    on('v-grip', (e) => {
+      const shown = document.body.classList.toggle('show-grip');
+      e.target.classList.toggle('on', shown);
+      log(`grip ${shown ? 'shown (harness CSS only)' : 'hidden'}`);
+    });
+    on('v-rm', (e) => {
+      rmMode = rmMode === 'live' ? 'on' : rmMode === 'on' ? 'off' : 'live';
+      e.target.textContent = `reducedMotion: ${rmMode}`;
+      e.target.classList.toggle('on', rmMode === 'on');
+      log(`reducedMotion ${rmMode} — rebuilding (constructor option)`);
+      rebuildAll();
+    });
+
+    onLens('s-destroy', () => {
+      const before = scene.el.querySelectorAll('.ml-lens').length;
+      removeCross();
+      lens.destroy();
+      lens.destroy();                       // idempotent by contract
+      const after = scene.el.querySelectorAll('.ml-lens').length;
+      lens = null;
+      log(`destroy() · .ml-lens nodes ${before} -> ${after}`);
+      paintReadout();
+    });
+    on('s-rebuild', () => { rebuildAll(); log('rebuilt scene + lens'); });
+
+    on('toggle-bar', (e) => {
+      const bar = document.getElementById('bar');
+      bar.classList.toggle('hidden');
+      e.target.textContent = bar.classList.contains('hidden') ? 'show panel' : 'hide panel';
+    });
+
+    build();
+    paintReadout();
+
+    // --- headless verification hook -------------------------------------------
+    window.QLOBE_DEBUG = {
+      ready: true,
+      get scene() { return scene; },
+      get lens() { return lens; },
+      bugs: BUGS,
+      getState: () => (lens ? lens.getState() : null),
+      getCentre: () => (lens ? lens.getCentre() : null),
+      /** The real drag path, same one QLOBE_DEBUG.setLens uses in the game. */
+      setLens: (x, y) => (lens ? lens.moveTo(x, y) : null),
+      syntheticDrag: (x, y, terminal) => syntheticDragToArt(x, y, terminal),
+      strandProbe,
+      dwellCount: () => dwells,
+      tapCount: () => taps,
+      found: () => [...found],
+      fastTimer: (ms = 60) => (lens ? lens.setDwell({ ms }) : null),
+      reset: rebuildAll,
+      /** Tap a revealed bug through the glass — proves the lens blocks nothing. */
+      tap: (id) => {
+        const el = stage.querySelector(`.hs-hotspot[data-id="${id}"]`);
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        const init = { bubbles: true, cancelable: true, pointerId: 1, isPrimary: true,
+          pointerType: 'touch', clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+        el.dispatchEvent(new PointerEvent('pointerdown', init));
+        el.dispatchEvent(new PointerEvent('pointerup', init));
+        return true;
+      },
+    };
+    document.title = 'ready';
+  </script>
+</body>
+</html>
