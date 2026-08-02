@@ -203,6 +203,15 @@ const field = createField({
       state.layout = layout;
       els.app.classList.toggle('compact', layout === 'compact');
     },
+    /** §2.5a — the plate the framed stage is showing, so the surround can be a
+     *  blurred duplicate of it. ABSOLUTE, for the same reason --splash-plate is:
+     *  a relative url() inside a custom property resolves against the
+     *  STYLESHEET, and css/style.css would fetch it as 'css/assets/…'. */
+    plate(url) {
+      if (!url) return;
+      const abs = new URL(url, document.baseURI).href;
+      document.documentElement.style.setProperty('--stage-plate', `url('${abs}')`);
+    },
     room(roomId) { void enterRoom(roomId); },
     reveal() { armIdle(); },
     target(bugId) { void openReward(bugId); },
@@ -343,7 +352,12 @@ async function goHotel({ fresh = false } = {}) {
     state.roundAtEntry = deriveRound(config, journal);
   }
   renderPips();
-  renderBanner('prompt-look');
+  // The hotel is a CHOICE, not a search. `prompt-look` ("Somebody tiny is
+  // hiding in this room") only makes sense once the child is INSIDE a room —
+  // printed over the four plaques it read like a broken state, because there is
+  // no "this room" yet. `pick-room` is the hotel's own line; `prompt-look`
+  // keeps its in-room job in speakRoomIntro's detective sequence.
+  renderBanner('pick-room');
   setScreen('hotel');
   await field.showHotel();
   if (state.screen !== 'hotel') return false;
@@ -414,7 +428,7 @@ function speakCurrentPrompt() {
       state.welcomeSpoken = true;
       return voice.say('welcome');
     case 'hotel':
-      return voice.say('prompt-look');
+      return voice.say('pick-room');
     case 'room':
       if (!bug) return Promise.resolve();
       return isDetective()
@@ -1015,7 +1029,13 @@ window.QLOBE_DEBUG = {
     if (!field.lens) return null;
     const s = field.lens.getState();
     return {
-      x: s.x, y: s.y, enabled: s.enabled, visible: s.visible, dragging: s.dragging,
+      x: s.x, y: s.y, enabled: s.enabled, visible: s.visible,
+      // §11 row 23 — a pointer down on the drag surface is a TRACKED PRESS
+      // (`pressing`); it only becomes `dragging` once it crosses `slopPx`.
+      // A harness that waits on the old meaning of `dragging` has to wait on
+      // `pressing` for the pointerdown and on `dragging` for the move.
+      pressing: s.pressing, dragging: s.dragging, slopPx: s.slopPx,
+      lastTapThrough: s.lastTapThrough,
       zoom: s.zoom, glassD: field.lens.glassD, dwell: s.dwell, sprites: s.sprites,
     };
   },

@@ -189,6 +189,11 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
   const doneRooms = new Map();  // roomId -> bugId whose happy badge is shown
   let layout = 'wide';
   let lastReflow = null;
+  // The lens's hidden world, mirrored. The module's own `setSprites` is a whole
+  // -list replace and `getState()` reports only id/x/y/visible/found, so the
+  // URLs (and the boxes) have to live somewhere the game owns if a sprite is
+  // ever to be MOVED without losing the frame it is currently wearing.
+  let lensSprites = [];
   let token = 0;                // supersedes every in-flight choreography
   let wrongTaps = 0;
   let lastCloserAt = -Infinity;
@@ -226,6 +231,134 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
   function roomBox(room) {
     const h = room.exteriorHotspot || {};
     return { x: Number(h.x), y: Number(h.y), w: Number(h.w) || 280, h: Number(h.h) || 260 };
+  }
+
+  // -- §4.3a the target is ALWAYS reachable ---------------------------------
+  //
+  // WHY THIS EXISTS. The scene COVER-fits a 4:3 plate, so a narrow window sees
+  // a vertical slice of it: a 390x844 phone reaches only art x ∈ [523, 1077].
+  // The leaf room's four nooks are authored at x = 466 / 478 / 831 / 1150 —
+  // against the real plate's painted hollows, where they must stay for the
+  // tablet the game is designed for — so on a phone three of the four sit
+  // outside the reachable band, and a round that puts the TARGET in one of
+  // them cannot be won at all. The child drags the glass to the edge and the
+  // ladybug is simply not in the room.
+  //
+  // The fix is deliberately the smallest one that keeps the authored art
+  // intact: the ZONES never move, and only the TARGET is guaranteed. The other
+  // two bugs are bonus finds (§4.2) and may stay off the crop.
+  //
+  // `MARGIN` is inset from the visible edge so the target is not merely on
+  // screen but comfortably inside it: the glass is 360 art px across and the
+  // dwell radius 150, and a bug pinned to the last column would need the child
+  // to park the glass half off the plate.
+  const REACH_MARGIN_ART = 120;
+
+  /** The comfortably-reachable art rectangle, or null before the first layout. */
+  function reachBand() {
+    const v = scene.visibleArt();
+    if (!v || !(v.w > 0) || !(v.h > 0)) return null;
+    // Never let the inset eat the band it is protecting: a third of the
+    // visible span is the cap, so x0 < x1 and y0 < y1 always hold.
+    const mx = Math.min(REACH_MARGIN_ART, v.w / 3);
+    const my = Math.min(REACH_MARGIN_ART, v.h / 3);
+    return { x0: v.x + mx, x1: v.x + v.w - mx, y0: v.y + my, y1: v.y + v.h - my };
+  }
+
+  const inBand = (b, x, y) => Boolean(b) && x >= b.x0 && x <= b.x1 && y >= b.y0 && y <= b.y1;
+  const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
+
+  /**
+   * Guarantees the round is winnable on THIS viewport. Mutates `placements`
+   * and returns true when something moved.
+   *
+   * Three ladders, in order, each preferring an authored nook to a made-up
+   * coordinate:
+   *   1. SWAP with a placed, still-hidden bug whose nook IS reachable — both
+   *      bugs stay in painted hollows and the layout keeps its authored look.
+   *   2. RELOCATE to the nearest free authored nook that is reachable (the
+   *      empty fourth nook of §4.3 is usually it).
+   *   3. CLAMP into the band. Only when the room has no reachable nook at all;
+   *      `artY` survives untouched whenever the crop is horizontal, which is
+   *      every phone case.
+   *
+   * DETERMINISTIC: it reads placement order, the authored zone order and the
+   * viewport — never the clock and never the PRNG. Same seed + mode + round +
+   * viewport ⇒ same layout, which is what QA pins.
+   *
+   * Never moves a bug the child has already found (see §2.9's exception note).
+   */
+  function ensureTargetReachable() {
+    if (view !== 'room' || !roomDef || !targetId) return false;
+    const band = reachBand();
+    if (!band) return false;
+    const t = placements.find((p) => p.bugId === targetId);
+    if (!t || inBand(band, t.artX, t.artY)) return false;
+
+    const swap = placements.find(
+      (p) => p !== t && !revealed.has(p.bugId) && inBand(band, p.artX, p.artY),
+    );
+    if (swap) {
+      const keep = { zone: t.zone, artX: t.artX, artY: t.artY };
+      t.zone = swap.zone; t.artX = swap.artX; t.artY = swap.artY;
+      swap.zone = keep.zone; swap.artX = keep.artX; swap.artY = keep.artY;
+      return true;
+    }
+
+    const taken = new Set(placements.filter((p) => p !== t).map((p) => p.zone));
+    let best = null;
+    for (const z of roomDef.zones || []) {
+      const x = Number(z.x);
+      const y = Number(z.y);
+      if (taken.has(z.name) || !Number.isFinite(x) || !Number.isFinite(y)) continue;
+      if (!inBand(band, x, y)) continue;
+      const d = Math.hypot(x - t.artX, y - t.artY);
+      // Strict `<` on a rounded distance: an exact tie falls to the earlier
+      // AUTHORED zone, so the pick cannot depend on float noise.
+      if (!best || d < best.d - 0.5) best = { name: z.name, x, y, d };
+    }
+    if (best) { t.zone = best.name; t.artX = best.x; t.artY = best.y; return true; }
+
+    const nx = clamp(t.artX, band.x0, band.x1);
+    const ny = clamp(t.artY, band.y0, band.y1);
+    if (nx === t.artX && ny === t.artY) return false;
+    t.artX = nx; t.artY = ny;
+    return true;
+  }
+
+  /**
+   * Re-points every live placement at its (possibly new) art box, in BOTH
+   * worlds. Re-adding a hotspot id updates the art box in place and returns
+   * the same handle; leaving `sprite`/`enabled`/`alt` out of the options keeps
+   * a revealed bug revealed. The lens has no per-sprite move, so its world is
+   * rebuilt from the game's mirror with the LIVE visible/found flags folded
+   * back in — a found bug must not un-find itself because the tablet turned.
+   */
+  function syncPlacementGeometry() {
+    for (const p of placements) {
+      if (!p.handle) continue;
+      const box = bugBox(p);
+      scene.addHotspot({ id: p.bugId, ...box, z: 3 });
+      const rec = lensSprites.find((s) => s.id === p.bugId);
+      if (rec) { rec.x = box.x; rec.y = box.y; rec.w = box.w; rec.h = box.h; }
+    }
+    if (!lens || !lensSprites.length) return;
+    const live = new Map((lens.getState().sprites || []).map((s) => [s.id, s]));
+    lens.setSprites(lensSprites.map((s) => {
+      const l = live.get(s.id);
+      return {
+        ...s,
+        visible: l ? l.visible !== false : s.visible !== false,
+        found: l ? Boolean(l.found) : Boolean(s.found),
+      };
+    }));
+  }
+
+  /** Keeps the lens mirror honest when a sprite swaps frame (idle ↔ happy). */
+  function setLensSprite(bugId, url) {
+    const rec = lensSprites.find((s) => s.id === bugId);
+    if (rec) rec.url = url || null;
+    if (lens) lens.setSpriteUrl(bugId, url);
   }
 
   // -- the done badges (hotel screen) ---------------------------------------
@@ -274,6 +407,18 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
     // A resize NEVER re-rolls a placement (§2.9) — the art boxes are authored
     // and the module re-derives the screen rects itself, so there is nothing to
     // re-place here. The lens re-clamps its own centre off the same reflow.
+    //
+    // THE ONE EXCEPTION (§2.9, §4.3a, §11 row 24). A rotation can change WHICH
+    // slice of the 4:3 plate the window sees, and a portrait phone sees a
+    // vertical band ~555 art px wide. If that leaves the round's TARGET outside
+    // the reachable crop the room becomes unwinnable, so the target — and only
+    // the target, and only while it is still hidden — is moved back into view.
+    // Nothing is re-rolled: this is the same deterministic ladder enterRoom
+    // ran, re-evaluated against the new band. A bug the child has already
+    // found never moves under their finger.
+    if (view === 'room' && targetId && !revealed.has(targetId) && ensureTargetReachable()) {
+      syncPlacementGeometry();
+    }
     if (on.reflow) on.reflow(payload, layout);
   });
 
@@ -397,7 +542,7 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
     // The same bug is now in two worlds (see reveal()); a greeting the child
     // cannot see because they happen to be holding the glass over it is not a
     // greeting, so the magnified copy changes frame too.
-    if (happy && lens) lens.setSpriteUrl(bugId, happy);
+    if (happy && lens) setLensSprite(bugId, happy);
     if (!scene.reducedMotion) p.handle.wiggle({ ms: T(Number(tuning.wiggleMs) || 420), deg: 6 });
 
     const isTarget = bugId === targetId;
@@ -432,7 +577,7 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
       const idle = await resolveArt(bug.sprites && bug.sprites.idle);
       if (mine !== token || !idle) return;
       p.handle.setSprite(idle);
-      if (lens) lens.setSpriteUrl(bugId, idle);
+      if (lens) setLensSprite(bugId, idle);
     });
   }
 
@@ -466,6 +611,7 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
     cancelTimers();
     scene.clear();
     placements = [];
+    lensSprites = [];
     roomDef = null;
     targetId = null;
     revealed.clear();
@@ -475,6 +621,11 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
 
     const url = await resolveArt((config.splash && config.splash.bg) || null);
     if (mine !== token) return false;
+    // The framed stage floats on a blurred duplicate of ITS OWN plate (§2.5a).
+    // The field is the only thing that knows which plate that is, and it says so
+    // here — from the RESOLVED url, so the surround can never disagree with the
+    // picture inside the card.
+    if (url && on.plate) on.plate(url);
     if (url) await scene.setBackground(url, { ms: T(420) });
     if (mine !== token) return false;
 
@@ -522,6 +673,12 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
     view = 'room';
     mounted = false;
     roomDef = room;
+    // Dropped BEFORE the awaits below, not after: `scene.clear()` has just
+    // destroyed every handle, and a reflow landing in the mount window must not
+    // find the previous room's placements still pointing at them.
+    placements = [];
+    lensSprites = [];
+    targetId = null;
     revealed.clear();
     wrongTaps = 0;
     firstRevealDone = false;
@@ -537,12 +694,17 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
       round,
       placed: Number(tuning.placedPerRoom) || 3,
     });
+    // §4.3a — the seeded roll above is authored for a tablet. On a crop that
+    // cannot reach the nook it landed the target in, move the TARGET (only)
+    // back inside the band before anything is built from `placements`.
+    ensureTargetReachable();
 
     // ONE resolved URL feeds BOTH worlds. If the base plate and the magnified
     // duplicate ever disagreed, the glass would show a different picture from
     // the one under it — see js/art.js.
     plateUrl = await resolveArt(room.bg);
     if (mine !== token) return false;
+    if (plateUrl && on.plate) on.plate(plateUrl);
     if (plateUrl) await scene.setBackground(plateUrl, { ms: T(420) });
     if (mine !== token) return false;
 
@@ -573,7 +735,8 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
       };
     }));
     if (mine !== token) return false;
-    lens.setSprites(sprites);
+    lensSprites = sprites.map((s) => ({ ...s, visible: true, found: false }));
+    lens.setSprites(lensSprites);
     lens.setDwell({
       ms: T(Number(lensCfg.dwellMs) || 600),
       radiusArt: Number(lensCfg.dwellRadiusArt) || 150,
@@ -609,6 +772,7 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
     fx.replaceChildren();
     scene.clear();
     placements = [];
+    lensSprites = [];
     roomDef = null;
     targetId = null;
     revealed.clear();

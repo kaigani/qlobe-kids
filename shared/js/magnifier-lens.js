@@ -27,9 +27,42 @@
 //     hotspot.setEnabled(true)
 //     hotspot.pop()
 // From that instant the object belongs to hotspot-scene.js and every tap on it
-// is ordinary hotspot logic. THE LENS NEVER HANDLES A TAP: its root is
-// `pointer-events: none` and the single invisible grip button is the only
-// pointer target it owns.
+// is ordinary hotspot logic.
+//
+// THE LENS OWNS A POINTER SURFACE, AND FORWARDS EVERY TAP IT CATCHES
+// (revised — the original contract read "THE LENS NEVER HANDLES A TAP: its root
+// is pointer-events:none and the single invisible grip button is the only
+// pointer target it owns".) That was true and it was also why the glass could
+// only be dragged by a small button on its handle: anything larger would have
+// eaten the tap on the bug the child had just found underneath it.
+//
+// The drag surface now covers the ring, the glass and the handle — roughly the
+// frame sprite's opaque bounds — and the tap is given back by disambiguation
+// rather than by staying out of the way:
+//
+//   pointerdown anywhere on the surface  -> start TRACKING (nothing moves yet)
+//   moved past `dragSlopPx` (12 css px)  -> it is a DRAG; the same window-level
+//                                           machinery and the same applyCentre
+//                                           as before take over
+//   pointerup still inside the slop      -> it is a TAP; the lens goes
+//                                           pointer-events:none for one
+//                                           `document.elementFromPoint` and
+//                                           clicks whatever was underneath
+//
+// The forward uses `el.click()`, NOT a synthesized pointerup, and that choice is
+// load-bearing. shared/js/tap.js runs its action on `pointerup` over the element
+// and eats the browser's own click for 700 ms afterwards; the click path is what
+// it keeps for keyboard and assistive tech. A synthetic `click()` on an element
+// this press never touched with a pointer therefore fires the action EXACTLY
+// ONCE — a synthesized pointerdown/pointerup pair would fire it once on the
+// pointerup and risk a second time on the browser's compatibility click.
+// The browser's own click for this press targets the SURFACE (the common
+// ancestor of the down and the up), never the element underneath, so there is
+// no second delivery from that direction either.
+//
+// What is lost: the underlying control's pointerdown `feedback` (hotspot-scene
+// uses it for the press-down scale). A tap through the glass acts, and does not
+// depress. That is the price of the larger drag surface and it is worth it.
 //
 // WHY `markFound` AND NOT `hideSprite`. The glass is OPAQUE — it paints its own
 // magnified copy of the world — so anything in the base scene underneath it is
@@ -59,7 +92,10 @@
 // Every URL the module touches is one the caller passed in
 // (interaction-patterns.md #10). Its styles are one `<style id="ml-style">`
 // injected at module scope; games override by specificity. It imports nothing —
-// not even tap.js, because the grip is a drag handle and never a tap target.
+// not even tap.js. The surface is a DRAG handle that happens to forward taps it
+// decides are not drags, and it forwards them by clicking the real control,
+// which already has whatever press path its own game gave it. Importing tap.js
+// would mean owning a second one.
 
 // --- module constants --------------------------------------------------------
 
@@ -83,6 +119,17 @@ const D = {
   gripDirX: 0.7,        // the authored handle leaves the ring down-and-right
   gripDirY: 0.7,
   disabledOpacity: 0.55,
+  // The drag surface, as multiples of `glassD`. Defaults measured off the
+  // shipped bug-hotel magnifier (assets/props/magnifier.webp): the paper ring
+  // is fully opaque out to 0.72·glassD from the glass centre and the handle tip
+  // is ~1.53·glassD along `gripDir`. A game whose lens art is a different shape
+  // overrides them; nothing here has to be exact, because a tap that lands on
+  // the surface is forwarded to whatever is underneath either way.
+  dragSlopPx: 12,       // CSS px of travel that turns a press into a drag
+  dragRing: 1.46,       // surface circle DIAMETER / glassD
+  dragHandleLen: 1.58,  // glass centre -> surface bar tip / glassD
+  dragHandleW: 0.36,    // surface bar width / glassD
+  dragHandleMinPx: 56,  // …and the bar is never thinner than a fingertip
 };
 
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
@@ -133,11 +180,23 @@ const CSS = `
 .ml-sheen{position:absolute;left:0;top:0;width:46%;height:200%;z-index:1;
   pointer-events:none;opacity:0;will-change:transform,opacity;
   background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.62) 50%,rgba(255,255,255,0) 100%)}
-.ml-grip{position:absolute;left:0;top:0;margin:0;padding:0;border:0;
+/* The drag surface. The CONTAINER is pointer-events:none and carries the
+   listener; its three children are the hit shapes, so the union is exactly
+   "ring + glass" ∪ "handle" ∪ "the legacy grip" and the empty corners of the
+   frame box stay tappable in the ordinary way. */
+.ml-surface{position:absolute;left:0;top:0;width:100%;height:100%;
+  pointer-events:none;z-index:3;touch-action:none}
+.ml-surface > *{position:absolute;left:0;top:0;margin:0;padding:0;border:0;
   background:transparent;color:transparent;font:inherit;appearance:none;
-  -webkit-appearance:none;pointer-events:auto;cursor:grab;z-index:3;
-  touch-action:none;-webkit-tap-highlight-color:transparent}
-.ml-lens.is-dragging .ml-grip{cursor:grabbing}
+  -webkit-appearance:none;pointer-events:auto;cursor:grab;touch-action:none;
+  -webkit-tap-highlight-color:transparent}
+.ml-lens.is-dragging .ml-surface > *{cursor:grabbing}
+/* One frame with the whole lens transparent to hit-testing: what
+   document.elementFromPoint needs to see the control under the glass. */
+.ml-lens.ml-pass,.ml-lens.ml-pass *{pointer-events:none !important}
+.ml-lens.is-inert .ml-surface > *{pointer-events:none;cursor:default}
+.ml-surface-ring{border-radius:50%}
+.ml-surface-handle{transform-origin:0 50%}
 .ml-grip:disabled{pointer-events:none;cursor:default}
 .ml-grip:focus{outline:none}
 .ml-grip:focus-visible{outline:4px solid #ffd24a;outline-offset:-6px;border-radius:50%}
@@ -180,6 +239,13 @@ function injectStyle() {
  * @param {number}  [opts.gripMinCssPx=140]      CSS-px floor for the drag button
  * @param {number}  [opts.gripSize=0.8]          drag button edge / glass diameter
  * @param {boolean} [opts.clampGrip=true]        keep the glass clear of the finger
+ *        when the press lands on the ring or the handle (a press ON the glass
+ *        is never corrected — see the drag section)
+ * @param {number}  [opts.dragSlopPx=12]         travel that turns a press into a drag
+ * @param {number}  [opts.dragRing=1.46]         drag-surface circle diameter / glassD
+ * @param {number}  [opts.dragHandleLen=1.58]    glass centre -> surface bar tip / glassD
+ * @param {number}  [opts.dragHandleW=0.36]      surface bar width / glassD
+ * @param {number}  [opts.dragHandleMinPx=56]    …and its CSS-px floor
  * @param {string|{url:string,scale:number,anchor:{x:number,y:number}}} [opts.frame]
  *        authored ring+handle cutout with a TRUE ALPHA glass hole. `scale` is
  *        the frame box edge as a multiple of `glassD`; `anchor` is where the
@@ -226,6 +292,20 @@ export function createLens(scene, opts = {}) {
   const gripSize = clamp(num(opts.gripSize, D.gripSize), 0.2, 2);
   const clampGrip = opts.clampGrip !== false;
   const clampToView = opts.clampToView !== false;
+  // The drag surface (see the header). `drag*` may also arrive inside the
+  // `frame` block, because they are measurements OF the frame sprite and a
+  // config that already carries `frame.scale` / `frame.anchor` is the honest
+  // place to keep them.
+  const dragOpt = (opts.drag && typeof opts.drag === 'object') ? opts.drag : {};
+  const pickDrag = (key, fallback) => {
+    const raw = opts[key] ?? dragOpt[key] ?? (opts.frame && typeof opts.frame === 'object' ? opts.frame[key] : undefined);
+    return num(raw, fallback);
+  };
+  const dragSlopPx = Math.max(0, pickDrag('dragSlopPx', D.dragSlopPx));
+  const dragRing = Math.max(1, pickDrag('dragRing', D.dragRing));
+  const dragHandleLen = Math.max(0, pickDrag('dragHandleLen', D.dragHandleLen));
+  const dragHandleW = Math.max(0, pickDrag('dragHandleW', D.dragHandleW));
+  const dragHandleMinPx = Math.max(0, pickDrag('dragHandleMinPx', D.dragHandleMinPx));
   let glintMs = Math.max(0, num(opts.glintMs, D.glintMs));
   let dwellMs = Math.max(0, num(opts.dwellMs, D.dwellMs));
   let dwellRadiusArt = Math.max(1, num(opts.dwellRadiusArt, D.dwellRadiusArt));
@@ -298,12 +378,26 @@ export function createLens(scene, opts = {}) {
   gripEl.className = 'ml-grip';
   gripEl.setAttribute('aria-label', String(opts.ariaLabel ?? 'magnifying glass'));
 
+  // NOTE: no `aria-hidden` here either — `surfaceEl` contains `gripEl`, which is
+  // the lens's one focusable control.
+  const surfaceEl = document.createElement('div');
+  surfaceEl.className = 'ml-surface';
+
+  const ringEl = document.createElement('div');
+  ringEl.className = 'ml-surface-ring';
+
+  const handleEl = document.createElement('div');
+  handleEl.className = 'ml-surface-handle';
+
   worldEl.appendChild(bgImg);
   glassEl.appendChild(worldEl);
   glassEl.appendChild(sheenEl);
   lensEl.appendChild(glassEl);
   lensEl.appendChild(frameImg);
-  lensEl.appendChild(gripEl);
+  surfaceEl.appendChild(handleEl);
+  surfaceEl.appendChild(ringEl);
+  surfaceEl.appendChild(gripEl);
+  lensEl.appendChild(surfaceEl);
   mount.appendChild(lensEl);
 
   // --- reduced motion --------------------------------------------------------
@@ -369,6 +463,24 @@ export function createLens(scene, opts = {}) {
     gripEl.style.height = gs + 'px';
     gripEl.style.left = (glassPx / 2 + gripOffset * gripDir.x * scale - gs / 2) + 'px';
     gripEl.style.top = (glassPx / 2 + gripOffset * gripDir.y * scale - gs / 2) + 'px';
+
+    // The drag surface: a circle over ring+glass, and a rounded bar out along
+    // the handle. Written here, with every other size, so a pointer move still
+    // costs exactly two transform strings and zero layout.
+    const ringD = glassPx * dragRing;
+    ringEl.style.width = ringD + 'px';
+    ringEl.style.height = ringD + 'px';
+    ringEl.style.left = (glassPx / 2 - ringD / 2) + 'px';
+    ringEl.style.top = (glassPx / 2 - ringD / 2) + 'px';
+
+    const hw = Math.max(dragHandleMinPx, glassPx * dragHandleW);
+    const hl = glassPx * dragHandleLen;
+    handleEl.style.width = hl + 'px';
+    handleEl.style.height = hw + 'px';
+    handleEl.style.left = (glassPx / 2) + 'px';
+    handleEl.style.top = (glassPx / 2 - hw / 2) + 'px';
+    handleEl.style.borderRadius = (hw / 2) + 'px';
+    handleEl.style.transform = `rotate(${Math.atan2(gripDir.y, gripDir.x) * 180 / Math.PI}deg)`;
 
     sheenEl.style.height = glassPx * 2 + 'px';
     sheenEl.style.top = -glassPx / 2 + 'px';
@@ -530,7 +642,8 @@ export function createLens(scene, opts = {}) {
 
   // --- drag (interaction-patterns.md #11) ------------------------------------
   // Listeners live on `window` for the lifetime of the lens and are filtered by
-  // `pointerId`. Nothing is attached to the grip beyond `pointerdown`, nothing
+  // `pointerId`. Nothing is attached to the drag surface beyond `pointerdown`
+  // (and the grip's own `keydown`), nothing
   // relies on `setPointerCapture` (an iPad drops capture mid-gesture), and every
   // terminal path — up, cancel, blur, tab-hidden, destroy — runs the SAME
   // `endDrag()`, which settles the lens exactly where it is and leaves it
@@ -540,41 +653,65 @@ export function createLens(scene, opts = {}) {
   let dragId = null;
   let grabDX = 0;
   let grabDY = 0;
+  let downX = 0;          // client px, for the tap/drag slop
+  let downY = 0;
+  let dragMoved = false;  // the slop has been crossed: this press IS a drag
+  const tapThroughSubs = [];
+  let lastTapThrough = null;
 
-  function onGripDown(e) {
+  function onSurfaceDown(e) {
     if (destroyed || !enabled || !visible) return;
     if (e.isPrimary === false) return;      // second finger: ignored, not ended
+    if (typeof e.button === 'number' && e.button > 0) return;  // right/middle
     if (dragId !== null) return;            // single-drag lock
     dragId = e.pointerId;
+    dragMoved = false;
+    downX = e.clientX;
+    downY = e.clientY;
     const p = scene.toArt(e.clientX, e.clientY);
     grabDX = cx - p.x;
     grabDY = cy - p.y;
-    if (clampGrip) {
-      // The glass must never sit under the hand that is moving it. Grabbing the
-      // grip's own centre already satisfies this exactly, so the common press
-      // does not move the lens at all; only a grab high up on the glass gets
-      // corrected, and then by design.
+    // The glass must never sit under the hand that is moving it — UNLESS the
+    // hand deliberately went there. A press on the ring or the handle keeps the
+    // original lift, so the old grip behaves exactly as it always did; a press
+    // ON THE GLASS is the child saying "move this, from here", and correcting it
+    // would make the glass jump out from under their finger at the instant they
+    // touched it.
+    const grabbedGlass = Math.hypot(p.x - cx, p.y - cy) <= glassD / 2;
+    if (clampGrip && !grabbedGlass) {
       const lift = Math.abs(gripOffset * gripDir.y);
       if (grabDY > -lift) grabDY = -lift;
     }
-    lensEl.classList.add('is-dragging');
     try { e.preventDefault(); } catch { /* passive listener: nothing to prevent */ }
-    applyCentre(p.x + grabDX, p.y + grabDY);
+    // NOTHING MOVES YET. Until the slop is crossed this press is still a
+    // candidate tap, and a lens that lurched on contact would make every tap
+    // through the glass feel like a mis-hit.
   }
 
   function onWinMove(e) {
     if (dragId === null || e.pointerId !== dragId) return;
+    if (!dragMoved) {
+      if (Math.hypot(e.clientX - downX, e.clientY - downY) < dragSlopPx) return;
+      dragMoved = true;
+      lensEl.classList.add('is-dragging');
+    }
     const p = scene.toArt(e.clientX, e.clientY);
     applyCentre(p.x + grabDX, p.y + grabDY);
   }
 
   function onWinUp(e) {
     if (dragId === null || e.pointerId !== dragId) return;
+    const wasTap = !dragMoved;
+    const x = e.clientX;
+    const y = e.clientY;
     endDrag('up');
+    // A press that never travelled is a TAP on whatever the glass is covering.
+    if (wasTap) forwardTap(x, y);
   }
 
   function onWinCancel(e) {
     if (dragId === null || e.pointerId !== dragId) return;
+    // `pointercancel` is not a completed gesture: it is NOT a tap either.
     endDrag('cancel');
   }
 
@@ -589,6 +726,7 @@ export function createLens(scene, opts = {}) {
   /** Every ending, one function. Never throws; always leaves a usable lens. */
   function endDrag(reason) {
     dragId = null;
+    dragMoved = false;
     lensEl.classList.remove('is-dragging');
     try {
       applyCentre(cx, cy, { settle: true });
@@ -597,7 +735,59 @@ export function createLens(scene, opts = {}) {
     }
   }
 
-  gripEl.addEventListener('pointerdown', onGripDown);
+  /** What the glass is covering at this client point, or null. */
+  function elementUnder(clientX, clientY) {
+    if (typeof document === 'undefined' || !document.elementFromPoint) return null;
+    lensEl.classList.add('ml-pass');
+    let el = null;
+    try {
+      el = document.elementFromPoint(clientX, clientY);
+    } catch { el = null; } finally {
+      lensEl.classList.remove('ml-pass');
+    }
+    if (!el || lensEl.contains(el)) return null;
+    // elementFromPoint can land on a decorative child (a sprite <img> inside a
+    // hotspot button); the ACTIVATABLE ancestor is what a real tap would have
+    // acted on.
+    const hit = typeof el.closest === 'function'
+      ? el.closest('button, [role="button"], a[href], input, select, textarea, [data-ml-tap]')
+      : null;
+    return hit || el;
+  }
+
+  /**
+   * Deliver a tap to the control under the glass. `click()` and not a synthetic
+   * pointer pair — see the header: it is the one path shared/js/tap.js runs
+   * exactly once for a press it never saw with a pointer.
+   */
+  function forwardTap(clientX, clientY) {
+    if (destroyed || !enabled || !visible) return null;
+    const el = elementUnder(clientX, clientY);
+    if (!el || typeof el.click !== 'function') return null;
+    if (el.disabled) return null;
+    try {
+      el.click();
+    } catch (err) {
+      console.warn('[magnifier-lens] tap-through threw', err);
+      return null;
+    }
+    for (const cb of tapThroughSubs.slice()) {
+      try { cb({ el, x: clientX, y: clientY }); } catch (err) { console.warn('[magnifier-lens] onTapThrough threw', err); }
+    }
+    // hotspot-scene names its buttons with `data-id`; fall back to whatever the
+    // element does carry, so the readout is useful for any consumer.
+    lastTapThrough = {
+      id: (el.dataset && el.dataset.id) || el.id || String(el.className || el.tagName || ''),
+      at: Date.now(),
+    };
+    return el;
+  }
+
+  // ONE listener, on the surface CONTAINER: the ring, the handle and the legacy
+  // grip button all bubble into it, so there is a single pointerdown path and a
+  // press that starts on the grip and one that starts on the glass are the same
+  // code from here on.
+  surfaceEl.addEventListener('pointerdown', onSurfaceDown);
   window.addEventListener('pointermove', onWinMove, { passive: true });
   window.addEventListener('pointerup', onWinUp, { passive: true });
   window.addEventListener('pointercancel', onWinCancel, { passive: true });
@@ -762,11 +952,22 @@ export function createLens(scene, opts = {}) {
 
   // --- enable / visibility ---------------------------------------------------
 
+  /** A disabled lens is INERT, not merely unresponsive: the surface is large
+   *  now, and a large surface that still swallowed pointers while the reward
+   *  spread was open would be a dead patch of screen. */
+  function applySurfaceHitting() {
+    // A CLASS, not `pointer-events:none` on the container: the container is
+    // already none — it is the CHILDREN that are the hit shapes, and
+    // pointer-events on a parent does not switch an `auto` child off.
+    lensEl.classList.toggle('is-inert', !(enabled && visible));
+  }
+
   function setEnabled(on) {
     const next = !!on;
     if (next === enabled) return;
     enabled = next;
     gripEl.disabled = !enabled;
+    applySurfaceHitting();
     lensEl.style.opacity = enabled ? '1' : String(D.disabledOpacity);
     if (!enabled && dragId !== null) endDrag('disabled');
     updateDwell();
@@ -775,6 +976,7 @@ export function createLens(scene, opts = {}) {
   function setVisible(on) {
     visible = !!on;
     if (!visible && dragId !== null) endDrag('hidden');
+    applySurfaceHitting();
     lensEl.hidden = !visible;
   }
 
@@ -789,6 +991,7 @@ export function createLens(scene, opts = {}) {
   // --- boot ------------------------------------------------------------------
 
   gripEl.disabled = !enabled;
+  applySurfaceHitting();
   lensEl.style.opacity = enabled ? '1' : String(D.disabledOpacity);
   if (Array.isArray(opts.sprites) && opts.sprites.length) setSprites(opts.sprites);
   layout();
@@ -801,11 +1004,16 @@ export function createLens(scene, opts = {}) {
   const lens = {
     /** The lens root, inside `scene.el`. Read-only in practice. */
     get el() { return lensEl; },
-    /** The single pointer target the lens owns. QA drives real drags on this. */
+    /** The legacy handle button — still here, still draggable, and still the
+     *  lens's one focusable control (arrow keys). QA drives real drags on it. */
     get gripEl() { return gripEl; },
+    /** The whole drag surface: ring + glass + handle + the grip inside it. */
+    get surfaceEl() { return surfaceEl; },
     get enabled() { return enabled; },
     get visible() { return visible; },
-    get dragging() { return dragId !== null; },
+    get dragging() { return dragMoved; },
+    /** A pointer is down on the surface — not yet known to be a drag. */
+    get pressing() { return dragId !== null; },
     get zoom() { return zoom; },
     get glassD() { return glassD; },
     get reducedMotion() { return isReduced(); },
@@ -921,6 +1129,18 @@ export function createLens(scene, opts = {}) {
       };
     },
 
+    /**
+     * Fires after a tap on the lens surface has been forwarded to the control
+     * underneath. Reporting only — the action has already run.
+     * @param {(d: {el: Element, x: number, y: number}) => void} cb
+     * @returns {() => void}
+     */
+    onTapThrough(cb) {
+      if (typeof cb !== 'function') return () => {};
+      tapThroughSubs.push(cb);
+      return () => { const i = tapThroughSubs.indexOf(cb); if (i >= 0) tapThroughSubs.splice(i, 1); };
+    },
+
     /** Re-tune the dwell without touching subscribers (QLOBE_DEBUG.fastTimer). */
     setDwell({ radiusArt, ms } = {}) {
       if (Number.isFinite(Number(radiusArt)) && Number(radiusArt) > 0) dwellRadiusArt = Number(radiusArt);
@@ -953,7 +1173,13 @@ export function createLens(scene, opts = {}) {
     getState() {
       return {
         x: cx, y: cy, scale, glassPx, zoom,
-        enabled, visible, dragging: dragId !== null,
+        enabled, visible,
+        /** A press is being TRACKED (it may still turn out to be a tap). */
+        pressing: dragId !== null,
+        /** The slop has been crossed: the glass is really being dragged. */
+        dragging: dragMoved,
+        slopPx: dragSlopPx,
+        lastTapThrough,
         reducedMotion: isReduced(),
         dwell: { id: dwell.id, fired: dwell.fired, ms: dwellMs, radiusArt: dwellRadiusArt },
         sprites: [...sprites.values()].map((s) => ({
@@ -965,10 +1191,10 @@ export function createLens(scene, opts = {}) {
     destroy() {
       if (destroyed) return;
       destroyed = true;
-      if (dragId !== null) { dragId = null; lensEl.classList.remove('is-dragging'); }
+      if (dragId !== null) { dragId = null; dragMoved = false; lensEl.classList.remove('is-dragging'); }
       clearDwellTimer();
       if (glintRaf) { cancelAnimationFrame(glintRaf); glintRaf = 0; }
-      gripEl.removeEventListener('pointerdown', onGripDown);
+      surfaceEl.removeEventListener('pointerdown', onSurfaceDown);
       gripEl.removeEventListener('keydown', onGripKey);
       window.removeEventListener('pointermove', onWinMove);
       window.removeEventListener('pointerup', onWinUp);
@@ -982,6 +1208,7 @@ export function createLens(scene, opts = {}) {
       try { offReflow(); } catch { /* the scene may already be gone */ }
       moveSubs.length = 0;
       dwellSubs.length = 0;
+      tapThroughSubs.length = 0;
       clearSprites();
       lensEl.remove();
     },

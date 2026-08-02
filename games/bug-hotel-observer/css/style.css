@@ -39,6 +39,21 @@
   --safe-b: max(16px, env(safe-area-inset-bottom));
   --safe-l: max(16px, env(safe-area-inset-left));
   --safe-r: max(16px, env(safe-area-inset-right));
+
+  /* THE STAGE BOX (§2.5a). Four numbers that every HUD piece anchored to the
+     play field is written against, so "the banner sits at the top of the art"
+     is ONE definition rather than four. On a tablet they are the whole window
+     and nothing changes; the framed-diorama media query below is the only
+     place that gives them other values.
+
+     PERCENTAGES, NOT vw/vh, in the default: every element that reads them is
+     absolutely positioned inside #app, and on iOS `100vh` is the LARGE
+     viewport — a stage sized from it hangs below the window whenever the URL
+     bar is showing. 100 % of #app is the window, always. */
+  --stage-w: 100%;
+  --stage-h: 100%;
+  --stage-x: 0px;
+  --stage-y: 0px;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -82,9 +97,38 @@ body {
      screens  9   splash · spread (reward / book / celebration) · end */
 #stage {
   position: absolute;
-  inset: 0;
+  left: var(--stage-x);
+  top: var(--stage-y);
+  width: var(--stage-w);
+  height: var(--stage-h);
   z-index: 0;
+  overflow: hidden;                    /* .hs-root is overflow:visible; the
+                                          cover-fit plate is bigger than its box
+                                          and must be clipped to the card */
   background: #6f8a4a;
+}
+
+/* The blurred surround. It is a DUPLICATE OF THE PLATE THE STAGE IS SHOWING —
+   the same treatment the splash gives the hotel (§2.3), and the approved
+   pattern for a decorative field (duplicated authored art, never a CSS
+   gradient standing in for identity). js/main.js keeps --stage-plate pointing
+   at whatever the scene last loaded, so the surround changes with the room.
+   Display:none until the frame exists: a full-screen blur is exactly the kind
+   of filter that costs an old iPad frames, and on a tablet the stage covers
+   the window anyway. */
+#stage-surround {
+  display: none;
+  position: absolute;
+  inset: -48px;                        /* the blur must not show a soft edge */
+  z-index: 0;
+  background: var(--stage-plate, var(--splash-plate, none)) center / cover no-repeat;
+  /* Kept close to the splash's own treatment (blur 6, brightness 1.08) rather
+     than crushed: a heavily darkened surround stopped reading as the same
+     picture and turned into grey fog. Blurred further because this one sits
+     behind a bright card and has to stay depth-of-field, and dimmed a LITTLE so
+     the card is the thing in focus. */
+  filter: blur(16px) brightness(.84) saturate(.94);
+  pointer-events: none;
 }
 
 /* The done-room badges of §2.4 — authored happy frames, never hit targets. */
@@ -165,12 +209,16 @@ body {
    never the instruction — the voice is — and it never takes a tap. */
 #banner {
   position: absolute;
-  top: max(18px, calc(env(safe-area-inset-top) + 8px));
-  left: 50%;
+  /* ANCHORED TO THE STAGE, NOT THE WINDOW (§2.5a). On a tablet the two are the
+     same box. Inside the framed diorama the caption has to ride the top of the
+     PICTURE — a banner still pinned to the window would float in the blurred
+     surround with the art half a screen below it. */
+  top: calc(var(--stage-y) + max(18px, env(safe-area-inset-top) + 8px));
+  left: calc(var(--stage-x) + var(--stage-w) / 2);
   transform: translateX(-50%);
   /* Never let it reach either corner control: 112 px of button plus a real
      28 px alley on each side, or the banner reads as welded to the arrow. */
-  width: min(84vw, 900px, calc(100vw - 2 * (var(--safe-l) + 140px)));
+  width: min(calc(var(--stage-w) * .84), 900px, calc(var(--stage-w) - 2 * (var(--safe-l) + 140px)));
   min-height: 88px;
   display: flex;
   align-items: center;
@@ -190,8 +238,8 @@ body {
 /* The target's own picture, top-right — `bug-hunt` only (§2.5). */
 #target-plaque {
   position: absolute;
-  top: var(--safe-t);
-  right: var(--safe-r);
+  top: calc(var(--stage-y) + var(--safe-t));
+  right: calc(var(--stage-x) + var(--safe-r));
   width: 128px;
   height: 128px;
   object-fit: contain;
@@ -209,8 +257,8 @@ body {
    js/main.js once it has resolved. */
 .journal-tab {
   position: absolute;
-  bottom: var(--safe-b);
-  left: calc(var(--safe-l) + 132px);
+  bottom: calc(var(--stage-y) + var(--safe-b));
+  left: calc(var(--stage-x) + var(--safe-l) + var(--journal-tab-gap, 132px));
   width: 128px;
   height: 128px;
   padding: 0;
@@ -227,8 +275,8 @@ body {
    numeral taken out (§11). A progress marker, not content. */
 #pips {
   position: absolute;
-  bottom: var(--safe-b);
-  left: 50%;
+  bottom: calc(var(--stage-y) + var(--safe-b));
+  left: calc(var(--stage-x) + var(--stage-w) / 2);
   transform: translateX(-50%);
   display: flex;
   gap: 18px;
@@ -759,7 +807,7 @@ body {
 @media (max-width: 900px), (max-height: 620px) {
   #banner { font-size: 30px; min-height: 72px; border-radius: 32px; }
   .corner-btn { width: 96px; height: 96px; }         /* still ≥ 96 px (§9.1) */
-  .journal-tab { width: 108px; height: 108px; left: calc(var(--safe-l) + 112px); }
+  .journal-tab { width: 108px; height: 108px; --journal-tab-gap: 112px; }
   #target-plaque { width: 104px; height: 104px; }
   .play-btn { width: 112px; height: 112px; }
   #btn-play { width: 132px; height: 132px; }
@@ -798,6 +846,112 @@ body {
   }
   #pips { gap: 12px; padding: 8px 14px; }
   .pip { width: 22px; height: 22px; }
+}
+
+/* --- A PHONE (§2.5, phone pass) ------------------------------------------ */
+
+/* WHY THIS BLOCK EXISTS. The HUD above is authored for a tablet, where every
+   piece can keep a real alley around every other piece. A 390 px phone has no
+   such room, and two of the default rules degenerate rather than shrink:
+
+   1. THE BANNER. `--stage-w - 2 * (--safe-l + 140px)` reserves a 156 px gutter
+      for each corner control. At 390 px that leaves the caption 78 px — a
+      one-word column of broken text. There is no width at which a CENTRED pill
+      keeps a 96 px button plus an alley on both sides AND stays readable, so
+      the phone stops trying: the caption takes the full width between the safe
+      insets and drops BELOW the top row of controls instead of squeezing
+      between them. It is an adult caption at `pointer-events: none` (§8.2 row
+      21), so nothing about tapping changes — and it carries a z-index anyway,
+      so a device whose safe-area insets push the controls down finds the
+      caption on top rather than half-hidden behind an arrow.
+
+   2. THE JOURNAL TAB. At `--safe-l + 112px` it sits directly on the bamboo and
+      log plaques, which on a phone crop land in the bottom third of the
+      screen. It moves to the bottom-RIGHT corner, the one corner of a phone
+      this game leaves empty, and the pips shrink to the same compact size the
+      short-landscape block already uses so the two never touch. It keeps its
+      96 css px (§9.1). */
+@media (max-width: 600px) {
+  #banner {
+    top: calc(var(--stage-y) + var(--safe-t) + 112px);
+    width: min(calc(var(--stage-w) - 2 * var(--safe-l)), 900px);
+    min-height: 60px;
+    padding: 10px 16px;
+    border-radius: 26px;
+    font-size: 24px;
+    z-index: 2;                        /* over the corner controls, never under */
+  }
+
+  .journal-tab {
+    width: 96px;
+    height: 96px;
+    left: auto;
+    right: calc(var(--stage-x) + var(--safe-r));
+    bottom: calc(var(--stage-y) + var(--safe-b));
+  }
+
+  #pips { gap: 12px; padding: 8px 14px; }
+  .pip { width: 22px; height: 22px; }
+}
+
+/* --- the FRAMED DIORAMA (§2.5a) ------------------------------------------ */
+
+/* WHY THIS EXISTS. The play field cover-fits its box, and the art is 4:3. On a
+   tablet that is close enough to free — a 1194x834 iPad crops 7 % off the top
+   and bottom and the composition survives. On a 2000x960 desktop window (2.08:1)
+   the same cover-fit eats 36 % of the picture: the hotel's red roof is gone, the
+   plaques slide off their own rooms as the HUD reserve pushes them clear, and a
+   child dragging the glass has to reach into the corners of a very wide screen.
+   So past a certain width the stage stops being the window and becomes a CARD:
+   a centred diorama on a blurred duplicate of its own plate, exactly the
+   treatment the splash gives the hotel (§2.3).
+
+   WHEN. Two entry conditions, and iPad landscape (1194 CSS px, 1.43:1) sits
+   under both on purpose — the shipped tablet composition is not changed by one
+   pixel:
+     - 1400 px and wider: any desktop window that big has room to spare, and a
+       full-bleed 4:3 plate on it reads as a screensaver, not a toy.
+     - 1000 px and wider AND 3:2 or flatter: the aspect ratio, not the size, is
+       what is destroying the crop.
+
+   HOW BIG. The card is the biggest box that fits inside the window minus a
+   real margin AND stays between 1.25:1 and 1.4:1. The maintainer's brief said
+   "max aspect ≈ 16:10, max crop ≈ 20 %"; 16:10 measures out at 16.7 % vertical
+   crop, which is 100 art px off the top — and the roof apex of bg-hotel.jpg
+   sits at y≈32. A 16:10 card decapitates the hotel, which is the exact defect
+   being fixed. 1.4:1 crops 4.8 % (≈29 px a side), keeps the roof, keeps the
+   plaques on their rooms, and is still visibly wider than the plate. Both caps
+   are far inside the 20 % budget. */
+@media (min-width: 1400px), (min-width: 1000px) and (min-aspect-ratio: 3 / 2) {
+  :root {
+    --frame-m: clamp(24px, 3vmin, 48px);
+    --frame-avail-w: calc(100vw - 2 * var(--frame-m));
+    --frame-avail-h: calc(100vh - 2 * var(--frame-m));
+    --stage-w: min(var(--frame-avail-w), var(--frame-avail-h) * 1.4);
+    --stage-h: min(var(--frame-avail-h), var(--frame-avail-w) / 1.25);
+    --stage-x: calc((100vw - var(--stage-w)) / 2);
+    --stage-y: calc((100vh - var(--stage-h)) / 2);
+  }
+
+  /* The card. A border-radius and a shadow are LAYOUT, not a drawn thing (§8):
+     the two rings are the same cream-paper-on-kraft the banner and the fact
+     card are made of, so the play field is visibly the same object as the
+     journal it opens into. Drawn as box-shadow spread rather than `border`, so
+     the scene's box — and therefore every art coordinate — is untouched. */
+  #stage {
+    border-radius: clamp(18px, 2.4vmin, 34px);
+    box-shadow:
+      0 0 0 7px var(--paper),
+      0 0 0 12px var(--kraft),
+      0 26px 56px rgba(40, 32, 18, .45);
+  }
+
+  #stage-surround { display: block; }
+
+  /* The journal tab moves to the card's own bottom-left corner: the sound
+     button it used to sit beside has stayed out at the window corner, and a tab
+     left behind at +132 px would be marooned in the blurred surround. */
+  .journal-tab { --journal-tab-gap: 0px; }
 }
 
 /* --- reduced motion (§9.10) ---------------------------------------------- */

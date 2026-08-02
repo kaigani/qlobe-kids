@@ -75,6 +75,11 @@
        down the handle can be eyeballed. The module never paints it. */
     body.show-grip .ml-grip { background: rgba(255, 45, 85, .18); border-radius: 50%;
       box-shadow: inset 0 0 0 3px rgba(255, 45, 85, .55); }
+    /* …and the WHOLE drag surface: the ring circle and the handle bar that make
+       the glass draggable from anywhere. The module never paints any of it. */
+    body.show-grip .ml-surface-ring,
+    body.show-grip .ml-surface-handle { background: rgba(45, 190, 255, .14);
+      box-shadow: inset 0 0 0 3px rgba(45, 190, 255, .55); }
   </style>
 </head>
 <body>
@@ -113,12 +118,14 @@
       <button id="p-strand" class="warn">strand: blur mid-drag</button>
       <button id="p-cancel" class="warn">strand: pointercancel</button>
       <button id="p-drag" class="alt">synthetic drag</button>
+      <button id="p-glassdrag" class="alt">drag from GLASS centre</button>
+      <button id="p-tapthru" class="alt">tap through the glass</button>
     </div>
     <div class="group">
       <strong>view</strong>
       <button id="v-reserve">reserve off</button>
       <button id="v-cross">crosshair</button>
-      <button id="v-grip">show grip</button>
+      <button id="v-grip">show drag surface</button>
       <button id="v-rm">reducedMotion: live</button>
     </div>
     <div class="group">
@@ -268,6 +275,10 @@
     let found = new Set();
     let lastDwell = '—';
     let lastMove = { x: 0, y: 0 };
+    // The enlarged drag surface hands taps back to whatever is under the glass;
+    // these two are the proof that it did (and that it did it once).
+    let tapThroughs = 0;
+    let lastTapThrough = '—';
     let crossEl = null;
 
     const lines = [];
@@ -332,6 +343,11 @@
         .map((b) => ({ id: b.id, url: BUG_PNG[b.id], x: b.x, y: b.y, w: b.size, h: b.size })));
       lens.setReserve(reserveRects);
       lens.onMove((c) => { lastMove = c; });
+      lens.onTapThrough((d) => {
+        tapThroughs++;
+        lastTapThrough = d.el.dataset && d.el.dataset.id ? d.el.dataset.id : (d.el.className || d.el.tagName);
+        log(`tap-through ${tapThroughs}: forwarded to ${lastTapThrough}`);
+      });
       lens.onDwell((d) => {
         dwells++;
         lastDwell = `${d.id} @ ${Math.round(d.x)},${Math.round(d.y)} (${Math.round(d.dist)} px)`;
@@ -406,7 +422,8 @@
         `lens art   x ${s.x.toFixed(1)}  y ${s.y.toFixed(1)}\n` +
         `lens css   glass ${s.glassPx.toFixed(1)} px   zoom ${s.zoom}\n` +
         `onMove     x ${lastMove.x.toFixed(1)}  y ${lastMove.y.toFixed(1)}\n` +
-        `state      enabled ${s.enabled}  visible ${s.visible}  dragging ${s.dragging}\n` +
+        `state      enabled ${s.enabled}  visible ${s.visible}  pressing ${s.pressing}  dragging ${s.dragging}\n` +
+        `surface    slop ${s.slopPx} px   tap-throughs ${tapThroughs}   last ${lastTapThrough ?? '—'}\n` +
         `dwell      ms ${s.dwell.ms}  radius ${s.dwell.radiusArt}  armed ${s.dwell.id ?? '—'}  fired ${s.dwell.fired}\n` +
         `dwells     ${dwells}   last ${lastDwell}\n` +
         `found      ${found.size}/${BUGS.length}   taps ${taps}\n` +
@@ -419,6 +436,11 @@
     // grip, then window-level moves, then the terminal event under test.
 
     const nextId = (() => { let n = 100; return () => ++n; })();
+
+    function glassCentre() {
+      const r = lens.el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
 
     function gripCentre() {
       const r = lens.gripEl.getBoundingClientRect();
@@ -579,6 +601,45 @@
       syntheticDragToArt(520, 430);
       log(`synthetic drag -> ${JSON.stringify(lens.getCentre())}`);
     });
+    onLens('p-glassdrag', () => {
+      // The whole point of the enlarged surface: a press that starts ON THE
+      // GLASS drags. It must NOT move inside the slop, and it must not correct
+      // the grab (no jump out from under the finger).
+      const before = lens.getCentre();
+      const g = glassCentre();
+      const id = nextId();
+      lens.surfaceEl.dispatchEvent(pe('pointerdown', id, g.x, g.y));
+      window.dispatchEvent(pe('pointermove', id, g.x + 6, g.y + 4));
+      const inSlop = lens.getCentre();
+      const held = Math.hypot(inSlop.x - before.x, inSlop.y - before.y) < 0.6;
+      for (let i = 1; i <= 8; i++) {
+        window.dispatchEvent(pe('pointermove', id, g.x + 20 * i, g.y + 14 * i));
+      }
+      const moving = lens.dragging;
+      window.dispatchEvent(pe('pointerup', id, g.x + 160, g.y + 112));
+      const after = lens.getCentre();
+      const moved = Math.hypot(after.x - before.x, after.y - before.y) > 40;
+      log(`${held && moving && moved ? 'PASS' : 'FAIL'} glass-drag  held-in-slop=${held} became-drag=${moving} moved=${moved}`);
+    });
+    onLens('p-tapthru', () => {
+      // Park the glass on a FOUND bug and press without moving: the tap has to
+      // reach the hotspot underneath, exactly once, and the glass must not budge.
+      const bug = BUGS.find((b) => found.has(b.id)) || BUGS[0];
+      if (!found.has(bug.id)) { reveal(bug.id); }
+      lens.moveTo(bug.x, bug.y).then(() => {
+        const before = lens.getCentre();
+        const t0 = taps;
+        const p = scene.toScreen(bug.x, bug.y);
+        const id = nextId();
+        lens.surfaceEl.dispatchEvent(pe('pointerdown', id, p.x, p.y));
+        window.dispatchEvent(pe('pointermove', id, p.x + 3, p.y + 2));
+        window.dispatchEvent(pe('pointerup', id, p.x + 3, p.y + 2));
+        const after = lens.getCentre();
+        const still = Math.hypot(after.x - before.x, after.y - before.y) < 0.6;
+        const once = taps - t0 === 1;
+        log(`${once && still ? 'PASS' : 'FAIL'} tap-through[${bug.id}]  taps ${t0} -> ${taps} (exactly once = ${once})  glass-still=${still}`);
+      });
+    });
 
     onLens('v-reserve', (e) => {
       reserveOn = !reserveOn;
@@ -598,7 +659,7 @@
     on('v-grip', (e) => {
       const shown = document.body.classList.toggle('show-grip');
       e.target.classList.toggle('on', shown);
-      log(`grip ${shown ? 'shown (harness CSS only)' : 'hidden'}`);
+      log(`drag surface ${shown ? 'shown (harness CSS only): blue = ring + handle, pink = legacy grip' : 'hidden'}`);
     });
     on('v-rm', (e) => {
       rmMode = rmMode === 'live' ? 'on' : rmMode === 'on' ? 'off' : 'live';
@@ -646,6 +707,18 @@
       found: () => [...found],
       fastTimer: (ms = 60) => (lens ? lens.setDwell({ ms }) : null),
       reset: rebuildAll,
+      /** Press the SURFACE without moving, over `x,y` art px: the module's own
+       *  tap-through path, which is what a finger on the glass really does. */
+      tapThroughGlass: (ax, ay) => {
+        if (!lens) return null;
+        const p = scene.toScreen(ax, ay);
+        const id = nextId();
+        const t0 = taps;
+        lens.surfaceEl.dispatchEvent(pe('pointerdown', id, p.x, p.y));
+        window.dispatchEvent(pe('pointerup', id, p.x, p.y));
+        return { taps: taps - t0, tapThroughs, lastTapThrough };
+      },
+      tapThroughCount: () => tapThroughs,
       /** Tap a revealed bug through the glass — proves the lens blocks nothing. */
       tap: (id) => {
         const el = stage.querySelector(`.hs-hotspot[data-id="${id}"]`);

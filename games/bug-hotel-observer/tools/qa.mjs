@@ -305,14 +305,14 @@ async function staticGate() {
   const lines = await readJSON(rel('tools/lines.json'));
   const wantKeys = new Set([
     'welcome', 'mode-bug-hunt', 'mode-bug-detective', 'mode-my-bug-book',
-    'prompt-look', 'prompt-lens', 'prompt-again', 'getting-closer', 'found-tap',
+    'pick-room', 'prompt-look', 'prompt-lens', 'prompt-again', 'getting-closer', 'found-tap',
     'idle-1', 'idle-2', 'nudge-wrong', 'yes-1', 'yes-2', 'yes-3', 'sticker',
     'next-room', 'round-done', 'cheer-end', 'journal-open', 'journal-empty', 'journal-tap',
     'room-leaf', 'room-bark', 'room-bamboo', 'room-log',
   ]);
   for (const b of bugs) for (const key of ['find', 'name', 'fact', 'clue']) wantKeys.add(b.voice[key]);
-  ok('exactly 74 voice keys are named by config + the fixed global script',
-    wantKeys.size === 74, String(wantKeys.size));
+  ok('exactly 75 voice keys are named by config + the fixed global script',
+    wantKeys.size === 75, String(wantKeys.size));
 
   const missingManifest = [...wantKeys].filter((k) => !manifest[k]);
   const missingLines = [...wantKeys].filter((k) => !lines[k] || !String(lines[k]).trim());
@@ -446,6 +446,20 @@ async function browserGate(base) {
   await page.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimer(20); });
   ok('fastTimer scales', await page.evaluate(() => window.QLOBE_DEBUG.getState().timeScale === 0.05));
 
+  console.log('\n-- ISSUE 2: unframed at iPad landscape (1194x834) --');
+  {
+    // 1194/834 = 1.4317, just under the (min-aspect-ratio: 3/2) trigger, and
+    // 1194px is under the 1400px width trigger — the framed-diorama media
+    // query must NOT engage here, so #stage stays exactly the window.
+    const g = await page.evaluate(() => {
+      const r = document.getElementById('stage').getBoundingClientRect();
+      return { x: r.x, y: r.y, w: r.width, h: r.height, vw: window.innerWidth, vh: window.innerHeight };
+    });
+    ok('at 1194x834 the stage box is the whole window (unframed, full-bleed)',
+      Math.abs(g.x) < 1 && Math.abs(g.y) < 1 && Math.abs(g.w - g.vw) < 1 && Math.abs(g.h - g.vh) < 1,
+      JSON.stringify(g));
+  }
+
   console.log('\n-- splash controls --');
   await page.click('#btn-play');
   ok('mode row opens', await page.evaluate(() => !document.getElementById('mode-row').hidden));
@@ -463,6 +477,45 @@ async function browserGate(base) {
   ok('4 room targets, role room', hotelTargets.length === 4 && hotelTargets.every((t) => t.role === 'room'),
     JSON.stringify(hotelTargets.map((t) => [t.id, t.role])));
   ok('round derives to 0', await page.evaluate(() => window.QLOBE_DEBUG.getState().round === 0));
+
+  console.log('\n-- ISSUE 1: the hotel prompt is the dedicated pick-room line --');
+  {
+    const linesJson = await readJSON(rel('tools/lines.json'));
+    const manifestJson = await readJSON(rel('assets/audio/manifest.json'));
+    ok('tools/lines.json carries a real pick-room script line',
+      typeof linesJson['pick-room'] === 'string' && linesJson['pick-room'].trim().length > 0,
+      JSON.stringify(linesJson['pick-room']));
+    ok('assets/audio/manifest.json carries a timed pick-room entry',
+      Boolean(manifestJson['pick-room'] && manifestJson['pick-room'].file && manifestJson['pick-room'].dur > 0),
+      JSON.stringify(manifestJson['pick-room']));
+    ok('the pick-room clip is really on disk',
+      await exists(rel('assets/audio', manifestJson['pick-room'].file)), manifestJson['pick-room'].file);
+
+    const bannerText = await page.textContent('#banner');
+    ok('the hotel banner prints pick-room, not prompt-look or any stale line',
+      bannerText === linesJson['pick-room'], JSON.stringify({ bannerText, want: linesJson['pick-room'] }));
+
+    // Real playback proof, not just a manifest entry: unmute, tap the sound
+    // button on the hotel screen, and check the SAME getClipMedia() proof the
+    // My Bug Book pass below uses — a decoded m4a, not the speech fallback.
+    await page.evaluate(() => window.QLOBE_DEBUG.clearAudioLog());
+    await page.evaluate(() => window.QLOBE_DEBUG.mute(false));
+    await page.click('#btn-sound');
+    await page.waitForFunction(() => {
+      const l = window.QLOBE_DEBUG.getAudioLog();
+      return l.some((e) => e.id === 'pick-room');
+    }, null, { timeout: 8000 });
+    const pickRoomLog = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+    ok('the sound button on the hotel screen speaks pick-room from the recorded pack',
+      pickRoomLog.some((l) => l.id === 'pick-room' && l.source === 'clip' && /\.m4a$/.test(l.file || '')),
+      JSON.stringify(pickRoomLog));
+    const pickRoomMedia = await page.evaluate(() => window.QLOBE_DEBUG.getClipMedia());
+    ok('the pick-room clip actually decoded in the page (readyState >= 2, real duration)',
+      Boolean(pickRoomMedia) && pickRoomMedia.key === 'pick-room' && /pick-room\.m4a(\?|$)/.test(pickRoomMedia.src)
+        && pickRoomMedia.readyState >= 2 && Number.isFinite(pickRoomMedia.duration) && pickRoomMedia.duration > 0,
+      JSON.stringify(pickRoomMedia));
+    await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
+  }
 
   console.log('\n-- a room, the lens and the reveal --');
   await page.evaluate(() => window.QLOBE_DEBUG.tap('leaf'));
@@ -531,6 +584,76 @@ async function browserGate(base) {
     JSON.stringify([lens0.x, lens0.y, dragged.x, dragged.y]));
 
   // -----------------------------------------------------------------------
+  // §11 row 23 — the whole lens is the drag surface, and a press that does not
+  // travel is handed to whatever is under the glass.
+  // -----------------------------------------------------------------------
+  console.log('\n-- a real finger on the GLASS --');
+  {
+    const before = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    const c = await page.evaluate(() => {
+      const r = document.querySelector('.ml-lens').getBoundingClientRect();
+      return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+    });
+    await page.mouse.move(c.x, c.y);
+    await page.mouse.down();
+    await page.mouse.move(c.x + 6, c.y + 4, { steps: 2 });
+    const inSlop = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('inside the 12 px slop the glass has not moved',
+      Math.abs(inSlop.x - before.x) < 0.6 && Math.abs(inSlop.y - before.y) < 0.6,
+      JSON.stringify([before.x, before.y, inSlop.x, inSlop.y]));
+    await page.mouse.move(c.x + 120, c.y + 70, { steps: 8 });
+    const mid = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('past the slop a press on the GLASS CENTRE drags', mid.dragging === true, JSON.stringify(mid));
+    await page.mouse.up();
+    const after = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('the glass drag moved the lens and settled it',
+      !after.dragging && Math.hypot(after.x - before.x, after.y - before.y) > 40,
+      JSON.stringify([before.x, before.y, after.x, after.y]));
+  }
+
+  console.log('\n-- a tap THROUGH the glass reaches the bug underneath --');
+  {
+    // A NON-TARGET roommate on purpose: tapping the target would open the
+    // reward spread and end the room, and `wrongTaps` is the one counter that
+    // is written SYNCHRONOUSLY in greet(), so it proves "exactly once" even
+    // with the voice muted (the audio log is not written while muted).
+    const revealedId = await page.evaluate(() => {
+      const st = window.QLOBE_DEBUG.getState();
+      const p = st.placements.find((q) => q.bugId !== st.targetId);
+      return p ? p.bugId : null;
+    });
+    await page.evaluate((id) => window.QLOBE_DEBUG.reveal(id), revealedId);
+    await page.waitForTimeout(200);
+    const art = await page.evaluate((id) => {
+      const p = window.QLOBE_DEBUG.getState().placements.find((q) => q.bugId === id);
+      return p ? { x: p.artX, y: p.artY } : null;
+    }, revealedId);
+    await page.evaluate((a) => window.QLOBE_DEBUG.setLens(a.x, a.y), art);
+    await page.waitForTimeout(160);
+    const spot = await page.evaluate((id) => {
+      const t = window.QLOBE_DEBUG.getTargets().find((x) => x.id === id);
+      return { x: t.rect.x + t.rect.w / 2, y: t.rect.y + t.rect.h / 2 };
+    }, revealedId);
+    const covering = await page.evaluate(({ x, y }) => {
+      const el = document.elementFromPoint(x, y);
+      return el ? String(el.className || el.tagName) : 'none';
+    }, spot);
+    ok('the drag surface really is covering the revealed bug', /ml-surface|ml-grip/.test(covering), covering);
+    const lensBefore = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    const wrongBefore = await page.evaluate(() => window.QLOBE_DEBUG.getState().wrongTaps || 0);
+    await page.mouse.move(spot.x, spot.y);
+    await page.mouse.down();
+    await page.mouse.up();
+    await page.waitForTimeout(400);
+    const wrongAfter = await page.evaluate(() => window.QLOBE_DEBUG.getState().wrongTaps || 0);
+    ok('the tap fired the bug underneath EXACTLY once',
+      wrongAfter - wrongBefore === 1, `${revealedId}: wrongTaps ${wrongBefore} -> ${wrongAfter}`);
+    const lensAfter = await page.evaluate(() => window.QLOBE_DEBUG.getLens());
+    ok('a tap through the glass does not move the glass',
+      Math.abs(lensAfter.x - lensBefore.x) < 0.6 && Math.abs(lensAfter.y - lensBefore.y) < 0.6);
+  }
+
+  // -----------------------------------------------------------------------
   // STRAND PROBES (interaction-patterns.md #11) — a drag that never ends
   // normally must still leave the lens visible, settled, and re-draggable.
   // -----------------------------------------------------------------------
@@ -543,10 +666,13 @@ async function browserGate(base) {
       const el = document.elementFromPoint(x, y);
       el.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 77, clientX: x, clientY: y, isPrimary: true, bubbles: true }));
     }, [b.x + b.width / 2, b.y + b.height / 2]);
-    await page.waitForFunction(() => window.QLOBE_DEBUG.getLens().dragging === true, null, { timeout: 2000 });
+    // §11 row 23 — a pointerdown is a TRACKED PRESS, not yet a drag. It becomes
+    // one only past the 12 px slop, which the move below crosses.
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getLens().pressing === true, null, { timeout: 2000 });
     await page.evaluate(([x, y]) => {
       window.dispatchEvent(new PointerEvent('pointermove', { pointerId: 77, clientX: x + 120, clientY: y - 60, bubbles: true }));
     }, [b.x + b.width / 2, b.y + b.height / 2]);
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getLens().dragging === true, null, { timeout: 2000 });
     await page.evaluate(() => {
       window.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 77, bubbles: true }));
     });
@@ -800,6 +926,140 @@ async function browserGate(base) {
   await page3.goto(URL_, { waitUntil: 'networkidle' });
   await page3.evaluate(() => window.QLOBE_DEBUG.ready);
   await page3.screenshot({ path: path.join(SHOTS, 'phone-390x844-splash.png') });
+
+  // =======================================================================
+  // ISSUE 3 — A PHONE IS PLAYABLE (§4.3a, §2.5 phone pass, §11 rows 24-25).
+  //
+  // A 390 px window cover-fits the 4:3 plate down to art x ∈ [523, 1077], and
+  // the leaf room's nooks are authored at x = 466 / 478 / 831 / 1150. Three of
+  // the four are off the crop, so BEFORE the fix a seeded round that put the
+  // target in one of them could not be finished at all: the child dragged the
+  // glass to the edge and the ladybug was not in the room. The HUD degenerated
+  // with it — a 78 px banner and a journal tab sitting on the log plaque.
+  // =======================================================================
+  console.log('\n-- ISSUE 3: the phone (390x844) is playable, HUD and all --');
+  {
+    await page3.evaluate(() => {
+      window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimer(20);
+    });
+    await page3.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+      && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+    await page3.screenshot({ path: path.join(SHOTS, 'phone-390x844-hotel.png') });
+
+    // (b) the banner is a readable caption, not a one-word column.
+    const bannerRect = await page3.evaluate(() => {
+      const el = document.getElementById('banner');
+      if (!el || el.hidden) return null;
+      const r = el.getBoundingClientRect();
+      return { x: r.x, y: r.y, w: r.width, h: r.height };
+    });
+    ok('at 390x844 the banner is at least 200 css px wide', Boolean(bannerRect) && bannerRect.w >= 200,
+      JSON.stringify(bannerRect));
+    ok('the banner still fits inside the window at 390x844',
+      Boolean(bannerRect) && bannerRect.x >= 0 && bannerRect.x + bannerRect.w <= 390.5,
+      JSON.stringify(bannerRect));
+
+    // (c) the journal tab clears every room plaque.
+    const tabRect = await page3.evaluate(() => {
+      const r = document.getElementById('btn-journal').getBoundingClientRect();
+      return { x: r.x, y: r.y, w: r.width, h: r.height };
+    });
+    const plaques = await page3.evaluate(() => window.QLOBE_DEBUG.getTargets());
+    const tabHits = plaques.filter((t) => t.rect.x < tabRect.x + tabRect.w && t.rect.x + t.rect.w > tabRect.x
+      && t.rect.y < tabRect.y + tabRect.h && t.rect.y + t.rect.h > tabRect.y);
+    ok('at 390x844 the journal tab intersects no room plaque',
+      tabHits.length === 0, JSON.stringify({ tabRect, hit: tabHits.map((t) => [t.id, t.rect]) }));
+    ok('the journal tab keeps its 96 css px target on a phone',
+      tabRect.w >= 96 && tabRect.h >= 96, JSON.stringify(tabRect));
+
+    // (a) the target is inside the crop the phone can actually reach…
+    await page3.evaluate(() => window.QLOBE_DEBUG.tap('leaf'));
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'room'
+      && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+    await page3.screenshot({ path: path.join(SHOTS, 'phone-390x844-room-leaf.png') });
+    const phoneSt = await page3.evaluate(() => window.QLOBE_DEBUG.getState());
+    const phoneView = (await page3.evaluate(() => window.QLOBE_DEBUG.getLayout())).visibleArt;
+    ok('the phone really is cropping the plate (a band narrower than the art)',
+      phoneView.w < 1600 && phoneView.w > 0, JSON.stringify(phoneView));
+    const phoneTarget = phoneSt.placements.find((p) => p.bugId === phoneSt.targetId);
+    const inside = (v, m, p) => p.artX >= v.x + m && p.artX <= v.x + v.w - m
+      && p.artY >= v.y + m && p.artY <= v.y + v.h - m;
+    ok('at 390x844 the leaf-room TARGET sits inside the visible art',
+      Boolean(phoneTarget) && inside(phoneView, 0, phoneTarget),
+      JSON.stringify({ target: phoneTarget, visibleArt: phoneView }));
+    ok('…and inside it by the 120 art px reach margin, not merely on its edge',
+      Boolean(phoneTarget) && inside(phoneView, Math.min(120, phoneView.w / 3), phoneTarget),
+      JSON.stringify({ target: phoneTarget, visibleArt: phoneView }));
+    ok('the phone layout is still one of the authored nooks (zones never move)',
+      (await readJSON(rel('config.json'))).rooms.find((r) => r.id === 'leaf').zones
+        .some((z) => z.name === phoneTarget.zone && z.x === phoneTarget.artX && z.y === phoneTarget.artY),
+      JSON.stringify(phoneTarget));
+
+    // …and the round completes through the REAL path: lens.moveTo + dwell,
+    // then a tap on the bug. Never winRound().
+    await page3.evaluate(([x, y]) => window.QLOBE_DEBUG.setLens(x, y), [phoneTarget.artX, phoneTarget.artY]);
+    await page3.waitForFunction((id) => window.QLOBE_DEBUG.getState().revealed.includes(id),
+      phoneSt.targetId, { timeout: 8000 });
+    ok('the dwell reveals the phone target through lens.moveTo', true);
+    const phoneTargetRect = (await page3.evaluate(() => window.QLOBE_DEBUG.getTargets()))
+      .find((t) => t.id === phoneSt.targetId);
+    ok('the revealed target is a real on-screen tap target at 390x844',
+      phoneTargetRect.enabled === true && phoneTargetRect.rect.w >= 96
+      && phoneTargetRect.rect.x >= 0 && phoneTargetRect.rect.y >= 0
+      && phoneTargetRect.rect.x + phoneTargetRect.rect.w <= 390.5
+      && phoneTargetRect.rect.y + phoneTargetRect.rect.h <= 844.5,
+      JSON.stringify(phoneTargetRect));
+    await page3.evaluate((id) => window.QLOBE_DEBUG.tap(id), phoneSt.targetId);
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 15000 });
+    ok('a full leaf round completes on a phone through the lens path (no winRound)', true);
+  }
+
+  // §2.9's ONE exception: a rotation MID-ROUND may move a still-hidden target
+  // back into the new crop. Nothing else moves — a found bug never does.
+  console.log('\n-- ISSUE 3: rotating mid-round keeps the hidden target reachable --');
+  {
+    await page3.setViewportSize({ width: 1194, height: 834 });
+    await page3.evaluate(() => { window.QLOBE_DEBUG.home(); window.QLOBE_DEBUG.resetJournal(); });
+    await page3.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+      && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+    await page3.evaluate(() => window.QLOBE_DEBUG.tap('leaf'));
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'room'
+      && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+    const wide = await page3.evaluate(() => window.QLOBE_DEBUG.getState());
+    const mate = wide.placements.find((p) => p.bugId !== wide.targetId);
+    await page3.evaluate(([x, y]) => window.QLOBE_DEBUG.setLens(x, y), [mate.artX, mate.artY]);
+    await page3.waitForFunction((id) => window.QLOBE_DEBUG.getState().revealed.includes(id),
+      mate.bugId, { timeout: 8000 });
+
+    await page3.setViewportSize({ width: 390, height: 844 });
+    await page3.waitForTimeout(500);
+    const narrow = await page3.evaluate(() => window.QLOBE_DEBUG.getState());
+    const nView = (await page3.evaluate(() => window.QLOBE_DEBUG.getLayout())).visibleArt;
+    const nTarget = narrow.placements.find((p) => p.bugId === narrow.targetId);
+    ok('after the rotation the still-hidden target is back inside the crop',
+      nTarget.artX >= nView.x && nTarget.artX <= nView.x + nView.w
+      && nTarget.artY >= nView.y && nTarget.artY <= nView.y + nView.h,
+      JSON.stringify({ nTarget, nView }));
+    const movedMate = narrow.placements.find((p) => p.bugId === mate.bugId);
+    ok('a bug the child already FOUND never moves on a rotation',
+      movedMate.artX === mate.artX && movedMate.artY === mate.artY,
+      JSON.stringify([mate, movedMate]));
+    ok('the found bug is still found, in the journal world and in the glass',
+      narrow.revealed.includes(mate.bugId)
+      && (await page3.evaluate(() => window.QLOBE_DEBUG.getLens())).sprites
+        .find((s) => s.id === mate.bugId).found === true,
+      JSON.stringify(narrow.revealed));
+    // and the moved target is still winnable, through the same real path
+    await page3.evaluate(([x, y]) => window.QLOBE_DEBUG.setLens(x, y), [nTarget.artX, nTarget.artY]);
+    await page3.waitForFunction((id) => window.QLOBE_DEBUG.getState().revealed.includes(id),
+      narrow.targetId, { timeout: 8000 });
+    await page3.evaluate((id) => window.QLOBE_DEBUG.tap(id), narrow.targetId);
+    await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 15000 });
+    ok('the round still completes after a mid-round rotation', true);
+  }
+
   ok('phone viewport (390x844) boots clean', phoneErrors.length === 0, JSON.stringify(phoneErrors.slice(0, 3)));
   await ctx3.close();
 
@@ -813,6 +1073,62 @@ async function browserGate(base) {
   await page4.screenshot({ path: path.join(SHOTS, 'compact-1180x520-splash.png') });
   ok('compact landscape viewport (1180x520) boots clean', wideErrors.length === 0, JSON.stringify(wideErrors.slice(0, 3)));
   await ctx4.close();
+
+  console.log('\n-- ISSUE 2: the framed diorama at 2000x960 --');
+  {
+    const ctx5 = await browser.newContext({ viewport: { width: 2000, height: 960 } });
+    const page5 = await ctx5.newPage();
+    const wideFrameErrors = [];
+    page5.on('pageerror', (e) => wideFrameErrors.push(String(e)));
+    page5.on('console', (m) => { if (m.type() === 'error') wideFrameErrors.push(m.text()); });
+    await page5.goto(URL_, { waitUntil: 'networkidle' });
+    await page5.evaluate(() => window.QLOBE_DEBUG.ready);
+    await page5.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimer(20); });
+    await page5.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
+    await page5.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
+      && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });
+
+    const g = await page5.evaluate(() => {
+      const r = document.getElementById('stage').getBoundingClientRect();
+      return { x: r.x, y: r.y, w: r.width, h: r.height, vw: window.innerWidth, vh: window.innerHeight };
+    });
+    ok('at 2000x960 the stage box is meaningfully inset on every edge (a framed card, not the window)',
+      g.x > 20 && g.y > 20 && (g.x + g.w) < g.vw - 20 && (g.y + g.h) < g.vh - 20, JSON.stringify(g));
+    const aspect = g.w / g.h;
+    ok('the framed card holds the 1.25:1..1.4:1 aspect budget',
+      aspect >= 1.24 && aspect <= 1.41, String(aspect));
+
+    const layout = await page5.evaluate(() => window.QLOBE_DEBUG.getLayout());
+    const v = layout.visibleArt;
+    ok('the roof apex (art y ~ 32) survives the crop', Number(v.y) <= 32, JSON.stringify(v));
+    const vertCropFrac = 1 - (Number(v.h) / 1200);
+    ok('vertical art crop is measurable and stays well inside the 20% budget (~4.8% expected)',
+      vertCropFrac > 0 && vertCropFrac <= 0.2, String(vertCropFrac));
+
+    const roomTargetsWide = await page5.evaluate(() => window.QLOBE_DEBUG.getTargets());
+    const hudRectsWide = await page5.evaluate(() => {
+      const ids = ['banner', 'target-plaque', 'pips', 'btn-journal'];
+      return ids.map((id) => {
+        const el = document.getElementById(id);
+        if (!el || el.hidden) return null;
+        const r = el.getBoundingClientRect();
+        return { id, x: r.x, y: r.y, w: r.width, h: r.height };
+      }).filter(Boolean);
+    });
+    const overlaps = (a, bx, by, bw, bh) =>
+      a.x < bx + bw && a.x + a.w > bx && a.y < by + bh && a.y + a.h > by;
+    const offCard = roomTargetsWide.filter((t) =>
+      t.rect.x < g.x - 1 || t.rect.y < g.y - 1 || t.rect.x + t.rect.w > g.x + g.w + 1 || t.rect.y + t.rect.h > g.y + g.h + 1);
+    ok('all four room plaques land inside the framed card (none clipped off it)',
+      offCard.length === 0, JSON.stringify(offCard.map((t) => [t.id, t.rect])));
+    const hudHits = roomTargetsWide.filter((t) => hudRectsWide.some((h) => overlaps(t.rect, h.x, h.y, h.w, h.h)));
+    ok('no HUD rect overlaps a room plaque at 2000x960',
+      hudHits.length === 0, JSON.stringify(hudHits.map((t) => t.id)));
+
+    await page5.screenshot({ path: path.join(SHOTS, 'wide-2000x960-hotel.png') });
+    ok('2000x960 framed hotel boots clean', wideFrameErrors.length === 0, JSON.stringify(wideFrameErrors.slice(0, 3)));
+    await ctx5.close();
+  }
 
   console.log('\n-- console hygiene --');
   ok('zero page errors', pageErrors.length === 0, JSON.stringify(pageErrors.slice(0, 4)));

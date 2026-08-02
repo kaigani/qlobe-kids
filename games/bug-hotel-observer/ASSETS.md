@@ -424,11 +424,15 @@ editing by hand.
 
 ---
 
-## 6. Voice — 74 clips
+## 6. Voice — 75 clips
+
+> **Fix pass (wide-viewport playtest):** `pick-room` — "Which room shall we peek into? Tap one!"
+> — was added after ship, so the shipped count of 74 became **75**. Same pipeline, same teacher
+> voice reference, accepted by whisper on seed 7 at score 1.0. See game-design.md §11 row 21.
 
 | | |
 |---|---|
-| script | **`tools/lines.json`** — `{ "<voice-id>": "<exact spoken text>" }`, 74 entries, the single source for both the recorder and the Web Speech fallback |
+| script | **`tools/lines.json`** — `{ "<voice-id>": "<exact spoken text>" }`, 75 entries, the single source for both the recorder and the Web Speech fallback |
 | workflow | `qwen3-tts-voiceclone`, reference `shared/assets/refs/voice-teacher.wav` (via `QLOBE_VOICE_REF`) |
 | seeds | 7 → 8 → 9 |
 | QA | `whisper-stt`, model `small`, language `en`; transcript must match the script |
@@ -488,7 +492,7 @@ truth; this table is the summary. Byte sizes are the shipped files after P6.
 | — | `assets/bugs/roly-poly-happy.webp` | 42 (+ `.png.json` retry) | `assets/source/raw-edit/bug-roly-poly-happy.png` | 47 KB | **Deliberately byte-identical to `roly-poly-idle.webp`.** The edit model recoloured the grey armour plates on four consecutive attempts, and the face-only repair in `tools/repair-rooms.py` came back unchanged — five takes, no usable happy pose. The greeting is carried by the scene's wiggle/pop instead, which is motion the sprite does not have to contain. Do not "fix" this by regenerating without reading that history first. |
 | — | `assets/bugs/spider-{idle,happy}.webp` | 42 → `fix-cutouts.py spider_legs` (P6) | `assets/source/raw-edit/`, `assets/source/cutouts/` | 30 / 36 KB | `layer_2` kept the charcoal body and dropped all eight pale-grey paper legs against the charcoal backdrop — a ball with eyes at render size. Repaired deterministically: the layered cutout's body silhouette UNION a gradient-tolerant flood key of the raw edit. No regeneration. |
 | — | `assets/og-image.jpg` | n/a | splash capture | 67 KB | Captured by `tools/pipeline/capture_og_images.mjs --only bug-hotel-observer --force` against the wired-finals splash (P7 recapture — the P6 splash re-composition made the prior 25 KB shot stale). Non-blank (luma stddev 67.7), zero console errors. |
-| — | `assets/audio/*.m4a` ×74 | 7 (all 74 accepted on the first seed) | `assets/source/voice/*.flac` + `*-transcript.json` | 3.0 MB total | 74/74 whisper-accepted, min score 0.961, zero omissions. **9 lines needed the biased `initial_prompt` re-check** before acceptance (`*-transcript-biased.json` beside them) — the loanword-bias recipe in §6 recovered every one. Decode verified in real Chrome (`readyState ≥ 2`), not just manifest presence. |
+| — | `assets/audio/*.m4a` ×75 | 7 (all 75 accepted on the first seed) | `assets/source/voice/*.flac` + `*-transcript.json` | 3.0 MB total | 75/75 whisper-accepted, min score 0.961, zero omissions. **9 lines needed the biased `initial_prompt` re-check** before acceptance (`*-transcript-biased.json` beside them) — the loanword-bias recipe in §6 recovered every one. Decode verified in real Chrome (`readyState ≥ 2`), not just manifest presence. |
 | — | `assets/source/qa/*-magenta.jpg` ×37 | n/a | — | — | Alpha QA composites for every transparent asset. |
 
 ---

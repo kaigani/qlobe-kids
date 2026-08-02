@@ -38,6 +38,12 @@
        adult caption in #banner, or the grown-up "Play" affordance of §2.3. -->
   <div id="app" data-screen="splash">
 
+    <!-- The decorative field the framed stage sits on (§2.5a): a blurred,
+         dimmed DUPLICATE of the plate the stage is currently showing, the same
+         treatment the splash gives the hotel. Empty on a tablet, where the
+         stage fills the window and CSS keeps this display:none. -->
+    <div id="stage-surround" aria-hidden="true"></div>
+
     <!-- z0–z4: the hotel and the rooms. shared/js/hotspot-scene.js mounts
          itself in here, and shared/js/magnifier-lens.js mounts inside that. -->
     <div id="stage"></div>

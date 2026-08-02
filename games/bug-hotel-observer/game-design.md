@@ -315,7 +315,7 @@ the child aims at; the arch behind it is painted into the plate.
   re-adding the sticker (`journal.add` is idempotent).
 - On arrival all four plaques run one **pulse sweep**, left to right, 120 ms apart.
 
-**HUD:** back top-left → splash. Sound top-right → re-speaks `prompt-look`. Journal tab
+**HUD:** back top-left → splash. Sound top-right → re-speaks `pick-room`. Journal tab
 bottom-left (`assets/props/mode-book.webp`, 128 CSS px — see §11 row 14) → the journal overlay. Four room pips
 bottom-centre (28 px, gap 18; filled `#5f8f3a`, empty `#fbf3e2` with a 3 px `#c9b590` ring).
 
@@ -349,7 +349,10 @@ z1   base hotspots           <button> per FOUND bug (empty + disabled until foun
 z2   lens world              circular clipped div: duplicate plate img @ scale*zoom
                              + duplicate <img> per UNFOUND bug           pointer-events:none
 z3   lens frame              assets/props/magnifier.webp (ring + handle)  pointer-events:none
-z4   lens grip               one invisible <button>, ≥140 CSS px, touch-action:none
+z4   lens drag surface       ring circle + handle bar + the legacy grip <button>,
+                             touch-action:none. Covers the glass; a press that
+                             does not travel 12 px is forwarded to what is under
+                             it (§11 row 23)
 --- HTML HUD overlay, CSS px ---
 h1   prompt banner (top-centre) · back (top-left) · target plaque (top-right)
 h2   sound (bottom-left) · journal tab (bottom-left, inboard) · 4 room pips (bottom-centre)
@@ -372,8 +375,32 @@ the pips, back, sound and the journal tab to `scene.setReserve()` on every reflo
 same rects to `lens.setReserve()` so the lens cannot be parked under the HUD. This is the single
 mechanism that keeps art and HUD from colliding at any aspect ratio.
 
-**What the child can touch:** the lens grip (drag), any **found** bug (tap), back, sound, the
+**What the child can touch:** the lens — anywhere on the ring, the glass or the handle —
+(drag), any **found** bug (tap, *including through the glass*), back, sound, the
 journal tab. Bare plate does nothing at all — no sound, no wiggle, no scold.
+
+### 2.5a THE STAGE BOX — full-bleed on a tablet, a framed diorama on a wide window
+
+The play field cover-fits its box and the art is 4:3. On a tablet that is nearly free
+(1194×834 crops 6.9 % off the top and bottom and the composition survives). On a **2000×960
+desktop window (2.08:1)** the same cover-fit ate 36 % of the picture: the hotel's red roof was
+gone, the HUD reserve shoved the plaques off their own rooms, and the child had to drag the
+glass into the far corners of a very wide screen. So past a certain width the stage stops being
+the window and becomes a **card**: a centred diorama on a blurred, slightly dimmed duplicate of
+its own plate — the treatment the splash already gives the hotel (§2.3).
+
+| | |
+|---|---|
+| **when the frame appears** | viewport ≥ **1400 px wide**, or ≥ 1000 px wide **and 3:2 or flatter**. iPad landscape (1194 px, 1.43:1) sits under both on purpose: the shipped tablet composition does not move by a pixel. Portrait and phone never frame. |
+| **card size** | the biggest box inside `viewport − clamp(24px, 3vmin, 48px)` on every side whose aspect stays between **1.25:1 and 1.4:1** |
+| **the surround** | `#stage-surround` — the CURRENT plate again, `blur(16px) brightness(.84) saturate(.94)`, `display:none` until the frame exists (a full-screen filter is what costs an old iPad frames). `--stage-plate` is set by `js/main.js` from the field's `on.plate` callback, i.e. from the same RESOLVED url the scene painted, so the two can never disagree. |
+| **the border** | `border-radius` + a 7 px cream / 12 px kraft `box-shadow` ring + a soft cast shadow. Spread shadow, not `border`, so the scene's box — and every art coordinate — is untouched. Same paper-on-kraft as the banner and the fact card. |
+| **what moves with the card** | banner, target plaque, room pips, journal tab. They are written against `--stage-x/-y/-w/-h`, which are `0 / 0 / 100 % / 100 %` everywhere else, so the tablet CSS is arithmetically identical. |
+| **what stays at the window corners** | back and sound. They are the way *out*, not part of the picture. |
+
+At 2000×960 the card measures **1263 × 902** (1.4:1), the art crops 4.8 % vertically (28.7 art px
+a side — the roof apex is at y≈32 and survives), all four plaques sit on their own rooms, and no
+HUD rect touches one.
 
 ### 2.6 REWARD — the mockup-03 composition
 
@@ -444,6 +471,13 @@ fires; the game re-places hotspots and calls `lens.resync()`. **A resize never r
 placements** — a bug must not move under a child's finger. **A resize never cancels an in-flight
 drag**; the lens is re-registered at its current art position.
 
+> **The one exception — §4.3a.** A rotation changes *which slice* of the 4:3 plate the window
+> shows, and a narrow crop can leave the round's **target** outside it, which makes the room
+> unwinnable. So on reflow, and only then, the target — **only the target, and only while it is
+> still hidden** — is moved back inside the reachable band, by the same deterministic ladder
+> `enterRoom` ran. Nothing is re-rolled: the PRNG is not touched, the authored zones do not move,
+> the two bonus bugs do not move, and **a bug the child has already found never moves.**
+
 **Backgrounding the tab.** On `visibilitychange → hidden`: stop voice, stop ambience, pause all
 timers, and **settle any in-flight lens drag in place** (§5.2.6). On `visible`: resume ambience,
 re-arm idle timers from zero. Nothing auto-advances while hidden.
@@ -468,8 +502,9 @@ and is the single source both for `tools/gen-voice.py` and for the Web Speech fa
 clip and its fallback can never drift. A clip that fails Whisper QA on three seeds ships
 unrecorded and is spoken by `speech.js` instead. It degrades; it never breaks.
 
-**74 clips: 22 global + 4 room intros + 12 bugs × 4.** No clip is composed from fragments — at
-this age a whole warm sentence beats a stitched one, and 74 is a tractable recording bill.
+**75 clips: 23 global + 4 room intros + 12 bugs × 4.** No clip is composed from fragments — at
+this age a whole warm sentence beats a stitched one, and 75 is a tractable recording bill.
+(74 shipped with P8; `pick-room` was added in the wide-viewport fix pass — see §11.)
 
 ### 3.1 The audio-unlock rule — nothing speaks before the first gesture
 
@@ -502,10 +537,11 @@ welcome, not the room prompt, not the fact.
 | `mode-bug-detective` | Bug Detective. I will tell you a secret about a bug. Can you work out who it is? |
 | `mode-my-bug-book` | My Bug Book. Here are all the bugs you have found. Tap one to hear about it again. |
 
-**Prompts · 3**
+**Prompts · 4**
 
 | id | line |
 |---|---|
+| `pick-room` | Which room shall we peek into? Tap one! |
 | `prompt-look` | Somebody tiny is hiding in this room. Let's have a look. |
 | `prompt-lens` | Drag the magnifying glass over the little rooms to look closely. |
 | `prompt-again` | Here it is one more time. |
@@ -641,7 +677,7 @@ first person*, playful, with a real pause before "Who am I?".
 | `bug-cricket-fact` | A cricket sings by rubbing its wings together. You can often hear crickets chirping at night. |
 | `bug-cricket-clue` | I am dark and small with long whiskers, and I chirp a little song at night. Who am I? |
 
-22 + 4 + 48 = **74**. `tools/lines.json` contains exactly these 74 ids and these 74 strings,
+23 + 4 + 48 = **75**. `tools/lines.json` contains exactly these 75 ids and these 75 strings,
 character for character. QA asserts the two agree (§13.1).
 
 ### 3.5 Runtime sequencing
@@ -652,6 +688,7 @@ character for character. QA asserts the two agree (§13.1).
 | enter a room, `bug-hunt` | `room-<id>` → `bug-<target>-find` | 260 |
 | enter a room, `bug-detective` | `room-<id>` → `prompt-look` → `bug-<target>-clue` | 260 / 260 |
 | first entry to any room in a session | …then `prompt-lens` | 400 |
+| sound button, hotel select | `pick-room` | — |
 | sound button, `bug-hunt` | `bug-<target>-find` | — |
 | sound button, `bug-detective` | `prompt-again` → `bug-<target>-clue` | 140 |
 | lens dwells near a bug (within `gettingCloserRadiusArt`, not yet revealing) | `getting-closer` | cooldown 6 s |
@@ -776,6 +813,38 @@ const order = shuffle(room.bugs, rng);            // which bug gets which nook, 
 `y ∈ [300, 1000]`; no two zones in a room are closer than 220 art px; every zone clears the HUD
 reserve at all six reference viewports.
 
+### 4.3a The target is always reachable — the narrow-crop guarantee
+
+The rule above is authored for a tablet, where the whole 1600×1200 plate is on screen. The scene
+**cover**-fits, so a narrow window sees only a vertical band of it: a **390×844 phone reaches art
+`x ∈ [523, 1077]`** — 555 art px of a 1600 px picture. The leaf room's four nooks sit at
+`x = 466 / 478 / 831 / 1150`, so three of the four are off that crop, and a seeded round that
+landed the **target** in one of them could not be finished at all. The child dragged the glass to
+the edge of the screen and the ladybug was simply not in the room.
+
+**The zones do not move.** They are authored against the painted hollows of the real plates (P6)
+and the tablet composition is not changed by one pixel. What moves, and only when it has to, is
+the **target's placement**:
+
+```
+band = scene.visibleArt() inset by 120 art px  (capped at ⅓ of the visible span)
+if the target's nook is inside the band            -> nothing happens (the tablet case, always)
+1. else swap with a placed, still-hidden bug whose nook IS inside   (both stay in painted nooks)
+2. else relocate to the nearest FREE authored nook inside the band  (usually §4.3's empty fourth)
+3. else clamp artX/artY into the band              (no reachable nook exists at all; artY survives
+                                                    untouched whenever the crop is horizontal)
+```
+
+- **Only the target is guaranteed.** The other two bugs are bonus finds (§4.2) and may stay off
+  the crop — a phone player finds one bug per room and still completes every round and the book.
+- **The 120 px inset** is not cosmetic: the glass is 360 art px across and the dwell radius is
+  150, so a bug pinned to the last visible column would need the child to park the glass half off
+  the plate.
+- **Still deterministic.** The ladder reads placement order, authored zone order and the viewport
+  — never the clock and never the PRNG. **Same seed + mode + round + viewport ⇒ same layout**, so
+  `QLOBE_DEBUG.seed(42)` still pins QA; only the *viewport* is now part of "same layout".
+- It runs once in `enterRoom`, and again on reflow under the §2.9 exception.
+
 ### 4.4 Keep-out derivation
 
 | keep-out (art px) | what it is |
@@ -874,8 +943,11 @@ const lens = createLens(scene, {
 glass_aperture()` finds the largest circle inside the ring's opaque inner edge and prints them;
 with the module's defaults instead, the magnified world sat visibly outside the paper ring.
 `gripOffset` × `gripDir` puts the invisible button on the handle, and `gripSize` keeps it small
-enough that **it never contains the glass centre** — a bug revealed under the glass has to stay
-tappable. The smoke suite asserts both properties.
+enough that **it never contains the glass centre**. That last property no longer carries the
+weight it used to: since §11 row 23 the whole lens is draggable and a tap that lands on it is
+forwarded to what is underneath, so a bug revealed under the glass stays tappable by
+disambiguation rather than by the grip staying out of the way. The smoke suite asserts both
+properties anyway — the grip is unchanged.
 
 **5.2.1 What it draws.** A `div` with `border-radius: 50%; overflow: hidden; will-change:
 transform`, containing (a) a duplicate `<img>` of the scene's current background at
@@ -888,9 +960,20 @@ thing that kills an old iPad).
 **true alpha hole** where the glass is. The paper ring and the wooden handle are authored art;
 CSS contributes only the clip and the shadow.
 
-**5.2.3 The grip.** One invisible `<button class="lens-grip">`, `touch-action: none`, centred
-`gripOffset` art px down the handle, never smaller than `gripMinCssPx`. It is the *only* pointer
-target the lens owns.
+**5.2.3 The drag surface** (was "the grip" — §11 row 23). Three invisible shapes under one
+`div.ml-surface`, `touch-action: none`, all bubbling into a single `pointerdown` listener:
+
+* `.ml-surface-ring` — a circle of `dragRing`·`glassD` (1.46 by default, measured off
+  `magnifier.webp`: the paper ring is fully opaque out to 0.72·`glassD`) centred on the glass,
+* `.ml-surface-handle` — a rounded bar `dragHandleW`·`glassD` wide running `dragHandleLen`·`glassD`
+  out along `gripDir`,
+* `.ml-grip` — the original invisible `<button>`, unchanged, still the lens's one focusable
+  control (arrow keys nudge through the same `applyCentre`).
+
+A press is a **tap** until it travels `dragSlopPx` (12 CSS px); past that it is a drag and the
+window-level machinery of 5.2.6 takes over unchanged. A tap goes to whatever is under the glass
+(§11 row 23). When the lens is disabled or hidden the surface is inert, so a large invisible
+shape can never become a dead patch of screen.
 
 **5.2.4 API.**
 
@@ -1196,6 +1279,11 @@ otherwise identical.
 | 18 | P4 | `spider-idle` / `spider-happy` ship as `qwen-image-layered` returned them | **body silhouette UNION a gradient-tolerant flood key of the raw edit** (`tools/fix-cutouts.py spider_legs`) | The layered cutout kept the charcoal body and dropped all eight pale-grey paper legs against the charcoal backdrop — at 200 px the spider read as a ball with eyes. Deterministic, local, no regeneration. |
 | 19 | §9.6 | the record is written before the flight, and every mounted grid repaints off that write | **the destination slot's FACE waits for the landing** (`journal-ui.js flyTo`) | Writing early is right and stays (a back tap mid-animation must not cost a child their ladybug) — but it meant the slot was already wearing the bug while a second copy of the same bug flew towards it. Hiding only the face keeps the guarantee and gives the flight its meaning back. |
 | 20 | §9.10 | reduced motion flattens the celebration's sticker rise via `transform: none` | **`animation: none`** on `.sticker.rise` | The rise keyframes are `both`-filled, so their end state is an *animation* value and outranks any declaration the reduced-motion block can make. The stickers were still rising, 40 px, in the "no motion" pass. |
+| 21 | §2.4 / §3.2 | the hotel-select screen banners and re-speaks `prompt-look` ("Somebody tiny is hiding in this room. Let's have a look.") | **a new line, `pick-room` — "Which room shall we peek into? Tap one!"** | There is no "this room" on the hotel screen; the child is choosing between four. Printed over the four plaques the old line read like a leftover from somewhere else. `prompt-look` keeps its real job — the `bug-detective` room intro (§3.5) — and the script grows from 74 lines to 75. |
+| 22 | maintainer brief, wide-viewport fix | "cap the stage at **≈16:10**, max **≈20 %** vertical crop" | **1.25:1 – 1.4:1, 4.8 % crop at 2000×960** (§2.5a) | 16:10 measures out at 16.7 % vertical crop = 100 art px off the top, and the roof apex of `bg-hotel.jpg` sits at y≈32. A 16:10 card decapitates the hotel — the exact defect being fixed. 1.4:1 is still visibly wider than the plate, keeps the roof and the plaques, and is far inside the 20 % budget the brief allowed. |
+| 23 | §5.2 (P2 contract) | "THE LENS NEVER HANDLES A TAP: its root is `pointer-events:none` and the single invisible grip button is the only pointer target it owns" | **the drag surface covers the ring, the glass and the handle; a press that does not travel 12 CSS px is a TAP and is forwarded to whatever is under the glass** | A drag handle the size of a bottle cap is not what a child reaches for — they grab the glass. The original contract existed only to protect the tap on a bug the child had just found underneath it, and disambiguation protects it better: past the slop the press is a drag (same window-level machinery, same `applyCentre`); inside it the lens goes `pointer-events:none` for one `document.elementFromPoint` and **`click()`s** the control underneath. `click()` and not a synthetic pointer pair, because `shared/js/tap.js` acts on `pointerup` and keeps `click` for keyboard/AT — a click on an element this press never touched with a pointer therefore fires the action **exactly once**, and the browser's own click for the press targets the surface, never the control. Cost: the underlying control's pointerdown feedback (hotspot-scene's press-down scale) does not run for a tap through the glass. A press ON the glass is also never `clampGrip`-corrected — correcting it would make the glass jump out from under the finger that just touched it; a press on the ring or the handle keeps the old lift exactly. |
+| 24 | §2.9 / §4.3 | "placement is computed **once**, when the room mounts, and **never** recomputed on a resize" | **one exception: a still-hidden TARGET that a narrow crop has put out of reach is moved back into the reachable band, on mount AND on reflow** (§4.3a) | The scene cover-fits a 4:3 plate, so a 390 px phone reaches only art `x ∈ [523, 1077]` while the leaf room's nooks are authored at `466 / 478 / 831 / 1150`. Three of four are off that crop, and a round whose *target* landed in one of them was **unwinnable** — the child could drag the glass to the edge and the bug was not in the room. The rule the original text was protecting is "a bug must not move under a child's finger", and that rule is kept intact: only the target moves, only while it is still hidden, never a bug already found, and the two bonus bugs stay wherever the seed put them. The zones themselves do not move — the tablet composition is untouched — and the ladder is deterministic (placement order, authored zone order, viewport; no PRNG, no clock), so `seed(42)` still pins a layout for a given viewport. |
+| 25 | §2.5 HUD geometry | the banner reserves `--safe-l + 140px` on each side and the journal tab sits at `--safe-l + 112px` along the bottom | **under 600 px both rules are replaced**: the caption takes the full width between the safe insets and drops **below** the top row of controls; the journal tab moves to the **bottom-right** corner and the pips shrink | On a 390 px phone the banner formula resolves to **78 px** — a one-word column of broken text — and no centred pill can clear a 96 px control on both sides *and* stay readable at that width, so the phone stops trying to fit between them and goes under them instead. The tab's authored offset put it directly on the bamboo and log plaques, which land in the bottom third of a phone crop; the bottom-right corner is the one corner this game leaves empty. Both keep every §9.1 touch size, the caption is still `pointer-events: none` (§8.2 row 21), and nothing at or above 600 px changes — 1194×834, 834×1194 and the 2000×960 framed card are byte-identical. |
 
 ### 11.1 P6 tuning record — what was measured, and against what
 
@@ -1318,7 +1406,7 @@ bug-hotel-observer` — never by hand, and never in the same commit as an asset 
 
 `node tools/validate/run.mjs` with **zero new errors**, plus `tools/qa.mjs --static`:
 config invariants (§6) · zone band + separation (§4.3) · every voice id in `config.json` present
-in `tools/lines.json` and vice versa · **exactly 74 lines** · every asset path relative,
+in `tools/lines.json` and vice versa · **exactly 75 lines** · every asset path relative,
 lowercase and present · byte budgets from `ASSETS.md` · **no emoji anywhere in the runtime DOM**
 · `assets/hub/tiles/` untouched · `shared/js/hotspot-scene.js` byte-identical to `main`.
 
@@ -1330,7 +1418,10 @@ silently, so the channel is not optional.
 1. Zero console errors, zero 404s, on every screen.
 2. All three modes end-to-end via `QLOBE_DEBUG` with `fastTimer(10)`.
 3. **A real synthetic pointer drag of the lens** (`pointerdown` on the grip → a path of
-   `pointermove`s → dwell → reveal) — not just `setLens`.
+   `pointermove`s → dwell → reveal) — not just `setLens`. Since §11 row 23, also: a drag started
+   on the **glass centre**; the 12 px slop holding the glass still inside it; and a **tap through
+   the glass** onto a revealed roommate firing `greet()` **exactly once** (`wrongTaps` +1 — the
+   one counter written synchronously, so it is true even with the voice muted).
 4. **Strand probes:** `pointercancel` mid-drag; `blur` mid-drag; `visibilitychange` mid-drag.
    Each must leave the lens settled in place, enabled, and draggable again.
 5. Wrong-input probes: tap a roommate, tap an empty sticker slot, tap bare plate, double-tap the
@@ -1342,6 +1433,19 @@ silently, so the channel is not optional.
    home appears only on the splash.
 9. Portrait + landscape + reduced-motion screenshots at three viewports
    (1194×834, 834×1194, 1024×768).
+10. **Wide-window geometry (§2.5a)** at 2000×960: the stage is a centred card with a real
+    margin, its aspect is ≤ 1.4:1, the vertical crop is ≤ 20 %, the roof apex (art y≈32) is on
+    screen, all four plaques are inside the card, and no HUD rect overlaps one. The same run at
+    1194×834 / 834×1194 / 390×844 must report **no frame at all** — the stage still fills the
+    window and `#stage-surround` stays `display:none`.
+11. **A phone is playable (§4.3a, §11 rows 24–25)** at 390×844: the leaf-room target's centre is
+    inside `visibleArt()` *by the 120 art px reach margin*, and still on one of the authored
+    nooks; the round completes through the **real** path (`lens.moveTo` → dwell → tap), never
+    `winRound()`; the banner is ≥ 200 css px wide and inside the window; the journal tab keeps its
+    96 css px and intersects **no** room plaque. Plus the §2.9 exception itself: enter a room at
+    1194×834, find one roommate, rotate to 390×844 — the hidden target is back inside the crop,
+    the found roommate has **not** moved and is still `found` in both worlds, and the round still
+    completes.
 
 ### 13.3 Visual QC (P6/P8)
 
@@ -1349,6 +1453,10 @@ Every plate reviewed **at full size**, with **material fidelity assessed separat
 layout** · magenta composites for all ~34 cutouts · the glass genuinely transparent over all four
 interiors · every bug readable at ~200 CSS px · `title.webp` and `fact-found.webp` spell-checked
 at full size · the four interiors palette-consistent with each other and with the exterior.
+
+`qa-shots/` carries three sets, all reviewed at full size: `wide-*` (2000×960, the framed
+diorama of §2.5a), `land-*` (1194×834) and `port-*` (834×1194). `wide-` and `land-` run the whole
+game 01→12; `port-` stops at the book.
 
 ### 13.4 Risks
 
