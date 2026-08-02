@@ -1,12 +1,24 @@
 #!/usr/bin/env node
 // Real-Chrome smoke test and visual-QC capture for Playdough Letter Factory.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/playdough-letter-factory/tools/qa.mjs
+//        [--base http://127.0.0.1:8000] [--shots qa-shots/playdough-letter-factory]
+//        [--chromium]  # visual-only fallback when system Chrome is occupied
+//   ($QLOBE_BASE / $QLOBE_SHOTS still work.)
 
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
-const base = (process.env.QLOBE_BASE || 'http://127.0.0.1:8000').replace(/\/$/, '');
-const shots = path.resolve(process.env.QLOBE_SHOTS || 'qa-shots/playdough-letter-factory');
+const args = process.argv.slice(2);
+const flag = (name, fallback = null) => {
+  const index = args.indexOf(`--${name}`);
+  return index >= 0 && args[index + 1] && !args[index + 1].startsWith('--')
+    ? args[index + 1] : fallback;
+};
+const base = (flag('base') || process.env.QLOBE_BASE || 'http://127.0.0.1:8000').replace(/\/$/, '');
+const shots = path.resolve(flag('shots') || process.env.QLOBE_SHOTS || 'qa-shots/playdough-letter-factory');
 const require = createRequire('/private/tmp/pw/node_modules/noop.js');
 const { chromium } = require('playwright');
 const checks = [];
@@ -16,6 +28,12 @@ function check(name, condition, detail = '') {
   const ok = Boolean(condition);
   checks.push({ name, ok, detail });
   console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
+}
+
+function finish() {
+  const failed = checks.filter(({ ok }) => !ok);
+  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed`);
+  if (failed.length) process.exitCode = 1;
 }
 
 async function openGame(browser, viewport, reducedMotion = 'no-preference') {
@@ -45,11 +63,11 @@ async function openGame(browser, viewport, reducedMotion = 'no-preference') {
     window.QLOBE_DEBUG.seed(42);
     window.QLOBE_DEBUG.fastTimers(.03);
   });
-  sessions.push({ context, errors, failed, remote });
+  sessions.push({ errors, failed, remote, close: () => context.close() });
   return page;
 }
 
-async function traceActiveLetter(page) {
+async function traceActiveLetter(page, { onMidStroke } = {}) {
   const strokeCount = await page.locator('.letter-clay').count();
   for (let stroke = 0; stroke < strokeCount; stroke += 1) {
     const points = await page.locator('.letter-clay').nth(stroke).evaluate((pathEl) => {
@@ -66,14 +84,32 @@ async function traceActiveLetter(page) {
     });
     await page.mouse.move(points[0].x, points[0].y);
     await page.mouse.down();
-    for (const point of points.slice(1)) await page.mouse.move(point.x, point.y, { steps: 2 });
+    for (let index = 1; index < points.length; index += 1) {
+      await page.mouse.move(points[index].x, points[index].y, { steps: 2 });
+      if (stroke === 0 && index === Math.floor(points.length / 2) && onMidStroke) {
+        await onMidStroke();
+      }
+    }
     await page.mouse.up();
   }
 }
 
+async function visibleLetterReveal(page) {
+  return page.locator('.letter-clay-finished').evaluateAll((paths) => paths.length > 0 && paths.every((pathEl) => {
+    const box = pathEl.getBBox();
+    const style = getComputedStyle(pathEl);
+    return pathEl.getTotalLength() > 0 && (box.width > 0 || box.height > 0)
+      && style.stroke !== 'none' && style.stroke !== 'rgba(0, 0, 0, 0)'
+      && !style.filter.includes('url(');
+  }));
+}
+
 async function main() {
   await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const browser = await chromium.launch({
+    channel: process.argv.includes('--chromium') ? undefined : 'chrome',
+    headless: true,
+  });
 
   const hubContext = await browser.newContext({ viewport: { width: 1180, height: 820 } });
   const hubPage = await hubContext.newPage();
@@ -94,7 +130,7 @@ async function main() {
   const cards = await page.locator('.mode-card').evaluateAll((nodes) =>
     nodes.map((node) => ({ w: node.getBoundingClientRect().width, h: node.getBoundingClientRect().height })));
   check('splash mode cards meet the 96px target', cards.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(cards));
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(350);
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
   await page.evaluate(async () => {
@@ -120,6 +156,8 @@ async function main() {
   await page.locator('[data-target-id="color-go"]').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'roll');
   const rollBox = await page.locator('[data-target-id="roll-zone"]').boundingBox();
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: path.join(shots, '03-roll-ready.png') });
   for (let pass = 0; pass < 3; pass += 1) {
     const forward = pass % 2 === 0;
     await page.mouse.move(
@@ -127,6 +165,16 @@ async function main() {
       rollBox.y + rollBox.height * .5,
     );
     await page.mouse.down();
+    if (pass === 0) {
+      await page.mouse.move(rollBox.x + rollBox.width * .5, rollBox.y + rollBox.height * .5, { steps: 6 });
+      const liveRoll = await page.evaluate(() => ({
+        count: window.QLOBE_DEBUG.getState().rollCount,
+        amount: Number.parseFloat(document.querySelector('.dough-rope').style.getPropertyValue('--rolled')),
+      }));
+      check('dough expands continuously before the first swipe is released',
+        liveRoll.count === 0 && liveRoll.amount > .48, JSON.stringify(liveRoll));
+      await page.screenshot({ path: path.join(shots, '03-roll-live.png') });
+    }
     await page.mouse.move(
       rollBox.x + rollBox.width * (forward ? .8 : .2),
       rollBox.y + rollBox.height * .5,
@@ -137,20 +185,40 @@ async function main() {
   }
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'trace');
   check('three real swipes advance to tracing', true);
-  await page.waitForTimeout(520);
+  await page.waitForTimeout(400);
   await page.screenshot({ path: path.join(shots, '04-trace-ready.png') });
 
   const tray = page.locator('.trace-tray');
   const trayBox = await tray.boundingBox();
   await page.mouse.click(trayBox.x + trayBox.width * .86, trayBox.y + trayBox.height * .16);
-  await page.waitForTimeout(120);
+  await page.waitForTimeout(50);
   check('a wrong trace start gives a gentle nudge without progress',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().stroke)) === 0);
-  await traceActiveLetter(page);
+  await traceActiveLetter(page, {
+    onMidStroke: async () => {
+      const progress = await page.evaluate(() => window.QLOBE_DEBUG.getState().strokeProgress);
+      check('tracing deepens an impression continuously inside the dough slab', progress > 0 && progress < 1, String(progress));
+      await page.screenshot({ path: path.join(shots, '04b-trace-impression.png') });
+    },
+  });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('real guided tracing reaches the phonics reveal', true);
-  await page.waitForTimeout(680);
+  check('first completed letter reveal is visible without an SVG URL filter', await visibleLetterReveal(page));
+  await page.waitForTimeout(450);
   await page.screenshot({ path: path.join(shots, '05-letter-reveal.png') });
+
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
+  let repeatedRevealsVisible = true;
+  for (let round = 0; round < 6; round += 1) {
+    await page.locator('#next').click();
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'color');
+    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
+    await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
+    repeatedRevealsVisible &&= await visibleLetterReveal(page);
+  }
+  check('letter art remains visible through seven consecutive completed rounds', repeatedRevealsVisible);
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: path.join(shots, '05b-letter-reveal-repeat.png') });
 
   await page.locator('#reveal-back').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'splash');
@@ -170,12 +238,12 @@ async function main() {
   if (correct) await page.evaluate((id) => window.QLOBE_DEBUG.tap(id), correct.id);
   check('correct word letter fills the next slot',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 1);
-  await page.waitForTimeout(220);
+  await page.waitForTimeout(50);
   await page.screenshot({ path: path.join(shots, '06-word-maker.png') });
   await page.evaluate(() => window.QLOBE_DEBUG.winRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('Word Maker reaches a complete word reveal', true);
-  await page.waitForTimeout(680);
+  await page.waitForTimeout(400);
   await page.screenshot({ path: path.join(shots, '07-word-reveal.png') });
 
   await page.evaluate(() => {
@@ -223,13 +291,11 @@ async function main() {
     check('session has no page or console errors', session.errors.length === 0, session.errors.join(' | '));
     check('session has no failed requests or 4xx responses', session.failed.length === 0, session.failed.join(' | '));
     check('session makes no runtime model or third-party requests', session.remote.length === 0, session.remote.join(' | '));
-    await session.context.close();
+    await session.close();
   }
   await browser.close();
 
-  const failed = checks.filter((item) => !item.ok);
-  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed`);
-  if (failed.length) process.exitCode = 1;
+  finish({ listFailures: false });
 }
 
 main().catch((error) => {

@@ -6,6 +6,7 @@
 }
 
 :root {
+  --qk-bg: #d69d3b;
   --teal: #118f87;
   --teal-dark: #07655f;
   --mint: #7bd1c2;
@@ -36,8 +37,8 @@ body {
   font-weight: 600;
   user-select: none;
   -webkit-user-select: none;
-  -webkit-touch-callout: none;
   overscroll-behavior: none;
+  -webkit-touch-callout: none;
   touch-action: manipulation;
 }
 
@@ -274,10 +275,11 @@ button {
   height: 50%;
   display: grid;
   place-items: center;
-  border: 4px solid rgba(255, 255, 255, .55);
-  border-radius: 18px;
-  background: rgba(255, 244, 217, .18);
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
   font-size: clamp(42px, 5.4vw, 66px);
+  filter: drop-shadow(0 5px 4px rgba(58, 32, 19, .18));
 }
 
 .mode-art-word span:nth-child(1) { left: 0; transform: rotate(-7deg); }
@@ -517,20 +519,14 @@ button {
   place-items: center;
   width: clamp(170px, 23vw, 260px);
   height: clamp(150px, 21vh, 215px);
-  border: 13px solid #71cfc0;
-  border-radius: 42px;
-  color: #fff4d9;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .3), transparent 25%),
-    linear-gradient(145deg, #ef8a38, #e35436);
-  box-shadow:
-    inset 0 0 0 8px #fff3d0,
-    inset 0 -14px 18px rgba(120, 48, 23, .14),
-    0 10px 0 rgba(40, 117, 104, .28),
-    0 19px 28px rgba(72, 43, 18, .2);
+  border: 0;
+  border-radius: 0;
+  color: #e75f43;
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 13px 9px rgba(72, 43, 18, .22));
   font-size: clamp(108px, 15vw, 178px);
   line-height: 1;
-  text-shadow: 0 7px 0 rgba(124, 51, 30, .17);
+  text-shadow: 0 6px 0 #b53d36, 0 10px 13px rgba(72, 43, 18, .18);
 }
 
 .color-belt {
@@ -564,41 +560,25 @@ button {
   transition: transform .14s ease;
 }
 
+.color-tub::before {
+  position: absolute;
+  z-index: 1;
+  inset: -7px -3px -2px;
+  background: transparent url('../assets/ui/dough-tub.webp') center bottom / contain no-repeat;
+  content: '';
+  filter: hue-rotate(var(--tub-hue, 0deg));
+}
+
 .color-tub:active {
   transform: scale(.94);
 }
 
 .color-tub .dough-lump {
-  position: absolute;
-  z-index: 2;
-  top: 4px;
-  left: 18%;
-  width: 64%;
-  height: 62px;
-  border-radius: 52% 48% 45% 50%;
-  background:
-    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, .31), transparent 25%),
-    radial-gradient(circle at 70% 71%, rgba(83, 39, 23, .12) 0 3px, transparent 4px),
-    var(--swatch);
-  box-shadow:
-    inset -8px -9px 12px rgba(70, 34, 20, .13),
-    0 5px 0 var(--swatch-dark);
+  display: none;
 }
 
 .color-tub .tub-body {
-  position: absolute;
-  right: 5%;
-  bottom: 0;
-  left: 5%;
-  height: 101px;
-  border: 7px solid #f5de9e;
-  border-radius: 21px 21px 31px 31px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, .22), transparent 32%),
-    var(--swatch);
-  box-shadow:
-    inset 0 -12px 0 rgba(75, 37, 21, .11),
-    0 7px 0 rgba(94, 51, 25, .2);
+  display: none;
 }
 
 .color-tub .tub-body::before {
@@ -691,7 +671,7 @@ button {
     0 13px 0 var(--dough-dark),
     0 23px 24px rgba(76, 39, 20, .18);
   transform: scaleX(var(--rolled, .48)) scaleY(var(--squish, 1.15));
-  transition: transform .28s cubic-bezier(.2, .85, .25, 1.1);
+  transition: transform .09s ease-out;
 }
 
 .rolling-pin {
@@ -699,42 +679,21 @@ button {
   z-index: 8;
   top: 50%;
   left: var(--roller-x, 18%);
-  width: clamp(145px, 23%, 235px);
-  height: 126px;
-  transform: translate(-50%, -54%);
+  width: clamp(185px, 28%, 250px);
+  height: clamp(62px, 9vh, 78px);
+  background: transparent url('../assets/ui/rolling-pin.webp') center / contain no-repeat;
+  filter: drop-shadow(0 10px 7px rgba(76, 39, 20, .24));
+  transform: translate(-50%, -54%) rotate(90deg);
   pointer-events: none;
   transition: left .08s linear;
 }
 
 .rolling-pin::before {
-  position: absolute;
-  top: 23px;
-  right: 18%;
-  left: 18%;
-  height: 80px;
-  border: 7px solid #f7e7bb;
-  border-radius: 28px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, .32), transparent 26%),
-    #67c8b9;
-  box-shadow:
-    inset 0 -11px 0 rgba(22, 112, 105, .14),
-    0 7px 0 rgba(95, 55, 24, .2);
-  content: '';
+  display: none;
 }
 
 .rolling-pin::after {
-  position: absolute;
-  top: 44px;
-  right: 0;
-  left: 0;
-  height: 39px;
-  border-radius: 19px;
-  background:
-    linear-gradient(90deg, #ef9a27 0 14%, transparent 14% 86%, #ef9a27 86%);
-  box-shadow:
-    inset 0 -6px 0 rgba(136, 68, 12, .18);
-  content: '';
+  display: none;
 }
 
 .swipe-cue {
@@ -743,7 +702,7 @@ button {
   bottom: 4%;
   left: 50%;
   width: 54%;
-  height: 42px;
+  height: 28px;
   border-top: 8px dotted rgba(16, 121, 113, .56);
   transform: translateX(-50%);
   pointer-events: none;
@@ -752,14 +711,25 @@ button {
 .swipe-cue::before,
 .swipe-cue::after {
   position: absolute;
-  top: -24px;
-  color: #118f87;
-  font-size: 35px;
-  content: '‹';
+  top: -17px;
+  width: 24px;
+  height: 24px;
+  border-style: solid;
+  border-color: #118f87;
+  content: '';
 }
 
-.swipe-cue::before { left: -11px; }
-.swipe-cue::after { right: -11px; content: '›'; }
+.swipe-cue::before {
+  left: -5px;
+  border-width: 0 0 8px 8px;
+  transform: rotate(45deg);
+}
+
+.swipe-cue::after {
+  right: -5px;
+  border-width: 8px 8px 0 0;
+  transform: rotate(45deg);
+}
 
 .swipe-cue.fade {
   opacity: 0;
@@ -813,6 +783,26 @@ button {
   height: min(69vh, 650px);
 }
 
+.trace-dough-slab {
+  position: absolute;
+  z-index: 3;
+  inset: 5% 7% 6%;
+  border-radius: 11% 8% 10% 7% / 9% 11% 8% 10%;
+  background:
+    radial-gradient(circle at 20% 23%, rgba(255, 255, 255, .2) 0 3px, transparent 4px),
+    radial-gradient(circle at 72% 68%, rgba(69, 29, 22, .11) 0 2px, transparent 3px),
+    radial-gradient(circle at 46% 39%, rgba(69, 29, 22, .08) 0 2px, transparent 3px),
+    var(--dough);
+  background-size: 97px 89px, 83px 71px, 119px 101px, auto;
+  box-shadow:
+    inset -14px -18px 20px rgba(72, 27, 20, .13),
+    inset 10px 11px 15px rgba(255, 255, 255, .17),
+    0 13px 0 var(--dough-dark),
+    0 22px 25px rgba(76, 39, 20, .2);
+  transform: rotate(-.3deg) scale(.985);
+  pointer-events: none;
+}
+
 .letter-svg {
   position: absolute;
   z-index: 6;
@@ -825,21 +815,35 @@ button {
 
 .letter-guide {
   fill: none;
-  stroke: rgba(25, 132, 123, .35);
-  stroke-width: 56;
+  stroke: rgba(79, 31, 24, .16);
+  stroke-width: 62;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 1 72;
+  filter:
+    drop-shadow(-3px -3px 1px rgba(77, 28, 22, .16))
+    drop-shadow(3px 4px 1px rgba(255, 255, 255, .17));
 }
 
-.letter-clay,
+.letter-clay {
+  fill: none;
+  stroke: rgba(57, 24, 20, .36);
+  stroke-width: 48;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter:
+    drop-shadow(-4px -4px 1px rgba(67, 27, 21, .34))
+    drop-shadow(4px 5px 2px rgba(255, 255, 255, .2));
+}
+
 .letter-clay-finished {
   fill: none;
   stroke: var(--dough);
   stroke-width: 72;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: url('#clay-shadow');
+  filter:
+    drop-shadow(0 11px 4px var(--dough-dark))
+    drop-shadow(-4px -5px 4px rgba(255, 255, 255, .17));
 }
 
 .letter-clay {
@@ -889,6 +893,11 @@ button {
 
 .target-letter-chip {
   color: #168d84;
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 9px 7px rgba(72, 43, 18, .2));
   font-size: clamp(68px, 9vw, 106px);
   text-shadow: 0 5px 0 rgba(57, 73, 51, .14);
 }
@@ -1011,13 +1020,11 @@ button {
   min-height: clamp(132px, 22vh, 190px);
   display: grid;
   place-items: center;
-  border: 8px solid #ead19a;
-  border-radius: 27px;
+  border: 0;
+  border-radius: 0;
   color: rgba(19, 123, 115, .24);
-  background: #fff7df;
-  box-shadow:
-    inset 0 7px 15px rgba(117, 79, 36, .1),
-    0 5px 0 rgba(70, 62, 36, .16);
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 8px 6px rgba(70, 62, 36, .2));
   font-size: clamp(82px, 11vw, 128px);
 }
 
@@ -1028,10 +1035,7 @@ button {
 }
 
 .word-slot.current {
-  box-shadow:
-    inset 0 7px 15px rgba(117, 79, 36, .1),
-    0 0 0 8px rgba(247, 184, 49, .7),
-    0 7px 0 rgba(70, 62, 36, .16);
+  filter: drop-shadow(0 0 10px #ffc63f) drop-shadow(0 8px 6px rgba(70, 62, 36, .2));
 }
 
 .letter-tray {
@@ -1047,16 +1051,12 @@ button {
   min-width: 104px;
   min-height: 112px;
   padding: 0;
-  border: 6px solid #fff0c5;
-  border-radius: 32% 28% 35% 25%;
-  color: #fff3d0;
-  background:
-    radial-gradient(circle at 27% 16%, rgba(255, 255, 255, .33), transparent 24%),
-    var(--token-color);
-  box-shadow:
-    inset 0 -12px 0 rgba(72, 27, 17, .13),
-    0 8px 0 var(--token-dark),
-    0 14px 18px rgba(70, 39, 21, .2);
+  border: 0;
+  border-radius: 0;
+  color: var(--token-color);
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 8px 6px rgba(70, 39, 21, .24));
+  text-shadow: 0 5px 0 var(--token-dark), 0 8px 10px rgba(70, 39, 21, .16);
   font-size: clamp(69px, 9vw, 104px);
   line-height: 1;
   cursor: grab;
@@ -1150,10 +1150,11 @@ button {
 }
 
 .stamp-button {
-  border-radius: 27px;
+  border: 0;
+  border-radius: 0;
   color: #0c8078;
-  background: #fff5da;
-  box-shadow: inset 0 -9px 0 rgba(126, 87, 37, .1), 0 7px 0 rgba(72, 55, 29, .18);
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 7px 5px rgba(72, 55, 29, .2));
   font-size: clamp(52px, 7vw, 78px);
 }
 
@@ -1339,16 +1340,13 @@ button {
   place-items: center;
   width: clamp(106px, 15vw, 168px);
   height: clamp(130px, 20vh, 190px);
-  border: 7px solid #fff0c7;
-  border-radius: 31% 27% 35% 26%;
-  color: #fff5d9;
-  background: var(--letter-color);
-  box-shadow:
-    inset 0 -14px 0 rgba(75, 29, 18, .13),
-    0 10px 0 var(--letter-dark),
-    0 17px 22px rgba(69, 38, 19, .2);
+  border: 0;
+  border-radius: 0;
+  color: var(--letter-color);
+  background: transparent url('../assets/ui/letter-tile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 10px 8px rgba(69, 38, 19, .22));
   font-size: clamp(81px, 11vw, 124px);
-  text-shadow: 0 5px 0 rgba(74, 28, 19, .15);
+  text-shadow: 0 5px 0 var(--letter-dark), 0 8px 10px rgba(74, 28, 19, .14);
   animation: word-letter-pop .44s calc(var(--i) * .11s) cubic-bezier(.18, .92, .2, 1.25) both;
 }
 

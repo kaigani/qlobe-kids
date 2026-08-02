@@ -1,0 +1,48 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "playdough-letter-factory-foreground-props",
+  "kind": "image-set",
+  "created": "2026-08-01",
+  "steps": [
+    {
+      "workflow": "built-in-gpt-image-2",
+      "reference": "../../scenes/factory.webp",
+      "referenceRole": "style only",
+      "prompts": "prompts.json#foreground-tub,foreground-roller,foreground-tile",
+      "outputs": [
+        "foreground-tub-chroma.png",
+        "foreground-roller-chroma.png",
+        "foreground-tile-chroma.png"
+      ]
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "seed": 42,
+      "layers": 2,
+      "driver": "../../../tools/extract-foreground-props.py",
+      "resultOutput": "layer_2",
+      "outputs": [
+        "foreground-tub-layer2.png",
+        "foreground-roller-layer2.png",
+        "foreground-tile-layer2.png"
+      ]
+    },
+    {
+      "workflow": "deterministic-finalize",
+      "tool": "../../../../../tools/pipeline/cutout_finalize.py",
+      "alphaFloor": 4,
+      "pad": 14,
+      "webpQuality": 88,
+      "outputs": [
+        "../../ui/dough-tub.webp",
+        "../../ui/rolling-pin.webp",
+        "../../ui/letter-tile.webp"
+      ]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "method": "alpha histogram plus saturated-magenta composite plus landscape/portrait runtime screenshots"
+  }
+}

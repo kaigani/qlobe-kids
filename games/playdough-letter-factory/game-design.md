@@ -2,7 +2,7 @@
 
 ## Product promise
 
-A child picks a favorite color, rolls a convincing lump of digital dough with broad finger swipes, then follows a giant dotted letter path until the handmade letter comes alive. The same factory also turns finished letters into three-letter picture words and offers a pressure-free drawing tray.
+A child picks a favorite color, rolls a convincing lump of digital dough with broad finger swipes, then presses a giant letter groove into the flattened sheet until the handmade letter comes alive. The same factory also turns finished letters into three-letter picture words and offers a pressure-free drawing tray.
 
 **Audience:** ages 4–6.
 
@@ -37,8 +37,8 @@ The splash makes all three choices understandable without reading: a giant dough
 ### Make a Letter (roughly 35–70 seconds)
 
 1. Pick one of five large color tubs.
-2. Swipe horizontally three times. The roller follows the finger, the rope grows longer and flatter, and one progress bead fills per accepted sweep.
-3. Start at the glowing dot and trace one stroke at a time. The accepted dough follows the finger while a generously spaced dotted guide remains visible.
+2. Swipe horizontally three times. The vertically oriented roller follows the finger, and the dough visibly grows longer and flatter throughout each drag before one progress bead fills for an accepted sweep.
+3. Start at the glowing dot and press one stroke at a time into the flattened colored dough. A shallow continuous guide becomes a deeper recessed groove beneath the finger.
 4. See the finished clay letter with a face, a shared picture object, confetti, and “A is for APPLE”-style phonics payoff.
 
 Trace input uses real SVG path geometry rather than a fake timer. The pointer must begin within an 88-unit forgiving radius and stay within an 82-unit corridor. Progress cannot jump more than a local forward window, while an 82% stroke completion threshold forgives small end misses.
@@ -69,12 +69,15 @@ Letter rewards add the shared “A is for apple” recordings through `content.j
 | Graphic title lockup | transparent WebP, 77 KB | GPT Image 2 magenta source + local chroma removal |
 | Factory guide | transparent WebP, 62 KB | GPT Image 2 magenta source + local chroma removal |
 | Hub tile | 640×533 JPEG, 90 KB | Studio `menu-game-tile`, Krea 2 seed 42 |
-| Dough letters/tools | runtime SVG/HTML/CSS | deterministic code-native clay components |
+| Dough tub | transparent WebP, 27 KB | GPT Image 2 style-reference generation → Qwen Layered true-alpha extraction |
+| Rolling pin | transparent WebP, 14 KB | GPT Image 2 style-reference generation → Qwen Layered true-alpha extraction |
+| Blank letter tile | transparent WebP, 31 KB | GPT Image 2 style-reference generation → Qwen Layered true-alpha extraction |
+| Dynamic letters and dough impressions | runtime HTML/SVG over authored carriers | accessible exact path geometry, recessed grooves, and authored material sprites beneath |
 | Picture clues | shared object library | `content.js` / shared WebP |
 | Guide voice | 12 AAC/M4A clips, ~360 KB total | Qwen voice clone + Whisper QA |
 | Phonics reward | shared recorded audio | `content.js` |
 
-The generated background deliberately leaves the upper center and workbench calm. Interface elements remain runtime objects, so controls stay legible, responsive, and localized independently of the art.
+The generated background deliberately leaves the upper center and workbench calm. The tub, rolling pin, and reusable blank letter carrier keep primary foreground objects in the same hand-sculpted material language; exact letters and paths remain runtime HTML/SVG, so they stay correct, responsive, and accessible independently of the art.
 
 ## Interaction and feedback rules
 

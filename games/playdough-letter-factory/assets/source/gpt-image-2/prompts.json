@@ -19,10 +19,34 @@
       "source": "mascot-chroma.png",
       "final": "../../ui/mascot.webp",
       "prompt": "Use case: stylized-concept. Asset type: production mascot sprite for a preschool tablet game. Create one friendly full-body playdough factory guide, a tiny childlike space-mechanic mascot, waving and inviting the player to make letters. Original gender-neutral preschool mascot with warm medium-brown skin, short dark-brown hair, huge friendly brown eyes, rosy cheeks, and a joyful open smile; cream clay spacesuit with chunky teal gloves and boots, an orange belt and star badge, clear round teal-edged bubble helmet with one tiny orange antenna ball; left hand waving, right hand pointing gently toward the play area; feet fully visible. Premium stop-motion claymation character sprite, hand-sculpted polymer clay, rounded proportions, fingerprints, tiny dents, soft bevels, coherent with a mint/cream/orange clay toy factory. Single isolated full-body character on a perfectly flat solid #ff00ff chroma-key background; no text, letters, numbers, props, machines, UI, speech bubbles, logos, trademarks, or watermark; crisp anatomically consistent silhouette."
+    },
+    {
+      "id": "foreground-tub",
+      "generated": "2026-08-01",
+      "source": "foreground-tub-chroma.png",
+      "final": "../../ui/dough-tub.webp",
+      "reference": "../../scenes/factory.webp (style only)",
+      "prompt": "Use case: stylized-concept. Asset type: production game prop sprite for a preschool claymation tablet game. Input image: style reference only—the existing playdough factory backdrop; do not edit or reproduce its scene. Primary request: one open cylindrical playdough tub with a thick rounded rim, a hinged lid tipped slightly behind it, and a generous mound of vivid coral-red dough visible inside. Style/medium: premium stop-motion claymation prop, visibly hand-sculpted polymer clay and playdough with fingerprints, tiny dents, subtle tool marks, soft imperfect edges and preschool-safe chunky proportions; match the reference image's material, warm honey lighting, teal/cream/orange factory palette, and camera perspective. Composition/framing: single isolated three-quarter-front product view, centered, fully visible, generous padding, square canvas. Color palette: coral-red tub and dough, small cream rim accent, no green or magenta in the subject. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for removal. Constraints: the background is one uniform color with no shadow, gradient, texture, reflection, floor plane, or lighting variation; crisp separated silhouette; no cast shadow or contact shadow; no text, letters, numbers, symbols, labels, faces, hands, UI, logos, trademarks, or watermark; exactly one tub; do not use #ff00ff anywhere in the subject."
+    },
+    {
+      "id": "foreground-roller",
+      "generated": "2026-08-01",
+      "source": "foreground-roller-chroma.png",
+      "final": "../../ui/rolling-pin.webp",
+      "reference": "../../scenes/factory.webp (style only)",
+      "prompt": "Use case: stylized-concept. Asset type: production game prop sprite for a preschool claymation tablet game. Input image: style reference only—the existing playdough factory backdrop; do not edit or reproduce its scene. Primary request: one chunky child-safe rolling pin made from hand-sculpted clay, with a wide cream-colored barrel, short warm-orange handles on both sides, and chunky teal rounded grip caps; horizontal orientation. Style/medium: premium stop-motion claymation prop with fingerprints, tiny dents, subtle tool marks, soft imperfect edges and preschool-safe proportions; match the reference image's material, warm honey lighting, palette, and straight-on game camera. Composition/framing: single isolated rolling pin, centered horizontally, fully visible, generous padding, square canvas. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for removal. Constraints: the background is one uniform color with no shadow, gradient, texture, reflection, floor plane, or lighting variation; crisp separated silhouette; no cast shadow or contact shadow; no dough, text, letters, numbers, symbols, labels, faces, hands, UI, logos, trademarks, or watermark; exactly one rolling pin; do not use #ff00ff anywhere in the subject."
+    },
+    {
+      "id": "foreground-tile",
+      "generated": "2026-08-01",
+      "source": "foreground-tile-chroma.png",
+      "final": "../../ui/letter-tile.webp",
+      "reference": "../../scenes/factory.webp (style only)",
+      "prompt": "Use case: stylized-concept. Asset type: production game UI prop sprite for a preschool claymation tablet game. Input image: style reference only—the existing playdough factory backdrop; do not edit or reproduce its scene. Primary request: one blank chunky rounded-square letter tile made from layered hand-sculpted clay: a warm cream face plate, thick teal outer base, slightly inset face, and a subtle coral-orange corner accent; the central face must be completely blank so accessible runtime letters can be overlaid. Style/medium: premium stop-motion claymation prop with fingerprints, tiny dents, subtle tool marks, soft imperfect edges and preschool-safe proportions; match the reference image's material, warm honey lighting, palette, and straight-on game camera. Composition/framing: single isolated tile in a nearly straight-on view with only slight physical depth, centered, fully visible, generous padding, square canvas. Scene/backdrop: perfectly flat solid #ff00ff chroma-key background for removal. Constraints: background is one uniform color with no shadow, gradient, texture, reflection, floor plane, or lighting variation; crisp separated silhouette; no cast shadow or contact shadow; absolutely no text, letters, numbers, symbols, labels, faces, hands, UI controls, logos, trademarks, or watermark; exactly one tile; central cream face stays open and uncluttered; do not use #ff00ff anywhere in the subject."
     }
   ],
   "processing": {
-    "backgroundRemoval": "Built-in imagegen chroma source processed with the installed imagegen remove_chroma_key.py helper using border auto-key, soft matte, thresholds 12/220, and despill.",
-    "encoding": "Opaque backdrop encoded to WebP at quality 88 and 1280x960. Transparent title and mascot encoded to WebP at quality 90/88."
+    "backgroundRemoval": "Built-in imagegen title/mascot chroma sources use the installed remove_chroma_key.py helper. The three 2026-08-01 foreground props use local qwen-image-layered seed 42 and fetch output=layer_2; tools/extract-foreground-props.py freezes those separation prompts.",
+    "encoding": "Opaque backdrop encoded to WebP at quality 88 and 1280x960. Transparent title and mascot encoded at quality 90/88. Foreground props use cutout_finalize.py alpha trim/pad plus WebP q88."
   }
 }

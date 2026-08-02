@@ -41,7 +41,7 @@ const SHORT_PROMPTS = {
   welcome: 'Pick a way to play',
   color: 'Pick a dough color',
   roll: 'Roll the dough',
-  trace: 'Follow the dotted line',
+  trace: 'Press along the letter groove',
   nudge: 'Start at the glowing dot',
   'word-cat': 'Build CAT',
   'word-dog': 'Build DOG',
@@ -58,6 +58,13 @@ const PROMPT_ICONS = {
   free: '∿',
 };
 const CONFETTI_COLORS = ['#ef5b4f', '#f5ba35', '#3d8fd5', '#73b94d', '#9164c7', '#22a99c'];
+const TUB_HUES = {
+  coral: '0deg',
+  sunny: '43deg',
+  blue: '185deg',
+  green: '92deg',
+  purple: '248deg',
+};
 
 const state = {
   screen: 'splash',
@@ -311,6 +318,7 @@ function renderColorShop() {
     button.className = 'color-tub';
     button.style.setProperty('--swatch', color.value);
     button.style.setProperty('--swatch-dark', color.dark);
+    button.style.setProperty('--tub-hue', TUB_HUES[color.id] || '0deg');
     button.setAttribute('aria-label', color.label);
     button.innerHTML = '<span class="dough-lump"></span><span class="tub-body"></span><span class="tub-check">✓</span>';
     registerTap(button, `color-${color.id}`, () => {
@@ -379,6 +387,12 @@ function renderRolling() {
   let startX = 0;
   let latestX = 0;
   let maximumTravel = 0;
+  const requiredTravel = () => Math.min(115, zone.clientWidth * .2);
+  const showRolledAmount = (amount) => {
+    const visualCount = Math.max(0, Math.min(3, amount));
+    rope.style.setProperty('--rolled', `${.48 + visualCount * .17}`);
+    rope.style.setProperty('--squish', `${1.15 - visualCount * .08}`);
+  };
   const pointX = (event) => {
     const rect = zone.getBoundingClientRect();
     return Math.max(0, Math.min(rect.width, event.clientX - rect.left));
@@ -399,17 +413,19 @@ function renderRolling() {
     maximumTravel = Math.max(maximumTravel, Math.abs(latestX - startX));
     const percent = 12 + (latestX / Math.max(1, zone.clientWidth)) * 76;
     zone.style.setProperty('--roller-x', `${percent}%`);
+    showRolledAmount(state.rollCount + Math.min(1, maximumTravel / requiredTravel()));
   };
   const finish = (event) => {
     if (event.pointerId !== pointerId) return;
     pointerId = null;
-    if (maximumTravel < Math.min(115, zone.clientWidth * .2)) {
+    if (maximumTravel < requiredTravel()) {
+      showRolledAmount(state.rollCount);
+      cue.classList.remove('fade');
       gentleNudge(tray);
       return;
     }
     state.rollCount = Math.min(3, state.rollCount + 1);
-    rope.style.setProperty('--rolled', `${.48 + state.rollCount * .17}`);
-    rope.style.setProperty('--squish', `${1.15 - state.rollCount * .08}`);
+    showRolledAmount(state.rollCount);
     meter.children[state.rollCount - 1]?.classList.add('done');
     playSfx(state.rollCount === 3 ? 'sparkle' : 'pop');
     if (state.rollCount >= 3) {
@@ -443,6 +459,10 @@ function renderTracing() {
   stage.className = 'trace-stage';
   const tray = document.createElement('div');
   tray.className = 'work-tray trace-tray';
+  const doughSlab = document.createElement('div');
+  doughSlab.className = 'trace-dough-slab';
+  doughSlab.setAttribute('aria-hidden', 'true');
+  tray.append(doughSlab);
   const side = document.createElement('aside');
   side.className = 'trace-side';
   side.innerHTML = `
@@ -489,13 +509,6 @@ function createTraceSurface(mount, pathData, callbacks) {
   svg.classList.add('letter-svg');
   svg.setAttribute('viewBox', '0 0 600 600');
   svg.dataset.targetId = 'trace-surface';
-  svg.innerHTML = `
-    <defs>
-      <filter id="clay-shadow" x="-30%" y="-30%" width="160%" height="180%">
-        <feDropShadow dx="0" dy="10" stdDeviation="4" flood-color="var(--dough-dark)" flood-opacity=".72"/>
-        <feDropShadow dx="-4" dy="-5" stdDeviation="5" flood-color="#fff" flood-opacity=".18"/>
-      </filter>
-    </defs>`;
   const guides = [];
   const clays = [];
   pathData.forEach((data) => {
@@ -652,16 +665,10 @@ function showLetterReveal() {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.classList.add('reveal-letter-svg');
   svg.setAttribute('viewBox', '0 0 600 600');
-  svg.innerHTML = `
-    <defs><filter id="reveal-shadow" x="-30%" y="-30%" width="160%" height="180%">
-      <feDropShadow dx="0" dy="12" stdDeviation="5" flood-color="${color.dark}" flood-opacity=".75"/>
-      <feDropShadow dx="-4" dy="-5" stdDeviation="5" flood-color="#fff" flood-opacity=".16"/>
-    </filter></defs>`;
   letter.paths.forEach((data) => {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', data);
     path.setAttribute('class', 'letter-clay-finished');
-    path.style.filter = 'url(#reveal-shadow)';
     svg.append(path);
   });
   const face = document.createElement('span');
@@ -771,7 +778,6 @@ function wireWordToken(button, action) {
   };
   button.addEventListener('pointerdown', (event) => {
     if (button.classList.contains('used') || pointerId !== null) return;
-    unlockAudio();
     playSfx('tick');
     pointerId = event.pointerId;
     start = { x: event.clientX, y: event.clientY };
@@ -1091,6 +1097,11 @@ function nextRound() {
   return renderFreeDough();
 }
 
+// NOT shared/js/celebrate.js on purpose. That module's burstConfetti() is a
+// one-shot burst that sweeps itself up after `duration`; this is ambient —
+// 28 pieces on an `infinite` CSS fall (css/style.css `.confetti i`) that keeps
+// going for as long as the reveal screen stays up, laid out deterministically
+// from the piece index (not the RNG) so it never needs reseeding.
 function buildConfetti() {
   els.confetti.replaceChildren();
   for (let index = 0; index < 28; index += 1) {
