@@ -76,8 +76,8 @@ All functional copy stays HTML. Every quoted line is present in `data/lines.json
 
 - Prompt: “Spin to Australia, a continent surrounded by ocean.”
 - Landing: “Welcome to Australia. Let’s open a eucalyptus woodland story.”
-- Animal: “Koalas grip branches with strong paws and sharp claws.”
-- Habitat: “Eucalyptus trees give koalas both food and a place to rest.”
+- Animal: “A koala grips branches with strong paws and sharp claws.”
+- Habitat: “Eucalyptus trees give a koala both food and a place to rest.”
 - Wonder: “Koalas sleep for many hours so their bodies can save energy.”
 - Stamp: “Australia stamp collected!”
 
@@ -96,7 +96,7 @@ All functional copy stays HTML. Every quoted line is present in `data/lines.json
 - Landing: “Welcome to South America. Let’s open a rainforest story.”
 - Animal: “A toucan uses its long, light beak to reach fruit on slender branches.”
 - Habitat: “Rainforests are warm, wet, and layered with plant life.”
-- Wonder: “Toucans toss fruit into the air and catch it in their beaks.”
+- Wonder: “This colorful bird tosses fruit into the air and catches it in its beak.”
 - Stamp: “South America stamp collected!”
 
 ## Interaction and feedback rules

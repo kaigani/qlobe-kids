@@ -16,6 +16,7 @@ const recipesDir = path.join(gameRoot, 'assets', 'source', 'voice-recipes');
 const transcriptsDir = path.join(gameRoot, 'assets', 'source', 'voice-qa');
 const studio = process.env.QLOBE_STUDIO_URL || 'http://127.0.0.1:8000';
 const seeds = [7, 8, 9];
+const minimumTranscriptRatio = 0.98;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -81,6 +82,11 @@ async function stage(key, media) {
   return { file: `${key}.m4a`, dur: await duration(audioPath) };
 }
 
+function transcriptPass(media) {
+  return Boolean(media?.transcript?.match)
+    && Number(media.transcript.ratio) >= minimumTranscriptRatio;
+}
+
 await Promise.all([audioDir, recipesDir, transcriptsDir].map((folder) => mkdir(folder, { recursive: true })));
 const lines = JSON.parse(await readFile(linesPath, 'utf8'));
 const manifest = {};
@@ -92,15 +98,17 @@ for (const [key, text] of Object.entries(lines)) {
   process.stdout.write(`[${number}/${Object.keys(lines).length}] ${key}\n`);
   let media = await mediaState(mediaId);
 
-  if (!media?.transcript?.match) {
+  if (!transcriptPass(media)) {
     for (const seed of seeds) {
       media = await generate(key, text, seed);
-      if (media?.transcript?.match) break;
+      if (transcriptPass(media)) break;
       process.stdout.write(`  transcript ratio ${media?.transcript?.ratio ?? 'unavailable'}; retrying\n`);
     }
   }
 
-  if (!media?.transcript?.match) throw new Error(`${key}: transcript QA did not pass after ${seeds.length} seeds`);
+  if (!transcriptPass(media)) {
+    throw new Error(`${key}: transcript QA did not reach ${minimumTranscriptRatio} after ${seeds.length} seeds`);
+  }
   await jsonRequest(`${studio}/api/studio/media/${mediaId}/accept`, { method: 'POST' });
   media = await mediaState(mediaId);
   manifest[key] = await stage(key, media);

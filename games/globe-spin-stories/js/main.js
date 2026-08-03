@@ -26,7 +26,7 @@ let celebrationHideTimer = 0;
 const linesResponse = await fetch('./data/lines.json');
 if (!linesResponse.ok) throw new Error(`Globe Spin Stories lines failed: ${linesResponse.status}`);
 const lines = await linesResponse.json();
-await voice.init('./assets/audio/manifest.json', './data/lines.json', lines);
+await voice.init('./assets/audio/manifest.json?v=20260803-recorded', './data/lines.json', lines);
 
 // Begin decoding every lightweight story plate while the child is still on the
 // splash/globe. Production CDN latency can otherwise expose the bare frame for

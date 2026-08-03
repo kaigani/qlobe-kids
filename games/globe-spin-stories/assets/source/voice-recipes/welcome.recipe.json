@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "gss-voice-welcome",
+  "kind": "voice",
+  "asset": "gss-voice-welcome.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ready, world traveler? Spin the globe and see where our story lands!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Ready, world traveler? Spin the globe and see where our story lands!"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Ready, world traveler? Spin the globe and see where our story lands!",
+      "heard": "Ready world traveler? Spin the globe and see where our story lands.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-03"
+}

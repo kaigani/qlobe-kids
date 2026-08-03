@@ -69,7 +69,33 @@ async function staticGate() {
   const rasterSizes = await Promise.all(runtimeRaster.filter((rel) => rel.endsWith('.webp')).map((rel) => size(...rel.split('/'))));
   check('every runtime raster stays below the 300KB asset budget', rasterSizes.every((bytes) => bytes <= 300 * 1024), rasterSizes.join(', '));
   const audioManifest = await readJSON('assets', 'audio', 'manifest.json');
-  check('release does not silently ship an unapproved teacher-voice clone', Object.keys(audioManifest).length === 0);
+  const lineKeys = Object.keys(lines).sort();
+  const manifestKeys = Object.keys(audioManifest).sort();
+  check('recorded narration covers every authored line exactly once',
+    JSON.stringify(manifestKeys) === JSON.stringify(lineKeys),
+    `manifest=${manifestKeys.length} lines=${lineKeys.length}`);
+  const voiceIssues = [];
+  for (const key of lineKeys) {
+    const entry = audioManifest[key];
+    if (!entry || entry.file !== `${key}.m4a` || !Number.isFinite(entry.dur) || entry.dur < 0.5 || entry.dur > 10) {
+      voiceIssues.push(`${key}: invalid manifest entry`);
+      continue;
+    }
+    if (!(await exists('assets', 'audio', entry.file)) || (await size('assets', 'audio', entry.file)) < 10 * 1024) {
+      voiceIssues.push(`${key}: missing or implausibly small audio`);
+    }
+    const transcript = await readJSON('assets', 'source', 'voice-qa', `${key}.json`);
+    if (!transcript.match || Number(transcript.ratio) < 0.98 || transcript.intended !== lines[key]) {
+      voiceIssues.push(`${key}: transcript QA failed`);
+    }
+    const recipe = await readJSON('assets', 'source', 'voice-recipes', `${key}.recipe.json`);
+    const voiceStep = recipe.steps?.find((step) => step.workflow === 'qwen3-tts-voiceclone');
+    if (!voiceStep || voiceStep.text !== lines[key] || recipe.refs?.voice !== 'teacher' || recipe.qa?.status !== 'accepted') {
+      voiceIssues.push(`${key}: incomplete teacher-voice provenance`);
+    }
+  }
+  check('all narration clips retain accepted Qwen/teacher recipes and ≥0.98 transcript QA',
+    voiceIssues.length === 0, voiceIssues.join(', '));
   const geometry = await readJSON('assets', 'map', 'natural-earth-110m.json');
   check('Natural Earth geometry is compact and non-trivial', geometry.license === 'public-domain' && geometry.rings.length > 100 && geometry.rings.length < 200);
   const runtime = await Promise.all(['index.html', 'js/main.js', 'css/style.css'].map((file) => readFile(path.join(GAME, file), 'utf8')));
@@ -108,17 +134,41 @@ async function browserGate(browser) {
   check('every splash target is at least 96px', splashTargets.every(({ rect }) => rect.w >= 96 && rect.h >= 96), JSON.stringify(splashTargets));
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
+  await page.evaluate(async () => {
+    const voice = await import('../../shared/js/voice-clips.js');
+    window.__gssVoiceQa = { channel: null, starts: [] };
+    voice.onClip((key, element) => {
+      window.__gssVoiceQa.channel = element;
+      window.__gssVoiceQa.starts.push({ key, src: element?.currentSrc || element?.src || '' });
+    });
+  });
   await page.evaluate(() => window.QLOBE_DEBUG.mute(false));
   await page.locator('#play-button').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'globe');
-  await page.waitForTimeout(100);
+  await page.waitForFunction(() => {
+    const element = window.__gssVoiceQa?.channel;
+    return element?.played?.length && element.played.end(element.played.length - 1) > 0;
+  }, null, { timeout: 10000 });
   const welcomeNarration = await page.evaluate(() => ({
     entry: window.QLOBE_DEBUG.getAudioLog().find((item) => item.key === 'welcome'),
-    speechActive: window.speechSynthesis.speaking || window.speechSynthesis.pending,
+    source: window.__gssVoiceQa.starts.find((item) => item.key === 'welcome')?.src || '',
+    played: (() => {
+      const element = window.__gssVoiceQa.channel;
+      return element?.played?.length ? element.played.end(element.played.length - 1) : 0;
+    })(),
+    duration: Number.isFinite(window.__gssVoiceQa.channel?.duration) ? window.__gssVoiceQa.channel.duration : null,
+    error: window.__gssVoiceQa.channel?.error?.code || null,
   }));
-  check('Play gesture starts the complete welcome narration',
-    welcomeNarration.entry?.kind === 'speech' && welcomeNarration.entry.text.length > 20 && welcomeNarration.speechActive,
+  check('Play gesture decodes and starts the recorded welcome narration',
+    welcomeNarration.entry?.kind === 'clip'
+      && welcomeNarration.entry.text.length > 20
+      && /welcome\.m4a(?:\?|$)/.test(welcomeNarration.source)
+      && welcomeNarration.played > 0
+      && welcomeNarration.duration > 0
+      && !welcomeNarration.error,
     JSON.stringify(welcomeNarration));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getAudioLog().some((entry) => entry.key === 'prompt-asia' && entry.kind === 'clip'),
+    null, { timeout: 10000 });
   await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
   check('home link is removed below splash', await page.locator('[data-target="home-catalog"]').count() === 0);
   const initial = await page.evaluate(() => window.QLOBE_DEBUG.getState());
@@ -186,6 +236,9 @@ async function browserGate(browser) {
   const narrationKeys = new Set(narrationLog.map((entry) => entry.key));
   const missedNarration = expectedNarration.filter((key) => !narrationKeys.has(key));
   check('the complete tour requests every authored content narration line', missedNarration.length === 0, missedNarration.join(', '));
+  const fallbackNarration = narrationLog.filter((entry) => expectedNarration.includes(entry.key) && entry.kind !== 'clip');
+  check('every requested tour line resolves to recorded narration, not Web Speech',
+    fallbackNarration.length === 0, fallbackNarration.map((entry) => entry.key).join(', '));
   await page.screenshot({ path: path.join(shots, '04-end-landscape.png') });
   await page.locator('#end-passport-button').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().passportOpen);

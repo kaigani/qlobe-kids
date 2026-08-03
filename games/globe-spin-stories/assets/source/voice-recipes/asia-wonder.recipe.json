@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "gss-voice-asia-wonder",
+  "kind": "voice",
+  "asset": "gss-voice-asia-wonder.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "A panda can spend much of its day eating bamboo.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "A panda can spend much of its day eating bamboo."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "A panda can spend much of its day eating bamboo.",
+      "heard": "A panda can spend much of its day eating bamboo.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-03"
+}

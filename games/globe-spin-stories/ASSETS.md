@@ -14,7 +14,7 @@
 | Fredoka SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | Milena Brandão and Hafontia, via Fontsource | SIL Open Font License 1.1 | Existing local QLOBE font reused unmodified. |
 | QLOBE HUD art | Existing QLOBE shared asset library | CC BY 4.0 | Existing raster home, back, and sound controls reused through the shared HUD stylesheet. |
 | Sound effects | QLOBE `shared/js/sfx.js` | MIT project code | Synthesized locally at runtime with WebAudio; no sourced audio files. |
-| Narration fallback | Device Web Speech API via QLOBE `shared/js/voice-clips.js` | Device/platform voice terms | All exact authored lines live in `data/lines.json`. No teacher-voice recording is shipped unless its local batch is explicitly authorized and transcript-QA accepted. |
+| Recorded narration (`assets/audio/*.m4a`) | QLOBE teacher voice, authored through the local QLOBE Studio API with `character-voice-line` / `qwen3-tts-voiceclone` | QLOBE approved, rights-cleared teacher reference | 38 authored lines encoded as AAC/M4A. Exact copy lives in `data/lines.json`; accepted recipes and Whisper transcripts are retained under `assets/source/voice-{recipes,qa}/`. Device Web Speech remains an error fallback only. |
 
 ## GPT Image 2 production record
 
@@ -42,9 +42,11 @@ Generation mode: built-in Codex image generation, one new image per request, wit
 
 The mockup screens in `01-game-concepts/globe-spin-stories/` guided composition and interaction hierarchy only; all shipped raster art is newly generated for this implementation. Runtime CSS is limited to layout, typography, state, and accessibility. It does not draw scene art, icons, panels, buttons, seals, pins, stamps, or confetti with vectors or CSS primitives.
 
-## Optional recorded-voice workflow
+## Recorded-voice production record
 
-`tools/gen-voice.mjs` is a resumable Studio client for the approved `character-voice-line` / `qwen3-tts-voiceclone` template. It requires explicit approval because it sends the configured teacher reference to a local Qwen service. For every authorized line it requires Whisper transcript match ≥0.8, accepts the media object, copies the `.m4a`, and preserves `recipe.json` plus `qa-transcript.json`. The current release intentionally keeps `assets/audio/manifest.json` empty and uses the safe speech fallback.
+`tools/gen-voice.mjs` is the resumable local Studio client used for this release. With the user-authorized, rights-cleared `shared/assets/refs/voice-teacher.wav` reference, it runs the approved `character-voice-line` / `qwen3-tts-voiceclone` template over every authored line using the deterministic seed ladder 7, 8, 9. A clip is accepted only when local Whisper reports a transcript match ratio of at least 0.98. The tool then stages the AAC/M4A file, its accepted `recipe.json`, and its `qa-transcript.json`, and rebuilds the flat runtime manifest.
+
+The shipped batch contains 38/38 lines. Prompt Africa required seed 9; the North America and South America landing lines required seed 8. The Australia animal and habitat facts and the South America wonder fact were lightly rewritten for clear child-directed pronunciation, then regenerated and rechecked. All final clips meet the ≥0.98 gate; the South America wonder line is an exact transcript match.
 
 ## Link preview (og:image)
 
