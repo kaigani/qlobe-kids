@@ -1,35 +1,40 @@
 {
   "id": "tangram-tales",
-  "title": "Shape Tangram Tales",
+  "title": "Tangram Tales",
   "category": "math-number-sense",
   "path": "games/tangram-tales/",
-  "icon": "🦊",
+  "icon": "assets/hub/tiles/tangram-tales.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 6 },
   "status": "beta",
-  "accent": "#58a945",
-  "shareTitle": "Shape Tangram Tales 🦊 — Shapes into Animals",
-  "description": "Place shape pieces onto ghost outlines to build animals and objects, hearing each shape named as it clicks into place. A hands-on shape-building game for ages 5–6.",
+  "accent": "#ef5b4c",
+  "shareTitle": "Tangram Tales — Seven Shapes, Endless Stories",
+  "description": "Build a fox, fish, and bird from seven tactile paper tangram pieces, then invent an original shape story on an open papercraft stage.",
   "learningGoals": [
-    "Compose larger figures from smaller shapes",
-    "Practice spatial reasoning and part-whole thinking",
-    "Name basic shapes while building playful pictures"
+    "Compose a whole figure from seven geometric parts",
+    "Compare shape size, direction, and position",
+    "Plan and revise an original spatial arrangement"
   ],
-  "interactionModel": "build-assemble drag or tap-tap shape pieces onto ghost positions",
-  "feedbackModel": "Correct shapes pop, sparkle, and speak the shape name; misses wiggle gently with a spoken nudge and retry. Finished builds come to life with a spoken line.",
+  "interactionModel": "forgiving drag or tap-tap placement in guided tales; normalized free drag and 45-degree rotation in open play",
+  "feedbackModel": "Matching paper ghosts glow; correct pieces auto-turn, settle, and speak their color and shape name; completed animals awaken in layered story scenes.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
+    "shared/js/freeform-board.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
+    "shared/js/debug-harness.js",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "animals", "title": "Build the Animal", "skill": "shape composition with animal figures" },
-    { "id": "things", "title": "Build the Thing", "skill": "shape composition with familiar objects" }
+    { "id": "fox", "title": "Fox Tale", "skill": "guided seven-piece spatial composition" },
+    { "id": "fish", "title": "Fish Tale", "skill": "guided seven-piece spatial composition" },
+    { "id": "bird", "title": "Bird Tale", "skill": "guided seven-piece spatial composition" },
+    { "id": "free", "title": "Make My Own", "skill": "open tangram arrangement and rotation" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder shape art only. Built with Codex for QLOBE Kids.",
+  "credits": "QLOBE Kids contributors; original papercraft art generated with GPT Image 2 and finalized locally. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

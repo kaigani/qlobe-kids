@@ -3,6 +3,10 @@
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const clone = (value) => JSON.parse(JSON.stringify(value));
+const normalizeAngle = (value) => {
+  const angle = Number(value) || 0;
+  return ((angle + 180) % 360 + 360) % 360 - 180;
+};
 
 export function createFreeformBoard(container, {
   interactive = true,
@@ -178,7 +182,7 @@ export function createFreeformBoard(container, {
       x: clamp(Number.isFinite(Number(spec.x)) ? Number(spec.x) : .5, -.08, 1.08),
       y: clamp(Number.isFinite(Number(spec.y)) ? Number(spec.y) : .5, -.08, 1.08),
       size: clamp(Number(spec.size) || .22, .08, .55),
-      rotation: clamp(Number(spec.rotation) || 0, -180, 180),
+      rotation: normalizeAngle(spec.rotation),
       mirror: !!spec.mirror,
       z: Number(spec.z) || ++nextZ,
       meta: clone(spec.meta || {}),
@@ -246,6 +250,32 @@ export function createFreeformBoard(container, {
     return true;
   }
 
+  // Update the semantic transform without rebuilding the DOM item. Creator
+  // games use this for explicit, child-sized rotate/mirror/resize controls;
+  // keeping it here means undo, persistence, and viewport-safe normalized
+  // coordinates all continue to share one source of truth.
+  function transform(id, changes = {}, { record = true } = {}) {
+    const item = items.get(id);
+    if (!item) return false;
+    if (record) remember();
+    if (changes.x != null) item.x = clamp(Number(changes.x), -.08, 1.08);
+    if (changes.y != null) item.y = clamp(Number(changes.y), -.08, 1.08);
+    if (changes.size != null) item.size = clamp(Number(changes.size), .08, .55);
+    if (changes.rotation != null) item.rotation = normalizeAngle(changes.rotation);
+    if (changes.mirror != null) item.mirror = !!changes.mirror;
+    applyAutoMirror(item);
+    item.z = ++nextZ;
+    applyTransform(item);
+    emit('transform', item);
+    return true;
+  }
+
+  function rotate(id = selected, delta = 45, options = {}) {
+    const item = items.get(id);
+    if (!item) return false;
+    return transform(id, { rotation: item.rotation + (Number(delta) || 0) }, options);
+  }
+
   function destroy() {
     if (destroyed) return;
     destroyed = true;
@@ -264,7 +294,7 @@ export function createFreeformBoard(container, {
   window.addEventListener('blur', cancelPointer);
 
   return {
-    add, remove, clear, undo, load: restore, move, select, snapshot,
+    add, remove, clear, undo, load: restore, move, transform, rotate, select, snapshot,
     canUndo: () => history.length > 0,
     getSelected: () => selected,
     getItems: () => snapshot().items,

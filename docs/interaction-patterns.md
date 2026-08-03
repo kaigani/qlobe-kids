@@ -706,8 +706,9 @@ walks off a wide, short window, and it is the part nobody thinks to clamp.
 
 **When to use:** open-ended creation games where a child places decorations,
 props, collage pieces, or course objects without a single correct slot.
-Canonical implementation: `shared/js/freeform-board.js`; production reference:
-`games/clay-creature-studio/`.
+Canonical implementation: `shared/js/freeform-board.js`; production references:
+`games/clay-creature-studio/` (free placement and auto-mirroring) and
+`games/tangram-tales/` (explicit 45-degree rotation and undoable transforms).
 
 Free placement is not ordinary drag-to-slot. The final position is the product,
 so the controller must preserve it across viewport changes and local saves:
@@ -738,8 +739,10 @@ so the controller must preserve it across viewport changes and local saves:
 9. Save semantic snapshots to a bounded local gallery. A storage failure must
    degrade to session play; persistence is never required to finish a loop.
 
-The module exposes `add`, `remove`, `clear`, `undo`, `load`, `move`, `select`,
-`snapshot`, `getItems`, and `destroy`. A snapshot has format
+The module exposes `add`, `remove`, `clear`, `undo`, `load`, `move`, `transform`,
+`rotate`, `select`, `snapshot`, `getItems`, and `destroy`. `transform` updates
+normalized position, size, rotation, and mirror state as one undoable semantic
+edit; `rotate` is its child-sized step-rotation convenience. A snapshot has format
 `qlobe-freeform-board` version 1 and can be rendered by the real game at any
 size, which makes saved miniatures and production QA use the same composition.
 

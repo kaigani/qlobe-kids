@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-03T12:36:10.039Z",
+  "generated": "2026-08-03T16:41:55.360Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -56,7 +56,7 @@
       ]
     },
     "build-assemble": {
-      "count": 12,
+      "count": 11,
       "games": [
         "bead-path-builder",
         "blend-train",
@@ -68,7 +68,6 @@
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
-        "tangram-tales",
         "turn-taking-tower"
       ]
     },
@@ -1719,14 +1718,18 @@
       "packs": []
     },
     "tangram-tales": {
-      "engine": "build-assemble",
+      "engine": null,
       "status": "beta",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/freeform-board.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1952,6 +1955,7 @@
         "snack-chef",
         "sound-painting",
         "story-stones",
+        "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
       ],
@@ -1994,6 +1998,7 @@
         "snack-chef",
         "sound-painting",
         "story-stones",
+        "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
       ],
@@ -2013,7 +2018,6 @@
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
-        "tangram-tales",
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
@@ -2111,7 +2115,8 @@
         "sticker-line-challenge"
       ],
       "shared/js/freeform-board.js": [
-        "clay-creature-studio"
+        "clay-creature-studio",
+        "tangram-tales"
       ],
       "shared/js/hotspot-scene.js": [
         "bug-hotel-observer",
@@ -2481,6 +2486,7 @@
         "sound-basket",
         "sound-painting",
         "sound-sprouts",
+        "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
       ],
@@ -2515,6 +2521,7 @@
         "sound-painting",
         "sound-sprouts",
         "story-stones",
+        "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
       ],

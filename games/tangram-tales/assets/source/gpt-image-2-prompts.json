@@ -1,0 +1,54 @@
+{
+  "modelPath": "built-in image generation tool (GPT Image 2)",
+  "styleReference": "../../../../01-game-concepts/tangram-tales/output/ui-mockups/00-overview.png",
+  "assets": [
+    {
+      "id": "theatre",
+      "output": "theatre-gpt-image-2.png",
+      "useCase": "stylized-concept",
+      "prompt": "Create a polished empty papercraft story theatre for a preschool tangram game: warm cream handmade paper center, layered scalloped coral curtains, cut-paper garden foliage and flowers only at the outer edges, tiny hanging stars and deckled clouds. Flat straight-on 4:3 landscape with a calm empty central 68 percent. Premium tactile cardstock fibers, imperfect scissor edges, folded-paper shadows, jewel palette. No tangram pieces, animals, cards, buttons, text, letters, numerals, logo, UI, watermark, device, hands, vector or glossy 3D look."
+    },
+    {
+      "id": "title-green-key",
+      "output": "title-chroma-gpt-image-2.png",
+      "useCase": "logo-brand",
+      "prompt": "Create one centered two-line handcrafted papercraft title lockup reading exactly Tangram Tales, with individually cut cardstock letters, two tiny paper stars and orange chevrons, on perfectly flat solid #00ff00. Preserve exact spelling T A N G R A M / T A L E S. No extra text, numerals, animals, scenery, watermark, or key color in the subject."
+    },
+    {
+      "id": "title-magenta-key-edit",
+      "output": "title-chroma-magenta-gpt-image-2.png",
+      "useCase": "precise-object-edit",
+      "prompt": "Replace only the bright green background with perfectly flat solid #ff00ff. Preserve the exact Tangram Tales title, every letter shape, spelling, color, cream backing, paper fiber, stars, chevrons, layout, scale, lighting and edge; do not recolor or darken green letters."
+    },
+    {
+      "id": "title-opaque-fallback-edit",
+      "output": "title-opaque-gpt-image-2.png",
+      "useCase": "precise-object-edit",
+      "prompt": "Replace only the magenta background with the same calm warm cream handmade paper in the approved theatre center. Preserve the exact Tangram Tales title, spelling, every letter shape and color, cream backing, fibers, stars, chevrons, scale, shadows and edges; no scenery, border, gradient, spotlight or watermark."
+    },
+    {
+      "id": "reveal-scenes",
+      "output": "reveal-scenes-gpt-image-2.png",
+      "useCase": "stylized-concept",
+      "prompt": "Exactly three equal papercraft environment cells in one horizontal contact sheet: woodland clearing for a fox, gentle underwater garden for a fish, sunny treetop meadow for a bird. Premium tactile cardstock matching the mockup, calm empty center, edge scenery, straight gutters. No animals, tangrams, characters, UI, text, letters, numerals, labels, watermark, device or vector look."
+    },
+    {
+      "id": "paper-atlas",
+      "output": "paper-atlas-gpt-image-2.png",
+      "useCase": "stylized-concept",
+      "prompt": "Exactly seven equal edge-to-edge handmade construction-paper texture swatches in one horizontal row, ordered coral red, burnt orange, sunflower yellow, leaf green, turquoise teal, royal blue, grape violet, with straight dark gutters. Uniform diffuse light, matte fibers and subtle physical imperfections. No shapes, objects, scenery, shadows across cells, text, labels or watermark."
+    },
+    {
+      "id": "ui-icons",
+      "output": "ui-icons-gpt-image-2.png",
+      "useCase": "stylized-concept",
+      "prompt": "Use case: stylized-concept\nAsset type: preschool game UI icon contact sheet\nPrimary request: exactly two equal square cells in one horizontal row. Left cell: one chunky five-point completion star cut from layered sunflower-yellow handmade cardstock, with a smaller burnt-orange paper star layered inside. Right cell: one chunky clockwise circular turning arrow cut from layered turquoise-teal handmade cardstock, with a violet paper edge accent; the arrow must have a large open center and read clearly at 96 pixels.\nScene/backdrop: every pixel behind both icons must be perfectly flat solid #ff00ff chroma key; one straight dark divider gutter only between cells.\nStyle/medium: premium tactile papercraft matching a warm preschool tangram theatre; matte paper fibers, imperfect scissor-cut edges, shallow folded-paper depth.\nComposition/framing: exactly one centered icon per cell, generous equal padding, front-facing, complete silhouettes fully inside each cell.\nConstraints: no text, letters, numerals, extra symbols, extra stars, extra arrows, buttons, cards, scenery, hands, cast shadows, floor plane, gradients, watermark, glossy 3D, vector look, or #ff00ff anywhere in either subject. The chroma-key background must be uniform with no texture, shadow, glow, lighting variation, or reflections."
+    },
+    {
+      "id": "face-details",
+      "output": "face-details-gpt-image-2.png",
+      "useCase": "stylized-concept",
+      "prompt": "Use case: stylized-concept\nAsset type: preschool tangram character face-detail contact sheet\nPrimary request: exactly two equal square cells in one horizontal row. Left cell: one friendly oversized papercraft googly eye made from layered warm-white, dark chocolate-brown, and one tiny white highlight circle, facing slightly toward the viewer. Right cell: one small rounded triangular fox nose cut from layered dark chocolate-brown handmade cardstock, front-facing, with a subtle warm tan lower paper edge.\nScene/backdrop: every pixel behind both subjects must be perfectly flat solid #ff00ff chroma key; one straight dark divider gutter only between cells.\nStyle/medium: premium tactile papercraft matching a warm preschool tangram theatre; matte fibers, imperfect scissor-cut edges, shallow layered-paper depth.\nComposition/framing: exactly one centered subject per cell, generous equal padding, complete silhouette fully inside its cell; eye and nose should remain readable at 48 pixels.\nConstraints: no face, animal, mouth, second eye, extra nose, text, letters, numerals, cards, buttons, scenery, hands, cast shadow, floor plane, gradients, watermark, glossy 3D, vector look, or #ff00ff anywhere in either subject. The chroma-key background must be uniform with no texture, shadow, glow, lighting variation, or reflections."
+    }
+  ]
+}

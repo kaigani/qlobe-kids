@@ -192,33 +192,48 @@
     },
     {
       "id": "tangram-tales",
-      "title": "Shape Tangram Tales",
+      "title": "Tangram Tales",
       "category": "math-number-sense",
       "path": "games/tangram-tales/",
       "icon": "assets/hub/tiles/tangram-tales.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
       "status": "beta",
-      "accent": "#58a945",
+      "accent": "#ef5b4c",
       "uses": [
-        "shared/js/audio.js",
-        "shared/js/sfx.js"
+        "shared/js/freeform-board.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/debug-harness.js",
+        "shared/assets/ui/"
       ],
       "modes": [
         {
-          "id": "animals",
-          "title": "Build the Animal",
-          "skill": "shape composition with animal figures"
+          "id": "fox",
+          "title": "Fox Tale",
+          "skill": "guided seven-piece spatial composition"
         },
         {
-          "id": "things",
-          "title": "Build the Thing",
-          "skill": "shape composition with familiar objects"
+          "id": "fish",
+          "title": "Fish Tale",
+          "skill": "guided seven-piece spatial composition"
+        },
+        {
+          "id": "bird",
+          "title": "Bird Tale",
+          "skill": "guided seven-piece spatial composition"
+        },
+        {
+          "id": "free",
+          "title": "Make My Own",
+          "skill": "open tangram arrangement and rotation"
         }
       ],
-      "summary": "Build animals and pictures from geometric shapes."
+      "summary": "Build three paper animals from seven shapes, then invent an original tangram tale."
     },
     {
       "id": "story-sequence",

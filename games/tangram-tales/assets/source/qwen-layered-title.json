@@ -1,0 +1,28 @@
+{
+  "workflow": "qwen-image-layered",
+  "source": "title-chroma-magenta-gpt-image-2.png",
+  "output": "title-layer2.png",
+  "selectedOutput": "layer_2",
+  "seed": 1337,
+  "prompt": "Background layer: the perfectly flat bright magenta background only. Top layer: the entire exact Tangram Tales papercraft title lockup together on a transparent background, including every cream backing edge, every colored letter, both yellow stars, and both orange chevrons. Preserve the exact spelling, letter shapes, green letters, colors, paper texture, scale, layout, and shadows. Do not crop, redraw, rearrange, add, recolor, darken, merge, or remove anything.",
+  "qa": {
+    "width": 1024,
+    "height": 680,
+    "alphaBoundingBox": [
+      102,
+      145,
+      935,
+      516
+    ],
+    "boundingBoxCoverage": 0.4438,
+    "significantAlphaThreshold": 24,
+    "significantAlphaRatio": 0.3119,
+    "cornerAlpha": [
+      1,
+      0,
+      3,
+      4
+    ],
+    "transparentCorners": true
+  }
+}

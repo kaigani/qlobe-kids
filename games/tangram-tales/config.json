@@ -1,0 +1,114 @@
+{
+  "title": "Tangram Tales",
+  "voice": {
+    "welcome": "Pick a story. Seven shapes can become anything!",
+    "foxStart": "Finish the fox. Put each paper shape on its matching spot.",
+    "fishStart": "Finish the fish. Find where each paper shape belongs.",
+    "birdStart": "Finish the bird. Build it from all seven shapes.",
+    "freeStart": "Make your own story. Move and turn the seven shapes any way you like.",
+    "coralTriangle": "Coral triangle.",
+    "blueTriangle": "Blue triangle.",
+    "violetTriangle": "Violet triangle.",
+    "orangeTriangle": "Orange triangle.",
+    "tealTriangle": "Teal triangle.",
+    "yellowSquare": "Yellow square.",
+    "greenParallelogram": "Green parallelogram.",
+    "nudge": "Almost. Try its other paper spot.",
+    "turnHint": "Tap the turning arrow to turn your shape.",
+    "foxReveal": "Amazing fox! Your paper fox is awake.",
+    "fishReveal": "Fantastic fish! Your paper fish can swim.",
+    "birdReveal": "Brilliant bird! Your paper bird can fly.",
+    "freeDone": "A brand-new tangram tale, made by you!",
+    "doneNudge": "Move one shape first, then your story can come alive.",
+    "saved": "Your paper story is saved on this device.",
+    "allDone": "Three tales are awake. You are a tangram storyteller!",
+    "idle": "Pick up a paper shape and find the spot that glows."
+  },
+  "pieces": [
+    { "id": "large-a", "family": "large", "shape": "triangle", "label": "large coral triangle", "voice": "coralTriangle", "art": "./assets/pieces/large-a.webp", "ghost": "./assets/pieces/ghost-large-a.webp" },
+    { "id": "large-b", "family": "large", "shape": "triangle", "label": "large blue triangle", "voice": "blueTriangle", "art": "./assets/pieces/large-b.webp", "ghost": "./assets/pieces/ghost-large-b.webp" },
+    { "id": "medium", "family": "medium", "shape": "triangle", "label": "medium orange triangle", "voice": "orangeTriangle", "art": "./assets/pieces/medium.webp", "ghost": "./assets/pieces/ghost-medium.webp" },
+    { "id": "small-a", "family": "small", "shape": "triangle", "label": "small violet triangle", "voice": "violetTriangle", "art": "./assets/pieces/small-a.webp", "ghost": "./assets/pieces/ghost-small-a.webp" },
+    { "id": "small-b", "family": "small", "shape": "triangle", "label": "small teal triangle", "voice": "tealTriangle", "art": "./assets/pieces/small-b.webp", "ghost": "./assets/pieces/ghost-small-b.webp" },
+    { "id": "square", "family": "square", "shape": "square", "label": "yellow square", "voice": "yellowSquare", "art": "./assets/pieces/square.webp", "ghost": "./assets/pieces/ghost-square.webp" },
+    { "id": "parallelogram", "family": "parallelogram", "shape": "parallelogram", "label": "green parallelogram", "voice": "greenParallelogram", "art": "./assets/pieces/parallelogram.webp", "ghost": "./assets/pieces/ghost-parallelogram.webp" }
+  ],
+  "tales": [
+    {
+      "id": "fox",
+      "title": "Fox",
+      "prompt": "Finish the fox",
+      "startVoice": "foxStart",
+      "revealVoice": "foxReveal",
+      "card": "./assets/ui/fox-card.webp",
+      "scene": "./assets/scenes/fox.webp",
+      "details": [
+        { "art": "./assets/ui/face-eye.webp", "x": 0.72, "y": 0.31, "size": 0.058, "rotation": 0 },
+        { "art": "./assets/ui/face-nose.webp", "x": 0.825, "y": 0.36, "size": 0.052, "rotation": -90 }
+      ],
+      "initial": ["parallelogram", "large-a", "square"],
+      "targets": {
+        "parallelogram": { "x": 0.3, "y": 0.43, "size": 0.31, "rotation": -65 },
+        "large-a": { "x": 0.49, "y": 0.53, "size": 0.32, "rotation": 45 },
+        "square": { "x": 0.62, "y": 0.44, "size": 0.18, "rotation": 45 },
+        "medium": { "x": 0.72, "y": 0.34, "size": 0.23, "rotation": -135 },
+        "large-b": { "x": 0.49, "y": 0.53, "size": 0.32, "rotation": -135 },
+        "small-a": { "x": 0.68, "y": 0.285, "size": 0.16, "rotation": 135 },
+        "small-b": { "x": 0.58, "y": 0.67, "size": 0.16, "rotation": -45 }
+      }
+    },
+    {
+      "id": "fish",
+      "title": "Fish",
+      "prompt": "Finish the fish",
+      "startVoice": "fishStart",
+      "revealVoice": "fishReveal",
+      "card": "./assets/ui/fish-card.webp",
+      "scene": "./assets/scenes/fish.webp",
+      "details": [
+        { "art": "./assets/ui/face-eye.webp", "x": 0.68, "y": 0.46, "size": 0.052, "rotation": 0 }
+      ],
+      "initial": ["large-a", "square", "medium"],
+      "targets": {
+        "large-a": { "x": 0.46, "y": 0.46, "size": 0.34, "rotation": -45 },
+        "large-b": { "x": 0.51, "y": 0.54, "size": 0.34, "rotation": 135 },
+        "square": { "x": 0.53, "y": 0.35, "size": 0.19, "rotation": 45 },
+        "medium": { "x": 0.33, "y": 0.5, "size": 0.25, "rotation": 45 },
+        "parallelogram": { "x": 0.64, "y": 0.49, "size": 0.25, "rotation": 90 },
+        "small-a": { "x": 0.65, "y": 0.335, "size": 0.17, "rotation": 135 },
+        "small-b": { "x": 0.62, "y": 0.59, "size": 0.17, "rotation": -45 }
+      }
+    },
+    {
+      "id": "bird",
+      "title": "Bird",
+      "prompt": "Finish the bird",
+      "startVoice": "birdStart",
+      "revealVoice": "birdReveal",
+      "card": "./assets/ui/bird-card.webp",
+      "scene": "./assets/scenes/bird.webp",
+      "details": [
+        { "art": "./assets/ui/face-eye.webp", "x": 0.66, "y": 0.36, "size": 0.052, "rotation": 0 }
+      ],
+      "initial": ["medium", "square", "parallelogram"],
+      "targets": {
+        "large-a": { "x": 0.49, "y": 0.52, "size": 0.31, "rotation": 45 },
+        "large-b": { "x": 0.49, "y": 0.52, "size": 0.31, "rotation": -135 },
+        "square": { "x": 0.65, "y": 0.38, "size": 0.18, "rotation": 45 },
+        "parallelogram": { "x": 0.29, "y": 0.52, "size": 0.26, "rotation": 5 },
+        "medium": { "x": 0.52, "y": 0.69, "size": 0.22, "rotation": 135 },
+        "small-a": { "x": 0.71, "y": 0.38, "size": 0.15, "rotation": -135 },
+        "small-b": { "x": 0.63, "y": 0.31, "size": 0.15, "rotation": 135 }
+      }
+    }
+  ],
+  "freeStart": [
+    { "id": "large-a", "x": 0.16, "y": 0.78, "size": 0.23, "rotation": 0 },
+    { "id": "large-b", "x": 0.29, "y": 0.82, "size": 0.23, "rotation": 90 },
+    { "id": "medium", "x": 0.42, "y": 0.79, "size": 0.2, "rotation": 45 },
+    { "id": "square", "x": 0.54, "y": 0.82, "size": 0.16, "rotation": 45 },
+    { "id": "parallelogram", "x": 0.66, "y": 0.8, "size": 0.2, "rotation": 0 },
+    { "id": "small-a", "x": 0.78, "y": 0.81, "size": 0.15, "rotation": 0 },
+    { "id": "small-b", "x": 0.89, "y": 0.8, "size": 0.15, "rotation": 90 }
+  ]
+}

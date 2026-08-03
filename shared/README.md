@@ -44,7 +44,7 @@ small. Full inventory and provenance in
 | `dom.js` | `escapeHtml`, `el` |
 | `preload.js` | `preloadImages(urls, { idle })`, never rejects |
 | `content.js` | accessor for shared letters / words / sounds |
-| `hotspot-scene.js`, `freeform-board.js`, `magnifier-lens.js`, `journal.js`, `musical-canvas.js` | interaction surfaces for specific archetypes |
+| `hotspot-scene.js`, `freeform-board.js`, `magnifier-lens.js`, `journal.js`, `musical-canvas.js` | interaction surfaces for specific archetypes; freeform-board includes normalized move/transform/rotate state with undo |
 | `music.js`, `performance-recorder.js`, `performance-video-export.js` | music bed + performance capture |
 
 ## Consumption rule (relative paths, always lowercase)
