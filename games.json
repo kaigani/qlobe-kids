@@ -1905,15 +1905,21 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#58a945",
+      "accent": "#ef3d82",
+      "uses": [
+        "shared/js/paper-globe.js",
+        "shared/vendor/three.module.min.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js"
+      ],
       "modes": [
         {
-          "id": "spin",
-          "title": "Where Did We Land?",
-          "skill": "habitat imagination and place vocabulary"
+          "id": "world-tour",
+          "title": "Five-Stop World Tour",
+          "skill": "beginning geography and animal-habitat connections"
         }
       ],
-      "summary": "Spin the globe, stop it, and imagine what lives there."
+      "summary": "Spin a tactile globe, follow the map pin, and open five papercraft animal stories."
     },
     {
       "id": "land-water-tray",

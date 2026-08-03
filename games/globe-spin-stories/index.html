@@ -5,42 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Globe Spin Stories 🌍 — World Habitat Curiosity Journal</title>
-  <meta name="description" content="Spin the globe, land somewhere icy, jungle, desert, or ocean, then tap stickers to imagine what might live there. A playful geography journal for ages 5–6." />
+  <meta name="theme-color" content="#0d4268" />
+  <title>Globe Spin Stories — Spin, Land, Discover</title>
+  <meta name="description" content="Spin a tactile papercraft globe, visit five world habitats, open pop-up animal stories, and stamp a world passport." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Globe Spin Stories" />
-  <meta property="og:title" content="Globe Spin Stories 🌍 — World Habitat Curiosity Journal" />
-  <meta property="og:description" content="Spin the globe, land somewhere icy, jungle, desert, or ocean, then tap stickers to imagine what might live there. A playful geography journal for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Globe Spin Stories — Spin, Land, Discover" />
+  <meta property="og:description" content="A tactile papercraft globe and five pop-up animal stories for curious young world travelers." />
   <meta property="og:url" content="https://qlo.be/games/globe-spin-stories/" />
   <meta property="og:image" content="https://qlo.be/games/globe-spin-stories/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Globe Spin Stories title screen with a Where Did We Land? button below a globe icon on a light blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A papercraft Globe Spin Stories title over a handmade world globe." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Globe Spin Stories 🌍 — World Habitat Curiosity Journal" />
-  <meta name="twitter:description" content="Spin the globe, land somewhere icy, jungle, desert, or ocean, then tap stickers to imagine what might live there. A playful geography journal for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/globe-spin-stories/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="preload" as="image" href="./assets/title.webp" />
+  <link rel="preload" as="image" href="./assets/scenes/asia.webp" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Globe Spin Stories">
+    <section id="screen-splash" class="screen splash-screen" aria-label="Globe Spin Stories home">
+      <div id="splash-home-slot"></div>
+      <div class="paper-sky" aria-hidden="true">
+        <i class="paper-cloud cloud-a"></i><i class="paper-cloud cloud-b"></i><i class="paper-cloud cloud-c"></i>
+        <i class="paper-star star-a"></i><i class="paper-star star-b"></i><i class="paper-star star-c"></i>
+        <div class="splash-hills"></div>
+        <div class="travel-dashes"></div>
+      </div>
+      <div class="splash-center">
+        <img class="title-lockup" src="./assets/title.webp" alt="Globe Spin Stories" width="1400" height="595" />
+        <div class="splash-globe" aria-hidden="true"><i></i><b></b><em></em></div>
+        <button id="play-button" class="paper-play" type="button" data-target="play" data-role="primary" aria-label="Play Globe Spin Stories">
+          <span aria-hidden="true"></span><strong>Spin the globe</strong>
+        </button>
+      </div>
+    </section>
+
+    <section id="screen-globe" class="screen globe-screen" aria-label="Spin the globe" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-globe" aria-label="Back to the title"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="sound" data-target="sound-globe" aria-label="Hear the direction again"></button>
+      <div class="globe-paper-sky" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+      <aside class="destination-cloud" aria-live="polite">
+        <span class="eyebrow">Our next story</span>
+        <h1 id="destination-name">Asia</h1>
+        <p id="destination-caption">Spin the globe and follow the glowing pin.</p>
+        <div id="tour-pips" class="tour-pips" aria-label="Tour progress"></div>
+      </aside>
+      <div id="globe-mount" class="globe-mount"></div>
+      <button id="spin-button" class="spin-ribbon" type="button" data-target="spin" data-role="primary">
+        <span class="spin-arrows" aria-hidden="true">↻</span><strong>SPIN</strong>
+      </button>
+      <button id="passport-button" class="passport-tab" type="button" data-target="passport" data-role="secondary" aria-label="Open my world passport">
+        <span aria-hidden="true" class="passport-mini">WORLD<br />PASSPORT</span><b id="passport-count">0</b>
+      </button>
+      <div id="land-hint" class="land-hint" hidden>Tap the glowing pin!</div>
+    </section>
+
+    <section id="screen-story" class="screen story-screen" aria-label="Pop-up world story" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-story" aria-label="Back to the title"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="sound" data-target="sound-story" aria-label="Hear that again"></button>
+      <div id="story-frame" class="story-frame">
+        <img id="story-scene" src="./assets/scenes/asia.webp" alt="" width="1600" height="1200" />
+        <article class="story-copy" aria-live="polite">
+          <span id="story-region" class="story-region">ASIA</span>
+          <h1 id="story-title">Meet the panda</h1>
+          <p id="story-fact">Tap the three paper stars to discover this page.</p>
+          <div id="discovery-pips" class="discovery-pips" aria-label="Page discoveries"></div>
+        </article>
+        <div id="discovery-layer" class="discovery-layer"></div>
+      </div>
+      <button id="story-passport-button" class="passport-tab story-passport-tab" type="button" data-target="passport-story" data-role="secondary" aria-label="Open my world passport">
+        <span aria-hidden="true" class="passport-mini">WORLD<br />PASSPORT</span><b id="story-passport-count">0</b>
+      </button>
+      <button id="stamp-button" class="stamp-button" type="button" data-target="stamp" data-role="primary" disabled>
+        <span class="stamp-mark" aria-hidden="true"></span><strong>STAMP PASSPORT</strong>
+      </button>
+    </section>
+
+    <section id="screen-end" class="screen end-screen" aria-label="World tour complete" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-end" aria-label="Back to the title"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="sound" data-target="sound-end" aria-label="Hear the celebration again"></button>
+      <div class="end-rays" aria-hidden="true"></div>
+      <div class="end-card">
+        <span class="end-kicker">WORLD TRAVELER</span>
+        <h1>Five wonderful places!</h1>
+        <div id="end-stamps" class="end-stamps"></div>
+        <p>Animals, habitats, and stories are waiting all around our big world.</p>
+        <button id="again-button" class="again-button" type="button" data-target="again" data-role="primary"><span aria-hidden="true">↻</span><strong>SPIN AGAIN</strong></button>
+        <button id="end-passport-button" class="end-passport-button" type="button" data-target="passport-end" data-role="secondary">Open passport</button>
+      </div>
+    </section>
+
+    <div id="passport-overlay" class="passport-overlay" hidden>
+      <div class="passport-backdrop" data-action="close-passport"></div>
+      <section class="passport-book" role="dialog" aria-modal="true" aria-labelledby="passport-heading">
+        <button id="passport-close" class="passport-close" type="button" data-target="close-passport" aria-label="Close passport">×</button>
+        <header><span>MY</span><h1 id="passport-heading">WORLD PASSPORT</h1><p>Every story leaves a stamp.</p></header>
+        <div id="passport-stamps" class="passport-stamps"></div>
+        <button id="reset-passport" class="reset-passport" type="button" data-target="reset-passport">Grown-up: reset stamps</button>
+      </section>
+    </div>
+    <div id="live-status" class="visually-hidden" aria-live="polite"></div>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

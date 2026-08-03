@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-03T06:40:43.938Z",
+  "generated": "2026-08-03T08:35:37.955Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -73,12 +73,11 @@
       ]
     },
     "observe-journal": {
-      "count": 9,
+      "count": 8,
       "games": [
         "bean-sprout-watch",
         "emotion-voice-game",
         "family-story-interview",
-        "globe-spin-stories",
         "kindness-delivery",
         "picture-narration",
         "shadow-chase",
@@ -582,16 +581,27 @@
       "packs": []
     },
     "globe-spin-stories": {
-      "engine": "observe-journal",
+      "engine": null,
       "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/paper-globe.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/vendor/three.module.min.js"
       ],
-      "assets": [],
+      "assets": [
+        "games/globe-spin-stories/assets/scenes/asia.webp",
+        "games/globe-spin-stories/assets/title.webp"
+      ],
       "packs": []
     },
     "grace-courtesy-theater": {
@@ -1929,6 +1939,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "globe-spin-stories",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -1949,6 +1960,7 @@
         "clay-creature-studio",
         "counting-treasure-cups",
         "feelings-charades",
+        "globe-spin-stories",
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
@@ -1969,6 +1981,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "globe-spin-stories",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2051,7 +2064,6 @@
         "bean-sprout-watch",
         "emotion-voice-game",
         "family-story-interview",
-        "globe-spin-stories",
         "kindness-delivery",
         "picture-narration",
         "shadow-chase",
@@ -2140,6 +2152,9 @@
         "sink-or-float",
         "sound-painting"
       ],
+      "shared/js/paper-globe.js": [
+        "globe-spin-stories"
+      ],
       "shared/js/performance-recorder.js": [
         "puppet-retell"
       ],
@@ -2154,6 +2169,7 @@
         "clay-creature-studio",
         "counting-treasure-cups",
         "flashlight-cave",
+        "globe-spin-stories",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2452,6 +2468,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "globe-spin-stories",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2467,6 +2484,7 @@
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "globe-spin-stories",
         "lunchbox-pack",
         "puppet-retell",
         "red-green-light",
@@ -2479,6 +2497,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "globe-spin-stories",
         "laundry-sorter",
         "letter-road-driving",
         "lunchbox-pack",
@@ -2503,6 +2522,9 @@
       ],
       "shared/vendor/three": [
         "sound-sprouts"
+      ],
+      "shared/vendor/three.module.min.js": [
+        "globe-spin-stories"
       ]
     },
     "characters": {
@@ -2684,6 +2706,12 @@
       ],
       "games/flashlight-cave/assets/pose-actors/ari": [
         "flashlight-cave"
+      ],
+      "games/globe-spin-stories/assets/scenes/asia.webp": [
+        "globe-spin-stories"
+      ],
+      "games/globe-spin-stories/assets/title.webp": [
+        "globe-spin-stories"
       ],
       "games/letter-road-driving/assets/audio": [
         "letter-road-driving"

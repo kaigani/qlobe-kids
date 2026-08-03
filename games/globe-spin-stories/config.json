@@ -1,0 +1,113 @@
+{
+  "id": "globe-spin-stories",
+  "title": "Globe Spin Stories",
+  "engine": "custom-paper-globe",
+  "storageKey": "qk-globe-spin-stories-v1",
+  "art": { "width": 1600, "height": 1200 },
+  "globe": {
+    "texture": "./assets/map/natural-earth-110m.json",
+    "initial": { "lat": 14, "lon": 22 },
+    "dragDegreesPerPixel": 0.22,
+    "tiltDegreesPerPixel": 0.11,
+    "maxTilt": 38,
+    "friction": 0.94,
+    "snapTolerance": 34,
+    "alignedTolerance": 8,
+    "assistedTurns": 1.35
+  },
+  "modes": [
+    { "id": "world-tour", "title": "World Tour", "skill": "associate five broad world regions with a characteristic animal and habitat" }
+  ],
+  "destinations": [
+    {
+      "id": "asia",
+      "name": "Asia",
+      "shortName": "Asia",
+      "lat": 36,
+      "lon": 100,
+      "color": "#efb62d",
+      "scene": "./assets/scenes/asia.webp",
+      "sceneAlt": "A handmade pop-up book showing a giant panda among layered paper bamboo in an Asian mountain forest",
+      "prompt": "prompt-asia",
+      "landing": "landing-asia",
+      "stamp": "stamp-asia",
+      "discoveries": [
+        { "id": "animal", "label": "Panda", "icon": "panda", "x": 74, "y": 52, "line": "asia-animal" },
+        { "id": "habitat", "label": "Bamboo forest", "icon": "leaf", "x": 56, "y": 28, "line": "asia-habitat" },
+        { "id": "wonder", "label": "Panda wonder", "icon": "spark", "x": 83, "y": 72, "line": "asia-wonder" }
+      ]
+    },
+    {
+      "id": "africa",
+      "name": "Africa",
+      "shortName": "Africa",
+      "lat": 4,
+      "lon": 22,
+      "color": "#e79a39",
+      "scene": "./assets/scenes/africa.webp",
+      "sceneAlt": "A handmade pop-up book showing an African elephant among layered paper grasses and acacia trees on a sunny savanna",
+      "prompt": "prompt-africa",
+      "landing": "landing-africa",
+      "stamp": "stamp-africa",
+      "discoveries": [
+        { "id": "animal", "label": "Elephant", "icon": "elephant", "x": 75, "y": 54, "line": "africa-animal" },
+        { "id": "habitat", "label": "Savanna", "icon": "grass", "x": 56, "y": 28, "line": "africa-habitat" },
+        { "id": "wonder", "label": "Elephant family", "icon": "spark", "x": 84, "y": 74, "line": "africa-wonder" }
+      ]
+    },
+    {
+      "id": "australia",
+      "name": "Australia",
+      "shortName": "Australia",
+      "lat": -25,
+      "lon": 134,
+      "color": "#db6f50",
+      "scene": "./assets/scenes/australia.webp",
+      "sceneAlt": "A handmade pop-up book showing a koala among layered paper eucalyptus branches in Australia",
+      "prompt": "prompt-australia",
+      "landing": "landing-australia",
+      "stamp": "stamp-australia",
+      "discoveries": [
+        { "id": "animal", "label": "Koala", "icon": "koala", "x": 74, "y": 52, "line": "australia-animal" },
+        { "id": "habitat", "label": "Eucalyptus woodland", "icon": "leaf", "x": 58, "y": 27, "line": "australia-habitat" },
+        { "id": "wonder", "label": "Koala rest", "icon": "spark", "x": 84, "y": 73, "line": "australia-wonder" }
+      ]
+    },
+    {
+      "id": "north-america",
+      "name": "North America",
+      "shortName": "N. America",
+      "lat": 45,
+      "lon": -110,
+      "color": "#79a94b",
+      "scene": "./assets/scenes/north-america.webp",
+      "sceneAlt": "A handmade pop-up book showing a brown bear among layered paper pines, mountains, and a river in North America",
+      "prompt": "prompt-north-america",
+      "landing": "landing-north-america",
+      "stamp": "stamp-north-america",
+      "discoveries": [
+        { "id": "animal", "label": "Brown bear", "icon": "bear", "x": 74, "y": 53, "line": "north-america-animal" },
+        { "id": "habitat", "label": "Mountain forest", "icon": "pine", "x": 56, "y": 28, "line": "north-america-habitat" },
+        { "id": "wonder", "label": "Bear den", "icon": "spark", "x": 84, "y": 73, "line": "north-america-wonder" }
+      ]
+    },
+    {
+      "id": "south-america",
+      "name": "South America",
+      "shortName": "S. America",
+      "lat": -12,
+      "lon": -60,
+      "color": "#c85f3d",
+      "scene": "./assets/scenes/south-america.webp",
+      "sceneAlt": "A handmade pop-up book showing a toucan among layered paper rainforest leaves and mist in South America",
+      "prompt": "prompt-south-america",
+      "landing": "landing-south-america",
+      "stamp": "stamp-south-america",
+      "discoveries": [
+        { "id": "animal", "label": "Toucan", "icon": "toucan", "x": 74, "y": 51, "line": "south-america-animal" },
+        { "id": "habitat", "label": "Rainforest", "icon": "leaf", "x": 57, "y": 28, "line": "south-america-habitat" },
+        { "id": "wonder", "label": "Toucan wonder", "icon": "spark", "x": 84, "y": 72, "line": "south-america-wonder" }
+      ]
+    }
+  ]
+}
