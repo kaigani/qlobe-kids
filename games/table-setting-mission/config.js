@@ -3,11 +3,6 @@ export default {
   engine: 'sort-into-bins',
   title: 'Table Setting Mission',
   splashEmoji: '🍽️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Let\'s set the table. Put each thing in its place.',
     nudge: 'Almost. Look for the place where that table thing belongs.',

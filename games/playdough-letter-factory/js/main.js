@@ -4,6 +4,9 @@ import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as content from '../../../shared/js/content.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { mulberry32, shuffle } from '../../../shared/js/rng.js';
+import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
@@ -82,9 +85,16 @@ const state = {
   awaitingInput: true,
   muted: false,
   timeScale: 1,
-  seed: 42,
   transition: false,
 };
+
+// The one platform RNG (shared/js/rng.js), replacing this game's own private
+// LCG — the cross-game seed-divergence fix: seed(42) now means the same
+// sequence here as on every other migrated game. A module variable, not
+// something startMode()/render*() capture once, so a seed set on the splash
+// (before any mode is chosen) still reaches whichever mode gets built next.
+// Swapped in by window.QLOBE_DEBUG's default seed() via onSeed below.
+let rng = mulberry32(42);
 
 let transitionPromise = Promise.resolve();
 let currentActions = new Map();
@@ -106,15 +116,16 @@ function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, Math.max(1, ms * state.timeScale)));
 }
 
-function unlockAudio() {
-  voice.unlock();
-  speech.unlock();
-  sfx.unlock();
-}
-
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+// The shared first-gesture unlock (sfx + speech + voice-clips + audio, each
+// try/caught) replaces this game's own unlockAudio() fan-out, and its latch
+// reopens on visibilitychange/pageshow — an iPad app-switch can no longer
+// leave the factory silent for the rest of the session. Every control here
+// used to call unlockAudio() again from its own pointerdown feedback too;
+// that per-button re-unlock is exactly what audio-unlock.js's docs warn
+// against, so those calls are gone below — the one global listener already
+// fires on the same gesture.
+installUnlockOnGesture();
+installKioskGuards();
 
 function playSfx(name) {
   if (!state.muted && typeof sfx[name] === 'function') sfx[name]();
@@ -165,7 +176,6 @@ function registerTap(element, id, action, feedback = true) {
   currentActions.set(id, action);
   onTap(element, action, {
     feedback: () => {
-      unlockAudio();
       if (feedback) playSfx('tick');
     },
   });
@@ -204,20 +214,17 @@ function renderModeCards() {
     button.append(art, label);
     els.cards.append(button);
     onTap(button, () => startMode(mode.id), {
-      feedback: () => {
-        unlockAudio();
-        playSfx('pop');
-      },
+      feedback: () => playSfx('pop'),
     });
   });
 }
 
 function wirePermanentControls() {
-  onTap(els.splashSound, () => speak('welcome'), { feedback: unlockAudio });
+  onTap(els.splashSound, () => speak('welcome'));
   onTap(els.back, () => goSplash({ greet: true }), { feedback: () => playSfx('unpop') });
   onTap(els.revealBack, () => goSplash({ greet: true }), { feedback: () => playSfx('unpop') });
-  onTap(els.sound, () => repeatPrompt(), { feedback: unlockAudio });
-  onTap(els.revealSound, () => repeatReveal(), { feedback: unlockAudio });
+  onTap(els.sound, () => repeatPrompt());
+  onTap(els.revealSound, () => repeatReveal());
   onTap(els.again, () => replayCurrent(), { feedback: () => playSfx('pop') });
   onTap(els.next, () => nextRound(), { feedback: () => playSfx('sparkle') });
 }
@@ -236,18 +243,16 @@ function repeatReveal() {
 async function startMode(modeId) {
   resetTransient();
   state.mode = modeId;
-  state.letterIndex = seededIndex(config.letters.length);
-  state.wordIndex = seededIndex(config.words.length);
+  state.letterIndex = randomIndex(config.letters.length);
+  state.wordIndex = randomIndex(config.words.length);
   showScreen('play');
   if (modeId === 'letters') return renderColorShop();
   if (modeId === 'words') return renderWordMaker();
   return renderFreeDough();
 }
 
-function seededIndex(length) {
-  const value = Math.abs((state.seed * 1664525 + 1013904223) | 0);
-  state.seed = value;
-  return value % length;
+function randomIndex(length) {
+  return Math.floor(rng() * length);
 }
 
 function phaseRail(count, active) {
@@ -734,7 +739,7 @@ function renderWordMaker() {
     slots.append(slot);
   });
 
-  const shuffled = seededShuffle(letters.map((letter, index) => ({ letter, original: index })));
+  const shuffled = shuffle(letters.map((letter, index) => ({ letter, original: index })), rng);
   shuffled.forEach((item, tokenIndex) => {
     const color = config.colors[(tokenIndex + state.wordIndex) % config.colors.length];
     const button = document.createElement('button');
@@ -754,15 +759,6 @@ function renderWordMaker() {
   els.playfield.append(stage);
   transitionPromise = speak(`word-${word.id}`);
   return transitionPromise;
-}
-
-function seededShuffle(items) {
-  const result = [...items];
-  for (let index = result.length - 1; index > 0; index -= 1) {
-    const swap = seededIndex(index + 1);
-    [result[index], result[swap]] = [result[swap], result[index]];
-  }
-  return result;
 }
 
 function wireWordToken(button, action) {
@@ -1169,17 +1165,20 @@ async function debugWinRound() {
   return false;
 }
 
-function debugMute() {
-  state.muted = true;
-  voice.stop();
-  speech.stop();
-  window.speechSynthesis?.cancel();
-  document.querySelectorAll('audio, video').forEach((media) => { media.muted = true; });
-  return true;
+// Two-way now — the old version only ever muted, never back. voice.setMuted()
+// is voice-clips.js's own gate (it cuts the current line, and its internal
+// stop() already cancels speechSynthesis), so this is state.muted — which
+// speak()/playSfx() already gate on — plus the one channel that needed a
+// direct call.
+function setMuted(on = true) {
+  const muted = Boolean(on);
+  state.muted = muted;
+  voice.setMuted(muted);
+  document.querySelectorAll('audio, video').forEach((media) => { media.muted = muted; });
+  return muted;
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   engine: 'custom-playdough-factory',
   ready,
@@ -1217,14 +1216,17 @@ window.QLOBE_DEBUG = {
     }),
   tap: debugTap,
   winRound: debugWinRound,
-  mute: debugMute,
-  seed: (value) => {
-    state.seed = Number(value) || 1;
-    return state.seed;
-  },
+  mute: setMuted,
+  // This game's own wait()-based timers already scale by state.timeScale —
+  // a caller-supplied fastTimers always wins over installDebug's default, so
+  // passing it through here keeps it working instead of losing it to the
+  // generic timers.js scale (which nothing here is wired to).
   fastTimers: (scale = .05) => {
     state.timeScale = Math.max(.01, Math.min(1, Number(scale) || .05));
     return state.timeScale;
   },
   home: () => goSplash(),
-};
+  // Where the seeded generator lands: mulberry32 (rng.js) now, not this
+  // game's old LCG. The default seed() is inert without this.
+  onSeed: (nextRng) => { rng = nextRng; },
+});

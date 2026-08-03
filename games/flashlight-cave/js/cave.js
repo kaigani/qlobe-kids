@@ -34,6 +34,7 @@
 
 import { loadPixi } from '../../../shared/js/stage/stage.js';
 import { createSpotlight } from '../../../shared/js/stage/spotlight.js';
+import { shuffle } from '../../../shared/js/rng.js';
 
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
 
@@ -234,14 +235,7 @@ export function layoutLetters(n, rng, config, transform) {
   const minSep = L.minSeparation ?? 235;
   const tries = L.maxJitterAttempts ?? 12;
 
-  const pickCells = () => {
-    const pool = cells.slice();
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(rng() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-    return pool.slice(0, Math.min(n, pool.length));
-  };
+  const pickCells = () => shuffle(cells, rng).slice(0, Math.min(n, cells.length));
 
   const chosen = pickCells();
   const fit = (p) => ({

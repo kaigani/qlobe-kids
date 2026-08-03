@@ -3,11 +3,6 @@ export default {
   engine: 'match-pairs',
   title: 'Texture Trail',
   splashEmoji: '🪨',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Let\'s match two things that feel the same.',
     nudge: 'Hmm, feel it in your imagination. Try another card.',

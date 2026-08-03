@@ -3608,12 +3608,6 @@ export default {
     sad: './assets/ui/judge-sad.png',
     happy: './assets/ui/judge-happy.png',
   },
-  copy: {
-    home: 'Home',
-    replay: 'Hear the choices again',
-    playAgain: 'Play Again',
-    castPrompt: 'Pick two puppets for the show!',
-  },
   voice: {
     intro: 'The puppets have a problem! Watch what happens, then help them find a kind way.',
     castPrompt: 'Pick two puppets for the show!',

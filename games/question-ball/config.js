@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Question Ball',
   splashEmoji: '🏐',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Catch the question ball! Listen to who, what, where, or why, then tap the answer.',
     nudge: 'Boing! Listen to the question again and catch another answer.',

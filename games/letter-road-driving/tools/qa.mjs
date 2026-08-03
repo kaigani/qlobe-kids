@@ -1,69 +1,44 @@
 #!/usr/bin/env node
 // Real-Chrome smoke and visual-QC driver for Letter Road Driving.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/letter-road-driving/tools/qa.mjs [--base http://127.0.0.1:8000]
+//        [--shots qa-shots/letter-road-driving] [--playwright /private/tmp/pw/node_modules]
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots, debug, dragPath,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const value = (name, fallback) => {
-  const index = argv.indexOf(`--${name}`);
-  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
-};
-const base = value('base', 'http://127.0.0.1:8000').replace(/\/$/, '');
-const shots = path.resolve(value('shots', 'qa-shots/letter-road-driving'));
-const require = createRequire('/private/tmp/pw/node_modules/noop.js');
-const { chromium } = require('playwright');
-const results = [];
-
-function check(name, condition, detail = '') {
-  const ok = Boolean(condition);
-  results.push({ name, ok });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
+const base = baseUrl();
+const shots = resolveShots('qa-shots/letter-road-driving');
+const { check, finish } = createReporter();
 
 async function openPage(browser, viewport, reducedMotion = 'no-preference') {
-  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+  return openSession(browser, {
+    url: `${base}/games/letter-road-driving/`,
+    base,
+    viewport,
+    reducedMotion,
+    seed: 42,
   });
-  page.on('request', (request) => {
-    if (!request.url().startsWith(base)) remote.push(request.url());
-  });
-  page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(`${base}/games/letter-road-driving/`, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => window.QLOBE_DEBUG.seed(42));
-  return { context, page, errors, failed, remote };
 }
 
 async function completeMode(page, mode) {
-  await page.evaluate((id) => window.QLOBE_DEBUG.startMode(id), mode);
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput);
-  while ((await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'play') {
-    await page.evaluate(() => window.QLOBE_DEBUG.winRound());
-  }
+  await debug.startMode(page, mode);
+  await debug.waitForInput(page);
+  while ((await debug.getState(page)).screen === 'play') await debug.winRound(page);
 }
 
-async function drawStroke(page, points) {
-  if (!points || points.length < 2) return;
-  await page.mouse.move(points[0].x, points[0].y);
-  await page.mouse.down();
-  for (const point of points.slice(1)) await page.mouse.move(point.x, point.y);
-  await page.mouse.up();
-}
+const drawStroke = (page, points) => dragPath(page, points);
 
 async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  await ensureShots(shots);
+  const browser = await launchChrome();
 
   const landscape = await openPage(browser, { width: 1180, height: 820 });
   const page = landscape.page;
@@ -362,9 +337,7 @@ async function main() {
   await portrait.context.close();
   await reduced.context.close();
   await browser.close();
-  const failures = results.filter(({ ok }) => !ok).length;
-  console.log(`\n${results.length - failures}/${results.length} checks passed`);
-  process.exitCode = failures ? 1 : 0;
+  finish({ listFailures: false });
 }
 
 main().catch((error) => {

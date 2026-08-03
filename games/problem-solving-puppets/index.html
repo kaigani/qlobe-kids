@@ -10,22 +10,10 @@
   <meta name="description" content="A social-emotional choose-one game where kids help puppet friends repair conflicts with kind strategies." />
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
-    /* The shared engine owns layout, touch handling, audio unlock, and motion. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
+    :root { --qk-bg: #bee3f5; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
   </style>
 </head>
 <body>

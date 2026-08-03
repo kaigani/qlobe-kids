@@ -7,8 +7,11 @@
 // be worthless).
 //
 //   python3 -m http.server 8177          # from the repo root
-//   node games/blend-train/tools/qa.mjs --playwright /tmp/pw/node_modules \
-//        [--base http://localhost:8177] [--shots games/blend-train/qa-shots]
+//   node games/blend-train/tools/qa.mjs [--base http://localhost:8177]
+//        [--shots games/blend-train/qa-shots] [--playwright /private/tmp/pw/node_modules]
+//
+// Plumbing (flags, Playwright resolution, launch, reporter, shots dir) comes from
+// tools/qa/lib/driver.mjs — see tools/qa/README.md.
 //
 // Only ONE WebGL context can be alive at a time in practice, so every pass
 // below runs sequentially and closes its context before the next opens.
@@ -50,29 +53,19 @@
 //
 // Exit code is non-zero if any check fails.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
+import {
+  baseUrl, launchChrome, createReporter, resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const argv = process.argv.slice(2);
-const flag = (name, dflt) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
-};
 
-const BASE = flag('base', 'http://localhost:8177');
+const BASE = baseUrl('http://localhost:8177');
 const URL_GAME = `${BASE}/games/blend-train/`;
-const SHOTS = flag('shots', path.resolve(HERE, '..', 'qa-shots'));
-const pwDir = flag('playwright', process.env.PLAYWRIGHT_MODULE_PATH);
-if (!pwDir) {
-  console.error('need --playwright <node_modules dir holding playwright@1.52.0>');
-  process.exit(2);
-}
-const require = createRequire(path.join(pwDir, 'noop.js'));
-const { chromium } = require('playwright');
+const SHOTS = resolveShots(path.resolve(HERE, '..', 'qa-shots'));
 
 const LANDSCAPE = { width: 1180, height: 820 };
 const PORTRAIT = { width: 820, height: 1180 };
@@ -85,14 +78,7 @@ const [SPACE_W, SPACE_H] = GAME_CONFIG.space;
 const SPACE_ASPECT = SPACE_W / SPACE_H;
 const MIN_TOUCH = 96;
 
-const results = [];
-const check = (name, ok, detail = '') => {
-  results.push({ name, ok: !!ok, detail: String(detail) });
-  console.log(`${ok ? '  ok  ' : '  FAIL'} ${name}${detail ? ' — ' + detail : ''}`);
-  return !!ok;
-};
-const notes = [];
-const note = (line) => { notes.push(line); console.log(`  note  ${line}`); };
+const { check, note, results, notes, finish } = createReporter({ style: 'pad' });
 
 // ---------------------------------------------------------------- page driver
 // Everything here runs INSIDE the page so every input goes through the real
@@ -403,8 +389,8 @@ async function checkBoardAspect(page, label) {
 }
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  await ensureShots(SHOTS);
+  const browser = await launchChrome({ headless: true });
   const runs = {};
   let audio = null;
 
@@ -785,12 +771,9 @@ async function main() {
 
   await browser.close();
 
-  const failed = results.filter((r) => !r.ok);
   await writeFile(path.join(SHOTS, 'qa.json'),
     JSON.stringify({ game: 'blend-train', base: BASE, when: new Date().toISOString(), results, runs, audio, notes }, null, 1));
-  console.log(`\n${results.length - failed.length}/${results.length} checks passed; shots in ${SHOTS}`);
-  if (failed.length) console.log('FAILED: ' + failed.map((f) => f.name).join(', '));
-  process.exitCode = failed.length ? 1 : 0;
+  finish({ suffix: `; shots in ${SHOTS}` });
 }
 
 main().catch((e) => { console.error(e); process.exitCode = 1; });

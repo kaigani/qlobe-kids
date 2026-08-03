@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Plastic PBD Clay — QLOBE Kids Research</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="./solid.css">
+  <link rel="stylesheet" href="./pbd.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../shared/vendor/three.module.min.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="solid-shell">
+    <header class="solid-header">
+      <div>
+        <p class="eyebrow">QLOBE KIDS · LOCAL PLASTICITY STUDY</p>
+        <h1>Dent and pull one clay ball</h1>
+        <p class="lede">A fixed-topology surface mesh tests the independent recommendation's strongest property: local marks that shift volume and remain after release. It is deliberately not a fusion solution.</p>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <span id="pbd-status">Starting PBD…</span>
+        <span id="pbd-state">Measuring volume…</span>
+      </div>
+    </header>
+
+    <section class="solid-workbench">
+      <div id="pbd-scene" class="solid-scene" aria-label="Interactive orange clay ball. Select Push or Pull, then drag the clay to leave a plastic deformation.">
+        <div class="wall-glow" aria-hidden="true"></div>
+        <div class="turntable" aria-hidden="true"></div>
+        <div class="pbd-shadow" aria-hidden="true"></div>
+        <canvas id="pbd-canvas"></canvas>
+        <div id="pbd-gesture" class="gesture-hint" aria-hidden="true"><span>☝</span> Touch clay, then drag down to press inward</div>
+      </div>
+
+      <aside class="solid-controls">
+        <fieldset>
+          <legend>Local tool</legend>
+          <div class="pbd-tool-grid">
+            <button type="button" data-pbd-tool="push" class="is-active" aria-pressed="true"><span>↓</span>Push</button>
+            <button type="button" data-pbd-tool="pull" aria-pressed="false"><span>↗</span>Pull</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="join-control pbd-sliders">
+          <legend>Engineering controls</legend>
+          <label for="pbd-creep">Plastic creep <output id="pbd-creep-output">clay</output></label>
+          <input id="pbd-creep" type="range" min="0" max="100" value="66">
+          <label for="pbd-recovery">Slow recovery <output id="pbd-recovery-output">off</output></label>
+          <input id="pbd-recovery" type="range" min="0" max="100" value="0">
+          <label for="pbd-brush">Finger area <output id="pbd-brush-output">finger</output></label>
+          <input id="pbd-brush" type="range" min="0" max="100" value="45">
+        </fieldset>
+
+        <fieldset>
+          <legend>Material reference</legend>
+          <div class="source-balls single-source">
+            <figure>
+              <img src="../../games/clay-creature-studio/assets/parts/ball-orange.webp" alt="">
+              <figcaption>Target ball language</figcaption>
+            </figure>
+          </div>
+        </fieldset>
+
+        <button id="pbd-reset" class="reset-button" type="button"><span>↺</span> Reset rest shape</button>
+        <p class="prototype-note">Representation: 642 welded surface vertices, edge and centre-spoke constraints, one non-creeping volume constraint, yield/creep plasticity, a neutral clay matcap, and a material-locked tri-planar height texture for dapple and fingerprints.</p>
+      </aside>
+    </section>
+
+    <section class="comparison-note">
+      <strong>Read this beside fusion</strong>
+      <p>This page asks whether PBD gives a better fingertip mark. The <a href="./solid.html">implicit-lobe study</a> asks whether two familiar balls can become one solid. Neither result proves the other.</p>
+    </section>
+  </main>
+
+  <script type="module" src="./pbd.js"></script>
+</body>
+</html>

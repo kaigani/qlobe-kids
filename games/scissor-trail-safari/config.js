@@ -10,11 +10,6 @@ export default {
   strokeColor: '#58a96b',
   tolerance: 78,
   startMarker: '✂️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Choose a paper safari trail for your finger-scissors!',
     nudge: 'Steady scissors. Find the dotted cutting line and keep going.',

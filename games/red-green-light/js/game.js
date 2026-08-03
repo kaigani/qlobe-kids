@@ -13,11 +13,15 @@
 
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
+import * as voiceClips from '../../../shared/js/voice-clips.js';
+import { unlockAll, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { createTimers } from '../../../shared/js/timers.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { progressDots, soundDebounce } from '../../../shared/js/hud.js';
+import { mulberry32 } from '../../../shared/js/rng.js';
 
-const FONT_URL = new URL('../../../shared/fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../../shared/assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../../shared/assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../../shared/assets/ui/btn-sound.png', import.meta.url).href;
+// @font-face, the reset and the HUD button artwork now come from
+// shared/css/base.css + shared/css/hud.css, linked by index.html.
 const PLAY_IMG = new URL('../../../shared/assets/ui/btn-play.png', import.meta.url).href;
 const BG_IMG = new URL('../assets/bg.jpg', import.meta.url).href;
 const TITLE_IMG = new URL('../assets/title.webp', import.meta.url).href;
@@ -26,7 +30,6 @@ const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
 const VIDEO_READY_TIMEOUT = 2600;
 let styleReady = false;
-let debugOwner = 0;
 
 export function createGame(config, callers, mountEl) {
   if (!mountEl) throw new Error('red-green-light requires a mount element');
@@ -40,8 +43,6 @@ class CallerGame {
     this.callers = callers;
     this.ready = callers.filter((c) => c.ready);
     this.mountEl = mountEl;
-    this.id = ++debugOwner;
-    this.previousDebug = window.QLOBE_DEBUG;
     this.screen = 'select';
     this.caller = null;
     this.mode = null;
@@ -53,19 +54,18 @@ class CallerGame {
     this.muted = false;
     this.destroyed = false;
     this.seeded = false;
-    this.timeScale = 1;
     this.rng = Math.random;
     this.reduced = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    this.lastReplay = 0;
     this.idlePrompted = false;
-    this.timers = new Set();
+    // One cancellable, time-scalable group. Every delay in the game goes on it,
+    // which is what makes QLOBE_DEBUG.fastTimers() real rather than a flag some
+    // call sites remember to multiply in (two of them used to divide instead,
+    // making the video-ready and clip-fallback guards 50x LONGER under fast).
+    this.timers = createTimers();
     this.videoEl = null;
-    this.audioEl = null;
     this.speakToken = 0;
 
-    this.preventGesture = (e) => e.preventDefault();
-    window.addEventListener('gesturestart', this.preventGesture);
-    window.addEventListener('contextmenu', this.preventGesture);
+    this.disposeGuards = installKioskGuards();
 
     // Delegated back/home so the listener survives every innerHTML swap.
     this.mountEl.addEventListener('click', (event) => {
@@ -75,7 +75,7 @@ class CallerGame {
 
     this.mountEl.classList.add('rgl-root');
     this.renderSelect();
-    this.installDebug();
+    this.disposeDebug = this.installDebug();
   }
 
   destroy() {
@@ -84,14 +84,10 @@ class CallerGame {
     this.clearTimers();
     this.stopVoice();
     this.teardownMedia();
-    window.removeEventListener('gesturestart', this.preventGesture);
-    window.removeEventListener('contextmenu', this.preventGesture);
+    this.disposeGuards?.();
     this.mountEl.classList.remove('rgl-root');
     this.mountEl.replaceChildren();
-    if (window.QLOBE_DEBUG === this.debug) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    this.disposeDebug?.();
   }
 
   // ---------- audio/video unlock ----------
@@ -99,19 +95,19 @@ class CallerGame {
   unlock() {
     if (this.audioUnlocked) return;
     this.audioUnlocked = true;
-    sfx.unlock();
-    speech.unlock();
-    // Bless the reused media elements inside the gesture so later programmatic
-    // play() (from timers) is allowed and unmuted audio isn't throttled on iOS.
+    // Fan out to every platform channel, including voice-clips — the caller's
+    // greet/cheer lines play through its single unlocked element (sayFile), and
+    // iOS only grants that element playback once it has played in a gesture.
+    unlockAll();
+    // Bless the reused video inside the gesture so later programmatic play()
+    // (from timers) is allowed and unmuted audio isn't throttled on iOS.
     if (this.videoEl) blessMedia(this.videoEl);
-    if (this.audioEl) blessMedia(this.audioEl);
   }
 
   teardownMedia() {
-    for (const el of [this.videoEl, this.audioEl]) {
-      if (!el) continue;
-      try { el.pause(); el.removeAttribute('src'); el.load(); } catch { /* ignore */ }
-    }
+    const el = this.videoEl;
+    if (!el) return;
+    try { el.pause(); el.removeAttribute('src'); el.load(); } catch { /* ignore */ }
   }
 
   // ---------- screen 1: caller select ----------
@@ -129,7 +125,7 @@ class CallerGame {
       </button>`).join('');
     this.mountEl.innerHTML = `
       <section class="rgl rgl-select" aria-label="${escAttr(this.config.title || '')}">
-        <a class="rgl-home rgl-img-btn" href="../../" aria-label="Home"></a>
+        <a class="rgl-home qk-hud-btn qk-hud-home" href="../../" aria-label="Home"></a>
         <div class="rgl-select-center">
           <img class="rgl-title" src="${TITLE_IMG}" alt="${escAttr(this.config.title || '')} — ${escAttr(this.config.selectPrompt || 'Pick your caller')}" draggable="false" />
           <div class="rgl-caller-grid">${tiles}</div>
@@ -163,7 +159,7 @@ class CallerGame {
       <button class="rgl-mode-button" type="button" data-mode="${escAttr(m.id)}">${escHtml(m.title || m.id)}</button>`).join('');
     this.mountEl.innerHTML = `
       <section class="rgl rgl-mode" style="--accent:${escAttr(c.accent)}" aria-label="${escAttr(c.name)}">
-        <button class="rgl-back rgl-img-btn" type="button" aria-label="Back to callers"></button>
+        <button class="rgl-back qk-hud-btn qk-hud-back" type="button" aria-label="Back to callers"></button>
         <div class="rgl-mode-center">
           <div class="rgl-caller-card">
             ${this.idleFrameHTML('rgl-mode-poster')}
@@ -235,9 +231,9 @@ class CallerGame {
     const c = this.caller;
     this.mountEl.innerHTML = `
       <section class="rgl rgl-play" style="--accent:${escAttr(c.accent)};--state:${escAttr((this.mode.states[0] || {}).color || '#58a945')}" aria-label="${escAttr(this.mode.title || '')}">
-        <header class="rgl-hud">
-          <button class="rgl-back rgl-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="rgl-round-dots" aria-hidden="true"></div>
+        <header class="rgl-hud qk-hud-bar">
+          <button class="rgl-back qk-hud-btn qk-hud-back" type="button" aria-label="Back to the game menu"></button>
+          <div class="rgl-round-dots qk-dots" aria-hidden="true"></div>
           <button class="rgl-pause" type="button" aria-label="Pause">Ⅱ</button>
         </header>
         <div class="rgl-stage">
@@ -248,12 +244,13 @@ class CallerGame {
           <div class="rgl-cue" aria-live="polite"></div>
           <div class="rgl-timebar"><span class="rgl-timebar-fill"></span></div>
         </div>
-        <button class="rgl-sound rgl-img-btn" type="button" aria-label="Hear it again"></button>
+        <button class="rgl-sound qk-hud-btn qk-hud-sound" type="button" aria-label="Hear it again"></button>
       </section>`;
     this.videoEl = this.mountEl.querySelector('.rgl-video');
-    this.audioEl = this.audioEl || new Audio();
     this.posterEl = this.mountEl.querySelector('.rgl-poster');
-    if (this.audioUnlocked) { blessMedia(this.videoEl); blessMedia(this.audioEl); }
+    // The voice channel is voice-clips' own element now, already unlocked by
+    // unlockAll() — only this screen's fresh <video> still needs blessing.
+    if (this.audioUnlocked) blessMedia(this.videoEl);
     this.videoEl.muted = false;
     const pause = this.mountEl.querySelector('.rgl-pause');
     pause.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlock(); this.togglePause(); });
@@ -283,7 +280,7 @@ class CallerGame {
     this.scheduleIdlePrompt(state);
     // Run the movement window, then advance.
     const ms = this.stateDurationMs(state);
-    this.runTimebar(ms);
+    this.runTimebar(this.timers.ms(ms));   // the bar has to finish when the timer fires
     this.schedule(() => this.advanceState(Date.now()), ms);
   }
 
@@ -324,7 +321,7 @@ class CallerGame {
       video.addEventListener('error', err, { once: true });
       video.src = src;
       video.load();
-      this.schedule(() => { cleanup(); resolve(video.readyState >= 3); }, VIDEO_READY_TIMEOUT / this.timeScale);
+      this.schedule(() => { cleanup(); resolve(video.readyState >= 3); }, VIDEO_READY_TIMEOUT);
     });
   }
 
@@ -346,7 +343,7 @@ class CallerGame {
     const min = Number(dur[0] || 1);
     const max = Number(dur[1] || min);
     const seconds = this.seeded ? min : min + this.rng() * Math.max(0, max - min);
-    return Math.max(0.05, seconds) * 1000 * this.timeScale;
+    return Math.max(0.05, seconds) * 1000;
   }
 
   runTimebar(ms) {
@@ -375,25 +372,26 @@ class CallerGame {
   }
 
   updateRoundDots() {
-    const count = Number(this.mode.rounds || 1);
-    const html = Array.from({ length: count }, (_, i) =>
-      `<span class="rgl-dot${i < this.cycleIndex ? ' is-done' : i === this.cycleIndex ? ' is-now' : ''}"></span>`).join('');
-    const host = this.mountEl.querySelector('.rgl-round-dots');
-    if (host) host.innerHTML = html;
+    const existing = this.mountEl.querySelector('.rgl-round-dots');
+    if (!existing) return;
+    // progressDots() builds the whole row; keep the rgl- hook class on it so the
+    // next update can find it again.
+    const dots = progressDots(Number(this.mode.rounds || 1), this.cycleIndex);
+    dots.classList.add('rgl-round-dots');
+    existing.replaceWith(dots);
   }
 
   // ---------- replay / idle ----------
 
-  replay() {
-    const now = performance.now();
-    if (now - this.lastReplay < REPLAY_DEBOUNCE_MS) return;
-    this.lastReplay = now;
+  // soundDebounce: a child drumming on the sound button gets the cue once, not
+  // eight overlapping copies. Leading-edge, so the first press is immediate.
+  replay = soundDebounce(() => {
     this.playSfx('tick');
     this.clearIdle();
     const state = (this.mode.states || [])[this.stateIndex];
     if (state) this.showCue(state);
     this.scheduleIdlePrompt(state);
-  }
+  }, REPLAY_DEBOUNCE_MS);
 
   scheduleIdlePrompt(state) {
     this.clearIdle();
@@ -408,8 +406,7 @@ class CallerGame {
 
   clearIdle() {
     if (!this.idleTimer) return;
-    window.clearTimeout(this.idleTimer);
-    this.timers.delete(this.idleTimer);
+    this.timers.clear(this.idleTimer);
     this.idleTimer = 0;
   }
 
@@ -433,7 +430,7 @@ class CallerGame {
           </div>
           <h1 class="rgl-heading">${escHtml((mode && (mode.endTitle || mode.title)) || this.config.title || '')}</h1>
           <button class="rgl-again" type="button"><span class="rgl-play-icon" aria-hidden="true"></span>${escHtml((mode && mode.againLabel) || 'PLAY AGAIN')}</button>
-          <button class="rgl-back rgl-img-btn" type="button" aria-label="Back to the game menu"></button>
+          <button class="rgl-back qk-hud-btn qk-hud-back" type="button" aria-label="Back to the game menu"></button>
         </div>
       </section>`;
     this.wireIdle();
@@ -454,20 +451,17 @@ class CallerGame {
 
   // Play a recorded clip if it loads; otherwise speak the text (never before
   // unlock, so a greeting can't slip to system TTS at page load).
+  //
+  // voice-clips.sayFile() is the manifest-free file path: one iOS-unlocked
+  // channel element shared with the rest of the platform, a Web Speech fallback
+  // on load/play failure, and every line recorded in getAudioLog() for QA.
+  // Callers' clip paths are page-relative (`./assets/callers/…`), and sayFile
+  // only passes a path through untouched when it is absolute or escapes the
+  // game folder — so resolve against the document first.
   playClipVoice(src, fallbackText) {
-    if (this.muted || !this.audioUnlocked) return;
-    const el = this.audioEl || (this.audioEl = new Audio());
-    let settled = false;
-    const useFallback = () => { if (settled) return; settled = true; this.speak(fallbackText); };
-    el.onerror = useFallback;
-    el.oncanplay = () => { settled = true; };
-    try {
-      el.src = src;
-      el.load();
-      const p = el.play();
-      if (p && p.catch) p.catch(useFallback);
-      this.schedule(() => { if (!settled && el.readyState < 3) useFallback(); }, 1400 / this.timeScale);
-    } catch { useFallback(); }
+    if (this.muted || !this.audioUnlocked || !src) return;
+    this.speakToken++;
+    voiceClips.sayFile(new URL(src, document.baseURI).href, fallbackText || '');
   }
 
   speak(text) {
@@ -478,8 +472,8 @@ class CallerGame {
 
   stopVoice() {
     this.speakToken++;
-    speech.stop();
-    if (this.audioEl) { try { this.audioEl.pause(); } catch { /* ignore */ } }
+    // stops the clip channel AND cancels speech synthesis
+    voiceClips.stop();
   }
 
   playSfx(name) {
@@ -488,23 +482,20 @@ class CallerGame {
 
   // ---------- timers ----------
 
+  /** Delays are given at scale 1; the group applies fastTimers()' scale. */
   schedule(fn, ms) {
-    const id = window.setTimeout(() => { this.timers.delete(id); fn(); }, Math.max(0, ms));
-    this.timers.add(id);
-    return id;
+    return this.timers.after(Math.max(0, ms), fn);
   }
 
   clearTimers() {
-    for (const id of this.timers) window.clearTimeout(id);
-    this.timers.clear();
+    this.timers.clearAll();
     this.idleTimer = 0;
   }
 
   // ---------- debug (headless playtest, mirrors coach-timer surface) ----------
 
   installDebug() {
-    this.debug = {
-      version: 1,
+    return installDebug({
       gameId: this.config.id || 'red-green-light',
       engine: 'caller-cues',
       ready: Promise.resolve(),
@@ -516,11 +507,22 @@ class CallerGame {
       getTargets: () => this.getTargets(),
       tap: (targetId) => this.tapTarget(targetId),
       winRound: () => this.winRound(),
-      mute: () => { this.muted = true; window.__qkMuted = true; this.stopVoice(); },
+      // The game's own mute: `this.muted` gates sfx, cues and clip playback, so
+      // the hook has to set it rather than only silencing the channels.
+      mute: (on = true) => {
+        this.muted = on !== false;
+        window.__qkMuted = this.muted;
+        voiceClips.setMuted(this.muted);
+        this.stopVoice();
+        for (const el of document.querySelectorAll('audio, video')) el.muted = this.muted;
+        return this.muted;
+      },
       seed: (n) => this.seed(n),
-      fastTimers: () => { this.timeScale = 0.02; },
-    };
-    window.QLOBE_DEBUG = this.debug;
+      // fastTimers() comes free from the group every delay is scheduled on.
+      timers: this.timers,
+      voice: voiceClips,
+      sfx,
+    });
   }
 
   getState() {
@@ -576,10 +578,15 @@ class CallerGame {
     }
   }
 
+  // Seeding pins every cue window to its MINIMUM duration (see stateDurationMs)
+  // so a headless run is both reproducible and quick; the generator is kept for
+  // any future seeded choice, and is now the platform's mulberry32 rather than
+  // a private LCG, so seed(42) means the same thing here as everywhere else.
   seed(n) {
     this.seeded = true;
-    let value = Number(n) || 1;
-    this.rng = () => { value = (value * 1664525 + 1013904223) >>> 0; return value / 4294967296; };
+    const value = Number.isFinite(Number(n)) ? Number(n) >>> 0 : 42;
+    this.rng = mulberry32(value);
+    return value;
   }
 }
 
@@ -612,14 +619,13 @@ function injectStyle() {
   const style = document.createElement('style');
   style.id = 'rgl-style';
   style.textContent = `
-    @font-face { font-family:'Fredoka'; src:url('${FONT_URL}') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
-    .rgl-root, .rgl-root * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    /* @font-face and the * reset come from shared/css/base.css. */
     .rgl { --navy:#17517e; --sky:#bee3f5; --accent:#58a945; --state:#58a945; position:relative; width:100%; height:100dvh; min-height:100%; overflow:hidden; color:var(--navy); font-family:'Fredoka','Arial Rounded MT Bold',sans-serif; font-weight:600; background:var(--sky); touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
-    .rgl-img-btn { display:block; width:96px; height:96px; border:0; background:transparent center/contain no-repeat; touch-action:manipulation; cursor:pointer; }
-    .rgl-home { background-image:url('${HOME_IMG}'); }
-    .rgl-back { background-image:url('${BACK_IMG}'); }
+    /* The round HUD buttons are shared/css/hud.css's .qk-hud-btn + .qk-hud-home
+       /back/sound (artwork, 96px target, press feedback, focus ring, small-screen
+       step-down). Only their PLACEMENT is this game's, below. */
     .rgl-emoji { display:grid; place-items:center; width:100%; height:100%; font-size:clamp(48px,12vmin,110px); }
-    .rgl-img-btn:active, .rgl-caller-tile:active, .rgl-mode-button:active, .rgl-again:active, .rgl-pause:active { transform:scale(.95); }
+    .rgl-caller-tile:active, .rgl-mode-button:active, .rgl-again:active, .rgl-pause:active { transform:scale(.95); }
 
     /* shared screen scaffolding */
     .rgl-select, .rgl-mode, .rgl-end { display:grid; place-items:center; padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); }
@@ -661,12 +667,10 @@ function injectStyle() {
 
     /* play */
     .rgl-play { background:#0c1622; }
-    .rgl-hud { position:absolute; z-index:7; inset:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) auto max(14px,env(safe-area-inset-left)); min-height:96px; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
-    .rgl-hud > * { pointer-events:auto; }
+    /* .rgl-hud is shared/css/hud.css's .qk-hud-bar verbatim; only z-index is ours. */
+    .rgl-hud { z-index:7; }
     .rgl-pause { width:96px; min-height:96px; border:6px solid #fff; border-radius:50%; background:#fffef8; color:var(--navy); font:inherit; font-size:44px; line-height:1; cursor:pointer; }
-    .rgl-round-dots { display:flex; justify-content:center; gap:10px; flex:1; padding:0 12px; }
-    .rgl-dot { width:20px; height:20px; flex:0 0 auto; border:4px solid #fff; border-radius:50%; background:rgba(255,255,255,.5); box-shadow:0 3px 0 rgba(0,0,0,.18); }
-    .rgl-dot.is-done { background:var(--accent); } .rgl-dot.is-now { background:#ffd166; }
+    /* Progress pips come from hud.js progressDots() + hud.css (.qk-dots/.qk-dot). */
     .rgl-stage { position:absolute; inset:112px 12px 12px; display:grid; grid-template-rows:1fr auto auto; justify-items:center; gap:10px; min-height:0; }
     .rgl-frame { position:relative; width:100%; height:100%; min-height:0; border:12px solid var(--state); border-radius:28px; box-shadow:0 0 0 4px #fff, 0 0 46px 6px color-mix(in srgb, var(--state) 60%, transparent); overflow:hidden; background:#0c1622; transition:border-color .2s ease, box-shadow .2s ease; }
     .rgl-poster, .rgl-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
@@ -674,7 +678,7 @@ function injectStyle() {
     .rgl-cue { max-width:min(1000px,94vw); text-align:center; color:#fff; font-size:clamp(26px,4.4vmin,50px); line-height:1.02; text-shadow:0 3px 10px rgba(0,0,0,.55); }
     .rgl-timebar { width:min(680px,90vw); height:12px; border-radius:8px; background:rgba(255,255,255,.22); overflow:hidden; }
     .rgl-timebar-fill { display:block; width:100%; height:100%; border-radius:8px; background:var(--state); transform-origin:left center; }
-    .rgl-sound { position:absolute; z-index:8; left:max(16px,env(safe-area-inset-left)); bottom:max(16px,env(safe-area-inset-bottom)); background-image:url('${SOUND_IMG}'); }
+    .rgl-sound { position:absolute; z-index:8; left:max(16px,env(safe-area-inset-left)); bottom:max(16px,env(safe-area-inset-bottom)); }
     .rgl-play.is-paused .rgl-frame { filter:saturate(.7) brightness(.8); }
 
     /* end */

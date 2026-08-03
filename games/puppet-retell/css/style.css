@@ -1,11 +1,10 @@
-@font-face {
-  font-family: 'Fredoka';
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
+/* @font-face, box-sizing/tap-highlight reset, and html/body margin+height now
+   come from shared/css/base.css (linked in index.html before this file). This
+   local block keeps only what base.css deliberately leaves to the game: the
+   display font, and the two resets this game intentionally differs on. */
 
 :root {
+  --qk-bg: #bde9e9;
   --navy: #123e62;
   --teal: #087c83;
   --aqua: #17b8bd;
@@ -16,16 +15,16 @@
   --shadow: 0 8px 0 rgba(18, 62, 98, .22), 0 14px 28px rgba(18, 62, 98, .18);
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+/* base.css doesn't set width or overflow on html/body — this game keeps both:
+   width guards a couple of older-WebKit percentage-height quirks, and
+   overflow:hidden kills iOS rubber-band bounce on this full-bleed stage. */
+html, body { width: 100%; overflow: hidden; }
 body {
   font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
   color: var(--navy);
-  background: #bde9e9;
-  user-select: none;
-  -webkit-user-select: none;
+  /* base.css sets touch-action/user-select/background; overscroll-behavior is
+     this game's own addition, kept alongside overflow:hidden above. */
   overscroll-behavior: none;
-  touch-action: manipulation;
 }
 button, a { font: inherit; }
 button { color: inherit; }
@@ -74,6 +73,12 @@ button:focus-visible, a:focus-visible { outline: 5px solid #fff; outline-offset:
   text-align: center;
   letter-spacing: .01em;
 }
+/* Not swapped for shared/css/hud.css's .qk-hud-btn: geometry doesn't match
+   closely enough to be a safe drop-in — 88px fixed here vs hud.css's
+   96/84/76px responsive steps, a scale-only :active here vs hud.css's
+   translateY+scale press, and per-button 8-12px corner offsets here vs
+   hud.css's uniform max(16px, safe-inset). Kept local; a Wave 3 pass could
+   reconcile the geometry and adopt it deliberately. */
 .icon-button {
   position: absolute;
   width: 88px;
@@ -444,10 +449,10 @@ button:focus-visible, a:focus-visible { outline: 5px solid #fff; outline-offset:
 #export-percent { display: block; margin-bottom: 15px; color: var(--teal); font-size: 28px; }
 .compact-button { min-width: 150px; min-height: 62px; font-size: 22px; }
 
+/* Host for shared/js/celebrate.js's burstConfetti() — it injects its own
+   .qk-confetti-layer/.qk-confetti styles and keyframes on first use. */
 #confetti { pointer-events: none; position: fixed; inset: 0; z-index: 100; overflow: hidden; }
-.confetti-bit { position: absolute; top: -30px; width: 16px; height: 28px; border-radius: 5px; animation: fall 2.5s linear forwards; }
 
-@keyframes fall { to { transform: translate(var(--drift, 0), 110vh) rotate(780deg); } }
 @keyframes pulse { 50% { transform: scale(.7); opacity: .5; } }
 @keyframes float { 50% { transform: translateY(-6px); } }
 

@@ -2,14 +2,11 @@
    Sizing is clamp()-on-vmin throughout so the same rules serve a phone, a
    portrait iPad and a landscape iPad without a pile of breakpoints. */
 
-@font-face {
-  font-family: 'Fredoka';
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
+/* @font-face, the reset, .hidden and .visually-hidden come from
+   shared/css/base.css, linked before this file. */
 
 :root {
+  --qk-bg: #0d4f7d;
   --ink: #14304a;
   --cream: #fdf3dd;
   --cream-edge: #fffdf6;
@@ -20,28 +17,21 @@
   --radius: clamp(14px, 2.6vmin, 26px);
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+/* `touch-action: none` (not base.css's `manipulation`) is deliberate: gems are
+   dragged, and any browser panning steals the pointer stream mid-drag. */
 html, body {
-  margin: 0;
-  height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
 
 body {
   font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
-  background: #0d4f7d;
   color: var(--ink);
 }
 
 #game { position: relative; height: 100dvh; width: 100vw; overflow: hidden; }
-
-.hidden { display: none !important; }
 
 .ctc-screen {
   position: absolute;
@@ -465,13 +455,6 @@ body {
 }
 
 /* ---- Confetti ----------------------------------------------------------- */
-
-#confetti-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  pointer-events: none;
-}
 
 /* ---- Portrait / short-landscape ----------------------------------------- */
 

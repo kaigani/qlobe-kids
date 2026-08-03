@@ -1,0 +1,91 @@
+/* base.css — the QLOBE Kids platform reset.
+ *
+ * This is the canonical form of the `@font-face` + reset block that every one
+ * of the 103 games currently hand-copies into its `<head>` (see
+ * games/pattern-train/index.html for the copy this file was distilled from).
+ *
+ * It is a *superset-compatible* match: a game that deletes its inline block and
+ * links this file instead renders identically, provided it keeps one tiny local
+ * block that opts into the two things base.css deliberately does NOT decide for
+ * it — the display font and the page colour:
+ *
+ *     <link rel="stylesheet" href="../../shared/css/base.css" />
+ *     <style>
+ *       :root { --qk-bg: #bee3f5; }
+ *       body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+ *     </style>
+ *
+ * Why font-family is not set here: a stylesheet that imposes a font on `body`
+ * would silently restyle every engine and game that links it, including the
+ * ones with their own type. One local line keeps the opt-in explicit.
+ *
+ * All urls resolve relative to THIS FILE (shared/css/), not to the page.
+ */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------ custom props */
+
+:root {
+  /* Safe-area insets, named once so layout code never repeats the env() dance.
+     The 0px fallbacks matter: env() is unresolvable in browsers without the
+     inset API, and an unresolvable value poisons the whole declaration. */
+  --qk-safe-top: env(safe-area-inset-top, 0px);
+  --qk-safe-right: env(safe-area-inset-right, 0px);
+  --qk-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --qk-safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* ------------------------------------------------------------------ reset */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--qk-bg, transparent);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The near-universal game root. `100dvh` (not `100vh`) so an iPad's collapsing
+   toolbar can't push the bottom HUD off screen. */
+#game {
+  height: 100dvh;
+  background: var(--qk-bg, transparent);
+}
+
+/* ----------------------------------------------------------- utilities */
+
+.hidden {
+  display: none !important;
+}
+
+/* Visible to screen readers, invisible on screen — aria-live announcers, the
+   text label behind an iconographic button. */
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  white-space: nowrap;
+  border: 0;
+}

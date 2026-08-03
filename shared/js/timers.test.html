@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>timers.js test — scalable timer group</title>
+  <!-- An empty inline icon, so a missing /favicon.ico cannot put a 404 in the
+       console and make "zero console errors" a caveated claim. -->
+  <link rel="icon" href="data:," />
+  <style>
+    body { margin: 0; padding: 16px 18px 40px; background: #eef6fb; color: #17517e;
+           font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    p.sub { margin: 0 0 14px; font-size: 13px; opacity: .75; }
+    #summary { font-size: 20px; font-weight: 700; color: #fff; padding: 12px 16px;
+               border-radius: 12px; background: #7a8794; margin-bottom: 14px; }
+    #summary.pass { background: #2f8f5b; }
+    #summary.fail { background: #b0453a; }
+    ol { margin: 0; padding-left: 26px; font-size: 14px; line-height: 1.6; }
+    li { padding: 2px 0; }
+    li.pass::marker { color: #2f8f5b; }
+    li.fail { color: #b0453a; font-weight: 600; }
+    li.fail::marker { color: #b0453a; }
+    .why { display: block; font-size: 12px; font-weight: 400; opacity: .8; }
+  </style>
+</head>
+<body>
+  <h1>timers.js</h1>
+  <p class="sub">createTimers — scaling, cancellation, isolation. Assertions run on load (about 1s of real waiting).</p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    import { createTimers } from './timers.js';
+
+    // ---- tiny assertion harness -----------------------------------------
+    const results = [];
+    async function test(name, fn) {
+      try { await fn(); results.push({ name, pass: true, why: '' }); }
+      catch (err) { results.push({ name, pass: false, why: err && err.message || String(err) }); }
+    }
+    function assert(cond, why) { if (!cond) throw new Error(why || 'assertion failed'); }
+    function eq(actual, expected, why) {
+      const a = JSON.stringify(actual);
+      const b = JSON.stringify(expected);
+      if (a !== b) throw new Error(`${why ? why + ' — ' : ''}got ${a}, expected ${b}`);
+    }
+    /** A REAL delay, deliberately not from the module under test. */
+    const realSleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+    // ---- ms(): pure scaling, nothing scheduled ---------------------------
+
+    await test('ms(): scale 1 is the identity', () => {
+      const t = createTimers();
+      eq(t.ms(1000), 1000);
+      eq(t.getScale(), 1);
+    });
+
+    await test('ms(): scale > 1 divides the delay (20 = twenty times faster)', () => {
+      const t = createTimers();
+      t.setScale(20);
+      eq(t.ms(1000), 50);
+      eq(t.ms(300), 15);
+    });
+
+    await test('ms(): scale < 1 stretches the delay', () => {
+      const t = createTimers();
+      t.setScale(0.5);
+      eq(t.ms(1000), 2000);
+    });
+
+    await test('ms(): zero, negative and junk durations are 0, never NaN', () => {
+      const t = createTimers();
+      t.setScale(20);
+      eq(t.ms(0), 0);
+      eq(t.ms(-500), 0);
+      eq(t.ms(NaN), 0);
+      eq(t.ms(undefined), 0);
+      eq(t.ms('abc'), 0);
+    });
+
+    await test('setScale(): returns the applied scale and rejects junk back to 1', () => {
+      const t = createTimers();
+      eq(t.setScale(20), 20);
+      eq(t.setScale(0), 1, 'zero would divide by nothing');
+      eq(t.setScale(-4), 1);
+      eq(t.setScale(NaN), 1);
+      eq(t.setScale(undefined), 1);
+      eq(t.setScale(5), 5);
+      eq(t.getScale(), 5);
+    });
+
+    await test('setScale(): clamps at 1000 so nothing can be scaled into a busy loop', () => {
+      const t = createTimers();
+      eq(t.setScale(1e9), 1000);
+    });
+
+    // ---- after() / wait() -------------------------------------------------
+
+    await test('after(): runs the callback', async () => {
+      const t = createTimers();
+      let fired = false;
+      t.after(20, () => { fired = true; });
+      await realSleep(90);
+      assert(fired, 'callback never ran');
+    });
+
+    await test('wait(): resolves', async () => {
+      const t = createTimers();
+      let done = false;
+      t.wait(20).then(() => { done = true; });
+      await realSleep(90);
+      assert(done, 'promise never settled');
+    });
+
+    await test('after(): a scaled delay really is shorter in wall-clock time', async () => {
+      const t = createTimers();
+      t.setScale(50);
+      const started = performance.now();
+      await new Promise((resolve) => t.after(1500, resolve)); // 30ms scaled
+      const elapsed = performance.now() - started;
+      assert(elapsed < 400, `1500ms at scale 50 took ${Math.round(elapsed)}ms`);
+    });
+
+    await test('wait(): is scaled too', async () => {
+      const t = createTimers();
+      t.setScale(50);
+      const started = performance.now();
+      await t.wait(2000); // 40ms scaled
+      const elapsed = performance.now() - started;
+      assert(elapsed < 500, `2000ms at scale 50 took ${Math.round(elapsed)}ms`);
+    });
+
+    await test('setScale(): only affects timers scheduled after the call', async () => {
+      const t = createTimers();
+      const started = performance.now();
+      const pending = new Promise((resolve) => t.after(120, resolve));
+      t.setScale(1000); // must NOT retro-fire the pending timer
+      await pending;
+      const elapsed = performance.now() - started;
+      assert(elapsed >= 90, `an already-scheduled 120ms timer fired after ${Math.round(elapsed)}ms`);
+    });
+
+    // ---- cancellation -----------------------------------------------------
+
+    await test('clearAll(): cancels a pending after()', async () => {
+      const t = createTimers();
+      let fired = false;
+      t.after(30, () => { fired = true; });
+      t.clearAll();
+      await realSleep(120);
+      assert(!fired, 'a cleared callback still ran');
+    });
+
+    await test('clearAll(): a cancelled wait() never settles (the flow just stops)', async () => {
+      const t = createTimers();
+      const race = Promise.race([
+        t.wait(30).then(() => 'settled'),
+        realSleep(160).then(() => 'still-pending'),
+      ]);
+      t.clearAll();
+      eq(await race, 'still-pending');
+    });
+
+    await test('clearAll(): is safe to call repeatedly and on an empty group', () => {
+      const t = createTimers();
+      t.clearAll();
+      t.clearAll();
+      eq(t.size(), 0);
+    });
+
+    await test('clear(id): cancels one timer and leaves the others alone', async () => {
+      const t = createTimers();
+      const fired = [];
+      const a = t.after(20, () => fired.push('a'));
+      t.after(20, () => fired.push('b'));
+      t.clear(a);
+      await realSleep(120);
+      eq(fired, ['b']);
+    });
+
+    await test('clear(id): an unknown id is ignored, not thrown', () => {
+      const t = createTimers();
+      t.clear(999999);
+      t.clear(undefined);
+      eq(t.size(), 0);
+    });
+
+    await test('size(): counts outstanding timers and drops them once they fire', async () => {
+      const t = createTimers();
+      t.after(20, () => {});
+      t.after(20, () => {});
+      eq(t.size(), 2);
+      await realSleep(120);
+      eq(t.size(), 0, 'timers were not de-registered after firing');
+    });
+
+    await test('size(): a settled wait() de-registers itself', async () => {
+      const t = createTimers();
+      const p = t.wait(20);
+      eq(t.size(), 1);
+      await p;
+      eq(t.size(), 0);
+    });
+
+    // ---- every() ----------------------------------------------------------
+
+    await test('every(): repeats until cleared', async () => {
+      const t = createTimers();
+      let ticks = 0;
+      const id = t.every(25, () => { ticks += 1; });
+      await realSleep(140);
+      t.clear(id);
+      const atClear = ticks;
+      assert(atClear >= 2, `only ${atClear} ticks in 140ms`);
+      await realSleep(120);
+      eq(ticks, atClear, 'kept ticking after clear');
+    });
+
+    await test('every(): is scaled and clearAll() stops it', async () => {
+      const t = createTimers();
+      t.setScale(10);
+      let ticks = 0;
+      t.every(200, () => { ticks += 1; }); // 20ms scaled
+      await realSleep(120);
+      t.clearAll();
+      const atClear = ticks;
+      assert(atClear >= 2, `scaling did not apply: ${atClear} ticks in 120ms`);
+      await realSleep(120);
+      eq(ticks, atClear, 'clearAll did not stop the interval');
+    });
+
+    // ---- isolation --------------------------------------------------------
+
+    await test('groups are independent: scale and cancellation do not leak', async () => {
+      const a = createTimers();
+      const b = createTimers();
+      a.setScale(20);
+      eq(b.getScale(), 1);
+      eq(b.ms(1000), 1000);
+
+      let bFired = false;
+      b.after(20, () => { bFired = true; });
+      a.clearAll();
+      await realSleep(120);
+      assert(bFired, "one group's clearAll cancelled another group's timer");
+    });
+
+    // ---- report -----------------------------------------------------------
+
+    const passed = results.filter((r) => r.pass).length;
+    const failed = results.length - passed;
+    const list = document.getElementById('results');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.className = r.pass ? 'pass' : 'fail';
+      li.textContent = r.name;
+      if (!r.pass) {
+        const why = document.createElement('span');
+        why.className = 'why';
+        why.textContent = r.why;
+        li.appendChild(why);
+      }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.className = failed ? 'fail' : 'pass';
+    summary.textContent = failed ? `✗ ${failed} of ${results.length} FAILED` : `✓ all ${results.length} passed`;
+
+    window.QLOBE_TEST = { passed, failed, total: results.length, results };
+  </script>
+</body>
+</html>

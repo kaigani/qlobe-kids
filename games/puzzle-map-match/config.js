@@ -3,11 +3,6 @@ export default {
   engine: 'sort-into-bins',
   title: 'Puzzle Map Match',
   splashEmoji: '🗺️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Where does each animal live? Find its home place.',
     nudge: 'Almost. Listen for that animal\'s home and try another place.',

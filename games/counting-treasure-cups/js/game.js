@@ -15,7 +15,17 @@ import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
 import * as voice from './voice.js';
 import { Stage } from './stage.js';
-import { burst, clearConfetti } from './confetti.js';
+import { shuffle } from '../../../shared/js/rng.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+
+/**
+ * The treasure palette — deliberately NOT the platform's QK_PALETTE. These are
+ * the gem colours the tiles are drawn in (plus the pink jewel), so a burst reads
+ * as spilled treasure rather than as party confetti.
+ */
+export const CONFETTI_COLORS = Object.freeze([
+  '#e0402a', '#f2a03d', '#f5c518', '#3faf4e', '#2d7dd2', '#8e5bc0', '#ff7ab6',
+]);
 
 const DRAG_SLOP = 10;          // px before a press becomes a drag
 const FLIGHT_MS = 300;         // treasure arc into the container
@@ -34,7 +44,7 @@ export class Game {
    * @param {object} opts.config      the whole config.json
    * @param {string} opts.modeId
    * @param {HTMLElement} opts.root   the `.ctc-play` screen
-   * @param {Record<string,import('./actor.js').Actor>} opts.actors
+   * @param {Record<string,Awaited<ReturnType<typeof import('../../../shared/js/stage/pose-sprite-dom.js').loadPoseActorDom>>>} opts.actors
    * @param {() => void} opts.onFinish called after the last round
    */
   constructor({ config, modeId, root, actors, onFinish }) {
@@ -58,6 +68,7 @@ export class Game {
     this.timers = new Set();
     this.actorHides = new Map();
     this.drag = null;
+    this.cancelBurst = null;
 
     this.els = {
       stage: root.querySelector('.ctc-stage'),
@@ -99,8 +110,13 @@ export class Game {
     this.disposers = [];
     window.removeEventListener('blur', this.onWindowBlur);
     this.stage.destroy();
-    clearConfetti();
+    this.clearConfetti();
     for (const a of Object.values(this.actors)) a.hide();
+  }
+
+  /** Take down a celebration burst early (screen change, next round). */
+  clearConfetti() {
+    if (this.cancelBurst) { this.cancelBurst(); this.cancelBurst = null; }
   }
 
   /** setTimeout that respects timeScale and is cleared on destroy. */
@@ -117,7 +133,7 @@ export class Game {
   async nextRound() {
     this.clearIdle();
     this.hideAgain();
-    clearConfetti();
+    this.clearConfetti();
     this.roundIndex += 1;
     if (this.roundIndex >= this.rounds.length) { this.finish(); return; }
 
@@ -180,8 +196,9 @@ export class Game {
     if (this.distractorsActive() && !kinds.includes(this.otherKind())) {
       kinds[n - 1] = this.otherKind();
     }
-    shuffle(kinds, this.rng);
-    this.els.tray.replaceChildren(...kinds.map((k, i) => this.makeTile(k, i)));
+    // shared shuffle() returns a NEW array — it does not mutate `kinds`.
+    const laid = shuffle(kinds, this.rng);
+    this.els.tray.replaceChildren(...laid.map((k, i) => this.makeTile(k, i)));
   }
 
   distractorsActive() {
@@ -478,8 +495,8 @@ export class Game {
     this.clearIdle();
     this.els.stage.classList.add('is-won');
     sfx.tada();
-    const p = this.stage.dropPoint();
-    burst(p.x, p.y, 110);
+    this.clearConfetti();
+    this.cancelBurst = burstConfetti({ host: this.root, count: 110, palette: CONFETTI_COLORS });
     this.actors.parrot?.show('celebrate');
     this.actors.captain?.show('celebrate');
     await this.speakFully('par-full', 'celebrate', 1400);
@@ -766,14 +783,6 @@ export class Game {
 }
 
 // ---- helpers ---------------------------------------------------------------
-
-function shuffle(arr, rng = Math.random) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
 
 function cssEscape(s) {
   return String(s).replace(/["\\]/g, '\\$&');

@@ -12,10 +12,7 @@ export default {
   splashEmoji: '🎙️',
   theme: { world: 'story-screen', background: './assets/bg.jpg' },
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Family News Story',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'This just in! Your family interview is ready!',

@@ -1,11 +1,5 @@
-@font-face {
-  font-family: Fredoka;
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
-
 :root {
+  --qk-bg: #06142f;
   --ink: #06142f;
   --navy: #0a2352;
   --cream: #fff6dc;
@@ -17,14 +11,10 @@
   --violet: #9f64ff;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+html, body { width: 100%; overflow: hidden; }
 body {
   font-family: Fredoka, "Arial Rounded MT Bold", sans-serif;
   color: var(--cream);
-  background: var(--ink);
-  user-select: none;
-  -webkit-user-select: none;
   -webkit-touch-callout: none;
   overscroll-behavior: none;
   touch-action: none;
@@ -32,15 +22,6 @@ body {
 button, a { font: inherit; }
 button { color: inherit; }
 button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset: 4px; }
-.hidden { display: none !important; }
-.sr-only {
-  position: fixed;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
 
 .screen {
   position: fixed;
@@ -147,27 +128,16 @@ button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset:
   font-size: clamp(14px, 1.65vw, 20px);
 }
 
-.round-button {
-  width: 96px;
-  height: 96px;
-  min-width: 96px;
-  min-height: 96px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent center / contain no-repeat;
-  cursor: pointer;
+/* hud.css (shared/css/hud.css) supplies the round nav-button shape/press
+   behavior via .qk-hud-btn + .qk-hud-home/back/sound; these overrides keep
+   this game's original fixed 96px sizing (never shrinks on narrow screens —
+   its layouts were tuned around a constant control size), 18px corner gap
+   and warm drop-shadow, rather than adopting hud.css's narrow-viewport
+   shrink defaults. */
+.qk-hud-btn {
+  --qk-hud-size: 96px;
+  --qk-hud-gap: 18px;
   filter: drop-shadow(0 7px 5px rgba(0, 0, 0, .28));
-}
-.round-button:active { transform: translateY(5px) scale(.96); }
-.splash .home-button {
-  position: absolute;
-  left: max(18px, env(safe-area-inset-left));
-  top: max(18px, env(safe-area-inset-top));
-}
-.sound-button {
-  position: absolute;
-  right: max(18px, env(safe-area-inset-right));
-  top: max(18px, env(safe-area-inset-top));
 }
 
 .paint-screen {
@@ -188,7 +158,6 @@ button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset:
     #173f78;
   box-shadow: inset 0 -6px 0 rgba(3, 16, 48, .26), 0 5px 14px rgba(0,0,0,.25);
 }
-.topbar .round-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; }
 .paint-title {
   min-width: 0;
   text-align: center;
@@ -367,11 +336,6 @@ button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset:
 .keepsake-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .keepsake-actions .paper-button { min-width: 0; }
 .keepsake-again { grid-column: 1 / -1; background: #9a57d4; }
-.keepsake > .round-button {
-  position: absolute;
-  left: max(18px, env(safe-area-inset-left));
-  top: max(18px, env(safe-area-inset-top));
-}
 
 @keyframes float { 50% { transform: translateY(-12px) rotate(-5deg); } }
 
@@ -394,7 +358,6 @@ button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset:
   .mode-title { font-size: 25px; }
   .paint-screen { grid-template-rows: 112px 1fr 116px; }
   .topbar { grid-template-columns: 108px 1fr 210px; }
-  .topbar .round-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; }
   .icon-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; font-size: 38px; }
   .workbench { grid-template-columns: 1fr; grid-template-rows: 1fr 122px; gap: 10px; }
   .palette { flex-direction: row; padding: 8px 12px; }
@@ -415,7 +378,7 @@ button:focus-visible, a:focus-visible { outline: 6px solid #fff; outline-offset:
   .paint-screen { grid-template-rows: 112px 1fr 112px; }
   .workbench { grid-template-columns: 1fr 230px; }
   .palette { display: grid; grid-template-columns: repeat(2, 96px); align-content: center; }
-  .topbar .round-button, .icon-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; }
+  .icon-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; }
   .color-button { width: 96px; height: 96px; min-width: 96px; min-height: 96px; }
   .paper-button, .play-button { min-height: 96px; }
 }

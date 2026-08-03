@@ -10,6 +10,11 @@ import { onTap } from '../../../shared/js/tap.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as sfx from '../../../shared/js/sfx.js';
+import { escapeHtml } from '../../../shared/js/dom.js';
+import { createTimers } from '../../../shared/js/timers.js';
+import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
 
 const appEl = document.querySelector('#app');
 const confettiEl = document.querySelector('#confetti');
@@ -43,13 +48,35 @@ const defaultLines = {
   ...Object.fromEntries(config.stories.flatMap((story) =>
     story.beats.map((beat) => [`story.${story.id}.${beat.id}`, beat.line]))),
 };
+// This game's own teal/orange/purple confetti palette — an intentional art
+// choice, not the platform QK_PALETTE, so it is passed through explicitly.
+const CONFETTI_COLORS = ['#f7c94b', '#ef6148', '#17b8bd', '#8f70d7', '#fff'];
 
 let current = null;
 let store = null;
 let pendingExport = null;
 let exportController = null;
+let confettiCancel = null;
 let readyResolve;
 const ready = new Promise((resolve) => { readyResolve = resolve; });
+
+// Route this game's own timed beats (idle-clip revert after a puppet action,
+// the action-button press flash, the record clock tick, the export blob-url
+// cleanup) through one cancellable, scalable group, so QLOBE_DEBUG's
+// fastTimers() reaches all of them instead of the old boolean-flag stub that
+// only ever touched one delay.
+const gameTimers = createTimers();
+
+// A seed set BEFORE startMode() has to reach the round startMode() builds, not
+// just whatever existed when seed() was called — hold the generator
+// module-level. Nothing in this game currently draws from it: the story,
+// cast, and stage are always the player's own picks presented in a fixed
+// order, never shuffled or drawn at random (the only Math.random() this game
+// ever had was decorative confetti scatter, which now belongs to
+// shared/js/celebrate.js and isn't seedable through that API either). Wired
+// anyway so seed() is a real hook rather than a silent no-op, ready for
+// whichever mode is the first to actually pick something at random.
+let rng = Math.random;
 
 const state = {
   screen: 'loading',
@@ -66,26 +93,25 @@ const state = {
   showCount: 0,
   exporting: false,
   muted: false,
-  seed: 1,
-  fastTimers: false,
 };
 
-function esc(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  })[char]);
-}
+// The shared first-gesture unlock. Its latch reopens on visibilitychange/
+// pageshow (and resumes speechSynthesis), so an iPad app-switch mid-show can
+// no longer leave the puppets silent for the rest of the session — this game
+// had no such recovery before.
+installUnlockOnGesture();
 
-function unlock() {
-  voice.unlock();
-  speech.unlock();
-  sfx.unlock();
-}
+// voice.unlock() stays armed until the clip channel has actually PLAYED, so it
+// runs on every gesture rather than only while the shared latch is open. This
+// game always re-ran its own unlock on every tap; keep that specifically for
+// the voice channel so a first attempt the browser refuses gets retried on
+// the very next tap instead of falling back to the synth voice for the show.
+window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
 
 function tapAll(root = document) {
   root.querySelectorAll('[data-action]').forEach((el) => {
     onTap(el, () => handleAction(el.dataset.action, el.dataset.value, el), {
-      feedback: () => { unlock(); if (!state.muted) sfx.tick(); },
+      feedback: () => { if (!state.muted) sfx.tick(); },
     });
   });
 }
@@ -93,7 +119,7 @@ function tapAll(root = document) {
 function header(title, back = 'splash') {
   return `<header class="screen-header">
     <button class="icon-button back-button" data-action="${back}" data-target="back" aria-label="Go back"></button>
-    <h1>${esc(title)}</h1>
+    <h1>${escapeHtml(title)}</h1>
     <button class="icon-button sound-button" data-action="sound" data-target="sound" aria-label="Turn sound ${state.muted ? 'on' : 'off'}" style="${state.muted ? 'filter:grayscale(1);opacity:.6' : ''}"></button>
   </header>`;
 }
@@ -119,7 +145,7 @@ async function cleanupScene() {
   if (!current) return;
   current.dragCleanup?.();
   current.recorder?.cancelPlayback();
-  if (current.recordTimer) clearInterval(current.recordTimer);
+  if (current.recordTimer) gameTimers.clear(current.recordTimer);
   if (current.theater && !current.theater.destroyed) current.theater.destroy();
   current.stage?.destroy();
   current.urls?.forEach((url) => URL.revokeObjectURL(url));
@@ -147,7 +173,7 @@ async function renderSplash({ announce = true } = {}) {
     <img class="mascot right" src="${face('rabbit')}" alt="" />
     <div class="splash-card">
       <div class="logo-kicker">Make your own</div>
-      <h1 class="logo">${esc(config.title)}</h1>
+      <h1 class="logo">${escapeHtml(config.title)}</h1>
       <p class="tagline">Pick two stars. Tell it your way!</p>
       <div class="splash-actions">
         <button class="mode-button" data-action="mode" data-value="guided" data-target="mode-guided"><img class="mode-art" src="${uiArt.storyStarters}" alt=""><span class="mode-label">Story Starters</span></button>
@@ -171,7 +197,7 @@ function renderStories() {
       ${groups.map(([collection, label]) => `<h2 class="section-label">${label}</h2>
         <div class="card-grid">${config.stories.filter((story) => story.collection === collection).map((story) => {
           return `<button class="choice-card story-card" data-action="story" data-value="${story.id}" data-target="story-${story.id}">
-            <img class="story-illustration" src="${story.art}" alt=""><span class="choice-title">${esc(story.title)}</span>
+            <img class="story-illustration" src="${story.art}" alt=""><span class="choice-title">${escapeHtml(story.title)}</span>
           </button>`;
         }).join('')}</div>`).join('')}
     </div>
@@ -188,7 +214,7 @@ function renderCast() {
         const pick = state.cast.indexOf(character);
         return `<button class="choice-card cast-card ${pick >= 0 ? 'selected' : ''}" data-action="cast" data-value="${character}" data-target="cast-${character}" aria-pressed="${pick >= 0}">
           ${pick >= 0 ? `<span class="pick-number">${pick + 1}</span>` : ''}
-          <img src="${face(character)}" alt="" /><span class="choice-title">${esc(names[character] || character)}</span>
+          <img src="${face(character)}" alt="" /><span class="choice-title">${escapeHtml(names[character] || character)}</span>
         </button>`;
       }).join('')}</div>
     </div>
@@ -199,17 +225,17 @@ function renderCast() {
 function renderSetup() {
   state.screen = 'setup';
   const stageCards = config.stages.map((stage) =>
-    `<button class="choice-card stage-card ${stage.id === state.stageId ? 'selected' : ''}" style="background-image:url('${stage.backdrop}')" data-action="stage" data-value="${stage.id}" data-target="stage-${stage.id}"><span class="choice-title">${esc(stage.title)}</span></button>`).join('');
+    `<button class="choice-card stage-card ${stage.id === state.stageId ? 'selected' : ''}" style="background-image:url('${stage.backdrop}')" data-action="stage" data-value="${stage.id}" data-target="stage-${stage.id}"><span class="choice-title">${escapeHtml(stage.title)}</span></button>`).join('');
   const puppetCards = roles.map((role, index) => {
     const character = state.cast[index];
     const selectedAccessory = config.accessories.find((item) => item.id === state.accessories[role]);
     return `<button class="dress-puppet ${state.activeRole === role ? 'active' : ''}" data-action="role" data-value="${role}" data-target="dress-${role}">
-      <img src="${face(character)}" alt="" /><strong>${esc(names[character] || character)}</strong>
-      <small class="chosen-prop">${selectedAccessory ? `<img src="${selectedAccessory.art}" alt=""><span>${esc(selectedAccessory.title)}</span>` : '<span>No prop</span>'}</small>
+      <img src="${face(character)}" alt="" /><strong>${escapeHtml(names[character] || character)}</strong>
+      <small class="chosen-prop">${selectedAccessory ? `<img src="${selectedAccessory.art}" alt=""><span>${escapeHtml(selectedAccessory.title)}</span>` : '<span>No prop</span>'}</small>
     </button>`;
   }).join('');
   const accessories = config.accessories.map((item) =>
-    `<button class="accessory ${state.accessories[state.activeRole] === item.id ? 'selected' : ''}" data-action="accessory" data-value="${item.id}" data-target="prop-${item.id}" aria-label="${esc(item.title)}"><img src="${item.art}" alt=""></button>`).join('');
+    `<button class="accessory ${state.accessories[state.activeRole] === item.id ? 'selected' : ''}" data-action="accessory" data-value="${item.id}" data-target="prop-${item.id}" aria-label="${escapeHtml(item.title)}"><img src="${item.art}" alt=""></button>`).join('');
   setHtml(`<section class="screen">
     ${header('Build Your Show', 'cast')}
     <div class="setup-layout">
@@ -230,10 +256,10 @@ function performanceHtml({ replay = false } = {}) {
     <div class="performance-hud">
       <button class="icon-button back-button" data-action="leave-performance" data-target="back" aria-label="Leave the stage"></button>
       <div class="role-picker" aria-label="Puppet for the next action">
-        ${roles.map((role, index) => `<button class="role-button ${state.activeRole === role ? 'active' : ''}" data-action="active-role" data-value="${role}" data-target="active-${role}" aria-label="Choose ${esc(names[state.cast[index]] || state.cast[index])}"><img src="${face(state.cast[index])}" alt="" /></button>`).join('')}
+        ${roles.map((role, index) => `<button class="role-button ${state.activeRole === role ? 'active' : ''}" data-action="active-role" data-value="${role}" data-target="active-${role}" aria-label="Choose ${escapeHtml(names[state.cast[index]] || state.cast[index])}"><img src="${face(state.cast[index])}" alt="" /></button>`).join('')}
       </div>
       <div class="record-status ${state.recording ? 'live' : ''}" id="record-status">${state.recording ? '<span class="record-dot"></span><span id="record-time">0:00</span>' : loading ? 'Opening curtain…' : replay ? '▶ Replaying' : 'Ready!'}</div>
-      ${beat ? `<div class="beat-card" id="beat-card"><img class="beat-art" src="${beat.art}" alt=""><span>${esc(beat.line)}</span>${state.recording && state.beat < story.beats.length - 1 ? '<button class="next-beat" data-action="next-beat" data-target="next-beat" aria-label="Next story part">→</button>' : ''}</div>` : ''}
+      ${beat ? `<div class="beat-card" id="beat-card"><img class="beat-art" src="${beat.art}" alt=""><span>${escapeHtml(beat.line)}</span>${state.recording && state.beat < story.beats.length - 1 ? '<button class="next-beat" data-action="next-beat" data-target="next-beat" aria-label="Next story part">→</button>' : ''}</div>` : ''}
       <div class="privacy-pill"><img src="${uiArt.privacy}" alt=""> <span>Stays on this device</span></div>
       <div class="action-tray" id="action-tray">
         ${loading ? `<span class="curtain-loader" aria-label="Loading the stage"><img src="${uiArt.loading}" alt=""></span>` : state.recording ? actions.map(([id, art, label]) => `<button class="action-button" data-action="puppet-action" data-value="${id}" data-target="action-${id}" aria-label="${label}"><img src="${art}" alt=""><span>${label}</span></button>`).join('') + '<button class="done-button" data-action="stop-recording" data-target="record-stop">Save<br>Show</button>' : replay ? '<button class="done-button" data-action="stop-replay" data-target="replay-stop">Stop</button>' : '<button class="record-button" data-action="start-recording" data-target="record-start" aria-label="Start recording">●</button>'}
@@ -516,11 +542,11 @@ async function startRecording() {
   state.beat = 0;
   refreshPerformanceHud();
   const started = performance.now();
-  current.recordTimer = setInterval(() => {
+  current.recordTimer = gameTimers.every(250, () => {
     const seconds = Math.floor((performance.now() - started) / 1000);
     const clock = document.querySelector('#record-time');
     if (clock) clock.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
-  }, 250);
+  });
   if (state.mode === 'guided') {
     const beat = getStory().beats[0];
     current.recorder.record('beat', { index: 0 });
@@ -568,12 +594,11 @@ function applyPuppetAction(role, action, { record = true, sound = true } = {}) {
   } else if (sound && !state.muted) {
     action === 'jump' ? sfx.boing() : sfx.pop();
   }
-  const delay = state.fastTimers ? 60 : 1050;
-  setTimeout(() => {
+  gameTimers.after(1050, () => {
     if (!current?.actors) return;
     if (action === 'hug') roles.forEach((item) => current.actors[item]?.puppet.playClip('idle'));
     else current.actors[role]?.puppet.playClip('idle');
-  }, delay);
+  });
 }
 
 async function thumbnailBlob() {
@@ -598,7 +623,7 @@ async function finishRecording() {
   if (!current?.recorder?.isRecording()) return;
   state.recording = false;
   state.phase = 'saving';
-  if (current.recordTimer) clearInterval(current.recordTimer);
+  if (current.recordTimer) gameTimers.clear(current.recordTimer);
   const show = await current.recorder.stop({
     finalBeat: state.beat,
     title: state.mode === 'guided' ? getStory().title : 'Free Show',
@@ -610,7 +635,8 @@ async function finishRecording() {
     state.showCount = (await store.list()).length;
     state.phase = 'saved';
     if (!state.muted) sfx.tada();
-    burstConfetti();
+    confettiCancel?.();
+    confettiCancel = burstConfetti({ host: confettiEl, count: 48, palette: CONFETTI_COLORS });
     showSaved(show.id);
     speak('saved');
   } catch (error) {
@@ -660,8 +686,8 @@ async function renderShows() {
     const date = new Date(show.createdAt);
     const length = Math.max(1, Math.round((show.durationMs || 0) / 1000));
     return `<article class="choice-card show-card" data-target="show-${show.id}">
-      <button class="show-thumb" style="${url ? `background-image:url('${url}')` : ''}" data-action="play-show" data-value="${show.id}" aria-label="Play ${esc(show.metadata?.title || 'puppet show')}">${url ? '' : `<img src="${esc(show.metadata?.storyArt || uiArt.freeShow)}" alt="">`}</button>
-      <div class="show-meta"><span>${esc(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><div class="show-card-actions"><button class="show-export" data-action="export-show" data-value="${show.id}" aria-label="Export ${esc(show.metadata?.title || 'puppet show')} as MP4">MP4</button><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show"><img src="${uiArt.delete}" alt=""></button></div></div>
+      <button class="show-thumb" style="${url ? `background-image:url('${url}')` : ''}" data-action="play-show" data-value="${show.id}" aria-label="Play ${escapeHtml(show.metadata?.title || 'puppet show')}">${url ? '' : `<img src="${escapeHtml(show.metadata?.storyArt || uiArt.freeShow)}" alt="">`}</button>
+      <div class="show-meta"><span>${escapeHtml(show.metadata?.title || 'Puppet Show')}<br><small>${date.toLocaleDateString()} · ${length}s</small></span><div class="show-card-actions"><button class="show-export" data-action="export-show" data-value="${show.id}" aria-label="Export ${escapeHtml(show.metadata?.title || 'puppet show')} as MP4">MP4</button><button class="show-delete" data-action="delete-show" data-value="${show.id}" aria-label="Delete show"><img src="${uiArt.delete}" alt=""></button></div></div>
     </article>`;
   }).join('');
   setHtml(`<section class="screen">
@@ -756,7 +782,8 @@ async function exportShow(id) {
   exportController?.abort();
   exportController = new AbortController();
   state.exporting = true;
-  confettiEl.innerHTML = '';
+  confettiCancel?.();
+  confettiCancel = null;
   try {
     await mountPerformance(show.initialState, { replay: true });
     state.replaying = false;
@@ -806,7 +833,7 @@ function showExportProgress(title) {
     <div class="modal-card export-card">
       <img class="export-art" src="${uiArt.replay}" alt="">
       <h2>Making Your MP4</h2>
-      <p>${esc(title)} is playing into a shareable video right here on this device.</p>
+      <p>${escapeHtml(title)} is playing into a shareable video right here on this device.</p>
       <div class="export-meter" role="progressbar" aria-label="MP4 export progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="export-meter-fill"></i></div>
       <strong id="export-percent">0%</strong>
       <button class="secondary-button compact-button" data-action="cancel-export">Cancel</button>
@@ -856,7 +883,7 @@ function savePendingExport() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  gameTimers.after(10_000, () => URL.revokeObjectURL(url));
 }
 
 async function sharePendingExport() {
@@ -879,10 +906,28 @@ async function sharePendingExport() {
 
 function showModal(title, message, buttons) {
   document.querySelector('.modal')?.remove();
-  appEl.insertAdjacentHTML('beforeend', `<div class="modal"><div class="modal-card"><h2>${esc(title)}</h2><p>${esc(message)}</p><div class="celebration-actions">
-    ${buttons.map(([label, action, value, cls]) => `<button class="${cls}" data-action="${action}" data-value="${esc(value)}">${esc(label)}</button>`).join('')}
+  appEl.insertAdjacentHTML('beforeend', `<div class="modal"><div class="modal-card"><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p><div class="celebration-actions">
+    ${buttons.map(([label, action, value, cls]) => `<button class="${cls}" data-action="${action}" data-value="${escapeHtml(value)}">${escapeHtml(label)}</button>`).join('')}
   </div></div></div>`);
   tapAll(appEl.querySelector('.modal'));
+}
+
+// The debug-harness default (collectTargets) would work, but this game has
+// one real signal worth keeping that the bare default shape doesn't carry:
+// "cast-next" is genuinely `disabled` until two puppets are picked, which a
+// QA driver needs to know before it tries to tap through. Same {id, role,
+// rect} shape as the default, `role` just also encodes disabled state — the
+// same pattern clay-creature-studio's migration used for the same reason.
+function debugTargets() {
+  return [...appEl.querySelectorAll('[data-target]')].flatMap((el) => {
+    const rect = el.getBoundingClientRect();
+    if (!(rect.width > 0) || !(rect.height > 0)) return [];
+    return [{
+      id: el.dataset.target,
+      role: el.disabled ? 'disabled' : 'neutral',
+      rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height },
+    }];
+  });
 }
 
 function confirmDelete(id) {
@@ -890,21 +935,6 @@ function confirmDelete(id) {
     ['Keep It', 'close-modal', '', 'secondary-button'],
     ['Erase', 'confirm-delete', id, 'danger-button'],
   ]);
-}
-
-function burstConfetti() {
-  confettiEl.innerHTML = '';
-  const colors = ['#f7c94b', '#ef6148', '#17b8bd', '#8f70d7', '#fff'];
-  for (let i = 0; i < 48; i += 1) {
-    const bit = document.createElement('i');
-    bit.className = 'confetti-bit';
-    bit.style.left = `${Math.random() * 100}%`;
-    bit.style.background = colors[i % colors.length];
-    bit.style.animationDelay = `${Math.random() * .6}s`;
-    bit.style.setProperty('--drift', `${Math.round((Math.random() - .5) * 240)}px`);
-    confettiEl.appendChild(bit);
-  }
-  setTimeout(() => { confettiEl.innerHTML = ''; }, 3400);
 }
 
 async function handleAction(action, value, el) {
@@ -979,7 +1009,7 @@ async function handleAction(action, value, el) {
     applyPuppetAction(state.activeRole, value);
     const pressed = document.querySelector(`[data-target="action-${value}"]`);
     pressed?.classList.add('active');
-    setTimeout(() => pressed?.classList.remove('active'), 300);
+    gameTimers.after(300, () => pressed?.classList.remove('active'));
     return;
   }
   if (action === 'again') {
@@ -1030,15 +1060,16 @@ window.addEventListener('pagehide', () => {
   speech.stop();
 });
 
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
-
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
+  gameId: config.id,
+  engine: config.engine,
   ready,
   listModes: () => config.modes.map(({ id, title }) => ({ id, title })),
   startMode: async (id) => {
-    unlock();
+    // Not a real user gesture (this runs from a QA driver's page.evaluate),
+    // but a best-effort priming attempt is cheap and matches what this game
+    // always did here before the shared unlock existed.
+    unlockAll();
     await handleAction('mode', id === 'free' ? 'free' : 'guided');
   },
   getState: () => ({
@@ -1056,10 +1087,7 @@ window.QLOBE_DEBUG = {
     roundsTotal: state.mode === 'guided' ? 3 : 1,
     awaitingInput: !['saving'].includes(state.phase),
   }),
-  getTargets: () => [...document.querySelectorAll('[data-target]')].map((el) => {
-    const rect = el.getBoundingClientRect();
-    return { id: el.dataset.target, x: rect.x, y: rect.y, width: rect.width, height: rect.height, disabled: !!el.disabled };
-  }),
+  getTargets: debugTargets,
   getPuppetMotion: () => Object.fromEntries(Object.entries(current?.actors || {}).map(([role, actor]) => [
     role,
     actor.puppet ? {
@@ -1085,13 +1113,24 @@ window.QLOBE_DEBUG = {
     if (state.screen === 'performance' && state.recording) return finishRecording();
     if (state.screen === 'performance') return startRecording();
   },
-  mute: (value = true) => { state.muted = !!value; if (value) voice.stop(); },
-  seed: (value) => { state.seed = Number(value) || 1; },
+  home: () => renderSplash({ announce: false }),
+  // Kept local, not defaulted: `state.muted` is read all over the game (the
+  // speak() gate, the tap-feedback tick, puppet-action sfx), so the hook has
+  // to write the game's own flag, not a channel list it fans out to alone.
+  mute: (value = true) => { state.muted = !!value; if (state.muted) voice.stop(); return state.muted; },
+  // This game's own timed beats (idle-clip revert, action-button flash, the
+  // record clock, the export blob-url cleanup) all run through gameTimers —
+  // fastTimers() (the installDebug default) scales this group for real.
+  timers: gameTimers,
+  // Where the seeded generator lands — see the comment on `rng` above; this
+  // game has no seed-sensitive picks yet, so it's currently just stored.
+  onSeed: (nextRng) => { rng = nextRng; },
   extras: {
-    fastTimers: (value = true) => { state.fastTimers = !!value; },
     finishRecording,
   },
-};
+});
+
+installKioskGuards();
 
 init().catch((error) => {
   console.error(error);

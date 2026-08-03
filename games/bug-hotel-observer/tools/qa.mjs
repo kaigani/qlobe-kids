@@ -12,6 +12,10 @@
 //   node games/bug-hotel-observer/tools/qa.mjs --base http://127.0.0.1:8000
 //   node games/bug-hotel-observer/tools/qa.mjs --base https://qlo.be
 //   node games/bug-hotel-observer/tools/qa.mjs --shots /tmp/shots --headed
+//   node games/bug-hotel-observer/tools/qa.mjs --playwright /private/tmp/pw/node_modules
+//
+// Flag parsing, Playwright resolution/launch and the shots directory come
+// from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 //
 // **channel: 'chrome' is load-bearing.** Playwright's bundled Chromium ships
 // without an AAC decoder, so every .m4a in assets/audio silently fails to
@@ -26,44 +30,29 @@
 // Shots go OUTSIDE the repo by default — a QA run must never leave PNGs in a
 // worktree.
 
-import { readFile, readdir, stat, access, mkdir } from 'node:fs/promises';
+import { readFile, readdir, stat, access } from 'node:fs/promises';
 import { constants as FS, createReadStream } from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import pw from '/private/tmp/pw/node_modules/playwright-core/index.js';
-
-const { chromium } = pw;
+import {
+  args, launchChrome, resolveShots, ensureShots, createReporter,
+} from '../../../tools/qa/lib/driver.mjs';
 
 // ---------------------------------------------------------------- arguments
-
-const argv = process.argv.slice(2);
-const flag = (name, fallback = null) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : fallback;
-};
-const has = (name) => argv.includes(`--${name}`);
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const GAME = path.resolve(HERE, '..');
 const ROOT = path.resolve(GAME, '..', '..');
-const SHOTS = path.resolve(flag('shots') || process.env.QLOBE_SHOTS || '/private/tmp/qlobe-bho-shots');
+const SHOTS = resolveShots('/private/tmp/qlobe-bho-shots');
 
 // ---------------------------------------------------------------- reporting
 
-let pass = 0;
-let fail = 0;
-const failures = [];
-function ok(name, cond, detail = '') {
-  const truthy = Boolean(cond);
-  if (truthy) { pass += 1; console.log(`  ok   ${name}`); }
-  else {
-    fail += 1;
-    const text = String(detail).replace(/\s+/g, ' ').slice(0, 300);
-    console.log(`  FAIL ${name}${text ? ` — ${text}` : ''}`);
-    failures.push(name);
-  }
-}
+const {
+  check: ok, results, failures,
+} = createReporter({
+  style: 'pad', collapse: true, detailLimit: 300, detailOnFail: true,
+});
 
 const rel = (...p) => path.join(GAME, ...p);
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
@@ -410,7 +399,7 @@ async function browserGate(base) {
   const URL_ = `${base}/games/bug-hotel-observer/`;
   console.log(`\n=== browser gate (${URL_}) ===`);
 
-  const browser = await chromium.launch({ channel: 'chrome', headless: !has('headed') });
+  const browser = await launchChrome();
   const ctx = await browser.newContext({ viewport: { width: 1194, height: 834 }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
 
@@ -1149,13 +1138,13 @@ async function browserGate(base) {
 // =========================================================================
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
+  await ensureShots(SHOTS);
   await staticGate();
 
   let server = null;
   let base;
-  if (flag('base')) {
-    base = flag('base').replace(/\/$/, '');
+  if (args.flag('base')) {
+    base = args.flag('base').replace(/\/$/, '');
   } else {
     const served = await serveRepo();
     server = served.server;
@@ -1166,10 +1155,13 @@ async function main() {
 
   if (server) server.close();
 
+  const failed = failures();
+  const pass = results.length - failed.length;
+  const fail = failed.length;
   console.log(`\n${pass} pass, ${fail} fail`);
   if (fail) {
     console.log('\nFAILED:');
-    for (const f of failures) console.log(`  - ${f}`);
+    for (const f of failed) console.log(`  - ${f.name}`);
   }
   process.exit(fail ? 1 : 0);
 }

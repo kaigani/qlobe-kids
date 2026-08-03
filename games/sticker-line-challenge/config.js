@@ -10,11 +10,6 @@ export default {
   strokeColor: '#e873a4',
   tolerance: 76,
   startMarker: '⭐',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Pick a sticker path to decorate!',
     nudge: 'Find the dotted line and keep sticking stars.',

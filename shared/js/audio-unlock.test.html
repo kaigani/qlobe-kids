@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>audio-unlock.js test</title>
+  <!-- An empty inline icon, so a missing /favicon.ico 404 can't muddy the
+       "zero console errors" check this page exists to support. -->
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.ok::marker { color: #1c6b42; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>audio-unlock.js test</h2>
+  <p class="lede">
+    Runs on load, no tapping needed: the gesture, the app-switch and the kiosk
+    guards are all driven with synthetic events. The behaviour under test is the
+    stale-latch fix — the unlock latch must reopen when the page comes back to
+    the foreground, while <code>onFirst</code> must never fire twice.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    import { unlockAll, installUnlockOnGesture, installKioskGuards } from './audio-unlock.js';
+
+    // ---- tiny assertion harness -----------------------------------------
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    // `document.hidden` is read-only, so shadow it on the instance to fake an
+    // app switch. Restored at the end.
+    const hiddenDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'hidden');
+    let fakeHidden = false;
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => fakeHidden });
+    function setHidden(v) {
+      fakeHidden = v;
+      document.dispatchEvent(new Event('visibilitychange'));
+    }
+    const tap = (target = window) =>
+      target.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+
+    // ---- 1. exports ------------------------------------------------------
+    t('exports unlockAll', typeof unlockAll === 'function');
+    t('exports installUnlockOnGesture', typeof installUnlockOnGesture === 'function');
+    t('exports installKioskGuards', typeof installKioskGuards === 'function');
+
+    // ---- 2. every unlock call is individually try/caught -----------------
+    let after = 0;
+    let threw = false;
+    try {
+      unlockAll([() => { throw new Error('boom'); }, () => { after += 1; }]);
+    } catch { threw = true; }
+    t('unlockAll swallows a throwing unlocker', !threw);
+    t('a throwing unlocker does not block the next one', after === 1, `after=${after}`);
+
+    // ---- 3. gesture latch + onFirst -------------------------------------
+    let fanout = 0;   // proxy for the whole unlock fan-out: `extra` runs inside it
+    let first = 0;
+    let firstEvent = null;
+    const dispose = installUnlockOnGesture({
+      extra: [() => { fanout += 1; }],
+      onFirst: (e) => { first += 1; firstEvent = e; },
+    });
+
+    tap();
+    t('first pointerdown unlocks', fanout === 1, `fanout=${fanout}`);
+    t('first pointerdown fires onFirst', first === 1, `first=${first}`);
+    t('onFirst receives the event', firstEvent && firstEvent.type === 'pointerdown');
+
+    tap();
+    tap();
+    t('later gestures do not re-unlock (latched)', fanout === 1, `fanout=${fanout}`);
+    t('onFirst fires once only', first === 1, `first=${first}`);
+
+    // ---- 4. going to the background must not reopen the latch ------------
+    setHidden(true);
+    tap();
+    t('hidden visibilitychange does not reset the latch', fanout === 1, `fanout=${fanout}`);
+
+    // ---- 5. …coming BACK must (the story-stones stale-guard bug) ---------
+    setHidden(false);
+    t('foreground alone does not unlock (waits for a gesture)', fanout === 1, `fanout=${fanout}`);
+    tap();
+    t('first gesture after foreground re-unlocks', fanout === 2, `fanout=${fanout}`);
+    t('onFirst still has not re-fired', first === 1, `first=${first}`);
+    tap();
+    t('and re-latches after that', fanout === 2, `fanout=${fanout}`);
+
+    // ---- 6. foreground pokes speechSynthesis.resume() --------------------
+    let resumed = 0;
+    let realResume = null;
+    if (typeof speechSynthesis !== 'undefined') {
+      realResume = speechSynthesis.resume;
+      speechSynthesis.resume = function () { resumed += 1; };
+      setHidden(true);
+      setHidden(false);
+      // speech.js installs its own global resume too, so >= 1 is the assertion.
+      t('foreground resumes speechSynthesis', resumed >= 1, `resumed=${resumed}`);
+      speechSynthesis.resume = realResume;
+    } else {
+      t('foreground resumes speechSynthesis (no synth in this browser — skipped)', true);
+    }
+
+    // ---- 7. dispose ------------------------------------------------------
+    const before = fanout;
+    dispose();
+    dispose(); // idempotent
+    tap();
+    setHidden(true);
+    setHidden(false);
+    tap();
+    t('dispose() detaches the gesture listener', fanout === before, `fanout=${fanout}`);
+
+    // ---- 8. custom target ------------------------------------------------
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+    let hostHits = 0;
+    const disposeHost = installUnlockOnGesture({ target: host, extra: [() => { hostHits += 1; }] });
+    tap(host);
+    t('target option scopes the listener', hostHits === 1, `hostHits=${hostHits}`);
+    disposeHost();
+    host.remove();
+
+    // ---- 9. kiosk guards -------------------------------------------------
+    const disposeKiosk = installKioskGuards();
+    const menu = new Event('contextmenu', { bubbles: true, cancelable: true });
+    window.dispatchEvent(menu);
+    t('installKioskGuards blocks contextmenu', menu.defaultPrevented);
+    const pinch = new Event('gesturestart', { bubbles: true, cancelable: true });
+    window.dispatchEvent(pinch);
+    t('installKioskGuards blocks gesturestart', pinch.defaultPrevented);
+    disposeKiosk();
+    const menu2 = new Event('contextmenu', { bubbles: true, cancelable: true });
+    window.dispatchEvent(menu2);
+    t('kiosk dispose() restores the menu', !menu2.defaultPrevented);
+
+    // ---- report ----------------------------------------------------------
+    if (hiddenDesc) Object.defineProperty(document, 'hidden', hiddenDesc);
+    await wait(0);
+
+    const failed = results.filter((r) => !r.pass);
+    const listEl = document.getElementById('results');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.className = r.pass ? 'ok' : 'bad';
+      li.textContent = (r.pass ? '✅ ' : '❌ ') + r.name;
+      if (r.why) {
+        const s = document.createElement('span');
+        s.className = 'why';
+        s.textContent = '  — ' + r.why;
+        li.appendChild(s);
+      }
+      listEl.appendChild(li);
+    }
+    const sum = document.getElementById('summary');
+    sum.className = failed.length ? 'fail' : 'pass';
+    sum.textContent = failed.length
+      ? `${failed.length} FAILED of ${results.length}`
+      : `all ${results.length} passed`;
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+
+    window.QLOBE_DEBUG = {
+      ready: true,
+      version: 1,
+      gameId: 'audio-unlock.test',
+      getState: () => ({ passed: results.length - failed.length, failed: failed.length }),
+      results: () => results.map((r) => ({ ...r })),
+    };
+  </script>
+</body>
+</html>

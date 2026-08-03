@@ -1,9 +1,13 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { coverageGesture, holdPour, ingredientDrag, pathGestures } from './gesture-surface.js';
+import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { createScreens, wireEndScreen } from '../../../shared/js/screens.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
@@ -53,6 +57,9 @@ const STAGE_ART = {
 };
 const JAM_ART = { toast: `${FOOD}jam-blob.webp`, 'apple-round': `${FOOD}nut-butter-blob.webp` };
 const BADGE_KINDS = { fruit: 'kiwi', toast: 'banana', boat: 'berry', apple: 'lid', rainbow: 'orange', parfait: 'strawberry' };
+// Deliberate snack/food palette (red, blueberry, banana, kiwi, orange, berry) —
+// kept as-is rather than the platform QK_PALETTE.
+const SNACK_PALETTE = ['#d94d62', '#405aa5', '#f4cc54', '#75a93c', '#ee8b38', '#7b4fa0'];
 
 const SHORT_PROMPTS = {
   'fruit-cut': 'Swipe the dotted lines',
@@ -74,8 +81,9 @@ const SHORT_PROMPTS = {
   'parfait-top': 'Decorate the top',
 };
 
+// `screen` is NOT here: shared/js/screens.js owns which screen is visible, and
+// a second copy of that fact in this object is how the two drift apart.
 const state = {
-  screen: 'splash',
   mode: null,
   step: 0,
   completed: 0,
@@ -84,7 +92,6 @@ const state = {
   selectedPiece: null,
   muted: false,
   timeScale: 1,
-  seed: 42,
   advancing: false,
   spreadDabs: [],
   placedHistory: [],
@@ -102,6 +109,7 @@ let lastStartNudge = 0;
 let lastPourNudge = 0;
 let movementDemoToken = 0;
 let revealToken = 0;
+let confettiCancel = null;
 
 const ready = voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
 
@@ -112,15 +120,8 @@ function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, Math.max(1, ms * state.timeScale)));
 }
 
-function unlockAudio() {
-  voice.unlock();
-  speech.unlock();
-  sfx.unlock();
-}
-
-window.addEventListener('pointerdown', unlockAudio);
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+installUnlockOnGesture();
+installKioskGuards();
 
 function speak(key) {
   state.currentPrompt = key;
@@ -128,12 +129,14 @@ function speak(key) {
   return voice.say(key, config.voice[key]);
 }
 
-function showScreen(name) {
-  state.screen = name;
-  els.splash.classList.toggle('hidden', name !== 'splash');
-  els.play.classList.toggle('hidden', name !== 'play');
-  els.reveal.classList.toggle('hidden', name !== 'reveal');
-}
+// The router. `voice` is handed over so every transition stops the outgoing
+// line — except the one into the reveal, which passes `{ silent: true }` so a
+// prompt that is still finishing plays out exactly as it always has.
+const screens = createScreens({
+  screens: { splash: els.splash, play: els.play, reveal: els.reveal },
+  initial: 'splash',
+  voice,
+});
 
 function img(src, className = '') {
   const image = document.createElement('img');
@@ -172,35 +175,41 @@ function clearStep() {
 }
 
 function showSplash({ speakPrompt = false } = {}) {
-  clearStep();
-  voice.stop();
   mode = null;
   state.mode = null;
   state.step = 0;
   state.advancing = false;
-  showScreen('splash');
+  // show() runs the leaving screen's disposer bag (clearStep) and stops the
+  // voice, so neither is repeated here.
+  screens.show('splash');
   if (speakPrompt) speak('again');
 }
 
+// Built once, at boot, and never re-rendered: returning to the splash must not
+// replay the staggered `card-in` entrance.
 function renderCards() {
-  config.modes.forEach((item, index) => {
-    const button = document.createElement('button');
-    button.className = 'recipe-card';
-    button.dataset.mode = item.id;
-    button.style.setProperty('--card-color', item.accent || config.theme.accent);
-    button.style.setProperty('--tilt', `${[-2, 1.5, -1, 1.8, -1.4, 1][index % 6]}deg`);
-    button.style.setProperty('--i', index);
-    button.setAttribute('aria-label', item.title);
-    button.append(img(item.art));
-    const badge = img(ingredientArt(BADGE_KINDS[item.id] || 'strawberry'), 'card-badge');
-    button.append(badge);
-    els.cards.append(button);
-    onTap(button, () => startMode(item.id), {
-      feedback: () => {
-        unlockAudio();
-        sfx.tick();
-      },
-    });
+  renderModeCards({
+    host: els.cards,
+    modes: config.modes,
+    onPick: (id) => startMode(id),
+    // These cards are hand-illustrated storybook art with the recipe name baked
+    // into the picture, so `skin: false` keeps every pixel of the local look and
+    // takes only the structure, the press path, and the 96px touch floor.
+    skin: false,
+    cardClass: 'recipe-card',
+    showTitle: false,
+    vars: (item, index) => ({
+      '--card-color': item.accent || config.theme.accent,
+      '--tilt': `${[-2, 1.5, -1, 1.8, -1.4, 1][index % 6]}deg`,
+      '--i': index,
+    }),
+    decorate: (button, item) => {
+      button.append(img(ingredientArt(BADGE_KINDS[item.id] || 'strawberry'), 'card-badge'));
+    },
+    feedback: () => {
+      unlockAll();
+      sfx.tick();
+    },
   });
 }
 
@@ -634,20 +643,6 @@ async function completeStep() {
   }
 }
 
-function fillConfetti() {
-  els.confetti.replaceChildren();
-  const colors = ['#d94d62', '#405aa5', '#f4cc54', '#75a93c', '#ee8b38', '#7b4fa0'];
-  for (let i = 0; i < 34; i += 1) {
-    const bit = document.createElement('i');
-    bit.style.left = `${(i * 37 + state.seed * 11) % 100}%`;
-    bit.style.setProperty('--c', colors[i % colors.length]);
-    bit.style.setProperty('--d', `${2.2 + (i % 6) * .4}s`);
-    bit.style.setProperty('--delay', `${-(i % 9) * .28}s`);
-    bit.style.setProperty('--sway', `${18 + (i % 4) * 12}px`);
-    els.confetti.append(bit);
-  }
-}
-
 function renderRecap() {
   els.recap.replaceChildren();
   mode.steps.forEach((step) => {
@@ -659,15 +654,26 @@ function renderRecap() {
 }
 
 async function revealSnack() {
-  clearStep();
   const token = ++revealToken;
-  showScreen('reveal');
+  // `silent`: the step prompt that was still finishing when the last target
+  // landed plays out, exactly as it did before the router existed.
+  // show() runs the play screen's bag, which is where clearStep() now lives.
+  screens.show('reveal', { silent: true });
+  // Leaving the reveal must abandon the star/ribbon sequence below. Without
+  // this, tapping "recipes" mid-celebration let the awaited loop wake up and
+  // speak the cheer line over the splash.
+  screens.hold(() => {
+    revealToken += 1;
+    confettiCancel?.();
+    confettiCancel = null;
+  });
   els.finished.src = mode.reveal || mode.art;
   els.finished.alt = mode.title;
   els.ribbon.classList.remove('show');
   els.stars.querySelectorAll('.star').forEach((star) => star.classList.remove('show'));
   els.recap.classList.remove('show');
-  els.confetti.replaceChildren();
+  confettiCancel?.();
+  confettiCancel = null;
   renderRecap();
   sfx.tada();
   await wait(320);
@@ -682,36 +688,43 @@ async function revealSnack() {
     await wait(260);
   }
   if (token !== revealToken) return;
-  fillConfetti();
+  confettiCancel = burstConfetti({ host: els.confetti, palette: SNACK_PALETTE, count: 34 });
   els.recap.classList.add('show');
   await speak(mode.cheer);
 }
 
+// screens.start() is the double-tap guard: two presses 80ms apart used to run
+// this whole body twice — two teardowns, two renders, two intro lines over each
+// other. The second call now resolves to `false` (which is also what
+// QLOBE_DEBUG.tap('mode-…') reports back) and the latch is released in a
+// `finally`, so a throw in here can never lock a child out of every recipe.
 async function startMode(id) {
-  await ready;
-  const next = config.modes.find((item) => item.id === id);
-  if (!next) return false;
-  voice.stop();
-  mode = next;
-  state.mode = id;
-  state.step = 0;
-  state.advancing = false;
-  state.spreadDabs = [];
-  state.placedHistory = [];
-  state.fillLevel = 0;
-  showScreen('play');
-  await speak(mode.intro);
-  setupStep();
-  return true;
+  return screens.start(async () => {
+    await ready;
+    const next = config.modes.find((item) => item.id === id);
+    if (!next) return false;
+    mode = next;
+    state.mode = id;
+    state.step = 0;
+    state.advancing = false;
+    state.spreadDabs = [];
+    state.placedHistory = [];
+    state.fillLevel = 0;
+    // release() first: show('play') is idempotent, so restarting a mode while
+    // already on the play screen would otherwise neither tear the old step
+    // down nor re-arm the bag.
+    screens.release();
+    screens.show('play');
+    screens.hold(clearStep);
+    await speak(mode.intro);
+    setupStep();
+    return true;
+  }, { busy: false });
 }
 
 onTap(els.back, () => {
   sfx.tick();
   showSplash();
-});
-onTap(els.revealBack, () => {
-  sfx.tick();
-  showSplash({ speakPrompt: true });
 });
 onTap(els.sound, () => {
   sfx.tick();
@@ -721,13 +734,23 @@ onTap(els.prompt, () => {
   sfx.tick();
   demonstrateMovement(speak(state.currentPrompt));
 });
-onTap(els.again, () => {
-  sfx.tick();
-  startMode(mode.id);
-});
-onTap(els.recipes, () => {
-  sfx.tick();
-  showSplash({ speakPrompt: true });
+
+// The reveal is this game's end screen. Its three controls are static markup,
+// so they are wired once for the session (`hold: false`) rather than rebuilt
+// per visit — but back and "more recipes" still share ONE destination, the
+// splash, which is the navigation rule (docs/interaction-patterns.md §8).
+// `feedback: null` + `onPress` keep the tick on the accepted press, where this
+// game has always played it.
+wireEndScreen({
+  screens,
+  back: els.revealBack,
+  choose: els.recipes,
+  again: els.again,
+  onSplash: () => showSplash({ speakPrompt: true }),
+  onAgain: () => startMode(mode.id),
+  onPress: () => sfx.tick(),
+  feedback: null,
+  hold: false,
 });
 
 for (const button of [els.back, els.revealBack, els.sound, els.prompt, els.again, els.recipes]) {
@@ -740,14 +763,14 @@ function targetRect(el) {
 }
 
 function debugTargets() {
-  if (state.screen === 'splash') {
+  if (screens.is('splash')) {
     return [...els.cards.querySelectorAll('.recipe-card')].map((el) => ({
       id: `mode-${el.dataset.mode}`,
       role: 'correct',
       rect: targetRect(el),
     }));
   }
-  if (state.screen !== 'play') return [];
+  if (!screens.is('play')) return [];
   const targets = [];
   els.board.querySelectorAll('[data-target-id]:not(.done):not(.filled)').forEach((el) => {
     let role = 'correct';
@@ -792,7 +815,7 @@ async function debugTap(id) {
 
 async function debugWinRound() {
   let guard = 0;
-  while (state.screen === 'play' && guard < 60) {
+  while (screens.is('play') && guard < 60) {
     guard += 1;
     if (state.advancing) {
       await transitionPromise;
@@ -821,48 +844,53 @@ async function debugWinRound() {
     }
     await transitionPromise;
   }
-  return state.screen === 'reveal';
+  return screens.is('reveal');
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   engine: config.engine,
   ready,
   listModes: () => config.modes.map(({ id, title }) => ({ id, title })),
   startMode,
   getState: () => ({
-    screen: state.screen,
+    screen: screens.current,
     mode: state.mode,
     step: currentStep()?.id || null,
     stepIndex: state.step,
     stepsTotal: mode?.steps.length || 0,
     completed: state.completed,
     targetTotal: state.total,
-    awaitingInput: state.screen === 'play' && !state.advancing,
+    awaitingInput: screens.is('play') && !state.advancing,
     prompt: state.currentPrompt,
   }),
   getTargets: debugTargets,
   tap: debugTap,
   gesture: debugTap,
   winRound: debugWinRound,
+  // Custom, not the default: this game's own muted flag gates speak() before
+  // voice.say() is even called (see speak() above), so the default fan-out
+  // mute would leave state.muted out of sync.
   mute(value = true) {
     state.muted = Boolean(value);
     if (state.muted) voice.stop();
     return state.muted;
   },
-  seed(value) {
-    state.seed = Number(value) || 42;
-    return state.seed;
-  },
+  // seed() is intentionally left to installDebug's default: nothing in this
+  // game reshuffles from a seed (the old seed() only offset cosmetic confetti
+  // positions, which burstConfetti now randomizes on its own), so there is no
+  // onSeed to wire up.
+  // Custom, not the default: this game has its own working timeScale
+  // (wait() multiplies delays by state.timeScale) rather than a timers.js
+  // group, so fastTimers() scales that directly.
   fastTimers(scale = .05) {
     state.timeScale = Math.min(1, Math.max(.01, Number(scale) || .05));
     return state.timeScale;
   },
   home: () => showSplash(),
-};
+});
 
 renderCards();
 ready.then(() => {
-  if (state.screen === 'splash') state.currentPrompt = 'welcome';
+  if (screens.is('splash')) state.currentPrompt = 'welcome';
 });

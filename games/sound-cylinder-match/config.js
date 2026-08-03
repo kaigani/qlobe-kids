@@ -18,11 +18,6 @@ export default {
   engine: 'match-pairs',
   title: 'Sound Cylinder Match',
   splashEmoji: '🔊',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Listen with your ears. Find two shakers that sound the same.',
     nudge: 'Hmm, those sound different. Listen again and try another shaker.',

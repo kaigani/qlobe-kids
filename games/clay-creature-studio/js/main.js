@@ -4,6 +4,11 @@ import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createFreeformBoard } from '../../../shared/js/freeform-board.js';
 import { driveLipsync, VISEME_IDENTITY } from '../../../shared/js/stage/lipsync.js';
+import { preloadImages } from '../../../shared/js/preload.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { mulberry32 } from '../../../shared/js/rng.js';
+import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 
 const mount = document.getElementById('game');
 const announcer = document.getElementById('announcer');
@@ -41,41 +46,37 @@ const partById = (id) => config.parts.find((item) => item.id === id);
 const pieceById = (id) => partById(id) || config.blobBalls.find((item) => item.id === id);
 const resolve = (path) => new URL(path, import.meta.url).href;
 
+const VISEMES = ['a', 'o', 'e', 'wr', 'ts', 'ln', 'uq', 'mbp', 'fv'];
+
 function preloadMouthRig(rig) {
   if (!mouthRigLoads.has(rig)) {
-    const visemes = ['a', 'o', 'e', 'wr', 'ts', 'ln', 'uq', 'mbp', 'fv'];
-    mouthRigLoads.set(rig, Promise.all(visemes.map((viseme) => new Promise((done) => {
-      const image = new Image();
-      image.onload = image.onerror = done;
-      image.src = resolve(`../assets/mouths/${rig}/${viseme}.webp`);
-    }))));
+    mouthRigLoads.set(rig, preloadImages(VISEMES.map((viseme) => resolve(`../assets/mouths/${rig}/${viseme}.webp`))));
   }
   return mouthRigLoads.get(rig);
 }
 
-const ready = Promise.allSettled([
+const ready = preloadImages([
   resolve('../assets/workshop.webp'), resolve('../assets/title.webp'), resolve('../assets/alive.webp'),
   resolve('../assets/trash.webp'),
   ...config.creatures.map((item) => resolve(`../${item.art.replace('./', '')}`)),
   ...config.parts.map((item) => resolve(`../${item.art.replace('./', '')}`)),
   ...config.blobBalls.map((item) => resolve(`../${item.art.replace('./', '')}`)),
-].map((src) => new Promise((done) => {
-  const image = new Image();
-  image.onload = image.onerror = done;
-  image.src = src;
-}))).then(() => { state.savedCount = loadGallery().length; });
+]).then(() => { state.savedCount = loadGallery().length; });
 
-function unlockAudio() {
-  if (state.audioUnlocked) return;
-  state.audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-  if (state.pendingWelcome && state.screen === 'splash') {
-    state.pendingWelcome = false;
-    say('welcome');
-  }
-}
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
+// The shared first-gesture unlock. Beyond replacing the hand-rolled fan-out it
+// fixes a live bug: this game never resumed speechSynthesis when the page came
+// back to the foreground, so an iPad app-switch left the studio mute for the
+// rest of the session. The shared listener reopens its latch on
+// visibilitychange/pageshow and resumes the speech queue.
+installUnlockOnGesture({
+  onFirst: () => {
+    state.audioUnlocked = true;
+    if (state.pendingWelcome && state.screen === 'splash') {
+      state.pendingWelcome = false;
+      say('welcome');
+    }
+  },
+});
 
 function say(key) {
   state.prompt = key;
@@ -99,7 +100,8 @@ function stopAudio() {
 
 function feedback(event) {
   event?.preventDefault?.();
-  unlockAudio();
+  // Unlock is the global first-gesture listener's job (installUnlockOnGesture
+  // above) — it fires on the same pointerdown, before this press becomes a tap.
   if (!state.muted) sfx.tick();
 }
 
@@ -354,8 +356,10 @@ function wireTrayDrag(tray) {
     const part = pieceById(choice.dataset.partId);
     if (!part) return;
     event.preventDefault();
+    // stopPropagation keeps this gesture from reaching the global unlock
+    // listener, so the tray must unlock the audio channels itself.
     event.stopPropagation();
-    unlockAudio();
+    unlockAll();
     const start = { x: event.clientX, y: event.clientY };
     const startScroll = tray.scrollLeft;
     let mode = 'pending';
@@ -610,14 +614,34 @@ async function playMouthVoice(saved) {
   }
 }
 
-function confettiMarkup() {
-  const colors = ['#f7ca48', '#ef715b', '#66a8d9', '#8d63bd', '#57ab72'];
-  return Array.from({ length: 34 }, (_, index) => {
-    const x = (index * 37 + state.seed * 11) % 100;
-    const delay = ((index * 13) % 17) / 10;
-    const turn = (index * 47) % 180;
-    return `<i style="--x:${x}%;--delay:${delay}s;--turn:${turn}deg;--confetti:${colors[index % colors.length]}"></i>`;
-  }).join('');
+// The Alive screen is a destination, not a beat, so this is ambience: blob-shaped
+// clay flecks falling for as long as the child stays. celebrate.js used to be
+// one-shot-only, which is the whole reason this was hand-rolled; it now has a
+// `loop` mode, so the plumbing is shared and only the art direction is local —
+// the studio's clay palette, its 16px blob, its straight-down `ease-in` fall.
+//
+// `rng` keeps the QA-reproducible layout the hand-rolled version had: seeded
+// from state.seed, so seed(42) puts the flecks in the same places every run.
+const CLAY_CONFETTI = ['#f7ca48', '#ef715b', '#66a8d9', '#8d63bd', '#57ab72'];
+const CLAY_FLECK = { width: 16, height: 16, radius: '43% 57% 48% 52%' };
+
+function startAmbientConfetti() {
+  const host = mount.querySelector('.confetti');
+  if (!host) return;
+  // `.confetti` sits at z-index 2, BEHIND the creature — the flecks fall past it,
+  // not over its face. That is why celebrate renders into this element rather
+  // than straight into the screen.
+  disposers.push(burstConfetti({
+    host,
+    loop: true,
+    count: 34,
+    palette: CLAY_CONFETTI,
+    duration: 2600,
+    drift: 0,
+    easing: 'ease-in',
+    piece: CLAY_FLECK,
+    rng: mulberry32(state.seed),
+  }));
 }
 
 function showAlive(saved, { fresh = false } = {}) {
@@ -632,7 +656,7 @@ function showAlive(saved, { fresh = false } = {}) {
   mount.innerHTML = `
     <section class="screen alive-screen" aria-label="Your clay ${creature.title} is alive">
       ${roundButton('back', 'back', 'back', 'Back to Clay Creature Studio')}
-      <div class="confetti" aria-hidden="true">${confettiMarkup()}</div>
+      <div class="confetti" aria-hidden="true"></div>
       <img class="alive-banner" src="./assets/alive.webp" alt="Alive!">
       <div class="alive-turntable">
         ${sceneMarkup(saved, 'alive-creature')}
@@ -643,6 +667,7 @@ function showAlive(saved, { fresh = false } = {}) {
       </div>
     </section>`;
   wireActions();
+  startAmbientConfetti();
   if (fresh) {
     if (!state.muted) sfx.tada();
     playMouthVoice(saved);
@@ -723,8 +748,7 @@ function targets() {
   });
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   engine: 'custom-freeform-board',
   ready,
@@ -766,13 +790,15 @@ window.QLOBE_DEBUG = {
     }
     return state.screen;
   },
+  // Kept local, not defaulted: `muted`/`fast`/`seed` are read all over the game
+  // (sfx gates, the 9s wake wait, the confetti and dialogue pickers), so the
+  // hook has to write the game's own state, not a generator it keeps to itself.
   mute: (value = true) => { state.muted = !!value; stopAudio(); return state.muted; },
   fastTimers: (value = true) => { state.fast = !!value; return state.fast; },
   seed: (value) => { state.seed = Number(value) || 42; return state.seed; },
   clearSaved: () => { try { localStorage.removeItem(STORAGE_KEY); } catch {} state.savedCount = 0; },
   home: () => showSplash({ greet: false }),
-};
+});
 
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+installKioskGuards();
 ready.then(() => showSplash());

@@ -1,50 +1,41 @@
 #!/usr/bin/env node
 // Real-Chrome interaction smoke test and screenshot driver.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/clay-creature-studio/tools/qa.mjs [--base http://127.0.0.1:8000]
+//        [--shots <dir>] [--playwright /private/tmp/pw/node_modules] [--skip-talk]
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  args, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const skipTalk = argv.includes('--skip-talk');
-const flag = (name, fallback) => {
-  const index = argv.indexOf(`--${name}`);
-  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
-};
-const base = flag('base', 'http://127.0.0.1:8000');
+const skipTalk = args.has('skip-talk');
+const base = args.flag('base', 'http://127.0.0.1:8000');
 const url = `${base.replace(/\/$/, '')}/games/clay-creature-studio/`;
-const shots = path.resolve(flag('shots', 'games/clay-creature-studio/qa-shots/clay-creature-studio'));
-const playwrightRoot = flag('playwright', '/private/tmp/pw/node_modules');
-const require = createRequire(path.join(playwrightRoot, 'noop.js'));
-const { chromium } = require('playwright');
-
-const results = [];
-function check(name, value, detail = '') {
-  const ok = !!value;
-  results.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
+const shots = resolveShots('games/clay-creature-studio/qa-shots/clay-creature-studio');
+const { check, note, finish } = createReporter();
 
 async function monitoredPage(browser, viewport, reducedMotion = 'no-preference', contextOptions = {}) {
-  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, reducedMotion, ...contextOptions });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-  page.on('request', (request) => { if (!request.url().startsWith(base)) remote.push(request.url()); });
-  page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
-  page.on('response', (response) => { if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`); });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.waitForFunction(() => window.QLOBE_DEBUG?.getState().screen === 'splash');
-  await page.evaluate(() => {
-    window.QLOBE_DEBUG.mute(true);
-    window.QLOBE_DEBUG.fastTimers(true);
-    window.QLOBE_DEBUG.seed(42);
-    window.QLOBE_DEBUG.clearSaved();
+  return openSession(browser, {
+    url,
+    base,
+    viewport,
+    reducedMotion,
+    context: contextOptions,
+    // This game boots straight to its splash; the harness has no `ready` promise.
+    readyWhen: () => window.QLOBE_DEBUG?.getState().screen === 'splash',
+    after: (page) => page.evaluate(() => {
+      window.QLOBE_DEBUG.mute(true);
+      window.QLOBE_DEBUG.fastTimers(true);
+      window.QLOBE_DEBUG.seed(42);
+      window.QLOBE_DEBUG.clearSaved();
+    }),
   });
-  return { context, page, errors, failed, remote };
 }
 
 async function visibleTargetSizes(page) {
@@ -95,10 +86,7 @@ async function dragPieceTo(page, piece, target) {
   await page.mouse.up();
 }
 
-async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
-
+async function drive(browser) {
   const landscape = await monitoredPage(browser, { width: 1180, height: 820 });
   const page = landscape.page;
   check('production splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
@@ -141,8 +129,19 @@ async function main() {
     `scrollLeft=${Math.round(swipeScroll)}`);
   await page.locator('#parts-tray').evaluate((node) => { node.scrollLeft = 0; });
   await dragTrayPart(page, 'part-eyes-pair', .5, .29);
-  check('tray-to-creature drag adds a semantic clay part', (await page.evaluate(() => window.QLOBE_DEBUG.getState().pieces)) === 1);
+  const placed = check('tray-to-creature drag adds a semantic clay part',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().pieces)) === 1);
   check('interaction banner dismisses after creation begins', await page.locator('.prompt-plate.is-dismissed').count() === 1);
+  if (!placed) {
+    // Every remaining scenario needs a placed clay part on the board. Report
+    // the page error that explains it and stop, rather than letting the next
+    // `.qlobe-freeform-piece` lookup burn a 30s locator timeout and throw.
+    check('the tray-drag gesture leaves no page error behind',
+      landscape.errors.length === 0, landscape.errors.join(' | '));
+    note('tray drag placed nothing — the rest of the suite depends on it; stopping here');
+    await landscape.context.close();
+    return;
+  }
   const drag = await dragSelectedPiece(page);
   check('real pointer drag changes normalized position',
     Math.abs(drag.after.x - drag.before.x) > .02 || Math.abs(drag.after.y - drag.before.y) > .02,
@@ -317,10 +316,20 @@ async function main() {
   check('zero failed requests or 404s', failed.length === 0, failed.join(' | '));
 
   for (const item of all) await item.context.close();
-  await browser.close();
-  const failures = results.filter((item) => !item.ok).length;
-  console.log(`\n${results.length - failures}/${results.length} checks passed`);
-  process.exitCode = failures ? 1 : 0;
+}
+
+async function main() {
+  await ensureShots(shots);
+  const browser = await launchChrome();
+  // MANDATORY: close the browser in a `finally`. A check that throws mid-drive
+  // otherwise leaves Chrome and its Playwright pipe alive, so node never runs
+  // out of handles and the driver hangs forever instead of reporting a failure.
+  try {
+    await drive(browser);
+  } finally {
+    await browser.close();
+    finish({ listFailures: false });
+  }
 }
 
 main().catch((error) => {

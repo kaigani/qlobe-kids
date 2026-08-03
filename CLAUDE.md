@@ -79,7 +79,19 @@ for it first.
   and `RoundedBoxGeometry.js` for 3D games, plus `pixi.min.js` (PixiJS) which the
   shared stage/puppet stack builds on. Plain 2D DOM/Canvas games skip all of it.
 - **`shared/fonts/`** — `fredoka-latin-600-normal.woff2`, the platform display
-  font. `@font-face` it; don't add other fonts.
+  font. Don't `@font-face` it yourself and don't add other fonts: link
+  `shared/css/base.css` (below), which ships the `@font-face`.
+- **`shared/css/`** — link these from `index.html` with `../../shared/css/…`:
+  - **`base.css`** — the platform reset. `@font-face` Fredoka, `box-sizing`,
+    tap-highlight, `touch-action: manipulation`, `user-select: none`,
+    `#game { height: 100dvh }`, the `.hidden` / `.visually-hidden` utilities, and
+    the `--qk-safe-*` safe-area props. **Never re-copy any of it.** A game keeps
+    exactly two local rules — `:root { --qk-bg: … }` and its `font-family`.
+  - **`hud.css`** — the `.qk-hud-btn` vocabulary (96px round button, corner
+    helpers, `.qk-hud-bar`, `.qk-dots`). Pairs with `shared/js/hud.js`.
+  - **`screens.css`** — `[data-qk-screen][hidden]`, the optional `.qk-screen` box
+    and the `.qk-mode-list` card skin. Link it after `base.css` and **before** the
+    game's own stylesheet.
 - **`shared/js/`** — the audio/interaction toolkit (import via `../../../shared/js/…` from your game's `js/` folder — module imports resolve relative to the importing file, one level deeper than the game root):
   - **`audio.js`** — recorded teacher-voice player. `import * as audio`, call
     `await audio.ready`, then `audio.play(category, key, { fallbackText })`.
@@ -97,12 +109,48 @@ for it first.
   - **`voice-clips.js`** — recorded-clip voice player for custom games
     (`init(manifest, lines, defaults)`, `say(key)`, `unlock()`, `onClip(cb)`).
     Uses one iOS-unlocked audio element so a clip sequence never slips into the
-    synth voice. Web Speech fallback built in.
+    synth voice. Web Speech fallback built in. Also `duration(key)`,
+    `clipInfo(key)`, `setMuted(on)`, and `getAudioLog()` — the `{ key, text,
+    kind: 'clip' | 'speech', at }` ring buffer QA drivers assert on.
+  - **`audio-unlock.js`** — the platform's one first-gesture unlock.
+    `installUnlockOnGesture({ extra, onFirst })` fans out to every audio channel
+    and **reopens its latch on `visibilitychange`/`pageshow`**, so audio revives
+    after an iPadOS app switch instead of going silent for the session. Also
+    `unlockAll()` and `installKioskGuards()` (contextmenu + pinch-zoom).
+  - **`narrator.js`** — `createNarrator()`: the game's one voice. Mute gate,
+    `aria-live` announcer, and a monotonic token so a newer line cancels an
+    in-flight sequence instead of it waking up and talking over the new one.
+  - **`hud.js`** — `hudButton('home'|'back'|'sound', onPress)`,
+    `soundDebounce(fn, 600)`, `progressDots(total, done)`. With `hud.css`.
+  - **`screens.js`** — `createScreens({ screens, initial, voice })`: the
+    splash → play → end router, with `show`/`hold`/`release`, a `start()`
+    double-tap latch, and per-screen teardown bags. Plus `wireEndScreen`.
+  - **`mode-select.js`** — `renderModeCards({ host, modes, onPick })` for the
+    splash. `skin: false` keeps a bespoke game's own card art pixel-for-pixel.
+  - **`celebrate.js`** — `tada()` / `burstConfetti()`: the platform confetti in
+    `QK_PALETTE`, self-cleaning, a no-op under `prefers-reduced-motion`, and
+    `{ loop: true }` for ambience on a destination screen.
+  - **`idle-nudge.js`** — `createNudger({ first, repeat, onNudge })`. A gentle
+    "still there?" ladder that any touch pushes back. Never a countdown.
+  - **`debug-harness.js`** — `installDebug(spec)` installs `window.QLOBE_DEBUG`
+    v1, the review hook every game needs. Pass `onSeed` (where the seeded RNG
+    goes) and `timers` (the group `fastTimers()` scales) or those two keys do
+    nothing. Also `collectTargets()`.
+  - **`timers.js`** — `createTimers()`: a cancellable, time-scalable group
+    (`wait`, `after`, `every`, `clearAll`, `setScale`, `ms`).
+  - **`rng.js`** — `mulberry32`, `hashString`, `shuffle` (returns a new array),
+    `pick`. One seeded source, so `QLOBE_DEBUG.seed(42)` reproduces.
+  - **`dom.js`** — `escapeHtml` (null → `''`, never the word "null") and `el()`.
+  - **`preload.js`** — `preloadImages(urls, { idle })`; never rejects.
   - **`content.js`** — the accessor for shared learning content: letters, their
     sounds, and picture-word objects. `await content.ready()`, then
     `content.objectsStartingWith('b')` / `content.letterSound('b')` — returns
     resolved image + audio URLs. Use this to reference letters/words/sounds;
     don't re-copy the files. See `docs/shared-assets.md`.
+  - **`stage/`** — Stage v2 (PixiJS): scene, tweens, particles, puppets, water —
+    plus DOM backends for the games that can't be Pixi:
+    `stage/drag-to-slot-dom.js` (drag with slot hit testing; `pointercancel` is a
+    cancel, never a drop) and `stage/pose-sprite-dom.js` (pose actors).
 - **`shared/assets/`**:
   - **`letter-tiles/`** — 56 onset/rime tile PNGs (blue onsets, orange rimes).
   - **`objects/`** — 134 illustrated word picture-cards in one consistent toy style.

@@ -19,11 +19,6 @@ export default {
   engine: 'choose-one',
   title: 'Sound Hopscotch',
   splashEmoji: '🦘',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Hopscotch with your ears! Listen for the sound, then tap the matching letter stone.',
     nudge: 'Hmm, listen for the sound and hop to another letter stone.',

@@ -4,10 +4,7 @@ export default {
   title: 'Weather Scientist',
   splashEmoji: '🌦️',
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Weather Report',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'Today\'s weather report is ready!',

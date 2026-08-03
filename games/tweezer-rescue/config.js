@@ -3,11 +3,6 @@ export default {
   engine: 'sort-into-bins',
   title: 'Tweezer Rescue',
   splashEmoji: '🫳',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Rescue the pom-poms! Pick one up with two fingers, like tiny tweezers.',
     nudge: 'Almost. Give that pom-pom a tiny wiggle and try another nest.',

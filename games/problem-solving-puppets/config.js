@@ -14,11 +14,6 @@ export default {
   // Story Screen art world (docs/art-direction.md): each Make Peace round
   // opens with a short felt-puppet vignette (Red and Blue) ending on the
   // conflict beat — the child picks the repair.
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'The puppets need help making peace. Listen to the problem, then tap a kind repair choice.',
     nudge: 'That does not match this puppet feeling yet. Listen again and try another one.',

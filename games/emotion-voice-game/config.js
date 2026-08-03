@@ -6,8 +6,6 @@ export default {
   // Story-corner backdrop, Story Screen art world (docs/art-direction.md)
   theme: { world: 'story-screen', background: './assets/bg.jpg' },
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'My Feelings Show',
     playAgain: 'Perform Again',
   },

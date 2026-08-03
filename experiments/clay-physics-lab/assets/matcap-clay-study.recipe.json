@@ -1,0 +1,16 @@
+{
+  "asset": "matcap-clay-study.png",
+  "source": "assets/source/matcap-clay-study-v2-gpt-image-2.png",
+  "created": "2026-08-02",
+  "creator": "OpenAI built-in image generation tool",
+  "modelPath": "built-in image generation (gpt-image-2 class)",
+  "use": "Prototype-only neutral clay matcap for the implicit and PBD comparison pages",
+  "reference": "Clay Creature Studio orange and teal ball screenshot supplied by the project owner; material and lighting reference only",
+  "processing": [
+    "Generated an initial centered neutral clay matcap disc on black",
+    "Edited once to remove the black sampling gap and lift the edge illumination after browser visual QA",
+    "Downscaled from 1254x1254 to 512x512 with macOS sips"
+  ],
+  "prompt": "Initial: create a centered neutral light-grey modelling-clay matcap, tintable orange or teal, with broad warm upper-left studio light and subtle fingerprint grain. Revision: enlarge the disc so it touches the midpoint of all four edges, eliminate any black gap or dark rim inside the disc, lift lower-right and edge illumination to medium warm grey, and preserve the centered orthographic circle, lighting direction and tactile grain.",
+  "licenseNote": "Generated specifically for this open-source research spike. Confirm repository-level licensing/attribution policy before promoting it from experiments into shared production assets."
+}

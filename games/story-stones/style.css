@@ -1,8 +1,7 @@
-@font-face { font-family:Fredoka; src:url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2'); font-weight:600; font-display:swap; }
-:root { --ink:#06466b; --sky:#25bceb; --yellow:#ffc72c; --red:#ff554e; --green:#70c915; --white:#fff; }
-* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html,body,#game { margin:0; width:100%; height:100%; overflow:hidden; }
-body { font-family:Fredoka,'Arial Rounded MT Bold',sans-serif; color:var(--ink); user-select:none; -webkit-user-select:none; touch-action:manipulation; background:#29bdea; }
+:root { --qk-bg:#29bdea; --ink:#06466b; --sky:#25bceb; --yellow:#ffc72c; --red:#ff554e; --green:#70c915; --white:#fff; }
+html, body { width:100%; overflow:hidden; }
+#game { margin:0; width:100%; height:100%; overflow:hidden; }
+body { font-family:Fredoka,'Arial Rounded MT Bold',sans-serif; color:var(--ink); }
 button,a { font:inherit; }
 button { cursor:pointer; }
 .ss-screen { position:relative; width:100%; height:100%; min-height:480px; overflow:hidden; background:linear-gradient(#3cc6ef 0 60%,#9fe44d 60%); }

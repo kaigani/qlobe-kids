@@ -1,17 +1,13 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createMusicalCanvas } from '../../../shared/js/musical-canvas.js';
+import { createNarrator } from '../../../shared/js/narrator.js';
+import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 
 const mount = document.getElementById('game');
-const announcer = document.getElementById('announcer');
-const UI = {
-  home: new URL('../../../shared/assets/ui/btn-home.png', import.meta.url).href,
-  back: new URL('../../../shared/assets/ui/btn-back.png', import.meta.url).href,
-  sound: new URL('../../../shared/assets/ui/btn-sound.png', import.meta.url).href,
-};
 const STORAGE_KEY = 'qlobe-sound-paintings-v1';
 
 const state = {
@@ -24,7 +20,6 @@ const state = {
   fast: false,
   pendingWelcome: false,
   savedCount: 0,
-  seed: 42,
 };
 
 let canvas = null;
@@ -32,59 +27,57 @@ let keepsakeCanvas = null;
 let latestPainting = null;
 let nudgeTimer = 0;
 let disposers = [];
-let audioUnlocked = false;
-// Monotonic: every speech start/stop claims a new token so an in-flight
-// sequence can tell it was superseded once its own clip promise settles.
+
+// createNarrator owns the aria-live announcer + mute gate + its own token
+// discipline; this module keeps a lightweight LOCAL token purely to gate
+// playPainting()'s "did something newer supersede the 'replay' prompt while
+// I was awaiting it" check below — narrator doesn't expose its internal one.
 let speechToken = 0;
+
+const narrator = createNarrator();
 
 const ready = (async () => {
   await voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
   state.savedCount = loadGallery().length;
 })();
 
-function unlockAudio() {
-  voice.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-  canvas?.unlock();
-  keepsakeCanvas?.unlock();
-  if (state.pendingWelcome && state.screen === 'splash') {
-    state.pendingWelcome = false;
-    say('welcome');
-  }
-}
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
+// Also handed straight to feedback() below: the global listener fires on
+// window's pointerdown bubble, which runs AFTER a tapped element's own
+// pointerdown handler — too late to guarantee the very first sfx.tick() is
+// audible. feedback() unlocks synchronously and first, same as this game
+// always has; the global listener adds the iPadOS re-latch-on-foreground fix
+// and the deferred-welcome onFirst hook, which a purely-local unlock cannot.
+const unlockExtras = [() => canvas?.unlock(), () => keepsakeCanvas?.unlock()];
+
+installKioskGuards();
+installUnlockOnGesture({
+  extra: unlockExtras,
+  onFirst: () => {
+    if (state.pendingWelcome && state.screen === 'splash') {
+      state.pendingWelcome = false;
+      say('welcome');
+    }
+  },
+});
 
 function say(key) {
-  const line = config.voice[key] || '';
-  announcer.textContent = line;
   speechToken += 1;
-  if (state.muted) return Promise.resolve();
-  return voice.say(key, line);
+  return narrator.say(key, config.voice[key] || '');
 }
 
 function stopSpeech() {
   speechToken += 1;
-  voice.stop();
+  narrator.stop();
 }
 
-async function saySequence(keys) {
-  for (const key of keys) {
-    if (state.muted) return;
-    const pending = say(key);
-    const token = speechToken;
-    await pending;
-    // A newer say()/stop() bumped the token while this clip was playing — the
-    // clip was already cut off, so advancing would talk over the newer audio.
-    if (token !== speechToken) return;
-  }
+function saySequence(keys) {
+  speechToken += 1;
+  return narrator.saySequence(keys.map((key) => [key, config.voice[key] || '']));
 }
 
 function feedback(event) {
   event?.preventDefault?.();
-  unlockAudio();
+  unlockAll(unlockExtras);
   if (!state.muted) sfx.tick();
 }
 
@@ -107,11 +100,9 @@ function showSplash({ greet = true } = {}) {
   state.replaying = false;
   mount.innerHTML = `
     <section class="screen splash" aria-label="Sound Painting">
-      <a class="round-button home-button" href="../../" aria-label="Back to all games"
-         style="background-image:url('${UI.home}')"></a>
-      <button class="round-button sound-button" type="button" data-action="welcome"
-              data-target="sound-welcome" aria-label="Hear the welcome again"
-              style="background-image:url('${UI.sound}')"></button>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" aria-label="Back to all games"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="welcome"
+              data-target="sound-welcome" aria-label="Hear the welcome again"></button>
       <header class="splash-heading">
         <h1>Sound<br>Painting</h1>
         <p>Paint what you hear</p>
@@ -134,7 +125,6 @@ function showSplash({ greet = true } = {}) {
     speechToken += 1;
     const played = await voice.trySay('welcome');
     state.pendingWelcome = !played;
-    if (played) audioUnlocked = true;
   });
 }
 
@@ -152,14 +142,14 @@ async function startMode(modeId) {
   mount.innerHTML = `
     <section class="screen paint-screen" aria-label="${mode.title} sound canvas">
       <header class="topbar">
-        <button class="round-button" type="button" data-action="back" data-target="back"
-                aria-label="Back to musical brushes" style="background-image:url('${UI.back}')"></button>
+        <button class="qk-hud-btn qk-hud-back" type="button" data-action="back" data-target="back"
+                aria-label="Back to musical brushes"></button>
         <div class="paint-title">${mode.title}</div>
         <div class="top-actions">
           <button class="icon-button" type="button" data-action="undo" data-target="undo"
                   aria-label="Undo the last mark" disabled>↶</button>
-          <button class="round-button" type="button" data-action="prompt" data-target="sound-prompt"
-                  aria-label="Hear the painting idea again" style="background-image:url('${UI.sound}')"></button>
+          <button class="qk-hud-btn qk-hud-sound" type="button" data-action="prompt" data-target="sound-prompt"
+                  aria-label="Hear the painting idea again"></button>
         </div>
       </header>
       <div class="workbench">
@@ -283,8 +273,8 @@ function showKeepsake(saved) {
   state.replaying = false;
   mount.innerHTML = `
     <section class="screen keepsake" aria-label="Finished Sound Painting">
-      <button class="round-button" type="button" data-action="back" data-target="back"
-              aria-label="Back to musical brushes" style="background-image:url('${UI.back}')"></button>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back"
+              aria-label="Back to musical brushes"></button>
       <div class="keepsake-card">
         <div class="keepsake-preview"><canvas id="keepsake-canvas" aria-label="Your finished sound painting"></canvas></div>
         <div class="keepsake-copy">
@@ -385,8 +375,12 @@ function targets() {
   });
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+// seed omitted: this game's seed() was already inert (stored a number no one
+// read back) — installDebug's default seed() is equally inert without an
+// onSeed callback, so it's a drop-in. fastTimers has a real spec.fast switch
+// to drive, so it's passed explicitly rather than reaching for the
+// timers.js-scaling default (see debug-harness.js JSDoc).
+installDebug({
   gameId: config.id,
   engine: 'custom-musical-canvas',
   ready,
@@ -427,17 +421,16 @@ window.QLOBE_DEBUG = {
     if (state.screen === 'paint') finishPainting();
   },
   mute: (value = true) => {
-    state.muted = !!value;
+    const muted = !!value;
+    state.muted = muted;
     stopSpeech();
-    canvas?.setMuted(state.muted);
-    keepsakeCanvas?.setMuted(state.muted);
-    return state.muted;
+    narrator.setMuted(muted);
+    canvas?.setMuted(muted);
+    keepsakeCanvas?.setMuted(muted);
+    return muted;
   },
-  seed: (value) => { state.seed = Number(value) || 42; return state.seed; },
-  fastTimer: (value = true) => { state.fast = !!value; return state.fast; },
+  fastTimers: (value = true) => { state.fast = !!value; return state.fast; },
   clearSaved: () => { localStorage.removeItem(STORAGE_KEY); state.savedCount = 0; },
-};
+});
 
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
 showSplash();

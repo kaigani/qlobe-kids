@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Board Game Reset',
   splashEmoji: '🎲',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Games end, and that is a skill. Pick the good-sport move.',
     nudge: 'That might hurt feelings. Listen again and choose the good-sport move.',

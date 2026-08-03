@@ -3,15 +3,12 @@
    right. Hub aesthetic: Fredoka, glossy pills, cream/sky palette.
    Built for a 5-year-old on an iPad: huge targets, no reading required. */
 
-@font-face {
-  font-family: 'Fredoka';
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
+/* @font-face, the box-sizing/tap-highlight reset, html/body margin+height,
+   body touch-action/user-select, and .hidden come from shared/css/base.css,
+   linked before this file. */
 
 :root {
+  --qk-bg: #bee3f5;
   --accent: #14a08a;
   --cream: #fff7e8;
   --sky: #bee3f5;
@@ -21,26 +18,22 @@
   --font: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: var(--font); }
 
+/* base.css does not decide overflow/overscroll/callout for a game — this one
+   is a fixed single-screen layout with no scrolling of its own (the food
+   shelf scrolls internally), so it locks the page against iOS rubber-band
+   and the two-finger callout menu. It also keeps its own ink colour + weight,
+   which base.css deliberately leaves to each game. */
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-  background: var(--sky);
-  font-family: var(--font);
+  overscroll-behavior: none;
+  -webkit-touch-callout: none;
+}
+body {
   font-weight: 600;
   color: var(--navy);
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  overscroll-behavior: none;
-  touch-action: manipulation;
 }
-
-.hidden { display: none !important; }
 
 .screen { position: fixed; inset: 0; }
 
@@ -488,17 +481,6 @@ html, body {
   100% { transform: scale(1) rotate(0); opacity: 1; }
 }
 .end-buttons { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
-
-/* ===================== Confetti ===================== */
-
-#confetti-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 60;
-}
 
 /* ===================== Portrait orientation ===================== */
 /* character top, box center, shelf becomes a bottom row */

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Shared base + hud CSS test</title>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+
+  <!-- The two shared sheets under test. -->
+  <link rel="stylesheet" href="./base.css" />
+  <link rel="stylesheet" href="./hud.css" />
+
+  <!-- Everything a migrating game keeps locally: the page colour and the font.
+       If this block grows past these two rules, base.css is missing something. -->
+  <style>
+    :root { --qk-bg: #bee3f5; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+  </style>
+
+  <!-- Test-harness furniture only. Nothing below this line is shared API. -->
+  <style>
+    #game { position: relative; overflow: hidden; color: #17517e; }
+
+    .panel {
+      position: absolute;
+      inset: 132px max(16px, var(--qk-safe-right)) auto max(16px, var(--qk-safe-left));
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      padding: 22px;
+      border: 6px solid #fff;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, .58);
+      text-align: center;
+    }
+    h1 { margin: 0; font-size: clamp(26px, 5vmin, 44px); line-height: 1.05; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; }
+    .t-btn {
+      min-height: 56px;
+      padding: 10px 20px;
+      border: 4px solid #fff;
+      border-radius: 18px;
+      background: #ffd166;
+      color: #17517e;
+      font: inherit;
+      font-size: 19px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .t-btn:active { transform: translateY(3px); }
+    .readout {
+      min-width: 320px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .8);
+      font-size: 17px;
+      font-variant-numeric: tabular-nums;
+    }
+    .swatches { display: flex; gap: 8px; }
+    .swatches i { width: 34px; height: 34px; border: 3px solid #fff; border-radius: 8px; }
+    .note { max-width: 640px; font-size: 15px; line-height: 1.4; opacity: .8; }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <!-- HUD bar: left control, progress dots, right control. -->
+    <div class="qk-hud-bar" id="bar"></div>
+
+    <!-- Free-standing corner placements. -->
+    <!-- (home/back/sound are appended here by the script.) -->
+
+    <div class="panel">
+      <h1>base.css + hud.css</h1>
+
+      <div class="row" id="palette-row">
+        <span>QK_PALETTE</span>
+        <span class="swatches" id="swatches"></span>
+      </div>
+
+      <div class="row">
+        <button class="t-btn" id="fire" type="button">Burst confetti (body)</button>
+        <button class="t-btn" id="fire-host" type="button">Burst confetti (this panel)</button>
+        <button class="t-btn" id="fire-tada" type="button">tada()</button>
+      </div>
+
+      <div class="row">
+        <button class="t-btn" id="toggle-hidden" type="button">Toggle .hidden target</button>
+        <span id="hidden-target" class="readout">I am the .hidden target</span>
+      </div>
+
+      <div class="readout" id="readout">body children: –</div>
+      <div class="readout" id="press-log">last press: –</div>
+      <div class="readout" id="measure">hud: –</div>
+
+      <p class="note">
+        Resize the window: below 700px wide the artwork steps down to 84px (76px
+        under 480px) while the press target stays pinned at the platform's 96px
+        floor — the two numbers above diverge, and the second one never drops.
+        The <span class="visually-hidden">screen-reader-only sentence that proves
+        .visually-hidden is applied</span>gap before this word is a
+        <code>.visually-hidden</code> node.
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { hudButton, soundDebounce, progressDots } from '../js/hud.js';
+    import { burstConfetti, tada, QK_PALETTE } from '../js/celebrate.js';
+
+    const game = document.getElementById('game');
+    const bar = document.getElementById('bar');
+    const log = document.getElementById('press-log');
+    const say = (what) => { log.textContent = `last press: ${what} @ ${new Date().toLocaleTimeString()}`; };
+
+    // --- HUD -------------------------------------------------------------
+    // Splash-style: home in the bar's left slot, dots centred, sound at right.
+    const home = hudButton('home', () => say('home (would go to ../../)'));
+    const sound = hudButton('sound', soundDebounce(() => say('sound (debounced 600ms)')));
+    bar.append(home, progressDots(5, 2), sound);
+
+    // Play-screen style: back pinned bottom-left, a second sound bottom-right.
+    const back = hudButton('back', () => say('back (would return to splash)'));
+    back.classList.add('qk-hud-bottom-left');
+    const sound2 = hudButton('sound', () => say('sound (bottom-right)'), { label: 'Say it again' });
+    sound2.classList.add('qk-hud-bottom-right');
+    game.append(back, sound2);
+
+    // Live artwork-vs-press-target measurement, re-read on every resize.
+    const measure = document.getElementById('measure');
+    const remeasure = () => {
+      const art = Math.round(home.getBoundingClientRect().width);
+      const hit = getComputedStyle(home, '::before').width;
+      measure.textContent = `hud artwork: ${art}px · press target: ${hit} · viewport: ${innerWidth}×${innerHeight}`;
+      measure.style.color = parseFloat(hit) >= 96 ? '' : '#c02a2a';
+    };
+    remeasure();
+    addEventListener('resize', remeasure);
+
+    // --- palette ---------------------------------------------------------
+    const swatches = document.getElementById('swatches');
+    for (const c of QK_PALETTE) {
+      const i = document.createElement('i');
+      i.style.background = c;
+      i.title = c;
+      swatches.append(i);
+    }
+
+    // --- confetti + node-count watch -------------------------------------
+    const readout = document.getElementById('readout');
+    const panel = document.querySelector('.panel');
+    let baseline = document.body.getElementsByTagName('*').length;
+    const tick = () => {
+      const now = document.body.getElementsByTagName('*').length;
+      readout.textContent = `body descendants: ${now} (baseline ${baseline})${now === baseline ? ' — clean' : ' — burst live'}`;
+      window.__qkNodes = now;
+      window.__qkBaseline = baseline;
+    };
+    tick();
+    setInterval(tick, 120);
+
+    document.getElementById('fire').addEventListener('click', () => { burstConfetti({ count: 36 }); say('confetti'); });
+    document.getElementById('fire-host').addEventListener('click', () => { burstConfetti({ host: panel, count: 24 }); say('confetti in panel'); });
+    document.getElementById('fire-tada').addEventListener('click', () => { tada(); say('tada'); });
+
+    // --- .hidden ---------------------------------------------------------
+    const target = document.getElementById('hidden-target');
+    document.getElementById('toggle-hidden').addEventListener('click', () => {
+      target.classList.toggle('hidden');
+      baseline = document.body.getElementsByTagName('*').length; // stays constant: .hidden doesn't remove
+      say('.hidden toggled');
+    });
+
+    // Handles for the Playwright drive.
+    window.__qk = { burstConfetti, tada, QK_PALETTE, hudButton, soundDebounce, progressDots, panel };
+  </script>
+</body>
+</html>

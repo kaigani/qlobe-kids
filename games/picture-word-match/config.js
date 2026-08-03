@@ -21,11 +21,6 @@ export default {
   engine: 'match-pairs',
   title: 'Picture Word Match',
   splashEmoji: '🃏',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Tap a picture and tap the word that says the same thing.',
     nudge: 'Hmm, listen again and find the word that sounds the same.',

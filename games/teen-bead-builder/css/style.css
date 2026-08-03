@@ -1,11 +1,10 @@
-@font-face {
-  font-family: Fredoka;
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
+/* @font-face, the `*` reset, the html/body margin+height reset and body's
+   user-select now come from shared/css/base.css, linked ahead of this file.
+   touch-action stays local: this game needs `none` (drag needs every default
+   touch gesture suppressed), not base.css's `manipulation`. */
 
 :root {
+  --qk-bg: #169ba6;
   --ink: #153a5a;
   --navy: #17385f;
   --cream: #fff6dc;
@@ -21,23 +20,13 @@
   --panel-shadow: 0 8px 0 rgba(91, 53, 20, .2), 0 18px 40px rgba(48, 39, 26, .18);
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
 html,
 body {
   width: 100%;
-  height: 100%;
-  margin: 0;
   overflow: hidden;
-  background: #169ba6;
   color: var(--ink);
   font-family: Fredoka, "Arial Rounded MT Bold", sans-serif;
   font-weight: 600;
-  user-select: none;
-  -webkit-user-select: none;
   -webkit-touch-callout: none;
   overscroll-behavior: none;
   touch-action: none;
@@ -713,27 +702,6 @@ button:focus-visible {
 
 .next-button:active { transform: translateY(5px); box-shadow: 0 2px 0 #176f39; }
 
-.confetti {
-  position: fixed;
-  z-index: 132;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.confetti i {
-  --x: 50vw;
-  --dx: 0px;
-  position: absolute;
-  top: -30px;
-  left: var(--x);
-  width: 15px;
-  height: 24px;
-  border-radius: 5px;
-  background: var(--c);
-  animation: confetti-fall 1.7s var(--delay) cubic-bezier(.2, .7, .35, 1) both;
-}
-
 .end {
   place-items: center;
   padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom));
@@ -858,12 +826,6 @@ button:focus-visible {
 
 @keyframes veil-in { from { opacity: 0; } }
 @keyframes celebrate-in { from { opacity: 0; transform: translateY(40px) scale(.7) rotate(-3deg); } }
-
-@keyframes confetti-fall {
-  0% { opacity: 0; transform: translate(0, 0) rotate(0); }
-  12% { opacity: 1; }
-  100% { opacity: 1; transform: translate(var(--dx), 108vh) rotate(700deg); }
-}
 
 @media (orientation: portrait) {
   .splash {

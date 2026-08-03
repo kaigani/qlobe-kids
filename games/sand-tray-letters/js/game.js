@@ -3,6 +3,11 @@ import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as content from '../../../shared/js/content.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { mulberry32, hashString, shuffle } from '../../../shared/js/rng.js';
+import { createNarrator } from '../../../shared/js/narrator.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { MATERIALS, LETTERS } from '../config.js';
 
 // Curated prize objects per letter load once (shared/data/letter-objects.json).
@@ -63,8 +68,14 @@ const els = {
   prizeBox: $('prize-box'), prizeBoxImg: $('prize-box-img'), prizeBoxEmoji: $('prize-box-emoji'),
   prizeReveal: $('prize-reveal'), prizeImg: $('prize-img'), prizeEmoji: $('prize-emoji'),
   prizeCaption: $('prize-caption'),
-  confetti: $('confetti'), announcer: $('announcer'),
+  confetti: $('confetti'),
 };
+
+// One voice for the game: the aria-live announcer node, the mute gate and the
+// monotonic "a newer line cancels the one still walking its steps" token all
+// live in shared/js/narrator.js now. `say` is voice-clips because the game
+// speaks by manifest key, not by text.
+const narrator = createNarrator({ say: voice.say });
 const ctx = els.canvas.getContext('2d', { alpha: false, desynchronized: true });
 
 const state = {
@@ -84,7 +95,6 @@ const state = {
   prize: null,
   prizeOpened: false,
   muted: false,
-  reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
   rng: Math.random,
   fast: false,
 };
@@ -96,7 +106,6 @@ let resizeFrame = 0;
 let audioContext = null;
 let lastTextureSound = 0;
 let nudgeTimer = 0;
-let confettiTimer = 0;
 
 function showScreen(name) {
   state.screen = name;
@@ -106,20 +115,18 @@ function showScreen(name) {
 }
 
 // Play a sequence of recorded clips (teacher voice) as one utterance, and mirror
-// the full text into the live-region announcer for screen readers. A newer say()
-// cancels the previous sequence via the token.
-let sayToken = 0;
+// the WHOLE utterance into the live-region announcer as one sentence — the clip
+// keys are split for recording, not for reading. narrator.saySequence owns the
+// cancellation token; announcing before it means the sentence lands even when
+// the voice is muted, which is the point of an announcer.
 function say(keys, announce) {
-  if (announce != null) els.announcer.textContent = announce;
-  voice.stop();
-  const token = ++sayToken;
-  if (state.muted) return;
-  (async () => {
-    for (const key of keys) {
-      if (token !== sayToken || state.muted) return;
-      await voice.say(key);
-    }
-  })();
+  if (announce != null) announce_(announce);
+  narrator.saySequence(keys);
+}
+
+/** Write one line into narrator's aria-live node. */
+function announce_(text) {
+  if (narrator.announcer) narrator.announcer.textContent = text;
 }
 
 // Success/replay utterance for a letter: praise, then the reused phonic fragment
@@ -134,20 +141,23 @@ function letterVoice(letter, withNext) {
 let audioReady = false;
 const WELCOME_LINE = 'Welcome to Sand Tray Letters. Trace, learn, and play!';
 
+// Unlock synchronously inside a gesture. The global first-gesture listener at
+// the bottom of this file (installUnlockOnGesture) does this too, but a control
+// with its own onTap wants it BEFORE its own sfx tick, not after the event has
+// bubbled to window.
 function unlockAudio() {
-  sfx.unlock();
-  speech.unlock();
-  voice.unlock();
-  if (!audioReady) {
-    audioReady = true;
-    // The welcome greeting is deferred to this first gesture: at page load the
-    // clip manifest has not loaded and the audio channel is not unlocked, so
-    // speaking then would fall back to the system voice. Now the recorded clip
-    // plays (synchronously, inside the gesture, so iOS allows it).
-    if (state.pendingWelcome && state.screen === 'welcome') {
-      state.pendingWelcome = false;
-      say(['welcome'], WELCOME_LINE);
-    }
+  unlockAll();
+}
+
+// The welcome greeting is deferred to the first gesture: at page load the clip
+// manifest has not loaded and the audio channel is not unlocked, so speaking
+// then would fall back to the system voice. Now the recorded clip plays
+// (synchronously, inside the gesture, so iOS allows it).
+function greetOnFirstGesture() {
+  audioReady = true;
+  if (state.pendingWelcome && state.screen === 'welcome') {
+    state.pendingWelcome = false;
+    say(['welcome'], WELCOME_LINE);
   }
 }
 
@@ -166,7 +176,7 @@ async function greet() {
   if (audioReady) { say(['welcome'], WELCOME_LINE); return; }
   await voiceReady;
   if (state.screen !== 'welcome') return;   // moved on during load
-  els.announcer.textContent = WELCOME_LINE;
+  announce_(WELCOME_LINE);
   if (audioReady) { say(['welcome'], WELCOME_LINE); return; } // a tap unlocked us mid-load
   const started = await voice.trySay('welcome');
   if (started) audioReady = true;      // autoplay allowed here (e.g. desktop)
@@ -201,7 +211,7 @@ function updateMaterialCards() {
 function beginTracing(resetRound = false) {
   if (resetRound || !state.order.length) {
     state.round = 0;
-    state.order = shuffled(LETTERS, state.rng);
+    state.order = shuffle(LETTERS, state.rng);
   }
   state.letter = state.order[state.round];
   state.success = false;
@@ -309,7 +319,7 @@ function buildTexture(width, height) {
   tx.fillStyle = gradient;
   tx.fillRect(0, 0, width, height);
 
-  const random = seededRandom(hashString(`${state.material}:${Math.round(width)}:${Math.round(height)}`));
+  const random = mulberry32(hashString(`${state.material}:${Math.round(width)}:${Math.round(height)}`));
   const density = state.material === 'flour' ? 5500 : state.material === 'salt' ? 6800 : 9000;
   for (let i = 0; i < density; i++) {
     const x = random() * width;
@@ -386,7 +396,7 @@ function drawGroove(index, end) {
   // A sparse rim of displaced grains makes the groove feel carved rather than
   // painted, without committing thousands of particles every frame.
   ctx.save();
-  const random = seededRandom((index + 1) * 9187 + Math.floor(end / 8));
+  const random = mulberry32((index + 1) * 9187 + Math.floor(end / 8));
   ctx.fillStyle = material.light;
   ctx.globalAlpha = .62;
   for (let i = 4; i < end; i += 11) {
@@ -558,7 +568,7 @@ function showSuccess() {
   updateLetterUI();          // reveals the success card
   setupPrizeBox();
   render();
-  if (!state.fast) { sfx.tada(); burstConfetti(30); }
+  if (!state.fast) { sfx.tada(); celebrate(30); }
   // Recorded praise (+ reused phonic) then the recorded "tap the box" prompt.
   say([...letterVoice(state.letter), 'tap-box'], `${state.letter.success} Tap the box to open your prize.`);
 }
@@ -585,7 +595,7 @@ function openPrize() {
   const prizes = content.letterObjects(state.letter.id);
   state.prize = prizes.length ? prizes[Math.floor(state.rng() * prizes.length)] : null;
   sfx.sparkle();
-  if (!state.fast) burstConfetti(48);
+  if (!state.fast) celebrate(48);
   els.prizeBox.classList.add('opening');
   const reveal = () => {
     if (state.screen !== 'play' || !state.success) return;
@@ -614,10 +624,13 @@ function openPrize() {
 /** Speak the recorded prize-reveal clip (Web Speech fallback with `line`),
  *  mirrored to the a11y region. Supersedes any in-flight sequence. */
 function sayPrize(line, fileUrl) {
-  els.announcer.textContent = line;
-  voice.stop();
-  sayToken++;
-  if (!state.muted) voice.sayFile(fileUrl, line);
+  announce_(line);
+  // narrator.stop() bumps the sequence token, so the prize line supersedes an
+  // in-flight say() instead of being talked over by its next step. The clip
+  // itself is addressed by path, not by manifest key, so it goes to voice-clips
+  // directly rather than through narrator.say().
+  narrator.stop();
+  if (!narrator.isMuted()) voice.sayFile(fileUrl, line);
 }
 
 function resetLetter(withVoice = true) {
@@ -670,7 +683,7 @@ function showFinish() {
   state.success = false;
   showScreen('finish');
   if (!state.fast) {
-    burstConfetti(60);
+    celebrate(60);
     sfx.tada();
   }
   say(['finish'], 'Terrific tracing! You made all twenty-six letters.');
@@ -720,21 +733,21 @@ function playTextureSound() {
   } catch { /* sensory sound is optional */ }
 }
 
-function burstConfetti(count) {
-  if (state.reducedMotion) return;
-  clearTimeout(confettiTimer);
-  const colors = ['#ff7613','#ffd01a','#1bbbd5','#f14e8a','#6bcf43','#8d5bd4'];
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement('span');
-    piece.className = 'confetti-piece';
-    piece.style.left = `${10 + state.rng() * 80}%`;
-    piece.style.background = colors[i % colors.length];
-    piece.style.setProperty('--dur', `${1.6 + state.rng() * 1.5}s`);
-    piece.style.setProperty('--drift', `${-80 + state.rng() * 160}px`);
-    piece.style.animationDelay = `${state.rng() * .35}s`;
-    els.confetti.appendChild(piece);
-  }
-  confettiTimer = setTimeout(() => els.confetti.replaceChildren(), 3600);
+// The sand-tray celebration palette — the game's own six, not the platform six,
+// because these are the material colours the trays are painted in.
+const CONFETTI_COLORS = ['#ff7613','#ffd01a','#1bbbd5','#f14e8a','#6bcf43','#8d5bd4'];
+
+// shared/js/celebrate.js is a no-op under prefers-reduced-motion and cleans up
+// after itself, so the old reducedMotion guard, the sweep timer and the
+// state.reducedMotion flag that only existed to feed it are all gone. The
+// returned cancel() is dropped on purpose: nothing here ever cut a burst short.
+function celebrate(count) {
+  burstConfetti({
+    host: els.confetti,
+    count,
+    palette: CONFETTI_COLORS,
+    duration: 3600,   // the fall this game's pieces always had
+  });
 }
 
 function mix(a, b, t) {
@@ -746,23 +759,9 @@ function hex(value) {
   const clean = value.replace('#','');
   return [0,2,4].map((i) => parseInt(clean.slice(i,i+2),16));
 }
-function hashString(value) {
-  let h = 2166136261;
-  for (let i = 0; i < value.length; i++) { h ^= value.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
-function seededRandom(seed) {
-  let value = seed >>> 0;
-  return () => { value += 0x6D2B79F5; let t=value; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; };
-}
-function shuffled(items, random) {
-  const result = items.slice();
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
+// seededRandom/hashString/shuffled were private copies of shared/js/rng.js
+// (mulberry32 bit-for-bit, FNV-1a, Fisher-Yates). They are imported now, so a
+// QLOBE_DEBUG seed(42) here reproduces the same sequence as everywhere else.
 
 // Interaction wiring --------------------------------------------------------
 onTap(els.start, () => { unlockAudio(); sfx.tick(); showMaterials(); });
@@ -788,9 +787,12 @@ window.addEventListener('resize', () => {
   cancelAnimationFrame(resizeFrame);
   resizeFrame = requestAnimationFrame(() => resizeCanvas());
 });
-window.addEventListener('pointerdown', unlockAudio, { once:true });
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+// The old `{ once:true }` unlock was the stale-latch bug in miniature: after an
+// iPadOS app-switch the permissions it stood for are gone but the listener is
+// too. installUnlockOnGesture reopens its latch on foreground, so the next touch
+// genuinely re-unlocks; onFirst still fires exactly once, ever.
+installUnlockOnGesture({ onFirst: greetOnFirstGesture });
+installKioskGuards();
 
 // QLOBE_DEBUG v1 ------------------------------------------------------------
 async function debugTraceLetter() {
@@ -838,8 +840,7 @@ function getTargets() {
   return [rect(els.playAgain,'play-again','correct')];
 }
 
-window.QLOBE_DEBUG = {
-  version:1,
+installDebug({
   gameId:'sand-tray-letters',
   engine:'custom-sand-canvas',
   ready:content.ready(),
@@ -880,10 +881,26 @@ window.QLOBE_DEBUG = {
     const r=els.canvas.getBoundingClientRect();
     return state.samples[state.stroke]?.map((s)=>{const p=toScreen(s);return{x:p.x+r.left,y:p.y+r.top};})||[];
   },
-  mute:()=>{state.muted=true;voice.stop();speech.stop();},
-  seed:(n)=>{state.rng=seededRandom(Number(n)||1);},
-  fastTimers:()=>{state.fast=true;},
-};
+  // Ours, not the harness default: `state.muted` also gates the WebAudio
+  // texture sound, which is not a channel any shared module knows about. Unlike
+  // the old one this honours `mute(false)`, so QA can turn the voice back on.
+  mute:(on=true)=>{
+    state.muted=Boolean(on);
+    narrator.setMuted(state.muted);
+    voice.setMuted(state.muted);
+    if(state.muted){voice.stop();speech.stop();}
+    return state.muted;
+  },
+  // The harness's default seed() builds the mulberry32 and hands it here.
+  onSeed:(rng)=>{state.rng=rng;},
+  // Ours: this game's "fast" is a branch, not a timer scale — every beat is an
+  // `if (state.fast) … else setTimeout(…)`, so there is no group to rescale.
+  fastTimers:(scale=0.05)=>{
+    state.fast=true;
+    const n=Number(scale);
+    return Math.min(1,Math.max(0.01,Number.isFinite(n)&&n>0?(n>1?1/n:n):0.05));
+  },
+});
 
 function wait(ms){return new Promise((resolve)=>setTimeout(resolve,ms));}
 

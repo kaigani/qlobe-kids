@@ -1,0 +1,19 @@
+{
+  "asset": "clay-height-study.png",
+  "source": "assets/source/clay-height-study-gpt-image-2.png",
+  "created": "2026-08-02",
+  "creator": "OpenAI built-in image generation tool",
+  "modelPath": "built-in image generation (gpt-image-2 class)",
+  "use": "Prototype-only grayscale height texture for material-locked tri-planar clay bump and dapple",
+  "references": [
+    "Current Plastic PBD Clay render supplied by the project owner, used as the problem reference",
+    "Two-ball tablet clay concept supplied by the project owner, used as the target material reference"
+  ],
+  "processing": [
+    "Generated as a square grayscale clay height texture",
+    "Downscaled from 1254x1254 to 512x512 with macOS sips",
+    "Sampled without a color-space transform and projected in three axes by the runtime shader"
+  ],
+  "prompt": "Use case: stylized-concept\nAsset type: seamless grayscale height/bump texture for a WebGL modelling-clay shader\nInput images: Image 1 shows the current PBD render whose surface is too smooth and shiny; Image 2 is the target clay material reference, especially its softly dappled handmade surface and faint fingerprints; Image 3 concerns colour fusion and is not relevant to this texture\nPrimary request: create a square, seamlessly tileable grayscale height map of hand-kneaded modelling clay, suitable for perturbing normals on a deforming mesh\nStyle/medium: neutral technical height texture, not a rendered object or photograph\nComposition/framing: flat orthographic texture filling the entire square, uniform detail distribution, exact seamless continuation across left/right and top/bottom edges\nMaterials/textures: a restrained mixture of broad shallow dimples and low-frequency hand-smoothed unevenness, faint curved fingerprint ridges, tiny compressed pores, and subtle kneading marks; preserve the soft tactile quality seen on the blue and orange clay in Image 2\nColor palette: middle gray base; gently lighter raised areas and gently darker depressions; low contrast with no pure white or pure black\nLighting: none baked into the map; no directional highlight, shadow, vignette, or ambient occlusion\nConstraints: height data only; no sphere, ball, scene, floor, perspective, color, text, logo, watermark, border, seams, obvious repeating motif, cracks, stone, leather, fabric, wrinkles, or glossy reflections; keep fingerprints sparse and subtle rather than covering the whole surface",
+  "licenseNote": "Generated specifically for this open-source research spike. Confirm repository-level licensing/attribution policy before promoting it from experiments into shared production assets."
+}

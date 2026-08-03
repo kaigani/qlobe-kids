@@ -19,11 +19,6 @@ export default {
   engine: 'choose-one',
   title: 'Letter Treasure Hunt',
   splashEmoji: '🏴‍☠️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Treasure ears ready. Listen for the first sound, then tap the picture treasure.',
     nudge: 'Hmm, listen to the first sound and try another treasure.',

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Clay Physics Lab — QLOBE Kids Research</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="lab-shell">
+    <header class="lab-header">
+      <div>
+        <p class="eyebrow">QLOBE KIDS · ENGINEERING SPIKE</p>
+        <h1>Clay Physics Lab</h1>
+        <p class="lede">A mass-conserving 2.5D material field. Press a dent, pull the edge, roll it flat, or stamp the letter.</p>
+        <nav class="study-links" aria-label="Other clay representation studies">
+          <a class="solid-switch" href="./solid.html">Sculptural ball fusion →</a>
+          <a class="solid-switch" href="./pbd.html">Plastic PBD dent and pull →</a>
+        </nav>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <span id="status">Starting…</span>
+        <span id="volume-status"></span>
+      </div>
+    </header>
+
+    <section class="workbench" aria-label="Interactive clay test surface">
+      <div class="canvas-wrap">
+        <canvas id="clay-canvas" aria-label="Clay surface. Drag with the selected tool to mould it."></canvas>
+        <span id="tool-cursor" class="tool-cursor" hidden aria-hidden="true"></span>
+        <div class="light-badge" aria-hidden="true"><i></i> clay-light shader</div>
+      </div>
+
+      <aside class="controls">
+        <fieldset>
+          <legend>Starting shape</legend>
+          <div class="button-row two-up">
+            <button type="button" data-preset="slab" aria-pressed="true"><span>▬</span>Dough slab</button>
+            <button type="button" data-preset="balls" aria-pressed="false"><span>●●</span>Four balls</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Moulding tool</legend>
+          <div class="tool-grid">
+            <button type="button" data-tool="press" aria-pressed="true"><span>☝</span>Press</button>
+            <button type="button" data-tool="pull" aria-pressed="false"><span>↝</span>Pull</button>
+            <button type="button" data-tool="roller" aria-pressed="false"><span>↔</span>Roll</button>
+            <button type="button" data-tool="stamp" aria-pressed="false"><span>A</span>Stamp</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Material colour</legend>
+          <div class="swatches">
+            <button class="swatch is-active" type="button" data-color="#ef725e" style="--swatch:#ef725e" aria-label="Coral clay" aria-pressed="true"></button>
+            <button class="swatch" type="button" data-color="#5bb7a8" style="--swatch:#5bb7a8" aria-label="Teal clay" aria-pressed="false"></button>
+            <button class="swatch" type="button" data-color="#8d76d5" style="--swatch:#8d76d5" aria-label="Purple clay" aria-pressed="false"></button>
+            <button class="swatch" type="button" data-color="#e6ae3f" style="--swatch:#e6ae3f" aria-label="Yellow clay" aria-pressed="false"></button>
+          </div>
+        </fieldset>
+
+        <button id="reset" class="reset-button" type="button"><span>↺</span>Reset clay</button>
+        <p class="prototype-note">This lab intentionally uses no library, build step, model call, or network request.</p>
+      </aside>
+    </section>
+
+    <section class="what-to-test">
+      <h2>What this prototype is testing</h2>
+      <div>
+        <p><strong>Persistence</strong> — a dent stays dented after release.</p>
+        <p><strong>Volume</strong> — pressing moves material into a raised rim instead of deleting it.</p>
+        <p><strong>Directness</strong> — the surface changes continuously under the pointer.</p>
+        <p><strong>Art fit</strong> — dynamic normals, warm light, grain, and fine ridges keep the result in the claymation world.</p>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

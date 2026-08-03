@@ -8,14 +8,12 @@
    this file is written as calc(<ms> * var(--ts, 1)) so the debug hook slows
    and speeds the visuals exactly as it does the JS beats (9, preamble). */
 
-@font-face {
-  font-family: 'Fredoka';
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
+/* @font-face, the `*` reset, the html/body margin+height reset and body's
+   touch-action/user-select now come from shared/css/base.css, linked ahead of
+   this file. What is left below is only what this game decides for itself. */
 
 :root {
+  --qk-bg: #0b1a3a;
   --ts: 1;
   --cream: #fffdf6;
   --cream-warm: #fff6dc;
@@ -29,12 +27,9 @@
   --safe-r: max(16px, env(safe-area-inset-right));
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 [hidden] { display: none !important; }
 
 html, body {
-  margin: 0;
-  height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
 }
@@ -42,11 +37,7 @@ html, body {
 body {
   font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
   font-weight: 600;
-  background: #0b1a3a;
   color: var(--navy);
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 #app {

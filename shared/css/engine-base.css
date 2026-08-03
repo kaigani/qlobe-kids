@@ -1,0 +1,374 @@
+/* engine-base.css — the archetype engines' shared skin, once.
+ *
+ * The ~13 engines in shared/js/engines/ each shipped their own ~1,500-line pile
+ * of CSS-in-JS, and ~80% of every pile was the same file with a different class
+ * prefix: the same `@font-face`, the same sky-with-bubbles page, the same 96px
+ * round PNG buttons, the same splash/end column, the same mode buttons, the same
+ * HUD grid, the same rounded canvas. This file is that intersection, expressed
+ * once against a prefix-free `qk-eng-*` vocabulary.
+ *
+ * ---------------------------------------------------------------- how to use
+ *
+ * Engines DUAL-CLASS: every element keeps the class it has always had and gains
+ * the shared one — `class="qk-choose-splash qk-eng-page"`. The old per-engine
+ * prefixes are a documented compatibility window (see
+ * shared/js/engines/README.md) because three shipped games skin engine
+ * internals through them.
+ *
+ * Engines load this file at runtime, once, guarded by an id:
+ *
+ *     const href = new URL('../../css/engine-base.css', import.meta.url).href;
+ *     if (!document.getElementById('qk-engine-base-css')) { … <link> … }
+ *
+ * ------------------------------------------------------------ cascade rules
+ *
+ * The order in `<head>` at runtime is, and must stay:
+ *
+ *     1. the page's own <link rel=stylesheet>  (base.css, then a game's skin)
+ *     2. shared/css/screens.css               } injected by the engine,
+ *     3. shared/css/engine-base.css           } in this order,
+ *     4. the engine's residual <style>        } at first createGame()
+ *
+ * So an engine always outranks this file at equal specificity, and this file
+ * always outranks a game's plain stylesheet. That last point is not a
+ * regression: everything here previously lived in (4), which already outranked
+ * (1). The three games that skin engine internals — letter-road-driving
+ * (`.qk-trace-*`), number-rod-race (`.qk-seq-*`) and blend-train
+ * (css/style.css) — all scope their overrides under `#game`, so they carry an
+ * ID and outrank every selector below regardless of order. Keep it that way:
+ * **never raise a selector here above one class**, and never use `!important`
+ * outside the `[hidden]` rule that screens.css owns.
+ *
+ * This file COMPOSES WITH base.css, which every stub page already links. It
+ * re-declares nothing from there: no reset, no `.hidden`, no `--qk-safe-*`, no
+ * `#game` background. In particular `#game { background: var(--qk-bg) }` is an
+ * ID selector — an engine surface paints *inside* `#game`, it does not fight it.
+ *
+ * The `@font-face` below is the one exception to "re-declare nothing": engine
+ * `.test.html` pages do not link base.css, and a test page with no Fredoka is a
+ * test page that proves nothing about the real layout. Two identical
+ * `@font-face` rules for one file are free — the same resource, one fetch.
+ *
+ * ------------------------------------------------------------------- tokens
+ *
+ * Everything that genuinely differs between engines is a custom property with
+ * the majority value as its `var()` fallback, so an engine declares only its
+ * own divergence. The three named in the refactor spec are the palette hooks:
+ *
+ *     --qk-primary   the mode/again button fill        (default the platform blue)
+ *     --qk-accent    the "this one is now" highlight   (default the platform gold)
+ *     --qk-shadow    the platform drop shadow
+ *
+ * A game's `config.accent` can be plumbed straight into `--qk-primary` on the
+ * surface element by an engine that wants per-game colour; none do that today,
+ * and turning it on is a visible change, so it stays opt-in.
+ *
+ * **Engines ALIAS their legacy variables onto these tokens** — `--qk-primary:
+ * var(--purple)`, `--qk-shadow: var(--shadow)` — rather than letting the
+ * defaults below stand. That is not ceremony: letter-road-driving reaches in
+ * and redefines `--navy`, `--blue`, `--shadow` under `#game .qk-trace`, and the
+ * alias is what keeps that override flowing into every rule here. A token read
+ * directly from this file would silently ignore it.
+ *
+ * Urls resolve relative to THIS FILE (shared/css/ -> ../assets/ui/), never to
+ * the page that loads it.
+ */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../fonts/fredoka-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------- the reset */
+
+/* Scoped, not global: an engine mounts inside somebody else's page. Some
+   engines reset on an outer wrapper (`.qk-observe-root`, `.qk-coach-root`) and
+   paint on an inner one, so the reset host and the surface are two classes. */
+.qk-eng-root,
+.qk-eng-root * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ------------------------------------------------------------- the surface */
+
+/* The full-bleed page an engine screen paints on. `100dvh` (not `100vh`) so an
+   iPad's collapsing toolbar cannot push the bottom HUD off screen. */
+.qk-eng-surface {
+  --qk-navy: #17517e;
+  --qk-sky: #bee3f5;
+  --qk-white: #ffffff;
+  --qk-primary: #2d7dd2;
+  --qk-accent: #ffd166;
+  --qk-shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
+
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100%;
+  overflow: hidden;
+  color: var(--qk-navy);
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+  background-color: var(--qk-eng-bg-color, var(--qk-sky));
+  background-image: var(--qk-eng-bg-image, none);
+  background-size: var(--qk-eng-bg-size, auto);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+}
+
+.qk-eng-surface button,
+.qk-eng-surface a {
+  font: inherit;
+  color: inherit;
+  touch-action: manipulation;
+}
+
+.qk-eng-surface button {
+  border: 0;
+  cursor: pointer;
+}
+
+.qk-eng-surface button:focus-visible,
+.qk-eng-surface a:focus-visible {
+  outline: 5px solid rgba(45, 125, 210, var(--qk-eng-focus-a, .65));
+  outline-offset: 4px;
+}
+
+/* ------------------------------------------------------------- HUD buttons */
+
+/* The engines' round PNG button. Deliberately NOT `.qk-hud-btn` from hud.css:
+   that one carries a `drop-shadow()` filter, a 96px `::before` hit pad and a
+   `translateY(4px)` press, none of which the engines have ever had. Adopting it
+   would repaint every engine game. The two vocabularies converge when the HUD
+   art itself is next revised — until then hud.css is the bespoke-game flavour
+   and this is the engine flavour, and `hudButton()`'s element shape (a
+   `<button type=button>` with `data-hud` and an aria-label) is what they share. */
+.qk-eng-img-btn {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: transparent center / 84px 84px no-repeat;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.qk-eng-img-btn:active { transform: scale(.93); }
+
+/* The artwork, split from the box so an engine with its own button geometry
+   (coach-timer's `display: block` / `contain` sizing) still shares the urls. */
+.qk-eng-ico-home { background-image: url('../assets/ui/btn-home.png'); }
+.qk-eng-ico-back { background-image: url('../assets/ui/btn-back.png'); }
+.qk-eng-ico-sound { background-image: url('../assets/ui/btn-sound.png'); }
+.qk-eng-ico-next { background-image: url('../assets/ui/btn-shuffle.png'); }
+
+/* --------------------------------------------------------------- placement */
+
+/* Top-left is home (splash) or back (everywhere else) — docs/interaction-patterns.md §8.
+   Bottom-left is "hear it again". Offsets are max(gap, safe-inset) so the
+   buttons clear an iPad's rounded corners without wasting space elsewhere. */
+.qk-eng-corner-tl {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+  z-index: var(--qk-eng-corner-z, 4);
+}
+
+.qk-eng-corner-bl {
+  position: absolute;
+  left: max(var(--qk-eng-sound-x, 14px), env(safe-area-inset-left));
+  bottom: max(var(--qk-eng-sound-y, 12px), env(safe-area-inset-bottom));
+  z-index: var(--qk-eng-corner-z, 4);
+}
+
+/* Inside the play HUD the same button is a grid cell, not a floating corner. */
+.qk-eng-hud .qk-eng-corner-tl {
+  position: static;
+  grid-column: 1;
+}
+
+/* ----------------------------------------------------- splash + end screens */
+
+/* The centred page both bookend screens use. */
+.qk-eng-page {
+  display: grid;
+  place-items: center;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom))
+    max(18px, env(safe-area-inset-left));
+}
+
+.qk-eng-center {
+  width: var(--qk-eng-center-w, min(900px, 100%));
+  display: grid;
+  justify-items: center;
+  gap: var(--qk-eng-center-gap, clamp(14px, 2.5vmin, 24px));
+  padding-top: var(--qk-eng-center-pt, 54px);
+  text-align: center;
+}
+
+/* The big rounded art tile: the game's emoji/picture, splash and end. */
+.qk-eng-card {
+  display: grid;
+  place-items: center;
+  width: var(--qk-eng-card-w, clamp(150px, 26vmin, 230px));
+  aspect-ratio: 1;
+  border: var(--qk-eng-card-border, 5px solid #fff);
+  border-radius: var(--qk-eng-card-radius, 28px);
+  background: var(--qk-eng-card-bg, linear-gradient(180deg, #fff, #fff3d0));
+  box-shadow: var(--qk-shadow);
+}
+
+/* Type sizing is a SEPARATE opt-in. Some engines fill the tile with a big
+   emoji (font-size), others with an `art.js` element sized by `--qk-art-size`
+   and no font-size at all — handing the second kind a font-size and a
+   `line-height: 1` it never had is exactly the sort of invisible-until-it-isn't
+   change this wave exists to avoid. */
+.qk-eng-card-glyph {
+  font-size: var(--qk-eng-card-size, clamp(82px, 16vmin, 132px));
+  line-height: 1;
+}
+
+/* No `color` here on purpose: every engine's h1 inherits its ink from the
+   surface, and a game skin that repaints the surface (letter-road-driving
+   redefines `--navy`) must keep reaching the heading. */
+.qk-eng-title {
+  margin: 0;
+  max-width: var(--qk-eng-title-w, 13ch);
+  font-size: clamp(38px, 7vmin, 78px);
+  line-height: var(--qk-eng-title-lh, .98);
+  text-shadow: 0 4px 0 rgba(255, 255, 255, .72);
+}
+
+.qk-eng-mode-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--qk-eng-mode-min, 210px), 1fr));
+  gap: var(--qk-eng-mode-gap, 18px);
+  width: var(--qk-eng-mode-list-w, min(760px, 100%));
+  margin-top: var(--qk-eng-mode-list-mt, 6px);
+}
+
+/* One rule for the splash's mode buttons and the end screen's "again" — they
+   have always been the same button wearing different content. */
+.qk-eng-mode {
+  min-height: var(--qk-eng-mode-h, 104px);
+  padding: var(--qk-eng-mode-pad, 18px 24px);
+  border: var(--qk-eng-mode-border, 5px solid #fff);
+  border-radius: var(--qk-eng-mode-radius, 26px);
+  background:
+    var(--qk-eng-mode-sheen, linear-gradient(180deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, 0) 50%)),
+    var(--qk-primary);
+  box-shadow: var(--qk-shadow);
+  color: var(--qk-eng-mode-ink, #fff);
+  font-size: var(--qk-eng-mode-font, clamp(23px, 4vmin, 36px));
+  line-height: 1.05;
+}
+
+.qk-eng-mode:active { transform: scale(.96); }
+
+.qk-eng-play-icon {
+  display: var(--qk-eng-play-icon-display, block);
+  width: var(--qk-eng-play-icon-size, 72px);
+  height: var(--qk-eng-play-icon-size, 72px);
+  background: transparent url('../assets/ui/btn-play.png') center / contain no-repeat;
+}
+
+/* --------------------------------------------------------- the play screen */
+
+.qk-eng-play {
+  display: grid;
+  grid-template-rows: var(--qk-eng-play-rows, auto 1fr);
+  min-height: var(--qk-eng-play-min-h, auto);
+  padding: var(--qk-eng-play-pad,
+    max(12px, env(safe-area-inset-top))
+    max(14px, env(safe-area-inset-right))
+    max(112px, calc(100px + env(safe-area-inset-bottom)))
+    max(14px, env(safe-area-inset-left)));
+}
+
+.qk-eng-hud {
+  position: relative;
+  z-index: var(--qk-eng-hud-z, 4);
+  display: grid;
+  grid-template-columns: var(--qk-eng-hud-cols, 96px 1fr 96px);
+  align-items: center;
+  min-height: var(--qk-eng-hud-h, 100px);
+}
+
+/* Progress, flavour A: one centred pill of small solid dots. */
+.qk-eng-pill {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-height: 32px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .38);
+}
+
+/* Progress, flavour B: a wrapping pill, for engines whose round count runs long. */
+.qk-eng-pill-wrap {
+  justify-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: min(560px, 58vw);
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .42);
+}
+
+.qk-eng-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, var(--qk-eng-dot-a, .9));
+  box-shadow: var(--qk-eng-dot-shadow, inset 0 -2px 0 rgba(23, 81, 126, .12));
+}
+
+/* The ringed variant — the same pip hud.css draws for bespoke games. */
+.qk-eng-dot-ring {
+  width: 22px;
+  height: 22px;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, var(--qk-eng-ring-a, .55));
+  box-shadow: 0 3px 0 rgba(23, 81, 126, var(--qk-eng-ring-shadow-a, .13));
+}
+
+/* The Pixi mount. `touch-action: none` because the stage owns the gesture. */
+.qk-eng-stage {
+  min-height: 0;
+  position: relative;
+  width: var(--qk-eng-stage-w, min(1200px, 100%));
+  justify-self: center;
+}
+
+.qk-eng-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--qk-eng-canvas-radius, 28px);
+  touch-action: none;
+}
+
+.qk-eng-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}

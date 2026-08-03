@@ -1,64 +1,44 @@
 #!/usr/bin/env node
 // Real-Chrome smoke test and visual-QC capture for Teen Bead Builder.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/teen-bead-builder/tools/qa.mjs [--base http://127.0.0.1:8000]
+//        [--shots qa-shots/teen-bead-builder] [--playwright /private/tmp/pw/node_modules]
+//   ($QLOBE_BASE / $QLOBE_SHOTS still work.)
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots, dragBetween,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const base = (process.env.QLOBE_BASE || 'http://127.0.0.1:8000').replace(/\/$/, '');
-const shots = path.resolve(process.env.QLOBE_SHOTS || 'qa-shots/teen-bead-builder');
-const require = createRequire('/private/tmp/pw/node_modules/noop.js');
-const { chromium } = require('playwright');
-const checks = [];
+const base = baseUrl();
+const shots = resolveShots('qa-shots/teen-bead-builder');
+const { check, summary, failures } = createReporter();
 const sessions = [];
 
-function check(name, condition, detail = '') {
-  const ok = Boolean(condition);
-  checks.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
-
 async function openGame(browser, viewport, reducedMotion = 'no-preference') {
-  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+  const session = await openSession(browser, {
+    url: `${base}/games/teen-bead-builder/`,
+    base,
+    viewport,
+    reducedMotion,
+    allowDataUrls: true,
+    allowAbortedMedia: true,
+    seed: 42,
   });
-  page.on('request', (request) => {
-    if (!request.url().startsWith(base) && !request.url().startsWith('data:')) remote.push(request.url());
-  });
-  page.on('requestfailed', (request) => {
-    const reason = request.failure()?.errorText || '';
-    if (reason === 'net::ERR_ABORTED' && request.url().endsWith('.m4a')) return;
-    failed.push(`${request.url()} ${reason}`);
-  });
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(`${base}/games/teen-bead-builder/`, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => window.QLOBE_DEBUG.seed(42));
-  sessions.push({ context, errors, failed, remote });
-  return page;
+  sessions.push(session);
+  return session.page;
 }
 
 async function drag(page, from, to) {
-  const a = await from.boundingBox();
-  const b = await to.boundingBox();
-  await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 8 });
-  await page.mouse.up();
+  await dragBetween(page, await from.boundingBox(), await to.boundingBox(), { steps: 8 });
 }
 
-async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
-
+async function drive(browser) {
   const hubContext = await browser.newContext({ viewport: { width: 1180, height: 820 } });
   const hubPage = await hubContext.newPage();
   await hubPage.goto(`${base}/#math-number-sense`, { waitUntil: 'networkidle' });
@@ -144,8 +124,9 @@ async function main() {
     JSON.stringify(bundleMaterials));
   await page.screenshot({ path: path.join(shots, '02-bundle-empty.png') });
 
-  // Keep the tutorial celebration visible long enough for a production screenshot;
-  // remote Chrome can spend longer than the accelerated 780ms window encoding it.
+  // fastTimers() is a SPEED factor, not a delay: 20 means "20x faster"
+  // (debug-harness clamps it to a 0.05 multiplier). Drive the drag sequence
+  // fast; the celebration window is restored to real time below.
   await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(20));
   await drag(page, page.locator('[data-bead-source]'), page.locator('[data-drop-zone]'));
   check('real drag places the first bead',
@@ -217,6 +198,11 @@ async function main() {
   check('off-tray drag returns without changing the quantity',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 9);
 
+  // Back to real time for the tenth bead. showCelebration() self-dismisses
+  // after `Math.max(450, timers.ms(3900))`, so under fastTimers(20) the overlay
+  // is gone 450ms after it appears — before the .celebration screenshots below
+  // can be taken. At scale 1 the card lives the authored 3.9s.
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(1));
   await page.evaluate(() => window.QLOBE_DEBUG.tap('bead-source'));
   await page.waitForTimeout(100);
   check('the tenth bead enters the visible bundling transition',
@@ -337,18 +323,29 @@ async function main() {
     check('session has no page or console errors', session.errors.length === 0, session.errors.join(' | '));
     check('session has no failed requests or 4xx responses', session.failed.length === 0, session.failed.join(' | '));
     check('session makes no runtime model or third-party requests', session.remote.length === 0, session.remote.join(' | '));
-    await session.context.close();
+    await session.close();
   }
-  const failed = checks.filter((item) => !item.ok);
-  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed`);
-  await Promise.race([
-    browser.close(),
-    new Promise((resolve) => setTimeout(resolve, 3000)),
-  ]);
-  process.exit(failed.length ? 1 : 0);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+async function main() {
+  await ensureShots(shots);
+  const browser = await launchChrome();
+  // MANDATORY: close the browser in a `finally`. A check that throws mid-drive
+  // otherwise leaves Chrome and its Playwright pipe alive, so node never runs
+  // out of handles and the driver hangs forever instead of reporting a failure.
+  try {
+    await drive(browser);
+  } finally {
+    summary();
+    await Promise.race([
+      browser.close(),
+      new Promise((resolve) => setTimeout(resolve, 3000)),
+    ]);
+  }
+}
+
+main()
+  .catch((error) => { console.error(error); process.exitCode = 1; })
+  // Chrome has been known to leave a live handle behind even after close();
+  // the explicit exit keeps that from turning a finished run into a hang.
+  .finally(() => process.exit(failures().length || process.exitCode ? 1 : 0));

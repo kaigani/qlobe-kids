@@ -27,6 +27,12 @@ import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
 import * as music from '../music.js';
 import { onTap } from '../tap.js';
+import { mulberry32 } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { createTimers } from '../timers.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens } from '../screens.js';
+import { installEngineStyles } from './engine-styles.js';
 import { createStage } from '../stage/stage.js';
 import { createTheater } from '../stage/theater.js';
 import { createPuppet, loadRigArt } from '../stage/puppet.js';
@@ -35,11 +41,6 @@ import { burst } from '../stage/particles.js';
 import { loadPropPack, propRuntimeDefinition } from '../stage/prop-pack.js';
 import { loadMusicSyncProfiles, createMusicSync } from '../stage/music-sync.js';
 
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const SHUFFLE_IMG = new URL('../../assets/ui/btn-shuffle.png', import.meta.url).href;
 const CHAR_BASE = new URL('../../characters/', import.meta.url);
 const INSTRUMENTS_MANIFEST = new URL('../../assets/instruments/manifest.json', import.meta.url).href;
 
@@ -73,9 +74,12 @@ class PuppetBandGame {
     this.syncProfiles = null;
     this.mountEl = mountEl;
     this.destroyed = false;
-    this.previousDebug = window.QLOBE_DEBUG;
+    // Scale holder only: the engine's own scheduling stays where it is, and
+    // `fastTimers()` turns this group's scale, read back through `timers.ms()`.
+    this.timers = createTimers();
 
-    this.screen = 'splash';        // splash | build | concert
+    // The router owns "which screen is live"; `screen` below is a getter over it.
+    this.screens = null;           // splash | build | concert
     this.band = [];                // [{ char, instr }] in stage order
     this.songIndex = 0;
     this.muted = false;
@@ -111,6 +115,7 @@ class PuppetBandGame {
       loadPropPack(this.config.propPack).then((pack) => { this.propPack = pack; }).catch(() => {}),
       loadMusicSyncProfiles(this.config.musicSync).then((profiles) => { this.syncProfiles = profiles; }).catch(() => {}),
     ]).then(() => {});
+    this.buildShell();
     this.renderSplash();
     this.installDebugHook();
   }
@@ -125,12 +130,10 @@ class PuppetBandGame {
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.innerHTML = '';
     this.targetMap.clear();
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   // sfx/speech/voiceClips/music unlock (or resume, if iPadOS suspended the
@@ -144,8 +147,7 @@ class PuppetBandGame {
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'puppet-band',
       ready: this.ready,
@@ -162,8 +164,8 @@ class PuppetBandGame {
       musicStats: () => music.stats(),
       attachAnalyser: () => music.attachAnalyser(),
       _theater: () => this.theater,
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      timers: this.timers,
+    });
   }
 
   async debugStart(songId) {
@@ -180,37 +182,77 @@ class PuppetBandGame {
 
   // --- splash ---------------------------------------------------------------------
 
+  /** @returns {'splash'|'build'|'concert'} straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * Three persistent sections, toggled by `hidden`, instead of one mount whose
+   * innerHTML is thrown away on every transition. Each section keeps the exact
+   * class list it rendered with before, plus the shared `qk-eng-*` vocabulary
+   * from shared/css/engine-base.css.
+   */
+  buildShell() {
+    this.mountEl.innerHTML = `
+      <section class="qk-pb qk-pb-splash qk-eng-root qk-eng-surface" aria-label="${escapeAttr(this.config.title)}"></section>
+      <section class="qk-pb qk-pb-build qk-eng-root qk-eng-surface" aria-label="Build your band" hidden></section>
+      <section class="qk-pb qk-pb-concert qk-eng-root qk-eng-surface" aria-label="${escapeAttr(this.config.title)}" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-pb-splash'),
+        build: this.mountEl.querySelector('.qk-pb-build'),
+        concert: this.mountEl.querySelector('.qk-pb-concert'),
+      },
+      initial: 'splash',
+      voice: { stop: () => { voiceClips.stop(); speech.stop(); } },
+    });
+  }
+
   renderSplash() {
     this.disposeStage();
-    this.screen = 'splash';
     this.targetMap.clear();
     voiceClips.stop();
     speech.stop();
 
-    this.mountEl.innerHTML = `
-      <section class="qk-pb qk-pb-splash" aria-label="${escapeAttr(this.config.title)}">
-        ${backdropMarkup(this.config, 'splash')}
-        <div class="qk-pb-scrim" aria-hidden="true"></div>
-        <div class="qk-pb-mascot-stage" aria-hidden="true"></div>
-        <a class="qk-pb-home qk-pb-img-btn" href="../../" aria-label="Home"></a>
-        <div class="qk-pb-center">
-          <div class="qk-pb-logo">${titleMarkup(this.config.title)}</div>
-          <button class="qk-pb-play-big" type="button">Tap to Play</button>
-        </div>
-        <div class="qk-pb-instrument-deco" aria-hidden="true">
-          ${['trumpet', 'piano'].map((id) => this.config.props[id]
-            ? `<span><img src="${escapeAttr(this.config.props[id])}" alt="" draggable="false" /></span>` : '').join('')}
-        </div>
-      </section>
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would run
+    // neither the disposer bag nor voice.stop(), so release it by hand first.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      ${backdropMarkup(this.config, 'splash')}
+      <div class="qk-pb-scrim" aria-hidden="true"></div>
+      <div class="qk-pb-mascot-stage" aria-hidden="true"></div>
+      <a class="qk-pb-home qk-pb-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="Home"></a>
+      <div class="qk-pb-center">
+        <div class="qk-pb-logo">${titleMarkup(this.config.title)}</div>
+        <button class="qk-pb-play-big" type="button">Tap to Play</button>
+      </div>
+      <div class="qk-pb-instrument-deco" aria-hidden="true">
+        ${['trumpet', 'piano'].map((id) => this.config.props[id]
+          ? `<span><img src="${escapeAttr(this.config.props[id])}" alt="" draggable="false" /></span>` : '').join('')}
+      </div>
     `;
-    const play = this.mountEl.querySelector('.qk-pb-play-big');
-    onTap(play, () => this.renderBuild(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
+    const play = splash.querySelector('.qk-pb-play-big');
+    this.screens.hold(onTap(play, () => this.renderBuild(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } }));
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-pb-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+
     this.bootMascots();
   }
 
   async bootMascots() {
     const ids = (this.config.menu.mascots || []).slice(0, 2);
-    const host = this.mountEl.querySelector('.qk-pb-mascot-stage');
+    const host = this.screens.el('splash').querySelector('.qk-pb-mascot-stage');
     if (!ids.length || !host) return;
     const generation = ++this.mascotGeneration;
     let stage;
@@ -266,7 +308,6 @@ class PuppetBandGame {
   renderBuild() {
     this.stopConcert();
     this.disposeStage();
-    this.screen = 'build';
     this.targetMap.clear();
     this.targetSeq = 0;
     voiceClips.stop();
@@ -287,46 +328,47 @@ class PuppetBandGame {
       </div>`;
     }).join('');
 
-    this.mountEl.innerHTML = `
-      <section class="qk-pb qk-pb-build" aria-label="Build your band">
-        ${backdropMarkup(this.config, 'build')}
-        <div class="qk-pb-scrim" aria-hidden="true"></div>
-        <button class="qk-pb-back qk-pb-img-btn" type="button" aria-label="Back to the title"></button>
-        <button class="qk-pb-build-sound qk-pb-img-btn" type="button" aria-label="Hear the instructions again"></button>
-        <div class="qk-pb-center">
-          <div class="qk-pb-build-title">
-            <h1>Build your band</h1>
-            <div class="qk-pb-pill" aria-live="polite"><span id="qk-pb-count">0</span> of ${MAX_BAND} friends</div>
-          </div>
-          <div class="qk-pb-grid">${tiles}</div>
-          <div class="qk-pb-build-footer">
-            <div class="qk-pb-build-help"><span aria-hidden="true">♫</span> Tap an instrument to hear it</div>
-            <button class="qk-pb-show" type="button" disabled>Play Show!</button>
-          </div>
+    const build = this.screens.el('build');
+    this.screens.release('build');
+    build.innerHTML = `
+      ${backdropMarkup(this.config, 'build')}
+      <div class="qk-pb-scrim" aria-hidden="true"></div>
+      <button class="qk-pb-back qk-pb-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the title"></button>
+      <button class="qk-pb-build-sound qk-pb-img-btn qk-eng-img-btn qk-eng-ico-sound" type="button" aria-label="Hear the instructions again"></button>
+      <div class="qk-pb-center">
+        <div class="qk-pb-build-title">
+          <h1>Build your band</h1>
+          <div class="qk-pb-pill" aria-live="polite"><span id="qk-pb-count">0</span> of ${MAX_BAND} friends</div>
         </div>
-      </section>
+        <div class="qk-pb-grid">${tiles}</div>
+        <div class="qk-pb-build-footer">
+          <div class="qk-pb-build-help"><span aria-hidden="true">♫</span> Tap an instrument to hear it</div>
+          <button class="qk-pb-show" type="button" disabled>Play Show!</button>
+        </div>
+      </div>
     `;
+    this.screens.show('build');
 
     // back on build goes to splash
-    onTap(this.mountEl.querySelector('.qk-pb-back'), () => this.renderSplash());
-    onTap(this.mountEl.querySelector('.qk-pb-build-sound'), () => {
+    this.screens.hold(onTap(build.querySelector('.qk-pb-back'), () => this.renderSplash()));
+    this.screens.hold(onTap(build.querySelector('.qk-pb-build-sound'), () => {
       this.speakNarr('build-join', this.config.voice.buildJoin);
-    }, { feedback: () => this.unlockAudio() });
+    }, { feedback: () => this.unlockAudio() }));
 
-    this.mountEl.querySelectorAll('.qk-pb-puppet').forEach((btn) => {
+    build.querySelectorAll('.qk-pb-puppet').forEach((btn) => {
       const id = this.nextTargetId('puppet');
       this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.toggleMember(btn.dataset.char) });
-      onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
+      this.screens.hold(onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } }));
     });
-    this.mountEl.querySelectorAll('.qk-pb-badge').forEach((btn) => {
+    build.querySelectorAll('.qk-pb-badge').forEach((btn) => {
       const id = this.nextTargetId('badge');
       this.targetMap.set(id, { id, el: btn, role: 'neutral', action: () => this.cycleInstrument(btn.dataset.char) });
-      onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
+      this.screens.hold(onTap(btn, () => this.tapTarget(id), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } }));
     });
-    const show = this.mountEl.querySelector('.qk-pb-show');
+    const show = build.querySelector('.qk-pb-show');
     const showId = this.nextTargetId('show');
     this.targetMap.set(showId, { id: showId, el: show, role: 'correct', action: () => this.startShow() });
-    onTap(show, () => this.tapTarget(showId), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
+    this.screens.hold(onTap(show, () => this.tapTarget(showId), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } }));
 
     this.refreshBuild();
     this.speakNarr('build-join', this.config.voice.buildJoin);
@@ -400,30 +442,30 @@ class PuppetBandGame {
 
   async renderConcert() {
     this.disposeStage();
-    this.screen = 'concert';
     this.targetMap.clear();
     this.targetSeq = 0;
     this.hintGiven = false;
 
-    this.mountEl.innerHTML = `
-      <section class="qk-pb qk-pb-concert" aria-label="${escapeAttr(this.config.title)}">
-        <header class="qk-pb-hud">
-          <button class="qk-pb-back qk-pb-img-btn" type="button" aria-label="Back to band building"></button>
-          <div class="qk-pb-songpill" aria-live="polite"></div>
-          <button class="qk-pb-next qk-pb-img-btn" type="button" aria-label="Next song"></button>
-        </header>
-        <main class="qk-pb-stagehost"></main>
-        <div class="qk-pb-carousel" aria-label="Swap band members"></div>
-        <button class="qk-pb-sound qk-pb-img-btn" type="button" aria-label="Hear the hint again"></button>
-      </section>
+    const concert = this.screens.el('concert');
+    this.screens.release('concert');
+    concert.innerHTML = `
+      <header class="qk-pb-hud">
+        <button class="qk-pb-back qk-pb-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to band building"></button>
+        <div class="qk-pb-songpill" aria-live="polite"></div>
+        <button class="qk-pb-next qk-pb-img-btn qk-eng-img-btn qk-eng-ico-next" type="button" aria-label="Next song"></button>
+      </header>
+      <main class="qk-pb-stagehost"></main>
+      <div class="qk-pb-carousel" aria-label="Swap band members"></div>
+      <button class="qk-pb-sound qk-pb-img-btn qk-eng-img-btn qk-eng-ico-sound" type="button" aria-label="Hear the hint again"></button>
     `;
-    onTap(this.mountEl.querySelector('.qk-pb-back'), () => this.renderBuild());
-    const next = this.mountEl.querySelector('.qk-pb-next');
-    onTap(next, () => this.nextSong(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
-    const sound = this.mountEl.querySelector('.qk-pb-sound');
-    onTap(sound, () => this.speakNarr('solo-hint', this.config.voice.soloHint), { feedback: (e) => e.stopPropagation() });
+    this.screens.show('concert');
+    this.screens.hold(onTap(concert.querySelector('.qk-pb-back'), () => this.renderBuild()));
+    const next = concert.querySelector('.qk-pb-next');
+    this.screens.hold(onTap(next, () => this.nextSong(), { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } }));
+    const sound = concert.querySelector('.qk-pb-sound');
+    this.screens.hold(onTap(sound, () => this.speakNarr('solo-hint', this.config.voice.soloHint), { feedback: (e) => e.stopPropagation() }));
 
-    const host = this.mountEl.querySelector('.qk-pb-stagehost');
+    const host = concert.querySelector('.qk-pb-stagehost');
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
     if (this.destroyed || this.screen !== 'concert' || generation !== this.stageGeneration) { stage.destroy(); return; }
@@ -865,7 +907,7 @@ class PuppetBandGame {
       if (this.destroyed || this.screen !== 'concert' || this.hintGiven) return;
       this.hintGiven = true;
       this.speakNarr('solo-hint', this.config.voice.soloHint);
-    }, IDLE_HINT_MS);
+    }, this.timers.ms(IDLE_HINT_MS));
   }
 
   // --- shared plumbing -----------------------------------------------------------------
@@ -991,15 +1033,6 @@ function normalizeConfig(config) {
   };
 }
 
-function mulberry32(seed) {
-  let t = seed >>> 0;
-  return function random() {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 function backdropMarkup(config, screen = 'splash') {
   const menu = config.menu || {};
@@ -1024,53 +1057,39 @@ function characterName(id) {
   return String(id || '').split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (ch) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[ch]));
-}
-function escapeAttr(value) { return escapeHtml(value); }
-
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-pb-style')) { styleInstalled = true; return; }
-  const style = document.createElement('style');
-  style.id = 'qk-pb-style';
-  style.textContent = `
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('${FONT_URL}') format('woff2');
-      font-weight: 600; font-style: normal; font-display: swap;
-    }
-    .qk-pb, .qk-pb * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  if (styleInstalled) return;
+  styleInstalled = true;
+  installEngineStyles('qk-pb-style', `
+    /* puppet-band's own skin — a concert, not a card game, so most of it is
+       genuinely this engine's. The @font-face, the reset, the surface, the 96px
+       PNG buttons and their artwork now come from shared/css/engine-base.css.
+
+       The .qk-pb-* class names are unchanged and stay supported — see the
+       compatibility window note in shared/js/engines/README.md. */
     .qk-pb {
       --navy: #17517e; --white: #fff;
       --shadow: 0 6px 0 rgba(23,81,126,.18), 0 14px 30px rgba(23,81,126,.18);
-      position: relative; height: 100dvh; width: 100%; overflow: hidden;
-      color: var(--navy);
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
-      font-weight: 600;
+      /* Alias, don't hard-code: a game skin that redefines --navy or --shadow
+         under #game must keep reaching every shared rule. */
+      --qk-navy: var(--navy);
+      --qk-white: var(--white);
+      --qk-shadow: var(--shadow);
+      --qk-eng-corner-z: 6;
+      /* A flat sky gradient rather than engine-base's bubble field. The
+         shorthand wins outright over .qk-eng-surface's background-color +
+         background-image because this stylesheet is later. */
       background: linear-gradient(#bee3f5, #e8f6ff 70%);
-      touch-action: manipulation; user-select: none; -webkit-user-select: none;
-      -webkit-touch-callout: none; overscroll-behavior: none;
     }
-    .qk-pb button { font: inherit; color: inherit; border: 0; cursor: pointer; touch-action: manipulation; }
-    .qk-pb button:focus-visible, .qk-pb a:focus-visible { outline: 5px solid rgba(45,125,210,.65); outline-offset: 4px; }
     .qk-pb-backdrop { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
     .qk-pb-scrim { position: absolute; z-index: 1; inset: 0; pointer-events: none;
       background: radial-gradient(circle at 50% 43%, rgba(255,255,255,.13), rgba(255,255,255,0) 44%); }
     .qk-pb-mascot-stage { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
     .qk-pb-mascot-stage canvas { display: block; width: 100%; height: 100%; pointer-events: none; }
-    .qk-pb-img-btn {
-      display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%;
-      background: transparent center / 84px 84px no-repeat; text-decoration: none;
-      filter: drop-shadow(0 5px 0 rgba(14,63,130,.18)) drop-shadow(0 8px 8px rgba(6,44,113,.18));
-    }
-    .qk-pb-img-btn:active { transform: scale(.93); }
-    .qk-pb-home { background-image: url('${HOME_IMG}'); }
-    .qk-pb-back { background-image: url('${BACK_IMG}'); }
-    .qk-pb-sound { background-image: url('${SOUND_IMG}'); }
-    .qk-pb-next { background-image: url('${SHUFFLE_IMG}'); }
-    .qk-pb-home, .qk-pb-back { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left)); z-index: 6; }
+    /* .qk-eng-img-btn is the box and .qk-eng-ico-* the artwork; the stage-light
+       drop shadow is this engine's alone. NOT a \`background\` shorthand — that
+       would reset the background-image the earlier stylesheet supplies. */
+    .qk-pb-img-btn { filter: drop-shadow(0 5px 0 rgba(14,63,130,.18)) drop-shadow(0 8px 8px rgba(6,44,113,.18)); }
     .qk-pb-center {
       position: relative; z-index: 3; height: 100%;
       display: grid; align-content: center; justify-items: center;
@@ -1127,7 +1146,7 @@ function installStyle() {
       border: 4px solid #fff; color: #fff; background: linear-gradient(#2fd2df, #0797b3);
       font-size: clamp(16px, 2.3vmin, 23px); box-shadow: 0 4px 0 #08788f, 0 8px 14px rgba(0,43,120,.18);
     }
-    .qk-pb-build-sound { position: absolute; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); z-index: 6; background-image: url('${SOUND_IMG}'); }
+    .qk-pb-build-sound { position: absolute; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); z-index: 6; }
     .qk-pb-grid {
       display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr));
       gap: clamp(8px, 1.4vmin, 14px); width: min(900px, 100%);
@@ -1256,7 +1275,5 @@ function installStyle() {
     @media (prefers-reduced-motion: reduce) {
       .qk-pb * { transition: none !important; animation: none !important; }
     }
-  `;
-  document.head.appendChild(style);
-  styleInstalled = true;
+  `);
 }

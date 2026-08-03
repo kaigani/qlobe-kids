@@ -8,7 +8,7 @@
 // Ownership split:
 //   main.js   — config, audio unlock, the ONE Pixi stage (created lazily and
 //               reused), screen routing, HUD, idle prompts, voice, music
-//               transport, seeded RNG, fast timers, the audio log.
+//               transport, seeded RNG, fast timers.
 //   screens/* — everything a screen draws and everything it lets a child do.
 //               Each exports create(ctx) -> { name, destroy, getTargets, tap,
 //               winRound, ready? } and touches the world only through `ctx`.
@@ -22,6 +22,10 @@ import * as speech from '../../../shared/js/speech.js';
 import * as voiceClips from '../../../shared/js/voice-clips.js';
 import * as music from '../../../shared/js/music.js';
 import { createStage } from '../../../shared/js/stage/stage.js';
+import { shuffle as rngShuffle } from '../../../shared/js/rng.js';
+import { createTimers } from '../../../shared/js/timers.js';
+import { createNudger } from '../../../shared/js/idle-nudge.js';
+import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { LINES } from './lines.js';
 import { songById } from './songs.js';
 import * as collection from './collection.js';
@@ -40,7 +44,6 @@ const INSTRUMENTS_URL = new URL('../../../shared/assets/instruments/manifest.jso
 const POSE_INDEX_URL = new URL('./assets/pose-actors/index.json', GAME_BASE).href;
 
 const IDLE_MS = 14000;
-const AUDIO_LOG_MAX = 80;
 
 const theme = config.theme || {};
 const NIGHT = theme.night || '#141c33';
@@ -57,9 +60,9 @@ let stage = null;              // the one Pixi stage, created on first need
 let stagePromise = null;
 let screen = null;             // the live screen object
 let screenName = 'splash';
-let audioUnlocked = false;
 let muted = false;
-let timeScale = 1;
+// Seeded via QLOBE_DEBUG's onSeed (mulberry32, the platform's one PRNG — see
+// shared/js/rng.js). Starts on Math.random so unseeded play is still random.
 let rng = Math.random;
 let destroyed = false;
 let poseReady = new Set();     // culture ids with a real pose pack on disk
@@ -67,19 +70,17 @@ let poseReady = new Set();     // culture ids with a real pose pack on disk
 const reduced = Boolean(window.matchMedia
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-const timers = new Set();
-const audioLog = [];
+// The one cancellable, fastTimers()-scalable timer group (shared/js/timers.js)
+// — replaces the old hand-rolled `timers` Set + `timeScale` variable.
+const timerGroup = createTimers();
 const musicState = { songId: null, loopCount: 0, notesScheduled: 0 };
 let songHandle = null;
 
 /** The card the child has earned but not yet pinned home: `{ cultureId }`. */
 let pending = null;
 
-let idle = { key: null, timer: 0, fired: false };
-
 // ----------------------------------------------------------------- utilities
 
-const clamp = (v, lo, hi) => (v < lo ? lo : (v > hi ? hi : v));
 const cultureById = (id) => cultures.find((c) => c.id === id) || null;
 
 /** Resolve a config-relative asset path ('./assets/x.webp') to a real URL. */
@@ -90,58 +91,36 @@ function assetUrl(rel) {
 
 /** setTimeout that honours fastTimers() and can be swept on teardown. */
 function wait(ms) {
-  return new Promise((resolve) => {
-    const delay = Math.max(0, Number(ms) || 0) * timeScale;
-    const id = setTimeout(() => { timers.delete(id); resolve(); }, delay);
-    timers.add(id);
-  });
+  return timerGroup.wait(ms);
 }
 
 /** Scale a tween/animation duration the same way wait() scales a delay. */
 function ms(value) {
-  return Math.max(1, Math.round((Number(value) || 0) * timeScale));
-}
-
-function clearTimers() {
-  timers.forEach(clearTimeout);
-  timers.clear();
+  return timerGroup.ms(value);
 }
 
 /** Fisher–Yates on a copy, using the (optionally seeded) game RNG. */
 function shuffle(list) {
-  const out = Array.from(list);
-  for (let i = out.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rng() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
-function seed(n) {
-  let value = (Number(n) || 1) >>> 0;
-  rng = () => {
-    value = (Math.imul(value, 1664525) + 1013904223) >>> 0;
-    return value / 4294967296;
-  };
+  return rngShuffle(list, rng);
 }
 
 // --------------------------------------------------------------------- audio
 
-/**
- * Every unlock/resume call runs on every qualifying gesture — iPadOS can
- * suspend the AudioContext after an app switch, notification, lock, or media
- * interruption, and a stale `audioUnlocked` guard would leave later touches
- * resuming nothing. Only the genuinely one-time load (the instrument library)
- * stays behind the boolean.
- */
+// Every unlock/resume call runs on every qualifying gesture — iPadOS can
+// suspend the AudioContext after an app switch, notification, lock, or media
+// interruption, and a stale unlock guard would leave later touches resuming
+// nothing. shared/js/audio-unlock.js owns that latch (and reopens it on
+// visibilitychange/pageshow — the story-stones stale-guard fix); this game
+// adds the music engine + the instrument-library load as extras so both ride
+// the same fan-out. `ensureInstruments()` stays idempotent on its own promise,
+// so calling it again on every re-unlock costs nothing.
+const unlockExtras = [() => music.unlock(), () => ensureInstruments()];
+
+/** Manual unlock for call sites that stop propagation before it reaches the
+ * window listener below (the HUD home/back buttons) or that want to unlock
+ * synchronously inside their own gesture handler. */
 function unlockAudio() {
-  sfx.unlock();
-  speech.unlock();
-  voiceClips.unlock();
-  music.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  ensureInstruments();
+  unlockAll(unlockExtras);
 }
 
 let instrumentsPromise = null;
@@ -151,13 +130,6 @@ function ensureInstruments() {
   return instrumentsPromise;
 }
 
-function logAudio(kind, key) {
-  audioLog.push({ t: Math.round(performance.now()), kind, key });
-  if (audioLog.length > AUDIO_LOG_MAX) audioLog.splice(0, audioLog.length - AUDIO_LOG_MAX);
-}
-
-voiceClips.onClip((key) => logAudio('clip', key));
-
 // How far the band drops while a voice line plays (1 = full volume).
 const VOICE_DUCK_LEVEL = 0.25;
 let voiceDuckToken = 0;
@@ -165,21 +137,19 @@ let voiceDuckToken = 0;
 /**
  * Speak one line. Recorded clip when the manifest has it, else Web Speech with
  * the frozen script text. Resolves when the line finishes (bounded).
+ *
+ * The "what was asked, and when" log lives entirely in shared/js/voice-clips.js
+ * now (QLOBE_DEBUG's getAudioLog points straight at it) — say()/sayFile() log
+ * unconditionally, muted or not, so this function no longer needs its own
+ * ring buffer or a `recorded` lookup just to feed one.
  */
 function say(key, fallback) {
   if (destroyed) return Promise.resolve();
-  const recorded = Boolean(voiceClips.clipInfo(key));
-  // onClip logs the recorded path when a clip actually starts; log the synth
-  // path here so the audio log carries exactly one truthful entry per line.
-  if (!recorded) logAudio('speech', key);
-  // Muted still logs. A smoke run mutes first (nobody wants 45 spoken lines in
-  // CI), and an audio log that goes empty the moment you mute cannot answer the
-  // question it exists for: did this line come from a recording or the synth?
-  if (muted) {
-    if (recorded) logAudio('clip', key);
-    return Promise.resolve();
-  }
   const text = fallback || LINES[key] || '';
+  // Muted still logs (voice-clips' own contract) but must not duck the band —
+  // there is nothing to duck under, and an unduck later would be a stray
+  // "restore" with no matching line.
+  if (voiceClips.isMuted()) return voiceClips.say(key, text);
   // The band sits back while the teacher talks: duck under the line, restore
   // when it resolves — unless a newer line (or stopVoice) took the bus over.
   const token = ++voiceDuckToken;
@@ -260,26 +230,40 @@ function musicStats() {
 
 // ---------------------------------------------------------------------- idle
 
-/** Re-prompt once per phase, never twice. Any gesture restarts the clock. */
-function armIdle(key, delay = IDLE_MS) {
-  if (idle.key !== key) idle = { key, timer: 0, fired: false };
-  clearTimeout(idle.timer);
-  if (idle.fired) return;
-  idle.timer = setTimeout(() => {
-    if (destroyed || idle.key !== key || idle.fired) return;
+/** Which phase the countdown below is currently reminding about, and whether
+ * that reminder has already fired once for it. */
+let idle = { key: null, fired: false };
+
+// "Still there?" on shared/js/idle-nudge.js's timer bookkeeping. This game's
+// own ladder is ONE rung, not idle-nudge's repeat: a phase gets reminded
+// once, never twice — a child re-shown the same copy prompt a third time in a
+// row is nagging, not helping. `nudger.stop()` inside onNudge is what makes
+// it one-shot; `armIdle()` below is what gives the NEXT phase a fresh chance.
+const nudger = createNudger({
+  first: IDLE_MS,
+  repeat: IDLE_MS,
+  onNudge: () => {
+    if (destroyed) return;
     idle.fired = true;
     say('nudge-idle');
-  }, Math.max(1000, delay * timeScale));
+    nudger.stop();
+  },
+});
+
+/** Re-prompt once per phase, never twice. Any gesture restarts the clock. */
+function armIdle(key) {
+  if (idle.key !== key) idle = { key, fired: false };
+  if (idle.fired) return;
+  nudger.arm();
 }
 
 function pokeIdle() {
-  if (!idle.key || idle.fired) return;
-  armIdle(idle.key);
+  nudger.poke(); // no-op once stopped, i.e. once this phase has already fired
 }
 
 function disarmIdle() {
-  clearTimeout(idle.timer);
-  idle = { key: null, timer: 0, fired: false };
+  nudger.stop();
+  idle = { key: null, fired: false };
 }
 
 // --------------------------------------------------------------------- stage
@@ -304,7 +288,7 @@ function showStage(visible) {
  */
 async function goto(name, opts = {}) {
   if (destroyed) return null;
-  clearTimers();
+  timerGroup.clearAll();
   disarmIdle();
   stopVoice();
   if (screen) {
@@ -380,7 +364,6 @@ const ctx = {
   collection,
   get reduced() { return reduced; },
   get muted() { return muted; },
-  get timeScale() { return timeScale; },
   get screenName() { return screenName; },
   get layer() { return els.layer; },
   get pending() { return pending; },
@@ -415,9 +398,16 @@ const ctx = {
 async function boot() {
   buildShell();
 
-  window.addEventListener('pointerdown', () => { unlockAudio(); pokeIdle(); }, { passive: true });
-  window.addEventListener('gesturestart', preventDefault);
-  window.addEventListener('contextmenu', preventDefault);
+  // The shared first-gesture unlock (shared/js/audio-unlock.js): fans out to
+  // sfx/speech/voice-clips (+ this game's music engine and instrument load,
+  // as extras) on the first pointerdown, and REOPENS the latch on
+  // visibilitychange/pageshow so a touch after an iPad app-switch genuinely
+  // re-unlocks instead of going silent (the story-stones stale-guard fix).
+  installUnlockOnGesture({ extra: unlockExtras });
+  installKioskGuards();
+  // Idle-poke is a separate concern from audio unlock — every pointerdown
+  // counts as "still here" regardless of which unlock latch is open.
+  window.addEventListener('pointerdown', () => pokeIdle(), { passive: true });
   window.addEventListener('pagehide', () => { stopSong(); stopVoice(); });
 
   // Both of these are absent until their production phase lands; voice-clips
@@ -435,21 +425,27 @@ async function boot() {
   installDebug(ctx, {
     get screen() { return screen; },
     get screenName() { return screenName; },
-    audioLog,
-    clearAudioLog() { audioLog.length = 0; },
+    timers: timerGroup,
+    onSeed(nextRng) { rng = nextRng; },
     setMuted(value) {
       muted = Boolean(value);
       music.setMuted(muted);
+      voiceClips.setMuted(muted);
       if (muted) stopVoice();
     },
-    setTimeScale(scale) { timeScale = clamp(Number(scale) || 1, 0.01, 1); },
-    seed,
     goto,
-    home() { window.location.href = '../../'; },
+    // Soft, in-page "back to splash" — deliberately NOT the real Home
+    // button's hard `../../` navigation (that stays exactly as it was, on
+    // els.home below). A debug hook that navigates the page away takes
+    // window.QLOBE_DEBUG with it, so a second seeded probe on the same page
+    // (QLOBE_DEBUG.seed(42) -> startMode() again, the way a QA driver proves
+    // determinism) finds no hook at all. That was the actual cause of this
+    // game's `seedDeterministic: false` in the pre-migration baseline — not
+    // the RNG. Fixed here; the LCG -> mulberry32 swap below is the other,
+    // independently-required half of the fix (cross-game seed comparability).
+    home() { goto('splash'); },
   });
 }
-
-function preventDefault(e) { e.preventDefault(); }
 
 /**
  * Which cultures have an assembled pose pack. A tiny index file (rather than

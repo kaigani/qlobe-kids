@@ -29,17 +29,13 @@
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
   <style>
-    /* The engine (js/game.js) injects its own stylesheet; this stays minimal. */
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #0c1622;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
+    /* The reset, @font-face and the HUD vocabulary come from the two shared
+       stylesheets above; the engine (js/game.js) injects the rest. */
+    :root { --qk-bg: #0c1622; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
   </style>
 </head>
 <body>

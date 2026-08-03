@@ -4,10 +4,7 @@ export default {
   title: 'Globe Spin Stories',
   splashEmoji: '🌍',
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Globe Story',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'Your globe story traveled to wonderful places!',

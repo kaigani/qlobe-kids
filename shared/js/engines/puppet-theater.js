@@ -43,6 +43,12 @@ import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
 import { onTap } from '../tap.js';
+import { mulberry32, shuffle } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 import { createStage } from '../stage/stage.js';
 import { createTheater } from '../stage/theater.js';
 import { createPuppet, loadRigArt } from '../stage/puppet.js';
@@ -52,11 +58,6 @@ import { artObj } from '../stage/art-pixi.js';
 import { loadPropPack, propRuntimeDefinition } from '../stage/prop-pack.js';
 import { loadScenePack, applyScenePack } from '../stage/scene-pack.js';
 
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const CHAR_BASE = new URL('../../characters/', import.meta.url);
 
 const IDLE_MS = 10000;
@@ -83,9 +84,9 @@ class PuppetTheaterGame {
     this.scenePack = null;
     this.mountEl = mountEl;
     this.destroyed = false;
-    this.previousDebug = window.QLOBE_DEBUG;
 
-    this.screen = 'splash';   // splash | cast | play | end
+    // The router owns "which screen is live"; `screen` below is a getter over it.
+    this.screens = null;      // splash | cast | play | end
     this.phase = null;        // setup | acting | judge | confirm | repair | celebrate
     this.mode = null;
     this.cast = [];           // [charId, charId] in pick order → roles a, b
@@ -132,6 +133,7 @@ class PuppetTheaterGame {
         applyScenePack(this.config, pack);
       }).catch(() => {}),
     ]).then(() => {});
+    this.buildShell();
     this.renderSplash();
     this.installDebugHook();
   }
@@ -146,12 +148,10 @@ class PuppetTheaterGame {
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.innerHTML = '';
     this.targetMap.clear();
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   // sfx/speech/voiceClips unlock (or resume, if iPadOS suspended the
@@ -163,15 +163,46 @@ class PuppetTheaterGame {
     voiceClips.unlock();
   }
 
-  // every screen rebuilds innerHTML, so its own back button needs rewiring
-  wireBackButton() {
-    const back = this.mountEl.querySelector('.qk-pt-back');
-    if (back) onTap(back, () => { voiceClips.stop(); this.renderSplash(); });
+  /** @returns {'splash'|'cast'|'play'|'end'} straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * Four persistent sections, toggled by `hidden`, instead of one mount whose
+   * innerHTML is thrown away on every transition. Each section keeps the exact
+   * class list it rendered with before, plus the shared `qk-eng-*` vocabulary
+   * from shared/css/engine-base.css.
+   */
+  buildShell() {
+    this.mountEl.innerHTML = `
+      <section class="qk-pt qk-pt-splash qk-eng-root qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title)}"></section>
+      <section class="qk-pt qk-pt-cast qk-eng-root qk-eng-surface qk-eng-page" hidden></section>
+      <section class="qk-pt qk-pt-play qk-eng-root qk-eng-surface" hidden></section>
+      <section class="qk-pt qk-pt-end qk-eng-root qk-eng-surface qk-eng-page" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-pt-splash'),
+        cast: this.mountEl.querySelector('.qk-pt-cast'),
+        play: this.mountEl.querySelector('.qk-pt-play'),
+        end: this.mountEl.querySelector('.qk-pt-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => { voiceClips.stop(); speech.stop(); } },
+    });
+  }
+
+  // each screen rebuilds its own innerHTML, so the back button is rewired at
+  // each render; the disposer rides that screen's own teardown bag.
+  wireBackButton(section) {
+    const back = section.querySelector('.qk-pt-back');
+    if (back) this.screens.hold(onTap(back, () => { voiceClips.stop(); this.renderSplash(); }));
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'puppet-theater',
       ready: this.ready,
@@ -188,8 +219,18 @@ class PuppetTheaterGame {
       skipToChoice: () => { if (this.theater) this.theater.timeScale = 24; },
       setCast: (ids) => { this.cast = (ids || []).slice(0, 2); },
       _theater: () => this.theater,   // internal: automation/QA inspection only
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      // The engine already owns a working time scale (theater.timeScale, driven
+      // by setTimeScale + effectiveTimeScale), so fastTimers() is routed into it
+      // rather than half-adopting timers.js beside it. Accepts either dialect:
+      // 0.05 (duration multiplier) or 20 (speed factor).
+      fastTimers: (scale = 0.05) => {
+        const n = Number(scale);
+        const raw = Number.isFinite(n) && n > 0 ? (n > 1 ? 1 / n : n) : 0.05;
+        const multiplier = Math.min(1, Math.max(0.01, raw));
+        this.setTimeScale(1 / multiplier);
+        return multiplier;
+      },
+    });
   }
 
   // --- splash -------------------------------------------------------------------
@@ -197,7 +238,6 @@ class PuppetTheaterGame {
   renderSplash() {
     this.clearIdleTimer();
     this.disposeStage();
-    this.screen = 'splash';
     this.phase = null;
     this.mode = null;
     this.awaitingInput = false;
@@ -206,38 +246,62 @@ class PuppetTheaterGame {
     voiceClips.stop();
     speech.stop();
 
-    const buttons = this.config.modes.map((mode) => `
-      <button class="qk-pt-mode" type="button" data-mode="${escapeAttr(mode.id)}"
-              aria-label="${escapeAttr(`${mode.title}: ${mode.menuHint || 'Kind ideas'}`)}">
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would run
+    // neither the disposer bag nor voice.stop(), so release it by hand first.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      ${menuBackdropMarkup(this.config)}
+      <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
+      <div class="qk-pt-mascot-stage" aria-hidden="true"></div>
+      <a class="qk-pt-home qk-pt-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+      <div class="qk-pt-splash-center">
+        <div class="qk-pt-logo" aria-label="${escapeAttr(this.config.title)}">${titleMarkup(this.config.title)}</div>
+        <div class="qk-pt-menu-prompt">${escapeHtml(this.config.menu?.prompt || 'Choose a story')}</div>
+        <div class="qk-pt-mode-list"></div>
+        <p class="qk-pt-menu-helper">${escapeHtml(this.config.menu?.helper || 'Pick a story for the puppets!')}</p>
+      </div>
+    `;
+
+    const picker = renderModeCards({
+      host: splash.querySelector('.qk-pt-mode-list'),
+      modes: this.config.modes,
+      // The engine paints its own cards, so screens.css's card skin stays off.
+      skin: false,
+      cardClass: 'qk-pt-mode',
+      showTitle: false,
+      // getTargets() reads this engine's own target map, never the DOM, so a
+      // data-target on the cards would be inert — leaving it off keeps the
+      // splash's target set provably unchanged.
+      targetPrefix: null,
+      label: (mode) => `${mode.title}: ${mode.menuHint || 'Kind ideas'}`,
+      decorate: (btn, mode) => {
+        // The engine's card is art + title + hint, so it is rebuilt here rather
+        // than by mode-select's default title span. Every class is preserved.
+        btn.replaceChildren();
+        btn.insertAdjacentHTML('beforeend', `
         <span class="qk-pt-mode-art" aria-hidden="true">
-          ${mode.menuArt ? `<img src="${escapeAttr(mode.menuArt)}" alt="" draggable="false" />` : `<span>${escapeHtml(mode.emoji || '⭐')}</span>`}
+          ${mode.menuArt ? `<img src="${escapeAttr(mode.menuArt)}" alt="" draggable="false" />` : `<span>${escapeHtml(mode.emoji || '\u2b50')}</span>`}
         </span>
         <span class="qk-pt-mode-copy">
           <span class="qk-pt-mode-title">${escapeHtml(mode.title)}</span>
           <span class="qk-pt-mode-hint">${escapeHtml(mode.menuHint || 'Kind ideas')}</span>
         </span>
-      </button>
-    `).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-pt qk-pt-splash" aria-label="${escapeAttr(this.config.title)}">
-        ${menuBackdropMarkup(this.config)}
-        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
-        <div class="qk-pt-mascot-stage" aria-hidden="true"></div>
-        <a class="qk-pt-home qk-pt-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
-        <div class="qk-pt-splash-center">
-          <div class="qk-pt-logo" aria-label="${escapeAttr(this.config.title)}">${titleMarkup(this.config.title)}</div>
-          <div class="qk-pt-menu-prompt">${escapeHtml(this.config.menu?.prompt || 'Choose a story')}</div>
-          <div class="qk-pt-mode-list">${buttons}</div>
-          <p class="qk-pt-menu-helper">${escapeHtml(this.config.menu?.helper || 'Pick a story for the puppets!')}</p>
-        </div>
-      </section>
-    `;
-
-    this.mountEl.querySelectorAll('.qk-pt-mode').forEach((button) => {
-      onTap(button, () => this.startMode(button.dataset.mode), {
-        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
-      });
+      `);
+      },
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      onPick: (id) => this.startMode(id),
     });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-pt-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
 
     this.bootMascots();
   }
@@ -246,7 +310,7 @@ class PuppetTheaterGame {
   // taking an occasional friendly wave. Pure decoration (pointer-events: none).
   async bootMascots() {
     const ids = (this.config.menu?.mascots || []).slice(0, 2);
-    const host = this.mountEl.querySelector('.qk-pt-mascot-stage');
+    const host = this.screens.el('splash').querySelector('.qk-pt-mascot-stage');
     if (!ids.length || !host) return;
     const generation = ++this.mascotGeneration;
     let stage;
@@ -317,7 +381,6 @@ class PuppetTheaterGame {
   // --- cast picker -----------------------------------------------------------------
 
   renderCastScreen(mode) {
-    this.screen = 'cast';
     this.pendingCast = [];
     const heads = this.config.cast.map((id) => `
       <button class="qk-pt-puppet" type="button" data-char="${escapeAttr(id)}" aria-label="${escapeAttr(id)}">
@@ -331,12 +394,14 @@ class PuppetTheaterGame {
       </button>
     `).join('');
 
-    this.mountEl.innerHTML = `
-      <section class="qk-pt qk-pt-cast" aria-label="${escapeAttr(this.config.copy.castPrompt)}">
-        ${menuBackdropMarkup(this.config)}
-        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
-        <button class="qk-pt-back qk-pt-img-btn" type="button" aria-label="Back to the game menu"></button>
-        <div class="qk-pt-cast-center">
+    const cast = this.screens.el('cast');
+    cast.setAttribute('aria-label', this.config.copy.castPrompt);
+    this.screens.release('cast');
+    cast.innerHTML = `
+      ${menuBackdropMarkup(this.config)}
+      <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
+      <button class="qk-pt-back qk-pt-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+      <div class="qk-pt-cast-center">
           <div class="qk-pt-cast-title">
             <span class="qk-pt-cast-kicker">${escapeHtml(mode?.title || 'Puppet show')}</span>
             <h1>${escapeHtml(this.config.copy.castPrompt)}</h1>
@@ -346,43 +411,49 @@ class PuppetTheaterGame {
           </div>
           <p class="qk-pt-cast-status" aria-live="polite">Choose your first puppet</p>
           <div class="qk-pt-cast-grid">${heads}</div>
-        </div>
-      </section>
+      </div>
     `;
+    this.screens.show('cast');
 
-    this.wireBackButton();
+    this.wireBackButton(cast);
     this.speakNarr('cast-prompt', this.config.voice.castPrompt);
 
     return new Promise((resolve) => {
-      this.mountEl.querySelectorAll('.qk-pt-puppet').forEach((button) => {
-        onTap(button, async () => {
+      // Leaving the cast screen resolves the picker to `false`. Without this the
+      // promise never settles, and since startMode now runs inside
+      // `screens.start()` an unsettled runner would hold the re-entrancy latch
+      // for the rest of the session — locking the child out of every mode. The
+      // disposer bag is what guarantees it settles on the way out.
+      this.screens.hold(() => resolve(false));
+      cast.querySelectorAll('.qk-pt-puppet').forEach((button) => {
+        this.screens.hold(onTap(button, async () => {
           if (this.screen !== 'cast') return;
           const id = button.dataset.char;
           if (this.pendingCast.includes(id)) return;
           this.pendingCast.push(id);
           button.classList.add('is-picked');
           button.querySelector('.qk-pt-pick-badge').textContent = this.pendingCast.length;
-          const firstStep = this.mountEl.querySelector('[data-cast-step="1"]');
-          const secondStep = this.mountEl.querySelector('[data-cast-step="2"]');
+          const firstStep = cast.querySelector('[data-cast-step="1"]');
+          const secondStep = cast.querySelector('[data-cast-step="2"]');
           firstStep.classList.add('is-filled'); firstStep.classList.remove('is-current');
           if (this.pendingCast.length === 1) {
             secondStep.classList.add('is-current');
-            this.mountEl.querySelector('.qk-pt-cast-status').textContent = 'Great! Now choose their friend';
+            cast.querySelector('.qk-pt-cast-status').textContent = 'Great! Now choose their friend';
           } else {
             secondStep.classList.add('is-filled'); secondStep.classList.remove('is-current');
-            this.mountEl.querySelector('.qk-pt-cast-status').textContent = 'Your puppet stars are ready!';
+            cast.querySelector('.qk-pt-cast-status').textContent = 'Your puppet stars are ready!';
           }
           this.playSfx('pop');
           // each pick says hello in its own recorded voice (existing intro line)
           this.playIntro(id);
           if (this.pendingCast.length >= 2) {
-            this.mountEl.querySelectorAll('.qk-pt-puppet').forEach((b) => { b.disabled = true; });
+            cast.querySelectorAll('.qk-pt-puppet').forEach((b) => { b.disabled = true; });
             await this.delay(this.muted ? 50 : 900);
             if (this.destroyed || this.screen !== 'cast') return;
             this.cast = this.pendingCast.slice(0, 2);
             resolve(true);
           }
-        }, { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } });
+        }, { feedback: (e) => { e.preventDefault(); this.unlockAudio(); } }));
       });
     });
   }
@@ -408,6 +479,12 @@ class PuppetTheaterGame {
     const mode = this.config.modes.find((m) => m.id === modeId) || this.config.modes[0];
     if (!mode) return;
 
+    // The double-tap latch: a second card press while the first start is still
+    // in flight is swallowed rather than running the cast picker twice.
+    return this.screens.start(() => this.runMode(mode, autoCast));
+  }
+
+  async runMode(mode, autoCast) {
     this.clearIdleTimer();
     voiceClips.stop();
     speech.stop();
@@ -424,7 +501,6 @@ class PuppetTheaterGame {
     }
 
     this.disposeStage();
-    this.screen = 'play';
     this.phase = 'setup';
     this.roundIndex = 0;
     this.yumIndex = 0;
@@ -458,23 +534,27 @@ class PuppetTheaterGame {
       <span class="qk-pt-dot" data-dot="${i}" aria-hidden="true"></span>
     `).join('');
 
-    this.mountEl.innerHTML = `
-      <section class="qk-pt qk-pt-play" aria-label="${escapeAttr(this.mode.title)}">
-        <header class="qk-pt-hud">
-          <button class="qk-pt-back qk-pt-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-pt-progress" aria-hidden="true">${dots}</div>
-        </header>
-        <main class="qk-pt-stagehost" aria-label="${escapeAttr(this.mode.title)}"></main>
-        <button class="qk-pt-sound qk-pt-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
-      </section>
+    const play = this.screens.el('play');
+    // Restarting a mode re-renders in place, and show() is idempotent — release
+    // the live tap handlers before the DOM under them goes.
+    this.screens.release('play');
+    play.setAttribute('aria-label', this.mode.title);
+    play.innerHTML = `
+      <header class="qk-pt-hud">
+        <button class="qk-pt-back qk-pt-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-pt-progress" aria-hidden="true">${dots}</div>
+      </header>
+      <main class="qk-pt-stagehost" aria-label="${escapeAttr(this.mode.title)}"></main>
+      <button class="qk-pt-sound qk-pt-img-btn qk-eng-img-btn qk-eng-ico-sound" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
     `;
-    this.wireBackButton();
-    const sound = this.mountEl.querySelector('.qk-pt-sound');
+    this.screens.show('play');
+    this.wireBackButton(play);
+    const sound = play.querySelector('.qk-pt-sound');
     onTap(sound, () => this.replayFromHud(), { feedback: (e) => e.stopPropagation() });
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-pt-stagehost');
+    const host = this.screens.el('play').querySelector('.qk-pt-stagehost');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -787,7 +867,6 @@ class PuppetTheaterGame {
 
   async finishGame() {
     this.clearIdleTimer();
-    this.screen = 'end';
     this.phase = null;
     this.awaitingInput = false;
     this.inputLocked = false;
@@ -799,30 +878,38 @@ class PuppetTheaterGame {
            onerror="this.onerror=null;this.src='${escapeAttr(new URL(`${id}/parts/head.png`, CHAR_BASE).href)}'"
            alt="${escapeAttr(characterName(id))}" draggable="false" />
     `).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-pt qk-pt-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        ${menuBackdropMarkup(this.config)}
-        <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
-        <button class="qk-pt-back qk-pt-img-btn" type="button" aria-label="Back to the game menu"></button>
-        <div class="qk-pt-end-center">
-          <div class="qk-pt-finale-stars">${stars}</div>
-          <div class="qk-pt-finale-badge" aria-hidden="true">★</div>
-          <h1>${escapeHtml(this.config.voice.cheer)}</h1>
-          <p>Three problems solved with kind ideas!</p>
-          <button class="qk-pt-again" type="button">
-            <span class="qk-pt-play-icon" aria-hidden="true"></span>
-            <span>${escapeHtml(this.config.copy.playAgain)}</span>
-          </button>
-        </div>
-      </section>
+    const end = this.screens.el('end');
+    end.setAttribute('aria-label', this.config.voice.cheer);
+    this.screens.release('end');
+    end.innerHTML = `
+      ${menuBackdropMarkup(this.config)}
+      <div class="qk-pt-menu-scrim" aria-hidden="true"></div>
+      <button class="qk-pt-back qk-pt-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+      <div class="qk-pt-end-center">
+        <div class="qk-pt-finale-stars">${stars}</div>
+        <div class="qk-pt-finale-badge" aria-hidden="true">★</div>
+        <h1>${escapeHtml(this.config.voice.cheer)}</h1>
+        <p>Three problems solved with kind ideas!</p>
+        <button class="qk-pt-again" type="button">
+          <span class="qk-pt-play-icon qk-eng-play-icon" aria-hidden="true"></span>
+          <span>${escapeHtml(this.config.copy.playAgain)}</span>
+        </button>
+      </div>
     `;
-    this.wireBackButton();
-    const again = this.mountEl.querySelector('.qk-pt-again');
-    onTap(again, () => {
-      this.cast = [];                       // fresh show, fresh casting
-      if (this.mode) this.startMode(this.mode.id);
-      else this.renderSplash();
-    }, { feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); } });
+    // `silent`: the cheer line is spoken below, and the router's voice.stop()
+    // would cut off whatever is still playing — which never happened before.
+    this.screens.show('end', { silent: true });
+    this.wireBackButton(end);
+    wireEndScreen({
+      screens: this.screens,
+      again: end.querySelector('.qk-pt-again'),
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      onAgain: () => {
+        this.cast = [];                       // fresh show, fresh casting
+        if (this.mode) this.startMode(this.mode.id);
+        else this.renderSplash();
+      },
+    });
     this.speakNarr('cheer', this.config.voice.cheer);
   }
 
@@ -869,7 +956,7 @@ class PuppetTheaterGame {
   }
 
   updateDots() {
-    this.mountEl.querySelectorAll('.qk-pt-dot').forEach((dot, index) => {
+    this.screens.el('play').querySelectorAll('.qk-pt-dot').forEach((dot, index) => {
       dot.classList.toggle('is-filled', index < this.roundIndex);
       dot.classList.toggle('is-current', index === this.roundIndex);
     });
@@ -1049,23 +1136,7 @@ function actedBeats(resolution) {
   return { beats, finale: null };
 }
 
-function shuffle(list, rng) {
-  for (let i = list.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [list[i], list[j]] = [list[j], list[i]];
-  }
-  return list;
-}
 
-function mulberry32(seed) {
-  let t = seed >>> 0;
-  return function random() {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 function menuBackdropMarkup(config) {
   const src = config.menu && config.menu.backdrop;
@@ -1082,30 +1153,17 @@ function characterName(id) {
   return String(id || '').split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (ch) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[ch]));
-}
-function escapeAttr(value) { return escapeHtml(value); }
-
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-pt-style')) {
-    styleInstalled = true;
-    return;
-  }
-  const style = document.createElement('style');
-  style.id = 'qk-pt-style';
-  style.textContent = `
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('${FONT_URL}') format('woff2');
-      font-weight: 600;
-      font-style: normal;
-      font-display: swap;
-    }
+  if (styleInstalled) return;
+  styleInstalled = true;
+  installEngineStyles('qk-pt-style', `
+    /* puppet-theater's own skin — a four-screen puppet show, so most of it is
+       genuinely this engine's. The @font-face, the reset, the surface, the
+       centred bookend page, the 96px PNG buttons and their artwork now come from
+       shared/css/engine-base.css.
 
-    .qk-pt, .qk-pt * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+       The .qk-pt-* class names are unchanged and stay supported — see the
+       compatibility window note in shared/js/engines/README.md. */
     .qk-pt {
       --navy: #17517e;
       --blue: #2d7dd2;
@@ -1114,54 +1172,20 @@ function installStyle() {
       --peach: #ffad7a;
       --white: #ffffff;
       --shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
-      position: relative;
-      height: 100dvh;
-      min-height: 100%;
-      width: 100%;
-      overflow: hidden;
-      color: var(--navy);
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
-      font-weight: 600;
-      background-color: #bee3f5;
-      background-image:
+
+      /* Alias, don't hard-code: a game skin that redefines --navy or --shadow
+         under #game must keep reaching every shared rule. */
+      --qk-navy: var(--navy);
+      --qk-white: var(--white);
+      --qk-primary: var(--purple);
+      --qk-shadow: var(--shadow);
+      --qk-eng-corner-z: 6;
+
+      --qk-eng-bg-image:
         radial-gradient(circle at 18% 18%, rgba(255,255,255,.45) 0 7px, transparent 8px),
         radial-gradient(circle at 72% 22%, rgba(255,255,255,.38) 0 10px, transparent 11px),
         radial-gradient(circle at 42% 82%, rgba(255,255,255,.30) 0 8px, transparent 9px);
-      background-size: 170px 170px, 240px 240px, 210px 210px;
-      touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-      overscroll-behavior: none;
-    }
-
-    .qk-pt button, .qk-pt a { font: inherit; color: inherit; touch-action: manipulation; }
-    .qk-pt button { border: 0; cursor: pointer; }
-    .qk-pt button:focus-visible, .qk-pt a:focus-visible {
-      outline: 5px solid rgba(45, 125, 210, .65);
-      outline-offset: 4px;
-    }
-
-    .qk-pt-img-btn {
-      display: grid;
-      place-items: center;
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: transparent center / 84px 84px no-repeat;
-      text-decoration: none;
-      box-shadow: none;
-    }
-    .qk-pt-img-btn:active { transform: scale(.93); }
-    .qk-pt-home { background-image: url('${HOME_IMG}'); }
-    .qk-pt-back { background-image: url('${BACK_IMG}'); }
-    .qk-pt-sound { background-image: url('${SOUND_IMG}'); }
-
-    .qk-pt-splash, .qk-pt-cast, .qk-pt-end {
-      display: grid;
-      place-items: center;
-      padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
-        max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+      --qk-eng-bg-size: 170px 170px, 240px 240px, 210px 210px;
     }
     .qk-pt-menu-backdrop {
       position: absolute;
@@ -1191,12 +1215,6 @@ function installStyle() {
       width: 100%;
       height: 100%;
       pointer-events: none;
-    }
-    .qk-pt-home, .qk-pt-back {
-      position: absolute;
-      top: max(12px, env(safe-area-inset-top));
-      left: max(12px, env(safe-area-inset-left));
-      z-index: 6;
     }
 
     .qk-pt-splash-center, .qk-pt-cast-center, .qk-pt-end-center {
@@ -1463,12 +1481,6 @@ function installStyle() {
       background: linear-gradient(#31a9ef, #0878cb);
       font-size: clamp(24px, 3.5vmin, 38px);
     }
-    .qk-pt-play-icon {
-      display: block;
-      width: 72px; height: 72px;
-      background: transparent url('${PLAY_IMG}') center / contain no-repeat;
-    }
-
     .qk-pt-end-center {
       width: min(720px, 94%);
       padding: clamp(24px, 5vmin, 52px);
@@ -1510,7 +1522,5 @@ function installStyle() {
     @media (prefers-reduced-motion: reduce) {
       .qk-pt * { transition: none !important; animation: none !important; }
     }
-  `;
-  document.head.appendChild(style);
-  styleInstalled = true;
+  `);
 }

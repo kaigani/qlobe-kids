@@ -6,13 +6,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
-  <title>Word Train 🚂 — Sound Cars & Word Blending</title>
+  <title>Word Train 🚂 — Sound Cars &amp; Word Blending</title>
   <meta name="description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Word Train" />
-  <meta property="og:title" content="Word Train 🚂 — Sound Cars & Word Blending" />
+  <meta property="og:title" content="Word Train 🚂 — Sound Cars &amp; Word Blending" />
   <meta property="og:description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/blend-train/" />
   <meta property="og:image" content="https://qlo.be/games/blend-train/assets/og-image.jpg" />
@@ -23,30 +23,17 @@
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Word Train 🚂 — Sound Cars & Word Blending" />
+  <meta name="twitter:title" content="Word Train 🚂 — Sound Cars &amp; Word Blending" />
   <meta name="twitter:description" content="Push sound cars together on the track, hear each sound spoken by the teacher voice, then hear the whole train blend into a word. A playful phonics ride for ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/blend-train/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
-    /* Stub games share the engine's built-in styles; this page only mounts it. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    #game { min-height: 100dvh; }
+    :root { --qk-bg: #bee3f5; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+    #game { height: auto; min-height: 100dvh; }
   </style>
   <!-- Game-local styling. The engine injects its shared stylesheet at runtime, so this
        link lands earlier in the cascade; every rule inside is scoped under #game so it

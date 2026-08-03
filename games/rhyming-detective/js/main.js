@@ -9,6 +9,7 @@ import config from '../config.js';
 import * as rawSfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import * as voice from './voice.js';
 import { createPlayfield, createDeck } from './game.js';
 
@@ -821,8 +822,7 @@ async function winRound() {
   return state.screen === 'celebration';
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   engine: 'rhyming-detective (game-local js/game.js + shared/js/hotspot-scene.js)',
   ready,
@@ -853,6 +853,8 @@ window.QLOBE_DEBUG = {
   tap: debugTap,
   winRound,
 
+  // Our own, not the harness default: `state.muted` also gates the sfx facade
+  // above (sfx.js has no gain export, so the mute happens at the call site).
   mute(value = true) {
     state.muted = Boolean(value);
     voice.setMuted(state.muted);
@@ -893,7 +895,7 @@ window.QLOBE_DEBUG = {
     reserves: reserves().map((r) => ({ x: r.x, y: r.y, width: r.width, height: r.height })),
   }),
 
-  getAudioLog: () => voice.getLog(),
-  clearAudioLog: () => voice.clearLog(),
+  getAudioLog: voice.getAudioLog,
+  clearAudioLog: voice.clearAudioLog,
   nextCase,
-};
+});

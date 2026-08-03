@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Song Story Remix',
   splashEmoji: '🎤',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Let us remix a song story! Listen for the silly singer, then tap the card.',
     nudge: 'That one makes a funny song too. Listen again and tap this singer.',

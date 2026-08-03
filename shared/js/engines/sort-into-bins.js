@@ -8,16 +8,17 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
+import { mulberry32, shuffle } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { createTimers } from '../timers.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
-
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
@@ -45,10 +46,16 @@ class SortIntoBinsGame {
     this.config = normalizeConfig(config);
     this.mountEl = mountEl;
     this.id = ++debugOwner;
-    this.previousDebug = window.QLOBE_DEBUG;
+    // The engine keeps its own delay registry (clearDelays() RESOLVES pending
+    // waits so an awaiting flow finishes instead of stalling -- timers.js
+    // clearAll() deliberately does the opposite). The group is here purely as
+    // the scale holder `fastTimers()` turns, read back through `timers.ms()`.
+    this.timers = createTimers();
     this.destroyed = false;
 
-    this.screen = 'splash';
+    // The screen router owns "which screen is live" — this.screen is a getter
+    // over it, never a second copy of the fact (docs/shared-platform-refactor.md §4a).
+    this.screens = null;
     this.mode = null;
     this.roundIndex = 0;
     this.roundsTotal = 0;
@@ -128,9 +135,39 @@ class SortIntoBinsGame {
         }
       },
     });
+    this.buildShell();
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
+  }
+
+  /** @returns {'splash'|'play'|'end'} the live screen, straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * The three screens, built once and toggled by the router, instead of one
+   * mount whose innerHTML is thrown away on every transition. Each section
+   * keeps the exact class list it rendered with before, plus the shared
+   * `qk-eng-*` vocabulary from shared/css/engine-base.css.
+   */
+  buildShell() {
+    this.mountEl.innerHTML = `
+      <section class="qk-sort qk-sort-splash qk-eng-root qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title)}"></section>
+      <section class="qk-sort qk-sort-play qk-eng-root qk-eng-surface qk-eng-play" hidden></section>
+      <section class="qk-sort qk-sort-end qk-eng-root qk-eng-surface qk-eng-page" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-sort-splash'),
+        play: this.mountEl.querySelector('.qk-sort-play'),
+        end: this.mountEl.querySelector('.qk-sort-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => speech.stop() },
+    });
   }
 
   destroy() {
@@ -148,12 +185,10 @@ class SortIntoBinsGame {
     // the mount outlives this instance — leaving the delegated tap on it would let
     // a destroyed game answer the next one's back button
     if (this.removeBackTap) { this.removeBackTap(); this.removeBackTap = null; }
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.replaceChildren();
     this.targetMap.clear();
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   unlockAudio() {
@@ -164,8 +199,7 @@ class SortIntoBinsGame {
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'sort-into-bins',
       ready: this.ready,
@@ -177,8 +211,8 @@ class SortIntoBinsGame {
       winRound: () => this.winRound(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      timers: this.timers,
+    });
   }
 
   renderSplash() {
@@ -186,7 +220,6 @@ class SortIntoBinsGame {
     this.removeDragListeners();
     this.activeDrag = null;
     this.disposeStage();
-    this.screen = 'splash';
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
@@ -194,37 +227,46 @@ class SortIntoBinsGame {
     this.targetMap.clear();
     speech.stop();
 
-    const buttons = this.config.modes.map((mode) => `
-      <button class="qk-sort-mode" type="button" data-mode="${escapeAttr(mode.id)}">
-        ${escapeHtml(mode.title || mode.id)}
-      </button>
-    `).join('');
-
-    this.mountEl.innerHTML = `
-      <section class="qk-sort qk-sort-splash" aria-label="${escapeAttr(this.config.title)}">
-        <a class="qk-sort-img-btn qk-sort-home" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
-        <div class="qk-sort-splash-center">
-          <div class="qk-sort-splash-art" aria-hidden="true">${escapeHtml(splashGlyph(this.config.splashArt))}</div>
-          <h1>${escapeHtml(this.config.title)}</h1>
-          <div class="qk-sort-mode-list">${buttons}</div>
-        </div>
-      </section>
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would not
+    // run its bag, so release it by hand before the markup underneath changes.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      <a class="qk-sort-home qk-sort-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+      <div class="qk-sort-splash-center qk-eng-center">
+        <div class="qk-sort-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(splashGlyph(this.config.splashArt))}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
+        <div class="qk-sort-mode-list qk-eng-mode-list"></div>
+      </div>
     `;
+    this.applyThemeBackdrop(splash);
 
-    this.applyThemeBackdrop();
-
-    this.mountEl.querySelectorAll('.qk-sort-mode').forEach((button) => {
-      onTap(button, () => this.startMode(button.dataset.mode), {
-        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
-      });
+    const picker = renderModeCards({
+      host: splash.querySelector('.qk-sort-mode-list'),
+      modes: this.config.modes,
+      // The engine paints its own cards (engine-base.css `.qk-eng-mode`), so the
+      // screens.css card skin stays off — `skin: false` is what keeps every pixel.
+      skin: false,
+      cardClass: 'qk-sort-mode qk-eng-mode',
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      onPick: (id) => this.startMode(id),
     });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-sort-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
   }
 
   /** Art-world backdrop (docs/art-direction.md): theme.background paints the
    *  whole section via CSS cover — the Pixi canvas is transparent above it. */
-  applyThemeBackdrop() {
+  applyThemeBackdrop(section) {
     const theme = this.config.theme;
-    const section = this.mountEl.querySelector('.qk-sort');
     if (!theme || !theme.background || !section) return;
     const ref = String(theme.background);
     const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
@@ -238,13 +280,18 @@ class SortIntoBinsGame {
     const mode = this.config.modes.find((item) => item.id === modeId) || this.config.modes[0];
     if (!mode) return;
 
+    // The double-tap latch: a second card press while the first start is still
+    // in flight is swallowed rather than running the whole teardown+render twice.
+    return this.screens.start(() => this.runMode(mode));
+  }
+
+  async runMode(mode) {
     this.clearIdleTimer();
     this.removeDragListeners();
     this.activeDrag = null;
     this.disposeStage();
     speech.stop();
     this.mode = mode;
-    this.screen = 'play';
     this.roundIndex = 0;
     this.roundsTotal = Math.max(1, mode.rounds);
     this.correctPlacements = 0;
@@ -260,30 +307,34 @@ class SortIntoBinsGame {
 
   renderPlayShell() {
     const dots = Array.from({ length: this.roundsTotal }, () => (
-      '<span class="qk-sort-dot" aria-hidden="true"></span>'
+      '<span class="qk-sort-dot qk-eng-dot" aria-hidden="true"></span>'
     )).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-sort qk-sort-play" aria-label="${escapeAttr(this.mode.title || this.config.title)}">
-        <header class="qk-sort-hud">
-          <button class="qk-sort-back qk-sort-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-sort-progress" aria-hidden="true">${dots}</div>
-        </header>
-        <main class="qk-sort-stage">
-          <div class="qk-sort-canvas" aria-label="${escapeAttr(this.mode.prompt || this.mode.title)}"></div>
-        </main>
-        <button class="qk-sort-img-btn qk-sort-sound" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
-      </section>
+    const play = this.screens.el('play');
+    // Restarting a mode from the play screen re-renders in place, and show() is
+    // idempotent — release the live tap handlers before the DOM under them goes.
+    this.screens.release('play');
+    play.setAttribute('aria-label', this.mode.title || this.config.title);
+    play.innerHTML = `
+      <header class="qk-sort-hud qk-eng-hud">
+        <button class="qk-sort-back qk-sort-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-sort-progress qk-eng-pill-wrap" aria-hidden="true">${dots}</div>
+      </header>
+      <main class="qk-sort-stage qk-eng-stage">
+        <div class="qk-sort-canvas qk-eng-canvas" aria-label="${escapeAttr(this.mode.prompt || this.mode.title)}"></div>
+      </main>
+      <button class="qk-sort-img-btn qk-sort-sound qk-eng-img-btn qk-eng-ico-sound qk-eng-corner-bl" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
     `;
-    this.applyThemeBackdrop();
+    this.screens.show('play');
+    this.applyThemeBackdrop(play);
     // .qk-sort-back is handled by the delegated onTap wired in the constructor
-    const sound = this.mountEl.querySelector('.qk-sort-sound');
-    onTap(sound, () => this.replayPromptFromHud(), {
+    const sound = play.querySelector('.qk-sort-sound');
+    this.screens.hold(onTap(sound, () => this.replayPromptFromHud(), {
       feedback: (e) => { e.preventDefault(); e.stopPropagation(); this.unlockAudio(); },
-    });
+    }));
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-sort-canvas');
+    const host = this.screens.el('play').querySelector('.qk-sort-canvas');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -1013,32 +1064,49 @@ class SortIntoBinsGame {
     this.clearIdleTimer();
     this.removeDragListeners();
     this.activeDrag = null;
-    this.screen = 'end';
     this.awaitingInput = false;
     this.inputLocked = false;
     this.selected = false;
     this.targetMap.clear();
+    // Leave 'play' before the stage goes: everything that guards on
+    // `screen === 'play'` used to see the flag flip here, and the router is now
+    // the only place that fact lives.
+    const end = this.screens.el('end');
+    end.setAttribute('aria-label', this.config.voice.cheer);
+    this.screens.release('end');
+    this.screens.show('end', { silent: true });
     this.playSfx('tada');
     this.disposeStage();
-    this.mountEl.innerHTML = `
-      <section class="qk-sort qk-sort-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <button class="qk-sort-back qk-sort-img-btn" type="button" aria-label="Back to the game menu"></button>
-        <div class="qk-sort-end-center">
-          <div class="qk-sort-end-art" aria-hidden="true">${escapeHtml(splashGlyph(this.config.endArt || this.config.splashArt))}</div>
-          <h1>${escapeHtml(this.config.voice.cheer)}</h1>
-          <button class="qk-sort-again" type="button">
-            <span class="qk-sort-play-icon" aria-hidden="true"></span>
-            <span>${escapeHtml(this.config.copy.playAgain)}</span>
-          </button>
-        </div>
-      </section>
-    `;
-    const again = this.mountEl.querySelector('.qk-sort-again');
-    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
-      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
-    });
-    this.createDomBurst(this.mountEl.querySelector('.qk-sort-end-art'), 34);
+    this.renderEnd(end);
     await this.speakLine(this.config.voice.cheer, true);
+  }
+
+  renderEnd(end) {
+    end.innerHTML = `
+      <button class="qk-sort-back qk-sort-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+      <div class="qk-sort-end-center qk-eng-center">
+        <div class="qk-sort-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(splashGlyph(this.config.endArt || this.config.splashArt))}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
+        <button class="qk-sort-again qk-eng-mode" type="button">
+          <span class="qk-sort-play-icon qk-eng-play-icon" aria-hidden="true"></span>
+          <span>${escapeHtml(this.config.copy.playAgain)}</span>
+        </button>
+      </div>
+    `;
+    // `.qk-sort-back` is handled by the delegated onTap wired in the constructor
+    // (it already covers every screen), so only "again" is wired here.
+    // wireEndScreen rather than a bare onTap: it is what enforces the §8
+    // navigation rule (back and "choose another" share one destination, and a
+    // back that is really a link out gets caught), and it puts its own disposer
+    // on this screen's bag — `hold` defaults to true, which is right for an
+    // engine that rebuilds and so rewires the end screen on every visit.
+    wireEndScreen({
+      screens: this.screens,
+      again: end.querySelector('.qk-sort-again'),
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      onAgain: () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()),
+    });
+    this.createDomBurst(end.querySelector('.qk-sort-end-art'), 34, end);
   }
 
   replayPromptFromHud() {
@@ -1082,7 +1150,7 @@ class SortIntoBinsGame {
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
       this.replayPrompt();
-    }, IDLE_MS);
+    }, this.timers.ms(IDLE_MS));
   }
 
   clearIdleTimer() {
@@ -1092,15 +1160,14 @@ class SortIntoBinsGame {
   }
 
   updateDots() {
-    this.mountEl.querySelectorAll('.qk-sort-dot').forEach((dot, index) => {
+    this.screens.el('play').querySelectorAll('.qk-sort-dot').forEach((dot, index) => {
       dot.classList.toggle('is-filled', index < this.roundIndex);
       dot.classList.toggle('is-current', index === this.roundIndex);
     });
   }
 
-  createDomBurst(anchor, count) {
-    if (!anchor || this.reducedMotion()) return;
-    const host = this.mountEl.querySelector('.qk-sort') || this.mountEl;
+  createDomBurst(anchor, count, host) {
+    if (!anchor || this.reducedMotion() || !host) return;
     const hostRect = host.getBoundingClientRect();
     const rect = anchor.getBoundingClientRect();
     const burstEl = document.createElement('div');
@@ -1255,7 +1322,7 @@ class SortIntoBinsGame {
   delay(ms) {
     return new Promise((resolve) => {
       const entry = { timer: 0, resolve };
-      entry.timer = window.setTimeout(() => { this.pendingDelays.delete(entry); resolve(); }, ms);
+      entry.timer = window.setTimeout(() => { this.pendingDelays.delete(entry); resolve(); }, this.timers.ms(ms));
       this.pendingDelays.add(entry);
     });
   }
@@ -1341,33 +1408,8 @@ function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
-function shuffle(list, rng) {
-  for (let i = list.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [list[i], list[j]] = [list[j], list[i]];
-  }
-  return list;
-}
 
-function mulberry32(seed) {
-  let t = seed >>> 0;
-  return function random() {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (ch) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[ch]));
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value);
-}
 
 /** The back button an event landed on, if any — null for anything else, including
  *  a target that is not an Element and so has no .closest. */
@@ -1377,96 +1419,105 @@ function backButtonFor(target) {
 }
 
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-sort-style')) {
-    styleInstalled = true;
-    return;
-  }
-  const style = document.createElement('style');
-  style.id = 'qk-sort-style';
-  style.textContent = `
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('${FONT_URL}') format('woff2');
-      font-weight: 600;
-      font-style: normal;
-      font-display: swap;
-    }
-    .qk-sort,.qk-sort * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  if (styleInstalled) return;
+  styleInstalled = true;
+  installEngineStyles('qk-sort-style', `
+    /* sort-into-bins's own skin. Everything the other engines also had —
+       @font-face, the reset, the surface, the 96px PNG buttons, the splash/end
+       column, the mode buttons, the HUD grid, the canvas — now comes from
+       shared/css/engine-base.css; what is left below is either this engine's
+       palette or a control only this engine has (the wrapping progress pill,
+       the drag/bin/tray art, the confetti burst).
+
+       The class names are unchanged and stay supported: see the compatibility
+       window note in shared/js/engines/README.md. */
+
     .qk-sort {
-      --sky: #bee3f5; --navy: #17517e; --blue: #2d7dd2; --green: #58a945;
-      --yellow: #ffd166; --coral: #f25f5c; --white: #ffffff;
-      --shadow: 0 6px 0 rgba(23,81,126,.18),0 14px 30px rgba(23,81,126,.18);
-      position: relative; width: 100%; height: 100dvh; min-height: 100%; overflow: hidden;
-      color: var(--navy); font-family: 'Fredoka','Arial Rounded MT Bold','Trebuchet MS',sans-serif;
-      font-weight: 600; background-color: var(--sky);
-      background-image: radial-gradient(circle at 18% 18%,rgba(255,255,255,.42) 0 8px,transparent 9px),
-        radial-gradient(circle at 78% 26%,rgba(255,255,255,.34) 0 12px,transparent 13px),
-        radial-gradient(circle at 48% 88%,rgba(255,255,255,.28) 0 9px,transparent 10px);
-      background-size: 160px 160px,230px 230px,200px 200px;
-      touch-action: manipulation; -webkit-user-select: none; user-select: none;
-      -webkit-touch-callout: none; overscroll-behavior: none;
+      --sky: #bee3f5;
+      --navy: #17517e;
+      --blue: #2d7dd2;
+      --green: #58a945;
+      --yellow: #ffd166;
+      --coral: #f25f5c;
+      --white: #ffffff;
+      --shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
+
+      /* Alias the legacy vars onto engine-base's tokens rather than letting its
+         defaults stand — a game skin that redefines --navy or --shadow under
+         #game must keep reaching every shared rule. */
+      --qk-navy: var(--navy);
+      --qk-sky: var(--sky);
+      --qk-white: var(--white);
+      --qk-primary: var(--blue);
+      --qk-shadow: var(--shadow);
+
+      --qk-eng-bg-image:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,.42) 0 8px, transparent 9px),
+        radial-gradient(circle at 78% 26%, rgba(255,255,255,.34) 0 12px, transparent 13px),
+        radial-gradient(circle at 48% 88%, rgba(255,255,255,.28) 0 9px, transparent 10px);
+      --qk-eng-bg-size: 160px 160px, 230px 230px, 200px 200px;
+      --qk-eng-focus-a: .7;
+      --qk-eng-corner-z: 5;
+      --qk-eng-hud-z: 4;
+      --qk-eng-card-size: clamp(70px, 15vmin, 126px);
+      --qk-eng-title-w: 13ch;
+      --qk-eng-stage-w: min(1200px, 100%);
+      --qk-eng-sound-x: 12px;
+      --qk-eng-play-icon-display: inline-block;
+      --qk-eng-play-icon-size: 64px;
+      --qk-eng-play-min-h: 100dvh;
+      --qk-eng-play-pad:
+        max(10px, env(safe-area-inset-top))
+        max(12px, env(safe-area-inset-right))
+        max(112px, calc(100px + env(safe-area-inset-bottom)))
+        max(12px, env(safe-area-inset-left));
     }
-    .qk-sort button,.qk-sort a { font: inherit; color: inherit; touch-action: manipulation; }
-    .qk-sort button { border: 0; cursor: pointer; }
-    .qk-sort button:focus-visible,.qk-sort a:focus-visible { outline: 5px solid rgba(45,125,210,.7); outline-offset: 4px; }
-    .qk-sort-img-btn { display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%;
-      background: transparent center/84px 84px no-repeat; text-decoration: none; box-shadow: none; }
-    .qk-sort-img-btn:active { transform: scale(.93); }
-    .qk-sort-home { background-image: url('${HOME_IMG}'); }
-    .qk-sort-back { background-image: url('${BACK_IMG}'); }
-    .qk-sort-sound { background-image: url('${SOUND_IMG}'); }
-    .qk-sort-splash,.qk-sort-end { display: grid; place-items: center;
-      padding: max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right))
-        max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-sort-home,     .qk-sort-back { position: absolute; top: max(12px,env(safe-area-inset-top)); left: max(12px,env(safe-area-inset-left)); z-index: 5; }
-    .qk-sort-splash-center,.qk-sort-end-center { width: min(900px,100%); display: grid; justify-items: center;
-      gap: clamp(14px,2.5vmin,24px); text-align: center; padding-top: 54px; }
-    .qk-sort-splash-art,.qk-sort-end-art { display: grid; place-items: center; width: clamp(150px,26vmin,230px);
-      aspect-ratio: 1; border-radius: 28px; background: linear-gradient(180deg,#fff,#fff3d0);
-      border: 5px solid var(--white); box-shadow: var(--shadow); font-size: clamp(70px,15vmin,126px); line-height: 1; }
-    .qk-sort h1 { margin: 0; max-width: 13ch; color: var(--navy); font-size: clamp(38px,7vmin,78px);
-      line-height: .98; text-shadow: 0 4px 0 rgba(255,255,255,.72); }
-    .qk-sort-mode-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 18px;
-      width: min(760px,100%); margin-top: 6px; }
-    .qk-sort-mode,.qk-sort-again { min-height: 104px; border-radius: 26px; border: 5px solid var(--white);
-      padding: 18px 24px; color: var(--white); background: linear-gradient(180deg,rgba(255,255,255,.34),transparent 50%),var(--blue);
-      box-shadow: var(--shadow); font-size: clamp(23px,4vmin,36px); line-height: 1.05; }
+
     .qk-sort-mode:nth-child(2n) { background-color: var(--green); }
     .qk-sort-mode:nth-child(3n) { background-color: var(--coral); }
-    .qk-sort-mode:active,.qk-sort-again:active { transform: scale(.96); }
-    .qk-sort-play { display: grid; grid-template-rows: auto 1fr; min-height: 100dvh;
-      padding: max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right))
-        max(112px,calc(100px + env(safe-area-inset-bottom))) max(12px,env(safe-area-inset-left)); }
-    .qk-sort-hud { position: relative; z-index: 4; display: grid; grid-template-columns: 96px 1fr 96px;
-      align-items: center; min-height: 100px; }
-    .qk-sort-hud .qk-sort-home,     .qk-sort-hud .qk-sort-back { position: static; }
-    .qk-sort-progress { justify-self: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-      max-width: min(560px,58vw); padding: 8px 15px; border-radius: 999px; background: rgba(255,255,255,.42); }
-    .qk-sort-dot { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.88);
-      box-shadow: inset 0 -2px 0 rgba(23,81,126,.12); }
+
     .qk-sort-dot.is-filled { background: var(--green); }
-    .qk-sort-dot.is-current { background: var(--yellow); box-shadow: 0 0 0 4px rgba(255,255,255,.72); }
-    .qk-sort-stage { min-height: 0; position: relative; width: min(1200px,100%); justify-self: center; }
-    .qk-sort-canvas { position: absolute; inset: 0; overflow: hidden; border-radius: 28px; touch-action: none; }
-    .qk-sort-canvas canvas { display: block; width: 100%; height: 100%; touch-action: none; }
-    .qk-sort-sound { position: absolute; left: max(12px,env(safe-area-inset-left)); bottom: max(12px,env(safe-area-inset-bottom)); z-index: 5; }
-    .qk-sort-again { display: inline-flex; align-items: center; justify-content: center; min-width: min(380px,92vw); background-color: var(--green); }
-    .qk-sort-play-icon { display: inline-block; width: 64px; height: 64px; margin-right: 10px;
-      background: url('${PLAY_IMG}') center/contain no-repeat; }
-    .qk-sort-burst { position: absolute; z-index: 9; pointer-events: none; }
-    .qk-sort-burst span { position: absolute; width: 16px; height: 16px; border-radius: 5px;
-      background: hsl(var(--hue),80%,58%); animation: qk-sort-burst .82s ease-out forwards; animation-delay: var(--delay); }
-    @keyframes qk-sort-burst { from { opacity: 1; transform: translate(-50%,-50%) scale(.8); }
-      to { opacity: 0; transform: translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.2) rotate(220deg); } }
+    .qk-sort-dot.is-current { background: var(--yellow); box-shadow: 0 0 0 4px rgba(255, 255, 255, .72); }
+
+    .qk-sort-again {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: min(380px, 92vw);
+      background-color: var(--green);
+    }
+
+    .qk-sort-play-icon { margin-right: 10px; }
+
+    .qk-sort-burst {
+      position: absolute;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .qk-sort-burst span {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+      background: hsl(var(--hue), 80%, 58%);
+      animation: qk-sort-burst .82s ease-out forwards;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes qk-sort-burst {
+      from { opacity: 1; transform: translate(-50%, -50%) scale(.8); }
+      to { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(.2) rotate(220deg); }
+    }
+
     @media (max-width: 620px) {
-      .qk-sort-play { padding-left: max(8px,env(safe-area-inset-left)); padding-right: max(8px,env(safe-area-inset-right)); }
+      .qk-sort-play { padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
       .qk-sort-hud { grid-template-columns: 96px 1fr 16px; }
       .qk-sort-progress { max-width: 50vw; }
     }
+
     @media (prefers-reduced-motion: reduce) {
       .qk-sort * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
-  `;
-  document.head.appendChild(style);
-  styleInstalled = true;
+  `);
 }

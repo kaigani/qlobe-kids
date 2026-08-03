@@ -9,17 +9,18 @@ import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
 import { onTap } from '../tap.js';
+import { mulberry32, hashString, shuffle } from '../rng.js';
+import { createTimers } from '../timers.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 import { artEl } from './art.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef } from '../stage/art-pixi.js';
 
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const HOME_HREF = '../../';
 
 const WAIT_FOR_INPUT_MS = 80;
@@ -52,10 +53,16 @@ class TracePathGame {
     this.config = normalizeConfig(config);
     this.mountEl = mountEl;
     this.id = ++debugOwner;
-    this.previousDebug = window.QLOBE_DEBUG;
+    // The engine keeps its own delay registry (clearDelays() RESOLVES pending
+    // waits so an awaiting flow finishes instead of stalling -- timers.js
+    // clearAll() deliberately does the opposite). The group is here purely as
+    // the scale holder `fastTimers()` turns, read back through `timers.ms()`.
+    this.timers = createTimers();
     this.destroyed = false;
 
-    this.screen = 'splash';
+    // The screen router owns "which screen is live" — this.screen is a getter
+    // over it, never a second copy of the fact (docs/shared-platform-refactor.md §4a).
+    this.screens = null;
     this.mode = null;
     this.roundPaths = [];
     this.roundIndex = 0;
@@ -142,6 +149,7 @@ class TracePathGame {
     window.addEventListener('gesturestart', this.onGestureStart);
     window.addEventListener('blur', this.onWindowBlur);
 
+    this.buildShell();
     this.renderSplash();
     this.ready = this.config.voiceClips
       ? voiceClips.init(
@@ -151,6 +159,35 @@ class TracePathGame {
       )
       : Promise.resolve();
     this.installDebugHook();
+  }
+
+  /** @returns {'splash'|'play'|'end'} the live screen, straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * The three screens, built once and toggled by the router, instead of one
+   * mount whose content is thrown away on every transition. Each section keeps
+   * the exact class list it rendered with before, plus the shared `qk-eng-*`
+   * vocabulary from shared/css/engine-base.css.
+   */
+  buildShell() {
+    this.mountEl.replaceChildren(
+      el('section', 'qk-trace qk-trace-splash qk-eng-root qk-eng-surface qk-eng-page'),
+      el('section', 'qk-trace qk-trace-play qk-eng-root qk-eng-surface qk-eng-play'),
+      el('section', 'qk-trace qk-trace-end qk-eng-root qk-eng-surface qk-eng-page'),
+    );
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-trace-splash'),
+        play: this.mountEl.querySelector('.qk-trace-play'),
+        end: this.mountEl.querySelector('.qk-trace-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => this.stopVoice() },
+    });
   }
 
   destroy() {
@@ -166,11 +203,9 @@ class TracePathGame {
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
     window.removeEventListener('blur', this.onWindowBlur);
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.replaceChildren();
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   unlockAudio() {
@@ -183,8 +218,7 @@ class TracePathGame {
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'trace-path',
       ready: this.ready,
@@ -198,8 +232,8 @@ class TracePathGame {
       traceStrokes: () => this.traceStrokes(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      timers: this.timers,
+    });
   }
 
   renderSplash() {
@@ -208,37 +242,52 @@ class TracePathGame {
     this.cancelDemo();
     this.removeTraceListeners();
     this.disposeStage();
-    this.screen = 'splash';
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
     this.stopVoice();
 
-    this.mountEl.replaceChildren();
-    const root = el('section', 'qk-trace qk-trace-splash');
-    this.applyTheme(root);
-    root.setAttribute('aria-label', this.config.title);
-    const home = this.renderImageButton('qk-trace-home', this.config.copy.home, HOME_HREF);
-    const center = el('div', 'qk-trace-splash-center');
-    const artCard = el('div', 'qk-trace-splash-art');
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would not
+    // run its bag, so release it by hand before the markup underneath changes.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.replaceChildren();
+    this.applyTheme(splash);
+    splash.setAttribute('aria-label', this.config.title);
+    const home = this.renderImageButton(
+      'qk-trace-home', this.config.copy.home, HOME_HREF, null,
+      'qk-eng-ico-home qk-eng-corner-tl',
+    );
+    const center = el('div', 'qk-trace-splash-center qk-eng-center');
+    const artCard = el('div', 'qk-trace-splash-art qk-eng-card');
     artCard.appendChild(artEl(this.config.splashArt, this.config.title));
-    const modeList = el('div', 'qk-trace-mode-list');
-    for (const mode of this.config.modes) {
-      const button = el('button', 'qk-trace-mode', mode.title || mode.id);
-      button.type = 'button';
-      button.dataset.mode = mode.id;
-      onTap(button, () => this.startMode(mode.id), {
-        feedback: (e) => {
-          e.preventDefault();
-          this.unlockAudio();
-          this.playSfx('tick');
-        },
-      });
-      modeList.appendChild(button);
-    }
-    center.append(artCard, el('h1', '', this.config.title), modeList);
-    root.append(home, center);
-    this.mountEl.appendChild(root);
+    const modeList = el('div', 'qk-trace-mode-list qk-eng-mode-list');
+    const picker = renderModeCards({
+      host: modeList,
+      modes: this.config.modes,
+      // The engine paints its own cards (engine-base.css `.qk-eng-mode`), so the
+      // screens.css card skin stays off — `skin: false` is what keeps every pixel.
+      skin: false,
+      cardClass: 'qk-trace-mode qk-eng-mode',
+      feedback: (e) => {
+        e.preventDefault();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
+      onPick: (id) => this.startMode(id),
+    });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-trace-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
+    center.append(artCard, el('h1', 'qk-eng-title', this.config.title), modeList);
+    splash.append(home, center);
   }
 
   async startMode(modeId) {
@@ -247,6 +296,12 @@ class TracePathGame {
     const mode = this.config.modes.find((item) => item.id === modeId) || this.config.modes[0];
     if (!mode) return;
 
+    // The double-tap latch: a second card press while the first start is still
+    // in flight is swallowed rather than running the whole teardown+render twice.
+    return this.screens.start(() => this.runMode(mode));
+  }
+
+  async runMode(mode) {
     this.clearIdleTimer();
     this.clearWanderTimer();
     this.cancelDemo();
@@ -254,7 +309,6 @@ class TracePathGame {
     this.disposeStage();
     this.stopVoice();
     this.mode = mode;
-    this.screen = 'play';
     this.roundIndex = 0;
     const paths = mode.shuffle ? shuffle(mode.paths.slice(), this.rng) : mode.paths.slice();
     const maxRounds = Math.min(mode.rounds || paths.length, paths.length);
@@ -271,25 +325,31 @@ class TracePathGame {
   }
 
   renderPlayShell() {
-    this.mountEl.replaceChildren();
-    const root = el('section', 'qk-trace qk-trace-play');
-    this.applyTheme(root);
-    root.setAttribute('aria-label', this.mode.title || this.config.title);
-    const hud = el('header', 'qk-trace-hud');
+    const play = this.screens.el('play');
+    // Restarting a mode from the play screen re-renders in place, and show() is
+    // idempotent — release the live tap handlers before the DOM under them goes.
+    this.screens.release('play');
+    this.screens.show('play');
+    play.replaceChildren();
+    this.applyTheme(play);
+    play.setAttribute('aria-label', this.mode.title || this.config.title);
+    const hud = el('header', 'qk-trace-hud qk-eng-hud');
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu', null, () => {
       this.stopVoice();
       this.renderSplash();
-    });
+    }, 'qk-eng-ico-back qk-eng-corner-tl');
     const progress = el('div', 'qk-trace-progress');
     progress.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot'));
+    for (let i = 0; i < this.roundsTotal; i++) progress.appendChild(el('span', 'qk-trace-dot qk-eng-dot-ring'));
     hud.append(home, progress, el('span', 'qk-trace-hud-spacer'));
 
     const stage = el('main', 'qk-trace-stage');
     const prompt = el('div', 'qk-trace-prompt');
     const canvasHost = el('div', 'qk-trace-canvas');
     canvasHost.setAttribute('aria-label', this.mode.title || this.config.title);
-    canvasHost.addEventListener('pointerdown', (e) => this.handleStagePointerDown(e), { passive: false });
+    const onStagePointerDown = (e) => this.handleStagePointerDown(e);
+    canvasHost.addEventListener('pointerdown', onStagePointerDown, { passive: false });
+    this.screens.hold(() => canvasHost.removeEventListener('pointerdown', onStagePointerDown));
     stage.append(prompt, canvasHost);
 
     const sound = this.renderImageButton(
@@ -297,13 +357,13 @@ class TracePathGame {
       this.config.copy.replay,
       null,
       () => this.replayPromptFromHud(),
+      'qk-eng-ico-sound qk-eng-corner-bl',
     );
-    root.append(hud, stage, sound);
-    this.mountEl.appendChild(root);
+    play.append(hud, stage, sound);
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-trace-canvas');
+    const host = this.screens.el('play').querySelector('.qk-trace-canvas');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -735,21 +795,24 @@ class TracePathGame {
     graphic.stroke({ width: INK_WIDTH, color, alpha: 0.94, cap: 'round', join: 'round' });
   }
 
-  renderImageButton(className, label, href, action) {
-    const node = href ? el('a', `qk-trace-img-btn ${className}`) : el('button', `qk-trace-img-btn ${className}`);
+  renderImageButton(className, label, href, action, engClass) {
+    const classes = `qk-trace-img-btn ${className} qk-eng-img-btn ${engClass}`;
+    const node = href ? el('a', classes) : el('button', classes);
     if (href) node.href = href;
     else node.type = 'button';
     node.setAttribute('aria-label', label);
     // href buttons (e.g. home) navigate natively on click; action is a no-op
     // and onTap never calls preventDefault, so that navigation still fires.
-    onTap(node, action || (() => {}), {
+    // Called only once `screens.show()` has made the owning screen current, so
+    // hold() lands the disposer on the right screen's teardown bag.
+    this.screens.hold(onTap(node, action || (() => {}), {
       feedback: (e) => {
         if (!href) e.preventDefault();
         e.stopPropagation();
         this.unlockAudio();
         this.playSfx('tick');
       },
-    });
+    }));
     return node;
   }
 
@@ -1113,7 +1176,14 @@ class TracePathGame {
 
   async finishGame() {
     if (this.destroyed) return;
-    this.screen = 'end';
+    const end = this.screens.el('end');
+    // Leave 'play' before the stage goes: everything that guards on
+    // `screen === 'play'` used to see the flag flip here, and the router is now
+    // the only place that fact lives. `silent` skips the router's own
+    // voice.stop() — the original never stopped speech at this point, letting
+    // the round's praise line carry into the cheer that follows.
+    this.screens.release('end');
+    this.screens.show('end', { silent: true });
     this.awaitingInput = false;
     this.inputLocked = false;
     this.clearIdleTimer();
@@ -1123,32 +1193,37 @@ class TracePathGame {
     this.playSfx('tada');
     this.disposeStage();
 
-    this.mountEl.replaceChildren();
-    const root = el('section', 'qk-trace qk-trace-end');
-    this.applyTheme(root);
-    root.setAttribute('aria-label', this.config.voice.cheer);
+    end.replaceChildren();
+    this.applyTheme(end);
+    end.setAttribute('aria-label', this.config.voice.cheer);
     const home = this.renderImageButton('qk-trace-back', 'Back to the game menu', null, () => {
       this.stopVoice();
       this.renderSplash();
-    });
-    const center = el('div', 'qk-trace-end-center');
-    const artCard = el('div', 'qk-trace-end-art');
+    }, 'qk-eng-ico-back qk-eng-corner-tl');
+    const center = el('div', 'qk-trace-end-center qk-eng-center');
+    const artCard = el('div', 'qk-trace-end-art qk-eng-card');
     artCard.appendChild(artEl(this.config.endArt || this.config.splashArt, ''));
-    const again = el('button', 'qk-trace-again');
+    const again = el('button', 'qk-trace-again qk-eng-mode');
     again.type = 'button';
-    const icon = el('span', 'qk-trace-play-icon');
+    const icon = el('span', 'qk-trace-play-icon qk-eng-play-icon');
     icon.setAttribute('aria-hidden', 'true');
     again.append(icon, el('span', '', this.config.copy.playAgain));
-    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
+    // wireEndScreen rather than a bare onTap: it is what enforces the §8
+    // navigation rule, and it puts its own disposer on this screen's bag —
+    // `hold` defaults to true, which is right for an engine that rebuilds and
+    // so rewires the end screen on every visit.
+    wireEndScreen({
+      screens: this.screens,
+      again,
       feedback: (e) => {
         e.preventDefault();
         this.unlockAudio();
         this.playSfx('tick');
       },
+      onAgain: () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()),
     });
-    center.append(artCard, el('h1', '', this.config.voice.cheer), again);
-    root.append(home, center);
-    this.mountEl.appendChild(root);
+    center.append(artCard, el('h1', 'qk-eng-title', this.config.voice.cheer), again);
+    end.append(home, center);
     this.createDomBurst(artCard, 34);
     await this.speakLine(this.config.voice.cheer, this.config.voice.cheerKey, true);
   }
@@ -1268,7 +1343,7 @@ class TracePathGame {
       // support stays visual so it never restarts a long instruction while the
       // child is thinking or moving between numbered strokes.
       this.playDemo();
-    }, IDLE_MS);
+    }, this.timers.ms(IDLE_MS));
   }
 
   clearIdleTimer() {
@@ -1284,7 +1359,7 @@ class TracePathGame {
   }
 
   updateDots() {
-    this.mountEl.querySelectorAll('.qk-trace-dot').forEach((dot, index) => {
+    this.screens.el('play').querySelectorAll('.qk-trace-dot').forEach((dot, index) => {
       dot.classList.toggle('is-filled', index < this.roundIndex);
       dot.classList.toggle('is-current', index === this.roundIndex);
     });
@@ -1476,7 +1551,7 @@ class TracePathGame {
   }
 
   renderCurrentPrompt() {
-    const prompt = this.mountEl.querySelector('.qk-trace-prompt');
+    const prompt = this.screens.el('play').querySelector('.qk-trace-prompt');
     if (!prompt) return;
     prompt.replaceChildren(el('span', 'qk-trace-mission', this.currentPrompt()));
     if (this.currentPath && this.currentPath.destination) {
@@ -1637,7 +1712,11 @@ class TracePathGame {
 
   createDomBurst(anchor, count) {
     if (!anchor || this.reducedMotion()) return;
-    const host = this.mountEl.querySelector('.qk-trace') || this.mountEl;
+    // createDomBurst is only ever called from finishGame(): with three live
+    // sections all wearing `.qk-trace`, a bare mountEl-wide query would return
+    // the splash (first in document order), not the end screen the burst
+    // anchor actually lives in.
+    const host = this.screens.el('end') || this.mountEl;
     const hostRect = host.getBoundingClientRect();
     const rect = anchor.getBoundingClientRect();
     const burstEl = el('div', 'qk-trace-burst');
@@ -1723,7 +1802,7 @@ class TracePathGame {
       entry.timer = window.setTimeout(() => {
         this.pendingDelays.delete(entry);
         resolve();
-      }, ms);
+      }, this.timers.ms(ms));
       this.pendingDelays.add(entry);
     });
   }
@@ -2059,15 +2138,6 @@ function pointSegmentDistance(point, a, b) {
   return Math.hypot(point.x - (a.x + dx * t), point.y - (a.y + dy * t));
 }
 
-function hashString(value) {
-  let hash = 2166136261;
-  for (const char of String(value)) {
-    hash ^= char.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
-
 function letterFromPath(path) {
   const match = String(path && (path.name || path.id) || '').match(/\b([A-Z])\b/i);
   return match ? match[1].toUpperCase() : '★';
@@ -2086,24 +2156,6 @@ function colorNumber(value, fallback) {
   return fallback;
 }
 
-function shuffle(list, rng) {
-  for (let i = list.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [list[i], list[j]] = [list[j], list[i]];
-  }
-  return list;
-}
-
-function mulberry32(seed) {
-  let t = seed >>> 0;
-  return function random() {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -2112,84 +2164,161 @@ function el(tag, className, text) {
 }
 
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-trace-style')) {
-    styleInstalled = true;
-    return;
-  }
-  const style = document.createElement('style');
-  style.id = 'qk-trace-style';
-  style.textContent = `
-    @font-face { font-family:'Fredoka'; src:url('${FONT_URL}') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
-    .qk-trace,.qk-trace * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    .qk-trace { --sky:#bee3f5; --navy:#17517e; --blue:#2d7dd2; --green:#58a945; --yellow:#ffd166;
-      --coral:#f25f5c; --white:#fff; --shadow:0 6px 0 rgba(23,81,126,.18),0 14px 30px rgba(23,81,126,.18);
-      position:relative; width:100%; height:100dvh; min-height:100%; overflow:hidden; color:var(--navy);
-      font-family:'Fredoka','Arial Rounded MT Bold','Trebuchet MS',sans-serif; font-weight:600; background-color:var(--sky);
-      background-image:radial-gradient(circle at 18% 18%,rgba(255,255,255,.42) 0 8px,transparent 9px),
-        radial-gradient(circle at 82% 28%,rgba(255,255,255,.34) 0 12px,transparent 13px),
-        radial-gradient(circle at 42% 84%,rgba(255,255,255,.28) 0 9px,transparent 10px);
-      background-size:160px 160px,230px 230px,200px 200px; touch-action:manipulation; -webkit-user-select:none;
-      user-select:none; -webkit-touch-callout:none; overscroll-behavior:none; }
-    .qk-trace button,.qk-trace a { font:inherit; color:inherit; touch-action:manipulation; }
-    .qk-trace button { border:0; cursor:pointer; }
-    .qk-trace button:focus-visible,.qk-trace a:focus-visible { outline:5px solid rgba(45,125,210,.7); outline-offset:4px; }
-    .qk-trace-img-btn { display:grid; place-items:center; width:96px; height:96px; border-radius:50%;
-      background:transparent center/84px 84px no-repeat; text-decoration:none; box-shadow:none; }
-    .qk-trace-img-btn:active { transform:scale(.93); }
-    .qk-trace-home { background-image:url('${HOME_IMG}'); }
-    .qk-trace-back { background-image:url('${BACK_IMG}'); }
-    .qk-trace-sound { background-image:url('${SOUND_IMG}'); }
-    .qk-trace-splash,.qk-trace-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top))
-      max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-trace-home, .qk-trace-back { position:absolute; top:max(12px,env(safe-area-inset-top)); left:max(12px,env(safe-area-inset-left)); z-index:5; }
-    .qk-trace-splash-center,.qk-trace-end-center { width:min(900px,100%); display:grid; justify-items:center;
-      gap:clamp(14px,2.5vmin,24px); text-align:center; padding-top:54px; }
-    .qk-trace-splash-art,.qk-trace-end-art { display:grid; place-items:center; width:clamp(150px,26vmin,230px);
-      aspect-ratio:1; border-radius:28px; background:linear-gradient(180deg,#fff,#fff3d0); border:5px solid var(--white);
-      box-shadow:var(--shadow); --qk-art-size:clamp(82px,16vmin,132px); }
-    .qk-trace h1 { margin:0; max-width:13ch; font-size:clamp(38px,7vmin,78px); line-height:.98;
-      text-shadow:0 4px 0 rgba(255,255,255,.72); }
-    .qk-trace-mode-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px;
-      width:min(760px,100%); margin-top:6px; }
-    .qk-trace-mode,.qk-trace-again { min-height:104px; border-radius:26px; border:5px solid var(--white); padding:18px 24px;
-      color:var(--white); background:linear-gradient(180deg,rgba(255,255,255,.34),transparent 50%),var(--blue);
-      box-shadow:var(--shadow); font-size:clamp(23px,4vmin,36px); line-height:1.05; }
-    .qk-trace button.qk-trace-mode,.qk-trace button.qk-trace-again { color:var(--white); }
-    .qk-trace-mode:nth-child(2n) { background-color:var(--green); }
-    .qk-trace-mode:nth-child(3n) { background-color:var(--coral); }
-    .qk-trace-mode:active,.qk-trace-again:active { transform:scale(.96); }
-    .qk-trace-play { display:grid; grid-template-rows:auto minmax(0,1fr); padding:max(12px,env(safe-area-inset-top))
-      max(14px,env(safe-area-inset-right)) max(112px,calc(100px + env(safe-area-inset-bottom))) max(14px,env(safe-area-inset-left)); }
-    .qk-trace-hud { position:relative; z-index:4; display:grid; grid-template-columns:96px 1fr 96px; align-items:center; min-height:100px; }
-    .qk-trace-hud .qk-trace-home, .qk-trace-hud .qk-trace-back { position:static; grid-column:1; }
-    .qk-trace-progress { grid-column:2; justify-self:center; display:flex; align-items:center; justify-content:center; gap:11px; min-height:32px; }
-    .qk-trace-dot { width:22px; height:22px; border-radius:50%; border:4px solid var(--white);
-      background:rgba(255,255,255,.52); box-shadow:0 3px 0 rgba(23,81,126,.14); }
-    .qk-trace-dot.is-current { background:var(--yellow); } .qk-trace-dot.is-filled { background:var(--green); }
-    .qk-trace-stage { min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr); gap:clamp(8px,1.6vmin,18px); touch-action:none; }
-    .qk-trace-prompt { justify-self:center; max-width:min(900px,92vw); min-height:44px; text-align:center; font-size:clamp(24px,4vmin,44px);
-      line-height:1.05; text-shadow:0 3px 0 rgba(255,255,255,.65); pointer-events:none; }
-    .qk-trace-canvas { position:relative; min-height:0; width:min(1200px,100%); height:100%; justify-self:center;
-      overflow:hidden; border-radius:28px; touch-action:none; }
-    .qk-trace-canvas canvas { display:block; width:100%; height:100%; touch-action:none; }
-    .qk-trace-sound { position:absolute; left:max(14px,env(safe-area-inset-left)); bottom:max(12px,env(safe-area-inset-bottom)); z-index:5; }
-    .qk-trace-again { display:inline-grid; grid-auto-flow:column; align-items:center; justify-content:center; gap:14px;
-      min-width:min(430px,84vw); background-color:var(--green); }
-    .qk-trace-play-icon { width:46px; height:46px; background:transparent center/contain no-repeat url('${PLAY_IMG}'); }
-    .qk-trace-burst { position:absolute; z-index:9; width:1px; height:1px; pointer-events:none; }
-    .qk-trace-burst span { position:absolute; width:20px; height:20px; border-radius:50%; background:hsl(var(--hue),78%,58%);
-      animation:qk-trace-burst .82s ease-out both; animation-delay:var(--delay); }
-    @keyframes qk-trace-burst { from { opacity:1; transform:translate(-50%,-50%) scale(.35); }
-      to { opacity:0; transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.15); } }
-    @media (orientation:landscape) and (max-height:620px) {
-      .qk-trace-play { grid-template-rows:92px minmax(0,1fr); padding-bottom:max(96px,calc(88px + env(safe-area-inset-bottom))); }
-      .qk-trace-hud { min-height:92px; } .qk-trace-prompt { font-size:clamp(22px,5vh,34px); min-height:34px; }
-    }
-    @media (max-width:560px) { .qk-trace-play { padding-left:max(8px,env(safe-area-inset-left)); padding-right:max(8px,env(safe-area-inset-right)); } }
-    @media (prefers-reduced-motion:reduce) { .qk-trace *,.qk-trace *::before,.qk-trace *::after {
-      animation-duration:.001ms !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
-      .qk-trace-burst { display:none !important; } }
-  `;
-  document.head.appendChild(style);
+  if (styleInstalled) return;
   styleInstalled = true;
+  installEngineStyles('qk-trace-style', `
+    /* trace-path's own skin. Everything the other engines also had —
+       @font-face, the reset, the surface, the 96px PNG buttons, the splash/end
+       column, the mode buttons, the HUD grid, the ringed dots, the play icon —
+       now comes from shared/css/engine-base.css; what is left below is either
+       this engine's palette or a control only this engine has (the road-style
+       guide, the freeform canvas box, the completion burst).
+
+       The class names are unchanged and stay supported: see the compatibility
+       window note in shared/js/engines/README.md — letter-road-driving skins
+       .qk-trace-* directly, including redefining --navy/--blue/--shadow
+       under #game .qk-trace, so every alias below has to keep flowing. */
+
+    .qk-trace {
+      --sky: #bee3f5;
+      --navy: #17517e;
+      --blue: #2d7dd2;
+      --green: #58a945;
+      --yellow: #ffd166;
+      --coral: #f25f5c;
+      --white: #fff;
+      --shadow: 0 6px 0 rgba(23, 81, 126, .18), 0 14px 30px rgba(23, 81, 126, .18);
+
+      /* Alias the legacy vars onto engine-base's tokens rather than letting its
+         defaults stand — letter-road-driving redefines --navy/--blue/--shadow
+         under #game .qk-trace and the alias is what keeps that flowing. */
+      --qk-navy: var(--navy);
+      --qk-sky: var(--sky);
+      --qk-white: var(--white);
+      --qk-primary: var(--blue);
+      --qk-shadow: var(--shadow);
+
+      --qk-eng-bg-image:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,.42) 0 8px, transparent 9px),
+        radial-gradient(circle at 82% 28%, rgba(255,255,255,.34) 0 12px, transparent 13px),
+        radial-gradient(circle at 42% 84%, rgba(255,255,255,.28) 0 9px, transparent 10px);
+      --qk-eng-bg-size: 160px 160px, 230px 230px, 200px 200px;
+
+      --qk-eng-corner-z: 5;
+      --qk-eng-hud-z: 4;
+      --qk-eng-title-w: 13ch;
+      --qk-eng-focus-a: .7;
+      --qk-eng-play-rows: auto minmax(0,1fr);
+      --qk-eng-ring-a: .52;
+      --qk-eng-ring-shadow-a: .14;
+      --qk-eng-play-icon-size: 46px;
+    }
+
+    /* .qk-eng-card sizes the tile; this engine's art has no font-size/line-height
+       of its own (art.js sizes by --qk-art-size), so qk-eng-card-glyph is never
+       adopted and this one custom property is all that's left to carry. */
+    .qk-trace-splash-art,
+    .qk-trace-end-art {
+      --qk-art-size: clamp(82px, 16vmin, 132px);
+    }
+
+    /* Specificity workaround, pre-existing: .qk-trace button (0,1,1) beats
+       .qk-eng-mode (0,1,0), so the mode/again buttons would otherwise fall
+       back to an inherited ink instead of engine-base's white. Preserved, not
+       "fixed". */
+    .qk-trace button.qk-trace-mode,
+    .qk-trace button.qk-trace-again { color: var(--white); }
+
+    .qk-trace-mode:nth-child(2n) { background-color: var(--green); }
+    .qk-trace-mode:nth-child(3n) { background-color: var(--coral); }
+
+    /* No pill background here — just a centred flex row of dots. */
+    .qk-trace-progress {
+      grid-column: 2;
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      min-height: 32px;
+    }
+    .qk-trace-dot.is-current { background: var(--yellow); }
+    .qk-trace-dot.is-filled { background: var(--green); }
+
+    /* The Pixi mount is a grid with its own rows/gap, not the shared absolute
+       stage box — kept as-is rather than adopting qk-eng-stage. */
+    .qk-trace-stage {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0,1fr);
+      gap: clamp(8px, 1.6vmin, 18px);
+      touch-action: none;
+    }
+
+    .qk-trace-prompt {
+      justify-self: center;
+      max-width: min(900px, 92vw);
+      min-height: 44px;
+      text-align: center;
+      font-size: clamp(24px, 4vmin, 44px);
+      line-height: 1.05;
+      text-shadow: 0 3px 0 rgba(255,255,255,.65);
+      pointer-events: none;
+    }
+
+    /* Positioned (relative, not absolute) and sized by width/height/justify-self
+       — does not match qk-eng-canvas's absolute box, so it stays local, along
+       with its canvas child rule. */
+    .qk-trace-canvas {
+      position: relative;
+      min-height: 0;
+      width: min(1200px, 100%);
+      height: 100%;
+      justify-self: center;
+      overflow: hidden;
+      border-radius: 28px;
+      touch-action: none;
+    }
+    .qk-trace-canvas canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+    .qk-trace-again {
+      display: inline-grid;
+      grid-auto-flow: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-width: min(430px, 84vw);
+      background-color: var(--green);
+    }
+
+    .qk-trace-burst { position: absolute; z-index: 9; width: 1px; height: 1px; pointer-events: none; }
+    .qk-trace-burst span {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: hsl(var(--hue), 78%, 58%);
+      animation: qk-trace-burst .82s ease-out both;
+      animation-delay: var(--delay);
+    }
+    @keyframes qk-trace-burst {
+      from { opacity: 1; transform: translate(-50%,-50%) scale(.35); }
+      to { opacity: 0; transform: translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.15); }
+    }
+
+    @media (orientation: landscape) and (max-height: 620px) {
+      .qk-trace-play { grid-template-rows: 92px minmax(0,1fr); padding-bottom: max(96px, calc(88px + env(safe-area-inset-bottom))); }
+      .qk-trace-hud { min-height: 92px; }
+      .qk-trace-prompt { font-size: clamp(22px, 5vh, 34px); min-height: 34px; }
+    }
+    @media (max-width: 560px) {
+      .qk-trace-play { padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .qk-trace *, .qk-trace *::before, .qk-trace *::after {
+        animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important;
+      }
+      .qk-trace-burst { display: none !important; }
+    }
+  `);
 }

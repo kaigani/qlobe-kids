@@ -29,25 +29,15 @@
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
     /* The game injects its own UI. This shell only sets page basics. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
+    :root { --qk-bg: #141c33; }
+    html, body { overflow: hidden; overscroll-behavior: none; }
     body {
       font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #141c33;
-      touch-action: manipulation;
-      user-select: none;
-      -webkit-user-select: none;
       -webkit-touch-callout: none;
     }
-    #game { height: 100dvh; }
   </style>
 </head>
 <body>

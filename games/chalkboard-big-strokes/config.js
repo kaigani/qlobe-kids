@@ -8,11 +8,6 @@ export default {
   strokeColor: '#f6f6f2',
   tolerance: 78,
   startMarker: '•',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Make a giant chalk stroke. Try it in the air too!',
     nudge: 'Back to the chalk line. Big gentle arm.',

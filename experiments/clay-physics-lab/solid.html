@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sculptural Clay Fusion — QLOBE Kids Research</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="./solid.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../shared/vendor/three.module.min.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="solid-shell">
+    <header class="solid-header">
+      <div>
+        <p class="eyebrow">QLOBE KIDS · SCULPTURAL SOLID STUDY</p>
+        <h1>Press two clay balls together</h1>
+        <p class="lede">Each lobe keeps its spherical volume. Contact makes a compressed patch and a narrow permanent clay neck—not a field of paint.</p>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <span id="solid-status">Starting WebGL…</span>
+        <span id="join-status">Two separate solids</span>
+      </div>
+    </header>
+
+    <section class="solid-workbench">
+      <div id="solid-scene" class="solid-scene" aria-label="Interactive orange and teal clay balls. Drag either ball to press and sculpt them together.">
+        <div class="wall-glow" aria-hidden="true"></div>
+        <div class="turntable" aria-hidden="true"></div>
+        <div id="contact-shadow" class="contact-shadow" aria-hidden="true"></div>
+        <canvas id="solid-canvas"></canvas>
+        <div class="gesture-hint" aria-hidden="true"><span>☝</span> Drag either lobe</div>
+      </div>
+
+      <aside class="solid-controls">
+        <fieldset>
+          <legend>Contact state</legend>
+          <div class="preset-grid">
+            <button type="button" data-solid-preset="touch"><span>● ●</span>Barely touching</button>
+            <button type="button" data-solid-preset="pressed" class="is-active"><span>●●</span>Pressed together</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="join-control">
+          <legend>Clay joint</legend>
+          <label for="join-width">Neck softness <output id="join-output">restrained</output></label>
+          <input id="join-width" type="range" min="0" max="100" value="28">
+          <div class="range-labels"><span>visible seam</span><span>soft union</span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Material comparison</legend>
+          <div class="material-grid">
+            <button type="button" data-solid-material="matcap" class="is-active" aria-pressed="true"><span>◉</span>Authored matcap</button>
+            <button type="button" data-solid-material="procedural" aria-pressed="false"><span>◌</span>Procedural light</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Source balls</legend>
+          <div class="source-balls">
+            <figure>
+              <img src="../../games/clay-creature-studio/assets/parts/ball-orange.webp" alt="">
+              <figcaption>Orange clay</figcaption>
+            </figure>
+            <figure>
+              <img src="../../games/clay-creature-studio/assets/parts/ball-teal.webp" alt="">
+              <figcaption>Teal clay</figcaption>
+            </figure>
+          </div>
+        </fieldset>
+
+        <button id="solid-reset" class="reset-button" type="button"><span>↺</span> Reset solid</button>
+        <p class="prototype-note">Representation: two deforming ellipsoidal SDF lobes and a bounded smooth union. The material buttons compare a generated neutral clay matcap with the original procedural studio light; object-space micro-normal detail remains procedural in both.</p>
+      </aside>
+    </section>
+
+    <section class="comparison-note">
+      <strong>What changed from the first study</strong>
+      <p>The earlier heightfield remains available as the <a href="./index.html">flat dough study</a>. It cannot describe a back side or preserve spherical lobes, so it is no longer proposed for Creature Studio bodies. The complementary <a href="./pbd.html">plastic PBD study</a> tests local dents and pulls without pretending that its fixed mesh can fuse.</p>
+    </section>
+  </main>
+
+  <script type="module" src="./solid.js"></script>
+</body>
+</html>

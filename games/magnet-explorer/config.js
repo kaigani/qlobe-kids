@@ -3,11 +3,6 @@ export default {
   engine: 'sort-into-bins',
   title: 'Magnet Explorer',
   splashEmoji: '🧲',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Which things stick to a magnet? Sort each thing.',
     nudge: 'Almost. Think about what the thing is made of and try again.',

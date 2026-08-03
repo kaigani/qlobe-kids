@@ -27,11 +27,6 @@ export default {
   engine: 'choose-one',
   title: 'Tiny Reader Theater',
   splashEmoji: '🎭',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Welcome to Tiny Reader Theater! Listen to the story line, then tap the word that belongs.',
     nudge: 'That word makes a funny story. Listen again and try another card.',

@@ -14,7 +14,15 @@
 //
 //   python3 -m http.server 8000                       # from the repo root
 //   npm install playwright@1.52.0                     # in a scratch dir, NOT the repo
-//   node games/flashlight-cave/tools/qa.mjs --playwright /tmp/pw/node_modules
+//   node games/flashlight-cave/tools/qa.mjs [--base http://localhost:8000]
+//        [--shots <dir>] [--playwright /private/tmp/pw/node_modules]
+//
+// Common CLI plumbing (flags, Playwright resolution, Chrome launch, the pad-
+// style reporter) comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
+// The page monitoring below stays bespoke: this gate tracks console/pageerror/
+// request errors through its own `allow`-listed bag (separate `aborted` vs
+// `failed` buckets, a lowercase-path audit) that the shared session helper
+// does not model.
 //
 // Checks, in order:
 //   A. boot / navigation / voice
@@ -61,51 +69,50 @@
 //
 // Exit code is non-zero if any check fails.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const flag = (name, dflt) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
-};
 // fileURLToPath, not URL.pathname: the repo lives under a path with a space in
 // it, and a raw pathname is percent-encoded — which silently writes every
 // screenshot into a brand-new "…260703%20QLOBE Kids/…" tree beside the repo.
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const GAME_DIR = path.resolve(HERE, '..');
 
-const BASE = flag('base', 'http://localhost:8000');
+const BASE = baseUrl('http://localhost:8000');
 const URL_GAME = `${BASE}/games/flashlight-cave/`;
-const SHOTS = flag('shots', path.join(GAME_DIR, 'qa-shots'));
-const pwDir = flag('playwright', process.env.PLAYWRIGHT_MODULE_PATH);
-if (!pwDir) {
-  console.error('need --playwright <node_modules dir holding playwright@1.52.0>');
-  process.exit(2);
-}
-const require = createRequire(path.join(pwDir, 'noop.js'));
-const { chromium } = require('playwright');
+const SHOTS = resolveShots(path.join(GAME_DIR, 'qa-shots'));
 
-const results = [];
-const notes = [];
-const check = (name, ok, detail = '') => {
-  results.push({ name, ok: !!ok, detail });
-  console.log(`${ok ? '  ok  ' : '  FAIL'} ${name}${detail ? ' — ' + detail : ''}`);
-  return !!ok;
-};
-const note = (text) => { notes.push(text); console.log(`  note  ${text}`); };
-const head = (t) => console.log(`\n=== ${t}`);
+const { check, note, head, results, notes } = createReporter({ style: 'pad' });
 
 // ---------------------------------------------------------------------------
-// Seeds. QLOBE_DEBUG.seed(n) installs the xorshift below and Game.makeBag() is
+// Seeds. QLOBE_DEBUG.seed(n) installs the PRNG below and Game.makeBag() is
 // its FIRST consumer, so bag[0..2] — the three round targets — is a pure
 // function of the seed. These seeds were found by replaying that exact rng in
 // node and are the ones that put C and/or K in the first three draws, which is
 // the only way to exercise the same-phonic decoy rule (§2.2) in a real play.
 // The gate re-derives the prediction at run time and asserts the game agrees,
 // so a change to the shuffle can never silently make this sweep vacuous.
+//
+// WHY THESE CONSTANTS CHANGED. The generator used to be this game's own
+// xorshift; the platform then moved every seeded source onto
+// shared/js/rng.js's mulberry32 (main.js's onSeed takes whatever
+// debug-harness hands it, and that is mulberry32 now). Fisher-Yates itself is
+// unchanged — shared/js/rng.js `shuffle` walks i from length-1 down and takes
+// `Math.floor(rng() * (i + 1))`, exactly the loop below — so the ONLY thing
+// that moved is the stream of floats. Every seed therefore deals a different
+// bag, and the old list (sound [3,6,13,30,31,36], picture
+// [8,14,21,32,33,34,41,55]) no longer lands C and K where it used to: under
+// mulberry32 those sound seeds deal FOY MHC IQH FYC SVC QPE — three Cs and not
+// one K, which is what failed the "sweep actually put C and K on screen" gate.
+// The lists below were re-derived by replaying mulberry32 + the same
+// Fisher-Yates over seeds 1..80 and picking the same shape of coverage the
+// originals had: C and/or K in the first three draws, with both letters
+// covered in each mode. predictBag() keeps its own copy of the generator on
+// purpose — an independent re-derivation, not an import of the code under test.
 // ---------------------------------------------------------------------------
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const PHONIC = {
@@ -114,17 +121,19 @@ const PHONIC = {
   Q: 'kwuh', R: 'ruh', S: 'suh', T: 'tuh', U: 'uh', V: 'vuh', W: 'wuh',
   X: 'kss', Y: 'yuh', Z: 'zuh',
 };
-function xorshift(n) {
-  let s = (n >>> 0) || 1;
+// The platform generator (shared/js/rng.js), transcribed rather than imported
+// so the prediction stays an independent re-derivation of the sequence.
+function mulberry32(seed) {
+  let value = Number(seed) >>> 0;
   return () => {
-    s ^= s << 13; s >>>= 0;
-    s ^= s >> 17;
-    s ^= s << 5; s >>>= 0;
-    return s / 4294967296;
+    value = (value + 0x6D2B79F5) >>> 0;
+    let result = Math.imul(value ^ (value >>> 15), value | 1);
+    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
+    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
   };
 }
 function predictBag(seed, eligible) {
-  const rng = xorshift(seed);
+  const rng = mulberry32(seed);
   const a = eligible.slice();
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
@@ -133,9 +142,13 @@ function predictBag(seed, eligible) {
   return a.slice(0, 3);
 }
 const ELIGIBLE = { find: ALPHABET, sound: ALPHABET, picture: ALPHABET.filter((L) => L !== 'X') };
+// mulberry32 draws (see the note above). Bags shown as the three targets dealt.
 const SEEDS = {
-  sound: [3, 6, 13, 30, 31, 36],            // C in 30/36, K in 3/6/13/31
-  picture: [8, 14, 21, 32, 33, 34, 41, 55], // C in 8/21/32/34, K in 8/14/33
+  // 2:PCY 6:MHC 12:CPW 34:KXS 43:RKH 50:KZJ  — C in 2/6/12, K in 34/43/50
+  sound: [2, 6, 12, 34, 43, 50],
+  // 4:ACM 10:SZK 12:COK 14:GCU 16:KCE 22:SUK 25:WBK 41:KDQ
+  //   — C in 4/12/14/16, K in 10/12/16/22/25/41
+  picture: [4, 10, 12, 14, 16, 22, 25, 41],
 };
 
 // ---------------------------------------------------------------------------
@@ -513,8 +526,8 @@ function checkLedge(label, l, vp) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: false });
+  await ensureShots(SHOTS);
+  const browser = await launchChrome({ headless: false });
   const collected = { rounds: [], runs: {}, perf: null };
 
   // =========================================================================

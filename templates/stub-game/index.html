@@ -1,32 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Everything from <meta charset> down to the apple-touch-icon link is
+       generated from game.json + games.json. Fill game.json in first, then run
+       `node tools/pipeline/gen-head-meta.mjs --write --only <your-game-id>` and
+       it rewrites this whole run for you. Two values the generator cannot
+       invent, so write them here by hand: og:image:alt, and theme-color (which
+       tracks --qk-bg below, not game.json's accent). -->
   <meta charset="utf-8" />
-  <title>GAME TITLE — QLOBE Kids</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
+  <title>GAME TITLE 🎈 — SHORT SHARE SUBTITLE</title>
   <meta name="description" content="ONE-LINE DESCRIPTION" />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="GAME TITLE" />
+  <meta property="og:title" content="GAME TITLE 🎈 — SHORT SHARE SUBTITLE" />
+  <meta property="og:description" content="ONE-LINE DESCRIPTION" />
+  <meta property="og:url" content="https://qlo.be/games/GAME_ID/" />
+  <meta property="og:image" content="https://qlo.be/games/GAME_ID/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="GAME TITLE title screen — describe what is actually pictured." />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GAME TITLE 🎈 — SHORT SHARE SUBTITLE" />
+  <meta name="twitter:description" content="ONE-LINE DESCRIPTION" />
+  <meta name="twitter:image" content="https://qlo.be/games/GAME_ID/assets/og-image.jpg" />
+
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <!-- The platform reset: @font-face Fredoka, box-sizing, tap-highlight,
+       touch-action, safe-area custom props, #game { height: 100dvh }, and the
+       .hidden / .visually-hidden utilities. Never re-copy any of it here. -->
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
-    /* Stub games share the engine's built-in styles; this file stays minimal.
-       The engine injects its own stylesheet (engine-owned look = consistent feel). */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #bee3f5;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
+    /* The only two things base.css deliberately leaves to the page: the page
+       colour and the display font. A stub game needs nothing else — the engine
+       injects its own stylesheet (engine-owned look = consistent feel). */
+    :root { --qk-bg: #bee3f5; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
   </style>
 </head>
 <body>

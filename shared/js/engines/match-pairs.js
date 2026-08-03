@@ -7,16 +7,18 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
+import { mulberry32, shuffle } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { createTimers } from '../timers.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 import { createStage } from '../stage/stage.js';
 import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
@@ -38,10 +40,15 @@ class MatchPairsGame {
     this.config = normalizeConfig(config);
     this.mountEl = mountEl;
     this.id = ++debugOwner;
-    this.previousDebug = window.QLOBE_DEBUG;
+    // The engine keeps its own delay registry (clearDelays() RESOLVES pending
+    // waits so an awaiting flow finishes instead of stalling — timers.js
+    // clearAll() deliberately does the opposite). The group is here purely as
+    // the scale holder `fastTimers()` turns, read back through `timers.ms()`.
+    this.timers = createTimers();
 
     this.destroyed = false;
-    this.screen = 'splash';
+    // The router owns "which screen is live"; `screen` below is a getter over it.
+    this.screens = null;
     this.mode = null;
     this.roundIndex = 0;
     this.roundsTotal = 0;
@@ -94,9 +101,39 @@ class MatchPairsGame {
         if (this.backDownEl) this.playSfx('tick');
       },
     });
+    this.buildShell();
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
+  }
+
+  /** @returns {'splash'|'play'|'end'} straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * Three persistent sections, toggled by `hidden`, instead of one mount whose
+   * innerHTML is thrown away on every transition. Each section keeps the exact
+   * class list it rendered with before, plus the shared `qk-eng-*` vocabulary
+   * from shared/css/engine-base.css.
+   */
+  buildShell() {
+    this.mountEl.innerHTML = `
+      <section class="qk-match qk-match-splash qk-eng-root qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title)}"></section>
+      <section class="qk-match qk-match-play qk-eng-root qk-eng-surface qk-eng-play" hidden></section>
+      <section class="qk-match qk-match-end qk-eng-root qk-eng-surface qk-eng-page" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-match-splash'),
+        play: this.mountEl.querySelector('.qk-match-play'),
+        end: this.mountEl.querySelector('.qk-match-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => speech.stop() },
+    });
   }
 
   destroy() {
@@ -111,11 +148,9 @@ class MatchPairsGame {
     // the mount outlives this instance — leaving the delegated tap on it would let
     // a destroyed game answer the next one's back button
     if (this.removeBackTap) { this.removeBackTap(); this.removeBackTap = null; }
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.innerHTML = '';
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   unlockAudio() {
@@ -124,8 +159,7 @@ class MatchPairsGame {
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'match-pairs',
       ready: this.ready,
@@ -137,14 +171,13 @@ class MatchPairsGame {
       winRound: () => this.winRound(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      timers: this.timers,
+    });
   }
 
   renderSplash() {
     this.clearIdleTimer();
     this.disposeStage();
-    this.screen = 'splash';
     this.mode = null;
     this.roundCards = [];
     this.selectedCardId = null;
@@ -152,41 +185,52 @@ class MatchPairsGame {
     this.inputLocked = false;
     speech.stop();
 
-    const buttons = this.config.modes.map((mode) => `
-      <button class="qk-match-mode" type="button" data-mode="${escapeAttr(mode.id)}">
-        <span>${escapeHtml(mode.title)}</span>
-      </button>
-    `).join('');
-
-    this.mountEl.innerHTML = `
-      <section class="qk-match qk-match-splash" aria-label="${escapeAttr(this.config.title)}">
-        <a class="qk-match-home qk-match-img-btn qk-match-home-splash" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
-        <div class="qk-match-splash-center">
-          <div class="qk-match-splash-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
-          <h1>${escapeHtml(this.config.title)}</h1>
-          <div class="qk-match-mode-list">${buttons}</div>
-        </div>
-      </section>
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would run
+    // neither the disposer bag nor voice.stop(), so release it by hand before
+    // the markup underneath changes.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      <a class="qk-match-home qk-match-img-btn qk-match-home-splash qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+      <div class="qk-match-splash-center qk-eng-center">
+        <div class="qk-match-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
+        <div class="qk-match-mode-list qk-eng-mode-list"></div>
+      </div>
     `;
 
-    this.applyThemeBackdrop();
+    this.applyThemeBackdrop(splash);
 
-    this.mountEl.querySelectorAll('.qk-match-mode').forEach((button) => {
-      onTap(button, () => this.startMode(button.dataset.mode), {
-        feedback: (event) => {
-          event.preventDefault();
-          this.unlockAudio();
-          this.playSfx('tick');
-        },
-      });
+    const picker = renderModeCards({
+      host: splash.querySelector('.qk-match-mode-list'),
+      modes: this.config.modes,
+      // The engine paints its own cards (engine-base.css `.qk-eng-mode`), so the
+      // screens.css card skin stays off — `skin: false` is what keeps every pixel.
+      skin: false,
+      cardClass: 'qk-match-mode qk-eng-mode',
+      feedback: (event) => {
+        event.preventDefault();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
+      onPick: (id) => this.startMode(id),
     });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-match-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
   }
 
   /** Art-world backdrop (docs/art-direction.md): theme.background paints the
    *  whole section via CSS cover — the Pixi canvas is transparent above it. */
-  applyThemeBackdrop() {
+  applyThemeBackdrop(section) {
     const theme = this.config.theme;
-    const section = this.mountEl.querySelector('.qk-match');
     if (!theme || !theme.background || !section) return;
     const ref = String(theme.background);
     const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
@@ -201,11 +245,25 @@ class MatchPairsGame {
     const mode = this.config.modes.find((entry) => entry.id === modeId) || this.config.modes[0];
     if (!mode) return;
 
+    // The double-tap latch: a second card press while the first start is still
+    // in flight is swallowed rather than running teardown + render twice.
+    return this.screens.start(() => this.runMode(mode));
+  }
+
+  async runMode(mode) {
     this.clearIdleTimer();
     this.disposeStage();
+    // LIVE BUG FIX (pre-existing, not a Wave 4b regression — reproduced against
+    // the pre-migration build at the same call site): disposeStage() destroys
+    // every card's Pixi view but leaves `roundCards` pointing at them, and the
+    // very next createPlayStage() fires an immediate onResize -> layoutCards(),
+    // which reads `card.view.position` on a destroyed view and throws. Entering
+    // a mode from the splash or from "again" happened to clear the list first;
+    // restarting a mode IN PLACE — which is exactly what QLOBE_DEBUG.startMode()
+    // does twice in a row — did not.
+    this.roundCards = [];
     speech.stop();
     this.mode = mode;
-    this.screen = 'play';
     this.roundIndex = 0;
     this.roundsTotal = mode.rounds;
     this.matchCount = 0;
@@ -225,34 +283,38 @@ class MatchPairsGame {
 
   renderPlayShell() {
     const dots = Array.from({ length: this.roundsTotal }, (_, index) => `
-      <span class="qk-match-dot" data-dot="${index}" aria-hidden="true"></span>
+      <span class="qk-match-dot qk-eng-dot" data-dot="${index}" aria-hidden="true"></span>
     `).join('');
 
-    this.mountEl.innerHTML = `
-      <section class="qk-match qk-match-play" aria-label="${escapeAttr(this.mode.title)}">
-        <header class="qk-match-hud">
-          <button class="qk-match-back qk-match-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-match-progress" aria-hidden="true">${dots}</div>
-        </header>
-        <main class="qk-match-field">
-          <div class="qk-match-prompt" aria-live="polite">${escapeHtml(this.mode.prompt)}</div>
-          <div class="qk-match-canvas" aria-label="${escapeAttr(this.mode.prompt)}"></div>
-        </main>
-        <button class="qk-match-sound qk-match-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
-      </section>
+    const play = this.screens.el('play');
+    // Restarting a mode re-renders in place, and show() is idempotent — release
+    // the live tap handlers before the DOM under them goes.
+    this.screens.release('play');
+    play.setAttribute('aria-label', this.mode.title);
+    play.innerHTML = `
+      <header class="qk-match-hud qk-eng-hud">
+        <button class="qk-match-back qk-match-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-match-progress qk-eng-pill" aria-hidden="true">${dots}</div>
+      </header>
+      <main class="qk-match-field">
+        <div class="qk-match-prompt" aria-live="polite">${escapeHtml(this.mode.prompt)}</div>
+        <div class="qk-match-canvas qk-eng-canvas" aria-label="${escapeAttr(this.mode.prompt)}"></div>
+      </main>
+      <button class="qk-match-sound qk-match-img-btn qk-eng-img-btn qk-eng-ico-sound qk-eng-corner-bl" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
     `;
-    this.applyThemeBackdrop();
+    this.screens.show('play');
+    this.applyThemeBackdrop(play);
 
     // the back button is owned by the delegated mount handler in the constructor
 
-    const sound = this.mountEl.querySelector('.qk-match-sound');
-    onTap(sound, () => this.replayPromptFromHud(), {
+    const sound = play.querySelector('.qk-match-sound');
+    this.screens.hold(onTap(sound, () => this.replayPromptFromHud(), {
       feedback: (event) => event.stopPropagation(),
-    });
+    }));
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-match-canvas');
+    const host = this.screens.el('play').querySelector('.qk-match-canvas');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -339,12 +401,12 @@ class MatchPairsGame {
       cards.push(this.cardFromPair(pair, pairKey, 'a'));
       cards.push(this.cardFromPair(pair, pairKey, 'b'));
     });
-    shuffle(cards, this.rng);
-    cards.forEach((card, index) => {
+    const dealt = shuffle(cards, this.rng);
+    dealt.forEach((card, index) => {
       card.id = `card:${index}`;
       card.cardIndex = index;
     });
-    return cards;
+    return dealt;
   }
 
   cardFromPair(pair, pairKey, side) {
@@ -654,7 +716,7 @@ class MatchPairsGame {
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
       this.speakLine(this.mode.prompt || this.config.voice.intro, true);
-    }, IDLE_MS);
+    }, this.timers.ms(IDLE_MS));
   }
 
   clearIdleTimer() {
@@ -665,60 +727,66 @@ class MatchPairsGame {
 
   async finishGame() {
     this.clearIdleTimer();
-    this.screen = 'end';
     this.awaitingInput = false;
     this.inputLocked = false;
     this.selectedCardId = null;
+    // Leave 'play' before the stage goes: everything that guards on
+    // `screen === 'play'` used to see the flag flip right here.
+    const end = this.screens.el('end');
+    end.setAttribute('aria-label', this.config.voice.cheer);
+    this.screens.release('end');
+    // `silent`: the cheer line is spoken below and the router's voice.stop()
+    // would cut off whatever is still playing, which never happened before.
+    this.screens.show('end', { silent: true });
     this.playSfx('tada');
     this.disposeStage();
     this.roundCards = [];
-    this.renderEnd();
-    this.createDomBurst(this.mountEl.querySelector('.qk-match-end-art'), 34);
+    this.renderEnd(end);
+    this.createDomBurst(end.querySelector('.qk-match-end-art'), 34, end);
     await this.speakLine(this.config.voice.cheer, true);
   }
 
-  renderEnd() {
-    // (backdrop re-applied below after innerHTML replaces the section)
-    this.mountEl.innerHTML = `
-      <section class="qk-match qk-match-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <button class="qk-match-back qk-match-img-btn" type="button" aria-label="Back to the game menu"></button>
-        <div class="qk-match-end-center">
-          <div class="qk-match-end-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
-          <h1>${escapeHtml(this.config.voice.cheer)}</h1>
-          <button class="qk-match-again" type="button">
-            <span class="qk-match-play-icon" aria-hidden="true"></span>
-            <span>${escapeHtml(this.config.copy.playAgain)}</span>
-          </button>
-        </div>
-      </section>
+  renderEnd(end) {
+    end.innerHTML = `
+      <button class="qk-match-back qk-match-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+      <div class="qk-match-end-center qk-eng-center">
+        <div class="qk-match-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
+        <button class="qk-match-again qk-eng-mode" type="button">
+          <span class="qk-match-play-icon qk-eng-play-icon" aria-hidden="true"></span>
+          <span>${escapeHtml(this.config.copy.playAgain)}</span>
+        </button>
+      </div>
     `;
 
-    this.applyThemeBackdrop();
-    // the back button is owned by the delegated mount handler in the constructor
-
-    const again = this.mountEl.querySelector('.qk-match-again');
-    onTap(again, () => {
-      if (this.mode) this.startMode(this.mode.id);
-      else this.renderSplash();
-    }, {
+    this.applyThemeBackdrop(end);
+    // the back button is owned by the delegated mount handler in the constructor,
+    // so wireEndScreen only takes "again" — its `back`/`choose` slots would
+    // double-wire a control that already has a listener.
+    wireEndScreen({
+      screens: this.screens,
+      again: end.querySelector('.qk-match-again'),
       feedback: (event) => {
         event.preventDefault();
         this.unlockAudio();
         this.playSfx('tick');
       },
+      onAgain: () => {
+        if (this.mode) this.startMode(this.mode.id);
+        else this.renderSplash();
+      },
     });
   }
 
   updateDots() {
-    this.mountEl.querySelectorAll('.qk-match-dot').forEach((dot, index) => {
+    this.screens.el('play').querySelectorAll('.qk-match-dot').forEach((dot, index) => {
       dot.classList.toggle('is-filled', index < this.roundIndex);
       dot.classList.toggle('is-current', index === this.roundIndex);
     });
   }
 
-  createDomBurst(anchor, count) {
-    if (!anchor || this.reducedMotion()) return;
-    const host = this.mountEl.querySelector('.qk-match') || this.mountEl;
+  createDomBurst(anchor, count, host) {
+    if (!anchor || this.reducedMotion() || !host) return;
     const hostRect = host.getBoundingClientRect();
     const rect = anchor.getBoundingClientRect();
     const burstEl = document.createElement('div');
@@ -886,7 +954,7 @@ class MatchPairsGame {
       entry.timer = window.setTimeout(() => {
         this.pendingDelays.delete(entry);
         resolve();
-      }, ms);
+      }, this.timers.ms(ms));
       this.pendingDelays.add(entry);
     });
   }
@@ -977,36 +1045,8 @@ function normalizePair(pair) {
   };
 }
 
-function shuffle(list, rng) {
-  for (let index = list.length - 1; index > 0; index--) {
-    const other = Math.floor(rng() * (index + 1));
-    [list[index], list[other]] = [list[other], list[index]];
-  }
-  return list;
-}
-
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return function random() {
-    value += 0x6D2B79F5;
-    let result = Math.imul(value ^ (value >>> 15), 1 | value);
-    result ^= result + Math.imul(result ^ (result >>> 7), 61 | result);
-    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, Number(value) || min));
-}
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[character]));
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value);
 }
 
 /** The back button an event landed on, if any — null for anything else, including
@@ -1017,22 +1057,17 @@ function backButtonFor(target) {
 }
 
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-match-style')) {
-    styleInstalled = true;
-    return;
-  }
-  const style = document.createElement('style');
-  style.id = 'qk-match-style';
-  style.textContent = `
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('${FONT_URL}') format('woff2');
-      font-weight: 600;
-      font-style: normal;
-      font-display: swap;
-    }
+  if (styleInstalled) return;
+  styleInstalled = true;
+  installEngineStyles('qk-match-style', `
+    /* match-pairs' own skin. The @font-face, the reset, the surface, the 96px
+       PNG buttons, the splash/end column, the mode buttons, the HUD grid and the
+       canvas now come from shared/css/engine-base.css; what is left is this
+       engine's palette and the two-row matching field.
 
-    .qk-match, .qk-match * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+       The .qk-match-* class names are unchanged and stay supported — see the
+       compatibility window note in shared/js/engines/README.md. */
+
     .qk-match {
       --sky: #bee3f5;
       --navy: #17517e;
@@ -1042,149 +1077,45 @@ function installStyle() {
       --mint: #81d6a3;
       --peach: #ffad7a;
       --shadow: 0 6px 0 rgba(23,81,126,.18), 0 14px 30px rgba(23,81,126,.18);
-      position: relative;
-      width: 100%;
-      height: 100dvh;
-      min-height: 100%;
-      overflow: hidden;
-      color: var(--navy);
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
-      font-weight: 600;
-      background-color: var(--sky);
-      background-image:
+
+      /* Alias the legacy vars onto engine-base's tokens rather than letting its
+         defaults stand — a game skin that redefines --navy or --shadow under
+         #game must keep reaching every shared rule. */
+      --qk-navy: var(--navy);
+      --qk-sky: var(--sky);
+      --qk-white: var(--white);
+      --qk-primary: var(--purple);
+      --qk-shadow: var(--shadow);
+
+      --qk-eng-bg-image:
         radial-gradient(circle at 14% 18%, rgba(255,255,255,.45) 0 8px, transparent 9px),
         radial-gradient(circle at 82% 24%, rgba(255,255,255,.35) 0 11px, transparent 12px),
         radial-gradient(circle at 46% 84%, rgba(255,255,255,.32) 0 8px, transparent 9px);
-      background-size: 180px 180px, 250px 250px, 220px 220px;
-      touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-      overscroll-behavior: none;
+      --qk-eng-bg-size: 180px 180px, 250px 250px, 220px 220px;
+
+      --qk-eng-title-w: 12ch;
+      --qk-eng-hud-z: 3;
+      --qk-eng-hud-h: 96px;
+      --qk-eng-play-rows: auto minmax(0, 1fr);
+      --qk-eng-play-pad:
+        max(8px, env(safe-area-inset-top))
+        max(12px, env(safe-area-inset-right))
+        max(104px, calc(94px + env(safe-area-inset-bottom)))
+        max(12px, env(safe-area-inset-left));
+      --qk-eng-sound-x: 14px;
+      --qk-eng-sound-y: 10px;
     }
 
-    .qk-match button, .qk-match a { font: inherit; color: inherit; touch-action: manipulation; }
-    .qk-match button { border: 0; cursor: pointer; }
-    .qk-match button:focus-visible, .qk-match a:focus-visible {
-      outline: 5px solid rgba(45,125,210,.65);
-      outline-offset: 4px;
-    }
-
-    .qk-match-img-btn {
-      display: grid;
-      place-items: center;
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: transparent center / 84px 84px no-repeat;
-      text-decoration: none;
-      box-shadow: none;
-    }
-    .qk-match-img-btn:active { transform: scale(.93); }
-    .qk-match-home { background-image: url('${HOME_IMG}'); }
-    .qk-match-back { background-image: url('${BACK_IMG}'); }
-    .qk-match-sound { background-image: url('${SOUND_IMG}'); }
-
-    .qk-match-splash, .qk-match-end {
-      display: grid;
-      place-items: center;
-      padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
-        max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
-    }
-    .qk-match-home,     .qk-match-back {
-      position: absolute;
-      top: max(12px, env(safe-area-inset-top));
-      left: max(12px, env(safe-area-inset-left));
-      z-index: 4;
-    }
-    .qk-match-splash-center, .qk-match-end-center {
-      width: min(900px, 100%);
-      display: grid;
-      justify-items: center;
-      gap: clamp(14px, 2.5vmin, 24px);
-      text-align: center;
-      padding-top: 54px;
-    }
-    .qk-match-splash-art, .qk-match-end-art {
-      display: grid;
-      place-items: center;
-      width: clamp(150px, 26vmin, 230px);
-      aspect-ratio: 1;
-      border-radius: 28px;
-      background: linear-gradient(180deg, #ffffff, #fff3d0);
-      border: 5px solid var(--white);
-      box-shadow: var(--shadow);
-      font-size: clamp(82px, 16vmin, 132px);
-      line-height: 1;
-    }
-    .qk-match h1 {
-      margin: 0;
-      font-size: clamp(38px, 7vmin, 78px);
-      line-height: .98;
-      color: var(--navy);
-      text-shadow: 0 4px 0 rgba(255,255,255,.72);
-      max-width: 12ch;
-    }
-    .qk-match-mode-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      width: min(760px, 100%);
-      margin-top: 6px;
-    }
-    .qk-match-mode, .qk-match-again {
-      min-height: 104px;
-      border-radius: 26px;
-      border: 5px solid var(--white);
-      padding: 18px 24px;
-      color: var(--white);
-      background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 50%), var(--purple);
-      box-shadow: var(--shadow);
-      font-size: clamp(23px, 4vmin, 36px);
-      line-height: 1.05;
-    }
     .qk-match-mode:nth-child(2n) { background-color: var(--blue); }
     .qk-match-mode:nth-child(3n) { background-color: #2e9f76; }
-    .qk-match-mode:active, .qk-match-again:active { transform: scale(.96); }
 
-    .qk-match-play {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
-        max(104px, calc(94px + env(safe-area-inset-bottom))) max(12px, env(safe-area-inset-left));
-    }
-    .qk-match-hud {
-      position: relative;
-      z-index: 3;
-      display: grid;
-      grid-template-columns: 96px 1fr 96px;
-      align-items: center;
-      min-height: 96px;
-    }
-    .qk-match-hud .qk-match-home,     .qk-match-hud .qk-match-back { position: static; grid-column: 1; }
-    .qk-match-progress {
-      grid-column: 2;
-      justify-self: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 11px;
-      min-height: 32px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.38);
-    }
-    .qk-match-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.9);
-      box-shadow: inset 0 -2px 0 rgba(23,81,126,.12);
-      opacity: .8;
-    }
+    .qk-match-dot { opacity: .8; }
     .qk-match-dot.is-filled { background: var(--mint); opacity: 1; }
     .qk-match-dot.is-current { background: var(--peach); opacity: 1; transform: scale(1.16); }
 
+    /* The matching field: a spoken prompt pill over the Pixi card table. Not
+       engine-base's .qk-eng-stage — this one is a two-row grid whose canvas is
+       a flow child, not an absolutely-positioned fill. */
     .qk-match-field {
       min-height: 0;
       width: min(1120px, 100%);
@@ -1207,26 +1138,15 @@ function installStyle() {
       line-height: 1.08;
       text-align: center;
     }
+    /* Overrides engine-base's absolutely-positioned .qk-eng-canvas: here the
+       canvas is the field grid's second row. */
     .qk-match-canvas {
       position: relative;
+      inset: auto;
       min-width: 0;
       min-height: 0;
-      overflow: hidden;
-      border-radius: 28px;
-      touch-action: none;
     }
-    .qk-match-canvas canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      touch-action: none;
-    }
-    .qk-match-sound {
-      position: absolute;
-      left: max(14px, env(safe-area-inset-left));
-      bottom: max(10px, env(safe-area-inset-bottom));
-      z-index: 4;
-    }
+
     .qk-match-again {
       display: inline-grid;
       grid-template-columns: 72px auto;
@@ -1235,12 +1155,7 @@ function installStyle() {
       min-width: min(420px, 100%);
       background-color: var(--blue);
     }
-    .qk-match-play-icon {
-      display: block;
-      width: 72px;
-      height: 72px;
-      background: transparent url('${PLAY_IMG}') center / contain no-repeat;
-    }
+
     .qk-match-burst { position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none; }
     .qk-match-burst span {
       position: absolute;
@@ -1269,7 +1184,5 @@ function installStyle() {
       0% { opacity: 1; transform: translate(-7px, -7px) scale(.8) rotate(0); }
       100% { opacity: 0; transform: translate(calc(var(--x) - 7px), calc(var(--y) - 7px)) scale(.25) rotate(160deg); }
     }
-  `;
-  document.head.appendChild(style);
-  styleInstalled = true;
+  `);
 }

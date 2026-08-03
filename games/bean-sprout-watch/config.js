@@ -4,10 +4,7 @@ export default {
   title: 'Bean Sprout Watch',
   splashEmoji: '🌱',
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Sprout Story',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'Your bean sprout story grew page by page!',

@@ -4,6 +4,7 @@
 
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
 
 // ---------- data -------------------------------------------------------
 
@@ -32,8 +33,6 @@ const CARD_ART = (key) => `./assets/cards/${key}.png`;
 const VIDEO_SRC = (key) => `./assets/video/${key}.mp4`;
 const PORTRAIT = (actor) => `../../shared/characters/${actor}/portrait.png`;
 
-const CONFETTI_COLORS = ['#e23d3d', '#f4c53d', '#58a945', '#2d7dd2', '#8a5bc4', '#f08a24'];
-
 // ---------- game -------------------------------------------------------
 
 export class Game {
@@ -53,8 +52,14 @@ export class Game {
     this.timeScale = 1;             // fastTimers() sets 0.02 for QA drives
     this.reducedMotion =
       window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // No round in this game draws from `rng` today — the grid and the guess
+    // order are both fixed sequences by design (see game-design.md). It is
+    // still wired through QLOBE_DEBUG's seed() (main.js onSeed) so a future
+    // shuffle has somewhere to plug in, and so seed(42) is not silently a
+    // no-op from the reviewer's side.
     this.guessOrder = [...GUESS_ITEMS];
     this.rng = Math.random;
+    this._confettiCancel = null;
   }
 
   start() {
@@ -72,6 +77,7 @@ export class Game {
     for (const t of this.timers) clearTimeout(t);
     this.timers.clear();
     voice.stop();
+    if (this._confettiCancel) { this._confettiCancel(); this._confettiCancel = null; }
     const v = this.els.demoVideo;
     try { v.pause(); v.removeAttribute('src'); v.load(); } catch { /* ignore */ }
   }
@@ -86,7 +92,9 @@ export class Game {
   }
 
   async speak(keys) {
-    if (window.__qkMuted) return; // QA drives silence the voice channel
+    // QA drives silence the voice channel via voice.setMuted() (QLOBE_DEBUG's
+    // mute() in main.js) — voice.say() below already resolves immediately
+    // without playing once that is set, so there is nothing to gate here.
     const token = ++this.speakToken;
     for (const key of keys) {
       if (token !== this.speakToken || this.destroyed) return;
@@ -102,18 +110,12 @@ export class Game {
   }
 
   confetti(count = 28) {
-    if (this.reducedMotion) return;
-    const layer = this.els.confetti;
-    for (let i = 0; i < count; i++) {
-      const bit = document.createElement('span');
-      bit.className = 'confetti-bit';
-      bit.style.left = Math.random() * 100 + 'vw';
-      bit.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
-      bit.style.animationDuration = 1.6 + Math.random() * 1.6 + 's';
-      bit.style.animationDelay = Math.random() * 0.4 + 's';
-      layer.appendChild(bit);
-      setTimeout(() => bit.remove(), 4000);
-    }
+    // shared/js/celebrate.js: same six-colour palette this game already used
+    // (its default IS QK_PALETTE), so no palette override needed. It is a
+    // no-op under prefers-reduced-motion on its own, so the local
+    // this.reducedMotion guard the old hand-rolled version needed is gone too.
+    if (this._confettiCancel) this._confettiCancel();
+    this._confettiCancel = burstConfetti({ host: this.els.confetti, count });
   }
 
   // ---------- Act It Out: grid ----------

@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Plan-Do-Review',
   splashEmoji: '📋',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Plan it, do it, review it. Every thoughtful plan can be a good plan.',
     nudge: 'That can work too. Pick the card that matches your idea.',

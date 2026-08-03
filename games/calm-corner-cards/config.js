@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Calm Corner Cards',
   splashEmoji: '🧘',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Welcome to the calm corner. Big feelings need tools. Pick one calm tool.',
     nudge: 'That helps sometimes. Right now, let us try a calm tool together.',

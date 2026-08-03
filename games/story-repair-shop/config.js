@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Story Repair Shop',
   splashEmoji: '🔧',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Stories are in the repair shop. Listen, then tap the ending that fixes the story.',
     nudge: 'Hmm, would that really happen? Listen again and try another ending.',

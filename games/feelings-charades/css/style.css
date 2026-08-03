@@ -1,33 +1,35 @@
 /* Feelings Charades — story-screen world. Sky, hills, sun. */
 
-@font-face {
-  font-family: 'Fredoka';
-  src: url('../../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
-
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0; padding: 0;
-  height: 100%;
+/* base.css supplies @font-face Fredoka, the box-sizing/tap-highlight reset,
+   html/body margin+height, body touch-action/user-select/background, and
+   .hidden. This local block opts into the two things base.css deliberately
+   leaves to the game (font-family + --qk-bg — see games/counting-treasure-cups
+   for the same pattern), plus the extra iPad hardening this game keeps beyond
+   the platform default: overflow/overscroll containment so the story-screen
+   background can't rubber-band, and -webkit-touch-callout suppression so a
+   long press on a feeling card never raises the iOS callout menu. */
+:root { --qk-bg: #0788e7; }
+body {
   overflow: hidden;
   font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-  -webkit-user-select: none; user-select: none;
   -webkit-touch-callout: none;
   overscroll-behavior: none;
-  touch-action: manipulation;
-  background: #aee0f2;
 }
 
 .screen {
   position: fixed; inset: 0;
   background: #aee0f2 url('../assets/bg.jpg') center / cover no-repeat;
 }
-.hidden { display: none !important; }
 
 /* ---------- round HUD buttons ---------- */
+/* NOT shared/css/hud.css .qk-hud-btn on purpose (checked during the Wave 2
+   migration): this world's 2026 refresh (below) settles the button at 86px
+   with a fixed 74px background-size, a flat 12px corner offset, and an
+   :active of `scale(.93)` with no press-down translate — hud.css's vocabulary
+   is a 96px box (84/76px at the small-screen breakpoints) with a `contain`
+   background, `max(gap, safe-inset)` corner offsets, and an :active of
+   `translateY(4px) scale(.96)`. None of those match closely enough to adopt
+   without a visible size/press-feel change, so this stays local. */
 .round-btn {
   position: absolute;
   width: 96px; height: 96px;
@@ -273,23 +275,14 @@ h1 {
 #end-title { color: #17517e; font-size: clamp(26px, 4.5vw, 40px); text-align: center; max-width: 700px; }
 
 /* ---------- confetti ---------- */
+/* #confetti-layer is the positioned host burstConfetti() renders into (shared/js/celebrate.js);
+   the piece styling + fall keyframe now live in that module's own injected stylesheet. */
 #confetti-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
-.confetti-bit {
-  position: absolute;
-  width: 12px; height: 9px;
-  border-radius: 2px;
-  animation: confetti-fall linear forwards;
-}
-@keyframes confetti-fall {
-  from { transform: translateY(-4vh) rotate(0); opacity: 1; }
-  to { transform: translateY(110vh) rotate(720deg); opacity: .7; }
-}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   #demo-art, #act-emoji, #affirm-badge, .answer-card.wrong { animation: none; }
   .breath-ring { transition: none; }
-  .confetti-bit { display: none; }
 }
 
 /* ========================================================================== */
@@ -307,9 +300,16 @@ h1 {
   --ink: #083b78;
 }
 
-html, body { background: #0788e7; }
+/* html,body background is --qk-bg (set above, same #0788e7) via base.css. */
 
-.screen {
+/* `#game` is one of the three `.screen` divs (it's the play screen), and
+   base.css's `#game { background: var(--qk-bg) }` (shared/css/base.css) is an
+   ID selector — higher specificity than `.screen`, so it would otherwise win
+   and flatten this hill/gradient world to a solid fill on the play screen
+   only (splash/end, which base.css does not target by id, stayed fine). Listing
+   `#game` here ties the specificity and this rule wins on source order
+   (style.css loads after base.css), restoring the gradient everywhere. */
+.screen, #game {
   isolation: isolate;
   overflow: hidden;
   background:

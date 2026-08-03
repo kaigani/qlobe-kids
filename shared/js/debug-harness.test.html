@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>debug-harness.js test — QLOBE_DEBUG v1</title>
+  <!-- An empty inline icon, so a missing /favicon.ico cannot put a 404 in the
+       console and make "zero console errors" a caveated claim. -->
+  <link rel="icon" href="data:," />
+  <style>
+    body { margin: 0; padding: 16px 18px 40px; background: #eef6fb; color: #17517e;
+           font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    p.sub { margin: 0 0 14px; font-size: 13px; opacity: .75; }
+    #summary { font-size: 20px; font-weight: 700; color: #fff; padding: 12px 16px;
+               border-radius: 12px; background: #7a8794; margin-bottom: 14px; }
+    #summary.pass { background: #2f8f5b; }
+    #summary.fail { background: #b0453a; }
+    ol { margin: 0; padding-left: 26px; font-size: 14px; line-height: 1.6; }
+    li { padding: 2px 0; }
+    li.pass::marker { color: #2f8f5b; }
+    li.fail { color: #b0453a; font-weight: 600; }
+    li.fail::marker { color: #b0453a; }
+    .why { display: block; font-size: 12px; font-weight: 400; opacity: .8; }
+
+    /* Fixture for collectTargets. Laid out for real (not display:none) so the
+       rects it reports are the rects a reviewer would actually tap, and parked
+       off to the side so it cannot cover the results. */
+    #fixture { position: fixed; right: 12px; top: 12px; width: 220px;
+               border: 2px dashed #b9d4e6; border-radius: 10px; padding: 8px;
+               background: #fff; opacity: .55; }
+    #fixture .card { display: block; width: 90px; height: 60px; margin: 4px 0;
+                     border-radius: 8px; background: #cfe6f6; }
+    #fixture .gone { display: none; }
+    #fixture .flat { height: 0; }
+  </style>
+</head>
+<body>
+  <h1>debug-harness.js</h1>
+  <p class="sub">installDebug / collectTargets — assertions run on load.</p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <!-- collectTargets fixture -->
+  <div id="fixture">
+    <span class="card" data-target="apple" data-role="correct"></span>
+    <span class="card" data-target="banana" data-role="wrong"></span>
+    <span class="card" data-target="plain"></span>
+    <span class="card gone" data-target="hidden-card" data-role="correct"></span>
+    <span class="card flat" data-target="collapsed-card"></span>
+    <span class="card" data-probe="not-a-target"></span>
+    <audio id="fixture-audio"></audio>
+  </div>
+  <div id="other-root">
+    <span data-target="elsewhere" style="display:inline-block;width:40px;height:20px"></span>
+  </div>
+
+  <script type="module">
+    import { installDebug, collectTargets } from './debug-harness.js';
+    import { createTimers } from './timers.js';
+
+    // ---- tiny assertion harness -----------------------------------------
+    const results = [];
+    function test(name, fn) {
+      try { fn(); results.push({ name, pass: true, why: '' }); }
+      catch (err) { results.push({ name, pass: false, why: err && err.message || String(err) }); }
+      finally { delete window.QLOBE_DEBUG; } // no test may leak a hook into the next
+    }
+    function assert(cond, why) { if (!cond) throw new Error(why || 'assertion failed'); }
+    function eq(actual, expected, why) {
+      const a = JSON.stringify(actual);
+      const b = JSON.stringify(expected);
+      if (a !== b) throw new Error(`${why ? why + ' — ' : ''}got ${a}, expected ${b}`);
+    }
+    /** The minimum a real game passes. */
+    const baseSpec = () => ({
+      gameId: 'test-game',
+      engine: 'test-engine',
+      ready: Promise.resolve(true),
+      listModes: () => [{ id: 'a', title: 'A' }],
+      startMode: async () => true,
+      getState: () => ({ screen: 'splash' }),
+    });
+
+    // ---- collectTargets ---------------------------------------------------
+
+    test('collectTargets: reads id + role off data attributes', () => {
+      const found = collectTargets(document.getElementById('fixture'));
+      eq(found.map((t) => t.id), ['apple', 'banana', 'plain']);
+      eq(found.map((t) => t.role), ['correct', 'wrong', 'neutral'], 'role defaults to neutral');
+    });
+
+    test('collectTargets: filters zero-size rects (display:none and height:0)', () => {
+      const ids = collectTargets(document.getElementById('fixture')).map((t) => t.id);
+      assert(!ids.includes('hidden-card'), 'a display:none target was reported as tappable');
+      assert(!ids.includes('collapsed-card'), 'a zero-height target was reported as tappable');
+    });
+
+    test('collectTargets: rects are plain JSON-safe numbers', () => {
+      const found = collectTargets(document.getElementById('fixture'));
+      assert(found.length > 0, 'fixture produced no targets');
+      for (const t of found) {
+        eq(Object.keys(t).sort(), ['id', 'rect', 'role']);
+        eq(Object.keys(t.rect).sort(), ['h', 'w', 'x', 'y']);
+        for (const v of Object.values(t.rect)) assert(typeof v === 'number' && Number.isFinite(v), `bad rect value ${v}`);
+      }
+      // survives a structured round-trip, which is what CDP does to it
+      eq(JSON.parse(JSON.stringify(found)), found);
+    });
+
+    test('collectTargets: reports the real measured size', () => {
+      const apple = collectTargets(document.getElementById('fixture')).find((t) => t.id === 'apple');
+      eq(apple.rect.w, 90);
+      eq(apple.rect.h, 60);
+    });
+
+    test('collectTargets: root scopes the search', () => {
+      eq(collectTargets(document.getElementById('other-root')).map((t) => t.id), ['elsewhere']);
+      const all = collectTargets().map((t) => t.id);
+      assert(all.includes('apple') && all.includes('elsewhere'), 'document default did not see both roots');
+    });
+
+    test('collectTargets: a custom selector is honoured', () => {
+      const found = collectTargets(document.getElementById('fixture'), '[data-probe]');
+      eq(found.length, 1);
+      eq(found[0].id, '', 'no data-target and no id means an empty id, not a crash');
+    });
+
+    test('collectTargets: a junk root falls back to document instead of throwing', () => {
+      assert(Array.isArray(collectTargets(null)));
+      assert(Array.isArray(collectTargets('nope')));
+    });
+
+    // ---- installDebug: wiring --------------------------------------------
+
+    test('installDebug: installs the hook and returns a dispose function', () => {
+      const dispose = installDebug(baseSpec());
+      assert(typeof dispose === 'function', 'did not return a disposer');
+      assert(window.QLOBE_DEBUG, 'no hook installed');
+      eq(window.QLOBE_DEBUG.version, 1, 'version must default to 1');
+      dispose();
+    });
+
+    test('installDebug: passes the v1 contract keys straight through', () => {
+      const spec = baseSpec();
+      const dispose = installDebug(spec);
+      const hook = window.QLOBE_DEBUG;
+      eq(hook.gameId, 'test-game');
+      eq(hook.engine, 'test-engine');
+      assert(hook.ready === spec.ready, 'ready was replaced');
+      assert(hook.listModes === spec.listModes, 'listModes was replaced');
+      assert(hook.startMode === spec.startMode, 'startMode was replaced');
+      assert(hook.getState === spec.getState, 'getState was replaced');
+      dispose();
+    });
+
+    test('installDebug: fills in the four documented defaults', () => {
+      const dispose = installDebug(baseSpec());
+      for (const key of ['getTargets', 'mute', 'seed', 'fastTimers']) {
+        assert(typeof window.QLOBE_DEBUG[key] === 'function', `${key} was not defaulted`);
+      }
+      dispose();
+    });
+
+    test('installDebug: caller-supplied keys override the defaults', () => {
+      const mine = { getTargets: () => ['mine'], mute: () => 'muted-by-me', seed: () => 7, fastTimers: () => 0.5 };
+      const dispose = installDebug({ ...baseSpec(), ...mine });
+      const hook = window.QLOBE_DEBUG;
+      assert(hook.getTargets === mine.getTargets, 'getTargets default won over the caller');
+      eq(hook.mute(), 'muted-by-me');
+      eq(hook.seed(1), 7);
+      eq(hook.fastTimers(), 0.5);
+      dispose();
+    });
+
+    test('installDebug: extra keys are spread through for game-specific helpers', () => {
+      const dispose = installDebug({ ...baseSpec(), getLayout: () => ({ scale: 2 }), nextCase: () => 'case-2', zones: [1, 2] });
+      eq(window.QLOBE_DEBUG.getLayout(), { scale: 2 });
+      eq(window.QLOBE_DEBUG.nextCase(), 'case-2');
+      eq(window.QLOBE_DEBUG.zones, [1, 2]);
+      dispose();
+    });
+
+    test('installDebug: tap / winRound / home appear only when supplied', () => {
+      const bare = installDebug(baseSpec());
+      for (const key of ['tap', 'winRound', 'home']) {
+        assert(!(key in window.QLOBE_DEBUG), `${key} was stubbed — a reviewer cannot feature-detect it`);
+      }
+      bare();
+
+      const full = installDebug({ ...baseSpec(), tap: async () => ({ accepted: true }), winRound: async () => true, home: () => true });
+      for (const key of ['tap', 'winRound', 'home']) {
+        assert(typeof window.QLOBE_DEBUG[key] === 'function', `${key} was dropped`);
+      }
+      full();
+    });
+
+    test('installDebug: reserved dependency keys are never published on the hook', () => {
+      const dispose = installDebug({
+        ...baseSpec(),
+        timers: createTimers(), narrator: {}, sfx: {}, voice: {},
+        onSeed: () => {}, root: document.body, targetSelector: '[data-target]',
+      });
+      for (const key of ['timers', 'narrator', 'sfx', 'voice', 'onSeed', 'root', 'targetSelector']) {
+        assert(!(key in window.QLOBE_DEBUG), `${key} leaked onto the hook`);
+      }
+      dispose();
+    });
+
+    test('installDebug: survives an empty spec', () => {
+      const dispose = installDebug();
+      eq(window.QLOBE_DEBUG.version, 1);
+      assert(typeof window.QLOBE_DEBUG.getTargets === 'function');
+      dispose();
+    });
+
+    // ---- installDebug: save / restore -------------------------------------
+
+    test('dispose: restores the previous hook', () => {
+      const sentinel = { version: 1, gameId: 'the-one-before' };
+      window.QLOBE_DEBUG = sentinel;
+      const dispose = installDebug(baseSpec());
+      assert(window.QLOBE_DEBUG !== sentinel, 'never took over');
+      dispose();
+      assert(window.QLOBE_DEBUG === sentinel, 'previous hook was not restored');
+    });
+
+    test('dispose: deletes the hook when there was nothing before', () => {
+      delete window.QLOBE_DEBUG;
+      const dispose = installDebug(baseSpec());
+      dispose();
+      assert(!('QLOBE_DEBUG' in window), 'left a hook behind');
+    });
+
+    test('dispose: nested installs unwind in order', () => {
+      delete window.QLOBE_DEBUG;
+      const disposeA = installDebug({ ...baseSpec(), gameId: 'a' });
+      const disposeB = installDebug({ ...baseSpec(), gameId: 'b' });
+      eq(window.QLOBE_DEBUG.gameId, 'b');
+      disposeB();
+      eq(window.QLOBE_DEBUG.gameId, 'a');
+      disposeA();
+      assert(!('QLOBE_DEBUG' in window));
+    });
+
+    test('dispose: an out-of-order dispose does not clobber a newer hook', () => {
+      delete window.QLOBE_DEBUG;
+      const disposeA = installDebug({ ...baseSpec(), gameId: 'a' });
+      const disposeB = installDebug({ ...baseSpec(), gameId: 'b' });
+      disposeA(); // stale — B owns the global now
+      eq(window.QLOBE_DEBUG.gameId, 'b', 'a stale disposer stomped the live hook');
+      disposeB();
+    });
+
+    test('dispose: is idempotent', () => {
+      const sentinel = { version: 1, gameId: 'before' };
+      window.QLOBE_DEBUG = sentinel;
+      const dispose = installDebug(baseSpec());
+      dispose();
+      dispose();
+      assert(window.QLOBE_DEBUG === sentinel);
+    });
+
+    // ---- default seed() ---------------------------------------------------
+
+    test('default seed(): hands a mulberry32 generator to onSeed', () => {
+      let got = null;
+      const dispose = installDebug({ ...baseSpec(), onSeed: (rng, n) => { got = { rng, n }; } });
+      const applied = window.QLOBE_DEBUG.seed(42);
+      eq(applied, 42, 'seed() should return the seed it applied');
+      assert(got && typeof got.rng === 'function', 'onSeed never received a generator');
+      eq(got.n, 42);
+      eq(got.rng(), 0.6011037519201636, 'not the platform mulberry32');
+      dispose();
+    });
+
+    test('default seed(): the same seed reproduces the same stream', () => {
+      const streams = [];
+      const dispose = installDebug({ ...baseSpec(), onSeed: (rng) => streams.push([rng(), rng(), rng()]) });
+      window.QLOBE_DEBUG.seed(7);
+      window.QLOBE_DEBUG.seed(7);
+      eq(streams[0], streams[1]);
+      dispose();
+    });
+
+    test('default seed(): junk seeds fall back to 42, negatives wrap to uint32', () => {
+      const dispose = installDebug(baseSpec());
+      eq(window.QLOBE_DEBUG.seed('nope'), 42);
+      eq(window.QLOBE_DEBUG.seed(undefined), 42);
+      eq(window.QLOBE_DEBUG.seed(-1), 4294967295);
+      dispose();
+    });
+
+    test('default seed(): works with no onSeed wired (inert, never throws)', () => {
+      const dispose = installDebug(baseSpec());
+      eq(window.QLOBE_DEBUG.seed(3), 3);
+      dispose();
+    });
+
+    // ---- default fastTimers() ---------------------------------------------
+
+    test('default fastTimers(): scales the supplied timer group by 20', () => {
+      const timers = createTimers();
+      const dispose = installDebug({ ...baseSpec(), timers });
+      const multiplier = window.QLOBE_DEBUG.fastTimers();
+      eq(multiplier, 0.05, 'should return the duration multiplier');
+      eq(timers.getScale(), 20);
+      eq(timers.ms(1000), 50);
+      dispose();
+    });
+
+    test('default fastTimers(): accepts either dialect — 0.05 or 20', () => {
+      const timers = createTimers();
+      const dispose = installDebug({ ...baseSpec(), timers });
+      eq(window.QLOBE_DEBUG.fastTimers(0.1), 0.1);
+      eq(timers.getScale(), 10);
+      eq(window.QLOBE_DEBUG.fastTimers(10), 0.1, 'a speed factor means the same thing');
+      eq(timers.getScale(), 10);
+      dispose();
+    });
+
+    test('default fastTimers(): clamps the multiplier to [0.01, 1]', () => {
+      const timers = createTimers();
+      const dispose = installDebug({ ...baseSpec(), timers });
+      eq(window.QLOBE_DEBUG.fastTimers(0.0001), 0.01);
+      eq(timers.getScale(), 100);
+      eq(window.QLOBE_DEBUG.fastTimers(1), 1, 'scale 1 = back to real time');
+      eq(timers.getScale(), 1);
+      eq(window.QLOBE_DEBUG.fastTimers(-3), 0.05, 'junk falls back to the default');
+      dispose();
+    });
+
+    test('default fastTimers(): scales every group in an array', () => {
+      const a = createTimers();
+      const b = createTimers();
+      const dispose = installDebug({ ...baseSpec(), timers: [a, b] });
+      window.QLOBE_DEBUG.fastTimers();
+      eq(a.getScale(), 20);
+      eq(b.getScale(), 20);
+      dispose();
+    });
+
+    test('default fastTimers(): works with no group supplied (returns the multiplier)', () => {
+      const dispose = installDebug(baseSpec());
+      eq(window.QLOBE_DEBUG.fastTimers(), 0.05);
+      dispose();
+    });
+
+    // ---- default mute() ---------------------------------------------------
+
+    test('default mute(): fans out to narrator, voice and sfx', () => {
+      const log = [];
+      const channel = (name) => ({
+        setMuted: (on) => log.push(`${name}:setMuted(${on})`),
+        stop: () => log.push(`${name}:stop`),
+      });
+      const dispose = installDebug({ ...baseSpec(), narrator: channel('narrator'), voice: channel('voice'), sfx: channel('sfx') });
+      eq(window.QLOBE_DEBUG.mute(), true, 'mute() should report the muted state');
+      eq(log, [
+        'narrator:setMuted(true)', 'narrator:stop',
+        'voice:setMuted(true)', 'voice:stop',
+        'sfx:setMuted(true)', 'sfx:stop',
+      ]);
+      dispose();
+    });
+
+    test('default mute(): silences stray <audio> elements and unmutes on mute(false)', () => {
+      const audio = document.getElementById('fixture-audio');
+      audio.muted = false;
+      const dispose = installDebug(baseSpec());
+      window.QLOBE_DEBUG.mute();
+      assert(audio.muted, 'a stray <audio> stayed unmuted');
+      eq(window.QLOBE_DEBUG.mute(false), false);
+      assert(!audio.muted, 'mute(false) did not unmute');
+      dispose();
+    });
+
+    test('default mute(): duck-types a channel with mute() instead of setMuted()', () => {
+      const log = [];
+      const dispose = installDebug({ ...baseSpec(), sfx: { mute: (on) => log.push(on) } });
+      window.QLOBE_DEBUG.mute();
+      eq(log, [true]);
+      dispose();
+    });
+
+    test('default mute(): a channel with no mute API at all is skipped, not crashed on', () => {
+      const dispose = installDebug({ ...baseSpec(), sfx: { pop() {} }, voice: null });
+      eq(window.QLOBE_DEBUG.mute(), true);
+      dispose();
+    });
+
+    test('default mute(): a throwing channel cannot break the mute', () => {
+      const audio = document.getElementById('fixture-audio');
+      audio.muted = false;
+      const dispose = installDebug({ ...baseSpec(), narrator: { setMuted() { throw new Error('boom'); } } });
+      eq(window.QLOBE_DEBUG.mute(), true);
+      assert(audio.muted, 'the <audio> sweep was skipped because a channel threw');
+      audio.muted = false;
+      dispose();
+    });
+
+    // ---- report -----------------------------------------------------------
+
+    delete window.QLOBE_DEBUG;
+
+    const passed = results.filter((r) => r.pass).length;
+    const failed = results.length - passed;
+    const list = document.getElementById('results');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.className = r.pass ? 'pass' : 'fail';
+      li.textContent = r.name;
+      if (!r.pass) {
+        const why = document.createElement('span');
+        why.className = 'why';
+        why.textContent = r.why;
+        li.appendChild(why);
+      }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.className = failed ? 'fail' : 'pass';
+    summary.textContent = failed ? `✗ ${failed} of ${results.length} FAILED` : `✓ all ${results.length} passed`;
+
+    window.QLOBE_TEST = { passed, failed, total: results.length, results };
+  </script>
+</body>
+</html>

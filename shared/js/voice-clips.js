@@ -9,6 +9,9 @@
 //   voiceClips.clipInfo(key)           // { file, dur } if recorded, else null
 //   voiceClips.unlock()                // call on every pointerdown (iOS)
 //   voiceClips.stop()
+//   voiceClips.duration(key)           // recorded seconds, or null
+//   voiceClips.setMuted(on) / isMuted()
+//   voiceClips.getAudioLog() / clearAudioLog()   // ring buffer, {key, text, at}
 //
 // Recorded clips are optional: every fetch/play failure falls back cleanly to
 // speech.js. Spoken fallback text comes from lines.json when present (so
@@ -82,6 +85,64 @@ export async function init(
 const clipListeners = new Set();
 export function onClip(cb) { clipListeners.add(cb); return () => clipListeners.delete(cb); }
 
+// ---- mute gate ------------------------------------------------------------
+// Off by default, so a game that never calls setMuted() behaves exactly as it
+// did before this existed. When on, say()/sayFile() stop whatever is talking and
+// resolve immediately instead of speaking; trySay() reports `false` (it did not
+// start), which is the same answer a caller already has to handle.
+let muted = false;
+
+/** Silence (or unsilence) the voice channel. Muting cuts off the current line. */
+export function setMuted(on) {
+  muted = !!on;
+  if (muted) stop();
+}
+
+/** @returns {boolean} */
+export function isMuted() { return muted; }
+
+// ---- audio log (QLOBE_DEBUG v1 `getAudioLog`) -----------------------------
+// A ring buffer of what the game ASKED to say, in order — the one thing that
+// makes an audio bug reproducible from a QA driver, where you cannot hear
+// anything and a missing clip is indistinguishable from a line that was never
+// requested. Games have been forking voice-clips just to get this (see
+// games/rhyming-detective/js/voice.js); it belongs here.
+const LOG_MAX = 80;
+const audioLog = [];
+
+function logSay(key, text, kind) {
+  audioLog.push({
+    key,
+    text: text || '',
+    // 'clip' when a recording backs this line, 'speech' when it will be
+    // synthesized — QA drivers assert on this to prove the recorded teacher
+    // voice actually played (see games/rhyming-detective/tools/qa.mjs).
+    kind: kind || 'speech',
+    // ms since page load (performance.now), so an entry lines up with console
+    // timings and with a driver's own clock without timezone arithmetic.
+    at: Math.round(typeof performance !== 'undefined' ? performance.now() : Date.now()),
+  });
+  if (audioLog.length > LOG_MAX) audioLog.splice(0, audioLog.length - LOG_MAX);
+}
+
+/** @returns {Array<{key: string, text: string, kind: 'clip'|'speech', at: number}>} a copy, oldest first. */
+export function getAudioLog() { return audioLog.map((entry) => ({ ...entry })); }
+
+/** Empty the audio log (a QA driver clears it between rounds). */
+export function clearAudioLog() { audioLog.length = 0; }
+
+/**
+ * The recorded length of a clip in seconds, or null when this game ships no
+ * recording for the key (or the manifest is absent). Lets a caller time a visual
+ * beat to the voice instead of guessing — clipInfo(key)?.dur without the
+ * optional-chaining dance, and null rather than undefined so `?? fallback` and
+ * `== null` both read cleanly.
+ */
+export function duration(key) {
+  const entry = manifest && manifest[key];
+  return entry && typeof entry.dur === 'number' ? entry.dur : null;
+}
+
 /**
  * The manifest entry for a key — `{ file, dur }` — or null when this game ships
  * no recording for it. Read-only and additive: it exists so a game can PLAN a
@@ -117,6 +178,8 @@ export function say(key, fallbackText) {
   speech.stop();
   const text = lineText(lines && lines[key]) || fallbackText || defaults[key] || '';
   const entry = manifest && manifest[key];
+  logSay(key, text, entry && entry.file ? 'clip' : 'speech');
+  if (muted) return Promise.resolve();
   if (!entry || !entry.file) return speech.speak(text);
   return playClip(clipUrl(entry.file), text, token, key, entry.dur);
 }
@@ -131,6 +194,8 @@ export function sayFile(fileRel, fallbackText, dur) {
   const token = ++playToken;
   pauseChannel();
   speech.stop();
+  logSay(fileRel || 'file', fallbackText || '', fileRel ? 'clip' : 'speech');
+  if (muted) return Promise.resolve();
   if (!fileRel) return speech.speak(fallbackText || '');
   return playClip(clipUrl(fileRel), fallbackText || '', token, 'file', dur);
 }
@@ -147,6 +212,7 @@ export function trySay(key, isFile = false) {
   ++playToken;
   pauseChannel();
   speech.stop();
+  if (muted) return Promise.resolve(false);
   const src = isFile ? key : (manifest && manifest[key] && manifest[key].file);
   if (!src) return Promise.resolve(false);
   const el = getChannel();

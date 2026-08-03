@@ -1,62 +1,40 @@
 #!/usr/bin/env node
 // Real-Chrome smoke + visual-QC driver for Puppet Tales.
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir, readFile, stat } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const flag = (name, fallback) => {
-  const index = argv.indexOf(`--${name}`);
-  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
-};
-const base = flag('base', 'http://127.0.0.1:4173');
-const url = `${base.replace(/\/$/, '')}/games/puppet-retell/`;
-const shots = path.resolve(flag('shots', 'qa-shots/puppet-retell'));
-const playwrightRoot = flag('playwright', '/private/tmp/pw/node_modules');
-const require = createRequire(path.join(playwrightRoot, 'noop.js'));
-const { chromium } = require('playwright');
+const base = baseUrl('http://127.0.0.1:4173');
+const url = `${base}/games/puppet-retell/`;
+const shots = resolveShots('qa-shots/puppet-retell');
 
-const results = [];
 const CHROME_AVC1_DIAGNOSTIC = 'When using "avc1" for mp4 encoding, the codec description is not supposed to change';
-function check(name, value, detail = '') {
-  const ok = !!value;
-  results.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
+const { check, finish } = createReporter();
 
 async function monitoredPage(browser, viewport, { denyMicrophone = false } = {}) {
-  const context = await browser.newContext({
+  return openSession(browser, {
+    url,
+    base,
     viewport,
-    deviceScaleFactor: 1,
-    permissions: ['microphone'],
+    context: { permissions: ['microphone'] },
+    initScript: denyMicrophone
+      ? () => {
+        Object.defineProperty(navigator, 'mediaDevices', {
+          configurable: true,
+          value: { getUserMedia: () => Promise.reject(new DOMException('denied for QA', 'NotAllowedError')) },
+        });
+      }
+      : null,
+    ignoreConsole: [CHROME_AVC1_DIAGNOSTIC],
+    mute: true,
   });
-  const page = await context.newPage();
-  if (denyMicrophone) {
-    await page.addInitScript(() => {
-      Object.defineProperty(navigator, 'mediaDevices', {
-        configurable: true,
-        value: { getUserMedia: () => Promise.reject(new DOMException('denied for QA', 'NotAllowedError')) },
-      });
-    });
-  }
-  const errors = [];
-  const diagnostics = [];
-  const failed = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() !== 'error') return;
-    if (message.text().includes(CHROME_AVC1_DIAGNOSTIC)) diagnostics.push(message.text());
-    else errors.push(message.text());
-  });
-  page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
-  return { context, page, errors, diagnostics, failed };
 }
 
 async function tap(page, id) {
@@ -85,9 +63,8 @@ async function buildCast(page, mode = 'guided') {
 }
 
 async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({
-    channel: 'chrome',
+  await ensureShots(shots);
+  const browser = await launchChrome({
     headless: true,
     args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
   });
@@ -265,9 +242,7 @@ async function main() {
     browser.close(),
     new Promise((resolve) => setTimeout(resolve, 5000)),
   ]);
-  const failed = results.filter((item) => !item.ok);
-  console.log(`\nPuppet Tales QA: ${results.length - failed.length}/${results.length} checks passed`);
-  process.exit(failed.length ? 1 : 0);
+  finish({ prefix: '\nPuppet Tales QA: ', listFailures: false, exit: true });
 }
 
 main().catch((error) => {

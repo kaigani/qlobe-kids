@@ -4,16 +4,17 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
+import { mulberry32 } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 import { createStage } from '../stage/stage.js';
 import { popIn } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
 const WAIT_FOR_INPUT = 80;
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
@@ -36,9 +37,10 @@ class CoachTimerGame {
     this.config = config;
     this.mountEl = mountEl;
     this.id = ++debugOwner;
-    this.previousDebug = window.QLOBE_DEBUG;
+    this.timeScale = 1;
     this.mode = null;
-    this.screen = 'splash';
+    // The router owns "which screen is live"; `screen` below is a getter over it.
+    this.screens = null;
     this.stepIndex = 0;
     this.cycleIndex = 0;
     this.signalStateIndex = 0;
@@ -77,9 +79,40 @@ class CoachTimerGame {
     window.addEventListener('contextmenu', this.preventGesture);
     document.addEventListener('visibilitychange', this.onVisibility);
 
+    this.buildShell();
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebug();
+  }
+
+  /** @returns {'splash'|'play'|'end'} straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * Three persistent sections, toggled by `hidden`, instead of one mount whose
+   * innerHTML is thrown away on every transition. The play section carries the
+   * mode-flavour class (`qk-coach-steps` / `qk-coach-signal`) that used to be
+   * baked into a freshly-built element.
+   */
+  buildShell() {
+    this.mountEl.classList.add('qk-coach-root', 'qk-eng-root');
+    this.mountEl.innerHTML = `
+      <section class="qk-coach qk-coach-splash qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title || '')}"></section>
+      <section class="qk-coach qk-coach-play qk-eng-surface" hidden></section>
+      <section class="qk-coach qk-coach-end qk-eng-surface qk-eng-page" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-coach-splash'),
+        play: this.mountEl.querySelector('.qk-coach-play'),
+        end: this.mountEl.querySelector('.qk-coach-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => speech.stop() },
+    });
   }
 
   destroy() {
@@ -92,13 +125,11 @@ class CoachTimerGame {
     window.removeEventListener('gesturestart', this.preventGesture);
     window.removeEventListener('contextmenu', this.preventGesture);
     document.removeEventListener('visibilitychange', this.onVisibility);
-    this.mountEl.classList.remove('qk-coach-root');
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
+    this.mountEl.classList.remove('qk-coach-root', 'qk-eng-root');
     this.mountEl.replaceChildren();
     this.targetMap.clear();
-    if (window.QLOBE_DEBUG === this.debug) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   unlockAudio() {
@@ -110,8 +141,7 @@ class CoachTimerGame {
   }
 
   installDebug() {
-    this.debug = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id || 'coach-timer',
       engine: 'coach-timer',
       ready: this.ready,
@@ -123,8 +153,8 @@ class CoachTimerGame {
       winRound: () => this.winRound(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
-    };
-    window.QLOBE_DEBUG = this.debug;
+      fastTimers: (scale) => this.fastTimers(scale),
+    });
   }
 
   listModes() {
@@ -135,41 +165,65 @@ class CoachTimerGame {
     this.clearTimers();
     this.disposeStage();
     speech.stop();
-    this.screen = 'splash';
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
     this.targetMap.clear();
-    this.mountEl.classList.add('qk-coach-root');
-    const buttons = (this.config.modes || []).map((mode) => `
-      <button class="qk-coach-mode-button" type="button" data-mode="${escapeAttr(mode.id)}">
-        ${escapeHtml(mode.title || mode.id)}
-      </button>`).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-coach qk-coach-splash" aria-label="${escapeAttr(this.config.title || '')}">
-        <a class="qk-coach-home qk-coach-img-btn" href="../../" aria-label="Home"></a>
-        <div class="qk-coach-splash-center">
-          <div class="qk-coach-splash-art" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji || 'emoji:⭐'))}</div>
-          <h1>${escapeHtml(this.config.title || '')}</h1>
-          <div class="qk-coach-mode-grid">${buttons}</div>
-        </div>
-      </section>`;
-    this.mountEl.querySelectorAll('.qk-coach-mode-button').forEach((button) => {
-      onTap(button, () => this.startMode(button.dataset.mode), {
-        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
-      });
+
+    const splash = this.screens.el('splash');
+    // show() is idempotent, so re-entering the splash we are already on would
+    // not run its bag — release it by hand before the markup underneath changes.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      <a class="qk-coach-home qk-coach-img-btn qk-eng-ico-home" href="../../" aria-label="Home"></a>
+      <div class="qk-coach-splash-center qk-eng-center">
+        <div class="qk-coach-splash-art qk-eng-card" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji || 'emoji:\u2b50'))}</div>
+        <h1>${escapeHtml(this.config.title || '')}</h1>
+        <div class="qk-coach-mode-grid qk-eng-mode-list"></div>
+      </div>`;
+
+    const picker = renderModeCards({
+      host: splash.querySelector('.qk-coach-mode-grid'),
+      modes: (this.config.modes || []),
+      // The engine paints its own buttons, so screens.css's card skin stays off.
+      skin: false,
+      cardClass: 'qk-coach-mode-button',
+      // getTargets() reads a fixed id list, never the DOM, so `data-target` on
+      // the cards would be inert — but leaving it off keeps the splash's target
+      // set provably unchanged.
+      targetPrefix: null,
+      label: (mode) => mode.title || mode.id,
+      showTitle: false,
+      decorate: (btn, mode) => { btn.textContent = mode.title || mode.id; },
+      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      onPick: (id) => this.startMode(id),
     });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-coach-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
   }
 
   async startMode(id) {
     await this.ready;
     const mode = (this.config.modes || []).find((item) => item.id === id);
     if (!mode || this.destroyed) return;
+    // The double-tap latch: a second press while the first start is in flight
+    // is swallowed rather than running the whole teardown + render twice.
+    return this.screens.start(() => this.runMode(mode));
+  }
+
+  async runMode(mode) {
     this.clearTimers();
     this.disposeStage();
     speech.stop();
     this.mode = mode;
-    this.screen = 'play';
     this.stepIndex = 0;
     this.cycleIndex = 0;
     this.signalStateIndex = 0;
@@ -196,22 +250,38 @@ class CoachTimerGame {
         <span class="qk-coach-check" aria-hidden="true"></span>
         <span class="qk-coach-row-text">${escapeHtml(step.say || '')}</span>
       </li>`).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-coach qk-coach-play qk-coach-steps" aria-label="${escapeAttr(this.mode.title || '')}">
-        <header class="qk-coach-hud">
-          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-coach-dots" aria-hidden="true"></div>
-        </header>
-        <main class="qk-coach-workspace">
-          <div class="qk-coach-canvas" aria-label="Activity timer and step picture"></div>
-          <ol class="qk-coach-checklist" aria-label="Activity steps">${rows}</ol>
-        </main>
-        <button class="qk-coach-sound qk-coach-img-btn" type="button" aria-label="Hear it again"></button>
-      </section>`;
-    this.applyThemeBackdrop();
-    this.wireBack();
-    this.wireReplay();
+    const play = this.openPlayScreen('qk-coach-steps');
+    play.innerHTML = `
+      <header class="qk-coach-hud">
+        <button class="qk-coach-back qk-coach-img-btn qk-eng-ico-back" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-coach-dots" aria-hidden="true"></div>
+      </header>
+      <main class="qk-coach-workspace">
+        <div class="qk-coach-canvas" aria-label="Activity timer and step picture"></div>
+        <ol class="qk-coach-checklist" aria-label="Activity steps">${rows}</ol>
+      </main>
+      <button class="qk-coach-sound qk-coach-img-btn qk-eng-ico-sound" type="button" aria-label="Hear it again"></button>`;
+    this.screens.show('play');
+    this.applyThemeBackdrop(play);
+    this.wireBack(play);
+    this.wireReplay(play);
     await this.createPlayStage();
+  }
+
+  /**
+   * Ready the one play section for a mode flavour. `show()` is idempotent, so
+   * re-entering play from play would run neither the disposer bag nor
+   * voice.stop() — release by hand before the markup underneath changes.
+   */
+  openPlayScreen(flavour) {
+    const play = this.screens.el('play');
+    this.screens.release('play');
+    play.classList.toggle('qk-coach-steps', flavour === 'qk-coach-steps');
+    play.classList.toggle('qk-coach-signal', flavour === 'qk-coach-signal');
+    play.setAttribute('aria-label', (this.mode && this.mode.title) || '');
+    if (flavour === 'qk-coach-signal') play.dataset.targetId = 'signal-area';
+    else delete play.dataset.targetId;
+    return play;
   }
 
   async showStep() {
@@ -221,13 +291,12 @@ class CoachTimerGame {
     if (!step) { await this.endMode(); return; }
     this.clearTimers();
     this.clearClock();
-    this.screen = 'play';
     this.awaitingInput = false;
     this.inputLocked = true;
     this.idlePrompted = false;
     this.targetMap.clear();
     this.updateChecklist();
-    const row = this.mountEl.querySelector(`[data-step="${this.stepIndex}"]`);
+    const row = this.screens.el('play').querySelector(`[data-step="${this.stepIndex}"]`);
     if (row) {
       row.classList.add('is-now');
       row.dataset.targetId = 'done';
@@ -261,7 +330,7 @@ class CoachTimerGame {
 
   updateChecklist() {
     const count = (this.mode.steps || []).length;
-    this.mountEl.querySelectorAll('.qk-coach-row').forEach((row, index) => {
+    this.screens.el('play').querySelectorAll('.qk-coach-row').forEach((row, index) => {
       row.classList.toggle('is-done', index < this.stepIndex);
       row.classList.toggle('is-now', index === this.stepIndex);
       row.removeAttribute('data-target-id');
@@ -269,8 +338,8 @@ class CoachTimerGame {
       row.removeAttribute('tabindex');
     });
     const dots = Array.from({ length: count }, (_, index) =>
-      `<span class="qk-coach-dot${index < this.stepIndex ? ' is-done' : index === this.stepIndex ? ' is-now' : ''}"></span>`).join('');
-    const host = this.mountEl.querySelector('.qk-coach-dots');
+      `<span class="qk-coach-dot qk-eng-dot-ring${index < this.stepIndex ? ' is-done' : index === this.stepIndex ? ' is-now' : ''}"></span>`).join('');
+    const host = this.screens.el('play').querySelector('.qk-coach-dots');
     if (host) host.innerHTML = dots;
   }
 
@@ -278,7 +347,7 @@ class CoachTimerGame {
     const seconds = Number(step.timerSec || 0);
     if (!(seconds > 0)) { this.setDialProgress(1, false); return; }
     const duration = this.seeded ? 0.2 : seconds;
-    this.clockTotalMs = duration * 1000;
+    this.clockTotalMs = duration * 1000 * this.timeScale;
     this.clockDeadline = Date.now() + this.clockTotalMs;
     this.clockDone = false;
     this.lastTickSecond = 4;
@@ -299,7 +368,7 @@ class CoachTimerGame {
     this.clearClock();
     this.playSfx('sparkle');
     this.speak(this.mode.praise || (this.config.voice && this.config.voice.praise));
-    const row = this.mountEl.querySelector(`[data-step="${this.stepIndex}"]`);
+    const row = this.screens.el('play').querySelector(`[data-step="${this.stepIndex}"]`);
     const finalStep = this.stepIndex + 1 >= (this.mode.steps || []).length;
     const fx = this.flyCheckToStage(row, finalStep);
     this.stepIndex += 1;
@@ -312,23 +381,23 @@ class CoachTimerGame {
   }
 
   async renderSignalShell() {
-    this.mountEl.innerHTML = `
-      <section class="qk-coach qk-coach-play qk-coach-signal" data-target-id="signal-area" aria-label="${escapeAttr(this.mode.title || '')}">
-        <header class="qk-coach-hud">
-          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-coach-round-dots" aria-hidden="true"></div>
-          <button class="qk-coach-pause" type="button" data-target-id="pause" aria-label="Pause">Ⅱ</button>
-        </header>
-        <main class="qk-coach-signal-field">
-          <div class="qk-coach-canvas" aria-label="Current movement signal"></div>
-          <div class="qk-coach-signal-cue" aria-live="polite"></div>
-        </main>
-        <button class="qk-coach-sound qk-coach-img-btn" type="button" aria-label="Hear it again"></button>
-      </section>`;
-    this.applyThemeBackdrop();
-    this.wireBack();
-    this.wireReplay();
-    const pause = this.mountEl.querySelector('.qk-coach-pause');
+    const play = this.openPlayScreen('qk-coach-signal');
+    play.innerHTML = `
+      <header class="qk-coach-hud">
+        <button class="qk-coach-back qk-coach-img-btn qk-eng-ico-back" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-coach-round-dots" aria-hidden="true"></div>
+        <button class="qk-coach-pause" type="button" data-target-id="pause" aria-label="Pause">Ⅱ</button>
+      </header>
+      <main class="qk-coach-signal-field">
+        <div class="qk-coach-canvas" aria-label="Current movement signal"></div>
+        <div class="qk-coach-signal-cue" aria-live="polite"></div>
+      </main>
+      <button class="qk-coach-sound qk-coach-img-btn qk-eng-ico-sound" type="button" aria-label="Hear it again"></button>`;
+    this.screens.show('play');
+    this.applyThemeBackdrop(play);
+    this.wireBack(play);
+    this.wireReplay(play);
+    const pause = play.querySelector('.qk-coach-pause');
     const pauseAction = () => { this.togglePause(); return { accepted: true }; };
     pause.addEventListener('pointerdown', (e) => {
       e.preventDefault();
@@ -337,7 +406,7 @@ class CoachTimerGame {
       pauseAction();
     });
     this.targetMap.set('pause', { id: 'pause', role: 'neutral', element: pause, action: pauseAction });
-    const area = this.mountEl.querySelector('.qk-coach-signal');
+    const area = play;
     const areaAction = () => ({ accepted: true });
     area.addEventListener('pointerdown', () => {
       this.unlockAudio();
@@ -358,9 +427,9 @@ class CoachTimerGame {
     this.idlePrompted = false;
     this.signalStateIndex = index % states.length;
     const state = states[this.signalStateIndex];
-    const section = this.mountEl.querySelector('.qk-coach-signal');
+    const section = this.screens.el('play');
     if (section) section.style.setProperty('--qk-signal-color', state.color || '#58a945');
-    const cue = this.mountEl.querySelector('.qk-coach-signal-cue');
+    const cue = section && section.querySelector('.qk-coach-signal-cue');
     if (cue) cue.textContent = state.say || '';
     this.updateSignalDots();
     const generation = ++this.viewGeneration;
@@ -372,7 +441,7 @@ class CoachTimerGame {
     this.speak(state.say);
     this.scheduleIdlePrompt();
     if (this.paused) return;
-    this.clockTotalMs = this.signalDurationMs(state);
+    this.clockTotalMs = this.signalDurationMs(state) * this.timeScale;
     this.clockDeadline = startsAt + this.clockTotalMs;
     this.clockDone = false;
     this.clockKind = 'signal';
@@ -384,8 +453,8 @@ class CoachTimerGame {
   updateSignalDots() {
     const count = Number(this.mode.rounds || 1);
     const html = Array.from({ length: count }, (_, index) =>
-      `<span class="qk-coach-dot${index < this.cycleIndex ? ' is-done' : index === this.cycleIndex ? ' is-now' : ''}"></span>`).join('');
-    const host = this.mountEl.querySelector('.qk-coach-round-dots');
+      `<span class="qk-coach-dot qk-eng-dot-ring${index < this.cycleIndex ? ' is-done' : index === this.cycleIndex ? ' is-now' : ''}"></span>`).join('');
+    const host = this.screens.el('play').querySelector('.qk-coach-round-dots');
     if (host) host.innerHTML = html;
   }
 
@@ -416,8 +485,8 @@ class CoachTimerGame {
     this.clearTimers();
     this.clearClock();
     this.playSfx('tick');
-    const pause = this.mountEl.querySelector('.qk-coach-pause');
-    const section = this.mountEl.querySelector('.qk-coach-signal');
+    const section = this.screens.el('play');
+    const pause = section.querySelector('.qk-coach-pause');
     if (pause) { pause.textContent = this.paused ? '▶' : 'Ⅱ'; pause.setAttribute('aria-label', this.paused ? 'Play' : 'Pause'); }
     if (section) section.classList.toggle('is-paused', this.paused);
     // Original semantics restart the current signal (including voice and a newly
@@ -426,7 +495,7 @@ class CoachTimerGame {
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-coach-canvas');
+    const host = this.screens.el('play').querySelector('.qk-coach-canvas');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -618,20 +687,20 @@ class CoachTimerGame {
     ]);
   }
 
-  wireReplay() {
-    const sound = this.mountEl.querySelector('.qk-coach-sound');
+  wireReplay(section) {
+    const sound = section.querySelector('.qk-coach-sound');
     if (!sound) return;
-    onTap(sound, () => this.replayPrompt(), {
+    this.screens.hold(onTap(sound, () => this.replayPrompt(), {
       feedback: (e) => { e.stopPropagation(); this.unlockAudio(); },
-    });
+    }));
   }
 
-  // play/end screens rebuild innerHTML, so the back button is rewired at
-  // each render rather than relying on a delegated listener
-  wireBack() {
-    const back = this.mountEl.querySelector('.qk-coach-back');
+  // play/end screens rebuild their innerHTML, so the back button is rewired at
+  // each render; the disposer rides that screen's own teardown bag.
+  wireBack(section) {
+    const back = section.querySelector('.qk-coach-back');
     if (!back) return;
-    onTap(back, () => { speech.stop(); this.renderSplash(); });
+    this.screens.hold(onTap(back, () => { speech.stop(); this.renderSplash(); }));
   }
 
   replayPrompt() {
@@ -658,7 +727,7 @@ class CoachTimerGame {
       if (this.destroyed || this.idlePrompted || !this.awaitingInput || this.screen !== 'play') return;
       this.idlePrompted = true;
       this.speak(this.currentLine());
-    }, IDLE_MS);
+    }, IDLE_MS * this.timeScale);
   }
 
   clearIdleTimer() {
@@ -668,9 +737,8 @@ class CoachTimerGame {
     this.idleTimer = 0;
   }
 
-  applyThemeBackdrop() {
+  applyThemeBackdrop(section) {
     const theme = this.config.theme;
-    const section = this.mountEl.querySelector('.qk-coach');
     if (!theme || !theme.background || !section) return;
     const ref = String(theme.background);
     const url = ref.startsWith('shared:') || ref.startsWith('char:') ? artUrlRef(ref) : ref;
@@ -681,28 +749,41 @@ class CoachTimerGame {
     if (this.destroyed) return;
     this.clearTimers();
     this.clearClock();
-    this.screen = 'end';
     this.awaitingInput = true;
     this.inputLocked = false;
     this.targetMap.clear();
     this.playSfx('tada');
     this.speak(this.mode && (this.mode.cheer || (this.config.voice && this.config.voice.cheer)));
     const mode = this.mode;
+    const end = this.screens.el('end');
+    end.setAttribute('aria-label', (mode && mode.endTitle) || this.config.title || '');
+    this.screens.release('end');
+    // `silent`: endMode has already spoken the cheer line, and the router's
+    // voice.stop() would cut it off — which never happened before.
+    this.screens.show('end', { silent: true });
     this.disposeStage();
-    this.mountEl.innerHTML = `
-      <section class="qk-coach qk-coach-end" aria-label="${escapeAttr((mode && mode.endTitle) || this.config.title || '')}">
-        <div class="qk-coach-end-center">
-          <div class="qk-coach-end-art" aria-hidden="true">${escapeHtml(emojiFromRef((mode && mode.endArt) || this.config.splashEmoji || 'emoji:⭐'))}</div>
-          <h1>${escapeHtml((mode && (mode.endTitle || mode.title)) || this.config.title || '')}</h1>
-          <button class="qk-coach-again" type="button"><span class="qk-coach-play-icon" aria-hidden="true"></span>${escapeHtml((mode && mode.againLabel) || 'PLAY AGAIN')}</button>
-          <button class="qk-coach-back qk-coach-img-btn" type="button" aria-label="Back to the game menu"></button>
-        </div>
-      </section>`;
-    this.wireBack();
-    const again = this.mountEl.querySelector('.qk-coach-again');
-    onTap(again, () => { if (mode) this.startMode(mode.id); }, {
-      feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+    end.innerHTML = `
+      <div class="qk-coach-end-center qk-eng-center">
+        <div class="qk-coach-end-art qk-eng-card" aria-hidden="true">${escapeHtml(emojiFromRef((mode && mode.endArt) || this.config.splashEmoji || 'emoji:⭐'))}</div>
+        <h1>${escapeHtml((mode && (mode.endTitle || mode.title)) || this.config.title || '')}</h1>
+        <button class="qk-coach-again" type="button"><span class="qk-coach-play-icon qk-eng-play-icon" aria-hidden="true"></span>${escapeHtml((mode && mode.againLabel) || 'PLAY AGAIN')}</button>
+        <button class="qk-coach-back qk-coach-img-btn qk-eng-ico-back" type="button" aria-label="Back to the game menu"></button>
+      </div>`;
+    wireEndScreen({
+      screens: this.screens,
+      back: end.querySelector('.qk-coach-back'),
+      again: end.querySelector('.qk-coach-again'),
+      // Back has always been a silent return here; the default feedback would
+      // add a preventDefault + tick this screen never made.
+      feedback: null,
+      onSplash: () => { speech.stop(); this.renderSplash(); },
+      onAgain: () => { if (mode) this.startMode(mode.id); },
     });
+    // "again" keeps its own richer press feedback (unlock + tick).
+    const again = end.querySelector('.qk-coach-again');
+    const press = (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); };
+    again.addEventListener('pointerdown', press);
+    this.screens.hold(() => again.removeEventListener('pointerdown', press));
   }
 
   getState() {
@@ -792,11 +873,25 @@ class CoachTimerGame {
 
   seed(n) {
     this.seeded = true;
-    let value = Number(n) || 1;
-    this.rng = () => {
-      value = (value * 1664525 + 1013904223) >>> 0;
-      return value / 4294967296;
-    };
+    this.rng = mulberry32(Number(n) || 1);
+  }
+
+  /**
+   * QA speed-up. coach-timer's beats ARE real-world timers, so the thing worth
+   * compressing is the clock: the scale is applied where a duration becomes a
+   * deadline, and the wake that fires it is measured against that same
+   * deadline, so the two never drift apart. timers.js is deliberately NOT the
+   * mechanism here — scaling `schedule()` alone would fire the wake before
+   * `clockDeadline`, `syncClock()` would return early, and the step would
+   * never advance. Defaults to 1, so an untouched game is byte-identical.
+   * @param {number} [scale] 0.05 (duration multiplier) or 20 (speed factor)
+   * @returns {number} the clamped multiplier actually applied
+   */
+  fastTimers(scale = 0.05) {
+    const n = Number(scale);
+    const raw = Number.isFinite(n) && n > 0 ? (n > 1 ? 1 / n : n) : 0.05;
+    this.timeScale = Math.min(1, Math.max(0.01, raw));
+    return this.timeScale;
   }
 
   speak(text) {
@@ -831,27 +926,75 @@ class CoachTimerGame {
 }
 
 function injectStyle() {
-  if (styleReady || document.getElementById('qk-coach-style')) { styleReady = true; return; }
-  const style = document.createElement('style');
-  style.id = 'qk-coach-style';
-  style.textContent = `
-    @font-face { font-family:'Fredoka'; src:url('${FONT_URL}') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
-    .qk-coach-root, .qk-coach-root * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    .qk-coach { --navy:#17517e; --sky:#bee3f5; position:relative; width:100%; height:100dvh; min-height:100%; overflow:hidden; color:var(--navy); font-family:'Fredoka','Arial Rounded MT Bold',sans-serif; font-weight:600; background-color:var(--sky); background-image:radial-gradient(circle at 20% 20%,rgba(255,255,255,.3) 0 10px,transparent 11px),radial-gradient(circle at 78% 28%,rgba(255,255,255,.23) 0 14px,transparent 15px); background-size:120px 120px,170px 170px; touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
-    .qk-coach-img-btn { display:block; width:96px; height:96px; border:0; background:transparent center/contain no-repeat; touch-action:manipulation; cursor:pointer; }
-    .qk-coach-home { background-image: url('${HOME_IMG}'); }
-    .qk-coach-back { background-image: url('${BACK_IMG}'); }
-    .qk-coach-sound { position:absolute; z-index:8; left:max(16px,env(safe-area-inset-left)); bottom:max(16px,env(safe-area-inset-bottom)); background-image:url('${SOUND_IMG}'); }
+  if (styleReady) return;
+  styleReady = true;
+  installEngineStyles('qk-coach-style', `
+    /* coach-timer's own skin. The @font-face, the reset, the surface, the
+       splash/end page, the centre column, the art tile, the mode grid, the
+       button artwork and the progress pips now come from
+       shared/css/engine-base.css. What is left is either this engine's palette
+       or a control only a coached activity has: the checklist, the signal
+       field, the pause button and the flying check.
+
+       The .qk-coach-* class names are unchanged and stay supported — see the
+       compatibility window note in shared/js/engines/README.md. */
+
+    .qk-coach {
+      --navy: #17517e;
+      --sky: #bee3f5;
+
+      --qk-navy: var(--navy);
+      --qk-sky: var(--sky);
+      /* The art tile's shadow, which is softer than the platform default. */
+      --qk-shadow: 0 8px 0 rgba(23,81,126,.16), 0 18px 34px rgba(23,81,126,.14);
+
+      --qk-eng-bg-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.3) 0 10px, transparent 11px),
+        radial-gradient(circle at 78% 28%, rgba(255,255,255,.23) 0 14px, transparent 15px);
+      --qk-eng-bg-size: 120px 120px, 170px 170px;
+
+      --qk-eng-center-w: min(900px, 94vw);
+      --qk-eng-center-gap: clamp(14px, 2.4vmin, 26px);
+      --qk-eng-center-pt: 0px;
+
+      --qk-eng-card-w: min(34vmin, 280px);
+      --qk-eng-card-border: 6px solid #fff;
+      --qk-eng-card-radius: 32px;
+      --qk-eng-card-bg: linear-gradient(#fffef8, #f7ecd5);
+
+      --qk-eng-mode-min: min(260px, 86vw);
+      --qk-eng-mode-gap: 16px;
+      --qk-eng-mode-list-w: min(760px, 92vw);
+      --qk-eng-mode-list-mt: 0px;
+
+      /* The ▶ glyph sits in a flex row, so \`inline\` blockifies to exactly what
+         it computed to before, when the rule declared no display at all. */
+      --qk-eng-play-icon-display: inline;
+      --qk-eng-play-icon-size: 62px;
+    }
+
+    /* The tile sizes its glyph rather than its art, so it takes .qk-eng-card
+       (the box) without .qk-eng-card-glyph (font-size + line-height: 1). */
+    .qk-coach-splash-art,.qk-coach-end-art { font-size: min(20vmin,160px); }
+    .qk-coach-end-art { font-size: min(18vmin,145px); }
+
+    /* This engine's button is a plain 96px block whose PNG fills it edge to
+       edge — not engine-base's 84px-inside-a-96px-circle. Longhands, not the
+       \`background\` shorthand: the shorthand would reset the background-image
+       .qk-eng-ico-* supplies from the earlier stylesheet. */
+    .qk-coach-img-btn { display:block; width:96px; height:96px; border:0; background-color:transparent; background-position:center; background-size:contain; background-repeat:no-repeat; touch-action:manipulation; cursor:pointer; }
+    .qk-coach-sound { position:absolute; z-index:8; left:max(16px,env(safe-area-inset-left)); bottom:max(16px,env(safe-area-inset-bottom)); }
     .qk-coach-hud { position:absolute; z-index:7; inset:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) auto max(14px,env(safe-area-inset-left)); min-height:96px; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
     .qk-coach-hud > * { pointer-events:auto; }
-    .qk-coach-splash,.qk-coach-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
     .qk-coach-splash > .qk-coach-home,     .qk-coach-splash > .qk-coach-back { position:absolute; left:max(16px,env(safe-area-inset-left)); top:max(16px,env(safe-area-inset-top)); }
-    .qk-coach-splash-center,.qk-coach-end-center { display:grid; justify-items:center; gap:clamp(14px,2.4vmin,26px); width:min(900px,94vw); text-align:center; }
-    .qk-coach-splash-art,.qk-coach-end-art { display:grid; place-items:center; width:min(34vmin,280px); aspect-ratio:1; border:6px solid #fff; border-radius:32px; background:linear-gradient(#fffef8,#f7ecd5); box-shadow:0 8px 0 rgba(23,81,126,.16),0 18px 34px rgba(23,81,126,.14); font-size:min(20vmin,160px); }
     .qk-coach h1 { margin:0; max-width:90vw; font-size:clamp(36px,7vmin,78px); line-height:1; text-shadow:0 4px 0 rgba(255,255,255,.65); }
-    .qk-coach-mode-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,86vw),1fr)); width:min(760px,92vw); gap:16px; }
-    .qk-coach-mode-button,.qk-coach-again,.qk-coach-pause { min-height:96px; border:6px solid #fff; border-radius:28px; color:var(--navy); background:linear-gradient(rgba(255,255,255,.58),rgba(255,255,255,0) 52%),#ffd166; box-shadow:0 7px 0 rgba(23,81,126,.18),0 16px 28px rgba(23,81,126,.16); font:inherit; font-size:clamp(25px,4vmin,42px); cursor:pointer; touch-action:manipulation; }
-    .qk-coach-mode-button { min-height:112px; padding:12px 22px; }
+    /* SPECIFICITY: engine-base's \`.qk-eng-surface button { border: 0 }\` and
+       \`{ font: inherit }\` are (0,1,1) and would otherwise beat a bare
+       \`.qk-coach-mode-button\` (0,1,0) — coach-timer is the one engine that never
+       had a \`button\` reset of its own, so its buttons are the ones that notice.
+       Qualifying with the element is the same fix trace-path already carries. */
+    .qk-coach button.qk-coach-mode-button,.qk-coach button.qk-coach-again,.qk-coach button.qk-coach-pause { min-height:96px; border:6px solid #fff; border-radius:28px; color:var(--navy); background:linear-gradient(rgba(255,255,255,.58),rgba(255,255,255,0) 52%),#ffd166; box-shadow:0 7px 0 rgba(23,81,126,.18),0 16px 28px rgba(23,81,126,.16); font:inherit; font-size:clamp(25px,4vmin,42px); cursor:pointer; touch-action:manipulation; }
+    .qk-coach button.qk-coach-mode-button { min-height:112px; padding:12px 22px; }
     .qk-coach-workspace { position:absolute; inset:118px 18px 18px; display:grid; grid-template-columns:minmax(280px,1.05fr) minmax(320px,.95fr); gap:clamp(16px,3vw,42px); align-items:center; padding-bottom:82px; }
     .qk-coach-canvas { width:100%; height:100%; min-height:220px; position:relative; }
     .qk-coach-canvas canvas { display:block; }
@@ -864,26 +1007,24 @@ function injectStyle() {
     .qk-coach-row.is-done .qk-coach-check { background:#58a945; }
     .qk-coach-row.is-done .qk-coach-check::after { content:'✓'; display:grid; place-items:center; height:100%; color:#fff; font-size:32px; }
     .qk-coach-dots,.qk-coach-round-dots { display:flex; justify-content:center; gap:10px; flex:1; padding:0 12px; }
-    .qk-coach-dot { width:22px; height:22px; flex:0 0 auto; border:4px solid #fff; border-radius:50%; background:rgba(255,255,255,.55); box-shadow:0 3px 0 rgba(23,81,126,.13); }
+    /* .qk-eng-dot-ring carries the 22px ringed pip; only the flex sizing and
+       the two state colours are this engine's. */
+    .qk-coach-dot { flex:0 0 auto; }
     .qk-coach-dot.is-done { background:#58a945; } .qk-coach-dot.is-now { background:#ffd166; }
     .qk-coach-signal { --qk-signal-color:#58a945; background-color:var(--qk-signal-color); transition:background-color .24s ease; }
     .qk-coach-signal::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(rgba(255,255,255,.19),transparent 42%); }
     .qk-coach-signal.is-paused { filter:saturate(.76); }
-    .qk-coach-pause { width:96px; min-height:96px; border-radius:50%; background-color:#fffef8; font-size:48px; line-height:1; }
+    .qk-coach button.qk-coach-pause { width:96px; min-height:96px; border-radius:50%; background-color:#fffef8; font-size:48px; line-height:1; }
     .qk-coach-signal-field { position:absolute; z-index:1; inset:112px 18px 30px; display:grid; grid-template-rows:1fr auto; justify-items:center; min-height:0; }
     .qk-coach-signal-cue { max-width:min(900px,90vw); padding:10px 18px 20px; text-align:center; font-size:clamp(28px,4.5vmin,52px); line-height:1; text-shadow:0 3px 0 rgba(255,255,255,.56); }
     .qk-coach-flying-check { position:fixed; z-index:9999; width:48px; height:48px; margin:-24px 0 0 -24px; border:5px solid #fff; border-radius:50%; background:#58a945; box-shadow:0 5px 12px rgba(23,81,126,.24); pointer-events:none; transition:transform 280ms cubic-bezier(.2,.8,.3,1),opacity 280ms ease; }
-    .qk-coach-end-art { font-size:min(18vmin,145px); }
-    .qk-coach-again { display:flex; align-items:center; justify-content:center; gap:12px; min-width:min(440px,84vw); padding:8px 24px; }
-    .qk-coach-play-icon { width:62px; height:62px; background:transparent url('${PLAY_IMG}') center/contain no-repeat; }
+    .qk-coach button.qk-coach-again { display:flex; align-items:center; justify-content:center; gap:12px; min-width:min(440px,84vw); padding:8px 24px; }
     .qk-coach-end-home { position:static; }
     .qk-coach-mode-button:active,.qk-coach-again:active,.qk-coach-img-btn:active,.qk-coach-pause:active,.qk-coach-row.is-now:active { transform:scale(.95); }
     @media (orientation:portrait) { .qk-coach-workspace { grid-template-columns:1fr; grid-template-rows:minmax(230px,42vh) 1fr; inset-top:112px; padding-bottom:88px; } .qk-coach-checklist { width:min(720px,96vw); max-height:38vh; justify-self:center; } }
     @media (orientation:landscape) and (max-height:600px) { .qk-coach-workspace { inset-top:104px; padding-bottom:4px; } .qk-coach-checklist { max-height:calc(100dvh - 120px); } .qk-coach-row { min-height:96px; font-size:20px; } .qk-coach-signal-field { inset-top:96px; } }
     @media (prefers-reduced-motion:reduce) { .qk-coach-root *, .qk-coach-root *::before, .qk-coach-root *::after { animation-duration:.001ms!important; transition-duration:.001ms!important; scroll-behavior:auto!important; } }
-  `;
-  document.head.appendChild(style);
-  styleReady = true;
+  `);
 }
 
 function emojiFromRef(ref) {
@@ -891,9 +1032,4 @@ function emojiFromRef(ref) {
   return value.startsWith('emoji:') ? value.slice(6) : value.includes(':') ? '⭐' : value;
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-}
-
-function escapeAttr(value) { return escapeHtml(value); }
 function wait(ms) { return new Promise((resolve) => window.setTimeout(resolve, ms)); }

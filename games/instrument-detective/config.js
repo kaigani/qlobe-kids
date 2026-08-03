@@ -3,11 +3,6 @@ export default {
   engine: 'choose-one',
   title: 'Instrument Detective',
   splashEmoji: '🕵️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Detective ears ready! Listen for the sound, then tap the instrument.',
     nudge: 'Hmm, listen closely and try another instrument.',

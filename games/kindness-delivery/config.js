@@ -17,10 +17,7 @@ export default {
   splashEmoji: '💌',
   theme: { world: 'story-screen', background: './assets/bg.jpg' },
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Kindness Journal',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'The kindness post office is full of hearts!',

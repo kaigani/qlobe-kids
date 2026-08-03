@@ -4,6 +4,8 @@
 
 import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { createTimers } from '../../../shared/js/timers.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
 import * as voice from './voice.js';
 import {
   GROUPS,
@@ -14,8 +16,13 @@ import {
   matchesRequest,
   pick,
 } from './requests.js';
-import { burst, clearConfetti } from './confetti.js';
 import { createTalkingMouth } from '../../../shared/js/stage/mouth.js';
+
+// The game's own celebration palette (matches the food-group swatches used
+// throughout the bubble/meter chips) — intentional local art, not the
+// platform QK_PALETTE, so it is passed to burstConfetti() explicitly rather
+// than adopted.
+const CONFETTI_COLORS = ['#e0402a', '#f2a03d', '#f5c518', '#3faf4e', '#2d7dd2', '#8e5bc0', '#ff7ab6'];
 
 // Compartment slot centers, measured against lunchbox-open.png (900×745,
 // layered-extraction art). x,y = center as % of the image; s = food scale.
@@ -71,6 +78,15 @@ export class Game {
     this.reducedMotion =
       window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // A scaled, cancellable timer group so window.QLOBE_DEBUG's default
+    // fastTimers() actually speeds up idle nudges, the lid-drop beat, and the
+    // between-box pause instead of being a no-op (this game had no working
+    // timeScale before the migration — see docs/shared-platform-refactor.md).
+    this.timers = createTimers();
+    // Overwritten by main.js's onSeed BEFORE start(), so a seed set on the
+    // splash reaches the session this constructor's caller is about to build.
+    this.rng = Math.random;
+
     this.session = null;
     this.boxIndex = 0;
     this.stars = 0;
@@ -84,6 +100,7 @@ export class Game {
     this.speakToken = 0;
     this.idleTimer = 0;
     this.nextTimer = 0;
+    this.confettiCancel = null;
     this.destroyed = false;
 
     this.onLidTap = this.onLidTap.bind(this);
@@ -102,7 +119,7 @@ export class Game {
   }
 
   start() {
-    this.session = makeSession(this.mode, this.data);
+    this.session = makeSession(this.mode, this.data, this.rng);
     this.boxIndex = 0;
     this.stars = 0;
     this.renderStars();
@@ -112,14 +129,16 @@ export class Game {
   destroy() {
     this.destroyed = true;
     this.speakToken++;
-    clearTimeout(this.idleTimer);
-    clearTimeout(this.nextTimer);
+    // wait()s cancelled by clearAll() never settle — this MUST run in
+    // destroy(), never awaited past, or an in-flight winRound()/speakLater()
+    // stalls forever instead of unwinding.
+    this.timers.clearAll();
     if (this.dragCleanup) this.dragCleanup(); // end any in-flight drag
     this.sweepStrayClones();
     if (this.mouth) { this.mouth.then((m) => m && m.destroy()); this.mouth = null; }
     if (this.mouthHook) { this.mouthHook(); this.mouthHook = null; }
     voice.stop();
-    clearConfetti();
+    if (this.confettiCancel) { this.confettiCancel(); this.confettiCancel = null; }
     this.tapDisposers.forEach((dispose) => dispose());
     this.els.boxArea.removeEventListener('pointerdown', this.onBoxTap);
     this.els.stage.removeEventListener('pointerdown', this.onStageTap, true);
@@ -201,7 +220,7 @@ export class Game {
     // request for a specific food that IS still on the shelf. Invisible, gentle.
     if (!this.isSolvable(req)) {
       const left = this.shelfFoods().filter((f) => !this.packedIds.includes(f.id));
-      const swap = pick(left.length ? left : this.shelfFoods());
+      const swap = pick(left.length ? left : this.shelfFoods(), this.rng);
       if (swap) {
         req = { type: 'food', food: swap.id, voice: 'req-' + swap.id };
         box.requests[this.reqIndex] = req;
@@ -227,7 +246,7 @@ export class Game {
   // ---- the one packing code path ----------------------------------------
 
   /**
-   * Attempt to pack a food (drag drop, tap-tap, or window.LUNCH.pack).
+   * Attempt to pack a food (drag drop, tap-tap, or window.QLOBE_DEBUG.pack).
    * @param {string} foodId
    * @param {{clone?: HTMLElement, card?: HTMLElement}} [src] visual source
    * @returns {{ok: boolean, reason?: string}}
@@ -358,16 +377,19 @@ export class Game {
     void this.els.lid.offsetWidth;
     this.els.lid.classList.add('dropped');
     sfx.whoosh();
-    setTimeout(() => {
+    this.timers.after(this.reducedMotion ? 0 : 550, () => {
       if (this.destroyed) return;
       sfx.tada();
-      const r = this.els.boxArea.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2);
+      // celebrate.js rains confetti over a host rather than bursting from a
+      // point — the canvas particle system's from-a-point-with-gravity look
+      // is gone, but the piece count and this game's own palette carry over.
+      if (this.confettiCancel) this.confettiCancel();
+      this.confettiCancel = burstConfetti({ host: document.body, count: 90, palette: CONFETTI_COLORS });
       this.stars++;
       this.renderStars();
       this.speakSeq([[this.mode === 'healthy' ? 'cheer-healthy' : 'cheer']]);
-    }, this.reducedMotion ? 0 : 550);
-    this.nextTimer = setTimeout(() => {
+    });
+    this.nextTimer = this.timers.after(CHEER_MS, () => {
       if (this.destroyed) return;
       this.boxIndex++;
       if (this.boxIndex >= this.session.boxes.length) {
@@ -375,7 +397,7 @@ export class Game {
       } else {
         this.startBox();
       }
-    }, CHEER_MS);
+    });
   }
 
   endSession() {
@@ -383,7 +405,8 @@ export class Game {
     this.phase = 'done';
     this.speakSeq([['bite']]);
     this.els.endScreen.classList.remove('hidden');
-    burst(window.innerWidth / 2, window.innerHeight * 0.4, 120);
+    if (this.confettiCancel) this.confettiCancel();
+    this.confettiCancel = burstConfetti({ host: document.body, count: 120, palette: CONFETTI_COLORS });
   }
 
   // ---- shelf + drag / tap-tap -------------------------------------------
@@ -405,6 +428,7 @@ export class Game {
       const card = document.createElement('div');
       card.className = 'food-card';
       card.dataset.id = id;
+      card.dataset.target = id; // getTargets() computes role live; this is just a DOM hook
       card.setAttribute('role', 'button');
       card.setAttribute('aria-label', food.name);
       const img = document.createElement('img');
@@ -428,7 +452,7 @@ export class Game {
       return;
     }
     card.classList.add('vanish');
-    setTimeout(() => card.remove(), 220);
+    this.timers.after(220, () => card.remove());
   }
 
   onCardDown(e, card, food) {
@@ -790,10 +814,10 @@ export class Game {
 
   speakLater(items, ms) {
     const token = this.speakToken;
-    setTimeout(() => {
+    this.timers.after(ms, () => {
       if (this.destroyed || token !== this.speakToken) return;
       this.speakSeq(items);
-    }, ms);
+    });
   }
 
   requestFallback(req) {
@@ -816,19 +840,19 @@ export class Game {
   armIdleNudge(req) {
     this.clearIdleNudge();
     if (req._nudged) return; // once per request, never nag
-    this.idleTimer = setTimeout(() => {
+    this.idleTimer = this.timers.after(IDLE_NUDGE_MS, () => {
       if (this.destroyed || this.currentRequest() !== req) return;
       req._nudged = true;
       this.speakSeq([[req.voice, this.requestFallback(req)]]);
-    }, IDLE_NUDGE_MS);
+    });
   }
 
   clearIdleNudge() {
-    clearTimeout(this.idleTimer);
+    this.timers.clear(this.idleTimer);
     this.idleTimer = 0;
   }
 
-  // ---- debug hook -----------------------------------------------------------
+  // ---- debug hook (window.QLOBE_DEBUG v1 — see main.js) --------------------
 
   debugState() {
     const box = this.session ? this.box() : null;
@@ -846,4 +870,93 @@ export class Game {
       stars: this.stars,
     };
   }
+
+  /**
+   * Tappable targets right now: every food card still on the shelf, plus the
+   * lid once the box is full and waiting to close. `role` is computed live
+   * against the CURRENT request, so a generic driver can find 'correct'
+   * without knowing this game's rules. Zero-size (hidden) elements are
+   * dropped, same contract as debug-harness.js's collectTargets().
+   */
+  getTargets() {
+    const req = this.currentRequest();
+    const targets = [];
+    for (const card of this.els.shelf.querySelectorAll('.food-card:not(.vanish)')) {
+      const rect = card.getBoundingClientRect();
+      if (!(rect.width > 0) || !(rect.height > 0)) continue;
+      const food = this.data.foods.find((f) => f.id === card.dataset.id);
+      const role = food && req && this.isCorrect(food, req) ? 'correct' : 'neutral';
+      targets.push({ id: card.dataset.id, role, rect: rectOf(rect) });
+    }
+    if (this.phase === 'lid') {
+      const rect = this.els.lid.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        targets.push({ id: 'lid', role: 'correct', rect: rectOf(rect) });
+      }
+    }
+    return targets;
+  }
+
+  /**
+   * Programmatic tap for window.QLOBE_DEBUG: 'lid' closes a full box through
+   * the same closeBox() a real tap uses; any other id attempts to pack that
+   * food through the exact same attemptPack() a drag-drop or tap-tap uses.
+   */
+  tap(id) {
+    if (this.destroyed || this.screen !== 'game') return { ok: false, reason: 'not-accepting' };
+    if (id === 'lid') {
+      if (this.phase !== 'lid') return { ok: false, reason: 'not-lid-phase' };
+      this.closeBox();
+      return { ok: true };
+    }
+    return this.attemptPack(id);
+  }
+
+  /** The first shelf food that would satisfy `req` right now, or undefined. */
+  findCorrectFood(req) {
+    return this.shelfFoods().find((f) => this.isCorrect(f, req));
+  }
+
+  /**
+   * Win the CURRENT box: keep packing a correct food (or closing the lid)
+   * until this box's index advances or the session ends. Mirrors the
+   * counting-treasure-cups winRound() pattern — poll on real (unscaled) small
+   * delays, not this.timers, so it is not itself subject to fastTimers() and
+   * does not risk hanging on a timers.wait() that clearAll() never settles.
+   */
+  async winRound() {
+    const startBox = this.boxIndex;
+    for (let guard = 0; guard < 200; guard += 1) {
+      if (this.destroyed || this.screen === 'end' || this.boxIndex !== startBox) break;
+      if (this.phase === 'lid') {
+        this.closeBox();
+      } else if (this.phase === 'request') {
+        const req = this.currentRequest();
+        const food = req && this.findCorrectFood(req);
+        if (!food) break;
+        this.attemptPack(food.id);
+      }
+      await delay(30);
+    }
+    // Packing/closing is accepted before its animation lands — wait for the
+    // box to actually advance (or the session to end) before reporting done.
+    for (let w = 0; w < 100 && this.boxIndex === startBox && this.screen !== 'end'; w += 1) {
+      await delay(30);
+    }
+  }
+}
+
+// ---- helpers ---------------------------------------------------------------
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function rectOf(rect) {
+  return {
+    x: Math.round(rect.x * 100) / 100,
+    y: Math.round(rect.y * 100) / 100,
+    w: Math.round(rect.width * 100) / 100,
+    h: Math.round(rect.height * 100) / 100,
+  };
 }

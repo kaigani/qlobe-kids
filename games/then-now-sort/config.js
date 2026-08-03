@@ -3,11 +3,6 @@ export default {
   engine: 'match-pairs',
   title: 'Then & Now Sort',
   splashEmoji: '🕰️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Let\'s match the old thing with the new thing.',
     nudge: 'Hmm, these do different jobs. Try another match.',

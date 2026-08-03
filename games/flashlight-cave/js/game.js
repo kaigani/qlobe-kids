@@ -21,6 +21,7 @@ import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
 import * as content from '../../../shared/js/content.js';
+import { shuffle } from '../../../shared/js/rng.js';
 import { burst, sparkle } from '../../../shared/js/stage/particles.js';
 import * as voice from './voice.js';
 import { createTransform, layoutLetters, objectImageSrc } from './cave.js';
@@ -97,7 +98,7 @@ export class Game {
       pips: root.querySelector('.fc-pips'),
       button: root.querySelector('.fc-round-btn'),
       sound: root.querySelector('.hud-sound'),
-      live: root.querySelector('.fc-sr-only'),
+      live: root.querySelector('.visually-hidden'),
     };
 
     // The no-WebGL screen has no cave, so it owns its own copy of the transform.
@@ -198,15 +199,6 @@ export class Game {
 
   // ---- letter selection (§2.2) ---------------------------------------------
 
-  shuffle(arr) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(this.rng() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
   eligible() {
     return this.mode.eligibleLetters === 'all-except-x'
       ? ALPHABET.filter((L) => L !== 'X')     // §9.12 — X cannot honestly prompt an initial sound
@@ -214,7 +206,7 @@ export class Game {
   }
 
   /** A seedable bag, so no letter is the target twice in one mode play. */
-  makeBag() { return this.shuffle(this.eligible()); }
+  makeBag() { return shuffle(this.eligible(), this.rng); }
 
   phonic(letter) {
     const info = content.letterInfo(letter);
@@ -242,7 +234,7 @@ export class Game {
   }
 
   pickDistinct(pool, n) {
-    return this.shuffle(pool).slice(0, Math.max(0, n));
+    return shuffle(pool, this.rng).slice(0, Math.max(0, n));
   }
 
   /** The round's letters: the target plus c confusable and n non-confusable decoys. */
@@ -260,7 +252,7 @@ export class Game {
     // four-letter round 3.
     const shortfall = c - picked.length;
     const nonPicked = this.pickDistinct(nonConf, n + shortfall);
-    return this.shuffle([T, ...picked, ...nonPicked]);
+    return shuffle([T, ...picked, ...nonPicked], this.rng);
   }
 
   // ---- rounds --------------------------------------------------------------

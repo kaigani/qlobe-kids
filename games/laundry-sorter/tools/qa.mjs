@@ -1,63 +1,42 @@
 #!/usr/bin/env node
 // Real-Chrome smoke and visual-QC driver for Laundry Sorter.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/laundry-sorter/tools/qa.mjs [--base http://127.0.0.1:8000]
+//        [--shots qa-shots/laundry-sorter] [--playwright /private/tmp/pw/node_modules]
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, openSession, checkSessionClean,
+  resolveShots, ensureShots, debug,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const flag = (name, fallback) => {
-  const index = argv.indexOf(`--${name}`);
-  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
-};
-const base = flag('base', 'http://127.0.0.1:8000').replace(/\/$/, '');
-const shots = path.resolve(flag('shots', 'qa-shots/laundry-sorter'));
-const require = createRequire(path.join(flag('playwright', '/private/tmp/pw/node_modules'), 'noop.js'));
-const { chromium } = require('playwright');
-const results = [];
+const base = baseUrl();
+const shots = resolveShots('qa-shots/laundry-sorter');
+const { check, finish } = createReporter();
 const sessions = [];
 
-function check(name, condition, detail = '') {
-  const ok = Boolean(condition);
-  results.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
-
 async function openGame(browser, viewport, reducedMotion = 'no-preference') {
-  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
-  });
-  page.on('request', (request) => {
-    if (!request.url().startsWith(base)) remote.push(request.url());
-  });
-  page.on('requestfailed', (request) => {
-    const reason = request.failure()?.errorText || '';
+  const session = await openSession(browser, {
+    url: `${base}/games/laundry-sorter/`,
+    base,
+    viewport,
+    reducedMotion,
     // Switching a spoken line intentionally aborts the previous media request.
-    if (reason === 'net::ERR_ABORTED' && request.url().endsWith('.m4a')) return;
-    failed.push(`${request.url()} ${reason}`);
+    allowAbortedMedia: true,
+    seed: 42,
+    fastTimers: true,
   });
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(`${base}/games/laundry-sorter/`, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => {
-    window.QLOBE_DEBUG.seed(42);
-    window.QLOBE_DEBUG.setFastTimers(true);
-  });
-  sessions.push({ context, errors, failed, remote });
-  return page;
+  sessions.push(session);
+  return session.page;
 }
 
 async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  await ensureShots(shots);
+  const browser = await launchChrome();
 
   const hubContext = await browser.newContext({ viewport: { width: 1180, height: 820 } });
   const hubPage = await hubContext.newPage();
@@ -305,16 +284,10 @@ async function main() {
   await reduced.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
   check('reduced-motion mode completes without animation dependence', true);
 
-  for (const session of sessions) {
-    check('session has no page errors', session.errors.length === 0, session.errors.join(' | '));
-    check('session has no failed requests or HTTP errors', session.failed.length === 0, session.failed.join(' | '));
-    check('session makes no remote runtime requests', session.remote.length === 0, session.remote.join(' | '));
-  }
+  for (const session of sessions) checkSessionClean({ check }, session);
 
   await browser.close();
-  const failures = results.filter((result) => !result.ok);
-  console.log(`\n${results.length - failures.length}/${results.length} checks passed`);
-  if (failures.length) process.exitCode = 1;
+  finish({ listFailures: false });
 }
 
 main().catch((error) => {

@@ -1,45 +1,41 @@
-// voice.js — Rhyming Detective's wrapper around shared/js/voice-clips.js.
+// voice.js — Rhyming Detective's one voice.
 //
-// game-design.md §3. Everything the game speaks goes through here so that:
-//   * one place decides recorded-clip vs Web Speech (voice-clips does the work),
-//   * one place owns sequencing with the §3.4 gaps and can cancel a sequence
-//     mid-flight when the child taps something else (§3.1 "interruption is
-//     always allowed"),
-//   * one place feeds the QLOBE_DEBUG audio ring buffer (§7.4).
+// game-design.md §3. Most of what used to live here is now shared/js/voice-clips.js:
+// the mute gate, the QLOBE_DEBUG audio ring buffer (§7.4) and the recorded-clip /
+// Web Speech decision are the shared player's own job. What survives is the part
+// that is genuinely this game's:
+//
+//   * init() reads `config.voice` (manifest path, lines path, word-key prefix),
+//   * keyForWord()/sayWord() encode the shared `word-<w>` clip key (§3.3),
+//   * seq() is the §3.4 gap-aware sequencer — a pause BEFORE each step, and the
+//     whole sequence abandons itself the moment anything else speaks (§3.1
+//     "interruption is always allowed"). narrator.js's saySequence has no gap
+//     column, so this one stays local.
 //
 // It MUST survive `assets/audio/manifest.json` being absent — the shell ships
 // before the voice pack does. voice-clips.init() never rejects: a 404 on the
-// manifest leaves `manifest === null` and every say() falls through to
-// speech.js with the text from data/lines.json. Nothing here may assume a clip
-// exists.
+// manifest leaves every say() falling through to speech.js with the text from
+// data/lines.json. Nothing here may assume a clip exists.
 
 import * as clips from '../../../shared/js/voice-clips.js';
-import * as speech from '../../../shared/js/speech.js';
 
 let ready = false;
 let wordKey = 'word-';
-let muted = false;
 
-// Monotonic token: a new say()/seq()/stop() supersedes any pending sequence
-// step so an interrupted line can never resume two beats later.
+// Monotonic token: a new say()/seq()/stop() supersedes any pending sequence step
+// so an interrupted line can never resume two beats later. voice-clips has a
+// token of its own for the audio element; this one is about the SEQUENCE, which
+// only this module knows exists.
 let token = 0;
 
-// ---- audio ring buffer (QLOBE_DEBUG.getAudioLog) --------------------------
-const LOG_MAX = 80;
-const log = [];
-
-function push(kind, key, url) {
-  log.push({ t: Math.round(performance.now()), kind, key, url: url || null });
-  if (log.length > LOG_MAX) log.splice(0, log.length - LOG_MAX);
-}
-
-export function getLog() {
-  return log.map((entry) => ({ ...entry }));
-}
-
-export function clearLog() {
-  log.length = 0;
-}
+// The shared player owns these outright now — re-exported so call sites (and the
+// QLOBE_DEBUG extensions in main.js) keep reading as "the game's voice".
+export {
+  unlock,
+  isMuted,
+  getAudioLog,
+  clearAudioLog,
+} from '../../../shared/js/voice-clips.js';
 
 // ---- lifecycle ------------------------------------------------------------
 
@@ -62,38 +58,20 @@ export async function init(config) {
     // problem can never stop the game from booting.
   }
   ready = true;
-  return hasClip('welcome');
+  try { return Boolean(clips.clipInfo('welcome')); } catch { return false; }
 }
 
-/** Cheap and idempotent — §3.1 calls this on EVERY pointerdown, not just the first. */
-export function unlock() {
-  try { clips.unlock(); } catch { /* a failed unlock retries on the next gesture */ }
-}
-
+/** Stop talking, and invalidate any sequence still walking its steps. */
 export function stop() {
   token += 1;
   try { clips.stop(); } catch { /* ignore */ }
-  try { speech.stop(); } catch { /* ignore */ }
 }
 
 export function setMuted(value) {
-  muted = Boolean(value);
-  if (muted) stop();
-  return muted;
-}
-
-export function isMuted() {
-  return muted;
-}
-
-/** The manifest entry for a key, or null when this key ships unrecorded. */
-export function hasClip(key) {
-  try { return Boolean(clips.clipInfo(key)); } catch { return false; }
-}
-
-/** Pass-through for the talking-mouth style hook; unused in v1 but free. */
-export function onClip(cb) {
-  return clips.onClip(cb);
+  const on = Boolean(value);
+  if (on) stop();          // bump the token too: mute must kill a running seq
+  clips.setMuted(on);
+  return on;
 }
 
 /** The shared word-clip key for a word: `word-cat` (§3.3). */
@@ -103,21 +81,11 @@ export function keyForWord(word) {
 
 // ---- speaking -------------------------------------------------------------
 
-/**
- * Speak one line. Resolves when it finishes (bounded — voice-clips guarantees
- * the promise settles). Stops whatever was playing first.
- */
-export function say(key) {
-  return sayInternal(key).promise;
-}
-
-// Returns the sequencing token this line owns alongside its promise, so seq()
-// can tell "my own line finished" from "something else interrupted me".
-function sayInternal(key) {
+// Speak one line and report the token it owns, so seq() can tell "my own line
+// finished" from "something else interrupted me".
+function speakInternal(key) {
   const id = ++token;
-  if (muted || !key || !ready) return { id, promise: Promise.resolve() };
-  const info = (() => { try { return clips.clipInfo(key); } catch { return null; } })();
-  push(info ? 'clip' : 'speech', key, info ? info.file : null);
+  if (!ready || !key) return { id, promise: Promise.resolve() };
   let promise;
   try {
     promise = clips.say(key) || Promise.resolve();
@@ -125,6 +93,14 @@ function sayInternal(key) {
     promise = Promise.resolve();
   }
   return { id, promise };
+}
+
+/**
+ * Speak one line. Resolves when it finishes (bounded — voice-clips guarantees
+ * the promise settles). Stops whatever was playing first.
+ */
+export function say(key) {
+  return speakInternal(key).promise;
 }
 
 /** Speak a word through its shared clip (`word-<w>`). */
@@ -141,7 +117,7 @@ export function sayWord(word) {
  * during the case prompt simply replaces it rather than fighting it.
  */
 export async function seq(steps, scale = 1) {
-  if (muted || !steps || !steps.length) return;
+  if (clips.isMuted() || !steps || !steps.length) return;
   let mine = ++token;
   for (let i = 0; i < steps.length; i += 1) {
     const step = typeof steps[i] === 'string' ? { key: steps[i] } : steps[i];
@@ -150,7 +126,7 @@ export async function seq(steps, scale = 1) {
       await wait(step.gap * scale);
       if (mine !== token) return;     // something else spoke during the gap
     }
-    const spoken = sayInternal(step.key);
+    const spoken = speakInternal(step.key);
     mine = spoken.id;
     await spoken.promise;
     if (mine !== token) return;       // superseded while the line played

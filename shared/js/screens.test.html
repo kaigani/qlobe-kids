@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>screens.js + mode-select.js test</title>
+  <link rel="icon" href="data:," />
+  <!-- The real stylesheet: the touch-floor assertions below read computed
+       style, so they are only worth anything with screens.css actually linked. -->
+  <link rel="stylesheet" href="../css/screens.css" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    h3 { margin: 18px 0 4px; font-size: 15px; }
+    p.lede { margin: 0 0 14px; max-width: 68ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+    /* The fixture lives off screen: these are real screens being shown and
+       hidden, and a router bug that paints two at once would otherwise cover
+       the results. */
+    #fixture { position: fixed; left: -20000px; top: 0; width: 900px; height: 600px; }
+    #fixture section { position: absolute; inset: 0; }
+    .live { position: relative; margin-top: 14px; height: 300px; width: 100%;
+            border: 3px dashed #b6d6ea; border-radius: 14px; overflow: hidden; background: #cfe9f7; }
+  </style>
+</head>
+<body>
+  <h2>screens.js + mode-select.js test</h2>
+  <p class="lede">
+    Runs on load against a hidden fixture of three real screens. The behaviour
+    under test is the state machine, not the paint: exactly one screen visible
+    via the <code>hidden</code> attribute, an idempotent <code>show()</code>
+    that must <em>not</em> tear down the screen it is already on, a per-screen
+    disposer bag that runs on exit, and the <code>starting</code> latch that
+    swallows the second of a double tap — including releasing when the runner
+    throws. The live strip at the bottom is a real skinned mode list you can
+    press.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <div id="fixture">
+    <section id="fx-splash">
+      <a class="qk-hud-home" href="../../" aria-label="Home"></a>
+      <div id="fx-modes"></div>
+    </section>
+    <section id="fx-play" hidden></section>
+    <!-- deliberately illegal: a home button on a deeper screen, so the
+         navigation-rule audit has something to catch -->
+    <section id="fx-end" class="hidden" hidden>
+      <a class="qk-hud-home" href="../../" aria-label="Home"></a>
+      <button id="fx-back" type="button">back</button>
+      <button id="fx-again" type="button">again</button>
+      <button id="fx-choose" type="button">choose</button>
+    </section>
+  </div>
+
+  <h3>Live skinned mode list</h3>
+  <div class="live"><div id="live-modes"></div></div>
+  <p class="lede" id="live-note">press a card…</p>
+
+  <script type="module">
+    import { createScreens, createBag, wireEndScreen } from './screens.js';
+    import { renderModeCards, modeCard } from './mode-select.js';
+
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    let pid = 100;
+    /** A real press: pointerdown then pointerup, the pair tap.js listens for. */
+    function press(el) {
+      const pointerId = ++pid;
+      el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true, isPrimary: true, pointerId }));
+      el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true, isPrimary: true, pointerId }));
+    }
+    const visible = (el) => !el.hasAttribute('hidden') && getComputedStyle(el).display !== 'none';
+
+    // ---- 1. createBag ----------------------------------------------------
+    {
+      const log = [];
+      const bag = createBag();
+      const first = () => log.push('a');
+      const back = bag.add(first, () => log.push('b'), null, undefined);
+      t('bag.add() ignores null/undefined', bag.size() === 2, `size ${bag.size()}`);
+      t('bag.add() returns the first disposer', back === first);
+      bag.run();
+      t('bag.run() runs everything in order', log.join(',') === 'a,b', log.join(','));
+      t('bag.run() empties the bag', bag.size() === 0);
+      bag.run();
+      t('bag.run() twice is a no-op', log.length === 2, log.join(','));
+
+      const log2 = [];
+      const bag2 = createBag();
+      bag2.add(() => { throw new Error('boom'); }, () => log2.push('survivor'));
+      bag2.run();
+      t('a throwing disposer cannot strand the rest', log2.join(',') === 'survivor', log2.join(','));
+    }
+
+    // ---- 2. adoption + exactly one visible -------------------------------
+    const splashEl = document.getElementById('fx-splash');
+    const playEl = document.getElementById('fx-play');
+    const endEl = document.getElementById('fx-end');
+
+    const enters = [];
+    const exits = [];
+    const stops = [];
+    const fakeVoice = { stop: () => stops.push(1) };
+
+    const screens = createScreens({
+      screens: { splash: '#fx-splash', play: playEl, end: '#fx-end' },
+      root: document.getElementById('fixture'),
+      voice: fakeVoice,
+      onEnter: (name, prev) => enters.push(`${prev}->${name}`),
+      onExit: (name, next) => exits.push(`${name}->${next}`),
+    });
+
+    t('names are the declared screens, in order', screens.names.join(',') === 'splash,play,end', screens.names.join(','));
+    t('el(name) resolves selectors and elements', screens.el('splash') === splashEl && screens.el('play') === playEl);
+    t('stamps data-qk-screen', splashEl.dataset.qkScreen === 'splash' && endEl.dataset.qkScreen === 'end');
+    t('adopts the screen that was not hidden as current', screens.current === 'splash', screens.current);
+    t('exactly one screen visible at boot',
+      [splashEl, playEl, endEl].filter(visible).length === 1,
+      [splashEl, playEl, endEl].map((e) => visible(e)).join(','));
+    t('strips a stale .hidden class it does not own', !endEl.classList.contains('hidden'), endEl.className);
+    t('end screen is still hidden by the attribute after the class is stripped',
+      endEl.hasAttribute('hidden') && !visible(endEl));
+    t('onEnter fires for the adopted screen', enters.join(',') === 'null->splash', enters.join(','));
+    t('adoption does not stop the voice', stops.length === 0, String(stops.length));
+
+    // ---- 3. show(): transition, bag, voice --------------------------------
+    {
+      const torn = [];
+      screens.hold(() => torn.push('splash-teardown'));
+      t('hold() registers against the current screen', screens.pending('splash') === 1, String(screens.pending('splash')));
+
+      screens.show('play');
+      t('show() moves the visible screen', visible(playEl) && !visible(splashEl));
+      t('show() keeps exactly one visible', [splashEl, playEl, endEl].filter(visible).length === 1);
+      t('show() runs the leaving screen\'s bag', torn.join(',') === 'splash-teardown', torn.join(','));
+      t('show() empties the bag it ran', screens.pending('splash') === 0);
+      t('show() stops the voice', stops.length === 1, String(stops.length));
+      t('onExit fires before onEnter with both names',
+        exits.join(',') === 'splash->play' && enters.join(',') === 'null->splash,splash->play',
+        `${exits.join(',')} | ${enters.join(',')}`);
+
+      // idempotence: the trap 4b adopters must know about
+      const before = { enters: enters.length, exits: exits.length, stops: stops.length };
+      const held = [];
+      screens.hold(() => held.push('play-teardown'));
+      const same = screens.show('play');
+      t('show(current) returns the element', same === playEl);
+      t('show(current) is idempotent — no enter/exit/voice.stop',
+        enters.length === before.enters && exits.length === before.exits && stops.length === before.stops,
+        `${enters.length}/${exits.length}/${stops.length}`);
+      t('show(current) does NOT run the bag (live handlers survive)',
+        held.length === 0 && screens.pending('play') === 1, held.join(','));
+
+      screens.show('play', { force: true });
+      t('show(current, {force}) re-runs exit + enter', held.join(',') === 'play-teardown'
+        && exits.at(-1) === 'play->play' && enters.at(-1) === 'play->play',
+        `${held.join(',')} | ${exits.at(-1)} | ${enters.at(-1)}`);
+
+      const stopsBefore = stops.length;
+      screens.show('end', { silent: true });
+      t('show(name, {silent}) skips voice.stop()', stops.length === stopsBefore, String(stops.length));
+      t('silent still transitions', visible(endEl) && !visible(playEl));
+
+      screens.show('nope');
+      t('show() of an unknown screen leaves the current one alone', screens.current === 'end', screens.current);
+      t('is(name) reflects the current screen', screens.is('end') && !screens.is('play'));
+    }
+
+    // ---- 4. release(): tear down without leaving ---------------------------
+    {
+      screens.show('play');
+      const torn = [];
+      screens.hold(() => torn.push('x'), () => torn.push('y'));
+      screens.release();
+      t('release() runs the current bag in place', torn.join(',') === 'x,y', torn.join(','));
+      t('release() does not change the screen', screens.current === 'play' && visible(playEl));
+      t('release() empties the bag', screens.pending() === 0);
+    }
+
+    // ---- 5. the starting latch -------------------------------------------
+    {
+      let runs = 0;
+      const slow = () => screens.start(async () => { runs += 1; await wait(30); return 'ok'; }, { busy: false });
+      const a = slow();
+      t('starting is true while a runner is in flight', screens.starting === true);
+      const b = slow();
+      const [ra, rb] = await Promise.all([a, b]);
+      t('the latch runs the first call only', runs === 1, `runs=${runs}`);
+      t('the first call resolves normally', ra === 'ok', String(ra));
+      t('the swallowed call resolves to opts.busy', rb === false, String(rb));
+      t('the latch releases when the runner settles', screens.starting === false);
+
+      const dflt = await screens.start(async () => { await wait(5); return 1; });
+      t('start() without opts.busy still returns the runner value', dflt === 1, String(dflt));
+
+      let threw = false;
+      try {
+        await screens.start(async () => { throw new Error('start blew up'); });
+      } catch { threw = true; }
+      t('start() rethrows the runner\'s error', threw);
+      t('the latch releases even when the runner throws (never lock the child out)',
+        screens.starting === false);
+      const after = await screens.start(async () => 'reachable', { busy: 'BUSY' });
+      t('a mode can still be started after a failed start', after === 'reachable', String(after));
+    }
+
+    // ---- 6. the navigation rule ------------------------------------------
+    {
+      const warnings = [];
+      const realWarn = console.warn;
+      console.warn = (...args) => { warnings.push(args.join(' ')); };
+      const audit = createScreens({
+        screens: { splash: '#fx-splash', end: '#fx-end' },
+        initial: 'splash',
+      });
+      audit.show('end');
+      console.warn = realWarn;
+      t('navRule warns about a home button off the splash',
+        warnings.some((w) => w.includes('home button')), JSON.stringify(warnings));
+      t('navRule does not warn about home on the splash',
+        warnings.filter((w) => w.includes('home button')).length === 1, JSON.stringify(warnings));
+      audit.destroy();
+    }
+
+    // ---- 7. wireEndScreen -------------------------------------------------
+    {
+      const nav = createScreens({
+        screens: { splash: '#fx-splash', end: '#fx-end' },
+        initial: 'end',
+        navRule: false,
+      });
+      let agains = 0;
+      const dispose = wireEndScreen({
+        screens: nav,
+        back: document.getElementById('fx-back'),
+        again: document.getElementById('fx-again'),
+        choose: document.getElementById('fx-choose'),
+        onAgain: () => { agains += 1; },
+        feedback: () => {},   // silence: this page has no audio gesture
+      });
+      t('wireEndScreen registers itself on the screen bag', nav.pending('end') >= 1);
+
+      press(document.getElementById('fx-again'));
+      t('again runs onAgain and stays put', agains === 1 && nav.current === 'end', `${agains}/${nav.current}`);
+
+      press(document.getElementById('fx-choose'));
+      t('choose returns to the splash', nav.current === 'splash', nav.current);
+
+      // Leaving the end screen ran its bag, which disposed these listeners.
+      // That is the contract, not an accident: a re-rendered end screen rewires.
+      const wasAgains = agains;
+      nav.show('end');
+      press(document.getElementById('fx-again'));
+      t('leaving the end screen disposed its listeners', agains === wasAgains, `${agains} vs ${wasAgains}`);
+      press(document.getElementById('fx-back'));
+      t('...back too, so the disposal is total', nav.current === 'end', nav.current);
+      dispose();
+
+      // hold:false — static end-screen markup wired once for the session
+      const seen = [];
+      wireEndScreen({
+        screens: nav,
+        back: document.getElementById('fx-back'),
+        again: document.getElementById('fx-again'),
+        onSplash: () => { seen.push('custom-splash'); nav.show('splash'); },
+        onAgain: () => seen.push('again'),
+        onPress: () => seen.push('press'),
+        feedback: null,
+        hold: false,
+      });
+      t('hold:false keeps the listeners off the screen bag', nav.pending('end') === 0, String(nav.pending('end')));
+      press(document.getElementById('fx-again'));
+      t('onPress runs before the route', seen.join(',') === 'press,again', seen.join(','));
+      press(document.getElementById('fx-back'));
+      t('onSplash replaces the default transition', seen.join(',') === 'press,again,press,custom-splash' && nav.current === 'splash', seen.join(','));
+      nav.show('end');
+      press(document.getElementById('fx-again'));
+      t('hold:false listeners survive leaving and returning', seen.filter((s) => s === 'again').length === 2, seen.join(','));
+      nav.destroy();
+    }
+
+    // ---- 7b. the "back is really home" trap -------------------------------
+    {
+      const warnings = [];
+      const realWarn = console.warn;
+      console.warn = (...args) => warnings.push(args.join(' '));
+      const link = document.createElement('a');
+      link.href = '../../';
+      const nav = createScreens({ screens: { splash: '#fx-splash', end: '#fx-end' }, initial: 'end', navRule: false });
+      wireEndScreen({ screens: nav, back: link, feedback: null, hold: false });
+      console.warn = realWarn;
+      t('an <a href> wired as end-screen back is caught',
+        warnings.some((w) => w.includes('back') && w.includes('../../')), JSON.stringify(warnings));
+      nav.destroy();
+    }
+
+    // ---- 8. destroy() -----------------------------------------------------
+    {
+      const torn = [];
+      const d = createScreens({ screens: { splash: '#fx-splash', play: '#fx-play' }, initial: 'splash', navRule: false });
+      d.hold(() => torn.push('a'));
+      d.show('play');
+      d.hold(() => torn.push('b'));
+      d.destroy();
+      t('destroy() runs every remaining bag', torn.join(',') === 'a,b', torn.join(','));
+      t('destroy() clears current', d.current === null, String(d.current));
+      d.show('splash');
+      t('show() after destroy() is inert', d.current === null, String(d.current));
+      d.destroy();
+      t('destroy() twice is a no-op', torn.length === 2, torn.join(','));
+    }
+
+    // ---- 9. renderModeCards: default skin ---------------------------------
+    const MODES = [
+      { id: 'alpha', title: 'Alpha', icon: '🍎' },
+      { id: 'beta', title: 'Beta', icon: '🍌' },
+      { id: 'gamma', title: 'Gamma', icon: '🥝' },
+    ];
+    {
+      const host = document.getElementById('fx-modes');
+      const picks = [];
+      const list = renderModeCards({
+        host, modes: MODES,
+        onPick: (id, mode, index) => picks.push(`${id}@${index}`),
+        feedback: () => {},
+      });
+      t('renders one card per mode', list.cards.length === 3, String(list.cards.length));
+      t('skin adds .qk-mode-list to the host', host.classList.contains('qk-mode-list'), host.className);
+      t('cards are <button type=button>', list.cards.every((c) => c.tagName === 'BUTTON' && c.type === 'button'));
+      t('cards carry .qk-mode-card', list.cards.every((c) => c.classList.contains('qk-mode-card')));
+      t('cards carry data-mode', list.cards.map((c) => c.dataset.mode).join(',') === 'alpha,beta,gamma');
+      t('cards carry the QA data-target', list.cards[0].dataset.target === 'mode-alpha', list.cards[0].dataset.target);
+      t('cards carry an aria-label from the title', list.cards[1].getAttribute('aria-label') === 'Beta');
+      t('cards carry --qk-mode-i for staggered entrances',
+        list.cards[2].style.getPropertyValue('--qk-mode-i') === '2');
+      t('an icon mode renders .qk-mode-icon', !!list.cards[0].querySelector('.qk-mode-icon'));
+      t('a titled mode renders .qk-mode-title',
+        list.cards[0].querySelector('.qk-mode-title')?.textContent === 'Alpha');
+
+      press(list.cards[1]);
+      t('a press calls onPick(id, mode, index)', picks.join(',') === 'beta@1', picks.join(','));
+
+      list.dispose();
+      press(list.cards[1]);
+      t('dispose() removes the tap listeners', picks.join(',') === 'beta@1', picks.join(','));
+      t('dispose() leaves the DOM alone (the caller owns it)', host.children.length === 3);
+    }
+
+    // ---- 10. renderModeCards: the bespoke-skin escape hatch ---------------
+    {
+      const host = document.createElement('div');
+      host.className = 'recipe-cards';
+      document.getElementById('fixture').append(host);
+      const badges = [];
+      const list = renderModeCards({
+        host,
+        modes: [{ id: 'fruit', title: 'Fruit Face', art: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=' }],
+        onPick: () => {},
+        skin: false,
+        cardClass: 'recipe-card',
+        showTitle: false,
+        vars: (mode, i) => ({ '--card-color': '#d94d62', '--tilt': '-2deg', '--i': i }),
+        decorate: (btn) => { const b = document.createElement('img'); b.className = 'card-badge'; btn.append(b); badges.push(b); },
+        feedback: () => {},
+      });
+      const card = list.cards[0];
+      t('skin:false leaves the host class alone', !host.classList.contains('qk-mode-list'), host.className);
+      t('cardClass is added alongside the contract class',
+        card.className === 'qk-mode-card recipe-card', card.className);
+      t('showTitle:false renders no title span', !card.querySelector('.qk-mode-title'));
+      t('the art image is the FIRST child (bespoke `> img:first-child` skins)',
+        card.firstElementChild?.tagName === 'IMG' && card.firstElementChild.classList.contains('qk-mode-art'),
+        card.firstElementChild?.outerHTML.slice(0, 60));
+      t('the art image is inert to drag + has an empty alt',
+        card.firstElementChild.draggable === false && card.firstElementChild.alt === '');
+      t('vars land as custom properties',
+        card.style.getPropertyValue('--card-color') === '#d94d62'
+        && card.style.getPropertyValue('--tilt') === '-2deg'
+        && card.style.getPropertyValue('--i') === '0');
+      t('decorate() runs and appends after the art', badges.length === 1 && card.lastElementChild === badges[0]);
+      t('skin:false leaves the card unpainted by screens.css',
+        getComputedStyle(card).borderRadius === '0px', getComputedStyle(card).borderRadius);
+      t('...but still gets the 96px touch floor',
+        getComputedStyle(card).minWidth === '96px', getComputedStyle(card).minWidth);
+      list.dispose();
+      host.remove();
+    }
+
+    // ---- 11. modeCard + art node + replace --------------------------------
+    {
+      const node = document.createElement('figure');
+      const card = modeCard({ id: 'x', title: 'X' }, { art: () => node, targetPrefix: null }, 4);
+      t('modeCard() accepts a ready-made art node', card.firstElementChild === node);
+      t('targetPrefix:null omits data-target', card.dataset.target === undefined, card.dataset.target);
+      t('modeCard() honours the index it is given', card.style.getPropertyValue('--qk-mode-i') === '4');
+
+      const host = document.createElement('div');
+      host.append(document.createElement('b'));
+      renderModeCards({ host, modes: MODES, onPick: () => {}, replace: false, feedback: () => {} });
+      t('replace:false keeps whatever was in the host', host.children.length === 4, String(host.children.length));
+      renderModeCards({ host, modes: MODES, onPick: () => {}, feedback: () => {} });
+      t('replace:true (default) clears the host first', host.children.length === 3, String(host.children.length));
+
+      let threw = false;
+      try { renderModeCards({ modes: MODES }); } catch { threw = true; }
+      t('renderModeCards() without a host throws loudly', threw);
+    }
+
+    // ---- 12. the live strip, and the touch floor measured on real pixels ---
+    {
+      const note = document.getElementById('live-note');
+      const live = renderModeCards({
+        host: document.getElementById('live-modes'),
+        modes: MODES,
+        onPick: (id) => { note.textContent = `picked: ${id}`; },
+      });
+      // Measured, not read off the source: the fixture above is off-screen and
+      // hidden by design, so only this on-page strip can prove the 96px floor.
+      const rects = live.cards.map((c) => c.getBoundingClientRect());
+      t('every rendered card clears the 96px touch floor',
+        rects.length === 3 && rects.every((r) => r.width >= 96 && r.height >= 96),
+        rects.map((r) => `${Math.round(r.width)}x${Math.round(r.height)}`).join(' '));
+      t('the skinned list lays cards out in a row that fits its host',
+        rects.every((r) => r.right <= document.getElementById('live-modes').getBoundingClientRect().right + 1),
+        rects.map((r) => Math.round(r.right)).join(','));
+    }
+
+    // ---- report -----------------------------------------------------------
+    const list = document.getElementById('results');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.textContent = r.name;
+      if (!r.pass) {
+        li.className = 'bad';
+        const why = document.createElement('span');
+        why.className = 'why';
+        why.textContent = r.why ? ` — ${r.why}` : ' — failed';
+        li.append(why);
+      }
+      list.append(li);
+    }
+    const failed = results.filter((r) => !r.pass);
+    const summary = document.getElementById('summary');
+    summary.textContent = failed.length
+      ? `${failed.length} of ${results.length} FAILED`
+      : `all ${results.length} checks pass`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    window.SCREENS_TEST = { total: results.length, failed: failed.length, results };
+  </script>
+</body>
+</html>

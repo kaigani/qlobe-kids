@@ -12,10 +12,7 @@ export default {
   splashEmoji: '🌤️',
   theme: { world: 'field-journal', background: './assets/bg.jpg' },
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Shadow Diary',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'Field report complete! Your shadow diary is ready!',

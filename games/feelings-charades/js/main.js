@@ -3,9 +3,11 @@
 // the talking Ravi host, and the QLOBE_DEBUG v1 hook.
 
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { soundDebounce } from '../../../shared/js/hud.js';
+import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createTalkingMouth } from '../../../shared/js/stage/mouth.js';
 import { Game, FEELINGS, DEFAULT_LINES } from './game.js';
 
@@ -57,8 +59,11 @@ const els = {
 let game = null;
 let currentMode = null;
 let starting = false;
-let audioUnlocked = false;
 let fastTimersOn = false;
+// Outlives any one Game: seed(42) is normally called BEFORE startMode(), and
+// the generator has to survive into the instance that mode creates or the
+// run is not reproducible after all (see games/counting-treasure-cups).
+let seedRng = null;
 
 els.hostPortrait.src = '../../shared/characters/ravi/portrait.png';
 
@@ -74,16 +79,22 @@ voice.onClip((key, audioEl) => {
   }
 });
 
-// ---- audio unlock on every gesture (voice.unlock is self-limiting) --------
+// ---- audio unlock on the first gesture --------------------------------------
 
-function unlockAudio() {
-  voice.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-}
-window.addEventListener('pointerdown', unlockAudio);
+// The shared first-gesture unlock: sfx/speech/voice-clips/audio fan-out, latch
+// reopens on visibilitychange/pageshow (the iPad app-switch fix — this game
+// never resumed speechSynthesis on foreground before, so a real bug fix rides
+// along here too). No onFirst greeting: this game never speaks on load — the
+// splash's own sound button and the mode buttons are the only ways a line
+// starts, so there is nothing to defer.
+installUnlockOnGesture();
+
+// voice.unlock() stays armed until the clip channel has actually PLAYED, so it
+// runs on every gesture rather than only while the shared latch is open —
+// otherwise a first attempt the browser refuses is never retried and recorded
+// voice falls back to Web Speech for the rest of the session (same pattern as
+// games/counting-treasure-cups).
+window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
 
 // ---- routing ---------------------------------------------------------------
 
@@ -109,6 +120,9 @@ async function startMode(mode) {
   els.game.classList.remove('hidden');
   game = new Game(mode, els, { onEnd: showEnd });
   if (fastTimersOn) game.timeScale = 0.02;
+  // A seed set on the splash has to reach the Game this mode is about to
+  // build, not just one that already existed when seed() was called.
+  if (seedRng) game.rng = seedRng;
   game.start();
   starting = false;
 }
@@ -125,7 +139,9 @@ function showEnd(kind) {
 // splash mode buttons — one press path
 els.splash.querySelectorAll('.mode-button').forEach((btn) => {
   onTap(btn, () => startMode(btn.dataset.mode), {
-    feedback: (e) => { e.preventDefault(); unlockAudio(); sfx.tick(); },
+    // Unlock is the global first-gesture listener's job (installUnlockOnGesture
+    // above) — it fires on this same pointerdown, before this feedback runs.
+    feedback: (e) => { e.preventDefault(); sfx.tick(); },
   });
 });
 
@@ -134,14 +150,11 @@ onTap(els.btnBack, () => { sfx.tick(); showSplash(); });
 onTap(els.btnEndBack, () => { sfx.tick(); showSplash(); });
 onTap(els.btnAgain, () => { sfx.tick(); if (currentMode) startMode(currentMode); });
 
-let lastReplay = 0;
-onTap(els.btnSound, () => {
-  const now = performance.now();
-  if (now - lastReplay < 600) return;
-  lastReplay = now;
+// soundDebounce: the hand-rolled 600ms replay guard, now the shared one.
+onTap(els.btnSound, soundDebounce(() => {
   sfx.tick();
   if (game) game.replay();
-});
+}));
 onTap(els.splashSound, () => {
   sfx.tick();
   voice.say('intro');
@@ -155,8 +168,7 @@ onTap(els.copeDone, () => { if (game) game.tap('cope-done'); });
 
 // ---- QLOBE_DEBUG v1 ---------------------------------------------------------
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: 'feelings-charades',
   engine: 'custom',
   ready: dataReady,
@@ -177,20 +189,31 @@ window.QLOBE_DEBUG = {
   getTargets: () => (game ? game.getTargets() : []),
   tap: (id) => (game ? game.tap(id) : { accepted: false }),
   winRound: () => (game ? game.winRound() : Promise.resolve()),
-  mute: () => { voice.stop(); speech.stop(); window.__qkMuted = true; },
-  seed: () => {},
+  home: () => showSplash(),
+  // channels the default mute() fans out to (voice.stop()+speech cancel is what
+  // the old hand-rolled mute() did; the default also mutes/unmutes, not just
+  // silences once, and catches any stray <audio>/<video> element)
+  voice,
+  sfx,
+  // Compress every timed beat so QA does not sit through the act-along ring,
+  // the breathing cycles, or the encouragement waits. This game already has a
+  // working timeScale, so its own fastTimers() replaces the timers.js default.
   fastTimers: () => {
     fastTimersOn = true;
     if (game) game.timeScale = 0.02;
+    return 0.02;
   },
-};
+  // Where the seeded generator lands. No content in this game is drawn from
+  // rng today (see the comment in game.js's constructor) — wired anyway so
+  // seed(42) is not a silent no-op and a future shuffle has somewhere to plug
+  // in, matching the contract other migrated games use.
+  onSeed: (rng) => { seedRng = rng; if (game) game.rng = rng; },
+});
 
 // ---- iPad niceties ----------------------------------------------------------
 
-window.addEventListener('contextmenu', (e) => e.preventDefault());
-window.addEventListener('gesturestart', (e) => e.preventDefault());
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    try { window.speechSynthesis && window.speechSynthesis.resume(); } catch { /* ignore */ }
-  }
-});
+// contextmenu + gesturestart; visibilitychange -> speechSynthesis.resume() is
+// wired by installUnlockOnGesture above (a live bug fix: this game never
+// resumed speech on foreground before, so an iPad app-switch could leave it
+// silent for the rest of the session).
+installKioskGuards();

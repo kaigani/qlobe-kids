@@ -13,11 +13,24 @@ from its `index.html`, and `../../../shared/` from files one level deeper (e.g.
 ## What exists now
 
 ### `shared/js/` — the runtime libraries
+The audio channels are below; the full module inventory (screens, HUD, narrator,
+celebrate, debug harness, RNG, timers, …) lives in
+[`shared/README.md`](../shared/README.md), and the craft guidance for using them
+in [`docs/interaction-patterns.md`](interaction-patterns.md).
+
 | Module | What it does |
 |---|---|
-| `audio.js` | **Primary voice channel.** Plays recorded teacher-voice clips from the audio manifest; falls back to Web Speech when a clip or the manifest is missing. Exports `ready`, `unlock`, `play(cat, key, opts)`, `playSeq`, `stop`. |
+| `audio.js` | **Primary voice channel.** Plays recorded teacher-voice clips from the audio manifest; falls back to Web Speech when a clip or the manifest is missing. Exports `ready`, `unlock`, `play(cat, key, opts)`, `playSeq`, `stop`, and `configure({ manifestUrl, base })` to point it at a game's own manifest. |
 | `speech.js` | Thin Web Speech (`speechSynthesis`) wrapper. Exports `unlock`, `speak`, `speakSeq`, `stop`. |
 | `sfx.js` | WebAudio-synthesized sound effects — **zero files**. Exports `pop`, `unpop`, `whoosh`, `sparkle`, `tada`, `silly`, `boing`, `tick`, `unlock`. |
+| `voice-clips.js` | Flat-key recorded-clip channel for a game's own lines. Exports `init`, `say`, `sayFile`, `duration`, `clipInfo`, `setMuted`, `getAudioLog`, `unlock`, `stop`. |
+| `audio-unlock.js` | The one first-gesture unlock for all of the above — `unlockAll`, `installUnlockOnGesture`, `installKioskGuards`. |
+
+### `shared/css/` — the platform stylesheets
+`base.css` (the `@font-face` + reset every game links), `hud.css` (the
+`.qk-hud-*` button vocabulary, background images from `assets/ui/`), and
+`screens.css` (screen visibility + the mode-card skin). All `url()`s resolve
+against the stylesheet, so they are correct from any game folder.
 
 ### `shared/assets/letter-tiles/` — 56 onset & rime tiles (PNG)
 Glossy letter tiles for phonics word-building: **19 single-letter onset tiles**
@@ -56,12 +69,16 @@ Play a clip with `audio.play('words', 'cat', { fallbackText: 'cat' })`. If the
 clip is absent, the `fallbackText` is spoken via `speech.js`.
 
 ### `shared/assets/ui/` — the UI kit
-`btn-home.png`, `btn-play.png`, `btn-shuffle.png`, `btn-sound.png` — the shared
-HUD button set.
+`btn-home.png`, `btn-back.png`, `btn-play.png`, `btn-shuffle.png`,
+`btn-sound.png` — the shared HUD button set. `shared/css/hud.css` already wires
+`home`, `back` and `sound` as background images; don't re-declare them.
 
 ### `shared/fonts/` — the display font
 `fredoka-latin-600-normal.woff2` (Fredoka SemiBold, weight 600) — the platform
-face. `@font-face` it from `../../../shared/fonts/` (see the template CSS).
+face. **Do not `@font-face` it yourself.** `shared/css/base.css` declares it
+(resolving `../fonts/` against the stylesheet); a game links that file and just
+names the family: `body { font-family: 'Fredoka', 'Arial Rounded MT Bold',
+sans-serif; }`.
 
 ### `shared/assets/twemoji/` — emoji fallback (31 SVGs)
 Twemoji artwork used as a defensive fallback when a picture-card is missing.
@@ -69,10 +86,13 @@ Twemoji artwork used as a defensive fallback when a picture-card is missing.
 
 ### `shared/vendor/` — vendored third-party code
 `three.module.min.js` (three.js **r166**, MIT) and `RoundedBoxGeometry.js` (MIT),
-for games that render in 3D. Reference them via the `index.html` import map.
+for games that render in 3D — reference them via the `index.html` import map —
+plus `pixi.min.js` (PixiJS), which the shared stage/puppet stack builds on.
 
 ### `shared/characters/`
-Reserved for shared character art (currently empty).
+Shared character art and puppet rigs: per-character folders, the rig and
+acting-clip JSON, and `character-sheet-template.md`. See
+[`docs/characters.md`](characters.md) and [`docs/puppet-rig-spec.md`](puppet-rig-spec.md).
 
 ---
 

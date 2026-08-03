@@ -7,13 +7,13 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#1677d2" />
   <title>Letter Road Driving 🚗 — Letter Shapes on Wheels</title>
-  <meta name="description" content="Drive a cheerful car along single- and multi-stroke uppercase letter roads, following each numbered start in order." />
+  <meta name="description" content="Help five cheerful car friends reach letter-linked destinations by tracing uppercase roads, then watch them drive the finished route." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Letter Road Driving" />
   <meta property="og:title" content="Letter Road Driving 🚗 — Letter Shapes on Wheels" />
-  <meta property="og:description" content="Drive a cheerful car along single- and multi-stroke uppercase letter roads, following each numbered start in order." />
+  <meta property="og:description" content="Help five cheerful car friends reach letter-linked destinations by tracing uppercase roads, then watch them drive the finished route." />
   <meta property="og:url" content="https://qlo.be/games/letter-road-driving/" />
   <meta property="og:image" content="https://qlo.be/games/letter-road-driving/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -24,27 +24,16 @@
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Letter Road Driving 🚗 — Letter Shapes on Wheels" />
-  <meta name="twitter:description" content="Drive a cheerful car along single- and multi-stroke uppercase letter roads, following each numbered start in order." />
+  <meta name="twitter:description" content="Help five cheerful car friends reach letter-linked destinations by tracing uppercase roads, then watch them drive the finished route." />
   <meta name="twitter:image" content="https://qlo.be/games/letter-road-driving/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
-    /* Keep entry files tiny: trace-path owns layout, input, recorded voice, SFX, and QA hooks. */
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; overflow: hidden; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #a8d5ff;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-    }
-    #game { height: 100dvh; }
+    :root { --qk-bg: #a8d5ff; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+    html, body { overflow: hidden; }
 
     /* Letter Road's production theme deliberately stays local to this game. */
     #game .qk-trace {

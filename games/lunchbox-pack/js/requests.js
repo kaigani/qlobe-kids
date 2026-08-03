@@ -1,6 +1,13 @@
 // requests.js — pure request/session generation for Lunchbox Pack.
-// No DOM, no imports: every export is a plain function over plain data, so the
-// round logic is unit-testable in node. game.js consumes makeSession().
+// No DOM: every export is a plain function over plain data, so the round
+// logic is unit-testable in node. The one import is shared/js/rng.js, itself
+// zero-dependency, for the platform's canonical shuffle/pick (so a
+// QLOBE_DEBUG seed(42) run reproduces this game's food/request pick order —
+// see docs/shared-platform-refactor.md). game.js consumes makeSession().
+
+import { shuffle, pick } from '../../../shared/js/rng.js';
+
+export { shuffle, pick };
 
 export const GROUPS = ['fruit', 'veggie', 'main', 'drink', 'treat'];
 
@@ -47,21 +54,6 @@ const FAVORITE_WEIGHT = 0.6;
 const BOXES_PER_SESSION = 3;
 
 // ---- small utilities ---------------------------------------------------
-
-/** Fisher–Yates shuffle into a new array. */
-export function shuffle(arr, rng = Math.random) {
-  const out = arr.slice();
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
-/** Random element (undefined on empty). */
-export function pick(arr, rng = Math.random) {
-  return arr[Math.floor(rng() * arr.length)];
-}
 
 /** Does a food match an attribute id ('crunchy' or a color name)? */
 export function matchesAttr(food, attr) {

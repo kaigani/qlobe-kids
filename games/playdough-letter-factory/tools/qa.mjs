@@ -4,67 +4,37 @@
 //   python3 -m http.server 8000        # from the repo root
 //   node games/playdough-letter-factory/tools/qa.mjs
 //        [--base http://127.0.0.1:8000] [--shots qa-shots/playdough-letter-factory]
+//        [--playwright /private/tmp/pw/node_modules]
 //        [--chromium]  # visual-only fallback when system Chrome is occupied
 //   ($QLOBE_BASE / $QLOBE_SHOTS still work.)
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const args = process.argv.slice(2);
-const flag = (name, fallback = null) => {
-  const index = args.indexOf(`--${name}`);
-  return index >= 0 && args[index + 1] && !args[index + 1].startsWith('--')
-    ? args[index + 1] : fallback;
-};
-const base = (flag('base') || process.env.QLOBE_BASE || 'http://127.0.0.1:8000').replace(/\/$/, '');
-const shots = path.resolve(flag('shots') || process.env.QLOBE_SHOTS || 'qa-shots/playdough-letter-factory');
-const require = createRequire('/private/tmp/pw/node_modules/noop.js');
-const { chromium } = require('playwright');
-const checks = [];
+const base = baseUrl();
+const shots = resolveShots('qa-shots/playdough-letter-factory');
+const { check, finish } = createReporter();
 const sessions = [];
 
-function check(name, condition, detail = '') {
-  const ok = Boolean(condition);
-  checks.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
-
-function finish() {
-  const failed = checks.filter(({ ok }) => !ok);
-  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed`);
-  if (failed.length) process.exitCode = 1;
-}
-
 async function openGame(browser, viewport, reducedMotion = 'no-preference') {
-  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+  const session = await openSession(browser, {
+    url: `${base}/games/playdough-letter-factory/`,
+    base,
+    viewport,
+    reducedMotion,
+    allowDataUrls: true,
+    allowAbortedMedia: true,
+    seed: 42,
+    fastTimers: 0.03,
   });
-  page.on('request', (request) => {
-    if (!request.url().startsWith(base) && !request.url().startsWith('data:')) remote.push(request.url());
-  });
-  page.on('requestfailed', (request) => {
-    const reason = request.failure()?.errorText || '';
-    if (reason === 'net::ERR_ABORTED' && request.url().endsWith('.m4a')) return;
-    failed.push(`${request.url()} ${reason}`);
-  });
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(`${base}/games/playdough-letter-factory/`, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => {
-    window.QLOBE_DEBUG.seed(42);
-    window.QLOBE_DEBUG.fastTimers(.03);
-  });
-  sessions.push({ errors, failed, remote, close: () => context.close() });
-  return page;
+  sessions.push(session);
+  return session.page;
 }
 
 async function traceActiveLetter(page, { onMidStroke } = {}) {
@@ -105,10 +75,9 @@ async function visibleLetterReveal(page) {
 }
 
 async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({
-    channel: process.argv.includes('--chromium') ? undefined : 'chrome',
-    headless: true,
+  await ensureShots(shots);
+  const browser = await launchChrome({
+    channel: process.argv.includes('--chromium') ? null : 'chrome',
   });
 
   const hubContext = await browser.newContext({ viewport: { width: 1180, height: 820 } });

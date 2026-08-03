@@ -9,11 +9,6 @@ export default {
   engine: 'choose-one',
   title: 'Mountain Seasons Wheel',
   splashEmoji: '🏔️',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Spin the mountain seasons wheel! Listen for the season, then tap what belongs.',
     nudge: 'Almost! Look at the season and try another one.',

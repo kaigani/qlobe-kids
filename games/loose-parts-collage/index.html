@@ -29,23 +29,12 @@
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
   <style>
-    @font-face {
-      font-family: 'Fredoka';
-      src: url('../../shared/fonts/fredoka-latin-600-normal.woff2') format('woff2');
-      font-weight: 600; font-display: swap;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; height: 100%; overflow: hidden; }
-    body {
-      font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
-      background: #b7d97b;
-      touch-action: manipulation;
-      user-select: none; -webkit-user-select: none;
-      -webkit-touch-callout: none;
-      overscroll-behavior: none;
-    }
-    #game { height: 100dvh; }
+    :root { --qk-bg: #b7d97b; }
+    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+    html, body { overflow: hidden; }
+    body { -webkit-touch-callout: none; overscroll-behavior: none; }
   </style>
 </head>
 <body>

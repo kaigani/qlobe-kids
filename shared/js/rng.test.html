@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rng.js test — seeded random</title>
+  <!-- An empty inline icon. Without it the browser asks for /favicon.ico and the
+       404 lands in the console, which would make "zero console errors" a claim
+       QA has to caveat rather than assert. -->
+  <link rel="icon" href="data:," />
+  <style>
+    body { margin: 0; padding: 16px 18px 40px; background: #eef6fb; color: #17517e;
+           font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    p.sub { margin: 0 0 14px; font-size: 13px; opacity: .75; }
+    #summary { font-size: 20px; font-weight: 700; color: #fff; padding: 12px 16px;
+               border-radius: 12px; background: #7a8794; margin-bottom: 14px; }
+    #summary.pass { background: #2f8f5b; }
+    #summary.fail { background: #b0453a; }
+    ol { margin: 0; padding-left: 26px; font-size: 14px; line-height: 1.6; }
+    li { padding: 2px 0; }
+    li.pass::marker { color: #2f8f5b; }
+    li.fail { color: #b0453a; font-weight: 600; }
+    li.fail::marker { color: #b0453a; }
+    code { font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+           background: #fff; padding: 1px 5px; border-radius: 5px; }
+    .why { display: block; font-size: 12px; font-weight: 400; opacity: .8; }
+  </style>
+</head>
+<body>
+  <h1>rng.js</h1>
+  <p class="sub">mulberry32 / hashString / shuffle / pick — assertions run on load.</p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    import { mulberry32, hashString, shuffle, pick } from './rng.js';
+
+    // ---- tiny assertion harness -----------------------------------------
+    const results = [];
+    function test(name, fn) {
+      try { fn(); results.push({ name, pass: true, why: '' }); }
+      catch (err) { results.push({ name, pass: false, why: err && err.message || String(err) }); }
+    }
+    function assert(cond, why) { if (!cond) throw new Error(why || 'assertion failed'); }
+    function eq(actual, expected, why) {
+      const a = JSON.stringify(actual);
+      const b = JSON.stringify(expected);
+      if (a !== b) throw new Error(`${why ? why + ' — ' : ''}got ${a}, expected ${b}`);
+    }
+    const draw = (rng, n) => Array.from({ length: n }, () => rng());
+
+    // ---- mulberry32 -------------------------------------------------------
+
+    test('mulberry32: same seed, same sequence', () => {
+      eq(draw(mulberry32(42), 8), draw(mulberry32(42), 8));
+    });
+
+    test('mulberry32: known vector for seed 42 (parity with the engine copies)', () => {
+      eq(draw(mulberry32(42), 5), [
+        0.6011037519201636, 0.44829055899754167, 0.8524657934904099,
+        0.6697340414393693, 0.17481389874592423,
+      ]);
+    });
+
+    test('mulberry32: every draw is in [0, 1)', () => {
+      const rng = mulberry32(12345);
+      for (let i = 0; i < 20000; i += 1) {
+        const v = rng();
+        assert(v >= 0 && v < 1, `draw ${i} was ${v}`);
+      }
+    });
+
+    test('mulberry32: different seeds diverge', () => {
+      assert(JSON.stringify(draw(mulberry32(1), 6)) !== JSON.stringify(draw(mulberry32(2), 6)));
+    });
+
+    test('mulberry32: non-numeric seed coerces to 0 rather than NaN', () => {
+      eq(draw(mulberry32('nope'), 4), draw(mulberry32(0), 4));
+      assert(Number.isFinite(mulberry32(undefined)()), 'undefined seed produced NaN');
+    });
+
+    test('mulberry32: uint32 wrap — seed 2^32 == seed 0', () => {
+      eq(draw(mulberry32(4294967296), 4), draw(mulberry32(0), 4));
+    });
+
+    test('mulberry32: stays uniform-ish over 10 buckets', () => {
+      const rng = mulberry32(2024);
+      const buckets = new Array(10).fill(0);
+      for (let i = 0; i < 100000; i += 1) buckets[Math.floor(rng() * 10)] += 1;
+      for (const count of buckets) assert(count > 9000 && count < 11000, `bucket skew: ${buckets}`);
+    });
+
+    // ---- hashString -------------------------------------------------------
+
+    test('hashString: canonical FNV-1a 32-bit vectors', () => {
+      eq(hashString(''), 2166136261);
+      eq(hashString('a'), 3826002220);
+      eq(hashString('abc'), 440920331);
+    });
+
+    test('hashString: stable and uint32-ranged', () => {
+      for (const s of ['qlobe', 'round-3', 'sink-or-float', '🐸 froggy', 'x'.repeat(500)]) {
+        const h = hashString(s);
+        eq(h, hashString(s), `unstable for ${s}`);
+        assert(Number.isInteger(h) && h >= 0 && h <= 4294967295, `out of uint32 range for ${s}: ${h}`);
+      }
+    });
+
+    test('hashString: null/undefined hash as the empty string', () => {
+      eq(hashString(null), hashString(''));
+      eq(hashString(undefined), hashString(''));
+    });
+
+    test('hashString: usable as a seed (distinct names, distinct sequences)', () => {
+      const a = mulberry32(hashString('round-1'))();
+      const b = mulberry32(hashString('round-2'))();
+      assert(a !== b, 'two round names produced the same first draw');
+    });
+
+    // ---- shuffle ----------------------------------------------------------
+
+    test('shuffle: returns a NEW array and never mutates the input', () => {
+      const source = [1, 2, 3, 4, 5, 6, 7, 8];
+      const out = shuffle(source, mulberry32(7));
+      assert(out !== source, 'returned the same array reference');
+      eq(source, [1, 2, 3, 4, 5, 6, 7, 8], 'input was mutated');
+    });
+
+    test('shuffle: keeps exactly the same elements', () => {
+      const source = ['a', 'b', 'c', 'd', 'e', 'f'];
+      const out = shuffle(source, mulberry32(99));
+      eq(out.slice().sort(), source.slice().sort());
+      eq(out.length, source.length);
+    });
+
+    test('shuffle: seeded runs are reproducible', () => {
+      eq(shuffle([1, 2, 3, 4, 5, 6, 7, 8], mulberry32(7)), [5, 7, 2, 3, 4, 6, 8, 1]);
+      eq(shuffle([1, 2, 3, 4, 5, 6, 7, 8], mulberry32(7)),
+         shuffle([1, 2, 3, 4, 5, 6, 7, 8], mulberry32(7)));
+    });
+
+    test('shuffle: actually reorders (not the identity)', () => {
+      const source = Array.from({ length: 12 }, (_, i) => i);
+      let moved = false;
+      for (let seed = 0; seed < 5 && !moved; seed += 1) {
+        moved = JSON.stringify(shuffle(source, mulberry32(seed))) !== JSON.stringify(source);
+      }
+      assert(moved, 'five seeds all returned the source order');
+    });
+
+    test('shuffle: every element reaches every position (Fisher-Yates, not a rotation)', () => {
+      const rng = mulberry32(5);
+      const seen = new Set();
+      for (let i = 0; i < 4000; i += 1) seen.add(shuffle([0, 1, 2, 3], rng).indexOf(0));
+      eq(seen.size, 4, `element 0 only reached positions ${[...seen]}`);
+    });
+
+    test('shuffle: defaults to Math.random when no rng is given', () => {
+      const out = shuffle([1, 2, 3, 4, 5]);
+      eq(out.slice().sort(), [1, 2, 3, 4, 5]);
+    });
+
+    test('shuffle: empty / non-array inputs give []', () => {
+      eq(shuffle([]), []);
+      eq(shuffle(null), []);
+      eq(shuffle(undefined), []);
+      eq(shuffle('abc'), []);
+    });
+
+    test('shuffle: a single element survives', () => {
+      eq(shuffle(['only'], mulberry32(3)), ['only']);
+    });
+
+    // ---- pick -------------------------------------------------------------
+
+    test('pick: returns a member of the array', () => {
+      const source = ['a', 'b', 'c', 'd', 'e'];
+      const rng = mulberry32(11);
+      for (let i = 0; i < 500; i += 1) assert(source.includes(pick(source, rng)));
+    });
+
+    test('pick: seeded picks are reproducible', () => {
+      eq(pick(['a', 'b', 'c', 'd', 'e'], mulberry32(1)), 'd');
+      eq(pick(['a', 'b', 'c', 'd', 'e'], mulberry32(1)),
+         pick(['a', 'b', 'c', 'd', 'e'], mulberry32(1)));
+    });
+
+    test('pick: reaches every element', () => {
+      const rng = mulberry32(8);
+      const seen = new Set();
+      for (let i = 0; i < 500; i += 1) seen.add(pick([0, 1, 2, 3, 4], rng));
+      eq(seen.size, 5, `only saw ${[...seen]}`);
+    });
+
+    test('pick: empty / non-array inputs give undefined', () => {
+      eq(pick([]), undefined);
+      eq(pick(null), undefined);
+      eq(pick(undefined), undefined);
+    });
+
+    test('pick: defaults to Math.random when no rng is given', () => {
+      assert([1, 2, 3].includes(pick([1, 2, 3])));
+    });
+
+    // ---- report -----------------------------------------------------------
+
+    const passed = results.filter((r) => r.pass).length;
+    const failed = results.length - passed;
+    const list = document.getElementById('results');
+    for (const r of results) {
+      const li = document.createElement('li');
+      li.className = r.pass ? 'pass' : 'fail';
+      li.textContent = r.name;
+      if (!r.pass) {
+        const why = document.createElement('span');
+        why.className = 'why';
+        why.textContent = r.why;
+        li.appendChild(why);
+      }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.className = failed ? 'fail' : 'pass';
+    summary.textContent = failed ? `✗ ${failed} of ${results.length} FAILED` : `✓ all ${results.length} passed`;
+
+    // Machine-readable, so a Playwright run can assert without scraping text.
+    window.QLOBE_TEST = { passed, failed, total: results.length, results };
+  </script>
+</body>
+</html>

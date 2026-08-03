@@ -17,6 +17,7 @@
 // slips to the robot synth voice.
 
 import { onTap } from '../../../../shared/js/tap.js';
+import { escapeAttr } from '../../../../shared/js/dom.js';
 import { NOTE_SVG } from '../art.js';
 
 export async function createSplashScreen(ctx) {
@@ -114,10 +115,4 @@ function buildHero(ctx, hero) {
   pose.addEventListener('error', () => hero.classList.add('no-pose'), { once: true });
   if (poseSrc) pose.src = poseSrc;
   else hero.classList.add('no-pose');
-}
-
-function escapeAttr(value) {
-  return String(value).replace(/[&<>"']/g, (ch) => (
-    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
-  ));
 }

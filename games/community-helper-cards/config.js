@@ -3,11 +3,6 @@ export default {
   engine: 'match-pairs',
   title: 'Community Helper Cards',
   splashEmoji: '🚒',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Let\'s match each helper with what they use.',
     nudge: 'Hmm, that helper uses something else. Try another card.',

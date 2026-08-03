@@ -9,11 +9,10 @@ modules, no framework, no build step. 2D DOM game (no three.js).
 games/lunchbox-pack/
   index.html          splash + game shell
   css/style.css
-  js/main.js          boot, splash, mode routing, audio unlock
+  js/main.js          boot, splash, mode routing, audio unlock, QLOBE_DEBUG
   js/game.js          the round engine (all 3 modes)
   js/requests.js      request generation (pure functions, unit-testable)
-  js/voice.js         recorded-clip player w/ speech fallback
-  js/confetti.js      small DOM/canvas confetti burst (no three.js)
+  js/voice.js         thin wrapper on shared/js/voice-clips.js
   data/foods.json     foods + characters (exists)
   assets/             bg.jpg, splash.jpg, lunchbox-open.png, lunchbox-closed.png
   assets/audio/       manifest.json + <key>.m4a clips (generated separately —
@@ -122,10 +121,16 @@ target food image with `×n`. The SAME food card can be dragged repeatedly
 
 ## Debug hook (for automated QA — REQUIRED)
 
-`window.LUNCH = { state(), pack(foodId) }` — state() returns
-`{ screen, mode, character, requests: [...], currentRequest, packed: [...], stars }`;
-pack(foodId) programmatically attempts packing that food (same code path as a
-drop). Read-only otherwise. Mirrors sound-sprouts' `window.SPROUTS`.
+`window.QLOBE_DEBUG` — the platform v1 contract (installed via
+`shared/js/debug-harness.js`'s `installDebug()`; see
+`docs/shared-platform-refactor.md`): `gameId, ready, listModes, startMode,
+getState, getTargets, tap, winRound, mute, seed, fastTimers, home`. `getState()`
+returns `{ screen, mode, phase, character, requests: [...], currentRequest,
+packed: [...], shelf: [...], filledGroups, stars }`; `tap(id)` packs a food id
+through the same code path as a drag-drop, or closes the lid for `id: 'lid'`.
+The original bespoke hook lives on as two extra keys for back-compat:
+`state()` (alias for `getState()`) and `pack(foodId)` (alias for the food-tap
+path). Read-only otherwise.
 
 ## index.html
 

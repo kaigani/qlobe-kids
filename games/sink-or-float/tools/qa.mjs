@@ -18,6 +18,12 @@
 //        [--pw-module /private/tmp/pw/node_modules] \
 //        [--channel chrome]
 //
+// Flag parsing, the out-of-tree Playwright resolution, the Chrome launch, and
+// the pass/fail reporter come from tools/qa/lib/driver.mjs — see
+// tools/qa/README.md for the shared API. Everything else here (the scenarios,
+// the spawned dev server, the pending-asset request filtering, the announcer
+// transcript, the water/physics waits) is bespoke to this game and stays put.
+//
 // Playwright is loaded out-of-tree (createRequire against a noop.js path that
 // need not exist — only its directory matters) from --pw-module, or the
 // PW_MODULE env var, defaulting to /private/tmp/pw/node_modules. Chromium is
@@ -51,7 +57,10 @@
 //     the asset lands.
 //
 //   - The "warm surprise path" after a deliberately wrong prediction is
-//     verified with a MutationObserver on #announcer, installed BEFORE the
+//     verified with a MutationObserver on the narrator's aria-live announcer
+//     (`p.visually-hidden[aria-live="polite"]`, created by
+//     shared/js/narrator.js and appended to document.body — the hand-rolled
+//     #announcer node this driver used to look up by id is gone), installed BEFORE the
 //     wrong round's drop() call and read back AFTER it resolves. drop()'s
 //     returned promise, once awaited, has already run the ENTIRE reveal chain
 //     (result line, surprise/praise line, journal stamp, round increment, and
@@ -75,34 +84,27 @@
 //
 // Exit code is non-zero if any check fails.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
+
+import {
+  args, launchChrome, createReporter, resolveShots, ensureShots, shooter,
+} from '../../../tools/qa/lib/driver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..', '..');
 const GAME_DIR = path.resolve(HERE, '..');
-const SHOTS = path.join(GAME_DIR, 'qa-shots');
+const SHOTS = resolveShots(path.join(GAME_DIR, 'qa-shots'));
 // Shots for the v2 feature pass (spoken badge order, pop-sync, 54-object pools)
 // land in their own folder so the original review set stays comparable.
 const SHOTS_V2 = path.join(SHOTS, 'v2');
 
-const argv = process.argv.slice(2);
-const flag = (name, dflt) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
-};
-
-const explicitBase = flag('base', null);
-const pwDir = flag('pw-module', process.env.PW_MODULE || '/private/tmp/pw/node_modules');
-const channel = flag('channel', null); // opt-in: `--channel chrome`
-
-const require = createRequire(path.join(pwDir, 'noop.js'));
-const { chromium } = require('playwright');
+const explicitBase = args.flag('base', null);
+const channel = args.flag('channel', null); // opt-in: `--channel chrome`
 
 const GAME_CONFIG = JSON.parse(readFileSync(path.join(GAME_DIR, 'config.json'), 'utf8'));
 const LINES = GAME_CONFIG.voice.lines || {};
@@ -141,22 +143,11 @@ let GAME_URL = ''; // filled in once BASE is known
 
 // --------------------------------------------------------------- bookkeeping
 
-const results = [];
-const notes = [];
-const check = (name, ok, detail = '') => {
-  results.push({ name, ok: !!ok, detail: String(detail) });
-  console.log(`${ok ? '  ok  ' : '  FAIL'} ${name}${detail ? ' — ' + detail : ''}`);
-  return !!ok;
-};
-const note = (line) => { notes.push(line); console.log(`  note  ${line}`); };
-
-async function shot(page, name) {
-  await page.screenshot({ path: path.join(SHOTS, `${name}.png`) });
-}
-
-async function shotV2(page, name) {
-  await page.screenshot({ path: path.join(SHOTS_V2, `${name}.png`) });
-}
+const {
+  check, note, results, notes, finish,
+} = createReporter({ style: 'pad' });
+const shot = shooter(SHOTS);
+const shotV2 = shooter(SHOTS_V2);
 
 function waitForNodeCondition(fn, timeout = 8000, interval = 100) {
   return new Promise((resolve) => {
@@ -356,12 +347,20 @@ async function predictRoundPass(browser, tag, viewport) {
   // Running transcript of every line the announcer carries, so the "warm
   // surprise" line can be found even though it is long overwritten by the
   // time drop()'s promise resolves (see header note).
-  await page.evaluate(() => {
+  // The announcer has no id any more: main.js moved to shared/js/narrator.js,
+  // which appends its own <p class="visually-hidden" aria-live="polite"> to
+  // document.body. narrator.js is the only thing in the platform that creates
+  // one, and the game's <main id="game"> is aria-live="off", so this selector
+  // resolves to exactly the narrator's node.
+  const observed = await page.evaluate(() => {
     window.__qaLog = [];
-    const node = document.getElementById('announcer');
+    const node = document.querySelector('p.visually-hidden[aria-live="polite"]');
+    if (!node) return false;
     const mo = new MutationObserver(() => window.__qaLog.push(node.textContent));
     mo.observe(node, { childList: true, characterData: true, subtree: true });
+    return true;
   });
+  check(`${tag}: the narrator's aria-live announcer is on the page`, observed, String(observed));
 
   const started = await page.evaluate(() => window.QLOBE_DEBUG.startMode('predict'));
   check(`${tag}: startMode("predict") accepted`, started === true, String(started));
@@ -805,8 +804,8 @@ async function seededDrawPass(browser) {
 // -------------------------------------------------------------------- main
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
-  await mkdir(SHOTS_V2, { recursive: true });
+  await ensureShots(SHOTS);
+  await ensureShots(SHOTS_V2);
 
   let base = explicitBase;
   let stopServer = null;
@@ -820,9 +819,10 @@ async function main() {
   }
   GAME_URL = `${base}/games/sink-or-float/`;
 
-  const launchOpts = { headless: true };
-  if (channel) launchOpts.channel = channel;
-  const browser = await chromium.launch(launchOpts);
+  const browser = await launchChrome({
+    channel,
+    playwright: { flags: ['pw-module'], envVars: ['PW_MODULE'] },
+  });
 
   const runs = {};
   const passes = [
@@ -855,7 +855,6 @@ async function main() {
     if (stopServer) stopServer();
   }
 
-  const failures = results.filter((r) => !r.ok);
   await writeFile(path.join(SHOTS, 'qa.json'), JSON.stringify({
     game: 'sink-or-float',
     base,
@@ -864,11 +863,7 @@ async function main() {
     notes,
   }, null, 2));
 
-  console.log(`\n${results.length - failures.length}/${results.length} checks passed; shots in ${SHOTS}`);
-  if (failures.length) {
-    console.log('FAILED: ' + failures.map((f) => f.name).join(', '));
-  }
-  process.exitCode = failures.length ? 1 : 0;
+  finish({ suffix: `; shots in ${SHOTS}` });
 }
 
 main().catch((error) => {

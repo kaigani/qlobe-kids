@@ -1,8 +1,14 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { mulberry32, shuffle } from '../../../shared/js/rng.js';
+import { escapeHtml } from '../../../shared/js/dom.js';
+import { createTimers } from '../../../shared/js/timers.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { createNudger } from '../../../shared/js/idle-nudge.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
 
 const app = document.getElementById('app');
 const beadColors = ['gold', 'coral', 'teal', 'green', 'blue', 'cream'];
@@ -11,6 +17,10 @@ const choiceColors = [
   ['#48beb9', '#238d9a'],
   ['#4fa8e6', '#3475c0'],
 ];
+// Deliberate bead palette (matches the manipulative colours above) — not the
+// platform QK_PALETTE, so it is passed through explicitly to burstConfetti.
+const BEAD_CONFETTI_PALETTE = ['#f15f49', '#f6bd28', '#31aaa3', '#6fb33d', '#4a9fe0', '#fff3c5'];
+
 const state = {
   screen: 'splash',
   mode: null,
@@ -23,16 +33,35 @@ const state = {
   awaitingInput: true,
   transition: false,
   muted: false,
-  timeScale: 1,
   seed: 42,
-  audioLog: [],
 };
 
 let rng = mulberry32(state.seed);
 let activeTargets = new Map();
-let idleTimer = 0;
 let advanceTimer = 0;
+let cancelConfetti = null;
 let drag = null;
+
+const timers = createTimers();
+const nudger = createNudger({
+  first: 9000,
+  repeat: 9000,
+  onNudge: () => {
+    // The pre-migration scheduleIdle() carried this guard and it has to stay:
+    // renderBuildRound() re-arms the nudger on every render, INCLUDING the ones
+    // bundleTen()/completeRound() do mid-transition with awaitingInput already
+    // false. Without it a nudge can talk over the transition it is waiting on.
+    if (state.screen !== 'play' || !state.awaitingInput) return;
+    repeatPrompt();
+    const target = state.phase === 'match'
+      ? app.querySelector('.number-choice')
+      : app.querySelector('.place-tray.active');
+    target?.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.025)' }, { transform: 'scale(1)' }],
+      { duration: 650 },
+    );
+  },
+});
 
 const ready = voice.init(
   './assets/audio/manifest.json',
@@ -40,31 +69,22 @@ const ready = voice.init(
   config.voice,
 ).then(() => true);
 
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
+installUnlockOnGesture();
+installKioskGuards();
 window.addEventListener('pointermove', moveDrag, { passive: false });
 window.addEventListener('pointerup', finishDrag, { passive: false });
 window.addEventListener('pointercancel', cancelDrag);
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
 window.addEventListener('blur', cancelDrag);
 
 function unlockAudio() {
-  voice.unlock();
-  speech.unlock();
-  sfx.unlock();
+  unlockAll();
 }
 
-function wait(ms) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, Math.max(1, ms * state.timeScale));
-  });
-}
-
-function clearTimers() {
-  window.clearTimeout(idleTimer);
+function stopTimers() {
+  timers.clearAll();
   window.clearTimeout(advanceTimer);
-  idleTimer = 0;
   advanceTimer = 0;
+  nudger.stop();
 }
 
 function playSfx(name) {
@@ -72,9 +92,6 @@ function playSfx(name) {
 }
 
 function speak(key, fallback = config.voice[key]) {
-  state.audioLog.push({ key, text: fallback || '', at: Date.now() });
-  if (state.audioLog.length > 60) state.audioLog.shift();
-  if (state.muted) return Promise.resolve();
   return voice.say(key, fallback);
 }
 
@@ -132,7 +149,7 @@ function modeArt(modeId) {
 }
 
 function renderSplash({ greet = false } = {}) {
-  clearTimers();
+  stopTimers();
   voice.stop();
   state.screen = 'splash';
   state.mode = null;
@@ -164,11 +181,11 @@ function renderSplash({ greet = false } = {}) {
 
 async function startMode(modeId) {
   await ready;
-  clearTimers();
+  stopTimers();
   const mode = config.modes.find((item) => item.id === modeId) || config.modes[0];
   state.screen = 'play';
   state.mode = mode.id;
-  state.rounds = shuffled(mode.rounds);
+  state.rounds = shuffle(mode.rounds, rng);
   state.roundIndex = 0;
   state.placed = 0;
   state.transition = false;
@@ -215,7 +232,7 @@ function playShell(workspace, prompt, count = '') {
 }
 
 function renderBuildRound() {
-  clearTimers();
+  stopTimers();
   state.screen = 'play';
   state.phase = state.phase === 'bundle' ? 'bundle' : 'build';
   state.awaitingInput = !state.transition;
@@ -276,8 +293,11 @@ function renderBuildRound() {
     registerTap(button, `remove-${button.dataset.remove}`, () => removeBead(Number(button.dataset.remove)), { sfxName: 'unpop' });
   });
   wireBeadSource(app.querySelector('[data-bead-source]'));
-  scheduleIdle();
+  nudger.arm();
 }
+
+// ---- Hand-rolled drag: kept exactly as-is (Wave 4 ships a shared DOM drag
+// adapter; until then this stays as written — see the migration brief). -----
 
 function wireBeadSource(source) {
   if (!source || state.transition) return;
@@ -361,11 +381,13 @@ function pointInRect(x, y, rect, pad = 0) {
   return x >= rect.left - pad && x <= rect.right + pad && y >= rect.top - pad && y <= rect.bottom + pad;
 }
 
+// ---- end hand-rolled drag ---------------------------------------------
+
 function addBead() {
   if (!state.awaitingInput || state.transition || state.screen !== 'play' || !['bundle', 'build'].includes(state.phase)) return;
   const needed = state.phase === 'bundle' ? 10 : state.target - 10;
   if (state.placed >= needed) return;
-  clearTimers();
+  stopTimers();
   state.placed += 1;
   playSfx('pop');
   renderBuildRound();
@@ -377,7 +399,7 @@ function addBead() {
 
 function removeBead(index) {
   if (!state.awaitingInput || state.transition || index >= state.placed) return;
-  clearTimers();
+  stopTimers();
   state.placed = Math.max(0, state.placed - 1);
   renderBuildRound();
 }
@@ -387,7 +409,7 @@ async function bundleTen() {
   state.awaitingInput = false;
   renderBuildRound();
   playSfx('whoosh');
-  await wait(850);
+  await timers.wait(850);
   if (state.phase !== 'bundle') return;
   state.tutorialDone = true;
   renderBuildRound();
@@ -408,7 +430,7 @@ function repeatPrompt() {
 }
 
 function renderMatchRound() {
-  clearTimers();
+  stopTimers();
   state.screen = 'play';
   state.phase = 'match';
   state.awaitingInput = true;
@@ -435,7 +457,7 @@ function renderMatchRound() {
     const number = Number(button.dataset.choice);
     registerTap(button, `choice-${number}`, () => chooseNumber(number), { sfxName: 'pop' });
   });
-  scheduleIdle();
+  nudger.arm();
 }
 
 function makeChoices(target) {
@@ -450,12 +472,12 @@ function makeChoices(target) {
   for (let number = 11; pool.length < 3 && number <= 19; number += 1) {
     if (!pool.includes(number)) pool.push(number);
   }
-  return shuffled(pool);
+  return shuffle(pool, rng);
 }
 
 function chooseNumber(number) {
   if (!state.awaitingInput || state.transition || state.phase !== 'match') return;
-  clearTimers();
+  stopTimers();
   const button = app.querySelector(`[data-choice="${number}"]`);
   if (number !== state.target) {
     button?.classList.remove('wrong');
@@ -463,7 +485,7 @@ function chooseNumber(number) {
     button?.classList.add('wrong');
     playSfx('boing');
     speak('tryAgain');
-    scheduleIdle();
+    nudger.arm();
     return;
   }
   state.awaitingInput = false;
@@ -475,22 +497,21 @@ function chooseNumber(number) {
 async function completeRound() {
   state.awaitingInput = false;
   state.transition = true;
-  clearTimers();
+  stopTimers();
   playSfx('sparkle');
-  await wait(280);
+  await timers.wait(280);
   await speakSuccess(state.target);
   if (state.screen === 'play') showCelebration(state.target);
 }
 
 function showCelebration(number, { tutorial = false } = {}) {
-  clearTimers();
+  stopTimers();
   state.screen = 'celebration';
   activeTargets = new Map();
   const ones = Math.max(0, number - 10);
   const overlay = document.createElement('div');
   overlay.className = 'celebration';
   overlay.innerHTML = `
-    <div class="confetti">${makeConfetti(34)}</div>
     <div class="celebrate-card" role="dialog" aria-label="${tutorial ? 'One ten made' : `${config.numberWords[number]} made`}">
       <div class="celebrate-number">${number}</div>
       <div class="celebrate-equation">${tutorial ? '10 ones = 1 ten' : `10 + ${ones} = ${number}`}</div>
@@ -500,11 +521,16 @@ function showCelebration(number, { tutorial = false } = {}) {
   app.append(overlay);
   registerTap(overlay.querySelector('.next-button'), 'next', nextRound, { sfxName: 'sparkle' });
   playSfx('tada');
-  advanceTimer = window.setTimeout(nextRound, Math.max(450, 3900 * state.timeScale));
+  cancelConfetti = burstConfetti({ host: overlay, count: 34, palette: BEAD_CONFETTI_PALETTE });
+  // 450ms floor even under fastTimers(), same guarantee the old raw
+  // setTimeout(…, Math.max(450, 3900 * timeScale)) gave the celebration card.
+  advanceTimer = window.setTimeout(nextRound, Math.max(450, timers.ms(3900)));
 }
 
 function nextRound() {
-  clearTimers();
+  stopTimers();
+  cancelConfetti?.();
+  cancelConfetti = null;
   app.querySelector('.celebration')?.remove();
   state.screen = 'play';
   state.transition = false;
@@ -538,7 +564,7 @@ function nextRound() {
 }
 
 function renderEnd() {
-  clearTimers();
+  stopTimers();
   state.screen = 'end';
   state.phase = 'end';
   state.awaitingInput = true;
@@ -566,60 +592,6 @@ function renderEnd() {
   registerTap(app.querySelector('[data-menu]'), 'menu', () => renderSplash(), { sfxName: 'tick' });
   playSfx('tada');
   speak('finish');
-}
-
-function scheduleIdle() {
-  window.clearTimeout(idleTimer);
-  idleTimer = window.setTimeout(() => {
-    if (state.screen !== 'play' || !state.awaitingInput) return;
-    repeatPrompt();
-    const target = state.phase === 'match'
-      ? app.querySelector('.number-choice')
-      : app.querySelector('.place-tray.active');
-    target?.animate(
-      [{ transform: 'scale(1)' }, { transform: 'scale(1.025)' }, { transform: 'scale(1)' }],
-      { duration: 650 },
-    );
-    scheduleIdle();
-  }, Math.max(700, 9000 * state.timeScale));
-}
-
-function makeConfetti(count) {
-  const colors = ['#f15f49', '#f6bd28', '#31aaa3', '#6fb33d', '#4a9fe0', '#fff3c5'];
-  return Array.from({ length: count }, (_, index) => {
-    const x = 7 + rng() * 86;
-    const dx = -130 + rng() * 260;
-    const delay = rng() * .35;
-    return `<i style="--x:${x}vw;--dx:${dx}px;--delay:${delay}s;--c:${colors[index % colors.length]}"></i>`;
-  }).join('');
-}
-
-function shuffled(items) {
-  const copy = [...items];
-  for (let index = copy.length - 1; index > 0; index -= 1) {
-    const other = Math.floor(rng() * (index + 1));
-    [copy[index], copy[other]] = [copy[other], copy[index]];
-  }
-  return copy;
-}
-
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value += 0x6D2B79F5;
-    let next = value;
-    next = Math.imul(next ^ (next >>> 15), next | 1);
-    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);
-    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
 }
 
 function debugState() {
@@ -680,8 +652,7 @@ function winRound() {
   return false;
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   ready,
   listModes: () => config.modes.map(({ id, title, skill }) => ({ id, title, skill })),
@@ -690,23 +661,19 @@ window.QLOBE_DEBUG = {
   getTargets: debugTargets,
   tap: debugTap,
   winRound,
+  home: renderSplash,
+  timers,
+  onSeed: (nextRng, value) => {
+    rng = nextRng;
+    state.seed = value;
+  },
   mute(value = true) {
     state.muted = value !== false;
-    if (state.muted) voice.stop();
+    voice.setMuted(state.muted);
     return state.muted;
   },
-  seed(value = 42) {
-    state.seed = Number(value) || 42;
-    rng = mulberry32(state.seed);
-    return state.seed;
-  },
-  fastTimers(scale = .05) {
-    state.timeScale = Math.max(.01, Number(scale) || .05);
-    return state.timeScale;
-  },
-  home: renderSplash,
-  getAudioLog: () => state.audioLog.map((entry) => ({ ...entry })),
-  clearAudioLog: () => { state.audioLog.length = 0; },
-};
+  getAudioLog: () => voice.getAudioLog(),
+  clearAudioLog: () => voice.clearAudioLog(),
+});
 
 renderSplash();

@@ -19,11 +19,6 @@ export default {
   engine: 'choose-one',
   title: 'Mystery Letter Bag',
   splashEmoji: '👜',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Reach into the mystery bag with your ears. Listen for the sound, then tap the letter.',
     nudge: 'Hmm, listen for the sound in the bag and try another letter.',

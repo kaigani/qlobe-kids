@@ -15,6 +15,12 @@
 //        [--base http://127.0.0.1:8917/games/world-music-dance/] \
 //        [--shots DIR] [--pw-module /private/tmp/pw/node_modules]
 //
+// Flag parsing, out-of-tree Playwright resolution, real-Chrome launch, and the
+// pass/fail reporter come from tools/qa/lib/driver.mjs — see tools/qa/README.md
+// for the full API and a conversion recipe. --base stays this driver's own FULL
+// game URL (not run through the lib's baseUrl(), which strips trailing slashes
+// and assumes a bare origin); --shots keeps its own hard-coded scratch default.
+//
 // If --base's origin isn't already serving, this script starts
 // `python3 -m http.server 8917` from the repo root itself (left running —
 // this mirrors the documented dev-server restart command, not a scratch
@@ -57,30 +63,24 @@
 //
 // Exit code is non-zero if any check fails.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import zlib from 'node:zlib';
+import {
+  args, launchChrome, createReporter, ensureShots, shooter, debug, audio,
+} from '../../../tools/qa/lib/driver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const GAME_DIR = path.resolve(HERE, '..');
 const ROOT = path.resolve(GAME_DIR, '..', '..');
 
-const argv = process.argv.slice(2);
-const flag = (name, dflt) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
-};
-
-const BASE = flag('base', 'http://127.0.0.1:8917/games/world-music-dance/');
-const SHOTS = flag('shots', '/private/tmp/claude-501/-Users-kaigani-Documents-PROJECTS-DEVELOPMENT-260703-QLOBE-Kids/7f196e63-72b3-4fd1-96b1-55b8ad5cc0b6/scratchpad/shots-smoke');
-const PW_MODULE = flag('pw-module', process.env.PW_MODULE || '/private/tmp/pw/node_modules');
-
-const require = createRequire(path.join(PW_MODULE, 'noop.js'));
-const { chromium } = require('playwright');
+// --base is a FULL game URL (not a bare origin), so it stays off baseUrl().
+// --shots keeps its own hard-coded scratch default rather than resolveShots().
+const BASE = args.flag('base', 'http://127.0.0.1:8917/games/world-music-dance/');
+const SHOTS = args.flag('shots', '/private/tmp/claude-501/-Users-kaigani-Documents-PROJECTS-DEVELOPMENT-260703-QLOBE-Kids/7f196e63-72b3-4fd1-96b1-55b8ad5cc0b6/scratchpad/shots-smoke');
 
 const CONFIG = JSON.parse(readFileSync(path.join(GAME_DIR, 'config.json'), 'utf8'));
 const CULTURES = Array.isArray(CONFIG.cultures) ? CONFIG.cultures : [];
@@ -91,20 +91,16 @@ const SEED = 7;
 
 // --------------------------------------------------------------- bookkeeping
 
-const results = [];
-const notes = [];
 const allTrackers = []; // every openPage() tracker across the whole run — item 10's tally
 
-function check(name, ok, detail = '') {
-  results.push({ name, ok: !!ok, detail: String(detail) });
-  console.log(`  ${ok ? 'ok  ' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`);
-  return !!ok;
-}
-function note(line) { notes.push(line); console.log(`  note  ${line}`); }
+// check()/note() come from createReporter(); style 'wide' reproduces this
+// driver's original `  ok   name` / `  FAIL  name` column widths byte-for-byte
+// (proved out against bug-hotel-observer's qa.mjs, the other 'wide' consumer).
+// The bespoke PASS/FAIL table and summary lines at the end of main() stay
+// hand-rolled — createReporter's finish() doesn't reproduce that table shape.
+const { check, note, results, notes } = createReporter({ style: 'wide' });
 
-async function shot(page, name) {
-  await page.screenshot({ path: path.join(SHOTS, `${name}.png`) });
-}
+const shot = shooter(SHOTS);
 
 // ------------------------------------------------------------- PNG pixel diff
 //
@@ -241,8 +237,8 @@ async function openPage(browser, viewport, opts = {}) {
 
 async function bootDebug(page, { seed = SEED, mute = true, fast = 0.05 } = {}) {
   await page.goto(BASE, { waitUntil: 'networkidle' });
-  await page.waitForFunction(() => !!window.QLOBE_DEBUG, null, { timeout: 20000 });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
+  await debug.waitForHook(page, 20000);
+  await debug.waitForReady(page);
   await page.evaluate(([s, m, f]) => {
     window.QLOBE_DEBUG.seed(s);
     if (m) window.QLOBE_DEBUG.mute();
@@ -250,12 +246,11 @@ async function bootDebug(page, { seed = SEED, mute = true, fast = 0.05 } = {}) {
   }, [seed, mute, fast]);
 }
 
-const call = (page, method, ...args) => page.evaluate(
-  ({ method, args }) => window.QLOBE_DEBUG[method](...args),
-  { method, args },
-);
-const getState = (page) => call(page, 'getState');
-const getTargets = (page) => call(page, 'getTargets');
+// Thin aliases over debug.call/getState/getTargets — same evaluate contract,
+// kept under the driver's existing short names since they're called ~30 times.
+const call = (page, method, ...params) => debug.call(page, method, ...params);
+const getState = (page) => debug.getState(page);
+const getTargets = (page) => debug.getTargets(page);
 
 function waitState(page, predicateSrc, arg, timeout = 8000) {
   return page.waitForFunction(predicateSrc, arg, { timeout }).then(() => true).catch(() => false);
@@ -272,7 +267,7 @@ async function bootAndGesturePass(browser) {
   check('boot: window.QLOBE_DEBUG is installed', hasDebug);
 
   let readyOk = false;
-  try { await page.evaluate(() => window.QLOBE_DEBUG.ready); readyOk = true; } catch { readyOk = false; }
+  try { await debug.waitForReady(page); readyOk = true; } catch { readyOk = false; }
   check('boot: QLOBE_DEBUG.ready resolves', readyOk);
 
   check('boot: zero pageerrors at boot', t.pageErrors.length === 0, t.pageErrors.slice(0, 3).join(' | '));
@@ -427,7 +422,7 @@ async function runCulture(page, culture) {
 
   if (id === 'india') {
     const log = await call(page, 'getAudioLog');
-    const hasClip = (log || []).some((e) => e.kind === 'clip');
+    const hasClip = audio.clips(log || []).length > 0;
     check('audio log: recorded-clip entries present after india completes', hasClip,
       JSON.stringify((log || []).slice(-10)));
   }
@@ -458,8 +453,8 @@ async function persistencePass(page) {
     beforeCount === CULTURES.length, `${beforeCount}/${CULTURES.length}`);
 
   await page.reload({ waitUntil: 'networkidle' });
-  await page.waitForFunction(() => !!window.QLOBE_DEBUG, null, { timeout: 20000 });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
+  await debug.waitForHook(page, 20000);
+  await debug.waitForReady(page);
 
   const after = await call(page, 'getCollection');
   const afterCount = Object.keys((after && after.placed) || {}).length;
@@ -528,7 +523,7 @@ async function allSixPass(page) {
     finalState.placedCount === CULTURES.length, JSON.stringify(finalState));
 
   const log = await call(page, 'getAudioLog');
-  const hasComplete = (log || []).some((e) => e.key === 'collection-complete');
+  const hasComplete = audio.heard(log || [], 'collection-complete');
   check('all-six: the collection-complete line fires on the 6th placement',
     hasComplete, JSON.stringify((log || []).map((e) => e.key)));
 
@@ -616,10 +611,10 @@ function tallyPass() {
 // -------------------------------------------------------------------- main
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
+  await ensureShots(SHOTS);
   const serverChild = await ensureServer();
 
-  const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  const browser = await launchChrome();
   let mainTracker = null;
 
   const passes = [

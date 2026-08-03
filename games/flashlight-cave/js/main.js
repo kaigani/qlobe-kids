@@ -22,6 +22,9 @@ import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { soundDebounce } from '../../../shared/js/hud.js';
+import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import * as voice from './voice.js';
 import { loadActors } from './actor.js';
 import { createCave, createTransform } from './cave.js';
@@ -45,11 +48,10 @@ let cave = null;
 let actors = {};
 let currentMode = null;
 let starting = false;
-let audioUnlocked = false;
 let greeted = false;
 let screen = 'splash';
 let timeScale = 1;
-let rng = Math.random;
+let seedRng = null;
 let splashTimers = [];
 
 /** Page-lifetime state: which one-per-session lines have been spoken. */
@@ -58,29 +60,35 @@ const session = {
   saidHintMove: false,
   touched: false,
   firstSuccess: true,
-  unlockAudio: () => unlockAudio(),
+  unlockAudio: () => unlockAll(),
 };
 
 const ready = (async () => { await voice.init(config.voice); })();
 
 // ---- audio unlock on the first gesture -------------------------------------
 
-function unlockAudio() {
-  // voice.unlock() stays armed until the clip channel has actually played, so it
-  // runs on every gesture — otherwise recorded voice can fail on iPad and fall
-  // back to Web Speech for the whole session.
-  voice.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-  if (!greeted && screen === 'splash') {
-    greeted = true;
-    voice.say('ari-welcome');
-    splashSpeak('enter');
-  }
-}
-window.addEventListener('pointerdown', unlockAudio);
+// The shared listener fans out to sfx/speech/voice-clips/audio and reopens its
+// latch whenever the page comes back to the foreground, so an iPad app-switch
+// can no longer leave the game silent for the rest of the session.
+installUnlockOnGesture({
+  onFirst: () => {
+    // User activation does not survive a page load, so the welcome usually
+    // cannot play until something is touched. Deliver it on that first touch
+    // instead of dropping it. Skipped when the child's first gesture was a
+    // mode tile — `greeted` is already true by then (see splashHTML wiring).
+    if (!greeted && screen === 'splash') {
+      greeted = true;
+      voice.say('ari-welcome');
+      splashSpeak('enter');
+    }
+  },
+});
+
+// voice.unlock() stays armed until the clip channel has actually played, so it
+// runs on every gesture rather than only while the shared latch is open —
+// otherwise a first attempt the browser refuses is never retried and recorded
+// voice falls back to Web Speech for the rest of the session.
+window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
 
 // ---- screens ----------------------------------------------------------------
 
@@ -130,7 +138,7 @@ function playHTML() {
       <div class="fc-pips"></div>
       <button class="fc-round-btn hidden" type="button" aria-label="${config.copy.playAgain}"
               style="background-image:url('${UI.play}')"></button>
-      <p class="fc-sr-only" aria-live="polite"></p>
+      <p class="visually-hidden" aria-live="polite"></p>
     </section>`;
 }
 
@@ -163,17 +171,19 @@ function showSplash() {
     onTap(btn, () => startMode(btn.dataset.mode), {
       // Marking `greeted` here is what makes the welcome skip when the child's
       // very first gesture is a mode tile.
-      feedback: (e) => { e.preventDefault(); greeted = true; unlockAudio(); sfx.tick(); },
+      feedback: (e) => { e.preventDefault(); greeted = true; unlockAll(); sfx.tick(); },
     });
   }
   hostActors();
 
-  // Only attempt a recorded greeting once the page HAS an unlocked channel —
-  // a play() before that is what slips a line into the synth voice.
-  if (audioUnlocked && !greeted) {
-    greeted = true;
-    voice.say('ari-welcome');
-    splashSpeak('enter');
+  // Try to greet immediately; if the browser blocks it (no user activation yet)
+  // the first-gesture handler above delivers the same line on the first touch.
+  if (!greeted) {
+    voice.trySay('ari-welcome').then((played) => {
+      if (!played) return;
+      greeted = true;
+      splashSpeak('enter');
+    });
   }
 
   // If the child does nothing: a paw at 15 s, one more line at 35 s. Nothing
@@ -257,7 +267,9 @@ async function startMode(modeId, { fallback = false } = {}) {
     // before it never gets past its first syllable.
     onExit: () => { showSplash(); voice.say('ari-again'); splashSpeak('celebrate'); },
   });
-  game.rng = rng;
+  // A seed set on the splash has to reach the Game this mode is about to build,
+  // not just one that already existed when seed() was called.
+  if (seedRng) game.rng = seedRng;
   game.timeScale = timeScale;
   try {
     await game.start();
@@ -307,14 +319,11 @@ function wireHud(root) {
 
   const sound = root.querySelector('.hud-sound');
   if (sound) {
-    let last = 0;
-    onTap(sound, () => {
-      const now = performance.now();
-      if (now - last < 600) return;              // debounce so rapid taps can't stack
-      last = now;
+    // soundDebounce: swallow presses inside 600ms so rapid taps can't stack.
+    onTap(sound, soundDebounce(() => {
       sfx.tick();
       game?.replayPrompt();
-    });
+    }));
   }
   // A corner tap must never also move the beam.
   for (const el of root.querySelectorAll('.hud-button')) {
@@ -339,14 +348,12 @@ const booted = (async () => {
 
 // ---- window.QLOBE_DEBUG v1 + the four beam extensions (§16) -----------------
 
-window.QLOBE_DEBUG = {
-  version: 1,
-  gameId: config.id,
-  engine: config.engine,
-  ready: booted,
-  listModes: () => config.modes.map((m) => ({ id: m.id, title: m.title })),
-  startMode: async (id) => { await startMode(id); return window.QLOBE_DEBUG.getState(); },
-  getState: () => (game && screen !== 'splash'
+/** Shared by `getState`, `startMode`'s return value and `winRound`'s — kept as
+ *  one local function instead of each reaching through `window.QLOBE_DEBUG`
+ *  (the old self-reference), which breaks if the hook is ever swapped out from
+ *  under a still-running call (e.g. a studio preview loading a new game). */
+function debugState() {
+  return game && screen !== 'splash'
     ? game.debugState()
     : {
       screen,
@@ -357,40 +364,35 @@ window.QLOBE_DEBUG = {
       reducedMotion: !!(window.matchMedia
         && window.matchMedia('(prefers-reduced-motion: reduce)').matches),
       quality: 'none',
-    }),
+    };
+}
+
+installDebug({
+  gameId: config.id,
+  engine: config.engine,
+  ready: booted,
+  listModes: () => config.modes.map((m) => ({ id: m.id, title: m.title })),
+  startMode: async (id) => { await startMode(id); return debugState(); },
+  getState: debugState,
   // `rect` is in SCREEN px so the gate can click it; `lit`/`litness` are art-space
   // truths and are the point of the whole surface — they are what let the gate
   // assert that a tap on an UNLIT correct target is not an attempt (§6.4).
   getTargets: () => (game ? game.getTargets() : []),
   tap: async (id) => (game ? game.tapById(id) : { accepted: false, reason: 'no-game' }),
-  winRound: async () => { await game?.winRound(); return window.QLOBE_DEBUG.getState(); },
-  mute: () => {
-    voice.setMuted(true);
-    speech.stop();
-    voice.stop();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    document.querySelectorAll('audio, video').forEach((el) => { el.muted = true; });
-    window.QLOBE_DEBUG.muted = true;
-  },
-  seed: (n) => {
-    let s = (n >>> 0) || 1;
-    rng = () => {
-      s ^= s << 13; s >>>= 0;
-      s ^= s >> 17;
-      s ^= s << 5; s >>>= 0;
-      return s / 4294967296;
-    };
-    window.QLOBE_DEBUG._rng = rng;
-    if (game) game.rng = rng;
-    return n;
-  },
+  winRound: async () => { await game?.winRound(); return debugState(); },
+  home: () => showSplash(),
   /** Compress every timed beat so QA does not sit through celebrations. */
   fastTimers: (scale = 0.05) => {
     timeScale = scale;
     if (game) game.timeScale = scale;
     return scale;
   },
-  home: () => showSplash(),
+  // channels the default mute() fans out to (sfx has no setMuted/mute of its
+  // own, same as before — sfx has never been part of what mute() silences).
+  voice,
+  sfx,
+  // where the seeded generator lands (mulberry32 now, not this game's xorshift)
+  onSeed: (nextRng) => { seedRng = nextRng; if (game) game.rng = nextRng; },
 
   // --- beam extensions. ART space (§4.2), so QA is resolution-independent. ---
   getBeam: () => (game ? game.getBeam() : { x: 0, y: 0, radius: 0, quality: 'none' }),
@@ -414,13 +416,10 @@ window.QLOBE_DEBUG = {
   // Handy for a resolution-independent gate; not part of the v1 contract.
   toScreen: (x, y) => (cave ? cave.transform.toScreen(x, y) : createTransform(config.art.space).toScreen(x, y)),
   tickerStarted: () => !!(cave && cave.app.ticker.started),
-};
+});
 
 // ---- iPad niceties ----------------------------------------------------------
 
-window.addEventListener('contextmenu', (e) => e.preventDefault());
-window.addEventListener('gesturestart', (e) => e.preventDefault());
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) return;
-  try { if (window.speechSynthesis) window.speechSynthesis.resume(); } catch { /* ignore */ }
-});
+// contextmenu + gesturestart; visibilitychange -> speechSynthesis.resume() is
+// wired by installUnlockOnGesture above.
+installKioskGuards();

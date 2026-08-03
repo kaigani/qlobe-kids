@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>drag-to-slot-dom.js test — drag a stone into a slot</title>
+  <!-- An empty inline icon. Without it the browser asks for /favicon.ico, 404s,
+       and puts an error in the console that makes the "zero console errors"
+       check this page exists to support a caveated claim. -->
+  <link rel="icon" href="data:," />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; overflow: hidden; background: #123a6b; color: #17517e;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      -webkit-user-select: none; user-select: none; touch-action: manipulation;
+    }
+
+    /* The board fills the viewport, so a fixed Playwright viewport makes every
+       rect in the synthetic scenarios stable. */
+    #board { position: fixed; inset: 0; display: grid;
+      grid-template-rows: 1fr auto; padding: 60px 18px 18px; gap: 18px; }
+
+    #slots { display: flex; gap: 20px; align-items: center; justify-content: center; }
+    .slot {
+      width: 150px; height: 150px; border-radius: 22px; border: 5px dashed #7fa8d6;
+      background: #ffffff18; color: #cfe3ff; display: grid; place-items: center;
+      font-size: 15px; text-align: center; padding: 6px;
+    }
+    .slot.hot { border-color: #ffd24a; background: #ffd24a33; }
+    .slot.filled { border-style: solid; border-color: #7ddc9a; background: #7ddc9a2e; }
+    #bin { border-color: #e8863a; }
+
+    #tray { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .piece {
+      width: 130px; height: 150px; border: 0; border-radius: 20px; padding: 8px;
+      background: var(--tint, #4a8b6a); color: #fff; font: inherit; font-size: 17px;
+      font-weight: 600; display: grid; place-items: center; cursor: grab;
+      box-shadow: 0 7px 0 rgba(0,0,0,.28);
+    }
+    .piece.used { opacity: .35; }
+    /* The ghost skin is the GAME's job, exactly as in story-stones — the module
+       only clones the node, adds `dragging`, and drives left/top. */
+    .piece.dragging {
+      position: fixed; z-index: 1000; pointer-events: none; opacity: .9;
+      transform: translate(-50%, -50%) rotate(-4deg); box-shadow: 0 14px 24px rgba(0,0,0,.4);
+    }
+
+    #bar {
+      position: fixed; left: 0; top: 0; right: 0; z-index: 9000;
+      display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px;
+      background: #fffef7ee; border-bottom: 3px solid #ecd9a8; align-items: center;
+    }
+    .group { display: flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 12px; background: #eef4fb; }
+    .group > strong { font-size: 11px; text-transform: uppercase; opacity: .6; letter-spacing: .04em; }
+    button.ui {
+      font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px;
+      padding: 8px 11px; min-height: 34px; background: #2f6fb0; color: #fff; cursor: pointer;
+    }
+    button.ui.on { background: #e8863a; }
+    button.ui.alt { background: #4a8b6a; }
+
+    #results {
+      position: fixed; right: 8px; bottom: 8px; z-index: 9000; width: 430px;
+      max-height: 62vh; overflow: auto; font-size: 12px; line-height: 1.5;
+      background: #000c; color: #d9ecff; padding: 9px 12px; border-radius: 12px;
+      white-space: pre-wrap; pointer-events: none;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    #results .ok { color: #8ce8a4; }
+    #results .bad { color: #ff9d9d; font-weight: 700; }
+    #results h4 { margin: 8px 0 2px; color: #ffe6b8; font-size: 12px; }
+    #log {
+      position: fixed; left: 8px; bottom: 8px; z-index: 9000; width: 330px;
+      max-height: 34vh; overflow: hidden; font-size: 12px; line-height: 1.5;
+      background: #0b2447dd; color: #cfe3ff; padding: 8px 11px; border-radius: 12px;
+      white-space: pre-wrap; pointer-events: none;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <div class="group"><strong>run</strong>
+      <button class="ui alt" id="run-all">run all scenarios</button>
+      <button class="ui" id="reset">reset board</button>
+    </div>
+    <div class="group"><strong>options</strong>
+      <button class="ui" id="opt-pad">slotPad: 0</button>
+      <button class="ui" id="opt-ghost">ghostOn: lift</button>
+      <button class="ui" id="opt-offset">grabOffset: 0</button>
+    </div>
+    <div class="group"><strong>manual</strong> <span style="font-size:12px">drag a card onto a slot</span></div>
+  </div>
+
+  <div id="board">
+    <div id="slots">
+      <div class="slot" data-slot="a">slot a</div>
+      <div class="slot" data-slot="b">slot b</div>
+      <div class="slot" data-slot="c">slot c</div>
+      <div class="slot" id="bin" data-slot="bin">bin<br>(padded)</div>
+    </div>
+    <div id="tray">
+      <button class="piece" data-piece="dragon" style="--tint:#a8453a">dragon</button>
+      <button class="piece" data-piece="owl" style="--tint:#4a8b6a">owl</button>
+      <button class="piece" data-piece="rock" style="--tint:#8a5bc4">rock</button>
+      <button class="piece" data-piece="chest" style="--tint:#c08a24">chest</button>
+    </div>
+  </div>
+
+  <div id="log">callbacks…</div>
+  <div id="results">press “run all scenarios”</div>
+
+<script type="module">
+import { createDragToSlotDom, DRAG_SLOP } from './drag-to-slot-dom.js';
+
+const $ = (sel) => document.querySelector(sel);
+const board = $('#board');
+const logEl = $('#log');
+const resultsEl = $('#results');
+
+// ---------------------------------------------------------------- test state
+/** Every module callback, in order, for the scenarios to assert against. */
+let events = [];
+const record = (name, extra = {}) => {
+  events.push({ name, ...extra });
+  logEl.textContent = events.slice(-12).map((e) => {
+    const detail = Object.entries(e).filter(([k]) => k !== 'name')
+      .map(([k, v]) => `${k}=${v}`).join(' ');
+    return detail ? `${e.name}  ${detail}` : e.name;
+  }).join('\n');
+};
+const seen = (name) => events.filter((e) => e.name === name);
+const last = (name) => seen(name).at(-1);
+
+let opts = { slotPad: 0, ghostOn: 'lift', grabOffset: 0 };
+let canStartGate = true;
+let grabGate = true;
+let drag = null;
+
+const GHOSTS = '[data-qk-drag-ghost]';
+const ghostCount = () => document.querySelectorAll(GHOSTS).length;
+const strayCount = () => document.querySelectorAll(`${GHOSTS}, .drag-clone`).length;
+
+function build() {
+  drag?.detach();
+  drag = createDragToSlotDom({
+    getPiece: (id) => board.querySelector(`[data-piece="${CSS.escape(String(id))}"]`),
+    slotPad: opts.slotPad,
+    ghostOn: opts.ghostOn,
+    grabOffset: opts.grabOffset,
+    hoverClass: 'hot',
+    canStart: () => canStartGate,
+    onGrab: (el, d) => { record('grab', { id: d.id }); return grabGate; },
+    onLift: (el, d) => record('lift', { id: d.id, ghost: ghostCount() }),
+    onMove: (el, d) => record('move', { slot: d.slot?.dataset.slot ?? 'none' }),
+    onDrop: (el, d) => {
+      record('drop', { id: d.id, slot: d.slot?.dataset.slot ?? 'none', ghost: ghostCount() });
+      if (d.slot) { d.slot.classList.add('filled'); d.slot.textContent = d.id; el.classList.add('used'); }
+    },
+    onCancel: (el, d) => record('cancel', { id: d.id, ghost: ghostCount() }),
+    onTap: (el, d) => record('tap', { id: d.id }),
+  });
+  for (const piece of board.querySelectorAll('[data-piece]')) {
+    piece.onpointerdown = (e) => { drag.begin(e, piece.dataset.piece); };
+  }
+}
+
+function resetBoard() {
+  drag?.cancel();
+  drag?.detach();
+  document.querySelectorAll(GHOSTS).forEach((n) => n.remove());
+  for (const slot of board.querySelectorAll('[data-slot]')) {
+    slot.classList.remove('filled', 'hot');
+    slot.textContent = slot.id === 'bin' ? 'bin (padded)' : `slot ${slot.dataset.slot}`;
+  }
+  for (const piece of board.querySelectorAll('[data-piece]')) piece.classList.remove('used');
+  canStartGate = true;
+  grabGate = true;
+  events = [];
+  build();
+}
+
+// ------------------------------------------------------- synthetic pointers
+let pointerSeq = 100;
+
+const centre = (el) => {
+  const r = el.getBoundingClientRect();
+  return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+};
+
+function pointer(type, target, { x, y, id, isPrimary = true }) {
+  target.dispatchEvent(new PointerEvent(type, {
+    bubbles: true, cancelable: true, composed: true,
+    pointerId: id, pointerType: 'touch', isPrimary,
+    clientX: x, clientY: y,
+  }));
+}
+
+/** A press on the piece; move/up/cancel go to window, like a real pointer stream. */
+const press = (piece, at, id, isPrimary = true) => pointer('pointerdown', piece, { ...at, id, isPrimary });
+const moveTo = (at, id) => pointer('pointermove', window, { ...at, id });
+const release = (at, id) => pointer('pointerup', window, { ...at, id });
+const abort = (at, id) => pointer('pointercancel', window, { ...at, id });
+
+/** Walk the pointer there in steps, so the slop gate sees real intermediate moves. */
+function glide(from, to, id, steps = 6) {
+  for (let i = 1; i <= steps; i += 1) {
+    moveTo({
+      x: Math.round(from.x + (to.x - from.x) * i / steps),
+      y: Math.round(from.y + (to.y - from.y) * i / steps),
+    }, id);
+  }
+}
+
+const tick = () => new Promise((r) => setTimeout(r, 0));
+
+// -------------------------------------------------------------- scenarios
+const scenarios = [];
+const scenario = (name, fn) => scenarios.push({ name, fn });
+
+const piece = (id) => board.querySelector(`[data-piece="${id}"]`);
+const slot = (id) => board.querySelector(`[data-slot="${id}"]`);
+
+scenario('slop gate rejects a press that barely moves', async (t) => {
+  const p = piece('dragon');
+  const at = centre(p);
+  const id = ++pointerSeq;
+  press(p, at, id);
+  t.is(seen('grab').length, 1, 'onGrab fired on the press');
+  // DRAG_SLOP is 10; walk 6px, which must NOT arm the drag.
+  glide(at, { x: at.x + 6, y: at.y }, id, 3);
+  t.is(ghostCount(), 0, 'no ghost below the slop gate');
+  t.is(seen('lift').length, 0, 'no onLift below the slop gate');
+  release({ x: at.x + 6, y: at.y }, id);
+  await tick();
+  t.is(seen('drop').length, 0, 'a press that never moved is NOT a drop');
+  t.is(seen('tap').length, 1, 'it is a tap');
+  t.is(drag.active, null, 'the record is released');
+});
+
+scenario('a press past the slop gate lifts a ghost', async (t) => {
+  const p = piece('owl');
+  const at = centre(p);
+  const id = ++pointerSeq;
+  press(p, at, id);
+  glide(at, { x: at.x, y: at.y - 40 }, id);
+  t.is(seen('lift').length, 1, 'onLift fired exactly once');
+  t.is(ghostCount(), 1, 'exactly one ghost is airborne');
+  t.ok(seen('move').length > 0, 'onMove fired');
+  const ghost = document.querySelector(GHOSTS);
+  t.ok(ghost.classList.contains('dragging'), 'the ghost carries the game ghostClass');
+  t.is(getComputedStyle(ghost).pointerEvents, 'none', 'the ghost never eats its own hit test');
+  t.is(ghost.getAttribute('data-target'), null, 'the ghost does not clone a data-target');
+  drag.cancel();
+  await tick();
+});
+
+scenario('drag and drop resolves the slot under the finger', async (t) => {
+  const p = piece('owl');
+  const from = centre(p);
+  const to = centre(slot('b'));
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, to, id, 10);
+  t.is(last('move').slot, 'b', 'onMove reports the hovered slot');
+  t.ok(slot('b').classList.contains('hot'), 'hoverClass painted on the slot under the finger');
+  release(to, id);
+  await tick();
+  t.is(seen('drop').length, 1, 'onDrop fired once');
+  t.is(last('drop').slot, 'b', 'onDrop resolved slot b');
+  t.is(last('drop').ghost, 0, 'the ghost is gone BEFORE the game handles the drop');
+  t.is(strayCount(), 0, 'no stray ghosts left behind');
+  t.is(drag.active, null, 'the record is released');
+  t.ok(!slot('b').classList.contains('hot'), 'hoverClass cleared on drop');
+});
+
+scenario('a drop over nothing resolves to null, not to the nearest slot', async (t) => {
+  const p = piece('rock');
+  const from = centre(p);
+  const to = { x: 12, y: Math.round(window.innerHeight / 2) };
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, to, id, 10);
+  release(to, id);
+  await tick();
+  t.is(last('drop').slot, 'none', 'slot is null with slotPad 0');
+  t.is(strayCount(), 0, 'ghost still cleaned up');
+});
+
+scenario('pointercancel is NOT a drop', async (t) => {
+  const p = piece('rock');
+  const from = centre(p);
+  const to = centre(slot('c'));
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, to, id, 10);
+  t.is(ghostCount(), 1, 'airborne before the cancel');
+  const dropsBefore = seen('drop').length;
+  // iPadOS palm rejection fires this with the palm's coordinates — which here
+  // are squarely over slot c. Committing it would place a piece the child
+  // never chose.
+  abort(to, id);
+  await tick();
+  t.is(seen('drop').length, dropsBefore, 'onDrop did NOT fire');
+  t.is(seen('cancel').length, 1, 'onCancel fired instead');
+  t.is(last('cancel').ghost, 0, 'the ghost is already gone inside onCancel');
+  t.ok(!slot('c').classList.contains('filled'), 'nothing was placed');
+  t.ok(!slot('c').classList.contains('hot'), 'hoverClass cleared');
+  t.is(drag.active, null, 'the record is released, so the next press works');
+});
+
+scenario('a mid-drag window blur cancels cleanly', async (t) => {
+  const p = piece('chest');
+  const from = centre(p);
+  const to = centre(slot('a'));
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, to, id, 10);
+  const dropsBefore = seen('drop').length;
+  window.dispatchEvent(new Event('blur'));
+  await tick();
+  t.is(seen('drop').length, dropsBefore, 'onDrop did NOT fire');
+  t.is(seen('cancel').length, 1, 'onCancel fired');
+  t.is(strayCount(), 0, 'the ghost went with it');
+  t.ok(!slot('a').classList.contains('filled'), 'nothing was placed');
+  t.is(drag.active, null, 'begin() is not wedged behind a phantom drag');
+});
+
+scenario('a mid-drag visibilitychange cancels cleanly', async (t) => {
+  const p = piece('chest');
+  const from = centre(p);
+  const to = centre(slot('a'));
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, to, id, 10);
+  // Stub the state the way an app switch leaves it.
+  const original = Object.getOwnPropertyDescriptor(Document.prototype, 'visibilityState');
+  Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+  document.dispatchEvent(new Event('visibilitychange'));
+  await tick();
+  delete document.visibilityState;
+  if (original) Object.defineProperty(Document.prototype, 'visibilityState', original);
+  t.is(seen('cancel').length, 1, 'onCancel fired');
+  t.is(strayCount(), 0, 'no ghost survived the app switch');
+  t.is(drag.active, null, 'the record is released');
+});
+
+scenario('one drag at a time', async (t) => {
+  const first = piece('dragon');
+  const second = piece('owl');
+  const from = centre(first);
+  const id = ++pointerSeq;
+  press(first, from, id);
+  glide(from, { x: from.x, y: from.y - 40 }, id);
+  const started = drag.begin(new PointerEvent('pointerdown', {
+    clientX: 10, clientY: 10, pointerId: id + 1, isPrimary: true,
+  }), 'owl');
+  t.is(started, false, 'a second begin() is refused while one is in flight');
+  t.is(ghostCount(), 1, 'and it built no second ghost');
+  t.is(seen('grab').length, 1, 'onGrab did not fire for the refused press');
+  drag.cancel();
+  await tick();
+});
+
+scenario('the second finger (isPrimary false) is rejected', async (t) => {
+  const p = piece('dragon');
+  const at = centre(p);
+  press(p, at, ++pointerSeq, /* isPrimary */ false);
+  t.is(seen('grab').length, 0, 'onGrab never ran');
+  t.is(drag.active, null, 'no drag record');
+  t.is(ghostCount(), 0, 'no ghost');
+  // And no window listener was attached, so a stray up does nothing at all.
+  release(at, pointerSeq);
+  await tick();
+  t.is(seen('drop').length, 0, 'no drop from the stray release');
+});
+
+scenario('canStart() gates the press', async (t) => {
+  canStartGate = false;
+  const p = piece('dragon');
+  const at = centre(p);
+  const started = drag.begin(new PointerEvent('pointerdown', {
+    clientX: at.x, clientY: at.y, pointerId: ++pointerSeq, isPrimary: true,
+  }), 'dragon');
+  canStartGate = true;
+  t.is(started, false, 'begin() returned false');
+  t.is(seen('grab').length, 0, 'onGrab never ran');
+  t.is(drag.active, null, 'no record was left behind');
+});
+
+scenario('onGrab returning false aborts before any listener attaches', async (t) => {
+  grabGate = false;
+  const p = piece('dragon');
+  const at = centre(p);
+  const id = ++pointerSeq;
+  press(p, at, id);
+  grabGate = true;
+  t.is(seen('grab').length, 1, 'onGrab ran');
+  t.is(drag.active, null, 'but no drag survived it');
+  glide(at, { x: at.x + 80, y: at.y }, id);
+  t.is(ghostCount(), 0, 'moves after a refused grab do nothing');
+  t.is(seen('lift').length, 0, 'no lift');
+  release({ x: at.x + 80, y: at.y }, id);
+  await tick();
+  t.is(seen('drop').length, 0, 'no drop');
+});
+
+scenario('slotPad forgives a near miss (and 0 does not)', async (t) => {
+  const bin = slot('bin');
+  const r = bin.getBoundingClientRect();
+  const justOutside = { x: Math.round(r.right + 22), y: Math.round(r.top + r.height / 2) };
+
+  // With the default pad, 22px outside the bin is a miss.
+  t.is(drag.hitTest(justOutside.x, justOutside.y), null, 'slotPad 0: a near miss is a miss');
+
+  // Rebuild with the teen-bead-builder dialect.
+  opts.slotPad = 45;
+  build();
+  t.is(drag.hitTest(justOutside.x, justOutside.y), bin, 'slotPad 45: the same point resolves to the bin');
+  t.is(drag.hitTest(Math.round(r.right + 300), justOutside.y), null, 'but not from across the screen');
+
+  const p = piece('dragon');
+  const from = centre(p);
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, justOutside, id, 10);
+  release(justOutside, id);
+  await tick();
+  t.is(last('drop').slot, 'bin', 'a padded drop reaches the game as slot=bin');
+  opts.slotPad = 0;
+  build();
+});
+
+scenario("ghostOn 'press' shows the ghost before the slop gate", async (t) => {
+  opts.ghostOn = 'press';
+  build();
+  const p = piece('owl');
+  const at = centre(p);
+  const id = ++pointerSeq;
+  press(p, at, id);
+  t.is(ghostCount(), 1, 'the ghost exists from the press');
+  t.is(seen('lift').length, 0, 'but the drag has still not lifted');
+  glide(at, { x: at.x + 4, y: at.y }, id, 2);
+  t.is(seen('lift').length, 0, 'the slop gate is unchanged by ghostOn');
+  release({ x: at.x + 4, y: at.y }, id);
+  await tick();
+  t.is(seen('drop').length, 0, 'still a tap, not a drop');
+  t.is(strayCount(), 0, 'and the press-time ghost is swept on the tap');
+  opts.ghostOn = 'lift';
+  build();
+});
+
+scenario('grabOffset keeps the grab point under the finger, capped', async (t) => {
+  opts.grabOffset = 0.35;
+  build();
+  const p = piece('rock');
+  const r = p.getBoundingClientRect();
+  // Grab the far top-left corner: an uncapped offset would be half the card.
+  const from = { x: Math.round(r.left + 6), y: Math.round(r.top + 6) };
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, { x: from.x, y: from.y - 60 }, id);
+  const capX = (r.width / 2) * 0.35;
+  const capY = (r.height / 2) * 0.35;
+  t.ok(Math.abs(drag.active.grabX - capX) < 1.5, `grabX clamped to the cap (${drag.active.grabX.toFixed(1)} ≈ ${capX.toFixed(1)})`);
+  t.ok(Math.abs(drag.active.grabY - capY) < 1.5, `grabY clamped to the cap (${drag.active.grabY.toFixed(1)} ≈ ${capY.toFixed(1)})`);
+  const ghost = document.querySelector(GHOSTS);
+  t.is(Math.round(parseFloat(ghost.style.left)), Math.round(from.x + capX), 'the ghost rides the offset');
+  drag.cancel();
+  await tick();
+  opts.grabOffset = 0;
+  build();
+});
+
+scenario('stray ghosts from a previous life are swept on the next press', async (t) => {
+  const orphan = document.createElement('span');
+  orphan.className = 'drag-clone';
+  document.body.append(orphan);
+  const orphan2 = document.createElement('span');
+  orphan2.setAttribute('data-qk-drag-ghost', '');
+  document.body.append(orphan2);
+  t.is(strayCount(), 2, 'two orphans planted');
+  const p = piece('dragon');
+  const at = centre(p);
+  const id = ++pointerSeq;
+  press(p, at, id);
+  t.is(strayCount(), 0, 'both swept by begin()');
+  release(at, id);
+  await tick();
+});
+
+scenario('detach() mid-drag releases everything', async (t) => {
+  const p = piece('chest');
+  const from = centre(p);
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, { x: from.x, y: from.y - 50 }, id);
+  t.is(ghostCount(), 1, 'airborne');
+  drag.detach();
+  t.is(drag.active, null, 'the record is dropped');
+  t.is(strayCount(), 0, 'the ghost is removed');
+  // The stream is no longer listened to, so a late up is inert.
+  release({ x: from.x, y: from.y - 50 }, id);
+  await tick();
+  t.is(seen('drop').length, 0, 'no drop from the orphaned pointer stream');
+  // …and the controller still works afterwards.
+  build();
+  const at = centre(piece('dragon'));
+  const id2 = ++pointerSeq;
+  press(piece('dragon'), at, id2);
+  t.ok(!!drag.active, 'begin() is not wedged after a detach');
+  drag.cancel();
+  await tick();
+});
+
+scenario('a foreign pointerId cannot steer or end the drag', async (t) => {
+  const p = piece('owl');
+  const from = centre(p);
+  const id = ++pointerSeq;
+  press(p, from, id);
+  glide(from, { x: from.x, y: from.y - 50 }, id);
+  const moves = seen('move').length;
+  moveTo({ x: 5, y: 5 }, id + 77);
+  t.is(seen('move').length, moves, 'a second finger cannot drag the piece');
+  release({ x: 5, y: 5 }, id + 77);
+  await tick();
+  t.is(seen('drop').length, 0, "and cannot drop it either");
+  t.ok(!!drag.active, 'the real drag is still in flight');
+  drag.cancel();
+  await tick();
+});
+
+// ------------------------------------------------------------------ runner
+async function runAll() {
+  const report = [];
+  let pass = 0;
+  let fail = 0;
+  for (const { name, fn } of scenarios) {
+    resetBoard();
+    const lines = [];
+    const t = {
+      ok(cond, message) {
+        if (cond) { pass += 1; lines.push(['ok', message]); }
+        else { fail += 1; lines.push(['bad', message]); }
+      },
+      is(actual, expected, message) {
+        t.ok(Object.is(actual, expected), `${message}  [${String(actual)} === ${String(expected)}]`);
+      },
+    };
+    try {
+      await fn(t);
+    } catch (err) {
+      fail += 1;
+      lines.push(['bad', `THREW: ${err && err.message}`]);
+    }
+    report.push({ name, lines });
+  }
+  resetBoard();
+
+  resultsEl.innerHTML = `<h4>${fail === 0 ? '<span class="ok">ALL GREEN</span>' : '<span class="bad">FAILURES</span>'} — ${pass} passed, ${fail} failed (DRAG_SLOP=${DRAG_SLOP})</h4>`
+    + report.map(({ name, lines }) => {
+      const bad = lines.some(([kind]) => kind === 'bad');
+      return `<h4>${bad ? '✗' : '✓'} ${name}</h4>`
+        + lines.map(([kind, message]) => `<span class="${kind}">  ${kind === 'ok' ? '✓' : '✗'} ${message}</span>`).join('\n');
+    }).join('\n');
+  resultsEl.scrollTop = 0;
+
+  const summary = { pass, fail, green: fail === 0, slop: DRAG_SLOP, scenarios: report.map((r) => ({
+    name: r.name, failures: r.lines.filter(([k]) => k === 'bad').map(([, m]) => m),
+  })) };
+  window.__DRAGTEST = summary;
+  return summary;
+}
+
+// ------------------------------------------------------------------- wiring
+$('#run-all').onclick = runAll;
+$('#reset').onclick = resetBoard;
+$('#opt-pad').onclick = (e) => {
+  opts.slotPad = opts.slotPad ? 0 : 45;
+  e.target.textContent = `slotPad: ${opts.slotPad}`;
+  e.target.classList.toggle('on', !!opts.slotPad);
+  build();
+};
+$('#opt-ghost').onclick = (e) => {
+  opts.ghostOn = opts.ghostOn === 'lift' ? 'press' : 'lift';
+  e.target.textContent = `ghostOn: ${opts.ghostOn}`;
+  e.target.classList.toggle('on', opts.ghostOn === 'press');
+  build();
+};
+$('#opt-offset').onclick = (e) => {
+  opts.grabOffset = opts.grabOffset ? 0 : 0.35;
+  e.target.textContent = `grabOffset: ${opts.grabOffset}`;
+  e.target.classList.toggle('on', !!opts.grabOffset);
+  build();
+};
+
+build();
+window.__RUN_DRAG_TESTS = runAll;
+</script>
+</body>
+</html>

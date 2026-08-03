@@ -9,6 +9,10 @@
 //
 // This is the PRIMARY voice channel. SFX (sfx.js, WebAudio) is a separate layer
 // and keeps firing alongside these clips.
+//
+// By default it plays the SHARED library at shared/assets/audio/. A game with
+// its own recorded pack calls configure({ manifestUrl }) at module scope before
+// awaiting `ready`, instead of forking this file.
 
 import * as speech from './speech.js';
 
@@ -21,6 +25,11 @@ const AUDIO_BASE = new URL('../assets/audio/', import.meta.url).href;
 /** @type {Record<string, Record<string, {file:string, dur:number}>>} */
 let manifest = null;
 let manifestOk = false;
+
+// Where clips are actually loaded from. Starts at the shared library and only
+// moves if a game calls configure() — see below.
+let activeManifestUrl = MANIFEST_URL;
+let activeBase = AUDIO_BASE;
 
 // Lazy HTMLAudioElement cache, keyed by "category/key".
 const elCache = new Map();
@@ -37,26 +46,87 @@ let playToken = 0;
 // in-flight playSeq(), which checks it between items and bails silently.
 let seqToken = 0;
 
+// The in-flight (or settled) manifest load, and a generation counter so a load
+// superseded by configure() can't write its result over the newer one.
+let loadPromise = null;
+let generation = 0;
+
+function startLoad(url, base) {
+  const gen = ++generation;
+  activeManifestUrl = url;
+  activeBase = base;
+  elCache.clear(); // elements built against the old base are now wrong
+  loadPromise = (async () => {
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('manifest ' + res.status);
+      const data = await res.json();
+      if (gen !== generation) return; // superseded by a later configure()
+      if (data && typeof data === 'object') {
+        manifest = data;
+        manifestOk = true;
+      }
+    } catch {
+      if (gen !== generation) return;
+      manifest = null;
+      manifestOk = false;
+    }
+  })();
+  return loadPromise;
+}
+
+// Kick the shared-library load immediately, exactly as this module always has:
+// a game that never awaits `ready` still finds the manifest warm by the time it
+// plays anything.
+startLoad(MANIFEST_URL, AUDIO_BASE);
+
 /**
  * Fetch the manifest once. Resolves (never rejects) so callers can `await ready`
  * without guarding — a missing/invalid manifest simply leaves us in
  * fallback-only mode where every play() delegates to speech.js.
+ *
+ * Resolves only once the LATEST load settles, so a configure() issued before
+ * (or while) `ready` is awaited is honoured rather than raced: the loop below
+ * re-awaits whenever configure() swapped the load out from under it.
  * @type {Promise<void>}
  */
 export const ready = (async () => {
-  try {
-    const res = await fetch(MANIFEST_URL, { cache: 'no-cache' });
-    if (!res.ok) throw new Error('manifest ' + res.status);
-    const data = await res.json();
-    if (data && typeof data === 'object') {
-      manifest = data;
-      manifestOk = true;
-    }
-  } catch {
-    manifest = null;
-    manifestOk = false;
-  }
+  let awaited;
+  do {
+    awaited = loadPromise;
+    await awaited;
+  } while (awaited !== loadPromise);
 })();
+
+/**
+ * Point this module at a game-local clip manifest instead of the shared library.
+ *
+ * Exists to kill the per-game `voice.js` forks: several games copied audio.js
+ * wholesale for no reason other than a different manifest path. Call it once, at
+ * module scope, BEFORE awaiting `ready`:
+ *
+ *   audio.configure({ manifestUrl: './assets/audio/manifest.json' });
+ *   await audio.ready;
+ *
+ * `manifestUrl` is resolved against the DOCUMENT (it is the game's own path, and
+ * the module-URL rule applies to shared code reaching shared assets, not to a
+ * caller naming its own file). `base` defaults to the manifest's own directory,
+ * which is where clip `file` paths are relative to; pass it only when the two
+ * genuinely differ. Calling with no arguments, or with the same manifest twice,
+ * changes nothing.
+ *
+ * @param {{manifestUrl?: string, base?: string}} [opts]
+ */
+export function configure({ manifestUrl, base } = {}) {
+  if (manifestUrl == null && base == null) return;
+  const docBase = typeof document !== 'undefined' ? document.baseURI : activeManifestUrl;
+  const url = manifestUrl != null ? new URL(manifestUrl, docBase).href : activeManifestUrl;
+  const resolvedBase = base != null
+    ? new URL(base, docBase).href
+    : (manifestUrl != null ? url.slice(0, url.lastIndexOf('/') + 1) : activeBase);
+  if (url === activeManifestUrl && resolvedBase === activeBase) return;
+  startLoad(url, resolvedBase);
+}
 
 /** Cache-bust suffix from the manifest version, so clip URLs change on each
  *  audio release (the manifest itself is fetched no-cache). */
@@ -75,6 +145,16 @@ function lookup(category, key) {
   return entry;
 }
 
+// A manifest entry's `file` is normally relative to the manifest's own folder.
+// A game-local manifest (see configure()) may instead point an entry at the
+// SHARED library with a path that escapes its folder or a full URL — pass those
+// through unchanged so shared clips can be reused, not re-copied. Matches
+// voice-clips.js `clipUrl`. No entry in the shared manifest takes this branch,
+// so the default path is unchanged.
+function clipUrl(file) {
+  return /^(?:https?:|\/|\.\.\/)/.test(file) ? file : activeBase + file;
+}
+
 /** Get (or lazily create) the cached HTMLAudioElement for a clip. */
 function getEl(category, key) {
   const ck = category + '/' + key;
@@ -82,7 +162,7 @@ function getEl(category, key) {
   if (el) return el;
   const entry = lookup(category, key);
   if (!entry) return null;
-  el = new Audio(AUDIO_BASE + entry.file + verSuffix());
+  el = new Audio(clipUrl(entry.file) + verSuffix());
   el.preload = 'auto';
   elCache.set(ck, el);
   return el;

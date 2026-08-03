@@ -14,11 +14,6 @@ export default {
     world: 'story-screen-stage',
     background: './assets/bg.jpg',
   },
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Welcome to the tiny manners theater. Listen to the scene, then tap the kind choice.',
     nudge: 'Hmm, how would THAT feel? Listen again and choose the kind way.',

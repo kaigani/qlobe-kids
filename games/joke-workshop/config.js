@@ -27,11 +27,6 @@ export default {
   engine: 'choose-one',
   title: 'Joke Workshop',
   splashEmoji: '🤡',
-  copy: {
-    home: 'Home',
-    replay: 'Hear it again',
-    playAgain: 'Play Again',
-  },
   voice: {
     intro: 'Welcome to Joke Workshop! Listen to the joke setup, then tap the picture punchline.',
     nudge: "Hmm, that's not it - but it IS silly! Listen again.",

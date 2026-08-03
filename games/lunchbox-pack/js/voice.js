@@ -57,3 +57,10 @@ export const say = clips.say;
 export const stop = clips.stop;
 export const unlock = clips.unlock;
 export const onClip = clips.onClip;
+
+// Re-exported so window.QLOBE_DEBUG's default mute() and getAudioLog() extra
+// (see main.js) can fan out to this game's voice channel.
+export const setMuted = clips.setMuted;
+export const isMuted = clips.isMuted;
+export const getAudioLog = clips.getAudioLog;
+export const clearAudioLog = clips.clearAudioLog;

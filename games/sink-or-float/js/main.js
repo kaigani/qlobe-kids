@@ -10,7 +10,7 @@
 //
 // Two rules this file exists to keep:
 //   1. Nothing is ever spoken before the first real gesture. `intro` is queued
-//      at boot and only released by unlockAudio().
+//      at boot and only released by installUnlockOnGesture's onFirst callback.
 //   2. A missed prediction is not an error. Same sparkle, same energy, warm
 //      "surprise" framing — the truth is what gets celebrated.
 
@@ -19,6 +19,12 @@ import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { shuffle } from '../../../shared/js/rng.js';
+import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { createNarrator } from '../../../shared/js/narrator.js';
+import { createNudger } from '../../../shared/js/idle-nudge.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createLab } from './lab.js';
 import * as art from './art.js';
 
@@ -29,7 +35,10 @@ art.useRealArt(REAL_ART);
 document.body.classList.toggle('real-art', REAL_ART);
 
 const mount = document.getElementById('game');
-const announcer = document.getElementById('announcer');
+// createNarrator makes its own <p class="visually-hidden" aria-live="polite">
+// announcer (appended to document.body), so the hand-rolled #announcer node
+// that used to live in index.html is gone — narrator.announcer replaces it.
+const narrator = createNarrator();
 const LINES = config.voice.lines || {};
 const OBJECTS = config.objects || [];
 const MODES = config.modes || [];
@@ -79,14 +88,24 @@ let current = null;      // the object under test
 let currentItem = null;  // its lab handle once dropped
 let rng = mulberry32(state.seed);
 let disposers = [];
-let idleTimer = 0;
-let idleUsed = false;
-let audioUnlocked = false;
-let pendingIntro = true;
 let drag = null;
 let lab = null;
 let labReady = null;
 let settleWaiter = null;
+
+// One-shot idle re-prompt (docs/shared-platform-refactor.md's example is this
+// exact ladder): a single nudge after IDLE_MS of quiet, then silence until the
+// next scheduleIdle() call rearms it. onNudge stops itself after firing so a
+// child who stays quiet longer than that is never nagged a second time.
+const nudger = createNudger({
+  first: IDLE_MS,
+  repeat: IDLE_MS,
+  onNudge: () => {
+    if (state.screen !== 'play' || !state.awaitingInput) return;
+    repeatPrompt();
+    nudger.stop();
+  },
+});
 
 // The Pixi host outlives every screen. Parked offscreen (not display:none —
 // a zero-sized host makes Pixi resize the renderer to nothing).
@@ -130,34 +149,26 @@ const ready = (async () => {
 
 // ------------------------------------------------------------------- audio
 
-function unlockAudio(event) {
-  voice.unlock();
-  if (!audioUnlocked) {
-    audioUnlocked = true;
-    sfx.unlock();
-    speech.unlock();
-  }
-  if (!pendingIntro || state.screen !== 'splash') return;
-  // Don't talk over the tap that is already leaving the splash.
-  if (event && event.target && event.target.closest && event.target.closest('.mode-card, .home-button')) {
-    pendingIntro = false;
-    return;
-  }
-  pendingIntro = false;
-  say('intro');
-}
-
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+// One window-level pointerdown listener does the whole fan-out (sfx + speech +
+// voice-clips + audio, each try/caught) and — the iPadOS fix — the unlock latch
+// REOPENS on visibilitychange/pageshow, so a child coming back from another app
+// still gets working audio on the next touch instead of a silent session.
+// `onFirst` is the deferred "intro" greeting: fires once, ever, after the
+// unlock fan-out has already run for that same gesture.
+installUnlockOnGesture({
+  onFirst: (event) => {
+    if (state.screen !== 'splash') return;
+    // Don't talk over the tap that is already leaving the splash.
+    if (event && event.target && event.target.closest && event.target.closest('.mode-card, .home-button')) return;
+    say('intro');
+  },
+});
+installKioskGuards();
 window.addEventListener('blur', cancelDrag);
 window.addEventListener('pointercancel', onPointerCancel, { passive: true });
 
 function say(key, text) {
-  const line = text || LINES[key] || '';
-  announcer.textContent = line;
-  if (state.muted || !line) return Promise.resolve(false);
-  return voice.say(key, line);
+  return narrator.say(key, text || LINES[key] || '');
 }
 
 function playSfx(name) {
@@ -167,8 +178,14 @@ function playSfx(name) {
 
 function feedback(event) {
   if (event && event.preventDefault) event.preventDefault();
-  if (event && event.stopPropagation) event.stopPropagation();
-  unlockAudio(event);
+  // Unlock BEFORE the tick, exactly as the pre-migration feedback() did. The
+  // window-level installUnlockOnGesture listener runs on the bubble phase —
+  // i.e. after this handler — so relying on it alone would leave the first
+  // tick of a session (and the first after an iPadOS app-switch, when the
+  // audio context comes back 'interrupted') playing into a locked channel.
+  // The event is deliberately NOT stopPropagation'd any more, so that window
+  // listener still gets it and still owns the latch and the deferred intro.
+  unlockAll();
   playSfx('tick');
 }
 
@@ -179,11 +196,9 @@ function delay(ms) {
 // ------------------------------------------------------------------ screens
 
 function clearScreen() {
-  clearTimeout(idleTimer);
-  idleTimer = 0;
-  idleUsed = false;
+  nudger.stop();
   cancelPops();
-  voice.stop();
+  narrator.stop();
   cancelDrag();
   // Never leave a drop awaiting a settle that can no longer happen — the
   // awaiting call checks `state.screen` and bails, but only once it resumes.
@@ -477,7 +492,6 @@ async function nextObject() {
   state.guess = null;
   state.step = 'name';
   state.awaitingInput = false;
-  idleUsed = false;
   if (lab) lab.clear();
 
   const slot = mount.querySelector('.focus-slot');
@@ -506,7 +520,6 @@ async function nextObject() {
 function askPrediction() {
   state.step = 'predict';
   state.awaitingInput = true;
-  idleUsed = false;
   setBadgesVisible(true);
   speakPrompt();
   scheduleIdle();
@@ -639,7 +652,7 @@ async function predict(guess) {
   // The question has been answered — no pop may land on a badge the child has
   // already chosen (it would read as the game correcting them).
   cancelPops();
-  voice.stop();
+  narrator.stop();
   playSfx('pop');
   const chosen = mount.querySelector(`.badge[data-guess="${guess}"]`);
   if (chosen) chosen.classList.add('is-chosen');
@@ -648,7 +661,6 @@ async function predict(guess) {
   setBadgesVisible(false);
   state.step = 'drop';
   state.awaitingInput = true;
-  idleUsed = false;
   const chip = mount.querySelector('.focus-chip');
   if (chip) chip.classList.add('is-live');
   say('drop-cue');
@@ -670,7 +682,7 @@ async function dropCurrent(clientX, clientY) {
   state.inputLocked = true;
   state.awaitingInput = false;
   state.step = 'falling';
-  clearTimeout(idleTimer);
+  nudger.stop();
   const slot = mount.querySelector('.focus-slot');
   const chip = slot ? slot.querySelector('.obj-chip') : null;
   let point = { x: clientX, y: clientY };
@@ -837,7 +849,6 @@ function onChipDown(event) {
   if (!obj) return;
   if (source.classList.contains('is-static')) return;
   event.preventDefault();
-  unlockAudio(event);
   sweepGhosts();
   const rect = source.getBoundingClientRect();
   // Every chip is draggable, so it carries `touch-action: none` — which also
@@ -872,7 +883,6 @@ function onChipDown(event) {
 function onCanvasDown(event) {
   if (drag || event.isPrimary === false) return;
   event.preventDefault();
-  unlockAudio(event);
   const item = lab ? lab.itemAt(event.clientX, event.clientY) : null;
   if (item && mode && mode.kind === 'sandbox') {
     sweepGhosts();
@@ -1064,13 +1074,8 @@ function repeatPrompt() {
 }
 
 function scheduleIdle() {
-  clearTimeout(idleTimer);
-  if (state.fast || state.screen !== 'play') return;
-  idleTimer = setTimeout(() => {
-    if (idleUsed || state.screen !== 'play' || !state.awaitingInput) return;
-    idleUsed = true;   // one re-prompt per step, then we leave the child alone
-    repeatPrompt();
-  }, IDLE_MS);
+  if (state.fast || state.screen !== 'play') { nudger.stop(); return; }
+  nudger.arm();
 }
 
 // ---------------------------------------------------------------- end screen
@@ -1117,7 +1122,9 @@ async function showEnd() {
   if (again) disposers.push(onTap(again, () => startMode(finished.id), { feedback }));
 
   playSfx('tada');
-  if (!reducedMotion() && !state.fast) burstConfetti();
+  // burstConfetti() is a no-op under prefers-reduced-motion on its own, so the
+  // only local gate left is the QA fast-mode skip.
+  if (!state.fast) burstConfetti({ host: mount.querySelector('.end-card'), count: 22, palette: CONFETTI });
   await say(finished.cheerLine);
   if (state.screen !== 'end') return;
   const recap = recapText();
@@ -1128,25 +1135,13 @@ async function showEnd() {
 
 // Confetti in the game's own paintbox. A hue wheel gives you neon magentas and
 // electric limes, which is a different game landing on top of this one — these
-// are the watercolours the plates are actually painted in.
+// are the watercolours the plates are actually painted in. Passed through to
+// shared/js/celebrate.js's burstConfetti() as `palette:` — its own QK_PALETTE
+// is a different game's paintbox, not this one's.
 const CONFETTI = [
   '#7fbcd2', '#4f95b8', '#a9cfd0', '#8fb06a',
   '#6f9f5c', '#e8956f', '#d9c16a', '#c6e0e6',
 ];
-
-function burstConfetti() {
-  const host = mount.querySelector('.end-card');
-  if (!host) return;
-  for (let i = 0; i < 22; i += 1) {
-    const bit = document.createElement('span');
-    bit.className = 'confetti';
-    bit.style.setProperty('--x', `${6 + (i * 37) % 88}%`);
-    bit.style.setProperty('--delay', `${(i % 7) * 0.08}s`);
-    bit.style.setProperty('--tint', CONFETTI[i % CONFETTI.length]);
-    host.appendChild(bit);
-    setTimeout(() => bit.remove(), 2400);
-  }
-}
 
 // -------------------------------------------------------------- QLOBE_DEBUG
 
@@ -1227,8 +1222,34 @@ async function winRound() {
   return state.screen === 'end';
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+// installDebug (shared/js/debug-harness.js) owns the version/timers/reserved-key
+// bookkeeping; everything below is a declared extension or an explicit override
+// of one of its optional defaults.
+//
+// getTargets is passed through as this game's own `targetFor`-based lookup
+// rather than the module's default `collectTargets()`: the default reads every
+// `[data-target]` element present regardless of game state, but this game's
+// contract is a CURATED, ROLE-ANNOTATED set of the currently-legal moves (e.g.
+// only guess-sink/guess-float during the predict step, each tagged
+// correct/wrong against the object's real truth) — collectTargets has no way
+// to know which guess the water will agree with, and returning every
+// `[data-target]` node on the play screen (HUD back/sound, the journal tab,
+// the focus chip, the whole guess-row container, …) would both change the
+// target list's shape and break `seeded run targets` parity.
+//
+// mute/seed/fastTimers are also passed through rather than defaulted:
+//   - mute() here always forces muted=true (there is no in-game unmute UI —
+//     this is a QA-only lever) and must keep syncing the local `state.muted`
+//     flag that playSfx() reads directly; the default's channel fan-out has no
+//     way to reach that.
+//   - seed()/setSeed() already reshuffle for real (rng = mulberry32(seed);
+//     lastRoundKey reset) and return the same numeric value setSeed always
+//     did; the default's onSeed hand-off isn't needed on top of that.
+//   - fastTimers() drives this game's own `state.fast` boolean, which many
+//     functions (delay(), waitForSettle(), scheduleIdle(), wiggle()) already
+//     check directly — a working timeScale of its own, per the migration's
+//     "pass your own fastTimers" allowance.
+installDebug({
   gameId: config.id,
   engine: 'custom-water-lab',
   ready,
@@ -1251,10 +1272,17 @@ window.QLOBE_DEBUG = {
     dragging: !!drag,
     awaitingInput: state.awaitingInput && !state.inputLocked,
   }),
+  getTargets,
+  tap: debugTap,
+  winRound,
+  mute: muteAll,
+  seed: setSeed,
+  fastTimers: (on = true) => { state.fast = !!on; return state.fast; },
+  home: () => { showSplash(); return true; },
+  // ---- declared extensions (not in the v1 contract; passed through as-is) --
   getTarget: () => (current
     ? { id: current.id, name: current.name, density: current.density, truth: current.truth, guess: state.guess, step: state.step }
     : null),
-  getTargets,
   // What this run was dealt, so QA can assert the 3-and-3 balance and the shelf
   // size without scraping the DOM.
   getRound: () => ({
@@ -1275,28 +1303,15 @@ window.QLOBE_DEBUG = {
   // the clause clips have landed.
   forcePromptParts: (on) => { partsForced = on === null ? null : !!on; return promptPartsReady(); },
   sayPrompt: () => speakPrompt(),
-  tap: debugTap,
   predict,
   drop: (x, y) => dropCurrent(x, y),
   settleNow: () => { if (lab) lab.settleNow(); if (settleWaiter) settleWaiter.resolve(); return true; },
-  winRound,
   // Re-seeding also forgets the previous round's set — otherwise the
   // don't-repeat-yourself rule would make the FIRST draw after a fresh seed
   // depend on what the session had already dealt, and QA could not reproduce it.
   setSeed: setSeed,
-  seed: setSeed,
-  mute: () => {
-    state.muted = true;
-    voice.stop();
-    speech.stop();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    document.querySelectorAll('audio, video').forEach((el) => { el.muted = true; });
-    return true;
-  },
-  fastTimers: (on = true) => { state.fast = !!on; return state.fast; },
   water: () => (lab ? lab.state() : null),
-  home: () => { showSplash(); return true; },
-};
+});
 
 // ------------------------------------------------------------------ helpers
 
@@ -1304,13 +1319,13 @@ function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
-function shuffle(values, random) {
-  const result = values.slice();
-  for (let index = result.length - 1; index > 0; index -= 1) {
-    const next = Math.floor(random() * (index + 1));
-    [result[index], result[next]] = [result[next], result[index]];
-  }
-  return result;
+function muteAll() {
+  state.muted = true;
+  narrator.setMuted(true);
+  speech.stop();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  document.querySelectorAll('audio, video').forEach((el) => { el.muted = true; });
+  return true;
 }
 
 function setSeed(n) {

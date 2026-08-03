@@ -8,16 +8,17 @@
 
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { soundDebounce } from '../../../shared/js/hud.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import * as voice from './voice.js';
-import { loadActors } from './actor.js';
-import { Game } from './game.js';
-import { initConfetti, clearConfetti, burst } from './confetti.js';
+import { loadPoseActors } from '../../../shared/js/stage/pose-sprite-dom.js';
+import { Game, CONFETTI_COLORS } from './game.js';
 import { blessMedia } from './stage.js';
 
 const mount = document.getElementById('game');
-initConfetti(document.getElementById('confetti-canvas'));
 
 const UI = {
   home: new URL('../../../shared/assets/ui/btn-home.png', import.meta.url).href,
@@ -30,9 +31,9 @@ let game = null;
 let actors = {};
 let currentMode = null;
 let starting = false;
-let audioUnlocked = false;
 let greeted = false;
 let screen = 'splash';
+let endBurst = null;
 
 const ready = (async () => {
   await voice.init(config.voice);
@@ -40,29 +41,31 @@ const ready = (async () => {
 
 // ---- audio + video unlock on the first gesture -----------------------------
 
-function unlockAudio() {
-  // voice.unlock() stays armed until the clip channel has actually played, so it
-  // runs on every gesture — otherwise recorded voice can fail on iPad and fall
-  // back to Web Speech for the whole session.
-  voice.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-  // Once only, and only for a video that is NOT already running — see blessMedia.
-  // A muted loop autoplays unaided; this just covers a browser that blocked it.
-  for (const v of document.querySelectorAll('video')) blessMedia(v);
-  // User activation does not survive a page load, so the welcome usually cannot
-  // play until something is touched. Deliver it on that first touch instead of
-  // dropping it — a child who lands on the splash always gets greeted.
-  if (!greeted && screen === 'splash') {
-    greeted = true;
-    voice.say('cap-welcome');
-    actors.captain?.show('enter');
-    setTimeout(() => actors.captain?.hide(), 4200);
-  }
-}
-window.addEventListener('pointerdown', unlockAudio);
+// The shared listener fans out to sfx/speech/voice-clips/audio and reopens its
+// latch whenever the page comes back to the foreground, so an iPad app-switch
+// can no longer leave the game silent for the rest of the session.
+installUnlockOnGesture({
+  onFirst: () => {
+    // Once only, and only for a video that is NOT already running — see blessMedia.
+    // A muted loop autoplays unaided; this just covers a browser that blocked it.
+    for (const v of document.querySelectorAll('video')) blessMedia(v);
+    // User activation does not survive a page load, so the welcome usually cannot
+    // play until something is touched. Deliver it on that first touch instead of
+    // dropping it — a child who lands on the splash always gets greeted.
+    if (!greeted && screen === 'splash') {
+      greeted = true;
+      voice.say('cap-welcome');
+      actors.captain?.show('enter');
+      setTimeout(() => actors.captain?.hide(), 4200);
+    }
+  },
+});
+
+// voice.unlock() stays armed until the clip channel has actually PLAYED, so it
+// runs on every gesture rather than only while the shared latch is open —
+// otherwise a first attempt the browser refuses is never retried and recorded
+// voice falls back to Web Speech for the rest of the session.
+window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
 
 // ---- screens ---------------------------------------------------------------
 
@@ -128,6 +131,11 @@ function teardownGame() {
   if (game) { game.destroy(); game = null; }
 }
 
+/** Take down the end-screen burst (the in-round one belongs to the Game). */
+function clearConfetti() {
+  if (endBurst) { endBurst(); endBurst = null; }
+}
+
 function showSplash() {
   teardownGame();
   starting = false;
@@ -137,12 +145,12 @@ function showSplash() {
   mount.innerHTML = splashHTML();
   for (const btn of mount.querySelectorAll('.ctc-mode')) {
     onTap(btn, () => startMode(btn.dataset.mode), {
-      feedback: (e) => { e.preventDefault(); unlockAudio(); sfx.tick(); },
+      feedback: (e) => { e.preventDefault(); sfx.tick(); },
     });
   }
   hostActors();
   // Try to greet immediately; if the browser blocks it (no user activation yet)
-  // unlockAudio() delivers the same line on the first touch.
+  // the first-gesture handler above delivers the same line on the first touch.
   voice.trySay('cap-welcome').then((played) => {
     if (!played) return;
     greeted = true;
@@ -172,6 +180,9 @@ async function startMode(modeId) {
     actors,
     onFinish: () => showEnd(),
   });
+  // A seed set on the splash has to reach the Game this mode is about to build,
+  // not just one that already existed when seed() was called.
+  if (seedRng) game.rng = seedRng;
   // try/finally: if start() ever throws, `starting` must not latch on and lock
   // the child out of every mode for the rest of the session.
   try {
@@ -193,7 +204,8 @@ function showEnd() {
   onTap(again, () => { sfx.tick(); showSplash(); },
     { feedback: (e) => { e.preventDefault(); sfx.tick(); } });
   sfx.tada();
-  burst(window.innerWidth / 2, window.innerHeight * 0.42, 150);
+  clearConfetti();
+  endBurst = burstConfetti({ host: mount, count: 150, palette: CONFETTI_COLORS });
   actors.captain?.show('celebrate');
   voice.say('cap-end');
 }
@@ -223,14 +235,11 @@ function wireHud(root) {
 
   const sound = root.querySelector('.hud-sound');
   if (sound) {
-    let last = 0;
-    onTap(sound, () => {
-      const now = performance.now();
-      if (now - last < 600) return;   // debounce so rapid taps can't stack
-      last = now;
+    // soundDebounce: swallow presses inside 600ms so rapid taps can't stack.
+    onTap(sound, soundDebounce(() => {
       sfx.tick();
       game?.replayPrompt();
-    });
+    }));
   }
   // A corner tap must never also reach the play field.
   for (const el of root.querySelectorAll('.hud-button')) {
@@ -245,15 +254,22 @@ const booted = (async () => {
   const host = document.createElement('div');
   host.className = 'ctc-actor-preload';
   document.body.appendChild(host);
-  actors = await loadActors(host, config.actors);
+  // `ctc-actor` is this game's own skin (css/style.css owns the edge slide-in,
+  // the foot line and the per-side transforms); the shared module owns the pack
+  // format and the paper-pop. `side` and `scale` come from each config entry.
+  actors = await loadPoseActors(host, config.actors, { className: 'ctc-actor' });
   host.remove();
   showSplash();
 })();
 
 // ---- window.QLOBE_DEBUG v1 (review automation depends on this) -------------
 
-window.QLOBE_DEBUG = {
-  version: 1,
+// `seedRng` outlives any one Game: seed(42) is normally called BEFORE
+// startMode(), and the generator has to survive into the instance that mode
+// creates or the run is not reproducible after all.
+let seedRng = null;
+
+installDebug({
   gameId: config.id,
   engine: config.engine,
   ready: booted,
@@ -269,36 +285,18 @@ window.QLOBE_DEBUG = {
     return game.attempt(id);
   },
   winRound: async () => { await game?.winRound(); return game?.debugState(); },
-  mute: () => {
-    voice.setMuted(true);
-    speech.stop();
-    voice.stop();
-    window.speechSynthesis && window.speechSynthesis.cancel();
-    document.querySelectorAll('audio, video').forEach((el) => { el.muted = true; });
-    window.QLOBE_DEBUG.muted = true;
-  },
-  seed: (n) => {
-    let s = n >>> 0 || 1;
-    const rng = () => {
-      s ^= s << 13; s >>>= 0;
-      s ^= s >> 17;
-      s ^= s << 5; s >>>= 0;
-      return s / 4294967296;
-    };
-    window.QLOBE_DEBUG._rng = rng;
-    if (game) game.rng = rng;
-  },
+  home: () => showSplash(),
   /** Compress every timed beat so QA does not sit through celebrations. */
   fastTimers: (scale = 0.05) => { if (game) game.timeScale = scale; return scale; },
-  home: () => showSplash(),
-};
+  // channels the default mute() fans out to
+  voice,
+  sfx,
+  // where the seeded generator lands (mulberry32 now, not this game's xorshift)
+  onSeed: (rng) => { seedRng = rng; if (game) game.rng = rng; },
+});
 
 // ---- iPad niceties ---------------------------------------------------------
 
-window.addEventListener('contextmenu', (e) => e.preventDefault());
-window.addEventListener('gesturestart', (e) => e.preventDefault());
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    try { window.speechSynthesis && window.speechSynthesis.resume(); } catch { /* ignore */ }
-  }
-});
+// contextmenu + gesturestart; visibilitychange -> speechSynthesis.resume() is
+// wired by installUnlockOnGesture above.
+installKioskGuards();

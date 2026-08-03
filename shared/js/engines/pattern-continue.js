@@ -8,12 +8,13 @@ import { to, ease, popIn, wiggle } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 import { onTap } from '../tap.js';
-
-const FONT_URL = new URL('../../fonts/fredoka-latin-600-normal.woff2', import.meta.url).href;
-const HOME_IMG = new URL('../../assets/ui/btn-home.png', import.meta.url).href;
-const BACK_IMG = new URL('../../assets/ui/btn-back.png', import.meta.url).href;
-const SOUND_IMG = new URL('../../assets/ui/btn-sound.png', import.meta.url).href;
-const PLAY_IMG = new URL('../../assets/ui/btn-play.png', import.meta.url).href;
+import { mulberry32, shuffle } from '../rng.js';
+import { escapeHtml, escapeAttr } from '../dom.js';
+import { createTimers } from '../timers.js';
+import { installDebug } from '../debug-harness.js';
+import { createScreens, wireEndScreen } from '../screens.js';
+import { renderModeCards } from '../mode-select.js';
+import { installEngineStyles } from './engine-styles.js';
 
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
@@ -38,9 +39,14 @@ class PatternContinueGame {
     this.mountEl = mountEl;
     this.id = ++debugOwner;
     this.destroyed = false;
-    this.previousDebug = window.QLOBE_DEBUG;
+    // The engine keeps its own delay registry (clearDelays() RESOLVES pending
+    // waits so an awaiting flow finishes instead of stalling -- timers.js
+    // clearAll() deliberately does the opposite). The group is here purely as
+    // the scale holder `fastTimers()` turns, read back through `timers.ms()`.
+    this.timers = createTimers();
 
-    this.screen = 'splash';
+    // The router owns "which screen is live"; `screen` below is a getter over it.
+    this.screens = null;
     this.mode = null;
     this.roundItems = [];
     this.roundIndex = 0;
@@ -78,9 +84,38 @@ class PatternContinueGame {
     window.addEventListener('contextmenu', this.onContextMenu);
     window.addEventListener('gesturestart', this.onGestureStart);
 
+    this.buildShell();
     this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebugHook();
+  }
+
+  /** @returns {'splash'|'play'|'end'} straight from the router */
+  get screen() {
+    return this.screens ? this.screens.current : 'splash';
+  }
+
+  /**
+   * Three persistent sections, toggled by `hidden`, instead of one mount whose
+   * innerHTML is thrown away on every transition. Each section keeps the exact
+   * class list it rendered with before, plus the shared `qk-eng-*` vocabulary.
+   */
+  buildShell() {
+    this.mountEl.innerHTML = `
+      <section class="qk-pattern qk-pattern-splash qk-eng-root qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title)}"></section>
+      <section class="qk-pattern qk-pattern-play qk-eng-root qk-eng-surface qk-eng-play" hidden></section>
+      <section class="qk-pattern qk-pattern-end qk-eng-root qk-eng-surface qk-eng-page" hidden></section>
+    `;
+    this.screens = createScreens({
+      root: this.mountEl,
+      screens: {
+        splash: this.mountEl.querySelector('.qk-pattern-splash'),
+        play: this.mountEl.querySelector('.qk-pattern-play'),
+        end: this.mountEl.querySelector('.qk-pattern-end'),
+      },
+      initial: 'splash',
+      voice: { stop: () => speech.stop() },
+    });
   }
 
   destroy() {
@@ -92,12 +127,10 @@ class PatternContinueGame {
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
+    if (this.screens) { this.screens.destroy(); this.screens = null; }
     this.mountEl.innerHTML = '';
     this.targetMap.clear();
-    if (window.QLOBE_DEBUG === this.debugHook) {
-      if (this.previousDebug) window.QLOBE_DEBUG = this.previousDebug;
-      else delete window.QLOBE_DEBUG;
-    }
+    if (this.disposeDebug) { this.disposeDebug(); this.disposeDebug = null; }
   }
 
   unlockAudio() {
@@ -109,8 +142,7 @@ class PatternContinueGame {
   }
 
   installDebugHook() {
-    this.debugHook = {
-      version: 1,
+    this.disposeDebug = installDebug({
       gameId: this.config.id,
       engine: 'pattern-continue',
       ready: this.ready,
@@ -122,49 +154,58 @@ class PatternContinueGame {
       winRound: () => this.winRound(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
-    };
-    window.QLOBE_DEBUG = this.debugHook;
+      timers: this.timers,
+    });
   }
 
   renderSplash() {
     this.clearIdleTimer();
     this.disposeStage();
-    this.screen = 'splash';
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
     this.targetMap.clear();
     speech.stop();
 
-    const buttons = this.config.modes.map((mode) => `
-      <button class="qk-pattern-mode" type="button" data-mode="${escapeAttr(mode.id)}">
-        <span>${escapeHtml(mode.title)}</span>
-      </button>
-    `).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-pattern qk-pattern-splash" aria-label="${escapeAttr(this.config.title)}">
-        <a class="qk-pattern-home qk-pattern-img-btn" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
-        <div class="qk-pattern-splash-center">
-          <div class="qk-pattern-splash-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
-          <h1>${escapeHtml(this.config.title)}</h1>
-          <div class="qk-pattern-mode-list">${buttons}</div>
-        </div>
-      </section>`;
-    this.applyThemeBackdrop();
+    const splash = this.screens.el('splash');
+    // show() is IDEMPOTENT: re-entering the splash we are already on would run
+    // neither the disposer bag nor voice.stop(), so release it by hand first.
+    this.screens.release('splash');
+    this.screens.show('splash');
+    splash.innerHTML = `
+      <a class="qk-pattern-home qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
+      <div class="qk-pattern-splash-center qk-eng-center">
+        <div class="qk-pattern-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
+        <div class="qk-pattern-mode-list qk-eng-mode-list"></div>
+      </div>`;
+    this.applyThemeBackdrop(splash);
 
-    this.mountEl.querySelectorAll('.qk-pattern-mode').forEach((button) => {
-      onTap(button, () => this.startMode(button.dataset.mode), {
-        feedback: (event) => {
-          if (event && event.preventDefault) event.preventDefault();
-          this.unlockAudio();
-          this.playSfx('tick');
-        },
-      });
+    const picker = renderModeCards({
+      host: splash.querySelector('.qk-pattern-mode-list'),
+      modes: this.config.modes,
+      // The engine paints its own cards, so screens.css's card skin stays off.
+      skin: false,
+      cardClass: 'qk-pattern-mode qk-eng-mode',
+      feedback: (event) => {
+        if (event && event.preventDefault) event.preventDefault();
+        this.unlockAudio();
+        this.playSfx('tick');
+      },
+      onPick: (id) => this.startMode(id),
     });
+
+    // docs/interaction-patterns.md §8, as a DOM invariant rather than a comment:
+    // the catalog link exists ONLY while the splash is the live screen. With
+    // persistent screen sections the anchor would otherwise sit in the document
+    // (hidden, but still findable) for the whole session — and "no catalog link
+    // on the play screen" is a check the QA drivers actually make.
+    const homeLink = splash.querySelector('a.qk-pattern-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    this.screens.hold(picker.dispose);
   }
 
-  applyThemeBackdrop() {
-    const section = this.mountEl.querySelector('.qk-pattern');
+  applyThemeBackdrop(section) {
     const background = this.config.theme && this.config.theme.background;
     if (!section || !background) return;
     const ref = String(background);
@@ -178,11 +219,16 @@ class PatternContinueGame {
     const mode = this.config.modes.find((entry) => entry.id === modeId) || this.config.modes[0];
     if (!mode) return;
 
+    // The double-tap latch: a second card press while the first start is still
+    // in flight is swallowed rather than running teardown + render twice.
+    return this.screens.start(() => this.runMode(mode));
+  }
+
+  async runMode(mode) {
     this.clearIdleTimer();
     this.disposeStage();
     speech.stop();
     this.mode = mode;
-    this.screen = 'play';
     this.roundIndex = 0;
     this.yumIndex = 0;
     this.roundItems = pickRounds(mode, this.rng);
@@ -198,28 +244,32 @@ class PatternContinueGame {
 
   renderPlayShell() {
     const dots = Array.from({ length: this.roundsTotal }, (_, index) =>
-      `<span class="qk-pattern-dot" data-dot="${index}" aria-hidden="true"></span>`).join('');
-    this.mountEl.innerHTML = `
-      <section class="qk-pattern qk-pattern-play" aria-label="${escapeAttr(this.mode.title)}">
-        <header class="qk-pattern-hud">
-          <button class="qk-pattern-back qk-pattern-img-btn" type="button" aria-label="Back to the game menu"></button>
-          <div class="qk-pattern-progress" aria-hidden="true">${dots}</div>
-        </header>
-        <main class="qk-pattern-stage">
-          <div class="qk-pattern-canvas" aria-label="${escapeAttr(this.mode.title)}"></div>
-        </main>
-        <button class="qk-pattern-sound qk-pattern-img-btn" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>
-      </section>`;
-    this.applyThemeBackdrop();
+      `<span class="qk-pattern-dot qk-eng-dot" data-dot="${index}" aria-hidden="true"></span>`).join('');
+    const play = this.screens.el('play');
+    // Restarting a mode re-renders in place, and show() is idempotent — release
+    // the live tap handlers before the DOM under them goes.
+    this.screens.release('play');
+    play.setAttribute('aria-label', this.mode.title);
+    play.innerHTML = `
+      <header class="qk-pattern-hud qk-eng-hud">
+        <button class="qk-pattern-back qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+        <div class="qk-pattern-progress qk-eng-pill" aria-hidden="true">${dots}</div>
+      </header>
+      <main class="qk-pattern-stage qk-eng-stage">
+        <div class="qk-pattern-canvas qk-eng-canvas" aria-label="${escapeAttr(this.mode.title)}"></div>
+      </main>
+      <button class="qk-pattern-sound qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-sound qk-eng-corner-bl" type="button" aria-label="${escapeAttr(this.config.copy.replay)}"></button>`;
+    this.screens.show('play');
+    this.applyThemeBackdrop(play);
 
-    const home = this.mountEl.querySelector('.qk-pattern-back');
-    onTap(home, () => { speech.stop(); this.renderSplash(); });
-    const sound = this.mountEl.querySelector('.qk-pattern-sound');
-    onTap(sound, () => this.replayPromptFromHud());
+    const home = play.querySelector('.qk-pattern-back');
+    this.screens.hold(onTap(home, () => { speech.stop(); this.renderSplash(); }));
+    const sound = play.querySelector('.qk-pattern-sound');
+    this.screens.hold(onTap(sound, () => this.replayPromptFromHud()));
   }
 
   async createPlayStage() {
-    const host = this.mountEl.querySelector('.qk-pattern-canvas');
+    const host = this.screens.el('play').querySelector('.qk-pattern-canvas');
     if (!host) return false;
     const generation = ++this.stageGeneration;
     const stage = await createStage(host);
@@ -694,7 +744,7 @@ class PatternContinueGame {
       if (this.destroyed || this.idlePrompted || this.screen !== 'play' || !this.awaitingInput) return;
       this.idlePrompted = true;
       this.replayPrompt();
-    }, IDLE_MS);
+    }, this.timers.ms(IDLE_MS));
   }
 
   clearIdleTimer() {
@@ -705,44 +755,58 @@ class PatternContinueGame {
 
   async finishGame() {
     this.clearIdleTimer();
-    this.screen = 'end';
     this.awaitingInput = false;
     this.inputLocked = false;
     this.targetMap.clear();
+    // Leave 'play' before the stage goes: everything that guards on
+    // `screen === 'play'` used to see the flag flip right here.
+    const end = this.screens.el('end');
+    end.setAttribute('aria-label', this.config.voice.cheer);
+    this.screens.release('end');
+    // `silent`: the cheer line is spoken below, and the router's voice.stop()
+    // would cut off whatever is still playing — which never happened before.
+    this.screens.show('end', { silent: true });
     this.playSfx('tada');
     this.disposeStage();
-    this.renderEnd();
+    this.renderEnd(end);
     this.speakLine(this.config.voice.cheer, true);
   }
 
-  renderEnd() {
-    this.mountEl.innerHTML = `
-      <section class="qk-pattern qk-pattern-end" aria-label="${escapeAttr(this.config.voice.cheer)}">
-        <button class="qk-pattern-back qk-pattern-img-btn" type="button" aria-label="Back to the game menu"></button>
-        <div class="qk-pattern-end-center">
-          <div class="qk-pattern-end-art" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
-          <h1>${escapeHtml(this.config.voice.cheer)}</h1>
-          <button class="qk-pattern-again" type="button">
-            <span class="qk-pattern-play-icon" aria-hidden="true"></span>
-            <span>${escapeHtml(this.config.copy.playAgain)}</span>
-          </button>
-        </div>
-      </section>`;
-    this.applyThemeBackdrop();
-    const back = this.mountEl.querySelector('.qk-pattern-back');
-    onTap(back, () => { speech.stop(); this.renderSplash(); });
-    const again = this.mountEl.querySelector('.qk-pattern-again');
-    onTap(again, () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()), {
-      feedback: (event) => {
-        if (event && event.preventDefault) event.preventDefault();
-        this.unlockAudio();
-        this.playSfx('tick');
-      },
+  renderEnd(end) {
+    end.innerHTML = `
+      <button class="qk-pattern-back qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
+      <div class="qk-pattern-end-center qk-eng-center">
+        <div class="qk-pattern-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
+        <button class="qk-pattern-again qk-eng-mode" type="button">
+          <span class="qk-pattern-play-icon qk-eng-play-icon" aria-hidden="true"></span>
+          <span>${escapeHtml(this.config.copy.playAgain)}</span>
+        </button>
+      </div>`;
+    this.applyThemeBackdrop(end);
+    wireEndScreen({
+      screens: this.screens,
+      back: end.querySelector('.qk-pattern-back'),
+      again: end.querySelector('.qk-pattern-again'),
+      // Back has always been a silent return to the splash here; the default
+      // preventDefault + sfx.tick would add a sound this screen never made.
+      feedback: null,
+      onSplash: () => { speech.stop(); this.renderSplash(); },
+      onAgain: () => (this.mode ? this.startMode(this.mode.id) : this.renderSplash()),
     });
+    // "again" keeps its own richer press feedback (unlock + tick).
+    const again = end.querySelector('.qk-pattern-again');
+    const press = (event) => {
+      if (event && event.preventDefault) event.preventDefault();
+      this.unlockAudio();
+      this.playSfx('tick');
+    };
+    again.addEventListener('pointerdown', press);
+    this.screens.hold(() => again.removeEventListener('pointerdown', press));
   }
 
   updateDots() {
-    this.mountEl.querySelectorAll('.qk-pattern-dot').forEach((dot, index) => {
+    this.screens.el('play').querySelectorAll('.qk-pattern-dot').forEach((dot, index) => {
       dot.classList.toggle('is-filled', index < this.roundIndex);
       dot.classList.toggle('is-current', index === this.roundIndex);
     });
@@ -877,7 +941,7 @@ class PatternContinueGame {
   delay(ms) {
     return new Promise((resolve) => {
       const entry = { timer: 0, resolve };
-      entry.timer = window.setTimeout(() => { this.pendingDelays.delete(entry); resolve(); }, ms);
+      entry.timer = window.setTimeout(() => { this.pendingDelays.delete(entry); resolve(); }, this.timers.ms(ms));
       this.pendingDelays.add(entry);
     });
   }
@@ -968,103 +1032,78 @@ function repeatingMotif(pattern) {
 }
 
 function fallbackUnit(unitId) { return { art: `text:${unitId}`, alt: unitId, say: unitId, sfx: 'tick' }; }
-function shuffle(list, rng) {
-  for (let index = list.length - 1; index > 0; index--) {
-    const other = Math.floor(rng() * (index + 1));
-    [list[index], list[other]] = [list[other], list[index]];
-  }
-  return list;
-}
 function unique(list) { return Array.from(new Set(list)); }
 function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
 function themeColor(config, group, key, fallback) {
   const value = config.theme && config.theme[group] && config.theme[group][key];
   return value == null ? fallback : value;
 }
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return function random() {
-    value += 0x6D2B79F5;
-    let result = Math.imul(value ^ (value >>> 15), 1 | value);
-    result ^= result + Math.imul(result ^ (result >>> 7), 61 | result);
-    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[character]));
-}
-function escapeAttr(value) { return escapeHtml(value); }
-
 function installStyle() {
-  if (styleInstalled || document.getElementById('qk-pattern-style')) { styleInstalled = true; return; }
-  const style = document.createElement('style');
-  style.id = 'qk-pattern-style';
-  style.textContent = `
-    @font-face { font-family:'Fredoka'; src:url('${FONT_URL}') format('woff2'); font-weight:600; font-display:swap; }
-    .qk-pattern,.qk-pattern * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    .qk-pattern {
-      --sky:#bee3f5; --navy:#17517e; --blue:#2d7dd2; --purple:#7c4fc4; --white:#fff;
-      --mint:#81d6a3; --peach:#ffad7a; --shadow:0 6px 0 rgba(23,81,126,.18),0 14px 30px rgba(23,81,126,.18);
-      position:relative; height:100dvh; min-height:100%; width:100%; overflow:hidden; color:var(--navy);
-      font-family:'Fredoka','Arial Rounded MT Bold','Trebuchet MS',sans-serif; font-weight:600;
-      background-color:var(--sky); background-image:linear-gradient(180deg,rgba(255,255,255,.36),transparent 42%),
-        radial-gradient(circle at 18% 20%,rgba(255,248,232,.72) 0 9px,transparent 10px),
-        radial-gradient(circle at 72% 18%,rgba(129,214,163,.42) 0 12px,transparent 13px),
-        radial-gradient(circle at 45% 82%,rgba(255,173,122,.36) 0 10px,transparent 11px);
-      background-size:auto,180px 180px,250px 250px,220px 220px; touch-action:manipulation;
-      -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; overscroll-behavior:none;
-    }
-    .qk-pattern button,.qk-pattern a { font:inherit; color:inherit; touch-action:manipulation; }
-    .qk-pattern button { border:0; cursor:pointer; }
-    .qk-pattern button:focus-visible,.qk-pattern a:focus-visible { outline:5px solid rgba(45,125,210,.65); outline-offset:4px; }
-    .qk-pattern-img-btn { display:grid; place-items:center; width:96px; height:96px; border-radius:50%;
-      background:transparent center/84px 84px no-repeat; text-decoration:none; box-shadow:none; }
-    .qk-pattern-img-btn:active { transform:scale(.93); }
-    .qk-pattern-home, .qk-pattern-back { position:absolute; top:max(12px,env(safe-area-inset-top));
-      left:max(12px,env(safe-area-inset-left)); z-index:4; }
-    .qk-pattern-home { background-image:url('${HOME_IMG}'); }
-    .qk-pattern-back { background-image:url('${BACK_IMG}'); }
-    .qk-pattern-sound { background-image:url('${SOUND_IMG}'); position:absolute; left:max(14px,env(safe-area-inset-left));
-      bottom:max(12px,env(safe-area-inset-bottom)); z-index:4; }
-    .qk-pattern-splash,.qk-pattern-end { display:grid; place-items:center; padding:max(18px,env(safe-area-inset-top))
-      max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left)); }
-    .qk-pattern-splash-center,.qk-pattern-end-center { width:min(900px,100%); display:grid; justify-items:center;
-      gap:clamp(14px,2.5vmin,24px); text-align:center; padding-top:54px; }
-    .qk-pattern-splash-art,.qk-pattern-end-art { display:grid; place-items:center; width:clamp(150px,26vmin,230px);
-      aspect-ratio:1; border-radius:28px; background:linear-gradient(180deg,#fff,#fff3d0); border:5px solid #fff;
-      box-shadow:var(--shadow); font-size:clamp(82px,16vmin,132px); line-height:1; }
-    .qk-pattern h1 { margin:0; font-size:clamp(38px,7vmin,78px); line-height:.98; color:var(--navy);
-      text-shadow:0 4px 0 rgba(255,255,255,.72); max-width:12ch; }
-    .qk-pattern-mode-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px;
-      width:min(760px,100%); margin-top:6px; }
-    .qk-pattern-mode,.qk-pattern-again { min-height:104px; border-radius:26px; border:5px solid #fff; padding:18px 24px;
-      color:#fff; background:linear-gradient(180deg,rgba(255,255,255,.34),transparent 50%),var(--purple);
-      box-shadow:var(--shadow); font-size:clamp(23px,4vmin,36px); line-height:1.05; }
-    .qk-pattern-mode:nth-child(2n) { background-color:var(--blue); }
-    .qk-pattern-mode:nth-child(3n) { background-color:#2e9f76; }
-    .qk-pattern-mode:active,.qk-pattern-again:active { transform:scale(.96); }
-    .qk-pattern-play { display:grid; grid-template-rows:auto 1fr; padding:max(12px,env(safe-area-inset-top))
-      max(14px,env(safe-area-inset-right)) max(112px,calc(100px + env(safe-area-inset-bottom)))
-      max(14px,env(safe-area-inset-left)); }
-    .qk-pattern-hud { position:relative; z-index:3; display:grid; grid-template-columns:96px 1fr 96px;
-      align-items:center; min-height:100px; }
-    .qk-pattern-hud .qk-pattern-home,     .qk-pattern-hud .qk-pattern-back { position:static; grid-column:1; }
-    .qk-pattern-progress { grid-column:2; justify-self:center; display:flex; align-items:center; justify-content:center;
-      gap:11px; min-height:32px; padding:6px 16px; border-radius:999px; background:rgba(255,255,255,.38); }
-    .qk-pattern-dot { width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,.9); opacity:.8; }
-    .qk-pattern-dot.is-filled { background:var(--mint); opacity:1; }
-    .qk-pattern-dot.is-current { background:var(--peach); opacity:1; transform:scale(1.16); }
-    .qk-pattern-stage { min-height:0; position:relative; width:min(1120px,100%); justify-self:center; }
-    .qk-pattern-canvas { position:absolute; inset:0; overflow:hidden; border-radius:28px; touch-action:none; }
-    .qk-pattern-canvas canvas { display:block; width:100%; height:100%; touch-action:none; }
-    .qk-pattern-again { display:inline-grid; grid-template-columns:72px auto; align-items:center; gap:14px;
-      min-width:min(420px,100%); background-color:var(--blue); }
-    .qk-pattern-play-icon { display:block; width:72px; height:72px; background:transparent url('${PLAY_IMG}') center/contain no-repeat; }
-    @media (max-width:560px) { .qk-pattern-hud { grid-template-columns:96px 1fr; } .qk-pattern-progress { justify-self:end; } }
-    @media (prefers-reduced-motion:reduce) { .qk-pattern * { transition:none!important; animation:none!important; } }
-  `;
-  document.head.appendChild(style);
+  if (styleInstalled) return;
   styleInstalled = true;
+  installEngineStyles('qk-pattern-style', `
+    /* pattern-continue's own skin. The @font-face, the reset, the surface, the
+       96px PNG buttons, the splash/end column, the mode buttons, the HUD grid,
+       the stage and the canvas now come from shared/css/engine-base.css; what is
+       left is this engine's palette.
+
+       The .qk-pattern-* class names are unchanged and stay supported — see the
+       compatibility window note in shared/js/engines/README.md. */
+
+    .qk-pattern {
+      --sky: #bee3f5;
+      --navy: #17517e;
+      --blue: #2d7dd2;
+      --purple: #7c4fc4;
+      --white: #fff;
+      --mint: #81d6a3;
+      --peach: #ffad7a;
+      --shadow: 0 6px 0 rgba(23,81,126,.18), 0 14px 30px rgba(23,81,126,.18);
+
+      /* Alias, don't hard-code: a game skin that redefines --navy or --shadow
+         under #game must keep reaching every shared rule. */
+      --qk-navy: var(--navy);
+      --qk-sky: var(--sky);
+      --qk-white: var(--white);
+      --qk-primary: var(--purple);
+      --qk-shadow: var(--shadow);
+
+      --qk-eng-bg-image:
+        linear-gradient(180deg, rgba(255,255,255,.36), transparent 42%),
+        radial-gradient(circle at 18% 20%, rgba(255,248,232,.72) 0 9px, transparent 10px),
+        radial-gradient(circle at 72% 18%, rgba(129,214,163,.42) 0 12px, transparent 13px),
+        radial-gradient(circle at 45% 82%, rgba(255,173,122,.36) 0 10px, transparent 11px);
+      --qk-eng-bg-size: auto, 180px 180px, 250px 250px, 220px 220px;
+
+      --qk-eng-title-w: 12ch;
+      --qk-eng-hud-z: 3;
+      --qk-eng-stage-w: min(1120px, 100%);
+      /* This engine's pips are flat — no inset highlight. */
+      --qk-eng-dot-shadow: none;
+    }
+
+    .qk-pattern-mode:nth-child(2n) { background-color: var(--blue); }
+    .qk-pattern-mode:nth-child(3n) { background-color: #2e9f76; }
+
+    .qk-pattern-dot { opacity: .8; }
+    .qk-pattern-dot.is-filled { background: var(--mint); opacity: 1; }
+    .qk-pattern-dot.is-current { background: var(--peach); opacity: 1; transform: scale(1.16); }
+
+    .qk-pattern-again {
+      display: inline-grid;
+      grid-template-columns: 72px auto;
+      align-items: center;
+      gap: 14px;
+      min-width: min(420px, 100%);
+      background-color: var(--blue);
+    }
+
+    @media (max-width: 560px) {
+      .qk-pattern-hud { grid-template-columns: 96px 1fr; }
+      .qk-pattern-progress { justify-self: end; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .qk-pattern * { transition: none !important; animation: none !important; }
+    }
+  `);
 }

@@ -6,8 +6,15 @@
 // silently fall back to Web Speech and the audio assertion would be worthless).
 //
 //   python3 -m http.server 8000          # from the repo root
-//   npm install playwright@1.52.0        # in a scratch dir
-//   node games/counting-treasure-cups/tools/qa.mjs --playwright /tmp/pw/node_modules
+//   npm install playwright@1.52.0        # in a scratch dir, NOT the repo
+//   node games/counting-treasure-cups/tools/qa.mjs [--base http://localhost:8000]
+//        [--shots qa-shots] [--playwright /private/tmp/pw/node_modules]
+//
+// Plumbing (flags, Playwright resolution, launch, reporter, shots dir) comes
+// from tools/qa/lib/driver.mjs — see tools/qa/README.md. The monitored page
+// below stays bespoke: it counts expected .m4a/.webp aborts in their own bucket
+// instead of dropping them, and boots in two stages (goto, then an in-page
+// DRIVER + a real unlock gesture).
 //
 // Checks, in order:
 //   1. zero console errors and zero failed requests, on every screen
@@ -21,33 +28,17 @@
 //
 // Exit code is non-zero if any check fails.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  baseUrl, launchChrome, createReporter, resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const flag = (name, dflt) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] ? argv[i + 1] : dflt;
-};
-
-const BASE = flag('base', 'http://localhost:8000');
+const BASE = baseUrl('http://localhost:8000');
 const URL_GAME = `${BASE}/games/counting-treasure-cups/`;
-const SHOTS = flag('shots', path.resolve('qa-shots'));
-const pwDir = flag('playwright', process.env.PLAYWRIGHT_MODULE_PATH);
-if (!pwDir) {
-  console.error('need --playwright <node_modules dir holding playwright@1.52.0>');
-  process.exit(2);
-}
-const require = createRequire(path.join(pwDir, 'noop.js'));
-const { chromium } = require('playwright');
+const SHOTS = resolveShots(path.resolve('qa-shots'));
 
-const results = [];
-const check = (name, ok, detail = '') => {
-  results.push({ name, ok, detail });
-  console.log(`${ok ? '  ok  ' : '  FAIL'} ${name}${detail ? ' — ' + detail : ''}`);
-  return ok;
-};
+const { check, results } = createReporter({ style: 'pad' });
 
 // The driver runs inside the page so every tap goes through the real handler.
 const DRIVER = `
@@ -148,8 +139,8 @@ async function boot(page) {
 }
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: false });
+  await ensureShots(SHOTS);
+  const browser = await launchChrome({ headless: false });
 
   // ---- pass 1: full playthrough, audio live -------------------------------
   const A = await newPage(browser);

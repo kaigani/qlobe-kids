@@ -1,0 +1,152 @@
+/* screens.css — the splash/play/end vocabulary.
+ *
+ * Pairs with shared/js/screens.js (the router) and shared/js/mode-select.js
+ * (the cards). Link it AFTER base.css and BEFORE the game's own stylesheet:
+ *
+ *     <link rel="stylesheet" href="../../shared/css/base.css" />
+ *     <link rel="stylesheet" href="../../shared/css/screens.css" />
+ *     <link rel="stylesheet" href="./css/style.css" />
+ *
+ * That order matters and is the whole compatibility story: every rule below is
+ * single-class specificity, so a game that declares the same property on the
+ * same element wins on cascade order. A game keeps its skin by being last.
+ *
+ * The file is split in two on purpose:
+ *
+ *   - `.qk-mode-card` on its own carries only the CONTRACT — the ≥96px touch
+ *     floor and the touch tuning. It is applied to every card, always.
+ *   - Everything painted is scoped under `.qk-mode-list`, which mode-select.js
+ *     adds to the host only when `skin` is on. `renderModeCards({ skin: false })`
+ *     therefore keeps a bespoke game's card art pixel-for-pixel.
+ *
+ * Urls resolve relative to THIS FILE (shared/css/), never to the page.
+ */
+
+/* ------------------------------------------------------------ the screens */
+
+/* The router owns the `hidden` attribute and nothing else. `!important`
+   because a screen's own layout rule (`display: grid` on the splash, say) is
+   otherwise same-specificity and later in the cascade — which is exactly how a
+   "hidden" screen ends up painted on top of the live one. */
+[data-qk-screen][hidden],
+.qk-screen[hidden] {
+  display: none !important;
+}
+
+/* Opt-in screen box. Games with their own positioned screens ignore it; it is
+   here so an engine does not have to re-derive "fill the mount, clip, stack". */
+.qk-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------- the mode cards */
+
+/* THE CONTRACT. Applied to every card mode-select.js builds, skinned or not.
+   96px is the platform's touch floor (CLAUDE.md); `manipulation` kills the
+   double-tap zoom that otherwise eats the second tap of an excited child. */
+.qk-mode-card {
+  min-width: 96px;
+  min-height: 96px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* THE SKIN. Everything below is scoped to the host class, so it exists only
+   for callers that asked for it. */
+
+.qk-mode-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: clamp(14px, 2.4vw, 28px);
+  padding: 12px;
+}
+
+.qk-mode-list .qk-mode-card {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: clamp(150px, 20vw, 230px);
+  min-height: 150px;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--qk-mode-bg, #fffdf5);
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, .95),
+    0 7px 0 rgba(23, 81, 126, .14),
+    0 15px 30px rgba(23, 81, 126, .16);
+  color: var(--qk-mode-ink, #17517e);
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.qk-mode-list .qk-mode-card:active {
+  transform: translateY(5px) scale(.97);
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, .95),
+    0 3px 0 rgba(23, 81, 126, .13),
+    0 8px 18px rgba(23, 81, 126, .13);
+}
+
+.qk-mode-list .qk-mode-card:focus-visible {
+  outline: 5px solid #1d6fa5;
+  outline-offset: 4px;
+}
+
+.qk-mode-list .qk-mode-art {
+  width: 100%;
+  max-height: 42vh;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 8px rgba(23, 81, 126, .15));
+}
+
+.qk-mode-list .qk-mode-icon {
+  font-size: clamp(46px, 6vw, 72px);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.qk-mode-list .qk-mode-title {
+  font-size: clamp(19px, 2.1vw, 26px);
+  line-height: 1.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------- the end screen */
+
+/* The row of big round actions on an end screen: "again" and "choose another".
+   Back lives in the corner (`.qk-hud-back` from hud.css), never here — see
+   docs/interaction-patterns.md §8. */
+.qk-end-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 40px);
+}
+
+.qk-end-actions > * {
+  min-width: 96px;
+  min-height: 96px;
+}
+
+/* ------------------------------------------------------------ small screens */
+
+@media (max-width: 700px) {
+  .qk-mode-list { gap: 14px; padding: 10px; }
+  .qk-mode-list .qk-mode-card { width: clamp(132px, 30vw, 190px); min-height: 128px; border-radius: 24px; padding: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qk-mode-list .qk-mode-card { transition: none; }
+}

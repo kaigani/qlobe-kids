@@ -1,11 +1,18 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { mulberry32, shuffle } from '../../../shared/js/rng.js';
+import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { createNarrator } from '../../../shared/js/narrator.js';
 
 const mount = document.getElementById('game');
-const announcer = document.getElementById('announcer');
+// say()'s only entanglement with game state was the state.muted gate and the
+// announcer text — both of which narrator.js owns natively, so this is a
+// clean swap (unlike clay-creature-studio/counting-treasure-cups, whose voice
+// wrappers also carry actor/speaker routing).
+const narrator = createNarrator();
 const UI = {
   home: new URL('../../../shared/assets/ui/btn-home.png', import.meta.url).href,
   back: new URL('../../../shared/assets/ui/btn-back.png', import.meta.url).href,
@@ -46,7 +53,6 @@ let disposers = [];
 let idleTimer = 0;
 let activeDrag = null;
 let foldPointer = null;
-let audioUnlocked = false;
 let pendingWelcome = false;
 
 const ready = (async () => {
@@ -72,34 +78,37 @@ function preloadCriticalImages() {
   })));
 }
 
-function unlockAudio() {
-  voice.unlock();
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  sfx.unlock();
-  speech.unlock();
-  if (pendingWelcome && state.screen === 'splash') {
-    pendingWelcome = false;
-    say('welcome');
-  }
-}
+// The shared listener fans out to sfx/speech/voice-clips/audio and reopens its
+// latch whenever the page comes back to the foreground, so an iPad app-switch
+// can no longer leave the game silent for the rest of the session.
+installUnlockOnGesture({
+  onFirst: () => {
+    // User activation does not survive a page load, so the welcome usually
+    // cannot play until something is touched. Deliver it on that first touch
+    // instead of dropping it — a child who lands on the splash always gets
+    // greeted.
+    if (pendingWelcome && state.screen === 'splash') {
+      pendingWelcome = false;
+      say('welcome');
+    }
+  },
+});
 
-window.addEventListener('pointerdown', unlockAudio, { passive: true });
-window.addEventListener('contextmenu', (event) => event.preventDefault());
-window.addEventListener('gesturestart', (event) => event.preventDefault());
+// voice.unlock() stays armed until the clip channel has actually PLAYED, so it
+// runs on every gesture rather than only while the shared latch is open —
+// otherwise a first attempt the browser refuses is never retried and recorded
+// voice falls back to Web Speech for the rest of the session.
+window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
+installKioskGuards();
 window.addEventListener('blur', cancelAllPointers);
 
 function say(key) {
-  const text = config.voice[key] || '';
-  announcer.textContent = text;
-  if (state.muted) return Promise.resolve(false);
-  return voice.say(key, text);
+  return narrator.say(key, config.voice[key]);
 }
 
 function feedback(event) {
   event?.preventDefault?.();
   event?.stopPropagation?.();
-  unlockAudio();
   if (!state.muted) sfx.tick();
 }
 
@@ -115,7 +124,7 @@ function delay(ms) {
 function clearScreen() {
   clearTimeout(idleTimer);
   idleTimer = 0;
-  voice.stop();
+  narrator.stop();
   cancelAllPointers();
   document.querySelectorAll('.drag-ghost, .spark').forEach((node) => node.remove());
   disposers.forEach((dispose) => dispose());
@@ -250,7 +259,6 @@ function showSplash({ greet = true } = {}) {
     if (state.screen !== 'splash') return;
     const played = await voice.trySay('welcome');
     pendingWelcome = !played;
-    if (played) audioUnlocked = true;
   });
 }
 
@@ -351,7 +359,6 @@ function onSortPointerDown(event) {
   const item = sortItems.find((candidate) => candidate.id === source.dataset.item);
   if (!item || item.sorted) return;
   event.preventDefault();
-  unlockAudio();
   const rect = source.getBoundingClientRect();
   activeDrag = {
     pointerId: event.pointerId,
@@ -630,7 +637,6 @@ function wireFold() {
 function onFoldPointerDown(event) {
   if (state.inputLocked || foldPointer || event.isPrimary === false) return;
   event.preventDefault();
-  unlockAudio();
   foldPointer = {
     pointerId: event.pointerId,
     startX: event.clientX,
@@ -807,7 +813,7 @@ function makePairDeck(designs) {
   // Deal one of each design per row, then rotate the second row so a matching
   // pair can never land directly above/below itself (an accidentally trivial
   // board at seed 42 exposed why a plain six-card shuffle was not enough).
-  const top = shuffle(designs.slice(), rng)
+  const top = shuffle(designs, rng)
     .map((design) => ({ ...design, instance: `${design.id}-a`, matched: false }));
   const shift = rng() < .5 ? 1 : 2;
   const bottom = top.map((_, index) => {
@@ -1040,8 +1046,7 @@ async function wrong() {
   return attemptPair(second.instance);
 }
 
-window.QLOBE_DEBUG = {
-  version: 1,
+installDebug({
   gameId: config.id,
   engine: 'custom-storybook-chores',
   ready,
@@ -1060,26 +1065,34 @@ window.QLOBE_DEBUG = {
   tap: debugTap,
   winRound,
   wrong,
-  mute: () => {
-    state.muted = true;
-    voice.stop();
-    speech.stop();
-    return true;
+  // Kept local, not defaulted: state.muted also gates every playSfx()/feedback()
+  // call across sort/fold/pairs, so the hook has to write the game's own flag,
+  // not a channel list it keeps to itself.
+  mute: (on = true) => {
+    const muted = !!on;
+    state.muted = muted;
+    narrator.setMuted(muted);
+    return muted;
   },
-  seed: (number) => {
-    state.seed = Number(number) >>> 0;
+  // A seed set before startMode() has to reach the mode startMode() is about
+  // to build, not just one that already existed when seed() was called —
+  // state.seed and roundSerial are module-level, so startMode() always
+  // recomputes rng from them on its next call.
+  onSeed: (nextRng, value) => {
+    state.seed = value;
     roundSerial = 0;
     previousSortColors = '';
     pairDeckCursor = 0;
     activePairDeck = null;
-    rng = mulberry32(state.seed);
-    return state.seed;
+    rng = nextRng;
   },
-  setFastTimers: (value = true) => {
-    state.fast = !!value;
-    return state.fast;
-  },
-};
+  // This game's "fast mode" is a boolean, not a numeric scale — any truthy
+  // call engages it. `fastTimers` is the v1 contract name (what QA drivers
+  // look for); `setFastTimers` stays as an alias for anything still using the
+  // old name.
+  fastTimers: (value = true) => { state.fast = !!value; return state.fast; },
+  setFastTimers: (value = true) => { state.fast = !!value; return state.fast; },
+});
 
 function pointInside(x, y, rect) {
   return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
@@ -1087,26 +1100,6 @@ function pointInside(x, y, rect) {
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
-}
-
-function shuffle(values, random) {
-  const result = values.slice();
-  for (let index = result.length - 1; index > 0; index -= 1) {
-    const next = Math.floor(random() * (index + 1));
-    [result[index], result[next]] = [result[next], result[index]];
-  }
-  return result;
-}
-
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value += 0x6D2B79F5;
-    let result = value;
-    result = Math.imul(result ^ (result >>> 15), result | 1);
-    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
-    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
-  };
 }
 
 function cssEscape(value) {

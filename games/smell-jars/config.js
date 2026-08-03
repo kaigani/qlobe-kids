@@ -4,10 +4,7 @@ export default {
   title: 'Smell Jars',
   splashEmoji: '👃',
   copy: {
-    home: 'Home',
-    replay: 'Hear it again',
     recap: 'Smell Notes',
-    playAgain: 'Play Again',
   },
   voice: {
     cheer: 'You were the nose and made a smell journal!',

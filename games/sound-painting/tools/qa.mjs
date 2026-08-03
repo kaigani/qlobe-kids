@@ -1,79 +1,66 @@
 #!/usr/bin/env node
 // Real-Chrome smoke + visual-QC driver for Sound Painting.
+//
+//   python3 -m http.server 8000        # from the repo root
+//   node games/sound-painting/tools/qa.mjs [--base http://127.0.0.1:8000]
+//        [--shots qa-shots/sound-painting] [--playwright /private/tmp/pw/node_modules]
+//
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 
-import { mkdir, stat } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  args, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots,
+} from '../../../tools/qa/lib/driver.mjs';
 
-const argv = process.argv.slice(2);
-const flag = (name, fallback) => {
-  const index = argv.indexOf(`--${name}`);
-  return index >= 0 && argv[index + 1] ? argv[index + 1] : fallback;
-};
-const base = flag('base', 'http://127.0.0.1:8000');
+const base = args.flag('base', 'http://127.0.0.1:8000');
 const url = `${base.replace(/\/$/, '')}/games/sound-painting/`;
-const shots = path.resolve(flag('shots', 'qa-shots/sound-painting'));
-const playwrightRoot = flag('playwright', '/private/tmp/pw/node_modules');
-const require = createRequire(path.join(playwrightRoot, 'noop.js'));
-const { chromium } = require('playwright');
+const shots = resolveShots('qa-shots/sound-painting');
+const { check, finish } = createReporter();
 
-const results = [];
-function check(name, value, detail = '') {
-  const ok = !!value;
-  results.push({ name, ok, detail });
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${detail ? ` — ${detail}` : ''}`);
-}
+// Every AudioContext oscillator start is recorded, so the driver can prove the
+// painting actually SOUNDED rather than just repainted.
+const spyOnOscillators = () => {
+  window.__qlobeOscillators = [];
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC || AC.prototype.__qlobeInstrumented) return;
+  const original = AC.prototype.createOscillator;
+  Object.defineProperty(AC.prototype, '__qlobeInstrumented', { value: true });
+  AC.prototype.createOscillator = function createInstrumentedOscillator() {
+    const oscillator = original.call(this);
+    const originalStart = oscillator.start.bind(oscillator);
+    oscillator.start = (...startArgs) => {
+      window.__qlobeOscillators.push({
+        at: performance.now(),
+        frequency: oscillator.frequency.value,
+        type: oscillator.type,
+      });
+      return originalStart(...startArgs);
+    };
+    return oscillator;
+  };
+};
 
 async function monitoredPage(browser, viewport, reducedMotion = 'no-preference', contextOptions = {}) {
-  const context = await browser.newContext({
+  return openSession(browser, {
+    url,
+    base,
     viewport,
-    deviceScaleFactor: 1,
     reducedMotion,
-    ...contextOptions,
+    context: contextOptions,
+    initScript: spyOnOscillators,
+    // The handshake order this game wants is mute -> fastTimers -> seed, in one
+    // evaluate. (It used to read `fastTimer` — a typo for the real hook name in
+    // js/main.js, `fastTimers`. That threw on every boot, so this driver had
+    // never actually run.)
+    after: (page) => page.evaluate(() => {
+      window.QLOBE_DEBUG.mute(true);
+      window.QLOBE_DEBUG.fastTimers(true);
+      window.QLOBE_DEBUG.seed(42);
+    }),
   });
-  const page = await context.newPage();
-  await page.addInitScript(() => {
-    window.__qlobeOscillators = [];
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC || AC.prototype.__qlobeInstrumented) return;
-    const original = AC.prototype.createOscillator;
-    Object.defineProperty(AC.prototype, '__qlobeInstrumented', { value: true });
-    AC.prototype.createOscillator = function createInstrumentedOscillator() {
-      const oscillator = original.call(this);
-      const originalStart = oscillator.start.bind(oscillator);
-      oscillator.start = (...args) => {
-        window.__qlobeOscillators.push({
-          at: performance.now(),
-          frequency: oscillator.frequency.value,
-          type: oscillator.type,
-        });
-        return originalStart(...args);
-      };
-      return oscillator;
-    };
-  });
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
-  });
-  page.on('request', (request) => {
-    if (!request.url().startsWith(base)) remote.push(request.url());
-  });
-  page.on('requestfailed', (request) => failed.push(`${request.url()} ${request.failure()?.errorText || ''}`));
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => {
-    window.QLOBE_DEBUG.mute(true);
-    window.QLOBE_DEBUG.fastTimer(true);
-    window.QLOBE_DEBUG.seed(42);
-  });
-  return { context, page, errors, failed, remote };
 }
 
 async function actualDraw(page) {
@@ -87,10 +74,7 @@ async function actualDraw(page) {
   await page.mouse.up();
 }
 
-async function main() {
-  await mkdir(shots, { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
-
+async function drive(browser) {
   const landscape = await monitoredPage(browser, { width: 1180, height: 820 });
   const page = landscape.page;
   check('splash boots', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
@@ -296,10 +280,20 @@ async function main() {
   await portrait.context.close();
   await reduced.context.close();
   await ipad.context.close();
-  await browser.close();
-  const failedCount = results.filter((result) => !result.ok).length;
-  console.log(`\n${results.length - failedCount}/${results.length} checks passed`);
-  process.exitCode = failedCount ? 1 : 0;
+}
+
+async function main() {
+  await ensureShots(shots);
+  const browser = await launchChrome({ headless: true });
+  // MANDATORY: close the browser in a `finally`. A check that throws mid-drive
+  // otherwise leaves Chrome (and its Playwright pipe) alive, node never runs out
+  // of handles, and the driver hangs forever instead of reporting a failure.
+  try {
+    await drive(browser);
+  } finally {
+    await browser.close();
+    finish({ listFailures: false });
+  }
 }
 
 main().catch((error) => {

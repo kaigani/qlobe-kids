@@ -16,9 +16,8 @@
 //   --shots <dir>   screenshot directory
 //   --headed        run Chrome headed
 //
-// Playwright is deliberately NOT a repo dependency (no-build repo): it is
-// loaded out of tree from /private/tmp/pw/node_modules via createRequire, or
-// from --playwright / PLAYWRIGHT_MODULE_PATH.
+// Plumbing (flags, Playwright resolution, launch, monitored pages, reporter)
+// comes from tools/qa/lib/driver.mjs — see tools/qa/README.md.
 //
 // **channel: 'chrome' is load-bearing.** Playwright's bundled Chromium ships
 // without the AAC decoder, so every .m4a silently fails to decode and every
@@ -29,36 +28,36 @@
 // Shots go OUTSIDE the repo by default: qa-shots/ is not in the root
 // .gitignore, and a QA run must never leave 40 untracked PNGs in a worktree.
 
-import { mkdir, readFile, readdir, stat, access } from 'node:fs/promises';
+import { readFile, readdir, stat, access } from 'node:fs/promises';
 import { constants as FS, createReadStream } from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
-import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import {
+  args, launchChrome, createReporter, openSession,
+  resolveShots, ensureShots, debug,
+} from '../../../tools/qa/lib/driver.mjs';
 
 // ---------------------------------------------------------------- arguments
 
-const argv = process.argv.slice(2);
-const flag = (name, fallback = null) => {
-  const i = argv.indexOf(`--${name}`);
-  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : fallback;
-};
-const has = (name) => argv.includes(`--${name}`);
+const { flag } = args;
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const GAME = path.resolve(HERE, '..');
 const ROOT = path.resolve(GAME, '..', '..');
-const SHOTS = path.resolve(flag('shots') || process.env.QLOBE_SHOTS || '/private/tmp/qlobe-rd-shots');
-const PW_DIR = flag('playwright') || process.env.PLAYWRIGHT_MODULE_PATH || '/private/tmp/pw/node_modules';
+const SHOTS = resolveShots('/private/tmp/qlobe-rd-shots');
 
 // ---------------------------------------------------------------- reporting
 
+// The lib reporter owns the printed ' ok '/'FAIL' line (collapsed, 220-char
+// detail); `checks` keeps its own RAW (uncollapsed, untruncated) copy because
+// the failure roll-call at the bottom of main() slices detail to 300 chars
+// on its own terms — a second, different truncation the lib does not do.
+const { check: reportCheck } = createReporter({ style: 'ok', collapse: true, detailLimit: 220 });
 const checks = [];
 function check(name, condition, detail = '') {
-  const ok = Boolean(condition);
-  checks.push({ name, ok, detail });
-  const text = String(detail).replace(/\s+/g, ' ').slice(0, 220);
-  console.log(`${ok ? ' ok ' : 'FAIL'} ${name}${text ? ` — ${text}` : ''}`);
+  checks.push({ name, ok: Boolean(condition), detail });
+  reportCheck(name, condition, detail);
 }
 
 const rel = (p) => path.join(GAME, p);
@@ -355,43 +354,32 @@ async function serveRepo() {
 // BROWSER
 // =========================================================================
 
-const require = createRequire(path.join(PW_DIR, 'noop.js'));
-const { chromium } = require('playwright');
-
 const sessions = [];
 let base = '';
 
 // Every session is watched for the §11.2 item 22 trio: page/console errors,
 // failed or 4xx requests, and any request that leaves the base origin.
+// openSession's `allowAbortedMedia` only names .m4a (the lib's platform-wide
+// exemption for an interrupted clip fetch) — this game's audio is entirely
+// .m4a (assets/audio/manifest.json), so it is a faithful match for the
+// original's broader `/\.(m4a|mp3|wav)$/` guard, which never actually had an
+// mp3 or wav to match here.
 async function openGame(browser, viewport, reducedMotion = 'no-preference', label = '') {
-  const context = await browser.newContext({ viewport, reducedMotion, deviceScaleFactor: 1 });
-  const page = await context.newPage();
-  const errors = [];
-  const failed = [];
-  const remote = [];
-  page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-  page.on('request', (request) => { if (!request.url().startsWith(base)) remote.push(request.url()); });
-  page.on('requestfailed', (request) => {
-    // A clip the child interrupted aborts its own fetch. That is the design
-    // ("interruption is always allowed", §3.1), not a broken asset.
-    const reason = request.failure()?.errorText || '';
-    if (reason === 'net::ERR_ABORTED' && /\.(m4a|mp3|wav)$/.test(request.url())) return;
-    failed.push(`${request.url()} ${reason}`);
+  const session = await openSession(browser, {
+    url: `${base}/games/rhyming-detective/`,
+    base,
+    viewport,
+    reducedMotion,
+    allowAbortedMedia: true,
   });
-  page.on('response', (response) => {
-    if (response.status() >= 400) failed.push(`${response.status()} ${response.url()}`);
-  });
-  await page.goto(`${base}/games/rhyming-detective/`, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  sessions.push({ label: label || `${viewport.width}x${viewport.height}`, context, errors, failed, remote });
-  return page;
+  session.label = label || `${viewport.width}x${viewport.height}`;
+  sessions.push(session);
+  return session.page;
 }
 
-const state = (page) => page.evaluate(() => window.QLOBE_DEBUG.getState());
-const targets = (page) => page.evaluate(() => window.QLOBE_DEBUG.getTargets());
-const awaitPlay = (page, timeout = 25000) =>
-  page.waitForFunction(() => window.QLOBE_DEBUG.getState().awaitingInput, null, { timeout });
+const state = debug.getState;
+const targets = debug.getTargets;
+const awaitPlay = (page, timeout = 25000) => debug.waitForInput(page, { timeout });
 
 // The recorded-clip probe. voice-clips.onClip fires with the <audio> element at
 // the moment a real file is handed to the decoder, so a key in this list came
@@ -746,7 +734,7 @@ async function captureStates(page, tag, assertFlight = false) {
 }
 
 async function main() {
-  await mkdir(SHOTS, { recursive: true });
+  await ensureShots(SHOTS);
   await staticChecks();
 
   let server = null;
@@ -759,7 +747,7 @@ async function main() {
   }
   console.log(`\n--- browser (${base}) ---`);
 
-  const browser = await chromium.launch({ channel: 'chrome', headless: !has('headed') });
+  const browser = await launchChrome();
 
   // -- the hub route -------------------------------------------------------
   const hubContext = await browser.newContext({ viewport: { width: 1194, height: 834 } });
