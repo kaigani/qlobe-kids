@@ -50,20 +50,36 @@ async function staticGate() {
     const rel = destination.scene.replace(/^\.\//, '');
     if (!(await exists(...rel.split('/')))) missingAssets.push(rel);
   }
-  for (const rel of ['assets/title.webp', 'assets/map/natural-earth-110m.json', 'assets/audio/manifest.json']) {
+  const rasterUi = [
+    'prompt-panel', 'passport-book', 'end-card', 'confetti', 'map-pin', 'passport-cover',
+    'seal-leaf', 'seal-paw', 'seal-star', 'stamp-star', 'button-play', 'button-spin',
+    'button-stamp', 'button-replay',
+  ].map((name) => `assets/ui/${name}.webp`);
+  const runtimeRaster = [
+    'assets/title.webp', 'assets/backgrounds/splash.webp', 'assets/backgrounds/globe.webp',
+    'assets/map/world-paper-map.webp', 'assets/audio/manifest.json', ...rasterUi,
+  ];
+  for (const rel of runtimeRaster) {
     if (!(await exists(...rel.split('/')))) missingAssets.push(rel);
   }
-  check('all runtime art, geometry, and manifest assets exist', missingAssets.length === 0, missingAssets.join(', '));
+  check('all runtime raster art and manifest assets exist', missingAssets.length === 0, missingAssets.join(', '));
   const sceneSizes = await Promise.all(config.destinations.map((item) => size(...item.scene.replace(/^\.\//, '').split('/'))));
   check('all five 1600x1200 story plates meet the 300KB default budget', sceneSizes.every((bytes) => bytes <= 300 * 1024), sceneSizes.join(', '));
   check('generated title meets the 150KB lockup budget', (await size('assets', 'title.webp')) <= 150 * 1024);
+  const rasterSizes = await Promise.all(runtimeRaster.filter((rel) => rel.endsWith('.webp')).map((rel) => size(...rel.split('/'))));
+  check('every runtime raster stays below the 300KB asset budget', rasterSizes.every((bytes) => bytes <= 300 * 1024), rasterSizes.join(', '));
   const audioManifest = await readJSON('assets', 'audio', 'manifest.json');
   check('release does not silently ship an unapproved teacher-voice clone', Object.keys(audioManifest).length === 0);
   const geometry = await readJSON('assets', 'map', 'natural-earth-110m.json');
   check('Natural Earth geometry is compact and non-trivial', geometry.license === 'public-domain' && geometry.rings.length > 100 && geometry.rings.length < 200);
   const runtime = await Promise.all(['index.html', 'js/main.js', 'css/style.css'].map((file) => readFile(path.join(GAME, file), 'utf8')));
+  runtime.push(await readFile(path.resolve(GAME, '../../shared/js/paper-globe.js'), 'utf8'));
   check('runtime has no emoji placeholder refs or remote media calls',
     !runtime.some((text) => text.includes('emoji:') || /(?:src|href)=["']https?:/.test(text)));
+  const forbiddenRuntimeArt = /<svg|iconSvg|clip-path|(?:repeating-)?(?:linear|radial|conic)-gradient|drawPaperMap|CanvasTexture|createLinearGradient|burstConfetti/;
+  check('runtime contains no SVG, CSS-drawn, or canvas-authored artwork',
+    !runtime.some((text) => forbiddenRuntimeArt.test(text)),
+    runtime.flatMap((text) => text.match(forbiddenRuntimeArt) || []).join(', '));
 }
 
 async function openGame(browser, viewport, reducedMotion = 'no-preference') {

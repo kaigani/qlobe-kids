@@ -1,7 +1,7 @@
 // paper-globe.js — tactile, accurate, reusable globe interaction for QLOBE Kids.
 //
-// The visible sphere is WebGL, but its land texture is generated locally from
-// compact Natural Earth rings. DOM pins sit above the canvas so they remain
+// The visible sphere is WebGL, with a pre-rendered raster texture authored
+// from Natural Earth data. Raster DOM pins sit above the canvas so they remain
 // accessible, inspectable, and at least 96px even when the sphere is small.
 
 import * as THREE from '../vendor/three.module.min.js';
@@ -18,16 +18,17 @@ const DEFAULTS = {
 };
 
 export async function createPaperGlobe(options = {}) {
-  const response = await fetch(options.geometryUrl);
-  if (!response.ok) throw new Error(`Paper globe geometry failed: ${response.status}`);
-  const geometry = await response.json();
-  return new PaperGlobe({ ...options, geometry });
+  const texture = await new Promise((resolve, reject) => {
+    new THREE.TextureLoader().load(options.textureUrl, resolve, undefined, reject);
+  });
+  return new PaperGlobe({ ...options, texture });
 }
 
 export class PaperGlobe {
   constructor(options) {
     this.mount = options.mount;
     this.landmarks = options.landmarks || [];
+    this.pinImageUrl = options.pinImageUrl || '';
     this.tuning = { ...DEFAULTS, ...(options.tuning || {}) };
     this.onChange = options.onChange || (() => {});
     this.onAligned = options.onAligned || (() => {});
@@ -52,7 +53,7 @@ export class PaperGlobe {
     this.pinLayer.className = 'qk-paper-globe-pins';
     this.pinLayer.setAttribute('aria-live', 'polite');
 
-    this.initThree(options.geometry?.rings || []);
+    this.initThree(options.texture);
     this.mount.append(this.renderer.domElement, this.pinLayer);
     this.buildPins();
     this.installInput();
@@ -64,10 +65,12 @@ export class PaperGlobe {
     this.frame = requestAnimationFrame(this.tick);
   }
 
-  initThree(rings) {
+  initThree(texture) {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
-    this.camera.position.set(0, 0, 5.25);
+    // Keep the whole sphere inside the transparent canvas. Cropping a sphere
+    // at the canvas edge exposes a rectangular boundary over raster scenery.
+    this.camera.position.set(0, 0, 7.2);
 
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.domElement.className = 'qk-paper-globe-canvas';
@@ -79,7 +82,6 @@ export class PaperGlobe {
 
     this.globeGroup = new THREE.Group();
     this.scene.add(this.globeGroup);
-    const texture = new THREE.CanvasTexture(drawPaperMap(rings));
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
     this.texture = texture;
@@ -120,8 +122,15 @@ export class PaperGlobe {
       button.dataset.role = 'primary';
       button.style.setProperty('--pin-color', landmark.color || '#e15d43');
       button.setAttribute('aria-label', `Open ${landmark.name}`);
-      button.innerHTML = '<span class="qk-paper-globe-pin-mark" aria-hidden="true"><i></i></span>'
-        + `<span class="qk-paper-globe-pin-label">${escapeHtml(landmark.shortName || landmark.name)}</span>`;
+      const art = document.createElement('img');
+      art.className = 'qk-paper-globe-pin-art';
+      art.src = this.pinImageUrl;
+      art.alt = '';
+      art.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.className = 'qk-paper-globe-pin-label';
+      label.textContent = landmark.shortName || landmark.name;
+      button.append(art, label);
       const activate = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -412,99 +421,6 @@ export function latLonToVector3(lat, lon, radius = 1) {
   );
 }
 
-function drawPaperMap(rings) {
-  const width = 2048;
-  const height = 1024;
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  const ocean = ctx.createLinearGradient(0, 0, 0, height);
-  ocean.addColorStop(0, '#1d8dbc');
-  ocean.addColorStop(0.5, '#1184b7');
-  ocean.addColorStop(1, '#0d6f9e');
-  ctx.fillStyle = ocean;
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.strokeStyle = 'rgba(212,241,241,.18)';
-  ctx.lineWidth = 2;
-  for (let lon = -150; lon <= 150; lon += 30) {
-    // Three.SphereGeometry's front meridian is u=.25, not u=.5. Shift the
-    // equirectangular plate by 90 degrees so geographic lon=0 matches the
-    // same local vector convention used by latLonToVector3() and the pins.
-    const x = ((lon + 90) / 360) * width;
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
-  }
-  for (let lat = -60; lat <= 60; lat += 30) {
-    const y = ((90 - lat) / 180) * height;
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
-  }
-
-  for (const ring of rings) drawRing(ctx, ring, width, height);
-
-  let seed = 246813579;
-  const random = () => {
-    seed = (1664525 * seed + 1013904223) >>> 0;
-    return seed / 4294967296;
-  };
-  ctx.globalCompositeOperation = 'soft-light';
-  for (let i = 0; i < 18000; i += 1) {
-    const alpha = 0.02 + random() * 0.045;
-    ctx.fillStyle = random() > 0.5 ? `rgba(255,255,255,${alpha})` : `rgba(20,45,55,${alpha})`;
-    const size = random() * 1.4 + 0.25;
-    ctx.fillRect(random() * width, random() * height, size, size * (0.3 + random()));
-  }
-  ctx.globalCompositeOperation = 'source-over';
-  return canvas;
-}
-
-function drawRing(ctx, ring, width, height) {
-  if (!ring || ring.length < 4) return;
-  const points = [];
-  let previous = ring[0][0];
-  let offset = 0;
-  for (const [rawLon, lat] of ring) {
-    const lon = Number(rawLon);
-    const delta = lon - previous;
-    if (delta > 180) offset -= 360;
-    else if (delta < -180) offset += 360;
-    points.push([lon + offset, Number(lat)]);
-    previous = lon;
-  }
-  const meanLon = points.reduce((sum, p) => sum + p[0], 0) / points.length;
-  const meanLat = points.reduce((sum, p) => sum + p[1], 0) / points.length;
-  for (const copy of [-360, 0, 360]) {
-    ctx.beginPath();
-    points.forEach(([lon, lat], index) => {
-      const x = ((lon + copy + 90) / 360) * width;
-      const y = ((90 - lat) / 180) * height;
-      if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
-    ctx.fillStyle = landColor(meanLon, meanLat);
-    ctx.shadowColor = 'rgba(20,38,25,.42)';
-    ctx.shadowBlur = 7;
-    ctx.shadowOffsetX = 3;
-    ctx.shadowOffsetY = 4;
-    ctx.fill();
-    ctx.shadowColor = 'transparent';
-    ctx.strokeStyle = 'rgba(248,238,178,.5)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-}
-
-function landColor(lon, lat) {
-  const normalized = normalizeLon(lon);
-  if (lat < -65) return '#e8e1d0';
-  if (normalized < -25 && lat >= 18) return '#78a749';
-  if (normalized < -25) return '#c75e3d';
-  if (normalized > 112 && lat < 0) return '#d96f4e';
-  if (normalized > 35 && lat >= 0) return '#e4b333';
-  if (lat > 34) return '#9a7fc0';
-  return '#df9336';
-}
-
 function shortestDelta(from, to) {
   return ((Number(to) - normalizeLon(Number(from)) + 540) % 360) - 180;
 }
@@ -516,6 +432,3 @@ function normalizeLon(value) {
 function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
 function mix(a, b, t) { return a + (b - a) * t; }
 function round(value) { return Math.round(Number(value) * 100) / 100; }
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-}

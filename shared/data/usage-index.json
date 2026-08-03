@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-03T08:35:37.955Z",
+  "generated": "2026-08-03T12:36:10.039Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -587,7 +587,6 @@
       "characters": [],
       "modules": [
         "shared/js/audio-unlock.js",
-        "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/paper-globe.js",
         "shared/js/rng.js",
@@ -599,8 +598,11 @@
         "shared/vendor/three.module.min.js"
       ],
       "assets": [
+        "games/globe-spin-stories/assets/backgrounds/globe.webp",
+        "games/globe-spin-stories/assets/backgrounds/splash.webp",
         "games/globe-spin-stories/assets/scenes/asia.webp",
-        "games/globe-spin-stories/assets/title.webp"
+        "games/globe-spin-stories/assets/title.webp",
+        "games/globe-spin-stories/assets/ui/confetti.webp"
       ],
       "packs": []
     },
@@ -1960,7 +1962,6 @@
         "clay-creature-studio",
         "counting-treasure-cups",
         "feelings-charades",
-        "globe-spin-stories",
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
@@ -2707,10 +2708,19 @@
       "games/flashlight-cave/assets/pose-actors/ari": [
         "flashlight-cave"
       ],
+      "games/globe-spin-stories/assets/backgrounds/globe.webp": [
+        "globe-spin-stories"
+      ],
+      "games/globe-spin-stories/assets/backgrounds/splash.webp": [
+        "globe-spin-stories"
+      ],
       "games/globe-spin-stories/assets/scenes/asia.webp": [
         "globe-spin-stories"
       ],
       "games/globe-spin-stories/assets/title.webp": [
+        "globe-spin-stories"
+      ],
+      "games/globe-spin-stories/assets/ui/confetti.webp": [
         "globe-spin-stories"
       ],
       "games/letter-road-driving/assets/audio": [

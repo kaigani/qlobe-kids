@@ -109,21 +109,21 @@ All functional copy stays HTML. Every quoted line is present in `data/lines.json
 - A non-interactive tap produces only a soft paper rustle; no red X, buzzer, score, or failure speech exists.
 - The sound button repeats the current prompt or most recent fact.
 - Idle help occurs at 12 and 26 seconds and stops after interaction.
-- Reduced motion removes inertia, cloud drift, page flip depth, stamp orbit, and particle travel; state changes remain immediate and clear.
+- Reduced motion removes inertia and decorative motion; state changes remain immediate and clear.
 
 ## Art inventory
 
 | Asset | Size / renderer | Visible renderer | Interaction substrate |
 | --- | --- | --- | --- |
 | Splash title lockup | alpha WebP, target ≤150 KB | authored stitched navy ribbon with layered cream paper letters | accessible `<img>` inside splash |
-| Globe | WebGL canvas | procedural paper ocean plus Natural Earth public-domain land geometry rendered as layered fibre-textured paper | reusable `paper-globe.js` drag, inertia, snap and pin projection |
-| Globe surround | CSS + tiny paper texture | layered paper hills, clouds, stars and travel path; procedural is faithful because these are simple cut-paper silhouettes, not lesson objects | decorative DOM, pointer-events none |
+| Globe | WebGL sphere with a static raster surface | locally baked papercraft world texture derived from Natural Earth public-domain land geometry | reusable `paper-globe.js` drag, inertia, snap and raster-pin projection |
+| Globe surround | 1440×1080 opaque WebP | GPT Image 2 torn-paper sky, hills, clouds, balloon and landscape details | screen background raster |
 | Five storybooks | 1600×1200 opaque WebP, target ≤300 KB each | GPT Image 2 papercraft pop-up spreads, no baked text or controls | responsive scene image with HTML discovery seals over measured hotspots |
-| Discovery seals | one authored paper seal sprite reused with runtime pictograms | textured paper medallion | 112–144 px buttons positioned by config |
-| Five stamps | CSS-masked paper ink stamps with exact HTML continent names | runtime ink + paper treatment; exact text must stay reliable | passport buttons / completion state |
-| Passport | CSS paper/leather composition | layered paper object faithful to papercraft world | dialog with focus-safe controls |
+| Discovery seals | three alpha WebP medallions | GPT Image 2 stitched leaf, paw and star seals | 112–144 px raster buttons positioned by config |
+| Five stamps | one alpha WebP paper stamp plus exact HTML region names | authored orange star patch with reliable live text | passport collection and completion state |
+| Passport | alpha WebP open book and cover | GPT Image 2 layered paper/leather objects with blank live-text areas | dialog and tabs with focus-safe controls |
 | HUD | shared PNG Home/Back/Sound controls | platform interaction grammar | ≥96 px controls |
-| Celebration | small paper stars/confetti | papercraft shapes, not emoji | DOM particle layer, reduced-motion aware |
+| Celebration | 1440×1080 alpha WebP | authored papercraft confetti and stitched stars | brief non-interactive raster overlay |
 
 Generation sources, exact prompts, processing, and licenses are recorded in `ASSETS.md`. Source generations stay in `assets/source/`.
 
@@ -142,7 +142,7 @@ Only `localStorage['qk-globe-spin-stories-v1']` is written. It contains a schema
 
 ## Architecture and reusable capability
 
-- `shared/js/paper-globe.js` is the reusable platform capability: accurate land texture generation from compact GeoJSON, Three.js sphere lifecycle, drag/inertia, `latLonToVector3`, front-visibility projection, landmark pin DOM projection, snap/ease, resize, reduced motion, and full teardown.
+- `shared/js/paper-globe.js` is the reusable platform capability: pre-rendered raster texture loading, Three.js sphere lifecycle, drag/inertia, `latLonToVector3`, front-visibility projection, raster landmark-pin DOM projection, snap/ease, resize, reduced motion, and full teardown. Natural Earth geometry is converted and baked offline by the game tools; the browser does not author map pixels.
 - `games/globe-spin-stories/js/main.js` owns screens, itinerary, narration, passport state, book discoveries, and `QLOBE_DEBUG`.
 - `config.json` owns destinations, coordinates, facts, scene assets, hotspots, tuning, and adult captions.
 - Shared `tap.js`, `voice-clips.js`, `audio-unlock.js`, `sfx.js`, `screens.js`, `timers.js`, and `debug-harness.js` remain authoritative.

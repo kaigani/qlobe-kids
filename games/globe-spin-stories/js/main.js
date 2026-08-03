@@ -6,7 +6,6 @@ import * as voice from '../../../shared/js/voice-clips.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
-import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -89,6 +88,7 @@ const els = {
   again: $('#again-button'),
   endPassport: $('#end-passport-button'),
   endStamps: $('#end-stamps'),
+  celebration: $('#celebration-art'),
   overlay: $('#passport-overlay'),
   passportStamps: $('#passport-stamps'),
   passportClose: $('#passport-close'),
@@ -101,7 +101,8 @@ const disposeKiosk = installKioskGuards();
 
 globe = await createPaperGlobe({
   mount: els.globeMount,
-  geometryUrl: config.globe.texture,
+  textureUrl: config.globe.texture,
+  pinImageUrl: config.globe.pin,
   landmarks: config.destinations,
   initial: config.globe.initial,
   tuning: config.globe,
@@ -307,7 +308,11 @@ function renderDiscoveries(destination) {
     button.dataset.target = `discover-${discovery.id}`;
     button.dataset.role = 'primary';
     button.setAttribute('aria-label', `Discover ${discovery.label}`);
-    button.innerHTML = iconSvg(discovery.icon);
+    const art = document.createElement('img');
+    art.src = discoveryArt(discovery.icon);
+    art.alt = '';
+    art.setAttribute('aria-hidden', 'true');
+    button.append(art);
     els.discoveries.append(button);
     storyDisposers.push(onTap(button, () => { void discover(discovery, button); }, { feedback: touchFeedback }));
 
@@ -355,7 +360,7 @@ async function stampPage() {
   saveVisited();
   globe.setVisited(state.visited);
   renderPassport();
-  burstConfetti({ host: game, count: 24, duration: 1700, palette: [destination.color, '#f3c54b', '#fff3d2', '#2d7aa1'], rng });
+  flashCelebration(1700);
   sfx.tada();
   await speak(destination.stamp);
   if (state.screen !== 'story') return true;
@@ -375,7 +380,7 @@ async function stampPage() {
 function showEnd() {
   showScreen('end');
   renderEndStamps();
-  burstConfetti({ host: game, count: 45, duration: 2800, rng });
+  flashCelebration(2800);
   sfx.tada();
   void speak('all-complete');
 }
@@ -385,6 +390,7 @@ function renderProgress() {
   state.itinerary.forEach((id, index) => {
     const pip = document.createElement('i');
     pip.className = 'tour-pip';
+    pip.style.backgroundImage = 'url(./assets/ui/stamp-star.webp)';
     pip.classList.toggle('is-done', state.tourVisited.has(id));
     pip.classList.toggle('is-now', index === state.index && state.screen !== 'end');
     els.tourPips.append(pip);
@@ -407,7 +413,12 @@ function renderPassport() {
     stamp.classList.toggle('is-collected', state.visited.has(destination.id));
     stamp.style.setProperty('--stamp-color', destination.color);
     stamp.style.setProperty('--tilt', `${[-3, 2, -1, 3, -2][index]}deg`);
-    stamp.innerHTML = `<i aria-hidden="true"></i><strong>${escapeHtml(destination.name)}</strong>`;
+    const art = document.createElement('img');
+    art.src = './assets/ui/stamp-star.webp';
+    art.alt = '';
+    const label = document.createElement('strong');
+    label.textContent = destination.name;
+    stamp.append(art, label);
     els.passportStamps.append(stamp);
   });
 }
@@ -419,7 +430,12 @@ function renderEndStamps() {
     stamp.className = 'end-stamp';
     stamp.style.setProperty('--stamp-color', destination.color);
     stamp.style.setProperty('--tilt', `${[-7, 5, -3, 6, -4][index]}deg`);
-    stamp.innerHTML = `<span aria-hidden="true"></span><strong>${escapeHtml(destination.shortName)}</strong>`;
+    const art = document.createElement('img');
+    art.src = './assets/ui/stamp-star.webp';
+    art.alt = '';
+    const label = document.createElement('strong');
+    label.textContent = destination.shortName;
+    stamp.append(art, label);
     els.endStamps.append(stamp);
   });
 }
@@ -560,18 +576,20 @@ function completeTour() {
   return true;
 }
 
-function iconSvg(kind) {
-  if (kind === 'leaf' || kind === 'grass' || kind === 'pine') {
-    return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M53 7C30 8 12 19 10 39c-1 9 6 17 15 17 19 0 29-22 28-49ZM17 50c8-14 18-23 31-32-10 11-18 23-24 37l-7-5Z"/></svg>';
-  }
-  if (kind === 'spark') {
-    return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="m32 3 7 20 21 1-17 13 6 21-17-12-17 12 6-21L4 24l21-1 7-20Z"/></svg>';
-  }
-  return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M17 29c5 0 9-6 9-13S22 4 17 4 8 10 8 17s4 12 9 12Zm30 0c5 0 9-5 9-12S52 5 47 5s-9 5-9 12 4 12 9 12ZM8 39c4 0 7-4 7-9s-3-9-7-9-7 4-7 9 3 9 7 9Zm48 0c4 0 7-4 7-9s-3-9-7-9-7 4-7 9 3 9 7 9ZM32 25c-10 0-20 10-20 21 0 8 6 14 13 14 3 0 5-2 7-2s4 2 7 2c7 0 13-6 13-14 0-11-10-21-20-21Z"/></svg>';
+function discoveryArt(kind) {
+  if (kind === 'leaf' || kind === 'grass' || kind === 'pine') return './assets/ui/seal-leaf.webp';
+  if (kind === 'spark') return './assets/ui/seal-star.webp';
+  return './assets/ui/seal-paw.webp';
 }
 
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+function flashCelebration(duration) {
+  els.celebration.hidden = false;
+  els.celebration.classList.remove('is-showing');
+  requestAnimationFrame(() => els.celebration.classList.add('is-showing'));
+  timers.after(duration, () => {
+    els.celebration.classList.remove('is-showing');
+    timers.after(250, () => { els.celebration.hidden = true; });
+  });
 }
 
 window.addEventListener('pagehide', () => {

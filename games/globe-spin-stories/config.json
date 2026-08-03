@@ -5,7 +5,8 @@
   "storageKey": "qk-globe-spin-stories-v1",
   "art": { "width": 1600, "height": 1200 },
   "globe": {
-    "texture": "./assets/map/natural-earth-110m.json",
+    "texture": "./assets/map/world-paper-map.webp",
+    "pin": "./assets/ui/map-pin.webp",
     "initial": { "lat": 14, "lon": 22 },
     "dragDegreesPerPixel": 0.22,
     "tiltDegreesPerPixel": 0.11,
