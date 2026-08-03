@@ -20,11 +20,28 @@ let globe = null;
 let storyDisposers = [];
 let resetTimer = null;
 let audioSequence = 0;
+let storyOpening = false;
 
 const linesResponse = await fetch('./data/lines.json');
 if (!linesResponse.ok) throw new Error(`Globe Spin Stories lines failed: ${linesResponse.status}`);
 const lines = await linesResponse.json();
 await voice.init('./assets/audio/manifest.json', './data/lines.json', lines);
+
+// Begin decoding every lightweight story plate while the child is still on the
+// splash/globe. Production CDN latency can otherwise expose the bare frame for
+// a beat when a later destination opens for the first time.
+const storyPlateReady = new Map(config.destinations.map((destination) => {
+  const image = new Image();
+  image.src = destination.scene;
+  const ready = image.decode().catch(() => new Promise((resolve) => {
+    if (image.complete) resolve();
+    else {
+      image.addEventListener('load', resolve, { once: true });
+      image.addEventListener('error', resolve, { once: true });
+    }
+  }));
+  return [destination.id, ready];
+}));
 
 const state = {
   screen: 'splash',
@@ -239,19 +256,32 @@ async function onGlobeAligned(id) {
 }
 
 async function landAt(id) {
-  if (state.screen !== 'globe' || id !== state.destinationId || globe.getState().alignedId !== id) return false;
+  if (storyOpening || state.screen !== 'globe' || id !== state.destinationId || globe.getState().alignedId !== id) return false;
+  storyOpening = true;
   sfx.pop();
-  openStory(destinationById.get(id));
-  return true;
+  try {
+    return await openStory(destinationById.get(id));
+  } finally {
+    storyOpening = false;
+  }
 }
 
-function openStory(destination) {
+async function openStory(destination) {
   if (!destination) return false;
+  els.storyScene.src = destination.scene;
+  els.storyScene.alt = destination.sceneAlt;
+  els.destinationCaption.textContent = 'Opening the storybook…';
+  await Promise.race([
+    storyPlateReady.get(destination.id) || Promise.resolve(),
+    timers.wait(8000),
+  ]);
+  // Decode the actual in-DOM image too: the preload may have populated the
+  // network cache without completing this element's paint lifecycle yet.
+  await els.storyScene.decode().catch(() => {});
+  if (state.screen !== 'globe' || state.destinationId !== destination.id) return false;
   showScreen('story');
   state.discoveries = new Set();
   state.destinationId = destination.id;
-  els.storyScene.src = destination.scene;
-  els.storyScene.alt = destination.sceneAlt;
   els.storyRegion.textContent = destination.name.toUpperCase();
   els.storyRegion.style.color = destination.color;
   els.storyTitle.textContent = `Meet the ${destination.discoveries[0].label.toLowerCase()}`;

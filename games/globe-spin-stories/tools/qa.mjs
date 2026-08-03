@@ -127,6 +127,8 @@ async function browserGate(browser) {
       await page.evaluate(() => window.QLOBE_DEBUG.land());
       await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'story');
       const destination = await page.evaluate(() => window.QLOBE_DEBUG.getState().destinationId);
+      check(`${destination} plate is decoded before its story becomes interactive`,
+        await page.locator('#story-scene').evaluate((img) => img.complete && img.naturalWidth === 1600 && img.naturalHeight === 1200));
       await page.screenshot({ path: path.join(shots, `03-story-${destination}.png`) });
     }
     for (const kind of ['animal', 'habitat', 'wonder']) await page.evaluate((id) => window.QLOBE_DEBUG.discover(id), kind);
