@@ -2,45 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Big Paper Murals 🎨 — Giant Drawing and Teamwork</title>
-  <meta name="description" content="Practice giant shoulder-led drawing moves, share the art space kindly, and celebrate every contribution at a gallery-opening finale. A whole-arm art coach for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="theme-color" content="#f4ead4" />
+  <title>Big Paper Murals — Paint Together</title>
+  <meta name="description" content="Paint a giant musical papercraft mural together, wake playful collage stamps, and save a local keepsake. Creative multi-touch play for ages 5–6." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Big Paper Murals" />
-  <meta property="og:title" content="Big Paper Murals 🎨 — Giant Drawing and Teamwork" />
-  <meta property="og:description" content="Practice giant shoulder-led drawing moves, share the art space kindly, and celebrate every contribution at a gallery-opening finale. A whole-arm art coach for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Big Paper Murals — Paint Together" />
+  <meta property="og:description" content="Two artists, one joyful musical mural, and no wrong way to paint." />
   <meta property="og:url" content="https://qlo.be/games/big-paper-murals/" />
   <meta property="og:image" content="https://qlo.be/games/big-paper-murals/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Big Paper Murals title screen with yellow My Mural and Mural Party buttons below a paint palette icon." />
-
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Big Paper Murals 🎨 — Giant Drawing and Teamwork" />
-  <meta name="twitter:description" content="Practice giant shoulder-led drawing moves, share the art space kindly, and celebrate every contribution at a gallery-opening finale. A whole-arm art coach for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/big-paper-murals/assets/og-image.jpg" />
-
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,68 @@
+{
+  "title": "Big Paper Murals",
+  "palette": ["#ef5b4c", "#f6b928", "#65a83f", "#168cc4", "#754bb6", "#e66a9c"],
+  "voice": {
+    "welcome": "Pick a paper, then paint together!",
+    "jungle": "Grow a wild jungle. Big leaves, tiny bugs, anything you imagine!",
+    "space": "Paint a space parade. Whooshing trails and twinkly stars!",
+    "city": "Build a busy city. Roads, rooftops, and silly surprises!",
+    "blank": "Fresh paper! Make any kind of mural you like.",
+    "paintNudge": "Try a big swoop. Two artists can paint at the same time!",
+    "stampNudge": "Tap the paper to wake a little collage friend.",
+    "music": "Listen! Every color has its own voice.",
+    "finishNudge": "Add a mark or a stamp, then your mural can come alive.",
+    "alive": "Your mural is alive! Tap the art to make music.",
+    "saved": "Your mural picture is saved!",
+    "fresh": "Fresh paper is ready."
+  },
+  "themes": [
+    {
+      "id": "jungle",
+      "title": "Jungle Jam",
+      "art": "./assets/theme-jungle.webp",
+      "promptKey": "jungle",
+      "colors": ["#ef5b4c", "#f6b928", "#65a83f", "#168cc4", "#754bb6"],
+      "stamps": ["tiger", "toucan", "sun", "paint-friend"]
+    },
+    {
+      "id": "space",
+      "title": "Space Parade",
+      "art": "./assets/theme-space.webp",
+      "promptKey": "space",
+      "colors": ["#ef5b4c", "#f6b928", "#168cc4", "#754bb6", "#e66a9c"],
+      "stamps": ["rocket", "planet", "sun", "paint-friend"]
+    },
+    {
+      "id": "city",
+      "title": "City Party",
+      "art": "./assets/theme-city.webp",
+      "promptKey": "city",
+      "colors": ["#ef5b4c", "#f6b928", "#65a83f", "#168cc4", "#754bb6"],
+      "stamps": ["car", "house", "sun", "paint-friend"]
+    },
+    {
+      "id": "blank",
+      "title": "Fresh Paper",
+      "art": null,
+      "promptKey": "blank",
+      "colors": ["#ef5b4c", "#f6b928", "#65a83f", "#168cc4", "#754bb6", "#e66a9c"],
+      "stamps": ["tiger", "rocket", "house", "paint-friend"]
+    }
+  ],
+  "stamps": {
+    "tiger": { "art": "./assets/stamps/tiger.webp", "label": "tiger", "color": "#ef8d25" },
+    "toucan": { "art": "./assets/stamps/toucan.webp", "label": "toucan", "color": "#65a83f" },
+    "rocket": { "art": "./assets/stamps/rocket.webp", "label": "rocket", "color": "#ef5b4c" },
+    "planet": { "art": "./assets/stamps/planet.webp", "label": "planet", "color": "#754bb6" },
+    "car": { "art": "./assets/stamps/car.webp", "label": "car", "color": "#ef5b4c" },
+    "house": { "art": "./assets/stamps/house.webp", "label": "house", "color": "#168cc4" },
+    "sun": { "art": "./assets/stamps/sun.webp", "label": "sun", "color": "#f6b928" },
+    "paint-friend": { "art": "./assets/stamps/paint-friend.webp", "label": "paint friend", "color": "#168cc4" }
+  },
+  "tools": [
+    { "id": "brush", "title": "Brush", "art": "./assets/tools/brush.webp", "brush": "ribbon" },
+    { "id": "roller", "title": "Roller", "art": "./assets/tools/roller.webp", "brush": "roller" },
+    { "id": "stamp", "title": "Stamp", "art": "./assets/tools/stamp.webp", "brush": null },
+    { "id": "music", "title": "Music", "art": "./assets/tools/music.webp", "brush": null }
+  ]
+}

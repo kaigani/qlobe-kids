@@ -9,14 +9,13 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-02T05:38:14.983Z",
+  "generated": "2026-08-03T06:40:43.938Z",
   "engines": {
     "coach-timer": {
-      "count": 20,
+      "count": 19,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "big-paper-murals",
         "button-zipper-lab",
         "cleanup-timer-quest",
         "freeze-focus-dance",
@@ -217,14 +216,19 @@
       "packs": []
     },
     "big-paper-murals": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "art-music",
       "characters": [],
       "modules": [
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/musical-canvas.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js"
       ],
       "assets": [],
       "packs": []
@@ -282,7 +286,7 @@
     },
     "bug-hotel-observer": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
@@ -352,7 +356,12 @@
       "category": "art-music",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
         "shared/js/freeform-board.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/lipsync.js",
@@ -426,8 +435,14 @@
         "skipper"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/pose-sprite-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
@@ -489,6 +504,10 @@
         "sam"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/mouth.js",
@@ -511,7 +530,11 @@
         "ari"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
         "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/particles.js",
@@ -650,6 +673,10 @@
       "category": "practical-life",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
@@ -745,10 +772,16 @@
         "sam"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/mouth.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "assets": [
@@ -1012,7 +1045,10 @@
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
         "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
@@ -1099,6 +1135,10 @@
         "unicorn"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
         "shared/js/performance-recorder.js",
         "shared/js/performance-video-export.js",
         "shared/js/sfx.js",
@@ -1106,6 +1146,7 @@
         "shared/js/stage/stage.js",
         "shared/js/stage/theater.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "assets": [
@@ -1161,8 +1202,14 @@
         "zoom"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
         "games/red-green-light/assets/callers"
@@ -1175,6 +1222,7 @@
       "category": "reading-phonics",
       "characters": [],
       "modules": [
+        "shared/js/debug-harness.js",
         "shared/js/hotspot-scene.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -1208,7 +1256,12 @@
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
         "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
@@ -1340,6 +1393,12 @@
       "category": "sensorial-science",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/particles.js",
@@ -1399,6 +1458,11 @@
         "maya"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
@@ -1486,7 +1550,10 @@
       "category": "art-music",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
         "shared/js/musical-canvas.js",
+        "shared/js/narrator.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
@@ -1577,8 +1644,11 @@
         "white-cat"
       ],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
         "shared/js/engines/story-stones.js",
         "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/stage/pose-sprite.js",
         "shared/js/stage/theater.js",
         "shared/js/voice-clips.js"
@@ -1657,9 +1727,16 @@
       "category": "math-number-sense",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "assets": [
@@ -1816,7 +1893,12 @@
       "category": "culture-geography",
       "characters": [],
       "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
         "shared/js/music.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/drag-to-slot.js",
@@ -1827,6 +1909,7 @@
         "shared/js/stage/stage.js",
         "shared/js/stage/tween.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "assets": [
@@ -1840,8 +1923,38 @@
       "shared/js/audio": [
         "sound-sprouts"
       ],
+      "shared/js/audio-unlock.js": [
+        "big-paper-murals",
+        "clay-creature-studio",
+        "counting-treasure-cups",
+        "feelings-charades",
+        "flashlight-cave",
+        "laundry-sorter",
+        "lunchbox-pack",
+        "playdough-letter-factory",
+        "puppet-retell",
+        "red-green-light",
+        "sand-tray-letters",
+        "sink-or-float",
+        "snack-chef",
+        "sound-painting",
+        "story-stones",
+        "teen-bead-builder",
+        "world-music-dance"
+      ],
       "shared/js/audio.js": [
         "sound-basket"
+      ],
+      "shared/js/celebrate.js": [
+        "clay-creature-studio",
+        "counting-treasure-cups",
+        "feelings-charades",
+        "lunchbox-pack",
+        "puppet-retell",
+        "sand-tray-letters",
+        "sink-or-float",
+        "snack-chef",
+        "teen-bead-builder"
       ],
       "shared/js/content.js": [
         "blend-train",
@@ -1849,6 +1962,31 @@
         "playdough-letter-factory",
         "sand-tray-letters",
         "sound-basket"
+      ],
+      "shared/js/debug-harness.js": [
+        "big-paper-murals",
+        "clay-creature-studio",
+        "counting-treasure-cups",
+        "feelings-charades",
+        "flashlight-cave",
+        "laundry-sorter",
+        "lunchbox-pack",
+        "playdough-letter-factory",
+        "puppet-retell",
+        "red-green-light",
+        "rhyming-detective",
+        "sand-tray-letters",
+        "sink-or-float",
+        "snack-chef",
+        "sound-painting",
+        "story-stones",
+        "teen-bead-builder",
+        "world-music-dance"
+      ],
+      "shared/js/dom.js": [
+        "puppet-retell",
+        "teen-bead-builder",
+        "world-music-dance"
       ],
       "shared/js/engines/build-assemble.js": [
         "bead-path-builder",
@@ -1884,7 +2022,6 @@
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "big-paper-murals",
         "button-zipper-lab",
         "cleanup-timer-quest",
         "freeze-focus-dance",
@@ -1967,17 +2104,40 @@
         "bug-hotel-observer",
         "rhyming-detective"
       ],
+      "shared/js/hud.js": [
+        "counting-treasure-cups",
+        "feelings-charades",
+        "flashlight-cave",
+        "lunchbox-pack",
+        "red-green-light"
+      ],
+      "shared/js/idle-nudge.js": [
+        "sink-or-float",
+        "teen-bead-builder",
+        "world-music-dance"
+      ],
       "shared/js/journal.js": [
         "bug-hotel-observer"
       ],
       "shared/js/magnifier-lens.js": [
         "bug-hotel-observer"
       ],
+      "shared/js/mode-select.js": [
+        "snack-chef"
+      ],
       "shared/js/music.js": [
         "my-puppet-band",
         "world-music-dance"
       ],
       "shared/js/musical-canvas.js": [
+        "big-paper-murals",
+        "sound-painting"
+      ],
+      "shared/js/narrator.js": [
+        "big-paper-murals",
+        "laundry-sorter",
+        "sand-tray-letters",
+        "sink-or-float",
         "sound-painting"
       ],
       "shared/js/performance-recorder.js": [
@@ -1985,6 +2145,26 @@
       ],
       "shared/js/performance-video-export.js": [
         "puppet-retell"
+      ],
+      "shared/js/preload.js": [
+        "clay-creature-studio"
+      ],
+      "shared/js/rng.js": [
+        "big-paper-murals",
+        "clay-creature-studio",
+        "counting-treasure-cups",
+        "flashlight-cave",
+        "laundry-sorter",
+        "lunchbox-pack",
+        "playdough-letter-factory",
+        "red-green-light",
+        "sand-tray-letters",
+        "sink-or-float",
+        "teen-bead-builder",
+        "world-music-dance"
+      ],
+      "shared/js/screens.js": [
+        "snack-chef"
       ],
       "shared/js/sfx": [
         "sound-sprouts"
@@ -2206,6 +2386,9 @@
       "shared/js/stage/art-pixi.js": [
         "blend-train"
       ],
+      "shared/js/stage/drag-to-slot-dom.js": [
+        "story-stones"
+      ],
       "shared/js/stage/drag-to-slot.js": [
         "blend-train",
         "world-music-dance"
@@ -2228,6 +2411,9 @@
       ],
       "shared/js/stage/pose-conductor.js": [
         "world-music-dance"
+      ],
+      "shared/js/stage/pose-sprite-dom.js": [
+        "counting-treasure-cups"
       ],
       "shared/js/stage/pose-sprite.js": [
         "story-stones",
@@ -2260,6 +2446,7 @@
         "sink-or-float"
       ],
       "shared/js/tap.js": [
+        "big-paper-murals",
         "bug-hotel-observer",
         "clay-creature-studio",
         "counting-treasure-cups",
@@ -2279,6 +2466,13 @@
         "teen-bead-builder",
         "world-music-dance"
       ],
+      "shared/js/timers.js": [
+        "lunchbox-pack",
+        "puppet-retell",
+        "red-green-light",
+        "teen-bead-builder",
+        "world-music-dance"
+      ],
       "shared/js/voice-clips.js": [
         "blend-train",
         "bug-hotel-observer",
@@ -2292,6 +2486,7 @@
         "playdough-letter-factory",
         "puppet-problem-solvers",
         "puppet-retell",
+        "red-green-light",
         "rhyming-detective",
         "sand-tray-letters",
         "sink-or-float",

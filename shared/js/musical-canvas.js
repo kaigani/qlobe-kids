@@ -8,7 +8,7 @@ const SCALE = [0, 2, 4, 7, 9, 12, 14, 16];
 const MAX_POINTS = 1800;
 export const MUSIC_MIX = Object.freeze({
   master: .85,
-  brushGain: Object.freeze({ ribbon: .09, bounce: .115, sparkle: .075 }),
+  brushGain: Object.freeze({ ribbon: .09, roller: .082, bounce: .115, sparkle: .075 }),
 });
 const COLOR_VOICES = [
   { semitones: -12, wave: 'sine',     brightness: .72, gain: 1.08, pan: -.52 },
@@ -51,10 +51,14 @@ export function createMusicalCanvas(canvas, {
   brush = 'ribbon',
   color = '#35d6e8',
   palette = [],
+  multiTouch = false,
+  maxPoints = MAX_POINTS,
+  renderBackground = null,
   reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches,
   onChange = () => {},
   onStrokeStart = () => {},
   onStrokeEnd = () => {},
+  onActivePointers = () => {},
 } = {}) {
   if (!(canvas instanceof HTMLCanvasElement)) {
     throw new Error('musical-canvas requires a canvas');
@@ -62,8 +66,9 @@ export function createMusicalCanvas(canvas, {
 
   const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
   const state = {
-    brush, color, palette: [...palette], reducedMotion, muted: false, activePointer: null,
-    strokes: [], redo: null, current: null, particles: [], replay: null,
+    brush, color, palette: [...palette], multiTouch, reducedMotion, muted: false,
+    activePointers: new Set(), currents: new Map(),
+    strokes: [], redo: null, particles: [], replay: null,
     sessionStart: performance.now(), width: 1, height: 1, dpr: 1,
   };
 
@@ -103,7 +108,7 @@ export function createMusicalCanvas(canvas, {
 
   function note(point, stroke, force = false) {
     const now = performance.now();
-    const wait = stroke.brush === 'ribbon' ? 92 : stroke.brush === 'bounce' ? 68 : 48;
+    const wait = stroke.brush === 'ribbon' ? 92 : stroke.brush === 'roller' ? 110 : stroke.brush === 'bounce' ? 68 : 48;
     const track = colorKey(stroke.color);
     const previous = lastSoundAt.get(track) || 0;
     if (!force && now - previous < wait) return;
@@ -118,7 +123,7 @@ export function createMusicalCanvas(canvas, {
     const osc = ac.createOscillator();
     const gain = ac.createGain();
     const filter = ac.createBiquadFilter();
-    const duration = stroke.brush === 'ribbon' ? .38 : stroke.brush === 'bounce' ? .18 : .28;
+    const duration = stroke.brush === 'ribbon' ? .38 : stroke.brush === 'roller' ? .3 : stroke.brush === 'bounce' ? .18 : .28;
     const baseAmount = MUSIC_MIX.brushGain[stroke.brush] || MUSIC_MIX.brushGain.ribbon;
     const amount = baseAmount * voice.gain;
     osc.type = voice.wave;
@@ -128,7 +133,7 @@ export function createMusicalCanvas(canvas, {
       osc.frequency.exponentialRampToValueAtTime(hz, ac.currentTime + duration);
     }
     filter.type = 'lowpass';
-    filter.frequency.value = (stroke.brush === 'ribbon' ? 1100 : 2600) * voice.brightness;
+    filter.frequency.value = (['ribbon', 'roller'].includes(stroke.brush) ? 1100 : 2600) * voice.brightness;
     osc.connect(filter);
     filter.connect(gain);
     if (typeof ac.createStereoPanner === 'function') {
@@ -158,14 +163,14 @@ export function createMusicalCanvas(canvas, {
     cancelReplay();
     state.redo = null;
     const stroke = {
-      id: `${Date.now().toString(36)}-${state.strokes.length}`,
+      id: `${Date.now().toString(36)}-${pointerId}-${state.strokes.length}`,
       brush: state.brush,
       color: state.color,
-      width: state.brush === 'ribbon' ? .026 : state.brush === 'bounce' ? .022 : .014,
+      width: state.brush === 'roller' ? .07 : state.brush === 'ribbon' ? .026 : state.brush === 'bounce' ? .022 : .014,
       start: Math.round(performance.now() - state.sessionStart),
       points: [{ x: round(point.x), y: round(point.y), t: 0, p: round(point.p || .5) }],
     };
-    state.current = { stroke, pointerId, began: performance.now(), last: point };
+    state.currents.set(pointerId, { stroke, pointerId, began: performance.now(), last: point });
     state.strokes.push(stroke);
     onStrokeStart(clone(stroke));
     spawn(state.particles, point, stroke, 5);
@@ -174,9 +179,9 @@ export function createMusicalCanvas(canvas, {
     return stroke;
   }
 
-  function addPoint(point, { sound = true } = {}) {
-    const current = state.current;
-    if (!current || totalPointCount(state.strokes) >= MAX_POINTS) return false;
+  function addPoint(point, { sound = true, pointerId = 'debug' } = {}) {
+    const current = state.currents.get(pointerId);
+    if (!current || totalPointCount(state.strokes) >= maxPoints) return false;
     const distance = Math.hypot(point.x - current.last.x, point.y - current.last.y);
     if (distance < .004 && performance.now() - current.began > 20) return false;
     const entry = {
@@ -192,74 +197,81 @@ export function createMusicalCanvas(canvas, {
     return true;
   }
 
-  function finishStroke() {
-    if (!state.current) return;
-    const stroke = state.current.stroke;
-    state.current = null;
+  function finishStroke(pointerId = 'debug') {
+    const current = state.currents.get(pointerId);
+    if (!current) return;
+    const stroke = current.stroke;
+    state.currents.delete(pointerId);
     onStrokeEnd(clone(stroke));
     onChange(snapshot());
     render();
   }
 
   function pointerDown(event) {
-    if (state.activePointer !== null || event.isPrimary === false || state.replay) return;
+    if (state.replay || state.activePointers.has(event.pointerId)) return;
+    if (!state.multiTouch && (state.activePointers.size || event.isPrimary === false)) return;
     event.preventDefault();
     unlock();
-    state.activePointer = event.pointerId;
+    state.activePointers.add(event.pointerId);
+    onActivePointers(state.activePointers.size);
     const point = normalized(event.clientX, event.clientY);
     point.p = event.pressure || .5;
     beginStroke(point, event.pointerId);
   }
 
   function pointerMove(event) {
-    if (event.pointerId !== state.activePointer || !state.current) return;
+    if (!state.activePointers.has(event.pointerId) || !state.currents.has(event.pointerId)) return;
     event.preventDefault();
     const point = normalized(event.clientX, event.clientY);
     point.p = event.pressure || .5;
-    addPoint(point);
+    addPoint(point, { pointerId: event.pointerId });
   }
 
   function pointerUp(event) {
-    if (event.pointerId !== state.activePointer) return;
+    if (!state.activePointers.has(event.pointerId)) return;
     event.preventDefault();
-    state.activePointer = null;
-    finishStroke();
+    state.activePointers.delete(event.pointerId);
+    finishStroke(event.pointerId);
+    onActivePointers(state.activePointers.size);
   }
 
   // A cancelled stroke was never completed by the child — discard it instead
   // of saving, and forget its track's throttle timer so it can't skew the
   // pacing of the next stroke in that color.
-  function discardStroke() {
-    if (!state.current) return;
-    const stroke = state.current.stroke;
+  function discardStroke(pointerId = 'debug') {
+    const current = state.currents.get(pointerId);
+    if (!current) return;
+    const stroke = current.stroke;
     const index = state.strokes.indexOf(stroke);
     if (index !== -1) state.strokes.splice(index, 1);
     lastSoundAt.delete(colorKey(stroke.color));
-    state.current = null;
+    state.currents.delete(pointerId);
     render();
   }
 
   function pointerCancel(event) {
-    if (event.pointerId !== state.activePointer) return;
+    if (!state.activePointers.has(event.pointerId)) return;
     event.preventDefault();
-    state.activePointer = null;
-    discardStroke();
+    state.activePointers.delete(event.pointerId);
+    discardStroke(event.pointerId);
+    onActivePointers(state.activePointers.size);
   }
 
-  function cancelPointer() {
-    if (state.activePointer === null) return;
-    state.activePointer = null;
-    discardStroke();
+  function cancelPointers() {
+    if (!state.activePointers.size) return;
+    for (const pointerId of state.activePointers) discardStroke(pointerId);
+    state.activePointers.clear();
+    onActivePointers(0);
   }
 
   canvas.addEventListener('pointerdown', pointerDown, { passive: false });
   window.addEventListener('pointermove', pointerMove, { passive: false });
   window.addEventListener('pointerup', pointerUp, { passive: false });
   window.addEventListener('pointercancel', pointerCancel, { passive: false });
-  window.addEventListener('blur', cancelPointer);
+  window.addEventListener('blur', cancelPointers);
 
   function setBrush(next) {
-    if (['ribbon', 'bounce', 'sparkle'].includes(next)) state.brush = next;
+    if (['ribbon', 'roller', 'bounce', 'sparkle'].includes(next)) state.brush = next;
   }
 
   function setColor(next) {
@@ -275,6 +287,7 @@ export function createMusicalCanvas(canvas, {
 
   function undo() {
     cancelReplay();
+    cancelPointers();
     if (!state.strokes.length) return false;
     state.redo = state.strokes.pop();
     onChange(snapshot());
@@ -284,6 +297,7 @@ export function createMusicalCanvas(canvas, {
 
   function clear() {
     cancelReplay();
+    cancelPointers();
     if (!state.strokes.length) return false;
     state.redo = { cleared: clone(state.strokes) };
     state.strokes = [];
@@ -312,6 +326,7 @@ export function createMusicalCanvas(canvas, {
 
   function load(painting) {
     cancelReplay();
+    cancelPointers();
     state.strokes = clone(painting?.strokes || []).filter(validStroke);
     state.sessionStart = performance.now();
     state.redo = null;
@@ -383,7 +398,7 @@ export function createMusicalCanvas(canvas, {
     beginStroke({ ...line[0], p: .5 });
     const began = performance.now();
     for (let i = 1; i < line.length; i++) {
-      state.current.began = began - i * 90;
+      state.currents.get('debug').began = began - i * 90;
       addPoint({ ...line[i], p: .5 }, { sound: false });
     }
     finishStroke();
@@ -406,13 +421,19 @@ export function createMusicalCanvas(canvas, {
 
   function render() {
     const { width, height } = state;
-    const bg = ctx.createRadialGradient(width * .5, height * .42, 0, width * .5, height * .5, width * .75);
-    bg.addColorStop(0, '#10285a');
-    bg.addColorStop(.6, '#071c43');
-    bg.addColorStop(1, '#04112b');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, width, height);
-    paperGrain(ctx, width, height);
+    if (typeof renderBackground === 'function') {
+      ctx.save();
+      renderBackground(ctx, width, height);
+      ctx.restore();
+    } else {
+      const bg = ctx.createRadialGradient(width * .5, height * .42, 0, width * .5, height * .5, width * .75);
+      bg.addColorStop(0, '#10285a');
+      bg.addColorStop(.6, '#071c43');
+      bg.addColorStop(1, '#04112b');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, width, height);
+      paperGrain(ctx, width, height);
+    }
 
     const strokes = state.replay ? state.replay.strokes : state.strokes;
     const elapsed = state.replay ? (performance.now() - state.replay.began) * state.replay.speed : Infinity;
@@ -441,7 +462,7 @@ export function createMusicalCanvas(canvas, {
     window.removeEventListener('pointermove', pointerMove);
     window.removeEventListener('pointerup', pointerUp);
     window.removeEventListener('pointercancel', pointerCancel);
-    window.removeEventListener('blur', cancelPointer);
+    window.removeEventListener('blur', cancelPointers);
     resizeObserver?.disconnect();
     audioContext?.close().catch(() => {});
   }
@@ -455,6 +476,7 @@ export function createMusicalCanvas(canvas, {
     snapshot, load, replay, cancelReplay, debugStroke, exportPng, resize,
     hasStrokes: () => state.strokes.length > 0,
     strokeCount: () => state.strokes.length,
+    activePointerCount: () => state.activePointers.size,
     isReplaying: () => !!state.replay,
     destroy,
   };
@@ -464,9 +486,37 @@ function drawStroke(ctx, stroke, visible, width, height) {
   const points = stroke.points.slice(0, visible).map((point) => ({ x: point.x * width, y: point.y * height }));
   if (!points.length) return;
   const base = Math.max(10, stroke.width * Math.min(width, height));
+  if (stroke.brush === 'roller') return drawRoller(ctx, points, stroke.color, base);
   if (stroke.brush === 'bounce') return drawBounce(ctx, points, stroke.color, base);
   if (stroke.brush === 'sparkle') return drawSparkle(ctx, points, stroke.color, base);
   drawRibbon(ctx, points, stroke.color, base);
+}
+
+function drawRoller(ctx, points, color, base) {
+  ctx.save();
+  ctx.lineCap = 'square';
+  ctx.lineJoin = 'round';
+  pathThrough(ctx, points);
+  ctx.strokeStyle = shade(color, -.18);
+  ctx.lineWidth = base * 1.15;
+  ctx.globalAlpha = .28;
+  ctx.stroke();
+  pathThrough(ctx, points);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = base;
+  ctx.globalAlpha = .9;
+  ctx.stroke();
+  ctx.globalAlpha = .2;
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = Math.max(2, base * .08);
+  for (let offset = -0.34; offset <= .34; offset += .17) {
+    ctx.save();
+    ctx.translate(0, offset * base);
+    pathThrough(ctx, points);
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
 }
 
 function pathThrough(ctx, points) {
@@ -613,7 +663,7 @@ function visiblePointCount(points, time) {
 }
 
 function validStroke(stroke) {
-  return stroke && ['ribbon', 'bounce', 'sparkle'].includes(stroke.brush)
+  return stroke && ['ribbon', 'roller', 'bounce', 'sparkle'].includes(stroke.brush)
     && /^#[0-9a-f]{6}$/i.test(stroke.color)
     && Array.isArray(stroke.points) && stroke.points.length;
 }

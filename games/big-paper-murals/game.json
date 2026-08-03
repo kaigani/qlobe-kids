@@ -7,28 +7,33 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#e76f51",
-  "shareTitle": "Big Paper Murals 🎨 — Giant Drawing and Teamwork",
-  "description": "Practice giant shoulder-led drawing moves, share the art space kindly, and celebrate every contribution at a gallery-opening finale. A whole-arm art coach for ages 5–6.",
+  "accent": "#ef5b4c",
+  "shareTitle": "Big Paper Murals — Paint Together",
+  "description": "Paint one musical papercraft mural with two fingers at once, wake playful collage stamps, replay every color, and save a local keepsake.",
   "learningGoals": [
-    "Practice shoulder-led gross-motor drawing before finger details",
-    "Collaborate kindly while sharing a large art space",
-    "Build creative confidence through open-ended prompts",
-    "Notice and celebrate each artist's contribution"
+    "Collaborate through simultaneous multi-touch mark-making",
+    "Explore color, line, shape, rhythm, and spatial composition",
+    "Build creative confidence through open-ended expression",
+    "Notice how visual choices can become musical patterns"
   ],
-  "interactionModel": "tap the large done target after each real-world mural step; timed steps coach sustained whole-arm drawing",
-  "feedbackModel": "exuberant spoken art coaching with sparkle, tick, and tada SFX; every movement and shared contribution earns warm praise",
+  "interactionModel": "choose a starter paper; paint or roll with multiple fingers; tap to place living stamps; replay the mural as overlapping color tracks; save locally",
+  "feedbackModel": "every stroke makes gentle pitched music, stamps bounce and sound, and the finished mural becomes a playful instrument with no score or wrong answer",
   "uses": [
-    "shared/js/engines/coach-timer.js",
+    "shared/js/musical-canvas.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/narrator.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/debug-harness.js"
   ],
   "modes": [
-    { "id": "solo", "title": "My Mural", "skill": "gross-motor drawing and creative confidence" },
-    { "id": "together", "title": "Mural Party", "skill": "collaboration and sharing art space" }
+    { "id": "jungle", "title": "Jungle Jam", "skill": "collaborative mark-making" },
+    { "id": "space", "title": "Space Parade", "skill": "spatial composition" },
+    { "id": "city", "title": "City Party", "skill": "shared visual storytelling" },
+    { "id": "blank", "title": "Fresh Paper", "skill": "open-ended creative expression" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "QLOBE Kids contributors; production papercraft assets generated with GPT Image 2 and extracted with the local Qwen Image Layered workflow (see ASSETS.md).",
   "characters": [],
   "conceptVideo": null
 }
