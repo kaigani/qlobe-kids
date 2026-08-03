@@ -108,8 +108,18 @@ async function browserGate(browser) {
   check('every splash target is at least 96px', splashTargets.every(({ rect }) => rect.w >= 96 && rect.h >= 96), JSON.stringify(splashTargets));
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
-  await page.evaluate(() => window.QLOBE_DEBUG.startMode('world-tour'));
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(false));
+  await page.locator('#play-button').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'globe');
+  await page.waitForTimeout(100);
+  const welcomeNarration = await page.evaluate(() => ({
+    entry: window.QLOBE_DEBUG.getAudioLog().find((item) => item.key === 'welcome'),
+    speechActive: window.speechSynthesis.speaking || window.speechSynthesis.pending,
+  }));
+  check('Play gesture starts the complete welcome narration',
+    welcomeNarration.entry?.kind === 'speech' && welcomeNarration.entry.text.length > 20 && welcomeNarration.speechActive,
+    JSON.stringify(welcomeNarration));
+  await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
   check('home link is removed below splash', await page.locator('[data-target="home-catalog"]').count() === 0);
   const initial = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   const globeBox = await page.locator('#globe-mount canvas').boundingBox();
@@ -155,10 +165,27 @@ async function browserGate(browser) {
       await page.evaluate(() => window.QLOBE_DEBUG.alignDestination());
       await page.waitForFunction(() => window.QLOBE_DEBUG.getState().aligned);
     }
+    if (stop === 0) {
+      await page.waitForTimeout(2100);
+      const celebrationCleared = await page.locator('#celebration-art').evaluate((img) => img.hidden && !img.classList.contains('is-showing'));
+      check('stamp confetti clears after a story-to-globe transition', celebrationCleared);
+    }
   }
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
   const endState = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('all five destination loops reach the end', endState.tourVisited.length === 5 && endState.visited.length === 5, JSON.stringify(endState));
+  const config = await readJSON('config.json');
+  const expectedNarration = [
+    'welcome', 'landed', 'page-complete', 'all-complete',
+    ...config.destinations.flatMap((destination) => [
+      destination.prompt, destination.landing, destination.stamp,
+      ...destination.discoveries.map((discovery) => discovery.line),
+    ]),
+  ];
+  const narrationLog = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+  const narrationKeys = new Set(narrationLog.map((entry) => entry.key));
+  const missedNarration = expectedNarration.filter((key) => !narrationKeys.has(key));
+  check('the complete tour requests every authored content narration line', missedNarration.length === 0, missedNarration.join(', '));
   await page.screenshot({ path: path.join(shots, '04-end-landscape.png') });
   await page.locator('#end-passport-button').click();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().passportOpen);

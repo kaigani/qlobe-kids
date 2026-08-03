@@ -20,6 +20,8 @@ let storyDisposers = [];
 let resetTimer = null;
 let audioSequence = 0;
 let storyOpening = false;
+let celebrationTimer = 0;
+let celebrationHideTimer = 0;
 
 const linesResponse = await fetch('./data/lines.json');
 if (!linesResponse.ok) throw new Error(`Globe Spin Stories lines failed: ${linesResponse.status}`);
@@ -199,9 +201,9 @@ function removeHomeLink() {
   els.homeSlot.replaceChildren();
 }
 
-function showScreen(name) {
+function showScreen(name, { preserveVoice = false } = {}) {
   timers.clearAll();
-  voice.stop();
+  if (!preserveVoice) voice.stop();
   closePassport({ silent: true });
   state.screen = name;
   for (const [id, screen] of Object.entries(els.screens)) screen.hidden = id !== name;
@@ -215,9 +217,13 @@ async function startTour({ shuffleOrder = false } = {}) {
   state.aligned = false;
   state.itinerary = shuffleOrder ? shuffle(config.destinations.map((item) => item.id), rng) : config.destinations.map((item) => item.id);
   state.destinationId = state.itinerary[0];
-  showScreen('globe');
+  // Begin speech while the Play/Again activation is still a trusted gesture.
+  // Starting it after the screen transition made Web Speech unreliable in
+  // browsers that require narration to begin inside the gesture callback.
+  const greeting = speak('welcome');
+  showScreen('globe', { preserveVoice: true });
   setDestination(state.destinationId);
-  await speak('welcome');
+  await greeting;
   if (state.screen === 'globe') void speak(currentDestination().prompt);
 }
 
@@ -583,13 +589,22 @@ function discoveryArt(kind) {
 }
 
 function flashCelebration(duration) {
+  window.clearTimeout(celebrationTimer);
+  window.clearTimeout(celebrationHideTimer);
   els.celebration.hidden = false;
   els.celebration.classList.remove('is-showing');
   requestAnimationFrame(() => els.celebration.classList.add('is-showing'));
-  timers.after(duration, () => {
+  // This cleanup deliberately does not use the screen timer group. A story →
+  // globe transition clears that group, which used to strand this full-screen
+  // raster overlay in its visible state forever.
+  celebrationTimer = window.setTimeout(() => {
     els.celebration.classList.remove('is-showing');
-    timers.after(250, () => { els.celebration.hidden = true; });
-  });
+    celebrationHideTimer = window.setTimeout(() => {
+      els.celebration.hidden = true;
+      celebrationHideTimer = 0;
+    }, 250);
+    celebrationTimer = 0;
+  }, duration);
 }
 
 window.addEventListener('pagehide', () => {
@@ -600,5 +615,7 @@ window.addEventListener('pagehide', () => {
   for (const dispose of storyDisposers) dispose();
   reducedQuery.removeEventListener?.('change', onReduced);
   timers.clearAll();
+  window.clearTimeout(celebrationTimer);
+  window.clearTimeout(celebrationHideTimer);
   globe?.destroy();
 }, { once: true });
