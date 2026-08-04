@@ -207,6 +207,21 @@ button:disabled { cursor: default; }
 .creature-stage { position:absolute; z-index:4; left:50%; top:47%; width:min(63vw,780px); height:min(66vh,620px); transform:translate(-50%,-50%); }
 .body-art { position:absolute; z-index:1; inset:1% 4% 3%; width:92%; height:96%; object-fit:contain; pointer-events:none; filter:drop-shadow(0 13px 7px rgba(75,40,23,.28)); }
 .piece-layer { position:absolute; z-index:3; inset:0; touch-action:none; }
+/* Shape phase only: the piece-layer is empty (decorations don't exist yet)
+   but, sitting above the lobe canvas, its geometry still intercepts every
+   pointer event unless explicitly made inert — an empty div is not the same
+   as an absent one. finishBlobShape() removes this the moment it locks the
+   canvas the other way. */
+.piece-layer.is-inert { pointer-events:none; }
+/* Blob shape phase only: the twelve tray balls render as lobes on this canvas
+   instead of freeform-board sprites. It sits between the contact shadow (1)
+   and the decoration piece-layer (3), which stays on top always. */
+.lobe-canvas { position:absolute; z-index:2; inset:0; width:100%; height:100%; touch-action:none; }
+.lobe-canvas.is-locked { pointer-events:none; }
+/* Width and opacity are written inline by the renderer every render — this
+   is only the pre-first-render fallback, never fought with !important. */
+.lobe-shadow { position:absolute; z-index:1; left:50%; bottom:-1%; width:40%; height:9%; border-radius:50%; background:radial-gradient(ellipse, rgba(45,22,10,.3), transparent 66%); opacity:0; pointer-events:none; transform:translateX(-50%); }
+.creature-stage.is-full-wiggle { animation:full-wiggle .4s ease; }
 .qlobe-freeform-board { position:absolute; }
 .qlobe-freeform-piece { position:absolute; width:var(--piece-size); aspect-ratio:1; padding:0; border:0; background:transparent; transform-origin:center; touch-action:none; filter:drop-shadow(0 5px 3px rgba(72,37,22,.28)); transition:filter .12s ease; }
 .qlobe-freeform-piece img { width:100%; height:100%; object-fit:contain; pointer-events:none; }
@@ -258,6 +273,9 @@ button:disabled { cursor: default; }
 .alive-turntable::after { content:""; position:absolute; z-index:0; left:50%; bottom:-3%; width:91%; height:24%; border-radius:50%; background:linear-gradient(#fff5d8,#d4b686); box-shadow:inset 0 -12px 0 rgba(121,80,45,.15),0 15px 17px rgba(73,37,21,.3); transform:translateX(-50%); animation:turntable 5s ease-in-out infinite; }
 .saved-scene { position:relative; width:100%; height:100%; }
 .saved-body { position:absolute; z-index:1; inset:0 5% 4%; width:90%; height:96%; object-fit:contain; filter:drop-shadow(0 13px 7px rgba(75,40,23,.28)); }
+/* The rasterized blob body fills the whole scene box, unlike the inset
+   creature art, so the decorations the child placed land in the same spot. */
+.saved-body.is-lobe-body { inset:0; width:100%; height:100%; }
 .saved-piece-layer { position:absolute; z-index:3; inset:0; }
 .saved-part { position:absolute; height:auto; object-fit:contain; }
 .alive-creature { z-index:3; animation:alive-dance 1.7s ease-in-out infinite; }
@@ -289,6 +307,7 @@ button:disabled { cursor: default; }
 @keyframes banner-drop { from { opacity:0; transform:translateY(-40px) rotate(-3deg) scale(.8); } to { opacity:1; transform:none; } }
 @keyframes turntable { 0%,100% { transform:translateX(-50%) scaleX(1); } 50% { transform:translateX(-50%) scaleX(.96); } }
 @keyframes alive-dance { 0%,100% { transform:translateY(0) rotate(-2deg); } 45% { transform:translateY(-18px) rotate(3deg) scale(1.03); } 70% { transform:translateY(0) rotate(1deg) scale(.99,1.02); } }
+@keyframes full-wiggle { 0%,100% { transform:translate(-50%,-50%); } 25% { transform:translate(calc(-50% - 7px),-50%) rotate(-2deg); } 75% { transform:translate(calc(-50% + 7px),-50%) rotate(2deg); } }
 
 @media (max-aspect-ratio: 4/5) {
   .splash { grid-template-rows:20vh 1fr auto; padding-top:3vh; }

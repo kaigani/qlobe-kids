@@ -810,7 +810,9 @@
         "shared/js/sfx.js",
         "shared/js/tap.js",
         "shared/assets/objects/",
-        "shared/assets/ui/"
+        "shared/assets/ui/",
+        "shared/js/clay/heightfield.js",
+        "shared/js/clay/heightfield-canvas.js"
       ],
       "modes": [
         {
@@ -1790,20 +1792,24 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#f25f5c",
+      "accent": "#f27622",
+      "uses": [
+        "shared/js/voice-meter.js",
+        "shared/js/voice-clips.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/screens.js",
+        "shared/js/tap.js",
+        "shared/js/celebrate.js",
+        "shared/js/sfx.js"
+      ],
       "modes": [
         {
-          "id": "lines",
-          "title": "Say It With Feeling",
-          "skill": "expressing the same sentence with different emotions"
-        },
-        {
-          "id": "animals",
-          "title": "Animal Feelings",
-          "skill": "recognizing and copying characterful emotional voices"
+          "id": "feelings-show",
+          "title": "Feelings Show",
+          "skill": "expressing one sentence with contrasting vocal feelings"
         }
       ],
-      "summary": "Say the same line happy, scared, then proud."
+      "summary": "Choose a feeling, hear Teddy model it, then use your own voice to light up a cozy felt theater."
     },
     {
       "id": "joke-workshop",
@@ -1919,7 +1925,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#ef3d82",
       "uses": [
         "shared/js/paper-globe.js",
@@ -2195,7 +2201,12 @@
           "skill": "visual-spatial observation and matching"
         }
       ],
-      "summary": "Decorate a clay friend, copy a creature card, and save it to your on-device shelf."
+      "summary": "Decorate a clay friend, copy a creature card, and save it to your on-device shelf.",
+      "uses": [
+        "shared/vendor/three.module.min.js",
+        "shared/js/clay/field.js",
+        "shared/js/clay/field-three.js"
+      ]
     },
     {
       "id": "rhythm-copycat",

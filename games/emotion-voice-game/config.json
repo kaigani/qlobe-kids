@@ -1,0 +1,42 @@
+{
+  "id": "emotion-voice-game",
+  "line": "I can do it!",
+  "emotions": [
+    {
+      "id": "happy",
+      "label": "Happy",
+      "hint": "Bright & bouncy",
+      "modelLine": "happy-model",
+      "successLine": "happy-success",
+      "pose": "bear-happy.webp",
+      "card": "card-happy.webp"
+    },
+    {
+      "id": "proud",
+      "label": "Proud",
+      "hint": "Strong & steady",
+      "modelLine": "proud-model",
+      "successLine": "proud-success",
+      "pose": "bear-proud.webp",
+      "card": "card-proud.webp"
+    },
+    {
+      "id": "calm",
+      "label": "Calm",
+      "hint": "Soft & smooth",
+      "modelLine": "calm-model",
+      "successLine": "calm-success",
+      "pose": "bear-calm.webp",
+      "card": "card-calm.webp"
+    },
+    {
+      "id": "silly",
+      "label": "Silly",
+      "hint": "Funny & wiggly",
+      "modelLine": "silly-model",
+      "successLine": "silly-success",
+      "pose": "bear-silly.webp",
+      "card": "card-silly.webp"
+    }
+  ]
+}

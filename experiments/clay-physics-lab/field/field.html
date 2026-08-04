@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Stored Clay Field — QLOBE Kids Research</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../shared/css/base.css">
+  <link rel="stylesheet" href="./field.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../../../shared/vendor/three.module.min.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="field-shell">
+    <header class="field-header">
+      <div>
+        <p class="eyebrow">QLOBE KIDS · STORED SDF + COLOUR FIELD STUDY</p>
+        <h1>One lump of clay, no pieces in it</h1>
+        <p class="lede">Tap the table to drop a ball; drag the clay to pull it. Every ball you add is smooth-unioned into a single 80&#179; grid of distance and colour and is never stored again. Pull through a colour boundary and the colour comes with the material, because there is nothing else for it to belong to.</p>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <span id="field-fps">Starting WebGL2&#8230;</span>
+        <span id="field-probe">probe &#8212;</span>
+        <span id="field-volume">volume &#8212;</span>
+      </div>
+    </header>
+
+    <section class="field-workbench">
+      <div id="field-scene" class="field-scene" aria-label="Interactive clay field. Tap the table to add a ball of the selected colour, drag the clay to pull material out of it.">
+        <div class="wall-glow" aria-hidden="true"></div>
+        <div class="turntable" aria-hidden="true"></div>
+        <div id="field-shadow" class="contact-shadow" aria-hidden="true"></div>
+        <canvas id="field-canvas"></canvas>
+        <div class="gesture-hint" aria-hidden="true"><span>&#9757;</span> Drag the clay to pull it</div>
+      </div>
+
+      <aside class="field-controls">
+        <fieldset>
+          <legend>Clay tray</legend>
+          <div class="tray">
+            <button type="button" class="tray-ball is-active" data-color="#3fbf6f" style="--ball:#3fbf6f" aria-pressed="true"><span></span>Green</button>
+            <button type="button" class="tray-ball" data-color="#ff7314" style="--ball:#ff7314" aria-pressed="false"><span></span>Orange</button>
+            <button type="button" class="tray-ball" data-color="#24cfb9" style="--ball:#24cfb9" aria-pressed="false"><span></span>Teal</button>
+            <button type="button" class="tray-ball" data-color="#e8497a" style="--ball:#e8497a" aria-pressed="false"><span></span>Pink</button>
+            <button type="button" class="tray-ball" data-color="#f2c53d" style="--ball:#f2c53d" aria-pressed="false"><span></span>Yellow</button>
+            <button type="button" class="tray-ball" data-color="#6b4a34" style="--ball:#6b4a34" aria-pressed="false"><span></span>Cocoa</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Brush</legend>
+          <label for="field-brush">Brush size <output id="field-brush-out">medium</output></label>
+          <input id="field-brush" type="range" min="0" max="100" value="45">
+          <div class="range-labels"><span>fingertip</span><span>whole hand</span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Verbs</legend>
+          <div class="verb-grid">
+            <button type="button" id="field-settle"><span>&#10515;</span>Settle</button>
+            <button type="button" id="field-simplify"><span>&#9312;</span>Smooth</button>
+            <button type="button" id="field-loaf"><span>&#9644;</span>Tilted loaf</button>
+            <button type="button" id="field-reset"><span>&#8634;</span>Reset</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Cost</legend>
+          <dl class="cost-readout">
+            <div><dt>Last op</dt><dd id="cost-op">&#8212;</dd></div>
+            <div><dt>Upload</dt><dd id="cost-upload">&#8212;</dd></div>
+            <div><dt>Raymarch</dt><dd id="cost-march">&#8212;</dd></div>
+            <div><dt>Memory</dt><dd id="cost-memory">&#8212;</dd></div>
+          </dl>
+        </fieldset>
+
+        <p class="prototype-note">Representation: one 80&#179; RGBA8 volume &#8212; colour in RGB, signed distance in alpha over &#177;4 voxels &#8212; raymarched with hardware trilinear filtering. A pull is semi-Lagrangian advection of the stored field inside a brush falloff, followed by a bounded Lipschitz repair and a local volume renormalisation. Nothing anywhere in this page holds a list of the balls you dropped.</p>
+      </aside>
+    </section>
+
+    <section class="comparison-note">
+      <strong>What this page answers</strong>
+      <p>It answers whether pulling material as stored-field advection reads as clay at interactive rates, and whether raymarch cost stays flat as a creature gets complicated &#8212; run <code>CLAY_FIELD_LAB.costCurve()</code> in the console for that measurement. It cannot answer whether this survives an old iPad, whether the material passes art review against <a href="../solid.html">the implicit-lobe study</a>, or whether a child prefers clay that cannot be taken apart again. The incumbent engine&#8217;s own local-deformation comparison is the <a href="../pbd.html">plastic PBD study</a>.</p>
+    </section>
+  </main>
+
+  <script type="module" src="./field.js"></script>
+</body>
+</html>

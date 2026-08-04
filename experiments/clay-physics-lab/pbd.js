@@ -49,11 +49,11 @@ clayHeight.wrapS = THREE.RepeatWrapping;
 clayHeight.wrapT = THREE.RepeatWrapping;
 const material = new THREE.ShaderMaterial({
   uniforms: {
-    uColor: { value: new THREE.Color('#ff9a42') },
+    uColor: { value: new THREE.Color('#ff7f2d') },
     uMatcap: { value: matcap },
     uClayHeight: { value: clayHeight },
-    uTextureScale: { value: 0.72 },
-    uBumpStrength: { value: 2.8 },
+    uTextureScale: { value: 0.64 },
+    uBumpStrength: { value: 0.22 },
   },
   side: THREE.FrontSide,
   extensions: { derivatives: true },
@@ -61,11 +61,13 @@ const material = new THREE.ShaderMaterial({
     attribute vec3 clayPosition;
     varying vec3 vViewNormal;
     varying vec3 vViewPosition;
+    varying vec3 vObjectPosition;
     varying vec3 vClayPosition;
     varying vec3 vObjectNormal;
     void main() {
       vViewNormal = normalize(normalMatrix * normal);
       vObjectNormal = normalize(normal);
+      vObjectPosition = position;
       vClayPosition = clayPosition;
       vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
       vViewPosition = viewPosition.xyz;
@@ -76,6 +78,7 @@ const material = new THREE.ShaderMaterial({
     precision highp float;
     varying vec3 vViewNormal;
     varying vec3 vViewPosition;
+    varying vec3 vObjectPosition;
     varying vec3 vClayPosition;
     varying vec3 vObjectNormal;
     uniform vec3 uColor;
@@ -112,11 +115,29 @@ const material = new THREE.ShaderMaterial({
       vec2 heightDelta = vec2(heightX - height, heightY - height) * uBumpStrength;
       vec3 normal = perturbClayNormal(vViewPosition, normalize(vViewNormal), heightDelta);
       vec3 matcapLight = texture2D(uMatcap, normal.xy * .49 + .5).rgb;
-      float tone = .55 + dot(matcapLight, vec3(.3333)) * .57;
-      tone *= .975 + (height - .5) * .075;
+      float matcapLuminance = dot(matcapLight, vec3(.3333));
+
+      // A real key light restores broad form shading when an aggressive edit
+      // leaves a large patch facing the camera with nearly parallel normals.
+      vec3 lightDirection = normalize(vec3(-.48, .68, .58));
+      vec3 viewDirection = normalize(-vViewPosition);
+      float wrappedDiffuse = clamp((dot(normal, lightDirection) + .35) / 1.35, 0.0, 1.0);
+      float hemisphere = normal.y * .5 + .5;
+      float formSweep = smoothstep(-1.15, 1.15, vObjectPosition.y * .78 - vObjectPosition.x * .42);
+      float tone = .44 + wrappedDiffuse * .36 + hemisphere * .08;
+      tone *= mix(.78, 1.13, formSweep);
+      tone *= mix(.92, 1.05, matcapLuminance);
+      tone *= .988 + (height - .5) * .035;
+
+      vec3 halfDirection = normalize(lightDirection + viewDirection);
+      float roughHighlight = pow(max(dot(normal, halfDirection), 0.0), 14.0) * .055;
       float rim = pow(1.0 - max(normal.z, 0.0), 2.6);
-      vec3 color = uColor * tone + uColor * rim * .01;
+      vec3 color = uColor * tone;
+      color += vec3(1.0, .78, .54) * roughHighlight;
+      color += uColor * rim * .012;
       gl_FragColor = vec4(color, 1.0);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
     }
   `,
 });

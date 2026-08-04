@@ -9,6 +9,11 @@ import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
 import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+// The blob body runs on the STORED CLAY FIELD (shared/js/clay/field.js). The
+// previous engine's glue, blob-lobes.js, is still on disk as the reference for
+// the choreography this preserves, and is deliberately not imported: there is
+// one blob body, and it is made of one clay.
+import { createBlobStage, rasterizeSavedBlob, BLOB_BALLS_REQUIRED } from './blob-field.js';
 
 const mount = document.getElementById('game');
 const announcer = document.getElementById('announcer');
@@ -29,10 +34,14 @@ const state = {
   screen: 'splash', creature: null, mode: null, phase: 'decorate',
   prompt: 'welcome', pieces: 0, readyToWake: false, alive: null,
   savedCount: 0, muted: false, audioUnlocked: false, pendingWelcome: false,
-  fast: false, seed: 42, promptDismissed: false, wakeSerial: 0,
+  fast: false, seed: 42, promptDismissed: false, wakeSerial: 0, shapeReady: false,
 };
 
 let board = null;
+let blobClay = null; // only ever set while state.creature.id === 'blob'; see blob-field.js
+// Bumped for every blob stage built this session, so consecutive creatures get
+// different surface-noise seeds without either of them being random.
+let blobStageSerial = 0;
 let idleTimer = 0;
 let pieceSerial = 0;
 let disposers = [];
@@ -110,6 +119,8 @@ function cleanup() {
   stopAudio();
   board?.destroy();
   board = null;
+  blobClay?.destroy();
+  blobClay = null;
   trayDrag?.cancel?.();
   trayDrag = null;
   for (const dispose of disposers) dispose();
@@ -248,7 +259,10 @@ function startMode(modeId, creatureId = state.creature?.id || 'dino') {
         ${mode.id === 'copy' ? copyCardMarkup(creature) : ''}
         <div class="turntable" aria-hidden="true"></div>
         <div class="creature-stage" id="creature-stage">
-          ${creature.id === 'blob' ? '' : `<img class="body-art body-${creature.id}" src="${creature.art}" alt="Blank clay ${creature.title}">`}
+          ${creature.id === 'blob'
+            ? `<div class="lobe-shadow" id="lobe-shadow" aria-hidden="true"></div>
+               <canvas class="lobe-canvas" id="lobe-canvas" aria-label="Your clay blob body. Drag the clay balls to squish them together."></canvas>`
+            : `<img class="body-art body-${creature.id}" src="${creature.art}" alt="Blank clay ${creature.title}">`}
           <div class="piece-layer" id="piece-layer" aria-label="Your clay creature decorations"></div>
         </div>
         <div class="progress-clay" aria-label="Creature progress">
@@ -281,6 +295,25 @@ function startMode(modeId, creatureId = state.creature?.id || 'dino') {
       if (moved && !discarded && !state.muted) sfx.sparkle();
     },
   });
+  if (creature.id === 'blob') {
+    blobClay = createBlobStage({
+      canvas: document.getElementById('lobe-canvas'),
+      shadow: document.getElementById('lobe-shadow'),
+      stage: document.getElementById('creature-stage'),
+      // The creature's hand-worked-surface seed. Derived from the game's own
+      // seed plus a per-session serial, so two blobs made one after another
+      // get their own lumps while a QA driver that pins `seed` still gets the
+      // same creature every run. It rides the save from here on (see
+      // blob-field.js toSaveDoc) — a shelf card must look like the blob the
+      // child actually made, not like a fresh roll of the dice.
+      seed: state.seed * 7919 + (blobStageSerial += 1),
+      hooks: { isMuted: () => state.muted, dismissPrompt, updateTrashHover, onChange: updateBuildState },
+    });
+    // Empty during the shape phase, but still on top (z-index 3) of the lobe
+    // canvas (2) — without this it silently eats every pointer event meant
+    // for the lobes. finishBlobShape() lifts it back once decorations begin.
+    document.getElementById('piece-layer')?.classList.add('is-inert');
+  }
   wireActions();
   renderTray();
   wireTrayDrag(document.getElementById('parts-tray'));
@@ -448,6 +481,37 @@ function wireTrayDrag(tray) {
   });
 }
 
+// THE LAST REFUSAL IN THE BLOB BODY, AND IT NO LONGER HAS ANYTHING TO REFUSE.
+//
+// Under the old engine a ball could be turned away because the shader's twelve-
+// lobe budget was full. The field has no primitive list and therefore no budget,
+// and place() cannot fail: there is no condition anywhere in the blob body under
+// which the creature answers a child's finger with "no". This is kept only as
+// the response to a genuinely broken stage (no renderer at all), because a child
+// must always feel that *something* happened — never a silent nothing.
+function refuseBlobBall() {
+  if (!state.muted) sfx.boing();
+  const stage = mount.querySelector('#creature-stage');
+  stage?.classList.add('is-full-wiggle');
+  setTimeout(() => stage?.classList.remove('is-full-wiggle'), 420);
+}
+
+function placeBlobBall(part, options) {
+  if (!blobClay) return false;
+  const ball = blobClay.place(part, { x: options.x, y: options.y });
+  if (!ball) { refuseBlobBall(); return false; }
+  if (!state.muted) { sfx.pop(); setTimeout(() => sfx.sparkle(), 90); }
+  // Clay is not a board item, so nothing fires freeform-board's onChange for
+  // it — the progress dots and the Decorate My Blob unlock have to be driven
+  // from here or the fourth ball never opens the next phase. Note that the ball
+  // is still FALLING at this point; it counts toward the gate only once it has
+  // landed and welded, which is why the gate is re-evaluated from the stage's
+  // own onChange hook as well as from here.
+  updateBuildState();
+  scheduleNudge();
+  return true;
+}
+
 function placePart(partId, options = {}) {
   if (state.screen !== 'build' || !board) return false;
   const part = pieceById(partId);
@@ -455,6 +519,7 @@ function placePart(partId, options = {}) {
   if (state.phase === 'shape' && !part.ball) return false;
   dismissPrompt();
   clearTimeout(idleTimer);
+  if (state.phase === 'shape' && part.ball) return placeBlobBall(part, options);
   const existing = board.getItems().filter((item) => item.kind === part.id).length;
   const angle = ((pieceSerial * 17 + state.seed) % 13) - 6;
   const offset = Math.min(existing, 3) * .035;
@@ -482,8 +547,7 @@ function placePart(partId, options = {}) {
     },
   });
   if (!state.muted) { sfx.pop(); setTimeout(() => sfx.sparkle(), 90); }
-  if (state.phase === 'shape' && board.getItems().filter((item) => item.meta.ball).length === 4) say('blob-shape-ready');
-  else if (board.getItems().length === 1 && part.eye) say('decorate');
+  if (board.getItems().length === 1 && part.eye) say('decorate');
   scheduleNudge();
   return true;
 }
@@ -491,12 +555,25 @@ function placePart(partId, options = {}) {
 function completion() {
   const items = board?.getItems() || [];
   const kinds = new Set(items.map((item) => item.kind));
-  const balls = items.filter((item) => item.meta.ball).length;
-  if (state.phase === 'shape') return { done: false, progress: Math.min(4, balls), shapeReady: balls >= 4 };
+  const isBlob = state.creature?.id === 'blob';
+  // Blob balls live in the lobe field, not the freeform board — ballCount()
+  // is the lobe field's own truth. Deliberately ballCount() and not count():
+  // arms pulled out of the lump are lobes too, and counting them would let a
+  // two-ball body unlock Decorate by growing two tentacles. Progress means
+  // "balls of clay you brought to the lump", which is what the four beads have
+  // always shown. Legacy sprite-ball saves never reach here (completion() only
+  // runs during live build), so this has no old-format branch.
+  //
+  // Under the field the number comes off the OP LOG — the count of stamps
+  // tagged as tray balls (blob-field.js, BALL_TAG). Pulls are not stamps, so
+  // there is no amount of sculpting that can fake progress, and there is no
+  // second copy of the number to drift from this one.
+  const balls = isBlob ? (blobClay?.ballCount() || 0) : items.filter((item) => item.meta.ball).length;
+  if (state.phase === 'shape') return { done: false, progress: Math.min(BLOB_BALLS_REQUIRED, balls), shapeReady: balls >= BLOB_BALLS_REQUIRED };
   if (state.mode === 'copy') {
     const required = state.creature.copy;
     const matched = required.filter((kind) => kinds.has(kind)).length;
-    return { done: required.every((kind) => kinds.has(kind)) && (state.creature.id !== 'blob' || balls >= 4), progress: matched };
+    return { done: required.every((kind) => kinds.has(kind)) && (!isBlob || balls >= BLOB_BALLS_REQUIRED), progress: matched };
   }
   const hasEye = items.some((item) => item.meta.eye);
   const hasMouth = items.some((item) => item.meta.mouth);
@@ -506,9 +583,11 @@ function completion() {
 
 function finishBlobShape() {
   if (state.screen !== 'build' || state.creature?.id !== 'blob' || state.phase !== 'shape') return false;
-  if ((board?.getItems() || []).filter((item) => item.meta.ball).length < 4) return false;
+  if ((blobClay?.ballCount() || 0) < BLOB_BALLS_REQUIRED) return false;
   state.phase = 'decorate';
   state.readyToWake = false;
+  blobClay?.lock();
+  mount.querySelector('#piece-layer')?.classList.remove('is-inert');
   renderTray();
   updateBuildState();
   say('blob-decorate');
@@ -538,6 +617,15 @@ function updateBuildState() {
     finishShape.disabled = !result.shapeReady;
     finishShape.classList.toggle('is-ready', !!result.shapeReady);
   }
+  // THE FOURTH BALL. Announced on the TRANSITION, from here rather than from
+  // placeBlobBall, because a dropped ball counts only once it has fallen and
+  // welded — the gate is opened by the landing, not by the drop.
+  const wasShapeReady = state.shapeReady;
+  state.shapeReady = !!result.shapeReady;
+  if (state.phase === 'shape' && !wasShapeReady && state.shapeReady) {
+    if (!state.muted) sfx.tada();
+    say('blob-shape-ready');
+  }
   if (!wasReady && result.done) {
     if (!state.muted) sfx.tada();
     say('ready');
@@ -555,6 +643,7 @@ function scheduleNudge() {
 function wakeCreature(snapshot = board?.snapshot()) {
   if (state.screen !== 'build' || !snapshot || (!state.readyToWake && !state.fast)) return false;
   const saved = { creature: state.creature.id, mode: state.mode, board: snapshot };
+  if (state.creature.id === 'blob' && blobClay) saved.blob = blobClay.toSaveDoc();
   showAlive(saved, { fresh: true });
   return true;
 }
@@ -562,12 +651,39 @@ function wakeCreature(snapshot = board?.snapshot()) {
 function sceneMarkup(saved, className = '') {
   const creature = creatureById(saved.creature) || config.creatures[0];
   const items = [...(saved.board?.items || [])].sort((a, b) => a.z - b.z);
+  // A `blob` key is a clay body: a v5 op-log document, or a v1–v4 lobe document
+  // from before the field (which blob-field.js converts to ops on load). Either
+  // way it rasterises through the one renderer.
+  //
+  // The oldest saves of all are sprite-ball bodies — board.items with meta.ball
+  // and no `blob` key — and they keep rendering exactly as they always have,
+  // as their own flat art with no body underneath. They were never 3-D
+  // geometry, so there is nothing to convert; re-rendering them as clay would
+  // invent depth the child never made.
+  const clayBody = creature.id === 'blob' && (saved.blob?.ops?.length || saved.blob?.lobes?.length) ? saved.blob : null;
   const builtBlob = creature.id === 'blob' && items.some((item) => item.meta?.ball);
   return `<div class="saved-scene ${className}" style="--saved-accent:${creature.accent}">
-    ${builtBlob ? '' : `<img class="saved-body body-${creature.id}" src="${creature.art}" alt="">`}
+    ${clayBody ? `<img class="saved-body is-lobe-body" data-lobe-body="${encodeURIComponent(JSON.stringify(clayBody))}" alt="">`
+      : builtBlob ? '' : `<img class="saved-body body-${creature.id}" src="${creature.art}" alt="">`}
     <div class="saved-piece-layer">${items.map((item) => `
       <img class="saved-part" data-saved-id="${item.id}" data-saved-kind="${item.kind}" src="${item.src}" alt="" style="left:${item.x * 100}%;top:${item.y * 100}%;width:${item.size * 100}%;z-index:${item.z};transform:translate(-50%,-50%) rotate(${item.rotation}deg) scaleX(${item.mirror ? -1 : 1})">`).join('')}</div>
   </div>`;
+}
+
+// Fills in every `saved-body.is-lobe-body` placeholder left by sceneMarkup().
+// One rasterize at a time (see blob-field.js's shared singleton) so shelf
+// cards never race each other's field/renderer. A broken thumbnail must
+// never break the decorations rendering alongside it.
+async function hydrateLobeBodies(root = mount) {
+  for (const img of root.querySelectorAll('img[data-lobe-body]')) {
+    try {
+      const doc = JSON.parse(decodeURIComponent(img.dataset.lobeBody));
+      const rect = img.getBoundingClientRect();
+      img.src = await rasterizeSavedBlob(doc, rect.width || 300, rect.height || 300);
+    } catch (error) {
+      console.warn('Clay blob thumbnail failed:', error.message);
+    }
+  }
 }
 
 async function playMouthVoice(saved) {
@@ -667,6 +783,7 @@ function showAlive(saved, { fresh = false } = {}) {
       </div>
     </section>`;
   wireActions();
+  hydrateLobeBodies();
   startAmbientConfetti();
   if (fresh) {
     if (!state.muted) sfx.tada();
@@ -713,6 +830,7 @@ function showShelf() {
       </div>
     </section>`;
   wireActions();
+  hydrateLobeBodies();
 }
 
 function wireActions(root = mount) {
@@ -742,10 +860,11 @@ async function route(action, value) {
 }
 
 function targets() {
-  return [...mount.querySelectorAll('[data-target]')].map((element) => {
+  const base = [...mount.querySelectorAll('[data-target]')].map((element) => {
     const rect = element.getBoundingClientRect();
     return { id: element.dataset.target, role: element.disabled ? 'disabled' : 'neutral', rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height } };
   });
+  return blobClay ? [...base, ...blobClay.getDebugTargets()] : base;
 }
 
 installDebug({
@@ -760,6 +879,14 @@ installDebug({
     screen: state.screen, creature: state.creature?.id || null, mode: state.mode,
     phase: state.phase, pieces: state.pieces, readyToWake: state.readyToWake,
     savedCount: state.savedCount, awaitingInput: ['splash', 'mode', 'build', 'alive', 'shelf'].includes(state.screen),
+    // THE FIELD'S VOCABULARY. There is no lobe count any more because there are
+    // no lobes: `ops` is the length of the op log (the creature's whole
+    // history, and its save), `balls` is how many of those ops were tray balls
+    // welding in — the number the progress beads have always shown — and
+    // `loose` is how much clay is still lying about unwelded.
+    ops: blobClay?.opCount() ?? 0,
+    balls: blobClay?.ballCount() ?? 0,
+    loose: blobClay?.looseCount() ?? 0,
   }),
   getTargets: targets,
   chooseCreature,
@@ -767,8 +894,70 @@ installDebug({
   placePart,
   finishBlobShape,
   pageTray,
-  movePiece: (id, x, y) => board?.move(id, x, y) || false,
+  movePiece: (id, x, y) => (blobClay?.movePiece(id, x, y) || board?.move(id, x, y) || false),
+  // ==========================================================================
+  // THE CLAY VERBS — the field's vocabulary, all in BOARD space (y down) so a
+  // driver never has to reason in world space. blob-field.js does the
+  // conversion and the field calls; these are just the routing hooks.
+  //
+  // WHAT WENT AWAY, AND WHY. Every per-lobe verb the old engine published —
+  // getLobes(), blobShapes(), pullOnLobe(id, …), blobWelds(),
+  // blobMergeCandidate(), consolidateBlob() — asked the clay a question the
+  // clay can no longer answer: "which piece is this?". That is not an
+  // oversight in the port, it is the product change the owner asked for, and
+  // the review hook has to stop being able to ask it or it stops being a
+  // truthful description of the toy. What replaces per-lobe geometry is
+  // colour and volume: `clayCensus()` is how you now ask whether the green
+  // ball is still recoverable, and the answer is a number that only goes one
+  // way.
+  //
+  // pullAt(nx, ny, dx, dy, steps) — press at (nx, ny) on the clay and pull the
+  //   MATERIAL there by (dx, dy), in `steps` sub-moves so the field sees the
+  //   progression a finger produces. Goes through the real gesture path
+  //   (beginGesture → pull → commitGesture). Reports how many ops it cost, the
+  //   volume before and after, and the per-op CPU cost so the drag budget can
+  //   be measured. `{ ok: false, reason: 'no-surface' }` is the ONLY failure,
+  //   and it means the board point is on the table. There is no refusal.
+  // stampAt(nx, ny, radius, color, { depth }) — weld clay straight into the creature at a
+  //   board point: the programmatic form of "a ball landed here". Lets a driver
+  //   build a known creature without waiting out four fall animations.
+  // clayOps() / opCount() — the op log IS the creature's state and IS its save.
+  // getClay() — the v5 save document, exactly as it goes to localStorage.
+  // clayCensus([colours]) — how the material is distributed across a set of
+  //   query colours, and what fraction has stopped being any of them. THE
+  //   ATOMIC-IDENTITY MEASUREMENT: stir two colours and `mixedFraction` rises;
+  //   no gesture brings it back down. (Measured in the lab: 0.012–0.039 for an
+  //   untouched seam, 0.109 after a stir, 0.258 after the exact inverse drag.)
+  // clayVolume() — total clay. The conservation invariant, so a driver can
+  //   watch it hold across a hundred gestures in the real renderer.
+  // looseBalls() / binLoose(id) — the unwelded clay: what is still an object a
+  //   child can pick up, and the bin escape for it.
+  // settleState() / settleNow() — gravity rest: whether one is owed, how far
+  //   off level the creature is, and a way to force it home so an assertion
+  //   never races an animation a frame from done.
+  // blobSettleLog() — every settle this stage has run: when, the angle and the
+  //   drop, in world units AND CSS pixels.
+  // blobSeed() — the creature's hand-worked-surface seed, as saved.
+  pullAt: (nx, ny, dx, dy, steps) => blobClay?.pullAt(nx, ny, dx, dy, steps) ?? { ok: false, reason: 'no-blob' },
+  stampAt: (nx, ny, radius, color, options) => blobClay?.stampAt(nx, ny, radius, color, options) ?? { ok: false, reason: 'no-blob' },
+  clayOps: () => blobClay?.ops() ?? [],
+  opCount: () => blobClay?.opCount() ?? 0,
+  getClay: () => blobClay?.toSaveDoc() ?? null,
+  clayCensus: (colors) => blobClay?.census(colors) ?? null,
+  clayVolume: () => blobClay?.clayVolume() ?? null,
+  clayBounds: () => blobClay?.bounds() ?? null,
+  looseBalls: () => blobClay?.looseBalls() ?? [],
+  binLoose: (id) => blobClay?.binLoose(id) ?? false,
+  settleState: () => blobClay?.settleState() ?? null,
+  settleNow: () => blobClay?.settleNow() ?? null,
+  blobSettleLog: () => blobClay?.settleLog() ?? [],
+  blobSeed: () => blobClay?.noiseSeed() ?? null,
   getBoard: () => board?.snapshot() || null,
+  // The raymarch cost probe and the render-on-demand proof. `renders` must not
+  // move while the stage is idle; the frame times are only meaningful with the
+  // renderer's sync flag, so treat them as submit cost, not GPU cost.
+  clayStats: () => blobClay?.stats() ?? null,
+  clayProbe: (frames) => blobClay?.probe(frames) ?? null,
   tap: async (targetId) => {
     const element = mount.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
     if (!element || element.disabled) return { accepted: false };
@@ -780,7 +969,20 @@ installDebug({
     if (state.screen === 'mode') startMode('free');
     if (state.screen === 'build') {
       if (state.creature.id === 'blob' && state.phase === 'shape') {
-        for (const kind of ['ball-coral', 'ball-yellow', 'ball-teal', 'ball-lavender']) placePart(kind);
+        // STAMPED, NOT DROPPED. A ball from the tray falls with weight and
+        // welds when it lands, which takes the better part of a second of real
+        // animation — and winRound() is synchronous by contract, so a
+        // placePart() here would leave the balls still in mid-air and
+        // finishBlobShape() would find a count of zero. stampAt welds
+        // immediately at a known board point: the same end state the fall
+        // reaches, with the fall skipped.
+        const spots = [[0.42, 0.62], [0.56, 0.60], [0.48, 0.48], [0.62, 0.50]];
+        const balls = ['ball-coral', 'ball-yellow', 'ball-teal', 'ball-lavender'];
+        balls.forEach((kind, index) => {
+          const part = pieceById(kind);
+          blobClay?.stampAt(spots[index][0], spots[index][1], (part?.size || 0.26) / 2, part?.color);
+        });
+        updateBuildState();
         finishBlobShape();
       }
       const needed = state.mode === 'copy' ? state.creature.copy : ['eyes-pair', 'mouth-goofy', 'spikes-blue', 'heart'];

@@ -985,3 +985,37 @@ deliberate asymmetry — **muting silences audio only, and the announcer keeps
 updating**, because a screen-reader user has muted nothing; the game's sound
 toggle is not their assistive tech's volume. `dispose()` stops, removes the
 announcer node, and makes every later call a no-op.
+
+## 19. Expressive voice input without recording
+
+**When to use:** a child should make a voice louder, softer, steadier, or more
+playful and the screen should react live. Use `shared/js/voice-meter.js`; use
+`performance-recorder.js` instead only when the product actually needs a saved
+or replayable performance.
+
+```js
+import { createVoiceMeter, voiceSparks } from '../../../shared/js/voice-meter.js';
+
+const meter = createVoiceMeter();
+if (await meter.request()) {
+  const summary = await meter.listen({
+    durationMs: 2300,
+    onFrame: ({ level }) => updateLights(level),
+  });
+  if (summary.heard) celebrate(voiceSparks('happy', summary));
+}
+meter.close();
+```
+
+The service holds a live `MediaStream` only while the game needs it, reads
+time-domain samples into memory, and returns summary features: active duration,
+energy, peak, pitch mean/range, and energy variation. It does **not** use
+`MediaRecorder`, create a Blob, persist samples, or make a network call. Close it
+on screen exit and `pagehide` so the browser’s microphone indicator turns off.
+
+Do not call the result “emotion recognition.” Microphone distance, room noise,
+device gain, accent, age, and physiology make that claim unfair and technically
+false. A child’s clearly heard attempt should always succeed; profile-relative
+scores may vary an ambient reward such as one to three sparks, never gate
+progress. Permission denial and unsupported browsers need an image-led
+tap-and-perform fallback that preserves the same play fantasy.

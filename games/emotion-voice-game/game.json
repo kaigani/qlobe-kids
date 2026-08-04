@@ -7,27 +7,30 @@
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#f25f5c",
-  "shareTitle": "Emotion Voice Game 🎭 — Perform a Feeling Aloud",
-  "description": "Pick a feeling, hear a theatrical model line, then perform the same words happy, scared, proud, sleepy, or animal-style. A playful expressive-voice game for ages 5–6.",
+  "accent": "#f27622",
+  "shareTitle": "Emotion Voice Game — Bring Feelings to Life",
+  "description": "Choose happy, proud, calm, or silly; hear Teddy model the feeling; then use your own voice to light up a cozy felt theater. Microphone analysis stays local and no audio is recorded.",
   "learningGoals": [
-    "Recognize feelings from facial and vocal cues",
-    "Change pitch, pace, volume, and rhythm to express emotion",
-    "Build confidence performing short spoken lines"
+    "Change volume, steadiness, and pitch movement to make vocal feeling audible",
+    "Connect facial, body, and vocal cues with happy, proud, calm, and silly expression",
+    "Build confidence performing one short spoken line"
   ],
-  "interactionModel": "listen to a line prompt, tap an emotion or animal sticker, hear the modeled performance, and copy it aloud",
-  "feedbackModel": "Every emotion is a valid performance choice; the coach models it broadly, the sticker sparkles into the journal, and the show ends with warm applause.",
+  "interactionModel": "tap a feeling card, listen to Teddy model the line, tap the microphone, and perform the same words with expressive prosody",
+  "feedbackModel": "any clearly heard performance succeeds; local acoustic features vary one to three voice sparks and the matching Teddy pose, with a tap-to-perform fallback when microphone access is unavailable",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
+    "shared/js/voice-meter.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/celebrate.js",
     "shared/js/sfx.js"
   ],
   "modes": [
-    { "id": "lines", "title": "Say It With Feeling", "skill": "expressing the same sentence with different emotions" },
-    { "id": "animals", "title": "Animal Feelings", "skill": "recognizing and copying characterful emotional voices" }
+    { "id": "feelings-show", "title": "Feelings Show", "skill": "expressing one sentence with contrasting vocal feelings" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "QLOBE Kids contributors; placeholder emoji only (see ASSETS.md).",
-  "characters": [],
+  "credits": "QLOBE Kids contributors; original cozy-felt art generated with GPT Image 2 and finalized locally; see ASSETS.md.",
+  "characters": ["Teddy"],
   "conceptVideo": ""
 }

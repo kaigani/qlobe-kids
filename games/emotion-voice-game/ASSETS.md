@@ -1,74 +1,104 @@
 # Emotion Voice Game assets
 
-## Placeholder art
+All original game-local art is self-generated for QLOBE Kids and licensed CC BY
+4.0. Runtime files contain no remote model or service dependency.
 
-All current gameplay art is Unicode emoji rendered by the shared engine on soft rounded cards. No image files were created for these placeholders.
+## Production art
 
-- Splash and stage: 🎭
-- Sentence scenes: 🚀 👟 🍝
-- Emotion stickers: 😊 😨 🥳 😴
-- Animal actors: 🐻 🐶 🐭
-- Story Screen backdrop: `./assets/bg.jpg` is intentionally referenced but not included; the reviewer supplies it.
+| Runtime asset | Source | Creator / workflow | Processing | Attribution |
+| --- | --- | --- | --- | --- |
+| `assets/felt-stage.webp` | `assets/source/felt-stage-gpt-image-2.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | resized and WebP encoded | no |
+| `assets/title.webp` | `assets/source/title-gpt-image-2.png` → `title-alpha.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | chroma-key removal, trim, resize, WebP | no |
+| `assets/characters/bear-*.webp` | original pose sheet; Happy/Silly corrected by `bear-{happy,silly}-v2-gpt-image-2.png` → `*-alpha.png` | OpenAI built-in identity-preserving image edits, GPT Image 2, 2026-08-03 | chroma-key removal, complete-silhouette outpaint, normalized 480×680 alpha canvases with ≥35 px horizontal runtime margin | no |
+| `assets/characters/teddy/anim/mouth-*.png` | `assets/source/visemes/teddy-visemes-gpt-image-2.png` → `teddy-visemes-alpha.png` | OpenAI built-in identity-preserving viseme-sheet generation, GPT Image 2, 2026-08-03 | deterministic 3×3 slice, soft muzzle matte, canonical QLOBE viseme names plus rest alias | no |
+| `assets/ui/*.webp` | `assets/source/ui-kit-gpt-image-2.png` → `ui-kit-alpha.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | chroma-key removal, deterministic 6-cell split, connected-component cleanup, alpha WebP | no |
+| `assets/ui/prompt-banner.webp`, `assets/ui/next-button.webp` | `assets/source/ui-banners-gpt-image-2.png` → `ui-banners-alpha.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | chroma-key removal, deterministic 2-cell split, connected-component cleanup, alpha WebP | no |
 
-## Assets needed
+The installed image-generation skill’s `remove_chroma_key.py` performed soft
+matte/despill extraction. `tools/process-art.py` owns the reproducible final
+crop, component cleanup, canvas normalization, and encoding. Alpha QA checks all
+four corners of every final sprite; production Chrome shots are under
+`qa-shots/emotion-voice-game/`.
 
-- Art: happy, scared, proud, and sleepy emotion-face stickers; rocket/moon, missing-shoe, and dinner scene cards; grumpy bear, excited puppy, and shy mouse character stickers; an animal stage card; and the supplied Story Screen background at `assets/bg.jpg`.
-- Voice: record every line below with a theatrical coach. The modeled performances must make the named feeling audible through broad, playful prosody while staying warm and non-scary.
+## Final prompt set
 
-## Voice lines (verbatim)
+### Felt stage
 
-### Shared
+Use case `illustration-story`; full-bleed 4:3 tablet backdrop; a cozy handmade
+felt puppet theater with deep midnight-blue felt wall, red curtains and valance,
+warm honey spotlight, empty golden felt stage, stitched gold stars only at the
+outer border; straight-on composition with a broad uncluttered performance area;
+premium fabric diorama with visible fibers and embroidery; no characters, text,
+letters, logo, controls, microphone, confetti, watermark, or tablet frame.
 
-- "Bravo! Your voice showed so many feelings!"
-- "What a performance!"
+### Teddy pose sheet
 
-### Say It With Feeling
+Use case `illustration-story`; one consistent brown plush felt bear in exactly
+five equal cells: neutral, Happy arms-up, Proud hands-on-hips with red cape, Calm
+eyes-closed hands-together, and Silly one-foot pose; same size/baseline/identity,
+red neckerchief in every pose, visible fibers and stitching; perfectly flat
+`#ff00ff` background; no shadows, floor, text, labels, extra props, or watermark.
 
-- "Welcome, performer! Pick a feeling, listen to my voice, then copy the line that way!"
-- "Bravo! You made the same words sparkle with different feelings!"
-- "The line is: We are going to the moon! Pick a feeling, listen, then perform it!"
-- "Happy voice: We are going to the moon! Hooray! Now you try it with a big smile!"
-- "Scared voice: We are going to the moon? Oh my! Now you try it with a shaky voice!"
-- "Proud voice: We are going to the moon! We can do it! Now you try it standing tall!"
-- "Sleepy voice: We are going to the moon... yawn. Now you try it slowly and softly!"
-- "The line is: Where did my shoe go? Pick a feeling, listen, then perform it!"
-- "Happy voice: Where did my shoe go? This is a fun mystery! Now you try it with a bright voice!"
-- "Scared voice: Where did my shoe go? Is it hiding? Now you try it with a tiny tremble!"
-- "Proud voice: Where did my shoe go? I know I can find it! Now you try it with confidence!"
-- "Sleepy voice: Where did my shoe go... maybe under the bed. Now you try it with a drowsy voice!"
-- "The line is: Dinner is ready! Pick a feeling, listen, then perform it!"
-- "Happy voice: Dinner is ready! Yum, yum! Now you try it with a cheerful voice!"
-- "Scared voice: Dinner is ready? What could it be? Now you try it with a worried voice!"
-- "Proud voice: Dinner is ready! I helped make it! Now you try it with a strong, proud voice!"
-- "Sleepy voice: Dinner is ready... I am coming. Now you try it with a slow, sleepy voice!"
+### Happy and Silly framing corrections
 
-### Animal Feelings
+Use the affected pose as the edit target and neutral Teddy only as the identity
+reference; preserve the pose, face, felt texture, stitching, neckerchief,
+lighting, proportions, and camera angle; reconstruct only clipped outer limbs;
+zoom out enough to show the entire silhouette with at least 14% empty margin on
+all sides; flat `#ff00ff`; no frame, labels, text, props, or shadows.
 
-- "Animal actors are taking the stage! Pick one, listen to its hello, then copy that feeling!"
-- "Bravo! Your bear, puppy, and mouse voices brought the animal stage to life!"
-- "Choose an animal actor. Listen to hello, then perform it the same way!"
-- "Grumpy bear voice: Hello! Hmph! Now you say hello with a low, grumbly voice!"
-- "Excited puppy voice: Hello! Hello! I am so glad to see you! Now you say hello with a bouncy voice!"
-- "Shy mouse voice: Oh... hello. Now you say hello with a quiet, gentle voice!"
-- "Encore! Choose an animal feeling and perform hello one more time!"
-- "Grumpy bear encore: Hello! Who woke me up? Now give us your biggest bear grumble!"
-- "Excited puppy encore: Hello! Let us play! Now give us your happiest puppy hello!"
-- "Shy mouse encore: Hello... it is nice to meet you. Now give us your softest mouse hello!"
+### Teddy viseme sheet
 
-## Modeled performances checklist
+Use case `character-model-sheet`; exact Teddy head and upper red neckerchief in
+a strict unlabeled 3×3 grid on flat `#ff00ff`; fixed scale, placement, eyes,
+brows, muzzle, lighting, and expression; only the mouth changes in canonical
+order A, O, E, W/R, T/S, L/N, U/Q, M/B/P, F/V; no deformation outside the mouth.
 
-- Moon line: happy, scared, proud, sleepy — one modeled performance each.
-- Missing-shoe line: happy, scared, proud, sleepy — one modeled performance each.
-- Dinner line: happy, scared, proud, sleepy — one modeled performance each.
-- Animal hello: grumpy bear, excited puppy, shy mouse — modeled on both pages.
+### Title lockup
 
-## Provenance and licensing
+Use case `logo-brand`; exact text “Emotion Voice Game” in chunky padded felt,
+navy “Emotion” and “Game,” orange “Voice,” two centered lines on a cream stitched
+felt banner with two gold stars; isolated on flat `#00ff00`; exact spelling and
+capitalization, no tagline, character, shadow, extra letters, or watermark.
 
-- Emoji glyph appearance depends on the device operating system. Unicode emoji are temporary references, not shipped third-party image assets.
-- Production art and recorded voice are not yet present. Document creator, source, license, attribution, and modifications here when the reviewer supplies them.
+### Felt UI kit
 
-## Link preview (og:image)
+Use case `illustration-story`; exactly six equal cells on flat `#ff00ff`: empty
+green, orange, blue, and purple stitched felt cards; navy circular button with a
+cream microphone appliqué; red circular button with a gold star appliqué;
+consistent scale, generous gutters, no text, shadows, floor, extra objects, or
+watermark.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+### Felt prompt and action carriers
+
+Use case `illustration-story`; exactly two wide empty felt pieces on flat
+`#ff00ff`: a cream instruction banner with a padded golden-orange stitched rim,
+and a deep royal-blue action button with a cream-and-gold padded stitched edge;
+same size, generous gutter, no text, icon, shadow, floor, extra object, or
+watermark.
+
+## Shared assets and runtime modules
+
+- `shared/css/base.css`, `hud.css`, `screens.css`, and the Fredoka font.
+- Raster Home/Back HUD art from `shared/assets/ui/` through `hud.css`.
+- `voice-clips.js`, `audio-unlock.js`, `screens.js`, `tap.js`, `celebrate.js`,
+  `sfx.js`, `preload.js`, `debug-harness.js`, and the new `voice-meter.js`.
+
+These are QLOBE Kids originals under the repository asset/code licenses.
+
+## Voice
+
+`assets/audio/lines.json` is the exact production script. Teddy's selected
+reference is the already-shipped Benny Bear character line at
+`shared/characters/bear/voice/intro.m4a`. `tools/generate-voice.py` clones that
+voice, Whisper-checks every result, normalizes it to M4A, runs Rhubarb 1.14, and
+maps the timing to QLOBE's canonical visemes. The explicitly approved LAN pass
+produced all 14 M4A clips and matching cue files; `manifest.json` records their
+durations, cue paths, and script hashes, while `qa.json` retains every Whisper
+transcript and similarity score. No runtime service request is made.
+
+## Link preview
+
+`assets/og-image.jpg` is the existing generated link-preview image. Regenerate
+it from the finished splash through `tools/pipeline/capture_og_images.mjs` after
+the hub registry is synchronized; do not hand-edit it.

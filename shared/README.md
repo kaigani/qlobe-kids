@@ -30,6 +30,7 @@ small. Full inventory and provenance in
 | `speech.js` | Web Speech (`speechSynthesis`) wrapper |
 | `sfx.js` | WebAudio sound effects, zero files |
 | `voice-clips.js` | flat-key recorded-clip channel; `duration`, `setMuted`, `getAudioLog` (`kind: 'clip'` / `'speech'`) |
+| `voice-meter.js` | local-only microphone energy/pitch summaries and gentle expressive-voice spark scoring; never records or uploads |
 | `narrator.js` | the game's one voice: mute gate, `aria-live` announcer, interrupt token |
 | `audio-unlock.js` | the first-gesture unlock, with the latch that reopens on foreground |
 | `tap.js` | `onTap(el, action, { feedback })` — one press path |

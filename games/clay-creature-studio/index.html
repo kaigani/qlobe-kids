@@ -22,6 +22,11 @@
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
   <link rel="stylesheet" href="../../shared/css/base.css">
   <link rel="stylesheet" href="./css/style.css">
+  <!-- Only the blob body imports 'three' (dynamically, in js/blob-field.js).
+       The other five creatures never touch it, so this map costs them nothing. -->
+  <script type="importmap">
+    { "imports": { "three": "../../shared/vendor/three.module.min.js" } }
+  </script>
 </head>
 <body>
   <div id="game"></div>

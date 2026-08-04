@@ -7,6 +7,7 @@ import { onTap } from '../../../shared/js/tap.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { createRollDough, createTraceDough, createFreeDough } from './clay-dough.js';
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
@@ -98,9 +99,19 @@ let rng = mulberry32(42);
 
 let transitionPromise = Promise.resolve();
 let currentActions = new Map();
+let rollController = null;
 let traceController = null;
 let freeController = null;
 let lastNudge = 0;
+
+// The three live height-field surfaces (clay-dough.js), one non-null at a
+// time — whichever phase is currently on screen. resetTransient() destroys
+// and nulls all three on every screen change, and applyColor() retints
+// whichever one is live, so no canvas or ResizeObserver ever survives past
+// the phase that created it.
+let rollDough = null;
+let traceDough = null;
+let freeDough = null;
 
 const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
@@ -151,10 +162,18 @@ function showScreen(name) {
 }
 
 function resetTransient() {
+  rollController?.destroy();
   traceController?.destroy();
   freeController?.destroy();
+  rollDough?.destroy();
+  traceDough?.destroy();
+  freeDough?.destroy();
+  rollController = null;
   traceController = null;
   freeController = null;
+  rollDough = null;
+  traceDough = null;
+  freeDough = null;
   voice.stop();
   currentActions = new Map();
   state.transition = false;
@@ -281,6 +300,10 @@ function colorById(id = state.selectedColor) {
 function applyColor(color) {
   document.documentElement.style.setProperty('--dough', color.value);
   document.documentElement.style.setProperty('--dough-dark', color.dark);
+  // Retint whichever height field is currently mounted — the field itself is
+  // untouched, so a colour change never costs the child their in-progress
+  // roll, groove, or free-play shape.
+  (rollDough || traceDough || freeDough)?.setColor(color.value);
 }
 
 /* Letter factory: choose, roll, trace, reveal */
@@ -368,13 +391,11 @@ function renderRolling() {
   const zone = document.createElement('div');
   zone.className = 'roll-zone';
   zone.dataset.targetId = 'roll-zone';
-  const rope = document.createElement('div');
-  rope.className = 'dough-rope';
   const roller = document.createElement('div');
   roller.className = 'rolling-pin';
   const cue = document.createElement('div');
   cue.className = 'swipe-cue';
-  zone.append(rope, roller, cue);
+  zone.append(roller, cue);
   tray.append(zone);
 
   const meter = document.createElement('div');
@@ -388,28 +409,28 @@ function renderRolling() {
   stage.append(tray, meter);
   els.playfield.append(stage);
 
+  // zone is attached to the document before the field mounts, so its first
+  // getBoundingClientRect (inside createRollDough) already has real layout.
+  rollDough = createRollDough(zone, { color: colorById().value });
+
   let pointerId = null;
   let startX = 0;
   let latestX = 0;
   let maximumTravel = 0;
   const requiredTravel = () => Math.min(115, zone.clientWidth * .2);
-  const showRolledAmount = (amount) => {
-    const visualCount = Math.max(0, Math.min(3, amount));
-    rope.style.setProperty('--rolled', `${.48 + visualCount * .17}`);
-    rope.style.setProperty('--squish', `${1.15 - visualCount * .08}`);
-  };
   const pointX = (event) => {
     const rect = zone.getBoundingClientRect();
     return Math.max(0, Math.min(rect.width, event.clientX - rect.left));
   };
   const onDown = (event) => {
-    if (pointerId !== null || state.transition) return;
+    if (pointerId !== null || state.transition || event.isPrimary === false) return;
     pointerId = event.pointerId;
     startX = pointX(event);
     latestX = startX;
     maximumTravel = 0;
-    zone.setPointerCapture?.(pointerId);
+    try { zone.setPointerCapture?.(pointerId); } catch { /* window listeners still cover it */ }
     cue.classList.add('fade');
+    rollDough?.begin(event.clientX, event.clientY);
   };
   const onMove = (event) => {
     if (event.pointerId !== pointerId) return;
@@ -418,19 +439,38 @@ function renderRolling() {
     maximumTravel = Math.max(maximumTravel, Math.abs(latestX - startX));
     const percent = 12 + (latestX / Math.max(1, zone.clientWidth)) * 76;
     zone.style.setProperty('--roller-x', `${percent}%`);
-    showRolledAmount(state.rollCount + Math.min(1, maximumTravel / requiredTravel()));
+    // Coalesced samples so a fast real swipe still lengthens/flattens the
+    // dough smoothly instead of only on the throttled move events the OS
+    // chooses to dispatch.
+    const samples = event.getCoalescedEvents?.() || [event];
+    samples.forEach((sample) => rollDough?.moveTo(sample.clientX, sample.clientY));
   };
+  // A pointercancel (iPadOS palm rejection) or a window blur mid-swipe must
+  // let go of the dough without ever crediting a roll. The old version bound
+  // `finish` to pointercancel directly, which meant a palm-rejection cancel
+  // could fill a bead and advance rollCount for a swipe the child never
+  // completed — this replaces that with a real release-only path.
+  const releaseGesture = () => {
+    if (pointerId === null) return;
+    pointerId = null;
+    rollDough?.release();
+    cue.classList.remove('fade');
+  };
+  const onCancel = (event) => {
+    if (event.pointerId !== pointerId) return;
+    releaseGesture();
+  };
+  const onBlur = () => releaseGesture();
   const finish = (event) => {
     if (event.pointerId !== pointerId) return;
     pointerId = null;
+    rollDough?.release();
     if (maximumTravel < requiredTravel()) {
-      showRolledAmount(state.rollCount);
       cue.classList.remove('fade');
       gentleNudge(tray);
       return;
     }
     state.rollCount = Math.min(3, state.rollCount + 1);
-    showRolledAmount(state.rollCount);
     meter.children[state.rollCount - 1]?.classList.add('done');
     playSfx(state.rollCount === 3 ? 'sparkle' : 'pop');
     if (state.rollCount >= 3) {
@@ -439,10 +479,24 @@ function renderRolling() {
       transitionPromise = wait(500).then(renderTracing);
     }
   };
+  // pointerdown stays on the zone itself (the gesture's natural start
+  // target); move/up/cancel move to window, filtered by the captured
+  // pointerId, per docs/interaction-patterns.md #11 — this game re-renders
+  // its whole screen on every phase change, which would otherwise strand a
+  // listener bound to an element mid-gesture.
   zone.addEventListener('pointerdown', onDown);
-  zone.addEventListener('pointermove', onMove);
-  zone.addEventListener('pointerup', finish);
-  zone.addEventListener('pointercancel', finish);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', finish);
+  window.addEventListener('pointercancel', onCancel);
+  window.addEventListener('blur', onBlur);
+  rollController = {
+    destroy() {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', finish);
+      window.removeEventListener('pointercancel', onCancel);
+      window.removeEventListener('blur', onBlur);
+    },
+  };
   currentActions.set('roll-zone', () => false);
   transitionPromise = speak('roll');
   return transitionPromise;
@@ -464,10 +518,6 @@ function renderTracing() {
   stage.className = 'trace-stage';
   const tray = document.createElement('div');
   tray.className = 'work-tray trace-tray';
-  const doughSlab = document.createElement('div');
-  doughSlab.className = 'trace-dough-slab';
-  doughSlab.setAttribute('aria-hidden', 'true');
-  tray.append(doughSlab);
   const side = document.createElement('aside');
   side.className = 'trace-side';
   side.innerHTML = `
@@ -476,6 +526,10 @@ function renderTracing() {
     <div class="stroke-meter" aria-hidden="true">${letter.paths.map(() => '<i class="stroke-dot"></i>').join('')}</div>`;
   stage.append(tray, side);
   els.playfield.append(stage);
+
+  // tray is attached to the document before the field mounts, same reason
+  // as roll's zone above.
+  traceDough = createTraceDough(tray, { color: colorById().value });
 
   traceController = createTraceSurface(tray, letter.paths, {
     onProgress: (value) => { state.strokeProgress = value; },
@@ -502,6 +556,9 @@ function renderTracing() {
       playSfx('sparkle');
       transitionPromise = wait(480).then(showLetterReveal);
     },
+    // Pure observer of the SVG layer's own credited-progress decision below —
+    // it never influences whether a stroke counts, only how the dough looks.
+    onCarve: (points) => traceDough?.carve(points),
   });
   currentActions.set('trace-surface', () => false);
   transitionPromise = speak('trace');
@@ -572,10 +629,32 @@ function createTraceSurface(mount, pathData, callbacks) {
     point.y = event.clientY;
     return point.matrixTransform(svg.getScreenCTM().inverse());
   };
+  // The forward half of localPoint's transform: turns a path-length sample
+  // back into client space so the height field (which only understands
+  // pointer-style client coordinates) can carve exactly what the SVG layer
+  // above just credited.
+  const clientAt = (pathIndex, length) => {
+    const point = pointAt(pathIndex, length);
+    const svgPoint = svg.createSVGPoint();
+    svgPoint.x = point.x;
+    svgPoint.y = point.y;
+    const screen = svgPoint.matrixTransform(svg.getScreenCTM());
+    return { x: screen.x, y: screen.y };
+  };
+  // Every ~8 SVG user units between `from` and `to`, always including both
+  // ends. Called only with a span that has just newly become credited —
+  // re-sampling the same span on a later call would carve the same groove
+  // twice and dig a hole straight through the dough.
+  const sampleSpan = (pathIndex, from, to) => {
+    const points = [];
+    for (let cursor = from; cursor < to; cursor += 8) points.push(clientAt(pathIndex, cursor));
+    points.push(clientAt(pathIndex, to));
+    return points;
+  };
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
   const onDown = (event) => {
-    if (pointerId !== null || index >= clays.length || destroyed) return;
+    if (pointerId !== null || index >= clays.length || destroyed || event.isPrimary === false) return;
     const local = localPoint(event);
     const expected = pointAt(index, progressLength);
     if (distance(local, expected) > 88) {
@@ -583,7 +662,7 @@ function createTraceSurface(mount, pathData, callbacks) {
       return;
     }
     pointerId = event.pointerId;
-    svg.setPointerCapture?.(pointerId);
+    try { svg.setPointerCapture?.(pointerId); } catch { /* window listeners still cover it */ }
     finger.style.display = 'none';
   };
   const onMove = (event) => {
@@ -598,17 +677,31 @@ function createTraceSurface(mount, pathData, callbacks) {
       if (distance(local, pointAt(index, cursor)) < 82) best = Math.max(best, cursor);
     }
     if (best > progressLength) {
+      const carvedFrom = progressLength;
       progressLength = best;
       clays[index].style.strokeDashoffset = `${Math.max(0, total - progressLength)}`;
       callbacks.onProgress(progressLength / total);
+      callbacks.onCarve(sampleSpan(index, carvedFrom, best));
       updateCue();
     }
+  };
+  // pointerup credits a finished stroke below; pointercancel (palm rejection,
+  // an app-switch blur) must not — it only releases whatever is mid-drag,
+  // same rule as the roll zone above.
+  const releaseStroke = () => {
+    if (pointerId === null) return;
+    pointerId = null;
+    finger.style.display = '';
+    updateCue();
   };
   const onUp = (event) => {
     if (event.pointerId !== pointerId || index >= clays.length) return;
     pointerId = null;
     const total = lengths[index];
     if (progressLength / total >= .82) {
+      // Carve the remaining tail so an accepted stroke that stopped short of
+      // the literal path end still reads as a fully-pressed groove.
+      if (progressLength < total) callbacks.onCarve(sampleSpan(index, progressLength, total));
       clays[index].style.strokeDashoffset = '0';
       callbacks.onStrokeComplete(index);
       index += 1;
@@ -623,27 +716,39 @@ function createTraceSurface(mount, pathData, callbacks) {
       updateCue();
     }
   };
+  const onCancel = (event) => {
+    if (event.pointerId !== pointerId) return;
+    releaseStroke();
+  };
+  const onBlur = () => releaseStroke();
+  // pointerdown stays on the svg (the natural start target); move/up/cancel
+  // move to window, filtered by pointerId, matching the roll-zone contract.
   svg.addEventListener('pointerdown', onDown);
-  svg.addEventListener('pointermove', onMove);
-  svg.addEventListener('pointerup', onUp);
-  svg.addEventListener('pointercancel', onUp);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onCancel);
+  window.addEventListener('blur', onBlur);
 
   return {
     complete() {
       if (destroyed) return;
       while (index < clays.length) {
+        const total = lengths[index];
+        if (progressLength < total) callbacks.onCarve(sampleSpan(index, progressLength, total));
         clays[index].style.strokeDashoffset = '0';
         callbacks.onStrokeComplete(index);
         index += 1;
+        progressLength = 0;
       }
       callbacks.onComplete();
     },
     destroy() {
       destroyed = true;
       svg.removeEventListener('pointerdown', onDown);
-      svg.removeEventListener('pointermove', onMove);
-      svg.removeEventListener('pointerup', onUp);
-      svg.removeEventListener('pointercancel', onUp);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onCancel);
+      window.removeEventListener('blur', onBlur);
     },
   };
 }
@@ -930,6 +1035,11 @@ function renderFreeDough() {
     registerTap(button, `palette-${color.id}`, () => {
       state.selectedColor = color.id;
       applyColor(color);
+      // applyColor() already pushes into whichever field is live, but the
+      // free tray is the one screen where the child picks colour mid-play —
+      // spelling the retint out here keeps it correct even if a future edit
+      // narrows applyColor()'s job back down to CSS chrome only.
+      freeDough?.setColor(color.value);
       palette.querySelectorAll('.palette-dot').forEach((dot) => dot.classList.toggle('selected', dot === button));
       return true;
     });
@@ -950,8 +1060,14 @@ function renderFreeDough() {
   stage.append(tray, tools, palette);
   els.playfield.append(stage);
 
-  freeController = createFreeSurface(tray, {
-    color: () => colorById(),
+  // tray is attached to the document before the field mounts, same reason
+  // as roll's zone and trace's tray above.
+  freeDough = createFreeDough(tray, { color: colorById().value });
+  // tools/qa.mjs and QLOBE_DEBUG's tap() both locate the free surface by
+  // this id; the SVG it replaces used to set it directly on itself too.
+  freeDough.canvas.dataset.targetId = 'free-canvas';
+
+  freeController = createFreeSurface(tray, freeDough, {
     onMark: () => {
       state.freeMarks += 1;
       playSfx(state.freeMarks % 4 === 0 ? 'sparkle' : 'pop');
@@ -966,111 +1082,80 @@ function renderFreeDough() {
   return transitionPromise;
 }
 
-function createFreeSurface(mount, callbacks) {
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(svgNS, 'svg');
-  svg.classList.add('free-canvas');
-  svg.setAttribute('viewBox', '0 0 900 600');
-  svg.dataset.targetId = 'free-canvas';
-  svg.innerHTML = `
-    <defs>
-      <filter id="free-shadow" x="-30%" y="-30%" width="160%" height="180%">
-        <feDropShadow dx="0" dy="9" stdDeviation="4" flood-color="#592d21" flood-opacity=".28"/>
-        <feDropShadow dx="-3" dy="-4" stdDeviation="4" flood-color="#fff" flood-opacity=".16"/>
-      </filter>
-    </defs>`;
+// doughSurface is the createFreeDough() handle mounted by renderFreeDough()
+// above — this function owns only the gesture/stamp/hint wiring on top of
+// it, not the field itself.
+function createFreeSurface(mount, doughSurface, callbacks) {
   const hint = document.createElement('div');
   hint.className = 'free-hint';
   hint.textContent = '∿';
-  mount.append(svg, hint);
+  mount.append(hint);
 
   let pointerId = null;
-  let currentPath = null;
-  let points = [];
   let destroyed = false;
-  const localPoint = (event) => {
-    const point = svg.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
-    return point.matrixTransform(svg.getScreenCTM().inverse());
-  };
-  const redraw = () => {
-    if (!currentPath || points.length === 0) return;
-    currentPath.setAttribute('d', points.map((point, index) => `${index ? 'L' : 'M'}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(' '));
+
+  const markMade = () => {
+    hint.classList.add('fade');
+    callbacks.onMark();
   };
   const onDown = (event) => {
-    if (pointerId !== null || destroyed) return;
+    if (pointerId !== null || destroyed || event.isPrimary === false) return;
     pointerId = event.pointerId;
-    svg.setPointerCapture?.(pointerId);
-    const color = callbacks.color();
-    currentPath = document.createElementNS(svgNS, 'path');
-    currentPath.setAttribute('stroke', color.value);
-    currentPath.setAttribute('stroke-width', '56');
-    currentPath.dataset.mark = 'draw';
-    points = [localPoint(event)];
-    svg.append(currentPath);
-    redraw();
-    hint.classList.add('fade');
+    try { doughSurface.canvas.setPointerCapture?.(pointerId); } catch { /* window listeners still cover it */ }
+    doughSurface.beginRope(event.clientX, event.clientY);
   };
   const onMove = (event) => {
-    if (event.pointerId !== pointerId || !currentPath) return;
+    if (event.pointerId !== pointerId || destroyed) return;
     event.preventDefault();
-    const point = localPoint(event);
-    const previous = points[points.length - 1];
-    if (Math.hypot(point.x - previous.x, point.y - previous.y) >= 7) {
-      points.push(point);
-      redraw();
-    }
+    const samples = event.getCoalescedEvents?.() || [event];
+    samples.forEach((sample) => doughSurface.extendRope(sample.clientX, sample.clientY));
+  };
+  // pointerup below counts as a completed mark; pointercancel/blur must
+  // release the rope in place without counting one — same rule as roll and
+  // trace above.
+  const releaseRope = () => {
+    if (pointerId === null) return;
+    pointerId = null;
+    doughSurface.endRope();
   };
   const onUp = (event) => {
     if (event.pointerId !== pointerId) return;
-    pointerId = null;
-    if (points.length < 2) {
-      const start = points[0];
-      currentPath.setAttribute('d', `M${start.x - 1} ${start.y} L${start.x + 1} ${start.y}`);
-    }
-    currentPath = null;
-    points = [];
-    callbacks.onMark();
+    releaseRope();
+    markMade();
   };
-  svg.addEventListener('pointerdown', onDown);
-  svg.addEventListener('pointermove', onMove);
-  svg.addEventListener('pointerup', onUp);
-  svg.addEventListener('pointercancel', onUp);
+  const onCancel = (event) => {
+    if (event.pointerId !== pointerId) return;
+    releaseRope();
+  };
+  const onBlur = () => releaseRope();
+  // pointerdown stays on the canvas (the natural start target); move/up/
+  // cancel move to window, filtered by pointerId, matching the roll-zone
+  // and trace-surface contracts above.
+  doughSurface.canvas.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onCancel);
+  window.addEventListener('blur', onBlur);
 
   return {
     stamp(mark) {
-      const color = callbacks.color();
-      const text = document.createElementNS(svgNS, 'text');
-      const count = svg.querySelectorAll('[data-mark]').length;
-      text.dataset.mark = 'stamp';
-      text.textContent = mark;
-      text.setAttribute('x', `${230 + (count * 173) % 470}`);
-      text.setAttribute('y', `${220 + (count * 109) % 245}`);
-      text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('font-family', 'Fredoka, sans-serif');
-      text.setAttribute('font-size', mark === '★' ? '170' : '225');
-      text.setAttribute('font-weight', '600');
-      text.setAttribute('fill', color.value);
-      text.setAttribute('stroke', color.dark);
-      text.setAttribute('stroke-width', '10');
-      text.setAttribute('paint-order', 'stroke fill');
-      text.setAttribute('filter', 'url(#free-shadow)');
-      svg.append(text);
-      hint.classList.add('fade');
-      callbacks.onMark();
+      if (destroyed) return;
+      doughSurface.stamp(mark);
+      markMade();
     },
     clear() {
-      svg.querySelectorAll('[data-mark]').forEach((mark) => mark.remove());
+      if (destroyed) return;
+      doughSurface.clear();
       hint.classList.remove('fade');
       callbacks.onClear();
     },
     destroy() {
       destroyed = true;
-      svg.removeEventListener('pointerdown', onDown);
-      svg.removeEventListener('pointermove', onMove);
-      svg.removeEventListener('pointerup', onUp);
-      svg.removeEventListener('pointercancel', onUp);
+      doughSurface.canvas.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onCancel);
+      window.removeEventListener('blur', onBlur);
     },
   };
 }
@@ -1119,6 +1204,24 @@ function targetRole(element) {
   if (id.startsWith('color-') || id.startsWith('palette-') || id.startsWith('stamp-')) return 'neutral';
   if (['roll-zone', 'trace-surface', 'free-canvas'].includes(id)) return 'correct';
   return 'neutral';
+}
+
+function doughDebugState() {
+  const active = rollDough || traceDough || freeDough;
+  if (!active) return null;
+  const metrics = active.metrics();
+  const round = (value, places) => {
+    const factor = 10 ** places;
+    return Math.round(value * factor) / factor;
+  };
+  return {
+    revision: metrics.revision,
+    volume: round(metrics.volume, 2),
+    peak: round(metrics.peak, 2),
+    spreadX: round(metrics.spreadX, 3),
+    spreadY: round(metrics.spreadY, 3),
+    renders: metrics.renders,
+  };
 }
 
 async function debugTap(targetId) {
@@ -1200,6 +1303,11 @@ installDebug({
     placed: state.placed,
     freeMarks: state.freeMarks,
     muted: state.muted,
+    // The live height field's own numbers, straight from clay-dough.js's
+    // metrics() — null when no field is on screen (color shop, word maker,
+    // reveal). Rounded for readability only; never smoothed or faked, so QA
+    // can assert on it directly.
+    dough: doughDebugState(),
   }),
   getTargets: () => [...document.querySelectorAll('[data-target-id]')]
     .filter((element) => {

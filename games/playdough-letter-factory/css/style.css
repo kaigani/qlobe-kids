@@ -453,6 +453,13 @@ button {
   pointer-events: none;
 }
 
+.clay-canvas {
+  position: absolute;
+  display: block;
+  border-radius: inherit;
+  touch-action: none;
+}
+
 .clay-action {
   min-width: 104px;
   min-height: 96px;
@@ -647,24 +654,12 @@ button {
   cursor: ew-resize;
 }
 
-.dough-rope {
-  position: relative;
-  width: min(76%, 650px);
-  height: clamp(88px, 15vh, 145px);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 18% 26%, rgba(255, 255, 255, .32), transparent 15%),
-    radial-gradient(circle at 67% 70%, rgba(72, 31, 22, .12) 0 3px, transparent 4px),
-    radial-gradient(circle at 42% 31%, rgba(72, 31, 22, .1) 0 2px, transparent 3px),
-    var(--dough);
-  background-size: auto, 66px 51px, 79px 63px, auto;
-  box-shadow:
-    inset 0 -17px 18px rgba(83, 28, 22, .14),
-    inset 0 8px 12px rgba(255, 255, 255, .16),
-    0 13px 0 var(--dough-dark),
-    0 23px 24px rgba(76, 39, 20, .18);
-  transform: scaleX(var(--rolled, .48)) scaleY(var(--squish, 1.15));
-  transition: transform .09s ease-out;
+.roll-canvas {
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .rolling-pin {
@@ -776,23 +771,11 @@ button {
   height: min(69vh, 650px);
 }
 
-.trace-dough-slab {
-  position: absolute;
+.trace-canvas {
   z-index: 3;
   inset: 5% 7% 6%;
-  border-radius: 11% 8% 10% 7% / 9% 11% 8% 10%;
-  background:
-    radial-gradient(circle at 20% 23%, rgba(255, 255, 255, .2) 0 3px, transparent 4px),
-    radial-gradient(circle at 72% 68%, rgba(69, 29, 22, .11) 0 2px, transparent 3px),
-    radial-gradient(circle at 46% 39%, rgba(69, 29, 22, .08) 0 2px, transparent 3px),
-    var(--dough);
-  background-size: 97px 89px, 83px 71px, 119px 101px, auto;
-  box-shadow:
-    inset -14px -18px 20px rgba(72, 27, 20, .13),
-    inset 10px 11px 15px rgba(255, 255, 255, .17),
-    0 13px 0 var(--dough-dark),
-    0 22px 25px rgba(76, 39, 20, .2);
-  transform: rotate(-.3deg) scale(.985);
+  width: 86%;
+  height: 89%;
   pointer-events: none;
 }
 
@@ -819,13 +802,10 @@ button {
 
 .letter-clay {
   fill: none;
-  stroke: rgba(57, 24, 20, .36);
-  stroke-width: 48;
+  stroke: rgba(57, 24, 20, .16);
+  stroke-width: 40;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter:
-    drop-shadow(-4px -4px 1px rgba(67, 27, 21, .34))
-    drop-shadow(4px 5px 2px rgba(255, 255, 255, .2));
 }
 
 .letter-clay-finished {
@@ -1101,13 +1081,6 @@ button {
   width: 100%;
   height: 100%;
   touch-action: none;
-}
-
-.free-canvas path {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: url('#free-shadow');
 }
 
 .free-hint {
@@ -1679,7 +1652,14 @@ button {
     grid-template-rows: minmax(0, 1fr) auto auto;
   }
 
+  /* This block's own `.work-tray { height: min(65vh, 720px) }` above has the
+     same specificity as the base `.free-tray { height: 100% }` and comes
+     later, so it wins — and a 720px tray does not fit the ~525px grid row
+     left after the stamp and palette rows, so the tray slid down underneath
+     them. Invisible while the tray was empty cream; obvious the moment it
+     holds a full sheet of dough. Re-assert the row-relative height here. */
   .free-tray {
+    height: 100%;
     grid-row: auto;
   }
 

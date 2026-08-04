@@ -5,42 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Emotion Voice Game 🎭 — Perform a Feeling Aloud</title>
-  <meta name="description" content="Pick a feeling, hear a theatrical model line, then perform the same words happy, scared, proud, sleepy, or animal-style. A playful expressive-voice game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="theme-color" content="#091d35" />
+  <title>Emotion Voice Game — Bring Feelings to Life</title>
+  <meta name="description" content="Choose a feeling, hear Teddy model it, then use your own voice to bring the cozy felt theater to life. Local microphone play for ages 5–6." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Emotion Voice Game" />
-  <meta property="og:title" content="Emotion Voice Game 🎭 — Perform a Feeling Aloud" />
-  <meta property="og:description" content="Pick a feeling, hear a theatrical model line, then perform the same words happy, scared, proud, sleepy, or animal-style. A playful expressive-voice game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Emotion Voice Game — Bring Feelings to Life" />
+  <meta property="og:description" content="Use happy, proud, calm, and silly voices to light up Teddy's felt theater." />
   <meta property="og:url" content="https://qlo.be/games/emotion-voice-game/" />
   <meta property="og:image" content="https://qlo.be/games/emotion-voice-game/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Emotion Voice Game title screen with Say It With Feeling and Animal Feelings game modes and theater masks on a spotlit stage." />
-
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Emotion Voice Game 🎭 — Perform a Feeling Aloud" />
-  <meta name="twitter:description" content="Pick a feeling, hear a theatrical model line, then perform the same words happy, scared, proud, sleepy, or animal-style. A playful expressive-voice game for ages 5–6." />
+  <meta name="twitter:title" content="Emotion Voice Game — Bring Feelings to Life" />
+  <meta name="twitter:description" content="Use happy, proud, calm, and silly voices to light up Teddy's felt theater." />
   <meta name="twitter:image" content="https://qlo.be/games/emotion-voice-game/assets/og-image.jpg" />
-
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="preload" as="image" href="assets/felt-stage.webp" />
+  <link rel="preload" as="image" href="assets/characters/bear-neutral.webp" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Emotion Voice Game">
+    <section class="screen splash" data-qk-screen="splash">
+      <a class="qk-hud-btn qk-hud-home home-link" data-hud="home" data-target="catalog-home" aria-label="Back to QLOBE Kids" href="../../"></a>
+      <img class="title-art" src="assets/title.webp" alt="Emotion Voice Game" />
+      <p class="choose-heading">Choose a feeling</p>
+      <div class="emotion-cards" id="emotion-cards" aria-label="Choose a feeling"></div>
+      <div class="splash-bear-wrap teddy-puppet" data-pose="neutral">
+        <img class="splash-bear" src="assets/characters/bear-neutral.webp" alt="Teddy, the feelings theater bear" />
+        <img class="teddy-mouth" id="splash-mouth" src="assets/characters/teddy/anim/mouth-rest.png" alt="" />
+      </div>
+      <p class="first-tap-note">Tap a feeling to hear Teddy</p>
+    </section>
+
+    <section class="screen play" data-qk-screen="play" hidden>
+      <button class="qk-hud-btn qk-hud-back play-back" data-hud="back" data-target="play-back" aria-label="Back to feelings"></button>
+      <div class="progress" id="progress" aria-label="Feelings completed"></div>
+      <div class="prompt-banner" aria-live="polite">
+        <span id="emotion-label">Happy voice</span>
+        <strong>Say: <em>I can do it!</em></strong>
+      </div>
+      <div class="actor-puppet teddy-puppet" id="actor-puppet" data-pose="neutral">
+        <img class="actor" id="actor" src="assets/characters/bear-neutral.webp" alt="Teddy on the felt stage" />
+        <img class="teddy-mouth" id="actor-mouth" src="assets/characters/teddy/anim/mouth-rest.png" alt="" />
+      </div>
+      <div class="performance-panel">
+        <button class="mic-button" id="mic-button" data-target="mic" aria-label="Start listening">
+          <img src="assets/ui/mic.webp" alt="" />
+          <span id="mic-label">My turn!</span>
+        </button>
+        <button class="fallback-button" id="fallback-button" data-target="fallback" aria-label="Perform without the microphone" hidden>
+          <img src="assets/ui/star.webp" alt="" />
+          <span>Say it!</span>
+        </button>
+        <div class="voice-lights" id="voice-lights" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </div>
+        <p class="listen-status" id="listen-status">Listen, then take your turn</p>
+        <p class="privacy-note">Your mic stays on this device. Nothing is saved.</p>
+      </div>
+    </section>
+
+    <section class="screen result" data-qk-screen="result" hidden>
+      <button class="qk-hud-btn qk-hud-back result-back" data-hud="back" data-target="result-back" aria-label="Back to feelings"></button>
+      <div class="result-puppet teddy-puppet" id="result-puppet" data-pose="happy">
+        <img class="result-bear" id="result-bear" src="assets/characters/bear-happy.webp" alt="Teddy celebrating" />
+        <img class="teddy-mouth" id="result-mouth" src="assets/characters/teddy/anim/mouth-rest.png" alt="" />
+      </div>
+      <div class="result-copy">
+        <p class="result-kicker" id="result-kicker">That sounded</p>
+        <h1 id="result-title">happy!</h1>
+        <div class="spark-row" id="spark-row" aria-label="Voice sparks earned"></div>
+        <p id="result-hint">Bright and bouncy</p>
+        <button class="next-button" id="next-button" data-target="next">Next feeling</button>
+      </div>
+    </section>
+  </main>
+  <div class="visually-hidden" id="announcer" aria-live="polite"></div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

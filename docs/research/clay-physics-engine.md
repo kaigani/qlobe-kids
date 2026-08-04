@@ -196,8 +196,12 @@ source to the neutral matcap. It is projected tri-planarly from immutable
 material coordinates and converted to a normal perturbation in the shader, so
 the dapple, faint fingerprints and shallow pores stay attached during plastic
 deformation. An initial high-strength pass read as stucco; the accepted lab
-setting reduces both bump strength and texture frequency. This is still a
-look-development asset, not an approved production texture.
+setting reduces both bump strength and texture frequency. The material also
+combines the matcap with a soft directional key and restrained position-based
+form sweep: matcap lighting alone became visually flat when an extreme plastic
+edit left a large patch facing the camera. Output colour conversion is explicit
+in the custom shader. This is still a look-development asset, not an approved
+production texture.
 
 The implicit fusion material now assigns colour from the two lobe field weights
 rather than projecting one lobe's colour as a circle onto the union. This makes

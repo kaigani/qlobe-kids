@@ -127,6 +127,18 @@ async function main() {
   const rollBox = await page.locator('[data-target-id="roll-zone"]').boundingBox();
   await page.waitForTimeout(400);
   await page.screenshot({ path: path.join(shots, '03-roll-ready.png') });
+  const startSpreadX = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough.spreadX);
+  const startVolume = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough.volume);
+  check('the roll phase mounts a clay height field', startSpreadX > 0 && startVolume > 0,
+    JSON.stringify({ startSpreadX, startVolume }));
+
+  // Render-on-demand (docs/interaction-patterns.md #12): an untouched field
+  // must not reshade. `renders` counts real per-pixel shading passes.
+  const idleRendersBefore = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough.renders);
+  await page.waitForTimeout(900);
+  const idleRendersAfter = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough.renders);
+  check('an untouched dough canvas does not redraw (render-on-demand)',
+    idleRendersAfter === idleRendersBefore, `${idleRendersBefore} -> ${idleRendersAfter}`);
   for (let pass = 0; pass < 3; pass += 1) {
     const forward = pass % 2 === 0;
     await page.mouse.move(
@@ -136,12 +148,16 @@ async function main() {
     await page.mouse.down();
     if (pass === 0) {
       await page.mouse.move(rollBox.x + rollBox.width * .5, rollBox.y + rollBox.height * .5, { steps: 6 });
-      const liveRoll = await page.evaluate(() => ({
-        count: window.QLOBE_DEBUG.getState().rollCount,
-        amount: Number.parseFloat(document.querySelector('.dough-rope').style.getPropertyValue('--rolled')),
-      }));
-      check('dough expands continuously before the first swipe is released',
-        liveRoll.count === 0 && liveRoll.amount > .48, JSON.stringify(liveRoll));
+      // The dough is a real mass-conserving height field now, so "it is
+      // getting longer" is a measurement, not a CSS custom property: the
+      // material's own bounding box has to widen mid-drag, while the
+      // three-swipe progress rule has not credited anything yet.
+      const liveRoll = await page.evaluate(() => {
+        const state = window.QLOBE_DEBUG.getState();
+        return { count: state.rollCount, spreadX: state.dough.spreadX, peak: state.dough.peak };
+      });
+      check('dough lengthens continuously before the first swipe is released',
+        liveRoll.count === 0 && liveRoll.spreadX > startSpreadX, JSON.stringify({ startSpreadX, ...liveRoll }));
       await page.screenshot({ path: path.join(shots, '03-roll-live.png') });
     }
     await page.mouse.move(
@@ -152,6 +168,13 @@ async function main() {
     await page.mouse.up();
     if (pass === 0) await page.screenshot({ path: path.join(shots, '03-roll-dough.png') });
   }
+  const rolled = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
+  check('three swipes leave the dough longer and flatter than the starting ball',
+    rolled.spreadX > startSpreadX * 1.5, JSON.stringify({ startSpreadX, ...rolled }));
+  check('rolling never creates or destroys dough (mass-conserving)',
+    Math.abs(rolled.volume - startVolume) / startVolume < .01,
+    JSON.stringify({ startVolume, volume: rolled.volume }));
+
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'trace');
   check('three real swipes advance to tracing', true);
   await page.waitForTimeout(400);
@@ -163,10 +186,20 @@ async function main() {
   await page.waitForTimeout(50);
   check('a wrong trace start gives a gentle nudge without progress',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().stroke)) === 0);
+  const slabBefore = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
   await traceActiveLetter(page, {
     onMidStroke: async () => {
-      const progress = await page.evaluate(() => window.QLOBE_DEBUG.getState().strokeProgress);
-      check('tracing deepens an impression continuously inside the dough slab', progress > 0 && progress < 1, String(progress));
+      const mid = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+      check('tracing deepens an impression continuously inside the dough slab',
+        mid.strokeProgress > 0 && mid.strokeProgress < 1, String(mid.strokeProgress));
+      // The groove is carved into the field, so the revision must have moved
+      // while the finger was still mid-stroke, and the displaced material
+      // must still be on the slab (a press is conserving, not an eraser).
+      check('a groove is carved into the dough while the stroke is still in progress',
+        mid.dough.revision > slabBefore.revision, `${slabBefore.revision} -> ${mid.dough.revision}`);
+      check('carving a groove conserves the slab (material moves to a rim, it is not erased)',
+        Math.abs(mid.dough.volume - slabBefore.volume) / slabBefore.volume < .01,
+        JSON.stringify({ before: slabBefore.volume, mid: mid.dough.volume }));
       await page.screenshot({ path: path.join(shots, '04b-trace-impression.png') });
     },
   });
@@ -221,14 +254,45 @@ async function main() {
   });
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'free');
   const canvas = await page.locator('[data-target-id="free-canvas"]').boundingBox();
+  check('Free Dough starts as a real sheet of dough, not an empty tray',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().dough.volume)) > 0);
+  const sheetBefore = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
   await page.mouse.move(canvas.x + canvas.width * .2, canvas.y + canvas.height * .6);
   await page.mouse.down();
   await page.mouse.move(canvas.x + canvas.width * .75, canvas.y + canvas.height * .35, { steps: 18 });
   await page.mouse.up();
-  await page.locator('[data-target-id="stamp-A"]').click();
+  const roped = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
+  check('drawing squeezes out a raised rope of new dough',
+    roped.volume > sheetBefore.volume && roped.peak > sheetBefore.peak,
+    JSON.stringify({ before: sheetBefore, after: roped }));
+  for (const mark of ['A', 'O', 'S', '★']) {
+    await page.locator(`[data-target-id="stamp-${mark}"]`).click();
+  }
+  const stamped = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
+  // A stamp PRESSES, it does not erase: the displaced dough goes to a rim
+  // around the glyph, so the sheet's total volume must be unchanged while the
+  // field itself has demonstrably moved.
+  check('stamps press letter-shaped impressions without erasing any dough',
+    stamped.revision > roped.revision
+      && Math.abs(stamped.volume - roped.volume) / roped.volume < .001,
+    JSON.stringify({ roped, stamped }));
   check('Free Dough accepts drawing and stamps',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().freeMarks)) >= 2);
   await page.screenshot({ path: path.join(shots, '08-free-dough.png') });
+
+  // A colour change must retint the dough, never rebuild the field — the
+  // child's ropes and stamps have to survive picking a new colour.
+  const beforeRetint = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
+  await page.locator('[data-target-id="palette-purple"]').click();
+  const afterRetint = await page.evaluate(() => window.QLOBE_DEBUG.getState().dough);
+  check('changing colour retints the dough without destroying the child\'s work',
+    Math.abs(afterRetint.volume - beforeRetint.volume) < .01,
+    JSON.stringify({ before: beforeRetint.volume, after: afterRetint.volume }));
+  await page.screenshot({ path: path.join(shots, '08b-free-dough-retint.png') });
+
+  await page.locator('[data-target-id="free-clear"]').click();
+  check('clearing the tray resets to a fresh sheet',
+    (await page.evaluate(() => window.QLOBE_DEBUG.getState().freeMarks)) === 0);
 
   const portrait = await openGame(browser, { width: 820, height: 1180 });
   await portrait.screenshot({ path: path.join(shots, '09-splash-portrait.png') });
@@ -255,6 +319,84 @@ async function main() {
   check('wide reduced-motion play targets stay at least 96px',
     wideTargets.filter(({ id }) => id.startsWith('token-')).every(({ rect }) => rect.w >= 96 && rect.h >= 96),
     JSON.stringify(wideTargets));
+
+  // The clay canvases in a compact landscape window: they must fill their
+  // trays and still respond to a real drag under reduced motion (where the
+  // post-release settle collapses to one synchronous relax).
+  await wide.evaluate(() => {
+    window.QLOBE_DEBUG.home();
+    return window.QLOBE_DEBUG.startMode('letters');
+  });
+  await wide.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'color');
+  await wide.locator('[data-target-id="color-blue"]').click();
+  await wide.locator('[data-target-id="color-go"]').click();
+  await wide.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'roll');
+  // Both rects in ONE evaluate: read across two round-trips they can land in
+  // different layout frames (the prompt pill reflows the header, which
+  // resizes the tray), and the check fails on a race rather than on a bug.
+  const compactFit = await wide.evaluate(() => {
+    const zone = document.querySelector('[data-target-id="roll-zone"]').getBoundingClientRect();
+    const canvas = document.querySelector('.roll-canvas').getBoundingClientRect();
+    return { zone: { w: zone.width, h: zone.height }, canvas: { w: canvas.width, h: canvas.height } };
+  });
+  check('the roll canvas fills its zone in a compact landscape window',
+    Math.abs(compactFit.canvas.w - compactFit.zone.w) < 2 && Math.abs(compactFit.canvas.h - compactFit.zone.h) < 2,
+    JSON.stringify(compactFit));
+  const compactBox = await wide.locator('[data-target-id="roll-zone"]').boundingBox();
+
+  const compactStart = await wide.evaluate(() => window.QLOBE_DEBUG.getState().dough.spreadX);
+  await wide.mouse.move(compactBox.x + compactBox.width * .25, compactBox.y + compactBox.height * .5);
+  await wide.mouse.down();
+  await wide.mouse.move(compactBox.x + compactBox.width * .78, compactBox.y + compactBox.height * .5, { steps: 14 });
+  await wide.mouse.up();
+  const compactRolled = await wide.evaluate(() => window.QLOBE_DEBUG.getState().dough.spreadX);
+  check('reduced motion still rolls the dough (settle collapses, it does not stop)',
+    compactRolled > compactStart, `${compactStart} -> ${compactRolled}`);
+  await wide.screenshot({ path: path.join(shots, '12-roll-compact-reduced.png') });
+
+  // pointercancel is a cancel, not a completed swipe. iPadOS palm rejection
+  // fires it mid-drag, and the pre-heightfield code credited a bead for it.
+  const cancelBefore = await wide.evaluate(() => window.QLOBE_DEBUG.getState().rollCount);
+  await wide.mouse.move(compactBox.x + compactBox.width * .25, compactBox.y + compactBox.height * .5);
+  await wide.mouse.down();
+  await wide.mouse.move(compactBox.x + compactBox.width * .8, compactBox.y + compactBox.height * .5, { steps: 10 });
+  await wide.evaluate(() => window.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 1, bubbles: true })));
+  await wide.mouse.up();
+  const cancelAfter = await wide.evaluate(() => window.QLOBE_DEBUG.getState().rollCount);
+  check('a pointercancel mid-swipe never credits a roll',
+    cancelAfter === cancelBefore, `${cancelBefore} -> ${cancelAfter}`);
+
+  const portraitRoll = await openGame(browser, { width: 820, height: 1180 });
+  await portraitRoll.evaluate(() => {
+    window.QLOBE_DEBUG.mute();
+    return window.QLOBE_DEBUG.startMode('free');
+  });
+  await portraitRoll.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'free');
+  // Past the .42s tray-arrive fade, or the shot catches a translucent tray
+  // and the dough looks like it is floating on the factory backdrop.
+  await portraitRoll.waitForTimeout(600);
+  const portraitFit = await portraitRoll.evaluate(() => {
+    const tray = document.querySelector('.free-tray').getBoundingClientRect();
+    const canvas = document.querySelector('.free-canvas').getBoundingClientRect();
+    return { tray: { w: tray.width, h: tray.height }, canvas: { w: canvas.width, h: canvas.height } };
+  });
+  check('the free canvas fills its tray in portrait',
+    Math.abs(portraitFit.canvas.w - portraitFit.tray.w) < 32 && portraitFit.canvas.h > 0,
+    JSON.stringify(portraitFit));
+
+  // The dough tray must end above the stamp row. In portrait the tray used to
+  // keep its landscape fixed height and slide down underneath the tools.
+  const portraitStack = await portraitRoll.evaluate(() => {
+    const tray = document.querySelector('.free-tray').getBoundingClientRect();
+    const tools = document.querySelector('.free-tools').getBoundingClientRect();
+    const palette = document.querySelector('.free-palette').getBoundingClientRect();
+    return { trayBottom: tray.bottom, toolsTop: tools.top, paletteTop: palette.top };
+  });
+  check('in portrait the dough tray sits above the stamp and palette rows, not under them',
+    portraitStack.trayBottom <= portraitStack.toolsTop + 1
+      && portraitStack.toolsTop < portraitStack.paletteTop,
+    JSON.stringify(portraitStack));
+  await portraitRoll.screenshot({ path: path.join(shots, '13-free-portrait.png') });
 
   for (const session of sessions) {
     check('session has no page or console errors', session.errors.length === 0, session.errors.join(' | '));
