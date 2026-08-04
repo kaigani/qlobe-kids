@@ -11,6 +11,7 @@ const normalizeAngle = (value) => {
 export function createFreeformBoard(container, {
   interactive = true,
   reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches,
+  holdRotate = null,
   onChange = () => {},
   onSelect = () => {},
   onGrab = () => {},
@@ -25,6 +26,11 @@ export function createFreeformBoard(container, {
   let active = null;
   let nextZ = 10;
   let destroyed = false;
+  const hold = holdRotate ? {
+    delay: Math.max(0, Number(holdRotate.delay) || 520),
+    tolerance: Math.max(4, Number(holdRotate.tolerance) || 22),
+    degreesPerSecond: Math.max(1, Number(holdRotate.degreesPerSecond) || 30),
+  } : null;
 
   container.classList.add('qlobe-freeform-board');
 
@@ -92,6 +98,45 @@ export function createFreeformBoard(container, {
     return selected;
   }
 
+  function clearHoldRotation(drag = active) {
+    if (!drag) return;
+    clearTimeout(drag.holdTimer);
+    cancelAnimationFrame(drag.holdFrame || 0);
+    drag.holdTimer = 0;
+    drag.holdFrame = 0;
+    drag.rotating = false;
+  }
+
+  function armHoldRotation(clientX, clientY) {
+    if (!hold || !active) return;
+    clearHoldRotation(active);
+    active.holdAnchorX = clientX;
+    active.holdAnchorY = clientY;
+    active.holdTimer = window.setTimeout(() => {
+      if (!active) return;
+      active.rotating = true;
+      active.lastRotateAt = performance.now();
+      const rotateFrame = (now) => {
+        if (!active?.rotating) return;
+        const elapsed = Math.min(64, Math.max(0, now - active.lastRotateAt));
+        active.lastRotateAt = now;
+        active.item.rotation = normalizeAngle(
+          active.item.rotation + hold.degreesPerSecond * elapsed / 1000,
+        );
+        active.rotated = true;
+        active.moved = true;
+        applyTransform(active.item, true);
+        onDrag(serializable(active.item), {
+          clientX: active.holdAnchorX,
+          clientY: active.holdAnchorY,
+          rotating: true,
+        });
+        active.holdFrame = requestAnimationFrame(rotateFrame);
+      };
+      active.holdFrame = requestAnimationFrame(rotateFrame);
+    }, hold.delay);
+  }
+
   function pointerDown(event) {
     if (!interactive || active || event.isPrimary === false) return;
     const el = event.currentTarget;
@@ -106,10 +151,12 @@ export function createFreeformBoard(container, {
       item,
       before: snapshot(),
       moved: false,
+      rotated: false,
       offsetX: event.clientX - (itemRect.left + itemRect.width / 2),
       offsetY: event.clientY - (itemRect.top + itemRect.height / 2),
       rect,
     };
+    armHoldRotation(event.clientX, event.clientY);
     el.classList.add('is-dragging');
     el.setPointerCapture?.(event.pointerId);
     applyTransform(item, true);
@@ -119,6 +166,9 @@ export function createFreeformBoard(container, {
   function pointerMove(event) {
     if (!active || event.pointerId !== active.pointerId) return;
     event.preventDefault();
+    if (hold && Math.hypot(event.clientX - active.holdAnchorX, event.clientY - active.holdAnchorY) > hold.tolerance) {
+      armHoldRotation(event.clientX, event.clientY);
+    }
     const { item, rect, offsetX, offsetY } = active;
     const x = (event.clientX - rect.left - offsetX) / Math.max(1, rect.width);
     const y = (event.clientY - rect.top - offsetY) / Math.max(1, rect.height);
@@ -136,6 +186,7 @@ export function createFreeformBoard(container, {
     if (!active || (event && event.pointerId !== active.pointerId)) return;
     event?.preventDefault?.();
     const drag = active;
+    clearHoldRotation(drag);
     active = null;
     drag.item.el.classList.remove('is-dragging');
     if (cancelled) {
@@ -146,7 +197,7 @@ export function createFreeformBoard(container, {
     if (drag.moved) {
       history.push(drag.before);
       if (history.length > 40) history.shift();
-      emit('move', drag.item);
+      emit(drag.rotated ? 'transform' : 'move', drag.item);
     }
     onDrop(serializable(drag.item), {
       moved: drag.moved,
@@ -279,6 +330,7 @@ export function createFreeformBoard(container, {
   function destroy() {
     if (destroyed) return;
     destroyed = true;
+    clearHoldRotation(active);
     window.removeEventListener('pointermove', pointerMove);
     window.removeEventListener('pointerup', finishPointer);
     window.removeEventListener('pointercancel', cancelPointer);

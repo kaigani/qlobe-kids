@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tangram Tales Layout Helper</title>
+  <link rel="icon" href="../../../assets/favicon.png" />
+  <link rel="stylesheet" href="./layout-helper.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">Authoring tool</p>
+      <h1>Tangram Tales layout helper</h1>
+      <p>Drag real runtime pieces over the supplied reference, then use precise sliders for rotation and size.</p>
+    </div>
+    <a href="../">Open game</a>
+  </header>
+  <main>
+    <section class="toolbar" aria-label="Layout controls">
+      <button id="previous" type="button">Previous</button>
+      <label>Figure <select id="tale"></select></label>
+      <button id="next" type="button">Next</button>
+      <label>Reference opacity <input id="opacity" type="range" min="0" max="1" step="0.05" value="0.42" /></label>
+      <label>Piece opacity <input id="piece-opacity" type="range" min="0.2" max="1" step="0.05" value="0.72" /></label>
+      <button id="save" type="button">Save draft</button>
+      <button id="reset" type="button">Reset</button>
+    </section>
+    <section class="workspace">
+      <div class="stage-shell">
+        <div id="stage" aria-label="Editable tangram board">
+          <canvas id="reference" width="1200" height="900" aria-hidden="true"></canvas>
+          <div id="board"></div>
+        </div>
+      </div>
+      <aside>
+        <h2 id="figure-title">Figure</h2>
+        <p id="selected-label">Select a piece on the board.</p>
+        <p id="draft-status" class="draft-status">Using committed targets.</p>
+        <label class="piece-picker">Piece
+          <select id="piece-select" aria-label="Select a tangram piece"></select>
+        </label>
+        <label class="lock-control">
+          <input id="lock-selection" type="checkbox" />
+          Lock selection (only this piece can move)
+        </label>
+        <div class="piece-controls">
+          <label>Rotation <output id="rotation-value">0°</output>
+            <input id="rotation" type="range" min="-180" max="180" step="1" value="0" disabled />
+          </label>
+          <label>Size <output id="size-value">0.20</output>
+            <input id="size" type="range" min="0.08" max="0.55" step="0.005" value="0.20" disabled />
+          </label>
+          <button id="flip-horizontal" type="button" disabled aria-pressed="false">Flip horizontal</button>
+        </div>
+        <button id="copy" class="primary" type="button">Copy target JSON</button>
+        <button id="copy-all" type="button">Copy all saved drafts</button>
+        <textarea id="output" rows="18" spellcheck="false" aria-label="Current target JSON"></textarea>
+        <p class="hint">Arrow keys nudge 0.5%. Shift + arrows nudge 2%. Rotation and size use the sliders; horizontal flip is available for the parallelogram.</p>
+      </aside>
+    </section>
+  </main>
+  <script type="module" src="./layout-helper.js"></script>
+</body>
+</html>

@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-03T16:41:55.360Z",
+  "generated": "2026-08-04T05:29:28.381Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -72,10 +72,9 @@
       ]
     },
     "observe-journal": {
-      "count": 8,
+      "count": 7,
       "games": [
         "bean-sprout-watch",
-        "emotion-voice-game",
         "family-story-interview",
         "kindness-delivery",
         "picture-narration",
@@ -356,6 +355,10 @@
       "modules": [
         "shared/js/audio-unlock.js",
         "shared/js/celebrate.js",
+        "shared/js/clay/field-three.js",
+        "shared/js/clay/field.js",
+        "shared/js/clay/lobes-three.js",
+        "shared/js/clay/lobes.js",
         "shared/js/debug-harness.js",
         "shared/js/freeform-board.js",
         "shared/js/preload.js",
@@ -452,14 +455,23 @@
       "packs": []
     },
     "emotion-voice-game": {
-      "engine": "observe-journal",
+      "engine": null,
       "status": "beta",
       "category": "oral-storytelling",
-      "characters": [],
+      "characters": [
+        "Teddy"
+      ],
       "modules": [
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/mouth.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/voice-meter.js"
       ],
       "assets": [],
       "packs": []
@@ -581,7 +593,7 @@
     },
     "globe-spin-stories": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "culture-geography",
       "characters": [],
       "modules": [
@@ -1057,6 +1069,8 @@
       "characters": [],
       "modules": [
         "shared/js/audio-unlock.js",
+        "shared/js/clay/heightfield-canvas.js",
+        "shared/js/clay/heightfield.js",
         "shared/js/content.js",
         "shared/js/debug-harness.js",
         "shared/js/rng.js",
@@ -1942,6 +1956,7 @@
         "big-paper-murals",
         "clay-creature-studio",
         "counting-treasure-cups",
+        "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
@@ -1965,6 +1980,7 @@
       "shared/js/celebrate.js": [
         "clay-creature-studio",
         "counting-treasure-cups",
+        "emotion-voice-game",
         "feelings-charades",
         "lunchbox-pack",
         "puppet-retell",
@@ -1972,6 +1988,24 @@
         "sink-or-float",
         "snack-chef",
         "teen-bead-builder"
+      ],
+      "shared/js/clay/field-three.js": [
+        "clay-creature-studio"
+      ],
+      "shared/js/clay/field.js": [
+        "clay-creature-studio"
+      ],
+      "shared/js/clay/heightfield-canvas.js": [
+        "playdough-letter-factory"
+      ],
+      "shared/js/clay/heightfield.js": [
+        "playdough-letter-factory"
+      ],
+      "shared/js/clay/lobes-three.js": [
+        "clay-creature-studio"
+      ],
+      "shared/js/clay/lobes.js": [
+        "clay-creature-studio"
       ],
       "shared/js/content.js": [
         "blend-train",
@@ -1984,6 +2018,7 @@
         "big-paper-murals",
         "clay-creature-studio",
         "counting-treasure-cups",
+        "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
@@ -2067,7 +2102,6 @@
       ],
       "shared/js/engines/observe-journal.js": [
         "bean-sprout-watch",
-        "emotion-voice-game",
         "family-story-interview",
         "kindness-delivery",
         "picture-narration",
@@ -2168,7 +2202,8 @@
         "puppet-retell"
       ],
       "shared/js/preload.js": [
-        "clay-creature-studio"
+        "clay-creature-studio",
+        "emotion-voice-game"
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
@@ -2186,6 +2221,7 @@
         "world-music-dance"
       ],
       "shared/js/screens.js": [
+        "emotion-voice-game",
         "snack-chef"
       ],
       "shared/js/sfx": [
@@ -2318,7 +2354,6 @@
         "color-mixing-lab",
         "community-helper-cards",
         "counting-treasure-cups",
-        "emotion-voice-game",
         "family-story-interview",
         "family-timeline",
         "feelings-charades",
@@ -2420,6 +2455,7 @@
         "puppet-problem-solvers"
       ],
       "shared/js/stage/mouth.js": [
+        "emotion-voice-game",
         "feelings-charades",
         "lunchbox-pack"
       ],
@@ -2472,6 +2508,7 @@
         "bug-hotel-observer",
         "clay-creature-studio",
         "counting-treasure-cups",
+        "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
@@ -2502,6 +2539,7 @@
         "blend-train",
         "bug-hotel-observer",
         "counting-treasure-cups",
+        "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
@@ -2524,6 +2562,9 @@
         "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
+      ],
+      "shared/js/voice-meter.js": [
+        "emotion-voice-game"
       ],
       "shared/vendor/pixi.min.js": [
         "flashlight-cave"
@@ -2680,6 +2721,9 @@
       ],
       "squirrel": [
         "subtraction-picnic"
+      ],
+      "Teddy": [
+        "emotion-voice-game"
       ],
       "twinkle": [
         "red-green-light"

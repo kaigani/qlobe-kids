@@ -11,26 +11,34 @@ const PROGRESS_KEY = 'qlobe-tangram-tales-progress-v1';
 const FREE_KEY = 'qlobe-tangram-tales-free-v1';
 const GALLERY_KEY = 'qlobe-tangram-tales-gallery-v1';
 const SELECTED_KEY = 'qlobe-tangram-tales-selected-v1';
+const HOLD_ROTATE_DELAY = 520;
+const HOLD_ROTATE_TOLERANCE = 22;
+const HOLD_ROTATE_DEGREES_PER_SECOND = 30;
+const TALES_PER_PAGE = 4;
 const pieceById = Object.fromEntries(config.pieces.map((piece) => [piece.id, piece]));
 const taleById = Object.fromEntries(config.tales.map((tale) => [tale.id, tale]));
-const savedTale = loadJson(SELECTED_KEY, 'fox');
+const defaultTaleId = config.tales[0]?.id || '';
+const savedTale = loadJson(SELECTED_KEY, defaultTaleId);
+const initialTaleIndex = Math.max(0, config.tales.findIndex((tale) => tale.id === savedTale));
 
 const state = {
   screen: 'splash',
-  selectedTale: taleById[savedTale] ? savedTale : 'fox',
+  selectedTale: taleById[savedTale] ? savedTale : defaultTaleId,
   tale: null,
   placements: {},
   selectedPiece: null,
   hintSlot: null,
   misses: 0,
   idlePrompted: false,
-  completed: new Set(loadJson(PROGRESS_KEY, [])),
+  completed: new Set(loadJson(PROGRESS_KEY, []).filter((id) => taleById[id])),
   muted: false,
   fast: false,
   seed: 42,
   freeMoved: false,
   freeSelected: null,
   freeSnapshot: null,
+  settle: null,
+  shelfPage: Math.floor(initialTaleIndex / TALES_PER_PAGE),
 };
 
 let freeBoard = null;
@@ -104,14 +112,27 @@ function showSplash({ greet = false } = {}) {
   state.screen = 'splash';
   state.tale = null;
   state.selectedPiece = null;
+  const pageCount = Math.ceil(config.tales.length / TALES_PER_PAGE);
+  state.shelfPage = Math.max(0, Math.min(pageCount - 1, state.shelfPage));
+  const pageStart = state.shelfPage * TALES_PER_PAGE;
+  const visibleTales = config.tales.slice(pageStart, pageStart + TALES_PER_PAGE);
   mount.innerHTML = `
     <section class="screen splash-screen" aria-label="Tangram Tales tale shelf">
       <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" data-target="catalog-home" aria-label="Back to all games"></a>
       <button class="qk-hud-btn qk-hud-sound qk-hud-top-right ${state.muted ? 'is-muted' : ''}" type="button"
               data-action="sound" data-target="sound" aria-label="${state.muted ? 'Turn sound on' : 'Hear the welcome'}"></button>
       <img class="title-art" src="./assets/title.webp" alt="Tangram Tales" />
-      <div class="tale-shelf" role="list" aria-label="Choose a tangram tale">
-        ${config.tales.map(taleCard).join('')}
+      <div class="shelf-area">
+        <div class="shelf-shell">
+          <button class="paper-tool shelf-nav shelf-prev" type="button" data-action="shelf-prev" data-target="shelf-prev"
+                  aria-label="Previous stories" ${state.shelfPage === 0 ? 'disabled' : ''}>Back</button>
+          <div class="tale-shelf" role="list" aria-label="Choose a tangram tale">
+            ${visibleTales.map(taleCard).join('')}
+          </div>
+          <button class="paper-tool shelf-nav shelf-next" type="button" data-action="shelf-next" data-target="shelf-next"
+                  aria-label="More stories" ${state.shelfPage === pageCount - 1 ? 'disabled' : ''}>More</button>
+        </div>
+        <p class="shelf-page" aria-live="polite">Stories ${pageStart + 1}–${pageStart + visibleTales.length} of ${config.tales.length}</p>
       </div>
       <div class="splash-actions">
         ${plateButton('play', 'Play', 'play-selected', 'play-selected')}
@@ -125,6 +146,21 @@ function showSplash({ greet = false } = {}) {
     </section>`;
   wireActions();
   if (greet) say('welcome');
+}
+
+function changeShelfPage(delta) {
+  const pageCount = Math.ceil(config.tales.length / TALES_PER_PAGE);
+  const nextPage = Math.max(0, Math.min(pageCount - 1, state.shelfPage + delta));
+  if (nextPage === state.shelfPage) return false;
+  state.shelfPage = nextPage;
+  const nextTale = config.tales[nextPage * TALES_PER_PAGE];
+  if (nextTale) {
+    state.selectedTale = nextTale.id;
+    saveJson(SELECTED_KEY, nextTale.id);
+  }
+  feedback('tick');
+  showSplash();
+  return true;
 }
 
 function taleCard(tale) {
@@ -172,6 +208,7 @@ async function startTale(id = state.selectedTale) {
   state.hintSlot = null;
   state.misses = 0;
   state.idlePrompted = false;
+  state.settle = null;
   renderGuided();
   say(tale.startVoice);
   return true;
@@ -216,13 +253,17 @@ function slotMarkup(slotId, target) {
 
 function placedMarkup(slotId, pieceId, target) {
   const piece = pieceById[pieceId];
-  return `<img class="board-object placed-piece" style="${objectStyle(target)}" src="${piece.art}" alt="${piece.label}, placed" data-piece="${pieceId}" data-slot="${slotId}" />`;
+  const settling = state.settle?.slotId === slotId;
+  const heldRotation = settling ? state.settle.rotation : target.rotation;
+  return `<img class="board-object placed-piece ${settling ? 'is-settling' : ''}"
+               style="${objectStyle(target)};--held-rotation:${heldRotation}deg" src="${piece.art}"
+               alt="${piece.label}, placed" data-piece="${pieceId}" data-slot="${slotId}" />`;
 }
 
 function trayPieceMarkup(piece) {
   return `
     <button class="tray-piece ${state.selectedPiece === piece.id ? 'is-selected' : ''}" type="button"
-            data-piece="${piece.id}" data-target="piece-${piece.id}" aria-label="${piece.label}. Drag it, or tap then tap its spot.">
+            data-piece="${piece.id}" data-target="piece-${piece.id}" aria-label="${piece.label}. Drag it, hold to turn it, or tap then tap its spot.">
       <img src="${piece.art}" alt="" aria-hidden="true" draggable="false" />
     </button>`;
 }
@@ -254,8 +295,11 @@ function beginDrag(event) {
     offsetX: event.clientX - (rect.left + rect.width / 2),
     offsetY: event.clientY - (rect.top + rect.height / 2),
     moved: false,
+    rotation: 0,
+    rotating: false,
   };
   source.classList.add('is-drag-source');
+  armGuidedHold(event.clientX, event.clientY);
   moveDrag(event);
   window.addEventListener('pointermove', moveDrag, { passive: false });
   window.addEventListener('pointerup', finishDrag, { passive: false });
@@ -264,9 +308,43 @@ function beginDrag(event) {
   window.addEventListener('orientationchange', cancelDrag);
 }
 
+function clearGuidedHold(drag = activeDrag) {
+  if (!drag) return;
+  clearTimeout(drag.holdTimer);
+  cancelAnimationFrame(drag.holdFrame || 0);
+  drag.holdTimer = 0;
+  drag.holdFrame = 0;
+  drag.rotating = false;
+}
+
+function armGuidedHold(clientX, clientY) {
+  if (!activeDrag) return;
+  clearGuidedHold(activeDrag);
+  activeDrag.holdAnchorX = clientX;
+  activeDrag.holdAnchorY = clientY;
+  activeDrag.holdTimer = window.setTimeout(() => {
+    if (!activeDrag) return;
+    activeDrag.rotating = true;
+    activeDrag.lastRotateAt = performance.now();
+    const rotateFrame = (now) => {
+      if (!activeDrag?.rotating) return;
+      const elapsed = Math.min(64, Math.max(0, now - activeDrag.lastRotateAt));
+      activeDrag.lastRotateAt = now;
+      activeDrag.rotation = (activeDrag.rotation + HOLD_ROTATE_DEGREES_PER_SECOND * elapsed / 1000) % 360;
+      activeDrag.moved = true;
+      activeDrag.clone.style.setProperty('--held-rotation', `${activeDrag.rotation}deg`);
+      activeDrag.holdFrame = requestAnimationFrame(rotateFrame);
+    };
+    activeDrag.holdFrame = requestAnimationFrame(rotateFrame);
+  }, HOLD_ROTATE_DELAY);
+}
+
 function moveDrag(event) {
   if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
   event.preventDefault();
+  if (Math.hypot(event.clientX - activeDrag.holdAnchorX, event.clientY - activeDrag.holdAnchorY) > HOLD_ROTATE_TOLERANCE) {
+    armGuidedHold(event.clientX, event.clientY);
+  }
   activeDrag.moved ||= Math.hypot(event.clientX - activeDrag.startX, event.clientY - activeDrag.startY) > 7;
   const centerX = event.clientX - activeDrag.offsetX;
   const centerY = event.clientY - activeDrag.offsetY;
@@ -286,7 +364,7 @@ function finishDrag(event) {
     const field = document.getElementById('puzzle-field')?.getBoundingClientRect();
     if (field) {
       const point = { x: (centerX - field.left) / field.width, y: (centerY - field.top) / field.height };
-      if (point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1) attemptPlace(drag.pieceId, point);
+      if (point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1) attemptPlace(drag.pieceId, point, null, drag.rotation);
       else renderGuided();
     }
   } else {
@@ -305,6 +383,7 @@ function cancelDrag(event) {
 function cancelActiveDrag() { if (activeDrag) releaseDragListeners(); }
 function releaseDragListeners() {
   if (activeDrag) {
+    clearGuidedHold(activeDrag);
     activeDrag.source?.classList.remove('is-drag-source');
     activeDrag.clone?.remove();
   }
@@ -338,11 +417,11 @@ function nearestSlot(pieceId, point) {
   }).sort((a, b) => a.distance - b.distance)[0] || null;
 }
 
-function attemptPlace(pieceId, point = null, forcedSlot = null) {
+function attemptPlace(pieceId, point = null, forcedSlot = null, heldRotation = 0) {
   const nearest = forcedSlot ? { id: forcedSlot, distance: 0 } : nearestSlot(pieceId, point);
   const radius = state.misses >= 2 ? .2 : .145;
   if (nearest && matchingOpenSlots(pieceId).includes(nearest.id) && nearest.distance <= radius) {
-    return placeInSlot(pieceId, nearest.id);
+    return placeInSlot(pieceId, nearest.id, heldRotation);
   }
   state.misses += 1;
   state.hintSlot = nearest?.id || matchingOpenSlots(pieceId)[0] || null;
@@ -357,15 +436,19 @@ function attemptPlace(pieceId, point = null, forcedSlot = null) {
   return false;
 }
 
-function placeInSlot(pieceId, slotId) {
+function placeInSlot(pieceId, slotId, heldRotation = 0) {
   if (!matchingOpenSlots(pieceId).includes(slotId)) return false;
   clearTimeout(idleTimer);
   state.placements[slotId] = pieceId;
   state.selectedPiece = null;
   state.hintSlot = null;
+  state.settle = { slotId, rotation: heldRotation };
   feedback('pop');
   say(pieceById[pieceId].voice);
   renderGuided();
+  later(() => {
+    if (state.settle?.slotId === slotId) state.settle = null;
+  }, 520);
   if (Object.keys(state.placements).length === 7) {
     revealTimer = later(() => showReveal(state.tale), 620);
   }
@@ -392,8 +475,8 @@ function showReveal(taleId) {
   state.tale = taleId;
   state.completed.add(taleId);
   saveJson(PROGRESS_KEY, [...state.completed]);
-  const allDone = state.completed.size === config.tales.length;
-  const title = allDone ? 'Three tales awake!' : `${tale.title} is awake!`;
+  const allDone = config.tales.every((candidate) => state.completed.has(candidate.id));
+  const title = allDone ? `All ${config.tales.length} tales awake!` : `${tale.title} is awake!`;
   mount.innerHTML = `
     <section class="screen reveal-screen reveal-${tale.id}" style="background-image:url('${tale.scene}')" aria-label="${title}">
       ${hud('back')}
@@ -409,7 +492,7 @@ function showReveal(taleId) {
     </section>`;
   wireActions();
   feedback('tada');
-  say(allDone ? 'allDone' : tale.revealVoice);
+  say(tale.revealVoice);
 }
 
 function nextTale() {
@@ -443,6 +526,11 @@ async function startFree() {
   wireActions();
   const boardEl = document.getElementById('free-board');
   freeBoard = createFreeformBoard(boardEl, {
+    holdRotate: {
+      delay: HOLD_ROTATE_DELAY,
+      tolerance: HOLD_ROTATE_TOLERANCE,
+      degreesPerSecond: HOLD_ROTATE_DEGREES_PER_SECOND,
+    },
     onChange(snapshot, info) {
       state.freeSnapshot = snapshot;
       if (['move', 'transform', 'undo'].includes(info.reason)) state.freeMoved = true;
@@ -539,6 +627,8 @@ function handleAction(action, value, event) {
   unlockAll();
   if (action !== 'sound') feedback('tick');
   if (action === 'select-tale') return selectTale(value);
+  if (action === 'shelf-prev') return changeShelfPage(-1);
+  if (action === 'shelf-next') return changeShelfPage(1);
   if (action === 'play-selected') return startTale(state.selectedTale);
   if (action === 'start-free') return startFree();
   if (action === 'slot') {
@@ -599,7 +689,7 @@ function figureMarkup(tale, placements) {
 }
 
 function objectStyle(target) {
-  return `--x:${target.x};--y:${target.y};--size:${target.size};--rotation:${target.rotation}deg`;
+  return `--x:${target.x};--y:${target.y};--size:${target.size};--rotation:${target.rotation}deg;--mirror:${target.mirror ? -1 : 1}`;
 }
 
 function plateButton(kind, label, action, target, disabled = false, icon = '') {
@@ -648,6 +738,7 @@ installDebug({
     freeMoved: state.freeMoved,
     freeSelected: state.freeSelected,
     freeItems: freeBoard?.getItems() || state.freeSnapshot?.items || [],
+    shelfPage: state.shelfPage,
   }),
   tap: debugTap,
   mute(on = true) { state.muted = !!on; voice.setMuted(state.muted); return state.muted; },
@@ -678,7 +769,8 @@ installDebug({
   clearSaved() {
     try { localStorage.removeItem(PROGRESS_KEY); localStorage.removeItem(FREE_KEY); localStorage.removeItem(GALLERY_KEY); localStorage.removeItem(SELECTED_KEY); } catch { /* storage unavailable */ }
     state.completed.clear();
-    state.selectedTale = 'fox';
+    state.selectedTale = defaultTaleId;
+    state.shelfPage = 0;
     return true;
   },
   getAudioLog: voice.getAudioLog,

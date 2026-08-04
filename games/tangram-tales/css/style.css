@@ -36,30 +36,48 @@ button:disabled { opacity: .48; cursor: default; }
 
 .splash-screen {
   display: grid;
-  grid-template-rows: minmax(112px, 27vh) minmax(220px, 1fr) auto auto;
+  grid-template-rows: minmax(106px, 23vh) minmax(230px, 1fr) auto auto;
   align-items: center;
   gap: clamp(4px, 1vh, 12px);
   padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
     max(8px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  background-image: url('../assets/splash.webp');
+  background-image: url('../assets/theatre.webp');
 }
 .title-art {
   align-self: end;
   justify-self: center;
-  width: min(61vw, 720px);
-  max-height: 26vh;
+  width: min(58vw, 700px);
+  max-height: 22vh;
   object-fit: contain;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
+  filter: drop-shadow(0 8px 5px #51352555);
+}
+.shelf-area {
+  align-self: stretch;
+  justify-self: stretch;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px;
+}
+.shelf-shell {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 920px) 96px;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(5px, 1vw, 12px);
 }
 .tale-shelf {
   align-self: center;
   justify-self: center;
   display: grid;
-  grid-template-columns: repeat(3, minmax(154px, 260px));
+  grid-template-columns: repeat(4, minmax(130px, 220px));
   gap: clamp(8px, 1.6vw, 22px);
-  width: min(76vw, 820px);
-  max-height: 46vh;
+  width: min(76vw, 920px);
+  max-height: 43vh;
 }
 .tale-card {
   position: relative;
@@ -74,6 +92,7 @@ button:disabled { opacity: .48; cursor: default; }
 .tale-card:nth-child(1) { transform: rotate(-1deg); }
 .tale-card:nth-child(2) { transform: rotate(.7deg); }
 .tale-card:nth-child(3) { transform: rotate(-.5deg); }
+.tale-card:nth-child(4) { transform: rotate(.9deg); }
 .tale-card.is-selected { transform: translateY(-9px) scale(1.035); filter: drop-shadow(0 0 9px #fff) drop-shadow(0 0 10px #f6b71f); }
 .card-plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
 .card-figure { position: absolute; inset: 8% 5% 18%; }
@@ -81,9 +100,18 @@ button:disabled { opacity: .48; cursor: default; }
   position: absolute;
   left: 50%; bottom: 7.5%;
   transform: translateX(-50%);
-  font-size: clamp(22px, 2.8vw, 36px);
+  width: 94%;
+  font-size: clamp(18px, 2.3vw, 31px);
+  white-space: nowrap;
   color: #173d68;
   text-shadow: 0 2px #fff8dc;
+}
+.shelf-page {
+  margin: 0;
+  text-align: center;
+  color: #385e58;
+  font-size: clamp(15px, 1.6vw, 20px);
+  text-shadow: 0 2px #fff2cb;
 }
 .paper-star {
   position: absolute;
@@ -154,7 +182,7 @@ button:disabled { opacity: .48; cursor: default; }
   width: calc(var(--size) * 100%);
   aspect-ratio: 1;
   object-fit: contain;
-  transform: translate(-50%, -50%) rotate(var(--rotation));
+  transform: translate(-50%, -50%) rotate(var(--rotation)) scaleX(var(--mirror, 1));
 }
 .face-detail {
   z-index: 5;
@@ -232,7 +260,7 @@ button:disabled { opacity: .48; cursor: default; }
   top: calc(var(--y) * 100%);
   width: calc(var(--size) * 100%);
   aspect-ratio: 1;
-  transform: translate(-50%, -50%) rotate(var(--rotation));
+  transform: translate(-50%, -50%) rotate(var(--rotation)) scaleX(var(--mirror, 1));
   object-fit: contain;
 }
 .slot {
@@ -248,6 +276,7 @@ button:disabled { opacity: .48; cursor: default; }
 .slot.is-near, .slot.is-hint { filter: drop-shadow(0 0 9px #fff) drop-shadow(0 0 13px #f6b71f); scale: 1.08; }
 .slot.is-hint { animation: slot-breathe .7s ease-in-out 2; }
 .placed-piece { pointer-events: none; filter: drop-shadow(0 7px 5px #59351e55); }
+.placed-piece.is-settling { animation: tangram-snap .46s cubic-bezier(.2, 1.45, .42, 1); }
 .piece-tray {
   position: relative;
   display: flex;
@@ -277,7 +306,7 @@ button:disabled { opacity: .48; cursor: default; }
 .drag-piece {
   position: fixed;
   z-index: 100;
-  transform: translate(-50%, -50%) scale(1.06) rotate(-3deg);
+  transform: translate(-50%, -50%) scale(1.06) rotate(var(--held-rotation, 0deg));
   border: 0;
   padding: 0;
   background: transparent;
@@ -392,9 +421,21 @@ button:disabled { opacity: .48; cursor: default; }
   font-size: clamp(23px, 3vw, 38px);
   text-shadow: 0 3px #463346;
 }
+.shelf-shell .shelf-nav {
+  width: 96px;
+  min-width: 96px;
+  min-height: 96px;
+  padding-inline: 8px;
+  font-size: clamp(18px, 2.2vw, 27px);
+}
 .free-reveal-board { height: min(66vh, 700px); pointer-events: none; }
 
 @keyframes slot-breathe { 50% { scale: 1.14; } }
+@keyframes tangram-snap {
+  from { transform: translate(-50%, -50%) rotate(var(--held-rotation)) scale(1.12); }
+  72% { transform: translate(-50%, -50%) rotate(var(--rotation)) scale(1.12); }
+  to { transform: translate(-50%, -50%) rotate(var(--rotation)) scale(1); }
+}
 @keyframes figure-wake { from { translate: 0 3px; rotate: -1deg; } to { translate: 0 -7px; rotate: 1deg; } }
 @keyframes tail-wave { from { rotate: -3deg; } to { rotate: 7deg; } }
 @keyframes celebration-float {
@@ -403,9 +444,11 @@ button:disabled { opacity: .48; cursor: default; }
 }
 
 @media (orientation: portrait) {
-  .splash-screen { grid-template-rows: minmax(120px, 23vh) minmax(0, 1fr) auto auto; }
-  .title-art { width: min(80vw, 680px); }
-  .tale-shelf { width: min(90vw, 760px); grid-template-columns: repeat(3, 1fr); }
+  .splash-screen { grid-template-rows: minmax(150px, 24vh) minmax(0, 1fr) auto auto; }
+  .title-art { width: min(78vw, 650px); max-height: 22vh; }
+  .shelf-shell { grid-template-columns: 96px minmax(0, 1fr) 96px; gap: 4px; }
+  .shelf-shell .shelf-nav { width: 96px; min-width: 96px; min-height: 112px; font-size: 20px; }
+  .tale-shelf { width: min(70vw, 580px); grid-template-columns: repeat(2, minmax(130px, 1fr)); max-height: none; }
   .tale-card > strong { font-size: clamp(20px, 3.7vw, 30px); }
   .play-heading { padding-inline: 100px; min-height: 118px; }
   .paper-heading { width: min(65vw, 540px); }
@@ -419,10 +462,12 @@ button:disabled { opacity: .48; cursor: default; }
 }
 
 @media (max-height: 620px) and (orientation: landscape) {
-  .splash-screen { grid-template-rows: 110px minmax(180px, 1fr) 88px 20px; gap: 2px; }
-  .title-art { max-height: 120px; width: 45vw; }
-  .tale-shelf { width: min(62vw, 650px); }
-  .tale-card > strong { font-size: 20px; }
+  .splash-screen { grid-template-rows: 96px minmax(170px, 1fr) 82px 18px; gap: 2px; }
+  .title-art { max-height: 94px; width: 39vw; }
+  .shelf-shell { grid-template-columns: 82px minmax(0, 720px) 82px; }
+  .shelf-shell .shelf-nav { width: 82px; min-width: 82px; min-height: 82px; font-size: 20px; }
+  .tale-shelf { width: min(62vw, 720px); }
+  .tale-card > strong { font-size: 18px; }
   .play-heading { min-height: 82px; }
   .paper-heading { min-height: 78px; }
   .paper-heading h1 { font-size: 32px; }
