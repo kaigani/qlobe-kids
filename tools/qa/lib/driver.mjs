@@ -13,7 +13,12 @@
 //   1. an explicit `dir` passed to loadPlaywright()
 //   2. --playwright <dir> / --pw-module <dir> on the command line
 //   3. $PLAYWRIGHT_MODULE_PATH / $PW_MODULE
-//   4. /private/tmp/pw/node_modules   (the default on this machine)
+//   4. ../../tools-local/playwright/node_modules, relative to the repo root —
+//      a sibling of this checkout, outside the repo but not in /private/tmp
+//      (which gets wiped on reboot). It is its own isolated npm project (has
+//      its own package.json) so `npm install` there never walks upward and
+//      touches an unrelated node_modules — see tools-local/playwright/README
+//      if that directory doesn't exist yet. (the default on this machine)
 //
 // **channel: 'chrome' is load-bearing.** Playwright's bundled Chromium ships
 // without an AAC decoder, so every .m4a in a game's assets/audio silently fails
@@ -30,6 +35,7 @@
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 // ─────────────────────────────────────────────────────────────── arguments ──
 
@@ -77,7 +83,15 @@ export function baseUrl(fallback = 'http://127.0.0.1:8000', { argv = args, envVa
 
 // ────────────────────────────────────────────────────────────── playwright ──
 
-export const DEFAULT_PLAYWRIGHT_DIR = '/private/tmp/pw/node_modules';
+// tools-local/playwright/ is a sibling of the repo checkout (this file lives at
+// <repo>/tools/qa/lib/driver.mjs), not inside it — the repo must never grow a
+// node_modules. It's its own isolated npm project (its own package.json) so an
+// `npm install` there can't walk upward and clobber an unrelated node_modules
+// higher up the tree the way it would from a bare, package-json-less directory.
+export const DEFAULT_PLAYWRIGHT_DIR = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../../../tools-local/playwright/node_modules',
+);
 
 /**
  * Resolve the out-of-tree Playwright node_modules directory. Never reads the

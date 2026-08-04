@@ -29,7 +29,7 @@ header):
 | --- | --- | --- |
 | `--base <url>` | origin to test — a local server, or `https://qlo.be` | `http://127.0.0.1:8000` |
 | `--shots <dir>` | screenshot directory | `qa-shots/<game-id>` |
-| `--playwright <dir>` | Playwright `node_modules` directory | `/private/tmp/pw/node_modules` |
+| `--playwright <dir>` | Playwright `node_modules` directory | `tools-local/playwright/node_modules` (sibling of the repo) |
 | `--headed` | run Chrome headed | headless |
 
 Environment equivalents: `$QLOBE_BASE`, `$QLOBE_SHOTS`,
@@ -37,17 +37,31 @@ Environment equivalents: `$QLOBE_BASE`, `$QLOBE_SHOTS`,
 
 ### Playwright lives outside the repo
 
-This is a **no-build repo** — no `package.json`, no `npm install`, ever. Install
-Playwright once into a scratch directory and point the drivers at it:
+This is a **no-build repo** — no `package.json`, no `npm install`, ever. Playwright
+is installed once into `tools-local/playwright/`, a sibling directory of this repo
+checkout (i.e. `<repo>/../tools-local/playwright/`) — outside the repo, but not in
+`/private/tmp`, which can get wiped on reboot. That directory is its own isolated
+npm project (it has its own `package.json`), which matters: run `npm install`
+from a bare directory with no `package.json` and npm walks *upward* looking for
+the nearest ancestor that has one (or a `node_modules`, or a `.git`) and installs
+there instead — silently mutating a completely unrelated project's dependencies
+if it finds one first. Giving this directory its own `package.json` makes it the
+install root, so that walk never happens.
 
 ```sh
-mkdir -p /private/tmp/pw && cd /private/tmp/pw && npm install playwright@1.52.0
+mkdir -p tools-local/playwright && cd tools-local/playwright
+cat > package.json <<'EOF'
+{ "name": "qlobe-kids-playwright-tool", "private": true,
+  "dependencies": { "playwright": "1.52.0" } }
+EOF
+npm install --no-save
 ```
 
 `loadPlaywright()` resolves it with `createRequire` against `<dir>/noop.js` —
 only the *directory* has to exist, not the file. Resolution order, first hit
 wins: an explicit `dir` argument → `--playwright` / `--pw-module` →
-`$PLAYWRIGHT_MODULE_PATH` / `$PW_MODULE` → `/private/tmp/pw/node_modules`.
+`$PLAYWRIGHT_MODULE_PATH` / `$PW_MODULE` →
+`tools-local/playwright/node_modules` next to the repo.
 
 ### `channel: 'chrome'` is load-bearing
 

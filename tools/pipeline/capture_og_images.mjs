@@ -11,8 +11,10 @@
 //   # serve the repo first (any static server on the repo root)
 //   python3 -m http.server 8000
 //
-//   # playwright is NOT a repo dependency — install it in a scratch dir and
-//   # point this tool at it (must match the cached Chromium build: 1.52.0)
+//   # playwright is NOT a repo dependency — it resolves by default from
+//   # tools-local/playwright/node_modules (a sibling of this repo checkout;
+//   # see tools/qa/README.md), or pass --playwright <dir> to point elsewhere
+//   # (must match the cached Chromium build: 1.52.0)
 //   node tools/pipeline/capture_og_images.mjs --playwright /tmp/pw/node_modules
 //
 // Flags
@@ -86,6 +88,9 @@ async function loadChromium() {
     flag('playwright'),
     process.env.PLAYWRIGHT_MODULE_PATH,
     ...String(process.env.NODE_PATH || '').split(path.delimiter).filter(Boolean),
+    // tools-local/playwright/ is a sibling of the repo checkout, outside the
+    // repo but not in /private/tmp (wiped on reboot). See tools/qa/README.md.
+    path.resolve(ROOT, '..', 'tools-local/playwright/node_modules'),
   ].filter(Boolean);
   const candidates = [
     'playwright',
@@ -109,8 +114,8 @@ const chromium = await loadChromium();
 if (!chromium) {
   console.error(
     'playwright is not resolvable. It is deliberately not a repo dependency.\n' +
-    '  mkdir -p /tmp/pw && cd /tmp/pw && npm init -y && npm i playwright@1.52.0\n' +
-    '  node tools/pipeline/capture_og_images.mjs --playwright /tmp/pw/node_modules\n' +
+    'See tools/qa/README.md to install it into tools-local/playwright/ (a sibling\n' +
+    'of this repo checkout), or point at another copy with --playwright <dir>.\n' +
     '(the version must match the cached Chromium build in ~/Library/Caches/ms-playwright)');
   process.exit(2);
 }
