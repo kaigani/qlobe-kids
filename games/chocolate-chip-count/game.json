@@ -15,8 +15,8 @@
     "Connect the last spoken number to the total quantity collected",
     "Coordinate horizontal tray movement with a falling object's path"
   ],
-  "interactionModel": "Choose an exact 3, 6, or 10-chip cookie, tap one active balloon at a time, then drag anywhere across the playfield to slide Ravi and his tray under each falling chip. Missed chips bounce back gently until caught; keyboard arrows are supported.",
-  "feedbackModel": "Each catch adds one visible chip to the progress cookie and speaks the next number. Misses make a playful boing and return without penalty. Completing the exact quantity reveals the finished cookie, three clay stars, confetti, spoken praise, and Again/Next controls.",
+  "interactionModel": "Choose an exact 3, 6, or 10-chip cookie, then tap any floating balloon rising from the bakery window — new balloons keep coming on their own pace, which quickens with each recipe — and drag anywhere across the playfield to slide Ravi and his tray under each falling chip. Keyboard arrows are supported.",
+  "feedbackModel": "Each catch adds one visible chip to the progress cookie and to Ravi's tray (in the spot it was caught) and speaks the next number. A miss makes a playful boing and costs nothing — that chip falls away and a fresh balloon takes its place. Completing the exact quantity reveals the finished cookie, three clay stars, confetti, spoken praise, and Again/Next controls.",
   "uses": [
     "games/chocolate-chip-count/js/game.js",
     "shared/js/audio-unlock.js",

@@ -49,13 +49,14 @@
     <section id="play" class="screen" data-qk-screen="play" hidden>
       <div class="hud-mount hud-play" aria-label="Game controls"></div>
       <div id="progress-cookie" class="cookie-composite progress-cookie" aria-hidden="true"></div>
-      <div id="balloon-row" class="balloon-row" aria-label="Balloons to pop"></div>
       <div id="catch-field" class="catch-field" aria-label="Slide left and right to catch the falling chocolate chips">
-        <div id="chip-layer" class="chip-layer" aria-hidden="true"></div>
+        <div id="balloon-row" class="balloon-row" aria-label="Balloons to pop"></div>
         <div id="chef-runner" class="chef-runner" aria-hidden="true">
           <img src="./assets/ravi-chef-tray.webp" alt="" />
+          <div id="tray-chips" class="tray-chips" aria-hidden="true"></div>
           <span class="tray-hitbox"></span>
         </div>
+        <div id="chip-layer" class="chip-layer" aria-hidden="true"></div>
         <img id="gesture-cue" class="gesture-cue" src="./assets/gesture.webp" alt="Slide left and right" />
       </div>
       <p id="play-status" class="visually-hidden" aria-live="polite"></p>

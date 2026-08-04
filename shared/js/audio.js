@@ -184,32 +184,47 @@ function stopActiveEl() {
   }
 }
 
+// Unlock latches, mirroring speech.js/voice-clips.js. Without these, unlock()
+// re-primes on every single call — and since unlockAll() runs on every tap's
+// onTap feedback (the platform convention), that meant re-muting and
+// replaying a REAL manifest-clip element on every touch of the game, for the
+// entire session. If that same category/key was ever requested as actual
+// content (any word reused often enough to be the first manifest entry),
+// this collided with it: the real playOne() and the unlock priming fought
+// over the same cached <audio> element's `muted` flag, and whichever write
+// lost the race left the child hearing nothing. Confirmed live in Chrome —
+// the "warm a real clip" trick is not worth this; always prime silence.
+let unlocked = false;
+let unlockPending = false;
+let primerEl = null;
+
 /**
  * Unlock recorded audio on the first user gesture (iOS autoplay policy): play
- * then immediately pause a clip so subsequent programmatic play() is allowed.
- * Also unlocks Web Speech.
+ * then immediately pause a dedicated silent element so subsequent
+ * programmatic play() is allowed. Also unlocks Web Speech. Runs its priming
+ * play() at most once — later calls (every tap fires unlockAll()) are cheap
+ * no-ops once unlocked.
  */
 export function unlock() {
   speech.unlock();
+  if (unlocked || unlockPending) return;
   try {
-    // Prefer a real manifest clip if we have one (warms the element); otherwise
-    // a tiny silent data-URI WAV still satisfies the gesture requirement.
-    let el = null;
-    for (const cat of Object.keys(manifest || {})) {
-      const keys = Object.keys(manifest[cat] || {});
-      if (keys.length) { el = getEl(cat, keys[0]); break; }
-    }
-    if (!el) el = new Audio(SILENT_WAV);
+    if (!primerEl) primerEl = new Audio(SILENT_WAV);
+    const el = primerEl;
     el.muted = true;
+    unlockPending = true;
     const p = el.play();
+    const settle = () => {
+      unlockPending = false;
+      unlocked = true;
+      try { el.pause(); el.currentTime = 0; el.muted = false; } catch { /* ignore */ }
+    };
     if (p && typeof p.then === 'function') {
-      p.then(() => {
-        try { el.pause(); el.currentTime = 0; el.muted = false; } catch { /* ignore */ }
-      }).catch(() => { try { el.muted = false; } catch { /* ignore */ } });
+      p.then(settle, () => { unlockPending = false; });
     } else {
-      try { el.pause(); el.muted = false; } catch { /* ignore */ }
+      settle();
     }
-  } catch { /* ignore */ }
+  } catch { unlockPending = false; }
 }
 
 /**

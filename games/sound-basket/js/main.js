@@ -125,19 +125,28 @@ function stopLocalWord() {
   }
 }
 
+// 44-byte silent WAV, same trick as shared/js/audio.js. MUST be a dedicated
+// element, never one of localWordCache's real word clips: priming used to
+// grab `Object.values(words)[0]` and mute/play/pause THAT element — which is
+// the exact same element playPackagedWord() plays for real the moment that
+// word comes up, so the two `muted` writes raced and could leave a real
+// word silently muted.
+const SILENT_WAV =
+  'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+let localWordPrimer = null;
+
 function unlockLocalWords() {
   if (localWordsUnlocked) return;
-  const entry = Object.values(localWordManifest.words || {})[0];
-  if (!entry) return;
   localWordsUnlocked = true;
   try {
-    const element = getLocalWordElement(entry);
+    if (!localWordPrimer) localWordPrimer = new Audio(SILENT_WAV);
+    const element = localWordPrimer;
     element.muted = true;
     const playing = element.play();
     if (playing?.then) {
       playing.then(() => {
         try { element.pause(); element.currentTime = 0; element.muted = false; } catch { /* no-op */ }
-      }).catch(() => { element.muted = false; localWordsUnlocked = false; });
+      }).catch(() => { localWordsUnlocked = false; });
     }
   } catch { localWordsUnlocked = false; }
 }

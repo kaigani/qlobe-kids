@@ -15,6 +15,10 @@ const BALLOON_ART = {
   blue: './assets/balloon-blue.webp',
 };
 
+// Native pixel size of assets/bakery.webp and the fraction of its height
+// where the window opening's wooden sill sits (measured from the source art).
+const BAKERY_ART = { width: 1448, height: 1086, sill: 0.667 };
+
 const CHIP_LAYOUTS = {
   3: [[50, 24, -6], [32, 62, 5], [68, 62, -2]],
   6: [[31, 25, -8], [69, 25, 7], [50, 47, -2], [27, 70, 5], [50, 76, -5], [73, 70, 8]],
@@ -71,6 +75,7 @@ export function createChocolateChipCount(config, root) {
     chipLayer: root.querySelector('#chip-layer'),
     chef: root.querySelector('#chef-runner'),
     tray: root.querySelector('.tray-hitbox'),
+    trayChips: root.querySelector('#tray-chips'),
     gesture: root.querySelector('#gesture-cue'),
     progress: root.querySelector('#progress-cookie'),
     playStatus: root.querySelector('#play-status'),
@@ -88,6 +93,7 @@ export function createChocolateChipCount(config, root) {
   let voiceToken = 0;
   let voiceQueue = Promise.resolve();
   let idleTimer = null;
+  let spawnTimerId = null;
   let confettiDispose = null;
   let drag = null;
   let gestureMoved = false;
@@ -102,7 +108,8 @@ export function createChocolateChipCount(config, root) {
     modeId: config.initialMode,
     target: 3,
     caught: 0,
-    balloonIndex: 0,
+    spawnedCount: 0,
+    floating: new Map(),
     activeChips: [],
     returnedChips: 0,
     trayX: 0.5,
@@ -157,20 +164,26 @@ export function createChocolateChipCount(config, root) {
     idleTimer = null;
   }
 
-  function resetIdle(kind = state.phase) {
+  function resetIdle() {
     clearIdle();
     if (state.screen !== 'play') return;
     const token = roundToken;
-    idleTimer = timers.after(kind === 'pop' ? 7200 : 8300, () => {
+    idleTimer = timers.after(8300, () => {
       if (token !== roundToken || state.screen !== 'play' || !state.awaitingInput) return;
-      if (state.phase === 'pop') {
-        els.balloonRow.querySelector('.balloon.is-active')?.classList.add('is-nudging');
+      if (state.floating.size > 0) {
+        for (const index of state.floating.keys()) {
+          els.balloonRow.querySelector(`[data-index="${index}"]`)?.classList.add('is-nudging');
+        }
         say('idle-pop');
-      } else if (state.phase === 'catch') {
+      } else if (state.activeChips.length > 0) {
         els.gesture.classList.remove('is-dismissed');
         say('idle-catch');
       }
     });
+  }
+
+  function refreshAwaitingInput() {
+    state.awaitingInput = state.floating.size > 0 || state.activeChips.length > 0;
   }
 
   function renderSelectedMode() {
@@ -227,16 +240,6 @@ export function createChocolateChipCount(config, root) {
     els.progress.setAttribute('aria-label', `${state.caught} of ${state.target} chocolate chips caught`);
   }
 
-  function updateBalloonStates() {
-    for (const button of els.balloonRow.querySelectorAll('.balloon')) {
-      const index = Number(button.dataset.index);
-      button.classList.toggle('is-active', index === state.balloonIndex && state.phase === 'pop');
-      button.classList.toggle('is-caught', index < state.balloonIndex);
-      button.dataset.role = index === state.balloonIndex && state.phase === 'pop' ? 'correct' : 'neutral';
-      button.disabled = index !== state.balloonIndex || state.phase !== 'pop';
-    }
-  }
-
   function renderBalloons(mode) {
     els.balloonRow.replaceChildren();
     mode.batches.forEach((count, index) => {
@@ -247,7 +250,8 @@ export function createChocolateChipCount(config, root) {
       button.dataset.index = String(index);
       button.dataset.target = `balloon-${index}`;
       button.dataset.role = 'neutral';
-      button.setAttribute('aria-label', `Pop ${color} balloon with ${count} chocolate ${count === 1 ? 'chip' : 'chips'}`);
+      button.disabled = true;
+      button.setAttribute('aria-label', `Floating ${color} balloon ${index + 1} of ${mode.target}`);
       button.append(img(BALLOON_ART[color], '', ''));
       const handler = () => popBalloon(index);
       targetHandlers.set(button.dataset.target, handler);
@@ -256,7 +260,6 @@ export function createChocolateChipCount(config, root) {
       }));
       els.balloonRow.append(button);
     });
-    updateBalloonStates();
   }
 
   function setRunnerWidth() {
@@ -264,6 +267,23 @@ export function createChocolateChipCount(config, root) {
     const field = els.catchField.getBoundingClientRect();
     const desired = clamp(field.width * (mode.trayWidth / 0.78), 250, 540);
     els.chef.style.setProperty('--runner-width', `${desired}px`);
+  }
+
+  // The bakery art (BAKERY_ART.width × BAKERY_ART.height) is a `background:
+  // cover` fill, so it crops top/bottom (or sides) to match the viewport's
+  // aspect ratio rather than the image's own. A fixed clip-path percentage
+  // only lines up with the drawn window sill at that one exact aspect ratio
+  // (4:3); on any other shape it drifts. Recompute the actual on-screen sill
+  // position from the cover-fit math every time the viewport changes.
+  function updateBalloonMask() {
+    const vw = innerWidth;
+    const vh = innerHeight;
+    if (!vw || !vh) return;
+    const scale = Math.max(vw / BAKERY_ART.width, vh / BAKERY_ART.height);
+    const cropTop = (BAKERY_ART.height * scale - vh) / 2;
+    const sillY = BAKERY_ART.sill * BAKERY_ART.height * scale - cropTop;
+    const bottomPct = clamp(100 - (sillY / vh) * 100, 0, 100);
+    els.balloonRow.style.clipPath = `inset(0 14% ${bottomPct.toFixed(2)}%)`;
   }
 
   function updateChef() {
@@ -280,11 +300,19 @@ export function createChocolateChipCount(config, root) {
     for (const chip of state.activeChips) chip.el?.remove();
     state.activeChips = [];
     els.chipLayer.replaceChildren();
+    els.trayChips.replaceChildren();
+    state.floating.clear();
+  }
+
+  function stopSpawnTimer() {
+    if (spawnTimerId != null) timers.clear(spawnTimerId);
+    spawnTimerId = null;
   }
 
   function teardownRound({ keepMode = true } = {}) {
     roundToken += 1;
     clearIdle();
+    stopSpawnTimer();
     timers.clearAll();
     clearChips();
     state.awaitingInput = false;
@@ -296,22 +324,26 @@ export function createChocolateChipCount(config, root) {
     if (!keepMode) state.modeId = config.initialMode;
   }
 
-  function beginPopPhase({ first = false } = {}) {
-    state.phase = 'pop';
-    state.awaitingInput = true;
-    updateBalloonStates();
-    say(first ? 'pop' : 'pop-next');
-    resetIdle('pop');
+  // Each mode's spawnInterval sets its balloon pace (slower on Tiny Batch,
+  // faster on Super Batch) — the timer keeps spawning on that cadence
+  // regardless of whether earlier balloons have been popped yet, so several
+  // can be in the air at once on the faster levels. A mode without a
+  // spawnInterval falls back to the event-driven path in afterChipResolved
+  // (next balloon only once the current one is fully resolved).
+  function startSpawnTimer(mode) {
+    stopSpawnTimer();
+    if (!mode.spawnInterval) return;
+    spawnTimerId = timers.every(mode.spawnInterval, spawnNextBalloon);
   }
 
-  function startMode(id = state.modeId) {
+  function startMode(id = state.modeId, { announceKey } = {}) {
     if (!modeById(id)) return Promise.resolve({ accepted: false });
     teardownRound();
     state.modeId = id;
     const mode = currentMode();
     state.target = mode.target;
     state.caught = 0;
-    state.balloonIndex = 0;
+    state.spawnedCount = 0;
     state.returnedChips = 0;
     state.trayX = 0.5;
     state.phase = 'intro';
@@ -326,13 +358,14 @@ export function createChocolateChipCount(config, root) {
     screens.show('play', { force: true });
     state.screen = 'play';
     setRunnerWidth();
-    const token = roundToken;
-    const ready = say('move').then(() => {
-      if (token !== roundToken || state.screen !== 'play') return { accepted: false };
-      beginPopPhase({ first: true });
-      return { accepted: true };
-    });
-    return ready;
+    updateBalloonMask();
+    if (announceKey) say(announceKey);
+    say('move');
+    say('pop');
+    state.phase = 'float';
+    spawnNextBalloon();
+    startSpawnTimer(mode);
+    return Promise.resolve({ accepted: true });
   }
 
   function spawnCluster(count, balloonButton) {
@@ -342,48 +375,72 @@ export function createChocolateChipCount(config, root) {
     const originX = clamp((balloonRect.left + balloonRect.width / 2 - field.left) / field.width, 0.2, 0.8);
     const spread = mode.spread;
     const offsets = count === 1 ? [0] : count === 2 ? [-0.42, 0.42] : [-0.58, 0, 0.58];
-    state.activeChips = [];
     offsets.slice(0, count).forEach((offset, index) => {
       const el = img(config.assets.chip, 'falling-chip');
       el.style.setProperty('--spin', `${[-8, 7, -3][index % 3]}deg`);
       els.chipLayer.append(el);
       const jitter = (rng() - 0.5) * spread * 0.12;
       const chip = {
-        id: `chip-${state.balloonIndex}-${index}`,
         el,
         x: clamp(originX + offset * spread + jitter, 0.08, 0.92),
         y: 0.14 - index * 0.055,
         prevY: 0.14 - index * 0.055,
         vx: (rng() - 0.5) * (0.025 + spread * 0.055),
         vy: mode.speed * (0.9 + rng() * 0.13),
-        returnCount: 0,
         caught: false,
-        returning: false,
       };
       state.activeChips.push(chip);
       placeChip(chip);
     });
-    state.phase = 'catch';
-    state.awaitingInput = true;
-    resetIdle('catch');
+    refreshAwaitingInput();
+    resetIdle();
+  }
+
+  // Puts one balloon in flight in the given pool slot. Slots are the
+  // pre-rendered `.balloon` buttons (one per mode.batches entry); levels
+  // that spawn faster than `target` balloons recycle slots via modulo, which
+  // is safe because a floating balloon always resolves (auto-pops) well
+  // before its slot comes back around — see spawnNextBalloon.
+  function spawnBalloon(index) {
+    const button = els.balloonRow.querySelector(`[data-index="${index}"]`);
+    if (!button) return;
+    const x = clamp(.14 + rng() * .72, .12, .88);
+    state.floating.set(index, { x, y: 1.08 });
+    button.style.left = `${x * 100}%`;
+    button.style.top = '108%';
+    button.classList.remove('is-caught', 'is-popping', 'is-nudging');
+    button.classList.add('is-active');
+    button.dataset.role = 'correct';
+    button.disabled = false;
+  }
+
+  function spawnNextBalloon() {
+    if (state.screen !== 'play' || state.phase === 'complete' || state.caught >= state.target) return;
+    const mode = currentMode();
+    const slot = state.spawnedCount % mode.batches.length;
+    if (state.floating.has(slot)) return; // pool briefly exhausted; the next tick will retry
+    state.spawnedCount += 1;
+    spawnBalloon(slot);
+    refreshAwaitingInput();
+    resetIdle();
   }
 
   function popBalloon(index) {
-    const expected = state.balloonIndex;
-    if (state.screen !== 'play' || state.phase !== 'pop' || index !== expected) return { accepted: false };
-    clearIdle();
-    state.awaitingInput = false;
+    if (state.screen !== 'play' || !state.floating.has(index)) return { accepted: false };
+    state.floating.delete(index);
     const button = els.balloonRow.querySelector(`[data-index="${index}"]`);
     if (!button) return { accepted: false };
-    button.classList.remove('is-active');
+    button.classList.remove('is-active', 'is-nudging');
     button.classList.add('is-popping');
+    button.dataset.role = 'neutral';
+    button.disabled = true;
     playSfx('pop');
-    const count = currentMode().batches[index];
     timers.after(state.reducedMotion ? 20 : 210, () => {
       button.classList.remove('is-popping');
       button.classList.add('is-caught');
-      spawnCluster(count, button);
+      spawnCluster(1, button);
     });
+    refreshAwaitingInput();
     return { accepted: true };
   }
 
@@ -397,48 +454,75 @@ export function createChocolateChipCount(config, root) {
     const previousY = fieldRect.top + chip.prevY * fieldRect.height;
     const currentY = fieldRect.top + chip.y * fieldRect.height;
     const radius = Math.max(18, Math.min(fieldRect.width, fieldRect.height) * 0.028);
-    const help = chip.returnCount > 0 ? radius * 1.18 : radius;
-    const withinX = x >= trayRect.left - help && x <= trayRect.right + help;
+    const withinX = x >= trayRect.left - radius && x <= trayRect.right + radius;
     const crosses = previousY - radius <= trayRect.bottom && currentY + radius >= trayRect.top;
     return withinX && crosses && currentY <= trayRect.bottom + radius;
   }
 
+  function landChipOnTray(chip) {
+    const fieldRect = els.catchField.getBoundingClientRect();
+    const trayRect = els.tray.getBoundingClientRect();
+    if (!trayRect.width) return;
+    const chipScreenX = fieldRect.left + chip.x * fieldRect.width;
+    const relX = clamp((chipScreenX - trayRect.left) / trayRect.width, 0.06, 0.94);
+    const landed = img(config.assets.chip, 'landed-chip');
+    landed.style.left = `${relX * 100}%`;
+    landed.style.top = `${50 + (rng() - 0.5) * 40}%`;
+    landed.style.setProperty('--chip-rotate', `${Math.round((rng() - 0.5) * 24)}deg`);
+    els.trayChips.append(landed);
+  }
+
+  function removeChip(chip) {
+    const index = state.activeChips.indexOf(chip);
+    if (index !== -1) state.activeChips.splice(index, 1);
+  }
+
+  // Shared tail for both a catch and a miss: check for round completion,
+  // then — for the event-driven levels only — queue the next balloon once
+  // nothing is left in flight. Timer-driven levels (spawnInterval set) don't
+  // need this: their next balloon is already on its way regardless.
+  function afterChipResolved() {
+    if (state.caught >= state.target) {
+      if (!state.advancing) {
+        state.advancing = true;
+        stopSpawnTimer();
+        voiceQueue.then(() => completeRound());
+      }
+      return;
+    }
+    refreshAwaitingInput();
+    resetIdle();
+    const mode = currentMode();
+    if (!mode.spawnInterval && state.floating.size === 0 && state.activeChips.length === 0) {
+      timers.after(620, () => {
+        if (state.screen !== 'play' || state.caught >= state.target) return;
+        say('pop-next');
+        spawnNextBalloon();
+      });
+    }
+  }
+
   function catchChip(chip) {
-    if (!chip || chip.caught || chip.returning || state.screen !== 'play') return false;
+    if (!chip || !state.activeChips.includes(chip) || state.screen !== 'play') return false;
     chip.caught = true;
+    removeChip(chip);
     state.caught += 1;
-    state.awaitingInput = false;
     chip.el.classList.add('is-caught');
+    landChipOnTray(chip);
     playSfx('pop');
     renderProgress(state.caught - 1);
     els.playStatus.textContent = `${state.caught} of ${state.target} chocolate chips caught.`;
     say(`count-${state.caught}`);
     timers.after(360, () => chip.el.remove());
-
-    if (state.activeChips.every((item) => item.caught)) {
-      state.advancing = true;
-      if (state.caught >= state.target) {
-        voiceQueue.then(() => completeRound());
-      } else {
-        timers.after(620, () => {
-          if (state.screen !== 'play') return;
-          state.balloonIndex += 1;
-          state.activeChips = [];
-          state.advancing = false;
-          beginPopPhase();
-        });
-      }
-    } else {
-      state.awaitingInput = true;
-      resetIdle('catch');
-    }
+    afterChipResolved();
     return true;
   }
 
-  function returnChip(chip) {
-    if (!chip || chip.caught || chip.returning) return false;
-    chip.returning = true;
-    chip.returnCount += 1;
+  // A miss no longer bounces the same chip back for another try — it lets
+  // the chip fall away and puts a fresh balloon in the air instead.
+  function missChip(chip) {
+    if (!chip || !state.activeChips.includes(chip) || state.screen !== 'play') return false;
+    removeChip(chip);
     state.returnedChips += 1;
     chip.el.classList.add('is-returning');
     playSfx('boing');
@@ -446,18 +530,8 @@ export function createChocolateChipCount(config, root) {
       returnVoiceUsed = true;
       say('boing');
     }
-    timers.after(480, () => {
-      if (state.screen !== 'play' || chip.caught) return;
-      chip.returning = false;
-      chip.y = 0.17;
-      chip.prevY = chip.y;
-      chip.vy *= 0.88;
-      chip.vx *= 0.62;
-      chip.el.classList.remove('is-returning');
-      placeChip(chip);
-      state.awaitingInput = true;
-      resetIdle('catch');
-    });
+    timers.after(420, () => chip.el.remove());
+    afterChipResolved();
     return true;
   }
 
@@ -465,13 +539,21 @@ export function createChocolateChipCount(config, root) {
     raf = requestAnimationFrame(tick);
     const elapsed = lastFrame ? Math.min(50, now - lastFrame) : 16;
     lastFrame = now;
-    if (state.screen !== 'play' || state.phase !== 'catch') return;
+    if (state.screen !== 'play') return;
 
     const fieldRect = els.catchField.getBoundingClientRect();
     const trayRect = els.tray.getBoundingClientRect();
     const seconds = elapsed / 1000;
-    for (const chip of state.activeChips) {
-      if (chip.caught || chip.returning) continue;
+    const balloonSpeed = currentMode().balloonSpeed;
+
+    for (const [index, balloon] of [...state.floating]) {
+      balloon.y -= seconds * balloonSpeed;
+      const button = els.balloonRow.querySelector(`[data-index="${index}"]`);
+      if (button) button.style.top = `${balloon.y * 100}%`;
+      if (balloon.y <= .08) popBalloon(index);
+    }
+
+    for (const chip of [...state.activeChips]) {
       chip.prevY = chip.y;
       chip.vy += seconds * 0.018;
       chip.x += chip.vx * seconds;
@@ -482,13 +564,14 @@ export function createChocolateChipCount(config, root) {
       }
       placeChip(chip);
       if (chipCaughtByTray(chip, fieldRect, trayRect)) catchChip(chip);
-      else if (chip.y > 0.91) returnChip(chip);
+      else if (chip.y > 0.91) missChip(chip);
     }
   }
 
   async function completeRound() {
     if (state.screen !== 'play' || state.phase === 'complete') return;
     clearIdle();
+    stopSpawnTimer();
     state.phase = 'complete';
     state.awaitingInput = false;
     state.advancing = true;
@@ -533,14 +616,13 @@ export function createChocolateChipCount(config, root) {
   }
 
   function again() {
-    const modeId = state.modeId;
-    return say('again').then(() => startMode(modeId));
+    return startMode(state.modeId, { announceKey: 'again' });
   }
 
   function next() {
     const index = config.modes.findIndex((mode) => mode.id === state.modeId);
     const mode = config.modes[(index + 1) % config.modes.length];
-    return say('next').then(() => startMode(mode.id));
+    return startMode(mode.id, { announceKey: 'next' });
   }
 
   function wirePermanentControls() {
@@ -583,6 +665,7 @@ export function createChocolateChipCount(config, root) {
 
   function beginDrag(event) {
     if (state.screen !== 'play' || event.isPrimary === false || drag) return;
+    if (event.target.closest?.('.balloon')) return;
     event.preventDefault();
     unlockAll();
     drag = {
@@ -604,7 +687,7 @@ export function createChocolateChipCount(config, root) {
     gestureMoved = true;
     els.gesture.classList.add('is-dismissed');
     setTrayX(drag.startTray + dx / rect.width);
-    resetIdle(state.phase);
+    resetIdle();
   }
 
   function endDrag(event) {
@@ -639,6 +722,7 @@ export function createChocolateChipCount(config, root) {
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
     window.addEventListener('resize', setRunnerWidth);
+    window.addEventListener('resize', updateBalloonMask);
     permanentDisposers.push(() => {
       els.catchField.removeEventListener('pointerdown', beginDrag);
       window.removeEventListener('pointermove', moveDrag);
@@ -648,6 +732,7 @@ export function createChocolateChipCount(config, root) {
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
       window.removeEventListener('resize', setRunnerWidth);
+      window.removeEventListener('resize', updateBalloonMask);
     });
   }
 
@@ -661,17 +746,11 @@ export function createChocolateChipCount(config, root) {
     if (state.screen === 'splash') await startMode(state.modeId);
     if (state.screen === 'reward') return;
     const promise = new Promise((resolve) => { rewardReadyResolve = resolve; });
-    let safety = 20;
+    let safety = 40;
     while (state.screen === 'play' && state.caught < state.target && safety-- > 0) {
-      if (state.phase === 'intro') await voiceQueue;
-      if (state.phase === 'pop') {
-        popBalloon(state.balloonIndex);
-        await timers.wait(260);
-      }
-      if (state.phase === 'catch') {
-        for (const chip of [...state.activeChips]) catchChip(chip);
-        await timers.wait(700);
-      }
+      for (const index of [...state.floating.keys()]) popBalloon(index);
+      for (const chip of [...state.activeChips]) catchChip(chip);
+      await timers.wait(300);
     }
     if (state.screen === 'reward') return;
     return promise;
@@ -696,8 +775,9 @@ export function createChocolateChipCount(config, root) {
         phase: state.phase,
         target: state.target,
         caught: state.caught,
-        balloonIndex: state.balloonIndex,
-        activeChips: state.activeChips.filter((chip) => !chip.caught).length,
+        balloonsSpawned: state.spawnedCount,
+        floatingBalloons: state.floating.size,
+        activeChips: state.activeChips.length,
         returnedChips: state.returnedChips,
         trayX: Number(state.trayX.toFixed(3)),
         muted: state.muted,
@@ -718,8 +798,11 @@ export function createChocolateChipCount(config, root) {
       },
       home: () => showSplash(),
       setTrayX,
-      dropNext: () => popBalloon(state.balloonIndex),
-      missActiveChip: () => returnChip(state.activeChips.find((chip) => !chip.caught && !chip.returning)),
+      dropNext: () => {
+        const [index] = state.floating.keys();
+        return index !== undefined ? popBalloon(index) : { accepted: false };
+      },
+      missActiveChip: () => missChip(state.activeChips[0]),
       getAudioLog: () => voice.getAudioLog(),
       clearAudioLog: () => voice.clearAudioLog(),
       getLayout: () => {
@@ -748,6 +831,7 @@ export function createChocolateChipCount(config, root) {
     permanentDisposers.push(installUnlockOnGesture(), installKioskGuards());
     renderProgress();
     setRunnerWidth();
+    updateBalloonMask();
     updateChef();
     raf = requestAnimationFrame(tick);
     keyboardTick();

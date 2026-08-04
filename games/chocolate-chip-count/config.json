@@ -44,34 +44,40 @@
       "id": "tiny-batch",
       "title": "Tiny Batch",
       "target": 3,
-      "batches": [1, 2],
+      "batches": [1, 1, 1],
       "speed": 0.128,
+      "balloonSpeed": 0.12,
       "spread": 0.2,
       "trayWidth": 0.38,
       "frame": "./assets/recipe-mint.webp",
-      "balloons": ["red", "yellow"]
+      "balloons": ["red", "yellow"],
+      "spawnInterval": 8000
     },
     {
       "id": "baker-batch",
       "title": "Baker Batch",
       "target": 6,
-      "batches": [2, 2, 2],
+      "batches": [1, 1, 1, 1, 1, 1],
       "speed": 0.167,
+      "balloonSpeed": 0.15,
       "spread": 0.38,
       "trayWidth": 0.33,
       "frame": "./assets/recipe-yellow.webp",
-      "balloons": ["yellow", "blue", "red"]
+      "balloons": ["yellow", "blue", "red"],
+      "spawnInterval": 4000
     },
     {
       "id": "super-batch",
       "title": "Super Batch",
       "target": 10,
-      "batches": [2, 3, 2, 3],
+      "batches": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       "speed": 0.2,
+      "balloonSpeed": 0.18,
       "spread": 0.56,
       "trayWidth": 0.29,
       "frame": "./assets/recipe-blue.webp",
-      "balloons": ["blue", "red", "yellow", "blue"]
+      "balloons": ["blue", "red", "yellow", "blue"],
+      "spawnInterval": 2000
     }
   ]
 }
