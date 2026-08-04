@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "menu-chocolate-chip-count-tile",
+  "kind": "image",
+  "asset": "menu-chocolate-chip-count-tile.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A cheerful clay mini-chef child holding a silver baking tray while exactly three chunky chocolate chips land on it, with one red, one yellow, and one blue rounded balloon floating above, staged in a warm cookie bakery as one instantly readable counting-and-catching game moment; tactile handmade modeling clay, no extra loose chocolate chips Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "A cheerful clay mini-chef child holding a silver baking tray while exactly three chunky chocolate chips land on it, with one red, one yellow, and one blue rounded balloon floating above, staged in a warm cookie bakery as one instantly readable counting-and-catching game moment; tactile handmade modeling clay, no extra loose chocolate chips"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-03"
+}

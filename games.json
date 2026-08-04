@@ -1028,7 +1028,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "archived",
       "accent": "#58a945",
       "modes": [
         {
@@ -1042,7 +1042,38 @@
           "skill": "takeaway from five and counting remaining pads"
         }
       ],
-      "summary": "Jump forward and backward along floor numbers."
+      "summary": "Superseded by Chocolate Chip Count, the live action-counting rebuild."
+    },
+    {
+      "id": "chocolate-chip-count",
+      "title": "Chocolate Chip Count",
+      "category": "math-number-sense",
+      "path": "games/chocolate-chip-count/",
+      "icon": "assets/hub/tiles/chocolate-chip-count.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#ef5b4c",
+      "modes": [
+        {
+          "id": "tiny-batch",
+          "title": "Tiny Batch",
+          "skill": "one-to-one catch counting to 3"
+        },
+        {
+          "id": "baker-batch",
+          "title": "Baker Batch",
+          "skill": "sustained catch counting to 6"
+        },
+        {
+          "id": "super-batch",
+          "title": "Super Batch",
+          "skill": "sustained catch counting to 10 across wider space"
+        }
+      ],
+      "summary": "Pop clay balloons and slide Ravi's tray to catch and count exactly 3, 6, or 10 chocolate chips."
     },
     {
       "id": "block-tower-measure",

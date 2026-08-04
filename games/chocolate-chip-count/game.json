@@ -1,0 +1,43 @@
+{
+  "id": "chocolate-chip-count",
+  "title": "Chocolate Chip Count",
+  "category": "math-number-sense",
+  "path": "games/chocolate-chip-count/",
+  "icon": "🍪",
+  "entry": "index.html",
+  "age": { "min": 4, "max": 6 },
+  "status": "beta",
+  "accent": "#ef5b4c",
+  "shareTitle": "Chocolate Chip Count 🍪 — Pop, Catch, and Count with Ravi",
+  "description": "Pop clay balloons, slide Ravi's baking tray under every falling chocolate chip, and hear the count grow from one to ten in QLOBE Kids' first gentle arcade-style action game.",
+  "learningGoals": [
+    "Count caught objects from 1 to 10 with one spoken number per object",
+    "Connect the last spoken number to the total quantity collected",
+    "Coordinate horizontal tray movement with a falling object's path"
+  ],
+  "interactionModel": "Choose an exact 3, 6, or 10-chip cookie, tap one active balloon at a time, then drag anywhere across the playfield to slide Ravi and his tray under each falling chip. Missed chips bounce back gently until caught; keyboard arrows are supported.",
+  "feedbackModel": "Each catch adds one visible chip to the progress cookie and speaks the next number. Misses make a playful boing and return without penalty. Completing the exact quantity reveals the finished cookie, three clay stars, confetti, spoken praise, and Again/Next controls.",
+  "uses": [
+    "games/chocolate-chip-count/js/game.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/tap.js",
+    "shared/js/hud.js",
+    "shared/js/voice-clips.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/js/celebrate.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/ui/"
+  ],
+  "modes": [
+    { "id": "tiny-batch", "title": "Tiny Batch", "skill": "one-to-one catch counting to 3" },
+    { "id": "baker-batch", "title": "Baker Batch", "skill": "sustained catch counting to 6" },
+    { "id": "super-batch", "title": "Super Batch", "skill": "sustained catch counting to 10 across wider space" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original claymation assets authored with built-in gpt-image-2 and locally processed for QLOBE Kids. Ravi is the recurring QLOBE Kids cast member.",
+  "characters": ["ravi"],
+  "conceptVideo": null
+}

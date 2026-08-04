@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#e8b66d" />
+  <title>Chocolate Chip Count 🍪 — Pop, Catch, and Count with Ravi</title>
+  <meta name="description" content="Pop clay balloons, slide Ravi's baking tray under every falling chocolate chip, and hear the count grow from one to ten in QLOBE Kids' first gentle arcade-style action game." />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Chocolate Chip Count" />
+  <meta property="og:title" content="Chocolate Chip Count 🍪 — Pop, Catch, and Count with Ravi" />
+  <meta property="og:description" content="Pop clay balloons, slide Ravi's baking tray under every falling chocolate chip, and hear the count grow from one to ten in QLOBE Kids' first gentle arcade-style action game." />
+  <meta property="og:url" content="https://qlo.be/games/chocolate-chip-count/" />
+  <meta property="og:image" content="https://qlo.be/games/chocolate-chip-count/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ravi the clay mini-chef catches falling chocolate chips in a warm clay bakery." />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chocolate Chip Count 🍪 — Pop, Catch, and Count with Ravi" />
+  <meta name="twitter:description" content="Pop clay balloons, slide Ravi's baking tray under every falling chocolate chip, and hear the count grow from one to ten in QLOBE Kids' first gentle arcade-style action game." />
+  <meta name="twitter:image" content="https://qlo.be/games/chocolate-chip-count/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <main id="game" aria-label="Chocolate Chip Count game">
+    <section id="splash" class="screen" data-qk-screen="splash">
+      <div class="hud-mount hud-splash" aria-label="Game controls"></div>
+      <img class="title-art" src="./assets/title.webp" alt="Chocolate Chip Count" />
+      <img class="splash-ravi" src="./assets/ravi-chef-tray.webp" alt="Ravi dressed as a mini-chef with a baking tray" />
+      <div id="recipe-grid" class="recipe-grid" aria-label="Choose how many chocolate chips to catch"></div>
+      <button id="play-button" class="clay-action" type="button" data-target="play" data-role="neutral" aria-label="Play Tiny Batch">
+        <img src="./assets/button.webp" alt="" aria-hidden="true" />
+        <span>PLAY</span>
+      </button>
+    </section>
+
+    <section id="play" class="screen" data-qk-screen="play" hidden>
+      <div class="hud-mount hud-play" aria-label="Game controls"></div>
+      <div id="progress-cookie" class="cookie-composite progress-cookie" aria-hidden="true"></div>
+      <div id="balloon-row" class="balloon-row" aria-label="Balloons to pop"></div>
+      <div id="catch-field" class="catch-field" aria-label="Slide left and right to catch the falling chocolate chips">
+        <div id="chip-layer" class="chip-layer" aria-hidden="true"></div>
+        <div id="chef-runner" class="chef-runner" aria-hidden="true">
+          <img src="./assets/ravi-chef-tray.webp" alt="" />
+          <span class="tray-hitbox"></span>
+        </div>
+        <img id="gesture-cue" class="gesture-cue" src="./assets/gesture.webp" alt="Slide left and right" />
+      </div>
+      <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="reward" class="screen" data-qk-screen="reward" hidden>
+      <div class="hud-mount hud-reward" aria-label="Game controls"></div>
+      <h1 class="reward-title">Great counting!</h1>
+      <div class="reward-tableau">
+        <img class="reward-ravi" src="./assets/ravi-chef-tray.webp" alt="Ravi proudly holding the completed cookie" />
+        <div id="reward-cookie" class="cookie-composite reward-cookie" aria-hidden="true"></div>
+      </div>
+      <div class="star-row" aria-hidden="true">
+        <img src="./assets/star.webp" alt="" />
+        <img src="./assets/star.webp" alt="" />
+        <img src="./assets/star.webp" alt="" />
+      </div>
+      <div class="reward-actions">
+        <button id="again-button" class="clay-action clay-action-small" type="button" data-target="again" data-role="neutral" aria-label="Bake another cookie">
+          <img src="./assets/button.webp" alt="" aria-hidden="true" />
+          <span>AGAIN</span>
+        </button>
+        <button id="next-button" class="clay-action clay-action-small" type="button" data-target="next" data-role="neutral" aria-label="Play the next recipe">
+          <img src="./assets/button.webp" alt="" aria-hidden="true" />
+          <span>NEXT</span>
+        </button>
+      </div>
+      <p id="reward-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+  "title": "Chocolate Chip Count",
+  "initialMode": "tiny-batch",
+  "assets": {
+    "bakery": "./assets/bakery.webp",
+    "title": "./assets/title.webp",
+    "ravi": "./assets/ravi-chef-tray.webp",
+    "cookie": "./assets/cookie.webp",
+    "chip": "./assets/chip.webp",
+    "button": "./assets/button.webp",
+    "star": "./assets/star.webp",
+    "gesture": "./assets/gesture.webp"
+  },
+  "voice": {
+    "welcome": "Welcome to Chocolate Chip Count! Pick a cookie.",
+    "pick": "Pick how many chocolate chips to catch.",
+    "mode-3": "Three chips. A tiny batch.",
+    "mode-6": "Six chips. A bigger batch.",
+    "mode-10": "Ten chips. Super chef challenge.",
+    "move": "Slide the tray to catch every chocolate chip.",
+    "pop": "Pop the bouncy balloon!",
+    "pop-next": "Pop the next balloon!",
+    "count-1": "One!",
+    "count-2": "Two!",
+    "count-3": "Three!",
+    "count-4": "Four!",
+    "count-5": "Five!",
+    "count-6": "Six!",
+    "count-7": "Seven!",
+    "count-8": "Eight!",
+    "count-9": "Nine!",
+    "count-10": "Ten!",
+    "boing": "Boing! That chip is coming back.",
+    "idle-pop": "Tap the wiggly balloon.",
+    "idle-catch": "Slide the tray under the chocolate chip.",
+    "complete-3": "You caught three chocolate chips. Great counting!",
+    "complete-6": "You caught six chocolate chips. Great counting!",
+    "complete-10": "You caught ten chocolate chips. Great counting!",
+    "again": "Bake another one!",
+    "next": "Ready for the next recipe?"
+  },
+  "modes": [
+    {
+      "id": "tiny-batch",
+      "title": "Tiny Batch",
+      "target": 3,
+      "batches": [1, 2],
+      "speed": 0.128,
+      "spread": 0.2,
+      "trayWidth": 0.38,
+      "frame": "./assets/recipe-mint.webp",
+      "balloons": ["red", "yellow"]
+    },
+    {
+      "id": "baker-batch",
+      "title": "Baker Batch",
+      "target": 6,
+      "batches": [2, 2, 2],
+      "speed": 0.167,
+      "spread": 0.38,
+      "trayWidth": 0.33,
+      "frame": "./assets/recipe-yellow.webp",
+      "balloons": ["yellow", "blue", "red"]
+    },
+    {
+      "id": "super-batch",
+      "title": "Super Batch",
+      "target": 10,
+      "batches": [2, 3, 2, 3],
+      "speed": 0.2,
+      "spread": 0.56,
+      "trayWidth": 0.29,
+      "frame": "./assets/recipe-blue.webp",
+      "balloons": ["blue", "red", "yellow", "blue"]
+    }
+  ]
+}

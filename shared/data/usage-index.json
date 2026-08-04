@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-04T05:29:28.381Z",
+  "generated": "2026-08-04T06:41:15.485Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -345,6 +345,36 @@
         "shared/js/speech.js"
       ],
       "assets": [],
+      "packs": []
+    },
+    "chocolate-chip-count": {
+      "engine": null,
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [
+        "ravi"
+      ],
+      "modules": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "assets": [
+        "games/chocolate-chip-count/assets/button.webp",
+        "games/chocolate-chip-count/assets/gesture.webp",
+        "games/chocolate-chip-count/assets/ravi-chef-tray.webp",
+        "games/chocolate-chip-count/assets/star.webp",
+        "games/chocolate-chip-count/assets/title.webp",
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "clay-creature-studio": {
@@ -943,7 +973,7 @@
     },
     "number-line-jump": {
       "engine": "tap-count",
-      "status": "beta",
+      "status": "archived",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
@@ -1954,6 +1984,7 @@
       ],
       "shared/js/audio-unlock.js": [
         "big-paper-murals",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -1978,6 +2009,7 @@
         "sound-basket"
       ],
       "shared/js/celebrate.js": [
+        "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -2016,6 +2048,7 @@
       ],
       "shared/js/debug-harness.js": [
         "big-paper-murals",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -2157,6 +2190,7 @@
         "rhyming-detective"
       ],
       "shared/js/hud.js": [
+        "chocolate-chip-count",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
@@ -2207,6 +2241,7 @@
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
         "flashlight-cave",
@@ -2221,6 +2256,7 @@
         "world-music-dance"
       ],
       "shared/js/screens.js": [
+        "chocolate-chip-count",
         "emotion-voice-game",
         "snack-chef"
       ],
@@ -2240,6 +2276,7 @@
         "button-zipper-lab",
         "calm-corner-cards",
         "chalkboard-big-strokes",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -2348,6 +2385,7 @@
         "button-zipper-lab",
         "calm-corner-cards",
         "chalkboard-big-strokes",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -2506,6 +2544,7 @@
       "shared/js/tap.js": [
         "big-paper-murals",
         "bug-hotel-observer",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -2528,6 +2567,7 @@
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "chocolate-chip-count",
         "globe-spin-stories",
         "lunchbox-pack",
         "puppet-retell",
@@ -2538,6 +2578,7 @@
       "shared/js/voice-clips.js": [
         "blend-train",
         "bug-hotel-observer",
+        "chocolate-chip-count",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -2696,6 +2737,7 @@
       ],
       "ravi": [
         "calm-corner-cards",
+        "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
         "name-puzzle",
@@ -2741,6 +2783,21 @@
       ]
     },
     "assets": {
+      "games/chocolate-chip-count/assets/button.webp": [
+        "chocolate-chip-count"
+      ],
+      "games/chocolate-chip-count/assets/gesture.webp": [
+        "chocolate-chip-count"
+      ],
+      "games/chocolate-chip-count/assets/ravi-chef-tray.webp": [
+        "chocolate-chip-count"
+      ],
+      "games/chocolate-chip-count/assets/star.webp": [
+        "chocolate-chip-count"
+      ],
+      "games/chocolate-chip-count/assets/title.webp": [
+        "chocolate-chip-count"
+      ],
       "games/counting-treasure-cups/assets/pose-actors": [
         "counting-treasure-cups"
       ],
@@ -2963,6 +3020,7 @@
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
+        "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
         "counting-treasure-cups",
@@ -3081,6 +3139,7 @@
       ],
       "shared/characters/ravi": [
         "calm-corner-cards",
+        "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
         "name-puzzle",

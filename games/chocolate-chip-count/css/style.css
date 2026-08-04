@@ -1,0 +1,448 @@
+:root {
+  --qk-bg: #d6944f;
+  --ink: #542c16;
+  --cream: #fff6dc;
+  --focus: #1d6fa5;
+}
+
+html,
+body {
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  color: var(--ink);
+  font-family: Fredoka, 'Arial Rounded MT Bold', sans-serif;
+  font-weight: 600;
+  -webkit-touch-callout: none;
+}
+
+button { font: inherit; }
+img { -webkit-user-drag: none; }
+
+#game {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #dfaa64 url('../assets/bakery.webp') center / cover no-repeat;
+}
+
+.screen[hidden] { display: none !important; }
+
+.hud-mount { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+.hud-mount > * { pointer-events: auto; }
+.hud-mount .qk-hud-sound { top: max(14px, var(--qk-safe-top)); right: max(14px, var(--qk-safe-right)); }
+.hud-mount .qk-hud-home,
+.hud-mount .qk-hud-back { top: max(14px, var(--qk-safe-top)); left: max(14px, var(--qk-safe-left)); }
+
+button:focus-visible {
+  outline: 6px solid var(--focus);
+  outline-offset: 5px;
+}
+
+/* Splash / recipe menu */
+
+.title-art {
+  position: absolute;
+  z-index: 12;
+  top: max(2.5vh, calc(var(--qk-safe-top) + 6px));
+  left: 50%;
+  width: min(58vw, 720px);
+  max-height: 29vh;
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 11px 10px rgba(86, 43, 13, .22));
+  animation: title-arrive .62s cubic-bezier(.2, .9, .25, 1.12) both;
+}
+
+.splash-ravi {
+  position: absolute;
+  z-index: 9;
+  left: clamp(4px, 3.5vw, 56px);
+  bottom: -8vh;
+  width: min(27vw, 370px);
+  max-height: 72vh;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 14px rgba(76, 38, 14, .24));
+  animation: ravi-arrive .58s .12s cubic-bezier(.2, .9, .25, 1.12) both;
+}
+
+.recipe-grid {
+  position: absolute;
+  z-index: 16;
+  top: 30vh;
+  right: max(4vw, calc(var(--qk-safe-right) + 18px));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(132px, 1fr));
+  gap: clamp(8px, 1.45vw, 22px);
+  width: min(72vw, 940px);
+}
+
+.recipe-card {
+  position: relative;
+  aspect-ratio: .99;
+  min-width: 132px;
+  min-height: 132px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(0) rotate(var(--tilt));
+  transition: transform .16s ease, filter .16s ease;
+  animation: card-arrive .55s calc(.18s + var(--i) * .08s) cubic-bezier(.2, .9, .25, 1.12) both;
+}
+
+.recipe-card > .frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* The generated contact sheet left a narrow divider in the transparent
+     gutter of the yellow and blue cells. Keep that source-only gutter out of
+     the child-facing crop without shrinking the clay frame itself. */
+  clip-path: inset(0 0 0 8%);
+  pointer-events: none;
+  filter: drop-shadow(0 10px 8px rgba(82, 42, 17, .18));
+}
+
+.recipe-card .cookie-composite {
+  position: absolute;
+  z-index: 2;
+  left: 21%;
+  top: 21%;
+  width: 58%;
+  aspect-ratio: 1;
+}
+
+.recipe-card.is-selected {
+  transform: translateY(-10px) rotate(0) scale(1.04);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 225, 1)) drop-shadow(0 0 18px rgba(255, 232, 96, .95));
+}
+
+.recipe-card:active { transform: translateY(3px) rotate(0) scale(.97); }
+
+.clay-action {
+  position: absolute;
+  z-index: 24;
+  left: 57%;
+  bottom: max(2.5vh, calc(var(--qk-safe-bottom) + 5px));
+  width: min(25vw, 330px);
+  min-width: 210px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff8e9;
+  cursor: pointer;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 10px 8px rgba(82, 38, 18, .25));
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.clay-action > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.clay-action > span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 2%;
+  color: #fff8e9;
+  font-size: clamp(28px, 4.1vw, 58px);
+  line-height: 1;
+  letter-spacing: .025em;
+  text-shadow: 0 4px 0 #b83730, 0 6px 8px rgba(91, 35, 23, .24);
+  pointer-events: none;
+}
+
+.clay-action:active { transform: translateX(-50%) translateY(6px) scale(.98); filter: drop-shadow(0 4px 4px rgba(82, 38, 18, .22)); }
+
+/* Exact-count cookie composition */
+
+.cookie-composite {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.cookie-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 5px rgba(83, 40, 13, .17));
+}
+
+.cookie-chip {
+  position: absolute;
+  z-index: 2;
+  width: var(--chip-size);
+  height: var(--chip-size);
+  object-fit: contain;
+  transform: translate(-50%, -50%) rotate(var(--chip-rotate));
+  filter: drop-shadow(0 2px 2px rgba(67, 27, 10, .22));
+}
+
+.cookie-chip.is-new { animation: pip-land .38s cubic-bezier(.2, .9, .3, 1.4) both; }
+
+/* Play */
+
+.catch-field {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: ew-resize;
+}
+
+.progress-cookie {
+  position: absolute;
+  z-index: 36;
+  top: max(12px, calc(var(--qk-safe-top) + 4px));
+  left: max(118px, calc(var(--qk-safe-left) + 112px));
+  width: clamp(82px, 10vw, 128px);
+  filter: drop-shadow(0 7px 7px rgba(75, 37, 13, .2));
+}
+
+.balloon-row {
+  position: absolute;
+  z-index: 34;
+  top: max(6.5vh, calc(var(--qk-safe-top) + 60px));
+  left: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(2px, .9vw, 13px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.balloon {
+  position: relative;
+  width: clamp(76px, 9.5vw, 132px);
+  height: clamp(108px, 13vw, 178px);
+  min-width: 96px;
+  min-height: 112px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: filter .16s ease, opacity .18s ease, transform .18s ease;
+}
+
+.balloon img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.balloon:not(.is-active) { opacity: .58; filter: saturate(.72); }
+.balloon.is-caught { opacity: .18; transform: scale(.78); pointer-events: none; }
+.balloon.is-active { filter: drop-shadow(0 0 10px rgba(255, 248, 202, 1)) drop-shadow(0 8px 8px rgba(65, 52, 38, .17)); animation: balloon-bob 1.05s ease-in-out infinite alternate; }
+.balloon.is-popping { animation: balloon-pop .25s ease-out both; pointer-events: none; }
+
+.chip-layer { position: absolute; inset: 0; z-index: 18; pointer-events: none; }
+
+.falling-chip {
+  position: absolute;
+  width: clamp(42px, 5.4vw, 72px);
+  height: clamp(42px, 5.4vw, 72px);
+  object-fit: contain;
+  transform: translate(-50%, -50%) rotate(var(--spin));
+  filter: drop-shadow(0 5px 4px rgba(67, 30, 10, .22));
+  will-change: left, top, transform;
+}
+
+.falling-chip.is-caught { animation: chip-catch .34s ease-out both; }
+.falling-chip.is-returning { animation: chip-boing .42s ease-out both; }
+
+.chef-runner {
+  position: absolute;
+  z-index: 24;
+  bottom: max(-12vh, -105px);
+  left: 50%;
+  width: var(--runner-width, min(38vw, 500px));
+  min-width: 235px;
+  max-width: 540px;
+  aspect-ratio: 700 / 875;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 15px 12px rgba(73, 36, 14, .23));
+  pointer-events: none;
+  will-change: left;
+}
+
+.chef-runner > img { width: 100%; height: 100%; object-fit: contain; }
+.tray-hitbox { position: absolute; left: 11%; top: 57%; width: 78%; height: 15%; }
+
+.gesture-cue {
+  position: absolute;
+  z-index: 38;
+  left: 50%;
+  bottom: max(5vh, calc(var(--qk-safe-bottom) + 8px));
+  width: min(44vw, 480px);
+  max-height: 18vh;
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 7px 7px rgba(64, 34, 15, .2));
+  animation: cue-slide 1.55s ease-in-out infinite;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.gesture-cue.is-dismissed { opacity: 0; animation: none; }
+
+/* Reward */
+
+.reward-title {
+  position: absolute;
+  z-index: 30;
+  top: max(2vh, calc(var(--qk-safe-top) + 6px));
+  left: 50%;
+  width: min(74vw, 880px);
+  margin: 0;
+  transform: translateX(-50%);
+  color: #fff0c5;
+  font-size: clamp(40px, 7vw, 92px);
+  line-height: 1;
+  text-align: center;
+  letter-spacing: -.025em;
+  text-shadow: 0 5px 0 #6f3218, 0 9px 0 #9d5428, 0 15px 18px rgba(74, 36, 13, .25);
+  animation: reward-title-in .55s cubic-bezier(.2, .9, .25, 1.15) both;
+}
+
+.reward-tableau {
+  position: absolute;
+  z-index: 18;
+  top: 14vh;
+  left: 50%;
+  width: min(62vw, 720px);
+  height: min(68vh, 660px);
+  transform: translateX(-50%);
+}
+
+.reward-ravi {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 13px rgba(73, 36, 14, .24));
+  animation: reward-ravi-in .5s .12s cubic-bezier(.2, .9, .25, 1.14) both;
+}
+
+.reward-cookie {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 61%;
+  width: min(21vw, 235px);
+  transform: translate(-50%, -50%);
+  animation: cookie-reveal .6s .32s cubic-bezier(.2, .9, .25, 1.25) both;
+}
+
+.star-row {
+  position: absolute;
+  z-index: 32;
+  left: 50%;
+  bottom: max(16vh, calc(var(--qk-safe-bottom) + 118px));
+  display: flex;
+  gap: clamp(4px, 1vw, 13px);
+  transform: translateX(-50%);
+}
+
+.star-row img {
+  width: clamp(62px, 8vw, 108px);
+  filter: drop-shadow(0 7px 6px rgba(77, 38, 14, .2));
+  animation: star-land .46s calc(.46s + var(--star-i, 0) * .12s) cubic-bezier(.2, .9, .25, 1.3) both;
+}
+
+.star-row img:nth-child(1) { --star-i: 0; transform: rotate(-7deg); }
+.star-row img:nth-child(2) { --star-i: 1; }
+.star-row img:nth-child(3) { --star-i: 2; transform: rotate(7deg); }
+
+.reward-actions {
+  position: absolute;
+  z-index: 36;
+  right: max(2.5vw, calc(var(--qk-safe-right) + 10px));
+  bottom: max(2.5vh, calc(var(--qk-safe-bottom) + 8px));
+  display: flex;
+  gap: clamp(8px, 1.2vw, 18px);
+}
+
+.reward-actions .clay-action {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  width: min(19vw, 250px);
+  min-width: 185px;
+  min-height: 96px;
+  transform: none;
+}
+
+.reward-actions .clay-action > span { font-size: clamp(22px, 2.8vw, 40px); }
+.reward-actions .clay-action:active { transform: translateY(6px) scale(.98); }
+
+/* Motion */
+
+@keyframes title-arrive { from { opacity: 0; transform: translate(-50%, -18px) scale(.88); } }
+@keyframes ravi-arrive { from { opacity: 0; transform: translateX(-30px) scale(.92); } }
+@keyframes card-arrive { from { opacity: 0; transform: translateY(28px) rotate(var(--tilt)) scale(.88); } }
+@keyframes pip-land { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.1) rotate(var(--chip-rotate)); } 70% { transform: translate(-50%, -50%) scale(1.18) rotate(var(--chip-rotate)); } }
+@keyframes balloon-bob { to { transform: translateY(-9px) rotate(2deg); } }
+@keyframes balloon-pop { 40% { transform: scale(1.18); } to { opacity: 0; transform: scale(.25) rotate(12deg); } }
+@keyframes chip-catch { to { opacity: 0; transform: translate(-50%, 36px) scale(.2) rotate(25deg); } }
+@keyframes chip-boing { 45% { transform: translate(-50%, -50%) scale(1.2, .6); } to { opacity: .2; transform: translate(-50%, -88px) scale(.75); } }
+@keyframes cue-slide { 0%, 100% { transform: translateX(-56%); } 50% { transform: translateX(-44%); } }
+@keyframes reward-title-in { from { opacity: 0; transform: translate(-50%, -24px) scale(.86); } }
+@keyframes reward-ravi-in { from { opacity: 0; transform: translateY(24px) scale(.94); } }
+@keyframes cookie-reveal { from { opacity: 0; transform: translate(-50%, -50%) scale(.12) rotate(-18deg); } }
+@keyframes star-land { from { opacity: 0; translate: 0 -35px; scale: .2; } }
+
+@media (orientation: portrait) {
+  .title-art { top: max(8vh, calc(var(--qk-safe-top) + 38px)); width: min(84vw, 660px); max-height: 24vh; }
+  .splash-ravi { left: -5vw; bottom: -2vh; width: min(32vw, 280px); max-height: 46vh; }
+  .recipe-grid { top: 34vh; right: 3vw; width: 94vw; grid-template-columns: repeat(3, minmax(112px, 1fr)); gap: 4px; }
+  .clay-action { left: 58%; bottom: max(13vh, calc(var(--qk-safe-bottom) + 42px)); width: min(42vw, 320px); }
+  .progress-cookie { top: max(14px, calc(var(--qk-safe-top) + 6px)); left: max(116px, calc(var(--qk-safe-left) + 110px)); width: clamp(88px, 17vw, 126px); }
+  .balloon-row { top: max(20vh, calc(var(--qk-safe-top) + 150px)); }
+  .balloon { width: clamp(78px, 18vw, 120px); height: clamp(116px, 26vw, 170px); }
+  .chef-runner { bottom: max(-7vh, -58px); min-width: 250px; max-width: 520px; }
+  .gesture-cue { bottom: max(1.5vh, calc(var(--qk-safe-bottom) + 4px)); width: min(48vw, 380px); }
+  .reward-title { top: max(9vh, calc(var(--qk-safe-top) + 42px)); width: 90vw; font-size: clamp(44px, 9vw, 74px); }
+  .reward-tableau { top: 18vh; width: min(86vw, 680px); height: min(57vh, 600px); }
+  .reward-cookie { width: min(32vw, 225px); }
+  .star-row { bottom: max(20vh, calc(var(--qk-safe-bottom) + 180px)); }
+  .star-row img { width: clamp(70px, 14vw, 104px); }
+  .reward-actions { right: 50%; bottom: max(5vh, calc(var(--qk-safe-bottom) + 12px)); transform: translateX(50%); }
+  .reward-actions .clay-action { width: min(39vw, 245px); min-width: 178px; }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+  .title-art { width: min(50vw, 620px); max-height: 25vh; }
+  .recipe-grid { top: 27vh; width: min(69vw, 820px); }
+  .splash-ravi { width: min(25vw, 320px); }
+  .clay-action { width: min(22vw, 285px); }
+  .balloon-row { top: max(5vh, calc(var(--qk-safe-top) + 50px)); }
+  .chef-runner { bottom: -18vh; }
+  .reward-tableau { top: 10vh; height: 72vh; }
+  .star-row { bottom: 13vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}
