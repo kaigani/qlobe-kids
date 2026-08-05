@@ -1603,21 +1603,16 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "in-design",
       "accent": "#2d7dd2",
       "modes": [
         {
-          "id": "today",
-          "title": "Today's Weather",
-          "skill": "weather observation and recording"
-        },
-        {
-          "id": "dress",
-          "title": "What to Wear?",
-          "skill": "connect clothing choices to weather conditions"
+          "id": "weather-lab",
+          "title": "Weather Lab",
+          "skill": "cause and effect in a changing weather system"
         }
       ],
-      "summary": "Chart sun, clouds, wind, and rain."
+      "summary": "Choose a meadow, desert, arctic, or rainforest and make it change with sun, rain, wind, and clouds."
     },
     {
       "id": "bug-hotel-observer",

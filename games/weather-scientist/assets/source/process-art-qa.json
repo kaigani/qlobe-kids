@@ -1,0 +1,655 @@
+{
+  "files": {
+    "assets/backgrounds/observatory-meadow.webp": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 226684,
+      "quality": 90,
+      "opaque": true
+    },
+    "assets/world/meadow/landmark.webp": {
+      "dimensions": [
+        560,
+        760
+      ],
+      "bytes": 236542,
+      "alpha_bbox": [
+        23,
+        145,
+        537,
+        737
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/growth-seedling.webp": {
+      "dimensions": [
+        420,
+        520
+      ],
+      "bytes": 84900,
+      "alpha_bbox": [
+        27,
+        149,
+        394,
+        494
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/growth-bud.webp": {
+      "dimensions": [
+        420,
+        520
+      ],
+      "bytes": 102656,
+      "alpha_bbox": [
+        53,
+        22,
+        366,
+        498
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/growth-bloom.webp": {
+      "dimensions": [
+        420,
+        520
+      ],
+      "bytes": 135768,
+      "alpha_bbox": [
+        57,
+        21,
+        362,
+        499
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/sun.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 241858,
+      "alpha_bbox": [
+        28,
+        45,
+        691,
+        692
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/cloud.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 163228,
+      "alpha_bbox": [
+        26,
+        260,
+        694,
+        694
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/rain-cloud.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 184750,
+      "alpha_bbox": [
+        26,
+        265,
+        694,
+        693
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/rainbow.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 191448,
+      "alpha_bbox": [
+        26,
+        280,
+        693,
+        694
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/puddle.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 114484,
+      "alpha_bbox": [
+        29,
+        447,
+        694,
+        694
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/shade.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 204660,
+      "alpha_bbox": [
+        27,
+        246,
+        693,
+        693
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/particles/meadow/raindrop.webp": {
+      "dimensions": [
+        160,
+        160
+      ],
+      "bytes": 11126,
+      "alpha_bbox": [
+        46,
+        15,
+        114,
+        146
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/particles/meadow/leaf-1.webp": {
+      "dimensions": [
+        160,
+        160
+      ],
+      "bytes": 17348,
+      "alpha_bbox": [
+        17,
+        14,
+        142,
+        146
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/particles/meadow/leaf-2.webp": {
+      "dimensions": [
+        160,
+        160
+      ],
+      "bytes": 18952,
+      "alpha_bbox": [
+        22,
+        12,
+        138,
+        148
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/particles/meadow/leaf-3.webp": {
+      "dimensions": [
+        160,
+        160
+      ],
+      "bytes": 19858,
+      "alpha_bbox": [
+        26,
+        12,
+        133,
+        148
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/wind-curl.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 129678,
+      "alpha_bbox": [
+        28,
+        201,
+        692,
+        689
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/world/meadow/sparkle.webp": {
+      "dimensions": [
+        720,
+        720
+      ],
+      "bytes": 103598,
+      "alpha_bbox": [
+        87,
+        34,
+        636,
+        686
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/control-sun.webp": {
+      "dimensions": [
+        340,
+        390
+      ],
+      "bytes": 102048,
+      "alpha_bbox": [
+        50,
+        15,
+        291,
+        375
+      ],
+      "alpha_coverage": 0.6349698340874812,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/control-wind.webp": {
+      "dimensions": [
+        340,
+        390
+      ],
+      "bytes": 106714,
+      "alpha_bbox": [
+        50,
+        15,
+        290,
+        375
+      ],
+      "alpha_coverage": 0.6329185520361991,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/control-cloud.webp": {
+      "dimensions": [
+        340,
+        390
+      ],
+      "bytes": 94302,
+      "alpha_bbox": [
+        49,
+        15,
+        291,
+        375
+      ],
+      "alpha_coverage": 0.6392232277526395,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/control-rain.webp": {
+      "dimensions": [
+        340,
+        390
+      ],
+      "bytes": 111160,
+      "alpha_bbox": [
+        45,
+        15,
+        295,
+        375
+      ],
+      "alpha_coverage": 0.6575113122171946,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/badge-sun.webp": {
+      "dimensions": [
+        190,
+        190
+      ],
+      "bytes": 35774,
+      "alpha_bbox": [
+        13,
+        12,
+        176,
+        178
+      ],
+      "alpha_coverage": 0.5756232686980609,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/badge-wind.webp": {
+      "dimensions": [
+        190,
+        190
+      ],
+      "bytes": 29186,
+      "alpha_bbox": [
+        12,
+        25,
+        182,
+        178
+      ],
+      "alpha_coverage": 0.4919667590027701,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/badge-cloud.webp": {
+      "dimensions": [
+        190,
+        190
+      ],
+      "bytes": 27260,
+      "alpha_bbox": [
+        10,
+        30,
+        182,
+        179
+      ],
+      "alpha_coverage": 0.4751523545706371,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/badge-rain.webp": {
+      "dimensions": [
+        190,
+        190
+      ],
+      "bytes": 32142,
+      "alpha_bbox": [
+        12,
+        12,
+        174,
+        178
+      ],
+      "alpha_coverage": 0.5747368421052632,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/control-tray.webp": {
+      "dimensions": [
+        340,
+        390
+      ],
+      "bytes": 86754,
+      "alpha_bbox": [
+        15,
+        157,
+        325,
+        375
+      ],
+      "alpha_coverage": 0.46469079939668173,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/prompt-banner.webp": {
+      "dimensions": [
+        780,
+        220
+      ],
+      "bytes": 124358,
+      "alpha_bbox": [
+        26,
+        15,
+        754,
+        204
+      ],
+      "alpha_coverage": 0.7148834498834499,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/wind-track.webp": {
+      "dimensions": [
+        520,
+        120
+      ],
+      "bytes": 39122,
+      "alpha_bbox": [
+        90,
+        15,
+        429,
+        105
+      ],
+      "alpha_coverage": 0.44591346153846156,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/wind-knob.webp": {
+      "dimensions": [
+        190,
+        190
+      ],
+      "bytes": 37558,
+      "alpha_bbox": [
+        15,
+        14,
+        174,
+        176
+      ],
+      "alpha_coverage": 0.5452631578947369,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/play.webp": {
+      "dimensions": [
+        620,
+        220
+      ],
+      "bytes": 77496,
+      "alpha_bbox": [
+        138,
+        17,
+        482,
+        204
+      ],
+      "alpha_coverage": 0.4098826979472141,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/explore.webp": {
+      "dimensions": [
+        620,
+        220
+      ],
+      "bytes": 75258,
+      "alpha_bbox": [
+        138,
+        16,
+        481,
+        203
+      ],
+      "alpha_coverage": 0.40964076246334313,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/reset.webp": {
+      "dimensions": [
+        220,
+        220
+      ],
+      "bytes": 42154,
+      "alpha_bbox": [
+        16,
+        16,
+        203,
+        204
+      ],
+      "alpha_coverage": 0.5697107438016529,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/ui/progress-ribbon.webp": {
+      "dimensions": [
+        500,
+        160
+      ],
+      "bytes": 54900,
+      "alpha_bbox": [
+        67,
+        17,
+        432,
+        143
+      ],
+      "alpha_coverage": 0.52195,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "assets/backgrounds/splash.webp": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 173406,
+      "quality": 90,
+      "opaque": true
+    }
+  },
+  "hubTile": {
+    "path": "assets/hub/tiles/weather-scientist.jpg",
+    "dimensions": [
+      640,
+      533
+    ],
+    "bytes": 138965,
+    "opaque": true
+  }
+}

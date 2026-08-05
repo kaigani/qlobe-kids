@@ -1,0 +1,215 @@
+{
+  "id": "weather-scientist",
+  "title": "Weather Scientist",
+  "status": "beta",
+  "guidedOrder": ["sun", "rain", "wind", "cloud"],
+  "windThreshold": 0.54,
+  "sceneOrder": ["meadow", "desert", "arctic", "rainforest"],
+  "scenes": {
+    "meadow": {
+      "id": "meadow",
+      "label": "Meadow",
+      "thumb": "./assets/ui/scene-meadow.webp",
+      "voice": {
+        "welcome": "Welcome to the Weather Observatory! Tap play and watch the meadow change.",
+        "sun-prompt": "First, tap the sun to warm the meadow.",
+        "sun-result": "Sunlight warms the earth. Look—the little bud is waking up!",
+        "rain-prompt": "Now tap rain to give the flower a drink.",
+        "rain-result": "Rain soaks into the soil. The flower is growing!",
+        "wind-prompt": "Slide the wind dial and help the leaves dance.",
+        "wind-result": "Whoosh! Wind pushes clouds and carries leaves through the sky.",
+        "cloud-prompt": "Tap the cloud to make cool shade.",
+        "cloud-result": "Clouds cover some sunlight and make a patch of shade.",
+        "gentle-nudge": "Try the glowing weather card.",
+        "wind-nudge": "Slide the golden dial toward the dancing leaves.",
+        "complete": "You did it! Sun, rain, wind, and clouds all change the meadow. You’re a Weather Scientist!",
+        "free-lab": "Now make your own weather. What happens when two kinds of weather meet?",
+        "rainbow": "Sun and rain together made a rainbow!",
+        "reset": "The observatory is ready for another weather day."
+      },
+      "assets": {
+        "background": "./assets/backgrounds/observatory-meadow.webp",
+        "landmark": "./assets/world/meadow/landmark.webp",
+        "growth": {
+          "seedling": "./assets/world/meadow/growth-seedling.webp",
+          "bud": "./assets/world/meadow/growth-bud.webp",
+          "bloom": "./assets/world/meadow/growth-bloom.webp"
+        },
+        "world": {
+          "sun": "./assets/world/meadow/sun.webp",
+          "cloud": "./assets/world/meadow/cloud.webp",
+          "rainCloud": "./assets/world/meadow/rain-cloud.webp",
+          "rainbow": "./assets/world/meadow/rainbow.webp",
+          "puddle": "./assets/world/meadow/puddle.webp",
+          "shade": "./assets/world/meadow/shade.webp"
+        },
+        "particles": {
+          "precip": "./assets/particles/meadow/raindrop.webp",
+          "debris1": "./assets/particles/meadow/leaf-1.webp",
+          "debris2": "./assets/particles/meadow/leaf-2.webp",
+          "debris3": "./assets/particles/meadow/leaf-3.webp"
+        }
+      }
+    },
+    "desert": {
+      "id": "desert",
+      "label": "Desert",
+      "thumb": "./assets/ui/scene-desert.webp",
+      "voice": {
+        "welcome": "Welcome to the Desert Observatory! Tap play and watch the dunes come alive.",
+        "sun-prompt": "First, tap the sun to heat up the sand.",
+        "sun-result": "The sun blazes down. Watch the little cactus soak up all that warmth!",
+        "rain-prompt": "Now tap rain — it's rare out here, so make it count.",
+        "rain-result": "Rain is precious in the desert. The cactus drinks up every single drop!",
+        "wind-prompt": "Slide the wind dial and swirl the desert sand.",
+        "wind-result": "Whoosh! Wind sweeps the sand into swirling golden waves.",
+        "cloud-prompt": "Tap the cloud to bring a little shade.",
+        "cloud-result": "A cloud drifts by and cools one small patch of hot sand.",
+        "gentle-nudge": "Try the glowing weather card.",
+        "wind-nudge": "Slide the golden dial and stir up the sand.",
+        "complete": "You did it! Sun, rain, wind, and clouds all change the desert. You’re a Weather Scientist!",
+        "free-lab": "Now make your own desert weather. What happens when two kinds of weather meet?",
+        "rainbow": "Sun and rain together made a rainbow over the dunes!",
+        "reset": "The desert is ready for another weather day."
+      },
+      "assets": {
+        "background": "./assets/backgrounds/desert.webp",
+        "landmark": "./assets/world/desert/landmark.webp",
+        "growth": {
+          "seedling": "./assets/world/desert/growth-seedling.webp",
+          "bud": "./assets/world/desert/growth-bud.webp",
+          "bloom": "./assets/world/desert/growth-bloom.webp"
+        },
+        "world": {
+          "sun": "./assets/world/desert/sun.webp",
+          "cloud": "./assets/world/desert/cloud.webp",
+          "rainCloud": "./assets/world/desert/rain-cloud.webp",
+          "rainbow": "./assets/world/desert/rainbow.webp",
+          "puddle": "./assets/world/desert/puddle.webp",
+          "shade": "./assets/world/desert/shade.webp"
+        },
+        "particles": {
+          "precip": "./assets/particles/desert/raindrop.webp",
+          "debris1": "./assets/particles/desert/leaf-1.webp",
+          "debris2": "./assets/particles/desert/leaf-2.webp",
+          "debris3": "./assets/particles/desert/leaf-3.webp"
+        }
+      }
+    },
+    "arctic": {
+      "id": "arctic",
+      "label": "Arctic",
+      "thumb": "./assets/ui/scene-arctic.webp",
+      "voice": {
+        "welcome": "Welcome to the Arctic Observatory! Tap play and watch the ice world change.",
+        "sun-prompt": "First, tap the sun to shine on the snow.",
+        "sun-result": "Sunlight sparkles on the ice. Look—the frost flower is starting to glimmer!",
+        "rain-prompt": "Now tap rain and watch it turn to freezing drizzle.",
+        "rain-result": "Cold rain falls and freezes into tiny beads of ice on the frost flower!",
+        "wind-prompt": "Slide the wind dial and send the snow swirling.",
+        "wind-result": "Whoosh! Wind whips the snow into a sparkling flurry.",
+        "cloud-prompt": "Tap the cloud to bring in extra cold air.",
+        "cloud-result": "Clouds roll in and the whole world gets even icier.",
+        "gentle-nudge": "Try the glowing weather card.",
+        "wind-nudge": "Slide the golden dial and stir up the snow.",
+        "complete": "You did it! Sun, rain, wind, and clouds all change the arctic. You’re a Weather Scientist!",
+        "free-lab": "Now make your own arctic weather. What happens when two kinds of weather meet?",
+        "rainbow": "Sun and rain together made a rainbow over the ice!",
+        "reset": "The arctic is ready for another weather day."
+      },
+      "assets": {
+        "background": "./assets/backgrounds/arctic.webp",
+        "landmark": "./assets/world/arctic/landmark.webp",
+        "growth": {
+          "seedling": "./assets/world/arctic/growth-seedling.webp",
+          "bud": "./assets/world/arctic/growth-bud.webp",
+          "bloom": "./assets/world/arctic/growth-bloom.webp"
+        },
+        "world": {
+          "sun": "./assets/world/arctic/sun.webp",
+          "cloud": "./assets/world/arctic/cloud.webp",
+          "rainCloud": "./assets/world/arctic/rain-cloud.webp",
+          "rainbow": "./assets/world/arctic/rainbow.webp",
+          "puddle": "./assets/world/arctic/puddle.webp",
+          "shade": "./assets/world/arctic/shade.webp"
+        },
+        "particles": {
+          "precip": "./assets/particles/arctic/raindrop.webp",
+          "debris1": "./assets/particles/arctic/leaf-1.webp",
+          "debris2": "./assets/particles/arctic/leaf-2.webp",
+          "debris3": "./assets/particles/arctic/leaf-3.webp"
+        }
+      }
+    },
+    "rainforest": {
+      "id": "rainforest",
+      "label": "Rainforest",
+      "thumb": "./assets/ui/scene-rainforest.webp",
+      "voice": {
+        "welcome": "Welcome to the Rainforest Observatory! Tap play and watch the jungle come alive.",
+        "sun-prompt": "First, tap the sun to send light through the leaves.",
+        "sun-result": "Sunbeams break through the canopy. Look—the little orchid is reaching for the light!",
+        "rain-prompt": "Now tap rain — the jungle loves a warm shower.",
+        "rain-result": "Warm rain patters down and the orchid drinks it in!",
+        "wind-prompt": "Slide the wind dial and rustle the big leaves.",
+        "wind-result": "Whoosh! Wind rustles the leaves and vines all through the trees.",
+        "cloud-prompt": "Tap the cloud to make the air warm and misty.",
+        "cloud-result": "Clouds roll in and fill the jungle with warm, gentle mist.",
+        "gentle-nudge": "Try the glowing weather card.",
+        "wind-nudge": "Slide the golden dial and rustle the leaves.",
+        "complete": "You did it! Sun, rain, wind, and clouds all change the rainforest. You’re a Weather Scientist!",
+        "free-lab": "Now make your own rainforest weather. What happens when two kinds of weather meet?",
+        "rainbow": "Sun and rain together made a rainbow over the treetops!",
+        "reset": "The rainforest is ready for another weather day."
+      },
+      "assets": {
+        "background": "./assets/backgrounds/rainforest.webp",
+        "landmark": "./assets/world/rainforest/landmark.webp",
+        "growth": {
+          "seedling": "./assets/world/rainforest/growth-seedling.webp",
+          "bud": "./assets/world/rainforest/growth-bud.webp",
+          "bloom": "./assets/world/rainforest/growth-bloom.webp"
+        },
+        "world": {
+          "sun": "./assets/world/rainforest/sun.webp",
+          "cloud": "./assets/world/rainforest/cloud.webp",
+          "rainCloud": "./assets/world/rainforest/rain-cloud.webp",
+          "rainbow": "./assets/world/rainforest/rainbow.webp",
+          "puddle": "./assets/world/rainforest/puddle.webp",
+          "shade": "./assets/world/rainforest/shade.webp"
+        },
+        "particles": {
+          "precip": "./assets/particles/rainforest/raindrop.webp",
+          "debris1": "./assets/particles/rainforest/leaf-1.webp",
+          "debris2": "./assets/particles/rainforest/leaf-2.webp",
+          "debris3": "./assets/particles/rainforest/leaf-3.webp"
+        }
+      }
+    }
+  },
+  "assets": {
+    "title": "./assets/title.webp",
+    "splashBackground": "./assets/backgrounds/splash.webp",
+    "ui": {
+      "tray": "./assets/ui/control-tray.webp",
+      "prompt": "./assets/ui/prompt-banner.webp",
+      "windTrack": "./assets/ui/wind-track.webp",
+      "windKnob": "./assets/ui/wind-knob.webp",
+      "play": "./assets/ui/play.webp",
+      "explore": "./assets/ui/explore.webp",
+      "reset": "./assets/ui/reset.webp"
+    },
+    "controls": {
+      "sun": "./assets/ui/control-sun.webp",
+      "rain": "./assets/ui/control-rain.webp",
+      "wind": "./assets/ui/control-wind.webp",
+      "cloud": "./assets/ui/control-cloud.webp"
+    },
+    "badges": {
+      "sun": "./assets/ui/badge-sun.webp",
+      "rain": "./assets/ui/badge-rain.webp",
+      "wind": "./assets/ui/badge-wind.webp",
+      "cloud": "./assets/ui/badge-cloud.webp"
+    }
+  }
+}

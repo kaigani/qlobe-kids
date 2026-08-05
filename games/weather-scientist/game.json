@@ -6,28 +6,39 @@
   "icon": "🌦️",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "beta",
+  "status": "in-design",
   "accent": "#2d7dd2",
-  "shareTitle": "Weather Scientist 🌦️ — A Real Window Weather Journal",
-  "description": "Look out a real window, then stamp the sky, air feel, wind, and weather clothes into a playful daily journal. A simple science-observing habit for ages 5–6.",
+  "shareTitle": "Weather Scientist 🌦️ — Make a Living World Change",
+  "description": "Choose a meadow, desert, arctic, or rainforest, then bring sunlight, rain, wind, and clouds into that living watercolor world. Four gentle guided discoveries teach cause and effect, then an open observatory lets children combine weather and reveal a rainbow. For ages 5–6.",
   "learningGoals": [
-    "Practice observing real weather",
-    "Build weather vocabulary for sky, temperature feel, and wind",
-    "Record simple data in a playful journal"
+    "Connect sunlight, rain, wind, and cloud cover to visible changes in a living place",
+    "Practice cause-and-effect reasoning by making and combining weather states",
+    "Compare how the same weather behaves differently across meadow, desert, arctic, and rainforest climates",
+    "Build weather vocabulary through immediate visual and spoken feedback",
+    "Develop controlled horizontal movement with a real wind-strength slider"
   ],
-  "interactionModel": "observe-journal tap stickers to record weather observations",
-  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken observation line; the recap reads the weather report back.",
+  "interactionModel": "Tap three large watercolor weather cards and drag one wind-strength dial to transform the same persistent meadow; finish the guided discoveries, then combine states freely.",
+  "feedbackModel": "Every input changes the world immediately through authored weather layers, raster rain and leaves, plant growth, low ambient sound, a progress badge, and warm local narration. Non-target input gets a brief truthful preview and gentle redirect, never an error.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
+    "shared/js/weather-world.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/celebrate.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/ui/",
+    "shared/fonts/"
   ],
   "modes": [
-    { "id": "today", "title": "Today's Weather", "skill": "weather observation and recording" },
-    { "id": "dress", "title": "What to Wear?", "skill": "connect clothing choices to weather conditions" }
+    { "id": "weather-lab", "title": "Weather Lab", "skill": "cause and effect in a changing weather system" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Original watercolor art generated for this project with GPT Image 2 and Krea2, semantically separated with Qwen Image Layered. Narration cloned from the platform's shared teacher-voice reference with Qwen3 TTS voice clone. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }
