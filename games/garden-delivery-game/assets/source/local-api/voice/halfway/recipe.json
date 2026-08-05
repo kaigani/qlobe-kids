@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-halfway",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-halfway.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Halfway there. Sunny's got this!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Halfway there. Sunny's got this!",
+      "heard": "Halfway there! Sunny's got this!",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

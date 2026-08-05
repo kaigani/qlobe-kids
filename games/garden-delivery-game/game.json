@@ -1,34 +1,43 @@
 {
   "id": "garden-delivery-game",
-  "title": "Garden Delivery Game",
+  "title": "Garden Delivery",
   "category": "movement-outdoor",
   "path": "games/garden-delivery-game/",
-  "icon": "🚚",
+  "icon": "🌻",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#2d9b74",
-  "shareTitle": "Garden Delivery Game 🪴 — Gentle Garden Deliveries",
-  "description": "Fill, carry, pour, and return on gentle water-delivery runs to thirsty plants, navigating obstacles and cleaning up any spills along the way. A careful-carrying coach for ages 5–6.",
+  "accent": "#80b75d",
+  "shareTitle": "Garden Delivery — Balance Water for Sunny's Flowers",
+  "description": "Help Sunny balance a bright bucket across garden stones, pour it onto a thirsty flower, and make the tiny clay garden bloom.",
   "learningGoals": [
-    "Practice carrying control with different containers",
-    "Walk with focus while navigating a simple obstacle route",
-    "Regulate force and speed so careful movement leads",
-    "Build pride in serving plants and cleaning up spills"
+    "Practice steady, intentional movement with gentle tablet tilts or finger control",
+    "Notice and counter a visible gentle breeze while balancing",
+    "Build confidence through a forgiving carry-and-care loop with no fail state"
   ],
-  "interactionModel": "follow each spoken fill-carry-pour-return mission, watch the calm timer, then tap the large current-step card after the real-world delivery",
-  "feedbackModel": "playful delivery-dispatch speech with grateful plant reviews and tick, sparkle, and tada SFX; spills become friendly cleanup stops",
+  "interactionModel": "Choose a flower, keep the bucket marker in the visible center of a touchable balance rail with a tablet tilt, one-finger slide, or arrow-key slider control, then tip toward the flower to pour.",
+  "feedbackModel": "Sunny hops across stones, a playful splash invites recentering without lost progress, and each thirsty flower blooms with spoken celebration.",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/tilt-input.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/css/base.css",
+    "shared/css/hud.css"
   ],
   "modes": [
-    { "id": "delivery", "title": "Water Delivery", "skill": "careful water carrying and obstacle navigation" },
-    { "id": "express", "title": "Express Round", "skill": "repeating the fill-carry-pour-return cycle with control" }
+    { "id": "rose", "title": "Rose", "skill": "Find and hold a wide, calm balance center." },
+    { "id": "tulip", "title": "Tulip", "skill": "Counter one slow visible breeze while staying level." },
+    { "id": "daisy", "title": "Daisy", "skill": "Recenter after alternating soft breezes." }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; authored GPT Image 2 clay visual system, local Krea 2 hub tile, and transcript-QA'd local Qwen teacher voice documented in ASSETS.md.",
+  "characters": ["Sunny the sunflower"],
   "conceptVideo": null
 }

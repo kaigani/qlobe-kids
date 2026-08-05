@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-choose-again",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-choose-again.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Which flower should we help next?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Which flower should we help next?",
+      "heard": "Which flower should we help next?",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

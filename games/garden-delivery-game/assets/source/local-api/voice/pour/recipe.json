@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-pour",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-pour.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "You made it! Tip the bucket toward the flower.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "You made it! Tip the bucket toward the flower.",
+      "heard": "You made it. Tip the bucket toward the flower.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

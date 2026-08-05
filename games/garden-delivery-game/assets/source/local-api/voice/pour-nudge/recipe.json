@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-pour-nudge",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-pour-nudge.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Move toward the glowing side and hold it there.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Move toward the glowing side and hold it there.",
+      "heard": "Move toward the glowing side and hold it there.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

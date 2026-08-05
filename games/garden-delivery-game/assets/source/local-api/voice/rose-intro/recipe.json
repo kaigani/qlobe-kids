@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-rose-intro-v2",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-rose-intro-v2.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The rose is thirsty. Keep the bucket in the green for three careful steps.",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The rose is thirsty. Keep the bucket in the green for three careful steps.",
+      "heard": "The rose is thirsty. Keep the bucket in the green for three careful steps.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

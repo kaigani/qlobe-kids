@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-controls",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-controls.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Hold the tablet with two hands and tilt gently, or slide the bucket with one finger.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Hold the tablet with two hands and tilt gently, or slide the bucket with one finger.",
+      "heard": "Hold the tablet with two hands until gently, or slide the bucket with one finger.",
+      "ratio": 0.969,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

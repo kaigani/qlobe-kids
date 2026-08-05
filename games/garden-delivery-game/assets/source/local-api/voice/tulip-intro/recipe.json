@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-voice-tulip-intro",
+  "kind": "voice",
+  "asset": "garden-delivery-voice-tulip-intro.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The tulip is thirsty. A soft breeze is coming. Lean gently to keep the water level.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The tulip is thirsty. A soft breeze is coming. Lean gently to keep the water level.",
+      "heard": "The tulip is thirsty, a soft breeze is coming, lean gently to keep the water level.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "garden-delivery-hub-source",
+  "kind": "image",
+  "asset": "garden-delivery-hub-source.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A cheerful yellow sunflower mascot carefully carrying a small silver bucket of blue water across five round stepping stones toward one drooping red rose, with one tiny flower bloom opening at the far edge; stage the whole recognisable game moment as friendly toy objects on sunny green garden ground, no children, no title, no UI, no text. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "A cheerful yellow sunflower mascot carefully carrying a small silver bucket of blue water across five round stepping stones toward one drooping red rose, with one tiny flower bloom opening at the far edge; stage the whole recognisable game moment as friendly toy objects on sunny green garden ground, no children, no title, no UI, no text."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-04"
+}

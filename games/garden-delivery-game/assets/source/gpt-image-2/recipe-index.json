@@ -1,0 +1,83 @@
+{
+  "format": "qlobe-imagegen-recipe-set",
+  "formatVersion": 1,
+  "generator": "built-in imagegen (GPT Image 2)",
+  "created": "2026-08-04",
+  "artDirection": "handmade stop-motion claymation, tactile fingerprints, warm morning garden light, preschool-readable silhouettes",
+  "conceptReference": "01-game-concepts/garden-delivery/output/ui-mockups/",
+  "recipes": [
+    {
+      "output": "garden-map-master.png",
+      "mode": "generate",
+      "prompt": "Create a clean 4:3 handmade stop-motion clay garden map plate matching the Garden Delivery concept: rolling green lawn, warm morning sky, three distinct empty flower-bed sockets, a winding stepping-stone path, tactile clay fingerprints and soft shadows. Keep broad calm negative space for a title and runtime flower cards. Background plate only: no mascot, bucket, flowers, UI, title, lettering, numbers, borders, or watermark."
+    },
+    {
+      "output": "garden-path-master.png",
+      "mode": "generate",
+      "prompt": "Create a clean 4:3 handmade stop-motion clay garden play plate matching the same Garden Delivery world: exactly five large round stepping stones crossing sunny green ground toward one empty soil bed at the right, warm sky and hedge depth, tactile clay texture, broad uncluttered upper/center space for a balance rail. Background plate only: no mascot, bucket, flower, water, UI, title, text, border, or watermark."
+    },
+    {
+      "output": "garden-party-master.png",
+      "mode": "generate",
+      "prompt": "Create a clean 4:3 handmade stop-motion clay garden celebration plate in the same world: sunny lawn, warm morning light, exactly three empty soil-bed sockets arranged for rose, tulip, and daisy plus open space for a sunflower mascot; tiny clay bunting and confetti may sit only at the far edges. Background plate only: no characters, flowers, bucket, UI, title, words, border, or watermark."
+    },
+    {
+      "output": "title-magenta-master.png",
+      "mode": "generate",
+      "prompt": "A single handcrafted clay title lockup spelling exactly 'Garden Delivery', every letter large, rounded, legible, correctly ordered and fully visible; cheerful yellow, coral, leaf green, and sky blue clay letters with subtle fingerprints and a few tiny clay leaves, centered with generous margin on one perfectly flat solid #ff00ff background. No other words, no extra letters, no border, no shadow touching the frame, no watermark."
+    },
+    {
+      "output": "character-props-sheet.png",
+      "mode": "generate",
+      "prompt": "A precise 2 by 2 claymation contact sheet on a uniform very dark neutral ground, equal cells with generous isolation: top left Sunny the friendly round yellow sunflower mascot carefully carrying a small silver bucket of blue water; top right the same Sunny identity cheering with open leaf arms; bottom left the separate silver water bucket; bottom right a round Garden Helper reward badge made from a sunflower and water drop with no text. Consistent scale, warm studio light, full objects, no overlap, no labels, letters, borders, or watermark."
+    },
+    {
+      "output": "flowers-sheet.png",
+      "mode": "generate",
+      "prompt": "A precise 3 by 2 claymation contact sheet on a uniform very dark neutral ground, equal isolated cells: top row thirsty drooping red rose, thirsty drooping purple tulip, thirsty drooping white daisy; bottom row the exact paired identities fully blooming in the same order. Each is a complete full plant with one ground socket, consistent camera and warm studio light, strong preschool-readable silhouettes, no pots, faces, overlap, labels, letters, borders, or watermark."
+    },
+    {
+      "output": "ui-effects-sheet.png",
+      "mode": "generate",
+      "prompt": "A precise 4 by 2 contact sheet of isolated handmade clay game pieces on one perfectly flat solid #ff00ff background, equal cells and wide clear margins: empty flower-card frame, wide cream balance rail with green center and coral ends, one-sided pour rail with a bright target end, empty rounded clay button plaque; then single yellow petal progress token, blue water drop, curved blue water stream, playful blue splash. No text, letters, numbers, gradients in the background, overlap, border, or watermark."
+    },
+    {
+      "output": "flower-card-isolated.png",
+      "mode": "generate",
+      "prompt": "Create one single isolated empty preschool game card frame as a handcrafted stop-motion clay object: tall softly rounded cream panel, medium-brown clay rim, separate coral-pink rounded header tab, front-facing and symmetrical with subtle fingerprints and warm studio light. No content, flower, icon, label, text, letters, numbers, extra pieces, detached shapes, or shadows beyond the object. Center it fully with generous margin on one perfectly flat solid #ff00ff background, no crop, border, or watermark."
+    },
+    {
+      "input": "character-props-sheet.png",
+      "output": "character-props-magenta-edit.png",
+      "mode": "precise-object-edit",
+      "prompt": "Preserve every clay subject, pose, identity, material, lighting, layout, scale, edge, and cell exactly. Change only the uniform dark background in all four cells to one perfectly flat solid #ff00ff chroma key. Do not redraw, move, resize, add, remove, relight, or crop any object; no text, border, shadow outside subjects, or watermark."
+    },
+    {
+      "input": "flowers-sheet.png",
+      "output": "flowers-magenta-edit.png",
+      "mode": "precise-object-edit",
+      "prompt": "Preserve all six clay flowers, paired identities, shapes, colors, lighting, positions, scale, cell order, ground sockets, and fine petal/leaf edges exactly. Change only the uniform dark background to one perfectly flat solid #ff00ff chroma key. Do not redraw, move, resize, add, remove, relight, or crop any flower; no text, border, or watermark."
+    },
+    {
+      "input": "original-cells/tulip-thirsty.png",
+      "output": "tulip-thirsty-red-edit.png",
+      "mode": "precise-object-edit",
+      "prompt": "Preserve the thirsty purple-and-green clay tulip exactly. Change only its dark background to one perfectly flat saturated pure red #ff0000 chroma key. Do not redraw, move, resize, recolor, relight, add, remove, or crop any part; no extra object, text, border, or watermark."
+    },
+    {
+      "input": "original-cells/tulip-bloom.png",
+      "output": "tulip-bloom-red-edit.png",
+      "mode": "precise-object-edit",
+      "prompt": "Preserve the blooming purple-and-green clay tulip exactly, including its expression. Change only its dark background to one perfectly flat saturated pure red #ff0000 chroma key. Do not redraw, move, resize, recolor, relight, add, remove, or crop any part; no extra object, text, border, or watermark."
+    }
+  ],
+  "postprocess": {
+    "cutout": "imagegen skill scripts/remove_chroma_key.py",
+    "finalize": "tools/pipeline/cutout_finalize.py",
+    "prepare": "games/garden-delivery-game/tools/process-assets.py",
+    "runtimeEncode": "WebP q90 method6 for alpha sprites; WebP q84 method6 for 1440x1080 plates",
+    "qa": "All cutouts reviewed full-size on saturated magenta QA panels; alpha statistics retained beside processed sources."
+  },
+  "license": "CC-BY-4.0",
+  "creator": "QLOBE Kids with OpenAI imagegen"
+}

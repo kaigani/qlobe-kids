@@ -9,17 +9,16 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-05T04:42:08.553Z",
+  "generated": "2026-08-05T07:26:45.426Z",
   "engines": {
     "coach-timer": {
-      "count": 19,
+      "count": 18,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
         "button-zipper-lab",
         "cleanup-timer-quest",
         "freeze-focus-dance",
-        "garden-delivery-game",
         "line-walking-challenge",
         "local-nature-guide",
         "melting-race",
@@ -641,15 +640,24 @@
       "packs": []
     },
     "garden-delivery-game": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "movement-outdoor",
-      "characters": [],
+      "characters": [
+        "Sunny the sunflower"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tilt-input.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [],
       "packs": []
@@ -2230,6 +2238,7 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "garden-delivery-game",
         "globe-spin-stories",
         "land-water-tray",
         "laundry-sorter",
@@ -2257,6 +2266,7 @@
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
+        "garden-delivery-game",
         "land-water-tray",
         "lunchbox-pack",
         "puppet-retell",
@@ -2302,6 +2312,7 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "garden-delivery-game",
         "globe-spin-stories",
         "land-water-tray",
         "laundry-sorter",
@@ -2359,7 +2370,6 @@
         "button-zipper-lab",
         "cleanup-timer-quest",
         "freeze-focus-dance",
-        "garden-delivery-game",
         "line-walking-challenge",
         "local-nature-guide",
         "melting-race",
@@ -2442,12 +2452,14 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "garden-delivery-game",
         "land-water-tray",
         "lunchbox-pack",
         "red-green-light"
       ],
       "shared/js/idle-nudge.js": [
         "color-mixing-lab",
+        "garden-delivery-game",
         "land-water-tray",
         "sink-or-float",
         "teen-bead-builder",
@@ -2502,6 +2514,7 @@
         "color-mixing-lab",
         "counting-treasure-cups",
         "flashlight-cave",
+        "garden-delivery-game",
         "globe-spin-stories",
         "land-water-tray",
         "laundry-sorter",
@@ -2657,7 +2670,6 @@
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
-        "garden-delivery-game",
         "globe-spin-stories",
         "grace-courtesy-theater",
         "instrument-detective",
@@ -2828,9 +2840,13 @@
         "weather-scientist",
         "world-music-dance"
       ],
+      "shared/js/tilt-input.js": [
+        "garden-delivery-game"
+      ],
       "shared/js/timers.js": [
         "chocolate-chip-count",
         "color-mixing-lab",
+        "garden-delivery-game",
         "globe-spin-stories",
         "land-water-tray",
         "lunchbox-pack",
@@ -2849,6 +2865,7 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "garden-delivery-game",
         "globe-spin-stories",
         "land-water-tray",
         "laundry-sorter",
@@ -3034,6 +3051,9 @@
       ],
       "squirrel": [
         "subtraction-picnic"
+      ],
+      "Sunny the sunflower": [
+        "garden-delivery-game"
       ],
       "Teddy": [
         "emotion-voice-game"

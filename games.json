@@ -2679,7 +2679,7 @@
     },
     {
       "id": "garden-delivery-game",
-      "title": "Garden Delivery Game",
+      "title": "Garden Delivery",
       "category": "movement-outdoor",
       "path": "games/garden-delivery-game/",
       "icon": "assets/hub/tiles/garden-delivery-game.jpg",
@@ -2688,20 +2688,25 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#2d9b74",
+      "accent": "#80b75d",
       "modes": [
         {
-          "id": "delivery",
-          "title": "Water Delivery",
-          "skill": "careful water carrying and obstacle navigation"
+          "id": "rose",
+          "title": "Rose",
+          "skill": "Find and hold a wide, calm balance center."
         },
         {
-          "id": "express",
-          "title": "Express Round",
-          "skill": "repeating the fill-carry-pour-return cycle with control"
+          "id": "tulip",
+          "title": "Tulip",
+          "skill": "Counter one slow visible breeze while staying level."
+        },
+        {
+          "id": "daisy",
+          "title": "Daisy",
+          "skill": "Recenter after alternating soft breezes."
         }
       ],
-      "summary": "Carry water across the yard without spilling."
+      "summary": "Balance Sunny's bucket across clay stepping stones, pour for a thirsty flower, and make the whole garden bloom."
     },
     {
       "id": "freeze-focus-dance",

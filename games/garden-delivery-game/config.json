@@ -1,0 +1,80 @@
+{
+  "id": "garden-delivery-game",
+  "title": "Garden Delivery",
+  "modeOrder": ["rose", "tulip", "daisy"],
+  "assets": {
+    "map": "./assets/backgrounds/garden-map.webp",
+    "path": "./assets/backgrounds/garden-path.webp",
+    "party": "./assets/backgrounds/garden-party.webp",
+    "title": "./assets/title.webp",
+    "sunnyCarry": "./assets/characters/sunny-carry.webp",
+    "sunnyCheer": "./assets/characters/sunny-cheer.webp",
+    "bucket": "./assets/props/bucket.webp",
+    "waterStream": "./assets/props/water-stream.webp",
+    "waterDrop": "./assets/props/water-drop.webp",
+    "waterSplash": "./assets/props/water-splash.webp",
+    "flowerCard": "./assets/ui/flower-card.webp",
+    "balanceRail": "./assets/ui/balance-rail.webp",
+    "pourRail": "./assets/ui/pour-rail.webp",
+    "clayButton": "./assets/ui/clay-button.webp",
+    "gardenHelper": "./assets/ui/garden-helper.webp",
+    "petal": "./assets/ui/petal.webp"
+  },
+  "voice": {
+    "welcome": "Sunny's garden needs water. Choose a thirsty flower!",
+    "choose-again": "Which flower should we help next?",
+    "controls": "Hold the tablet with two hands and tilt gently, or slide the bucket with one finger.",
+    "rose-intro": "The rose is thirsty. Keep the bucket in the green for three careful steps.",
+    "tulip-intro": "The tulip is thirsty. A soft breeze is coming. Lean gently to keep the water level.",
+    "daisy-intro": "The daisy is thirsty. Follow the changing breeze and bring the water safely.",
+    "steady": "So steady!",
+    "splash": "Little splash! Bring the bucket back to the middle.",
+    "halfway": "Halfway there. Sunny's got this!",
+    "pour": "You made it! Tip the bucket toward the flower.",
+    "pour-nudge": "Move toward the glowing side and hold it there.",
+    "rose-bloom": "The rose bloomed! Look at those velvety petals.",
+    "tulip-bloom": "The tulip bloomed! What a bright garden bell.",
+    "daisy-bloom": "The daisy bloomed! Sunshine in a flower.",
+    "all-bloomed": "Every flower is dancing! You're a garden helper.",
+    "balance-nudge": "The green middle is waiting for the bucket.",
+    "replay": "The garden always loves another delivery."
+  },
+  "modes": [
+    {
+      "id": "rose",
+      "title": "Rose",
+      "flower": "rose",
+      "flowerAssets": { "thirsty": "./assets/flowers/rose-thirsty.webp", "bloom": "./assets/flowers/rose-bloom.webp" },
+      "stones": 3,
+      "safeThreshold": 0.37,
+      "breezeSegments": [{ "from": 0, "to": 0 }],
+      "pourSide": "right",
+      "introVoice": "rose-intro",
+      "bloomVoice": "rose-bloom"
+    },
+    {
+      "id": "tulip",
+      "title": "Tulip",
+      "flower": "tulip",
+      "flowerAssets": { "thirsty": "./assets/flowers/tulip-thirsty.webp", "bloom": "./assets/flowers/tulip-bloom.webp" },
+      "stones": 4,
+      "safeThreshold": 0.31,
+      "breezeSegments": [{ "from": 0, "to": 0 }, { "from": 1, "to": 0.2 }],
+      "pourSide": "right",
+      "introVoice": "tulip-intro",
+      "bloomVoice": "tulip-bloom"
+    },
+    {
+      "id": "daisy",
+      "title": "Daisy",
+      "flower": "daisy",
+      "flowerAssets": { "thirsty": "./assets/flowers/daisy-thirsty.webp", "bloom": "./assets/flowers/daisy-bloom.webp" },
+      "stones": 5,
+      "safeThreshold": 0.28,
+      "breezeSegments": [{ "from": 0, "to": 0.18 }, { "from": 1, "to": -0.2 }, { "from": 2, "to": 0.22 }, { "from": 3, "to": -0.18 }],
+      "pourSide": "right",
+      "introVoice": "daisy-intro",
+      "bloomVoice": "daisy-bloom"
+    }
+  ]
+}
