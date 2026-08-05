@@ -58,6 +58,11 @@ def main():
     im = Image.open(ASSETS / "source/local-api/chroma/flower-card-clean-final.png").convert("RGBA")
     im.save(ASSETS / "ui/flower-card.webp", "WEBP", quality=90, method=6)
 
+    # The original contact-sheet crop cut through the balance rail's left cap.
+    # Package the approved full-width imagegen repair instead of that cell.
+    im = Image.open(ASSETS / "source/local-api/chroma/balance-rail-rounded-final.png").convert("RGBA")
+    im.save(ASSETS / "ui/balance-rail.webp", "WEBP", quality=90, method=6)
+
     # Purple petals were too close to the general magenta key. These two
     # subject-safe red-key finals keep the tulip fully opaque on green scenery.
     for state in ("thirsty", "bloom"):

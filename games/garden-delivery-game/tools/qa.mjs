@@ -78,6 +78,7 @@ async function main() {
   check('three modes registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes().length)) === 3);
   await page.screenshot({ path: path.join(shots, '01-map-landscape.png') });
   await page.locator('[data-mode="rose"]').click(); check('balance starts', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'balance');
+  check('balance rail keeps both rounded caps', await page.locator('.balance-screen .rail-art').evaluate((image) => image.complete && image.naturalWidth / image.naturalHeight > 2.8));
   await page.evaluate(() => window.QLOBE_DEBUG.setTiltStatus('unavailable')); check('unavailable fallback status', (await page.evaluate(() => window.QLOBE_DEBUG.getState().input.status)) === 'unavailable');
   await page.locator('[data-rail]').focus(); await page.keyboard.press('Home');
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().stableProgress > 0.04);

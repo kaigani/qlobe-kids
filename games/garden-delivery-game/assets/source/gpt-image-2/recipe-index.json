@@ -3,6 +3,7 @@
   "formatVersion": 1,
   "generator": "built-in imagegen (GPT Image 2)",
   "created": "2026-08-04",
+  "updated": "2026-08-05",
   "artDirection": "handmade stop-motion claymation, tactile fingerprints, warm morning garden light, preschool-readable silhouettes",
   "conceptReference": "01-game-concepts/garden-delivery/output/ui-mockups/",
   "recipes": [
@@ -69,6 +70,12 @@
       "output": "tulip-bloom-red-edit.png",
       "mode": "precise-object-edit",
       "prompt": "Preserve the blooming purple-and-green clay tulip exactly, including its expression. Change only its dark background to one perfectly flat saturated pure red #ff0000 chroma key. Do not redraw, move, resize, recolor, relight, add, remove, or crop any part; no extra object, text, border, or watermark."
+    },
+    {
+      "input": "cells/balance-rail-source.png",
+      "output": "balance-rail-rounded-edit.png",
+      "mode": "precise-object-edit",
+      "prompt": "Use case: precise-object-edit\nAsset type: transparent UI balance rail source for a children's claymation game\nInput image: the provided balance-rail source is the edit target\nPrimary request: reconstruct only the missing left rounded end cap so the rail is fully visible and horizontally symmetrical; the left outer cream clay frame must mirror the complete rounded right outer cream clay frame.\nScene/backdrop: keep one perfectly flat solid #ff00ff chroma-key background.\nStyle/medium: handmade claymation, exactly matching the existing clay texture, lighting, thickness, seams, green center, and coral end zones.\nComposition/framing: keep the entire rail horizontal with generous empty magenta padding on all four sides; no part may touch or cross the canvas edge.\nConstraints: preserve the existing rail design and proportions; do not change the center, right end, colors, texture, or lighting; add no bucket, indicators, text, letters, numbers, shadows on the background, border, or watermark.\nAvoid: cropped or flat-ended rail, asymmetric frame, new UI elements, gradients or texture in the magenta background."
     }
   ],
   "postprocess": {
