@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "all-built.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "You built all four landforms. Amazing exploring!",
+  "textHash": "b6d30b33acc652b5",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 0.989,
+    "coverage": 0.857,
+    "transcript": "You built all four land forms. Amazing exploring."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

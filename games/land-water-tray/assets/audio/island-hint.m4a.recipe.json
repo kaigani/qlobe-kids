@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "island-hint.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Keep the green land away from every edge.",
+  "textHash": "008bd27795a887f0",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Keep the green land away from every edge."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

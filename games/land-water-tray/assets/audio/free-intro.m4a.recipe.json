@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "free-intro.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Build any coast you can imagine. Pour land or scoop water.",
+  "textHash": "bb3d0068f5056203",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Build any coast you can imagine. Pour land or scoop water."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "guided-intro.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Pick a landform to build.",
+  "textHash": "477ea7df3ed9bc88",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 0.98,
+    "coverage": 0.8,
+    "transcript": "Pick a land form to build."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

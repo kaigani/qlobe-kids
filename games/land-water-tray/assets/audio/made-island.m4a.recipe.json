@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "made-island.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "You made an island! Water goes all the way around.",
+  "textHash": "3d31b5abd8f6a42e",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "You made an island. Water goes all the way around."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

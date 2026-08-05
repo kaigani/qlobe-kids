@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "bay-hint.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Open the blue water to the edge.",
+  "textHash": "933a5832ded9858a",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Open the blue water to the edge."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

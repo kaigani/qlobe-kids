@@ -1975,21 +1975,31 @@
     },
     {
       "id": "land-water-tray",
-      "title": "Land & Water Tray",
+      "title": "Land Explorer",
       "category": "culture-geography",
       "path": "games/land-water-tray/",
       "icon": "assets/hub/tiles/land-water-tray.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
       "status": "beta",
-      "accent": "#2d7dd2",
+      "accent": "#078b88",
       "modes": [
         {
-          "id": "forms",
-          "title": "Make the Landform",
-          "skill": "landform concepts from land and water arrangements"
+          "id": "guided",
+          "title": "Build Landforms",
+          "skill": "Spatially construct four land/water relationships."
+        },
+        {
+          "id": "mystery",
+          "title": "Mystery Maps",
+          "skill": "Recognize the same four landforms from spoken clues and authored picture cards."
+        },
+        {
+          "id": "free",
+          "title": "Free Explorer",
+          "skill": "Explore cause and effect by pouring connected coasts, scooping inlets, and launching a tiny boat."
         }
       ],
       "summary": "Shape an island, lake, peninsula, and bay."
