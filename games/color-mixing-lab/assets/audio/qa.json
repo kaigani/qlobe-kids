@@ -1,0 +1,858 @@
+{
+  "format": "qlobe-voice-qa",
+  "formatVersion": 1,
+  "workflow": "qwen3-tts-voiceclone",
+  "transport": "QLOBE Studio character-voice-line template",
+  "verifier": "whisper-stt + normalized transcript score",
+  "seedLadder": [
+    7,
+    8,
+    9
+  ],
+  "rejectPolicy": "reject -> next seed; omit after seed 9 and use speech fallback",
+  "accepted": 33,
+  "omitted": [],
+  "total": 33,
+  "clips": {
+    "mode-discover": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Let’s mix two colors and discover a new one.",
+      "heard": "Let's mix two colors and discover a new one.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.396,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Let’s mix two colors and discover a new one.",
+          "heard": "Let's mix two colors and discover a new one.",
+          "duration": 2.396,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/mode-discover-s7.m4a",
+          "recipe": "assets/source/voice/candidates/mode-discover-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "mode-predict": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Guess what color they will make, then test your idea.",
+      "heard": "Guess what color they will make? Then test your idea.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.956,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Guess what color they will make, then test your idea.",
+          "heard": "Guess what color they will make? Then test your idea.",
+          "duration": 2.956,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/mode-predict-s7.m4a",
+          "recipe": "assets/source/voice/candidates/mode-predict-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "discover-yellow-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Pour yellow and blue into the beaker.",
+      "heard": "Pour yellow and blue into the beaker.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.157,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Pour yellow and blue into the beaker.",
+          "heard": "Pour yellow and blue into the beaker.",
+          "duration": 2.157,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/discover-yellow-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/discover-yellow-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "discover-red-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Pour red and blue into the beaker.",
+      "heard": "Pour red and blue into the beaker.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.837,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Pour red and blue into the beaker.",
+          "heard": "Pour red and blue into the beaker.",
+          "duration": 1.837,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/discover-red-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/discover-red-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-red-yellow": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Red and yellow are ready. Which color do you think they will make?",
+      "heard": "Red and yellow are ready. Which color do you think they will make?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 4.074,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Red and yellow are ready. Which color do you think they will make?",
+          "heard": "Red and yellow are ready. Which color do you think they will make?",
+          "duration": 4.074,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-red-yellow-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-red-yellow-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-yellow-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Yellow and blue are ready. Which color do you think they will make?",
+      "heard": "Yellow and blue are ready. Which color do you think they will make?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 3.994,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Yellow and blue are ready. Which color do you think they will make?",
+          "heard": "Yellow and blue are ready. Which color do you think they will make?",
+          "duration": 3.994,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-yellow-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-yellow-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-red-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Red and blue are ready. Which color do you think they will make?",
+      "heard": "Red and blue are ready. Which color do you think they will make?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 3.275,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Red and blue are ready. Which color do you think they will make?",
+          "heard": "Red and blue are ready. Which color do you think they will make?",
+          "duration": 3.275,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-red-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-red-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "recipe-orange": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Can you make orange?",
+      "heard": "Can you make orange?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.038,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Can you make orange?",
+          "heard": "Can you make orange?",
+          "duration": 1.038,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/recipe-orange-s7.m4a",
+          "recipe": "assets/source/voice/candidates/recipe-orange-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "recipe-green": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Can you make green?",
+      "heard": "Can you make green?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.038,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Can you make green?",
+          "heard": "Can you make green?",
+          "duration": 1.038,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/recipe-green-s7.m4a",
+          "recipe": "assets/source/voice/candidates/recipe-green-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "recipe-purple": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Can you make purple?",
+      "heard": "Can you make purple?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.038,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Can you make purple?",
+          "heard": "Can you make purple?",
+          "duration": 1.038,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/recipe-purple-s7.m4a",
+          "recipe": "assets/source/voice/candidates/recipe-purple-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "pour-red": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Red.",
+      "heard": "Red",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 0.479,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Red.",
+          "heard": "Red",
+          "duration": 0.479,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/pour-red-s7.m4a",
+          "recipe": "assets/source/voice/candidates/pour-red-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "pour-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Blue.",
+      "heard": "Blue!",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 0.639,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Blue.",
+          "heard": "Blue!",
+          "duration": 0.639,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/pour-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/pour-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "result-orange": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Red and yellow make orange!",
+      "heard": "Red and yellow make orange.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.757,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Red and yellow make orange!",
+          "heard": "Red and yellow make orange.",
+          "duration": 1.757,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/result-orange-s7.m4a",
+          "recipe": "assets/source/voice/candidates/result-orange-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "result-green": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Yellow and blue make green!",
+      "heard": "Yellow and blue make green!",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.237,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Yellow and blue make green!",
+          "heard": "Yellow and blue make green!",
+          "duration": 2.237,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/result-green-s7.m4a",
+          "recipe": "assets/source/voice/candidates/result-green-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "result-purple": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Red and blue make purple!",
+      "heard": "Red and blue make purple.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.518,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Red and blue make purple!",
+          "heard": "Red and blue make purple.",
+          "duration": 1.518,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/result-purple-s7.m4a",
+          "recipe": "assets/source/voice/candidates/result-purple-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-right-orange": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "You predicted orange, and you were right!",
+      "heard": "You predicted orange and you were right.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.876,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "You predicted orange, and you were right!",
+          "heard": "You predicted orange and you were right.",
+          "duration": 2.876,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-right-orange-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-right-orange-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-right-green": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "You predicted green, and you were right!",
+      "heard": "You predicted green and you were right",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.956,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "You predicted green, and you were right!",
+          "heard": "You predicted green and you were right",
+          "duration": 2.956,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-right-green-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-right-green-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-right-purple": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "You predicted purple, and you were right!",
+      "heard": "You predicted purple and you were right.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.556,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "You predicted purple, and you were right!",
+          "heard": "You predicted purple and you were right.",
+          "duration": 2.556,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-right-purple-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-right-purple-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-surprise-orange": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "The experiment made orange!",
+      "heard": "The experiment made orange.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.077,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "The experiment made orange!",
+          "heard": "The experiment made orange.",
+          "duration": 2.077,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-surprise-orange-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-surprise-orange-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-surprise-green": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "The experiment made green!",
+      "heard": "The experiment made green.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.677,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "The experiment made green!",
+          "heard": "The experiment made green.",
+          "duration": 1.677,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-surprise-green-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-surprise-green-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "predict-surprise-purple": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "The experiment made purple!",
+      "heard": "The experiment made purple.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.677,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "The experiment made purple!",
+          "heard": "The experiment made purple.",
+          "duration": 1.677,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/predict-surprise-purple-s7.m4a",
+          "recipe": "assets/source/voice/candidates/predict-surprise-purple-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "nudge-red-yellow": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "We need red and yellow this time.",
+      "heard": "We need red and yellow this time.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.837,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "We need red and yellow this time.",
+          "heard": "We need red and yellow this time.",
+          "duration": 1.837,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/nudge-red-yellow-s7.m4a",
+          "recipe": "assets/source/voice/candidates/nudge-red-yellow-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "nudge-yellow-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "We need yellow and blue this time.",
+      "heard": "We need yellow and blue this time.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.997,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "We need yellow and blue this time.",
+          "heard": "We need yellow and blue this time.",
+          "duration": 1.997,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/nudge-yellow-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/nudge-yellow-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "nudge-red-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "We need red and blue this time.",
+      "heard": "We need red and blue this time.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.837,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "We need red and blue this time.",
+          "heard": "We need red and blue this time.",
+          "duration": 1.837,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/nudge-red-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/nudge-red-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "same-red": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "More red stays red. Pick a different color to make a new one.",
+      "heard": "More red stays red. Pick a different color to make a new one.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 3.835,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "More red stays red. Pick a different color to make a new one.",
+          "heard": "More red stays red. Pick a different color to make a new one.",
+          "duration": 3.835,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/same-red-s7.m4a",
+          "recipe": "assets/source/voice/candidates/same-red-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "same-yellow": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "More yellow stays yellow. Pick a different color to make a new one.",
+      "heard": "More yellow stays yellow. Pick a different color to make a new one.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 3.675,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "More yellow stays yellow. Pick a different color to make a new one.",
+          "heard": "More yellow stays yellow. Pick a different color to make a new one.",
+          "duration": 3.675,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/same-yellow-s7.m4a",
+          "recipe": "assets/source/voice/candidates/same-yellow-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "same-blue": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "More blue stays blue. Pick a different color to make a new one.",
+      "heard": "More blue stays blue. Pick a different color to make a new one.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 4.154,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "More blue stays blue. Pick a different color to make a new one.",
+          "heard": "More blue stays blue. Pick a different color to make a new one.",
+          "duration": 4.154,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/same-blue-s7.m4a",
+          "recipe": "assets/source/voice/candidates/same-blue-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "rinse": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "A little rinse, and we can try again.",
+      "heard": "a little rinse and we can try again.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.157,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "A little rinse, and we can try again.",
+          "heard": "a little rinse and we can try again.",
+          "duration": 2.157,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/rinse-s7.m4a",
+          "recipe": "assets/source/voice/candidates/rinse-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "end": {
+      "accepted": true,
+      "acceptedSeed": 7,
+      "intended": "Your color lab is glowing!",
+      "heard": "Your color lab is glowing!",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.837,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Your color lab is glowing!",
+          "heard": "Your color lab is glowing!",
+          "duration": 1.837,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/end-s7.m4a",
+          "recipe": "assets/source/voice/candidates/end-s7.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "welcome": {
+      "accepted": true,
+      "acceptedSeed": 8,
+      "intended": "Welcome to the color lab! Pick an experiment.",
+      "heard": "Welcome to the Color Lab. Pick an experiment.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 3.675,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": false,
+          "score": 0.93,
+          "coverage": 0.875,
+          "intended": "Welcome to the color lab! Pick an experiment.",
+          "heard": "Welcome to the Color Lab. Take an experiment.",
+          "duration": 3.835,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/welcome-s7.m4a",
+          "recipe": "assets/source/voice/candidates/welcome-s7.recipe.json"
+        },
+        {
+          "seed": 8,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Welcome to the color lab! Pick an experiment.",
+          "heard": "Welcome to the Color Lab. Pick an experiment.",
+          "duration": 3.675,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/welcome-s8.m4a",
+          "recipe": "assets/source/voice/candidates/welcome-s8.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "mode-recipe": {
+      "accepted": true,
+      "acceptedSeed": 8,
+      "intended": "Can you mix the two colors this little friend needs?",
+      "heard": "Can you mix the two colors this little friend needs?",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 2.796,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": false,
+          "score": 0.961,
+          "coverage": 0.9,
+          "intended": "Can you mix the two colors this little friend needs?",
+          "heard": "Can you mix the two colors this little friend meets?",
+          "duration": 2.556,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/mode-recipe-s7.m4a",
+          "recipe": "assets/source/voice/candidates/mode-recipe-s7.recipe.json"
+        },
+        {
+          "seed": 8,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Can you mix the two colors this little friend needs?",
+          "heard": "Can you mix the two colors this little friend needs?",
+          "duration": 2.796,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/mode-recipe-s8.m4a",
+          "recipe": "assets/source/voice/candidates/mode-recipe-s8.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "discover-red-yellow": {
+      "accepted": true,
+      "acceptedSeed": 8,
+      "intended": "Pour red and yellow into the beaker.",
+      "heard": "pour red and yellow into the beaker.",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 1.917,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": false,
+          "score": 0.971,
+          "coverage": 0.857,
+          "intended": "Pour red and yellow into the beaker.",
+          "heard": "Poor red and yellow into the beaker.",
+          "duration": 1.997,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/discover-red-yellow-s7.m4a",
+          "recipe": "assets/source/voice/candidates/discover-red-yellow-s7.recipe.json"
+        },
+        {
+          "seed": 8,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Pour red and yellow into the beaker.",
+          "heard": "pour red and yellow into the beaker.",
+          "duration": 1.917,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/discover-red-yellow-s8.m4a",
+          "recipe": "assets/source/voice/candidates/discover-red-yellow-s8.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    },
+    "pour-yellow": {
+      "accepted": true,
+      "acceptedSeed": 8,
+      "intended": "Yellow.",
+      "heard": "Yellow",
+      "score": 1.0,
+      "coverage": 1.0,
+      "duration": 0.639,
+      "attempts": [
+        {
+          "seed": 7,
+          "accepted": false,
+          "score": 0.6,
+          "coverage": 0.0,
+          "intended": "Yellow.",
+          "heard": "YOLO!",
+          "duration": 0.799,
+          "studioMatch": false,
+          "source": "assets/source/voice/candidates/pour-yellow-s7.m4a",
+          "recipe": "assets/source/voice/candidates/pour-yellow-s7.recipe.json"
+        },
+        {
+          "seed": 8,
+          "accepted": true,
+          "score": 1.0,
+          "coverage": 1.0,
+          "intended": "Yellow.",
+          "heard": "Yellow",
+          "duration": 0.639,
+          "studioMatch": true,
+          "source": "assets/source/voice/candidates/pour-yellow-s8.m4a",
+          "recipe": "assets/source/voice/candidates/pour-yellow-s8.recipe.json"
+        }
+      ],
+      "studioRecipeStatus": "accepted"
+    }
+  }
+}

@@ -8,28 +8,39 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#7c4fc4",
-  "shareTitle": "Color Mixing Lab 🧪 — Predicting Color Mixes",
-  "description": "Drag two paint swatches together, guess the result out loud, then watch the mixed color reveal itself. A simple color-science toy for ages 5–6.",
+  "shareTitle": "Color Mixing Lab 🧪 — Field Journal Watercolor Experiments",
+  "description": "Pour two painted glass flasks into a watercolor beaker and discover the new color in three experiments: discover, predict, and recipe. A hands-on color laboratory for ages 5–6.",
   "learningGoals": [
-    "Explore primary-color mixing",
-    "Predict color outcomes aloud",
-    "Connect two inputs with one visible result"
+    "Observe cause and effect in primary-color mixing",
+    "Predict a color before testing the mixture",
+    "Recall which two colors make orange, green, and purple"
   ],
-  "interactionModel": "build-assemble drag or tap-tap color swatches and the result onto ghost positions",
-  "feedbackModel": "Correct swatches pop, sparkle, and speak the color name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the color equation.",
+  "interactionModel": "Custom watercolor workbench: drag or tap-tap painted flasks into the padded beaker pour zone, with prediction cards in predict mode",
+  "feedbackModel": "Accepted pours animate a flask, paint stream, beaker tint, and speaking result; non-requested choices wiggle or boop with a friendly spoken model and no loss state.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/rng.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "mix", "title": "Mix Two Colors", "skill": "basic color mixing" },
-    { "id": "guess", "title": "What Will It Make?", "skill": "color prediction before reveal" }
+    { "id": "discover", "title": "Discover", "skill": "observe cause and effect" },
+    { "id": "predict", "title": "Predict", "skill": "predict before testing" },
+    { "id": "recipe", "title": "Recipe", "skill": "recall the two-color recipe" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; swatch and emoji placeholder art only. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; Field Journal watercolor art and authored flask, beaker, stream, and mascot assets. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

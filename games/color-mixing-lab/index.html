@@ -1,46 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Color Mixing Lab 🧪 — Predicting Color Mixes</title>
-  <meta name="description" content="Drag two paint swatches together, guess the result out loud, then watch the mixed color reveal itself. A simple color-science toy for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Color Mixing Lab" />
-  <meta property="og:title" content="Color Mixing Lab 🧪 — Predicting Color Mixes" />
-  <meta property="og:description" content="Drag two paint swatches together, guess the result out loud, then watch the mixed color reveal itself. A simple color-science toy for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/color-mixing-lab/" />
-  <meta property="og:image" content="https://qlo.be/games/color-mixing-lab/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Color Mixing Lab title screen with Mix Two Colors and What Will It Make? buttons below a green test tube icon." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Color Mixing Lab 🧪 — Predicting Color Mixes" />
-  <meta name="twitter:description" content="Drag two paint swatches together, guess the result out loud, then watch the mixed color reveal itself. A simple color-science toy for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/color-mixing-lab/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ead8b2">
+  <title>Color Mixing Lab</title>
+  <meta name="description" content="Pour painted colors together and discover new color friends.">
+  <meta property="og:title" content="Color Mixing Lab">
+  <meta property="og:description" content="Pour painted colors together and discover new color friends.">
+  <meta property="og:url" content="https://qlo.be/games/color-mixing-lab/">
+  <meta property="og:image" content="https://qlo.be/games/color-mixing-lab/assets/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Color Mixing Lab">
+    <section class="qk-screen color-screen splash-screen" data-qk-screen="splash"></section>
+    <section class="qk-screen color-screen play-screen" data-qk-screen="play" hidden></section>
+    <section class="qk-screen color-screen end-screen" data-qk-screen="end" hidden></section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

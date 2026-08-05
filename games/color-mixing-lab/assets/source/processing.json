@@ -1,0 +1,748 @@
+{
+  "format": "qlobe-color-lab-processing",
+  "formatVersion": 1,
+  "method": "local-chroma",
+  "intermediatePolicy": "Cell slices, raw alpha mattes, final PNG masters, and magenta QA plates are reproducible working files and are not shipped; rerun tools/process-assets.py to regenerate them from the retained full-sheet sources.",
+  "objects": {
+    "ui/mode-discover": {
+      "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+      "crop": [
+        0,
+        0,
+        591,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mode-cards-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mode-cards-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/ui-mode-discover-alpha.png",
+      "final": "assets/ui/mode-discover.webp",
+      "alpha": {
+        "transparentPct": 24.079,
+        "opaquePct": 74.519,
+        "partialPct": 1.402
+      },
+      "finalSize": [
+        300,
+        420
+      ],
+      "finalKB": 20.0,
+      "validation": "passed"
+    },
+    "ui/mode-predict": {
+      "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+      "crop": [
+        591,
+        0,
+        1182,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mode-cards-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mode-cards-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/ui-mode-predict-alpha.png",
+      "final": "assets/ui/mode-predict.webp",
+      "alpha": {
+        "transparentPct": 23.845,
+        "opaquePct": 74.752,
+        "partialPct": 1.403
+      },
+      "finalSize": [
+        301,
+        420
+      ],
+      "finalKB": 20.3,
+      "validation": "passed"
+    },
+    "ui/mode-recipe": {
+      "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+      "crop": [
+        1182,
+        0,
+        1773,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mode-cards-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mode-cards-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mode-cards-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/ui-mode-recipe-alpha.png",
+      "final": "assets/ui/mode-recipe.webp",
+      "alpha": {
+        "transparentPct": 23.889,
+        "opaquePct": 74.707,
+        "partialPct": 1.404
+      },
+      "finalSize": [
+        301,
+        420
+      ],
+      "finalKB": 20.4,
+      "validation": "passed"
+    },
+    "flasks/red": {
+      "source": "assets/source/gpt-image-2/flasks-sheet.png",
+      "crop": [
+        0,
+        0,
+        443,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/flasks-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/flasks-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/flasks-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/flasks-red-alpha.png",
+      "final": "assets/flasks/red.webp",
+      "alpha": {
+        "transparentPct": 65.588,
+        "opaquePct": 33.286,
+        "partialPct": 1.126
+      },
+      "finalSize": [
+        284,
+        420
+      ],
+      "finalKB": 25.5,
+      "validation": "passed"
+    },
+    "flasks/yellow": {
+      "source": "assets/source/gpt-image-2/flasks-sheet.png",
+      "crop": [
+        443,
+        0,
+        886,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/flasks-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/flasks-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/flasks-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/flasks-yellow-alpha.png",
+      "final": "assets/flasks/yellow.webp",
+      "alpha": {
+        "transparentPct": 66.173,
+        "opaquePct": 32.707,
+        "partialPct": 1.12
+      },
+      "finalSize": [
+        287,
+        420
+      ],
+      "finalKB": 22.8,
+      "validation": "passed"
+    },
+    "flasks/blue": {
+      "source": "assets/source/gpt-image-2/flasks-sheet.png",
+      "crop": [
+        886,
+        0,
+        1329,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/flasks-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/flasks-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/flasks-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/flasks-blue-alpha.png",
+      "final": "assets/flasks/blue.webp",
+      "alpha": {
+        "transparentPct": 66.837,
+        "opaquePct": 32.047,
+        "partialPct": 1.116
+      },
+      "finalSize": [
+        283,
+        420
+      ],
+      "finalKB": 26.1,
+      "validation": "passed"
+    },
+    "flasks/empty": {
+      "source": "assets/source/gpt-image-2/flasks-sheet.png",
+      "crop": [
+        1329,
+        0,
+        1772,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/flasks-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/flasks-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/flasks-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/flasks-empty-alpha.png",
+      "final": "assets/flasks/empty.webp",
+      "alpha": {
+        "transparentPct": 65.846,
+        "opaquePct": 33.03,
+        "partialPct": 1.124
+      },
+      "finalSize": [
+        284,
+        420
+      ],
+      "finalKB": 22.2,
+      "validation": "passed"
+    },
+    "beakers/empty": {
+      "source": "assets/source/gpt-image-2/beakers-sheet.png",
+      "crop": [
+        0,
+        0,
+        443,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/beakers-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/beakers-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/beakers-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/beakers-empty-alpha.png",
+      "final": "assets/beakers/empty.webp",
+      "alpha": {
+        "transparentPct": 70.837,
+        "opaquePct": 28.111,
+        "partialPct": 1.052
+      },
+      "finalSize": [
+        415,
+        392
+      ],
+      "finalKB": 20.0,
+      "validation": "passed"
+    },
+    "beakers/orange": {
+      "source": "assets/source/gpt-image-2/beakers-sheet.png",
+      "crop": [
+        443,
+        0,
+        886,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/beakers-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/beakers-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/beakers-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/beakers-orange-alpha.png",
+      "final": "assets/beakers/orange.webp",
+      "alpha": {
+        "transparentPct": 70.758,
+        "opaquePct": 28.137,
+        "partialPct": 1.105
+      },
+      "finalSize": [
+        443,
+        392
+      ],
+      "finalKB": 22.3,
+      "validation": "passed"
+    },
+    "beakers/green": {
+      "source": "assets/source/gpt-image-2/beakers-sheet.png",
+      "crop": [
+        886,
+        0,
+        1329,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/beakers-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/beakers-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/beakers-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/beakers-green-alpha.png",
+      "final": "assets/beakers/green.webp",
+      "alpha": {
+        "transparentPct": 70.77,
+        "opaquePct": 28.116,
+        "partialPct": 1.114
+      },
+      "finalSize": [
+        443,
+        392
+      ],
+      "finalKB": 21.8,
+      "validation": "passed"
+    },
+    "beakers/purple": {
+      "source": "assets/source/gpt-image-2/beakers-sheet.png",
+      "crop": [
+        1329,
+        0,
+        1772,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/beakers-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/beakers-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/beakers-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/beakers-purple-alpha.png",
+      "final": "assets/beakers/purple.webp",
+      "alpha": {
+        "transparentPct": 70.869,
+        "opaquePct": 28.092,
+        "partialPct": 1.039
+      },
+      "finalSize": [
+        411,
+        392
+      ],
+      "finalKB": 22.9,
+      "validation": "passed"
+    },
+    "mascots/orange": {
+      "source": "assets/source/gpt-image-2/mascots-sheet.png",
+      "crop": [
+        0,
+        0,
+        720,
+        768
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mascots-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mascots-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mascots-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/mascots-orange-alpha.png",
+      "final": "assets/mascots/orange.webp",
+      "alpha": {
+        "transparentPct": 74.378,
+        "opaquePct": 24.441,
+        "partialPct": 1.181
+      },
+      "finalSize": [
+        420,
+        418
+      ],
+      "finalKB": 27.4,
+      "validation": "passed"
+    },
+    "mascots/green": {
+      "source": "assets/source/gpt-image-2/mascots-sheet.png",
+      "crop": [
+        720,
+        0,
+        1342,
+        768
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mascots-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mascots-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mascots-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/mascots-green-alpha.png",
+      "final": "assets/mascots/green.webp",
+      "alpha": {
+        "transparentPct": 69.959,
+        "opaquePct": 28.679,
+        "partialPct": 1.362
+      },
+      "finalSize": [
+        420,
+        420
+      ],
+      "finalKB": 27.6,
+      "validation": "passed"
+    },
+    "mascots/purple": {
+      "source": "assets/source/gpt-image-2/mascots-sheet.png",
+      "crop": [
+        1342,
+        0,
+        2048,
+        768
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/mascots-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/mascots-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/mascots-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/mascots-purple-alpha.png",
+      "final": "assets/mascots/purple.webp",
+      "alpha": {
+        "transparentPct": 73.949,
+        "opaquePct": 24.844,
+        "partialPct": 1.207
+      },
+      "finalSize": [
+        420,
+        420
+      ],
+      "finalKB": 29.5,
+      "validation": "passed"
+    },
+    "effects/stream-red": {
+      "source": "assets/source/gpt-image-2/streams-sheet.png",
+      "crop": [
+        0,
+        0,
+        591,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/streams-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/streams-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/streams-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-stream-red-alpha.png",
+      "final": "assets/effects/stream-red.webp",
+      "alpha": {
+        "transparentPct": 90.785,
+        "opaquePct": 8.184,
+        "partialPct": 1.031
+      },
+      "finalSize": [
+        147,
+        640
+      ],
+      "finalKB": 18.0,
+      "validation": "passed"
+    },
+    "effects/stream-yellow": {
+      "source": "assets/source/gpt-image-2/streams-sheet.png",
+      "crop": [
+        591,
+        0,
+        1182,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/streams-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/streams-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/streams-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-stream-yellow-alpha.png",
+      "final": "assets/effects/stream-yellow.webp",
+      "alpha": {
+        "transparentPct": 90.78,
+        "opaquePct": 8.197,
+        "partialPct": 1.023
+      },
+      "finalSize": [
+        146,
+        640
+      ],
+      "finalKB": 17.9,
+      "validation": "passed"
+    },
+    "effects/stream-blue": {
+      "source": "assets/source/gpt-image-2/streams-sheet.png",
+      "crop": [
+        1182,
+        0,
+        1773,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/streams-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/streams-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/streams-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-stream-blue-alpha.png",
+      "final": "assets/effects/stream-blue.webp",
+      "alpha": {
+        "transparentPct": 90.97,
+        "opaquePct": 7.994,
+        "partialPct": 1.035
+      },
+      "finalSize": [
+        146,
+        640
+      ],
+      "finalKB": 18.9,
+      "validation": "passed"
+    },
+    "effects/swirl-orange": {
+      "source": "assets/source/gpt-image-2/swirls-sheet.png",
+      "crop": [
+        0,
+        0,
+        591,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/swirls-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/swirls-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/swirls-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-swirl-orange-alpha.png",
+      "final": "assets/effects/swirl-orange.webp",
+      "alpha": {
+        "transparentPct": 73.685,
+        "opaquePct": 23.079,
+        "partialPct": 3.236
+      },
+      "finalSize": [
+        520,
+        492
+      ],
+      "finalKB": 61.2,
+      "validation": "passed"
+    },
+    "effects/swirl-green": {
+      "source": "assets/source/gpt-image-2/swirls-sheet.png",
+      "crop": [
+        591,
+        0,
+        1182,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/swirls-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/swirls-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/swirls-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-swirl-green-alpha.png",
+      "final": "assets/effects/swirl-green.webp",
+      "alpha": {
+        "transparentPct": 73.412,
+        "opaquePct": 23.413,
+        "partialPct": 3.174
+      },
+      "finalSize": [
+        520,
+        494
+      ],
+      "finalKB": 65.8,
+      "validation": "passed"
+    },
+    "effects/swirl-purple": {
+      "source": "assets/source/gpt-image-2/swirls-sheet.png",
+      "crop": [
+        1182,
+        0,
+        1773,
+        887
+      ],
+      "method": "local-chroma",
+      "steps": [
+        {
+          "workflow": "gpt-image-2",
+          "op": "precise-object-edit",
+          "change": "background-only to flat #ff00ff",
+          "source": "assets/source/gpt-image-2/swirls-sheet.png",
+          "chromaSource": "assets/source/gpt-image-2/swirls-sheet-magenta.png"
+        },
+        {
+          "op": "remove-chroma-key",
+          "method": "hard color-distance matte; tolerance 60; edge-contract 1; edge-feather 0.5 (not flood fill)",
+          "selectedOutput": "assets/source/gpt-image-2/swirls-sheet-alpha.png"
+        }
+      ],
+      "rawAlpha": "assets/source/layers/effects-swirl-purple-alpha.png",
+      "final": "assets/effects/swirl-purple.webp",
+      "alpha": {
+        "transparentPct": 73.783,
+        "opaquePct": 23.131,
+        "partialPct": 3.085
+      },
+      "finalSize": [
+        520,
+        492
+      ],
+      "finalKB": 67.8,
+      "validation": "passed"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "color-mixing-lab",
+  "title": "Color Mixing Lab",
+  "rounds": 3,
+  "assets": {
+    "splash": "./assets/lab-splash.webp",
+    "play": "./assets/lab-play.webp",
+    "title": "./assets/title.webp",
+    "home": "../../shared/assets/ui/btn-home.png",
+    "back": "../../shared/assets/ui/btn-back.png",
+    "sound": "../../shared/assets/ui/btn-sound.png",
+    "playButton": "../../shared/assets/ui/btn-play.png"
+  },
+  "primary": {
+    "red": { "name": "red", "flask": "./assets/flasks/red.webp", "stream": "./assets/effects/stream-red.webp" },
+    "yellow": { "name": "yellow", "flask": "./assets/flasks/yellow.webp", "stream": "./assets/effects/stream-yellow.webp" },
+    "blue": { "name": "blue", "flask": "./assets/flasks/blue.webp", "stream": "./assets/effects/stream-blue.webp" }
+  },
+  "emptyFlask": "./assets/flasks/empty.webp",
+  "beakers": { "empty": "./assets/beakers/empty.webp", "orange": "./assets/beakers/orange.webp", "green": "./assets/beakers/green.webp", "purple": "./assets/beakers/purple.webp" },
+  "mascots": { "orange": "./assets/mascots/orange.webp", "green": "./assets/mascots/green.webp", "purple": "./assets/mascots/purple.webp" },
+  "swirls": { "orange": "./assets/effects/swirl-orange.webp", "green": "./assets/effects/swirl-green.webp", "purple": "./assets/effects/swirl-purple.webp" },
+  "mixtures": [
+    { "id": "red-yellow", "colors": ["red", "yellow"], "result": "orange" },
+    { "id": "yellow-blue", "colors": ["yellow", "blue"], "result": "green" },
+    { "id": "red-blue", "colors": ["red", "blue"], "result": "purple" }
+  ],
+  "modes": [
+    { "id": "discover", "title": "Discover", "art": "./assets/ui/mode-discover.webp", "voice": "mode-discover", "description": "Mix two colors" },
+    { "id": "predict", "title": "Predict", "art": "./assets/ui/mode-predict.webp", "voice": "mode-predict", "description": "Make a color guess" },
+    { "id": "recipe", "title": "Recipe", "art": "./assets/ui/mode-recipe.webp", "voice": "mode-recipe", "description": "Help a color friend" }
+  ],
+  "voice": {
+    "welcome": "Welcome to the color lab! Pick an experiment.",
+    "mode-discover": "Let’s mix two colors and discover a new one.",
+    "mode-predict": "Guess what color they will make, then test your idea.",
+    "mode-recipe": "Can you mix the two colors this little friend needs?",
+    "discover-red-yellow": "Pour red and yellow into the beaker.",
+    "discover-yellow-blue": "Pour yellow and blue into the beaker.",
+    "discover-red-blue": "Pour red and blue into the beaker.",
+    "predict-red-yellow": "Red and yellow are ready. Which color do you think they will make?",
+    "predict-yellow-blue": "Yellow and blue are ready. Which color do you think they will make?",
+    "predict-red-blue": "Red and blue are ready. Which color do you think they will make?",
+    "recipe-orange": "Can you make orange?", "recipe-green": "Can you make green?", "recipe-purple": "Can you make purple?",
+    "pour-red": "Red.", "pour-yellow": "Yellow.", "pour-blue": "Blue.",
+    "result-orange": "Red and yellow make orange!", "result-green": "Yellow and blue make green!", "result-purple": "Red and blue make purple!",
+    "predict-right-orange": "You predicted orange, and you were right!", "predict-right-green": "You predicted green, and you were right!", "predict-right-purple": "You predicted purple, and you were right!",
+    "predict-surprise-orange": "The experiment made orange!", "predict-surprise-green": "The experiment made green!", "predict-surprise-purple": "The experiment made purple!",
+    "nudge-red-yellow": "We need red and yellow this time.", "nudge-yellow-blue": "We need yellow and blue this time.", "nudge-red-blue": "We need red and blue this time.",
+    "same-red": "More red stays red. Pick a different color to make a new one.", "same-yellow": "More yellow stays yellow. Pick a different color to make a new one.", "same-blue": "More blue stays blue. Pick a different color to make a new one.",
+    "rinse": "A little rinse, and we can try again.", "end": "Your color lab is glowing!"
+  }
+}

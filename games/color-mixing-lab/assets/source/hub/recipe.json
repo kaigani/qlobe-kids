@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "color-mixing-lab-hub-tile-v2",
+  "kind": "image",
+  "asset": "color-mixing-lab-hub-tile-v2.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A red toy paint flask and a yellow toy paint flask pouring together into one clear mixing beaker that glows orange, while one blue paint flask stands upright behind them and a single tiny smiling orange color droplet watches beside the beaker; one scientifically clear red-plus-yellow experiment, staged as objects on a soft pale-blue tabletop, no hands. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 1337,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "A red toy paint flask and a yellow toy paint flask pouring together into one clear mixing beaker that glows orange, while one blue paint flask stands upright behind them and a single tiny smiling orange color droplet watches beside the beaker; one scientifically clear red-plus-yellow experiment, staged as objects on a soft pale-blue tabletop, no hands."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-04"
+}

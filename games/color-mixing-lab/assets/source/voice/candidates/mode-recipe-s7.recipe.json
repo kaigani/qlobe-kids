@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "color-lab-voice-mode-recipe",
+  "kind": "voice",
+  "asset": "color-lab-voice-mode-recipe.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Can you mix the two colors this little friend needs?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Can you mix the two colors this little friend needs?"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Can you mix the two colors this little friend needs?",
+      "heard": "Can you mix the two colors this little friend meets?",
+      "ratio": 0.961,
+      "match": true
+    }
+  },
+  "created": "2026-08-04"
+}

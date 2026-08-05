@@ -1,0 +1,66 @@
+{
+  "format": "qlobe-imagegen-prompt-log",
+  "formatVersion": 1,
+  "provider": "OpenAI",
+  "model": "gpt-image-2",
+  "created": "2026-08-04",
+  "artDirection": "Field Journal watercolor-and-ink on warm cotton paper, translucent painted glass, visible pigment blooms, soft upper-left daylight, rounded preschool-safe forms",
+  "generations": [
+    {
+      "output": "lab-play-master.png",
+      "useCase": "stylized-concept",
+      "prompt": "Create a premium 4:3 full-bleed watercolor-and-ink background plate for a preschool tablet game called Color Mixing Lab: a sunlit field-journal science room with a honey-colored wood workbench across the bottom, powder-blue cabinets, a microscope, small racks of red/yellow/blue/green/purple test tubes, leafy classroom plants, and a bright window. Keep the central 60 percent calm, pale, empty, and low contrast for the real interactive beaker and flasks. Warm cotton-paper grain, translucent pigments, soft upper-left daylight, friendly and orderly. Environment only: no children, hands, characters, title, labels, words, letters, numerals, UI, logo, watermark, or border."
+    },
+    {
+      "output": "lab-splash-master.png",
+      "useCase": "stylized-concept",
+      "prompt": "Create a coordinating 4:3 Color Mixing Lab splash background in the exact same Field Journal watercolor classroom world: pale cream paper wall, powder-blue laboratory cabinets, honey wood counter, microscope and small colorful test-tube racks kept at the far edges, trailing green plants, and a sunny window. Reserve a large quiet center and upper-center for a painted title and three mode cards. Warm, welcoming, airy, premium children's picture-book watercolor. No people, hands, mascots, text, title, labels, UI, logo, watermark, or frame."
+    },
+    {
+      "output": "title-chroma.png",
+      "useCase": "design",
+      "prompt": "An isolated two-line hand-painted watercolor title lockup reading exactly ‘Color Mixing Lab’. Chunky rounded preschool lettering with Color in red/orange/green/blue/purple, Mixing in warm red/orange/blue/purple, and Lab in rich blue; a few tiny painted droplets, star blots, and loose watercolor ribbons around the words. Exact spelling and capitalization, no other words or letters, no logo, no frame. Center the complete lockup with generous clearance on a single flat #ff00ff chroma background."
+    },
+    {
+      "output": "mode-cards-sheet.png",
+      "useCase": "design",
+      "prompt": "A coordinated three-column contact sheet of large cream watercolor experiment cards with rounded painted borders and no text. Card 1: red and yellow glass flasks pour into a joyful orange beaker with sparkles. Card 2: yellow and blue glass flasks flank one large blue mystery question and three small orange/green/purple droplet results. Card 3: a joyful purple droplet friend points toward red, yellow, and blue recipe flasks. Same Field Journal watercolor-and-ink style, consistent scale and upper-left light, ample separation, dark charcoal outside background, no labels, words, letters, numerals, UI, logo, or watermark."
+    },
+    {
+      "output": "flasks-sheet.png",
+      "useCase": "design",
+      "prompt": "A four-column contact sheet of the exact same chunky translucent watercolor laboratory flask, front view and fully visible: red paint, yellow paint, blue paint, then empty glass. Premium hand-painted watercolor-and-ink on cotton paper, consistent vessel anatomy, size, baseline, highlights, and upper-left lighting; simple preschool-readable silhouettes; wide separation on a dark charcoal background. No text, labels, symbols, hands, shadows joining cells, logo, or watermark."
+    },
+    {
+      "output": "beakers-sheet.png",
+      "useCase": "design",
+      "prompt": "A four-column contact sheet of the exact same clear glass mixing beaker on a small pale-blue watercolor tray, straight-on and fully visible: empty, filled with glowing orange mixture, filled with bright green mixture, filled with rich purple mixture. Consistent vessel, tray, scale, baseline, liquid level, bubbles, highlights, and upper-left daylight in the Field Journal watercolor-and-ink style. Wide separation on a dark charcoal background. No text, labels, hands, logo, or watermark."
+    },
+    {
+      "output": "mascots-sheet.png",
+      "useCase": "character-design",
+      "prompt": "A three-column contact sheet of one joyful rounded paint-droplet mascot in orange, green, and purple. Each friend has the same teardrop body, wide open smile, glossy dark eyes, tiny rosy cheeks, raised arms with simple mitten hands, and little feet; full body, front-facing, consistent anatomy, scale, baseline, and upper-left light. Premium watercolor-and-ink pigment texture, preschool-safe, wide separation on a dark charcoal background. No text, props, logo, or watermark."
+    },
+    {
+      "output": "streams-sheet.png",
+      "useCase": "design",
+      "prompt": "A three-column contact sheet of long vertical curved ribbons of pouring watercolor liquid: red, yellow, and blue. Each stream begins at a small flask-mouth lip, flows in one readable continuous arc, and ends in a small painted splash; same shape family, length, thickness, highlight, and upper-left light. Isolated with wide separation on a dark charcoal background, no flask body, vessel, text, labels, logo, or watermark."
+    },
+    {
+      "output": "swirls-sheet.png",
+      "useCase": "design",
+      "prompt": "A three-column contact sheet of energetic circular watercolor paint vortices in orange, green, and purple. Each is a thick open spiral with expressive wet-brush streaks and a few separate droplets, centered, fully visible, consistent scale and upper-left highlights, isolated with wide separation on a dark charcoal background. No words, letters, symbols, characters, vessels, logo, or watermark."
+    }
+  ],
+  "backgroundEdit": {
+    "outputs": [
+      "mode-cards-sheet-magenta.png",
+      "flasks-sheet-magenta.png",
+      "beakers-sheet-magenta.png",
+      "mascots-sheet-magenta.png",
+      "streams-sheet-magenta.png",
+      "swirls-sheet-magenta.png"
+    ],
+    "prompt": "Precise object edit: preserve every authored object exactly—composition, dimensions, shape, colors, watercolor texture, highlights, shadows, spacing, and crop. Change only the outside background to one completely flat uniform #ff00ff chroma color. Do not redraw, restyle, move, resize, crop, omit, or add anything."
+  }
+}
