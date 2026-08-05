@@ -27,10 +27,14 @@ let deck = [];
 let drag = null;
 let pendingWelcome = true;
 let runId = 0;
+const artFailures = [];
 
-const ready = voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice)
-  .catch(() => undefined)
-  .then(() => renderSplash());
+const artReady = preloadArt();
+const ready = Promise.all([
+  voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice)
+    .catch(() => undefined),
+  artReady,
+]).then(() => renderSplash());
 
 installKioskGuards();
 installUnlockOnGesture({ onFirst: () => {
@@ -44,6 +48,40 @@ window.addEventListener('blur', () => drag?.cancel());
 reduceQuery.addEventListener?.('change', (event) => { state.reducedMotion = event.matches; });
 
 const nudger = createNudger({ first: 11000, repeat: 11000, onNudge: (count) => idleNudge(count) });
+
+function preloadArt() {
+  const urls = [
+    ...Object.values(config.assets),
+    ...Object.values(config.primary).flatMap(({ flask, stream }) => [flask, stream]),
+    config.emptyFlask,
+    ...Object.values(config.beakers),
+    ...Object.values(config.mascots),
+    ...Object.values(config.swirls),
+    ...config.modes.map(({ art }) => art),
+  ];
+  return Promise.all([...new Set(urls)].map((url) => new Promise((resolve) => {
+    const image = new Image();
+    let settled = false;
+    const finish = (reason = null) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(deadline);
+      if (reason) {
+        artFailures.push({ url, reason });
+        console.warn(`Color Mixing Lab art preload ${reason}: ${url}`);
+      }
+      resolve();
+    };
+    const deadline = window.setTimeout(() => finish('timed out'), 8000);
+    image.onload = () => {
+      const decoded = image.decode?.();
+      if (decoded) decoded.then(() => finish(), () => finish('decode failed'));
+      else finish();
+    };
+    image.onerror = () => finish('failed');
+    image.src = url;
+  })));
+}
 
 function say(key) { return narrator.say(key, config.voice[key]); }
 function currentRound() { return deck[state.round] || null; }
@@ -331,6 +369,7 @@ installDebug({
     result: state.result?.result || null,
     dragging: !!drag?.active,
     dragMoved: !!drag?.active?.moved,
+    artFailures: artFailures.map((failure) => ({ ...failure })),
   }),
   getTargets: () => collectTargets(mount), tap: tapTarget, pour, predict: choosePrediction, winRound,
   home: renderSplash, getAudioLog: () => voice.getAudioLog(),

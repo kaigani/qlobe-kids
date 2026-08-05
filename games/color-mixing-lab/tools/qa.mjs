@@ -40,6 +40,29 @@ async function openHub(browser) {
 }
 const state = (page) => page.evaluate(() => window.QLOBE_DEBUG.getState());
 const wait = (page, predicate) => page.waitForFunction(predicate);
+async function capture(page, name) {
+  await page.waitForLoadState('networkidle');
+  await page.waitForFunction(() => [...document.images].filter((image) => {
+    if (!image.hasAttribute('src') || !image.getAttribute('src')) return false;
+    const rect = image.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0
+      && rect.top < innerHeight && rect.left < innerWidth;
+  }).every((image) => (
+    image.complete && image.naturalWidth > 0 && image.naturalHeight > 0
+  )));
+  await page.evaluate(async () => {
+    const images = [...document.images].filter((image) => {
+      if (!image.hasAttribute('src') || !image.getAttribute('src')) return false;
+      const rect = image.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0
+        && rect.top < innerHeight && rect.left < innerWidth;
+    });
+    await Promise.all(images.map((image) => (
+      typeof image.decode === 'function' ? image.decode() : undefined
+    )));
+  });
+  await page.screenshot({ path: path.join(shots, name) });
+}
 
 async function completeMode(page, id) {
   await page.evaluate((mode) => window.QLOBE_DEBUG.startMode(mode), id);
@@ -65,7 +88,7 @@ async function main() {
   check('hub tile uses the curated production image',
     (await hubTile.locator('img').getAttribute('src')) === 'assets/hub/tiles/color-mixing-lab.jpg');
   await hubTile.scrollIntoViewIfNeeded();
-  await hub.screenshot({ path: path.join(shots, '00-hub-tile.png') });
+  await capture(hub, '00-hub-tile.png');
   await Promise.all([
     hub.waitForURL('**/games/color-mixing-lab/'),
     hubTile.click(),
@@ -75,10 +98,11 @@ async function main() {
 
   const page = await openGame(browser, { width: 1180, height: 820 });
   check('splash boots', (await state(page)).screen === 'splash');
+  check('runtime art preload completes without failures', (await state(page)).artFailures.length === 0);
   check('all three modes are registered', (await page.evaluate(() => window.QLOBE_DEBUG.listModes())).map((m) => m.id).join(',') === 'discover,predict,recipe');
   const splashTargets = await page.evaluate(() => window.QLOBE_DEBUG.getTargets());
   check('mode cards meet 96px target minimum', splashTargets.filter((t) => t.id.startsWith('mode-')).every((t) => t.rect.w >= 96 && t.rect.h >= 96));
-  await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
+  await capture(page, '01-splash-landscape.png');
 
   await page.locator('[data-target="mode-discover"]').click();
   await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'play');
@@ -99,7 +123,7 @@ async function main() {
   await page.mouse.move(beaker.x + beaker.width / 2, beaker.y + beaker.height / 2, { steps: 6 }); await page.mouse.up();
   await wait(page, () => window.QLOBE_DEBUG.getState().poured.length === 1);
   check('real drag reaches the semantic pour path', (await state(page)).poured.length === 1);
-  await page.screenshot({ path: path.join(shots, '02-discover-first-pour.png') });
+  await capture(page, '02-discover-first-pour.png');
 
   // A synthetic cancellation follows the shared controller's same pointer lifecycle.
   const cancelMe = await page.locator('.flask:not([disabled])').first(); const cancelBox = await cancelMe.boundingBox();
@@ -116,13 +140,13 @@ async function main() {
   await page.evaluate(async () => { const s = window.QLOBE_DEBUG.getState(); await window.QLOBE_DEBUG.pour(s.target.split('-').find((c) => !s.poured.includes(c))); });
   await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'reveal');
   check('tap/debug semantic pour completes reveal after recovery', (await state(page)).result !== null);
-  await page.screenshot({ path: path.join(shots, '03-discover-reveal.png') });
+  await capture(page, '03-discover-reveal.png');
   await page.evaluate(() => window.QLOBE_DEBUG.tap('next'));
 
   await page.evaluate(() => window.QLOBE_DEBUG.home());
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('predict'));
   await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'predict');
-  await page.screenshot({ path: path.join(shots, '04a-predict-choices.png') });
+  await capture(page, '04a-predict-choices.png');
   await page.evaluate(() => window.QLOBE_DEBUG.predict('purple'));
   check('predict accepts every hypothesis before workbench', (await state(page)).phase === 'play' && (await state(page)).prediction === 'purple');
   await page.evaluate(() => window.QLOBE_DEBUG.winRound()); await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'reveal');
@@ -131,7 +155,7 @@ async function main() {
 
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('recipe'));
   await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'play');
-  await page.screenshot({ path: path.join(shots, '04b-recipe-workbench.png') });
+  await capture(page, '04b-recipe-workbench.png');
   const recipe = await state(page); const firstRecipe = recipe.target.split('-')[0];
   await page.evaluate((color) => window.QLOBE_DEBUG.pour(color), firstRecipe);
   await page.evaluate((color) => window.QLOBE_DEBUG.pour(color), firstRecipe);
@@ -140,10 +164,10 @@ async function main() {
   await page.evaluate((color) => window.QLOBE_DEBUG.pour(color), badSecond);
   await wait(page, () => window.QLOBE_DEBUG.getState().phase === 'play' && window.QLOBE_DEBUG.getState().poured.length === 0);
   check('recipe wrong valid pair rinses and preserves round', (await state(page)).round === 0);
-  await page.screenshot({ path: path.join(shots, '04-recipe-rinsed.png') });
+  await capture(page, '04-recipe-rinsed.png');
   await completeMode(page, 'recipe');
   check('recipe completes all three rounds to end', (await state(page)).screen === 'end');
-  await page.screenshot({ path: path.join(shots, '04c-end.png') });
+  await capture(page, '04c-end.png');
   await page.evaluate(() => window.QLOBE_DEBUG.tap('back'));
   check('back from end returns to splash', (await state(page)).screen === 'splash');
   check('splash Home routes to the catalog', (await page.locator('[data-target="home"]').getAttribute('href')) === '../../');
@@ -158,35 +182,35 @@ async function main() {
   await narrow.evaluate(() => window.QLOBE_DEBUG.startMode('discover'));
   const narrowTargets = await narrow.evaluate(() => window.QLOBE_DEBUG.getTargets());
   check('1180x520 keeps HUD and beaker visible', ['back', 'sound', 'beaker'].every((id) => narrowTargets.some((t) => t.id === id)));
-  await narrow.screenshot({ path: path.join(shots, '05-landscape-short.png') });
+  await capture(narrow, '05-landscape-short.png');
   const phoneLandscape = await openGame(browser, { width: 568, height: 320 });
   const phoneCards = (await phoneLandscape.evaluate(() => window.QLOBE_DEBUG.getTargets())).filter((target) => target.id.startsWith('mode-'));
   check('568x320 keeps all three splash modes visible and tappable', phoneCards.length === 3
     && phoneCards.every(({ rect }) => rect.w >= 96 && rect.h >= 96 && rect.y >= 0 && rect.y + rect.h <= 320));
-  await phoneLandscape.screenshot({ path: path.join(shots, '05a-phone-splash.png') });
+  await capture(phoneLandscape, '05a-phone-splash.png');
   await phoneLandscape.evaluate(() => window.QLOBE_DEBUG.startMode('discover'));
   const phoneTargets = await phoneLandscape.evaluate(() => window.QLOBE_DEBUG.getTargets());
   check('568x320 keeps all primary play targets inside the viewport', ['back', 'sound', 'beaker', 'flask-red', 'flask-yellow', 'flask-blue'].every((id) => {
     const target = phoneTargets.find((item) => item.id === id);
     return target && target.rect.w >= 76 && target.rect.h >= 76 && target.rect.y >= 0 && target.rect.y + target.rect.h <= 320;
   }));
-  await phoneLandscape.screenshot({ path: path.join(shots, '05b-phone-landscape.png') });
+  await capture(phoneLandscape, '05b-phone-landscape.png');
   await phoneLandscape.evaluate(() => window.QLOBE_DEBUG.winRound());
   await wait(phoneLandscape, () => window.QLOBE_DEBUG.getState().phase === 'reveal');
   const phoneNext = (await phoneLandscape.evaluate(() => window.QLOBE_DEBUG.getTargets())).find((target) => target.id === 'next');
   check('568x320 reveal keeps its continuation target fully visible', phoneNext
     && phoneNext.rect.w >= 76 && phoneNext.rect.h >= 76 && phoneNext.rect.y >= 0 && phoneNext.rect.y + phoneNext.rect.h <= 320);
-  await phoneLandscape.screenshot({ path: path.join(shots, '05c-phone-reveal.png') });
+  await capture(phoneLandscape, '05c-phone-reveal.png');
   const portrait = await openGame(browser, { width: 820, height: 1180 });
   await portrait.evaluate(() => window.QLOBE_DEBUG.startMode('discover'));
   const portraitTargets = await portrait.evaluate(() => window.QLOBE_DEBUG.getTargets());
   check('portrait preserves 96px flask targets', portraitTargets.filter((t) => t.id.startsWith('flask-')).every((t) => t.rect.w >= 96 && t.rect.h >= 96));
-  await portrait.screenshot({ path: path.join(shots, '06-portrait.png') });
+  await capture(portrait, '06-portrait.png');
   const reduced = await openGame(browser, { width: 1180, height: 820 }, 'reduce');
   await reduced.evaluate(() => window.QLOBE_DEBUG.startMode('discover'));
   await reduced.evaluate(() => window.QLOBE_DEBUG.winRound()); await wait(reduced, () => window.QLOBE_DEBUG.getState().phase === 'reveal');
   check('reduced-motion state is reported and reveal works', (await state(reduced)).reducedMotion === true);
-  await reduced.screenshot({ path: path.join(shots, '07-reduced-reveal.png') });
+  await capture(reduced, '07-reduced-reveal.png');
 
   for (const session of sessions) {
     session.failed = session.failed.filter((entry) => !PLATFORM_ANALYTICS.some((prefix) => entry.startsWith(prefix)));

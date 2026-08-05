@@ -329,6 +329,11 @@ remain under `assets/source/` and are recorded in `ASSETS.md`.
   Whisper comparison.
 - Paint-pour/glug uses a small local WebAudio texture plus shared SFX. There is
   no autoplaying music and no runtime download.
+- The local runtime art set preloads and decodes before `QLOBE_DEBUG.ready`
+  resolves, preventing cold-cache sessions from revealing partially painted
+  screens while keeping all authoring masters out of the runtime request path.
+  Each preload has an eight-second guard and records a debug-visible failure
+  instead of blocking boot; production QA requires the failure list to be empty.
 - LTX video is deliberately not used: the promised action is child-driven and
   reads more clearly when the real flask sprites move under the child’s finger.
   A passive video would weaken—not strengthen—the interaction.
