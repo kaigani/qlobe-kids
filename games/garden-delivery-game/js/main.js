@@ -38,6 +38,7 @@ let lastFrameAt = performance.now();
 let celebrationDispose = null;
 let soundHoldTimer = null;
 let soundWasLongPress = false;
+const warmedVisuals = [];
 const repeatSound = soundDebounce(repeatPrompt, 650);
 
 const tilt = createTiltInput({
@@ -70,6 +71,19 @@ function say(key) {
 }
 function currentFlowerAsset(selectedMode, blooming = false) {
   return selectedMode?.flowerAssets?.[blooming ? 'bloom' : 'thirsty'] || '';
+}
+function warmVisualAssets() {
+  const urls = [
+    ...Object.values(config.assets),
+    ...config.modes.flatMap((item) => Object.values(item.flowerAssets || {})),
+  ];
+  for (const url of new Set(urls.filter(Boolean))) {
+    const image = new Image();
+    image.decoding = 'async';
+    image.fetchPriority = 'low';
+    image.src = asset(url);
+    warmedVisuals.push(image);
+  }
 }
 function bucketValueText(x, pouring = false) {
   if (Math.abs(x) < 0.12) return 'Bucket centered';
@@ -448,6 +462,7 @@ window.requestAnimationFrame(animationFrame);
 // metadata request may finish later; the exact config text is already a safe
 // Web Speech fallback.
 render();
+warmVisualAssets();
 let startupTimer = null;
 const audioReady = voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
 const audioDeadline = new Promise((resolve) => { startupTimer = window.setTimeout(resolve, 2500); });

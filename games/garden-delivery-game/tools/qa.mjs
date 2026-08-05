@@ -104,6 +104,7 @@ async function main() {
   await page.locator('[data-action="back"]').click(); check('back returns map', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'map');
   for (const id of ['rose', 'tulip', 'daisy']) await winMode(page, id);
   check('all-three party appears', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'party');
+  check('party background is ready at transition', await page.locator('.party-screen .garden-plate').evaluate((image) => image.complete && image.naturalWidth >= 1000));
   await page.screenshot({ path: path.join(shots, '02-party-landscape.png') }); await page.locator('[data-action="party-map"]').click();
   check('replay returns map', (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'map');
   const portrait = await open(browser, { width: 600, height: 900 }); await portrait.page.screenshot({ path: path.join(shots, '03-map-portrait.png') });
