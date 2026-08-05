@@ -1,0 +1,61 @@
+{
+  "generator": "OpenAI imagegen",
+  "model": "gpt-image-2",
+  "created": "2026-08-04",
+  "artDirection": "Claymation",
+  "assets": [
+    {
+      "id": "tray-empty",
+      "file": "tray-empty.png",
+      "mode": "reference edit",
+      "reference": "../../../../../01-game-concepts/land-explorer/output/ui-mockups/02-build-an-island.png",
+      "prompt": "Create a clean production background plate from the referenced Land Explorer mockup. Preserve the warm top-down beechwood Montessori tray, rounded joinery, glossy turquoise-blue resin water basin, and deep empty lower tool shelf. Remove every title, prompt, progress mark, card, hand, scoop, clay shape, boat, animal, button, and UI element. The result is an inviting empty 4:3 claymation play surface with consistent warm studio lighting, no text, no symbols, no interface, and no loose objects."
+    },
+    {
+      "id": "title",
+      "file": "title-magenta.png",
+      "mode": "generation",
+      "prompt": "A premium claymation preschool game title lockup reading exactly ‘Land Explorer’. Chunky hand-shaped deep teal clay letters mounted on a softly rounded pale beechwood plaque, with two small fresh green clay leaves as balanced accents. Front-facing, centered, warm tactile studio lighting, charming handmade fingerprints, crisp spelling and generous margins. Isolated on one perfectly flat bright magenta background with no shadows beyond the object, no other words, no characters, no UI. Wide horizontal composition."
+    },
+    {
+      "id": "landform-cards",
+      "file": "landform-cards-charcoal.png",
+      "mode": "generation",
+      "prompt": "A precise 2 by 2 contact sheet of four coordinated claymation Montessori landform cards, one complete card centered in each equal square cell. Top left: island, green clay land with blue water all around. Top right: lake, blue water surrounded by green clay land. Bottom left: peninsula, green clay joined to the left shore with water on three sides. Bottom right: bay, blue water opening from the right edge into green clay land on three sides. Every card has the same softly rounded pale beechwood frame and a wide blank wooden label band at the bottom. No letters, words, icons, hands, shadows crossing cells, or extra props. Objects isolated on one perfectly flat dark charcoal background, orthographic top-down view, cohesive tactile clay texture and warm studio light."
+    },
+    {
+      "id": "props",
+      "file": "props-charcoal.png",
+      "mode": "generation",
+      "prompt": "A precise 3 column by 2 row contact sheet of six coordinated claymation Land Explorer props, one complete object centered in each equal cell. Top row: a soft bright-green clay lump; a child-safe pale wooden scoop with a little green clay residue; a tiny red-and-cream wooden sailboat. Bottom row: a friendly turquoise fish; a friendly moss-green turtle; a wide blank action plaque with a deep teal inset mounted in pale beechwood. Premium handmade clay and toy materials, warm tactile studio lighting, clear silhouettes, consistent scale family. No words, letters, numbers, hands, borders between cells, or extra objects. Isolated on one perfectly flat dark charcoal background with nothing cropped."
+    },
+    {
+      "id": "boat-isolation",
+      "file": "boat-magenta.png",
+      "mode": "reference edit",
+      "reference": "slices/boat.png",
+      "prompt": "Edit the supplied toy sailboat into a production isolation plate. Preserve the entire original boat exactly as one complete object: the full pale beechwood oval bowl-shaped hull, both teal clay sails, the complete central wooden mast, and the complete coral-red flag. Preserve camera angle, materials, colors, proportions, texture, and warm lighting. Center the whole boat and scale it so at least 12% of the square canvas remains clear beyond every outer edge; nothing may be cropped. Replace only the charcoal background and ground shadow with one perfectly flat uniform bright magenta (#ff00ff) background. Opaque PNG. No transparency, text, extra props, water, shadows, borders, or added objects."
+    },
+    {
+      "id": "turtle-isolation",
+      "file": "turtle-magenta.png",
+      "mode": "reference edit",
+      "reference": "slices/turtle.png",
+      "prompt": "Edit the supplied green clay turtle into a production isolation plate. Preserve the one complete original turtle exactly: full dark-green patterned shell, light-green head with its single visible eye, all four light-green flippers, and the small triangular tail. Preserve the top-down camera angle, clay materials, colors, proportions, texture, and warm lighting. Center the whole turtle and scale it so at least 14% of the square canvas remains clear beyond every outer edge; nothing may be cropped. Remove the tiny neighboring object fragment at the far right. Replace only the charcoal background and ground shadow with one perfectly flat uniform bright magenta (#ff00ff) background. Opaque PNG. No transparency, strings, cords, scribbles, extra props, water, shadows, borders, or added objects."
+    },
+    {
+      "id": "action-plaque-isolation-first-pass",
+      "file": "action-plaque-magenta-first-pass.png",
+      "mode": "reference edit",
+      "reference": "slices/action-plaque.png",
+      "prompt": "Edit the supplied image as a production isolation plate. Preserve the one complete blank action plaque exactly: its full continuous pale beechwood rounded outer frame on every side, its large deep-teal clay inset, exact proportions, camera angle, texture, lighting, and scale. Replace only the dark charcoal background and any ground shadow with one perfectly flat, uniform bright magenta (#ff00ff) field extending to all image edges. The entire plaque must remain visible and uncropped with generous clear magenta space around it. Do not add text, symbols, shadows, props, borders, or new objects. No transparency; opaque PNG source plate."
+    },
+    {
+      "id": "action-plaque-isolation",
+      "file": "action-plaque-magenta.png",
+      "mode": "reference edit",
+      "reference": "action-plaque-magenta-first-pass.png",
+      "prompt": "Production layout correction only. Keep the complete blank beechwood-and-deep-teal action plaque exactly as supplied. Scale the entire plaque uniformly down to about 72% of the square canvas width and center it horizontally and vertically, so at least 12% of perfectly flat uniform bright magenta (#ff00ff) background is visible beyond every outer edge of the wood frame. Every edge of the full continuous wooden frame must be visible and uncropped. Preserve the plaque's materials, shape, proportions, colors, texture, lighting, and blank teal inset. Opaque PNG. Do not add text, symbols, shadows, props, borders, transparency, or new objects."
+    }
+  ]
+}

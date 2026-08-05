@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-04T06:41:15.485Z",
+  "generated": "2026-08-05T01:05:44.765Z",
   "engines": {
     "coach-timer": {
       "count": 19,
@@ -56,13 +56,12 @@
       ]
     },
     "build-assemble": {
-      "count": 11,
+      "count": 10,
       "games": [
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
         "color-mixing-lab",
-        "land-water-tray",
         "loose-parts-collage",
         "secret-message-copy",
         "shape-to-picture",
@@ -706,14 +705,26 @@
       "packs": []
     },
     "land-water-tray": {
-      "engine": "build-assemble",
+      "engine": null,
       "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/clay/heightfield-canvas.js",
+        "shared/js/clay/heightfield.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1991,6 +2002,7 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
+        "land-water-tray",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2014,6 +2026,7 @@
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
+        "land-water-tray",
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
@@ -2028,9 +2041,11 @@
         "clay-creature-studio"
       ],
       "shared/js/clay/heightfield-canvas.js": [
+        "land-water-tray",
         "playdough-letter-factory"
       ],
       "shared/js/clay/heightfield.js": [
+        "land-water-tray",
         "playdough-letter-factory"
       ],
       "shared/js/clay/lobes-three.js": [
@@ -2055,6 +2070,7 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
+        "land-water-tray",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2080,7 +2096,6 @@
         "blend-train",
         "block-tower-measure",
         "color-mixing-lab",
-        "land-water-tray",
         "loose-parts-collage",
         "secret-message-copy",
         "shape-to-picture",
@@ -2194,10 +2209,12 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "land-water-tray",
         "lunchbox-pack",
         "red-green-light"
       ],
       "shared/js/idle-nudge.js": [
+        "land-water-tray",
         "sink-or-float",
         "teen-bead-builder",
         "world-music-dance"
@@ -2209,6 +2226,7 @@
         "bug-hotel-observer"
       ],
       "shared/js/mode-select.js": [
+        "land-water-tray",
         "snack-chef"
       ],
       "shared/js/music.js": [
@@ -2221,6 +2239,7 @@
       ],
       "shared/js/narrator.js": [
         "big-paper-murals",
+        "land-water-tray",
         "laundry-sorter",
         "sand-tray-letters",
         "sink-or-float",
@@ -2246,6 +2265,7 @@
         "counting-treasure-cups",
         "flashlight-cave",
         "globe-spin-stories",
+        "land-water-tray",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2258,6 +2278,7 @@
       "shared/js/screens.js": [
         "chocolate-chip-count",
         "emotion-voice-game",
+        "land-water-tray",
         "snack-chef"
       ],
       "shared/js/sfx": [
@@ -2403,7 +2424,6 @@
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
-        "land-water-tray",
         "laundry-sorter",
         "letter-road-driving",
         "letter-treasure-hunt",
@@ -2551,6 +2571,7 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
+        "land-water-tray",
         "laundry-sorter",
         "lunchbox-pack",
         "playdough-letter-factory",
@@ -2569,6 +2590,7 @@
       "shared/js/timers.js": [
         "chocolate-chip-count",
         "globe-spin-stories",
+        "land-water-tray",
         "lunchbox-pack",
         "puppet-retell",
         "red-green-light",
@@ -2584,6 +2606,7 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
+        "land-water-tray",
         "laundry-sorter",
         "letter-road-driving",
         "lunchbox-pack",

@@ -1,0 +1,638 @@
+{
+  "workflow": "qwen-image-layered",
+  "tray": {
+    "source": "tray-empty.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "final": "scenes/tray.webp",
+    "finalSize": [
+      1280,
+      960
+    ]
+  },
+  "objects": {
+    "boat": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        363,
+        380
+      ],
+      "alphaBBox": [
+        161,
+        199,
+        833,
+        904
+      ],
+      "bboxCoverage": 0.4518,
+      "alphaHistogram": {
+        "transparentPct": 72.904,
+        "opaqueCorePct": 26.787,
+        "partialPct": 0.308
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 311151,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/boat-layer2-seed42.png",
+      "finalKB": 34.3,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/boat-magenta.png",
+      "crop": null,
+      "prompt": "Layer 1 is only the flat bright magenta background. Layer 2 must be the one entire toy sailboat alone on true transparency. The foreground sailboat includes ALL of its parts as one subject: the complete pale wooden oval bowl-shaped hull across the bottom, both teal sails, the full central wooden mast, and the complete coral flag at the top. Keep the hull and coral flag fully opaque and connected with the mast and sails; do not omit any part or isolate only the sail or mast. Everything outside the complete boat silhouette must be fully transparent. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/world/boat.webp",
+      "rejectedCandidates": [],
+      "visualRejections": [
+        {
+          "seed": 9001,
+          "source": "slices/boat.png",
+          "reason": "human magenta review: wooden hull omitted"
+        },
+        {
+          "seed": 2718,
+          "source": "slices/boat.png",
+          "reason": "human magenta review: coral flag omitted"
+        }
+      ]
+    },
+    "turtle": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        260,
+        246
+      ],
+      "alphaBBox": [
+        226,
+        196,
+        845,
+        781
+      ],
+      "bboxCoverage": 0.3453,
+      "alphaHistogram": {
+        "transparentPct": 79.788,
+        "opaqueCorePct": 19.893,
+        "partialPct": 0.319
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 377658,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/turtle-layer2-seed42.png",
+      "finalKB": 20.5,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/turtle-magenta.png",
+      "crop": null,
+      "prompt": "Layer 1 is only the flat bright magenta background. Layer 2 must be the one entire green clay turtle alone on true transparency. The turtle is the foreground subject: keep its complete dark-green shell, head and eye, all four light-green flippers, and small triangular tail fully opaque as one connected animal. The subject has no strings, cords, whiskers, scribbles, or long thin trailing lines: exclude all such artifacts. Do not turn the turtle into a transparent hole or keep the magenta outside. Everything outside the complete turtle silhouette must be fully transparent. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/world/turtle.webp",
+      "rejectedCandidates": [],
+      "visualRejections": [
+        {
+          "seed": 9001,
+          "source": "slices/turtle.png",
+          "reason": "alpha matte inverted"
+        },
+        {
+          "seed": 1337,
+          "source": "slices/turtle.png",
+          "reason": "background retained"
+        },
+        {
+          "seed": 2718,
+          "source": "slices/turtle.png",
+          "reason": "human magenta review: long trailing line artifacts"
+        }
+      ]
+    },
+    "action-plaque": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        520,
+        303
+      ],
+      "alphaBBox": [
+        169,
+        320,
+        854,
+        706
+      ],
+      "bboxCoverage": 0.2522,
+      "alphaHistogram": {
+        "transparentPct": 78.14,
+        "opaqueCorePct": 21.647,
+        "partialPct": 0.212
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 354055,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/action-plaque-layer2-seed42.png",
+      "finalKB": 54.7,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/action-plaque-magenta.png",
+      "crop": null,
+      "prompt": "Layer 1 is only the flat bright magenta background. Layer 2 must be the one entire blank action plaque alone on true transparency. Keep the complete continuous pale beechwood outer frame on all four sides AND its large deep-teal clay inset as one fully opaque foreground object; the teal middle is part of the plaque, not a hole or background. Everything outside the complete plaque silhouette must be fully transparent. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/action-plaque.webp",
+      "rejectedCandidates": [],
+      "visualRejections": [
+        {
+          "seed": 2718,
+          "source": "slices/action-plaque.png",
+          "reason": "alpha matte inverted"
+        },
+        {
+          "seed": 1337,
+          "source": "slices/action-plaque.png",
+          "reason": "human magenta review: upper wood frame omitted"
+        },
+        {
+          "seed": 31415,
+          "source": "slices/action-plaque.png",
+          "reason": "alpha matte inverted"
+        }
+      ]
+    },
+    "title": {
+      "sourceSize": [
+        1024,
+        432
+      ],
+      "size": [
+        954,
+        246
+      ],
+      "alphaBBox": [
+        51,
+        101,
+        973,
+        315
+      ],
+      "bboxCoverage": 0.446,
+      "alphaHistogram": {
+        "transparentPct": 57.054,
+        "opaqueCorePct": 42.424,
+        "partialPct": 0.522
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 75152,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/title-layer2-seed42.png",
+      "finalKB": 41.4,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/title-magenta.png",
+      "crop": null,
+      "prompt": "Background layer: flat bright magenta only. Top layer: the complete exact title lockup; preserve all lettering and edges. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/title.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    },
+    "island": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        506,
+        520
+      ],
+      "alphaBBox": [
+        119,
+        74,
+        967,
+        947
+      ],
+      "bboxCoverage": 0.706,
+      "alphaHistogram": {
+        "transparentPct": 30.918,
+        "opaqueCorePct": 67.787,
+        "partialPct": 1.295
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 42157,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/island-layer2-seed1337.png",
+      "finalKB": 55.8,
+      "selectedSeed": 1337,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/island.png",
+      "crop": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete wooden island landform card including its blank label band. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/card-island.webp",
+      "rejectedCandidates": [
+        {
+          "seed": 42,
+          "error": "layer2 alpha QA failed"
+        }
+      ],
+      "visualRejections": []
+    },
+    "lake": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        506,
+        520
+      ],
+      "alphaBBox": [
+        58,
+        75,
+        906,
+        948
+      ],
+      "bboxCoverage": 0.706,
+      "alphaHistogram": {
+        "transparentPct": 30.93,
+        "opaqueCorePct": 68.468,
+        "partialPct": 0.602
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 46146,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/lake-layer2-seed42.png",
+      "finalKB": 62.0,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/lake.png",
+      "crop": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete wooden lake landform card including its blank label band. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/card-lake.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    },
+    "peninsula": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        505,
+        520
+      ],
+      "alphaBBox": [
+        117,
+        48,
+        966,
+        924
+      ],
+      "bboxCoverage": 0.7093,
+      "alphaHistogram": {
+        "transparentPct": 30.6,
+        "opaqueCorePct": 68.545,
+        "partialPct": 0.856
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 45224,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/peninsula-layer2-seed42.png",
+      "finalKB": 57.3,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/peninsula.png",
+      "crop": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete wooden peninsula landform card including its blank label band. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/card-peninsula.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    },
+    "bay": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        505,
+        520
+      ],
+      "alphaBBox": [
+        57,
+        48,
+        905,
+        923
+      ],
+      "bboxCoverage": 0.7076,
+      "alphaHistogram": {
+        "transparentPct": 30.723,
+        "opaqueCorePct": 68.003,
+        "partialPct": 1.274
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 2,
+        "keptComponents": 1,
+        "removedComponents": 1,
+        "removedAlphaPixels": 44114,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/bay-layer2-seed42.png",
+      "finalKB": 60.6,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/bay.png",
+      "crop": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete wooden bay landform card including its blank label band. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/card-bay.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    },
+    "clay-lump": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        520,
+        323
+      ],
+      "alphaBBox": [
+        147,
+        333,
+        963,
+        828
+      ],
+      "bboxCoverage": 0.3852,
+      "alphaHistogram": {
+        "transparentPct": 69.655,
+        "opaqueCorePct": 29.988,
+        "partialPct": 0.358
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 167567,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/clay-lump-layer2-seed42.png",
+      "finalKB": 33.7,
+      "selectedSeed": 42,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/clay-lump.png",
+      "crop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete clay lump. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/clay-lump.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    },
+    "scoop": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        520,
+        506
+      ],
+      "alphaBBox": [
+        110,
+        213,
+        922,
+        1002
+      ],
+      "bboxCoverage": 0.611,
+      "alphaHistogram": {
+        "transparentPct": 74.563,
+        "opaqueCorePct": 20.232,
+        "partialPct": 5.205
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 117880,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/scoop-layer2-seed9001.png",
+      "finalKB": 52.7,
+      "selectedSeed": 9001,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/scoop.png",
+      "crop": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "prompt": "Layer 1 is only the flat dark charcoal background. Layer 2 must be the entire light beech wooden scoop alone on true transparency. The scoop is the foreground subject: its bowl interior, rim, handle, end cap, wood texture, and every pixel inside its outer silhouette must be opaque; everything outside that silhouette must be fully transparent. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/ui/scoop.webp",
+      "rejectedCandidates": [
+        {
+          "seed": 42,
+          "error": "layer2 alpha QA failed"
+        },
+        {
+          "seed": 1337,
+          "error": "layer2 alpha QA failed"
+        }
+      ],
+      "visualRejections": []
+    },
+    "fish": {
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "size": [
+        260,
+        168
+      ],
+      "alphaBBox": [
+        156,
+        192,
+        976,
+        711
+      ],
+      "bboxCoverage": 0.4059,
+      "alphaHistogram": {
+        "transparentPct": 73.484,
+        "opaqueCorePct": 25.987,
+        "partialPct": 0.528
+      },
+      "alphaComponentCleanup": {
+        "componentCount": 1,
+        "keptComponents": 1,
+        "removedComponents": 0,
+        "removedAlphaPixels": 138865,
+        "minimumCorePixels": 96
+      },
+      "alphaFloor": 16,
+      "originalCornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedOutput": "layer_2",
+      "rawLayer": "assets/source/gpt-image-2/fish-layer2-seed9001.png",
+      "finalKB": 12.8,
+      "selectedSeed": 9001,
+      "validation": "passed",
+      "source": "assets/source/gpt-image-2/slices/fish.png",
+      "crop": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "prompt": "Background layer: flat dark charcoal only. Top layer: the complete fish. Preserve exact colors, texture, shape, position, and scale; do not crop, redraw, rearrange, add, remove, or add shadows.",
+      "workflow": "qwen-image-layered",
+      "final": "assets/world/fish.webp",
+      "rejectedCandidates": [],
+      "visualRejections": []
+    }
+  },
+  "alphaCleanup": "small disconnected Layered matte components removed and alpha below 16 floored; no flood fill or chroma key"
+}

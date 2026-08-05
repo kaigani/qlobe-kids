@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "island-prompt.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Pour green land into the water. Make an island!",
+  "textHash": "9e8edb2d1b48d692",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Pour green land into the water. Make an island."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,0 +1,880 @@
+:root {
+  --qk-bg: #c9844f;
+  --ink: #173f3f;
+  --teal: #087f7f;
+  --cream: #fff5d3;
+}
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+  color: var(--ink);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+#game {
+  position: relative;
+  overflow: hidden;
+}
+
+.game-screen {
+  display: grid;
+  place-items: center;
+  background-color: #c9844f;
+}
+
+/* HUD hosts are overlays, not extra grid rows. Keeping them out of flow means
+   the 4:3 tray stays in exactly the same centered place as screens change,
+   especially in portrait where an empty second row would shift play upward. */
+.guided-hud,
+.play-hud,
+.mystery-hud,
+.end-hud {
+  position: absolute;
+  z-index: 70;
+  inset: 0;
+  pointer-events: none;
+}
+
+.guided-hud .qk-hud-btn,
+.play-hud .qk-hud-btn,
+.mystery-hud .qk-hud-btn,
+.end-hud .qk-hud-btn {
+  pointer-events: auto;
+}
+
+.tray-stage {
+  position: relative;
+  z-index: 1;
+  width: min(100vw, 133.333dvh);
+  height: min(75vw, 100dvh);
+  overflow: visible;
+  background-image: url('../assets/scenes/tray.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: drop-shadow(0 12px 24px rgba(80, 43, 24, .22));
+  isolation: isolate;
+}
+
+.tray-stage img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* Splash --------------------------------------------------------------- */
+
+.title-lockup {
+  position: absolute;
+  z-index: 8;
+  top: 1.2%;
+  left: 21%;
+  width: 58%;
+  height: 25%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 5px rgba(68, 42, 21, .20));
+  animation: title-arrive .55s cubic-bezier(.2, .85, .24, 1.12) both;
+}
+
+.splash-diorama {
+  position: absolute;
+  z-index: 5;
+  top: 24%;
+  left: 10%;
+  width: 80%;
+  height: 44%;
+  pointer-events: none;
+}
+
+.splash-clay {
+  position: absolute;
+  top: 8%;
+  left: 29%;
+  width: 41%;
+  height: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 13px 7px rgba(24, 87, 67, .26));
+  animation: clay-breathe 3.8s ease-in-out infinite;
+}
+
+.splash-boat {
+  position: absolute;
+  z-index: 2;
+  right: 19%;
+  bottom: 6%;
+  width: 18%;
+  height: 44%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 4px rgba(20, 85, 100, .25));
+  animation: boat-bob 2.4s ease-in-out infinite;
+}
+
+.mode-shelf {
+  position: absolute;
+  z-index: 12;
+  right: 7.5%;
+  bottom: .8%;
+  left: 7.5%;
+  display: flex;
+  height: 21.5%;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1.5%;
+}
+
+.mode-plaque {
+  position: relative;
+  width: 31.5%;
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform .13s ease, filter .13s ease;
+  animation: shelf-arrive .52s calc(.1s + var(--qk-mode-i) * .09s) cubic-bezier(.22, .85, .28, 1.08) both;
+}
+
+.mode-plaque-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 4px rgba(79, 45, 24, .22));
+}
+
+.mode-plaque .qk-mode-art {
+  position: absolute;
+  z-index: 2;
+  top: -51%;
+  left: 31%;
+  width: 38%;
+  height: 83%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 4px rgba(40, 64, 54, .24));
+  transition: transform .16s ease;
+}
+
+.mode-plaque .qk-mode-title,
+.mode-plaque small {
+  position: absolute;
+  z-index: 3;
+  right: 13%;
+  left: 13%;
+  text-align: center;
+  pointer-events: none;
+}
+
+.mode-plaque .qk-mode-title {
+  top: 34%;
+  color: #fff9dc;
+  font-size: clamp(17px, 2.25dvh, 26px);
+  line-height: 1.05;
+  text-shadow: 0 2px 0 rgba(10, 83, 78, .35);
+}
+
+.mode-plaque small {
+  top: 66%;
+  color: #d7fff2;
+  font-size: clamp(12px, 1.45dvh, 17px);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.mode-plaque:active {
+  transform: translateY(5px) scale(.97);
+}
+
+.mode-plaque:active .qk-mode-art {
+  transform: rotate(-5deg) scale(1.06);
+}
+
+.mode-plaque:focus-visible,
+.landform-card:focus-visible,
+.tool-button:focus-visible,
+.plaque-button:focus-visible {
+  outline: 6px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Authored plaques ------------------------------------------------------ */
+
+.prompt-plaque,
+.plaque-button {
+  position: absolute;
+}
+
+.prompt-plaque > img,
+.plaque-button > img:first-child {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 4px rgba(71, 44, 25, .18));
+}
+
+.prompt-plaque > div,
+.plaque-button > span {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.prompt-plaque > div {
+  top: 50%;
+  right: 16%;
+  left: 16%;
+  transform: translateY(-50%);
+}
+
+.prompt-plaque h2,
+.prompt-plaque p {
+  margin: 0;
+  color: #fff9dc;
+  text-shadow: 0 2px 0 rgba(12, 84, 77, .32);
+}
+
+.prompt-plaque h2 {
+  font-size: clamp(17px, 2.4dvh, 28px);
+  line-height: 1.03;
+}
+
+.prompt-plaque p {
+  margin-top: .22em;
+  color: #d9fff3;
+  font-size: clamp(11px, 1.45dvh, 17px);
+  line-height: 1.12;
+}
+
+.plaque-button {
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  touch-action: manipulation;
+  transition: transform .13s ease;
+}
+
+.plaque-button > span {
+  top: 50%;
+  right: 15%;
+  left: 15%;
+  transform: translateY(-50%);
+  color: #fff9dc;
+  font-size: clamp(16px, 2.15dvh, 24px);
+  line-height: 1.05;
+  text-shadow: 0 2px 0 rgba(12, 84, 77, .35);
+}
+
+.plaque-button:active {
+  transform: translateY(5px) scale(.97);
+}
+
+/* Landform shelf + Mystery Maps ---------------------------------------- */
+
+.shelf-prompt,
+.mystery-prompt {
+  z-index: 10;
+  top: 1.5%;
+  left: 31%;
+  width: 38%;
+  height: 25%;
+}
+
+.landform-shelf,
+.mystery-cards {
+  position: absolute;
+  z-index: 9;
+  top: 25.5%;
+  right: 6.5%;
+  left: 6.5%;
+  display: flex;
+  height: 48.5%;
+  align-items: center;
+  justify-content: center;
+  gap: 1%;
+}
+
+.landform-card {
+  position: relative;
+  width: 24%;
+  height: auto;
+  aspect-ratio: 1;
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform .14s ease, filter .14s ease, opacity .16s ease;
+}
+
+.landform-card > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 9px 5px rgba(59, 41, 25, .25));
+}
+
+.landform-card > span {
+  position: absolute;
+  z-index: 2;
+  right: 12%;
+  bottom: 8%;
+  left: 12%;
+  color: #315345;
+  font-size: clamp(17px, 2.5dvh, 29px);
+  line-height: 1;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 2px 0 rgba(255, 249, 215, .7);
+}
+
+.landform-card:active {
+  transform: translateY(5px) scale(.96) rotate(-1deg);
+}
+
+.card-star {
+  position: absolute;
+  z-index: 3;
+  top: 1%;
+  right: 3%;
+  display: none;
+  width: 29%;
+  height: 22%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 2px rgba(34, 91, 94, .26));
+}
+
+.landform-card.is-complete .card-star {
+  display: block;
+  animation: star-pop .4s cubic-bezier(.18, .9, .3, 1.25) both;
+}
+
+.mystery-progress,
+.play-progress {
+  position: absolute;
+  z-index: 12;
+  top: 8%;
+  right: 6.5%;
+  display: flex;
+  width: 25%;
+  justify-content: center;
+}
+
+.mystery-card.is-wrong {
+  animation: friendly-wobble .46s ease-in-out;
+}
+
+.mystery-card.is-correct {
+  z-index: 5;
+  transform: translateY(-7%) scale(1.09) rotate(2deg);
+  filter: saturate(1.12);
+}
+
+.mystery-card.is-hinting {
+  animation: tool-pulse .7s ease-in-out 2;
+}
+
+.mystery-card.is-correct ~ .mystery-card,
+.mystery-cards:has(.is-correct) .mystery-card:not(.is-correct) {
+  opacity: .48;
+}
+
+.mystery-friend {
+  position: absolute;
+  z-index: 14;
+  right: 5.5%;
+  bottom: 20%;
+  width: 16%;
+  height: 23%;
+  pointer-events: none;
+}
+
+.mystery-friend img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 5px rgba(23, 83, 86, .22));
+  animation: friend-peek .52s cubic-bezier(.18, .88, .28, 1.2) both;
+}
+
+/* Clay board ------------------------------------------------------------ */
+
+.play-prompt {
+  z-index: 14;
+  top: .8%;
+  left: 29%;
+  width: 42%;
+  height: 25%;
+}
+
+.play-prompt h2 {
+  font-size: clamp(15px, 2.05dvh, 24px);
+}
+
+.play-prompt p {
+  font-size: clamp(10px, 1.3dvh, 15px);
+}
+
+.basin-slot {
+  position: absolute;
+  z-index: 7;
+  top: 24%;
+  left: 7.7%;
+  width: 84.6%;
+  height: 48%;
+  overflow: hidden;
+  border-radius: 11% 10% 12% 10%;
+  touch-action: none;
+  clip-path: inset(0 round 11% 10% 12% 10%);
+}
+
+.basin-slot canvas {
+  display: block;
+}
+
+.landform-board__clay {
+  cursor: crosshair;
+}
+
+.tool-shelf {
+  position: absolute;
+  z-index: 15;
+  right: 7.5%;
+  bottom: .5%;
+  left: 7.5%;
+  display: flex;
+  height: 22.5%;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 1%;
+}
+
+.tool-button {
+  position: relative;
+  width: 22%;
+  min-width: 96px;
+  min-height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform .14s ease, filter .14s ease;
+}
+
+.tool-button > img {
+  position: absolute;
+  top: -8%;
+  left: 12%;
+  width: 76%;
+  height: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 5px rgba(55, 44, 28, .24));
+  transition: transform .16s ease;
+}
+
+.tool-button > span {
+  position: absolute;
+  right: 2%;
+  bottom: 12%;
+  left: 2%;
+  color: #234c3e;
+  font-size: clamp(15px, 2dvh, 23px);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(255, 224, 160, .65);
+}
+
+.tool-button.is-active > img {
+  transform: translateY(-8%) scale(1.1) rotate(-3deg);
+  filter: drop-shadow(0 9px 3px rgba(28, 93, 77, .33));
+}
+
+.tool-button:active {
+  transform: translateY(5px) scale(.96);
+}
+
+.tool-button.is-hinting {
+  animation: tool-pulse .72s ease-in-out 2;
+}
+
+.reset-button,
+.sail-button {
+  position: relative;
+  width: 25%;
+  height: 100%;
+}
+
+.sail-button {
+  display: none;
+}
+
+.play-screen.is-free .tool-button {
+  width: 19%;
+}
+
+.play-screen.is-free .reset-button,
+.play-screen.is-free .sail-button {
+  display: block;
+  width: 22%;
+}
+
+.play-screen.is-free .play-progress {
+  display: none;
+}
+
+.sail-button .sail-button-boat {
+  position: absolute;
+  z-index: 3;
+  top: -36%;
+  right: 29%;
+  width: 42%;
+  height: 65%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 3px rgba(19, 77, 88, .26));
+}
+
+/* Rewards --------------------------------------------------------------- */
+
+.reward-layer,
+.sailing-layer {
+  position: absolute;
+  z-index: 24;
+  top: 24%;
+  left: 7.7%;
+  width: 84.6%;
+  height: 48%;
+  pointer-events: none;
+}
+
+.reward-layer[hidden],
+.sailing-layer[hidden],
+.mystery-friend[hidden] {
+  display: none;
+}
+
+.reward-boat,
+.reward-fish,
+.reward-turtle,
+.sailing-boat,
+.sailing-fish,
+.sailing-turtle {
+  position: absolute;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 4px rgba(20, 78, 90, .25));
+}
+
+.reward-boat {
+  z-index: 2;
+  top: 40%;
+  left: 13%;
+  width: 21%;
+  height: 42%;
+  animation: boat-bob 1.9s ease-in-out infinite;
+}
+
+.reward-fish {
+  right: 16%;
+  bottom: 2%;
+  width: 15%;
+  height: 25%;
+  animation: friend-peek .45s .18s backwards;
+}
+
+.reward-turtle {
+  top: 3%;
+  right: 9%;
+  width: 17%;
+  height: 30%;
+  animation: friend-peek .5s .3s backwards;
+}
+
+.reward-plaque {
+  top: 1%;
+  left: 25%;
+  width: 50%;
+  height: 69%;
+}
+
+.reward-plaque h2 {
+  font-size: clamp(17px, 2.6dvh, 30px);
+}
+
+.continue-button {
+  right: 0;
+  bottom: -50%;
+  width: 32%;
+  height: 49%;
+  pointer-events: auto;
+}
+
+.sailing-layer {
+  overflow: hidden;
+  border-radius: 11% 10% 12% 10%;
+}
+
+.sailing-boat {
+  z-index: 3;
+  top: 28%;
+  left: -20%;
+  width: 20%;
+  height: 44%;
+}
+
+.sailing-fish {
+  right: 21%;
+  bottom: -3%;
+  width: 14%;
+  height: 25%;
+}
+
+.sailing-turtle {
+  top: -2%;
+  right: 5%;
+  width: 17%;
+  height: 29%;
+}
+
+.sailing-layer.is-sailing .sailing-boat {
+  animation: sail-across var(--sail-duration, 3s) cubic-bezier(.18, .53, .38, .88) both;
+}
+
+.sailing-layer.is-sailing .sailing-fish,
+.sailing-layer.is-sailing .sailing-turtle {
+  animation: friend-peek var(--sail-friend-duration, .5s) var(--sail-friend-delay, 1.65s) both;
+}
+
+/* End ------------------------------------------------------------------- */
+
+.end-plaque {
+  z-index: 5;
+  top: 6%;
+  left: 25%;
+  width: 50%;
+  height: 39%;
+}
+
+.end-plaque h2 {
+  font-size: clamp(22px, 3.5dvh, 40px);
+}
+
+.end-plaque p {
+  font-size: clamp(14px, 2dvh, 23px);
+}
+
+.end-card-row {
+  position: absolute;
+  z-index: 3;
+  top: 38%;
+  right: 11%;
+  left: 11%;
+  display: flex;
+  height: 34%;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.end-card {
+  position: relative;
+  width: 25%;
+  height: 100%;
+  animation: shelf-arrive .5s calc(var(--i, 0) * .08s) both;
+}
+
+.end-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 5px rgba(54, 40, 26, .21));
+}
+
+.end-card span {
+  position: absolute;
+  right: 12%;
+  bottom: 23%;
+  left: 12%;
+  color: #315345;
+  font-size: clamp(13px, 1.7dvh, 20px);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(255, 249, 215, .7);
+}
+
+.end-actions {
+  position: absolute;
+  z-index: 9;
+  right: 25%;
+  bottom: .6%;
+  left: 25%;
+  display: flex;
+  height: 22%;
+  justify-content: center;
+  gap: 5%;
+}
+
+.end-actions .plaque-button {
+  position: relative;
+  width: 48%;
+  height: 100%;
+}
+
+.end-boat,
+.end-turtle {
+  position: absolute;
+  z-index: 7;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 5px rgba(20, 75, 77, .24));
+}
+
+.end-boat {
+  right: 4%;
+  bottom: 1%;
+  width: 15%;
+  height: 27%;
+  animation: boat-bob 2s ease-in-out infinite;
+}
+
+.end-turtle {
+  bottom: 2%;
+  left: 6%;
+  width: 13%;
+  height: 24%;
+  animation: friend-peek .55s .25s backwards;
+}
+
+/* Motion ---------------------------------------------------------------- */
+
+@keyframes title-arrive {
+  from { opacity: 0; transform: translateY(-12%) scale(.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shelf-arrive {
+  from { opacity: 0; transform: translateY(25%) scale(.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes clay-breathe {
+  0%, 100% { transform: rotate(-1deg) scale(1); }
+  50% { transform: rotate(1deg) scale(1.025); }
+}
+
+@keyframes boat-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7%) rotate(2deg); }
+}
+
+@keyframes tool-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.09) translateY(-4%); }
+}
+
+@keyframes star-pop {
+  from { opacity: 0; transform: scale(.2) rotate(-28deg); }
+  to { opacity: 1; transform: scale(1) rotate(5deg); }
+}
+
+@keyframes friendly-wobble {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-4%) rotate(-2deg); }
+  70% { transform: translateX(4%) rotate(2deg); }
+}
+
+@keyframes friend-peek {
+  from { opacity: 0; transform: translateY(45%) scale(.72) rotate(9deg); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+@keyframes sail-across {
+  0% { transform: translateX(0) translateY(12%) rotate(-4deg); }
+  35% { transform: translateX(245%) translateY(-11%) rotate(2deg); }
+  70% { transform: translateX(430%) translateY(8%) rotate(-1deg); }
+  100% { transform: translateX(610%) translateY(-5%) rotate(3deg); }
+}
+
+@media (orientation: portrait) {
+  .tray-stage {
+    filter: drop-shadow(0 10px 18px rgba(80, 43, 24, .19));
+  }
+
+  .game-screen::before,
+  .game-screen::after {
+    position: absolute;
+    z-index: 0;
+    right: 0;
+    left: 0;
+    height: 20dvh;
+    background-image: url('../assets/scenes/tray.webp');
+    background-position: center top;
+    background-size: 133.333dvh 100dvh;
+    opacity: .16;
+    content: '';
+    pointer-events: none;
+  }
+
+  .game-screen::before { top: 0; }
+  .game-screen::after { bottom: 0; transform: rotate(180deg); }
+
+  .mode-plaque .qk-mode-title {
+    top: 28%;
+    font-size: clamp(17px, 2dvh, 22px);
+    line-height: .94;
+  }
+
+  .mode-plaque small {
+    top: 78%;
+    font-size: clamp(11px, 1.2dvh, 14px);
+  }
+
+  .tool-button > span {
+    font-size: clamp(14px, 1.65dvh, 20px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .prompt-plaque h2 { font-size: clamp(15px, 3.8dvh, 22px); }
+  .prompt-plaque p { font-size: clamp(10px, 2.2dvh, 14px); }
+  .mode-plaque .qk-mode-title { font-size: clamp(15px, 3.5dvh, 22px); }
+  .landform-card > span { font-size: clamp(16px, 4dvh, 25px); }
+  .tool-button > span { font-size: clamp(14px, 3.2dvh, 21px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

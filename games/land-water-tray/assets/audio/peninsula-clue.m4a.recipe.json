@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "peninsula-clue.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "A peninsula is land with water around three sides.",
+  "textHash": "5ec7c5d2b325c4fa",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "A peninsula is land with water around three sides."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

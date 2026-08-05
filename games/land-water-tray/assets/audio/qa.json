@@ -1,0 +1,488 @@
+{
+  "welcome": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Welcome, land explorer! Choose a way to play.",
+        "transcript": "Welcome Land Explorer. Choose a way to play.",
+        "duration": 2.899
+      }
+    ]
+  },
+  "guided-intro": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 0.98,
+        "coverage": 0.8,
+        "wanted": "Pick a landform to build.",
+        "transcript": "Pick a land form to build.",
+        "duration": 1.546
+      }
+    ]
+  },
+  "island-prompt": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Pour green land into the water. Make an island!",
+        "transcript": "Pour green land into the water. Make an island.",
+        "duration": 3.2
+      }
+    ]
+  },
+  "island-clue": {
+    "accepted": false,
+    "acceptedSeed": null,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": false,
+        "score": 0.988,
+        "coverage": 0.889,
+        "wanted": "An island is land with water all around it.",
+        "transcript": "And island is land with water all around it.",
+        "duration": 2.726
+      },
+      {
+        "seed": 8,
+        "accepted": false,
+        "score": 0.988,
+        "coverage": 0.889,
+        "wanted": "An island is land with water all around it.",
+        "transcript": "And island is land with water all around it.",
+        "duration": 2.796
+      },
+      {
+        "seed": 9,
+        "accepted": false,
+        "score": 0.988,
+        "coverage": 0.889,
+        "wanted": "An island is land with water all around it.",
+        "transcript": "And island is land with water all around it.",
+        "duration": 2.703
+      }
+    ]
+  },
+  "island-hint": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Keep the green land away from every edge.",
+        "transcript": "Keep the green land away from every edge.",
+        "duration": 2.49
+      }
+    ]
+  },
+  "lake-prompt": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Scoop water into the middle. Make a lake!",
+        "transcript": "Scoop water into the middle. Make a lake.",
+        "duration": 2.494
+      }
+    ]
+  },
+  "lake-clue": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "A lake is water with land all around it.",
+        "transcript": "A lake is water with land all around it.",
+        "duration": 2.476
+      }
+    ]
+  },
+  "lake-hint": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 0.987,
+        "coverage": 0.75,
+        "wanted": "Make one blue pool inside the green land.",
+        "transcript": "Make one blue pool inside the Greenland.",
+        "duration": 2.576
+      }
+    ]
+  },
+  "peninsula-prompt": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Pour land out from the shore. Make a peninsula!",
+        "transcript": "Pour land out from the shore. Make a peninsula.",
+        "duration": 2.842
+      }
+    ]
+  },
+  "peninsula-clue": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "A peninsula is land with water around three sides.",
+        "transcript": "A peninsula is land with water around three sides.",
+        "duration": 3.1
+      }
+    ]
+  },
+  "peninsula-hint": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Connect the new land to the shore.",
+        "transcript": "Connect the new land to the shore.",
+        "duration": 1.823
+      }
+    ]
+  },
+  "bay-prompt": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Scoop water into the shore. Make a bay!",
+        "transcript": "Scoop water into the shore. Make a bay.",
+        "duration": 2.787
+      }
+    ]
+  },
+  "bay-clue": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "A bay is water with land around three sides.",
+        "transcript": "A bay is water with land around three sides.",
+        "duration": 2.94
+      }
+    ]
+  },
+  "bay-hint": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Open the blue water to the edge.",
+        "transcript": "Open the blue water to the edge.",
+        "duration": 1.828
+      }
+    ]
+  },
+  "pour-tool": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Pour green land with your finger.",
+        "transcript": "Pour green land with your finger.",
+        "duration": 1.735
+      }
+    ]
+  },
+  "scoop-tool": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Scoop water through the land.",
+        "transcript": "Scoop water through the land.",
+        "duration": 1.746
+      }
+    ]
+  },
+  "made-island": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "You made an island! Water goes all the way around.",
+        "transcript": "You made an island. Water goes all the way around.",
+        "duration": 3.4
+      }
+    ]
+  },
+  "made-lake": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "You made a lake! Land goes all the way around.",
+        "transcript": "You made a lake! Land goes all the way around.",
+        "duration": 2.799
+      }
+    ]
+  },
+  "made-peninsula": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "You made a peninsula! It reaches out from the shore.",
+        "transcript": "You made a peninsula. It reaches out from the shore.",
+        "duration": 2.876
+      }
+    ]
+  },
+  "made-bay": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "You made a bay! Water reaches into the land.",
+        "transcript": "You made a bay! Water reaches into the land.",
+        "duration": 2.999
+      }
+    ]
+  },
+  "all-built": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 0.989,
+        "coverage": 0.857,
+        "wanted": "You built all four landforms. Amazing exploring!",
+        "transcript": "You built all four land forms. Amazing exploring.",
+        "duration": 3.4
+      }
+    ]
+  },
+  "mystery-intro": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Listen to the clue, then tap the matching landform.",
+        "transcript": "Listen to the clue, then tap the matching landform.",
+        "duration": 3.3
+      }
+    ]
+  },
+  "mystery-nudge": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Look closely at where the land meets the water.",
+        "transcript": "Look closely at where the land meets the water.",
+        "duration": 2.315
+      }
+    ]
+  },
+  "mystery-cheer": {
+    "accepted": true,
+    "acceptedSeed": 8,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": false,
+        "score": 0.923,
+        "coverage": 0.857,
+        "wanted": "That's it! You found the landform.",
+        "transcript": "That's it! You found the lamp form.",
+        "duration": 2.177
+      },
+      {
+        "seed": 8,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "That's it! You found the landform.",
+        "transcript": "That's it! You found the landform.",
+        "duration": 2.367
+      }
+    ]
+  },
+  "free-intro": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Build any coast you can imagine. Pour land or scoop water.",
+        "transcript": "Build any coast you can imagine. Pour land or scoop water.",
+        "duration": 4.1
+      }
+    ]
+  },
+  "sail-nudge": {
+    "accepted": true,
+    "acceptedSeed": 8,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": false,
+        "score": 0.941,
+        "coverage": 0.667,
+        "wanted": "Add a little more land, then launch your boat.",
+        "transcript": "Add a little more land than lunch or boat.",
+        "duration": 2.636
+      },
+      {
+        "seed": 8,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Add a little more land, then launch your boat.",
+        "transcript": "Add a little more land, then launch your boat.",
+        "duration": 2.503
+      }
+    ]
+  },
+  "sail-ready": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Your little boat is ready to explore!",
+        "transcript": "Your little boat is ready to explore.",
+        "duration": 1.986
+      }
+    ]
+  },
+  "new-coast": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "You made a brand-new coast. Let's sail around it!",
+        "transcript": "You made a brand new coast. Let's sail around it.",
+        "duration": 2.755
+      }
+    ]
+  },
+  "idle": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Touch the green clay, or choose the wooden scoop.",
+        "transcript": "Touch the green clay or choose the wooden scoop.",
+        "duration": 2.796
+      }
+    ]
+  },
+  "again": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Ready to explore another shape?",
+        "transcript": "Ready to explore another shape?",
+        "duration": 1.5
+      }
+    ]
+  }
+}

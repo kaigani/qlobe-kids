@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "bay-clue.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "A bay is water with land around three sides.",
+  "textHash": "d9ee4b178b03b5fa",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "A bay is water with land around three sides."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

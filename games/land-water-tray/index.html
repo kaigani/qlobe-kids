@@ -1,46 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#078b88" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Land &amp; Water Tray 🏝️ — Building Islands and Lakes</title>
-  <meta name="description" content="Drag land and water pieces into place to build islands, lakes, peninsulas, and bays, hearing each landform named aloud. A hands-on Montessori-style toy for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Land &amp; Water Tray" />
-  <meta property="og:title" content="Land &amp; Water Tray 🏝️ — Building Islands and Lakes" />
-  <meta property="og:description" content="Drag land and water pieces into place to build islands, lakes, peninsulas, and bays, hearing each landform named aloud. A hands-on Montessori-style toy for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/land-water-tray/" />
-  <meta property="og:image" content="https://qlo.be/games/land-water-tray/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Land &amp; Water Tray title screen with a Make the Landform button below a palm tree island icon." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Land &amp; Water Tray 🏝️ — Building Islands and Lakes" />
-  <meta name="twitter:description" content="Drag land and water pieces into place to build islands, lakes, peninsulas, and bays, hearing each landform named aloud. A hands-on Montessori-style toy for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/land-water-tray/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <title>Land Explorer</title>
+  <meta name="description" content="Shape green clay and blue water into islands, lakes, peninsulas, and bays." />
+  <meta property="og:type" content="website" /><meta property="og:site_name" content="Land Explorer" /><meta property="og:title" content="Land Explorer" /><meta property="og:description" content="Shape green clay and blue water into landforms." /><meta property="og:url" content="https://qlo.be/games/land-water-tray/" /><meta property="og:image" content="https://qlo.be/games/land-water-tray/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Land Explorer" /><meta name="twitter:description" content="Shape green clay and blue water into landforms." /><meta name="twitter:image" content="https://qlo.be/games/land-water-tray/assets/og-image.jpg" />
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" /><link rel="stylesheet" href="../../shared/css/base.css" /><link rel="stylesheet" href="../../shared/css/screens.css" /><link rel="stylesheet" href="../../shared/css/hud.css" /><link rel="stylesheet" href="./css/style.css" />
 </head>
-<body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
-</body>
+<body><main id="game" aria-label="Land Explorer"></main><script type="module" src="./js/main.js"></script></body>
 </html>

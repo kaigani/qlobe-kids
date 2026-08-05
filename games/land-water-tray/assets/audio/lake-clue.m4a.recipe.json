@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "lake-clue.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "A lake is water with land all around it.",
+  "textHash": "d296cafc4617388c",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "A lake is water with land all around it."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

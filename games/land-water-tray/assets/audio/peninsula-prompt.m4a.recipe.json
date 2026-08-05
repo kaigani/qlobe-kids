@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "peninsula-prompt.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Pour land out from the shore. Make a peninsula!",
+  "textHash": "3ce13e93cb4d95f9",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Pour land out from the shore. Make a peninsula."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

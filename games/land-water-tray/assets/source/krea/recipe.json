@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "land-explorer-hub-seed42",
+  "kind": "image",
+  "asset": "land-explorer-hub-seed42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A centered miniature Montessori beech land-and-water tray filled with glossy blue resin water, a tactile green clay island in the middle, a child-safe wooden scoop resting beside it, and a tiny red-and-cream sailboat exploring the shore. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "A centered miniature Montessori beech land-and-water tray filled with glossy blue resin water, a tactile green clay island in the middle, a child-safe wooden scoop resting beside it, and a tiny red-and-cream sailboat exploring the shore."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-04"
+}
