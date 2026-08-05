@@ -1,0 +1,517 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "cozy-sheet",
+  "source": "assets/source/local-api/raw/cozy-sheet.png",
+  "sourceSha256": "6082eb253e61cb56221741d5e9864ffad388a84f0e1a4183a0349e50ef376a8f",
+  "jobSha256": "1f28a7d35d58c597e1a84bdc730e693acea8da548a110ce4bead127b75e4c8bb",
+  "generatedAt": "2026-08-05T16:08:17Z",
+  "runtime": [
+    {
+      "id": "felt-circle-teal",
+      "path": "assets/pieces/cozy/felt-circle-teal.webp",
+      "bytes": 112382,
+      "kilobytes": 109.7,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "felt-petal-purple",
+      "path": "assets/pieces/cozy/felt-petal-purple.webp",
+      "bytes": 71786,
+      "kilobytes": 70.1,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "felt-spiral-coral",
+      "path": "assets/pieces/cozy/felt-spiral-coral.webp",
+      "bytes": 118686,
+      "kilobytes": 115.9,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "ribbon-bow-yellow",
+      "path": "assets/pieces/cozy/ribbon-bow-yellow.webp",
+      "bytes": 82400,
+      "kilobytes": 80.5,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "lace-loop-cream",
+      "path": "assets/pieces/cozy/lace-loop-cream.webp",
+      "bytes": 85404,
+      "kilobytes": 83.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "pompom-pink",
+      "path": "assets/pieces/cozy/pompom-pink.webp",
+      "bytes": 100020,
+      "kilobytes": 97.7,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "08fa6876f33148d8ae5698d83af38673"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: felt circle teal, felt petal purple, felt spiral coral, ribbon bow yellow, lace loop cream, pompom pink. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/cozy-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 96.316,
+    "opaqueCorePct": 2.673,
+    "partialPct": 1.011,
+    "bbox": [
+      25,
+      81,
+      1014,
+      621
+    ],
+    "bboxCoverage": 0.767,
+    "alphaFill": 0.048,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "felt-circle-teal": {
+      "transparentPct": 94.572,
+      "opaqueCorePct": 4.606,
+      "partialPct": 0.822,
+      "bbox": [
+        101,
+        89,
+        322,
+        310
+      ],
+      "bboxCoverage": 0.0701,
+      "alphaFill": 0.7738,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 75.624,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "felt-petal-purple": {
+      "transparentPct": 95.77,
+      "opaqueCorePct": 3.478,
+      "partialPct": 0.752,
+      "bbox": [
+        443,
+        75,
+        606,
+        327
+      ],
+      "bboxCoverage": 0.059,
+      "alphaFill": 0.7171,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 75.789,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "felt-spiral-coral": {
+      "transparentPct": 94.03,
+      "opaqueCorePct": 4.74,
+      "partialPct": 1.23,
+      "bbox": [
+        720,
+        82,
+        943,
+        322
+      ],
+      "bboxCoverage": 0.0769,
+      "alphaFill": 0.7767,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 66.745,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "ribbon-bow-yellow": {
+      "transparentPct": 94.462,
+      "opaqueCorePct": 4.278,
+      "partialPct": 1.261,
+      "bbox": [
+        77,
+        399,
+        356,
+        607
+      ],
+      "bboxCoverage": 0.0833,
+      "alphaFill": 0.6645,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 86.423,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "lace-loop-cream": {
+      "transparentPct": 96.084,
+      "opaqueCorePct": 2.931,
+      "partialPct": 0.985,
+      "bbox": [
+        434,
+        378,
+        613,
+        626
+      ],
+      "bboxCoverage": 0.0638,
+      "alphaFill": 0.6143,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 28.754,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "pompom-pink": {
+      "transparentPct": 91.942,
+      "opaqueCorePct": 4.393,
+      "partialPct": 3.665,
+      "bbox": [
+        716,
+        387,
+        994,
+        673
+      ],
+      "bboxCoverage": 0.1142,
+      "alphaFill": 0.7057,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 52.737,
+      "componentCleanup": {
+        "components": 4,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "08fa6876f33148d8ae5698d83af38673",
+      "selectedSource": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "08fa6876f33148d8ae5698d83af38673",
+      "source": "assets/source/local-api/layered/cozy-sheet-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 66.009,
+        "opaqueCorePct": 24.427,
+        "partialPct": 9.564,
+        "bbox": [
+          77,
+          75,
+          1005,
+          680
+        ],
+        "bboxCoverage": 0.8063,
+        "alphaFill": 0.4216,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "felt-circle-teal": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 94.572,
+            "opaqueCorePct": 4.606,
+            "partialPct": 0.822,
+            "bbox": [
+              101,
+              89,
+              322,
+              310
+            ],
+            "bboxCoverage": 0.0701,
+            "alphaFill": 0.7738,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 75.624,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "felt-petal-purple": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.77,
+            "opaqueCorePct": 3.478,
+            "partialPct": 0.752,
+            "bbox": [
+              443,
+              75,
+              606,
+              327
+            ],
+            "bboxCoverage": 0.059,
+            "alphaFill": 0.7171,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 75.789,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "felt-spiral-coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 94.03,
+            "opaqueCorePct": 4.74,
+            "partialPct": 1.23,
+            "bbox": [
+              720,
+              82,
+              943,
+              322
+            ],
+            "bboxCoverage": 0.0769,
+            "alphaFill": 0.7767,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 66.745,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "ribbon-bow-yellow": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 94.462,
+            "opaqueCorePct": 4.278,
+            "partialPct": 1.261,
+            "bbox": [
+              77,
+              399,
+              356,
+              607
+            ],
+            "bboxCoverage": 0.0833,
+            "alphaFill": 0.6645,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 86.423,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "lace-loop-cream": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.084,
+            "opaqueCorePct": 2.931,
+            "partialPct": 0.985,
+            "bbox": [
+              434,
+              378,
+              613,
+              626
+            ],
+            "bboxCoverage": 0.0638,
+            "alphaFill": 0.6143,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 28.754,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pompom-pink": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 91.942,
+            "opaqueCorePct": 4.393,
+            "partialPct": 3.665,
+            "bbox": [
+              716,
+              387,
+              994,
+              673
+            ],
+            "bboxCoverage": 0.1142,
+            "alphaFill": 0.7057,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 52.737,
+            "componentCleanup": {
+              "components": 4,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/cozy-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/cozy-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

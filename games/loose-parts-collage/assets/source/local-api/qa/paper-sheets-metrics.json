@@ -1,0 +1,298 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "paper-sheets",
+  "source": "assets/source/local-api/raw/paper-sheets.png",
+  "sourceSha256": "e97c072ef69c12c71166a330948d4c0b090df413efc78c8c1ca7eabb7df5b7ca",
+  "jobSha256": "fc1915969d5bf1a1a0b064e7b7daeeed5ab93f3df36a26ad0c9aaa70449c9c25",
+  "generatedAt": "2026-08-05T15:56:24Z",
+  "runtime": [
+    {
+      "id": "cream",
+      "path": "assets/paper/cream.webp",
+      "bytes": 62368,
+      "kilobytes": 60.9,
+      "encoding": "lossy",
+      "quality": 92
+    },
+    {
+      "id": "sky",
+      "path": "assets/paper/sky.webp",
+      "bytes": 62956,
+      "kilobytes": 61.5,
+      "encoding": "lossy",
+      "quality": 92
+    },
+    {
+      "id": "blush",
+      "path": "assets/paper/blush.webp",
+      "bytes": 63384,
+      "kilobytes": 61.9,
+      "encoding": "lossy",
+      "quality": 92
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: cream, sky, blush. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/paper-sheets.layer2.png",
+  "sourceSize": [
+    1536,
+    768
+  ],
+  "layerSize": [
+    1024,
+    512
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 95.277,
+    "opaqueCorePct": 4.228,
+    "partialPct": 0.496,
+    "bbox": [
+      25,
+      207,
+      1001,
+      306
+    ],
+    "bboxCoverage": 0.1843,
+    "alphaFill": 0.2563,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "cream": {
+      "transparentPct": 85.787,
+      "opaqueCorePct": 12.814,
+      "partialPct": 1.399,
+      "bbox": [
+        73,
+        110,
+        329,
+        407
+      ],
+      "bboxCoverage": 0.145,
+      "alphaFill": 0.9801,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 7.887,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/paper-sheets-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "sky": {
+      "transparentPct": 85.622,
+      "opaqueCorePct": 12.843,
+      "partialPct": 1.534,
+      "bbox": [
+        384,
+        110,
+        642,
+        407
+      ],
+      "bboxCoverage": 0.1462,
+      "alphaFill": 0.9837,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 11.036,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/paper-sheets-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "blush": {
+      "transparentPct": 85.638,
+      "opaqueCorePct": 12.825,
+      "partialPct": 1.537,
+      "bbox": [
+        696,
+        110,
+        955,
+        407
+      ],
+      "bboxCoverage": 0.1467,
+      "alphaFill": 0.9789,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 13.471,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/paper-sheets-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/paper-sheets-seed42.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 56.815,
+        "opaqueCorePct": 38.482,
+        "partialPct": 4.703,
+        "bbox": [
+          72,
+          109,
+          956,
+          409
+        ],
+        "bboxCoverage": 0.5058,
+        "alphaFill": 0.8537,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "cream": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 85.787,
+            "opaqueCorePct": 12.814,
+            "partialPct": 1.399,
+            "bbox": [
+              73,
+              110,
+              329,
+              407
+            ],
+            "bboxCoverage": 0.145,
+            "alphaFill": 0.9801,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 7.887,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 41,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 85.622,
+            "opaqueCorePct": 12.843,
+            "partialPct": 1.534,
+            "bbox": [
+              384,
+              110,
+              642,
+              407
+            ],
+            "bboxCoverage": 0.1462,
+            "alphaFill": 0.9837,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 11.036,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 41,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "blush": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 85.638,
+            "opaqueCorePct": 12.825,
+            "partialPct": 1.537,
+            "bbox": [
+              696,
+              110,
+              955,
+              407
+            ],
+            "bboxCoverage": 0.1467,
+            "alphaFill": 0.9789,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 13.471,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 41,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/paper-sheets-magenta.png",
+    "contact": "assets/source/local-api/qa/paper-sheets-contact.png",
+    "status": "human-approved"
+  }
+}

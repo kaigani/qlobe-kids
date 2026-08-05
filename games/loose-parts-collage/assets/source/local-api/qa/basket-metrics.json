@@ -1,0 +1,302 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "basket",
+  "source": "assets/source/local-api/raw/basket.png",
+  "sourceSha256": "c1eb3ef35b770044dc651f68383f08e00b5d951792fbeab7ea0f692eafbc2cd5",
+  "jobSha256": "a84afa08c23da10f1cbae1b6eefd1f4932bda05559d73fb6b7d08b35646287e4",
+  "generatedAt": "2026-08-05T17:16:10Z",
+  "runtime": [
+    {
+      "id": "basket",
+      "path": "assets/ui/basket.webp",
+      "bytes": 272056,
+      "kilobytes": 265.7,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "16361f9ab5234733b02b904a056e3404"
+  ],
+  "seeds": [
+    7
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: basket. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/basket.layer2.png",
+  "sourceSize": [
+    1536,
+    512
+  ],
+  "layerSize": [
+    1024,
+    336
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 69.7,
+    "opaqueCorePct": 11.046,
+    "partialPct": 19.254,
+    "bbox": [
+      171,
+      66,
+      845,
+      304
+    ],
+    "bboxCoverage": 0.4662,
+    "alphaFill": 0.6499,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": [
+      "alpha-partial-band>2%"
+    ]
+  },
+  "cells": {
+    "basket": {
+      "transparentPct": 69.7,
+      "opaqueCorePct": 11.046,
+      "partialPct": 19.254,
+      "bbox": [
+        171,
+        66,
+        845,
+        304
+      ],
+      "bboxCoverage": 0.4662,
+      "alphaFill": 0.6499,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 48.793,
+      "componentCleanup": {
+        "components": 223,
+        "keptComponents": 30,
+        "minimumCorePixels": 27,
+        "removedAlphaPixels": 838
+      },
+      "selectedSeed": 7,
+      "selectedJobId": "16361f9ab5234733b02b904a056e3404",
+      "selectedSource": "assets/source/local-api/layered/basket-seed7.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_0-minus-layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "800927e6e7934a98bad244ce5b4f0a3b",
+      "source": "assets/source/local-api/layered/basket-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 90.925,
+        "opaqueCorePct": 0.0,
+        "partialPct": 9.075,
+        "bbox": [
+          13,
+          5,
+          1024,
+          330
+        ],
+        "bboxCoverage": 0.955,
+        "alphaFill": 0.095,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "basket": {
+          "accepted": false,
+          "error": "basket: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.833,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.167,
+            "bbox": [
+              1012,
+              45,
+              1024,
+              139
+            ],
+            "bboxCoverage": 0.0033,
+            "alphaFill": 0.5098,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": "2fdef3fd2d1045a2935dda10364f1555",
+      "source": "assets/source/local-api/layered/basket-seed1337.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 100.0,
+        "opaqueCorePct": 0.0,
+        "partialPct": 0.0,
+        "bbox": null,
+        "bboxCoverage": 0,
+        "alphaFill": 0,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "basket": {
+          "accepted": false,
+          "error": "basket: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 9001,
+      "jobId": "b5978dc1a61f47089c8d5e32347fea76",
+      "source": "assets/source/local-api/layered/basket-seed9001.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 88.053,
+        "opaqueCorePct": 0.0,
+        "partialPct": 11.947,
+        "bbox": [
+          330,
+          11,
+          1024,
+          336
+        ],
+        "bboxCoverage": 0.6555,
+        "alphaFill": 0.1822,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          11
+        ]
+      },
+      "cells": {
+        "basket": {
+          "accepted": false,
+          "error": "basket: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "jobId": "16361f9ab5234733b02b904a056e3404",
+      "source": "assets/source/local-api/layered/basket-seed7.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_0-minus-layer_2",
+      "fullAlpha": {
+        "transparentPct": 69.457,
+        "opaqueCorePct": 11.046,
+        "partialPct": 19.497,
+        "bbox": [
+          36,
+          66,
+          845,
+          322
+        ],
+        "bboxCoverage": 0.6019,
+        "alphaFill": 0.5074,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "basket": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 69.7,
+            "opaqueCorePct": 11.046,
+            "partialPct": 19.254,
+            "bbox": [
+              171,
+              66,
+              845,
+              304
+            ],
+            "bboxCoverage": 0.4662,
+            "alphaFill": 0.6499,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 48.793,
+            "componentCleanup": {
+              "components": 223,
+              "keptComponents": 30,
+              "minimumCorePixels": 27,
+              "removedAlphaPixels": 838
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/basket-magenta.png",
+    "contact": "assets/source/local-api/qa/basket-contact.png",
+    "status": "human-approved"
+  }
+}

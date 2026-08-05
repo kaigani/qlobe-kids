@@ -1,0 +1,30 @@
+{
+  "format": "qlobe-local-edit-recipe",
+  "formatVersion": 1,
+  "pipelineVersion": 1,
+  "assetId": "ui-sheet/bigger",
+  "sourcePath": "assets/source/local-api/slices/ui-sheet/bigger.png",
+  "sourceSha256": "4d4bb5054318c2c70db63c742d3ee8acbd19e7aaa3cda62f52e37afe627c2083",
+  "source": "local-lan-api",
+  "workflow": "qwen-image-edit",
+  "seed": 42,
+  "prompt": "Change only the dark-charcoal background to a perfectly flat solid saturated chroma-magenta background. Keep the complete circular papercraft badge identical in shape, scale, position, colors, material texture, physical shadows, cream outer rim, every backing layer, and central glyph. Do not redraw, crop, enlarge, move, recolor, add, or remove any part of the badge. No gradient, texture, vignette, cast shadow, border, or extra object in the magenta background.",
+  "quality": {
+    "dimensions": [
+      944,
+      1104
+    ],
+    "cornerMeanRgb": [
+      206.86,
+      17.72,
+      110.38
+    ],
+    "cornerStddevRgb": [
+      1.49,
+      1.38,
+      1.34
+    ]
+  },
+  "outputSha256": "81395d69d7f18022481cbcc61ce8f4ea11e677f8654943b10bddb4e99f4a6d1d",
+  "visualQa": "human-approved"
+}

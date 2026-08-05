@@ -1,0 +1,582 @@
+{
+  "welcome": {
+    "accepted": true,
+    "text": "Welcome, little artist! Pick something lovely to make.",
+    "textHash": "37ce084c7856b796",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Welcome, little artist! Pick something lovely to make.",
+        "transcript": "Welcome, little artist! Pick something lovely to make!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.5,
+        "recipe": "assets/source/local-api/voice/welcome-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Welcome, little artist! Pick something lovely to make!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 3.5
+  },
+  "choose": {
+    "accepted": true,
+    "text": "Collage, yarn, or a Teddy idea. You choose.",
+    "textHash": "1147f41dc751d278",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Collage, yarn, or a Teddy idea. You choose.",
+        "transcript": "Collage, yarn, or a teddy idea? You choose!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.5,
+        "recipe": "assets/source/local-api/voice/choose-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Collage, yarn, or a teddy idea? You choose!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 3.5
+  },
+  "collage-label": {
+    "accepted": true,
+    "text": "Free Collage.",
+    "textHash": "cebc638aaf98491b",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 1337,
+        "status": "accepted",
+        "text": "Free Collage.",
+        "transcript": "Free collage!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 0.943,
+        "recipe": "assets/source/local-api/voice/collage-label-seed1337.recipe.json"
+      }
+    ],
+    "seed": 1337,
+    "transcript": "Free collage!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 0.943
+  },
+  "collage-prompt": {
+    "accepted": true,
+    "text": "Choose any treasures. Drag, turn, and layer them your way.",
+    "textHash": "b9047eb51ce75478",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Choose any treasures. Drag, turn, and layer them your way.",
+        "transcript": "Choose any treasures. Drag, turn, and layer them your way.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 4.5,
+        "recipe": "assets/source/local-api/voice/collage-prompt-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Choose any treasures. Drag, turn, and layer them your way.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 4.5
+  },
+  "yarn-label": {
+    "accepted": true,
+    "text": "Yarn Magic.",
+    "textHash": "76a1f4c03db1c835",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Yarn Magic.",
+        "transcript": "Yarn Magic",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.038,
+        "recipe": "assets/source/local-api/voice/yarn-label-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Yarn Magic",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.038
+  },
+  "yarn-prompt": {
+    "accepted": true,
+    "text": "Let your finger spin a soft yarn trail. Loop, swirl, or wiggle.",
+    "textHash": "362dc58f7f874bd6",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 7,
+        "status": "accepted",
+        "text": "Let your finger spin a soft yarn trail. Loop, swirl, or wiggle.",
+        "transcript": "Let your finger spin a soft yarn trail, loop, swirl, or wiggle.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 4.2,
+        "recipe": "assets/source/local-api/voice/yarn-prompt-seed7.recipe.json"
+      }
+    ],
+    "seed": 7,
+    "transcript": "Let your finger spin a soft yarn trail, loop, swirl, or wiggle.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 4.2
+  },
+  "teddy-label": {
+    "accepted": true,
+    "text": "Teddy's Idea.",
+    "textHash": "12d7cff62450b774",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 7,
+        "status": "accepted",
+        "text": "Teddy's Idea.",
+        "transcript": "Teddy's idea.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 0.874,
+        "recipe": "assets/source/local-api/voice/teddy-label-seed7.recipe.json"
+      }
+    ],
+    "seed": 7,
+    "transcript": "Teddy's idea.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 0.874
+  },
+  "teddy-prompt": {
+    "accepted": true,
+    "text": "I have a tiny idea for you. Make it any way you imagine.",
+    "textHash": "c6533b9bb247cc68",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "I have a tiny idea for you. Make it any way you imagine.",
+        "transcript": "I have a tiny idea for you. Make it any way you imagine.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.8,
+        "recipe": "assets/source/local-api/voice/teddy-prompt-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "I have a tiny idea for you. Make it any way you imagine.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 3.8
+  },
+  "idea-grow": {
+    "accepted": true,
+    "text": "Can you make something that grows?",
+    "textHash": "eb5aee210fea5f95",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Can you make something that grows?",
+        "transcript": "Can you make something that grows?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.826,
+        "recipe": "assets/source/local-api/voice/idea-grow-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Can you make something that grows?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.826
+  },
+  "idea-fly": {
+    "accepted": true,
+    "text": "Can you make something that can fly?",
+    "textHash": "7b298d3035dbe7ee",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Can you make something that can fly?",
+        "transcript": "Can you make something that can fly?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.735,
+        "recipe": "assets/source/local-api/voice/idea-fly-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Can you make something that can fly?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.735
+  },
+  "idea-face": {
+    "accepted": true,
+    "text": "Can you make a funny face?",
+    "textHash": "4a074010ddddfd80",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Can you make a funny face?",
+        "transcript": "Can you make a funny face?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.437,
+        "recipe": "assets/source/local-api/voice/idea-face-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Can you make a funny face?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.437
+  },
+  "idea-pattern": {
+    "accepted": true,
+    "text": "Can you make a repeating pattern?",
+    "textHash": "2916aa9a477f7eb0",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Can you make a repeating pattern?",
+        "transcript": "Can you make a repeating pattern?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.467,
+        "recipe": "assets/source/local-api/voice/idea-pattern-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Can you make a repeating pattern?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.467
+  },
+  "empty": {
+    "accepted": true,
+    "text": "Your paper is waiting. Pick a treasure or draw a yarn trail.",
+    "textHash": "cb78f8b26056db15",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Your paper is waiting. Pick a treasure or draw a yarn trail.",
+        "transcript": "Your paper is waiting. Pick a treasure or draw a yarn trail.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 4.4,
+        "recipe": "assets/source/local-api/voice/empty-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Your paper is waiting. Pick a treasure or draw a yarn trail.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 4.4
+  },
+  "finish-ready": {
+    "accepted": true,
+    "text": "Whenever your art feels ready, tap the golden star.",
+    "textHash": "5b6df63d6e5ec5c9",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Whenever your art feels ready, tap the golden star.",
+        "transcript": "Whenever your art feels ready, tap the golden star.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.6,
+        "recipe": "assets/source/local-api/voice/finish-ready-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Whenever your art feels ready, tap the golden star.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 3.6
+  },
+  "fresh": {
+    "accepted": true,
+    "text": "Fresh paper. A brand-new beginning.",
+    "textHash": "67770bd8abefda27",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Fresh paper. A brand-new beginning.",
+        "transcript": "Fresh Paper, a brand new beginning.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.299,
+        "recipe": "assets/source/local-api/voice/fresh-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Fresh Paper, a brand new beginning.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 2.299
+  },
+  "saved": {
+    "accepted": true,
+    "text": "Your art is safe on this device.",
+    "textHash": "54c7bd67d1bc4f90",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Your art is safe on this device.",
+        "transcript": "Your art is safe on this device.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.177,
+        "recipe": "assets/source/local-api/voice/saved-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Your art is safe on this device.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 2.177
+  },
+  "done": {
+    "accepted": true,
+    "text": "Oh, I love what you made!",
+    "textHash": "9e968317c65a816a",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Oh, I love what you made!",
+        "transcript": "Oh, I love what you made!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.657,
+        "recipe": "assets/source/local-api/voice/done-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Oh, I love what you made!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.657
+  },
+  "gallery": {
+    "accepted": true,
+    "text": "Here are your little masterpieces.",
+    "textHash": "7d001a5fe1e83d8c",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Here are your little masterpieces.",
+        "transcript": "Here are your little masterpieces!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.861,
+        "recipe": "assets/source/local-api/voice/gallery-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Here are your little masterpieces!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.861
+  },
+  "gallery-empty": {
+    "accepted": true,
+    "text": "Your gallery is ready for its first masterpiece.",
+    "textHash": "55e6acecf3490558",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Your gallery is ready for its first masterpiece.",
+        "transcript": "Your gallery is ready for its first masterpiece.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.795,
+        "recipe": "assets/source/local-api/voice/gallery-empty-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Your gallery is ready for its first masterpiece.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 2.795
+  },
+  "resume": {
+    "accepted": true,
+    "text": "Your artwork is right where you left it.",
+    "textHash": "ceda8ad1e1ed9903",
+    "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "pipelineVersion": 2,
+    "verifierVersion": 2,
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "whisperModel": "medium",
+    "whisperConditioning": "none",
+    "attempts": [
+      {
+        "seed": 42,
+        "status": "accepted",
+        "text": "Your artwork is right where you left it.",
+        "transcript": "Your artwork is right where you left it.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.997,
+        "recipe": "assets/source/local-api/voice/resume-seed42.recipe.json"
+      }
+    ],
+    "seed": 42,
+    "transcript": "Your artwork is right where you left it.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "duration": 1.997
+  }
+}

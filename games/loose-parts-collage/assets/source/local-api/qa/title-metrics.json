@@ -1,0 +1,158 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "title",
+  "source": "assets/source/local-api/raw/title.png",
+  "sourceSha256": "a45a843ce6e6b96307cd93f26408ff9b1c3e8f22998c3f6b8cb7e2925e23f73d",
+  "jobSha256": "65bae1783bdb990c8b818959cd9105c02fe8255d6c45b07b3feb1c65ced786d7",
+  "generatedAt": "2026-08-05T17:29:21Z",
+  "runtime": [
+    {
+      "id": "title",
+      "path": "assets/title.webp",
+      "bytes": 195374,
+      "kilobytes": 190.8,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "86bf07a9eb7744a0ba491b9469a47770"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: title. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/title.layer2.png",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "layerSize": [
+    1024,
+    768
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 89.895,
+    "opaqueCorePct": 8.869,
+    "partialPct": 1.236,
+    "bbox": [
+      236,
+      242,
+      784,
+      520
+    ],
+    "bboxCoverage": 0.1937,
+    "alphaFill": 0.5216,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "title": {
+      "transparentPct": 89.895,
+      "opaqueCorePct": 8.869,
+      "partialPct": 1.236,
+      "bbox": [
+        236,
+        242,
+        784,
+        520
+      ],
+      "bboxCoverage": 0.1937,
+      "alphaFill": 0.5216,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 46.411,
+      "componentCleanup": {
+        "components": 11,
+        "keptComponents": 11,
+        "minimumCorePixels": 62,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "86bf07a9eb7744a0ba491b9469a47770",
+      "selectedSource": "assets/source/local-api/layered/title-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "86bf07a9eb7744a0ba491b9469a47770",
+      "source": "assets/source/local-api/layered/title-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 89.895,
+        "opaqueCorePct": 8.869,
+        "partialPct": 1.236,
+        "bbox": [
+          236,
+          242,
+          784,
+          520
+        ],
+        "bboxCoverage": 0.1937,
+        "alphaFill": 0.5216,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "title": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 89.895,
+            "opaqueCorePct": 8.869,
+            "partialPct": 1.236,
+            "bbox": [
+              236,
+              242,
+              784,
+              520
+            ],
+            "bboxCoverage": 0.1937,
+            "alphaFill": 0.5216,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 46.411,
+            "componentCleanup": {
+              "components": 11,
+              "keptComponents": 11,
+              "minimumCorePixels": 62,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/title-magenta.png",
+    "contact": "assets/source/local-api/qa/title-contact.png",
+    "status": "human-approved"
+  }
+}

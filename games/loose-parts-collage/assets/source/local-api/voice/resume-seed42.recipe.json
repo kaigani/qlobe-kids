@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-local-voice-recipe",
+  "formatVersion": 1,
+  "pipelineVersion": 2,
+  "key": "resume",
+  "source": "local-lan-api",
+  "workflow": "qwen3-tts-voiceclone",
+  "voiceReference": "platform-teacher",
+  "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 42,
+  "text": "Your artwork is right where you left it.",
+  "textHash": "ceda8ad1e1ed9903",
+  "raw": "assets/source/local-api/voice/resume-seed42.flac",
+  "candidate": "assets/source/local-api/voice/resume-seed42.m4a",
+  "duration": 1.997,
+  "generatedAt": "2026-08-05T19:06:38Z"
+}

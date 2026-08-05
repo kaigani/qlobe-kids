@@ -84,12 +84,17 @@ export function createFreeformBoard(container, {
   }
 
   function select(id) {
-    if (selected && items.has(selected)) items.get(selected).el.classList.remove('is-selected');
+    if (selected && items.has(selected)) {
+      const previous = items.get(selected).el;
+      previous.classList.remove('is-selected');
+      previous.setAttribute('aria-pressed', 'false');
+    }
     selected = items.has(id) ? id : null;
     if (selected) {
       const item = items.get(selected);
       item.z = ++nextZ;
       item.el.classList.add('is-selected');
+      item.el.setAttribute('aria-pressed', 'true');
       applyTransform(item);
       onSelect(serializable(item));
     } else {
@@ -163,6 +168,16 @@ export function createFreeformBoard(container, {
     onGrab(serializable(item));
   }
 
+  // Native buttons emit detail=0 clicks for keyboard and assistive-technology
+  // activation. Pointer selection is already handled on pointerdown so a drag
+  // can start immediately; limiting this path avoids selecting/lifting twice
+  // after an ordinary tap or mouse click.
+  function keyboardActivate(event) {
+    if (!interactive || event.detail !== 0) return;
+    const item = items.get(event.currentTarget.dataset.freeformId);
+    if (item) select(item.id);
+  }
+
   function pointerMove(event) {
     if (!active || event.pointerId !== active.pointerId) return;
     event.preventDefault();
@@ -212,12 +227,16 @@ export function createFreeformBoard(container, {
     el.className = 'qlobe-freeform-piece';
     el.dataset.freeformId = item.id;
     el.setAttribute('aria-label', item.alt || item.kind || 'clay decoration');
+    if (interactive) el.setAttribute('aria-pressed', 'false');
     const image = document.createElement('img');
     image.src = item.src;
     image.alt = '';
     image.draggable = false;
     el.append(image);
-    if (interactive) el.addEventListener('pointerdown', pointerDown, { passive: false });
+    if (interactive) {
+      el.addEventListener('pointerdown', pointerDown, { passive: false });
+      el.addEventListener('click', keyboardActivate);
+    }
     return el;
   }
 

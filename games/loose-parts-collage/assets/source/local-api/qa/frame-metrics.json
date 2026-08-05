@@ -1,0 +1,211 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "frame",
+  "source": "assets/source/local-api/raw/frame.png",
+  "sourceSha256": "c87c12ae2bdd11cbd9249491ecac4da08b2e64f1882a476b01a7ff4a740d024e",
+  "jobSha256": "c5828debaca0012f180430d8c80c1ea2da4b6bc1d3c98a668c3862d11fe1421d",
+  "generatedAt": "2026-08-05T17:21:07Z",
+  "runtime": [
+    {
+      "id": "frame",
+      "path": "assets/ui/frame.webp",
+      "bytes": 105038,
+      "kilobytes": 102.6,
+      "encoding": "lossy",
+      "quality": 92
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "ff027d2e3cd64513aed40a98458a13f4"
+  ],
+  "seeds": [
+    1337
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: frame. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/frame.layer2.png",
+  "sourceSize": [
+    1024,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    1024
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 54.207,
+    "opaqueCorePct": 44.878,
+    "partialPct": 0.915,
+    "bbox": [
+      88,
+      84,
+      936,
+      940
+    ],
+    "bboxCoverage": 0.6923,
+    "alphaFill": 0.6615,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "frame": {
+      "transparentPct": 54.207,
+      "opaqueCorePct": 44.878,
+      "partialPct": 0.915,
+      "bbox": [
+        88,
+        84,
+        936,
+        940
+      ],
+      "bboxCoverage": 0.6923,
+      "alphaFill": 0.6615,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "centerAlpha": 0,
+      "flags": [],
+      "meanVisibleSaturation": 44.322,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 83,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": "ff027d2e3cd64513aed40a98458a13f4",
+      "selectedSource": "assets/source/local-api/layered/frame-seed1337.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "614343966b384526ab31b7511b975de4",
+      "source": "assets/source/local-api/layered/frame-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 31.494,
+        "opaqueCorePct": 67.989,
+        "partialPct": 0.516,
+        "bbox": [
+          88,
+          84,
+          936,
+          941
+        ],
+        "bboxCoverage": 0.6931,
+        "alphaFill": 0.9884,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "frame": {
+          "accepted": false,
+          "error": "frame: intended open center is not transparent",
+          "alpha": {
+            "transparentPct": 31.494,
+            "opaqueCorePct": 67.989,
+            "partialPct": 0.516,
+            "bbox": [
+              88,
+              84,
+              936,
+              941
+            ],
+            "bboxCoverage": 0.6931,
+            "alphaFill": 0.9884,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": "ff027d2e3cd64513aed40a98458a13f4",
+      "source": "assets/source/local-api/layered/frame-seed1337.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 54.207,
+        "opaqueCorePct": 44.878,
+        "partialPct": 0.915,
+        "bbox": [
+          88,
+          84,
+          936,
+          940
+        ],
+        "bboxCoverage": 0.6923,
+        "alphaFill": 0.6615,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "frame": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 54.207,
+            "opaqueCorePct": 44.878,
+            "partialPct": 0.915,
+            "bbox": [
+              88,
+              84,
+              936,
+              940
+            ],
+            "bboxCoverage": 0.6923,
+            "alphaFill": 0.6615,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "centerAlpha": 0,
+            "flags": [],
+            "meanVisibleSaturation": 44.322,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 83,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/frame-magenta.png",
+    "contact": "assets/source/local-api/qa/frame-contact.png",
+    "status": "human-approved"
+  }
+}

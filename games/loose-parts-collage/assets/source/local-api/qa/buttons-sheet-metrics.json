@@ -1,0 +1,1084 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "buttons-sheet",
+  "source": "assets/source/local-api/raw/buttons-sheet.png",
+  "sourceSha256": "a2f1f2ec61ef7ffc38b430a1eb2052b4ccb8555ddfc4c1824933da3f33625c1a",
+  "jobSha256": "b35ddca327c599dbac9629945ca4a636c33d3da3ce8a30c0637c6ae99c997a9b",
+  "generatedAt": "2026-08-05T16:09:28Z",
+  "runtime": [
+    {
+      "id": "button-coral",
+      "path": "assets/pieces/buttons/button-coral.webp",
+      "bytes": 88750,
+      "kilobytes": 86.7,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "button-sky",
+      "path": "assets/pieces/buttons/button-sky.webp",
+      "bytes": 79618,
+      "kilobytes": 77.8,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "button-marigold",
+      "path": "assets/pieces/buttons/button-marigold.webp",
+      "bytes": 85108,
+      "kilobytes": 83.1,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "button-plum",
+      "path": "assets/pieces/buttons/button-plum.webp",
+      "bytes": 82700,
+      "kilobytes": 80.8,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "button-mint",
+      "path": "assets/pieces/buttons/button-mint.webp",
+      "bytes": 75734,
+      "kilobytes": 74.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "sequin-gold",
+      "path": "assets/pieces/buttons/sequin-gold.webp",
+      "bytes": 84820,
+      "kilobytes": 82.8,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [],
+  "seeds": [
+    42,
+    1337,
+    9001
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: button coral, button sky, button marigold, button plum, button mint, sequin gold. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/buttons-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 96.946,
+    "opaqueCorePct": 2.494,
+    "partialPct": 0.56,
+    "bbox": [
+      37,
+      88,
+      989,
+      596
+    ],
+    "bboxCoverage": 0.6945,
+    "alphaFill": 0.044,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "button-coral": {
+      "transparentPct": 95.21,
+      "opaqueCorePct": 4.191,
+      "partialPct": 0.599,
+      "bbox": [
+        112,
+        96,
+        323,
+        310
+      ],
+      "bboxCoverage": 0.0648,
+      "alphaFill": 0.7386,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 66.582,
+      "componentCleanup": {
+        "components": 12,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-seed1337.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "button-sky": {
+      "transparentPct": 95.557,
+      "opaqueCorePct": 4.231,
+      "partialPct": 0.212,
+      "bbox": [
+        410,
+        96,
+        614,
+        301
+      ],
+      "bboxCoverage": 0.0601,
+      "alphaFill": 0.7397,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 50.127,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "button-marigold": {
+      "transparentPct": 95.149,
+      "opaqueCorePct": 4.247,
+      "partialPct": 0.604,
+      "bbox": [
+        709,
+        96,
+        921,
+        313
+      ],
+      "bboxCoverage": 0.0661,
+      "alphaFill": 0.7342,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 76.313,
+      "componentCleanup": {
+        "components": 23,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "button-plum": {
+      "transparentPct": 94.646,
+      "opaqueCorePct": 4.309,
+      "partialPct": 1.044,
+      "bbox": [
+        111,
+        379,
+        328,
+        599
+      ],
+      "bboxCoverage": 0.0686,
+      "alphaFill": 0.7809,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 63.317,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-button-plum-target-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2"
+    },
+    "button-mint": {
+      "transparentPct": 95.562,
+      "opaqueCorePct": 4.229,
+      "partialPct": 0.21,
+      "bbox": [
+        410,
+        379,
+        614,
+        584
+      ],
+      "bboxCoverage": 0.0601,
+      "alphaFill": 0.739,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 34.442,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "sequin-gold": {
+      "transparentPct": 96.853,
+      "opaqueCorePct": 2.373,
+      "partialPct": 0.774,
+      "bbox": [
+        709,
+        379,
+        916,
+        587
+      ],
+      "bboxCoverage": 0.0618,
+      "alphaFill": 0.5089,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 66.797,
+      "componentCleanup": {
+        "components": 31,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/buttons-sheet-seed1337.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/buttons-sheet-seed42.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 91.119,
+        "opaqueCorePct": 8.459,
+        "partialPct": 0.422,
+        "bbox": [
+          410,
+          96,
+          614,
+          584
+        ],
+        "bboxCoverage": 0.143,
+        "alphaFill": 0.6212,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "button-coral": {
+          "accepted": false,
+          "error": "button-coral: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.557,
+            "opaqueCorePct": 4.231,
+            "partialPct": 0.212,
+            "bbox": [
+              410,
+              96,
+              614,
+              301
+            ],
+            "bboxCoverage": 0.0601,
+            "alphaFill": 0.7397,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 50.127,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-marigold": {
+          "accepted": false,
+          "error": "button-marigold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-plum": {
+          "accepted": false,
+          "error": "button-plum: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-mint": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.562,
+            "opaqueCorePct": 4.229,
+            "partialPct": 0.21,
+            "bbox": [
+              410,
+              379,
+              614,
+              584
+            ],
+            "bboxCoverage": 0.0601,
+            "alphaFill": 0.739,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 34.442,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "sequin-gold": {
+          "accepted": false,
+          "error": "sequin-gold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/buttons-sheet-seed1337.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 83.091,
+        "opaqueCorePct": 10.814,
+        "partialPct": 6.095,
+        "bbox": [
+          0,
+          0,
+          1024,
+          680
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 0.1691,
+        "cornerAlpha": [
+          0,
+          0,
+          11,
+          0
+        ]
+      },
+      "cells": {
+        "button-coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.21,
+            "opaqueCorePct": 4.191,
+            "partialPct": 0.599,
+            "bbox": [
+              112,
+              96,
+              323,
+              310
+            ],
+            "bboxCoverage": 0.0648,
+            "alphaFill": 0.7386,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 66.582,
+            "componentCleanup": {
+              "components": 12,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.091,
+            "opaqueCorePct": 4.201,
+            "partialPct": 0.707,
+            "bbox": [
+              409,
+              93,
+              624,
+              313
+            ],
+            "bboxCoverage": 0.0679,
+            "alphaFill": 0.7226,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 46.098,
+            "componentCleanup": {
+              "components": 29,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-marigold": {
+          "accepted": false,
+          "error": "button-marigold: near-blank extraction (0.001% opaque)",
+          "alpha": {
+            "transparentPct": 99.926,
+            "opaqueCorePct": 0.001,
+            "partialPct": 0.073,
+            "bbox": [
+              891,
+              163,
+              920,
+              267
+            ],
+            "bboxCoverage": 0.0043,
+            "alphaFill": 0.1698,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-plum": {
+          "accepted": false,
+          "error": "button-plum: near-blank extraction (0.049% opaque)",
+          "alpha": {
+            "transparentPct": 96.608,
+            "opaqueCorePct": 0.049,
+            "partialPct": 3.344,
+            "bbox": [
+              112,
+              380,
+              323,
+              594
+            ],
+            "bboxCoverage": 0.0648,
+            "alphaFill": 0.5231,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-mint": {
+          "accepted": false,
+          "error": "button-mint: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.892,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.108,
+            "bbox": [
+              471,
+              378,
+              619,
+              578
+            ],
+            "bboxCoverage": 0.0425,
+            "alphaFill": 0.0253,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "sequin-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.853,
+            "opaqueCorePct": 2.373,
+            "partialPct": 0.774,
+            "bbox": [
+              709,
+              379,
+              916,
+              587
+            ],
+            "bboxCoverage": 0.0618,
+            "alphaFill": 0.5089,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 66.797,
+            "componentCleanup": {
+              "components": 31,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 9001,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/buttons-sheet-seed9001.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 73.218,
+        "opaqueCorePct": 19.233,
+        "partialPct": 7.549,
+        "bbox": [
+          0,
+          0,
+          1024,
+          680
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 0.2678,
+        "cornerAlpha": [
+          16,
+          16,
+          27,
+          0
+        ]
+      },
+      "cells": {
+        "button-coral": {
+          "accepted": false,
+          "error": "button-coral: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 95.175,
+            "opaqueCorePct": 4.21,
+            "partialPct": 0.615,
+            "bbox": [
+              0,
+              12,
+              325,
+              314
+            ],
+            "bboxCoverage": 0.141,
+            "alphaFill": 0.3423,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.1,
+            "opaqueCorePct": 4.217,
+            "partialPct": 0.682,
+            "bbox": [
+              409,
+              95,
+              622,
+              313
+            ],
+            "bboxCoverage": 0.0667,
+            "alphaFill": 0.7347,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 46.113,
+            "componentCleanup": {
+              "components": 19,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-marigold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.149,
+            "opaqueCorePct": 4.247,
+            "partialPct": 0.604,
+            "bbox": [
+              709,
+              96,
+              921,
+              313
+            ],
+            "bboxCoverage": 0.0661,
+            "alphaFill": 0.7342,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 76.313,
+            "componentCleanup": {
+              "components": 23,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-plum": {
+          "accepted": false,
+          "error": "button-plum: near-blank extraction (0.072% opaque)",
+          "alpha": {
+            "transparentPct": 96.189,
+            "opaqueCorePct": 0.072,
+            "partialPct": 3.74,
+            "bbox": [
+              0,
+              374,
+              326,
+              594
+            ],
+            "bboxCoverage": 0.103,
+            "alphaFill": 0.3701,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-mint": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.107,
+            "opaqueCorePct": 4.096,
+            "partialPct": 0.797,
+            "bbox": [
+              409,
+              379,
+              623,
+              596
+            ],
+            "bboxCoverage": 0.0667,
+            "alphaFill": 0.7336,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 31.754,
+            "componentCleanup": {
+              "components": 34,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "sequin-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.83,
+            "opaqueCorePct": 2.391,
+            "partialPct": 0.779,
+            "bbox": [
+              709,
+              379,
+              916,
+              588
+            ],
+            "bboxCoverage": 0.0621,
+            "alphaFill": 0.5102,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 66.412,
+            "componentCleanup": {
+              "components": 28,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/buttons-sheet-seed7.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 73.894,
+        "opaqueCorePct": 19.095,
+        "partialPct": 7.011,
+        "bbox": [
+          0,
+          0,
+          1024,
+          680
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 0.2611,
+        "cornerAlpha": [
+          11,
+          0,
+          21,
+          0
+        ]
+      },
+      "cells": {
+        "button-coral": {
+          "accepted": false,
+          "error": "button-coral: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 95.2,
+            "opaqueCorePct": 4.195,
+            "partialPct": 0.605,
+            "bbox": [
+              0,
+              17,
+              321,
+              310
+            ],
+            "bboxCoverage": 0.1351,
+            "alphaFill": 0.3554,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.091,
+            "opaqueCorePct": 4.198,
+            "partialPct": 0.711,
+            "bbox": [
+              409,
+              95,
+              622,
+              313
+            ],
+            "bboxCoverage": 0.0667,
+            "alphaFill": 0.7362,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 46.2,
+            "componentCleanup": {
+              "components": 22,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-marigold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.19,
+            "opaqueCorePct": 4.241,
+            "partialPct": 0.569,
+            "bbox": [
+              709,
+              96,
+              919,
+              312
+            ],
+            "bboxCoverage": 0.0651,
+            "alphaFill": 0.7384,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 76.883,
+            "componentCleanup": {
+              "components": 23,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "button-plum": {
+          "accepted": false,
+          "error": "button-plum: near-blank extraction (0.055% opaque)",
+          "alpha": {
+            "transparentPct": 96.641,
+            "opaqueCorePct": 0.055,
+            "partialPct": 3.304,
+            "bbox": [
+              113,
+              379,
+              324,
+              594
+            ],
+            "bboxCoverage": 0.0651,
+            "alphaFill": 0.5156,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "button-mint": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.153,
+            "opaqueCorePct": 4.061,
+            "partialPct": 0.786,
+            "bbox": [
+              409,
+              379,
+              622,
+              596
+            ],
+            "bboxCoverage": 0.0664,
+            "alphaFill": 0.7302,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 31.672,
+            "componentCleanup": {
+              "components": 37,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "sequin-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.869,
+            "opaqueCorePct": 2.345,
+            "partialPct": 0.786,
+            "bbox": [
+              709,
+              379,
+              916,
+              587
+            ],
+            "bboxCoverage": 0.0618,
+            "alphaFill": 0.5063,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 67.125,
+            "componentCleanup": {
+              "components": 29,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/buttons-sheet-button-plum-target-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2",
+      "cell": "button-plum",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 94.646,
+        "opaqueCorePct": 4.309,
+        "partialPct": 1.044,
+        "bbox": [
+          111,
+          379,
+          328,
+          599
+        ],
+        "bboxCoverage": 0.0686,
+        "alphaFill": 0.7809,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 63.317,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 55,
+          "removedAlphaPixels": 0
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/buttons-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/buttons-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

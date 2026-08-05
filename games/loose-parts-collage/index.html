@@ -1,49 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#b7d97b" />
-  <title>Loose Parts Collage 🍂 — Arranging Nature into Art</title>
-  <meta name="description" content="Arrange leaves, buttons, yarn, and pinecones onto ghost outlines to compose your own picture. A screen-to-real-world art game for ages 5–6." />
+  <meta name="theme-color" content="#e46f55" />
+  <title>Little Artist — Make It Your Way</title>
+  <meta name="description" content="Choose treasures, draw yarn trails, and make an artwork all your own. A gentle open-ended art table for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Loose Parts Collage" />
-  <meta property="og:title" content="Loose Parts Collage 🍂 — Arranging Nature into Art" />
-  <meta property="og:description" content="Arrange leaves, buttons, yarn, and pinecones onto ghost outlines to compose your own picture. A screen-to-real-world art game for ages 5–6." />
+  <meta property="og:site_name" content="Little Artist" />
+  <meta property="og:title" content="Little Artist — Make It Your Way" />
+  <meta property="og:description" content="Choose treasures, draw yarn trails, and make an artwork all your own. A gentle open-ended art table for ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/loose-parts-collage/" />
   <meta property="og:image" content="https://qlo.be/games/loose-parts-collage/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Loose Parts Collage title screen with a Nature Pictures button below a falling leaves icon on a blue background." />
+  <meta property="og:image:alt" content="Little Artist craft table with paper, yarn, and tactile treasures." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Loose Parts Collage 🍂 — Arranging Nature into Art" />
-  <meta name="twitter:description" content="Arrange leaves, buttons, yarn, and pinecones onto ghost outlines to compose your own picture. A screen-to-real-world art game for ages 5–6." />
+  <meta name="twitter:title" content="Little Artist — Make It Your Way" />
+  <meta name="twitter:description" content="Choose treasures, draw yarn trails, and make an artwork all your own. A gentle open-ended art table for ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/loose-parts-collage/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #b7d97b; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-    html, body { overflow: hidden; }
-    body { -webkit-touch-callout: none; overscroll-behavior: none; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
-</body>
+<body><main id="game" aria-label="Little Artist"></main><script type="module" src="./js/main.js"></script></body>
 </html>

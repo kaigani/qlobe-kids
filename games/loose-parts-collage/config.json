@@ -1,0 +1,171 @@
+{
+  "id": "loose-parts-collage",
+  "title": "Little Artist",
+  "theme": {
+    "accent": "#e46f55",
+    "ink": "#49392f",
+    "cream": "#fff5dd",
+    "green": "#6f9f63",
+    "gold": "#e7ad3a",
+    "background": "./assets/workshop.webp",
+    "title": "./assets/title.webp"
+  },
+  "voice": {
+    "welcome": "Welcome, little artist! Pick something lovely to make.",
+    "choose": "Collage, yarn, or a Teddy idea. You choose.",
+    "collage-label": "Free Collage.",
+    "collage-prompt": "Choose any treasures. Drag, turn, and layer them your way.",
+    "yarn-label": "Yarn Magic.",
+    "yarn-prompt": "Let your finger spin a soft yarn trail. Loop, swirl, or wiggle.",
+    "teddy-label": "Teddy's Idea.",
+    "teddy-prompt": "I have a tiny idea for you. Make it any way you imagine.",
+    "idea-grow": "Can you make something that grows?",
+    "idea-fly": "Can you make something that can fly?",
+    "idea-face": "Can you make a funny face?",
+    "idea-pattern": "Can you make a repeating pattern?",
+    "empty": "Your paper is waiting. Pick a treasure or draw a yarn trail.",
+    "finish-ready": "Whenever your art feels ready, tap the golden star.",
+    "fresh": "Fresh paper. A brand-new beginning.",
+    "saved": "Your art is safe on this device.",
+    "done": "Oh, I love what you made!",
+    "gallery": "Here are your little masterpieces.",
+    "gallery-empty": "Your gallery is ready for its first masterpiece.",
+    "resume": "Your artwork is right where you left it."
+  },
+  "modes": [
+    {
+      "id": "collage",
+      "title": "Free Collage",
+      "skill": "spatial composition through choosing, layering, rotating, and sizing",
+      "art": "./assets/modes/collage.webp",
+      "labelKey": "collage-label",
+      "promptKey": "collage-prompt",
+      "startTool": "pieces"
+    },
+    {
+      "id": "yarn",
+      "title": "Yarn Magic",
+      "skill": "continuous fine-motor path planning with loops, curves, and crossings",
+      "art": "./assets/modes/yarn.webp",
+      "labelKey": "yarn-label",
+      "promptKey": "yarn-prompt",
+      "startTool": "yarn"
+    },
+    {
+      "id": "teddy",
+      "title": "Teddy's Idea",
+      "skill": "intentional visual storytelling from an open-ended spoken prompt",
+      "art": "./assets/modes/teddy.webp",
+      "labelKey": "teddy-label",
+      "promptKey": "teddy-prompt",
+      "startTool": "pieces"
+    }
+  ],
+  "papers": [
+    { "id": "cream", "title": "Warm Cream Paper", "art": "./assets/paper/cream.webp", "swatch": "#fff7e4" },
+    { "id": "sky", "title": "Sky Blue Paper", "art": "./assets/paper/sky.webp", "swatch": "#dff0ed" },
+    { "id": "blush", "title": "Blush Pink Paper", "art": "./assets/paper/blush.webp", "swatch": "#f6ddd8" }
+  ],
+  "materialFamilies": [
+    { "id": "nature", "title": "Nature Treasures", "representative": "maple-leaf-coral" },
+    { "id": "paper", "title": "Paper Shapes", "representative": "paper-star-plum" },
+    { "id": "buttons", "title": "Buttons and Sparkles", "representative": "button-sky" },
+    { "id": "cozy", "title": "Cozy Bits", "representative": "ribbon-bow-yellow" }
+  ],
+  "materials": [
+    { "id": "maple-leaf-coral", "title": "Coral Maple Leaf", "family": "nature", "art": "./assets/pieces/nature/maple-leaf-coral.webp", "size": 0.22 },
+    { "id": "oak-leaf-gold", "title": "Golden Oak Leaf", "family": "nature", "art": "./assets/pieces/nature/oak-leaf-gold.webp", "size": 0.22 },
+    { "id": "fern-leaf-green", "title": "Green Fern", "family": "nature", "art": "./assets/pieces/nature/fern-leaf-green.webp", "size": 0.25 },
+    { "id": "pressed-daisy", "title": "Pressed Daisy", "family": "nature", "art": "./assets/pieces/nature/pressed-daisy.webp", "size": 0.18 },
+    { "id": "pressed-blue-flower", "title": "Pressed Blue Flower", "family": "nature", "art": "./assets/pieces/nature/pressed-blue-flower.webp", "size": 0.18 },
+    { "id": "twig-fork", "title": "Forked Twig", "family": "nature", "art": "./assets/pieces/nature/twig-fork.webp", "size": 0.28 },
+    { "id": "acorn", "title": "Little Acorn", "family": "nature", "art": "./assets/pieces/nature/acorn.webp", "size": 0.15 },
+    { "id": "pinecone", "title": "Small Pinecone", "family": "nature", "art": "./assets/pieces/nature/pinecone.webp", "size": 0.19 },
+
+    { "id": "paper-circle-coral", "title": "Coral Paper Circle", "family": "paper", "art": "./assets/pieces/paper/paper-circle-coral.webp", "size": 0.18 },
+    { "id": "paper-circle-gold", "title": "Golden Paper Circle", "family": "paper", "art": "./assets/pieces/paper/paper-circle-gold.webp", "size": 0.18 },
+    { "id": "paper-triangle-teal", "title": "Teal Paper Triangle", "family": "paper", "art": "./assets/pieces/paper/paper-triangle-teal.webp", "size": 0.2 },
+    { "id": "paper-star-plum", "title": "Plum Paper Star", "family": "paper", "art": "./assets/pieces/paper/paper-star-plum.webp", "size": 0.2 },
+    { "id": "paper-heart-pink", "title": "Pink Paper Heart", "family": "paper", "art": "./assets/pieces/paper/paper-heart-pink.webp", "size": 0.2 },
+    { "id": "paper-cloud-cream", "title": "Cream Paper Cloud", "family": "paper", "art": "./assets/pieces/paper/paper-cloud-cream.webp", "size": 0.24 },
+    { "id": "paper-fringe-blue", "title": "Blue Fringed Paper", "family": "paper", "art": "./assets/pieces/paper/paper-fringe-blue.webp", "size": 0.22 },
+    { "id": "paper-strip-rainbow", "title": "Rainbow Paper Strip", "family": "paper", "art": "./assets/pieces/paper/paper-strip-rainbow.webp", "size": 0.26 },
+
+    { "id": "button-coral", "title": "Coral Button", "family": "buttons", "art": "./assets/pieces/buttons/button-coral.webp", "size": 0.14 },
+    { "id": "button-sky", "title": "Sky Button", "family": "buttons", "art": "./assets/pieces/buttons/button-sky.webp", "size": 0.14 },
+    { "id": "button-marigold", "title": "Marigold Button", "family": "buttons", "art": "./assets/pieces/buttons/button-marigold.webp", "size": 0.14 },
+    { "id": "button-plum", "title": "Plum Button", "family": "buttons", "art": "./assets/pieces/buttons/button-plum.webp", "size": 0.14 },
+    { "id": "button-mint", "title": "Mint Button", "family": "buttons", "art": "./assets/pieces/buttons/button-mint.webp", "size": 0.14 },
+    { "id": "sequin-gold", "title": "Golden Sequin", "family": "buttons", "art": "./assets/pieces/buttons/sequin-gold.webp", "size": 0.12 },
+
+    { "id": "felt-circle-teal", "title": "Teal Felt Patch", "family": "cozy", "art": "./assets/pieces/cozy/felt-circle-teal.webp", "size": 0.2 },
+    { "id": "felt-petal-purple", "title": "Purple Felt Petal", "family": "cozy", "art": "./assets/pieces/cozy/felt-petal-purple.webp", "size": 0.2 },
+    { "id": "felt-spiral-coral", "title": "Coral Felt Spiral", "family": "cozy", "art": "./assets/pieces/cozy/felt-spiral-coral.webp", "size": 0.22 },
+    { "id": "ribbon-bow-yellow", "title": "Yellow Ribbon Bow", "family": "cozy", "art": "./assets/pieces/cozy/ribbon-bow-yellow.webp", "size": 0.22 },
+    { "id": "lace-loop-cream", "title": "Cream Lace Loop", "family": "cozy", "art": "./assets/pieces/cozy/lace-loop-cream.webp", "size": 0.24 },
+    { "id": "pompom-pink", "title": "Pink Pom-Pom", "family": "cozy", "art": "./assets/pieces/cozy/pompom-pink.webp", "size": 0.16 }
+  ],
+  "yarns": [
+    { "id": "sky", "title": "Sky Yarn", "art": "./assets/yarn/sky.webp", "color": "#349fbd" },
+    { "id": "coral", "title": "Coral Yarn", "art": "./assets/yarn/coral.webp", "color": "#df6958" },
+    { "id": "gold", "title": "Golden Yarn", "art": "./assets/yarn/gold.webp", "color": "#dfaa35" },
+    { "id": "mint", "title": "Mint Yarn", "art": "./assets/yarn/mint.webp", "color": "#6da67d" },
+    { "id": "plum", "title": "Plum Yarn", "art": "./assets/yarn/plum.webp", "color": "#8b668e" },
+    { "id": "cream", "title": "Cream Yarn", "art": "./assets/yarn/cream.webp", "color": "#eee2c6" }
+  ],
+  "ideas": [
+    {
+      "id": "grow",
+      "voiceKey": "idea-grow",
+      "pieces": [
+        { "assetId": "twig-fork", "x": 0.5, "y": 0.62, "size": 0.25, "rotation": 2 },
+        { "assetId": "pressed-daisy", "x": 0.5, "y": 0.34, "size": 0.2, "rotation": -5 },
+        { "assetId": "fern-leaf-green", "x": 0.37, "y": 0.57, "size": 0.18, "rotation": -42 }
+      ]
+    },
+    {
+      "id": "fly",
+      "voiceKey": "idea-fly",
+      "pieces": [
+        { "assetId": "paper-triangle-teal", "x": 0.5, "y": 0.46, "size": 0.24, "rotation": 8 },
+        { "assetId": "pressed-blue-flower", "x": 0.35, "y": 0.47, "size": 0.16, "rotation": -24 },
+        { "assetId": "pressed-blue-flower", "x": 0.65, "y": 0.47, "size": 0.16, "rotation": 24 }
+      ]
+    },
+    {
+      "id": "face",
+      "voiceKey": "idea-face",
+      "pieces": [
+        { "assetId": "felt-circle-teal", "x": 0.5, "y": 0.5, "size": 0.34, "rotation": 0 },
+        { "assetId": "button-sky", "x": 0.44, "y": 0.45, "size": 0.1, "rotation": 0 },
+        { "assetId": "button-marigold", "x": 0.56, "y": 0.45, "size": 0.1, "rotation": 0 }
+      ]
+    },
+    {
+      "id": "pattern",
+      "voiceKey": "idea-pattern",
+      "pieces": [
+        { "assetId": "button-coral", "x": 0.34, "y": 0.5, "size": 0.1, "rotation": 0 },
+        { "assetId": "button-sky", "x": 0.45, "y": 0.5, "size": 0.1, "rotation": 0 },
+        { "assetId": "button-coral", "x": 0.56, "y": 0.5, "size": 0.1, "rotation": 0 },
+        { "assetId": "button-sky", "x": 0.67, "y": 0.5, "size": 0.1, "rotation": 0 }
+      ]
+    }
+  ],
+  "art": {
+    "teddyWelcome": "./assets/teddy/welcome.webp",
+    "teddyPeek": "./assets/teddy/peek.webp",
+    "teddyCelebrate": "./assets/teddy/celebrate.webp",
+    "basket": "./assets/ui/basket.webp",
+    "frame": "./assets/ui/frame.webp",
+    "gallery": "./assets/ui/gallery.webp",
+    "finish": "./assets/ui/finish.webp",
+    "recycle": "./assets/ui/recycle.webp",
+    "turn": "./assets/ui/turn.webp",
+    "smaller": "./assets/ui/smaller.webp",
+    "bigger": "./assets/ui/bigger.webp",
+    "undo": "./assets/ui/undo.webp",
+    "fresh": "./assets/ui/fresh.webp",
+    "picture": "./assets/ui/picture.webp"
+  }
+}

@@ -1,0 +1,1321 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "yarn-sheet",
+  "source": "assets/source/local-api/raw/yarn-sheet.png",
+  "sourceSha256": "db682598baad2c20c180cd57daf2c9e23b99f2f33005a1d5ee4079e9b7005205",
+  "jobSha256": "8a0e2073b17a659518716ee24c127fc0662b7a59daf371505420fb9500ceef60",
+  "generatedAt": "2026-08-05T16:56:23Z",
+  "runtime": [
+    {
+      "id": "sky",
+      "path": "assets/yarn/sky.webp",
+      "bytes": 7278,
+      "kilobytes": 7.1,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "coral",
+      "path": "assets/yarn/coral.webp",
+      "bytes": 8198,
+      "kilobytes": 8.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "gold",
+      "path": "assets/yarn/gold.webp",
+      "bytes": 11792,
+      "kilobytes": 11.5,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "mint",
+      "path": "assets/yarn/mint.webp",
+      "bytes": 10624,
+      "kilobytes": 10.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "plum",
+      "path": "assets/yarn/plum.webp",
+      "bytes": 10118,
+      "kilobytes": 9.9,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "cream",
+      "path": "assets/yarn/cream.webp",
+      "bytes": 14348,
+      "kilobytes": 14.0,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "20223e3be2574e62b2687f4a1f7948bb",
+    "34107f7713534a8d99edbca7d3f8ab22",
+    "9d57bfbac44940d0bac20119935f04aa",
+    "af91d3191ed54a7caa5dd91443aaeccf",
+    "afbb58cf82064e56ba4d60543538297e"
+  ],
+  "seeds": [
+    42,
+    1337
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: sky, coral, gold, mint, plum, cream. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/yarn-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 94.123,
+    "opaqueCorePct": 3.597,
+    "partialPct": 2.281,
+    "bbox": [
+      22,
+      153,
+      1024,
+      539
+    ],
+    "bboxCoverage": 0.5555,
+    "alphaFill": 0.1058,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": [
+      "alpha-partial-band>2%"
+    ]
+  },
+  "cells": {
+    "sky": {
+      "transparentPct": 92.804,
+      "opaqueCorePct": 6.152,
+      "partialPct": 1.044,
+      "bbox": [
+        64,
+        227,
+        960,
+        283
+      ],
+      "bboxCoverage": 0.0957,
+      "alphaFill": 0.7519,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 38.542,
+      "componentCleanup": {
+        "components": 96,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 119
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": "afbb58cf82064e56ba4d60543538297e",
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-sky-slice-87c1fb1f74-seed1337.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_0-minus-layer_2"
+    },
+    "coral": {
+      "transparentPct": 92.22,
+      "opaqueCorePct": 4.473,
+      "partialPct": 3.307,
+      "bbox": [
+        65,
+        224,
+        958,
+        290
+      ],
+      "bboxCoverage": 0.1124,
+      "alphaFill": 0.6921,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 50.911,
+      "componentCleanup": {
+        "components": 121,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 715
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "20223e3be2574e62b2687f4a1f7948bb",
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-coral-slice-7668ed47a8-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "gold": {
+      "transparentPct": 88.177,
+      "opaqueCorePct": 7.861,
+      "partialPct": 3.962,
+      "bbox": [
+        69,
+        205,
+        959,
+        320
+      ],
+      "bboxCoverage": 0.1952,
+      "alphaFill": 0.6056,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 71.837,
+      "componentCleanup": {
+        "components": 45,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 175
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "9d57bfbac44940d0bac20119935f04aa",
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-gold-slice-f0d2b12f23-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "mint": {
+      "transparentPct": 88.305,
+      "opaqueCorePct": 6.284,
+      "partialPct": 5.411,
+      "bbox": [
+        65,
+        202,
+        965,
+        314
+      ],
+      "bboxCoverage": 0.1923,
+      "alphaFill": 0.6083,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 17.083,
+      "componentCleanup": {
+        "components": 243,
+        "keptComponents": 2,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 1727
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "af91d3191ed54a7caa5dd91443aaeccf",
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-mint-slice-ec5c4cacd4-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "plum": {
+      "transparentPct": 87.647,
+      "opaqueCorePct": 8.115,
+      "partialPct": 4.238,
+      "bbox": [
+        62,
+        205,
+        969,
+        306
+      ],
+      "bboxCoverage": 0.1747,
+      "alphaFill": 0.707,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 46.459,
+      "componentCleanup": {
+        "components": 335,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 1972
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "34107f7713534a8d99edbca7d3f8ab22",
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-plum-slice-33ba838226-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "cream": {
+      "transparentPct": 82.733,
+      "opaqueCorePct": 11.101,
+      "partialPct": 6.166,
+      "bbox": [
+        0,
+        214,
+        1024,
+        344
+      ],
+      "bboxCoverage": 0.2539,
+      "alphaFill": 0.6801,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 17.221,
+      "componentCleanup": {
+        "components": 351,
+        "keptComponents": 2,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 1543
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/yarn-sheet-cream-slice-e4d215c8b3-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/yarn-sheet-seed42.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 84.68,
+        "opaqueCorePct": 5.516,
+        "partialPct": 9.804,
+        "bbox": [
+          0,
+          27,
+          1024,
+          680
+        ],
+        "bboxCoverage": 0.9603,
+        "alphaFill": 0.1595,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 78.069,
+            "opaqueCorePct": 7.868,
+            "partialPct": 14.063,
+            "bbox": [
+              0,
+              131,
+              341,
+              264
+            ],
+            "bboxCoverage": 0.3912,
+            "alphaFill": 0.5606,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 38.468,
+            "componentCleanup": {
+              "components": 307,
+              "keptComponents": 16,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 2132
+            }
+          }
+        },
+        "coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 83.028,
+            "opaqueCorePct": 8.374,
+            "partialPct": 8.598,
+            "bbox": [
+              0,
+              141,
+              342,
+              233
+            ],
+            "bboxCoverage": 0.2706,
+            "alphaFill": 0.6272,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 58.445,
+            "componentCleanup": {
+              "components": 233,
+              "keptComponents": 22,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 1520
+            }
+          }
+        },
+        "gold": {
+          "accepted": false,
+          "error": "gold: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 82.444,
+            "opaqueCorePct": 9.192,
+            "partialPct": 8.365,
+            "bbox": [
+              0,
+              137,
+              341,
+              340
+            ],
+            "bboxCoverage": 0.5971,
+            "alphaFill": 0.294,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              16
+            ]
+          }
+        },
+        "mint": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 79.395,
+            "opaqueCorePct": 7.625,
+            "partialPct": 12.98,
+            "bbox": [
+              0,
+              138,
+              341,
+              258
+            ],
+            "bboxCoverage": 0.3529,
+            "alphaFill": 0.5838,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 28.4,
+            "componentCleanup": {
+              "components": 307,
+              "keptComponents": 18,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 1435
+            }
+          }
+        },
+        "plum": {
+          "accepted": false,
+          "error": "plum: near-blank extraction (0.005% opaque)",
+          "alpha": {
+            "transparentPct": 92.648,
+            "opaqueCorePct": 0.005,
+            "partialPct": 7.347,
+            "bbox": [
+              0,
+              148,
+              342,
+              223
+            ],
+            "bboxCoverage": 0.2206,
+            "alphaFill": 0.3333,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "cream": {
+          "accepted": false,
+          "error": "cream: near-blank extraction (0.038% opaque)",
+          "alpha": {
+            "transparentPct": 99.707,
+            "opaqueCorePct": 0.038,
+            "partialPct": 0.255,
+            "bbox": [
+              0,
+              0,
+              340,
+              1
+            ],
+            "bboxCoverage": 0.0029,
+            "alphaFill": 1.0,
+            "cornerAlpha": [
+              149,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/yarn-sheet-seed1337.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 61.151,
+        "opaqueCorePct": 21.431,
+        "partialPct": 17.417,
+        "bbox": [
+          0,
+          0,
+          1024,
+          680
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 0.3885,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          253
+        ]
+      },
+      "cells": {
+        "sky": {
+          "accepted": false,
+          "error": "sky: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "coral": {
+          "accepted": false,
+          "error": "coral: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.928,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.072,
+            "bbox": [
+              341,
+              144,
+              342,
+              228
+            ],
+            "bboxCoverage": 0.0007,
+            "alphaFill": 1.0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 66.86,
+            "opaqueCorePct": 17.941,
+            "partialPct": 15.198,
+            "bbox": [
+              0,
+              86,
+              341,
+              242
+            ],
+            "bboxCoverage": 0.4588,
+            "alphaFill": 0.7223,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 51.695,
+            "componentCleanup": {
+              "components": 10,
+              "keptComponents": 2,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 5106
+            }
+          }
+        },
+        "mint": {
+          "accepted": false,
+          "error": "mint: alpha touches a source corner",
+          "alpha": {
+            "transparentPct": 5.003,
+            "opaqueCorePct": 11.067,
+            "partialPct": 83.93,
+            "bbox": [
+              0,
+              0,
+              341,
+              323
+            ],
+            "bboxCoverage": 0.95,
+            "alphaFill": 1.0,
+            "cornerAlpha": [
+              23,
+              28,
+              0,
+              0
+            ]
+          }
+        },
+        "plum": {
+          "accepted": false,
+          "error": "plum: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.521,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.479,
+            "bbox": [
+              0,
+              0,
+              342,
+              340
+            ],
+            "bboxCoverage": 1.0,
+            "alphaFill": 0.0048,
+            "cornerAlpha": [
+              0,
+              26,
+              0,
+              93
+            ]
+          }
+        },
+        "cream": {
+          "accepted": false,
+          "error": "cream: background retained (0.0% transparent)",
+          "alpha": {
+            "transparentPct": 0.0,
+            "opaqueCorePct": 99.706,
+            "partialPct": 0.294,
+            "bbox": [
+              0,
+              0,
+              341,
+              340
+            ],
+            "bboxCoverage": 1.0,
+            "alphaFill": 1.0,
+            "cornerAlpha": [
+              88,
+              110,
+              243,
+              253
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 9001,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/yarn-sheet-seed9001.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 84.104,
+        "opaqueCorePct": 5.507,
+        "partialPct": 10.389,
+        "bbox": [
+          0,
+          103,
+          1024,
+          680
+        ],
+        "bboxCoverage": 0.8485,
+        "alphaFill": 0.1873,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 77.913,
+            "opaqueCorePct": 7.992,
+            "partialPct": 14.095,
+            "bbox": [
+              0,
+              130,
+              341,
+              326
+            ],
+            "bboxCoverage": 0.5765,
+            "alphaFill": 0.3831,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 38.314,
+            "componentCleanup": {
+              "components": 331,
+              "keptComponents": 16,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 2454
+            }
+          }
+        },
+        "coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 81.528,
+            "opaqueCorePct": 8.362,
+            "partialPct": 10.11,
+            "bbox": [
+              0,
+              142,
+              342,
+              233
+            ],
+            "bboxCoverage": 0.2676,
+            "alphaFill": 0.6902,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 55.122,
+            "componentCleanup": {
+              "components": 209,
+              "keptComponents": 19,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 1656
+            }
+          }
+        },
+        "gold": {
+          "accepted": false,
+          "error": "gold: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 82.109,
+            "opaqueCorePct": 9.116,
+            "partialPct": 8.775,
+            "bbox": [
+              0,
+              138,
+              341,
+              340
+            ],
+            "bboxCoverage": 0.5941,
+            "alphaFill": 0.3011,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "mint": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 79.72,
+            "opaqueCorePct": 7.574,
+            "partialPct": 12.707,
+            "bbox": [
+              0,
+              137,
+              341,
+              262
+            ],
+            "bboxCoverage": 0.3676,
+            "alphaFill": 0.5516,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 28.233,
+            "componentCleanup": {
+              "components": 337,
+              "keptComponents": 21,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 2306
+            }
+          }
+        },
+        "plum": {
+          "accepted": false,
+          "error": "plum: near-blank extraction (0.004% opaque)",
+          "alpha": {
+            "transparentPct": 92.326,
+            "opaqueCorePct": 0.004,
+            "partialPct": 7.669,
+            "bbox": [
+              0,
+              10,
+              342,
+              225
+            ],
+            "bboxCoverage": 0.6324,
+            "alphaFill": 0.1214,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "cream": {
+          "accepted": false,
+          "error": "cream: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/yarn-sheet-seed7.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 88.064,
+        "opaqueCorePct": 2.526,
+        "partialPct": 9.411,
+        "bbox": [
+          0,
+          0,
+          1024,
+          657
+        ],
+        "bboxCoverage": 0.9662,
+        "alphaFill": 0.1235,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "sky": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 89.678,
+            "opaqueCorePct": 7.216,
+            "partialPct": 3.106,
+            "bbox": [
+              0,
+              138,
+              341,
+              186
+            ],
+            "bboxCoverage": 0.1412,
+            "alphaFill": 0.7311,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 31.575,
+            "componentCleanup": {
+              "components": 117,
+              "keptComponents": 1,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 223
+            }
+          }
+        },
+        "coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 90.077,
+            "opaqueCorePct": 7.703,
+            "partialPct": 2.22,
+            "bbox": [
+              0,
+              142,
+              342,
+              187
+            ],
+            "bboxCoverage": 0.1324,
+            "alphaFill": 0.7497,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 66.008,
+            "componentCleanup": {
+              "components": 34,
+              "keptComponents": 1,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 9
+            }
+          }
+        },
+        "gold": {
+          "accepted": false,
+          "error": "gold: near-blank extraction (0.163% opaque)",
+          "alpha": {
+            "transparentPct": 92.404,
+            "opaqueCorePct": 0.163,
+            "partialPct": 7.433,
+            "bbox": [
+              0,
+              0,
+              341,
+              340
+            ],
+            "bboxCoverage": 1.0,
+            "alphaFill": 0.076,
+            "cornerAlpha": [
+              0,
+              0,
+              37,
+              149
+            ]
+          }
+        },
+        "mint": {
+          "accepted": false,
+          "error": "mint: near-blank extraction (0.064% opaque)",
+          "alpha": {
+            "transparentPct": 61.689,
+            "opaqueCorePct": 0.064,
+            "partialPct": 38.247,
+            "bbox": [
+              0,
+              0,
+              341,
+              153
+            ],
+            "bboxCoverage": 0.45,
+            "alphaFill": 0.8514,
+            "cornerAlpha": [
+              11,
+              90,
+              0,
+              0
+            ]
+          }
+        },
+        "plum": {
+          "accepted": false,
+          "error": "plum: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.847,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.153,
+            "bbox": [
+              47,
+              150,
+              218,
+              165
+            ],
+            "bboxCoverage": 0.0221,
+            "alphaFill": 0.0694,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "cream": {
+          "accepted": false,
+          "error": "cream: near-blank extraction (0.0% opaque)",
+          "alpha": {
+            "transparentPct": 99.907,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.093,
+            "bbox": [
+              0,
+              0,
+              222,
+              1
+            ],
+            "bboxCoverage": 0.0019,
+            "alphaFill": 0.4865,
+            "cornerAlpha": [
+              122,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "a76210b30aa7473e8d26a103847552cc",
+      "source": "assets/source/local-api/layered/yarn-sheet-sky-slice-87c1fb1f74-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "sky",
+      "accepted": false,
+      "error": "sky: background retained (0.0% transparent)",
+      "alpha": {
+        "transparentPct": 0.0,
+        "opaqueCorePct": 5.246,
+        "partialPct": 94.754,
+        "bbox": [
+          0,
+          0,
+          1024,
+          512
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 1.0,
+        "cornerAlpha": [
+          142,
+          145,
+          143,
+          127
+        ]
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": "afbb58cf82064e56ba4d60543538297e",
+      "source": "assets/source/local-api/layered/yarn-sheet-sky-slice-87c1fb1f74-seed1337.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_0-minus-layer_2",
+      "cell": "sky",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 92.804,
+        "opaqueCorePct": 6.152,
+        "partialPct": 1.044,
+        "bbox": [
+          64,
+          227,
+          960,
+          283
+        ],
+        "bboxCoverage": 0.0957,
+        "alphaFill": 0.7519,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 38.542,
+        "componentCleanup": {
+          "components": 96,
+          "keptComponents": 1,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 119
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "20223e3be2574e62b2687f4a1f7948bb",
+      "source": "assets/source/local-api/layered/yarn-sheet-coral-slice-7668ed47a8-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "coral",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 92.22,
+        "opaqueCorePct": 4.473,
+        "partialPct": 3.307,
+        "bbox": [
+          65,
+          224,
+          958,
+          290
+        ],
+        "bboxCoverage": 0.1124,
+        "alphaFill": 0.6921,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "meanVisibleSaturation": 50.911,
+        "componentCleanup": {
+          "components": 121,
+          "keptComponents": 1,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 715
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "9d57bfbac44940d0bac20119935f04aa",
+      "source": "assets/source/local-api/layered/yarn-sheet-gold-slice-f0d2b12f23-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "gold",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 88.177,
+        "opaqueCorePct": 7.861,
+        "partialPct": 3.962,
+        "bbox": [
+          69,
+          205,
+          959,
+          320
+        ],
+        "bboxCoverage": 0.1952,
+        "alphaFill": 0.6056,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "meanVisibleSaturation": 71.837,
+        "componentCleanup": {
+          "components": 45,
+          "keptComponents": 1,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 175
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "af91d3191ed54a7caa5dd91443aaeccf",
+      "source": "assets/source/local-api/layered/yarn-sheet-mint-slice-ec5c4cacd4-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "mint",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 88.305,
+        "opaqueCorePct": 6.284,
+        "partialPct": 5.411,
+        "bbox": [
+          65,
+          202,
+          965,
+          314
+        ],
+        "bboxCoverage": 0.1923,
+        "alphaFill": 0.6083,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "meanVisibleSaturation": 17.083,
+        "componentCleanup": {
+          "components": 243,
+          "keptComponents": 2,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 1727
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "34107f7713534a8d99edbca7d3f8ab22",
+      "source": "assets/source/local-api/layered/yarn-sheet-plum-slice-33ba838226-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "plum",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 87.647,
+        "opaqueCorePct": 8.115,
+        "partialPct": 4.238,
+        "bbox": [
+          62,
+          205,
+          969,
+          306
+        ],
+        "bboxCoverage": 0.1747,
+        "alphaFill": 0.707,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "meanVisibleSaturation": 46.459,
+        "componentCleanup": {
+          "components": 335,
+          "keptComponents": 1,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 1972
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/yarn-sheet-cream-slice-e4d215c8b3-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2",
+      "cell": "cream",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 82.733,
+        "opaqueCorePct": 11.101,
+        "partialPct": 6.166,
+        "bbox": [
+          0,
+          214,
+          1024,
+          344
+        ],
+        "bboxCoverage": 0.2539,
+        "alphaFill": 0.6801,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "meanVisibleSaturation": 17.221,
+        "componentCleanup": {
+          "components": 351,
+          "keptComponents": 2,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 1543
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/yarn-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/yarn-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

@@ -1,0 +1,1635 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "nature-sheet",
+  "source": "assets/source/local-api/raw/nature-sheet.png",
+  "sourceSha256": "63f9ec692c4707c02967e92f9bc6e6b4a41f8fd49a7700a7290eadac96000056",
+  "jobSha256": "27d6819ae249eb1b5cf4cc81c7242e22c0695ff6751889f6446a4165041cb5c2",
+  "generatedAt": "2026-08-05T15:54:42Z",
+  "runtime": [
+    {
+      "id": "maple-leaf-coral",
+      "path": "assets/pieces/nature/maple-leaf-coral.webp",
+      "bytes": 64894,
+      "kilobytes": 63.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "oak-leaf-gold",
+      "path": "assets/pieces/nature/oak-leaf-gold.webp",
+      "bytes": 61052,
+      "kilobytes": 59.6,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "fern-leaf-green",
+      "path": "assets/pieces/nature/fern-leaf-green.webp",
+      "bytes": 66054,
+      "kilobytes": 64.5,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "pressed-daisy",
+      "path": "assets/pieces/nature/pressed-daisy.webp",
+      "bytes": 101764,
+      "kilobytes": 99.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "pressed-blue-flower",
+      "path": "assets/pieces/nature/pressed-blue-flower.webp",
+      "bytes": 92900,
+      "kilobytes": 90.7,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "twig-fork",
+      "path": "assets/pieces/nature/twig-fork.webp",
+      "bytes": 24054,
+      "kilobytes": 23.5,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "acorn",
+      "path": "assets/pieces/nature/acorn.webp",
+      "bytes": 81284,
+      "kilobytes": 79.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "pinecone",
+      "path": "assets/pieces/nature/pinecone.webp",
+      "bytes": 78710,
+      "kilobytes": 76.9,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [],
+  "seeds": [
+    42,
+    1337,
+    9001
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: maple leaf coral, oak leaf gold, fern leaf green, pressed daisy, pressed blue flower, twig fork, acorn, pinecone. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/nature-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 98.542,
+    "opaqueCorePct": 1.122,
+    "partialPct": 0.336,
+    "bbox": [
+      14,
+      99,
+      1010,
+      582
+    ],
+    "bboxCoverage": 0.6909,
+    "alphaFill": 0.0211,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "maple-leaf-coral": {
+      "transparentPct": 95.896,
+      "opaqueCorePct": 3.468,
+      "partialPct": 0.636,
+      "bbox": [
+        58,
+        75,
+        282,
+        356
+      ],
+      "bboxCoverage": 0.0904,
+      "alphaFill": 0.454,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 67.051,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "oak-leaf-gold": {
+      "transparentPct": 96.42,
+      "opaqueCorePct": 3.114,
+      "partialPct": 0.466,
+      "bbox": [
+        332,
+        81,
+        499,
+        344
+      ],
+      "bboxCoverage": 0.0631,
+      "alphaFill": 0.5675,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 73.745,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "fern-leaf-green": {
+      "transparentPct": 96.139,
+      "opaqueCorePct": 3.109,
+      "partialPct": 0.752,
+      "bbox": [
+        543,
+        58,
+        707,
+        345
+      ],
+      "bboxCoverage": 0.0676,
+      "alphaFill": 0.5713,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 54.189,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "pressed-daisy": {
+      "transparentPct": 96.204,
+      "opaqueCorePct": 3.444,
+      "partialPct": 0.352,
+      "bbox": [
+        767,
+        106,
+        966,
+        307
+      ],
+      "bboxCoverage": 0.0574,
+      "alphaFill": 0.6609,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 21.345,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed1337.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "pressed-blue-flower": {
+      "transparentPct": 97.484,
+      "opaqueCorePct": 2.092,
+      "partialPct": 0.424,
+      "bbox": [
+        91,
+        424,
+        257,
+        592
+      ],
+      "bboxCoverage": 0.0401,
+      "alphaFill": 0.6281,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 36.969,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "twig-fork": {
+      "transparentPct": 99.092,
+      "opaqueCorePct": 0.557,
+      "partialPct": 0.351,
+      "bbox": [
+        363,
+        390,
+        450,
+        628
+      ],
+      "bboxCoverage": 0.0297,
+      "alphaFill": 0.3055,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 50.245,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 9001,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "acorn": {
+      "transparentPct": 98.173,
+      "opaqueCorePct": 1.597,
+      "partialPct": 0.23,
+      "bbox": [
+        570,
+        436,
+        695,
+        583
+      ],
+      "bboxCoverage": 0.0264,
+      "alphaFill": 0.6923,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 64.13,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 1337,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-seed1337.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "pinecone": {
+      "transparentPct": 98.005,
+      "opaqueCorePct": 1.687,
+      "partialPct": 0.308,
+      "bbox": [
+        812,
+        420,
+        922,
+        593
+      ],
+      "bboxCoverage": 0.0273,
+      "alphaFill": 0.7302,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 61.554,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/nature-sheet-pinecone-target-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed42.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 100.0,
+        "opaqueCorePct": 0.0,
+        "partialPct": 0.0,
+        "bbox": null,
+        "bboxCoverage": 0,
+        "alphaFill": 0,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": false,
+          "error": "maple-leaf-coral: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": false,
+          "error": "oak-leaf-gold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": false,
+          "error": "fern-leaf-green: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-daisy": {
+          "accepted": false,
+          "error": "pressed-daisy: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": false,
+          "error": "pressed-blue-flower: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "twig-fork": {
+          "accepted": false,
+          "error": "twig-fork: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "acorn": {
+          "accepted": false,
+          "error": "acorn: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed1337.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 94.377,
+        "opaqueCorePct": 5.041,
+        "partialPct": 0.582,
+        "bbox": [
+          570,
+          106,
+          966,
+          583
+        ],
+        "bboxCoverage": 0.2713,
+        "alphaFill": 0.2073,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": false,
+          "error": "maple-leaf-coral: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": false,
+          "error": "oak-leaf-gold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": false,
+          "error": "fern-leaf-green: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-daisy": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.204,
+            "opaqueCorePct": 3.444,
+            "partialPct": 0.352,
+            "bbox": [
+              767,
+              106,
+              966,
+              307
+            ],
+            "bboxCoverage": 0.0574,
+            "alphaFill": 0.6609,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 21.345,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": false,
+          "error": "pressed-blue-flower: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "twig-fork": {
+          "accepted": false,
+          "error": "twig-fork: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "acorn": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 98.173,
+            "opaqueCorePct": 1.597,
+            "partialPct": 0.23,
+            "bbox": [
+              570,
+              436,
+              695,
+              583
+            ],
+            "bboxCoverage": 0.0264,
+            "alphaFill": 0.6923,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 64.13,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 9001,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed9001.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 83.162,
+        "opaqueCorePct": 13.917,
+        "partialPct": 2.921,
+        "bbox": [
+          58,
+          58,
+          707,
+          628
+        ],
+        "bboxCoverage": 0.5313,
+        "alphaFill": 0.3169,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.896,
+            "opaqueCorePct": 3.468,
+            "partialPct": 0.636,
+            "bbox": [
+              58,
+              75,
+              282,
+              356
+            ],
+            "bboxCoverage": 0.0904,
+            "alphaFill": 0.454,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 67.051,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.42,
+            "opaqueCorePct": 3.114,
+            "partialPct": 0.466,
+            "bbox": [
+              332,
+              81,
+              499,
+              344
+            ],
+            "bboxCoverage": 0.0631,
+            "alphaFill": 0.5675,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 73.745,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.139,
+            "opaqueCorePct": 3.109,
+            "partialPct": 0.752,
+            "bbox": [
+              543,
+              58,
+              707,
+              345
+            ],
+            "bboxCoverage": 0.0676,
+            "alphaFill": 0.5713,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 54.189,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pressed-daisy": {
+          "accepted": false,
+          "error": "pressed-daisy: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 97.484,
+            "opaqueCorePct": 2.092,
+            "partialPct": 0.424,
+            "bbox": [
+              91,
+              424,
+              257,
+              592
+            ],
+            "bboxCoverage": 0.0401,
+            "alphaFill": 0.6281,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 36.969,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "twig-fork": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 99.092,
+            "opaqueCorePct": 0.557,
+            "partialPct": 0.351,
+            "bbox": [
+              363,
+              390,
+              450,
+              628
+            ],
+            "bboxCoverage": 0.0297,
+            "alphaFill": 0.3055,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 50.245,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "acorn": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 98.132,
+            "opaqueCorePct": 1.577,
+            "partialPct": 0.291,
+            "bbox": [
+              570,
+              436,
+              696,
+              584
+            ],
+            "bboxCoverage": 0.0268,
+            "alphaFill": 0.6976,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 63.899,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed7.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 96.357,
+        "opaqueCorePct": 3.276,
+        "partialPct": 0.367,
+        "bbox": [
+          768,
+          106,
+          965,
+          306
+        ],
+        "bboxCoverage": 0.0566,
+        "alphaFill": 0.6438,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": false,
+          "error": "maple-leaf-coral: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": false,
+          "error": "oak-leaf-gold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": false,
+          "error": "fern-leaf-green: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-daisy": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.357,
+            "opaqueCorePct": 3.276,
+            "partialPct": 0.367,
+            "bbox": [
+              768,
+              106,
+              965,
+              306
+            ],
+            "bboxCoverage": 0.0566,
+            "alphaFill": 0.6438,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 20.385,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": false,
+          "error": "pressed-blue-flower: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "twig-fork": {
+          "accepted": false,
+          "error": "twig-fork: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "acorn": {
+          "accepted": false,
+          "error": "acorn: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 2026,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed2026.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 97.774,
+        "opaqueCorePct": 2.027,
+        "partialPct": 0.199,
+        "bbox": [
+          92,
+          424,
+          252,
+          588
+        ],
+        "bboxCoverage": 0.0377,
+        "alphaFill": 0.5907,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": false,
+          "error": "maple-leaf-coral: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": false,
+          "error": "oak-leaf-gold: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": false,
+          "error": "fern-leaf-green: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-daisy": {
+          "accepted": false,
+          "error": "pressed-daisy: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 97.774,
+            "opaqueCorePct": 2.027,
+            "partialPct": 0.199,
+            "bbox": [
+              92,
+              424,
+              252,
+              588
+            ],
+            "bboxCoverage": 0.0377,
+            "alphaFill": 0.5907,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 36.75,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "twig-fork": {
+          "accepted": false,
+          "error": "twig-fork: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "acorn": {
+          "accepted": false,
+          "error": "acorn: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 31415,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-seed31415.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 85.82,
+        "opaqueCorePct": 11.972,
+        "partialPct": 2.208,
+        "bbox": [
+          0,
+          0,
+          1024,
+          680
+        ],
+        "bboxCoverage": 1.0,
+        "alphaFill": 0.1418,
+        "cornerAlpha": [
+          0,
+          21,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "maple-leaf-coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.225,
+            "opaqueCorePct": 3.473,
+            "partialPct": 0.303,
+            "bbox": [
+              59,
+              76,
+              281,
+              354
+            ],
+            "bboxCoverage": 0.0886,
+            "alphaFill": 0.426,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 62.877,
+            "componentCleanup": {
+              "components": 22,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "oak-leaf-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.636,
+            "opaqueCorePct": 3.099,
+            "partialPct": 0.265,
+            "bbox": [
+              333,
+              82,
+              497,
+              343
+            ],
+            "bboxCoverage": 0.0615,
+            "alphaFill": 0.5472,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 70.193,
+            "componentCleanup": {
+              "components": 18,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "fern-leaf-green": {
+          "accepted": false,
+          "error": "fern-leaf-green: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pressed-daisy": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.323,
+            "opaqueCorePct": 3.369,
+            "partialPct": 0.308,
+            "bbox": [
+              768,
+              106,
+              968,
+              311
+            ],
+            "bboxCoverage": 0.0589,
+            "alphaFill": 0.6245,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 21.021,
+            "componentCleanup": {
+              "components": 43,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pressed-blue-flower": {
+          "accepted": false,
+          "error": "pressed-blue-flower: near-blank extraction (0.166% opaque)",
+          "alpha": {
+            "transparentPct": 99.717,
+            "opaqueCorePct": 0.166,
+            "partialPct": 0.118,
+            "bbox": [
+              116,
+              448,
+              209,
+              561
+            ],
+            "bboxCoverage": 0.0151,
+            "alphaFill": 0.1877,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "twig-fork": {
+          "accepted": false,
+          "error": "twig-fork: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "acorn": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 98.298,
+            "opaqueCorePct": 1.256,
+            "partialPct": 0.446,
+            "bbox": [
+              572,
+              437,
+              695,
+              582
+            ],
+            "bboxCoverage": 0.0256,
+            "alphaFill": 0.6644,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 60.91,
+            "componentCleanup": {
+              "components": 15,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "pinecone": {
+          "accepted": false,
+          "error": "pinecone: alpha fill 0.4054 is below 0.65",
+          "alpha": {
+            "transparentPct": 98.882,
+            "opaqueCorePct": 0.609,
+            "partialPct": 0.509,
+            "bbox": [
+              812,
+              420,
+              923,
+              593
+            ],
+            "bboxCoverage": 0.0276,
+            "alphaFill": 0.4054,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/nature-sheet-pinecone-target-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "cached-layer_2",
+      "cell": "pinecone",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 98.005,
+        "opaqueCorePct": 1.687,
+        "partialPct": 0.308,
+        "bbox": [
+          812,
+          420,
+          922,
+          593
+        ],
+        "bboxCoverage": 0.0273,
+        "alphaFill": 0.7302,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 61.554,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 55,
+          "removedAlphaPixels": 0
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/nature-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/nature-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

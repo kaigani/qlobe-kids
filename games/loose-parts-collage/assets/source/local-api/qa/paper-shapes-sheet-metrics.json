@@ -1,0 +1,655 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "paper-shapes-sheet",
+  "source": "assets/source/local-api/raw/paper-shapes-sheet.png",
+  "sourceSha256": "3b2bac8a998add4553979060d7efb64bfb1b23d3dadc7d60f30460b3dbe4c73e",
+  "jobSha256": "c5aec988e8d0f0dbd7b3b45cefb93dcb7dc18699abcd1de1cfec36a6c124613d",
+  "generatedAt": "2026-08-05T15:56:33Z",
+  "runtime": [
+    {
+      "id": "paper-circle-coral",
+      "path": "assets/pieces/paper/paper-circle-coral.webp",
+      "bytes": 106940,
+      "kilobytes": 104.4,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-circle-gold",
+      "path": "assets/pieces/paper/paper-circle-gold.webp",
+      "bytes": 103610,
+      "kilobytes": 101.2,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-triangle-teal",
+      "path": "assets/pieces/paper/paper-triangle-teal.webp",
+      "bytes": 70660,
+      "kilobytes": 69.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-star-plum",
+      "path": "assets/pieces/paper/paper-star-plum.webp",
+      "bytes": 75252,
+      "kilobytes": 73.5,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-heart-pink",
+      "path": "assets/pieces/paper/paper-heart-pink.webp",
+      "bytes": 93792,
+      "kilobytes": 91.6,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-cloud-cream",
+      "path": "assets/pieces/paper/paper-cloud-cream.webp",
+      "bytes": 64376,
+      "kilobytes": 62.9,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-fringe-blue",
+      "path": "assets/pieces/paper/paper-fringe-blue.webp",
+      "bytes": 125670,
+      "kilobytes": 122.7,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "paper-strip-rainbow",
+      "path": "assets/pieces/paper/paper-strip-rainbow.webp",
+      "bytes": 68896,
+      "kilobytes": 67.3,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "e7ff9591233f4fa392e77016cec530f2"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: paper circle coral, paper circle gold, paper triangle teal, paper star plum, paper heart pink, paper cloud cream, paper fringe blue, paper strip rainbow. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/paper-shapes-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 97.881,
+    "opaqueCorePct": 1.894,
+    "partialPct": 0.226,
+    "bbox": [
+      13,
+      106,
+      1011,
+      579
+    ],
+    "bboxCoverage": 0.6779,
+    "alphaFill": 0.0313,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "paper-circle-coral": {
+      "transparentPct": 95.594,
+      "opaqueCorePct": 4.275,
+      "partialPct": 0.132,
+      "bbox": [
+        56,
+        98,
+        254,
+        296
+      ],
+      "bboxCoverage": 0.0563,
+      "alphaFill": 0.7826,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 69.876,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-circle-gold": {
+      "transparentPct": 95.576,
+      "opaqueCorePct": 4.295,
+      "partialPct": 0.13,
+      "bbox": [
+        302,
+        98,
+        500,
+        297
+      ],
+      "bboxCoverage": 0.0566,
+      "alphaFill": 0.7819,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 91.955,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-triangle-teal": {
+      "transparentPct": 96.923,
+      "opaqueCorePct": 2.936,
+      "partialPct": 0.141,
+      "bbox": [
+        532,
+        100,
+        745,
+        291
+      ],
+      "bboxCoverage": 0.0584,
+      "alphaFill": 0.5266,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 76.299,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-star-plum": {
+      "transparentPct": 96.66,
+      "opaqueCorePct": 3.167,
+      "partialPct": 0.173,
+      "bbox": [
+        751,
+        85,
+        972,
+        303
+      ],
+      "bboxCoverage": 0.0692,
+      "alphaFill": 0.4827,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 68.573,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-heart-pink": {
+      "transparentPct": 95.99,
+      "opaqueCorePct": 3.879,
+      "partialPct": 0.131,
+      "bbox": [
+        53,
+        384,
+        257,
+        582
+      ],
+      "bboxCoverage": 0.058,
+      "alphaFill": 0.6913,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 43.444,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-cloud-cream": {
+      "transparentPct": 95.9,
+      "opaqueCorePct": 3.961,
+      "partialPct": 0.139,
+      "bbox": [
+        277,
+        399,
+        519,
+        563
+      ],
+      "bboxCoverage": 0.057,
+      "alphaFill": 0.7193,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 17.161,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-fringe-blue": {
+      "transparentPct": 94.745,
+      "opaqueCorePct": 4.976,
+      "partialPct": 0.279,
+      "bbox": [
+        548,
+        383,
+        740,
+        577
+      ],
+      "bboxCoverage": 0.0535,
+      "alphaFill": 0.9824,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 40.077,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    },
+    "paper-strip-rainbow": {
+      "transparentPct": 95.74,
+      "opaqueCorePct": 4.104,
+      "partialPct": 0.156,
+      "bbox": [
+        791,
+        339,
+        952,
+        615
+      ],
+      "bboxCoverage": 0.0638,
+      "alphaFill": 0.6675,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 61.704,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 55,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "e7ff9591233f4fa392e77016cec530f2",
+      "selectedSource": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "e7ff9591233f4fa392e77016cec530f2",
+      "source": "assets/source/local-api/layered/paper-shapes-sheet-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 67.127,
+        "opaqueCorePct": 31.593,
+        "partialPct": 1.28,
+        "bbox": [
+          53,
+          85,
+          972,
+          615
+        ],
+        "bboxCoverage": 0.6995,
+        "alphaFill": 0.47,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "paper-circle-coral": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.594,
+            "opaqueCorePct": 4.275,
+            "partialPct": 0.132,
+            "bbox": [
+              56,
+              98,
+              254,
+              296
+            ],
+            "bboxCoverage": 0.0563,
+            "alphaFill": 0.7826,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 69.876,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-circle-gold": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.576,
+            "opaqueCorePct": 4.295,
+            "partialPct": 0.13,
+            "bbox": [
+              302,
+              98,
+              500,
+              297
+            ],
+            "bboxCoverage": 0.0566,
+            "alphaFill": 0.7819,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 91.955,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-triangle-teal": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.923,
+            "opaqueCorePct": 2.936,
+            "partialPct": 0.141,
+            "bbox": [
+              532,
+              100,
+              745,
+              291
+            ],
+            "bboxCoverage": 0.0584,
+            "alphaFill": 0.5266,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 76.299,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-star-plum": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 96.66,
+            "opaqueCorePct": 3.167,
+            "partialPct": 0.173,
+            "bbox": [
+              751,
+              85,
+              972,
+              303
+            ],
+            "bboxCoverage": 0.0692,
+            "alphaFill": 0.4827,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 68.573,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-heart-pink": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.99,
+            "opaqueCorePct": 3.879,
+            "partialPct": 0.131,
+            "bbox": [
+              53,
+              384,
+              257,
+              582
+            ],
+            "bboxCoverage": 0.058,
+            "alphaFill": 0.6913,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 43.444,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-cloud-cream": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.9,
+            "opaqueCorePct": 3.961,
+            "partialPct": 0.139,
+            "bbox": [
+              277,
+              399,
+              519,
+              563
+            ],
+            "bboxCoverage": 0.057,
+            "alphaFill": 0.7193,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 17.161,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-fringe-blue": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 94.745,
+            "opaqueCorePct": 4.976,
+            "partialPct": 0.279,
+            "bbox": [
+              548,
+              383,
+              740,
+              577
+            ],
+            "bboxCoverage": 0.0535,
+            "alphaFill": 0.9824,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 40.077,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "paper-strip-rainbow": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 95.74,
+            "opaqueCorePct": 4.104,
+            "partialPct": 0.156,
+            "bbox": [
+              791,
+              339,
+              952,
+              615
+            ],
+            "bboxCoverage": 0.0638,
+            "alphaFill": 0.6675,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 61.704,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 55,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/paper-shapes-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/paper-shapes-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

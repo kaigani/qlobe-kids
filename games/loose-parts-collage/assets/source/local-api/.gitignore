@@ -1,0 +1,8 @@
+# Reproducible working caches. Production retains accepted raw sources and
+# recipes, final QA contacts/mattes/metrics, transcripts, and rejected records.
+/layered/
+/slices/
+/normalized/**/*.png
+/voice/*.flac
+/voice/*-seed*.m4a
+/qa/*-seed*-magenta.png

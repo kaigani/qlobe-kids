@@ -1,0 +1,158 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "recycle",
+  "source": "assets/source/local-api/raw/recycle.png",
+  "sourceSha256": "57198270ecd8d3ca528fcd9d7325bf3f9922e3d40709d9227ae634273ce1a3a7",
+  "jobSha256": "3866a72cc058ce98d8828df51619be224b1c6cbc8b2491009d1db9a25284b537",
+  "generatedAt": "2026-08-05T17:26:37Z",
+  "runtime": [
+    {
+      "id": "recycle",
+      "path": "assets/ui/recycle.webp",
+      "bytes": 103704,
+      "kilobytes": 101.3,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "494123fabaf24a4ca0b6110f561035da"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: recycle. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/recycle.layer2.png",
+  "sourceSize": [
+    1024,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    1024
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 63.227,
+    "opaqueCorePct": 36.257,
+    "partialPct": 0.515,
+    "bbox": [
+      178,
+      154,
+      845,
+      867
+    ],
+    "bboxCoverage": 0.4535,
+    "alphaFill": 0.8108,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "recycle": {
+      "transparentPct": 63.227,
+      "opaqueCorePct": 36.257,
+      "partialPct": 0.515,
+      "bbox": [
+        178,
+        154,
+        845,
+        867
+      ],
+      "bboxCoverage": 0.4535,
+      "alphaFill": 0.8108,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 46.921,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 83,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "494123fabaf24a4ca0b6110f561035da",
+      "selectedSource": "assets/source/local-api/layered/recycle-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "494123fabaf24a4ca0b6110f561035da",
+      "source": "assets/source/local-api/layered/recycle-seed42.layer2.png",
+      "reusedCandidate": false,
+      "selectedMethod": "layer_2",
+      "fullAlpha": {
+        "transparentPct": 63.227,
+        "opaqueCorePct": 36.257,
+        "partialPct": 0.515,
+        "bbox": [
+          178,
+          154,
+          845,
+          867
+        ],
+        "bboxCoverage": 0.4535,
+        "alphaFill": 0.8108,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "recycle": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 63.227,
+            "opaqueCorePct": 36.257,
+            "partialPct": 0.515,
+            "bbox": [
+              178,
+              154,
+              845,
+              867
+            ],
+            "bboxCoverage": 0.4535,
+            "alphaFill": 0.8108,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 46.921,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 83,
+              "removedAlphaPixels": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/recycle-magenta.png",
+    "contact": "assets/source/local-api/qa/recycle-contact.png",
+    "status": "human-approved"
+  }
+}

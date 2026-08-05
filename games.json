@@ -2315,7 +2315,7 @@
     },
     {
       "id": "loose-parts-collage",
-      "title": "Loose Parts Collage",
+      "title": "Little Artist",
       "category": "art-music",
       "path": "games/loose-parts-collage/",
       "icon": "assets/hub/tiles/loose-parts-collage.jpg",
@@ -2324,12 +2324,22 @@
         "max": 6
       },
       "status": "beta",
-      "accent": "#b7d97b",
+      "accent": "#e46f55",
       "modes": [
         {
-          "id": "nature",
-          "title": "Nature Pictures",
-          "skill": "composition from found loose parts"
+          "id": "collage",
+          "title": "Free Collage",
+          "skill": "spatial composition through choosing, layering, rotating, and sizing"
+        },
+        {
+          "id": "yarn",
+          "title": "Yarn Magic",
+          "skill": "continuous fine-motor path planning with loops, curves, and crossings"
+        },
+        {
+          "id": "teddy",
+          "title": "Teddy's Idea",
+          "skill": "intentional visual storytelling from an open-ended spoken prompt"
         }
       ],
       "summary": "Arrange leaves, buttons, paper, and yarn into art."

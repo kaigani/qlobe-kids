@@ -1,0 +1,682 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "ui-sheet",
+  "source": "assets/source/local-api/raw/ui-sheet.png",
+  "sourceSha256": "0dc125997b8b9b760e7a0e1f7aec77a549b1068206fa63f84812c92aae1f6fc7",
+  "jobSha256": "55bc8a6573ac29c5ed4fdb013532c3aac4220d2567cda35519af2786a1103cd9",
+  "generatedAt": "2026-08-05T18:38:22Z",
+  "runtime": [
+    {
+      "id": "turn",
+      "path": "assets/ui/turn.webp",
+      "bytes": 48990,
+      "kilobytes": 47.8,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "smaller",
+      "path": "assets/ui/smaller.webp",
+      "bytes": 53198,
+      "kilobytes": 52.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "bigger",
+      "path": "assets/ui/bigger.webp",
+      "bytes": 54062,
+      "kilobytes": 52.8,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "undo",
+      "path": "assets/ui/undo.webp",
+      "bytes": 52210,
+      "kilobytes": 51.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "fresh",
+      "path": "assets/ui/fresh.webp",
+      "bytes": 50222,
+      "kilobytes": 49.0,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "picture",
+      "path": "assets/ui/picture.webp",
+      "bytes": 52872,
+      "kilobytes": 51.6,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "finish",
+      "path": "assets/ui/finish.webp",
+      "bytes": 57462,
+      "kilobytes": 56.1,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "gallery",
+      "path": "assets/ui/gallery.webp",
+      "bytes": 51106,
+      "kilobytes": 49.9,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "079b9d691d6c4b3da2e8c0e5fc521239",
+    "31dab50653d8481c961f9178f4e0f2ff",
+    "6757ea8ab1404445ba242b392685c159",
+    "7b389850c6af474fabbcf5249a99488f",
+    "98dd40fc9f6f4bd192f4831c511cc651",
+    "ab74e2e171d54693aca2e785a66bea61",
+    "af4ff189745a4b2899575876faf600fe",
+    "b8466472f9ee4c60a2feba3a025d55eb"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: turn, smaller, bigger, undo, fresh, picture, finish, gallery. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/ui-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    683
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 80.22,
+    "opaqueCorePct": 19.189,
+    "partialPct": 0.592,
+    "bbox": [
+      58,
+      95,
+      968,
+      587
+    ],
+    "bboxCoverage": 0.6402,
+    "alphaFill": 0.309,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "turn": {
+      "transparentPct": 79.328,
+      "opaqueCorePct": 20.265,
+      "partialPct": 0.407,
+      "bbox": [
+        203,
+        278,
+        684,
+        767
+      ],
+      "bboxCoverage": 0.2634,
+      "alphaFill": 0.7848,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 45.279,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "7b389850c6af474fabbcf5249a99488f",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-turn-slice-decdb7d6c2-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "smaller": {
+      "transparentPct": 77.277,
+      "opaqueCorePct": 22.292,
+      "partialPct": 0.43,
+      "bbox": [
+        187,
+        265,
+        691,
+        776
+      ],
+      "bboxCoverage": 0.2884,
+      "alphaFill": 0.7878,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 39.688,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "ab74e2e171d54693aca2e785a66bea61",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-smaller-slice-b51a16e581-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "bigger": {
+      "transparentPct": 76.789,
+      "opaqueCorePct": 22.751,
+      "partialPct": 0.46,
+      "bbox": [
+        176,
+        257,
+        686,
+        777
+      ],
+      "bboxCoverage": 0.297,
+      "alphaFill": 0.7815,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 49.892,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "b8466472f9ee4c60a2feba3a025d55eb",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-bigger-slice-733b00ef78-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "undo": {
+      "transparentPct": 77.498,
+      "opaqueCorePct": 22.126,
+      "partialPct": 0.376,
+      "bbox": [
+        178,
+        265,
+        679,
+        776
+      ],
+      "bboxCoverage": 0.2867,
+      "alphaFill": 0.7848,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 42.607,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "6757ea8ab1404445ba242b392685c159",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-undo-slice-785ddb9ee2-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "fresh": {
+      "transparentPct": 78.827,
+      "opaqueCorePct": 20.708,
+      "partialPct": 0.465,
+      "bbox": [
+        197,
+        248,
+        688,
+        738
+      ],
+      "bboxCoverage": 0.2694,
+      "alphaFill": 0.7858,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 31.536,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "31dab50653d8481c961f9178f4e0f2ff",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-fresh-slice-b4f29e4573-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "picture": {
+      "transparentPct": 77.472,
+      "opaqueCorePct": 22.093,
+      "partialPct": 0.435,
+      "bbox": [
+        186,
+        235,
+        694,
+        740
+      ],
+      "bboxCoverage": 0.2873,
+      "alphaFill": 0.7841,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 48.517,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "98dd40fc9f6f4bd192f4831c511cc651",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-picture-slice-f7a69c8c12-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "finish": {
+      "transparentPct": 76.194,
+      "opaqueCorePct": 23.357,
+      "partialPct": 0.449,
+      "bbox": [
+        169,
+        242,
+        687,
+        764
+      ],
+      "bboxCoverage": 0.3028,
+      "alphaFill": 0.7861,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 71.386,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "af4ff189745a4b2899575876faf600fe",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-finish-slice-549b5c91e1-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "gallery": {
+      "transparentPct": 77.952,
+      "opaqueCorePct": 21.607,
+      "partialPct": 0.441,
+      "bbox": [
+        180,
+        245,
+        679,
+        747
+      ],
+      "bboxCoverage": 0.2805,
+      "alphaFill": 0.7859,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 52.205,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 71,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "079b9d691d6c4b3da2e8c0e5fc521239",
+      "selectedSource": "assets/source/local-api/layered/ui-sheet-gallery-slice-304f076c33-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": "7b389850c6af474fabbcf5249a99488f",
+      "source": "assets/source/local-api/layered/ui-sheet-turn-slice-decdb7d6c2-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "turn",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 79.328,
+        "opaqueCorePct": 20.265,
+        "partialPct": 0.407,
+        "bbox": [
+          203,
+          278,
+          684,
+          767
+        ],
+        "bboxCoverage": 0.2634,
+        "alphaFill": 0.7848,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 45.279,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "ab74e2e171d54693aca2e785a66bea61",
+      "source": "assets/source/local-api/layered/ui-sheet-smaller-slice-b51a16e581-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "smaller",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 77.277,
+        "opaqueCorePct": 22.292,
+        "partialPct": 0.43,
+        "bbox": [
+          187,
+          265,
+          691,
+          776
+        ],
+        "bboxCoverage": 0.2884,
+        "alphaFill": 0.7878,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 39.688,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "b8466472f9ee4c60a2feba3a025d55eb",
+      "source": "assets/source/local-api/layered/ui-sheet-bigger-slice-733b00ef78-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "bigger",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 76.789,
+        "opaqueCorePct": 22.751,
+        "partialPct": 0.46,
+        "bbox": [
+          176,
+          257,
+          686,
+          777
+        ],
+        "bboxCoverage": 0.297,
+        "alphaFill": 0.7815,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 49.892,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "6757ea8ab1404445ba242b392685c159",
+      "source": "assets/source/local-api/layered/ui-sheet-undo-slice-785ddb9ee2-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "undo",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 77.498,
+        "opaqueCorePct": 22.126,
+        "partialPct": 0.376,
+        "bbox": [
+          178,
+          265,
+          679,
+          776
+        ],
+        "bboxCoverage": 0.2867,
+        "alphaFill": 0.7848,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 42.607,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "31dab50653d8481c961f9178f4e0f2ff",
+      "source": "assets/source/local-api/layered/ui-sheet-fresh-slice-b4f29e4573-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "fresh",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 78.827,
+        "opaqueCorePct": 20.708,
+        "partialPct": 0.465,
+        "bbox": [
+          197,
+          248,
+          688,
+          738
+        ],
+        "bboxCoverage": 0.2694,
+        "alphaFill": 0.7858,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 31.536,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "98dd40fc9f6f4bd192f4831c511cc651",
+      "source": "assets/source/local-api/layered/ui-sheet-picture-slice-f7a69c8c12-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "picture",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 77.472,
+        "opaqueCorePct": 22.093,
+        "partialPct": 0.435,
+        "bbox": [
+          186,
+          235,
+          694,
+          740
+        ],
+        "bboxCoverage": 0.2873,
+        "alphaFill": 0.7841,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 48.517,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "af4ff189745a4b2899575876faf600fe",
+      "source": "assets/source/local-api/layered/ui-sheet-finish-slice-549b5c91e1-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "finish",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 76.194,
+        "opaqueCorePct": 23.357,
+        "partialPct": 0.449,
+        "bbox": [
+          169,
+          242,
+          687,
+          764
+        ],
+        "bboxCoverage": 0.3028,
+        "alphaFill": 0.7861,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 71.386,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "079b9d691d6c4b3da2e8c0e5fc521239",
+      "source": "assets/source/local-api/layered/ui-sheet-gallery-slice-304f076c33-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "gallery",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 77.952,
+        "opaqueCorePct": 21.607,
+        "partialPct": 0.441,
+        "bbox": [
+          180,
+          245,
+          679,
+          747
+        ],
+        "bboxCoverage": 0.2805,
+        "alphaFill": 0.7859,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 52.205,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 71,
+          "removedAlphaPixels": 0
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/ui-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/ui-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

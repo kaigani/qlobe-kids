@@ -1,0 +1,652 @@
+{
+  "format": "qlobe-local-extraction-recipe",
+  "formatVersion": 1,
+  "assetId": "teddy-sheet",
+  "source": "assets/source/local-api/raw/teddy-sheet.png",
+  "sourceSha256": "9a7240ac5662a52f3f9fcb1a4a777d8db45b3ef3faa040e50049a3ecf09fc9f6",
+  "jobSha256": "d1995fd4359efebb478e23e2f7648dd15fb6c38b900492da87cb16c6fdcd9133",
+  "generatedAt": "2026-08-05T17:42:30Z",
+  "runtime": [
+    {
+      "id": "welcome",
+      "path": "assets/teddy/welcome.webp",
+      "bytes": 143430,
+      "kilobytes": 140.1,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "peek",
+      "path": "assets/teddy/peek.webp",
+      "bytes": 170320,
+      "kilobytes": 166.3,
+      "encoding": "lossless",
+      "quality": null
+    },
+    {
+      "id": "celebrate",
+      "path": "assets/teddy/celebrate.webp",
+      "bytes": 154082,
+      "kilobytes": 150.5,
+      "encoding": "lossless",
+      "quality": null
+    }
+  ],
+  "workflow": "qwen-image-layered",
+  "jobIds": [
+    "a0f5ca941d1044b484236c790ea1b579",
+    "d8ea97332e234481b32efc874d68ea13"
+  ],
+  "seeds": [
+    42
+  ],
+  "selectedOutput": "layer_2 or Qwen layer_0-minus-layer_2 matte",
+  "prompt": "Layer 1: only the flat dark background. Layer 2: all complete original foreground objects together on true transparency. The foreground objects are: welcome, peek, celebrate. Preserve their exact source shapes, colors, textures, holes, count, positions, and scale. Do not redraw, rearrange, crop, merge, add, or remove anything.",
+  "layer": "assets/source/local-api/layered/teddy-sheet.layer2.png",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "layerSize": [
+    1024,
+    680
+  ],
+  "alphaFloor": 8,
+  "fullAlpha": {
+    "transparentPct": 73.374,
+    "opaqueCorePct": 25.047,
+    "partialPct": 1.579,
+    "bbox": [
+      53,
+      148,
+      970,
+      531
+    ],
+    "bboxCoverage": 0.5044,
+    "alphaFill": 0.5279,
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "flags": []
+  },
+  "cells": {
+    "welcome": {
+      "transparentPct": 71.259,
+      "opaqueCorePct": 27.935,
+      "partialPct": 0.806,
+      "bbox": [
+        87,
+        208,
+        517,
+        803
+      ],
+      "bboxCoverage": 0.4462,
+      "alphaFill": 0.6442,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 58.436,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 45,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "d8ea97332e234481b32efc874d68ea13",
+      "selectedSource": "assets/source/local-api/layered/teddy-sheet-welcome-slice-3ff5da401c-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    },
+    "peek": {
+      "transparentPct": 77.785,
+      "opaqueCorePct": 19.162,
+      "partialPct": 3.053,
+      "bbox": [
+        33,
+        285,
+        309,
+        523
+      ],
+      "bboxCoverage": 0.2825,
+      "alphaFill": 0.7865,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "meanVisibleSaturation": 53.748,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 24,
+        "removedAlphaPixels": 172
+      },
+      "selectedSeed": 42,
+      "selectedJobId": null,
+      "selectedSource": "assets/source/local-api/layered/teddy-sheet-seed42.layer2.png",
+      "individualFallback": false,
+      "selectedMethod": "cached-layer_2"
+    },
+    "celebrate": {
+      "transparentPct": 68.65,
+      "opaqueCorePct": 30.527,
+      "partialPct": 0.823,
+      "bbox": [
+        6,
+        223,
+        432,
+        800
+      ],
+      "bboxCoverage": 0.4688,
+      "alphaFill": 0.6687,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "meanVisibleSaturation": 57.752,
+      "componentCleanup": {
+        "components": 1,
+        "keptComponents": 1,
+        "minimumCorePixels": 41,
+        "removedAlphaPixels": 0
+      },
+      "selectedSeed": 42,
+      "selectedJobId": "a0f5ca941d1044b484236c790ea1b579",
+      "selectedSource": "assets/source/local-api/layered/teddy-sheet-celebrate-slice-7c57a8ec46-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2"
+    }
+  },
+  "candidates": [
+    {
+      "seed": 42,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/teddy-sheet-seed42.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 92.556,
+        "opaqueCorePct": 6.4,
+        "partialPct": 1.044,
+        "bbox": [
+          374,
+          285,
+          651,
+          523
+        ],
+        "bboxCoverage": 0.0947,
+        "alphaFill": 0.7863,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "welcome": {
+          "accepted": false,
+          "error": "welcome: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "peek": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 77.785,
+            "opaqueCorePct": 19.162,
+            "partialPct": 3.053,
+            "bbox": [
+              33,
+              285,
+              309,
+              523
+            ],
+            "bboxCoverage": 0.2825,
+            "alphaFill": 0.7865,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 53.748,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 172
+            }
+          }
+        },
+        "celebrate": {
+          "accepted": false,
+          "error": "celebrate: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 1337,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/teddy-sheet-seed1337.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 93.334,
+        "opaqueCorePct": 6.348,
+        "partialPct": 0.318,
+        "bbox": [
+          378,
+          286,
+          645,
+          516
+        ],
+        "bboxCoverage": 0.0882,
+        "alphaFill": 0.7558,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "welcome": {
+          "accepted": false,
+          "error": "welcome: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "peek": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 80.042,
+            "opaqueCorePct": 19.006,
+            "partialPct": 0.952,
+            "bbox": [
+              37,
+              286,
+              304,
+              516
+            ],
+            "bboxCoverage": 0.2641,
+            "alphaFill": 0.7558,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [],
+            "meanVisibleSaturation": 58.456,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 0
+            }
+          }
+        },
+        "celebrate": {
+          "accepted": false,
+          "error": "celebrate: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 9001,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/teddy-sheet-seed9001.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 92.854,
+        "opaqueCorePct": 6.381,
+        "partialPct": 0.764,
+        "bbox": [
+          377,
+          285,
+          647,
+          519
+        ],
+        "bboxCoverage": 0.0907,
+        "alphaFill": 0.7875,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "welcome": {
+          "accepted": false,
+          "error": "welcome: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "peek": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 78.686,
+            "opaqueCorePct": 19.107,
+            "partialPct": 2.208,
+            "bbox": [
+              36,
+              285,
+              306,
+              519
+            ],
+            "bboxCoverage": 0.2717,
+            "alphaFill": 0.7846,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 57.937,
+            "componentCleanup": {
+              "components": 1,
+              "keptComponents": 1,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 188
+            }
+          }
+        },
+        "celebrate": {
+          "accepted": false,
+          "error": "celebrate: empty alpha extraction",
+          "alpha": {
+            "transparentPct": 100.0,
+            "opaqueCorePct": 0.0,
+            "partialPct": 0.0,
+            "bbox": null,
+            "bboxCoverage": 0,
+            "alphaFill": 0,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "jobId": null,
+      "source": "assets/source/local-api/layered/teddy-sheet-seed7.layer2.png",
+      "reusedCandidate": true,
+      "selectedMethod": "cached-layer_2",
+      "fullAlpha": {
+        "transparentPct": 73.516,
+        "opaqueCorePct": 20.599,
+        "partialPct": 5.884,
+        "bbox": [
+          0,
+          0,
+          1024,
+          678
+        ],
+        "bboxCoverage": 0.9971,
+        "alphaFill": 0.2656,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "cells": {
+        "welcome": {
+          "accepted": false,
+          "error": "welcome: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 69.241,
+            "opaqueCorePct": 23.99,
+            "partialPct": 6.769,
+            "bbox": [
+              0,
+              140,
+              341,
+              675
+            ],
+            "bboxCoverage": 0.7868,
+            "alphaFill": 0.391,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "peek": {
+          "accepted": false,
+          "error": "peek: subject touches its cell boundary",
+          "alpha": {
+            "transparentPct": 81.65,
+            "opaqueCorePct": 15.577,
+            "partialPct": 2.773,
+            "bbox": [
+              0,
+              267,
+              303,
+              522
+            ],
+            "bboxCoverage": 0.3322,
+            "alphaFill": 0.5523,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "celebrate": {
+          "accepted": true,
+          "error": null,
+          "alpha": {
+            "transparentPct": 70.102,
+            "opaqueCorePct": 22.246,
+            "partialPct": 7.652,
+            "bbox": [
+              5,
+              150,
+              285,
+              546
+            ],
+            "bboxCoverage": 0.4782,
+            "alphaFill": 0.6253,
+            "cornerAlpha": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "meanVisibleSaturation": 53.957,
+            "componentCleanup": {
+              "components": 75,
+              "keptComponents": 3,
+              "minimumCorePixels": 24,
+              "removedAlphaPixels": 343
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "d8ea97332e234481b32efc874d68ea13",
+      "source": "assets/source/local-api/layered/teddy-sheet-welcome-slice-3ff5da401c-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "welcome",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 71.259,
+        "opaqueCorePct": 27.935,
+        "partialPct": 0.806,
+        "bbox": [
+          87,
+          208,
+          517,
+          803
+        ],
+        "bboxCoverage": 0.4462,
+        "alphaFill": 0.6442,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 58.436,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 45,
+          "removedAlphaPixels": 0
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "jobId": "a0f5ca941d1044b484236c790ea1b579",
+      "source": "assets/source/local-api/layered/teddy-sheet-celebrate-slice-7c57a8ec46-seed42.layer2.png",
+      "individualFallback": true,
+      "selectedMethod": "layer_2",
+      "cell": "celebrate",
+      "accepted": true,
+      "error": null,
+      "alpha": {
+        "transparentPct": 68.65,
+        "opaqueCorePct": 30.527,
+        "partialPct": 0.823,
+        "bbox": [
+          6,
+          223,
+          432,
+          800
+        ],
+        "bboxCoverage": 0.4688,
+        "alphaFill": 0.6687,
+        "cornerAlpha": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "flags": [],
+        "meanVisibleSaturation": 57.752,
+        "componentCleanup": {
+          "components": 1,
+          "keptComponents": 1,
+          "minimumCorePixels": 41,
+          "removedAlphaPixels": 0
+        }
+      }
+    }
+  ],
+  "visualQa": {
+    "magenta": "assets/source/local-api/qa/teddy-sheet-magenta.png",
+    "contact": "assets/source/local-api/qa/teddy-sheet-contact.png",
+    "status": "human-approved"
+  }
+}

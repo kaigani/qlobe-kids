@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-local-voice-recipe",
+  "formatVersion": 1,
+  "pipelineVersion": 2,
+  "key": "finish-ready",
+  "source": "local-lan-api",
+  "workflow": "qwen3-tts-voiceclone",
+  "voiceReference": "platform-teacher",
+  "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 42,
+  "text": "Whenever your art feels ready, tap the golden star.",
+  "textHash": "5b6df63d6e5ec5c9",
+  "raw": "assets/source/local-api/voice/finish-ready-seed42.flac",
+  "candidate": "assets/source/local-api/voice/finish-ready-seed42.m4a",
+  "duration": 3.6,
+  "generatedAt": "2026-08-05T19:05:44Z"
+}
