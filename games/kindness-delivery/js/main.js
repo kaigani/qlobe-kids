@@ -226,6 +226,7 @@ export function startKindnessDelivery(config, root) {
       './assets/backgrounds/delivery.webp',
       './assets/ui/title.webp',
       './assets/props/plane.webp',
+      './assets/props/restore.webp',
       './assets/props/send-button.webp',
       ...config.friends.flatMap(({ card, idle, reaction }) => [card, idle, reaction]),
       ...config.stamps.map(({ src }) => src),
