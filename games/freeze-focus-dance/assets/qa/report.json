@@ -1,0 +1,376 @@
+{
+  "assets": [
+    {
+      "file": "scenes/forest-day.webp",
+      "width": 1600,
+      "height": 1200,
+      "alpha": false,
+      "bbox_occupancy": [
+        0,
+        0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "scenes/forest-night.webp",
+      "width": 1600,
+      "height": 1200,
+      "alpha": false,
+      "bbox_occupancy": [
+        0,
+        0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-cheer.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.818,
+        0.927
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-dance.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.804,
+        0.924
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-freeze.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.86,
+        0.927
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-star.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.861,
+        0.81
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-tall.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.696,
+        0.926
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-tiny.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.717,
+        0.926
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "characters/pip-wide.webp",
+      "width": 720,
+      "height": 820,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.861,
+        0.81
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/bunny-hidden.webp",
+      "width": 360,
+      "height": 360,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.917,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/bunny-reveal.webp",
+      "width": 560,
+      "height": 640,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.754,
+        0.998
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/fox-hidden.webp",
+      "width": 360,
+      "height": 360,
+      "alpha": true,
+      "bbox_occupancy": [
+        1.0,
+        0.847
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/fox-reveal.webp",
+      "width": 560,
+      "height": 640,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.811,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/owl-hidden.webp",
+      "width": 360,
+      "height": 360,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.917,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/owl-reveal.webp",
+      "width": 560,
+      "height": 640,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.998,
+        0.883
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/raccoon-hidden.webp",
+      "width": 360,
+      "height": 360,
+      "alpha": true,
+      "bbox_occupancy": [
+        1.0,
+        0.842
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "animals/raccoon-reveal.webp",
+      "width": 560,
+      "height": 640,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.979,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/action-button.webp",
+      "width": 900,
+      "height": 280,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.94,
+        0.936
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/camera.webp",
+      "width": 300,
+      "height": 300,
+      "alpha": true,
+      "bbox_occupancy": [
+        1.0,
+        0.993
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/focus-star.webp",
+      "width": 650,
+      "height": 650,
+      "alpha": true,
+      "bbox_occupancy": [
+        1.0,
+        0.972
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/freeze.webp",
+      "width": 1050,
+      "height": 340,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.987,
+        0.994
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/mirror-frame.webp",
+      "width": 560,
+      "height": 420,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.939,
+        0.94
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/mode-dance.webp",
+      "width": 520,
+      "height": 420,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.881,
+        0.881
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/mode-lookout.webp",
+      "width": 520,
+      "height": 420,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.881,
+        0.881
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/mode-statues.webp",
+      "width": 520,
+      "height": 420,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.881,
+        0.881
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/music-note.webp",
+      "width": 480,
+      "height": 480,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.871,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/prompt-plaque.webp",
+      "width": 900,
+      "height": 210,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.94,
+        0.938
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/skip-star.webp",
+      "width": 300,
+      "height": 300,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.997,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/snowflake.webp",
+      "width": 480,
+      "height": 480,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.931,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/sparkle-cluster.webp",
+      "width": 160,
+      "height": 160,
+      "alpha": true,
+      "bbox_occupancy": [
+        1.0,
+        0.769
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    },
+    {
+      "file": "ui/title.webp",
+      "width": 1200,
+      "height": 460,
+      "alpha": true,
+      "bbox_occupancy": [
+        0.574,
+        1.0
+      ],
+      "opaque_corners": false,
+      "near_white_border": false
+    }
+  ]
+}

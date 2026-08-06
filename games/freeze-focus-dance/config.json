@@ -1,0 +1,111 @@
+{
+  "id": "freeze-focus-dance",
+  "title": "Freeze Focus Dance",
+  "voice": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "roundTiming": {
+    "danceMin": 4200,
+    "danceMax": 6000,
+    "freeze": 3000,
+    "searchSettle": 1800,
+    "statueHold": 4000,
+    "praise": 1500
+  },
+  "modes": [
+    {
+      "id": "beat",
+      "title": "Beat Stop",
+      "shortTitle": "Beat Stop",
+      "card": "./assets/ui/mode-dance.webp",
+      "rounds": 5,
+      "intro": "beat-intro",
+      "end": "beat-end"
+    },
+    {
+      "id": "lookout",
+      "title": "Owl Lookout",
+      "shortTitle": "Owl Lookout",
+      "card": "./assets/ui/mode-lookout.webp",
+      "rounds": 4,
+      "intro": "lookout-intro",
+      "end": "lookout-end"
+    },
+    {
+      "id": "statues",
+      "title": "Star Statues",
+      "shortTitle": "Star Statues",
+      "card": "./assets/ui/mode-statues.webp",
+      "rounds": 4,
+      "intro": "statue-intro",
+      "end": "statue-end"
+    }
+  ],
+  "animals": [
+    {
+      "id": "owl",
+      "find": "find-owl",
+      "hint": "hint-owl",
+      "found": "found-owl",
+      "hidden": "./assets/animals/owl-hidden.webp",
+      "reveal": "./assets/animals/owl-reveal.webp",
+      "x": 87,
+      "y": 34
+    },
+    {
+      "id": "fox",
+      "find": "find-fox",
+      "hint": "hint-fox",
+      "found": "found-fox",
+      "hidden": "./assets/animals/fox-hidden.webp",
+      "reveal": "./assets/animals/fox-reveal.webp",
+      "x": 19,
+      "y": 72
+    },
+    {
+      "id": "raccoon",
+      "find": "find-raccoon",
+      "hint": "hint-raccoon",
+      "found": "found-raccoon",
+      "hidden": "./assets/animals/raccoon-hidden.webp",
+      "reveal": "./assets/animals/raccoon-reveal.webp",
+      "x": 82,
+      "y": 75
+    },
+    {
+      "id": "bunny",
+      "find": "find-bunny",
+      "hint": "hint-bunny",
+      "found": "found-bunny",
+      "hidden": "./assets/animals/bunny-hidden.webp",
+      "reveal": "./assets/animals/bunny-reveal.webp",
+      "x": 63,
+      "y": 76
+    }
+  ],
+  "statues": [
+    { "id": "star", "prompt": "statue-star", "art": "./assets/characters/pip-star.webp" },
+    { "id": "tall", "prompt": "statue-tall", "art": "./assets/characters/pip-tall.webp" },
+    { "id": "tiny", "prompt": "statue-tiny", "art": "./assets/characters/pip-tiny.webp" },
+    { "id": "wide", "prompt": "statue-wide", "art": "./assets/characters/pip-wide.webp" }
+  ],
+  "assets": {
+    "forestDay": "./assets/scenes/forest-day.webp",
+    "forestNight": "./assets/scenes/forest-night.webp",
+    "title": "./assets/ui/title.webp",
+    "freeze": "./assets/ui/freeze.webp",
+    "pipDance": "./assets/characters/pip-dance.webp",
+    "pipFreeze": "./assets/characters/pip-freeze.webp",
+    "pipCheer": "./assets/characters/pip-cheer.webp",
+    "camera": "./assets/ui/camera.webp",
+    "skip": "./assets/ui/skip-star.webp",
+    "mirror": "./assets/ui/mirror-frame.webp",
+    "plaque": "./assets/ui/prompt-plaque.webp",
+    "action": "./assets/ui/action-button.webp",
+    "focusStar": "./assets/ui/focus-star.webp",
+    "snowflake": "./assets/ui/snowflake.webp",
+    "musicNote": "./assets/ui/music-note.webp",
+    "sparkles": "./assets/ui/sparkle-cluster.webp"
+  }
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>camera-motion tests</title>
+<pre id="out">running…</pre>
+<script type="module">
+  import { activityFromDifference, createCameraMotion, measureFrameDifference, rgbaToLuminance } from './camera-motion.js';
+
+  const results = [];
+  async function test(name, fn) {
+    try { await fn(); results.push(`PASS ${name}`); }
+    catch (error) { results.push(`FAIL ${name}: ${error.message}`); }
+  }
+  function assert(value, message) { if (!value) throw new Error(message); }
+  const pixel = (value) => new Uint8ClampedArray([value, value, value, 255]);
+
+  await test('luminance and difference are deterministic', () => {
+    assert(rgbaToLuminance(pixel(100))[0] === 100, 'neutral luminance');
+    assert(measureFrameDifference(new Uint8Array([20]), new Uint8Array([20])) === 0, 'same frame');
+    assert(measureFrameDifference(new Uint8Array([0]), new Uint8Array([255])) === 1, 'maximum change');
+    assert(activityFromDifference(0.2, 0.01) === 1, 'clamped activity');
+  });
+
+  await test('permission denial is non-throwing', async () => {
+    const error = new Error('no'); error.name = 'NotAllowedError';
+    const video = { setAttribute() {}, pause() {}, readyState: 0, srcObject: null };
+    const camera = createCameraMotion({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.reject(error) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+    });
+    const state = await camera.request();
+    assert(state.state === 'denied', `state was ${state.state}`);
+    camera.destroy();
+  });
+
+  await test('stop closes tracks and ignores a late grant', async () => {
+    let resolveGrant; let stopped = 0;
+    const track = { stop: () => { stopped += 1; }, addEventListener() {}, removeEventListener() {} };
+    const stream = { getTracks: () => [track] };
+    const video = { setAttribute() {}, pause() {}, play: () => Promise.resolve(), readyState: 0, srcObject: null };
+    const camera = createCameraMotion({
+      video,
+      requestTimeoutMs: 1000,
+      mediaDevices: { getUserMedia: () => new Promise((resolve) => { resolveGrant = resolve; }) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+    });
+    const pending = camera.request();
+    camera.stop('back');
+    resolveGrant(stream);
+    await pending;
+    await Promise.resolve();
+    assert(stopped >= 1, 'late stream was not stopped');
+    assert(video.srcObject === null, 'late stream reached video');
+    camera.destroy();
+  });
+
+  await test('pagehide closes a live stream and reports why', async () => {
+    let stopped = 0;
+    const track = { stop: () => { stopped += 1; }, addEventListener() {}, removeEventListener() {} };
+    const stream = { getTracks: () => [track] };
+    const video = { setAttribute() {}, pause() {}, play: () => Promise.resolve(), readyState: 0, srcObject: null };
+    const camera = createCameraMotion({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.resolve(stream) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      raf: () => 1,
+      caf: () => {},
+    });
+    const live = await camera.request();
+    assert(live.state === 'live', `state was ${live.state}`);
+    window.dispatchEvent(new Event('pagehide'));
+    await Promise.resolve();
+    const state = camera.snapshot();
+    assert(state.state === 'stopped' && state.reason === 'pagehide', `${state.state}/${state.reason}`);
+    assert(stopped === 1, `track stopped ${stopped} times`);
+    assert(video.srcObject === null, 'video retained the stream');
+    camera.destroy();
+  });
+
+  await test('hidden visibility closes a live stream and reports why', async () => {
+    let stopped = 0;
+    const track = { stop: () => { stopped += 1; }, addEventListener() {}, removeEventListener() {} };
+    const stream = { getTracks: () => [track] };
+    const video = { setAttribute() {}, pause() {}, play: () => Promise.resolve(), readyState: 0, srcObject: null };
+    const camera = createCameraMotion({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.resolve(stream) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      raf: () => 1,
+      caf: () => {},
+    });
+    await camera.request();
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+    document.dispatchEvent(new Event('visibilitychange'));
+    delete document.visibilityState;
+    await Promise.resolve();
+    const state = camera.snapshot();
+    assert(state.state === 'stopped' && state.reason === 'hidden', `${state.state}/${state.reason}`);
+    assert(stopped === 1, `track stopped ${stopped} times`);
+    assert(video.srcObject === null, 'video retained the stream');
+    camera.destroy();
+  });
+
+  const failed = results.filter((line) => line.startsWith('FAIL'));
+  document.querySelector('#out').textContent = results.join('\n');
+  document.title = failed.length ? `FAIL (${failed.length}) camera-motion` : 'PASS camera-motion';
+  document.documentElement.dataset.result = failed.length ? 'fail' : 'pass';
+</script>

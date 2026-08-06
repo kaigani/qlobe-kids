@@ -1,0 +1,30 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "freeze-focus-dance-hub-tile",
+  "kind": "image",
+  "asset": "freeze-focus-dance-hub-tile.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Pip, a joyful small sky-blue clay child creature with three rounded head bumps, enormous brown-and-white eyes, a wide smile, a green jacket with a yellow front, orange bow tie, red pants, and orange sneakers, dancing on one foot while holding a crisp icy-blue snowflake; a golden Focus Star on the ground and a tiny friendly brown owl peeking from a mossy tree hollow; one clear hand-sculpted clay forest toy scene; no people, no hands, no title, no UI, no text. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 1337,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "Pip, a joyful small sky-blue clay child creature with three rounded head bumps, enormous brown-and-white eyes, a wide smile, a green jacket with a yellow front, orange bow tie, red pants, and orange sneakers, dancing on one foot while holding a crisp icy-blue snowflake; a golden Focus Star on the ground and a tiny friendly brown owl peeking from a mossy tree hollow; one clear hand-sculpted clay forest toy scene; no people, no hands, no title, no UI, no text."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "failed-qa",
+    "review": "Rejected at the final cross-surface asset gate. Although seed 1337 improved on seed 42, its smooth pastel cheeks, head tufts, jacket construction, and toy lighting still drift from the accepted textured runtime Pip. Preserved only as rejection evidence; never shipped."
+  },
+  "created": "2026-08-05"
+}

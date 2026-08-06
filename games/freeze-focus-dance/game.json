@@ -8,27 +8,42 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#f08a24",
-  "shareTitle": "Freeze Focus Dance 🕺 — Dance Freeze and Focus",
-  "description": "Dance freely to the music, then freeze solid the instant the signal calls, with tiny attention missions folded into every round. A joyful impulse-control game for ages 5–6.",
+  "shareTitle": "Freeze Focus Dance — Dance, Freeze, and Find",
+  "description": "Dance with Pip in a clay forest, then freeze when the music stops. Choose Beat Stop, find a hidden forest friend in Owl Lookout, or copy a playful pose in Star Statues. Optional camera motion adds local sparkles but never judges or gates play.",
   "learningGoals": [
     "Practice stopping the body on a spoken signal",
     "Build impulse control and body-stop regulation",
     "Sustain attention during a short still moment",
     "Release energy through joyful whole-body movement"
   ],
-  "interactionModel": "follow automatic spoken dance and freeze signals; use the large pause control whenever a break is needed",
-  "feedbackModel": "DJ-style spoken cues with pop, boing, silly, sparkle, and tada SFX; every completed set celebrates both energetic movement and focused stillness",
+  "interactionModel": "choose one of three timed dance-and-freeze modes; optionally enable local motion sparkles, then follow spoken cues, tap a discovered forest friend, or copy a modeled statue",
+  "feedbackModel": "recorded narrator cues, authored freeze and forest visuals, dance music, tactile pop/sparkle/tada SFX, and mode-specific celebrations affirm movement and stillness without scoring or penalties",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/camera-motion.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/music.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/js/screens.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js"
   ],
   "modes": [
-    { "id": "classic", "title": "Dance and Freeze", "skill": "impulse control and body-stop regulation" },
-    { "id": "focus", "title": "Freeze Missions", "skill": "attention and balance while holding still" }
+    { "id": "beat", "title": "Beat Stop", "skill": "inhibit movement after an audio cue" },
+    { "id": "lookout", "title": "Owl Lookout", "skill": "sustain visual attention after settling" },
+    { "id": "statues", "title": "Star Statues", "skill": "deliberately shape and hold the body" }
   ],
+  "privacy": {
+    "network": "none at runtime",
+    "microphone": false,
+    "camera": "optional local motion only; no recording, recognition, persistence, or upload",
+    "storage": false
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; claymation art and synthetic platform teacher voice production directed for QLOBE Kids; built with Codex.",
   "characters": [],
   "conceptVideo": null
 }

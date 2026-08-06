@@ -1,47 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Freeze Focus Dance 🕺 — Dance Freeze and Focus</title>
-  <meta name="description" content="Dance freely to the music, then freeze solid the instant the signal calls, with tiny attention missions folded into every round. A joyful impulse-control game for ages 5–6." />
+  <meta name="theme-color" content="#163b46" />
+  <title>Freeze Focus Dance — Dance, Freeze, and Find</title>
+  <meta name="description" content="Dance with Pip in a clay forest, then freeze when the music stops. Choose Beat Stop, find a hidden forest friend in Owl Lookout, or copy a playful pose in Star Statues. Optional camera motion adds local sparkles but never judges or gates play." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Freeze Focus Dance" />
-  <meta property="og:title" content="Freeze Focus Dance 🕺 — Dance Freeze and Focus" />
-  <meta property="og:description" content="Dance freely to the music, then freeze solid the instant the signal calls, with tiny attention missions folded into every round. A joyful impulse-control game for ages 5–6." />
+  <meta property="og:title" content="Freeze Focus Dance — Dance, Freeze, and Find" />
+  <meta property="og:description" content="Dance with Pip in a clay forest, then freeze when the music stops. Choose Beat Stop, find a hidden forest friend in Owl Lookout, or copy a playful pose in Star Statues. Optional camera motion adds local sparkles but never judges or gates play." />
   <meta property="og:url" content="https://qlo.be/games/freeze-focus-dance/" />
   <meta property="og:image" content="https://qlo.be/games/freeze-focus-dance/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Freeze Focus Dance title screen with Dance and Freeze and Freeze Missions modes and a dancing figure icon on a pale blue background." />
+  <meta property="og:image:alt" content="Pip dances beside a snowflake and a golden star in a colorful clay forest." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Freeze Focus Dance 🕺 — Dance Freeze and Focus" />
-  <meta name="twitter:description" content="Dance freely to the music, then freeze solid the instant the signal calls, with tiny attention missions folded into every round. A joyful impulse-control game for ages 5–6." />
+  <meta name="twitter:title" content="Freeze Focus Dance — Dance, Freeze, and Find" />
+  <meta name="twitter:description" content="Dance with Pip in a clay forest, then freeze when the music stops. Choose Beat Stop, find a hidden forest friend in Owl Lookout, or copy a playful pose in Star Statues. Optional camera motion adds local sparkles but never judges or gates play." />
   <meta name="twitter:image" content="https://qlo.be/games/freeze-focus-dance/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Freeze Focus Dance"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
