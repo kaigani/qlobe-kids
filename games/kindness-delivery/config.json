@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "kindness-delivery",
+  "title": "Kindness Delivery",
+  "friends": [
+    {
+      "id": "fox",
+      "name": "Fox",
+      "accent": "#ed806e",
+      "card": "./assets/ui/friend-card-fox.webp",
+      "idle": "./assets/characters/fox-idle.webp",
+      "reaction": "./assets/characters/fox-reaction.webp",
+      "promptKey": "fox-invite",
+      "deliveredKey": "fox-delivered",
+      "skill": "express warmth through drawing"
+    },
+    {
+      "id": "bunny",
+      "name": "Bunny",
+      "accent": "#efb84e",
+      "card": "./assets/ui/friend-card-bunny.webp",
+      "idle": "./assets/characters/bunny-idle.webp",
+      "reaction": "./assets/characters/bunny-reaction.webp",
+      "promptKey": "bunny-invite",
+      "deliveredKey": "bunny-delivered",
+      "skill": "compose a supportive visual message"
+    },
+    {
+      "id": "bear",
+      "name": "Bear",
+      "accent": "#70afd1",
+      "card": "./assets/ui/friend-card-bear.webp",
+      "idle": "./assets/characters/bear-idle.webp",
+      "reaction": "./assets/characters/bear-reaction.webp",
+      "promptKey": "bear-invite",
+      "deliveredKey": "bear-delivered",
+      "skill": "connect a kind intention to a real-world act"
+    }
+  ],
+  "crayons": [
+    { "id": "sunshine", "label": "Sunshine yellow crayon", "color": "#f4b83f", "filter": "hue-rotate(28deg) saturate(.9) brightness(1.05)" },
+    { "id": "berry", "label": "Berry pink crayon", "color": "#e95575", "filter": "hue-rotate(350deg) saturate(.86) brightness(1.02)" },
+    { "id": "sky", "label": "Sky blue crayon", "color": "#4d9bd8", "filter": "hue-rotate(175deg) saturate(.75) brightness(1.08)" },
+    { "id": "leaf", "label": "Leaf green crayon", "color": "#63a95f", "filter": "hue-rotate(92deg) saturate(.68) brightness(.95)" }
+  ],
+  "stamps": [
+    { "id": "sun", "label": "Smiling sun stamp", "src": "./assets/props/stamp-sun.webp", "voiceKey": "stamp-sun" },
+    { "id": "heart", "label": "Warm heart stamp", "src": "./assets/props/stamp-heart.webp", "voiceKey": "stamp-heart" },
+    { "id": "flower", "label": "Growing flower stamp", "src": "./assets/props/stamp-flower.webp", "voiceKey": "stamp-flower" },
+    { "id": "star", "label": "Wonderful star stamp", "src": "./assets/props/stamp-star.webp", "voiceKey": "stamp-star" }
+  ],
+  "stickers": [
+    { "id": "rainbow", "label": "Rainbow sticker", "src": "./assets/props/sticker-rainbow.webp" },
+    { "id": "envelope", "label": "Heart envelope sticker", "src": "./assets/props/sticker-envelope.webp" },
+    { "id": "sparkle", "label": "Sparkle star sticker", "src": "./assets/props/sticker-sparkle.webp" },
+    { "id": "daisy", "label": "Daisy sticker", "src": "./assets/props/sticker-daisy.webp" }
+  ]
+}

@@ -9,16 +9,14 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-05T07:26:45.426Z",
+  "generated": "2026-08-06T20:19:07.556Z",
   "engines": {
     "coach-timer": {
-      "count": 18,
+      "count": 16,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "button-zipper-lab",
         "cleanup-timer-quest",
-        "freeze-focus-dance",
         "line-walking-challenge",
         "local-nature-guide",
         "melting-race",
@@ -55,28 +53,16 @@
       ]
     },
     "build-assemble": {
-      "count": 9,
+      "count": 8,
       "games": [
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
-        "loose-parts-collage",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "turn-taking-tower"
-      ]
-    },
-    "observe-journal": {
-      "count": 6,
-      "games": [
-        "bean-sprout-watch",
-        "family-story-interview",
-        "kindness-delivery",
-        "picture-narration",
-        "shadow-chase",
-        "smell-jars"
       ]
     },
     "sequence-order": {
@@ -97,6 +83,16 @@
         "sound-cylinder-match",
         "texture-trail",
         "then-now-sort"
+      ]
+    },
+    "observe-journal": {
+      "count": 5,
+      "games": [
+        "bean-sprout-watch",
+        "family-story-interview",
+        "picture-narration",
+        "shadow-chase",
+        "smell-jars"
       ]
     },
     "trace-path": {
@@ -309,17 +305,35 @@
       "packs": []
     },
     "button-zipper-lab": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "practical-life",
-      "characters": [],
+      "characters": [
+        "Felt Bear"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/constrained-gesture-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "games/button-zipper-lab/assets/boards/zipper.webp",
+        "games/button-zipper-lab/assets/patches/zipper.webp",
+        "games/button-zipper-lab/assets/title.webp",
+        "games/button-zipper-lab/assets/ui/helper-paw.webp",
+        "games/button-zipper-lab/assets/ui/zipper-pull.webp"
+      ],
       "packs": []
     },
     "calm-corner-cards": {
@@ -443,7 +457,7 @@
     },
     "color-mixing-lab": {
       "engine": null,
-      "status": "beta",
+      "status": "in-design",
       "category": "art-music",
       "characters": [],
       "modules": [
@@ -626,15 +640,22 @@
       "packs": []
     },
     "freeze-focus-dance": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/camera-motion.js",
+        "shared/js/debug-harness.js",
+        "shared/js/music.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [],
       "packs": []
@@ -738,17 +759,40 @@
       "packs": []
     },
     "kindness-delivery": {
-      "engine": "observe-journal",
+      "engine": null,
       "status": "beta",
       "category": "social-emotional",
-      "characters": [],
+      "characters": [
+        "Paper Bear",
+        "Paper Bunny",
+        "Paper Fox"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/freeform-board.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/musical-canvas.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [],
+      "assets": [
+        "games/kindness-delivery/assets/backgrounds/delivery.webp",
+        "games/kindness-delivery/assets/backgrounds/flight.webp",
+        "games/kindness-delivery/assets/backgrounds/select.webp",
+        "games/kindness-delivery/assets/backgrounds/studio.webp",
+        "games/kindness-delivery/assets/props/plane.webp",
+        "games/kindness-delivery/assets/props/send-button.webp",
+        "games/kindness-delivery/assets/ui/title.webp"
+      ],
       "packs": []
     },
     "land-water-tray": {
@@ -864,19 +908,25 @@
       "packs": []
     },
     "loose-parts-collage": {
-      "engine": "build-assemble",
+      "engine": null,
       "status": "beta",
       "category": "art-music",
-      "characters": [],
+      "characters": [
+        "Teddy"
+      ],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/freeform-board.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js"
       ],
-      "assets": [
-        "shared/assets/ui"
-      ],
+      "assets": [],
       "packs": []
     },
     "lunchbox-pack": {
@@ -2145,7 +2195,6 @@
         "family-timeline",
         "feelings-charades",
         "flashlight-cave",
-        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
         "grace-courtesy-theater",
@@ -2158,7 +2207,6 @@
         "letter-treasure-hunt",
         "line-walking-challenge",
         "local-nature-guide",
-        "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
@@ -2231,6 +2279,7 @@
       ],
       "shared/js/audio-unlock.js": [
         "big-paper-murals",
+        "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
@@ -2238,10 +2287,13 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
         "puppet-retell",
@@ -2259,7 +2311,11 @@
       "shared/js/audio.js": [
         "sound-basket"
       ],
+      "shared/js/camera-motion.js": [
+        "freeze-focus-dance"
+      ],
       "shared/js/celebrate.js": [
+        "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
@@ -2268,6 +2324,7 @@
         "feelings-charades",
         "garden-delivery-game",
         "land-water-tray",
+        "loose-parts-collage",
         "lunchbox-pack",
         "puppet-retell",
         "sand-tray-letters",
@@ -2305,6 +2362,7 @@
       ],
       "shared/js/debug-harness.js": [
         "big-paper-murals",
+        "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
@@ -2312,10 +2370,13 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
         "puppet-retell",
@@ -2340,7 +2401,6 @@
         "bead-path-builder",
         "blend-train",
         "block-tower-measure",
-        "loose-parts-collage",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
@@ -2367,9 +2427,7 @@
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "button-zipper-lab",
         "cleanup-timer-quest",
-        "freeze-focus-dance",
         "line-walking-challenge",
         "local-nature-guide",
         "melting-race",
@@ -2394,7 +2452,6 @@
       "shared/js/engines/observe-journal.js": [
         "bean-sprout-watch",
         "family-story-interview",
-        "kindness-delivery",
         "picture-narration",
         "shadow-chase",
         "smell-jars"
@@ -2440,6 +2497,8 @@
       ],
       "shared/js/freeform-board.js": [
         "clay-creature-studio",
+        "kindness-delivery",
+        "loose-parts-collage",
         "tangram-tales"
       ],
       "shared/js/hotspot-scene.js": [
@@ -2447,20 +2506,25 @@
         "rhyming-detective"
       ],
       "shared/js/hud.js": [
+        "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
+        "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
         "red-green-light"
       ],
       "shared/js/idle-nudge.js": [
+        "button-zipper-lab",
         "color-mixing-lab",
         "garden-delivery-game",
+        "kindness-delivery",
         "land-water-tray",
+        "loose-parts-collage",
         "sink-or-float",
         "teen-bead-builder",
         "weather-scientist",
@@ -2473,22 +2537,28 @@
         "bug-hotel-observer"
       ],
       "shared/js/mode-select.js": [
+        "button-zipper-lab",
         "land-water-tray",
         "snack-chef"
       ],
       "shared/js/music.js": [
+        "freeze-focus-dance",
         "my-puppet-band",
         "world-music-dance"
       ],
       "shared/js/musical-canvas.js": [
         "big-paper-murals",
+        "kindness-delivery",
         "sound-painting"
       ],
       "shared/js/narrator.js": [
         "big-paper-murals",
         "color-mixing-lab",
+        "freeze-focus-dance",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "loose-parts-collage",
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
@@ -2505,19 +2575,25 @@
       ],
       "shared/js/preload.js": [
         "clay-creature-studio",
-        "emotion-voice-game"
+        "emotion-voice-game",
+        "freeze-focus-dance",
+        "kindness-delivery"
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
+        "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
         "counting-treasure-cups",
         "flashlight-cave",
+        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
         "red-green-light",
@@ -2527,9 +2603,12 @@
         "world-music-dance"
       ],
       "shared/js/screens.js": [
+        "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
         "emotion-voice-game",
+        "freeze-focus-dance",
+        "kindness-delivery",
         "land-water-tray",
         "snack-chef"
       ],
@@ -2655,7 +2734,6 @@
         "block-tower-measure",
         "board-game-reset",
         "bug-hotel-observer",
-        "button-zipper-lab",
         "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
@@ -2669,18 +2747,15 @@
         "family-timeline",
         "feelings-charades",
         "flashlight-cave",
-        "freeze-focus-dance",
         "globe-spin-stories",
         "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
-        "kindness-delivery",
         "laundry-sorter",
         "letter-road-driving",
         "letter-treasure-hunt",
         "line-walking-challenge",
         "local-nature-guide",
-        "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
@@ -2752,6 +2827,9 @@
       "shared/js/stage/art-pixi.js": [
         "blend-train"
       ],
+      "shared/js/stage/constrained-gesture-dom.js": [
+        "button-zipper-lab"
+      ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "color-mixing-lab",
         "story-stones"
@@ -2816,6 +2894,7 @@
       "shared/js/tap.js": [
         "big-paper-murals",
         "bug-hotel-observer",
+        "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
         "counting-treasure-cups",
@@ -2823,8 +2902,10 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
         "puppet-retell",
@@ -2844,10 +2925,13 @@
         "garden-delivery-game"
       ],
       "shared/js/timers.js": [
+        "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
         "puppet-retell",
@@ -2859,17 +2943,21 @@
       "shared/js/voice-clips.js": [
         "blend-train",
         "bug-hotel-observer",
+        "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
         "letter-road-driving",
+        "loose-parts-collage",
         "lunchbox-pack",
         "my-puppet-band",
         "playdough-letter-factory",
@@ -2938,6 +3026,9 @@
       "ember": [
         "red-green-light"
       ],
+      "Felt Bear": [
+        "button-zipper-lab"
+      ],
       "fox": [
         "my-puppet-band",
         "puppet-problem-solvers",
@@ -3005,6 +3096,15 @@
       "owl": [
         "story-stones"
       ],
+      "Paper Bear": [
+        "kindness-delivery"
+      ],
+      "Paper Bunny": [
+        "kindness-delivery"
+      ],
+      "Paper Fox": [
+        "kindness-delivery"
+      ],
       "pip": [
         "red-green-light"
       ],
@@ -3056,7 +3156,8 @@
         "garden-delivery-game"
       ],
       "Teddy": [
-        "emotion-voice-game"
+        "emotion-voice-game",
+        "loose-parts-collage"
       ],
       "twinkle": [
         "red-green-light"
@@ -3074,6 +3175,21 @@
       ]
     },
     "assets": {
+      "games/button-zipper-lab/assets/boards/zipper.webp": [
+        "button-zipper-lab"
+      ],
+      "games/button-zipper-lab/assets/patches/zipper.webp": [
+        "button-zipper-lab"
+      ],
+      "games/button-zipper-lab/assets/title.webp": [
+        "button-zipper-lab"
+      ],
+      "games/button-zipper-lab/assets/ui/helper-paw.webp": [
+        "button-zipper-lab"
+      ],
+      "games/button-zipper-lab/assets/ui/zipper-pull.webp": [
+        "button-zipper-lab"
+      ],
       "games/chocolate-chip-count/assets/button.webp": [
         "chocolate-chip-count"
       ],
@@ -3121,6 +3237,27 @@
       ],
       "games/globe-spin-stories/assets/ui/confetti.webp": [
         "globe-spin-stories"
+      ],
+      "games/kindness-delivery/assets/backgrounds/delivery.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/backgrounds/flight.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/backgrounds/select.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/backgrounds/studio.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/props/plane.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/props/send-button.webp": [
+        "kindness-delivery"
+      ],
+      "games/kindness-delivery/assets/ui/title.webp": [
+        "kindness-delivery"
       ],
       "games/letter-road-driving/assets/audio": [
         "letter-road-driving"
@@ -3318,7 +3455,6 @@
         "feelings-charades",
         "flashlight-cave",
         "land-water-tray",
-        "loose-parts-collage",
         "lunchbox-pack",
         "playdough-letter-factory",
         "rhyming-detective",

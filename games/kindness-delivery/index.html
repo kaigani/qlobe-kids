@@ -5,43 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Kindness Delivery 💌 — Kindness Post Office</title>
-  <meta name="description" content="Notice how someone might be feeling, choose a caring delivery to send them, and carry that same kindness into real life. A warm kindness post office for ages 5–6." />
+  <meta name="theme-color" content="#9fdce9" />
+  <title>Kindness Delivery — Draw, Fold, and Fly a Kind Note</title>
+  <meta name="description" content="Choose a papercraft friend, draw and decorate a real kindness note, fold it into a paper plane, and swipe it across the garden for a joyful delivery." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Kindness Delivery" />
-  <meta property="og:title" content="Kindness Delivery 💌 — Kindness Post Office" />
-  <meta property="og:description" content="Notice how someone might be feeling, choose a caring delivery to send them, and carry that same kindness into real life. A warm kindness post office for ages 5–6." />
+  <meta property="og:title" content="Kindness Delivery — Draw, Fold, and Fly a Kind Note" />
+  <meta property="og:description" content="Choose a papercraft friend, draw and decorate a real kindness note, fold it into a paper plane, and swipe it across the garden for a joyful delivery." />
   <meta property="og:url" content="https://qlo.be/games/kindness-delivery/" />
   <meta property="og:image" content="https://qlo.be/games/kindness-delivery/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Kindness Delivery title screen with Make a Delivery and Secret Kindness modes and a heart envelope icon on a cartoon street of houses." />
+  <meta property="og:image:alt" content="A papercraft meadow with Fox, Bunny, and Bear waiting for a kindness note." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Kindness Delivery 💌 — Kindness Post Office" />
-  <meta name="twitter:description" content="Notice how someone might be feeling, choose a caring delivery to send them, and carry that same kindness into real life. A warm kindness post office for ages 5–6." />
+  <meta name="twitter:title" content="Kindness Delivery — Draw, Fold, and Fly a Kind Note" />
+  <meta name="twitter:description" content="Choose a papercraft friend, draw and decorate a real kindness note, fold it into a paper plane, and swipe it across the garden for a joyful delivery." />
   <meta name="twitter:image" content="https://qlo.be/games/kindness-delivery/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
+  <main id="game" class="kindness-app" aria-busy="true">
+    <div class="loading-card" id="loading-card" role="status" aria-live="polite">
+      <img src="./assets/ui/title.webp" alt="Kindness Delivery" />
+      <span>Getting the paper garden ready…</span>
+    </div>
+
+    <section id="screen-select" class="game-screen" data-qk-screen="select" aria-label="Choose a friend">
+      <img class="ambient-bg" src="./assets/backgrounds/select.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-select">
+        <img class="scene-bg" src="./assets/backgrounds/select.webp" alt="A sunny layered-paper meadow" />
+        <img class="title-lockup" src="./assets/ui/title.webp" alt="Kindness Delivery" />
+        <div id="friend-list" class="friend-list" aria-label="Friends"></div>
+      </div>
+      <div id="select-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-studio" class="game-screen" data-qk-screen="studio" hidden aria-label="Make a kindness note">
+      <img class="ambient-bg" src="./assets/backgrounds/studio.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-studio" id="studio-artboard">
+        <img class="scene-bg" id="studio-bg" src="./assets/backgrounds/studio.webp" alt="A papercraft table with a blank note" />
+        <h1 class="screen-prompt" id="studio-prompt">Make a kind note</h1>
+
+        <div class="note-surface" id="note-surface">
+          <canvas id="note-canvas" aria-label="Drawing area for your kindness note"></canvas>
+          <div id="sticker-board" class="sticker-board" aria-label="Stickers on your note"></div>
+        </div>
+
+        <div id="tool-palette" class="tool-palette" aria-label="Tool choices"></div>
+        <div class="tool-tray" id="tool-tray" aria-label="Kindness note tools"></div>
+        <div class="studio-actions" id="studio-actions"></div>
+
+        <div class="fold-overlay" id="fold-overlay" hidden aria-hidden="true">
+          <img id="fold-preview" alt="" />
+          <img class="fold-plane" src="./assets/props/plane.webp" alt="" />
+        </div>
+      </div>
+      <div id="studio-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-flight" class="game-screen" data-qk-screen="flight" hidden aria-label="Fly the kindness note">
+      <img class="ambient-bg" src="./assets/backgrounds/flight.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-flight" id="flight-artboard">
+        <img class="scene-bg" src="./assets/backgrounds/flight.webp" alt="A wide papercraft sky leading to a mailbox" />
+        <h1 class="screen-prompt flight-prompt">Swipe to your friend</h1>
+        <button class="plane-actor" id="plane-actor" type="button" data-target="launch-plane" aria-label="Swipe or press to send the note">
+          <img src="./assets/props/plane.webp" alt="" />
+          <img id="plane-note-preview" class="plane-note-preview" alt="Your note folded into the plane" />
+        </button>
+        <div class="heart-trail" id="heart-trail" aria-hidden="true"></div>
+      </div>
+      <div id="flight-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-delivery" class="game-screen" data-qk-screen="delivery" hidden aria-label="Kindness delivered">
+      <img class="ambient-bg" src="./assets/backgrounds/delivery.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-delivery" id="delivery-artboard">
+        <img class="scene-bg" src="./assets/backgrounds/delivery.webp" alt="A papercraft meadow with a large heart" />
+        <div class="delivery-copy">
+          <h1>Kindness delivered!</h1>
+          <p id="delivery-subtitle">You made a friend smile.</p>
+        </div>
+        <div class="reaction-wrap" id="reaction-wrap">
+          <img id="reaction-friend" class="reaction-friend" alt="" />
+          <img id="reaction-note-preview" class="reaction-note-preview" alt="The note you made" />
+        </div>
+        <div class="heart-burst" id="heart-burst" aria-hidden="true"></div>
+        <button id="send-another" class="send-another" type="button" data-target="send-another">
+          <img src="./assets/props/send-button.webp" alt="" />
+          <span>Send another</span>
+        </button>
+      </div>
+      <div id="delivery-hud" class="screen-hud"></div>
+    </section>
+  </main>
+
   <script type="module">
     import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
+    import { startKindnessDelivery } from './js/main.js';
+    startKindnessDelivery(config, document.getElementById('game'));
   </script>
 </body>
 </html>

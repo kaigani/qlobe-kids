@@ -1,63 +1,68 @@
-# Asset Log - Kindness Delivery
+# Kindness Delivery assets
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/observe-journal.js` |
-| Kindness placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
-| Story-screen background (`assets/bg.jpg`) | Not supplied yet | Reviewer-supplied | To be documented when supplied | To be determined | Referenced by config; not included in this stub |
+All shipped art and audio are local at runtime. Model services were used only
+during authoring. Original game assets are released with QLOBE Kids under CC BY
+4.0 unless a row says otherwise.
 
-## Assets needed
+## Visual direction and concept gate
 
-### Art
+Four Krea 2 concepts established the Paper Garden/Papercraft direction before
+production rendering. Full prompts, review criteria, seed, and selection notes
+are in `assets/source/concepts/krea2/PROMPTS.md`.
 
-- Recipient portraits: tired grown-up, friend with a scraped knee, and new neighbor.
-- Deliverable stickers: drawing, note, flower, and helping hands.
-- Kindness postal satchel.
-- Story-screen background art for `assets/bg.jpg`.
+| Source assets | Workflow | Seed / size | Runtime use |
+| --- | --- | --- | --- |
+| `assets/source/concepts/krea2/01-friend-select.png` through `04-delivery.png` | local approved `krea2-turbo-t2i` authoring API | seed 42, 1024×768 | source-only style anchors |
+| `assets/source/krea2/hub-tile.png` | local approved `krea2-turbo-t2i` authoring API | seed 42, 768×640 | cropped/resized to `../../assets/hub/tiles/kindness-delivery.jpg` |
 
-### Voice
+## GPT Image 2 production art
 
-- "The kindness post office is full of hearts!"
-- "That kindness is ready to deliver!"
-- "Welcome to the kindness post office. Let's make someone's WHOLE day!"
-- "Three heart stamps! Your kindness deliveries can make a whole day brighter!"
-- "A grown-up looks tired. What could we make to bring a smile?"
-- "A drawing for the tired grown-up! Special delivery!"
-- "A kind note for the tired grown-up! Special delivery!"
-- "A flower for the tired grown-up! Special delivery!"
-- "Helping hands for the tired grown-up! Special delivery!"
-- "Delivery complete! Stamp a heart in your kindness journal."
-- "Heart stamped! Now make or do one of those kind things for a REAL grown-up."
-- "A friend scraped their knee and feels sad. What caring delivery could we make?"
-- "A drawing for your friend! Special delivery!"
-- "A kind note for your friend! Special delivery!"
-- "A flower for your friend! Special delivery!"
-- "Helping hands for your friend! Special delivery!"
-- "Heart stamped! Now make or do one of those kind things for a REAL friend."
-- "A new neighbor just arrived. What could we deliver to say, welcome?"
-- "A drawing for the new neighbor! Special delivery!"
-- "A kind note for the new neighbor! Special delivery!"
-- "A flower for the new neighbor! Special delivery!"
-- "Helping hands for the new neighbor! Special delivery!"
-- "Heart stamped! Now make a REAL welcome surprise for someone with a grown-up."
-- "Psst! Secret kindness mission. Let's make someone smile without being seen!"
-- "The sneakiest smiles! Your secret kindness made two heart stamps!"
-- "Secret mission: a toy needs tidying. Choose how you will help, then try it for REAL off the tablet!"
-- "Secret mission: a toy needs tidying. Choose your sneaky kindness plan!"
-- "Tidy one toy, quiet as a mouse."
-- "Helping hands can tidy a toy."
-- "Secret heart stamped! Now put away a REAL toy without being asked!"
-- "Secret mission: one last cookie is waiting. Choose a generous plan, then try that kindness for REAL!"
-- "Secret mission: one last cookie is waiting. Choose your sneaky kindness plan!"
-- "Save the last cookie for someone else."
-- "Leave a kind surprise beside it."
-- "Secret heart stamped! Now practice sharing something REAL!"
+Generated with Codex's built-in `imagegen` tool using OpenAI GPT Image 2. The
+full saved prompt set is in `assets/source/gpt-image-2/PROMPTS.md`.
 
-## Link preview (og:image)
+| Runtime asset | Preserved source | Processing |
+| --- | --- | --- |
+| `assets/backgrounds/select.webp` | `assets/source/gpt-image-2/backgrounds/splash-meadow.png` | Krea-guided clean plate; WebP q82, 1448×1086 |
+| `assets/backgrounds/studio.webp` | `assets/source/gpt-image-2/backgrounds/studio.png` | Krea-guided clean plate; WebP q82, 1448×1086 |
+| `assets/backgrounds/flight.webp` | `assets/source/gpt-image-2/backgrounds/flight.png` | Krea-guided clean plate; WebP q82, 1448×1086 |
+| `assets/backgrounds/delivery.webp` | `assets/source/gpt-image-2/backgrounds/delivery.png` | Krea-guided clean plate; WebP q82, 1448×1086 |
+| `assets/characters/{fox,bunny,bear}-{idle,reaction}.webp` | `assets/source/gpt-image-2/characters/character-sheet-green.png` | chroma-to-alpha, exact 3×2 split, trim/pad, magenta edge QA, transparent WebP |
+| `assets/props/*.webp` (16) | `assets/source/gpt-image-2/props/prop-sheet-green.png` | chroma-to-alpha, exact 4×4 split, trim/pad, magenta edge QA, transparent WebP |
+| `assets/ui/friend-card-{fox,bunny,bear}.webp` | `assets/source/gpt-image-2/frames/friend-frames-green.png` | chroma-to-alpha, exact thirds, trim/pad, magenta edge QA, transparent WebP |
+| `assets/ui/title.webp` | `assets/source/gpt-image-2/title/title-green.png` | exact-letter review, chroma-to-alpha, trim/pad, magenta edge QA, transparent WebP |
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+`splash-meadow-v1.png` is retained to document the rejected first cleanup pass.
+No generative model is contacted by the shipped game.
+
+## Child-created imagery
+
+The note shown in the fold, flight, and delivery scenes is rendered locally
+from the child's own normalized canvas strokes and sticker-board data. It is a
+transient in-memory JPEG data URL, is never uploaded, and is discarded on
+navigation or reload.
+
+## Narration and sound
+
+| Asset | Source / creator | License | Processing |
+| --- | --- | --- | --- |
+| `assets/audio/lines.json` | original QLOBE Kids script | CC BY 4.0 | exact fallback and recorded-line source text |
+| `assets/audio/*.m4a`, `manifest.json`, `qa.json` | project-internal teacher reference, local Qwen3 voice clone | project-internal reference; generated clips CC BY 4.0 | loudness normalized, AAC mono 24 kHz, local Whisper transcript gate ≥0.72; seeds recorded in `qa.json` |
+| tactile sound effects | `shared/js/sfx.js`, QLOBE Kids | MIT | synthesized locally at runtime |
+| drawing tones | `shared/js/musical-canvas.js`, QLOBE Kids | MIT | synthesized locally at runtime |
+| fallback voice | browser/OS Web Speech API | platform-provided | used only when a recorded clip cannot play |
+
+The private teacher reference is not copied into this game. Raw LAN-authoring
+outputs and transcripts stay under ignored `assets/source/local-api/voice/`.
+
+## Shared runtime assets
+
+| Asset | Source | Creator | License | Modifications |
+| --- | --- | --- | --- | --- |
+| Fredoka SemiBold | Fontsource / Google Fonts | Milena Brandão and Hafontia | SIL OFL 1.1 | reused unchanged from `shared/fonts/` |
+| HUD controls | QLOBE Kids shared library | QLOBE Kids | CC BY 4.0 | reused unchanged through `shared/js/hud.js` |
+
+## Link previews
+
+`assets/og-image.jpg` is generated from the finished splash at 1200×630 with
+`tools/pipeline/capture_og_images.mjs` after visual QA. It should be regenerated
+from the live game rather than edited by hand.

@@ -5,29 +5,41 @@
   "path": "games/kindness-delivery/",
   "icon": "💌",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 7 },
   "status": "beta",
-  "accent": "#e85d8f",
-  "shareTitle": "Kindness Delivery 💌 — Kindness Post Office",
-  "description": "Notice how someone might be feeling, choose a caring delivery to send them, and carry that same kindness into real life. A warm kindness post office for ages 5–6.",
+  "accent": "#e96b58",
+  "shareTitle": "Kindness Delivery — Draw, Fold, and Fly a Kind Note",
+  "description": "Choose a papercraft friend, draw and decorate a real kindness note, fold it into a paper plane, and swipe it across the garden for a joyful delivery.",
   "learningGoals": [
-    "Notice clues about how another person may feel",
-    "Practice choosing generous and helpful responses",
-    "Carry playful kindness ideas into real-world habits"
+    "Express warmth and care through an original visual message",
+    "Compose a supportive note with drawing, stamps, and stickers",
+    "Connect a kind intention on screen to a small caring action nearby"
   ],
-  "interactionModel": "observe-journal presents a recipient or secret mission, then the child taps a large deliverable sticker to add a heart-worthy act to the journal",
-  "feedbackModel": "Every caring choice is accepted with warm speech and cheerful pop, whoosh, and sparkle SFX; each spoken response ends with an off-tablet real-world nudge.",
+  "interactionModel": "choose Fox, Bunny, or Bear; author a real normalized canvas note with crayons, stamps, and movable stickers; recoverably undo or clear it; fold the child's work into a plane; then swipe or press the oversized plane to deliver it",
+  "feedbackModel": "every intentional launch succeeds; papercraft motion, a heart trail, recorded teacher narration, synthesized tactile sound effects, and each friend's unique full-body reaction celebrate the child's own note without scores or failure",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/freeform-board.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/musical-canvas.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "deliveries", "title": "Make a Delivery", "skill": "notice feelings and choose a caring response" },
-    { "id": "secret", "title": "Secret Kindness", "skill": "practice generosity without seeking attention" }
+    { "id": "fox", "title": "Fox", "skill": "express warmth through drawing" },
+    { "id": "bunny", "title": "Bunny", "skill": "compose a supportive visual message" },
+    { "id": "bear", "title": "Bear", "skill": "connect a kind intention to a real-world act" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; visual development with Krea 2 and OpenAI GPT Image 2; teacher narration authored with local Qwen3 TTS after explicit approval. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Paper Fox", "Paper Bunny", "Paper Bear"],
   "conceptVideo": null
 }
