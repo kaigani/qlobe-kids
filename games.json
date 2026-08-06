@@ -1274,24 +1274,34 @@
       "path": "games/button-zipper-lab/",
       "icon": "assets/hub/tiles/button-zipper-lab.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
       "status": "beta",
-      "accent": "#7c4fc4",
+      "accent": "#236fbc",
       "modes": [
         {
-          "id": "buttons",
-          "title": "Button Lab",
-          "skill": "buttoning motions and fine-motor persistence"
+          "id": "zipper",
+          "title": "Zipper",
+          "skill": "two-hand stabilization and controlled upward pulling"
         },
         {
-          "id": "zippers",
-          "title": "Zipper Lab",
-          "skill": "zipper connection, control, and dressing independence"
+          "id": "button",
+          "title": "Button",
+          "skill": "curved path following and buttonhole alignment"
+        },
+        {
+          "id": "snap",
+          "title": "Snap",
+          "skill": "alignment followed by sustained or repeated pressure"
+        },
+        {
+          "id": "velcro",
+          "title": "Hook & Loop",
+          "skill": "peeling away and smoothing back across"
         }
       ],
-      "summary": "Practice buttons and zippers on dressing frames or clothes."
+      "summary": "Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear."
     },
     {
       "id": "plant-care-captain",

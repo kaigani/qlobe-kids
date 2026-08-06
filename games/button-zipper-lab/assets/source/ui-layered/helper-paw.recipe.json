@@ -1,0 +1,52 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-ui-helper-paw-gpt",
+  "kind": "image",
+  "asset": "bzl-ui-helper-paw-gpt.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Button-Zipper Lab exact felt helper-paw sprite on a flat dark charcoal background",
+      "seed": 42,
+      "output": "ui-sprites-gpt-image-2.png",
+      "ground": null
+    },
+    {
+      "op": "crop",
+      "from": "ui-sprites-gpt-image-2.png",
+      "output": "bzl-ui-helper-paw-gpt.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Create exactly two layers from this single-object sprite image. Layer 1 is a perfectly solid flat chroma-green background. Layer 2 contains only the one complete helper paw felt object exactly as shown, including its full silhouette, fibers, stitches, highlights, and natural shadow. Remove every dark charcoal background pixel. Do not crop, redesign, duplicate, add, omit, recolor, or move the object.",
+      "output": "layer_2",
+      "from": "bzl-ui-helper-paw-gpt.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 512,
+      "encode": "png",
+      "from": "bzl-ui-helper-paw-gpt.layer2.png",
+      "output": "bzl-ui-helper-paw-gpt.png"
+    }
+  ],
+  "refs": {
+    "parent": "games/button-zipper-lab/assets/source/ui-sprites-gpt-image-2.png"
+  },
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 41.828,
+      "opaquePct": 43.513,
+      "partialPct": 14.66
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

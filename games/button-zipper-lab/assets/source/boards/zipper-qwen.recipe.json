@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-board-zipper-base-qwen",
+  "kind": "image",
+  "asset": "bzl-board-zipper-base-qwen.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit only the central zipper assembly in the reference game board. Remove the metal zipper slider and pull completely. Leave the two gold zipper tooth tracks, bottom box and pin, and open cobalt jacket sides visible and unobstructed, ready for a separate pull sprite. Preserve everything else exactly: the same honey-tan bear identity, face, ears, body, pose, proportions, cobalt woven-denim jacket shape, pockets, collar, seams, sky-blue felt page, cream border, framing, camera, scale, palette, fibers, stitching, shadows, and lighting. Do not close the jacket, redesign the bear, move any feature, add any object, add text, or change the square composition.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "media:bzl-board-zipper-gpt"
+  },
+  "derivedFrom": "bzl-board-zipper-gpt",
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-05"
+}

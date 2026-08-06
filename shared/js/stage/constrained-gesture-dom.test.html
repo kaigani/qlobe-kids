@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
+<title>constrained-gesture-dom tests</title><style>body{font:14px system-ui;margin:2rem;background:#f5f8ff;color:#17233a}#summary{padding:1rem;border-radius:.5rem;background:#fff;white-space:pre-wrap}.ok{color:#087d32}.bad{color:#b20d30;font-weight:700}</style></head>
+<body><h1>constrained-gesture-dom.js</h1><div id="summary">Running…</div>
+<script type="module">
+import { projectPointToSegment, projectPointToPolyline, nearestStop, createConstrainedGestureDom } from './constrained-gesture-dom.js';
+const lines=[]; let failed=0;
+function test(name, fn) { try { fn(); lines.push(`<span class="ok">PASS</span> ${name}`); } catch (error) { failed++; lines.push(`<span class="bad">FAIL</span> ${name}: ${error.message}`); } }
+function eq(actual, expected, message='') { if (actual !== expected) throw Error(`${message} expected ${expected}, got ${actual}`); }
+function near(actual, expected, message='') { if (Math.abs(actual - expected) > 1e-7) throw Error(`${message} expected ${expected}, got ${actual}`); }
+function pointer(type, pointerId, x=0, y=0) { const event = new Event(type, { bubbles:true, cancelable:true }); Object.defineProperties(event, { pointerId:{value:pointerId}, clientX:{value:x}, clientY:{value:y} }); return event; }
+
+test('segment math clamps normalized projection', () => { const a=projectPointToSegment({x:15,y:4},{x:0,y:0},{x:10,y:0}); near(a.progress,1); near(a.point.x,10); near(a.distance,Math.sqrt(41)); });
+test('polyline uses arc-length progress', () => { const a=projectPointToPolyline({x:10,y:5},[{x:0,y:0},{x:10,y:0},{x:10,y:10}]); near(a.progress,.75); eq(a.segmentIndex,1); near(a.point.y,5); });
+test('zero-length paths stay finite', () => { const a=projectPointToPolyline({x:3,y:4},[{x:1,y:1},{x:1,y:1}]); eq(a.progress,0); eq(a.segmentIndex,0); near(a.distance,Math.sqrt(13)); });
+test('nearest stop clamps values and ignores invalid stops', () => { eq(nearestStop(2,[-2,.6,3,NaN]),1); eq(nearestStop(.52,[0,.5,1]),.5); eq(nearestStop(-1,[]),0); });
+
+function make(options={}) { const calls=[]; const c=createConstrainedGestureDom({ getHandle:(id)=>id === 'no' ? null : {id}, project:({x})=>({progress:x/100,point:{x,y:0}}), onStart:(a)=>calls.push(['start',a.id]), onProgress:(a)=>calls.push(['progress',a.progress]), onRelease:(a)=>calls.push(['release',a.progress]), onTap:(a)=>calls.push(['tap',a.id]), onCancel:(a,why)=>calls.push(['cancel',why]), onSupportChange:(s)=>calls.push(['support',s?.pointerId ?? null]), ...options }); return {c,calls}; }
+test('slop distinguishes tap and drag, then releases', () => { const {c,calls}=make(); eq(c.begin(pointer('pointerdown',1,0,0),'a'),true); window.dispatchEvent(pointer('pointermove',1,4,0)); window.dispatchEvent(pointer('pointerup',1,4,0)); eq(calls.map(x=>x[0]).join(','),'start,tap'); eq(c.begin(pointer('pointerdown',2,0,0),'a'),true); window.dispatchEvent(pointer('pointermove',2,11,0)); window.dispatchEvent(pointer('pointerup',2,50,0)); eq(calls.map(x=>x[0]).slice(-3).join(','),'progress,progress,release'); eq(c.active,null); c.detach(); });
+test('pointercancel never releases', () => { const {c,calls}=make(); c.begin(pointer('pointerdown',1,0,0),'a'); window.dispatchEvent(pointer('pointermove',1,11,0)); window.dispatchEvent(pointer('pointercancel',1)); eq(calls.at(-1)[0],'cancel'); eq(calls.some(x=>x[0]==='release'),false); c.detach(); });
+test('blur cancels a stream', () => { const {c,calls}=make(); c.begin(pointer('pointerdown',1,0,0),'a'); window.dispatchEvent(new Event('blur')); eq(calls.at(-1)[0],'cancel'); eq(c.active,null); c.detach(); });
+test('source removal mid-gesture is safe because listeners are on window', () => { const {c,calls}=make(); const source=document.createElement('button'); document.body.append(source); source.addEventListener('pointerdown', (event)=>c.begin(event,'a')); source.dispatchEvent(pointer('pointerdown',1,0,0)); source.remove(); window.dispatchEvent(pointer('pointermove',1,20,0)); window.dispatchEvent(pointer('pointerup',1,30,0)); eq(calls.at(-1)[0],'release'); eq(c.active,null); c.detach(); });
+test('support works before and after manipulator; duplicate and third streams are rejected', () => { const {c,calls}=make(); eq(c.beginSupport(pointer('pointerdown',7),'before'),true); eq(c.begin(pointer('pointerdown',7),'same-pointer'),false); eq(c.begin(pointer('pointerdown',1),'a'),true); eq(c.beginSupport(pointer('pointerdown',8),'third'),false); eq(c.support.pointerId,7); window.dispatchEvent(pointer('pointerup',7)); eq(c.support,null); eq(c.beginSupport(pointer('pointerdown',8),'after'),true); eq(c.support.pointerId,8); c.cancel(); eq(calls.filter(x=>x[0]==='support').length >= 4,true); c.detach(); });
+test('callback throw still cleans up', () => { const {c}=make({onProgress:()=>{throw Error('boom')}}); c.begin(pointer('pointerdown',1,0,0),'a'); window.dispatchEvent(pointer('pointermove',1,20,0)); eq(c.active,null); c.detach(); });
+test('detach cancels and rejects future begins', () => { const {c,calls}=make(); c.begin(pointer('pointerdown',1),'a'); c.detach(); eq(calls.at(-1)[0],'cancel'); eq(c.begin(pointer('pointerdown',2),'a'),false); });
+test('debug paths use regular callbacks without DOM events', () => { const {c,calls}=make(); c.debugProgress(.6,{kind:'test'}); c.debugSupport(true,{hand:'left'}); eq(calls.map(x=>x[0]).join(','),'progress,support'); near(calls[0][1],.6); eq(c.support.debug,true); c.debugSupport(false); eq(calls.at(-1)[1],null); c.detach(); });
+document.querySelector('#summary').innerHTML = `${failed ? `<span class="bad">${failed} failing</span>` : `<span class="ok">All ${lines.length} tests passed</span>`}\n${lines.join('<br>')}`;
+if (failed) throw Error(`${failed} constrained gesture tests failed`);
+</script></body></html>

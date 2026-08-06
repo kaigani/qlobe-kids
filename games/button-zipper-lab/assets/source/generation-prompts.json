@@ -1,0 +1,132 @@
+{
+  "game": "button-zipper-lab",
+  "date": "2026-08-05",
+  "artDirection": "Paper Garden — cozy felt quiet-book puppet craft",
+  "conceptWorkflow": "krea2-turbo-t2i",
+  "conceptSeed": 42,
+  "concepts": [
+    {
+      "id": "shelf",
+      "file": "concepts/01-shelf-krea-42.png",
+      "prompt": "A straight-on preschool tablet game screen showing a sky-blue wool-felt quiet-book page with layered rolling green felt hills and stitched flowers around the edges. Four large tactile activity cards fill the middle in one row: a cobalt denim zipper card, a leaf-green felt button card, a lavender metal snap card, and an orange fuzzy hook-and-loop tab card. A wide empty cream felt title plaque sits above and a wide empty orange felt play plaque sits below. Premium handmade quiet-book craft made entirely from real wool felt, woven denim, chunky cream blanket stitching, fuzzy hook-and-loop, and brushed metal fasteners. Rounded safe forms, soft studio lighting, shallow physical shadows, deep navy cobalt orange leaf green lavender cream and sunflower palette, coherent single visual system, polished preschool app composition. No vector, no flat graphic design, no text, no letters, no words, no logo, no watermark."
+    },
+    {
+      "id": "zipper",
+      "file": "concepts/02-zipper-krea-42.png",
+      "prompt": "A straight-on preschool tablet game play screen on a sky-blue stitched wool-felt page. The same friendly honey-tan stuffed felt bear fills the center wearing an open cobalt-blue woven denim jacket. An oversized realistic brushed-metal zipper pull waits at the bottom of a very clear vertical zipper track; the two jacket sides are open enough to show the upward motion. A large empty cream felt instruction plaque sits at the top, a small empty lavender progress patch at upper right, and a white stitched arrow models upward motion. Premium handmade quiet-book craft made entirely from real wool felt, woven denim, chunky cream blanket stitching, fuzzy fabric, and brushed metal. Rounded safe forms, soft studio lighting, shallow physical shadows, deep navy cobalt orange leaf green lavender cream and sunflower palette, coherent single visual system, polished preschool app composition. No vector, no flat graphic design, no text, no letters, no words, no logo, no watermark."
+    },
+    {
+      "id": "button",
+      "file": "concepts/03-button-krea-42.png",
+      "prompt": "A straight-on preschool tablet game play screen on a sky-blue stitched wool-felt page. The same friendly honey-tan stuffed felt bear fills the center wearing a leaf-green woven cardigan. One oversized sunflower-yellow felt-covered four-hole button is beside one clearly visible horizontal cream-stitched buttonhole, with a curved dotted stitch trail showing the button turning edge-on and passing through. A large empty cream felt instruction plaque sits at the top, a small empty lavender progress patch at upper right, and all interaction space is generous for small fingers. Premium handmade quiet-book craft made entirely from real wool felt, woven cloth, chunky cream blanket stitching, and tactile fabric. Rounded safe forms, soft studio lighting, shallow physical shadows, deep navy cobalt orange leaf green lavender cream and sunflower palette, coherent single visual system, polished preschool app composition. No vector, no flat graphic design, no text, no letters, no words, no logo, no watermark."
+    },
+    {
+      "id": "reward",
+      "file": "concepts/04-reward-krea-42.png",
+      "prompt": "A straight-on preschool tablet game reward screen made as a cream wool-felt quilt page inside a thick cobalt stitched border. The same friendly honey-tan stuffed felt bear in a fully fastened cobalt jacket jumps joyfully on the left. On the right is one large sunflower-yellow stitched star patch and four smaller tactile skill patches showing only recognizable objects: zipper, button, metal snap, and fuzzy hook-and-loop tab. Loose felt confetti dots and curled scraps decorate the edges; a wide empty cobalt felt action plaque sits near the bottom. Premium handmade quiet-book craft made entirely from real wool felt, woven denim, chunky cream blanket stitching, fuzzy fabric, and brushed metal. Rounded safe forms, soft studio lighting, shallow physical shadows, deep navy cobalt orange leaf green lavender cream and sunflower palette, coherent single visual system, polished preschool app composition. No vector, no flat graphic design, no text, no letters, no words, no logo, no watermark."
+    }
+  ],
+  "productionWorkflow": "built-in imagegen (GPT Image 2)",
+  "productionImagegenMode": "source; reference edits for standalone velcro and reward-patch retries",
+  "productionPrompts": [
+    {
+      "id": "mode-cards",
+      "file": "mode-cards-gpt-image-2.png",
+      "references": ["concepts/01-shelf-krea-42.png", "concepts/02-zipper-krea-42.png", "concepts/03-button-krea-42.png"],
+      "prompt": "Create one exact 2 by 2 contact sheet on a flat dark-charcoal ground for Button-Zipper Lab. Use the same premium tactile quiet-book world as the references: real wool felt, woven denim, chunky cream blanket stitching, fuzzy fibers, brushed metal, soft studio light, rounded preschool-safe forms, and the same cobalt, leaf green, lavender, orange, cream, and sunflower palette. Upper left: cobalt denim zipper activity card with one oversized brushed-metal pull and teeth. Upper right: leaf-green felt card with one large four-hole button. Lower left: lavender felt card with a pair of metal snap halves. Lower right: orange felt card with a fuzzy hook-and-loop tab. Every card has one wide, completely blank cream label plaque near its top. Keep all four cards fully inside separate equal cells with generous gutters. No words, letters, numerals, logos, watermark, UI chrome, bear, hands, extra objects, vector, or flat graphic style."
+    },
+    {
+      "id": "game-boards",
+      "file": "game-boards-gpt-image-2.png",
+      "references": ["concepts/02-zipper-krea-42.png", "concepts/03-button-krea-42.png", "concepts/04-reward-krea-42.png"],
+      "prompt": "Create one exact 2 by 2 contact sheet of four square quiet-book game boards. Preserve one identical friendly honey-tan stuffed felt bear in every cell: same face, ears, muzzle, bead eyes, proportions, front-facing pose, scale, sky-blue stitched felt page, cream border, lighting, fibers, and camera. Upper left bear wears an open cobalt denim zipper jacket with clear teeth and a large pull. Upper right bear wears an open leaf-green cardigan with three cream buttonholes and three matching buttons. Lower left bear wears a lavender snap vest with a loose flap and two shiny snap halves. Lower right bear wears an orange hook-and-loop jacket with a loose orange tab and cream fuzzy receiving strip. Premium physical wool felt, denim, stitching, and brushed metal only. No text, plaques, arrows, progress UI, hands, logos, watermark, vector, or flat graphic style."
+    },
+    {
+      "id": "ui-sprites",
+      "file": "ui-sprites-gpt-image-2.png",
+      "references": ["mode-cards-gpt-image-2.png", "game-boards-gpt-image-2.png"],
+      "prompt": "Create one exact 4-column by 3-row contact sheet of twelve isolated Button-Zipper Lab tactile felt assets on a uniform flat dark-charcoal background, one centered object per equal cell with wide clear margins. Row 1 in order: brushed-metal zipper pull, sunflower-yellow four-hole felt button, lavender felt snap flap with one metal half, orange fuzzy hook-and-loop tab. Row 2: honey-tan helper bear paw, cream stitched upward arrow, lavender progress patch frame, wide blank cream felt prompt plaque. Row 3: four separate sunflower-yellow stitched star patches in order, bearing only a zipper emblem, button emblem, two-snap emblem, and hook-and-loop emblem. Preserve the exact material language, palette, light direction, shadows, and scale family from the references. No words, letters, numbers, logos, watermark, connected objects, extra props, vector, or flat graphic style."
+    },
+    {
+      "id": "zipper-pull-standalone-retry",
+      "file": "ui-standalone/zipper-pull-gpt-image-2.png",
+      "references": ["ui-sprites-gpt-image-2.png"],
+      "prompt": "Create one production UI sprite source for a premium preschool quiet-book game. A single complete brushed-silver metal zipper pull, front-facing and vertically oriented: complete compact slider housing at top, attached long pull tab below, one large oval opening in the lower pull tab, clean believable metal edges and fine engraved texture. Center the whole object at generous scale with wide empty margin on every side. Background must be one perfectly uniform flat chroma green (#00FF00), edge to edge, with no gradient, texture, vignette, cast-shadow field, horizon, floor, or other color. The zipper may have only a tiny contact shadow immediately touching its metal edge. No fabric, zipper teeth, garment, hands, text, letters, logo, watermark, frame, checkerboard, extra object, cropped edge, vector, or flat graphic style. Square image."
+    },
+    {
+      "id": "snap-flap-standalone-retry",
+      "file": "ui-standalone/snap-flap-gpt-image-2.png",
+      "references": ["ui-sprites-gpt-image-2.png"],
+      "prompt": "Create one production UI sprite source for a premium preschool quiet-book game. A single complete horizontal lavender-purple wool-felt snap flap as one assembled object: a wide rounded rectangular felt tab, fully visible from left edge through right edge, chunky cream blanket stitching around its border, and one attached realistic brushed-silver snap half near the left side. Center the entire flap with wide empty margin on every side. Background must be one perfectly uniform flat chroma green (#00FF00), edge to edge, with no gradient, texture, vignette, cast-shadow field, horizon, floor, or other color. The flap may have only a tiny contact shadow immediately touching its felt edge. No orange object, garment, bear, hand, text, letters, logo, watermark, frame, checkerboard, extra object, cropped edge, vector, or flat graphic style. Square image."
+    },
+    {
+      "id": "velcro-tab-standalone-retry",
+      "file": "ui-standalone/velcro-tab-gpt-image-2.png",
+      "references": [
+        "ui-cells-opaque/velcro-tab.png"
+      ],
+      "prompt": "Edit this exact preschool quiet-book UI object into a clean extraction source. Preserve the single complete orange felt hook-and-loop tab as one assembled object: the entire rounded orange rectangle, fully visible left and right edges, lifted triangular orange corner, exposed cream hook-and-loop fibers, cream blanket stitching, proportions, colors, wool texture, and believable soft contact shadow. Center the entire object at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the felt edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image."
+    },
+    {
+      "id": "patch-zipper-standalone-retry",
+      "file": "ui-standalone/patch-zipper-gpt-image-2.png",
+      "references": [
+        "ui-cells-opaque/patch-zipper.png"
+      ],
+      "prompt": "Edit this exact preschool quiet-book reward patch into a clean extraction source. Preserve the single complete yellow five-point wool-felt star badge as one assembled object: all five full points, the entire blue blanket-stitched outer border, the attached complete brushed-silver zipper pull with slider housing, long pull tab and oval opening, proportions, colors, felt fibers, metal texture, and believable soft contact shadow. Center the entire badge at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the badge edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image."
+    },
+    {
+      "id": "patch-button-standalone-retry",
+      "file": "ui-standalone/patch-button-gpt-image-2.png",
+      "references": [
+        "ui-cells-opaque/patch-button.png"
+      ],
+      "prompt": "Edit this exact preschool quiet-book reward patch into a clean extraction source. Preserve the single complete yellow five-point wool-felt star badge as one assembled object: all five full points, the entire blue blanket-stitched outer border, the attached complete green four-hole felt button with its cream crossed thread, proportions, colors, felt fibers, and believable soft contact shadow. Center the entire badge at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the badge edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image."
+    },
+    {
+      "id": "patch-snap-standalone-retry",
+      "file": "ui-standalone/patch-snap-gpt-image-2.png",
+      "references": [
+        "ui-cells-opaque/patch-snap.png"
+      ],
+      "prompt": "Edit this exact preschool quiet-book reward patch into a clean extraction source. Preserve the single complete yellow five-point wool-felt star badge as one assembled object: all five full points, the entire blue blanket-stitched outer border, both attached complete brushed-silver snap halves with their distinct open socket and raised stud, proportions, colors, felt fibers, metal texture, and believable soft contact shadow. Center the entire badge at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the badge edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image."
+    },
+    {
+      "id": "patch-velcro-standalone-retry",
+      "file": "ui-standalone/patch-velcro-gpt-image-2.png",
+      "references": [
+        "ui-cells-opaque/patch-velcro.png"
+      ],
+      "prompt": "Edit this exact preschool quiet-book reward patch into a clean extraction source. Preserve the single complete yellow five-point wool-felt star badge as one assembled object: all five full points, the entire blue blanket-stitched outer border, the attached complete orange triangular hook-and-loop patch with its lifted corner and exposed cream fibers, proportions, colors, felt texture, and believable soft contact shadow. Center the entire badge at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the badge edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image."
+    },
+    {
+      "id": "title",
+      "file": "title-gpt-image-2.png",
+      "references": ["mode-cards-gpt-image-2.png"],
+      "prompt": "On a flat dark-charcoal ground, create one wide cream wool-felt title plaque with rounded corners, blanket stitching, a tiny sunflower and two tiny cloud appliques, and dark navy raised felt letters spelling exactly: Button-Zipper Lab. Verify every character and hyphen in B-u-t-t-o-n-hyphen-Z-i-p-p-e-r space L-a-b. Keep the complete plaque inside frame with clear space on all sides. Match the premium quiet-book materials and lighting of the reference. No other words, subtitle, logo, watermark, frame, UI, bear, vector, or flat graphic style."
+    },
+    {
+      "id": "splash-background",
+      "file": "splash-bg-gpt-image-2.png",
+      "references": ["concepts/01-shelf-krea-42.png", "mode-cards-gpt-image-2.png"],
+      "prompt": "Create an empty 4:3 sky-blue wool-felt quiet-book landscape background for Button-Zipper Lab. Add layered rolling leaf-green felt hills, tiny stitched flowers, clouds, and a few fabric leaves only around the outer edges. Keep the broad center and upper-middle calm, uncluttered, and free for title and four cards. Premium handmade felt, chunky stitches, shallow physical shadows, same palette and studio light as the references. No cards, plaques, buttons, zipper, snap, hook-and-loop, bear, text, letters, logo, watermark, vector, or flat graphic style."
+    },
+    {
+      "id": "reward-background",
+      "file": "reward-bg-gpt-image-2.png",
+      "references": ["concepts/04-reward-krea-42.png", "game-boards-gpt-image-2.png"],
+      "prompt": "Create a 4:3 cream wool-felt quilt reward background inside a thick cobalt stitched border. On the left place the exact same honey-tan felt bear identity from the board reference, smiling in a fully zipped cobalt jacket. Leave the entire right half calm and open except for one large completely blank sunflower-yellow stitched star backing that can receive an earned patch. Add only sparse felt confetti near outer edges. Preserve premium fibers, denim weave, blanket stitching, soft light, and shallow shadows. No text, letters, buttons, UI plaques, additional patches, logos, watermark, vector, or flat graphic style."
+    }
+  ],
+  "editWorkflow": "qwen-image-edit",
+  "editSeed": 42,
+  "editPrompts": "Stored verbatim in assets/source/boards/*.recipe.json",
+  "layerWorkflow": "qwen-image-layered, layer_2 fetched by QLOBE Studio and passed through alpha QA",
+  "layerPrompts": "Stored verbatim in title-alpha.recipe.json, mode-cards-alpha.recipe.json, and ui-layered/*.recipe.json",
+  "voiceWorkflow": "qwen3-tts-voiceclone",
+  "voiceSeeds": {
+    "default": 7,
+    "zipper-help": 9
+  },
+  "voiceLines": "Stored verbatim in assets/audio/lines.json and each clip recipe sidecar"
+}

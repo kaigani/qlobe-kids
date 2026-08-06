@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-board-snap-base-qwen",
+  "kind": "image",
+  "asset": "bzl-board-snap-base-qwen.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit only the short lavender rounded flap and its attached outer metal snap on the left front of the vest in the reference game board. Remove that flap and attached snap completely, continuing the underlying lavender felt vest into a smooth stitched base. Keep the separate receiving metal snap half on the right vest front exactly unchanged and clearly visible. Preserve everything else exactly: the same honey-tan bear identity, face, ears, body, pose, proportions, lavender vest shape, other seams, sky-blue felt page, cream border, framing, camera, scale, palette, fibers, stitching, shadows, and lighting. Do not remove or move the right receiving snap, redesign the bear, add any object, add text, or change the square composition.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "media:bzl-board-snap-gpt"
+  },
+  "derivedFrom": "bzl-board-snap-gpt",
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-05"
+}

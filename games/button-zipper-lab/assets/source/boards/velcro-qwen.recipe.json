@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-board-velcro-base-qwen",
+  "kind": "image",
+  "asset": "bzl-board-velcro-base-qwen.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit only the loose orange rounded hook-and-loop tab on the right side of the coat in the reference game board. Remove that movable orange tab completely and reveal the full wide cream fuzzy hook-and-loop strip beneath it from end to end, preserving the orange coat fabric and seams around the strip. Keep the fuzzy strip centered, unobstructed, and ready for a separate tab sprite. Preserve everything else exactly: the same honey-tan bear identity, face, ears, body, pose, proportions, orange coat shape, collar, sleeves, sky-blue felt page, cream border, framing, camera, scale, palette, fibers, stitching, shadows, and lighting. Do not redesign the bear, move any feature, add any object, add text, or change the square composition.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "media:bzl-board-velcro-gpt"
+  },
+  "derivedFrom": "bzl-board-velcro-gpt",
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-05"
+}

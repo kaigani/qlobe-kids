@@ -5,43 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Button-Zipper Lab 🧥 — Practicing Buttons and Zippers</title>
-  <meta name="description" content="Practice pushing buttons through buttonholes and connecting zippers in slow, patient motions before a solo victory lap. A fine-motor dressing coach for ages 5–6." />
+  <meta name="theme-color" content="#8fd0ec" />
+  <title>Button-Zipper Lab — Four Tactile Fastener Games</title>
+  <meta name="description" content="Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear. Earn a stitched patch for each three-round fine-motor challenge." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Button-Zipper Lab" />
-  <meta property="og:title" content="Button-Zipper Lab 🧥 — Practicing Buttons and Zippers" />
-  <meta property="og:description" content="Practice pushing buttons through buttonholes and connecting zippers in slow, patient motions before a solo victory lap. A fine-motor dressing coach for ages 5–6." />
+  <meta property="og:title" content="Button-Zipper Lab — Four Tactile Fastener Games" />
+  <meta property="og:description" content="Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear. Earn a stitched patch for each three-round fine-motor challenge." />
   <meta property="og:url" content="https://qlo.be/games/button-zipper-lab/" />
   <meta property="og:image" content="https://qlo.be/games/button-zipper-lab/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Button-Zipper Lab title screen with Button Lab and Zipper Lab buttons and a tan coat icon on a dotted blue background." />
+  <meta property="og:image:alt" content="A friendly felt bear practicing a zipper in the Button-Zipper Lab quiet book." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Button-Zipper Lab 🧥 — Practicing Buttons and Zippers" />
-  <meta name="twitter:description" content="Practice pushing buttons through buttonholes and connecting zippers in slow, patient motions before a solo victory lap. A fine-motor dressing coach for ages 5–6." />
+  <meta name="twitter:title" content="Button-Zipper Lab — Four Tactile Fastener Games" />
+  <meta name="twitter:description" content="Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear. Earn a stitched patch for each three-round fine-motor challenge." />
   <meta name="twitter:image" content="https://qlo.be/games/button-zipper-lab/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game">
+    <section id="splash-screen" class="screen splash-screen" data-qk-screen="splash" aria-label="Choose a fastener">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" data-target="catalog-home" aria-label="Back to all games"></a>
+      <div id="splash-sound" class="hud-slot hud-top-right"></div>
+      <img class="title-art" src="./assets/title.webp" alt="Button-Zipper Lab" />
+      <p class="splash-prompt">Which fastener shall we practice?</p>
+      <div id="mode-cards" class="mode-cards" aria-label="Fastener choices"></div>
+      <div class="patch-shelf" aria-label="Earned fastener patches">
+        <span class="patch-shelf-label">My patches</span>
+        <div id="splash-patches" class="patch-row"></div>
+      </div>
+    </section>
+
+    <section id="play-screen" class="screen play-screen" data-qk-screen="play" aria-label="Fastener practice" hidden>
+      <div id="play-back" class="hud-slot hud-top-left"></div>
+      <div id="play-sound" class="hud-slot hud-top-right"></div>
+      <header class="play-header">
+        <div class="prompt-plaque">
+          <span id="mode-kicker" class="mode-kicker"></span>
+          <h1 id="prompt-text">Follow the stitches</h1>
+        </div>
+        <div id="round-dots" class="round-dots"></div>
+      </header>
+      <div id="activity-stage" class="activity-stage" data-mode="zipper">
+        <img id="board-art" class="board-art" src="./assets/boards/zipper.webp" alt="A felt bear wearing a practice jacket" draggable="false" />
+        <div id="path-glow" class="path-glow" aria-hidden="true"></div>
+        <div id="zip-seam" class="zip-seam" aria-hidden="true"></div>
+        <button id="support-zone" class="support-zone" type="button" data-target="support" aria-label="Hold the jacket steady with another finger">
+          <img src="./assets/ui/helper-paw.webp" alt="" aria-hidden="true" draggable="false" />
+          <span>HOLD</span>
+        </button>
+        <img id="helper-paw" class="helper-paw" src="./assets/ui/helper-paw.webp" alt="" aria-hidden="true" draggable="false" />
+        <button id="fastener" class="fastener" type="button" data-target="fastener" aria-label="Move the fastener along its stitched path">
+          <img id="fastener-art" src="./assets/ui/zipper-pull.webp" alt="" aria-hidden="true" draggable="false" />
+          <span id="hold-ring" class="hold-ring" aria-hidden="true"></span>
+        </button>
+        <div id="gesture-caption" class="gesture-caption" aria-live="polite">Pull up</div>
+        <div id="round-badge" class="round-badge" aria-label="Round 1 of 3"><strong>1</strong><span>of 3</span></div>
+      </div>
+    </section>
+
+    <section id="end-screen" class="screen end-screen" data-qk-screen="end" aria-label="Fastener complete" hidden>
+      <div id="end-back" class="hud-slot hud-top-left"></div>
+      <div id="end-sound" class="hud-slot hud-top-right"></div>
+      <div class="reward-copy">
+        <p class="reward-eyebrow">PATCH EARNED</p>
+        <h1 id="reward-title">Zipper star!</h1>
+        <p id="reward-message">Three patient zips finished.</p>
+      </div>
+      <img id="reward-patch" class="reward-patch" src="./assets/patches/zipper.webp" alt="Zipper patch" />
+      <div class="reward-actions">
+        <button id="again-button" class="felt-action again-action" type="button" data-target="again">Again</button>
+        <button id="choose-button" class="felt-action choose-action" type="button" data-target="choose">Choose another</button>
+      </div>
+      <div id="end-patches" class="patch-row end-patches" aria-label="All earned fastener patches"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

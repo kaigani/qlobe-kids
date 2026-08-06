@@ -5,30 +5,41 @@
   "path": "games/button-zipper-lab/",
   "icon": "🧥",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 7 },
   "status": "beta",
-  "accent": "#7c4fc4",
-  "shareTitle": "Button-Zipper Lab 🧥 — Practicing Buttons and Zippers",
-  "description": "Practice pushing buttons through buttonholes and connecting zippers in slow, patient motions before a solo victory lap. A fine-motor dressing coach for ages 5–6.",
+  "accent": "#236fbc",
+  "shareTitle": "Button-Zipper Lab — Four Tactile Fastener Games",
+  "description": "Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear. Earn a stitched patch for each three-round fine-motor challenge.",
   "learningGoals": [
-    "Practice pushing and pulling buttons through buttonholes",
-    "Practice connecting and moving a zipper",
-    "Build fine-motor persistence through slow repeated motions",
-    "Grow independence with getting dressed"
+    "Coordinate a steadying hand with a moving hand",
+    "Follow straight and curved paths with controlled finger movement",
+    "Practice zipper, button, snap, and hook-and-loop fastener motions",
+    "Build persistence and confidence with everyday dressing skills"
   ],
-  "interactionModel": "tap the large done row after each real-world dressing experiment; timers make room for patient fine-motor practice",
-  "feedbackModel": "playful lab-scientist speech with sparkle, tick, and tada SFX; every prompt makes patience and resting acceptable",
+  "interactionModel": "drag one oversized raster fastener along a constrained stitched path, with optional two-finger support, press-and-hold, two-phase peel-and-smooth, and a complete tap fallback",
+  "feedbackModel": "the felt object tracks the child's motion, snaps to forgiving checkpoints, gives gentle narrated hints without failure, and awards persistent stitched patches after three successful rounds",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/mode-select.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/constrained-gesture-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "buttons", "title": "Button Lab", "skill": "buttoning motions and fine-motor persistence" },
-    { "id": "zippers", "title": "Zipper Lab", "skill": "zipper connection, control, and dressing independence" }
+    { "id": "zipper", "title": "Zipper", "skill": "two-hand stabilization and controlled upward pulling" },
+    { "id": "button", "title": "Button", "skill": "curved path following and buttonhole alignment" },
+    { "id": "snap", "title": "Snap", "skill": "alignment followed by sustained or repeated pressure" },
+    { "id": "velcro", "title": "Hook & Loop", "skill": "peeling away and smoothing back across" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; visual development with Krea 2, GPT Image 2, and Qwen Image Edit/Layered; teacher narration with Qwen3 TTS. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Felt Bear"],
   "conceptVideo": null
 }

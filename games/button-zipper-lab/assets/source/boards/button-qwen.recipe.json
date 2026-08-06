@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-board-button-base-qwen2",
+  "kind": "image",
+  "asset": "bzl-board-button-base-qwen2.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Remove every one of the three round green buttons from the right half of the cardigan. The right cardigan panel must be completely button-free, showing only smooth uninterrupted leaf-green woven fabric with no circles, no rosettes, no button shapes, no thread, no marks, and no replacement objects. Keep the three cream horizontal buttonholes on the left cardigan panel exactly as they are. Do not fasten or close the cardigan. Preserve the exact same bear, pose, open cardigan, page, crop, lighting, stitches, texture, and all other details. This is a precise object-removal edit: erase the three round green buttons only.",
+      "seed": 47,
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "refs": {
+    "style": "media:bzl-board-button-base-qwen"
+  },
+  "derivedFrom": "bzl-board-button-base-qwen",
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-05"
+}

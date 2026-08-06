@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-mode-cards-gpt",
+  "kind": "image",
+  "asset": "bzl-mode-cards-gpt.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Exact 2 by 2 contact sheet of four Button-Zipper Lab felt mode cards on a flat dark charcoal background: zipper, button, snap, hook-and-loop",
+      "seed": 42,
+      "output": "bzl-mode-cards-gpt.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Create exactly two layers from this image. Layer 1 is a perfectly solid flat chroma-green background. Layer 2 contains only all four complete felt mode cards in their exact 2 by 2 positions, including each card, icon, empty cream label plaque, edge fibers, and shadows, with no charcoal background, no crop, no moved element, and no redesign.",
+      "output": "layer_2",
+      "from": "bzl-mode-cards-gpt.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 1254,
+      "encode": "png",
+      "from": "bzl-mode-cards-gpt.layer2.png",
+      "output": "bzl-mode-cards-gpt.png"
+    }
+  ],
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 13.071,
+      "opaquePct": 52.067,
+      "partialPct": 34.862
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

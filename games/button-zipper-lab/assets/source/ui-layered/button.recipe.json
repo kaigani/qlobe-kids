@@ -1,0 +1,52 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-ui-button-gpt",
+  "kind": "image",
+  "asset": "bzl-ui-button-gpt.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Button-Zipper Lab exact felt button sprite on a flat dark charcoal background",
+      "seed": 42,
+      "output": "ui-sprites-gpt-image-2.png",
+      "ground": null
+    },
+    {
+      "op": "crop",
+      "from": "ui-sprites-gpt-image-2.png",
+      "output": "bzl-ui-button-gpt.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Output exactly two layers. Layer 1 must be only a perfectly solid flat chroma-green background. Layer 2 MUST contain the complete foreground object from the reference, at the same size and position on transparency. The foreground object may not appear in layer 1 and layer 2 may not be empty. Preserve the object exactly; remove all dark charcoal background; do not crop, omit, duplicate, redraw, recolor, or add anything.",
+      "output": "layer_2",
+      "from": "bzl-ui-button-gpt.raw.png",
+      "seed": 47
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 512,
+      "encode": "png",
+      "from": "bzl-ui-button-gpt.layer2.png",
+      "output": "bzl-ui-button-gpt.png"
+    }
+  ],
+  "refs": {
+    "parent": "games/button-zipper-lab/assets/source/ui-sprites-gpt-image-2.png"
+  },
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 45.19,
+      "opaquePct": 36.943,
+      "partialPct": 17.867
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 47
+  },
+  "created": "2026-08-05"
+}

@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-voice-zipper-nudge",
+  "kind": "voice",
+  "asset": "bzl-voice-zipper-nudge.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Slow and steady. Follow the glowing track upward.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Slow and steady. Follow the glowing track upward."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Slow and steady. Follow the glowing track upward.",
+      "heard": "Slow and steady, follow the glowing track upward.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-05"
+}

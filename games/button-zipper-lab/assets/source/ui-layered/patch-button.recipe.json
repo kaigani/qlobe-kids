@@ -1,0 +1,46 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-ui-patch-button-gpt3",
+  "kind": "image",
+  "asset": "bzl-ui-patch-button-gpt3.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Edit this exact preschool quiet-book reward patch into a clean extraction source. Preserve the single complete yellow five-point wool-felt star badge as one assembled object: all five full points, the entire blue blanket-stitched outer border, the attached complete green four-hole felt button with its cream crossed thread, proportions, colors, felt fibers, and believable soft contact shadow. Center the entire badge at generous scale with wide empty margin on every side. Replace the dark background with one perfectly uniform flat chroma green (#00FF00), edge to edge: no gradient, texture, vignette, horizon, floor, checkerboard, or other background color. Keep only a tiny contact shadow immediately touching the badge edge. No extra object, text, letters, logo, watermark, frame, crop, hand, garment, bear, vector, or flat graphic style. Square production source image.",
+      "output": "games/button-zipper-lab/assets/source/ui-standalone/patch-button-gpt-image-2.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same one complete yellow five-point felt star badge as a single assembled object, including all five full points, every blue border stitch, the attached complete green four-hole felt button with cream crossed thread, all fibers, and the tiny contact shadow, isolated and centered, from the image. The complete star and button must appear together in the top layer; the green field must be only the background layer. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "bzl-ui-patch-button-gpt3.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 512,
+      "encode": "png",
+      "from": "bzl-ui-patch-button-gpt3.layer2.png",
+      "output": "bzl-ui-patch-button-gpt3.png"
+    }
+  ],
+  "refs": {
+    "parent": "games/button-zipper-lab/assets/source/ui-sprites-gpt-image-2.png"
+  },
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 47.204,
+      "opaquePct": 28.946,
+      "partialPct": 23.851
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

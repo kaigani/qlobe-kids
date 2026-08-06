@@ -1,0 +1,46 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-ui-zipper-pull-gpt2",
+  "kind": "image",
+  "asset": "bzl-ui-zipper-pull-gpt2.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Create one production UI sprite source for a premium preschool quiet-book game. A single complete brushed-silver metal zipper pull, front-facing and vertically oriented: complete compact slider housing at top, attached long pull tab below, one large oval opening in the lower pull tab, clean believable metal edges and fine engraved texture. Center the whole object at generous scale with wide empty margin on every side. Background must be one perfectly uniform flat chroma green (#00FF00), edge to edge, with no gradient, texture, vignette, cast-shadow field, horizon, floor, or other color. The zipper may have only a tiny contact shadow immediately touching its metal edge. No fabric, zipper teeth, garment, hands, text, letters, logo, watermark, frame, checkerboard, extra object, cropped edge, vector, or flat graphic style. Square image.",
+      "output": "games/button-zipper-lab/assets/source/ui-standalone/zipper-pull-gpt-image-2.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same single complete brushed-silver zipper pull, including its full slider housing, attached long pull tab, oval opening, all metal edges, and tiny contact shadow, isolated and centered, from the image. The entire zipper pull must be in the top layer and the green field must be only the background layer. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "bzl-ui-zipper-pull-gpt2.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 512,
+      "encode": "png",
+      "from": "bzl-ui-zipper-pull-gpt2.layer2.png",
+      "output": "bzl-ui-zipper-pull-gpt2.png"
+    }
+  ],
+  "refs": {
+    "parent": "games/button-zipper-lab/assets/source/ui-sprites-gpt-image-2.png"
+  },
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 65.83,
+      "opaquePct": 13.175,
+      "partialPct": 20.996
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

@@ -1,0 +1,46 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-ui-snap-flap-gpt2",
+  "kind": "image",
+  "asset": "bzl-ui-snap-flap-gpt2.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Create one production UI sprite source for a premium preschool quiet-book game. A single complete horizontal lavender-purple wool-felt snap flap as one assembled object: a wide rounded rectangular felt tab, fully visible from left edge through right edge, chunky cream blanket stitching around its border, and one attached realistic brushed-silver snap half near the left side. Center the entire flap with wide empty margin on every side. Background must be one perfectly uniform flat chroma green (#00FF00), edge to edge, with no gradient, texture, vignette, cast-shadow field, horizon, floor, or other color. The flap may have only a tiny contact shadow immediately touching its felt edge. No orange object, garment, bear, hand, text, letters, logo, watermark, frame, checkerboard, extra object, cropped edge, vector, or flat graphic style. Square image.",
+      "output": "games/button-zipper-lab/assets/source/ui-standalone/snap-flap-gpt-image-2.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same single complete horizontal lavender-purple felt snap flap, including the entire rounded rectangular felt tab, every cream blanket stitch, the attached silver snap half, all felt fibers, and tiny contact shadow, isolated and centered, from the image. The whole flap and attached snap must be together in the top layer and the green field must be only the background layer. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "bzl-ui-snap-flap-gpt2.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 512,
+      "encode": "png",
+      "from": "bzl-ui-snap-flap-gpt2.layer2.png",
+      "output": "bzl-ui-snap-flap-gpt2.png"
+    }
+  ],
+  "refs": {
+    "parent": "games/button-zipper-lab/assets/source/ui-sprites-gpt-image-2.png"
+  },
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 54.354,
+      "opaquePct": 24.689,
+      "partialPct": 20.957
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

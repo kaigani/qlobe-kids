@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-voice-welcome",
+  "kind": "voice",
+  "asset": "bzl-voice-welcome.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Welcome to the Button-Zipper Lab. Pick a fastener to practice.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Welcome to the Button-Zipper Lab. Pick a fastener to practice."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Welcome to the Button-Zipper Lab. Pick a fastener to practice.",
+      "heard": "Welcome to the Button Zipper Lab. Pick a fastener to practice.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-05"
+}

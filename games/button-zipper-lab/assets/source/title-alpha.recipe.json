@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bzl-title-gpt",
+  "kind": "image",
+  "asset": "bzl-title-gpt.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Button-Zipper Lab exact stitched felt title plaque on a flat dark charcoal background",
+      "seed": 42,
+      "output": "bzl-title-gpt.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Create exactly two layers from this image. Layer 1 is a perfectly solid flat chroma-green background. Layer 2 contains only the complete cream felt title plaque and every stitched letter exactly as shown, including all edge fibers and shadows, with no charcoal background, no crop, no redesign, no spelling change, and no missing pixels.",
+      "output": "layer_2",
+      "from": "bzl-title-gpt.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 1751,
+      "encode": "png",
+      "from": "bzl-title-gpt.layer2.png",
+      "output": "bzl-title-gpt.png"
+    }
+  ],
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 38.734,
+      "opaquePct": 32.96,
+      "partialPct": 28.306
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-05"
+}

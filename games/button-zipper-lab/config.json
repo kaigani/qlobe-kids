@@ -1,0 +1,82 @@
+{
+  "title": "Button-Zipper Lab",
+  "roundsPerMode": 3,
+  "voice": {
+    "welcome": "Welcome to the Button-Zipper Lab. Pick a fastener to practice.",
+    "mode-zipper": "Zipper time!",
+    "mode-button": "Button time!",
+    "mode-snap": "Snap time!",
+    "mode-velcro": "Hook-and-loop time!",
+    "zipper-start": "Hold the jacket steady, then pull the zipper up.",
+    "zipper-nudge": "Slow and steady. Follow the glowing track upward.",
+    "zipper-help": "My helper paw can hold the jacket with you.",
+    "button-start": "Guide the button across and through its buttonhole.",
+    "button-nudge": "Follow the curved stitches toward the buttonhole.",
+    "snap-start": "Slide the flap onto the shiny snap.",
+    "snap-press": "Now press and hold until it clicks.",
+    "snap-nudge": "Bring the two shiny snap parts together.",
+    "velcro-start": "Peel the orange tab away from the fuzzy strip.",
+    "velcro-nudge": "Keep peeling along the glowing stitches.",
+    "round-one": "One fastener finished. Beautiful patient hands!",
+    "round-two": "Two fasteners finished. You are getting smoother!",
+    "round-three": "Three fasteners finished. You did the whole set!",
+    "mode-complete": "You earned a brand-new fastener patch!",
+    "all-complete": "Every patch is yours. You are a getting-dressed champion!",
+    "idle": "Touch the glowing fastener and follow the stitched path.",
+    "again": "Ready to practice that fastener again."
+  },
+  "modes": [
+    {
+      "id": "zipper",
+      "title": "Zipper",
+      "card": "./assets/cards/zipper.webp",
+      "board": "./assets/boards/zipper.webp",
+      "piece": "./assets/ui/zipper-pull.webp",
+      "patch": "./assets/patches/zipper.webp",
+      "accent": "#236fbc",
+      "startVoice": "zipper-start",
+      "nudgeVoice": "zipper-nudge",
+      "instruction": "Pull up",
+      "kind": "zipper"
+    },
+    {
+      "id": "button",
+      "title": "Button",
+      "card": "./assets/cards/button.webp",
+      "board": "./assets/boards/button.webp",
+      "piece": "./assets/ui/button.webp",
+      "patch": "./assets/patches/button.webp",
+      "accent": "#529442",
+      "startVoice": "button-start",
+      "nudgeVoice": "button-nudge",
+      "instruction": "Push through",
+      "kind": "button"
+    },
+    {
+      "id": "snap",
+      "title": "Snap",
+      "card": "./assets/cards/snap.webp",
+      "board": "./assets/boards/snap.webp",
+      "piece": "./assets/ui/snap-flap.webp",
+      "patch": "./assets/patches/snap.webp",
+      "accent": "#8c63c7",
+      "startVoice": "snap-start",
+      "nudgeVoice": "snap-nudge",
+      "instruction": "Slide together",
+      "kind": "snap"
+    },
+    {
+      "id": "velcro",
+      "title": "Hook & Loop",
+      "card": "./assets/cards/velcro.webp",
+      "board": "./assets/boards/velcro.webp",
+      "piece": "./assets/ui/velcro-tab.webp",
+      "patch": "./assets/patches/velcro.webp",
+      "accent": "#e67e2e",
+      "startVoice": "velcro-start",
+      "nudgeVoice": "velcro-nudge",
+      "instruction": "Peel away",
+      "kind": "velcro"
+    }
+  ]
+}
