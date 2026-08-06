@@ -223,7 +223,7 @@ Runtime uses the recorded clip first and Web Speech as a correct fallback.
 | `welcome` | “Welcome to Kindness Delivery. Choose a friend for your kindness note.” |
 | `choose-friend` | “Who would you like to make smile?” |
 | `fox-invite` | “Fox would love a bright picture. Make anything cheerful.” |
-| `bunny-invite` | “Bunny loves little surprises. Draw, stamp, and sticker a happy note.” |
+| `bunny-invite` | “Bunny loves little surprises. Draw a happy note, then add stamps and stickers.” |
 | `bear-invite` | “Bear could use a cozy smile. Make a gentle note just for Bear.” |
 | `add-mark` | “Add one little mark first. Every picture can carry kindness.” |
 | `stamp-sun` | “You make the day brighter.” |

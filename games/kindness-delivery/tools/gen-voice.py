@@ -35,7 +35,7 @@ def main():
     for k in keys:
         final=OUTPUT/f"{k}.m4a"; raw=RAW/f"{k}-seed{a.seed}.flac"
         if not a.force and final.exists() and duration(final)>.25: continue
-        if not (raw.exists() and raw.stat().st_size>1500) and not call(tts,[f"voice=@{REFERENCE}",f"text={LINES[k]}",f"seed={a.seed}"],raw,1500): continue
+        if (a.force or not (raw.exists() and raw.stat().st_size>1500)) and not call(tts,[f"voice=@{REFERENCE}",f"text={LINES[k]}",f"seed={a.seed}"],raw,1500): continue
         subprocess.run(["ffmpeg","-y","-loglevel","error","-i",str(raw),"-af","loudnorm=I=-18:TP=-2:LRA=9","-c:a","aac","-b:a","80k","-ar","24000","-ac","1","-movflags","+faststart",str(final)],check=True)
     qa_path=OUTPUT/"qa.json"; manifest_path=OUTPUT/"manifest.json"
     try: qa=json.loads(qa_path.read_text())
