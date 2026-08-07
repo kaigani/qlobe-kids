@@ -11,6 +11,7 @@ import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const mount = document.getElementById('game');
 const screens = createScreens({ root: mount, initial: 'splash', splash: 'splash' });
@@ -84,6 +85,15 @@ function preloadArt() {
 }
 
 function say(key) { return narrator.say(key, config.voice[key]); }
+// How long to hold before speaking the NEXT line after `key`, so it doesn't
+// cut `key`'s clip off mid-sentence — the single shared audio channel stops
+// whatever is playing the moment a new say() starts (voice-clips.js). Use the
+// recorded clip's real length (+ a small breath), not a guessed constant.
+function gapAfter(key, reducedMs = 180) {
+  if (state.reducedMotion) return reducedMs;
+  const dur = voice.duration(key);
+  return dur != null ? Math.round(dur * 1000) + 250 : 1400;
+}
 function currentRound() { return deck[state.round] || null; }
 function activeMode() { return config.modes.find((mode) => mode.id === state.mode); }
 function pairResult(colors) {
@@ -126,11 +136,34 @@ function renderSplash() {
     <a class="lab-icon splash-home" href="${homeHref()}" aria-label="Back to all games" data-target="home" style="background-image:url('${buttonArt('home')}')"></a>
     <header class="lab-title">${img(config.assets.title, config.title, 'lab-title-art')}</header>
     <p class="lab-kicker">Pick an experiment</p>
-    <div class="mode-grid" role="list" aria-label="Choose an experiment">
-      ${config.modes.map((mode) => `<button class="mode-card" type="button" role="listitem" data-mode="${mode.id}" data-target="mode-${mode.id}" aria-label="${mode.title}: ${mode.description}">
-        ${img(mode.art, '', 'mode-art')}<span>${mode.title}</span><small>${mode.description}</small></button>`).join('')}
-    </div>`;
-  screen.querySelectorAll('.mode-card').forEach((node) => node.addEventListener('click', () => startMode(node.dataset.mode)));
+    <div class="mode-grid" role="list" aria-label="Choose an experiment"></div>`;
+  // tapTarget() below already handles these via a plain target.click() —
+  // renderModeCards()'s cards fire their onPick on the native `click` event
+  // too (tap.js's keyboard/AT fallback path), so no debug-tap patch needed.
+  renderModeCards({
+    host: screen.querySelector('.mode-grid'),
+    modes: config.modes,
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-card's own 128x250px min already clears it).
+    cardClass: 'mode-card',
+    showTitle: false, // decorate() builds the title span + description small itself
+    art: () => null, // suppress modeCard()'s own auto <img class="qk-mode-art">
+                      // from the raw mode.art field — decorate() below builds
+                      // the real <img class="mode-art"> itself; without this
+                      // the two stack (doubling the picture, per loose-parts-collage).
+    label: (mode) => `${mode.title}: ${mode.description}`,
+    decorate(btn, mode) {
+      btn.insertAdjacentHTML('beforeend', img(mode.art, '', 'mode-art'));
+      const title = document.createElement('span');
+      title.textContent = mode.title;
+      btn.append(title);
+      const desc = document.createElement('small');
+      desc.textContent = mode.description;
+      btn.append(desc);
+    },
+    onPick: (id) => startMode(id),
+  });
 }
 
 function startMode(id) {
@@ -144,7 +177,7 @@ function startMode(id) {
   pendingWelcome = false;
   renderPlay();
   say(mode.voice);
-  timers.after(420, () => say(promptKey()));
+  timers.after(gapAfter(mode.voice), () => say(promptKey()));
 }
 
 function promptKey() {
@@ -185,6 +218,17 @@ function flaskMarkup(color) {
     ${img(isPoured ? config.emptyFlask : config.primary[color].flask, `${isPoured ? 'empty' : color} paint flask`, 'flask-art')}</button>`;
 }
 
+function beakerArt() {
+  // Once a color is in, keep showing IT (not 'empty') through the brief
+  // renderPlay() that fires right after the second pour too — reveal()/
+  // recipeRetry() take over the beaker-art src from there once the mix
+  // result is known; this is only ever seen for the "one color in, waiting
+  // on the second" moment.
+  if (state.result) return config.beakers[state.result];
+  if (state.poured.length) return config.beakers[state.poured[0]];
+  return config.beakers.empty;
+}
+
 function renderPlay() {
   const round = currentRound();
   if (!round) return renderEnd();
@@ -197,8 +241,9 @@ function renderPlay() {
   const content = document.createElement('div'); content.className = `lab-workbench phase-${state.phase}`;
   content.innerHTML = `${promptMarkup(round)}
     <div class="beaker-stage"><button class="beaker-slot" type="button" data-slot data-target="beaker" aria-label="Pour into the beaker" ${state.phase === 'predict' || state.busy ? 'disabled' : ''}>
-      ${img(config.beakers.empty, 'empty beaker', 'beaker-art')}<img class="swirl-art" alt="" hidden></button>
-      <div class="stream-layer" aria-hidden="true"></div><div class="mascot-reveal" aria-live="polite"></div></div>
+      ${img(beakerArt(), 'beaker', 'beaker-art')}<img class="swirl-art" alt="" hidden></button>
+      <div class="mascot-reveal" aria-live="polite"></div></div>
+    <div class="beaker-stage stream-anchor"><div class="stream-layer" aria-hidden="true"></div></div>
     <div class="flask-dock" aria-label="Paint flasks">${Object.keys(config.primary).map(flaskMarkup).join('')}</div>
     <div class="result-equation" aria-live="polite"></div>`;
   screen.append(content);
@@ -265,17 +310,31 @@ async function animatePour(color) {
   const screen = screens.el('play'); const flask = screen.querySelector(`.flask-${color}`);
   const stream = screen.querySelector('.stream-layer');
   if (!flask || !stream) return;
-  const beaker = screen.querySelector('.beaker-slot');
-  const from = flask.getBoundingClientRect(); const to = beaker?.getBoundingClientRect();
-  if (to) {
-    const dx = to.left + to.width * .52 - (from.left + from.width / 2);
-    const dy = to.top + to.height * .23 - (from.top + from.height / 2);
-    flask.style.transform = `translate(${Math.round(dx)}px, ${Math.round(dy)}px) rotate(-72deg)`;
-  }
+  const from = flask.getBoundingClientRect(); const to = stream.getBoundingClientRect();
+  // `.flask.is-pouring` rotates around its spout (72%, 12% of its own box,
+  // per that rule's transform-origin) — CSS applies the transform list
+  // right-to-left, so rotate() runs first (pivoting the flask in place) and
+  // translate() runs LAST, as a plain unrotated page-space shift on top of
+  // that. That means the spout (the pivot itself) ends up exactly at
+  // origin + (dx, dy), with no trig needed — landing it precisely where the
+  // pour-stream art (.stream-layer) actually starts. Values tuned visually
+  // with tools/pour-tuner.html.
+  const originX = from.left + from.width * 0.72;
+  const originY = from.top + from.height * 0.12;
+  const targetX = to.left + to.width * -0.15;
+  const targetY = to.top + to.height * 0.10;
+  const dx = targetX - originX;
+  const dy = targetY - originY;
+  flask.style.transform = `translate(${Math.round(dx)}px, ${Math.round(dy)}px) rotate(152deg)`;
   flask.classList.add('is-pouring');
+  // Let the bottle finish tipping into place (.flask.is-pouring's own 330ms
+  // transform transition, 180ms under reduced motion) before the liquid
+  // starts — pouring from a bottle that's still mid-swing reads as the
+  // stream floating in empty air.
+  await timers.wait(state.reducedMotion ? 90 : 330);
   stream.innerHTML = img(config.primary[color].stream, '', `pour-stream stream-${color}`);
   glug(); if (!state.muted) sfx.whoosh();
-  await timers.wait(state.reducedMotion ? 180 : 760);
+  await timers.wait(state.reducedMotion ? 90 : 430);
   flask.classList.remove('is-pouring'); flask.style.transform = ''; stream.replaceChildren();
 }
 
@@ -290,7 +349,7 @@ async function recipeRetry(made) {
   const screen = screens.el('play'); const beaker = screen.querySelector('.beaker-slot'); const mascot = screen.querySelector('.mascot-reveal');
   beaker.querySelector('.beaker-art').src = config.beakers[made.result];
   mascot.innerHTML = img(config.mascots[made.result], `${made.result} color friend`, 'retry-mascot');
-  say(`result-${made.result}`); await timers.wait(state.reducedMotion ? 180 : 1100); say(`nudge-${currentRound().id}`); await timers.wait(state.reducedMotion ? 180 : 1050);
+  say(`result-${made.result}`); await timers.wait(gapAfter(`result-${made.result}`)); say(`nudge-${currentRound().id}`); await timers.wait(gapAfter(`nudge-${currentRound().id}`));
   say('rinse'); state.poured = []; state.selected = null; state.result = null; state.phase = 'play'; state.busy = false; renderPlay();
 }
 
@@ -354,7 +413,7 @@ async function tapTarget(id) {
 }
 async function winRound() {
   if (state.phase === 'predict') await choosePrediction(currentRound().result);
-  const colors = state.mode === 'recipe' ? currentRound().colors : currentRound().colors;
+  const colors = currentRound().colors;
   for (const color of colors) { await pour(color); while (state.busy) await timers.wait(5); }
 }
 

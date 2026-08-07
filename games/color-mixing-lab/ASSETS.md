@@ -14,6 +14,7 @@ repository's shared analytics shim; art, audio, code, and fonts are all local.
 | `assets/ui/mode-{discover,predict,recipe}.webp` | Original coordinated `gpt-image-2` three-card contact sheet | precise background-only chroma edit, deterministic equal-cell crop, local matte, alpha QA, WebP | CC BY 4.0 |
 | `assets/flasks/{red,yellow,blue,empty}.webp` | Original coordinated `gpt-image-2` four-flask contact sheet | same inspected contact-sheet pipeline | CC BY 4.0 |
 | `assets/beakers/{empty,orange,green,purple}.webp` | Original coordinated `gpt-image-2` four-beaker contact sheet | same inspected contact-sheet pipeline | CC BY 4.0 |
+| `assets/beakers/{red,yellow,blue}.webp` | Follow-up local `qwen-image-edit` recolor of the accepted `orange.webp` master (liquid color only; same glass, tray, highlights) | local edit flattened to white, recolored per primary, then re-composited with `orange.webp`'s own accepted alpha mask (silhouette is unchanged by a liquid-color-only edit) and encoded WebP | CC BY 4.0 |
 | `assets/mascots/{orange,green,purple}.webp` | Original coordinated `gpt-image-2` droplet-friend contact sheet | same inspected contact-sheet pipeline | CC BY 4.0 |
 | `assets/effects/stream-{red,yellow,blue}.webp` | Original coordinated `gpt-image-2` pour-stream contact sheet | same inspected contact-sheet pipeline | CC BY 4.0 |
 | `assets/effects/swirl-{orange,green,purple}.webp` | Original coordinated `gpt-image-2` watercolor-vortex contact sheet | same inspected contact-sheet pipeline | CC BY 4.0 |

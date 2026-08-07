@@ -4,7 +4,7 @@ button { font: inherit; }
 #game, .color-screen { width: 100%; height: 100dvh; }
 .color-screen { position: relative; isolation: isolate; overflow: hidden; background-position: center; background-size: cover; }
 .color-screen::after { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(255,247,225,.08); pointer-events: none; }
-.lab-icon, .qk-hud-btn { width: 76px; height: 76px; min-width: 76px; min-height: 76px; border: 0; background-color: transparent; background-position: center; background-repeat: no-repeat; background-size: contain; cursor: pointer; filter: drop-shadow(0 3px 2px var(--shadow)); }
+.lab-icon { width: 96px; height: 96px; min-width: 96px; min-height: 96px; border: 0; background-color: transparent; background-position: center; background-repeat: no-repeat; background-size: contain; cursor: pointer; filter: drop-shadow(0 3px 2px var(--shadow)); }
 .splash-home { position: absolute; top: max(18px, env(safe-area-inset-top)); left: max(18px, env(safe-area-inset-left)); z-index: 2; }
 .lab-title { position: absolute; top: max(20px, env(safe-area-inset-top)); left: 50%; width: min(48vw, 500px); transform: translateX(-50%); text-align: center; }
 .lab-title-art { display: block; width: 100%; max-height: 25vh; object-fit: contain; }
@@ -23,21 +23,34 @@ button { font: inherit; }
 .lab-progress .qk-dot { width: 19px; height: 19px; border: 2px solid #755c35; border-radius: 50%; background: #fff6df; }
 .lab-progress .is-done, .lab-progress .is-now { background: #eeb34e; }
 .lab-workbench { position: relative; width: min(100%, 1180px); height: 100%; margin: auto; }
-.prompt-panel { position: absolute; z-index: 2; top: clamp(86px, 11vh, 120px); left: 50%; width: min(55vw, 560px); min-height: 94px; padding: 10px 20px; transform: translateX(-50%); box-sizing: border-box; border-radius: 24px; background: rgba(255,249,228,.81); box-shadow: 0 3px 11px var(--shadow); text-align: center; }
+.prompt-panel { position: absolute; z-index: 8; top: clamp(86px, 11vh, 120px); left: 50%; width: min(55vw, 560px); min-height: 94px; padding: 10px 20px; transform: translateX(-50%); box-sizing: border-box; border-radius: 24px; background: rgba(255,249,228,.81); box-shadow: 0 3px 11px var(--shadow); text-align: center; }
 .prompt-panel p { margin: 2px 0; font-size: clamp(17px, 1.7vw, 24px); line-height: 1.15; }
 .equation-pictures { display: flex; align-items: center; justify-content: center; gap: 9px; height: 60px; }
 .equation-pictures b, .result-equation b { font-size: 29px; }
 .prompt-flask { width: 52px; height: 58px; object-fit: contain; }
 .paint-question { width: 53px; height: 53px; display: grid; place-items: center; border-radius: 50%; color: #fff9e7; background: #7d5bb6; font-size: 37px; font-weight: 900; }
-.beaker-stage { position: absolute; z-index: 1; left: 50%; top: 45%; width: clamp(360px, 43vw, 540px); height: clamp(320px, 44vh, 470px); transform: translate(-50%, -35%); }
+/* `transform` alone (its own translate/centering here) makes an element an
+   isolating stacking context regardless of z-index — dropping the z-index
+   here previously did NOT stop the beaker body and the stream from being
+   fused into one shared paint layer, since the transform still isolated them
+   together. The stream now lives in its own `.stream-anchor` copy of this
+   same box (js/main.js renders it as a separate sibling, not nested inside
+   this one), so it can out-stack .flask-dock on its own instead of being
+   trapped at whatever level the beaker body paints at. */
+.beaker-stage { position: absolute; left: 50%; top: 45%; width: clamp(360px, 43vw, 540px); height: clamp(320px, 44vh, 470px); transform: translate(-50%, -35%); }
+/* Same box as .beaker-stage, holding only the pour-stream — kept clickthrough
+   so it never steals taps/drags meant for the real .beaker-slot underneath. */
+.stream-anchor { z-index: 7; pointer-events: none; }
 .beaker-slot { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; touch-action: none; }
 .beaker-slot:focus-visible { outline: 5px solid #6040a5; outline-offset: -3px; border-radius: 40%; }
 .beaker-slot.is-ready::after { content: ""; position: absolute; inset: 12%; border-radius: 46%; box-shadow: 0 0 0 8px rgba(244,190,77,.7), 0 0 34px 14px rgba(251,232,119,.72); animation: pulse 750ms infinite alternate; }
 .beaker-art, .swirl-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .swirl-art:not([hidden]) { animation: swirl 650ms linear; }
-.stream-layer { position: absolute; z-index: 3; left: 50%; top: -4%; width: 86px; height: 270px; transform: translateX(-50%); pointer-events: none; }
+/* Bottom to top: beaker (no z-index, above), bottle (.flask-dock, z:4), pour
+   liquid (here, z:7). */
+.stream-layer { position: absolute; z-index: 7; left: 50%; top: -4%; width: 86px; height: 270px; transform: translateX(-50%); pointer-events: none; }
 .pour-stream { width: 100%; height: 100%; object-fit: fill; transform-origin: top center; animation: stream-in 430ms ease both; }
-.mascot-reveal { position: absolute; z-index: 4; bottom: 20%; left: 50%; width: clamp(128px, 18vw, 220px); transform: translateX(-50%); pointer-events: none; }
+.mascot-reveal { position: absolute; bottom: 20%; left: 50%; width: clamp(128px, 18vw, 220px); transform: translateX(-50%); pointer-events: none; }
 .result-mascot, .retry-mascot { display: block; width: 100%; animation: mascot-pop 540ms cubic-bezier(.16,1.35,.33,1); }
 .flask-dock { position: absolute; z-index: 4; right: 5%; bottom: 2.5%; left: 5%; display: flex; align-items: flex-end; justify-content: center; gap: clamp(20px, 9vw, 180px); }
 .flask-dock.is-revealed { opacity: .42; transform: translateY(24px) scale(.9); transition: opacity 300ms ease, transform 300ms ease; }

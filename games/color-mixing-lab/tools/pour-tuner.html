@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pour position tuner — Color Mixing Lab (dev tool, not shipped)</title>
+<link rel="stylesheet" href="../../../shared/css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Tool-only chrome. Everything else (.color-screen, .beaker-stage, .flask,
+     .flask-dock, .stream-layer, .pour-stream) is the real game CSS, unmodified,
+     so what you tune here matches real gameplay pixel-for-pixel. */
+  html, body { overflow: auto; }
+  #game { height: 100vh; }
+  .panel {
+    position: fixed; top: 0; right: 0; width: 340px; height: 100vh; overflow-y: auto;
+    background: #1c1c22; color: #eee; font: 13px/1.4 -apple-system, system-ui, sans-serif;
+    padding: 16px; box-sizing: border-box; z-index: 100; box-shadow: -4px 0 20px rgba(0,0,0,.4);
+  }
+  .panel h1 { font-size: 15px; margin: 0 0 4px; }
+  .panel p.hint { color: #999; margin: 0 0 16px; }
+  .panel label { display: block; margin: 12px 0 4px; color: #bbb; }
+  .panel label b { color: #fff; }
+  .panel input[type=range] { width: 100%; }
+  .panel .row { display: flex; gap: 8px; }
+  .panel .row button { flex: 1; }
+  .swatches { display: flex; gap: 6px; margin-bottom: 4px; }
+  .swatches button {
+    flex: 1; padding: 8px 4px; border-radius: 8px; border: 2px solid transparent;
+    background: #333; color: #fff; cursor: pointer; font-weight: 600;
+  }
+  .swatches button.active { border-color: #fff; }
+  .swatches button[data-color=red] { background: #b33; }
+  .swatches button[data-color=yellow] { background: #a90; }
+  .swatches button[data-color=blue] { background: #35a; }
+  .num { font-variant-numeric: tabular-nums; color: #7fd; }
+  pre#code {
+    background: #000; color: #9f9; padding: 10px; border-radius: 8px; font-size: 11.5px;
+    white-space: pre-wrap; word-break: break-word; max-height: 220px; overflow-y: auto;
+  }
+  button.copy, button.reset {
+    margin-top: 8px; padding: 8px 10px; border-radius: 8px; border: 0;
+    background: #446; color: #fff; cursor: pointer; font-weight: 600;
+  }
+  button.copy:hover, button.reset:hover { background: #557; }
+  .marker {
+    position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px;
+    border-radius: 50%; background: rgba(255,80,80,.85); border: 2px solid #fff;
+    cursor: grab; z-index: 50; box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  }
+  .marker.target { background: rgba(80,160,255,.85); }
+  .marker:active { cursor: grabbing; }
+  .marker::after {
+    content: attr(data-label); position: absolute; top: 26px; left: 50%; transform: translateX(-50%);
+    font: 700 11px system-ui; color: #fff; background: rgba(0,0,0,.6); padding: 2px 6px;
+    border-radius: 5px; white-space: nowrap;
+  }
+  .preview-flask {
+    /* z-index: 4 matches .flask-dock's real stacking level — same tier the
+       shipped bottle paints at, so what you see here (bottle under the
+       stream, over the beaker) is the true in-game layering, not just
+       whatever reads clearest while dragging. It stays draggable under the
+       stream because .stream-anchor is pointer-events:none, same as prod. */
+    position: absolute; padding: 0; border: 0; background: none; cursor: grab;
+    width: clamp(128px, 15vw, 190px); height: clamp(128px, 15vw, 190px); z-index: 4;
+    opacity: .95; filter: drop-shadow(0 0 0 #000) drop-shadow(0 4px 10px rgba(0,0,0,.5));
+  }
+  .preview-flask:active { cursor: grabbing; }
+  .preview-flask img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .preview-flask.dragging { outline: 3px dashed #fff; outline-offset: 4px; }
+</style>
+</head>
+<body>
+  <main id="game" aria-label="Pour position tuner">
+    <section class="color-screen" id="stage">
+      <div class="lab-workbench phase-play" id="workbench">
+        <div class="beaker-stage" id="beakerStage">
+          <button class="beaker-slot" type="button" tabindex="-1">
+            <img class="beaker-art" id="beakerArt" src="../assets/beakers/empty.webp" alt="">
+          </button>
+          <div class="mascot-reveal"></div>
+        </div>
+        <div class="flask-dock" id="flaskDock">
+          <button class="flask flask-red" type="button" tabindex="-1"><img class="flask-art" src="../assets/flasks/red.webp" alt=""></button>
+          <button class="flask flask-yellow" type="button" tabindex="-1"><img class="flask-art" src="../assets/flasks/yellow.webp" alt=""></button>
+          <button class="flask flask-blue" type="button" tabindex="-1"><img class="flask-art" src="../assets/flasks/blue.webp" alt=""></button>
+        </div>
+        <!-- Same structure as the shipped game: the stream lives in its own
+             .stream-anchor sibling (not nested in .beaker-stage) so it can
+             out-stack .flask-dock. Real layering, bottom to top: beaker,
+             bottle, pour liquid. -->
+        <div class="beaker-stage stream-anchor">
+          <div class="stream-layer" id="streamLayer">
+            <img class="pour-stream" id="streamImg" src="../assets/effects/stream-red.webp" alt="" style="animation:none">
+          </div>
+        </div>
+      </div>
+      <button class="preview-flask" id="previewFlask" type="button" aria-label="Drag me">
+        <img id="previewImg" src="../assets/flasks/red.webp" alt="">
+      </button>
+      <div class="marker" id="originMarker" data-label="spout (origin)"></div>
+      <div class="marker target" id="targetMarker" data-label="target"></div>
+    </section>
+  </main>
+
+  <div class="panel">
+    <h1>Pour position tuner</h1>
+    <p class="hint">Layering here matches the shipped game: beaker, then bottle, then pour liquid on top. Drag the <b>bottle</b> to where it should sit. Drag the <b style="color:#f88">red dot</b> to mark the spout on the artwork. Drag the <b style="color:#8bf">blue dot</b> to mark where the stream should start from. Adjust rotation with the slider. Numbers below update live — click Copy and paste the result to me when it looks right.</p>
+
+    <div class="swatches">
+      <button data-color="red" class="active">red</button>
+      <button data-color="yellow">yellow</button>
+      <button data-color="blue">blue</button>
+    </div>
+
+    <label>Rotation: <span class="num" id="rotVal">-72</span>&deg;
+      <input type="range" id="rot" min="-180" max="180" value="-72" step="1">
+    </label>
+
+    <label>Spout origin (on flask art): <span class="num" id="originVal">72%, 12%</span></label>
+    <label>Target (on stream art): <span class="num" id="targetVal">50%, 0%</span></label>
+    <label>Resulting dx, dy: <span class="num" id="dxdyVal">0, 0</span> px</label>
+
+    <div class="row">
+      <button class="reset" id="resetBtn">Reset to current code</button>
+    </div>
+
+    <label style="margin-top:16px">Paste this into <code>animatePour()</code>:</label>
+    <pre id="code"></pre>
+    <button class="copy" id="copyBtn">Copy code</button>
+  </div>
+
+<script>
+const DEFAULTS = { originXFrac: .72, originYFrac: .12, targetXFrac: .5, targetYFrac: 0, rotation: -72 };
+let state = { ...DEFAULTS, color: 'red' };
+
+const stage = document.getElementById('stage');
+const flaskDock = document.getElementById('flaskDock');
+const streamLayer = document.getElementById('streamLayer');
+const streamImg = document.getElementById('streamImg');
+const beakerArt = document.getElementById('beakerArt');
+const previewFlask = document.getElementById('previewFlask');
+const previewImg = document.getElementById('previewImg');
+const originMarker = document.getElementById('originMarker');
+const targetMarker = document.getElementById('targetMarker');
+
+function restFlaskEl() { return flaskDock.querySelector(`.flask-${state.color}`); }
+
+function stageRect() { return stage.getBoundingClientRect(); }
+function toStage(pageX, pageY) { const r = stageRect(); return { x: pageX - r.left, y: pageY - r.top }; }
+
+function layout() {
+  const flask = restFlaskEl();
+  const restRect = flask.getBoundingClientRect();
+  const streamRect = streamLayer.getBoundingClientRect();
+  const s = stageRect();
+
+  const originPageX = restRect.left + restRect.width * state.originXFrac;
+  const originPageY = restRect.top + restRect.height * state.originYFrac;
+  const targetPageX = streamRect.left + streamRect.width * state.targetXFrac;
+  const targetPageY = streamRect.top + streamRect.height * state.targetYFrac;
+  const dx = targetPageX - originPageX;
+  const dy = targetPageY - originPageY;
+
+  // preview flask: same box as the rest flask, shifted by (dx,dy), rotated
+  // around the tuned origin — exactly what the shipped translate()-then-
+  // rotate() transform produces (translate is the outer/last function, so
+  // it's a plain page-space shift; rotate pivots around transform-origin).
+  previewFlask.style.left = (restRect.left - s.left + dx) + 'px';
+  previewFlask.style.top = (restRect.top - s.top + dy) + 'px';
+  previewFlask.style.width = restRect.width + 'px';
+  previewFlask.style.height = restRect.height + 'px';
+  previewFlask.style.transformOrigin = `${state.originXFrac * 100}% ${state.originYFrac * 100}%`;
+  previewFlask.style.transform = `rotate(${state.rotation}deg)`;
+  previewImg.src = `../assets/flasks/${state.color}.webp`;
+  streamImg.src = `../assets/effects/stream-${state.color}.webp`;
+
+  const originStage = toStage(originPageX, originPageY);
+  originMarker.style.left = originStage.x + 'px';
+  originMarker.style.top = originStage.y + 'px';
+  const targetStage = toStage(targetPageX, targetPageY);
+  targetMarker.style.left = targetStage.x + 'px';
+  targetMarker.style.top = targetStage.y + 'px';
+
+  document.getElementById('rotVal').textContent = state.rotation;
+  document.getElementById('originVal').textContent = `${Math.round(state.originXFrac * 100)}%, ${Math.round(state.originYFrac * 100)}%`;
+  document.getElementById('targetVal').textContent = `${Math.round(state.targetXFrac * 100)}%, ${Math.round(state.targetYFrac * 100)}%`;
+  document.getElementById('dxdyVal').textContent = `${Math.round(dx)}, ${Math.round(dy)}`;
+
+  document.getElementById('code').textContent =
+`const originX = from.left + from.width * ${state.originXFrac.toFixed(2)};
+const originY = from.top + from.height * ${state.originYFrac.toFixed(2)};
+const targetX = to.left + to.width * ${state.targetXFrac.toFixed(2)};
+const targetY = to.top + to.height * ${state.targetYFrac.toFixed(2)};
+const dx = targetX - originX;
+const dy = targetY - originY;
+flask.style.transform = \`translate(\${Math.round(dx)}px, \${Math.round(dy)}px) rotate(${state.rotation}deg)\`;
+
+/* if the origin moved from 72%/12%, also update in css/style.css: */
+.flask.is-pouring { transform-origin: ${(state.originXFrac * 100).toFixed(0)}% ${(state.originYFrac * 100).toFixed(0)}%; }`;
+}
+
+function dragMarker(el, onMove) {
+  el.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    el.setPointerCapture(e.pointerId);
+    const move = (ev) => onMove(ev.clientX, ev.clientY);
+    const up = () => {
+      el.releasePointerCapture(e.pointerId);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  });
+}
+
+dragMarker(originMarker, (clientX, clientY) => {
+  const flask = restFlaskEl();
+  const r = flask.getBoundingClientRect();
+  state.originXFrac = (clientX - r.left) / r.width;
+  state.originYFrac = (clientY - r.top) / r.height;
+  layout();
+});
+
+dragMarker(targetMarker, (clientX, clientY) => {
+  const r = streamLayer.getBoundingClientRect();
+  state.targetXFrac = (clientX - r.left) / r.width;
+  state.targetYFrac = (clientY - r.top) / r.height;
+  layout();
+});
+
+dragMarker(previewFlask, (clientX, clientY) => {
+  previewFlask.classList.add('dragging');
+  // Solve backwards for the target fraction that puts the spout under the cursor.
+  const flask = restFlaskEl();
+  const r = flask.getBoundingClientRect();
+  const streamRect = streamLayer.getBoundingClientRect();
+  const originPageX = r.left + r.width * state.originXFrac;
+  const originPageY = r.top + r.height * state.originYFrac;
+  // cursor marks where the spout should be (drag grabs anywhere on the bottle;
+  // keep it simple and snap the spout to the cursor position).
+  state.targetXFrac = (clientX - streamRect.left) / streamRect.width;
+  state.targetYFrac = (clientY - streamRect.top) / streamRect.height;
+  layout();
+});
+previewFlask.addEventListener('pointerup', () => previewFlask.classList.remove('dragging'));
+
+document.getElementById('rot').addEventListener('input', (e) => {
+  state.rotation = Number(e.target.value);
+  layout();
+});
+
+document.querySelectorAll('.swatches button').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.swatches button').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.color = btn.dataset.color;
+    layout();
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  state = { ...DEFAULTS, color: state.color };
+  document.getElementById('rot').value = state.rotation;
+  layout();
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('code').textContent);
+  const btn = document.getElementById('copyBtn');
+  const old = btn.textContent; btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = old; }, 1200);
+});
+
+document.getElementById('rot').value = state.rotation;
+
+window.addEventListener('resize', layout);
+window.addEventListener('load', layout);
+// images loading can change layout slightly; relayout once they're in.
+Promise.all([...document.images].map((img) => img.decode?.().catch(() => {}))).then(layout);
+layout();
+</script>
+</body>
+</html>
