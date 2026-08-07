@@ -1,0 +1,50 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "throwing-target-garden-hub-seed2026",
+  "kind": "image",
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table"
+  },
+  "subject": "A handcrafted teal felt target-garden toy diorama that fills the frame: one oversized cream rope landing basket in the foreground, one upright rainbow felt bullseye garden sign behind it, and three clearly separated stitched red, yellow, and blue beanbags resting safely on the grass as colorful choices. Smiling felt flowers and leafy stitched bushes frame the sides. Tactile wool fibers, visible blanket stitching, cozy handmade preschool toss-and-match game identity. Objects only, no tablet, no screen, no hands, no child, no flying object, no projectile, no impact, no UI.",
+  "candidate": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed2026.png",
+  "candidateSha256": "9d986525fb8fb72790e58e28cbfaeff5e55caf540e8f7d12426aa09c6eeb388f",
+  "installed": "assets/hub/tiles/throwing-target-garden.jpg",
+  "installedSha256": "bbb40259bf829e6c175a36edf48c04beb2f39f21f744557fb0426eff9a27908a",
+  "status": "installed",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A handcrafted teal felt target-garden toy diorama that fills the frame: one oversized cream rope landing basket in the foreground, one upright rainbow felt bullseye garden sign behind it, and three clearly separated stitched red, yellow, and blue beanbags resting safely on the grass as colorful choices. Smiling felt flowers and leafy stitched bushes frame the sides. Tactile wool fibers, visible blanket stitching, cozy handmade preschool toss-and-match game identity. Objects only, no tablet, no screen, no hands, no child, no flying object, no projectile, no impact, no UI. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 2026,
+      "width": 768,
+      "height": 640,
+      "output": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed2026.png"
+    },
+    {
+      "op": "finalize",
+      "from": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed2026.png",
+      "output": "assets/hub/tiles/throwing-target-garden.jpg",
+      "resize": "640x533-cover",
+      "encode": "jpeg-q90-progressive"
+    }
+  ],
+  "refs": {},
+  "qa": {
+    "status": "accepted",
+    "gate": "unanimous",
+    "scores": [
+      9.4,
+      9.7,
+      9.3
+    ],
+    "minimumScore": 9.3,
+    "reviewContext": "Original-resolution hub review: felt-runtime identity, target/basket/three-choice recognition, child appeal, crop safety, and no unsafe projectile implication.",
+    "reviewed": "2026-08-06"
+  },
+  "license": "CC-BY-4.0",
+  "created": "2026-08-06",
+  "review": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed2026.review.json",
+  "reviewSha256": "78335b06255abd14c59710525e49b3b77a5e4bf5328eb5a5631c66e3914efd8f"
+}

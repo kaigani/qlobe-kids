@@ -9,29 +9,8 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-06T20:19:07.556Z",
+  "generated": "2026-08-07T03:20:13.210Z",
   "engines": {
-    "coach-timer": {
-      "count": 16,
-      "games": [
-        "animal-walk-cards",
-        "balance-beam-trail",
-        "cleanup-timer-quest",
-        "line-walking-challenge",
-        "local-nature-guide",
-        "melting-race",
-        "nature-scavenger-hunt",
-        "neighborhood-map-walk",
-        "obstacle-course-builder",
-        "plant-care-captain",
-        "pouring-station",
-        "shelf-reset-game",
-        "sweep-the-trail",
-        "throwing-target-garden",
-        "trail-counting-walk",
-        "waiting-muscle-game"
-      ]
-    },
     "choose-one": {
       "count": 15,
       "games": [
@@ -50,6 +29,26 @@
         "sound-hopscotch",
         "story-repair-shop",
         "tiny-reader-theater"
+      ]
+    },
+    "coach-timer": {
+      "count": 15,
+      "games": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "cleanup-timer-quest",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "melting-race",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "obstacle-course-builder",
+        "plant-care-captain",
+        "pouring-station",
+        "shelf-reset-game",
+        "sweep-the-trail",
+        "trail-counting-walk",
+        "waiting-muscle-game"
       ]
     },
     "build-assemble": {
@@ -2014,15 +2013,22 @@
       "packs": []
     },
     "throwing-target-garden": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/camera-throw.js",
+        "shared/js/debug-harness.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "assets": [],
       "packs": []
@@ -2265,7 +2271,6 @@
         "teen-bead-builder",
         "texture-trail",
         "then-now-sort",
-        "throwing-target-garden",
         "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -2305,6 +2310,7 @@
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
+        "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2313,6 +2319,9 @@
       ],
       "shared/js/camera-motion.js": [
         "freeze-focus-dance"
+      ],
+      "shared/js/camera-throw.js": [
+        "throwing-target-garden"
       ],
       "shared/js/celebrate.js": [
         "button-zipper-lab",
@@ -2389,6 +2398,7 @@
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
+        "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2438,7 +2448,6 @@
         "pouring-station",
         "shelf-reset-game",
         "sweep-the-trail",
-        "throwing-target-garden",
         "trail-counting-walk",
         "waiting-muscle-game"
       ],
@@ -2562,6 +2571,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
+        "throwing-target-garden",
         "weather-scientist"
       ],
       "shared/js/paper-globe.js": [
@@ -2577,7 +2587,8 @@
         "clay-creature-studio",
         "emotion-voice-game",
         "freeze-focus-dance",
-        "kindness-delivery"
+        "kindness-delivery",
+        "throwing-target-garden"
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
@@ -2600,6 +2611,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "teen-bead-builder",
+        "throwing-target-garden",
         "world-music-dance"
       ],
       "shared/js/screens.js": [
@@ -2610,7 +2622,8 @@
         "freeze-focus-dance",
         "kindness-delivery",
         "land-water-tray",
-        "snack-chef"
+        "snack-chef",
+        "throwing-target-garden"
       ],
       "shared/js/sfx": [
         "sound-sprouts"
@@ -2812,7 +2825,6 @@
         "teen-bead-builder",
         "texture-trail",
         "then-now-sort",
-        "throwing-target-garden",
         "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -2918,6 +2930,7 @@
         "sound-sprouts",
         "tangram-tales",
         "teen-bead-builder",
+        "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2937,6 +2950,7 @@
         "puppet-retell",
         "red-green-light",
         "teen-bead-builder",
+        "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2974,6 +2988,7 @@
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
+        "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
       ],

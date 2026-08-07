@@ -1,0 +1,322 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>camera-throw tests</title>
+<pre id="out">running…</pre>
+<script type="module">
+  import {
+    classifyThrowColor,
+    createCameraThrow,
+    createThrowDetector,
+    findLargestColorBlob,
+    mapCameraX,
+    rgbToHsv,
+  } from './camera-throw.js';
+
+  const failures = [];
+  const lines = [];
+  const test = (name, fn) => Promise.resolve().then(fn).then(() => lines.push(`ok ${name}`), (error) => {
+    failures.push(`${name}: ${error?.message || error}`);
+    lines.push(`FAIL ${name}`);
+  });
+  const assert = (value, message = 'assertion failed') => { if (!value) throw new Error(message); };
+  const near = (a, b, epsilon = .04) => Math.abs(a - b) <= epsilon;
+  const frame = (w, h, boxes = []) => {
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let i = 3; i < data.length; i += 4) data[i] = 255;
+    for (const { x, y, width, height, rgb } of boxes) {
+      for (let py = y; py < y + height; py += 1) for (let px = x; px < x + width; px += 1) {
+        const i = (py * w + px) * 4;
+        data[i] = rgb[0]; data[i + 1] = rgb[1]; data[i + 2] = rgb[2];
+      }
+    }
+    return data;
+  };
+  const mockTrack = () => {
+    const listeners = new Map();
+    return {
+      stopped: 0,
+      stop() { this.stopped += 1; },
+      addEventListener(type, listener) { listeners.set(type, listener); },
+      removeEventListener(type, listener) {
+        if (listeners.get(type) === listener) listeners.delete(type);
+      },
+      emit(type) { listeners.get(type)?.(); },
+    };
+  };
+  const mockVideo = (readyState = 0) => ({
+    readyState,
+    videoWidth: 320,
+    videoHeight: 240,
+    srcObject: null,
+    setAttribute() {},
+    play() {},
+    pause() {},
+  });
+  const deferred = () => {
+    let resolve;
+    let reject;
+    const promise = new Promise((onResolve, onReject) => {
+      resolve = onResolve;
+      reject = onReject;
+    });
+    return { promise, resolve, reject };
+  };
+  const waitUntil = async (predicate, message) => {
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      if (predicate()) return;
+      await Promise.resolve();
+    }
+    assert(predicate(), message);
+  };
+  const cameraWithStream = async ({ track = mockTrack(), video = mockVideo(), context = {}, ...options } = {}) => {
+    const stream = { getTracks: () => [track] };
+    const camera = createCameraThrow({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.resolve(stream) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => context }),
+      raf: () => 1,
+      caf: () => {},
+      ...options,
+    });
+    const result = await camera.request();
+    assert(result.state === 'live', `state=${result.state}`);
+    return { camera, stream, track, video };
+  };
+
+  await test('RGB to HSV and conservative color bands', () => {
+    assert(rgbToHsv(255, 0, 0).h === 0, 'red hue');
+    assert(classifyThrowColor(235, 34, 38) === 'red', 'classifies red');
+    assert(classifyThrowColor(245, 205, 28) === 'yellow', 'classifies yellow');
+    assert(classifyThrowColor(30, 104, 224) === 'blue', 'classifies blue');
+    assert(classifyThrowColor(150, 145, 145) === null, 'rejects grey');
+    assert(classifyThrowColor(40, 210, 90) === null, 'rejects green');
+  });
+
+  await test('largest connected component reports normalized centroid', () => {
+    const data = frame(40, 30, [
+      { x: 2, y: 3, width: 2, height: 2, rgb: [240, 20, 25] },
+      { x: 24, y: 10, width: 8, height: 6, rgb: [240, 25, 35] },
+    ]);
+    const blob = findLargestColorBlob(data, 40, 30, { minFraction: .001 });
+    assert(blob?.color === 'red', 'red component');
+    assert(near(blob.x, 28 / 40), `x=${blob?.x}`);
+    assert(near(blob.y, 13 / 30), `y=${blob?.y}`);
+    assert(blob.area > .035, 'area');
+  });
+
+  await test('tiny noise and full-frame color washes are rejected', () => {
+    assert(findLargestColorBlob(frame(40, 30, [
+      { x: 3, y: 3, width: 1, height: 1, rgb: [250, 10, 10] },
+    ]), 40, 30) === null, 'tiny noise');
+    assert(findLargestColorBlob(frame(40, 30, [
+      { x: 0, y: 0, width: 40, height: 30, rgb: [20, 80, 230] },
+    ]), 40, 30) === null, 'wash');
+  });
+
+  await test('mirror mapping is exact and reversible', () => {
+    assert(mapCameraX(.2, true) === .8, 'mirrored');
+    assert(mapCameraX(.2, false) === .2, 'unmirrored');
+  });
+
+  await test('stationary color never emits a throw', () => {
+    const detector = createThrowDetector();
+    for (let i = 0; i < 8; i += 1) {
+      const hit = detector.push({ x: .4, y: .4, area: .015, color: 'red', confidence: .9 }, i * 80);
+      assert(hit === null, 'stationary event');
+    }
+  });
+
+  await test('moving, growing, descending blob emits one semantic throw', () => {
+    const detector = createThrowDetector({ cooldownMs: 800 });
+    const samples = [
+      { x: .22, y: .28, area: .004 },
+      { x: .30, y: .34, area: .006 },
+      { x: .40, y: .44, area: .009 },
+      { x: .52, y: .58, area: .014 },
+    ];
+    const hits = samples.map((sample, i) => detector.push({ ...sample, color: 'blue', confidence: .9 }, i * 80)).filter(Boolean);
+    assert(hits.length === 1, `hits=${hits.length}`);
+    assert(hits[0].color === 'blue', 'color');
+    assert(hits[0].reason === 'approach', 'reason');
+  });
+
+  await test('cooldown prevents a double score', () => {
+    const detector = createThrowDetector({ cooldownMs: 900, minSpeed: .2, minApproachArea: .002 });
+    const gesture = (start) => [
+      detector.push({ x: .2, y: .2, area: .003, color: 'yellow', confidence: .9 }, start),
+      detector.push({ x: .3, y: .3, area: .005, color: 'yellow', confidence: .9 }, start + 70),
+      detector.push({ x: .45, y: .5, area: .010, color: 'yellow', confidence: .9 }, start + 140),
+    ].filter(Boolean);
+    assert(gesture(0).length === 1, 'first throw');
+    assert(gesture(250).length === 0, 'cooldown');
+    assert(gesture(1200).length === 1, 'later throw');
+  });
+
+  await test('camera denial is reported without throwing', async () => {
+    const error = new Error('no'); error.name = 'NotAllowedError';
+    const camera = createCameraThrow({
+      video: { setAttribute() {}, play() {}, pause() {}, readyState: 0 },
+      mediaDevices: { getUserMedia: () => Promise.reject(error) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+    });
+    const result = await camera.request();
+    assert(result.state === 'denied', `state=${result.state}`);
+    camera.destroy();
+  });
+
+  await test('late grant after stop is immediately released', async () => {
+    let resolveGrant;
+    let stopped = 0;
+    const source = new Promise((resolve) => { resolveGrant = resolve; });
+    const camera = createCameraThrow({
+      video: { setAttribute() {}, play() {}, pause() {}, readyState: 0 },
+      mediaDevices: { getUserMedia: () => source },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      requestTimeoutMs: 1000,
+    });
+    const pending = camera.request();
+    camera.stop('test-navigation');
+    resolveGrant({ getTracks: () => [{ stop: () => { stopped += 1; } }] });
+    await pending;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert(stopped === 1, `stopped=${stopped}`);
+    camera.destroy();
+  });
+
+  await test('permission timeout releases a later real stream grant', async () => {
+    let resolveGrant;
+    const track = mockTrack();
+    const source = new Promise((resolve) => { resolveGrant = resolve; });
+    const camera = createCameraThrow({
+      video: mockVideo(),
+      mediaDevices: { getUserMedia: () => source },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      requestTimeoutMs: 1000,
+    });
+    const result = await camera.request();
+    assert(result.state === 'unavailable' && result.reason === 'permission-timeout', JSON.stringify(result));
+    resolveGrant({ getTracks: () => [track] });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    camera.destroy();
+  });
+
+  await test('hidden document stops every active camera track', async () => {
+    const { camera, track, video } = await cameraWithStream();
+    const ownVisibility = Object.getOwnPropertyDescriptor(document, 'visibilityState');
+    try {
+      Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+      document.dispatchEvent(new Event('visibilitychange'));
+    } finally {
+      if (ownVisibility) Object.defineProperty(document, 'visibilityState', ownVisibility);
+      else delete document.visibilityState;
+    }
+    const result = camera.snapshot();
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    assert(video.srcObject === null, 'video retained stream');
+    assert(result.state === 'stopped' && result.reason === 'hidden', JSON.stringify(result));
+    camera.destroy();
+  });
+
+  await test('pagehide stops every active camera track', async () => {
+    const { camera, track } = await cameraWithStream();
+    globalThis.dispatchEvent(new Event('pagehide'));
+    const result = camera.snapshot();
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    assert(result.state === 'stopped' && result.reason === 'pagehide', JSON.stringify(result));
+    camera.destroy();
+  });
+
+  await test('ended media track releases the stream and reports ended', async () => {
+    const { camera, track, video } = await cameraWithStream();
+    track.emit('ended');
+    const result = camera.snapshot();
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    assert(video.srcObject === null, 'video retained ended stream');
+    assert(result.state === 'ended' && result.reason === 'stream-ended', JSON.stringify(result));
+    camera.destroy();
+  });
+
+  await test('ended track cannot become live after a deferred video play', async () => {
+    const track = mockTrack();
+    const stream = { getTracks: () => [track] };
+    const playGate = deferred();
+    const video = { ...mockVideo(), play: () => playGate.promise };
+    let rafCalls = 0;
+    const camera = createCameraThrow({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.resolve(stream) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      raf: () => { rafCalls += 1; return rafCalls; },
+      caf: () => {},
+    });
+    const pending = camera.request();
+    await waitUntil(() => video.srcObject === stream, 'stream was not attached before play');
+    track.emit('ended');
+    assert(camera.snapshot().state === 'ended', JSON.stringify(camera.snapshot()));
+    assert(video.srcObject === null, 'ended stream remained attached');
+    playGate.resolve();
+    const result = await pending;
+    assert(result.state === 'ended' && result.reason === 'stream-ended', JSON.stringify(result));
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    assert(rafCalls === 0, `rafCalls=${rafCalls}`);
+    camera.destroy();
+  });
+
+  await test('stale deferred play cannot release a newer camera stream', async () => {
+    const firstTrack = mockTrack();
+    const secondTrack = mockTrack();
+    const firstStream = { getTracks: () => [firstTrack] };
+    const secondStream = { getTracks: () => [secondTrack] };
+    const firstPlay = deferred();
+    const secondPlay = deferred();
+    const video = mockVideo();
+    video.play = () => {
+      if (video.srcObject === firstStream) return firstPlay.promise;
+      if (video.srcObject === secondStream) return secondPlay.promise;
+      throw new Error('play called without a known stream');
+    };
+    const streams = [firstStream, secondStream];
+    const camera = createCameraThrow({
+      video,
+      mediaDevices: { getUserMedia: () => Promise.resolve(streams.shift()) },
+      canvasFactory: () => ({ width: 0, height: 0, getContext: () => ({}) }),
+      raf: () => 1,
+      caf: () => {},
+    });
+    const firstRequest = camera.request();
+    await waitUntil(() => video.srcObject === firstStream, 'first stream was not attached');
+    const secondRequest = camera.request();
+    await waitUntil(() => video.srcObject === secondStream, 'second stream was not attached');
+    firstPlay.resolve();
+    await firstRequest;
+    assert(video.srcObject === secondStream, 'stale completion detached the second stream');
+    assert(firstTrack.stopped === 1, `first stopped=${firstTrack.stopped}`);
+    assert(secondTrack.stopped === 0, `second stopped=${secondTrack.stopped}`);
+    assert(camera.snapshot().state === 'requesting', JSON.stringify(camera.snapshot()));
+    secondPlay.resolve();
+    const result = await secondRequest;
+    assert(result.state === 'live', JSON.stringify(result));
+    assert(video.srcObject === secondStream, 'live stream was detached');
+    assert(secondTrack.stopped === 0, `second stopped=${secondTrack.stopped}`);
+    camera.destroy();
+    assert(secondTrack.stopped === 1, `destroy stopped=${secondTrack.stopped}`);
+  });
+
+  await test('frame read failure releases the stream and fails closed', async () => {
+    const context = {
+      drawImage() {},
+      getImageData() { throw new Error('injected frame read failure'); },
+    };
+    const { camera, track, video } = await cameraWithStream({ video: mockVideo(2), context });
+    camera.sampleFrame(1200);
+    const result = camera.snapshot();
+    assert(track.stopped === 1, `stopped=${track.stopped}`);
+    assert(video.srcObject === null, 'video retained failed stream');
+    assert(result.state === 'error' && result.reason === 'frame-read-failed', JSON.stringify(result));
+    camera.destroy();
+  });
+
+  document.querySelector('#out').textContent = [...lines, ...failures].join('\n');
+  document.title = failures.length ? `FAIL (${failures.length}) camera-throw` : 'PASS camera-throw';
+</script>

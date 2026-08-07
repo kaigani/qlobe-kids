@@ -2579,19 +2579,33 @@
       },
       "status": "beta",
       "accent": "#f28c45",
+      "uses": [
+        "shared/js/camera-throw.js",
+        "shared/js/screens.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/narrator.js",
+        "shared/js/sfx.js",
+        "shared/js/debug-harness.js"
+      ],
       "modes": [
         {
-          "id": "clinic",
-          "title": "Throwing Clinic",
-          "skill": "throwing mechanics, aim, and force control"
+          "id": "number",
+          "title": "Number Hunt",
+          "skill": "spoken numeral recognition and spatial aiming"
         },
         {
-          "id": "wacky",
-          "title": "Trick Shots",
-          "skill": "creative throwing and safe experimentation"
+          "id": "color",
+          "title": "Color Match",
+          "skill": "primary-color matching and selection"
+        },
+        {
+          "id": "sequence",
+          "title": "Sequence Trail",
+          "skill": "ascending order and spatial planning"
         }
       ],
-      "summary": "Toss beanbags at target circles."
+      "summary": "Aim safely into a soft basket; match numbers, colors, and sequences."
     },
     {
       "id": "obstacle-course-builder",

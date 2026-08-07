@@ -1,0 +1,20 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "throwing-target-garden-concept-03-safe-setup-rejected-seed42",
+  "kind": "image",
+  "workflow": "krea2-turbo-t2i",
+  "prompt": "Use case: stylized-concept. Asset type: game visual-development study. Style/medium: a cozy felt-and-fabric preschool diorama with visible fuzzy fibers, embroidery, stuffed depth, imperfect hand-cut edges, and warm tactile shadows. Color palette: saturated teal, sky blue, leaf green, cream, orange, red, yellow, blue, and purple. Composition/framing: front-facing 4:3 tablet composition. Lighting/mood: premium, safe, warm, and joyful. Constraints: no vector art, CSS art, photorealism, logos, watermarks, letters, or words. Primary request: a wordless side-view felt diorama of a tablet secured on a stable stand behind and above a wide soft basket. One soft beanbag follows a gentle underhand arc into the basket, while the tablet is visibly outside the landing arc. No people, UI, or text.",
+  "seed": 42,
+  "width": 1024,
+  "height": 768,
+  "candidate": "games/throwing-target-garden/assets/source/krea2-concepts/03-safe-setup-rejected-seed42.png",
+  "candidateSha256": "70e47854ed1c209f208b1569822c35e9bf29ed2f16a6a4ac787c03ed2b32925f",
+  "status": "rejected",
+  "qa": {
+    "status": "rejected",
+    "reason": "The tablet stand overlaps the basket, the requested side-view separation is absent, and no readable underhand landing arc appears."
+  },
+  "license": "CC-BY-4.0",
+  "created": "2026-08-06"
+}

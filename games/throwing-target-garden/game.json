@@ -8,27 +8,32 @@
   "age": { "min": 5, "max": 6 },
   "status": "beta",
   "accent": "#f28c45",
-  "shareTitle": "Throwing Target Garden 🎯 — Throwing and Aim Practice",
-  "description": "Practice underhand lobs at homemade targets, work on distance and aim, then finish with a wacky trick-shot round. A friendly backyard throwing clinic for ages 5–6 where near-misses get cheered too.",
+  "shareTitle": "Throwing Target Garden — Numbers, Colors, and Sequences",
+  "description": "Listen, aim, and send soft beanbags into a safe landing basket while a handmade felt garden practices numbers, colors, and sequences. Private local camera tracking and Touch Toss are equal ways to play.",
   "learningGoals": [
-    "Practice underhand throwing mechanics before harder throws",
-    "Control aim and throwing force across different distances",
-    "Coordinate an opposite-foot step with a throw",
-    "Celebrate near-misses and take turns warmly"
+    "Recognize spoken and pictured numerals 1–5",
+    "Match red, yellow, and blue across speech, objects, and targets",
+    "Follow short ascending number sequences",
+    "Practice gentle underhand aim into a safe soft landing basket"
   ],
-  "interactionModel": "follow spoken throwing missions with real soft objects and tap the large completed step after each practice station",
-  "feedbackModel": "upbeat spoken coaching with sparkle/tick/tada SFX; hits and near-misses both receive energetic encouragement",
+  "interactionModel": "choose private local camera tracking and toss a soft colored object into a secured basket, or use Touch Toss to flick it toward a generous number, color, or sequence target",
+  "feedbackModel": "large felt garden-match motion, warm spoken redirects, progress without scores or miss counts, and an authored safe-basket goal",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/camera-throw.js",
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/sfx.js",
+    "shared/js/debug-harness.js"
   ],
   "modes": [
-    { "id": "clinic", "title": "Throwing Clinic", "skill": "throwing mechanics, aim, and force control" },
-    { "id": "wacky", "title": "Trick Shots", "skill": "creative throwing and safe experimentation" }
+    { "id": "number", "title": "Number Hunt", "skill": "spoken numeral recognition and spatial aiming" },
+    { "id": "color", "title": "Color Match", "skill": "primary-color matching and selection" },
+    { "id": "sequence", "title": "Sequence Trail", "skill": "ascending order and spatial planning" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; cozy felt production art generated with OpenAI gpt-image-2 and documented in ASSETS.md. Built with Codex for QLOBE Kids.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/throwing-target-garden/"
 }

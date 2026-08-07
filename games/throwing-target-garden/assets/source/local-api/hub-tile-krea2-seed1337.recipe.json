@@ -1,0 +1,32 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "throwing-target-garden-hub-seed1337",
+  "kind": "image",
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table"
+  },
+  "subject": "A handcrafted teal felt target-garden toy diorama that fills the frame: one oversized cream rope landing basket in the foreground, one upright rainbow felt bullseye garden sign behind it, and three clearly separated stitched red, yellow, and blue beanbags resting safely on the grass as colorful choices. Smiling felt flowers and leafy stitched bushes frame the sides. Tactile wool fibers, visible blanket stitching, cozy handmade preschool toss-and-match game identity. Objects only, no tablet, no screen, no hands, no child, no flying object, no projectile, no impact, no UI.",
+  "candidate": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed1337.png",
+  "candidateSha256": "4eb346adc6ee576fbc6660a875f6a20c5384d1f0835e660c41badeef073ba73e",
+  "installed": null,
+  "installedSha256": null,
+  "status": "candidate",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A handcrafted teal felt target-garden toy diorama that fills the frame: one oversized cream rope landing basket in the foreground, one upright rainbow felt bullseye garden sign behind it, and three clearly separated stitched red, yellow, and blue beanbags resting safely on the grass as colorful choices. Smiling felt flowers and leafy stitched bushes frame the sides. Tactile wool fibers, visible blanket stitching, cozy handmade preschool toss-and-match game identity. Objects only, no tablet, no screen, no hands, no child, no flying object, no projectile, no impact, no UI. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 1337,
+      "width": 768,
+      "height": 640,
+      "output": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed1337.png"
+    }
+  ],
+  "refs": {},
+  "qa": {
+    "status": "candidate"
+  },
+  "license": "CC-BY-4.0",
+  "created": "2026-08-06"
+}

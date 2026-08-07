@@ -1,0 +1,1923 @@
+{
+  "format": "qlobe-kids.visual-review-receipt",
+  "id": "throwing-target-garden-final-unanimous-visual-review",
+  "version": 1,
+  "date": "2026-08-06",
+  "mockupReferences": [
+    {
+      "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+      "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d",
+      "bytes": 2294588,
+      "dimensions": {
+        "width": 1864,
+        "height": 482
+      }
+    },
+    {
+      "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+      "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b",
+      "bytes": 2903848,
+      "dimensions": {
+        "width": 1448,
+        "height": 1086
+      }
+    },
+    {
+      "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+      "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227",
+      "bytes": 2486393,
+      "dimensions": {
+        "width": 1448,
+        "height": 1086
+      }
+    },
+    {
+      "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+      "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9",
+      "bytes": 3120793,
+      "dimensions": {
+        "width": 1448,
+        "height": 1086
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "qa-shots/throwing-target-garden/01-splash-landscape.png",
+      "sha256": "66172f85dccb858ec4e575bf73b700203d8b3f618b5d2452c4123b694973bfca",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 1468233,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/02-safe-setup-landscape.png",
+      "sha256": "146ddeb5128fb321831677bc52ad1cfecb62f1e973f7afe584b9aaa2c6bebe55",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1437174,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/03-camera-ready-landscape.png",
+      "sha256": "998f382e86dc67c4451cdfda6b78e0fcd8c588f053e6c233057f76d059b49850",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 1426976,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/04-number-play-camera.png",
+      "sha256": "695f26401b2bfdf0db8b7ab7bbc80f6618cc879802a87caed9e0fe82c62967f7",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.5,
+        "visual-c": 9.5
+      },
+      "bytes": 1395433,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/05-garden-match-landscape.png",
+      "sha256": "a45a4e6e87fbd9b4cb4f39f72aa95c5f067ae44402bc22c4064c06079e4c0878",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 1408716,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/06-garden-star-landscape.png",
+      "sha256": "9172f5d5810fa8c6aac3807d0314a4aa84f1f34d46cd4d57921fdde2232f2514",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 1402273,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/07-color-reward-drag.png",
+      "sha256": "537e04620d859e9620ee99f77b77e60d23fc30101284a72d82fef05a146d7ffe",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 1400764,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/08-sequence-trail-landscape.png",
+      "sha256": "d923bfa20082debacdc3d0de8162012619113c60f7145ee8a517364f3ce854f2",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 1403925,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/09-splash-portrait.png",
+      "sha256": "846e83df871331c5753cdf856f985dec7b7551e0079f517f123b4ac7a66af907",
+      "dimensions": {
+        "width": 820,
+        "height": 1180
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1627569,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/10-setup-portrait.png",
+      "sha256": "a75deddf47eaf62aad77c8682dbc8b1ca21dcadef4a330ed29cce7027b33c1ba",
+      "dimensions": {
+        "width": 820,
+        "height": 1180
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.3,
+        "visual-c": 9.2
+      },
+      "bytes": 1609674,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/11-sequence-play-portrait.png",
+      "sha256": "d76960118ecc33833fabd9ca9259e0326d5b5cf60e2f09250b6a2bb6dab3f747",
+      "dimensions": {
+        "width": 820,
+        "height": 1180
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.2
+      },
+      "bytes": 1477830,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/12-reward-portrait.png",
+      "sha256": "67bb568a0272d269208286b8e7fcddaeba3ce0f3c9f2def275fd41d757947730",
+      "dimensions": {
+        "width": 820,
+        "height": 1180
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.2
+      },
+      "bytes": 1548163,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/13-splash-wide-short.png",
+      "sha256": "a4815cf9ac1ac0681228fd2934937a974d8d183fce8d7299422272dc97f063d1",
+      "dimensions": {
+        "width": 1366,
+        "height": 600
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 1429384,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/14-number-play-wide-short.png",
+      "sha256": "de715ae357979ad43fb0424c1632df68be4d4fcf62c0cc447ba12fd5bbd7a2d9",
+      "dimensions": {
+        "width": 1366,
+        "height": 600
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 1330829,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/15-reward-reduced-motion.png",
+      "sha256": "03bab7bc260fb69bd61b7984f77dc15316ad83c2a8e886f02323389712865300",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 1374097,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/16-color-match-before-throw.png",
+      "sha256": "a0635e1fec883ee710201a8837a645660c440cd1fcd85f07bdc2bbffcd396605",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 1414809,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/17-touch-toss-bag-selected.png",
+      "sha256": "0088011a7a05fe674f914d7084786413cc0113821868bcc89910674765c36be6",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 1415607,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/18-wrong-color-warm-retry.png",
+      "sha256": "f6a843669bdb94b0e4240f4ffc4bdc7a7cbf66356061bd7daafe0e6496b16cbe",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.2
+      },
+      "bytes": 1363085,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/19-camera-lost-touch-toss.png",
+      "sha256": "412174b06f83a0acedd87ce0d8126e62850d1f93c6b41000df83bc86eb7c1dfa",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1388240,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/20-camera-recovery-touch-toss.png",
+      "sha256": "82b2b4de16cf2fb7e627ec1d6368475d16d94975bf8d9f749a9e8b9e171cc8f4",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 1428710,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/21-camera-ready-portrait.png",
+      "sha256": "fc77ac3fc7b4b6862f0916c35fa10e486ead6ac304a6e6eeea103e3941c494bf",
+      "dimensions": {
+        "width": 820,
+        "height": 1180
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.2
+      },
+      "bytes": 1555058,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/22-mode-color-selected-landscape.png",
+      "sha256": "c27f2b1abb97da6a8544309d6620240311058c0b66ade823c8818f2cff003088",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 1467673,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/23-number-near-miss-landscape.png",
+      "sha256": "44b5f97223ca6500ec1d0610ee74f3f49df21c76b3d0620a63dd4d61fe9ba6c5",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 1380920,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/24-sequence-wrong-order-landscape.png",
+      "sha256": "b70f44539b598490fc70945ca0fc121f6eaf1a660869c324602d6b5645659f9a",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 1385097,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/25-camera-ready-timeout.png",
+      "sha256": "a083bc3499e99e5e04b33d8d811df1b1a06b118590ed941da5fb11ff503b73a1",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1423498,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/26-camera-ready-flipped.png",
+      "sha256": "f73cc463bd05d3c3ef0c95534b6544cc4b71861978afa1ec5a227a44735ad20c",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1420134,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/27-color-camera-play.png",
+      "sha256": "ade87c683fd032519280a8cb52f321e90b60766f204cb37bdc1f30c87c746022",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 1386537,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/28-sequence-camera-play.png",
+      "sha256": "af03414965b870b0ac1fe3c71493461df6c29ebad0e1e7e3f6122daf73245b2d",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1380745,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/29-color-idle-hint.png",
+      "sha256": "ba403fdced1ebd2267b8d053937900c70ac0d74ee8a9d5e154b1de546dffc663",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 1399563,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/30-color-garden-star.png",
+      "sha256": "a3215d9036d27b46bab268f4bf3893dfd5978528718700426aca265f7705b383",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 1402037,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/31-sequence-garden-star.png",
+      "sha256": "016b43bfc7e1fd35ec14302f75378ea07e148e697b1f913fbe0409ae5f388a38",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 1401886,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/32-color-no-bag-hint.png",
+      "sha256": "48a341d42e2c9f47de6885325c72528adaa79b4a47f581a891acb7bc3681ba6e",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 1394912,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/33-touch-toss-drag-flight.png",
+      "sha256": "8b2a41f8b49279f7db01beabf45f484659b5e9e7344851dd8f529bb40b236b53",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 1410693,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/34-camera-unavailable-touch-toss.png",
+      "sha256": "1c005ac4dbd24e06f6eace8c7fdc36c29629a52403fddd997efbb6b6dd6f9a2d",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1426997,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/35-camera-error-touch-toss.png",
+      "sha256": "c532ddf14bf4ff8a73b8810f5faa861da1229befad2656bf950445c2268d790d",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1426927,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/36-camera-late-touch-toss.png",
+      "sha256": "cf770b4d4c0b30b42633806e229ad5cbbaef0e64c99ef56097844d99bdbea102",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 1429007,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/37-camera-loss-clears-retry.png",
+      "sha256": "dda2f321ac886b4069c92f9157c2b88f7e39f71af657801a7c8d28499f833099",
+      "dimensions": {
+        "width": 1024,
+        "height": 768
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.3,
+        "visual-b": 9.4,
+        "visual-c": 9.3
+      },
+      "bytes": 1395150,
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/38-compact-splash-portrait.png",
+      "sha256": "c9fb79eacfcd76f9afa572862d3414580507d8fb73938f785b809a49bd25520d",
+      "bytes": 466361,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.3,
+        "visual-c": 9.2
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/39-compact-setup-portrait.png",
+      "sha256": "bc552cd628f2799911a3d74dfc799a8a839b7102151234c615ec0434a7c16372",
+      "bytes": 466253,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png"
+      ],
+      "critics": {
+        "visual-a": 9.1,
+        "visual-b": 9.2,
+        "visual-c": 9
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/40-compact-camera-ready-portrait.png",
+      "sha256": "4f834fcff38366ba544cb84bd097491beb1ed59b208f95c84647e650b63871f0",
+      "bytes": 466577,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.1,
+        "visual-b": 9.3,
+        "visual-c": 9
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/41-compact-number-play-portrait.png",
+      "sha256": "2fe60477d7d461e3cdd00a37b2069b716f0e6ab1fe81c178d7bfa806572dba10",
+      "bytes": 445787,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png"
+      ],
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.3,
+        "visual-c": 9
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/42-compact-reward-portrait.png",
+      "sha256": "f100728ee5a7d08583f4dca6d8580a1a3f3fc6cb9d25c10387cebfb40ca887f2",
+      "bytes": 467320,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.4,
+        "visual-c": 9.1
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/43-compact-garden-star-portrait.png",
+      "sha256": "1ffc267e635696c08f2242f56d695dc0adc70dadd00c276e0d7185b2636e1379",
+      "bytes": 453399,
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9,
+        "visual-b": 9.1,
+        "visual-c": 9
+      },
+      "status": "PASS"
+    },
+    {
+      "path": "qa-shots/throwing-target-garden/44-compact-garden-star-landscape.png",
+      "sha256": "938bace68ab15b6b673de58562da8bd5b6112a62464829a4a939197b3d72897d",
+      "bytes": 612833,
+      "dimensions": {
+        "width": 844,
+        "height": 390
+      },
+      "mockupRefs": [
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+        "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png"
+      ],
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.5,
+        "visual-c": 9.1
+      },
+      "status": "PASS"
+    }
+  ],
+  "assets": [
+    {
+      "path": "games/throwing-target-garden/assets/beanbags/blue.webp",
+      "sha256": "b6ed4dec6a829593b8f2147200208fe2d8c4a8f79b8498903342d948ce94267f",
+      "dimensions": {
+        "width": 280,
+        "height": 280
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 103006,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/beanbags/red.webp",
+      "sha256": "81c6f675176b25338bd6084922d13f72ec5e445a3f9400c4a4e9b1663bbc77a8",
+      "dimensions": {
+        "width": 280,
+        "height": 280
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 95700,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/beanbags/yellow.webp",
+      "sha256": "2a58930108c1454ebcb630e161c0ac25da3649be501fef90b82f3ee8b27e9c80",
+      "dimensions": {
+        "width": 280,
+        "height": 280
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 98722,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/numerals/1.webp",
+      "sha256": "d788ed2d87cb3e2aaa39a505dd10ea7fa6fab1ccb576055db62c1270ecc890c8",
+      "dimensions": {
+        "width": 260,
+        "height": 320
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 66918,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/numerals/2.webp",
+      "sha256": "64fbb864b882bd5e21761ce5ef0efcc8fbfd3792b672a4b193dbe7bf7a378f48",
+      "dimensions": {
+        "width": 260,
+        "height": 320
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 86062,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/numerals/3.webp",
+      "sha256": "3395fef7f04a05058974bc85e0e60216f4531bfc9a63196b5b0dc920b710e0b3",
+      "dimensions": {
+        "width": 260,
+        "height": 320
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 96370,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/numerals/4.webp",
+      "sha256": "090474e96c3f23034e2228a35675f21cec1a8747c56ff176a9f86f0e0464a415",
+      "dimensions": {
+        "width": 260,
+        "height": 320
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 83382,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/numerals/5.webp",
+      "sha256": "ca235d8d8b66a61a70218cf27d370400794e133334edfb3ae18d9a222a618706",
+      "dimensions": {
+        "width": 260,
+        "height": 320
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.6
+      },
+      "bytes": 97028,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/scenes/garden-day.webp",
+      "sha256": "d3344d131c881b5d055ce4e33098495d9c20845fccd7d7d0993e8dfb1666796a",
+      "dimensions": {
+        "width": 1448,
+        "height": 1086
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.8,
+        "visual-b": 9.7,
+        "visual-c": 9.5
+      },
+      "bytes": 301024,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/targets/blue.webp",
+      "sha256": "b5665ccd045da13eceb362bb871a5da8abe5917e78ce6a1b69932bf68d221c9a",
+      "dimensions": {
+        "width": 620,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 244594,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/targets/cream.webp",
+      "sha256": "e826ab28638a09461016c03ec09e6454c1ce65f25beb489c8b9a1855e9c1e927",
+      "dimensions": {
+        "width": 620,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 207856,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/targets/rainbow.webp",
+      "sha256": "b37745257f6de0c03b038a4820ae90252b9ce5390070ac2bcaa64d6f346b4398",
+      "dimensions": {
+        "width": 620,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 102656,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/targets/red.webp",
+      "sha256": "8b53c872f2bc975ca10b0a6ed6275d7023c1c809cc760d58c3408f5a814039c6",
+      "dimensions": {
+        "width": 620,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 238988,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/targets/yellow.webp",
+      "sha256": "a4cadfc304c0d00be3021ff36e9816a4a8a42099ec490c8b11fe5603f108a6aa",
+      "dimensions": {
+        "width": 620,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 219888,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/badge-progress.webp",
+      "sha256": "f812153569d01bb433afd544cf4d772d809fb149f51c5ebf6d9e94c024941b5a",
+      "dimensions": {
+        "width": 380,
+        "height": 140
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.4,
+        "visual-c": 9.3
+      },
+      "bytes": 24076,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/badge-tracking.webp",
+      "sha256": "8eed819e24b001b6e53504619e08f0000dfb24dcc7e160aba6e243b72918ad81",
+      "dimensions": {
+        "width": 420,
+        "height": 140
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.4,
+        "visual-c": 9.2
+      },
+      "bytes": 45150,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/basket.webp",
+      "sha256": "69988afdefde9a5cb469b6b6f71e54964517549b16794a6d8e1d71a7e89fd505",
+      "dimensions": {
+        "width": 620,
+        "height": 390
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.5
+      },
+      "bytes": 72848,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/button-blue.webp",
+      "sha256": "1150cc3bf37e543227e847b584f5f3b67cd528340303c252cf5772402634d0f4",
+      "dimensions": {
+        "width": 760,
+        "height": 240
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 162044,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/button-green.webp",
+      "sha256": "89cfa1c854805e036c50b8146d4f683487e79c8e0fc3c7d6a674d7534c6a3bfa",
+      "dimensions": {
+        "width": 760,
+        "height": 240
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.5,
+        "visual-c": 9.3
+      },
+      "bytes": 189256,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/button-orange.webp",
+      "sha256": "6f44e56a2516b27639d3c0160c2a1a1dc75d71bbe896b08dd383fbfa4cd898b1",
+      "dimensions": {
+        "width": 760,
+        "height": 240
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 152952,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/confetti-dot.webp",
+      "sha256": "7e6a23d4f93bf2b971784b6d6f4f5e8d9c0de4c2ee31af29f77fb0ec197e18f9",
+      "dimensions": {
+        "width": 240,
+        "height": 160
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 15704,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/confetti-ribbon.webp",
+      "sha256": "7aae1492633920d73358660318a247496d28ad126daef33efb69b3841e7687a5",
+      "dimensions": {
+        "width": 240,
+        "height": 160
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 16136,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/end-garland.webp",
+      "sha256": "90b9ae47284800735d288785cf56b23a09fd0d6545df5db9b576799540ccaa3b",
+      "dimensions": {
+        "width": 1100,
+        "height": 360
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": false,
+      "status": "REJECTED_CONTROL",
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.6,
+        "visual-c": 8
+      },
+      "bytes": 98852
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/flip-mapping.webp",
+      "sha256": "a8964cb45e2217e3cf51342ab48ea36138fd78dcca64c384c5fc02240c00b6af",
+      "dimensions": {
+        "width": 240,
+        "height": 240
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.2,
+        "visual-c": 9.2
+      },
+      "bytes": 31004,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/flower-cheer.webp",
+      "sha256": "e4ce59c0e781635848c1109b082703abc641a7a2de6ee2005506aae71b387dc3",
+      "dimensions": {
+        "width": 340,
+        "height": 420
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 39600,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/flower-happy.webp",
+      "sha256": "d1d564d7b809660f568601c6268fcc9d9802e6f301053ac487aea8408611d17a",
+      "dimensions": {
+        "width": 340,
+        "height": 420
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.5,
+        "visual-c": 9.4
+      },
+      "bytes": 46700,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/mode-color.webp",
+      "sha256": "e041cd3cfd7c9554be53f58f576f6ef1f92622a42ff7ef3bbc772084d3797760",
+      "dimensions": {
+        "width": 480,
+        "height": 420
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 88082,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/mode-number.webp",
+      "sha256": "d5ba1fe7c34b61977805d9c7c6103c673b55fbdf5917aec4ed0c47f7e037dcb9",
+      "dimensions": {
+        "width": 480,
+        "height": 420
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 73334,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/mode-sequence.webp",
+      "sha256": "016de9832d6cd6bb089e5bac6378e3791420adc8b93e1ac9d1d782f2c01ad9fa",
+      "dimensions": {
+        "width": 480,
+        "height": 420
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.5,
+        "visual-b": 9.6,
+        "visual-c": 9.4
+      },
+      "bytes": 69250,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/panel-green-wide.webp",
+      "sha256": "d9e34e6f62ff0e05511f9910b508bf92c4f0613a086f2ea0118f0a49909754e4",
+      "dimensions": {
+        "width": 1100,
+        "height": 240
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.4,
+        "visual-c": 9.3
+      },
+      "bytes": 108480,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/setup-safe.webp",
+      "sha256": "7d03b878bef15d52eead823b796423619f8a945a2c608506454e116d718ac054",
+      "dimensions": {
+        "width": 760,
+        "height": 620
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.6,
+        "visual-c": 9.3
+      },
+      "bytes": 290144,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/target-hit.webp",
+      "sha256": "3fcd0f9288089d882eb5be61f384191dcf1a27ab2950ba2b907b0a2ff73de8e9",
+      "dimensions": {
+        "width": 900,
+        "height": 360
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "shipping": false,
+      "status": "REJECTED_CONTROL",
+      "critics": {
+        "visual-a": 9.1,
+        "visual-b": 9.5,
+        "visual-c": 5
+      },
+      "bytes": 179786
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/title.webp",
+      "sha256": "657929a230aea949e71365c909e1e0bf5f6ba34cabc06de3f46c4dcf73669e10",
+      "dimensions": {
+        "width": 1100,
+        "height": 500
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.6,
+        "visual-b": 9.7,
+        "visual-c": 9.4
+      },
+      "bytes": 279658,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/tracking-compass.webp",
+      "sha256": "66c654d2198d09ec8b8d004d4a605230f01e7a42d4206e8625eccdd98d001f2a",
+      "dimensions": {
+        "width": 760,
+        "height": 220
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        }
+      ],
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.4,
+        "visual-c": 9.3
+      },
+      "bytes": 69630,
+      "status": "PASS"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/og-image.jpg",
+      "sha256": "dd88f28ec2aeec73f3bef74578cd9e52e80b183e286f56e2e1196f2cd5c84d23",
+      "dimensions": {
+        "width": 1200,
+        "height": 630
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/01-mode-select.png",
+          "sha256": "96de458d0a28661a05e9f0eed95edd1bb8b53a0d18dd4865ee39479f30cd0d6b"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/02-hit-number-three.png",
+          "sha256": "93116b17576f5b0263480e5a2558348f2460083f45410a5aa82d7795ee9c2227"
+        },
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/03-target-hit.png",
+          "sha256": "41519a05b3b9a89444ffb559278d3b2d2eb7bd1190fe06ae8efb81af3687bfd9"
+        }
+      ],
+      "reviewContext": "separate-toy-table-hub-grammar",
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.3,
+        "visual-c": 9.4
+      },
+      "bytes": 189964,
+      "status": "PASS"
+    },
+    {
+      "path": "assets/hub/tiles/throwing-target-garden.jpg",
+      "sha256": "bbb40259bf829e6c175a36edf48c04beb2f39f21f744557fb0426eff9a27908a",
+      "dimensions": {
+        "width": 640,
+        "height": 533
+      },
+      "mockupRefs": [
+        {
+          "filename": "../01-game-concepts/_completed/throwing-target-garden/output/ui-mockups/00-overview.png",
+          "sha256": "d566bb6c32be80a6104917334d8af15b43f83f7e391ed5a22e392d61fa1f1e4d"
+        }
+      ],
+      "reviewContext": "separate-toy-table-hub-grammar",
+      "shipping": true,
+      "critics": {
+        "visual-a": 9.4,
+        "visual-b": 9.7,
+        "visual-c": 9.2
+      },
+      "bytes": 81215,
+      "status": "PASS"
+    }
+  ],
+  "nonvisualChecks": [
+    "track release",
+    "late grant",
+    "pagehide",
+    "hidden cleanup",
+    "network silence",
+    "pointer cancel final restoration",
+    "window blur final restoration"
+  ],
+  "acceptanceRule": {
+    "screens": "all 44 screens require three independent scores >=9 and PASS",
+    "shippingAssets": "all 34 shipping assets require three independent scores >=9 and PASS",
+    "rejectedControls": "rejected controls require explicit rejected disposition",
+    "screenCount": 44,
+    "criticIds": [
+      "visual-a",
+      "visual-b",
+      "visual-c"
+    ],
+    "shippingAssetCount": 34
+  },
+  "qaEvidence": {
+    "passed": 185,
+    "total": 185,
+    "screenshots": 44,
+    "expectedScreenshots": 44
+  },
+  "status": "PASS",
+  "reviewers": [
+    {
+      "id": "visual-a",
+      "status": "PASS",
+      "minimumScreenScore": 9,
+      "minimumShippingAssetScore": 9.4
+    },
+    {
+      "id": "visual-b",
+      "status": "PASS",
+      "minimumScreenScore": 9.1,
+      "minimumShippingAssetScore": 9.2
+    },
+    {
+      "id": "visual-c",
+      "status": "PASS",
+      "minimumScreenScore": 9,
+      "minimumShippingAssetScore": 9.2
+    }
+  ],
+  "minimumScreenScore": 9,
+  "minimumShippingAssetScore": 9.2,
+  "rejectedControls": [
+    {
+      "path": "games/throwing-target-garden/assets/ui/end-garland.webp",
+      "status": "REJECTED_CONTROL",
+      "critics": {
+        "visual-a": 9.2,
+        "visual-b": 9.6,
+        "visual-c": 8
+      },
+      "reason": "Disallowed beanbag-on-target physical-safety composition; retained only as an audit control."
+    },
+    {
+      "path": "games/throwing-target-garden/assets/ui/target-hit.webp",
+      "status": "REJECTED_CONTROL",
+      "critics": {
+        "visual-a": 9.1,
+        "visual-b": 9.5,
+        "visual-c": 5
+      },
+      "reason": "Disallowed beanbag-on-target physical-safety composition; retained only as an audit control."
+    }
+  ],
+  "codeReview": {
+    "status": "PASS",
+    "findingCount": 0,
+    "maximumSeverity": null
+  }
+}

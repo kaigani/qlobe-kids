@@ -1,47 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Throwing Target Garden 🎯 — Throwing and Aim Practice</title>
-  <meta name="description" content="Practice underhand lobs at homemade targets, work on distance and aim, then finish with a wacky trick-shot round. A friendly backyard throwing clinic for ages 5–6 where near-misses get cheered too." />
+  <meta name="theme-color" content="#163f47" />
+  <title>Throwing Target Garden — Numbers, Colors, and Sequences</title>
+  <meta name="description" content="Listen, aim, and send soft beanbags into a safe landing basket while a handmade felt garden practices numbers, colors, and sequences. Private local camera tracking and Touch Toss are equal ways to play." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Throwing Target Garden" />
-  <meta property="og:title" content="Throwing Target Garden 🎯 — Throwing and Aim Practice" />
-  <meta property="og:description" content="Practice underhand lobs at homemade targets, work on distance and aim, then finish with a wacky trick-shot round. A friendly backyard throwing clinic for ages 5–6 where near-misses get cheered too." />
+  <meta property="og:title" content="Throwing Target Garden — Numbers, Colors, and Sequences" />
+  <meta property="og:description" content="Listen, aim, and send soft beanbags into a safe landing basket while a handmade felt garden practices numbers, colors, and sequences. Private local camera tracking and Touch Toss are equal ways to play." />
   <meta property="og:url" content="https://qlo.be/games/throwing-target-garden/" />
   <meta property="og:image" content="https://qlo.be/games/throwing-target-garden/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Throwing Target Garden title screen with Throwing Clinic and Trick Shots modes and a dart and target icon on a pale blue background." />
+  <meta property="og:image:alt" content="A handmade felt garden with plush targets and colorful soft beanbags." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Throwing Target Garden 🎯 — Throwing and Aim Practice" />
-  <meta name="twitter:description" content="Practice underhand lobs at homemade targets, work on distance and aim, then finish with a wacky trick-shot round. A friendly backyard throwing clinic for ages 5–6 where near-misses get cheered too." />
+  <meta name="twitter:title" content="Throwing Target Garden — Numbers, Colors, and Sequences" />
+  <meta name="twitter:description" content="Listen, aim, and send soft beanbags into a safe landing basket while a handmade felt garden practices numbers, colors, and sequences. Private local camera tracking and Touch Toss are equal ways to play." />
   <meta name="twitter:image" content="https://qlo.be/games/throwing-target-garden/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Throwing Target Garden"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

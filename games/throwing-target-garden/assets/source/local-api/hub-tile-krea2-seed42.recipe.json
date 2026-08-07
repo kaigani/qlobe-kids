@@ -1,0 +1,51 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "throwing-target-garden-hub-seed42",
+  "kind": "image",
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table"
+  },
+  "subject": "A soft cream woven landing basket in front of a chunky round number three target, with three small red, yellow, and blue beanbags resting safely on the ground and a few cheerful felt flowers framing the scene. Objects only, front-facing preschool game still life, no tablet, no screen, no hands, no child, no flying object, no projectile, no UI.",
+  "candidate": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed42.png",
+  "candidateSha256": "89047c1e54b3e1215cfbd54692a3be779cea3c00c8722983668554ae510c06d9",
+  "installed": null,
+  "installedSha256": null,
+  "status": "superseded",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A soft cream woven landing basket in front of a chunky round number three target, with three small red, yellow, and blue beanbags resting safely on the ground and a few cheerful felt flowers framing the scene. Objects only, front-facing preschool game still life, no tablet, no screen, no hands, no child, no flying object, no projectile, no UI. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "output": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed42.png"
+    },
+    {
+      "op": "finalize",
+      "from": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed42.png",
+      "output": "assets/hub/tiles/throwing-target-garden.jpg",
+      "resize": "640x533-cover",
+      "encode": "jpeg-q90-progressive"
+    }
+  ],
+  "refs": {},
+  "qa": {
+    "status": "superseded",
+    "gate": "unanimous",
+    "scores": [
+      9.3,
+      9.2
+    ],
+    "minimumScore": 9.2,
+    "reviewContext": "documented separate toy-table hub grammar with neighboring hub tiles",
+    "reviewed": "2026-08-06"
+  },
+  "license": "CC-BY-4.0",
+  "created": "2026-08-06",
+  "review": "games/throwing-target-garden/assets/source/local-api/hub-tile-krea2-seed42.review.json",
+  "reviewSha256": "51f579351a7cc5b65c8f78f71293e5185043e5bc9d474cf4fa3452b34ba10715",
+  "previouslyInstalled": "assets/hub/tiles/throwing-target-garden.jpg",
+  "previouslyInstalledSha256": "7505f13c89b47f18ac49c8194737f18109af97a3ac2f41d0d9c7390d6fbfcbd0"
+}

@@ -1,0 +1,957 @@
+{
+  "assets": {
+    "beanbags/blue.webp": {
+      "size": [
+        280,
+        280
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        5,
+        3,
+        275,
+        277
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 103006,
+      "valid": true
+    },
+    "beanbags/red.webp": {
+      "size": [
+        280,
+        280
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        3,
+        3,
+        277,
+        277
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 95700,
+      "valid": true
+    },
+    "beanbags/yellow.webp": {
+      "size": [
+        280,
+        280
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        4,
+        3,
+        276,
+        277
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 98722,
+      "valid": true
+    },
+    "numerals/1.webp": {
+      "size": [
+        260,
+        320
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        38,
+        3,
+        222,
+        317
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 66918,
+      "valid": true
+    },
+    "numerals/2.webp": {
+      "size": [
+        260,
+        320
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        10,
+        3,
+        249,
+        317
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 86062,
+      "valid": true
+    },
+    "numerals/3.webp": {
+      "size": [
+        260,
+        320
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        15,
+        3,
+        245,
+        317
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 96370,
+      "valid": true
+    },
+    "numerals/4.webp": {
+      "size": [
+        260,
+        320
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        2,
+        9,
+        257,
+        310
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 83382,
+      "valid": true
+    },
+    "numerals/5.webp": {
+      "size": [
+        260,
+        320
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        13,
+        3,
+        246,
+        317
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 97028,
+      "valid": true
+    },
+    "scenes/garden-day.webp": {
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "has_alpha": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "content_bbox": [
+        0,
+        0,
+        1448,
+        1086
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 301024,
+      "valid": true
+    },
+    "targets/blue.webp": {
+      "size": [
+        620,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        59,
+        49,
+        560,
+        570
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 244594,
+      "valid": true
+    },
+    "targets/cream.webp": {
+      "size": [
+        620,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        53,
+        49,
+        567,
+        570
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 207856,
+      "valid": true
+    },
+    "targets/rainbow.webp": {
+      "size": [
+        620,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        51,
+        49,
+        569,
+        570
+      ],
+      "low_alpha_green_pixels": 25528,
+      "low_alpha_green_ratio": 0.06641,
+      "file_bytes": 102656,
+      "valid": true
+    },
+    "targets/red.webp": {
+      "size": [
+        620,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        54,
+        49,
+        566,
+        570
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 238988,
+      "valid": true
+    },
+    "targets/yellow.webp": {
+      "size": [
+        620,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        56,
+        49,
+        563,
+        570
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 219888,
+      "valid": true
+    },
+    "ui/badge-progress.webp": {
+      "size": [
+        380,
+        140
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        4,
+        12,
+        376,
+        127
+      ],
+      "low_alpha_green_pixels": 2332,
+      "low_alpha_green_ratio": 0.043835,
+      "file_bytes": 24076,
+      "valid": true
+    },
+    "ui/badge-tracking.webp": {
+      "size": [
+        420,
+        140
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        4,
+        1,
+        416,
+        138
+      ],
+      "low_alpha_green_pixels": 5759,
+      "low_alpha_green_ratio": 0.097942,
+      "file_bytes": 45150,
+      "valid": true
+    },
+    "ui/basket.webp": {
+      "size": [
+        620,
+        390
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        80,
+        4,
+        539,
+        386
+      ],
+      "low_alpha_green_pixels": 12382,
+      "low_alpha_green_ratio": 0.051208,
+      "file_bytes": 72848,
+      "valid": true
+    },
+    "ui/button-blue.webp": {
+      "size": [
+        760,
+        240
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        144,
+        2,
+        616,
+        237
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 162044,
+      "valid": true
+    },
+    "ui/button-green.webp": {
+      "size": [
+        760,
+        240
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        146,
+        2,
+        613,
+        237
+      ],
+      "low_alpha_green_pixels": 2420,
+      "low_alpha_green_ratio": 0.013268,
+      "file_bytes": 189256,
+      "valid": true
+    },
+    "ui/button-orange.webp": {
+      "size": [
+        760,
+        240
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        146,
+        2,
+        613,
+        237
+      ],
+      "low_alpha_green_pixels": 0,
+      "low_alpha_green_ratio": 0.0,
+      "file_bytes": 152952,
+      "valid": true
+    },
+    "ui/confetti-dot.webp": {
+      "size": [
+        240,
+        160
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        2,
+        6,
+        237,
+        154
+      ],
+      "low_alpha_green_pixels": 1734,
+      "low_alpha_green_ratio": 0.045156,
+      "file_bytes": 15704,
+      "valid": true
+    },
+    "ui/confetti-ribbon.webp": {
+      "size": [
+        240,
+        160
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        2,
+        9,
+        237,
+        150
+      ],
+      "low_alpha_green_pixels": 1561,
+      "low_alpha_green_ratio": 0.040651,
+      "file_bytes": 16136,
+      "valid": true
+    },
+    "ui/end-garland.webp": {
+      "size": [
+        1100,
+        360
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        11,
+        71,
+        1089,
+        289
+      ],
+      "low_alpha_green_pixels": 10747,
+      "low_alpha_green_ratio": 0.027139,
+      "file_bytes": 98852,
+      "valid": true
+    },
+    "ui/flip-mapping.webp": {
+      "size": [
+        240,
+        240
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        2,
+        7,
+        237,
+        232
+      ],
+      "low_alpha_green_pixels": 2646,
+      "low_alpha_green_ratio": 0.045937,
+      "file_bytes": 31004,
+      "valid": true
+    },
+    "ui/flower-cheer.webp": {
+      "size": [
+        340,
+        420
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        3,
+        60,
+        336,
+        359
+      ],
+      "low_alpha_green_pixels": 5657,
+      "low_alpha_green_ratio": 0.039615,
+      "file_bytes": 39600,
+      "valid": true
+    },
+    "ui/flower-happy.webp": {
+      "size": [
+        340,
+        420
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        3,
+        58,
+        336,
+        361
+      ],
+      "low_alpha_green_pixels": 5436,
+      "low_alpha_green_ratio": 0.038067,
+      "file_bytes": 46700,
+      "valid": true
+    },
+    "ui/mode-color.webp": {
+      "size": [
+        480,
+        420
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        53,
+        10,
+        430,
+        416
+      ],
+      "low_alpha_green_pixels": 2005,
+      "low_alpha_green_ratio": 0.009945,
+      "file_bytes": 88082,
+      "valid": true
+    },
+    "ui/mode-number.webp": {
+      "size": [
+        480,
+        420
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        76,
+        9,
+        419,
+        416
+      ],
+      "low_alpha_green_pixels": 1010,
+      "low_alpha_green_ratio": 0.00501,
+      "file_bytes": 73334,
+      "valid": true
+    },
+    "ui/mode-sequence.webp": {
+      "size": [
+        480,
+        420
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        66,
+        10,
+        400,
+        416
+      ],
+      "low_alpha_green_pixels": 1828,
+      "low_alpha_green_ratio": 0.009067,
+      "file_bytes": 69250,
+      "valid": true
+    },
+    "ui/panel-green-wide.webp": {
+      "size": [
+        1100,
+        240
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        4,
+        2,
+        1096,
+        238
+      ],
+      "low_alpha_green_pixels": 13331,
+      "low_alpha_green_ratio": 0.050496,
+      "file_bytes": 108480,
+      "valid": true
+    },
+    "ui/setup-safe.webp": {
+      "size": [
+        760,
+        620
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        7,
+        56,
+        752,
+        563
+      ],
+      "low_alpha_green_pixels": 42306,
+      "low_alpha_green_ratio": 0.089784,
+      "file_bytes": 290144,
+      "valid": true
+    },
+    "ui/target-hit.webp": {
+      "size": [
+        900,
+        360
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        40,
+        3,
+        859,
+        356
+      ],
+      "low_alpha_green_pixels": 8180,
+      "low_alpha_green_ratio": 0.025247,
+      "file_bytes": 179786,
+      "valid": true
+    },
+    "ui/title.webp": {
+      "size": [
+        1100,
+        500
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        93,
+        5,
+        1006,
+        495
+      ],
+      "low_alpha_green_pixels": 12897,
+      "low_alpha_green_ratio": 0.023449,
+      "file_bytes": 279658,
+      "valid": true
+    },
+    "ui/tracking-compass.webp": {
+      "size": [
+        760,
+        220
+      ],
+      "mode": "RGBA",
+      "has_alpha": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "content_bbox": [
+        7,
+        16,
+        752,
+        203
+      ],
+      "low_alpha_green_pixels": 9240,
+      "low_alpha_green_ratio": 0.055263,
+      "file_bytes": 69630,
+      "valid": true
+    }
+  },
+  "ok": true
+}

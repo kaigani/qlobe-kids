@@ -1,0 +1,43 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "throwing-target-garden-krea-synthesis-safe-setup",
+  "kind": "image",
+  "workflow": "built-in-gpt-image-2",
+  "prompt": "Use case: stylized-concept\nAsset type: Throwing Target Garden safety-setup visual-development illustration for a preschool tablet game\nInput images: Images 1–4 are style references only. Use their shared fuzzy felt fibers, embroidery, stuffed depth, warm tactile shadows, saturated palette, and handmade proportions. Do not copy their compositions.\nPrimary request: Create one polished, wordless side-view felt diorama that unmistakably models a safe underhand toss into a soft basket, never at the tablet.\nScene/backdrop: calm sky-blue felt field with a small stitched grass floor and generous uncluttered space.\nSubject and exact geometry: On the back-left, a tablet is secured upright on its own broad, stable floor stand. On the front-right, a wide soft woven basket sits lower and at least one full basket-width away from the stand. The tablet is visibly behind and about one-third higher than the basket. A small red fabric beanbag is suspended directly above the basket opening at the end of a simple dotted stitched underhand arc that begins near the lower-right edge. The entire arc stays well below and in front of the tablet. The tablet, stand, basket, beanbag, and arc must not overlap except that the beanbag may overlap the basket opening at its landing point.\nStyle/medium: premium cozy felt-and-fabric preschool diorama, consistent with Images 1–4; visible fibers, embroidered seams, imperfect hand-cut edges, plush dimensionality.\nComposition/framing: front-facing 4:3 landscape, clear side-view spatial relationship, all objects fully visible with generous margins.\nLighting/mood: warm, safe, calm, friendly.\nColor palette: teal, sky blue, leaf green, cream, orange, red, yellow, blue, and purple.\nConstraints: no people, hands, faces, children, characters, title, UI, labels, words, letters, numerals, logos, watermark, camera preview, flying object near the tablet, device inside basket, stand touching basket, overlap between tablet and basket, vector art, CSS art, or photorealism.",
+  "references": [
+    {
+      "path": "games/throwing-target-garden/assets/source/krea2-concepts/01-world-stage.png",
+      "sha256": "9da4cf0e887efb7658bcd3dc95daef8895a872442e26a37ecc0fb4cd5a3c84e9",
+      "role": "style reference"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/source/krea2-concepts/02-core-play.png",
+      "sha256": "34d5bd89926c3aa2363a7c4e22cca612c165640eeb7b163877684bc43239ab6c",
+      "role": "style reference"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/source/krea2-concepts/03-mode-shelf.png",
+      "sha256": "61048dfa859098ff44823cce104664a8d8ce75c698d40a91828a7e131c66e308",
+      "role": "style reference"
+    },
+    {
+      "path": "games/throwing-target-garden/assets/source/krea2-concepts/04-garden-match.png",
+      "sha256": "091c903bd344b6396f0e251a66261b11a3e3eecb02ce594b08ab7a43719b2ee5",
+      "role": "style reference"
+    }
+  ],
+  "candidate": "games/throwing-target-garden/assets/source/gpt-image-2/krea-synthesis-safe-setup.png",
+  "candidateSha256": "37e2c61d6120cb20a77d410b9297742b4b80984c2b2d0c8fba83d3feebdbf1b1",
+  "width": 1448,
+  "height": 1086,
+  "bytes": 2413907,
+  "status": "accepted-reference",
+  "qa": {
+    "status": "accepted-reference",
+    "reviewed": "2026-08-06",
+    "notes": "Tablet and basket are separate; the beanbag resolves above the basket; the stitched trajectory stays away from the device. Kept as a visual-development reference rather than replacing the already alpha- and responsive-QA-verified runtime setup cutout."
+  },
+  "license": "CC-BY-4.0",
+  "created": "2026-08-06"
+}

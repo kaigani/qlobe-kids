@@ -1,0 +1,71 @@
+{
+  "id": "throwing-target-garden",
+  "title": "Throwing Target Garden",
+  "voice": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "modes": [
+    {
+      "id": "number",
+      "title": "Number Hunt",
+      "card": "./assets/ui/mode-number.webp",
+      "rounds": 5,
+      "intro": "number-intro",
+      "end": "number-end"
+    },
+    {
+      "id": "color",
+      "title": "Color Match",
+      "card": "./assets/ui/mode-color.webp",
+      "rounds": 5,
+      "intro": "color-intro",
+      "end": "color-end"
+    },
+    {
+      "id": "sequence",
+      "title": "Sequence Trail",
+      "card": "./assets/ui/mode-sequence.webp",
+      "rounds": 3,
+      "intro": "sequence-intro",
+      "end": "sequence-end"
+    }
+  ],
+  "assets": {
+    "garden": "./assets/scenes/garden-day.webp",
+    "title": "./assets/ui/title.webp",
+    "buttonOrange": "./assets/ui/button-orange.webp",
+    "buttonGreen": "./assets/ui/button-green.webp",
+    "buttonBlue": "./assets/ui/button-blue.webp",
+    "panelGreen": "./assets/ui/panel-green-wide.webp",
+    "badgeTracking": "./assets/ui/badge-tracking.webp",
+    "badgeProgress": "./assets/ui/badge-progress.webp",
+    "setupSafe": "./assets/ui/setup-safe.webp",
+    "trackingCompass": "./assets/ui/tracking-compass.webp",
+    "flipMapping": "./assets/ui/flip-mapping.webp",
+    "basket": "./assets/ui/basket.webp",
+    "flowerHappy": "./assets/ui/flower-happy.webp",
+    "flowerCheer": "./assets/ui/flower-cheer.webp",
+    "confettiDot": "./assets/ui/confetti-dot.webp",
+    "confettiRibbon": "./assets/ui/confetti-ribbon.webp",
+    "targets": {
+      "cream": "./assets/targets/cream.webp",
+      "rainbow": "./assets/targets/rainbow.webp",
+      "red": "./assets/targets/red.webp",
+      "yellow": "./assets/targets/yellow.webp",
+      "blue": "./assets/targets/blue.webp"
+    },
+    "numerals": {
+      "1": "./assets/numerals/1.webp",
+      "2": "./assets/numerals/2.webp",
+      "3": "./assets/numerals/3.webp",
+      "4": "./assets/numerals/4.webp",
+      "5": "./assets/numerals/5.webp"
+    },
+    "beanbags": {
+      "red": "./assets/beanbags/red.webp",
+      "yellow": "./assets/beanbags/yellow.webp",
+      "blue": "./assets/beanbags/blue.webp"
+    }
+  }
+}
