@@ -32,6 +32,12 @@ let canvasApi = null;
 let canvasNode = null;
 let disposers = [];
 let idleTimer = 0;
+// Separate from idleTimer on purpose: both used to share one variable, so
+// clearTimeout(idleTimer) at a stroke start could silently cancel an
+// in-flight clear-confirm countdown — clearArmed stayed true and the button's
+// "armed" class never reset, leaving the next tap an unconfirmed instant clear.
+let clearArmTimer = 0;
+let saveTimer = 0;
 let clearArmed = false;
 let lastClear = null;
 const imageCache = new Map();
@@ -81,6 +87,11 @@ function feedback(event) {
 
 function cleanupScreen() {
   clearTimeout(idleTimer);
+  clearTimeout(clearArmTimer);
+  // Flush rather than drop: a debounced save may still be pending when the
+  // child taps back mid-stroke, and losing it would silently undo their last
+  // few brushstrokes.
+  if (saveTimer) { clearTimeout(saveTimer); saveTimer = 0; saveCurrent(); }
   narrator.stop();
   canvasApi?.destroy();
   canvasApi = null;
@@ -257,7 +268,7 @@ function renderStudio() {
     onStrokeEnd: () => {
       mural.history.push('stroke');
       mural.painting = canvasApi.snapshot();
-      saveCurrent();
+      scheduleSave();
       updateStudioControls();
     },
     onChange: (painting) => { mural.painting = painting; },
@@ -424,7 +435,7 @@ function clearMural() {
   if (!clearArmed) {
     clearArmed = true;
     mount.querySelector('[data-target="clear"]')?.classList.add('armed');
-    idleTimer = setTimeout(() => {
+    clearArmTimer = setTimeout(() => {
       clearArmed = false;
       mount.querySelector('[data-target="clear"]')?.classList.remove('armed');
     }, state.fast ? 180 : 2400);
@@ -643,6 +654,16 @@ function snapshotMural() {
   const snapshot = structuredClone(mural);
   if (canvasApi) snapshot.painting = canvasApi.snapshot();
   return snapshot;
+}
+
+// A stroke can end dozens of times a minute, and each save re-serializes the
+// WHOLE mural (every painting point plus every stamp) into localStorage.
+// Coalesce rapid strokes into one write shortly after the child pauses,
+// instead of blocking the main thread on every brush lift. cleanupScreen()
+// flushes any pending save immediately so leaving mid-stroke never drops it.
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { saveTimer = 0; saveCurrent(); }, state.fast ? 30 : 900);
 }
 
 function saveCurrent(addToGallery = false) {

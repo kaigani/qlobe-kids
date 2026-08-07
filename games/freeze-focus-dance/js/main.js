@@ -11,9 +11,11 @@ import { createScreens } from '../../../shared/js/screens.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { installKioskGuards, installUnlockOnGesture, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { onTap } from '../../../shared/js/tap.js';
 import { preloadImages } from '../../../shared/js/preload.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { createCameraMotion } from '../../../shared/js/camera-motion.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const mount = document.querySelector('#game');
 const A = config.assets;
@@ -167,16 +169,17 @@ function playSfx(name) {
   try { sfx[name]?.(); } catch { /* feedback cannot strand play */ }
 }
 
+// onTap fires `handler` on pointerup over the element (the same press the
+// feedback came from), keeping `click` only for keyboard/AT — the split
+// pointerdown-feedback + click-action pattern this replaced could drop a tap
+// when the browser suppressed or delayed the synthetic click that followed.
 function press(element, handler, { feedback = true } = {}) {
   if (!element) return;
-  element.addEventListener('pointerdown', (event) => {
-    if (feedback) {
-      event.preventDefault();
-      unlockAll([() => music.unlock(), () => ensureInstruments()]);
-      playSfx('tick');
-    }
+  onTap(element, handler, {
+    feedback: feedback
+      ? () => { unlockAll([() => music.unlock(), () => ensureInstruments()]); playSfx('tick'); }
+      : undefined,
   });
-  element.addEventListener('click', handler);
 }
 
 function scene(src) {
@@ -220,11 +223,6 @@ function repeatPrompt() {
 function renderSplash() {
   state.phase = 'idle';
   state.currentPrompt = 'welcome';
-  const cards = MODES.map((mode) => `
-    <button class="art-button mode-card" type="button" data-target="mode-${attr(mode.id)}" data-role="mode" data-mode="${attr(mode.id)}" aria-label="${attr(mode.title)}">
-      <img src="${attr(mode.card)}" alt="" draggable="false">
-      <span class="mode-label">${html(mode.title)}</span>
-    </button>`).join('');
   nodes.splash.innerHTML = `${scene(A.forestDay)}
     <div class="qfd-hud">
       <a class="qk-hud-btn qk-hud-home" href="../../" data-target="home" data-role="navigation" aria-label="QLOBE Kids home"></a>
@@ -234,11 +232,28 @@ function renderSplash() {
     <img class="splash-prop splash-note" src="${attr(A.musicNote)}" alt="" draggable="false">
     <img class="splash-prop splash-snow" src="${attr(A.snowflake)}" alt="" draggable="false">
     <img class="splash-pip" src="${attr(A.pipDance)}" alt="Pip, a blue clay dancer" draggable="false">
-    <div class="mode-shelf" aria-label="Choose a dance game">${cards}</div>`;
+    <div class="mode-shelf" aria-label="Choose a dance game"></div>`;
   press(nodes.splash.querySelector('[data-target="sound"]'), () => say('welcome'));
-  for (const button of nodes.splash.querySelectorAll('[data-mode]')) {
-    press(button, () => selectMode(button.dataset.mode));
-  }
+  // tap:'s `target.click()` already fires renderModeCards()'s onTap through
+  // its click fallback — no debug-harness patch needed.
+  renderModeCards({
+    host: nodes.splash.querySelector('.mode-shelf'),
+    modes: MODES,
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — cards render far above the 96px floor here).
+    cardClass: 'art-button mode-card',
+    showTitle: false, // decorate() builds .mode-label itself
+    art: (mode) => { const img = document.createElement('img'); img.src = mode.card; img.alt = ''; img.draggable = false; return img; },
+    decorate(btn, mode) {
+      const label = document.createElement('span');
+      label.className = 'mode-label';
+      label.textContent = mode.title;
+      btn.append(label);
+    },
+    onPick: (id) => selectMode(id),
+    feedback: () => { unlockAll([() => music.unlock(), () => ensureInstruments()]); playSfx('tick'); },
+  });
 }
 
 function goSplash() {

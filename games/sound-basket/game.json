@@ -18,12 +18,14 @@
   "interactionModel": "tap-to-hear picture naming followed by forgiving drag-to-basket sorting with one spoken target sound per round",
   "feedbackModel": "Every card speaks its recorded word; matches fly into the basket with layered toy feedback, while distractors wiggle gently and remain available.",
   "uses": [
-    "shared/js/audio.js",
     "shared/js/voice-clips.js",
     "shared/js/tap.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
     "shared/js/content.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/rng.js",
+    "shared/js/debug-harness.js",
     "shared/assets/audio/",
     "shared/assets/ui/",
     "shared/assets/objects/"

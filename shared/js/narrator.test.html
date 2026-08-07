@@ -126,6 +126,43 @@
       n.dispose();
     }
 
+    // ---- 4b. per-step gap and the exposed token ---------------------------
+    {
+      const v = fakeVoice(10);
+      const n = createNarrator({ say: v.fn });
+      const start = performance.now();
+      await n.saySequence(['a', { key: 'b', gap: 80 }]);
+      const elapsed = performance.now() - start;
+      t('a step gap delays that step', elapsed >= 80, `elapsed=${elapsed.toFixed(1)}ms`);
+      t('gap does not add/skip steps', v.spoken.map((s) => s.key).join(',') === 'a,b',
+        JSON.stringify(v.spoken.map((s) => s.key)));
+      n.dispose();
+    }
+    {
+      // A newer line during the gap (before the step's own say() call) must
+      // still cancel the step, exactly like a line spoken mid-await.
+      const v = fakeVoice(10);
+      const n = createNarrator({ say: v.fn });
+      const seq = n.saySequence(['a', { key: 'b', gap: 60 }]);
+      await wait(15); // 'a' done, now inside the gap wait for 'b'
+      n.say('urgent', 'Look!');
+      await seq;
+      await wait(100);
+      const keys = v.spoken.map((s) => s.key);
+      t('a newer say() during a gap cancels the step waiting on it',
+        !keys.includes('b'), JSON.stringify(keys));
+      t('the interrupting line was spoken', keys.includes('urgent'), JSON.stringify(keys));
+      n.dispose();
+    }
+    {
+      const n = createNarrator({ say: fakeVoice().fn });
+      t('exposes a numeric token', typeof n.token === 'number');
+      const before = n.token;
+      await n.say('x', 'x');
+      t('say() advances the token', n.token > before, `before=${before} after=${n.token}`);
+      n.dispose();
+    }
+
     // ---- 5. interruption: the monotonic token ---------------------------
     {
       const v = fakeVoice(40);

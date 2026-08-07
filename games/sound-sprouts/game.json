@@ -20,15 +20,16 @@
   "interactionModel": "tap letter tiles to build words",
   "feedbackModel": "gentle retry, modeling, confetti celebration",
   "uses": [
-    "shared/js/audio",
-    "shared/js/speech",
-    "shared/js/sfx",
+    "shared/js/voice-clips.js",
+    "shared/js/speech.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
     "shared/assets/letter-tiles",
     "shared/assets/objects",
     "shared/assets/audio",
     "shared/assets/ui",
     "shared/fonts",
-    "shared/vendor/three"
+    "shared/vendor/three.module.min.js"
   ],
   "modes": [
     { "id": "guided", "title": "Make a Word", "skill": "blend CVC sounds into words" },

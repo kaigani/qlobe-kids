@@ -717,7 +717,7 @@ first card equals the last card played, swap it with the second). The deck seed 
 selection (§4.3), so `seed(n)` pins the whole game for QA.
 
 Idle timers are cleared by any `pointerdown` in the play field and restart from zero. All scale
-with `QLOBE_DEBUG.fastTimer(scale)`.
+with `QLOBE_DEBUG.fastTimers(scale)`.
 
 | elapsed with no interaction | what happens |
 |---|---|
@@ -1120,7 +1120,7 @@ centre is inside the §4.3 band; `tuning.placedPerRoom (3) < tuning.zonesPerRoom
 |---|---|
 | `setLens(artX, artY)` | moves the lens through **`lens.moveTo`, the same code path as a drag** — so a QA move exercises the real dwell machinery, not a shortcut |
 | `getLens()` | `{ x, y, enabled, zoom, glassD }` in art px |
-| `fastTimer(scale)` | divides every timed beat (dwell 600 → 60 ms at `scale: 10`, idle, auto-advance, choreography). Rhyming Detective's `T(ms)` pattern. |
+| `fastTimers(scale)` | divides every timed beat (dwell 600 → 60 ms at `scale: 10`, idle, auto-advance, choreography). Rhyming Detective's `T(ms)` pattern. |
 | `getJournal()` | `[{ id, room, round, foundAt }]` straight from `shared/js/journal.js` |
 | `resetJournal()` | clears the store and re-derives `round` to 0 |
 | `getAudioLog()` | `[{ id, source: 'clip' | 'speech', at, file }]` — which line the game *chose* to play, and from where |
@@ -1183,7 +1183,7 @@ Byte budgets, prompts, seeds, workflows and provenance for every row: `ASSETS.md
 
 ## 9. Interaction and feedback — the choreography
 
-All durations are `tuning` keys and all scale with `fastTimer`.
+All durations are `tuning` keys and all scale with `fastTimers`.
 
 **9.1 One press path.** Every interactive element is bound with `shared/js/tap.js`'s `onTap`. No
 bare `click`, no `touchstart`, nowhere. Delegated `onTap` handlers guard on the **start** target,
@@ -1416,7 +1416,7 @@ Chromium's bundled build **cannot decode AAC** and will fail every recorded-clip
 silently, so the channel is not optional.
 
 1. Zero console errors, zero 404s, on every screen.
-2. All three modes end-to-end via `QLOBE_DEBUG` with `fastTimer(10)`.
+2. All three modes end-to-end via `QLOBE_DEBUG` with `fastTimers(10)`.
 3. **A real synthetic pointer drag of the lens** (`pointerdown` on the grip → a path of
    `pointermove`s → dwell → reveal) — not just `setLens`. Since §11 row 23, also: a drag started
    on the **glass centre**; the 12 px slop holding the glass still inside it; and a **tap through

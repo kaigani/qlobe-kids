@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>speech.js test</title>
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>speech.js test</h2>
+  <p class="lede">
+    <code>window.speechSynthesis</code> is monkey-patched with a fake engine
+    <em>before</em> <code>speech.js</code> is imported (a dynamic
+    <code>import()</code>, so the patch lands before the module's top-level
+    <code>pickVoice()</code> runs) — deterministic and silent, instead of racing
+    a real system voice engine that may not even be installed in a headless
+    tab. The behaviour under test: the unlock latch, the iOS-GC utterance-ref
+    keepalive, cancel-on-first-fragment-only in a sequence, and the bounded
+    safety timeout that must resolve `speak()` even if the engine never fires
+    its events.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    // ---- fake speechSynthesis, installed BEFORE speech.js is imported -----
+    // Voice list is deliberately empty: `SpeechSynthesisVoice` has no public
+    // constructor, so a plain object standing in for one throws
+    // "Failed to convert value to 'SpeechSynthesisVoice'" the moment
+    // speech.js does `u.voice = chosenVoice` — and this automated tab has
+    // zero real voices installed to borrow from anyway. Leaving the list
+    // empty exercises the exact no-voices-available path speech.js has to
+    // survive in headless/CI environments, and keeps `speak()` from ever
+    // touching the one property we can't safely fake.
+    const FAKE_VOICES = [];
+    const spoken = []; // every utterance actually handed to speak()
+    let autoFire = true; // when true, speak() auto-fires onstart+onend async
+    const synth = {
+      speaking: false,
+      pending: false,
+      _listeners: {},
+      getVoices: () => FAKE_VOICES,
+      addEventListener(type, fn) { (this._listeners[type] ||= []).push(fn); },
+      cancel() { synth.speaking = false; synth.pending = false; },
+      resume() {},
+      speak(utterance) {
+        spoken.push(utterance);
+        synth.speaking = true;
+        if (!autoFire) return;
+        Promise.resolve().then(() => {
+          utterance.onstart?.();
+          Promise.resolve().then(() => {
+            synth.speaking = false;
+            utterance.onend?.();
+          });
+        });
+      },
+    };
+    Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
+
+    const mod = await import(`./speech.js?t=${Date.now()}`); // cache-bust: must see the patched global
+    const { unlock, speak, speakSeq, stop } = mod;
+
+    // ---- 1. shape ------------------------------------------------------
+    for (const name of ['unlock', 'speak', 'speakSeq', 'stop']) {
+      t(`exports ${name}`, typeof mod[name] === 'function');
+    }
+
+    // ---- 2. zero installed voices is survivable, not a throw --------------
+    {
+      spoken.length = 0;
+      let threw = false;
+      try { await speak('hello'); } catch { threw = true; }
+      t('speak() does not throw with zero voices installed', !threw);
+      t('the utterance still reaches the engine', spoken.length === 1, `count=${spoken.length}`);
+      t('with no voice selected, .voice is left unset (never assigned)',
+        spoken[0] && spoken[0].voice == null, spoken[0] && String(spoken[0].voice));
+    }
+
+    // ---- 3. speak() resolves once the engine fires onend -----------------
+    {
+      spoken.length = 0;
+      const start = performance.now();
+      await speak('a short line');
+      const elapsed = performance.now() - start;
+      t('speak() resolves after the fake engine finishes', elapsed < 500, `elapsed=${elapsed.toFixed(0)}ms`);
+      t('speak() handed the engine exactly one utterance', spoken.length === 1, `count=${spoken.length}`);
+      t('the utterance carries the requested text', spoken[0].text === 'a short line', spoken[0].text);
+    }
+
+    // ---- 4. default rate/pitch, and an override ---------------------------
+    // SpeechSynthesisUtterance.rate/.pitch are WebIDL `float` (32-bit), so a
+    // round-tripped 0.8 reads back as 0.800000011920929 — compare with an
+    // epsilon, not ===, or every assertion here is a false negative.
+    const near = (a, b, eps = 1e-5) => Math.abs(a - b) < eps;
+    {
+      spoken.length = 0;
+      await speak('defaults');
+      t('default rate is 0.8 (slow, kid-friendly)', near(spoken[0].rate, 0.8), `rate=${spoken[0].rate}`);
+      t('default pitch is 1.05', near(spoken[0].pitch, 1.05), `pitch=${spoken[0].pitch}`);
+      spoken.length = 0;
+      await speak('override', { rate: 1.2, pitch: 0.9 });
+      t('rate/pitch overrides pass through', near(spoken[0].rate, 1.2) && near(spoken[0].pitch, 0.9),
+        `rate=${spoken[0].rate} pitch=${spoken[0].pitch}`);
+    }
+
+    // ---- 5. speak() cancels the queue by default, opt-out with cancel:false
+    {
+      let cancelCount = 0;
+      const realCancel = synth.cancel;
+      synth.cancel = () => { cancelCount += 1; realCancel(); };
+      await speak('first');
+      t('speak() cancels the queue by default', cancelCount === 1, `cancelCount=${cancelCount}`);
+      await speak('second', { cancel: false });
+      t('cancel:false skips the queue-clear', cancelCount === 1, `cancelCount=${cancelCount}`);
+      synth.cancel = realCancel;
+    }
+
+    // ---- 6. speakSeq cancels only on the FIRST fragment --------------------
+    {
+      let cancelCount = 0;
+      const realCancel = synth.cancel;
+      synth.cancel = () => { cancelCount += 1; realCancel(); };
+      spoken.length = 0;
+      await speakSeq(['one', 'two', 'three'], { gap: 5 });
+      t('speakSeq speaks every fragment, in order',
+        spoken.map((u) => u.text).join(',') === 'one,two,three', spoken.map((u) => u.text).join(','));
+      t('speakSeq cancels the queue only once (first fragment)', cancelCount === 1, `cancelCount=${cancelCount}`);
+      synth.cancel = realCancel;
+    }
+
+    // ---- 7. an empty/missing parts list is a no-op -------------------------
+    {
+      spoken.length = 0;
+      await speakSeq([]);
+      await speakSeq(null);
+      t('speakSeq([]) / speakSeq(null) speak nothing', spoken.length === 0, `count=${spoken.length}`);
+    }
+
+    // ---- 8. speak('') / speak(null) resolve without calling the engine -----
+    {
+      spoken.length = 0;
+      await speak('');
+      await speak(null);
+      t('speak() with no text never reaches the engine', spoken.length === 0, `count=${spoken.length}`);
+    }
+
+    // ---- 9. stop() cancels the engine and clears the keepalive set --------
+    {
+      let cancelled = false;
+      const realCancel = synth.cancel;
+      synth.cancel = () => { cancelled = true; realCancel(); };
+      stop();
+      t('stop() calls through to synth.cancel()', cancelled === true);
+      synth.cancel = realCancel;
+    }
+
+    // ---- 10. speak() never hangs even if the engine drops its events -------
+    // autoFire off: the fake engine accepts the utterance but never calls
+    // onstart/onend — speak()'s own safety timeout must still resolve it.
+    {
+      autoFire = false;
+      const start = performance.now();
+      await speak('x'); // guardMs = 1500 + 1*90 ≈ 1590ms
+      const elapsed = performance.now() - start;
+      t('speak() resolves via its own safety timeout when the engine goes silent',
+        elapsed >= 1400 && elapsed < 3000, `elapsed=${elapsed.toFixed(0)}ms`);
+      autoFire = true;
+    }
+
+    // ---- 11. unlock() is idempotent and never throws -----------------------
+    {
+      let threw = false;
+      try { unlock(); unlock(); unlock(); } catch { threw = true; }
+      t('unlock() can be called repeatedly without throwing', !threw);
+    }
+
+    // ---- render -------------------------------------------------------------
+    const list = document.getElementById('results');
+    const summary = document.getElementById('summary');
+    const failed = results.filter((r) => !r.pass);
+    list.innerHTML = results.map((r) =>
+      `<li class="${r.pass ? 'ok' : 'bad'}">${r.pass ? '✅' : '❌'} ${r.name}${r.why ? ` <span class="why">— ${r.why}</span>` : ''}</li>`
+    ).join('');
+    summary.textContent = failed.length ? `${failed.length} FAILED of ${results.length}` : `all ${results.length} passed`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+  </script>
+</body>
+</html>

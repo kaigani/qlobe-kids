@@ -9,6 +9,7 @@
 // Contract references are to games/rhyming-detective/game-design.md.
 
 import { createScene } from '../../../shared/js/hotspot-scene.js';
+import { createTimers } from '../../../shared/js/timers.js';
 
 // ---------------------------------------------------------------------------
 // §4.4 — the game's only PRNG. FNV-1a over a concatenated string, shared by the
@@ -295,7 +296,10 @@ export function createPlayfield({ mount, config, voice, sfx, ctx, on }) {
   let currentRoom = null;
   let layout = 'wide';
   let lastReflow = null;
-  const timers = new Set();
+  // Mirrors bug-hotel-observer/js/game.js's own timerGroup — see that file's
+  // comment for the scale convention (ctx.timeScale() stays authoritative;
+  // retuneTimers() below is main.js's "fastTimers() changed" hook).
+  const timerGroup = createTimers();
   const found = [];            // words, in the order found
   const claimed = new Set();   // tray slots claimed synchronously at t=520
   let wrongTaps = 0;
@@ -303,17 +307,14 @@ export function createPlayfield({ mount, config, voice, sfx, ctx, on }) {
   let busy = 0;                // in-flight correct choreographies
   let caseToken = 0;
 
-  const T = (ms) => ms * ctx.timeScale();
+  const T = (ms) => timerGroup.ms(ms);
 
   function later(ms, fn) {
-    const id = setTimeout(() => { timers.delete(id); fn(); }, Math.max(0, T(ms)));
-    timers.add(id);
-    return id;
+    return timerGroup.after(ms, fn);
   }
 
   function cancelTimers() {
-    for (const id of timers) clearTimeout(id);
-    timers.clear();
+    timerGroup.clearAll();
   }
 
   // -- sprites ---------------------------------------------------------------
@@ -862,6 +863,8 @@ export function createPlayfield({ mount, config, voice, sfx, ctx, on }) {
     get caseDef() { return caseDef; },
     setEnabled(on_) { scene.setEnabled(on_); },
     reflow() { scene.reflow(); },
+    /** main.js's `fastTimers()` hook — mirrors bug-hotel-observer's retuneDwell(). */
+    retuneTimers() { timerGroup.setScale(1 / ctx.timeScale()); },
     unfoundRhymes() {
       if (!caseDef) return [];
       return caseDef.rhymes.filter((w) => !found.includes(w));

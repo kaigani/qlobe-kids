@@ -5,6 +5,8 @@ let ctx = null;
 let master = null;
 let selfHealAttached = false;
 const playCounts = Object.create(null);
+const MASTER_GAIN = 0.5;
+let muted = false;
 
 function mark(name) {
   playCounts[name] = (playCounts[name] || 0) + 1;
@@ -15,6 +17,22 @@ export function stats() {
   return { ...playCounts };
 }
 
+/**
+ * Silence (or unsilence) every effect at once. Every effect routes through
+ * the one master gain node, so this replaces the `if (state.muted) return;`
+ * proxy ~7 games wrap around every `sfx.xxx()` call — mute the channel here
+ * instead of gating each call site by hand.
+ */
+export function setMuted(on) {
+  muted = !!on;
+  if (master) master.gain.value = muted ? 0 : MASTER_GAIN;
+}
+
+/** @returns {boolean} */
+export function isMuted() {
+  return muted;
+}
+
 /** Lazily build the AudioContext + master gain. Safe to call repeatedly. */
 function ensure() {
   if (ctx) return ctx;
@@ -22,7 +40,7 @@ function ensure() {
   if (!AC) return null;
   ctx = new AC();
   master = ctx.createGain();
-  master.gain.value = 0.5;
+  master.gain.value = muted ? 0 : MASTER_GAIN;
   master.connect(ctx.destination);
   attachSelfHeal();
   return ctx;

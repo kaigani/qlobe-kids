@@ -89,3 +89,17 @@ body {
   white-space: nowrap;
   border: 0;
 }
+
+/* The two properties every hand-rolled drag-ghost element needs and is one
+   copy-paste away from forgetting: `position: fixed` (it tracks the pointer
+   across the whole viewport, not inside whatever scrolls) and
+   `pointer-events: none` (without it the ghost itself eats the drop's
+   pointerup/pointercancel and the piece never lands). Six games each grew a
+   full bespoke ghost block (`.drag-ghost`, `.tray-drag-ghost`,
+   `.la-tray-drag-ghost`, …) with their own sizing/shadow/rotation on top of
+   this — extend `.qk-drag-ghost`, don't replace it, so size/shape/art stay
+   the game's own. */
+.qk-drag-ghost {
+  position: fixed;
+  pointer-events: none;
+}

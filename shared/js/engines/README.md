@@ -20,6 +20,13 @@ shared/js/engines/
   coach-timer.js      guide a real-world activity: spoken steps + timer + checklist
 ```
 
+Three more files live in this folder but are **not** engines under the contract
+below — `puppet-band.js`, `puppet-theater.js`, `story-stones.js` predate it and
+break the import allow-list (they eagerly init `voice-clips.js`, among other
+things). Treat them as single-game modules that happen to sit here, not as a
+pattern to copy; a future pass either promotes them to the contract or moves
+each under its one consuming game.
+
 ## Engine module contract
 
 - Pure ES module. Imports allowed:

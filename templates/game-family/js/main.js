@@ -11,12 +11,14 @@
 // Keep it vanilla ES modules — no bundler, no framework, no build step.
 
 // ---- shared platform libraries ---------------------------------------
-// audio.js  = PRIMARY voice channel. Plays recorded teacher-voice clips from the
-//             audio manifest, and falls back to device Web Speech when a clip
-//             (or the whole manifest) is missing. Exported: ready, unlock,
-//             play(category, key, opts), playSeq(items, opts), stop().
-// speech.js = the Web Speech wrapper audio.js falls back to. You can also call
-//             speech.speak('...') directly for text you have no recording for.
+// voice-clips.js = PRIMARY voice channel. Plays recorded teacher-voice clips
+//             from a per-game manifest (./assets/audio/manifest.json +
+//             ./assets/audio/lines.json), and falls back to device Web Speech
+//             when a clip (or the whole manifest) is missing. Exported: init,
+//             say(key, fallbackText), unlock, stop, setMuted, getAudioLog.
+// speech.js = the Web Speech wrapper voice-clips.js falls back to. You can
+//             also call speech.speak('...') directly for text you have no
+//             recording for.
 // sfx.js    = WebAudio sound effects, zero files. Exported effects include
 //             pop(), tick(), tada(), sparkle(), whoosh(), boing().
 // PATH NOTE: these imports resolve relative to THIS module's own URL. main.js
@@ -26,7 +28,7 @@
 // (js/ -> <id>/ -> games/ -> repo root), so the path does not change.
 // (Note: index.html's importmap uses only ../../shared/ because it resolves
 //  relative to the document, which sits one level shallower than this module.)
-import * as audio from '../../../shared/js/audio.js';
+import * as voiceClips from '../../../shared/js/voice-clips.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as sfx from '../../../shared/js/sfx.js';
 
@@ -40,8 +42,10 @@ const btnHome = document.getElementById('btn-home');
 let currentMode = null; // id of the running mode, or null on the menu
 
 // Kick off manifest loading at boot. It never rejects — a missing manifest
-// simply leaves audio.js in speech-fallback mode, so we don't block on it.
-audio.ready.catch(() => {});
+// simply leaves voice-clips.js in speech-fallback mode, so we don't block on
+// it. Swap in real recorded lines once you have them, in your game's
+// ./assets/audio/manifest.json + ./assets/audio/lines.json.
+voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json');
 
 // ---- audio unlock on first gesture -----------------------------------
 // iOS Safari will not play any sound until the user has interacted. We unlock
@@ -52,14 +56,14 @@ function unlockAudio() {
   audioUnlocked = true;
   sfx.unlock();
   speech.unlock();
-  audio.unlock();
+  voiceClips.unlock();
 }
 window.addEventListener('pointerdown', unlockAudio, { once: false });
 
 // ---- screen routing --------------------------------------------------
 function showMenu() {
   currentMode = null;
-  audio.stop();      // stop any in-flight voice clip
+  voiceClips.stop(); // stop any in-flight voice clip
   speech.stop();
   menu.classList.remove('hidden');
   stage.classList.add('hidden');
@@ -81,8 +85,8 @@ function startMode(mode) {
       stageText.textContent = 'Mode A is playing';
       console.log('[template] started Mode A');
       // Try a recorded prompt; fall back to spoken text if there's no clip.
-      // (Swap 'prompts'/'start' for real manifest keys once you record audio.)
-      audio.play('prompts', 'start', { fallbackText: 'Let’s play Mode A!' });
+      // (Swap 'start' for a real manifest key once you record audio.)
+      voiceClips.say('start', 'Let’s play Mode A!');
       sfx.pop();
       break;
 

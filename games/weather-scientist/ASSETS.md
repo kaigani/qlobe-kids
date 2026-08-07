@@ -64,7 +64,7 @@ report is `assets/source/process-art-qa.json`.
 | --- | --- | --- | --- |
 | `assets/audio/<scene>-<key>.m4a` (60 clips: 4 scenes × 15 lines) | Exact authored lines in `config.json`'s per-scene `voice` blocks (mirrored into `assets/audio/lines.json`), cloned from the platform's shared teacher-voice reference (`voice_teacher.wav`) with the LAN `qwen3-tts-voiceclone` workflow | `tools/generate-voice.py` clones each line, converts the FLAC output to AAC 96 kbps M4A (`loudnorm=I=-18:TP=-2:LRA=9`), and Whisper-QA's the transcript against the source text (space/punctuation-insensitive compare, retried across seeds 7→42→1337→9001 on mismatch or failed audio QA) before shipping. Results: `manifest.json` and `qa.json`. | Generated locally for this project from the platform's shared voice reference; CC BY 4.0 |
 | Interface feedback | `shared/js/sfx.js` | Synthesized at runtime with Web Audio | QLOBE Kids code, MIT |
-| Rain/wind/snow/sand ambience | `shared/js/weather-world.js` | Synthesized at runtime with Web Audio; muted/suspended with the game | QLOBE Kids code, MIT |
+| Rain/wind/snow/sand ambience | `weather-world.js` (local, `games/weather-scientist/js/`) | Synthesized at runtime with Web Audio; muted/suspended with the game | QLOBE Kids code, MIT |
 | Missing-clip fallback | `shared/js/voice-clips.js` → `shared/js/speech.js` | Device speech only when a committed clip cannot play — not exercised in normal operation (60/60 clips ship valid) | Device/browser supplied; no bundled third-party file |
 
 An earlier build of this game generated its "recorded" clips entirely offline
@@ -93,7 +93,7 @@ python3 games/weather-scientist/tools/process-art.py            # all scenes
 python3 games/weather-scientist/tools/process-art.py --scene desert
 python3 games/weather-scientist/tools/process-art.py --check
 python3 games/weather-scientist/tools/generate-voice.py --check
-node shared/js/weather-world.test.mjs
+node games/weather-scientist/js/weather-world.test.mjs
 ```
 
 Current status: all 4 scenes' backgrounds, world sheets, and UI kit rebuild

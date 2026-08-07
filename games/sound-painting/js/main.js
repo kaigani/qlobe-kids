@@ -6,6 +6,7 @@ import { createMusicalCanvas } from '../../../shared/js/musical-canvas.js';
 import { createNarrator } from '../../../shared/js/narrator.js';
 import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const mount = document.getElementById('game');
 const STORAGE_KEY = 'qlobe-sound-paintings-v1';
@@ -107,17 +108,37 @@ function showSplash({ greet = true } = {}) {
         <h1>Sound<br>Painting</h1>
         <p>Paint what you hear</p>
       </header>
-      <div class="mode-grid" role="list" aria-label="Musical brushes">
-        ${config.modes.map((mode) => `
-          <button class="mode-card" type="button" role="listitem"
-                  data-action="start" data-value="${mode.id}" data-target="mode-${mode.id}" data-mode="${mode.id}"
-                  aria-label="${mode.title}">
-            <span class="mode-symbol" aria-hidden="true">${mode.symbol}</span>
-            <span class="mode-title">${mode.title}</span>
-          </button>`).join('')}
-      </div>
+      <div class="mode-grid" role="list" aria-label="Musical brushes"></div>
       <p class="splash-note">No wrong way to paint.</p>
     </section>`;
+  // Mode cards are the one splash control NOT wired through wireActions()'s
+  // generic [data-action] sweep below — renderModeCards() owns their tap path
+  // directly (it always attaches its own onTap, so leaving data-action on
+  // these buttons too would double-wire them). The debug tap() below has the
+  // matching fallback for QLOBE_DEBUG.tap('mode-x').
+  renderModeCards({
+    host: mount.querySelector('.mode-grid'),
+    modes: config.modes,
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-card's own clamp(172px,26vh,248px) min-height
+                 // already clears it).
+    cardClass: 'mode-card',
+    showTitle: false, // decorate() builds .mode-symbol + .mode-title itself
+    decorate(btn, mode) {
+      const symbol = document.createElement('span');
+      symbol.className = 'mode-symbol';
+      symbol.setAttribute('aria-hidden', 'true');
+      symbol.textContent = mode.symbol;
+      btn.append(symbol);
+      const title = document.createElement('span');
+      title.className = 'mode-title';
+      title.textContent = mode.title;
+      btn.append(title);
+    },
+    onPick: (id) => startMode(id),
+    feedback: (e) => feedback(e),
+  });
   wireActions();
   if (!greet) return;
   ready.then(async () => {
@@ -235,8 +256,7 @@ async function playPainting(target = canvas) {
     updatePaintControls();
     return false;
   }
-  if (state.screen === 'paint') await target.replay({ speed: state.fast ? 5 : 1 });
-  else await target.replay({ speed: state.fast ? 5 : 1 });
+  await target.replay({ speed: state.fast ? 5 : 1 });
   state.replaying = false;
   updatePaintControls();
   return true;
@@ -398,6 +418,9 @@ installDebug({
   tap: async (targetId) => {
     const element = mount.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
     if (!element || element.disabled) return { accepted: false };
+    if (!element.dataset.action && targetId.startsWith('mode-')) {
+      return { accepted: await startMode(targetId.slice(5)) };
+    }
     await route(element.dataset.action, element.dataset.value);
     return { accepted: true };
   },

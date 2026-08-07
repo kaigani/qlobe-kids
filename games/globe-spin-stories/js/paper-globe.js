@@ -4,7 +4,7 @@
 // from Natural Earth data. Raster DOM pins sit above the canvas so they remain
 // accessible, inspectable, and at least 96px even when the sphere is small.
 
-import * as THREE from '../vendor/three.module.min.js';
+import * as THREE from '../../../shared/vendor/three.module.min.js';
 
 const DEG = Math.PI / 180;
 const DEFAULTS = {

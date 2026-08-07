@@ -16,26 +16,11 @@
 //
 // Every returned object is sized to fit a `size` box (contain), centered pivot.
 
-const SHARED = new URL('../../', import.meta.url); // -> shared/
-
-/**
- * Resolve an art ref to a URL string, or null when the ref is not file-backed.
- * @param {string} ref
- * @param {string} [base] base URL for `game:` refs (default: document.baseURI)
- * @returns {string|null}
- */
-export function artUrlRef(ref, base) {
-  if (typeof ref !== 'string') return null; // arrays/objects have no single URL
-  if (ref.startsWith('shared:')) return new URL('assets/' + ref.slice(7), SHARED).href;
-  if (ref.startsWith('char:')) return new URL('characters/' + ref.slice(5) + '/portrait.png', SHARED).href;
-  if (ref.startsWith('game:')) return new URL(ref.slice(5), base || document.baseURI).href;
-  return null;
-}
-
-/** Normalise a layer entry: a bare ref string, or { ref, scale, dx, dy, alpha, tint }. */
-function layerSpec(entry) {
-  return (entry && typeof entry === 'object' && !Array.isArray(entry)) ? entry : { ref: entry };
-}
+// URL resolution + layer normalisation are shared with engines/art.js — see
+// ../art-ref.js. artUrlRef keeps its historic name here for this file's own
+// call sites and its several `import { artUrlRef } from '../stage/art-pixi.js'` consumers.
+import { resolveArtUrl as artUrlRef, layerSpec } from '../art-ref.js';
+export { artUrlRef };
 
 /**
  * Build a display object for an art ref.

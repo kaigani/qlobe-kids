@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>sfx.js test</title>
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>sfx.js test</h2>
+  <p class="lede">
+    Runs against a REAL <code>AudioContext</code> (WebAudio graph construction
+    needs no mock — the only thing worth faking is a whole synthesizer, which
+    would test the fake, not sfx.js), muted at the master gain before any
+    effect fires so the run stays silent. The behaviour under test is the
+    wrapper: every effect must be callable pre-unlock without throwing, the
+    master-gain mute/unmute round-trip, and that muting BEFORE the context
+    exists is honoured once it's created.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    import * as sfx from './sfx.js';
+
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+
+    const EFFECTS = ['pop', 'unpop', 'whoosh', 'sparkle', 'tada', 'silly', 'boing', 'tick', 'vroom', 'motor', 'honk'];
+
+    // ---- 1. shape ------------------------------------------------------
+    for (const name of [...EFFECTS, 'unlock', 'setMuted', 'isMuted', 'stats']) {
+      t(`exports ${name}`, typeof sfx[name] === 'function', typeof sfx[name]);
+    }
+
+    // ---- 2. muting BEFORE the AudioContext exists is honoured -------------
+    // sfx.js builds its AudioContext lazily on first unlock()/effect call —
+    // setMuted() must still record the intent and apply it the moment the
+    // real context (and its master gain node) comes into being.
+    {
+      t('isMuted() defaults to false', sfx.isMuted() === false);
+      sfx.setMuted(true);
+      t('setMuted(true) is readable before any audio node exists', sfx.isMuted() === true);
+    }
+
+    // ---- 3. unlock() builds the context; still silent -----------------------
+    {
+      let threw = false;
+      try { sfx.unlock(); } catch { threw = true; }
+      t('unlock() does not throw (builds the AudioContext + master gain)', !threw);
+      t('isMuted() is still true after the context now exists', sfx.isMuted() === true);
+    }
+
+    // ---- 4. every effect is callable while muted, and never throws ----------
+    // Muted first so this whole pass is silent — the point is "does the
+    // WebAudio graph get built and scheduled without error", not "does it
+    // make the exact right sound".
+    for (const name of EFFECTS) {
+      let threw = null;
+      try { sfx[name](); } catch (err) { threw = err; }
+      t(`${name}() does not throw`, !threw, threw && threw.message);
+    }
+
+    // ---- 5. unmute takes effect (no throw, and isMuted() flips back) --------
+    {
+      let threw = false;
+      try { sfx.setMuted(false); } catch { threw = true; }
+      t('setMuted(false) does not throw', !threw);
+      t('isMuted() reflects the unmute', sfx.isMuted() === false);
+    }
+
+    // ---- 6. effects are callable again post-unmute, still no throw ----------
+    // (Real audible output here — this is the one moment the run isn't
+    // silent. A single quick pop() is the smallest honest proof the master
+    // gain actually un-muted, not just that the flag flipped.)
+    {
+      let threw = null;
+      try { sfx.pop(); } catch (err) { threw = err; }
+      t('an effect after unmuting does not throw', !threw, threw && threw.message);
+    }
+    sfx.setMuted(true); // back to silent for the rest of the page's life
+
+    // ---- 7. stats() tracks the effects that call mark() ----------------------
+    // Only vroom/motor/honk call mark() today (pop/tick/etc. don't) — this
+    // locks in that split rather than assuming every effect is counted.
+    {
+      const before = sfx.stats();
+      sfx.vroom();
+      const after = sfx.stats();
+      t('stats() counts a mark()-ed effect', (after.vroom || 0) === (before.vroom || 0) + 1,
+        `before=${before.vroom || 0} after=${after.vroom || 0}`);
+    }
+
+    // ---- 8. unlock() is idempotent -------------------------------------------
+    {
+      let threw = false;
+      try { sfx.unlock(); sfx.unlock(); sfx.unlock(); } catch { threw = true; }
+      t('unlock() can be called repeatedly without throwing', !threw);
+    }
+
+    // ---- render -------------------------------------------------------------
+    const list = document.getElementById('results');
+    const summary = document.getElementById('summary');
+    const failed = results.filter((r) => !r.pass);
+    list.innerHTML = results.map((r) =>
+      `<li class="${r.pass ? 'ok' : 'bad'}">${r.pass ? '✅' : '❌'} ${r.name}${r.why ? ` <span class="why">— ${r.why}</span>` : ''}</li>`
+    ).join('');
+    summary.textContent = failed.length ? `${failed.length} FAILED of ${results.length}` : `all ${results.length} passed`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+  </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import { createBag, createScreens } from '../../../shared/js/screens.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
+import { preloadImages } from '../../../shared/js/preload.js';
 import {
   createConstrainedGestureDom,
   nearestStop,
@@ -68,7 +69,7 @@ const assetUrls = [
 
 const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
-  ...assetUrls.map(preload),
+  preloadImages(assetUrls),
 ]).then(() => true);
 
 const screens = createScreens({
@@ -98,16 +99,6 @@ installUnlockOnGesture({
 wireHud();
 wireEndActions();
 renderSplash();
-
-function preload(src) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(true);
-    image.onerror = () => resolve(false);
-    image.src = src;
-  });
-}
 
 function line(key) { return config.voice[key] || ''; }
 function say(key) {

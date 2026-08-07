@@ -1,11 +1,11 @@
 import config from '../config.js';
 import { createStage } from '../../../shared/js/stage/stage.js';
 import { createTheater } from '../../../shared/js/stage/theater.js';
-import { createPerformanceRecorder, openPerformanceStore } from '../../../shared/js/performance-recorder.js';
+import { createPerformanceRecorder, openPerformanceStore } from './performance-recorder.js';
 import {
   canExportPerformanceMp4,
   renderPerformanceMp4,
-} from '../../../shared/js/performance-video-export.js';
+} from './performance-video-export.js';
 import { onTap } from '../../../shared/js/tap.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as speech from '../../../shared/js/speech.js';
@@ -14,6 +14,7 @@ import { escapeHtml } from '../../../shared/js/dom.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 
 const appEl = document.querySelector('#app');
@@ -175,13 +176,50 @@ async function renderSplash({ announce = true } = {}) {
       <div class="logo-kicker">Make your own</div>
       <h1 class="logo">${escapeHtml(config.title)}</h1>
       <p class="tagline">Pick two stars. Tell it your way!</p>
-      <div class="splash-actions">
-        <button class="mode-button" data-action="mode" data-value="guided" data-target="mode-guided"><img class="mode-art" src="${uiArt.storyStarters}" alt=""><span class="mode-label">Story Starters</span></button>
-        <button class="mode-button" data-action="mode" data-value="free" data-target="mode-free"><img class="mode-art" src="${uiArt.freeShow}" alt=""><span class="mode-label">Free Show</span></button>
-        <button class="mode-button" data-action="shows" data-target="my-shows"><img class="mode-art" src="${uiArt.myShows}" alt=""><span class="mode-label">My Shows</span></button>
-      </div>
+      <div class="splash-actions"></div>
     </div>
   </section>`);
+  // config.modes only covers the two real modes (guided/free) — "My Shows"
+  // is a third, differently-shaped navigation button (`data-action="shows"`,
+  // no config.modes entry) that shares this row and its `nth-child(3)` color
+  // rule, so it's appended manually after the mode cards rather than folded
+  // into renderModeCards()'s `modes` array.
+  const actionsHost = appEl.querySelector('.splash-actions');
+  renderModeCards({
+    host: actionsHost,
+    modes: config.modes,
+    skin: false, // .mode-button keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-button's own size already clears it).
+    cardClass: 'mode-button',
+    showTitle: false, // decorate() builds .mode-art + .mode-label itself,
+                       // matching the original markup's exact class names
+    art: () => null, // suppress modeCard()'s own auto <img class="qk-mode-art">
+                      // (wrong class name for this game's CSS) — decorate()
+                      // below builds the real <img class="mode-art"> itself
+    decorate(btn, mode) {
+      const art = document.createElement('img');
+      art.className = 'mode-art';
+      art.src = mode.art;
+      art.alt = '';
+      btn.append(art);
+      const label = document.createElement('span');
+      label.className = 'mode-label';
+      label.textContent = mode.title;
+      btn.append(label);
+    },
+    onPick: (id) => handleAction('mode', id),
+    feedback: () => { if (!state.muted) sfx.tick(); },
+  });
+  const showsButton = document.createElement('button');
+  showsButton.className = 'mode-button';
+  showsButton.dataset.action = 'shows';
+  showsButton.dataset.target = 'my-shows';
+  showsButton.innerHTML = `<img class="mode-art" src="${uiArt.myShows}" alt=""><span class="mode-label">My Shows</span>`;
+  actionsHost.append(showsButton);
+  onTap(showsButton, () => handleAction('shows', undefined, showsButton), {
+    feedback: () => { if (!state.muted) sfx.tick(); },
+  });
   if (announce) speak('intro');
 }
 

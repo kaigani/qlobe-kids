@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>tap.js test</title>
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+    button { position: absolute; left: -9999px; } /* off-screen, never actually tapped by a human */
+  </style>
+</head>
+<body>
+  <h2>tap.js test</h2>
+  <p class="lede">
+    Runs on load against synthetic <code>PointerEvent</code>s, so nothing here
+    depends on a real touch or mouse. The behaviour under test is the split
+    that motivated <code>onTap</code>: feedback on <code>pointerdown</code>,
+    action on the SAME press's <code>pointerup</code> — never on a stray
+    pointer, never twice from a trailing synthetic <code>click</code>.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+  <button id="btn"></button>
+
+  <script type="module">
+    import { onTap } from './tap.js';
+
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+
+    const btn = document.getElementById('btn');
+
+    function fire(type, opts = {}) {
+      btn.dispatchEvent(new PointerEvent(type, {
+        bubbles: true, cancelable: true, pointerId: 1, isPrimary: true, ...opts,
+      }));
+    }
+
+    // ---- 1. shape ----------------------------------------------------------
+    {
+      const dispose = onTap(btn, () => {});
+      t('returns a disposer function', typeof dispose === 'function');
+      dispose();
+    }
+
+    // ---- 2. feedback on pointerdown, action on pointerup -------------------
+    {
+      const log = [];
+      const dispose = onTap(btn, () => log.push('action'), { feedback: () => log.push('feedback') });
+      fire('pointerdown');
+      t('feedback runs on pointerdown, before action', log.join(',') === 'feedback', JSON.stringify(log));
+      fire('pointerup');
+      t('action runs on pointerup', log.join(',') === 'feedback,action', JSON.stringify(log));
+      dispose();
+    }
+
+    // ---- 3. no feedback option is fine --------------------------------------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      fire('pointerdown');
+      fire('pointerup');
+      t('action fires with no feedback callback', fired === 1, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 4. a feedback that throws must not block the action ---------------
+    {
+      let actioned = false;
+      const dispose = onTap(btn, () => { actioned = true; }, {
+        feedback: () => { throw new Error('boom'); },
+      });
+      let threw = false;
+      try { fire('pointerdown'); } catch { threw = true; }
+      t('a throwing feedback does not escape pointerdown', !threw);
+      fire('pointerup');
+      t('action still runs after feedback threw', actioned === true);
+      dispose();
+    }
+
+    // ---- 5. only the pointer that went down can complete the press ---------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      fire('pointerdown', { pointerId: 1 });
+      fire('pointerup', { pointerId: 2 }); // a different finger's pointerup
+      t('a different pointerId does not complete the press', fired === 0, `fired=${fired}`);
+      fire('pointerup', { pointerId: 1 }); // the original finger, later
+      t('the original pointerId still completes it', fired === 1, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 6. second finger ignored (isPrimary: false) ------------------------
+    {
+      const log = [];
+      const dispose = onTap(btn, () => log.push('action'), { feedback: () => log.push('feedback') });
+      fire('pointerdown', { pointerId: 1, isPrimary: true });
+      fire('pointerdown', { pointerId: 2, isPrimary: false }); // second finger while first is down
+      t('a non-primary pointerdown is ignored (no extra feedback)',
+        log.join(',') === 'feedback', JSON.stringify(log));
+      fire('pointerup', { pointerId: 1 }); // first finger lifts — still completes normally
+      t('the primary pointer still completes the press', log.join(',') === 'feedback,action', JSON.stringify(log));
+      dispose();
+    }
+
+    // ---- 7. pointercancel clears the press without firing action -----------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      fire('pointerdown', { pointerId: 1 });
+      fire('pointercancel', { pointerId: 1 });
+      t('pointercancel does not fire the action', fired === 0, `fired=${fired}`);
+      fire('pointerup', { pointerId: 1 }); // a stray pointerup after cancel — downId is already cleared
+      t('a pointerup after cancel does not fire it either', fired === 0, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 8. the trailing synthetic click is suppressed ----------------------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      fire('pointerdown');
+      fire('pointerup');
+      t('pointerup fired the action once', fired === 1, `fired=${fired}`);
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      t('the click the browser sends after a touch does not double-fire it', fired === 1, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 9. a bare click (keyboard / assistive tech) still activates -------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      // No pointer events at all — this is what Enter/Space on a focused
+      // button, or a screen reader's activation gesture, actually dispatches.
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      t('a click with no prior pointer sequence still activates (keyboard/AT)', fired === 1, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 10. disposer removes every listener --------------------------------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      dispose();
+      fire('pointerdown');
+      fire('pointerup');
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      t('no listener fires after dispose()', fired === 0, `fired=${fired}`);
+    }
+
+    // ---- 11. repeated presses each fire exactly once -------------------------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      for (let i = 0; i < 3; i += 1) {
+        fire('pointerdown');
+        fire('pointerup');
+      }
+      t('three presses fire the action exactly three times', fired === 3, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- render -------------------------------------------------------------
+    const list = document.getElementById('results');
+    const summary = document.getElementById('summary');
+    const failed = results.filter((r) => !r.pass);
+    list.innerHTML = results.map((r) =>
+      `<li class="${r.pass ? 'ok' : 'bad'}">${r.pass ? '✅' : '❌'} ${r.name}${r.why ? ` <span class="why">— ${r.why}</span>` : ''}</li>`
+    ).join('');
+    summary.textContent = failed.length ? `${failed.length} FAILED of ${results.length}` : `all ${results.length} passed`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+  </script>
+</body>
+</html>

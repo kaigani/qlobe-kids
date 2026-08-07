@@ -2,12 +2,13 @@ import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
-import { coverageGesture, holdPour, ingredientDrag, pathGestures } from './gesture-surface.js';
+import { coverageGesture, holdPour, pathGestures } from './gesture-surface.js';
 import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createScreens, wireEndScreen } from '../../../shared/js/screens.js';
 import { renderModeCards } from '../../../shared/js/mode-select.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
@@ -100,7 +101,7 @@ const state = {
 
 let mode = null;
 let gestureDispose = null;
-let dragDispose = null;
+let dragBound = false;
 let coverage = null;
 let pour = null;
 let stepTapDisposers = [];
@@ -157,11 +158,10 @@ function ingredientColor(kind) {
 
 function clearStep() {
   gestureDispose?.();
-  dragDispose?.();
+  ingredientDrag.cancel();
   coverage?.destroy?.();
   pour?.destroy?.();
   gestureDispose = null;
-  dragDispose = null;
   coverage = null;
   pour = null;
   stepTapDisposers.forEach((dispose) => dispose());
@@ -513,11 +513,39 @@ function makeIngredient(spec, index) {
   return piece;
 }
 
-function slotAt(x, y) {
-  return [...els.board.querySelectorAll('.slot:not(.filled)')].find((slot) => {
-    const r = slot.getBoundingClientRect();
-    return x >= r.left - 20 && x <= r.right + 20 && y >= r.top - 20 && y <= r.bottom + 20;
-  }) || null;
+// ---- Drag: shared/js/stage/drag-to-slot-dom.js ---------------------------
+// Was ~50 LOC of hand-rolled pointerdown/move/up/cancel in gesture-surface.js
+// (ingredientDrag) — a byte-for-byte match for the module's own default
+// ghost (cloneNode, strip id) and slot resolution (elementFromPoint + a
+// 20px-padded rect fallback), just with the padding and callback names
+// spelled out by hand. `els.tray` is a fixed element (only its `.ingredient`
+// children change per step), so the pointerdown listener is wired once.
+const ingredientDrag = createDragToSlotDom({
+  getPiece: (el) => el,
+  slotSelector: '.slot:not(.filled)',
+  slotPad: 20,
+  root: () => els.board,
+  ghostClass: 'drag-clone',
+  slop: 8,
+  onLift: (piece) => { piece.style.opacity = '.25'; },
+  onTap: (piece) => selectPiece(piece),
+  onDrop: (piece, drag) => {
+    piece.style.opacity = '';
+    if (drag.slot) attemptPlace(piece, drag.slot);
+    else nudgePiece(piece);
+  },
+  onCancel: (piece) => { piece.style.opacity = ''; },
+});
+
+function wireIngredientDrag() {
+  if (dragBound) return;
+  dragBound = true;
+  els.tray.addEventListener('pointerdown', (event) => {
+    const el = event.target.closest('.ingredient');
+    if (!el || !els.tray.contains(el) || el.classList.contains('placed')) return;
+    event.preventDefault();
+    ingredientDrag.begin(event, el);
+  });
 }
 
 function selectPiece(piece) {
@@ -602,12 +630,7 @@ function renderArrangeStep(step) {
   els.board.append(base);
   state.total = step.slots.length;
 
-  dragDispose = ingredientDrag(els.tray, {
-    getSlot: slotAt,
-    onSelect: selectPiece,
-    onDrop: attemptPlace,
-    onCancel: nudgePiece,
-  });
+  wireIngredientDrag();
 }
 
 function setupStep({ speakPrompt = true } = {}) {

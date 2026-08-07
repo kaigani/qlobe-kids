@@ -214,8 +214,9 @@ The important runtime pieces are:
 - `shared/js/stage/lipsync.js` and `mouth.js` — speech animation.
 - `shared/js/stage/music-sync.js` — beat/note/energy animation hooks.
 - `shared/js/stage/tween.js`, `spline.js`, and `particles.js` — motion/payoff.
-- `shared/js/performance-recorder.js` — tableau, events, audio, IndexedDB.
-- `shared/js/performance-video-export.js` — local replay-to-MP4 export.
+- `performance-recorder.js` / `performance-video-export.js` — tableau, events,
+  audio, IndexedDB, replay-to-MP4 export. Single-consumer (puppet-retell); lives
+  in `games/puppet-retell/js/`, not `shared/js/`.
 
 Studio previews use these same runtime modules. “What you see is what ships” is
 an architectural requirement, not a slogan.
@@ -557,10 +558,10 @@ initial tableau + timestamped game events + optional microphone Blob
 ```
 
 This gives a small, editable, privacy-preserving show that can be replayed by
-the real runtime. `shared/js/performance-recorder.js` is the reference service.
+the real runtime. `games/puppet-retell/js/performance-recorder.js` is the reference service.
 
 If a game offers keepsake export,
-`shared/js/performance-video-export.js` replays into a fixed 1280 × 720 canvas
+`games/puppet-retell/js/performance-video-export.js` replays into a fixed 1280 × 720 canvas
 and records locally. No upload is required.
 
 Compatibility rules learned from Puppet Tales:

@@ -432,8 +432,8 @@ async function browserGate(base) {
   ok('no emoji in the live body DOM',
     await page.evaluate(() => !/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(document.body.innerText)));
 
-  await page.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimer(20); });
-  ok('fastTimer scales', await page.evaluate(() => window.QLOBE_DEBUG.getState().timeScale === 0.05));
+  await page.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimers(20); });
+  ok('fastTimers scales', await page.evaluate(() => window.QLOBE_DEBUG.getState().timeScale === 0.05));
 
   console.log('\n-- ISSUE 2: unframed at iPad landscape (1194x834) --');
   {
@@ -844,7 +844,7 @@ async function browserGate(base) {
   ok('no sticker/reward screen resulted from the wrong tap', afterWrong.screen !== 'reward');
   // The sequence itself (name -> nudge-wrong -> clue) is fire-and-forget from
   // greet()'s point of view, and each step AWAITS THE CLIP'S OWN PLAYBACK,
-  // which runs at real wall-clock speed — fastTimer only scales the gaps
+  // which runs at real wall-clock speed — fastTimers only scales the gaps
   // between steps, never decoded audio duration. So this waits on the log
   // itself, generously, rather than sampling it after a fixed pause.
   const wrongLog = await page.waitForFunction(() => {
@@ -857,7 +857,7 @@ async function browserGate(base) {
 
   // Drive the whole round to completion via winRound() so mode 2 is really
   // exercised end-to-end, the same way mode 1 was.
-  await page.evaluate(() => window.QLOBE_DEBUG.fastTimer(20));
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(20));
   await page.evaluate((id) => window.QLOBE_DEBUG.tap(id), beforeWrong.targetId);
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reward', null, { timeout: 12000 });
   ok('the real target still completes the case after a wrong tap', true);
@@ -895,7 +895,7 @@ async function browserGate(base) {
   page2.on('console', (m) => { if (m.type() === 'error') rmErrors.push(m.text()); });
   await page2.goto(URL_, { waitUntil: 'networkidle' });
   await page2.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page2.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimer(20); });
+  await page2.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimers(20); });
   ok('reduced motion is observed', await page2.evaluate(() => window.QLOBE_DEBUG.getState().reducedMotion === true));
   await page2.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
   await page2.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
@@ -935,7 +935,7 @@ async function browserGate(base) {
   console.log('\n-- ISSUE 3: the phone (390x844) is playable, HUD and all --');
   {
     await page3.evaluate(() => {
-      window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimer(20);
+      window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.seed(42); window.QLOBE_DEBUG.fastTimers(20);
     });
     await page3.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
     await page3.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
@@ -1078,7 +1078,7 @@ async function browserGate(base) {
     page5.on('console', (m) => { if (m.type() === 'error') wideFrameErrors.push(m.text()); });
     await page5.goto(URL_, { waitUntil: 'networkidle' });
     await page5.evaluate(() => window.QLOBE_DEBUG.ready);
-    await page5.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimer(20); });
+    await page5.evaluate(() => { window.QLOBE_DEBUG.mute(true); window.QLOBE_DEBUG.fastTimers(20); });
     await page5.evaluate(() => window.QLOBE_DEBUG.startMode('bug-hunt'));
     await page5.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'hotel'
       && window.QLOBE_DEBUG.getState().roomReady, null, { timeout: 8000 });

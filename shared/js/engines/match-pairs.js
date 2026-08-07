@@ -9,6 +9,7 @@ import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
 import { mulberry32, shuffle } from '../rng.js';
 import { escapeHtml, escapeAttr } from '../dom.js';
+import { emojiFromRef } from '../art-ref.js';
 import { createTimers } from '../timers.js';
 import { installDebug } from '../debug-harness.js';
 import { createScreens, wireEndScreen } from '../screens.js';
@@ -194,7 +195,7 @@ class MatchPairsGame {
     splash.innerHTML = `
       <a class="qk-match-home qk-match-img-btn qk-match-home-splash qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
       <div class="qk-match-splash-center qk-eng-center">
-        <div class="qk-match-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-match-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
         <div class="qk-match-mode-list qk-eng-mode-list"></div>
       </div>
@@ -750,7 +751,7 @@ class MatchPairsGame {
     end.innerHTML = `
       <button class="qk-match-back qk-match-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
       <div class="qk-match-end-center qk-eng-center">
-        <div class="qk-match-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-match-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.endArt || this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
         <button class="qk-match-again qk-eng-mode" type="button">
           <span class="qk-match-play-icon qk-eng-play-icon" aria-hidden="true"></span>
@@ -1015,10 +1016,10 @@ function normalizeConfig(config = {}) {
   }).filter((mode) => mode.pairs.length >= 2);
 
   return {
+    ...config,
     id: config.id || 'match-pairs',
     title: config.title || 'Match Pairs',
-    splashEmoji: config.splashEmoji || '🔎',
-    ...config,
+    splashEmoji: config.splashEmoji || config.splashArt || '🔎',
     copy,
     voice,
     modes,

@@ -33,6 +33,7 @@
 // existing caller sees any change at all.
 
 import * as sfx from './sfx.js';
+import { injectStyleOnce } from './dom.js';
 
 /**
  * The one platform celebration palette. Hex twins of the `0x…` values in
@@ -85,14 +86,6 @@ const CSS = `
   .qk-confetti { animation: none; }
 }
 `;
-
-function ensureStyle() {
-  if (document.getElementById(STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = STYLE_ID;
-  style.textContent = CSS;
-  document.head.append(style);
-}
 
 function reducedMotion() {
   try {
@@ -147,7 +140,7 @@ export function burstConfetti({
   const random = typeof rng === 'function' ? rng : Math.random;
   const driftPx = Number.isFinite(drift) ? Math.abs(drift) : 90;
   const size = (value) => (typeof value === 'number' ? `${value}px` : value);
-  ensureStyle();
+  injectStyleOnce(STYLE_ID, CSS);
 
   // An absolutely-positioned layer needs a positioned ancestor. `body` is fine
   // as-is (its static children resolve against the viewport), but an arbitrary

@@ -3,10 +3,10 @@
 // five creatures: main.js only calls createBlobStage() when the child picked
 // Blob, and that is the sole place three.js gets imported.
 //
-// It replaces blob-lobes.js, which stays on disk this round as the reference
-// for the choreography being preserved. The gestures, the tray, the fall with
-// weight, the squash landing, the four-ball unlock, the bin, the settle and the
-// shelf all behave as they did. What changed is what the clay IS.
+// It replaces blob-lobes.js (deleted; git history has it), keeping the same
+// choreography. The gestures, the tray, the fall with weight, the squash
+// landing, the four-ball unlock, the bin, the settle and the shelf all behave
+// as they did. What changed is what the clay IS.
 //
 //
 // THE ONE THING THAT CHANGED

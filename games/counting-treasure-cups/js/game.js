@@ -17,6 +17,7 @@ import * as voice from './voice.js';
 import { Stage } from './stage.js';
 import { shuffle } from '../../../shared/js/rng.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 /**
  * The treasure palette — deliberately NOT the platform's QK_PALETTE. These are
@@ -67,7 +68,6 @@ export class Game {
     this.disposers = [];
     this.timers = new Set();
     this.actorHides = new Map();
-    this.drag = null;
     this.cancelBurst = null;
 
     this.els = {
@@ -85,8 +85,39 @@ export class Game {
 
     this.disposers.push(onTap(this.els.again, () => { sfx.tick(); this.nextRound(); }));
 
-    this.onWindowBlur = () => this.cancelDrag();
-    window.addEventListener('blur', this.onWindowBlur);
+    // Tray tiles have no slot markup — "in" is anywhere above the tray, tested
+    // by Y-coordinate, so slotSelector/slotPad are left at their defaults and
+    // onDrop resolves success from drag.y instead of drag.slot. cancelOnBlur's
+    // default (true) replaces the old window 'blur'-only listener AND adds the
+    // visibilitychange/pagehide coverage this game never had.
+    this.dragCtl = createDragToSlotDom({
+      getPiece: (tile) => tile,
+      slop: DRAG_SLOP,
+      preventDefaultOnPress: true, // the hand-rolled version called preventDefault
+                                    // unconditionally on every tile pointerdown
+      ghostClass: null, // makeGhost already sets the full className below
+      makeGhost: (tile) => {
+        const clone = document.createElement('img');
+        clone.className = 'ctc-flier drag-clone';
+        clone.src = tile.dataset.art;
+        clone.alt = '';
+        clone.draggable = false;
+        clone.style.width = `${this.stage.itemSize()}px`;
+        clone.style.transform = 'translate(-50%, -50%)';
+        return clone;
+      },
+      canStart: () => !this.busy && this.awaitingInput,
+      onGrab: () => { sfx.tick(); return true; },
+      onLift: (tile) => tile.classList.add('is-held'),
+      onDrop: async (tile, drag) => {
+        tile.classList.remove('is-held');
+        const overStage = this.isOverContainer(drag.y);
+        if (overStage && tile.isConnected) this.attempt(tile.dataset.id);
+        else sfx.unpop();
+      },
+      onCancel: async (tile) => { tile.classList.remove('is-held'); },
+      onTap: (tile) => { if (tile.isConnected) this.attempt(tile.dataset.id); },
+    });
   }
 
   // ---- lifecycle ----------------------------------------------------------
@@ -101,14 +132,12 @@ export class Game {
 
   destroy() {
     this.finished = true;
-    this.cancelDrag();
-    this.sweepClones();
+    this.dragCtl.detach();
     this.sweepFliers();
     for (const t of this.timers) clearTimeout(t);
     this.timers.clear();
     for (const d of this.disposers) { try { d(); } catch { /* ignore */ } }
     this.disposers = [];
-    window.removeEventListener('blur', this.onWindowBlur);
     this.stage.destroy();
     this.clearConfetti();
     for (const a of Object.values(this.actors)) a.hide();
@@ -228,7 +257,7 @@ export class Game {
     tile.innerHTML =
       `<img class="ctc-tile-card" src="${this.config.tileArt || './assets/tile.png'}" alt="" draggable="false" />` +
       `<img class="ctc-tile-art" src="${art}" alt="" draggable="false" />`;
-    tile.addEventListener('pointerdown', (e) => this.onTilePointerDown(e, tile));
+    tile.addEventListener('pointerdown', (e) => this.dragCtl.begin(e, tile));
     // Pointer input runs through the drag path above (interaction-pattern #11),
     // which deliberately never uses `click`. Keep `click` for keyboard and
     // assistive tech only — detail === 0 means it was not a real pointer press.
@@ -613,99 +642,7 @@ export class Game {
     this.idleA = this.idleB = null;
   }
 
-  // ---- drag (interaction-pattern #11) --------------------------------------
-
-  onTilePointerDown(e, tile) {
-    if (this.busy || !this.awaitingInput) return;
-    if (e.isPrimary === false) return;      // second finger
-    if (this.drag) return;                  // one drag at a time
-    e.preventDefault();
-    this.sweepClones();
-    sfx.tick();
-
-    this.drag = {
-      id: e.pointerId,
-      tile,
-      x0: e.clientX,
-      y0: e.clientY,
-      clone: null,
-      moved: false,
-    };
-    const move = (ev) => this.onDragMove(ev);
-    const up = (ev) => this.onDragUp(ev);
-    const cancel = (ev) => { if (ev.pointerId === this.drag?.id) this.cancelDrag(); };
-    // Listeners live on window, never on the tile: the tile is replaced the
-    // moment a drop is accepted, and the stream has to survive that.
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-    window.addEventListener('pointercancel', cancel);
-    this.drag.off = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-      window.removeEventListener('pointercancel', cancel);
-    };
-  }
-
-  onDragMove(e) {
-    const d = this.drag;
-    if (!d || e.pointerId !== d.id) return;
-    const dx = e.clientX - d.x0;
-    const dy = e.clientY - d.y0;
-    if (!d.moved && Math.hypot(dx, dy) < DRAG_SLOP) return;
-    if (!d.moved) {
-      d.moved = true;
-      d.clone = this.makeClone(d.tile);
-      d.tile.classList.add('is-held');
-    }
-    const size = this.stage.itemSize();
-    d.clone.style.left = `${e.clientX - size / 2}px`;
-    d.clone.style.top = `${e.clientY - size / 2}px`;
-  }
-
-  onDragUp(e) {
-    const d = this.drag;
-    if (!d || e.pointerId !== d.id) return;
-    const { tile, moved, clone } = d;
-    d.off();
-    this.drag = null;
-    tile.classList.remove('is-held');
-
-    try {
-      if (!moved) {
-        // A press that never travelled is a tap — the equal, easier path.
-        clone?.remove();
-        if (tile.isConnected) this.attempt(tile.dataset.id);
-        return;
-      }
-      const overStage = this.isOverContainer(e.clientY);
-      clone?.remove();
-      if (overStage && tile.isConnected) this.attempt(tile.dataset.id);
-      else sfx.unpop();
-    } finally {
-      this.sweepClones();
-    }
-  }
-
-  cancelDrag() {
-    const d = this.drag;
-    if (!d) return;
-    d.off();
-    d.tile.classList.remove('is-held');
-    d.clone?.remove();
-    this.drag = null;
-    this.sweepClones();
-  }
-
-  makeClone(tile) {
-    const clone = document.createElement('img');
-    clone.className = 'ctc-flier drag-clone';
-    clone.src = tile.dataset.art;
-    clone.alt = '';
-    clone.draggable = false;
-    clone.style.width = `${this.stage.itemSize()}px`;
-    document.body.appendChild(clone);
-    return clone;
-  }
+  // ---- drag (interaction-pattern #11, via shared/js/stage/drag-to-slot-dom.js) --
 
   /** Very forgiving drop zone: anywhere above the tile tray counts as "in". */
   isOverContainer(clientY) {

@@ -59,7 +59,7 @@ authoring/fallback source; a missing or rejected clip uses device speech.
 
 ## Local MP4 export
 
-`shared/js/performance-video-export.js` replays the saved action timeline into
+`performance-video-export.js` (local, `games/puppet-retell/js/`) replays the saved action timeline into
 a fixed 1280×720 Pixi canvas and records it with the browser's native MP4
 encoder. It prefers the QuickTime-compatible `avc1` H.264 sample format and
 falls back to `avc3` only when the browser exposes no `avc1` recorder. When a

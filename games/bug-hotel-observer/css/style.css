@@ -14,7 +14,7 @@
    <style id="hs-style"> and the lens by magnifier-lens.js's <style id="ml-style">.
    Nothing here overrides either: they own the room, this owns everything over it.
 
-   --ts is the QLOBE_DEBUG.fastTimer scale. Every duration below is written as
+   --ts is the QLOBE_DEBUG.fastTimers scale. Every duration below is written as
    calc(<ms> * var(--ts, 1)) so the debug hook speeds the visuals exactly as it
    speeds the JS beats. */
 

@@ -142,7 +142,7 @@ Only `localStorage['qk-globe-spin-stories-v1']` is written. It contains a schema
 
 ## Architecture and reusable capability
 
-- `shared/js/paper-globe.js` is the reusable platform capability: pre-rendered raster texture loading, Three.js sphere lifecycle, drag/inertia, `latLonToVector3`, front-visibility projection, raster landmark-pin DOM projection, snap/ease, resize, reduced motion, and full teardown. Natural Earth geometry is converted and baked offline by the game tools; the browser does not author map pixels.
+- `paper-globe.js` (local, `games/globe-spin-stories/js/`) is the reusable platform capability: pre-rendered raster texture loading, Three.js sphere lifecycle, drag/inertia, `latLonToVector3`, front-visibility projection, raster landmark-pin DOM projection, snap/ease, resize, reduced motion, and full teardown. Natural Earth geometry is converted and baked offline by the game tools; the browser does not author map pixels.
 - `games/globe-spin-stories/js/main.js` owns screens, itinerary, narration, passport state, book discoveries, and `QLOBE_DEBUG`.
 - `config.json` owns destinations, coordinates, facts, scene assets, hotspots, tuning, and adult captions.
 - Shared `tap.js`, `voice-clips.js`, `audio-unlock.js`, `sfx.js`, `screens.js`, `timers.js`, and `debug-harness.js` remain authoritative.

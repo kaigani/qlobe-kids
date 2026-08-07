@@ -9,6 +9,7 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { soundDebounce } from '../../../shared/js/hud.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
@@ -69,27 +70,23 @@ window.addEventListener('pointerdown', () => voice.unlock(), { passive: true });
 
 // ---- screens ---------------------------------------------------------------
 
+/** The mode icon is the game's own art wherever possible — an emoji stand-in
+ *  (a toolbox for "Big Treasure") misleads a child who cannot read the label. */
+function modeFace(m) {
+  return m.iconArt
+    ? `<span class="ctc-mode-icon"><img src="${m.iconArt}" alt="" draggable="false" />` +
+      (m.iconText ? `<span class="ctc-mode-icon-text">${m.iconText}</span>` : '') + '</span>'
+    : `<span class="ctc-mode-icon" aria-hidden="true">${m.icon || '⭐'}</span>`;
+}
+
 function splashHTML() {
-  // The mode icon is the game's own art wherever possible — an emoji stand-in
-  // (a toolbox for "Big Treasure") misleads a child who cannot read the label.
-  const buttons = config.modes.map((m) => {
-    const icon = m.iconArt
-      ? `<span class="ctc-mode-icon"><img src="${m.iconArt}" alt="" draggable="false" />` +
-        (m.iconText ? `<span class="ctc-mode-icon-text">${m.iconText}</span>` : '') + '</span>'
-      : `<span class="ctc-mode-icon" aria-hidden="true">${m.icon || '⭐'}</span>`;
-    return `
-    <button class="ctc-mode" type="button" data-mode="${m.id}">
-      ${icon}
-      <span class="ctc-mode-title">${m.title}</span>
-    </button>`;
-  }).join('');
   return `
     <section class="ctc-screen ctc-splash">
       <img class="ctc-splash-art" src="./assets/splash.jpg" alt="" draggable="false" />
       <a class="hud-button hud-img hud-home" href="../../" aria-label="${config.copy.home}"
          style="background-image:url('${UI.home}')"></a>
       <h1 class="ctc-title">${config.title}</h1>
-      <div class="ctc-modes">${buttons}</div>
+      <div class="ctc-modes"></div>
     </section>`;
 }
 
@@ -143,11 +140,30 @@ function showSplash() {
   voice.stop();
   clearConfetti();
   mount.innerHTML = splashHTML();
-  for (const btn of mount.querySelectorAll('.ctc-mode')) {
-    onTap(btn, () => startMode(btn.dataset.mode), {
-      feedback: (e) => { e.preventDefault(); sfx.tick(); },
-    });
-  }
+  renderModeCards({
+    host: mount.querySelector('.ctc-modes'),
+    // Strip icon/iconArt/iconText from the copy passed in so modeCard()'s own
+    // no-art-then-icon fallback never fires — modeFace() (via decorate) is
+    // the only thing that renders the icon, unchanged from before.
+    modes: config.modes.map(({ icon, iconArt, iconText, ...mode }) => mode),
+    skin: false, // .ctc-mode keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .ctc-mode's own 150px/96px mins already clear it).
+    cardClass: 'ctc-mode',
+    showTitle: false, // decorate() builds the .ctc-mode-title span itself —
+                       // the built-in title uses a different class name.
+    targetPrefix: null, // unchanged QA-target surface: these tiles never had one
+    decorate(btn, mode, index) {
+      const original = config.modes[index];
+      btn.insertAdjacentHTML('afterbegin', modeFace(original));
+      const title = document.createElement('span');
+      title.className = 'ctc-mode-title';
+      title.textContent = original.title;
+      btn.append(title);
+    },
+    onPick: (id) => startMode(id),
+    feedback: (e) => { e.preventDefault(); sfx.tick(); },
+  });
   hostActors();
   // Try to greet immediately; if the browser blocks it (no user activation yet)
   // the first-gesture handler above delivers the same line on the first touch.

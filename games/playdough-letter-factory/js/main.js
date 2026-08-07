@@ -117,7 +117,7 @@ const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
   content.ready(),
 ]).then(() => {
-  renderModeCards();
+  renderFactoryModeCards();
   wirePermanentControls();
   buildConfetti();
   return true;
@@ -200,7 +200,11 @@ function registerTap(element, id, action, feedback = true) {
   });
 }
 
-function renderModeCards() {
+// Named to avoid colliding with shared/js/mode-select.js's renderModeCards()
+// export — this game's splash predates it and keeps its own bespoke card
+// art (letter-splitting "words" art, per-mode gradient/tilt vars) rather
+// than adopting the shared skin.
+function renderFactoryModeCards() {
   els.cards.replaceChildren();
   config.modes.forEach((mode, index) => {
     const button = document.createElement('button');

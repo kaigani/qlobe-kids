@@ -9,7 +9,16 @@ import { soundDebounce } from '../../../shared/js/hud.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createTalkingMouth } from '../../../shared/js/stage/mouth.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { Game, FEELINGS, DEFAULT_LINES } from './game.js';
+
+// This game has no engine config.modes — the splash's two modes are fixed,
+// so the same {id,title} pairs installDebug()'s listModes already used are
+// promoted to a real local array renderModeCards() can render from.
+const MODES = [
+  { id: 'act', title: 'Act It Out', emoji: '🎭' },
+  { id: 'guess', title: 'Guess the Feeling', emoji: '👂' },
+];
 
 const els = {
   splash: document.getElementById('splash'),
@@ -137,12 +146,28 @@ function showEnd(kind) {
 }
 
 // splash mode buttons — one press path
-els.splash.querySelectorAll('.mode-button').forEach((btn) => {
-  onTap(btn, () => startMode(btn.dataset.mode), {
+renderModeCards({
+  host: document.querySelector('.mode-buttons'),
+  modes: MODES,
+  skin: false, // .mode-button keeps its own pixel-for-pixel look; only the
+               // shared .qk-mode-card touch-floor contract is added (a
+               // no-op — .mode-button's own size already clears it).
+  cardClass: 'mode-button',
+  showTitle: false, // decorate() builds the emoji span + text itself,
+                     // matching the original markup's bare-text-node shape
+  decorate(btn, mode) {
+    const emoji = document.createElement('span');
+    emoji.setAttribute('aria-hidden', 'true');
+    emoji.textContent = mode.emoji;
+    btn.append(emoji, ` ${mode.title}`);
+  },
+  onPick: (id) => startMode(id),
+  feedback: (e) => {
     // Unlock is the global first-gesture listener's job (installUnlockOnGesture
     // above) — it fires on this same pointerdown, before this feedback runs.
-    feedback: (e) => { e.preventDefault(); sfx.tick(); },
-  });
+    e.preventDefault();
+    sfx.tick();
+  },
 });
 
 // in-game controls

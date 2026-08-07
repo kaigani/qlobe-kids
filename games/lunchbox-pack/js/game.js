@@ -17,6 +17,7 @@ import {
   pick,
 } from './requests.js';
 import { createTalkingMouth } from '../../../shared/js/stage/mouth.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 // The game's own celebration palette (matches the food-group swatches used
 // throughout the bubble/meter chips) — intentional local art, not the
@@ -116,6 +117,54 @@ export class Game {
     ];
     this.els.boxArea.addEventListener('pointerdown', this.onBoxTap);
     this.els.stage.addEventListener('pointerdown', this.onStageTap, true);
+
+    // Pieces are `{ el: card, food }` records (not bare Elements) so onDrop/
+    // onCancel/onTap all get the food object back alongside the card without
+    // a separate lookup. cancelOnBlur's default (true) replaces the old
+    // window 'blur'-only listener AND adds the visibilitychange/pagehide
+    // coverage this game never had.
+    this.dragCtl = createDragToSlotDom({
+      getPiece: (piece) => piece,
+      slop: 10,
+      preventDefaultOnPress: true, // the hand-rolled version called
+                                    // preventDefault unconditionally
+      ghostClass: null, // makeDragClone already sets the full className
+      makeGhost: (piece) => this.makeDragClone(piece.el, piece.food),
+      canStart: () => !this.destroyed && this.phase === 'request',
+      onDrop: async (piece, drag) => {
+        piece.el.classList.remove('drag-src');
+        // The shared module always removes its own ghost before onDrop
+        // fires (so the game's re-render starts from a clean document) —
+        // but attemptPack()/placeFood() need a live element's rect (a
+        // success) or a live, animatable element (a miss -> glideBack), so
+        // a fresh stand-in is built at the drag's last known position
+        // rather than trying to reuse the already-detached module ghost.
+        const standin = this.makeDragClone(piece.el, piece.food);
+        standin.style.left = `${drag.x}px`;
+        standin.style.top = `${drag.y}px`;
+        if (!this.pointOverBox(drag.x, drag.y)) {
+          this.glideBack(standin, piece.el);
+          return;
+        }
+        let res;
+        try {
+          res = this.attemptPack(piece.food.id, { clone: standin, card: piece.el });
+        } catch (err) {
+          console.warn('lunchbox: pack failed', err);
+          res = { ok: false };
+        }
+        if (res.ok) standin.remove();
+        else this.glideBack(standin, piece.el);
+      },
+      onCancel: async (piece, drag) => {
+        piece.el.classList.remove('drag-src');
+        const standin = this.makeDragClone(piece.el, piece.food);
+        standin.style.left = `${drag.x}px`;
+        standin.style.top = `${drag.y}px`;
+        this.glideBack(standin, piece.el);
+      },
+      onTap: (piece) => { this.toggleSelect(piece.el, piece.food); },
+    });
   }
 
   start() {
@@ -133,7 +182,7 @@ export class Game {
     // destroy(), never awaited past, or an in-flight winRound()/speakLater()
     // stalls forever instead of unwinding.
     this.timers.clearAll();
-    if (this.dragCleanup) this.dragCleanup(); // end any in-flight drag
+    this.dragCtl.detach(); // end any in-flight drag
     this.sweepStrayClones();
     if (this.mouth) { this.mouth.then((m) => m && m.destroy()); this.mouth = null; }
     if (this.mouthHook) { this.mouthHook(); this.mouthHook = null; }
@@ -418,7 +467,7 @@ export class Game {
   }
 
   cardFor(id) {
-    return this.els.shelf.querySelector(`.food-card[data-id="${id}"]:not(.vanish)`);
+    return this.els.shelf.querySelector(`.food-card[data-id="${CSS.escape(id)}"]:not(.vanish)`);
   }
 
   buildShelf(ids) {
@@ -439,7 +488,9 @@ export class Game {
       label.className = 'food-name';
       label.textContent = food.name;
       card.append(img, label);
-      card.addEventListener('pointerdown', (e) => this.onCardDown(e, card, food));
+      card.addEventListener('pointerdown', (e) => {
+        if (this.dragCtl.begin(e, { el: card, food })) e.stopPropagation();
+      });
       this.els.shelf.appendChild(card);
     }
   }
@@ -453,83 +504,6 @@ export class Game {
     }
     card.classList.add('vanish');
     this.timers.after(220, () => card.remove());
-  }
-
-  onCardDown(e, card, food) {
-    if (this.destroyed || this.phase !== 'request') return;
-    // One drag at a time, primary pointer only — kids use both hands, and a
-    // second simultaneous drag is how clones used to get stranded.
-    if (this.dragCleanup || e.isPrimary === false) return;
-    e.preventDefault();
-    e.stopPropagation();
-    this.sweepStrayClones();
-    const pointerId = e.pointerId;
-    const startX = e.clientX;
-    const startY = e.clientY;
-    let clone = null;
-    let dragging = false;
-
-    // Listeners live on window, not the card: if the card is removed from the
-    // DOM mid-drag (multi-touch race, round advance), the stream survives and
-    // finish() still runs — the clone can never be orphaned.
-    const onMove = (ev) => {
-      if (ev.pointerId !== pointerId) return;
-      if (!dragging && Math.hypot(ev.clientX - startX, ev.clientY - startY) > 10) {
-        dragging = true;
-        clone = this.makeDragClone(card, food);
-        card.classList.add('drag-src');
-      }
-      if (dragging && clone) {
-        clone.style.left = ev.clientX + 'px';
-        clone.style.top = ev.clientY + 'px';
-      }
-    };
-    const finish = (ev, cancelled) => {
-      if (ev.pointerId !== pointerId) return;
-      cleanup();
-      card.classList.remove('drag-src');
-      if (!dragging) {
-        if (!cancelled) this.toggleSelect(card, food);
-        return;
-      }
-      if (cancelled || !this.pointOverBox(ev.clientX, ev.clientY)) {
-        this.glideBack(clone, card);
-        return;
-      }
-      let res;
-      try {
-        res = this.attemptPack(food.id, { clone, card });
-      } catch (err) {
-        console.warn('lunchbox: pack failed', err);
-        res = { ok: false };
-      }
-      if (res.ok) {
-        clone.remove();
-      } else {
-        this.glideBack(clone, card);
-      }
-    };
-    const onUp = (ev) => finish(ev, false);
-    const onCancel = (ev) => finish(ev, true);
-    const cleanup = () => {
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-      window.removeEventListener('pointercancel', onCancel);
-      window.removeEventListener('blur', onBlur);
-      this.dragCleanup = null;
-    };
-    // Window blur (system gesture, notification, app switch) can eat the
-    // pointerup entirely — treat it as a cancel so the food glides home.
-    const onBlur = () => {
-      cleanup();
-      card.classList.remove('drag-src');
-      if (dragging) this.glideBack(clone, card);
-    };
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    window.addEventListener('pointercancel', onCancel);
-    window.addEventListener('blur', onBlur);
-    this.dragCleanup = onBlur; // doubles as "drag in progress" flag
   }
 
   /** Remove any drag clones that lost their event stream (should be
@@ -565,8 +539,14 @@ export class Game {
       ],
       { duration: 240, easing: 'ease-out' }
     );
-    anim.onfinish = () => clone.remove();
-    anim.oncancel = () => clone.remove();
+    // `onfinish`/`oncancel` alone can leave the clone stranded in a throttled/
+    // backgrounded tab, where WAAPI timeline processing stalls indefinitely —
+    // a fallback timer guarantees cleanup either way (a second `.remove()`
+    // call on an already-removed node is a harmless no-op).
+    const cleanup = () => clone.remove();
+    anim.onfinish = cleanup;
+    anim.oncancel = cleanup;
+    this.timers.after(440, cleanup);
   }
 
   pointOverBox(x, y) {
@@ -679,13 +659,21 @@ export class Game {
       ],
       { duration: 320, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1.1)' }
     );
+    let landed = false;
     const land = () => {
+      if (landed) return;
+      landed = true;
       flyer.remove();
       img.style.visibility = '';
       img.classList.add('pop-in');
     };
     anim.onfinish = land;
     anim.oncancel = land;
+    // Same throttled-tab stall risk as glideBack() above, but with a more
+    // visible failure mode here: the real packed food image stays hidden
+    // (line 672) until `land()` runs, so a stall would leave a slot looking
+    // empty rather than just stranding a decorative clone.
+    this.timers.after(520, land);
   }
 
   // ---- request art (bubble) ----------------------------------------------

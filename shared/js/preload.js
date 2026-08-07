@@ -14,21 +14,38 @@ const done = new Set();
 // Images still in flight, held so nothing collects them mid-decode.
 const inFlight = new Set();
 
+// Never let one slow/stalled request hold up an entire preload batch — a
+// flaky network or a server that accepts the connection and never responds
+// leaves onload/onerror both silent forever without this.
+const LOAD_TIMEOUT_MS = 8000;
+
 /**
  * @param {string} url
- * @returns {Promise<void>} resolves on load OR error — never rejects
+ * @returns {Promise<void>} resolves on load OR error OR timeout — never rejects
  */
 function loadOne(url) {
   if (done.has(url)) return Promise.resolve();
   return new Promise((resolve) => {
     const img = new Image();
     inFlight.add(img);
+    let settled = false;
     const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(deadline);
       inFlight.delete(img);
       done.add(url);
       resolve();
     };
-    img.onload = finish;
+    const deadline = setTimeout(finish, LOAD_TIMEOUT_MS);
+    img.onload = () => {
+      // decode() forces the (potentially expensive) bitmap decode to happen
+      // now, off the paint path, instead of jank on the frame this image
+      // first appears — onload alone only guarantees the bytes arrived.
+      const decoding = img.decode?.();
+      if (decoding) decoding.then(finish, finish);
+      else finish();
+    };
     img.onerror = finish;
     img.decoding = 'async';
     img.src = url;

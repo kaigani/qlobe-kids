@@ -10,9 +10,9 @@ import { mulberry32 } from '../../../shared/js/rng.js';
 import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 // The blob body runs on the STORED CLAY FIELD (shared/js/clay/field.js). The
-// previous engine's glue, blob-lobes.js, is still on disk as the reference for
-// the choreography this preserves, and is deliberately not imported: there is
-// one blob body, and it is made of one clay.
+// previous engine's glue (blob-lobes.js, shared/js/clay/lobes.js +
+// lobes-three.js) is gone — git history is the reference for the choreography
+// this preserves. There is one blob body, and it is made of one clay.
 import { createBlobStage, rasterizeSavedBlob, BLOB_BALLS_REQUIRED } from './blob-field.js';
 
 const mount = document.getElementById('game');

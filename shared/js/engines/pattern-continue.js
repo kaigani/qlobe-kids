@@ -10,6 +10,7 @@ import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 import { onTap } from '../tap.js';
 import { mulberry32, shuffle } from '../rng.js';
 import { escapeHtml, escapeAttr } from '../dom.js';
+import { emojiFromRef } from '../art-ref.js';
 import { createTimers } from '../timers.js';
 import { installDebug } from '../debug-harness.js';
 import { createScreens, wireEndScreen } from '../screens.js';
@@ -175,7 +176,7 @@ class PatternContinueGame {
     splash.innerHTML = `
       <a class="qk-pattern-home qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
       <div class="qk-pattern-splash-center qk-eng-center">
-        <div class="qk-pattern-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-pattern-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
         <div class="qk-pattern-mode-list qk-eng-mode-list"></div>
       </div>`;
@@ -776,7 +777,7 @@ class PatternContinueGame {
     end.innerHTML = `
       <button class="qk-pattern-back qk-pattern-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
       <div class="qk-pattern-end-center qk-eng-center">
-        <div class="qk-pattern-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-pattern-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.endArt || this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
         <button class="qk-pattern-again qk-eng-mode" type="button">
           <span class="qk-pattern-play-icon qk-eng-play-icon" aria-hidden="true"></span>
@@ -965,8 +966,9 @@ function normalizeConfig(config) {
   if (!Array.isArray(voice.yums)) voice.yums = [String(voice.yums || 'Nice!')];
   const rawModes = Array.isArray(config.modes) && config.modes.length ? config.modes : [config];
   return {
+    ...config,
     id: config.id || 'pattern-continue', title: config.title || 'Pattern Train',
-    splashEmoji: config.splashEmoji || '🚂', ...config, copy, voice,
+    splashEmoji: config.splashEmoji || config.splashArt || '🚂', copy, voice,
     modes: rawModes.map((mode, index) => normalizeMode(mode, index)),
   };
 }

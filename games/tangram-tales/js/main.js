@@ -5,6 +5,9 @@ import { onTap } from '../../../shared/js/tap.js';
 import { createFreeformBoard } from '../../../shared/js/freeform-board.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { installKioskGuards, installUnlockOnGesture, unlockAll } from '../../../shared/js/audio-unlock.js';
+import { escapeHtml as esc } from '../../../shared/js/dom.js';
+import { preloadImages } from '../../../shared/js/preload.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 const mount = document.getElementById('game');
 const PROGRESS_KEY = 'qlobe-tangram-tales-progress-v1';
@@ -44,7 +47,6 @@ const state = {
 let freeBoard = null;
 let disposers = [];
 let idleTimer = 0;
-let activeDrag = null;
 let revealTimer = 0;
 
 const assetUrls = [
@@ -60,21 +62,11 @@ const assetUrls = [
 
 const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
-  ...assetUrls.map(preload),
+  preloadImages(assetUrls),
 ]).then(() => true);
 
 installKioskGuards();
 installUnlockOnGesture({ onFirst: () => { if (state.screen === 'splash') say('welcome'); } });
-
-function preload(src) {
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.decoding = 'async';
-    image.onload = () => resolve(true);
-    image.onerror = () => resolve(false);
-    image.src = src;
-  });
-}
 
 function line(key) { return config.voice[key] || ''; }
 function say(key) {
@@ -92,7 +84,7 @@ function cleanup() {
   clearTimeout(idleTimer);
   clearTimeout(revealTimer);
   voice.stop();
-  cancelActiveDrag();
+  guidedDragCtl.detach();
   freeBoard?.destroy();
   freeBoard = null;
   for (const dispose of disposers) dispose();
@@ -168,11 +160,11 @@ function taleCard(tale) {
   const complete = state.completed.has(tale.id);
   return `
     <button class="tale-card ${selected ? 'is-selected' : ''}" type="button" role="listitem"
-            data-action="select-tale" data-value="${tale.id}" data-target="tale-${tale.id}"
-            aria-pressed="${selected}" aria-label="${tale.title} tale${complete ? ', completed' : ''}">
-      <img class="card-plate" src="${tale.card}" alt="" aria-hidden="true" />
+            data-action="select-tale" data-value="${esc(tale.id)}" data-target="tale-${esc(tale.id)}"
+            aria-pressed="${selected}" aria-label="${esc(tale.title)} tale${complete ? ', completed' : ''}">
+      <img class="card-plate" src="${esc(tale.card)}" alt="" aria-hidden="true" />
       <span class="card-figure" aria-hidden="true">${figureMarkup(tale, identityPlacements())}</span>
-      <strong>${tale.title}</strong>
+      <strong>${esc(tale.title)}</strong>
       ${complete ? '<img class="paper-star" src="./assets/ui/completion-star.webp" alt="" aria-hidden="true" />' : ''}
     </button>`;
 }
@@ -219,14 +211,14 @@ function renderGuided() {
   const placedCount = Object.keys(state.placements).length;
   const used = new Set(Object.values(state.placements));
   mount.innerHTML = `
-    <section class="screen guided-screen" aria-label="${tale.prompt}">
+    <section class="screen guided-screen" aria-label="${esc(tale.prompt)}">
       ${hud('back')}
       <header class="play-heading">
-        <div class="paper-heading"><h1>${tale.prompt}</h1></div>
+        <div class="paper-heading"><h1>${esc(tale.prompt)}</h1></div>
         <div class="progress-badge" aria-label="${placedCount} of 7 pieces placed"><strong>${placedCount}</strong><span>of 7</span></div>
       </header>
       <div class="puzzle-wrap">
-        <div id="puzzle-field" class="puzzle-field" aria-label="${tale.title} tangram outline">
+        <div id="puzzle-field" class="puzzle-field" aria-label="${esc(tale.title)} tangram outline">
           ${Object.entries(tale.targets).map(([slotId, target]) => slotMarkup(slotId, target)).join('')}
           ${Object.entries(state.placements).map(([slotId, pieceId]) => placedMarkup(slotId, pieceId, tale.targets[slotId])).join('')}
         </div>
@@ -245,9 +237,9 @@ function slotMarkup(slotId, target) {
   const source = pieceById[slotId];
   return `
     <button class="board-object slot ${state.hintSlot === slotId ? 'is-hint' : ''}" type="button"
-            style="${objectStyle(target)}" data-action="slot" data-value="${slotId}"
-            data-target="slot-${slotId}" aria-label="Matching spot for a ${source.shape}">
-      <img src="${source.ghost}" alt="" aria-hidden="true" />
+            style="${objectStyle(target)}" data-action="slot" data-value="${esc(slotId)}"
+            data-target="slot-${esc(slotId)}" aria-label="Matching spot for a ${esc(source.shape)}">
+      <img src="${esc(source.ghost)}" alt="" aria-hidden="true" />
     </button>`;
 }
 
@@ -256,144 +248,127 @@ function placedMarkup(slotId, pieceId, target) {
   const settling = state.settle?.slotId === slotId;
   const heldRotation = settling ? state.settle.rotation : target.rotation;
   return `<img class="board-object placed-piece ${settling ? 'is-settling' : ''}"
-               style="${objectStyle(target)};--held-rotation:${heldRotation}deg" src="${piece.art}"
-               alt="${piece.label}, placed" data-piece="${pieceId}" data-slot="${slotId}" />`;
+               style="${objectStyle(target)};--held-rotation:${heldRotation}deg" src="${esc(piece.art)}"
+               alt="${esc(piece.label)}, placed" data-piece="${esc(pieceId)}" data-slot="${esc(slotId)}" />`;
 }
 
 function trayPieceMarkup(piece) {
   return `
     <button class="tray-piece ${state.selectedPiece === piece.id ? 'is-selected' : ''}" type="button"
-            data-piece="${piece.id}" data-target="piece-${piece.id}" aria-label="${piece.label}. Drag it, hold to turn it, or tap then tap its spot.">
-      <img src="${piece.art}" alt="" aria-hidden="true" draggable="false" />
+            data-piece="${esc(piece.id)}" data-target="piece-${esc(piece.id)}" aria-label="${esc(piece.label)}. Drag it, hold to turn it, or tap then tap its spot.">
+      <img src="${esc(piece.art)}" alt="" aria-hidden="true" draggable="false" />
     </button>`;
 }
 
 function wireGuidedPieces() {
   document.querySelectorAll('.tray-piece').forEach((button) => {
-    button.addEventListener('pointerdown', beginDrag, { passive: false });
+    button.addEventListener('pointerdown', (e) => guidedDragCtl.begin(e, button));
   });
 }
 
-function beginDrag(event) {
-  if (activeDrag || event.isPrimary === false) return;
-  event.preventDefault();
-  const source = event.currentTarget;
-  const rect = source.getBoundingClientRect();
-  const clone = source.cloneNode(true);
-  clone.className = 'drag-piece';
-  clone.removeAttribute('data-target');
-  clone.style.width = `${rect.width}px`;
-  clone.style.height = `${rect.height}px`;
-  document.body.append(clone);
-  activeDrag = {
-    pointerId: event.pointerId,
-    pieceId: source.dataset.piece,
-    source,
-    clone,
-    startX: event.clientX,
-    startY: event.clientY,
-    offsetX: event.clientX - (rect.left + rect.width / 2),
-    offsetY: event.clientY - (rect.top + rect.height / 2),
-    moved: false,
-    rotation: 0,
-    rotating: false,
-  };
-  source.classList.add('is-drag-source');
-  armGuidedHold(event.clientX, event.clientY);
-  moveDrag(event);
-  window.addEventListener('pointermove', moveDrag, { passive: false });
-  window.addEventListener('pointerup', finishDrag, { passive: false });
-  window.addEventListener('pointercancel', cancelDrag, { passive: false });
-  window.addEventListener('blur', cancelDrag);
-  window.addEventListener('orientationchange', cancelDrag);
+/** Cleared/re-armed on the drag's own `record` — the mutable per-drag scratch
+ *  object the shared module hands to every callback (same object the
+ *  hold-rotate loop below also uses to force `record.moved = true`). */
+function clearGuidedHold(record) {
+  clearTimeout(record.holdTimer);
+  cancelAnimationFrame(record.holdFrame || 0);
+  record.holdTimer = 0;
+  record.holdFrame = 0;
+  record.rotating = false;
 }
 
-function clearGuidedHold(drag = activeDrag) {
-  if (!drag) return;
-  clearTimeout(drag.holdTimer);
-  cancelAnimationFrame(drag.holdFrame || 0);
-  drag.holdTimer = 0;
-  drag.holdFrame = 0;
-  drag.rotating = false;
-}
-
-function armGuidedHold(clientX, clientY) {
-  if (!activeDrag) return;
-  clearGuidedHold(activeDrag);
-  activeDrag.holdAnchorX = clientX;
-  activeDrag.holdAnchorY = clientY;
-  activeDrag.holdTimer = window.setTimeout(() => {
-    if (!activeDrag) return;
-    activeDrag.rotating = true;
-    activeDrag.lastRotateAt = performance.now();
+function armGuidedHold(record, clientX, clientY) {
+  clearGuidedHold(record);
+  record.holdAnchorX = clientX;
+  record.holdAnchorY = clientY;
+  record.holdTimer = window.setTimeout(() => {
+    if (guidedDragCtl.active !== record) return;
+    record.rotating = true;
+    record.lastRotateAt = performance.now();
     const rotateFrame = (now) => {
-      if (!activeDrag?.rotating) return;
-      const elapsed = Math.min(64, Math.max(0, now - activeDrag.lastRotateAt));
-      activeDrag.lastRotateAt = now;
-      activeDrag.rotation = (activeDrag.rotation + HOLD_ROTATE_DEGREES_PER_SECOND * elapsed / 1000) % 360;
-      activeDrag.moved = true;
-      activeDrag.clone.style.setProperty('--held-rotation', `${activeDrag.rotation}deg`);
-      activeDrag.holdFrame = requestAnimationFrame(rotateFrame);
+      if (guidedDragCtl.active !== record || !record.rotating) return;
+      const elapsed = Math.min(64, Math.max(0, now - record.lastRotateAt));
+      record.lastRotateAt = now;
+      record.rotation = (record.rotation + HOLD_ROTATE_DEGREES_PER_SECOND * elapsed / 1000) % 360;
+      // A stationary hold-and-rotate-then-release still commits a placement
+      // attempt, same as before this migration — the shared module's own
+      // tap-vs-drop decision reads this exact field, so setting it here
+      // (rather than only via real translation past `slop`) is how that
+      // behavior is preserved. Decision: keep it, not change the feel.
+      record.moved = true;
+      record.ghost?.style.setProperty('--held-rotation', `${record.rotation}deg`);
+      record.holdFrame = requestAnimationFrame(rotateFrame);
     };
-    activeDrag.holdFrame = requestAnimationFrame(rotateFrame);
+    record.holdFrame = requestAnimationFrame(rotateFrame);
   }, HOLD_ROTATE_DELAY);
 }
 
-function moveDrag(event) {
-  if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
-  event.preventDefault();
-  if (Math.hypot(event.clientX - activeDrag.holdAnchorX, event.clientY - activeDrag.holdAnchorY) > HOLD_ROTATE_TOLERANCE) {
-    armGuidedHold(event.clientX, event.clientY);
-  }
-  activeDrag.moved ||= Math.hypot(event.clientX - activeDrag.startX, event.clientY - activeDrag.startY) > 7;
-  const centerX = event.clientX - activeDrag.offsetX;
-  const centerY = event.clientY - activeDrag.offsetY;
-  activeDrag.clone.style.left = `${centerX}px`;
-  activeDrag.clone.style.top = `${centerY}px`;
-  highlightNearest(centerX, centerY, activeDrag.pieceId);
-}
-
-function finishDrag(event) {
-  if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
-  event.preventDefault();
-  const drag = activeDrag;
-  const centerX = event.clientX - drag.offsetX;
-  const centerY = event.clientY - drag.offsetY;
-  releaseDragListeners();
-  if (drag.moved) {
+// grabOffset: 1 preserves the exact press-to-piece-center offset for the
+// whole drag (any on-piece press already has an offset within the piece's
+// own half-size, so this is effectively unclamped) — without it the piece
+// would jump to center under the finger the instant a drag starts.
+// ghostOn: 'press' matches the original: the clone appears immediately on
+// pointerdown, not gated behind the slop gate. cancelOnBlur's default
+// (true) replaces the old blur-only listener AND adds the
+// visibilitychange/pagehide coverage this game never had.
+const guidedDragCtl = createDragToSlotDom({
+  getPiece: (button) => button,
+  slop: 7,
+  grabOffset: 1,
+  ghostOn: 'press',
+  preventDefaultOnPress: true,
+  ghostClass: null, // makeGhost already sets the full className
+  makeGhost: (button) => {
+    const rect = button.getBoundingClientRect();
+    const clone = button.cloneNode(true);
+    clone.className = 'drag-piece';
+    clone.removeAttribute('data-target');
+    clone.style.width = `${rect.width}px`;
+    clone.style.height = `${rect.height}px`;
+    return clone;
+  },
+  onGrab: (button, record) => {
+    button.classList.add('is-drag-source');
+    record.rotation = 0;
+    record.rotating = false;
+    armGuidedHold(record, record.startX, record.startY);
+  },
+  onMove: (button, record) => {
+    if (Math.hypot(record.lastX - record.holdAnchorX, record.lastY - record.holdAnchorY) > HOLD_ROTATE_TOLERANCE) {
+      armGuidedHold(record, record.lastX, record.lastY);
+    }
+    // record.x/y already carry the grabOffset translation — the piece's
+    // current center, exactly what the hand-rolled version tracked as
+    // centerX/centerY.
+    highlightNearest(record.x, record.y, button.dataset.piece);
+  },
+  onDrop: async (button, record) => {
+    clearGuidedHold(record);
+    button.classList.remove('is-drag-source');
+    const pieceId = button.dataset.piece;
     const field = document.getElementById('puzzle-field')?.getBoundingClientRect();
     if (field) {
-      const point = { x: (centerX - field.left) / field.width, y: (centerY - field.top) / field.height };
-      if (point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1) attemptPlace(drag.pieceId, point, null, drag.rotation);
+      const point = { x: (record.x - field.left) / field.width, y: (record.y - field.top) / field.height };
+      if (point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1) attemptPlace(pieceId, point, null, record.rotation);
       else renderGuided();
     }
-  } else {
-    state.selectedPiece = drag.pieceId;
+  },
+  onCancel: async (button, record) => {
+    clearGuidedHold(record);
+    button.classList.remove('is-drag-source');
+    document.querySelectorAll('.slot.is-near').forEach((slot) => slot.classList.remove('is-near'));
+  },
+  onTap: (button) => {
+    state.selectedPiece = button.dataset.piece;
     feedback('tick');
     renderGuided();
-  }
-}
-
-function cancelDrag(event) {
-  if (event?.pointerId != null && activeDrag && event.pointerId !== activeDrag.pointerId) return;
-  releaseDragListeners();
-  document.querySelectorAll('.slot.is-near').forEach((slot) => slot.classList.remove('is-near'));
-}
-
-function cancelActiveDrag() { if (activeDrag) releaseDragListeners(); }
-function releaseDragListeners() {
-  if (activeDrag) {
-    clearGuidedHold(activeDrag);
-    activeDrag.source?.classList.remove('is-drag-source');
-    activeDrag.clone?.remove();
-  }
-  activeDrag = null;
-  window.removeEventListener('pointermove', moveDrag, { passive: false });
-  window.removeEventListener('pointerup', finishDrag, { passive: false });
-  window.removeEventListener('pointercancel', cancelDrag, { passive: false });
-  window.removeEventListener('blur', cancelDrag);
-  window.removeEventListener('orientationchange', cancelDrag);
-}
+  },
+});
+// The shared module has no orientationchange handling of its own (only
+// blur/visibilitychange/pagehide) — this game added it as an extra signal
+// that a drag should abandon; cancel() is always safe to call, including
+// with nothing in flight.
+window.addEventListener('orientationchange', () => guidedDragCtl.cancel());
 
 function matchingOpenSlots(pieceId) {
   const tale = taleById[state.tale];
@@ -478,11 +453,11 @@ function showReveal(taleId) {
   const allDone = config.tales.every((candidate) => state.completed.has(candidate.id));
   const title = allDone ? `All ${config.tales.length} tales awake!` : `${tale.title} is awake!`;
   mount.innerHTML = `
-    <section class="screen reveal-screen reveal-${tale.id}" style="background-image:url('${tale.scene}')" aria-label="${title}">
+    <section class="screen reveal-screen reveal-${esc(tale.id)}" style="background-image:url('${esc(tale.scene)}')" aria-label="${esc(title)}">
       ${hud('back')}
       ${celebrationStars()}
-      <div class="reveal-heading"><h1>${title}</h1></div>
-      <div class="reveal-figure ${tale.id}-figure" aria-label="Completed ${tale.title} made from seven tangram pieces">
+      <div class="reveal-heading"><h1>${esc(title)}</h1></div>
+      <div class="reveal-figure ${esc(tale.id)}-figure" aria-label="Completed ${esc(tale.title)} made from seven tangram pieces">
         ${figureMarkup(tale, state.placements)}
       </div>
       <div class="reveal-actions">
@@ -681,10 +656,10 @@ function figureMarkup(tale, placements) {
     const target = tale.targets[slotId];
     const piece = pieceById[pieceId];
     if (!target || !piece) return '';
-    return `<img class="figure-piece" src="${piece.art}" alt="" style="${objectStyle(target)}" data-piece="${pieceId}" data-slot="${slotId}" />`;
+    return `<img class="figure-piece" src="${esc(piece.art)}" alt="" style="${objectStyle(target)}" data-piece="${esc(pieceId)}" data-slot="${esc(slotId)}" />`;
   }).join('');
   const details = (tale.details || []).map((detail) =>
-    `<img class="figure-piece face-detail" src="${detail.art}" alt="" aria-hidden="true" style="${objectStyle(detail)}" />`).join('');
+    `<img class="figure-piece face-detail" src="${esc(detail.art)}" alt="" aria-hidden="true" style="${objectStyle(detail)}" />`).join('');
   return pieces + details;
 }
 

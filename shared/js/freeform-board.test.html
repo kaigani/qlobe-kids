@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>freeform-board.js test</title>
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+    #board { position: absolute; left: -9999px; width: 400px; height: 300px; }
+  </style>
+</head>
+<body>
+  <h2>freeform-board.js test</h2>
+  <p class="lede">
+    Runs against a real (off-screen) container, calling the state API
+    directly rather than simulating pointer drags — the behaviour under test
+    is the state machine (add/remove/move/transform/undo/snapshot/load), not
+    the drag gesture, which `stage/drag-to-slot-dom.js` already has its own
+    604-line test file covering the equivalent DOM-drag concerns.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+  <div id="board"></div>
+
+  <script type="module">
+    import { createFreeformBoard } from './freeform-board.js';
+
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+
+    const container = document.getElementById('board');
+
+    // ---- 1. shape + construction guard --------------------------------------
+    {
+      let threw = false;
+      try { createFreeformBoard('not an element'); } catch { threw = true; }
+      t('throws without a real HTMLElement container', threw);
+
+      const board = createFreeformBoard(container);
+      for (const name of ['add', 'remove', 'clear', 'undo', 'load', 'move', 'transform',
+        'rotate', 'select', 'snapshot', 'canUndo', 'getSelected', 'getItems', 'destroy']) {
+        t(`returns ${name}`, typeof board[name] === 'function' || name === 'destroy', typeof board[name]);
+      }
+      t('container gets the qlobe-freeform-board class', container.classList.contains('qlobe-freeform-board'));
+      board.destroy();
+    }
+
+    // ---- 2. add() --------------------------------------------------------
+    {
+      const board = createFreeformBoard(container);
+      const piece = board.add({ id: 'p1', kind: 'ball', src: 'ball.png', x: .5, y: .5 });
+      t('add() returns the serialized item', piece && piece.id === 'p1', JSON.stringify(piece));
+      t('add() appends a real element to the container', container.children.length === 1,
+        `children=${container.children.length}`);
+      t('a duplicate id is rejected (returns null)', board.add({ id: 'p1' }) === null);
+      t('a second distinct id is accepted', !!board.add({ id: 'p2', x: .3, y: .3 }));
+      t('getItems() reflects both pieces', board.getItems().length === 2, `count=${board.getItems().length}`);
+      board.destroy();
+    }
+
+    // ---- 3. add() clamps out-of-range values --------------------------------
+    {
+      const board = createFreeformBoard(container);
+      const wild = board.add({ id: 'w', x: 5, y: -5, size: 99 });
+      t('x is clamped to the viewport-safe range', wild.x <= 1.08, `x=${wild.x}`);
+      t('y is clamped to the viewport-safe range', wild.y >= -.08, `y=${wild.y}`);
+      t('size is clamped to its max', wild.size <= .55, `size=${wild.size}`);
+      board.destroy();
+    }
+
+    // ---- 4. remove() / clear() ----------------------------------------------
+    {
+      const board = createFreeformBoard(container);
+      board.add({ id: 'a' });
+      board.add({ id: 'b' });
+      t('remove() of an existing id succeeds', board.remove('a') === true);
+      t('remove() of a gone id fails cleanly', board.remove('a') === false);
+      t('the removed element leaves the DOM', container.children.length === 1,
+        `children=${container.children.length}`);
+      t('clear() on a non-empty board succeeds', board.clear() === true);
+      t('clear() on an already-empty board reports false', board.clear() === false);
+      t('the DOM is empty after clear()', container.children.length === 0);
+      board.destroy();
+    }
+
+    // ---- 5. snapshot() / load() round-trip -----------------------------------
+    {
+      const board = createFreeformBoard(container);
+      board.add({ id: 'x', kind: 'star', x: .2, y: .4, rotation: 30 });
+      board.add({ id: 'y', kind: 'moon', x: .8, y: .6, mirror: true });
+      const snap = board.snapshot();
+      t('snapshot() carries the format marker', snap.format === 'qlobe-freeform-board');
+      t('snapshot() has both items', snap.items.length === 2, `count=${snap.items.length}`);
+
+      const board2 = createFreeformBoard(document.createElement('div'));
+      const loaded = board2.load(snap);
+      t('load() returns a snapshot with the same item count', loaded.items.length === 2,
+        `count=${loaded.items.length}`);
+      const kinds = board2.getItems().map((i) => i.kind).sort().join(',');
+      t('load() preserves each item’s data', kinds === 'moon,star', kinds);
+      board.destroy();
+      board2.destroy();
+    }
+
+    // ---- 6. undo() ------------------------------------------------------------
+    {
+      const board = createFreeformBoard(container);
+      t('canUndo() is false on an empty history', board.canUndo() === false);
+      board.add({ id: 'u1' });
+      t('canUndo() is true after a recorded change', board.canUndo() === true);
+      board.add({ id: 'u2' });
+      t('two items exist before undo', board.getItems().length === 2, `count=${board.getItems().length}`);
+      const undone = board.undo();
+      t('undo() reports success', undone === true);
+      t('undo() reverts to one item', board.getItems().length === 1, `count=${board.getItems().length}`);
+      board.undo();
+      t('a second undo empties the board', board.getItems().length === 0, `count=${board.getItems().length}`);
+      t('undo() on empty history reports false', board.undo() === false);
+      board.destroy();
+    }
+
+    // ---- 7. move() / transform() / rotate() ----------------------------------
+    {
+      const board = createFreeformBoard(container);
+      board.add({ id: 'm', x: .1, y: .1, size: .2, rotation: 0 });
+      board.move('m', .5, .5);
+      let item = board.getItems().find((i) => i.id === 'm');
+      t('move() updates x/y', Math.abs(item.x - .5) < 1e-9 && Math.abs(item.y - .5) < 1e-9,
+        `x=${item.x} y=${item.y}`);
+      t('move() of an unknown id reports false', board.move('nope', 0, 0) === false);
+
+      board.transform('m', { size: .4, mirror: true });
+      item = board.getItems().find((i) => i.id === 'm');
+      t('transform() updates size', Math.abs(item.size - .4) < 1e-9, `size=${item.size}`);
+      t('transform() updates mirror', item.mirror === true);
+      t('transform() leaves x/y alone when omitted', Math.abs(item.x - .5) < 1e-9, `x=${item.x}`);
+
+      board.rotate('m', 45);
+      item = board.getItems().find((i) => i.id === 'm');
+      t('rotate() adds the delta to the current rotation', Math.abs(item.rotation - 45) < 1e-9,
+        `rotation=${item.rotation}`);
+
+      // normalizeAngle wraps into (-180, 180]
+      board.transform('m', { rotation: 400 });
+      item = board.getItems().find((i) => i.id === 'm');
+      t('rotation normalizes into (-180, 180]', item.rotation > -180 && item.rotation <= 180,
+        `rotation=${item.rotation}`);
+      board.destroy();
+    }
+
+    // ---- 8. select() / getSelected() ------------------------------------------
+    {
+      let selectedLog = [];
+      const board = createFreeformBoard(container, { onSelect: (item) => selectedLog.push(item && item.id) });
+      board.add({ id: 's1' }); // interactive:true (default) auto-selects on add
+      t('add() auto-selects the new piece', board.getSelected() === 's1', board.getSelected());
+      board.add({ id: 's2' });
+      t('adding a second piece re-selects to it', board.getSelected() === 's2', board.getSelected());
+      board.select('s1');
+      t('select() switches the selection', board.getSelected() === 's1', board.getSelected());
+      board.select('does-not-exist');
+      t('select() of an unknown id clears the selection', board.getSelected() === null,
+        String(board.getSelected()));
+      t('onSelect fired for every real selection change', selectedLog.filter(Boolean).length >= 3,
+        JSON.stringify(selectedLog));
+      board.destroy();
+    }
+
+    // ---- 9. onChange fires with a reason ---------------------------------------
+    {
+      const reasons = [];
+      const board = createFreeformBoard(container, { onChange: (snap, info) => reasons.push(info.reason) });
+      board.add({ id: 'r1' });
+      board.remove('r1');
+      board.add({ id: 'r2' });
+      board.clear();
+      t('onChange saw add/remove/add/clear in order',
+        reasons.join(',') === 'add,remove,add,clear', reasons.join(','));
+      board.destroy();
+    }
+
+    // ---- 10. destroy() is safe to call twice, and clears the DOM --------------
+    {
+      const board = createFreeformBoard(container);
+      board.add({ id: 'd1' });
+      let threw = false;
+      try { board.destroy(); board.destroy(); } catch { threw = true; }
+      t('destroy() can be called twice without throwing', !threw);
+      t('destroy() empties the container', container.children.length === 0);
+      t('destroy() removes the board class', !container.classList.contains('qlobe-freeform-board'));
+    }
+
+    // ---- render -------------------------------------------------------------
+    const list = document.getElementById('results');
+    const summary = document.getElementById('summary');
+    const failed = results.filter((r) => !r.pass);
+    list.innerHTML = results.map((r) =>
+      `<li class="${r.pass ? 'ok' : 'bad'}">${r.pass ? '✅' : '❌'} ${r.name}${r.why ? ` <span class="why">— ${r.why}</span>` : ''}</li>`
+    ).join('');
+    summary.textContent = failed.length ? `${failed.length} FAILED of ${results.length}` : `all ${results.length} passed`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+  </script>
+</body>
+</html>

@@ -8,10 +8,12 @@ small. Full inventory and provenance in
 ## What's in here
 | Folder | Contents |
 |---|---|
-| `css/` | `base.css` (the platform reset + `@font-face`; link it, never re-copy it), `hud.css` (the `.qk-hud-*` button vocabulary), `screens.css` (`[data-qk-screen][hidden]`, the mode-card skin) |
+| `css/` | `base.css` (the platform reset + `@font-face`; link it, never re-copy it), `engine-base.css` (the reset the config-driven `js/engines/` games link instead of `base.css`), `hud.css` (the `.qk-hud-*` button vocabulary), `screens.css` (`[data-qk-screen][hidden]`, the mode-card skin) |
 | `js/` | the runtime toolkit — see the table below |
 | `js/engines/` | the config-driven game engines (own README) |
-| `js/stage/` | Stage v2: Pixi scene, puppets, tweens, particles, water, drag + pose DOM backends |
+| `js/stage/` | Stage v2 (PixiJS): `stage.js` scene, `tween.js`, `particles.js`, `puppet.js` + `theater.js` puppet rig, `water.js` physics, `pose-conductor.js`, `spotlight.js`, `spline.js`, plus DOM backends for games that can't be Pixi (`drag-to-slot-dom.js`, `pose-sprite-dom.js`, `constrained-gesture-dom.js`). `puppet-builder.js` + `puppet-studio.html` are an authoring tool, not a runtime module — open `puppet-studio.html` directly to rig a character. |
+| `js/clay/` | soft-body clay sculpting: `field.js` + `field-three.js` (the live implicit-field renderer) and `heightfield.js` + `heightfield-canvas.js` (2D heightfield sculpting, e.g. Playdough Letter Factory). The older lobe-union engine (`lobes.js`/`lobes-three.js`) was deleted 2026-08-06 — superseded by `field.js`; git history has it if it's ever needed again. |
+| `js/studio/` | QLOBE Studio: the in-browser game-authoring tool (`studio.js`, `api.js`, `projects.js`) that reads/writes `config.json` engine games. Not imported by any shipped game. |
 | `assets/letter-tiles/` | 56 onset & rime tile PNGs |
 | `assets/objects/` | 134 word picture-card PNGs |
 | `assets/audio/` | teacher-voice clips + `manifest.json` (`fragments`, `words`, `prompts`, `celebrate`, `misc`) |
@@ -26,10 +28,10 @@ small. Full inventory and provenance in
 ### `js/` — one line each
 | Module | What it is |
 |---|---|
-| `audio.js` | recorded teacher voice + speech fallback; `configure({ manifestUrl })` points it at a game's own manifest |
+| `voice-clips.js` | **primary voice channel** — flat-key recorded-clip player + speech fallback; `duration`, `setMuted`, `getAudioLog` (`kind: 'clip'` / `'speech'`) |
 | `speech.js` | Web Speech (`speechSynthesis`) wrapper |
 | `sfx.js` | WebAudio sound effects, zero files |
-| `voice-clips.js` | flat-key recorded-clip channel; `duration`, `setMuted`, `getAudioLog` (`kind: 'clip'` / `'speech'`) |
+| `analytics.js` | the one shared GA4 pageview tag (`G-H2WT0GRBVS`); every game links it once instead of pasting the gtag snippet. See `CLAUDE.md`'s "What NOT to do" for the analytics policy this implements. |
 | `voice-meter.js` | local-only microphone energy/pitch summaries and gentle expressive-voice spark scoring; never records or uploads |
 | `camera-throw.js` | local-only coarse red/yellow/blue throw tracking; emits position/color summaries without preview, persistence, export, or network |
 | `narrator.js` | the game's one voice: mute gate, `aria-live` announcer, interrupt token |
@@ -43,7 +45,7 @@ small. Full inventory and provenance in
 | `debug-harness.js` | `installDebug(spec)` → `window.QLOBE_DEBUG` v1, `collectTargets` |
 | `timers.js` | `createTimers()` — cancellable, time-scalable timer group |
 | `rng.js` | `mulberry32`, `hashString`, `shuffle`, `pick` — the one seeded source |
-| `dom.js` | `escapeHtml`, `el` |
+| `dom.js` | `escapeHtml`, `el`, `clamp`, `round`, `cssEscape`, `pointInside`, `prefersReducedMotion`, `emojiSpan` |
 | `preload.js` | `preloadImages(urls, { idle })`, never rejects |
 | `content.js` | accessor for shared letters / words / sounds |
 | `hotspot-scene.js`, `freeform-board.js`, `magnifier-lens.js`, `journal.js`, `musical-canvas.js` | interaction surfaces for specific archetypes; freeform-board includes normalized move/transform/rotate state with undo |

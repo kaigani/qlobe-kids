@@ -97,7 +97,7 @@
       "accent": "#7FB069",
       "uses": [
         "shared/vendor/three.module.min.js",
-        "shared/js/audio.js",
+        "shared/js/voice-clips.js",
         "shared/js/speech.js",
         "shared/js/sfx.js",
         "shared/assets/letter-tiles/",
@@ -173,7 +173,7 @@
       "status": "beta",
       "accent": "#2d7dd2",
       "uses": [
-        "shared/js/audio.js",
+        "shared/js/voice-clips.js",
         "shared/js/sfx.js"
       ],
       "modes": [
@@ -248,7 +248,7 @@
       "status": "beta",
       "accent": "#f25f5c",
       "uses": [
-        "shared/js/audio.js",
+        "shared/js/voice-clips.js",
         "shared/js/sfx.js",
         "shared/assets/objects/"
       ],
@@ -279,7 +279,7 @@
       "status": "in-design",
       "accent": "#8a5bc4",
       "uses": [
-        "shared/js/audio.js",
+        "shared/js/voice-clips.js",
         "shared/js/sfx.js",
         "shared/assets/twemoji/"
       ],
@@ -322,7 +322,6 @@
         }
       ],
       "uses": [
-        "shared/js/audio.js",
         "shared/js/voice-clips.js",
         "shared/js/tap.js",
         "shared/js/speech.js",
@@ -1964,7 +1963,6 @@
       "status": "live",
       "accent": "#ef3d82",
       "uses": [
-        "shared/js/paper-globe.js",
         "shared/vendor/three.module.min.js",
         "shared/js/voice-clips.js",
         "shared/js/sfx.js"

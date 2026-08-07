@@ -19,26 +19,11 @@
 // Layer offsets dx/dy are FRACTIONS OF THE BOX (rendered as % translate),
 // never pixels, so a composed stack survives every rescale without drifting.
 
-const SHARED = new URL('../../', import.meta.url); // -> shared/
-
-/**
- * Resolve an art ref to a URL string, or null for emoji/text/swatch refs.
- * @param {string} ref
- * @param {string} [base] base URL for `game:` refs (default: document.baseURI)
- * @returns {string|null}
- */
-export function artUrl(ref, base) {
-  if (typeof ref !== 'string') return null; // arrays/objects have no single URL
-  if (ref.startsWith('shared:')) return new URL('assets/' + ref.slice(7), SHARED).href;
-  if (ref.startsWith('char:')) return new URL('characters/' + ref.slice(5) + '/portrait.png', SHARED).href;
-  if (ref.startsWith('game:')) return new URL(ref.slice(5), base || document.baseURI).href;
-  return null;
-}
-
-/** Normalise a layer entry: a bare ref string, or { ref, scale, dx, dy, alpha, tint }. */
-function layerSpec(entry) {
-  return (entry && typeof entry === 'object' && !Array.isArray(entry)) ? entry : { ref: entry };
-}
+// URL resolution + layer normalisation are shared with stage/art-pixi.js —
+// see ../art-ref.js. artUrl keeps its historic name here for this file's own
+// call sites and any external `import { artUrl } from './art.js'`.
+import { resolveArtUrl as artUrl, layerSpec } from '../art-ref.js';
+export { artUrl };
 
 /**
  * Build a DOM element for an art ref. Emoji render as text scaled to the

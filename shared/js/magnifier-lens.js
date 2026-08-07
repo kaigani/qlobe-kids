@@ -97,6 +97,8 @@
 // which already has whatever press path its own game gave it. Importing tap.js
 // would mean owning a second one.
 
+import { injectStyleOnce } from './dom.js';
+
 // --- module constants --------------------------------------------------------
 
 /** Above every hotspot (1000+i) and below a hotspot bubble (5000). */
@@ -202,15 +204,6 @@ const CSS = `
 .ml-grip:focus-visible{outline:4px solid #ffd24a;outline-offset:-6px;border-radius:50%}
 `;
 
-function injectStyle() {
-  if (typeof document === 'undefined') return;
-  if (document.getElementById(STYLE_ID)) return;
-  const el = document.createElement('style');
-  el.id = STYLE_ID;
-  el.textContent = CSS;
-  document.head.appendChild(el);
-}
-
 /**
  * @typedef {object} LensSprite
  * @property {string} id           stable id; what `onDwell` reports
@@ -269,7 +262,7 @@ export function createLens(scene, opts = {}) {
     throw new TypeError('createLens: scene must be a shared/js/hotspot-scene.js scene');
   }
 
-  injectStyle();
+  injectStyleOnce(STYLE_ID, CSS);
 
   const artW = num(scene.artW, 1600);
   const artH = num(scene.artH, 1200);

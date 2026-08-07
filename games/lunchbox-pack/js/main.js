@@ -13,8 +13,18 @@ import { onTap } from '../../../shared/js/tap.js';
 import { soundDebounce } from '../../../shared/js/hud.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import * as voice from './voice.js';
 import { Game } from './game.js';
+
+// No engine config.modes here — the splash's three modes are fixed, so the
+// same {id,title} data installDebug()'s listModes already used is promoted
+// to a real local array renderModeCards() can render from.
+const MODES = [
+  { id: 'pack', title: 'Pack for Me!', emoji: '🎒' },
+  { id: 'healthy', title: 'Healthy Helper', emoji: '🥗' },
+  { id: 'count', title: 'Count & Pack', emoji: '🔢' },
+];
 
 const els = {
   splash: document.getElementById('splash'),
@@ -90,13 +100,26 @@ async function startMode(mode) {
 
 // splash mode buttons — feedback and action share one press path (onTap), so
 // a touch can't tick on pointerdown and then drop the action with the click
-els.splash.querySelectorAll('.mode-button').forEach((btn) => {
-  onTap(btn, () => startMode(btn.dataset.mode), {
-    feedback: (e) => {
-      e.preventDefault();
-      sfx.tick();
-    },
-  });
+renderModeCards({
+  host: document.querySelector('.splash-buttons'),
+  modes: MODES,
+  skin: false, // .mode-button keeps its own pixel-for-pixel look; only the
+               // shared .qk-mode-card touch-floor contract is added (a
+               // no-op — .mode-button's own size already clears it).
+  cardClass: 'mode-button',
+  showTitle: false, // decorate() builds the emoji span + text itself,
+                     // matching the original markup's bare-text-node shape
+  decorate(btn, mode) {
+    const emoji = document.createElement('span');
+    emoji.className = 'mode-emoji';
+    emoji.textContent = mode.emoji;
+    btn.append(emoji, ` ${mode.title}`);
+  },
+  onPick: (id) => startMode(id),
+  feedback: (e) => {
+    e.preventDefault();
+    sfx.tick();
+  },
 });
 
 // ---- HUD ---------------------------------------------------------------------

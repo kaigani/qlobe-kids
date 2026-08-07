@@ -1,12 +1,67 @@
 import config from '../config.js';
-import * as audio from '../../../shared/js/audio.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as rawSfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as content from '../../../shared/js/content.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { unlockAll as sharedUnlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { mulberry32, shuffle as sharedShuffle } from '../../../shared/js/rng.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 const $ = (id) => document.getElementById(id);
+
+// The two mode cards are built here, synchronously, BEFORE `els` below
+// captures `[data-mode]` — `els.modeButtons` and getTargets()/debug.tap()
+// both depend on that snapshot reflecting the real rendered buttons, not
+// the (now-empty) static markup. `replace: false` keeps the static
+// `#play-default` button in place; it's re-spliced back to the middle
+// position afterward so the row still reads [mode-two, play, mode-three]
+// left to right, matching `.mode-row`'s plain flex (DOM-order) layout.
+const modeRow = document.querySelector('.mode-row');
+const playDefaultButton = $('play-default');
+const { cards: modeCardButtons } = renderModeCards({
+  host: modeRow,
+  modes: config.modes,
+  replace: false,
+  skin: false, // .mode-button keeps its own pixel-for-pixel look; only the
+               // shared .qk-mode-card touch-floor contract is added (a
+               // no-op — .mode-button's own min-height already clears it).
+  cardClass: 'mode-button',
+  showTitle: false, // decorate() builds the bespoke per-mode letter graphic
+  targetPrefix: null, // this game's own getTargets()/debug.tap() key off
+                       // the bare mode id (`two`/`three`), not `mode-<id>`
+  decorate(button, mode) {
+    const graphic = document.createElement('span');
+    graphic.className = `mode-graphic mode-graphic-${mode.id}`;
+    graphic.setAttribute('aria-hidden', 'true');
+    if (mode.id === 'two') {
+      graphic.innerHTML = '<i>A</i><i>M</i>';
+    } else {
+      graphic.innerHTML = '<i>C</i><i>P</i><i>T</i>';
+    }
+    const basket = document.createElement('img');
+    basket.src = './assets/art/basket.png';
+    basket.alt = '';
+    graphic.append(basket);
+    button.append(graphic);
+    const copy = document.createElement('span');
+    copy.className = 'mode-copy';
+    copy.innerHTML = `<strong>${mode.id === 'two' ? '2' : '3'}</strong><small>sounds</small>`;
+    button.append(copy);
+  },
+  onPick: (id) => startMode(id),
+  feedback: (event) => {
+    unlockAll();
+    sfx.tick();
+    const button = event.currentTarget;
+    button.classList.add('is-pressed');
+    setTimeout(() => button.classList.remove('is-pressed'), 150);
+  },
+});
+modeRow.insertBefore(playDefaultButton, modeCardButtons[1]);
+
 const els = {
   screens: [...document.querySelectorAll('.screen')],
   splash: $('splash'),
@@ -54,30 +109,15 @@ const state = {
   idleSpoken: false,
   lastSpokenWord: null,
   lastWordSource: null,
-  drag: null,
 };
 
 const ALPHABET = [...'abcdefghijklmnopqrstuvwxyz'];
 const T = (ms) => Math.max(0, ms * state.timeScale);
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, T(ms)));
 
-let randomState = state.seed >>> 0;
-function random() {
-  randomState += 0x6d2b79f5;
-  let value = randomState;
-  value = Math.imul(value ^ (value >>> 15), value | 1);
-  value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
-  return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
-}
-
-function shuffle(values) {
-  const result = [...values];
-  for (let index = result.length - 1; index > 0; index -= 1) {
-    const swap = Math.floor(random() * (index + 1));
-    [result[index], result[swap]] = [result[swap], result[index]];
-  }
-  return result;
-}
+let rng = mulberry32(state.seed);
+function random() { return rng(); }
+function shuffle(values) { return sharedShuffle(values, rng); }
 
 const sfx = {};
 for (const key of ['tick', 'pop', 'unpop', 'whoosh', 'sparkle', 'tada']) {
@@ -125,7 +165,7 @@ function stopLocalWord() {
   }
 }
 
-// 44-byte silent WAV, same trick as shared/js/audio.js. MUST be a dedicated
+// 44-byte silent WAV, same trick shared/js/voice-clips.js uses. MUST be a dedicated
 // element, never one of localWordCache's real word clips: priming used to
 // grab `Object.values(words)[0]` and mute/play/pause THAT element — which is
 // the exact same element playPackagedWord() plays for real the moment that
@@ -151,12 +191,22 @@ function unlockLocalWords() {
   } catch { localWordsUnlocked = false; }
 }
 
+// This latch has the same reopen requirement audio-unlock.js documents for
+// every other channel: an iPadOS app-switch can revoke the primed element's
+// play permission, so the guard must reset on foreground or the local word
+// channel goes silent for the rest of the session while every other channel
+// (fixed via installUnlockOnGesture below) correctly revives.
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) localWordsUnlocked = false;
+});
+window.addEventListener('pageshow', () => { localWordsUnlocked = false; });
+
 async function playPackagedWord(card, fallbackText) {
   await localWordReady;
   const entry = localWordManifest.words?.[card.word];
   if (!entry) {
     state.lastWordSource = 'shared';
-    return audio.play('words', card.word, { fallbackText, rate: 0.76 });
+    return voice.sayFile(content.wordAudio(card.word), fallbackText);
   }
   state.lastWordSource = entry.kind || 'local';
   const token = ++localWordToken;
@@ -182,7 +232,7 @@ async function playPackagedWord(card, fallbackText) {
     };
     const fail = () => {
       finish();
-      if (token === localWordToken) audio.play('words', card.word, { fallbackText, rate: 0.76 });
+      if (token === localWordToken) voice.sayFile(content.wordAudio(card.word), fallbackText);
     };
     element.addEventListener('ended', finish);
     element.addEventListener('error', fail);
@@ -193,16 +243,16 @@ async function playPackagedWord(card, fallbackText) {
   });
 }
 
-let unlocked = false;
+// Fans out to sfx/speech/voice-clips (audio-unlock.js's own list) plus this
+// game's local word-audio channel. installUnlockOnGesture's latch RESETS on
+// visibilitychange/pageshow, so a touch after an iPad app-switch genuinely
+// re-unlocks instead of the game going silently silent for the rest of the
+// session (unlockLocalWords()'s own latch never reopened before this).
 function unlockAll() {
-  if (!unlocked) unlocked = true;
-  try { rawSfx.unlock(); } catch { /* no-op */ }
-  try { speech.unlock(); } catch { /* no-op */ }
-  try { audio.unlock(); } catch { /* no-op */ }
-  try { voice.unlock(); } catch { /* no-op */ }
-  try { unlockLocalWords(); } catch { /* no-op */ }
+  sharedUnlockAll([unlockLocalWords]);
 }
-window.addEventListener('pointerdown', unlockAll, { passive: true });
+installUnlockOnGesture({ extra: [unlockLocalWords] });
+installKioskGuards();
 
 const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
@@ -212,7 +262,6 @@ const ready = Promise.all([
 
 function stopAudio() {
   state.audioToken += 1;
-  audio.stop();
   voice.stop();
   speech.stop();
   stopLocalWord();
@@ -231,14 +280,12 @@ async function sayWord(card) {
   const packaged = localWordManifest.words?.[card.word];
   state.lastWordSource = packaged?.kind || (packaged ? 'local' : 'shared');
   if (state.muted) return;
-  await audio.ready;
   return playPackagedWord(card, spokenName);
 }
 
 async function sayLetter(letter) {
   if (state.muted) return;
-  await audio.ready;
-  return audio.play('fragments', letter, { fallbackText: content.letterSound(letter)?.phonic || letter, rate: 0.74 });
+  return voice.sayFile(content.letterSoundUrl(letter), content.letterSound(letter)?.phonic || letter);
 }
 
 function showScreen(name) {
@@ -320,7 +367,7 @@ function renderCards() {
     image.alt = card.name || card.word;
     image.draggable = false;
     button.append(image);
-    button.addEventListener('pointerdown', (event) => beginDrag(event, button, card));
+    button.addEventListener('pointerdown', (event) => dragCtl.begin(event, { el: button, card }));
     button.addEventListener('click', (event) => {
       if (event.detail === 0) previewCard(card);
     });
@@ -390,74 +437,64 @@ async function replayPrompt() {
   armIdle();
 }
 
-function beginDrag(event, button, card) {
-  if (!state.awaitingInput || state.busy || state.drag || event.isPrimary === false) return;
-  event.preventDefault();
-  unlockAll();
-  state.drag = {
-    pointerId: event.pointerId,
-    button,
-    card,
-    x: event.clientX,
-    y: event.clientY,
-    dx: 0,
-    dy: 0,
-    originRect: button.getBoundingClientRect(),
-    moved: false,
-  };
-  button.setPointerCapture?.(event.pointerId);
-}
-
-function moveDrag(event) {
-  const drag = state.drag;
-  if (!drag || event.pointerId !== drag.pointerId) return;
-  const dx = event.clientX - drag.x;
-  const dy = event.clientY - drag.y;
-  if (!drag.moved && Math.hypot(dx, dy) < 8) return;
-  drag.moved = true;
-  drag.dx = dx;
-  drag.dy = dy;
-  drag.button.classList.add('is-dragging');
-  drag.button.style.transform = `translate(${dx}px, ${dy}px) scale(1.04) rotate(${Math.max(-5, Math.min(5, dx / 30))}deg)`;
-}
-
-function finishDrag(event, cancelled = false) {
-  const drag = state.drag;
-  if (!drag || event.pointerId !== undefined && event.pointerId !== drag.pointerId) return;
-  state.drag = null;
-  drag.button.classList.remove('is-dragging');
-  if (cancelled) {
-    drag.button.style.transform = '';
-    return;
-  }
-  if (!drag.moved) {
-    drag.button.style.transform = '';
-    previewCard(drag.card);
-    return;
-  }
-  const catchRect = els.basketCatch.getBoundingClientRect();
-  const inside = event.clientX >= catchRect.left && event.clientX <= catchRect.right
-    && event.clientY >= catchRect.top && event.clientY <= catchRect.bottom;
-  if (inside) {
-    placeCard(drag.card, drag.button, {
-      transform: drag.button.style.transform,
-      originRect: drag.originRect,
-    });
-  }
-  else {
-    const animation = drag.button.animate([
-      { transform: `translate(${event.clientX - drag.x}px, ${event.clientY - drag.y}px) scale(1.04)` },
+// This game transforms the ORIGINAL card in place (translate/scale/rotate)
+// rather than dragging a separate clone — makeGhost: () => null tells the
+// shared module to skip its own ghost entirely (a fully supported mode:
+// moveGhost()/dropGhost() are no-ops when record.ghost stays null), so the
+// module contributes only its proven pointer lifecycle (one-drag-lock, the
+// slop gate, blur/visibilitychange/pagehide cancel) while every pixel of
+// the card's own movement is still driven by this game's own math, byte-
+// for-byte the same formulas the hand-rolled version used.
+const dragCtl = createDragToSlotDom({
+  getPiece: (piece) => piece,
+  slop: 8,
+  preventDefaultOnPress: true,
+  makeGhost: () => null,
+  onGrab: (piece, record) => {
+    unlockAll();
+    // Captured once, before any transform is applied — getBoundingClientRect()
+    // on the card itself would otherwise report its CURRENT (dragged)
+    // position instead of its resting shelf slot.
+    record.originRect = piece.el.getBoundingClientRect();
+  },
+  onLift: (piece) => piece.el.classList.add('is-dragging'),
+  onMove: (piece, record) => {
+    const dx = record.lastX - record.startX;
+    const dy = record.lastY - record.startY;
+    piece.el.style.transform = `translate(${dx}px, ${dy}px) scale(1.04) rotate(${Math.max(-5, Math.min(5, dx / 30))}deg)`;
+  },
+  onDrop: async (piece, record) => {
+    piece.el.classList.remove('is-dragging');
+    const catchRect = els.basketCatch.getBoundingClientRect();
+    const inside = record.x >= catchRect.left && record.x <= catchRect.right
+      && record.y >= catchRect.top && record.y <= catchRect.bottom;
+    if (inside) {
+      placeCard(piece.card, piece.el, { transform: piece.el.style.transform, originRect: record.originRect });
+      return;
+    }
+    const dx = record.x - record.startX;
+    const dy = record.y - record.startY;
+    const animation = piece.el.animate([
+      { transform: `translate(${dx}px, ${dy}px) scale(1.04)` },
       { transform: 'translate(0, 0) scale(1)' },
     ], { duration: T(240), easing: 'ease-out' });
-    animation.finished.finally(() => { drag.button.style.transform = ''; });
-  }
-}
-
-window.addEventListener('pointermove', moveDrag, { passive: true });
-window.addEventListener('pointerup', (event) => finishDrag(event));
-window.addEventListener('pointercancel', (event) => finishDrag(event, true));
-window.addEventListener('blur', () => {
-  if (state.drag) finishDrag({ pointerId: state.drag.pointerId }, true);
+    // The hand-rolled version this replaced had the same bare `.finished`
+    // await here (unlike returnDraggedCard/flyDraggedCard in this same
+    // file, which already race against a timeout) — a throttled/
+    // backgrounded tab can leave `finished` unresolved indefinitely,
+    // stranding the card mid-drag-offset forever. Race it the same way.
+    await Promise.race([animation.finished.catch(() => {}), wait(240 + 200)]);
+    piece.el.style.transform = '';
+  },
+  onCancel: async (piece) => {
+    piece.el.classList.remove('is-dragging');
+    piece.el.style.transform = '';
+  },
+  onTap: (piece) => {
+    piece.el.classList.remove('is-dragging');
+    piece.el.style.transform = '';
+    previewCard(piece.card);
+  },
 });
 
 async function previewCard(card) {
@@ -475,7 +512,10 @@ async function returnDraggedCard(button, drop) {
     { transform: drop.transform },
     { transform: 'translate(0, 0) scale(1)' },
   ], { duration: T(260), easing: 'ease-out' });
-  await animation.finished.catch(() => {});
+  // Never await an animation unconditionally: in a backgrounded tab the
+  // compositor throttles and `finished` can stall indefinitely, which would
+  // leave input locked forever. The timeout always wins eventually.
+  await Promise.race([animation.finished.catch(() => {}), wait(260 + 200)]);
   button.style.transform = '';
 }
 
@@ -488,7 +528,7 @@ async function flyDraggedCard(button, drop, targetRect) {
     { transform: drop.transform, opacity: 1 },
     { transform: `translate(${targetX}px, ${targetY}px) scale(.28) rotate(10deg)`, opacity: 0 },
   ], { duration: T(430), easing: 'cubic-bezier(.2,.75,.25,1)', fill: 'forwards' });
-  await animation.finished.catch(() => {});
+  await Promise.race([animation.finished.catch(() => {}), wait(430 + 200)]);
   button.classList.add('is-found');
   animation.cancel();
   button.style.transform = '';
@@ -616,7 +656,8 @@ async function showEnd() {
 wireTap(els.splashHome, () => { stopAudio(); window.location.href = '../../'; });
 wireTap(els.splashSound, () => replayPrompt());
 wireTap(els.playDefault, () => startMode('two'));
-for (const button of els.modeButtons) wireTap(button, () => startMode(button.dataset.mode));
+// The two mode cards wire their own press path via renderModeCards()'s
+// onPick above — wiring them again here would double-fire startMode().
 wireTap(els.playBack, () => goSplash());
 wireTap(els.playSound, () => replayPrompt());
 wireTap(els.celebrationBack, () => goSplash());
@@ -625,10 +666,11 @@ wireTap(els.endBack, () => goSplash());
 wireTap(els.again, () => startMode(state.mode?.id || 'two'));
 
 const debug = {
+  gameId: config.id,
   version: 1,
   ready,
   listModes: () => config.modes.map(({ id, title, skill }) => ({ id, title, skill })),
-  start: (modeId) => startMode(modeId),
+  startMode: (modeId) => startMode(modeId),
   getState: () => ({
     screen: state.screen,
     mode: state.mode?.id || null,
@@ -652,7 +694,7 @@ const debug = {
       });
     }
     return state.cards.filter((card) => !state.found.has(card.id)).map((card) => {
-      const element = els.shelf.querySelector(`[data-target="${card.id}"]`);
+      const element = els.shelf.querySelector(`[data-target="${CSS.escape(card.id)}"]`);
       const rect = element?.getBoundingClientRect() || { x: 0, y: 0, width: 0, height: 0 };
       return { id: card.id, role: card.letter === state.target ? 'correct' : 'wrong', rect: { x: rect.x, y: rect.y, w: rect.width, h: rect.height } };
     });
@@ -665,7 +707,7 @@ const debug = {
   },
   drop: async (targetId) => {
     const card = state.cards.find((item) => item.id === targetId);
-    const element = card && els.shelf.querySelector(`[data-target="${targetId}"]`);
+    const element = card && els.shelf.querySelector(`[data-target="${CSS.escape(targetId)}"]`);
     return card && element ? placeCard(card, element) : { accepted: false };
   },
   speakWord: async (word) => {
@@ -678,15 +720,15 @@ const debug = {
   },
   winRound: async () => {
     for (const card of state.cards.filter((item) => item.letter === state.target && !state.found.has(item.id))) {
-      const element = els.shelf.querySelector(`[data-target="${card.id}"]`);
+      const element = els.shelf.querySelector(`[data-target="${CSS.escape(card.id)}"]`);
       await placeCard(card, element);
     }
   },
   mute: () => { state.muted = true; stopAudio(); },
-  seed: (seed) => { state.seed = Number(seed) >>> 0; randomState = state.seed; return state.seed; },
+  seed: (seed) => { state.seed = Number(seed) >>> 0; rng = mulberry32(state.seed); return state.seed; },
   fastTimers: (scale = .05) => { state.timeScale = Math.max(.01, Math.min(1, Number(scale) || .05)); return state.timeScale; },
   home: () => goSplash(),
 };
 
-window.QLOBE_DEBUG = debug;
+installDebug(debug);
 goSplash();

@@ -22,6 +22,7 @@ import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { soundDebounce } from '../../../shared/js/hud.js';
 import { installUnlockOnGesture, installKioskGuards, unlockAll } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
@@ -107,17 +108,13 @@ function modeFace(m) {
 }
 
 function splashHTML() {
-  const tiles = config.modes.map((m) => `
-    <button class="fc-mode" type="button" data-mode="${m.id}" aria-label="${m.title}">
-      ${modeFace(m)}
-    </button>`).join('');
   return `
     <section class="fc-screen fc-splash">
       <img class="fc-splash-art" src="${config.art.splash}" alt="" draggable="false" />
       <a class="hud-button hud-img hud-home" href="../../" aria-label="${config.copy.home}"
          style="background-image:url('${UI.home}')"></a>
       <h1 class="fc-title"><span>Flashlight</span><span>Cave</span></h1>
-      <div class="fc-modes">${tiles}</div>
+      <div class="fc-modes"></div>
       <div class="fc-actors"></div>
     </section>`;
 }
@@ -167,13 +164,25 @@ function showSplash() {
   voice.stop();
   speech.stop();
   mount.innerHTML = splashHTML();
-  for (const btn of mount.querySelectorAll('.fc-mode')) {
-    onTap(btn, () => startMode(btn.dataset.mode), {
-      // Marking `greeted` here is what makes the welcome skip when the child's
-      // very first gesture is a mode tile.
-      feedback: (e) => { e.preventDefault(); greeted = true; unlockAll(); sfx.tick(); },
-    });
-  }
+  renderModeCards({
+    host: mount.querySelector('.fc-modes'),
+    // `config.modes[].icon` (e.g. "🔤") exists for other tooling but this
+    // splash never showed it — modeFace() is the whole visual. Strip it so
+    // modeCard()'s no-art-then-icon fallback doesn't paint a glyph these
+    // tiles never had.
+    modes: config.modes.map(({ icon, ...mode }) => mode),
+    skin: false, // .fc-mode keeps its own pixel-for-pixel look; only the shared
+                 // .qk-mode-card touch-floor contract is added (a no-op here —
+                 // .fc-mode's own 220px min already clears it).
+    cardClass: 'fc-mode',
+    showTitle: false, // the mode face (modeFace()) IS the visible content
+    targetPrefix: null, // unchanged QA-target surface: these tiles never had one
+    decorate(btn, mode) { btn.insertAdjacentHTML('afterbegin', modeFace(mode)); },
+    onPick: (id) => startMode(id),
+    // Marking `greeted` here is what makes the welcome skip when the child's
+    // very first gesture is a mode tile.
+    feedback: (e) => { e.preventDefault(); greeted = true; unlockAll(); sfx.tick(); },
+  });
   hostActors();
 
   // Try to greet immediately; if the browser blocks it (no user activation yet)

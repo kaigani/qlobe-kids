@@ -35,7 +35,7 @@ _None yet._ If you make a proof-of-concept clip, drop it at `concept/poc.mp4`
 - **Core loop (30–90s):** <Describe one full round here.>
 
 ## Shared assets used
-- `shared/js/audio.js` — recorded teacher voice with Web Speech fallback.
+- `shared/js/voice-clips.js` — recorded teacher voice with Web Speech fallback.
 - `shared/js/sfx.js` — synthesized sound effects (no files).
 - `shared/js/speech.js` — Web Speech wrapper.
 - `shared/fonts/fredoka-latin-600-normal.woff2` — display font.

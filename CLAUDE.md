@@ -93,10 +93,14 @@ for it first.
     and the `.qk-mode-list` card skin. Link it after `base.css` and **before** the
     game's own stylesheet.
 - **`shared/js/`** — the audio/interaction toolkit (import via `../../../shared/js/…` from your game's `js/` folder — module imports resolve relative to the importing file, one level deeper than the game root):
-  - **`audio.js`** — recorded teacher-voice player. `import * as audio`, call
-    `await audio.ready`, then `audio.play(category, key, { fallbackText })`.
-    Falls back to `speech.js` when a clip is missing. `audio.unlock()` on the
-    first tap satisfies the iOS autoplay policy. Also `playSeq`, `stop`.
+  - **`voice-clips.js`** — **PRIMARY voice channel.** Recorded-clip voice
+    player (`init(manifestUrl, linesUrl, defaultLines)`, `say(key,
+    fallbackText)`, `unlock()`, `onClip(cb)`). Uses one iOS-unlocked audio
+    element so a clip sequence never slips into the synth voice. Web Speech
+    fallback built in. Also `duration(key)`, `clipInfo(key)`, `setMuted(on)`,
+    and `getAudioLog()` — the `{ key, text, kind: 'clip' | 'speech', at }` ring
+    buffer QA drivers assert on. This is the module the template imports and
+    what nearly every game uses — reach for it first.
   - **`speech.js`** — Web Speech (`speechSynthesis`) fallback: `speak(text)`,
     `speakSeq(parts)`, `unlock()`, `stop()`. Picks a friendly local voice.
   - **`sfx.js`** — zero-file WebAudio sound effects: `pop`, `unpop`, `whoosh`,
@@ -106,12 +110,6 @@ for it first.
     buttons (feedback on pointerdown, action on pointerup over the element,
     `click` reserved for keyboard/AT). Use it instead of splitting feedback
     across `pointerdown` + `click`. Returns a disposer.
-  - **`voice-clips.js`** — recorded-clip voice player for custom games
-    (`init(manifest, lines, defaults)`, `say(key)`, `unlock()`, `onClip(cb)`).
-    Uses one iOS-unlocked audio element so a clip sequence never slips into the
-    synth voice. Web Speech fallback built in. Also `duration(key)`,
-    `clipInfo(key)`, `setMuted(on)`, and `getAudioLog()` — the `{ key, text,
-    kind: 'clip' | 'speech', at }` ring buffer QA drivers assert on.
   - **`audio-unlock.js`** — the platform's one first-gesture unlock.
     `installUnlockOnGesture({ extra, onFirst })` fans out to every audio channel
     and **reopens its latch on `visibilitychange`/`pageshow`**, so audio revives
@@ -194,7 +192,7 @@ Root `games.json` — one fetch drives the hub:
       "age": { "min": 5, "max": 6 },
       "status": "in-design",
       "accent": "#5Bb0…",
-      "uses": ["shared/js/audio.js", "shared/assets/objects/"],
+      "uses": ["shared/js/voice-clips.js", "shared/assets/objects/"],
       "modes": [ { "id": "tap-count", "title": "Tap & Count", "skill": "one-to-one counting" } ]
     }
   ]
@@ -222,9 +220,13 @@ field, never synced.
 
 ## What NOT to do
 
-- No frameworks, bundlers, `package.json`, or npm. No CDN or remote asset loads.
-- No ads, no accounts/logins, no analytics or tracking, no loot boxes or dark
-  patterns.
+- No frameworks, bundlers, `package.json`, or npm. No CDN or remote asset loads,
+  **except** the platform-wide GA4 pageview tag (`shared/js/analytics.js`,
+  loaded via googletagmanager.com) — that's the one deliberate exception; don't
+  add any other remote script, font, or font/asset CDN.
+- No ads, no accounts/logins, no loot boxes or dark patterns. Analytics is
+  limited to the one shared GA4 pageview tag every game links — don't add
+  per-game tracking, third-party pixels, or anything beyond that.
 - No gameplay that depends on a child reading text. Audio + pictures + touch.
 - No harsh failure states — no "Game Over", no losing streaks, no scary sounds.
   A wrong tap gets a gentle nudge and another try. Repeat with variation.

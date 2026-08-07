@@ -68,18 +68,20 @@ warm/no-fail feel. Keep it short and concrete.
 Reuse the library via `../../shared/…`. Import the toolkit:
 
 ```js
-import * as audio from '../../../shared/js/audio.js';
+import * as voiceClips from '../../../shared/js/voice-clips.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as sfx    from '../../../shared/js/sfx.js';
 ```
 
 Key patterns:
-- **Unlock audio on the first tap** (iOS autoplay policy). In the first
-  pointer/touch handler call `audio.unlock()`, `sfx.unlock()`, `speech.unlock()`.
-- **Speak with fallback:** `await audio.ready;` then
-  `audio.play('prompts', key, { fallbackText: 'Tap the cat' });` — recorded
-  teacher voice when the clip exists, Web Speech otherwise. `speech.speak(text)`
-  is the direct fallback path.
+- **Unlock audio on the first tap** (iOS autoplay policy). Use
+  `installUnlockOnGesture()` from `shared/js/audio-unlock.js` — it fans out to
+  every channel AND reopens its latch after an iPadOS app-switch, which a
+  hand-rolled `let unlocked = false` never does.
+- **Speak with fallback:** `voiceClips.init('./assets/audio/manifest.json',
+  './assets/audio/lines.json')` once at boot, then
+  `voiceClips.say(key, 'Tap the cat');` — recorded teacher voice when the clip
+  exists, Web Speech otherwise. `speech.speak(text)` is the direct fallback path.
 - **Sound effects are free:** `sfx.pop()`, `sfx.tada()`, `sfx.sparkle()`,
   `sfx.boing()`, `sfx.tick()` — synthesized, no files, never 404.
 - **Reuse assets:** picture-cards in `shared/assets/objects/`, tiles in
@@ -118,7 +120,7 @@ to the root `games.json` `games` array. Schema:
   "age": { "min": 5, "max": 6 },
   "status": "in-design",
   "accent": "#5bb0d8",
-  "uses": ["shared/js/audio.js", "shared/assets/objects/"],
+  "uses": ["shared/js/voice-clips.js", "shared/assets/objects/"],
   "modes": [ { "id": "tap-count", "title": "Tap & Count", "skill": "one-to-one counting" } ]
 }
 ```

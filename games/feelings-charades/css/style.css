@@ -396,7 +396,7 @@ h1 {
 #host-portrait { width: 120%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 8px rgba(0,54,91,.25)); }
 .mode-buttons { position: relative; z-index: 3; gap: clamp(12px,2vw,22px); }
 .mode-button, .big-cta {
-  min-height: 78px;
+  min-height: 96px;
   border: 5px solid #fff;
   box-shadow: 0 7px 0 rgba(3,67,139,.55), 0 12px 18px rgba(0,42,90,.25);
   text-shadow: 0 2px 0 rgba(0,44,100,.2);
@@ -465,7 +465,7 @@ h1 {
 #demo-instruction { display: flex; align-items: baseline; gap: 16px; color: var(--ink); background: rgba(255,253,244,.94); border: 4px solid #ffc51a; border-radius: 24px; padding: 8px 22px; box-shadow: 0 5px 0 #e49b0c; }
 #demo-instruction strong { font-size: clamp(18px,2.5vw,28px); }
 #demo-instruction span { font-size: clamp(14px,1.8vw,20px); }
-#btn-your-turn { min-height: 70px; }
+#btn-your-turn { min-height: 96px; }
 
 #act-ring-wrap { width: min(51vh,430px); height: min(51vh,430px); }
 #act-ring { filter: drop-shadow(0 9px 10px rgba(0,45,91,.25)); }
@@ -489,14 +489,14 @@ h1 {
 #breath-steps { padding: 8px; border-radius: 34px; background: rgba(255,255,255,.9); box-shadow: 0 6px 14px rgba(0,76,112,.18); }
 #breath-steps span { border: 0; background: transparent; padding: 10px 15px; }
 #breath-steps span.active { background: #e9f8ff; color: #006fd1; }
-#btn-cope-done { min-height: 68px; background: linear-gradient(#ff8b16,#f26900); }
+#btn-cope-done { min-height: 96px; background: linear-gradient(#ff8b16,#f26900); }
 
 /* affirmation */
 #affirm { background: radial-gradient(circle at 50% 24%,rgba(255,255,205,.98) 0 7%,rgba(255,214,20,.92) 8% 18%,transparent 31%); }
 #affirm-badge { width: min(47vh,420px); filter: drop-shadow(0 8px 4px rgba(0,65,119,.25)); }
 #affirm-title { margin-top: -29vh; margin-bottom: 8vh; position: relative; z-index: 2; color: #e52723; font-size: clamp(48px,8vw,82px); line-height: .9; text-shadow: 0 5px 0 #fff,0 9px 0 rgba(148,24,15,.18); }
 #affirm-text { width: min(74vw,760px); max-width: none; color: var(--ink); background: #fffdf5; border: 7px solid #ffd03a; border-radius: 34px; box-shadow: 0 8px 0 #e4a715,0 14px 20px rgba(0,48,97,.25); padding: 24px 34px; }
-#btn-affirm-next { min-height: 72px; }
+#btn-affirm-next { min-height: 96px; }
 
 /* guessing */
 #guess::before { content:"Guess the Feeling"; position:absolute; top:3vh; left:50%; transform:translateX(-50%); color:#fff; font-size:clamp(30px,4.8vw,52px); text-shadow:0 4px 0 rgba(0,60,130,.35); white-space:nowrap; }

@@ -19,12 +19,13 @@ import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
-import { shuffle } from '../../../shared/js/rng.js';
+import { shuffle, mulberry32 } from '../../../shared/js/rng.js';
 import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { createNarrator } from '../../../shared/js/narrator.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { createLab } from './lab.js';
 import * as art from './art.js';
 
@@ -257,22 +258,39 @@ function showSplash() {
         <img class="title-art" src="./assets/title.webp" width="620" height="560"
              alt="" aria-hidden="true" decoding="async">
       </header>
-      <div class="mode-grid" role="list" aria-label="Choose an experiment">
-        ${MODES.map((item) => `
-          <button class="mode-card" type="button" role="listitem"
-                  data-mode="${item.id}" data-target="mode-${item.id}"
-                  aria-label="${item.title}">
-            <span class="mode-art" aria-hidden="true">${art.modeFace(item)}</span>
-            <span class="mode-title">${item.title}</span>
-          </button>`).join('')}
-      </div>
+      <div class="mode-grid" role="list" aria-label="Choose an experiment"></div>
     </section>`;
 
-  mount.querySelectorAll('.mode-card').forEach((button) => {
-    disposers.push(onTap(button, () => startMode(button.dataset.mode), {
-      feedback: (event) => { feedback(event); say(modeById(button.dataset.mode).menuLine); },
-    }));
+  // debugTap() already has a dedicated `mode-` prefix branch calling
+  // startMode() directly (see below) — no patch needed for renderModeCards()
+  // to slot in here.
+  const { dispose: disposeModeCards } = renderModeCards({
+    host: mount.querySelector('.mode-grid'),
+    modes: MODES.map(({ icon, ...item }) => item), // icon stripped: modeFace()
+      // resolves it itself (through modeById() below); left in scope,
+      // modeCard()'s own icon fallback would print the raw path as text
+      // since this game has no `art` field to short-circuit it first.
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-card's own 152px min-height clears it).
+    cardClass: 'mode-card',
+    showTitle: false, // decorate() builds .mode-art + .mode-title itself
+    decorate(btn, mode) {
+      const original = modeById(mode.id);
+      const face = document.createElement('span');
+      face.className = 'mode-art';
+      face.setAttribute('aria-hidden', 'true');
+      face.innerHTML = art.modeFace(original);
+      btn.append(face);
+      const title = document.createElement('span');
+      title.className = 'mode-title';
+      title.textContent = mode.title;
+      btn.append(title);
+    },
+    onPick: (id) => startMode(id),
+    feedback: (e, mode) => { feedback(e); say(mode.menuLine); },
   });
+  disposers.push(disposeModeCards);
   const home = mount.querySelector('.home-button');
   if (home) home.addEventListener('pointerdown', feedback, { passive: false });
 }
@@ -1333,17 +1351,6 @@ function setSeed(n) {
   rng = mulberry32(state.seed);
   lastRoundKey = '';
   return state.seed;
-}
-
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value += 0x6D2B79F5;
-    let result = value;
-    result = Math.imul(result ^ (result >>> 15), result | 1);
-    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
-    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
-  };
 }
 
 function cssEscape(value) {

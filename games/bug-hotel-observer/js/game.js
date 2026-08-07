@@ -11,6 +11,7 @@
 
 import { createScene } from '../../../shared/js/hotspot-scene.js';
 import { createLens } from '../../../shared/js/magnifier-lens.js';
+import { createTimers } from '../../../shared/js/timers.js';
 import { resolveArt, imgEl } from './art.js';
 
 // ---------------------------------------------------------------------------
@@ -204,21 +205,22 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
   // is the flag that says the field is actually playable — QLOBE_DEBUG reports
   // it, so a harness waits on the truth instead of racing a screen name.
   let mounted = false;
-  const timers = new Set();
+  // Mirrors main.js's own timerGroup — see that file's comment for the scale
+  // convention (ctx.timeScale() stays authoritative; retuneDwell() below is
+  // the existing "fastTimers() changed, re-tune this module" hook, so it is
+  // also where this group's scale gets kept in sync).
+  const timerGroup = createTimers();
   let offDwell = null;
   let offMove = null;
 
-  const T = (ms) => ms * ctx.timeScale();
+  const T = (ms) => timerGroup.ms(ms);
 
   function later(ms, fn) {
-    const id = setTimeout(() => { timers.delete(id); fn(); }, Math.max(0, T(ms)));
-    timers.add(id);
-    return id;
+    return timerGroup.after(ms, fn);
   }
 
   function cancelTimers() {
-    for (const id of timers) clearTimeout(id);
-    timers.clear();
+    timerGroup.clearAll();
   }
 
   // -- geometry --------------------------------------------------------------
@@ -839,8 +841,9 @@ export function createField({ mount, config, voice, sfx, ctx, on }) {
       return p ? { x: p.artX, y: p.artY } : null;
     },
 
-    /** §7 `fastTimer` — the dwell lives in the module, so it is re-tuned here. */
+    /** §7 `fastTimers` — the dwell lives in the module, so it is re-tuned here. */
     retuneDwell() {
+      timerGroup.setScale(1 / ctx.timeScale());
       if (lens) {
         lens.setDwell({
           ms: T(Number(lensCfg.dwellMs) || 600),

@@ -6,8 +6,10 @@ import { burstConfetti, tada } from '../../../shared/js/celebrate.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
 import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as sfx from '../../../shared/js/sfx.js';
+import { preloadImages } from '../../../shared/js/preload.js';
 
 const BALLOON_ART = {
   red: './assets/balloon-red.webp',
@@ -34,17 +36,6 @@ function img(src, className, alt = '') {
   node.alt = alt;
   if (className) node.className = className;
   return node;
-}
-
-function preload(urls) {
-  return Promise.all([...new Set(urls)].map((url) => new Promise((resolve) => {
-    const node = new Image();
-    const done = () => resolve(url);
-    node.addEventListener('load', done, { once: true });
-    node.addEventListener('error', done, { once: true });
-    node.src = url;
-    if (node.complete) done();
-  })));
 }
 
 function populateCookie(host, count, chipArt, cookieArt, newest = -1) {
@@ -209,29 +200,29 @@ export function createChocolateChipCount(config, root) {
   }
 
   function renderRecipeCards() {
-    els.recipeGrid.replaceChildren();
-    config.modes.forEach((mode, index) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'recipe-card';
-      button.dataset.mode = mode.id;
-      button.dataset.target = `mode-${mode.id}`;
-      button.dataset.role = 'neutral';
-      button.style.setProperty('--i', index);
-      button.style.setProperty('--tilt', `${[-2, 1.5, -1][index]}deg`);
-      button.setAttribute('aria-label', `${mode.title}: catch ${mode.target} chocolate chips`);
-      const frame = img(mode.frame, 'frame');
-      const cookie = document.createElement('span');
-      cookie.className = 'cookie-composite';
-      populateCookie(cookie, mode.target, config.assets.chip, config.assets.cookie);
-      button.append(frame, cookie);
-      const handler = () => selectMode(mode.id);
-      targetHandlers.set(button.dataset.target, handler);
-      permanentDisposers.push(onTap(button, handler, {
-        feedback: (event) => { event.preventDefault(); unlockAll(); },
-      }));
-      els.recipeGrid.append(button);
+    const { dispose } = renderModeCards({
+      host: els.recipeGrid,
+      modes: config.modes,
+      skin: false, // .recipe-card keeps its own pixel-for-pixel look; only
+                   // the shared .qk-mode-card touch-floor contract is added
+                   // (a no-op — .recipe-card's own size already clears it).
+      cardClass: 'recipe-card',
+      showTitle: false, // decorate() builds the frame + cookie-composite itself
+      vars: (mode, index) => ({ '--i': index, '--tilt': `${[-2, 1.5, -1][index]}deg` }),
+      label: (mode) => `${mode.title}: catch ${mode.target} chocolate chips`,
+      decorate(button, mode) {
+        const frame = img(mode.frame, 'frame');
+        const cookie = document.createElement('span');
+        cookie.className = 'cookie-composite';
+        populateCookie(cookie, mode.target, config.assets.chip, config.assets.cookie);
+        button.append(frame, cookie);
+        const handler = () => selectMode(mode.id);
+        targetHandlers.set(button.dataset.target, handler);
+      },
+      onPick: (id) => selectMode(id),
+      feedback: (event) => { event.preventDefault(); unlockAll(); },
     });
+    permanentDisposers.push(dispose);
     renderSelectedMode();
   }
 
@@ -692,6 +683,7 @@ export function createChocolateChipCount(config, root) {
 
   function endDrag(event) {
     if (!drag || (event && event.pointerId !== drag.pointerId)) return;
+    try { els.catchField.releasePointerCapture(drag.pointerId); } catch { /* already released */ }
     drag = null;
   }
 
@@ -820,7 +812,7 @@ export function createChocolateChipCount(config, root) {
 
   const ready = (async () => {
     await voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
-    await preload([
+    await preloadImages([
       ...Object.values(config.assets),
       ...Object.values(BALLOON_ART),
       ...config.modes.map((mode) => mode.frame),

@@ -1,13 +1,13 @@
 // field.js — a STORED signed-distance + colour field for clay.
 //
 // WHY THIS EXISTS
-// The other shipped engine (shared/js/clay/lobes.js, which stays exactly where
-// it is) is a blended union of analytic primitives. The blend is beautiful and
-// the seams are loved, but every lobe keeps an identity: it stays in a list, it
-// stays draggable, and a child can lever a welded mass back apart because "the
-// green ball" is still a row in an array. The product owner asked for the
-// opposite — "the green clay should now be a part of the whole and behave
-// accordingly, not have an atomic identity."
+// The previous engine (shared/js/clay/lobes.js, deleted — superseded by this
+// file) was a blended union of analytic primitives. The blend was beautiful
+// and the seams were loved, but every lobe kept an identity: it stayed in a
+// list, it stayed draggable, and a child could lever a welded mass back apart
+// because "the green ball" was still a row in an array. The product owner
+// asked for the opposite — "the green clay should now be a part of the whole
+// and behave accordingly, not have an atomic identity."
 //
 // This module is the other representation. There is exactly ONE object here: a
 // 3-D grid of (signed distance, colour). A stamp writes into it. A pull moves

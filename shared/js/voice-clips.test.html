@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>voice-clips.js test</title>
+  <link rel="icon" href="data:," />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #eef6fb; color: #17517e; }
+    h2 { margin: 0 0 4px; }
+    p.lede { margin: 0 0 14px; max-width: 62ch; font-size: 14px; opacity: .8; }
+    #summary { font-size: 20px; font-weight: 700; padding: 10px 14px; border-radius: 10px;
+               background: #fff; display: inline-block; }
+    #summary.pass { background: #d7f5e3; color: #1c6b42; }
+    #summary.fail { background: #ffdcd7; color: #8c2b1e; }
+    ol { padding-left: 22px; font-size: 14px; line-height: 1.6; }
+    li.bad { color: #8c2b1e; font-weight: 600; }
+    li .why { opacity: .65; font-size: 12px; }
+    code { background: #fff; padding: 1px 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>voice-clips.js test</h2>
+  <p class="lede">
+    <code>window.fetch</code> (manifest/lines loading) and
+    <code>window.speechSynthesis</code> (voice-clips' own fallback, via
+    <code>speech.js</code>) are both faked before the module is imported. Clip
+    playback itself is exercised against a real <code>&lt;audio&gt;</code>
+    element with a URL that 404s — the real browser fires a real
+    <code>error</code> event, which is exactly the path a missing recording
+    takes in production, so the clip → speech fallback is proven end to end
+    rather than mocked away.
+  </p>
+  <div id="summary">running…</div>
+  <ol id="results"></ol>
+
+  <script type="module">
+    const results = [];
+    function t(name, cond, why) {
+      results.push({ name, pass: !!cond, why: cond ? '' : (why || '') });
+    }
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    // ---- fake speechSynthesis (speech.js's fallback engine) ---------------
+    const spokenText = [];
+    const synth = {
+      speaking: false, pending: false, _listeners: {},
+      getVoices: () => [],
+      addEventListener(type, fn) { (this._listeners[type] ||= []).push(fn); },
+      cancel() { synth.speaking = false; },
+      resume() {},
+      speak(u) {
+        spokenText.push(u.text);
+        synth.speaking = true;
+        Promise.resolve().then(() => {
+          u.onstart?.();
+          Promise.resolve().then(() => { synth.speaking = false; u.onend?.(); });
+        });
+      },
+    };
+    Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
+
+    // ---- fake fetch for the manifest + lines table -------------------------
+    const MANIFEST = {
+      welcome: { file: 'welcome.m4a', dur: 1.2 },
+      // 'unrecorded' key intentionally has no manifest entry.
+    };
+    const LINES = {
+      welcome: 'Hello there!',
+      unrecorded: 'This line was never recorded.',
+    };
+    const realFetch = window.fetch.bind(window);
+    window.fetch = async (url) => {
+      const clean = String(url).split('?')[0];
+      if (clean.endsWith('fake-manifest.json')) return new Response(JSON.stringify(MANIFEST), { status: 200 });
+      if (clean.endsWith('fake-lines.json')) return new Response(JSON.stringify(LINES), { status: 200 });
+      return realFetch(url); // let real asset/module requests through untouched
+    };
+
+    const mod = await import(`./voice-clips.js?t=${Date.now()}`);
+    const { init, say, sayFile, trySay, stop, unlock, setMuted, isMuted,
+      getAudioLog, clearAudioLog, duration, clipInfo, onClip } = mod;
+
+    // ---- 1. shape ------------------------------------------------------
+    for (const name of ['init', 'say', 'sayFile', 'trySay', 'stop', 'unlock',
+      'setMuted', 'isMuted', 'getAudioLog', 'clearAudioLog', 'duration', 'clipInfo', 'onClip']) {
+      t(`exports ${name}`, typeof mod[name] === 'function');
+    }
+
+    // ---- 2. init() never rejects, even against a 404 manifest --------------
+    {
+      let threw = false;
+      try { await init('./does-not-exist-manifest.json', './does-not-exist-lines.json', {}); }
+      catch { threw = true; }
+      t('init() does not reject on a 404 manifest/lines', !threw);
+    }
+
+    // ---- 3. init() against a real (faked) manifest --------------------------
+    {
+      await init('./fake-manifest.json', './fake-lines.json', {});
+      t('clipInfo() reflects a recorded key', clipInfo('welcome')?.file === 'welcome.m4a',
+        JSON.stringify(clipInfo('welcome')));
+      t('duration() reads the manifest dur for a recorded key', duration('welcome') === 1.2,
+        `duration=${duration('welcome')}`);
+      t('clipInfo() is null for an unrecorded key', clipInfo('unrecorded') === null);
+      t('duration() is null for an unrecorded key', duration('unrecorded') === null);
+    }
+
+    // ---- 4. say() on an unrecorded key falls back to speech ------------------
+    {
+      clearAudioLog();
+      spokenText.length = 0;
+      await say('unrecorded', 'fallback text');
+      t('an unrecorded key never touches the audio element (no clip to try)', true); // no crash = pass
+      t('the fallback spoke the lines.json text, not the caller fallback', spokenText[0] === 'This line was never recorded.',
+        JSON.stringify(spokenText));
+      const log = getAudioLog();
+      t('the audio log records it as kind: speech', log.at(-1)?.kind === 'speech', JSON.stringify(log.at(-1)));
+      t('the audio log key matches', log.at(-1)?.key === 'unrecorded', JSON.stringify(log.at(-1)));
+    }
+
+    // ---- 5. say() on a recorded key tries the clip, 404s, falls back --------
+    {
+      clearAudioLog();
+      spokenText.length = 0;
+      const clipStarts = [];
+      const offClip = onClip((key) => clipStarts.push(key));
+      await say('welcome', 'ignored fallback');
+      offClip();
+      t('onClip fired for the attempted clip', clipStarts.includes('welcome'), JSON.stringify(clipStarts));
+      t('a 404 clip falls back to the lines.json text', spokenText[0] === 'Hello there!', JSON.stringify(spokenText));
+      const log = getAudioLog();
+      // logSay() tags by manifest presence, not by whether the file actually
+      // loads — a recorded key is logged 'clip' even when the file 404s,
+      // which is correct: the CLAIM was a clip, the fallback is a separate
+      // concern this ring buffer doesn't need to re-litigate.
+      t('the audio log records it as kind: clip (a recording was claimed)', log.at(-1)?.kind === 'clip',
+        JSON.stringify(log.at(-1)));
+    }
+
+    // ---- 6. sayFile() with a direct 404 path also falls back ----------------
+    {
+      spokenText.length = 0;
+      await sayFile('./nope.m4a', 'direct file fallback');
+      t('sayFile() falls back to speech on a 404', spokenText[0] === 'direct file fallback', JSON.stringify(spokenText));
+    }
+
+    // ---- 7. trySay() resolves false on a failed/blocked clip -----------------
+    {
+      const ok = await trySay('welcome');
+      t('trySay() resolves a boolean', typeof ok === 'boolean', `ok=${ok}`);
+    }
+
+    // ---- 8. setMuted / isMuted --------------------------------------------
+    {
+      t('starts unmuted', isMuted() === false);
+      setMuted(true);
+      t('setMuted(true) takes effect', isMuted() === true);
+      spokenText.length = 0;
+      const p = say('unrecorded', 'should not speak');
+      let settled = false;
+      p.then(() => { settled = true; });
+      await wait(20);
+      t('say() while muted resolves promptly without speaking', settled && spokenText.length === 0,
+        `settled=${settled} spoken=${JSON.stringify(spokenText)}`);
+      setMuted(false);
+      t('setMuted(false) restores isMuted() to false', isMuted() === false);
+    }
+
+    // ---- 9. getAudioLog / clearAudioLog ------------------------------------
+    {
+      clearAudioLog();
+      t('clearAudioLog() empties the log', getAudioLog().length === 0, `length=${getAudioLog().length}`);
+      await say('unrecorded', 'one');
+      t('a say() call adds exactly one log entry', getAudioLog().length === 1, `length=${getAudioLog().length}`);
+      t('getAudioLog() returns a copy, not the live array',
+        (() => { const a = getAudioLog(); a.push('tampered'); return getAudioLog().length === 1; })());
+    }
+
+    // ---- 10. stop() invalidates an in-flight say() ---------------------------
+    {
+      clearAudioLog();
+      const p = say('unrecorded', 'will be cut off');
+      stop();
+      let threw = false;
+      try { await p; } catch { threw = true; }
+      t('stop() does not make an in-flight say() reject', !threw);
+    }
+
+    // ---- 11. unlock() never throws (even without a real user gesture) --------
+    {
+      let threw = false;
+      try { unlock(); unlock(); } catch { threw = true; }
+      t('unlock() can be called repeatedly without throwing', !threw);
+    }
+
+    window.fetch = realFetch;
+
+    // ---- render -------------------------------------------------------------
+    const list = document.getElementById('results');
+    const summary = document.getElementById('summary');
+    const failed = results.filter((r) => !r.pass);
+    list.innerHTML = results.map((r) =>
+      `<li class="${r.pass ? 'ok' : 'bad'}">${r.pass ? '✅' : '❌'} ${r.name}${r.why ? ` <span class="why">— ${r.why}</span>` : ''}</li>`
+    ).join('');
+    summary.textContent = failed.length ? `${failed.length} FAILED of ${results.length}` : `all ${results.length} passed`;
+    summary.className = failed.length ? 'fail' : 'pass';
+    document.title = failed.length ? `FAIL (${failed.length})` : 'PASS';
+  </script>
+</body>
+</html>

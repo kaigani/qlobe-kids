@@ -137,6 +137,27 @@ export function duck(level = 1, ms = 200) {
   g.linearRampToValueAtTime(duckGain, now + Math.max(0.01, ms / 1000));
 }
 
+let duckDuringToken = 0;
+
+/**
+ * Duck the band under `promise` (e.g. a spoken line) and restore it the
+ * moment `promise` settles — unless a newer duckDuring() took over first, in
+ * which case this one's restore is silently dropped. Replaces the token-
+ * guarded duck-then-restore wrapper world-music-dance and freeze-focus-dance
+ * each hand-rolled around their `say()`.
+ *
+ * @param {Promise<any>} promise
+ * @param {{down?: number, downMs?: number, upMs?: number}} [opts]
+ * @returns {Promise<any>} resolves/rejects exactly like `promise`
+ */
+export function duckDuring(promise, { down = 0.25, downMs = 120, upMs = 350 } = {}) {
+  const token = ++duckDuringToken;
+  duck(down, downMs);
+  const restore = () => { if (token === duckDuringToken) duck(1, upMs); };
+  Promise.resolve(promise).then(restore, restore);
+  return promise;
+}
+
 export function instrumentIds() { return Object.keys(manifest || {}); }
 export function instrumentDef(id) { return manifest && manifest[id]; }
 export function stats() { return { notesScheduled, playing: !!current }; }

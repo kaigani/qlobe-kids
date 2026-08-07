@@ -20,7 +20,7 @@ importing file, not the page.
 | Pattern | Import instead of copying |
 |---|---|
 | §1 audio unlock | `shared/js/audio-unlock.js` |
-| §2 recorded voice | `shared/js/audio.js`, `shared/js/voice-clips.js` |
+| §2 recorded voice | `shared/js/voice-clips.js` |
 | §7 celebration | `shared/js/celebrate.js` |
 | §8 HUD | `shared/js/hud.js` + `shared/css/hud.css` |
 | §9 iPad tuning | `shared/css/base.css` + `installKioskGuards()` |
@@ -43,7 +43,7 @@ and `preload.js` (`preloadImages(urls, { idle })`, which never rejects).
 
 **When to use:** always. iOS Safari (and most mobile browsers) refuse to play any
 sound until the user makes a gesture inside the page. Every audio channel —
-recorded voice (`audio.js` and `voice-clips.js`), Web Speech, WebAudio SFX — has
+recorded voice (`voice-clips.js`), Web Speech, WebAudio SFX — has
 to be unlocked from inside that gesture's own task.
 
 **Import:** `shared/js/audio-unlock.js`. Install it once, at module scope, and
@@ -61,9 +61,9 @@ installKioskGuards();                  // contextmenu + gesturestart (see §9)
 
 `unlockAll(extra)` is the same fan-out without a listener, for a game that
 already owns its first-gesture handler. Both call `sfx.unlock()`,
-`speech.unlock()`, `voiceClips.unlock()` and `audio.unlock()`, each individually
-try/caught — one dead channel (no `AudioContext`, no `speechSynthesis`) must
-never stop the other three or break the gesture the game also starts play from.
+`speech.unlock()` and `voiceClips.unlock()`, each individually try/caught — one
+dead channel (no `AudioContext`, no `speechSynthesis`) must never stop the
+others or break the gesture the game also starts play from.
 
 **What the hand-rolled copies got wrong.** About half of them latched with a
 plain `let audioUnlocked = false` that never reopened. On iPadOS that guard goes stale
@@ -82,9 +82,9 @@ the intro line again. Coming back to the foreground also calls
 silently fails or slips out as the system synth voice instead of the recorded
 teacher. `onFirst` is where that line belongs.
 
-`audio.unlock()` plays-then-pauses a real manifest clip (or a tiny silent
-data-URI WAV if none exists yet) so subsequent programmatic `play()` calls are
-permitted.
+`voiceClips.unlock()` plays-then-pauses the one reusable clip element (or a tiny
+silent data-URI WAV if no clip has loaded yet) so subsequent programmatic
+`play()` calls are permitted.
 
 ---
 
@@ -95,63 +95,54 @@ fragments, whole words, prompts, praise. This is the **primary** voice channel;
 it sounds far warmer than synthesized speech. Always pass a `fallbackText` so the
 game still talks when a clip (or the whole manifest) is missing.
 
-**Import:** `shared/js/audio.js`. The clip library lives at
-`shared/assets/audio/` with a `manifest.json` shaped as
-`{ "<category>": { "<key>": { "file": "<category>/<key>.m4a", "dur": <sec> } } }`.
-Categories in use: `fragments`, `words`, `prompts`, `celebrate`, `misc`.
+**Import:** `shared/js/voice-clips.js`. A game keeps its own clip library at
+`./assets/audio/` with a flat-key `manifest.json` shaped as
+`{ "<key>": { "file": "<key>.m4a", "dur": <sec> } }`, plus a `lines.json` of
+`{ "<key>": "spoken text" }` so the recorded and spoken-fallback voice always
+say the same thing.
 
-**API:** `await audio.ready` (resolves once, never rejects); `audio.play(category,
-key, opts)` → Promise that resolves when the clip ends; `audio.playSeq(items,
-{gap})` to chain clips; `audio.stop()`. A `play` key maps directly to a manifest
-entry: `play('fragments', 'c')` looks up `manifest.fragments.c`.
+**API:** call `voiceClips.init(manifestUrl, linesUrl, defaultLines)` once at
+boot (never rejects — a missing manifest just runs in speech-fallback mode);
+then `voiceClips.say(key, fallbackText)` → Promise that resolves when the clip
+ends; `voiceClips.unlock()`; `voiceClips.stop()`.
 
 ```js
-await audio.ready;                                   // non-blocking; safe to await
+import * as voiceClips from '../../../shared/js/voice-clips.js';
+
+voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json');
+
 // one clip, with a spoken fallback if it's not recorded yet
-audio.play('words', 'cat', { fallbackText: 'cat', rate: 0.7, pitch: 1.05 });
-
-// a sequence: intro, two sound fragments, outro, with 300ms gaps
-audio.playSeq([
-  { cat: 'misc', key: 'mystery-intro', fallbackText: 'Mystery word! Listen.' },
-  { cat: 'fragments', key: 'c', fallbackText: 'kuh' },
-  { cat: 'fragments', key: 'at', fallbackText: 'at' },
-], { gap: 300 });
+voiceClips.say('cat', 'cat');
 ```
 
-`play()` stops any current clip and cancels Web Speech first, so prompts and words
-never overlap. Recorded clips have a fixed voice, so `rate`/`pitch` only affect
-the fallback.
+`say()` stops any current clip and cancels Web Speech first, so prompts and words
+never overlap.
 
-**A game with its own recordings does not fork the module.** Point `audio.js` at
-the game's manifest instead — once, at module scope, before anything awaits
-`ready`:
+**A game that needs to reach a clip in the SHARED library** (not its own
+manifest) — e.g. a picture-word's recorded pronunciation, or a letter's phonic
+sound — doesn't fork the module either. Resolve the URL with `content.js`
+(§ shared-assets) and play it directly, bypassing the local manifest:
 
 ```js
-audio.configure({ manifestUrl: './assets/audio/manifest.json' });
-await audio.ready;
+import * as content from '../../../shared/js/content.js';
+voiceClips.sayFile(content.wordAudio('cat'), 'cat');
+voiceClips.sayFile(content.letterSoundUrl('c'), 'kuh');
 ```
 
-`manifestUrl` resolves against the *document* (it is the game's own path — the
-module-URL rule in §10 governs shared code reaching shared assets, not a caller
-naming its own file). `base` defaults to the manifest's directory. This is what
-replaced the per-game `voice.js` forks.
-
-`shared/js/voice-clips.js` is the flat-key sibling for games whose lines are
-`{ key: "spoken text" }` rather than category/key. Beyond `init` / `say` /
-`sayFile` / `unlock` / `stop` it carries the things games used to fork it for:
-`duration(key)` and `clipInfo(key)` (plan a visual beat against the recording's
-real length instead of guessing), `setMuted(on)` / `isMuted()`, and
-`getAudioLog()` / `clearAudioLog()` — a capped ring buffer of
-`{ key, text, kind: 'clip' | 'speech', at }`. That `kind` is the field a QA
-driver asserts on to prove the recorded teacher voice actually played rather than
-the synth quietly standing in for it.
+Beyond `init` / `say` / `sayFile` / `unlock` / `stop`, `voice-clips.js` carries
+the things games used to fork it for: `duration(key)` and `clipInfo(key)` (plan
+a visual beat against the recording's real length instead of guessing),
+`setMuted(on)` / `isMuted()`, and `getAudioLog()` / `clearAudioLog()` — a capped
+ring buffer of `{ key, text, kind: 'clip' | 'speech', at }`. That `kind` is the
+field a QA driver asserts on to prove the recorded teacher voice actually played
+rather than the synth quietly standing in for it.
 
 ---
 
 ## 3. Web Speech fallback
 
 **When to use:** two cases — (a) as the automatic fallback for a missing recorded
-clip (handled for you when you pass `fallbackText` to `audio.play`), and (b) to
+clip (handled for you when you pass `fallbackText` to `voiceClips.say`), and (b) to
 voice **arbitrary, un-recordable text**: nonsense blends, a child's name, a
 generated number. Recorded voice can't cover open-ended text; speech can.
 
@@ -219,7 +210,7 @@ async slot(tile) {
   this.busy = true;
   sfx.pop();
   await bounceTile(tile);                                   // squash-and-stretch
-  audio.play('fragments', tile.userData.text, { fallbackText: tile.userData.spoken });
+  voiceClips.sayFile(content.letterSoundUrl(tile.userData.text), tile.userData.spoken);
   sfx.whoosh();
   await flyTo(tile, slot.world.x, slot.world.y);            // gentle arc
   this.busy = false;
@@ -238,7 +229,7 @@ Note the ordering: **hear it** (sound plays on tap) → **see it** (bounce + fly
 correct thing, respond warmly, and return the pieces so the child simply tries
 again. Design distractors so wrong picks often still make *something* real.
 
-**Import:** `sfx.js` + `audio.js` + `speech.js`. The reference game branches into
+**Import:** `sfx.js` + `voice-clips.js` + `speech.js`. The reference game branches into
 three warm outcomes — a real picture-word (celebrate), a real word with no picture
 (a bonus sparkle), or nonsense (a silly, giggly response) — and in the last two
 just floats the tiles back home. No red X, no buzzer, no "try again" scold.
@@ -255,7 +246,7 @@ async silly(blend, left, right) {
   sfx.silly();
   await Promise.all([jiggleTile(left), jiggleTile(right)]);   // playful, not punitive
   await speech.speak(blend, { rate: 0.7 });                   // model what it says
-  audio.play('misc', 'silly-' + (1 + (Math.random()*3|0)), { fallbackText: '...' });
+  voiceClips.say('silly-' + (1 + (Math.random()*3|0)), '...');
   await this.returnTiles(left, right);                        // reset for another try
 }
 ```
@@ -273,7 +264,7 @@ stays in flow. Guided/mystery rounds also auto-advance after ~6s so a distracted
 kid isn't stranded.
 
 **Import:** `shared/js/celebrate.js` for a DOM screen, `shared/js/stage/particles.js`
-when you already have a Pixi stage — plus `sfx.js` / `audio.js` and the shared
+when you already have a Pixi stage — plus `sfx.js` / `voice-clips.js` and the shared
 "play/again" button art in `shared/assets/ui/btn-play.png`.
 
 ```js
@@ -325,11 +316,11 @@ reference game (its `burst()` is the three.js particle backend):
 
 ```js
 async celebrate(wordObj, left, right) {
-  await audio.play('words', wordObj.word, { fallbackText: wordObj.word, rate: 0.7 });
+  await voiceClips.sayFile(content.wordAudio(wordObj.word), wordObj.word);
   sfx.tada();
   burst({ x: 0, y: cardY, z: 1 }, { count: 130 });           // confetti particles
   await popCard(this.card, 0, cardY);                        // spring-scale reveal
-  audio.play('celebrate', wordObj.word, { fallbackText: 'You made ' + wordObj.word + '!' });
+  voiceClips.sayFile(content.wordCelebrate(wordObj.word), 'You made ' + wordObj.word + '!');
   this.awaitingAgain = true;
   this.showAgain();                                          // big round Again button
   this.advanceTimer = setTimeout(() => this.again(), 6000); // gentle auto-advance
@@ -514,18 +505,19 @@ notch or home indicator.
 ## 10. The module-URL rule (for shared code)
 
 **When to use:** any time code **inside `shared/js/`** references a shared asset by
-path (e.g. `audio.js` fetching its manifest). A plain document-relative path like
-`./assets/audio/manifest.json` resolves against *the consuming page*, which differs
-between the hub (`/`) and each game (`/games/<id>/`) — so it breaks. Resolve
-against the **module's own URL** instead, and it works from anywhere.
+path (e.g. `content.js` resolving a word's clip URL). A plain document-relative
+path like `./assets/audio/manifest.json` resolves against *the consuming page*,
+which differs between the hub (`/`) and each game (`/games/<id>/`) — so it
+breaks. Resolve against the **module's own URL** instead, and it works from
+anywhere.
 
 **Import:** none — it's a language feature. Use `new URL(relativePath,
 import.meta.url).href`:
 
 ```js
-// inside shared/js/audio.js — resolves relative to THIS file, not the page
-const MANIFEST_URL = new URL('../assets/audio/manifest.json', import.meta.url).href;
-const AUDIO_BASE   = new URL('../assets/audio/', import.meta.url).href;
+// inside shared/js/content.js — resolves relative to THIS file, not the page
+const SHARED = new URL('../', import.meta.url); // → shared/
+const url = (rel) => new URL(rel, SHARED).href;
 ```
 
 **The exception — three.js `TextureLoader` and `<img>`:** these resolve relative to
@@ -549,8 +541,8 @@ domain in either case.
 against the stylesheet, not the page — which is why `base.css` can name
 `../fonts/…` and `hud.css` can name `../assets/ui/btn-home.png` and both stay
 correct from any game folder. The one place the rule inverts is a caller naming
-its *own* file: `audio.configure({ manifestUrl: './assets/audio/manifest.json' })`
-resolves against the document, because that path is the game's, not the library's.
+its *own* file: `voiceClips.init('./assets/audio/manifest.json', …)` resolves
+against the document, because that path is the game's, not the library's.
 
 ## 11. Drag & drop that can never strand a piece
 

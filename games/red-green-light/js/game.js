@@ -15,9 +15,11 @@ import * as sfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import * as voiceClips from '../../../shared/js/voice-clips.js';
 import { unlockAll, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { onTap } from '../../../shared/js/tap.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { progressDots, soundDebounce } from '../../../shared/js/hud.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
 
 // @font-face, the reset and the HUD button artwork now come from
@@ -134,8 +136,9 @@ class CallerGame {
     this.mountEl.querySelectorAll('.rgl-caller-tile').forEach((tile) => {
       const img = tile.querySelector('.rgl-caller-poster');
       if (img) img.addEventListener('error', () => img.replaceWith(emojiSpan('🎪')), { once: true });
-      tile.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlock(); this.playSfx('tick'); });
-      tile.addEventListener('click', () => this.pickCaller(tile.dataset.caller));
+      onTap(tile, () => this.pickCaller(tile.dataset.caller), {
+        feedback: () => { this.unlock(); this.playSfx('tick'); },
+      });
     });
   }
 
@@ -155,8 +158,6 @@ class CallerGame {
     this.screen = 'mode';
     this.awaitingInput = false;
     const c = this.caller;
-    const buttons = (this.config.modes || []).map((m) => `
-      <button class="rgl-mode-button" type="button" data-mode="${escAttr(m.id)}">${escHtml(m.title || m.id)}</button>`).join('');
     this.mountEl.innerHTML = `
       <section class="rgl rgl-mode" style="--accent:${escAttr(c.accent)}" aria-label="${escAttr(c.name)}">
         <button class="rgl-back qk-hud-btn qk-hud-back" type="button" aria-label="Back to callers"></button>
@@ -166,13 +167,26 @@ class CallerGame {
             <span class="rgl-name-pill">${escHtml(c.name)}</span>
           </div>
           <h1 class="rgl-heading">${escHtml(this.config.modePrompt || 'How shall we play?')}</h1>
-          <div class="rgl-mode-grid">${buttons}</div>
+          <div class="rgl-mode-grid"></div>
         </div>
       </section>`;
     this.wireIdle();
-    this.mountEl.querySelectorAll('.rgl-mode-button').forEach((button) => {
-      button.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlock(); this.playSfx('tick'); });
-      button.addEventListener('click', () => this.startMode(button.dataset.mode));
+    // getTargets()/tapTarget() (below) read `.rgl-mode-button` + dataset.mode
+    // directly and build their own `mode:<id>` ids — data-target is unused by
+    // this game's own debug harness, so targetPrefix is dropped entirely.
+    renderModeCards({
+      host: this.mountEl.querySelector('.rgl-mode-grid'),
+      modes: this.config.modes || [],
+      skin: false, // .rgl-mode-button keeps its own pixel-for-pixel look; only
+                   // the shared .qk-mode-card touch-floor contract is added (a
+                   // no-op — .rgl-mode-button's own min-height is already 96px).
+      cardClass: 'rgl-mode-button',
+      showTitle: false, // decorate() sets bare text content, matching the
+                         // original markup exactly (no wrapper span)
+      targetPrefix: null,
+      decorate: (btn, mode) => { btn.textContent = mode.title || mode.id; },
+      onPick: (id) => this.startMode(id),
+      feedback: () => { this.unlock(); this.playSfx('tick'); },
     });
   }
 
@@ -253,10 +267,9 @@ class CallerGame {
     if (this.audioUnlocked) blessMedia(this.videoEl);
     this.videoEl.muted = false;
     const pause = this.mountEl.querySelector('.rgl-pause');
-    pause.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); this.unlock(); this.togglePause(); });
+    onTap(pause, () => this.togglePause(), { feedback: () => this.unlock() });
     const sound = this.mountEl.querySelector('.rgl-sound');
-    sound.addEventListener('pointerdown', (e) => e.stopPropagation());
-    sound.addEventListener('click', () => this.replay());
+    onTap(sound, () => this.replay());
     this.updateRoundDots();
   }
 
@@ -435,8 +448,9 @@ class CallerGame {
       </section>`;
     this.wireIdle();
     const again = this.mountEl.querySelector('.rgl-again');
-    again.addEventListener('pointerdown', (e) => { e.preventDefault(); this.unlock(); this.playSfx('tick'); });
-    again.addEventListener('click', () => this.startMode(mode.id));
+    onTap(again, () => this.startMode(mode.id), {
+      feedback: () => { this.unlock(); this.playSfx('tick'); },
+    });
     this.playClipVoice(c.audio.cheer, (mode && mode.cheer) || (this.config.voice && this.config.voice.cheer));
   }
 

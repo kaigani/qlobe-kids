@@ -1,5 +1,5 @@
 import config from '../config.js';
-import { createPaperGlobe } from '../../../shared/js/paper-globe.js';
+import { createPaperGlobe } from './paper-globe.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import * as voice from '../../../shared/js/voice-clips.js';
@@ -7,6 +7,7 @@ import * as sfx from '../../../shared/js/sfx.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
+import { preloadImages } from '../../../shared/js/preload.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -31,18 +32,10 @@ await voice.init('./assets/audio/manifest.json?v=20260803-recorded', './data/lin
 // Begin decoding every lightweight story plate while the child is still on the
 // splash/globe. Production CDN latency can otherwise expose the bare frame for
 // a beat when a later destination opens for the first time.
-const storyPlateReady = new Map(config.destinations.map((destination) => {
-  const image = new Image();
-  image.src = destination.scene;
-  const ready = image.decode().catch(() => new Promise((resolve) => {
-    if (image.complete) resolve();
-    else {
-      image.addEventListener('load', resolve, { once: true });
-      image.addEventListener('error', resolve, { once: true });
-    }
-  }));
-  return [destination.id, ready];
-}));
+const storyPlateReady = new Map(config.destinations.map((destination) => [
+  destination.id,
+  preloadImages([destination.scene]),
+]));
 
 const state = {
   screen: 'splash',

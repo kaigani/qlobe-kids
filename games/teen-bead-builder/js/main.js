@@ -2,6 +2,7 @@ import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { escapeHtml } from '../../../shared/js/dom.js';
 import { createTimers } from '../../../shared/js/timers.js';
@@ -9,6 +10,7 @@ import { installDebug } from '../../../shared/js/debug-harness.js';
 import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 const app = document.getElementById('app');
 const beadColors = ['gold', 'coral', 'teal', 'green', 'blue', 'cream'];
@@ -40,7 +42,6 @@ let rng = mulberry32(state.seed);
 let activeTargets = new Map();
 let advanceTimer = 0;
 let cancelConfetti = null;
-let drag = null;
 
 const timers = createTimers();
 const nudger = createNudger({
@@ -71,10 +72,6 @@ const ready = voice.init(
 
 installUnlockOnGesture();
 installKioskGuards();
-window.addEventListener('pointermove', moveDrag, { passive: false });
-window.addEventListener('pointerup', finishDrag, { passive: false });
-window.addEventListener('pointercancel', cancelDrag);
-window.addEventListener('blur', cancelDrag);
 
 function unlockAudio() {
   unlockAll();
@@ -107,7 +104,7 @@ function speakSuccess(number) {
 
 function screenShell(name, inner) {
   activeTargets = new Map();
-  cancelDrag();
+  beadDrag.cancel();
   app.innerHTML = `<section class="screen ${name}">${inner}</section>`;
 }
 
@@ -161,19 +158,45 @@ function renderSplash({ greet = false } = {}) {
     ${hud('home', 'Home')}
     ${hud('sound', 'Hear the choices')}
     <img class="title-lockup" src="./assets/title.webp" alt="Teen Bead Builder" />
-    <div class="mode-grid">
-      ${config.modes.map((mode, index) => `
-        <button class="mode-card" type="button" data-mode="${mode.id}" style="--i:${index}" aria-label="${escapeHtml(mode.title)}">
-          ${modeArt(mode.id)}
-          <span class="mode-label">${escapeHtml(mode.title)}</span>
-        </button>
-      `).join('')}
-    </div>
+    <div class="mode-grid"></div>
   `);
 
   registerTap(app.querySelector('.hud-home'), 'home', () => { window.location.href = '../../'; });
-  app.querySelectorAll('.mode-card').forEach((button) => {
-    registerTap(button, `mode-${button.dataset.mode}`, () => startMode(button.dataset.mode), { sfxName: 'pop' });
+  // renderModeCards() wires its own onTap internally, so the cards it builds
+  // bypass registerTap()'s data-target-id/activeTargets bookkeeping — restore
+  // that afterward from the returned card elements so QLOBE_DEBUG.tap('mode-x')
+  // keeps working exactly as before.
+  const { cards } = renderModeCards({
+    host: app.querySelector('.mode-grid'),
+    // config.modes has no icon/art field today, but strip defensively so a
+    // future config edit can't make modeCard()'s own art/icon fallback paint
+    // something modeArt() doesn't already draw.
+    modes: config.modes.map(({ icon, art, ...mode }) => mode),
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-card's own 160px+ min-height already clears
+                 // it, and its grid-template-columns keeps width well above
+                 // 96px even though it sets no explicit min-width).
+    cardClass: 'mode-card',
+    showTitle: false, // decorate() builds .mode-label itself, matching the original markup
+    targetPrefix: null, // registerTap()'s own data-target-id, wired below, is this game's real QA surface
+    vars: (mode, index) => ({ '--i': index }),
+    decorate(btn, mode) {
+      btn.insertAdjacentHTML('afterbegin', modeArt(mode.id));
+      const label = document.createElement('span');
+      label.className = 'mode-label';
+      label.textContent = mode.title;
+      btn.append(label);
+    },
+    onPick: (id) => startMode(id),
+    feedback: () => { unlockAudio(); playSfx('pop'); },
+  });
+  cards.forEach((button, index) => {
+    const mode = config.modes[index];
+    button.dataset.mode = mode.id;
+    const id = `mode-${mode.id}`;
+    button.dataset.targetId = id;
+    activeTargets.set(id, () => startMode(mode.id));
   });
   registerTap(app.querySelector('.hud-sound'), 'sound', () => speak('welcome'));
   if (greet) speak('back');
@@ -296,89 +319,60 @@ function renderBuildRound() {
   nudger.arm();
 }
 
-// ---- Hand-rolled drag: kept exactly as-is (Wave 4 ships a shared DOM drag
-// adapter; until then this stays as written — see the migration brief). -----
+// ---- Drag: shared/js/stage/drag-to-slot-dom.js -------------------------
+// This game (~80 LOC of hand-rolled pointerdown/move/up/cancel) was one of
+// the two source games the module's design was extracted from — its 45px
+// drop-zone forgiveness is `slotPad`, its ghost-on-press is `ghostOn:
+// 'press'`, and a plain tap that never dragged still adding a bead is
+// `onTap`. See the module's own header for the full rationale (why the
+// listeners live on window, why a pointercancel is never a drop, why blur
+// cancels).
+
+let beadSourceEl = null;
+
+const beadDrag = createDragToSlotDom({
+  getPiece: () => beadSourceEl,
+  slotSelector: '[data-drop-zone]',
+  slotPad: 45,
+  hoverClass: 'drag-over',
+  ghostOn: 'press',
+  slop: 12,
+  canStart: () => state.awaitingInput,
+  makeGhost: (source) => {
+    const color = source.dataset.beadColor || beadColors[state.placed % beadColors.length];
+    const ghost = document.createElement('span');
+    ghost.className = `bead drag-ghost ${color}`;
+    return ghost;
+  },
+  onGrab: () => {
+    unlockAudio();
+    playSfx('pop');
+    return true;
+  },
+  // A tap that never dragged is still a valid add — the original treated
+  // "didn't move" as automatically valid, drop-zone or not.
+  onTap: () => addBead(),
+  onDrop: (source, drag) => {
+    if (drag.slot) { addBead(); return; }
+    playSfx('boing');
+    const zone = app.querySelector('[data-drop-zone]');
+    zone?.animate(
+      [{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'translateX(0)' }],
+      { duration: 380 },
+    );
+    speak('bundleNudge');
+  },
+});
 
 function wireBeadSource(source) {
   if (!source || state.transition) return;
   activeTargets.set('bead-source', addBead);
   source.dataset.targetId = 'bead-source';
+  beadSourceEl = source;
   source.addEventListener('pointerdown', (event) => {
-    if (!state.awaitingInput || drag) return;
     event.preventDefault();
-    unlockAudio();
-    playSfx('pop');
-    const color = source.dataset.beadColor || beadColors[state.placed % beadColors.length];
-    const ghost = document.createElement('span');
-    ghost.className = `bead drag-ghost ${color}`;
-    ghost.style.left = `${event.clientX}px`;
-    ghost.style.top = `${event.clientY}px`;
-    document.body.append(ghost);
-    drag = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      x: event.clientX,
-      y: event.clientY,
-      moved: false,
-      ghost,
-      source,
-    };
-    try { source.setPointerCapture(event.pointerId); } catch { /* window listeners still cover it */ }
+    beadDrag.begin(event, 'bead-source');
   });
-}
-
-function moveDrag(event) {
-  if (!drag || event.pointerId !== drag.pointerId) return;
-  event.preventDefault();
-  drag.x = event.clientX;
-  drag.y = event.clientY;
-  drag.moved ||= Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 12;
-  drag.ghost.style.left = `${event.clientX}px`;
-  drag.ghost.style.top = `${event.clientY}px`;
-  const zone = app.querySelector('[data-drop-zone]');
-  if (zone) {
-    const rect = zone.getBoundingClientRect();
-    zone.classList.toggle('drag-over', pointInRect(event.clientX, event.clientY, rect, 45));
-  }
-}
-
-function finishDrag(event) {
-  if (!drag || event.pointerId !== drag.pointerId) return;
-  event.preventDefault();
-  const current = drag;
-  const zone = app.querySelector('[data-drop-zone]');
-  const upX = Number.isFinite(event.clientX) ? event.clientX : current.x;
-  const upY = Number.isFinite(event.clientY) ? event.clientY : current.y;
-  const zoneRect = zone?.getBoundingClientRect();
-  const valid = !current.moved || (zoneRect && (
-    pointInRect(upX, upY, zoneRect, 45)
-      || pointInRect(current.x, current.y, zoneRect, 45)
-  ));
-  cancelDrag();
-  if (valid) addBead();
-  else {
-    playSfx('boing');
-    if (zone) {
-      zone.animate(
-        [{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'translateX(0)' }],
-        { duration: 380 },
-      );
-    }
-    speak('bundleNudge');
-  }
-}
-
-function cancelDrag(event) {
-  if (!drag || (event?.pointerId != null && event.pointerId !== drag.pointerId)) return;
-  drag.ghost?.remove();
-  try { drag.source?.releasePointerCapture(drag.pointerId); } catch { /* ignore */ }
-  app.querySelector('[data-drop-zone]')?.classList.remove('drag-over');
-  drag = null;
-}
-
-function pointInRect(x, y, rect, pad = 0) {
-  return x >= rect.left - pad && x <= rect.right + pad && y >= rect.top - pad && y <= rect.bottom + pad;
 }
 
 // ---- end hand-rolled drag ---------------------------------------------

@@ -64,7 +64,7 @@ rather than reproduce any modern adaptation.
 - Shared Pixi stage + rigged-puppet theater used as a child-directed sandbox.
 - Additive soft-ragdoll limb springs coexist with authored poses and preserve
   their motion during saved-show replay and MP4 export.
-- Reusable `shared/js/performance-recorder.js` serializes an initial tableau,
+- Reusable `performance-recorder.js` (local, `games/puppet-retell/js/`) serializes an initial tableau,
   timestamped semantic events, and an optional audio Blob.
 - Reusable local show storage with format versioning and a bounded shelf.
 - Graceful microphone-denied and recorded-voice-missing fallbacks.

@@ -24,7 +24,6 @@
 import * as sfx from './sfx.js';
 import * as speech from './speech.js';
 import * as voiceClips from './voice-clips.js';
-import * as audio from './audio.js';
 
 /** Call fn, swallowing anything it throws. */
 function guard(fn) {
@@ -48,7 +47,6 @@ export function unlockAll(extra = []) {
   guard(() => sfx.unlock());
   guard(() => speech.unlock());
   guard(() => voiceClips.unlock());
-  guard(() => audio.unlock());
   if (extra && extra.length) for (const fn of extra) guard(fn);
 }
 

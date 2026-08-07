@@ -5,10 +5,12 @@ import { createNarrator } from '../../../shared/js/narrator.js';
 import { installKioskGuards, installUnlockOnGesture, unlockAll } from '../../../shared/js/audio-unlock.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
+import { preloadImages } from '../../../shared/js/preload.js';
 import { createTexturedStrokeCanvas } from './textured-stroke-canvas.js';
 import {
   normalizeArtwork,
@@ -69,20 +71,11 @@ const narrator = createNarrator({
   stop: () => voiceClips.stop(),
 });
 
-const preload = (src) => new Promise((resolveImage) => {
-  if (!src) { resolveImage(null); return; }
-  const image = new Image();
-  image.decoding = 'async';
-  image.onload = () => resolveImage(image);
-  image.onerror = () => resolveImage(null);
-  image.src = resolve(src);
-});
-
-const ready = Promise.all([
-  ...config.papers.map((item) => preload(item.art)),
-  ...config.materials.map((item) => preload(item.art)),
-  ...config.yarns.map((item) => preload(item.art)),
-  ...config.modes.map((item) => preload(item.art)),
+const ready = preloadImages([
+  ...config.papers.map((item) => resolve(item.art)),
+  ...config.materials.map((item) => resolve(item.art)),
+  ...config.yarns.map((item) => resolve(item.art)),
+  ...config.modes.map((item) => resolve(item.art)),
 ]).then(() => voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice));
 
 installKioskGuards();
@@ -267,16 +260,47 @@ function showSplash({ greet = false } = {}) {
       <button class="la-mute-button" type="button" data-action="mute" data-target="mute" aria-pressed="${state.muted}" aria-label="${state.muted ? 'Turn sound on' : 'Mute sound'}"></button>
       <img class="la-title-art" src="${resolve(config.theme.title)}" alt="Little Artist" />
       <img class="la-teddy-welcome" src="${resolve(config.art.teddyWelcome)}" alt="Teddy waves from the craft basket" />
-      <div class="la-mode-cards" role="list" aria-label="Choose how to make art">
-        ${config.modes.map((mode) => `<button class="la-mode-card la-mode-${mode.id}" type="button" role="listitem" data-action="start-mode" data-value="${mode.id}" data-target="mode-${mode.id}" aria-label="${mode.title}">
-          <img src="${resolve(mode.art)}" alt="" /><span class="la-mode-name">${mode.title}</span><small>${mode.skill}</small>
-        </button>`).join('')}
-      </div>
+      <div class="la-mode-cards" role="list" aria-label="Choose how to make art"></div>
       <div class="la-splash-actions">
         ${resumable ? `<button class="la-resume-card" type="button" data-action="resume" data-target="resume" aria-label="Continue your saved artwork"><span class="la-card-pin" aria-hidden="true"></span><strong>Keep making</strong><small>Your paper is waiting</small></button>` : ''}
         ${saved.length ? `<button class="la-gallery-button" type="button" data-action="gallery" data-target="gallery" aria-label="Open your gallery"><img src="${resolve(config.art.gallery)}" alt="" /><span>Your gallery</span></button>` : ''}
       </div>
   </section>`;
+  // The mode cards are the one splash control NOT wired through wireActions()'s
+  // generic [data-action] sweep below — renderModeCards() owns their tap path
+  // directly (it always attaches its own onTap, so leaving `data-action` on
+  // these buttons too would double-wire them). The debug tap() below has the
+  // matching fallback for QLOBE_DEBUG.tap('mode-x').
+  renderModeCards({
+    host: mount.querySelector('.la-mode-cards'),
+    modes: config.modes.map(({ icon, ...mode }) => mode),
+    skin: false, // .la-mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .la-mode-card's own 260px min-height clears it,
+                 // and the card's own width is already well above 96px).
+    cardClass: (mode) => `la-mode-card la-mode-${mode.id}`,
+    showTitle: false, // decorate() builds .la-mode-name + the <small> skill line itself
+    art: () => null, // suppress modeCard()'s own auto <img class="qk-mode-art">
+                      // from the raw `mode.art` field — decorate() below builds
+                      // the real, resolved <img> itself; without this the two
+                      // stacked (doubling the picture, breaking the polaroid look).
+    decorate(btn, mode) {
+      btn.setAttribute('role', 'listitem');
+      const img = document.createElement('img');
+      img.src = resolve(mode.art);
+      img.alt = '';
+      btn.append(img);
+      const name = document.createElement('span');
+      name.className = 'la-mode-name';
+      name.textContent = mode.title;
+      btn.append(name);
+      const skill = document.createElement('small');
+      skill.textContent = mode.skill;
+      btn.append(skill);
+    },
+    onPick: (id) => startMode(id),
+    feedback: (e) => soundFeedback(e),
+  });
   wireActions();
 }
 
@@ -762,7 +786,11 @@ installDebug({
   tap: (id) => {
     const target = mount.querySelector(`[data-target="${CSS.escape(String(id))}"]`);
     if (!target || target.disabled) return false;
-    return route(target.dataset.action, target.dataset.value);
+    // Mode cards are wired directly by renderModeCards(), not the
+    // [data-action] sweep, so they carry data-target but no data-action.
+    if (target.dataset.action) return route(target.dataset.action, target.dataset.value);
+    if (String(id).startsWith('mode-')) return startMode(String(id).slice(5));
+    return false;
   },
   drawYarn: debugDrawYarn, addPiece: debugAddPiece, movePiece: debugMovePiece, transformPiece: debugTransformPiece,
   snapshot: () => snapshotArtwork(), loadArtwork, finishArtwork, savePicture,

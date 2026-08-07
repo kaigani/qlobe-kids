@@ -30,7 +30,7 @@ keep the job constant while adding a small amount of counter-balancing:
 | `daisy` | 5 | alternating soft breezes | recenter after direction changes |
 
 This game makes a missing platform capability reusable:
-`shared/js/tilt-input.js` owns permission, orientation mapping, calibration,
+`tilt-input.js` (local, `games/garden-delivery-game/js/`) owns permission, orientation mapping, calibration,
 smoothing, teardown, and pointer fallback. It emits the same normalized
 `x/y` sample regardless of source, so future balance, marble, pouring, and
 steering games do not have to reimplement privileged sensor handling.
@@ -266,7 +266,7 @@ and voice keys. `config.js` is only the standard fetch shim.
 
 Shared modules used:
 
-- `shared/js/tilt-input.js` — new normalized sensor/pointer capability.
+- `tilt-input.js` (local, `games/garden-delivery-game/js/`) — new normalized sensor/pointer capability.
 - `shared/js/audio-unlock.js` — first-gesture fan-out and kiosk guards.
 - `shared/js/voice-clips.js` — recorded voice plus correct fallback/log.
 - `shared/js/sfx.js` — tactile, splash, step, and bloom effects.

@@ -99,6 +99,16 @@ function ms(value) {
   return timerGroup.ms(value);
 }
 
+/** Cancellable setTimeout that honours fastTimers() — pair with clear(). */
+function after(delayMs, fn) {
+  return timerGroup.after(delayMs, fn);
+}
+
+/** Cancel a pending after() by the id it returned. */
+function clear(id) {
+  timerGroup.clear(id);
+}
+
 /** Fisher–Yates on a copy, using the (optionally seeded) game RNG. */
 function shuffle(list) {
   return rngShuffle(list, rng);
@@ -377,6 +387,8 @@ const ctx = {
   sfx: playSfx,
   wait,
   ms,
+  after,
+  clear,
   rng: () => rng(),
   shuffle,
   getStage,

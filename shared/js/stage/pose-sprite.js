@@ -2,18 +2,9 @@
 // illustration; changes use a short paper-pop instead of skeletal interpolation.
 
 import { ease, to } from './tween.js';
+import { fetchPoseManifest, loadPoseManifest } from './pose-pack.js';
 
-const manifestCache = new Map();
 const textureCache = new Map();
-
-async function fetchManifest(url) {
-  const href = new URL(url, document.baseURI).href;
-  if (!manifestCache.has(href)) manifestCache.set(href, fetch(href, { cache:'no-store' }).then((response) => {
-    if (!response.ok) throw new Error(`Could not load pose manifest ${new URL(href).pathname}`);
-    return response.json();
-  }));
-  return manifestCache.get(href);
-}
 
 function texture(PIXI, url) {
   const href = new URL(url, document.baseURI).href;
@@ -22,11 +13,7 @@ function texture(PIXI, url) {
 }
 
 export async function loadPoseActor(PIXI, manifestUrl) {
-  const url = new URL(manifestUrl, document.baseURI);
-  const manifest = await fetchManifest(url);
-  if (manifest.format !== 'qlobe-pose-actor' || !manifest.poses?.neutral) {
-    throw new Error(`Invalid pose actor manifest: ${url.pathname}`);
-  }
+  const { url, manifest } = await loadPoseManifest(manifestUrl);
   const base = new URL('./', url);
   const view = new PIXI.Container();
   let sprite = null, pose = null, destroyed = false, generation = 0;
@@ -76,4 +63,4 @@ export async function loadPoseActor(PIXI, manifestUrl) {
   return { view, manifest, get pose(){ return pose; }, setPose, preload, destroy };
 }
 
-export const __test = { fetchManifest };
+export const __test = { fetchManifest: fetchPoseManifest };

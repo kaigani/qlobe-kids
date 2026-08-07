@@ -9,9 +9,12 @@ import config from '../config.js';
 import * as rawSfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { installUnlockOnGesture } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
+import { createTimers } from '../../../shared/js/timers.js';
 import * as voice from './voice.js';
 import { createPlayfield, createDeck } from './game.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const cases = config.cases || [];
 const tuning = config.tuning || {};
@@ -42,8 +45,13 @@ let yesDeck = createDeck((config.voice && config.voice.decks && config.voice.dec
 let idleDeck = createDeck((config.voice && config.voice.decks && config.voice.decks.idle) || [], state.seed);
 let lastReflow = null;
 
-const T = (ms) => ms * state.timeScale;
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
+// The one cancellable, fastTimers()-scalable timer group (shared/js/timers.js)
+// — mirrors bug-hotel-observer's main.js. `state.timeScale` stays the source
+// of truth for the two non-scheduling consumers that read it directly
+// (voice.seq()'s gap multiplier, the `--ts` CSS custom property, and
+// game.js's own T()); fastTimers() keeps both in sync (see the debug hook).
+const timerGroup = createTimers();
+const wait = (ms) => timerGroup.wait(ms);
 
 // SFX facade — one place to gate every effect on mute(). sfx.js has no gain
 // export, so the mute happens at the call site (§7.4 "sfx gain to 0").
@@ -145,26 +153,19 @@ function spriteImg(word, className) {
 // ---------------------------------------------------------------------------
 
 const timers = { idle: null, intro: null, auto: null, card: null };
-const beats = new Set();
 
 function clearTimer(name) {
-  if (timers[name]) { clearTimeout(timers[name]); timers[name] = null; }
+  if (timers[name] != null) { timerGroup.clear(timers[name]); timers[name] = null; }
 }
 
+/** A scaled, fire-once beat — not individually cancellable, swept by clearAllTimers(). */
 function beat(ms, fn) {
-  const id = setTimeout(() => { beats.delete(id); fn(); }, Math.max(0, T(ms)));
-  beats.add(id);
-  return id;
-}
-
-function clearBeats() {
-  for (const id of beats) clearTimeout(id);
-  beats.clear();
+  return timerGroup.after(ms, fn);
 }
 
 function clearAllTimers() {
-  for (const name of Object.keys(timers)) clearTimer(name);
-  clearBeats();
+  for (const name of Object.keys(timers)) timers[name] = null;
+  timerGroup.clearAll();
 }
 
 function debounced(ms, fn) {
@@ -431,15 +432,15 @@ async function startCase(index) {
   // once afterwards; the target sprite is placed against it.
   beat(180, () => els.card.classList.add('in'));
   beat(520, () => playfield.reflow());
-  await wait(T(260));
+  await wait(260);
   if (token !== state.introToken) return false;
 
   // The prompt is a composed stem + shared word clip (§3.4). We race it against
   // a bound so a missing/blocked clip can never strand the child on the intro.
   const spoken = speakCasePrompt();
-  await Promise.race([spoken, wait(T(2600))]);
+  await Promise.race([spoken, wait(2600)]);
   if (token !== state.introToken) return false;
-  await wait(T(Number(tuning.caseIntroTailMs) || 350));
+  await wait(Number(tuning.caseIntroTailMs) || 350);
   if (token !== state.introToken) return false;
   enterPlay();
   return true;
@@ -491,7 +492,7 @@ function armIdle(early = false) {
   // "fires immediately on the next settle" — the wrong sequence settles at
   // ~1.6 s, so an early tier lands after it rather than on top of no-N.
   const first = early ? 1600 : (Number(tuning.idleMs) || 8000);
-  timers.idle = setTimeout(runIdleTier, T(first));
+  timers.idle = timerGroup.after(first, runIdleTier);
 }
 
 function runIdleTier() {
@@ -520,7 +521,7 @@ function runIdleTier() {
   } else {
     speakCasePrompt();
   }
-  timers.idle = setTimeout(runIdleTier, T(next));
+  timers.idle = timerGroup.after(next, runIdleTier);
 }
 
 // ---------------------------------------------------------------------------
@@ -582,8 +583,7 @@ function liftFinds(found) {
 function showCelebration(lastFound, found) {
   const caseDef = currentCase();
   if (!caseDef) return;
-  clearTimer('idle');
-  clearBeats();
+  clearAllTimers();
   playfield.setEnabled(false);
   setScreen('celebration');
 
@@ -626,10 +626,10 @@ function showCelebration(lastFound, found) {
   beat(2300, () => els.next.classList.add('in'));
 
   clearTimer('auto');
-  timers.auto = setTimeout(() => {
+  timers.auto = timerGroup.after(Number(tuning.celebrationAutoAdvanceMs) || 12000, () => {
     timers.auto = null;
     void nextCase();
-  }, T(Number(tuning.celebrationAutoAdvanceMs) || 12000));
+  });
 }
 
 async function nextCase() {
@@ -637,7 +637,7 @@ async function nextCase() {
   clearAllTimers();
   voice.say('next-case');
   els.celebration.classList.remove('show');
-  await wait(T(260));
+  await wait(260);
   if (state.screen !== 'celebration') return false;   // back was pressed mid-fade
   if (state.caseIndex + 1 < cases.length) {
     await startCase(state.caseIndex + 1);
@@ -690,6 +690,14 @@ function press(el, action) {
 
 // §3.1 — unlock on EVERY gesture, not just the first.
 window.addEventListener('pointerdown', unlockAudio, { capture: true, passive: true });
+// Calling unlockAudio() on every gesture still isn't enough on its own: the
+// channels it fans out to (voice-clips.js, speech.js) each latch "unlocked"
+// permanently once true, so a call after an iPadOS app-switch can be a no-op
+// even though the OS actually revoked the permission it represents.
+// installUnlockOnGesture's own latch resets on visibilitychange/pageshow and
+// resumes a paused speechSynthesis — the one recovery step this game's
+// backgrounding handler (below) didn't have.
+installUnlockOnGesture({ extra: [unlockAudio] });
 
 // §3.6 — any pointerdown restarts the idle ladder from zero; a pointerdown
 // during the case-intro is the escape hatch into play.
@@ -739,35 +747,37 @@ press(els.again, () => {
 
 // §2.3 — the mode row, built from config so listModes() and the tiles agree.
 function buildModeRow() {
-  els.modeRow.replaceChildren();
-  for (const mode of modes) {
-    const tile = document.createElement('button');
-    tile.type = 'button';
-    tile.className = `mode-tile mode-${mode.id}`;
-    tile.dataset.mode = mode.id;
+  renderModeCards({
+    host: els.modeRow,
+    modes,
+    skin: false, // .mode-tile keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-tile's own size already clears it).
+    cardClass: (mode) => `mode-tile mode-${mode.id}`,
+    showTitle: false, // decorate() builds .tile-face + .tile-label itself
+    decorate(tile, mode) {
+      const face = document.createElement('span');
+      face.className = 'tile-face';
+      if (mode.id === 'sound-detective') {
+        face.appendChild(soundGlyph(0));
+      } else {
+        const img = document.createElement('img');
+        img.className = 'tile-art';
+        img.alt = '';
+        img.src = 'assets/props/magnifier.webp';
+        img.addEventListener('error', () => { img.hidden = true; });
+        face.appendChild(img);
+      }
+      tile.appendChild(face);
 
-    const face = document.createElement('span');
-    face.className = 'tile-face';
-    if (mode.id === 'sound-detective') {
-      face.appendChild(soundGlyph(0));
-    } else {
-      const img = document.createElement('img');
-      img.className = 'tile-art';
-      img.alt = '';
-      img.src = 'assets/props/magnifier.webp';
-      img.addEventListener('error', () => { img.hidden = true; });
-      face.appendChild(img);
-    }
-    tile.appendChild(face);
-
-    const label = document.createElement('span');
-    label.className = 'tile-label';
-    label.textContent = mode.title;
-    tile.appendChild(label);
-
-    press(tile, () => { void startMode(mode.id); });
-    els.modeRow.appendChild(tile);
-  }
+      const label = document.createElement('span');
+      label.className = 'tile-label';
+      label.textContent = mode.title;
+      tile.appendChild(label);
+    },
+    onPick: (id) => { void startMode(id); },
+    feedback: () => { unlockAudio(); sfx.pop(); },
+  });
 }
 
 // §2.8 — backgrounding: stop voice, pause every timer; re-arm from zero on return.
@@ -779,8 +789,8 @@ document.addEventListener('visibilitychange', () => {
   } else if (state.screen === 'play') {
     armIdle();
   } else if (state.screen === 'celebration' && !timers.auto) {
-    timers.auto = setTimeout(() => { timers.auto = null; void nextCase(); },
-      T(Number(tuning.celebrationAutoAdvanceMs) || 12000));
+    timers.auto = timerGroup.after(Number(tuning.celebrationAutoAdvanceMs) || 12000,
+      () => { timers.auto = null; void nextCase(); });
   }
 });
 
@@ -878,6 +888,10 @@ installDebug({
     const n = Number(scale);
     state.timeScale = Math.min(1, Math.max(0.01, Number.isFinite(n) ? n : 0.05));
     document.documentElement.style.setProperty('--ts', String(state.timeScale));
+    // timerGroup's convention is the inverse of state.timeScale's (higher =
+    // faster there; lower = faster here) — see the const timerGroup comment.
+    timerGroup.setScale(1 / state.timeScale);
+    playfield.retuneTimers();
     return state.timeScale;
   },
 

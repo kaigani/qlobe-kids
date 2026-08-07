@@ -1,6 +1,6 @@
 // Weather Scientist — one persistent, authored watercolor world per scene.
 import config from '../config.js';
-import { createWeatherWorld } from '../../../shared/js/weather-world.js';
+import { createWeatherWorld } from './weather-world.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { createNarrator } from '../../../shared/js/narrator.js';

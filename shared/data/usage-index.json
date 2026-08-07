@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-07T03:20:13.210Z",
+  "generated": "2026-08-07T08:35:58.010Z",
   "engines": {
     "choose-one": {
       "count": 15,
@@ -160,6 +160,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -174,6 +179,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -187,6 +197,11 @@
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -203,6 +218,11 @@
         "shared/js/engines/observe-journal.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -223,6 +243,10 @@
         "shared/js/speech.js",
         "shared/js/tap.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -240,6 +264,11 @@
         "shared/js/stage/art-pixi.js",
         "shared/js/stage/drag-to-slot.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/audio/celebrate",
@@ -259,6 +288,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -277,6 +311,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -287,6 +326,7 @@
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
         "shared/js/hotspot-scene.js",
         "shared/js/journal.js",
         "shared/js/magnifier-lens.js",
@@ -295,6 +335,7 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [],
       "assets": [
         "shared/assets/ui/btn-back.png",
         "shared/assets/ui/btn-home.png",
@@ -326,6 +367,11 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "games/button-zipper-lab/assets/boards/zipper.webp",
         "games/button-zipper-lab/assets/patches/zipper.webp",
@@ -351,6 +397,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -364,6 +415,11 @@
         "shared/js/engines/trace-path.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -389,6 +445,10 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
+      ],
       "assets": [
         "games/chocolate-chip-count/assets/button.webp",
         "games/chocolate-chip-count/assets/gesture.webp",
@@ -410,8 +470,6 @@
         "shared/js/celebrate.js",
         "shared/js/clay/field-three.js",
         "shared/js/clay/field.js",
-        "shared/js/clay/lobes-three.js",
-        "shared/js/clay/lobes.js",
         "shared/js/debug-harness.js",
         "shared/js/freeform-board.js",
         "shared/js/preload.js",
@@ -420,6 +478,9 @@
         "shared/js/speech.js",
         "shared/js/stage/lipsync.js",
         "shared/js/tap.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -437,6 +498,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -450,6 +516,11 @@
         "shared/js/engines/sequence-order.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -475,6 +546,11 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -490,6 +566,11 @@
         "shared/js/engines/match-pairs.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -514,6 +595,9 @@
         "shared/js/stage/pose-sprite-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "games/counting-treasure-cups/assets/pose-actors",
@@ -542,6 +626,11 @@
         "shared/js/voice-clips.js",
         "shared/js/voice-meter.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -556,6 +645,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -569,6 +663,11 @@
         "shared/js/engines/sequence-order.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -595,6 +694,9 @@
         "shared/js/stage/mouth.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "games/feelings-charades/assets/badge-sun.png",
@@ -628,6 +730,9 @@
         "shared/js/voice-clips.js",
         "shared/vendor/pixi.min.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "games/flashlight-cave/assets/pose-actors/ari",
         "shared/assets/audio/fragments",
@@ -653,8 +758,13 @@
         "shared/js/rng.js",
         "shared/js/screens.js",
         "shared/js/sfx.js",
+        "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [],
       "packs": []
@@ -675,9 +785,12 @@
         "shared/js/idle-nudge.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/tilt-input.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [],
       "packs": []
@@ -691,7 +804,6 @@
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
-        "shared/js/paper-globe.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -699,6 +811,10 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js",
         "shared/vendor/three.module.min.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [
         "games/globe-spin-stories/assets/backgrounds/globe.webp",
@@ -726,6 +842,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -740,6 +861,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -753,6 +879,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -782,6 +913,11 @@
         "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/kindness-delivery/assets/backgrounds/delivery.webp",
@@ -817,6 +953,11 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -838,6 +979,9 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "shared/assets/storybook"
       ],
@@ -856,6 +1000,11 @@
         "shared/js/stage",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "games/letter-road-driving/assets/audio"
       ],
@@ -871,6 +1020,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/letter-tiles",
@@ -889,6 +1043,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -902,6 +1061,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -924,6 +1088,11 @@
         "shared/js/sfx.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -952,6 +1121,9 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "games/lunchbox-pack/assets/lunchbox-closed.png",
         "games/lunchbox-pack/assets/lunchbox-open.png",
@@ -971,6 +1143,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -985,6 +1162,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -998,6 +1180,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1025,6 +1212,11 @@
         "shared/js/stage/theater.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/instruments"
       ],
@@ -1040,6 +1232,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/letter-tiles"
@@ -1063,6 +1260,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1076,6 +1278,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1091,6 +1298,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1104,6 +1316,11 @@
         "shared/js/engines/tap-count.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1119,6 +1336,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1132,6 +1354,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1147,6 +1374,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1160,6 +1392,11 @@
         "shared/js/engines/pattern-continue.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1175,6 +1412,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1188,6 +1430,11 @@
         "shared/js/engines/match-pairs.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/objects"
@@ -1207,6 +1454,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1220,6 +1472,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1242,6 +1499,9 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "games/playdough-letter-factory/assets/ui/mascot.webp",
         "games/playdough-letter-factory/assets/ui/title.webp",
@@ -1260,6 +1520,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1280,6 +1545,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1308,6 +1578,11 @@
         "shared/js/stage/theater.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1331,8 +1606,6 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/dom.js",
-        "shared/js/performance-recorder.js",
-        "shared/js/performance-video-export.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/stage.js",
@@ -1340,6 +1613,9 @@
         "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "shared/characters/bear",
@@ -1364,6 +1640,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1377,6 +1658,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1403,8 +1689,13 @@
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [
         "games/red-green-light/assets/callers"
@@ -1418,12 +1709,16 @@
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
         "shared/js/hotspot-scene.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "shared/assets/audio/words",
@@ -1443,6 +1738,11 @@
         "shared/js/engines/pattern-continue.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1465,6 +1765,9 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "games/sand-tray-letters/assets/materials/golden-sand.png",
         "games/sand-tray-letters/assets/materials/soft-flour.png",
@@ -1483,6 +1786,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1497,6 +1805,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1510,6 +1823,11 @@
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1527,6 +1845,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1540,6 +1863,11 @@
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1557,6 +1885,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1570,6 +1903,11 @@
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1586,6 +1924,11 @@
         "shared/js/engines/build-assemble.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/letter-tiles",
@@ -1614,6 +1957,9 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -1629,6 +1975,11 @@
         "shared/js/engines/observe-journal.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1649,6 +2000,11 @@
         "shared/js/engines/tap-count.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/foods/apple.png",
@@ -1675,8 +2031,13 @@
         "shared/js/screens.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/snack-chef/assets/title.webp",
@@ -1699,6 +2060,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1709,13 +2075,16 @@
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/audio.js",
+        "shared/js/audio-unlock.js",
         "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [],
       "assets": [
         "games/sound-basket/assets/art/backdrop.webp",
         "games/sound-basket/assets/art/basket.png",
@@ -1739,6 +2108,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1752,6 +2126,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/letter-tiles"
@@ -1774,6 +2153,10 @@
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -1786,15 +2169,13 @@
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/audio",
-        "shared/js/sfx",
         "shared/js/sfx.js",
-        "shared/js/speech",
         "shared/js/speech.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js",
-        "shared/vendor/three"
+        "shared/vendor/three.module.min.js"
       ],
+      "css": [],
       "assets": [
         "games/sound-sprouts/assets/apple-touch-icon.png",
         "games/sound-sprouts/assets/favicon.png",
@@ -1820,6 +2201,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1834,6 +2220,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1847,6 +2238,11 @@
         "shared/js/engines/sequence-order.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -1873,6 +2269,11 @@
         "shared/js/stage/theater.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1891,6 +2292,11 @@
         "shared/js/engines/tap-count.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/foods/apple.png",
@@ -1912,6 +2318,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1926,6 +2337,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -1938,11 +2354,16 @@
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
+        "shared/js/dom.js",
         "shared/js/freeform-board.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -1964,9 +2385,13 @@
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "games/teen-bead-builder/assets/manipulatives/bead-blue.webp",
@@ -1995,6 +2420,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -2008,6 +2438,11 @@
         "shared/js/engines/match-pairs.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -2030,6 +2465,10 @@
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -2043,6 +2482,11 @@
         "shared/js/engines/choose-one.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/objects/bus.webp",
@@ -2065,6 +2509,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -2085,6 +2534,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/ui"
       ],
@@ -2101,6 +2555,11 @@
         "shared/js/sfx.js",
         "shared/js/speech.js"
       ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
+      ],
       "assets": [],
       "packs": []
     },
@@ -2114,6 +2573,11 @@
         "shared/js/engines/coach-timer.js",
         "shared/js/sfx.js",
         "shared/js/speech.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/engine-base.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -2134,8 +2598,11 @@
         "shared/js/speech.js",
         "shared/js/tap.js",
         "shared/js/timers.js",
-        "shared/js/voice-clips.js",
-        "shared/js/weather-world.js"
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -2167,6 +2634,9 @@
         "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css"
       ],
       "assets": [
         "shared/assets/instruments"
@@ -2279,11 +2749,9 @@
         "weather-scientist",
         "world-music-dance"
       ],
-      "shared/js/audio": [
-        "sound-sprouts"
-      ],
       "shared/js/audio-unlock.js": [
         "big-paper-murals",
+        "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -2303,9 +2771,11 @@
         "playdough-letter-factory",
         "puppet-retell",
         "red-green-light",
+        "rhyming-detective",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "sound-basket",
         "sound-painting",
         "story-stones",
         "tangram-tales",
@@ -2313,9 +2783,6 @@
         "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
-      ],
-      "shared/js/audio.js": [
-        "sound-basket"
       ],
       "shared/js/camera-motion.js": [
         "freeze-focus-dance"
@@ -2356,12 +2823,6 @@
         "land-water-tray",
         "playdough-letter-factory"
       ],
-      "shared/js/clay/lobes-three.js": [
-        "clay-creature-studio"
-      ],
-      "shared/js/clay/lobes.js": [
-        "clay-creature-studio"
-      ],
       "shared/js/content.js": [
         "blend-train",
         "flashlight-cave",
@@ -2394,6 +2855,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "sound-basket",
         "sound-painting",
         "story-stones",
         "tangram-tales",
@@ -2404,6 +2866,7 @@
       ],
       "shared/js/dom.js": [
         "puppet-retell",
+        "tangram-tales",
         "teen-bead-builder",
         "world-music-dance"
       ],
@@ -2574,15 +3037,6 @@
         "throwing-target-garden",
         "weather-scientist"
       ],
-      "shared/js/paper-globe.js": [
-        "globe-spin-stories"
-      ],
-      "shared/js/performance-recorder.js": [
-        "puppet-retell"
-      ],
-      "shared/js/performance-video-export.js": [
-        "puppet-retell"
-      ],
       "shared/js/preload.js": [
         "clay-creature-studio",
         "emotion-voice-game",
@@ -2610,6 +3064,7 @@
         "red-green-light",
         "sand-tray-letters",
         "sink-or-float",
+        "sound-basket",
         "teen-bead-builder",
         "throwing-target-garden",
         "world-music-dance"
@@ -2624,9 +3079,6 @@
         "land-water-tray",
         "snack-chef",
         "throwing-target-garden"
-      ],
-      "shared/js/sfx": [
-        "sound-sprouts"
       ],
       "shared/js/sfx.js": [
         "animal-walk-cards",
@@ -2733,9 +3185,6 @@
         "waiting-muscle-game",
         "weather-scientist",
         "world-music-dance"
-      ],
-      "shared/js/speech": [
-        "sound-sprouts"
       ],
       "shared/js/speech.js": [
         "animal-walk-cards",
@@ -2844,7 +3293,9 @@
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "color-mixing-lab",
-        "story-stones"
+        "snack-chef",
+        "story-stones",
+        "teen-bead-builder"
       ],
       "shared/js/stage/drag-to-slot.js": [
         "blend-train",
@@ -2913,6 +3364,7 @@
         "emotion-voice-game",
         "feelings-charades",
         "flashlight-cave",
+        "freeze-focus-dance",
         "globe-spin-stories",
         "kindness-delivery",
         "land-water-tray",
@@ -2921,6 +3373,7 @@
         "lunchbox-pack",
         "playdough-letter-factory",
         "puppet-retell",
+        "red-green-light",
         "rhyming-detective",
         "sand-tray-letters",
         "sink-or-float",
@@ -2933,9 +3386,6 @@
         "throwing-target-garden",
         "weather-scientist",
         "world-music-dance"
-      ],
-      "shared/js/tilt-input.js": [
-        "garden-delivery-game"
       ],
       "shared/js/timers.js": [
         "button-zipper-lab",
@@ -2995,17 +3445,288 @@
       "shared/js/voice-meter.js": [
         "emotion-voice-game"
       ],
-      "shared/js/weather-world.js": [
-        "weather-scientist"
-      ],
       "shared/vendor/pixi.min.js": [
         "flashlight-cave"
       ],
-      "shared/vendor/three": [
-        "sound-sprouts"
-      ],
       "shared/vendor/three.module.min.js": [
-        "globe-spin-stories"
+        "globe-spin-stories",
+        "sound-sprouts"
+      ]
+    },
+    "css": {
+      "shared/css/base.css": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "bead-path-builder",
+        "bean-sprout-watch",
+        "big-paper-murals",
+        "blend-train",
+        "block-tower-measure",
+        "board-game-reset",
+        "button-zipper-lab",
+        "calm-corner-cards",
+        "chalkboard-big-strokes",
+        "chocolate-chip-count",
+        "clay-creature-studio",
+        "cleanup-timer-quest",
+        "color-gradient-cards",
+        "color-mixing-lab",
+        "community-helper-cards",
+        "counting-treasure-cups",
+        "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
+        "feelings-charades",
+        "flashlight-cave",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "globe-spin-stories",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "kindness-delivery",
+        "land-water-tray",
+        "laundry-sorter",
+        "letter-road-driving",
+        "letter-treasure-hunt",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "loose-parts-collage",
+        "lunchbox-pack",
+        "magnet-explorer",
+        "melting-race",
+        "mountain-seasons-wheel",
+        "my-puppet-band",
+        "mystery-letter-bag",
+        "name-puzzle",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "number-line-jump",
+        "number-rod-race",
+        "obstacle-course-builder",
+        "pattern-bracelet-band",
+        "pattern-train",
+        "picture-narration",
+        "picture-word-match",
+        "plan-do-review",
+        "plant-care-captain",
+        "playdough-letter-factory",
+        "pouring-station",
+        "problem-solving-puppets",
+        "puppet-problem-solvers",
+        "puppet-retell",
+        "puzzle-map-match",
+        "question-ball",
+        "red-green-light",
+        "rhyming-detective",
+        "rhythm-copycat",
+        "sand-tray-letters",
+        "sandpaper-number-match",
+        "scissor-trail-safari",
+        "secret-message-copy",
+        "shadow-chase",
+        "shape-to-picture",
+        "shelf-reset-game",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "sink-or-float",
+        "smell-jars",
+        "snack-addition-stories",
+        "snack-chef",
+        "song-story-remix",
+        "sound-cylinder-match",
+        "sound-hopscotch",
+        "sound-painting",
+        "sticker-line-challenge",
+        "story-repair-shop",
+        "story-sequence",
+        "story-stones",
+        "subtraction-picnic",
+        "sweep-the-trail",
+        "table-setting-mission",
+        "tangram-tales",
+        "teen-bead-builder",
+        "texture-trail",
+        "then-now-sort",
+        "throwing-target-garden",
+        "tiny-reader-theater",
+        "trail-counting-walk",
+        "turn-taking-tower",
+        "tweezer-rescue",
+        "waiting-muscle-game",
+        "weather-scientist",
+        "world-music-dance"
+      ],
+      "shared/css/engine-base.css": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "bead-path-builder",
+        "bean-sprout-watch",
+        "blend-train",
+        "block-tower-measure",
+        "board-game-reset",
+        "calm-corner-cards",
+        "chalkboard-big-strokes",
+        "cleanup-timer-quest",
+        "color-gradient-cards",
+        "community-helper-cards",
+        "family-story-interview",
+        "family-timeline",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "letter-road-driving",
+        "letter-treasure-hunt",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "magnet-explorer",
+        "melting-race",
+        "mountain-seasons-wheel",
+        "my-puppet-band",
+        "mystery-letter-bag",
+        "name-puzzle",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "number-line-jump",
+        "number-rod-race",
+        "obstacle-course-builder",
+        "pattern-bracelet-band",
+        "pattern-train",
+        "picture-narration",
+        "picture-word-match",
+        "plan-do-review",
+        "plant-care-captain",
+        "pouring-station",
+        "problem-solving-puppets",
+        "puppet-problem-solvers",
+        "puzzle-map-match",
+        "question-ball",
+        "rhythm-copycat",
+        "sandpaper-number-match",
+        "scissor-trail-safari",
+        "secret-message-copy",
+        "shadow-chase",
+        "shape-to-picture",
+        "shelf-reset-game",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "smell-jars",
+        "snack-addition-stories",
+        "song-story-remix",
+        "sound-cylinder-match",
+        "sound-hopscotch",
+        "sticker-line-challenge",
+        "story-repair-shop",
+        "story-sequence",
+        "story-stones",
+        "subtraction-picnic",
+        "sweep-the-trail",
+        "table-setting-mission",
+        "texture-trail",
+        "then-now-sort",
+        "tiny-reader-theater",
+        "trail-counting-walk",
+        "turn-taking-tower",
+        "tweezer-rescue",
+        "waiting-muscle-game"
+      ],
+      "shared/css/hud.css": [
+        "big-paper-murals",
+        "button-zipper-lab",
+        "chocolate-chip-count",
+        "color-mixing-lab",
+        "emotion-voice-game",
+        "freeze-focus-dance",
+        "garden-delivery-game",
+        "globe-spin-stories",
+        "kindness-delivery",
+        "land-water-tray",
+        "loose-parts-collage",
+        "red-green-light",
+        "sound-painting",
+        "tangram-tales",
+        "throwing-target-garden",
+        "weather-scientist"
+      ],
+      "shared/css/screens.css": [
+        "animal-walk-cards",
+        "balance-beam-trail",
+        "bead-path-builder",
+        "bean-sprout-watch",
+        "blend-train",
+        "block-tower-measure",
+        "board-game-reset",
+        "button-zipper-lab",
+        "calm-corner-cards",
+        "chalkboard-big-strokes",
+        "cleanup-timer-quest",
+        "color-gradient-cards",
+        "color-mixing-lab",
+        "community-helper-cards",
+        "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "kindness-delivery",
+        "land-water-tray",
+        "letter-road-driving",
+        "letter-treasure-hunt",
+        "line-walking-challenge",
+        "local-nature-guide",
+        "loose-parts-collage",
+        "magnet-explorer",
+        "melting-race",
+        "mountain-seasons-wheel",
+        "my-puppet-band",
+        "mystery-letter-bag",
+        "name-puzzle",
+        "nature-scavenger-hunt",
+        "neighborhood-map-walk",
+        "number-line-jump",
+        "number-rod-race",
+        "obstacle-course-builder",
+        "pattern-bracelet-band",
+        "pattern-train",
+        "picture-narration",
+        "picture-word-match",
+        "plan-do-review",
+        "plant-care-captain",
+        "pouring-station",
+        "problem-solving-puppets",
+        "puppet-problem-solvers",
+        "puzzle-map-match",
+        "question-ball",
+        "rhythm-copycat",
+        "sandpaper-number-match",
+        "scissor-trail-safari",
+        "secret-message-copy",
+        "shadow-chase",
+        "shape-to-picture",
+        "shelf-reset-game",
+        "silly-sentence-builder",
+        "silly-swap-words",
+        "smell-jars",
+        "snack-addition-stories",
+        "snack-chef",
+        "song-story-remix",
+        "sound-cylinder-match",
+        "sound-hopscotch",
+        "sticker-line-challenge",
+        "story-repair-shop",
+        "story-sequence",
+        "story-stones",
+        "subtraction-picnic",
+        "sweep-the-trail",
+        "table-setting-mission",
+        "texture-trail",
+        "then-now-sort",
+        "tiny-reader-theater",
+        "trail-counting-walk",
+        "turn-taking-tower",
+        "tweezer-rescue",
+        "waiting-muscle-game"
       ]
     },
     "characters": {
@@ -3612,5 +4333,26 @@
         "rhyming-detective"
       ]
     }
-  }
+  },
+  "zeroConsumers": {
+    "modules": [
+      "shared/js/stage/puppet-builder.js",
+      "shared/js/studio/studio.js",
+      "shared/js/studio/workspaces/animate.js",
+      "shared/js/studio/workspaces/assemble.js",
+      "shared/js/studio/workspaces/games.js",
+      "shared/js/studio/workspaces/generate.js",
+      "shared/js/studio/workspaces/library.js",
+      "shared/js/studio/workspaces/modules.js",
+      "shared/js/studio/workspaces/music.js",
+      "shared/js/studio/workspaces/production.js",
+      "shared/js/studio/workspaces/props.js",
+      "shared/js/studio/workspaces/rig.js",
+      "shared/js/studio/workspaces/speech.js",
+      "shared/js/studio/workspaces/stage-story-stones.js",
+      "shared/js/studio/workspaces/stage.js"
+    ],
+    "css": []
+  },
+  "warnings": []
 }

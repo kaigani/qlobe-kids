@@ -6,6 +6,7 @@ import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
 import { mulberry32, shuffle } from '../rng.js';
 import { escapeHtml, escapeAttr } from '../dom.js';
+import { emojiFromRef } from '../art-ref.js';
 import { createTimers } from '../timers.js';
 import { installDebug } from '../debug-harness.js';
 import { createScreens, wireEndScreen } from '../screens.js';
@@ -175,7 +176,7 @@ class ChooseOneGame {
     splash.innerHTML = `
       <a class="qk-choose-home qk-choose-img-btn qk-choose-home-splash qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
       <div class="qk-choose-splash-center qk-eng-center">
-        <div class="qk-choose-splash-emoji qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-choose-splash-emoji qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
         <div class="qk-choose-mode-list qk-eng-mode-list"></div>
       </div>
@@ -686,7 +687,7 @@ class ChooseOneGame {
     end.innerHTML = `
       <button class="qk-choose-back qk-choose-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
       <div class="qk-choose-end-center qk-eng-center">
-        <div class="qk-choose-end-emoji qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-choose-end-emoji qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.endArt || this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
         <button class="qk-choose-again qk-eng-mode" type="button">
           <span class="qk-choose-play-icon qk-eng-play-icon" aria-hidden="true"></span>
@@ -893,10 +894,10 @@ function normalizeConfig(config) {
   if (!Array.isArray(voice.yums)) voice.yums = [String(voice.yums || 'Nice!')];
 
   return {
+    ...config,
     id: config.id || 'choose-one',
     title: config.title || 'Choose One',
-    splashEmoji: config.splashEmoji || '⭐',
-    ...config,
+    splashEmoji: config.splashEmoji || config.splashArt || '⭐',
     copy,
     voice,
     modes: (config.modes || []).map((mode) => {

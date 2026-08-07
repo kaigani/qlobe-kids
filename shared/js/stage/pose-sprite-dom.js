@@ -48,8 +48,10 @@
 // rejects: a missing pack, a missing pose, or a broken image leaves that actor
 // absent (or invisible) and the game entirely playable.
 
-/** Fallback paper-pop duration when the manifest does not name one. */
-export const POSE_POP_MS = 220;
+import { fetchPoseManifest, loadPoseManifest, POSE_POP_MS } from './pose-pack.js';
+import { injectStyleOnce } from '../dom.js';
+
+export { POSE_POP_MS };
 
 /** Fraction of the pop spent on the overshoot. Mirrors `up` in pose-sprite.js. */
 const POP_UP_FRACTION = 0.62;
@@ -89,7 +91,7 @@ const CSS = `
 }
 @keyframes qk-pose-pop {
   0%   { opacity: 0; transform: scale(.92); animation-timing-function: ${EASE_OUT_CUBIC}; }
-  62%  { opacity: 1; transform: scale(1.04); animation-timing-function: ${EASE_IN_OUT_SINE}; }
+  ${POP_UP_FRACTION * 100}%  { opacity: 1; transform: scale(1.04); animation-timing-function: ${EASE_IN_OUT_SINE}; }
   100% { opacity: 1; transform: scale(1); }
 }
 @keyframes qk-pose-fade {
@@ -103,15 +105,6 @@ const CSS = `
 }
 `;
 
-function ensureStyle() {
-  if (typeof document === 'undefined') return;
-  if (document.getElementById(STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = STYLE_ID;
-  style.textContent = CSS;
-  document.head.append(style);
-}
-
 function prefersReducedMotion() {
   try {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -122,20 +115,7 @@ function prefersReducedMotion() {
 
 // ------------------------------------------------------------------- caches
 
-const manifestCache = new Map();
 const imageCache = new Map();
-
-/** Mirrors pose-sprite.js's fetchManifest, cache policy included. */
-async function fetchManifest(url) {
-  const href = new URL(url, document.baseURI).href;
-  if (!manifestCache.has(href)) {
-    manifestCache.set(href, fetch(href, { cache: 'no-store' }).then((response) => {
-      if (!response.ok) throw new Error(`Could not load pose manifest ${new URL(href).pathname}`);
-      return response.json();
-    }));
-  }
-  return manifestCache.get(href);
-}
 
 /**
  * Decode one pose image off-screen. The DOM analogue of `PIXI.Assets.load`, and
@@ -190,12 +170,8 @@ export async function loadPoseActorDom(manifestUrl, {
   preloadOrder = DEFAULT_PRELOAD_ORDER,
   reducedMotion = prefersReducedMotion,
 } = {}) {
-  const url = new URL(manifestUrl, document.baseURI);
-  const manifest = await fetchManifest(url);
-  if (manifest.format !== 'qlobe-pose-actor' || !manifest.poses?.neutral) {
-    throw new Error(`Invalid pose actor manifest: ${url.pathname}`);
-  }
-  ensureStyle();
+  const { url, manifest } = await loadPoseManifest(manifestUrl);
+  injectStyleOnce(STYLE_ID, CSS);
 
   const base = new URL('./', url);
   const transition = manifest.transition || { kind: 'paper-pop', durationMs: POSE_POP_MS };
@@ -405,4 +381,4 @@ export async function loadPoseActors(host, defs, opts = {}) {
   return Object.fromEntries(loaded);
 }
 
-export const __test = { fetchManifest, loadImage, manifestCache, imageCache };
+export const __test = { fetchManifest: fetchPoseManifest, loadImage, imageCache };

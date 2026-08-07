@@ -6,6 +6,9 @@ import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createNarrator } from '../../../shared/js/narrator.js';
+import { preloadImages } from '../../../shared/js/preload.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
+import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 
 const mount = document.getElementById('game');
 // say()'s only entanglement with game state was the state.muted gate and the
@@ -51,7 +54,6 @@ let rng = mulberry32(state.seed);
 let roundSerial = 0;
 let disposers = [];
 let idleTimer = 0;
-let activeDrag = null;
 let foldPointer = null;
 let pendingWelcome = false;
 
@@ -61,7 +63,7 @@ const ready = (async () => {
 })();
 
 function preloadCriticalImages() {
-  const urls = new Set([
+  return preloadImages([
     config.theme.background,
     ...config.modes.flatMap((item) => [
       ...(item.items || []).map((entry) => entry.art),
@@ -70,12 +72,6 @@ function preloadCriticalImages() {
       ...(item.designs || []).map((entry) => entry.art),
     ]),
   ]);
-  return Promise.all([...urls].map((url) => new Promise((resolve) => {
-    const image = new Image();
-    image.onload = resolve;
-    image.onerror = resolve;
-    image.src = url;
-  })));
 }
 
 // The shared listener fans out to sfx/speech/voice-clips/audio and reopens its
@@ -132,11 +128,8 @@ function clearScreen() {
 }
 
 function cancelAllPointers() {
-  if (activeDrag) finishDragCleanup();
+  sortDragCtl.cancel();
   foldPointer = null;
-  window.removeEventListener('pointermove', onSortPointerMove);
-  window.removeEventListener('pointerup', onSortPointerUp);
-  window.removeEventListener('pointercancel', onSortPointerCancel);
   window.removeEventListener('pointermove', onFoldPointerMove);
   window.removeEventListener('pointerup', onFoldPointerUp);
   window.removeEventListener('pointercancel', onFoldPointerCancel);
@@ -237,20 +230,36 @@ function showSplash({ greet = true } = {}) {
         <img src="${YELLOW_SOCK}" alt="">
         <img src="../../shared/assets/storybook/sock-green.png" alt="">
       </div>
-      <div class="mode-grid" role="list" aria-label="Choose a laundry chore">
-        ${cards.map((card) => `
-          <button class="mode-card" type="button" role="listitem"
-                  data-mode="${card.mode.id}" data-target="mode-${card.mode.id}"
-                  aria-label="${card.mode.title}">
-            <span class="mode-art" aria-hidden="true">${card.art}</span>
-            <span class="mode-title">${card.mode.title}</span>
-          </button>`).join('')}
-      </div>
+      <div class="mode-grid" role="list" aria-label="Choose a laundry chore"></div>
     </section>`;
 
-  mount.querySelectorAll('.mode-card').forEach((button) => {
-    disposers.push(onTap(button, () => startMode(button.dataset.mode), { feedback }));
+  // debugTap() already has a dedicated `mode-` prefix branch — no patch
+  // needed for renderModeCards() to slot in here. `.mode-card:nth-child(2/3)`
+  // color the fold/pairs cards, so `cards`' sort/fold/pairs order must be
+  // preserved exactly (it is — renderModeCards() renders in array order).
+  const { dispose: disposeModeCards } = renderModeCards({
+    host: mount.querySelector('.mode-grid'),
+    modes: cards.map((card) => card.mode),
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-card's own size already clears it).
+    cardClass: 'mode-card',
+    showTitle: false, // decorate() builds .mode-art + .mode-title itself
+    decorate(btn, mode, index) {
+      const face = document.createElement('span');
+      face.className = 'mode-art';
+      face.setAttribute('aria-hidden', 'true');
+      face.innerHTML = cards[index].art;
+      btn.append(face);
+      const title = document.createElement('span');
+      title.className = 'mode-title';
+      title.textContent = mode.title;
+      btn.append(title);
+    },
+    onPick: (id) => startMode(id),
+    feedback,
   });
+  disposers.push(disposeModeCards);
   const home = mount.querySelector('.home-button');
   home.addEventListener('pointerdown', feedback, { passive: false });
 
@@ -340,7 +349,7 @@ function renderSort() {
 
 function wireSort() {
   mount.querySelectorAll('.sock-piece').forEach((piece) => {
-    piece.addEventListener('pointerdown', onSortPointerDown, { passive: false });
+    piece.addEventListener('pointerdown', (event) => sortDragCtl.begin(event, piece), { passive: false });
   });
   mount.querySelectorAll('.basket').forEach((basket) => {
     disposers.push(onTap(basket, () => {
@@ -353,69 +362,74 @@ function wireSort() {
   });
 }
 
-function onSortPointerDown(event) {
-  if (state.inputLocked || activeDrag || event.isPrimary === false) return;
-  const source = event.currentTarget;
-  const item = sortItems.find((candidate) => candidate.id === source.dataset.item);
-  if (!item || item.sorted) return;
-  event.preventDefault();
-  const rect = source.getBoundingClientRect();
-  activeDrag = {
-    pointerId: event.pointerId,
-    itemId: item.id,
-    source,
-    rect,
-    startX: event.clientX,
-    startY: event.clientY,
-    x: event.clientX,
-    y: event.clientY,
-    offsetX: event.clientX - rect.left,
-    offsetY: event.clientY - rect.top,
-    moved: false,
-    ghost: null,
-  };
-  window.addEventListener('pointermove', onSortPointerMove, { passive: false });
-  window.addEventListener('pointerup', onSortPointerUp, { passive: false });
-  window.addEventListener('pointercancel', onSortPointerCancel, { passive: false });
-  beginGhost({ markMoved: false });
-}
-
-function onSortPointerMove(event) {
-  if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
-  event.preventDefault();
-  activeDrag.x = event.clientX;
-  activeDrag.y = event.clientY;
-  const distance = Math.hypot(event.clientX - activeDrag.startX, event.clientY - activeDrag.startY);
-  if (!activeDrag.moved && distance >= DRAG_SLOP) {
-    activeDrag.moved = true;
-    playSfx('pop');
-  }
-  if (!activeDrag.moved) return;
-  const tilt = clamp((event.clientX - activeDrag.startX) * .07, -12, 12);
-  const left = event.clientX - activeDrag.offsetX;
-  const top = event.clientY - activeDrag.offsetY;
-  activeDrag.ghost.style.setProperty('--ghost-x', `${left}px`);
-  activeDrag.ghost.style.setProperty('--ghost-y', `${top}px`);
-  activeDrag.ghost.style.setProperty('--ghost-tilt', `${tilt}deg`);
-  highlightHoveredBasket(event.clientX, event.clientY);
-}
-
-function beginGhost({ markMoved = true } = {}) {
-  if (!activeDrag || activeDrag.ghost) return;
-  activeDrag.moved = markMoved;
-  const image = activeDrag.source.querySelector('img');
-  const ghost = document.createElement('img');
-  ghost.className = 'drag-ghost';
-  ghost.src = image.src;
-  ghost.alt = '';
-  ghost.style.filter = getComputedStyle(image).filter;
-  ghost.style.setProperty('--ghost-size', `${activeDrag.rect.width}px`);
-  ghost.style.setProperty('--ghost-x', `${activeDrag.rect.left}px`);
-  ghost.style.setProperty('--ghost-y', `${activeDrag.rect.top}px`);
-  document.body.appendChild(ghost);
-  activeDrag.ghost = ghost;
-  activeDrag.source.classList.add('is-drag-source');
-}
+// Self-managed ghost (makeGhost: () => null) — the .drag-ghost CSS positions
+// via --ghost-x/--ghost-y/--ghost-tilt custom properties (translate3d), not
+// the module's own left/top, and animateDragIntoBasket()/animateDragReturn()
+// below need a live element to call .animate() on after the module would
+// otherwise have already torn its own ghost down. Same pattern as
+// sound-basket's transform-in-place drag. record.customGhost (not
+// record.ghost, which the module owns and leaves null here) carries it.
+const sortDragCtl = createDragToSlotDom({
+  getPiece: (source) => source,
+  slop: DRAG_SLOP,
+  preventDefaultOnPress: true,
+  makeGhost: () => null,
+  canStart: () => !state.inputLocked,
+  onGrab: (source, record) => {
+    const item = sortItems.find((candidate) => candidate.id === source.dataset.item);
+    if (!item || item.sorted) return false;
+    record.itemId = item.id;
+    record.rect = source.getBoundingClientRect();
+    record.offsetX = record.startX - record.rect.left;
+    record.offsetY = record.startY - record.rect.top;
+    const image = source.querySelector('img');
+    const ghost = document.createElement('img');
+    ghost.className = 'drag-ghost';
+    ghost.src = image.src;
+    ghost.alt = '';
+    ghost.style.filter = getComputedStyle(image).filter;
+    ghost.style.setProperty('--ghost-size', `${record.rect.width}px`);
+    ghost.style.setProperty('--ghost-x', `${record.rect.left}px`);
+    ghost.style.setProperty('--ghost-y', `${record.rect.top}px`);
+    document.body.appendChild(ghost);
+    record.customGhost = ghost;
+    source.classList.add('is-drag-source');
+  },
+  onLift: () => playSfx('pop'),
+  onMove: (source, record) => {
+    const tilt = clamp((record.lastX - record.startX) * .07, -12, 12);
+    const left = record.lastX - record.offsetX;
+    const top = record.lastY - record.offsetY;
+    record.customGhost.style.setProperty('--ghost-x', `${left}px`);
+    record.customGhost.style.setProperty('--ghost-y', `${top}px`);
+    record.customGhost.style.setProperty('--ghost-tilt', `${tilt}deg`);
+    highlightHoveredBasket(record.lastX, record.lastY);
+  },
+  onDrop: async (source, record) => {
+    const target = [...mount.querySelectorAll('.basket')]
+      .find((basket) => pointInside(record.x, record.y, basket.getBoundingClientRect()));
+    mount.querySelectorAll('.basket').forEach((basket) => basket.classList.remove('is-hover'));
+    const drag = {
+      itemId: record.itemId, source, rect: record.rect, ghost: record.customGhost,
+      x: record.x, y: record.y, offsetX: record.offsetX, offsetY: record.offsetY,
+    };
+    if (target) await attemptSort(record.itemId, target.dataset.bin, drag);
+    else {
+      await animateDragReturn(drag);
+      cleanupDragVisual(drag);
+      bounceSortItem(record.itemId);
+    }
+  },
+  onCancel: async (source, record) => {
+    mount.querySelectorAll('.basket').forEach((basket) => basket.classList.remove('is-hover'));
+    cleanupDragVisual({ ghost: record.customGhost, source });
+    bounceSortItem(record.itemId);
+  },
+  onTap: (source, record) => {
+    cleanupDragVisual({ ghost: record.customGhost, source });
+    selectSortItem(record.itemId);
+  },
+});
 
 function highlightHoveredBasket(x, y) {
   mount.querySelectorAll('.basket').forEach((basket) => {
@@ -423,53 +437,9 @@ function highlightHoveredBasket(x, y) {
   });
 }
 
-async function onSortPointerUp(event) {
-  if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
-  event.preventDefault();
-  const drag = activeDrag;
-  const target = [...mount.querySelectorAll('.basket')]
-    .find((basket) => pointInside(event.clientX, event.clientY, basket.getBoundingClientRect()));
-  activeDrag = null;
-  detachSortDragListeners();
-  mount.querySelectorAll('.basket').forEach((basket) => basket.classList.remove('is-hover'));
-  if (drag.moved) {
-    if (target) await attemptSort(drag.itemId, target.dataset.bin, drag);
-    else {
-      await animateDragReturn(drag);
-      cleanupDragVisual(drag);
-      bounceSortItem(drag.itemId);
-    }
-  } else {
-    cleanupDragVisual(drag);
-    selectSortItem(drag.itemId);
-  }
-}
-
-function onSortPointerCancel(event) {
-  if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
-  const itemId = activeDrag.itemId;
-  finishDragCleanup();
-  bounceSortItem(itemId);
-}
-
-function finishDragCleanup() {
-  if (!activeDrag) return;
-  const drag = activeDrag;
-  activeDrag = null;
-  cleanupDragVisual(drag);
-  mount.querySelectorAll('.basket').forEach((basket) => basket.classList.remove('is-hover'));
-  detachSortDragListeners();
-}
-
 function cleanupDragVisual(drag) {
   drag?.ghost?.remove();
   drag?.source?.classList.remove('is-drag-source');
-}
-
-function detachSortDragListeners() {
-  window.removeEventListener('pointermove', onSortPointerMove);
-  window.removeEventListener('pointerup', onSortPointerUp);
-  window.removeEventListener('pointercancel', onSortPointerCancel);
 }
 
 function selectSortItem(itemId) {
@@ -558,7 +528,7 @@ async function animateDragIntoBasket(drag, target) {
     { transform: `translate3d(${startX}px, ${startY}px, 0) rotate(0deg) scale(1.08)`, opacity: 1 },
     { transform: `translate3d(${endX}px, ${endY}px, 0) rotate(-5deg) scale(.28)`, opacity: .12 },
   ], { duration: 330, easing: 'cubic-bezier(.2,.82,.35,1)', fill: 'forwards' });
-  await animation.finished.catch(() => {});
+  await raceFinished(animation, 330);
 }
 
 async function animateDragReturn(drag) {
@@ -569,7 +539,7 @@ async function animateDragReturn(drag) {
     { transform: `translate3d(${startX}px, ${startY}px, 0) rotate(0deg) scale(1.08)` },
     { transform: `translate3d(${drag.rect.left}px, ${drag.rect.top}px, 0) rotate(0deg) scale(1)` },
   ], { duration: 260, easing: 'cubic-bezier(.25,.8,.35,1)', fill: 'forwards' });
-  await animation.finished.catch(() => {});
+  await raceFinished(animation, 260);
 }
 
 function bounceSortItem(itemId) {
@@ -594,7 +564,7 @@ async function animateFlight(image, from, target) {
     { transform: `translate(${(from.left + endX) / 2}px, ${Math.min(from.top, endY) - 100}px) scale(.82) rotate(10deg)`, opacity: 1, offset: .55 },
     { transform: `translate(${endX}px, ${endY}px) scale(.28) rotate(-5deg)`, opacity: .2 },
   ], { duration: 560, easing: 'cubic-bezier(.2,.8,.35,1)', fill: 'forwards' });
-  await animation.finished.catch(() => {});
+  await raceFinished(animation, 560);
   flyer.remove();
 }
 
@@ -759,7 +729,7 @@ async function swapFoldStage(image, direction, nextArt) {
       { transform: 'translate(0, 0) scale(1)', opacity: 1 },
       { transform: `translate(${x}px, ${y}px) scale(.9)`, opacity: .22 },
     ], { duration: 210, easing: 'cubic-bezier(.35,0,.65,1)', fill: 'forwards' });
-    await out.finished.catch(() => {});
+    await raceFinished(out, 210);
   }
   image.src = nextArt;
   await image.decode?.().catch(() => {});
@@ -768,7 +738,7 @@ async function swapFoldStage(image, direction, nextArt) {
       { transform: 'scale(.86)', opacity: .2 },
       { transform: 'scale(1)', opacity: 1 },
     ], { duration: 290, easing: 'cubic-bezier(.2,1.2,.4,1)', fill: 'forwards' });
-    await incoming.finished.catch(() => {});
+    await raceFinished(incoming, 290);
   }
 }
 
@@ -1104,6 +1074,17 @@ function clamp(value, min, max) {
 
 function cssEscape(value) {
   return window.CSS?.escape ? window.CSS.escape(String(value)) : String(value).replace(/["\\]/g, '\\$&');
+}
+
+// Never await an animation unconditionally: in a backgrounded tab the
+// compositor throttles and `finished` can stall indefinitely, which would
+// leave input locked forever (counting-treasure-cups has the same guard).
+// The timeout always wins eventually.
+function raceFinished(animation, ms) {
+  return Promise.race([
+    animation.finished.catch(() => {}),
+    new Promise((resolve) => setTimeout(resolve, ms + 200)),
+  ]);
 }
 
 showSplash();

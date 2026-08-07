@@ -1,8 +1,9 @@
 // field-core.js — a STORED signed-distance + colour field for clay.
 //
 // WHY THIS EXISTS
-// The shipped engine (shared/js/clay/lobes.js) is a blended union of analytic
-// primitives. The blend is beautiful and the seams are loved, but every lobe
+// The engine this experiment grew out of (shared/js/clay/lobes.js, since
+// deleted — superseded by shared/js/clay/field.js) was a blended union of
+// analytic primitives. The blend was beautiful and the seams were loved, but every lobe
 // keeps an identity: it stays in a list, it stays draggable, and a child can
 // lever a welded mass back apart because "the green ball" is still a row in an
 // array. The product owner asked for the opposite — "the green clay should now

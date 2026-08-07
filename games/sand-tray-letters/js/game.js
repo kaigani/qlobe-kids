@@ -284,21 +284,35 @@ function resizeCanvas(force = false) {
   const cssWidth = Math.max(1, rect.width);
   const cssHeight = Math.max(1, rect.height);
   const scale = Math.min(cssWidth * .82 / 1000, cssHeight * .84 / 700);
-  metricsCache = {
+  const nextMetrics = {
     width: cssWidth,
     height: cssHeight,
     scale,
     left: (cssWidth - 1000 * scale) / 2,
     top: (cssHeight - 700 * scale) / 2,
   };
+  // A CSS resize that rounds to the SAME device-pixel canvas size still moves
+  // scale/left/top (safe-area shifts, a sidebar resize) — skipping the repaint
+  // whenever the bitmap dims match left toScreen()'s guide/stroke coordinates
+  // using the NEW metrics against the OLD (un-repainted) bitmap, drifting the
+  // guide out of alignment with what's on screen. Compare metrics, not just
+  // pixel dims, to decide whether a repaint is needed.
+  const metricsChanged = !metricsCache
+    || metricsCache.width !== nextMetrics.width
+    || metricsCache.height !== nextMetrics.height
+    || metricsCache.scale !== nextMetrics.scale;
+  metricsCache = nextMetrics;
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const width = Math.max(1, Math.round(rect.width * dpr));
   const height = Math.max(1, Math.round(rect.height * dpr));
-  if (!force && els.canvas.width === width && els.canvas.height === height) return;
-  els.canvas.width = width;
-  els.canvas.height = height;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  textureKey = '';
+  const pixelsChanged = els.canvas.width !== width || els.canvas.height !== height;
+  if (!force && !pixelsChanged && !metricsChanged) return;
+  if (force || pixelsChanged) {
+    els.canvas.width = width;
+    els.canvas.height = height;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    textureKey = '';
+  }
   render();
 }
 

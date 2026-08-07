@@ -14,6 +14,7 @@ import { createStage } from '../stage/stage.js';
 import { popIn } from '../stage/tween.js';
 import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
+import { emojiFromRef } from '../art-ref.js';
 
 const WAIT_FOR_INPUT = 80;
 const IDLE_MS = 10000;
@@ -23,12 +24,12 @@ const WIN_BAIL_MS = 15000;
 const DIAL_TRACK_STROKE = { width: 22, color: 0xffffff, alpha: 0.68 };
 const DIAL_ARC_STROKE = { width: 22, color: 0x58a945, cap: 'round' };
 
-let styleReady = false;
+let styleInstalled = false;
 let debugOwner = 0;
 
 export function createGame(config, mountEl) {
   if (!mountEl) throw new Error('coach-timer requires a mount element');
-  injectStyle();
+  installStyle();
   return new CoachTimerGame(config || {}, mountEl);
 }
 
@@ -925,9 +926,9 @@ class CoachTimerGame {
   }
 }
 
-function injectStyle() {
-  if (styleReady) return;
-  styleReady = true;
+function installStyle() {
+  if (styleInstalled) return;
+  styleInstalled = true;
   installEngineStyles('qk-coach-style', `
     /* coach-timer's own skin. The @font-face, the reset, the surface, the
        splash/end page, the centre column, the art tile, the mode grid, the
@@ -1025,11 +1026,6 @@ function injectStyle() {
     @media (orientation:landscape) and (max-height:600px) { .qk-coach-workspace { inset-top:104px; padding-bottom:4px; } .qk-coach-checklist { max-height:calc(100dvh - 120px); } .qk-coach-row { min-height:96px; font-size:20px; } .qk-coach-signal-field { inset-top:96px; } }
     @media (prefers-reduced-motion:reduce) { .qk-coach-root *, .qk-coach-root *::before, .qk-coach-root *::after { animation-duration:.001ms!important; transition-duration:.001ms!important; scroll-behavior:auto!important; } }
   `);
-}
-
-function emojiFromRef(ref) {
-  const value = String(ref || '⭐');
-  return value.startsWith('emoji:') ? value.slice(6) : value.includes(':') ? '⭐' : value;
 }
 
 function wait(ms) { return new Promise((resolve) => window.setTimeout(resolve, ms)); }

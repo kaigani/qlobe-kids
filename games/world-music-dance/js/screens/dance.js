@@ -294,8 +294,8 @@ export async function createDanceScreen(ctx, opts = {}) {
     dot.classList.remove('beat');
     void dot.offsetWidth;   // reflow, so the animation restarts on every beat
     dot.classList.add('beat');
-    clearTimeout(beatTimer);
-    beatTimer = setTimeout(() => dot.classList.remove('beat'), 380);
+    ctx.clear(beatTimer);
+    beatTimer = ctx.after(380, () => dot.classList.remove('beat'));
   }
 
   function poseArtUrl(pose) {
@@ -431,7 +431,7 @@ export async function createDanceScreen(ctx, opts = {}) {
     ctx.sfx('boing');
     if (button) {
       button.classList.add('wrong');
-      setTimeout(() => button.classList.remove('wrong'), 460);
+      ctx.after(460, () => button.classList.remove('wrong'));
     }
     const move = moves[step];
     ctx.say('nudge-copy');
@@ -558,7 +558,7 @@ export async function createDanceScreen(ctx, opts = {}) {
           const button = cardsEl.querySelector(`.wmd-move[data-pose="${cssEscape(pose)}"]`);
           await onCardTap(pose, button);
         } else {
-          await new Promise((resolve) => setTimeout(resolve, 30));
+          await ctx.wait(30);
         }
       }
     },
@@ -569,7 +569,7 @@ export async function createDanceScreen(ctx, opts = {}) {
     },
     destroy() {
       dead = true;
-      clearTimeout(beatTimer);
+      ctx.clear(beatTimer);
       loopWaiters.forEach((waiter) => { try { waiter.resolve(); } catch { /* settled */ } });
       loopWaiters.clear();
       disposers.forEach((dispose) => { try { dispose(); } catch { /* already gone */ } });

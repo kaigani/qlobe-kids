@@ -12,12 +12,15 @@ import config from '../config.js';
 import * as rawSfx from '../../../shared/js/sfx.js';
 import * as speech from '../../../shared/js/speech.js';
 import { onTap } from '../../../shared/js/tap.js';
+import { installUnlockOnGesture } from '../../../shared/js/audio-unlock.js';
 import { createJournal } from '../../../shared/js/journal.js';
+import { createTimers } from '../../../shared/js/timers.js';
 import * as voice from './voice.js';
 import { createField, createDeck, deriveRound, targetForRoom } from './game.js';
 import { createJournalUI } from './journal-ui.js';
 import { createAmbience } from './ambience.js';
 import { imgEl, applyFallback, resolveArt } from './art.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const rooms = config.rooms || [];
 const bugs = config.bugs || [];
@@ -72,8 +75,15 @@ const journal = createJournal(config.id || 'bug-hotel-observer', {
 let yesDeck = createDeck((config.voice && config.voice.decks && config.voice.decks.yes) || [], state.seed);
 let idleDeck = createDeck((config.voice && config.voice.decks && config.voice.decks.idle) || [], state.seed);
 
-const T = (ms) => ms * state.timeScale;
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
+// The one cancellable, fastTimers()-scalable timer group (shared/js/timers.js)
+// — replaces the hand-rolled `beats` Set + raw setTimeout scheduling below.
+// `state.timeScale` stays the source of truth for the two non-scheduling
+// consumers that read it directly (voice.seq()'s gap multiplier, the `--ts`
+// CSS custom property, and game.js's own T()); fastTimers() keeps both in
+// sync (see the debug hook below).
+const timerGroup = createTimers();
+const T = (ms) => timerGroup.ms(ms);
+const wait = (ms) => timerGroup.wait(ms);
 
 // SFX facade — one place to gate every effect on mute(). sfx.js has no gain
 // export, so the mute happens at the call site.
@@ -132,26 +142,19 @@ const els = {
 // ---------------------------------------------------------------------------
 
 const timers = { idle: null, auto: null, intro: null };
-const beats = new Set();
 
 function clearTimer(name) {
-  if (timers[name]) { clearTimeout(timers[name]); timers[name] = null; }
+  if (timers[name] != null) { timerGroup.clear(timers[name]); timers[name] = null; }
 }
 
+/** A scaled, fire-once beat — not individually cancellable, swept by clearAllTimers(). */
 function beat(ms, fn) {
-  const id = setTimeout(() => { beats.delete(id); fn(); }, Math.max(0, T(ms)));
-  beats.add(id);
-  return id;
-}
-
-function clearBeats() {
-  for (const id of beats) clearTimeout(id);
-  beats.clear();
+  return timerGroup.after(ms, fn);
 }
 
 function clearAllTimers() {
-  for (const name of Object.keys(timers)) clearTimer(name);
-  clearBeats();
+  for (const name of Object.keys(timers)) timers[name] = null;
+  timerGroup.clearAll();
 }
 
 function debounced(ms, fn) {
@@ -385,9 +388,9 @@ async function enterRoom(roomId) {
   renderBanner(promptKeyForBanner());
 
   const spoken = speakRoomIntro();
-  await Promise.race([spoken, wait(T(4200))]);
+  await Promise.race([spoken, wait(4200)]);
   if (token !== state.introToken) return false;
-  await wait(T(Number(tuning.roomIntroTailMs) || 350));
+  await wait(Number(tuning.roomIntroTailMs) || 350);
   if (token !== state.introToken) return false;
   armIdle();
   return true;
@@ -457,18 +460,25 @@ function armIdle() {
   if (document.hidden) return;
   if (state.screen !== 'room' && state.screen !== 'hotel') return;
   idleTier = 0;
-  timers.idle = setTimeout(runIdleTier, T(Number(tuning.idleMs) || 12000));
+  timers.idle = timerGroup.after(Number(tuning.idleMs) || 12000, runIdleTier);
 }
 
 function runIdleTier() {
   timers.idle = null;
   if (state.screen !== 'room' && state.screen !== 'hotel') return;
   // Never talk over a line the child is still hearing. The prompt itself can
-  // run longer than the idle window under `fastTimer` (game beats scale, a
+  // run longer than the idle window under `fastTimers` (game beats scale, a
   // speech engine does not), and an idle nudge that cuts the question in half
   // is the one thing this ladder must not do. Wait a beat and ask again.
   if (voice.isSpeaking()) {
-    timers.idle = setTimeout(runIdleTier, Math.max(200, T(2000)));
+    // A 200ms floor on the FINAL delay, even under fastTimers() — this is a
+    // speech-recheck poll, not a beat, and must not spin. timerGroup.after()
+    // scales its input by 1/scale, so to floor the SCALED OUTPUT at 200 the
+    // input must be `200 * scale` (unscaling the floor cancels the group's
+    // own scaling exactly): after(200*scale, fn) settles at
+    // max(200*scale,2000)/scale === max(200, 2000/scale), the original
+    // Math.max(200, T(2000)).
+    timers.idle = timerGroup.after(Math.max(200 * timerGroup.getScale(), 2000), runIdleTier);
     return;
   }
   const tier = idleTier;
@@ -482,7 +492,7 @@ function runIdleTier() {
   } else {
     void speakCurrentPrompt();
   }
-  timers.idle = setTimeout(runIdleTier, T(Number(tuning.idleRepeatMs) || 15000));
+  timers.idle = timerGroup.after(Number(tuning.idleRepeatMs) || 15000, runIdleTier);
 }
 
 // ---------------------------------------------------------------------------
@@ -521,7 +531,7 @@ async function openReward(bugId) {
   beat(120, () => els.factFound.classList.add('in'));
   beat(200, () => els.factRow.classList.add('in'));
 
-  await wait(T(Number(tuning.factOpenMs) || 520));
+  await wait(Number(tuning.factOpenMs) || 520);
   if (token !== state.introToken) return false;
   const spoken = voice.speakFor(bug.voice.fact, 2400, state.timeScale);
   await spoken;
@@ -557,10 +567,10 @@ async function openReward(bugId) {
   // checked.
   if (token !== state.introToken) return false;
   clearTimer('auto');
-  timers.auto = setTimeout(() => {
+  timers.auto = timerGroup.after(Number(tuning.rewardAutoAdvanceMs) || 14000, () => {
     timers.auto = null;
     void leaveReward();
-  }, T(Number(tuning.rewardAutoAdvanceMs) || 14000));
+  });
   return true;
 }
 
@@ -590,7 +600,7 @@ async function leaveReward() {
   renderPips();
   voice.say('next-room');
   els.spread.classList.remove('show');
-  await wait(T(380));
+  await wait(380);
   if (state.screen !== 'reward') return false;   // back was pressed mid-slide
   state.rewardBug = null;
   field.setEnabled(true);
@@ -610,7 +620,7 @@ async function goHotelThenRoom(roomId) {
   setScreen('hotel');
   await field.showHotel();
   if (state.screen !== 'hotel') return;
-  await wait(T(520));
+  await wait(520);
   if (state.screen !== 'hotel') return;
   await enterRoom(roomId);
 }
@@ -651,10 +661,10 @@ function showCelebration() {
   beat(600, () => gridSpread.rise(roundBugs.slice()));
 
   clearTimer('auto');
-  timers.auto = setTimeout(() => {
+  timers.auto = timerGroup.after(Number(tuning.celebrationAutoAdvanceMs) || 16000, () => {
     timers.auto = null;
     showEnd();
-  }, T(Number(tuning.celebrationAutoAdvanceMs) || 16000));
+  });
 }
 
 function showEnd() {
@@ -697,7 +707,7 @@ async function closeJournal() {
   const from = state.journalFrom;
   voice.stop();
   els.spread.classList.remove('show');
-  await wait(T(380));
+  await wait(380);
   state.journalFrom = null;
   if (from === 'room' && state.roomId) {
     setScreen('room');
@@ -744,6 +754,14 @@ function press(el, action) {
 // lost to a tab switch or an interrupted gesture, and a recorded line spoken
 // before the unlock silently degrades to the system speech voice.
 window.addEventListener('pointerdown', unlockAudio, { capture: true, passive: true });
+// Calling unlockAudio() on every gesture still isn't enough on its own: the
+// channels it fans out to (voice-clips.js, speech.js) each latch "unlocked"
+// permanently once true, so a call after an iPadOS app-switch can be a no-op
+// even though the OS actually revoked the permission it represents.
+// installUnlockOnGesture's own latch resets on visibilitychange/pageshow and
+// resumes a paused speechSynthesis — the one recovery step this game's
+// backgrounding handler (below) didn't have.
+installUnlockOnGesture({ extra: [unlockAudio] });
 
 // §3.6 — any pointerdown in the play field restarts the idle ladder from zero.
 window.addEventListener('pointerdown', () => {
@@ -802,27 +820,28 @@ press(els.again, () => { goSplash(); });
 
 // §2.3 — the mode row, built from config so listModes() and the tiles agree.
 function buildModeRow() {
-  els.modeRow.replaceChildren();
-  for (const mode of modes) {
-    const tile = document.createElement('button');
-    tile.type = 'button';
-    tile.className = `mode-tile mode-${mode.id}`;
-    tile.dataset.mode = mode.id;
-    tile.setAttribute('aria-label', mode.title);
+  renderModeCards({
+    host: els.modeRow,
+    modes,
+    skin: false, // .mode-tile keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — .mode-tile's own size already clears it).
+    cardClass: (mode) => `mode-tile mode-${mode.id}`,
+    showTitle: false, // decorate() builds .tile-face + .tile-label itself
+    decorate(tile, mode) {
+      const face = document.createElement('span');
+      face.className = 'tile-face';
+      face.appendChild(imgEl(MODE_FACE[mode.id] || '', 'tile-art'));
+      tile.appendChild(face);
 
-    const face = document.createElement('span');
-    face.className = 'tile-face';
-    face.appendChild(imgEl(MODE_FACE[mode.id] || '', 'tile-art'));
-    tile.appendChild(face);
-
-    const label = document.createElement('span');
-    label.className = 'tile-label';
-    label.textContent = mode.title;
-    tile.appendChild(label);
-
-    press(tile, () => { void startMode(mode.id); });
-    els.modeRow.appendChild(tile);
-  }
+      const label = document.createElement('span');
+      label.className = 'tile-label';
+      label.textContent = mode.title;
+      tile.appendChild(label);
+    },
+    onPick: (id) => { void startMode(id); },
+    feedback: () => { unlockAudio(); sfx.pop(); },
+  });
 }
 
 // §2.9 backgrounding: stop voice and ambience, pause every timer; re-arm from
@@ -837,11 +856,11 @@ document.addEventListener('visibilitychange', () => {
     ambience.resume();
     if (state.screen === 'room' || state.screen === 'hotel') armIdle();
     else if (state.screen === 'reward' && !timers.auto) {
-      timers.auto = setTimeout(() => { timers.auto = null; void leaveReward(); },
-        T(Number(tuning.rewardAutoAdvanceMs) || 14000));
+      timers.auto = timerGroup.after(Number(tuning.rewardAutoAdvanceMs) || 14000,
+        () => { timers.auto = null; void leaveReward(); });
     } else if (state.screen === 'celebration' && !timers.auto) {
-      timers.auto = setTimeout(() => { timers.auto = null; showEnd(); },
-        T(Number(tuning.celebrationAutoAdvanceMs) || 16000));
+      timers.auto = timerGroup.after(Number(tuning.celebrationAutoAdvanceMs) || 16000,
+        () => { timers.auto = null; showEnd(); });
     }
   }
 });
@@ -932,7 +951,7 @@ async function winRound() {
   await field.reveal(targetId);
   await debugTap(targetId);
   // The greeting resolves before the spread mounts; give the beat a frame.
-  for (let i = 0; i < 40 && state.screen !== 'reward'; i += 1) await wait(T(60));
+  for (let i = 0; i < 40 && state.screen !== 'reward'; i += 1) await wait(60);
   return state.screen === 'reward';
 }
 
@@ -1041,16 +1060,19 @@ window.QLOBE_DEBUG = {
   },
 
   /**
-   * Divides every timed beat: `fastTimer(10)` takes the 600 ms dwell to 60 ms
+   * Divides every timed beat: `fastTimers(10)` takes the 600 ms dwell to 60 ms
    * and the 14 s auto-advance to 1.4 s. A value in (0, 1] is read as a direct
    * multiplier instead, so the rhyming-detective habit of `fastTimers(0.05)`
    * does the expected thing here too.
    */
-  fastTimer(scale = 10) {
+  fastTimers(scale = 10) {
     const n = Number(scale);
     const value = !Number.isFinite(n) || n <= 0 ? 0.1 : (n > 1 ? 1 / n : n);
     state.timeScale = Math.min(1, Math.max(0.005, value));
     document.documentElement.style.setProperty('--ts', String(state.timeScale));
+    // timerGroup's convention is the inverse of state.timeScale's (higher =
+    // faster there; lower = faster here) — see the const timerGroup comment.
+    timerGroup.setScale(1 / state.timeScale);
     field.retuneDwell();
     return state.timeScale;
   },

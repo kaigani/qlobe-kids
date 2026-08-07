@@ -52,6 +52,14 @@ export function initScene(canvas) {
   onResize();
 
   renderer.setAnimationLoop(renderLoop);
+  // requestAnimationFrame throttling in a backgrounded tab is a browser
+  // heuristic, not a guarantee — stop the loop outright on visibilitychange
+  // so an iPad app-switch can't leave WebGL rendering (and draining battery)
+  // behind an app the child isn't even looking at.
+  document.addEventListener('visibilitychange', () => {
+    renderer.setAnimationLoop(document.hidden ? null : renderLoop);
+    if (!document.hidden) lastT = performance.now() / 1000;
+  });
   return { scene, camera, renderer };
 }
 

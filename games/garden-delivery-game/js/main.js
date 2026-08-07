@@ -1,5 +1,5 @@
 import config from '../config.js';
-import { createTiltInput } from '../../../shared/js/tilt-input.js';
+import { createTiltInput } from './tilt-input.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import * as voiceClips from '../../../shared/js/voice-clips.js';
 import * as sfx from '../../../shared/js/sfx.js';
@@ -9,6 +9,7 @@ import { createTimers } from '../../../shared/js/timers.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { soundDebounce } from '../../../shared/js/hud.js';
+import { preloadImages } from '../../../shared/js/preload.js';
 
 const mount = document.getElementById('game');
 const timers = createTimers();
@@ -38,7 +39,6 @@ let lastFrameAt = performance.now();
 let celebrationDispose = null;
 let soundHoldTimer = null;
 let soundWasLongPress = false;
-const warmedVisuals = [];
 const repeatSound = soundDebounce(repeatPrompt, 650);
 
 const tilt = createTiltInput({
@@ -77,13 +77,11 @@ function warmVisualAssets() {
     ...Object.values(config.assets),
     ...config.modes.flatMap((item) => Object.values(item.flowerAssets || {})),
   ];
-  for (const url of new Set(urls.filter(Boolean))) {
-    const image = new Image();
-    image.decoding = 'async';
-    image.fetchPriority = 'low';
-    image.src = asset(url);
-    warmedVisuals.push(image);
-  }
+  // idle: true (small batches between frames) is the closest shared-module
+  // equivalent of the original's fetchPriority:'low' — background warmth
+  // that stays off the splash's own critical path, not a byte-identical
+  // priority hint (preloadImages() has no fetchPriority option).
+  preloadImages(urls, { idle: true });
 }
 function bucketValueText(x, pouring = false) {
   if (Math.abs(x) < 0.12) return 'Bucket centered';

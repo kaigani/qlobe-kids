@@ -39,7 +39,7 @@ building. Delete this line if you have none.>
 
 ## Shared assets used
 > Check `docs/asset-system.md` FIRST — reuse before you make anything new.
-- <e.g. `shared/js/audio.js` for teacher-voice + speech fallback>
+- <e.g. `shared/js/voice-clips.js` for teacher-voice + speech fallback>
 - <e.g. `shared/assets/objects/*.png` picture cards>
 - <e.g. `shared/fonts/fredoka-latin-600-normal.woff2`>
 

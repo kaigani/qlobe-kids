@@ -14,6 +14,7 @@ import { preloadImages } from '../../../shared/js/preload.js';
 import { shuffle } from '../../../shared/js/rng.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createCameraThrow } from '../../../shared/js/camera-throw.js';
+import { renderModeCards } from '../../../shared/js/mode-select.js';
 
 const mount = document.querySelector('#game');
 const A = config.assets;
@@ -193,25 +194,39 @@ function renderSplash() {
   state.phase = 'idle';
   state.currentPrompt = 'welcome';
   const selectedTitle = modeById(state.selectedMode)?.title || 'Garden Game';
-  const cards = MODES.map((mode) => {
-    const selected = mode.id === state.selectedMode;
-    return `<button class="art-button mode-card${selected ? ' is-selected' : ''}" type="button"
-      data-target="mode-${attr(mode.id)}" data-role="mode" data-mode="${attr(mode.id)}"
-      aria-label="${attr(mode.title)}${selected ? ', selected' : ''}" aria-pressed="${selected}">
-      <img src="${attr(mode.card)}" alt="" draggable="false">
-      <span>${html(mode.title)}</span>
-    </button>`;
-  }).join('');
   nodes.splash.innerHTML = `${scene()}${hud({ home: true })}
     <div class="splash-layout">
       <img class="title-lockup" src="${attr(A.title)}" alt="Throwing Target Garden" draggable="false">
-      <div class="mode-shelf" aria-label="Choose a garden game">${cards}</div>
+      <div class="mode-shelf" aria-label="Choose a garden game"></div>
       ${artButton({ id: 'start', role: 'start', src: A.buttonOrange, label: 'START', className: 'main-action', aria: `Start ${selectedTitle}` })}
     </div>`;
   bindTap(nodes.splash, '[data-target="sound"]', () => narrator.say('welcome', L.welcome));
-  for (const button of nodes.splash.querySelectorAll('[data-mode]')) {
-    bindTap(nodes.splash, button, () => selectMode(button.dataset.mode));
-  }
+  // tap:'s bare `target.click()` already fires renderModeCards()'s onTap
+  // through its click fallback — no debug-harness patch needed. Tapping a
+  // card only selects it (state.selectedMode); the START button below is
+  // what actually begins play — unchanged from the pre-migration behavior.
+  const { dispose: disposeModeCards } = renderModeCards({
+    host: nodes.splash.querySelector('.mode-shelf'),
+    modes: MODES,
+    skin: false, // .mode-card keeps its own pixel-for-pixel look; only the
+                 // shared .qk-mode-card touch-floor contract is added (a
+                 // no-op — cards render far above the 96px floor here).
+    cardClass: 'art-button mode-card',
+    showTitle: false, // decorate() builds the title span itself
+    art: (mode) => { const img = document.createElement('img'); img.src = mode.card; img.alt = ''; img.draggable = false; return img; },
+    label: (mode) => `${mode.title}${mode.id === state.selectedMode ? ', selected' : ''}`,
+    decorate(btn, mode) {
+      const selected = mode.id === state.selectedMode;
+      btn.classList.toggle('is-selected', selected);
+      btn.setAttribute('aria-pressed', String(selected));
+      const title = document.createElement('span');
+      title.textContent = mode.title;
+      btn.append(title);
+    },
+    onPick: (id) => selectMode(id),
+    feedback,
+  });
+  screens.hold(disposeModeCards);
   bindTap(nodes.splash, '[data-target="start"]', startSelectedMode);
 }
 
@@ -999,7 +1014,14 @@ async function animateThrow(semantic) {
     { opacity: 1, transform: 'translate(-50%, -50%) rotate(7deg) scale(.92)' },
   ], { duration, easing: 'cubic-bezier(.2,.72,.28,1)', fill: 'forwards' });
   playSfx('whoosh');
-  try { await animation.finished; } catch { /* a route change cancels the arc */ }
+  // A throttled/backgrounded tab can leave `finished` unresolved indefinitely
+  // (rAF-driven WAAPI timing stalls) — race it against the animation's own
+  // duration plus a buffer so a route change or a backgrounded tab can never
+  // strand the caller (submitThrow awaits this before resolving the throw).
+  await Promise.race([
+    animation.finished.catch(() => {}),
+    timers.wait(duration + 200),
+  ]);
   bag.remove();
 }
 

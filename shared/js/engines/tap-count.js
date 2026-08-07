@@ -6,6 +6,7 @@ import * as speech from '../speech.js';
 import { onTap } from '../tap.js';
 import { mulberry32, shuffle } from '../rng.js';
 import { escapeHtml, escapeAttr } from '../dom.js';
+import { emojiFromRef } from '../art-ref.js';
 import { createTimers } from '../timers.js';
 import { installDebug } from '../debug-harness.js';
 import { createScreens, wireEndScreen } from '../screens.js';
@@ -202,7 +203,7 @@ class TapCountGame {
     splash.innerHTML = `
       <a class="qk-tap-home qk-tap-img-btn qk-eng-img-btn qk-eng-ico-home qk-eng-corner-tl" href="../../" aria-label="${escapeAttr(this.config.copy.home)}"></a>
       <div class="qk-tap-splash-center qk-eng-center">
-        <div class="qk-tap-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-tap-splash-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.title)}</h1>
         <div class="qk-tap-mode-list qk-eng-mode-list"></div>
       </div>
@@ -805,7 +806,7 @@ class TapCountGame {
     end.innerHTML = `
       <button class="qk-tap-back qk-tap-img-btn qk-eng-img-btn qk-eng-ico-back qk-eng-corner-tl" type="button" aria-label="Back to the game menu"></button>
       <div class="qk-tap-end-center qk-eng-center">
-        <div class="qk-tap-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(this.config.splashEmoji)}</div>
+        <div class="qk-tap-end-art qk-eng-card qk-eng-card-glyph" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.endArt || this.config.splashEmoji))}</div>
         <h1 class="qk-eng-title">${escapeHtml(this.config.voice.cheer)}</h1>
         <button class="qk-tap-again qk-eng-mode" type="button">
           <span class="qk-tap-play-icon qk-eng-play-icon" aria-hidden="true"></span>
@@ -993,11 +994,11 @@ function normalizeConfig(config) {
   };
   if (!Array.isArray(voice.counts)) voice.counts = [];
   return {
+    ...config,
     id: config.id || 'tap-count',
     title: config.title || 'Tap Count',
-    splashEmoji: config.splashEmoji || '🔢',
+    splashEmoji: config.splashEmoji || config.splashArt || '🔢',
     basketArt: config.basketArt || 'emoji:🧺',
-    ...config,
     copy,
     voice,
     modes: (config.modes || []).map((mode) => {

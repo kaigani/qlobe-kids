@@ -59,6 +59,7 @@
 // each other.
 
 import { onTap } from './tap.js';
+import { injectStyleOnce } from './dom.js';
 
 // --- module constants --------------------------------------------------------
 
@@ -197,15 +198,6 @@ const CSS = `
 .hs-bubble svg{display:block;margin:0 auto;width:52px;height:52px}
 `;
 
-function injectStyle() {
-  if (typeof document === 'undefined') return;
-  if (document.getElementById(STYLE_ID)) return;
-  const el = document.createElement('style');
-  el.id = STYLE_ID;
-  el.textContent = CSS;
-  document.head.appendChild(el);
-}
-
 /** The `glyph: 'sound'` mark — three arcs, drawn inline so nothing is fetched. */
 const SOUND_SVG =
   '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">' +
@@ -297,7 +289,7 @@ export function createScene(mountEl, {
   artW = Number(artW);
   artH = Number(artH);
 
-  injectStyle();
+  injectStyleOnce(STYLE_ID, CSS);
 
   // --- root ------------------------------------------------------------------
   const root = document.createElement('div');

@@ -224,7 +224,7 @@ contribute their own background + world sheet.
 
 ## Reusable capability
 
-`shared/js/weather-world.js` is the reusable feature introduced by this game.
+`weather-world.js` (local, `games/weather-scientist/js/`) is the reusable feature introduced by this game.
 It owns raster-sprite rain and leaf particles, deterministic wind movement,
 sun/cloud/rain visual state, reduced-motion behavior, resize/DPR handling,
 ambient weather audio, and teardown. It accepts the game’s authored layer

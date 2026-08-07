@@ -91,3 +91,79 @@ export function el(tag, attrs = {}, children = []) {
   }
   return node;
 }
+
+/** Constrain a number to [min, max]. @returns {number} */
+export function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+/** Round to `decimals` places (default 0), not just to an integer. @returns {number} */
+export function round(value, decimals = 0) {
+  const f = 10 ** decimals;
+  return Math.round(value * f) / f;
+}
+
+/**
+ * Escape a value for interpolation into a CSS selector (an attribute-selector
+ * value, an id used as a selector, …) — `CSS.escape` with a fallback for the
+ * one thing missing it would ever hit (older embedded WebViews).
+ * @param {*} value
+ * @returns {string}
+ */
+export function cssEscape(value) {
+  const str = String(value);
+  return typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(str) : str.replace(/["\\]/g, '\\$&');
+}
+
+/**
+ * Is `x,y` (page/client coordinates) inside `rect` (a DOMRect or
+ * `{left,top,right,bottom}`-shaped object, e.g. from getBoundingClientRect())?
+ * @returns {boolean}
+ */
+export function pointInside(x, y, rect) {
+  return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+}
+
+/**
+ * True when the platform/user has asked for reduced motion. Re-reads the media
+ * query on every call — call it right before an animation decision, not once
+ * at boot, since a caller can change this setting mid-session.
+ * @returns {boolean}
+ */
+export function prefersReducedMotion() {
+  return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * The `<span class="X-emoji">{emoji}</span>` a game swaps in for an art asset
+ * that failed to load (`img.addEventListener('error', () => img.replaceWith(emojiSpan('🎪')))`).
+ * `className` defaults to `'emoji-fallback'`; pass the game's own class to match
+ * its sizing rule (`.rgl-emoji`, `.feel-emoji`, …).
+ * @param {string} emoji
+ * @param {string} [className='emoji-fallback']
+ * @returns {HTMLSpanElement}
+ */
+export function emojiSpan(emoji, className = 'emoji-fallback') {
+  const span = document.createElement('span');
+  span.className = className;
+  span.textContent = emoji;
+  return span;
+}
+
+/**
+ * Inject a `<style id="id">` once per page — a no-op on a repeat call (same
+ * id already in `document.head`) or outside a DOM (SSR/tests). The pattern
+ * every standalone shared module (a hidden-object scene, a magnifier lens, a
+ * confetti burst, a pose actor) hand-rolls for its own base CSS.
+ * @param {string} id
+ * @param {string} css
+ */
+export function injectStyleOnce(id, css) {
+  if (typeof document === 'undefined') return;
+  if (document.getElementById(id)) return;
+  const style = document.createElement('style');
+  style.id = id;
+  style.textContent = css;
+  document.head.append(style);
+}

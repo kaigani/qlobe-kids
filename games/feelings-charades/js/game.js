@@ -5,6 +5,7 @@
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { onTap } from '../../../shared/js/tap.js';
 
 // ---------- data -------------------------------------------------------
 
@@ -147,8 +148,7 @@ export class Game {
         star.textContent = '⭐';
         card.appendChild(star);
       }
-      card.addEventListener('pointerdown', (e) => e.preventDefault());
-      card.addEventListener('pointerup', () => this.pickFeeling(f.key));
+      onTap(card, () => this.pickFeeling(f.key));
       grid.appendChild(card);
     }
   }
@@ -408,8 +408,7 @@ export class Game {
       label.className = 'a-label';
       label.textContent = opt.label;
       card.append(img, label);
-      card.addEventListener('pointerdown', (e) => e.preventDefault());
-      card.addEventListener('pointerup', () => this.answerGuess(key, card));
+      onTap(card, () => this.answerGuess(key, card));
       answers.appendChild(card);
     });
 

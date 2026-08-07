@@ -33,7 +33,7 @@ let token = 0;
 // How many lines are in the air. The idle ladder reads it: a nudge that lands
 // on top of the sentence the child is still listening to is worse than no nudge
 // at all, and it is the exact thing a sped-up QA clock provokes (game beats
-// scale with `fastTimer`; a speech engine does not).
+// scale with `fastTimers`; a speech engine does not).
 let speaking = 0;
 
 // ---- audio ring buffer (QLOBE_DEBUG.getAudioLog) --------------------------
@@ -176,7 +176,7 @@ function sayInternal(key) {
 /**
  * Speak a sequence (§3.5). `steps` is a list of either a key string or
  * `{ key, gap }`, where `gap` is the pause in ms BEFORE that step — exactly the
- * gap column of the §3.5 table. `scale` multiplies every gap (fastTimer).
+ * gap column of the §3.5 table. `scale` multiplies every gap (fastTimers).
  *
  * The sequence abandons itself silently the moment anything else speaks, so a
  * tap during the room prompt replaces it rather than fighting it.
@@ -207,7 +207,7 @@ export async function seq(steps, scale = 1) {
  *
  * @param {string} key
  * @param {number} [capMs=2400] the §9.6 "or +2.4 s under a speech fallback"
- * @param {number} [scale=1]    fastTimer scale, applied to the cap only
+ * @param {number} [scale=1]    fastTimers scale, applied to the cap only
  */
 export function speakFor(key, capMs = 2400, scale = 1) {
   const spoken = say(key);

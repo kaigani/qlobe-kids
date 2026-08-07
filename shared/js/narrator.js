@@ -13,7 +13,13 @@
 // Contract (docs/shared-platform-refactor.md):
 //   createNarrator({ say, saySeq, announcerParent }) ->
 //     { say(key, fallbackText), saySequence(parts), stop(),
-//       setMuted(on), isMuted(), dispose() }
+//       setMuted(on), isMuted(), dispose(), token }
+//   saySequence() parts accept a per-step `gap` (ms, pause BEFORE that step) —
+//   the sequencing-gap column bug-hotel-observer/js/voice.js and
+//   rhyming-detective/js/voice.js each hand-roll their own copy of. `token` is
+//   the read-only interrupt counter, for a caller that needs to tell "my line
+//   finished" from "something newer interrupted" without its own shadow
+//   counter (sound-painting/js/main.js used to keep one).
 //
 // Muting silences audio only. The announcer keeps updating, because a screen
 // reader user has muted nothing — the game's own sound toggle is not their
@@ -22,15 +28,26 @@
 import * as voiceClips from './voice-clips.js';
 
 /**
- * Normalise one saySequence() part into { key, text }.
- * Accepts 'key' | ['key', 'spoken text'] | { key, text } | { key, fallbackText }.
+ * Normalise one saySequence() part into { key, text, gap }.
+ * Accepts 'key' | ['key', 'spoken text'] | { key, text, gap } | { key, fallbackText, gap }.
+ * `gap` (ms) is a pause BEFORE this step — the §3.5-style gap column every
+ * hand-rolled sequencer (bug-hotel-observer/js/voice.js,
+ * rhyming-detective/js/voice.js) re-implements identically.
  */
 function normalizePart(part) {
-  if (Array.isArray(part)) return { key: part[0], text: part[1] };
+  if (Array.isArray(part)) return { key: part[0], text: part[1], gap: 0 };
   if (part && typeof part === 'object') {
-    return { key: part.key, text: part.text != null ? part.text : part.fallbackText };
+    return {
+      key: part.key,
+      text: part.text != null ? part.text : part.fallbackText,
+      gap: Number(part.gap) || 0,
+    };
   }
-  return { key: part, text: undefined };
+  return { key: part, text: undefined, gap: 0 };
+}
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
 }
 
 /**
@@ -104,7 +121,8 @@ export function createNarrator({
   /**
    * Speak several lines back to back. A newer say()/saySequence()/stop() cancels
    * whatever is left.
-   * @param {Array<string | [string, string] | {key: string, text?: string}>} parts
+   * @param {Array<string | [string, string] | {key: string, text?: string, gap?: number}>} parts
+   *   `gap` (ms) is an optional pause BEFORE that step; omit/0 for back-to-back.
    * @returns {Promise<void>}
    */
   async function saySequence(parts) {
@@ -124,7 +142,11 @@ export function createNarrator({
     }
     for (const part of parts) {
       if (mine !== token || muted || disposed) return;
-      const { key, text } = normalizePart(part);
+      const { key, text, gap } = normalizePart(part);
+      if (gap) {
+        await wait(gap);
+        if (mine !== token || muted || disposed) return; // something else spoke during the gap
+      }
       await speakInternal(key, text);
       // Re-check AFTER the await: the line we just spoke may have been cut off
       // mid-word by a newer say(), and continuing would talk over it.
@@ -169,5 +191,9 @@ export function createNarrator({
     isMuted,
     dispose,
     get announcer() { return announcer; },
+    // Read-only: the current interrupt token, for a caller that needs to tell
+    // "my own line finished" from "something newer interrupted me" without
+    // keeping its own shadow counter (sound-painting/js/main.js used to).
+    get token() { return token; },
   };
 }
