@@ -2,8 +2,8 @@
   "format": "qlobe-game-qa-report",
   "formatVersion": 1,
   "game": "throwing-target-garden",
-  "runAt": "2026-08-07T04:30:31.997Z",
-  "base": "http://127.0.0.1:8000",
+  "runAt": "2026-08-07T05:12:06.686Z",
+  "base": "https://qlo.be",
   "browser": "Google Chrome",
   "completed": true,
   "status": "pass",
@@ -20,12 +20,12 @@
     {
       "name": "hub tile launches the real game at its splash screen",
       "ok": true,
-      "detail": "{\"screen\":\"splash\",\"phase\":\"idle\",\"selectedMode\":\"number\",\"mode\":null,\"round\":0,\"roundsTotal\":0,\"sequenceStep\":0,\"target\":null,\"prompt\":\"welcome\",\"inputPath\":null,\"awaitingInput\":false,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[],\"camera\":{\"status\":\"idle\",\"state\":\"idle\",\"reason\":null,\"blob\":null,\"lastThrow\":null},\"lastThrow\":null,\"lastResolution\":null,\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":null,\"muted\":false,\"pendingTimers\":0,\"seed\":3665526501}"
+      "detail": "{\"screen\":\"splash\",\"phase\":\"idle\",\"selectedMode\":\"number\",\"mode\":null,\"round\":0,\"roundsTotal\":0,\"sequenceStep\":0,\"target\":null,\"prompt\":\"welcome\",\"inputPath\":null,\"awaitingInput\":false,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[],\"camera\":{\"status\":\"idle\",\"state\":\"idle\",\"reason\":null,\"blob\":null,\"lastThrow\":null},\"lastThrow\":null,\"lastResolution\":null,\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":null,\"muted\":false,\"pendingTimers\":0,\"seed\":3668014887}"
     },
     {
       "name": "splash Home returns to the real hub catalog",
       "ok": true,
-      "detail": "http://127.0.0.1:8000/"
+      "detail": "https://qlo.be/"
     },
     {
       "name": "hub-to-game transition has no page errors",
@@ -45,12 +45,12 @@
     {
       "name": "recorded teacher path selects the exact authored welcome clip",
       "ok": true,
-      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":1064},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":1065}]"
+      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":8181},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":8182}]"
     },
     {
       "name": "missing recorded manifest still fails closed to the exact authored welcome line",
       "ok": true,
-      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":268},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":268}]"
+      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":332},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":333}]"
     },
     {
       "name": "recorded voice and fallback has no page errors",
@@ -405,7 +405,7 @@
     {
       "name": "moving and growing MediaStream pixels reach the real tracker scoring path",
       "ok": true,
-      "detail": "{\"x\":0.5,\"y\":0.5833333333333334,\"color\":\"red\",\"speed\":2.106974555791627,\"confidence\":0.9843294117647059,\"source\":\"camera\"}"
+      "detail": "{\"x\":0.5,\"y\":0.5833333333333334,\"color\":\"red\",\"speed\":2.104448207403385,\"confidence\":0.9843294117647059,\"source\":\"camera\"}"
     },
     {
       "name": "tracker-scored reward releases its real synthetic MediaStream track",
@@ -595,7 +595,7 @@
     {
       "name": "camera loss cancels a pending retry before replacing it with one clean Touch Toss hint schedule",
       "ok": true,
-      "detail": "{\"fallbackImmediate\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackImmediateDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.68,\"guidedBags\":1},\"fallbackSettled\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackSettledDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.936545,\"guidedBags\":1}}"
+      "detail": "{\"fallbackImmediate\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackImmediateDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.68,\"guidedBags\":1},\"fallbackSettled\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackSettledDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.936469,\"guidedBags\":1}}"
     },
     {
       "name": "hidden document releases the track and falls back to playable Touch Toss",
