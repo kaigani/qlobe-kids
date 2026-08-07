@@ -52,7 +52,7 @@ not counted as completed.
 14. Completed the historical 31-screen builder–critic loop, then expanded the
     canonical packet to 44 screens and 36 visual assets. The final hash-bound
     three-critic receipt passes every screen and every shipping asset at >=9.0.
-15. Expanded real-browser interaction coverage from 68 to 185 checks: visible
+15. Expanded real-browser interaction coverage from 68 to 192 checks: visible
     mode selection/START, splash Home return, all end/reward actions, no-bag
     guidance, idle nudges, pointer cancellation/blur, the error path, and every
     previously uncaptured retry/end state.
@@ -94,8 +94,14 @@ not counted as completed.
     rejected the clay baseline, selected seed 2026 at 9.4/9.7/9.3, installed its
     exact reviewed hash, and added interruption-recovery journaling to hub
     publication.
+26. Reopened the shipped candidate after production visual review, added an
+    immediate color-aware bag/route cue for fresh and fallback Touch Toss,
+    then closed a final code-review finding by measuring that route from the
+    rendered bag to the rendered active target. Also corrected compact carrier
+    labels and bottom safe spacing, narrowed long prompt copy, and added seven
+    measured browser assertions for those exact failure modes.
 
-**Completed-pass proxy:** 25 of 29 passes, or **86%**, are polish, validation,
+**Completed-pass proxy:** 26 of 30 passes, or **87%**, are polish, validation,
 or critic iterations after/beyond the functional foundation.
 
 ## Not counted as complete

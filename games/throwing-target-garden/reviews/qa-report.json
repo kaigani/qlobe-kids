@@ -2,13 +2,13 @@
   "format": "qlobe-game-qa-report",
   "formatVersion": 1,
   "game": "throwing-target-garden",
-  "runAt": "2026-08-07T02:45:20.298Z",
+  "runAt": "2026-08-07T04:30:31.997Z",
   "base": "http://127.0.0.1:8000",
   "browser": "Google Chrome",
   "completed": true,
   "status": "pass",
-  "passed": 185,
-  "total": 185,
+  "passed": 192,
+  "total": 192,
   "screenshots": 44,
   "expectedScreenshots": 44,
   "checks": [
@@ -20,7 +20,7 @@
     {
       "name": "hub tile launches the real game at its splash screen",
       "ok": true,
-      "detail": "{\"screen\":\"splash\",\"phase\":\"idle\",\"selectedMode\":\"number\",\"mode\":null,\"round\":0,\"roundsTotal\":0,\"sequenceStep\":0,\"target\":null,\"prompt\":\"welcome\",\"inputPath\":null,\"awaitingInput\":false,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[],\"camera\":{\"status\":\"idle\",\"state\":\"idle\",\"reason\":null,\"blob\":null,\"lastThrow\":null},\"lastThrow\":null,\"lastResolution\":null,\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":null,\"muted\":false,\"pendingTimers\":0,\"seed\":3659220665}"
+      "detail": "{\"screen\":\"splash\",\"phase\":\"idle\",\"selectedMode\":\"number\",\"mode\":null,\"round\":0,\"roundsTotal\":0,\"sequenceStep\":0,\"target\":null,\"prompt\":\"welcome\",\"inputPath\":null,\"awaitingInput\":false,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[],\"camera\":{\"status\":\"idle\",\"state\":\"idle\",\"reason\":null,\"blob\":null,\"lastThrow\":null},\"lastThrow\":null,\"lastResolution\":null,\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":null,\"muted\":false,\"pendingTimers\":0,\"seed\":3665526501}"
     },
     {
       "name": "splash Home returns to the real hub catalog",
@@ -45,12 +45,12 @@
     {
       "name": "recorded teacher path selects the exact authored welcome clip",
       "ok": true,
-      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":811},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":812}]"
+      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":1064},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"clip\",\"at\":1065}]"
     },
     {
       "name": "missing recorded manifest still fails closed to the exact authored welcome line",
       "ok": true,
-      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":251},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":251}]"
+      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":268},{\"key\":\"welcome\",\"text\":\"Welcome to Throwing Target Garden! Pick a garden game.\",\"kind\":\"speech\",\"at\":268}]"
     },
     {
       "name": "recorded voice and fallback has no page errors",
@@ -155,7 +155,7 @@
     {
       "name": "number camera play keeps the complete safe basket inside the viewport",
       "ok": true,
-      "detail": "{\"x\":271.3671875,\"y\":627.6875,\"width\":481.265625,\"height\":140.296875,\"viewport\":{\"width\":1024,\"height\":768},\"inside\":true}"
+      "detail": "{\"x\":271.3671875,\"y\":627.6875,\"width\":481.265625,\"height\":140.296875,\"viewport\":{\"width\":1024,\"height\":768},\"bottomClearance\":0.015625,\"inside\":true}"
     },
     {
       "name": "near miss keeps a static lane cue visible for the retry dwell",
@@ -188,6 +188,11 @@
       "detail": ""
     },
     {
+      "name": "camera-loss Touch Toss shows an immediate nonverbal bag-to-target guide",
+      "ok": true,
+      "detail": "{\"selected\":\"\",\"guideColor\":\"yellow\",\"guidedColors\":[\"yellow\"],\"guidedVisible\":true,\"targetColor\":\"\",\"targetX\":\"0.24\",\"routeTargetX\":\"0.24\",\"routeOpacity\":0.68,\"routeLength\":268,\"sourceDistance\":1.0280504135541262,\"targetDistance\":5.982919871886597,\"alignmentCosine\":0.9999996866646782,\"viewportSafe\":true}"
+    },
+    {
       "name": "tap beanbag then tap target reaches the shared reward path",
       "ok": true,
       "detail": ""
@@ -206,6 +211,11 @@
       "name": "garden end celebrates beanbags resting in the basket",
       "ok": true,
       "detail": "{\"destination\":\"basket\",\"label\":\"Three colorful beanbags resting in the soft basket\",\"bags\":3,\"basketReady\":true,\"unsafeGarlands\":0}"
+    },
+    {
+      "name": "fresh Touch Toss shows an immediate nonverbal bag-to-target guide",
+      "ok": true,
+      "detail": "{\"selected\":\"\",\"guideColor\":\"blue\",\"guidedColors\":[\"blue\"],\"guidedVisible\":true,\"targetColor\":\"blue\",\"targetX\":\"0.5\",\"routeTargetX\":\"0.5\",\"routeOpacity\":0.68,\"routeLength\":166,\"sourceDistance\":1.7322576642403056,\"targetDistance\":5.4032337081690445,\"alignmentCosine\":0.9999935940530903,\"viewportSafe\":true}"
     },
     {
       "name": "Color Match prompt stays clear of both status badges",
@@ -395,7 +405,7 @@
     {
       "name": "moving and growing MediaStream pixels reach the real tracker scoring path",
       "ok": true,
-      "detail": "{\"x\":0.5,\"y\":0.5833333333333334,\"color\":\"red\",\"speed\":2.104448207403385,\"confidence\":0.9843294117647059,\"source\":\"camera\"}"
+      "detail": "{\"x\":0.5,\"y\":0.5833333333333334,\"color\":\"red\",\"speed\":2.106974555791627,\"confidence\":0.9843294117647059,\"source\":\"camera\"}"
     },
     {
       "name": "tracker-scored reward releases its real synthetic MediaStream track",
@@ -503,6 +513,11 @@
       "detail": ""
     },
     {
+      "name": "Color camera prompt stays inside the stitched carrier",
+      "ok": true,
+      "detail": "[{\"selector\":\".prompt-plate\",\"text\":\"Yellow beanbag. Match yellow!\",\"inset\":137.625,\"requiredInset\":131.890625,\"lineCount\":1,\"singleLine\":true,\"pass\":true}]"
+    },
+    {
       "name": "camera-path wrong Color keeps the first round active",
       "ok": true,
       "detail": ""
@@ -580,7 +595,7 @@
     {
       "name": "camera loss cancels a pending retry before replacing it with one clean Touch Toss hint schedule",
       "ok": true,
-      "detail": "{\"fallbackImmediate\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackImmediateDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0},\"fallbackSettled\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackSettledDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0}}"
+      "detail": "{\"fallbackImmediate\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackImmediateDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.68,\"guidedBags\":1},\"fallbackSettled\":{\"screen\":\"play\",\"phase\":\"play\",\"selectedMode\":\"number\",\"mode\":\"number\",\"round\":0,\"roundsTotal\":5,\"sequenceStep\":0,\"target\":{\"number\":2,\"x\":0.5},\"prompt\":\"number-2\",\"inputPath\":\"touch\",\"awaitingInput\":true,\"inputLocked\":false,\"selectedColor\":null,\"calibrationLanes\":[\"left\",\"right\"],\"camera\":{\"status\":\"stopped\",\"state\":\"stopped\",\"reason\":\"camera-lost\",\"mirrored\":true,\"blob\":null,\"lastThrow\":null},\"lastThrow\":{\"x\":0.04,\"y\":0.5,\"color\":\"blue\",\"speed\":1,\"confidence\":1,\"source\":\"debug-inject\"},\"lastResolution\":\"near-miss\",\"feedbackKind\":null,\"attemptedTarget\":null,\"fallbackNotice\":\"camera-lost\",\"muted\":true,\"pendingTimers\":1,\"seed\":42},\"fallbackSettledDom\":{\"guidance\":0,\"retryTargets\":0,\"prompt\":\"Number two!\",\"fallbackNotice\":\"CAMERA RESTING • TOUCH TOSS\",\"feedbackRibbons\":0,\"routeOpacity\":0.936545,\"guidedBags\":1}}"
     },
     {
       "name": "hidden document releases the track and falls back to playable Touch Toss",
@@ -635,7 +650,7 @@
     {
       "name": "portrait sequence play keeps the complete safe basket inside the viewport",
       "ok": true,
-      "detail": "{\"x\":85,\"y\":984.953125,\"width\":650,\"height\":195.03125,\"viewport\":{\"width\":820,\"height\":1180},\"inside\":true}"
+      "detail": "{\"x\":85,\"y\":984.953125,\"width\":650,\"height\":195.03125,\"viewport\":{\"width\":820,\"height\":1180},\"bottomClearance\":0.015625,\"inside\":true}"
     },
     {
       "name": "portrait targets remain within the viewport",
@@ -708,6 +723,11 @@
       "detail": "{\"lines\":[\"Grown-up: secure tablet behind and above basket. Soft fabric objects only.\",\"Camera pictures stay on this tablet—never shown, recorded, saved, or uploaded.\"],\"rect\":{\"x\":11.25,\"y\":543,\"w\":360,\"h\":118},\"inside\":true}"
     },
     {
+      "name": "compact setup labels stay inside their stitched carriers",
+      "ok": true,
+      "detail": "[{\"selector\":\"#screen-setup .setup-title\",\"text\":\"SOFT TOSSES. SAFE BASKET.\",\"inset\":81.078125,\"requiredInset\":77.55,\"lineCount\":1,\"singleLine\":true,\"pass\":true},{\"selector\":\"#screen-setup [data-target=\\\"camera\\\"]\",\"text\":\"CAMERA\",\"inset\":58.59375,\"requiredInset\":21.36,\"lineCount\":1,\"singleLine\":true,\"pass\":true},{\"selector\":\"#screen-setup [data-target=\\\"touch\\\"]\",\"text\":\"TOUCH TOSS\",\"inset\":24.90625,\"requiredInset\":21.36,\"lineCount\":1,\"singleLine\":true,\"pass\":true}]"
+    },
+    {
       "name": "compact portrait camera ready targets meet the 96px minimum",
       "ok": true,
       "detail": ""
@@ -735,7 +755,7 @@
     {
       "name": "compact portrait play keeps every primary element inside the viewport",
       "ok": true,
-      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-play .tracking-status\",\"visible\":true,\"rect\":{\"x\":122.5,\"y\":14,\"w\":130,\"h\":44},\"inside\":true},{\"selector\":\"#screen-play .progress-status\",\"visible\":true,\"rect\":{\"x\":122.5,\"y\":62,\"w\":130,\"h\":44},\"inside\":true},{\"selector\":\"#screen-play .prompt-plate\",\"visible\":true,\"rect\":{\"x\":15,\"y\":120,\"w\":345,\"h\":96},\"inside\":true},{\"selector\":\"#screen-play .target-field\",\"visible\":true,\"rect\":{\"x\":0,\"y\":216,\"w\":375,\"h\":306},\"inside\":true},{\"selector\":\"#screen-play .touch-dock\",\"visible\":true,\"rect\":{\"x\":0,\"y\":525,\"w\":375,\"h\":142},\"inside\":true}]}"
+      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-play .tracking-status\",\"visible\":true,\"rect\":{\"x\":118.5,\"y\":14,\"w\":138,\"h\":44},\"inside\":true},{\"selector\":\"#screen-play .progress-status\",\"visible\":true,\"rect\":{\"x\":122.5,\"y\":62,\"w\":130,\"h\":44},\"inside\":true},{\"selector\":\"#screen-play .prompt-plate\",\"visible\":true,\"rect\":{\"x\":15,\"y\":120,\"w\":345,\"h\":96},\"inside\":true},{\"selector\":\"#screen-play .target-field\",\"visible\":true,\"rect\":{\"x\":0,\"y\":216,\"w\":375,\"h\":306},\"inside\":true},{\"selector\":\"#screen-play .touch-dock\",\"visible\":true,\"rect\":{\"x\":0,\"y\":519,\"w\":375,\"h\":142},\"inside\":true}]}"
     },
     {
       "name": "compact portrait play header keeps primary elements separated",
@@ -743,9 +763,19 @@
       "detail": "{\"missing\":[],\"overlaps\":[]}"
     },
     {
+      "name": "compact Touch Toss instruction stays on one line inside its badge",
+      "ok": true,
+      "detail": "[{\"selector\":\"#screen-play .tracking-status\",\"text\":\"PICK • DRAG • FLICK\",\"inset\":21.5,\"requiredInset\":4.14,\"lineCount\":1,\"singleLine\":true,\"pass\":true}]"
+    },
+    {
+      "name": "compact Touch Toss shows an immediate nonverbal bag-to-target guide",
+      "ok": true,
+      "detail": "{\"selected\":\"\",\"guideColor\":\"yellow\",\"guidedColors\":[\"yellow\"],\"guidedVisible\":true,\"targetColor\":\"\",\"targetX\":\"0.5\",\"routeTargetX\":\"0.5\",\"routeOpacity\":0.68,\"routeLength\":91,\"sourceDistance\":3.5311172541420777,\"targetDistance\":5.1478150704935,\"alignmentCosine\":0.9996426127140469,\"viewportSafe\":true}"
+    },
+    {
       "name": "compact portrait play keeps the complete safe basket inside the viewport",
       "ok": true,
-      "detail": "{\"x\":0,\"y\":543.453125,\"width\":375,\"height\":123.53125,\"viewport\":{\"width\":375,\"height\":667},\"inside\":true}"
+      "detail": "{\"x\":0,\"y\":537.453125,\"width\":375,\"height\":123.53125,\"viewport\":{\"width\":375,\"height\":667},\"bottomClearance\":6.015625,\"inside\":true}"
     },
     {
       "name": "compact portrait reward resolves the beanbag visibly in the safe basket",
@@ -765,7 +795,7 @@
     {
       "name": "compact portrait reward keeps every primary element inside the viewport",
       "ok": true,
-      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-reward .garden-match-lockup\",\"visible\":true,\"rect\":{\"x\":15,\"y\":116.65625,\"w\":345,\"h\":76},\"inside\":true},{\"selector\":\"#screen-reward .reward-progress\",\"visible\":true,\"rect\":{\"x\":117.5,\"y\":196.65625,\"w\":140,\"h\":58},\"inside\":true},{\"selector\":\"#screen-reward .reward-recognition\",\"visible\":true,\"rect\":{\"x\":87.5,\"y\":240.03125,\"w\":200,\"h\":200},\"inside\":true},{\"selector\":\"#screen-reward .reward-basket\",\"visible\":true,\"rect\":{\"x\":70,\"y\":407.34375,\"w\":235,\"h\":145},\"inside\":true},{\"selector\":\"#screen-reward .reward-next\",\"visible\":true,\"rect\":{\"x\":52.5,\"y\":556.34375,\"w\":270,\"h\":104},\"inside\":true}]}"
+      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-reward .garden-match-lockup\",\"visible\":true,\"rect\":{\"x\":15,\"y\":116.65625,\"w\":345,\"h\":76},\"inside\":true},{\"selector\":\"#screen-reward .reward-progress\",\"visible\":true,\"rect\":{\"x\":117.5,\"y\":196.65625,\"w\":140,\"h\":58},\"inside\":true},{\"selector\":\"#screen-reward .reward-recognition\",\"visible\":true,\"rect\":{\"x\":87.5,\"y\":240.03125,\"w\":200,\"h\":200},\"inside\":true},{\"selector\":\"#screen-reward .reward-basket\",\"visible\":true,\"rect\":{\"x\":70,\"y\":407.34375,\"w\":235,\"h\":145},\"inside\":true},{\"selector\":\"#screen-reward .reward-next\",\"visible\":true,\"rect\":{\"x\":52.5,\"y\":552.34375,\"w\":270,\"h\":104},\"inside\":true}]}"
     },
     {
       "name": "compact portrait reward chrome keeps primary elements separated",
@@ -790,12 +820,17 @@
     {
       "name": "compact portrait end keeps every primary element inside the viewport",
       "ok": true,
-      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-end .end-title\",\"visible\":true,\"rect\":{\"x\":15,\"y\":116.65625,\"w\":345,\"h\":72},\"inside\":true},{\"selector\":\"#screen-end .end-basket\",\"visible\":true,\"rect\":{\"x\":30,\"y\":191.65625,\"w\":315,\"h\":266.796875},\"inside\":true},{\"selector\":\"#screen-end .end-message\",\"visible\":true,\"rect\":{\"x\":11.25,\"y\":463.34375,\"w\":352.5,\"h\":82},\"inside\":true},{\"selector\":\"#screen-end .end-actions\",\"visible\":true,\"rect\":{\"x\":7.5,\"y\":556.34375,\"w\":360,\"h\":104},\"inside\":true}]}"
+      "detail": "{\"viewport\":{\"width\":375,\"height\":667},\"elements\":[{\"selector\":\"#screen-end .end-title\",\"visible\":true,\"rect\":{\"x\":15,\"y\":116.65625,\"w\":345,\"h\":72},\"inside\":true},{\"selector\":\"#screen-end .end-basket\",\"visible\":true,\"rect\":{\"x\":30,\"y\":191.65625,\"w\":315,\"h\":266.796875},\"inside\":true},{\"selector\":\"#screen-end .end-message\",\"visible\":true,\"rect\":{\"x\":11.25,\"y\":463.34375,\"w\":352.5,\"h\":82},\"inside\":true},{\"selector\":\"#screen-end .end-actions\",\"visible\":true,\"rect\":{\"x\":7.5,\"y\":552.34375,\"w\":360,\"h\":104},\"inside\":true}]}"
     },
     {
       "name": "compact portrait end keeps primary elements separated",
       "ok": true,
       "detail": "{\"missing\":[],\"overlaps\":[]}"
+    },
+    {
+      "name": "compact alternate-game label stays inside its stitched button",
+      "ok": true,
+      "detail": "[{\"selector\":\"#screen-end [data-target=\\\"choose\\\"]\",\"text\":\"OTHER GAME\",\"inset\":42.015625,\"requiredInset\":21.36,\"lineCount\":1,\"singleLine\":true,\"pass\":true}]"
     },
     {
       "name": "compact portrait has no page errors",
@@ -875,7 +910,7 @@
     {
       "name": "wide-short play keeps the complete safe basket inside the viewport",
       "ok": true,
-      "detail": "{\"x\":338,\"y\":464.265625,\"width\":690,\"height\":135.71875,\"viewport\":{\"width\":1366,\"height\":600},\"inside\":true}"
+      "detail": "{\"x\":338,\"y\":464.265625,\"width\":690,\"height\":135.71875,\"viewport\":{\"width\":1366,\"height\":600},\"bottomClearance\":0.015625,\"inside\":true}"
     },
     {
       "name": "wide-short play targets meet the 96px minimum",

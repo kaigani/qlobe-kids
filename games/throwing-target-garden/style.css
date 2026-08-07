@@ -129,6 +129,8 @@ a:focus-visible {
   pointer-events: none;
 }
 
+.label-compact { display: none; }
+
 .art-button:active > img {
   transform: translateY(4px) scale(.96);
 }
@@ -548,7 +550,7 @@ a:focus-visible {
 }
 
 .prompt-plate > span {
-  max-width: 74%;
+  max-width: 52%;
   color: #174650;
   font-size: clamp(18px, 2.2vw, 33px);
   text-shadow: 0 2px 0 rgba(255, 255, 255, .72), 0 3px 2px rgba(53, 57, 43, .18);
@@ -755,36 +757,48 @@ a:focus-visible {
 
 .gesture-route {
   position: absolute;
-  z-index: 1;
-  top: -52px;
-  left: 50%;
-  width: min(33vw, 280px);
-  height: 92px;
-  border-top: 5px dashed #fff3a0;
-  border-radius: 50% 50% 0 0;
-  opacity: 0;
-  pointer-events: none;
-  filter: drop-shadow(0 3px 1px rgba(38, 75, 58, .55));
-  transform: translateX(-50%) rotate(-8deg);
-  transition: transform 160ms ease;
-}
-
-.gesture-route::after {
-  position: absolute;
-  top: -11px;
-  right: -4px;
+  z-index: 10;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-  border-left: 15px solid #fff3a0;
-  content: '';
-  transform: rotate(19deg);
+  border-top: 5px dashed #fff3a0;
+  opacity: .9;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 1px rgba(38, 75, 58, .55));
+  transform-origin: 0 50%;
+  transition: left 160ms ease, top 160ms ease, width 160ms ease, transform 160ms ease;
 }
 
-.touch-dock.has-selection .gesture-route {
+.gesture-route:not(.has-selection) {
+  animation: route-guide 1.35s ease-in-out infinite;
+}
+
+.gesture-route-origin {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  border: 3px solid rgba(255, 255, 255, .82);
+  border-radius: 50%;
+  background: #fff3a0;
+  box-shadow: 0 2px 0 rgba(38, 75, 58, .28);
+}
+
+.gesture-route-tip {
+  position: absolute;
+  top: -9px;
+  left: calc(100% - 2px);
+  width: 18px;
+  height: 18px;
+  background: #fff3a0;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  filter: drop-shadow(0 2px 0 rgba(38, 75, 58, .28));
+}
+
+.gesture-route.has-selection {
   opacity: 1;
-  transform: translateX(-50%) translateY(-8px) rotate(-8deg);
 }
 
 .basket-art {
@@ -844,9 +858,14 @@ a:focus-visible {
 }
 
 .bag-button.is-selected > img,
+.bag-button.is-guided > img,
 .bag-button.hint-pulse > img {
   transform: translateY(-12px) scale(1.13) rotate(-4deg);
   filter: drop-shadow(0 0 7px #fff5a1) drop-shadow(0 9px 5px rgba(24, 58, 50, .25));
+}
+
+.bag-button.is-guided > img {
+  animation: bag-guide 1.35s ease-in-out infinite;
 }
 
 .bag-button.is-dragging {
@@ -1333,7 +1352,7 @@ a:focus-visible {
 
   .bag-row { left: 13%; right: 13%; }
 
-  .garden-match-lockup { width: min(82vw, 680px); }
+  .garden-match-lockup { width: min(70vw, 620px); }
   .reward-recognition { top: 38%; left: 50%; width: clamp(230px, 53vmin, 460px); height: clamp(230px, 53vmin, 460px); }
   .reward-basket { left: 50%; bottom: 11%; width: min(72vw, 560px); height: min(29vh, 330px); }
   .reward-flower { bottom: 14%; width: clamp(120px, 22vmin, 210px); height: clamp(150px, 28vmin, 270px); }
@@ -1388,10 +1407,12 @@ a:focus-visible {
   }
 
   .setup-title { width: 94vw; height: 96px; }
-  .setup-title > span { font-size: clamp(15px, 4.3vw, 20px); }
+  .setup-title > span { max-width: 54%; font-size: clamp(16px, 4.3vw, 20px); line-height: 1.16; }
   .path-choices { gap: 4px; }
   .path-button { height: 104px; }
-  .path-button > span { font-size: clamp(14px, 3.9vw, 18px); }
+  .path-button > span { left: 14%; right: 14%; font-size: clamp(15px, 4vw, 18px); }
+  .label-full { display: none; }
+  .label-compact { display: inline; }
   .safety-note { width: 96vw; height: 118px; }
   .safety-note > span { max-width: 88%; font-size: 15px; line-height: 1.15; }
 
@@ -1428,7 +1449,13 @@ a:focus-visible {
   }
 
   .tracking-status { top: max(14px, env(safe-area-inset-top)); }
-  .tracking-status[data-touch-gesture] { width: 130px; }
+  .tracking-status[data-touch-gesture] { width: 138px; }
+  .tracking-status[data-touch-gesture] > span {
+    max-width: 94%;
+    font-size: 11px;
+    letter-spacing: -.18px;
+    white-space: nowrap;
+  }
   .tracking-status.has-fallback-notice { width: 190px; }
   .tracking-status.has-fallback-notice > span { max-width: 84%; font-size: 11px; }
   .progress-status { top: calc(max(14px, env(safe-area-inset-top)) + 48px); }
@@ -1442,11 +1469,9 @@ a:focus-visible {
   .target-sequence { width: 110px; height: 110px; }
   .garden-flower { width: 88px; height: 108px; }
   .flower-mid { width: 62px; height: 76px; }
-  .touch-dock { bottom: 0; width: 100vw; height: 142px; }
+  .touch-dock { bottom: max(6px, env(safe-area-inset-bottom)); width: 100vw; height: 142px; }
   .camera-wait { bottom: 0; width: 96vw; height: 142px; }
   .bag-row { left: 4%; right: 4%; }
-  .gesture-route { top: -34px; width: 210px; height: 70px; }
-
   .garden-match-lockup {
     top: 110px;
     width: 92vw;
@@ -1467,7 +1492,7 @@ a:focus-visible {
   .reward-recognition { top: 51%; width: 200px; height: 200px; }
   .reward-basket { bottom: 108px; width: 235px; height: 145px; }
   .reward-flower { bottom: 112px; width: 90px; height: 110px; }
-  .reward-next { bottom: 0; width: 72vw; height: 104px; }
+  .reward-next { bottom: max(4px, env(safe-area-inset-bottom)); width: 72vw; height: 104px; }
   .reward-layout .confetti { inset: 108px 0 110px; }
 
   .end-title {
@@ -1480,7 +1505,7 @@ a:focus-visible {
   .end-basket { top: max(185px, 22vh); width: 84vw; height: min(40vh, 300px); }
   .end-message { bottom: 115px; width: 94vw; height: 82px; min-height: 0; }
   .end-message > span { font-size: clamp(15px, 4vw, 18px); }
-  .end-actions { bottom: 0; width: 96vw; gap: 4px; }
+  .end-actions { bottom: max(4px, env(safe-area-inset-bottom)); width: 96vw; gap: 4px; }
   .end-button { min-width: 0; height: 104px; }
   .end-button > span {
     left: 4%;
@@ -1489,6 +1514,11 @@ a:focus-visible {
     font-size: clamp(14px, 3.55vw, 18px);
     line-height: .95;
     white-space: nowrap;
+  }
+  .end-button[data-target="choose"] > span {
+    left: 10%;
+    right: 10%;
+    font-size: clamp(15px, 4vw, 18px);
   }
   .end-flower { bottom: 112px; width: 90px; height: 110px; }
   .end-layout .confetti { inset: 105px 2% 130px; }
@@ -1519,6 +1549,16 @@ a:focus-visible {
 @keyframes target-pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
   50% { transform: translate(-50%, -50%) scale(1.11); }
+}
+
+@keyframes route-guide {
+  0%, 100% { opacity: .68; }
+  50% { opacity: 1; }
+}
+
+@keyframes bag-guide {
+  0%, 100% { transform: translateY(-8px) scale(1.08) rotate(-2deg); }
+  50% { transform: translateY(-14px) scale(1.16) rotate(3deg); }
 }
 
 @keyframes reward-pop {

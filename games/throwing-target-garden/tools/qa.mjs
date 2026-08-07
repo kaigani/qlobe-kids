@@ -402,17 +402,126 @@ async function checkPromptStatusSeparation(page, label) {
   check(`${label} guidance stays clear of both status badges`, result?.overlaps === 0, JSON.stringify(result));
 }
 
-async function checkBasketInsideViewport(page, selector, label) {
+async function checkBasketInsideViewport(page, selector, label, minBottomClearance = 0) {
   const result = await page.locator(selector).evaluate((node) => {
     const rect = node.getBoundingClientRect();
     return {
       x: rect.x, y: rect.y, width: rect.width, height: rect.height,
       viewport: { width: innerWidth, height: innerHeight },
+      bottomClearance: innerHeight - rect.bottom,
       inside: rect.x >= -1 && rect.y >= -1
         && rect.right <= innerWidth + 1 && rect.bottom <= innerHeight + 1,
     };
   });
-  check(`${label} keeps the complete safe basket inside the viewport`, result.inside, JSON.stringify(result));
+  check(`${label} keeps the complete safe basket inside the viewport`,
+    result.inside && result.bottomClearance >= minBottomClearance, JSON.stringify(result));
+}
+
+async function checkCarrierLabelInsets(page, items, label) {
+  const result = await page.evaluate((specs) => specs.map((spec) => {
+    const carrier = document.querySelector(spec.selector);
+    const outer = carrier?.querySelector(':scope > span');
+    const activeChild = outer
+      ? [...outer.children].find((child) => getComputedStyle(child).display !== 'none')
+      : null;
+    const textNode = activeChild || outer;
+    if (!carrier || !outer || !textNode) return { selector: spec.selector, missing: true };
+    const carrierRect = carrier.getBoundingClientRect();
+    const textRect = textNode.getBoundingClientRect();
+    const lineHeight = Number.parseFloat(getComputedStyle(outer).lineHeight) || textRect.height;
+    const lineCount = textNode.getClientRects().length;
+    const inset = Math.min(textRect.left - carrierRect.left, carrierRect.right - textRect.right);
+    const requiredInset = carrierRect.width * spec.minInsetRatio;
+    const singleLine = !spec.singleLine
+      || (lineCount === 1 && textRect.height <= lineHeight * 1.35);
+    return {
+      selector: spec.selector,
+      text: textNode.textContent.trim(),
+      inset,
+      requiredInset,
+      lineCount,
+      singleLine,
+      pass: inset >= requiredInset - 1 && singleLine,
+    };
+  }), items);
+  check(label, result.every((entry) => entry.pass), JSON.stringify(result));
+}
+
+async function checkTouchGuide(page, label) {
+  const result = await page.evaluate(() => {
+    const dock = document.querySelector('.touch-dock');
+    const route = document.querySelector('.gesture-route');
+    const origin = route?.querySelector('.gesture-route-origin');
+    const tip = route?.querySelector('.gesture-route-tip');
+    const guided = [...(dock?.querySelectorAll('.bag-button.is-guided') || [])];
+    const source = dock?.querySelector(`.bag-button[data-color="${CSS.escape(dock?.dataset.guideColor || '')}"]`);
+    const target = document.querySelector('.target-button.is-current');
+    const screen = document.querySelector('#screen-play');
+    const routeRect = route?.getBoundingClientRect();
+    const originRect = origin?.getBoundingClientRect();
+    const tipRect = tip?.getBoundingClientRect();
+    const sourceRect = source?.getBoundingClientRect();
+    const targetRect = target?.getBoundingClientRect();
+    const screenRect = screen?.getBoundingClientRect();
+    const point = (rect) => rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : null;
+    const originPoint = point(originRect);
+    const tipPoint = point(tipRect);
+    const sourcePoint = sourceRect
+      ? { x: sourceRect.left + sourceRect.width / 2, y: sourceRect.top + Math.min(14, sourceRect.height * .1) }
+      : null;
+    const targetPoint = targetRect
+      ? { x: targetRect.left + targetRect.width / 2, y: targetRect.top + targetRect.height * .8 }
+      : null;
+    const distance = (a, b) => a && b ? Math.hypot(a.x - b.x, a.y - b.y) : Infinity;
+    const routeVector = originPoint && tipPoint
+      ? { x: tipPoint.x - originPoint.x, y: tipPoint.y - originPoint.y }
+      : null;
+    const targetVector = originPoint && targetPoint
+      ? { x: targetPoint.x - originPoint.x, y: targetPoint.y - originPoint.y }
+      : null;
+    const cosine = routeVector && targetVector
+      ? (routeVector.x * targetVector.x + routeVector.y * targetVector.y)
+        / (Math.hypot(routeVector.x, routeVector.y) * Math.hypot(targetVector.x, targetVector.y))
+      : -1;
+    const visualRects = [routeRect, originRect, tipRect].filter(Boolean);
+    const visualBounds = visualRects.length ? {
+      left: Math.min(...visualRects.map((rect) => rect.left)),
+      top: Math.min(...visualRects.map((rect) => rect.top)),
+      right: Math.max(...visualRects.map((rect) => rect.right)),
+      bottom: Math.max(...visualRects.map((rect) => rect.bottom)),
+    } : null;
+    return {
+      selected: dock?.dataset.selectedColor,
+      guideColor: dock?.dataset.guideColor,
+      guidedColors: guided.map((bag) => bag.dataset.color),
+      guidedVisible: guided.every((bag) => Boolean(bag.getClientRects().length)),
+      targetColor: target?.dataset.color,
+      targetX: target?.dataset.x,
+      routeTargetX: route?.dataset.guideTargetX,
+      routeOpacity: route ? Number.parseFloat(getComputedStyle(route).opacity) : 0,
+      routeLength: route?.offsetWidth || 0,
+      sourceDistance: distance(originPoint, sourcePoint),
+      targetDistance: distance(tipPoint, targetPoint),
+      alignmentCosine: cosine,
+      viewportSafe: Boolean(visualBounds && screenRect
+        && visualBounds.left >= screenRect.left - 1 && visualBounds.right <= screenRect.right + 1
+        && visualBounds.top >= screenRect.top - 1 && visualBounds.bottom <= screenRect.bottom + 1),
+    };
+  });
+  check(`${label} shows an immediate nonverbal bag-to-target guide`,
+    result.selected === ''
+      && result.guidedColors.length === 1
+      && result.guidedColors[0] === result.guideColor
+      && result.guidedVisible
+      && (!result.targetColor || result.guideColor === result.targetColor)
+      && result.routeTargetX === result.targetX
+      && result.routeOpacity >= .65
+      && result.routeLength >= 80
+      && result.sourceDistance <= 20
+      && result.targetDistance <= 32
+      && result.alignmentCosine >= .985
+      && result.viewportSafe,
+  JSON.stringify(result));
 }
 
 async function checkAuthoredCarrier(page, selector, label) {
@@ -710,6 +819,7 @@ async function driveLandscape(browser) {
     && lost.awaitingInput && lost.camera.status === 'lost'
     && lost.fallbackNotice === 'camera-lost'
     && await page.locator('[data-fallback-notice="camera-lost"]').isVisible());
+  await checkTouchGuide(page, 'camera-loss Touch Toss');
   await shot(page, '19-camera-lost-touch-toss');
   await debug.call(page, 'selectBag', 'blue');
   await debug.tap(page, 'target-main');
@@ -727,6 +837,7 @@ async function driveLandscape(browser) {
 
   await chooseTouch(page, 'color');
   const colorStart = await debug.getState(page);
+  await checkTouchGuide(page, 'fresh Touch Toss');
   const bag = page.locator(`[data-target="bag-${colorStart.target.color}"]`);
   const target = page.locator('[data-target="target-main"]');
   const colorHeader = await page.evaluate(() => {
@@ -1178,6 +1289,9 @@ async function driveSyntheticCameraCoverage(browser) {
   await calibrateIntoCameraPlay(colorPage);
   check('Color Match enters play through the actual camera request path',
     (await debug.getState(colorPage)).inputPath === 'camera');
+  await checkCarrierLabelInsets(colorPage,
+    [{ selector: '.prompt-plate', minInsetRatio: .23, singleLine: false }],
+    'Color camera prompt stays inside the stitched carrier');
   await shot(colorPage, '27-color-camera-play');
   let colorState = await debug.getState(colorPage);
   const wrongColor = ['red', 'yellow', 'blue'].find((color) => color !== colorState.target.color);
@@ -1289,6 +1403,8 @@ async function driveSyntheticCameraCoverage(browser) {
     prompt: document.querySelector('#screen-play .prompt-plate > span')?.textContent?.trim(),
     fallbackNotice: document.querySelector('[data-fallback-notice="camera-lost"]')?.textContent?.trim(),
     feedbackRibbons: document.querySelectorAll('#screen-play .feedback-ribbon:not([hidden])').length,
+    routeOpacity: Number.parseFloat(getComputedStyle(document.querySelector('.gesture-route')).opacity),
+    guidedBags: document.querySelectorAll('.bag-button.is-guided').length,
   }));
   await lifecyclePage.waitForTimeout(900);
   const fallbackSettled = await debug.getState(lifecyclePage);
@@ -1298,6 +1414,8 @@ async function driveSyntheticCameraCoverage(browser) {
     prompt: document.querySelector('#screen-play .prompt-plate > span')?.textContent?.trim(),
     fallbackNotice: document.querySelector('[data-fallback-notice="camera-lost"]')?.textContent?.trim(),
     feedbackRibbons: document.querySelectorAll('#screen-play .feedback-ribbon:not([hidden])').length,
+    routeOpacity: Number.parseFloat(getComputedStyle(document.querySelector('.gesture-route')).opacity),
+    guidedBags: document.querySelectorAll('.bag-button.is-guided').length,
   }));
   check('camera loss cancels a pending retry before replacing it with one clean Touch Toss hint schedule',
     fallbackImmediate.inputPath === 'touch'
@@ -1309,10 +1427,14 @@ async function driveSyntheticCameraCoverage(browser) {
       && fallbackImmediateDom.guidance === 0
       && fallbackImmediateDom.retryTargets === 0
       && fallbackImmediateDom.feedbackRibbons === 0
+      && fallbackImmediateDom.routeOpacity >= .65
+      && fallbackImmediateDom.guidedBags === 1
       && /CAMERA RESTING.*TOUCH TOSS/i.test(fallbackImmediateDom.fallbackNotice || '')
       && fallbackSettledDom.guidance === 0
       && fallbackSettledDom.retryTargets === 0
       && fallbackSettledDom.feedbackRibbons === 0
+      && fallbackSettledDom.routeOpacity >= .65
+      && fallbackSettledDom.guidedBags === 1
       && /CAMERA RESTING.*TOUCH TOSS/i.test(fallbackSettledDom.fallbackNotice || '')
       && fallbackSettledDom.prompt === fallbackImmediateDom.prompt,
   JSON.stringify({ fallbackImmediate, fallbackImmediateDom, fallbackSettled, fallbackSettledDom }));
@@ -1448,6 +1570,11 @@ async function driveCompactResponsive(browser) {
     ['#screen-setup .setup-title', '#screen-setup .setup-art', '#screen-setup .path-choices', '#screen-setup .safety-note'],
     'compact portrait setup');
   await checkCompactSafetyDisclosure(page);
+  await checkCarrierLabelInsets(page, [
+    { selector: '#screen-setup .setup-title', minInsetRatio: .22, singleLine: false },
+    { selector: '#screen-setup [data-target="camera"]', minInsetRatio: .12, singleLine: true },
+    { selector: '#screen-setup [data-target="touch"]', minInsetRatio: .12, singleLine: true },
+  ], 'compact setup labels stay inside their stitched carriers');
   await shot(page, '39-compact-setup-portrait');
 
   await debug.call(page, 'setCameraScenario', 'live');
@@ -1475,7 +1602,11 @@ async function driveCompactResponsive(browser) {
     ['#screen-play .qk-hud-back', '#screen-play .qk-hud-sound', '#screen-play .tracking-status',
       '#screen-play .progress-status', '#screen-play .prompt-plate'],
     'compact portrait play header');
-  await checkBasketInsideViewport(page, '.basket-art', 'compact portrait play');
+  await checkCarrierLabelInsets(page,
+    [{ selector: '#screen-play .tracking-status', minInsetRatio: .03, singleLine: true }],
+    'compact Touch Toss instruction stays on one line inside its badge');
+  await checkTouchGuide(page, 'compact Touch Toss');
+  await checkBasketInsideViewport(page, '.basket-art', 'compact portrait play', 5);
   await shot(page, '41-compact-number-play-portrait');
 
   await debug.winRound(page);
@@ -1504,6 +1635,9 @@ async function driveCompactResponsive(browser) {
   await checkElementsSeparated(page,
     ['#screen-end .end-title', '#screen-end .end-basket', '#screen-end .end-message', '#screen-end .end-actions'],
     'compact portrait end');
+  await checkCarrierLabelInsets(page,
+    [{ selector: '#screen-end [data-target="choose"]', minInsetRatio: .12, singleLine: true }],
+    'compact alternate-game label stays inside its stitched button');
   await shot(page, '43-compact-garden-star-portrait');
   checkSessionClean(report, compact, 'compact portrait');
   await compact.close();

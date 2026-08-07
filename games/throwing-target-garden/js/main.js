@@ -155,10 +155,13 @@ function stackedPlate(src, lines, className = '', extra = '') {
   </div>`;
 }
 
-function artButton({ id, role, src, label, className = '', aria = label, extra = '' }) {
+function artButton({ id, role, src, label, compactLabel = null, className = '', aria = label, extra = '' }) {
+  const visibleLabel = compactLabel
+    ? `<span><span class="label-full">${html(label)}</span><span class="label-compact" aria-hidden="true">${html(compactLabel)}</span></span>`
+    : label ? `<span>${html(label)}</span>` : '';
   return `<button class="art-button ${attr(className)}" type="button" data-target="${attr(id)}" data-role="${attr(role)}" aria-label="${attr(aria)}" ${extra}>
     <img src="${attr(src)}" alt="" draggable="false">
-    ${label ? `<span>${html(label)}</span>` : ''}
+    ${visibleLabel}
   </button>`;
 }
 
@@ -276,7 +279,7 @@ function renderSetup() {
       ${plate(A.buttonOrange, 'SOFT TOSSES. SAFE BASKET.', 'setup-title')}
       <img class="setup-art" src="${attr(A.setupSafe)}" alt="A tablet secured on a stand behind and above a soft basket, with a child tossing a soft beanbag underhand into the basket" draggable="false">
       <div class="path-choices" aria-label="Choose how to toss">
-        ${artButton({ id: 'camera', role: 'camera-choice', src: A.buttonBlue, label: 'CAMERA TOSSES', className: 'path-button', aria: 'Use the private local camera to spot soft beanbag throws' })}
+        ${artButton({ id: 'camera', role: 'camera-choice', src: A.buttonBlue, label: 'CAMERA TOSSES', compactLabel: 'CAMERA', className: 'path-button', aria: 'Use the private local camera to spot soft beanbag throws' })}
         ${artButton({ id: 'touch', role: 'touch-choice', src: A.buttonGreen, label: 'TOUCH TOSS', className: 'path-button', aria: 'Play with Touch Toss, no camera' })}
       </div>
       ${stackedPlate(A.panelGreen, [
@@ -585,7 +588,10 @@ function renderPlay({ replace = false } = {}) {
     ${renderThrowDock()}`;
   wireHud(nodes.play, repeatPrompt);
   wirePlayTargets();
-  if (state.inputPath === 'touch') wireTouchBags();
+  if (state.inputPath === 'touch') {
+    wireTouchBags();
+    wireTouchGuide();
+  }
 }
 
 function trackingLabel() {
@@ -625,11 +631,15 @@ function renderTargets() {
 function targetButton({ id, x, number = null, color = null, size, hit = false, current = false, label }) {
   const targetSrc = hit ? A.targets.rainbow : color ? A.targets[color] : A.targets.cream;
   return `<button class="target-button target-${attr(size)}${hit ? ' is-hit' : ''}${current ? ' is-current' : ''}" type="button"
-    data-target="${attr(id)}" data-role="target" data-x="${x}" data-number="${attr(number || '')}" style="--target-x:${x * 100}%" aria-label="${attr(label)}">
+    data-target="${attr(id)}" data-role="target" data-x="${x}" data-number="${attr(number || '')}" data-color="${attr(color || '')}" style="--target-x:${x * 100}%" aria-label="${attr(label)}">
     <img class="target-art" src="${attr(targetSrc)}" alt="" draggable="false">
     ${number ? `<img class="target-numeral" src="${attr(A.numerals[number])}" alt="" draggable="false">` : ''}
     ${hit ? `<img class="target-mark" src="${attr(A.flowerCheer)}" alt="" draggable="false">` : ''}
   </button>`;
+}
+
+function suggestedTouchColor() {
+  return (state.mode?.id === 'color' ? state.target?.color : 'yellow') || 'yellow';
 }
 
 function renderThrowDock() {
@@ -641,17 +651,66 @@ function renderThrowDock() {
       </div>
     </div>`;
   }
-  return `<div class="touch-dock${state.selectedColor ? ' has-selection' : ''}" aria-label="Touch Toss basket" data-selected-color="${attr(state.selectedColor || '')}">
-    <span class="gesture-route" aria-hidden="true"></span>
+  const guideColor = state.selectedColor || suggestedTouchColor();
+  return `<span class="gesture-route${state.selectedColor ? ' has-selection' : ''}" data-guide-color="${attr(guideColor)}" aria-hidden="true" hidden>
+    <span class="gesture-route-origin"></span><span class="gesture-route-tip"></span>
+  </span>
+  <div class="touch-dock${state.selectedColor ? ' has-selection' : ''}" aria-label="Touch Toss basket" data-selected-color="${attr(state.selectedColor || '')}" data-guide-color="${attr(guideColor)}">
     <img class="basket-art" src="${attr(A.basket)}" alt="A soft landing basket" draggable="false">
     <div class="bag-row">
-      ${COLORS.map((color) => `<button class="bag-button${state.selectedColor === color ? ' is-selected' : ''}" type="button"
+      ${COLORS.map((color) => `<button class="bag-button${state.selectedColor === color ? ' is-selected' : ''}${!state.selectedColor && guideColor === color ? ' is-guided' : ''}" type="button"
         data-target="bag-${attr(color)}" data-role="throw-object" data-color="${attr(color)}"
-        aria-label="${attr(color)} beanbag${state.selectedColor === color ? ', selected; tap a target to choose it' : '; tap to select or drag in Touch Toss'}" aria-pressed="${state.selectedColor === color}">
+        aria-label="${attr(color)} beanbag${state.selectedColor === color ? ', selected; tap a target to choose it' : !state.selectedColor && guideColor === color ? ', suggested first; tap to select or drag in Touch Toss' : '; tap to select or drag in Touch Toss'}" aria-pressed="${state.selectedColor === color}">
         <img src="${attr(A.beanbags[color])}" alt="" draggable="false">
       </button>`).join('')}
     </div>
   </div>`;
+}
+
+function wireTouchGuide() {
+  const sync = () => syncTouchGuideGeometry();
+  sync();
+  window.addEventListener('resize', sync);
+  screens.hold(() => window.removeEventListener('resize', sync));
+}
+
+function syncTouchGuideGeometry() {
+  const route = nodes.play.querySelector('.gesture-route');
+  const dock = nodes.play.querySelector('.touch-dock');
+  const guideColor = dock?.dataset.guideColor;
+  const source = guideColor
+    ? nodes.play.querySelector(`.bag-button[data-color="${cssEscape(guideColor)}"]`)
+    : null;
+  const target = nodes.play.querySelector('.target-button.is-current');
+  if (!route || !source || !target) {
+    if (route) route.hidden = true;
+    return false;
+  }
+
+  const screenRect = nodes.play.getBoundingClientRect();
+  const sourceRect = source.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const startX = sourceRect.left + sourceRect.width * .5 - screenRect.left;
+  const startY = sourceRect.top + Math.min(14, sourceRect.height * .1) - screenRect.top;
+  const endX = targetRect.left + targetRect.width * .5 - screenRect.left;
+  const endY = targetRect.top + targetRect.height * .8 - screenRect.top;
+  const dx = endX - startX;
+  const dy = endY - startY;
+  const length = Math.hypot(dx, dy);
+  if (!Number.isFinite(length) || length < 1) {
+    route.hidden = true;
+    return false;
+  }
+
+  route.hidden = false;
+  route.dataset.guideColor = guideColor;
+  route.dataset.guideTarget = target.dataset.target || '';
+  route.dataset.guideTargetX = target.dataset.x || '';
+  route.style.left = `${startX}px`;
+  route.style.top = `${startY}px`;
+  route.style.width = `${length}px`;
+  route.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+  return true;
 }
 
 function wirePlayTargets() {
@@ -780,6 +839,7 @@ function selectBag(color) {
   for (const bag of nodes.play.querySelectorAll('.bag-button')) {
     const selected = bag.dataset.color === color;
     bag.classList.toggle('is-selected', selected);
+    bag.classList.remove('is-guided');
     bag.setAttribute('aria-pressed', String(selected));
     bag.setAttribute('aria-label', `${bag.dataset.color} beanbag${selected ? ', selected; tap a target to choose it' : '; tap to select or drag in Touch Toss'}`);
   }
@@ -790,10 +850,13 @@ function selectBag(color) {
 
 function clearBagSelection() {
   state.selectedColor = null;
+  const guideColor = suggestedTouchColor();
   for (const bag of nodes.play.querySelectorAll('.bag-button')) {
+    const guided = bag.dataset.color === guideColor;
     bag.classList.remove('is-selected');
+    bag.classList.toggle('is-guided', guided);
     bag.setAttribute('aria-pressed', 'false');
-    bag.setAttribute('aria-label', `${bag.dataset.color} beanbag; tap to select or drag in Touch Toss`);
+    bag.setAttribute('aria-label', `${bag.dataset.color} beanbag${guided ? ', suggested first; tap to select or drag in Touch Toss' : '; tap to select or drag in Touch Toss'}`);
   }
   updateTrackingLabel();
 }
@@ -809,7 +872,14 @@ function updateTrackingLabel() {
   }
   const dock = nodes.play.querySelector('.touch-dock');
   dock?.classList.toggle('has-selection', Boolean(state.selectedColor));
-  if (dock) dock.dataset.selectedColor = state.selectedColor || '';
+  if (dock) {
+    dock.dataset.selectedColor = state.selectedColor || '';
+    dock.dataset.guideColor = state.selectedColor || suggestedTouchColor();
+  }
+  const route = nodes.play.querySelector('.gesture-route');
+  route?.classList.toggle('has-selection', Boolean(state.selectedColor));
+  if (route && dock) route.dataset.guideColor = dock.dataset.guideColor;
+  syncTouchGuideGeometry();
 }
 
 function showFeedback(kind, semantic = {}) {
@@ -1130,7 +1200,7 @@ function renderEnd() {
       ${plate(A.panelGreen, L[state.mode.end], 'end-message')}
       <div class="end-actions">
         ${artButton({ id: 'again', role: 'restart', src: A.buttonOrange, label: 'PLAY AGAIN', className: 'end-button' })}
-        ${artButton({ id: 'choose', role: 'navigation', src: A.buttonBlue, label: 'CHOOSE ANOTHER', className: 'end-button' })}
+        ${artButton({ id: 'choose', role: 'navigation', src: A.buttonBlue, label: 'CHOOSE ANOTHER', compactLabel: 'OTHER GAME', className: 'end-button', aria: 'Choose another garden game' })}
       </div>
     </div>`;
   wireHud(nodes.end, repeatPrompt);

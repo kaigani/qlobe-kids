@@ -123,8 +123,11 @@ Touch Toss at any time.
      target region, and a calm open center preserve the mockup hierarchy.
    - Camera mode waits for physical throws; Touch Toss exposes a raster
      beanbag basket along the bottom edge. Its status carrier teaches
-     “PICK • DRAG • FLICK”; selection names the chosen color and reveals a
-     dotted route toward the target.
+     “PICK • DRAG • FLICK”; before the first touch, the suggested bag glows and
+     a color-aware stitched route is measured from that bag to the active
+     target. Selection names the chosen color and re-anchors the route to that
+     bag. The same immediate nonverbal cue appears whenever camera play falls
+     back to Touch Toss.
 5. **Garden match**
    - The same garden shifts to a safety-corrected reward composition: the
      rainbow/color target and optional numeral remain a compact recognition
@@ -483,7 +486,7 @@ Release requires:
     playtest confirm safety, comprehension, tracking robustness, and delight.
 
 Current automated evidence (2026-08-06): the expanded real-Chrome suite passes
-185/185 checks and produces exactly 44 canonical captures, including real hub
+192/192 checks and produces exactly 44 canonical captures, including real hub
 listing/launch/return, visible mode selection, all three modes through camera
 and Touch Toss, a real synthetic `MediaStream` lifecycle, ready timeout, flip,
 idle guidance, retry states, all end actions, and teardown on reward, switch,

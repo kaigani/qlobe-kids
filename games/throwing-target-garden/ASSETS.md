@@ -97,7 +97,7 @@ After explicit authorization, all 49 were produced through
 published atomically in `manifest.json`: 48 accepted seed 7 and one accepted
 seed 8, with transcript ratio 1.0 and durations from 0.878 to 10.3 seconds.
 `assets/audio/qa.json` records the exact intended/heard text, seed, duration,
-bytes, SHA-256, and source-text hash for every clip. The 185-check real-Chrome
+bytes, SHA-256, and source-text hash for every clip. The 192-check real-Chrome
 run fetches and hashes every local clip, proves recorded welcome playback, then
 forces `{}` as the manifest and proves the exact Web Speech fallback. Runtime
 audio makes no remote requests.
@@ -140,7 +140,7 @@ Built-in GPT Image 2 source masters under `assets/source/gpt-image-2/` and the
 reproducible `tools/process-art.py` produce the installed WebP set. The asset
 audit covers **34 outputs: 32 runtime finals plus 2 rejected audit controls**
 (`target-hit.webp` and `end-garland.webp`). The corrected basket-first runtime
-passes **185/185** real-Chrome checks and produces exactly **44** canonical
+passes **192/192** real-Chrome checks and produces exactly **44** canonical
 captures. The prior 31-screen matrix remains a historical audit. The current
 hash-bound receipt is **PASS**: three independent critics scored all 44 screens
 and all 34 shipping assets at least 9.0; the two unsafe legacy controls remain
