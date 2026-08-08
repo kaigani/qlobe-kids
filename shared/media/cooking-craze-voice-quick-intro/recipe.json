@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-quick-intro",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-quick-intro.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Quick bake! Add five toppings, then bake.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Quick bake! Add five toppings, then bake.",
+      "heard": "Quick bake! Add 5 toppings, then bake!",
+      "ratio": 0.932,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

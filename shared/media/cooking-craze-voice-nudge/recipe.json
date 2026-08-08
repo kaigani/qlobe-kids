@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-nudge",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-nudge.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Almost! Try the glowing slice.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Almost! Try the glowing slice.",
+      "heard": "Almost try the glowing slice.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

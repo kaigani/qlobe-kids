@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-build-press",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-build-press.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Pat the floury dough flat.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Pat the floury dough flat.",
+      "heard": "Pat the flowery dough flat.",
+      "ratio": 0.941,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

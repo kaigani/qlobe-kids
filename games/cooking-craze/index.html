@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#fff7e8" />
+  <title>Cooking Craze — QLOBE Kids</title>
+  <meta name="description" content="Pat dough, swirl sauce, match cheerful toppings and bake a Kawaii pizza." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Cooking Craze — Pat, swirl, top, and bake a Kawaii pizza" />
+  <meta property="og:description" content="Pat dough, swirl sauce, match cheerful toppings and bake a Kawaii pizza." />
+  <meta property="og:url" content="https://qlo.be/games/cooking-craze/" />
+  <meta property="og:image" content="https://qlo.be/games/cooking-craze/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Cooking Craze Kawaii pizza chefs in a warm pink kitchen with three recipe cards." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cooking Craze — Pat, swirl, top, and bake a Kawaii pizza" />
+  <meta name="twitter:description" content="Pat dough, swirl sauce, match cheerful toppings and bake a Kawaii pizza." />
+  <meta name="twitter:image" content="https://qlo.be/games/cooking-craze/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <div id="game">
+    <section class="qk-screen game-screen splash-screen" data-qk-screen="splash" aria-label="Cooking Craze menu">
+      <h1 class="visually-hidden">Cooking Craze</h1>
+      <img class="title-lockup splash-title-art" src="./assets/ui/title-kawaii-v3.webp" alt="Cooking Craze" draggable="false" />
+      <img class="splash-mascot-trio" src="./assets/ui/mascot-trio-v2.webp" alt="Three happy kitchen helpers" draggable="false" />
+      <div class="mode-shelf cooking-mode-shelf" data-mode-shelf aria-label="Choose a pizza game"></div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-hud="home" data-target="home" href="../../index.html" aria-label="Home"></a>
+    </section>
+
+    <section class="qk-screen game-screen play-screen" data-qk-screen="play" aria-label="Make the pizza" hidden>
+      <div class="prompt-plaque play-prompt" data-play-prompt><div><h2 data-play-title></h2><p data-play-clue></p></div></div>
+      <div class="play-progress" data-play-progress aria-hidden="true"></div>
+      <div class="board-slot cooking-board" data-board aria-label="Pizza board"></div>
+      <div class="ingredient-tray cooking-tray" data-tray aria-label="Toppings"></div>
+      <div class="play-hud" data-play-hud></div>
+    </section>
+
+    <section class="qk-screen game-screen end-screen" data-qk-screen="end" aria-label="Pizza served" hidden>
+      <div class="end-banner">
+        <h2 class="visually-hidden">Pizza Perfect!</h2>
+        <img class="end-lockup" src="./assets/ui/completion-lockup-v2.webp" alt="" aria-hidden="true" draggable="false" />
+      </div>
+      <img class="end-mascots" src="./assets/ui/mascot-trio-v2.webp" alt="" aria-hidden="true" draggable="false" />
+      <div class="reveal-hero cooking-reveal" data-reveal></div>
+      <div class="end-hud" data-end-hud></div>
+      <div class="reveal-actions">
+        <button type="button" class="action-plate action-plate--again" data-action="again" data-target="again"><img class="action-plate__back" src="./assets/ui/action-button-v2.webp" alt="" draggable="false" /><img class="action-plate__icon" src="./assets/ui/action-replay-icon-v2.webp" alt="" draggable="false" /><span>Make Another</span></button>
+        <button type="button" class="action-plate action-plate--serve" data-action="serve" data-target="serve"><img class="action-plate__back" src="./assets/ui/action-button-v2.webp" alt="" draggable="false" /><img class="action-plate__icon" src="./assets/ui/action-serve-icon-v2.webp" alt="" draggable="false" /><span>Serve &amp; Choose</span></button>
+      </div>
+    </section>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

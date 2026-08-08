@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-hint-swirl",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-hint-swirl.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Swirl the sauce in big circles. Round and round!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Swirl the sauce in big circles. Round and round!",
+      "heard": "Swirl the sauce in big circles, round and round.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

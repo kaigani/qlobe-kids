@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-build-bake",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-build-bake.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Slide the pizza into the oven!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Slide the pizza into the oven!",
+      "heard": "Slide the pizza into the oven.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

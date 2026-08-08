@@ -1,0 +1,865 @@
+:root {
+  --qk-bg: #ff7f86;
+  --accent: #ef5e68;
+  --ink: #6f321f;
+  --cream: #fff1d3;
+}
+
+html,
+body {
+  overflow: hidden;
+  background: var(--qk-bg);
+}
+
+body {
+  font-family: 'Fredoka', system-ui, sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+.sauce-surface:focus-visible {
+  outline: 6px solid #24a8dc;
+  outline-offset: 4px;
+}
+
+#game {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+.game-screen {
+  position: absolute;
+  inset: 0;
+  min-height: 100dvh;
+  overflow: hidden;
+  padding: max(10px, var(--qk-safe-top)) max(10px, var(--qk-safe-right)) max(10px, var(--qk-safe-bottom)) max(10px, var(--qk-safe-left));
+}
+
+.splash-screen,
+.end-screen {
+  background: #ff858a url('../assets/scenes/kawaii-kitchen-v2.webp') center / cover no-repeat;
+}
+
+/* Splash --------------------------------------------------------------- */
+
+.splash-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(2px, 1vh, 12px);
+  text-align: center;
+}
+
+.splash-title-art {
+  z-index: 3;
+  width: min(68vw, 700px);
+  max-height: 19vh;
+  object-fit: contain;
+  margin-top: max(2px, var(--qk-safe-top));
+  filter: drop-shadow(0 9px 4px rgb(101 45 22 / 22%));
+}
+
+.splash-mascot-trio {
+  z-index: 2;
+  width: min(58vw, 590px);
+  max-height: 28vh;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 4px rgb(101 45 22 / 20%));
+  animation: mascot-bob 3.6s ease-in-out infinite;
+}
+
+.cooking-mode-shelf {
+  z-index: 4;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  width: min(82vw, 780px);
+  height: min(29vh, 225px);
+  margin-top: auto;
+  margin-bottom: max(4px, var(--qk-safe-bottom));
+}
+
+.mode-card {
+  position: relative;
+  flex: 0 1 31%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  touch-action: manipulation;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.mode-card:active {
+  transform: translateY(5px) scale(.97);
+}
+
+.mode-card__plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 3px rgb(96 45 24 / 22%));
+}
+
+.mode-card__food {
+  position: absolute;
+  z-index: 2;
+  top: 18%;
+  left: 50%;
+  width: 68%;
+  height: 58%;
+  object-fit: contain;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: drop-shadow(0 7px 3px rgb(96 45 24 / 18%));
+}
+
+.mode-card--swirl .mode-card__food {
+  width: 62%;
+}
+
+.mode-card__cue,
+.mode-card__sauce,
+.mode-card__peel,
+.mode-card__quick-pizza {
+  position: absolute;
+  z-index: 3;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 2px rgb(96 45 24 / 18%));
+}
+
+.mode-card__cue { top: 30%; width: 25%; }
+.mode-card__cue--1 { left: 22%; transform: rotate(-8deg); }
+.mode-card__cue--2 { top: 24%; left: 39%; transform: rotate(5deg); }
+.mode-card__cue--3 { top: 33%; right: 20%; transform: rotate(10deg); }
+.mode-card__sauce { top: 25%; left: 50%; width: 45%; transform: translateX(-50%) rotate(-7deg); }
+.mode-card__peel { top: 13%; left: 50%; width: 66%; height: 68%; transform: translateX(-50%) rotate(6deg); }
+.mode-card__quick-pizza { top: 19%; left: 50%; width: 45%; transform: translateX(-50%) rotate(6deg); }
+
+.mode-card__label {
+  position: absolute;
+  z-index: 4;
+  right: 12%;
+  bottom: 11%;
+  left: 12%;
+  color: var(--ink);
+  font-size: clamp(15px, 2.2vw, 25px);
+  line-height: .98;
+  text-shadow: 0 2px 0 #fff8e7;
+}
+
+/* Play ----------------------------------------------------------------- */
+
+.play-screen {
+  background: #ff858a;
+}
+
+.cooking-board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.kitchen-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.kitchen-stage__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transition: filter 700ms ease;
+}
+
+.play-prompt {
+  position: absolute;
+  z-index: 12;
+  top: max(10px, var(--qk-safe-top));
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: min(62vw, 640px);
+  min-height: clamp(70px, 11vh, 102px);
+  padding: 12px clamp(52px, 7vw, 88px);
+  border: 0;
+  background: transparent url('../assets/ui/action-button-v2.webp') center / 100% 100% no-repeat;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.play-prompt h2 {
+  margin: 0;
+  color: #fff9e7;
+  font-size: clamp(20px, 3vw, 34px);
+  line-height: 1;
+  text-shadow: 0 3px 0 #b94336;
+}
+
+.play-prompt > div {
+  transform: translateY(-4px);
+}
+
+.play-prompt p {
+  margin: 3px 0 0;
+  color: #6f321f;
+  font-size: clamp(11px, 1.35vw, 15px);
+  line-height: 1.05;
+}
+
+.play-progress {
+  position: absolute;
+  z-index: 13;
+  top: max(83px, calc(var(--qk-safe-top) + 80px));
+  left: 50%;
+  display: flex;
+  gap: 2px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.play-progress .dot {
+  width: clamp(26px, 3.8vw, 40px);
+  aspect-ratio: 1;
+  background: transparent url('../assets/ui/ingredient-cheese-v2.webp') center / contain no-repeat;
+  opacity: .28;
+  filter: grayscale(.7);
+}
+
+.play-progress .dot.done {
+  opacity: 1;
+  filter: none;
+}
+
+.play-progress .dot.active {
+  opacity: .9;
+  filter: none;
+  animation: star-pulse 1.2s ease-in-out infinite;
+}
+
+.pizza-object {
+  position: absolute;
+  z-index: 4;
+  top: 54%;
+  left: 50%;
+  width: min(48vw, 52vh, 510px);
+  aspect-ratio: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  touch-action: none;
+  transition: opacity 180ms ease;
+}
+
+.pizza-object__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 5px rgb(101 45 22 / 24%));
+}
+
+.pizza-object--dough.is-patted .pizza-object__art {
+  animation: dough-pat 360ms ease-out;
+}
+
+.pizza-object--parked {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flour-puff {
+  position: absolute;
+  z-index: 8;
+  top: 44%;
+  left: 48%;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fffaf0;
+  box-shadow: -52px 18px 0 -4px #fff5de, 45px 22px 0 -5px #fff9eb, -14px -42px 0 -6px #fff1d5, 38px -34px 0 -7px #fff9eb;
+  pointer-events: none;
+  animation: flour-poof 560ms ease-out forwards;
+}
+
+.sauce-surface {
+  position: absolute;
+  z-index: 5;
+  inset: 13.5%;
+  overflow: hidden;
+  border-radius: 50%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.sauce-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent url('../assets/ui/sauce-dab-v2.webp') center / contain no-repeat;
+  opacity: .13;
+  pointer-events: none;
+}
+
+.sauce-layer {
+  position: absolute;
+  inset: 0;
+  background: transparent url('../assets/ui/sauce-dab-v2.webp') center / contain no-repeat;
+  -webkit-mask-image: conic-gradient(from -.25turn, #000 calc(var(--sauce-progress) * 1turn), transparent 0);
+  mask-image: conic-gradient(from -.25turn, #000 calc(var(--sauce-progress) * 1turn), transparent 0);
+  pointer-events: none;
+  filter: drop-shadow(0 4px 2px rgb(101 45 22 / 18%));
+}
+
+.pizza-slot {
+  position: absolute;
+  z-index: 7;
+  width: clamp(96px, 23%, 122px);
+  aspect-ratio: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  touch-action: none;
+}
+
+.pizza-slot::before {
+  content: '';
+  position: absolute;
+  inset: 7%;
+  border-radius: 50%;
+  background-color: rgb(255 250 232 / 38%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: .64;
+  filter: saturate(1.1) drop-shadow(0 0 5px #fff8df) drop-shadow(0 3px 1px rgb(101 45 22 / 18%));
+  transition: opacity 150ms ease;
+}
+
+.pizza-slot[data-kind='tomato']::before { background-image: url('../assets/ui/ingredient-tomato-v2.webp'); }
+.pizza-slot[data-kind='cheese']::before { background-image: url('../assets/ui/ingredient-cheese-v2.webp'); }
+.pizza-slot[data-kind='pepperoni']::before { background-image: url('../assets/ui/ingredient-pepperoni-v2.webp'); }
+.pizza-slot[data-kind='mushroom']::before { background-image: url('../assets/ui/ingredient-mushroom-v2.webp'); }
+.pizza-slot[data-kind='basil']::before { background-image: url('../assets/ui/ingredient-basil-v2.webp'); }
+.pizza-slot[data-kind='olive']::before { background-image: url('../assets/ui/ingredient-olive-v2.webp'); }
+
+.pizza-slot.is-filled::before {
+  opacity: 0;
+}
+
+.pizza-slot__topping {
+  position: absolute;
+  inset: 4%;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 2px rgb(101 45 22 / 22%));
+  animation: topping-land 260ms cubic-bezier(.2, .9, .3, 1.3) both;
+}
+
+.cooking-tray {
+  position: absolute;
+  z-index: 15;
+  right: max(10px, var(--qk-safe-right));
+  bottom: max(8px, var(--qk-safe-bottom));
+  left: max(10px, var(--qk-safe-left));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 1vw, 12px);
+  min-height: 104px;
+  pointer-events: none;
+  overscroll-behavior: contain;
+}
+
+.ingredient {
+  position: relative;
+  width: clamp(96px, 10vw, 116px);
+  height: clamp(96px, 10vw, 116px);
+  flex: 0 1 auto;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  pointer-events: auto;
+  touch-action: none;
+  transition: transform 150ms ease, opacity 150ms ease, filter 150ms ease;
+}
+
+.ingredient__art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 3px rgb(101 45 22 / 25%));
+}
+
+.ingredient.selected {
+  transform: translateY(-10px) scale(1.08);
+  filter: brightness(1.07);
+}
+
+.ingredient.is-lifted {
+  opacity: .28;
+}
+
+.ingredient.is-placed {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.65);
+}
+
+.ingredient.is-wiggling {
+  animation: gentle-wiggle 420ms ease;
+}
+
+.ingredient-drag-ghost {
+  z-index: 1000;
+  width: 122px;
+  height: 122px;
+  margin: -61px 0 0 -61px;
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(0 12px 4px rgb(101 45 22 / 28%));
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.ingredient-drag-ghost .ingredient__art {
+  width: 100%;
+  height: 100%;
+}
+
+.oven-object {
+  position: absolute;
+  z-index: 3;
+  top: 9%;
+  left: 50%;
+  width: min(38vw, 390px);
+  height: 37%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.peel-control {
+  position: absolute;
+  z-index: 9;
+  bottom: -2%;
+  left: 50%;
+  width: min(32vw, 39vh, 350px);
+  aspect-ratio: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  transform: translateX(-50%);
+  transform-origin: 50% 16%;
+  touch-action: none;
+  transition: transform 900ms cubic-bezier(.2, .78, .25, 1), opacity 700ms ease;
+}
+
+.peel-control__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 4px rgb(101 45 22 / 24%));
+}
+
+.peel-control__pizza-wrap {
+  position: absolute;
+  z-index: 2;
+  top: 5%;
+  left: 50%;
+  width: 70%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.peel-control__pizza {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.peel-control__topping {
+  position: absolute;
+  width: 25%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+}
+
+.cooking-board.is-baking .peel-control {
+  transform: translate(-50%, -33vh) scale(.5);
+  opacity: 0;
+}
+
+.cooking-board.is-baking .kitchen-stage__backdrop {
+  filter: brightness(1.1) saturate(1.08);
+}
+
+.completion-cheese {
+  position: absolute;
+  z-index: 8;
+  top: 50%;
+  left: 50%;
+  width: 32%;
+  transform: translate(-50%, -50%);
+  animation: topping-land 420ms cubic-bezier(.2, .9, .3, 1.3) both;
+}
+
+.completion-sparkles {
+  position: absolute;
+  z-index: 9;
+  inset: -10%;
+  pointer-events: none;
+}
+
+.completion-sparkles::before,
+.completion-sparkles::after {
+  content: '✦';
+  position: absolute;
+  color: #ffd62d;
+  font-size: clamp(36px, 7vw, 78px);
+  opacity: 0;
+}
+
+.completion-sparkles::before { top: 5%; left: 13%; }
+.completion-sparkles::after { right: 10%; bottom: 8%; }
+.completion-sparkles.is-on::before,
+.completion-sparkles.is-on::after { animation: sparkle-in 700ms ease-out both; }
+.completion-sparkles.is-on::after { animation-delay: 140ms; }
+
+.play-hud,
+.end-hud {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  pointer-events: none;
+}
+
+.play-hud .qk-hud-btn,
+.end-hud .qk-hud-btn {
+  position: absolute;
+  top: max(12px, var(--qk-safe-top));
+  pointer-events: auto;
+}
+
+.play-hud .qk-hud-back,
+.end-hud .qk-hud-back { left: max(12px, var(--qk-safe-left)); }
+.play-hud .qk-hud-sound,
+.end-hud .qk-hud-sound { right: max(12px, var(--qk-safe-right)); }
+
+/* End ------------------------------------------------------------------ */
+
+.end-screen {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+}
+
+.end-banner {
+  position: relative;
+  z-index: 8;
+  margin-top: max(2px, var(--qk-safe-top));
+}
+
+.end-lockup {
+  display: block;
+  width: min(62vw, 700px);
+  max-height: 29vh;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 4px rgb(101 45 22 / 24%));
+}
+
+.end-mascots {
+  position: absolute;
+  z-index: 3;
+  top: 55%;
+  left: 50%;
+  width: min(72vw, 70vh, 680px);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 12px 5px rgb(101 45 22 / 24%));
+  pointer-events: none;
+  animation: mascot-bob 3.6s ease-in-out infinite;
+}
+
+.cooking-reveal {
+  position: absolute;
+  z-index: 4;
+  top: 56%;
+  left: 50%;
+  width: min(54vw, 54vh, 570px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.final-pizza {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  animation: reveal-pizza 600ms cubic-bezier(.2, .9, .3, 1.2) both;
+}
+
+.final-pizza__base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 17px 5px rgb(101 45 22 / 26%));
+}
+
+.final-pizza__topping {
+  position: absolute;
+  width: 22%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 6px 2px rgb(101 45 22 / 20%));
+}
+
+.final-pizza__topping--cheese {
+  width: 28%;
+}
+
+.reveal-actions {
+  position: absolute;
+  z-index: 12;
+  right: max(16px, var(--qk-safe-right));
+  bottom: max(12px, var(--qk-safe-bottom));
+  left: max(16px, var(--qk-safe-left));
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2.4vw, 28px);
+}
+
+.action-plate {
+  position: relative;
+  width: min(39vw, 500px);
+  min-height: 98px;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fffaf0;
+  touch-action: manipulation;
+  transition: transform 160ms ease;
+}
+
+.action-plate:active {
+  transform: translateY(5px) scale(.98);
+}
+
+.action-plate__back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 3px rgb(101 45 22 / 25%));
+}
+
+.action-plate__icon {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: clamp(16px, 2.2vw, 28px);
+  width: clamp(66px, 8vw, 84px);
+  height: clamp(66px, 8vw, 84px);
+  object-fit: contain;
+  transform: translateY(-50%);
+  pointer-events: none;
+  filter: drop-shadow(0 5px 2px rgb(101 45 22 / 20%));
+}
+
+.action-plate span {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: 98px;
+  place-items: center;
+  padding: 10px 42px 10px clamp(96px, 11vw, 126px);
+  font-size: clamp(21px, 3.3vw, 40px);
+  line-height: .95;
+  text-shadow: 0 3px 0 #b94336;
+}
+
+/* Motion --------------------------------------------------------------- */
+
+@keyframes mascot-bob {
+  0%, 100% { transform: translateY(0) rotate(-.3deg); }
+  50% { transform: translateY(-7px) rotate(.3deg); }
+}
+
+@keyframes star-pulse {
+  0%, 100% { transform: scale(.9) rotate(-3deg); }
+  50% { transform: scale(1.08) rotate(3deg); }
+}
+
+@keyframes dough-pat {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.08, .9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes flour-poof {
+  0% { opacity: .95; transform: scale(.4); }
+  100% { opacity: 0; transform: scale(2.2) translateY(-18px); }
+}
+
+@keyframes topping-land {
+  from { opacity: 0; transform: scale(.3) rotate(-18deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes gentle-wiggle {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-9px) rotate(-6deg); }
+  75% { transform: translateX(9px) rotate(6deg); }
+}
+
+@keyframes sparkle-in {
+  0% { opacity: 0; transform: scale(.2) rotate(-25deg); }
+  55% { opacity: 1; transform: scale(1.25) rotate(8deg); }
+  100% { opacity: .8; transform: scale(1) rotate(0); }
+}
+
+@keyframes reveal-pizza {
+  from { opacity: 0; transform: scale(.35) rotate(-10deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+/* Responsive tuning --------------------------------------------------- */
+
+@media (orientation: portrait) {
+  .splash-title-art { width: min(82vw, 700px); max-height: 16vh; margin-top: max(68px, var(--qk-safe-top)); }
+  .splash-mascot-trio { width: min(80vw, 650px); max-height: 27vh; }
+  .cooking-mode-shelf { width: min(97vw, 780px); height: min(18.4vh, 158px); gap: 4px; margin-top: clamp(38px, 8vh, 72px); margin-bottom: auto; }
+  .mode-card { flex: 1 1 0; min-width: 0; aspect-ratio: auto; }
+  .mode-card__label { right: 7%; bottom: 8%; left: 7%; font-size: clamp(12px, 3.4vw, 17px); line-height: .92; }
+  .play-prompt { top: max(92px, calc(var(--qk-safe-top) + 92px)); width: min(84vw, 640px); }
+  .play-progress { top: max(170px, calc(var(--qk-safe-top) + 170px)); }
+  .pizza-object { top: 48%; width: min(66vw, 43vh, 520px); }
+  .cooking-tray { bottom: max(14px, var(--qk-safe-bottom)); display: grid; grid-template-columns: repeat(3, 96px); gap: 0 10px; min-height: 192px; }
+  .ingredient { width: 96px; height: 96px; }
+  .peel-control { width: min(48vw, 35vh, 390px); }
+  .cooking-reveal { top: 48%; width: min(76vw, 42vh, 540px); }
+  .end-banner { margin-top: max(82px, calc(var(--qk-safe-top) + 82px)); }
+  .end-lockup { width: min(88vw, 620px); max-height: 22vh; }
+  .end-mascots { top: 48%; width: min(91vw, 650px); }
+  .reveal-actions { bottom: max(34px, var(--qk-safe-bottom)); flex-direction: column; align-items: center; gap: 8px; }
+  .action-plate { width: min(82vw, 520px); min-height: 96px; }
+  .action-plate span { min-height: 96px; }
+}
+
+@media (max-height: 650px) and (orientation: landscape) {
+  .splash-title-art { width: min(47vw, 560px); max-height: 18vh; }
+  .splash-mascot-trio { width: min(38vw, 430px); max-height: 25vh; }
+  .cooking-mode-shelf { width: min(68vw, 680px); height: min(34vh, 185px); }
+  .play-prompt { width: min(57vw, 590px); min-height: 74px; }
+  .play-prompt p { display: none; }
+  .play-progress { top: max(67px, calc(var(--qk-safe-top) + 63px)); }
+  .pizza-object { top: 53%; width: min(43vw, 51vh, 390px); }
+  .cooking-tray { min-height: 96px; }
+  .ingredient { width: 96px; height: 96px; }
+  .end-lockup { width: min(50vw, 380px); max-height: 20vh; }
+  .end-mascots { top: 52%; width: min(45vw, 260px); }
+  .cooking-reveal { top: 52%; width: min(38vw, 48vh, 380px); }
+  .action-plate { min-height: 96px; }
+  .action-plate span { min-height: 96px; padding-right: 20px; padding-left: 88px; font-size: clamp(17px, 2.8vw, 32px); }
+  .action-plate__icon { left: 14px; width: 64px; height: 64px; }
+}
+
+@media (max-width: 700px) and (max-height: 650px) and (orientation: landscape) {
+  .play-prompt { left: 31%; width: 52vw; }
+  .play-progress { left: 31%; }
+  .pizza-object { top: 59%; left: 31%; width: min(53vw, 64vh, 300px); }
+  .pizza-slot[data-slot='0'] { top: 12% !important; left: 50% !important; }
+  .pizza-slot[data-slot='1'] { top: 31% !important; left: 88% !important; }
+  .pizza-slot[data-slot='2'] { top: 69% !important; left: 88% !important; }
+  .pizza-slot[data-slot='3'] { top: 88% !important; left: 50% !important; }
+  .pizza-slot[data-slot='4'] { top: 69% !important; left: 12% !important; }
+  .pizza-slot[data-slot='5'] { top: 31% !important; left: 12% !important; }
+  .cooking-tray {
+    top: 90px;
+    right: max(6px, var(--qk-safe-right));
+    bottom: max(6px, var(--qk-safe-bottom));
+    left: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 96px);
+    grid-auto-rows: 96px;
+    align-content: start;
+    justify-content: center;
+    width: 216px;
+    min-height: 0;
+    padding: 2px 4px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 8px;
+    pointer-events: auto;
+    scroll-snap-type: y proximity;
+    scrollbar-width: none;
+    touch-action: pan-y;
+  }
+  .cooking-tray::-webkit-scrollbar { display: none; }
+  .ingredient { flex: none; scroll-snap-align: center; touch-action: pan-y; }
+}
+
+@media (orientation: portrait) and (max-width: 520px) {
+  .pizza-slot[data-slot='0'] { top: 12% !important; left: 50% !important; }
+  .pizza-slot[data-slot='1'] { top: 31% !important; left: 88% !important; }
+  .pizza-slot[data-slot='2'] { top: 69% !important; left: 88% !important; }
+  .pizza-slot[data-slot='3'] { top: 88% !important; left: 50% !important; }
+  .pizza-slot[data-slot='4'] { top: 69% !important; left: 12% !important; }
+  .pizza-slot[data-slot='5'] { top: 31% !important; left: 12% !important; }
+}
+
+@media (orientation: portrait) and (max-height: 700px) {
+  .end-banner { margin-top: max(66px, calc(var(--qk-safe-top) + 66px)); }
+  .end-lockup { max-height: 16vh; }
+  .end-mascots { top: 46%; width: min(88vw, 500px); }
+  .cooking-reveal { top: 46%; width: min(76vw, 42vh, 420px); }
+  .reveal-actions { bottom: max(14px, var(--qk-safe-bottom)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}

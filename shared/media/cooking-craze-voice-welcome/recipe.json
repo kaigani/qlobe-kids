@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-welcome",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-welcome.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Welcome to Cooking Craze! Tap a yummy pizza to start.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Welcome to Cooking Craze! Tap a yummy pizza to start.",
+      "heard": "Welcome to Cooking Craze. Tap a yummy pizza to start.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

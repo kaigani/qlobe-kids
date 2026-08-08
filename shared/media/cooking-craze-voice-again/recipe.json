@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-again",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-again.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "What pizza shall we make next?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "What pizza shall we make next?",
+      "heard": "What pizza shall we make next?",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-07"
+}

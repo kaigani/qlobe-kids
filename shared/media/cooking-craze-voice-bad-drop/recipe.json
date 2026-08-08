@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-bad-drop",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-bad-drop.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Try the matching slice!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Try the matching slice!",
+      "heard": "Try the matching slice.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-08"
+}

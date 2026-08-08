@@ -1,0 +1,65 @@
+{
+  "id": "cooking-craze",
+  "title": "Cooking Craze",
+  "accent": "#ef5e68",
+  "modes": [
+    { "id": "build", "title": "Build Your Pizza", "skill": "follow four cooking steps and match six toppings" },
+    { "id": "swirl", "title": "Sauce Swirl", "skill": "broad presses and circular sauce spreading" },
+    { "id": "quick", "title": "Quick Bake", "skill": "place five toppings and slide the peel to the oven" }
+  ],
+  "voice": {
+    "welcome": "Welcome to Cooking Craze! Tap a yummy pizza to start.",
+    "again": "What pizza shall we make next?",
+    "nudge": "Almost! Try the glowing slice.",
+    "hint-press": "Pat the dough with your finger. Pat, pat, pat!",
+    "hint-swirl": "Swirl the sauce in big circles. Round and round!",
+    "hint-oven": "Slide the pizza into the warm oven.",
+    "bad-drop": "Try the matching slice!",
+    "build-intro": "Let's make a rainbow pizza!",
+    "build-press": "Pat the floury dough flat.",
+    "build-sauce": "Swirl the tomato sauce to every edge.",
+    "build-topping": "Match each topping to its picture.",
+    "build-bake": "Slide the pizza into the oven!",
+    "build-cheer": "Pizza perfect! You made a delicious pizza!",
+    "swirl-intro": "Let's pat the dough and swirl the sauce!",
+    "swirl-press": "Pat the dough with your finger.",
+    "swirl-sauce": "Now swirl the red sauce around.",
+    "swirl-cheer": "Smooth and saucy! Great chef work!",
+    "quick-intro": "Quick bake! Add five toppings, then bake.",
+    "quick-topping": "Tap a topping, then tap a slice.",
+    "quick-bake": "Into the oven it goes!",
+    "quick-cheer": "Cheesy and bubbly! You baked it!"
+  },
+  "thresholds": {
+    "sauceCoverage": 0.8,
+    "pressTaps": 4
+  },
+  "recipes": [
+    { "id": "rainbow", "label": "Rainbow Pizza", "kinds": ["tomato", "basil", "olive", "cheese", "pepperoni", "mushroom"] },
+    { "id": "garden", "label": "Garden Pizza", "kinds": ["basil", "mushroom", "tomato", "olive", "cheese", "pepperoni"] },
+    { "id": "starry", "label": "Starry Pizza", "kinds": ["cheese", "tomato", "olive", "mushroom", "pepperoni", "basil"] }
+  ],
+  "slices": 6,
+  "assets": {
+    "kitchen": "./assets/scenes/kawaii-kitchen-v2.webp",
+    "title": "./assets/ui/title-kawaii-v3.webp",
+    "mascots": "./assets/ui/mascot-trio-v2.webp",
+    "modeCard": "./assets/ui/mode-card-v2.webp",
+    "actionButton": "./assets/ui/action-button-v2.webp",
+    "completionLockup": "./assets/ui/completion-lockup-v2.webp",
+    "actionReplay": "./assets/ui/action-replay-icon-v2.webp",
+    "actionServe": "./assets/ui/action-serve-icon-v2.webp",
+    "sauceDab": "./assets/ui/sauce-dab-v2.webp",
+    "peel": "./assets/world/peel-v2.webp",
+    "pizzaBase": "./assets/world/pizza-base-v2.webp",
+    "doughBlob": "./assets/world/dough-blob-v2.webp",
+    "ingredients": {
+      "tomato": "./assets/ui/ingredient-tomato-v2.webp",
+      "cheese": "./assets/ui/ingredient-cheese-v2.webp",
+      "pepperoni": "./assets/ui/ingredient-pepperoni-v2.webp",
+      "mushroom": "./assets/ui/ingredient-mushroom-v2.webp",
+      "basil": "./assets/ui/ingredient-basil-v2.webp",
+      "olive": "./assets/ui/ingredient-olive-v2.webp"
+    }
+  }
+}

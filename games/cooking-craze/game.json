@@ -1,0 +1,50 @@
+{
+  "id": "cooking-craze",
+  "title": "Cooking Craze",
+  "icon": "🍕",
+  "category": "practical-life",
+  "path": "games/cooking-craze/",
+  "entry": "index.html",
+  "age": { "min": 3, "max": 7 },
+  "status": "beta",
+  "accent": "#ef5e68",
+  "shareTitle": "Cooking Craze — Pat, swirl, top, and bake a Kawaii pizza",
+  "description": "Pat soft dough, swirl tomato sauce, match cheerful toppings to every slice, and slide the pizza into a warm Kawaii kitchen oven.",
+  "learningGoals": [
+    "Follow a spoken four-step recipe from dough to serving",
+    "Practice broad patting and circular sauce-spreading gestures",
+    "Match six toppings to six slices with one-to-one correspondence"
+  ],
+  "interactionModel": "four broad dough pats, free circular sauce coverage, strand-proof topping drag with tap-to-place, and an upward peel slide to bake; all primary targets are 96 px or larger",
+  "feedbackModel": "dough squishes and flour puffs under the finger; sauce fills the pizza; toppings snap with pop and sparkle; gentle spoken nudges support retries; every completed pizza earns a three-star celebration",
+  "uses": [
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/narrator.js",
+    "shared/js/hud.js",
+    "shared/js/screens.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/preload.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "build", "title": "Build Your Pizza", "skill": "follow four cooking steps and match six toppings" },
+    { "id": "swirl", "title": "Sauce Swirl", "skill": "broad presses and circular sauce spreading" },
+    { "id": "quick", "title": "Quick Bake", "skill": "place five toppings and slide the peel to the oven" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original Kawaii kitchen, character, food, and UI art produced with GPT Image 2, with Krea 2 and Qwen Image Layered used for authoring explorations; teacher voice produced with Qwen3-TTS VoiceClone and transcript-checked with Whisper; platform UI by QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": "01-game-concepts/cooking-craze/"
+}

@@ -1203,6 +1203,42 @@
       ]
     },
     {
+      "id": "cooking-craze",
+      "title": "Cooking Craze",
+      "category": "practical-life",
+      "path": "games/cooking-craze/",
+      "icon": "assets/hub/tiles/cooking-craze-v2.jpg",
+      "age": {
+        "min": 3,
+        "max": 7
+      },
+      "status": "beta",
+      "accent": "#ef5e68",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "build",
+          "title": "Build Your Pizza",
+          "skill": "follow four cooking steps and match six toppings"
+        },
+        {
+          "id": "swirl",
+          "title": "Sauce Swirl",
+          "skill": "broad presses and circular sauce spreading"
+        },
+        {
+          "id": "quick",
+          "title": "Quick Bake",
+          "skill": "place five toppings and slide the peel to the oven"
+        }
+      ],
+      "summary": "Pat dough, spread sauce, match cheerful toppings, and slide a Kawaii pizza into the oven."
+    },
+    {
       "id": "laundry-sorter",
       "title": "Laundry Sorter",
       "category": "practical-life",

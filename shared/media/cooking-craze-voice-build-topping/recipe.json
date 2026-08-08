@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-voice-build-topping",
+  "kind": "voice",
+  "asset": "cooking-craze-voice-build-topping.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Match each topping to its picture.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Match each topping to its picture.",
+      "heard": "Match each topping to its picture.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-08"
+}
