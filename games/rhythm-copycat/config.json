@@ -1,0 +1,122 @@
+{
+ "voice": {
+  "intro": "Rhythm Copycat!",
+  "choose-mode": "Choose your mode!",
+  "mode-clap-stomp": "Clap and stomp!",
+  "mode-drum-circle": "Drum circle!",
+  "pick-beat": "Pick a beat!",
+  "start": "Let's go!",
+  "listen": "Listen!",
+  "your-turn": "Now you copy it!",
+  "clap": "Clap!",
+  "stomp": "Stomp!",
+  "tap": "Tap!",
+  "shake": "Shake!",
+  "good-1": "Great!",
+  "good-2": "Nice!",
+  "good-3": "Awesome!",
+  "oops": "Oops!",
+  "nudge-clap": "Try the clap!",
+  "nudge-stomp": "Try the stomp!",
+  "nudge-tap": "Try the tap!",
+  "nudge-shake": "Try the shake!",
+  "together": "Let's do it together!",
+  "song": "Listen to our song!",
+  "round-end": "Yay! You did the beat!",
+  "all-done": "You made a song!",
+  "stars-1": "One star! Nice!",
+  "stars-2": "Two stars! Great job!",
+  "stars-3": "Three stars! Amazing!",
+  "again": "Play again!"
+ },
+ "assets": {
+  "splashBg": "./assets/bg/splash.webp",
+  "playBg": "./assets/bg/play.webp",
+  "title": "./assets/ui/title.webp",
+  "plaque": "./assets/ui/plaque.webp",
+  "card": "./assets/ui/card.webp",
+  "button": "./assets/ui/button.webp",
+  "star": "./assets/ui/star.webp",
+  "tray": "./assets/ui/tray.webp",
+  "kiki": "./assets/kiki/poses.json",
+  "pads": {
+   "clap": "./assets/pads/clap.webp",
+   "stomp": "./assets/pads/stomp.webp",
+   "tap": "./assets/pads/tap.webp",
+   "shake": "./assets/pads/shake.webp"
+  },
+  "dots": {
+   "clap": "./assets/dots/coral.webp",
+   "stomp": "./assets/dots/teal.webp",
+   "tap": "./assets/dots/mustard.webp",
+   "shake": "./assets/dots/lilac.webp"
+  },
+  "djembe": "./assets/ui/djembe.webp"
+ },
+ "pads": {
+  "clap": {
+   "color": "coral",
+   "label": "Clap"
+  },
+  "stomp": {
+   "color": "teal",
+   "label": "Stomp"
+  },
+  "tap": {
+   "color": "mustard",
+   "label": "Tap"
+  },
+  "shake": {
+   "color": "lilac",
+   "label": "Shake"
+  }
+ },
+ "modes": [
+  {
+   "id": "clap-stomp",
+   "title": "Clap & Stomp",
+   "skill": "copy 2\u20133 beat percussion patterns",
+   "badge": "clap",
+   "tempo": 66,
+   "tempoCap": 78,
+   "rounds": 5,
+   "pads": [
+    "clap",
+    "stomp",
+    "tap"
+   ]
+  },
+  {
+   "id": "drum-circle",
+   "title": "Drum Circle",
+   "skill": "copy 3\u20134 beat patterns at a faster tempo",
+   "badge": "drum",
+   "tempo": 78,
+   "tempoCap": 88,
+   "rounds": 5,
+   "pads": [
+    "clap",
+    "stomp",
+    "tap",
+    "shake"
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "id": "hop",
+   "title": "Bunny Hop",
+   "length": 2
+  },
+  {
+   "id": "trot",
+   "title": "Fox Trot",
+   "length": 3
+  },
+  {
+   "id": "bear",
+   "title": "Big Bear",
+   "length": 4
+  }
+ ]
+}

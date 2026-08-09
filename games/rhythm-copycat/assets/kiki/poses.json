@@ -1,0 +1,48 @@
+{
+ "format": "qlobe-pose-actor",
+ "formatVersion": 1,
+ "id": "kiki",
+ "label": "Kiki the clay kitten",
+ "canvas": [
+  1024,
+  1024
+ ],
+ "anchor": [
+  0.5,
+  0.94921875
+ ],
+ "transition": {
+  "kind": "paper-pop",
+  "durationMs": 220
+ },
+ "poses": {
+  "neutral": {
+   "art": "poses/neutral.webp",
+   "alt": "Kiki the clay kitten \u2014 neutral pose"
+  },
+  "notice": {
+   "art": "poses/notice.webp",
+   "alt": "Kiki the clay kitten \u2014 notice pose"
+  },
+  "clap": {
+   "art": "poses/clap.webp",
+   "alt": "Kiki the clay kitten \u2014 clap pose"
+  },
+  "stomp": {
+   "art": "poses/stomp.webp",
+   "alt": "Kiki the clay kitten \u2014 stomp pose"
+  },
+  "tap": {
+   "art": "poses/tap.webp",
+   "alt": "Kiki the clay kitten \u2014 tap pose"
+  },
+  "shake": {
+   "art": "poses/shake.webp",
+   "alt": "Kiki the clay kitten \u2014 shake pose"
+  },
+  "celebrate": {
+   "art": "poses/celebrate.webp",
+   "alt": "Kiki the clay kitten \u2014 celebrate pose"
+  }
+ }
+}

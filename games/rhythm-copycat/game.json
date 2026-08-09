@@ -1,33 +1,59 @@
 {
-  "id": "rhythm-copycat",
-  "title": "Rhythm Copycat",
-  "category": "art-music",
-  "path": "games/rhythm-copycat/",
-  "icon": "👏",
-  "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "beta",
-  "accent": "#f25f5c",
-  "shareTitle": "Rhythm Copycat 👏 — Copying Clap and Stomp Beats",
-  "description": "Listen to clap, stomp, pat, and animal beat patterns, then tap the next card to keep the rhythm going. A body-percussion game for ages 5–6.",
-  "learningGoals": [
-    "Recognize AB and ABC rhythm patterns",
-    "Hear and extend body-percussion sequences",
-    "Turn screen patterns into real clap-and-stomp play"
-  ],
-  "interactionModel": "pattern-continue tap the next rhythm card to complete the beat",
-  "feedbackModel": "Correct beats replay the full pattern and invite body movement; misses wiggle gently with a spoken nudge and retry.",
-  "uses": [
-    "shared/js/engines/pattern-continue.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
-  ],
-  "modes": [
-    { "id": "copycat", "title": "Clap and Stomp", "skill": "AB and ABC body-percussion patterns" },
-    { "id": "animals", "title": "Animal Beats", "skill": "auditory pattern recognition with animal sounds" }
-  ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+ "id": "rhythm-copycat",
+ "title": "Rhythm Copycat",
+ "category": "art-music",
+ "path": "games/rhythm-copycat/",
+ "icon": "🥁",
+ "entry": "index.html",
+ "age": {
+  "min": 5,
+  "max": 6
+ },
+ "status": "live",
+ "accent": "#f25f5c",
+ "shareTitle": "Rhythm Copycat 🥁 — copy the clay kitten's claps, stomps, taps and shakes",
+ "description": "Kiki the clay kitten plays a beat on her clay stage. Listen, then copy it back in time — clap, stomp, tap and shake! A body-percussion rhythm game.",
+ "learningGoals": [
+  "Hear and copy short body-percussion rhythm patterns",
+  "Match sounds to actions in a steady beat",
+  "Feel tempo and stay in time with a beat"
+ ],
+ "interactionModel": "watch the clay kitten demo a beat, then tap the matching clay pads in time to play it back",
+ "feedbackModel": "every beat can be finished: wrong pads wiggle with a spoken nudge, missed beats replay once, and the round always ends in a song and a cheer",
+ "uses": [
+  "shared/js/voice-clips.js",
+  "shared/js/narrator.js",
+  "shared/js/sfx.js",
+  "shared/js/tap.js",
+  "shared/js/hud.js",
+  "shared/js/celebrate.js",
+  "shared/js/audio-unlock.js",
+  "shared/js/idle-nudge.js",
+  "shared/js/debug-harness.js",
+  "shared/js/timers.js",
+  "shared/js/rng.js",
+  "shared/js/preload.js",
+  "shared/js/stage/pose-sprite-dom.js"
+ ],
+ "modes": [
+  {
+   "id": "clap-stomp",
+   "title": "Clap & Stomp",
+   "skill": "copy 2–3 beat percussion patterns"
+  },
+  {
+   "id": "drum-circle",
+   "title": "Drum Circle",
+   "skill": "copy 3–4 beat patterns at a faster tempo"
+  }
+ ],
+ "license": {
+  "code": "MIT",
+  "assets": "CC-BY-4.0"
+ },
+ "credits": "All art generated locally with the QLOBE LAN pipeline (Krea 2, Qwen Image Edit, Qwen Image Layered, Ideogram 4, Qwen3 TTS voice clone). See ASSETS.md. Built for QLOBE Kids.",
+ "characters": [
+  "kiki"
+ ],
+ "conceptVideo": null
 }

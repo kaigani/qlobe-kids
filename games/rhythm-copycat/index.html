@@ -2,46 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Rhythm Copycat 👏 — Copying Clap and Stomp Beats</title>
-  <meta name="description" content="Listen to clap, stomp, pat, and animal beat patterns, then tap the next card to keep the rhythm going. A body-percussion game for ages 5–6." />
+  <meta name="theme-color" content="#5f9ea0" />
+  <title>Rhythm Copycat — QLOBE Kids</title>
+  <meta name="description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Rhythm Copycat" />
-  <meta property="og:title" content="Rhythm Copycat 👏 — Copying Clap and Stomp Beats" />
-  <meta property="og:description" content="Listen to clap, stomp, pat, and animal beat patterns, then tap the next card to keep the rhythm going. A body-percussion game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Rhythm Copycat — copy the clay kitten's beat" />
+  <meta property="og:description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
   <meta property="og:url" content="https://qlo.be/games/rhythm-copycat/" />
   <meta property="og:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Rhythm Copycat title screen with Clap and Stomp and Animal Beats buttons below a clapping hands icon." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="Rhythm Copycat clay kitten stage with four percussion pads." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Rhythm Copycat 👏 — Copying Clap and Stomp Beats" />
-  <meta name="twitter:description" content="Listen to clap, stomp, pat, and animal beat patterns, then tap the next card to keep the rhythm going. A body-percussion game for ages 5–6." />
+  <meta name="twitter:title" content="Rhythm Copycat — copy the clay kitten's beat" />
+  <meta name="twitter:description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
   <meta name="twitter:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/pattern-continue.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <div id="game">
+
+    <!-- ===================== SPLASH ===================== -->
+    <section class="rc-screen rc-splash" data-qk-screen="splash" aria-label="Rhythm Copycat menu">
+      <div class="rc-bg" data-rc-bg></div>
+      <h1 class="visually-hidden">Rhythm Copycat</h1>
+      <img class="rc-title" src="./assets/ui/title.webp" alt="Rhythm Copycat" draggable="false" />
+      <div class="rc-splash-kiki" data-rc-actor="splash" aria-hidden="true"></div>
+      <div class="rc-mode-shelf" data-rc-modes aria-label="Choose a game"></div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-hud="home" data-target="home" href="../../index.html" aria-label="Home"></a>
+      <div class="rc-hud-top-right" data-rc-sound></div>
+    </section>
+
+    <!-- ===================== PICK A BEAT ===================== -->
+    <section class="rc-screen rc-select" data-qk-screen="select" aria-label="Pick a beat" hidden>
+      <div class="rc-bg" data-rc-bg></div>
+      <header class="rc-plaque rc-select-plaque">
+        <h2 data-rc-pick-title>Pick a beat!</h2>
+      </header>
+      <div class="rc-cards" data-rc-cards aria-label="Choose a beat to copy"></div>
+      <div class="rc-big-btn-wrap">
+        <button type="button" class="rc-big-btn" data-rc-start data-target="start" aria-label="Start">
+          <span data-rc-start-label>Start</span>
+        </button>
+      </div>
+      <div class="rc-hud-left" data-rc-back></div>
+      <div class="rc-hud-top-right" data-rc-sound-select></div>
+    </section>
+
+    <!-- ===================== PLAY ===================== -->
+    <section class="rc-screen rc-play" data-qk-screen="play" aria-label="Copy the beat" hidden>
+      <div class="rc-bg" data-rc-bg></div>
+      <header class="rc-plaque rc-play-plaque" data-rc-prompt aria-live="polite">
+        <p data-rc-prompt-text></p>
+      </header>
+      <div class="rc-progress" data-rc-progress aria-hidden="true"></div>
+      <div class="rc-stage" data-rc-stage>
+        <div class="rc-tray" data-rc-tray aria-hidden="true">
+          <img class="rc-tray-art" src="./assets/ui/tray.webp" alt="" draggable="false" />
+          <div class="rc-slots" data-rc-slots></div>
+        </div>
+        <div class="rc-kiki" data-rc-actor="play" aria-hidden="true"></div>
+      </div>
+      <div class="rc-pads" data-rc-pads aria-label="Percussion pads"></div>
+      <div class="rc-hud-left" data-rc-back-play></div>
+      <div class="rc-play-glow" data-rc-glow aria-hidden="true"></div>
+    </section>
+
+    <!-- ===================== END ===================== -->
+    <section class="rc-screen rc-end" data-qk-screen="end" aria-label="You made a song" hidden>
+      <div class="rc-bg" data-rc-bg></div>
+      <header class="rc-plaque rc-end-plaque">
+        <h2 data-rc-end-title>You made a song!</h2>
+      </header>
+      <div class="rc-stars" data-rc-stars aria-label="Stars earned"></div>
+      <div class="rc-end-kiki" data-rc-actor="end" aria-hidden="true"></div>
+      <div class="rc-confetti" data-rc-confetti aria-hidden="true"></div>
+      <div class="rc-end-actions">
+        <button type="button" class="rc-big-btn" data-rc-again data-target="again" aria-label="Play again">
+          <span data-rc-again-label>Play Again</span>
+        </button>
+        <button type="button" class="rc-pill-btn" data-rc-beats data-target="beats" aria-label="Pick another beat">
+          <span>Pick a Beat</span>
+        </button>
+      </div>
+      <div class="rc-hud-left" data-rc-back-end></div>
+      <div class="rc-hud-top-right" data-rc-sound-end></div>
+    </section>
+
+  </div>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
