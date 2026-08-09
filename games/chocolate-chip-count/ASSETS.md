@@ -50,14 +50,19 @@ was transmitted for this comparison.
 
 ## Voice production
 
-The verbatim 24-line script is in `assets/audio/lines.json`. Runtime uses the
-same line table through Web Speech unless an accepted local recording appears
-in `assets/audio/manifest.json`. The optional Qwen teacher-reference batch is
-intentionally not shipped yet: repository automation blocked transmission of
-the rights-cleared reference to an endpoint configured outside the repository.
-No unverified or partially generated clip is present. `tools/gen-voice.py`
-implements batch generation, AAC normalization, Whisper verification, and
-manifest admission for a later explicitly approved run.
+The verbatim 26-line script is in `assets/audio/lines.json`. All 26 lines have
+an accepted recorded clip in `assets/audio/manifest.json` — Web Speech is now
+only a same-session network-failure fallback, not the default voice.
+`tools/gen-voice.py` batch-cloned the platform teacher-voice reference
+(`shared/assets/refs/voice-teacher.wav`, `qwen3-tts-voiceclone`), AAC-normalized
+each take, and QA'd every clip with `whisper-stt` against its intended text
+(`assets/audio/qa.json`). 24/26 passed on the first pass (seed 7); `count-5`
+needed a reroll (seed 42 fixed a "Five!"→"Bye!" TTS mishear). `boing` failed
+Whisper's default-vocabulary transcript on every seed ("Boing" heard as "Boy")
+but was confirmed correct with a biased `initial_prompt` naming the onomatopoeia
+explicitly — the audio was right and only Whisper's spelling failed; see
+`assets/audio/qa.json`'s `boing` entry for the note. Total payload: 476 KB
+across 26 clips (28–40 KB each).
 
 ## Visual and interaction QA
 

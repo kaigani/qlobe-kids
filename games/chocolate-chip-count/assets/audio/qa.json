@@ -1,0 +1,237 @@
+{
+  "again": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Bake another one!",
+    "transcript": "Bake another one.",
+    "seed": 7,
+    "duration": 1.018
+  },
+  "boing": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Boing! That chip is coming back.",
+    "transcript": "Boing! That chip is coming back!",
+    "seed": 1337,
+    "duration": 1.675,
+    "note": "whisper base mistranscribed boing as boy on default pass; biased initial_prompt naming the onomatopoeia confirmed the take was correct (see whisper-loanword-bias-qa)"
+  },
+  "complete-10": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "You caught ten chocolate chips. Great counting!",
+    "transcript": "You caught ten chocolate chips. Great counting!",
+    "seed": 7,
+    "duration": 3.2
+  },
+  "complete-3": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "You caught three chocolate chips. Great counting!",
+    "transcript": "You caught three chocolate chips. Great counting!",
+    "seed": 7,
+    "duration": 3.5
+  },
+  "complete-6": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "You caught six chocolate chips. Great counting!",
+    "transcript": "You caught six chocolate chips. Great counting!",
+    "seed": 7,
+    "duration": 2.832
+  },
+  "count-1": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "One!",
+    "transcript": "One.",
+    "seed": 7,
+    "duration": 0.684
+  },
+  "count-10": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Ten!",
+    "transcript": "Ten.",
+    "seed": 7,
+    "duration": 0.646
+  },
+  "count-2": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Two!",
+    "transcript": "Two.",
+    "seed": 7,
+    "duration": 0.541
+  },
+  "count-3": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Three!",
+    "transcript": "Three!",
+    "seed": 7,
+    "duration": 0.707
+  },
+  "count-4": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Four!",
+    "transcript": "Four.",
+    "seed": 7,
+    "duration": 0.568
+  },
+  "count-5": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Five!",
+    "transcript": "Five.",
+    "seed": 42,
+    "duration": 0.438
+  },
+  "count-6": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Six!",
+    "transcript": "Six.",
+    "seed": 7,
+    "duration": 0.635
+  },
+  "count-7": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Seven!",
+    "transcript": "Seven.",
+    "seed": 7,
+    "duration": 0.716
+  },
+  "count-8": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Eight!",
+    "transcript": "Eight.",
+    "seed": 7,
+    "duration": 0.58
+  },
+  "count-9": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Nine!",
+    "transcript": "Nine.",
+    "seed": 7,
+    "duration": 0.644
+  },
+  "idle-catch": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Slide the tray under the chocolate chip.",
+    "transcript": "Slide the tray under the chocolate chip.",
+    "seed": 7,
+    "duration": 2.009
+  },
+  "idle-pop": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Tap the wiggly balloon.",
+    "transcript": "Tap the wiggly balloon.",
+    "seed": 7,
+    "duration": 1.249
+  },
+  "mode-10": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Ten chips. Super chef challenge.",
+    "transcript": "Ten chips, super chef challenge.",
+    "seed": 7,
+    "duration": 2.316
+  },
+  "mode-3": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Three chips. A tiny batch.",
+    "transcript": "Three chips, a tiny batch.",
+    "seed": 7,
+    "duration": 1.842
+  },
+  "mode-6": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Six chips. A bigger batch.",
+    "transcript": "Six chips, a bigger batch.",
+    "seed": 7,
+    "duration": 2.413
+  },
+  "move": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Slide the tray to catch every chocolate chip.",
+    "transcript": "Slide the tray to catch every chocolate chip.",
+    "seed": 7,
+    "duration": 2.113
+  },
+  "next": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Ready for the next recipe?",
+    "transcript": "Ready for the next recipe?",
+    "seed": 7,
+    "duration": 1.324
+  },
+  "pick": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Pick how many chocolate chips to catch.",
+    "transcript": "Pick how many chocolate chips to catch.",
+    "seed": 7,
+    "duration": 1.907
+  },
+  "pop": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Pop the bouncy balloon!",
+    "transcript": "Pop the bouncy balloon.",
+    "seed": 7,
+    "duration": 1.358
+  },
+  "pop-next": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Pop the next balloon!",
+    "transcript": "Pop the next balloon.",
+    "seed": 7,
+    "duration": 1.118
+  },
+  "welcome": {
+    "accepted": true,
+    "score": 1.0,
+    "coverage": 1.0,
+    "want": "Welcome to Chocolate Chip Count! Pick a cookie.",
+    "transcript": "Welcome to Chocolate Chip Count. Pick a cookie.",
+    "seed": 7,
+    "duration": 3.1
+  }
+}
