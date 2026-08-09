@@ -191,6 +191,9 @@ the full loop playable.
 - Exactly three modeled pieces begin placed, rather than five, giving the child
   four meaningful placements while preserving the mockup's mid-round 5-of-7
   composition after two successful moves.
+- The four manual pieces are reshuffled from the full seven-piece set each time
+  a tale starts, so replaying a story changes the puzzle without changing its
+  authored target figure.
 - The old unrelated cat, boat, tree, rocket, house, and flower rounds are removed.
   They diluted the standard seven-piece tangram promise and used browser emoji.
 - Japanese praise is omitted; warm concise English matches the platform voice.

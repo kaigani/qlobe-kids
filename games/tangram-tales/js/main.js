@@ -8,6 +8,7 @@ import { installKioskGuards, installUnlockOnGesture, unlockAll } from '../../../
 import { escapeHtml as esc } from '../../../shared/js/dom.js';
 import { preloadImages } from '../../../shared/js/preload.js';
 import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
+import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 
 const mount = document.getElementById('game');
 const PROGRESS_KEY = 'qlobe-tangram-tales-progress-v1';
@@ -45,6 +46,7 @@ const state = {
 };
 
 let freeBoard = null;
+let rng = mulberry32(state.seed);
 let disposers = [];
 let idleTimer = 0;
 let revealTimer = 0;
@@ -186,6 +188,21 @@ function selectTale(id) {
   return true;
 }
 
+function randomizedInitialPlacements() {
+  const manualPieceIds = shuffle(config.pieces.map((piece) => piece.id), rng).slice(0, 4);
+  const nonTriangleIds = config.pieces
+    .filter((piece) => piece.shape !== 'triangle')
+    .map((piece) => piece.id);
+  if (manualPieceIds.length === 4 && manualPieceIds.every((pieceId) => pieceById[pieceId].shape === 'triangle') && nonTriangleIds.length) {
+    const replacement = nonTriangleIds[Math.floor(rng() * nonTriangleIds.length)];
+    manualPieceIds[manualPieceIds.length - 1] = replacement;
+  }
+  const manualPieces = new Set(manualPieceIds);
+  return Object.fromEntries(config.pieces
+    .filter((piece) => !manualPieces.has(piece.id))
+    .map((piece) => [piece.id, piece.id]));
+}
+
 async function startTale(id = state.selectedTale) {
   await ready;
   const tale = taleById[id];
@@ -195,7 +212,7 @@ async function startTale(id = state.selectedTale) {
   state.tale = id;
   state.selectedTale = id;
   saveJson(SELECTED_KEY, id);
-  state.placements = Object.fromEntries(tale.initial.map((pieceId) => [pieceId, pieceId]));
+  state.placements = randomizedInitialPlacements();
   state.selectedPiece = null;
   state.hintSlot = null;
   state.misses = 0;
@@ -254,10 +271,19 @@ function placedMarkup(slotId, pieceId, target) {
 
 function trayPieceMarkup(piece) {
   return `
-    <button class="tray-piece ${state.selectedPiece === piece.id ? 'is-selected' : ''}" type="button"
+    <button class="tray-piece tray-piece-${esc(piece.family)} ${state.selectedPiece === piece.id ? 'is-selected' : ''}" type="button"
             data-piece="${esc(piece.id)}" data-target="piece-${esc(piece.id)}" aria-label="${esc(piece.label)}. Drag it, hold to turn it, or tap then tap its spot.">
       <img src="${esc(piece.art)}" alt="" aria-hidden="true" draggable="false" />
     </button>`;
+}
+
+function previewTargetFor(pieceId) {
+  const tale = taleById[state.tale];
+  if (!tale) return null;
+  const directTarget = tale.targets[pieceId];
+  if (directTarget && !state.placements[pieceId]) return directTarget;
+  const alternateSlot = matchingOpenSlots(pieceId)[0];
+  return alternateSlot ? tale.targets[alternateSlot] : directTarget || null;
 }
 
 function wireGuidedPieces() {
@@ -321,10 +347,13 @@ const guidedDragCtl = createDragToSlotDom({
   makeGhost: (button) => {
     const rect = button.getBoundingClientRect();
     const clone = button.cloneNode(true);
+    const field = document.getElementById('puzzle-field')?.getBoundingClientRect();
+    const target = previewTargetFor(button.dataset.piece);
+    const targetSize = field && target ? field.width * target.size : 0;
     clone.className = 'drag-piece';
     clone.removeAttribute('data-target');
-    clone.style.width = `${rect.width}px`;
-    clone.style.height = `${rect.height}px`;
+    clone.style.width = `${targetSize > 0 ? targetSize : rect.width}px`;
+    clone.style.height = `${targetSize > 0 ? targetSize : rect.height}px`;
     return clone;
   },
   onGrab: (button, record) => {
@@ -717,7 +746,7 @@ installDebug({
   }),
   tap: debugTap,
   mute(on = true) { state.muted = !!on; voice.setMuted(state.muted); return state.muted; },
-  seed(value = 42) { state.seed = Number(value) || 42; return state.seed; },
+  onSeed(nextRng, seed) { rng = nextRng; state.seed = seed; },
   fastTimers() { state.fast = true; return .05; },
   completeRound: completeGuided,
   winRound: completeGuided,

@@ -60,6 +60,33 @@ async function realDragOffset(page, pieceId, slotId, normalizedX) {
   return true;
 }
 
+async function measureDragWidth(page, pieceId, slotId) {
+  const source = await page.locator(`[data-target="piece-${pieceId}"]`).boundingBox();
+  if (!source) return null;
+  await page.mouse.move(source.x + source.width / 2, source.y + source.height / 2);
+  await page.mouse.down();
+  try {
+    return await page.locator('.drag-piece').evaluate((piece, targetId) => {
+      const field = document.querySelector('#puzzle-field');
+      const slot = document.querySelector(`[data-target="slot-${targetId}"]`);
+      const fieldWidth = field?.getBoundingClientRect().width || 0;
+      const size = Number.parseFloat(getComputedStyle(slot).getPropertyValue('--size')) || 0;
+      return {
+        inlineWidth: Number.parseFloat(piece.style.width) || 0,
+        expectedWidth: fieldWidth * size,
+      };
+    }, slotId);
+  } finally {
+    await page.mouse.move(8, 8);
+    await page.mouse.up();
+    await page.locator('.drag-piece').waitFor({ state: 'detached' });
+  }
+}
+
+async function trayPieceIds(page) {
+  return page.locator('.tray-piece').evaluateAll((nodes) => nodes.map((node) => node.dataset.piece));
+}
+
 async function holdRotateIntoSlot(page, pieceId, slotId) {
   const source = await page.locator(`[data-target="piece-${pieceId}"]`).boundingBox();
   const target = await page.locator(`[data-target="slot-${slotId}"]`).boundingBox();
@@ -132,6 +159,10 @@ async function drive(browser) {
   check('title is fully visible instead of cover-cropped', titleBox && titleBox.y >= 0 && titleBox.y + titleBox.height <= 820,
     titleBox ? `${Math.round(titleBox.y)}–${Math.round(titleBox.y + titleBox.height)}` : 'missing');
   check('shelf shows four large choices per page', await page.locator('.tale-card').count() === 4);
+  const fairyCardFigure = await page.locator('[data-target="tale-fairy"] .card-figure').boundingBox();
+  check('tale thumbnails use the same 4:3 figure frame as the reveal',
+    fairyCardFigure && Math.abs(fairyCardFigure.width / fairyCardFigure.height - 4 / 3) < .04,
+    fairyCardFigure ? `${Math.round(fairyCardFigure.width)}×${Math.round(fairyCardFigure.height)}` : 'missing thumbnail figure');
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
   const seenTales = [];
@@ -143,31 +174,72 @@ async function drive(browser) {
   check('paged shelf exposes each reference figure exactly once', seenTales.join(',') ===
     'boat,fairy,whale,rabbit,boy,girl,horse,candle,dog,camel,bear,face,house,cat,duck,lion');
 
-  await page.evaluate(() => window.QLOBE_DEBUG.startMode('boat'));
+  await page.evaluate(() => { window.QLOBE_DEBUG.seed(42); return window.QLOBE_DEBUG.startMode('boat'); });
   await page.waitForSelector('#puzzle-field');
   current = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('boat starts with exactly three modeled pieces', current.screen === 'guided' && current.placed === 3);
-  await realDragOutside(page, 'large-a');
+  const firstBoatOpen = await trayPieceIds(page);
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('boat'));
+  await page.waitForSelector('#puzzle-field');
+  const secondBoatOpen = await trayPieceIds(page);
+  check('replaying a tale randomizes the four manual pieces', firstBoatOpen.length === 4 && secondBoatOpen.length === 4 &&
+    firstBoatOpen.join(',') !== secondBoatOpen.join(',') &&
+    firstBoatOpen.some((pieceId) => ['square', 'parallelogram'].includes(pieceId)) &&
+    secondBoatOpen.some((pieceId) => ['square', 'parallelogram'].includes(pieceId)),
+    `${firstBoatOpen.join(',')} → ${secondBoatOpen.join(',')}`);
+  await page.evaluate(() => { window.QLOBE_DEBUG.seed(42); return window.QLOBE_DEBUG.startMode('boat'); });
+  await page.waitForSelector('#puzzle-field');
+  const boatOpen = await trayPieceIds(page);
+  const largePiece = boatOpen.find((pieceId) => pieceId.startsWith('large-'));
+  const smallPiece = boatOpen.find((pieceId) => pieceId.startsWith('small-'));
+  const secondLargePiece = boatOpen.find((pieceId) => pieceId.startsWith('large-') && pieceId !== largePiece);
+  const boatField = await page.locator('#puzzle-field').boundingBox();
+  check('boat guided field preserves the 4:3 composition ratio', boatField && Math.abs(boatField.width / boatField.height - 4 / 3) < .04,
+    boatField ? `${Math.round(boatField.width)}×${Math.round(boatField.height)}` : 'missing field');
+  await largeTargets(page, 'boat guided');
+  const triangleArtWidths = await page.locator(`[data-target="piece-${largePiece}"] img, [data-target="piece-${smallPiece}"] img`)
+    .evaluateAll((nodes) => Object.fromEntries(nodes.map((node) => [node.closest('.tray-piece').dataset.piece,
+      node.getBoundingClientRect().width])));
+  check('boat large triangle tray art is materially wider than small triangle art',
+    largePiece && smallPiece && triangleArtWidths[largePiece] > triangleArtWidths[smallPiece] * 1.4,
+    largePiece && smallPiece ? `${Math.round(triangleArtWidths[largePiece])}px vs ${Math.round(triangleArtWidths[smallPiece])}px` : 'missing large/small tray pieces');
+  const boatBeforeMeasurements = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  const largeDrag = await measureDragWidth(page, largePiece, largePiece);
+  check('large triangle drag width matches its open slot target size',
+    largeDrag && Math.abs(largeDrag.inlineWidth - largeDrag.expectedWidth) < 0.5,
+    largeDrag ? `${largeDrag.inlineWidth}px vs ${largeDrag.expectedWidth}px` : 'missing drag measurement');
+  const smallDrag = await measureDragWidth(page, smallPiece, smallPiece);
+  check('small triangle drag width matches its open slot target size',
+    smallDrag && Math.abs(smallDrag.inlineWidth - smallDrag.expectedWidth) < 0.5,
+    smallDrag ? `${smallDrag.inlineWidth}px vs ${smallDrag.expectedWidth}px` : 'missing drag measurement');
+  const boatAfterMeasurements = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('triangle drag previews preserve Boat state',
+    boatAfterMeasurements.placed === boatBeforeMeasurements.placed &&
+    boatAfterMeasurements.misses === boatBeforeMeasurements.misses &&
+    boatAfterMeasurements.selectedPiece === boatBeforeMeasurements.selectedPiece);
+  await realDragOutside(page, largePiece);
   current = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('release outside the board returns the piece without a miss', current.placed === 3 && current.misses === 0 && await page.locator('.drag-piece').count() === 0);
-  check('wrong-family direct placement is gently refused', await page.evaluate(() => window.QLOBE_DEBUG.dragPiece('large-a', 'small-a')) === false);
+  check('wrong-family direct placement is gently refused', await page.evaluate(([pieceId, slotId]) => window.QLOBE_DEBUG.dragPiece(pieceId, slotId), [largePiece, smallPiece]) === false);
   check('miss is recorded without losing progress', (await page.evaluate(() => window.QLOBE_DEBUG.getState())).misses === 1);
-  await realDragOffset(page, 'small-a', 'small-a', -.19);
+  await realDragOffset(page, smallPiece, smallPiece, -.19);
   current = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('first near miss returns home and widens assistance', current.placed === 3 && current.misses === 2);
-  await realDragOffset(page, 'small-a', 'small-a', -.19);
+  await realDragOffset(page, smallPiece, smallPiece, -.19);
   check('repeat-miss assist accepts the same real pointer drop', (await page.evaluate(() => window.QLOBE_DEBUG.getState())).placed === 4);
-  await page.locator('[data-target="piece-small-b"]').click();
-  const tapSlot = await page.locator('[data-target="slot-small-b"]').boundingBox();
+  const tapPiece = secondLargePiece || boatOpen.find((pieceId) => ![largePiece, smallPiece].includes(pieceId));
+  await page.locator(`[data-target="piece-${tapPiece}"]`).click();
+  const tapSlot = await page.locator(`[data-target="slot-${tapPiece}"]`).boundingBox();
   await page.mouse.click(tapSlot.x + tapSlot.width / 2, tapSlot.y + tapSlot.height / 2);
   check('tap-piece then tap-slot fallback places a piece', (await page.evaluate(() => window.QLOBE_DEBUG.getState())).placed === 5);
   await page.screenshot({ path: path.join(shots, '02-boat-five-of-seven.png') });
-  const guidedHold = await holdRotateIntoSlot(page, 'large-a', 'large-a');
+  const guidedHold = await holdRotateIntoSlot(page, largePiece, largePiece);
   check('small tolerated hold movement starts slow guided rotation', guidedHold.angle >= 4 && guidedHold.angle <= 25,
     `${guidedHold.angle.toFixed(1)} degrees`);
   check('right guided piece auto-rotates and pops into its target', guidedHold.settling &&
     (await page.evaluate(() => window.QLOBE_DEBUG.getState())).placed === 6);
-  await page.evaluate(() => window.QLOBE_DEBUG.placePiece('large-b', 'large-b'));
+  const finalBoatPiece = await page.locator('.tray-piece').getAttribute('data-piece');
+  await page.evaluate((pieceId) => window.QLOBE_DEBUG.placePiece(pieceId, pieceId), finalBoatPiece);
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('boat completes into the living-tale reveal', true);
   check('play/reveal Back is a button to splash, not a catalog anchor', await page.locator('[data-target="back"]').evaluate((node) => node.tagName === 'BUTTON'));
@@ -182,19 +254,40 @@ async function drive(browser) {
   await page.screenshot({ path: path.join(shots, '04-whale-reveal.png') });
 
   await page.evaluate(() => window.QLOBE_DEBUG.tap('back'));
-  await page.evaluate(() => window.QLOBE_DEBUG.startMode('rabbit'));
+  await page.evaluate(() => { window.QLOBE_DEBUG.seed(42); return window.QLOBE_DEBUG.startMode('rabbit'); });
+  const rabbitLargeOpen = await trayPieceIds(page);
   check('rabbit leaves both large triangles open for family-swap QA', (await page.evaluate(() => window.QLOBE_DEBUG.getState().placed)) === 3);
   check('large triangle A accepts large triangle B slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('large-a', 'large-b')) === true);
   check('large triangle B accepts large triangle A slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('large-b', 'large-a')) === true);
-  check('small triangle A accepts small triangle B slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('small-a', 'small-b')) === true);
-  check('small triangle B accepts small triangle A slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('small-b', 'small-a')) === true);
+  check('rabbit random round exposes both large triangles', rabbitLargeOpen.includes('large-a') && rabbitLargeOpen.includes('large-b'));
+  await page.evaluate(() => window.QLOBE_DEBUG.completeRound());
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   check('three completed reference tales persist', (await page.evaluate(() => window.QLOBE_DEBUG.getState().completed)).length === 3);
   await page.screenshot({ path: path.join(shots, '05-rabbit-reveal.png') });
 
+  await page.evaluate(() => { window.QLOBE_DEBUG.seed(2); return window.QLOBE_DEBUG.startMode('rabbit'); });
+  const rabbitSmallOpen = await trayPieceIds(page);
+  check('rabbit replay exposes both small triangles', rabbitSmallOpen.includes('small-a') && rabbitSmallOpen.includes('small-b'));
+  check('randomized rounds never leave only triangles in the tray', rabbitSmallOpen.length === 4 &&
+    rabbitSmallOpen.some((pieceId) => ['square', 'parallelogram'].includes(pieceId)));
+  check('small triangle A accepts small triangle B slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('small-a', 'small-b')) === true);
+  check('small triangle B accepts small triangle A slot', await page.evaluate(() => window.QLOBE_DEBUG.placePiece('small-b', 'small-a')) === true);
+
   const remainingTales = ['fairy', 'boy', 'girl', 'horse', 'candle', 'dog', 'camel', 'bear', 'face', 'house', 'cat', 'duck', 'lion'];
   for (const taleId of remainingTales) {
-    await page.evaluate((id) => window.QLOBE_DEBUG.startMode(id), taleId);
+    if (taleId === 'candle') {
+      await page.evaluate(() => { window.QLOBE_DEBUG.seed(42); return window.QLOBE_DEBUG.startMode('candle'); });
+      check('candle large triangle A accepts large triangle B slot',
+        await page.evaluate(() => window.QLOBE_DEBUG.placePiece('large-a', 'large-b')) === true);
+      const alternateLargeDrag = await measureDragWidth(page, 'large-b', 'large-a');
+      check('candle alternate large triangle preview matches its open slot target size',
+        alternateLargeDrag && Math.abs(alternateLargeDrag.inlineWidth - alternateLargeDrag.expectedWidth) < 0.5,
+        alternateLargeDrag ? `${alternateLargeDrag.inlineWidth}px vs ${alternateLargeDrag.expectedWidth}px` : 'missing drag measurement');
+      check('candle large triangle B accepts large triangle A slot',
+        await page.evaluate(() => window.QLOBE_DEBUG.placePiece('large-b', 'large-a')) === true);
+    } else {
+      await page.evaluate((id) => window.QLOBE_DEBUG.startMode(id), taleId);
+    }
     await page.evaluate(() => window.QLOBE_DEBUG.completeRound());
     await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'reveal');
   }
@@ -253,6 +346,10 @@ async function drive(browser) {
   const portrait = await session(browser, { width: 820, height: 1180 });
   await boot(portrait.page);
   await largeTargets(portrait.page, 'portrait splash');
+  const portraitFairyCardFigure = await portrait.page.locator('[data-target="tale-fairy"] .card-figure').boundingBox();
+  check('portrait tale thumbnails keep the 4:3 figure frame',
+    portraitFairyCardFigure && Math.abs(portraitFairyCardFigure.width / portraitFairyCardFigure.height - 4 / 3) < .04,
+    portraitFairyCardFigure ? `${Math.round(portraitFairyCardFigure.width)}×${Math.round(portraitFairyCardFigure.height)}` : 'missing portrait thumbnail figure');
   await portrait.page.screenshot({ path: path.join(shots, '08-splash-portrait.png') });
   await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('whale'));
   await largeTargets(portrait.page, 'portrait guided');
@@ -267,6 +364,8 @@ async function drive(browser) {
   const shortField = await short.page.locator('#puzzle-field').boundingBox();
   check('short-landscape puzzle remains on screen', shortField.y >= 70 && shortField.y + shortField.height <= 520,
     `${Math.round(shortField.x)},${Math.round(shortField.y)} ${Math.round(shortField.width)}×${Math.round(shortField.height)}`);
+  check('short-landscape puzzle preserves the 4:3 composition ratio', Math.abs(shortField.width / shortField.height - 4 / 3) < .04,
+    `${Math.round(shortField.width)}×${Math.round(shortField.height)}`);
   await short.page.screenshot({ path: path.join(shots, '10-lion-short-landscape.png') });
 
   const reduced = await session(browser, { width: 1180, height: 820 }, 'reduce');
@@ -335,6 +434,7 @@ async function drive(browser) {
   const jsText = await readFile(new URL('../js/main.js', import.meta.url), 'utf8');
   check('runtime config contains no emoji placeholder refs', !configText.includes('emoji:'));
   check('visible game skin contains no CSS gradients', !/gradient\(/.test(cssText));
+  check('reveal animation moves the whole figure without an independent tail wave', cssText.includes('figure-wake') && !cssText.includes('tail-wave'));
   check('child-facing game UI contains no star or rotation font glyphs', !/[★↻]/.test(jsText));
 }
 
