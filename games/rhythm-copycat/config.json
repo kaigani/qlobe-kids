@@ -34,7 +34,6 @@
   "playBg": "./assets/bg/play.webp",
   "title": "./assets/ui/title.webp",
   "plaque": "./assets/ui/plaque.webp",
-  "card": "./assets/ui/card.webp",
   "button": "./assets/ui/button.webp",
   "star": "./assets/ui/star.webp",
   "tray": "./assets/ui/tray.webp",
@@ -46,28 +45,36 @@
    "shake": "./assets/pads/shake.webp"
   },
   "dots": {
-   "clap": "./assets/dots/coral.webp",
-   "stomp": "./assets/dots/teal.webp",
-   "tap": "./assets/dots/mustard.webp",
-   "shake": "./assets/dots/lilac.webp"
+   "clap": "./assets/dots/blue.webp",
+   "stomp": "./assets/dots/green.webp",
+   "tap": "./assets/dots/orange.webp",
+   "shake": "./assets/dots/red.webp"
   },
-  "djembe": "./assets/ui/djembe.webp"
+  "djembe": "./assets/ui/djembe.webp",
+  "cards": {
+   "orange": "./assets/cards/orange.webp",
+   "yellow": "./assets/cards/yellow.webp",
+   "teal": "./assets/cards/teal.webp"
+  },
+  "tambourine": "./assets/ui/tambourine.webp",
+  "woodblock": "./assets/ui/woodblock.webp",
+  "maraca": "./assets/ui/maraca.webp"
  },
  "pads": {
   "clap": {
-   "color": "coral",
+   "color": "#2a9be4",
    "label": "Clap"
   },
   "stomp": {
-   "color": "teal",
+   "color": "#6abf4b",
    "label": "Stomp"
   },
   "tap": {
-   "color": "mustard",
+   "color": "#f0812a",
    "label": "Tap"
   },
   "shake": {
-   "color": "lilac",
+   "color": "#e94e4a",
    "label": "Shake"
   }
  },
@@ -75,7 +82,7 @@
   {
    "id": "clap-stomp",
    "title": "Clap & Stomp",
-   "skill": "copy 2\u20133 beat percussion patterns",
+   "skill": "copy 2–3 beat percussion patterns",
    "badge": "clap",
    "tempo": 66,
    "tempoCap": 78,
@@ -89,7 +96,7 @@
   {
    "id": "drum-circle",
    "title": "Drum Circle",
-   "skill": "copy 3\u20134 beat patterns at a faster tempo",
+   "skill": "copy 3–4 beat patterns at a faster tempo",
    "badge": "drum",
    "tempo": 78,
    "tempoCap": 88,
@@ -106,17 +113,20 @@
   {
    "id": "hop",
    "title": "Bunny Hop",
-   "length": 2
+   "length": 2,
+   "color": "orange"
   },
   {
    "id": "trot",
    "title": "Fox Trot",
-   "length": 3
+   "length": 3,
+   "color": "yellow"
   },
   {
    "id": "bear",
    "title": "Big Bear",
-   "length": 4
+   "length": 4,
+   "color": "teal"
   }
  ]
 }

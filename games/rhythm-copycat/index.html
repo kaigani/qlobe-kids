@@ -7,12 +7,12 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#5f9ea0" />
   <title>Rhythm Copycat — QLOBE Kids</title>
-  <meta name="description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta name="description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="QLOBE Kids" />
-  <meta property="og:title" content="Rhythm Copycat — copy the clay kitten's beat" />
-  <meta property="og:description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta property="og:title" content="Rhythm Copycat — copy the kawaii kitten's beat" />
+  <meta property="og:description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
   <meta property="og:url" content="https://qlo.be/games/rhythm-copycat/" />
   <meta property="og:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -20,8 +20,8 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Rhythm Copycat clay kitten stage with four percussion pads." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Rhythm Copycat — copy the clay kitten's beat" />
-  <meta name="twitter:description" content="Kiki the clay kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta name="twitter:title" content="Rhythm Copycat — copy the kawaii kitten's beat" />
+  <meta name="twitter:description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
   <meta name="twitter:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
@@ -37,6 +37,7 @@
 
     <!-- ===================== SPLASH ===================== -->
     <section class="rc-screen rc-splash" data-qk-screen="splash" aria-label="Rhythm Copycat menu">
+      <div class="rc-scene-toys" data-rc-splash-toys aria-hidden="true"></div>
       <div class="rc-bg" data-rc-bg></div>
       <h1 class="visually-hidden">Rhythm Copycat</h1>
       <img class="rc-title" src="./assets/ui/title.webp" alt="Rhythm Copycat" draggable="false" />
@@ -48,9 +49,10 @@
 
     <!-- ===================== PICK A BEAT ===================== -->
     <section class="rc-screen rc-select" data-qk-screen="select" aria-label="Pick a beat" hidden>
+      <div class="rc-scene-toys" data-rc-select-toys aria-hidden="true"></div>
       <div class="rc-bg" data-rc-bg></div>
       <header class="rc-plaque rc-select-plaque">
-        <h2 data-rc-pick-title>Pick a beat!</h2>
+        <h2 data-rc-pick-title><span class="rc-w-coral">Pick</span> <span class="rc-w-lime">a</span> <span class="rc-w-teal">beat!</span></h2>
       </header>
       <div class="rc-cards" data-rc-cards aria-label="Choose a beat to copy"></div>
       <div class="rc-big-btn-wrap">

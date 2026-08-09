@@ -77,6 +77,30 @@ async function setKiki(pose, { host = 'play', instant = false } = {}) {
 
 // ------------------------------------------------------------------ render
 
+const KW_WORDS = ['rc-w-coral', 'rc-w-teal', 'rc-w-lime', 'rc-w-coral'];
+
+function paintWords(el, text) {
+  // Mockup-style per-word splash colors on the headline plaques.
+  const words = text.split(' ');
+  el.innerHTML = words.map((w, i) =>
+    `<span class="${KW_WORDS[i % KW_WORDS.length]}">${w}</span>`).join(' ');
+}
+
+function mountSceneToys(hostSel, { maraca, tambourine }) {
+  const host = mount.querySelector(hostSel);
+  if (!host) return;
+  const mk = (cls, src, alt) => {
+    const img = document.createElement('img');
+    img.className = cls;
+    img.src = src;
+    img.alt = alt;
+    img.draggable = false;
+    host.append(img);
+  };
+  if (maraca) mk('rc-toy-maraca', maraca, '');
+  if (tambourine) mk('rc-toy-tambourine', tambourine, '');
+}
+
 function renderSplash() {
   els.modeShelf.innerHTML = '';
   for (const mode of config.modes) {
@@ -86,7 +110,7 @@ function renderSplash() {
     btn.dataset.target = `mode-${mode.id}`;
     btn.setAttribute('aria-label', mode.title);
     btn.innerHTML = `
-      <img class="rc-mode-card__back" src="${config.assets.card}" alt="" draggable="false" />
+      <img class="rc-mode-card__back" src="${config.assets.cards[mode.id === 'clap-stomp' ? 'orange' : 'teal']}" alt="" draggable="false" />
       <img class="rc-mode-card__badge" src="${mode.badge === 'drum' ? config.assets.djembe : config.assets.pads[mode.badge]}" alt="" draggable="false" />
       <span class="rc-mode-card__title">${mode.title}</span>
       <span class="rc-mode-card__skill">${mode.skill}</span>`;
@@ -103,6 +127,9 @@ function buildDots(pattern) {
     const slot = document.createElement('span');
     slot.className = 'rc-slot';
     slot.style.setProperty('--slot', String(i));
+    // Seat centers measured in the kawaii stadium-track art (left %, top 50%).
+    slot.style.left = `${[22, 39, 60, 79][i] ?? 50}%`;
+    slot.style.top = '50%';
     slot.innerHTML = `<img class="rc-dot" src="${config.assets.dots[pad]}" alt="" draggable="false" />`;
     wrap.append(slot);
     return slot;
@@ -126,8 +153,10 @@ function renderSelect() {
     btn.className = 'rc-card';
     btn.dataset.target = `card-${card.id}`;
     btn.setAttribute('aria-label', `${card.title}, ${card.length} beats`);
+    const icon = { orange: config.assets.djembe, yellow: config.assets.tambourine, teal: config.assets.woodblock }[card.color];
     btn.innerHTML = `
-      <img class="rc-card__back" src="${config.assets.card}" alt="" draggable="false" />
+      <img class="rc-card__back" src="${config.assets.cards[card.color]}" alt="" draggable="false" />
+      <img class="rc-card__icon" src="${icon}" alt="" draggable="false" />
       <span class="rc-card__title">${card.title}</span>
       <span class="rc-card__dots">${state.previews[ci].map((pad) =>
         `<img class="rc-card-dot" src="${config.assets.dots[pad]}" alt="" draggable="false" />`).join('')}
@@ -155,7 +184,7 @@ function renderTray(pattern) {
 function renderPads() {
   els.pads.innerHTML = '';
   padEls = {};
-  for (const id of padIds()) {
+  for (const id of Object.keys(config.assets.pads)) {
     const info = config.pads[id];
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -391,7 +420,7 @@ function endGame() {
   state.completed = true;
   state.phase = 'end';
   disposeRound();
-  els.endTitle.textContent = config.voice['all-done'] || 'You made a song!';
+  paintWords(els.endTitle, config.voice['all-done'] || 'You made a song!');
   screens.show('end');
   setKiki('celebrate', { host: 'end' });
   els.stars.innerHTML = '';
@@ -488,13 +517,18 @@ Promise.all([
 ]).then(([splash, play, end]) => {
   actors = { splash: splash.kiki, play: play.kiki, end: end.kiki };
   setKiki('neutral', { host: 'splash' });
+  mountSceneToys('[data-rc-splash-toys]', { maraca: config.assets.maraca, tambourine: config.assets.tambourine });
+  mountSceneToys('[data-rc-select-toys]', { maraca: config.assets.maraca, tambourine: config.assets.tambourine });
 });
+paintWords(els.pickTitle, els.pickTitle.textContent);
 
 preloadImages(
   Object.values(config.assets.pads)
     .concat(Object.values(config.assets.dots))
+    .concat(Object.values(config.assets.cards))
+    .concat([config.assets.djembe, config.assets.tambourine, config.assets.woodblock])
     .concat([config.assets.title, config.assets.splashBg, config.assets.playBg,
-      config.assets.card, config.assets.button, config.assets.star,
+      config.assets.button, config.assets.star,
       config.assets.tray, config.assets.plaque, config.assets.djembe]),
 );
 

@@ -2,14 +2,16 @@
 
 **Concept:** `../01-game-concepts/rhythm-copycat/brief.md`
 **Replaces:** `games/rhythm-copycat/` beta stub (pattern-continue engine, 👏 emoji art)
-**Canonical art-direction label:** Claymation
+**Canonical art-direction label:** Kawaii sticker toy (revised to the
+`output/ui-mockups` kawaii-redesign style: puffy white-sticker outlines,
+matte-satin vinyl, citrus/aqua palette, cocoa-stroked bubble type)
 **Category:** art-music · **Age:** 4–6 · **Status target:** live
 
 ## Product promise
 
-*Rhythm Copycat is a body-percussion band for little hands.* A clay kitten
-conductor (Kiki) plays CLAP, STOMP, TAP and SHAKE beats on a cozy clay stage;
-the child listens, then copies the beat back in time by tapping big clay pads.
+*Rhythm Copycat is a body-percussion band for little hands.* A kawaii kitten
+conductor (Kiki) plays CLAP, STOMP, TAP and SHAKE beats on a sticker-toy stage;
+the child listens, then copies the beat back in time by tapping big sticker pads.
 No reading, no losing — every beat ends in a song and a cheer.
 
 This is the platform's first **timed** rhythm game: the pattern-continue stub
@@ -26,16 +28,16 @@ Splash ──▶ Pick a Beat ──▶ Play (demo → copy → song replay) ─�
         home = catalog      back = pick-a-beat        again = pick-a-beat
 ```
 
-1. **Splash** — clay world stage: teal wall, wood table, clay props, Kiki
+1. **Splash** — kawaii sticker world stage: teal wall, window, shelf, rug, Kiki
    peeking. Clay title lockup (generated art, spell-checked). Two mode cards.
    Home button (→ catalog) top-left, sound top-right. Theme: `--qk-accent`
    coral `#f25f5c`.
-2. **Pick a Beat** — three clay beat cards, each previewing its pattern as
-   colored dots (data-driven composition from real clay dot sprites). Tap a
+2. **Pick a Beat** — three kawaii beat cards, each previewing its pattern as
+   colored dots (data-driven composition from real sticker dot sprites). Tap a
    card to select (it pops), tap big START. Back → splash. Voice: "Pick a
    beat!"
 3. **Play** — stage scene. Kiki stands center-table with the beat tray above
-   her. Four clay action pads across the bottom (icon-only + small HTML
+   her. Four sticker action pads across the bottom (icon-only + small HTML
    caption). Two phases per round:
    - **Demo:** "Listen!" — Kiki performs each beat in time; sounds play; the
      tray slot lights and its pad glows as it sounds.
@@ -123,23 +125,26 @@ converted to AAC m4a (+faststart, 64k), Whisper-QA'd against this table.
 
 ## Art list
 
-World: **Claymation** — matte modeling-clay forms, fingerprints, hand-pressed
+World: **Kawaii sticker toy** — puffy soft-vinyl forms, thick white sticker borders, glossy
+kawaii faces, matte-satin finish (per the ui-mockups kawaii redesign)
 seams, warm studio light, teal wall + warm wood table. One star character:
-**Kiki, a ginger clay kitten** with cream muzzle/chest, big amber eyes, black
+**Kiki, a ginger kawaii kitten** with a white sticker outline, glossy eyes, blush cheeks,
+cream muzzle/chest, black
 stubby tail. Sparse props only (maraca, xylophone) — the stage must stay calm
 under the tray and pads.
 
 | # | asset | size | renderer / notes |
 |---|---|---|---|
-| 1 | `splash-bg.webp` | 1600×1200 | opaque WebP, full stage scene w/ props; title zone calm at top-center |
-| 2 | `play-bg.webp` | 1600×1200 | opaque WebP, same world, center calm for Kiki + tray |
-| 3 | `title.webp` | ~1200×360 | clay letter lockup "Rhythm Copycat", alpha PNG→WebP, ≤150 KB, OCR-checked |
+| 1 | `splash.webp` | 1600×1200 | kawaii music-room scene (window, shelf, rug), used on splash + select |
+| 2 | `play.webp` | 1600×1200 | flat aqua sticker stage with corner props + water strip |
+| 2b | `end.webp` | 1600×1200 | sky-blue stage with scalloped podium + confetti |
+| 3 | `title.webp` | ~520×138 | kawaii bubble letter lockup "Rhythm ♪ Copycat", cocoa-stroked, layered cutout |
 | 4 | `kiki/poses/{neutral,notice,clap,stomp,tap,shake,celebrate}.webp` | 1024×1024 canvas | pose actor pack (manifest `poses.json`), normalized via `pose_actor_assemble.py`, shared scale/baseline, anchor [0.5, 0.95] |
-| 5 | `pads/{clap,stomp,tap,shake}.webp` | 512×512 | layered cutouts: clay drum-pads, embossed icon (hands / sneaker / hand-on-drum / maraca) |
-| 6 | `tray.webp` | 1200×240 | clay beat tray, 4 recessed wells, transparent ends |
-| 7 | `dots/{coral,mustard,teal,lilac}.webp` | 160×160 | clay dots (pad colors), transparent |
-| 8 | `ui/card.webp` | 640×720 | clay beat-card panel (transparent rounded panel) |
-| 9 | `ui/badge-clap.webp`, `ui/badge-drum.webp` | 256×256 | mode-card icons (two hands / drum circle) |
+| 5 | `pads/{clap,stomp,tap,shake}.webp` | 512×512 | cream squircles, cocoa/colored borders, limb icons (clap hands / sneakers / drum tap / maraca) |
+| 6 | `tray.webp` | ~886×364 | stadium track with 4 recessed chip seats |
+| 7 | `dots/{blue,green,orange,red}.webp` | 160×160 | flat sticker dots keyed to the four actions |
+| 8 | `cards/{orange,yellow,teal}.webp` | ~608×608 | colored sticker cards with stitch + white pill |
+| 9 | `ui/{button,plaque,star,djembe}.webp` + `ui/{tambourine,woodblock,maraca}.webp` | — | coral CTA pill, cloud plaque, kawaii star/instruments |
 | 10 | `hub/tiles/rhythm-copycat.jpg` | 640×533 | krea2 menu-game-tile product shot, no text |
 | 11 | `og-image.jpg` | 1200×630 | splash-derived capture |
 | 12 | `assets/source/*` | — | every raw generation retained |
@@ -190,15 +195,14 @@ accounts. Static site, offline-capable after first load.
 
 ## Departures from brief/mockups (with reasons)
 
-1. **Mockups have no character; brief asks for an animal guide.** Kiki the
-   clay kitten is added as the performer — the brief's "expressive animated
-   animal character acting out the actions on a stage" wins over the
-   handprint-only mockup screens. Claymation label follows the brief (the
-   `kawaii-redesign/` set is recorded but not used).
+1. **Mockups have no guide; the platform benefits from one.** Kiki the
+   kawaii kitten is the performer — restyled in the mockups' sticker language
+   (white die-cut outline, glossy eyes, blush) so she belongs to the same
+   world.
 2. **Pad captions (CLAP/STOMP/TAP/SHAKE) are real HTML text**, not baked
    art — functional text stays HTML; icons carry pre-reader meaning.
-3. **Beat cards are data-driven compositions** (card sprite + real clay dots
-   + pad icons), not three generated screenshots — patterns are generated at
+3. **Beat cards are data-driven compositions** (card sprite + real sticker dots
+   + instrument stickers), not three generated screenshots — patterns are generated at
    runtime from the same seeded RNG that plays them, so what you preview is
    exactly what you copy.
 4. **No countdown/score pressure.** Stars derive from first-try accuracy but
