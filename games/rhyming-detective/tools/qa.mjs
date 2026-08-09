@@ -286,7 +286,7 @@ async function staticChecks() {
     manifestJson.title === 'Rhyming Detective'
     && manifestJson.category === 'reading-phonics'
     && manifestJson.age.min === 3 && manifestJson.age.max === 6
-    && manifestJson.status === 'beta' && manifestJson.accent === '#2f6fd0',
+    && manifestJson.status === 'in-design' && manifestJson.accent === '#2f6fd0',
     JSON.stringify({ age: manifestJson.age, status: manifestJson.status, accent: manifestJson.accent }));
   check('game.json declares both modes with a one-skill description',
     manifestJson.modes.map((m) => m.id).join(',') === 'rhyme-hunt,sound-detective'
@@ -303,7 +303,7 @@ async function staticChecks() {
   const entry = registry.games.find((g) => g.id === 'rhyming-detective');
   check('games.json mirrors the manifest',
     entry && entry.title === manifestJson.title && entry.accent === manifestJson.accent
-    && entry.age.min === 3 && entry.status === 'beta'
+    && entry.age.min === 3 && entry.status === 'in-design'
     && entry.modes.map((m) => m.id).join(',') === 'rhyme-hunt,sound-detective');
   check('the curated hub tile is on disk and untouched by this build',
     await exists(path.join(ROOT, entry.icon)), entry && entry.icon);
