@@ -10,7 +10,7 @@ import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/a
 import { createNarrator } from '../../../shared/js/narrator.js';
 import { createTimers } from '../../../shared/js/timers.js';
 import { mulberry32 } from '../../../shared/js/rng.js';
-import { tada, burstConfetti } from '../../../shared/js/celebrate.js';
+import { tada } from '../../../shared/js/celebrate.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
 import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
@@ -57,6 +57,11 @@ function disposeStage() {
   dragCtl?.cancel(); dragCtl?.detach(); dragCtl = null;
   stageDisposers.forEach((dispose) => { try { dispose(); } catch { /* teardown */ } });
   stageDisposers = []; bakePointer = null; timers.clearAll();
+  // beginBake() adds this but nothing ever removes it — left in place, a second
+  // bake in the same session (Make Another, or replaying a mode) inherits
+  // `.cooking-board.is-baking .peel-control { opacity: 0 }` from the FIRST
+  // bake and the peel renders invisible from the moment toppings finish.
+  els.board.classList.remove('is-baking');
 }
 function resetState(mode) {
   const recipeIndex = Math.floor(rng() * config.recipes.length);
@@ -136,6 +141,7 @@ function addFlourPuff(target) {
 }
 function patDough(target = els.board.querySelector('.pizza-object--dough')) {
   if (!active() || state.phase !== 'press' || !target) return false;
+  nudger.poke();
   state.presses = Math.min(config.thresholds.pressTaps, state.presses + 1);
   target.dataset.presses = String(state.presses); target.classList.remove('is-patted'); void target.offsetWidth; target.classList.add('is-patted'); addFlourPuff(target);
   try { sfx.pop(); } catch { /* sound optional */ }
@@ -150,6 +156,10 @@ function sauceCellAt(event, surface) {
 }
 function addSauceProgress(cell, surface = els.board.querySelector('.sauce-surface')) {
   if (!active() || state.phase !== 'sauce' || !SAUCE_CELL_SET.has(cell) || state.sauceCells.has(cell)) return false;
+  // The nudger's own reset only fires on a fresh window pointerdown, so one
+  // long continuous swirl (or a keyboard-only child who never touches the
+  // screen) can run past the idle deadline mid-progress. Poke it here instead.
+  nudger.poke();
   state.sauceCells.add(cell);
   renderSauceProgress(surface);
   try { sfx.sparkle(); } catch { /* sound optional */ }
@@ -175,13 +185,21 @@ function renderSauceProgress(surface) {
 }
 function wireSauce(surface) {
   let pointerId = null;
+  // setPointerCapture is never balanced by a release on the state-driven exits
+  // (coverage threshold reached mid-stroke, Back, a keyboard finish) — only on
+  // pointerup/pointercancel/blur. Those exits tear the surface out of the DOM
+  // via renderStage() while it still holds capture for the live pointerId,
+  // which can leave that pointerId wedged on some browsers and deafen the very
+  // next gesture (sauce or the toppings drag right after it). Route every exit
+  // through one release so capture never outlives the element that holds it.
+  const releaseCapture = () => { if (pointerId != null) { try { surface.releasePointerCapture(pointerId); } catch { /* already gone */ } } };
   const down = (event) => { if (event.isPrimary === false || state.phase !== 'sauce') return; pointerId = event.pointerId; surface.setPointerCapture?.(pointerId); addSauceProgress(sauceCellAt(event, surface), surface); event.preventDefault(); };
   const move = (event) => { if (event.pointerId !== pointerId) return; addSauceProgress(sauceCellAt(event, surface), surface); };
-  const end = (event) => { if (event.pointerId === pointerId) pointerId = null; };
-  const blur = () => { pointerId = null; };
+  const end = (event) => { if (event.pointerId === pointerId) { releaseCapture(); pointerId = null; } };
+  const blur = () => { releaseCapture(); pointerId = null; };
   const keydown = (event) => { if (!['Enter', ' ', 'Spacebar'].includes(event.key)) return; event.preventDefault(); addNextSauceCells(surface, 4); };
   surface.addEventListener('pointerdown', down); surface.addEventListener('keydown', keydown); window.addEventListener('pointermove', move, { passive: true }); window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end); window.addEventListener('blur', blur);
-  stageDisposers.push(() => { surface.removeEventListener('pointerdown', down); surface.removeEventListener('keydown', keydown); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end); window.removeEventListener('blur', blur); });
+  stageDisposers.push(() => { releaseCapture(); surface.removeEventListener('pointerdown', down); surface.removeEventListener('keydown', keydown); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end); window.removeEventListener('blur', blur); });
 }
 function finishSwirl() {
   if (!active() || state.phase !== 'sauce') return false;
@@ -211,6 +229,7 @@ function placeTopping(kind, index) {
   if (!active() || state.phase !== 'toppings') return false;
   const slot = els.board.querySelector(`[data-slot="${index}"]`); const piece = els.tray.querySelector(`[data-kind="${kind}"]`);
   if (!slot || !piece || slot.dataset.filled || piece.classList.contains('is-placed') || slot.dataset.kind !== kind) { nudgePiece(piece); return false; }
+  nudger.poke();
   slot.dataset.filled = kind; slot.classList.add('is-filled'); slot.append(img(ingredientAsset(kind), 'pizza-slot__topping', kind)); piece.classList.add('is-placed'); piece.classList.remove('selected'); piece.setAttribute('aria-pressed', 'false'); piece.disabled = true; state.placed.push({ kind, slot: index }); state.selectedKind = null; try { sfx.sparkle(); } catch { /* optional */ }
   if (state.placed.length >= toppingCount()) setPhase('bake', voiceKey('bake'));
   return true;
@@ -230,6 +249,7 @@ function wireToppings() {
 }
 function beginBake(event = null) {
   if (!active() || state.phase !== 'bake' || state.baking || (needsToppings() && state.placed.length < toppingCount())) return false;
+  nudger.poke();
   state.baking = true; els.board.classList.add('is-baking'); say(voiceKey('bake'));
   timers.after(950, completePizza); return true;
 }
@@ -249,12 +269,16 @@ function wireBake(peel, oven) {
     const nearOven = ovenRect.height > 0 && event.clientY <= ovenRect.bottom + Math.min(100, ovenRect.height / 2);
     reset(); if (travelled >= 56 || nearOven) beginBake(event);
   };
-  peel.addEventListener('pointerdown', down); window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', reset); window.addEventListener('blur', reset);
-  stageDisposers.push(onTap(peel, () => beginBake()), () => { peel.removeEventListener('pointerdown', down); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', reset); window.removeEventListener('blur', reset); });
+  // A screen lock can end the gesture without ever blurring the window, which
+  // would otherwise leave the peel visually stuck mid-slide until the next
+  // interaction (drag-to-slot-dom covers this the same way for toppings).
+  const visibility = () => { if (document.visibilityState === 'hidden') reset(); };
+  peel.addEventListener('pointerdown', down); window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', reset); window.addEventListener('blur', reset); document.addEventListener('visibilitychange', visibility);
+  stageDisposers.push(onTap(peel, () => beginBake()), () => { peel.removeEventListener('pointerdown', down); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', reset); window.removeEventListener('blur', reset); document.removeEventListener('visibilitychange', visibility); });
 }
 function completePizza() {
   if (!active() || state.completed) return false;
-  state.completed = true; state.phase = 'complete'; state.step = 'complete'; state.baking = false; nudger.stop(); disposeStage(); renderEnd(); screens.show('end'); tada(); burstConfetti(); say(state.mode === 'swirl' ? 'swirl-cheer' : voiceKey('cheer')); return true;
+  state.completed = true; state.phase = 'complete'; state.step = 'complete'; state.baking = false; nudger.stop(); disposeStage(); renderEnd(); screens.show('end'); tada(); say(state.mode === 'swirl' ? 'swirl-cheer' : voiceKey('cheer')); return true;
 }
 function renderStage() {
   disposeStage(); updatePrompt(); els.board.replaceChildren(); els.tray.replaceChildren();
@@ -293,7 +317,12 @@ function renderEnd() {
 }
 async function startMode(mode) {
   if (!config.modes.some((item) => item.id === mode)) return false;
-  return screens.start(() => {
+  return screens.start(async () => {
+    // Same fix as sink-or-float/rhyming-detective: without this, a mode picked
+    // before the manifest fetch resolves speaks the intro through the Web
+    // Speech fallback instead of the recorded teacher clip. audioReady never
+    // rejects (voice-clips.js swallows load failures), so no try/catch needed.
+    await audioReady;
     disposeStage(); resetState(mode); screens.show('play'); state.screen = 'play'; renderStage(); say(`${mode}-intro`); nudger.arm(); return true;
   }, { busy: false });
 }

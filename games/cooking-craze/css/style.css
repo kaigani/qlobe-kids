@@ -438,6 +438,13 @@ a:focus-visible,
 }
 
 .ingredient-drag-ghost {
+  /* The ghost is a clone of .ingredient, which is `position: relative` — drag-
+     to-slot-dom.js only promotes a ghost to `fixed` when its computed position
+     is `static` (its "don't fight a game that positioned it" rule), so without
+     this the inherited `relative` wins and left/top land as an offset from the
+     ghost's in-flow spot at the end of <body> instead of viewport coordinates,
+     rendering it far off-screen instead of under the finger.  */
+  position: fixed;
   z-index: 1000;
   width: 122px;
   height: 122px;
@@ -603,7 +610,7 @@ a:focus-visible,
 
 .end-mascots {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   top: 55%;
   left: 50%;
   width: min(72vw, 70vh, 680px);
@@ -833,7 +840,12 @@ a:focus-visible,
     touch-action: pan-y;
   }
   .cooking-tray::-webkit-scrollbar { display: none; }
-  .ingredient { flex: none; scroll-snap-align: center; touch-action: pan-y; }
+  /* touch-action stays `none` (the base .ingredient rule) even here: rule #6 in
+     docs/interaction-patterns.md — a draggable element must keep touch-action:
+     none or the browser claims a vertical-ish drag as native panning instead of
+     handing it to the drag controller. The tray's own touch-action: pan-y above
+     still lets a touch that starts on the padding/gaps scroll the rail. */
+  .ingredient { flex: none; scroll-snap-align: center; }
 }
 
 @media (orientation: portrait) and (max-width: 520px) {
