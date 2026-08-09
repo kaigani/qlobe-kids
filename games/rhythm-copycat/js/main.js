@@ -478,13 +478,16 @@ onTap(els.beats, () => { sfx.pop(); goSelect(); }, { feedback: () => {} });
 
 // ------------------------------------------------------------------ actors
 
+// The mode shelf must be tappable before the kitten art finishes streaming —
+// it renders immediately; Kiki pops in when her pack lands.
+renderSplash();
 Promise.all([
   loadPoseActors(mount.querySelector('[data-rc-actor="splash"]'), { kiki: { pack: config.assets.kiki } }),
   loadPoseActors(mount.querySelector('[data-rc-actor="play"]'), { kiki: { pack: config.assets.kiki } }),
   loadPoseActors(mount.querySelector('[data-rc-actor="end"]'), { kiki: { pack: config.assets.kiki } }),
 ]).then(([splash, play, end]) => {
   actors = { splash: splash.kiki, play: play.kiki, end: end.kiki };
-  renderSplash();
+  setKiki('neutral', { host: 'splash' });
 });
 
 preloadImages(

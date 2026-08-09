@@ -75,6 +75,8 @@ async function waitArmed(page) {
 
 async function playthrough(page, modeId, prefix) {
   await shot(page, `${prefix}-01-splash.png`);
+  await page.waitForFunction((id) =>
+    [...document.querySelectorAll('[data-target^="mode-"]')].some((el) => el.offsetParent !== null), modeId);
   await debug.tap(page, `mode-${modeId}`);
   await waitScreen(page, 'select');
   await shot(page, `${prefix}-02-select.png`);
