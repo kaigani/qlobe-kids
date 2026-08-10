@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bracelet-workshop-bg",
+  "kind": "image",
+  "asset": "bracelet-workshop-bg.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a warm stop-motion claymation workshop table seen straight from above, light oak wood grain with a broad cream linen runner down the middle, soft sunny window bokeh at the back edge, blurred clay jars and wooden tools along the far edge, calm empty center for a bracelet, warm golden studio light, soft and magical, welcoming for ages 3-7, THE CENTER OF THE FRAME IS OPEN EMPTY STAGE (sprites will stand there), no characters, no loose objects in the middle. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "scene-backdrop",
+    "style": "toy-table",
+    "fields": {
+      "setting": "a warm stop-motion claymation workshop table seen straight from above, light oak wood grain with a broad cream linen runner down the middle, soft sunny window bokeh at the back edge, blurred clay jars and wooden tools along the far edge, calm empty center for a bracelet",
+      "framing": "wide 16:9 view with a broad uncluttered lower-centre performance clearing and environmental detail around the edges",
+      "mood": "warm golden studio light, soft and magical, welcoming for ages 3-7"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-07"
+}

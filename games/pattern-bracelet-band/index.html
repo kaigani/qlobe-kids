@@ -5,43 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Pattern Bracelet Band 📿 — Stringing Bead Patterns</title>
-  <meta name="description" content="Tap the next bead color to continue AB, ABC, and ABB patterns and finish your own bracelet. A craft-inspired patterning game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="theme-color" content="#d9b68a" />
+  <title>Pattern Bracelet Studio — String, Play, Hear Your Pattern</title>
+  <meta name="description" content="String clay beads into AB and ABC patterns on a wooden bracelet, then press PLAY to hear your pattern as music. Invent your own bracelet song!" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Pattern Bracelet Band" />
-  <meta property="og:title" content="Pattern Bracelet Band 📿 — Stringing Bead Patterns" />
-  <meta property="og:description" content="Tap the next bead color to continue AB, ABC, and ABB patterns and finish your own bracelet. A craft-inspired patterning game for ages 5–6." />
+  <meta property="og:site_name" content="Pattern Bracelet Studio" />
+  <meta property="og:title" content="Pattern Bracelet Studio — String, Play, Hear Your Pattern" />
+  <meta property="og:description" content="String clay beads into patterns and hear them as music. Every bead is a chime!" />
   <meta property="og:url" content="https://qlo.be/games/pattern-bracelet-band/" />
   <meta property="og:image" content="https://qlo.be/games/pattern-bracelet-band/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Pattern Bracelet Band title screen with a purple String the Beads button below a beaded bracelet icon." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="Pattern Bracelet Studio splash with three clay bracelet cards on a warm wood table." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pattern Bracelet Band 📿 — Stringing Bead Patterns" />
-  <meta name="twitter:description" content="Tap the next bead color to continue AB, ABC, and ABB patterns and finish your own bracelet. A craft-inspired patterning game for ages 5–6." />
+  <meta name="twitter:title" content="Pattern Bracelet Studio — String, Play, Hear Your Pattern" />
+  <meta name="twitter:description" content="String clay beads into patterns and hear them as music." />
   <meta name="twitter:image" content="https://qlo.be/games/pattern-bracelet-band/assets/og-image.jpg" />
-
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/pattern-continue.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app" aria-live="polite">
+    <section id="splash" class="screen" aria-label="Pattern Bracelet Studio">
+      <a class="hud hud-home" href="../../" aria-label="Back to all games"></a>
+      <div class="splash-inner">
+        <img class="title-art" src="./assets/title.webp" alt="Pattern Bracelet Studio" />
+        <p class="splash-tag">Every bead is a chime!</p>
+        <div id="mode-cards" class="mode-cards" aria-label="Choose a bracelet"></div>
+      </div>
+    </section>
+
+    <section id="play" class="screen" hidden>
+      <button id="back" class="hud hud-back" aria-label="Back to bracelets"></button>
+      <button id="sound" class="hud hud-sound" aria-label="Hear the instruction again"></button>
+      <div class="play-inner">
+        <div id="step-rail" class="step-rail" aria-hidden="true"></div>
+        <button id="prompt-card" class="prompt-card" aria-label="Hear the instruction again">
+          <span id="prompt-icon" class="prompt-icon" aria-hidden="true"></span>
+          <span id="prompt-text"></span>
+        </button>
+        <div id="board-wrap" class="board-wrap">
+          <div id="board" class="board" aria-label="Bracelet">
+            <div id="cord" class="cord" aria-hidden="true"></div>
+            <div id="slots" class="slots"></div>
+            <div id="slot-glow" class="slot-glow" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div id="tray-wrap" class="tray-wrap">
+          <div id="tray" class="tray" aria-label="Choose a bead"></div>
+          <div class="play-controls">
+            <button id="play-btn" class="big-play" aria-label="Play your bracelet">▶ Play</button>
+            <div class="tempo" aria-label="Tempo">
+              <button id="slower" class="tempo-btn" aria-label="Slower">−</button>
+              <span id="tempo-label" class="tempo-label">Tempo</span>
+              <button id="faster" class="tempo-btn" aria-label="Faster">+</button>
+            </div>
+            <button id="clear-btn" class="clear-btn" aria-label="Clear beads">Clear</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="celebrate" class="screen" hidden>
+      <button id="celebrate-back" class="hud hud-back" aria-label="Back to bracelets"></button>
+      <div class="celebrate-inner">
+        <img id="ribbon" class="ribbon" src="./assets/ui/banner-ribbon.webp" alt="" aria-hidden="true">
+        <h2 class="celebrate-title">Bracelet Concert!</h2>
+        <div id="stars" class="stars" aria-hidden="true">
+          <img class="star" src="./assets/ui/star-gold.webp" alt="">
+          <img class="star star-mid" src="./assets/ui/star-gold.webp" alt="">
+          <img class="star" src="./assets/ui/star-gold.webp" alt="">
+        </div>
+        <div id="celebrate-board-wrap" class="board-wrap celebrate-board-wrap"></div>
+        <div id="recap" class="recap" aria-hidden="true"></div>
+        <div class="celebrate-actions">
+          <button id="again" class="big-button" aria-label="Make this bracelet again">Make again</button>
+          <button id="choose" class="big-button secondary" aria-label="Choose another bracelet">Choose bracelet</button>
+        </div>
+      </div>
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

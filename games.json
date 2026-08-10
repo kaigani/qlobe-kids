@@ -200,7 +200,7 @@
     "min": 4,
     "max": 6
    },
-   "status": "in-design",
+   "status": "live",
    "accent": "#ef5b4c",
    "uses": [
     "shared/js/freeform-board.js",
@@ -2452,7 +2452,7 @@
   },
   {
    "id": "pattern-bracelet-band",
-   "title": "Pattern Bracelet Band",
+   "title": "Pattern Bracelet Studio",
    "category": "art-music",
    "path": "games/pattern-bracelet-band/",
    "icon": "assets/hub/tiles/pattern-bracelet-band.jpg",
@@ -2461,12 +2461,22 @@
     "max": 6
    },
    "status": "in-design",
-   "accent": "#8a5bc4",
+   "accent": "#d67a3a",
    "modes": [
     {
-     "id": "beads",
-     "title": "String the Beads",
-     "skill": "AB, ABC, and ABB bead-pattern extension"
+     "id": "pop",
+     "title": "Pop Pattern",
+     "skill": "AB pattern extension with musical playback"
+    },
+    {
+     "id": "star",
+     "title": "Star Pattern",
+     "skill": "ABC and ABB pattern extension"
+    },
+    {
+     "id": "jam",
+     "title": "Free Jam Studio",
+     "skill": "invent and hear your own bead pattern as music"
     }
    ],
    "summary": "Make a wearable bracelet with a repeating pattern."

@@ -1,0 +1,60 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "test-bead-red",
+  "kind": "image",
+  "asset": "test-bead-red.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a chunky polymer clay torus bead in coral-red, thick handmade ring with fingerprint dimples, soft highlight, stop-motion clay texture, matte satin, isolated, centered. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "ground": "dark-charcoal",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "test-bead-red.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a chunky polymer clay torus bead in coral-red, thick handmade ring with fingerprint dimples, soft highlight, stop-motion clay texture, matte satin, isolated, centered. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "test-bead-red.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 640,
+      "encode": "png",
+      "from": "test-bead-red.layer2.png",
+      "output": "test-bead-red.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "prop-cutout",
+    "style": "toy-table",
+    "fields": {
+      "prop": "a chunky polymer clay torus bead in coral-red, thick handmade ring with fingerprint dimples, soft highlight, stop-motion clay texture, matte satin"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 43.992,
+      "opaquePct": 31.718,
+      "partialPct": 24.29
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 42
+  },
+  "created": "2026-08-07"
+}

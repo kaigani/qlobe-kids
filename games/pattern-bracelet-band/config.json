@@ -1,0 +1,78 @@
+{
+  "id": "pattern-bracelet-band",
+  "title": "Pattern Bracelet Studio",
+  "engine": "custom-bracelet-sequencer",
+  "theme": {
+    "world": "claymation",
+    "accent": "#d67a3a",
+    "background": "./assets/workshop.webp"
+  },
+  "beads": {
+    "red":    { "art": "./assets/beads/bead-red.webp",    "label": "red",    "hz": 262, "alt": "coral-red clay bead" },
+    "yellow": { "art": "./assets/beads/bead-yellow.webp", "label": "yellow", "hz": 392, "alt": "sunny yellow clay bead" },
+    "blue":   { "art": "./assets/beads/bead-blue.webp",   "label": "blue",   "hz": 330, "alt": "sky blue clay bead" },
+    "purple": { "art": "./assets/beads/bead-purple.webp", "label": "purple", "hz": 440, "alt": "lavender purple clay bead" },
+    "teal":   { "art": "./assets/beads/bead-teal.webp",   "label": "teal",   "hz": 349, "alt": "teal clay bead" },
+    "coral":  { "art": "./assets/beads/bead-coral.webp",  "label": "coral",  "hz": 294, "alt": "coral peach clay bead" }
+  },
+  "voice": {
+    "welcome": "Welcome to the Bracelet Studio! Pick a bracelet and let's string it!",
+    "intro-pop": "Let's make a pop pattern! Red, yellow, red, yellow — what comes next?",
+    "intro-star": "Let's make a star pattern! Watch closely — red, yellow, blue…",
+    "intro-jam": "This bracelet is yours! Pick any beads, then press play to hear your song!",
+    "prompt-choose": "Which color comes next? Look at the pattern!",
+    "nudge": "Hmm, look again. Which color follows the pattern?",
+    "cheer-pop": "You strung it! What a groovy pop pattern!",
+    "cheer-star": "Stunning! You finished the star pattern!",
+    "cheer-jam": "What a hit! Your bracelet song is amazing!",
+    "play": "Press play to hear your bracelet!",
+    "faster": "Faster!",
+    "slower": "Slower!",
+    "again": "Make another bracelet?",
+    "empty-slot": "Tap a glowing dot to add a bead."
+  },
+  "modes": [
+    {
+      "id": "pop",
+      "title": "Pop Pattern",
+      "skill": "AB pattern extension with musical playback",
+      "accent": "#e85a4a",
+      "slots": 8,
+      "rounds": 5,
+      "patterns": [
+        { "sequence": ["red","yellow","red","yellow","red","yellow"], "missing": 2 },
+        { "sequence": ["blue","purple","blue","purple","blue","purple"], "missing": 2 },
+        { "sequence": ["teal","coral","teal","coral","teal","coral"], "missing": 2 },
+        { "sequence": ["yellow","blue","yellow","blue","yellow","blue"], "missing": 2 },
+        { "sequence": ["purple","teal","purple","teal","purple","teal"], "missing": 2 }
+      ],
+      "candidates": ["red","yellow","blue","purple","teal","coral"]
+    },
+    {
+      "id": "star",
+      "title": "Star Pattern",
+      "skill": "ABC and ABB pattern extension",
+      "accent": "#7b5bb0",
+      "slots": 8,
+      "rounds": 5,
+      "patterns": [
+        { "sequence": ["red","yellow","blue","red","yellow","blue"], "missing": 2 },
+        { "sequence": ["purple","red","yellow","purple","red","yellow"], "missing": 2 },
+        { "sequence": ["blue","purple","purple","blue","purple","purple"], "missing": 2 },
+        { "sequence": ["teal","teal","coral","teal","teal","coral"], "missing": 2 },
+        { "sequence": ["yellow","blue","purple","yellow","blue","purple"], "missing": 2 }
+      ],
+      "candidates": ["red","yellow","blue","purple","teal","coral"]
+    },
+    {
+      "id": "jam",
+      "title": "Free Jam Studio",
+      "skill": "Invent and hear your own bead pattern as music",
+      "accent": "#58c4b8",
+      "slots": 8,
+      "rounds": 1,
+      "free": true,
+      "candidates": ["red","yellow","blue","purple","teal","coral"]
+    }
+  ]
+}
