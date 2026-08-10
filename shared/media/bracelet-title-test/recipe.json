@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bracelet-title-test",
+  "kind": "image",
+  "asset": "bracelet-title-test.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a handmade clay title plaque reading PATTERN BRACELET STUDIO in three lines of rounded bubbly clay letters, coral teal yellow and sky-blue letters on an irregular sky-blue clay slab with tiny clay beads along the border, stop-motion polymer clay texture with fingerprints, premium preschool logo, bright even studio light, THE CENTER OF THE FRAME IS OPEN EMPTY STAGE (sprites will stand there), no characters, no loose objects in the middle. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "scene-backdrop",
+    "style": "toy-table",
+    "fields": {
+      "setting": "a handmade clay title plaque reading PATTERN BRACELET STUDIO in three lines of rounded bubbly clay letters, coral teal yellow and sky-blue letters on an irregular sky-blue clay slab with tiny clay beads along the border, stop-motion polymer clay texture with fingerprints, premium preschool logo",
+      "framing": "centered title plaque isolated with lots of empty space around it",
+      "mood": "bright even studio light"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review"
+  },
+  "created": "2026-08-07"
+}

@@ -1,0 +1,48 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-props2",
+  "kind": "image",
+  "asset": "cooking-craze-props2.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Claymation pizza props: a round unbaked pizza base with thick dough rim, a soft flour-dusted dough blob, a wooden pizza peel with handle, and a stone pizza oven arch. Each soft stop-motion clay or wood with gentle highlight and contact shadow, warm kitchen colors, arranged in a neat 2x2 grid on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background. Premium preschool app asset.",
+      "seed": 1337,
+      "width": 1024,
+      "height": 1024,
+      "output": "cooking-craze-props2.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same Claymation pizza props: a round unbaked pizza base with thick dough rim, a soft flour-dusted dough blob, a wooden pizza peel with handle, and a stone pizza oven arch. Each soft stop-motion clay or wood with gentle highlight and contact shadow, warm kitchen colors, arranged in a neat 2x2 grid on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background. Premium preschool app asset. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "cooking-craze-props2.raw.png",
+      "seed": 1337
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 400,
+      "encode": "png",
+      "from": "cooking-craze-props2.layer2.png",
+      "output": "cooking-craze-props2.png"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 49.51,
+      "opaquePct": 31.356,
+      "partialPct": 19.135
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 1337
+  },
+  "created": "2026-08-07"
+}

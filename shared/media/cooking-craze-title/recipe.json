@@ -1,0 +1,48 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-title",
+  "kind": "image",
+  "asset": "cooking-craze-title.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "The words COOKING CRAZE in chunky glossy claymation 3D bubble letters, warm orange and red and yellow, soft rounded, with tiny clay pizza slice and basil leaf ornaments, premium preschool game title, centered on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background.",
+      "seed": 42,
+      "width": 1024,
+      "height": 512,
+      "output": "cooking-craze-title.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same The words COOKING CRAZE in chunky glossy claymation 3D bubble letters, warm orange and red and yellow, soft rounded, with tiny clay pizza slice and basil leaf ornaments, premium preschool game title, centered on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "cooking-craze-title.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 400,
+      "encode": "png",
+      "from": "cooking-craze-title.layer2.png",
+      "output": "cooking-craze-title.png"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 53.367,
+      "opaquePct": 7.523,
+      "partialPct": 39.11
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-07"
+}

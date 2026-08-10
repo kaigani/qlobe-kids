@@ -1,0 +1,48 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cooking-craze-toppings",
+  "kind": "image",
+  "asset": "cooking-craze-toppings.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A contact sheet of 6 clay toppings: glossy red tomato slice, yellow cheese block, red pepperoni discs, beige mushroom halves, green basil leaves, black olive rings. Each topping is soft stop-motion modeling clay with gentle highlight and contact shadow, rounded forms, matte finish. Arranged in a neat 3x2 grid on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background. Premium preschool app asset.",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "cooking-craze-toppings.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same A contact sheet of 6 clay toppings: glossy red tomato slice, yellow cheese block, red pepperoni discs, beige mushroom halves, green basil leaves, black olive rings. Each topping is soft stop-motion modeling clay with gentle highlight and contact shadow, rounded forms, matte finish. Arranged in a neat 3x2 grid on a perfectly flat solid uniform dark charcoal background, no gradient, no texture, no shadows on the background. Premium preschool app asset. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "cooking-craze-toppings.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 400,
+      "encode": "png",
+      "from": "cooking-craze-toppings.layer2.png",
+      "output": "cooking-craze-toppings.png"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 52.45,
+      "opaquePct": 17.145,
+      "partialPct": 30.405
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-07"
+}
