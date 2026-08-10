@@ -11,51 +11,88 @@ look reads as one long worksheet. So the play-field — the part inside the HUD
 tend to share a world, which gives each shelf of the hub its own feel while
 the platform stays cohesive.
 
-## The worlds
+## Canonical art-direction taxonomy
 
-### 1. Toy Table (default — the current look)
-Clean toy-style objects on airy sky-blue fields with soft dots. The
-"Montessori tray" feel: the object IS the lesson, nothing competes with it.
-The existing `shared/assets/objects/` library (134 pieces) is this world's
-canon.
-- **Palette:** sky `#bfe3f5`, card white, navy line `#17517e`, accents from
-  the category color.
-- **Home categories:** reading-phonics, math-number-sense, matching/memory
-  games of any category.
+These are the six approved art-direction labels for concept briefs, UI
+mockups, production design documents, and visual QA. Use the labels exactly as
+written; an older runtime or template slug may be recorded alongside the label
+but does not replace it.
 
-### 2. Storybook Rooms
-Polished 2D game-illustration interiors: real places rendered with rounded
-geometry, crisp navy outlines, and subtle glossy depth (the Laundry Sorter
-concept look). The room itself is a full-bleed background; gameplay objects
-are cut-out sprites that visibly belong to the room.
-- **Palette:** bright cyan/aqua/violet/coral/yellow; navy outlines everywhere.
-- **Home categories:** practical-life (kitchen, laundry, garden shed,
-  workbench), plus any game whose skill lives in a real domestic place.
+### 1. Puppet / Cozy felt fabric
+Handcrafted puppet-theater worlds built from wool felt, fleece, fabric, and
+plush forms. Use visible blanket stitching, embroidered faces, fabric seams,
+soft stuffing, painted wood, and warm theatrical lighting. This is the home for
+puppet-led social-emotional scenes, oral storytelling, and tactile quiet-book
+experiences.
+- **Palette:** cranberry, warm cream, peach, mustard, coral, teal, lavender,
+  and dark plum.
+- **Material rule:** characters, props, rewards, and primary manipulatives
+  should all feel sewn, padded, or puppet-made—not like generic glossy UI.
 
-### 3. Paper Garden
-Cut-paper collage: construction-paper shapes with visible texture, slightly
-imperfect edges, layered like a classroom wall display. Cardstock, felt, and
-paper may mix when their edges and fibers remain visible; small stitched
-details and soft physical shadows can clarify the layers. Handmade warmth.
-- **Palette:** saturated kraft-paper brights on a warm cream field.
-- **Home categories:** art-music, crafting/building games, pattern play.
-- **Production anchor:** Sound Painting proves the world with an approved
-  nighttime studio variant: ink-blue cardstock replaces the cream field while
-  the cut edges, fibers, stacked layers, and saturated paper colors stay
-  unchanged.
+### 2. Toy
+Clean, tactile toy objects on an airy field or an orderly Montessori tray. The
+object IS the lesson: painted wood, molded toy forms, soft 3D cartoon geometry,
+rounded safe edges, and restrained shadows keep attention on the task. The
+existing `shared/assets/objects/` library is the canon for the Toy family.
+- **Palette:** sky `#bfe3f5`, card white, navy line `#17517e`, plus the
+  category accent.
+- **Legacy names:** `Toy Table` and the runtime/template style id
+  `toy-table` are the established Toy default.
+- **Home categories:** reading-phonics, math-number-sense, matching/memory,
+  practical-life, and object-based sensorial games.
 
-### 4. Field Journal
-Soft gouache/watercolor nature illustration on warm paper — the look of a
-naturalist's notebook. Quieter and more textured than the other worlds.
-- **Palette:** leaf greens, sky blues, earth browns on cream `#f7f1e3`.
-- **Home categories:** sensorial-science, culture-geography,
-  movement-outdoor, observation games.
+### 3. Watercolor / Storybook
+Illustrated story worlds on warm paper: hand-painted gouache or watercolor,
+gentle ink or colored-pencil definition, visible paper grain, imperfect edges,
+and soft washes. This category also contains the established illustrated-room
+variant: rounded interiors with crisp navy outlines, one soft highlight, and
+one contact shadow, with cut-out sprites that belong to the room.
+- **Palette:** leaf greens, sky blues, earth browns, warm cream `#f7f1e3`,
+  and gentle storybook accents.
+- **Legacy names:** `Storybook`, `Storybook Rooms`, `Field Journal`, and the
+  runtime/template ids `storybook`, `storybook-rooms`, and `field-journal`
+  are variants or aliases of this canonical category—not additional worlds.
+- **Home categories:** story, oral language, nature observation,
+  culture-geography, and movement-outdoor games.
 
-### 5. Story Screen (video)
-Short animated vignettes — preschool-TV warmth, soft rounded characters,
-static camera — that set up a social moment or story beat before the child
-responds. Used as intros and round set-ups, never as passive viewing: watch a
-6-second moment, then DO something about it.
+### 4. Claymation
+Stop-motion-inspired worlds made from polymer clay or modeling clay: visible
+fingerprints, sculpted seams, hand-shaped imperfections, matte-to-satin clay,
+rounded forms, and warm studio light. Use this when material transformation or
+squish/snap quality is part of the fantasy, not merely as a glossy 3D surface.
+
+### 5. Papercraft
+Layered construction-paper and cardstock collage with deckled or scissor-cut
+edges, visible fibers, folded depth, occasional stitches, and soft physical
+shadows. Paper, felt, and printed textures may mix when their layers remain
+legible and handmade.
+- **Palette:** saturated kraft-paper brights on warm cream, with jewel accents
+  when the scene calls for them.
+- **Legacy name:** `Paper Garden` and the runtime/template style id
+  `paper-garden` are the established Papercraft variant.
+- **Production anchor:** Sound Painting proves a nighttime Papercraft variant:
+  ink-blue cardstock replaces the cream field while the cut edges, fibers,
+  stacked layers, and saturated paper colors remain unchanged.
+
+### 6. Kawaii
+Original cute graphic worlds with highly expressive mascots, puffy or sticker
+outlines, candy-color panels, scalloped cards, playful symbols, and oversized
+touch targets. Glossy clay, vinyl, cardboard, or plush accents are allowed,
+but the defining language is the friendly kawaii package—not a borrowed brand
+or a generic glossy 3D app.
+- **Palette:** bright primary and pastel colors, often with cream outlines,
+  cocoa or dark-plum type, rainbow accents, and celebratory sparkles.
+- **Material rule:** keep forms simple, readable, and non-photorealistic;
+  exact runtime copy remains HTML/audio rather than baked into generated art.
+
+## Story Screen (video layer, not a gameplay art world)
+
+Short animated vignettes—preschool-TV warmth, soft rounded characters, static
+camera—that set up a social moment or story beat before the child responds.
+Use them as intros and round set-ups, never as passive viewing: watch a
+6-second moment, then DO something about it. A Story Screen can accompany any
+of the six canonical art directions, but it is not a seventh art world and
+should not be used as a brief's art-direction label.
 - **Format:** h264 mp4, ≤960px wide, ≤8s, target ≤1.5MB per clip, max ~2
   clips per game. Poster image required; playback starts from a tap (the
   splash tap satisfies autoplay rules).
@@ -63,16 +100,17 @@ responds. Used as intros and round set-ups, never as passive viewing: watch a
 
 ## Lighting variants are not new worlds
 
-A game can be moody, dark, or lit-by-flashlight without inventing a sixth
+A game can be moody, dark, or lit-by-flashlight without inventing a seventh
 world — that's a **lighting variant**, a legal per-game modifier of an
 existing art world, not a new one. It qualifies only when both hold: (a) the
 effect is applied at **runtime by a shared module** (e.g.
 `shared/js/stage/spotlight.js` masking the play-field to a beam/pool of
 light), not baked into per-game art; and (b) the **art plate itself stays in
 the world's palette** — same outline weight, same hue family, same rendering
-style, just seen through less light. Flashlight Cave is Storybook Rooms (an
-interior, cut-out sprites belonging to a full-bleed background) plus a
-runtime night/spotlight pass — explicitly **not** a sixth world. If a new
+style, just seen through less light. Flashlight Cave is Watercolor /
+Storybook (the legacy Storybook Rooms interior variant, with cut-out sprites
+belonging to a full-bleed background) plus a
+runtime night/spotlight pass — explicitly **not** a seventh world. If a new
 game's mood tempts you to propose "Nighttime" or "Shadow World" as its own
 entry in this doc, reach for a lighting variant on its home world's plate
 style first; only propose a new world when the geometry and rendering style
@@ -80,8 +118,12 @@ genuinely differ, not just the lighting.
 
 ## Assignment rules
 
-- Each game declares its world once; the category default applies unless the
-  game's design doc argues otherwise. Never mix worlds inside one game.
+- Each game declares exactly one canonical art-direction label; the category
+  default applies unless the game's design doc argues otherwise. Never mix
+  worlds inside one game.
+- The `brief.md` field `UI Mockup Art Direction` is the source of truth for
+  concept screens. A concept video's visual treatment communicates gameplay
+  only and does not override the selected art direction.
 - The HUD, splash idioms, end screens, and interaction patterns are
   world-independent — worlds restyle the play-field only.
 - Splash titles are **generated graphic lockups in the game's world style**,
@@ -94,11 +136,26 @@ genuinely differ, not just the lighting.
 ## Implementation (Stage v2)
 
 Engines accept an optional `theme` block in the game config (absence = Toy
-Table, so all existing games are unaffected):
+Table, so all existing games are unaffected). During the taxonomy migration,
+keep the existing runtime/template ids in code and record the canonical label
+in the design docs. The current mapping is:
+
+| Canonical label | Existing runtime/template ids or notes |
+| --- | --- |
+| Puppet / Cozy felt fabric | Use a game-specific stage/asset world until a generic id is added. `story-screen` and `story-screen-stage` are video/theater layer ids, not automatic Puppet aliases. |
+| Toy | `toy-table` (Toy Table) |
+| Watercolor / Storybook | `storybook`, `storybook-rooms`, `field-journal` |
+| Claymation | No generic Stage v2 id yet; record `claymation` in the design docs. |
+| Papercraft | `paper-garden` (Paper Garden) |
+| Kawaii | No generic Stage v2 id yet; record `kawaii` in the design docs. |
+
+When a new generic runtime world is implemented, add its slug and prompt
+suffix to the shared template/style registry in the same change. Do not rename
+legacy ids casually; they are already referenced by shipped configs.
 
 ```js
 theme: {
-  world: 'storybook-rooms',
+  world: 'storybook-rooms', // legacy runtime id; canonical label: Watercolor / Storybook
   background: './assets/room.png',   // full-bleed play-field backdrop
   panel:  { fill: 0xfff8e8, stroke: 0xffffff },  // card/bin backing tokens
   accent: 0x8a5bc4,

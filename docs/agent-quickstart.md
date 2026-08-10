@@ -1,7 +1,8 @@
 # QLOBE Kids — agent quickstart: concept to production
 
-Last grounded against the repository, the Puppet Tales production pass, and
-the Teen Bead Builder style-fidelity correction on 2026-07-31.
+Last grounded against the repository, the Puppet Tales production pass, the
+Teen Bead Builder style-fidelity correction, and the six-world art-direction
+reconciliation on 2026-08-08.
 
 This is the clean-context runbook for an agent asked to choose, build, polish,
 or extend a QLOBE Kids game. It connects the concept library, static game
@@ -50,7 +51,8 @@ Read these canonical documents:
 1. `CLAUDE.md` — hard platform constraints, shared inventory, registry rules.
 2. `docs/philosophy.md` — child-development and learning principles.
 3. `docs/interaction-patterns.md` — touch, audio, navigation, drag, safe areas.
-4. `docs/art-direction.md` — shared interaction grammar and named art worlds.
+4. `docs/art-direction.md` — shared interaction grammar, the six canonical art
+   direction labels, legacy runtime aliases, and material-fidelity rules.
 5. `docs/polish-process.md` — beta-to-live gates.
 6. `docs/studio-quickstart.md` — current Studio operating instructions.
 7. `docs/qlobe-studio-v2.md` — detailed Studio/data/pipeline contract.
@@ -94,7 +96,8 @@ about five seconds.
 
 The concept library is under `../01-game-concepts/`. Each concept normally has:
 
-- `brief.md` — the product idea and intended learning/play loop.
+- `brief.md` — the product idea, intended learning/play loop, and canonical
+  `UI Mockup Art Direction` label.
 - `output/ui-mockups/` — cleaned 4:3 screen concepts.
 - `output/ui-mockups/PROMPTS.md` — generation direction when present.
 - an optional concept video.
@@ -102,6 +105,14 @@ The concept library is under `../01-game-concepts/`. Each concept normally has:
 `../01-game-concepts/UI_MOCKUPS_INDEX.md` is the inventory. `_completed/` is a
 historical signal, not the runtime source of truth; verify the corresponding
 game and production status in `games.json`.
+
+Before generating, reviewing, or implementing a concept UI, read
+`docs/art-direction.md` and use exactly one of its six canonical labels:
+**Puppet / Cozy felt fabric**, **Toy**, **Watercolor / Storybook**,
+**Claymation**, **Papercraft**, or **Kawaii**. Resolve older names such as Toy
+Table, Paper Garden, Field Journal, and Storybook Rooms through the alias table
+in that document. Record the canonical label in the brief and keep any legacy
+runtime slug only as an implementation detail.
 
 Choose capability-first, not only theme-first. Prefer a concept that makes an
 incomplete shared system real and reusable. Useful questions:
@@ -124,6 +135,11 @@ and additive ragdoll motion.
 
 Concept screens are an interaction storyboard and visual north star, not an
 implementation specification.
+
+The brief's art-direction label and `docs/art-direction.md` define the visual
+world. The concept video's look is a gameplay reference only; when the video
+and the selected art world disagree, preserve the interaction and follow the
+canonical art world for the mockup and production assets.
 
 Extract from them:
 
@@ -230,7 +246,7 @@ For a serious replacement or live-quality game, `game-design.md` should answer:
 - exact 30–90 second core loop;
 - full spoken script, verbatim;
 - complete art list with dimensions and intended renderer;
-- art world and shared cast;
+- canonical art-direction label, material language, and shared cast;
 - interaction and feedback rules;
 - difficulty/replay variation;
 - privacy, permission, persistence, and fallback behavior;
@@ -449,6 +465,11 @@ The repo budgets in `docs/art-direction.md` are defaults: approximately 300 KB
 for a background, 30–80 KB for ordinary sprites, and 1.5 MB per short video.
 Deviate only deliberately and record why.
 
+For a raster or material-led world, confirm the selected canonical label before
+generation and retain the prompt/style provenance. If a Studio template still
+uses a legacy style id, record both values: the canonical label for design and
+the legacy slug for the current pipeline.
+
 ### Replace placeholders before calling a game polished
 
 Emoji are acceptable scaffolding for an engine prototype. They are not a final
@@ -489,7 +510,7 @@ Use Studio's `menu-game-tile` template:
 - seed: 42 first;
 - one recognizable game moment staged as objects;
 - no title or UI baked into the image;
-- style: `toy-table`.
+- style: `toy-table` (the Toy category's legacy Toy Table variant).
 
 The proven style suffix is stored in
 `shared/data/generate-templates.json`. A representative prompt is:
