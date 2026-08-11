@@ -1,36 +1,27 @@
-# Asset Log - Letter Treasure Hunt
+# Asset Log — Letter Treasure Hunt
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Letter tiles (`shared/assets/letter-tiles/b.png`, `s.png`, `m.png`, `c.png`, `p.png`, `t.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified through `shared:` refs |
-| Object cards (`shared/assets/objects/bat.png`, `sun.png`, `map.png`, `cat.png`, `pig.png`, `top.png`, `pan.png`, `bun.png`, `gum.png`, `gem.png`, `net.png`, `nut.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified through `shared:` refs |
-| Pirate flag placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:🏴‍☠️` refs | N/A | Platform/browser emoji font license | N/A | Used as a temporary placeholder only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+| Asset | Source | License / note |
+|---|---|---|
+| `assets/papercraft/quest-map.webp` | Built-in gpt-image-2 workflow | Sea-map plate with three small blank islands for the previous, selected, and next letters in the scrolling A–Z menu. |
+| `assets/papercraft/b-hunt/background.webp` | Built-in gpt-image-2 workflow | Runtime B hunt background layer. |
+| `assets/papercraft/b-hunt/{butterfly,ball,boat,chest}.webp` | Built-in gpt-image-2 workflow | Runtime B hunt overlays: three matching targets plus the treasure-chest decoy, layered above the background. |
+| `assets/papercraft/a-hunt/` and `assets/papercraft/c-hunt/` | Built-in imagegen workflow | Reviewed layered A and C hunt packages: opaque background plus three matching target overlays and a treasure-chest decoy. A/B/C reuse one another's transparent target layers as cross-letter wrong choices. |
+| `assets/papercraft/{a,c}-celebration.webp` | Built-in imagegen workflow | Reviewed A and C open-chest completion scenes with their three target objects and confetti. |
+| `assets/islands/{a-z}.webp` | Built-in gpt-image-2 workflow | Legacy full-bleed letter plates retained for provenance; D–Z no longer use these at runtime. |
+| `assets/papercraft/{d-z}-hunt/` | Built-in imagegen workflow plus component-aware chroma extraction | Reviewed D–Z layered packages: one 4:3 background and three transparent target objects per letter. Cross-letter distractors and chests remain separate raster layers. |
+| `data/dz-scene-layouts.json` | QLOBE local authoring data | Versioned 4:3 visible-alpha rectangles and immutable source-art trim metadata for every D–Z hunt/completion object. Edit through `Launch Layout Editor.command`; runtime validates each rectangle and retains built-in fallbacks. |
+| `assets/papercraft/shared/open-chest.webp` | Built-in imagegen workflow plus chroma-key removal | Reusable transparent open-chest and confetti overlay for D–Z completion scenes. `open-chest-source.png` retains the generated source plate for provenance. |
+| `assets/papercraft/island-hunt.webp` | Built-in gpt-image-2 workflow | Legacy/unused pre-layered B hunt plate retained for provenance; superseded by the runtime B layers above. |
+| `assets/papercraft/decoy-chest.webp` | Built-in gpt-image-2 workflow | Legacy/unused generic decoy retained for provenance. |
+| `assets/papercraft/island-celebration.webp` | Built-in gpt-image-2 workflow | Full-bleed open-chest celebration plate used by the runtime. |
+| `assets/papercraft/celebration.webp` | Built-in gpt-image-2 workflow | Legacy/unused celebration plate retained for provenance; superseded by `island-celebration.webp`. |
+| `assets/ui-raster/` | Built-in imagegen bases plus deterministic author-time raster compositing | Complete A–Z raster UI inventory: quest title, PLAY, controls, letters, prompts, pause/grown-up/orientation dialogs, OK control, badges, progress counts/tokens, feedback, NEXT, and per-letter completion art. Runtime uses bitmap assets over semantic controls, while hidden DOM copy remains for accessibility, testing, and localization. |
+| Fredoka SemiBold | QLOBE Kids shared font library | SIL OFL 1.1 |
+| Sound effects | `shared/js/sfx.js` | Synthesized at runtime; no external files |
+| Narration | `assets/audio/` | The production script contains 234 A–Z core, chest, and cross-letter lines. The 27 A/B/C lines have local Qwen3-TTS teacher-voice `.m4a` clips, manifest coverage, and Whisper transcript QA; D–Z currently use the tested Web Speech fallback until the remote voice-clone host completes the remaining batch. Human phoneme review remains required because broad transcription matching can accept variants such as `boo` for authored `buh`. |
 
-## Assets needed
-
-### Art
-- Treasure chest frame art for future prompt or card theming.
-
-### Voice
-- "Treasure ears ready. Listen for the first sound, then tap the picture treasure."
-- "Hmm, listen to the first sound and try another treasure."
-- "Treasure found! You heard the starting sounds!"
-- "Yes! That word starts with the sound!"
-- "Great treasure ears!"
-- "You found the sound treasure!"
-- "Find something that starts with buh."
-- "Find something that starts with sss."
-- "Find something that starts with mmm."
-- "Find something that starts with kuh."
-- "Find something that starts with puh."
-- "Find something that starts with tuh."
-
-## Link preview (og:image)
-
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+Scene plates remain text-free, but reviewed UI copy is rendered into raster
+assets rather than drawn live with CSS/SVG. Hidden DOM copy remains HTML so it
+can be tested, localized, and kept synchronized with the accessible state.
+`assets/source` is not copied into the game; the built-in imagegen
+outputs remain in the Codex generated-image archive as provenance.

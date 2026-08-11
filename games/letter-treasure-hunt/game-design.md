@@ -1,57 +1,96 @@
-# Game Design Document - Letter Treasure Hunt
+# Game Design Document — Letter Treasure Hunt
 
 ## Game title
-Letter Treasure Hunt 🏴‍☠️
 
-## Category
-`reading-phonics`
+**Well Done! Phonics Treasure Island — Letter Treasure Hunt**
 
-## Age target
-5-6 (platform default).
+## Audience and art world
 
-## Concept video
-_None yet._
+Toddlers and preschoolers, ages 2–5, playing on a tablet in landscape. The
+runtime follows the Globe Spin Stories composition pattern: every screen is a
+fixed full-viewport layer, a full-bleed raster scene owns the world, and
+reviewed UI visuals (letters, banners, prompts, badges, controls, and buttons)
+are raster assets over semantic HTML controls. Hidden DOM copy remains for
+touch, accessibility, testing, and localization; it is not the visible art.
 
-## Learning goals
-1. Hear the initial sound in familiar CVC words.
-2. Connect a target letter tile with a real object whose word begins with that sound.
-3. Practice close contrasts such as b/p, c/g, and m/n through picture choices.
+The visual system is premium tactile papercraft: layered construction paper,
+deckled edges, visible fibers, stitched waves, and soft miniature shadows.
 
-## Mini-games / modes
+## Learning goal
 
-### Mode 1 - Sound Treasure
-- **Skill:** Initial-sound identification for b, s, m, c, p, and t.
-- **Core loop (30-90s):** The child hears "Find something that starts with..." while seeing the target letter tile, then taps the object-card treasure that starts with that sound.
-- **Rounds:** 6 with `difficultyRamp: true`.
+Connect an uppercase letter to three familiar words that begin with it, using
+an initial sound cue where the pictured words genuinely share that sound.
 
-### Mode 2 - Two Treasures
-- **Skill:** Initial-sound discrimination with plausible distractors.
-- **Core loop (30-90s):** The child hears a target first sound and chooses among object cards with closer sound contrasts, such as b vs p or c vs g.
-- **Rounds:** 4.
+## Core loop
 
-## Shared assets used
-- `shared/js/engines/choose-one.js` - choose-one interaction loop, splash, HUD, retry, celebration, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, boing, tick, and tada effects.
-- `shared/assets/letter-tiles/` - letter tile PNGs for b, s, m, c, p, and t.
-- `shared/assets/objects/` - object cards for bat, sun, map, cat, pig, top, pan, bun, gum, gem, net, and nut.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
+1. **Choose a Letter Quest:** use the left/right arrows to page through a sea
+   map of three small letter islands. Every visible island is a direct launch
+   target; tapping one opens that letter's quest immediately. The center island
+   is the selected letter; the window wraps from A to Z and covers all 26
+   data-driven quests.
+2. **Find things that start with the letter:** the selected island opens a
+   spatial hunt. All A–Z islands use reviewed layered papercraft backgrounds
+   and independently positioned raster objects. D–Z positions come from the
+   versioned `data/dz-scene-layouts.json` authoring document. Every island includes one raster object from a
+   different letter and a visible treasure-chest decoy. A wrong object names
+   the letter contrast without advancing progress. The target badge, prompt,
+   and three progress tokens remain in the live UI layer.
+3. **Collect letter tokens:** each correct find plays pop/sparkle feedback,
+   speaks the word, and fills one token. Finds work in any order.
+4. **Well Done:** an open treasure chest and three filled tokens celebrate the
+  island. NEXT advances the carousel one letter for another short loop.
 
-## New assets needed
-- Treasure chest frame art for the prompt area or future themed card treatment.
-- Recorded teacher-voice prompt lines matching every line in `config.js`.
+## Screen and interaction contract
 
-## Interaction model
-Tap one picture-card answer after a spoken initial-sound prompt. The target letter tile is visual support; the child can play from sound and pictures without reading instructions.
+- Carousel: home, sound control in the upper-right, previous/next arrows, and
+  three large previous/selected/next map islands. There is no PLAY button or
+  grown-up/parental control on this screen.
+- Hunt: back, target-letter badge, prompt, three progress tokens, visible count,
+  pause, sound, three large spatial target areas, one cross-letter wrong object,
+  and one chest decoy on every A–Z island. Collected targets disappear into the
+  raster progress tokens rather than using CSS-drawn imagery.
+- End: back, sound, celebration copy, three filled letter tokens, score, and
+  NEXT.
+- Navigation and UI controls use the shared `onTap` press path and retain a
+  minimum 96px target floor. D–Z scene choices use tight visible-art bounds
+  with a 10px invisible tap halo, avoiding oversized empty interaction zones.
+- Audio unlocks through `shared/js/audio-unlock.js`. The authored inventory has
+  234 A–Z lines: island, hunt, idle, three finds, chest, cross-letter contrast,
+  and completion for every letter. A/B/C currently have 27 recorded local
+  Qwen3-TTS teacher-voice clips with manifest and Whisper coverage; Web Speech
+  is the tested fallback for the remaining lines while voice generation is
+  retried. Human phoneme review remains the audio acceptance gate. I/O/U/X and
+  S-shell use truthful letter-based copy instead of a misleading single-sound
+  claim. Synthesized SFX provide pop, sparkle, tick, and tada.
+- `window.QLOBE_DEBUG` exposes the 26 carousel modes, `startMode`, `getState`,
+  `getTargets`, `tap`, `winRound`, `mute`, `fastTimers`, and `home` for QA.
+- Reduced motion is respected in CSS. Portrait orientation receives a clear
+  full-screen landscape guidance card because the scene plates are composed
+  for a 4:3 tablet canvas.
 
-## Feedback model
-- **Success:** pop/sparkle SFX, bounce, and spoken praise.
-- **Retry:** gentle wiggle, boing SFX, spoken nudge, and the same prompt again.
-- **Hint:** idle replay after a pause, plus the HUD sound button.
-- **Celebration:** end-of-mode tada, confetti-style burst, and spoken cheer.
+## Content map
 
-## Difficulty progression
-`Sound Treasure` starts with two answer cards and ramps toward three. `Two Treasures` keeps three choices but uses closer initial-sound distractors.
+| Letter range | Example island targets |
+|---|---|
+| A–F | ant/apple/alligator · butterfly/ball/boat · cat/cupcake/car · dog/drum/duck · elephant/egg/envelope · fish/flower/frog |
+| G–L | goat/grapes/guitar · hat/horse/house · ice cream/igloo/insect · jacket/jellyfish/juice · kite/key/kangaroo · lion/leaf/lemon |
+| M–R | monkey/moon/muffin · nest/noodles/nose · owl/orange/octopus · penguin/pineapple/pizza · queen/quilt/quail · rabbit/rainbow/robot |
+| S–Z | sun/starfish/shell · tiger/turtle/train · umbrella/unicorn/ukulele · violin/volcano/van · whale/watermelon/wagon · xylophone/x-ray/X mark · yak/yo-yo/yarn · zebra/zipper/zucchini |
 
-## Replay variation
-The engine shuffles round order and answer order on each play. Debug seeding remains available through `window.QLOBE_DEBUG.seed(n)` for review automation.
+## Verification gate
+
+Run the game-local QA driver with a real Chrome session after starting the
+static server from `qlobe-kids/`:
+
+```sh
+python3 -m http.server 8000
+node games/letter-treasure-hunt/tools/qa.mjs
+# Once production narration is complete:
+QLOBE_REQUIRE_RECORDED_AUDIO=1 node games/letter-treasure-hunt/tools/qa.mjs
+```
+
+The expanded browser gate covers all 26 scene records and representative
+D/I/S/X/Z end-to-end play, including loaded raster assets, two wrong choices,
+non-overlapping visible-art targets with verified tap halos, found markers, pause focus isolation, completion,
+navigation cancellation, and browser errors. Recorded-manifest coverage and
+human phoneme review remain the separate audio acceptance gates.

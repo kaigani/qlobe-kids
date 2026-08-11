@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Letter Treasure Hunt · Layout Editor</title>
+  <link rel="stylesheet" href="layout-editor.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Letter Treasure Hunt</p>
+      <h1>Island layout editor</h1>
+    </div>
+    <div class="header-tools">
+      <span id="save-status" class="save-status" role="status" aria-live="polite">Unsaved changes</span>
+      <button id="save-project" type="button" class="primary">Save to project</button>
+    </div>
+  </header>
+
+  <div class="editor-toolbar" aria-label="Editor controls">
+    <div class="letter-controls">
+      <button id="previous-letter" type="button" aria-label="Previous letter">←</button>
+      <label for="letter-select">Letter</label>
+      <select id="letter-select" aria-label="Choose island letter">
+        <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+        <option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option>
+        <option value="L">L</option><option value="M">M</option><option value="N">N</option><option value="O">O</option>
+        <option value="P">P</option><option value="Q">Q</option><option value="R">R</option><option value="S">S</option>
+        <option value="T">T</option><option value="U">U</option><option value="V">V</option><option value="W">W</option>
+        <option value="X">X</option><option value="Y">Y</option><option value="Z">Z</option>
+      </select>
+      <button id="next-letter" type="button" aria-label="Next letter">→</button>
+    </div>
+    <label for="mode-select">Mode</label>
+    <select id="mode-select"><option value="hunt">Hunt</option><option value="completion">Completion</option></select>
+    <div class="toolbar-actions">
+      <button id="save-draft" type="button">Save draft</button>
+      <button id="reset-letter" type="button">Reset letter</button>
+      <button id="download-json" type="button">Download JSON</button>
+      <button id="copy-json" type="button">Copy JSON</button>
+      <button id="import-json" type="button">Import JSON</button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <main class="workspace">
+    <section class="preview-column" aria-labelledby="preview-title">
+      <div class="section-heading"><h2 id="preview-title">Preview</h2><span class="hint">Select an item to edit</span></div>
+      <div id="preview-shell" class="preview-shell">
+        <iframe id="game-preview" title="Letter island layout preview" src="../index.html?layout-editor=1"></iframe>
+        <div class="preview-empty" aria-hidden="true">Preview loading…</div>
+      </div>
+      <div class="preview-controls">
+        <div class="viewport-buttons" role="group" aria-label="Preview size">
+          <button type="button" data-viewport="standard" class="active">Standard</button>
+          <button type="button" data-viewport="wide">Wide</button>
+          <button type="button" data-viewport="compact">Compact</button>
+        </div>
+        <label class="toggle"><input id="show-guides" type="checkbox"><span>Show safe guides</span></label>
+      </div>
+      <p class="instructions">Click an item, drag to move, or use its corner to resize. Arrow keys nudge; hold Shift for larger steps.</p>
+    </section>
+
+    <aside id="selection-panel" class="selection-panel" aria-labelledby="selection-title">
+      <div class="section-heading"><h2 id="selection-title">Selection</h2><span id="selected-label">Nothing selected</span></div>
+      <label class="json-label" for="item-select">Editable item</label>
+      <select id="item-select" disabled aria-label="Choose editable item"><option>Nothing selected</option></select>
+      <form class="geometry-form" onsubmit="return false">
+        <div class="field"><label for="rect-x">X</label><input id="rect-x" type="number" step=".1" inputmode="decimal"></div>
+        <div class="field"><label for="rect-y">Y</label><input id="rect-y" type="number" step=".1" inputmode="decimal"></div>
+        <div class="field"><label for="rect-w">Width</label><input id="rect-w" type="number" step=".1" min="0" inputmode="decimal"></div>
+        <div class="field"><label for="rect-h">Height</label><input id="rect-h" type="number" step=".1" min="0" inputmode="decimal"></div>
+      </form>
+      <label class="toggle lock"><input id="lock-aspect" type="checkbox"><span>Lock aspect ratio</span></label>
+      <div class="layer-actions">
+        <button id="bring-forward" type="button" disabled>Bring forward</button>
+        <button id="send-back" type="button" disabled>Send back</button>
+      </div>
+      <label class="json-label" for="json-output">Layout JSON</label>
+      <textarea id="json-output" rows="14" spellcheck="false" aria-label="Layout JSON output"></textarea>
+      <p class="save-note">Save to project uses the local launcher. Browser draft and JSON export work everywhere.</p>
+    </aside>
+  </main>
+  <script type="module" src="layout-editor.js"></script>
+</body>
+</html>

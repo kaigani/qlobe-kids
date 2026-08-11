@@ -5,43 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Letter Treasure Hunt 💰 — Sound Hunting Adventure</title>
-  <meta name="description" content="Hear a target starting sound and tap the picture whose word begins with it, hunting one treasure at a time. A first-sounds adventure for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="theme-color" content="#13a7ba" />
+  <title>Letter Treasure Hunt — Well Done! Phonics Treasure Island</title>
+  <meta name="description" content="Choose from A–Z papercraft islands, then hunt for three familiar things that start with the selected letter." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Letter Treasure Hunt" />
-  <meta property="og:title" content="Letter Treasure Hunt 💰 — Sound Hunting Adventure" />
-  <meta property="og:description" content="Hear a target starting sound and tap the picture whose word begins with it, hunting one treasure at a time. A first-sounds adventure for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Letter Treasure Hunt — Well Done! Phonics Treasure Island" />
+  <meta property="og:description" content="Choose an A–Z island, then find three matching objects in a tactile tropical papercraft sea." />
   <meta property="og:url" content="https://qlo.be/games/letter-treasure-hunt/" />
   <meta property="og:image" content="https://qlo.be/games/letter-treasure-hunt/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Letter Treasure Hunt title screen with Sound Treasure and Two Treasures modes and a pirate skull flag icon." />
-
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Letter Treasure Hunt 💰 — Sound Hunting Adventure" />
-  <meta name="twitter:description" content="Hear a target starting sound and tap the picture whose word begins with it, hunting one treasure at a time. A first-sounds adventure for ages 5–6." />
+  <meta name="twitter:title" content="Letter Treasure Hunt — Well Done! Phonics Treasure Island" />
+  <meta name="twitter:description" content="Choose an A–Z island, then find three matching objects in a tactile tropical papercraft sea." />
   <meta name="twitter:image" content="https://qlo.be/games/letter-treasure-hunt/assets/og-image.jpg" />
-
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="preload" as="image" href="./assets/papercraft/quest-map.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/b-hunt/background.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/b-hunt/butterfly.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/b-hunt/ball.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/b-hunt/boat.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/b-hunt/chest.webp" />
+  <link rel="preload" as="image" href="./assets/papercraft/island-celebration.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/quest-title.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/controls/home.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/controls/sound.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/controls/previous.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/controls/next.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/letters/a.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/letters/b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/letters/c.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/prompts/b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/badges/b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/tokens/empty.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/tokens/b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/counts/0.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/next.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/completion-b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/dialogs/pause-b.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/dialogs/orientation.webp" />
+  <link rel="preload" as="image" href="./assets/ui-raster/controls/resume.webp" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" role="application" aria-label="Letter Treasure Hunt"></main>
+  <div class="lth-orientation-lock" role="status" aria-live="polite">
+    <div class="lth-orientation-card">
+      <img src="./assets/ui-raster/dialogs/orientation.webp" alt="" draggable="false" />
+      <span class="visually-hidden">Turn your tablet sideways. The treasure map is ready in landscape.</span>
+    </div>
+  </div>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
