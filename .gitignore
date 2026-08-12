@@ -10,6 +10,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# QA screenshots/reports from Playwright verification runs — not shippable assets
+**/qa-shots/
+
 # Node (defensive — this is a no-build static site)
 node_modules/
 
