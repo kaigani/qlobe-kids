@@ -56,10 +56,10 @@ an initial sound cue where the pictured words genuinely share that sound.
   with a 10px invisible tap halo, avoiding oversized empty interaction zones.
 - Audio unlocks through `shared/js/audio-unlock.js`. The authored inventory has
   234 A–Z lines: island, hunt, idle, three finds, chest, cross-letter contrast,
-  and completion for every letter. A/B/C currently have 27 recorded local
-  Qwen3-TTS teacher-voice clips with manifest and Whisper coverage; Web Speech
-  is the tested fallback for the remaining lines while voice generation is
-  retried. Human phoneme review remains the audio acceptance gate. I/O/U/X and
+  and completion for every letter. All 234 lines have recorded local
+  Qwen3-TTS teacher-voice clips with complete manifest and Whisper
+  coverage; Web Speech is retained only as a runtime recovery fallback. Human
+  phoneme review remains the audio acceptance gate. I/O/U/X and
   S-shell use truthful letter-based copy instead of a misleading single-sound
   claim. Synthesized SFX provide pop, sparkle, tick, and tada.
 - `window.QLOBE_DEBUG` exposes the 26 carousel modes, `startMode`, `getState`,
@@ -84,8 +84,6 @@ static server from `qlobe-kids/`:
 
 ```sh
 python3 -m http.server 8000
-node games/letter-treasure-hunt/tools/qa.mjs
-# Once production narration is complete:
 QLOBE_REQUIRE_RECORDED_AUDIO=1 node games/letter-treasure-hunt/tools/qa.mjs
 ```
 

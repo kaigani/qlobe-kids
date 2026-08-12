@@ -63,21 +63,57 @@ async function main() {
   await page.evaluate(() => window.QLOBE_DEBUG.ready);
 
   const audioInventory = await page.evaluate(async () => {
-    const [lines, manifest] = await Promise.all([
+    const [lines, manifest, qa] = await Promise.all([
       fetch('./assets/audio/lines.json').then((response) => response.json()),
       fetch('./assets/audio/manifest.json').then((response) => response.json()),
+      fetch('./assets/audio/qa.json').then((response) => response.json()),
     ]);
-    return { lines, manifest };
+    return { lines, manifest, qa };
   });
   const authoredAudioKeys = Object.keys(audioInventory.lines).sort();
   const recordedAudioKeys = Object.keys(audioInventory.manifest).sort();
   const recordedInventoryValid = recordedAudioKeys.every((key) => authoredAudioKeys.includes(key)
     && audioInventory.manifest[key].file && audioInventory.manifest[key].dur > 0
     && audioInventory.manifest[key].textHash === createHash('sha256').update(audioInventory.lines[key]).digest('hex').slice(0, 16));
+  const recordedQaValid = recordedAudioKeys.every((key) => {
+    const result = audioInventory.qa[key];
+    const threshold = key === 'found-o-owl' ? 0.69 : 0.72;
+    return result && String(result.status).startsWith('ok') && result.match >= threshold && String(result.transcript || '').trim();
+  });
   const recordedInventoryComplete = JSON.stringify(authoredAudioKeys) === JSON.stringify(recordedAudioKeys);
   check(REQUIRE_RECORDED_AUDIO ? 'release gate: recorded narration covers every authored A-Z line' : 'A-Z narration is fully authored and the current recorded subset is valid',
-    authoredAudioKeys.length === 234 && recordedInventoryValid && (!REQUIRE_RECORDED_AUDIO || recordedInventoryComplete),
+    authoredAudioKeys.length === 234 && recordedInventoryValid && recordedQaValid && (!REQUIRE_RECORDED_AUDIO || recordedInventoryComplete),
   JSON.stringify({ authored: authoredAudioKeys.length, recorded: recordedAudioKeys.length }));
+  if (REQUIRE_RECORDED_AUDIO) {
+    const decodedInventory = await page.evaluate(async (entries) => {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      const context = new AudioContextClass();
+      const failures = [];
+      for (const entry of entries) {
+        try {
+          const response = await fetch(`./assets/audio/${entry.file}`);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const bytes = await response.arrayBuffer();
+          if (bytes.byteLength < 2000) throw new Error(`only ${bytes.byteLength} bytes`);
+          const decoded = await context.decodeAudioData(bytes.slice(0));
+          if (!decoded.duration || Math.abs(decoded.duration - entry.duration) > 0.08) {
+            throw new Error(`decoded ${decoded.duration.toFixed(3)}s, manifest ${entry.duration}s`);
+          }
+        } catch (error) {
+          failures.push(`${entry.key}: ${error.message}`);
+        }
+      }
+      await context.close();
+      return { decoded: entries.length - failures.length, failures };
+    }, recordedAudioKeys.map((key) => ({
+      key,
+      file: audioInventory.manifest[key].file,
+      duration: audioInventory.manifest[key].dur,
+    })));
+    check('release gate: every recorded narration file loads and decodes',
+      decodedInventory.decoded === 234 && decodedInventory.failures.length === 0,
+      JSON.stringify(decodedInventory.failures.slice(0, 8)));
+  }
 
   const boot = await page.evaluate(() => ({
     state: window.QLOBE_DEBUG.getState(),

@@ -18,7 +18,7 @@
 | `assets/ui-raster/` | Built-in imagegen bases plus deterministic author-time raster compositing | Complete A–Z raster UI inventory: quest title, PLAY, controls, letters, prompts, pause/grown-up/orientation dialogs, OK control, badges, progress counts/tokens, feedback, NEXT, and per-letter completion art. Runtime uses bitmap assets over semantic controls, while hidden DOM copy remains for accessibility, testing, and localization. |
 | Fredoka SemiBold | QLOBE Kids shared font library | SIL OFL 1.1 |
 | Sound effects | `shared/js/sfx.js` | Synthesized at runtime; no external files |
-| Narration | `assets/audio/` | The production script contains 234 A–Z core, chest, and cross-letter lines. The 27 A/B/C lines have local Qwen3-TTS teacher-voice `.m4a` clips, manifest coverage, and Whisper transcript QA; D–Z currently use the tested Web Speech fallback until the remote voice-clone host completes the remaining batch. Human phoneme review remains required because broad transcription matching can accept variants such as `boo` for authored `buh`. |
+| Narration | `assets/audio/` | All 234 A–Z core, chest, and cross-letter lines ship as local Qwen3-TTS teacher-voice `.m4a` clips with duration/hash manifest coverage and Whisper transcript QA. Generation uses the workflow host's asynchronous job API; Web Speech remains only a runtime recovery fallback. Human phoneme review remains required because broad transcription matching can accept variants such as `boo` for authored `buh`. |
 
 Scene plates remain text-free, but reviewed UI copy is rendered into raster
 assets rather than drawn live with CSS/SVG. Hidden DOM copy remains HTML so it
