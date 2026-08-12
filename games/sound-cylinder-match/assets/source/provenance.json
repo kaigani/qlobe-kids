@@ -1,0 +1,74 @@
+{
+  "format": "qlobe-game-asset-provenance-v1",
+  "created": "2026-08-11",
+  "canonicalArtDirection": "Kawaii",
+  "assets": {
+    "gpt-image-2-playroom.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "stylized-concept",
+      "prompt": "Full-bleed 4:3 original kawaii sensory-toy playroom: aqua padded wall panels, pale rounded wooden shelves only at the far edges, warm pale wood tabletop, large scalloped turquoise stitched-felt mat filling the lower half, calm empty central 70 percent, soft warm morning studio light, aqua/coral/lilac/mint/butter-yellow/cream palette, molded vinyl and felt texture. Background plate only; no UI, title, text, buttons, cylinders, stars, people, watermark, or logo."
+    },
+    "gpt-image-2-cylinder-aqua.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "stylized-concept",
+      "references": ["gpt-image-2-playroom.png"],
+      "prompt": "One upright aqua-teal kawaii sound cylinder with warm-cream perforated lid and base, dark-plum oval eyes, rosy cheeks, curved smile and tiny molded side nubs; exact playroom material language; single centered object with generous padding on flat dark charcoal, no floor, shadow, text, symbol, tray, or watermark."
+    },
+    "gpt-image-2-cylinder-coral.png": {
+      "workflow": "gpt-image-2-edit",
+      "useCase": "precise-object-edit",
+      "references": ["gpt-image-2-cylinder-aqua.png"],
+      "prompt": "Change only the aqua body to warm coral-orange. Preserve the cream parts, face, silhouette, proportions, camera, texture, lighting, padding, pose, and charcoal background exactly."
+    },
+    "gpt-image-2-star.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "stylized-concept",
+      "references": ["gpt-image-2-playroom.png", "gpt-image-2-cylinder-aqua.png"],
+      "prompt": "One butter-yellow five-point plush star mascot with warm-cream stitched edge, dark-plum oval eyes, coral cheeks, joyful open smile and two tiny lifted plush arms; single centered full-body cutout source on flat dark charcoal; no text, cylinder, confetti, extra object, shadow, watermark, or logo."
+    },
+    "gpt-image-2-title.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "stylized-concept",
+      "references": ["gpt-image-2-playroom.png", "gpt-image-2-cylinder-aqua.png", "gpt-image-2-star.png"],
+      "prompt": "Perfectly legible three-line title reading exactly SOUND / CYLINDER / MATCH in chunky aqua, coral and lilac molded letters on one puffy warm-cream stitched backing, with one aqua and one lilac sound-wave ornament and three tiny yellow sparkles. Flat dark charcoal removal ground. No other text, subtitle, button, character, cylinder, watermark or logo."
+    },
+    "gpt-image-2-sound-badge.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "production-ui-sprite",
+      "references": ["gpt-image-2-playroom.png", "gpt-image-2-cylinder-aqua.png", "gpt-image-2-star.png", "krea-button.png"],
+      "prompt": "One tactile kawaii sound-play badge: butter-yellow rounded sticker, stitched cream edge, teal speaker, three coral sound waves, plush-vinyl texture, no text or extra objects; match the referenced game art; centered on solid #111111 charcoal with generous cutout margin."
+    },
+    "gpt-image-2-reward-stage.png": {
+      "workflow": "gpt-image-2",
+      "useCase": "production-reward-layer",
+      "references": ["gpt-image-2-playroom.png", "gpt-image-2-cylinder-aqua.png", "gpt-image-2-cylinder-coral.png", "gpt-image-2-star.png", "krea-button.png"],
+      "prompt": "A large celebratory kawaii arch and platform: warm-cream plush sunburst, pastel aqua/coral/butter/lilac rainbow bands, broad scalloped felt podium, empty center, no characters, cylinders, stars, text, numbers, or buttons; front-facing and isolated on #111111 charcoal."
+    },
+    "gpt-image-2-muted.png": {
+      "workflow": "gpt-image-2-edit",
+      "useCase": "precise-ui-state-edit",
+      "references": ["shared/assets/ui/btn-sound.png"],
+      "prompt": "Preserve the exact circular glossy blue sound button and white rim; add a bold coral tactile diagonal slash and replace sound waves with a coral padded X; no text or new background; unmistakable at 96px."
+    },
+    "krea-button.png": {
+      "workflow": "krea2-turbo-t2i",
+      "seed": 42,
+      "size": [1024, 512],
+      "prompt": "One blank wide pill-shaped preschool button plate with butter-yellow molded center, puffy warm-cream stitched border, tiny coral/aqua edge sparkles, straight-on, original tactile kawaii toy-package raster style, flat dark charcoal background; no text, symbol, icon, character, shadow, or watermark."
+    },
+    "krea-hub-tile.png": {
+      "workflow": "krea2-turbo-t2i",
+      "template": "menu-game-tile",
+      "style": "toy-table",
+      "seed": 42,
+      "size": [768, 640],
+      "prompt": "Two friendly toy sound cylinders leaning toward one another as if listening, one coral and one aqua, cream perforated lids and happy faces, on a scalloped turquoise felt mat with a butter-yellow plush star between them and a softly framed playroom behind. One recognizable game moment staged as objects; bright soft 3D toy style; no interface, text, letters, or words."
+    }
+  },
+  "extraction": {
+    "workflow": "deterministic-connected-charcoal-matte",
+    "script": "../../tools/finalize-assets.py",
+    "reason": "The execution environment denied the planned Qwen Image Layered upload; local processing kept all source pixels on device.",
+    "qa": "Saturated-magenta composites in qa/ were visually inspected at original detail."
+  }
+}

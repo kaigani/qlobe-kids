@@ -1,47 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sound Cylinder Match 🔊 — Listen and Match Shakers</title>
-  <meta name="description" content="Tap two shaker cards, listen closely, and match the pair that sounds the same, sharpening auditory memory one round at a time. A quiet listening game for ages 5–6." />
+  <meta name="theme-color" content="#7fd4d3" />
+  <title>Sound Cylinder Match — Find the Sound Twin</title>
+  <meta name="description" content="Listen to one coral mystery shaker, then test three visually identical aqua shakers to find its sound twin. A gentle kawaii auditory-discrimination game for ages 2–5." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Sound Cylinder Match" />
-  <meta property="og:title" content="Sound Cylinder Match 🔊 — Listen and Match Shakers" />
-  <meta property="og:description" content="Tap two shaker cards, listen closely, and match the pair that sounds the same, sharpening auditory memory one round at a time. A quiet listening game for ages 5–6." />
+  <meta property="og:title" content="Sound Cylinder Match — Find the Sound Twin" />
+  <meta property="og:description" content="Listen to one coral mystery shaker, then test three visually identical aqua shakers to find its sound twin. A gentle kawaii auditory-discrimination game for ages 2–5." />
   <meta property="og:url" content="https://qlo.be/games/sound-cylinder-match/" />
   <meta property="og:image" content="https://qlo.be/games/sound-cylinder-match/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sound Cylinder Match title screen with a Same Sound game mode and a speaker icon on a light blue background." />
+  <meta property="og:image:alt" content="Two friendly sound-cylinder toys listening together in a kawaii playroom." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sound Cylinder Match 🔊 — Listen and Match Shakers" />
-  <meta name="twitter:description" content="Tap two shaker cards, listen closely, and match the pair that sounds the same, sharpening auditory memory one round at a time. A quiet listening game for ages 5–6." />
+  <meta name="twitter:title" content="Sound Cylinder Match — Find the Sound Twin" />
+  <meta name="twitter:description" content="Listen to one coral mystery shaker, then test three visually identical aqua shakers to find its sound twin. A gentle kawaii auditory-discrimination game for ages 2–5." />
   <meta name="twitter:image" content="https://qlo.be/games/sound-cylinder-match/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/match-pairs.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game">
+    <section class="scm-screen scm-splash" data-screen="splash" aria-label="Sound Cylinder Match menu">
+      <div class="scm-bg" aria-hidden="true"></div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" data-target="home" aria-label="Home"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-splash" aria-label="Mute sound"></button>
+      <h1 class="visually-hidden">Sound Cylinder Match</h1>
+      <img class="scm-title" src="./assets/art/title.webp" alt="Sound Cylinder Match" draggable="false" />
+      <div class="scm-splash-friends" aria-hidden="true">
+        <img class="scm-splash-cylinder scm-coral" src="./assets/art/cylinder-coral.webp" alt="" draggable="false" />
+        <img class="scm-splash-star" src="./assets/art/star.webp" alt="" draggable="false" />
+        <img class="scm-splash-cylinder scm-aqua" src="./assets/art/cylinder-aqua.webp" alt="" draggable="false" />
+      </div>
+      <button class="scm-art-button scm-play-button" type="button" data-action="play" data-target="play" aria-label="Play Sound Cylinder Match">
+        <img src="./assets/art/button.webp" alt="" draggable="false" />
+        <span>PLAY</span>
+      </button>
+      <p class="scm-status" data-status aria-live="polite"></p>
+    </section>
+
+    <section class="scm-screen scm-play" data-screen="play" aria-label="Find the matching sound" hidden>
+      <div class="scm-bg" aria-hidden="true"></div>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-play" aria-label="Back to game menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-play" aria-label="Mute sound"></button>
+      <header class="scm-prompt" aria-live="polite">
+        <img src="./assets/art/button.webp" alt="" draggable="false" />
+        <p data-prompt>Listen. Find the same sound.</p>
+      </header>
+      <div class="scm-progress" aria-label="Round progress" data-progress></div>
+      <div class="scm-listening-stage">
+        <div class="scm-reference-wrap">
+          <span class="scm-bank-label">LISTEN</span>
+          <button class="scm-shaker scm-reference" type="button" data-action="reference" data-target="reference" data-role="reference" aria-label="Play the mystery sound">
+            <img class="scm-cylinder-art" src="./assets/art/cylinder-coral.webp" alt="Coral mystery sound cylinder" draggable="false" />
+            <img class="scm-audio-cue" src="./assets/art/sound-badge.webp" alt="" draggable="false" aria-hidden="true" />
+          </button>
+        </div>
+        <div class="scm-connector" data-connector aria-hidden="true">
+          <img src="./assets/art/star.webp" alt="" draggable="false" />
+        </div>
+        <div class="scm-candidate-wrap">
+          <span class="scm-bank-label">MATCH</span>
+          <div class="scm-candidates" data-candidates>
+            <button class="scm-shaker scm-candidate" type="button" data-index="0" data-target="candidate-0" aria-label="Try aqua shaker one"><img class="scm-cylinder-art" src="./assets/art/cylinder-aqua.webp" alt="" draggable="false" /><img class="scm-audio-cue" src="./assets/art/sound-badge.webp" alt="" draggable="false" aria-hidden="true" /></button>
+            <button class="scm-shaker scm-candidate" type="button" data-index="1" data-target="candidate-1" aria-label="Try aqua shaker two"><img class="scm-cylinder-art" src="./assets/art/cylinder-aqua.webp" alt="" draggable="false" /><img class="scm-audio-cue" src="./assets/art/sound-badge.webp" alt="" draggable="false" aria-hidden="true" /></button>
+            <button class="scm-shaker scm-candidate" type="button" data-index="2" data-target="candidate-2" aria-label="Try aqua shaker three"><img class="scm-cylinder-art" src="./assets/art/cylinder-aqua.webp" alt="" draggable="false" /><img class="scm-audio-cue" src="./assets/art/sound-badge.webp" alt="" draggable="false" aria-hidden="true" /></button>
+          </div>
+        </div>
+      </div>
+      <img class="scm-guide" src="./assets/art/star.webp" alt="" draggable="false" aria-hidden="true" />
+    </section>
+
+    <section class="scm-screen scm-end" data-screen="end" aria-label="All sounds matched" hidden>
+      <div class="scm-bg" aria-hidden="true"></div>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-end" aria-label="Back to game menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-end" aria-label="Mute sound"></button>
+      <img class="scm-reward-stage" src="./assets/art/reward-stage.webp" alt="" draggable="false" aria-hidden="true" />
+      <div class="scm-end-copy">
+        <img src="./assets/art/star.webp" alt="Happy star" draggable="false" />
+        <div class="scm-end-title">
+          <img src="./assets/art/button.webp" alt="" draggable="false" aria-hidden="true" />
+          <h2>You matched every sound!</h2>
+        </div>
+      </div>
+      <div class="scm-end-pair" aria-hidden="true">
+        <img src="./assets/art/cylinder-coral.webp" alt="" draggable="false" />
+        <img src="./assets/art/cylinder-aqua.webp" alt="" draggable="false" />
+      </div>
+      <div class="scm-end-stars" aria-hidden="true">
+        <img class="scm-earned-plate" src="./assets/art/button.webp" alt="" />
+        <div class="scm-earned-stars"><img src="./assets/art/star.webp" alt="" /><img src="./assets/art/star.webp" alt="" />
+          <img src="./assets/art/star.webp" alt="" /><img src="./assets/art/star.webp" alt="" /></div>
+      </div>
+      <button class="scm-art-button scm-again-button" type="button" data-action="again" data-target="again" aria-label="Play again">
+        <img src="./assets/art/button.webp" alt="" draggable="false" />
+        <span>PLAY AGAIN</span>
+      </button>
+      <div class="scm-confetti" data-confetti aria-hidden="true"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "id": "sound-cylinder-match",
+  "title": "Sound Cylinder Match",
+  "mode": { "id": "listen", "title": "Find the Twin", "rounds": 4 },
+  "sounds": [
+    { "id": "seeds", "label": "soft seeds", "file": "seeds.wav", "group": "soft" },
+    { "id": "bell", "label": "tiny bell", "file": "bell.wav", "group": "bright" },
+    { "id": "wood", "label": "wooden knock", "file": "wood.wav", "group": "dry" },
+    { "id": "sand", "label": "soft sand", "file": "sand.wav", "group": "soft" },
+    { "id": "drum", "label": "deep drum", "file": "drum.wav", "group": "low" },
+    { "id": "chime", "label": "high chime", "file": "chime.wav", "group": "bright" }
+  ],
+  "lines": {
+    "welcome": "Welcome, sound detective! Listen to the coral shaker, then find its sound twin.",
+    "start": "Listen!",
+    "find": "Now tap an aqua shaker. Which one sounds the same?",
+    "different": "Those sound different. Listen to the coral shaker again.",
+    "same": "Great!",
+    "round-two": "Wonderful listening. Here comes a new mystery sound.",
+    "round-three": "Your listening ears are ready for another one.",
+    "round-four": "Last mystery sound. Listen closely.",
+    "idle-reference": "Tap the coral shaker to hear it again.",
+    "idle-candidate": "Try an aqua shaker and listen for the same sound.",
+    "complete": "You matched every sound! Your listening ears are amazing.",
+    "again": "Play again!"
+  }
+}

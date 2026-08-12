@@ -5,28 +5,32 @@
   "path": "games/sound-cylinder-match/",
   "icon": "🔊",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2e9f76",
-  "shareTitle": "Sound Cylinder Match 🔊 — Listen and Match Shakers",
-  "description": "Tap two shaker cards, listen closely, and match the pair that sounds the same, sharpening auditory memory one round at a time. A quiet listening game for ages 5–6.",
+  "age": { "min": 2, "max": 5 },
+  "status": "beta",
+  "accent": "#087f86",
+  "shareTitle": "Sound Cylinder Match — Find the Sound Twin",
+  "description": "Listen to one coral mystery shaker, then test three visually identical aqua shakers to find its sound twin. A gentle kawaii auditory-discrimination game for ages 2–5.",
   "learningGoals": [
-    "Practice auditory discrimination",
-    "Build auditory memory across multiple mystery shakers",
-    "Match by sound rather than by sight"
+    "Hear whether two sounds are the same or different",
+    "Hold one sound in short-term auditory memory",
+    "Match by sound rather than by color or markings"
   ],
-  "interactionModel": "match-pairs tap two visually identical shaker cards and compare their spoken sound",
-  "feedbackModel": "Correct same-sound pairs sparkle and speak the matched sound; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "interactionModel": "one-tap auditory comparison: replay one reference shaker, then tap one of three visually identical candidates",
+  "feedbackModel": "A correct twin hops and glows with a recorded cheer; a different sound gently wobbles, replays the reference, and invites another listen without loss or failure.",
   "uses": [
-    "shared/js/engines/match-pairs.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "listen", "title": "Same Sound", "skill": "auditory discrimination and auditory memory" }
+    { "id": "listen", "title": "Find the Twin", "skill": "auditory discrimination and short-term auditory memory" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani and QLOBE Kids; original GPT Image 2 and Krea art; deterministic QLOBE sound samples; reused transcript-approved teacher cues. Built with Codex.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "../../../01-game-concepts/sound-cylinder-match/dreamina-2026-07-31-2662-Tablet game demo for preschool age. Fast....mp4"
 }
