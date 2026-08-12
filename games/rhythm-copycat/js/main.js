@@ -1,581 +1,560 @@
-// Rhythm Copycat — Kiki the clay kitten's body-percussion band.
-//
-// Screens: splash (choose mode) → select (pick a beat card) → play
-// (demo → copy → song) → end (stars, play again). Timing lives in beat.js;
-// all beat audio comes from percussion.js; every visible sound-or-action
-// line is the recorded teacher voice with Web Speech fallback.
-
 import config from '../config.js';
+import * as voice from '../../../shared/js/voice-clips.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as voiceClips from '../../../shared/js/voice-clips.js';
-import * as percussion from './percussion.js';
-import { BeatRound, makePattern, nextPattern } from './beat.js';
-import { createScreens } from '../../../shared/js/screens.js';
-import { hudButton, soundDebounce, progressDots } from '../../../shared/js/hud.js';
-import { onTap } from '../../../shared/js/tap.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
-import { createNarrator } from '../../../shared/js/narrator.js';
+import { onTap } from '../../../shared/js/tap.js';
 import { createTimers } from '../../../shared/js/timers.js';
-import { mulberry32 } from '../../../shared/js/rng.js';
-import { tada, burstConfetti } from '../../../shared/js/celebrate.js';
-import { installDebug } from '../../../shared/js/debug-harness.js';
-import { createNudger } from '../../../shared/js/idle-nudge.js';
-import { preloadImages } from '../../../shared/js/preload.js';
-import { loadPoseActors } from '../../../shared/js/stage/pose-sprite-dom.js';
+import { mulberry32, pick } from '../../../shared/js/rng.js';
+import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
+import { burstConfetti } from '../../../shared/js/celebrate.js';
+import { loadPoseActorDom } from '../../../shared/js/stage/pose-sprite-dom.js';
+import * as perc from './percussion.js';
 
-const mount = document.querySelector('#game');
-const screensEl = Object.fromEntries([...mount.querySelectorAll('[data-qk-screen]')]
-  .map((el) => [el.dataset.qkScreen, el]));
-const els = {
-  pickTitle: mount.querySelector('[data-rc-pick-title]'),
-  cards: mount.querySelector('[data-rc-cards]'),
-  start: mount.querySelector('[data-rc-start]'),
-  startLabel: mount.querySelector('[data-rc-start-label]'),
-  promptText: mount.querySelector('[data-rc-prompt-text]'),
-  progress: mount.querySelector('[data-rc-progress]'),
-  slots: mount.querySelector('[data-rc-slots]'),
-  pads: mount.querySelector('[data-rc-pads]'),
-  modeShelf: mount.querySelector('[data-rc-modes]'),
-  glow: mount.querySelector('[data-rc-glow]'),
-  endTitle: mount.querySelector('[data-rc-end-title]'),
-  stars: mount.querySelector('[data-rc-stars]'),
-  again: mount.querySelector('[data-rc-again]'),
-  againLabel: mount.querySelector('[data-rc-again-label]'),
-  beats: mount.querySelector('[data-rc-beats]'),
-};
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const screens = Object.fromEntries($$('[data-screen]').map((el) => [el.dataset.screen, el]));
+const timers = createTimers();
+
+const MODES = config.modes;
+const BEAT_MS = Math.round(60000 / config.bpm);
+const PRAISE = ['good-1', 'good-2', 'good-3'];
 
 const state = {
-  screen: 'splash', mode: null, card: null, round: 0, length: 2,
-  phase: 'menu', pattern: null, previews: [], roundResults: [],
-  stars: 0, beatRound: null,
+  screen: 'splash',
+  mode: null,
+  selected: null,
+  round: -1,
+  roundsTotal: 4,
+  phase: 'between', // 'demo' | 'copy' | 'between'
+  pattern: [],
+  stepIndex: 0,
+  demoStep: -1,
+  missCount: 0,
+  awaitingInput: false,
+  busy: false,
+  muted: false,
+  seed: 42,
+  praiseIndex: 0,
+  progress: Object.fromEntries(MODES.map((mode) => [mode.id, 0])),
+  lastPattern: [],
+  flow: 0,
 };
-const timers = createTimers();
-const narrator = createNarrator();
-let rng = mulberry32(42);
-let actors = {};
-let padEls = {};      // pad id -> <button>
-let dotEls = [];      // slot images
-let cursorEl = null;
-let selectedCard = null;
-let praiseIndex = 0;
-let lastNudgeAt = 0;
 
-function say(key) { return narrator.say(key, config.voice[key] || config.voice.intro); }
-function modeSpec() { return config.modes.find((m) => m.id === state.mode); }
-function activePlay() { return screens.is('play') && !state.completed; }
-function padIds() { return (modeSpec() || config.modes[0]).pads; }
+let rng = mulberry32(state.seed);
+let kiki = null;
+let confettiStop = null;
+const percLog = [];
 
-// ------------------------------------------------------------------ poses
-
-const KIKI_POSE_BY_PAD = { clap: 'clap', stomp: 'stomp', tap: 'tap', shake: 'shake' };
-
-async function setKiki(pose, { host = 'play', instant = false } = {}) {
-  const actor = actors[host];
-  if (!actor) return;
-  await actor.setPose(pose, { instant });
+function modeById(id) { return MODES.find((mode) => mode.id === id); }
+function speak(key) { return voice.say(key, config.lines[key]); }
+function hit(action) {
+  if (state.muted) return;
+  perc.play(action);
+  percLog.push({ action, at: Math.round(performance.now()) });
+  if (percLog.length > 80) percLog.splice(0, percLog.length - 80);
 }
 
-// ------------------------------------------------------------------ render
+function setPrompt(text) { $('[data-prompt]').textContent = text; }
 
-const KW_WORDS = ['rc-w-coral', 'rc-w-teal', 'rc-w-lime', 'rc-w-coral'];
+/* ---------- Kiki, one actor moved between screens ---------- */
 
-function paintWords(el, text) {
-  // Mockup-style per-word splash colors on the headline plaques.
-  const words = text.split(' ');
-  el.innerHTML = words.map((w, i) =>
-    `<span class="${KW_WORDS[i % KW_WORDS.length]}">${w}</span>`).join(' ');
+function mountKiki(host) {
+  if (kiki && host && kiki.el.parentElement !== host) host.append(kiki.el);
 }
 
-function mountSceneToys(hostSel, { maraca, tambourine }) {
-  const host = mount.querySelector(hostSel);
-  if (!host) return;
-  const mk = (cls, src, alt) => {
-    const img = document.createElement('img');
-    img.className = cls;
-    img.src = src;
-    img.alt = alt;
-    img.draggable = false;
-    host.append(img);
-  };
-  if (maraca) mk('rc-toy-maraca', maraca, '');
-  if (tambourine) mk('rc-toy-tambourine', tambourine, '');
-}
+function kikiPose(name, opts) { return kiki ? kiki.setPose(name, opts) : Promise.resolve(false); }
 
-function renderSplash() {
-  els.modeShelf.innerHTML = '';
-  for (const mode of config.modes) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = `rc-mode-card rc-mode-card--${mode.id}`;
-    btn.dataset.target = `mode-${mode.id}`;
-    btn.setAttribute('aria-label', mode.title);
-    btn.innerHTML = `
-      <img class="rc-mode-card__back" src="${config.assets.cards[mode.id === 'clap-stomp' ? 'orange' : 'teal']}" alt="" draggable="false" />
-      <img class="rc-mode-card__badge" src="${mode.badge === 'drum' ? config.assets.djembe : config.assets.pads[mode.badge]}" alt="" draggable="false" />
-      <span class="rc-mode-card__title">${mode.title}</span>
-      <span class="rc-mode-card__skill">${mode.skill}</span>`;
-    onTap(btn, () => pickMode(mode.id), { feedback: () => {} });
-    els.modeShelf.append(btn);
-  }
-  setKiki('neutral', { host: 'splash' });
-}
+/* ---------- screen plumbing ---------- */
 
-function buildDots(pattern) {
-  const wrap = els.slots;
-  wrap.innerHTML = '';
-  dotEls = pattern.map((pad, i) => {
-    const slot = document.createElement('span');
-    slot.className = 'rc-slot';
-    slot.style.setProperty('--slot', String(i));
-    // Seat centers measured in the kawaii stadium-track art (left %, top 50%).
-    slot.style.left = `${[22, 39, 60, 79][i] ?? 50}%`;
-    slot.style.top = '50%';
-    slot.innerHTML = `<img class="rc-dot" src="${config.assets.dots[pad]}" alt="" draggable="false" />`;
-    wrap.append(slot);
-    return slot;
-  });
-}
-
-function slotState(i, lit) {
-  const slot = dotEls[i];
-  if (slot) slot.classList.toggle('is-lit', lit);
-}
-
-function renderSelect() {
-  const pads = padIds();
-  state.previews = config.cards.map((card) => makePattern(rng, card.length, pads));
-  selectedCard = null;
-  els.start.classList.remove('is-armed');
-  els.cards.innerHTML = '';
-  config.cards.forEach((card, ci) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'rc-card';
-    btn.dataset.target = `card-${card.id}`;
-    btn.setAttribute('aria-label', `${card.title}, ${card.length} beats`);
-    const icon = { orange: config.assets.djembe, yellow: config.assets.tambourine, teal: config.assets.woodblock }[card.color];
-    btn.innerHTML = `
-      <img class="rc-card__back" src="${config.assets.cards[card.color]}" alt="" draggable="false" />
-      <img class="rc-card__icon" src="${icon}" alt="" draggable="false" />
-      <span class="rc-card__title">${card.title}</span>
-      <span class="rc-card__dots">${state.previews[ci].map((pad) =>
-        `<img class="rc-card-dot" src="${config.assets.dots[pad]}" alt="" draggable="false" />`).join('')}
-      </span>`;
-    onTap(btn, () => {
-      selectedCard = ci;
-      els.cards.querySelectorAll('.rc-card').forEach((c, j) => {
-        c.classList.toggle('is-selected', j === ci);
-      });
-      els.start.classList.add('is-armed');
-      sfx.pop();
-      say('start');
-    }, { feedback: () => {} });
-    els.cards.append(btn);
-  });
-  setKiki('notice', { host: 'splash' });
-}
-
-function renderTray(pattern) {
-  buildDots(pattern);
-  const padMap = {};
-  pattern.forEach((pad, i) => { padMap[pad] = (padMap[pad] || 0) + 1; });
-}
-
-function renderPads() {
-  els.pads.innerHTML = '';
-  padEls = {};
-  for (const id of Object.keys(config.assets.pads)) {
-    const info = config.pads[id];
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = `rc-pad rc-pad--${id}`;
-    btn.dataset.pad = id;
-    btn.dataset.target = `pad-${id}`;
-    btn.setAttribute('aria-label', info.label);
-    btn.innerHTML = `
-      <img class="rc-pad__art" src="${config.assets.pads[id]}" alt="" draggable="false" />
-      <span class="rc-pad__label">${info.label}</span>`;
-    onTap(btn, (e) => { e.stopPropagation(); handlePadTap(id); }, {
-      feedback: () => {
-        btn.classList.add('is-pressed');
-        clearTimeout(btn._rcPressTimer);
-        btn._rcPressTimer = setTimeout(() => btn.classList.remove('is-pressed'), 240);
-      },
-    });
-    els.pads.append(btn);
-    padEls[id] = btn;
-  }
-}
-
-function setPrompt(textKey) {
-  els.promptText.textContent = config.voice[textKey] || '';
-}
-
-function flashPad(id) {
-  const el = padEls[id];
-  if (!el) return;
-  el.classList.remove('is-flash');
-  void el.offsetWidth; // restart the animation
-  el.classList.add('is-flash');
-  clearTimeout(el._rcFlashTimer);
-  el._rcFlashTimer = setTimeout(() => el.classList.remove('is-flash'), 520);
-}
-
-function wigglePad(id) {
-  const el = padEls[id];
-  if (!el) return;
-  el.classList.remove('is-wrong');
-  void el.offsetWidth;
-  el.classList.add('is-wrong');
-  clearTimeout(el._rcWrongTimer);
-  el._rcWrongTimer = setTimeout(() => el.classList.remove('is-wrong'), 560);
-}
-
-function sayNudge() {
-  const now = performance.now();
-  if (now - lastNudgeAt < 2500) return;
-  lastNudgeAt = now;
-  const expected = state.beatRound?.pattern[state.beatRound?.slot];
-  if (expected) say(`nudge-${expected}`);
-}
-
-// ------------------------------------------------------------------ rounds
-
-function roundLength() {
-  return Math.min(4, state.length + Math.floor((state.round - 1) / 2));
-}
-
-function roundTempo() {
-  const mode = modeSpec();
-  const ramp = state.round > 2 ? Math.pow(1.06, Math.min(state.round - 2, 3)) : 1;
-  return Math.min(mode.tempoCap, Math.round(mode.tempo * ramp));
-}
-
-function disposeRound() {
-  state.beatRound?.cancel();
-  state.beatRound = null;
-  state.phase = 'menu';
+function showScreen(name) {
   timers.clearAll();
+  voice.stop();
+  stopConfetti();
+  state.flow += 1;
+  for (const [id, el] of Object.entries(screens)) el.hidden = id !== name;
+  state.screen = name;
 }
 
-function beginRound() {
-  const mode = modeSpec();
-  state.round += 1;
-  const length = roundLength();
-  const tempo = roundTempo();
-  const beatMs = timers.ms(60000 / tempo);
-  const pads = mode.pads;
-  const pattern = state.round === 1 && selectedCard != null
-    ? state.previews[selectedCard]
-    : nextPattern(rng, length, pads, state.pattern);
-  state.pattern = pattern;
-
-  els.progress.replaceChildren(progressDots(mode.rounds, state.round - 1));
-  renderTray(pattern);
-  state.phase = 'demo';
-  setPrompt('listen');
-  setKiki('notice', { host: 'play' });
-  say('listen');
-
-  const round = new BeatRound({
-    timers, beatMs, pattern,
-    onSound: (i, pad) => {
-      percussion.play(pad);
-      percussion.play('bass', i);
-      flashPad(pad);
-      setKiki(KIKI_POSE_BY_PAD[pad] || 'notice', { host: 'play' });
-    },
-    onLight: (i, pad, off) => slotState(i, !off),
-    onArm: (i) => {
-      slotState(i, true);
-      const slot = dotEls[i];
-      if (slot) slot.classList.add('is-armed');
-    },
-    onFill: (i, pad) => {
-      percussion.play(pad);
-      flashPad(pad);
-      slotState(i, true);
-      dotEls[i]?.classList.remove('is-armed');
-      setKiki(KIKI_POSE_BY_PAD[pad] || 'notice', { host: 'play' });
-      if (i % 2 === 1) praise();
-    },
-    onWrong: (pad) => {
-      wigglePad(pad);
-      setKiki('react', { host: 'play' });
-      say('oops');
-      sayNudge();
-    },
-    onMiss: (i, pad) => {
-      percussion.play(pad);
-      flashPad(pad);
-    },
-    onAuto: (i, pad) => {
-      percussion.play(pad);
-      slotState(i, true);
-      say('together');
-    },
-    onDone: (stats) => onPhaseDone(stats),
-  });
-  state.beatRound = round;
-  round.demo();
+function stopConfetti() {
+  if (confettiStop) { try { confettiStop(); } catch { /* no-op */ } confettiStop = null; }
 }
 
-function praise() {
-  praiseIndex = (praiseIndex + 1) % 3;
-  say(`good-${praiseIndex + 1}`);
-}
+/* ---------- splash ---------- */
 
-function onPhaseDone(stats) {
-  if (stats.phase === 'demo') {
-    timers.after(420, () => {
-      if (state.screen !== 'play' || !state.beatRound) return;
-      state.phase = 'copy';
-      setPrompt('your-turn');
-      setKiki('notice', { host: 'play' });
-      say('your-turn');
-      state.beatRound.copy();
-    });
-    return;
-  }
-  if (stats.phase === 'copy') {
-    state.roundResults.push({
-      firstTry: stats.firstTry, slots: stats.slots,
-      assists: stats.assists, misses: stats.misses,
-    });
-    state.phase = 'song';
-    setPrompt('round-end');
-    say('round-end');
-    sfx.tada({ confetti: false });
-    timers.after(750, () => {
-      if (state.screen !== 'play' || !state.beatRound) return;
-      state.beatRound.replay();
-    });
-    return;
-  }
-  if (stats.phase === 'song') {
-    const mode = modeSpec();
-    if (state.round < mode.rounds) {
-      timers.after(650, () => {
-        if (state.screen !== 'play') return;
-        beginRound();
-      });
-    } else {
-      endGame();
+function renderCardDots() {
+  for (const mode of MODES) {
+    const host = $(`[data-dots="${mode.id}"]`);
+    if (!host) continue;
+    host.replaceChildren();
+    const progress = state.progress[mode.id];
+    const rest = REST_PATTERNS[mode.id] || [];
+    for (let i = 0; i < state.roundsTotal; i += 1) {
+      const dot = document.createElement('span');
+      let cls = 'rc-dot';
+      if (i < progress) cls += ' is-filled';
+      else if (progress === 0 && rest[i]) cls += ' is-rest';
+      dot.className = cls;
+      host.append(dot);
     }
   }
 }
 
-function handlePadTap(id) {
-  if (state.phase !== 'copy' || !state.beatRound) return;
-  const result = state.beatRound.tap(id);
-  if (result !== 'ok') return;
-  try { if (navigator.vibrate) navigator.vibrate(30); } catch { /* not everywhere */ }
-  const slot = state.beatRound.slot - 1;
-  if (dotEls[slot]) dotEls[slot].classList.remove('is-armed');
+function renderSplash() {
+  showScreen('splash');
+  state.mode = null;
+  state.round = -1;
+  state.phase = 'between';
+  state.pattern = [];
+  state.awaitingInput = false;
+  state.busy = false;
+  mountKiki($('[data-kiki-splash]'));
+  kikiPose('neutral', { instant: true });
+  renderCardDots();
+  armSplashIdle();
 }
 
-// ------------------------------------------------------------------ screens
-
-function pickMode(modeId) {
-  state.mode = modeId;
-  state.round = 0;
-  state.roundResults = [];
-  state.stars = 0;
-  state.pattern = null;
-  sfx.pop();
-  setKiki('celebrate', { host: 'splash' });
-  screens.show('select');
-  renderSelect();
-  narrator.saySequence([
-    { key: `mode-${modeId}`, text: config.voice[`mode-${modeId}`] },
-    { key: 'pick-beat', text: config.voice['pick-beat'], gap: 500 },
-  ]);
-  nudger.arm();
+function highlightCard(id) {
+  $('.rc-cards').classList.toggle('has-selection', Boolean(id));
+  for (const card of $$('.rc-card')) card.classList.toggle('is-selected', card.dataset.mode === id);
 }
 
-async function startGame() {
-  if (selectedCard == null) return;
-  if (state.screen === 'play' && state.phase !== 'menu') return;
-  await audioReady;
-  disposeRound();
-  state.round = 0;
-  state.roundResults = [];
-  state.stars = 0;
-  state.length = config.cards[selectedCard].length;
-  state.pattern = null;
-  screens.show('play');
-  renderPads();
-  renderTray([]);
-  els.progress.replaceChildren(progressDots(modeSpec().rounds, 0));
-  setKiki('neutral', { host: 'play' });
-  nudger.arm();
-  beginRound();
+// Decorative resting patterns echo the mockup's per-card colored pills until
+// the child earns real progress fills.
+const REST_PATTERNS = { 'drum-beat': [1, 1, 0, 1], 'jingle-beat': [1, 1, 1, 0], 'parade-beat': [1, 1, 0, 0] };
+
+// The selected card's pill dots fill one-by-one in its accent color — a tiny
+// preview of "you'll play four rounds" — then settle back to real progress.
+function previewDots(id) {
+  const dots = $$(`[data-dots="${id}"] .rc-dot`);
+  dots.forEach((dot, index) => {
+    timers.after(160 + index * 190, () => dot.classList.add('is-preview'));
+  });
+  timers.after(160 + dots.length * 190 + 900, () => {
+    for (const dot of dots) dot.classList.remove('is-preview');
+  });
 }
 
-function endGame() {
-  const total = state.roundResults.reduce((n, r) => n + r.slots, 0);
-  const first = state.roundResults.reduce((n, r) => n + r.firstTry, 0);
-  const accuracy = total ? first / total : 0;
-  state.stars = accuracy >= 0.8 ? 3 : accuracy >= 0.55 ? 2 : 1;
-  state.completed = true;
-  state.phase = 'end';
-  disposeRound();
-  paintWords(els.endTitle, config.voice['all-done'] || 'You made a song!');
-  screens.show('end');
-  setKiki('celebrate', { host: 'end' });
-  els.stars.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
-    const star = document.createElement('img');
-    star.className = 'rc-star';
-    star.src = config.assets.star;
-    star.alt = '';
-    star.draggable = false;
-    if (i >= state.stars) star.classList.add('is-dim');
-    els.stars.append(star);
+async function selectMode(id) {
+  if (state.screen !== 'splash' || state.busy) return false;
+  if (state.selected === id) return startMode(id);
+  state.selected = id;
+  highlightCard(id);
+  previewDots(id);
+  $('.rc-start').classList.add('is-pulsing');
+  kikiPose('notice');
+  hit(modeById(id).actions[0]);
+  await speak(modeById(id).line);
+  timers.after(2400, () => kikiPose('neutral'));
+  return true;
+}
+
+function armSplashIdle() {
+  timers.after(8000, () => {
+    if (state.screen !== 'splash') return;
+    speak('pick-beat');
+    const first = $('.rc-card');
+    if (first) {
+      first.classList.add('is-nudged');
+      timers.after(1400, () => first.classList.remove('is-nudged'));
+    }
+    armSplashIdle();
+  });
+}
+
+/* ---------- play: demo phase ---------- */
+
+function pickPattern(mode, roundIndex) {
+  const pool = mode.rounds[roundIndex].pool;
+  let pattern = pick(pool, rng);
+  if (state.lastPattern.length && pool.length > 1) {
+    let guard = 8;
+    while (guard-- > 0 && pattern.join() === state.lastPattern.join()) pattern = pick(pool, rng);
   }
-  tada({ count: 160, host: mount.querySelector('[data-rc-confetti]') });
-  timers.after(120, () => percussion.play('strum'));
-  narrator.saySequence([
-    { key: 'all-done', text: config.voice['all-done'] },
-    { key: `stars-${state.stars}`, text: config.voice[`stars-${state.stars}`], gap: 500 },
-  ]);
-  nudger.arm();
-  nudger.arm();
+  state.lastPattern = pattern;
+  return pattern;
 }
 
-function goSelect() {
-  disposeRound();
-  state.completed = false;
-  screens.show('select');
-  renderSelect();
-  say('pick-beat');
-  nudger.arm();
+function renderChips(pattern) {
+  const host = $('[data-chips]');
+  const tray = $('.rc-tray');
+  for (const n of [2, 3, 4]) tray.classList.toggle(`rc-tray-len${n}`, pattern.length === n);
+  host.replaceChildren();
+  pattern.forEach((action, index) => {
+    const chip = document.createElement('span');
+    chip.className = 'rc-chip is-socket';
+    chip.dataset.index = String(index);
+    chip.style.setProperty('--chip-color', config.actions[action].color);
+    const img = document.createElement('img');
+    img.src = `./${config.actions[action].chip}`;
+    img.alt = '';
+    img.draggable = false;
+    chip.append(img);
+    host.append(chip);
+  });
 }
 
-function goSplash() {
-  disposeRound();
-  state.completed = false;
-  screens.show('splash');
-  renderSplash();
-  say('choose-mode');
-  nudger.arm();
+function chipEl(index) { return $(`[data-chips] .rc-chip[data-index="${index}"]`); }
+function padEl(action) { return $(`.rc-pad[data-pad="${action}"]`); }
+
+// A little authored star pops off the pad on every correct hit.
+function burstOnPad(action) {
+  const pad = padEl(action);
+  if (!pad) return;
+  const star = document.createElement('img');
+  star.src = './assets/ui/star.webp';
+  star.alt = '';
+  star.className = 'rc-burst';
+  star.draggable = false;
+  pad.append(star);
+  timers.after(620, () => star.remove());
 }
 
-const screens = createScreens({
-  screens: screensEl, initial: 'splash', voice: narrator,
-  onEnter: (name) => { state.screen = name; },
+function animateOnce(element, className, ms = 650) {
+  if (!element) return;
+  element.classList.remove(className);
+  void element.offsetWidth;
+  element.classList.add(className);
+  timers.after(ms, () => element.classList.remove(className));
+}
+
+async function runDemo({ replay = false } = {}) {
+  const flow = state.flow;
+  state.phase = 'demo';
+  state.busy = true;
+  state.awaitingInput = false;
+  state.stepIndex = 0;
+  state.missCount = 0;
+  screens.play.classList.add('is-demo');
+  setPrompt('Listen!');
+  for (const chip of $$('[data-chips] .rc-chip')) chip.className = 'rc-chip is-socket';
+  await speak(replay ? 'listen' : 'watch-kiki');
+  if (flow !== state.flow) return;
+  await timers.wait(BEAT_MS * 0.6);
+  if (flow !== state.flow) return;
+  for (let i = 0; i < state.pattern.length; i += 1) {
+    const action = state.pattern[i];
+    state.demoStep = i;
+    chipEl(i)?.classList.remove('is-socket');
+    chipEl(i)?.classList.add('is-shown');
+    animateOnce(chipEl(i), 'is-beat', 420);
+    animateOnce(padEl(action), 'is-demo-hit', 480);
+    kikiPose(action);
+    hit(action);
+    speak(action);
+    await timers.wait(BEAT_MS);
+    if (flow !== state.flow) return;
+  }
+  state.demoStep = -1;
+  kikiPose('neutral');
+  await timers.wait(BEAT_MS * 0.4);
+  if (flow !== state.flow) return;
+  state.phase = 'copy';
+  state.busy = false;
+  state.awaitingInput = true;
+  screens.play.classList.remove('is-demo');
+  for (const chip of $$('[data-chips] .rc-chip')) {
+    if (!chip.classList.contains('is-socket')) chip.classList.add('is-ghost');
+  }
+  setPrompt('Your turn!');
+  await speak('your-turn');
+  armPlayIdle();
+}
+
+function armPlayIdle() {
+  timers.after(9000, async () => {
+    if (state.screen !== 'play' || !state.awaitingInput || state.busy) return;
+    await speak('together');
+    if (state.screen !== 'play' || !state.awaitingInput) return;
+    replayDemo();
+  });
+}
+
+async function replayDemo() {
+  if (state.screen !== 'play' || state.busy) return false;
+  state.flow += 1; // a replay restarts the copy phase from the top
+  await runDemo({ replay: true });
+  return true;
+}
+
+/* ---------- play: copy phase ---------- */
+
+async function padTap(action) {
+  if (state.screen !== 'play') return { accepted: false };
+  if (state.busy || !state.awaitingInput) {
+    // During the demo the pads are inert; a tap still gives silent visual feedback.
+    return { accepted: false };
+  }
+  timers.clearAll();
+  const expected = state.pattern[state.stepIndex];
+  if (action === expected) {
+    state.missCount = 0;
+    const index = state.stepIndex;
+    state.stepIndex += 1;
+    hit(action);
+    animateOnce(padEl(action), 'is-hit', 460);
+    burstOnPad(action);
+    padEl(action)?.classList.remove('is-hint');
+    const chip = chipEl(index);
+    chip?.classList.remove('is-ghost', 'is-socket');
+    chip?.classList.add('is-shown');
+    animateOnce(chip, 'is-beat', 460);
+    kikiPose(action);
+    timers.after(500, () => { if (state.phase === 'copy') kikiPose('neutral'); });
+    if (state.stepIndex >= state.pattern.length) return roundComplete().then(() => ({ accepted: true }));
+    armPlayIdle();
+    return { accepted: true };
+  }
+  state.missCount += 1;
+  animateOnce(padEl(action), 'is-wrong', 520);
+  if (!state.muted) sfx.unpop();
+  kikiPose('notice');
+  timers.after(900, () => { if (state.phase === 'copy') kikiPose('neutral'); });
+  await speak('oops');
+  if (state.screen !== 'play' || !state.awaitingInput) return { accepted: false };
+  await speak(`nudge-${expected}`);
+  if (state.missCount >= 2) padEl(expected)?.classList.add('is-hint');
+  armPlayIdle();
+  return { accepted: false };
+}
+
+async function roundComplete() {
+  const flow = state.flow;
+  state.awaitingInput = false;
+  state.busy = true;
+  state.phase = 'between';
+  if (!state.muted) sfx.sparkle();
+  kikiPose('celebrate');
+  burstConfetti({ host: screens.play, count: 16, rng });
+  const mode = modeById(state.mode);
+  state.progress[mode.id] = Math.max(state.progress[mode.id], state.round + 1);
+  renderProgress();
+  const praise = PRAISE[state.praiseIndex % PRAISE.length];
+  state.praiseIndex += 1;
+  await speak(praise);
+  if (flow !== state.flow) return;
+  await timers.wait(650);
+  if (flow !== state.flow) return;
+  if (state.round + 1 >= state.roundsTotal) return finishSet();
+  return showRound(state.round + 1);
+}
+
+function renderProgress() {
+  const host = $('[data-progress]');
+  host.replaceChildren();
+  for (let i = 0; i < state.roundsTotal; i += 1) {
+    const done = i < state.round || (i === state.round && state.phase === 'between');
+    const dot = document.createElement('span');
+    dot.className = 'rc-round-dot' + (done ? ' is-done' : i === state.round ? ' is-now' : '');
+    host.append(dot);
+  }
+  host.setAttribute('aria-label', `Round ${Math.min(state.round + 1, state.roundsTotal)} of ${state.roundsTotal}`);
+}
+
+async function showRound(index) {
+  if (state.screen !== 'play') return;
+  state.flow += 1;
+  state.round = index;
+  const mode = modeById(state.mode);
+  state.pattern = pickPattern(mode, index);
+  state.stepIndex = 0;
+  state.missCount = 0;
+  renderChips(state.pattern);
+  renderProgress();
+  for (const pad of $$('.rc-pad')) {
+    pad.classList.remove('is-hint', 'is-wrong', 'is-hit');
+    pad.classList.toggle('is-resting', !mode.actions.includes(pad.dataset.pad));
+  }
+  await runDemo();
+}
+
+async function startMode(id) {
+  const mode = modeById(id) || MODES[0];
+  await ready;
+  state.selected = mode.id;
+  highlightCard(mode.id);
+  showScreen('play');
+  state.mode = mode.id;
+  state.round = -1;
+  state.praiseIndex = 0;
+  state.lastPattern = [];
+  mountKiki($('[data-kiki-play]'));
+  kikiPose('neutral', { instant: true });
+  await speak('start');
+  if (state.screen === 'play') await showRound(0);
+  return true;
+}
+
+/* ---------- end ---------- */
+
+async function finishSet() {
+  showScreen('end');
+  const flow = state.flow; // captured AFTER showScreen's increment so the star loop survives
+  state.phase = 'between';
+  state.busy = false;
+  state.awaitingInput = false;
+  mountKiki($('[data-kiki-end]'));
+  kikiPose('celebrate', { instant: true });
+  const stars = $$('[data-stars] img');
+  for (const star of stars) star.classList.remove('is-in');
+  if (!state.muted) sfx.tada();
+  await speak('round-end');
+  if (flow !== state.flow) return true;
+  for (let i = 0; i < stars.length; i += 1) {
+    stars[i].classList.add('is-in');
+    if (!state.muted) sfx.pop();
+    await timers.wait(420);
+    if (flow !== state.flow) return true;
+  }
+  confettiStop = burstConfetti({ host: screens.end, loop: true, rng });
+  await speak('stars-3');
+  if (flow !== state.flow) return true;
+  await speak('song');
+  if (flow !== state.flow) return true;
+  // The child's last pattern becomes the song: percussion + a warm bass walk.
+  const song = state.lastPattern.length ? state.lastPattern : ['clap', 'tap'];
+  for (let bar = 0; bar < 2; bar += 1) {
+    for (let i = 0; i < song.length; i += 1) {
+      hit(song[i]);
+      if (!state.muted) perc.play('bass', bar * song.length + i);
+      await timers.wait(BEAT_MS * 0.75);
+      if (flow !== state.flow) return true;
+    }
+  }
+  if (!state.muted) perc.play('strum');
+  await speak('all-done');
+  timers.after(8000, () => { if (state.screen === 'end') renderSplash(); });
+  return true;
+}
+
+/* ---------- input wiring ---------- */
+
+function prepareAudio() { perc.unlock(); }
+
+function setMuted(on = !state.muted) {
+  state.muted = Boolean(on);
+  voice.setMuted(state.muted);
+  if (state.muted) voice.stop();
+  for (const button of $$('[data-action="mute"]')) {
+    button.setAttribute('aria-label', state.muted ? 'Turn sound on' : 'Mute sound');
+    button.classList.toggle('is-muted', state.muted);
+  }
+  return state.muted;
+}
+
+function wireControls() {
+  for (const card of $$('.rc-card')) {
+    onTap(card, () => selectMode(card.dataset.mode), { feedback: () => { if (!state.muted) sfx.tick(); } });
+  }
+  onTap($('.rc-start'), () => startMode(state.selected || MODES[0].id), { feedback: () => { if (!state.muted) sfx.tick(); } });
+  onTap($('.rc-listen'), () => replayDemo(), { feedback: () => { if (!state.muted) sfx.tick(); } });
+  onTap($('.rc-again'), () => startMode(state.mode || MODES[0].id), { feedback: () => { if (!state.muted) sfx.tick(); } });
+  for (const pad of $$('.rc-pad')) {
+    onTap(pad, () => padTap(pad.dataset.pad), { feedback: () => { /* percussion IS the feedback */ } });
+  }
+  for (const button of $$('[data-action="back"]')) {
+    onTap(button, () => renderSplash(), { feedback: () => { if (!state.muted) sfx.tick(); } });
+  }
+  for (const button of $$('[data-action="mute"]')) {
+    onTap(button, () => setMuted(), { feedback: () => {} });
+  }
+}
+
+function tapTarget(id) {
+  if (id === 'start') return startMode(state.selected || MODES[0].id);
+  if (id === 'listen') return replayDemo();
+  if (id === 'again') return startMode(state.mode || MODES[0].id);
+  if (id === 'back-play' || id === 'back-end') { renderSplash(); return true; }
+  if (id.startsWith('sound-')) return setMuted();
+  const card = id.match(/^card-(.+)$/);
+  if (card) return selectMode(card[1]);
+  const pad = id.match(/^pad-(.+)$/);
+  if (pad) return padTap(pad[1]);
+  return false;
+}
+
+async function winRound() {
+  await ready;
+  if (state.screen !== 'play') return false;
+  let guard = 12;
+  while (state.busy && guard-- > 0) await timers.wait(200);
+  while (state.awaitingInput && state.stepIndex < state.pattern.length) {
+    const result = await padTap(state.pattern[state.stepIndex]);
+    if (!result?.accepted) return false;
+  }
+  return true;
+}
+
+/* ---------- boot ---------- */
+
+const ready = Promise.all([
+  voice.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.lines),
+  loadPoseActorDom('./assets/kiki/poses.json', {
+    host: $('[data-kiki-splash]'),
+    className: 'rc-kiki-actor',
+    preloadOrder: ['neutral', 'clap', 'stomp', 'tap', 'shake', 'notice', 'celebrate'],
+  }).then((actor) => { kiki = actor; actor.show('neutral'); }),
+]).then(() => true).catch((error) => {
+  console.error(error);
+  const status = $('[data-status]');
+  if (status) status.textContent = 'Art or sound files need an adult check.';
+  throw error;
 });
 
-const nudger = createNudger({
-  first: 9000, repeat: 11000,
-  onNudge: () => {
-    if (screens.current === 'splash') say('choose-mode');
-    else if (screens.current === 'select') say('pick-beat');
-    else if (screens.current === 'play') say(state.phase === 'copy' ? 'your-turn' : 'listen');
-    else if (screens.current === 'end') say('all-done');
-  },
-});
-
-// ------------------------------------------------------------------ wiring
-
-installKioskGuards();
+wireControls();
+renderCardDots();
 installUnlockOnGesture({
-  extra: [() => percussion.unlock(), () => sfx.unlock(), () => voiceClips.unlock()],
-  onFirst: () => say('intro'),
+  extra: [() => perc.unlock()],
+  onFirst: () => { timers.after(150, () => { if (state.screen === 'splash') { speak('intro'); timers.after(1600, () => { if (state.screen === 'splash') speak('pick-beat'); }); } }); },
 });
-const audioReady = voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
-
-const playBack = hudButton('back', goSelect);
-const selectBack = hudButton('back', goSplash);
-const endBack = hudButton('back', goSelect);
-const splashSound = hudButton('sound', soundDebounce(() => say('intro'), 600));
-const selectSound = hudButton('sound', soundDebounce(() => say('pick-beat'), 600));
-const playSound = hudButton('sound', soundDebounce(() => say(state.phase === 'copy' ? 'your-turn' : 'listen'), 600));
-const endSound = hudButton('sound', soundDebounce(() => say('all-done'), 600));
-for (const btn of [selectBack, playBack, endBack]) btn.classList.add('qk-hud-top-left');
-for (const btn of [splashSound, selectSound, playSound, endSound]) btn.classList.add('qk-hud-bottom-left');
-mount.querySelector('[data-rc-back]').append(selectBack);
-mount.querySelector('[data-rc-back-play]').append(playBack);
-mount.querySelector('[data-rc-back-end]').append(endBack);
-mount.querySelector('[data-rc-sound]').append(splashSound);
-mount.querySelector('[data-rc-sound-select]').append(selectSound);
-mount.querySelector('[data-rc-sound-end]').append(endSound);
-
-onTap(els.start, () => startGame(), { feedback: () => {} });
-onTap(els.again, () => { sfx.pop(); goSelect(); }, { feedback: () => {} });
-onTap(els.beats, () => { sfx.pop(); goSelect(); }, { feedback: () => {} });
-
-// ------------------------------------------------------------------ actors
-
-// The mode shelf must be tappable before the kitten art finishes streaming —
-// it renders immediately; Kiki pops in when her pack lands.
-renderSplash();
-Promise.all([
-  loadPoseActors(mount.querySelector('[data-rc-actor="splash"]'), { kiki: { pack: config.assets.kiki } }),
-  loadPoseActors(mount.querySelector('[data-rc-actor="play"]'), { kiki: { pack: config.assets.kiki } }),
-  loadPoseActors(mount.querySelector('[data-rc-actor="end"]'), { kiki: { pack: config.assets.kiki } }),
-]).then(([splash, play, end]) => {
-  actors = { splash: splash.kiki, play: play.kiki, end: end.kiki };
-  setKiki('neutral', { host: 'splash' });
-  mountSceneToys('[data-rc-splash-toys]', { maraca: config.assets.maraca, tambourine: config.assets.tambourine });
-  mountSceneToys('[data-rc-select-toys]', { maraca: config.assets.maraca, tambourine: config.assets.tambourine });
-});
-paintWords(els.pickTitle, els.pickTitle.textContent);
-
-preloadImages(
-  Object.values(config.assets.pads)
-    .concat(Object.values(config.assets.dots))
-    .concat(Object.values(config.assets.cards))
-    .concat([config.assets.djembe, config.assets.tambourine, config.assets.woodblock])
-    .concat([config.assets.title, config.assets.splashBg, config.assets.playBg,
-      config.assets.button, config.assets.star,
-      config.assets.tray, config.assets.plaque, config.assets.djembe]),
-);
-
-// ------------------------------------------------------------------ debug
-
-function debugState() {
-  return {
-    screen: state.screen, mode: state.mode, card: state.card, round: state.round,
-    length: state.length, phase: state.phase,
-    pattern: state.pattern, results: state.roundResults, stars: state.stars,
-    tempo: state.round >= 1 ? roundTempo() : null,
-    slot: state.beatRound ? state.beatRound.slot : null,
-  };
-}
+installKioskGuards();
 
 installDebug({
-  gameId: 'rhythm-copycat',
-  modes: config.modes.map((m) => m.id),
-  timers, narrator, sfx, voice: voiceClips, ready: audioReady,
-  onSeed: (next) => { rng = next; },
-  state: debugState, getState: debugState,
-  tap: (id) => {
-    // Prefer the visible instance: several screens each carry a back button.
-    const selector = ['home', 'back', 'sound'].includes(id) ? `[data-hud="${id}"]` : `[data-target="${id}"]`;
-    const el = [...mount.querySelectorAll(selector)]
-      .find((candidate) => candidate.offsetParent !== null) || mount.querySelector(selector);
-    el?.click();
-    return !!el;
+  gameId: config.id,
+  ready,
+  listModes: () => MODES.map((mode) => ({ id: mode.id, title: mode.title })),
+  startMode: (id) => startMode(id),
+  getState: () => ({
+    screen: state.screen,
+    mode: state.mode,
+    round: state.round,
+    roundsTotal: state.roundsTotal,
+    phase: state.phase,
+    pattern: state.pattern.slice(),
+    stepIndex: state.stepIndex,
+    demoStep: state.demoStep,
+    missCount: state.missCount,
+    awaitingInput: state.awaitingInput,
+    busy: state.busy,
+    muted: state.muted,
+    seed: state.seed,
+    progress: { ...state.progress },
+  }),
+  getTargets: () => {
+    const targets = collectTargets(screens[state.screen]);
+    if (state.screen === 'play') {
+      const expected = state.pattern[state.stepIndex];
+      for (const target of targets) {
+        const pad = target.id?.match(/^pad-(.+)$/);
+        if (pad) target.role = state.awaitingInput ? (pad[1] === expected ? 'correct' : 'wrong') : 'neutral';
+      }
+    }
+    return targets;
   },
-  actions: {
-    start: () => startGame(),
-    skipTo: (phase) => {
-      if (!state.beatRound) return false;
-      if (phase === 'demo') { state.beatRound.cancel(); }
-      return true;
-    },
-    bpm: (n) => {
-      if (!state.beatRound) return false;
-      state.beatRound.beatMs = timers.ms(60000 / n);
-      return true;
-    },
-    pads: () => Object.keys(padEls),
+  tap: tapTarget,
+  winRound,
+  mute: setMuted,
+  seed: (value) => {
+    state.seed = Number.isFinite(Number(value)) ? Number(value) >>> 0 : 42;
+    rng = mulberry32(state.seed);
+    return state.seed;
   },
-  fillNext: () => {
-    if (state.phase !== 'copy' || !state.beatRound) return false;
-    return handlePadTap(state.beatRound.pattern[state.beatRound.slot]) === 'ok' || true;
-  },
-  getAudioLog: voiceClips.getAudioLog,
-  clearAudioLog: voiceClips.clearAudioLog,
+  timers,
+  getAudioLog: () => ({ voice: voice.getAudioLog(), percussion: percLog.map((entry) => ({ ...entry })) }),
+  home: renderSplash,
+});
+
+ready.then(() => {
+  const status = $('[data-status]');
+  if (status) status.textContent = '';
+  renderSplash();
 });

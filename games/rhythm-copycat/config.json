@@ -1,132 +1,386 @@
 {
- "voice": {
-  "intro": "Rhythm Copycat!",
-  "choose-mode": "Choose your mode!",
-  "mode-clap-stomp": "Clap and stomp!",
-  "mode-drum-circle": "Drum circle!",
-  "pick-beat": "Pick a beat!",
-  "start": "Let's go!",
-  "listen": "Listen!",
-  "your-turn": "Now you copy it!",
-  "clap": "Clap!",
-  "stomp": "Stomp!",
-  "tap": "Tap!",
-  "shake": "Shake!",
-  "good-1": "Great!",
-  "good-2": "Nice!",
-  "good-3": "Awesome!",
-  "oops": "Oops!",
-  "nudge-clap": "Try the clap!",
-  "nudge-stomp": "Try the stomp!",
-  "nudge-tap": "Try the tap!",
-  "nudge-shake": "Try the shake!",
-  "together": "Let's do it together!",
-  "song": "Listen to our song!",
-  "round-end": "Yay! You did the beat!",
-  "all-done": "You made a song!",
-  "stars-1": "One star! Nice!",
-  "stars-2": "Two stars! Great job!",
-  "stars-3": "Three stars! Amazing!",
-  "again": "Play again!"
- },
- "assets": {
-  "splashBg": "./assets/bg/splash.webp",
-  "playBg": "./assets/bg/play.webp",
-  "title": "./assets/ui/title.webp",
-  "plaque": "./assets/ui/plaque.webp",
-  "button": "./assets/ui/button.webp",
-  "star": "./assets/ui/star.webp",
-  "tray": "./assets/ui/tray.webp",
-  "kiki": "./assets/kiki/poses.json",
-  "pads": {
-   "clap": "./assets/pads/clap.webp",
-   "stomp": "./assets/pads/stomp.webp",
-   "tap": "./assets/pads/tap.webp",
-   "shake": "./assets/pads/shake.webp"
+  "id": "rhythm-copycat",
+  "title": "Rhythm Copycat",
+  "bpm": 80,
+  "actions": {
+    "clap": {
+      "title": "Clap",
+      "color": "#8ec5ff",
+      "pad": "assets/pads/clap.webp",
+      "chip": "assets/pads/clap.webp"
+    },
+    "stomp": {
+      "title": "Stomp",
+      "color": "#8ed152",
+      "pad": "assets/pads/stomp.webp",
+      "chip": "assets/pads/stomp.webp"
+    },
+    "tap": {
+      "title": "Tap",
+      "color": "#ffb23f",
+      "pad": "assets/pads/tap.webp",
+      "chip": "assets/pads/tap.webp"
+    },
+    "shake": {
+      "title": "Shake",
+      "color": "#ff6e5d",
+      "pad": "assets/pads/shake.webp",
+      "chip": "assets/pads/shake.webp"
+    }
   },
-  "dots": {
-   "clap": "./assets/dots/blue.webp",
-   "stomp": "./assets/dots/green.webp",
-   "tap": "./assets/dots/orange.webp",
-   "shake": "./assets/dots/red.webp"
-  },
-  "djembe": "./assets/ui/djembe.webp",
-  "cards": {
-   "orange": "./assets/cards/orange.webp",
-   "yellow": "./assets/cards/yellow.webp",
-   "teal": "./assets/cards/teal.webp"
-  },
-  "tambourine": "./assets/ui/tambourine.webp",
-  "woodblock": "./assets/ui/woodblock.webp",
-  "maraca": "./assets/ui/maraca.webp"
- },
- "pads": {
-  "clap": {
-   "color": "#2a9be4",
-   "label": "Clap"
-  },
-  "stomp": {
-   "color": "#6abf4b",
-   "label": "Stomp"
-  },
-  "tap": {
-   "color": "#f0812a",
-   "label": "Tap"
-  },
-  "shake": {
-   "color": "#e94e4a",
-   "label": "Shake"
+  "modes": [
+    {
+      "id": "drum-beat",
+      "title": "Drum Beat",
+      "skill": "copy 2-4 beat clap and stomp patterns",
+      "card": "assets/cards/orange.webp",
+      "badge": "assets/ui/djembe.webp",
+      "actions": [
+        "clap",
+        "stomp"
+      ],
+      "line": "mode-drum-beat",
+      "rounds": [
+        {
+          "pool": [
+            [
+              "clap",
+              "clap"
+            ],
+            [
+              "clap",
+              "stomp"
+            ],
+            [
+              "stomp",
+              "stomp"
+            ],
+            [
+              "stomp",
+              "clap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "stomp",
+              "clap"
+            ],
+            [
+              "clap",
+              "stomp"
+            ],
+            [
+              "clap",
+              "clap"
+            ],
+            [
+              "stomp",
+              "stomp"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "clap",
+              "clap",
+              "stomp"
+            ],
+            [
+              "clap",
+              "stomp",
+              "clap"
+            ],
+            [
+              "stomp",
+              "clap",
+              "clap"
+            ],
+            [
+              "stomp",
+              "stomp",
+              "clap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "clap",
+              "stomp",
+              "clap",
+              "stomp"
+            ],
+            [
+              "clap",
+              "clap",
+              "stomp",
+              "stomp"
+            ],
+            [
+              "stomp",
+              "clap",
+              "stomp",
+              "clap"
+            ],
+            [
+              "clap",
+              "stomp",
+              "stomp",
+              "clap"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jingle-beat",
+      "title": "Jingle Beat",
+      "skill": "copy 2-4 beat tap and shake patterns",
+      "card": "assets/cards/yellow.webp",
+      "badge": "assets/ui/tambourine.webp",
+      "actions": [
+        "tap",
+        "shake"
+      ],
+      "line": "mode-jingle-beat",
+      "rounds": [
+        {
+          "pool": [
+            [
+              "tap",
+              "tap"
+            ],
+            [
+              "tap",
+              "shake"
+            ],
+            [
+              "shake",
+              "shake"
+            ],
+            [
+              "shake",
+              "tap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "shake",
+              "tap"
+            ],
+            [
+              "tap",
+              "shake"
+            ],
+            [
+              "tap",
+              "tap"
+            ],
+            [
+              "shake",
+              "shake"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "tap",
+              "tap",
+              "shake"
+            ],
+            [
+              "tap",
+              "shake",
+              "tap"
+            ],
+            [
+              "shake",
+              "tap",
+              "tap"
+            ],
+            [
+              "shake",
+              "shake",
+              "tap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "tap",
+              "shake",
+              "tap",
+              "shake"
+            ],
+            [
+              "tap",
+              "tap",
+              "shake",
+              "shake"
+            ],
+            [
+              "shake",
+              "tap",
+              "shake",
+              "tap"
+            ],
+            [
+              "tap",
+              "shake",
+              "shake",
+              "tap"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "parade-beat",
+      "title": "Parade Beat",
+      "skill": "copy patterns mixing all four actions",
+      "card": "assets/cards/teal.webp",
+      "badge": "assets/ui/woodblock.webp",
+      "actions": [
+        "clap",
+        "stomp",
+        "tap",
+        "shake"
+      ],
+      "line": "mode-parade-beat",
+      "rounds": [
+        {
+          "pool": [
+            [
+              "clap",
+              "tap"
+            ],
+            [
+              "tap",
+              "shake"
+            ],
+            [
+              "stomp",
+              "tap"
+            ],
+            [
+              "clap",
+              "shake"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "clap",
+              "tap",
+              "shake"
+            ],
+            [
+              "tap",
+              "tap",
+              "stomp"
+            ],
+            [
+              "clap",
+              "stomp",
+              "shake"
+            ],
+            [
+              "shake",
+              "tap",
+              "clap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "stomp",
+              "shake",
+              "tap"
+            ],
+            [
+              "tap",
+              "clap",
+              "tap"
+            ],
+            [
+              "shake",
+              "shake",
+              "clap"
+            ],
+            [
+              "stomp",
+              "clap",
+              "tap"
+            ]
+          ]
+        },
+        {
+          "pool": [
+            [
+              "clap",
+              "tap",
+              "stomp",
+              "shake"
+            ],
+            [
+              "tap",
+              "shake",
+              "tap",
+              "clap"
+            ],
+            [
+              "clap",
+              "clap",
+              "shake",
+              "stomp"
+            ],
+            [
+              "stomp",
+              "tap",
+              "shake",
+              "tap"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "lines": {
+    "intro": "Rhythm Copycat!",
+    "pick-beat": "Pick a beat!",
+    "start": "Let's go!",
+    "listen": "Listen!",
+    "watch-kiki": "Watch Kiki!",
+    "your-turn": "Now you copy it!",
+    "together": "Let's do it together!",
+    "clap": "Clap!",
+    "stomp": "Stomp!",
+    "tap": "Tap!",
+    "shake": "Shake!",
+    "nudge-clap": "Try the clap!",
+    "nudge-stomp": "Try the stomp!",
+    "nudge-tap": "Try the tap!",
+    "nudge-shake": "Try the shake!",
+    "oops": "Oops!",
+    "good-1": "Great!",
+    "good-2": "Nice!",
+    "good-3": "Awesome!",
+    "round-end": "Yay! You did the beat!",
+    "all-done": "You made a song!",
+    "stars-3": "Three stars! Amazing!",
+    "song": "Listen to our song!",
+    "again": "Play again!",
+    "mode-drum-beat": "Drum beat!",
+    "mode-jingle-beat": "Jingle beat!",
+    "mode-parade-beat": "Parade beat!"
   }
- },
- "modes": [
-  {
-   "id": "clap-stomp",
-   "title": "Clap & Stomp",
-   "skill": "copy 2–3 beat percussion patterns",
-   "badge": "clap",
-   "tempo": 66,
-   "tempoCap": 78,
-   "rounds": 5,
-   "pads": [
-    "clap",
-    "stomp",
-    "tap"
-   ]
-  },
-  {
-   "id": "drum-circle",
-   "title": "Drum Circle",
-   "skill": "copy 3–4 beat patterns at a faster tempo",
-   "badge": "drum",
-   "tempo": 78,
-   "tempoCap": 88,
-   "rounds": 5,
-   "pads": [
-    "clap",
-    "stomp",
-    "tap",
-    "shake"
-   ]
-  }
- ],
- "cards": [
-  {
-   "id": "hop",
-   "title": "Bunny Hop",
-   "length": 2,
-   "color": "orange"
-  },
-  {
-   "id": "trot",
-   "title": "Fox Trot",
-   "length": 3,
-   "color": "yellow"
-  },
-  {
-   "id": "bear",
-   "title": "Big Bear",
-   "length": 4,
-   "color": "teal"
-  }
- ]
 }

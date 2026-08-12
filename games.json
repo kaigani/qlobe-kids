@@ -1,3195 +1,3315 @@
 {
- "schemaVersion": 1,
- "categories": [
-  {
-   "id": "reading-phonics",
-   "title": "Reading & Phonics",
-   "order": 1,
-   "color": "#58a945",
-   "emoji": "📖",
-   "icon": "assets/hub/categories/reading-phonics.jpg"
-  },
-  {
-   "id": "writing-fine-motor",
-   "title": "Writing & Fine Motor",
-   "order": 2,
-   "color": "#e4587c",
-   "emoji": "✏️",
-   "icon": "assets/hub/categories/writing-fine-motor.jpg"
-  },
-  {
-   "id": "math-number-sense",
-   "title": "Math & Number Sense",
-   "order": 3,
-   "color": "#2d7dd2",
-   "emoji": "🔢",
-   "icon": "assets/hub/categories/math-number-sense.jpg"
-  },
-  {
-   "id": "practical-life",
-   "title": "Practical Life & Independence",
-   "order": 4,
-   "color": "#14a08a",
-   "emoji": "🏡",
-   "icon": "assets/hub/categories/practical-life.jpg"
-  },
-  {
-   "id": "sensorial-science",
-   "title": "Sensorial & Early Science",
-   "order": 5,
-   "color": "#00a2c8",
-   "emoji": "🔬",
-   "icon": "assets/hub/categories/sensorial-science.jpg"
-  },
-  {
-   "id": "oral-storytelling",
-   "title": "Oral Language & Storytelling",
-   "order": 6,
-   "color": "#f08a24",
-   "emoji": "💬",
-   "icon": "assets/hub/categories/oral-storytelling.jpg"
-  },
-  {
-   "id": "culture-geography",
-   "title": "Culture, Geography & History",
-   "order": 7,
-   "color": "#c9503a",
-   "emoji": "🌍",
-   "icon": "assets/hub/categories/culture-geography.jpg"
-  },
-  {
-   "id": "art-music",
-   "title": "Art & Music",
-   "order": 8,
-   "color": "#b84bb0",
-   "emoji": "🎨",
-   "icon": "assets/hub/categories/art-music.jpg"
-  },
-  {
-   "id": "movement-outdoor",
-   "title": "Movement & Outdoor Learning",
-   "order": 9,
-   "color": "#7cb518",
-   "emoji": "🤸",
-   "icon": "assets/hub/categories/movement-outdoor.jpg"
-  },
-  {
-   "id": "social-emotional",
-   "title": "Social-Emotional & Self-Regulation",
-   "order": 10,
-   "color": "#8a5bc4",
-   "emoji": "😊",
-   "icon": "assets/hub/categories/social-emotional.jpg"
-  }
- ],
- "games": [
-  {
-   "id": "sound-sprouts",
-   "title": "Sound Sprouts",
-   "category": "reading-phonics",
-   "path": "games/sound-sprouts/",
-   "icon": "games/sound-sprouts/assets/gen/ui/splash/title.png",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#7FB069",
-   "uses": [
-    "shared/vendor/three.module.min.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/assets/letter-tiles/",
-    "shared/assets/objects/",
-    "shared/data/words.json"
-   ],
-   "modes": [
-    {
-     "id": "guided",
-     "title": "Make a Word",
-     "skill": "blend CVC sounds into words"
-    },
-    {
-     "id": "mystery",
-     "title": "Mystery Picture",
-     "skill": "decode a word to reveal a picture"
-    },
-    {
-     "id": "freeplay",
-     "title": "Word Mixer",
-     "skill": "free phoneme exploration"
-    }
-   ],
-   "iconBg": "games/sound-sprouts/assets/gen/bg.jpg",
-   "iconFit": "contain",
-   "summary": "Build simple words like cat, sun, and map with movable letters."
-  },
-  {
-   "id": "blend-train",
-   "title": "Word Train",
-   "category": "reading-phonics",
-   "path": "games/blend-train/",
-   "icon": "assets/hub/tiles/blend-train.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#2d7dd2",
-   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/stage/drag-to-slot.js",
-    "shared/js/voice-clips.js",
-    "shared/js/content.js",
-    "shared/js/sfx.js",
-    "shared/assets/audio/fragments/",
-    "shared/assets/audio/celebrate/"
-   ],
-   "modes": [
-    {
-     "id": "couple",
-     "title": "Couple the Cars",
-     "skill": "onset-rime blending with two sound cars"
-    },
-    {
-     "id": "sounds",
-     "title": "Sound Cars",
-     "skill": "phoneme-by-phoneme blending with three sound cars"
-    }
-   ],
-   "summary": "Push sound cars together on the track and hear them blend into a word."
-  },
-  {
-   "id": "pattern-train",
-   "title": "Pattern Train",
-   "category": "math-number-sense",
-   "path": "games/pattern-train/",
-   "icon": "assets/hub/tiles/pattern-train.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js"
-   ],
-   "modes": [
-    {
-     "id": "colors",
-     "title": "Color Cars",
-     "skill": "AB, ABC, and AAB color-pattern extension"
-    },
-    {
-     "id": "shapes",
-     "title": "Shape Cars",
-     "skill": "simple shape-pattern extension"
-    }
-   ],
-   "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
-  },
-  {
-   "id": "tangram-tales",
-   "title": "Tangram Tales",
-   "category": "math-number-sense",
-   "path": "games/tangram-tales/",
-   "icon": "assets/hub/tiles/tangram-tales.jpg",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#ef5b4c",
-   "uses": [
-    "shared/js/freeform-board.js",
-    "shared/js/audio-unlock.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/debug-harness.js",
-    "shared/assets/ui/"
-   ],
-   "modes": [
-    {
-     "id": "fox",
-     "title": "Fox Tale",
-     "skill": "guided seven-piece spatial composition"
-    },
-    {
-     "id": "fish",
-     "title": "Fish Tale",
-     "skill": "guided seven-piece spatial composition"
-    },
-    {
-     "id": "bird",
-     "title": "Bird Tale",
-     "skill": "guided seven-piece spatial composition"
-    },
-    {
-     "id": "free",
-     "title": "Make My Own",
-     "skill": "open tangram arrangement and rotation"
-    }
-   ],
-   "summary": "Build three paper animals from seven shapes, then invent an original tangram tale."
-  },
-  {
-   "id": "story-sequence",
-   "title": "First, Next, Last",
-   "category": "oral-storytelling",
-   "path": "games/story-sequence/",
-   "icon": "assets/hub/tiles/story-sequence.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f25f5c",
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js",
-    "shared/assets/objects/"
-   ],
-   "modes": [
-    {
-     "id": "stories",
-     "title": "First, Next, Last",
-     "skill": "narrative sequencing with first/next/last"
-    },
-    {
-     "id": "daily",
-     "title": "My Day",
-     "skill": "ordering daily routines"
-    }
-   ],
-   "summary": "Sequence simple picture stories in order."
-  },
-  {
-   "id": "feelings-charades",
-   "title": "Feelings Charades",
-   "category": "social-emotional",
-   "path": "games/feelings-charades/",
-   "icon": "assets/hub/tiles/feelings-charades.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#8a5bc4",
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js",
-    "shared/assets/twemoji/"
-   ],
-   "modes": [
-    {
-     "id": "act",
-     "title": "Act It Out",
-     "skill": "emotional expression and coping strategies"
-    },
-    {
-     "id": "guess",
-     "title": "Guess the Feeling",
-     "skill": "emotion recognition from body clues"
-    }
-   ],
-   "summary": "Act out proud, frustrated, calm, and worried."
-  },
-  {
-   "id": "sound-basket",
-   "title": "Sound Basket",
-   "category": "reading-phonics",
-   "path": "games/sound-basket/",
-   "icon": "assets/hub/tiles/sound-basket.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "two",
-     "title": "Two Sounds",
-     "skill": "initial-sound isolation with two randomized contrasting onsets"
-    },
-    {
-     "id": "three",
-     "title": "Three Sounds",
-     "skill": "initial-sound isolation across three randomized contrasting onsets"
-    }
-   ],
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/tap.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/assets/audio/",
-    "shared/assets/ui/",
-    "shared/assets/letter-tiles/",
-    "shared/assets/objects/"
-   ],
-   "summary": "Hear a picture word, then tap or drag matching first sounds into a woven basket."
-  },
-  {
-   "id": "mystery-letter-bag",
-   "title": "Mystery Letter Bag",
-   "category": "reading-phonics",
-   "path": "games/mystery-letter-bag/",
-   "icon": "assets/hub/tiles/mystery-letter-bag.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "bag",
-     "title": "What's in the Bag?",
-     "skill": "sound-to-letter mapping for b, s, m, t, c, and p"
-    },
-    {
-     "id": "tricky",
-     "title": "Tricky Sounds",
-     "skill": "discriminating similar consonant sounds"
-    }
-   ],
-   "summary": "Feel a hidden letter with your fingers and name its sound."
-  },
-  {
-   "id": "rhyming-detective",
-   "title": "Rhyming Detective",
-   "category": "reading-phonics",
-   "path": "games/rhyming-detective/",
-   "icon": "assets/hub/tiles/rhyming-detective.jpg",
-   "age": {
-    "min": 3,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2f6fd0",
-   "modes": [
-    {
-     "id": "rhyme-hunt",
-     "title": "Rhyme Hunt",
-     "skill": "finding words that rhyme with a target word, with the words printed"
-    },
-    {
-     "id": "sound-detective",
-     "title": "Sound Detective",
-     "skill": "finding rhymes by ear alone, with no printed words"
-    }
-   ],
-   "summary": "Hunt around the room for things that rhyme."
-  },
-  {
-   "id": "letter-treasure-hunt",
-   "title": "Letter Treasure Hunt",
-   "category": "reading-phonics",
-   "path": "games/letter-treasure-hunt/",
-   "icon": "games/letter-treasure-hunt/assets/papercraft/quest-map.webp",
-   "age": {
-    "min": 2,
-    "max": 5
-   },
-   "status": "beta",
-   "accent": "#ef6548",
-   "modes": [
-    { "id": "a-quest", "title": "A Island", "skill": "finding familiar objects that begin with the /a/ sound" },
-    { "id": "b-quest", "title": "B Island", "skill": "finding familiar objects that begin with the /b/ sound" },
-    { "id": "c-quest", "title": "C Island", "skill": "finding familiar objects that begin with the /c/ sound" },
-    { "id": "d-quest", "title": "D Island", "skill": "finding familiar objects that begin with the /d/ sound" },
-    { "id": "e-quest", "title": "E Island", "skill": "finding familiar objects that begin with the /e/ sound" },
-    { "id": "f-quest", "title": "F Island", "skill": "finding familiar objects that begin with the /f/ sound" },
-    { "id": "g-quest", "title": "G Island", "skill": "finding familiar objects that begin with the /g/ sound" },
-    { "id": "h-quest", "title": "H Island", "skill": "finding familiar objects that begin with the /h/ sound" },
-    { "id": "i-quest", "title": "I Island", "skill": "finding familiar objects that begin with the /i/ sound" },
-    { "id": "j-quest", "title": "J Island", "skill": "finding familiar objects that begin with the /j/ sound" },
-    { "id": "k-quest", "title": "K Island", "skill": "finding familiar objects that begin with the /k/ sound" },
-    { "id": "l-quest", "title": "L Island", "skill": "finding familiar objects that begin with the /l/ sound" },
-    { "id": "m-quest", "title": "M Island", "skill": "finding familiar objects that begin with the /m/ sound" },
-    { "id": "n-quest", "title": "N Island", "skill": "finding familiar objects that begin with the /n/ sound" },
-    { "id": "o-quest", "title": "O Island", "skill": "finding familiar objects that begin with the /o/ sound" },
-    { "id": "p-quest", "title": "P Island", "skill": "finding familiar objects that begin with the /p/ sound" },
-    { "id": "q-quest", "title": "Q Island", "skill": "finding familiar objects that begin with the /q/ sound" },
-    { "id": "r-quest", "title": "R Island", "skill": "finding familiar objects that begin with the /r/ sound" },
-    { "id": "s-quest", "title": "S Island", "skill": "finding familiar objects that begin with the /s/ sound" },
-    { "id": "t-quest", "title": "T Island", "skill": "finding familiar objects that begin with the /t/ sound" },
-    { "id": "u-quest", "title": "U Island", "skill": "finding familiar objects that begin with the /u/ sound" },
-    { "id": "v-quest", "title": "V Island", "skill": "finding familiar objects that begin with the /v/ sound" },
-    { "id": "w-quest", "title": "W Island", "skill": "finding familiar objects that begin with the /w/ sound" },
-    { "id": "x-quest", "title": "X Island", "skill": "finding familiar X words and symbols" },
-    { "id": "y-quest", "title": "Y Island", "skill": "finding familiar objects that begin with the /y/ sound" },
-    { "id": "z-quest", "title": "Z Island", "skill": "finding familiar objects that begin with the /z/ sound" }
-   ],
-   "summary": "Scroll a sea map of 26 papercraft letter islands, then find three matching objects among playful decoys."
-  },
-  {
-   "id": "flashlight-cave",
-   "title": "Flashlight Cave",
-   "category": "reading-phonics",
-   "path": "games/flashlight-cave/",
-   "icon": "assets/hub/tiles/flashlight-cave.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#f0a53c",
-   "uses": [
-    "games/flashlight-cave/js/main.js",
-    "games/flashlight-cave/js/game.js",
-    "games/flashlight-cave/js/cave.js",
-    "games/flashlight-cave/js/letters.js",
-    "games/flashlight-cave/js/beam.js",
-    "games/flashlight-cave/js/actor.js",
-    "games/flashlight-cave/js/voice.js",
-    "games/flashlight-cave/assets/pose-actors/ari/",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/js/stage/spotlight.js",
-    "shared/js/stage/stage.js",
-    "shared/js/stage/particles.js",
-    "shared/js/stage/tween.js",
-    "shared/js/content.js",
-    "shared/assets/ui/",
-    "shared/assets/objects/",
-    "shared/assets/audio/fragments/",
-    "shared/fonts/fredoka-latin-600-normal.woff2",
-    "shared/vendor/pixi.min.js"
-   ],
-   "modes": [
-    {
-     "id": "find",
-     "title": "Find the Letter",
-     "skill": "recognizing an uppercase letter by name"
-    },
-    {
-     "id": "sound",
-     "title": "Sound Cave",
-     "skill": "matching a spoken sound to its letter"
-    },
-    {
-     "id": "picture",
-     "title": "Whose Letter?",
-     "skill": "identifying the letter a word starts with"
-    }
-   ],
-   "summary": "Sweep a flashlight through a dark cave to find glowing letters and meet their alphabet friends."
-  },
-  {
-   "id": "silly-swap-words",
-   "title": "Silly Swap Words",
-   "category": "reading-phonics",
-   "path": "games/silly-swap-words/",
-   "icon": "assets/hub/tiles/silly-swap-words.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f25f5c",
-   "modes": [
-    {
-     "id": "swap",
-     "title": "Swap a Sound",
-     "skill": "phoneme substitution with one changed sound"
-    },
-    {
-     "id": "chain",
-     "title": "Word Chains",
-     "skill": "hearing a sequence of small word changes"
-    }
-   ],
-   "summary": "Change one sound at a time to turn cat into hat into hot."
-  },
-  {
-   "id": "picture-word-match",
-   "title": "Picture Word Match",
-   "category": "reading-phonics",
-   "path": "games/picture-word-match/",
-   "icon": "assets/hub/tiles/picture-word-match.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "easy",
-     "title": "Match the Word",
-     "skill": "picture-to-print matching with familiar CVC words"
-    },
-    {
-     "id": "more",
-     "title": "More Words",
-     "skill": "picture-to-print matching with additional CVC words"
-    }
-   ],
-   "summary": "Match picture cards to the words they spell."
-  },
-  {
-   "id": "sound-hopscotch",
-   "title": "Sound Hopscotch",
-   "category": "reading-phonics",
-   "path": "games/sound-hopscotch/",
-   "icon": "assets/hub/tiles/sound-hopscotch.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2e9f76",
-   "modes": [
-    {
-     "id": "hop",
-     "title": "Hop to the Sound",
-     "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g"
-    },
-    {
-     "id": "fast",
-     "title": "Quick Hops",
-     "skill": "rapid discrimination of tricky letter-sound pairs"
-    }
-   ],
-   "summary": "Jump onto letters as their sounds are spoken."
-  },
-  {
-   "id": "tiny-reader-theater",
-   "title": "Tiny Reader Theater",
-   "category": "reading-phonics",
-   "path": "games/tiny-reader-theater/",
-   "icon": "assets/hub/tiles/tiny-reader-theater.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "stories",
-     "title": "Fill the Story",
-     "skill": "context-based decoding of short CVC words"
-    },
-    {
-     "id": "act",
-     "title": "Act It Out",
-     "skill": "story participation and character comprehension"
-    }
-   ],
-   "summary": "Act out one-page decodable stories."
-  },
-  {
-   "id": "sand-tray-letters",
-   "title": "Sand Tray Letters",
-   "category": "writing-fine-motor",
-   "path": "games/sand-tray-letters/",
-   "icon": "assets/hub/tiles/sand-tray-letters.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#20bfd8",
-   "modes": [
-    {
-     "id": "letters",
-     "title": "Sand Tray Letters",
-     "skill": "uppercase formation, stroke order, and letter-sound link"
-    }
-   ],
-   "summary": "Trace letters in sand, salt, or flour with a fingertip."
-  },
-  {
-   "id": "chalkboard-big-strokes",
-   "title": "Chalkboard Big Strokes",
-   "category": "writing-fine-motor",
-   "path": "games/chalkboard-big-strokes/",
-   "icon": "assets/hub/tiles/chalkboard-big-strokes.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#4d8068",
-   "modes": [
-    {
-     "id": "strokes",
-     "title": "Big Strokes",
-     "skill": "large pre-writing stroke control"
-    },
-    {
-     "id": "double",
-     "title": "Two-Part Strokes",
-     "skill": "multi-stroke sequencing for crosses and slants"
-    }
-   ],
-   "summary": "Practice giant loops, lines, and curves on a chalkboard."
-  },
-  {
-   "id": "bead-path-builder",
-   "title": "Bead Path Builder",
-   "category": "writing-fine-motor",
-   "path": "games/bead-path-builder/",
-   "icon": "assets/hub/tiles/bead-path-builder.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "string",
-     "title": "String the Beads",
-     "skill": "left-to-right controlled placement along a curve"
-    },
-    {
-     "id": "fancy",
-     "title": "Fancy Strings",
-     "skill": "placing alternating bead shapes on a curved path"
-    }
-   ],
-   "summary": "String beads in a left-to-right pattern."
-  },
-  {
-   "id": "tweezer-rescue",
-   "title": "Tweezer Rescue",
-   "category": "writing-fine-motor",
-   "path": "games/tweezer-rescue/",
-   "icon": "assets/hub/tiles/tweezer-rescue.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "colors",
-     "title": "Color Nests",
-     "skill": "pincer-grip drag control and color matching"
-    },
-    {
-     "id": "sizes",
-     "title": "Big and Small",
-     "skill": "pincer-grip drag control and size vocabulary"
-    }
-   ],
-   "summary": "Move pom-poms by color or sound using tweezers."
-  },
-  {
-   "id": "sticker-line-challenge",
-   "title": "Sticker Line Challenge",
-   "category": "writing-fine-motor",
-   "path": "games/sticker-line-challenge/",
-   "icon": "assets/hub/tiles/sticker-line-challenge.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#e873a4",
-   "modes": [
-    {
-     "id": "waves",
-     "title": "Wavy Lines",
-     "skill": "controlled left-to-right curved strokes"
-    },
-    {
-     "id": "zigzags",
-     "title": "Zigzag Trails",
-     "skill": "direction changes and corner control"
-    },
-    {
-     "id": "loops",
-     "title": "Loop-the-Loops",
-     "skill": "circular and loop pre-writing strokes"
-    }
-   ],
-   "summary": "Place stickers along curves and zigzags."
-  },
-  {
-   "id": "name-puzzle",
-   "title": "Name Puzzle",
-   "category": "writing-fine-motor",
-   "path": "games/name-puzzle/",
-   "icon": "assets/hub/tiles/name-puzzle.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "friends",
-     "title": "Fix the Names",
-     "skill": "letter order and name recognition"
-    },
-    {
-     "id": "words",
-     "title": "Fix the Words",
-     "skill": "left-to-right order in simple words"
-    }
-   ],
-   "summary": "Reorder the cut-up letters of your own name."
-  },
-  {
-   "id": "letter-road-driving",
-   "title": "Letter Road Driving",
-   "category": "writing-fine-motor",
-   "path": "games/letter-road-driving/",
-   "icon": "assets/hub/tiles/letter-road-driving.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#1677d2",
-   "uses": [
-    "shared/js/engines/trace-path.js",
-    "shared/js/voice-clips.js",
-    "shared/js/stage/",
-    "shared/js/sfx.js",
-    "games/letter-road-driving/assets/audio/"
-   ],
-   "modes": [
-    {
-     "id": "cruise",
-     "title": "Easy Roads",
-     "skill": "continuous control on single-stroke uppercase letter shapes"
-    },
-    {
-     "id": "town",
-     "title": "Letter Town",
-     "skill": "numbered multi-stroke uppercase letter formation"
-    }
-   ],
-   "summary": "Steer a cheerful car along glowing letter roads, then follow numbered starts to build multi-stroke capitals."
-  },
-  {
-   "id": "scissor-trail-safari",
-   "title": "Scissor Trail Safari",
-   "category": "writing-fine-motor",
-   "path": "games/scissor-trail-safari/",
-   "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a96b",
-   "modes": [
-    {
-     "id": "straight",
-     "title": "Straight Cuts",
-     "skill": "straight and angled line control"
-    },
-    {
-     "id": "curvy",
-     "title": "Curvy Cuts",
-     "skill": "smooth continuous curved strokes"
-    },
-    {
-     "id": "spiral",
-     "title": "Spiral Rescue",
-     "skill": "sustained hand-eye steering on spirals"
-    }
-   ],
-   "summary": "Cut along winding animal-path lines."
-  },
-  {
-   "id": "playdough-letter-factory",
-   "title": "Playdough Letter Factory",
-   "category": "writing-fine-motor",
-   "path": "games/playdough-letter-factory/",
-   "icon": "assets/hub/tiles/playdough-letter-factory.jpg",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#118f87",
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/content.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/assets/objects/",
-    "shared/assets/ui/",
-    "shared/js/clay/heightfield.js",
-    "shared/js/clay/heightfield-canvas.js"
-   ],
-   "modes": [
-    {
-     "id": "letters",
-     "title": "Make a Letter",
-     "skill": "guided uppercase letter formation"
-    },
-    {
-     "id": "words",
-     "title": "Build a Word",
-     "skill": "ordered letter assembly with a picture clue"
-    },
-    {
-     "id": "free",
-     "title": "Free Dough",
-     "skill": "open-ended fine-motor mark making"
-    }
-   ],
-   "summary": "Roll colorful dough, trace giant letters, build picture words, and make free-form clay art."
-  },
-  {
-   "id": "secret-message-copy",
-   "title": "Secret Message Copy",
-   "category": "writing-fine-motor",
-   "path": "games/secret-message-copy/",
-   "icon": "assets/hub/tiles/secret-message-copy.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "secret",
-     "title": "Copy the Code",
-     "skill": "letter-by-letter copying of three-letter words"
-    },
-    {
-     "id": "long",
-     "title": "Longer Codes",
-     "skill": "letter-by-letter copying of four-letter words"
-    }
-   ],
-   "summary": "Copy one short word or phrase."
-  },
-  {
-   "id": "number-rod-race",
-   "title": "Number Rod Race",
-   "category": "math-number-sense",
-   "path": "games/number-rod-race/",
-   "icon": "assets/hub/tiles/number-rod-race.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "short",
-     "title": "Short to Long",
-     "skill": "length comparison and ascending order"
-    },
-    {
-     "id": "long",
-     "title": "Long to Short",
-     "skill": "length comparison and descending order"
-    }
-   ],
-   "summary": "Order rods from shortest to longest."
-  },
-  {
-   "id": "counting-treasure-cups",
-   "title": "Counting Treasure Cups",
-   "category": "math-number-sense",
-   "path": "games/counting-treasure-cups/",
-   "icon": "assets/hub/tiles/counting-treasure-cups.jpg",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "live",
-   "summary": "Count gems into a pirate treasure cup, sort gold coins into the chest, and work out how many treasures are inside.",
-   "accent": "#d69b2d",
-   "modes": [
-    {
-     "id": "cup",
-     "title": "Fill the Cup",
-     "skill": "counting out a set of a given size"
-    },
-    {
-     "id": "chest",
-     "title": "Big Treasure",
-     "skill": "counting while sorting by kind"
-    },
-    {
-     "id": "howmany",
-     "title": "How Many?",
-     "skill": "cardinality — counting a set and naming the total"
-    }
-   ],
-   "uses": [
-    "games/counting-treasure-cups/js/game.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/assets/ui/"
-   ]
-  },
-  {
-   "id": "sandpaper-number-match",
-   "title": "Sandpaper Number Match",
-   "category": "math-number-sense",
-   "path": "games/sandpaper-number-match/",
-   "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "meet",
-     "title": "Meet the Numbers",
-     "skill": "numeral recognition for 1-5 tied to quantity"
-    },
-    {
-     "id": "big",
-     "title": "Bigger Numbers",
-     "skill": "numeral recognition for 6-9 tied to quantity"
-    }
-   ],
-   "summary": "Trace a numeral, then count that many objects."
-  },
-  {
-   "id": "teen-bead-builder",
-   "title": "Teen Bead Builder",
-   "category": "math-number-sense",
-   "path": "games/teen-bead-builder/",
-   "icon": "assets/hub/tiles/teen-bead-builder.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#159ca6",
-   "modes": [
-    {
-     "id": "build",
-     "title": "Bundle & Build",
-     "skill": "compose teen numbers as one ten and some ones"
-    },
-    {
-     "id": "match",
-     "title": "Bead Detective",
-     "skill": "match a base-ten bead model to its teen numeral"
-    }
-   ],
-   "summary": "Bundle ten ones into one ten, build teen numbers, and match bead models to numerals."
-  },
-  {
-   "id": "snack-addition-stories",
-   "title": "Snack Addition Stories",
-   "category": "math-number-sense",
-   "path": "games/snack-addition-stories/",
-   "icon": "assets/hub/tiles/snack-addition-stories.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#e85d75",
-   "modes": [
-    {
-     "id": "stories",
-     "title": "Snack Stories",
-     "skill": "informal addition stories to 6"
-    }
-   ],
-   "summary": "Tell add-together stories, like three berries plus two berries."
-  },
-  {
-   "id": "subtraction-picnic",
-   "title": "Subtraction Picnic",
-   "category": "math-number-sense",
-   "path": "games/subtraction-picnic/",
-   "icon": "assets/hub/tiles/subtraction-picnic.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "picnic",
-     "title": "Hungry Guests",
-     "skill": "informal subtraction stories within 6"
-    }
-   ],
-   "summary": "Animals eat counters away to show taking away."
-  },
-  {
-   "id": "number-line-jump",
-   "title": "Number Line Jump",
-   "category": "math-number-sense",
-   "path": "games/number-line-jump/",
-   "icon": "assets/hub/tiles/number-line-jump.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "archived",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "hops",
-     "title": "Frog Hops",
-     "skill": "movement-linked counting 2-6"
-    },
-    {
-     "id": "back",
-     "title": "Hop Home",
-     "skill": "takeaway from five and counting remaining pads"
-    }
-   ],
-   "summary": "Superseded by Chocolate Chip Count, the live action-counting rebuild."
-  },
-  {
-   "id": "chocolate-chip-count",
-   "title": "Chocolate Chip Count",
-   "category": "math-number-sense",
-   "path": "games/chocolate-chip-count/",
-   "icon": "assets/hub/tiles/chocolate-chip-count.jpg",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#ef5b4c",
-   "modes": [
-    {
-     "id": "tiny-batch",
-     "title": "Tiny Batch",
-     "skill": "one-to-one catch counting to 3"
-    },
-    {
-     "id": "baker-batch",
-     "title": "Baker Batch",
-     "skill": "sustained catch counting to 6"
-    },
-    {
-     "id": "super-batch",
-     "title": "Super Batch",
-     "skill": "sustained catch counting to 10 across wider space"
-    }
-   ],
-   "summary": "Pop clay balloons and slide Ravi's tray to catch and count exactly 3, 6, or 10 chocolate chips."
-  },
-  {
-   "id": "block-tower-measure",
-   "title": "Block Tower Measure",
-   "category": "math-number-sense",
-   "path": "games/block-tower-measure/",
-   "icon": "assets/hub/tiles/block-tower-measure.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f59f36",
-   "modes": [
-    {
-     "id": "stack",
-     "title": "Stack It Tall",
-     "skill": "size ordering and counting tower height"
-    },
-    {
-     "id": "compare",
-     "title": "Two Towers",
-     "skill": "height comparison between two towers"
-    }
-   ],
-   "summary": "Compare heights by stacking cubes."
-  },
-  {
-   "id": "pouring-station",
-   "title": "Pouring Station",
-   "category": "practical-life",
-   "path": "games/pouring-station/",
-   "icon": "assets/hub/tiles/pouring-station.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "water",
-     "title": "Water Pouring",
-     "skill": "careful water pouring and cleanup"
-    },
-    {
-     "id": "beans",
-     "title": "Bean Pouring",
-     "skill": "careful dry pouring and listening"
-    }
-   ],
-   "summary": "Pour water, beans, or rice between pitchers."
-  },
-  {
-   "id": "table-setting-mission",
-   "title": "Table Setting Mission",
-   "category": "practical-life",
-   "path": "games/table-setting-mission/",
-   "icon": "assets/hub/tiles/table-setting-mission.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f4a83d",
-   "modes": [
-    {
-     "id": "places",
-     "title": "Set the Table",
-     "skill": "table-setting order and spatial placement vocabulary"
-    }
-   ],
-   "summary": "Set the places using a visual placemat card."
-  },
-  {
-   "id": "snack-chef",
-   "title": "Snack Chef",
-   "category": "practical-life",
-   "path": "games/snack-chef/",
-   "icon": "assets/hub/tiles/snack-chef.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#d94d62",
-   "modes": [
-    {
-     "id": "fruit",
-     "title": "Fruit Face",
-     "skill": "spatial arrangement and facial symmetry"
-    },
-    {
-     "id": "toast",
-     "title": "Toast Garden",
-     "skill": "controlled circular spreading"
-    },
-    {
-     "id": "boat",
-     "title": "Banana Boat",
-     "skill": "directional preparation sequencing"
-    },
-    {
-     "id": "apple",
-     "title": "Apple Sandwich",
-     "skill": "layered assembly and lid alignment"
-    },
-    {
-     "id": "rainbow",
-     "title": "Rainbow Plate",
-     "skill": "color sorting and arc arrangement"
-    },
-    {
-     "id": "parfait",
-     "title": "Yogurt Parfait",
-     "skill": "controlled pouring and layering"
-    }
-   ],
-   "summary": "Spread, peel, slice, pour, and arrange six playful storybook snacks.",
-   "uses": [
-    "shared/js/tap.js",
-    "shared/js/sfx.js",
-    "shared/js/speech.js",
-    "shared/js/voice-clips.js",
-    "shared/assets/ui/",
-    "shared/assets/foods-storybook/",
-    "shared/characters/maya/portrait.png"
-   ]
-  },
-  {
-   "id": "cooking-craze",
-   "title": "Cooking Craze",
-   "category": "practical-life",
-   "path": "games/cooking-craze/",
-   "icon": "assets/hub/tiles/cooking-craze-v2.jpg",
-   "age": {
-    "min": 3,
-    "max": 7
-   },
-   "status": "in-design",
-   "accent": "#ef5e68",
-   "uses": [
-    "shared/js/voice-clips.js",
-    "shared/js/stage/drag-to-slot-dom.js",
-    "shared/assets/ui/"
-   ],
-   "modes": [
-    {
-     "id": "build",
-     "title": "Build Your Pizza",
-     "skill": "follow four cooking steps and match six toppings"
-    },
-    {
-     "id": "swirl",
-     "title": "Sauce Swirl",
-     "skill": "broad presses and circular sauce spreading"
-    },
-    {
-     "id": "quick",
-     "title": "Quick Bake",
-     "skill": "place five toppings and slide the peel to the oven"
-    }
-   ],
-   "summary": "Pat dough, spread sauce, match cheerful toppings, and slide a Kawaii pizza into the oven."
-  },
-  {
-   "id": "laundry-sorter",
-   "title": "Laundry Sorter",
-   "category": "practical-life",
-   "path": "games/laundry-sorter/",
-   "icon": "assets/hub/tiles/laundry-sorter.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#7b35d0",
-   "modes": [
-    {
-     "id": "sort",
-     "title": "Sort It",
-     "skill": "color categorization"
-    },
-    {
-     "id": "fold",
-     "title": "Fold It",
-     "skill": "directional swipes and sequencing"
-    },
-    {
-     "id": "pairs",
-     "title": "Find the Pairs",
-     "skill": "color-and-pattern matching and working memory"
-    }
-   ],
-   "uses": [
-    "shared/js/tap.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/assets/storybook/"
-   ],
-   "summary": "Sort a changing mix of colorful clothes, fold shirts, pants, and towels step by step, and find matching pairs."
-  },
-  {
-   "id": "sweep-the-trail",
-   "title": "Sweep the Trail",
-   "category": "practical-life",
-   "path": "games/sweep-the-trail/",
-   "icon": "assets/hub/tiles/sweep-the-trail.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "indoor",
-     "title": "Crumb Patrol",
-     "skill": "thorough indoor sweeping and dustpan use"
-    },
-    {
-     "id": "outdoor",
-     "title": "Leaf Trail",
-     "skill": "whole-arm outdoor sweeping and path care"
-    }
-   ],
-   "summary": "Sweep crumbs or leaves into a target spot."
-  },
-  {
-   "id": "button-zipper-lab",
-   "title": "Button-Zipper Lab",
-   "category": "practical-life",
-   "path": "games/button-zipper-lab/",
-   "icon": "assets/hub/tiles/button-zipper-lab.jpg",
-   "age": {
-    "min": 4,
-    "max": 7
-   },
-   "status": "in-design",
-   "accent": "#236fbc",
-   "modes": [
-    {
-     "id": "zipper",
-     "title": "Zipper",
-     "skill": "two-hand stabilization and controlled upward pulling"
-    },
-    {
-     "id": "button",
-     "title": "Button",
-     "skill": "curved path following and buttonhole alignment"
-    },
-    {
-     "id": "snap",
-     "title": "Snap",
-     "skill": "alignment followed by sustained or repeated pressure"
-    },
-    {
-     "id": "velcro",
-     "title": "Hook & Loop",
-     "skill": "peeling away and smoothing back across"
-    }
-   ],
-   "summary": "Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear."
-  },
-  {
-   "id": "plant-care-captain",
-   "title": "Plant Care Captain",
-   "category": "practical-life",
-   "path": "games/plant-care-captain/",
-   "icon": "assets/hub/tiles/plant-care-captain.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "care",
-     "title": "Care Round",
-     "skill": "daily observation, soil checking, and careful watering"
-    },
-    {
-     "id": "spa",
-     "title": "Plant Spa Day",
-     "skill": "gentle leaf cleaning and occasional plant care"
-    }
-   ],
-   "summary": "Water, mist, prune, and observe a plant."
-  },
-  {
-   "id": "shelf-reset-game",
-   "title": "Shelf Reset Game",
-   "category": "practical-life",
-   "path": "games/shelf-reset-game/",
-   "icon": "assets/hub/tiles/shelf-reset-game.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#d69e67",
-   "modes": [
-    {
-     "id": "cycle",
-     "title": "One Full Cycle",
-     "skill": "choose, use, reset, and return one tray"
-    },
-    {
-     "id": "inspector",
-     "title": "Shelf Inspector",
-     "skill": "sort misplaced materials and restore shelf order"
-    }
-   ],
-   "summary": "Choose a tray, use it, then return it neatly."
-  },
-  {
-   "id": "lunchbox-pack",
-   "title": "Lunchbox Pack",
-   "category": "practical-life",
-   "path": "games/lunchbox-pack/",
-   "icon": "assets/hub/tiles/lunchbox-pack.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "summary": "Pack items using a picture checklist.",
-   "accent": "#14a08a",
-   "uses": [
-    "shared/assets/foods/",
-    "shared/characters/",
-    "shared/js/sfx.js",
-    "shared/js/speech.js",
-    "shared/fonts/",
-    "shared/assets/ui/"
-   ],
-   "modes": [
-    {
-     "id": "pack",
-     "title": "Pack for Me!",
-     "skill": "listening & following spoken instructions"
-    },
-    {
-     "id": "healthy",
-     "title": "Healthy Helper",
-     "skill": "food groups / healthy choices"
-    },
-    {
-     "id": "count",
-     "title": "Count & Pack",
-     "skill": "counting 1–5 with one-to-one correspondence"
-    }
-   ]
-  },
-  {
-   "id": "cleanup-timer-quest",
-   "title": "Cleanup Timer Quest",
-   "category": "practical-life",
-   "path": "games/cleanup-timer-quest/",
-   "icon": "assets/hub/tiles/cleanup-timer-quest.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f28c45",
-   "modes": [
-    {
-     "id": "room",
-     "title": "Room Rescue",
-     "skill": "sort first, then store one category at a time"
-    },
-    {
-     "id": "speed",
-     "title": "Five-Minute Wonder",
-     "skill": "time awareness during one bounded cleanup"
-    }
-   ],
-   "summary": "Restore a space before the song ends."
-  },
-  {
-   "id": "sink-or-float",
-   "title": "Sink or Float Lab",
-   "category": "sensorial-science",
-   "path": "games/sink-or-float/",
-   "icon": "assets/hub/tiles/sink-or-float.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "predict",
-     "title": "Predict & Test",
-     "skill": "making and testing a prediction"
-    },
-    {
-     "id": "tricky",
-     "title": "Tricky Ones",
-     "skill": "reasoning past the big-things-sink misconception"
-    },
-    {
-     "id": "pond",
-     "title": "Water Playground",
-     "skill": "open observation of what water does"
-    }
-   ],
-   "summary": "Drop real things into a big jar of water, test your guess, and stamp what happened into your field journal.",
-   "uses": [
-    "shared/js/stage/stage.js",
-    "shared/js/stage/water.js",
-    "shared/js/stage/particles.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/assets/ui/",
-    "shared/fonts/"
-   ]
-  },
-  {
-   "id": "magnet-explorer",
-   "title": "Magnet Explorer",
-   "category": "sensorial-science",
-   "path": "games/magnet-explorer/",
-   "icon": "assets/hub/tiles/magnet-explorer.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "explore",
-     "title": "Sticks or Not?",
-     "skill": "magnetic versus non-magnetic sorting"
-    }
-   ],
-   "summary": "Find which objects are magnetic and which are not."
-  },
-  {
-   "id": "sound-cylinder-match",
-   "title": "Sound Cylinder Match",
-   "category": "sensorial-science",
-   "path": "games/sound-cylinder-match/",
-   "icon": "assets/hub/tiles/sound-cylinder-match.jpg",
-   "age": {
-    "min": 2,
-    "max": 5
-   },
-   "status": "beta",
-   "accent": "#087f86",
-   "modes": [
-    {
-     "id": "listen",
-     "title": "Find the Twin",
-     "skill": "auditory discrimination and short-term auditory memory"
-    }
-   ],
-   "summary": "Listen to one mystery shaker, then find its kawaii sound twin by ear."
-  },
-  {
-   "id": "texture-trail",
-   "title": "Texture Trail",
-   "category": "sensorial-science",
-   "path": "games/texture-trail/",
-   "icon": "assets/hub/tiles/texture-trail.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#8f6f4e",
-   "modes": [
-    {
-     "id": "feel",
-     "title": "Feels the Same",
-     "skill": "texture vocabulary and comparison"
-    }
-   ],
-   "summary": "Match rough, smooth, soft, and bumpy surfaces."
-  },
-  {
-   "id": "smell-jars",
-   "title": "Smell Jars",
-   "category": "sensorial-science",
-   "path": "games/smell-jars/",
-   "icon": "assets/hub/tiles/smell-jars.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#ffd166",
-   "modes": [
-    {
-     "id": "sniff",
-     "title": "Be the Nose",
-     "skill": "connect real smells to vocabulary and preference"
-    },
-    {
-     "id": "guess",
-     "title": "Sniff and Guess",
-     "skill": "make and revise sensory guesses"
-    }
-   ],
-   "summary": "Identify lemon, mint, cinnamon, and pine by scent."
-  },
-  {
-   "id": "color-gradient-cards",
-   "title": "Color Gradient Cards",
-   "category": "sensorial-science",
-   "path": "games/color-gradient-cards/",
-   "icon": "assets/hub/tiles/color-gradient-cards.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f25f5c",
-   "modes": [
-    {
-     "id": "blues",
-     "title": "Light to Dark",
-     "skill": "shade discrimination and ordering"
-    },
-    {
-     "id": "rainbow",
-     "title": "Rainbow Order",
-     "skill": "rainbow color sequence"
-    }
-   ],
-   "summary": "Order color shades from light to dark."
-  },
-  {
-   "id": "bean-sprout-watch",
-   "title": "Bean Sprout Watch",
-   "category": "sensorial-science",
-   "path": "games/bean-sprout-watch/",
-   "icon": "assets/hub/tiles/bean-sprout-watch.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "week",
-     "title": "Sprout Diary",
-     "skill": "observe plant growth over time"
-    },
-    {
-     "id": "care",
-     "title": "What Does It Need?",
-     "skill": "match plant cues to care needs"
-    }
-   ],
-   "summary": "Observe and draw a sprout's daily changes."
-  },
-  {
-   "id": "weather-scientist",
-   "title": "Weather Scientist",
-   "category": "sensorial-science",
-   "path": "games/weather-scientist/",
-   "icon": "assets/hub/tiles/weather-scientist.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "weather-lab",
-     "title": "Weather Lab",
-     "skill": "cause and effect in a changing weather system"
-    }
-   ],
-   "summary": "Choose a meadow, desert, arctic, or rainforest and make it change with sun, rain, wind, and clouds."
-  },
-  {
-   "id": "bug-hotel-observer",
-   "title": "Bug Hotel Observer",
-   "category": "sensorial-science",
-   "path": "games/bug-hotel-observer/",
-   "icon": "assets/hub/tiles/bug-hotel-observer.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#5f8f3a",
-   "uses": [
-    "shared/js/hotspot-scene.js",
-    "shared/js/magnifier-lens.js",
-    "shared/js/journal.js",
-    "shared/js/voice-clips.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/assets/ui/",
-    "shared/fonts/"
-   ],
-   "modes": [
-    {
-     "id": "bug-hunt",
-     "title": "Bug Hunt",
-     "skill": "finding and naming a bug that has been named out loud, by searching a natural scene with a magnifying glass"
-    },
-    {
-     "id": "bug-detective",
-     "title": "Bug Detective",
-     "skill": "matching a spoken description of a bug to the right bug, with no name given"
-    },
-    {
-     "id": "my-bug-book",
-     "title": "My Bug Book",
-     "skill": "recalling the bugs already collected and re-hearing each one's name and fact from its sticker"
-    }
-   ],
-   "summary": "Drag a paper magnifying glass across a bug hotel to discover twelve tiny garden guests, then keep their stickers and facts in your own bug book."
-  },
-  {
-   "id": "melting-race",
-   "title": "Melting Race",
-   "category": "sensorial-science",
-   "path": "games/melting-race/",
-   "icon": "assets/hub/tiles/melting-race.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "race",
-     "title": "The Big Melt",
-     "skill": "compare melting under four conditions"
-    },
-    {
-     "id": "rescue",
-     "title": "Ice Rescue",
-     "skill": "use warmth to melt ice and free a toy"
-    }
-   ],
-   "summary": "Compare ice melting in sun, shade, hand, and cloth."
-  },
-  {
-   "id": "story-stones",
-   "title": "Story Stones",
-   "category": "oral-storytelling",
-   "path": "games/story-stones/",
-   "icon": "assets/hub/tiles/story-stones.jpg",
-   "age": {
-    "min": 3,
-    "max": 7
-   },
-   "status": "live",
-   "accent": "#25bceb",
-   "modes": [
-    {
-     "id": "storybook-library",
-     "title": "Storybook Library",
-     "skill": "open-ended combinatorial storytelling"
-    }
-   ],
-   "summary": "Choose any three magical stones and discover one of 220 unique illustrated stories."
-  },
-  {
-   "id": "puppet-retell",
-   "title": "Puppet Tales",
-   "category": "oral-storytelling",
-   "path": "games/puppet-retell/",
-   "icon": "assets/hub/tiles/puppet-retell.jpg",
-   "age": {
-    "min": 4,
-    "max": 7
-   },
-   "status": "live",
-   "accent": "#0d9fa5",
-   "modes": [
-    {
-     "id": "guided",
-     "title": "Story Starters",
-     "skill": "telling a beginning, middle, and ending"
-    },
-    {
-     "id": "free",
-     "title": "Free Show",
-     "skill": "confident imaginative oral storytelling"
-    }
-   ],
-   "summary": "Cast two puppets, tell a story in your own voice, then replay or export the show as a private on-device MP4."
-  },
-  {
-   "id": "question-ball",
-   "title": "Question Ball",
-   "category": "oral-storytelling",
-   "path": "games/question-ball/",
-   "icon": "assets/hub/tiles/question-ball.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#ffad7a",
-   "modes": [
-    {
-     "id": "wh",
-     "title": "Catch the Question",
-     "skill": "who, what, and where question comprehension"
-    },
-    {
-     "id": "why",
-     "title": "Why Questions",
-     "skill": "matching why questions to simple reasons"
-    }
-   ],
-   "summary": "Toss a ball and answer who, what, why, or how."
-  },
-  {
-   "id": "silly-sentence-builder",
-   "title": "Silly Sentence Builder",
-   "category": "oral-storytelling",
-   "path": "games/silly-sentence-builder/",
-   "icon": "assets/hub/tiles/silly-sentence-builder.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f25f5c",
-   "modes": [
-    {
-     "id": "silly",
-     "title": "Make a Silly Sentence",
-     "skill": "subject-action-place sentence structure"
-    },
-    {
-     "id": "sillier",
-     "title": "Even Sillier",
-     "skill": "subject-action-place-adverb sentence expansion"
-    }
-   ],
-   "summary": "Combine noun, verb, and place cards into silly sentences."
-  },
-  {
-   "id": "picture-narration",
-   "title": "Picture Narration",
-   "category": "oral-storytelling",
-   "path": "games/picture-narration/",
-   "icon": "assets/hub/tiles/picture-narration.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "park",
-     "title": "At the Park",
-     "skill": "observing and describing details in a park scene"
-    },
-    {
-     "id": "market",
-     "title": "At the Market",
-     "skill": "naming and describing familiar market sights and sounds"
-    }
-   ],
-   "summary": "Describe one detailed illustration out loud."
-  },
-  {
-   "id": "emotion-voice-game",
-   "title": "Emotion Voice Game",
-   "category": "oral-storytelling",
-   "path": "games/emotion-voice-game/",
-   "icon": "assets/hub/tiles/emotion-voice-game.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#f27622",
-   "uses": [
-    "shared/js/voice-meter.js",
-    "shared/js/voice-clips.js",
-    "shared/js/audio-unlock.js",
-    "shared/js/screens.js",
-    "shared/js/tap.js",
-    "shared/js/celebrate.js",
-    "shared/js/sfx.js"
-   ],
-   "modes": [
-    {
-     "id": "feelings-show",
-     "title": "Feelings Show",
-     "skill": "expressing one sentence with contrasting vocal feelings"
-    }
-   ],
-   "summary": "Choose a feeling, hear Teddy model it, then use your own voice to light up a cozy felt theater."
-  },
-  {
-   "id": "joke-workshop",
-   "title": "Joke Workshop",
-   "category": "oral-storytelling",
-   "path": "games/joke-workshop/",
-   "icon": "assets/hub/tiles/joke-workshop.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#ffad7a",
-   "modes": [
-    {
-     "id": "jokes",
-     "title": "Finish the Joke",
-     "skill": "punchline anticipation and wordplay"
-    },
-    {
-     "id": "knock",
-     "title": "Knock Knock",
-     "skill": "call-and-response joke comprehension"
-    }
-   ],
-   "summary": "Make silly riddles and playful wordplay."
-  },
-  {
-   "id": "family-story-interview",
-   "title": "Family Story Interview",
-   "category": "oral-storytelling",
-   "path": "games/family-story-interview/",
-   "icon": "assets/hub/tiles/family-story-interview.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "childhood",
-     "title": "When You Were Five",
-     "skill": "ask, listen, and compare childhood stories"
-    },
-    {
-     "id": "places",
-     "title": "Where You Lived",
-     "skill": "retell stories about past homes and journeys"
-    }
-   ],
-   "summary": "Ask a grown-up about the long-ago days."
-  },
-  {
-   "id": "story-repair-shop",
-   "title": "Story Repair Shop",
-   "category": "oral-storytelling",
-   "path": "games/story-repair-shop/",
-   "icon": "assets/hub/tiles/story-repair-shop.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2e9f76",
-   "modes": [
-    {
-     "id": "repair",
-     "title": "Fix the Ending",
-     "skill": "story prediction and cause-and-effect reasoning"
-    },
-    {
-     "id": "silly",
-     "title": "Silly or Real?",
-     "skill": "identifying intentionally silly story endings"
-    }
-   ],
-   "summary": "Fix a story that is missing its ending."
-  },
-  {
-   "id": "puzzle-map-match",
-   "title": "Puzzle Map Match",
-   "category": "culture-geography",
-   "path": "games/puzzle-map-match/",
-   "icon": "assets/hub/tiles/puzzle-map-match.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2f9bb3",
-   "modes": [
-    {
-     "id": "homes",
-     "title": "Animal Homes",
-     "skill": "habitat matching and hot-cold-ocean vocabulary"
-    },
-    {
-     "id": "farm-wild",
-     "title": "Farm or Wild?",
-     "skill": "farm and wild animal classification"
-    }
-   ],
-   "summary": "Match animals, foods, or landmarks to their places."
-  },
-  {
-   "id": "globe-spin-stories",
-   "title": "Globe Spin Stories",
-   "category": "culture-geography",
-   "path": "games/globe-spin-stories/",
-   "icon": "assets/hub/tiles/globe-spin-stories.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#ef3d82",
-   "uses": [
-    "shared/vendor/three.module.min.js",
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js"
-   ],
-   "modes": [
-    {
-     "id": "world-tour",
-     "title": "Five-Stop World Tour",
-     "skill": "beginning geography and animal-habitat connections"
-    }
-   ],
-   "summary": "Spin a tactile globe, follow the map pin, and open five papercraft animal stories."
-  },
-  {
-   "id": "land-water-tray",
-   "title": "Land Explorer",
-   "category": "culture-geography",
-   "path": "games/land-water-tray/",
-   "icon": "assets/hub/tiles/land-water-tray.jpg",
-   "age": {
-    "min": 4,
-    "max": 7
-   },
-   "status": "in-design",
-   "accent": "#078b88",
-   "modes": [
-    {
-     "id": "guided",
-     "title": "Build Landforms",
-     "skill": "Spatially construct four land/water relationships."
-    },
-    {
-     "id": "mystery",
-     "title": "Mystery Maps",
-     "skill": "Recognize the same four landforms from spoken clues and authored picture cards."
-    },
-    {
-     "id": "free",
-     "title": "Free Explorer",
-     "skill": "Explore cause and effect by pouring connected coasts, scooping inlets, and launching a tiny boat."
-    }
-   ],
-   "summary": "Shape an island, lake, peninsula, and bay."
-  },
-  {
-   "id": "then-now-sort",
-   "title": "Then & Now Sort",
-   "category": "culture-geography",
-   "path": "games/then-now-sort/",
-   "icon": "assets/hub/tiles/then-now-sort.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "classic",
-     "title": "Old and New",
-     "skill": "then-and-now comparison and object function"
-    }
-   ],
-   "summary": "Sort old and new versions, like candle and lamp."
-  },
-  {
-   "id": "family-timeline",
-   "title": "Family Timeline",
-   "category": "culture-geography",
-   "path": "games/family-timeline/",
-   "icon": "assets/hub/tiles/family-timeline.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "growing",
-     "title": "Growing Up",
-     "skill": "ordering life stages from younger to older"
-    },
-    {
-     "id": "then-now",
-     "title": "Long Ago to Today",
-     "skill": "ordering simple historical change over time"
-    }
-   ],
-   "summary": "Order baby, toddler, now, and future self."
-  },
-  {
-   "id": "community-helper-cards",
-   "title": "Community Helper Cards",
-   "category": "culture-geography",
-   "path": "games/community-helper-cards/",
-   "icon": "assets/hub/tiles/community-helper-cards.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#d95f43",
-   "modes": [
-    {
-     "id": "helpers",
-     "title": "Who Uses What?",
-     "skill": "community helper tools and roles"
-    },
-    {
-     "id": "places",
-     "title": "Where Do They Work?",
-     "skill": "helper work contexts and vehicles"
-    }
-   ],
-   "summary": "Match tools to the helpers who use them."
-  },
-  {
-   "id": "mountain-seasons-wheel",
-   "title": "Mountain Seasons Wheel",
-   "category": "culture-geography",
-   "path": "games/mountain-seasons-wheel/",
-   "icon": "assets/hub/tiles/mountain-seasons-wheel.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "wheel",
-     "title": "What Season?",
-     "skill": "seasonal nature and activity matching"
-    },
-    {
-     "id": "dress",
-     "title": "Dress for It",
-     "skill": "seasonal clothing and weather matching"
-    }
-   ],
-   "summary": "Explore local weather, clothing, plants, and animals by season."
-  },
-  {
-   "id": "neighborhood-map-walk",
-   "title": "Neighborhood Map Walk",
-   "category": "culture-geography",
-   "path": "games/neighborhood-map-walk/",
-   "icon": "assets/hub/tiles/neighborhood-map-walk.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#e07a5f",
-   "modes": [
-    {
-     "id": "map",
-     "title": "Make Your Map",
-     "skill": "draw landmarks and routes as a personal map"
-    },
-    {
-     "id": "walk",
-     "title": "Walk and Spot",
-     "skill": "observe and remember neighborhood features"
-    }
-   ],
-   "summary": "Draw home, trail, store, and lake on a map."
-  },
-  {
-   "id": "world-music-dance",
-   "title": "World Music Dance",
-   "category": "culture-geography",
-   "path": "games/world-music-dance/",
-   "icon": "assets/hub/tiles/world-music-dance.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "festival",
-     "title": "World Dance Festival",
-     "skill": "culture, geography, beat, and pose matching in one loop"
-    }
-   ],
-   "summary": "Pick a lantern on the night map, copy a real dance to its music, and pin the card home.",
-   "uses": [
-    "shared/js/music.js",
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js",
-    "shared/js/speech.js",
-    "shared/js/tap.js",
-    "shared/js/stage/stage.js",
-    "shared/js/stage/pose-sprite.js",
-    "shared/js/stage/pose-conductor.js",
-    "shared/js/stage/music-sync.js",
-    "shared/js/stage/drag-to-slot.js",
-    "shared/js/stage/particles.js",
-    "shared/js/stage/tween.js",
-    "shared/assets/instruments/",
-    "shared/assets/ui/"
-   ]
-  },
-  {
-   "id": "local-nature-guide",
-   "title": "Local Nature Guide",
-   "category": "culture-geography",
-   "path": "games/local-nature-guide/",
-   "icon": "assets/hub/tiles/local-nature-guide.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "collect",
-     "title": "Guide Training",
-     "skill": "study and describe local nature finds"
-    },
-    {
-     "id": "tour",
-     "title": "Give the Tour",
-     "skill": "teach back observations with confidence"
-    }
-   ],
-   "summary": "Identify pinecones, rocks, birds, and animal tracks."
-  },
-  {
-   "id": "color-mixing-lab",
-   "title": "Color Mixing Lab",
-   "category": "art-music",
-   "path": "games/color-mixing-lab/",
-   "icon": "assets/hub/tiles/color-mixing-lab.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "discover",
-     "title": "Discover",
-     "skill": "observe cause and effect"
-    },
-    {
-     "id": "predict",
-     "title": "Predict",
-     "skill": "predict before testing"
-    },
-    {
-     "id": "recipe",
-     "title": "Recipe",
-     "skill": "recall the two-color recipe"
-    }
-   ],
-   "summary": "Discover new colors by mixing the primaries."
-  },
-  {
-   "id": "clay-creature-studio",
-   "title": "Clay Creature Studio",
-   "category": "art-music",
-   "path": "games/clay-creature-studio/",
-   "icon": "assets/hub/tiles/clay-creature-studio.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#ef715b",
-   "modes": [
-    {
-     "id": "free",
-     "title": "Make a Friend",
-     "skill": "creative spatial composition"
-    },
-    {
-     "id": "copy",
-     "title": "Copy a Creature",
-     "skill": "visual-spatial observation and matching"
-    }
-   ],
-   "summary": "Decorate a clay friend, copy a creature card, and save it to your on-device shelf.",
-   "uses": [
-    "shared/vendor/three.module.min.js",
-    "shared/js/clay/field.js",
-    "shared/js/clay/field-three.js"
-   ]
-  },
-  {
-   "id": "rhythm-copycat",
-   "title": "Rhythm Copycat",
-   "category": "art-music",
-   "path": "games/rhythm-copycat/",
-   "icon": "assets/hub/tiles/rhythm-copycat.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#f25f5c",
-   "modes": [
-    {
-     "id": "clap-stomp",
-     "title": "Clap & Stomp",
-     "skill": "copy 2-3 beat body-percussion patterns at a relaxed tempo"
-    },
-    {
-     "id": "drum-circle",
-     "title": "Drum Circle",
-     "skill": "copy 3-4 beat patterns at a faster tempo"
-    }
-   ],
-   "summary": "A clay kitten plays a beat on her drums — listen, then copy it back by clapping, stomping, tapping and shaking."
-  },
-  {
-   "id": "sound-painting",
-   "title": "Sound Painting",
-   "category": "art-music",
-   "path": "games/sound-painting/",
-   "icon": "assets/hub/tiles/sound-painting.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#9f64ff",
-   "uses": [
-    "shared/js/musical-canvas.js",
-    "shared/js/voice-clips.js",
-    "shared/js/sfx.js",
-    "shared/js/tap.js",
-    "shared/assets/ui/"
-   ],
-   "modes": [
-    {
-     "id": "calm",
-     "title": "Calm River",
-     "skill": "slow continuous expressive movement"
-    },
-    {
-     "id": "bounce",
-     "title": "Bouncy Beat",
-     "skill": "rhythmic looping and tapping movement"
-    },
-    {
-     "id": "sparkle",
-     "title": "Star Sparkles",
-     "skill": "quick light expressive movement"
-    }
-   ],
-   "summary": "Paint glowing paper ribbons with your finger, hear every color, then replay the picture as music."
-  },
-  {
-   "id": "loose-parts-collage",
-   "title": "Little Artist",
-   "category": "art-music",
-   "path": "games/loose-parts-collage/",
-   "icon": "assets/hub/tiles/loose-parts-collage.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#e46f55",
-   "modes": [
-    {
-     "id": "collage",
-     "title": "Free Collage",
-     "skill": "spatial composition through choosing, layering, rotating, and sizing"
-    },
-    {
-     "id": "yarn",
-     "title": "Yarn Magic",
-     "skill": "continuous fine-motor path planning with loops, curves, and crossings"
-    },
-    {
-     "id": "teddy",
-     "title": "Teddy's Idea",
-     "skill": "intentional visual storytelling from an open-ended spoken prompt"
-    }
-   ],
-   "summary": "Arrange leaves, buttons, paper, and yarn into art."
-  },
-  {
-   "id": "instrument-detective",
-   "title": "Instrument Detective",
-   "category": "art-music",
-   "path": "games/instrument-detective/",
-   "icon": "assets/hub/tiles/instrument-detective.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2d7dd2",
-   "modes": [
-    {
-     "id": "listen",
-     "title": "Sound Detective",
-     "skill": "listening discrimination and instrument names"
-    },
-    {
-     "id": "families",
-     "title": "Loud or Soft?",
-     "skill": "sound vocabulary and instrument qualities"
-    }
-   ],
-   "summary": "Guess the shaker, drum, bell, and chime by sound."
-  },
-  {
-   "id": "big-paper-murals",
-   "title": "Big Paper Murals",
-   "category": "art-music",
-   "path": "games/big-paper-murals/",
-   "icon": "assets/hub/tiles/big-paper-murals.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "beta",
-   "accent": "#ef5b4c",
-   "modes": [
-    {
-     "id": "jungle",
-     "title": "Jungle Jam",
-     "skill": "collaborative mark-making"
-    },
-    {
-     "id": "space",
-     "title": "Space Parade",
-     "skill": "spatial composition"
-    },
-    {
-     "id": "city",
-     "title": "City Party",
-     "skill": "shared visual storytelling"
-    },
-    {
-     "id": "blank",
-     "title": "Fresh Paper",
-     "skill": "open-ended creative expression"
-    }
-   ],
-   "summary": "Paint one joyful musical mural together with two fingers, living paper stamps, and a local keepsake."
-  },
-  {
-   "id": "pattern-bracelet-band",
-   "title": "Pattern Bracelet Studio",
-   "category": "art-music",
-   "path": "games/pattern-bracelet-band/",
-   "icon": "assets/hub/tiles/pattern-bracelet-band.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#d67a3a",
-   "modes": [
-    {
-     "id": "pop",
-     "title": "Pop Pattern",
-     "skill": "AB pattern extension with musical playback"
-    },
-    {
-     "id": "star",
-     "title": "Star Pattern",
-     "skill": "ABC and ABB pattern extension"
-    },
-    {
-     "id": "jam",
-     "title": "Free Jam Studio",
-     "skill": "invent and hear your own bead pattern as music"
-    }
-   ],
-   "summary": "Make a wearable bracelet with a repeating pattern."
-  },
-  {
-   "id": "shape-to-picture",
-   "title": "Shape-to-Picture Challenge",
-   "category": "art-music",
-   "path": "games/shape-to-picture/",
-   "icon": "assets/hub/tiles/shape-to-picture.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "pictures",
-     "title": "Shape Pictures",
-     "skill": "shape recombination into pictures"
-    },
-    {
-     "id": "faces",
-     "title": "Shape Faces",
-     "skill": "shape recombination into faces"
-    }
-   ],
-   "summary": "Turn circles into animals or objects."
-  },
-  {
-   "id": "song-story-remix",
-   "title": "Song Story Remix",
-   "category": "art-music",
-   "path": "games/song-story-remix/",
-   "icon": "assets/hub/tiles/song-story-remix.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#ffad7a",
-   "modes": [
-    {
-     "id": "farm",
-     "title": "Remix the Farm",
-     "skill": "song verse and animal sound play"
-    },
-    {
-     "id": "bus",
-     "title": "Remix the Bus",
-     "skill": "song verse and rider sound play"
-    }
-   ],
-   "summary": "Change the lyrics to a familiar tune."
-  },
-  {
-   "id": "balance-beam-trail",
-   "title": "Balance Beam Trail",
-   "category": "movement-outdoor",
-   "path": "games/balance-beam-trail/",
-   "icon": "assets/hub/tiles/balance-beam-trail.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "floor",
-     "title": "Tape Trail",
-     "skill": "heel-to-toe balance and body control"
-    },
-    {
-     "id": "outdoor",
-     "title": "Log and Curb",
-     "skill": "spotter-supported outdoor balance"
-    }
-   ],
-   "summary": "Walk along lines, logs, and tape paths."
-  },
-  {
-   "id": "animal-walk-cards",
-   "title": "Animal Walk Cards",
-   "category": "movement-outdoor",
-   "path": "games/animal-walk-cards/",
-   "icon": "assets/hub/tiles/animal-walk-cards.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f4a261",
-   "modes": [
-    {
-     "id": "learn",
-     "title": "Animal School",
-     "skill": "animal body shapes and coordination"
-    },
-    {
-     "id": "parade",
-     "title": "Animal Parade",
-     "skill": "movement memory and cardio play"
-    }
-   ],
-   "summary": "Bear crawl, frog jump, and crab walk."
-  },
-  {
-   "id": "nature-scavenger-hunt",
-   "title": "Nature Scavenger Hunt",
-   "category": "movement-outdoor",
-   "path": "games/nature-scavenger-hunt/",
-   "icon": "assets/hub/tiles/nature-scavenger-hunt.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "classic",
-     "title": "Five Finds",
-     "skill": "categorizing nature finds by sensory quality"
-    },
-    {
-     "id": "texture",
-     "title": "Feely Hunt",
-     "skill": "texture vocabulary and tactile attention"
-    }
-   ],
-   "summary": "Find something smooth, green, round, and tiny."
-  },
-  {
-   "id": "throwing-target-garden",
-   "title": "Throwing Target Garden",
-   "category": "movement-outdoor",
-   "path": "games/throwing-target-garden/",
-   "icon": "assets/hub/tiles/throwing-target-garden.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f28c45",
-   "uses": [
-    "shared/js/camera-throw.js",
-    "shared/js/screens.js",
-    "shared/js/tap.js",
-    "shared/js/voice-clips.js",
-    "shared/js/narrator.js",
-    "shared/js/sfx.js",
-    "shared/js/debug-harness.js"
-   ],
-   "modes": [
-    {
-     "id": "number",
-     "title": "Number Hunt",
-     "skill": "spoken numeral recognition and spatial aiming"
-    },
-    {
-     "id": "color",
-     "title": "Color Match",
-     "skill": "primary-color matching and selection"
-    },
-    {
-     "id": "sequence",
-     "title": "Sequence Trail",
-     "skill": "ascending order and spatial planning"
-    }
-   ],
-   "summary": "Aim safely into a soft basket; match numbers, colors, and sequences."
-  },
-  {
-   "id": "obstacle-course-builder",
-   "title": "Obstacle Course Builder",
-   "category": "movement-outdoor",
-   "path": "games/obstacle-course-builder/",
-   "icon": "assets/hub/tiles/obstacle-course-builder.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#d98c2b",
-   "modes": [
-    {
-     "id": "build",
-     "title": "Build It",
-     "skill": "planning, course design, and safety checks"
-    },
-    {
-     "id": "run",
-     "title": "Run It",
-     "skill": "varied gross-motor movement and balance"
-    }
-   ],
-   "summary": "Crawl, climb, hop, balance, and carry through a course."
-  },
-  {
-   "id": "line-walking-challenge",
-   "title": "Line Walking Challenge",
-   "category": "movement-outdoor",
-   "path": "games/line-walking-challenge/",
-   "icon": "assets/hub/tiles/line-walking-challenge.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "line",
-     "title": "The Quiet Line",
-     "skill": "slow heel-to-toe walking and calm balance"
-    },
-    {
-     "id": "carry",
-     "title": "Carry Challenge",
-     "skill": "controlled walking while balancing and carrying"
-    }
-   ],
-   "summary": "Walk slowly and carefully along a Montessori line."
-  },
-  {
-   "id": "trail-counting-walk",
-   "title": "Trail Counting Walk",
-   "category": "movement-outdoor",
-   "path": "games/trail-counting-walk/",
-   "icon": "assets/hub/tiles/trail-counting-walk.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#e9853d",
-   "modes": [
-    {
-     "id": "walk",
-     "title": "Counting Walk",
-     "skill": "counting, remembering, and comparing outdoor totals"
-    },
-    {
-     "id": "race",
-     "title": "Number Race",
-     "skill": "counting observed categories to target numbers"
-    }
-   ],
-   "summary": "Count stairs, birds, pinecones, and signs on a walk."
-  },
-  {
-   "id": "shadow-chase",
-   "title": "Shadow Chase",
-   "category": "movement-outdoor",
-   "path": "games/shadow-chase/",
-   "icon": "assets/hub/tiles/shadow-chase.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f4b942",
-   "modes": [
-    {
-     "id": "morning",
-     "title": "Morning Shadows",
-     "skill": "observe and move with body and object shadows"
-    },
-    {
-     "id": "day",
-     "title": "All-Day Watch",
-     "skill": "compare one shadow across morning, noon, and evening"
-    }
-   ],
-   "summary": "Watch shadows move and shift through the day."
-  },
-  {
-   "id": "garden-delivery-game",
-   "title": "Garden Delivery",
-   "category": "movement-outdoor",
-   "path": "games/garden-delivery-game/",
-   "icon": "assets/hub/tiles/garden-delivery-game.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#80b75d",
-   "modes": [
-    {
-     "id": "rose",
-     "title": "Rose",
-     "skill": "Find and hold a wide, calm balance center."
-    },
-    {
-     "id": "tulip",
-     "title": "Tulip",
-     "skill": "Counter one slow visible breeze while staying level."
-    },
-    {
-     "id": "daisy",
-     "title": "Daisy",
-     "skill": "Recenter after alternating soft breezes."
-    }
-   ],
-   "summary": "Balance Sunny's bucket across clay stepping stones, pour for a thirsty flower, and make the whole garden bloom."
-  },
-  {
-   "id": "freeze-focus-dance",
-   "title": "Freeze Focus Dance",
-   "category": "movement-outdoor",
-   "path": "games/freeze-focus-dance/",
-   "icon": "assets/hub/tiles/freeze-focus-dance.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f08a24",
-   "modes": [
-    {
-     "id": "beat",
-     "title": "Beat Stop",
-     "skill": "inhibit movement after an audio cue"
-    },
-    {
-     "id": "lookout",
-     "title": "Owl Lookout",
-     "skill": "sustain visual attention after settling"
-    },
-    {
-     "id": "statues",
-     "title": "Star Statues",
-     "skill": "deliberately shape and hold the body"
-    }
-   ],
-   "summary": "Dance, freeze, find forest friends, and make playful statues with Pip."
-  },
-  {
-   "id": "grace-courtesy-theater",
-   "title": "Grace & Courtesy Theater",
-   "category": "social-emotional",
-   "path": "games/grace-courtesy-theater/",
-   "icon": "assets/hub/tiles/grace-courtesy-theater.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "manners",
-     "title": "What Do We Say?",
-     "skill": "kind social phrases"
-    },
-    {
-     "id": "helping",
-     "title": "Kind or Not?",
-     "skill": "recognizing helpful actions"
-    }
-   ],
-   "summary": "Practice greeting, asking, and waiting politely."
-  },
-  {
-   "id": "calm-corner-cards",
-   "title": "Calm Corner Cards",
-   "category": "social-emotional",
-   "path": "games/calm-corner-cards/",
-   "icon": "assets/hub/tiles/calm-corner-cards.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#2e9f76",
-   "modes": [
-    {
-     "id": "tools",
-     "title": "Pick a Calm Tool",
-     "skill": "choosing self-regulation tools"
-    },
-    {
-     "id": "breathe",
-     "title": "Balloon Breathing",
-     "skill": "slow paced breathing"
-    }
-   ],
-   "summary": "Choose breathing, squeezing, drawing, or resting to calm down."
-  },
-  {
-   "id": "turn-taking-tower",
-   "title": "Turn-Taking Tower",
-   "category": "social-emotional",
-   "path": "games/turn-taking-tower/",
-   "icon": "assets/hub/tiles/turn-taking-tower.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#8fd3c7",
-   "modes": [
-    {
-     "id": "together",
-     "title": "Our Tower",
-     "skill": "turn-taking rhythm with one friend"
-    },
-    {
-     "id": "tall",
-     "title": "Super Tower",
-     "skill": "turn-taking rhythm with two friends"
-    }
-   ],
-   "summary": "Build a tower one block per turn."
-  },
-  {
-   "id": "waiting-muscle-game",
-   "title": "Waiting Muscle Game",
-   "category": "social-emotional",
-   "path": "games/waiting-muscle-game/",
-   "icon": "assets/hub/tiles/waiting-muscle-game.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "train",
-     "title": "Waiting Workout",
-     "skill": "delayed gratification using practical waiting tricks"
-    },
-    {
-     "id": "master",
-     "title": "Waiting Master",
-     "skill": "sustained self-control and intentional choice"
-    }
-   ],
-   "summary": "Wait ten seconds before grabbing the prize."
-  },
-  {
-   "id": "problem-solving-puppets",
-   "title": "Problem-Solving Puppets",
-   "category": "social-emotional",
-   "path": "games/problem-solving-puppets/",
-   "icon": "assets/hub/tiles/problem-solving-puppets.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "archived",
-   "accent": "#2e9f76",
-   "modes": [
-    {
-     "id": "peace",
-     "title": "Make Peace",
-     "skill": "choosing conflict repair strategies"
-    },
-    {
-     "id": "feelings",
-     "title": "How Do They Feel?",
-     "skill": "naming feelings during conflict"
-    }
-   ],
-   "summary": "Superseded by puppet-problem-solvers, the live puppet-theater rebuild."
-  },
-  {
-   "id": "puppet-problem-solvers",
-   "title": "Problem-Solving Puppets",
-   "category": "social-emotional",
-   "path": "games/puppet-problem-solvers/",
-   "icon": "assets/hub/tiles/puppet-problem-solvers.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#2e9f76",
-   "uses": [
-    "shared/js/engines/puppet-theater.js",
-    "shared/js/stage/theater.js",
-    "shared/js/stage/puppet.js",
-    "shared/characters/"
-   ],
-   "modes": [
-    {
-     "id": "share",
-     "title": "Share",
-     "skill": "sharing and joint play"
-    },
-    {
-     "id": "take-turns",
-     "title": "Take Turns",
-     "skill": "turn-taking and patience"
-    },
-    {
-     "id": "ask-for-help",
-     "title": "Ask for Help",
-     "skill": "asking for and offering help"
-    }
-   ],
-   "summary": "Cast two puppets, watch every kind idea acted out, then pick your favorite."
-  },
-  {
-   "id": "my-puppet-band",
-   "title": "My Puppet Band",
-   "category": "art-music",
-   "path": "games/my-puppet-band/",
-   "icon": "assets/hub/tiles/my-puppet-band.jpg",
-   "age": {
-    "min": 4,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#f08a24",
-   "uses": [
-    "shared/js/engines/puppet-band.js",
-    "shared/js/music.js",
-    "shared/assets/instruments/",
-    "shared/characters/"
-   ],
-   "modes": [
-    {
-     "id": "rainbow-jam",
-     "title": "Rainbow Jam",
-     "skill": "ensemble listening"
-    },
-    {
-     "id": "bubble-pop",
-     "title": "Bubble Pop",
-     "skill": "melody and rhythm"
-    },
-    {
-     "id": "sleepy-cat",
-     "title": "Sleepy Cat Swing",
-     "skill": "swing feel"
-    },
-    {
-     "id": "dino-stomp",
-     "title": "Dino Stomp",
-     "skill": "strong beat"
-    },
-    {
-     "id": "teddy-parade",
-     "title": "Teddy Bear Parade",
-     "skill": "steady march beat"
-    },
-    {
-     "id": "cloud-waltz",
-     "title": "Cloud Waltz",
-     "skill": "waltz time (3/4)"
-    },
-    {
-     "id": "robot-disco",
-     "title": "Robot Disco",
-     "skill": "syncopation"
-    },
-    {
-     "id": "lullaby-moon",
-     "title": "Lullaby Moon",
-     "skill": "gentle listening"
-    },
-    {
-     "id": "seoul-sparkle",
-     "title": "Seoul Sparkle",
-     "skill": "borrowed-chord color (K-Pop)"
-    },
-    {
-     "id": "gamelan-garden",
-     "title": "Gamelan Garden",
-     "skill": "interlocking patterns (Indonesia)"
-    },
-    {
-     "id": "desert-caravan",
-     "title": "Desert Caravan",
-     "skill": "hijaz mode (Middle East)"
-    },
-    {
-     "id": "samba-sunshine",
-     "title": "Samba Sunshine",
-     "skill": "seventh-chord harmony (Brazil)"
-    }
-   ],
-   "summary": "Build a puppet band with real instruments and stage a rainbow concert."
-  },
-  {
-   "id": "plan-do-review",
-   "title": "Plan-Do-Review",
-   "category": "social-emotional",
-   "path": "games/plan-do-review/",
-   "icon": "assets/hub/tiles/plan-do-review.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#f4a83d",
-   "modes": [
-    {
-     "id": "loop",
-     "title": "Plan It, Do It!",
-     "skill": "intention action reflection loop"
-    },
-    {
-     "id": "tomorrow",
-     "title": "Plan for Tomorrow",
-     "skill": "future planning and sharing a plan"
-    }
-   ],
-   "summary": "Choose a task, finish it, then reflect on it."
-  },
-  {
-   "id": "kindness-delivery",
-   "title": "Kindness Delivery",
-   "category": "social-emotional",
-   "path": "games/kindness-delivery/",
-   "icon": "assets/hub/tiles/kindness-delivery.jpg",
-   "age": {
-    "min": 4,
-    "max": 7
-   },
-   "status": "in-design",
-   "accent": "#e96b58",
-   "modes": [
-    {
-     "id": "fox",
-     "title": "Fox",
-     "skill": "express warmth through drawing"
-    },
-    {
-     "id": "bunny",
-     "title": "Bunny",
-     "skill": "compose a supportive visual message"
-    },
-    {
-     "id": "bear",
-     "title": "Bear",
-     "skill": "connect a kind intention to a real-world act"
-    }
-   ],
-   "summary": "Draw, decorate, fold, and fly a kind note to a papercraft friend."
-  },
-  {
-   "id": "red-green-light",
-   "title": "Red Light, Green Light",
-   "category": "social-emotional",
-   "path": "games/red-green-light/",
-   "icon": "assets/hub/tiles/red-green-light.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "live",
-   "accent": "#58a945",
-   "modes": [
-    {
-     "id": "classic",
-     "title": "Classic",
-     "skill": "stop/go impulse control"
-    },
-    {
-     "id": "silly",
-     "title": "Silly Switch",
-     "skill": "three-way self-regulation switching"
-    }
-   ],
-   "summary": "Pick a muppet-style video caller who says the lights in their own voice — run on green, freeze on red."
-  },
-  {
-   "id": "board-game-reset",
-   "title": "Board Game Reset",
-   "category": "social-emotional",
-   "path": "games/board-game-reset/",
-   "icon": "assets/hub/tiles/board-game-reset.jpg",
-   "age": {
-    "min": 5,
-    "max": 6
-   },
-   "status": "in-design",
-   "accent": "#7c4fc4",
-   "modes": [
-    {
-     "id": "sport",
-     "title": "Good Sport",
-     "skill": "winning and losing graciously"
-    },
-    {
-     "id": "reset",
-     "title": "Clean-Up Crew",
-     "skill": "cleanup sequence for board games"
-    }
-   ],
-   "summary": "Play, win or lose, then clean up together."
-  }
- ]
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "reading-phonics",
+      "title": "Reading & Phonics",
+      "order": 1,
+      "color": "#58a945",
+      "emoji": "📖",
+      "icon": "assets/hub/categories/reading-phonics.jpg"
+    },
+    {
+      "id": "writing-fine-motor",
+      "title": "Writing & Fine Motor",
+      "order": 2,
+      "color": "#e4587c",
+      "emoji": "✏️",
+      "icon": "assets/hub/categories/writing-fine-motor.jpg"
+    },
+    {
+      "id": "math-number-sense",
+      "title": "Math & Number Sense",
+      "order": 3,
+      "color": "#2d7dd2",
+      "emoji": "🔢",
+      "icon": "assets/hub/categories/math-number-sense.jpg"
+    },
+    {
+      "id": "practical-life",
+      "title": "Practical Life & Independence",
+      "order": 4,
+      "color": "#14a08a",
+      "emoji": "🏡",
+      "icon": "assets/hub/categories/practical-life.jpg"
+    },
+    {
+      "id": "sensorial-science",
+      "title": "Sensorial & Early Science",
+      "order": 5,
+      "color": "#00a2c8",
+      "emoji": "🔬",
+      "icon": "assets/hub/categories/sensorial-science.jpg"
+    },
+    {
+      "id": "oral-storytelling",
+      "title": "Oral Language & Storytelling",
+      "order": 6,
+      "color": "#f08a24",
+      "emoji": "💬",
+      "icon": "assets/hub/categories/oral-storytelling.jpg"
+    },
+    {
+      "id": "culture-geography",
+      "title": "Culture, Geography & History",
+      "order": 7,
+      "color": "#c9503a",
+      "emoji": "🌍",
+      "icon": "assets/hub/categories/culture-geography.jpg"
+    },
+    {
+      "id": "art-music",
+      "title": "Art & Music",
+      "order": 8,
+      "color": "#b84bb0",
+      "emoji": "🎨",
+      "icon": "assets/hub/categories/art-music.jpg"
+    },
+    {
+      "id": "movement-outdoor",
+      "title": "Movement & Outdoor Learning",
+      "order": 9,
+      "color": "#7cb518",
+      "emoji": "🤸",
+      "icon": "assets/hub/categories/movement-outdoor.jpg"
+    },
+    {
+      "id": "social-emotional",
+      "title": "Social-Emotional & Self-Regulation",
+      "order": 10,
+      "color": "#8a5bc4",
+      "emoji": "😊",
+      "icon": "assets/hub/categories/social-emotional.jpg"
+    }
+  ],
+  "games": [
+    {
+      "id": "sound-sprouts",
+      "title": "Sound Sprouts",
+      "category": "reading-phonics",
+      "path": "games/sound-sprouts/",
+      "icon": "games/sound-sprouts/assets/gen/ui/splash/title.png",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#7FB069",
+      "uses": [
+        "shared/vendor/three.module.min.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/assets/letter-tiles/",
+        "shared/assets/objects/",
+        "shared/data/words.json"
+      ],
+      "modes": [
+        {
+          "id": "guided",
+          "title": "Make a Word",
+          "skill": "blend CVC sounds into words"
+        },
+        {
+          "id": "mystery",
+          "title": "Mystery Picture",
+          "skill": "decode a word to reveal a picture"
+        },
+        {
+          "id": "freeplay",
+          "title": "Word Mixer",
+          "skill": "free phoneme exploration"
+        }
+      ],
+      "iconBg": "games/sound-sprouts/assets/gen/bg.jpg",
+      "iconFit": "contain",
+      "summary": "Build simple words like cat, sun, and map with movable letters."
+    },
+    {
+      "id": "blend-train",
+      "title": "Word Train",
+      "category": "reading-phonics",
+      "path": "games/blend-train/",
+      "icon": "assets/hub/tiles/blend-train.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#2d7dd2",
+      "uses": [
+        "shared/js/engines/build-assemble.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/voice-clips.js",
+        "shared/js/content.js",
+        "shared/js/sfx.js",
+        "shared/assets/audio/fragments/",
+        "shared/assets/audio/celebrate/"
+      ],
+      "modes": [
+        {
+          "id": "couple",
+          "title": "Couple the Cars",
+          "skill": "onset-rime blending with two sound cars"
+        },
+        {
+          "id": "sounds",
+          "title": "Sound Cars",
+          "skill": "phoneme-by-phoneme blending with three sound cars"
+        }
+      ],
+      "summary": "Push sound cars together on the track and hear them blend into a word."
+    },
+    {
+      "id": "pattern-train",
+      "title": "Pattern Train",
+      "category": "math-number-sense",
+      "path": "games/pattern-train/",
+      "icon": "assets/hub/tiles/pattern-train.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js"
+      ],
+      "modes": [
+        {
+          "id": "colors",
+          "title": "Color Cars",
+          "skill": "AB, ABC, and AAB color-pattern extension"
+        },
+        {
+          "id": "shapes",
+          "title": "Shape Cars",
+          "skill": "simple shape-pattern extension"
+        }
+      ],
+      "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
+    },
+    {
+      "id": "tangram-tales",
+      "title": "Tangram Tales",
+      "category": "math-number-sense",
+      "path": "games/tangram-tales/",
+      "icon": "assets/hub/tiles/tangram-tales.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#ef5b4c",
+      "uses": [
+        "shared/js/freeform-board.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/debug-harness.js",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "fox",
+          "title": "Fox Tale",
+          "skill": "guided seven-piece spatial composition"
+        },
+        {
+          "id": "fish",
+          "title": "Fish Tale",
+          "skill": "guided seven-piece spatial composition"
+        },
+        {
+          "id": "bird",
+          "title": "Bird Tale",
+          "skill": "guided seven-piece spatial composition"
+        },
+        {
+          "id": "free",
+          "title": "Make My Own",
+          "skill": "open tangram arrangement and rotation"
+        }
+      ],
+      "summary": "Build three paper animals from seven shapes, then invent an original tangram tale."
+    },
+    {
+      "id": "story-sequence",
+      "title": "First, Next, Last",
+      "category": "oral-storytelling",
+      "path": "games/story-sequence/",
+      "icon": "assets/hub/tiles/story-sequence.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f25f5c",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/assets/objects/"
+      ],
+      "modes": [
+        {
+          "id": "stories",
+          "title": "First, Next, Last",
+          "skill": "narrative sequencing with first/next/last"
+        },
+        {
+          "id": "daily",
+          "title": "My Day",
+          "skill": "ordering daily routines"
+        }
+      ],
+      "summary": "Sequence simple picture stories in order."
+    },
+    {
+      "id": "feelings-charades",
+      "title": "Feelings Charades",
+      "category": "social-emotional",
+      "path": "games/feelings-charades/",
+      "icon": "assets/hub/tiles/feelings-charades.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#8a5bc4",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/assets/twemoji/"
+      ],
+      "modes": [
+        {
+          "id": "act",
+          "title": "Act It Out",
+          "skill": "emotional expression and coping strategies"
+        },
+        {
+          "id": "guess",
+          "title": "Guess the Feeling",
+          "skill": "emotion recognition from body clues"
+        }
+      ],
+      "summary": "Act out proud, frustrated, calm, and worried."
+    },
+    {
+      "id": "sound-basket",
+      "title": "Sound Basket",
+      "category": "reading-phonics",
+      "path": "games/sound-basket/",
+      "icon": "assets/hub/tiles/sound-basket.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "two",
+          "title": "Two Sounds",
+          "skill": "initial-sound isolation with two randomized contrasting onsets"
+        },
+        {
+          "id": "three",
+          "title": "Three Sounds",
+          "skill": "initial-sound isolation across three randomized contrasting onsets"
+        }
+      ],
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/tap.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/assets/audio/",
+        "shared/assets/ui/",
+        "shared/assets/letter-tiles/",
+        "shared/assets/objects/"
+      ],
+      "summary": "Hear a picture word, then tap or drag matching first sounds into a woven basket."
+    },
+    {
+      "id": "mystery-letter-bag",
+      "title": "Mystery Letter Bag",
+      "category": "reading-phonics",
+      "path": "games/mystery-letter-bag/",
+      "icon": "assets/hub/tiles/mystery-letter-bag.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "bag",
+          "title": "What's in the Bag?",
+          "skill": "sound-to-letter mapping for b, s, m, t, c, and p"
+        },
+        {
+          "id": "tricky",
+          "title": "Tricky Sounds",
+          "skill": "discriminating similar consonant sounds"
+        }
+      ],
+      "summary": "Feel a hidden letter with your fingers and name its sound."
+    },
+    {
+      "id": "rhyming-detective",
+      "title": "Rhyming Detective",
+      "category": "reading-phonics",
+      "path": "games/rhyming-detective/",
+      "icon": "assets/hub/tiles/rhyming-detective.jpg",
+      "age": {
+        "min": 3,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2f6fd0",
+      "modes": [
+        {
+          "id": "rhyme-hunt",
+          "title": "Rhyme Hunt",
+          "skill": "finding words that rhyme with a target word, with the words printed"
+        },
+        {
+          "id": "sound-detective",
+          "title": "Sound Detective",
+          "skill": "finding rhymes by ear alone, with no printed words"
+        }
+      ],
+      "summary": "Hunt around the room for things that rhyme."
+    },
+    {
+      "id": "letter-treasure-hunt",
+      "title": "Letter Treasure Hunt",
+      "category": "reading-phonics",
+      "path": "games/letter-treasure-hunt/",
+      "icon": "games/letter-treasure-hunt/assets/papercraft/quest-map.webp",
+      "age": {
+        "min": 2,
+        "max": 5
+      },
+      "status": "beta",
+      "accent": "#ef6548",
+      "modes": [
+        {
+          "id": "a-quest",
+          "title": "A Island",
+          "skill": "finding familiar objects that begin with the /a/ sound"
+        },
+        {
+          "id": "b-quest",
+          "title": "B Island",
+          "skill": "finding familiar objects that begin with the /b/ sound"
+        },
+        {
+          "id": "c-quest",
+          "title": "C Island",
+          "skill": "finding familiar objects that begin with the /c/ sound"
+        },
+        {
+          "id": "d-quest",
+          "title": "D Island",
+          "skill": "finding familiar objects that begin with the /d/ sound"
+        },
+        {
+          "id": "e-quest",
+          "title": "E Island",
+          "skill": "finding familiar objects that begin with the /e/ sound"
+        },
+        {
+          "id": "f-quest",
+          "title": "F Island",
+          "skill": "finding familiar objects that begin with the /f/ sound"
+        },
+        {
+          "id": "g-quest",
+          "title": "G Island",
+          "skill": "finding familiar objects that begin with the /g/ sound"
+        },
+        {
+          "id": "h-quest",
+          "title": "H Island",
+          "skill": "finding familiar objects that begin with the /h/ sound"
+        },
+        {
+          "id": "i-quest",
+          "title": "I Island",
+          "skill": "finding familiar objects that begin with the /i/ sound"
+        },
+        {
+          "id": "j-quest",
+          "title": "J Island",
+          "skill": "finding familiar objects that begin with the /j/ sound"
+        },
+        {
+          "id": "k-quest",
+          "title": "K Island",
+          "skill": "finding familiar objects that begin with the /k/ sound"
+        },
+        {
+          "id": "l-quest",
+          "title": "L Island",
+          "skill": "finding familiar objects that begin with the /l/ sound"
+        },
+        {
+          "id": "m-quest",
+          "title": "M Island",
+          "skill": "finding familiar objects that begin with the /m/ sound"
+        },
+        {
+          "id": "n-quest",
+          "title": "N Island",
+          "skill": "finding familiar objects that begin with the /n/ sound"
+        },
+        {
+          "id": "o-quest",
+          "title": "O Island",
+          "skill": "finding familiar objects that begin with the /o/ sound"
+        },
+        {
+          "id": "p-quest",
+          "title": "P Island",
+          "skill": "finding familiar objects that begin with the /p/ sound"
+        },
+        {
+          "id": "q-quest",
+          "title": "Q Island",
+          "skill": "finding familiar objects that begin with the /q/ sound"
+        },
+        {
+          "id": "r-quest",
+          "title": "R Island",
+          "skill": "finding familiar objects that begin with the /r/ sound"
+        },
+        {
+          "id": "s-quest",
+          "title": "S Island",
+          "skill": "finding familiar objects that begin with the /s/ sound"
+        },
+        {
+          "id": "t-quest",
+          "title": "T Island",
+          "skill": "finding familiar objects that begin with the /t/ sound"
+        },
+        {
+          "id": "u-quest",
+          "title": "U Island",
+          "skill": "finding familiar objects that begin with the /u/ sound"
+        },
+        {
+          "id": "v-quest",
+          "title": "V Island",
+          "skill": "finding familiar objects that begin with the /v/ sound"
+        },
+        {
+          "id": "w-quest",
+          "title": "W Island",
+          "skill": "finding familiar objects that begin with the /w/ sound"
+        },
+        {
+          "id": "x-quest",
+          "title": "X Island",
+          "skill": "finding familiar X words and symbols"
+        },
+        {
+          "id": "y-quest",
+          "title": "Y Island",
+          "skill": "finding familiar objects that begin with the /y/ sound"
+        },
+        {
+          "id": "z-quest",
+          "title": "Z Island",
+          "skill": "finding familiar objects that begin with the /z/ sound"
+        }
+      ],
+      "summary": "Scroll a sea map of 26 papercraft letter islands, then find three matching objects among playful decoys."
+    },
+    {
+      "id": "flashlight-cave",
+      "title": "Flashlight Cave",
+      "category": "reading-phonics",
+      "path": "games/flashlight-cave/",
+      "icon": "assets/hub/tiles/flashlight-cave.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#f0a53c",
+      "uses": [
+        "games/flashlight-cave/js/main.js",
+        "games/flashlight-cave/js/game.js",
+        "games/flashlight-cave/js/cave.js",
+        "games/flashlight-cave/js/letters.js",
+        "games/flashlight-cave/js/beam.js",
+        "games/flashlight-cave/js/actor.js",
+        "games/flashlight-cave/js/voice.js",
+        "games/flashlight-cave/assets/pose-actors/ari/",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/stage/spotlight.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/tween.js",
+        "shared/js/content.js",
+        "shared/assets/ui/",
+        "shared/assets/objects/",
+        "shared/assets/audio/fragments/",
+        "shared/fonts/fredoka-latin-600-normal.woff2",
+        "shared/vendor/pixi.min.js"
+      ],
+      "modes": [
+        {
+          "id": "find",
+          "title": "Find the Letter",
+          "skill": "recognizing an uppercase letter by name"
+        },
+        {
+          "id": "sound",
+          "title": "Sound Cave",
+          "skill": "matching a spoken sound to its letter"
+        },
+        {
+          "id": "picture",
+          "title": "Whose Letter?",
+          "skill": "identifying the letter a word starts with"
+        }
+      ],
+      "summary": "Sweep a flashlight through a dark cave to find glowing letters and meet their alphabet friends."
+    },
+    {
+      "id": "silly-swap-words",
+      "title": "Silly Swap Words",
+      "category": "reading-phonics",
+      "path": "games/silly-swap-words/",
+      "icon": "assets/hub/tiles/silly-swap-words.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "swap",
+          "title": "Swap a Sound",
+          "skill": "phoneme substitution with one changed sound"
+        },
+        {
+          "id": "chain",
+          "title": "Word Chains",
+          "skill": "hearing a sequence of small word changes"
+        }
+      ],
+      "summary": "Change one sound at a time to turn cat into hat into hot."
+    },
+    {
+      "id": "picture-word-match",
+      "title": "Picture Word Match",
+      "category": "reading-phonics",
+      "path": "games/picture-word-match/",
+      "icon": "assets/hub/tiles/picture-word-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "easy",
+          "title": "Match the Word",
+          "skill": "picture-to-print matching with familiar CVC words"
+        },
+        {
+          "id": "more",
+          "title": "More Words",
+          "skill": "picture-to-print matching with additional CVC words"
+        }
+      ],
+      "summary": "Match picture cards to the words they spell."
+    },
+    {
+      "id": "sound-hopscotch",
+      "title": "Sound Hopscotch",
+      "category": "reading-phonics",
+      "path": "games/sound-hopscotch/",
+      "icon": "assets/hub/tiles/sound-hopscotch.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "hop",
+          "title": "Hop to the Sound",
+          "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g"
+        },
+        {
+          "id": "fast",
+          "title": "Quick Hops",
+          "skill": "rapid discrimination of tricky letter-sound pairs"
+        }
+      ],
+      "summary": "Jump onto letters as their sounds are spoken."
+    },
+    {
+      "id": "tiny-reader-theater",
+      "title": "Tiny Reader Theater",
+      "category": "reading-phonics",
+      "path": "games/tiny-reader-theater/",
+      "icon": "assets/hub/tiles/tiny-reader-theater.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "stories",
+          "title": "Fill the Story",
+          "skill": "context-based decoding of short CVC words"
+        },
+        {
+          "id": "act",
+          "title": "Act It Out",
+          "skill": "story participation and character comprehension"
+        }
+      ],
+      "summary": "Act out one-page decodable stories."
+    },
+    {
+      "id": "sand-tray-letters",
+      "title": "Sand Tray Letters",
+      "category": "writing-fine-motor",
+      "path": "games/sand-tray-letters/",
+      "icon": "assets/hub/tiles/sand-tray-letters.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#20bfd8",
+      "modes": [
+        {
+          "id": "letters",
+          "title": "Sand Tray Letters",
+          "skill": "uppercase formation, stroke order, and letter-sound link"
+        }
+      ],
+      "summary": "Trace letters in sand, salt, or flour with a fingertip."
+    },
+    {
+      "id": "chalkboard-big-strokes",
+      "title": "Chalkboard Big Strokes",
+      "category": "writing-fine-motor",
+      "path": "games/chalkboard-big-strokes/",
+      "icon": "assets/hub/tiles/chalkboard-big-strokes.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#4d8068",
+      "modes": [
+        {
+          "id": "strokes",
+          "title": "Big Strokes",
+          "skill": "large pre-writing stroke control"
+        },
+        {
+          "id": "double",
+          "title": "Two-Part Strokes",
+          "skill": "multi-stroke sequencing for crosses and slants"
+        }
+      ],
+      "summary": "Practice giant loops, lines, and curves on a chalkboard."
+    },
+    {
+      "id": "bead-path-builder",
+      "title": "Bead Path Builder",
+      "category": "writing-fine-motor",
+      "path": "games/bead-path-builder/",
+      "icon": "assets/hub/tiles/bead-path-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "string",
+          "title": "String the Beads",
+          "skill": "left-to-right controlled placement along a curve"
+        },
+        {
+          "id": "fancy",
+          "title": "Fancy Strings",
+          "skill": "placing alternating bead shapes on a curved path"
+        }
+      ],
+      "summary": "String beads in a left-to-right pattern."
+    },
+    {
+      "id": "tweezer-rescue",
+      "title": "Tweezer Rescue",
+      "category": "writing-fine-motor",
+      "path": "games/tweezer-rescue/",
+      "icon": "assets/hub/tiles/tweezer-rescue.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "colors",
+          "title": "Color Nests",
+          "skill": "pincer-grip drag control and color matching"
+        },
+        {
+          "id": "sizes",
+          "title": "Big and Small",
+          "skill": "pincer-grip drag control and size vocabulary"
+        }
+      ],
+      "summary": "Move pom-poms by color or sound using tweezers."
+    },
+    {
+      "id": "sticker-line-challenge",
+      "title": "Sticker Line Challenge",
+      "category": "writing-fine-motor",
+      "path": "games/sticker-line-challenge/",
+      "icon": "assets/hub/tiles/sticker-line-challenge.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#e873a4",
+      "modes": [
+        {
+          "id": "waves",
+          "title": "Wavy Lines",
+          "skill": "controlled left-to-right curved strokes"
+        },
+        {
+          "id": "zigzags",
+          "title": "Zigzag Trails",
+          "skill": "direction changes and corner control"
+        },
+        {
+          "id": "loops",
+          "title": "Loop-the-Loops",
+          "skill": "circular and loop pre-writing strokes"
+        }
+      ],
+      "summary": "Place stickers along curves and zigzags."
+    },
+    {
+      "id": "name-puzzle",
+      "title": "Name Puzzle",
+      "category": "writing-fine-motor",
+      "path": "games/name-puzzle/",
+      "icon": "assets/hub/tiles/name-puzzle.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "friends",
+          "title": "Fix the Names",
+          "skill": "letter order and name recognition"
+        },
+        {
+          "id": "words",
+          "title": "Fix the Words",
+          "skill": "left-to-right order in simple words"
+        }
+      ],
+      "summary": "Reorder the cut-up letters of your own name."
+    },
+    {
+      "id": "letter-road-driving",
+      "title": "Letter Road Driving",
+      "category": "writing-fine-motor",
+      "path": "games/letter-road-driving/",
+      "icon": "assets/hub/tiles/letter-road-driving.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#1677d2",
+      "uses": [
+        "shared/js/engines/trace-path.js",
+        "shared/js/voice-clips.js",
+        "shared/js/stage/",
+        "shared/js/sfx.js",
+        "games/letter-road-driving/assets/audio/"
+      ],
+      "modes": [
+        {
+          "id": "cruise",
+          "title": "Easy Roads",
+          "skill": "continuous control on single-stroke uppercase letter shapes"
+        },
+        {
+          "id": "town",
+          "title": "Letter Town",
+          "skill": "numbered multi-stroke uppercase letter formation"
+        }
+      ],
+      "summary": "Steer a cheerful car along glowing letter roads, then follow numbered starts to build multi-stroke capitals."
+    },
+    {
+      "id": "scissor-trail-safari",
+      "title": "Scissor Trail Safari",
+      "category": "writing-fine-motor",
+      "path": "games/scissor-trail-safari/",
+      "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a96b",
+      "modes": [
+        {
+          "id": "straight",
+          "title": "Straight Cuts",
+          "skill": "straight and angled line control"
+        },
+        {
+          "id": "curvy",
+          "title": "Curvy Cuts",
+          "skill": "smooth continuous curved strokes"
+        },
+        {
+          "id": "spiral",
+          "title": "Spiral Rescue",
+          "skill": "sustained hand-eye steering on spirals"
+        }
+      ],
+      "summary": "Cut along winding animal-path lines."
+    },
+    {
+      "id": "playdough-letter-factory",
+      "title": "Playdough Letter Factory",
+      "category": "writing-fine-motor",
+      "path": "games/playdough-letter-factory/",
+      "icon": "assets/hub/tiles/playdough-letter-factory.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#118f87",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/content.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/objects/",
+        "shared/assets/ui/",
+        "shared/js/clay/heightfield.js",
+        "shared/js/clay/heightfield-canvas.js"
+      ],
+      "modes": [
+        {
+          "id": "letters",
+          "title": "Make a Letter",
+          "skill": "guided uppercase letter formation"
+        },
+        {
+          "id": "words",
+          "title": "Build a Word",
+          "skill": "ordered letter assembly with a picture clue"
+        },
+        {
+          "id": "free",
+          "title": "Free Dough",
+          "skill": "open-ended fine-motor mark making"
+        }
+      ],
+      "summary": "Roll colorful dough, trace giant letters, build picture words, and make free-form clay art."
+    },
+    {
+      "id": "secret-message-copy",
+      "title": "Secret Message Copy",
+      "category": "writing-fine-motor",
+      "path": "games/secret-message-copy/",
+      "icon": "assets/hub/tiles/secret-message-copy.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "secret",
+          "title": "Copy the Code",
+          "skill": "letter-by-letter copying of three-letter words"
+        },
+        {
+          "id": "long",
+          "title": "Longer Codes",
+          "skill": "letter-by-letter copying of four-letter words"
+        }
+      ],
+      "summary": "Copy one short word or phrase."
+    },
+    {
+      "id": "number-rod-race",
+      "title": "Number Rod Race",
+      "category": "math-number-sense",
+      "path": "games/number-rod-race/",
+      "icon": "assets/hub/tiles/number-rod-race.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "short",
+          "title": "Short to Long",
+          "skill": "length comparison and ascending order"
+        },
+        {
+          "id": "long",
+          "title": "Long to Short",
+          "skill": "length comparison and descending order"
+        }
+      ],
+      "summary": "Order rods from shortest to longest."
+    },
+    {
+      "id": "counting-treasure-cups",
+      "title": "Counting Treasure Cups",
+      "category": "math-number-sense",
+      "path": "games/counting-treasure-cups/",
+      "icon": "assets/hub/tiles/counting-treasure-cups.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "live",
+      "summary": "Count gems into a pirate treasure cup, sort gold coins into the chest, and work out how many treasures are inside.",
+      "accent": "#d69b2d",
+      "modes": [
+        {
+          "id": "cup",
+          "title": "Fill the Cup",
+          "skill": "counting out a set of a given size"
+        },
+        {
+          "id": "chest",
+          "title": "Big Treasure",
+          "skill": "counting while sorting by kind"
+        },
+        {
+          "id": "howmany",
+          "title": "How Many?",
+          "skill": "cardinality — counting a set and naming the total"
+        }
+      ],
+      "uses": [
+        "games/counting-treasure-cups/js/game.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/"
+      ]
+    },
+    {
+      "id": "sandpaper-number-match",
+      "title": "Sandpaper Number Match",
+      "category": "math-number-sense",
+      "path": "games/sandpaper-number-match/",
+      "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "meet",
+          "title": "Meet the Numbers",
+          "skill": "numeral recognition for 1-5 tied to quantity"
+        },
+        {
+          "id": "big",
+          "title": "Bigger Numbers",
+          "skill": "numeral recognition for 6-9 tied to quantity"
+        }
+      ],
+      "summary": "Trace a numeral, then count that many objects."
+    },
+    {
+      "id": "teen-bead-builder",
+      "title": "Teen Bead Builder",
+      "category": "math-number-sense",
+      "path": "games/teen-bead-builder/",
+      "icon": "assets/hub/tiles/teen-bead-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#159ca6",
+      "modes": [
+        {
+          "id": "build",
+          "title": "Bundle & Build",
+          "skill": "compose teen numbers as one ten and some ones"
+        },
+        {
+          "id": "match",
+          "title": "Bead Detective",
+          "skill": "match a base-ten bead model to its teen numeral"
+        }
+      ],
+      "summary": "Bundle ten ones into one ten, build teen numbers, and match bead models to numerals."
+    },
+    {
+      "id": "snack-addition-stories",
+      "title": "Snack Addition Stories",
+      "category": "math-number-sense",
+      "path": "games/snack-addition-stories/",
+      "icon": "assets/hub/tiles/snack-addition-stories.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#e85d75",
+      "modes": [
+        {
+          "id": "stories",
+          "title": "Snack Stories",
+          "skill": "informal addition stories to 6"
+        }
+      ],
+      "summary": "Tell add-together stories, like three berries plus two berries."
+    },
+    {
+      "id": "subtraction-picnic",
+      "title": "Subtraction Picnic",
+      "category": "math-number-sense",
+      "path": "games/subtraction-picnic/",
+      "icon": "assets/hub/tiles/subtraction-picnic.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "picnic",
+          "title": "Hungry Guests",
+          "skill": "informal subtraction stories within 6"
+        }
+      ],
+      "summary": "Animals eat counters away to show taking away."
+    },
+    {
+      "id": "number-line-jump",
+      "title": "Number Line Jump",
+      "category": "math-number-sense",
+      "path": "games/number-line-jump/",
+      "icon": "assets/hub/tiles/number-line-jump.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "archived",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "hops",
+          "title": "Frog Hops",
+          "skill": "movement-linked counting 2-6"
+        },
+        {
+          "id": "back",
+          "title": "Hop Home",
+          "skill": "takeaway from five and counting remaining pads"
+        }
+      ],
+      "summary": "Superseded by Chocolate Chip Count, the live action-counting rebuild."
+    },
+    {
+      "id": "chocolate-chip-count",
+      "title": "Chocolate Chip Count",
+      "category": "math-number-sense",
+      "path": "games/chocolate-chip-count/",
+      "icon": "assets/hub/tiles/chocolate-chip-count.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#ef5b4c",
+      "modes": [
+        {
+          "id": "tiny-batch",
+          "title": "Tiny Batch",
+          "skill": "one-to-one catch counting to 3"
+        },
+        {
+          "id": "baker-batch",
+          "title": "Baker Batch",
+          "skill": "sustained catch counting to 6"
+        },
+        {
+          "id": "super-batch",
+          "title": "Super Batch",
+          "skill": "sustained catch counting to 10 across wider space"
+        }
+      ],
+      "summary": "Pop clay balloons and slide Ravi's tray to catch and count exactly 3, 6, or 10 chocolate chips."
+    },
+    {
+      "id": "block-tower-measure",
+      "title": "Block Tower Measure",
+      "category": "math-number-sense",
+      "path": "games/block-tower-measure/",
+      "icon": "assets/hub/tiles/block-tower-measure.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f59f36",
+      "modes": [
+        {
+          "id": "stack",
+          "title": "Stack It Tall",
+          "skill": "size ordering and counting tower height"
+        },
+        {
+          "id": "compare",
+          "title": "Two Towers",
+          "skill": "height comparison between two towers"
+        }
+      ],
+      "summary": "Compare heights by stacking cubes."
+    },
+    {
+      "id": "pouring-station",
+      "title": "Pouring Station",
+      "category": "practical-life",
+      "path": "games/pouring-station/",
+      "icon": "assets/hub/tiles/pouring-station.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "water",
+          "title": "Water Pouring",
+          "skill": "careful water pouring and cleanup"
+        },
+        {
+          "id": "beans",
+          "title": "Bean Pouring",
+          "skill": "careful dry pouring and listening"
+        }
+      ],
+      "summary": "Pour water, beans, or rice between pitchers."
+    },
+    {
+      "id": "table-setting-mission",
+      "title": "Table Setting Mission",
+      "category": "practical-life",
+      "path": "games/table-setting-mission/",
+      "icon": "assets/hub/tiles/table-setting-mission.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f4a83d",
+      "modes": [
+        {
+          "id": "places",
+          "title": "Set the Table",
+          "skill": "table-setting order and spatial placement vocabulary"
+        }
+      ],
+      "summary": "Set the places using a visual placemat card."
+    },
+    {
+      "id": "snack-chef",
+      "title": "Snack Chef",
+      "category": "practical-life",
+      "path": "games/snack-chef/",
+      "icon": "assets/hub/tiles/snack-chef.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#d94d62",
+      "modes": [
+        {
+          "id": "fruit",
+          "title": "Fruit Face",
+          "skill": "spatial arrangement and facial symmetry"
+        },
+        {
+          "id": "toast",
+          "title": "Toast Garden",
+          "skill": "controlled circular spreading"
+        },
+        {
+          "id": "boat",
+          "title": "Banana Boat",
+          "skill": "directional preparation sequencing"
+        },
+        {
+          "id": "apple",
+          "title": "Apple Sandwich",
+          "skill": "layered assembly and lid alignment"
+        },
+        {
+          "id": "rainbow",
+          "title": "Rainbow Plate",
+          "skill": "color sorting and arc arrangement"
+        },
+        {
+          "id": "parfait",
+          "title": "Yogurt Parfait",
+          "skill": "controlled pouring and layering"
+        }
+      ],
+      "summary": "Spread, peel, slice, pour, and arrange six playful storybook snacks.",
+      "uses": [
+        "shared/js/tap.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/voice-clips.js",
+        "shared/assets/ui/",
+        "shared/assets/foods-storybook/",
+        "shared/characters/maya/portrait.png"
+      ]
+    },
+    {
+      "id": "cooking-craze",
+      "title": "Cooking Craze",
+      "category": "practical-life",
+      "path": "games/cooking-craze/",
+      "icon": "assets/hub/tiles/cooking-craze-v2.jpg",
+      "age": {
+        "min": 3,
+        "max": 7
+      },
+      "status": "in-design",
+      "accent": "#ef5e68",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "build",
+          "title": "Build Your Pizza",
+          "skill": "follow four cooking steps and match six toppings"
+        },
+        {
+          "id": "swirl",
+          "title": "Sauce Swirl",
+          "skill": "broad presses and circular sauce spreading"
+        },
+        {
+          "id": "quick",
+          "title": "Quick Bake",
+          "skill": "place five toppings and slide the peel to the oven"
+        }
+      ],
+      "summary": "Pat dough, spread sauce, match cheerful toppings, and slide a Kawaii pizza into the oven."
+    },
+    {
+      "id": "laundry-sorter",
+      "title": "Laundry Sorter",
+      "category": "practical-life",
+      "path": "games/laundry-sorter/",
+      "icon": "assets/hub/tiles/laundry-sorter.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#7b35d0",
+      "modes": [
+        {
+          "id": "sort",
+          "title": "Sort It",
+          "skill": "color categorization"
+        },
+        {
+          "id": "fold",
+          "title": "Fold It",
+          "skill": "directional swipes and sequencing"
+        },
+        {
+          "id": "pairs",
+          "title": "Find the Pairs",
+          "skill": "color-and-pattern matching and working memory"
+        }
+      ],
+      "uses": [
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/assets/storybook/"
+      ],
+      "summary": "Sort a changing mix of colorful clothes, fold shirts, pants, and towels step by step, and find matching pairs."
+    },
+    {
+      "id": "sweep-the-trail",
+      "title": "Sweep the Trail",
+      "category": "practical-life",
+      "path": "games/sweep-the-trail/",
+      "icon": "assets/hub/tiles/sweep-the-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "indoor",
+          "title": "Crumb Patrol",
+          "skill": "thorough indoor sweeping and dustpan use"
+        },
+        {
+          "id": "outdoor",
+          "title": "Leaf Trail",
+          "skill": "whole-arm outdoor sweeping and path care"
+        }
+      ],
+      "summary": "Sweep crumbs or leaves into a target spot."
+    },
+    {
+      "id": "button-zipper-lab",
+      "title": "Button-Zipper Lab",
+      "category": "practical-life",
+      "path": "games/button-zipper-lab/",
+      "icon": "assets/hub/tiles/button-zipper-lab.jpg",
+      "age": {
+        "min": 4,
+        "max": 7
+      },
+      "status": "in-design",
+      "accent": "#236fbc",
+      "modes": [
+        {
+          "id": "zipper",
+          "title": "Zipper",
+          "skill": "two-hand stabilization and controlled upward pulling"
+        },
+        {
+          "id": "button",
+          "title": "Button",
+          "skill": "curved path following and buttonhole alignment"
+        },
+        {
+          "id": "snap",
+          "title": "Snap",
+          "skill": "alignment followed by sustained or repeated pressure"
+        },
+        {
+          "id": "velcro",
+          "title": "Hook & Loop",
+          "skill": "peeling away and smoothing back across"
+        }
+      ],
+      "summary": "Zip, button, snap, peel, and smooth four cozy felt fasteners with a friendly bear."
+    },
+    {
+      "id": "plant-care-captain",
+      "title": "Plant Care Captain",
+      "category": "practical-life",
+      "path": "games/plant-care-captain/",
+      "icon": "assets/hub/tiles/plant-care-captain.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "care",
+          "title": "Care Round",
+          "skill": "daily observation, soil checking, and careful watering"
+        },
+        {
+          "id": "spa",
+          "title": "Plant Spa Day",
+          "skill": "gentle leaf cleaning and occasional plant care"
+        }
+      ],
+      "summary": "Water, mist, prune, and observe a plant."
+    },
+    {
+      "id": "shelf-reset-game",
+      "title": "Shelf Reset Game",
+      "category": "practical-life",
+      "path": "games/shelf-reset-game/",
+      "icon": "assets/hub/tiles/shelf-reset-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#d69e67",
+      "modes": [
+        {
+          "id": "cycle",
+          "title": "One Full Cycle",
+          "skill": "choose, use, reset, and return one tray"
+        },
+        {
+          "id": "inspector",
+          "title": "Shelf Inspector",
+          "skill": "sort misplaced materials and restore shelf order"
+        }
+      ],
+      "summary": "Choose a tray, use it, then return it neatly."
+    },
+    {
+      "id": "lunchbox-pack",
+      "title": "Lunchbox Pack",
+      "category": "practical-life",
+      "path": "games/lunchbox-pack/",
+      "icon": "assets/hub/tiles/lunchbox-pack.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "summary": "Pack items using a picture checklist.",
+      "accent": "#14a08a",
+      "uses": [
+        "shared/assets/foods/",
+        "shared/characters/",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/fonts/",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "pack",
+          "title": "Pack for Me!",
+          "skill": "listening & following spoken instructions"
+        },
+        {
+          "id": "healthy",
+          "title": "Healthy Helper",
+          "skill": "food groups / healthy choices"
+        },
+        {
+          "id": "count",
+          "title": "Count & Pack",
+          "skill": "counting 1–5 with one-to-one correspondence"
+        }
+      ]
+    },
+    {
+      "id": "cleanup-timer-quest",
+      "title": "Cleanup Timer Quest",
+      "category": "practical-life",
+      "path": "games/cleanup-timer-quest/",
+      "icon": "assets/hub/tiles/cleanup-timer-quest.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f28c45",
+      "modes": [
+        {
+          "id": "room",
+          "title": "Room Rescue",
+          "skill": "sort first, then store one category at a time"
+        },
+        {
+          "id": "speed",
+          "title": "Five-Minute Wonder",
+          "skill": "time awareness during one bounded cleanup"
+        }
+      ],
+      "summary": "Restore a space before the song ends."
+    },
+    {
+      "id": "sink-or-float",
+      "title": "Sink or Float Lab",
+      "category": "sensorial-science",
+      "path": "games/sink-or-float/",
+      "icon": "assets/hub/tiles/sink-or-float.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "predict",
+          "title": "Predict & Test",
+          "skill": "making and testing a prediction"
+        },
+        {
+          "id": "tricky",
+          "title": "Tricky Ones",
+          "skill": "reasoning past the big-things-sink misconception"
+        },
+        {
+          "id": "pond",
+          "title": "Water Playground",
+          "skill": "open observation of what water does"
+        }
+      ],
+      "summary": "Drop real things into a big jar of water, test your guess, and stamp what happened into your field journal.",
+      "uses": [
+        "shared/js/stage/stage.js",
+        "shared/js/stage/water.js",
+        "shared/js/stage/particles.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/",
+        "shared/fonts/"
+      ]
+    },
+    {
+      "id": "magnet-explorer",
+      "title": "Magnet Explorer",
+      "category": "sensorial-science",
+      "path": "games/magnet-explorer/",
+      "icon": "assets/hub/tiles/magnet-explorer.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "explore",
+          "title": "Sticks or Not?",
+          "skill": "magnetic versus non-magnetic sorting"
+        }
+      ],
+      "summary": "Find which objects are magnetic and which are not."
+    },
+    {
+      "id": "sound-cylinder-match",
+      "title": "Sound Cylinder Match",
+      "category": "sensorial-science",
+      "path": "games/sound-cylinder-match/",
+      "icon": "assets/hub/tiles/sound-cylinder-match.jpg",
+      "age": {
+        "min": 2,
+        "max": 5
+      },
+      "status": "beta",
+      "accent": "#087f86",
+      "modes": [
+        {
+          "id": "listen",
+          "title": "Find the Twin",
+          "skill": "auditory discrimination and short-term auditory memory"
+        }
+      ],
+      "summary": "Listen to one mystery shaker, then find its kawaii sound twin by ear."
+    },
+    {
+      "id": "texture-trail",
+      "title": "Texture Trail",
+      "category": "sensorial-science",
+      "path": "games/texture-trail/",
+      "icon": "assets/hub/tiles/texture-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#8f6f4e",
+      "modes": [
+        {
+          "id": "feel",
+          "title": "Feels the Same",
+          "skill": "texture vocabulary and comparison"
+        }
+      ],
+      "summary": "Match rough, smooth, soft, and bumpy surfaces."
+    },
+    {
+      "id": "smell-jars",
+      "title": "Smell Jars",
+      "category": "sensorial-science",
+      "path": "games/smell-jars/",
+      "icon": "assets/hub/tiles/smell-jars.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#ffd166",
+      "modes": [
+        {
+          "id": "sniff",
+          "title": "Be the Nose",
+          "skill": "connect real smells to vocabulary and preference"
+        },
+        {
+          "id": "guess",
+          "title": "Sniff and Guess",
+          "skill": "make and revise sensory guesses"
+        }
+      ],
+      "summary": "Identify lemon, mint, cinnamon, and pine by scent."
+    },
+    {
+      "id": "color-gradient-cards",
+      "title": "Color Gradient Cards",
+      "category": "sensorial-science",
+      "path": "games/color-gradient-cards/",
+      "icon": "assets/hub/tiles/color-gradient-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "blues",
+          "title": "Light to Dark",
+          "skill": "shade discrimination and ordering"
+        },
+        {
+          "id": "rainbow",
+          "title": "Rainbow Order",
+          "skill": "rainbow color sequence"
+        }
+      ],
+      "summary": "Order color shades from light to dark."
+    },
+    {
+      "id": "bean-sprout-watch",
+      "title": "Bean Sprout Watch",
+      "category": "sensorial-science",
+      "path": "games/bean-sprout-watch/",
+      "icon": "assets/hub/tiles/bean-sprout-watch.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "week",
+          "title": "Sprout Diary",
+          "skill": "observe plant growth over time"
+        },
+        {
+          "id": "care",
+          "title": "What Does It Need?",
+          "skill": "match plant cues to care needs"
+        }
+      ],
+      "summary": "Observe and draw a sprout's daily changes."
+    },
+    {
+      "id": "weather-scientist",
+      "title": "Weather Scientist",
+      "category": "sensorial-science",
+      "path": "games/weather-scientist/",
+      "icon": "assets/hub/tiles/weather-scientist.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "weather-lab",
+          "title": "Weather Lab",
+          "skill": "cause and effect in a changing weather system"
+        }
+      ],
+      "summary": "Choose a meadow, desert, arctic, or rainforest and make it change with sun, rain, wind, and clouds."
+    },
+    {
+      "id": "bug-hotel-observer",
+      "title": "Bug Hotel Observer",
+      "category": "sensorial-science",
+      "path": "games/bug-hotel-observer/",
+      "icon": "assets/hub/tiles/bug-hotel-observer.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#5f8f3a",
+      "uses": [
+        "shared/js/hotspot-scene.js",
+        "shared/js/magnifier-lens.js",
+        "shared/js/journal.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/",
+        "shared/fonts/"
+      ],
+      "modes": [
+        {
+          "id": "bug-hunt",
+          "title": "Bug Hunt",
+          "skill": "finding and naming a bug that has been named out loud, by searching a natural scene with a magnifying glass"
+        },
+        {
+          "id": "bug-detective",
+          "title": "Bug Detective",
+          "skill": "matching a spoken description of a bug to the right bug, with no name given"
+        },
+        {
+          "id": "my-bug-book",
+          "title": "My Bug Book",
+          "skill": "recalling the bugs already collected and re-hearing each one's name and fact from its sticker"
+        }
+      ],
+      "summary": "Drag a paper magnifying glass across a bug hotel to discover twelve tiny garden guests, then keep their stickers and facts in your own bug book."
+    },
+    {
+      "id": "melting-race",
+      "title": "Melting Race",
+      "category": "sensorial-science",
+      "path": "games/melting-race/",
+      "icon": "assets/hub/tiles/melting-race.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "race",
+          "title": "The Big Melt",
+          "skill": "compare melting under four conditions"
+        },
+        {
+          "id": "rescue",
+          "title": "Ice Rescue",
+          "skill": "use warmth to melt ice and free a toy"
+        }
+      ],
+      "summary": "Compare ice melting in sun, shade, hand, and cloth."
+    },
+    {
+      "id": "story-stones",
+      "title": "Story Stones",
+      "category": "oral-storytelling",
+      "path": "games/story-stones/",
+      "icon": "assets/hub/tiles/story-stones.jpg",
+      "age": {
+        "min": 3,
+        "max": 7
+      },
+      "status": "live",
+      "accent": "#25bceb",
+      "modes": [
+        {
+          "id": "storybook-library",
+          "title": "Storybook Library",
+          "skill": "open-ended combinatorial storytelling"
+        }
+      ],
+      "summary": "Choose any three magical stones and discover one of 220 unique illustrated stories."
+    },
+    {
+      "id": "puppet-retell",
+      "title": "Puppet Tales",
+      "category": "oral-storytelling",
+      "path": "games/puppet-retell/",
+      "icon": "assets/hub/tiles/puppet-retell.jpg",
+      "age": {
+        "min": 4,
+        "max": 7
+      },
+      "status": "live",
+      "accent": "#0d9fa5",
+      "modes": [
+        {
+          "id": "guided",
+          "title": "Story Starters",
+          "skill": "telling a beginning, middle, and ending"
+        },
+        {
+          "id": "free",
+          "title": "Free Show",
+          "skill": "confident imaginative oral storytelling"
+        }
+      ],
+      "summary": "Cast two puppets, tell a story in your own voice, then replay or export the show as a private on-device MP4."
+    },
+    {
+      "id": "question-ball",
+      "title": "Question Ball",
+      "category": "oral-storytelling",
+      "path": "games/question-ball/",
+      "icon": "assets/hub/tiles/question-ball.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "wh",
+          "title": "Catch the Question",
+          "skill": "who, what, and where question comprehension"
+        },
+        {
+          "id": "why",
+          "title": "Why Questions",
+          "skill": "matching why questions to simple reasons"
+        }
+      ],
+      "summary": "Toss a ball and answer who, what, why, or how."
+    },
+    {
+      "id": "silly-sentence-builder",
+      "title": "Silly Sentence Builder",
+      "category": "oral-storytelling",
+      "path": "games/silly-sentence-builder/",
+      "icon": "assets/hub/tiles/silly-sentence-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "silly",
+          "title": "Make a Silly Sentence",
+          "skill": "subject-action-place sentence structure"
+        },
+        {
+          "id": "sillier",
+          "title": "Even Sillier",
+          "skill": "subject-action-place-adverb sentence expansion"
+        }
+      ],
+      "summary": "Combine noun, verb, and place cards into silly sentences."
+    },
+    {
+      "id": "picture-narration",
+      "title": "Picture Narration",
+      "category": "oral-storytelling",
+      "path": "games/picture-narration/",
+      "icon": "assets/hub/tiles/picture-narration.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "park",
+          "title": "At the Park",
+          "skill": "observing and describing details in a park scene"
+        },
+        {
+          "id": "market",
+          "title": "At the Market",
+          "skill": "naming and describing familiar market sights and sounds"
+        }
+      ],
+      "summary": "Describe one detailed illustration out loud."
+    },
+    {
+      "id": "emotion-voice-game",
+      "title": "Emotion Voice Game",
+      "category": "oral-storytelling",
+      "path": "games/emotion-voice-game/",
+      "icon": "assets/hub/tiles/emotion-voice-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#f27622",
+      "uses": [
+        "shared/js/voice-meter.js",
+        "shared/js/voice-clips.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/screens.js",
+        "shared/js/tap.js",
+        "shared/js/celebrate.js",
+        "shared/js/sfx.js"
+      ],
+      "modes": [
+        {
+          "id": "feelings-show",
+          "title": "Feelings Show",
+          "skill": "expressing one sentence with contrasting vocal feelings"
+        }
+      ],
+      "summary": "Choose a feeling, hear Teddy model it, then use your own voice to light up a cozy felt theater."
+    },
+    {
+      "id": "joke-workshop",
+      "title": "Joke Workshop",
+      "category": "oral-storytelling",
+      "path": "games/joke-workshop/",
+      "icon": "assets/hub/tiles/joke-workshop.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "jokes",
+          "title": "Finish the Joke",
+          "skill": "punchline anticipation and wordplay"
+        },
+        {
+          "id": "knock",
+          "title": "Knock Knock",
+          "skill": "call-and-response joke comprehension"
+        }
+      ],
+      "summary": "Make silly riddles and playful wordplay."
+    },
+    {
+      "id": "family-story-interview",
+      "title": "Family Story Interview",
+      "category": "oral-storytelling",
+      "path": "games/family-story-interview/",
+      "icon": "assets/hub/tiles/family-story-interview.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "childhood",
+          "title": "When You Were Five",
+          "skill": "ask, listen, and compare childhood stories"
+        },
+        {
+          "id": "places",
+          "title": "Where You Lived",
+          "skill": "retell stories about past homes and journeys"
+        }
+      ],
+      "summary": "Ask a grown-up about the long-ago days."
+    },
+    {
+      "id": "story-repair-shop",
+      "title": "Story Repair Shop",
+      "category": "oral-storytelling",
+      "path": "games/story-repair-shop/",
+      "icon": "assets/hub/tiles/story-repair-shop.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "repair",
+          "title": "Fix the Ending",
+          "skill": "story prediction and cause-and-effect reasoning"
+        },
+        {
+          "id": "silly",
+          "title": "Silly or Real?",
+          "skill": "identifying intentionally silly story endings"
+        }
+      ],
+      "summary": "Fix a story that is missing its ending."
+    },
+    {
+      "id": "puzzle-map-match",
+      "title": "Puzzle Map Match",
+      "category": "culture-geography",
+      "path": "games/puzzle-map-match/",
+      "icon": "assets/hub/tiles/puzzle-map-match.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2f9bb3",
+      "modes": [
+        {
+          "id": "homes",
+          "title": "Animal Homes",
+          "skill": "habitat matching and hot-cold-ocean vocabulary"
+        },
+        {
+          "id": "farm-wild",
+          "title": "Farm or Wild?",
+          "skill": "farm and wild animal classification"
+        }
+      ],
+      "summary": "Match animals, foods, or landmarks to their places."
+    },
+    {
+      "id": "globe-spin-stories",
+      "title": "Globe Spin Stories",
+      "category": "culture-geography",
+      "path": "games/globe-spin-stories/",
+      "icon": "assets/hub/tiles/globe-spin-stories.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#ef3d82",
+      "uses": [
+        "shared/vendor/three.module.min.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js"
+      ],
+      "modes": [
+        {
+          "id": "world-tour",
+          "title": "Five-Stop World Tour",
+          "skill": "beginning geography and animal-habitat connections"
+        }
+      ],
+      "summary": "Spin a tactile globe, follow the map pin, and open five papercraft animal stories."
+    },
+    {
+      "id": "land-water-tray",
+      "title": "Land Explorer",
+      "category": "culture-geography",
+      "path": "games/land-water-tray/",
+      "icon": "assets/hub/tiles/land-water-tray.jpg",
+      "age": {
+        "min": 4,
+        "max": 7
+      },
+      "status": "in-design",
+      "accent": "#078b88",
+      "modes": [
+        {
+          "id": "guided",
+          "title": "Build Landforms",
+          "skill": "Spatially construct four land/water relationships."
+        },
+        {
+          "id": "mystery",
+          "title": "Mystery Maps",
+          "skill": "Recognize the same four landforms from spoken clues and authored picture cards."
+        },
+        {
+          "id": "free",
+          "title": "Free Explorer",
+          "skill": "Explore cause and effect by pouring connected coasts, scooping inlets, and launching a tiny boat."
+        }
+      ],
+      "summary": "Shape an island, lake, peninsula, and bay."
+    },
+    {
+      "id": "then-now-sort",
+      "title": "Then & Now Sort",
+      "category": "culture-geography",
+      "path": "games/then-now-sort/",
+      "icon": "assets/hub/tiles/then-now-sort.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Old and New",
+          "skill": "then-and-now comparison and object function"
+        }
+      ],
+      "summary": "Sort old and new versions, like candle and lamp."
+    },
+    {
+      "id": "family-timeline",
+      "title": "Family Timeline",
+      "category": "culture-geography",
+      "path": "games/family-timeline/",
+      "icon": "assets/hub/tiles/family-timeline.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "growing",
+          "title": "Growing Up",
+          "skill": "ordering life stages from younger to older"
+        },
+        {
+          "id": "then-now",
+          "title": "Long Ago to Today",
+          "skill": "ordering simple historical change over time"
+        }
+      ],
+      "summary": "Order baby, toddler, now, and future self."
+    },
+    {
+      "id": "community-helper-cards",
+      "title": "Community Helper Cards",
+      "category": "culture-geography",
+      "path": "games/community-helper-cards/",
+      "icon": "assets/hub/tiles/community-helper-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#d95f43",
+      "modes": [
+        {
+          "id": "helpers",
+          "title": "Who Uses What?",
+          "skill": "community helper tools and roles"
+        },
+        {
+          "id": "places",
+          "title": "Where Do They Work?",
+          "skill": "helper work contexts and vehicles"
+        }
+      ],
+      "summary": "Match tools to the helpers who use them."
+    },
+    {
+      "id": "mountain-seasons-wheel",
+      "title": "Mountain Seasons Wheel",
+      "category": "culture-geography",
+      "path": "games/mountain-seasons-wheel/",
+      "icon": "assets/hub/tiles/mountain-seasons-wheel.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "wheel",
+          "title": "What Season?",
+          "skill": "seasonal nature and activity matching"
+        },
+        {
+          "id": "dress",
+          "title": "Dress for It",
+          "skill": "seasonal clothing and weather matching"
+        }
+      ],
+      "summary": "Explore local weather, clothing, plants, and animals by season."
+    },
+    {
+      "id": "neighborhood-map-walk",
+      "title": "Neighborhood Map Walk",
+      "category": "culture-geography",
+      "path": "games/neighborhood-map-walk/",
+      "icon": "assets/hub/tiles/neighborhood-map-walk.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#e07a5f",
+      "modes": [
+        {
+          "id": "map",
+          "title": "Make Your Map",
+          "skill": "draw landmarks and routes as a personal map"
+        },
+        {
+          "id": "walk",
+          "title": "Walk and Spot",
+          "skill": "observe and remember neighborhood features"
+        }
+      ],
+      "summary": "Draw home, trail, store, and lake on a map."
+    },
+    {
+      "id": "world-music-dance",
+      "title": "World Music Dance",
+      "category": "culture-geography",
+      "path": "games/world-music-dance/",
+      "icon": "assets/hub/tiles/world-music-dance.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "festival",
+          "title": "World Dance Festival",
+          "skill": "culture, geography, beat, and pose matching in one loop"
+        }
+      ],
+      "summary": "Pick a lantern on the night map, copy a real dance to its music, and pin the card home.",
+      "uses": [
+        "shared/js/music.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/pose-sprite.js",
+        "shared/js/stage/pose-conductor.js",
+        "shared/js/stage/music-sync.js",
+        "shared/js/stage/drag-to-slot.js",
+        "shared/js/stage/particles.js",
+        "shared/js/stage/tween.js",
+        "shared/assets/instruments/",
+        "shared/assets/ui/"
+      ]
+    },
+    {
+      "id": "local-nature-guide",
+      "title": "Local Nature Guide",
+      "category": "culture-geography",
+      "path": "games/local-nature-guide/",
+      "icon": "assets/hub/tiles/local-nature-guide.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "collect",
+          "title": "Guide Training",
+          "skill": "study and describe local nature finds"
+        },
+        {
+          "id": "tour",
+          "title": "Give the Tour",
+          "skill": "teach back observations with confidence"
+        }
+      ],
+      "summary": "Identify pinecones, rocks, birds, and animal tracks."
+    },
+    {
+      "id": "color-mixing-lab",
+      "title": "Color Mixing Lab",
+      "category": "art-music",
+      "path": "games/color-mixing-lab/",
+      "icon": "assets/hub/tiles/color-mixing-lab.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "discover",
+          "title": "Discover",
+          "skill": "observe cause and effect"
+        },
+        {
+          "id": "predict",
+          "title": "Predict",
+          "skill": "predict before testing"
+        },
+        {
+          "id": "recipe",
+          "title": "Recipe",
+          "skill": "recall the two-color recipe"
+        }
+      ],
+      "summary": "Discover new colors by mixing the primaries."
+    },
+    {
+      "id": "clay-creature-studio",
+      "title": "Clay Creature Studio",
+      "category": "art-music",
+      "path": "games/clay-creature-studio/",
+      "icon": "assets/hub/tiles/clay-creature-studio.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#ef715b",
+      "modes": [
+        {
+          "id": "free",
+          "title": "Make a Friend",
+          "skill": "creative spatial composition"
+        },
+        {
+          "id": "copy",
+          "title": "Copy a Creature",
+          "skill": "visual-spatial observation and matching"
+        }
+      ],
+      "summary": "Decorate a clay friend, copy a creature card, and save it to your on-device shelf.",
+      "uses": [
+        "shared/vendor/three.module.min.js",
+        "shared/js/clay/field.js",
+        "shared/js/clay/field-three.js"
+      ]
+    },
+    {
+      "id": "rhythm-copycat",
+      "title": "Rhythm Copycat",
+      "category": "art-music",
+      "path": "games/rhythm-copycat/",
+      "icon": "assets/hub/tiles/rhythm-copycat.jpg",
+      "age": {
+        "min": 2,
+        "max": 4
+      },
+      "status": "beta",
+      "accent": "#f25f5c",
+      "modes": [
+        {
+          "id": "drum-beat",
+          "title": "Drum Beat",
+          "skill": "copy 2-4 beat clap and stomp patterns"
+        },
+        {
+          "id": "jingle-beat",
+          "title": "Jingle Beat",
+          "skill": "copy 2-4 beat tap and shake patterns"
+        },
+        {
+          "id": "parade-beat",
+          "title": "Parade Beat",
+          "skill": "copy patterns mixing all four actions"
+        }
+      ],
+      "summary": "Kiki the kawaii kitten plays a tiny beat — listen, then copy it back on four big friendly pads.",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/celebrate.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/timers.js",
+        "shared/js/rng.js",
+        "shared/js/stage/pose-sprite-dom.js"
+      ]
+    },
+    {
+      "id": "sound-painting",
+      "title": "Sound Painting",
+      "category": "art-music",
+      "path": "games/sound-painting/",
+      "icon": "assets/hub/tiles/sound-painting.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#9f64ff",
+      "uses": [
+        "shared/js/musical-canvas.js",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "calm",
+          "title": "Calm River",
+          "skill": "slow continuous expressive movement"
+        },
+        {
+          "id": "bounce",
+          "title": "Bouncy Beat",
+          "skill": "rhythmic looping and tapping movement"
+        },
+        {
+          "id": "sparkle",
+          "title": "Star Sparkles",
+          "skill": "quick light expressive movement"
+        }
+      ],
+      "summary": "Paint glowing paper ribbons with your finger, hear every color, then replay the picture as music."
+    },
+    {
+      "id": "loose-parts-collage",
+      "title": "Little Artist",
+      "category": "art-music",
+      "path": "games/loose-parts-collage/",
+      "icon": "assets/hub/tiles/loose-parts-collage.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#e46f55",
+      "modes": [
+        {
+          "id": "collage",
+          "title": "Free Collage",
+          "skill": "spatial composition through choosing, layering, rotating, and sizing"
+        },
+        {
+          "id": "yarn",
+          "title": "Yarn Magic",
+          "skill": "continuous fine-motor path planning with loops, curves, and crossings"
+        },
+        {
+          "id": "teddy",
+          "title": "Teddy's Idea",
+          "skill": "intentional visual storytelling from an open-ended spoken prompt"
+        }
+      ],
+      "summary": "Arrange leaves, buttons, paper, and yarn into art."
+    },
+    {
+      "id": "instrument-detective",
+      "title": "Instrument Detective",
+      "category": "art-music",
+      "path": "games/instrument-detective/",
+      "icon": "assets/hub/tiles/instrument-detective.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2d7dd2",
+      "modes": [
+        {
+          "id": "listen",
+          "title": "Sound Detective",
+          "skill": "listening discrimination and instrument names"
+        },
+        {
+          "id": "families",
+          "title": "Loud or Soft?",
+          "skill": "sound vocabulary and instrument qualities"
+        }
+      ],
+      "summary": "Guess the shaker, drum, bell, and chime by sound."
+    },
+    {
+      "id": "big-paper-murals",
+      "title": "Big Paper Murals",
+      "category": "art-music",
+      "path": "games/big-paper-murals/",
+      "icon": "assets/hub/tiles/big-paper-murals.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#ef5b4c",
+      "modes": [
+        {
+          "id": "jungle",
+          "title": "Jungle Jam",
+          "skill": "collaborative mark-making"
+        },
+        {
+          "id": "space",
+          "title": "Space Parade",
+          "skill": "spatial composition"
+        },
+        {
+          "id": "city",
+          "title": "City Party",
+          "skill": "shared visual storytelling"
+        },
+        {
+          "id": "blank",
+          "title": "Fresh Paper",
+          "skill": "open-ended creative expression"
+        }
+      ],
+      "summary": "Paint one joyful musical mural together with two fingers, living paper stamps, and a local keepsake."
+    },
+    {
+      "id": "pattern-bracelet-band",
+      "title": "Pattern Bracelet Studio",
+      "category": "art-music",
+      "path": "games/pattern-bracelet-band/",
+      "icon": "assets/hub/tiles/pattern-bracelet-band.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#d67a3a",
+      "modes": [
+        {
+          "id": "pop",
+          "title": "Pop Pattern",
+          "skill": "AB pattern extension with musical playback"
+        },
+        {
+          "id": "star",
+          "title": "Star Pattern",
+          "skill": "ABC and ABB pattern extension"
+        },
+        {
+          "id": "jam",
+          "title": "Free Jam Studio",
+          "skill": "invent and hear your own bead pattern as music"
+        }
+      ],
+      "summary": "Make a wearable bracelet with a repeating pattern."
+    },
+    {
+      "id": "shape-to-picture",
+      "title": "Shape-to-Picture Challenge",
+      "category": "art-music",
+      "path": "games/shape-to-picture/",
+      "icon": "assets/hub/tiles/shape-to-picture.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "pictures",
+          "title": "Shape Pictures",
+          "skill": "shape recombination into pictures"
+        },
+        {
+          "id": "faces",
+          "title": "Shape Faces",
+          "skill": "shape recombination into faces"
+        }
+      ],
+      "summary": "Turn circles into animals or objects."
+    },
+    {
+      "id": "song-story-remix",
+      "title": "Song Story Remix",
+      "category": "art-music",
+      "path": "games/song-story-remix/",
+      "icon": "assets/hub/tiles/song-story-remix.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#ffad7a",
+      "modes": [
+        {
+          "id": "farm",
+          "title": "Remix the Farm",
+          "skill": "song verse and animal sound play"
+        },
+        {
+          "id": "bus",
+          "title": "Remix the Bus",
+          "skill": "song verse and rider sound play"
+        }
+      ],
+      "summary": "Change the lyrics to a familiar tune."
+    },
+    {
+      "id": "balance-beam-trail",
+      "title": "Balance Beam Trail",
+      "category": "movement-outdoor",
+      "path": "games/balance-beam-trail/",
+      "icon": "assets/hub/tiles/balance-beam-trail.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "floor",
+          "title": "Tape Trail",
+          "skill": "heel-to-toe balance and body control"
+        },
+        {
+          "id": "outdoor",
+          "title": "Log and Curb",
+          "skill": "spotter-supported outdoor balance"
+        }
+      ],
+      "summary": "Walk along lines, logs, and tape paths."
+    },
+    {
+      "id": "animal-walk-cards",
+      "title": "Animal Walk Cards",
+      "category": "movement-outdoor",
+      "path": "games/animal-walk-cards/",
+      "icon": "assets/hub/tiles/animal-walk-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f4a261",
+      "modes": [
+        {
+          "id": "learn",
+          "title": "Animal School",
+          "skill": "animal body shapes and coordination"
+        },
+        {
+          "id": "parade",
+          "title": "Animal Parade",
+          "skill": "movement memory and cardio play"
+        }
+      ],
+      "summary": "Bear crawl, frog jump, and crab walk."
+    },
+    {
+      "id": "nature-scavenger-hunt",
+      "title": "Nature Scavenger Hunt",
+      "category": "movement-outdoor",
+      "path": "games/nature-scavenger-hunt/",
+      "icon": "assets/hub/tiles/nature-scavenger-hunt.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Five Finds",
+          "skill": "categorizing nature finds by sensory quality"
+        },
+        {
+          "id": "texture",
+          "title": "Feely Hunt",
+          "skill": "texture vocabulary and tactile attention"
+        }
+      ],
+      "summary": "Find something smooth, green, round, and tiny."
+    },
+    {
+      "id": "throwing-target-garden",
+      "title": "Throwing Target Garden",
+      "category": "movement-outdoor",
+      "path": "games/throwing-target-garden/",
+      "icon": "assets/hub/tiles/throwing-target-garden.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f28c45",
+      "uses": [
+        "shared/js/camera-throw.js",
+        "shared/js/screens.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/narrator.js",
+        "shared/js/sfx.js",
+        "shared/js/debug-harness.js"
+      ],
+      "modes": [
+        {
+          "id": "number",
+          "title": "Number Hunt",
+          "skill": "spoken numeral recognition and spatial aiming"
+        },
+        {
+          "id": "color",
+          "title": "Color Match",
+          "skill": "primary-color matching and selection"
+        },
+        {
+          "id": "sequence",
+          "title": "Sequence Trail",
+          "skill": "ascending order and spatial planning"
+        }
+      ],
+      "summary": "Aim safely into a soft basket; match numbers, colors, and sequences."
+    },
+    {
+      "id": "obstacle-course-builder",
+      "title": "Obstacle Course Builder",
+      "category": "movement-outdoor",
+      "path": "games/obstacle-course-builder/",
+      "icon": "assets/hub/tiles/obstacle-course-builder.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#d98c2b",
+      "modes": [
+        {
+          "id": "build",
+          "title": "Build It",
+          "skill": "planning, course design, and safety checks"
+        },
+        {
+          "id": "run",
+          "title": "Run It",
+          "skill": "varied gross-motor movement and balance"
+        }
+      ],
+      "summary": "Crawl, climb, hop, balance, and carry through a course."
+    },
+    {
+      "id": "line-walking-challenge",
+      "title": "Line Walking Challenge",
+      "category": "movement-outdoor",
+      "path": "games/line-walking-challenge/",
+      "icon": "assets/hub/tiles/line-walking-challenge.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "line",
+          "title": "The Quiet Line",
+          "skill": "slow heel-to-toe walking and calm balance"
+        },
+        {
+          "id": "carry",
+          "title": "Carry Challenge",
+          "skill": "controlled walking while balancing and carrying"
+        }
+      ],
+      "summary": "Walk slowly and carefully along a Montessori line."
+    },
+    {
+      "id": "trail-counting-walk",
+      "title": "Trail Counting Walk",
+      "category": "movement-outdoor",
+      "path": "games/trail-counting-walk/",
+      "icon": "assets/hub/tiles/trail-counting-walk.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#e9853d",
+      "modes": [
+        {
+          "id": "walk",
+          "title": "Counting Walk",
+          "skill": "counting, remembering, and comparing outdoor totals"
+        },
+        {
+          "id": "race",
+          "title": "Number Race",
+          "skill": "counting observed categories to target numbers"
+        }
+      ],
+      "summary": "Count stairs, birds, pinecones, and signs on a walk."
+    },
+    {
+      "id": "shadow-chase",
+      "title": "Shadow Chase",
+      "category": "movement-outdoor",
+      "path": "games/shadow-chase/",
+      "icon": "assets/hub/tiles/shadow-chase.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f4b942",
+      "modes": [
+        {
+          "id": "morning",
+          "title": "Morning Shadows",
+          "skill": "observe and move with body and object shadows"
+        },
+        {
+          "id": "day",
+          "title": "All-Day Watch",
+          "skill": "compare one shadow across morning, noon, and evening"
+        }
+      ],
+      "summary": "Watch shadows move and shift through the day."
+    },
+    {
+      "id": "garden-delivery-game",
+      "title": "Garden Delivery",
+      "category": "movement-outdoor",
+      "path": "games/garden-delivery-game/",
+      "icon": "assets/hub/tiles/garden-delivery-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#80b75d",
+      "modes": [
+        {
+          "id": "rose",
+          "title": "Rose",
+          "skill": "Find and hold a wide, calm balance center."
+        },
+        {
+          "id": "tulip",
+          "title": "Tulip",
+          "skill": "Counter one slow visible breeze while staying level."
+        },
+        {
+          "id": "daisy",
+          "title": "Daisy",
+          "skill": "Recenter after alternating soft breezes."
+        }
+      ],
+      "summary": "Balance Sunny's bucket across clay stepping stones, pour for a thirsty flower, and make the whole garden bloom."
+    },
+    {
+      "id": "freeze-focus-dance",
+      "title": "Freeze Focus Dance",
+      "category": "movement-outdoor",
+      "path": "games/freeze-focus-dance/",
+      "icon": "assets/hub/tiles/freeze-focus-dance.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f08a24",
+      "modes": [
+        {
+          "id": "beat",
+          "title": "Beat Stop",
+          "skill": "inhibit movement after an audio cue"
+        },
+        {
+          "id": "lookout",
+          "title": "Owl Lookout",
+          "skill": "sustain visual attention after settling"
+        },
+        {
+          "id": "statues",
+          "title": "Star Statues",
+          "skill": "deliberately shape and hold the body"
+        }
+      ],
+      "summary": "Dance, freeze, find forest friends, and make playful statues with Pip."
+    },
+    {
+      "id": "grace-courtesy-theater",
+      "title": "Grace & Courtesy Theater",
+      "category": "social-emotional",
+      "path": "games/grace-courtesy-theater/",
+      "icon": "assets/hub/tiles/grace-courtesy-theater.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "manners",
+          "title": "What Do We Say?",
+          "skill": "kind social phrases"
+        },
+        {
+          "id": "helping",
+          "title": "Kind or Not?",
+          "skill": "recognizing helpful actions"
+        }
+      ],
+      "summary": "Practice greeting, asking, and waiting politely."
+    },
+    {
+      "id": "calm-corner-cards",
+      "title": "Calm Corner Cards",
+      "category": "social-emotional",
+      "path": "games/calm-corner-cards/",
+      "icon": "assets/hub/tiles/calm-corner-cards.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "tools",
+          "title": "Pick a Calm Tool",
+          "skill": "choosing self-regulation tools"
+        },
+        {
+          "id": "breathe",
+          "title": "Balloon Breathing",
+          "skill": "slow paced breathing"
+        }
+      ],
+      "summary": "Choose breathing, squeezing, drawing, or resting to calm down."
+    },
+    {
+      "id": "turn-taking-tower",
+      "title": "Turn-Taking Tower",
+      "category": "social-emotional",
+      "path": "games/turn-taking-tower/",
+      "icon": "assets/hub/tiles/turn-taking-tower.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#8fd3c7",
+      "modes": [
+        {
+          "id": "together",
+          "title": "Our Tower",
+          "skill": "turn-taking rhythm with one friend"
+        },
+        {
+          "id": "tall",
+          "title": "Super Tower",
+          "skill": "turn-taking rhythm with two friends"
+        }
+      ],
+      "summary": "Build a tower one block per turn."
+    },
+    {
+      "id": "waiting-muscle-game",
+      "title": "Waiting Muscle Game",
+      "category": "social-emotional",
+      "path": "games/waiting-muscle-game/",
+      "icon": "assets/hub/tiles/waiting-muscle-game.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "train",
+          "title": "Waiting Workout",
+          "skill": "delayed gratification using practical waiting tricks"
+        },
+        {
+          "id": "master",
+          "title": "Waiting Master",
+          "skill": "sustained self-control and intentional choice"
+        }
+      ],
+      "summary": "Wait ten seconds before grabbing the prize."
+    },
+    {
+      "id": "problem-solving-puppets",
+      "title": "Problem-Solving Puppets",
+      "category": "social-emotional",
+      "path": "games/problem-solving-puppets/",
+      "icon": "assets/hub/tiles/problem-solving-puppets.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "archived",
+      "accent": "#2e9f76",
+      "modes": [
+        {
+          "id": "peace",
+          "title": "Make Peace",
+          "skill": "choosing conflict repair strategies"
+        },
+        {
+          "id": "feelings",
+          "title": "How Do They Feel?",
+          "skill": "naming feelings during conflict"
+        }
+      ],
+      "summary": "Superseded by puppet-problem-solvers, the live puppet-theater rebuild."
+    },
+    {
+      "id": "puppet-problem-solvers",
+      "title": "Problem-Solving Puppets",
+      "category": "social-emotional",
+      "path": "games/puppet-problem-solvers/",
+      "icon": "assets/hub/tiles/puppet-problem-solvers.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#2e9f76",
+      "uses": [
+        "shared/js/engines/puppet-theater.js",
+        "shared/js/stage/theater.js",
+        "shared/js/stage/puppet.js",
+        "shared/characters/"
+      ],
+      "modes": [
+        {
+          "id": "share",
+          "title": "Share",
+          "skill": "sharing and joint play"
+        },
+        {
+          "id": "take-turns",
+          "title": "Take Turns",
+          "skill": "turn-taking and patience"
+        },
+        {
+          "id": "ask-for-help",
+          "title": "Ask for Help",
+          "skill": "asking for and offering help"
+        }
+      ],
+      "summary": "Cast two puppets, watch every kind idea acted out, then pick your favorite."
+    },
+    {
+      "id": "my-puppet-band",
+      "title": "My Puppet Band",
+      "category": "art-music",
+      "path": "games/my-puppet-band/",
+      "icon": "assets/hub/tiles/my-puppet-band.jpg",
+      "age": {
+        "min": 4,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#f08a24",
+      "uses": [
+        "shared/js/engines/puppet-band.js",
+        "shared/js/music.js",
+        "shared/assets/instruments/",
+        "shared/characters/"
+      ],
+      "modes": [
+        {
+          "id": "rainbow-jam",
+          "title": "Rainbow Jam",
+          "skill": "ensemble listening"
+        },
+        {
+          "id": "bubble-pop",
+          "title": "Bubble Pop",
+          "skill": "melody and rhythm"
+        },
+        {
+          "id": "sleepy-cat",
+          "title": "Sleepy Cat Swing",
+          "skill": "swing feel"
+        },
+        {
+          "id": "dino-stomp",
+          "title": "Dino Stomp",
+          "skill": "strong beat"
+        },
+        {
+          "id": "teddy-parade",
+          "title": "Teddy Bear Parade",
+          "skill": "steady march beat"
+        },
+        {
+          "id": "cloud-waltz",
+          "title": "Cloud Waltz",
+          "skill": "waltz time (3/4)"
+        },
+        {
+          "id": "robot-disco",
+          "title": "Robot Disco",
+          "skill": "syncopation"
+        },
+        {
+          "id": "lullaby-moon",
+          "title": "Lullaby Moon",
+          "skill": "gentle listening"
+        },
+        {
+          "id": "seoul-sparkle",
+          "title": "Seoul Sparkle",
+          "skill": "borrowed-chord color (K-Pop)"
+        },
+        {
+          "id": "gamelan-garden",
+          "title": "Gamelan Garden",
+          "skill": "interlocking patterns (Indonesia)"
+        },
+        {
+          "id": "desert-caravan",
+          "title": "Desert Caravan",
+          "skill": "hijaz mode (Middle East)"
+        },
+        {
+          "id": "samba-sunshine",
+          "title": "Samba Sunshine",
+          "skill": "seventh-chord harmony (Brazil)"
+        }
+      ],
+      "summary": "Build a puppet band with real instruments and stage a rainbow concert."
+    },
+    {
+      "id": "plan-do-review",
+      "title": "Plan-Do-Review",
+      "category": "social-emotional",
+      "path": "games/plan-do-review/",
+      "icon": "assets/hub/tiles/plan-do-review.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#f4a83d",
+      "modes": [
+        {
+          "id": "loop",
+          "title": "Plan It, Do It!",
+          "skill": "intention action reflection loop"
+        },
+        {
+          "id": "tomorrow",
+          "title": "Plan for Tomorrow",
+          "skill": "future planning and sharing a plan"
+        }
+      ],
+      "summary": "Choose a task, finish it, then reflect on it."
+    },
+    {
+      "id": "kindness-delivery",
+      "title": "Kindness Delivery",
+      "category": "social-emotional",
+      "path": "games/kindness-delivery/",
+      "icon": "assets/hub/tiles/kindness-delivery.jpg",
+      "age": {
+        "min": 4,
+        "max": 7
+      },
+      "status": "in-design",
+      "accent": "#e96b58",
+      "modes": [
+        {
+          "id": "fox",
+          "title": "Fox",
+          "skill": "express warmth through drawing"
+        },
+        {
+          "id": "bunny",
+          "title": "Bunny",
+          "skill": "compose a supportive visual message"
+        },
+        {
+          "id": "bear",
+          "title": "Bear",
+          "skill": "connect a kind intention to a real-world act"
+        }
+      ],
+      "summary": "Draw, decorate, fold, and fly a kind note to a papercraft friend."
+    },
+    {
+      "id": "red-green-light",
+      "title": "Red Light, Green Light",
+      "category": "social-emotional",
+      "path": "games/red-green-light/",
+      "icon": "assets/hub/tiles/red-green-light.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "live",
+      "accent": "#58a945",
+      "modes": [
+        {
+          "id": "classic",
+          "title": "Classic",
+          "skill": "stop/go impulse control"
+        },
+        {
+          "id": "silly",
+          "title": "Silly Switch",
+          "skill": "three-way self-regulation switching"
+        }
+      ],
+      "summary": "Pick a muppet-style video caller who says the lights in their own voice — run on green, freeze on red."
+    },
+    {
+      "id": "board-game-reset",
+      "title": "Board Game Reset",
+      "category": "social-emotional",
+      "path": "games/board-game-reset/",
+      "icon": "assets/hub/tiles/board-game-reset.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "in-design",
+      "accent": "#7c4fc4",
+      "modes": [
+        {
+          "id": "sport",
+          "title": "Good Sport",
+          "skill": "winning and losing graciously"
+        },
+        {
+          "id": "reset",
+          "title": "Clean-Up Crew",
+          "skill": "cleanup sequence for board games"
+        }
+      ],
+      "summary": "Play, win or lose, then clean up together."
+    }
+  ]
 }

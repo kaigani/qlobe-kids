@@ -1,110 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#5f9ea0" />
-  <title>Rhythm Copycat — QLOBE Kids</title>
-  <meta name="description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta name="theme-color" content="#2dd2d3" />
+  <title>Rhythm Copycat — Copy Kiki's Beat</title>
+  <meta name="description" content="Kiki the kawaii kitten plays a tiny beat. Listen, then copy it back on four big friendly pads — clap, stomp, tap and shake! A gentle rhythm game for ages 2–4." />
 
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="QLOBE Kids" />
-  <meta property="og:title" content="Rhythm Copycat — copy the kawaii kitten's beat" />
-  <meta property="og:description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta property="og:site_name" content="Rhythm Copycat" />
+  <meta property="og:title" content="Rhythm Copycat — Copy Kiki's Beat" />
+  <meta property="og:description" content="Kiki the kawaii kitten plays a tiny beat. Listen, then copy it back on four big friendly pads — clap, stomp, tap and shake!" />
   <meta property="og:url" content="https://qlo.be/games/rhythm-copycat/" />
   <meta property="og:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Rhythm Copycat clay kitten stage with four percussion pads." />
+  <meta property="og:image:alt" content="Kiki the kawaii kitten with three colorful beat cards in a bright music room." />
+
+  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Rhythm Copycat — copy the kawaii kitten's beat" />
-  <meta name="twitter:description" content="Kiki the kawaii kitten plays a beat. Listen, then copy it back — clap, stomp, tap and shake!" />
+  <meta name="twitter:title" content="Rhythm Copycat — Copy Kiki's Beat" />
+  <meta name="twitter:description" content="Kiki the kawaii kitten plays a tiny beat. Listen, then copy it back — clap, stomp, tap and shake!" />
   <meta name="twitter:image" content="https://qlo.be/games/rhythm-copycat/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <link rel="stylesheet" href="../../shared/css/screens.css" />
   <link rel="stylesheet" href="../../shared/css/hud.css" />
   <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game">
-
-    <!-- ===================== SPLASH ===================== -->
-    <section class="rc-screen rc-splash" data-qk-screen="splash" aria-label="Rhythm Copycat menu">
-      <div class="rc-scene-toys" data-rc-splash-toys aria-hidden="true"></div>
-      <div class="rc-bg" data-rc-bg></div>
+  <main id="game">
+    <!-- ============ SPLASH — "Pick a beat" ============ -->
+    <section class="rc-screen rc-splash" data-screen="splash" aria-label="Rhythm Copycat menu">
+      <div class="rc-bg" aria-hidden="true"></div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" data-target="home" aria-label="Home"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-splash" aria-label="Mute sound"></button>
       <h1 class="visually-hidden">Rhythm Copycat</h1>
       <img class="rc-title" src="./assets/ui/title.webp" alt="Rhythm Copycat" draggable="false" />
-      <div class="rc-splash-kiki" data-rc-actor="splash" aria-hidden="true"></div>
-      <div class="rc-mode-shelf" data-rc-modes aria-label="Choose a game"></div>
-      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-hud="home" data-target="home" href="../../index.html" aria-label="Home"></a>
-      <div class="rc-hud-top-right" data-rc-sound></div>
-    </section>
-
-    <!-- ===================== PICK A BEAT ===================== -->
-    <section class="rc-screen rc-select" data-qk-screen="select" aria-label="Pick a beat" hidden>
-      <div class="rc-scene-toys" data-rc-select-toys aria-hidden="true"></div>
-      <div class="rc-bg" data-rc-bg></div>
-      <header class="rc-plaque rc-select-plaque">
-        <h2 data-rc-pick-title><span class="rc-w-coral">Pick</span> <span class="rc-w-lime">a</span> <span class="rc-w-teal">beat!</span></h2>
-      </header>
-      <div class="rc-cards" data-rc-cards aria-label="Choose a beat to copy"></div>
-      <div class="rc-big-btn-wrap">
-        <button type="button" class="rc-big-btn" data-rc-start data-target="start" aria-label="Start">
-          <span data-rc-start-label>Start</span>
-        </button>
-      </div>
-      <div class="rc-hud-left" data-rc-back></div>
-      <div class="rc-hud-top-right" data-rc-sound-select></div>
-    </section>
-
-    <!-- ===================== PLAY ===================== -->
-    <section class="rc-screen rc-play" data-qk-screen="play" aria-label="Copy the beat" hidden>
-      <div class="rc-bg" data-rc-bg></div>
-      <header class="rc-plaque rc-play-plaque" data-rc-prompt aria-live="polite">
-        <p data-rc-prompt-text></p>
-      </header>
-      <div class="rc-progress" data-rc-progress aria-hidden="true"></div>
-      <div class="rc-stage" data-rc-stage>
-        <div class="rc-tray" data-rc-tray aria-hidden="true">
-          <img class="rc-tray-art" src="./assets/ui/tray.webp" alt="" draggable="false" />
-          <div class="rc-slots" data-rc-slots></div>
+      <div class="rc-splash-mid">
+        <div class="rc-kiki rc-kiki-splash" data-kiki-splash aria-hidden="true"></div>
+        <div class="rc-cards" role="group" aria-label="Pick a beat">
+          <button class="rc-card" type="button" data-mode="drum-beat" data-target="card-drum-beat" style="--card-accent:#e8543f" aria-label="Drum Beat — clap and stomp">
+            <img class="rc-card-face" src="./assets/cards/orange.webp" alt="" draggable="false" />
+            <span class="rc-card-dots" data-dots="drum-beat" aria-hidden="true"></span>
+            <img class="rc-card-badge" src="./assets/ui/djembe.webp" alt="" draggable="false" />
+          </button>
+          <button class="rc-card" type="button" data-mode="jingle-beat" data-target="card-jingle-beat" style="--card-accent:#f5a623" aria-label="Jingle Beat — tap and shake">
+            <img class="rc-card-face" src="./assets/cards/yellow.webp" alt="" draggable="false" />
+            <span class="rc-card-dots" data-dots="jingle-beat" aria-hidden="true"></span>
+            <img class="rc-card-badge" src="./assets/ui/tambourine.webp" alt="" draggable="false" />
+          </button>
+          <button class="rc-card" type="button" data-mode="parade-beat" data-target="card-parade-beat" style="--card-accent:#1fb2b8" aria-label="Parade Beat — clap, stomp, tap and shake">
+            <img class="rc-card-face" src="./assets/cards/teal.webp" alt="" draggable="false" />
+            <span class="rc-card-dots" data-dots="parade-beat" aria-hidden="true"></span>
+            <img class="rc-card-badge" src="./assets/ui/woodblock.webp" alt="" draggable="false" />
+          </button>
         </div>
-        <div class="rc-kiki" data-rc-actor="play" aria-hidden="true"></div>
       </div>
-      <div class="rc-pads" data-rc-pads aria-label="Percussion pads"></div>
-      <div class="rc-hud-left" data-rc-back-play></div>
-      <div class="rc-play-glow" data-rc-glow aria-hidden="true"></div>
+      <button class="rc-pill rc-start" type="button" data-action="start" data-target="start" aria-label="Start the beat">
+        <img src="./assets/ui/button.webp" alt="" draggable="false" />
+        <span>START</span>
+      </button>
+      <p class="rc-status" data-status aria-live="polite"></p>
     </section>
 
-    <!-- ===================== END ===================== -->
-    <section class="rc-screen rc-end" data-qk-screen="end" aria-label="You made a song" hidden>
-      <div class="rc-bg" data-rc-bg></div>
-      <header class="rc-plaque rc-end-plaque">
-        <h2 data-rc-end-title>You made a song!</h2>
-      </header>
-      <div class="rc-stars" data-rc-stars aria-label="Stars earned"></div>
-      <div class="rc-end-kiki" data-rc-actor="end" aria-hidden="true"></div>
-      <div class="rc-confetti" data-rc-confetti aria-hidden="true"></div>
-      <div class="rc-end-actions">
-        <button type="button" class="rc-big-btn" data-rc-again data-target="again" aria-label="Play again">
-          <span data-rc-again-label>Play Again</span>
-        </button>
-        <button type="button" class="rc-pill-btn" data-rc-beats data-target="beats" aria-label="Pick another beat">
-          <span>Pick a Beat</span>
-        </button>
+    <!-- ============ PLAY — "Copy the beat" ============ -->
+    <section class="rc-screen rc-play" data-screen="play" aria-label="Copy the beat" hidden>
+      <div class="rc-bg" aria-hidden="true"></div>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-play" aria-label="Back to menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-play" aria-label="Mute sound"></button>
+      <div class="rc-progress" data-progress aria-label="Round progress"></div>
+      <div class="rc-board">
+        <header class="rc-plaque">
+          <img src="./assets/ui/plaque.webp" alt="" draggable="false" />
+          <p data-prompt aria-live="polite">Listen!</p>
+        </header>
+        <div class="rc-pads" role="group" aria-label="Action pads">
+          <button class="rc-pad" type="button" data-pad="clap" data-target="pad-clap" aria-label="Clap">
+            <img src="./assets/pads/clap.webp" alt="" draggable="false" />
+            <span class="rc-pad-label" style="--label-color:#4f8fd8">Clap</span>
+          </button>
+          <button class="rc-pad" type="button" data-pad="stomp" data-target="pad-stomp" aria-label="Stomp">
+            <img src="./assets/pads/stomp.webp" alt="" draggable="false" />
+            <span class="rc-pad-label" style="--label-color:#6cb232">Stomp</span>
+          </button>
+          <button class="rc-pad" type="button" data-pad="tap" data-target="pad-tap" aria-label="Tap">
+            <img src="./assets/pads/tap.webp" alt="" draggable="false" />
+            <span class="rc-pad-label" style="--label-color:#e88a2d">Tap</span>
+          </button>
+          <button class="rc-pad" type="button" data-pad="shake" data-target="pad-shake" aria-label="Shake">
+            <img src="./assets/pads/shake.webp" alt="" draggable="false" />
+            <span class="rc-pad-label" style="--label-color:#e8543f">Shake</span>
+          </button>
+        </div>
+        <div class="rc-tray">
+          <img class="rc-tray-art" src="./assets/ui/tray.webp" alt="" draggable="false" />
+          <div class="rc-chips" data-chips aria-hidden="true"></div>
+        </div>
+        <div class="rc-listen-row">
+          <img class="rc-listen-star" src="./assets/ui/star.webp" alt="" draggable="false" aria-hidden="true" />
+          <button class="rc-pill rc-listen" type="button" data-action="listen" data-target="listen" aria-label="Listen to the beat again">
+            <img src="./assets/ui/button.webp" alt="" draggable="false" />
+            <span>LISTEN</span>
+          </button>
+          <img class="rc-listen-star" src="./assets/ui/star.webp" alt="" draggable="false" aria-hidden="true" />
+        </div>
       </div>
-      <div class="rc-hud-left" data-rc-back-end></div>
-      <div class="rc-hud-top-right" data-rc-sound-end></div>
+      <div class="rc-kiki rc-kiki-play" data-kiki-play aria-hidden="true"></div>
     </section>
 
-  </div>
+    <!-- ============ END — "Beat complete!" ============ -->
+    <section class="rc-screen rc-end" data-screen="end" aria-label="Beat complete" hidden>
+      <div class="rc-bg" aria-hidden="true"></div>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back" data-target="back-end" aria-label="Back to menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-action="mute" data-target="sound-end" aria-label="Mute sound"></button>
+      <div class="rc-end-plaque">
+        <img src="./assets/ui/plaque.webp" alt="" draggable="false" />
+        <p><span class="rc-word-coral">Beat</span> <span class="rc-word-teal">complete!</span></p>
+      </div>
+      <div class="rc-kiki rc-kiki-end" data-kiki-end aria-hidden="true"></div>
+      <div class="rc-stars" data-stars aria-hidden="true">
+        <img src="./assets/ui/star.webp" alt="" draggable="false" />
+        <img src="./assets/ui/star.webp" alt="" draggable="false" />
+        <img src="./assets/ui/star.webp" alt="" draggable="false" />
+      </div>
+      <button class="rc-pill rc-again" type="button" data-action="again" data-target="again" aria-label="Play again">
+        <img src="./assets/ui/button.webp" alt="" draggable="false" />
+        <span>PLAY AGAIN</span>
+      </button>
+    </section>
+  </main>
   <script type="module" src="./js/main.js"></script>
 </body>
 </html>

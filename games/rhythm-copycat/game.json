@@ -3,55 +3,56 @@
  "title": "Rhythm Copycat",
  "category": "art-music",
  "path": "games/rhythm-copycat/",
- "icon": "🥁",
+ "icon": "assets/hub/tiles/rhythm-copycat.jpg",
  "entry": "index.html",
  "age": {
-  "min": 5,
-  "max": 6
+  "min": 2,
+  "max": 4
  },
- "status": "live",
+ "status": "beta",
  "accent": "#f25f5c",
- "shareTitle": "Rhythm Copycat 🥁 — copy the kawaii kitten's claps, stomps, taps and shakes",
- "description": "Kiki the kawaii kitten plays a beat on her sticker-band stage. Listen, then copy it back in time — clap, stomp, tap and shake! A body-percussion rhythm game.",
+ "shareTitle": "Rhythm Copycat 🥁 — copy Kiki's claps, stomps, taps and shakes",
+ "description": "Kiki the kawaii kitten plays a tiny beat. Listen, then copy it back on four big friendly pads — clap, stomp, tap and shake!",
  "learningGoals": [
   "Hear and copy short body-percussion rhythm patterns",
-  "Match sounds to actions in a steady beat",
-  "Feel tempo and stay in time with a beat"
+  "Match sounds to actions in a steady sequence",
+  "Grow pattern memory from two beats to four"
  ],
- "interactionModel": "watch the kawaii kitten demo a beat, then tap the matching sticker pads in time to play it back",
- "feedbackModel": "every beat can be finished: wrong pads wiggle with a spoken nudge, missed beats replay once, and the round always ends in a song and a cheer",
+ "interactionModel": "pick a beat card, watch Kiki play the pattern on the pads, then copy it by tapping the same big pads in order",
+ "feedbackModel": "every beat can be finished: a wrong pad wiggles with a spoken nudge and the right pad glows after two tries; every finished beat ends in stars, confetti and a song",
  "uses": [
   "shared/js/voice-clips.js",
-  "shared/js/narrator.js",
   "shared/js/sfx.js",
   "shared/js/tap.js",
-  "shared/js/hud.js",
   "shared/js/celebrate.js",
   "shared/js/audio-unlock.js",
-  "shared/js/idle-nudge.js",
   "shared/js/debug-harness.js",
   "shared/js/timers.js",
   "shared/js/rng.js",
-  "shared/js/preload.js",
   "shared/js/stage/pose-sprite-dom.js"
  ],
  "modes": [
   {
-   "id": "clap-stomp",
-   "title": "Clap & Stomp",
-   "skill": "copy 2–3 beat percussion patterns"
+   "id": "drum-beat",
+   "title": "Drum Beat",
+   "skill": "copy 2-4 beat clap and stomp patterns"
   },
   {
-   "id": "drum-circle",
-   "title": "Drum Circle",
-   "skill": "copy 3–4 beat patterns at a faster tempo"
+   "id": "jingle-beat",
+   "title": "Jingle Beat",
+   "skill": "copy 2-4 beat tap and shake patterns"
+  },
+  {
+   "id": "parade-beat",
+   "title": "Parade Beat",
+   "skill": "copy patterns mixing all four actions"
   }
  ],
  "license": {
   "code": "MIT",
   "assets": "CC-BY-4.0"
  },
- "credits": "All art generated locally with the QLOBE LAN pipeline (Krea 2, Qwen Image Edit, Qwen Image Layered, Ideogram 4, Qwen3 TTS voice clone). Kawaii sticker style per the ui-mockups. See ASSETS.md. Built for QLOBE Kids.",
+ "credits": "All art generated locally with the QLOBE LAN pipeline (Krea 2, Ideogram 4, Qwen Image Edit, Qwen Image Layered, Qwen3 TTS voice clone, Whisper QA). Kawaii sticker style per the ui-mockups. See ASSETS.md. Built for QLOBE Kids.",
  "characters": [
   "kiki"
  ],

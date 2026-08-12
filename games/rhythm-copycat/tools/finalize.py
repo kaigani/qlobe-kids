@@ -127,6 +127,22 @@ def disc_crop(img, pad=8, alpha_th=190):
     return img.crop((x0, y0, x1, y1))
 
 
+def central_dot_crop(img):
+    """Keep the authored center dot from the generated dot contact sheet.
+
+    The LAN generation sometimes returns a playful contact sheet around the
+    requested dot. The previous alpha/saturation crop retained every saturated
+    face in that sheet, which made the runtime beat tokens unreadable. The
+    central colored dot is intentionally consistent across the four masters,
+    so crop a small square around that authored subject after keying.
+    """
+    side = int(min(img.width, img.height) * 0.30)
+    cx, cy = img.width // 2, img.height // 2
+    x0 = max(0, cx - side // 2)
+    y0 = max(0, cy - side // 2)
+    return img.crop((x0, y0, min(img.width, x0 + side), min(img.height, y0 + side)))
+
+
 def layer2(name, required=True):
     p = os.path.join(SRC, f"{name}.layer2.png")
     if not os.path.exists(p):
@@ -226,7 +242,7 @@ def _run(report):
         img = key_dot(os.path.join(SRC, f"kw-dot-{color}.png"))
         # The krea masters bake a wide warm shadow around the disc; crop to the
         # disc body so the sticker dot, not its halo, fills the sprite.
-        img = disc_crop(img).convert("RGBA")
+        img = central_dot_crop(img).convert("RGBA")
         contact.append((img, f"dot-{color}"))
         report[f"dot-{color}"] = {"bytes": save_webp(pad_square(img),
             os.path.join(ROOT, "assets", "dots", f"{color}.webp"), (160, 160)),

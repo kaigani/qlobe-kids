@@ -1,226 +1,216 @@
-# Rhythm Copycat — production game design
+# Rhythm Copycat — production game design (rebuild 3)
 
-**Concept:** `../01-game-concepts/rhythm-copycat/brief.md`
-**Replaces:** `games/rhythm-copycat/` beta stub (pattern-continue engine, 👏 emoji art)
-**Canonical art-direction label:** Kawaii sticker toy (revised to the
-`output/ui-mockups` kawaii-redesign style: puffy white-sticker outlines,
-matte-satin vinyl, citrus/aqua palette, cocoa-stroked bubble type)
-**Category:** art-music · **Age:** 4–6 · **Status target:** live
+Canonical art-direction label: **Kawaii** (sticker/vinyl citrus dialect — the
+`tools/kawaii_gen.py` STYLE prefix). Ages 2–4, a deliberate departure from the
+platform's 5–6 default: body-percussion echo play is a toddler skill, and the
+whole game runs with zero reading and zero fine-motor demands. Recorded in
+`game.json` (`age: {min: 2, max: 4}`).
+
+## Why rebuild 3 exists
+
+Attempts 1 (claymation) and 2 (kawaii restyle) shipped a strong asset library
+inside a failed composition. The autopsy (2026-08-12) found:
+
+- The splash abandoned the mockup's IA (three beat cards + START) for three
+  cramped Play/Levels/Rewards circles colliding with a decor djembe, an HTML
+  title overflowing its plaque, and a reading-required subtitle.
+- The play screen shrank the four action pads — the game's whole interaction —
+  into two small dark rings at the bottom, parked Kiki ON TOP of the sequence
+  tray, floated an orphan "Stomp" chip over the board, and replaced the
+  mockup's 1:1 icon mapping (beat chip icon == pad icon) with abstract colored
+  pop-it wells a toddler cannot decode.
+- The generated title lockup sat on an opaque plate (its own ASSETS.md reject
+  criterion) and never shipped; pads drifted off-palette (pale cream + dark
+  cocoa ring instead of the mockup's vivid bordered pads).
+
+**Rebuild rule: the mockups are the composition.** Screens are rebuilt to the
+mockup layouts; the salvaged asset library fills them; every screen must pass a
+blind side-by-side against `01-game-concepts/rhythm-copycat/output/ui-mockups/`.
 
 ## Product promise
 
-*Rhythm Copycat is a body-percussion band for little hands.* A kawaii kitten
-conductor (Kiki) plays CLAP, STOMP, TAP and SHAKE beats on a sticker-toy stage;
-the child listens, then copies the beat back in time by tapping big sticker pads.
-No reading, no losing — every beat ends in a song and a cheer.
+Kiki the kawaii kitten plays a tiny body-percussion beat. Listen, watch, then
+copy it back on four big friendly pads — clap, stomp, tap, shake — and every
+beat always ends in a song, stars, and a cheer. One skill: **hear a short
+rhythm pattern and reproduce its sequence**.
 
-This is the platform's first **timed** rhythm game: the pattern-continue stub
-only asked "what comes next" as a sequence puzzle. Real beat timing (a
-metronome cursor, beat windows, tempo ramp) is the new capability this game
-makes real, on top of the shared pose-actor system (stage/pose-sprite-dom.js).
+## Modes (the three beat cards)
 
-## Screen map
+| id | title | card | actions | patterns |
+| --- | --- | --- | --- | --- |
+| `drum-beat` | Drum Beat | orange card + djembe badge | clap, stomp | 4 rounds, lengths 2,2,3,4 |
+| `jingle-beat` | Jingle Beat | yellow card + tambourine badge | tap, shake | 4 rounds, lengths 2,2,3,4 |
+| `parade-beat` | Parade Beat | teal card + woodblock badge | all four | 4 rounds, lengths 2,3,3,4 |
 
-```
-Splash ──▶ Pick a Beat ──▶ Play (demo → copy → song replay) ──▶ End
-   ▲            ▲                    │                            │
-   └────────────┴────────────────────┴────────────────────────────┘
-        home = catalog      back = pick-a-beat        again = pick-a-beat
-```
+Patterns are seed-shuffled from curated pools (no two identical consecutive
+rounds; a round never opens with the same action three times). Completing a
+round fills one dot on the mode's card pill; dots persist per session (not
+localStorage — a fresh visit is a fresh drum session).
 
-1. **Splash** — kawaii sticker world stage: teal wall, window, shelf, rug, Kiki
-   peeking. Clay title lockup (generated art, spell-checked). Two mode cards.
-   Home button (→ catalog) top-left, sound top-right. Theme: `--qk-accent`
-   coral `#f25f5c`.
-2. **Pick a Beat** — three kawaii beat cards, each previewing its pattern as
-   colored dots (data-driven composition from real sticker dot sprites). Tap a
-   card to select (it pops), tap big START. Back → splash. Voice: "Pick a
-   beat!"
-3. **Play** — stage scene. Kiki stands center-table with the beat tray above
-   her. Four sticker action pads across the bottom (icon-only + small HTML
-   caption). Two phases per round:
-   - **Demo:** "Listen!" — Kiki performs each beat in time; sounds play; the
-     tray slot lights and its pad glows as it sounds.
-   - **Copy:** "Now you copy it!" — a walking cursor counts the slots; the
-     child taps pads. Correct pad → sound, slot fills, Kiki does a mini-pose,
-     cursor advances. Wrong pad → gentle wiggle + spoken nudge. Missed slot →
-     replay + highlight, then auto-complete together (never a dead end).
-   - **Song replay:** the finished pattern plays back once with Kiki dancing —
-     "Listen to our song!" — then next round (longer/faster).
-4. **End** — after 5 rounds: Kiki celebrate pose, confetti + tada, 1–3 stars
-   filled by first-try accuracy, spoken star line, PLAY AGAIN / PICK A BEAT /
-   HOME (back semantics: play/end back → splash).
+## Screen map & navigation
 
-## Modes (one skill each)
+1. **Splash — "Pick a beat"** (mockup 01). Title lockup art top-center, Kiki
+   neutral→notice at left of the card row, three beat cards center, START pill
+   bottom-center. Home button (top-left) → catalog. First gesture unlocks
+   audio and speaks `intro` + `pick-beat`.
+   - Tap a card: it pops (scale bounce), Kiki notices, the card's instrument
+     one-shot plays, voice speaks the mode line, START pulses.
+   - Tap START (or the selected card again): screens.start → play.
+   - Idle nudger: 8s `pick-beat`, then highlight the first card.
+2. **Play — "Copy the beat"** (mockup 02). Plaque header (authored art +
+   HTML Fredoka line), four action pads mid-band, sequence tray under the
+   pads, LISTEN pill bottom-center, Kiki in the left rail (landscape) / above
+   the plaque row (portrait). Back button (top-left) → splash. Progress dots
+   (round n of 4) top-center via `progressDots`.
+   - **Demo phase**: plaque+voice "Listen!"; for each beat: tick, matching
+     chip pops into the tray with the ACTION'S icon, the matching pad
+     highlights, Kiki swaps to the action pose, percussion one-shot plays,
+     voice speaks the action word. Pads are inert (visually calm, not
+     greyed) during demo.
+   - **Copy phase**: plaque+voice "Your turn!"; tray chips dim to outlines;
+     child taps pads in order. Correct: pad bounce + percussion + chip fills
+     + tick of praise every round end. Wrong pad: pad wiggles, `oops` +
+     `nudge-<action>` voice, Kiki `notice`, no penalty; the second miss on
+     the same step makes the correct pad pulse until tapped (modeling, never
+     failure). LISTEN replays the demo anytime (child taps it; also the idle
+     nudge at 9s replays it).
+   - Round complete: `good-N` rotating praise, Kiki `celebrate`, chips
+     sparkle; next round after a musical breath. After round 4 → end screen.
+3. **End — "Beat complete!"** (mockup 03). End backdrop (podium), Kiki
+   `celebrate` center on the podium, three star stickers pop in one-by-one,
+   looping gentle confetti (`celebrate.js` ambience), voice `round-end` +
+   `stars-3` + `song`. PLAY AGAIN pill → replay same mode; Back (top-left) →
+   splash. 8s idle auto-returns to splash (never strands a toddler).
 
-| id | title | skill | tempo | patterns | rounds |
-|---|---|---|---|---|---|
-| `clap-stomp` | Clap & Stomp | copy 2–3 beat percussion patterns | 66 BPM | 2→3 beats, pads clap/stomp/tap | 5 |
-| `drum-circle` | Drum Circle | copy 3–4 beat patterns at speed | 78 BPM | 3→4 beats, all four pads | 5 |
+Navigation loop: splash Home→catalog is the only page exit; play/end Back →
+splash in-page; end PLAY AGAIN → play (same mode). All via `createScreens`.
 
-Pattern generation is seeded per game (mulberry32) so `QLOBE_DEBUG.seed(42)`
-reproduces exactly. Tempo ramp within a mode: +6% per round after round 2,
-capped at the mode ceiling. Every round's pattern differs from the previous.
+## Interaction rules
 
-## Core loop (exact, 30–90 s per mode)
+- Every control ≥96px hit area (pads ~200px, cards ~240px). `onTap` from
+  `shared/js/tap.js` everywhere; single `busy` lock during demo playback so
+  taps can't corrupt the sequence; pads stay tappable during copy only.
+- `installUnlockOnGesture` + `installKioskGuards` once at module scope;
+  greeting deferred to `onFirst`. `createNarrator` wraps `voice-clips.js`;
+  narrator handed to `createScreens({voice})`.
+- Reduced motion: pose swaps instant (pose-sprite-dom handles it), confetti
+  no-ops, pad bounce becomes a highlight-only state.
+- Portrait and landscape both first-class; layout is a CSS grid that reflows
+  (see Layout). Safe areas via `--qk-safe-*` / `.qk-hud-*`.
+- No timing windows anywhere: the copy phase is untimed echo. Rhythm feel
+  comes from the demo's steady 92 BPM spacing and the child's natural
+  imitation, not from a judged tempo.
 
-```
-pick card → START → demo(pattern) → copy(pattern) → replay-song(pattern)
-   → next pattern (longer) ×5 → end screen → again
-```
+## Spoken script (verbatim — the recording manifest)
 
-Copy phase timing model (the heart of the game):
+Salvaged clips (already produced + hash-manifested, reused as-is):
+`intro` "Rhythm Copycat!", `pick-beat` "Pick a beat!", `choose-mode` "Choose
+your mode!" (unused, kept), `start` "Let's go!", `listen` "Listen!",
+`your-turn` "Now you copy it!", `together` "Let's do it together!",
+`clap` "Clap!", `stomp` "Stomp!", `tap` "Tap!", `shake` "Shake!",
+`nudge-clap` "Try the clap!", `nudge-stomp` "Try the stomp!",
+`nudge-tap` "Try the tap!", `nudge-shake` "Try the shake!",
+`oops` "Oops!", `good-1` "Great!", `good-2` "Nice!", `good-3` "Awesome!",
+`round-end` "Yay! You did the beat!", `all-done` "You made a song!",
+`stars-3` "Three stars! Amazing!", `song` "Listen to our song!",
+`again` "Play again!", `mode-clap-stomp` "Clap and stomp!".
 
-- `beat = 60000 / bpm` (66 → 909 ms, 78 → 769 ms).
-- Slot `i` is *armed* from `t_i = roundStart + i·beat` until
-  `t_i + beat + 400 ms` grace.
-- Tap while armed: correct pad → advance; wrong pad → wiggle, hint line
-  (throttled to one per 2.5 s), slot stays armed.
-- Slot expires armed: replay the slot's sound, flash its pad 600 ms, re-arm
-  for one extra beat. Second expiry: auto-fill with "Let's do it together!"
-- First-try accuracy = slots filled on the first arm ÷ total slots →
-  stars at end (≥80% = 3, ≥55% = 2, else 1). Stars are always earned, never
-  denied loudly.
-- Vibration (where available): light 30 ms tick on pad activation.
+New lines to produce (voice-clone batch, seed 7 → 8 → 9):
+- `mode-drum-beat` "Drum beat!"
+- `mode-jingle-beat` "Jingle beat!"
+- `mode-parade-beat` "Parade beat!"
+- `watch-kiki` "Watch Kiki!"
 
-## Spoken script (verbatim, pre-generation)
+Retired: `mode-drum-circle`, `stars-1`, `stars-2` (no partial stars — a
+finished beat is always three stars; files kept on disk, dropped from
+lines.json). Fallback text for every key ships in `defaultLines` so Web
+Speech covers a missing clip.
 
-| key | line |
-|---|---|
-| `intro` | Rhythm Copycat! |
-| `choose-mode` | Choose your mode! |
-| `mode-clap-stomp` | Clap and stomp! |
-| `mode-drum-circle` | Drum circle! |
-| `pick-beat` | Pick a beat! |
-| `start` | Let's go! |
-| `listen` | Listen! |
-| `your-turn` | Now you copy it! |
-| `clap` | Clap! |
-| `stomp` | Stomp! |
-| `tap` | Tap! |
-| `shake` | Shake! |
-| `good-1` | Great! |
-| `good-2` | Nice! |
-| `good-3` | Awesome! |
-| `oops` | Oops! |
-| `nudge-clap` | Try the clap! |
-| `nudge-stomp` | Try the stomp! |
-| `nudge-tap` | Try the tap! |
-| `nudge-shake` | Try the shake! |
-| `together` | Let's do it together! |
-| `song` | Listen to our song! |
-| `round-end` | Yay! You did the beat! |
-| `all-done` | You made a song! |
-| `stars-1` | One star! Nice! |
-| `stars-2` | Two stars! Great job! |
-| `stars-3` | Three stars! Amazing! |
-| `again` | Play again! |
+## Art list (renderer / substrate split)
 
-Action words also double as the pad audio identity — the same recorded word
-plays when Kiki demos a beat and when the child plays it.
+Salvaged (visual QA'd against mockups 2026-08-12):
 
-All lines generated with `qwen3-tts-voiceclone` from the platform teacher
-reference (`tools/state/local.json → teacherVoicePath`, seed 8, retry 9),
-converted to AAC m4a (+faststart, 64k), Whisper-QA'd against this table.
+| asset | use | substrate |
+| --- | --- | --- |
+| `assets/bg/splash.webp` | splash backdrop (music room) | `<img>` full-bleed cover |
+| `assets/bg/play.webp` | play backdrop (aqua board field) | same |
+| `assets/bg/end.webp` | end backdrop (podium stage) | same |
+| `assets/cards/{orange,yellow,teal}.webp` | beat cards | button > card img + badge img + dot overlays |
+| `assets/ui/{djembe,tambourine,woodblock}.webp` | card instrument badges | img inside card |
+| `assets/ui/plaque.webp` | play prompt plaque | img + HTML Fredoka text overlay |
+| `assets/ui/tray.webp` | sequence tray | img + chip overlays |
+| `assets/ui/star.webp` | end-screen stars | img ×3 |
+| `assets/kiki/poses/*.webp` (7) | Kiki pose actor | `pose-sprite-dom` |
+| `assets/dots/*.webp` | card progress dot fills | img in pill seats |
 
-## Art list
+To produce (LAN API, krea2/qwen-edit/ideogram, seeds 42→1337→9001):
 
-World: **Kawaii sticker toy** — puffy soft-vinyl forms, thick white sticker borders, glossy
-kawaii faces, matte-satin finish (per the ui-mockups kawaii redesign)
-seams, warm studio light, teal wall + warm wood table. One star character:
-**Kiki, a ginger kawaii kitten** with a white sticker outline, glossy eyes, blush cheeks,
-cream muzzle/chest, black
-stubby tail. Sparse props only (maraca, xylophone) — the stage must stay calm
-under the tray and pads.
+| asset | spec |
+| --- | --- |
+| `assets/ui/title.webp` | REROLL: "Rhythm Copycat" bubble-letter lockup, alpha-trimmed, ≤150 KB, spell-checked at full size |
+| `assets/pads/{clap,stomp,tap,shake}.webp` | REROLL to mockup-02 language: vivid squircle pads, thick per-action colored border (cocoa/green/orange/red), cream inner panel, big icon, baked label word, ~700px source → ≤80 KB |
+| `assets/chips/{clap,stomp,tap,shake}.webp` | NEW: round beat chips, colored disc + white mini icon matching pad icon 1:1, 160px |
+| `assets/ui/pill-start.webp`, `pill-listen.webp`, `pill-again.webp` | coral stadium pills with baked START / LISTEN / PLAY AGAIN (ideogram), spell-checked; a11y names on the buttons |
 
-| # | asset | size | renderer / notes |
-|---|---|---|---|
-| 1 | `splash.webp` | 1600×1200 | kawaii music-room scene (window, shelf, rug), used on splash + select |
-| 2 | `play.webp` | 1600×1200 | flat aqua sticker stage with corner props + water strip |
-| 2b | `end.webp` | 1600×1200 | sky-blue stage with scalloped podium + confetti |
-| 3 | `title.webp` | ~520×138 | kawaii bubble letter lockup "Rhythm ♪ Copycat", cocoa-stroked, layered cutout |
-| 4 | `kiki/poses/{neutral,notice,clap,stomp,tap,shake,celebrate}.webp` | 1024×1024 canvas | pose actor pack (manifest `poses.json`), normalized via `pose_actor_assemble.py`, shared scale/baseline, anchor [0.5, 0.95] |
-| 5 | `pads/{clap,stomp,tap,shake}.webp` | 512×512 | cream squircles, cocoa/colored borders, limb icons (clap hands / sneakers / drum tap / maraca) |
-| 6 | `tray.webp` | ~886×364 | stadium track with 4 recessed chip seats |
-| 7 | `dots/{blue,green,orange,red}.webp` | 160×160 | flat sticker dots keyed to the four actions |
-| 8 | `cards/{orange,yellow,teal}.webp` | ~608×608 | colored sticker cards with stitch + white pill |
-| 9 | `ui/{button,plaque,star,djembe}.webp` + `ui/{tambourine,woodblock,maraca}.webp` | — | coral CTA pill, cloud plaque, kawaii star/instruments |
-| 10 | `hub/tiles/rhythm-copycat.jpg` | 640×533 | krea2 menu-game-tile product shot, no text |
-| 11 | `og-image.jpg` | 1200×630 | splash-derived capture |
-| 12 | `assets/source/*` | — | every raw generation retained |
+Everything the child sees is authored raster; DOM supplies layout, hit areas,
+highlight states (brightness/scale transforms on the authored art), and the
+HTML plaque line. No CSS-illustrated primary objects.
 
-Deterministic post: alpha floor + trim + normalize canvas + downscale +
-WebP encode (`tools/pipeline/cutout_finalize.py` / `pose_actor_assemble.py`),
-magenta-composite alpha QA, full-size OCR QA on the title, vision-model QA on
-every pose and pad.
+## Audio design
 
-## Interaction & feedback rules
+- Percussion voices: `js/percussion.js` (salvaged) — WebAudio clap/stomp/
+  tap/shake one-shots, zero bytes. Same voice for demo and child taps so the
+  echo "sounds like me".
+- Metronome: `sfx.tick` at demo beat spacing (650ms ≈ 92 BPM).
+- Praise/celebration: `sfx.sparkle`, `sfx.tada`, voice clips above.
+- End-screen song: `song` clip + a short percussion flourish replaying the
+  final round's pattern (the child hears "their" beat inside the song).
 
-- Touch targets ≥ 148×148 px visual; tap via `shared/js/tap.js` (press
-  feedback on pointerdown, action on pointerup-over).
-- Audio unlock on first gesture (`audio-unlock.js`), kiosk guards installed.
-- Wrong tap: pad wiggle (CSS keyframe, `prefers-reduced-motion` no-op),
-  quiet "Oops!" + action nudge, never a penalty, never a "Game Over".
-- Idle re-prompt once per long pause (`idle-nudge.js`), voice-driven.
-- Celebration: `celebrate.js` tada + burstConfetti on round and end screens.
-- Portrait + landscape layouts; safe-area insets; `prefers-reduced-motion`
-  disables wiggle/pop/confetti motion (poses still swap).
-- Progress: 5 dots top-center (hud.js `progressDots`).
+## QLOBE_DEBUG (v1 + extras)
 
-## Shared modules used / made stronger
+`installDebug` with: `ready`, `listModes`, `startMode`, `getState()` →
+`{screen, mode, round, roundsTotal, phase: 'demo'|'copy'|'between',
+stepIndex, pattern, awaitingInput}`, `getTargets()` (pads truthful
+correct/wrong per current step; cards+pills on their screens), `tap(id)`
+through the real handler, `winRound()`, `mute()`, `seed(n)` (wired to
+`onSeed` before pattern draw), `fastTimers()` (wired to the game's one
+`createTimers` group — demo playback, pauses, auto-advance all scale),
+`getAudioLog()`, `home()`.
 
-`sfx.js` (UI pops + tada), `voice-clips.js` (recorded teacher voice w/ Web
-Speech fallback), `tap.js`, `audio-unlock.js`, `hud.js`, `celebrate.js`,
-`idle-nudge.js`, `debug-harness.js` (`installDebug({onSeed, timers})`),
-`timers.js`, `rng.js` (mulberry32), `preload.js`,
-`stage/pose-sprite-dom.js` (Kiki pose actor — proof of a 8-pose custom
-vocabulary pack driving timed gameplay; `stage/pose-pack.js` untouched).
+## Critic gauntlet record (2026-08-12)
 
-Body-percussion samples are synthesized deterministically in
-`js/percussion.js` (WebAudio: clap = noise burst + bandpass + double echo;
-stomp = low sine thump + click; tap = short wood knock; shake = modulated
-shaker noise). Zero bytes, no 404s, identical cross-platform.
+Five blind side-by-side rounds against the ui-mockups by an independent
+harsh-art-director agent. Round 5 final: splash 8.5 PASS, play-demo 8.0 PASS,
+play-copy 8.5 PASS ("exceeds its mockup in state communication"), end 8.5
+PASS, portrait 8.0 PASS — "the game as a set meets the equal-or-exceed bar."
+Non-blocking backlog: (1) splash card runtime dot fills register ~3px off the
+painted seat centroids (visible only at 3× zoom); (2) portrait end wall
+confetti sparser than landscape. Key craft lessons: never dim a card with
+opacity over a busy backdrop (the room ghosts through it); layered extraction
+leaves faint full-canvas alpha specks, so finalize trims at alpha>24; simple
+high-contrast shapes on flat charcoal key better locally (threshold+erode)
+than through generative extraction.
 
-## QLOBE_DEBUG surface
+## Critic round 1 decisions (2026-08-12)
 
-- `seed(n)` — reseeds rounds.
-- `fastTimers()` — scales beat/tempo (timers group) for smoke tests.
-- `skipTo(key)` — `demo|copy|replay|end` phase jumps.
-- `bpm(n)` — override tempo; `pads()` — flash each pad once for layout QA.
+The blind side-by-side critic pass rejected all five screen groups; fixes
+applied: per-card accent progress dots + selection preview fill, visible
+selected-card state with sibling dimming, sticker-extruded typography on every
+pill word and the end headline (two-tone), pad word-pills in per-action colors,
+socket chips previewing the pattern length, cream housing for the round dots,
+stronger hit/demo feedback, splash bg djembe removed (edit), play bg corner
+props removed (edit), gold kawaii-faced stars (edit), pad icons enlarged ~1.3×
+(edit), portrait rebalance (Kiki anchored large bottom-left, compressed play
+bands). **Declined:** restyling the shared HUD home/back/sound buttons — HUD
+chrome is deliberately world-independent platform furniture
+(`docs/art-direction.md`), consistent across every QLOBE game.
 
-## Privacy / permissions / persistence
+## Risks & release gate
 
-No network at runtime (GA4 platform tag only), no mic, no storage, no
-accounts. Static site, offline-capable after first load.
-
-## Departures from brief/mockups (with reasons)
-
-1. **Mockups have no guide; the platform benefits from one.** Kiki the
-   kawaii kitten is the performer — restyled in the mockups' sticker language
-   (white die-cut outline, glossy eyes, blush) so she belongs to the same
-   world.
-2. **Pad captions (CLAP/STOMP/TAP/SHAKE) are real HTML text**, not baked
-   art — functional text stays HTML; icons carry pre-reader meaning.
-3. **Beat cards are data-driven compositions** (card sprite + real sticker dots
-   + instrument stickers), not three generated screenshots — patterns are generated at
-   runtime from the same seeded RNG that plays them, so what you preview is
-   exactly what you copy.
-4. **No countdown/score pressure.** Stars derive from first-try accuracy but
-   every run reaches the full 5-round song; losing states do not exist.
-5. **Timed copy replaces "tap the next card".** The stub's sequence-only
-   pattern-continue cannot express rhythm; the metronome cursor makes the
-   beat audible and copyable for a pre-reader.
-
-## Known risks & release gates
-
-- **Pose identity drift across 7 generations** → reference-image edits from
-  one accepted neutral; vision QA every pose against the neutral; reroll on
-  face/marking mismatch (ladder 42 → 1337 → 9001 → 7).
-- **Timing feel** → beat width tuned in real-device playtest; grace (400 ms)
-  and one extra re-arm keep it forgiving; smoke QA asserts no stuck states.
-- **Voice line mismatch** → Whisper QA all clips; omit + fall back to
-  device speech on rejection.
-- **Title letters malformed** (AI typography) → OCR + vision full-size check,
-  reroll until every letter is clean.
-- Release gate: hub tile curated, 0 console errors, 0 404s, portrait +
-  landscape visual pass, reduced-motion pass, adversarial art-director sign-off.
+- Kiki pose identity drift (neutral's plain eyes vs celebrate's catchlights)
+  — judged tolerable at runtime size by the critic pass, or the pose chain is
+  regenerated from neutral with the locked identity string.
+- LAN GenAI host offline at build start: build+smoke proceeds with salvaged
+  art and interim pads; the four REROLL/NEW asset groups are the release gate
+  for `beta`. **`live` requires the critic pass on every screen plus the
+  real-iPad child playtest.**
