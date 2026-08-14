@@ -41,7 +41,7 @@ catalog → splash → play (four matches) → reward/end
 - Full-bleed kawaii playroom plate.
 - Generated `SOUND CYLINDER MATCH` lockup, visually spell-checked.
 - Coral and aqua cylinder sprites gently lean toward one another on the felt
-  mat; the star guide peeks beside them.
+  mat.
 - One large raster-backed play control. The first press unlocks all audio and
   speaks the welcome before entering play.
 - Home is the only catalog link.
@@ -57,8 +57,12 @@ catalog → splash → play (four matches) → reward/end
   exact same raster asset, scale, lighting, and unmarked base. Their sound
   identities are shuffled from a seeded deck. Each repeats the same small
   raster speaker badge so the whole row reads as tappable sound objects.
-- After the reference has played, each candidate can be tapped to shake and
-  play its real sample. The game evaluates that choice immediately.
+- After the reference has played, all three aqua candidates shake and play
+  their real samples in sequence. The child can tap a candidate during this
+  preview to interrupt it and make the choice immediately, or tap while the
+  spoken “Which aqua shaker…” instruction is still playing. That first tap
+  starts and records the choice while the instruction continues; the correct
+  or different result begins as soon as the instruction ends.
 - Correct choice: both cylinders hop together, a luminous connector and raster
   star appear, the matched sample plays once more, and a recorded cheer leads
   into the next round.
@@ -111,13 +115,12 @@ qualities (seeds/sand or bell/chime).
 | `complete` | “You matched every sound! Your listening ears are amazing.” |
 | `again` | “Play again!” |
 
-Recorded, transcript-approved teacher clips from the existing Rhythm Copycat
-production set are the primary channel for the three generic cues “Listen!”,
-“Great!”, and “Play again!” The environment did not authorize uploading the
-private teacher reference for new cloning, so every game-specific line remains
-on the exact Web Speech fallback recorded in `lines.json`; no mismatched clip
-is shipped. Shaker samples never use speech as a substitute; their deterministic
-packaged WAV files are required for readiness.
+All 12 fixed lines are transcript-approved Qwen3-TTS VoiceClone clips from the
+committed synthetic platform teacher reference, with complete manifest coverage
+and same-host Whisper QA. Exact text in `lines.json` remains the Web Speech
+fallback if a packaged clip is blocked or unavailable. Shaker samples never use
+speech as a substitute; their deterministic packaged WAV files are required for
+readiness.
 
 ## Art inventory
 
@@ -154,8 +157,10 @@ acceptance. No SVG, emoji, CSS illustration, or model call appears at runtime.
   sit under safe-area insets.
 - `prefers-reduced-motion` removes bobbing, hopping, connector sweeps, and
   confetti but preserves state changes and sound.
-- Muting stops both narration and samples, releases any pending audio action,
-  and swaps every sound button to a distinct authored slash/X raster state.
+- The sound icon repeats the active narration and replays the prompt animation.
+  The debug mute path stops both narration and samples, releases any pending
+  audio action, and swaps every sound button to a distinct authored slash/X
+  raster state.
 - Audio errors resolve safely and never strand input.
 
 ## Explicit departures

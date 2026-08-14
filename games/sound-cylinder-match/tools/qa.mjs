@@ -38,8 +38,18 @@ async function main() {
   const { page } = run;
   check('splash boots', (await page.evaluate(() => QLOBE_DEBUG.getState().screen)) === 'splash');
   check('debug v1 and listening mode', await page.evaluate(() => QLOBE_DEBUG.version === 1 && QLOBE_DEBUG.listModes()[0].id === 'listen'));
+  const narrationCoverage = await page.evaluate(async () => {
+    const [lines, manifest] = await Promise.all([
+      fetch('./assets/audio/lines.json').then((response) => response.json()),
+      fetch('./assets/audio/manifest.json').then((response) => response.json()),
+    ]);
+    const keys = Object.keys(lines);
+    return keys.length === 12 && keys.every((key) => manifest[key]?.file);
+  });
+  check('all fixed narration lines have packaged clips', narrationCoverage);
   check('generated title is spelled accessibly', (await page.locator('.scm-title').getAttribute('alt')) === 'Sound Cylinder Match');
   check('all splash images decode', await page.evaluate(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0)));
+  check('decorative duplicate stars are removed', await page.evaluate(() => !document.querySelector('.scm-splash-star, .scm-guide')));
   check('no emoji, svg, or canvas primary art', await page.evaluate(() => !document.body.textContent.includes('🥫') && !document.querySelector('svg,canvas')));
   const splashTargets = await page.evaluate(() => QLOBE_DEBUG.getTargets());
   check('splash targets clear 96px', splashTargets.every(({ rect }) => rect.w >= 96 && rect.h >= 96), JSON.stringify(splashTargets));
@@ -55,7 +65,11 @@ async function main() {
   await page.waitForFunction(() => QLOBE_DEBUG.getState().awaitingInput, null, { timeout: 20000 });
   check('recorded Listen cue played after gesture', await page.evaluate(() => window.__scmClips.includes('start')), await page.evaluate(() => window.__scmClips.join(',')));
   const first = await page.evaluate(() => QLOBE_DEBUG.getState());
+  const firstSamples = await page.evaluate(() => QLOBE_DEBUG.getAudioLog().samples.slice(-4).map((entry) => entry.id));
+  const firstVoice = await page.evaluate(() => QLOBE_DEBUG.getAudioLog().voice.map((entry) => ({ key: entry.key, kind: entry.kind })));
   check('seeded round has one target and three candidates', Boolean(first.target) && first.candidates.length === 3 && new Set(first.candidates).size === 3, JSON.stringify(first));
+  check('reference and all aqua shakers preview before choice', JSON.stringify(firstSamples) === JSON.stringify([first.target, ...first.candidates]), firstSamples.join(','));
+  check('opening narration uses packaged voice clips', firstVoice.length >= 3 && firstVoice.every((entry) => entry.kind === 'clip'), JSON.stringify(firstVoice));
   const playTargets = await page.evaluate(() => QLOBE_DEBUG.getTargets());
   check('play targets clear 96px', playTargets.every(({ rect }) => rect.w >= 96 && rect.h >= 96), JSON.stringify(playTargets));
   check('truthful reference/correct/different roles', playTargets.filter((target) => target.role === 'reference').length === 1 && playTargets.filter((target) => target.role === 'correct').length === 1 && playTargets.filter((target) => target.role === 'different').length === 2);
@@ -72,9 +86,11 @@ async function main() {
   await page.locator('[data-target="reference"]').click();
   await page.locator('[data-target="sound-play"]').click();
   await page.waitForFunction(() => QLOBE_DEBUG.getState().awaitingInput, null, { timeout: 2500 });
-  check('mute interrupts audio without stranding input', await page.evaluate(() => QLOBE_DEBUG.getState().muted && QLOBE_DEBUG.getState().awaitingInput));
-  check('mute has a distinct raster state', await page.evaluate(() => getComputedStyle(document.querySelector('[data-target="sound-play"]')).backgroundImage.includes('muted.webp')));
-  await page.locator('[data-target="sound-play"]').click();
+  check('sound icon replays the current prompt', await page.evaluate(() => {
+    const log = QLOBE_DEBUG.getAudioLog().voice;
+    return log.at(-1)?.key === 'find' && log.at(-1)?.kind === 'clip';
+  }));
+  check('sound icon replays the prompt animation', await page.evaluate(() => document.querySelector('.scm-prompt').classList.contains('is-replaying')));
 
   await page.evaluate(() => { QLOBE_DEBUG.winRound(); });
   for (let probe = 0; probe < 35; probe += 1) {
@@ -104,6 +120,30 @@ async function main() {
   check('remote calls are limited to platform analytics', run.remote.every((url) => url.includes('google-analytics.com') || url.includes('googletagmanager.com')), run.remote.join(' | '));
   await run.context.close();
 
+  const interrupt = await openGame(browser, { width: 1180, height: 820 });
+  await interrupt.page.evaluate(() => QLOBE_DEBUG.seed(42));
+  await interrupt.page.locator('[data-action="play"]').click();
+  await interrupt.page.waitForFunction(() => QLOBE_DEBUG.getState().instructionActive, null, { timeout: 20000 });
+  const instructionState = await interrupt.page.evaluate(() => QLOBE_DEBUG.getState());
+  const correctIndex = instructionState.candidates.indexOf(instructionState.target);
+  const wrongIndex = (correctIndex + 1) % instructionState.candidates.length;
+  await interrupt.page.evaluate((index) => QLOBE_DEBUG.tap(`candidate-${index}`), correctIndex);
+  await interrupt.page.evaluate((index) => QLOBE_DEBUG.tap(`candidate-${index}`), wrongIndex);
+  const selectedDuringInstruction = await interrupt.page.evaluate(() => QLOBE_DEBUG.getState());
+  check('candidate tap registers during find instruction', selectedDuringInstruction.instructionActive && selectedDuringInstruction.pendingChoice === instructionState.target && selectedDuringInstruction.lastChoice === instructionState.target && selectedDuringInstruction.matched === 0, JSON.stringify(selectedDuringInstruction));
+  check('selected shaker sample starts before instruction ends', await interrupt.page.evaluate((target) => QLOBE_DEBUG.getAudioLog().samples.some((entry) => entry.id === target), instructionState.target));
+  check('pending selection has coral glow', await interrupt.page.evaluate((index) => document.querySelectorAll('.scm-candidate')[index].classList.contains('is-pending'), correctIndex));
+  await interrupt.page.waitForTimeout(300);
+  check('result is deferred until instruction ends', await interrupt.page.evaluate(() => {
+    const state = QLOBE_DEBUG.getState();
+    return state.instructionActive && state.matched === 0 && !document.querySelector('.scm-candidate.is-correct, .scm-candidate.is-wrong');
+  }));
+  await interrupt.page.waitForFunction(() => QLOBE_DEBUG.getState().matched === 1 && QLOBE_DEBUG.getState().round === 1, null, { timeout: 20000 });
+  check('deferred correct result follows instruction', await interrupt.page.evaluate(() => !QLOBE_DEBUG.getState().instructionActive && QLOBE_DEBUG.getState().matched === 1));
+  check('pending glow clears after result', await interrupt.page.evaluate((index) => !document.querySelectorAll('.scm-candidate')[index].classList.contains('is-pending'), correctIndex));
+  check('instruction interrupt test has no page errors or failures', interrupt.errors.length === 0 && interrupt.failed.length === 0, [...interrupt.errors, ...interrupt.failed].join(' | '));
+  await interrupt.context.close();
+
   const keyboard = await openGame(browser, { width: 1180, height: 820 });
   await keyboard.page.locator('[data-action="play"]').focus();
   await keyboard.page.keyboard.press('Enter');
@@ -113,8 +153,16 @@ async function main() {
   await keyboard.context.close();
 
   const portrait = await openGame(browser, { width: 820, height: 1180 });
-  await portrait.page.evaluate(() => { QLOBE_DEBUG.mute(true); QLOBE_DEBUG.fastTimers(.04); QLOBE_DEBUG.seed(42); });
+  // Chromium is launched with --mute-audio, so keep the game's audio state on
+  // here: the real sample durations give the interruptible preview time to be
+  // observed without sending sound to the user's speakers.
+  await portrait.page.evaluate(() => { QLOBE_DEBUG.fastTimers(.04); QLOBE_DEBUG.seed(42); });
   await portrait.page.locator('[data-action="play"]').click();
+  await portrait.page.waitForFunction(() => QLOBE_DEBUG.getState().previewing);
+  const portraitPreview = await portrait.page.evaluate(() => QLOBE_DEBUG.getState());
+  await portrait.page.evaluate((index) => QLOBE_DEBUG.tap(`candidate-${index}`), 0);
+  await portrait.page.waitForFunction((target) => QLOBE_DEBUG.getState().lastChoice === target, portraitPreview.candidates[0]);
+  check('child can interrupt aqua preview with a choice', await portrait.page.evaluate(() => !QLOBE_DEBUG.getState().previewing && QLOBE_DEBUG.getState().lastChoice !== null));
   await portrait.page.waitForFunction(() => QLOBE_DEBUG.getState().awaitingInput);
   check('portrait play fits viewport', await portrait.page.evaluate(() => [...document.querySelectorAll('.scm-shaker')].filter((el) => el.getBoundingClientRect().width > 0).every((el) => { const r = el.getBoundingClientRect(); return r.left >= -1 && r.right <= innerWidth + 1 && r.top >= -1 && r.bottom <= innerHeight + 1; })));
   await portrait.page.screenshot({ path: path.join(shots, '06-play-portrait.png') });

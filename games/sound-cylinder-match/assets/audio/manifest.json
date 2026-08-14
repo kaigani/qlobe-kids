@@ -1,5 +1,74 @@
 {
-  "start": { "file": "listen.m4a", "dur": 0.958 },
-  "same": { "file": "great.m4a", "dur": 0.479 },
-  "again": { "file": "again.m4a", "dur": 0.958 }
+  "welcome": {
+    "file": "welcome.m4a",
+    "dur": 5.3,
+    "sha256": "705d7fab892235f7ab7cb8c0191e512d4cf6838e858aa3a44ed0ebd68ae3e1b1",
+    "textHash": "b0254665e3dfbeff"
+  },
+  "start": {
+    "file": "start.m4a",
+    "dur": 0.799,
+    "sha256": "aee92e6425e90efbc1e9495b87811cfb80cab73b6c800dcad602e73a80ee1b33",
+    "textHash": "2291c6d738b710ed"
+  },
+  "find": {
+    "file": "find.m4a",
+    "dur": 4.9,
+    "sha256": "b7cb964662ac20860a7ce4fba8515c7ba21b1a56ef726553d7060d4fffbd80ec",
+    "textHash": "7eaad394ca9a9b39"
+  },
+  "different": {
+    "file": "different.m4a",
+    "dur": 3.7,
+    "sha256": "1c86fe72131c0d738b8a5de02447638db212562c1e68e40970aee23762e07a31",
+    "textHash": "0f6eef476e8d1c04"
+  },
+  "same": {
+    "file": "same.m4a",
+    "dur": 0.639,
+    "sha256": "a7867ef55914a6fd7b7e97c83ebb35432932a80b32d55e6cce93670f4cd08995",
+    "textHash": "3765ea16037b1bc3"
+  },
+  "round-two": {
+    "file": "round-two.m4a",
+    "dur": 3.5,
+    "sha256": "2b9d2d1fb5414355177e8d8a1eb3f9c6f946730c23a8d63ac3504e492c73aaeb",
+    "textHash": "fac0b1a443696758"
+  },
+  "round-three": {
+    "file": "round-three.m4a",
+    "dur": 2.956,
+    "sha256": "606bb8ddfef22d897a75d11300490114a63ebf93ea2f3d20ab6d25559f83d28d",
+    "textHash": "6e39007b8b186c9b"
+  },
+  "round-four": {
+    "file": "round-four.m4a",
+    "dur": 2.796,
+    "sha256": "339d7e9c1a435632501cb0d9f6c0179ab23f44b795eef53016cbb504714cf621",
+    "textHash": "d6571170f003f588"
+  },
+  "idle-reference": {
+    "file": "idle-reference.m4a",
+    "dur": 1.997,
+    "sha256": "e585dff2fdf74b13f283c96047bcddb6232b3a628f49cae3552d33cf03dea873",
+    "textHash": "4661bcc0b2d4169e"
+  },
+  "idle-candidate": {
+    "file": "idle-candidate.m4a",
+    "dur": 3.2,
+    "sha256": "be307d628744fae0adae1812f6756a94df79c0fe970628ac966249896dc8301d",
+    "textHash": "dfeda5ae13033294"
+  },
+  "complete": {
+    "file": "complete.m4a",
+    "dur": 4.0,
+    "sha256": "a01ce6f0eda16dd64136e3d5120b5cd0d096f3d02fe604ae3c27e99a995737dc",
+    "textHash": "fb5ac085b1361ebc"
+  },
+  "again": {
+    "file": "again.m4a",
+    "dur": 0.879,
+    "sha256": "aa8283898b906fdc5c6c03bb694180ebe64691f5195921fa650d6a7ea90063f3",
+    "textHash": "df3f44533da44b2b"
+  }
 }

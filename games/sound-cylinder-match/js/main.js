@@ -24,6 +24,10 @@ const state = {
   target: null,
   candidates: [],
   awaitingInput: false,
+  previewing: false,
+  instructionActive: false,
+  pendingChoice: null,
+  promptKey: 'welcome',
   busy: false,
   muted: false,
   seed: 42,
@@ -37,6 +41,8 @@ let sessionTargets = [];
 let sampleToken = 0;
 let samplesUnlocked = false;
 let finishCurrentSample = null;
+let finishFindInstruction = null;
+let activeFindInstruction = null;
 const sampleLog = [];
 
 const SAMPLE_BASE = new URL('../assets/samples/', import.meta.url);
@@ -106,18 +112,85 @@ function playSample(id) {
   });
 }
 
-function speak(key) { return voice.say(key, config.lines[key]); }
+function speak(key) {
+  state.promptKey = key;
+  return voice.say(key, config.lines[key]);
+}
+
+function animatePrompt() {
+  const prompt = $('.scm-prompt');
+  if (!prompt) return;
+  prompt.classList.remove('is-replaying');
+  void prompt.offsetWidth;
+  prompt.classList.add('is-replaying');
+  timers.after(520, () => prompt.classList.remove('is-replaying'));
+}
+
+function repeatPrompt() {
+  if (state.muted) return false;
+  animatePrompt();
+  const replay = speak(state.promptKey || 'welcome');
+  activeFindInstruction?.replay(replay);
+  return replay;
+}
+
+function beginFindInstruction() {
+  let gateSettled = false;
+  let doneSettled = false;
+  let resolveGate;
+  let resolveDone;
+  let replayToken = 0;
+  const gate = new Promise((resolve) => { resolveGate = resolve; });
+  const done = new Promise((resolve) => { resolveDone = resolve; });
+  const finish = () => {
+    if (!gateSettled) {
+      gateSettled = true;
+      resolveGate();
+    }
+    if (!doneSettled) {
+      doneSettled = true;
+      resolveDone();
+    }
+  };
+  const replay = (promise) => {
+    const token = ++replayToken;
+    Promise.resolve(promise).then(() => {
+      if (token === replayToken && !doneSettled) {
+        doneSettled = true;
+        resolveDone();
+      }
+    }, () => {
+      if (token === replayToken && !doneSettled) {
+        doneSettled = true;
+        resolveDone();
+      }
+    });
+  };
+  finishFindInstruction = finish;
+  const instruction = { gate, done, finish, replay };
+  activeFindInstruction = instruction;
+  return instruction;
+}
 
 function showScreen(name) {
   timers.clearAll();
   stopSample();
+  finishFindInstruction?.();
+  finishFindInstruction = null;
+  activeFindInstruction = null;
   voice.stop();
   state.flow += 1;
+  state.previewing = false;
+  state.instructionActive = false;
+  state.pendingChoice = null;
   for (const [id, el] of Object.entries(screens)) el.hidden = id !== name;
   state.screen = name;
 }
 
-function setPrompt(text) { $('[data-prompt]').textContent = text; }
+function setPrompt(text, key = null) {
+  if (key) state.promptKey = key;
+  $('[data-prompt]').textContent = text;
+}
 
 function renderProgress() {
   const host = $('[data-progress]');
@@ -136,7 +209,7 @@ function renderProgress() {
 function resetRoundVisuals() {
   $('.scm-reference').classList.remove('is-shaking', 'is-correct');
   $('[data-connector]').classList.remove('is-visible');
-  for (const button of candidateButtons) button.classList.remove('is-shaking', 'is-wrong', 'is-correct');
+  for (const button of candidateButtons) button.classList.remove('is-shaking', 'is-pending', 'is-wrong', 'is-correct');
 }
 
 function animateOnce(element, className, ms = 700) {
@@ -161,6 +234,10 @@ async function showRound(index) {
   state.target = sessionTargets[index];
   state.lastChoice = null;
   state.awaitingInput = false;
+  state.previewing = false;
+  state.instructionActive = false;
+  state.pendingChoice = null;
+  state.promptKey = 'welcome';
   state.busy = true;
   resetRoundVisuals();
   const choices = shuffle([state.target, ...pickDistractors(state.target)], rng);
@@ -173,17 +250,48 @@ async function showRound(index) {
   renderProgress();
 
   const lineKey = index === 0 ? 'start' : `round-${['one', 'two', 'three', 'four'][index]}`;
-  setPrompt(index === 0 ? 'Listen to the coral shaker.' : 'A new mystery sound!');
+  setPrompt(index === 0 ? 'Listen to the coral shaker.' : 'A new mystery sound!', lineKey);
   if (config.lines[lineKey]) await speak(lineKey);
   if (flow !== state.flow || state.screen !== 'play') return;
   await tapReference(true);
   if (flow !== state.flow || state.screen !== 'play') return;
-  setPrompt('Which aqua shaker sounds the same?');
-  await speak('find');
+
+  // Let the child hear every aqua option before the game asks for a choice.
+  // The buttons remain interruptible during this sequence so an eager child
+  // can tap an option as soon as it sounds familiar.
+  state.previewing = true;
+  await previewCandidates(flow);
+  if (flow !== state.flow || state.screen !== 'play' || !state.previewing) return;
+  state.previewing = false;
+  setPrompt('Which aqua shaker sounds the same?', 'find');
+  state.instructionActive = true;
+  const instruction = beginFindInstruction();
+  instruction.replay(speak('find'));
+  await Promise.race([instruction.done, instruction.gate]);
+  instruction.finish();
+  if (finishFindInstruction === instruction.finish) finishFindInstruction = null;
+  if (activeFindInstruction === instruction) activeFindInstruction = null;
   if (flow !== state.flow || state.screen !== 'play') return;
+  state.instructionActive = false;
+  if (state.pendingChoice) {
+    const { index, id } = state.pendingChoice;
+    state.pendingChoice = null;
+    return finishCandidateChoice(index, id, { samplePlayed: true });
+  }
   state.busy = false;
   state.awaitingInput = true;
   scheduleIdle();
+}
+
+async function previewCandidates(flow) {
+  for (const [choiceIndex, id] of state.candidates.entries()) {
+    if (flow !== state.flow || state.screen !== 'play' || !state.previewing) return false;
+    const button = candidateButtons[choiceIndex];
+    animateOnce(button, 'is-shaking', 560);
+    safeSfx('pop');
+    await playSample(id);
+  }
+  return true;
 }
 
 async function tapReference(fromFlow = false) {
@@ -203,17 +311,47 @@ async function tapReference(fromFlow = false) {
 }
 
 async function chooseCandidate(index) {
-  if (state.screen !== 'play' || state.busy || !state.awaitingInput) return false;
+  if (state.screen !== 'play' || (!state.awaitingInput && !state.previewing && !state.instructionActive)) return false;
   const button = candidateButtons[index];
   const chosen = state.candidates[index];
   if (!button || !chosen) return false;
+
+  // During the spoken instruction, commit the first tap immediately and let
+  // its sample play on the independent sample channel. The instruction keeps
+  // speaking; showRound consumes this pending choice as soon as that line
+  // ends, so the result follows directly without another prompt.
+  if (state.instructionActive) {
+    if (state.pendingChoice) return false;
+    state.pendingChoice = { index, id: chosen };
+    state.lastChoice = chosen;
+    button.classList.add('is-pending');
+    animateOnce(button, 'is-shaking', 560);
+    safeSfx('pop');
+    void playSample(chosen);
+    return true;
+  }
+
+  state.flow += 1;
+  state.previewing = false;
   timers.clearAll();
+  $('.scm-reference').classList.remove('is-shaking');
+  for (const candidate of candidateButtons) candidate.classList.remove('is-shaking');
+  voice.stop();
+  stopSample();
   state.busy = true;
   state.awaitingInput = false;
   state.lastChoice = chosen;
   animateOnce(button, 'is-shaking', 560);
   safeSfx('pop');
   await playSample(chosen);
+  return finishCandidateChoice(index, chosen, { samplePlayed: true });
+}
+
+async function finishCandidateChoice(index, chosen, { samplePlayed = false } = {}) {
+  if (state.screen !== 'play') return false;
+  const button = candidateButtons[index];
+  button.classList.remove('is-pending');
+  if (!samplePlayed) await playSample(chosen);
   if (state.screen !== 'play') return false;
 
   if (chosen === state.target.id) {
@@ -223,7 +361,7 @@ async function chooseCandidate(index) {
     $('[data-connector]').classList.add('is-visible');
     safeSfx('sparkle');
     renderProgress();
-    setPrompt('You found the sound twin!');
+    setPrompt('You found the sound twin!', 'same');
     await speak('same');
     await timers.wait(650);
     if (state.round + 1 >= state.rounds) return finishGame();
@@ -232,12 +370,12 @@ async function chooseCandidate(index) {
 
   button.classList.add('is-wrong');
   safeSfx('boing');
-  setPrompt('Different sounds. Listen again.');
+  setPrompt('Different sounds. Listen again.', 'different');
   await speak('different');
   if (state.screen !== 'play') return false;
   await playSample(state.target.id);
   button.classList.remove('is-wrong');
-  setPrompt('Which aqua shaker sounds the same?');
+  setPrompt('Which aqua shaker sounds the same?', 'find');
   state.busy = false;
   state.awaitingInput = true;
   scheduleIdle();
@@ -250,11 +388,11 @@ function scheduleIdle() {
     if (state.screen !== 'play' || !state.awaitingInput || state.busy) return;
     state.busy = true;
     state.awaitingInput = false;
-    setPrompt('Listen to the coral shaker again.');
+    setPrompt('Listen to the coral shaker again.', 'idle-reference');
     await speak('idle-reference');
     await tapReference(true);
     if (state.screen !== 'play') return;
-    setPrompt('Try an aqua shaker.');
+    setPrompt('Try an aqua shaker.', 'idle-candidate');
     await speak('idle-candidate');
     state.busy = false;
     state.awaitingInput = true;
@@ -271,10 +409,13 @@ async function startMode({ replay = false } = {}) {
   state.target = null;
   state.candidates = [];
   state.awaitingInput = false;
+  state.previewing = false;
+  state.instructionActive = false;
+  state.pendingChoice = null;
   state.busy = true;
   sessionTargets = shuffle(config.sounds, rng).slice(0, state.rounds);
   renderProgress();
-  setPrompt('Get your listening ears ready!');
+  setPrompt('Get your listening ears ready!', replay ? 'again' : 'welcome');
   await speak(replay ? 'again' : 'welcome');
   if (state.screen === 'play') await showRound(0);
 }
@@ -283,6 +424,9 @@ async function finishGame() {
   showScreen('end');
   state.round = state.rounds;
   state.awaitingInput = false;
+  state.previewing = false;
+  state.instructionActive = false;
+  state.pendingChoice = null;
   state.busy = false;
   safeSfx('tada');
   await speak('complete');
@@ -297,6 +441,9 @@ function renderSplash() {
   state.target = null;
   state.candidates = [];
   state.awaitingInput = false;
+  state.previewing = false;
+  state.instructionActive = false;
+  state.pendingChoice = null;
   state.busy = false;
 }
 
@@ -304,9 +451,15 @@ function setMuted(on = !state.muted) {
   state.muted = Boolean(on);
   voice.setMuted(state.muted);
   sampleAudio.muted = state.muted;
-  if (state.muted) { stopSample(); voice.stop(); }
-  for (const button of $$('[data-action="mute"]')) {
-    button.setAttribute('aria-label', state.muted ? 'Turn sound on' : 'Mute sound');
+  if (state.muted) {
+    stopSample();
+    finishFindInstruction?.();
+    finishFindInstruction = null;
+    activeFindInstruction = null;
+    voice.stop();
+  }
+  for (const button of $$('[data-action="sound"]')) {
+    button.setAttribute('aria-label', state.muted ? 'Sound is muted' : 'Hear the prompt again');
     button.classList.toggle('is-muted', state.muted);
   }
   return state.muted;
@@ -319,7 +472,7 @@ async function tapTarget(id) {
   if (id === 'again') return startMode({ replay: true });
   if (id === 'reference') return tapReference();
   if (id === 'back-play' || id === 'back-end') return renderSplash();
-  if (id.startsWith('sound-')) return setMuted();
+  if (id.startsWith('sound-')) return repeatPrompt();
   const match = id.match(/^candidate-(\d)$/);
   if (match) return chooseCandidate(Number(match[1]));
   return false;
@@ -333,7 +486,7 @@ function wireControls() {
       if (action === 'play') startMode();
       else if (action === 'again') startMode({ replay: true });
       else if (action === 'back') renderSplash();
-      else if (action === 'mute') setMuted();
+      else if (action === 'sound') repeatPrompt();
       else if (action === 'reference') tapReference();
     }, { feedback: () => { prepareAudio(); safeSfx('tick'); } });
   }
@@ -382,6 +535,9 @@ installDebug({
     screen: state.screen, mode: state.mode, round: state.round, rounds: state.rounds,
     matched: state.matched, target: state.target?.id || null,
     candidates: state.candidates.slice(), awaitingInput: state.awaitingInput,
+    previewing: state.previewing,
+    instructionActive: state.instructionActive,
+    pendingChoice: state.pendingChoice?.id || null,
     busy: state.busy, muted: state.muted, seed: state.seed,
     lastSample: state.lastSample, lastChoice: state.lastChoice,
   }),

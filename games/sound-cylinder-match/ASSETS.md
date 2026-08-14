@@ -65,22 +65,24 @@ CC BY 4.0.
 
 ## Narration
 
-The environment did not authorize uploading the private teacher voice
-reference to the LAN voice-clone endpoint. Rather than ship confidently wrong
-audio, this game reuses three transcript-approved, exact generic teacher cues
-from the existing Rhythm Copycat production set:
+All 12 fixed narration lines ship as local Qwen3-TTS VoiceClone AAC/M4A clips
+using the committed synthetic platform teacher reference at
+`shared/assets/refs/voice-teacher.wav`. Every clip passed same-host Whisper
+transcript QA at ratio 1.0 on seed 7; `assets/audio/manifest.json` has complete
+coverage for `assets/audio/lines.json`, with durations, SHA-256 hashes, and text
+hashes. `assets/audio/qa.json` preserves the generation evidence.
 
-| Local file | Exact line | Source | Duration |
-| --- | --- | --- | ---: |
-| `assets/audio/listen.m4a` | “Listen!” | `games/rhythm-copycat/assets/audio/listen.m4a` | 0.958 s |
-| `assets/audio/great.m4a` | “Great!” | `games/rhythm-copycat/assets/audio/good-1.m4a` | 0.479 s |
-| `assets/audio/again.m4a` | “Play again!” | `games/rhythm-copycat/assets/audio/again.m4a` | 0.958 s |
+The authoring command is:
 
-These files were produced by `qwen3-tts-voiceclone`, transcript-QA'd in the
-source game, and are original QLOBE Kids media licensed CC BY 4.0. Every
-game-specific line uses the exact text in `assets/audio/lines.json` through the
-shared device-speech fallback. `manifest.json` never claims a recording exists
-when it does not.
+```sh
+QLOBE_QWEN_URL=http://LAN-HOST:8100 \
+  python3 games/sound-cylinder-match/tools/generate-voice.py \
+  --voice-ref shared/assets/refs/voice-teacher.wav
+```
+
+Runtime playback remains offline and static. The shared voice player retains
+exact Web Speech fallback text for a missing or playback-blocked clip, but no
+fixed line is expected to use that fallback in a healthy release build.
 
 ## Shared assets
 
