@@ -6,34 +6,59 @@
   "icon": "🎭",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "status": "beta",
   "accent": "#7c4fc4",
-  "shareTitle": "Tiny Reader Theater 🎬 — Acting Out Little Stories",
-  "description": "Fill in a tiny theater story by tapping the word or character that fits, then act the line out loud. A playful decoding-and-drama game for ages 5–6.",
+  "shareTitle": "Tiny Reader Theater 🎭 — Tap, Read, and Watch the Puppets Act It Out",
+  "description": "Pick two puppet stars and tap each word of a tiny forest story to hear it read aloud, then watch the puppets act the line out on stage. After the beginning and each middle chapter, choose what happens next and follow a small branching story tree to one of nine different endings — a word-by-word tap-to-read game built around a controlled, repeated vocabulary for ages 5–6.",
   "learningGoals": [
-    "Use oral story context to choose a decodable word",
-    "Connect printed word cards to familiar picture prompts",
-    "Participate physically by acting out story lines"
+    "Track print word-by-word left to right and hear each word spoken on tap (concept of word, 1:1 print-to-speech correspondence)",
+    "Build sight-word recognition through repetition of a small, deliberately controlled vocabulary across many story lines",
+    "Practice oral-language comprehension and cause/effect through simple story choices (\"what happens next?\")",
+    "Experience a complete narrative arc (beginning, middle, end) and understand that a story's shape can change with different choices"
   ],
-  "interactionModel": "choose-one tap the word or character card after a spoken theater prompt",
-  "feedbackModel": "Correct cards sparkle and prompt acting; misses wiggle gently, get a spoken nudge, and replay the line.",
+  "interactionModel": "word-by-word tap-to-read: each line's words render as separate tappable chips that speak on tap and color-fill; once every word in a line is tapped, two chosen puppets act the line out on stage while the narrator reads it, then after the beginning and each middle chapter the child taps one of three picture cards to choose what happens next",
+  "feedbackModel": "Word taps speak the word, fill the chip with color, and get a little acknowledging nod from a puppet; a fully-tapped line sparkles and triggers a bespoke puppet performance of that line (walks, prop hand-offs, jumps in the mud, a cheeky squirrel raid); chapter changes are real scene changes — the puppets walk offstage, the scenery swaps, and they stroll back on; choice taps highlight and whoosh into the next chapter; finishing an ending triggers puppet bows, confetti, and an endings tracker update. Every word tap is correct by construction — there is no wrong-answer or retry state.",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/stage/stage.js",
+    "shared/js/stage/theater.js",
+    "shared/js/voice-clips.js",
     "shared/js/sfx.js",
-    "shared/assets/objects/cat.webp",
-    "shared/assets/objects/sun.webp",
-    "shared/assets/objects/bus.webp",
-    "shared/assets/objects/dog.webp",
-    "shared/assets/objects/hat.webp",
-    "shared/assets/objects/mud.webp"
+    "shared/js/tap.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/celebrate.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/assets/backdrops/forest-cottage.jpg",
+    "shared/assets/backdrops/enchanted-castle.jpg",
+    "shared/assets/backdrops/moon-adventure.jpg",
+    "shared/characters/bear/",
+    "shared/characters/doggy/",
+    "shared/characters/fox/",
+    "shared/characters/frog/",
+    "shared/characters/rabbit/",
+    "shared/characters/unicorn/",
+    "shared/characters/princess-lily/",
+    "shared/characters/princess-zoe/"
   ],
   "modes": [
-    { "id": "stories", "title": "Fill the Story", "skill": "context-based decoding of short CVC words" },
-    { "id": "act", "title": "Act It Out", "skill": "story participation and character comprehension" }
+    { "id": "forest", "title": "Forest Adventure", "skill": "word-by-word sight reading and story choices" },
+    { "id": "castle", "title": "Castle Adventure", "skill": "word-by-word sight reading and story choices" },
+    { "id": "outer-space", "title": "Outer Space Adventure", "skill": "word-by-word sight reading and story choices" }
   ],
+  "privacy": {
+    "recording": "none",
+    "storage": "localStorage key qk:tiny-reader-theater:forest:endings stores the array of discovered ending ids only",
+    "uploads": false,
+    "exports": false
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Shared QLOBE object cards, text cards, and emoji placeholders. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Original QLOBE Kids UI art extracted and generated via local qwen-image-edit; shared rigged QLOBE puppet cast; teacher-voice-clone narration via qwen3-tts-voiceclone with Web Speech fallback.",
+  "characters": [
+    "bear", "doggy", "fox", "frog", "rabbit", "unicorn", "princess-lily", "princess-zoe"
+  ],
   "conceptVideo": null
 }

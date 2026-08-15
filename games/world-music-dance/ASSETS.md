@@ -31,6 +31,16 @@ retain both complete legs and shoes. All 30 final WebPs passed dimension,
 manifest, alpha-range, nonempty-bounds, and edge-clearance validation; the
 five affected culture contact sheets were visually reviewed.
 
+Targeted repair (2026-08-15): Ireland `neutral`, `move-3`, and `celebrate`,
+Japan `move-2`, and Mexico `celebrate` and `move-2` were repaired against
+their accepted source poses with the LAN `qwen-image-edit` workflow, then
+re-extracted with `qwen-image-layered` (`layer_2`, seed 42). Ireland used the
+light-grey shoe extraction-prep pass so both black shoes and socks remained in
+the alpha cutouts; Japan's accidental third foot was removed; Mexico's
+inconsistent black footwear was matched to the dancer's pink shoes. The six
+runtime WebPs and three affected contact sheets were reassembled and visually
+checked.
+
 Dancer roster (original characters, no real-person likeness): India — Kathak
 girl (marigold/pink lehenga); Brazil — samba girl (yellow/green carnival
 dress); Japan — Bon Odori child (indigo yukata, uchiwa fan); Ghana — Kpanlogo

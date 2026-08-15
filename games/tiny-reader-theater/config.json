@@ -1,0 +1,662 @@
+{
+  "cast": ["bear", "doggy", "fox", "frog", "rabbit", "unicorn", "princess-lily", "princess-zoe"],
+  "settings": [
+    {
+      "id": "forest",
+      "title": "Forest",
+      "locked": false,
+      "stage": {
+        "backdrop": "../../shared/assets/backdrops/forest-cottage.jpg",
+        "floorY": 0.88
+      },
+      "tree": {
+        "beginning": {
+          "beat": "investigate",
+          "beats": ["walk-on-discover", "flip-map", "pass-map"],
+          "staging": {
+            "scenery": [],
+            "props": ["map"]
+          },
+          "lines": [
+            "The two friends find an old map.",
+            "Oh no! It is upside down!",
+            "They turn it round and round."
+          ],
+          "choices": [
+            { "id": "map", "label": "Follow the map", "next": "middle-1" },
+            { "id": "bird", "label": "Help a lost bird", "next": "middle-2" },
+            { "id": "door", "label": "Find a secret door", "next": "middle-3" }
+          ]
+        },
+
+        "middle-1": {
+          "beat": "travel",
+          "beats": ["wrong-way", "march-past", "splash-peek"],
+          "staging": {
+            "scenery": [
+              { "prop": "log", "x": 0.15, "y": 0.86, "scale": 0.6 },
+              { "prop": "mud", "x": 0.6, "y": 0.9, "scale": 0.75 },
+              { "prop": "tree", "x": 0.9, "y": 0.62, "scale": 0.95 }
+            ],
+            "props": ["map"]
+          },
+          "lines": [
+            "They follow the map... the wrong way!",
+            "They march past a big log.",
+            "Splish, splash! Look at the mud!"
+          ],
+          "choices": [
+            { "id": "dig-log", "label": "Dig by the log", "next": "ending-1-1" },
+            { "id": "hop-mud", "label": "Jump in the mud!", "next": "ending-1-2" },
+            { "id": "climb-tree", "label": "Climb the big tree", "next": "ending-1-3" }
+          ]
+        },
+        "ending-1-1": {
+          "beat": "finale",
+          "beats": ["dig-dig", "muddy-shake", "gem-reveal"],
+          "staging": {
+            "scenery": [
+              { "prop": "log", "x": 0.3, "y": 0.86, "scale": 0.7 }
+            ],
+            "props": ["gem"]
+          },
+          "lines": [
+            "They dig and dig by the log.",
+            "Muddy paws! Muddy noses!",
+            "Look! A shiny red gem!"
+          ],
+          "summary": "The two friends found a shiny gem."
+        },
+        "ending-1-2": {
+          "beat": "finale",
+          "beats": ["puddle-jump", "splash-splash", "laugh-home"],
+          "staging": {
+            "scenery": [
+              { "prop": "mud", "x": 0.5, "y": 0.9, "scale": 0.9 }
+            ],
+            "props": []
+          },
+          "lines": [
+            "They jump in the muddy puddles!",
+            "Splash! Splash! Mud on everyone!",
+            "Muddy friends laugh all the way home."
+          ],
+          "summary": "The two friends jumped in muddy puddles."
+        },
+        "ending-1-3": {
+          "beat": "finale",
+          "beats": ["climb-up", "see-forest", "wave-hello"],
+          "staging": {
+            "scenery": [
+              { "prop": "tree", "x": 0.72, "y": 0.58, "scale": 1.05 }
+            ],
+            "props": ["bird"]
+          },
+          "lines": [
+            "Up, up, up the big tree!",
+            "They can see the whole forest!",
+            "They wave to the birds. Hello!"
+          ],
+          "summary": "The two friends climbed the tall tree."
+        },
+
+        "middle-2": {
+          "beat": "help",
+          "beats": ["bird-lands", "sad-bird", "promise-help"],
+          "staging": {
+            "scenery": [
+              { "prop": "log", "x": 0.5, "y": 0.88, "scale": 0.36 }
+            ],
+            "props": ["bird"]
+          },
+          "lines": [
+            "Peep! Peep! A little bird!",
+            "It can not find its nest.",
+            "Do not be sad. We can help!"
+          ],
+          "choices": [
+            { "id": "make-nest", "label": "Make a cozy nest", "next": "ending-2-1" },
+            { "id": "sing-bird", "label": "Sing to the bird", "next": "ending-2-2" },
+            { "id": "share-nut", "label": "Share a nut", "next": "ending-2-3" }
+          ]
+        },
+        "ending-2-1": {
+          "beat": "finale",
+          "beats": ["build-nest", "bird-home", "thank-you"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "bird", "x": 0.2, "y": 0.84 }, "nest"]
+          },
+          "lines": [
+            "They make a nest of soft moss.",
+            "The little bird hops inside. So cozy!",
+            "Peep, peep! That means thank you!"
+          ],
+          "summary": "The two friends made a cozy nest."
+        },
+        "ending-2-2": {
+          "beat": "finale",
+          "beats": ["silly-song", "la-la-tweet", "mama-swoops"],
+          "staging": {
+            "scenery": [
+              { "prop": "log", "x": 0.5, "y": 0.88, "scale": 0.36 }
+            ],
+            "props": [{ "prop": "bird", "x": 0.5, "y": 0.82 }, "mama-bird"]
+          },
+          "lines": [
+            "They sing a silly song.",
+            "La, la, la! Tweet, tweet, tweet!",
+            "Mama bird swoops down. Tweet, tweet!"
+          ],
+          "summary": "The two friends sang the bird home."
+        },
+        "ending-2-3": {
+          "beat": "finale",
+          "beats": ["share-nut", "nut-steal", "share-giggle"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "bird", "x": 0.12, "y": 0.85 }, "nut", "squirrel"]
+          },
+          "lines": [
+            "They share a big brown nut.",
+            "A cheeky squirrel grabs it! Hey!",
+            "They all laugh and share the nut."
+          ],
+          "summary": "The two friends shared with a squirrel."
+        },
+
+        "middle-3": {
+          "beat": "celebrate",
+          "beats": ["spot-door", "knock-knock", "door-creaks"],
+          "staging": {
+            "scenery": [
+              { "prop": "tree", "x": 0.82, "y": 0.56, "scale": 1.1 },
+              { "prop": "door", "x": 0.82, "y": 0.8, "scale": 0.55 }
+            ],
+            "props": []
+          },
+          "lines": [
+            "A tiny door in the tree!",
+            "Knock, knock! Who is in there?",
+            "The old door opens. Creak!"
+          ],
+          "choices": [
+            { "id": "down-steps", "label": "Go down the steps", "next": "ending-3-1" },
+            { "id": "peek-den", "label": "Peek in the den", "next": "ending-3-2" },
+            { "id": "follow-bugs", "label": "Follow the glow bugs", "next": "ending-3-3" }
+          ]
+        },
+        "ending-3-1": {
+          "beat": "finale",
+          "beats": ["tiptoe-in", "surprise-party", "dance-moon"],
+          "staging": {
+            "scenery": [
+              { "prop": "tree", "x": 0.85, "y": 0.58, "scale": 0.95 }
+            ],
+            "props": ["moon"]
+          },
+          "lines": [
+            "Down, down, down the secret steps.",
+            "Surprise! A party under the tree!",
+            "They dance until the moon comes up."
+          ],
+          "summary": "The two friends found a secret party."
+        },
+        "ending-3-2": {
+          "beat": "finale",
+          "beats": ["peek-in", "sleepy-cub", "tiptoe-away"],
+          "staging": {
+            "scenery": [
+              { "prop": "den", "x": 0.26, "y": 0.8, "scale": 0.62 }
+            ],
+            "props": ["fox-cub"]
+          },
+          "lines": [
+            "They peek in the little den.",
+            "A fox cub is fast asleep.",
+            "Shh! Tiptoe, tiptoe. Night, night!"
+          ],
+          "summary": "The two friends met a sleepy fox cub."
+        },
+        "ending-3-3": {
+          "beat": "finale",
+          "beats": ["bugs-blink", "follow-parade", "twinkle-stars"],
+          "staging": {
+            "scenery": [],
+            "props": ["bug-1", "bug-2", "bug-3"]
+          },
+          "lines": [
+            "Blink! Blink! Ten little glow bugs!",
+            "The bugs light up the dark path.",
+            "They twinkle like tiny stars. Wow!"
+          ],
+          "summary": "The two friends followed the glow bugs."
+        }
+      }
+    },
+    {
+      "id": "castle",
+      "title": "Castle",
+      "locked": false,
+      "stage": {
+        "backdrop": "../../shared/assets/backdrops/enchanted-castle.jpg",
+        "floorY": 0.82
+      },
+      "tree": {
+        "beginning": {
+          "beat": "investigate",
+          "beats": ["trumpet-hello", "gate-opens", "walk-in"],
+          "staging": {
+            "scenery": [{ "prop": "gate", "x": 0.82, "y": 0.62, "scale": 1.0 }],
+            "props": ["trumpet"]
+          },
+          "lines": [
+            "The two friends see a big castle.",
+            "Toot, toot! The royal trumpet!",
+            "The gate opens. Come in, come in!"
+          ],
+          "choices": [
+            { "id": "crown", "label": "Find the lost crown", "next": "middle-1" },
+            { "id": "dragon", "label": "Meet the baby dragon", "next": "middle-2" },
+            { "id": "ball", "label": "Go to the royal ball", "next": "middle-3" }
+          ]
+        },
+
+        "middle-1": {
+          "beat": "investigate",
+          "beats": ["crown-gone", "look-around", "who-hid"],
+          "staging": {
+            "scenery": [{ "prop": "throne", "x": 0.75, "y": 0.76, "scale": 0.7 }],
+            "props": []
+          },
+          "lines": [
+            "Oh no! The royal crown is lost!",
+            "They look up. They look down.",
+            "Silly castle! Who hid the crown?"
+          ],
+          "choices": [
+            { "id": "throne", "label": "Peek under the throne", "next": "ending-1-1" },
+            { "id": "tower", "label": "Climb the tall tower", "next": "ending-1-2" },
+            { "id": "mouse", "label": "Follow the little mouse", "next": "ending-1-3" }
+          ]
+        },
+        "ending-1-1": {
+          "beat": "finale",
+          "beats": ["peek-throne", "sleepy-cat", "crown-shared"],
+          "staging": {
+            "scenery": [{ "prop": "throne", "x": 0.62, "y": 0.76, "scale": 0.8 }],
+            "props": ["cat", "crown"]
+          },
+          "lines": [
+            "They peek under the big throne.",
+            "A sleepy cat naps on the crown!",
+            "Purr! The cat shares the crown."
+          ],
+          "summary": "The two friends found the royal crown."
+        },
+        "ending-1-2": {
+          "beat": "finale",
+          "beats": ["twisty-climb", "window-twinkle", "tower-wave"],
+          "staging": {
+            "scenery": [],
+            "props": ["crown"]
+          },
+          "lines": [
+            "Up, up, up the twisty stairs!",
+            "The crown twinkles by the window!",
+            "Hooray! They wave from the top!"
+          ],
+          "summary": "The two friends climbed the twisty tower."
+        },
+        "ending-1-3": {
+          "beat": "finale",
+          "beats": ["mouse-squeaks", "tiny-hole", "crown-safe"],
+          "staging": {
+            "scenery": [],
+            "props": ["mouse", "crown"]
+          },
+          "lines": [
+            "The little mouse squeaks. Follow me!",
+            "It hops into a tiny hole.",
+            "The crown! The mouse kept it safe."
+          ],
+          "summary": "The two friends met a helpful mouse."
+        },
+
+        "middle-2": {
+          "beat": "help",
+          "beats": ["meet-dragon", "big-sneeze", "smoke-rings"],
+          "staging": {
+            "scenery": [],
+            "props": ["dragon", "ring-1", "ring-2"]
+          },
+          "lines": [
+            "A baby dragon! Do not be scared.",
+            "Ah... ah... ACHOO! What a sneeze!",
+            "Puff! Smoke rings float up, up!"
+          ],
+          "choices": [
+            { "id": "tissue", "label": "Bring a big tissue", "next": "ending-2-1" },
+            { "id": "lullaby", "label": "Sing a sleepy song", "next": "ending-2-2" },
+            { "id": "rings", "label": "Hop through the rings", "next": "ending-2-3" }
+          ]
+        },
+        "ending-2-1": {
+          "beat": "finale",
+          "beats": ["bring-tissue", "catch-sneeze", "bless-you"],
+          "staging": {
+            "scenery": [],
+            "props": ["dragon", "tissue"]
+          },
+          "lines": [
+            "They bring a big soft tissue.",
+            "ACHOO! Got it! Bless you!",
+            "Thank you, friends! No more sneezes."
+          ],
+          "summary": "The two friends helped the sneezy dragon."
+        },
+        "ending-2-2": {
+          "beat": "finale",
+          "beats": ["sleepy-song", "dragon-yawns", "snore-night"],
+          "staging": {
+            "scenery": [],
+            "props": ["dragon"]
+          },
+          "lines": [
+            "They sing a soft sleepy song.",
+            "The baby dragon yawns and yawns.",
+            "Snore... snore... Night, night, dragon."
+          ],
+          "summary": "The two friends sang the dragon to sleep."
+        },
+        "ending-2-3": {
+          "beat": "finale",
+          "beats": ["puff-rings", "hop-through", "best-game"],
+          "staging": {
+            "scenery": [],
+            "props": ["dragon", "ring-1", "ring-2", "ring-3"]
+          },
+          "lines": [
+            "The dragon puffs happy smoke rings.",
+            "They hop through the big rings!",
+            "Best game ever! Hooray, hooray!"
+          ],
+          "summary": "The two friends played with smoke rings."
+        },
+
+        "middle-3": {
+          "beat": "celebrate",
+          "beats": ["royal-ball", "music-stops", "band-asleep"],
+          "staging": {
+            "scenery": [],
+            "props": ["drum", "trumpet"]
+          },
+          "lines": [
+            "Music! The royal ball is starting!",
+            "But oh no! The music stops.",
+            "The royal band is fast asleep!"
+          ],
+          "choices": [
+            { "id": "drum", "label": "Play the big drum", "next": "ending-3-1" },
+            { "id": "dance", "label": "Do a silly dance", "next": "ending-3-2" },
+            { "id": "wake", "label": "Wake the sleepy band", "next": "ending-3-3" }
+          ]
+        },
+        "ending-3-1": {
+          "beat": "finale",
+          "beats": ["boom-boom", "hop-beat", "castle-dances"],
+          "staging": {
+            "scenery": [],
+            "props": ["drum"]
+          },
+          "lines": [
+            "Boom! Boom! They play the drum!",
+            "Everyone hops to the beat.",
+            "The whole castle dances! Hooray!"
+          ],
+          "summary": "The two friends played the royal drum."
+        },
+        "ending-3-2": {
+          "beat": "finale",
+          "beats": ["wiggle-dance", "wiggle-hop", "all-join"],
+          "staging": {
+            "scenery": [],
+            "props": []
+          },
+          "lines": [
+            "They do a silly wiggle dance.",
+            "Wiggle left! Wiggle right! Hop!",
+            "Everyone giggles and joins in!"
+          ],
+          "summary": "The two friends started a silly dance."
+        },
+        "ending-3-3": {
+          "beat": "finale",
+          "beats": ["wake-up", "tap-toot", "band-plays"],
+          "staging": {
+            "scenery": [],
+            "props": ["drum", "trumpet"]
+          },
+          "lines": [
+            "Wake up, sleepy royal band!",
+            "Tap, tap! Toot, toot! Wake up!",
+            "The band plays a happy song!"
+          ],
+          "summary": "The two friends woke the royal band."
+        }
+      }
+    },
+    {
+      "id": "outer-space",
+      "title": "Outer Space",
+      "locked": false,
+      "stage": {
+        "backdrop": "../../shared/assets/backdrops/moon-adventure.jpg",
+        "floorY": 0.83
+      },
+      "tree": {
+        "beginning": {
+          "beat": "investigate",
+          "beats": ["countdown", "zoom-up", "moon-close"],
+          "staging": {
+            "scenery": [],
+            "props": ["rocket"]
+          },
+          "lines": [
+            "Three, two, one... Blast off!",
+            "The little rocket zooms up, up!",
+            "Wow! The moon is so close!"
+          ],
+          "choices": [
+            { "id": "bounce", "label": "Bounce on the moon", "next": "middle-1" },
+            { "id": "star", "label": "Catch a falling star", "next": "middle-2" },
+            { "id": "visit", "label": "Visit the moon house", "next": "middle-3" }
+          ]
+        },
+
+        "middle-1": {
+          "beat": "travel",
+          "beats": ["moon-boing", "bounce-rock", "dust-achoo"],
+          "staging": {
+            "scenery": [{ "prop": "rock", "x": 0.68, "y": 0.86, "scale": 0.6 }],
+            "props": []
+          },
+          "lines": [
+            "Boing! Boing! Moon jumps are big!",
+            "They bounce over a moon rock.",
+            "Moon dust puffs up. Achoo!"
+          ],
+          "choices": [
+            { "id": "crater", "label": "Peek in the crater", "next": "ending-1-1" },
+            { "id": "flag", "label": "Plant a happy flag", "next": "ending-1-2" },
+            { "id": "jump", "label": "Do the biggest jump", "next": "ending-1-3" }
+          ]
+        },
+        "ending-1-1": {
+          "beat": "finale",
+          "beats": ["crater-peek", "echo-hello", "echo-giggle"],
+          "staging": {
+            "scenery": [{ "prop": "crater", "x": 0.6, "y": 0.9, "scale": 0.8 }],
+            "props": []
+          },
+          "lines": [
+            "They peek into the deep crater.",
+            "Hello! Hello! The echo says hello!",
+            "They giggle with the echo. Hello!"
+          ],
+          "summary": "The two friends found a hello echo."
+        },
+        "ending-1-2": {
+          "beat": "finale",
+          "beats": ["plant-flag", "flag-smile", "wave-stars"],
+          "staging": {
+            "scenery": [],
+            "props": ["flag"]
+          },
+          "lines": [
+            "They plant a little happy flag.",
+            "The flag has a big smile.",
+            "Wave, flag, wave at the stars!"
+          ],
+          "summary": "The two friends planted a happy flag."
+        },
+        "ending-1-3": {
+          "beat": "finale",
+          "beats": ["ready-set", "star-jump", "wow-wow"],
+          "staging": {
+            "scenery": [{ "prop": "rock", "x": 0.2, "y": 0.86, "scale": 0.5 }],
+            "props": []
+          },
+          "lines": [
+            "Ready? The biggest jump ever!",
+            "Boing! They fly up to the stars!",
+            "What a jump! Wow, wow, wow!"
+          ],
+          "summary": "The two friends made the biggest jump."
+        },
+
+        "middle-2": {
+          "beat": "help",
+          "beats": ["star-falls", "soft-landing", "shy-star"],
+          "staging": {
+            "scenery": [],
+            "props": ["star"]
+          },
+          "lines": [
+            "A little star falls down. Whee!",
+            "It lands in the soft moon dust.",
+            "Blink, blink! The star is shy."
+          ],
+          "choices": [
+            { "id": "toss", "label": "Toss it back home", "next": "ending-2-1" },
+            { "id": "show", "label": "Show it our home", "next": "ending-2-2" },
+            { "id": "dance", "label": "Do a twinkle dance", "next": "ending-2-3" }
+          ]
+        },
+        "ending-2-1": {
+          "beat": "finale",
+          "beats": ["big-toss", "zoom-back", "twinkle-thanks"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "star", "x": 0.5, "y": 0.84 }]
+          },
+          "lines": [
+            "One, two, three... big toss!",
+            "The star zooms back to the sky!",
+            "It twinkles. That means thank you!"
+          ],
+          "summary": "The two friends tossed the star home."
+        },
+        "ending-2-2": {
+          "beat": "finale",
+          "beats": ["look-home", "blue-green", "twinkle-smile"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "star", "x": 0.5, "y": 0.84 }, "earth"]
+          },
+          "lines": [
+            "Look, little star! That is our home.",
+            "It is blue and green and small.",
+            "The star smiles a twinkle smile."
+          ],
+          "summary": "The two friends showed the star home."
+        },
+        "ending-2-3": {
+          "beat": "finale",
+          "beats": ["twinkle-dance", "blink-hop-spin", "glow-bright"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "star", "x": 0.5, "y": 0.8 }]
+          },
+          "lines": [
+            "They dance a twinkle dance.",
+            "Blink, blink! Hop, hop! Spin!",
+            "The happy star glows so bright!"
+          ],
+          "summary": "The two friends danced with a star."
+        },
+
+        "middle-3": {
+          "beat": "celebrate",
+          "beats": ["moon-house", "ding-dong", "friend-peeks"],
+          "staging": {
+            "scenery": [{ "prop": "moon-house", "x": 0.75, "y": 0.72, "scale": 0.85 }],
+            "props": ["moon-friend"]
+          },
+          "lines": [
+            "A little round moon house!",
+            "Ding, dong! Is anyone home?",
+            "A green moon friend peeks out!"
+          ],
+          "choices": [
+            { "id": "snack", "label": "Share a space snack", "next": "ending-3-1" },
+            { "id": "hide", "label": "Play hide and seek", "next": "ending-3-2" },
+            { "id": "picnic", "label": "Have a star picnic", "next": "ending-3-3" }
+          ]
+        },
+        "ending-3-1": {
+          "beat": "finale",
+          "beats": ["space-snack", "munch-crunch", "friend-loves"],
+          "staging": {
+            "scenery": [{ "prop": "moon-house", "x": 0.85, "y": 0.72, "scale": 0.7 }],
+            "props": [{ "prop": "moon-friend", "x": 0.5, "y": 0.82 }, "snack"]
+          },
+          "lines": [
+            "They share a yummy space snack.",
+            "Munch, munch! Crunch, crunch! Yum!",
+            "Yum! The moon friend loves it!"
+          ],
+          "summary": "The two friends shared a space snack."
+        },
+        "ending-3-2": {
+          "beat": "finale",
+          "beats": ["count-hide", "where-friend", "found-you"],
+          "staging": {
+            "scenery": [{ "prop": "moon-house", "x": 0.8, "y": 0.72, "scale": 0.75 }, { "prop": "rock", "x": 0.18, "y": 0.86, "scale": 0.55 }],
+            "props": ["moon-friend"]
+          },
+          "lines": [
+            "One, two, three... hide!",
+            "Where is the moon friend? Peek!",
+            "Found you! What a fun game!"
+          ],
+          "summary": "The two friends played hide and seek."
+        },
+        "ending-3-3": {
+          "beat": "finale",
+          "beats": ["moon-picnic", "tiny-lights", "good-night"],
+          "staging": {
+            "scenery": [],
+            "props": [{ "prop": "moon-friend", "x": 0.14, "y": 0.83 }, "snack", "star", "star-2"]
+          },
+          "lines": [
+            "They have a picnic on the moon.",
+            "The stars twinkle like tiny lights.",
+            "Good night, moon. Good night, stars."
+          ],
+          "summary": "The two friends had a moon picnic."
+        }
+      }
+    }
+  ]
+}

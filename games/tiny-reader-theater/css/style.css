@@ -1,0 +1,1160 @@
+/* Tiny Reader Theater — cohesive rendered puppet/felt art world.
+ *
+ * The setup theater, title, world/choice cards, cast-card carrier, word-tile
+ * carrier, plaques, banners, action buttons, tracker, stamps, backdrops, and
+ * puppets are authored raster assets. CSS owns layout, hit targets, live text,
+ * selection order, focus, animation, and color-state effects only. Dynamic
+ * word buttons reuse one rendered felt tile rather than rebuilding its visible
+ * identity with borders and gradients.
+ *
+ * Layer order (back to front):
+ *   #game background (backstage dark)
+ *   #trt-stage-layer   (Pixi canvas: backdrop + 2 puppets)
+ *   #trt-screens        (the four screens)
+ *   rendered setup/stage art + live HTML labels and controls
+ */
+
+:root {
+  --qk-bg: #2c0c14;
+
+  --trt-curtain: #7a1f2c;
+  --trt-curtain-hi: #9c2c3b;
+  --trt-curtain-dark: #4a0f18;
+  --trt-gold: #eab244;
+  --trt-gold-dark: #a97423;
+  --trt-gold-pale: #f6d789;
+  --trt-cream: #f6e9c9;
+  --trt-panel: #fffaee;
+  --trt-panel-edge: #e7d3a1;
+  --trt-ink: #3c2415;
+  --trt-ink-soft: #6b4a30;
+  --trt-teal: #1f6f6a;
+  --trt-teal-dark: #144e4a;
+  --trt-navy: #244a7a;
+  --trt-navy-dark: #1a3559;
+
+  --trt-word-1: #4f8fc4;
+  --trt-word-1-dark: #366aa0;
+  --trt-word-2: #7fa64a;
+  --trt-word-2-dark: #5c8030;
+  --trt-word-3: #dd7a63;
+  --trt-word-3-dark: #b7563f;
+  --trt-word-4: #a878c9;
+  --trt-word-4-dark: #8256a4;
+
+  --trt-card-1: #4f8fc4;
+  --trt-card-2: #7fa64a;
+  --trt-card-3: #a878c9;
+  --trt-card-4: #d9a53c;
+}
+
+body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+
+#game {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 8%, var(--trt-curtain-hi) 0%, var(--trt-curtain) 46%, var(--trt-curtain-dark) 100%);
+}
+
+#trt-stage-layer,
+#trt-stage-host { position: absolute; inset: 0; }
+
+#trt-screens { position: absolute; inset: 0; z-index: 10; }
+
+.trt-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(96px, 14vh, 150px) clamp(14px, 3vw, 34px) clamp(20px, 4vh, 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.trt-screen::-webkit-scrollbar { display: none; }
+
+/* Read floats over the live puppet stage: only its own panels catch touches
+   so the two puppets stay visible and untouchable-through behind it. */
+#screen-read {
+  justify-content: flex-end;
+  /* The "N of M words" badge (#trt-line::after) hangs 46px+ below the word
+     line's own box, outside .trt-line-panel — this padding has to clear that
+     overhang plus the badge's own height or it gets clipped against the
+     viewport edge. */
+  padding-bottom: clamp(76px, 11vh, 106px);
+  background: none;
+  pointer-events: none;
+}
+#screen-read > * { pointer-events: auto; }
+#screen-read > .trt-hud { pointer-events: none; }
+#screen-read > .trt-hud > * { pointer-events: auto; }
+
+#screen-setup {
+  justify-content: flex-start;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, .05) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg, var(--trt-cream) 0%, #ecd8a9 100%);
+}
+
+#screen-choice,
+#screen-complete {
+  justify-content: center;
+  background: rgba(58, 16, 22, .46);
+}
+
+/* ------------------------------------------------------------- proscenium
+ * Pure decorative chrome (no baked identity of any manipulative): a burgundy
+ * velvet valance with a scalloped gold hem across the top, and two narrow
+ * drape bands down the sides. Always on top, never eats a tap.
+ * ----------------------------------------------------------------------- */
+
+#trt-screens::before,
+#trt-screens::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+#trt-screens::before {
+  background-image:
+    /* scalloped gold hem, sitting just under the valance body */
+    repeating-radial-gradient(circle at 26px 4px, var(--trt-gold) 0 9px, transparent 10px 30px),
+    /* velvet valance body */
+    linear-gradient(180deg, var(--trt-curtain-hi) 0%, var(--trt-curtain) 55%, var(--trt-curtain-dark) 100%),
+    /* soft floor shadow under the whole stage, top footlight glow */
+    radial-gradient(60% 40% at 50% 100%, rgba(0, 0, 0, .28) 0%, transparent 70%);
+  background-size:
+    100% clamp(58px, 8.6vh, 108px),
+    100% clamp(52px, 7.6vh, 96px),
+    100% 26px;
+  background-position: top, top, bottom;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18);
+}
+
+#trt-screens::after {
+  background-image:
+    linear-gradient(90deg,
+      var(--trt-curtain-dark) 0%, var(--trt-curtain) 38%, var(--trt-curtain) 62%, transparent 100%),
+    linear-gradient(270deg,
+      var(--trt-curtain-dark) 0%, var(--trt-curtain) 38%, var(--trt-curtain) 62%, transparent 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .07) 0 3px, transparent 3px 14px),
+    repeating-linear-gradient(270deg, rgba(255, 255, 255, .07) 0 3px, transparent 3px 14px);
+  background-size:
+    clamp(20px, 4.4vw, 58px) 100%,
+    clamp(20px, 4.4vw, 58px) 100%,
+    clamp(20px, 4.4vw, 58px) 100%,
+    clamp(20px, 4.4vw, 58px) 100%;
+  background-position: left top, right top, left top, right top;
+  background-repeat: no-repeat;
+}
+
+/* ------------------------------------------------------------------- HUD */
+
+.trt-hud { position: absolute; inset: 0; z-index: 95; pointer-events: none; }
+.trt-hud > * { pointer-events: auto; }
+.trt-home-link { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* ---------------------------------------------------------------- setup */
+
+.trt-title {
+  display: block;
+  width: clamp(280px, 46vw, 620px);
+  height: auto;
+  margin: -4px 0 6px;
+  /* The lockup is a true-alpha layered WebP; CSS only sizes and shadows it. */
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .35));
+}
+
+.trt-setup-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(1040px, 100%);
+}
+
+.trt-step-label {
+  margin: 4px 0 0;
+  padding: 9px 24px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--trt-teal) 0%, var(--trt-teal-dark) 100%);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, .2), inset 0 0 0 2px rgba(255, 255, 255, .18);
+  color: var(--trt-cream);
+  font-size: clamp(16px, 2vw, 21px);
+  letter-spacing: .01em;
+  text-align: center;
+}
+
+.trt-world-grid,
+.trt-cast-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 20px);
+}
+
+/* -- world cards: the PNG (already framed art) IS the card; CSS adds the
+   label pill, the selection glow, and the locked treatment. -- */
+
+.trt-world-card {
+  position: relative;
+  width: clamp(118px, 15.5vw, 190px);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.trt-world-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .32));
+  transition: filter .15s ease;
+}
+
+.trt-world-title {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  max-width: 84%;
+  padding: 5px 14px 6px;
+  border-radius: 999px;
+  background: var(--trt-panel);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .18), inset 0 0 0 2px var(--trt-gold);
+  color: var(--trt-ink);
+  font-size: clamp(13px, 1.5vw, 17px);
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trt-world-card[data-selected="true"] {
+  transform: translateY(-4px) scale(1.045);
+}
+.trt-world-card[data-selected="true"] .trt-world-art {
+  filter: drop-shadow(0 0 0 3px var(--trt-gold-pale)) drop-shadow(0 0 18px rgba(234, 178, 68, .85)) drop-shadow(0 8px 12px rgba(0, 0, 0, .3));
+}
+.trt-world-card:active { transform: translateY(1px) scale(.97); }
+
+.trt-world-card[data-locked="true"] .trt-world-art {
+  filter: grayscale(.4) brightness(.72) drop-shadow(0 6px 10px rgba(0, 0, 0, .32));
+}
+.trt-world-card[data-locked="true"] .trt-world-title { opacity: .8; }
+
+.trt-lock-badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px 6px 9px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #6b5a3f 0%, #4a3c28 100%);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
+  color: var(--trt-cream);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  z-index: 2;
+}
+.trt-lock-badge::before {
+  content: '';
+  width: 11px;
+  height: 9px;
+  border: 2px solid var(--trt-cream);
+  border-bottom: 0;
+  border-radius: 5px 5px 0 0;
+  box-sizing: border-box;
+}
+
+/* -- cast portraits: shared/characters head-ts.png cutouts on an authored
+   trading-card panel; CSS never draws the face. -- */
+
+.trt-cast-card {
+  position: relative;
+  width: clamp(96px, 10.6vw, 132px);
+  padding: 8px 6px 24px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--trt-card-1);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, .55),
+    0 5px 0 rgba(0, 0, 0, .22),
+    0 8px 14px rgba(0, 0, 0, .28);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.trt-cast-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 13px;
+  border: 2px dashed rgba(255, 255, 255, .45);
+  pointer-events: none;
+}
+.trt-cast-grid .trt-cast-card:nth-of-type(4n+1) { background: var(--trt-card-1); }
+.trt-cast-grid .trt-cast-card:nth-of-type(4n+2) { background: var(--trt-card-2); }
+.trt-cast-grid .trt-cast-card:nth-of-type(4n+3) { background: var(--trt-card-3); }
+.trt-cast-grid .trt-cast-card:nth-of-type(4n+4) { background: var(--trt-card-4); }
+
+.trt-cast-face {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .3));
+}
+
+.trt-cast-name {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  max-width: 88%;
+  padding: 3px 10px 4px;
+  border-radius: 999px;
+  background: var(--trt-panel);
+  color: var(--trt-ink);
+  font-size: clamp(11px, 1.3vw, 14px);
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .16);
+}
+
+.trt-cast-card[data-selected="true"] {
+  transform: translateY(-5px) scale(1.06);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, .8),
+    0 0 0 4px var(--trt-gold-pale),
+    0 0 18px rgba(234, 178, 68, .8),
+    0 8px 14px rgba(0, 0, 0, .3);
+}
+.trt-cast-card:active { transform: translateY(1px) scale(.96); }
+
+.trt-setup-actions { margin-top: 6px; }
+
+.trt-start {
+  min-width: 220px;
+  min-height: 96px;
+  padding: 14px 40px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--trt-gold-pale) 0%, var(--trt-gold) 55%, var(--trt-gold-dark) 100%);
+  box-shadow: 0 6px 0 #7c541a, 0 12px 20px rgba(0, 0, 0, .28), inset 0 0 0 2px rgba(255, 255, 255, .4);
+  color: var(--trt-ink);
+  font: inherit;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 600;
+  letter-spacing: .01em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.trt-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #7c541a, 0 6px 10px rgba(0, 0, 0, .22); }
+.trt-start[data-ready="false"] { opacity: .5; box-shadow: 0 6px 0 rgba(0, 0, 0, .18); cursor: default; }
+
+/* ------------------------------------------------------------------ read */
+
+#trt-line-dots {
+  display: flex;
+  gap: 9px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(58, 16, 22, .55);
+}
+.trt-line-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7a6142, #4a3620 75%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3);
+}
+.trt-line-dot.is-done {
+  background: radial-gradient(circle at 35% 30%, var(--trt-gold-pale), var(--trt-gold-dark) 75%);
+  box-shadow: 0 0 6px rgba(234, 178, 68, .8), inset 0 0 0 1px rgba(0, 0, 0, .2);
+}
+.trt-line-dot.is-now {
+  background: radial-gradient(circle at 35% 30%, #fff6da, var(--trt-gold) 75%);
+  box-shadow: 0 0 10px rgba(255, 233, 170, .95), inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.trt-line-panel {
+  position: relative;
+  width: min(1040px, 100%);
+  padding: clamp(14px, 2.4vh, 22px) clamp(16px, 3vw, 28px);
+  border-radius: 28px 28px 14px 14px;
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, .025) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, var(--trt-panel) 0%, #f8ecd2 100%);
+  box-shadow:
+    inset 0 0 0 3px var(--trt-panel-edge),
+    0 -3px 0 var(--trt-gold-dark),
+    0 14px 28px rgba(0, 0, 0, .4);
+}
+
+/* "Tap each word to hear it!" — static reinforcement of the once-per-node
+   spoken prompt (main.js `ui:tapPrompt`). Real HTML text, aria-hidden because
+   the word group already has its own accessible name and the prompt is
+   spoken; this is a redundant visual cue for sighted children only. */
+.trt-tap-hint {
+  margin: 0 0 clamp(8px, 1.4vh, 14px);
+  color: var(--trt-ink-soft);
+  font-size: clamp(14px, 1.7vw, 18px);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* "N of M words" — a live count with no JS hook of its own: a CSS counter
+   over the chips' existing `data-tapped` state, read against the `line`'s
+   own `data-word-count` (both already set by word-tap.js), so this is a pure
+   presentational readout of state main.js already publishes, not a new
+   interactive control. */
+#trt-line { counter-reset: trt-tapped 0; }
+#trt-line .trt-word[data-tapped="true"] { counter-increment: trt-tapped; }
+#trt-line::after {
+  content: counter(trt-tapped) " of " attr(data-word-count) " words";
+  position: absolute;
+  left: clamp(10px, 2vw, 22px);
+  bottom: -46px;
+  padding: 7px 18px 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--trt-navy) 0%, var(--trt-navy-dark) 100%);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25), inset 0 0 0 2px rgba(255, 255, 255, .15);
+  color: var(--trt-cream);
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.trt-word-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 14px);
+}
+
+.trt-word {
+  position: relative;
+  min-width: 96px;
+  min-height: 96px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fffdf6 0%, var(--trt-cream) 100%);
+  box-shadow:
+    0 4px 0 var(--trt-panel-edge),
+    0 7px 12px rgba(0, 0, 0, .18);
+  color: var(--trt-ink);
+  font: inherit;
+  font-size: clamp(21px, 3vw, 36px);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.trt-word::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 12px;
+  border: 2px dashed rgba(60, 36, 21, .16);
+  pointer-events: none;
+}
+.trt-word:active { transform: translateY(3px); }
+
+/* tapped: solid fabric-tag fill, cycling the mockup's 4-color rotation by
+   word position (matches the approved screen exactly). */
+.trt-word-line .trt-word:nth-of-type(4n+1)[data-tapped="true"] {
+  background: linear-gradient(180deg, var(--trt-word-1) 0%, var(--trt-word-1-dark) 100%);
+  box-shadow: 0 4px 0 var(--trt-word-1-dark), 0 7px 12px rgba(0, 0, 0, .22);
+}
+.trt-word-line .trt-word:nth-of-type(4n+2)[data-tapped="true"] {
+  background: linear-gradient(180deg, var(--trt-word-2) 0%, var(--trt-word-2-dark) 100%);
+  box-shadow: 0 4px 0 var(--trt-word-2-dark), 0 7px 12px rgba(0, 0, 0, .22);
+}
+.trt-word-line .trt-word:nth-of-type(4n+3)[data-tapped="true"] {
+  background: linear-gradient(180deg, var(--trt-word-3) 0%, var(--trt-word-3-dark) 100%);
+  box-shadow: 0 4px 0 var(--trt-word-3-dark), 0 7px 12px rgba(0, 0, 0, .22);
+}
+.trt-word-line .trt-word:nth-of-type(4n+4)[data-tapped="true"] {
+  background: linear-gradient(180deg, var(--trt-word-4) 0%, var(--trt-word-4-dark) 100%);
+  box-shadow: 0 4px 0 var(--trt-word-4-dark), 0 7px 12px rgba(0, 0, 0, .22);
+}
+.trt-word[data-tapped="true"] { color: #fff9ec; }
+.trt-word[data-tapped="true"]::after { border-color: rgba(255, 255, 255, .5); }
+
+/* speaking: restartable pop, re-triggered every tap including repeats */
+.trt-word.is-speaking { animation: trt-word-pop .42s ease; }
+@keyframes trt-word-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.16) translateY(-3px); }
+  100% { transform: scale(1); }
+}
+
+/* line complete: gentle glow + sparkle twinkles */
+.trt-word.is-line-complete {
+  animation: trt-word-glow 1.6s ease-in-out infinite;
+}
+.trt-word.is-line-complete::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 22px;
+  background-image:
+    radial-gradient(circle, #fff6cf 0 3px, transparent 4px) ,
+    radial-gradient(circle, #fff6cf 0 2px, transparent 3px),
+    radial-gradient(circle, #fff6cf 0 2.5px, transparent 3.5px);
+  background-position: 4% 12%, 88% 20%, 70% 88%;
+  background-repeat: no-repeat;
+  animation: trt-sparkle 1.3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes trt-word-glow {
+  0%, 100% { box-shadow: 0 4px 0 rgba(0, 0, 0, .2), 0 0 0 rgba(234, 178, 68, 0); }
+  50% { box-shadow: 0 4px 0 rgba(0, 0, 0, .2), 0 0 20px 4px rgba(234, 178, 68, .75); }
+}
+@keyframes trt-sparkle {
+  0%, 100% { opacity: .2; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.trt-word[data-locked="true"] { cursor: default; }
+
+/* ---------------------------------------------------------------- choice */
+
+.trt-choice-prompt {
+  margin: 0 0 4px;
+  padding: 12px 30px 13px;
+  border-radius: 999px;
+  background: var(--trt-panel);
+  box-shadow: 0 5px 0 var(--trt-panel-edge), 0 10px 20px rgba(0, 0, 0, .3), inset 0 0 0 2px var(--trt-gold);
+  color: var(--trt-ink);
+  font-size: clamp(20px, 2.8vw, 30px);
+  font-weight: 600;
+  text-align: center;
+}
+
+.trt-choice-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(14px, 2.6vw, 30px);
+}
+
+.trt-choice-card {
+  position: relative;
+  width: clamp(150px, 21vw, 240px);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.trt-choice-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .4));
+}
+
+.trt-choice-label {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  transform: translateX(-50%);
+  max-width: 90%;
+  padding: 6px 16px 7px;
+  border-radius: 999px;
+  background: var(--trt-panel);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .18), inset 0 0 0 2px var(--trt-gold);
+  color: var(--trt-ink);
+  font-size: clamp(13px, 1.6vw, 18px);
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trt-choice-card:active { transform: translateY(2px) scale(.98); }
+.trt-choice-card[data-picked="true"] {
+  transform: translateY(-6px) scale(1.06);
+}
+.trt-choice-card[data-picked="true"] .trt-choice-art {
+  filter: drop-shadow(0 0 0 3px var(--trt-gold-pale)) drop-shadow(0 0 20px rgba(234, 178, 68, .9)) drop-shadow(0 8px 14px rgba(0, 0, 0, .35));
+}
+
+/* -------------------------------------------------------------- complete */
+
+.trt-summary {
+  max-width: min(760px, 92%);
+  margin: 0;
+  padding: 16px 30px 17px;
+  border-radius: 26px;
+  background: var(--trt-panel);
+  box-shadow: 0 6px 0 var(--trt-panel-edge), 0 14px 24px rgba(0, 0, 0, .35), inset 0 0 0 2px var(--trt-gold);
+  color: var(--trt-ink);
+  font-size: clamp(19px, 2.6vw, 27px);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+}
+.trt-summary[data-new="true"] {
+  box-shadow: 0 6px 0 var(--trt-gold-dark), 0 0 26px rgba(234, 178, 68, .55), 0 14px 24px rgba(0, 0, 0, .35), inset 0 0 0 3px var(--trt-gold);
+}
+
+.trt-endings {
+  width: min(420px, 92%);
+  padding: 14px 18px 16px;
+  border-radius: 22px;
+  background: var(--trt-cream);
+  box-shadow: 0 5px 0 var(--trt-panel-edge), 0 10px 20px rgba(0, 0, 0, .3), inset 0 0 0 2px var(--trt-panel-edge);
+}
+
+.trt-endings-stamps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.trt-stamp { display: block; }
+.trt-stamp-art {
+  display: block;
+  width: clamp(38px, 8vw, 54px);
+  height: auto;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .22));
+}
+.trt-stamp[data-found="false"] .trt-stamp-art { opacity: .55; }
+.trt-stamp[data-current="true"] .trt-stamp-art {
+  filter: drop-shadow(0 0 0 3px var(--trt-gold-pale)) drop-shadow(0 0 10px rgba(234, 178, 68, .85)) drop-shadow(0 3px 4px rgba(0, 0, 0, .25));
+}
+
+.trt-endings-count {
+  margin: 0;
+  color: var(--trt-ink-soft);
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 600;
+  text-align: center;
+}
+
+.trt-end-actions { gap: clamp(14px, 2.6vw, 30px); }
+
+.trt-action {
+  min-width: 96px;
+  min-height: 96px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .22), 0 12px 18px rgba(0, 0, 0, .28), inset 0 0 0 2px rgba(255, 255, 255, .2);
+  color: var(--trt-cream);
+  font: inherit;
+  font-size: clamp(16px, 1.9vw, 21px);
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.trt-action:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0, 0, 0, .22), 0 5px 8px rgba(0, 0, 0, .2); }
+
+#trt-replay { background: linear-gradient(180deg, var(--trt-teal) 0%, var(--trt-teal-dark) 100%); }
+#trt-replay::before {
+  content: ''; width: 20px; height: 20px; flex: none;
+  border: 3px solid var(--trt-cream);
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+#trt-new-path { background: linear-gradient(180deg, var(--trt-navy) 0%, var(--trt-navy-dark) 100%); }
+#trt-new-path::before {
+  content: ''; width: 0; height: 0; flex: none;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 12px solid var(--trt-cream);
+}
+
+#trt-home-complete { background: linear-gradient(180deg, #d98a3c 0%, #b8672a 100%); }
+#trt-home-complete::before {
+  content: ''; width: 18px; height: 14px; flex: none;
+  background: var(--trt-cream);
+  clip-path: polygon(50% 0%, 100% 42%, 100% 100%, 0% 100%, 0% 42%);
+}
+
+/* --------------------------------------------------------- keyboard focus
+ * Every primary manipulative here is a real <button>; give keyboard/AT users
+ * a visible ring that matches the gold accent already used for the touch
+ * selection glow, without changing the pointer-driven visuals above.
+ * ----------------------------------------------------------------------- */
+
+.trt-world-card:focus-visible,
+.trt-cast-card:focus-visible,
+.trt-choice-card:focus-visible,
+.trt-word:focus-visible,
+.trt-start:focus-visible,
+.trt-action:focus-visible {
+  outline: 4px solid var(--trt-gold-pale);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------- portrait
+ * Narrower viewports: shrink the side drapes so they don't eat play space,
+ * and tighten the top padding.
+ * ----------------------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .trt-screen { padding: clamp(76px, 13vh, 118px) 10px clamp(16px, 3vh, 28px); }
+  #trt-screens::after {
+    background-size:
+      clamp(12px, 3.2vw, 30px) 100%,
+      clamp(12px, 3.2vw, 30px) 100%,
+      clamp(12px, 3.2vw, 30px) 100%,
+      clamp(12px, 3.2vw, 30px) 100%;
+  }
+  .trt-world-grid, .trt-cast-grid, .trt-choice-cards { gap: 10px; }
+}
+
+/* Standard tablet landscape (the platform's own QA viewport is 1180x820) is
+   short enough that Setup's title + 2 picker rows + start button overflow at
+   full size — 8 cast cards wrap to a 2nd row and the start button ends up
+   below the fold, reachable only by an undiscoverable scroll. Compact
+   everything and force the cast grid onto one row wherever there's enough
+   width to hold it (tablets), so Setup fits without scrolling. */
+@media (orientation: landscape) and (max-height: 1000px) {
+  .trt-screen { padding-top: clamp(64px, 12vh, 96px); gap: 8px; }
+  .trt-title { width: clamp(220px, 32vw, 420px); margin-bottom: 0; }
+  .trt-setup-step { gap: 8px; }
+  .trt-step-label { padding: 6px 20px 7px; }
+  .trt-cast-card { width: clamp(88px, 8.6vw, 118px); padding: 6px 5px 20px; }
+  .trt-world-card { width: clamp(96px, 12vw, 150px); }
+}
+
+@media (orientation: landscape) and (max-height: 1000px) and (min-width: 860px) {
+  .trt-cast-grid { flex-wrap: nowrap; gap: clamp(6px, 1.4vw, 14px); }
+  /* At one-row width "Princess Lily" / "Princess Zoe" no longer fit the name
+     pill on one line and both ellipsis down to the identical "Princess ..."
+     — let two-word names wrap to a second line instead of truncating. */
+  .trt-cast-card { padding-bottom: 30px; }
+  .trt-cast-name {
+    max-width: 94%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.15;
+    text-align: center;
+    font-size: clamp(10px, 1.15vw, 13px);
+  }
+}
+
+/* ------------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .trt-world-card,
+  .trt-cast-card,
+  .trt-choice-card,
+  .trt-start,
+  .trt-action,
+  .trt-word { transition: none; }
+  .trt-word.is-speaking { animation: none; }
+  .trt-word.is-line-complete,
+  .trt-word.is-line-complete::before { animation: none; opacity: 1; }
+}
+
+/* ------------------------------------------------------ rendered art world
+ * Production override: visible furniture is authored felt artwork. CSS below
+ * only places that art, supplies live labels/hit targets, and changes state.
+ * ----------------------------------------------------------------------- */
+
+#game { background: #2c0c14; }
+
+#trt-screens::before,
+#trt-screens::after { display: none; }
+
+#screen-setup {
+  background: #e3bb78 url('../assets/ui/setup-stage.webp') center / cover no-repeat;
+}
+
+#screen-choice,
+#screen-complete { background: rgba(33, 12, 16, .26); }
+
+#screen-read {
+  justify-content: flex-start;
+  padding-top: clamp(108px, 16vh, 142px);
+  padding-bottom: 24px;
+}
+.trt-line-dots {
+  position: absolute;
+  top: auto;
+  bottom: 18px;
+}
+
+.trt-stage-title {
+  position: absolute;
+  z-index: 78;
+  top: clamp(4px, 1.2vh, 12px);
+  left: 50%;
+  display: none;
+  width: clamp(360px, 58vw, 720px);
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 10px rgba(42, 12, 12, .38));
+}
+
+#game:not([data-screen='setup']) .trt-stage-title { display: block; }
+
+.trt-title {
+  width: clamp(320px, 48vw, 620px);
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 8px 12px rgba(68, 24, 14, .28));
+}
+
+.trt-step-label,
+.trt-cast-pair,
+.trt-choice-progress,
+.trt-choice-hint,
+.trt-process-cue {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/label-plaque.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  color: #fff5d8;
+  text-shadow: 0 2px 0 rgba(48, 25, 15, .7);
+}
+
+.trt-step-label { padding: 12px 34px 14px; }
+
+.trt-world-card { background: transparent; }
+
+.trt-world-art,
+.trt-choice-art,
+.trt-stamp-art,
+.trt-title { background: transparent; }
+
+.trt-world-title,
+.trt-cast-name,
+.trt-choice-label {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/word-tile.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  padding: 10px 20px 12px;
+}
+
+.trt-lock-badge {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/label-plaque.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  padding: 8px 16px 10px;
+  color: #fff5d8;
+}
+.trt-lock-badge::before { display: none; }
+
+.trt-cast-card {
+  background: transparent url('../assets/ui-kit/portrait-card.webp') center / 100% 100% no-repeat !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 13px 12px 27px;
+  overflow: visible;
+}
+.trt-cast-card::before { display: none; }
+.trt-cast-card[data-selected='true'] {
+  box-shadow: none;
+  filter: drop-shadow(0 0 6px #fff1a8) drop-shadow(0 0 12px #eab244);
+}
+.trt-cast-card[data-selected='true']::after {
+  content: '';
+  position: absolute;
+  inset: 3%;
+  border: 3px solid #f5c75d;
+  border-radius: 18%;
+  pointer-events: none;
+}
+.trt-cast-order {
+  position: absolute;
+  z-index: 4;
+  top: -9px;
+  left: -7px;
+  display: grid;
+  width: 40px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 3px solid #eab244;
+  border-radius: 50%;
+  background: #176763;
+  color: #fff5d8;
+  box-shadow: 0 3px 0 #80531c, 0 5px 10px rgba(48, 20, 12, .32);
+  font-size: 22px;
+  line-height: 1;
+}
+.trt-cast-order[hidden] { display: none; }
+
+.trt-setup-actions {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+.trt-cast-pair {
+  min-width: 260px;
+  margin: 0;
+  padding: 9px 30px 11px;
+  font-size: clamp(14px, 1.8vw, 20px);
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+.trt-cast-pair[data-ready='false'] { opacity: .76; }
+
+.trt-start {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/action-button.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  padding: 24px 68px 27px;
+  color: #4b2815;
+  text-shadow: 0 2px 0 rgba(255, 236, 176, .5);
+}
+.trt-start:active { box-shadow: none; }
+#game[data-loading='true'] .trt-world-grid,
+#game[data-loading='true'] .trt-cast-grid,
+#game[data-loading='true'] .trt-start {
+  pointer-events: none;
+}
+#game[data-loading='true'] .trt-start { filter: saturate(.45); }
+
+.trt-line-panel {
+  z-index: 1;
+  width: min(1040px, 92%);
+  /* This used to stretch the small endings-panel raster across the whole
+     sentence. Keep the wrapper for layout and the word counter, but let the
+     individual cards carry the visible fabric treatment. */
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.trt-tap-hint {
+  top: 5%;
+  padding: 8px 30px 10px;
+  background: transparent;
+  color: #fff5d8;
+  text-shadow: 0 2px 0 rgba(48, 25, 15, .7);
+}
+
+.trt-word {
+  isolation: isolate;
+  z-index: 1;
+  min-width: 96px;
+  min-height: 96px;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #3c2415;
+  pointer-events: auto;
+}
+.trt-word::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -6px;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/word-tile.webp') center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.trt-word::after { display: none; }
+.trt-word-line .trt-word:nth-of-type(4n+1)[data-tapped='true']::before {
+  filter: sepia(.5) saturate(3.4) hue-rotate(166deg) brightness(.82);
+}
+.trt-word-line .trt-word:nth-of-type(4n+2)[data-tapped='true']::before {
+  filter: sepia(.55) saturate(3.1) hue-rotate(42deg) brightness(.82);
+}
+.trt-word-line .trt-word:nth-of-type(4n+3)[data-tapped='true']::before {
+  filter: sepia(.55) saturate(3.2) hue-rotate(315deg) brightness(.92);
+}
+.trt-word-line .trt-word:nth-of-type(4n+4)[data-tapped='true']::before {
+  filter: sepia(.5) saturate(2.7) hue-rotate(235deg) brightness(.88);
+}
+
+.trt-process-cue {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.2vw, 14px);
+  margin-top: -6px;
+  padding: 10px 34px 12px;
+  font-size: clamp(10px, 1.35vw, 15px);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.trt-process-cue b { color: #f6c45b; }
+
+.trt-choice-progress,
+.trt-choice-hint {
+  margin: 0;
+  padding: 10px 38px 12px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+.trt-choice-progress { font-size: clamp(13px, 1.8vw, 20px); }
+.trt-choice-hint { font-size: clamp(12px, 1.5vw, 16px); }
+
+.trt-choice-prompt,
+.trt-complete-title,
+.trt-summary {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/story-banner.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  color: #3c2415;
+}
+.trt-choice-prompt { padding: 22px 70px 25px; }
+
+.trt-choice-label {
+  bottom: 4%;
+  max-width: 96%;
+  padding: 11px 22px 13px;
+}
+
+.trt-complete-title {
+  margin: 0;
+  padding: 22px 78px 25px;
+  font-size: clamp(24px, 3vw, 34px);
+}
+.trt-summary {
+  padding: 19px 70px 23px;
+}
+.trt-summary[data-new='true'] {
+  filter: drop-shadow(0 0 14px rgba(246, 196, 91, .75));
+  box-shadow: none;
+}
+
+.trt-endings {
+  width: min(560px, 94%);
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/endings-panel.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  padding: 62px 38px 28px;
+}
+.trt-endings-count {
+  position: absolute;
+  top: 15px;
+  left: 12%;
+  width: 76%;
+  color: #fff5d8;
+  text-shadow: 0 2px 0 rgba(48, 25, 15, .7);
+}
+
+#screen-complete {
+  justify-content: flex-start;
+  padding: 0;
+  overflow: hidden;
+}
+#screen-complete .trt-complete-title {
+  position: absolute;
+  top: clamp(104px, 15vh, 132px);
+}
+#screen-complete .trt-summary {
+  position: absolute;
+  top: clamp(166px, 23vh, 202px);
+}
+#screen-complete .trt-endings {
+  position: absolute;
+  bottom: clamp(126px, 17vh, 150px);
+}
+#screen-complete .trt-end-actions {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 94%;
+}
+
+.trt-action {
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/ui-kit/label-plaque.webp') center / 100% 100% no-repeat !important;
+  box-shadow: none;
+  padding: 20px 42px 23px;
+  color: #fff5d8;
+  text-shadow: 0 2px 0 rgba(48, 25, 15, .7);
+}
+.trt-action:active { box-shadow: none; }
+#trt-home-complete {
+  background-image: url('../assets/ui-kit/action-button.webp') !important;
+  color: #4b2815;
+  text-shadow: 0 2px 0 rgba(255, 236, 176, .5);
+}
+#trt-replay::before,
+#trt-new-path::before,
+#trt-home-complete::before { display: none; }
+
+@media (orientation: landscape) and (max-height: 1000px) {
+  .trt-title { width: clamp(280px, 38vw, 500px); }
+  .trt-cast-pair { padding-block: 6px 8px; }
+  .trt-start { padding: 18px 58px 21px; }
+  .trt-process-cue { position: absolute; right: 5%; bottom: 3%; }
+  #screen-choice { padding-top: clamp(90px, 14vh, 120px); }
+}
+
+@media (max-width: 700px) {
+  .trt-stage-title { width: min(72vw, 520px); }
+  .trt-process-cue { display: none; }
+  .trt-choice-prompt { padding-inline: 48px; }
+  .trt-complete-title,
+  .trt-summary { padding-inline: 48px; }
+}

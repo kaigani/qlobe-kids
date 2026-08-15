@@ -9,28 +9,8 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-07T08:35:58.010Z",
+  "generated": "2026-08-14T00:36:16.813Z",
   "engines": {
-    "choose-one": {
-      "count": 15,
-      "games": [
-        "board-game-reset",
-        "calm-corner-cards",
-        "grace-courtesy-theater",
-        "instrument-detective",
-        "joke-workshop",
-        "letter-treasure-hunt",
-        "mountain-seasons-wheel",
-        "mystery-letter-bag",
-        "plan-do-review",
-        "problem-solving-puppets",
-        "question-ball",
-        "song-story-remix",
-        "sound-hopscotch",
-        "story-repair-shop",
-        "tiny-reader-theater"
-      ]
-    },
     "coach-timer": {
       "count": 15,
       "games": [
@@ -49,6 +29,24 @@
         "sweep-the-trail",
         "trail-counting-walk",
         "waiting-muscle-game"
+      ]
+    },
+    "choose-one": {
+      "count": 13,
+      "games": [
+        "board-game-reset",
+        "calm-corner-cards",
+        "grace-courtesy-theater",
+        "instrument-detective",
+        "joke-workshop",
+        "mountain-seasons-wheel",
+        "mystery-letter-bag",
+        "plan-do-review",
+        "problem-solving-puppets",
+        "question-ball",
+        "song-story-remix",
+        "sound-hopscotch",
+        "story-repair-shop"
       ]
     },
     "build-assemble": {
@@ -74,16 +72,6 @@
         "story-sequence"
       ]
     },
-    "match-pairs": {
-      "count": 5,
-      "games": [
-        "community-helper-cards",
-        "picture-word-match",
-        "sound-cylinder-match",
-        "texture-trail",
-        "then-now-sort"
-      ]
-    },
     "observe-journal": {
       "count": 5,
       "games": [
@@ -92,6 +80,15 @@
         "picture-narration",
         "shadow-chase",
         "smell-jars"
+      ]
+    },
+    "match-pairs": {
+      "count": 4,
+      "games": [
+        "community-helper-cards",
+        "picture-word-match",
+        "texture-trail",
+        "then-now-sort"
       ]
     },
     "trace-path": {
@@ -122,11 +119,9 @@
       ]
     },
     "pattern-continue": {
-      "count": 3,
+      "count": 1,
       "games": [
-        "pattern-bracelet-band",
-        "pattern-train",
-        "rhythm-copycat"
+        "pattern-train"
       ]
     },
     "story-stones": {
@@ -330,12 +325,16 @@
         "shared/js/hotspot-scene.js",
         "shared/js/journal.js",
         "shared/js/magnifier-lens.js",
+        "shared/js/mode-select.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
-      "css": [],
+      "css": [
+        "shared/css/screens.css"
+      ],
       "assets": [
         "shared/assets/ui/btn-back.png",
         "shared/assets/ui/btn-home.png",
@@ -359,6 +358,7 @@
         "shared/js/hud.js",
         "shared/js/idle-nudge.js",
         "shared/js/mode-select.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/screens.js",
         "shared/js/sfx.js",
@@ -437,6 +437,8 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/screens.js",
         "shared/js/sfx.js",
@@ -447,7 +449,8 @@
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css"
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/chocolate-chip-count/assets/button.webp",
@@ -537,6 +540,7 @@
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
         "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
         "shared/js/narrator.js",
         "shared/js/rng.js",
         "shared/js/screens.js",
@@ -575,6 +579,44 @@
       "assets": [],
       "packs": []
     },
+    "cooking-craze": {
+      "engine": null,
+      "status": "in-design",
+      "category": "practical-life",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "games/cooking-craze/assets/ui/action-button-v2.webp",
+        "games/cooking-craze/assets/ui/action-replay-icon-v2.webp",
+        "games/cooking-craze/assets/ui/action-serve-icon-v2.webp",
+        "games/cooking-craze/assets/ui/completion-lockup-v2.webp",
+        "games/cooking-craze/assets/ui/mascot-trio-v2.webp",
+        "games/cooking-craze/assets/ui/title-kawaii-v3.webp",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
     "counting-treasure-cups": {
       "engine": null,
       "status": "live",
@@ -589,15 +631,18 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/stage/pose-sprite-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/counting-treasure-cups/assets/pose-actors",
@@ -689,6 +734,7 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/mouth.js",
@@ -696,7 +742,8 @@
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/feelings-charades/assets/badge-sun.png",
@@ -719,6 +766,7 @@
         "shared/js/content.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -731,7 +779,8 @@
         "shared/vendor/pixi.min.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/flashlight-cave/assets/pose-actors/ari",
@@ -752,6 +801,7 @@
         "shared/js/audio-unlock.js",
         "shared/js/camera-motion.js",
         "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
         "shared/js/music.js",
         "shared/js/narrator.js",
         "shared/js/preload.js",
@@ -764,7 +814,8 @@
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css"
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
@@ -783,6 +834,7 @@
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
         "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/timers.js",
@@ -804,6 +856,7 @@
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -972,15 +1025,19 @@
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
         "shared/js/narrator.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/storybook"
@@ -1011,24 +1068,56 @@
       "packs": []
     },
     "letter-treasure-hunt": {
-      "engine": "choose-one",
-      "status": "archived",
+      "engine": null,
+      "status": "beta",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/preload.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/base.css"
       ],
       "assets": [
-        "shared/assets/letter-tiles",
-        "shared/assets/objects"
+        "games/letter-treasure-hunt/assets/audio",
+        "games/letter-treasure-hunt/assets/islands",
+        "games/letter-treasure-hunt/assets/papercraft/a-celebration.webp",
+        "games/letter-treasure-hunt/assets/papercraft/a-hunt",
+        "games/letter-treasure-hunt/assets/papercraft/b-hunt/background.webp",
+        "games/letter-treasure-hunt/assets/papercraft/b-hunt/ball.webp",
+        "games/letter-treasure-hunt/assets/papercraft/b-hunt/boat.webp",
+        "games/letter-treasure-hunt/assets/papercraft/b-hunt/butterfly.webp",
+        "games/letter-treasure-hunt/assets/papercraft/b-hunt/chest.webp",
+        "games/letter-treasure-hunt/assets/papercraft/c-celebration.webp",
+        "games/letter-treasure-hunt/assets/papercraft/c-hunt",
+        "games/letter-treasure-hunt/assets/papercraft/island-celebration.webp",
+        "games/letter-treasure-hunt/assets/papercraft/quest-map.webp",
+        "games/letter-treasure-hunt/assets/ui-raster",
+        "games/letter-treasure-hunt/assets/ui-raster/badges/b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/completion-b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/controls/home.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/controls/next.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/controls/previous.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/controls/resume.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/controls/sound.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/counts/0.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/dialogs/orientation.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/dialogs/pause-b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/letters/a.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/letters/b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/letters/c.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/next.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/prompts/b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/quest-title.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/tokens/b.webp",
+        "games/letter-treasure-hunt/assets/ui-raster/tokens/empty.webp"
       ],
       "packs": []
     },
@@ -1083,7 +1172,9 @@
         "shared/js/debug-harness.js",
         "shared/js/freeform-board.js",
         "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
         "shared/js/narrator.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/tap.js",
@@ -1113,16 +1204,19 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/stage/mouth.js",
         "shared/js/tap.js",
         "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/lunchbox-pack/assets/lunchbox-closed.png",
@@ -1364,22 +1458,31 @@
       "packs": []
     },
     "pattern-bracelet-band": {
-      "engine": "pattern-continue",
+      "engine": null,
       "status": "in-design",
       "category": "art-music",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/pattern-continue.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/pattern-bracelet-band/assets/title.webp",
+        "games/pattern-bracelet-band/assets/ui/banner-ribbon.webp",
+        "games/pattern-bracelet-band/assets/ui/star-gold.webp"
+      ],
       "packs": []
     },
     "pattern-train": {
@@ -1606,6 +1709,7 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/dom.js",
+        "shared/js/mode-select.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/stage.js",
@@ -1615,7 +1719,8 @@
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/characters/bear",
@@ -1686,6 +1791,7 @@
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -1695,7 +1801,8 @@
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css"
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/red-green-light/assets/callers"
@@ -1712,13 +1819,16 @@
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
         "shared/js/hotspot-scene.js",
+        "shared/js/mode-select.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/tap.js",
+        "shared/js/timers.js",
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/audio/words",
@@ -1729,22 +1839,45 @@
       "packs": []
     },
     "rhythm-copycat": {
-      "engine": "pattern-continue",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "art-music",
-      "characters": [],
+      "characters": [
+        "kiki"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/pattern-continue.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/pose-sprite-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/hud.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/rhythm-copycat/assets/cards/orange.webp",
+        "games/rhythm-copycat/assets/cards/teal.webp",
+        "games/rhythm-copycat/assets/cards/yellow.webp",
+        "games/rhythm-copycat/assets/pads/clap.webp",
+        "games/rhythm-copycat/assets/pads/shake.webp",
+        "games/rhythm-copycat/assets/pads/stomp.webp",
+        "games/rhythm-copycat/assets/pads/tap.webp",
+        "games/rhythm-copycat/assets/ui/button.webp",
+        "games/rhythm-copycat/assets/ui/djembe.webp",
+        "games/rhythm-copycat/assets/ui/plaque.webp",
+        "games/rhythm-copycat/assets/ui/star.webp",
+        "games/rhythm-copycat/assets/ui/tambourine.webp",
+        "games/rhythm-copycat/assets/ui/title.webp",
+        "games/rhythm-copycat/assets/ui/tray.webp",
+        "games/rhythm-copycat/assets/ui/woodblock.webp"
+      ],
       "packs": []
     },
     "sand-tray-letters": {
@@ -1947,6 +2080,7 @@
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
         "shared/js/narrator.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
@@ -1958,7 +2092,8 @@
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -2078,13 +2213,17 @@
         "shared/js/audio-unlock.js",
         "shared/js/content.js",
         "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
-      "css": [],
+      "css": [
+        "shared/css/screens.css"
+      ],
       "assets": [
         "games/sound-basket/assets/art/backdrop.webp",
         "games/sound-basket/assets/art/basket.png",
@@ -2098,22 +2237,33 @@
       "packs": []
     },
     "sound-cylinder-match": {
-      "engine": "match-pairs",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/match-pairs.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/hud.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/sound-cylinder-match/assets/art/button.webp",
+        "games/sound-cylinder-match/assets/art/cylinder-aqua.webp",
+        "games/sound-cylinder-match/assets/art/cylinder-coral.webp",
+        "games/sound-cylinder-match/assets/art/reward-stage.webp",
+        "games/sound-cylinder-match/assets/art/sound-badge.webp",
+        "games/sound-cylinder-match/assets/art/star.webp",
+        "games/sound-cylinder-match/assets/art/title.webp"
+      ],
       "packs": []
     },
     "sound-hopscotch": {
@@ -2146,6 +2296,7 @@
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
         "shared/js/musical-canvas.js",
         "shared/js/narrator.js",
         "shared/js/sfx.js",
@@ -2155,7 +2306,8 @@
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css"
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "shared/assets/ui"
@@ -2347,7 +2499,7 @@
     },
     "tangram-tales": {
       "engine": null,
-      "status": "in-design",
+      "status": "live",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
@@ -2356,8 +2508,11 @@
         "shared/js/debug-harness.js",
         "shared/js/dom.js",
         "shared/js/freeform-board.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
         "shared/js/tap.js",
         "shared/js/voice-clips.js"
       ],
@@ -2382,6 +2537,7 @@
         "shared/js/debug-harness.js",
         "shared/js/dom.js",
         "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
         "shared/js/rng.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
@@ -2391,7 +2547,8 @@
         "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css"
+        "shared/css/base.css",
+        "shared/css/screens.css"
       ],
       "assets": [
         "games/teen-bead-builder/assets/manipulatives/bead-blue.webp",
@@ -2456,6 +2613,7 @@
         "shared/js/audio-unlock.js",
         "shared/js/camera-throw.js",
         "shared/js/debug-harness.js",
+        "shared/js/mode-select.js",
         "shared/js/narrator.js",
         "shared/js/preload.js",
         "shared/js/rng.js",
@@ -2467,34 +2625,60 @@
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css"
+        "shared/css/hud.css",
+        "shared/css/screens.css"
       ],
       "assets": [],
       "packs": []
     },
     "tiny-reader-theater": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "reading-phonics",
-      "characters": [],
+      "characters": [
+        "bear",
+        "doggy",
+        "fox",
+        "frog",
+        "princess-lily",
+        "princess-zoe",
+        "rabbit",
+        "unicorn"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/stage.js",
+        "shared/js/stage/theater.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/objects/bus.webp",
-        "shared/assets/objects/cat.webp",
-        "shared/assets/objects/dog.webp",
-        "shared/assets/objects/hat.webp",
-        "shared/assets/objects/mud.webp",
-        "shared/assets/objects/sun.webp"
+        "games/tiny-reader-theater/assets/ui/title-lockup.png",
+        "shared/assets/backdrops/enchanted-castle.jpg",
+        "shared/assets/backdrops/forest-cottage.jpg",
+        "shared/assets/backdrops/moon-adventure.jpg",
+        "shared/characters/bear",
+        "shared/characters/doggy",
+        "shared/characters/fox",
+        "shared/characters/frog",
+        "shared/characters/princess-lily",
+        "shared/characters/princess-zoe",
+        "shared/characters/rabbit",
+        "shared/characters/unicorn"
       ],
       "packs": []
     },
@@ -2665,6 +2849,7 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "community-helper-cards",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "family-story-interview",
@@ -2756,6 +2941,7 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -2766,21 +2952,26 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
         "red-green-light",
         "rhyming-detective",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
+        "sound-cylinder-match",
         "sound-painting",
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2795,6 +2986,7 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -2803,10 +2995,12 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "puppet-retell",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "teen-bead-builder",
+        "tiny-reader-theater",
         "weather-scientist"
       ],
       "shared/js/clay/field-three.js": [
@@ -2836,6 +3030,7 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -2846,21 +3041,26 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
         "red-green-light",
         "rhyming-detective",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
+        "sound-cylinder-match",
         "sound-painting",
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -2886,7 +3086,6 @@
         "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
-        "letter-treasure-hunt",
         "mountain-seasons-wheel",
         "mystery-letter-bag",
         "plan-do-review",
@@ -2894,8 +3093,7 @@
         "question-ball",
         "song-story-remix",
         "sound-hopscotch",
-        "story-repair-shop",
-        "tiny-reader-theater"
+        "story-repair-shop"
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
@@ -2917,7 +3115,6 @@
       "shared/js/engines/match-pairs.js": [
         "community-helper-cards",
         "picture-word-match",
-        "sound-cylinder-match",
         "texture-trail",
         "then-now-sort"
       ],
@@ -2929,9 +3126,7 @@
         "smell-jars"
       ],
       "shared/js/engines/pattern-continue.js": [
-        "pattern-bracelet-band",
-        "pattern-train",
-        "rhythm-copycat"
+        "pattern-train"
       ],
       "shared/js/engines/puppet-band.js": [
         "my-puppet-band"
@@ -2981,6 +3176,7 @@
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
@@ -2988,17 +3184,20 @@
         "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
-        "red-green-light"
+        "red-green-light",
+        "tiny-reader-theater"
       ],
       "shared/js/idle-nudge.js": [
         "button-zipper-lab",
         "color-mixing-lab",
+        "cooking-craze",
         "garden-delivery-game",
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
         "sink-or-float",
         "teen-bead-builder",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -3009,9 +3208,27 @@
         "bug-hotel-observer"
       ],
       "shared/js/mode-select.js": [
+        "bug-hotel-observer",
         "button-zipper-lab",
+        "chocolate-chip-count",
+        "color-mixing-lab",
+        "counting-treasure-cups",
+        "feelings-charades",
+        "flashlight-cave",
+        "freeze-focus-dance",
         "land-water-tray",
-        "snack-chef"
+        "laundry-sorter",
+        "loose-parts-collage",
+        "lunchbox-pack",
+        "puppet-retell",
+        "red-green-light",
+        "rhyming-detective",
+        "sink-or-float",
+        "snack-chef",
+        "sound-basket",
+        "sound-painting",
+        "teen-bead-builder",
+        "throwing-target-garden"
       ],
       "shared/js/music.js": [
         "freeze-focus-dance",
@@ -3026,6 +3243,7 @@
       "shared/js/narrator.js": [
         "big-paper-murals",
         "color-mixing-lab",
+        "cooking-craze",
         "freeze-focus-dance",
         "kindness-delivery",
         "land-water-tray",
@@ -3038,10 +3256,19 @@
         "weather-scientist"
       ],
       "shared/js/preload.js": [
+        "button-zipper-lab",
+        "chocolate-chip-count",
         "clay-creature-studio",
+        "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
+        "garden-delivery-game",
+        "globe-spin-stories",
         "kindness-delivery",
+        "laundry-sorter",
+        "letter-treasure-hunt",
+        "loose-parts-collage",
+        "tangram-tales",
         "throwing-target-garden"
       ],
       "shared/js/rng.js": [
@@ -3050,6 +3277,7 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "flashlight-cave",
         "freeze-focus-dance",
@@ -3060,25 +3288,32 @@
         "laundry-sorter",
         "loose-parts-collage",
         "lunchbox-pack",
+        "pattern-bracelet-band",
         "playdough-letter-factory",
         "red-green-light",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "sound-basket",
+        "sound-cylinder-match",
+        "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "world-music-dance"
       ],
       "shared/js/screens.js": [
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
         "kindness-delivery",
         "land-water-tray",
         "snack-chef",
-        "throwing-target-garden"
+        "throwing-target-garden",
+        "tiny-reader-theater"
       ],
       "shared/js/sfx.js": [
         "animal-walk-cards",
@@ -3099,6 +3334,7 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "community-helper-cards",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "family-story-interview",
@@ -3215,7 +3451,6 @@
         "joke-workshop",
         "laundry-sorter",
         "letter-road-driving",
-        "letter-treasure-hunt",
         "line-walking-challenge",
         "local-nature-guide",
         "lunchbox-pack",
@@ -3244,7 +3479,6 @@
         "question-ball",
         "red-green-light",
         "rhyming-detective",
-        "rhythm-copycat",
         "sand-tray-letters",
         "sandpaper-number-match",
         "scissor-trail-safari",
@@ -3260,7 +3494,6 @@
         "snack-chef",
         "song-story-remix",
         "sound-basket",
-        "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
@@ -3274,7 +3507,6 @@
         "teen-bead-builder",
         "texture-trail",
         "then-now-sort",
-        "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -3293,8 +3525,15 @@
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "color-mixing-lab",
+        "cooking-craze",
+        "counting-treasure-cups",
+        "laundry-sorter",
+        "lunchbox-pack",
+        "pattern-bracelet-band",
         "snack-chef",
+        "sound-basket",
         "story-stones",
+        "tangram-tales",
         "teen-bead-builder"
       ],
       "shared/js/stage/drag-to-slot.js": [
@@ -3322,7 +3561,8 @@
         "world-music-dance"
       ],
       "shared/js/stage/pose-sprite-dom.js": [
-        "counting-treasure-cups"
+        "counting-treasure-cups",
+        "rhythm-copycat"
       ],
       "shared/js/stage/pose-sprite.js": [
         "story-stones",
@@ -3339,13 +3579,15 @@
         "flashlight-cave",
         "puppet-retell",
         "sink-or-float",
+        "tiny-reader-theater",
         "world-music-dance"
       ],
       "shared/js/stage/theater.js": [
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
-        "story-stones"
+        "story-stones",
+        "tiny-reader-theater"
       ],
       "shared/js/stage/tween.js": [
         "flashlight-cave",
@@ -3360,6 +3602,7 @@
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -3369,38 +3612,51 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
         "red-green-light",
         "rhyming-detective",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
+        "sound-cylinder-match",
         "sound-painting",
         "sound-sprouts",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "cooking-craze",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
         "kindness-delivery",
         "land-water-tray",
+        "letter-treasure-hunt",
         "lunchbox-pack",
+        "pattern-bracelet-band",
         "puppet-retell",
         "red-green-light",
+        "rhyming-detective",
+        "rhythm-copycat",
+        "sound-cylinder-match",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -3410,6 +3666,7 @@
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
@@ -3421,24 +3678,29 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-road-driving",
+        "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
         "my-puppet-band",
+        "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-problem-solvers",
         "puppet-retell",
         "red-green-light",
         "rhyming-detective",
+        "rhythm-copycat",
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
+        "sound-cylinder-match",
         "sound-painting",
         "sound-sprouts",
         "story-stones",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
       ],
@@ -3472,6 +3734,7 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "community-helper-cards",
+        "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "family-story-interview",
@@ -3576,7 +3839,6 @@
         "instrument-detective",
         "joke-workshop",
         "letter-road-driving",
-        "letter-treasure-hunt",
         "line-walking-challenge",
         "local-nature-guide",
         "magnet-explorer",
@@ -3590,7 +3852,6 @@
         "number-line-jump",
         "number-rod-race",
         "obstacle-course-builder",
-        "pattern-bracelet-band",
         "pattern-train",
         "picture-narration",
         "picture-word-match",
@@ -3601,7 +3862,6 @@
         "puppet-problem-solvers",
         "puzzle-map-match",
         "question-ball",
-        "rhythm-copycat",
         "sandpaper-number-match",
         "scissor-trail-safari",
         "secret-message-copy",
@@ -3613,7 +3873,6 @@
         "smell-jars",
         "snack-addition-stories",
         "song-story-remix",
-        "sound-cylinder-match",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -3624,7 +3883,6 @@
         "table-setting-mission",
         "texture-trail",
         "then-now-sort",
-        "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -3635,6 +3893,7 @@
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
+        "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-delivery-game",
@@ -3643,9 +3902,12 @@
         "land-water-tray",
         "loose-parts-collage",
         "red-green-light",
+        "rhythm-copycat",
+        "sound-cylinder-match",
         "sound-painting",
         "tangram-tales",
         "throwing-target-garden",
+        "tiny-reader-theater",
         "weather-scientist"
       ],
       "shared/css/screens.css": [
@@ -3656,26 +3918,34 @@
         "blend-train",
         "block-tower-measure",
         "board-game-reset",
+        "bug-hotel-observer",
         "button-zipper-lab",
         "calm-corner-cards",
         "chalkboard-big-strokes",
+        "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
         "community-helper-cards",
+        "cooking-craze",
+        "counting-treasure-cups",
         "emotion-voice-game",
         "family-story-interview",
         "family-timeline",
+        "feelings-charades",
+        "flashlight-cave",
+        "freeze-focus-dance",
         "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "laundry-sorter",
         "letter-road-driving",
-        "letter-treasure-hunt",
         "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
+        "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
         "mountain-seasons-wheel",
@@ -3696,9 +3966,11 @@
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
+        "puppet-retell",
         "puzzle-map-match",
         "question-ball",
-        "rhythm-copycat",
+        "red-green-light",
+        "rhyming-detective",
         "sandpaper-number-match",
         "scissor-trail-safari",
         "secret-message-copy",
@@ -3707,12 +3979,14 @@
         "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
+        "sink-or-float",
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "song-story-remix",
-        "sound-cylinder-match",
+        "sound-basket",
         "sound-hopscotch",
+        "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
         "story-sequence",
@@ -3720,8 +3994,10 @@
         "subtraction-picnic",
         "sweep-the-trail",
         "table-setting-mission",
+        "teen-bead-builder",
         "texture-trail",
         "then-now-sort",
+        "throwing-target-garden",
         "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -3737,7 +4013,8 @@
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
-        "subtraction-picnic"
+        "subtraction-picnic",
+        "tiny-reader-theater"
       ],
       "bird": [
         "subtraction-picnic"
@@ -3754,7 +4031,8 @@
       "doggy": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "dragon": [
         "story-stones"
@@ -3768,7 +4046,8 @@
       "fox": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "friendly-monster": [
         "story-stones"
@@ -3776,13 +4055,17 @@
       "frog": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "gilly": [
         "red-green-light"
       ],
       "growlie": [
         "red-green-light"
+      ],
+      "kiki": [
+        "rhythm-copycat"
       ],
       "leo": [
         "calm-corner-cards",
@@ -3847,17 +4130,20 @@
       "princess-lily": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "princess-zoe": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "rabbit": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "ravi": [
         "calm-corner-cards",
@@ -3901,7 +4187,8 @@
       "unicorn": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "white-cat": [
         "story-stones"
@@ -3940,6 +4227,24 @@
       ],
       "games/chocolate-chip-count/assets/title.webp": [
         "chocolate-chip-count"
+      ],
+      "games/cooking-craze/assets/ui/action-button-v2.webp": [
+        "cooking-craze"
+      ],
+      "games/cooking-craze/assets/ui/action-replay-icon-v2.webp": [
+        "cooking-craze"
+      ],
+      "games/cooking-craze/assets/ui/action-serve-icon-v2.webp": [
+        "cooking-craze"
+      ],
+      "games/cooking-craze/assets/ui/completion-lockup-v2.webp": [
+        "cooking-craze"
+      ],
+      "games/cooking-craze/assets/ui/mascot-trio-v2.webp": [
+        "cooking-craze"
+      ],
+      "games/cooking-craze/assets/ui/title-kawaii-v3.webp": [
+        "cooking-craze"
       ],
       "games/counting-treasure-cups/assets/pose-actors": [
         "counting-treasure-cups"
@@ -3998,11 +4303,116 @@
       "games/letter-road-driving/assets/audio": [
         "letter-road-driving"
       ],
+      "games/letter-treasure-hunt/assets/audio": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/islands": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/a-celebration.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/a-hunt": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/b-hunt/background.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/b-hunt/ball.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/b-hunt/boat.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/b-hunt/butterfly.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/b-hunt/chest.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/c-celebration.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/c-hunt": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/island-celebration.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/papercraft/quest-map.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/badges/b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/completion-b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/controls/home.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/controls/next.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/controls/previous.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/controls/resume.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/controls/sound.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/counts/0.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/dialogs/orientation.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/dialogs/pause-b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/letters/a.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/letters/b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/letters/c.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/next.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/prompts/b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/quest-title.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/tokens/b.webp": [
+        "letter-treasure-hunt"
+      ],
+      "games/letter-treasure-hunt/assets/ui-raster/tokens/empty.webp": [
+        "letter-treasure-hunt"
+      ],
       "games/lunchbox-pack/assets/lunchbox-closed.png": [
         "lunchbox-pack"
       ],
       "games/lunchbox-pack/assets/lunchbox-open.png": [
         "lunchbox-pack"
+      ],
+      "games/pattern-bracelet-band/assets/title.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/banner-ribbon.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/star-gold.webp": [
+        "pattern-bracelet-band"
       ],
       "games/playdough-letter-factory/assets/ui/mascot.webp": [
         "playdough-letter-factory"
@@ -4012,6 +4422,51 @@
       ],
       "games/red-green-light/assets/callers": [
         "red-green-light"
+      ],
+      "games/rhythm-copycat/assets/cards/orange.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/cards/teal.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/cards/yellow.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/pads/clap.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/pads/shake.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/pads/stomp.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/pads/tap.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/button.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/djembe.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/plaque.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/star.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/tambourine.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/title.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/tray.webp": [
+        "rhythm-copycat"
+      ],
+      "games/rhythm-copycat/assets/ui/woodblock.webp": [
+        "rhythm-copycat"
       ],
       "games/sand-tray-letters/assets/materials/golden-sand.png": [
         "sand-tray-letters"
@@ -4039,6 +4494,27 @@
       ],
       "games/sound-basket/assets/art/title.webp": [
         "sound-basket"
+      ],
+      "games/sound-cylinder-match/assets/art/button.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/cylinder-aqua.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/cylinder-coral.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/reward-stage.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/sound-badge.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/star.webp": [
+        "sound-cylinder-match"
+      ],
+      "games/sound-cylinder-match/assets/art/title.webp": [
+        "sound-cylinder-match"
       ],
       "games/sound-sprouts/assets/apple-touch-icon.png": [
         "sound-sprouts"
@@ -4091,6 +4567,9 @@
       "games/teen-bead-builder/assets/manipulatives/tray.webp": [
         "teen-bead-builder"
       ],
+      "games/tiny-reader-theater/assets/ui/title-lockup.png": [
+        "tiny-reader-theater"
+      ],
       "shared/assets/audio": [
         "sound-basket",
         "sound-sprouts"
@@ -4110,6 +4589,15 @@
       ],
       "shared/assets/audio/words": [
         "rhyming-detective"
+      ],
+      "shared/assets/backdrops/enchanted-castle.jpg": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/backdrops/forest-cottage.jpg": [
+        "tiny-reader-theater"
+      ],
+      "shared/assets/backdrops/moon-adventure.jpg": [
+        "tiny-reader-theater"
       ],
       "shared/assets/foods": [
         "lunchbox-pack"
@@ -4142,7 +4630,6 @@
         "world-music-dance"
       ],
       "shared/assets/letter-tiles": [
-        "letter-treasure-hunt",
         "mystery-letter-bag",
         "silly-swap-words",
         "sound-hopscotch",
@@ -4150,32 +4637,17 @@
       ],
       "shared/assets/objects": [
         "flashlight-cave",
-        "letter-treasure-hunt",
         "picture-word-match",
         "playdough-letter-factory",
         "rhyming-detective",
         "sound-basket",
         "sound-sprouts"
       ],
-      "shared/assets/objects/bus.webp": [
-        "tiny-reader-theater"
-      ],
       "shared/assets/objects/cat.webp": [
-        "sound-basket",
-        "tiny-reader-theater"
-      ],
-      "shared/assets/objects/dog.webp": [
-        "tiny-reader-theater"
-      ],
-      "shared/assets/objects/hat.webp": [
-        "tiny-reader-theater"
-      ],
-      "shared/assets/objects/mud.webp": [
-        "tiny-reader-theater"
+        "sound-basket"
       ],
       "shared/assets/objects/sun.webp": [
-        "sound-basket",
-        "tiny-reader-theater"
+        "sound-basket"
       ],
       "shared/assets/storybook": [
         "laundry-sorter"
@@ -4187,6 +4659,7 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
+        "cooking-craze",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
@@ -4227,22 +4700,26 @@
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
-        "subtraction-picnic"
+        "subtraction-picnic",
+        "tiny-reader-theater"
       ],
       "shared/characters/doggy": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/fox": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/frog": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/leo": [
         "calm-corner-cards",
@@ -4289,17 +4766,20 @@
       "shared/characters/princess-lily": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/princess-zoe": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/rabbit": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/characters/ravi": [
         "calm-corner-cards",
@@ -4327,7 +4807,8 @@
       "shared/characters/unicorn": [
         "my-puppet-band",
         "puppet-problem-solvers",
-        "puppet-retell"
+        "puppet-retell",
+        "tiny-reader-theater"
       ],
       "shared/data/words.json": [
         "rhyming-detective"

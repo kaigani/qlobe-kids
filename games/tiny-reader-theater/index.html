@@ -5,43 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Tiny Reader Theater 🎬 — Acting Out Little Stories</title>
-  <meta name="description" content="Fill in a tiny theater story by tapping the word or character that fits, then act the line out loud. A playful decoding-and-drama game for ages 5–6." />
+  <meta name="theme-color" content="#2f7d5a" />
+  <title>Tiny Reader Theater 🎭 — Tap Every Word, Then Watch It Played</title>
+  <meta name="description" content="Tap each word of a tiny forest story to hear it, then watch two puppets act the line out. Choose what happens next and find all nine endings. A read-along branching-story game for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Tiny Reader Theater" />
-  <meta property="og:title" content="Tiny Reader Theater 🎬 — Acting Out Little Stories" />
-  <meta property="og:description" content="Fill in a tiny theater story by tapping the word or character that fits, then act the line out loud. A playful decoding-and-drama game for ages 5–6." />
+  <meta property="og:title" content="Tiny Reader Theater 🎭 — Tap Every Word, Then Watch It Played" />
+  <meta property="og:description" content="Tap each word of a tiny forest story to hear it, then watch two puppets act the line out. Choose what happens next and find all nine endings." />
   <meta property="og:url" content="https://qlo.be/games/tiny-reader-theater/" />
   <meta property="og:image" content="https://qlo.be/games/tiny-reader-theater/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Tiny Reader Theater title screen with Fill the Story and Act It Out modes and a theater masks icon." />
+  <meta property="og:image:alt" content="Tiny Reader Theater title screen with a forest puppet stage." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tiny Reader Theater 🎬 — Acting Out Little Stories" />
-  <meta name="twitter:description" content="Fill in a tiny theater story by tapping the word or character that fits, then act the line out loud. A playful decoding-and-drama game for ages 5–6." />
+  <meta name="twitter:title" content="Tiny Reader Theater 🎭 — Tap Every Word, Then Watch It Played" />
+  <meta name="twitter:description" content="Tap each word of a tiny forest story to hear it, then watch two puppets act the line out. Choose what happens next and find all nine endings." />
   <meta name="twitter:image" content="https://qlo.be/games/tiny-reader-theater/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <div id="game" data-screen="setup" data-stage="off">
+
+    <!-- The Pixi puppet stage. A persistent layer BEHIND the screens, so the
+         two puppets stay on stage across Read → Choice → Complete. -->
+    <div id="trt-stage-layer" hidden>
+      <div id="trt-stage-host"></div>
+    </div>
+
+    <div id="trt-screens">
+
+      <img id="trt-stage-title" class="trt-stage-title" src="./assets/ui/title-lockup.webp" alt="" aria-hidden="true" />
+
+      <!-- ---------------------------------------------------------- SETUP -->
+      <section id="screen-setup" class="trt-screen" data-qk-screen="setup" hidden>
+        <div id="trt-setup-hud" class="trt-hud trt-hud-setup"><!-- home button --></div>
+        <img id="trt-title" class="trt-title" src="./assets/ui/title-lockup.webp" alt="Tiny Reader Theater" />
+
+        <div class="trt-setup-step" data-step="world">
+          <h2 id="trt-world-label" class="trt-step-label">1. Pick a world</h2>
+          <div id="trt-world-grid" class="trt-world-grid"><!-- .trt-world-card --></div>
+        </div>
+
+        <div class="trt-setup-step" data-step="cast">
+          <h2 id="trt-cast-label" class="trt-step-label">2. Pick two puppet stars</h2>
+          <div id="trt-cast-grid" class="trt-cast-grid"><!-- .trt-cast-card --></div>
+        </div>
+
+        <div class="trt-setup-actions">
+          <p id="trt-cast-pair" class="trt-cast-pair" aria-live="polite">Pick two puppet stars</p>
+          <button id="trt-start" class="trt-start" type="button" data-target="start" data-role="start" data-ready="false" disabled>Start the story</button>
+        </div>
+      </section>
+
+      <!-- ----------------------------------------------------------- READ -->
+      <section id="screen-read" class="trt-screen" data-qk-screen="read" hidden>
+        <div id="trt-read-hud" class="trt-hud trt-hud-read"><!-- back button --></div>
+        <div id="trt-line-dots" class="trt-line-dots" aria-hidden="true"></div>
+        <div id="trt-line-panel" class="trt-line-panel">
+          <p class="trt-tap-hint" aria-hidden="true">Tap each word to hear it!</p>
+          <div id="trt-line" class="trt-word-line" role="group" aria-label="Tap every word"><!-- .trt-word --></div>
+        </div>
+        <div class="trt-process-cue" aria-hidden="true">
+          <span>All words</span><b>→</b><span>Sparkle</span><b>→</b><span>Narrator + puppets</span>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- CHOICE -->
+      <section id="screen-choice" class="trt-screen" data-qk-screen="choice" hidden>
+        <div id="trt-choice-hud" class="trt-hud trt-hud-choice"><!-- back button --></div>
+        <p id="trt-choice-progress" class="trt-choice-progress" aria-hidden="true"></p>
+        <h2 id="trt-choice-prompt" class="trt-choice-prompt">What happens next?</h2>
+        <div id="trt-choice-cards" class="trt-choice-cards"><!-- .trt-choice-card --></div>
+        <p class="trt-choice-hint" aria-hidden="true">Tap a card to choose!</p>
+      </section>
+
+      <!-- ------------------------------------------------------- COMPLETE -->
+      <section id="screen-complete" class="trt-screen" data-qk-screen="complete" hidden>
+        <div id="trt-complete-hud" class="trt-hud trt-hud-complete"><!-- back button --></div>
+        <h2 class="trt-complete-title">Story complete!</h2>
+        <p id="trt-summary" class="trt-summary"></p>
+        <div id="trt-endings-tracker" class="trt-endings" data-found="0" data-total="0">
+          <div id="trt-endings-stamps" class="trt-endings-stamps"><!-- .trt-stamp --></div>
+          <p id="trt-endings-count" class="trt-endings-count"></p>
+        </div>
+        <div class="trt-end-actions qk-end-actions">
+          <button id="trt-replay" class="trt-action" type="button" data-target="replay" data-role="replay">Replay</button>
+          <button id="trt-new-path" class="trt-action" type="button" data-target="new-path" data-role="new-path">Choose a new path</button>
+          <a id="trt-home-complete" class="trt-action trt-home-link" href="../../index.html" data-target="home" data-role="home">Home</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

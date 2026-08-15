@@ -135,12 +135,26 @@
       fire('pointerdown');
       fire('pointerup');
       t('pointerup fired the action once', fired === 1, `fired=${fired}`);
-      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 }));
       t('the click the browser sends after a touch does not double-fire it', fired === 1, `fired=${fired}`);
       dispose();
     }
 
-    // ---- 9. a bare click (keyboard / assistive tech) still activates -------
+    // ---- 9. dragging outside cancels despite implicit pointer capture -------
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      const rect = btn.getBoundingClientRect();
+      fire('pointerdown', { pointerId: 1, clientX: rect.left + 2, clientY: rect.top + 2 });
+      fire('pointermove', { pointerId: 1, clientX: rect.right + 20, clientY: rect.bottom + 20 });
+      fire('pointerup', { pointerId: 1, clientX: rect.right + 20, clientY: rect.bottom + 20 });
+      t('dragging outside the control cancels the press', fired === 0, `fired=${fired}`);
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 }));
+      t('the trailing click after a drag-off stays cancelled', fired === 0, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 10. a bare click (keyboard / assistive tech) still activates ------
     {
       let fired = 0;
       const dispose = onTap(btn, () => { fired += 1; });
@@ -151,7 +165,18 @@
       dispose();
     }
 
-    // ---- 10. disposer removes every listener --------------------------------
+    // ---- 11. keyboard/AT activation is not swallowed after pointer use -----
+    {
+      let fired = 0;
+      const dispose = onTap(btn, () => { fired += 1; });
+      fire('pointerdown');
+      fire('pointerup');
+      btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 0 }));
+      t('detail=0 activation still fires immediately after pointer use', fired === 2, `fired=${fired}`);
+      dispose();
+    }
+
+    // ---- 12. disposer removes every listener -------------------------------
     {
       let fired = 0;
       const dispose = onTap(btn, () => { fired += 1; });
@@ -162,7 +187,7 @@
       t('no listener fires after dispose()', fired === 0, `fired=${fired}`);
     }
 
-    // ---- 11. repeated presses each fire exactly once -------------------------
+    // ---- 13. repeated presses each fire exactly once -----------------------
     {
       let fired = 0;
       const dispose = onTap(btn, () => { fired += 1; });
