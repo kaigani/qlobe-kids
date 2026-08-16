@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cheer-ab",
+  "output": "games/bead-path-builder/assets/source/voice-raw/cheer-ab.flac",
+  "seed": 7,
+  "text": "You followed the pattern. What a beautiful necklace!",
+  "voiceResult": {
+    "bytes": 97020,
+    "jobId": "2e953fbf81874c0383512eb421584c8c",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/cheer-ab.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 355,
+    "heard": "You followed the pattern, what a beautiful necklace.",
+    "jobId": "2ec4e83c3a0d49adbfcf2b34af0b1daf",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/cheer-ab.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/cheer-ab.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

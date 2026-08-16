@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "find-round",
+  "output": "games/bead-path-builder/assets/source/voice-raw/find-round.flac",
+  "seed": 7,
+  "text": "Find the round bead.",
+  "voiceResult": {
+    "bytes": 47380,
+    "jobId": "a3fa9c8eb64d4c4c92951c1a180a5598",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/find-round.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 259,
+    "heard": "Find the round bead.",
+    "jobId": "6a58b06d430946d7b040f5ab0a66b4f0",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/find-round.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/find-round.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

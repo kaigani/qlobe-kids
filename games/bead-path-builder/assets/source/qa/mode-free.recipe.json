@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "mode-free",
+  "output": "games/bead-path-builder/assets/source/voice-raw/mode-free.flac",
+  "seed": 7,
+  "text": "Make your very own necklace. Any beads you like!",
+  "voiceResult": {
+    "bytes": 103521,
+    "jobId": "286259c2c3dc43e9b00d7e0ee3308f6c",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/mode-free.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 427,
+    "heard": "Make your very own necklace. Any beads you like?",
+    "jobId": "b6ccdd8e31c940378c130e6df9769f5d",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/mode-free.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/mode-free.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

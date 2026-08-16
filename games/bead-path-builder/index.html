@@ -1,48 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Bead Path Builder 📿 — Fine Motor Bead Stringing</title>
-  <meta name="description" content="String beads onto a curved path, placing each one carefully from left to right. A fine-motor building game for ages 5–6." />
+  <meta name="theme-color" content="#d8a568" />
+  <title>Bead Path Builder — Fine Motor Patterns</title>
+  <meta name="description" content="Thread chunky painted wooden beads onto a curved cord, continue gentle AB and ABC patterns, or design a one-of-a-kind necklace." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Bead Path Builder" />
-  <meta property="og:title" content="Bead Path Builder 📿 — Fine Motor Bead Stringing" />
-  <meta property="og:description" content="String beads onto a curved path, placing each one carefully from left to right. A fine-motor building game for ages 5–6." />
+  <meta property="og:title" content="Bead Path Builder — Fine Motor Patterns" />
+  <meta property="og:description" content="Thread chunky painted wooden beads onto a curved cord, continue gentle AB and ABC patterns, or design a one-of-a-kind necklace." />
   <meta property="og:url" content="https://qlo.be/games/bead-path-builder/" />
   <meta property="og:image" content="https://qlo.be/games/bead-path-builder/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Bead Path Builder title screen with String the Beads and Fancy Strings modes and a spool of blue thread icon." />
+  <meta property="og:image:alt" content="A warm wooden bead atelier with painted beads and three necklace pattern choices." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bead Path Builder 📿 — Fine Motor Bead Stringing" />
-  <meta name="twitter:description" content="String beads onto a curved path, placing each one carefully from left to right. A fine-motor building game for ages 5–6." />
+  <meta name="twitter:title" content="Bead Path Builder — Fine Motor Patterns" />
+  <meta name="twitter:description" content="Thread chunky painted wooden beads onto a curved cord, continue gentle AB and ABC patterns, or design a one-of-a-kind necklace." />
   <meta name="twitter:image" content="https://qlo.be/games/bead-path-builder/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-    #game { height: auto; min-height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game"></main>
+  <div id="game-status" class="qk-sr-only" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

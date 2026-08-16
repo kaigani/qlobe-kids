@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "intro-free",
+  "output": "games/bead-path-builder/assets/source/voice-raw/intro-free.flac",
+  "seed": 7,
+  "text": "Choose any bead. Start at the left and make it yours.",
+  "voiceResult": {
+    "bytes": 104904,
+    "jobId": "1b8c2c33c4844e6da087679c2c84b625",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/intro-free.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 445,
+    "heard": "Choose any bead. Start at the left and make it yours.",
+    "jobId": "6e0609bef4104f5398fb627a7010b4f7",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/intro-free.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/intro-free.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

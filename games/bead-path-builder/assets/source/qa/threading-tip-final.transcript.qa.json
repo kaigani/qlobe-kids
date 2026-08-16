@@ -1,0 +1,18 @@
+{
+  "expected": "Through the hole, then slide it home!",
+  "result": {
+    "accepted": true,
+    "bytes": 310,
+    "heard": "through the hole, then slide it home.",
+    "jobId": "5d21230da684412ab62ea0c1ac2236e6",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/threading-tip-final.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/threading-tip-final.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/bead-path-builder/assets/source/qa/threading-tip-final-audio.flac",
+  "workflow": "whisper-stt"
+}

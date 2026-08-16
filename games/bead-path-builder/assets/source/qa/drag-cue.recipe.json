@@ -1,0 +1,21 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "drag-cue",
+  "output": "games/bead-path-builder/assets/source/voice-raw/drag-cue.flac",
+  "seed": 7,
+  "text": "Through the hole, then slide it home!",
+  "voiceResult": {
+    "reason": "exists",
+    "saved": "games/bead-path-builder/assets/source/voice-raw/drag-cue.flac",
+    "status": "skipped"
+  },
+  "whisper": {
+    "heard": "through the hole, then slide it home.",
+    "ratio": 1.0,
+    "reason": "exists",
+    "saved": "games/bead-path-builder/assets/source/qa/drag-cue.transcript.txt",
+    "status": "skipped"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

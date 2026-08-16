@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "mode-abc",
+  "output": "games/bead-path-builder/assets/source/voice-raw/mode-abc.flac",
+  "seed": 7,
+  "text": "Make a three-bead pattern: one, two, three, then repeat.",
+  "voiceResult": {
+    "bytes": 145794,
+    "jobId": "84db80b6302c49c6b1097d737cb2561a",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/mode-abc.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 454,
+    "heard": "Make a three-beat pattern. One, two, three, then repeat.",
+    "jobId": "e912b270621f44eaa0213a0b5ccef26b",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.98,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/mode-abc.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/mode-abc.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

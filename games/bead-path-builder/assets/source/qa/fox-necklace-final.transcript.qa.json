@@ -1,0 +1,18 @@
+{
+  "expected": "Look what you made. It fits perfectly!",
+  "result": {
+    "accepted": true,
+    "bytes": 312,
+    "heard": "Look what you made. It fits perfectly.",
+    "jobId": "d76ccd7cafc14be89f480be3a98d80a3",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/fox-necklace-final.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/fox-necklace-final.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/bead-path-builder/assets/source/qa/fox-necklace-final-audio.flac",
+  "workflow": "whisper-stt"
+}

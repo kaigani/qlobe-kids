@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pattern-three",
+  "output": "games/bead-path-builder/assets/source/voice-raw/pattern-three.flac",
+  "seed": 7,
+  "text": "Round, barrel, diamond. What comes next?",
+  "voiceResult": {
+    "bytes": 93957,
+    "jobId": "7ae1fbf90b6146c093f28f2673a4c439",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/pattern-three.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 400,
+    "heard": "Round barrel diamond. What comes next?",
+    "jobId": "74e3dd727b9c4578807964f7f63fa6ae",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/pattern-three.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/pattern-three.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

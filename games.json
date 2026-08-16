@@ -752,18 +752,23 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "live",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "string",
-          "title": "String the Beads",
-          "skill": "left-to-right controlled placement along a curve"
+          "id": "ab",
+          "title": "AB Garden",
+          "skill": "continue a two-part repeating pattern while placing left to right"
         },
         {
-          "id": "fancy",
-          "title": "Fancy Strings",
-          "skill": "placing alternating bead shapes on a curved path"
+          "id": "abc",
+          "title": "ABC Rainbow",
+          "skill": "continue a three-part repeating pattern while placing left to right"
+        },
+        {
+          "id": "free",
+          "title": "My Necklace",
+          "skill": "plan, revise, and finish a self-chosen bead sequence"
         }
       ],
       "summary": "String beads in a left-to-right pattern."
@@ -2303,7 +2308,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#7c4fc4",
       "modes": [
         {

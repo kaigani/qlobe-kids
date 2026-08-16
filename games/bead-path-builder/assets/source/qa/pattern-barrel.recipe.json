@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pattern-barrel",
+  "output": "games/bead-path-builder/assets/source/voice-raw/pattern-barrel.flac",
+  "seed": 7,
+  "text": "Round, barrel, round, barrel. Find the barrel bead.",
+  "voiceResult": {
+    "bytes": 107446,
+    "jobId": "ac8427b17a5f427da0d04afd8cb84b85",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/pattern-barrel.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 439,
+    "heard": "Round, barrel, round, barrel. Find the barrel bead.",
+    "jobId": "24e885b85ba8458395db1cbccbb99a5c",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/pattern-barrel.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/pattern-barrel.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

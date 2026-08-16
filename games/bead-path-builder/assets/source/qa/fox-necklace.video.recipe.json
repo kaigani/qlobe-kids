@@ -1,0 +1,28 @@
+{
+  "dimensions": {
+    "height": 480,
+    "width": 832
+  },
+  "duration": 5.0,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "fox-necklace",
+  "output": "games/bead-path-builder/assets/source/video-raw/fox-necklace-raw.mp4",
+  "prompt": "Use <Picture 1> as the exact first frame and character identity. The same carved wooden toy fox looks warmly toward the viewer, gently touches the outer edges of its necklace without covering it, gives one proud little nod and a tiny side-to-side sway, then returns to rest. Its mouth moves naturally in time with the teacher voice from <Audio 1>. Preserve exactly one fox, six necklace beads, their shapes, order, colors, cord, paws, face, wood texture, and atelier. Static camera, one continuous shot. No extra limbs, extra beads, costume change, scene change, captions, text, logo, camera motion, or exaggerated dancing.",
+  "references": {
+    "reference_audio_1": "games/bead-path-builder/assets/source/video-audio/wear-cheer.flac",
+    "reference_image_1": "games/bead-path-builder/assets/source/video-keys/fox-necklace.png"
+  },
+  "result": {
+    "bytes": 405899,
+    "jobId": "1091db609d924cd895a0b555ea3f2ead",
+    "outputs": [
+      "output0"
+    ],
+    "relocatedFrom": "games/bead-path-builder/assets/video/fox-necklace-raw.mp4",
+    "saved": "games/bead-path-builder/assets/source/video-raw/fox-necklace-raw.mp4",
+    "status": "completed"
+  },
+  "seed": 42,
+  "workflow": "minimax-h3-r2v"
+}

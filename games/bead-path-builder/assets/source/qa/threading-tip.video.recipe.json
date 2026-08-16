@@ -1,0 +1,28 @@
+{
+  "dimensions": {
+    "height": 480,
+    "width": 832
+  },
+  "duration": 5.0,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "threading-tip",
+  "output": "games/bead-path-builder/assets/source/video-raw/threading-tip-raw.mp4",
+  "prompt": "Use <Picture 1> as the exact first frame and visual identity. Static top-down camera. In one slow, physically clear demonstration, the braided cream cord tip moves to the right, passes cleanly through the open center hole of the coral-red wooden bead, then the bead slides left along the cord and settles snugly. Preserve the exact bead, hole, cord, linen, lighting, and framing. Play the teacher voice from <Audio 1> exactly once as calm voiceover. No hands, paws, arrows, text, new objects, camera motion, cuts, morphing, changing colors, duplicate bead, or tangled cord.",
+  "references": {
+    "reference_audio_1": "games/bead-path-builder/assets/source/video-audio/drag-cue.flac",
+    "reference_image_1": "games/bead-path-builder/assets/source/video-keys/threading-tip.png"
+  },
+  "result": {
+    "bytes": 617061,
+    "jobId": "4d3f7920e04743b8a364b4ed6014e7a0",
+    "outputs": [
+      "output0"
+    ],
+    "relocatedFrom": "games/bead-path-builder/assets/video/threading-tip-raw.mp4",
+    "saved": "games/bead-path-builder/assets/source/video-raw/threading-tip-raw.mp4",
+    "status": "completed"
+  },
+  "seed": 42,
+  "workflow": "minimax-h3-r2v"
+}

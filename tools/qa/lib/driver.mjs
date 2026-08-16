@@ -322,8 +322,10 @@ export async function openSession(browser, {
   if (captureRequestFailures) {
     page.on('requestfailed', (request) => {
       const reason = request.failure()?.errorText || '';
-      // Switching a spoken line intentionally aborts the previous media request.
-      if (allowAbortedMedia && reason === 'net::ERR_ABORTED' && request.url().endsWith('.m4a')) return;
+      // Replacing an audio or video element intentionally aborts its in-flight
+      // media request. Playwright identifies both as `media`; do not tie this
+      // opt-in to one audio file extension.
+      if (allowAbortedMedia && reason === 'net::ERR_ABORTED' && request.resourceType() === 'media') return;
       failed.push(`${request.url()} ${reason}`);
     });
   }

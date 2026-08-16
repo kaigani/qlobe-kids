@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "find-diamond",
+  "output": "games/bead-path-builder/assets/source/voice-raw/find-diamond.flac",
+  "seed": 7,
+  "text": "Find the diamond bead.",
+  "voiceResult": {
+    "bytes": 44785,
+    "jobId": "e8343408510b4f4b9b805a086529d94d",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/find-diamond.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 264,
+    "heard": "Find the Diamond Bead!",
+    "jobId": "de56731d641848a18e8f3e924177bfbe",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/find-diamond.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/find-diamond.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "mode-ab",
+  "output": "games/bead-path-builder/assets/source/voice-raw/mode-ab.flac",
+  "seed": 7,
+  "text": "Make a two-bead pattern: one, two, one, two.",
+  "voiceResult": {
+    "bytes": 116047,
+    "jobId": "50991bf90b4948e08dda59387bc46e01",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/mode-ab.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 418,
+    "heard": "Make it to beat pattern. One, two, one, two.",
+    "jobId": "07bba199bb7e42dfb1b3213add614cc6",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.9090909090909091,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/mode-ab.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/mode-ab.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "welcome",
+  "output": "games/bead-path-builder/assets/source/voice-raw/welcome.flac",
+  "seed": 7,
+  "text": "Welcome to the bead atelier. Pick a necklace to make!",
+  "voiceResult": {
+    "bytes": 97825,
+    "jobId": "0c19692af4ce4b6ca83d96ebc55fed05",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/welcome.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 448,
+    "heard": "Welcome to the beat, Italian. Pick a necklace to make.",
+    "jobId": "768118cbb2774e87a4bb0a9a1e74250e",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.9019607843137255,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/welcome.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/welcome.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

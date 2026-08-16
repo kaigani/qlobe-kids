@@ -1,0 +1,21 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "wear-cheer",
+  "output": "games/bead-path-builder/assets/source/voice-raw/wear-cheer.flac",
+  "seed": 7,
+  "text": "Look what you made. It fits perfectly!",
+  "voiceResult": {
+    "reason": "exists",
+    "saved": "games/bead-path-builder/assets/source/voice-raw/wear-cheer.flac",
+    "status": "skipped"
+  },
+  "whisper": {
+    "heard": "Look what you made. It fits perfectly.",
+    "ratio": 1.0,
+    "reason": "exists",
+    "saved": "games/bead-path-builder/assets/source/qa/wear-cheer.transcript.txt",
+    "status": "skipped"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

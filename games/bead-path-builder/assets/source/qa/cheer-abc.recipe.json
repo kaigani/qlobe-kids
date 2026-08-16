@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "cheer-abc",
+  "output": "games/bead-path-builder/assets/source/voice-raw/cheer-abc.flac",
+  "seed": 7,
+  "text": "Three beads, then repeat. You did it!",
+  "voiceResult": {
+    "bytes": 93209,
+    "jobId": "a2aa460f004d4a37a61531c316bf2113",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/cheer-abc.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 397,
+    "heard": "Three beads, then repeat. You did it.",
+    "jobId": "8547866918294967823526cd5e5cb61a",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/cheer-abc.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/cheer-abc.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

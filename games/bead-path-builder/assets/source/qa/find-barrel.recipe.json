@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "find-barrel",
+  "output": "games/bead-path-builder/assets/source/voice-raw/find-barrel.flac",
+  "seed": 7,
+  "text": "Find the barrel bead.",
+  "voiceResult": {
+    "bytes": 40963,
+    "jobId": "b8982cfd098a4fefa808723bd69acf91",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/find-barrel.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 261,
+    "heard": "Find the barrel bead.",
+    "jobId": "c84484176e594f87a6257add0095ee64",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/find-barrel.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/find-barrel.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

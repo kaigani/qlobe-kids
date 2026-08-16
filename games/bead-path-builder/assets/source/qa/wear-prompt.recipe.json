@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "wear-prompt",
+  "output": "games/bead-path-builder/assets/source/voice-raw/wear-prompt.flac",
+  "seed": 7,
+  "text": "Tap the fox to see the necklace!",
+  "voiceResult": {
+    "bytes": 64831,
+    "jobId": "ab07e553ee524813890b4319986bd08f",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/wear-prompt.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 294,
+    "heard": "Tap the Fox to see the necklace.",
+    "jobId": "d08a211180004f45a2efe85cea07eff6",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/wear-prompt.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/wear-prompt.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

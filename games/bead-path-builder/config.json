@@ -1,0 +1,50 @@
+{
+  "id": "bead-path-builder",
+  "title": "Bead Path Builder",
+  "beads": {
+    "round-red": { "name": "round", "file": "round-red.webp" },
+    "barrel-yellow": { "name": "barrel", "file": "barrel-yellow.webp" },
+    "diamond-blue": { "name": "diamond", "file": "diamond-blue.webp" },
+    "flower-teal": { "name": "flower", "file": "flower-teal.webp" },
+    "star-purple": { "name": "star", "file": "star-purple.webp" },
+    "heart-coral": { "name": "heart", "file": "heart-coral.webp" }
+  },
+  "modes": {
+    "ab": [
+      ["round-red", "barrel-yellow", "round-red", "barrel-yellow", "round-red", "barrel-yellow"],
+      ["diamond-blue", "heart-coral", "diamond-blue", "heart-coral", "diamond-blue", "heart-coral"],
+      ["flower-teal", "star-purple", "flower-teal", "star-purple", "flower-teal", "star-purple"]
+    ],
+    "abc": [
+      ["round-red", "barrel-yellow", "diamond-blue", "round-red", "barrel-yellow", "diamond-blue"],
+      ["heart-coral", "flower-teal", "star-purple", "heart-coral", "flower-teal", "star-purple"],
+      ["diamond-blue", "round-red", "flower-teal", "diamond-blue", "round-red", "flower-teal"]
+    ]
+  },
+  "lines": {
+    "welcome": "Welcome to the bead atelier. Pick a necklace to make!",
+    "mode-ab": "Make a two-bead pattern: one, two, one, two.",
+    "mode-abc": "Make a three-bead pattern: one, two, three, then repeat.",
+    "mode-free": "Make your very own necklace. Any beads you like!",
+    "intro-ab": "Follow the two-bead pattern. Thread the glowing spot next.",
+    "intro-abc": "Follow the three-bead pattern. Thread the glowing spot next.",
+    "intro-free": "Choose any bead. Start at the left and make it yours.",
+    "drag-cue": "Through the hole, then slide it home!",
+    "off-target": "Bring the bead to the glowing spot.",
+    "pattern-round": "Round, barrel, round, barrel. Find the round bead.",
+    "pattern-barrel": "Round, barrel, round, barrel. Find the barrel bead.",
+    "pattern-three": "Round, barrel, diamond. What comes next?",
+    "find-round": "Find the round bead.",
+    "find-barrel": "Find the barrel bead.",
+    "find-diamond": "Find the diamond bead.",
+    "find-flower": "Find the flower bead.",
+    "find-star": "Find the star bead.",
+    "find-heart": "Find the heart bead.",
+    "cheer-ab": "You followed the pattern. What a beautiful necklace!",
+    "cheer-abc": "Three beads, then repeat. You did it!",
+    "cheer-free": "Your necklace is one of a kind!",
+    "wear-prompt": "Tap the fox to see the necklace!",
+    "wear-cheer": "Look what you made. It fits perfectly!",
+    "again": "Shall we make another?"
+  }
+}

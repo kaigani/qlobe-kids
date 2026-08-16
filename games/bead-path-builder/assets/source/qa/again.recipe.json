@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "again",
+  "output": "games/bead-path-builder/assets/source/voice-raw/again.flac",
+  "seed": 7,
+  "text": "Shall we make another?",
+  "voiceResult": {
+    "bytes": 51183,
+    "jobId": "00b69325d6e34a4fa26f1c37091ec5da",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/again.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 265,
+    "heard": "Shall we make another?",
+    "jobId": "a53f366b057d47cdbaffe105aa2f2f13",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 1.0,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/again.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/again.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

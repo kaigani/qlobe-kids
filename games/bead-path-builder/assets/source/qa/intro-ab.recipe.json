@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "intro-ab",
+  "output": "games/bead-path-builder/assets/source/voice-raw/intro-ab.flac",
+  "seed": 7,
+  "text": "Follow the two-bead pattern. Thread the glowing spot next.",
+  "voiceResult": {
+    "bytes": 103493,
+    "jobId": "60006f625edb44aa93518f82a336b030",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/intro-ab.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 354,
+    "heard": "Follow the 2B pattern, thread the glowing spot next.",
+    "jobId": "1d3763243be34681b000a163f45ea8a9",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.9333333333333333,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/intro-ab.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/intro-ab.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}

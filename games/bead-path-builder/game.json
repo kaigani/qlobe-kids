@@ -6,30 +6,39 @@
   "icon": "🧵",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "status": "live",
   "accent": "#58a945",
-  "shareTitle": "Bead Path Builder 📿 — Fine Motor Bead Stringing",
-  "description": "String beads onto a curved path, placing each one carefully from left to right. A fine-motor building game for ages 5–6.",
+  "shareTitle": "Bead Path Builder — Fine Motor Patterns",
+  "description": "Thread chunky painted wooden beads onto a curved cord, continue gentle AB and ABC patterns, or design a one-of-a-kind necklace.",
   "learningGoals": [
     "Practice controlled placement on a path",
     "Build left-to-right motor sequencing",
     "Follow simple bead patterns with color and shape cues"
   ],
-  "interactionModel": "build-assemble drag or tap-tap bead cards onto curved ghost spots",
-  "feedbackModel": "Correct beads pop, sparkle, and speak their count or shape; misses wiggle gently with a spoken nudge and retry. Finished strings celebrate with a short voice line.",
+  "interactionModel": "drag a large wooden bead through the cord tip and into the next glowing position, or use the complete tap-bead then tap-slot fallback; free play supports left-to-right revision",
+  "feedbackModel": "correct beads hop to the cord tip, slide home, and click; mismatches wobble with a gentle pattern cue; completed necklaces sparkle, speak praise, and unlock the fox Magic Mirror reward",
   "uses": [
-    "shared/js/engines/build-assemble.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
     "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
     "shared/assets/ui/",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "string", "title": "String the Beads", "skill": "left-to-right controlled placement along a curve" },
-    { "id": "fancy", "title": "Fancy Strings", "skill": "placing alternating bead shapes on a curved path" }
+    { "id": "ab", "title": "AB Garden", "skill": "continue a two-part repeating pattern while placing left to right" },
+    { "id": "abc", "title": "ABC Rainbow", "skill": "continue a three-part repeating pattern while placing left to right" },
+    { "id": "free", "title": "My Necklace", "skill": "plan, revise, and finish a self-chosen bead sequence" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; placeholder emoji and swatch cards rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original Toy artwork produced with OpenAI GPT Image 2; MiniMax H3 threading and fox animations; non-identifying Qwen3 Voice Design narration with Whisper transcript QA. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/bead-path-builder/"
 }

@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "off-target",
+  "output": "games/bead-path-builder/assets/source/voice-raw/off-target.flac",
+  "seed": 7,
+  "text": "Bring the bead to the glowing spot.",
+  "voiceResult": {
+    "bytes": 62798,
+    "jobId": "9f8083754a8f4600bec66801d32836a6",
+    "outputs": [
+      "output0"
+    ],
+    "saved": "games/bead-path-builder/assets/source/voice-raw/off-target.flac",
+    "status": "completed"
+  },
+  "whisper": {
+    "accepted": true,
+    "bytes": 294,
+    "heard": "Bring the B to the glowing spot.",
+    "jobId": "5391694c66624840b9587a1a81362b29",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.9538461538461539,
+    "rawSaved": "games/bead-path-builder/assets/source/qa/off-target.transcript.whisper.json",
+    "saved": "games/bead-path-builder/assets/source/qa/off-target.transcript.txt",
+    "status": "completed"
+  },
+  "workflow": "qwen3-tts-voicedesign"
+}
