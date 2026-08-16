@@ -5,43 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Name Puzzle 🧩 — Letters in the Right Order</title>
-  <meta name="description" content="Put jumbled letters back in order to fix a friend's name or a simple word, working left to right. A letter-order puzzle for ages 5–6." />
+  <meta name="theme-color" content="#6f8fb0" />
+  <title>Name Puzzle 🌈 — Build a Name, Meet a Friend</title>
+  <meta name="description" content="Choose one of 20 familiar four- or five-letter names, match its felt letter tiles to the clue spots, and reveal a unique cozy character friend. A gentle name-recognition game for ages 3–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Name Puzzle" />
-  <meta property="og:title" content="Name Puzzle 🧩 — Letters in the Right Order" />
-  <meta property="og:description" content="Put jumbled letters back in order to fix a friend's name or a simple word, working left to right. A letter-order puzzle for ages 5–6." />
+  <meta property="og:title" content="Name Puzzle 🌈 — Build a Name, Meet a Friend" />
+  <meta property="og:description" content="Choose one of 20 familiar four- or five-letter names, match its felt letter tiles to the clue spots, and reveal a unique cozy character friend. A gentle name-recognition game for ages 3–6." />
   <meta property="og:url" content="https://qlo.be/games/name-puzzle/" />
   <meta property="og:image" content="https://qlo.be/games/name-puzzle/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Name Puzzle title screen with Fix the Names and Fix the Words modes and a green puzzle piece icon." />
+  <meta property="og:image:alt" content="Name Puzzle in a cozy felt classroom with colorful letter tiles and friendly character puppets." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Name Puzzle 🧩 — Letters in the Right Order" />
-  <meta name="twitter:description" content="Put jumbled letters back in order to fix a friend's name or a simple word, working left to right. A letter-order puzzle for ages 5–6." />
+  <meta name="twitter:title" content="Name Puzzle 🌈 — Build a Name, Meet a Friend" />
+  <meta name="twitter:description" content="Choose one of 20 familiar four- or five-letter names, match its felt letter tiles to the clue spots, and reveal a unique cozy character friend. A gentle name-recognition game for ages 3–6." />
   <meta name="twitter:image" content="https://qlo.be/games/name-puzzle/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sequence-order.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="np-game" aria-live="off">
+    <section id="screen-picker" class="qk-screen np-screen np-picker" data-qk-screen="picker">
+      <div id="picker-hud" class="np-hud-slot qk-hud-top-left"></div>
+
+      <header class="np-picker-header">
+        <img class="np-title" src="./assets/ui/title.webp" alt="Name Puzzle" />
+        <p class="np-picker-prompt">Pick a name to build!</p>
+      </header>
+
+      <div id="name-grid" class="np-name-grid" role="group" aria-label="Names"></div>
+
+      <nav class="np-pager" aria-label="Name pages">
+        <button id="page-prev" class="np-page-button" type="button" aria-label="Previous names" data-target="previous-page" data-role="navigation">
+          <img src="./assets/ui/pager-prev.webp" alt="" aria-hidden="true" />
+        </button>
+        <div class="np-page-copy">
+          <div id="page-dots" class="np-page-dots" aria-hidden="true"></div>
+          <span id="page-label">Names 1–5 of 20</span>
+        </div>
+        <button id="page-next" class="np-page-button" type="button" aria-label="Next names" data-target="next-page" data-role="navigation">
+          <img src="./assets/ui/pager-next.webp" alt="" aria-hidden="true" />
+        </button>
+      </nav>
+    </section>
+
+    <section id="screen-build" class="qk-screen np-screen np-build" data-qk-screen="build" hidden>
+      <div id="build-back" class="np-hud-slot qk-hud-top-left"></div>
+      <div id="build-sound" class="np-hud-slot qk-hud-top-right"></div>
+
+      <header class="np-build-header">
+        <div class="np-felt-label" aria-live="polite">
+          <img src="./assets/ui/panel-plum.webp" alt="" aria-hidden="true" />
+          <h1 id="build-prompt">Build BELLE</h1>
+        </div>
+        <p class="np-build-hint">Tap a letter, or drag it to its spot.</p>
+      </header>
+
+      <div id="name-board" class="np-name-board" aria-label="Name puzzle board">
+        <img class="np-board-art" src="./assets/ui/name-board.webp" alt="" aria-hidden="true" />
+        <div id="slot-row" class="np-slot-row" role="group" aria-label="Letter spots"></div>
+      </div>
+
+      <div id="letter-bank" class="np-letter-bank" role="group" aria-label="Letter tiles"></div>
+      <p id="build-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="screen-reveal" class="qk-screen np-screen np-reveal" data-qk-screen="reveal" hidden>
+      <div id="reveal-back" class="np-hud-slot qk-hud-top-left"></div>
+      <div id="reveal-sound" class="np-hud-slot qk-hud-top-right"></div>
+
+      <div class="np-reveal-stage">
+        <img class="np-medal" src="./assets/ui/star-medal.webp" alt="" aria-hidden="true" />
+        <div class="np-reveal-copy">
+          <div class="np-felt-label np-reveal-label">
+            <img src="./assets/ui/panel-plum.webp" alt="" aria-hidden="true" />
+            <h1 id="reveal-line">Meet Belle!</h1>
+          </div>
+          <div id="reveal-name" class="np-reveal-name" aria-label="Completed name"></div>
+        </div>
+        <img id="reveal-character" class="np-reveal-character" src="./assets/characters/belle.webp" alt="" />
+      </div>
+
+      <div class="np-reveal-actions qk-end-actions">
+        <button id="play-again" class="np-felt-action" type="button" data-target="play-again" data-role="replay">
+          <img src="./assets/ui/panel-coral.webp" alt="" aria-hidden="true" />
+          <span>Build Again</span>
+        </button>
+        <button id="choose-another" class="np-felt-action" type="button" data-target="choose-another" data-role="navigation">
+          <img src="./assets/ui/panel-teal.webp" alt="" aria-hidden="true" />
+          <span>Pick a Name</span>
+        </button>
+      </div>
+      <p id="reveal-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <div id="drag-layer" class="np-drag-layer" aria-hidden="true"></div>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

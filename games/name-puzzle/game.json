@@ -5,29 +5,39 @@
   "path": "games/name-puzzle/",
   "icon": "🧩",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2d7dd2",
-  "shareTitle": "Name Puzzle 🧩 — Letters in the Right Order",
-  "description": "Put jumbled letters back in order to fix a friend's name or a simple word, working left to right. A letter-order puzzle for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#7eabc3",
+  "shareTitle": "Name Puzzle 🌈 — Build a Name, Meet a Friend",
+  "description": "Choose one of 20 familiar four- or five-letter names, match its felt letter tiles to the clue spots, and reveal a unique cozy character friend. A gentle name-recognition game for ages 3–6.",
   "learningGoals": [
-    "Practice letter order in familiar names",
-    "Build name recognition with the QLOBE Kids cast",
-    "Reinforce left-to-right sequencing with short words"
+    "Recognize a familiar written name as a whole",
+    "Match uppercase letters to visible letter clues",
+    "Practice left-to-right letter order, including repeated letters"
   ],
-  "interactionModel": "tap or drag text letter cards into sequence slots",
-  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "interactionModel": "tap any matching felt letter tile or drag it directly to its letter-clue spot",
+  "feedbackModel": "Recorded name prompts, spoken letter sounds, gentle wiggle-and-retry guidance, staged idle hints, and a unique character reveal with a short confetti celebration.",
   "uses": [
-    "shared/js/engines/sequence-order.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/voice-clips.js",
+    "shared/js/content.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/assets/audio/fragments/",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "games/name-puzzle/assets/"
   ],
   "modes": [
-    { "id": "friends", "title": "Fix the Names", "skill": "letter order and name recognition" },
-    { "id": "words", "title": "Fix the Words", "skill": "left-to-right order in simple words" }
+    { "id": "name-builder", "title": "Build a Name", "skill": "name recognition, letter matching, and letter order" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
   "credits": "Built with Codex for QLOBE Kids.",
-  "characters": ["maya", "leo", "nia", "sam", "ravi"],
+  "characters": [],
   "conceptVideo": ""
 }

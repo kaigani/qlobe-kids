@@ -837,24 +837,19 @@
       "path": "games/name-puzzle/",
       "icon": "assets/hub/tiles/name-puzzle.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#7eabc3",
       "modes": [
         {
-          "id": "friends",
-          "title": "Fix the Names",
-          "skill": "letter order and name recognition"
-        },
-        {
-          "id": "words",
-          "title": "Fix the Words",
-          "skill": "left-to-right order in simple words"
+          "id": "name-builder",
+          "title": "Build a Name",
+          "skill": "name recognition, letter matching, and letter order"
         }
       ],
-      "summary": "Reorder the cut-up letters of your own name."
+      "summary": "Build one of 20 felt-tile names, then meet its character friend."
     },
     {
       "id": "letter-road-driving",

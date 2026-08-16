@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-14T00:36:16.813Z",
+  "generated": "2026-08-16T19:24:29.678Z",
   "engines": {
     "coach-timer": {
       "count": 15,
@@ -50,9 +50,8 @@
       ]
     },
     "build-assemble": {
-      "count": 8,
+      "count": 7,
       "games": [
-        "bead-path-builder",
         "blend-train",
         "block-tower-measure",
         "secret-message-copy",
@@ -60,16 +59,6 @@
         "silly-sentence-builder",
         "silly-swap-words",
         "turn-taking-tower"
-      ]
-    },
-    "sequence-order": {
-      "count": 5,
-      "games": [
-        "color-gradient-cards",
-        "family-timeline",
-        "name-puzzle",
-        "number-rod-race",
-        "story-sequence"
       ]
     },
     "observe-journal": {
@@ -80,6 +69,15 @@
         "picture-narration",
         "shadow-chase",
         "smell-jars"
+      ]
+    },
+    "sequence-order": {
+      "count": 4,
+      "games": [
+        "color-gradient-cards",
+        "family-timeline",
+        "number-rod-race",
+        "story-sequence"
       ]
     },
     "match-pairs": {
@@ -183,19 +181,27 @@
       "packs": []
     },
     "bead-path-builder": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "live",
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/preload.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
@@ -345,7 +351,7 @@
     },
     "button-zipper-lab": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "practical-life",
       "characters": [
         "Felt Bear"
@@ -530,7 +536,7 @@
     },
     "color-mixing-lab": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "art-music",
       "characters": [],
       "modules": [
@@ -581,7 +587,7 @@
     },
     "cooking-craze": {
       "engine": null,
-      "status": "in-design",
+      "status": "live",
       "category": "practical-life",
       "characters": [],
       "modules": [
@@ -794,7 +800,7 @@
     },
     "freeze-focus-dance": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
@@ -822,7 +828,7 @@
     },
     "garden-delivery-game": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [
         "Sunny the sunflower"
@@ -943,7 +949,7 @@
     },
     "kindness-delivery": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "social-emotional",
       "characters": [
         "Paper Bear",
@@ -1069,7 +1075,7 @@
     },
     "letter-treasure-hunt": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
@@ -1161,7 +1167,7 @@
     },
     "loose-parts-collage": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "art-music",
       "characters": [
         "Teddy"
@@ -1338,28 +1344,44 @@
       "packs": []
     },
     "name-puzzle": {
-      "engine": "sequence-order",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "writing-fine-motor",
-      "characters": [
-        "leo",
-        "maya",
-        "nia",
-        "ravi",
-        "sam"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sequence-order.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/name-puzzle/assets/characters/belle.webp",
+        "games/name-puzzle/assets/ui/name-board.webp",
+        "games/name-puzzle/assets/ui/pager-next.webp",
+        "games/name-puzzle/assets/ui/pager-prev.webp",
+        "games/name-puzzle/assets/ui/panel-coral.webp",
+        "games/name-puzzle/assets/ui/panel-plum.webp",
+        "games/name-puzzle/assets/ui/panel-teal.webp",
+        "games/name-puzzle/assets/ui/star-medal.webp",
+        "games/name-puzzle/assets/ui/title.webp",
+        "shared/assets/audio/fragments"
+      ],
       "packs": []
     },
     "nature-scavenger-hunt": {
@@ -2238,7 +2260,7 @@
     },
     "sound-cylinder-match": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
@@ -2606,7 +2628,7 @@
     },
     "throwing-target-garden": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
@@ -2667,7 +2689,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
-        "games/tiny-reader-theater/assets/ui/title-lockup.png",
+        "games/tiny-reader-theater/assets/ui/title-lockup.webp",
         "shared/assets/backdrops/enchanted-castle.jpg",
         "shared/assets/backdrops/forest-cottage.jpg",
         "shared/assets/backdrops/moon-adventure.jpg",
@@ -2795,7 +2817,7 @@
     },
     "world-music-dance": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "culture-geography",
       "characters": [],
       "modules": [
@@ -2935,6 +2957,7 @@
         "world-music-dance"
       ],
       "shared/js/audio-unlock.js": [
+        "bead-path-builder",
         "big-paper-murals",
         "bug-hotel-observer",
         "button-zipper-lab",
@@ -2955,6 +2978,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
@@ -2982,6 +3006,7 @@
         "throwing-target-garden"
       ],
       "shared/js/celebrate.js": [
+        "bead-path-builder",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -2994,6 +3019,7 @@
         "land-water-tray",
         "loose-parts-collage",
         "lunchbox-pack",
+        "name-puzzle",
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -3020,11 +3046,13 @@
       "shared/js/content.js": [
         "blend-train",
         "flashlight-cave",
+        "name-puzzle",
         "playdough-letter-factory",
         "sand-tray-letters",
         "sound-basket"
       ],
       "shared/js/debug-harness.js": [
+        "bead-path-builder",
         "big-paper-murals",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3044,6 +3072,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
@@ -3071,7 +3100,6 @@
         "world-music-dance"
       ],
       "shared/js/engines/build-assemble.js": [
-        "bead-path-builder",
         "blend-train",
         "block-tower-measure",
         "secret-message-copy",
@@ -3137,7 +3165,6 @@
       "shared/js/engines/sequence-order.js": [
         "color-gradient-cards",
         "family-timeline",
-        "name-puzzle",
         "number-rod-race",
         "story-sequence"
       ],
@@ -3173,6 +3200,7 @@
         "rhyming-detective"
       ],
       "shared/js/hud.js": [
+        "bead-path-builder",
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-mixing-lab",
@@ -3184,6 +3212,7 @@
         "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
+        "name-puzzle",
         "red-green-light",
         "tiny-reader-theater"
       ],
@@ -3195,6 +3224,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "name-puzzle",
         "sink-or-float",
         "teen-bead-builder",
         "tiny-reader-theater",
@@ -3256,6 +3286,7 @@
         "weather-scientist"
       ],
       "shared/js/preload.js": [
+        "bead-path-builder",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3288,6 +3319,7 @@
         "laundry-sorter",
         "loose-parts-collage",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "red-green-light",
@@ -3311,6 +3343,7 @@
         "freeze-focus-dance",
         "kindness-delivery",
         "land-water-tray",
+        "name-puzzle",
         "snack-chef",
         "throwing-target-garden",
         "tiny-reader-theater"
@@ -3524,11 +3557,13 @@
         "button-zipper-lab"
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
+        "bead-path-builder",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
         "laundry-sorter",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "snack-chef",
         "sound-basket",
@@ -3597,6 +3632,7 @@
         "sink-or-float"
       ],
       "shared/js/tap.js": [
+        "bead-path-builder",
         "big-paper-murals",
         "bug-hotel-observer",
         "button-zipper-lab",
@@ -3615,6 +3651,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
@@ -3636,6 +3673,7 @@
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "bead-path-builder",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3648,6 +3686,7 @@
         "land-water-tray",
         "letter-treasure-hunt",
         "lunchbox-pack",
+        "name-puzzle",
         "pattern-bracelet-band",
         "puppet-retell",
         "red-green-light",
@@ -3661,6 +3700,7 @@
         "world-music-dance"
       ],
       "shared/js/voice-clips.js": [
+        "bead-path-builder",
         "blend-train",
         "bug-hotel-observer",
         "button-zipper-lab",
@@ -3682,6 +3722,7 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "my-puppet-band",
+        "name-puzzle",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-problem-solvers",
@@ -3823,7 +3864,6 @@
       "shared/css/engine-base.css": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "bead-path-builder",
         "bean-sprout-watch",
         "blend-train",
         "block-tower-measure",
@@ -3846,7 +3886,6 @@
         "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
-        "name-puzzle",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
@@ -3889,6 +3928,7 @@
         "waiting-muscle-game"
       ],
       "shared/css/hud.css": [
+        "bead-path-builder",
         "big-paper-murals",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3901,6 +3941,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "name-puzzle",
         "red-green-light",
         "rhythm-copycat",
         "sound-cylinder-match",
@@ -4072,7 +4113,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4087,7 +4127,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "plan-do-review",
         "problem-solving-puppets",
         "snack-chef",
@@ -4102,7 +4141,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4150,7 +4188,6 @@
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4161,7 +4198,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4405,6 +4441,33 @@
       "games/lunchbox-pack/assets/lunchbox-open.png": [
         "lunchbox-pack"
       ],
+      "games/name-puzzle/assets/characters/belle.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/name-board.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/pager-next.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/pager-prev.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/panel-coral.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/panel-plum.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/panel-teal.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/star-medal.webp": [
+        "name-puzzle"
+      ],
+      "games/name-puzzle/assets/ui/title.webp": [
+        "name-puzzle"
+      ],
       "games/pattern-bracelet-band/assets/title.webp": [
         "pattern-bracelet-band"
       ],
@@ -4567,7 +4630,7 @@
       "games/teen-bead-builder/assets/manipulatives/tray.webp": [
         "teen-bead-builder"
       ],
-      "games/tiny-reader-theater/assets/ui/title-lockup.png": [
+      "games/tiny-reader-theater/assets/ui/title-lockup.webp": [
         "tiny-reader-theater"
       ],
       "shared/assets/audio": [
@@ -4579,7 +4642,8 @@
       ],
       "shared/assets/audio/fragments": [
         "blend-train",
-        "flashlight-cave"
+        "flashlight-cave",
+        "name-puzzle"
       ],
       "shared/assets/audio/isfor": [
         "flashlight-cave"
@@ -4726,7 +4790,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4738,7 +4801,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "plan-do-review",
         "problem-solving-puppets",
         "snack-chef",
@@ -4756,7 +4818,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4786,7 +4847,6 @@
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4797,7 +4857,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "name-puzzle",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
