@@ -191,7 +191,14 @@ function gameCard(game, index, accent) {
   card.setAttribute('aria-label', game.status === 'beta' ? `${game.title} — beta` : game.title);
   card.dataset.gameId = game.id;
   card.style.setProperty('--card-accent', accent);
-  card.append(tileArt(game, { eager: index < 10 }));
+  const art = tileArt(game, { eager: index < 10 });
+  if (game.status === 'beta') {
+    const badge = el('span', 'beta-badge');
+    badge.textContent = '🏗️ Beta';
+    badge.setAttribute('aria-hidden', 'true');
+    art.appendChild(badge);
+  }
+  card.append(art);
 
   const label = el('span', 'game-title');
   label.textContent = game.title;
