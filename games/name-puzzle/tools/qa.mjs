@@ -43,6 +43,59 @@ async function targetSizes(page, selector) {
   }));
 }
 
+async function pickerLabelGeometry(page) {
+  return page.locator('.np-name-card').evaluateAll((cards) => cards.map((card) => {
+    const label = card.querySelector('.np-name-card-label');
+    const character = card.querySelector('.np-name-card-character');
+    const host = card.getBoundingClientRect();
+    const text = label.getBoundingClientRect();
+    const art = character.getBoundingClientRect();
+    return {
+      name: label.textContent.trim(),
+      scrollX: label.scrollWidth - label.clientWidth,
+      scrollY: label.scrollHeight - label.clientHeight,
+      left: text.left - host.left,
+      rightGap: art.left - text.right,
+      centerY: (text.top + text.bottom - host.top - host.bottom) / 2,
+      contained: text.left >= host.left - 1 && text.right <= host.right + 1
+        && text.top >= host.top - 1 && text.bottom <= host.bottom + 1,
+    };
+  }));
+}
+
+async function centeredLabelGeometry(page, textSelector, hostSelector) {
+  return page.locator(textSelector).evaluateAll((nodes, selector) => nodes.map((node) => {
+    const host = node.closest(selector);
+    const outer = host.getBoundingClientRect();
+    const text = node.getBoundingClientRect();
+    const safeTop = outer.top + outer.height * .2;
+    const safeBottom = outer.bottom - outer.height * .2;
+    return {
+      text: node.textContent.trim(),
+      scrollX: node.scrollWidth - node.clientWidth,
+      scrollY: node.scrollHeight - node.clientHeight,
+      centerX: (text.left + text.right - outer.left - outer.right) / 2,
+      centerY: (text.top + text.bottom - outer.top - outer.bottom) / 2,
+      withinPanelHeight: text.top >= safeTop - 2 && text.bottom <= safeBottom + 2,
+      contained: text.left >= outer.left - 1 && text.right <= outer.right + 1
+        && text.top >= outer.top - 1 && text.bottom <= outer.bottom + 1,
+    };
+  }), hostSelector);
+}
+
+function pickerLabelsPass(metrics) {
+  return metrics.length > 0 && metrics.every(({ scrollX, scrollY, rightGap, centerY, contained }) => (
+    scrollX <= 1 && scrollY <= 2 && rightGap >= -1 && Math.abs(centerY) <= 2 && contained
+  ));
+}
+
+function centeredLabelsPass(metrics) {
+  return metrics.length > 0 && metrics.every(({
+    scrollX, scrollY, centerX, centerY, withinPanelHeight, contained,
+  }) => scrollX <= 1 && scrollY <= 2 && Math.abs(centerX) <= 2 && Math.abs(centerY) <= 2
+    && withinPanelHeight && contained);
+}
+
 async function noViewportOverflow(page) {
   return page.evaluate(() => ({
     x: document.documentElement.scrollWidth - innerWidth,
@@ -188,15 +241,19 @@ async function main() {
   await shot(page, '01-picker-landscape');
 
   const pagedNames = [];
+  const pagedLabels = [];
   for (let pageIndex = 0; pageIndex < 4; pageIndex += 1) {
     pagedNames.push(...await page.locator('.np-name-card').evaluateAll(
       (cards) => cards.map((card) => card.dataset.target),
     ));
+    pagedLabels.push(...await pickerLabelGeometry(page));
     if (pageIndex > 0) await shot(page, `01-picker-page-${pageIndex + 1}`);
     if (pageIndex < 3) await page.locator('[data-target="next-page"]').click();
   }
   check('four picker pages expose all twenty names exactly once', pagedNames.length === 20
     && new Set(pagedNames).size === 20, JSON.stringify(pagedNames));
+  check('all twenty picker labels fit left of their character art', pagedLabels.length === 20
+    && pickerLabelsPass(pagedLabels), JSON.stringify(pagedLabels));
   for (let pageIndex = 3; pageIndex > 0; pageIndex -= 1) {
     await page.locator('[data-target="previous-page"]').click();
   }
@@ -210,6 +267,8 @@ async function main() {
   const pieces = await targetSizes(page, '.np-letter-piece');
   check('landscape letter tiles meet the 96px target', pieces.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(pieces));
   check('build prompt names BELLE', (await page.locator('#build-prompt').textContent()).trim() === 'Build BELLE');
+  const landscapeBuildLabel = await centeredLabelGeometry(page, '#build-prompt', '.np-felt-label');
+  check('landscape build label fits and centers on its felt panel', centeredLabelsPass(landscapeBuildLabel), JSON.stringify(landscapeBuildLabel));
   check('all empty BELLE slots show their matching clues', await page.locator('.np-slot-clue').allTextContents()
     .then((letters) => letters.join('') === 'BELLE'));
   const buildAudio = await debug.getAudioLog(page);
@@ -281,6 +340,10 @@ async function main() {
   const revealAudio = await debug.getAudioLog(page);
   check('Belle reveal selects its recorded clip', revealAudio.some(({ key, kind }) => key === 'reveal-belle' && kind === 'clip'), JSON.stringify(revealAudio));
   await waitForSettledReveal(page);
+  const landscapeRevealLabels = await centeredLabelGeometry(page, '#reveal-line', '.np-reveal-label');
+  const landscapeActionLabels = await centeredLabelGeometry(page, '.np-felt-action > span', '.np-felt-action');
+  check('landscape reveal copy fits and centers on its felt panel', centeredLabelsPass(landscapeRevealLabels), JSON.stringify(landscapeRevealLabels));
+  check('landscape action labels fit and center on their felt panels', centeredLabelsPass(landscapeActionLabels), JSON.stringify(landscapeActionLabels));
   await shot(page, '03-belle-reveal');
 
   await page.locator('[data-target="play-again"]').click();
@@ -298,11 +361,18 @@ async function main() {
   const portraitOverflow = await noViewportOverflow(portrait.page);
   check('portrait build stays inside the viewport', portraitOverflow.x <= 1 && portraitOverflow.y <= 1, JSON.stringify(portraitOverflow));
   check('portrait keeps all five Sofia slots visible', await portrait.page.locator('.np-slot').count() === 5);
+  const portraitBuildLabel = await centeredLabelGeometry(portrait.page, '#build-prompt', '.np-felt-label');
+  check('portrait build label fits and centers on its felt panel', centeredLabelsPass(portraitBuildLabel), JSON.stringify(portraitBuildLabel));
   await shot(portrait.page, '04-sofia-build-portrait');
   await debug.winRound(portrait.page);
   await debug.waitForScreen(portrait.page, 'reveal');
   check('Sofia has her unique Swan reveal', (await portrait.page.locator('#reveal-line').textContent()).trim() === 'Meet Sofia the Swan!');
   await waitForSettledReveal(portrait.page);
+  const portraitRevealLabels = await centeredLabelGeometry(portrait.page, '#reveal-line', '.np-reveal-label');
+  const portraitActionLabels = await centeredLabelGeometry(portrait.page, '.np-felt-action > span', '.np-felt-action');
+  check('portrait reveal and action labels fit their felt panels', centeredLabelsPass([
+    ...portraitRevealLabels, ...portraitActionLabels,
+  ]), JSON.stringify([...portraitRevealLabels, ...portraitActionLabels]));
   await shot(portrait.page, '05-sofia-reveal-portrait');
 
   const reduced = await openGame(browser, { width: 1180, height: 820 }, 'reduce');
@@ -311,6 +381,8 @@ async function main() {
   await debug.waitForScreen(reduced.page, 'reveal');
   check('reduced-motion reveal remains complete and readable', await reduced.page.locator('#reveal-character').isVisible()
     && (await reduced.page.locator('#reveal-line').textContent()).includes('Emma'));
+  const reducedRevealLabel = await centeredLabelGeometry(reduced.page, '#reveal-line', '.np-reveal-label');
+  check('reduced-motion reveal label fits and centers on its felt panel', centeredLabelsPass(reducedRevealLabel), JSON.stringify(reducedRevealLabel));
   await shot(reduced.page, '06-emma-reveal-reduced-motion');
 
   const playback = await openGame(browser, { width: 900, height: 700 }, 'no-preference', false);
@@ -339,6 +411,14 @@ async function main() {
   ), JSON.stringify(revealPlayback));
 
   const narrow = await openGame(browser, { width: 390, height: 844 });
+  const narrowPickerLabels = [];
+  for (let pageIndex = 0; pageIndex < 4; pageIndex += 1) {
+    narrowPickerLabels.push(...await pickerLabelGeometry(narrow.page));
+    if (pageIndex === 0) await shot(narrow.page, '10-picker-narrow');
+    if (pageIndex < 3) await narrow.page.locator('[data-target="next-page"]').click();
+  }
+  check('all twenty 390px picker labels fit left of their character art', narrowPickerLabels.length === 20
+    && pickerLabelsPass(narrowPickerLabels), JSON.stringify(narrowPickerLabels));
   await debug.startMode(narrow.page, 'liam');
   await debug.waitForScreen(narrow.page, 'build');
   const narrowTargets = await targetSizes(narrow.page, '.np-slot, .np-letter-piece');
@@ -346,6 +426,8 @@ async function main() {
     && narrowTargets.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(narrowTargets));
   const narrowOverflow = await noViewportOverflow(narrow.page);
   check('390×844 build stays inside the viewport', narrowOverflow.x <= 1 && narrowOverflow.y <= 1, JSON.stringify(narrowOverflow));
+  const narrowBuildLabel = await centeredLabelGeometry(narrow.page, '#build-prompt', '.np-felt-label');
+  check('390px build label fits and centers on its felt panel', centeredLabelsPass(narrowBuildLabel), JSON.stringify(narrowBuildLabel));
   const liftTarget = await pieceTargetForLetter(narrow.page, 'L');
   const liftBox = await narrow.page.locator(`[data-target="${liftTarget}"]`).boundingBox();
   await narrow.page.mouse.move(liftBox.x + liftBox.width / 2, liftBox.y + liftBox.height / 2);
@@ -380,6 +462,15 @@ async function main() {
     && await narrow.page.locator('.np-letter-ghost').count() === 0
     && await narrow.page.locator('.np-letter-piece.is-lifting').count() === 0
     && (await debug.getState(narrow.page)).placed.every((value) => value === null), JSON.stringify(resizedOverflow));
+  await debug.winRound(narrow.page);
+  await debug.waitForScreen(narrow.page, 'reveal');
+  await waitForSettledReveal(narrow.page);
+  const narrowRevealLabels = await centeredLabelGeometry(narrow.page, '#reveal-line', '.np-reveal-label');
+  const narrowActionLabels = await centeredLabelGeometry(narrow.page, '.np-felt-action > span', '.np-felt-action');
+  check('narrow reveal and action labels fit their felt panels', centeredLabelsPass([
+    ...narrowRevealLabels, ...narrowActionLabels,
+  ]), JSON.stringify([...narrowRevealLabels, ...narrowActionLabels]));
+  await shot(narrow.page, '12-liam-reveal-narrow');
 
   const compact = await openGame(browser, { width: 1180, height: 520 });
   await debug.startMode(compact.page, 'hazel');
@@ -389,7 +480,18 @@ async function main() {
     && compactTargets.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(compactTargets));
   const compactOverflow = await noViewportOverflow(compact.page);
   check('1180×520 build stays inside the viewport', compactOverflow.x <= 1 && compactOverflow.y <= 1, JSON.stringify(compactOverflow));
+  const compactBuildLabel = await centeredLabelGeometry(compact.page, '#build-prompt', '.np-felt-label');
+  check('compact build label fits and centers on its felt panel', centeredLabelsPass(compactBuildLabel), JSON.stringify(compactBuildLabel));
   await shot(compact.page, '08-hazel-build-compact-landscape');
+  await debug.winRound(compact.page);
+  await debug.waitForScreen(compact.page, 'reveal');
+  await waitForSettledReveal(compact.page);
+  const compactRevealLabels = await centeredLabelGeometry(compact.page, '#reveal-line', '.np-reveal-label');
+  const compactActionLabels = await centeredLabelGeometry(compact.page, '.np-felt-action > span', '.np-felt-action');
+  check('compact reveal and action labels fit their felt panels', centeredLabelsPass([
+    ...compactRevealLabels, ...compactActionLabels,
+  ]), JSON.stringify([...compactRevealLabels, ...compactActionLabels]));
+  await shot(compact.page, '11-hazel-reveal-compact-landscape');
 
   const missingArt = await openMissingArtGame(browser, 'noah');
   await debug.call(missingArt.page, 'nextPage');

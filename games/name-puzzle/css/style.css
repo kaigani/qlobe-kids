@@ -146,10 +146,10 @@ button {
 
 .np-name-card-character {
   position: absolute;
-  right: -1%;
+  right: 0;
   bottom: 6%;
-  width: 53%;
-  height: 93%;
+  width: 47%;
+  height: 91%;
   object-fit: contain;
   object-position: right bottom;
   filter: drop-shadow(0 5px 4px rgba(55, 37, 63, .24));
@@ -158,14 +158,16 @@ button {
 .np-name-card-label {
   position: absolute;
   z-index: 2;
-  top: 27%;
-  left: 7%;
-  width: 54%;
-  font-size: clamp(25px, 3.2vw, 50px);
+  top: 50%;
+  left: 22%;
+  width: 31%;
+  font-size: clamp(19px, 1.75vw, 26px);
   line-height: 1;
   letter-spacing: .01em;
   text-align: center;
   text-shadow: 0 3px 0 rgba(47, 34, 67, .72);
+  transform: translateY(-50%);
+  white-space: nowrap;
 }
 
 .np-name-card:active {
@@ -283,13 +285,17 @@ button {
 .np-felt-label h1 {
   position: relative;
   z-index: 1;
-  max-width: 84%;
+  width: 48%;
+  min-width: 0;
+  max-width: none;
   margin: 0;
-  font-size: clamp(27px, 3.5vw, 49px);
-  line-height: 1;
+  font-size: clamp(22px, 2.45vw, 34px);
+  line-height: 1.06;
   text-align: center;
   text-shadow: 0 3px 0 rgba(38, 22, 56, .45);
 }
+
+#build-prompt { white-space: nowrap; }
 
 .np-build-hint {
   margin-top: clamp(-18px, -1.7vh, -7px);
@@ -467,7 +473,11 @@ button {
   min-width: 330px;
 }
 
-.np-reveal-label h1 { font-size: clamp(25px, 3.2vw, 46px); }
+.np-reveal-label h1 {
+  font-size: clamp(23px, 2.6vw, 34px);
+  line-height: 1.08;
+  text-wrap: balance;
+}
 
 .np-reveal-character {
   z-index: 1;
@@ -564,11 +574,14 @@ button {
 .np-felt-action > span {
   position: relative;
   z-index: 1;
-  max-width: 84%;
-  font-size: clamp(23px, 2.5vw, 34px);
-  line-height: 1;
+  width: 50%;
+  min-width: 0;
+  max-width: none;
+  font-size: clamp(17px, 1.75vw, 23px);
+  line-height: 1.05;
   text-align: center;
   text-shadow: 0 3px 0 rgba(36, 46, 70, .45);
+  text-wrap: balance;
 }
 
 .np-felt-action:active {
@@ -629,7 +642,7 @@ button {
   }
 
   .np-name-card { aspect-ratio: 1.62; }
-  .np-name-card-label { font-size: clamp(28px, 5vw, 42px); }
+  .np-name-card-label { font-size: clamp(19px, 3vw, 25px); }
   .np-title { width: clamp(245px, 49vw, 390px); max-height: 18vh; }
   .np-felt-label { width: clamp(290px, 47vw, 410px); }
 
@@ -677,7 +690,7 @@ button {
 
   .np-build { grid-template-rows: auto minmax(0, 1fr) auto; }
   .np-felt-label { width: clamp(250px, 28vw, 350px); }
-  .np-felt-label h1 { font-size: clamp(25px, 3vw, 38px); }
+  .np-felt-label h1 { font-size: clamp(21px, 2.25vw, 28px); }
   .np-build-hint { font-size: 17px; }
   .np-name-board { width: min(68vw, calc(32vh * 2.145), 700px); }
   .np-letter-bank { min-height: 104px; }
@@ -695,7 +708,7 @@ button {
   .np-hud-slot { --qk-hud-gap: 12px; }
 
   .np-name-grid { width: 94vw; }
-  .np-name-card-label { font-size: clamp(24px, 7.8vw, 36px); }
+  .np-name-card-label { font-size: clamp(18px, 4.7vw, 21px); }
   .np-pager { gap: 5px; }
   .np-page-copy { min-width: 132px; }
   .np-name-board { width: 96vw; height: 250px; aspect-ratio: auto; }
