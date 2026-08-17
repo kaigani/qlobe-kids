@@ -1,0 +1,33 @@
+{
+  "letter-kit": [
+    {
+      "jobId": "e648502525b04bd9a7e1009442111a74",
+      "seed": 42,
+      "reason": "whole-sheet candidate rejected: near-empty alpha (transparent=1.000, opaque=0.000)"
+    },
+    {
+      "jobId": "f0d1067353094b5890245ac190526e78",
+      "seed": 9001,
+      "reason": "whole-sheet candidate rejected: no opaque foreground core and nontransparent corners"
+    }
+  ],
+  "letter-red": [
+    {
+      "jobId": "fd1ae25ab1f046709ad2882e0c697c8f",
+      "seed": 9001,
+      "reason": "individual candidate rejected: fully opaque layer_2"
+    },
+    {
+      "jobId": "b9b816a1148148f387b0d33e5e9ada0c",
+      "seed": 9001,
+      "reason": "individual candidate rejected: foreground RGB drift exceeded threshold (core MAE 44.395)"
+    }
+  ],
+  "letter-orange": [
+    {
+      "jobId": "3d5976dc26e64198a3fdbd6096d5ee8c",
+      "seed": 1337,
+      "reason": "letter-orange: alpha QA failed (corners=[252, 247, 243, 222], transparent=0.000, opaque=1.000)"
+    }
+  ]
+}

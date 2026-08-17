@@ -183,19 +183,38 @@ Execution `exec-ddc94ce8-a462-4230-93bc-9f8e2b51d26a`; source
 
 ## Layer extraction and finalization
 
-The approved local-Qwen extraction prompt is preserved verbatim in
-`../../tools/extract-characters.py`:
+The production local-Qwen extraction template is preserved verbatim in
+`../../tools/extract-characters.py` and instantiated with an exact subject
+description for each of the 20 characters, three single UI masters, eight
+letter tiles, and two UI sheets. The blank letter tiles are deterministically
+cropped and background-presented through Qwen Image Edit before their separate
+Layered jobs; the panel and navigation sheets remain intact and are cropped
+only after their authoritative alpha layer is returned:
 
-> Background layer: the single flat dark-charcoal background. Top layer: the
-> exact complete illustrated character {name} from the input on true
-> transparency. Preserve silhouette, colors, facial features, clothing,
-> texture, and lighting; do not redesign, crop, or add objects.
+> Layer 1 is only the complete dark-charcoal background, including every
+> background pixel and cast shadow. Layer 2 must be {exact subject description}
+> alone on true transparency. Preserve the exact input pixels, identity,
+> silhouette, colors, facial features, text, layout, felt texture, stitching,
+> scale, and lighting. Keep all foreground parts fully present. Do not redraw,
+> redesign, crop, rearrange, add, remove, repair, extend, or invent anything.
+> Everything outside the named foreground objects must be fully transparent;
+> retain no charcoal bands, halos, rectangles, floor, cast shadow, or background
+> residue.
 
-It targets `qwen-image-layered`, two layers, seed `42`, and would store returned
-layers in `assets/source/layered/`. The production-session submission was not
-allowed because the managed environment required separate permission to upload
-the private reference-derived masters to a LAN service. No Qwen result is
-claimed or shipped. The deterministic offline fallback
-`../../tools/finalize-assets.py` instead removes the authored charcoal matte,
-fits the masters to fixed canvases, encodes WebP runtime assets, and creates
-`qa-local/contact-sheet.png` plus `qa-local/alpha-report.json`.
+For each letter tile, the focused Layered prompt is:
+
+> Layer 1 is every grey background pixel and the grey cast shadow. Layer 2 is
+> only {exact felt tile description}, with true transparent alpha everywhere
+> outside the felt tile.
+
+It targets `qwen-image-layered`, two layers, seed 42 for characters and whole
+UI masters, and a bounded 1337/42/9001 seed ladder for individual letters. It
+stores only accepted authoritative `output=layer_2` PNGs in
+`assets/source/layered/`. Accepted job ids/seeds, source and layer checksums,
+machine-validation metrics, pending attempts, and rejected candidates are
+retained in `qwen-jobs.json`, `qwen-layer-report.json`,
+`qwen-pending-jobs.json`, and `qwen-layer-rejections.json`; the configured LAN
+address is not. A release check requires no pending attempts. The deterministic
+finalizer only trims, pads, resizes, and encodes those RGBA layers, then creates
+`qa-layered/contact-sheet.png` and `qa-layered/alpha-report.json`. It has no
+matte-inference fallback.

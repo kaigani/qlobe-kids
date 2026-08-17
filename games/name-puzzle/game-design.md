@@ -145,13 +145,12 @@ contains 45 authored clips:
 
 The runtime manifest publishes the batch only when all 45 files pass media,
 checksum, duration, volume, and transcript checks together. The release pack
-was rendered fully on-device with the installed macOS Samantha voice, leveled
-to -18 LUFS, and round-tripped through an installed CPU-only whisper.cpp small
-model; `assets/audio/qa.json` records a 1.0 normalized transcript ratio for all
-45 lines. The preferred Qwen teacher-voice/Whisper LAN path remains available
-in `tools/generate-voice.py`, but its private-reference upload was not approved
-by the managed environment for this production session and is not claimed as
-the source of the shipped clips.
+uses LAN `qwen3-tts-voiceclone` with the approved synthetic platform
+teacher-narrator reference, is leveled to -18 LUFS, and is round-tripped through
+LAN `whisper-stt`. `assets/audio/qa.json` records the engine, narrator-reference
+checksum, intended text, transcript, similarity, duration, volume, and output
+checksum for every line. System speech is recovery-only and cannot pass the
+production voice check.
 
 Correct tile landings use the shared recorded A–Z letter clips through
 `content.js`. No runtime model or network call is permitted.
@@ -189,10 +188,14 @@ large brown eyes, black curly updo and ringlets, rainbow jeweled crown, rainbow
 gown, and crystal-tipped scepter while translating every material into sewn
 felt/fleece. Do not copy the bathroom background. Other characters share the
 same handmade scale, frontal three-quarter presentation, lighting, padding,
-and stitched facial language. The prepared Qwen Image Layered route was not
-authorized to receive the private reference-derived masters in this production
-session, so the shipped cutouts use the deterministic local charcoal-matte
-finalizer. All alpha edges are reviewed on saturated magenta before final WebP.
+and stitched facial language. The 20 characters, three single UI masters,
+eight letter tiles, and two UI sheets pass through LAN `qwen-image-layered`.
+Letters are cropped and background-presented by Qwen Image Edit first; panel
+and navigation sheets are cropped only after Layered returns their alpha. The
+returned `layer_2` is always the sole alpha authority. No flood-fill, chroma-key,
+or silhouette reconstruction is permitted. Raw layers and model receipts are
+retained, and every final alpha edge is reviewed at full size on saturated
+magenta before WebP encoding.
 
 The hub tile is a purpose-composed 6:5 scene rather than a cropped gameplay
 screenshot: Belle waves beside a stitched board whose five tiles spell exactly

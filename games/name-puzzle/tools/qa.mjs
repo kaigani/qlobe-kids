@@ -135,6 +135,34 @@ async function main() {
     const data = await fetch('./config.json').then((response) => response.json());
     return data.names.every(({ letters }) => /^[A-Z]{4,5}$/.test(letters));
   }));
+  check('all shipped narration is Qwen teacher narration, never system speech', await page.evaluate(async () => {
+    const receipts = await fetch('./assets/audio/qa.json').then((response) => response.json());
+    const entries = Object.values(receipts);
+    return entries.length === 45 && entries.every((entry) => entry.valid === true
+      && entry.engine === 'qwen3-tts-voiceclone'
+      && entry.voice === 'platform-teacher-narrator'
+      && typeof entry.referenceSha256 === 'string'
+      && /^[0-9a-f]{64}$/.test(entry.referenceSha256));
+  }));
+  check('all transparent source art publishes Qwen layer_2 provenance', await page.evaluate(async () => {
+    const [report, jobs, pending] = await Promise.all([
+      fetch('./assets/source/qwen-layer-report.json').then((response) => response.json()),
+      fetch('./assets/source/qwen-jobs.json').then((response) => response.json()),
+      fetch('./assets/source/qwen-pending-jobs.json').then((response) => response.json()),
+    ]);
+    const entries = Object.entries(report);
+    return entries.length === 33 && Object.keys(jobs).length === 33
+      && Object.keys(pending).length === 0
+      && entries.every(([key, entry]) => entry.workflow === 'qwen-image-layered'
+      && entry.selectedOutput === 'layer_2'
+      && /^[0-9a-f]{64}$/.test(entry.sourceSha256)
+      && /^[0-9a-f]{64}$/.test(entry.rawLayerSha256)
+      && /no flood fill/i.test(entry.matteAuthority)
+      && entry.acceptedJobId === jobs[key]?.jobId
+      && entry.seed === jobs[key]?.seed)
+      && Object.values(jobs).every((entry) => /^[0-9a-f]{32}$/.test(entry.jobId)
+        && Number.isInteger(entry.seed));
+  }));
   check('picker shows five choices per page', await page.locator('.np-name-card').count() === 5);
   const cards = await targetSizes(page, '.np-name-card');
   check('picker cards meet the 96px target', cards.every(({ w, h }) => w >= 96 && h >= 96), JSON.stringify(cards));
