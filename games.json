@@ -2802,21 +2802,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#d98c2b",
+      "status": "beta",
+      "accent": "#2a83ba",
       "modes": [
         {
-          "id": "build",
-          "title": "Build It",
-          "skill": "planning, course design, and safety checks"
+          "id": "backyard",
+          "title": "Backyard",
+          "skill": "spatial planning with crawl, climb, hop, and carry modules"
         },
         {
-          "id": "run",
-          "title": "Run It",
-          "skill": "varied gross-motor movement and balance"
+          "id": "jungle",
+          "title": "Jungle",
+          "skill": "route revision with crawl, climb, balance, and carry modules"
+        },
+        {
+          "id": "arctic",
+          "title": "Arctic",
+          "skill": "curved route planning with combinable belly-slide ramps"
         }
       ],
-      "summary": "Crawl, climb, hop, balance, and carry through a course."
+      "summary": "Build a Papercraft route, then crawl, climb, hop, carry, and slide through it."
     },
     {
       "id": "line-walking-challenge",

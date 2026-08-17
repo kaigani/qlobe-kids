@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen3-tts-voicedesign",
+  "fields": {
+    "instruct": "A warm, calm preschool adventure guide with a gentle smile in her voice, clear American English, unhurried pace, natural and encouraging, never sing-song.",
+    "text": "A treasure to carry!",
+    "seed": 7
+  },
+  "source": "games/obstacle-course-builder/assets/source/voice-raw/carry-picked-s7.flac",
+  "output": "games/obstacle-course-builder/assets/audio/carry-picked.m4a",
+  "whisper": {
+    "workflow": "whisper-stt",
+    "heard": "A treasure to carry!",
+    "ratio": 1.0,
+    "accepted": true
+  }
+}

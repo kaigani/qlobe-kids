@@ -1,0 +1,40 @@
+{
+  "id": "obstacle-course-builder",
+  "title": "Obstacle Course Builder",
+  "grid": { "columns": 4, "rows": 3, "cells": ["c0-r0", "c1-r0", "c2-r0", "c3-r0", "c0-r1", "c1-r1", "c2-r1", "c3-r1", "c0-r2", "c1-r2", "c2-r2", "c3-r2"] },
+  "worlds": [
+    { "id": "backyard", "title": "Backyard", "guide": "puppy", "plate": "./assets/worlds/backyard.webp", "modules": [
+      { "kind": "tunnel", "title": "Rainbow tunnel", "asset": "./assets/obstacles/backyard-rainbow-tunnel.webp", "action": "crawl" },
+      { "kind": "wall", "title": "Rock wall", "asset": "./assets/obstacles/backyard-rock-wall.webp", "action": "climb" },
+      { "kind": "hop", "title": "Lily-pad crossing", "asset": "./assets/obstacles/backyard-lily-pad-crossing.webp", "action": "hop" },
+      { "kind": "carry", "title": "Foam-block carry", "asset": "./assets/obstacles/backyard-foam-block-carry.webp", "action": "carry", "item": "./assets/props/foam-block.webp", "goal": "./assets/props/backyard-goal.webp" }
+    ] },
+    { "id": "jungle", "title": "Jungle", "guide": "monkey", "plate": "./assets/worlds/jungle.webp", "modules": [
+      { "kind": "tunnel", "title": "Vine tunnel", "asset": "./assets/obstacles/jungle-vine-tunnel.webp", "action": "crawl" },
+      { "kind": "wall", "title": "Boulder wall", "asset": "./assets/obstacles/jungle-boulder-wall.webp", "action": "climb" },
+      { "kind": "hop", "title": "Log crossing", "asset": "./assets/obstacles/jungle-log-crossing.webp", "action": "hop" },
+      { "kind": "carry", "title": "Fruit carry", "asset": "./assets/obstacles/jungle-fruit-carry.webp", "action": "carry", "item": "./assets/props/fruit.webp", "goal": "./assets/props/jungle-goal.webp" }
+    ] },
+    { "id": "arctic", "title": "Arctic", "guide": "penguin", "plate": "./assets/worlds/arctic.webp", "modules": [
+      { "kind": "tunnel", "title": "Igloo tunnel", "asset": "./assets/obstacles/arctic-igloo-tunnel.webp", "action": "crawl" },
+      { "kind": "wall", "title": "Iceberg wall", "asset": "./assets/obstacles/arctic-iceberg-wall.webp", "action": "climb" },
+      { "kind": "hop", "title": "Ice-floe crossing", "asset": "./assets/obstacles/arctic-ice-floe-crossing.webp", "action": "hop" },
+      { "kind": "carry", "title": "Fish carry", "asset": "./assets/obstacles/arctic-fish-carry.webp", "action": "carry", "item": "./assets/props/fish.webp", "goal": "./assets/props/arctic-goal.webp" },
+      { "kind": "slide", "title": "Belly-slide ramp", "asset": "./assets/obstacles/arctic-belly-slide-ramp.webp", "action": "slide" }
+    ] }
+  ],
+  "guides": {
+    "puppy": { "idle": "./assets/guides/puppy-idle.webp", "crawl": "./assets/guides/puppy-crawl.webp", "climb": "./assets/guides/puppy-climb.webp", "hop": "./assets/guides/puppy-hop.webp", "carry": "./assets/guides/puppy-carry.webp", "cheer": "./assets/guides/puppy-cheer.webp" },
+    "monkey": { "idle": "./assets/guides/monkey-idle.webp", "crawl": "./assets/guides/monkey-crawl.webp", "climb": "./assets/guides/monkey-climb.webp", "hop": "./assets/guides/monkey-hop.webp", "carry": "./assets/guides/monkey-carry.webp", "cheer": "./assets/guides/monkey-cheer.webp" },
+    "penguin": { "idle": "./assets/guides/penguin-idle.webp", "crawl": "./assets/guides/penguin-crawl.webp", "climb": "./assets/guides/penguin-climb.webp", "hop": "./assets/guides/penguin-hop.webp", "carry": "./assets/guides/penguin-carry.webp", "cheer": "./assets/guides/penguin-cheer.webp", "slide": "./assets/guides/penguin-belly-slide.webp" }
+  },
+  "colors": { "sunny": { "backyard": "saturate(1.08) hue-rotate(0deg)", "jungle": "saturate(1.12) hue-rotate(-4deg)", "arctic": "saturate(1.05) hue-rotate(8deg)" }, "berry": { "backyard": "saturate(1.15) hue-rotate(322deg)", "jungle": "saturate(1.12) hue-rotate(328deg)", "arctic": "saturate(1.1) hue-rotate(300deg)" }, "ocean": { "backyard": "saturate(1.1) hue-rotate(150deg)", "jungle": "saturate(1.08) hue-rotate(145deg)", "arctic": "saturate(1.1) hue-rotate(180deg)" } },
+  "suggestedRoutes": [
+    { "id": "straight", "cells": ["c0-r1", "c1-r1", "c2-r1"], "kinds": ["tunnel", "wall", "hop"] },
+    { "id": "zigzag", "cells": ["c0-r0", "c1-r1", "c2-r0"], "kinds": ["hop", "carry", "tunnel"] },
+    { "id": "curve", "cells": ["c0-r2", "c1-r1", "c2-r1"], "kinds": ["wall", "hop", "carry"] }
+  ],
+  "voice": {
+    "choose-world": "Choose a world to build in. Puppy, monkey, or penguin?", "world-backyard": "Backyard adventure! Puppy is ready.", "world-jungle": "Jungle adventure! Monkey is ready.", "world-arctic": "Arctic adventure! Penguin is ready to slide.", "builder-intro": "Build your course. Tap an obstacle, then tap a glowing spot. Or drag it there.", "need-three": "Add three obstacles so your friend has a course to explore.", "builder-ready": "Your course is ready! Move pieces, stamp colors, or press play.", "tunnel-picked": "A tunnel for crawling!", "climb-picked": "A wall for climbing!", "hop-picked": "Stepping stones for hopping and balancing!", "carry-picked": "A treasure to carry!", "slide-picked": "A slide ramp! Put slides together for a longer glide.", "play-intro": "Here we go! Help your friend through the course you built.", "crawl-prompt": "Drag your friend through the tunnel.", "climb-prompt": "Tap the handholds from bottom to top.", "hop-prompt": "Tap each stepping stone. Hop and balance!", "carry-prompt": "Carry the treasure to the basket.", "slide-prompt": "Swipe left and right to steer. Then tap the landing.", "super-slide-prompt": "Super slide! Swipe left and right through every snowflake gate.", "gentle-hint": "You’re close. Follow the glowing paper trail.", "station-cheer-1": "You made it!", "station-cheer-2": "Great course move!", "station-cheer-3": "On to the next adventure!", "course-complete": "Course complete! You built it, then played it!", "real-world-invite": "Ask a grown-up to help make a safe floor course with pillows and tape. Grown-ups check every piece before you move.", "build-another": "Let’s build another course!"
+  }
+}

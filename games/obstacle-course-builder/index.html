@@ -1,47 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Obstacle Course Builder 🪜 — Build and Move Adventure</title>
-  <meta name="description" content="Design a safe household obstacle course with a grown-up, then run it — climbing, crawling, jumping, balancing, and carrying through each station. A build-then-play activity for ages 5–6." />
+  <meta name="theme-color" content="#61c7c5" />
+  <title>Obstacle Course Builder — QLOBE Kids</title>
+  <meta name="description" content="Build a playful obstacle course, then help a puppy, monkey, or penguin crawl, climb, hop, carry, and slide through it." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Obstacle Course Builder" />
-  <meta property="og:title" content="Obstacle Course Builder 🪜 — Build and Move Adventure" />
-  <meta property="og:description" content="Design a safe household obstacle course with a grown-up, then run it — climbing, crawling, jumping, balancing, and carrying through each station. A build-then-play activity for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Obstacle Course Builder" />
+  <meta property="og:description" content="Build it, move it, then play the Papercraft course you imagined." />
   <meta property="og:url" content="https://qlo.be/games/obstacle-course-builder/" />
   <meta property="og:image" content="https://qlo.be/games/obstacle-course-builder/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Obstacle Course Builder title screen with Build It and Run It modes and a construction crane icon on a pale blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A layered paper obstacle course with a puppy, monkey, and penguin." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Obstacle Course Builder 🪜 — Build and Move Adventure" />
-  <meta name="twitter:description" content="Design a safe household obstacle course with a grown-up, then run it — climbing, crawling, jumping, balancing, and carrying through each station. A build-then-play activity for ages 5–6." />
+  <meta name="twitter:title" content="Obstacle Course Builder" />
+  <meta name="twitter:description" content="Build it, move it, then play the Papercraft course you imagined." />
   <meta name="twitter:image" content="https://qlo.be/games/obstacle-course-builder/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./styles.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Obstacle Course Builder">
+    <section id="splash" class="game-screen splash-screen" data-qk-screen="splash">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-hud="home" aria-label="Back to QLOBE Kids" href="../../"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" id="splash-sound" data-hud="sound" data-target="splash-sound" aria-label="Hear the invitation again"></button>
+      <div class="splash-wash" aria-hidden="true"></div>
+      <img class="title-art" src="./assets/ui/title.webp" alt="Obstacle Course Builder" draggable="false" />
+      <div class="world-picker" id="world-picker" role="group" aria-label="Choose a world"></div>
+      <button class="play-course-button splash-play-button" id="splash-play" data-target="splash-play" aria-label="Play in the selected world" hidden>
+        <img src="./assets/ui/start-flag.webp" alt="" draggable="false" />
+        <span aria-hidden="true">▶</span>
+      </button>
+      <div class="splash-hint" aria-hidden="true">
+        <img src="./assets/ui/start-flag.webp" alt="" />
+        <span></span><span></span><span></span>
+        <img src="./assets/ui/finish-flag.webp" alt="" />
+      </div>
+    </section>
+
+    <section id="builder" class="game-screen builder-screen" data-qk-screen="builder" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" id="builder-back" data-hud="back" data-target="builder-back" aria-label="Choose another world"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" id="builder-sound" data-hud="sound" data-target="builder-sound" aria-label="Hear the builder directions again"></button>
+      <div class="world-backdrop" aria-hidden="true"></div>
+      <header class="builder-header">
+        <img class="builder-guide" id="builder-guide" alt="" draggable="false" />
+        <div class="build-meter" id="build-meter" aria-label="Course length"></div>
+      </header>
+      <div class="builder-workspace">
+        <aside class="module-tray" id="module-tray" aria-label="Obstacle tray"></aside>
+        <div class="course-wrap" id="course-wrap">
+          <img class="course-board-art" src="./assets/ui/course-board.webp" alt="" draggable="false" />
+          <div class="route-layer" id="route-layer" aria-hidden="true"></div>
+          <div class="course-grid" id="course-grid" aria-label="Course building board"></div>
+          <img class="board-start" src="./assets/ui/start-flag.webp" alt="" draggable="false" />
+          <img class="board-finish" src="./assets/ui/finish-flag.webp" alt="" draggable="false" />
+        </div>
+        <aside class="builder-tools" aria-label="Builder tools">
+          <button class="tool-button palette-button" id="palette-button" data-target="palette" aria-label="Change the selected obstacle color" disabled>
+            <img src="./assets/ui/swatches.webp" alt="" draggable="false" />
+          </button>
+          <div class="swatch-popover" id="swatch-popover" role="group" aria-label="Choose a color" hidden></div>
+          <button class="tool-button" id="undo-button" data-target="undo" aria-label="Undo last change" disabled>
+            <img src="./assets/ui/undo.webp" alt="" draggable="false" />
+          </button>
+          <button class="tool-button" id="scrap-button" data-target="scrap" data-scrap-slot data-slot="scrap" aria-label="Remove selected obstacle" disabled>
+            <img src="./assets/ui/scrap-basket.webp" alt="" draggable="false" />
+          </button>
+        </aside>
+      </div>
+      <button class="play-course-button is-dormant" id="play-course" data-target="play-course" aria-label="Add at least three obstacles to play">
+        <img src="./assets/ui/start-flag.webp" alt="" draggable="false" />
+        <span aria-hidden="true">▶</span>
+      </button>
+    </section>
+
+    <section id="play" class="game-screen play-screen" data-qk-screen="play" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" id="play-back" data-hud="back" data-target="play-back" aria-label="Choose another world"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" id="play-sound" data-hud="sound" data-target="play-sound" aria-label="Hear the action again"></button>
+      <div class="world-backdrop" aria-hidden="true"></div>
+      <div class="play-progress" id="play-progress" aria-label="Course progress"></div>
+      <div class="station-card" id="station-card">
+        <div class="station-number" id="station-number" aria-hidden="true"></div>
+        <img class="station-obstacle" id="station-obstacle" alt="" draggable="false" />
+        <img class="station-guide" id="station-guide" alt="" draggable="false" />
+        <div class="action-stage" id="action-stage" aria-label="Movement activity"></div>
+      </div>
+      <div class="paper-prompt" id="paper-prompt" aria-hidden="true"></div>
+    </section>
+
+    <section id="end" class="game-screen end-screen" data-qk-screen="end" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" id="end-back" data-hud="back" data-target="end-back" aria-label="Choose another world"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" id="end-sound" data-hud="sound" data-target="end-sound" aria-label="Hear the celebration again"></button>
+      <div class="world-backdrop" aria-hidden="true"></div>
+      <div class="finish-card">
+        <img class="finish-masthead" src="./assets/ui/course-complete.webp" alt="Course complete!" draggable="false" />
+        <img class="finish-flag" src="./assets/ui/finish-flag.webp" alt="" draggable="false" />
+        <div class="finish-stars" aria-label="Three course accomplishments">
+          <img src="./assets/ui/star.webp" alt="Built it" draggable="false" />
+          <img src="./assets/ui/star.webp" alt="Played it" draggable="false" />
+          <img src="./assets/ui/star.webp" alt="Imagined it" draggable="false" />
+        </div>
+        <img class="finish-guide" id="finish-guide" alt="" draggable="false" />
+        <div class="finish-course" id="finish-course" aria-label="Your finished course"></div>
+        <div class="finish-actions">
+          <button class="finish-action rebuild-action" id="build-another" data-target="build-another" aria-label="Build another course">
+            <img src="./assets/ui/course-board.webp" alt="" draggable="false" /><span class="action-label">Build Another</span>
+          </button>
+          <button class="finish-action replay-action" id="replay-course" data-target="replay-course" aria-label="Play this course again">
+            <img src="./assets/ui/start-flag.webp" alt="" draggable="false" /><span class="action-label">Replay Course</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

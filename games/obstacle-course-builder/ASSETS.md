@@ -1,44 +1,32 @@
-# Obstacle Course Builder Assets
+# Obstacle Course Builder — asset provenance
 
-All current art is emoji placeholder art rendered by the `coach-timer` engine on soft rounded cards. No image files, generated art, downloaded art, recorded clips, or network assets are used. The configured Field Journal background path is reserved for the reviewer-supplied `assets/bg.jpg` and is not included here.
+All production art was generated with OpenAI GPT Image 2 from `assets/source/gpt-image-2/PROMPTS.md`. Five concept mockups/world references informed the look; they are references, not shipped runtime art. The visual direction is hand-made papercraft: cut paper, card, felt, foam and painted wood with soft edges, visible fibers and gentle shadows. It is not vector or CSS-generated art. Project-owned artwork is released under CC BY 4.0.
 
-## Assets needed
+## Source and processing
 
-Art:
+- Generated masters: `assets/source/gpt-image-2/` (`*-master.png`).
+- Transparent sprites and UI were cropped from flat chroma-background masters. `tools/extract-chroma-assets.py` performs hue-aware alpha extraction for cross-cell assets and removes disconnected contact-sheet remnants; QA crops and alpha checks are under `assets/source/qa/`.
+- Runtime files are WebP and live in `worlds/`, `guides/`, `obstacles/`, `props/`, and `ui/` (complete list below).
+- Keep `assets/bg.jpg` as a legacy, unused file if present. `assets/og-image.jpg` is a generated screenshot of the game splash screen, not source artwork.
 
-- Cushion mountain: low, soft stacked cushions with a stable climbing route.
-- Chair tunnel: sturdy household chairs arranged as a safe crawl tunnel.
-- Tape river: bright floor-tape river with a clear jumping gap.
-- Finish flag: celebratory flag or ribbon finish line.
-- Field Journal background: warm hand-crafted backyard course scene for `assets/bg.jpg`.
+## Final runtime files
 
-Voice lines:
+**Worlds:** `worlds/arctic.webp`, `worlds/backyard.webp`, `worlds/jungle.webp`.
 
-- Crew, helmets on! We are building and running a safe obstacle course.
-- Station checked! That is pro course work.
-- Course complete! Builder, runner, and champion!
-- Station checked! Make sure it is steady and safe.
-- Construction complete! Your obstacle course is ready to run.
-- Build a low cushion mountain to climb over. Press it gently to check that it is steady.
-- Build a chair tunnel to crawl under. Ask a grown-up to check the chairs.
-- Safety check! The chair tunnel should feel steady with plenty of room to crawl.
-- Make a tape river on the floor to jump across. Keep it away from stairs and slippery spots.
-- Make a sock-ball carry zone. Choose a spoon or cup to carry the soft ball.
-- Add a finish-line flag or ribbon. Walk the whole course and do one final safety check.
-- Station complete! Ready for the next challenge.
-- What a run! The course champion planned it, practiced it, and conquered it.
-- Climb over cushion mountain with careful hands and feet.
-- The champion has crossed cushion mountain!
-- Crawl through the chair tunnel. Stay low and move carefully.
-- The champion emerges safely from the tunnel!
-- Jump across the tape river. Bend, swing, and land softly.
-- A soft landing beyond the mighty river!
-- Carry the sock-ball through the carry zone. Balance it all the way.
-- The precious sock-ball makes it safely through!
-- Slow-motion champion replay! Our remarkable course runner approaches the mountain, glides through the tunnel, soars across the river, and carries the sock-ball toward the finish!
+**Guides:** `guides/monkey-carry.webp`, `monkey-cheer.webp`, `monkey-climb.webp`, `monkey-crawl.webp`, `monkey-hop.webp`, `monkey-idle.webp`, `penguin-belly-slide.webp`, `penguin-carry.webp`, `penguin-cheer.webp`, `penguin-climb.webp`, `penguin-crawl.webp`, `penguin-hop.webp`, `penguin-idle.webp`, `puppy-carry.webp`, `puppy-cheer.webp`, `puppy-climb.webp`, `puppy-crawl.webp`, `puppy-hop.webp`, `puppy-idle.webp`.
 
-## Link preview (og:image)
+**Obstacles:** `obstacles/arctic-belly-slide-ramp.webp`, `arctic-fish-carry.webp`, `arctic-ice-floe-crossing.webp`, `arctic-iceberg-wall.webp`, `arctic-igloo-tunnel.webp`, `backyard-foam-block-carry.webp`, `backyard-lily-pad-crossing.webp`, `backyard-rainbow-tunnel.webp`, `backyard-rock-wall.webp`, `jungle-boulder-wall.webp`, `jungle-fruit-carry.webp`, `jungle-log-crossing.webp`, `jungle-vine-tunnel.webp`.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+**Props:** `props/arctic-goal.webp`, `backyard-goal.webp`, `fish.webp`, `foam-block.webp`, `fruit.webp`, `jungle-goal.webp`.
+
+**UI:** `ui/cell-pad.webp`, `check.webp`, `course-board.webp`, `course-complete.webp`, `finish-flag.webp`, `landing-badge.webp`, `number-tab.webp`, `route-ribbon.webp`, `scrap-basket.webp`, `selection-ring.webp`, `slide-arrows.webp`, `snowflake-gate.webp`, `star.webp`, `start-flag.webp`, `swatches.webp`, `title.webp`, `undo.webp`.
+
+## Audio and shared sources
+
+Narration is non-identifying Qwen3-TTS voice-design with text-only input; no recorded voice or identity reference was uploaded. Raw source takes are in `assets/source/voice-raw/` (`.flac`); recipes and QA metadata are in `assets/source/qa/*.voice.recipe.json`; shipped finals are the `.m4a` files in `assets/audio/`. All 26 shipped lines achieved a Whisper transcript ratio of 1.0 against their authored text, above the ≥0.90 gate. The runtime manifest is fail-closed: an incomplete batch publishes no clips. Qwen Layered was not used for the accepted finals; the deterministic flat-chroma extraction preserved the authored silhouettes without redraw drift.
+
+The game uses shared Fredoka at `../../shared/fonts/fredoka-latin-600-normal.woff2` and shared HUD/SFX implementation at `../../shared/js/sfx.js`.
+
+## Link preview
+
+`assets/og-image.jpg` is a QLOBE Kids-generated 1200×630 screenshot of this game's splash screen (CC BY 4.0; regenerate with the capture tool rather than editing by hand).

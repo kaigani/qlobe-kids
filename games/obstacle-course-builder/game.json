@@ -3,32 +3,42 @@
   "title": "Obstacle Course Builder",
   "category": "movement-outdoor",
   "path": "games/obstacle-course-builder/",
-  "icon": "🏗️",
+  "icon": "🏁",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#d98c2b",
-  "shareTitle": "Obstacle Course Builder 🪜 — Build and Move Adventure",
-  "description": "Design a safe household obstacle course with a grown-up, then run it — climbing, crawling, jumping, balancing, and carrying through each station. A build-then-play activity for ages 5–6.",
+  "status": "beta",
+  "accent": "#2a83ba",
+  "shareTitle": "Obstacle Course Builder — Build It, Then Play It",
+  "description": "Design a Papercraft obstacle course in the Backyard, Jungle, or Arctic, then help an animal guide crawl, climb, hop, carry, and belly-slide through the exact route you built.",
   "learningGoals": [
-    "Plan and build before beginning a physical activity",
-    "Practice climbing, crawling, jumping, balancing, and carrying",
-    "Use simple safety checks during creative risk play",
-    "Invent and revise a course using household materials"
+    "Plan a three-to-five-step sequence and preserve its order",
+    "Explore how spatial placement changes a route's shape",
+    "Practice crawl, climb, hop, balance, carry, and steering gestures",
+    "Revise a design by moving, swapping, recoloring, undoing, and removing pieces"
   ],
-  "interactionModel": "follow spoken build and run stations in the real world, using large completed-step controls and individual timers",
-  "feedbackModel": "construction and race-announcer voice coaching with sparkle/tick/tada SFX; safety checks are framed as professional protocols",
+  "interactionModel": "drag a reusable obstacle from the tray to a large board cell, or tap the obstacle then the glowing cell; move and swap placed pieces, recolor them, then use obstacle-specific direct gestures to play the authored course",
+  "feedbackModel": "layered Papercraft movement, numbered route ribbons, pose-specific animal guides, verified recorded narration, gentle tactile SFX, one-shot hints, and an unscored three-star finish",
   "uses": [
-    "shared/js/engines/coach-timer.js",
+    "shared/js/screens.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js"
   ],
   "modes": [
-    { "id": "build", "title": "Build It", "skill": "planning, course design, and safety checks" },
-    { "id": "run", "title": "Run It", "skill": "varied gross-motor movement and balance" }
+    { "id": "backyard", "title": "Backyard", "skill": "spatial planning with crawl, climb, hop, and carry modules" },
+    { "id": "jungle", "title": "Jungle", "skill": "route revision with crawl, climb, balance, and carry modules" },
+    { "id": "arctic", "title": "Arctic", "skill": "curved route planning with combinable belly-slide ramps" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original Papercraft production art made with OpenAI GPT Image 2; non-identifying Qwen3 Voice Design narration with Whisper transcript QA. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/obstacle-course-builder/"
 }

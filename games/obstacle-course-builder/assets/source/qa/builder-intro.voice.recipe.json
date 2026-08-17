@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen3-tts-voicedesign",
+  "fields": {
+    "instruct": "A warm, calm preschool adventure guide with a gentle smile in her voice, clear American English, unhurried pace, natural and encouraging, never sing-song.",
+    "text": "Build your course. Tap an obstacle, then tap a glowing spot. Or drag it there.",
+    "seed": 7
+  },
+  "source": "games/obstacle-course-builder/assets/source/voice-raw/builder-intro-s7.flac",
+  "output": "games/obstacle-course-builder/assets/audio/builder-intro.m4a",
+  "whisper": {
+    "workflow": "whisper-stt",
+    "heard": "Build your course. Tap an obstacle, then tap a glowing spot. Or drag it there.",
+    "ratio": 1.0,
+    "accepted": true
+  }
+}

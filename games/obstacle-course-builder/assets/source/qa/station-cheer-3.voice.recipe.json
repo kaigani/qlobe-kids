@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen3-tts-voicedesign",
+  "fields": {
+    "instruct": "A warm, calm preschool adventure guide with a gentle smile in her voice, clear American English, unhurried pace, natural and encouraging, never sing-song.",
+    "text": "On to the next adventure!",
+    "seed": 7
+  },
+  "source": "games/obstacle-course-builder/assets/source/voice-raw/station-cheer-3-s7.flac",
+  "output": "games/obstacle-course-builder/assets/audio/station-cheer-3.m4a",
+  "whisper": {
+    "workflow": "whisper-stt",
+    "heard": "On to the next adventure!",
+    "ratio": 1.0,
+    "accepted": true
+  }
+}
