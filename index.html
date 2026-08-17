@@ -2,31 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>QLOBE Kids</title>
+  <title>QLOBE Kids — Little games to play and grow!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="QLOBE Kids" />
-  <meta name="theme-color" content="#bee3f5" />
-  <meta name="description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required — play, learn, and grow one little game at a time." />
+  <meta name="theme-color" content="#bce6f8" />
+  <meta name="description" content="A warm, colorful library of tiny educational games for kids aged 5–6. Pick a game and play, learn, and grow." />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="QLOBE Kids" />
   <meta property="og:title" content="QLOBE Kids — Little games to play and grow!" />
-  <meta property="og:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, audio-rich, no reading required." />
+  <meta property="og:description" content="A warm, colorful library of tiny educational games for kids aged 5–6. Pick a game and play, learn, and grow." />
   <meta property="og:url" content="https://qlo.be/" />
   <meta property="og:image" content="https://qlo.be/assets/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="The QLOBE Kids game chooser: colorful game tiles under candy-colored category badges on a sky-blue background." />
+  <meta property="og:image:alt" content="The QLOBE Kids game library with a featured Word Train game, colorful category chips, and toy-like game tiles." />
 
-  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="QLOBE Kids — Little games to play and grow!" />
-  <meta name="twitter:description" content="A warm, open-source library of tiny educational games for kids aged 5–6. Tablet-first, no reading required." />
+  <meta name="twitter:description" content="A warm, colorful library of tiny educational games for kids aged 5–6. Pick a game and play, learn, and grow." />
   <meta name="twitter:image" content="https://qlo.be/assets/og-image.png" />
 
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
@@ -35,51 +33,47 @@
   <script src="shared/js/analytics.js"></script>
 </head>
 <body>
-
   <header class="top">
-    <a class="corner-btn corner-grownups" href="./grown-ups/" aria-label="For grown-ups">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="16" r="6.5" fill="#fff"/><path d="M6.5 37c0-6.5 4.7-11 10.5-11s10.5 4.5 10.5 11v1.5h-21z" fill="#fff"/><circle cx="33.5" cy="19.5" r="5" fill="#fff" opacity=".9"/><path d="M27 38.5c.4-5.3 3-9 6.5-9 4 0 7.5 3.7 7.5 9z" fill="#fff" opacity=".9"/></svg>
-    </a>
-
-    <div class="masthead">
-      <img class="wordmark" src="./assets/hub/wordmark.png" alt="QLOBE Kids" draggable="false" />
-      <p class="tagline">Little games to play and grow!</p>
-    </div>
-
-    <a class="corner-btn corner-gear" href="./grown-ups/#contribute" aria-label="About this project — for grown-ups">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3.5l3.2 6.6 7.2-1.5 1 7.3 7.3 1-1.5 7.2 6.6 3.2-6.6 3.2 1.5 7.2-7.3 1-1 7.3-7.2-1.5L24 44.5l-3.2-6.6-7.2 1.5-1-7.3-7.3-1 1.5-7.2L.2 24l6.6-3.2-1.5-7.2 7.3-1 1-7.3 7.2 1.5z" fill="#fff"/><circle cx="24" cy="24" r="7" class="gear-hole"/></svg>
+    <a class="brand" href="./" aria-label="QLOBE Kids home">
+      <img class="brand-logo" src="./assets/logo-horizontal-final.webp" alt="QLOBE Kids" draggable="false" />
     </a>
   </header>
 
-  <div class="context" id="context" hidden></div>
+  <main class="hub-shell">
+    <section class="featured" aria-labelledby="featured-title">
+      <img class="featured-art" id="featured-art" src="./assets/hub/tiles/blend-train.jpg" alt="" draggable="false" />
+      <div class="featured-copy">
+        <p class="featured-eyebrow"><span aria-hidden="true">★</span> Featured</p>
+        <h1 id="featured-title">Word Train</h1>
+        <p id="featured-summary">Build words and take the train to new places!</p>
+        <a class="play-button" id="featured-play" href="./games/blend-train/">
+          <span class="play-icon" aria-hidden="true"></span>
+          <span>Play Now</span>
+        </a>
+      </div>
+    </section>
 
-  <main class="chooser">
-    <button class="arrow arrow-prev" aria-label="Previous games" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    <nav class="category-nav" id="category-nav" aria-label="Choose a game category"></nav>
 
-    <div class="carousel" id="carousel" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Game categories — swipe or use the arrows">
+    <section class="library" aria-labelledby="library-title">
+      <div class="library-heading visually-hidden">
+        <h2 id="library-title">Games</h2>
+        <p id="game-count" aria-live="polite"></p>
+      </div>
+      <div class="game-grid" id="game-grid"></div>
+      <p class="empty-state" id="empty-state" hidden>No games are ready in this category yet. Try another one!</p>
       <noscript>
         <div class="noscript-links">
-          <a href="games/sound-sprouts/">Play Sound Sprouts 🌱</a>
-          <a href="grown-ups/">For grown-ups</a>
+          <a href="./games/sound-sprouts/">Play Sound Sprouts</a>
+          <a href="./grown-ups/">For grown-ups</a>
         </div>
       </noscript>
-    </div>
-
-    <button class="arrow arrow-next" aria-label="More games" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    </section>
   </main>
 
-  <div class="dots" id="dots" aria-hidden="true"></div>
-
   <footer class="bottom">
-    <button class="chooser-pill" id="home-pill" aria-label="Back to the first games">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10.2V20h12v-9.8" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="10.2" y="14.2" width="3.6" height="5.8" rx="1" fill="#fff"/></svg>
-      <span>Game Chooser</span>
-    </button>
-    <div class="ages-badge" aria-label="For ages five and up"><span class="ages-word">Ages</span><span class="ages-num">5+</span></div>
+    <p>Little games to play and grow!</p>
+    <a href="./grown-ups/">For grown-ups</a>
   </footer>
 
   <script type="module" src="./js/hub.js"></script>
