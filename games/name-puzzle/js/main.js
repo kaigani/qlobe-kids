@@ -90,6 +90,8 @@ let pickerDisposers = [];
 let buildDisposers = [];
 let drag = null;
 let roundSerial = 0;
+let renderedPickerPageSize = 0;
+let pickerResizeFrame = 0;
 
 const state = {
   screen: 'picker',
@@ -208,12 +210,24 @@ function wireStaticControls() {
   onTap(els.chooseAnother, () => goPicker(true), { feedback: pressFeedback });
 }
 
+function getPickerPageSize() {
+  const configured = Math.max(1, Number(config?.pageSize) || 3);
+  if (innerWidth < 720) return 1;
+  if (innerWidth < 1200) return Math.min(2, configured);
+  return configured;
+}
+
 function renderPicker() {
   if (!config) return;
   clearDisposers(pickerDisposers);
   els.nameGrid.replaceChildren();
 
-  const pageSize = config.pageSize || 5;
+  const pageSize = getPickerPageSize();
+  if (renderedPickerPageSize && renderedPickerPageSize !== pageSize) {
+    const firstVisibleIndex = state.page * renderedPickerPageSize;
+    state.page = Math.floor(firstVisibleIndex / pageSize);
+  }
+  renderedPickerPageSize = pageSize;
   const totalPages = Math.ceil(config.names.length / pageSize);
   state.page = Math.max(0, Math.min(totalPages - 1, state.page));
   const start = state.page * pageSize;
@@ -255,7 +269,7 @@ function renderPicker() {
 
 function changePage(delta) {
   if (!config || state.screen !== 'picker') return;
-  const totalPages = Math.ceil(config.names.length / config.pageSize);
+  const totalPages = Math.ceil(config.names.length / getPickerPageSize());
   const next = Math.max(0, Math.min(totalPages - 1, state.page + delta));
   if (next === state.page) return;
   state.page = next;
@@ -570,6 +584,11 @@ function mute(on = true) {
 
 setupHud();
 wireStaticControls();
+window.addEventListener('resize', () => {
+  if (!config || state.screen !== 'picker' || getPickerPageSize() === renderedPickerPageSize) return;
+  cancelAnimationFrame(pickerResizeFrame);
+  pickerResizeFrame = requestAnimationFrame(renderPicker);
+});
 installUnlockOnGesture({
   onFirst: () => ready.then((loaded) => {
     if (loaded && state.screen === 'picker') voice.say('intro', config.voice.intro);
@@ -586,6 +605,7 @@ installDebug({
   getState: () => ({
     screen: state.screen,
     page: state.page,
+    pageSize: renderedPickerPageSize || getPickerPageSize(),
     selectedId: state.selected?.id || null,
     name: state.selected?.letters || null,
     placed: state.placed.map((piece) => piece?.letter || null),

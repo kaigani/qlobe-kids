@@ -79,7 +79,7 @@ button {
   grid-template-rows: auto minmax(0, 1fr) auto;
   align-items: center;
   justify-items: center;
-  gap: clamp(6px, 1.2vh, 16px);
+  gap: 4px;
   padding:
     max(12px, var(--qk-safe-top))
     max(18px, var(--qk-safe-right))
@@ -94,8 +94,8 @@ button {
 }
 
 .np-title {
-  width: clamp(250px, 34vw, 470px);
-  max-height: clamp(114px, 21vh, 210px);
+  width: clamp(210px, 26vw, 300px);
+  max-height: 110px;
   object-fit: contain;
   filter: drop-shadow(0 8px 5px rgba(39, 46, 81, .22));
 }
@@ -110,22 +110,38 @@ button {
   text-shadow: 0 2px 0 rgba(255, 255, 255, .9);
 }
 
+.np-picker-prompt {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+}
+
 .np-name-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(142px, 1fr));
-  align-self: center;
-  align-items: center;
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  justify-content: center;
   width: min(94vw, 1380px);
+  height: 100%;
+  min-height: 0;
   max-height: 100%;
   gap: clamp(10px, 1.6vw, 24px);
 }
 
 .np-name-card {
   position: relative;
+  display: grid;
+  grid-template: minmax(0, 1fr) 62px / 1fr;
+  flex: 0 1 min(44vw, 520px);
+  place-items: center;
   overflow: visible;
   min-width: 96px;
   min-height: 112px;
-  aspect-ratio: 1.5;
+  height: 100%;
   padding: 0;
   border: 0;
   background: transparent;
@@ -137,36 +153,39 @@ button {
 }
 
 .np-name-card-art {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  grid-area: 2 / 1;
+  width: clamp(150px, 15vw, 190px);
+  aspect-ratio: 560 / 360;
   object-fit: fill;
 }
 
 .np-name-card-character {
-  position: absolute;
-  right: 0;
-  bottom: 6%;
-  width: 47%;
-  height: 91%;
+  position: relative;
+  grid-area: 1 / 1;
+  align-self: end;
+  width: min(38.4vw, 488px, 100%);
+  height: min(57.6vh, 552px, 100%);
   object-fit: contain;
-  object-position: right bottom;
+  object-position: center bottom;
   filter: drop-shadow(0 5px 4px rgba(55, 37, 63, .24));
 }
 
+.np-name-card-character.is-fallback {
+  width: min(34%, 170px);
+  height: min(70%, 220px);
+}
+
 .np-name-card-label {
-  position: absolute;
+  position: relative;
   z-index: 2;
-  top: 50%;
-  left: 22%;
-  width: 31%;
-  font-size: clamp(19px, 1.75vw, 26px);
+  grid-area: 2 / 1;
+  width: clamp(72px, 8.5vw, 108px);
+  font-size: clamp(18px, 1.7vw, 23px);
   line-height: 1;
   letter-spacing: .01em;
   text-align: center;
   text-shadow: 0 3px 0 rgba(47, 34, 67, .72);
-  transform: translateY(-50%);
   white-space: nowrap;
 }
 
@@ -633,39 +652,18 @@ button {
 /* --------------------------------------------------------- responsive */
 
 @media (min-width: 1200px) {
-  .np-name-card-character {
-    right: -6%;
-    bottom: -1%;
-    width: 60%;
-    height: 112%;
-  }
-
-  .np-name-card-label {
-    left: 25%;
-    width: 28%;
-    font-size: clamp(19px, 1.6vw, 23px);
-  }
-
-  /* These silhouettes carry more opaque artwork on their left edge. */
-  .np-name-card[data-target="name-noah"] .np-name-card-character { right: -7%; }
-  .np-name-card[data-target="name-james"] .np-name-card-character { right: -8%; }
-  .np-name-card[data-target="name-mateo"] .np-name-card-character { right: -13%; }
-  .np-name-card[data-target="name-owen"] .np-name-card-character { right: -10%; }
-  .np-name-card[data-target="name-ezra"] .np-name-card-character { right: -7%; }
+  .np-name-card { flex-basis: min(29vw, 440px); }
 }
 
 @media (max-width: 900px) {
   .np-hud-slot { --qk-hud-gap: 14px; }
 
   .np-name-grid {
-    grid-template-columns: repeat(3, minmax(150px, 1fr));
-    width: min(88vw, 760px);
+    width: min(92vw, 1000px);
     gap: clamp(7px, 1.2vh, 14px) clamp(11px, 2vw, 20px);
   }
 
-  .np-name-card { aspect-ratio: 1.62; }
-  .np-name-card-label { font-size: clamp(19px, 3vw, 25px); }
-  .np-title { width: clamp(245px, 49vw, 390px); max-height: 18vh; }
+  .np-title { width: clamp(210px, 36vw, 280px); max-height: 110px; }
   .np-felt-label { width: clamp(290px, 47vw, 410px); }
 
   .np-reveal-stage {
@@ -677,12 +675,12 @@ button {
 
 @media (max-width: 700px) and (orientation: portrait) {
   .np-picker { gap: 4px; }
-  .np-name-grid {
-    grid-template-columns: repeat(2, minmax(150px, 1fr));
-    width: min(82vw, 570px);
+  .np-name-grid { width: min(90vw, 570px); }
+  .np-name-card { flex-basis: min(88vw, 500px); }
+  .np-name-card-character {
+    width: min(52.8vw, 400px, 100%);
+    height: min(44vh, 448px, 100%);
   }
-  .np-name-card { aspect-ratio: 1.65; }
-  .np-name-card:last-child:nth-child(odd) { grid-column: 1 / -1; width: 48%; justify-self: center; }
 
   .np-name-board { width: min(94vw, calc(35vh * 2.145), 720px); }
   .np-slot-row { right: 5%; left: 5%; gap: 5px; }
@@ -703,7 +701,7 @@ button {
 
 @media (orientation: landscape) and (max-height: 620px) {
   .np-picker { gap: 2px; }
-  .np-title { width: clamp(220px, 28vw, 330px); max-height: 24vh; }
+  .np-title { width: clamp(200px, 24vw, 270px); max-height: 96px; }
   .np-picker-prompt { font-size: 19px; }
   .np-name-grid { width: min(86vw, 1120px); }
   .np-name-card { min-height: 96px; }
@@ -730,8 +728,8 @@ button {
   .np-hud-slot { --qk-hud-gap: 12px; }
 
   .np-name-grid { width: 94vw; }
-  .np-name-card-label { font-size: clamp(18px, 4.7vw, 21px); }
   .np-pager { gap: 5px; }
+  .np-page-dots { display: none; }
   .np-page-copy { min-width: 132px; }
   .np-name-board { width: 96vw; height: 250px; aspect-ratio: auto; }
   .np-slot-row {
