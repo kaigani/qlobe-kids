@@ -63,6 +63,71 @@ async function pickerLabelGeometry(page) {
   }));
 }
 
+async function widePickerGeometry(page) {
+  return page.locator('.np-name-card').evaluateAll((cards) => cards.map((card) => {
+    const label = card.querySelector('.np-name-card-label');
+    const character = card.querySelector('.np-name-card-character');
+    const host = card.getBoundingClientRect();
+    const labelBox = label.getBoundingClientRect();
+    const characterBox = character.getBoundingClientRect();
+    const range = document.createRange();
+    range.selectNodeContents(label);
+    const ink = range.getBoundingClientRect();
+
+    const naturalAspect = character.naturalWidth / character.naturalHeight;
+    const boxAspect = characterBox.width / characterBox.height;
+    const renderedWidth = boxAspect > naturalAspect
+      ? characterBox.height * naturalAspect
+      : characterBox.width;
+    const renderedHeight = boxAspect > naturalAspect
+      ? characterBox.height
+      : characterBox.width / naturalAspect;
+    const renderedLeft = characterBox.right - renderedWidth;
+    const renderedTop = characterBox.bottom - renderedHeight;
+
+    const sourceY1 = Math.max(0, Math.min(
+      character.naturalHeight - 1,
+      Math.floor((ink.top - renderedTop) / renderedHeight * character.naturalHeight),
+    ));
+    const sourceY2 = Math.max(sourceY1 + 1, Math.min(
+      character.naturalHeight,
+      Math.ceil((ink.bottom - renderedTop) / renderedHeight * character.naturalHeight),
+    ));
+    const canvas = document.createElement('canvas');
+    canvas.width = character.naturalWidth;
+    canvas.height = character.naturalHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(character, 0, 0);
+    const pixels = context.getImageData(
+      0, sourceY1, character.naturalWidth, sourceY2 - sourceY1,
+    ).data;
+    let firstOpaqueX = character.naturalWidth;
+    for (let y = 0; y < sourceY2 - sourceY1; y += 1) {
+      for (let x = 0; x < character.naturalWidth; x += 1) {
+        if (pixels[(y * character.naturalWidth + x) * 4 + 3] > 16) {
+          firstOpaqueX = Math.min(firstOpaqueX, x);
+          break;
+        }
+      }
+    }
+    const visibleCharacterLeft = renderedLeft
+      + firstOpaqueX / character.naturalWidth * renderedWidth;
+    const feltLeft = host.left + host.width * (134 / 560);
+
+    return {
+      name: label.textContent.trim(),
+      scrollX: label.scrollWidth - label.clientWidth,
+      scrollY: label.scrollHeight - label.clientHeight,
+      opticalLeftPadding: ink.left - feltLeft,
+      visibleCharacterGap: visibleCharacterLeft - ink.right,
+      characterScale: renderedHeight / host.height,
+      decoded: character.complete && character.naturalWidth > 100,
+      contained: labelBox.left >= host.left - 1 && labelBox.right <= host.right + 1
+        && labelBox.top >= host.top - 1 && labelBox.bottom <= host.bottom + 1,
+    };
+  }));
+}
+
 async function centeredLabelGeometry(page, textSelector, hostSelector) {
   return page.locator(textSelector).evaluateAll((nodes, selector) => nodes.map((node) => {
     const host = node.closest(selector);
@@ -258,6 +323,28 @@ async function main() {
     await page.locator('[data-target="previous-page"]').click();
   }
   check('picker paging returns to names 1–5', (await page.locator('#page-label').textContent()).includes('1–5'));
+
+  await page.setViewportSize({ width: 1465, height: 749 });
+  const widePickerLabels = [];
+  for (let pageIndex = 0; pageIndex < 4; pageIndex += 1) {
+    widePickerLabels.push(...await widePickerGeometry(page));
+    await shot(page, pageIndex === 0 ? '13-picker-wide' : `13-picker-wide-page-${pageIndex + 1}`);
+    if (pageIndex < 3) await page.locator('[data-target="next-page"]').click();
+  }
+  check('all twenty wide picker names keep optical padding inside their felt panels',
+    widePickerLabels.length === 20 && widePickerLabels.every(({
+      scrollX, scrollY, opticalLeftPadding, contained,
+    }) => scrollX <= 1 && scrollY <= 2 && opticalLeftPadding >= 4 && contained),
+    JSON.stringify(widePickerLabels));
+  check('all twenty wide picker characters are larger and remain clear of their names',
+    widePickerLabels.length === 20 && widePickerLabels.every(({
+      visibleCharacterGap, characterScale, decoded,
+    }) => visibleCharacterGap >= 4 && characterScale >= 1 && decoded),
+    JSON.stringify(widePickerLabels));
+  for (let pageIndex = 3; pageIndex > 0; pageIndex -= 1) {
+    await page.locator('[data-target="previous-page"]').click();
+  }
+  await page.setViewportSize({ width: 1180, height: 820 });
 
   await debug.clearAudioLog(page);
   await page.locator('[data-target="name-belle"]').click();

@@ -632,6 +632,28 @@ button {
 
 /* --------------------------------------------------------- responsive */
 
+@media (min-width: 1200px) {
+  .np-name-card-character {
+    right: -6%;
+    bottom: -1%;
+    width: 60%;
+    height: 112%;
+  }
+
+  .np-name-card-label {
+    left: 25%;
+    width: 28%;
+    font-size: clamp(19px, 1.6vw, 23px);
+  }
+
+  /* These silhouettes carry more opaque artwork on their left edge. */
+  .np-name-card[data-target="name-noah"] .np-name-card-character { right: -7%; }
+  .np-name-card[data-target="name-james"] .np-name-card-character { right: -8%; }
+  .np-name-card[data-target="name-mateo"] .np-name-card-character { right: -13%; }
+  .np-name-card[data-target="name-owen"] .np-name-card-character { right: -10%; }
+  .np-name-card[data-target="name-ezra"] .np-name-card-character { right: -7%; }
+}
+
 @media (max-width: 900px) {
   .np-hud-slot { --qk-hud-gap: 14px; }
 
