@@ -444,6 +444,39 @@ async function interactionGate(browser) {
   await page.evaluate(() => window.QLOBE_DEBUG.home());
   await waitForScreen(page, 'splash');
 
+  // The child-facing clothing card must activate through a real drag or click, and
+  // leaving a later round through Back must return to the wheel without
+  // discarding a stamp already earned.
+  await page.evaluate(() => window.QLOBE_DEBUG.startMode('wheel'));
+  await waitForScreen(page, 'wheel');
+  await page.evaluate(() => window.QLOBE_DEBUG.settleWheel('spring'));
+  await waitForScreen(page, 'dress');
+  await page.locator('[data-garment="parka"]').click();
+  await page.waitForFunction(() => document.querySelector('[data-garment="raincoat"]')?.classList.contains('is-model'));
+  const raincoatBox = await page.locator('[data-garment="raincoat"]').boundingBox();
+  const juniBox = await page.locator('#juni-character').boundingBox();
+  if (raincoatBox && juniBox) {
+    await page.mouse.move(raincoatBox.x + raincoatBox.width / 2, raincoatBox.y + raincoatBox.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(juniBox.x + juniBox.width / 2, juniBox.y + juniBox.height / 2, { steps: 8 });
+    await page.mouse.up();
+  }
+  await waitForScreen(page, 'explore');
+  await page.evaluate(() => window.QLOBE_DEBUG.completeSeason());
+  await waitForScreen(page, 'wheel');
+  await page.evaluate(() => window.QLOBE_DEBUG.settleWheel('summer'));
+  await waitForScreen(page, 'dress');
+  await page.locator('[data-garment="sun-hat"]').click();
+  await waitForScreen(page, 'explore');
+  await page.locator('[data-target="explore-back"]').click();
+  await waitForScreen(page, 'wheel');
+  state = await page.evaluate(() => window.QLOBE_DEBUG.getState());
+  check('a real clothing drag and click work and Back to the wheel preserves earned stamps',
+    state.mode === 'wheel'
+      && state.screen === 'wheel'
+      && JSON.stringify(state.stamps) === JSON.stringify(['spring']),
+    JSON.stringify(state));
+
   // A second miss can arrive while the first feedback promise is still resuming.
   await page.evaluate(() => window.QLOBE_DEBUG.startMode('wheel'));
   await page.evaluate(() => window.QLOBE_DEBUG.settleWheel('spring'));

@@ -65,6 +65,7 @@ const el = {
   dressProgress: $('#dress-progress'),
   dressPrompt: $('#dress-prompt'),
   weatherLabel: $('#weather-label'),
+  juniStage: $('.juni-stage'),
   juni: $('#juni-character'),
   garmentGrid: $('#garment-grid'),
   dressFx: $('#dress-fx'),
@@ -332,6 +333,9 @@ function resetSession(mode) {
 function showWheel() {
   state.busy = false;
   state.season = null;
+  state.discoveries = { plant: false, animal: false };
+  state.pendingSeason = null;
+  currentFact = null;
   screens.show('wheel');
   setScene(el.wheelBackground, null, { neutral: true });
   renderProgress(el.wheelProgress, state.stamps);
@@ -355,7 +359,7 @@ function renderGarments(season) {
     button.dataset.target = `garment-${garmentId}`;
     button.dataset.role = 'choice';
     button.dataset.garment = garmentId;
-    button.setAttribute('aria-label', garment.alt);
+    button.setAttribute('aria-label', `${garment.alt}. Tap or drag it to Juni.`);
 
     const image = document.createElement('img');
     image.src = garment.path;
@@ -364,10 +368,102 @@ function renderGarments(season) {
     label.textContent = garment.label;
     button.append(image, label);
     el.garmentGrid.append(button);
-    garmentDisposers.push(onTap(button, () => chooseGarment(garmentId), { feedback: touchFeedback }));
+    const drag = installGarmentDrag(button, garmentId);
+    garmentDisposers.push(() => drag.dispose());
+    garmentDisposers.push(onTap(button, (event) => {
+      if (drag.consumePointerAction(event)) return;
+      void chooseGarment(garmentId);
+    }, { feedback: touchFeedback }));
   }
   const correctId = config.seasons[season].dress;
   $(`[data-garment="${correctId}"]`, el.garmentGrid)?.setAttribute('data-correct', 'true');
+}
+
+function installGarmentDrag(button, garmentId) {
+  const dragThreshold = 8;
+  let drag = null;
+  let suppressPointerAction = false;
+
+  const isOverJuni = (clientX, clientY) => {
+    const rect = el.juni.getBoundingClientRect();
+    return clientX >= rect.left && clientX <= rect.right
+      && clientY >= rect.top && clientY <= rect.bottom;
+  };
+
+  const setDropTarget = (active) => {
+    el.juniStage?.classList.toggle('is-drop-target', active);
+  };
+
+  const resetDrag = () => {
+    const pointerId = drag?.pointerId;
+    drag = null;
+    button.classList.remove('is-dragging');
+    button.style.removeProperty('--drag-x');
+    button.style.removeProperty('--drag-y');
+    setDropTarget(false);
+    if (pointerId != null && button.hasPointerCapture?.(pointerId)) {
+      try { button.releasePointerCapture(pointerId); } catch { /* already released */ }
+    }
+  };
+
+  const onDown = (event) => {
+    if (event.isPrimary === false || button.disabled) return;
+    suppressPointerAction = false;
+    drag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      active: false,
+    };
+    try { button.setPointerCapture(event.pointerId); } catch { /* capture is optional */ }
+  };
+
+  const onMove = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    const deltaX = event.clientX - drag.startX;
+    const deltaY = event.clientY - drag.startY;
+    if (!drag.active && Math.hypot(deltaX, deltaY) < dragThreshold) return;
+    if (!drag.active) {
+      drag.active = true;
+      button.classList.add('is-dragging');
+    }
+    button.style.setProperty('--drag-x', `${deltaX}px`);
+    button.style.setProperty('--drag-y', `${deltaY}px`);
+    setDropTarget(isOverJuni(event.clientX, event.clientY));
+  };
+
+  const onEnd = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    const active = drag.active;
+    const overJuni = event.type === 'pointerup'
+      && active
+      && isOverJuni(event.clientX, event.clientY);
+    if (active) suppressPointerAction = true;
+    resetDrag();
+    if (overJuni) void chooseGarment(garmentId);
+  };
+
+  button.addEventListener('pointerdown', onDown);
+  button.addEventListener('pointermove', onMove);
+  button.addEventListener('pointerup', onEnd);
+  button.addEventListener('pointercancel', onEnd);
+  button.addEventListener('lostpointercapture', onEnd);
+
+  return {
+    consumePointerAction(event) {
+      if (event.type !== 'pointerup' || !suppressPointerAction) return false;
+      suppressPointerAction = false;
+      return true;
+    },
+    dispose() {
+      resetDrag();
+      button.removeEventListener('pointerdown', onDown);
+      button.removeEventListener('pointermove', onMove);
+      button.removeEventListener('pointerup', onEnd);
+      button.removeEventListener('pointercancel', onEnd);
+      button.removeEventListener('lostpointercapture', onEnd);
+    },
+  };
 }
 
 function showDressRound(season = state.dressOrder[state.dressRound], { announce = true } = {}) {
@@ -429,6 +525,12 @@ async function chooseGarment(garmentId) {
   state.busy = true;
   nudger.stop();
   for (const choice of $$('.garment-card', el.garmentGrid)) choice.disabled = true;
+  if (correctButton) {
+    const cardRect = correctButton.getBoundingClientRect();
+    const juniRect = el.juni.getBoundingClientRect();
+    correctButton.style.setProperty('--card-fly-x', `${(juniRect.left + juniRect.width / 2) - (cardRect.left + cardRect.width / 2)}px`);
+    correctButton.style.setProperty('--card-fly-y', `${(juniRect.top + juniRect.height / 2) - (cardRect.top + cardRect.height / 2)}px`);
+  }
   correctButton?.classList.remove('is-model', 'is-bouncing');
   correctButton?.classList.add('is-correct');
   try { sfx.sparkle(); } catch { /* supportive only */ }
@@ -640,6 +742,18 @@ function goSplash() {
   return true;
 }
 
+function goBack() {
+  if (screens.is('explore') && !el.factOverlay.hidden) return false;
+  const returnToWheel = state.mode === 'wheel'
+    && !screens.is('wheel')
+    && (screens.is('explore') || state.stamps.length > 0);
+  if (returnToWheel) {
+    showWheel();
+    return true;
+  }
+  return goSplash();
+}
+
 function startMode(mode) {
   if (!config.modes[mode]) return Promise.resolve(false);
   return screens.start(async () => {
@@ -666,7 +780,9 @@ function installHud() {
     const screen = screens.el(screenName);
     const backSlot = $('[data-hud-slot="back"]', screen);
     const soundSlot = $('[data-hud-slot="sound"]', screen);
-    const back = hudButton('back', goSplash, { label: 'Back to game choices' });
+    const back = hudButton('back', screenName === 'wheel' ? goSplash : goBack, {
+      label: screenName === 'wheel' ? 'Back to game choices' : 'Back to the season wheel',
+    });
     back.dataset.target = `${screenName}-back`;
     back.dataset.role = 'navigation';
     const sound = hudButton('sound', soundDebounce(replayCurrentLine), { label: 'Hear it again' });

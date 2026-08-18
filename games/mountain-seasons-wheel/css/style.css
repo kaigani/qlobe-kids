@@ -131,7 +131,7 @@ a:focus-visible,
   position: absolute;
   z-index: 25;
   width: min(760px, calc(100vw - 240px));
-  min-height: 104px;
+  min-height: 126px;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -150,7 +150,7 @@ a:focus-visible,
   position: relative;
   z-index: 1;
   margin: 0;
-  padding: 18px 64px 22px;
+  padding: 28px max(70px, calc(48px + var(--qk-safe-right))) 32px max(70px, calc(48px + var(--qk-safe-left)));
   color: #254c32;
   font-size: clamp(1.1rem, 2.25vw, 1.75rem);
   line-height: 1.08;
@@ -161,8 +161,9 @@ a:focus-visible,
 
 .paper-action {
   position: relative;
+  aspect-ratio: 388 / 193;
   min-width: 180px;
-  min-height: 104px;
+  min-height: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -174,10 +175,15 @@ a:focus-visible,
 
 .paper-action > img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
+  /* The source raster is alpha-cropped at both horizontal edges. Keep a
+     little breathing room so the paper lip and its antialiasing never meet
+     the button's clipping boundary. */
+  top: 2.5%;
+  left: 2.5%;
+  display: block;
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
   pointer-events: none;
 }
 
@@ -185,8 +191,9 @@ a:focus-visible,
   position: relative;
   z-index: 1;
   display: grid;
+  height: 100%;
   place-items: center;
-  min-height: 104px;
+  min-height: 0;
   padding: 18px 32px 24px;
   color: #fffbe7;
   font-size: clamp(1.35rem, 2.6vw, 2rem);
@@ -308,8 +315,11 @@ a:focus-visible,
 }
 
 .mode-card > img {
-  width: 100%;
+  display: block;
+  width: auto;
+  max-width: 100%;
   height: 220px;
+  margin-inline: auto;
   object-fit: contain;
   pointer-events: none;
 }
@@ -414,10 +424,12 @@ a:focus-visible,
 
 .wheel-art {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
+  max-height: 100%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
   transform-origin: center;
   will-change: transform;
@@ -491,6 +503,11 @@ a:focus-visible,
   animation: juni-dressed 620ms cubic-bezier(0.2, 1.2, 0.4, 1) both;
 }
 
+.juni-stage.is-drop-target .juni-character {
+  filter: drop-shadow(0 12px 8px rgba(43, 45, 28, 0.28)) drop-shadow(0 0 18px #f2c64e);
+  transform: scale(1.03);
+}
+
 .weather-label {
   position: absolute;
   z-index: 3;
@@ -525,6 +542,8 @@ a:focus-visible,
   border: 0;
   background: transparent;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
   transition: transform 150ms ease, filter 150ms ease;
   filter: drop-shadow(0 9px 7px rgba(51, 48, 28, 0.25));
 }
@@ -571,6 +590,15 @@ a:focus-visible,
 
 .garment-card:active {
   transform: translateY(4px) scale(0.97);
+}
+
+.garment-card.is-dragging {
+  z-index: 40;
+  cursor: grabbing;
+  filter: drop-shadow(0 16px 10px rgba(51, 48, 28, 0.34));
+  animation: none !important;
+  transform: translate(var(--drag-x, 0), var(--drag-y, 0)) rotate(-3deg) scale(1.04) !important;
+  transition: none;
 }
 
 .garment-card.is-wrong {
@@ -905,8 +933,8 @@ a:focus-visible,
 
 @keyframes card-to-juni {
   0% { transform: translate(0, 0) scale(1); opacity: 1; }
-  55% { transform: translate(-35vw, -7vh) rotate(-8deg) scale(0.84); opacity: 1; }
-  100% { transform: translate(-35vw, -7vh) rotate(-8deg) scale(0.5); opacity: 0; }
+  55% { transform: translate(var(--card-fly-x, -35vw), var(--card-fly-y, -7vh)) rotate(-8deg) scale(0.84); opacity: 1; }
+  100% { transform: translate(var(--card-fly-x, -35vw), var(--card-fly-y, -7vh)) rotate(-8deg) scale(0.5); opacity: 0; }
 }
 
 @keyframes seal-breathe {
@@ -972,11 +1000,11 @@ a:focus-visible,
 
   .prompt-wrap {
     width: min(76vw, 620px);
-    min-height: 88px;
+    min-height: 116px;
   }
 
   .prompt-text {
-    padding: 14px 46px 18px;
+    padding: 24px max(58px, calc(38px + var(--qk-safe-right))) 28px max(58px, calc(38px + var(--qk-safe-left)));
     font-size: clamp(1rem, 3.5vw, 1.45rem);
   }
 
@@ -1123,11 +1151,11 @@ a:focus-visible,
   }
 
   .prompt-wrap {
-    min-height: 80px;
+    min-height: 108px;
   }
 
   .prompt-text {
-    padding: 11px 38px 15px;
+    padding: 20px max(48px, calc(32px + var(--qk-safe-right))) 24px max(48px, calc(32px + var(--qk-safe-left)));
   }
 
   .wheel-prompt-wrap,
