@@ -1,0 +1,179 @@
+{
+  "id": "mountain-seasons-wheel",
+  "title": "Mountain Seasons Wheel",
+  "modes": {
+    "wheel": {
+      "title": "Season Adventure",
+      "skill": "connect a season with weather, plants, and animals",
+      "rounds": 4,
+      "line": "choose-mode"
+    },
+    "dress": {
+      "title": "Dress for Weather",
+      "skill": "choose clothing that fits concrete weather",
+      "rounds": 4,
+      "line": "dress-intro"
+    }
+  },
+  "seasonOrder": ["spring", "summer", "autumn", "winter"],
+  "assets": {
+    "backgrounds": {
+      "splash": "./assets/backgrounds/splash.webp",
+      "wheel": "./assets/backgrounds/wheel.webp",
+      "spring": "./assets/backgrounds/spring.webp",
+      "summer": "./assets/backgrounds/summer.webp",
+      "autumn": "./assets/backgrounds/autumn.webp",
+      "winter": "./assets/backgrounds/winter.webp"
+    },
+    "title": "./assets/title.webp",
+    "wheel": "./assets/ui/wheel.webp",
+    "pointer": "./assets/ui/pointer.webp",
+    "button": "./assets/ui/button.webp",
+    "modeWheel": "./assets/ui/mode-wheel.webp",
+    "modeDress": "./assets/ui/mode-dress.webp",
+    "promptBanner": "./assets/ui/prompt-banner.webp",
+    "garmentCard": "./assets/ui/garment-card.webp",
+    "leafSeal": "./assets/ui/leaf-seal.webp",
+    "pawSeal": "./assets/ui/paw-seal.webp",
+    "factCard": "./assets/ui/fact-card.webp",
+    "juniBase": "./assets/character/juni-base.webp",
+    "rewardAdventure": "./assets/reward/four-seasons.webp",
+    "particles": {
+      "spring": ["./assets/ui/particles/rain.webp", "./assets/ui/particles/petal-qwen.webp"],
+      "summer": ["./assets/ui/particles/sun.webp"],
+      "autumn": ["./assets/ui/particles/leaf.webp"],
+      "winter": ["./assets/ui/particles/snow.webp"]
+    }
+  },
+  "garments": {
+    "raincoat": {
+      "path": "./assets/clothes/raincoat.webp",
+      "alt": "shiny yellow raincoat",
+      "label": "Raincoat",
+      "season": "spring"
+    },
+    "sun-hat": {
+      "path": "./assets/clothes/sun-hat.webp",
+      "alt": "wide-brimmed sun hat",
+      "label": "Sun hat",
+      "season": "summer"
+    },
+    "warm-vest": {
+      "path": "./assets/clothes/warm-vest.webp",
+      "alt": "soft orange warm vest",
+      "label": "Warm vest",
+      "season": "autumn"
+    },
+    "parka": {
+      "path": "./assets/clothes/parka.webp",
+      "alt": "thick blue parka with fuzzy hood",
+      "label": "Parka",
+      "season": "winter"
+    }
+  },
+  "seasons": {
+    "spring": {
+      "label": "Spring",
+      "weather": "cool rain and new growth",
+      "background": "./assets/backgrounds/spring.webp",
+      "stamp": "./assets/ui/stamps/spring.webp",
+      "character": "./assets/character/juni-spring.webp",
+      "dress": "raincoat",
+      "plant": {
+        "id": "spring-wildflowers",
+        "path": "./assets/discoveries/spring-wildflowers.webp",
+        "alt": "mountain wildflowers",
+        "label": "Mountain wildflowers",
+        "x": 0.17,
+        "y": 0.68
+      },
+      "animal": {
+        "id": "spring-marmot",
+        "path": "./assets/discoveries/spring-marmot.webp",
+        "alt": "marmot",
+        "label": "Marmot",
+        "x": 0.79,
+        "y": 0.68
+      }
+    },
+    "summer": {
+      "label": "Summer",
+      "weather": "warm sun and a green meadow",
+      "background": "./assets/backgrounds/summer.webp",
+      "stamp": "./assets/ui/stamps/summer.webp",
+      "character": "./assets/character/juni-summer.webp",
+      "dress": "sun-hat",
+      "plant": {
+        "id": "summer-lupine",
+        "path": "./assets/discoveries/summer-lupine.webp",
+        "alt": "purple lupine flowers",
+        "label": "Lupine flowers",
+        "x": 0.17,
+        "y": 0.66
+      },
+      "animal": {
+        "id": "summer-deer",
+        "path": "./assets/discoveries/summer-deer.webp",
+        "alt": "mule deer",
+        "label": "Mule deer",
+        "x": 0.79,
+        "y": 0.64
+      }
+    },
+    "autumn": {
+      "label": "Autumn",
+      "weather": "a cool breeze and golden leaves",
+      "background": "./assets/backgrounds/autumn.webp",
+      "stamp": "./assets/ui/stamps/autumn.webp",
+      "character": "./assets/character/juni-autumn.webp",
+      "dress": "warm-vest",
+      "plant": {
+        "id": "autumn-aspen",
+        "path": "./assets/discoveries/autumn-aspen.webp",
+        "alt": "golden aspen tree",
+        "label": "Golden aspen",
+        "x": 0.38,
+        "y": 0.52
+      },
+      "animal": {
+        "id": "autumn-squirrel",
+        "path": "./assets/discoveries/autumn-squirrel.webp",
+        "alt": "red squirrel holding a seed",
+        "label": "Red squirrel",
+        "x": 0.79,
+        "y": 0.66
+      }
+    },
+    "winter": {
+      "label": "Winter",
+      "weather": "falling snow and freezing air",
+      "background": "./assets/backgrounds/winter.webp",
+      "stamp": "./assets/ui/stamps/winter.webp",
+      "character": "./assets/character/juni-winter.webp",
+      "dress": "parka",
+      "plant": {
+        "id": "winter-evergreen",
+        "path": "./assets/discoveries/winter-evergreen.webp",
+        "alt": "snowy evergreen tree",
+        "label": "Evergreen tree",
+        "x": 0.18,
+        "y": 0.62
+      },
+      "animal": {
+        "id": "winter-hare",
+        "path": "./assets/discoveries/winter-hare.webp",
+        "alt": "white snowshoe hare",
+        "label": "Snowshoe hare",
+        "x": 0.79,
+        "y": 0.68
+      }
+    }
+  },
+  "tuning": {
+    "wheelTurns": 2,
+    "spinDurationMs": 1800,
+    "idleHelpMs": 11000,
+    "hotspotPx": 112
+  },
+  "lines": "./data/lines.json"
+}

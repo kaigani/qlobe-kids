@@ -5,29 +5,32 @@
   "path": "games/mountain-seasons-wheel/",
   "icon": "🏔️",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2d7dd2",
-  "shareTitle": "Mountain Seasons Wheel 🏔️ — Matching Seasons and Weather",
-  "description": "Tap the card that matches mountain weather, clothing, and nature clues after a spoken prompt. A cheerful seasons game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#3f7a4b",
+  "shareTitle": "Mountain Seasons Wheel — A Papercraft Nature Adventure",
+  "description": "Spin through a changing paper mountain, dress Juni for the weather, and discover a plant and animal in every season.",
   "learningGoals": [
-    "Recognize winter, spring, summer, and autumn clues",
-    "Connect seasonal weather with clothing choices",
-    "Sort nature and activity symbols by season"
+    "Connect spring, summer, autumn, and winter with visible weather changes",
+    "Choose clothing that fits concrete seasonal weather",
+    "Discover how mountain plants and animals change through the year"
   ],
-  "interactionModel": "choose-one tap cards after a spoken prompt",
-  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and the prompt again.",
+  "interactionModel": "flick or tap a four-part wheel, choose a garment, then tap authored plant and animal discoveries",
+  "feedbackModel": "The mountain transforms in place, Juni changes outfit, discoveries open narrated field notes, and each completed season earns a paper stamp.",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/sfx.js",
+    "shared/js/debug-harness.js"
   ],
   "modes": [
-    { "id": "wheel", "title": "What Season?", "skill": "seasonal nature and activity matching" },
-    { "id": "dress", "title": "Dress for It", "skill": "seasonal clothing and weather matching" }
+    { "id": "wheel", "title": "Season Adventure", "skill": "connect a season with weather, plants, and animals" },
+    { "id": "dress", "title": "Dress for Weather", "skill": "choose clothing that fits concrete weather" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
   "credits": "Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "characters": ["Juni the bear"],
   "conceptVideo": ""
 }

@@ -5,43 +5,166 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Mountain Seasons Wheel 🏔️ — Matching Seasons and Weather</title>
-  <meta name="description" content="Tap the card that matches mountain weather, clothing, and nature clues after a spoken prompt. A cheerful seasons game for ages 5–6." />
+  <meta name="theme-color" content="#dcefcf" />
+  <title>Mountain Seasons Wheel — A Papercraft Nature Adventure</title>
+  <meta name="description" content="Spin through spring, summer, autumn, and winter. Dress Juni for the weather and discover mountain plants and animals." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Mountain Seasons Wheel" />
-  <meta property="og:title" content="Mountain Seasons Wheel 🏔️ — Matching Seasons and Weather" />
-  <meta property="og:description" content="Tap the card that matches mountain weather, clothing, and nature clues after a spoken prompt. A cheerful seasons game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Mountain Seasons Wheel — A Papercraft Nature Adventure" />
+  <meta property="og:description" content="Spin the seasons, dress Juni for the weather, and discover a changing papercraft mountain." />
   <meta property="og:url" content="https://qlo.be/games/mountain-seasons-wheel/" />
   <meta property="og:image" content="https://qlo.be/games/mountain-seasons-wheel/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Mountain Seasons Wheel title screen with What Season? and Dress for It buttons below a snowy mountain icon." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A tactile paper seasons wheel in a four-season mountain diorama." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mountain Seasons Wheel 🏔️ — Matching Seasons and Weather" />
-  <meta name="twitter:description" content="Tap the card that matches mountain weather, clothing, and nature clues after a spoken prompt. A cheerful seasons game for ages 5–6." />
+  <meta name="twitter:title" content="Mountain Seasons Wheel" />
+  <meta name="twitter:description" content="A papercraft mountain nature adventure for young children." />
   <meta name="twitter:image" content="https://qlo.be/games/mountain-seasons-wheel/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Mountain Seasons Wheel game">
+    <section id="splash-screen" class="ms-screen splash-screen" data-qk-screen="splash">
+      <img class="scene-plate" src="./assets/backgrounds/splash.webp" alt="One paper mountain shown in all four seasons" />
+      <div class="scene-shade" aria-hidden="true"></div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left splash-home" data-hud="home" data-target="catalog-home" href="../../" aria-label="Home"></a>
+      <div class="splash-content">
+        <img class="title-art" src="./assets/title.webp" alt="Mountain Seasons" />
+        <p class="splash-kicker">A paper mountain changes all year</p>
+        <div class="mode-grid" aria-label="Choose how to play">
+          <button class="mode-card" id="mode-wheel" type="button" data-target="mode-wheel" data-role="primary">
+            <img src="./assets/ui/mode-wheel.webp" alt="A four-part seasons wheel" />
+            <span class="mode-copy"><strong>Season Adventure</strong><small>Spin, dress, and discover</small></span>
+          </button>
+          <button class="mode-card" id="mode-dress" type="button" data-target="mode-dress" data-role="primary">
+            <img src="./assets/ui/mode-dress.webp" alt="A warm paper coat" />
+            <span class="mode-copy"><strong>Dress for Weather</strong><small>Help Juni get ready</small></span>
+          </button>
+        </div>
+      </div>
+      <p class="splash-listen" aria-hidden="true">Tap once to hear Juni</p>
+    </section>
+
+    <section id="wheel-screen" class="ms-screen wheel-screen" data-qk-screen="wheel" hidden>
+      <img id="wheel-background" class="scene-plate scene-transition" src="./assets/backgrounds/wheel.webp" alt="A layered paper mountain waiting for a season" />
+      <div class="scene-shade light" aria-hidden="true"></div>
+      <div class="hud-slot hud-left" data-hud-slot="back"></div>
+      <div class="hud-slot hud-right" data-hud-slot="sound"></div>
+      <div id="wheel-progress" class="stamp-ribbon" aria-label="Season stamps collected"></div>
+      <div class="prompt-wrap wheel-prompt-wrap">
+        <img src="./assets/ui/prompt-banner.webp" alt="" aria-hidden="true" />
+        <p id="wheel-prompt" class="prompt-text" aria-live="polite">Give the seasons wheel a spin!</p>
+      </div>
+      <div class="wheel-layout">
+        <div class="wheel-frame">
+          <div id="wheel-touch" class="wheel-touch" role="button" tabindex="0" data-target="wheel-flick" data-role="primary" aria-label="Turn the seasons wheel. Swipe it or press Enter to spin.">
+            <img id="wheel-art" class="wheel-art" src="./assets/ui/wheel.webp" alt="Four-part paper wheel: spring blossom, summer sun, autumn leaf, winter snowflake" draggable="false" />
+          </div>
+          <img class="wheel-pointer" src="./assets/ui/pointer.webp" alt="" aria-hidden="true" draggable="false" />
+        </div>
+        <button id="spin-button" class="paper-action spin-action" type="button" data-target="spin" data-role="primary">
+          <img src="./assets/ui/button.webp" alt="" aria-hidden="true" />
+          <span>Spin</span>
+        </button>
+      </div>
+      <div id="wheel-fx" class="particle-layer" aria-hidden="true"></div>
+    </section>
+
+    <section id="dress-screen" class="ms-screen dress-screen" data-qk-screen="dress" hidden>
+      <img id="dress-background" class="scene-plate" src="./assets/backgrounds/spring.webp" alt="Spring rain on the paper mountain" />
+      <div class="scene-shade light" aria-hidden="true"></div>
+      <div class="hud-slot hud-left" data-hud-slot="back"></div>
+      <div class="hud-slot hud-right" data-hud-slot="sound"></div>
+      <div id="dress-progress" class="stamp-ribbon compact" aria-label="Weather rounds completed"></div>
+      <div class="prompt-wrap dress-prompt-wrap">
+        <img src="./assets/ui/prompt-banner.webp" alt="" aria-hidden="true" />
+        <p id="dress-prompt" class="prompt-text" aria-live="polite">Which coat helps Juni stay dry?</p>
+      </div>
+      <div class="dress-layout">
+        <div class="juni-stage">
+          <div class="juni-shadow" aria-hidden="true"></div>
+          <img id="juni-character" class="juni-character" src="./assets/character/juni-base.webp" alt="Juni, a friendly brown paper bear" />
+          <p id="weather-label" class="weather-label">Cool spring rain</p>
+        </div>
+        <div id="garment-grid" class="garment-grid" aria-label="Choose clothing for Juni"></div>
+      </div>
+      <div id="dress-fx" class="particle-layer" aria-hidden="true"></div>
+    </section>
+
+    <section id="explore-screen" class="ms-screen explore-screen" data-qk-screen="explore" hidden>
+      <div id="explore-scene" class="explore-scene">
+        <img id="explore-backdrop" class="scene-backdrop" src="./assets/backgrounds/spring.webp" alt="" aria-hidden="true" />
+        <img id="explore-background" class="scene-plate contain-portrait" src="./assets/backgrounds/spring.webp" alt="Spring on the paper mountain" />
+        <div class="scene-shade edge" aria-hidden="true"></div>
+        <button id="plant-hotspot" class="discovery-hotspot" type="button" data-target="discover-plant" data-role="primary" aria-label="Discover the mountain plant">
+          <img src="./assets/ui/leaf-seal.webp" alt="Leaf discovery seal" />
+          <span class="hotspot-label">Plant</span>
+        </button>
+        <button id="animal-hotspot" class="discovery-hotspot" type="button" data-target="discover-animal" data-role="primary" aria-label="Discover the mountain animal">
+          <img src="./assets/ui/paw-seal.webp" alt="Paw-print discovery seal" />
+          <span class="hotspot-label">Animal</span>
+        </button>
+      </div>
+      <div class="hud-slot hud-left" data-hud-slot="back"></div>
+      <div class="hud-slot hud-right" data-hud-slot="sound"></div>
+      <div id="explore-progress" class="stamp-ribbon" aria-label="Season stamps collected"></div>
+      <div class="prompt-wrap explore-prompt-wrap">
+        <img src="./assets/ui/prompt-banner.webp" alt="" aria-hidden="true" />
+        <p id="explore-prompt" class="prompt-text" aria-live="polite">Find the plant and the animal.</p>
+      </div>
+      <button id="season-complete-button" class="paper-action season-complete-action" type="button" data-target="complete-season" data-role="primary" hidden>
+        <img src="./assets/ui/button.webp" alt="" aria-hidden="true" />
+        <span>Add the stamp</span>
+      </button>
+      <div id="fact-overlay" class="fact-overlay" role="dialog" aria-modal="true" aria-labelledby="fact-title" hidden>
+        <div class="fact-card">
+          <img class="fact-card-paper" src="./assets/ui/fact-card.webp" alt="" aria-hidden="true" />
+          <button id="fact-close" class="fact-close" type="button" data-target="close-fact" aria-label="Close discovery card">Close</button>
+          <div class="fact-card-content">
+            <img id="fact-image" class="fact-image" src="./assets/discoveries/spring-wildflowers.webp" alt="Mountain wildflowers" />
+            <h2 id="fact-title">Mountain wildflowers</h2>
+            <p id="fact-copy">Spring rain gives wildflowers water to grow.</p>
+            <button id="fact-replay" class="fact-replay" type="button" data-target="replay-fact">Hear it again</button>
+          </div>
+        </div>
+      </div>
+      <div id="explore-fx" class="particle-layer" aria-hidden="true"></div>
+    </section>
+
+    <section id="reward-screen" class="ms-screen reward-screen" data-qk-screen="reward" hidden>
+      <img id="reward-backdrop" class="scene-backdrop" src="./assets/reward/four-seasons.webp" alt="" aria-hidden="true" />
+      <img id="reward-background" class="scene-plate" src="./assets/reward/four-seasons.webp" alt="A folded paper mountain showing all four seasons" />
+      <div class="scene-shade reward" aria-hidden="true"></div>
+      <div class="hud-slot hud-left" data-hud-slot="back"></div>
+      <div class="hud-slot hud-right" data-hud-slot="sound"></div>
+      <div id="reward-panel" class="reward-panel">
+        <p class="reward-eyebrow">Mountain explorer</p>
+        <h1 id="reward-title">You found the whole mountain year!</h1>
+        <div id="reward-stamps" class="reward-stamps" aria-label="Four season stamps"></div>
+        <div id="dress-reward-collage" class="dress-reward-collage" hidden>
+          <img class="reward-juni" src="./assets/character/juni-base.webp" alt="Juni ready for every season" />
+          <div id="reward-garments" class="reward-garments"></div>
+        </div>
+        <button id="again-button" class="paper-action again-action" type="button" data-target="again" data-role="primary">
+          <img src="./assets/ui/button.webp" alt="" aria-hidden="true" />
+          <span>Play again</span>
+        </button>
+      </div>
+      <div id="reward-fx" class="particle-layer reward-fx" aria-hidden="true"></div>
+    </section>
+
+    <p id="game-status" class="visually-hidden" role="status" aria-live="polite"></p>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
