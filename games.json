@@ -2015,23 +2015,38 @@
       "icon": "assets/hub/tiles/joke-workshop.jpg",
       "age": {
         "min": 5,
-        "max": 6
+        "max": 8
       },
-      "status": "in-design",
-      "accent": "#ffad7a",
+      "status": "live",
+      "accent": "#d9364f",
+      "uses": [
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
       "modes": [
         {
-          "id": "jokes",
-          "title": "Finish the Joke",
-          "skill": "punchline anticipation and wordplay"
+          "id": "picture-punchlines",
+          "title": "Picture Punchlines",
+          "skill": "anticipate a surprising ending from an oral setup"
         },
         {
-          "id": "knock",
-          "title": "Knock Knock",
-          "skill": "call-and-response joke comprehension"
+          "id": "record-my-own",
+          "title": "Record My Own",
+          "skill": "compose and share a short original ending aloud"
         }
       ],
-      "summary": "Make silly riddles and playful wordplay."
+      "summary": "Pick or invent a punchline, perform it on a papercraft comedy stage, and fill a personal Joke Book."
     },
     {
       "id": "family-story-interview",
