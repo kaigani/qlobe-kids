@@ -748,6 +748,7 @@ function renderSafari() {
   const target = workbench.querySelector('.safari-target');
   if (reveal) {
     const match = item.choices.find((choice) => choice.id === state.safariMatch);
+    target.style.setProperty('--safari-match-color', match.hex);
     target.append(makeButtonImage(match.card, 'Matching shade'));
   } else {
     target.dataset.role = state.selected ? 'correct' : 'neutral';
