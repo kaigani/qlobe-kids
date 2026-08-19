@@ -1,47 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Bean Sprout Watch 🌱 — A Growing Sprout Diary</title>
-  <meta name="description" content="Stamp what changed in a pretend sprout's day and note the care it needs, then get nudged to grow a real bean in a jar. A patient plant-watching diary for ages 5–6." />
+  <meta name="theme-color" content="#f6efd5" />
+  <title>Bean Sprout Watch — A Five-Day Growing Journal</title>
+  <meta name="description" content="Care for one little bean, draw each new root and leaf, and watch it grow through a five-day watercolor science journal." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Bean Sprout Watch" />
-  <meta property="og:title" content="Bean Sprout Watch 🌱 — A Growing Sprout Diary" />
-  <meta property="og:description" content="Stamp what changed in a pretend sprout's day and note the care it needs, then get nudged to grow a real bean in a jar. A patient plant-watching diary for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Bean Sprout Watch — A Five-Day Growing Journal" />
+  <meta property="og:description" content="Give a little bean water and sunshine, draw what changed, and watch it grow." />
   <meta property="og:url" content="https://qlo.be/games/bean-sprout-watch/" />
   <meta property="og:image" content="https://qlo.be/games/bean-sprout-watch/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Bean Sprout Watch title screen with Sprout Diary and What Does It Need? game modes and a sprout icon." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A smiling bean sprout in a terracotta pot inside a watercolor garden journal." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bean Sprout Watch 🌱 — A Growing Sprout Diary" />
-  <meta name="twitter:description" content="Stamp what changed in a pretend sprout's day and note the care it needs, then get nudged to grow a real bean in a jar. A patient plant-watching diary for ages 5–6." />
+  <meta name="twitter:title" content="Bean Sprout Watch" />
+  <meta name="twitter:description" content="A five-day watercolor growing journal for young scientists." />
   <meta name="twitter:image" content="https://qlo.be/games/bean-sprout-watch/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="bean-game" aria-label="Bean Sprout Watch">
+    <section class="qk-screen garden-screen" data-qk-screen="splash" aria-label="Five-day sprout journal"></section>
+    <section class="qk-screen garden-screen" data-qk-screen="play" aria-label="Care for and draw the bean plant" hidden></section>
+    <section class="qk-screen garden-screen" data-qk-screen="reward" aria-label="Growth observation" hidden></section>
+    <section class="qk-screen garden-screen" data-qk-screen="complete" aria-label="Completed sprout journal" hidden></section>
+  </main>
+  <noscript>Bean Sprout Watch needs JavaScript to play.</noscript>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

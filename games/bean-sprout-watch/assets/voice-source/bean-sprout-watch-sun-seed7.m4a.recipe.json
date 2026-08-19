@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-sun-seed7",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-sun-seed7.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Warm sunshine helps the leaves make food.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Warm sunshine helps the leaves make food.",
+      "heard": "Warm sunshine helps the leaves make food.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

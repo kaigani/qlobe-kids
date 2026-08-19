@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-garden-seed42",
+  "kind": "image",
+  "asset": "bean-sprout-watch-garden-seed42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Use case: illustration-story. Asset type: 16:9 game backdrop. Primary request: a sunlit botanical observation nook for a little bean plant, warm cream journal paper world with a low wooden potting bench along the lower edge, terracotta pots and small garden tools tucked around the far sides, delicate bean vines and loose watercolor leaves framing the outer edges, a broad quiet uncluttered center for the interactive smiling pot. Style/medium: soft gouache and watercolour nature illustration on warm cream paper #f7f1e3, the look of a naturalist's notebook; leaf greens, sky blues and earth browns; visible paper grain, light pencil under-drawing showing through, quieter and more textured than the other worlds. No text, no letters, no words. Composition/framing: wide 16:9 view with a broad uncluttered center and lower-centre observation space, richly painted botanical detail only around crop-safe outer edges. Lighting/mood: soft honey-gold morning light, peaceful, curious, welcoming for ages 3 to 6. Constraints: environment only; preserve a clear open floor for separately composited sprites. Avoid: characters, creatures, people, food or loose hero objects in the performance area, text, letters, logo, watermark, UI, border, collage, photorealism, 3D.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "scene-backdrop",
+    "style": "field-journal",
+    "fields": {
+      "setting": "a sunlit botanical observation nook for a little bean plant, warm cream journal paper world with a low wooden potting bench along the lower edge, terracotta pots and small garden tools tucked around the far sides, delicate bean vines and loose watercolor leaves framing the outer edges, a broad quiet uncluttered center for the interactive smiling pot",
+      "framing": "wide 16:9 view with a broad uncluttered center and lower-centre observation space, richly painted botanical detail only around crop-safe outer edges",
+      "mood": "soft honey-gold morning light, peaceful, curious, welcoming for ages 3 to 6"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-19"
+}

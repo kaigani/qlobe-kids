@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-hub-seed42",
+  "kind": "image",
+  "asset": "bean-sprout-watch-hub-seed42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "One recognizable Bean Sprout Watch moment staged as child-safe toy objects: a friendly smiling terracotta pot with a bright four-leaf bean sprout, a small sky-blue watering can and a warm yellow sun token beside it, one tiny magnifying glass and a leaf badge, balanced close still life, no child, no text Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "One recognizable Bean Sprout Watch moment staged as child-safe toy objects: a friendly smiling terracotta pot with a bright four-leaf bean sprout, a small sky-blue watering can and a warm yellow sun token beside it, one tiny magnifying glass and a leaf badge, balanced close still life, no child, no text"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-19"
+}

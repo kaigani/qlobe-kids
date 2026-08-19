@@ -1749,24 +1749,19 @@
       "path": "games/bean-sprout-watch/",
       "icon": "assets/hub/tiles/bean-sprout-watch.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#58a945",
+      "status": "beta",
+      "accent": "#789a43",
       "modes": [
         {
-          "id": "week",
-          "title": "Sprout Diary",
-          "skill": "observe plant growth over time"
-        },
-        {
-          "id": "care",
-          "title": "What Does It Need?",
-          "skill": "match plant cues to care needs"
+          "id": "sprout-week",
+          "title": "Five-Day Sprout Journal",
+          "skill": "observe plant growth as an ordered sequence of visible changes"
         }
       ],
-      "summary": "Observe and draw a sprout's daily changes."
+      "summary": "Care, draw, and watch one little bean grow across five watercolor journal days."
     },
     {
       "id": "weather-scientist",

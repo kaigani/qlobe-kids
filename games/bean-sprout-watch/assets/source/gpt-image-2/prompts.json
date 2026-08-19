@@ -1,0 +1,32 @@
+{
+  "format": "qlobe-image-generation-log",
+  "formatVersion": 1,
+  "model": "gpt-image-2",
+  "mode": "generation",
+  "created": "2026-08-19",
+  "generations": [
+    {
+      "id": "growth-tools-sheet",
+      "source": "growth-tools-sheet-chroma.png",
+      "derived": "growth-tools-sheet-alpha.png",
+      "prompt": "Create one clean production asset sheet for a preschool tablet game in a gentle hand-painted Watercolor / Storybook field-journal style. Use an exact 3 by 3 grid on a flat saturated chroma-magenta background with generous separation, no grid lines, no text, no labels, no shadows touching another cell. Keep one identical friendly smiling terracotta pot character, camera angle, watercolor texture, scale, and baseline across the first six cells. Reading left to right, top to bottom: cell 1 pot with one bean resting on soil; cell 2 the same pot with a small soil cutaway and one pale root emerging downward; cell 3 the same pot with a hooked green shoot just above soil; cell 4 the same pot with a straight stem and exactly two small seed leaves; cell 5 the same pot with exactly two larger true leaves; cell 6 the same pot with exactly four leaves total on a taller young plant. Bottom row: a friendly blue watering can, a warm smiling sun with rays, and a circular Nature Explorer badge showing a tiny sprout, magnifying glass, and star with no words. Soft gouache and watercolor on warm paper, dark olive outlines, visible paper grain, charming preschool proportions, coherent authored raster art. No extra objects, no extra leaves, no words, no watermark, no photorealism, no 3D."
+    },
+    {
+      "id": "title-lockup",
+      "source": "title-chroma.png",
+      "derived": "title-alpha.png",
+      "prompt": "Create a single centered watercolor storybook title lockup on a flat saturated chroma-magenta background. The wording must be exactly and correctly spelled: Bean Sprout Watch. Hand-painted dark leaf-green lettering with warm paper texture, highly legible for a preschool game, with one thin curling bean vine underline and a few pale green leaves at the far ends. Wide horizontal composition, generous clear margin, no other words, no subtitle, no pot, no character, no watermark, no border."
+    },
+    {
+      "id": "ui-carriers-sheet",
+      "source": "ui-carriers-sheet-chroma.png",
+      "derived": "ui-carriers-sheet-alpha.png",
+      "prompt": "Create one production UI-carrier asset sheet for a preschool watercolor field-journal game. Arrange exactly six separate objects in a clear 3 by 2 layout on flat saturated chroma-magenta, with generous spacing and no grid lines. Top row: one tall blank cream paper day card with a small tab and terracotta outline; one wide blank rounded terracotta watercolor button; one wide blank rounded leaf-green watercolor button. Bottom row: one wide blank torn-edge pale green prompt banner; one round cream reset token containing a bean and a circular green arrow with no words; one long delicate green bean vine flourish carrying exactly five leaves. Soft gouache and watercolor on warm paper, visible grain, dark olive/terracotta pencil edges, no text, no letters, no numerals, no symbols except the reset arrow, no watermark, no 3D, no extra objects."
+    }
+  ],
+  "notes": [
+    "GPT Image 2 does not expose a reproducible seed in this workflow.",
+    "Flat-magenta masters are retained; transparent derivatives and runtime WebP assets are produced deterministically by tools/process-art.py."
+  ]
+}
+

@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-day-4-intro-seed9",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-day-4-intro-seed9.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Day four. Two little leaves are open. Give them water and sunshine.",
+      "seed": 9
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Day four. Two little leaves are open. Give them water and sunshine.",
+      "heard": "Day 4. Two little leaves are open. Give them water and sunshine.",
+      "ratio": 0.96,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

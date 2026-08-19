@@ -1,0 +1,45 @@
+{
+  "id": "bean-sprout-watch",
+  "title": "Bean Sprout Watch",
+  "storageKey": "qlobe-bean-sprout-watch-v1",
+  "theme": { "world": "field-journal", "background": "./assets/backgrounds/bean-sprout-watch-garden.webp", "title": "./assets/ui/title.webp" },
+  "assets": {
+    "stages": ["./assets/plants/stage-0.webp", "./assets/plants/stage-1.webp", "./assets/plants/stage-2.webp", "./assets/plants/stage-3.webp", "./assets/plants/stage-4.webp", "./assets/plants/stage-5.webp"],
+    "water": "./assets/ui/water.webp",
+    "sun": "./assets/ui/sun.webp",
+    "dayCard": "./assets/ui/day-card.webp",
+    "badge": "./assets/ui/nature-badge.webp",
+    "actionTerracotta": "./assets/ui/action-terracotta.webp",
+    "actionGreen": "./assets/ui/action-green.webp",
+    "promptBanner": "./assets/ui/prompt-banner.webp",
+    "resetSeed": "./assets/ui/reset-seed.webp",
+    "progressVine": "./assets/ui/progress-vine.webp",
+    "brush": "./assets/ui/brush-stamp.webp"
+  },
+  "voice": {
+    "welcome": "Come watch a little bean grow. Tap the glowing day to begin.", "choose-day": "Pick the glowing sprout day.", "future-day": "That sprout day is still growing. Start with the glowing day.",
+    "day-1-intro": "Day one. The bean is resting in the soil. Give it water and sunshine.", "day-2-intro": "Day two. A tiny root is awake. Give it water and sunshine.", "day-3-intro": "Day three. A green shoot is reaching up. Give it water and sunshine.", "day-4-intro": "Day four. Two little leaves are open. Give them water and sunshine.", "day-5-intro": "Day five. Our bean plant is getting tall. Give it water and sunshine.",
+    "water": "Drip, drop. The roots drink a little water.", "sun": "Warm sunshine helps the leaves make food.", "care-ready": "Now draw what is new. Follow the glowing garden line.",
+    "trace-1": "Draw the bean's first root reaching down.", "trace-2": "Draw the little shoot pushing up.", "trace-3": "Trace the two seed leaves.", "trace-4": "Trace the two bigger true leaves.", "trace-5": "Draw two new leaves on the stem.", "trace-nudge": "Start where the light is twinkling, then follow the garden line.", "care-nudge": "Our bean is waiting for water and warm sunshine.",
+    "success-1": "Look! The bean's first root reaches down to find water.", "success-2": "Look! The shoot pushes up and turns toward the light.", "success-3": "Look! Two seed leaves opened like tiny green hands.", "success-4": "Look! The first true leaves spread out to catch sunlight.", "success-5": "Look! New leaves made our little bean plant fuller.", "badge": "Nature Explorer badge!", "all-grown": "You watched a bean become a young plant, one careful day at a time.", "reset-check": "Grow a brand-new bean? Tap the seed one more time.", "reset-done": "A new bean is ready for day one."
+  },
+  "days": [
+    { "day": 1, "before": 0, "after": 1, "intro": "day-1-intro", "trace": "trace-1", "success": "success-1", "observation": "A first root reaches down to find water.", "guides": [[[0.54,0.25],[0.59,0.27],[0.60,0.31],[0.58,0.35],[0.56,0.39],[0.57,0.43]]] },
+    { "day": 2, "before": 1, "after": 2, "intro": "day-2-intro", "trace": "trace-2", "success": "success-2", "observation": "The shoot pushes up and turns toward the light.", "guides": [[[0.52,0.31],[0.52,0.25],[0.52,0.19],[0.55,0.13],[0.60,0.12],[0.62,0.16],[0.60,0.21]]] },
+    { "day": 3, "before": 2, "after": 3, "intro": "day-3-intro", "trace": "trace-3", "success": "success-3", "observation": "Two seed leaves open like tiny green hands.", "guides": [[[0.50,0.17],[0.45,0.12],[0.38,0.08],[0.33,0.08],[0.35,0.13],[0.42,0.16],[0.50,0.17]],[[0.50,0.17],[0.55,0.12],[0.62,0.08],[0.67,0.08],[0.65,0.13],[0.58,0.16],[0.50,0.17]]] },
+    { "day": 4, "before": 3, "after": 4, "intro": "day-4-intro", "trace": "trace-4", "success": "success-4", "observation": "The first true leaves spread out to catch sunlight.", "guides": [[[0.50,0.24],[0.43,0.17],[0.32,0.10],[0.20,0.07],[0.14,0.12],[0.24,0.19],[0.39,0.22],[0.50,0.24]],[[0.50,0.24],[0.57,0.17],[0.68,0.10],[0.80,0.07],[0.86,0.12],[0.76,0.19],[0.61,0.22],[0.50,0.24]]] },
+    { "day": 5, "before": 4, "after": 5, "intro": "day-5-intro", "trace": "trace-5", "success": "success-5", "observation": "New leaves make the little bean plant fuller.", "guides": [[[0.50,0.39],[0.43,0.33],[0.32,0.27],[0.21,0.27],[0.16,0.32],[0.27,0.37],[0.42,0.38],[0.50,0.39]],[[0.50,0.39],[0.57,0.33],[0.68,0.27],[0.79,0.27],[0.84,0.32],[0.73,0.37],[0.58,0.38],[0.50,0.39]]] }
+  ],
+  "music": {
+    "band": [{ "instr": "guitar" }],
+    "song": {
+      "id": "little-bean-garden", "title": "Little Bean Garden", "bpm": 72, "beatsPerBar": 4, "bars": 4, "lead": "strings",
+      "scale": [60, 62, 64, 67, 69],
+      "parts": {
+        "melody": [[0,64,1.5],[2,67,1],[3.5,69,0.5],[4,67,1.5],[6,64,1.5],[8,62,1.5],[10,64,1],[11.5,67,0.5],[12,64,1.5],[14,60,2]],
+        "bass": [], "chord": [], "perc": []
+      }
+    }
+  },
+  "thresholds": { "coverage": 0.58, "softCoverage": 0.45, "minGesturePx": 32, "softenAfterStrokes": 3 }
+}

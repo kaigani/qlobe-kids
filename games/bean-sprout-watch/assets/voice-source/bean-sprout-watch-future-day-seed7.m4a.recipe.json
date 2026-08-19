@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-future-day-seed7",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-future-day-seed7.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "That sprout day is still growing. Start with the glowing day.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "That sprout day is still growing. Start with the glowing day.",
+      "heard": "That sprout day is still growing. Start with the glowing day.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

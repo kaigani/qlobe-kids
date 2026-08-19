@@ -5,29 +5,38 @@
   "path": "games/bean-sprout-watch/",
   "icon": "🌱",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Bean Sprout Watch 🌱 — A Growing Sprout Diary",
-  "description": "Stamp what changed in a pretend sprout's day and note the care it needs, then get nudged to grow a real bean in a jar. A patient plant-watching diary for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#789a43",
+  "shareTitle": "Bean Sprout Watch — A Five-Day Growing Journal",
+  "description": "Care for one little bean, draw each new root and leaf, and watch it grow through a five-day watercolor science journal.",
   "learningGoals": [
-    "Notice plant growth over time",
-    "Practice daily observation language for roots, sprouts, stems, and leaves",
-    "Connect plant care to water, light, and gentle handling"
+    "Observe how a bean changes from seed to root, shoot, and young plant",
+    "Connect plant growth with water and sunlight",
+    "Practice attending to and drawing one new plant structure at a time"
   ],
-  "interactionModel": "observe-journal tap stickers to record what changed or what care the sprout needs",
-  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken plant observation; the recap replays the growth story.",
+  "interactionModel": "choose the current journal day, tap large water and sunshine tools in either order, then make a forgiving finger trace over one or two new root, stem, or leaf guides",
+  "feedbackModel": "Care actions receive immediate gentle sound and visible used states; a meaningful trace blooms into the next authored watercolor plant stage, saves the journal day, and earns a Nature Explorer badge without scores, timers, or failure states.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/analytics.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/music.js",
+    "shared/js/narrator.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "week", "title": "Sprout Diary", "skill": "observe plant growth over time" },
-    { "id": "care", "title": "What Does It Need?", "skill": "match plant cues to care needs" }
+    { "id": "sprout-week", "title": "Five-Day Sprout Journal", "skill": "observe plant growth as an ordered sequence of visible changes" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original Watercolor / Storybook production art made with OpenAI GPT Image 2 and local Krea 2 workflows. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
   "conceptVideo": null
 }

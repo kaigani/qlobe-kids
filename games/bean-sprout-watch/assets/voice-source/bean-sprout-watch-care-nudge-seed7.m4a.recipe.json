@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-care-nudge-seed7",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-care-nudge-seed7.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Our bean is waiting for water and warm sunshine.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Our bean is waiting for water and warm sunshine.",
+      "heard": "Our bean is waiting for water and warm sunshine.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

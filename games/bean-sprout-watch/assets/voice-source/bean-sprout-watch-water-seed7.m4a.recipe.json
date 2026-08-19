@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-water-seed7",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-water-seed7.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Drip, drop. The roots drink a little water.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Drip, drop. The roots drink a little water.",
+      "heard": "Drip, drop, the roots drink a little water.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

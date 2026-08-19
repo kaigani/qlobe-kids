@@ -1,28 +1,110 @@
-# Asset Log - Bean Sprout Watch
+# Bean Sprout Watch asset log
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/observe-journal.js` |
-| Bean sprout placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All child-facing primary art is authored raster artwork. CSS and canvas provide
+layout, hit regions, guide/stroke rendering, and state transitions only.
 
-## Assets needed
+## Generated visual sources
 
-### Art
-- Sprout growth-stage scene art for bean in jar, root emerging, sprout, leaves, and mature plant.
-- Sticker art for root, sprout, leaf, water, sun, window, measuring, jar, gentle hands, and daily check.
-- Care-state scene art for droopy, leggy, and dry-paper sprout pages.
+| Source | Generator / workflow | Provenance | Decision |
+| --- | --- | --- | --- |
+| `assets/source/gpt-image-2/growth-tools-sheet-chroma.png` | OpenAI GPT Image 2, generation | Full final prompt in `assets/source/gpt-image-2/prompts.json` | Accepted after alpha/composition QA; provides six registered plant stages plus water, sun, and badge |
+| `assets/source/gpt-image-2/title-chroma.png` | OpenAI GPT Image 2, generation | Full final prompt in `assets/source/gpt-image-2/prompts.json` | Accepted; title spelling checked at full resolution |
+| `assets/source/gpt-image-2/ui-carriers-sheet-chroma.png` | OpenAI GPT Image 2, generation | Full final prompt in `assets/source/gpt-image-2/prompts.json` | Accepted; provides blank HTML-text carriers, reset token, and five-leaf vine |
+| `assets/source-local-api/bean-sprout-watch-garden-seed42.png` | QLOBE Studio / Krea 2 Turbo T2I | Adjacent `.png.recipe.json`; seed 42; accepted through Studio | Accepted Watercolor / Storybook environment; calm crop-safe center |
+| `assets/source-local-api/bean-sprout-watch-hub-seed42.png` | QLOBE Studio / Krea 2 Turbo T2I | Adjacent `.png.recipe.json`; seed 42; accepted through Studio | Accepted Toy hub tile source; no baked text |
 
-### Voice
-- "A real bean in a jar can change slowly. Look each day and stamp what changed."
-- Five day prompts for the Sprout Diary mode.
-- Three care prompts for the What Does It Need? mode.
-- All sticker observation and care lines from `config.js`.
+The magenta masters and transparent intermediates are retained for repeatable
+post-processing. `tools/process-art.py` owns crop boxes, chroma keying,
+registered canvases, authored-texture brush extraction, WebP encoding, hub
+resizing, and QA metrics. Run:
 
-## Link preview (og:image)
+```sh
+python3 games/bean-sprout-watch/tools/process-art.py
+python3 games/bean-sprout-watch/tools/process-art.py --check
+```
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+QA composites and dimensions/byte counts live in `assets/source/qa/`. The
+runtime visual pack is under 700 KB in the recorded metrics; no individual
+generated runtime asset exceeds 100 KB.
+
+## Shipped visual assets
+
+- `assets/backgrounds/bean-sprout-watch-garden.webp` — full-bleed garden.
+- `assets/plants/stage-0.webp` through `stage-5.webp` — registered pot/growth sequence.
+- `assets/ui/title.webp`, `day-card.webp`, `prompt-banner.webp`,
+  `action-terracotta.webp`, `action-green.webp`, `reset-seed.webp`,
+  `progress-vine.webp`, `water.webp`, `sun.webp`,
+  `nature-badge.webp`, and `brush-stamp.webp`.
+- `../../assets/hub/tiles/bean-sprout-watch.jpg` — catalog tile.
+- `assets/og-image.jpg` — 1200×630 capture of the shipped splash, regenerated
+  with `tools/pipeline/capture_og_images.mjs`.
+
+## Audio
+
+| Audio | Source | Notes |
+| --- | --- | --- |
+| garden music | `shared/js/music.js` + licensed shared `guitar.m4a` sample | Game-authored 72 BPM four-bar melody in `config.json`; starts only after a gesture and ducks under narration |
+| water, sun, leaf, badge | `js/botany-sounds.js` WebAudio synthesis | Game-local, gentle, mute-safe, and lazy-unlocked |
+| shared ticks / celebration | `shared/js/sfx.js` and `shared/js/celebrate.js` | Reused platform feedback |
+| teacher narration | 27 Qwen3 teacher-voice-clone AAC clips in `assets/audio/` | Recorded voice is primary; exact text remains the Web Speech fallback through `shared/js/voice-clips.js` |
+
+`tools/generate-voice.py` is the reproducible Qwen3 voice-clone pipeline. It
+uses the git-ignored platform teacher reference, seeds 7 → 8 → 9, the localhost
+Studio queue, and Studio's unconditioned Whisper transcript. A clip is published
+only when normalized intended and heard text match exactly and its duration and
+volume pass. Normalization ignores punctuation/case and treats Whisper's
+single-digit spelling (`5`) as equivalent to the spoken word (`five`); all
+other words remain exact, including the rejected `root`/`route` distinction.
+
+The user-approved 2026-08-19 Studio run passed **27/27** lines. Twenty-two final
+takes use seed 7 and five day-intro takes use seed 9. `assets/audio/qa.json`
+records intended/heard text, duration, loudness, hashes, reference checksum,
+seed, and source recipe for every runtime clip. `assets/audio/manifest.json`
+publishes the matching 27 stable keys. Accepted authoring masters and their
+Studio recipes live under `assets/voice-source/`; no LAN host or private source
+path is committed. Re-run and verify with:
+
+```sh
+python3 games/bean-sprout-watch/tools/generate-voice.py
+python3 games/bean-sprout-watch/tools/generate-voice.py --check
+```
+
+## Licensing
+
+- Shared HUD raster buttons and instrument samples are project assets documented
+  in the root/shared asset logs and reused without modification.
+- Code is MIT; game-specific generated visual assets are released under
+  CC BY 4.0 as declared in `game.json`.
+
+### Recorded voice authoring masters
+
+Each accepted master below has an adjacent `qlobe-recipe` sidecar under
+`assets/voice-source/`; the runtime key and exact source recipe are joined in
+`assets/audio/qa.json`.
+- `bean-sprout-watch-welcome-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-welcome-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-choose-day-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-choose-day-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-future-day-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-future-day-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-water-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-water-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-sun-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-sun-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-care-ready-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-care-ready-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-2-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-2-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-3-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-3-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-4-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-4-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-5-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-5-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-nudge-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-nudge-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-care-nudge-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-care-nudge-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-success-2-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-success-2-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-success-3-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-success-3-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-success-4-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-success-4-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-success-5-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-success-5-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-badge-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-badge-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-all-grown-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-all-grown-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-reset-check-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-reset-check-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-reset-done-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-reset-done-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-day-1-intro-seed9.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-day-1-intro-seed9.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-day-2-intro-seed9.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-day-2-intro-seed9.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-day-3-intro-seed9.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-day-3-intro-seed9.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-day-4-intro-seed9.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-day-4-intro-seed9.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-day-5-intro-seed9.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-day-5-intro-seed9.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-trace-1-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-trace-1-seed7.m4a.recipe.json`, CC BY 4.0.
+- `bean-sprout-watch-success-1-seed7.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `bean-sprout-watch-success-1-seed7.m4a.recipe.json`, CC BY 4.0.

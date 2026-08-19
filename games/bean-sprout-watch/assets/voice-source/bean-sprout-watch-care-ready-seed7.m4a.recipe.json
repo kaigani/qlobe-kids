@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-care-ready-seed7",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-care-ready-seed7.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Now draw what is new. Follow the glowing garden line.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Now draw what is new. Follow the glowing garden line.",
+      "heard": "Now draw what is new. Follow the glowing garden line.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}

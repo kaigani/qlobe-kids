@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "bean-sprout-watch-day-2-intro-seed9",
+  "kind": "voice",
+  "asset": "bean-sprout-watch-day-2-intro-seed9.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Day two. A tiny root is awake. Give it water and sunshine.",
+      "seed": 9
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Day two. A tiny root is awake. Give it water and sunshine.",
+      "heard": "Day 2. A tiny root is awake. Give it water and sunshine.",
+      "ratio": 0.963,
+      "match": true
+    }
+  },
+  "created": "2026-08-19"
+}
