@@ -5,43 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Joke Workshop 🤡 — Guess the Silly Punchline</title>
-  <meta name="description" content="Hear a classic joke setup and tap the picture punchline, then get to retell the joke yourself. A silly listening-and-wordplay game for ages 5–6." />
+  <meta name="theme-color" content="#102e58" />
+  <title>Joke Workshop — Build a Punchline</title>
+  <meta name="description" content="Pick or invent a punchline, perform it on a friendly paper comedy stage, and save it in your Joke Book." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Joke Workshop" />
-  <meta property="og:title" content="Joke Workshop 🤡 — Guess the Silly Punchline" />
-  <meta property="og:description" content="Hear a classic joke setup and tap the picture punchline, then get to retell the joke yourself. A silly listening-and-wordplay game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Joke Workshop — Build a Punchline" />
+  <meta property="og:description" content="Pick or invent a punchline, perform it on a friendly paper comedy stage, and save it in your Joke Book." />
   <meta property="og:url" content="https://qlo.be/games/joke-workshop/" />
   <meta property="og:image" content="https://qlo.be/games/joke-workshop/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Joke Workshop title screen with Finish the Joke and Knock Knock game modes and a clown face icon." />
+  <meta property="og:image:alt" content="A layered paper comedy stage with Joke Workshop title art and three joke cards." />
 
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Joke Workshop 🤡 — Guess the Silly Punchline" />
-  <meta name="twitter:description" content="Hear a classic joke setup and tap the picture punchline, then get to retell the joke yourself. A silly listening-and-wordplay game for ages 5–6." />
+  <meta name="twitter:title" content="Joke Workshop — Build a Punchline" />
+  <meta name="twitter:description" content="Pick or invent a punchline, perform it, and fill your Joke Book." />
   <meta name="twitter:image" content="https://qlo.be/games/joke-workshop/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="jw-app" aria-label="Joke Workshop">
+    <img class="jw-stage-plate" src="./assets/art/backgrounds/comedy-stage.webp" alt="" aria-hidden="true" />
+
+    <section class="jw-screen jw-splash" data-qk-screen="splash" aria-label="Joke Workshop home">
+      <div class="jw-hud-slot" data-hud-slot="splash"></div>
+      <div class="jw-splash-center">
+        <img class="jw-title" src="./assets/art/title.webp" alt="Joke Workshop" />
+        <p class="jw-tagline">Where Words Become Jokes!</p>
+        <div class="jw-splash-actions">
+          <button id="start-button" class="jw-paper-button jw-start-button" type="button" data-target="start" data-role="action">
+            <img src="./assets/art/ui/button-blue.webp" alt="" aria-hidden="true" />
+            <span>Pick a Joke</span>
+          </button>
+          <button id="splash-book-button" class="jw-book-button" type="button" data-target="open-book" data-role="action" aria-label="Open Joke Book">
+            <img class="jw-book-art" src="./assets/art/ui/joke-book.webp" alt="" aria-hidden="true" />
+            <span class="jw-book-label">Joke Book</span>
+            <span class="jw-star-pill" aria-label="Comedian Stars"><img src="./assets/art/ui/comedian-star.webp" alt="" /><strong data-star-count>0</strong></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="jw-screen jw-deck" data-qk-screen="deck" hidden aria-label="Pick a joke">
+      <div class="jw-hud-slot" data-hud-slot="deck"></div>
+      <header class="jw-paper-heading">
+        <img src="./assets/art/ui/question-banner.webp" alt="" aria-hidden="true" />
+        <h1>Pick a Joke</h1>
+      </header>
+      <div id="joke-deck" class="jw-card-row jw-topic-row" role="group" aria-label="Joke cards"></div>
+    </section>
+
+    <section class="jw-screen jw-builder" data-qk-screen="builder" hidden aria-label="Build a punchline">
+      <div class="jw-hud-slot" data-hud-slot="builder"></div>
+      <header class="jw-question-card">
+        <img src="./assets/art/ui/question-banner.webp" alt="" aria-hidden="true" />
+        <p class="jw-eyebrow">Pick the punchline</p>
+        <h1 id="setup-text"></h1>
+      </header>
+
+      <div id="answer-row" class="jw-card-row jw-answer-row" role="group" aria-label="Picture punchlines"></div>
+
+      <div id="record-option" class="jw-record-option" role="group" aria-label="Record your own punchline">
+        <button id="record-button" class="jw-record-button" type="button" data-target="record-punchline" data-role="choice" aria-pressed="false">
+          <img class="jw-record-art" src="./assets/art/ui/recording-microphone.webp" alt="" aria-hidden="true" />
+          <span id="record-button-label">Record My Own</span>
+          <strong id="record-countdown" class="jw-record-countdown" aria-live="assertive" hidden></strong>
+        </button>
+        <p id="record-status" class="jw-record-status" aria-live="polite">Tap the microphone to record your own punchline.</p>
+      </div>
+    </section>
+
+    <section class="jw-screen jw-performance" data-qk-screen="stage" hidden aria-label="Comedy performance">
+      <div class="jw-hud-slot" data-hud-slot="stage"></div>
+      <div id="performance-copy" class="jw-performance-copy">
+        <img src="./assets/art/ui/speech-plaque.webp" alt="" aria-hidden="true" />
+        <p id="performance-setup"></p>
+        <h1 id="performance-punchline"></h1>
+      </div>
+
+      <div id="audience-stage" class="jw-audience-stage" aria-live="polite">
+        <video id="audience-reaction-video" class="jw-audience-video" playsinline preload="metadata" aria-label="The audience reaction"></video>
+        <div id="reward-star" class="jw-reward-star" hidden>
+          <img src="./assets/art/ui/comedian-star.webp" alt="" />
+          <span>+1</span>
+        </div>
+      </div>
+
+      <p id="stage-caption" class="jw-stage-caption">The spotlight is ready…</p>
+      <div id="stage-actions" class="jw-stage-actions" hidden>
+        <button id="next-joke-button" class="jw-paper-button" type="button" data-target="next-joke" data-role="action">
+          <img src="./assets/art/ui/button-orange.webp" alt="" aria-hidden="true" />
+          <span>Next Joke</span>
+        </button>
+        <button id="stage-book-button" class="jw-paper-button" type="button" data-target="stage-book" data-role="action">
+          <img src="./assets/art/ui/button-blue.webp" alt="" aria-hidden="true" />
+          <span>Joke Book</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="jw-screen jw-book" data-qk-screen="book" hidden aria-label="Joke Book">
+      <div class="jw-hud-slot" data-hud-slot="book"></div>
+      <header class="jw-book-header">
+        <img class="jw-book-cover" src="./assets/art/ui/joke-book.webp" alt="" aria-hidden="true" />
+        <div>
+          <h1>My Joke Book</h1>
+          <p><span class="jw-inline-star"><img src="./assets/art/ui/comedian-star.webp" alt="" /></span><strong data-star-count>0</strong> Comedian Stars</p>
+        </div>
+      </header>
+      <div id="book-list" class="jw-book-list"></div>
+      <div id="book-empty" class="jw-book-empty" hidden>
+        <img src="./assets/art/ui/question-banner.webp" alt="" aria-hidden="true" />
+        <p>Your first joke will appear here.</p>
+      </div>
+      <button id="book-play-button" class="jw-paper-button jw-book-play" type="button" data-target="book-play" data-role="action">
+        <img src="./assets/art/ui/button-orange.webp" alt="" aria-hidden="true" />
+        <span>Make a Joke</span>
+      </button>
+    </section>
+
+    <p id="game-status" class="visually-hidden" aria-live="polite"></p>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

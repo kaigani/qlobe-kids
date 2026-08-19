@@ -1,0 +1,41 @@
+{
+  "id": "joke-workshop",
+  "title": "Joke Workshop",
+  "status": "beta",
+  "age": { "min": 5, "max": 8 },
+  "category": "oral-storytelling",
+  "tagline": "Where Words Become Jokes!",
+  "assets": {
+    "background": "assets/art/backgrounds/comedy-stage.webp",
+    "title": "assets/art/title.webp",
+    "stage": {
+      "audienceNeutral": "assets/art/stage/audience-neutral.webp",
+      "audienceLaugh": "assets/art/stage/audience-laugh.mp4",
+      "audienceConfused": "assets/art/stage/audience-confused.mp4"
+    },
+    "ui": {
+      "topicCardGold": "assets/art/ui/topic-card-gold.webp",
+      "topicCardCream": "assets/art/ui/topic-card-cream.webp",
+      "topicCardLavender": "assets/art/ui/topic-card-lavender.webp",
+      "choiceCardGreen": "assets/art/ui/choice-card-green.webp",
+      "choiceCardBlue": "assets/art/ui/choice-card-blue.webp",
+      "choiceCardViolet": "assets/art/ui/choice-card-violet.webp",
+      "questionBanner": "assets/art/ui/question-banner.webp",
+      "speechPlaque": "assets/art/ui/speech-plaque.webp",
+      "buttonRed": "assets/art/ui/button-red.webp",
+      "buttonBlue": "assets/art/ui/button-blue.webp",
+      "buttonOrange": "assets/art/ui/button-orange.webp",
+      "jokeBook": "assets/art/ui/joke-book.webp",
+      "comedianStar": "assets/art/ui/comedian-star.webp",
+      "recordingMicrophone": "assets/art/ui/recording-microphone.webp"
+    },
+    "topics": { "bear": "assets/art/topics/bear.webp", "banana": "assets/art/topics/banana.webp", "ghost": "assets/art/topics/ghost.webp" },
+    "answers": { "bear-gummy": "assets/art/answers/bear-gummy.webp", "bear-sleepy": "assets/art/answers/bear-sleepy.webp", "bear-dancing": "assets/art/answers/bear-dancing.webp", "banana-peeling": "assets/art/answers/banana-peeling.webp", "banana-split": "assets/art/answers/banana-split.webp", "banana-phone": "assets/art/answers/banana-phone.webp", "ghost-berries": "assets/art/answers/ghost-berries.webp", "ghost-toast": "assets/art/answers/ghost-toast.webp", "ghost-moon": "assets/art/answers/ghost-moon.webp" }
+  },
+  "jokes": [
+    { "id": "bear", "label": "Bear joke.", "setup": "What do you call a bear with no teeth?", "setupVoice": "bear-setup", "answers": [{ "id": "bear-gummy", "text": "A gummy bear!", "classic": true }, { "id": "bear-sleepy", "text": "A sleepy bear!" }, { "id": "bear-dancing", "text": "A dancing bear!" }] },
+    { "id": "banana", "label": "Banana joke.", "setup": "Why did the banana go to the doctor?", "setupVoice": "banana-setup", "answers": [{ "id": "banana-peeling", "text": "Because it was not peeling well!", "classic": true }, { "id": "banana-split", "text": "Because it wanted a banana split!" }, { "id": "banana-phone", "text": "Because it called on the banana phone!" }] },
+    { "id": "ghost", "label": "Ghost joke.", "setup": "What do ghosts eat for breakfast?", "setupVoice": "ghost-setup", "answers": [{ "id": "ghost-berries", "text": "Boo-berries!", "classic": true }, { "id": "ghost-toast", "text": "Ghost toast!" }, { "id": "ghost-moon", "text": "Moon cereal!" }] }
+  ],
+  "voiceLines": "assets/audio/lines.json"
+}

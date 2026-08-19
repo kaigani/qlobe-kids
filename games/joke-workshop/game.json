@@ -3,31 +3,25 @@
   "title": "Joke Workshop",
   "category": "oral-storytelling",
   "path": "games/joke-workshop/",
-  "icon": "🤡",
+  "icon": "🎭",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#ffad7a",
-  "shareTitle": "Joke Workshop 🤡 — Guess the Silly Punchline",
-  "description": "Hear a classic joke setup and tap the picture punchline, then get to retell the joke yourself. A silly listening-and-wordplay game for ages 5–6.",
-  "learningGoals": [
-    "Anticipate a joke punchline from an oral setup",
-    "Connect wordplay to a picture clue",
-    "Build confidence retelling short jokes"
-  ],
-  "interactionModel": "choose-one tap the punchline picture after a spoken joke setup",
-  "feedbackModel": "Correct picks pop and sparkle with spoken praise; misses wiggle gently with the line \"Hmm, that's not it - but it IS silly!\" and replay the setup.",
-  "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
-  ],
+  "age": { "min": 5, "max": 8 },
+  "status": "beta",
+  "accent": "#d9364f",
+  "shareTitle": "Joke Workshop — Build a Punchline",
+  "description": "Choose a setup, pick a surprising ending or record your own, then perform it on a friendly paper stage.",
+  "learningGoals": ["Understand that jokes have setups and surprising endings", "Practice oral storytelling and wordplay", "Compose and share a short original ending"],
+  "interactionModel": "Directly choose one of three picture punchlines or record an original punchline, followed by an automatic stage performance",
+  "feedbackModel": "Every ending is warmly celebrated by the audience video, with a Comedian Star. Picture endings are saved in the Joke Book; recordings stay local to the active performance.",
+  "uses": ["shared/js/audio-unlock.js", "shared/js/celebrate.js", "shared/js/debug-harness.js", "shared/js/hud.js", "shared/js/idle-nudge.js", "shared/js/preload.js", "shared/js/rng.js", "shared/js/screens.js", "shared/js/sfx.js", "shared/js/speech.js", "shared/js/tap.js", "shared/js/timers.js", "shared/js/voice-clips.js", "browser MediaRecorder"],
   "modes": [
-    { "id": "jokes", "title": "Finish the Joke", "skill": "punchline anticipation and wordplay" },
-    { "id": "knock", "title": "Knock Knock", "skill": "call-and-response joke comprehension" }
+    { "id": "picture-punchlines", "title": "Picture Punchlines", "skill": "anticipate a surprising ending from an oral setup" },
+    { "id": "record-my-own", "title": "Record My Own", "skill": "compose and share a short original ending aloud" }
   ],
+  "persistence": "localStorage Joke Book stores picture-punchline entries and an integer Comedian Star count; recorded original punchlines play locally for the current performance and are not uploaded.",
+  "stage": "Direct picture selection or a microphone recording opens the neutral audience panel; the narrator says the setup and punchline, then a local laugh or confused reaction video plays. Classic endings and recordings get audience-laugh; alternate endings get audience-confused, followed by confetti and the star reward.",
+  "assets": { "source": "generated/local", "runtimeNetwork": false, "art": "generated/local papercraft assets" },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder joke-card art only. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Papercraft art is locally generated and curated; fixed narration uses a locally generated comedian-reference voice pack, with device Web Speech for child-authored text and resilient fallback.",
   "conceptVideo": null
 }

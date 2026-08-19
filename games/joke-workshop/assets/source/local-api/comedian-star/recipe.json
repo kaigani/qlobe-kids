@@ -1,0 +1,60 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "joke-workshop-comedian-star",
+  "kind": "image",
+  "asset": "joke-workshop-comedian-star.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a chunky five-point Comedian Star award made from layered golden-yellow cardstock, with a small deep-blue paper rosette center and two short ruby-red paper ribbon tails; completely blank with no lettering, isolated, centered. premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words.",
+      "ground": "dark-charcoal",
+      "seed": 42,
+      "width": 1024,
+      "height": 1024,
+      "output": "joke-workshop-comedian-star.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a chunky five-point Comedian Star award made from layered golden-yellow cardstock, with a small deep-blue paper rosette center and two short ruby-red paper ribbon tails; completely blank with no lettering, isolated, centered. premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "joke-workshop-comedian-star.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 640,
+      "encode": "png",
+      "from": "joke-workshop-comedian-star.layer2.png",
+      "output": "joke-workshop-comedian-star.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "prop-cutout",
+    "style": "paper-garden",
+    "fields": {
+      "prop": "a chunky five-point Comedian Star award made from layered golden-yellow cardstock, with a small deep-blue paper rosette center and two short ruby-red paper ribbon tails; completely blank with no lettering"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "alpha": {
+      "transparentPct": 59.571,
+      "opaquePct": 20.975,
+      "partialPct": 19.454
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 42
+  },
+  "created": "2026-08-18"
+}

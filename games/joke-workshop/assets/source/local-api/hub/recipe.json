@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "joke-workshop-hub-tile",
+  "kind": "image",
+  "asset": "joke-workshop-hub-tile.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A tiny cheerful comedy stage arranged as tactile toy objects: open red curtains, one warm spotlight, a smiling gummy-bear figure beside a little rimshot drum, three colorful blank joke cards fanned at the edge, and a golden star token; no words or lettering. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "A tiny cheerful comedy stage arranged as tactile toy objects: open red curtains, one warm spotlight, a smiling gummy-bear figure beside a little rimshot drum, three colorful blank joke cards fanned at the edge, and a golden star token; no words or lettering."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-18"
+}
