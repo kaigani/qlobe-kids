@@ -1,0 +1,2896 @@
+{
+  "generator": "OpenAI gpt-image-2 source art plus deterministic Pillow/cwebp finalization",
+  "chroma_helper": "~/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py",
+  "policy": {
+    "alpha_floor": 5,
+    "minimum_edge_margin_px": 8,
+    "maximum_bbox_center_offset_ratio": 0.03,
+    "webp_quality": 88,
+    "webp_alpha_quality": 100,
+    "maximum_encoded_card_channel_delta": 2,
+    "minimum_family_luma_gap": 0.07
+  },
+  "family_lightness": {
+    "reds": {
+      "luma": [
+        0.8215,
+        0.5855,
+        0.423,
+        0.294,
+        0.1978
+      ],
+      "adjacent_descending_gaps": [
+        0.236,
+        0.1624,
+        0.1291,
+        0.0962
+      ],
+      "rule": "descending by >= 0.07",
+      "pass": true
+    },
+    "blues": {
+      "luma": [
+        0.908,
+        0.7375,
+        0.5162,
+        0.3353,
+        0.211
+      ],
+      "adjacent_descending_gaps": [
+        0.1705,
+        0.2213,
+        0.1808,
+        0.1243
+      ],
+      "rule": "descending by >= 0.07",
+      "pass": true
+    },
+    "greens": {
+      "luma": [
+        0.9104,
+        0.7472,
+        0.5723,
+        0.404,
+        0.256
+      ],
+      "adjacent_descending_gaps": [
+        0.1632,
+        0.1749,
+        0.1683,
+        0.148
+      ],
+      "rule": "descending by >= 0.07",
+      "pass": true
+    },
+    "purples": {
+      "luma": [
+        0.8812,
+        0.6764,
+        0.4759,
+        0.3174,
+        0.1905
+      ],
+      "adjacent_descending_gaps": [
+        0.2048,
+        0.2005,
+        0.1585,
+        0.1269
+      ],
+      "rule": "descending by >= 0.07",
+      "pass": true
+    },
+    "rainbow": {
+      "luma": [
+        0.4699,
+        0.6484,
+        0.8184,
+        0.5773,
+        0.469
+      ],
+      "adjacent_descending_gaps": [
+        -0.1785,
+        -0.17,
+        0.2412,
+        0.1082
+      ],
+      "rule": "named hue path",
+      "pass": true
+    }
+  },
+  "outputs": {
+    "atelier-backdrop": {
+      "source": "assets/source/gpt-image-2/atelier-backdrop-source.png",
+      "master": "assets/source/final/atelier-backdrop.png",
+      "output": "assets/atelier-backdrop.webp",
+      "dimensions": [
+        1600,
+        1200
+      ],
+      "bytes": 239810,
+      "opaque": true,
+      "pass": true
+    },
+    "title": {
+      "source": "assets/source/gpt-image-2/title-keyed-source.png",
+      "master": "assets/source/final/title.png",
+      "output": "assets/title.webp",
+      "dimensions": [
+        900,
+        500
+      ],
+      "bytes": 77184,
+      "alpha_bbox": [
+        74,
+        22,
+        826,
+        478
+      ],
+      "margins": [
+        74,
+        22,
+        74,
+        22
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -5.502,
+        27.398
+      ],
+      "pass": true,
+      "canvas": [
+        900,
+        500
+      ],
+      "content_size": [
+        752,
+        456
+      ],
+      "safe_padding": 22
+    },
+    "spectrum-rack": {
+      "source": "assets/source/gpt-image-2/spectrum-rack-keyed-source.png",
+      "master": "assets/source/final/spectrum-rack.png",
+      "output": "assets/spectrum-rack.webp",
+      "dimensions": [
+        1200,
+        500
+      ],
+      "bytes": 67138,
+      "alpha_bbox": [
+        22,
+        88,
+        1178,
+        412
+      ],
+      "margins": [
+        22,
+        88,
+        22,
+        88
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.817,
+        0.906
+      ],
+      "pass": true,
+      "canvas": [
+        1200,
+        500
+      ],
+      "content_size": [
+        1156,
+        324
+      ],
+      "safe_padding": 22
+    },
+    "card-tray": {
+      "source": "assets/source/gpt-image-2/card-tray-keyed-source.png",
+      "master": "assets/source/final/card-tray.png",
+      "output": "assets/card-tray.webp",
+      "dimensions": [
+        1200,
+        460
+      ],
+      "bytes": 41068,
+      "alpha_bbox": [
+        21,
+        111,
+        1179,
+        349
+      ],
+      "margins": [
+        21,
+        111,
+        21,
+        111
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        0.019,
+        0.747
+      ],
+      "pass": true,
+      "canvas": [
+        1200,
+        460
+      ],
+      "content_size": [
+        1158,
+        238
+      ],
+      "safe_padding": 21
+    },
+    "mixer-press": {
+      "source": "assets/source/gpt-image-2/mixer-press-keyed-source.png",
+      "master": "assets/source/final/mixer-press.png",
+      "output": "assets/mixer-press.webp",
+      "dimensions": [
+        1200,
+        640
+      ],
+      "bytes": 102458,
+      "alpha_bbox": [
+        29,
+        47,
+        1171,
+        593
+      ],
+      "margins": [
+        29,
+        47,
+        29,
+        47
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.671,
+        14.982
+      ],
+      "pass": true,
+      "canvas": [
+        1200,
+        640
+      ],
+      "content_size": [
+        1142,
+        546
+      ],
+      "safe_padding": 29
+    },
+    "safari-frame": {
+      "source": "assets/source/gpt-image-2/safari-frame-keyed-source.png",
+      "master": "assets/source/final/safari-frame.png",
+      "output": "assets/safari-frame.webp",
+      "dimensions": [
+        720,
+        900
+      ],
+      "bytes": 71382,
+      "alpha_bbox": [
+        53,
+        32,
+        668,
+        868
+      ],
+      "margins": [
+        53,
+        32,
+        52,
+        32
+      ],
+      "bbox_center_offset": [
+        0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        0.619,
+        58.36
+      ],
+      "pass": true,
+      "canvas": [
+        720,
+        900
+      ],
+      "content_size": [
+        616,
+        836
+      ],
+      "safe_padding": 32
+    },
+    "reward-ribbon": {
+      "source": "assets/source/gpt-image-2/reward-ribbon-keyed-source.png",
+      "master": "assets/source/final/reward-ribbon.png",
+      "output": "assets/reward-ribbon.webp",
+      "dimensions": [
+        900,
+        420
+      ],
+      "bytes": 63892,
+      "alpha_bbox": [
+        19,
+        54,
+        881,
+        366
+      ],
+      "margins": [
+        19,
+        54,
+        19,
+        54
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.211,
+        2.757
+      ],
+      "pass": true,
+      "canvas": [
+        900,
+        420
+      ],
+      "content_size": [
+        862,
+        312
+      ],
+      "safe_padding": 19
+    },
+    "mode-spectrum": {
+      "source": "assets/source/gpt-image-2/mode-spectrum-keyed-source.png",
+      "master": "assets/source/final/mode-spectrum.png",
+      "output": "assets/ui/mode-spectrum.webp",
+      "dimensions": [
+        520,
+        440
+      ],
+      "bytes": 44922,
+      "alpha_bbox": [
+        20,
+        40,
+        500,
+        400
+      ],
+      "margins": [
+        20,
+        40,
+        20,
+        40
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.298,
+        0.818
+      ],
+      "pass": true,
+      "canvas": [
+        520,
+        440
+      ],
+      "content_size": [
+        480,
+        360
+      ],
+      "safe_padding": 20
+    },
+    "mode-mixer": {
+      "source": "assets/source/gpt-image-2/mode-mixer-keyed-source.png",
+      "master": "assets/source/final/mode-mixer.png",
+      "output": "assets/ui/mode-mixer.webp",
+      "dimensions": [
+        520,
+        440
+      ],
+      "bytes": 41140,
+      "alpha_bbox": [
+        42,
+        20,
+        478,
+        420
+      ],
+      "margins": [
+        42,
+        20,
+        42,
+        20
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.014,
+        0.23
+      ],
+      "pass": true,
+      "canvas": [
+        520,
+        440
+      ],
+      "content_size": [
+        436,
+        400
+      ],
+      "safe_padding": 20
+    },
+    "mode-safari": {
+      "source": "assets/source/gpt-image-2/mode-safari-keyed-source.png",
+      "master": "assets/source/final/mode-safari.png",
+      "output": "assets/ui/mode-safari.webp",
+      "dimensions": [
+        520,
+        440
+      ],
+      "bytes": 94010,
+      "alpha_bbox": [
+        34,
+        20,
+        486,
+        420
+      ],
+      "margins": [
+        34,
+        20,
+        34,
+        20
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -5.794,
+        -1.225
+      ],
+      "pass": true,
+      "canvas": [
+        520,
+        440
+      ],
+      "content_size": [
+        452,
+        400
+      ],
+      "safe_padding": 20
+    },
+    "ui/btn-back": {
+      "source": "assets/source/gpt-image-2/hud-controls-source.png#back-quadrant",
+      "master": "assets/source/final/ui/btn-back.png",
+      "output": "assets/ui/btn-back.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 19634,
+      "alpha_bbox": [
+        16,
+        16,
+        239,
+        240
+      ],
+      "margins": [
+        16,
+        16,
+        17,
+        16
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -4.473,
+        -4.545
+      ],
+      "pass": true,
+      "canvas": [
+        256,
+        256
+      ],
+      "content_size": [
+        223,
+        224
+      ],
+      "safe_padding": 16
+    },
+    "ui/btn-sound": {
+      "source": "assets/source/gpt-image-2/hud-controls-source.png#sound-quadrant",
+      "master": "assets/source/final/ui/btn-sound.png",
+      "output": "assets/ui/btn-sound.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 20196,
+      "alpha_bbox": [
+        16,
+        16,
+        239,
+        239
+      ],
+      "margins": [
+        16,
+        16,
+        17,
+        17
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        -0.5
+      ],
+      "alpha_centroid_offset": [
+        -4.847,
+        -5.289
+      ],
+      "pass": true,
+      "canvas": [
+        256,
+        256
+      ],
+      "content_size": [
+        223,
+        224
+      ],
+      "safe_padding": 16
+    },
+    "ui/btn-home": {
+      "source": "assets/source/gpt-image-2/hud-controls-source.png#home-quadrant",
+      "master": "assets/source/final/ui/btn-home.png",
+      "output": "assets/ui/btn-home.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 19966,
+      "alpha_bbox": [
+        16,
+        16,
+        239,
+        240
+      ],
+      "margins": [
+        16,
+        16,
+        17,
+        16
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -4.747,
+        -4.789
+      ],
+      "pass": true,
+      "canvas": [
+        256,
+        256
+      ],
+      "content_size": [
+        224,
+        224
+      ],
+      "safe_padding": 16
+    },
+    "ui/btn-play": {
+      "source": "assets/source/gpt-image-2/hud-controls-source.png#play-quadrant",
+      "master": "assets/source/final/ui/btn-play.png",
+      "output": "assets/ui/btn-play.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 19456,
+      "alpha_bbox": [
+        16,
+        16,
+        239,
+        240
+      ],
+      "margins": [
+        16,
+        16,
+        17,
+        16
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -4.693,
+        -4.157
+      ],
+      "pass": true,
+      "canvas": [
+        256,
+        256
+      ],
+      "content_size": [
+        223,
+        224
+      ],
+      "safe_padding": 16
+    },
+    "safari/apple": {
+      "source": "assets/source/gpt-image-2/safari-apple-keyed-source.png",
+      "master": "assets/source/final/safari/apple.png",
+      "output": "assets/safari/apple.webp",
+      "dimensions": [
+        480,
+        480
+      ],
+      "bytes": 30680,
+      "alpha_bbox": [
+        46,
+        22,
+        433,
+        458
+      ],
+      "margins": [
+        46,
+        22,
+        47,
+        22
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        3.415,
+        15.124
+      ],
+      "pass": true,
+      "canvas": [
+        480,
+        480
+      ],
+      "content_size": [
+        387,
+        436
+      ],
+      "safe_padding": 22,
+      "target_hex": "#e84b44",
+      "recolored_pixels": 575021,
+      "source_median_saturation": 0.8474,
+      "source_median_value": 0.9686
+    },
+    "safari/sunflower": {
+      "source": "assets/source/gpt-image-2/safari-sunflower-keyed-source.png",
+      "master": "assets/source/final/safari/sunflower.png",
+      "output": "assets/safari/sunflower.webp",
+      "dimensions": [
+        480,
+        480
+      ],
+      "bytes": 28496,
+      "alpha_bbox": [
+        22,
+        24,
+        458,
+        456
+      ],
+      "margins": [
+        22,
+        24,
+        22,
+        24
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.448,
+        1.402
+      ],
+      "pass": true,
+      "canvas": [
+        480,
+        480
+      ],
+      "content_size": [
+        436,
+        432
+      ],
+      "safe_padding": 22,
+      "target_hex": "#f3d44b",
+      "recolored_pixels": 503594,
+      "source_median_saturation": 0.86,
+      "source_median_value": 0.9804
+    },
+    "safari/leaf": {
+      "source": "assets/source/gpt-image-2/safari-leaf-keyed-source.png",
+      "master": "assets/source/final/safari/leaf.png",
+      "output": "assets/safari/leaf.webp",
+      "dimensions": [
+        480,
+        480
+      ],
+      "bytes": 40836,
+      "alpha_bbox": [
+        42,
+        22,
+        437,
+        458
+      ],
+      "margins": [
+        42,
+        22,
+        43,
+        22
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        3.535,
+        -5.907
+      ],
+      "pass": true,
+      "canvas": [
+        480,
+        480
+      ],
+      "content_size": [
+        395,
+        436
+      ],
+      "safe_padding": 22,
+      "target_hex": "#58a958",
+      "recolored_pixels": 376279,
+      "source_median_saturation": 0.7403,
+      "source_median_value": 0.6745
+    },
+    "safari/ocean": {
+      "source": "assets/source/gpt-image-2/safari-ocean-keyed-source.png",
+      "master": "assets/source/final/safari/ocean.png",
+      "output": "assets/safari/ocean.webp",
+      "dimensions": [
+        480,
+        480
+      ],
+      "bytes": 37226,
+      "alpha_bbox": [
+        22,
+        37,
+        458,
+        442
+      ],
+      "margins": [
+        22,
+        37,
+        22,
+        38
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -0.5
+      ],
+      "alpha_centroid_offset": [
+        -0.686,
+        10.738
+      ],
+      "pass": true,
+      "canvas": [
+        480,
+        480
+      ],
+      "content_size": [
+        436,
+        405
+      ],
+      "safe_padding": 22,
+      "target_hex": "#3893ca",
+      "recolored_pixels": 337843,
+      "source_median_saturation": 0.7277,
+      "source_median_value": 0.7608
+    },
+    "safari/berries": {
+      "source": "assets/source/gpt-image-2/safari-berries-keyed-source.png",
+      "master": "assets/source/final/safari/berries.png",
+      "output": "assets/safari/berries.webp",
+      "dimensions": [
+        480,
+        480
+      ],
+      "bytes": 31472,
+      "alpha_bbox": [
+        46,
+        22,
+        433,
+        458
+      ],
+      "margins": [
+        46,
+        22,
+        47,
+        22
+      ],
+      "bbox_center_offset": [
+        -0.5,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -1.904,
+        16.919
+      ],
+      "pass": true,
+      "canvas": [
+        480,
+        480
+      ],
+      "content_size": [
+        387,
+        436
+      ],
+      "safe_padding": 22,
+      "target_hex": "#946ac3",
+      "recolored_pixels": 602052,
+      "source_median_saturation": 0.5628,
+      "source_median_value": 0.6745
+    },
+    "source/card-neutral": {
+      "source": "assets/source/gpt-image-2/card-neutral-keyed-source.png",
+      "master": "assets/source/final/card-neutral.png",
+      "dimensions": [
+        256,
+        340
+      ],
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "canvas": [
+        256,
+        340
+      ],
+      "content_size": [
+        218,
+        316
+      ],
+      "safe_padding": 12
+    },
+    "cards/reds-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/reds-1.png",
+      "output": "assets/cards/reds-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5844,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f9c7c5",
+      "encoded_median_rgb": [
+        248,
+        198,
+        197
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/reds-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/reds-2.png",
+      "output": "assets/cards/reds-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5464,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f27d75",
+      "encoded_median_rgb": [
+        241,
+        125,
+        117
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/reds-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/reds-3.png",
+      "output": "assets/cards/reds-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5168,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#e84b44",
+      "encoded_median_rgb": [
+        231,
+        75,
+        69
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/reds-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/reds-4.png",
+      "output": "assets/cards/reds-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4778,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#c6283b",
+      "encoded_median_rgb": [
+        198,
+        40,
+        59
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/reds-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/reds-5.png",
+      "output": "assets/cards/reds-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4334,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#741f32",
+      "encoded_median_rgb": [
+        116,
+        31,
+        50
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "ui/family-reds": {
+      "source": "raster composite of the five final family cards",
+      "master": "assets/source/final/ui/family-reds.png",
+      "output": "assets/ui/family-reds.webp",
+      "dimensions": [
+        520,
+        360
+      ],
+      "bytes": 10660,
+      "alpha_bbox": [
+        26,
+        78,
+        494,
+        280
+      ],
+      "margins": [
+        26,
+        78,
+        26,
+        80
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -1.0
+      ],
+      "alpha_centroid_offset": [
+        -1.076,
+        -0.673
+      ],
+      "pass": true
+    },
+    "cards/blues-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/blues-1.png",
+      "output": "assets/cards/blues-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6028,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#d3ecf8",
+      "encoded_median_rgb": [
+        210,
+        236,
+        248
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/blues-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/blues-2.png",
+      "output": "assets/cards/blues-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5642,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#85c8e8",
+      "encoded_median_rgb": [
+        132,
+        199,
+        231
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/blues-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/blues-3.png",
+      "output": "assets/cards/blues-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5022,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#3893ca",
+      "encoded_median_rgb": [
+        56,
+        147,
+        200
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        -2
+      ],
+      "color_pass": true
+    },
+    "cards/blues-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/blues-4.png",
+      "output": "assets/cards/blues-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4786,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#1e5f9b",
+      "encoded_median_rgb": [
+        30,
+        95,
+        155
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/blues-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/blues-5.png",
+      "output": "assets/cards/blues-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4342,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#173a67",
+      "encoded_median_rgb": [
+        22,
+        58,
+        103
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "ui/family-blues": {
+      "source": "raster composite of the five final family cards",
+      "master": "assets/source/final/ui/family-blues.png",
+      "output": "assets/ui/family-blues.webp",
+      "dimensions": [
+        520,
+        360
+      ],
+      "bytes": 10812,
+      "alpha_bbox": [
+        26,
+        78,
+        494,
+        280
+      ],
+      "margins": [
+        26,
+        78,
+        26,
+        80
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -1.0
+      ],
+      "alpha_centroid_offset": [
+        -1.076,
+        -0.673
+      ],
+      "pass": true
+    },
+    "cards/greens-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/greens-1.png",
+      "output": "assets/cards/greens-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5898,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#d9efd1",
+      "encoded_median_rgb": [
+        217,
+        238,
+        208
+      ],
+      "encoded_channel_delta": [
+        0,
+        -1,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/greens-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/greens-2.png",
+      "output": "assets/cards/greens-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5616,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#9dce88",
+      "encoded_median_rgb": [
+        157,
+        205,
+        136
+      ],
+      "encoded_channel_delta": [
+        0,
+        -1,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/greens-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/greens-3.png",
+      "output": "assets/cards/greens-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5178,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#58a958",
+      "encoded_median_rgb": [
+        87,
+        168,
+        89
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/greens-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/greens-4.png",
+      "output": "assets/cards/greens-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4816,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#2f7b46",
+      "encoded_median_rgb": [
+        48,
+        123,
+        70
+      ],
+      "encoded_channel_delta": [
+        1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/greens-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/greens-5.png",
+      "output": "assets/cards/greens-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4262,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#1d4d38",
+      "encoded_median_rgb": [
+        29,
+        78,
+        57
+      ],
+      "encoded_channel_delta": [
+        0,
+        1,
+        1
+      ],
+      "color_pass": true
+    },
+    "ui/family-greens": {
+      "source": "raster composite of the five final family cards",
+      "master": "assets/source/final/ui/family-greens.png",
+      "output": "assets/ui/family-greens.webp",
+      "dimensions": [
+        520,
+        360
+      ],
+      "bytes": 10434,
+      "alpha_bbox": [
+        26,
+        78,
+        494,
+        280
+      ],
+      "margins": [
+        26,
+        78,
+        26,
+        80
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -1.0
+      ],
+      "alpha_centroid_offset": [
+        -1.076,
+        -0.673
+      ],
+      "pass": true
+    },
+    "cards/purples-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/purples-1.png",
+      "output": "assets/cards/purples-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5718,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#eadcf4",
+      "encoded_median_rgb": [
+        232,
+        219,
+        242
+      ],
+      "encoded_channel_delta": [
+        -2,
+        -1,
+        -2
+      ],
+      "color_pass": true
+    },
+    "cards/purples-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/purples-2.png",
+      "output": "assets/cards/purples-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5634,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#c5a0e0",
+      "encoded_median_rgb": [
+        197,
+        159,
+        223
+      ],
+      "encoded_channel_delta": [
+        0,
+        -1,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/purples-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/purples-3.png",
+      "output": "assets/cards/purples-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5122,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#946ac3",
+      "encoded_median_rgb": [
+        148,
+        107,
+        196
+      ],
+      "encoded_channel_delta": [
+        0,
+        1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/purples-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/purples-4.png",
+      "output": "assets/cards/purples-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4660,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#684397",
+      "encoded_median_rgb": [
+        103,
+        67,
+        150
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/purples-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/purples-5.png",
+      "output": "assets/cards/purples-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4280,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#41275f",
+      "encoded_median_rgb": [
+        65,
+        40,
+        96
+      ],
+      "encoded_channel_delta": [
+        0,
+        1,
+        1
+      ],
+      "color_pass": true
+    },
+    "ui/family-purples": {
+      "source": "raster composite of the five final family cards",
+      "master": "assets/source/final/ui/family-purples.png",
+      "output": "assets/ui/family-purples.webp",
+      "dimensions": [
+        520,
+        360
+      ],
+      "bytes": 10272,
+      "alpha_bbox": [
+        26,
+        78,
+        494,
+        280
+      ],
+      "margins": [
+        26,
+        78,
+        26,
+        80
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -1.0
+      ],
+      "alpha_centroid_offset": [
+        -1.076,
+        -0.673
+      ],
+      "pass": true
+    },
+    "cards/rainbow-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/rainbow-1.png",
+      "output": "assets/cards/rainbow-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5216,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#e95a52",
+      "encoded_median_rgb": [
+        232,
+        90,
+        81
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/rainbow-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/rainbow-2.png",
+      "output": "assets/cards/rainbow-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5788,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f19a37",
+      "encoded_median_rgb": [
+        241,
+        154,
+        56
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/rainbow-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/rainbow-3.png",
+      "output": "assets/cards/rainbow-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6006,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f3d44b",
+      "encoded_median_rgb": [
+        242,
+        211,
+        76
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/rainbow-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/rainbow-4.png",
+      "output": "assets/cards/rainbow-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5088,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#60a85c",
+      "encoded_median_rgb": [
+        96,
+        168,
+        91
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/rainbow-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/rainbow-5.png",
+      "output": "assets/cards/rainbow-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5068,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#3783c5",
+      "encoded_median_rgb": [
+        56,
+        132,
+        197
+      ],
+      "encoded_channel_delta": [
+        1,
+        1,
+        0
+      ],
+      "color_pass": true
+    },
+    "ui/family-rainbow": {
+      "source": "raster composite of the five final family cards",
+      "master": "assets/source/final/ui/family-rainbow.png",
+      "output": "assets/ui/family-rainbow.webp",
+      "dimensions": [
+        520,
+        360
+      ],
+      "bytes": 11508,
+      "alpha_bbox": [
+        26,
+        78,
+        494,
+        280
+      ],
+      "margins": [
+        26,
+        78,
+        26,
+        80
+      ],
+      "bbox_center_offset": [
+        0.0,
+        -1.0
+      ],
+      "alpha_centroid_offset": [
+        -1.076,
+        -0.673
+      ],
+      "pass": true
+    },
+    "cards/gold-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/gold-1.png",
+      "output": "assets/cards/gold-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6144,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#fde59a",
+      "encoded_median_rgb": [
+        253,
+        228,
+        154
+      ],
+      "encoded_channel_delta": [
+        0,
+        -1,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/gold-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/gold-2.png",
+      "output": "assets/cards/gold-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6006,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f3d44b",
+      "encoded_median_rgb": [
+        242,
+        211,
+        76
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/gold-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/gold-3.png",
+      "output": "assets/cards/gold-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5378,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#c99428",
+      "encoded_median_rgb": [
+        201,
+        148,
+        40
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-yellow-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-yellow-1.png",
+      "output": "assets/cards/mix-red-yellow-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5168,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#e84b44",
+      "encoded_median_rgb": [
+        231,
+        75,
+        69
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-yellow-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-yellow-2.png",
+      "output": "assets/cards/mix-red-yellow-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5432,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#ea663c",
+      "encoded_median_rgb": [
+        234,
+        102,
+        60
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-yellow-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-yellow-3.png",
+      "output": "assets/cards/mix-red-yellow-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5636,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#ee7f37",
+      "encoded_median_rgb": [
+        238,
+        127,
+        56
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-yellow-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-yellow-4.png",
+      "output": "assets/cards/mix-red-yellow-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5674,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f09a3b",
+      "encoded_median_rgb": [
+        239,
+        154,
+        60
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-yellow-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-yellow-5.png",
+      "output": "assets/cards/mix-red-yellow-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6006,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f3d44b",
+      "encoded_median_rgb": [
+        242,
+        211,
+        76
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-yellow-blue-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-yellow-blue-1.png",
+      "output": "assets/cards/mix-yellow-blue-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 6006,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#f3d44b",
+      "encoded_median_rgb": [
+        242,
+        211,
+        76
+      ],
+      "encoded_channel_delta": [
+        -1,
+        -1,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-yellow-blue-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-yellow-blue-2.png",
+      "output": "assets/cards/mix-yellow-blue-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5538,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#b2ca4c",
+      "encoded_median_rgb": [
+        177,
+        202,
+        76
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-yellow-blue-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-yellow-blue-3.png",
+      "output": "assets/cards/mix-yellow-blue-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5034,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#64aa57",
+      "encoded_median_rgb": [
+        100,
+        170,
+        87
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-yellow-blue-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-yellow-blue-4.png",
+      "output": "assets/cards/mix-yellow-blue-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4926,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#4d9a84",
+      "encoded_median_rgb": [
+        77,
+        153,
+        132
+      ],
+      "encoded_channel_delta": [
+        0,
+        -1,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-yellow-blue-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-yellow-blue-5.png",
+      "output": "assets/cards/mix-yellow-blue-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5068,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#3783c5",
+      "encoded_median_rgb": [
+        56,
+        132,
+        197
+      ],
+      "encoded_channel_delta": [
+        1,
+        1,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-blue-1": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-blue-1.png",
+      "output": "assets/cards/mix-red-blue-1.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5168,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#e84b44",
+      "encoded_median_rgb": [
+        231,
+        75,
+        69
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-blue-2": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-blue-2.png",
+      "output": "assets/cards/mix-red-blue-2.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4972,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#c34f73",
+      "encoded_median_rgb": [
+        194,
+        79,
+        116
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-blue-3": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-blue-3.png",
+      "output": "assets/cards/mix-red-blue-3.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4936,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#9b548f",
+      "encoded_median_rgb": [
+        155,
+        84,
+        142
+      ],
+      "encoded_channel_delta": [
+        0,
+        0,
+        -1
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-blue-4": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-blue-4.png",
+      "output": "assets/cards/mix-red-blue-4.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 4676,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#6d60ad",
+      "encoded_median_rgb": [
+        108,
+        96,
+        173
+      ],
+      "encoded_channel_delta": [
+        -1,
+        0,
+        0
+      ],
+      "color_pass": true
+    },
+    "cards/mix-red-blue-5": {
+      "source": "deterministic recolor of assets/source/final/card-neutral.png",
+      "master": "assets/source/final/cards/mix-red-blue-5.png",
+      "output": "assets/cards/mix-red-blue-5.webp",
+      "dimensions": [
+        256,
+        340
+      ],
+      "bytes": 5068,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        328
+      ],
+      "margins": [
+        19,
+        12,
+        19,
+        12
+      ],
+      "bbox_center_offset": [
+        0.0,
+        0.0
+      ],
+      "alpha_centroid_offset": [
+        -0.548,
+        -0.648
+      ],
+      "pass": true,
+      "target_hex": "#3783c5",
+      "encoded_median_rgb": [
+        56,
+        132,
+        197
+      ],
+      "encoded_channel_delta": [
+        1,
+        1,
+        0
+      ],
+      "color_pass": true
+    }
+  }
+}

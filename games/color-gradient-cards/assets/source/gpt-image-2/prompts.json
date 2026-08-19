@@ -1,0 +1,110 @@
+{
+  "tool": "OpenAI built-in image generation",
+  "model": "gpt-image-2",
+  "sharedStyle": "Tactile handmade papercraft for a calm Montessori-inspired game for ages five to six. Layered cut cardstock, deckled paper edges, visible natural fibers, tiny handmade irregularities, warm shallow physical shadows, front-facing studio lighting, clear child-readable silhouettes. No vector-flat look, no glossy plastic, no 3D render, no emoji, no interface chrome, no watermark.",
+  "cutoutRule": "For isolated assets, keep the complete subject centered with at least twelve percent breathing room on every side. Nothing may touch or cross the canvas edge. Use the requested uniform chroma plate outside and through every truly empty opening; do not cast a shadow onto the chroma background.",
+  "entries": [
+    {
+      "id": "atelier-backdrop",
+      "operation": "generate",
+      "source": "atelier-backdrop-source.png",
+      "prompt": "Create a 4:3 papercraft color atelier environment plate. A large warm-cream handmade paper sheet with softly deckled edges must keep the central sixty-five percent calm and usable. Layer torn coral, saffron, teal, green, blue, and plum construction-paper corners around the outer perimeter. No objects, cards, controls, letters, or text. Preserve generous safe space in every corner for real game controls. Apply the shared papercraft style."
+    },
+    {
+      "id": "title",
+      "operation": "generate then background-only edit",
+      "sources": ["title-original-source.png", "title-keyed-source.png"],
+      "prompt": "Create an isolated hand-cut paper title lockup spelling exactly ‘Color Gradient Cards’. Use chunky navy cardstock letters with cream cut-paper borders and a fan of small red, orange, yellow, green, blue, and purple paper shade cards behind the words. Every letter must be fully legible and correctly spelled. Center the complete lockup with broad padding. The edit must change only the outside background to a uniform vivid chroma green plate, preserving the title pixel-for-pixel."
+    },
+    {
+      "id": "neutral-card",
+      "operation": "generate then background-only edit",
+      "sources": ["card-neutral-original-source.png", "card-neutral-keyed-source.png"],
+      "prompt": "Create one blank front-facing rectangular cardstock tablet in neutral warm white. Rounded hand-cut corners, subtle deckled edge, fine paper fibers, a restrained raised-paper bevel and shallow self-shadow. No color patch, text, icon, border decoration, holes, or perspective. Center the entire card with ample padding. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "spectrum-rack",
+      "operation": "generate then background-only edit",
+      "sources": ["spectrum-rack-original-source.png", "spectrum-rack-keyed-source.png"],
+      "prompt": "Create one wide front-facing Montessori papercraft spectrum rack containing exactly five equal empty vertical card wells in a single row. Cream handmade cardstock faces, kraft-paper recesses, saffron stitch accents, sturdy layered end caps, no loose cards, no labels, no text. Keep the rack symmetrical, completely visible, and centered. The edit must replace only the outside and empty background with uniform vivid chroma green."
+    },
+    {
+      "id": "card-tray",
+      "operation": "generate then background-only edit",
+      "sources": ["card-tray-original-source.png", "card-tray-keyed-source.png"],
+      "prompt": "Create one wide shallow empty papercraft card tray, front-facing with a slight readable inner lip. Cream fibrous paper inside, kraft layered wall, coral running-stitch detail, softly rounded handmade corners. No cards, labels, or text. Center the complete tray with generous padding. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "mixer-press",
+      "operation": "generate then background-only edit",
+      "sources": ["mixer-press-original-source.png", "mixer-press-keyed-source.png"],
+      "prompt": "Create a whimsical front-facing paper color-mixing press with exactly two large empty circular wells across the top and exactly five equal empty vertical bridge-card slots across the lower channel. Layered cream and kraft cardstock, coral and gold tabs, stitched paper details, one small central paper roller. No cards, liquids, labels, text, extra wells, or extra slots. Center the entire object with safe padding. The edit must replace only the background and truly empty exterior with uniform vivid chroma green."
+    },
+    {
+      "id": "safari-frame",
+      "operation": "generate then background-only edit",
+      "sources": ["safari-frame-original-source.png", "safari-frame-keyed-source.png"],
+      "prompt": "Create one tall front-facing papercraft nature-specimen frame. One large empty rounded display opening above and one shallow empty shade-card pocket below. Cream and kraft cardstock layers, tiny stitched seams, small autumn-paper leaf accents at the outer corners. No object, card, label, or text. Center the complete frame. The edit must make the outside and large empty opening a uniform vivid chroma green while retaining the physical pocket interior."
+    },
+    {
+      "id": "reward-ribbon",
+      "operation": "generate then background-only edit",
+      "sources": ["reward-ribbon-original-source.png", "reward-ribbon-keyed-source.png"],
+      "prompt": "Create one blank folded golden-paper celebration ribbon, wide and gently arched, with small layered paper stars and confetti flecks around it. The ribbon face must be empty for live HTML praise; no lettering, numbers, badge, or watermark. Center every decorative piece with generous edge clearance. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "mode-spectrum",
+      "operation": "generate then background-only edit",
+      "sources": ["mode-spectrum-original-source.png", "mode-spectrum-keyed-source.png"],
+      "prompt": "Create a self-contained square papercraft mode tableau on a torn cream-paper frame. Show exactly five red paper shade cards visibly progressing from pale pink under a layered paper sun to deep burgundy under a navy moon, with soft red paper hills below. No text or UI symbols. Center the complete framed tableau. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "mode-mixer",
+      "operation": "generate then background-only edit",
+      "sources": ["mode-mixer-original-source.png", "mode-mixer-keyed-source.png"],
+      "prompt": "Create a self-contained square papercraft mode tableau on a torn cream-paper frame. Two large overlapping red and yellow fibrous-paper circles make a clearly orange overlap, with exactly five small red-to-orange-to-yellow paper steps below. No text or UI. Center the complete framed tableau. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "mode-safari",
+      "operation": "generate then background-only edit",
+      "sources": ["mode-safari-original-source.png", "mode-safari-keyed-source.png"],
+      "prompt": "Create a self-contained square papercraft nature-safari tableau on a torn cream-paper frame. A large navy paper magnifying glass crosses a golden sunflower, layered blue ocean wave, purple leaf, clouds, and sun; exactly three small gold, blue, and purple paper sample cards sit along the bottom. No text or UI. Center the complete tableau. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "safari-apple",
+      "operation": "generate isolated cutout",
+      "source": "safari-apple-keyed-source.png",
+      "prompt": "Create one complete front-facing layered red-paper apple with a small brown paper stem and one green paper leaf. Visible fibers, several subtle red cardstock layers, readable friendly silhouette, no face, basket, text, or extra fruit. Use the cutout rule on a uniform vivid chroma green plate."
+    },
+    {
+      "id": "safari-sunflower",
+      "operation": "generate isolated cutout",
+      "source": "safari-sunflower-keyed-source.png",
+      "prompt": "Create one complete front-facing golden papercraft sunflower head with layered yellow paper petals and a textured brown circular paper center. No stem, pot, face, text, or extra flowers. Use the cutout rule on a uniform vivid chroma green plate."
+    },
+    {
+      "id": "safari-leaf",
+      "operation": "generate isolated cutout",
+      "source": "safari-leaf-keyed-source.png",
+      "prompt": "Create one complete front-facing green papercraft leaf, broad and friendly, with layered green cardstock, a clear central vein and several cut-paper side veins. No branch, flower, face, text, or extra leaves. Preserve every natural green by using the cutout rule on a uniform vivid magenta plate."
+    },
+    {
+      "id": "safari-ocean",
+      "operation": "generate isolated cutout",
+      "source": "safari-ocean-keyed-source.png",
+      "prompt": "Create one complete stylized layered blue-paper ocean wave curling to the right, with several nested blue cardstock bands and small cream paper foam shapes. No boat, animal, face, text, beach, or extra waves. Use the cutout rule on a uniform vivid chroma green plate."
+    },
+    {
+      "id": "safari-berries",
+      "operation": "generate then background-only edit",
+      "sources": ["safari-berries-original-source.png", "safari-berries-keyed-source.png"],
+      "prompt": "Create one complete cluster of exactly five round purple layered-paper berries joined by a small brown paper stem. Rich visible cardstock layers and tiny simple paper calyx shapes; no leaves, bowl, face, text, or extra berries. Center the cluster with broad padding. The edit must replace only the outside background with uniform vivid chroma green."
+    },
+    {
+      "id": "hud-controls",
+      "operation": "generate transparent 2-by-2 sprite sheet",
+      "source": "hud-controls-source.png",
+      "prompt": "Create a clean 2-by-2 sprite sheet of four matching circular papercraft game buttons for a premium preschool color-learning game. Solid uniform chroma-key green background (#00FF00), with absolutely no texture or shadow on the green backdrop. Each quadrant contains exactly one isolated button, fully visible, centered, same scale, and separated by very generous empty green gutters; nothing may touch a quadrant edge and no objects may overlap. Visual system: handmade layered cardstock and felt, warm cream outer deckled paper rim, muted coral-red stitched inner ring, tiny golden-yellow paper accent tabs, subtle real paper fibers, shallow tactile bevel from stacked paper, soft shadow contained close to the button. No plastic, no glass, no glossy highlight, no metallic shine, no 3D-rendered toy look. High-contrast deep navy cut-paper symbol, simple enough for ages 5–6. Quadrants, reading order: 1. top-left: bold left-pointing Back arrow. 2. top-right: simple speaker with exactly two curved sound waves. 3. bottom-left: simple house/home symbol. 4. bottom-right: bold right-pointing Play triangle. No words, no letters, no numbers, no extra icons, no confetti, no decorative scene. Orthographic front view. Consistent light from upper left. The exact entire silhouette of every circular button, including paper edge and close shadow, must fit comfortably and be visually centered in its quadrant with at least 18% padding on all sides."
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "id": "color-gradient-cards",
+  "title": "Color Gradient Cards",
+  "rounds": 3,
+  "artDirection": "papercraft",
+  "assets": {
+    "backdrop": "./assets/atelier-backdrop.webp",
+    "title": "./assets/title.webp",
+    "reward": "./assets/reward-ribbon.webp",
+    "rack": "./assets/spectrum-rack.webp",
+    "tray": "./assets/card-tray.webp",
+    "press": "./assets/mixer-press.webp",
+    "safariFrame": "./assets/safari-frame.webp",
+    "home": "./assets/ui/btn-home.webp",
+    "back": "./assets/ui/btn-back.webp",
+    "sound": "./assets/ui/btn-sound.webp",
+    "playButton": "./assets/ui/btn-play.webp"
+  },
+  "audio": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "modes": [
+    {
+      "id": "spectrum",
+      "title": "Spectrum Studio",
+      "description": "Order shades from light to dark",
+      "art": "./assets/ui/mode-spectrum.webp",
+      "voice": "mode-spectrum"
+    },
+    {
+      "id": "mixer",
+      "title": "Color Mixer",
+      "description": "Build a bridge between two colors",
+      "art": "./assets/ui/mode-mixer.webp",
+      "voice": "mode-mixer"
+    },
+    {
+      "id": "safari",
+      "title": "Shade Safari",
+      "description": "Match colors in the paper garden",
+      "art": "./assets/ui/mode-safari.webp",
+      "voice": "mode-safari"
+    }
+  ],
+  "families": {
+    "reds": {
+      "label": "Reds",
+      "voice": "family-reds",
+      "preview": "./assets/ui/family-reds.webp",
+      "palette": [
+        { "hex": "#f9c7c5", "card": "./assets/cards/reds-1.webp" },
+        { "hex": "#f27d75", "card": "./assets/cards/reds-2.webp" },
+        { "hex": "#e84b44", "card": "./assets/cards/reds-3.webp" },
+        { "hex": "#c6283b", "card": "./assets/cards/reds-4.webp" },
+        { "hex": "#741f32", "card": "./assets/cards/reds-5.webp" }
+      ]
+    },
+    "blues": {
+      "label": "Blues",
+      "voice": "family-blues",
+      "preview": "./assets/ui/family-blues.webp",
+      "palette": [
+        { "hex": "#d3ecf8", "card": "./assets/cards/blues-1.webp" },
+        { "hex": "#85c8e8", "card": "./assets/cards/blues-2.webp" },
+        { "hex": "#3893ca", "card": "./assets/cards/blues-3.webp" },
+        { "hex": "#1e5f9b", "card": "./assets/cards/blues-4.webp" },
+        { "hex": "#173a67", "card": "./assets/cards/blues-5.webp" }
+      ]
+    },
+    "greens": {
+      "label": "Greens",
+      "voice": "family-greens",
+      "preview": "./assets/ui/family-greens.webp",
+      "palette": [
+        { "hex": "#d9efd1", "card": "./assets/cards/greens-1.webp" },
+        { "hex": "#9dce88", "card": "./assets/cards/greens-2.webp" },
+        { "hex": "#58a958", "card": "./assets/cards/greens-3.webp" },
+        { "hex": "#2f7b46", "card": "./assets/cards/greens-4.webp" },
+        { "hex": "#1d4d38", "card": "./assets/cards/greens-5.webp" }
+      ]
+    },
+    "purples": {
+      "label": "Purples",
+      "voice": "family-purples",
+      "preview": "./assets/ui/family-purples.webp",
+      "palette": [
+        { "hex": "#eadcf4", "card": "./assets/cards/purples-1.webp" },
+        { "hex": "#c5a0e0", "card": "./assets/cards/purples-2.webp" },
+        { "hex": "#946ac3", "card": "./assets/cards/purples-3.webp" },
+        { "hex": "#684397", "card": "./assets/cards/purples-4.webp" },
+        { "hex": "#41275f", "card": "./assets/cards/purples-5.webp" }
+      ]
+    },
+    "rainbow": {
+      "label": "Rainbow",
+      "voice": "family-rainbow",
+      "preview": "./assets/ui/family-rainbow.webp",
+      "palette": [
+        { "hex": "#e95a52", "card": "./assets/cards/rainbow-1.webp" },
+        { "hex": "#f19a37", "card": "./assets/cards/rainbow-2.webp" },
+        { "hex": "#f3d44b", "card": "./assets/cards/rainbow-3.webp" },
+        { "hex": "#60a85c", "card": "./assets/cards/rainbow-4.webp" },
+        { "hex": "#3783c5", "card": "./assets/cards/rainbow-5.webp" }
+      ]
+    }
+  },
+  "mixer": {
+    "primary": {
+      "red": { "label": "Red", "card": "./assets/cards/reds-3.webp" },
+      "yellow": { "label": "Yellow", "card": "./assets/cards/rainbow-3.webp" },
+      "blue": { "label": "Blue", "card": "./assets/cards/rainbow-5.webp" }
+    },
+    "bridges": [
+      {
+        "id": "red-yellow",
+        "colors": ["red", "yellow"],
+        "result": "orange",
+        "voice": "result-orange",
+        "palette": ["#e84b44", "#ea663c", "#ee7f37", "#f09a3b", "#f3d44b"],
+        "cards": ["./assets/cards/mix-red-yellow-1.webp", "./assets/cards/mix-red-yellow-2.webp", "./assets/cards/mix-red-yellow-3.webp", "./assets/cards/mix-red-yellow-4.webp", "./assets/cards/mix-red-yellow-5.webp"]
+      },
+      {
+        "id": "yellow-blue",
+        "colors": ["yellow", "blue"],
+        "result": "green",
+        "voice": "result-green",
+        "palette": ["#f3d44b", "#b2ca4c", "#64aa57", "#4d9a84", "#3783c5"],
+        "cards": ["./assets/cards/mix-yellow-blue-1.webp", "./assets/cards/mix-yellow-blue-2.webp", "./assets/cards/mix-yellow-blue-3.webp", "./assets/cards/mix-yellow-blue-4.webp", "./assets/cards/mix-yellow-blue-5.webp"]
+      },
+      {
+        "id": "red-blue",
+        "colors": ["red", "blue"],
+        "result": "purple",
+        "voice": "result-purple",
+        "palette": ["#e84b44", "#c34f73", "#9b548f", "#6d60ad", "#3783c5"],
+        "cards": ["./assets/cards/mix-red-blue-1.webp", "./assets/cards/mix-red-blue-2.webp", "./assets/cards/mix-red-blue-3.webp", "./assets/cards/mix-red-blue-4.webp", "./assets/cards/mix-red-blue-5.webp"]
+      }
+    ]
+  },
+  "safari": {
+    "rounds": 3,
+    "objects": [
+      {
+        "id": "apple",
+        "label": "apple",
+        "colorLabel": "red",
+        "asset": "./assets/safari/apple.webp",
+        "target": "#e84b44",
+        "voice": "safari-apple",
+        "choices": [
+          { "id": "apple-light", "hex": "#f27d75", "card": "./assets/cards/reds-2.webp" },
+          { "id": "apple-match", "hex": "#e84b44", "card": "./assets/cards/reds-3.webp", "correct": true },
+          { "id": "apple-dark", "hex": "#c6283b", "card": "./assets/cards/reds-4.webp" }
+        ]
+      },
+      {
+        "id": "sunflower",
+        "label": "sunflower",
+        "colorLabel": "golden",
+        "asset": "./assets/safari/sunflower.webp",
+        "target": "#f3d44b",
+        "voice": "safari-sunflower",
+        "choices": [
+          { "id": "sunflower-light", "hex": "#fde59a", "card": "./assets/cards/gold-1.webp" },
+          { "id": "sunflower-match", "hex": "#f3d44b", "card": "./assets/cards/gold-2.webp", "correct": true },
+          { "id": "sunflower-dark", "hex": "#c99428", "card": "./assets/cards/gold-3.webp" }
+        ]
+      },
+      {
+        "id": "leaf",
+        "label": "leaf",
+        "colorLabel": "green",
+        "asset": "./assets/safari/leaf.webp",
+        "target": "#58a958",
+        "voice": "safari-leaf",
+        "choices": [
+          { "id": "leaf-light", "hex": "#9dce88", "card": "./assets/cards/greens-2.webp" },
+          { "id": "leaf-match", "hex": "#58a958", "card": "./assets/cards/greens-3.webp", "correct": true },
+          { "id": "leaf-dark", "hex": "#2f7b46", "card": "./assets/cards/greens-4.webp" }
+        ]
+      },
+      {
+        "id": "ocean",
+        "label": "ocean wave",
+        "colorLabel": "blue",
+        "asset": "./assets/safari/ocean.webp",
+        "target": "#3893ca",
+        "voice": "safari-ocean",
+        "choices": [
+          { "id": "ocean-light", "hex": "#85c8e8", "card": "./assets/cards/blues-2.webp" },
+          { "id": "ocean-match", "hex": "#3893ca", "card": "./assets/cards/blues-3.webp", "correct": true },
+          { "id": "ocean-dark", "hex": "#1e5f9b", "card": "./assets/cards/blues-4.webp" }
+        ]
+      },
+      {
+        "id": "berries",
+        "label": "berries",
+        "colorLabel": "purple",
+        "asset": "./assets/safari/berries.webp",
+        "target": "#946ac3",
+        "voice": "safari-berries",
+        "choices": [
+          { "id": "berries-light", "hex": "#c5a0e0", "card": "./assets/cards/purples-2.webp" },
+          { "id": "berries-match", "hex": "#946ac3", "card": "./assets/cards/purples-3.webp", "correct": true },
+          { "id": "berries-dark", "hex": "#684397", "card": "./assets/cards/purples-4.webp" }
+        ]
+      }
+    ]
+  },
+  "voice": {
+    "welcome": "Welcome to the color atelier. Choose a color adventure.",
+    "mode-spectrum": "Build a beautiful color spectrum.",
+    "choose-family": "Choose a color family.",
+    "family-reds": "Reds.",
+    "family-blues": "Blues.",
+    "family-greens": "Greens.",
+    "family-purples": "Purples.",
+    "family-rainbow": "Rainbow.",
+    "arrange-spectrum": "Look closely. Put the cards from light to dark.",
+    "arrange-rainbow": "Make a rainbow path from red to blue.",
+    "order-nudge": "Look again. Which shade fits here?",
+    "shade-fit": "That shade fits.",
+    "spectrum-complete": "Well done! Look at that beautiful spectrum.",
+    "mode-mixer": "Blend two colors and watch the shades change.",
+    "mixer-prompt": "Choose two different colors for the paper press.",
+    "same-red": "More red stays red. Choose a different color.",
+    "same-yellow": "More yellow stays yellow. Choose a different color.",
+    "same-blue": "More blue stays blue. Choose a different color.",
+    "result-orange": "Red and yellow make orange.",
+    "result-green": "Yellow and blue make green.",
+    "result-purple": "Red and blue make purple.",
+    "mixer-complete": "Your color bridges are glowing.",
+    "mode-safari": "Find the shade that matches each paper treasure.",
+    "safari-apple": "Find the red that matches the apple.",
+    "safari-sunflower": "Find the golden shade that matches the sunflower.",
+    "safari-leaf": "Find the green that matches the leaf.",
+    "safari-ocean": "Find the blue that matches the ocean wave.",
+    "safari-berries": "Find the purple that matches the berries.",
+    "match-nudge": "Almost. Look closely at the shade.",
+    "match-cheer": "A perfect shade match.",
+    "safari-complete": "You found a whole garden of color."
+  }
+}

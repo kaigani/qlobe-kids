@@ -1721,21 +1721,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#d95d67",
       "modes": [
         {
-          "id": "blues",
-          "title": "Light to Dark",
-          "skill": "shade discrimination and ordering"
+          "id": "spectrum",
+          "title": "Spectrum Studio",
+          "skill": "shade discrimination and seriation"
         },
         {
-          "id": "rainbow",
-          "title": "Rainbow Order",
-          "skill": "rainbow color sequence"
+          "id": "mixer",
+          "title": "Color Mixer",
+          "skill": "observe primary-color transitions"
+        },
+        {
+          "id": "safari",
+          "title": "Shade Safari",
+          "skill": "exact object-to-shade matching"
         }
       ],
-      "summary": "Order color shades from light to dark."
+      "summary": "Order paper shades, reveal color bridges, and match exact colors."
     },
     {
       "id": "bean-sprout-watch",

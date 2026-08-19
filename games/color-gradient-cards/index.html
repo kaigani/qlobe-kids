@@ -1,47 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Color Gradient Cards 🎨 — Light to Dark Ordering</title>
-  <meta name="description" content="Arrange color swatches from light to dark and put rainbow shades in their familiar order, sharpening an eye for subtle shade differences. A calm sorting game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Color Gradient Cards" />
-  <meta property="og:title" content="Color Gradient Cards 🎨 — Light to Dark Ordering" />
-  <meta property="og:description" content="Arrange color swatches from light to dark and put rainbow shades in their familiar order, sharpening an eye for subtle shade differences. A calm sorting game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/color-gradient-cards/" />
-  <meta property="og:image" content="https://qlo.be/games/color-gradient-cards/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Color Gradient Cards title screen with Light to Dark and Rainbow Order game modes and a painter's palette icon." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Color Gradient Cards 🎨 — Light to Dark Ordering" />
-  <meta name="twitter:description" content="Arrange color swatches from light to dark and put rainbow shades in their familiar order, sharpening an eye for subtle shade differences. A calm sorting game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/color-gradient-cards/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#f4dca6">
+  <title>Color Gradient Cards — A Papercraft Color Atelier</title>
+  <meta name="description" content="Arrange paper shades, mix color bridges, and find exact color matches in a tactile papercraft atelier.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Color Gradient Cards — A Papercraft Color Atelier">
+  <meta property="og:description" content="Arrange paper shades, mix color bridges, and find exact color matches in a tactile papercraft atelier.">
+  <meta property="og:url" content="https://qlo.be/games/color-gradient-cards/">
+  <meta property="og:image" content="https://qlo.be/games/color-gradient-cards/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Color Gradient Cards papercraft atelier with Spectrum Studio, Color Mixer, and Shade Safari mode cards.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Color Gradient Cards — A Papercraft Color Atelier">
+  <meta name="twitter:description" content="Arrange paper shades, mix color bridges, and find exact color matches in a tactile papercraft atelier.">
+  <meta name="twitter:image" content="https://qlo.be/games/color-gradient-cards/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sequence-order.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Color Gradient Cards">
+    <section class="qk-screen gradient-screen splash-screen" data-qk-screen="splash"></section>
+    <section class="qk-screen gradient-screen picker-screen" data-qk-screen="picker" hidden></section>
+    <section class="qk-screen gradient-screen play-screen" data-qk-screen="play" hidden></section>
+    <section class="qk-screen gradient-screen end-screen" data-qk-screen="end" hidden></section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

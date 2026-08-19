@@ -1,41 +1,70 @@
-# Asset Log - Color Gradient Cards
+# Asset Log — Color Gradient Cards
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/sequence-order.js` |
-| Color chip placeholder cards | N/A - `swatch:#hex` refs rendered by the engine | N/A | N/A | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All child-facing game artwork is committed raster art. CSS supplies layout,
+hit areas, focus, and short state transitions; it does not substitute vector or
+CSS-drawn cards, racks, nature objects, or mode illustrations.
 
-## Assets needed
+## Authored papercraft artwork
 
-### Art
-- Glossy color-chip art for blue shade family
-- Glossy color-chip art for green shade family
-- Glossy color-chip art for pink shade family
-- Glossy color-chip art for orange shade family
-- Glossy color-chip art for rainbow color cards
+| Asset family | Source and model | Production outputs | Modifications and QA |
+| --- | --- | --- | --- |
+| Atelier environment | OpenAI built-in image generation, `gpt-image-2` | `assets/atelier-backdrop.webp` | Center-cropped to 4:3 and encoded at 1600 × 1200; 234 KB |
+| Title lockup | `gpt-image-2` generation plus background-only edit | `assets/title.webp` | Exact title spelling retained; chroma extracted, normalized to a centered 900 × 500 canvas |
+| Spectrum furniture | `gpt-image-2` generation plus background-only edits | `assets/spectrum-rack.webp`, `assets/card-tray.webp` | Exactly five rack wells; alpha-normalized and centered on fixed canvases |
+| Mixer furniture | `gpt-image-2` generation plus background-only edit | `assets/mixer-press.webp` | Exactly two wells and five bridge slots; alpha-normalized and centered |
+| Safari furniture and objects | `gpt-image-2` generation/background edits | `assets/safari-frame.webp`, `assets/safari/*.webp` | Object-family paper pixels selectively shifted toward the exact configured target while preserving fibers, neutral paper, stems, and shadows |
+| Mode illustrations | `gpt-image-2` generation plus background-only edits | `assets/ui/mode-*.webp` | Complete framed tableaux, centered on 520 × 440 canvases |
+| Reward ribbon | `gpt-image-2` generation plus background-only edit | `assets/reward-ribbon.webp` | Ribbon remains blank; praise is live accessible HTML/audio |
+| HUD controls | `gpt-image-2` transparent 2 × 2 generation | `assets/ui/btn-{home,back,sound,play}.webp` | Four matching stitched-paper controls are split by fixed quadrants, despilled, alpha-normalized, and centered on 256 × 256 canvases |
+| Neutral paper tablet | `gpt-image-2` generation plus background-only edit | `assets/source/final/card-neutral.png` | One shared fibrous paper master, centered at 256 × 340 with 12–19 px alpha margins |
+| Exact shade tablets | Deterministic raster derivation from the accepted neutral tablet | `assets/cards/*.webp` | Target values come from `config.json`; fibers, deckled edge, and authored alpha remain. Lossy WebP center medians remain within 1–2 RGB values of targets |
+| Family previews | Raster composites of the final shade tablets | `assets/ui/family-*.webp` | Five actual game cards are fanned and re-centered; no runtime swatches |
 
-### Voice
-- "Color chips are ready. Put them in order."
-- "Look closely at the color. Try another spot."
-- "You ordered the color cards!"
-- "Beautiful looking!"
-- "That shade fits!"
-- "Careful color eyes!"
-- "Put the color chips from light to dark."
-- "Lightest to darkest. Beautiful blues!"
-- "Lightest to darkest. Gorgeous greens!"
-- "Lightest to darkest. Pretty pinks!"
-- "Lightest to darkest. Warm oranges!"
-- "Make the rainbow order."
-- "Red, orange, yellow, green. Rainbow order!"
-- "Orange, yellow, green, blue, purple. Rainbow order!"
-- "Red, orange, yellow, green, blue. Rainbow order!"
+The complete structured prompt set and source-to-output mapping are recorded in
+`assets/source/gpt-image-2/prompts.json` and `assets/source/processing.json`.
+Original, keyed, alpha, normalized PNG, magenta-composite, and contact-sheet
+evidence remains under `assets/source/`.
 
-## Link preview (og:image)
+## Cutout and centering contract
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+`tools/process-assets.py` uses the installed imagegen chroma helper with an
+auto-border key, soft matte, one-pixel edge contraction, and despill. It then:
+
+1. thresholds only residual near-zero alpha;
+2. trims to the visible alpha bounds;
+3. scales into a declared fixed canvas with safe padding;
+4. centers the alpha bounding box;
+5. rejects any subject with less than 8 px edge margin or more than 3% bbox-center offset;
+6. writes saturated-magenta QA composites and an overall contact sheet;
+7. encodes WebP at quality 88 / alpha quality 100.
+
+All 68 recorded production outputs pass. The shipped WebP art set is about
+1.31 MiB. The processor is deterministic and idempotent.
+
+## Voice
+
+| Asset | Source | Creator / engine | Runtime use |
+| --- | --- | --- | --- |
+| `assets/audio/*.m4a` | The verbatim `config.json` voice script and the project-configured, approved teacher reference | Local `qwen3-tts-voiceclone`, seed ladder 7 → 8 → 9 | Primary recorded teacher narration |
+| `assets/audio/manifest.json` | Generated by `tools/generate-voice.py` | QLOBE Kids authoring pipeline | Only transcript-accepted clips are addressable at runtime |
+| `assets/audio/lines.json` | Deterministically copied from `config.json` | QLOBE Kids | Exact device-speech fallback text |
+| `assets/audio/qa.json` | Local Whisper transcription plus audio measurements | Local `whisper-stt` | Per-line seed, transcript, similarity, coverage, duration, and loudness evidence |
+| `assets/source/local-api/voice/*` | Locally preserved, gitignored authoring candidates and private-path-free sidecars | Local Qwen/Whisper pipeline | Retry diagnostics only; never loaded by the game or committed |
+
+The endpoint and personal teacher-reference path are never written to committed
+provenance. Synthesized interaction sounds come from `shared/js/sfx.js`; the
+five short spectrum pitches are generated at runtime with Web Audio.
+
+## Shared platform assets
+
+| Asset | Source | Creator | License | Modifications |
+| --- | --- | --- | --- | --- |
+| Fredoka SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | Fontsource / Google Fonts | Milena Brandão and Hafontia | SIL OFL 1.1 | Reused unmodified |
+
+## Catalog and sharing
+
+- `assets/hub/tiles/color-gradient-cards.jpg` is the existing curated 640 × 533
+  Toy-menu image and stays in the hub’s separate visual grammar.
+- `assets/og-image.jpg` is a 1200 × 630 capture of the final splash. Regenerate
+  it with `node tools/pipeline/capture_og_images.mjs --only color-gradient-cards
+  --force --layout-scale 1` whenever the splash materially changes.

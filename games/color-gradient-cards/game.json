@@ -6,28 +6,43 @@
   "icon": "🎨",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f25f5c",
-  "shareTitle": "Color Gradient Cards 🎨 — Light to Dark Ordering",
-  "description": "Arrange color swatches from light to dark and put rainbow shades in their familiar order, sharpening an eye for subtle shade differences. A calm sorting game for ages 5–6.",
+  "status": "beta",
+  "accent": "#d95d67",
+  "shareTitle": "Color Gradient Cards 🎨 — A Papercraft Color Atelier",
+  "description": "Arrange tactile paper shades from light to dark, reveal bridges between mixed colors, and find exact matches in a papercraft nature safari. A calm color-discrimination game for ages 5–6.",
   "learningGoals": [
-    "Discriminate between lighter and darker shades",
-    "Order colors within one color family",
-    "Practice the familiar rainbow sequence"
+    "Discriminate and order nearby shades by lightness",
+    "Observe the transition between two primary colors",
+    "Match an object's visible color to an exact shade card"
   ],
-  "interactionModel": "tap or drag swatch cards into sequence slots",
-  "feedbackModel": "Warm spoken praise and sparkle SFX on success; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "interactionModel": "Custom papercraft atelier: drag cards into padded rack, press, and specimen targets, or use the equivalent tap-card then tap-target path",
+  "feedbackModel": "Correct cards snap into place with chromatic notes and recorded praise; close attempts wobble gently, return in place, and preserve all progress.",
   "uses": [
-    "shared/js/engines/sequence-order.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/sfx.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/mode-select.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "blues", "title": "Light to Dark", "skill": "shade discrimination and ordering" },
-    { "id": "rainbow", "title": "Rainbow Order", "skill": "rainbow color sequence" }
+    { "id": "spectrum", "title": "Spectrum Studio", "skill": "shade discrimination and seriation" },
+    { "id": "mixer", "title": "Color Mixer", "skill": "observe primary-color transitions" },
+    { "id": "safari", "title": "Shade Safari", "skill": "exact object-to-shade matching" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; papercraft art generated with OpenAI gpt-image-2, then authored, extracted, recolored, and normalized for QLOBE Kids. Voice generated locally and transcript-checked with Whisper. Built with Codex for QLOBE Kids.",
   "characters": [],
-  "conceptVideo": ""
+  "conceptVideo": null
 }
