@@ -5,43 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Puzzle Map Match 🗺️ — Sorting Animals by Habitat</title>
-  <meta name="description" content="Match animals to their homes — icy, hot, ocean, farm, or wild — sorting each one into its place bin with a tap or drag. A gentle first-geography game for ages 5–6." />
+  <meta name="theme-color" content="#155796" />
+  <title>Puzzle Explorer 🗺️ — A Papercraft World Match</title>
+  <meta name="description" content="Carry animals, foods, and famous landmarks to six continents on a tactile papercraft world map. A gentle geography adventure for ages 3–6." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Puzzle Map Match" />
-  <meta property="og:title" content="Puzzle Map Match 🗺️ — Sorting Animals by Habitat" />
-  <meta property="og:description" content="Match animals to their homes — icy, hot, ocean, farm, or wild — sorting each one into its place bin with a tap or drag. A gentle first-geography game for ages 5–6." />
+  <meta property="og:site_name" content="Puzzle Explorer" />
+  <meta property="og:title" content="Puzzle Explorer 🗺️ — A Papercraft World Match" />
+  <meta property="og:description" content="Match friendly picture cards to six continents with tap or drag play, gentle hints, and joyful world facts." />
   <meta property="og:url" content="https://qlo.be/games/puzzle-map-match/" />
   <meta property="og:image" content="https://qlo.be/games/puzzle-map-match/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Puzzle Map Match title screen with Animal Homes and Farm or Wild? buttons below a folded map icon." />
+  <meta property="og:image:alt" content="Puzzle Explorer papercraft title above a colorful world map and picture cards." />
 
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Puzzle Map Match 🗺️ — Sorting Animals by Habitat" />
-  <meta name="twitter:description" content="Match animals to their homes — icy, hot, ocean, farm, or wild — sorting each one into its place bin with a tap or drag. A gentle first-geography game for ages 5–6." />
+  <meta name="twitter:title" content="Puzzle Explorer 🗺️ — A Papercraft World Match" />
+  <meta name="twitter:description" content="A gentle papercraft geography adventure for ages 3–6." />
   <meta name="twitter:image" content="https://qlo.be/games/puzzle-map-match/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sort-into-bins.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Puzzle Explorer"></main>
+  <noscript>Puzzle Explorer needs JavaScript to play.</noscript>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

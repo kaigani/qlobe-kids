@@ -1,0 +1,260 @@
+{
+  "id": "puzzle-map-match",
+  "engine": "custom-dom",
+  "title": "Puzzle Explorer",
+  "artDirection": "Papercraft",
+  "storageKey": "qk-puzzle-explorer-v1",
+  "audio": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./data/lines.json"
+  },
+  "music": {
+    "manifest": "./assets/audio/music-manifest.json",
+    "band": [
+      { "instr": "vibraphone" },
+      { "instr": "guitar" },
+      { "instr": "maracas" }
+    ],
+    "song": {
+      "id": "paper-passport-parade",
+      "title": "Paper Passport Parade",
+      "bpm": 82,
+      "beatsPerBar": 4,
+      "bars": 4,
+      "lead": "keys",
+      "scale": [60, 62, 64, 67, 69],
+      "parts": {
+        "melody": [[0,64,1],[1,67,1],[2,69,2],[4,67,1],[5,64,1],[6,62,2],[8,60,1],[9,64,1],[10,67,2],[12,69,1],[13,67,1],[14,64,2]],
+        "bass": [],
+        "chord": [[0,[48,52,55],4],[4,[47,50,55],4],[8,[45,48,52],4],[12,[48,52,55],4]],
+        "perc": [[0,"a"],[2,"b"],[4,"a"],[6,"b"],[8,"a"],[10,"b"],[12,"a"],[14,"b"]]
+      }
+    }
+  },
+  "assets": {
+    "splash": "./assets/backgrounds/splash.webp",
+    "playTexture": "./assets/backgrounds/play-texture.webp",
+    "title": "./assets/ui/title.webp",
+    "mapBoard": "./assets/ui/map-board.webp",
+    "promptRibbon": "./assets/ui/prompt-ribbon.webp",
+    "tray": "./assets/ui/tray.webp",
+    "confetti": "./assets/ui/confetti.webp",
+    "successBurst": "./assets/ui/success-burst.webp",
+    "handGuide": "./assets/ui/hand-guide.webp",
+    "continents": "./assets/map/continents.webp",
+    "continentMask": "./assets/map/continent-mask.png",
+    "continentData": "./assets/map/continents.json",
+    "home": "../../shared/assets/ui/btn-home.png",
+    "back": "../../shared/assets/ui/btn-back.png",
+    "sound": "../../shared/assets/ui/btn-sound.png",
+    "play": "../../shared/assets/ui/btn-play.png"
+  },
+  "timing": {
+    "firstHintMs": 9000,
+    "repeatHintMs": 12000,
+    "successHoldMs": 2500,
+    "roundCompleteHoldMs": 1200
+  },
+  "continents": [
+    { "id": "asia", "name": "Asia" },
+    { "id": "africa", "name": "Africa" },
+    { "id": "australia", "name": "Australia" },
+    { "id": "north-america", "name": "North America" },
+    { "id": "south-america", "name": "South America" },
+    { "id": "europe", "name": "Europe" }
+  ],
+  "modes": [
+    {
+      "id": "animal-trek",
+      "title": "Animal Trek",
+      "skill": "match characteristic animals to six inhabited continents",
+      "voice": "mode-animals",
+      "completeVoice": "complete-animals",
+      "cover": "./assets/cards/panda.webp",
+      "items": [
+        {
+          "id": "panda",
+          "name": "giant panda",
+          "continent": "asia",
+          "asset": "./assets/cards/panda.webp",
+          "prompt": "Where does the giant panda belong?",
+          "promptVoice": "prompt-panda",
+          "voice": "fact-panda"
+        },
+        {
+          "id": "elephant",
+          "name": "African elephant",
+          "continent": "africa",
+          "asset": "./assets/cards/elephant.webp",
+          "prompt": "Where does the elephant belong?",
+          "promptVoice": "prompt-elephant",
+          "voice": "fact-elephant"
+        },
+        {
+          "id": "kangaroo",
+          "name": "kangaroo",
+          "continent": "australia",
+          "asset": "./assets/cards/kangaroo.webp",
+          "prompt": "Where does the kangaroo belong?",
+          "promptVoice": "prompt-kangaroo",
+          "voice": "fact-kangaroo"
+        },
+        {
+          "id": "bison",
+          "name": "American bison",
+          "continent": "north-america",
+          "asset": "./assets/cards/bison.webp",
+          "prompt": "Where does the bison belong?",
+          "promptVoice": "prompt-bison",
+          "voice": "fact-bison"
+        },
+        {
+          "id": "llama",
+          "name": "llama",
+          "continent": "south-america",
+          "asset": "./assets/cards/llama.webp",
+          "prompt": "Where does the llama belong?",
+          "promptVoice": "prompt-llama",
+          "voice": "fact-llama"
+        },
+        {
+          "id": "ibex",
+          "name": "Alpine ibex",
+          "continent": "europe",
+          "asset": "./assets/cards/ibex.webp",
+          "prompt": "This is a mountain goat. Where does it belong?",
+          "promptVoice": "prompt-ibex",
+          "voice": "fact-ibex"
+        }
+      ]
+    },
+    {
+      "id": "tasty-travels",
+      "title": "Tasty Travels",
+      "skill": "connect foods and crops with a clear place of origin or tradition",
+      "voice": "mode-foods",
+      "completeVoice": "complete-foods",
+      "cover": "./assets/cards/bananas.webp",
+      "items": [
+        {
+          "id": "bananas",
+          "name": "bananas",
+          "continent": "asia",
+          "asset": "./assets/cards/bananas.webp",
+          "prompt": "Where did bananas first grow?",
+          "promptVoice": "prompt-bananas",
+          "voice": "fact-bananas"
+        },
+        {
+          "id": "watermelon",
+          "name": "watermelon",
+          "continent": "africa",
+          "asset": "./assets/cards/watermelon.webp",
+          "prompt": "Where did wild watermelons first grow?",
+          "promptVoice": "prompt-watermelon",
+          "voice": "fact-watermelon"
+        },
+        {
+          "id": "lamington",
+          "name": "lamington cake",
+          "continent": "australia",
+          "asset": "./assets/cards/lamington.webp",
+          "prompt": "Where is lamington cake from?",
+          "promptVoice": "prompt-lamington",
+          "voice": "fact-lamington"
+        },
+        {
+          "id": "corn",
+          "name": "corn",
+          "continent": "north-america",
+          "asset": "./assets/cards/corn.webp",
+          "prompt": "Where was corn first grown?",
+          "promptVoice": "prompt-corn",
+          "voice": "fact-corn"
+        },
+        {
+          "id": "cacao",
+          "name": "cacao",
+          "continent": "south-america",
+          "asset": "./assets/cards/cacao.webp",
+          "prompt": "Where does this cacao story begin?",
+          "promptVoice": "prompt-cacao",
+          "voice": "fact-cacao"
+        },
+        {
+          "id": "pretzel",
+          "name": "pretzel",
+          "continent": "europe",
+          "asset": "./assets/cards/pretzel.webp",
+          "prompt": "Where is this twisty treat a tradition?",
+          "promptVoice": "prompt-pretzel",
+          "voice": "fact-pretzel"
+        }
+      ]
+    },
+    {
+      "id": "world-wonders",
+      "title": "World Wonders",
+      "skill": "match recognizable landmarks to six inhabited continents",
+      "voice": "mode-landmarks",
+      "completeVoice": "complete-landmarks",
+      "cover": "./assets/cards/great-wall.webp",
+      "items": [
+        {
+          "id": "great-wall",
+          "name": "Great Wall of China",
+          "continent": "asia",
+          "asset": "./assets/cards/great-wall.webp",
+          "prompt": "Where is the Great Wall?",
+          "promptVoice": "prompt-great-wall",
+          "voice": "fact-great-wall"
+        },
+        {
+          "id": "pyramids",
+          "name": "Great Pyramid of Giza",
+          "continent": "africa",
+          "asset": "./assets/cards/pyramids.webp",
+          "prompt": "Where are the pyramids of Giza?",
+          "promptVoice": "prompt-pyramids",
+          "voice": "fact-pyramids"
+        },
+        {
+          "id": "sydney-opera-house",
+          "name": "Sydney Opera House",
+          "continent": "australia",
+          "asset": "./assets/cards/sydney-opera-house.webp",
+          "prompt": "Where is the Sydney Opera House?",
+          "promptVoice": "prompt-sydney-opera-house",
+          "voice": "fact-sydney-opera-house"
+        },
+        {
+          "id": "statue-of-liberty",
+          "name": "Statue of Liberty",
+          "continent": "north-america",
+          "asset": "./assets/cards/statue-of-liberty.webp",
+          "prompt": "Where is the Statue of Liberty?",
+          "promptVoice": "prompt-statue-of-liberty",
+          "voice": "fact-statue-of-liberty"
+        },
+        {
+          "id": "machu-picchu",
+          "name": "Machu Picchu",
+          "continent": "south-america",
+          "asset": "./assets/cards/machu-picchu.webp",
+          "prompt": "Where is Machu Picchu?",
+          "promptVoice": "prompt-machu-picchu",
+          "voice": "fact-machu-picchu"
+        },
+        {
+          "id": "eiffel-tower",
+          "name": "Eiffel Tower",
+          "continent": "europe",
+          "asset": "./assets/cards/eiffel-tower.webp",
+          "prompt": "Where is the Eiffel Tower?",
+          "promptVoice": "prompt-eiffel-tower",
+          "voice": "fact-eiffel-tower"
+        }
+      ]
+    }
+  ]
+}

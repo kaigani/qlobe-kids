@@ -1,33 +1,41 @@
 {
   "id": "puzzle-map-match",
-  "title": "Puzzle Map Match",
+  "title": "Puzzle Explorer",
   "category": "culture-geography",
   "path": "games/puzzle-map-match/",
   "icon": "🗺️",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2f9bb3",
-  "shareTitle": "Puzzle Map Match 🗺️ — Sorting Animals by Habitat",
-  "description": "Match animals to their homes — icy, hot, ocean, farm, or wild — sorting each one into its place bin with a tap or drag. A gentle first-geography game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#f18a2b",
+  "shareTitle": "Puzzle Explorer 🗺️ — A Papercraft World Match",
+  "description": "Carry animals, foods, and famous landmarks to their continents on a tactile papercraft world map, with recorded teacher guidance, gentle hints, and a travel-passport celebration.",
   "learningGoals": [
-    "Connect animals with simple home-place categories",
-    "Build hot, cold, ocean, farm, and wild vocabulary",
-    "Practice first geography through concrete animal examples"
+    "Build a beginning mental map of the six inhabited continents",
+    "Connect familiar animals, foods, crops, and landmarks with broad world regions",
+    "Practice purposeful dragging, tap-to-place, visual search, and recall"
   ],
-  "interactionModel": "sort-into-bins drag or tap-tap animals into place bins",
-  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "drag a large picture card onto a geographically shaped continent, or tap the card and then tap a generous continent target",
+  "feedbackModel": "Correct matches pulse, pop into the map, announce the continent, share one short fact, and fill a passport stamp; misses glide home with a gentle spoken nudge and no penalty.",
   "uses": [
-    "shared/js/engines/sort-into-bins.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/sfx.js",
+    "shared/js/music.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/js/stage/drag-to-slot-dom.js"
   ],
   "modes": [
-    { "id": "homes", "title": "Animal Homes", "skill": "habitat matching and hot-cold-ocean vocabulary" },
-    { "id": "farm-wild", "title": "Farm or Wild?", "skill": "farm and wild animal classification" }
+    { "id": "animal-trek", "title": "Animal Trek", "skill": "animal-to-continent matching" },
+    { "id": "tasty-travels", "title": "Tasty Travels", "skill": "food and crop place associations" },
+    { "id": "world-wonders", "title": "World Wonders", "skill": "landmark-to-continent matching" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; GPT Image 2 and Qwen Image Layered papercraft visual system; Qwen3 TTS teacher voice; Whisper transcript QA; Natural Earth public-domain land data. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/puzzle-explorer/"
 }

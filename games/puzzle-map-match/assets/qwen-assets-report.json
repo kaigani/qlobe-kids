@@ -1,0 +1,82 @@
+{
+  "format": "qlobe-production-report",
+  "formatVersion": 1,
+  "id": "puzzle-map-match-qwen-assets",
+  "visualReview": {
+    "accepted": [
+      "assets/source/animals-layer2.png",
+      "assets/source/foods-layer2.png",
+      "assets/source/landmarks-layer2.png"
+    ],
+    "date": "2026-08-20",
+    "rejected": [
+      {
+        "output": "assets/source/play-plate-qwen-edit.png",
+        "reason": "The edit removed cards and the guide hand but retained a decorative blue world silhouette, which conflicts with the authoritative Natural Earth overlay. The clean GPT Image 2 edit remains the runtime board source."
+      }
+    ],
+    "runtimeDecision": "Use all three visually clean Qwen layer-2 card sheets; reject the Qwen play-plate edit."
+  },
+  "outputs": [
+    {
+      "output": "assets/source/play-plate-qwen-edit.png",
+      "prompt": "Change only the removable gameplay contents in this approved papercraft UI plate. Remove all three animal cards, the white hand cursor, every continent shape, and the stitched Australia halo. Fill those areas with the matching empty blue felt map-board and tray textures. Preserve the exact 4:3 composition, blank cream prompt ribbon, cream map frame, blue board, round HUD icons, empty blue tray, foreground foliage, palette, fibers, stitching, shadows, and lighting. Do not add or move anything. No text, pseudo-text, cards, hand, continents, labels, or new ornaments.",
+      "seed": 42,
+      "source": "assets/source/play-screen-gpt-image-2.png",
+      "validation": {
+        "height": 1086,
+        "mode": "RGB",
+        "width": 1448
+      },
+      "workflow": "qwen-image-edit"
+    },
+    {
+      "output": "assets/source/animals-layer2.png",
+      "prompt": "Background layer: the exact flat solid magenta background from the input.\nTop layer: the exact same six finished papercraft animal cards on transparent background. Preserve every card, animal, border, cell position, color, and pixel detail from the input; remove only the magenta outside the cards.",
+      "seed": 42,
+      "source": "assets/source/animals-sheet-gpt-image-2.png",
+      "validation": {
+        "alpha_max": 255,
+        "alpha_min": 0,
+        "height": 1086,
+        "mode": "RGBA",
+        "opaque_fraction": 0.75631,
+        "transparent_fraction": 0.2292,
+        "width": 1448
+      },
+      "workflow": "qwen-image-layered"
+    },
+    {
+      "output": "assets/source/foods-layer2.png",
+      "prompt": "Background layer: the exact flat solid magenta background from the input.\nTop layer: the exact same six finished papercraft food cards on transparent background. Preserve every card, food, border, cell position, color, and pixel detail from the input; remove only the magenta outside the cards.",
+      "seed": 42,
+      "source": "assets/source/foods-sheet-gpt-image-2.png",
+      "validation": {
+        "alpha_max": 255,
+        "alpha_min": 0,
+        "height": 1086,
+        "mode": "RGBA",
+        "opaque_fraction": 0.76318,
+        "transparent_fraction": 0.22244,
+        "width": 1448
+      },
+      "workflow": "qwen-image-layered"
+    },
+    {
+      "output": "assets/source/landmarks-layer2.png",
+      "prompt": "Background layer: the exact flat solid magenta background from the input.\nTop layer: the exact same six finished papercraft landmark cards on transparent background. Preserve every card, landmark, border, cell position, color, and pixel detail from the input; remove only the magenta outside the cards.",
+      "seed": 42,
+      "source": "assets/source/landmarks-sheet-gpt-image-2.png",
+      "validation": {
+        "alpha_max": 255,
+        "alpha_min": 0,
+        "height": 1086,
+        "mode": "RGBA",
+        "opaque_fraction": 0.75627,
+        "transparent_fraction": 0.22924,
+        "width": 1448
+      },
+      "workflow": "qwen-image-layered"
+    }
+  ]
+}

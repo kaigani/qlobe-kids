@@ -2102,26 +2102,31 @@
     },
     {
       "id": "puzzle-map-match",
-      "title": "Puzzle Map Match",
+      "title": "Puzzle Explorer",
       "category": "culture-geography",
       "path": "games/puzzle-map-match/",
       "icon": "assets/hub/tiles/puzzle-map-match.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2f9bb3",
+      "status": "beta",
+      "accent": "#f18a2b",
       "modes": [
         {
-          "id": "homes",
-          "title": "Animal Homes",
-          "skill": "habitat matching and hot-cold-ocean vocabulary"
+          "id": "animal-trek",
+          "title": "Animal Trek",
+          "skill": "animal-to-continent matching"
         },
         {
-          "id": "farm-wild",
-          "title": "Farm or Wild?",
-          "skill": "farm and wild animal classification"
+          "id": "tasty-travels",
+          "title": "Tasty Travels",
+          "skill": "food and crop place associations"
+        },
+        {
+          "id": "world-wonders",
+          "title": "World Wonders",
+          "skill": "landmark-to-continent matching"
         }
       ],
       "summary": "Match animals, foods, or landmarks to their places."

@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-voice-all-complete",
+  "kind": "voice",
+  "asset": "pmm-voice-all-complete.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Three amazing journeys! You explored animals, foods, and wonders around our big world.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Three amazing journeys! You explored animals, foods, and wonders around our big world."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Three amazing journeys! You explored animals, foods, and wonders around our big world.",
+      "heard": "Three amazing journeys. You explored animals, foods, and wonders around our big world.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}

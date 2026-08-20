@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-voice-continent-asia",
+  "kind": "voice",
+  "asset": "pmm-voice-continent-asia.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "This is Asia!",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "This is Asia!"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "This is Asia!",
+      "heard": "This is Asia.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}

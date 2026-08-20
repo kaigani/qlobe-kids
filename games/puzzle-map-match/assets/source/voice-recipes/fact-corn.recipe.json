@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-voice-fact-corn",
+  "kind": "voice",
+  "asset": "pmm-voice-fact-corn.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Corn was first grown in Mexico, in North America.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Corn was first grown in Mexico, in North America."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Corn was first grown in Mexico, in North America.",
+      "heard": "Corn was first grown in Mexico in North America.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}

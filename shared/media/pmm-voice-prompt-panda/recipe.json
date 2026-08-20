@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-voice-prompt-panda",
+  "kind": "voice",
+  "asset": "pmm-voice-prompt-panda.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Where does the giant panda belong?",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Where does the giant panda belong?"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Where does the giant panda belong?",
+      "heard": "Where does the giant panda belong?",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}
