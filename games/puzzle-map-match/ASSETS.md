@@ -1,59 +1,72 @@
-# Puzzle Explorer Assets
+# Puzzle Explorer asset and provenance record
 
-Puzzle Explorer is a raster-first papercraft game. Runtime art is stored locally; the game makes no remote art requests.
+All runtime assets are local. Production makes no model or LAN calls. The authoritative runtime inventory is `config.json`; the retired geography plates, cards, map, tools, and 56 geography-only narration records were removed from the current tree and remain recoverable from the previous commit.
 
-## GPT Image 2 production art
+## GPT Image 2 puzzle scenes
 
-All rows below were created with the built-in `imagegen` tool in generate/edit mode, then copied into `assets/source/`. Runtime WebPs are deterministic derivatives made by `tools/finalize-assets.py`. The imagegen skill's `remove_chroma_key.py` produced reproducible fallback mattes; the final card build prefers the visually approved Qwen layer separations documented below. No CSS or vector substitutes are used for these illustrations.
+The three full-bleed sources were generated in built-in `imagegen` mode, one call per asset, using the concept mockups only as material/composition references. Each output is 1536×1024 (3:2), contains no UI/text/cut lines, and distributes meaningful visual clues across all six future grid regions.
 
-| Source file | Final production prompt / operation | Runtime derivatives |
+| Source | Production role | Prompt summary |
 |---|---|---|
-| `assets/source/play-screen-gpt-image-2.png` | Using the concept overview and a gameplay-video frame as composition references, create a polished 4:3 children's geography screen in tactile layered cardstock: deep-blue paper table, stitched cream map board, blank prompt ribbon, empty navy tray, large shared-style HUD buttons, bright six-continent paper map, friendly oversize picture cards, no UI text. | Approved art-direction reference only |
-| `assets/source/title-gpt-image-2.png` | Exact title `PUZZLE EXPLORER`, two stacked lines, orange `PUZZLE`, blue `EXPLORER`, thick layered cut-cardstock letters on a stitched cream paper plaque with tiny leaves and map tickets; flat chroma-magenta surround; no other words. | `assets/ui/title.png`, `assets/ui/title.webp` |
-| `assets/source/animals-sheet-gpt-image-2.png` | Exact 3×2 papercraft card sheet in this visual system: panda, African elephant, kangaroo / American bison, llama, Alpine ibex; one complete square stitched paper card per cell, no labels, no text, flat keyable surround. | `assets/cards/panda.webp`, `elephant.webp`, `kangaroo.webp`, `bison.webp`, `llama.webp`, `ibex.webp` |
-| `assets/source/foods-sheet-gpt-image-2.png` | Exact 3×2 papercraft card sheet: bananas, watermelon, lamington / corn, cacao, pretzel; one complete square stitched paper card per cell, no labels, no text, flat keyable surround. | `assets/cards/bananas.webp`, `watermelon.webp`, `lamington.webp`, `corn.webp`, `cacao.webp`, `pretzel.webp` |
-| `assets/source/landmarks-sheet-gpt-image-2.png` | Exact 3×2 papercraft card sheet: Great Wall, Great Pyramid of Giza, Sydney Opera House / Statue of Liberty, Machu Picchu, Eiffel Tower; one complete square stitched paper card per cell, no labels, no text, flat keyable surround. | `assets/cards/great-wall.webp`, `pyramids.webp`, `sydney-opera-house.webp`, `statue-of-liberty.webp`, `machu-picchu.webp`, `eiffel-tower.webp` |
-| `assets/source/splash-background-gpt-image-2.png` | Empty 4:3 papercraft explorer background: rich blue paper, leafy hills and flowers around the safe edges, hot-air balloon, paper plane, compass, clouds, and an open cream world-atlas along the bottom; large clean central title/mode safe area; no words or cards. | `assets/backgrounds/splash.webp`, `assets/backgrounds/play-texture.webp` |
-| `assets/source/play-plate-gpt-image-2-edit.png` | Edit the approved play screen: remove all cards, hand cursor, map shapes, target halo, and words while preserving the stitched blue/cream board, empty prompt ribbon, HUD-safe frame, empty navy tray, foliage, shadows, and paper texture. | `assets/ui/map-board.webp`, `prompt-ribbon.webp`, `tray.webp` |
-| `assets/source/hand-guide-gpt-image-2.png` | “Create one isolated papercraft UI hand cursor that belongs to the exact visual world of the reference image. A friendly child-sized off-white cut-paper hand with the index finger extended straight upward, palm facing the viewer, rounded simple fingers, a small sky-blue paper cuff, visible layered cardstock edges, subtle real paper fibers, and a soft compact contact shadow attached to the hand. Center the hand with generous empty margin. Use a perfectly flat solid chroma-key magenta background #FF00FF from edge to edge. No map, no cards, no tray, no stars, no icons, no text, no letters, no border, no additional objects, no detached shadow, no gradients in the background. Square bitmap asset, crisp silhouette, production-ready game UI guide.” The service returned black rather than magenta; the skill's corner-key matte removed it. | `assets/source/hand-guide-alpha.png`, `assets/ui/hand-guide.webp` |
-| `assets/source/hub-tile-gpt-image-2.png` | Edit/generate from the approved splash material reference: landscape preschool-geography storefront art with a central open world-map passport, a panda picture-card placed over Asia, elephant and kangaroo cards in a tidy tray, compass and paper airplane; exact layered papercraft palette/materials; no words, logo, buttons, chrome, people, hands, clay, or distorted geography; keep subjects in a central 6:5 safe crop. | `../../assets/hub/tiles/puzzle-map-match.jpg` (center crop and resize to 640×533, JPEG quality 90) |
+| `assets/source/puzzles/forest-fox-gpt-image-2.png` | Forest Fox source and choice-card art | Friendly central red fox in a woodland clearing; mushrooms/ferns lower left, stream/stepping stones lower right, trees/mountains/sky; layered cardstock/felt, visible fibers, soft object shadows; no seams, frame, text, UI, hands, or duplicate foxes. |
+| `assets/source/puzzles/star-rocket-gpt-image-2.png` | Star Rocket source and choice-card art | Central coral storybook rocket; ringed mustard planet, cream moon, stars, Earth/clouds; calm deep-blue space; layered cardstock/felt; no seams, frame, text, UI, people, astronauts, or duplicate rockets. |
+| `assets/source/puzzles/garden-flowers-gpt-image-2.png` | Garden Flowers source and choice-card art | Coral/yellow/blue focal flowers; fence, watering can, sun, butterflies, clouds, grass, stones; layered cardstock/felt; no seams, frame, text, UI, hands, or duplicate focal flowers. |
 
-Generated-art creator: OpenAI GPT Image 2, directed for this QLOBE Kids project. Project license: CC BY 4.0 as declared in `game.json`.
+Generated-image originals remain in the Codex image-generation cache; the project-bound copies above are the durable sources.
 
-## Local Qwen authoring
+## Seeded puzzle cuts
 
-The authoritative user brief explicitly approved private-LAN asset generation. `tools/gen-qwen-assets.py --allow-lan` sent the four listed internal source plates to the configured private Qwen service using seed 42. The tool accepts only loopback/RFC1918 origins, refuses redirects, validates PNG/alpha coverage, normalizes service-native canvases to the exact source geometry when necessary, and writes each candidate atomically. Prompts, metrics, and the manual accept/reject record are in `assets/qwen-assets-report.json`.
+`tools/cut-puzzle.mjs` calls `shared/js/puzzle-cutter.js` in Chrome. The accepted commands were:
 
-| Candidate | Workflow | Review and production use |
+```sh
+node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/forest-fox-gpt-image-2.png --grid 3x2 --seed forest-fox-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/forest-fox
+node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/star-rocket-gpt-image-2.png --grid 3x2 --seed star-rocket-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/star-rocket
+node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/garden-flowers-gpt-image-2.png --grid 3x2 --seed garden-flowers-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/garden-flowers
+```
+
+Each folder contains:
+
+- six transparent `piece-rNcN.png` canvases with an inner cut line and directional bevel;
+- `pieces.json` with dimensions, seed input/resolved seed, cell rectangles, exact paths, edge labels, and reconstruction `x/y`;
+- `outline.svg`, the printable full cut template;
+- `assembled.png`, the seamless reconstruction proof;
+- `preview.png`, the exploded physical-piece review.
+
+All three manifests are 1200×800, 2 rows × 3 columns, with six finite placements and seven complementary tab/blank joins. Runtime recreates and compares the same contract before play.
+
+## UI and presentation art
+
+| Asset | Source / transformation | Role |
 |---|---|---|
-| `assets/source/animals-layer2.png` | `qwen-image-layered` | Accepted after compositing on game blue: all six cards intact, clean transparent surround, no visible magenta fringe. Source for six animal runtime WebPs. |
-| `assets/source/foods-layer2.png` | `qwen-image-layered` | Accepted under the same checks. Source for six food runtime WebPs. |
-| `assets/source/landmarks-layer2.png` | `qwen-image-layered` | Accepted under the same checks. Source for six landmark runtime WebPs. |
-| `assets/source/play-plate-qwen-edit.png` | `qwen-image-edit` | Rejected for runtime: it removed cards and the hand but retained a decorative blue world silhouette that would conflict with the authoritative map. Retained as honest authoring provenance only; `play-plate-gpt-image-2-edit.png` remains the board source. |
+| `assets/ui/title.webp` | Accepted GPT Image 2 Puzzle Explorer lockup from the original production pass; alpha-trimmed with source retained at `assets/source/title-gpt-image-2.png`. | Choice/loading title. Exact spelling visually reviewed. |
+| `assets/ui/hint.png` | Built-in imagegen, referenced from the placement mockup: isolated stitched cream cardstock badge with a mustard felt lightbulb; generated with alpha and resized to 256×256 using `sips`. Source: `assets/source/hint-button-gpt-image-2.png`. | Explicit hint control. |
+| `assets/ui/tray-alpha.webp` | Built-in imagegen: shallow wide blue stitched felt tray with green corner leaves. The service returned a neutral checker preview; `tools/finalize-jigsaw-assets.py` deterministically extracts saturated tray/leaves and the darker grounding shadow, trims, and pads. Source: `assets/source/tray-gpt-image-2.png`. | Holds one loose cut canvas without vertical distortion. |
+| `assets/ui/prompt-ribbon-alpha.webp` | The accepted cream stitched ribbon crop from the first papercraft plate; `tools/finalize-jigsaw-assets.py` removes its retired cool-blue screen matte with a documented warm-vs-blue alpha ramp. | Choose, placement, and completion labels. |
+| `assets/backgrounds/play-texture.webp` | Clean blue paper crop from the accepted first papercraft background. | All screen backdrops. |
+| `assets/ui/hand-guide.webp` | Accepted GPT Image 2 paper hand, alpha-finished in the first production pass; source files retained. | Idle/explicit modeled placement path. |
+| `assets/ui/confetti.webp` | Reused QLOBE Kids papercraft celebration surround from Globe Spin Stories. | Completion. |
+| Shared HUD PNGs | `shared/assets/ui/btn-{home,back,sound,play}.png` | Navigation, replay, and sound controls. |
 
-`tools/finalize-assets.py` records the selected sheet filename for every emitted 512×512 card and falls back to the imagegen-skill matte if a validated Qwen sheet is absent. Qwen is an authoring dependency only; production makes no model or LAN calls.
+`assets/jigsaw-finalize-report.json` records the exact two matte-removal outputs, inputs, transforms, and sizes. The script is deterministic and writes atomically.
 
-## Map and derived UI art
+## Narration, music, and SFX
 
-| Asset | Source | License | Transformation |
-|---|---|---|---|
-| `assets/map/continents.webp`, `continent-mask.png`, `continents.json` | Bundled Natural Earth `ne_110m_land` v5.1.2 | Public domain | `tools/render-map.py` rasterizes coastlines, deterministically classifies the six inhabited continents, excludes Antarctica, and emits matching visual/mask rasters plus semantic hint coordinates. |
-| `assets/ui/confetti.webp` | QLOBE Kids `games/globe-spin-stories/assets/ui/confetti.webp` | CC BY 4.0 | Reused papercraft celebration surround on the end screen. |
-| `assets/ui/success-burst.webp` | Local crop of the preceding confetti raster | CC BY 4.0 | Compact paper-star/confetti burst placed behind the successful map card. |
-| Shared HUD buttons | `shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png`, `btn-play.png` | CC BY 4.0 | Reused unmodified. |
+`data/lines.json` contains 17 jigsaw-specific lines. The two exact concept lines reuse accepted Qwen3 teacher recordings from the previous batch:
 
-## Audio
-
-The 58-clip teacher-voice batch is recorded. The approved LAN Studio character-voice-line workflow is `qwen3-tts-voiceclone`, using the committed teacher reference. The seed ladder is 7/8/9. Whisper base/en strict normalized transcript comparison is ≥0.98; this accepted batch has a minimum ratio of 0.984 and a seed distribution of 51/6/1. Accepted Studio records are retained in `shared/media/pmm-voice-*`; runtime M4As and their manifest ship with local recipe and QA copies. Web Speech remains only a graceful fallback.
-
-| Asset/channel | Source | Notes |
+| Key | Runtime clip | Provenance |
 |---|---|---|
-| Music samples | `shared/assets/instruments/{vibraphone,guitar,maracas-a,maracas-b}.m4a` | Local QLOBE Kids sample library, arranged at runtime as “Paper Passport Parade” by `shared/js/music.js`. |
-| SFX | `shared/js/sfx.js` | Synthesized locally with WebAudio. |
-| Teacher narration | `shared/media/pmm-voice-*` → `assets/audio/*.m4a` + `assets/audio/manifest.json` | 58 recorded clips; Studio records, local recipe, and QA copies retained. Web Speech is a graceful fallback only. |
+| `welcome` | `assets/audio/welcome.m4a` | `assets/source/voice-recipes/welcome.recipe.json` + `assets/source/voice-qa/welcome.json`; accepted teacher reference, Whisper ratio ≥0.98. |
+| `success` | `assets/audio/success.m4a` | `assets/source/voice-recipes/success.recipe.json` + `assets/source/voice-qa/success.json`; accepted teacher reference, Whisper ratio ≥0.98. |
 
-## Link preview
+The correction run attempted the approved local Studio workflow for the 15 newly authored lines, but the execution environment denied the data-egress permission. No workaround or alternate service was used. Their manifest entries are intentionally absent, so `shared/js/voice-clips.js` routes them through the local Web Speech fallback. `tools/gen-voice.mjs` is updated to use new `pmm-jigsaw-*` media ids and retains the seed 7/8/9 plus ≥0.98 Whisper gate for a future explicitly authorized recording pass.
 
-`assets/og-image.jpg` is a screenshot of the game itself. Regenerate it with `node tools/pipeline/capture_og_images.mjs --only puzzle-map-match` after the final visual pass; do not edit it by hand.
+Music uses local `shared/assets/instruments/{vibraphone,guitar,maracas-a,maracas-b}.m4a` samples arranged at runtime as “Paper Puzzle Parade.” SFX come from local `shared/js/sfx.js` WebAudio synthesis.
 
-The hub tile is the GPT Image 2 source listed above, deterministically center-cropped and resized with macOS `sips`. It replaces the retired clay-style tile so the storefront and game share one papercraft visual system.
+## Storefront and link preview
+
+- `assets/hub/tiles/puzzle-map-match.jpg` is a deterministic 640×533 crop of the accepted Forest Fox source, keeping the central fox readable in the hub’s 6:5 card.
+- `assets/og-image.jpg` is generated from the final game through `tools/pipeline/capture_og_images.mjs --only puzzle-map-match`; it is never hand-painted or substituted with a mockup.
+
+## License
+
+Game code and authoring scripts are MIT. New and reused QLOBE Kids papercraft assets ship under the repository’s CC BY 4.0 asset policy. No third-party photograph, logo, font file, or externally fetched runtime asset is included.

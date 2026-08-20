@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>puzzle-cutter.js test — cut, scatter, reassemble</title>
+  <!-- An empty inline icon. Without it the browser asks for /favicon.ico and the
+       404 lands in the console, which would make "zero console errors" a claim
+       QA has to caveat rather than assert. -->
+  <link rel="icon" href="data:," />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; overflow: hidden; background: #0b1a3a; color: #17517e;
+      font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+      -webkit-user-select: none; user-select: none;
+    }
+
+    #stage { position: fixed; inset: 0; display: grid; place-items: center; }
+    #view { max-width: 96vw; max-height: 78vh; border-radius: 14px;
+      box-shadow: 0 12px 40px #0008; background: #123; }
+
+    #bar {
+      position: fixed; left: 0; top: 0; right: 0; z-index: 9000;
+      display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px;
+      background: #fffef7ee; border-bottom: 3px solid #ecd9a8; align-items: center;
+      max-height: 46vh; overflow: auto;
+    }
+    .group { display: flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 12px; background: #eef4fb; }
+    .group > strong { font-size: 11px; text-transform: uppercase; opacity: .6; letter-spacing: .04em; }
+    button {
+      font: inherit; font-size: 13px; font-weight: 600; border: 0; border-radius: 10px;
+      padding: 8px 11px; min-height: 34px; background: #2f6fb0; color: #fff; cursor: pointer;
+    }
+    button.on { background: #e8863a; }
+    input[type="file"] { max-width: 180px; font-size: 12px; }
+
+    #log {
+      position: fixed; left: 8px; bottom: 8px; z-index: 9000; max-width: 90vw;
+      font-size: 12px; line-height: 1.5; background: #000c; color: #ffe6b8;
+      padding: 8px 11px; border-radius: 12px; white-space: pre-wrap;
+      pointer-events: none; font-family: ui-monospace, Menlo, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage"><canvas id="view"></canvas></div>
+
+  <div id="bar">
+    <div class="group"><strong>grid</strong>
+      <button data-grid="2x2">2×2</button>
+      <button data-grid="3x2" class="on">3×2</button>
+      <button data-grid="4x3">4×3</button>
+      <button data-grid="5x4">5×4</button>
+      <button data-grid="7x5">7×5</button>
+    </div>
+    <div class="group"><strong>view</strong>
+      <button data-view="assembled">assembled</button>
+      <button data-view="exploded" class="on">exploded</button>
+      <button data-view="scatter">scatter</button>
+      <button data-view="outline">outline</button>
+    </div>
+    <div class="group"><strong>look</strong>
+      <button id="toggle-outline" class="on">outline</button>
+      <button id="toggle-bevel" class="on">bevel</button>
+    </div>
+    <div class="group"><strong>seed</strong>
+      <button id="reseed">reseed</button>
+    </div>
+    <div class="group"><strong>image</strong>
+      <input type="file" id="file" accept="image/*" />
+    </div>
+  </div>
+
+  <div id="log">loading…</div>
+
+  <script type="module">
+    import { cutImage, generatePuzzle, outlineSvg } from './puzzle-cutter.js';
+    import { mulberry32 } from './rng.js';
+
+    const view = document.getElementById('view');
+    const log = document.getElementById('log');
+    const state = { grid: [3, 2], view: 'exploded', outline: true, bevel: true, seed: 7, source: null };
+
+    // Default source: a drawn scene, so the harness needs no asset and works
+    // offline. Enough edges and color regions to judge the cut visually.
+    function paintDemoScene() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1280; canvas.height = 880;
+      const ctx = canvas.getContext('2d');
+      const sky = ctx.createLinearGradient(0, 0, 0, 880);
+      sky.addColorStop(0, '#7ec8f5'); sky.addColorStop(1, '#eaf7ff');
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, 1280, 880);
+      ctx.fillStyle = '#ffd23e'; ctx.beginPath(); ctx.arc(1050, 160, 95, 0, 7); ctx.fill();
+      ctx.fillStyle = '#7cc26b'; ctx.beginPath();
+      ctx.moveTo(0, 880); ctx.quadraticCurveTo(320, 520, 720, 700);
+      ctx.quadraticCurveTo(1050, 830, 1280, 640); ctx.lineTo(1280, 880); ctx.fill();
+      ctx.fillStyle = '#e8863a'; ctx.fillRect(220, 430, 260, 220);
+      ctx.fillStyle = '#a8453a'; ctx.beginPath();
+      ctx.moveTo(180, 430); ctx.lineTo(350, 300); ctx.lineTo(520, 430); ctx.fill();
+      ctx.fillStyle = '#fffef7'; ctx.fillRect(300, 500, 100, 150);
+      const rand = mulberry32(5);
+      for (let i = 0; i < 26; i += 1) {
+        ctx.fillStyle = ['#f6b1c3', '#b39ddb', '#fff3b0'][i % 3];
+        ctx.beginPath();
+        ctx.arc(60 + rand() * 1160, 700 + rand() * 150, 12 + rand() * 14, 0, 7);
+        ctx.fill();
+      }
+      return canvas;
+    }
+
+    function rebuild() {
+      const [cols, rows] = state.grid;
+      const t0 = performance.now();
+      const puzzle = cutImage(state.source, {
+        rows, cols, seed: state.seed,
+        outline: state.outline ? {} : false,
+        bevel: state.bevel ? {} : false,
+      });
+      const cutMs = performance.now() - t0;
+
+      const pad = Math.round(Math.min(puzzle.cellWidth, puzzle.cellHeight) * 0.6);
+      view.width = puzzle.width + pad * 2;
+      view.height = puzzle.height + pad * 2;
+      const ctx = view.getContext('2d');
+      ctx.fillStyle = '#fffef7'; ctx.fillRect(0, 0, view.width, view.height);
+
+      if (state.view === 'outline') {
+        const svg = new Image();
+        svg.onload = () => ctx.drawImage(svg, pad, pad);
+        svg.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(outlineSvg(puzzle))}`;
+      } else {
+        const rand = mulberry32(state.seed + 99);
+        for (const piece of puzzle.pieces) {
+          let dx = 0; let dy = 0;
+          if (state.view === 'exploded') {
+            const cx = piece.cell.x + piece.cell.width / 2 - puzzle.width / 2;
+            const cy = piece.cell.y + piece.cell.height / 2 - puzzle.height / 2;
+            dx = cx * 0.16; dy = cy * 0.16;
+          } else if (state.view === 'scatter') {
+            dx = (rand() - 0.5) * puzzle.cellWidth * 1.2;
+            dy = (rand() - 0.5) * puzzle.cellHeight * 1.2;
+          }
+          ctx.drawImage(piece.canvas, pad + piece.x + dx, pad + piece.y + dy);
+        }
+      }
+
+      const counts = { tab: 0, blank: 0, flat: 0 };
+      for (const piece of puzzle.pieces) {
+        for (const side of Object.values(piece.edges)) counts[side] += 1;
+      }
+      log.textContent = `${cols}×${rows} · seed ${state.seed} · ${puzzle.pieces.length} pieces `
+        + `· cut+render ${cutMs.toFixed(0)}ms · sides tab:${counts.tab} blank:${counts.blank} flat:${counts.flat}`;
+      window.__puzzle = puzzle; // for console poking / QA drives
+    }
+
+    for (const btn of document.querySelectorAll('[data-grid]')) {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-grid]').forEach((b) => b.classList.remove('on'));
+        btn.classList.add('on');
+        state.grid = btn.dataset.grid.split('x').map(Number);
+        rebuild();
+      });
+    }
+    for (const btn of document.querySelectorAll('[data-view]')) {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-view]').forEach((b) => b.classList.remove('on'));
+        btn.classList.add('on');
+        state.view = btn.dataset.view;
+        rebuild();
+      });
+    }
+    const toggle = (id, key) => document.getElementById(id).addEventListener('click', (event) => {
+      state[key] = !state[key];
+      event.target.classList.toggle('on', state[key]);
+      rebuild();
+    });
+    toggle('toggle-outline', 'outline');
+    toggle('toggle-bevel', 'bevel');
+    document.getElementById('reseed').addEventListener('click', () => {
+      state.seed = (state.seed * 16807 + 11) % 2147483647;
+      rebuild();
+    });
+    document.getElementById('file').addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.src = url;
+      await img.decode();
+      state.source = img;
+      rebuild();
+      URL.revokeObjectURL(url);
+    });
+
+    state.source = paintDemoScene();
+    rebuild();
+  </script>
+</body>
+</html>

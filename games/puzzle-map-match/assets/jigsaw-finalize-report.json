@@ -1,0 +1,23 @@
+{
+  "outputs": [
+    {
+      "path": "assets/ui/prompt-ribbon-alpha.webp",
+      "size": [
+        920,
+        159
+      ],
+      "source": "assets/ui/prompt-ribbon.webp",
+      "transform": "warm-vs-blue alpha ramp; 3px edge closure; 0.65px feather; alpha trim; 10px pad"
+    },
+    {
+      "path": "assets/ui/tray-alpha.webp",
+      "size": [
+        1816,
+        545
+      ],
+      "source": "assets/source/tray-gpt-image-2.png",
+      "transform": "saturation/dark-shadow matte extraction; 7px closure; 0.9px feather; alpha trim; 14px pad"
+    }
+  ],
+  "version": 1
+}

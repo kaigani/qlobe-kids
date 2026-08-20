@@ -9,10 +9,10 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-16T19:24:29.678Z",
+  "generated": "2026-08-20T16:25:47.506Z",
   "engines": {
     "coach-timer": {
-      "count": 15,
+      "count": 14,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
@@ -22,7 +22,6 @@
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
-        "obstacle-course-builder",
         "plant-care-captain",
         "pouring-station",
         "shelf-reset-game",
@@ -32,14 +31,12 @@
       ]
     },
     "choose-one": {
-      "count": 13,
+      "count": 11,
       "games": [
         "board-game-reset",
         "calm-corner-cards",
         "grace-courtesy-theater",
         "instrument-detective",
-        "joke-workshop",
-        "mountain-seasons-wheel",
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
@@ -61,25 +58,6 @@
         "turn-taking-tower"
       ]
     },
-    "observe-journal": {
-      "count": 5,
-      "games": [
-        "bean-sprout-watch",
-        "family-story-interview",
-        "picture-narration",
-        "shadow-chase",
-        "smell-jars"
-      ]
-    },
-    "sequence-order": {
-      "count": 4,
-      "games": [
-        "color-gradient-cards",
-        "family-timeline",
-        "number-rod-race",
-        "story-sequence"
-      ]
-    },
     "match-pairs": {
       "count": 4,
       "games": [
@@ -98,15 +76,6 @@
         "sticker-line-challenge"
       ]
     },
-    "sort-into-bins": {
-      "count": 4,
-      "games": [
-        "magnet-explorer",
-        "puzzle-map-match",
-        "table-setting-mission",
-        "tweezer-rescue"
-      ]
-    },
     "tap-count": {
       "count": 4,
       "games": [
@@ -114,6 +83,31 @@
         "sandpaper-number-match",
         "snack-addition-stories",
         "subtraction-picnic"
+      ]
+    },
+    "observe-journal": {
+      "count": 4,
+      "games": [
+        "family-story-interview",
+        "picture-narration",
+        "shadow-chase",
+        "smell-jars"
+      ]
+    },
+    "sequence-order": {
+      "count": 3,
+      "games": [
+        "family-timeline",
+        "number-rod-race",
+        "story-sequence"
+      ]
+    },
+    "sort-into-bins": {
+      "count": 3,
+      "games": [
+        "magnet-explorer",
+        "table-setting-mission",
+        "tweezer-rescue"
       ]
     },
     "pattern-continue": {
@@ -210,19 +204,28 @@
       "packs": []
     },
     "bean-sprout-watch": {
-      "engine": "observe-journal",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/music.js",
+        "shared/js/narrator.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [],
@@ -516,22 +519,36 @@
       "packs": []
     },
     "color-gradient-cards": {
-      "engine": "sequence-order",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sequence-order.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "color-mixing-lab": {
@@ -929,22 +946,42 @@
       "packs": []
     },
     "joke-workshop": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "live",
       "category": "oral-storytelling",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/joke-workshop/assets/art/backgrounds/comedy-stage.webp",
+        "games/joke-workshop/assets/art/title.webp",
+        "games/joke-workshop/assets/art/ui/button-blue.webp",
+        "games/joke-workshop/assets/art/ui/button-orange.webp",
+        "games/joke-workshop/assets/art/ui/comedian-star.webp",
+        "games/joke-workshop/assets/art/ui/joke-book.webp",
+        "games/joke-workshop/assets/art/ui/question-banner.webp",
+        "games/joke-workshop/assets/art/ui/recording-microphone.webp",
+        "games/joke-workshop/assets/art/ui/speech-plaque.webp"
+      ],
       "packs": []
     },
     "kindness-delivery": {
@@ -1271,22 +1308,50 @@
       "packs": []
     },
     "mountain-seasons-wheel": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "live",
       "category": "culture-geography",
-      "characters": [],
+      "characters": [
+        "Juni the bear"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/mountain-seasons-wheel/assets/backgrounds/splash.webp",
+        "games/mountain-seasons-wheel/assets/backgrounds/spring.webp",
+        "games/mountain-seasons-wheel/assets/backgrounds/wheel.webp",
+        "games/mountain-seasons-wheel/assets/character/juni-base.webp",
+        "games/mountain-seasons-wheel/assets/discoveries/spring-wildflowers.webp",
+        "games/mountain-seasons-wheel/assets/reward/four-seasons.webp",
+        "games/mountain-seasons-wheel/assets/title.webp",
+        "games/mountain-seasons-wheel/assets/ui/button.webp",
+        "games/mountain-seasons-wheel/assets/ui/fact-card.webp",
+        "games/mountain-seasons-wheel/assets/ui/leaf-seal.webp",
+        "games/mountain-seasons-wheel/assets/ui/mode-dress.webp",
+        "games/mountain-seasons-wheel/assets/ui/mode-wheel.webp",
+        "games/mountain-seasons-wheel/assets/ui/paw-seal.webp",
+        "games/mountain-seasons-wheel/assets/ui/pointer.webp",
+        "games/mountain-seasons-wheel/assets/ui/prompt-banner.webp",
+        "games/mountain-seasons-wheel/assets/ui/wheel.webp"
+      ],
       "packs": []
     },
     "my-puppet-band": {
@@ -1345,7 +1410,7 @@
     },
     "name-puzzle": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
@@ -1461,22 +1526,43 @@
       "packs": []
     },
     "obstacle-course-builder": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/obstacle-course-builder/assets/ui/course-board.webp",
+        "games/obstacle-course-builder/assets/ui/course-complete.webp",
+        "games/obstacle-course-builder/assets/ui/finish-flag.webp",
+        "games/obstacle-course-builder/assets/ui/scrap-basket.webp",
+        "games/obstacle-course-builder/assets/ui/star.webp",
+        "games/obstacle-course-builder/assets/ui/start-flag.webp",
+        "games/obstacle-course-builder/assets/ui/swatches.webp",
+        "games/obstacle-course-builder/assets/ui/title.webp",
+        "games/obstacle-course-builder/assets/ui/undo.webp"
+      ],
       "packs": []
     },
     "pattern-bracelet-band": {
@@ -1757,20 +1843,25 @@
       "packs": []
     },
     "puzzle-map-match": {
-      "engine": "sort-into-bins",
-      "status": "in-design",
-      "category": "culture-geography",
+      "engine": null,
+      "status": "beta",
+      "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sort-into-bins.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/music.js",
+        "shared/js/preload.js",
+        "shared/js/puzzle-cutter.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/base.css"
       ],
       "assets": [],
       "packs": []
@@ -2958,11 +3049,13 @@
       ],
       "shared/js/audio-unlock.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "big-paper-murals",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
@@ -2972,16 +3065,20 @@
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
+        "puzzle-map-match",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3007,19 +3104,24 @@
       ],
       "shared/js/celebrate.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
         "feelings-charades",
         "garden-delivery-game",
+        "joke-workshop",
         "land-water-tray",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -3053,10 +3155,12 @@
       ],
       "shared/js/debug-harness.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "big-paper-murals",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
@@ -3066,16 +3170,20 @@
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
+        "puzzle-map-match",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3113,8 +3221,6 @@
         "calm-corner-cards",
         "grace-courtesy-theater",
         "instrument-detective",
-        "joke-workshop",
-        "mountain-seasons-wheel",
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
@@ -3132,7 +3238,6 @@
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
-        "obstacle-course-builder",
         "plant-care-captain",
         "pouring-station",
         "shelf-reset-game",
@@ -3147,7 +3252,6 @@
         "then-now-sort"
       ],
       "shared/js/engines/observe-journal.js": [
-        "bean-sprout-watch",
         "family-story-interview",
         "picture-narration",
         "shadow-chase",
@@ -3163,14 +3267,12 @@
         "puppet-problem-solvers"
       ],
       "shared/js/engines/sequence-order.js": [
-        "color-gradient-cards",
         "family-timeline",
         "number-rod-race",
         "story-sequence"
       ],
       "shared/js/engines/sort-into-bins.js": [
         "magnet-explorer",
-        "puzzle-map-match",
         "table-setting-mission",
         "tweezer-rescue"
       ],
@@ -3201,29 +3303,38 @@
       ],
       "shared/js/hud.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "red-green-light",
         "tiny-reader-theater"
       ],
       "shared/js/idle-nudge.js": [
+        "bean-sprout-watch",
         "button-zipper-lab",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "garden-delivery-game",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "mountain-seasons-wheel",
         "name-puzzle",
         "sink-or-float",
         "teen-bead-builder",
@@ -3241,6 +3352,7 @@
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "counting-treasure-cups",
         "feelings-charades",
@@ -3261,8 +3373,10 @@
         "throwing-target-garden"
       ],
       "shared/js/music.js": [
+        "bean-sprout-watch",
         "freeze-focus-dance",
         "my-puppet-band",
+        "puzzle-map-match",
         "world-music-dance"
       ],
       "shared/js/musical-canvas.js": [
@@ -3271,7 +3385,9 @@
         "sound-painting"
       ],
       "shared/js/narrator.js": [
+        "bean-sprout-watch",
         "big-paper-murals",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "freeze-focus-dance",
@@ -3279,6 +3395,7 @@
         "land-water-tray",
         "laundry-sorter",
         "loose-parts-collage",
+        "obstacle-course-builder",
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
@@ -3290,23 +3407,32 @@
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "laundry-sorter",
         "letter-treasure-hunt",
         "loose-parts-collage",
+        "mountain-seasons-wheel",
+        "obstacle-course-builder",
+        "puzzle-map-match",
         "tangram-tales",
         "throwing-target-garden"
+      ],
+      "shared/js/puzzle-cutter.js": [
+        "puzzle-map-match"
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
@@ -3314,12 +3440,15 @@
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "red-green-light",
@@ -3335,15 +3464,20 @@
         "world-music-dance"
       ],
       "shared/js/screens.js": [
+        "bean-sprout-watch",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "snack-chef",
         "throwing-target-garden",
         "tiny-reader-theater"
@@ -3459,7 +3593,6 @@
         "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
-        "bean-sprout-watch",
         "big-paper-murals",
         "blend-train",
         "block-tower-measure",
@@ -3470,7 +3603,6 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
-        "color-gradient-cards",
         "color-mixing-lab",
         "community-helper-cards",
         "counting-treasure-cups",
@@ -3489,7 +3621,6 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
-        "mountain-seasons-wheel",
         "mystery-letter-bag",
         "name-puzzle",
         "nature-scavenger-hunt",
@@ -3508,7 +3639,6 @@
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "puppet-retell",
-        "puzzle-map-match",
         "question-ball",
         "red-green-light",
         "rhyming-detective",
@@ -3558,13 +3688,16 @@
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "bead-path-builder",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
         "laundry-sorter",
         "lunchbox-pack",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
+        "puzzle-map-match",
         "snack-chef",
         "sound-basket",
         "story-stones",
@@ -3633,11 +3766,13 @@
       ],
       "shared/js/tap.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "big-paper-murals",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -3645,16 +3780,20 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-retell",
+        "puzzle-map-match",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3674,21 +3813,27 @@
       ],
       "shared/js/timers.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "letter-treasure-hunt",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "puppet-retell",
+        "puzzle-map-match",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3701,10 +3846,12 @@
       ],
       "shared/js/voice-clips.js": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "blend-train",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
@@ -3714,6 +3861,7 @@
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
@@ -3721,12 +3869,15 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "mountain-seasons-wheel",
         "my-puppet-band",
         "name-puzzle",
+        "obstacle-course-builder",
         "pattern-bracelet-band",
         "playdough-letter-factory",
         "puppet-problem-solvers",
         "puppet-retell",
+        "puzzle-map-match",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3864,33 +4015,28 @@
       "shared/css/engine-base.css": [
         "animal-walk-cards",
         "balance-beam-trail",
-        "bean-sprout-watch",
         "blend-train",
         "block-tower-measure",
         "board-game-reset",
         "calm-corner-cards",
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
-        "color-gradient-cards",
         "community-helper-cards",
         "family-story-interview",
         "family-timeline",
         "grace-courtesy-theater",
         "instrument-detective",
-        "joke-workshop",
         "letter-road-driving",
         "line-walking-challenge",
         "local-nature-guide",
         "magnet-explorer",
         "melting-race",
-        "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
         "number-rod-race",
-        "obstacle-course-builder",
         "pattern-train",
         "picture-narration",
         "picture-word-match",
@@ -3899,7 +4045,6 @@
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
-        "puzzle-map-match",
         "question-ball",
         "sandpaper-number-match",
         "scissor-trail-safari",
@@ -3929,19 +4074,24 @@
       ],
       "shared/css/hud.css": [
         "bead-path-builder",
+        "bean-sprout-watch",
         "big-paper-murals",
         "button-zipper-lab",
         "chocolate-chip-count",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-delivery-game",
         "globe-spin-stories",
+        "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "mountain-seasons-wheel",
         "name-puzzle",
+        "obstacle-course-builder",
         "red-green-light",
         "rhythm-copycat",
         "sound-cylinder-match",
@@ -4008,7 +4158,6 @@
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "puppet-retell",
-        "puzzle-map-match",
         "question-ball",
         "red-green-light",
         "rhyming-detective",
@@ -4104,6 +4253,9 @@
       ],
       "growlie": [
         "red-green-light"
+      ],
+      "Juni the bear": [
+        "mountain-seasons-wheel"
       ],
       "kiki": [
         "rhythm-copycat"
@@ -4315,6 +4467,33 @@
       "games/globe-spin-stories/assets/ui/confetti.webp": [
         "globe-spin-stories"
       ],
+      "games/joke-workshop/assets/art/backgrounds/comedy-stage.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/title.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/button-blue.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/button-orange.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/comedian-star.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/joke-book.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/question-banner.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/recording-microphone.webp": [
+        "joke-workshop"
+      ],
+      "games/joke-workshop/assets/art/ui/speech-plaque.webp": [
+        "joke-workshop"
+      ],
       "games/kindness-delivery/assets/backgrounds/delivery.webp": [
         "kindness-delivery"
       ],
@@ -4441,6 +4620,54 @@
       "games/lunchbox-pack/assets/lunchbox-open.png": [
         "lunchbox-pack"
       ],
+      "games/mountain-seasons-wheel/assets/backgrounds/splash.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/backgrounds/spring.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/backgrounds/wheel.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/character/juni-base.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/discoveries/spring-wildflowers.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/reward/four-seasons.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/title.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/button.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/fact-card.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/leaf-seal.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/mode-dress.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/mode-wheel.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/paw-seal.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/pointer.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/prompt-banner.webp": [
+        "mountain-seasons-wheel"
+      ],
+      "games/mountain-seasons-wheel/assets/ui/wheel.webp": [
+        "mountain-seasons-wheel"
+      ],
       "games/name-puzzle/assets/characters/belle.webp": [
         "name-puzzle"
       ],
@@ -4467,6 +4694,33 @@
       ],
       "games/name-puzzle/assets/ui/title.webp": [
         "name-puzzle"
+      ],
+      "games/obstacle-course-builder/assets/ui/course-board.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/course-complete.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/finish-flag.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/scrap-basket.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/star.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/start-flag.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/swatches.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/title.webp": [
+        "obstacle-course-builder"
+      ],
+      "games/obstacle-course-builder/assets/ui/undo.webp": [
+        "obstacle-course-builder"
       ],
       "games/pattern-bracelet-band/assets/title.webp": [
         "pattern-bracelet-band"
@@ -4722,6 +4976,7 @@
         "block-tower-measure",
         "chocolate-chip-count",
         "clay-creature-studio",
+        "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",

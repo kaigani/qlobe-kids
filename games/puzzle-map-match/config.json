@@ -1,9 +1,9 @@
 {
   "id": "puzzle-map-match",
-  "engine": "custom-dom",
+  "engine": "dom-jigsaw-v1",
   "title": "Puzzle Explorer",
   "artDirection": "Papercraft",
-  "storageKey": "qk-puzzle-explorer-v1",
+  "storageKey": "qk-puzzle-explorer-v2",
   "audio": {
     "manifest": "./assets/audio/manifest.json",
     "lines": "./data/lines.json"
@@ -16,8 +16,8 @@
       { "instr": "maracas" }
     ],
     "song": {
-      "id": "paper-passport-parade",
-      "title": "Paper Passport Parade",
+      "id": "paper-puzzle-parade",
+      "title": "Paper Puzzle Parade",
       "bpm": 82,
       "beatsPerBar": 4,
       "bars": 4,
@@ -32,229 +32,75 @@
     }
   },
   "assets": {
-    "splash": "./assets/backgrounds/splash.webp",
     "playTexture": "./assets/backgrounds/play-texture.webp",
     "title": "./assets/ui/title.webp",
-    "mapBoard": "./assets/ui/map-board.webp",
-    "promptRibbon": "./assets/ui/prompt-ribbon.webp",
-    "tray": "./assets/ui/tray.webp",
+    "promptRibbon": "./assets/ui/prompt-ribbon-alpha.webp",
+    "tray": "./assets/ui/tray-alpha.webp",
     "confetti": "./assets/ui/confetti.webp",
-    "successBurst": "./assets/ui/success-burst.webp",
     "handGuide": "./assets/ui/hand-guide.webp",
-    "continents": "./assets/map/continents.webp",
-    "continentMask": "./assets/map/continent-mask.png",
-    "continentData": "./assets/map/continents.json",
+    "hint": "./assets/ui/hint.png",
     "home": "../../shared/assets/ui/btn-home.png",
     "back": "../../shared/assets/ui/btn-back.png",
     "sound": "../../shared/assets/ui/btn-sound.png",
     "play": "../../shared/assets/ui/btn-play.png"
   },
   "timing": {
-    "firstHintMs": 9000,
-    "repeatHintMs": 12000,
-    "successHoldMs": 2500,
-    "roundCompleteHoldMs": 1200
+    "firstHintMs": 8000,
+    "repeatHintMs": 11000,
+    "hintVisibleMs": 4200,
+    "snapHoldMs": 720
   },
-  "continents": [
-    { "id": "asia", "name": "Asia" },
-    { "id": "africa", "name": "Africa" },
-    { "id": "australia", "name": "Australia" },
-    { "id": "north-america", "name": "North America" },
-    { "id": "south-america", "name": "South America" },
-    { "id": "europe", "name": "Europe" }
-  ],
-  "modes": [
+  "puzzles": [
     {
-      "id": "animal-trek",
-      "title": "Animal Trek",
-      "skill": "match characteristic animals to six inhabited continents",
-      "voice": "mode-animals",
-      "completeVoice": "complete-animals",
-      "cover": "./assets/cards/panda.webp",
-      "items": [
-        {
-          "id": "panda",
-          "name": "giant panda",
-          "continent": "asia",
-          "asset": "./assets/cards/panda.webp",
-          "prompt": "Where does the giant panda belong?",
-          "promptVoice": "prompt-panda",
-          "voice": "fact-panda"
-        },
-        {
-          "id": "elephant",
-          "name": "African elephant",
-          "continent": "africa",
-          "asset": "./assets/cards/elephant.webp",
-          "prompt": "Where does the elephant belong?",
-          "promptVoice": "prompt-elephant",
-          "voice": "fact-elephant"
-        },
-        {
-          "id": "kangaroo",
-          "name": "kangaroo",
-          "continent": "australia",
-          "asset": "./assets/cards/kangaroo.webp",
-          "prompt": "Where does the kangaroo belong?",
-          "promptVoice": "prompt-kangaroo",
-          "voice": "fact-kangaroo"
-        },
-        {
-          "id": "bison",
-          "name": "American bison",
-          "continent": "north-america",
-          "asset": "./assets/cards/bison.webp",
-          "prompt": "Where does the bison belong?",
-          "promptVoice": "prompt-bison",
-          "voice": "fact-bison"
-        },
-        {
-          "id": "llama",
-          "name": "llama",
-          "continent": "south-america",
-          "asset": "./assets/cards/llama.webp",
-          "prompt": "Where does the llama belong?",
-          "promptVoice": "prompt-llama",
-          "voice": "fact-llama"
-        },
-        {
-          "id": "ibex",
-          "name": "Alpine ibex",
-          "continent": "europe",
-          "asset": "./assets/cards/ibex.webp",
-          "prompt": "This is a mountain goat. Where does it belong?",
-          "promptVoice": "prompt-ibex",
-          "voice": "fact-ibex"
-        }
-      ]
+      "id": "forest-fox",
+      "title": "Forest Fox",
+      "shortTitle": "Fox",
+      "skill": "assemble a whole woodland scene from six interlocking parts",
+      "source": "./assets/source/puzzles/forest-fox-gpt-image-2.png",
+      "manifest": "./assets/puzzles/forest-fox/pieces.json",
+      "assembledQa": "./assets/puzzles/forest-fox/assembled.png",
+      "seed": "forest-fox-v1",
+      "rows": 2,
+      "cols": 3,
+      "width": 1200,
+      "height": 800,
+      "order": [0, 5, 2, 3, 1, 4],
+      "introVoice": "puzzle-fox",
+      "completeVoice": "complete-fox"
     },
     {
-      "id": "tasty-travels",
-      "title": "Tasty Travels",
-      "skill": "connect foods and crops with a clear place of origin or tradition",
-      "voice": "mode-foods",
-      "completeVoice": "complete-foods",
-      "cover": "./assets/cards/bananas.webp",
-      "items": [
-        {
-          "id": "bananas",
-          "name": "bananas",
-          "continent": "asia",
-          "asset": "./assets/cards/bananas.webp",
-          "prompt": "Where did bananas first grow?",
-          "promptVoice": "prompt-bananas",
-          "voice": "fact-bananas"
-        },
-        {
-          "id": "watermelon",
-          "name": "watermelon",
-          "continent": "africa",
-          "asset": "./assets/cards/watermelon.webp",
-          "prompt": "Where did wild watermelons first grow?",
-          "promptVoice": "prompt-watermelon",
-          "voice": "fact-watermelon"
-        },
-        {
-          "id": "lamington",
-          "name": "lamington cake",
-          "continent": "australia",
-          "asset": "./assets/cards/lamington.webp",
-          "prompt": "Where is lamington cake from?",
-          "promptVoice": "prompt-lamington",
-          "voice": "fact-lamington"
-        },
-        {
-          "id": "corn",
-          "name": "corn",
-          "continent": "north-america",
-          "asset": "./assets/cards/corn.webp",
-          "prompt": "Where was corn first grown?",
-          "promptVoice": "prompt-corn",
-          "voice": "fact-corn"
-        },
-        {
-          "id": "cacao",
-          "name": "cacao",
-          "continent": "south-america",
-          "asset": "./assets/cards/cacao.webp",
-          "prompt": "Where does this cacao story begin?",
-          "promptVoice": "prompt-cacao",
-          "voice": "fact-cacao"
-        },
-        {
-          "id": "pretzel",
-          "name": "pretzel",
-          "continent": "europe",
-          "asset": "./assets/cards/pretzel.webp",
-          "prompt": "Where is this twisty treat a tradition?",
-          "promptVoice": "prompt-pretzel",
-          "voice": "fact-pretzel"
-        }
-      ]
+      "id": "star-rocket",
+      "title": "Star Rocket",
+      "shortTitle": "Rocket",
+      "skill": "assemble a whole space scene from six interlocking parts",
+      "source": "./assets/source/puzzles/star-rocket-gpt-image-2.png",
+      "manifest": "./assets/puzzles/star-rocket/pieces.json",
+      "assembledQa": "./assets/puzzles/star-rocket/assembled.png",
+      "seed": "star-rocket-v1",
+      "rows": 2,
+      "cols": 3,
+      "width": 1200,
+      "height": 800,
+      "order": [2, 3, 0, 5, 1, 4],
+      "introVoice": "puzzle-rocket",
+      "completeVoice": "complete-rocket"
     },
     {
-      "id": "world-wonders",
-      "title": "World Wonders",
-      "skill": "match recognizable landmarks to six inhabited continents",
-      "voice": "mode-landmarks",
-      "completeVoice": "complete-landmarks",
-      "cover": "./assets/cards/great-wall.webp",
-      "items": [
-        {
-          "id": "great-wall",
-          "name": "Great Wall of China",
-          "continent": "asia",
-          "asset": "./assets/cards/great-wall.webp",
-          "prompt": "Where is the Great Wall?",
-          "promptVoice": "prompt-great-wall",
-          "voice": "fact-great-wall"
-        },
-        {
-          "id": "pyramids",
-          "name": "Great Pyramid of Giza",
-          "continent": "africa",
-          "asset": "./assets/cards/pyramids.webp",
-          "prompt": "Where are the pyramids of Giza?",
-          "promptVoice": "prompt-pyramids",
-          "voice": "fact-pyramids"
-        },
-        {
-          "id": "sydney-opera-house",
-          "name": "Sydney Opera House",
-          "continent": "australia",
-          "asset": "./assets/cards/sydney-opera-house.webp",
-          "prompt": "Where is the Sydney Opera House?",
-          "promptVoice": "prompt-sydney-opera-house",
-          "voice": "fact-sydney-opera-house"
-        },
-        {
-          "id": "statue-of-liberty",
-          "name": "Statue of Liberty",
-          "continent": "north-america",
-          "asset": "./assets/cards/statue-of-liberty.webp",
-          "prompt": "Where is the Statue of Liberty?",
-          "promptVoice": "prompt-statue-of-liberty",
-          "voice": "fact-statue-of-liberty"
-        },
-        {
-          "id": "machu-picchu",
-          "name": "Machu Picchu",
-          "continent": "south-america",
-          "asset": "./assets/cards/machu-picchu.webp",
-          "prompt": "Where is Machu Picchu?",
-          "promptVoice": "prompt-machu-picchu",
-          "voice": "fact-machu-picchu"
-        },
-        {
-          "id": "eiffel-tower",
-          "name": "Eiffel Tower",
-          "continent": "europe",
-          "asset": "./assets/cards/eiffel-tower.webp",
-          "prompt": "Where is the Eiffel Tower?",
-          "promptVoice": "prompt-eiffel-tower",
-          "voice": "fact-eiffel-tower"
-        }
-      ]
+      "id": "garden-flowers",
+      "title": "Garden Flowers",
+      "shortTitle": "Garden",
+      "skill": "assemble a whole garden scene from six interlocking parts",
+      "source": "./assets/source/puzzles/garden-flowers-gpt-image-2.png",
+      "manifest": "./assets/puzzles/garden-flowers/pieces.json",
+      "assembledQa": "./assets/puzzles/garden-flowers/assembled.png",
+      "seed": "garden-flowers-v1",
+      "rows": 2,
+      "cols": 3,
+      "width": 1200,
+      "height": 800,
+      "order": [3, 2, 0, 5, 1, 4],
+      "introVoice": "puzzle-garden",
+      "completeVoice": "complete-garden"
     }
   ]
 }

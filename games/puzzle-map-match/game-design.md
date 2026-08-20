@@ -1,153 +1,125 @@
 # Puzzle Explorer — production game design
 
-**Category:** culture-geography · **Ages:** 3–6 · **Status:** beta until a child playtest
+**Category:** sensorial-science · **Ages:** 3–6 · **Status:** beta until a child/iPad playtest
 
-**Art direction:** Papercraft — layered construction paper and felt, deckled edges, visible fibres, cream stitching, and soft tabletop shadows
+**Art direction:** tactile papercraft — layered cardstock and felt, visible fibers, stitched cream labels, soft tabletop shadows, and chunky physical jigsaw edges
 
-**Concept:** `../01-game-concepts/puzzle-explorer/brief.md`, video, and papercraft mockups
-
-**Replaces:** the emoji `sort-into-bins` prototype at the existing `puzzle-map-match` id and route
+**Concept authority:** the static Puzzle Explorer mockups in `01-game-concepts/puzzle-explorer/output/ui-mockups/` and the user’s explicit correction establish the central mechanic as assembling a conventional jigsaw puzzle. The earlier continent-matching interpretation is retired.
 
 ## Product promise
 
-> A handmade world map is waiting under your finger. Pick up a beautiful discovery card, carry it to its continent, and watch the map turn that match into a tiny travel story.
+> Choose a beautiful picture, fit six real interlocking pieces into their matching spaces, and finish with the exact whole scene.
 
-The production build must make four promises true:
+The production build makes four promises:
 
-1. Geography is the play surface, not decoration. Six recognizable continent shapes are rendered from public-domain Natural Earth data and the same raster mask resolves every real drop.
-2. Every child-facing object is authored papercraft art. CSS owns layout, state, accessibility, and motion only; it does not draw the map, cards, tray, ribbon, title, or celebration art.
-3. Dragging and tap-to-place are equal paths. Broad targets, dynamic hand guidance, target pulsing, cancellation hardening, and gentle retry keep motor precision from gating learning.
-4. A pre-reader can finish from pictures, motion, and spoken guidance. Live text supports adults without becoming a dependency.
+1. The pieces are not decorative rectangles. `shared/js/puzzle-cutter.js` creates their seeded interlocking geometry and renders each one to an independent transparent canvas.
+2. Correct placement uses the cutter’s returned `x/y` reconstruction coordinates. The game does not estimate, redraw, or approximate a snap.
+3. Dragging, tap-to-place, and keyboard activation reach the same placement function. Motor precision never gates completion.
+4. A pre-reader can finish from the scene clues, piece silhouettes, modeled hand path, lightbulb hint, short labels, and spoken guidance.
 
-There is one repeated skill—**associate a familiar discovery with one of the six inhabited continents**—expressed through three themed expeditions.
-
-## Session and screen map
+## Screen and session map
 
 ```text
-SPLASH / MODE SELECT --choose--> MAP --correct--> DISCOVERY
-       ^                          ^                |
-       |                          +----next--------+
-       |                          |
-       +--back--------------------+--after 6--> PASSPORT END
-
-Splash Home --> catalog
-Map / Passport Back --> splash
+CHOOSE PUZZLE --fox / rocket / garden--> SIX-PIECE BOARD
+      ^                                      |
+      |                            correct piece × 6
+      |                                      v
+      +---------- choose / back -------- COMPLETE
+                                             |
+                                  build again / next puzzle
 ```
 
-- **Splash / mode select (3–15 s):** authored title and background; three large picture-led mode cards; the first real gesture unlocks every audio channel and speaks the exact concept welcome line.
-- **Map (10–30 s per card):** one current card sits in the tray. Drag it anywhere over the map or select it and tap a continent. A placed miniature remains on its continent so the board grows into a travel collage.
-- **Guidance:** after nine idle seconds a paper hand models card-to-map movement. During a drag the correct target receives a warm stitched pulse. The sound control repeats the current prompt.
-- **Correct match / discovery (2–6 s):** a paper-star burst surrounds the region; a bold live continent banner appears on the blank ribbon; the card snaps to a configured point; the guide says “It’s puzzle-tastic!” and one short fact.
-- **Retry:** an off-map or wrong-region drop glides home. The guide says “Not that spot. Let’s look around the map.” There is no red X, score loss, buzzer, or “Game Over.”
-- **Passport end (10–30 s):** six placed cards orbit the completed expedition stamp. Completing a mode persists one local stamp. All three stamps produce a larger celebration but never lock content.
+- **Choose (3–15 seconds):** the authored Puzzle Explorer title, “Choose a puzzle” banner, and three large picture cards. Completed pictures receive a small check but never lock or reorder content.
+- **Board (roughly 45–150 seconds):** one loose piece is offered at a time. The board contains a faint whole-picture guide and the exact six cut outlines. Correct pieces accumulate in place.
+- **Hint:** after eight idle seconds—or immediately from the lightbulb—the current silhouette glows and the existing paper hand models tray-to-space motion. Reduced-motion mode keeps the glow and removes the traveling hand.
+- **Retry:** a wrong-space or off-board drop returns the piece. Progress, order, persistence, and already placed pieces do not change. There is no red X, lost life, buzzer, timer, or score.
+- **Snap:** the correct canvas is placed at its cutter-supplied `x/y`, receives one brief physical settle, and remains on the board. “It’s puzzle-tastic!” is the success beat.
+- **Complete:** all six original cut canvases form the picture. Confetti, “Puzzle complete!”, Build again, Next puzzle, Choose, and Home remain visible.
 
-One expedition is roughly 90 seconds to four minutes. A child may leave after any correct match with no penalty.
+Each puzzle uses a deterministic corner-first order, but the sequence is not presented as a test and has no difficulty label. All three pictures use the reference mockup’s exact 3×2 / six-piece scope.
 
-## Three expeditions
+## Three puzzles
 
-### Animal Trek
+| Puzzle | Scene clues | Seed | Piece order |
+|---|---|---|---|
+| Forest Fox | fox, mushrooms, pine trees, stream, stepping stones | `forest-fox-v1` | 0, 5, 2, 3, 1, 4 |
+| Star Rocket | rocket, ringed planet, moon, stars, Earth and clouds | `star-rocket-v1` | 2, 3, 0, 5, 1, 4 |
+| Garden Flowers | coral/blue/yellow flowers, fence, watering can, sun, butterflies | `garden-flowers-v1` | 3, 2, 0, 5, 1, 4 |
 
-| Continent | Card | Association |
-|---|---|---|
-| Asia | Giant panda | Native bamboo-forest range in China |
-| Africa | African elephant | Native African range |
-| Australia | Kangaroo | Native Australian range |
-| North America | American bison | Native North American grasslands |
-| South America | Llama | Domesticated in the Andes |
-| Europe | Alpine ibex | Native European Alps |
+The order varies the first visible clue while still placing corners early. It is authored data, not a difficulty system.
 
-### Tasty Travels
+## Cutter and placement contract
 
-This mode names either a documented place of origin/domestication or a strong regional food tradition; it does not imply that a food is eaten only there.
+At authoring time, each 1536×1024 GPT Image 2 source is downscaled to 1200×800 and passed to:
 
-| Continent | Card | Association |
-|---|---|---|
-| Asia | Bananas | Early cultivation in Southeast Asia |
-| Africa | Watermelon | Wild ancestors in Africa |
-| Australia | Lamington | Australian cake tradition |
-| North America | Corn | Domesticated in present-day Mexico |
-| South America | Cacao | Native and early cultivation in tropical South America |
-| Europe | Pretzel | Long European baking tradition |
+```text
+node tools/cut-puzzle.mjs <source> --grid 3x2 --seed <scene-v1> --max 1200 --out <folder>
+```
 
-### World Wonders
+Every folder retains six transparent PNGs, `pieces.json`, `outline.svg`, `assembled.png`, and `preview.png`.
 
-| Continent | Card | Landmark |
-|---|---|---|
-| Asia | Great Wall | China |
-| Africa | Great Pyramid of Giza | Egypt |
-| Australia | Sydney Opera House | Australia |
-| North America | Statue of Liberty | United States |
-| South America | Machu Picchu | Peru |
-| Europe | Eiffel Tower | France |
+At runtime the selected source is drawn to a 1200×800 canvas and passed to `cutImage()` with the same rows, columns, and seed. Boot rejects a scene if any piece identity, SVG path, edge label, or `x/y` differs from its committed manifest. A debug assembly probe draws all six live canvases back at `piece.x, piece.y` and compares that bitmap against the CLI’s `assembled.png`; the accepted build has zero mismatched pixels and a maximum channel delta of zero for all three scenes.
 
-## Interaction and feedback rules
+The board’s semantic targets are the six cell rectangles. They answer “which space did the child choose?” only. Once that cell index matches the current piece index, the cutter’s `x/y`—not the target rectangle—is authoritative for rendering the snapped canvas.
 
-- One primary pointer at a time. Window-level move/up/cancel, pointer capture, blur, page-hide, visibility, resize, and orientation cancellation all return the card safely.
-- A 10 px movement gate separates taps from drags. A drag uses the shared DOM drag controller; a tap selects the card, after which any generous continent target can place it.
-- Map drops sample `continent-mask.png` at the actual pointer coordinate. The same source dimensions and generated metadata drive the visible raster and the hit result.
-- Transparent 96 px continent buttons provide keyboard/assistive access without redrawing the map. Physical map taps resolve through the authoritative raster mask plus a nearest-center ocean-edge fallback, so overlapping semantic rectangles on the narrowest phones cannot steal one another’s pointer events. Europe and Africa use small opposite label/focus offsets; mask geometry and placed-card coordinates remain geographically anchored.
-- The target pulse begins only after card lift or idle modeling; it never gives away the answer before the child begins.
-- Correct drops lock input during the short fact beat. Wrong drops never advance, never reorder the deck, and never speak over an active fact.
-- Reduced motion removes travel arcs, bobbing, shake, confetti drift, and repeated pulses. State changes, success color, narration, and the continent banner remain immediate.
+## Interaction rules
 
-## Art inventory
+- One primary pointer at a time. The shared DOM drag controller owns window-level move/up/cancel, capture, blur, page-hide, visibility, resize, and orientation cleanup.
+- A 10px movement gate separates tap from drag. The drag ghost is a fresh bitmap copy because cloning a `<canvas>` element does not copy its pixels.
+- Tap flow is Piece → Space. Enter/Space on the focused piece and space uses the same flow.
+- Wrong and off-board attempts do not mutate `placed`, `step`, or the configured order.
+- Input locks only during the short retry or snap settle. Teardown removes every ghost, hint timer, event listener, and in-flight voice line.
+- Each fitted canvas uses percentage-scaled values derived from its exact image-coordinate `x`, `y`, and intrinsic canvas dimensions. This keeps the reconstruction invariant across every viewport.
 
-| Asset | Production / role |
-|---|---|
-| Splash and play-screen style anchor | GPT Image 2, 4:3, source retained |
-| Title lockup | GPT Image 2, chroma-keyed alpha, exact spelling reviewed |
-| Eighteen discovery cards | Three GPT Image 2 contact sheets → visually accepted private-LAN Qwen layer separation (imagegen-skill chroma matte retained as fallback) → deterministic six-cell crop |
-| Blank map board / ribbon / tray | Built-in GPT Image 2 edit from the accepted play-screen anchor → deterministic crops |
-| Continent overlay and hit mask | Natural Earth public-domain SHP/DBF → deterministic raster renderer; no generated geography |
-| Confetti | Reused QLOBE papercraft raster celebration asset |
-| HUD | Shared QLOBE PNG home/back/sound controls |
-| Voice | 58 teacher-voice clips are recorded through the approved LAN Studio `character-voice-line → qwen3-tts-voiceclone` workflow, with committed teacher reference, seed ladder 7/8/9, and Whisper base/en strict normalized transcript ratio ≥0.98. Accepted records, runtime M4As, manifest, recipe, and QA copies are present; Web Speech is a graceful fallback only. |
-| SFX | Shared synthesized pop, sparkle, boing, tick, and tada effects |
+## Visual and responsive contract
 
-Exact prompts, seeds, source paths, processing, QA, and licenses are recorded in `ASSETS.md` and game-local production reports.
+- Runtime CSS owns layout, state, focus, and motion. Scene art, title, controls, hint badge, tray, ribbon, hand, and confetti remain raster assets; the functional jigsaw outline is drawn directly from cutter geometry.
+- The board guide is the selected source at 20% opacity over cream, plus the cutter’s border and seven interior cuts. Placed pieces are fully opaque and physically beveled.
+- Landscape uses board-left / piece-tray-right. Portrait stacks the tray beneath the board. The 568×320 composition keeps both fully on-screen.
+- At 320px portrait the contained board is wide enough for six 101.9×101.9px semantic cells; there is no page overflow. Desktop and tablet cells are larger.
+- HUD controls respect safe areas. Every explicit control has a visible focus ring and accessible name.
+- Reduced motion removes snap travel, repeated glow movement, confetti entrance, shakes, and the modeled hand; state, target contrast, narration, and final composition remain.
 
-## Responsive and accessibility contract
+## Narration and sound
 
-- Landscape uses a map-first two-row composition: ribbon and progress above, map board center, tray in front. Portrait stacks the ribbon, contained map, and tray; the current card remains at least 132 px wide.
-- Every explicit control and semantic continent target is at least 96×96 CSS px. Small visual continents receive larger invisible semantic targets.
-- All card and landmark images have meaningful alt text; all buttons have accessible names; keyboard focus is visible; Enter/Space follows the same tap placement path.
-- No essential instruction is baked into art. Live captions use short Fredoka labels with high contrast, while voice and modeled motion carry the child path.
-- Safe-area insets protect the HUD. Runtime makes no remote request and requests no account, location, camera, microphone, motion sensor, or personal data.
+The child-facing table contains 17 concise jigsaw lines. Two exact concept phrases retain previously accepted Qwen3 teacher clips with Whisper ratio ≥0.98:
+
+- “Welcome to Puzzle Explorer! Let’s discover the world together.”
+- “It’s puzzle-tastic!”
+
+The environment’s egress gate denied the correction run’s local Studio request for the 15 new lines, so this build does not send text or voice data through an alternate path. Those lines use the shared local Web Speech fallback and are ready for the `pmm-jigsaw-*` generator when separately authorized. Music uses the existing local vibraphone, guitar, and maracas sample set; SFX are shared local WebAudio synthesis.
 
 ## Persistence and privacy
 
-Only `localStorage['qk-puzzle-explorer-v1']` is written. It contains schema version 1 and completed mode ids. No name, age, voice, location, dates, identifiers, or analytics payload is stored. Storage failure falls back to memory and never blocks play. A future adult reset may clear only this key; reset is not required for the core loop because stamps do not lock content.
+Only `localStorage['qk-puzzle-explorer-v2']` is written. It contains schema version 2 and completed puzzle ids. The new key intentionally ignores the retired geography stamps. No name, age, voice, location, date, identifier, or gameplay history is stored. Storage failure falls back to memory and never blocks play.
 
 ## Architecture
 
-- `config.json` owns all continents, modes, card copy, facts, asset paths, and tuning.
-- `js/main.js` owns screen state, shuffled deck, drag/tap parity, raster-mask drop resolution, modeled hand prompt, narration, persistence, and `QLOBE_DEBUG`.
+- `config.json` owns the three sources, manifests, fixed grids, seeds, dimensions, piece orders, voice keys, timing, and local art paths.
+- `js/main.js` owns screen state, runtime cutting, manifest drift rejection, canvas placement, drag/tap/keyboard parity, hints, persistence, narration, and `QLOBE_DEBUG`.
+- `shared/js/puzzle-cutter.js` owns pure seeded geometry and canvas rendering.
 - `shared/js/stage/drag-to-slot-dom.js` owns hardened pointer lifecycle and ghost cleanup.
-- Shared `voice-clips.js`, `audio-unlock.js`, `sfx.js`, `music.js`, `tap.js`, `timers.js`, `rng.js`, `preload.js`, and `debug-harness.js` remain authoritative.
-- All generation is authoring-time. The shipped game is static, offline, and dependency-free at runtime.
+- `tools/cut-puzzle.mjs` owns durable authoring artifacts and assembled/exploded QA renders.
+- `tools/finalize-jigsaw-assets.py` owns deterministic matte removal for the accepted ribbon and tray.
+- Shared voice, audio unlock, SFX, music, tap, timers, preload, RNG, and debug modules remain authoritative.
+
+Production runtime is static, dependency-free, and makes no model, account, location, camera, microphone, motion-sensor, or personal-data request.
 
 ## QLOBE_DEBUG v1
 
 The hook exposes the standard contract plus:
 
-- `getState()` → screen, mode, phase, card index/id, selected card, placed ids/continents, completed modes, busy, muted, reduced motion, active drag, and asset failures.
-- `getTargets()` → visible controls and continent tap targets.
-- `startMode(id)`, `tap(id)`, `place(itemId, continentId)`, `dropAt(itemId, normalizedX, normalizedY)`, `winRound()`, `completeMode()`, `mute(on)`, `seed(n)`, and `fastTimers(scale)`.
-- `getAudioLog()` proves the exact guide/fact key and clip-vs-speech path.
+- `getState()` → screen, phase, puzzle, current piece/expected slot, placed indices, completed puzzles, busy/selected/hint/reduced-motion state, manifest agreement, runtime geometry, active drag, art failures, timers, and music state.
+- `listModes()`, `startMode(id)`, and `startPuzzle(id)` → the same three puzzle choices.
+- `place(pieceIndex, slotIndex)`, `winRound()`, `completePuzzle()`, and `completeMode()` → deterministic QA paths.
+- `showHint()` → the real lightbulb path.
+- `verifyAssembly()` → exact live-canvas versus CLI assembled-image pixel comparison.
+- `tap(id)`, `getTargets()`, `getAudioLog()`, `clearAudioLog()`, `mute(on)`, and `fastTimers(scale)` → shared review functions.
 
-## Explicit departures
+## Beta acceptance and promotion gate
 
-- The written brief and concept video define a continent-matching geography game. The four fox-jigsaw PNGs conflict with that mechanic, so they guide material finish, hierarchy, card framing, and celebration only; the implementation follows the written loop.
-- The brief asks for a “vibrant vector map,” but the user explicitly prohibits vector/CSS artwork. The game therefore uses geographically accurate **raster** land geometry with papercraft texture.
-- Six inhabited continents are used. Antarctica is omitted because the three chosen content families cannot offer one accurate, equivalent familiar match without distorting the single skill.
-- The target pulse appears after engagement rather than continuously, preserving discovery while still supporting younger players.
-- Persistent passport stamps are an additive replay aid. They never gate modes, score children, or collect personal data.
-
-## Beta acceptance and live-promotion gate
-
-- Direct and hub launch, all three modes, all eighteen correct paths, wrong map/off-map retry, drag and tap parity, idle hand cue, facts, passport persistence, reload, and replay must work with zero console errors, failed requests, or 404s.
-- Real pointer drag, cancel, blur, visibility, resize-mid-drag, phone and tablet portrait, landscape, reduced motion, keyboard placement, ≥96 px semantic targets, mask-routed phone taps for all six continents, and teardown pass automated probes.
-- Recorded narration provenance, transcript QA, and the runtime decode gate are satisfied. Promotion to `live` still requires the real child/iPad playtest; the game remains beta and makes no production-deployment claim.
-- Static checks verify config ids, exact 18-card/6-continent coverage, case-sensitive paths, no emoji art, local-only runtime, raster budgets, manifest/registry parity, and valid source/provenance records.
-- Visual review separately approves material fidelity for the backdrop, map, manipulatives, tray, prompt ribbon, rewards, portrait/landscape hierarchy, geography recognizability, title spelling, retry, success, and end states at full size.
-- A separate adversarial ART DIRECTOR review must find no unresolved high- or medium-severity visual issue before handoff.
+- Three select paths, eighteen correct placements, wrong-space and off-board return, pointer drag, tap, keyboard, hint, replay, next, persistence, and reload pass automated Chrome probes.
+- Resize-mid-drag, blur-mid-drag, ghost cleanup, manifest drift rejection, alpha-bearing loose canvases, complementary tab/blank pairs, and exact zero-delta assembly pass.
+- Desktop 1200×800, phone 320×800, compact landscape 568×320, portrait tablet 700×1100, and reduced-motion compositions pass with no page error, failed local request, overflow, or remote runtime request.
+- Final art and code review must report no unresolved high- or medium-severity defect.
+- Promotion to `live` still requires a real child/iPad playtest; the game remains `beta`.

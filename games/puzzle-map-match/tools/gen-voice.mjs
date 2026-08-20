@@ -26,7 +26,7 @@ const seeds = [7, 8, 9];
 const threshold = 0.98;
 
 const lines = JSON.parse(await readFile(linesPath, 'utf8'));
-const plan = Object.entries(lines).map(([key, text]) => ({ key, text, mediaId: `pmm-voice-${key}`, file: `${key}.m4a` }));
+const plan = Object.entries(lines).map(([key, text]) => ({ key, text, mediaId: `pmm-jigsaw-${key}`, file: `${key}.m4a` }));
 if (!plan.length || plan.some(({ key }) => !/^[a-z0-9][a-z0-9-]*$/.test(key))) {
   throw new Error('Voice line ids must be non-empty lowercase kebab-case basenames.');
 }

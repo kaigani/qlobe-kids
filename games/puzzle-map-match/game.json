@@ -1,41 +1,41 @@
 {
   "id": "puzzle-map-match",
   "title": "Puzzle Explorer",
-  "category": "culture-geography",
+  "category": "sensorial-science",
   "path": "games/puzzle-map-match/",
-  "icon": "🗺️",
+  "icon": "🧩",
   "entry": "index.html",
   "age": { "min": 3, "max": 6 },
   "status": "beta",
   "accent": "#f18a2b",
-  "shareTitle": "Puzzle Explorer 🗺️ — A Papercraft World Match",
-  "description": "Carry animals, foods, and famous landmarks to their continents on a tactile papercraft world map, with recorded teacher guidance, gentle hints, and a travel-passport celebration.",
+  "shareTitle": "Puzzle Explorer 🧩 — Six-Piece Papercraft Jigsaws",
+  "description": "Build a forest fox, star rocket, or flower garden from six real interlocking jigsaw pieces, with gentle spoken hints and satisfying exact-fit snaps.",
   "learningGoals": [
-    "Build a beginning mental map of the six inhabited continents",
-    "Connect familiar animals, foods, crops, and landmarks with broad world regions",
-    "Practice purposeful dragging, tap-to-place, visual search, and recall"
+    "Strengthen visual-spatial reasoning by relating each part to a whole picture",
+    "Notice contours, colors, and neighboring image clues while finding a piece’s location",
+    "Practice purposeful dragging, tap-to-place, keyboard choice, and fine-motor control"
   ],
-  "interactionModel": "drag a large picture card onto a geographically shaped continent, or tap the card and then tap a generous continent target",
-  "feedbackModel": "Correct matches pulse, pop into the map, announce the continent, share one short fact, and fill a passport stamp; misses glide home with a gentle spoken nudge and no penalty.",
+  "interactionModel": "assemble one guided jigsaw piece at a time by dragging it to its exact space, or tapping the piece and then its matching space",
+  "feedbackModel": "Correct pieces snap to the cutter’s exact reconstruction coordinates and remain on the board; misses return gently with no penalty, and the lightbulb models the matching path.",
   "uses": [
+    "shared/js/puzzle-cutter.js",
     "shared/js/voice-clips.js",
     "shared/js/audio-unlock.js",
     "shared/js/sfx.js",
     "shared/js/music.js",
     "shared/js/tap.js",
     "shared/js/timers.js",
-    "shared/js/rng.js",
     "shared/js/preload.js",
     "shared/js/debug-harness.js",
     "shared/js/stage/drag-to-slot-dom.js"
   ],
   "modes": [
-    { "id": "animal-trek", "title": "Animal Trek", "skill": "animal-to-continent matching" },
-    { "id": "tasty-travels", "title": "Tasty Travels", "skill": "food and crop place associations" },
-    { "id": "world-wonders", "title": "World Wonders", "skill": "landmark-to-continent matching" }
+    { "id": "forest-fox", "title": "Forest Fox", "skill": "assemble a woodland scene from six interlocking parts" },
+    { "id": "star-rocket", "title": "Star Rocket", "skill": "assemble a space scene from six interlocking parts" },
+    { "id": "garden-flowers", "title": "Garden Flowers", "skill": "assemble a garden scene from six interlocking parts" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; GPT Image 2 and Qwen Image Layered papercraft visual system; Qwen3 TTS teacher voice; Whisper transcript QA; Natural Earth public-domain land data. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "credits": "Kaigani; GPT Image 2 papercraft puzzle scenes and hint control; Qwen3 TTS teacher voice; Whisper transcript QA; shared seeded Puzzle Cutter geometry. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
   "conceptVideo": "01-game-concepts/puzzle-explorer/"
 }

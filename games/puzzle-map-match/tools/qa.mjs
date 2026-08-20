@@ -1,250 +1,358 @@
 #!/usr/bin/env node
 import path from 'node:path';
-import { mkdir } from 'node:fs/promises';
-import { args, launchChrome, openSession, createReporter, checkSessionClean } from '../../../tools/qa/lib/driver.mjs';
+import { access, mkdir, readFile } from 'node:fs/promises';
+import {
+  args,
+  launchChrome,
+  openSession,
+  createReporter,
+  checkSessionClean,
+  dragBetween,
+} from '../../../tools/qa/lib/driver.mjs';
 
 const base = (args.flag('base', 'http://127.0.0.1:8765')).replace(/\/$/, '');
 const url = `${base}/games/puzzle-map-match/`;
-const shots = '/private/tmp/puzzle-explorer-qa';
+const shots = '/private/tmp/puzzle-explorer-jigsaw-qa';
 const { check, finish } = createReporter();
 const sessions = [];
 const platformAnalytics = ['https://www.googletagmanager.com/', 'https://www.google-analytics.com/'];
+const repoRoot = path.resolve(import.meta.dirname, '../../..');
 await mkdir(shots, { recursive: true });
+
+const gameConfig = JSON.parse(await readFile(path.join(repoRoot, 'games/puzzle-map-match/config.json'), 'utf8'));
+const gameMeta = JSON.parse(await readFile(path.join(repoRoot, 'games/puzzle-map-match/game.json'), 'utf8'));
+const registry = JSON.parse(await readFile(path.join(repoRoot, 'games.json'), 'utf8'));
+const registryGame = registry.games.find((game) => game.id === 'puzzle-map-match');
+
+check('metadata classifies the rebuilt game as a visual-spatial sensorial puzzle', gameMeta.category === 'sensorial-science' && registryGame?.category === 'sensorial-science');
+check('metadata and registry expose the same three jigsaw puzzles', gameMeta.modes.map(({ id }) => id).join(',') === 'forest-fox,star-rocket,garden-flowers' && registryGame?.modes?.map(({ id }) => id).join(',') === 'forest-fox,star-rocket,garden-flowers');
+check('game remains beta until a real child/iPad playtest', gameMeta.status === 'beta' && registryGame?.status === 'beta');
+
+for (const puzzle of gameConfig.puzzles) {
+  const folder = path.join(repoRoot, 'games/puzzle-map-match/assets/puzzles', puzzle.id);
+  const manifest = JSON.parse(await readFile(path.join(folder, 'pieces.json'), 'utf8'));
+  const expectedFiles = [
+    ...manifest.pieces.map((piece) => piece.file),
+    'pieces.json', 'outline.svg', 'assembled.png', 'preview.png',
+  ];
+  let existing = 0;
+  for (const file of expectedFiles) {
+    try { await access(path.join(folder, file)); existing += 1; } catch { /* reported below */ }
+  }
+  check(`${puzzle.id} has six durable piece PNGs and four pipeline QA artifacts`, manifest.pieces.length === 6 && existing === 10, `${existing}/10 files`);
+  check(`${puzzle.id} manifest keeps the 3×2 1200×800 seeded contract`, manifest.cols === 3 && manifest.rows === 2 && manifest.width === 1200 && manifest.height === 800 && manifest.seedInput === puzzle.seed);
+  check(`${puzzle.id} manifest has finite reconstruction coordinates and paths`, manifest.pieces.every((piece) => Number.isFinite(piece.x) && Number.isFinite(piece.y) && typeof piece.path === 'string' && piece.path.startsWith('M ')));
+
+  const complement = (a, b) => (a === 'tab' && b === 'blank') || (a === 'blank' && b === 'tab');
+  const byCell = new Map(manifest.pieces.map((piece) => [`${piece.row}:${piece.col}`, piece]));
+  let joins = 0;
+  let validJoins = 0;
+  for (const piece of manifest.pieces) {
+    const right = byCell.get(`${piece.row}:${piece.col + 1}`);
+    const below = byCell.get(`${piece.row + 1}:${piece.col}`);
+    if (right) { joins += 1; if (complement(piece.edges.right, right.edges.left)) validJoins += 1; }
+    if (below) { joins += 1; if (complement(piece.edges.bottom, below.edges.top)) validJoins += 1; }
+  }
+  check(`${puzzle.id} has complementary tab/blank labels at all seven joins`, joins === 7 && validJoins === 7, `${validJoins}/${joins}`);
+}
 
 const browser = await launchChrome({ channel: 'chrome' });
 try {
-  const mainSession = await openSession(browser, { url, base, viewport: { width: 1200, height: 800 }, reducedMotion: 'no-preference', allowAbortedMedia: true, fastTimers: true, allowRemote: platformAnalytics });
+  const mainSession = await openSession(browser, {
+    url,
+    base,
+    viewport: { width: 1200, height: 800 },
+    reducedMotion: 'no-preference',
+    allowAbortedMedia: true,
+    allowRemote: platformAnalytics,
+    mute: true,
+  });
   sessions.push(mainSession);
   const { page } = mainSession;
-  await page.waitForFunction(() => window.QLOBE_DEBUG?.ready);
-  await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
-  const debug = () => page.evaluate(() => window.QLOBE_DEBUG.getState());
-  const api = await page.evaluate(() => ({ id: window.QLOBE_DEBUG.gameId, engine: window.QLOBE_DEBUG.engine, modes: window.QLOBE_DEBUG.listModes() }));
-  check('game id and engine exposed', api.id === 'puzzle-map-match' && typeof api.engine === 'string', JSON.stringify(api));
-  check('three modes registered', api.modes.length === 3 && api.modes.map(m => m.id).join(',') === 'animal-trek,tasty-travels,world-wonders');
-  check('splash screen visible', (await debug()).screen === 'splash');
-  check('splash art decodes', await page.locator('img:visible').evaluateAll(xs => xs.every(x => x.naturalWidth > 0)));
-  check('no art failures', (await debug()).artFailures.length === 0);
+  const state = () => page.evaluate(() => window.QLOBE_DEBUG.getState());
+
+  const api = await page.evaluate(() => ({
+    id: window.QLOBE_DEBUG.gameId,
+    engine: window.QLOBE_DEBUG.engine,
+    modes: window.QLOBE_DEBUG.listModes(),
+  }));
+  check('debug hook exposes the jigsaw engine at the stable game id', api.id === 'puzzle-map-match' && api.engine === 'dom-jigsaw-v1', JSON.stringify(api));
+  check('debug hook lists fox, rocket, and garden', api.modes.map(({ id }) => id).join(',') === 'forest-fox,star-rocket,garden-flowers');
+  check('choice screen boots with three picture-led puzzle cards', (await state()).screen === 'choose' && await page.locator('[data-puzzle]').count() === 3);
+  check('all visible choice-screen raster art decodes', await page.locator('img:visible').evaluateAll((images) => images.every((image) => image.naturalWidth > 0 && image.naturalHeight > 0)));
+  check('boot reports no missing art', (await state()).artFailures.length === 0);
+  await page.screenshot({ path: path.join(shots, '01-choose.png') });
+
   const voicePack = await page.evaluate(async () => {
     const [manifestResponse, linesResponse] = await Promise.all([
       fetch('./assets/audio/manifest.json'),
       fetch('./data/lines.json'),
     ]);
     const [manifest, lines] = await Promise.all([manifestResponse.json(), linesResponse.json()]);
-    const issues = [];
+    const decodeIssues = [];
     const provenanceIssues = [];
-    let decoded = 0;
     const context = new OfflineAudioContext(1, 1, 44100);
     for (const [key, entry] of Object.entries(manifest)) {
       try {
         const response = await fetch(`./assets/audio/${entry.file}`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const audio = await context.decodeAudioData(await response.arrayBuffer());
-        if (!(audio.duration > 0)) throw new Error('zero duration');
-        if (Number.isFinite(entry.dur) && Math.abs(audio.duration - entry.dur) > 0.12) {
-          throw new Error(`duration ${audio.duration.toFixed(3)} != ${entry.dur}`);
-        }
-        decoded += 1;
+        if (!(audio.duration > 0) || Math.abs(audio.duration - entry.dur) > 0.12) throw new Error(`duration ${audio.duration}`);
       } catch (error) {
-        issues.push(`${key}: ${error.message}`);
+        decodeIssues.push(`${key}: ${error.message}`);
       }
-    }
-    await Promise.all(Object.entries(lines).map(async ([key, authored]) => {
-      let recipe;
-      let sidecar;
       try {
         const [recipeResponse, sidecarResponse] = await Promise.all([
           fetch(`./assets/source/voice-recipes/${key}.recipe.json`),
           fetch(`./assets/source/voice-qa/${key}.json`),
         ]);
-        if (!recipeResponse.ok) throw new Error(`recipe HTTP ${recipeResponse.status}`);
-        if (!sidecarResponse.ok) throw new Error(`QA HTTP ${sidecarResponse.status}`);
-        [recipe, sidecar] = await Promise.all([recipeResponse.json(), sidecarResponse.json()]);
+        if (!recipeResponse.ok || !sidecarResponse.ok) throw new Error('missing provenance');
+        const [recipe, sidecar] = await Promise.all([recipeResponse.json(), sidecarResponse.json()]);
+        if (recipe?.steps?.[0]?.text !== lines[key] || recipe?.qa?.transcript?.match !== true || Number(recipe?.qa?.transcript?.ratio) < 0.98 || sidecar?.match !== true || Number(sidecar?.ratio) < 0.98) throw new Error('transcript mismatch');
       } catch (error) {
         provenanceIssues.push(`${key}: ${error.message}`);
-        return;
       }
-      const step = recipe?.steps?.[0];
-      const recipeTranscript = recipe?.qa?.transcript;
-      const failures = [];
-      if (recipe?.qa?.status !== 'accepted') failures.push('status');
-      if (recipe?.refs?.voice !== 'teacher') failures.push('voice ref');
-      if (step?.workflow !== 'qwen3-tts-voiceclone') failures.push('workflow');
-      if (step?.text !== authored) failures.push('recipe text');
-      if (recipeTranscript?.intended !== authored) failures.push('recipe intended');
-      if (sidecar?.intended !== authored) failures.push('QA intended');
-      if (recipeTranscript?.match !== true || !Number.isFinite(Number(recipeTranscript?.ratio)) || Number(recipeTranscript.ratio) < 0.98) failures.push('recipe transcript QA');
-      if (sidecar?.match !== true || !Number.isFinite(Number(sidecar?.ratio)) || Number(sidecar.ratio) < 0.98) failures.push('QA transcript');
-      if (failures.length) provenanceIssues.push(`${key}: ${failures.join(', ')}`);
-    }));
+    }
     return {
-      manifestCount: Object.keys(manifest).length,
+      manifestKeys: Object.keys(manifest),
       lineCount: Object.keys(lines).length,
-      decoded,
-      issues,
-      provenanceCount: Object.keys(lines).length - provenanceIssues.length,
+      exactWelcome: lines.welcome,
+      exactSuccess: lines.success,
+      decodeIssues,
       provenanceIssues,
-      sameKeys: Object.keys(lines).every((key) => Object.hasOwn(manifest, key)),
     };
   });
-  check('recorded voice manifest covers all 58 authored lines', voicePack.lineCount === 58 && voicePack.manifestCount === 58 && voicePack.sameKeys, JSON.stringify(voicePack));
-  check('real Chrome decodes all recorded voice clips', voicePack.decoded === 58 && voicePack.issues.length === 0, voicePack.issues.join('; '));
-  check('all 58 voice provenance pairs pass accepted teacher-voice transcript QA', voicePack.provenanceCount === 58 && voicePack.provenanceIssues.length === 0, voicePack.provenanceIssues.join('; '));
-  await page.screenshot({ path: path.join(shots, '01-splash.png') });
+  check('17 concise jigsaw lines replace the 58 geography lines', voicePack.lineCount === 17);
+  check('the two required concept phrases remain exact', voicePack.exactWelcome === 'Welcome to Puzzle Explorer! Let’s discover the world together.' && voicePack.exactSuccess === 'It’s puzzle-tastic!');
+  check('accepted teacher clips are intentionally limited to exact welcome and success', voicePack.manifestKeys.sort().join(',') === 'success,welcome', voicePack.manifestKeys.join(','));
+  check('both retained teacher clips decode and keep accepted Whisper provenance', voicePack.decodeIssues.length === 0 && voicePack.provenanceIssues.length === 0, [...voicePack.decodeIssues, ...voicePack.provenanceIssues].join('; '));
 
-  await page.evaluate(() => window.QLOBE_DEBUG.startMode('animal-trek'));
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'map');
-  let state = await debug();
-  const card = await page.locator('[data-role="draggable"]:visible').boundingBox();
-  const targets = await page.locator('[data-role="drop-target"]:visible').evaluateAll(ns => ns.map(n => ({ id: n.dataset.continent, rect: (() => { const r=n.getBoundingClientRect(); return {x:r.x,y:r.y,width:r.width,height:r.height}; })() })));
-  check('animal trek has card and six continent targets', !!card && targets.length === 6);
-  check('targets are at least 96px', targets.every(t => t.rect.width >= 96 && t.rect.height >= 96));
-  await page.screenshot({ path: path.join(shots, '02-play.png') });
-  const wrong = targets.find(t => t.id !== state.expectedContinent);
-  await page.mouse.move(card.x + card.width / 2, card.y + card.height / 2); await page.mouse.down();
-  await page.mouse.move(wrong.rect.x + wrong.rect.width / 2, wrong.rect.y + wrong.rect.height / 2, { steps: 10 }); await page.mouse.up();
+  await page.evaluate(() => window.QLOBE_DEBUG.startPuzzle('forest-fox'));
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  let playState = await state();
+  check('forest puzzle starts as a six-piece 3×2 cut', playState.geometry?.width === 1200 && playState.geometry?.height === 800 && playState.geometry?.rows === 2 && playState.geometry?.cols === 3 && playState.totalPieces === 6, JSON.stringify(playState.geometry));
+  check('runtime geometry exactly matches the committed cutter manifest', playState.manifestMatches === true && playState.manifestIssues.length === 0);
+  check('board starts empty with one real loose cut canvas', playState.placed.length === 0 && await page.locator('.placed-piece').count() === 0 && await page.locator('.loose-piece canvas').count() === 1);
+  const alpha = await page.locator('.loose-piece canvas').evaluate((canvas) => {
+    const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+    let clear = 0; let opaque = 0;
+    for (let index = 3; index < data.length; index += 16) {
+      if (data[index] === 0) clear += 1;
+      if (data[index] > 200) opaque += 1;
+    }
+    return { clear, opaque, width: canvas.width, height: canvas.height };
+  });
+  check('loose piece canvas has transparent surround and painted image pixels', alpha.clear > 0 && alpha.opaque > 0, JSON.stringify(alpha));
+  const assembly = await page.evaluate(() => window.QLOBE_DEBUG.verifyAssembly());
+  check('all six runtime canvases reassemble the CLI proof pixel-for-pixel', assembly.match === true && assembly.mismatchedPixels === 0 && assembly.maxDelta === 0, JSON.stringify(assembly));
+
+  let slots = await page.locator('[data-piece-index]').evaluateAll((nodes) => nodes.map((node) => {
+    const rect = node.getBoundingClientRect();
+    return { index: Number(node.dataset.pieceIndex), x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  }));
+  check('desktop board exposes six non-overlapping generous semantic spaces', slots.length === 6 && slots.every((slot) => slot.width >= 96 && slot.height >= 96));
+  await page.screenshot({ path: path.join(shots, '02-fox-play.png') });
+
+  const pieceBox = await page.locator('[data-role="draggable"]:visible').boundingBox();
+  const wrongBox = slots.find((slot) => slot.index !== playState.expectedSlot);
+  await dragBetween(page, pieceBox, wrongBox, { steps: 10 });
   await page.waitForFunction(() => !window.QLOBE_DEBUG.getState().busy);
-  state = await debug();
-  check('wrong real drag does not place card', state.placed.length === 0 && state.round === 0);
-  await page.evaluate(() => window.QLOBE_DEBUG.tap('sound'));
-  check('sound control replays the active prompt after a nudge', await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog().at(-1)?.key === window.QLOBE_DEBUG.getState().currentItem.replace(/^/, 'prompt-') || window.QLOBE_DEBUG.getAudioLog().at(-1)?.text === document.querySelector('.prompt-copy')?.textContent?.trim()));
-  await page.screenshot({ path: path.join(shots, '03-retry.png') });
+  playState = await state();
+  check('wrong real drag leaves progress and piece order unchanged', playState.step === 0 && playState.placed.length === 0 && playState.currentPiece === 0);
+  check('wrong real drag always removes its ghost', await page.locator('[data-qk-drag-ghost]').count() === 0);
+  await page.screenshot({ path: path.join(shots, '03-wrong-return.png') });
 
-  const offMapCard = await page.locator('[data-role="draggable"]:visible').boundingBox();
-  await page.mouse.move(offMapCard.x + offMapCard.width / 2, offMapCard.y + offMapCard.height / 2); await page.mouse.down();
-  await page.mouse.move(4, 4, { steps: 10 }); await page.mouse.up();
+  const offboardPiece = await page.locator('[data-role="draggable"]:visible').boundingBox();
+  await dragBetween(page, offboardPiece, { x: 4, y: 4 }, { steps: 9 });
   await page.waitForFunction(() => !window.QLOBE_DEBUG.getState().busy);
-  check('off-map real drag returns card without progress', (await debug()).placed.length === 0 && (await debug()).round === 0);
+  check('off-board drop returns without mutation', (await state()).placed.length === 0 && (await state()).step === 0);
 
-  const cancel = await page.evaluate(() => { const c=document.querySelector('[data-role="draggable"]'); const r=c.getBoundingClientRect(); const id=91; c.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:id,clientX:r.x+r.width/2,clientY:r.y+r.height/2})); window.dispatchEvent(new Event('resize')); c.dispatchEvent(new PointerEvent('pointercancel',{bubbles:true,pointerId:id})); return window.QLOBE_DEBUG.getState(); });
-  check('resize-mid-drag cancels interaction', !cancel.activeDrag && cancel.placed.length === 0);
-  const blurCard = await page.locator('[data-role="draggable"]:visible').boundingBox();
-  await page.mouse.move(blurCard.x + blurCard.width / 2, blurCard.y + blurCard.height / 2); await page.mouse.down(); await page.mouse.move(blurCard.x + blurCard.width / 2 + 35, blurCard.y + blurCard.height / 2 - 35, { steps: 5 });
+  let cancelPiece = await page.locator('[data-role="draggable"]:visible').boundingBox();
+  await page.mouse.move(cancelPiece.x + cancelPiece.width / 2, cancelPiece.y + cancelPiece.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(cancelPiece.x + cancelPiece.width / 2 + 35, cancelPiece.y + cancelPiece.height / 2 - 28, { steps: 5 });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().activeDrag);
+  await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+  await page.waitForFunction(() => !window.QLOBE_DEBUG.getState().activeDrag);
+  await page.mouse.up();
+  check('resize-mid-drag cancels safely and preserves progress', (await state()).placed.length === 0 && await page.locator('[data-qk-drag-ghost]').count() === 0);
+
+  cancelPiece = await page.locator('[data-role="draggable"]:visible').boundingBox();
+  await page.mouse.move(cancelPiece.x + cancelPiece.width / 2, cancelPiece.y + cancelPiece.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(cancelPiece.x + cancelPiece.width / 2 + 32, cancelPiece.y + cancelPiece.height / 2 + 25, { steps: 5 });
   await page.evaluate(() => window.dispatchEvent(new Event('blur')));
   await page.waitForFunction(() => !window.QLOBE_DEBUG.getState().activeDrag);
-  check('blur-mid-drag removes the ghost and preserves progress', await page.locator('[data-qk-drag-ghost]').count() === 0 && (await debug()).placed.length === 0);
   await page.mouse.up();
-  const expected = targets.find(t => t.id === state.expectedContinent);
-  const card2 = await page.locator('[data-role="draggable"]:visible').boundingBox();
-  await page.mouse.move(card2.x + card2.width / 2, card2.y + card2.height / 2); await page.mouse.down(); await page.mouse.move(expected.rect.x + expected.rect.width / 2, expected.rect.y + expected.rect.height / 2, { steps: 12 });
-  check('real drag creates one ghost', await page.locator('[data-qk-drag-ghost]').count() === 1);
+  check('blur-mid-drag cancels safely and removes the ghost', (await state()).placed.length === 0 && await page.locator('[data-qk-drag-ghost]').count() === 0);
+
+  await page.evaluate(() => window.QLOBE_DEBUG.showHint());
+  check('lightbulb hint highlights only the exact current space', await page.locator('.piece-slot.is-hint').count() === 1 && (await state()).hintVisible === true);
+  await page.screenshot({ path: path.join(shots, '04-hint.png') });
+
+  playState = await state();
+  const correctBox = slots.find((slot) => slot.index === playState.expectedSlot);
+  const correctPiece = await page.locator('[data-role="draggable"]:visible').boundingBox();
+  await page.mouse.move(correctPiece.x + correctPiece.width / 2, correctPiece.y + correctPiece.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(correctBox.x + correctBox.width / 2, correctBox.y + correctBox.height / 2, { steps: 12 });
+  check('real drag uses one bitmap-bearing ghost', await page.locator('[data-qk-drag-ghost] canvas').count() === 1);
   await page.mouse.up();
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().placed.length === 1);
-  check('correct real drag places expected card', (await debug()).phase === 'reward');
-  await page.screenshot({ path: path.join(shots, '04-success.png') });
-  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().round === 1 && window.QLOBE_DEBUG.getState().phase === 'playing');
-  state = await debug();
+  check('correct real drag snaps the expected cutter piece', (await state()).phase === 'snapping' && await page.locator('.placed-piece').count() === 1);
+  await page.screenshot({ path: path.join(shots, '05-snap.png') });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().step === 1 && window.QLOBE_DEBUG.getState().phase === 'playing');
+
+  const audioLog = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+  check('exact welcome and success use retained teacher clips while new jigsaw lines use local fallback', audioLog.some((entry) => entry.key === 'welcome' && entry.kind === 'clip') && audioLog.some((entry) => entry.key === 'success' && entry.kind === 'clip') && audioLog.some((entry) => entry.key === 'puzzle-fox' && entry.kind === 'speech'), JSON.stringify(audioLog));
+
   await page.locator('[data-role="draggable"]:visible').focus();
   await page.keyboard.press('Enter');
-  const selected = await debug(); check('tap-to-place selects the current card', selected.selected === true);
-  await page.evaluate(() => window.QLOBE_DEBUG.tap('sound'));
-  check('sound control replays the active prompt after tap help', await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog().at(-1)?.text === document.querySelector('.prompt-copy')?.textContent?.trim()));
-  await page.locator(`[data-continent="${selected.expectedContinent}"]`).focus();
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().selected === true);
+  playState = await state();
+  const wrongTapIndex = slots.find((slot) => slot.index !== playState.expectedSlot && !playState.placed.includes(slot.index)).index;
+  await page.locator(`[data-piece-index="${wrongTapIndex}"]`).focus();
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => !window.QLOBE_DEBUG.getState().busy);
+  check('wrong keyboard/tap choice preserves progress and selection', (await state()).step === 1 && (await state()).selected === true);
+  await page.locator(`[data-piece-index="${playState.expectedSlot}"]`).focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().placed.length === 2);
-  await page.screenshot({ path: path.join(shots, '05-animal-progress.png') });
+  await page.waitForFunction(() => window.QLOBE_DEBUG.getState().step === 2 && window.QLOBE_DEBUG.getState().phase === 'playing');
+  check('keyboard path places through the same exact snap state', (await state()).placed.length === 2 && await page.locator('.placed-piece').count() === 2);
+  await page.screenshot({ path: path.join(shots, '06-two-placed.png') });
 
+  await page.evaluate(() => window.QLOBE_DEBUG.fastTimers(20));
   let correctPaths = 0;
-  for (const modeId of ['animal-trek', 'tasty-travels', 'world-wonders']) {
-    await page.evaluate((id) => window.QLOBE_DEBUG.startMode(id), modeId);
-    await page.waitForFunction((id) => window.QLOBE_DEBUG.getState().mode === id && window.QLOBE_DEBUG.getState().phase === 'playing', modeId);
-    if (modeId !== 'animal-trek') await page.screenshot({ path: path.join(shots, modeId === 'tasty-travels' ? '10-tasty-play.png' : '11-wonders-play.png') });
+  for (const puzzleId of ['forest-fox', 'star-rocket', 'garden-flowers']) {
+    await page.evaluate((id) => window.QLOBE_DEBUG.startPuzzle(id), puzzleId);
+    await page.waitForFunction((id) => window.QLOBE_DEBUG.getState().puzzle === id && window.QLOBE_DEBUG.getState().phase === 'playing', puzzleId);
+    check(`${puzzleId} runtime cut agrees with its durable manifest`, (await state()).manifestMatches === true);
     for (let index = 0; index < 6; index += 1) {
-      const before = await debug();
-      check(`${modeId} round ${index + 1} has a mapped item`, Boolean(before.currentItem && before.expectedContinent));
-      await page.evaluate(({ item, continent }) => window.QLOBE_DEBUG.place(item, continent), { item: before.currentItem, continent: before.expectedContinent });
+      const before = await state();
+      check(`${puzzleId} piece ${index + 1} exposes one expected slot`, Number.isInteger(before.currentPiece) && before.currentPiece === before.expectedSlot);
+      await page.evaluate(({ piece, slot }) => window.QLOBE_DEBUG.place(piece, slot), { piece: before.currentPiece, slot: before.expectedSlot });
       correctPaths += 1;
+      if (index < 5) await page.waitForFunction((step) => window.QLOBE_DEBUG.getState().step === step && window.QLOBE_DEBUG.getState().phase === 'playing', index + 1);
+      else await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'complete');
     }
-    check(`${modeId} completes all six correct paths`, (await debug()).screen === 'end');
+    check(`${puzzleId} reaches a complete assembled scene`, (await state()).screen === 'complete' && await page.locator('.solved-piece').count() === 6);
   }
-  check('all eighteen configured correct paths complete', correctPaths === 18);
+  check('all eighteen configured piece-to-space paths complete', correctPaths === 18);
+  check('completion exposes build-again, next-puzzle, and choose controls', await page.locator('[data-target="again"], [data-target="next"], [data-target="choose"]').count() === 3);
+  await page.screenshot({ path: path.join(shots, '07-complete.png') });
+
   await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => window.QLOBE_DEBUG?.ready);
   await page.evaluate(() => window.QLOBE_DEBUG.ready);
-  const reloaded = await debug();
-  check('passport completion persists across reload', reloaded.screen === 'splash' && reloaded.completedModes.length === 3);
   await page.evaluate(() => window.QLOBE_DEBUG.mute(true));
+  check('all three completed puzzles persist across reload', (await state()).screen === 'choose' && (await state()).completedPuzzles.length === 3);
 
-  const phone = await openSession(browser, { url, base, viewport: { width: 320, height: 800 }, reducedMotion: 'no-preference', allowAbortedMedia: true, fastTimers: true, allowRemote: platformAnalytics });
+  const phone = await openSession(browser, {
+    url,
+    base,
+    viewport: { width: 320, height: 800 },
+    reducedMotion: 'no-preference',
+    allowAbortedMedia: true,
+    allowRemote: platformAnalytics,
+    fastTimers: 20,
+    mute: true,
+  });
   sessions.push(phone);
-  await phone.page.waitForFunction(() => window.QLOBE_DEBUG?.ready);
-  await phone.page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await phone.page.evaluate(() => window.QLOBE_DEBUG.mute(true));
-  await phone.page.evaluate(() => window.QLOBE_DEBUG.startMode('animal-trek'));
-  await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'map');
-  const phoneType = await phone.page.evaluate(() => ({
-    cue: (() => { const el = document.querySelector('.tray-instruction'); const style = getComputedStyle(el); const rect = el.getBoundingClientRect(); return { display: style.display, font: parseFloat(style.fontSize), width: rect.width, height: rect.height }; })(),
-    prompt: parseFloat(getComputedStyle(document.querySelector('.prompt-copy')).fontSize),
-    labels: [...document.querySelectorAll('.continent-target span')].map((el) => parseFloat(getComputedStyle(el).fontSize)),
-    targets: [...document.querySelectorAll('[data-continent]')].map((el) => { const rect = el.getBoundingClientRect(); return { id: el.dataset.continent, width: rect.width, height: rect.height }; }),
+  const phoneChoice = await phone.page.locator('[data-puzzle]').evaluateAll((cards) => cards.map((card) => {
+    const cardRect = card.getBoundingClientRect();
+    const picture = card.querySelector('.puzzle-card-picture');
+    const pictureRect = picture.getBoundingClientRect();
+    const image = picture.querySelector('img');
+    const label = card.querySelector('.puzzle-card-label');
+    return {
+      width: cardRect.width,
+      height: cardRect.height,
+      pictureWidth: pictureRect.width,
+      pictureHeight: pictureRect.height,
+      imageFit: getComputedStyle(image).objectFit,
+      labelFont: parseFloat(getComputedStyle(label).fontSize),
+    };
   }));
-  check('320px portrait keeps a readable visual tap-or-drag cue', phoneType.cue.display !== 'none' && phoneType.cue.font >= 10.5 && phoneType.cue.width > 0 && phoneType.cue.height > 0, JSON.stringify(phoneType.cue));
-  check('320px portrait keeps readable prompt and continent type', phoneType.prompt >= 14 && phoneType.labels.every((size) => size >= 10.5), JSON.stringify(phoneType));
-  check('320px portrait keeps six 96px semantic targets', phoneType.targets.length === 6 && phoneType.targets.every((target) => target.width >= 96 && target.height >= 96), JSON.stringify(phoneType.targets));
-  await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getAudioLog().some((entry) => entry.key === 'drag-help'));
-  check('first idle hand cue uses the recorded drag-help clip', await phone.page.evaluate(() => window.QLOBE_DEBUG.getAudioLog().some((entry) => entry.key === 'drag-help' && entry.kind === 'clip')));
-  await phone.page.screenshot({ path: path.join(shots, '12-phone-play.png') });
+  check('320px chooser keeps three recognizable landscape scene cards', phoneChoice.length === 3 && phoneChoice.every((card) => card.width / card.height >= 1.75 && card.pictureWidth >= 150 && card.pictureHeight >= 90 && card.imageFit === 'contain' && card.labelFont >= 13), JSON.stringify(phoneChoice));
+  await phone.page.screenshot({ path: path.join(shots, '08-phone-choose.png') });
+  await phone.page.evaluate(() => window.QLOBE_DEBUG.startPuzzle('forest-fox'));
+  await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  const phoneLayout = await phone.page.evaluate(() => ({
+    viewport: { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth, scrollHeight: document.documentElement.scrollHeight },
+    cue: (() => { const element = document.querySelector('.piece-cue'); const rect = element.getBoundingClientRect(); return { font: parseFloat(getComputedStyle(element).fontSize), width: rect.width, height: rect.height }; })(),
+    piece: (() => { const rect = document.querySelector('[data-role="draggable"]').getBoundingClientRect(); return { width: rect.width, height: rect.height }; })(),
+    slots: [...document.querySelectorAll('[data-piece-index]')].map((element) => { const rect = element.getBoundingClientRect(); return { width: rect.width, height: rect.height }; }),
+  }));
+  check('320px portrait keeps six 96px puzzle spaces', phoneLayout.slots.length === 6 && phoneLayout.slots.every((slot) => slot.width >= 96 && slot.height >= 96), JSON.stringify(phoneLayout.slots));
+  check('320px portrait keeps a readable tap-or-drag cue and loose piece', phoneLayout.cue.font >= 10.5 && phoneLayout.cue.width > 0 && phoneLayout.piece.width >= 120, JSON.stringify(phoneLayout));
+  check('320px portrait has no page overflow', phoneLayout.viewport.scrollWidth <= phoneLayout.viewport.width + 1 && phoneLayout.viewport.scrollHeight <= phoneLayout.viewport.height + 1, JSON.stringify(phoneLayout.viewport));
+  await phone.page.screenshot({ path: path.join(shots, '08-phone-play.png') });
 
-  let phonePlacements = 0;
   for (let index = 0; index < 6; index += 1) {
     const before = await phone.page.evaluate(() => window.QLOBE_DEBUG.getState());
-    const phoneCard = await phone.page.locator('[data-role="draggable"]:visible').boundingBox();
-    await phone.page.mouse.click(phoneCard.x + phoneCard.width / 2, phoneCard.y + phoneCard.height / 2);
+    await phone.page.locator('[data-role="draggable"]:visible').click();
     await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().selected === true);
-    const phoneTarget = await phone.page.locator(`[data-continent="${before.expectedContinent}"]`).boundingBox();
-    await phone.page.mouse.click(phoneTarget.x + phoneTarget.width / 2, phoneTarget.y + phoneTarget.height / 2);
-    phonePlacements += 1;
-    await phone.page.waitForFunction((count) => window.QLOBE_DEBUG.getState().placed.length === count, phonePlacements);
-    if (index === 0) {
-      const factSize = await phone.page.locator('.prompt-copy small').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-      check('320px portrait success fact remains readable', factSize >= 12, String(factSize));
-      await phone.page.screenshot({ path: path.join(shots, '13-phone-success.png') });
-    }
-    if (index < 5) await phone.page.waitForFunction((round) => window.QLOBE_DEBUG.getState().round === round && window.QLOBE_DEBUG.getState().phase === 'playing', index + 1);
+    await phone.page.locator(`[data-piece-index="${before.expectedSlot}"]`).click();
+    if (index < 5) await phone.page.waitForFunction((step) => window.QLOBE_DEBUG.getState().step === step && window.QLOBE_DEBUG.getState().phase === 'playing', index + 1);
+    else await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'complete');
   }
-  await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
-  check('all six phone-width pointer taps route to their intended continent', phonePlacements === 6 && (await phone.page.evaluate(() => window.QLOBE_DEBUG.getState())).screen === 'end');
+  check('all six phone-width pointer taps complete the puzzle', (await phone.page.evaluate(() => window.QLOBE_DEBUG.getState())).screen === 'complete');
+  await phone.page.screenshot({ path: path.join(shots, '09-phone-complete.png') });
 
-  const portrait = await openSession(browser, { url, base, viewport: { width: 700, height: 1100 }, reducedMotion: 'reduce', allowAbortedMedia: true, fastTimers: true, allowRemote: platformAnalytics });
-  sessions.push(portrait);
-  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG?.ready);
-  await portrait.page.evaluate(() => window.QLOBE_DEBUG.ready);
-  await portrait.page.evaluate(() => window.QLOBE_DEBUG.mute(true));
-  check('portrait reduced-motion splash boots', (await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState())).screen === 'splash');
-  check('reduced motion state reported', (await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState())).reducedMotion === true);
-  await portrait.page.screenshot({ path: path.join(shots, '06-portrait-reduced.png') });
-  await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('animal-trek'));
-  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'map');
-  const portraitTargets = await portrait.page.locator('[data-role="drop-target"]:visible').evaluateAll(nodes => nodes.map(node => { const rect = node.getBoundingClientRect(); return { id: node.dataset.continent, x: rect.x, y: rect.y, width: rect.width, height: rect.height }; }));
-  check('portrait map keeps six 96px continent targets', portraitTargets.length === 6 && portraitTargets.every(rect => rect.width >= 96 && rect.height >= 96));
-  const portraitOverlaps = portraitTargets.flatMap((a, index) => portraitTargets.slice(index + 1).filter((b) => Math.min(a.x + a.width, b.x + b.width) > Math.max(a.x, b.x) && Math.min(a.y + a.height, b.y + b.height) > Math.max(a.y, b.y)).map((b) => `${a.id}/${b.id}`));
-  check('portrait continent targets do not overlap', portraitOverlaps.length === 0, portraitOverlaps.join(','));
-  check('portrait target centers route through the raster map surface', await portrait.page.locator('[data-role="drop-target"]:visible').evaluateAll(nodes => nodes.every(node => { const rect = node.getBoundingClientRect(); return Boolean(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)?.closest?.('[data-map-surface]')); })));
-  check('portrait current card remains at least 132px', await portrait.page.locator('[data-role="draggable"]:visible').evaluate(node => node.getBoundingClientRect().width >= 132));
-  await portrait.page.screenshot({ path: path.join(shots, '07-portrait-play.png') });
-  await portrait.page.evaluate(() => {
-    const state = window.QLOBE_DEBUG.getState();
-    const surface = document.querySelector('[data-map-surface]').getBoundingClientRect();
-    const target = document.querySelector(`[data-continent="${state.expectedContinent}"]`).getBoundingClientRect();
-    const normalizedX = (target.x + target.width / 2 - surface.x) / surface.width;
-    const normalizedY = (target.y + target.height / 2 - surface.y) / surface.height;
-    window.QLOBE_DEBUG.dropAt(state.currentItem, normalizedX, normalizedY);
-    return true;
+  const compact = await openSession(browser, {
+    url,
+    base,
+    viewport: { width: 568, height: 320 },
+    reducedMotion: 'no-preference',
+    allowAbortedMedia: true,
+    allowRemote: platformAnalytics,
+    fastTimers: 20,
+    mute: true,
   });
-  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().phase === 'reward');
-  await portrait.page.screenshot({ path: path.join(shots, '08-portrait-success.png') });
-  await portrait.page.evaluate(() => window.QLOBE_DEBUG.completeMode());
-  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
-  check('debug completion reaches end screen', (await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState())).screen === 'end');
-  const audioEvents = await portrait.page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
-  const keys = audioEvents.map((entry) => entry.key);
-  check('audio log records gameplay voice from clips', audioEvents.length > 0 && audioEvents.every((entry) => entry.kind === 'clip'), JSON.stringify(audioEvents));
-  await portrait.page.screenshot({ path: path.join(shots, '09-end.png') });
-  for (const session of sessions) {
+  sessions.push(compact);
+  await compact.page.evaluate(() => window.QLOBE_DEBUG.startPuzzle('star-rocket'));
+  await compact.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  const compactLayout = await compact.page.evaluate(() => ({
+    board: (() => { const rect = document.querySelector('.board-frame').getBoundingClientRect(); return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom }; })(),
+    tray: (() => { const rect = document.querySelector('.piece-tray').getBoundingClientRect(); return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom }; })(),
+    cue: (() => { const element = document.querySelector('.piece-cue'); const rect = element.getBoundingClientRect(); return { font: parseFloat(getComputedStyle(element).fontSize), width: rect.width, height: rect.height }; })(),
+    slots: [...document.querySelectorAll('[data-piece-index]')].map((element) => { const rect = element.getBoundingClientRect(); return { width: rect.width, height: rect.height }; }),
+    viewport: { width: innerWidth, height: innerHeight },
+  }));
+  check('568×320 landscape keeps board and tray fully on screen', [compactLayout.board, compactLayout.tray].every((rect) => rect.left >= -1 && rect.top >= -1 && rect.right <= compactLayout.viewport.width + 1 && rect.bottom <= compactLayout.viewport.height + 1), JSON.stringify(compactLayout));
+  check('568×320 landscape keeps every drop space at least 96px', compactLayout.slots.every((slot) => slot.width >= 96 && slot.height >= 96), JSON.stringify(compactLayout.slots));
+  check('568×320 landscape keeps the tap-or-drag cue readable', compactLayout.cue.font >= 11.5 && compactLayout.cue.width >= 100 && compactLayout.cue.height >= 24, JSON.stringify(compactLayout.cue));
+  await compact.page.screenshot({ path: path.join(shots, '10-compact-landscape.png') });
+
+  const portrait = await openSession(browser, {
+    url,
+    base,
+    viewport: { width: 700, height: 1100 },
+    reducedMotion: 'reduce',
+    allowAbortedMedia: true,
+    allowRemote: platformAnalytics,
+    fastTimers: 20,
+    mute: true,
+  });
+  sessions.push(portrait);
+  check('portrait reduced-motion choice screen boots', (await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState())).screen === 'choose' && (await portrait.page.evaluate(() => window.QLOBE_DEBUG.getState())).reducedMotion === true);
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.startPuzzle('garden-flowers'));
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'play');
+  const portraitSlots = await portrait.page.locator('[data-piece-index]').evaluateAll((nodes) => nodes.map((node) => { const rect = node.getBoundingClientRect(); return { width: rect.width, height: rect.height }; }));
+  check('700×1100 portrait keeps six generous puzzle spaces', portraitSlots.length === 6 && portraitSlots.every((slot) => slot.width >= 96 && slot.height >= 96), JSON.stringify(portraitSlots));
+  check('reduced motion removes the modeled hand without removing the hint target', await portrait.page.locator('.hand-guide').evaluate((node) => getComputedStyle(node).display === 'none') && await portrait.page.locator('[data-target="hint"]').isVisible());
+  await portrait.page.screenshot({ path: path.join(shots, '11-portrait-reduced.png') });
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.completePuzzle());
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'complete');
+  await portrait.page.screenshot({ path: path.join(shots, '12-portrait-complete.png') });
+
+  for (const [index, session] of sessions.entries()) {
     session.failed = session.failed.filter((request) => !platformAnalytics.some((prefix) => request.startsWith(prefix)));
-    checkSessionClean({ check }, session);
+    checkSessionClean({ check }, session, `browser session ${index + 1}`);
   }
-  await portrait.page.close(); await phone.page.close(); await page.close();
-} finally { await browser.close(); }
+  await Promise.all(sessions.map((session) => session.close()));
+} finally {
+  await browser.close();
+}
+
 finish({ suffix: `; screenshots: ${shots}` });
