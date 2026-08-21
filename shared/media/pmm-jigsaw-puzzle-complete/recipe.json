@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-jigsaw-puzzle-complete",
+  "kind": "voice",
+  "asset": "pmm-jigsaw-puzzle-complete.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Puzzle complete!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Puzzle complete!"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Puzzle complete!",
+      "heard": "puzzle complete",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}

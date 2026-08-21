@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pmm-jigsaw-puzzle-rocket",
+  "kind": "voice",
+  "asset": "pmm-jigsaw-puzzle-rocket.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Star Rocket. Let\u2019s fit six space pieces together.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Star Rocket. Let\u2019s fit six space pieces together."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Star Rocket. Let\u2019s fit six space pieces together.",
+      "heard": "Star Rocket! Let's fit six space pieces together.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-20"
+}
