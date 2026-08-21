@@ -6,42 +6,41 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
-  <title>Table Setting Mission 🍽️ — Setting a Proper Table</title>
-  <meta name="description" content="Place food, drinks, and cutlery into their proper spots on the table, learning where each piece belongs. A practical-life sorting game for ages 5–6." />
+  <title>Little Helper: Set the Table</title>
+  <meta name="description" content="Help Pip prepare four places for breakfast, a picnic, or dinner." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Table Setting Mission" />
-  <meta property="og:title" content="Table Setting Mission 🍽️ — Setting a Proper Table" />
-  <meta property="og:description" content="Place food, drinks, and cutlery into their proper spots on the table, learning where each piece belongs. A practical-life sorting game for ages 5–6." />
+  <meta property="og:site_name" content="Little Helper: Set the Table" />
+  <meta property="og:title" content="Little Helper: Set the Table" />
+  <meta property="og:description" content="Help Pip prepare four places for breakfast, a picnic, or dinner." />
   <meta property="og:url" content="https://qlo.be/games/table-setting-mission/" />
   <meta property="og:image" content="https://qlo.be/games/table-setting-mission/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Table Setting Mission title screen with a single Set the Table button and a plate, fork, and knife icon on a dotted background." />
+  <meta property="og:image:alt" content="Little Helper: Set the Table title screen in a warm kawaii kitchen." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Table Setting Mission 🍽️ — Setting a Proper Table" />
-  <meta name="twitter:description" content="Place food, drinks, and cutlery into their proper spots on the table, learning where each piece belongs. A practical-life sorting game for ages 5–6." />
+  <meta name="twitter:title" content="Little Helper: Set the Table" />
+  <meta name="twitter:description" content="Help Pip prepare four places for breakfast, a picnic, or dinner." />
   <meta name="twitter:image" content="https://qlo.be/games/table-setting-mission/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sort-into-bins.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" data-game="table-setting-mission">
+    <section data-qk-screen="splash" aria-label="Choose a meal"></section>
+    <section data-qk-screen="play" aria-label="Set the table" hidden></section>
+    <section data-qk-screen="end" aria-label="Table ready" hidden></section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+[
+  {
+    "file": "kitchen-source.png",
+    "prompt": "Warm kawaii kitchen backdrop with butter-yellow paneled walls, cozy side shelves, gingham lower surface, tactile food-toy and printed-cardboard materials, and a large open center; no text or loose table-setting objects.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "opaque background; retained source"
+  },
+  {
+    "file": "tabletop-source.png",
+    "prompt": "Kawaii overhead tabletop play backdrop with a yellow gingham field, blue scalloped top trim, a large blank warm-cream stitched center, and sparse fruit-and-star appliques around the edges; tactile printed-cardboard texture, no text or loose objects.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "opaque background; retained source"
+  },
+  {
+    "file": "title-alpha.png",
+    "prompt": "Exact text ‘Set the Table’ in chunky puffy stitched kawaii lettering: blueberry blue, mint green, tomato red, cream edging, a blue gingham bow, and small heart accents; clean isolated silhouette and no extra text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "chroma-key -> remove_chroma_key.py -> cutout_finalize.py -> cwebp q88 alpha_q100"
+  },
+  {
+    "file": "pip-alpha.png",
+    "prompt": "Cheerful Pip helper mascot: a cream-and-blue kawaii teacup with a red bow tie, rosy cheeks, blue shoes, and one waving arm; tactile food-toy/cardboard illustration, isolated pose, no text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "chroma-key -> remove_chroma_key.py -> cutout_finalize.py -> cwebp q88 alpha_q100"
+  },
+  {
+    "file": "maya-thumbs-up-alpha.png",
+    "prompt": "Maya gives a warm thumbs-up while preserving the canonical shared portrait’s identity, face, hair, yellow bow, blue shirt, and tactile kawaii proportions; isolated full pose with no text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2; derivative of shared/characters/maya/portrait.png",
+    "processing": "chroma-key -> remove_chroma_key.py -> cutout_finalize.py -> cwebp q88 alpha_q100"
+  },
+  {
+    "file": "mode-cards",
+    "prompt": "Three distinct breakfast, picnic, and dinner mode-card illustrations with coordinated cute place settings, scalloped textiles, chunky tableware, and tactile kawaii food-toy materials; no baked labels or extra text.",
+    "model": "gpt-image-2",
+    "source": "mode-breakfast-source.png; mode-picnic-source.png; mode-dinner-source.png",
+    "processing": "opaque source cards retained; encoded to WebP q88"
+  },
+  {
+    "file": "banner-guide-tray-placemat-ui-kit",
+    "prompt": "Cohesive scalloped banner, square guide card, long serving tray, and woven placemat kit for a preschool table-setting game; cream, mint, cocoa outline, blue stitches, tactile kawaii food-toy/cardboard materials, no text.",
+    "model": "gpt-image-2",
+    "source": "ui-kit-chroma.png",
+    "processing": "chroma-key -> object-specific crops -> remove_chroma_key.py -> cutout_finalize.py -> cwebp q88 alpha_q100; guide-card recropped after screenshot QC"
+  },
+  {
+    "file": "items-breakfast-sheet.png",
+    "prompt": "Five coordinated breakfast table-setting sprites—blue plate, smiling toast, cream-and-blue cup, blue-handled spoon, and red-handled fork—chunky kawaii food toys isolated on a flat chroma sheet, no text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "sheet retained; chroma-key cutout workflow -> cwebp q88 alpha_q100"
+  },
+  {
+    "file": "items-picnic-sheet.png",
+    "prompt": "Six coordinated picnic sprites—yellow plate, triangular sandwich, red apple, mint tumbler, red checked napkin, and green-handled fork—kawaii cardboard food toys isolated on a flat chroma sheet, no text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "sheet retained; picnic plate and tumbler recrops documented; chroma-key cutout workflow -> cwebp q88 alpha_q100"
+  },
+  {
+    "file": "items-dinner-sheet.png",
+    "prompt": "Eight coordinated dinner sprites—tomato-red dinner plate, blue goblet cup, blue-handled fork, child-safe knife and spoon, smiling carrot, smiling roll, and bowl of peas—kawaii food toys isolated on a flat chroma sheet, no text.",
+    "model": "gpt-image-2",
+    "source": "assets/source/gpt-image-2",
+    "processing": "sheet retained; all dinner item recrops documented; chroma-key cutout workflow -> cwebp q88 alpha_q100"
+  }
+]

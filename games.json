@@ -1253,24 +1253,34 @@
     },
     {
       "id": "table-setting-mission",
-      "title": "Table Setting Mission",
+      "title": "Little Helper: Set the Table",
       "category": "practical-life",
       "path": "games/table-setting-mission/",
       "icon": "assets/hub/tiles/table-setting-mission.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#f4a83d",
       "modes": [
         {
-          "id": "places",
-          "title": "Set the Table",
-          "skill": "table-setting order and spatial placement vocabulary"
+          "id": "breakfast",
+          "title": "Breakfast Basics",
+          "skill": "object-to-silhouette matching"
+        },
+        {
+          "id": "picnic",
+          "title": "Picnic Picture",
+          "skill": "copying a pictured place-setting pattern"
+        },
+        {
+          "id": "dinner",
+          "title": "Dinner for Four",
+          "skill": "left/right/center spatial recall"
         }
       ],
-      "summary": "Set the places using a visual placemat card."
+      "summary": "Help Pip prepare four places for breakfast, a picnic, or dinner."
     },
     {
       "id": "snack-chef",
