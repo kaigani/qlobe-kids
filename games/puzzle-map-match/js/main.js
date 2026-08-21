@@ -1,7 +1,7 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voice from '../../../shared/js/voice-clips.js';
-import * as music from '../../../shared/js/music.js';
+import * as bgm from '../../../shared/js/bgm.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
@@ -14,6 +14,12 @@ const mount = document.getElementById('game');
 const timers = createTimers();
 const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const VALID_PUZZLE_IDS = new Set(config.puzzles.map((puzzle) => puzzle.id));
+const CELEBRATION_PHRASE_KEYS = [
+  'celebrate-01', 'celebrate-02', 'celebrate-03', 'celebrate-04',
+  'celebrate-05', 'celebrate-06', 'celebrate-07', 'celebrate-08',
+  'celebrate-09', 'celebrate-10', 'celebrate-11', 'celebrate-12',
+];
+const FINAL_CELEBRATION_KEY = 'celebrate-complete';
 
 let lineTable = {};
 let activeRuntime = null;
@@ -21,13 +27,16 @@ let drag = null;
 let flowToken = 0;
 let hintTimer = null;
 let hintHideTimer = null;
+let worldFactTimer = null;
 let interactionDisposers = [];
 let welcomeSpoken = false;
 let tapHelpSpoken = false;
 let dragHelpSpoken = false;
 let audioActivated = false;
-let musicStarted = false;
 let voiceDuckToken = 0;
+let celebrationQueue = Promise.resolve();
+let celebrationGeneration = 0;
+let celebrationActive = false;
 
 const artFailures = [];
 const completedPuzzles = loadCompletedPuzzles();
@@ -38,6 +47,7 @@ const state = {
   placed: [],
   step: 0,
   selected: false,
+  selectedPiece: null,
   busy: true,
   muted: false,
   reducedMotion: reducedQuery.matches,
@@ -45,9 +55,11 @@ const state = {
   hintVisible: false,
   manifestMatches: false,
   manifestIssues: [],
+  factIndex: 0,
+  loosePositions: {},
 };
 
-const musicReady = music.init(config.music.manifest);
+bgm.preload(config.music.themes[config.continents[0]?.id]);
 const ready = boot().catch((error) => {
   console.error(error);
   renderFatal(error);
@@ -55,11 +67,8 @@ const ready = boot().catch((error) => {
 });
 const disposeKiosk = installKioskGuards();
 const disposeUnlock = installUnlockOnGesture({
-  extra: [music.unlock],
-  onFirst: () => {
-    audioActivated = true;
-    startMusic();
-  },
+  extra: [bgm.unlock],
+  onFirst: () => { audioActivated = true; },
 });
 
 const onReducedMotion = (event) => {
@@ -70,6 +79,7 @@ reducedQuery.addEventListener?.('change', onReducedMotion);
 const cancelDragForLayout = () => {
   drag?.cancel();
   stopHint();
+  if (state.screen === 'play') requestAnimationFrame(() => paintLoosePieces());
 };
 window.addEventListener('resize', cancelDragForLayout);
 window.addEventListener('orientationchange', cancelDragForLayout);
@@ -86,7 +96,6 @@ async function boot() {
   await Promise.all([
     voice.init(config.audio.manifest, config.audio.lines, lineTable),
     preloadImages(artUrls),
-    musicReady,
   ]);
   await auditArt(artUrls);
   renderChoose();
@@ -106,26 +115,56 @@ function auditArt(urls) {
   })));
 }
 
-function startMusic() {
-  if (musicStarted) return;
-  musicStarted = true;
-  Promise.resolve(musicReady).then(() => {
-    try {
-      music.playSong(config.music.song, config.music.band);
-      music.duck(0.22, 80);
-      music.setMuted(state.muted);
-    } catch { /* music is optional when WebAudio is unavailable */ }
+function playContinentTheme(continentId) {
+  const url = continentId ? config.music.themes[continentId] : null;
+  try {
+    if (url) {
+      bgm.play(url, { key: continentId });
+      bgm.duck(config.music.restingDuck, 80);
+      bgm.setMuted(state.muted);
+    } else {
+      bgm.stop();
+    }
+  } catch { /* music is optional when playback is unavailable */ }
+}
+
+function speakNow(key, fallback = lineTable[key]) {
+  if (!key) return Promise.resolve();
+  state.lastVoiceKey = key;
+  const mine = ++voiceDuckToken;
+  if (audioActivated && !state.muted) bgm.duck(config.music.speakingDuck, 90);
+  return Promise.resolve(voice.say(key, fallback || '')).finally(() => {
+    if (mine === voiceDuckToken && audioActivated && !state.muted) bgm.duck(config.music.restingDuck, 300);
   });
 }
 
 function speak(key, fallback = lineTable[key]) {
-  if (!key) return Promise.resolve();
-  state.lastVoiceKey = key;
-  const mine = ++voiceDuckToken;
-  if (audioActivated && !state.muted) music.duck(0.055, 90);
-  return Promise.resolve(voice.say(key, fallback || '')).finally(() => {
-    if (mine === voiceDuckToken && audioActivated && !state.muted) music.duck(0.22, 300);
+  if (celebrationActive) return Promise.resolve();
+  return speakNow(key, fallback);
+}
+
+function cancelCelebrationVoice() {
+  celebrationGeneration += 1;
+  celebrationQueue = Promise.resolve();
+  celebrationActive = false;
+}
+
+function queueCelebration(key) {
+  const generation = celebrationGeneration;
+  celebrationQueue = celebrationQueue.catch(() => {}).then(async () => {
+    if (generation !== celebrationGeneration) return;
+    celebrationActive = true;
+    try {
+      await speakNow(key);
+    } finally {
+      if (generation === celebrationGeneration) celebrationActive = false;
+    }
   });
+  return celebrationQueue;
+}
+
+function randomCelebrationKey() {
+  return CELEBRATION_PHRASE_KEYS[Math.floor(Math.random() * CELEBRATION_PHRASE_KEYS.length)];
 }
 
 async function speakSequence(keys, token = flowToken) {
@@ -171,7 +210,7 @@ function wireTap(element, action, { quiet = false } = {}) {
   register(onTap(element, action, {
     feedback: () => {
       voice.unlock();
-      music.unlock();
+      bgm.unlock();
       sfx.unlock();
       if (!quiet && !state.muted) sfx.tick();
     },
@@ -187,8 +226,12 @@ function resetInteractions({ stopVoice = true } = {}) {
   timers.clearAll();
   hintTimer = null;
   hintHideTimer = null;
+  worldFactTimer = null;
   state.hintVisible = false;
-  if (stopVoice) voice.stop();
+  if (stopVoice) {
+    cancelCelebrationVoice();
+    voice.stop();
+  }
   document.querySelectorAll('[data-qk-drag-ghost], .piece-drag-ghost').forEach((node) => node.remove());
 }
 
@@ -200,13 +243,37 @@ function puzzleById(id) {
   return config.puzzles.find((puzzle) => puzzle.id === id) || null;
 }
 
-function currentPieceIndex() {
-  return state.puzzle?.order?.[state.step] ?? null;
+function continentById(id) {
+  return config.continents.find((continent) => continent.id === id) || null;
 }
 
-function currentPiece() {
-  const index = currentPieceIndex();
-  return index == null ? null : activeRuntime?.cut?.pieces?.[index] || null;
+function puzzlesForContinent(id) {
+  return config.puzzles.filter((puzzle) => puzzle.continent === id);
+}
+
+function selectedPieceIndex() {
+  const index = state.selectedPiece;
+  return Number.isInteger(index) && !state.placed.includes(index) ? index : null;
+}
+
+function hintPieceIndex() {
+  const selected = selectedPieceIndex();
+  if (selected != null) return selected;
+  return activeRuntime?.cut?.pieces?.find((piece) => !state.placed.includes(piece.index))?.index ?? null;
+}
+
+function pieceByIndex(index) {
+  const pieceIndex = Number(index);
+  return Number.isInteger(pieceIndex) ? activeRuntime?.cut?.pieces?.[pieceIndex] || null : null;
+}
+
+function syncPieceSelection() {
+  const selected = selectedPieceIndex();
+  mount.querySelectorAll('.loose-piece').forEach((button) => {
+    const isSelected = selected != null && Number(button.dataset.pieceIndex) === selected;
+    button.classList.toggle('is-selected', isSelected);
+    button.setAttribute('aria-pressed', String(isSelected));
+  });
 }
 
 function announce(text) {
@@ -218,7 +285,7 @@ function hudButton(kind, asset, label) {
   return `<button type="button" class="hud-control hud-${kind}" data-target="${kind}" data-role="navigation" aria-label="${escapeHtml(label)}">${img(asset, '')}</button>`;
 }
 
-function renderChoose({ announceChoice = false } = {}) {
+function renderChoose({ continentId = null, announceChoice = false } = {}) {
   ++flowToken;
   resetInteractions();
   activeRuntime = null;
@@ -229,39 +296,70 @@ function renderChoose({ announceChoice = false } = {}) {
     placed: [],
     step: 0,
     selected: false,
+    selectedPiece: null,
     busy: false,
     hintVisible: false,
     lastVoiceKey: 'choose',
     manifestMatches: false,
     manifestIssues: [],
+    factIndex: 0,
+    loosePositions: {},
   });
 
-  const cards = config.puzzles.map((puzzle) => {
-    const complete = completedPuzzles.has(puzzle.id);
-    return `
-      <button type="button" class="puzzle-card${complete ? ' is-complete' : ''}" data-puzzle="${puzzle.id}" data-target="puzzle-${puzzle.id}" data-role="choice" aria-label="${escapeHtml(puzzle.title)} puzzle${complete ? ', completed' : ''}">
-        <span class="puzzle-card-picture">${img(puzzle.source, `${puzzle.title} papercraft scene`)}</span>
-        <span class="puzzle-card-label">${escapeHtml(puzzle.shortTitle)}</span>
-        ${complete ? '<span class="puzzle-card-check" aria-hidden="true">✓</span>' : ''}
-      </button>`;
-  }).join('');
+  const continent = continentById(continentId);
+  playContinentTheme(continent?.id ?? null);
+  const cards = continent
+    ? puzzlesForContinent(continent.id).map((puzzle) => {
+      const complete = completedPuzzles.has(puzzle.id);
+      return `
+        <button type="button" class="puzzle-card puzzle-card-scene${complete ? ' is-complete' : ''}" data-puzzle="${puzzle.id}" data-target="puzzle-${puzzle.id}" data-role="choice" aria-label="${escapeHtml(puzzle.title)} puzzle${complete ? ', completed' : ''}">
+          <span class="puzzle-card-picture">${img(puzzle.source, `${puzzle.title} papercraft scene`)}</span>
+          <span class="puzzle-card-label">${escapeHtml(puzzle.shortTitle)}</span>
+          <span class="puzzle-card-region">${escapeHtml(puzzle.region)} · ${escapeHtml(puzzle.difficulty)}</span>
+          <span class="puzzle-card-fact"><b>Animal:</b> ${escapeHtml(puzzle.facts.animal)}</span>
+          ${complete ? '<span class="puzzle-card-check" aria-hidden="true">✓</span>' : ''}
+        </button>`;
+    }).join('')
+    : config.continents.map((entry) => {
+      const continentPuzzles = puzzlesForContinent(entry.id);
+      const complete = continentPuzzles.filter((puzzle) => completedPuzzles.has(puzzle.id)).length;
+      const cover = continentPuzzles[0];
+      return `
+        <button type="button" class="puzzle-card continent-card${complete === continentPuzzles.length ? ' is-complete' : ''}" data-continent="${entry.id}" data-target="continent-${entry.id}" data-role="choice" aria-label="Explore ${escapeHtml(entry.name)}">
+          <span class="puzzle-card-picture">${img(cover.source, `${entry.name} papercraft scene`)}</span>
+          <span class="puzzle-card-label">${escapeHtml(entry.name)}</span>
+          <span class="continent-card-description">${escapeHtml(entry.description)}</span>
+          <span class="continent-card-progress">${complete} of ${continentPuzzles.length} explored</span>
+          ${complete === continentPuzzles.length ? '<span class="puzzle-card-check" aria-hidden="true">✓</span>' : ''}
+        </button>`;
+    }).join('');
+
+  const title = continent ? `Explore ${continent.name}` : 'Explore the world';
+  const cardLabel = continent ? `Three puzzles in ${continent.name}` : 'Seven continents to explore';
+  const levelNavigation = continent
+    ? hudButton('back', config.assets.back, 'Back to the Puzzle Explorer splash')
+    : `<a class="choose-home" href="../../" data-target="home" data-role="navigation" aria-label="Back to all QLOBE Kids games">${img(config.assets.home, '')}</a>`;
 
   mount.innerHTML = `
     <section class="screen choose-screen" data-screen="choose" style="background-image:url('${config.assets.playTexture}')">
-      <a class="choose-home" href="../../" data-target="home" data-role="navigation" aria-label="Back to all QLOBE Kids games">${img(config.assets.home, '')}</a>
+      ${levelNavigation}
       ${img(config.assets.title, config.title, 'choose-title')}
-      <div class="choose-banner" aria-label="Choose a puzzle">
+      <div class="choose-banner" aria-label="${escapeHtml(title)}">
         ${img(config.assets.promptRibbon, '', 'choose-banner-art')}
-        <h1>Choose a puzzle</h1>
+        <h1>${escapeHtml(title)}</h1>
       </div>
-      <div class="puzzle-grid" role="list" aria-label="Three six-piece puzzles">${cards}</div>
-      <p class="choose-note">Six chunky pieces in every picture</p>
+      <div class="puzzle-grid${continent ? ' scene-grid' : ' continent-grid'}" role="list" aria-label="${escapeHtml(cardLabel)}">${cards}</div>
+      <p class="choose-note">${continent ? 'Two six-piece scenes and one 12-piece challenge · Learn as you build' : 'Choose a continent, then discover animals, places, and living heritage'}</p>
       <div class="sr-live" data-live aria-live="polite"></div>
     </section>`;
 
   mount.querySelectorAll('[data-puzzle]').forEach((button) => {
     wireTap(button, () => { void startPuzzle(button.dataset.puzzle); });
   });
+  mount.querySelectorAll('[data-continent]').forEach((button) => {
+    wireTap(button, () => renderChoose({ continentId: button.dataset.continent, announceChoice: true }));
+  });
+  wireTap(mount.querySelector('[data-target="back"]'), () => renderChoose({ announceChoice: true }));
   if (announceChoice) void speak('choose');
 }
 
@@ -272,7 +370,7 @@ function renderLoading(puzzle) {
       ${img(config.assets.title, config.title, 'loading-title')}
       <div class="loading-card">
         ${img(puzzle.source, '', 'loading-picture')}
-        <p>Cutting six pieces…</p>
+        <p>Cutting ${puzzle.rows * puzzle.cols} pieces…</p>
       </div>
       <div class="sr-live" data-live aria-live="polite">Loading ${escapeHtml(puzzle.title)}.</div>
     </section>`;
@@ -345,10 +443,13 @@ async function startPuzzle(id) {
     placed: [],
     step: 0,
     selected: false,
+    selectedPiece: null,
     busy: true,
     hintVisible: false,
     manifestMatches: false,
     manifestIssues: [],
+    factIndex: 0,
+    loosePositions: {},
   });
   renderLoading(puzzle);
 
@@ -389,12 +490,55 @@ function boardTargetsHtml(cut) {
   }).join('');
 }
 
-function renderPlay({ snappedIndex = null } = {}) {
-  resetInteractions();
+function defaultScatterPosition(pieceIndex, totalPieces) {
+  const localIndex = pieceIndex % Math.ceil(totalPieces / 2);
+  const positions = totalPieces === 12
+    ? [
+      { left: 27, top: 17 },
+      { left: 74, top: 14 },
+      { left: 41, top: 45 },
+      { left: 84, top: 47 },
+      { left: 24, top: 78 },
+      { left: 66, top: 83 },
+    ]
+    : [
+      { left: 34, top: 24 },
+      { left: 72, top: 51 },
+      { left: 39, top: 79 },
+    ];
+  return positions[Math.min(localIndex, positions.length - 1)];
+}
+
+function scatterSideForPiece(pieceIndex, totalPieces) {
+  const saved = state.loosePositions?.[pieceIndex];
+  if (saved?.side === 'left' || saved?.side === 'right') return saved.side;
+  return pieceIndex < Math.ceil(totalPieces / 2) ? 'left' : 'right';
+}
+
+function loosePositionForPiece(pieceIndex, totalPieces, side, fallback = null) {
+  const saved = state.loosePositions?.[pieceIndex];
+  if (saved?.side === side && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+    return saved;
+  }
+  return fallback || defaultScatterPosition(pieceIndex, totalPieces);
+}
+
+function loosePiecesHtml(cut, side) {
+  return cut.pieces
+    .filter((piece) => !state.placed.includes(piece.index))
+    .filter((piece) => scatterSideForPiece(piece.index, cut.pieces.length) === side)
+    .map((piece) => `
+      <button type="button" class="loose-piece${state.selectedPiece === piece.index ? ' is-selected' : ''}" data-piece-index="${piece.index}" data-target="piece-${piece.index}" data-role="draggable" aria-pressed="${state.selectedPiece === piece.index}" aria-label="Puzzle piece ${piece.index + 1} of ${cut.pieces.length}. Drag it to its matching space, or tap to select it."></button>`)
+    .join('');
+}
+
+function renderPlay({ snappedIndex = null, preserveVoice = false } = {}) {
+  // Placement redraws replace the drag DOM, but an active celebration must
+  // keep speaking through that replacement and any following drag.
+  resetInteractions({ stopVoice: !preserveVoice });
   const runtime = activeRuntime;
   const puzzle = state.puzzle;
-  const piece = currentPiece();
-  if (!runtime || !puzzle || !piece) return;
+  if (!runtime || !puzzle) return;
 
   mount.innerHTML = `
     <section class="screen play-screen" data-screen="play" data-phase="${state.phase}" style="background-image:url('${config.assets.playTexture}')">
@@ -403,7 +547,7 @@ function renderPlay({ snappedIndex = null } = {}) {
       ${hudButton('hint', config.assets.hint, 'Show where this piece goes')}
       <header class="prompt-shell">
         ${img(config.assets.promptRibbon, '', 'prompt-ribbon-art')}
-        <div class="prompt-copy">Place the piece</div>
+        <div class="prompt-copy">${escapeHtml(continentById(puzzle.continent)?.name || 'World')} · Drag any piece</div>
       </header>
       <div class="piece-progress" aria-label="${state.placed.length} of ${runtime.cut.pieces.length} pieces placed"><strong>${state.placed.length}</strong> of ${runtime.cut.pieces.length}</div>
       <div class="jigsaw-stage">
@@ -415,10 +559,11 @@ function renderPlay({ snappedIndex = null } = {}) {
             <div class="board-slot-layer">${boardTargetsHtml(runtime.cut)}</div>
           </div>
         </div>
-        <div class="piece-tray" aria-label="Loose puzzle piece">
-          ${img(config.assets.tray, '', 'piece-tray-art')}
-          <button type="button" class="loose-piece${state.selected ? ' is-selected' : ''}" data-piece="${piece.index}" data-target="piece-${piece.index}" data-role="draggable" aria-pressed="${state.selected}" aria-label="Piece ${state.step + 1} of ${runtime.cut.pieces.length}. Tap to select, or drag it to its matching space."></button>
-          <p class="piece-cue">Tap, then tap its space — or drag</p>
+        <div class="piece-scatter piece-scatter-${runtime.cut.pieces.length} piece-scatter-left" aria-label="Loose puzzle pieces on the left">
+          ${loosePiecesHtml(runtime.cut, 'left')}
+        </div>
+        <div class="piece-scatter piece-scatter-${runtime.cut.pieces.length} piece-scatter-right" aria-label="Loose puzzle pieces on the right">
+          ${loosePiecesHtml(runtime.cut, 'right')}
         </div>
       </div>
       ${img(config.assets.handGuide, '', 'hand-guide')}
@@ -426,9 +571,40 @@ function renderPlay({ snappedIndex = null } = {}) {
     </section>`;
 
   paintBoard(snappedIndex);
-  paintLoosePiece();
+  paintLoosePieces();
   wirePlayInteractions();
+  scheduleWorldFact(state.factIndex === 0 ? 7000 : 9000);
   if (state.phase === 'playing') scheduleHint(config.timing.firstHintMs);
+}
+
+function worldFactSnippets(puzzle) {
+  return [
+    { key: `fact-${puzzle.id}-animal`, label: 'Animal fact', text: puzzle.facts.animal },
+    { key: `fact-${puzzle.id}-place`, label: 'Place fact', text: puzzle.facts.location },
+    { key: `fact-${puzzle.id}-heritage`, label: 'Heritage fact', text: puzzle.facts.heritage },
+  ];
+}
+
+function scheduleWorldFact(delay = 9000) {
+  if (worldFactTimer) timers.clear(worldFactTimer);
+  worldFactTimer = null;
+  if (state.screen !== 'play' || state.phase !== 'playing' || state.busy || !state.puzzle) return;
+  const snippets = worldFactSnippets(state.puzzle);
+  if (state.factIndex >= snippets.length) return;
+  worldFactTimer = timers.after(delay, async () => {
+    worldFactTimer = null;
+    if (state.screen !== 'play' || state.phase !== 'playing' || state.busy || !state.puzzle) return;
+    if (celebrationActive) {
+      scheduleWorldFact(2500);
+      return;
+    }
+    const snippet = worldFactSnippets(state.puzzle)[state.factIndex];
+    if (!snippet) return;
+    state.factIndex += 1;
+    announce(snippet.text);
+    await speak(snippet.key, `${snippet.label}. ${snippet.text}`);
+    scheduleWorldFact(9000);
+  });
 }
 
 function paintBoard(snappedIndex = null) {
@@ -459,9 +635,9 @@ function paintBoard(snappedIndex = null) {
   target.height = cut.height;
   target.className = 'target-guide-canvas';
   const targetContext = target.getContext('2d');
-  const piece = currentPiece();
-  if (piece && !state.placed.includes(piece.index)) {
-    const path = new Path2D(piece.path);
+  const hintPiece = state.phase === 'playing' ? pieceByIndex(hintPieceIndex()) : null;
+  if (hintPiece && !state.placed.includes(hintPiece.index)) {
+    const path = new Path2D(hintPiece.path);
     targetContext.fillStyle = 'rgba(255, 225, 89, 0.13)';
     targetContext.fill(path);
     targetContext.strokeStyle = 'rgba(255, 238, 112, 0.48)';
@@ -491,85 +667,152 @@ function copyCanvas(source, className = '') {
   return canvas;
 }
 
-function paintLoosePiece() {
-  const holder = mount.querySelector('[data-piece]');
-  const piece = currentPiece();
-  if (!holder || !piece) return;
-  holder.style.setProperty('--piece-ratio', `${piece.canvas.width} / ${piece.canvas.height}`);
-  holder.append(copyCanvas(piece.canvas, 'loose-piece-canvas'));
+function paintLoosePieces() {
+  const { cut } = activeRuntime || {};
+  const board = mount.querySelector('[data-board]');
+  const boardFrame = mount.querySelector('.board-frame');
+  const scatters = [...mount.querySelectorAll('.piece-scatter')];
+  if (!cut || !board || !boardFrame || scatters.length !== 2) return;
+
+  // Let the board keep its authored responsive size. Loose pieces use that
+  // board scale, even when their physical tab bounds overlap in the side areas.
+  boardFrame.style.removeProperty('width');
+  scatters.forEach((scatter) => scatter.style.removeProperty('height'));
+
+  const finalBoardWidth = board.clientWidth;
+  const finalBoardHeight = board.clientHeight;
+  if (!finalBoardWidth || !finalBoardHeight) return;
+  const scale = finalBoardWidth / cut.width;
+  const priorityIndex = hintPieceIndex();
+
+  mount.querySelectorAll('.loose-piece').forEach((holder) => {
+    const piece = pieceByIndex(holder.dataset.pieceIndex);
+    if (!piece) return;
+    const scatter = holder.closest('.piece-scatter');
+    const side = scatter?.classList.contains('piece-scatter-right') ? 'right' : 'left';
+    const position = loosePositionForPiece(piece.index, cut.pieces.length, side);
+    holder.style.position = 'absolute';
+    holder.style.left = `${position.left}%`;
+    holder.style.top = `${position.top}%`;
+    holder.style.width = `${piece.canvas.width * scale}px`;
+    holder.style.height = `${piece.canvas.height * (finalBoardHeight / cut.height)}px`;
+    holder.style.zIndex = String(piece.index === priorityIndex ? cut.pieces.length + 10 : cut.pieces.length - piece.index + 1);
+    holder.style.setProperty('--piece-ratio', `${piece.canvas.width} / ${piece.canvas.height}`);
+    holder.querySelectorAll('.loose-piece-canvas').forEach((canvas) => canvas.remove());
+    holder.append(copyCanvas(piece.canvas, 'loose-piece-canvas'));
+  });
 }
 
-function makeDragGhost() {
-  const piece = currentPiece();
-  const source = mount.querySelector('[data-piece]');
+function rememberLoosePosition(pieceIndex, x, y) {
+  const { cut } = activeRuntime || {};
+  const board = mount.querySelector('[data-board]');
+  if (!cut || !board || !Number.isFinite(x) || !Number.isFinite(y)) return false;
+  const boardRect = board.getBoundingClientRect();
+  if (x >= boardRect.left && x <= boardRect.right && y >= boardRect.top && y <= boardRect.bottom) return false;
+
+  const side = Math.abs(x - boardRect.left) <= Math.abs(x - boardRect.right) ? 'left' : 'right';
+  const scatter = mount.querySelector(`.piece-scatter-${side}`);
+  if (!scatter) return false;
+  const rect = scatter.getBoundingClientRect();
+  if (!rect.width || !rect.height) return false;
+  const left = Math.min(88, Math.max(12, ((x - rect.left) / rect.width) * 100));
+  const top = Math.min(88, Math.max(12, ((y - rect.top) / rect.height) * 100));
+  state.loosePositions[pieceIndex] = { side, left, top };
+  return true;
+}
+
+function makeDragGhost(pieceRecord) {
+  const piece = pieceByIndex(pieceRecord?.index);
+  const source = pieceRecord?.el;
   if (!piece || !source) return null;
   const rect = source.getBoundingClientRect();
+  const computed = getComputedStyle(source);
   const ghost = document.createElement('div');
   ghost.className = 'piece-drag-ghost';
-  ghost.style.width = `${rect.width}px`;
-  ghost.style.height = `${rect.height}px`;
+  ghost.style.width = `${parseFloat(computed.width) || rect.width}px`;
+  ghost.style.height = `${parseFloat(computed.height) || rect.height}px`;
   ghost.append(copyCanvas(piece.canvas, 'loose-piece-canvas'));
   return ghost;
 }
 
 function wirePlayInteractions() {
-  const piece = currentPiece();
-  const pieceButton = mount.querySelector('[data-piece]');
-  if (!piece || !pieceButton) return;
-
-  wireTap(mount.querySelector('[data-target="back"]'), () => renderChoose({ announceChoice: true }));
+  wireTap(mount.querySelector('[data-target="back"]'), () => renderChoose({ continentId: state.puzzle?.continent, announceChoice: true }));
   wireTap(mount.querySelector('[data-target="sound"]'), repeatCurrentVoice);
   wireTap(mount.querySelector('[data-target="hint"]'), () => showHint({ explicit: true }));
-  wireTap(pieceButton, selectCurrentPiece);
-  mount.querySelectorAll('[data-piece-index]').forEach((target) => {
+  const pieceButtons = [...mount.querySelectorAll('.loose-piece')];
+  pieceButtons.forEach((pieceButton) => {
+    const index = Number(pieceButton.dataset.pieceIndex);
+    wireTap(pieceButton, () => selectPiece(index));
+  });
+  mount.querySelectorAll('.piece-slot').forEach((target) => {
     wireTap(target, () => { void onSlotTap(Number(target.dataset.pieceIndex)); }, { quiet: true });
   });
 
-  const onPointerDown = (event) => drag?.begin(event, piece.index);
-  pieceButton.addEventListener('pointerdown', onPointerDown);
-  register(() => pieceButton.removeEventListener('pointerdown', onPointerDown));
+  pieceButtons.forEach((pieceButton) => {
+    const onPointerDown = (event) => drag?.begin(event, Number(pieceButton.dataset.pieceIndex));
+    pieceButton.addEventListener('pointerdown', onPointerDown);
+    register(() => pieceButton.removeEventListener('pointerdown', onPointerDown));
+  });
 
   drag = createDragToSlotDom({
-    getPiece: (index) => Number(index) === piece.index ? { el: pieceButton, index: piece.index } : null,
+    getPiece: (index) => {
+      const pieceIndex = Number(index);
+      const button = mount.querySelector(`.loose-piece[data-piece-index="${pieceIndex}"]`);
+      return button && !state.placed.includes(pieceIndex) ? { el: button, index: pieceIndex } : null;
+    },
     makeGhost: makeDragGhost,
     ghostHost: document.body,
     root: () => mount.querySelector('[data-board]'),
-    slotSelector: '[data-piece-index]',
+    slotSelector: '.piece-slot',
     slotPad: 10,
     ghostClass: 'piece-drag-ghost',
     preventDefaultOnPress: true,
     canStart: () => state.screen === 'play' && state.phase === 'playing' && !state.busy,
-    onGrab: () => {
+    onGrab: (pieceRecord) => {
+      pieceRecord.el.style.zIndex = '20';
       stopHint();
       return true;
     },
-    onLift: () => {
+    onLift: (pieceRecord) => {
       state.selected = true;
-      pieceButton.classList.add('is-selected');
-      pieceButton.setAttribute('aria-pressed', 'true');
+      state.selectedPiece = pieceRecord.index;
+      syncPieceSelection();
       if (!state.muted) sfx.whoosh();
     },
-    onDrop: async (_recordPiece, record) => {
-      const index = Number(record.slot?.dataset?.pieceIndex);
-      await attemptPlacement(Number.isInteger(index) ? index : null, 'drag');
+    onDrop: async (pieceRecord, record) => {
+      const targetIndex = Number(record.slot?.dataset?.pieceIndex);
+      if (!Number.isInteger(targetIndex)) {
+        const moved = rememberLoosePosition(pieceRecord.index, record.lastX, record.lastY);
+        state.selected = false;
+        state.selectedPiece = null;
+        if (moved) {
+          renderPlay({ preserveVoice: true });
+        } else {
+          syncPieceSelection();
+          scheduleHint(2400);
+        }
+        return;
+      }
+      await attemptPlacement(pieceRecord.index, Number.isInteger(targetIndex) ? targetIndex : null, 'drag');
     },
     onCancel: () => {
       state.selected = false;
-      pieceButton.classList.remove('is-selected');
-      pieceButton.setAttribute('aria-pressed', 'false');
+      state.selectedPiece = null;
+      syncPieceSelection();
       if (state.phase === 'playing') scheduleHint(config.timing.repeatHintMs);
     },
   });
 }
 
-function selectCurrentPiece() {
+function selectPiece(index) {
   if (state.busy || state.phase !== 'playing') return false;
+  const piece = pieceByIndex(index);
+  if (!piece || state.placed.includes(piece.index)) return false;
   stopHint();
   state.selected = true;
-  const button = mount.querySelector('[data-piece]');
-  button?.classList.add('is-selected');
-  button?.setAttribute('aria-pressed', 'true');
-  announce(`Piece ${state.step + 1} selected. Now choose its matching space.`);
+  state.selectedPiece = piece.index;
+  syncPieceSelection();
+  announce(`Puzzle piece ${piece.index + 1} selected. Now choose its matching space.`);
   if (!tapHelpSpoken) {
     tapHelpSpoken = true;
     void speak('tap-help');
@@ -579,35 +822,37 @@ function selectCurrentPiece() {
 
 async function onSlotTap(index) {
   if (state.busy || state.phase !== 'playing') return false;
-  if (!state.selected) {
-    selectCurrentPiece();
+  const selected = selectedPieceIndex();
+  if (selected == null) {
+    announce('Choose a puzzle piece first, then choose its matching space.');
     return false;
   }
-  return attemptPlacement(index, 'tap');
+  return attemptPlacement(selected, index, 'tap');
 }
 
-async function attemptPlacement(targetIndex, source = 'debug') {
-  const expected = currentPieceIndex();
-  if (expected == null || state.screen !== 'play' || state.phase !== 'playing' || state.busy) return false;
+async function attemptPlacement(pieceIndex, targetIndex, source = 'debug') {
+  const piece = pieceByIndex(pieceIndex);
+  if (!piece || state.placed.includes(piece.index) || state.screen !== 'play' || state.phase !== 'playing' || state.busy) return false;
   stopHint();
 
-  if (targetIndex !== expected) {
+  if (targetIndex !== piece.index) {
     state.busy = true;
     state.selected = source === 'tap';
-    const pieceButton = mount.querySelector('[data-piece]');
-    const target = Number.isInteger(targetIndex) ? mount.querySelector(`[data-piece-index="${targetIndex}"]`) : null;
+    state.selectedPiece = source === 'tap' ? piece.index : null;
+    syncPieceSelection();
+    const pieceButton = mount.querySelector(`.loose-piece[data-piece-index="${piece.index}"]`);
+    const target = Number.isInteger(targetIndex) ? mount.querySelector(`.piece-slot[data-piece-index="${targetIndex}"]`) : null;
     pieceButton?.classList.add('is-wrong');
     target?.classList.add('is-wrong');
     announce('That piece does not fit there. Try another spot.');
     if (!state.muted) sfx.unpop();
     void speak('nudge');
     timers.after(620, () => {
-      if (state.screen !== 'play' || currentPieceIndex() !== expected) return;
+      if (state.screen !== 'play' || !mount.querySelector(`.loose-piece[data-piece-index="${piece.index}"]`)) return;
       state.busy = false;
       pieceButton?.classList.remove('is-wrong');
       target?.classList.remove('is-wrong');
-      pieceButton?.classList.toggle('is-selected', state.selected);
-      pieceButton?.setAttribute('aria-pressed', String(state.selected));
+      syncPieceSelection();
       scheduleHint(2400);
     });
     return false;
@@ -617,34 +862,38 @@ async function attemptPlacement(targetIndex, source = 'debug') {
   state.busy = true;
   state.phase = 'snapping';
   state.selected = false;
-  state.placed.push(expected);
+  state.selectedPiece = null;
+  state.placed.push(piece.index);
+  state.step = state.placed.length;
   if (!state.muted) {
     sfx.pop();
     sfx.sparkle();
   }
-  renderPlay({ snappedIndex: expected });
-  announce(`It’s puzzle-tastic! ${state.placed.length} of ${activeRuntime.cut.pieces.length} pieces placed.`);
-  void speak('success');
+  renderPlay({ snappedIndex: piece.index, preserveVoice: true });
+  const celebrationKey = randomCelebrationKey();
+  const celebrationText = lineTable[celebrationKey] || 'Well done!';
+  announce(`${celebrationText} ${state.placed.length} of ${activeRuntime.cut.pieces.length} pieces placed.`);
+  void queueCelebration(celebrationKey);
 
-  const voiceHold = (voice.duration('success') || 0) * 1000 + 80;
-  timers.after(Math.max(config.timing.snapHoldMs, voiceHold), () => {
+  timers.after(config.timing.snapHoldMs, () => {
     if (token !== flowToken || state.screen !== 'play') return;
-    state.step += 1;
     state.busy = false;
-    if (state.step >= activeRuntime.cut.pieces.length) {
-      renderComplete({ announceCompletion: true });
+    if (state.placed.length >= activeRuntime.cut.pieces.length) {
+      renderComplete({ announceCompletion: true, preserveVoice: true });
       return;
     }
     state.phase = 'playing';
-    renderPlay();
+    renderPlay({ preserveVoice: true });
   });
   return true;
 }
 
 function repeatCurrentVoice() {
-  const key = state.screen === 'complete'
-    ? state.puzzle?.completeVoice
-    : state.screen === 'play' ? 'place-piece' : 'choose';
+  if (state.screen === 'complete') {
+    void queueCelebration(FINAL_CELEBRATION_KEY);
+    return true;
+  }
+  const key = state.screen === 'play' ? 'place-piece' : 'choose';
   if (!key) return false;
   void speak(key);
   return true;
@@ -662,8 +911,9 @@ function showHint({ explicit = false } = {}) {
   if (hintHideTimer) timers.clear(hintHideTimer);
   hintTimer = null;
   state.hintVisible = true;
-  const piece = mount.querySelector('[data-piece]');
-  const target = mount.querySelector(`[data-piece-index="${currentPieceIndex()}"]`);
+  const pieceIndex = hintPieceIndex();
+  const piece = mount.querySelector(`.loose-piece[data-piece-index="${pieceIndex}"]`);
+  const target = mount.querySelector(`.piece-slot[data-piece-index="${pieceIndex}"]`);
   const guide = mount.querySelector('.hand-guide');
   const targetCanvas = mount.querySelector('.target-guide-canvas');
   if (!piece || !target || !guide) return false;
@@ -711,23 +961,9 @@ function stopHint() {
   mount.querySelector('.target-guide-canvas')?.classList.remove('is-hint');
 }
 
-function paintSolvedBoard() {
-  const layer = mount.querySelector('[data-solved-board]');
-  if (!layer || !activeRuntime) return;
-  const { cut } = activeRuntime;
-  for (const piece of cut.pieces) {
-    const canvas = piece.canvas;
-    canvas.className = 'solved-piece';
-    canvas.style.left = `${(piece.x / cut.width) * 100}%`;
-    canvas.style.top = `${(piece.y / cut.height) * 100}%`;
-    canvas.style.width = `${(canvas.width / cut.width) * 100}%`;
-    layer.append(canvas);
-  }
-}
-
-function renderComplete({ announceCompletion = false } = {}) {
+function renderComplete({ announceCompletion = false, preserveVoice = false } = {}) {
   ++flowToken;
-  resetInteractions();
+  resetInteractions({ stopVoice: !preserveVoice });
   const puzzle = state.puzzle;
   if (!puzzle || !activeRuntime) return renderChoose();
   completedPuzzles.add(puzzle.id);
@@ -737,42 +973,41 @@ function renderComplete({ announceCompletion = false } = {}) {
     phase: 'complete',
     busy: false,
     selected: false,
+    selectedPiece: null,
     hintVisible: false,
-    lastVoiceKey: puzzle.completeVoice,
+    lastVoiceKey: FINAL_CELEBRATION_KEY,
   });
-  const allComplete = config.puzzles.every((entry) => completedPuzzles.has(entry.id));
+  const continent = continentById(puzzle.continent);
+  const continentPuzzles = puzzlesForContinent(puzzle.continent);
+  const allComplete = continentPuzzles.every((entry) => completedPuzzles.has(entry.id));
   const puzzleIndex = config.puzzles.findIndex((entry) => entry.id === puzzle.id);
-  const next = config.puzzles[(puzzleIndex + 1) % config.puzzles.length];
+  const continentIndex = continentPuzzles.findIndex((entry) => entry.id === puzzle.id);
+  const next = continentPuzzles[continentIndex + 1] || config.puzzles[(puzzleIndex + 1) % config.puzzles.length];
 
   mount.innerHTML = `
     <section class="screen complete-screen" data-screen="complete" style="background-image:url('${config.assets.playTexture}')">
-      <a class="choose-home" href="../../" data-target="home" data-role="navigation" aria-label="Back to all QLOBE Kids games">${img(config.assets.home, '')}</a>
+      ${hudButton('back', config.assets.back, 'Back to puzzle choices')}
       ${hudButton('sound', config.assets.sound, 'Hear the celebration again')}
       <div class="complete-banner">
         ${img(config.assets.promptRibbon, '', 'complete-banner-art')}
         <h1>Puzzle complete!</h1>
       </div>
-      <div class="complete-board" style="--board-ratio:${activeRuntime.cut.width} / ${activeRuntime.cut.height}" data-solved-board aria-label="Completed ${escapeHtml(puzzle.title)} puzzle"></div>
+      <div class="complete-board" style="--board-ratio:${activeRuntime.cut.width} / ${activeRuntime.cut.height}" data-solved-board aria-label="Completed ${escapeHtml(puzzle.title)} puzzle">${img(puzzle.source, `${puzzle.title} completed puzzle`, 'complete-image')}</div>
       <p class="complete-title">${escapeHtml(puzzle.title)}</p>
       <div class="complete-actions">
-        <button type="button" class="paper-action" data-target="again" data-role="choice" aria-label="Build ${escapeHtml(puzzle.title)} again">${img(config.assets.play, '')}<span>Build again</span></button>
         <button type="button" class="paper-action is-primary" data-target="next" data-role="choice" aria-label="Next puzzle, ${escapeHtml(next.title)}">${img(config.assets.play, '')}<span>Next puzzle</span></button>
-        <button type="button" class="paper-action" data-target="choose" data-role="navigation" aria-label="Choose a puzzle">${img(config.assets.back, '')}<span>Choose</span></button>
       </div>
-      ${allComplete ? '<p class="all-complete">All three puzzles are complete!</p>' : ''}
+      ${allComplete ? `<p class="all-complete">All three ${escapeHtml(continent?.name || '')} puzzles are complete!</p>` : ''}
       ${img(config.assets.confetti, '', 'confetti-layer')}
       <div class="sr-live" data-live aria-live="assertive"></div>
     </section>`;
 
-  paintSolvedBoard();
+  wireTap(mount.querySelector('[data-target="back"]'), () => renderChoose({ continentId: puzzle.continent, announceChoice: true }));
   wireTap(mount.querySelector('[data-target="sound"]'), repeatCurrentVoice);
-  wireTap(mount.querySelector('[data-target="again"]'), () => { void startPuzzle(puzzle.id); });
   wireTap(mount.querySelector('[data-target="next"]'), () => { void startPuzzle(next.id); });
-  wireTap(mount.querySelector('[data-target="choose"]'), () => renderChoose({ announceChoice: true }));
   announce(`Puzzle complete! The ${puzzle.title} picture is whole.`);
   if (announceCompletion) {
-    const token = flowToken;
-    void speakSequence(['puzzle-complete', puzzle.completeVoice, allComplete ? 'all-complete' : 'next-puzzle'], token);
+    void queueCelebration(FINAL_CELEBRATION_KEY);
   }
 }
 
@@ -797,7 +1032,7 @@ function setMuted(on = true) {
   state.muted = Boolean(on);
   sfx.setMuted(state.muted);
   voice.setMuted(state.muted);
-  music.setMuted(state.muted);
+  bgm.setMuted(state.muted);
   return state.muted;
 }
 
@@ -814,17 +1049,22 @@ function debugState() {
     screen: state.screen,
     phase: state.phase,
     puzzle: state.puzzle?.id || null,
+    continent: state.puzzle?.continent || null,
     round: state.step,
     step: state.step,
     totalPieces: activeRuntime?.cut?.pieces?.length || 0,
-    currentPiece: currentPieceIndex(),
-    expectedSlot: currentPieceIndex(),
+    currentPiece: selectedPieceIndex() ?? hintPieceIndex(),
+    hintPiece: hintPieceIndex(),
+    expectedSlot: null,
+    availablePieces: activeRuntime?.cut?.pieces?.filter((piece) => !state.placed.includes(piece.index)).map((piece) => piece.index) || [],
     placed: [...state.placed],
     selected: state.selected,
+    selectedPiece: selectedPieceIndex(),
     busy: state.busy,
     muted: state.muted,
     reducedMotion: state.reducedMotion,
     hintVisible: state.hintVisible,
+    factIndex: state.factIndex,
     activeDrag: Boolean(drag?.active),
     completedPuzzles: [...completedPuzzles],
     manifestMatches: state.manifestMatches,
@@ -838,22 +1078,24 @@ function debugState() {
     } : null,
     artFailures: artFailures.map((entry) => ({ ...entry })),
     timers: timers.size(),
-    music: music.stats(),
+    music: bgm.stats(),
   };
 }
 
-async function debugPlace(pieceIndex = currentPieceIndex(), slotIndex = currentPieceIndex()) {
+async function debugPlace(pieceIndex = hintPieceIndex(), slotIndex = pieceIndex) {
   await ready;
-  if (state.screen !== 'play' || Number(pieceIndex) !== currentPieceIndex()) return false;
+  const index = Number(pieceIndex);
+  if (state.screen !== 'play' || !pieceByIndex(index) || state.placed.includes(index)) return false;
   state.selected = true;
-  return attemptPlacement(Number(slotIndex), 'debug');
+  state.selectedPiece = index;
+  return attemptPlacement(index, Number(slotIndex), 'debug');
 }
 
 async function debugCompletePuzzle() {
   await ready;
   if (!state.puzzle || state.screen !== 'play' || !activeRuntime) return false;
   state.placed = activeRuntime.cut.pieces.map((piece) => piece.index);
-  state.step = activeRuntime.cut.pieces.length;
+  state.step = state.placed.length;
   renderComplete({ announceCompletion: false });
   return true;
 }
@@ -905,7 +1147,7 @@ installDebug({
   getState: debugState,
   getTargets: () => collectTargets(mount),
   tap: async (id) => { await ready; return tapTarget(id); },
-  winRound: async () => { await ready; return attemptPlacement(currentPieceIndex(), 'debug'); },
+  winRound: async () => { await ready; const index = hintPieceIndex(); return index == null ? false : attemptPlacement(index, index, 'debug'); },
   place: debugPlace,
   completeMode: debugCompletePuzzle,
   completePuzzle: debugCompletePuzzle,
@@ -928,5 +1170,5 @@ window.addEventListener('beforeunload', () => {
   reducedQuery.removeEventListener?.('change', onReducedMotion);
   window.removeEventListener('resize', cancelDragForLayout);
   window.removeEventListener('orientationchange', cancelDragForLayout);
-  music.stopSong?.();
+  bgm.stop({ fadeOutMs: 0 });
 });

@@ -6,23 +6,23 @@
   "icon": "🧩",
   "entry": "index.html",
   "age": { "min": 3, "max": 6 },
-  "status": "beta",
+  "status": "live",
   "accent": "#f18a2b",
-  "shareTitle": "Puzzle Explorer 🧩 — Six-Piece Papercraft Jigsaws",
-  "description": "Build a forest fox, star rocket, or flower garden from six real interlocking jigsaw pieces, with gentle spoken hints and satisfying exact-fit snaps.",
+  "shareTitle": "Puzzle Explorer 🧩 — A Papercraft World Tour",
+  "description": "Explore all seven continents through 21 papercraft animal, location, and cultural heritage puzzles, including a harder 12-piece challenge on every continent.",
   "learningGoals": [
     "Strengthen visual-spatial reasoning by relating each part to a whole picture",
     "Notice contours, colors, and neighboring image clues while finding a piece’s location",
     "Practice purposeful dragging, tap-to-place, keyboard choice, and fine-motor control"
   ],
-  "interactionModel": "assemble one guided jigsaw piece at a time by dragging it to its exact space, or tapping the piece and then its matching space",
+  "interactionModel": "choose a continent, then assemble any six-piece scene or twelve-piece challenge in any order by dragging pieces to their exact spaces, or tapping a piece and its matching space",
   "feedbackModel": "Correct pieces snap to the cutter’s exact reconstruction coordinates and remain on the board; misses return gently with no penalty, and the lightbulb models the matching path.",
   "uses": [
     "shared/js/puzzle-cutter.js",
     "shared/js/voice-clips.js",
     "shared/js/audio-unlock.js",
     "shared/js/sfx.js",
-    "shared/js/music.js",
+    "shared/js/bgm.js",
     "shared/js/tap.js",
     "shared/js/timers.js",
     "shared/js/preload.js",
@@ -30,12 +30,12 @@
     "shared/js/stage/drag-to-slot-dom.js"
   ],
   "modes": [
-    { "id": "forest-fox", "title": "Forest Fox", "skill": "assemble a woodland scene from six interlocking parts" },
-    { "id": "star-rocket", "title": "Star Rocket", "skill": "assemble a space scene from six interlocking parts" },
-    { "id": "garden-flowers", "title": "Garden Flowers", "skill": "assemble a garden scene from six interlocking parts" }
+    { "id": "world-tour", "title": "Seven-Continent World Tour", "skill": "explore 21 animal, location, and cultural heritage scenes" },
+    { "id": "six-piece", "title": "Six-Piece Explorations", "skill": "assemble the first two scenes in each continent" },
+    { "id": "twelve-piece", "title": "Twelve-Piece Challenges", "skill": "take on the harder final scene in each continent" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; GPT Image 2 papercraft puzzle scenes and hint control; Qwen3 TTS teacher voice; Whisper transcript QA; shared seeded Puzzle Cutter geometry. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "credits": "Kaigani; GPT Image 2 papercraft puzzle scenes and hint control; Qwen3 TTS teacher voice; local Samantha celebration dialogue; MiniMax Music 3 per-continent instrumental themes; Whisper transcript QA; shared seeded Puzzle Cutter geometry. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
   "conceptVideo": "01-game-concepts/puzzle-explorer/"
 }

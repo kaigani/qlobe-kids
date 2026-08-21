@@ -164,6 +164,17 @@ canvas {
   place-items: stretch;
 }
 
+.continent-grid {
+  width: min(96vw, 1180px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(7px, 1.4vw, 18px);
+}
+
+.scene-grid {
+  width: min(95vw, 1120px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .puzzle-card {
   position: relative;
   display: grid;
@@ -179,6 +190,14 @@ canvas {
   cursor: pointer;
   transform: rotate(var(--card-tilt, -1deg));
   transition: transform 150ms ease, filter 150ms ease;
+}
+
+.continent-card {
+  grid-template-rows: minmax(0, 1fr) auto auto auto;
+}
+
+.puzzle-card-scene {
+  grid-template-rows: minmax(0, 1fr) auto auto minmax(32px, auto);
 }
 
 .puzzle-card:nth-child(2) {
@@ -219,6 +238,52 @@ canvas {
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.puzzle-card-region,
+.continent-card-progress {
+  overflow: hidden;
+  color: #805331;
+  font-size: clamp(11px, 1.2vw, 16px);
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.puzzle-card-fact,
+.continent-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  padding: 4px 4px 3px;
+  color: #6e4a37;
+  font-size: clamp(10px, 1.05vw, 14px);
+  font-weight: 650;
+  line-height: 1.16;
+  text-align: center;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.continent-card-description {
+  -webkit-line-clamp: 3;
+}
+
+.choose-back {
+  position: absolute;
+  z-index: 8;
+  top: max(16px, env(safe-area-inset-top));
+  left: clamp(76px, 9vw, 112px);
+  padding: 9px 15px;
+  border: 3px solid #a06a3b;
+  border-radius: 999px;
+  background: var(--cream);
+  color: #6a422e;
+  font-size: clamp(13px, 1.4vw, 18px);
+  font-weight: 850;
+  box-shadow: 0 4px 0 #684126;
+  cursor: pointer;
 }
 
 .puzzle-card-check {
@@ -333,17 +398,20 @@ canvas {
 }
 
 .jigsaw-stage {
-  display: flex;
-  width: min(94vw, 1160px);
+  display: grid;
+  width: min(98vw, 1440px);
   height: min(78vh, 700px);
   padding-top: clamp(62px, 8vw, 102px);
+  grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr) minmax(180px, 1fr);
   align-items: center;
-  justify-content: center;
-  gap: clamp(12px, 3vw, 46px);
+  gap: clamp(8px, 1.8vw, 24px);
 }
 
 .board-frame {
-  width: min(66vw, 760px, calc((100vh - 160px) * 1.5));
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  width: min(100%, 760px, calc((100vh - 160px) * 1.5));
   padding: clamp(7px, 1vw, 13px);
   border: clamp(5px, 0.6vw, 9px) solid #9a653c;
   border-radius: clamp(18px, 2vw, 30px);
@@ -359,6 +427,16 @@ canvas {
   aspect-ratio: var(--board-ratio, 3 / 2);
   overflow: visible;
   background: var(--cream);
+}
+
+.complete-board {
+  overflow: hidden;
+}
+
+.complete-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .board-guide-layer,
@@ -441,32 +519,33 @@ canvas {
   animation: wrong-slot 180ms ease-in-out 3;
 }
 
-.piece-tray {
+.piece-scatter {
   position: relative;
-  display: grid;
-  width: clamp(190px, 23vw, 285px);
-  height: clamp(190px, 31vh, 260px);
+  display: block;
+  width: 100%;
+  height: min(62vh, 540px);
   min-width: 0;
-  place-items: center;
+  align-self: center;
+  overflow: visible;
 }
 
-.piece-tray-art {
-  position: absolute;
-  right: 0;
-  bottom: 8%;
-  left: 0;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 12px rgba(3, 28, 51, 0.32));
+.piece-scatter-left {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.piece-scatter-right {
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .loose-piece {
-  position: relative;
+  position: absolute;
   z-index: 2;
   display: grid;
-  width: clamp(138px, 18vw, 225px);
-  height: 76%;
+  width: 100px;
+  height: 100px;
+  min-height: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -474,6 +553,7 @@ canvas {
   place-items: center;
   filter: drop-shadow(0 9px 5px rgba(49, 31, 22, 0.35));
   touch-action: none;
+  transform: translate(-50%, -50%) translateX(var(--piece-shift, 0)) rotate(var(--piece-tilt, 0deg));
   transition: filter 140ms ease, transform 140ms ease;
 }
 
@@ -483,7 +563,7 @@ canvas {
 
 .loose-piece.is-selected {
   filter: drop-shadow(0 0 7px #fff57c) drop-shadow(0 10px 5px rgba(49, 31, 22, 0.35));
-  transform: translateY(-5px) scale(1.04);
+  transform: translate(-50%, calc(-50% - 5px)) translateX(var(--piece-shift, 0)) rotate(var(--piece-tilt, 0deg));
 }
 
 .loose-piece.is-wrong {
@@ -493,26 +573,15 @@ canvas {
 .loose-piece-canvas {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill;
 }
 
-.piece-cue {
-  position: absolute;
-  z-index: 2;
-  right: 5%;
-  bottom: 0;
-  left: 5%;
-  margin: 0;
-  padding: 4px 8px 5px;
-  border: 2px solid #9b653a;
-  border-radius: 999px;
-  background: rgba(255, 242, 213, 0.96);
-  color: #62412d;
-  font-size: clamp(11px, 1.25vw, 16px);
-  font-weight: 750;
-  line-height: 1.1;
-  text-align: center;
-}
+.piece-scatter .loose-piece[data-piece-index="0"] { --piece-shift: -5px; --piece-tilt: -5deg; }
+.piece-scatter .loose-piece[data-piece-index="1"] { --piece-shift: 5px; --piece-tilt: 3deg; }
+.piece-scatter .loose-piece[data-piece-index="2"] { --piece-shift: -3px; --piece-tilt: 6deg; }
+.piece-scatter .loose-piece[data-piece-index="3"] { --piece-shift: 4px; --piece-tilt: -4deg; }
+.piece-scatter .loose-piece[data-piece-index="4"] { --piece-shift: -6px; --piece-tilt: 4deg; }
+.piece-scatter .loose-piece[data-piece-index="5"] { --piece-shift: 3px; --piece-tilt: -6deg; }
 
 .piece-drag-ghost {
   position: fixed;
@@ -522,9 +591,10 @@ canvas {
   border: 0;
   background: transparent;
   place-items: center;
+  pointer-events: none;
   filter: drop-shadow(0 15px 8px rgba(24, 19, 18, 0.42));
   opacity: 0.98;
-  transform: translate(-50%, -50%) scale(1.06) rotate(2deg);
+  transform: translate(-50%, -50%) rotate(2deg);
   transform-origin: center;
 }
 
@@ -582,8 +652,8 @@ canvas {
 .complete-actions {
   z-index: 6;
   display: grid;
-  width: min(94vw, 700px);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(94vw, 280px);
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(6px, 1.2vw, 14px);
 }
 
@@ -699,8 +769,8 @@ canvas {
 }
 
 @keyframes piece-wrong {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(8px) rotate(2deg); }
+  0%, 100% { transform: translate(-50%, -50%) translateX(var(--piece-shift, 0)) rotate(var(--piece-tilt, 0deg)); }
+  50% { transform: translate(-50%, -50%) translateX(calc(var(--piece-shift, 0) + 8px)) rotate(calc(var(--piece-tilt, 0deg) + 2deg)); }
 }
 
 @keyframes wrong-slot {
@@ -756,6 +826,15 @@ canvas {
     gap: clamp(6px, 1.4vw, 15px);
   }
 
+  .continent-grid {
+    width: min(94vw, 860px);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .scene-grid {
+    width: min(91vw, 820px);
+  }
+
   .puzzle-card {
     padding: 5px;
     border-width: 4px;
@@ -766,6 +845,26 @@ canvas {
   .puzzle-card-label {
     padding: 5px 2px 2px;
     font-size: clamp(13px, 3.5vh, 20px);
+  }
+
+  .puzzle-card-region,
+  .continent-card-progress {
+    font-size: 10px;
+  }
+
+  .puzzle-card-fact,
+  .continent-card-description {
+    padding: 2px;
+    font-size: 9px;
+  }
+
+  .choose-back {
+    top: 8px;
+    left: 66px;
+    padding: 5px 9px;
+    border-width: 2px;
+    font-size: 11px;
+    box-shadow: 0 3px 0 #684126;
   }
 
   .choose-note {
@@ -805,30 +904,20 @@ canvas {
     width: min(96vw, 850px);
     height: 100%;
     padding-top: 68px;
+    grid-template-columns: minmax(100px, 1fr) minmax(0, 3fr) minmax(100px, 1fr);
     gap: clamp(8px, 2vw, 22px);
   }
 
   .board-frame {
-    width: min(67vw, 600px, calc((100vh - 96px) * 1.5));
+    width: min(100%, 600px, calc((100vh - 96px) * 1.5));
     padding: 6px;
     border-width: 5px;
     border-radius: 15px;
     box-shadow: 0 6px 0 #603d29, 0 10px 16px rgba(3, 27, 51, 0.35);
   }
 
-  .piece-tray {
-    width: min(23vw, 185px);
-    height: min(calc(100vh - 84px), 190px);
-    max-height: calc(100vh - 84px);
-  }
-
-  .loose-piece {
-    width: min(19vw, 155px);
-  }
-
-  .piece-cue {
-    bottom: 6%;
-    font-size: clamp(11.5px, 3.4vh, 13px);
+  .piece-scatter {
+    height: min(calc(100vh - 84px), 260px);
   }
 
   .complete-screen {
@@ -857,7 +946,7 @@ canvas {
   }
 
   .complete-actions {
-    width: min(73vw, 570px);
+    width: min(50vw, 300px);
   }
 
   .paper-action {
@@ -871,6 +960,7 @@ canvas {
   .paper-action img {
     width: 34px;
   }
+
 }
 
 /* Portrait tablet and phone */
@@ -890,6 +980,16 @@ canvas {
     gap: clamp(4px, 1.5vw, 13px);
   }
 
+  .continent-grid {
+    width: min(calc(100vw - 16px), 680px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scene-grid {
+    width: min(calc(100vw - 16px), 680px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .puzzle-card {
     padding: clamp(5px, 1vw, 10px);
     border-width: clamp(3px, 0.8vw, 6px);
@@ -901,36 +1001,54 @@ canvas {
     font-size: clamp(13px, 4vw, 25px);
   }
 
+  .puzzle-card-region,
+  .continent-card-progress {
+    font-size: clamp(9px, 1.8vw, 13px);
+  }
+
+  .puzzle-card-fact,
+  .continent-card-description {
+    font-size: clamp(9px, 1.55vw, 12px);
+  }
+
+  .choose-back {
+    top: max(10px, env(safe-area-inset-top));
+    left: 70px;
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
   .jigsaw-stage {
     width: 100%;
     height: 100%;
     padding-top: clamp(88px, 13vh, 126px);
-    flex-direction: column;
-    justify-content: flex-start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto minmax(150px, 22vh);
+    align-content: start;
     gap: clamp(8px, 1.8vh, 20px);
   }
 
   .board-frame {
+    grid-column: 1 / -1;
+    grid-row: 1;
     width: min(calc(100vw - 20px), 680px, calc((100vh - 300px) * 1.5));
     flex: 0 0 auto;
   }
 
-  .piece-tray {
-    width: min(calc(100vw - 48px), 330px);
+  .piece-scatter {
+    width: 100%;
     height: clamp(150px, 22vh, 210px);
-    max-height: min(25vh, 220px);
+    align-self: start;
   }
 
-  .loose-piece {
-    width: clamp(132px, 39vw, 210px);
-    max-height: 72%;
+  .piece-scatter-left {
+    grid-column: 1;
+    grid-row: 2;
   }
 
-  .piece-cue {
-    right: 5%;
-    bottom: 5%;
-    left: 5%;
-    font-size: clamp(10.5px, 2.5vw, 15px);
+  .piece-scatter-right {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .hud-hint {
@@ -946,7 +1064,7 @@ canvas {
   }
 
   .complete-actions {
-    width: min(calc(100vw - 16px), 660px);
+    width: min(calc(100vw - 32px), 320px);
   }
 
   .paper-action {
@@ -959,6 +1077,7 @@ canvas {
   .paper-action img {
     width: clamp(30px, 8vw, 50px);
   }
+
 }
 
 @media (max-width: 380px) {
@@ -991,6 +1110,14 @@ canvas {
     gap: 8px;
   }
 
+  .continent-grid {
+    width: min(calc(100vw - 20px), 330px);
+    height: min(58vh, 470px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
   .puzzle-card {
     grid-template-rows: minmax(0, 1fr);
     grid-template-columns: minmax(0, 1fr) 76px;
@@ -1014,6 +1141,30 @@ canvas {
     align-self: center;
     padding: 4px;
     font-size: 13px;
+  }
+
+  .puzzle-card-region,
+  .continent-card-description,
+  .continent-card-progress {
+    display: none;
+  }
+
+  .continent-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .choose-back {
+    left: 66px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .puzzle-card-fact {
+    display: -webkit-box;
+    padding: 2px;
+    font-size: 8px;
+    -webkit-line-clamp: 2;
   }
 
   .choose-note {
@@ -1050,13 +1201,8 @@ canvas {
     border-radius: 14px;
   }
 
-  .piece-tray {
-    width: min(calc(100vw - 44px), 285px);
-    max-height: 150px;
-  }
-
-  .loose-piece {
-    width: 132px;
+  .piece-scatter {
+    height: min(150px, 21vh);
   }
 
   .complete-banner {
@@ -1069,6 +1215,7 @@ canvas {
   }
 
   .complete-actions {
+    width: min(calc(100vw - 32px), 280px);
     gap: 4px;
   }
 

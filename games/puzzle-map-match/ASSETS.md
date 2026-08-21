@@ -1,72 +1,60 @@
 # Puzzle Explorer asset and provenance record
 
-All runtime assets are local. Production makes no model or LAN calls. The authoritative runtime inventory is `config.json`; the retired geography plates, cards, map, tools, and 56 geography-only narration records were removed from the current tree and remain recoverable from the previous commit.
+All runtime assets are local. The authoritative runtime inventory is `config.json`; every world-tour scene has a local source image and a durable seeded cut manifest.
 
 ## GPT Image 2 puzzle scenes
 
-The three full-bleed sources were generated in built-in `imagegen` mode, one call per asset, using the concept mockups only as material/composition references. Each output is 1536×1024 (3:2), contains no UI/text/cut lines, and distributes meaningful visual clues across all six future grid regions.
+The 21 full-bleed sources were generated in built-in imagegen mode, one call per asset. Each output is 1536×1024 (3:2), uses the established layered felt/cardstock papercraft style, contains no UI or text, and distributes clear visual clues across the future cut regions.
 
-| Source | Production role | Prompt summary |
-|---|---|---|
-| `assets/source/puzzles/forest-fox-gpt-image-2.png` | Forest Fox source and choice-card art | Friendly central red fox in a woodland clearing; mushrooms/ferns lower left, stream/stepping stones lower right, trees/mountains/sky; layered cardstock/felt, visible fibers, soft object shadows; no seams, frame, text, UI, hands, or duplicate foxes. |
-| `assets/source/puzzles/star-rocket-gpt-image-2.png` | Star Rocket source and choice-card art | Central coral storybook rocket; ringed mustard planet, cream moon, stars, Earth/clouds; calm deep-blue space; layered cardstock/felt; no seams, frame, text, UI, people, astronauts, or duplicate rockets. |
-| `assets/source/puzzles/garden-flowers-gpt-image-2.png` | Garden Flowers source and choice-card art | Coral/yellow/blue focal flowers; fence, watering can, sun, butterflies, clouds, grass, stones; layered cardstock/felt; no seams, frame, text, UI, hands, or duplicate focal flowers. |
+| Continent | Sources |
+|---|---|
+| Africa | `africa-serengeti-lion`, `africa-congo-okapi`, `africa-nile-elephant` |
+| Antarctica | `antarctica-emperor-penguin`, `antarctica-weddell-seal`, `antarctica-albatross-treaty` |
+| Asia | `asia-himalaya-snow-leopard`, `asia-japan-crane`, `asia-india-tiger` |
+| Europe | `europe-greece-turtle`, `europe-alps-ibex`, `europe-lapland-reindeer` |
+| North America | `north-america-arctic-polar-bear`, `north-america-great-plains-bison`, `north-america-maya-jaguar` |
+| South America | `south-america-amazon-jaguar`, `south-america-andes-llama`, `south-america-galapagos-tortoise` |
+| Oceania | `oceania-great-barrier-reef-turtle`, `oceania-new-zealand-kiwi`, `oceania-polynesia-whale` |
 
-Generated-image originals remain in the Codex image-generation cache; the project-bound copies above are the durable sources.
+The durable copies live at `assets/source/puzzles/<id>-gpt-image-2.png`. Generated-image originals remain in the Codex image-generation cache. The older Forest Fox, Star Rocket, and Garden Flowers sources remain in the tree as recoverable legacy assets but are no longer part of the world-tour configuration.
 
 ## Seeded puzzle cuts
 
-`tools/cut-puzzle.mjs` calls `shared/js/puzzle-cutter.js` in Chrome. The accepted commands were:
+`tools/cut-puzzle.mjs` calls `shared/js/puzzle-cutter.js` in Chrome. The first two scenes in every continent use six pieces:
 
 ```sh
-node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/forest-fox-gpt-image-2.png --grid 3x2 --seed forest-fox-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/forest-fox
-node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/star-rocket-gpt-image-2.png --grid 3x2 --seed star-rocket-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/star-rocket
-node tools/cut-puzzle.mjs games/puzzle-map-match/assets/source/puzzles/garden-flowers-gpt-image-2.png --grid 3x2 --seed garden-flowers-v1 --max 1200 --out games/puzzle-map-match/assets/puzzles/garden-flowers
+node tools/cut-puzzle.mjs <source> --grid 3x2 --seed <scene-v1> --max 1200 --out <folder>
 ```
 
-Each folder contains:
+The third scene in every continent uses twelve pieces:
 
-- six transparent `piece-rNcN.png` canvases with an inner cut line and directional bevel;
-- `pieces.json` with dimensions, seed input/resolved seed, cell rectangles, exact paths, edge labels, and reconstruction `x/y`;
-- `outline.svg`, the printable full cut template;
-- `assembled.png`, the seamless reconstruction proof;
-- `preview.png`, the exploded physical-piece review.
+```sh
+node tools/cut-puzzle.mjs <source> --grid 4x3 --seed <scene-v1> --max 1200 --out <folder>
+```
 
-All three manifests are 1200×800, 2 rows × 3 columns, with six finite placements and seven complementary tab/blank joins. Runtime recreates and compares the same contract before play.
+Each scene folder contains the appropriate transparent `piece-rNcN.png` files, `pieces.json`, `outline.svg`, `assembled.png`, and `preview.png`. Manifests are 1200×800 with either 2 rows × 3 columns / 6 pieces or 3 rows × 4 columns / 12 pieces. Runtime recreates the same rows, columns, seed, paths, edges, and reconstruction coordinates before play.
 
 ## UI and presentation art
 
 | Asset | Source / transformation | Role |
 |---|---|---|
-| `assets/ui/title.webp` | Accepted GPT Image 2 Puzzle Explorer lockup from the original production pass; alpha-trimmed with source retained at `assets/source/title-gpt-image-2.png`. | Choice/loading title. Exact spelling visually reviewed. |
-| `assets/ui/hint.png` | Built-in imagegen, referenced from the placement mockup: isolated stitched cream cardstock badge with a mustard felt lightbulb; generated with alpha and resized to 256×256 using `sips`. Source: `assets/source/hint-button-gpt-image-2.png`. | Explicit hint control. |
-| `assets/ui/tray-alpha.webp` | Built-in imagegen: shallow wide blue stitched felt tray with green corner leaves. The service returned a neutral checker preview; `tools/finalize-jigsaw-assets.py` deterministically extracts saturated tray/leaves and the darker grounding shadow, trims, and pads. Source: `assets/source/tray-gpt-image-2.png`. | Holds one loose cut canvas without vertical distortion. |
-| `assets/ui/prompt-ribbon-alpha.webp` | The accepted cream stitched ribbon crop from the first papercraft plate; `tools/finalize-jigsaw-assets.py` removes its retired cool-blue screen matte with a documented warm-vs-blue alpha ramp. | Choose, placement, and completion labels. |
-| `assets/backgrounds/play-texture.webp` | Clean blue paper crop from the accepted first papercraft background. | All screen backdrops. |
-| `assets/ui/hand-guide.webp` | Accepted GPT Image 2 paper hand, alpha-finished in the first production pass; source files retained. | Idle/explicit modeled placement path. |
-| `assets/ui/confetti.webp` | Reused QLOBE Kids papercraft celebration surround from Globe Spin Stories. | Completion. |
+| `assets/ui/title.webp` | Accepted Puzzle Explorer title lockup. | Choice/loading title. |
+| `assets/ui/hint.png` | Built-in imagegen papercraft lightbulb badge. | Explicit hint control. |
+| `assets/ui/tray-alpha.webp` | Built-in imagegen felt tray, matte-finished deterministically. | Loose-piece presentation. |
+| `assets/ui/prompt-ribbon-alpha.webp` | Accepted stitched ribbon crop, matte-finished deterministically. | Chooser, placement, and completion labels. |
+| `assets/backgrounds/play-texture.webp` | Clean blue paper crop from the accepted papercraft background. | All screen backdrops. |
+| `assets/ui/hand-guide.webp` | Accepted papercraft hand with alpha finish. | Idle/explicit modeled placement path. |
+| `assets/ui/confetti.webp` | Reused QLOBE Kids papercraft celebration surround. | Completion. |
 | Shared HUD PNGs | `shared/assets/ui/btn-{home,back,sound,play}.png` | Navigation, replay, and sound controls. |
-
-`assets/jigsaw-finalize-report.json` records the exact two matte-removal outputs, inputs, transforms, and sizes. The script is deterministic and writes atomically.
 
 ## Narration, music, and SFX
 
-`data/lines.json` contains 17 jigsaw-specific lines. The two exact concept lines reuse accepted Qwen3 teacher recordings from the previous batch:
+`data/lines.json` contains direction lines, 21 short continent-scene introductions, 12 randomized encouragements, and the final completion line. The 12 encouragement clips and `celebrate-complete.m4a` are locally synthesized Samantha AAC clips committed for uninterrupted serialized playback. The new scene introductions use the shared speech fallback until dedicated recordings are approved; their fact cards are always visible.
 
-| Key | Runtime clip | Provenance |
-|---|---|---|
-| `welcome` | `assets/audio/welcome.m4a` | `assets/source/voice-recipes/welcome.recipe.json` + `assets/source/voice-qa/welcome.json`; accepted teacher reference, Whisper ratio ≥0.98. |
-| `success` | `assets/audio/success.m4a` | `assets/source/voice-recipes/success.recipe.json` + `assets/source/voice-qa/success.json`; accepted teacher reference, Whisper ratio ≥0.98. |
+The older `success` “It’s puzzle-tastic!” line remains in the manifest for provenance but is not requested by the runtime. The final completion phrase is `celebrate-complete`: “You did it!”
 
-The correction run attempted the approved local Studio workflow for the 15 newly authored lines, but the execution environment denied the data-egress permission. No workaround or alternate service was used. Their manifest entries are intentionally absent, so `shared/js/voice-clips.js` routes them through the local Web Speech fallback. `tools/gen-voice.mjs` is updated to use new `pmm-jigsaw-*` media ids and retains the seed 7/8/9 plus ≥0.98 Whisper gate for a future explicitly authorized recording pass.
+Music is one generated instrumental theme per continent (`assets/audio/theme-<continent>.m4a`), produced with the local MiniMax Music 3 workflow (`audio-minimax-music-3`) — a warm, even-energy "toybox" arrangement (kalimba, marimba, flute, ukulele, or steel pan depending on the continent) matched to that continent's papercraft scenes, never claiming a specific real-world musical tradition. Each track's caption/lyrics/seed are recorded alongside it in `assets/audio/theme-<continent>.m4a.recipe.json`. The generated songs are not seamless loops, so `shared/js/bgm.js` (a new shared module, not the procedural `shared/js/music.js` band engine this game used previously) fades each track to silence just before its natural end and fades back in from the top, and exposes the same `duck()`/`setMuted()` shape so narration ducking works identically. `js/main.js` starts/crossfades the theme when a continent is chosen and fades it out back at the world chooser. SFX come from local `shared/js/sfx.js` WebAudio synthesis.
 
-Music uses local `shared/assets/instruments/{vibraphone,guitar,maracas-a,maracas-b}.m4a` samples arranged at runtime as “Paper Puzzle Parade.” SFX come from local `shared/js/sfx.js` WebAudio synthesis.
+## Storefront and license
 
-## Storefront and link preview
-
-- `assets/hub/tiles/puzzle-map-match.jpg` is a deterministic 640×533 crop of the accepted Forest Fox source, keeping the central fox readable in the hub’s 6:5 card.
-- `assets/og-image.jpg` is generated from the final game through `tools/pipeline/capture_og_images.mjs --only puzzle-map-match`; it is never hand-painted or substituted with a mockup.
-
-## License
-
-Game code and authoring scripts are MIT. New and reused QLOBE Kids papercraft assets ship under the repository’s CC BY 4.0 asset policy. No third-party photograph, logo, font file, or externally fetched runtime asset is included.
+The hub tile and OG image retain their existing local production assets; they may be refreshed after the world-tour art is accepted. Game code and authoring scripts are MIT. New and reused QLOBE Kids papercraft assets ship under the repository’s CC BY 4.0 asset policy. No third-party photograph, logo, font file, or externally fetched runtime asset is included.
