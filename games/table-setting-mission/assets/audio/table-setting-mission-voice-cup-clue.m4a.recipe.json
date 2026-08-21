@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "table-setting-mission-voice-cup-clue",
+  "kind": "voice",
+  "asset": "table-setting-mission-voice-cup-clue.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The cup sits above the plate.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "The cup sits above the plate."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "The cup sits above the plate.",
+      "heard": "The cup sits above the plate.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

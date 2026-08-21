@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "table-setting-mission-voice-tap-help",
+  "kind": "voice",
+  "asset": "table-setting-mission-voice-tap-help.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Tap a table helper, or drag it to the matching shape.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Tap a table helper, or drag it to the matching shape."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Tap a table helper, or drag it to the matching shape.",
+      "heard": "tap a table helper or drag it to the matching shape.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "table-setting-mission-voice-plate-clue",
+  "kind": "voice",
+  "asset": "table-setting-mission-voice-plate-clue.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The plate goes in the middle.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "The plate goes in the middle."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "The plate goes in the middle.",
+      "heard": "The plate goes in the middle.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

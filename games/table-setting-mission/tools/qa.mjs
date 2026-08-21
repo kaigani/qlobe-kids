@@ -115,6 +115,28 @@ async function drive(browser) {
   check('splash uses the authored graphic title',
     (await page.locator('.title-art').getAttribute('src')).endsWith('/assets/art/ui/title.webp'));
   check('splash has three authored meal cards', await page.locator('.meal-card-art').count() === 3);
+  const voiceAssets = await page.evaluate(async () => {
+    const [manifestResponse, linesResponse] = await Promise.all([
+      fetch('./assets/audio/manifest.json'),
+      fetch('./data/lines.json'),
+    ]);
+    const manifest = await manifestResponse.json();
+    const lines = await linesResponse.json();
+    const checks = await Promise.all(Object.entries(manifest).map(async ([key, entry]) => {
+      const response = await fetch(`./assets/audio/${entry.file}`);
+      return { key, ok: response.ok, bytes: (await response.arrayBuffer()).byteLength };
+    }));
+    return {
+      manifestKeys: Object.keys(manifest),
+      lineKeys: Object.keys(lines),
+      failed: checks.filter(({ ok, bytes }) => !ok || bytes === 0),
+    };
+  });
+  check('all 22 recorded teacher clips are mapped and fetchable',
+    voiceAssets.manifestKeys.length === 22
+      && voiceAssets.manifestKeys.join(',') === voiceAssets.lineKeys.join(',')
+      && voiceAssets.failed.length === 0,
+    JSON.stringify(voiceAssets));
   await assertTargets(page, 'splash');
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
@@ -230,12 +252,55 @@ async function drive(browser) {
   check('mode switch cancels an in-flight placement from the prior meal',
     switchedMode.modeId === 'dinner' && Object.keys(switchedMode.placed).length === 0,
     JSON.stringify(switchedMode));
+  await page.evaluate(() => {
+    const originalPlay = HTMLMediaElement.prototype.play;
+    window.__voicePlaybackProbe = { calls: 0, resolved: 0, rejected: 0 };
+    HTMLMediaElement.prototype.play = function patchedPlay(...args) {
+      window.__voicePlaybackProbe.calls += 1;
+      const result = originalPlay.apply(this, args);
+      Promise.resolve(result).then(
+        () => { window.__voicePlaybackProbe.resolved += 1; },
+        () => { window.__voicePlaybackProbe.rejected += 1; },
+      );
+      return result;
+    };
+  });
+  await debug.mute(page, false);
+  await page.locator('[data-target="sound"]').click();
+  await page.waitForFunction(() => window.__voicePlaybackProbe.resolved + window.__voicePlaybackProbe.rejected > 0);
+  const playbackProbe = await page.evaluate(() => window.__voicePlaybackProbe);
+  check('a real recorded clip starts through the unlocked browser audio channel',
+    playbackProbe.calls > 0 && playbackProbe.resolved > 0 && playbackProbe.rejected === 0,
+    JSON.stringify(playbackProbe));
+  await page.waitForTimeout(700);
+  await page.evaluate(() => {
+    window.__voiceFallbackProbe = { calls: 0, text: '' };
+    HTMLMediaElement.prototype.play = () => Promise.reject(new DOMException('forced QA rejection', 'NotAllowedError'));
+    Object.defineProperty(window.speechSynthesis, 'speak', {
+      configurable: true,
+      value: (utterance) => {
+        window.__voiceFallbackProbe.calls += 1;
+        window.__voiceFallbackProbe.text = utterance.text;
+        queueMicrotask(() => {
+          utterance.onstart?.(new Event('start'));
+          utterance.onend?.(new Event('end'));
+        });
+      },
+    });
+  });
+  await page.locator('[data-target="sound"]').click();
+  await page.waitForFunction(() => window.__voiceFallbackProbe.calls > 0);
+  const fallbackProbe = await page.evaluate(() => window.__voiceFallbackProbe);
+  check('a rejected clip falls back to the same exact-text Web Speech line',
+    fallbackProbe.calls === 1 && fallbackProbe.text === 'Let’s make four places. Start with this one.',
+    JSON.stringify(fallbackProbe));
+  await debug.mute(page, true);
   await debug.call(page, 'home');
   await debug.fastTimers(page, 20);
 
   const audioLog = await debug.getAudioLog(page);
-  check('documented exact-text speech fallback is active while clips are unavailable',
-    audioLog.length > 0 && audioLog.every(({ kind }) => kind === 'speech'), JSON.stringify(audioLog));
+  check('recorded teacher clips back every requested voice line',
+    audioLog.length > 0 && audioLog.every(({ kind }) => kind === 'clip'), JSON.stringify(audioLog));
   check('mute and unmute fan out through the semantic control',
     await debug.mute(page, false) === false && await debug.mute(page, true) === true);
 

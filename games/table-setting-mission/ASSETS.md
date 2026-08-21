@@ -25,4 +25,27 @@ All briefs preserve the kawaii food-toy/cardboard look: chunky friendly forms, w
 
 ## Audio provenance
 
-QLOBE Studio `character-voice-line` / `qwen3-tts-voiceclone` was attempted for all 22 lines on 2026-08-20 with configured LAN API seed 7. Every job failed during clone with HTTP 500; the direct endpoint then became unreachable. The audio manifest is therefore intentionally empty (`assets/audio/manifest.json`), and the exact `lines.json` copy is spoken through the voice-clips Web Speech fallback. No generated audio is claimed.
+The initial 2026-08-20 QLOBE Studio `character-voice-line` / `qwen3-tts-voiceclone` run failed during clone while the configured LAN service was unavailable. After service restoration on 2026-08-21, all 22 exact lines were regenerated with the teacher reference at seed 7, transcript-checked, accepted in Studio, and assigned into `assets/audio/`. Transcript ratios range from 0.941 to 1.0 and measured AAC durations from 0.958 to 4.394 seconds; every file also passed a full `ffmpeg` decode. An objective volume pass found mean levels from -26.0 to -20.2 dB and peaks from -9.8 to -3.3 dB, with no silent, inaudibly quiet, or clipped file. `manifest.json` maps every `data/lines.json` key to its reviewed clip, while Web Speech remains a runtime safety fallback. Each `.m4a.recipe.json` sidecar records exact text, seed, symbolic teacher reference, template provenance, and accepted transcript QA without exposing local configuration. Three media IDs use the shorter `table-setting-voice-*` prefix to satisfy Studio's 40-character ID limit.
+
+- `table-setting-mission-voice-welcome.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-welcome.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-choose.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-choose.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-picnic-intro.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-picnic-intro.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-dinner-intro.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-dinner-intro.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-start-place.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-start-place.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-next-place.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-next-place.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-last-place.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-last-place.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-plate-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-plate-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-cup-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-cup-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-fork-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-fork-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-spoon-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-spoon-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-knife-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-knife-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-napkin-clue.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-napkin-clue.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-tap-help.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-tap-help.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-voice-breakfast-intro.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-voice-breakfast-intro.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-distractor.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-distractor.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-gentle-retry.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-gentle-retry.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-voice-praise-perfect.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-voice-praise-perfect.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-voice-praise-helper.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-voice-praise-helper.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-table-ready.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-table-ready.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-place-ready.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-place-ready.m4a.recipe.json`, CC BY 4.0.
+- `table-setting-mission-voice-again.m4a` — generated via QLOBE Studio (voice; qwen3-tts-voiceclone), recipe `table-setting-mission-voice-again.m4a.recipe.json`, CC BY 4.0.

@@ -61,7 +61,7 @@ catalog
 - Full-bleed authored kitchen art, generated title lockup, Pip mascot, and three oversized picture cards.
 - Shared raster Home button at top left returns to the catalog.
 - Meal cards are useful without their HTML labels: breakfast tray, picnic cloth, and dinner place setting are visually distinct.
-- First genuine gesture unlocks recorded clips when available, the exact-text Web Speech fallback, SFX, and quiet background music. Pip says the welcome line once.
+- First genuine gesture unlocks the shipped teacher-voice clips, the exact-text Web Speech safety fallback, SFX, and quiet background music. Pip says the welcome line once.
 
 ### Play
 
@@ -77,7 +77,7 @@ catalog
 
 - The camera reveals a complete four-place table assembled from the same runtime dish sprites.
 - Maya appears in her canonical design with a thumbs-up, while Pip hops beside her.
-- Confetti, fanfare, and the final narration play (a recorded clip when available, otherwise the exact-text Web Speech fallback). Reduced-motion keeps the final tableau and fanfare but omits falling confetti and large movement.
+- Confetti, fanfare, and the final recorded narration play; exact-text Web Speech remains a safety fallback. Reduced-motion keeps the final tableau and fanfare but omits falling confetti and large movement.
 - An authored meal-card Again button repeats the same meal. A shared raster Back button returns to the meal chooser.
 
 ## The 30–90 second play loop
@@ -117,7 +117,7 @@ catalog
 
 ## Voice script (verbatim)
 
-The keys below are the source of truth for `assets/audio/lines.json` and generated clips.
+The keys below are the source of truth for `data/lines.json` and generated clips.
 
 | Key | Spoken line |
 |---|---|
@@ -170,8 +170,8 @@ Source generations live under `assets/source/gpt-image-2/`. Deterministic crops,
 
 ## Audio and music
 
-- Production requested teacher voice through QLOBE Studio / `qwen3-tts-voiceclone`, with seeds 7, 8, and 9 as the retry ladder. The configured LAN service returned HTTP 500 for all 22 seed-7 jobs and was subsequently unreachable, so this beta deliberately ships the exact-text Web Speech path rather than unreviewed clips. `ASSETS.md` records the attempt without exposing local configuration.
-- Runtime playback uses `shared/js/voice-clips.js`; its manifest is intentionally empty until recorded clips pass transcript QA, and `data/lines.json` supplies the exact fallback copy.
+- Production teacher voice ships through QLOBE Studio / `qwen3-tts-voiceclone`, with seeds 7, 8, and 9 retained as the retry ladder. After the LAN service recovered, all 22 lines passed transcript QA at seed 7, were accepted in Studio, and were assigned with reproducible recipe sidecars. `ASSETS.md` records both the initial failed attempt and the successful production run without exposing local configuration.
+- Runtime playback uses `shared/js/voice-clips.js`; `assets/audio/manifest.json` maps all 22 reviewed AAC clips, and `data/lines.json` supplies the exact Web Speech safety copy.
 - `shared/js/sfx.js` supplies pop, sparkle, whoosh, boing, tick, and tada.
 - A quiet four-bar original pattern uses the shared `music.js` instrument sampler (piano, vibraphone, soft flute). It begins only after a gesture, loops softly, ducks under voice, revives after iPad interruptions, and respects mute.
 
@@ -223,7 +223,7 @@ The debug surface is semantic and serializable; it never mutates DOM behind the 
 ## Release gates
 
 - Every required raster asset exists, is visually reviewed at full size, optimized deliberately, and provenance-logged.
-- Every recorded line passes transcript QA or is deliberately omitted in favor of the correct fallback. This beta takes the documented fallback branch because the local generation service failed.
+- All 22 recorded lines pass transcript QA, decode cleanly, and remain within the 0.2–9 second delivery window; the exact-text Web Speech path remains available only as a playback safety fallback.
 - All three modes and all four places are playable by drag and tap-to-place.
 - Wrong target, distractor, pointer cancel, blur, back navigation, mute, portrait, landscape, safe areas, and reduced motion are tested.
 - No emoji or CSS-drawn primary object remains; no console error, failed request, or 404 occurs.
