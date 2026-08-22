@@ -1,34 +1,48 @@
 {
   "id": "board-game-reset",
-  "title": "Board Game Reset",
+  "title": "Board Game Reset Ritual",
   "category": "social-emotional",
   "path": "games/board-game-reset/",
   "icon": "🎲",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Board Game Reset 🎲 — Good Sport Skills",
-  "description": "Practice winning kindly, losing warmly, and cleaning up together after a bumped board game. A good-sport coach for ages 5–6 that treats cleanup as part of finishing play.",
+  "status": "beta",
+  "accent": "#4e9fa3",
+  "shareTitle": "Board Game Reset Ritual — Breathe, Hug, Tidy, Try Again",
+  "description": "Help two wooden toy friends recover from a wobbly board-game moment with one slow breath, a cozy hug, and a cooperative tidy-up.",
+  "summary": "Help Biscuit and Miso breathe, hug, tidy the board, and happily play again together.",
   "learningGoals": [
-    "Model good-sport words for winning and losing",
-    "Practice warm choices when a game feels wobbly or gets bumped",
-    "Treat cleanup as part of finishing play"
+    "Rehearse a three-step calming ritual after disappointment",
+    "Practice comforting a friend without blame",
+    "Return loose game pieces together and resume play"
   ],
-  "interactionModel": "choose-one tap the good-sport move or cleanup step after a spoken board-game scenario",
-  "feedbackModel": "Good-sport choices sparkle and speak modeled words; misses wiggle with a gentle spoken nudge and retry.",
+  "interactionModel": "spin and move a cooperative pair, then tap or drag through breathe, hug, and tidy actions before resuming the board",
+  "feedbackModel": "recorded teacher narration, warm toy music, tactile wooden movement, gentle modeling, high-five celebration, and no punitive state",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/bgm.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
     "shared/js/sfx.js",
-    "shared/characters/"
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/css/hud.css",
+    "shared/assets/music/",
+    "games/board-game-reset/assets/"
   ],
   "modes": [
-    { "id": "sport", "title": "Good Sport", "skill": "winning and losing graciously" },
-    { "id": "reset", "title": "Clean-Up Crew", "skill": "cleanup sequence for board games" }
+    { "id": "together", "title": "Reset Together", "skill": "breathe, hug, tidy, and return to play" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder board-game art and shared character portraits. Built with Codex for QLOBE Kids.",
-  "characters": ["nia"],
+  "credits": "Original Toy-world raster art produced with GPT Image 2 and QLOBE's local authoring pipeline. Built with Codex for QLOBE Kids.",
+  "characters": [],
   "conceptVideo": null
 }

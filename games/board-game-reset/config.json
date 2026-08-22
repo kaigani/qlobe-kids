@@ -1,0 +1,77 @@
+{
+  "id": "board-game-reset",
+  "title": "Board Game Reset Ritual",
+  "world": "toy",
+  "board": {
+    "finish": 9,
+    "resetSpace": 3,
+    "path": [
+      { "x": 10, "y": 49 },
+      { "x": 14, "y": 36 },
+      { "x": 23, "y": 30 },
+      { "x": 34, "y": 29 },
+      { "x": 42, "y": 37 },
+      { "x": 53, "y": 45 },
+      { "x": 66, "y": 44 },
+      { "x": 79, "y": 49 },
+      { "x": 86, "y": 60 },
+      { "x": 88, "y": 72 }
+    ],
+    "moves": [2, 1, 2, 2, 2]
+  },
+  "assets": {
+    "backgrounds": {
+      "splash": "./assets/world/splash-table.webp",
+      "board": "./assets/world/board-table.webp",
+      "ritual": "./assets/world/ritual-table.webp",
+      "responsivePortrait": "./assets/world/responsive-portrait.webp",
+      "responsiveWide": "./assets/world/responsive-wide.webp"
+    },
+    "title": "./assets/ui/title.webp",
+    "play": "./assets/ui/play-medallion.webp",
+    "spinner": "./assets/ui/spinner.webp",
+    "plaque": "./assets/ui/wood-plaque.webp",
+    "breathe": "./assets/ui/breathe-cloud.webp",
+    "basket": "./assets/ui/tidy-basket.webp",
+    "badge": "./assets/ui/together-badge.webp",
+    "characters": {
+      "biscuit": "./assets/characters/biscuit-neutral.webp",
+      "biscuitWorried": "./assets/characters/biscuit-worried.webp",
+      "miso": "./assets/characters/miso-neutral.webp",
+      "hug": "./assets/characters/friends-hug.webp",
+      "highFive": "./assets/characters/friends-high-five.webp"
+    },
+    "pawns": {
+      "biscuit": "./assets/pieces/pawn-biscuit.webp",
+      "miso": "./assets/pieces/pawn-miso.webp"
+    },
+    "pieces": [
+      { "id": "heart", "asset": "./assets/pieces/heart.webp", "label": "heart piece" },
+      { "id": "star", "asset": "./assets/pieces/star.webp", "label": "star piece" },
+      { "id": "flower", "asset": "./assets/pieces/flower.webp", "label": "flower piece" }
+    ]
+  },
+  "voice": {
+    "welcome": "Biscuit and Miso play together. Tap the spinner and help them reach the star.",
+    "spin": "Give the spinner a whirl!",
+    "move": "Hop, hop, hop. Together we go.",
+    "setback": "Oops. The board got wobbly. Biscuit feels disappointed, and that feeling is okay.",
+    "reset-intro": "Let's do our reset ritual together.",
+    "breathe-prompt": "First, tap the breathing cloud.",
+    "breathe": "Breathe in slowly... and blow it out.",
+    "hug-prompt": "Now bring Miso close for a cozy hug.",
+    "hug-done": "Kind hearts help wobbly feelings.",
+    "tidy-prompt": "Last, put each loose piece in the basket.",
+    "tidy-one": "One piece cozy.",
+    "tidy-two": "Two pieces cozy.",
+    "tidy-done": "Everything is back in its place.",
+    "ready": "You did it. The board is ready, and so are our friends!",
+    "resume": "High five! Tap the spinner when you're ready.",
+    "finish": "Biscuit and Miso made it together. Kind hearts can try again.",
+    "idle-spin": "The spinner is waiting for your hand.",
+    "idle-breathe": "Tap the cloud for one slow breath.",
+    "idle-hug": "Bring the kitten and puppy together.",
+    "idle-tidy": "Put a piece into the basket."
+  },
+  "music": { "track": "../../shared/assets/music/whimsical-toy-workshop.mp3" }
+}

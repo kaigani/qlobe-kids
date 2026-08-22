@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-characters-green.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#biscuit-and-miso-identity-sheet",
+      "references": [
+        "concept:board-game-reset-ritual/ui-mockups/01-title.png",
+        "concept:board-game-reset-ritual/ui-mockups/03-ready-again.png"
+      ]
+    },
+    {
+      "op": "remove-chroma-key",
+      "script": "imagegen:remove_chroma_key.py",
+      "key": "green"
+    },
+    {
+      "op": "fixed-grid-slice-and-webp",
+      "grid": "3x2"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["Biscuit identity", "Miso identity", "dark eyes preserved", "all full poses", "clean alpha"]
+  }
+}

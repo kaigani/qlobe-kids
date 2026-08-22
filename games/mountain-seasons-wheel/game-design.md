@@ -203,7 +203,7 @@ Sources and contact sheets remain under `assets/source/`. GPT Image 2 establishe
 
 - Recorded narration is the primary channel. Web Speech is a truthful per-line fallback when a clip is missing or rejected.
 - Shared synthesized SFX provide paper ticks, pop, sparkle, boing, whoosh, and tada.
-- A game-local WebAudio soundscape adds a very quiet, season-tuned four-note wooden pulse with a soft filtered tick. It starts only after the first gesture, stops on mute/screen exit, and never masks speech.
+- A game-local adapter selects recorded background music from the shared library for each season. It starts only after the first gesture and fades out on mute or screen exit.
 - Wheel clicks align with segment crossings. The chosen season gets one short transition flourish; continuous ambience is optional and muted by the shared sound control.
 - No generated video ships in v1: the promised transformations and discoveries remain interactive, and a passive clip would add size without communicating an action that the raster states cannot.
 

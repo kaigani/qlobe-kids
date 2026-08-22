@@ -1,0 +1,25 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "promptRef": "PROMPTS.md#qwen-image-layered",
+      "seed": 42,
+      "layers": 3,
+      "reference": "gpt-image-2-characters-sheet.png",
+      "jobId": "b3ab3cd8a67e402cb8d30cd6fe8efda0"
+    }
+  ],
+  "outputs": [
+    "qwen-layered-characters-layer_0.png",
+    "qwen-layered-characters-layer_1.png",
+    "qwen-layered-characters-layer2.png"
+  ],
+  "qa": {
+    "status": "failed-qa",
+    "reason": "Foreground extraction retained a dark matte; deterministic green-screen alpha had cleaner edges."
+  }
+}

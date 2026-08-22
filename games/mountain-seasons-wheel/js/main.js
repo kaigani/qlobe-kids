@@ -24,7 +24,7 @@ await voice.init('./assets/audio/manifest.json', config.lines, lines);
 
 const root = $('#game');
 const timers = createTimers();
-const soundscape = createSoundscape();
+const soundscape = createSoundscape(config.music);
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const globalDisposers = [];
 let garmentDisposers = [];
@@ -158,7 +158,7 @@ function speak(key) {
   currentLine = key;
   const text = spokenText(key);
   if (text) el.status.textContent = text;
-  return voice.say(key, text);
+  return soundscape.duckDuring(voice.say(key, text));
 }
 
 function replayCurrentLine() {

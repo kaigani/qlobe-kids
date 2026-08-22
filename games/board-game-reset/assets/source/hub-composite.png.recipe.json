@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "hub-composite.png",
+  "kind": "image-composite",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "op": "raster-composite",
+      "base": "krea2-hub-base-seed42.png",
+      "overlays": [
+        "../characters/friends-high-five.webp",
+        "../ui/spinner.webp"
+      ],
+      "final": "shared-hub:board-game-reset.jpg",
+      "width": 640,
+      "height": 533
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["identity consistency", "clear silhouette", "no text", "catalog dimensions"]
+  }
+}

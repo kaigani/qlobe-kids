@@ -1,0 +1,22 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-board-master.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#board-master",
+      "references": [
+        "concept:board-game-reset-ritual/ui-mockups/02-reset-ritual.png",
+        "concept:board-game-reset-ritual/ui-mockups/03-ready-again.png"
+      ]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["4:3 composition", "ten-stop path", "clear interaction center", "no baked text or characters"]
+  }
+}

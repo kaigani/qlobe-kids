@@ -9,7 +9,7 @@ import { createTimers } from '../../../shared/js/timers.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { tada } from '../../../shared/js/celebrate.js';
 import * as voiceClips from '../../../shared/js/voice-clips.js';
-import * as music from '../../../shared/js/music.js';
+import * as bgm from '../../../shared/js/bgm.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import { createTraceCanvas, traceCanvasStats } from './trace-canvas.js';
 import { createBotanySounds } from './botany-sounds.js';
@@ -112,16 +112,16 @@ function preloadImages() {
 
 const assetReady = preloadImages();
 const voiceReady = voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice);
-const musicReady = music.init('../../../shared/assets/instruments/manifest.json');
-const ready = Promise.all([assetReady, voiceReady, musicReady]).then(() => true);
+bgm.preload(config.music.track);
+const ready = Promise.all([assetReady, voiceReady]).then(() => true);
 
 function startMusic() {
   if (musicStarted) return;
   musicStarted = true;
-  Promise.resolve(musicReady).then(() => {
+  Promise.resolve(ready).then(() => {
     try {
-      music.playSong(config.music.song, config.music.band);
-      music.duck(.22, 60);
+      bgm.play(config.music.track, { key: 'bean-sprout-watch' });
+      bgm.duck(.22, 60);
     } catch { /* music is optional */ }
   });
 }
@@ -130,9 +130,9 @@ function speak(key) {
   if (!key || !config.voice[key]) return Promise.resolve();
   currentPromptKey = key;
   const mine = ++duckToken;
-  if (audioActivated && !muted) music.duck(.075, 100);
+  if (audioActivated && !muted) bgm.duck(.075, 100);
   return narrator.say(key, config.voice[key]).finally(() => {
-    if (mine === duckToken && audioActivated && !muted) music.duck(.22, 320);
+    if (mine === duckToken && audioActivated && !muted) bgm.duck(.22, 320);
   });
 }
 
@@ -145,9 +145,9 @@ function speakSequence(keys) {
   if (!parts.length) return Promise.resolve();
   currentPromptKey = parts[parts.length - 1].key;
   const mine = ++duckToken;
-  if (audioActivated && !muted) music.duck(.075, 100);
+  if (audioActivated && !muted) bgm.duck(.075, 100);
   return narrator.saySequence(parts).finally(() => {
-    if (mine === duckToken && audioActivated && !muted) music.duck(.22, 320);
+    if (mine === duckToken && audioActivated && !muted) bgm.duck(.22, 320);
   });
 }
 
@@ -157,7 +157,7 @@ function setMuted(on = true) {
   voiceClips.setMuted(muted || !audioActivated);
   botany.setMuted(muted);
   sfx.setMuted(muted);
-  music.setMuted(muted);
+  bgm.setMuted(muted);
   if (muted) narrator.stop();
   return muted;
 }
@@ -311,7 +311,7 @@ function bindCareDrag(card, kind, section) {
 function showScreen(name, render, { force = false } = {}) {
   duckToken += 1;
   narrator.stop();
-  if (audioActivated && !muted) music.duck(.22, 180);
+  if (audioActivated && !muted) bgm.duck(.22, 180);
   screens.show(name, { force });
   state.screen = name;
   render();
@@ -701,7 +701,7 @@ function getState() {
     reducedMotion,
     muted,
     saveState: { ...saved, completedDays: [...saved.completedDays], badges: [...saved.badges] },
-    music: music.stats(),
+    music: bgm.stats(),
     traceCanvasControllers: traceCanvasStats().activeControllers,
   };
 }
@@ -783,13 +783,13 @@ function activateAudio(event) {
 const onKeyboardUnlock = (event) => {
   if (event.repeat || (event.key !== 'Enter' && event.key !== ' ')) return;
   if (!event.target?.closest?.('button, [role="button"]')) return;
-  unlockAll([music.unlock, botany.unlock]);
+  unlockAll([bgm.unlock, botany.unlock]);
   activateAudio(event);
 };
 window.addEventListener('keydown', onKeyboardUnlock, true);
 const disposeKeyboardUnlock = () => window.removeEventListener('keydown', onKeyboardUnlock, true);
 const disposeUnlock = installUnlockOnGesture({
-  extra: [music.unlock, botany.unlock],
+  extra: [bgm.unlock, botany.unlock],
   onFirst: activateAudio,
 });
 
@@ -827,7 +827,7 @@ window.addEventListener('beforeunload', () => {
   traceController?.destroy();
   botany.destroy();
   narrator.dispose();
-  music.stopSong();
+  bgm.stop({ fadeOutMs: 0 });
   screens.destroy();
   disposeKeyboardUnlock();
   disposeUnlock();

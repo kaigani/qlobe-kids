@@ -222,8 +222,8 @@ fallback. Music ducks under every line.
 - Teacher voice: `qwen3-tts-voiceclone`, seed ladder 7 → 8 → 9, every output
   checked by unconditioned Whisper and published only when the normalized
   transcript matches the intended line exactly.
-- Music: a quiet 72 BPM plucked-string garden loop built with the shared
-  licensed guitar sample through `shared/js/music.js`. Its short, high-register
+- Music: the shared recorded `gentle-country-morning.mp3` track, looped with
+  gentle fades through `shared/js/bgm.js`. Its quiet acoustic character
   picking pattern evokes the brief’s gentle ukulele bed without adding a
   network or runtime dependency. It begins only after a child gesture, ducks
   to 22% under speech, and respects mute/page visibility.
@@ -280,7 +280,7 @@ it. The entire first-paint visual payload targets under 1.2 MB.
 - `shared/js/voice-clips.js` + `shared/js/narrator.js` — recorded voice,
   fallback, cancellation, aria-live.
 - `shared/js/sfx.js` + `shared/js/celebrate.js` — tactile feedback and reward.
-- `shared/js/music.js` — sampled plucked-string loop and voice ducking.
+- `shared/js/bgm.js` — recorded-track looping and voice ducking.
 - `shared/js/timers.js` + `shared/js/idle-nudge.js` — cancellable choreography
   and gentle help.
 - `shared/js/debug-harness.js` — stable production QA surface.

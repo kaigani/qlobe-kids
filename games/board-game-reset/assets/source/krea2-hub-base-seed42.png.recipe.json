@@ -1,0 +1,20 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "krea2-hub-base-seed42.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "promptRef": "PROMPTS.md#krea-2--accepted-shipped-base",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["recognizable wooden board", "clear center", "no text", "crop-safe 6:5"]
+  }
+}

@@ -1,29 +1,80 @@
-# Asset Log - Board Game Reset
+# Board Game Reset Ritual — asset log
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Character portrait (`char:nia`) | Shared QLOBE Kids character library | QLOBE Kids project | CC BY 4.0 | No | Reused unmodified |
-| Board-game placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholder only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All authored game art is raster. CSS is limited to layout, focus, raster-edge
+masks, shadows, and motion; there are no SVG, emoji, canvas-drawn, or CSS-drawn
+game objects.
+Generated assets are original QLOBE Kids production material, released with the
+repository under CC BY 4.0; no in-game attribution is required.
 
-## Assets needed
+## Shipped raster art
 
-### Art
-- Board-game scene art for winning kindly.
-- Board-game scene art for losing and asking for a rematch.
-- Board-game scene art for a knocked board repair.
-- Cleanup sequence art for pieces, box, and shelf.
+| Runtime asset | Production lineage | Finalization |
+|---|---|---|
+| `assets/world/board-table.webp` | GPT Image 2 board master, composed against the concept mockups | 1600×1200 WebP q82, 240 KB |
+| `assets/world/splash-table.webp`, `ritual-table.webp` | GPT Image 2 clean tabletop plate | 1600×1200 WebP; ritual plate intentionally reuses the clean plate |
+| `assets/world/responsive-portrait.webp`, `responsive-wide.webp` | GPT Image 2 responsive Toy-world outpaints, matched to the accepted ritual plate | 1086×1448 and 1915×821 WebP; edge-authored, interaction-safe center fields |
+| `assets/ui/title.webp` | GPT Image 2 exact-spelling green-screen lockup | deterministic chroma removal, alpha crop, WebP |
+| `assets/characters/*.webp`, `assets/pieces/pawn-*.webp` | GPT Image 2 Biscuit/Miso identity sheet on green | deterministic chroma removal, fixed cell crops, WebP |
+| `assets/ui/{spinner,play-medallion,wood-plaque,breathe-cloud,tidy-basket,together-badge}.webp` | GPT Image 2 prop sheet on green | deterministic chroma removal, cell crops, alpha-tight plaque crop, WebP |
+| `assets/pieces/{heart,star,flower}.webp` | Same accepted GPT Image 2 prop sheet | deterministic cell crops, WebP |
+| `../../assets/hub/tiles/board-game-reset.jpg` | Krea 2 seed-42 clean Toy board plate + accepted GPT character/spinner cutouts | local raster composite, 640×533 JPEG, 84 KB |
+| `assets/og-image.jpg` | Accepted splash plate + title + friends + play cutout | local raster composite, 1200×630 JPEG, 140 KB |
 
-### Voice
-- Warm good-sport lines for winning, losing, rematch, board bump, and cleanup scenarios.
-- Extra warmth for losing rounds: "Losing feels wobbly. What helps?"
-- Celebration and nudge lines from `voice.cheer`, `voice.nudge`, and `voice.yums`.
+The complete prompt set, parameters, accepted/rejected decisions, and source
+filenames are frozen in `assets/source/PROMPTS.md` and adjacent recipe JSON.
 
-## Link preview (og:image)
+## Local API studies
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+- `qwen-edit-ritual-master.png` tested a direct reset-scene edit. It was
+  rejected because it baked duplicate props into the plate.
+- `qwen-layered-characters-layer_0.png`, `layer_1.png`, and `layer2.png`
+  preserve the completed three-layer Qwen Image Layered job. The separation
+  worked, but the extracted layer retained a dark matte; the cleaner
+  deterministic green-screen cutouts were promoted.
+- `krea2-hub-base-seed42.png` passed visual review and is visibly present in
+  the shipped hub tile beneath GPT-authored identity-safe characters.
+- Superseded GPT keyed studies remain in `assets/source/` for auditability and
+  are not fetched at runtime.
+
+## Voice and sound
+
+All 20 configured lines under `assets/audio/*.m4a` were produced with
+`qwen3-tts-voiceclone`, using a project-accessible, already transcript-approved
+teacher-voice clip as the authorized reference. Each FLAC result was trimmed,
+loudness-normalized to -18 LUFS / -2 dBTP, and encoded as 24 kHz mono AAC at
+96 kbps. Whisper `base` then transcribed every final candidate with the expected
+line as its initial prompt.
+
+- `assets/audio/manifest.json`: runtime file, duration, and text-hash map.
+- `assets/audio/lines.json`: exact text derived from `config.json`.
+- `assets/audio/qa.json`: seed, duration, level, transcript, match score, and
+  attempt record. Result: **20/20 accepted; minimum transcript score 1.0**.
+- `assets/source/local-api/voice/`: accepted source candidates and per-clip
+  provenance sidecars.
+- `tools/generate-voice.py`: resumable batch generator and strict QA gate.
+
+The inaccessible machine-local reference path and private LAN host are never
+serialized into committed provenance.
+
+Runtime SFX come from the shared QLOBE audio modules. Recorded background music
+uses the shared library and loops with fades through `shared/js/bgm.js`.
+
+## Shared platform assets
+
+| Asset | Source | License | Use |
+|---|---|---|---|
+| Fredoka 600 | Fontsource / Fredoka by Milena Brandão and Hafontia | SIL OFL 1.1 | Interface text |
+| Shared HUD button PNGs | QLOBE Kids | CC BY 4.0 | Home/back and replay-audio controls |
+| `shared/assets/music/whimsical-toy-workshop.mp3` | QLOBE Kids shared music library | Repository license | Quiet optional underscore |
+
+## Regeneration
+
+```bash
+python3 games/board-game-reset/tools/generate-voice.py
+python3 games/board-game-reset/tools/generate-voice.py --check
+node tools/pipeline/capture_og_images.mjs --only board-game-reset
+```
+
+Image regeneration uses the built-in GPT Image 2 workflow and the approved
+QLOBE local workflows named in `assets/source/PROMPTS.md`. Endpoint and personal
+reference configuration stay in ignored local state.

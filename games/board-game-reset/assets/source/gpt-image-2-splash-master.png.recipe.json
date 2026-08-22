@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-splash-master.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#splashritual-clean-plate",
+      "references": ["concept:board-game-reset-ritual/ui-mockups/01-title.png"]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["clean oval stage", "portrait and landscape crop room", "no baked interaction objects"]
+  }
+}

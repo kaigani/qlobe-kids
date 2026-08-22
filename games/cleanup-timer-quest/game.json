@@ -12,7 +12,7 @@
   "learningGoals": ["Sort objects by a concrete category", "Practice tidy-up routines", "Build confidence through gentle feedback"],
   "interactionModel": "drag an object to its matching picture-marked home, or tap the object and then its home",
   "feedbackModel": "spoken prompts, tactile placement feedback, a musical pacing timer, and a sparkling room transformation",
-  "uses": ["shared/js/audio-unlock.js", "shared/js/celebrate.js", "shared/js/debug-harness.js", "shared/js/hud.js", "shared/js/idle-nudge.js", "shared/js/music.js", "shared/js/narrator.js", "shared/js/voice-clips.js", "shared/js/preload.js", "shared/js/rng.js", "shared/js/screens.js", "shared/js/tap.js", "shared/js/timers.js", "shared/js/stage/drag-to-slot-dom.js", "shared/css/hud.css", "shared/assets/instruments/", "games/cleanup-timer-quest/assets/"],
+  "uses": ["shared/js/audio-unlock.js", "shared/js/bgm.js", "shared/js/celebrate.js", "shared/js/debug-harness.js", "shared/js/hud.js", "shared/js/idle-nudge.js", "shared/js/narrator.js", "shared/js/voice-clips.js", "shared/js/preload.js", "shared/js/rng.js", "shared/js/screens.js", "shared/js/tap.js", "shared/js/timers.js", "shared/js/stage/drag-to-slot-dom.js", "shared/css/hud.css", "shared/assets/music/", "games/cleanup-timer-quest/assets/"],
   "modes": [
     { "id": "playroom", "title": "Playroom Rescue", "skill": "sort plush friends and wooden blocks by picture" },
     { "id": "bedroom", "title": "Bedroom Rescue", "skill": "sort clothes and books by picture" },

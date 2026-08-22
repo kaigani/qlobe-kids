@@ -3342,7 +3342,7 @@
     },
     {
       "id": "board-game-reset",
-      "title": "Board Game Reset",
+      "title": "Board Game Reset Ritual",
       "category": "social-emotional",
       "path": "games/board-game-reset/",
       "icon": "assets/hub/tiles/board-game-reset.jpg",
@@ -3350,21 +3350,16 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#4e9fa3",
       "modes": [
         {
-          "id": "sport",
-          "title": "Good Sport",
-          "skill": "winning and losing graciously"
-        },
-        {
-          "id": "reset",
-          "title": "Clean-Up Crew",
-          "skill": "cleanup sequence for board games"
+          "id": "together",
+          "title": "Reset Together",
+          "skill": "breathe, hug, tidy, and return to play"
         }
       ],
-      "summary": "Play, win or lose, then clean up together."
+      "summary": "Help Biscuit and Miso breathe, hug, tidy the board, and happily play again together."
     }
   ]
 }

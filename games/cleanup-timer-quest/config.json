@@ -10,34 +10,5 @@
     { "id": "living-room", "title": "Living Room", "promptKey": "living-room-prompt", "scene": "./assets/scenes/living-room.webp", "items": [{"id":"red-toy-train","category":"wheels","asset":"./assets/items/red-toy-train.webp"},{"id":"yellow-toy-car","category":"wheels","asset":"./assets/items/yellow-toy-car.webp"},{"id":"blue-toy-plane","category":"wheels","asset":"./assets/items/blue-toy-plane.webp"},{"id":"small-drum","category":"music","asset":"./assets/items/small-drum.webp"},{"id":"maracas","category":"music","asset":"./assets/items/maracas.webp"},{"id":"rainbow-xylophone","category":"music","asset":"./assets/items/rainbow-xylophone.webp"}], "bins": [{"id":"wheel-garage","category":"wheels","asset":"./assets/bins/wheel-garage.webp"},{"id":"drum-basket","category":"music","asset":"./assets/bins/drum-basket.webp"}] }
   ],
   "voice": {"welcome":"The toys need a home! Choose a room to rescue.","playroom-prompt":"Help the plush friends and blocks find their baskets.","bedroom-prompt":"Help the clothes and books find their homes.","living-room-prompt":"Help the wheels and music toys find their baskets.","plush-home":"Cuddly friends go in the teddy basket.","blocks-home":"Wood blocks go in the block box.","clothes-home":"Shirts, socks, and pajamas go in the shirt hamper.","books-home":"Books stand together in the book crate.","wheels-home":"Wheeled toys park in the wheel garage.","music-home":"Music toys rest in the drum basket.","wrong-bin":"That basket has a different picture. Try the other home.","praise-one":"Perfect landing!","praise-two":"You found its home!","praise-three":"Cozy and tidy!","more-time":"The music keeps playing. Take your time.","playroom-cheer":"Playroom rescued! Every toy is home.","bedroom-cheer":"Bedroom rescued! Everything is tucked away.","living-room-cheer":"Living room rescued! What a sparkling space.","sparkling":"You did it! The room is sparkling!","choose-another":"Choose another room to rescue."},
-  "music": {
-    "band": [
-      { "instr": "vibraphone" },
-      { "instr": "maracas" }
-    ],
-    "song": {
-      "id": "clean-up-vibraphone-maracas",
-      "title": "Wind-Up Tidy Tune",
-      "bpm": 92,
-      "beatsPerBar": 4,
-      "bars": 4,
-      "swing": 0.04,
-      "lead": "keys",
-      "scale": [60, 62, 64, 67, 69, 72],
-      "parts": {
-        "melody": [
-          [0, 67, 0.72], [1, 69, 0.72], [2, 72, 0.72], [3, 69, 0.72],
-          [4, 67, 0.72], [5, 64, 0.72], [6, 62, 0.72], [7, 64, 0.72],
-          [8, 67, 0.72], [9, 69, 0.72], [10, 72, 0.72], [11, 74, 0.72],
-          [12, 72, 0.72], [13, 69, 0.72], [14, 67, 0.72], [15, 64, 0.72]
-        ],
-        "bass": [],
-        "chord": [],
-        "perc": [
-          [0, "a"], [2, "b"], [4, "a"], [6, "b"],
-          [8, "a"], [10, "b"], [12, "a"], [14, "b"]
-        ]
-      }
-    }
-  }
+  "music": { "track": "../../shared/assets/music/whimsical-toy-workshop.mp3" }
 }

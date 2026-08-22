@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-title-green.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#exact-title-lockup",
+      "references": ["concept:board-game-reset-ritual/ui-mockups/01-title.png"]
+    },
+    {
+      "op": "remove-chroma-key",
+      "script": "imagegen:remove_chroma_key.py",
+      "key": "green"
+    },
+    {
+      "op": "alpha-crop-and-webp"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "spelling": "BOARD GAME RESET RITUAL",
+    "checks": ["full-size spelling", "clean alpha", "colored letters preserved"]
+  }
+}

@@ -1,0 +1,842 @@
+{
+  "welcome": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Biscuit and Miso play together. Tap the spinner and help them reach the star.",
+    "textHash": "00fb7310fd42653c",
+    "duration": 4.5,
+    "meanVolumeDb": -19.0,
+    "bytes": 56118,
+    "transcript": "Biscuit and Miso play together. Tap the spinner and help them reach the star.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Biscuit and Miso play together. Tap the spinner and help them reach the star.",
+        "textHash": "00fb7310fd42653c",
+        "duration": 4.5,
+        "meanVolumeDb": -19.0,
+        "bytes": 56118,
+        "generated": true,
+        "valid": true,
+        "transcript": "Biscuit and Miso play together. Tap the spinner and help them reach the star.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "spin": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Give the spinner a whirl!",
+    "textHash": "bc59def0e388ff63",
+    "duration": 1.41,
+    "meanVolumeDb": -19.2,
+    "bytes": 18830,
+    "transcript": "Give the spinner a whirl!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Give the spinner a whirl!",
+        "textHash": "bc59def0e388ff63",
+        "duration": 1.41,
+        "meanVolumeDb": -19.2,
+        "bytes": 18830,
+        "generated": true,
+        "valid": true,
+        "transcript": "Give the spinner a whirl!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "move": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Hop, hop, hop. Together we go.",
+    "textHash": "f8432e30e192d069",
+    "duration": 2.79,
+    "meanVolumeDb": -19.5,
+    "bytes": 35359,
+    "transcript": "Hop, hop, hop. Together we go.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Hop, hop, hop. Together we go.",
+        "textHash": "f8432e30e192d069",
+        "duration": 2.79,
+        "meanVolumeDb": -19.5,
+        "bytes": 35359,
+        "generated": true,
+        "valid": true,
+        "transcript": "Hop, hop, hop. Together we go.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "setback": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Oops. The board got wobbly. Biscuit feels disappointed, and that feeling is okay.",
+    "textHash": "81deb42e7c6e31e3",
+    "duration": 5.7,
+    "meanVolumeDb": -19.2,
+    "bytes": 74642,
+    "transcript": "Oops. The board got wobbly. Biscuit feels disappointed, and that feeling is okay.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Oops. The board got wobbly. Biscuit feels disappointed, and that feeling is okay.",
+        "textHash": "81deb42e7c6e31e3",
+        "duration": 5.7,
+        "meanVolumeDb": -19.2,
+        "bytes": 74642,
+        "generated": true,
+        "valid": true,
+        "transcript": "Oops. The board got wobbly. Biscuit feels disappointed, and that feeling is okay.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "reset-intro": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Let's do our reset ritual together.",
+    "textHash": "ab30fb361fd38403",
+    "duration": 2.0,
+    "meanVolumeDb": -19.2,
+    "bytes": 27147,
+    "transcript": "Let's do our reset ritual together.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Let's do our reset ritual together.",
+        "textHash": "ab30fb361fd38403",
+        "duration": 2.0,
+        "meanVolumeDb": -19.2,
+        "bytes": 27147,
+        "generated": true,
+        "valid": true,
+        "transcript": "Let's do our reset ritual together.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "breathe-prompt": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "First, tap the breathing cloud.",
+    "textHash": "9e7bd803997b4a4e",
+    "duration": 1.906,
+    "meanVolumeDb": -19.1,
+    "bytes": 25689,
+    "transcript": "First, tap the breathing cloud.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "First, tap the breathing cloud.",
+        "textHash": "9e7bd803997b4a4e",
+        "duration": 1.906,
+        "meanVolumeDb": -19.1,
+        "bytes": 25689,
+        "generated": true,
+        "valid": true,
+        "transcript": "First, tap the breathing cloud.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "breathe": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Breathe in slowly... and blow it out.",
+    "textHash": "e3dd408aebca060a",
+    "duration": 2.264,
+    "meanVolumeDb": -18.3,
+    "bytes": 29174,
+    "transcript": "Breathe in slowly... and blow it out.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Breathe in slowly... and blow it out.",
+        "textHash": "e3dd408aebca060a",
+        "duration": 2.264,
+        "meanVolumeDb": -18.3,
+        "bytes": 29174,
+        "generated": true,
+        "valid": true,
+        "transcript": "Breathe in slowly... and blow it out.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "hug-prompt": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Now bring Miso close for a cozy hug.",
+    "textHash": "9becc96df7d37de7",
+    "duration": 2.343,
+    "meanVolumeDb": -19.0,
+    "bytes": 31929,
+    "transcript": "Now bring Miso close for a cozy hug.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Now bring Miso close for a cozy hug.",
+        "textHash": "9becc96df7d37de7",
+        "duration": 2.343,
+        "meanVolumeDb": -19.0,
+        "bytes": 31929,
+        "generated": true,
+        "valid": true,
+        "transcript": "Now bring Miso close for a cozy hug.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "hug-done": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Kind hearts help wobbly feelings.",
+    "textHash": "bcf83ecb4dd39e16",
+    "duration": 2.016,
+    "meanVolumeDb": -18.9,
+    "bytes": 27277,
+    "transcript": "Kind hearts help wobbly feelings.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Kind hearts help wobbly feelings.",
+        "textHash": "bcf83ecb4dd39e16",
+        "duration": 2.016,
+        "meanVolumeDb": -18.9,
+        "bytes": 27277,
+        "generated": true,
+        "valid": true,
+        "transcript": "Kind hearts help wobbly feelings.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "tidy-prompt": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Last, put each loose piece in the basket.",
+    "textHash": "24099e77cc2f0298",
+    "duration": 2.515,
+    "meanVolumeDb": -20.1,
+    "bytes": 34186,
+    "transcript": "Last, put each loose piece in the basket.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Last, put each loose piece in the basket.",
+        "textHash": "24099e77cc2f0298",
+        "duration": 2.515,
+        "meanVolumeDb": -20.1,
+        "bytes": 34186,
+        "generated": true,
+        "valid": true,
+        "transcript": "Last, put each loose piece in the basket.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "tidy-one": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "One piece cozy.",
+    "textHash": "8346691aaf51a9f2",
+    "duration": 1.192,
+    "meanVolumeDb": -18.7,
+    "bytes": 15928,
+    "transcript": "One piece cozy.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "One piece cozy.",
+        "textHash": "8346691aaf51a9f2",
+        "duration": 1.192,
+        "meanVolumeDb": -18.7,
+        "bytes": 15928,
+        "generated": true,
+        "valid": true,
+        "transcript": "One piece cozy.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "tidy-two": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Two pieces cozy.",
+    "textHash": "e2d1aa6670010643",
+    "duration": 1.248,
+    "meanVolumeDb": -17.9,
+    "bytes": 16179,
+    "transcript": "Two pieces cozy.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Two pieces cozy.",
+        "textHash": "e2d1aa6670010643",
+        "duration": 1.248,
+        "meanVolumeDb": -17.9,
+        "bytes": 16179,
+        "generated": true,
+        "valid": true,
+        "transcript": "Two pieces cozy.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "tidy-done": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Everything is back in its place.",
+    "textHash": "e22c586377239b12",
+    "duration": 1.605,
+    "meanVolumeDb": -19.0,
+    "bytes": 21892,
+    "transcript": "Everything is back in its place.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Everything is back in its place.",
+        "textHash": "e22c586377239b12",
+        "duration": 1.605,
+        "meanVolumeDb": -19.0,
+        "bytes": 21892,
+        "generated": true,
+        "valid": true,
+        "transcript": "Everything is back in its place.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "ready": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "You did it. The board is ready, and so are our friends!",
+    "textHash": "a7f72f28ffe37373",
+    "duration": 3.7,
+    "meanVolumeDb": -18.2,
+    "bytes": 45958,
+    "transcript": "You did it. The board is ready, and so are our friends!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "You did it. The board is ready, and so are our friends!",
+        "textHash": "a7f72f28ffe37373",
+        "duration": 3.7,
+        "meanVolumeDb": -18.2,
+        "bytes": 45958,
+        "generated": true,
+        "valid": true,
+        "transcript": "You did it. The board is ready, and so are our friends!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "resume": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "High five! Tap the spinner when you're ready.",
+    "textHash": "620d9abd70e93e6f",
+    "duration": 2.698,
+    "meanVolumeDb": -20.1,
+    "bytes": 35334,
+    "transcript": "High five! Tap the spinner when you're ready.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "High five! Tap the spinner when you're ready.",
+        "textHash": "620d9abd70e93e6f",
+        "duration": 2.698,
+        "meanVolumeDb": -20.1,
+        "bytes": 35334,
+        "generated": true,
+        "valid": true,
+        "transcript": "High five! Tap the spinner when you're ready.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "finish": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Biscuit and Miso made it together. Kind hearts can try again.",
+    "textHash": "d94ede1665ff4b00",
+    "duration": 3.8,
+    "meanVolumeDb": -19.1,
+    "bytes": 49507,
+    "transcript": "Biscuit and Miso made it together. Kind hearts can try again.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Biscuit and Miso made it together. Kind hearts can try again.",
+        "textHash": "d94ede1665ff4b00",
+        "duration": 3.8,
+        "meanVolumeDb": -19.1,
+        "bytes": 49507,
+        "generated": true,
+        "valid": true,
+        "transcript": "Biscuit and Miso made it together. Kind hearts can try again.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "idle-spin": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "The spinner is waiting for your hand.",
+    "textHash": "4c6f8b9572e2aee0",
+    "duration": 1.739,
+    "meanVolumeDb": -19.9,
+    "bytes": 23620,
+    "transcript": "The spinner is waiting for your hand.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "The spinner is waiting for your hand.",
+        "textHash": "4c6f8b9572e2aee0",
+        "duration": 1.739,
+        "meanVolumeDb": -19.9,
+        "bytes": 23620,
+        "generated": true,
+        "valid": true,
+        "transcript": "The spinner is waiting for your hand.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "idle-breathe": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Tap the cloud for one slow breath.",
+    "textHash": "aed36d5bbb000af3",
+    "duration": 2.003,
+    "meanVolumeDb": -18.6,
+    "bytes": 27213,
+    "transcript": "Tap the cloud for one slow breath.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Tap the cloud for one slow breath.",
+        "textHash": "aed36d5bbb000af3",
+        "duration": 2.003,
+        "meanVolumeDb": -18.6,
+        "bytes": 27213,
+        "generated": true,
+        "valid": true,
+        "transcript": "Tap the cloud for one slow breath.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "idle-hug": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Bring the kitten and puppy together.",
+    "textHash": "9495e706d84c43a4",
+    "duration": 1.801,
+    "meanVolumeDb": -19.1,
+    "bytes": 24771,
+    "transcript": "Bring the kitten and puppy together.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Bring the kitten and puppy together.",
+        "textHash": "9495e706d84c43a4",
+        "duration": 1.801,
+        "meanVolumeDb": -19.1,
+        "bytes": 24771,
+        "generated": true,
+        "valid": true,
+        "transcript": "Bring the kitten and puppy together.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  },
+  "idle-tidy": {
+    "engine": "qwen3-tts-voiceclone",
+    "voice": "voice_teacher",
+    "seed": 7,
+    "sourceText": "Put a piece into the basket.",
+    "textHash": "b2a54b465c505608",
+    "duration": 1.553,
+    "meanVolumeDb": -20.7,
+    "bytes": 22385,
+    "transcript": "Put a piece into the basket.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 8,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "seed": 9,
+        "valid": false,
+        "error": "voiceclone request failed (curl exit 26)"
+      },
+      {
+        "engine": "qwen3-tts-voiceclone",
+        "voice": "voice_teacher",
+        "seed": 7,
+        "sourceText": "Put a piece into the basket.",
+        "textHash": "b2a54b465c505608",
+        "duration": 1.553,
+        "meanVolumeDb": -20.7,
+        "bytes": 22385,
+        "generated": true,
+        "valid": true,
+        "transcript": "Put a piece into the basket.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "error": null
+      }
+    ]
+  }
+}

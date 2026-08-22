@@ -43,7 +43,7 @@ generated runtime asset exceeds 100 KB.
 
 | Audio | Source | Notes |
 | --- | --- | --- |
-| garden music | `shared/js/music.js` + licensed shared `guitar.m4a` sample | Game-authored 72 BPM four-bar melody in `config.json`; starts only after a gesture and ducks under narration |
+| garden music | `shared/assets/music/gentle-country-morning.mp3` | Shared recorded track; starts only after a gesture, loops with a fade, and ducks under narration via `shared/js/bgm.js` |
 | water, sun, leaf, badge | `js/botany-sounds.js` WebAudio synthesis | Game-local, gentle, mute-safe, and lazy-unlocked |
 | shared ticks / celebration | `shared/js/sfx.js` and `shared/js/celebrate.js` | Reused platform feedback |
 | teacher narration | 27 Qwen3 teacher-voice-clone AAC clips in `assets/audio/` | Recorded voice is primary; exact text remains the Web Speech fallback through `shared/js/voice-clips.js` |

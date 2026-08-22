@@ -1,7 +1,7 @@
 import config from '../config.js';
 import * as sfx from '../../../shared/js/sfx.js';
 import * as voiceClips from '../../../shared/js/voice-clips.js';
-import * as music from '../../../shared/js/music.js';
+import * as bgm from '../../../shared/js/bgm.js';
 import { onTap } from '../../../shared/js/tap.js';
 import { mulberry32, shuffle } from '../../../shared/js/rng.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
@@ -84,9 +84,9 @@ const criticalArt = [
   ]),
 ];
 
+bgm.preload(config.music.track);
 const ready = Promise.all([
   voiceClips.init('./assets/audio/manifest.json', './assets/audio/lines.json', config.voice),
-  music.init(new URL('../../../shared/assets/instruments/manifest.json', import.meta.url).href),
   preloadImages(criticalArt),
 ]).then(() => {
   mount.classList.remove('is-loading');
@@ -94,11 +94,11 @@ const ready = Promise.all([
 });
 
 function say(key) {
-  return music.duckDuring(narrator.say(key, config.voice[key]));
+  return bgm.duckDuring(narrator.say(key, config.voice[key]));
 }
 
 function saySequence(parts) {
-  return music.duckDuring(narrator.saySequence(parts.map((part) => ({
+  return bgm.duckDuring(narrator.saySequence(parts.map((part) => ({
     ...part,
     text: config.voice[part.key],
   }))));
@@ -467,15 +467,14 @@ function updatePlayHud() {
 
 function startRoundSystems(room) {
   stopCountdown();
-  music.unlock();
-  music.playSong(config.music.song, config.music.band, {
-    onNote: () => screens.el('play')?.querySelector('.music-timer')?.classList.toggle('is-playing'),
-  });
+  bgm.unlock();
+  bgm.play(config.music.track, { key: 'cleanup-timer-quest' });
+  screens.el('play')?.querySelector('.music-timer')?.classList.add('is-playing');
   countdownId = timers.every(1000, tickCountdown);
   nudge.arm();
   screens.hold(nudge.stop);
   screens.hold(stopCountdown);
-  screens.hold(music.stopSong);
+  screens.hold(() => bgm.stop());
   updateTimerVisual();
   void room;
 }
@@ -488,7 +487,8 @@ function stopCountdown() {
 function stopRoundSystems() {
   stopCountdown();
   nudge.stop();
-  music.stopSong();
+  bgm.stop();
+  screens.el('play')?.querySelector('.music-timer')?.classList.remove('is-playing');
   dragController?.cancel();
   timers.clearAll();
 }
@@ -632,12 +632,12 @@ function setMuted(on = true) {
   narrator.setMuted(state.muted);
   voiceClips.setMuted(state.muted);
   sfx.setMuted(state.muted);
-  music.setMuted(state.muted);
+  bgm.setMuted(state.muted);
   return state.muted;
 }
 
 installUnlockOnGesture({
-  extra: [music.unlock],
+  extra: [bgm.unlock],
   onFirst: (event) => {
     if (pendingWelcome && state.screen === 'splash') {
       pendingWelcome = false;
@@ -704,7 +704,7 @@ installDebug({
     return state.extensions;
   },
   getAudioLog: () => voiceClips.getAudioLog(),
-  musicStats: () => music.stats(),
+  musicStats: () => bgm.stats(),
 });
 
 mount.classList.add('is-loading');

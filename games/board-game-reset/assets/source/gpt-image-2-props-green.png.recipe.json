@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-props-green.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#ritual-prop-sheet",
+      "references": ["concept:board-game-reset-ritual/ui-mockups/02-reset-ritual.png"]
+    },
+    {
+      "op": "remove-chroma-key",
+      "script": "imagegen:remove_chroma_key.py",
+      "key": "green"
+    },
+    {
+      "op": "fixed-grid-slice-and-webp",
+      "grid": "3x3"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["complete object silhouettes", "clean alpha", "single-family lighting", "no words"]
+  }
+}

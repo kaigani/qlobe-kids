@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "gpt-image-2-responsive-portrait.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen-edit",
+      "promptRef": "PROMPTS.md#responsive-toy-world-extensions",
+      "references": ["runtime:assets/world/ritual-table.webp"]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["portrait authored field", "calm interaction center", "edge-only Toy details", "no baked game objects or text"]
+  }
+}

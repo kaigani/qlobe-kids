@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "qwen-edit-ritual-master.png",
+  "kind": "image",
+  "created": "2026-08-22",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "promptRef": "PROMPTS.md#qwen-image-edit",
+      "seed": 42,
+      "reference": "gpt-image-2-splash-master.png"
+    }
+  ],
+  "qa": {
+    "status": "failed-qa",
+    "reason": "Generated baked cloud, basket, and dice-like objects that duplicated interactive pieces."
+  }
+}

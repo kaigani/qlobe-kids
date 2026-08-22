@@ -1,0 +1,926 @@
+:root {
+  --qk-bg: #d9b07b;
+  --reset-ink: #4b3125;
+  --reset-focus: #fff28a;
+  --reset-glow: #75eee5;
+  --scene-width: min(100vw, calc(100svh * 4 / 3));
+  --scene-height: min(100svh, calc(100vw * 3 / 4));
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #d9b07b;
+  color: var(--reset-ink);
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+#game {
+  position: fixed;
+  isolation: isolate;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.reset-screen {
+  position: absolute;
+  isolation: isolate;
+  inset: 0;
+  overflow: hidden;
+  background: #d9b07b;
+}
+
+.reset-screen[hidden] {
+  display: none !important;
+}
+
+.world-plate {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-frame {
+  position: absolute;
+  isolation: isolate;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: var(--scene-width);
+  height: var(--scene-height);
+  overflow: visible;
+  transform: translate(-50%, -50%);
+}
+
+.scene-frame > .world-plate {
+  object-fit: fill;
+}
+
+.responsive-world {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+}
+
+.responsive-world-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.qk-hud-btn {
+  --qk-hud-size: clamp(96px, 8.3vw, 108px);
+  --qk-hud-gap: max(14px, env(safe-area-inset-left));
+  z-index: 100;
+}
+
+.qk-hud-btn:focus-visible,
+.art-button:focus-visible,
+.hug-slot:focus-visible,
+.hug-piece:focus-visible,
+.tidy-piece:focus-visible {
+  outline: 8px solid var(--reset-focus);
+  outline-offset: 5px;
+  filter: drop-shadow(0 0 12px rgba(60, 134, 168, .85));
+}
+
+.art-button {
+  position: absolute;
+  display: grid;
+  min-width: 96px;
+  min-height: 96px;
+  place-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.art-button-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 5px rgba(73, 46, 28, .34));
+  transition: transform .2s cubic-bezier(.2, 1.35, .35, 1), filter .2s ease;
+}
+
+.art-button:active:not(:disabled) .art-button-image {
+  filter: drop-shadow(0 4px 3px rgba(73, 46, 28, .28));
+  transform: translateY(6px) scale(.97);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+}
+
+/* Splash ---------------------------------------------------------------- */
+
+.splash-world,
+.end-world {
+  position: absolute;
+  isolation: isolate;
+  inset: 0;
+  overflow: hidden;
+}
+
+.splash-title {
+  position: absolute;
+  z-index: 5;
+  top: max(2.5vh, env(safe-area-inset-top));
+  left: 50%;
+  width: min(65vw, 880px);
+  max-height: 43vh;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 6px rgba(78, 47, 27, .32));
+  transform: translateX(-50%);
+}
+
+.splash-friends {
+  position: absolute;
+  z-index: 4;
+  bottom: -1.5vh;
+  left: 48%;
+  width: min(40vw, 520px);
+  max-height: 51vh;
+  object-fit: contain;
+  filter: drop-shadow(0 13px 6px rgba(75, 47, 28, .34));
+  transform: translateX(-50%);
+}
+
+.splash-play {
+  z-index: 8;
+  right: clamp(4vw, 10vw, 150px);
+  bottom: max(5vh, env(safe-area-inset-bottom));
+  width: clamp(150px, 18vw, 245px);
+  height: clamp(150px, 18vw, 245px);
+  animation: play-in .55s .2s cubic-bezier(.2, 1.35, .35, 1) both;
+}
+
+@keyframes play-in {
+  from { opacity: 0; transform: translateY(24px) scale(.72); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Raster prompt plaque -------------------------------------------------- */
+
+.prompt-plaque {
+  position: absolute;
+  z-index: 25;
+  top: 1.2%;
+  left: 50%;
+  display: grid;
+  width: clamp(330px, 38%, 520px);
+  min-height: 96px;
+  place-items: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.prompt-plaque-art {
+  grid-area: 1 / 1;
+  width: 100%;
+  filter: drop-shadow(0 7px 3px rgba(74, 45, 26, .28));
+}
+
+.prompt-plaque-copy {
+  z-index: 2;
+  grid-area: 1 / 1;
+  display: grid;
+  width: 74%;
+  gap: 2px;
+  place-items: center;
+  color: #4f3426;
+  line-height: 1.02;
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(255, 244, 210, .7);
+}
+
+.prompt-plaque-copy strong {
+  font-size: clamp(20px, 2.35vw, 34px);
+  font-weight: 700;
+}
+
+.prompt-plaque-copy span {
+  font-size: clamp(13px, 1.35vw, 20px);
+  font-weight: 600;
+}
+
+/* Board ----------------------------------------------------------------- */
+
+.board-pawns {
+  --pawn-x: 10;
+  --pawn-y: 49;
+  position: absolute;
+  z-index: 16;
+  top: calc(var(--pawn-y) * 1%);
+  left: calc(var(--pawn-x) * 1%);
+  width: clamp(84px, 10.5%, 138px);
+  aspect-ratio: 1;
+  filter: drop-shadow(0 8px 4px rgba(67, 43, 27, .38));
+  transform: translate(-50%, -50%);
+  transition: top .4s cubic-bezier(.2, .82, .32, 1), left .4s cubic-bezier(.2, .82, .32, 1);
+}
+
+.board-pawn {
+  position: absolute;
+  width: 76%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.pawn-biscuit {
+  top: 3%;
+  left: -17%;
+  transform: rotate(-7deg);
+}
+
+.pawn-miso {
+  top: -16%;
+  left: 34%;
+  transform: rotate(7deg);
+}
+
+.board-scene.is-moving .board-pawns {
+  animation: pawn-hop .42s ease-in-out infinite alternate;
+}
+
+@keyframes pawn-hop {
+  from { filter: drop-shadow(0 8px 4px rgba(67, 43, 27, .38)); transform: translate(-50%, -50%); }
+  to { filter: drop-shadow(0 13px 5px rgba(67, 43, 27, .28)); transform: translate(-50%, calc(-50% - 10px)); }
+}
+
+.spinner-control {
+  z-index: 22;
+  top: 70%;
+  left: 50%;
+  width: clamp(150px, 17.5%, 230px);
+  height: clamp(150px, 17.5%, 230px);
+  transform: translate(-50%, -50%);
+}
+
+.spinner-control.is-spinning .art-button-image {
+  animation: spinner-whirl .9s cubic-bezier(.16, .82, .22, 1) both;
+}
+
+.spinner-control:not(.is-spinning) .art-button-image {
+  transform-origin: 50% 50%;
+  animation: spinner-invite 3.2s 1.15s ease-in-out infinite;
+}
+
+@keyframes spinner-invite {
+  0%, 68%, 100% {
+    filter: drop-shadow(0 10px 5px rgba(73, 46, 28, .34));
+    transform: rotate(0) scale(1);
+  }
+  76% {
+    filter: drop-shadow(0 0 13px rgba(117, 238, 229, .74)) drop-shadow(0 11px 5px rgba(73, 46, 28, .3));
+    transform: rotate(-3deg) scale(1.025);
+  }
+  86% {
+    filter: drop-shadow(0 0 16px rgba(117, 238, 229, .82)) drop-shadow(0 11px 5px rgba(73, 46, 28, .3));
+    transform: rotate(3deg) scale(1.035);
+  }
+  94% { transform: rotate(-1.5deg) scale(1.012); }
+}
+
+@keyframes spinner-whirl {
+  0% { transform: rotate(0); }
+  70% { transform: rotate(600deg) scale(1.06); }
+  100% { transform: rotate(720deg) scale(1); }
+}
+
+.scene-frame.is-wobbling,
+.ritual-scene.is-wobbling {
+  animation: gentle-wobble .62s ease-in-out 2;
+}
+
+@keyframes gentle-wobble {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0); }
+  25% { transform: translate(calc(-50% - 5px), -50%) rotate(-.6deg); }
+  75% { transform: translate(calc(-50% + 5px), -50%) rotate(.6deg); }
+}
+
+/* Ritual progress ------------------------------------------------------- */
+
+.ritual-progress {
+  position: absolute;
+  z-index: 24;
+  top: 3.5%;
+  right: 3.5%;
+  display: flex;
+  gap: clamp(5px, .8vw, 12px);
+  align-items: center;
+}
+
+.ritual-step {
+  width: clamp(54px, 5.3vw, 76px);
+  height: clamp(54px, 5.3vw, 76px);
+  opacity: .47;
+  transform: scale(.82);
+  transition: opacity .24s ease, transform .24s cubic-bezier(.2, 1.5, .35, 1), filter .24s ease;
+}
+
+.ritual-step-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ritual-step.is-done {
+  opacity: .82;
+  filter: saturate(.7);
+  transform: scale(.88);
+}
+
+.ritual-step.is-current {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px var(--reset-glow)) drop-shadow(0 6px 3px rgba(73, 45, 25, .3));
+  transform: scale(1.1);
+}
+
+.ritual-action {
+  position: absolute;
+  z-index: 10;
+  inset: 15% 2.5% 2%;
+}
+
+/* Setback and breathe --------------------------------------------------- */
+
+.ritual-characters {
+  position: absolute;
+  inset: 0;
+}
+
+.ritual-character {
+  position: absolute;
+  bottom: 6%;
+  width: clamp(150px, 23%, 300px);
+  max-height: 67%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 5px rgba(72, 44, 25, .32));
+}
+
+.ritual-character.biscuit-worried {
+  left: 15%;
+}
+
+.ritual-character.miso-supportive {
+  right: 15%;
+}
+
+.setback-pieces {
+  position: absolute;
+  z-index: 14;
+  inset: 0;
+  pointer-events: none;
+}
+
+.setback-piece {
+  position: absolute;
+  width: clamp(72px, 8%, 110px);
+  filter: drop-shadow(0 7px 3px rgba(74, 44, 25, .3));
+}
+
+.setback-piece.piece-1 { top: 58%; left: 42%; transform: rotate(-16deg); }
+.setback-piece.piece-2 { top: 70%; left: 53%; transform: rotate(12deg); }
+.setback-piece.piece-3 { top: 48%; left: 59%; transform: rotate(24deg); }
+
+.breathe-control {
+  z-index: 21;
+  top: 52%;
+  left: 50%;
+  width: clamp(150px, 21%, 270px);
+  height: clamp(150px, 21%, 270px);
+  transform: translate(-50%, -50%);
+}
+
+.breathe-control.is-breathing .art-button-image {
+  animation: one-breath 3.45s ease-in-out both;
+  filter: drop-shadow(0 0 20px rgba(117, 238, 229, .9)) drop-shadow(0 10px 5px rgba(73, 46, 28, .3));
+}
+
+@keyframes one-breath {
+  0% { transform: scale(.82); }
+  48% { transform: scale(1.18); }
+  65% { transform: scale(1.18); }
+  100% { transform: scale(.88); }
+}
+
+/* Hug ------------------------------------------------------------------- */
+
+.hug-slot,
+.hug-piece {
+  position: absolute;
+  z-index: 18;
+  top: 51%;
+  display: grid;
+  width: clamp(150px, 24%, 305px);
+  min-width: 96px;
+  min-height: 96px;
+  place-items: center;
+  cursor: pointer;
+  touch-action: none;
+  transform: translateY(-50%);
+  transition: transform .34s cubic-bezier(.2, 1.15, .35, 1), filter .2s ease, opacity .2s ease;
+}
+
+.hug-slot { left: 19%; }
+.hug-piece { right: 19%; }
+
+.hug-character {
+  width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 5px rgba(72, 44, 25, .33));
+}
+
+.hug-slot.is-hovered {
+  filter: drop-shadow(0 0 22px var(--reset-glow));
+  transform: translateY(-50%) scale(1.06);
+}
+
+.hug-piece.is-lifting {
+  opacity: .16;
+}
+
+.ritual-action.is-hugging .hug-slot {
+  transform: translate(58%, -50%) rotate(4deg);
+}
+
+.ritual-action.is-hugging .hug-piece {
+  transform: translate(-58%, -50%) rotate(-4deg);
+}
+
+.reset-drag-ghost {
+  z-index: 120;
+  width: clamp(150px, 23vw, 270px) !important;
+  height: clamp(150px, 23vw, 270px) !important;
+  margin: calc(clamp(150px, 23vw, 270px) / -2) 0 0 calc(clamp(150px, 23vw, 270px) / -2);
+  opacity: .98;
+  filter: drop-shadow(0 18px 7px rgba(72, 43, 25, .42));
+  pointer-events: none;
+}
+
+.reset-drag-ghost img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tidy ------------------------------------------------------------------ */
+
+.tidy-friends {
+  position: absolute;
+  z-index: 11;
+  top: 4%;
+  left: 50%;
+  width: clamp(180px, 28%, 355px);
+  max-height: 51%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 5px rgba(72, 44, 25, .28));
+  transform: translateX(-50%);
+}
+
+.tidy-pieces {
+  position: absolute;
+  z-index: 18;
+  inset: 0;
+}
+
+.tidy-piece {
+  position: absolute;
+  display: grid;
+  bottom: 6%;
+  width: clamp(100px, 12%, 155px);
+  min-width: 96px;
+  min-height: 96px;
+  place-items: center;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity .18s ease, transform .42s cubic-bezier(.2, .85, .35, 1), filter .18s ease;
+}
+
+.tidy-piece-1 { left: 10%; transform: rotate(-9deg); }
+.tidy-piece-2 { left: 25%; transform: rotate(7deg); }
+.tidy-piece-3 { left: 40%; transform: rotate(-3deg); }
+
+.tidy-piece-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 4px rgba(73, 44, 25, .33));
+}
+
+.tidy-piece.is-lifting {
+  opacity: .14;
+}
+
+.tidy-piece.is-flying-home {
+  opacity: 0;
+  transform: translate(380%, -35%) rotate(24deg) scale(.45);
+}
+
+.tidy-basket {
+  position: absolute;
+  z-index: 17;
+  right: 8%;
+  bottom: 2%;
+  display: grid;
+  width: clamp(155px, 21%, 270px);
+  min-width: 120px;
+  min-height: 120px;
+  place-items: center;
+  transition: filter .2s ease, transform .2s cubic-bezier(.2, 1.4, .35, 1);
+}
+
+.tidy-basket.is-hovered {
+  filter: drop-shadow(0 0 24px var(--reset-glow));
+  transform: scale(1.06);
+}
+
+.tidy-basket-art {
+  grid-area: 1 / 1;
+  width: 100%;
+  filter: drop-shadow(0 11px 5px rgba(72, 44, 25, .32));
+}
+
+.basket-count {
+  z-index: 2;
+  grid-area: 1 / 1;
+  display: flex;
+  width: 57%;
+  height: 34%;
+  margin-top: -13%;
+  align-items: end;
+  justify-content: center;
+}
+
+.basket-mini-piece {
+  width: 39%;
+  margin: 0 -5%;
+  object-fit: contain;
+}
+
+/* Ready and end --------------------------------------------------------- */
+
+.ready-friends {
+  position: absolute;
+  z-index: 13;
+  top: 17%;
+  left: 44%;
+  width: clamp(235px, 38%, 500px);
+  max-height: 66%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 5px rgba(72, 44, 25, .31));
+  transform: translateX(-50%);
+  animation: ready-pop .5s cubic-bezier(.2, 1.4, .35, 1) both;
+}
+
+.ready-badge {
+  position: absolute;
+  z-index: 14;
+  top: 34%;
+  right: 17%;
+  width: clamp(110px, 15%, 190px);
+  filter: drop-shadow(0 8px 4px rgba(72, 44, 25, .32));
+  animation: badge-turn .65s .12s cubic-bezier(.2, 1.4, .35, 1) both;
+}
+
+.ready-control {
+  z-index: 20;
+  right: 10%;
+  bottom: 6%;
+  width: clamp(140px, 17%, 220px);
+  height: clamp(140px, 17%, 220px);
+}
+
+@keyframes ready-pop {
+  from { opacity: 0; transform: translateX(-50%) scale(.62); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes badge-turn {
+  from { opacity: 0; transform: rotate(-22deg) scale(.45); }
+  to { opacity: 1; transform: rotate(7deg) scale(1); }
+}
+
+.end-friends {
+  position: absolute;
+  z-index: 8;
+  bottom: -2%;
+  left: 47%;
+  width: min(43vw, 560px);
+  max-height: 58vh;
+  object-fit: contain;
+  filter: drop-shadow(0 13px 6px rgba(72, 44, 25, .34));
+  transform: translateX(-50%);
+}
+
+.end-badge {
+  position: absolute;
+  z-index: 9;
+  top: 27%;
+  right: 15%;
+  width: clamp(120px, 16vw, 220px);
+  filter: drop-shadow(0 10px 5px rgba(72, 44, 25, .34));
+  transform: rotate(7deg);
+}
+
+.end-world .prompt-plaque {
+  top: max(2.5vh, env(safe-area-inset-top));
+  width: clamp(360px, 42vw, 570px);
+}
+
+.end-again {
+  z-index: 12;
+  right: clamp(5vw, 10vw, 150px);
+  bottom: max(5vh, env(safe-area-inset-bottom));
+  width: clamp(150px, 18vw, 235px);
+  height: clamp(150px, 18vw, 235px);
+}
+
+/* Portrait -------------------------------------------------------------- */
+
+@media (orientation: portrait) {
+  :root {
+    --scene-width: 100vw;
+    --scene-height: 75vw;
+  }
+
+  .scene-frame {
+    top: 49%;
+  }
+
+  .responsive-world {
+    display: block;
+  }
+
+  .ritual-scene {
+    top: 50%;
+    width: 100vw;
+    height: 100svh;
+  }
+
+  .ritual-scene > .ritual-plate {
+    display: none;
+  }
+
+  .qk-hud-btn {
+    --qk-hud-size: 96px;
+  }
+
+  .splash-title {
+    top: max(9vh, env(safe-area-inset-top));
+    width: min(94vw, 720px);
+    max-height: 37vh;
+  }
+
+  .splash-friends {
+    bottom: 19vh;
+    left: 50%;
+    width: min(74vw, 500px);
+    max-height: 43vh;
+  }
+
+  .splash-play {
+    right: 50%;
+    bottom: max(2.5vh, env(safe-area-inset-bottom));
+    width: clamp(140px, 33vw, 220px);
+    height: clamp(140px, 33vw, 220px);
+    transform: translateX(50%);
+  }
+
+  @keyframes play-in {
+    from { opacity: 0; transform: translate(50%, 24px) scale(.72); }
+    to { opacity: 1; transform: translate(50%, 0) scale(1); }
+  }
+
+  .board-scene .prompt-plaque {
+    top: -7%;
+    width: clamp(290px, 62%, 470px);
+  }
+
+
+  .ritual-scene .prompt-plaque {
+    top: max(9.5%, env(safe-area-inset-top));
+    width: min(72vw, 470px);
+  }
+
+  .prompt-plaque-copy strong {
+    font-size: clamp(17px, 3.9vw, 29px);
+  }
+
+  .prompt-plaque-copy span {
+    font-size: clamp(11px, 2.3vw, 17px);
+  }
+
+  .spinner-control {
+    top: 73%;
+    width: clamp(112px, 24%, 165px);
+    height: clamp(112px, 24%, 165px);
+  }
+
+  .board-pawns {
+    width: clamp(70px, 14%, 105px);
+  }
+
+  .board-plate {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+
+  .ritual-progress {
+    top: max(2.5%, env(safe-area-inset-top));
+    right: 3%;
+  }
+
+  .ritual-step {
+    width: clamp(48px, 9vw, 65px);
+    height: clamp(48px, 9vw, 65px);
+  }
+
+  .ritual-action {
+    inset: 20% 1% 2%;
+  }
+
+  .ritual-character {
+    bottom: 3%;
+    width: clamp(105px, 26%, 195px);
+  }
+
+  .ritual-character.biscuit-worried { left: 8%; }
+  .ritual-character.miso-supportive { right: 8%; }
+
+  .breathe-control {
+    top: 58%;
+    width: clamp(112px, 27%, 190px);
+    height: clamp(112px, 27%, 190px);
+  }
+
+  .hug-slot,
+  .hug-piece {
+    top: 57%;
+    width: clamp(105px, 28%, 205px);
+  }
+
+  .hug-slot { left: 9%; }
+  .hug-piece { right: 9%; }
+
+  .tidy-friends {
+    top: 3%;
+    width: clamp(150px, 35%, 245px);
+  }
+
+  .tidy-piece {
+    bottom: 1%;
+    width: clamp(96px, 16%, 120px);
+  }
+
+  .tidy-piece-1 { left: 2%; }
+  .tidy-piece-2 { left: 20%; }
+  .tidy-piece-3 { left: 38%; }
+
+  .tidy-basket {
+    right: 1%;
+    bottom: -2%;
+    width: clamp(125px, 28%, 195px);
+  }
+
+  .ready-friends {
+    top: 9%;
+    left: 42%;
+    width: clamp(180px, 45%, 310px);
+  }
+
+  .ready-badge {
+    top: 30%;
+    right: 4%;
+    width: clamp(90px, 19%, 135px);
+  }
+
+  .ready-control {
+    right: 2%;
+    bottom: -1%;
+    width: clamp(110px, 25%, 165px);
+    height: clamp(110px, 25%, 165px);
+  }
+
+  .end-world .prompt-plaque {
+    top: max(10vh, env(safe-area-inset-top));
+    width: min(84vw, 540px);
+  }
+
+  .end-friends {
+    bottom: 18vh;
+    left: 50%;
+    width: min(76vw, 500px);
+    max-height: 43vh;
+  }
+
+  .end-badge {
+    top: 42%;
+    right: 5%;
+    width: clamp(105px, 25vw, 175px);
+  }
+
+  .end-again {
+    right: 50%;
+    bottom: max(2vh, env(safe-area-inset-bottom));
+    width: clamp(140px, 33vw, 215px);
+    height: clamp(140px, 33vw, 215px);
+    transform: translateX(50%);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 620px) {
+  .responsive-world {
+    display: block;
+  }
+
+  .ritual-scene {
+    width: 100vw;
+    height: 100svh;
+  }
+
+  .ritual-scene > .ritual-plate {
+    display: none;
+  }
+
+  .qk-hud-btn {
+    --qk-hud-size: 96px;
+  }
+
+  .prompt-plaque {
+    top: -2%;
+    width: clamp(300px, 35%, 430px);
+  }
+
+  .spinner-control {
+    width: clamp(130px, 16%, 180px);
+    height: clamp(130px, 16%, 180px);
+  }
+
+  .board-plate {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+
+  .ritual-action {
+    top: 12%;
+  }
+
+  .splash-title {
+    max-height: 40vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

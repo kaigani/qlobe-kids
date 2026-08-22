@@ -99,8 +99,8 @@ without changing the sorting rule.
 The timer is an authored wooden music rail with eight inset lights. Runtime
 HTML softly extinguishes the lights as the song continues; there is no numeric
 countdown or urgent depletion color. The visible material and wind-up key come
-from raster art. The shared `music.js` sample engine plays a quiet 16-beat
-vibraphone-and-maracas loop. Voice ducks the music, and all channels unlock on
+from raster art. The shared `bgm.js` player loops the recorded
+`whimsical-toy-workshop.mp3` track with a gentle fade. Voice ducks the music, and all channels unlock on
 the first real gesture and revive after an iPad app switch.
 
 Production duration is 42 seconds with a 24-second automatic extension. Debug
@@ -235,7 +235,7 @@ from picture badges, selection halos, and object motion.
 - `shared/js/debug-harness.js`
 - `shared/js/hud.js` and `shared/css/hud.css`
 - `shared/js/idle-nudge.js`
-- `shared/js/music.js` and `shared/assets/instruments/`
+- `shared/js/bgm.js` and `shared/assets/music/whimsical-toy-workshop.mp3`
 - `shared/js/narrator.js` and `shared/js/voice-clips.js`
 - `shared/js/preload.js`, `rng.js`, `screens.js`, `tap.js`, and `timers.js`
 - `shared/js/stage/drag-to-slot-dom.js`
