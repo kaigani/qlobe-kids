@@ -92,6 +92,32 @@ QLOBE Kids is a pure static site deployed as written.
 The minimum bar is not “it loads.” A child should understand what to do within
 about five seconds.
 
+### Background music policy
+
+For supportive background music, prefer a recorded track from
+`shared/assets/music/` played through `shared/js/bgm.js`. Do not author a
+programmatic song with `shared/js/music.js` merely to provide an underscore.
+The recorded shared library is the platform default because it gives games a
+more intentional musical identity and keeps background-music playback,
+non-seamless looping, fades, muting, and narration ducking consistent.
+
+Use `shared/js/music.js` when generated notes, instrument parts, beats, or live
+arrangement are part of the game mechanic—for example, a band builder, rhythm
+activity, or dance experience whose timing depends on the song. Programmatic
+environmental sound such as wind, rain, insects, and responsive one-shot SFX
+is not background music and may still use Web Audio when appropriate.
+
+Recorded BGM must:
+
+- be configured as a shared asset rather than copied into a game;
+- call `bgm.preload(track)` before the first gesture and include `bgm.unlock`
+  in the shared gesture-unlock fan-out;
+- start only after a real child gesture;
+- use `bgm.duckDuring(...)` around spoken guidance and a deliberately quiet
+  normal volume;
+- follow the game mute state and stop on screen exit or page teardown; and
+- be declared in `game.json` usage metadata and documented in `ASSETS.md`.
+
 ## Choosing a concept
 
 The concept library is under `../01-game-concepts/`. Each concept normally has:
