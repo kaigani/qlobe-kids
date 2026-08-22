@@ -1,0 +1,308 @@
+{
+  "format": "qlobe-runtime-smoke",
+  "formatVersion": 1,
+  "gameId": "monster-opera",
+  "created": "2026-08-18",
+  "browser": "installed-google-chrome",
+  "status": "passed",
+  "counts": {
+    "checks": 73,
+    "passed": 73,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "name": "catalog exposes one Monster Opera beta tile",
+      "ok": true
+    },
+    {
+      "name": "catalog tile raster decodes",
+      "ok": true
+    },
+    {
+      "name": "catalog tile opens the production game path",
+      "ok": true
+    },
+    {
+      "name": "catalog-opened game reaches splash",
+      "ok": true
+    },
+    {
+      "name": "catalog route has no page or local-request errors",
+      "ok": true
+    },
+    {
+      "name": "keyboard Enter opens chorus from the initial CTA",
+      "ok": true
+    },
+    {
+      "name": "keyboard chorus activation unlocks running audio with a log entry",
+      "ok": true
+    },
+    {
+      "name": "keyboard unlock has no page errors",
+      "ok": true
+    },
+    {
+      "name": "keyboard unlock has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "keyboard unlock has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "splash boots",
+      "ok": true
+    },
+    {
+      "name": "debug v1 exposes three modes",
+      "ok": true
+    },
+    {
+      "name": "all raster images decode",
+      "ok": true
+    },
+    {
+      "name": "all 32 facial-pose WebPs decode",
+      "ok": true
+    },
+    {
+      "name": "primary art has no svg or canvas",
+      "ok": true
+    },
+    {
+      "name": "splash Home is the only catalog link",
+      "ok": true
+    },
+    {
+      "name": "landscape splash targets clear 96px",
+      "ok": true
+    },
+    {
+      "name": "landscape splash targets stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "chorus opens from the primary CTA",
+      "ok": true
+    },
+    {
+      "name": "all singers can be deselected",
+      "ok": true
+    },
+    {
+      "name": "empty chorus cannot start a hidden default show",
+      "ok": true
+    },
+    {
+      "name": "sixth selection evicts the oldest singer at the five-part cap",
+      "ok": true
+    },
+    {
+      "name": "selected chorus enters the live show",
+      "ok": true
+    },
+    {
+      "name": "all eight monster samples decode",
+      "ok": true
+    },
+    {
+      "name": "live performer tap enters the recording",
+      "ok": true
+    },
+    {
+      "name": "show targets clear 96px",
+      "ok": true
+    },
+    {
+      "name": "background lifecycle freezes show and returns explicitly paused",
+      "ok": true
+    },
+    {
+      "name": "pause-show resumes after lifecycle pause",
+      "ok": true
+    },
+    {
+      "name": "pause rejects performer input without recording it",
+      "ok": true
+    },
+    {
+      "name": "pause toggles back to performing",
+      "ok": true
+    },
+    {
+      "name": "show finishes cleanly",
+      "ok": true
+    },
+    {
+      "name": "replay can restart without changing screens",
+      "ok": true
+    },
+    {
+      "name": "Done returns to chorus",
+      "ok": true
+    },
+    {
+      "name": "real pointer gaze swaps authored left/right rasters and returns neutral",
+      "ok": true
+    },
+    {
+      "name": "solo sing visibly enters singing raster pose then returns neutral",
+      "ok": true
+    },
+    {
+      "name": "blinkMonster shows blink raster pose then returns neutral",
+      "ok": true
+    },
+    {
+      "name": "real primary-pointer swipe changes singer once and performs one phrase",
+      "ok": true
+    },
+    {
+      "name": "solo UI performs all three pitches",
+      "ok": true
+    },
+    {
+      "name": "every scheduled phrase note stays in C major pentatonic",
+      "ok": true
+    },
+    {
+      "name": "solo targets clear 96px",
+      "ok": true
+    },
+    {
+      "name": "garden stage selects",
+      "ok": true
+    },
+    {
+      "name": "cloud stage selects",
+      "ok": true
+    },
+    {
+      "name": "moon stage selects",
+      "ok": true
+    },
+    {
+      "name": "mute round trip is truthful",
+      "ok": true
+    },
+    {
+      "name": "landscape has no page errors",
+      "ok": true
+    },
+    {
+      "name": "landscape has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "landscape has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "tablet portrait chorus targets clear 96px",
+      "ok": true
+    },
+    {
+      "name": "tablet portrait chorus stays in bounds",
+      "ok": true
+    },
+    {
+      "name": "tablet portrait has no page errors",
+      "ok": true
+    },
+    {
+      "name": "tablet portrait has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "tablet portrait has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "phone splash targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "real touch gesture opens the chosen solo singer",
+      "ok": true
+    },
+    {
+      "name": "phone chorus targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "phone solo targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "phone stages targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "phone portrait has no page errors",
+      "ok": true
+    },
+    {
+      "name": "phone portrait has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "phone portrait has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "375px phone solo targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "375px phone portrait has no page errors",
+      "ok": true
+    },
+    {
+      "name": "375px phone portrait has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "375px phone portrait has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "wide-short splash targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "wide-short show targets clear 96px and stay in bounds",
+      "ok": true
+    },
+    {
+      "name": "wide-short landscape has no page errors",
+      "ok": true
+    },
+    {
+      "name": "wide-short landscape has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "wide-short landscape has no unexpected remote requests",
+      "ok": true
+    },
+    {
+      "name": "reduced-motion run completes a show",
+      "ok": true
+    },
+    {
+      "name": "reduced motion has no page errors",
+      "ok": true
+    },
+    {
+      "name": "reduced motion has no failed requests",
+      "ok": true
+    },
+    {
+      "name": "reduced motion has no unexpected remote requests",
+      "ok": true
+    }
+  ],
+  "screenshots": "generated outside the repository via QLOBE_SHOTS"
+}

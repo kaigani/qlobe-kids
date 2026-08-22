@@ -1,0 +1,64 @@
+{
+  "asset": "yellow-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-yellow-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/yellow.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "0ef919e7730eaf17999f6734af1c70a4bc19e6cee2668a14105132b831896eb3"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/yellow.wav",
+        "bytes": 141198,
+        "sha256": "c9067bee62eee8331c144ef322ad11b2eeca73150ebe4d0f08bc05432dadc859"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/yellow.waveform.png",
+        "bytes": 4386,
+        "sha256": "59625301b7e6011b40580021ac0c2300eaaba28d0b8aaa4819b115b924ae2025"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/yellow.spectrogram.png",
+        "bytes": 606210,
+        "sha256": "01710d5a9bab4c20164d31091404e6d7d52cc1e2d9e797def458305997f06f47"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/yellow.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the sunny-yellow fuzzy antenna monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one tiny bell-bright unaccompanied soprano vocal: a single steady sustained syllable 'liiiii' on one stable very high but soft musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'lee', no tune, harmony, backing singer, music, instruments, bell, beat, ambience, crowd, applause, reverb, UI sound, sparkle chime, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/yellow.png"
+      },
+      "result": {
+        "jobId": "1890c47427fe4b24ad7be027a8704978",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+        "bytes": 444013,
+        "sha256": "4be8b61aaded909d8f8dd97348e49db1f59891601398eb98feb9f4977594f5d6",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:28:51.921174+00:00",
+        "completedAt": "2026-08-18T14:31:21.777077+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

@@ -186,6 +186,11 @@ img {
   text-shadow: 0 2px 0 #fff8de;
 }
 
+.task-banner > p {
+  inset: 20% 10% 32%;
+  font-size: clamp(22px, 2.6vw, 38px);
+}
+
 .seat-progress {
   position: absolute;
   z-index: 16;
@@ -288,6 +293,23 @@ img {
 
 .guide-pip.pip-nibble {
   animation: pip-nibble .58s ease-in-out;
+}
+
+.round-guest {
+  position: absolute;
+  z-index: 17;
+  top: 48%;
+  left: 26%;
+  width: min(13vw, 190px);
+  transform: translate(0, -50%);
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 10px 6px rgba(76, 48, 23, .25));
+  animation: guest-pop .45s cubic-bezier(.3, 1.6, .4, 1) both;
+}
+
+@keyframes guest-pop {
+  0% { transform: translate(0, -50%) scale(.5) rotate(-6deg); opacity: 0; }
+  100% { transform: translate(0, -50%) scale(1) rotate(0); opacity: 1; }
 }
 
 .setting-zone {
@@ -537,6 +559,20 @@ img {
   filter: drop-shadow(0 4px 3px rgba(70, 43, 20, .18));
 }
 
+.final-guest {
+  position: absolute;
+  z-index: 6;
+  top: -6%;
+  right: -6%;
+  width: 32%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 3px solid #fff;
+  object-fit: cover;
+  box-shadow: 0 4px 3px rgba(76, 48, 23, .2);
+}
+
 .end-maya {
   position: absolute;
   z-index: 25;
@@ -684,6 +720,7 @@ img {
   .seat-progress { top: 11%; width: 36%; }
   .guide-wrap { top: 18%; left: 1%; width: 31%; }
   .setting-zone { top: 20%; right: 1%; bottom: 29%; left: 23%; }
+  .round-guest { left: 25%; top: 47%; width: min(11vw, 120px); }
   .tray-zone { right: 1.5%; bottom: 1%; left: 8%; height: 27%; }
   .four-place-table { top: 19%; right: 11%; bottom: 25%; left: 10%; }
   .end-maya { width: 34vw; }
@@ -695,7 +732,7 @@ img {
   .chooser-prompt { font-size: 20px; }
   .meal-label { font-size: 18px; }
   .tray-item { flex-basis: 96px; }
-  .guide-pip { display: none; }
+  .guide-pip, .round-guest { display: none; }
   .task-banner > p { font-size: 18px; }
 }
 
@@ -710,6 +747,7 @@ img {
   .seat-progress { top: 1%; height: 72px; }
   .guide-wrap { top: 17%; width: 22%; }
   .setting-zone { top: 12%; bottom: 31%; left: 22%; }
+  .round-guest { left: 24%; top: 40%; width: min(11vw, 140px); }
   .tray-zone { height: 32%; }
   .tray-item { flex-basis: 96px; min-width: 96px; min-height: 96px; }
   .four-place-table { top: 14%; bottom: 3%; }

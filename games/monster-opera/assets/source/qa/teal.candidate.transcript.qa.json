@@ -1,0 +1,19 @@
+{
+  "expected": "mmm",
+  "result": {
+    "accepted": false,
+    "bytes": 210,
+    "emptyTranscript": false,
+    "heard": "Hmm.",
+    "jobId": "cdc460fe66f2407998bf8a1796a6b795",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.6666666666666666,
+    "rawSaved": "games/monster-opera/assets/source/qa/teal.candidate.transcript.whisper.json",
+    "saved": "games/monster-opera/assets/source/qa/teal.candidate.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/monster-opera/assets/source/audio-h3/teal.candidate.mp3",
+  "workflow": "whisper-stt"
+}

@@ -6,30 +6,30 @@
   "icon": "🗼",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "status": "beta",
   "accent": "#f59f36",
   "shareTitle": "Block Tower Measure 🗼 — Stacking and Comparing Heights",
-  "description": "Stack block towers from biggest to smallest, then count and compare finished towers side by side. A hands-on measuring game for ages 5–6.",
+  "description": "Build equal paper blocks, use a ruler to compare tower heights, and wake a friendly paper robot.",
   "learningGoals": [
-    "Order blocks by size from biggest to smallest",
-    "Build vertical stacks with one-to-one placement",
-    "Count and compare tower heights"
+    "Measure height by counting equal-size units",
+    "Compare taller, shorter, and equal heights",
+    "Explore how adding or removing one unit changes height"
   ],
-  "interactionModel": "build-assemble drag or tap-tap blocks into tower ghost positions",
+  "interactionModel": "custom three-mode build, compare, and robot interactions",
   "feedbackModel": "Correct blocks pop, sparkle, and speak their placement; misses wiggle gently with a spoken nudge and retry. Finished towers are counted or compared aloud.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js",
-    "shared/assets/ui/",
-    "shared/fonts/fredoka-latin-600-normal.woff2"
+    "shared/js/screens.js", "shared/js/mode-select.js", "shared/js/tap.js", "shared/js/hud.js",
+    "shared/js/audio-unlock.js", "shared/js/voice-clips.js", "shared/js/sfx.js", "shared/js/timers.js",
+    "shared/js/idle-nudge.js", "shared/js/rng.js", "shared/js/celebrate.js", "shared/js/preload.js", "shared/js/debug-harness.js",
+    "games/block-tower-measure/assets/art/", "games/block-tower-measure/assets/audio/"
   ],
   "modes": [
-    { "id": "stack", "title": "Stack It Tall", "skill": "size ordering and counting tower height" },
-    { "id": "compare", "title": "Two Towers", "skill": "height comparison between two towers" }
+    { "id": "build", "title": "Build It Tall", "skill": "measure height by counting equal-size units" },
+    { "id": "compare", "title": "Tower Detective", "skill": "compare taller, shorter, and equal heights" },
+    { "id": "robot", "title": "Robot Workshop", "skill": "explore one-unit height changes" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder block art only. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original GPT Image 2 papercraft art and QLOBE teacher voice-clone recordings. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

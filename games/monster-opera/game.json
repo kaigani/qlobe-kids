@@ -1,0 +1,38 @@
+{
+  "id": "monster-opera",
+  "title": "Monster Opera",
+  "category": "art-music",
+  "path": "games/monster-opera/",
+  "icon": "🎶",
+  "entry": "index.html",
+  "age": { "min": 3, "max": 5 },
+  "status": "beta",
+  "accent": "#f26f82",
+  "shareTitle": "Monster Opera — Make a Monster Chorus",
+  "description": "Tap fuzzy singers, compare pitches, layer a chorus, and perform a tiny replayable opera on a playful stage.",
+  "learningGoals": ["Compare low, middle, and high pitch", "Hear how timbre, rhythm, and musical layers combine", "Arrange a short call-and-response performance"],
+  "interactionModel": "large singer cards, a constrained left/right singer swipe, picture pitch controls, and a local semantic performance replay",
+  "feedbackModel": "Each tap produces an immediate monster phrase with authored mouth flaps, blinking, finger-following gaze poses, and a squash animation; selections gain a compact gold check badge and every combination stays consonant.",
+  "uses": [
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/constrained-gesture-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
+  ],
+  "modes": [
+    { "id": "solo", "title": "Sing with Me", "skill": "compare low, middle, and high pitch in one timbre" },
+    { "id": "chorus", "title": "Make a Chorus", "skill": "hear how distinct musical roles layer" },
+    { "id": "stage-show", "title": "Pick a Stage", "skill": "arrange a short call-and-response performance" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original Kawaii production art made with OpenAI GPT Image 2; monster timbre auditions extracted from project-owned concept performances. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": [],
+  "conceptVideo": ""
+}

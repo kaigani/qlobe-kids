@@ -1,0 +1,985 @@
+{
+  "format": "monster-opera-h3-audio-handoff",
+  "formatVersion": 3,
+  "created": "2026-08-18",
+  "pathBase": "games/monster-opera/",
+  "reviewPage": "assets/source/qa/h3-audio/index.html",
+  "overallStatus": "review",
+  "manualIsolationReview": "pending",
+  "counts": {
+    "monsters": 8,
+    "currentRuntimeMp3s": 8,
+    "currentTechnicalPass": 8,
+    "h3Videos": 8,
+    "candidateMp3s": 8,
+    "h3ArtifactIntegrityVerified": 8,
+    "h3TechnicalPass": 8,
+    "remoteResultHashVerified": 8,
+    "whisperJobs": 8,
+    "whisperComplete": 8,
+    "humanAccepted": 0,
+    "humanRejected": 0
+  },
+  "monsters": [
+    {
+      "id": "blue",
+      "expected": "doo",
+      "heard": "Dooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+      "emptyTranscript": false,
+      "whisperRatio": 0.006718924972004479,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "blue",
+        "jobId": "0b93c72f3e1045769b5c3ea45efbd876",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:16:23.701794+00:00",
+        "completedAt": "2026-08-18T14:18:53.472550+00:00",
+        "bytes": 324928,
+        "sha256": "bb42dedaea7dec5f7b54ceffd211347cfd1a0881612a80e518f61d359c1c1505",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/blue.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/blue.spectrogram.png",
+      "audio": "assets/source/audio-h3/blue.candidate.mp3",
+      "qa": "assets/source/qa/blue.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/blue.mp3",
+        "reviewPageSrc": "../../../audio/monsters/blue.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 0.966531,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 12011
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/blue.mp3",
+          "bytes": 12011,
+          "sha256": "222bf92b5795406559a639a3e54e6bb7fd5c32b56609eb198a597390df437a89"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/blue.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/blue.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/blue.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "05134eae5d4f471652d34eb9325722e5469e6656592b1be01cd6533ca62fed15"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/blue.wav",
+            "bytes": 141198,
+            "sha256": "4c07d49cbabba8f9bb1d0c1fbc6e7099664bd753486c522b5299067f1c45014e"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/blue.waveform.png",
+            "bytes": 4837,
+            "sha256": "0e222bb79b338e9b28491937423320c4731443ca51245aca8a333833bc39f068"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/blue.spectrogram.png",
+            "bytes": 439497,
+            "sha256": "dcba7d3c83ae653a90e05cd2eb5dde1eadd06cd33de7937e670f9f8df762d6d6"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "doo",
+          "heard": "Dooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+          "emptyTranscript": false,
+          "ratio": 0.006718924972004479
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "coral",
+      "expected": "bop bop bop",
+      "heard": "Oh",
+      "emptyTranscript": false,
+      "whisperRatio": 0.15384615384615385,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 25121,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 2.0637,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "coral",
+        "jobId": "0055fea20d0547c796cd0742c5e684da",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:33:47.464867+00:00",
+        "completedAt": "2026-08-18T14:36:08.803137+00:00",
+        "bytes": 402833,
+        "sha256": "922b4d8daac3dfc92a3ea5fb491deabf7894b6cd69e2406fb408d7dfcbfaf638",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/coral.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/coral.spectrogram.png",
+      "audio": "assets/source/audio-h3/coral.candidate.mp3",
+      "qa": "assets/source/qa/coral.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/coral.mp3",
+        "reviewPageSrc": "../../../audio/monsters/coral.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.149388,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 14206
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/coral.mp3",
+          "bytes": 14206,
+          "sha256": "56383e95c60b7cfa06224eea2002da8473f77c55e67713dc1395685de24b7599"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/coral.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/coral.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 25121,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 2.0637,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/coral.candidate.mp3",
+            "bytes": 25121,
+            "sha256": "34a2cca0903b74bcbf409dd230728bbaccece47bfb945868214f516d07fa46fa"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/coral.wav",
+            "bytes": 179428,
+            "sha256": "4f18a3e7f0617f8ca70a0777e73d6a8e093a540335955d30b6142871b80e300e"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/coral.waveform.png",
+            "bytes": 5288,
+            "sha256": "66cf98b13a5521bb6ee4b8f200f50177f173eb4de112ed3e023b12ba7c3a22fc"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/coral.spectrogram.png",
+            "bytes": 362850,
+            "sha256": "a230ca75866242c208749443b83fd1bbbcd59a62faf3b61da6801ca562e9d2e2"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "bop bop bop",
+          "heard": "Oh",
+          "emptyTranscript": false,
+          "ratio": 0.15384615384615385
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "mint",
+      "expected": "loo",
+      "heard": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+      "emptyTranscript": false,
+      "whisperRatio": 0.006726457399103139,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "mint",
+        "jobId": "fe8a35e1b05243498bbb26fabe2c88d9",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:13:58.202403+00:00",
+        "completedAt": "2026-08-18T14:16:22.761421+00:00",
+        "bytes": 342359,
+        "sha256": "f265cf20ef06453866d92c1be5c0c59feb4f4f309c66d677179264acf675b84f",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/mint.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/mint.spectrogram.png",
+      "audio": "assets/source/audio-h3/mint.candidate.mp3",
+      "qa": "assets/source/qa/mint.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/mint.mp3",
+        "reviewPageSrc": "../../../audio/monsters/mint.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.28,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 15773
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/mint.mp3",
+          "bytes": 15773,
+          "sha256": "6cd650fc6c481b56e882494a3a963215ca82aa94aab4dc07b0dd5028d22e79f6"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/mint.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/mint.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/mint.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "ffc0739ddf4ae3d9e5a0274b3f358e302e39c20aec442f306b5f2a36592d24d5"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/mint.wav",
+            "bytes": 141198,
+            "sha256": "0f0b6955818c7de8b37c329450411474dee7cd915f9b61735bd7ce79881d30e9"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/mint.waveform.png",
+            "bytes": 6048,
+            "sha256": "8ea02ffc5b5f1f7e400c9f11ab46ba80d0dfad248279b1d35a98606a5da06461"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/mint.spectrogram.png",
+            "bytes": 461561,
+            "sha256": "158ac9c135d0fe70957c6e316ba2a4dc2c94dfea124f1c1fe6581fe44c577fbf"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "loo",
+          "heard": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+          "emptyTranscript": false,
+          "ratio": 0.006726457399103139
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "orange",
+      "expected": "bum",
+      "heard": "BOOOOO",
+      "emptyTranscript": false,
+      "whisperRatio": 0.2222222222222222,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "orange",
+        "jobId": "2b770bbce6884b45a9f072760d42d51d",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:26:28.476852+00:00",
+        "completedAt": "2026-08-18T14:28:51.652665+00:00",
+        "bytes": 316495,
+        "sha256": "6a1bca72c5ebdd5a21421031c824d95a5253a870217e7d296ffb6225e782093f",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/orange.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/orange.spectrogram.png",
+      "audio": "assets/source/audio-h3/orange.candidate.mp3",
+      "qa": "assets/source/qa/orange.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/orange.mp3",
+        "reviewPageSrc": "../../../audio/monsters/orange.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.201633,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 14833
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/orange.mp3",
+          "bytes": 14833,
+          "sha256": "9ea06ccf20cbdfd49ddc1877387bdbcf4c3303bdf7733cc2617d660e6d32eeae"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/orange.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/orange.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/orange.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "f4bfc7f7c13cba68ad757e83ba97d9acc1619e9e69a5ef5f14fc3766b09a05af"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/orange.wav",
+            "bytes": 141198,
+            "sha256": "7b0fd937a99d36cdeb75da3cb74ad605f37e68f91ef023fd320623c668c5e43e"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/orange.waveform.png",
+            "bytes": 5924,
+            "sha256": "04171f70fedd7e0f903784e04a6c98897b8b49a1219910ad00bc5038750458dc"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/orange.spectrogram.png",
+            "bytes": 452546,
+            "sha256": "5dbde2acbec9767e527758e11a53e0adbb29dcb7bc6b4016b5eae31860e4bc9c"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "bum",
+          "heard": "BOOOOO",
+          "emptyTranscript": false,
+          "ratio": 0.2222222222222222
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "pink",
+      "expected": "la",
+      "heard": "Love",
+      "emptyTranscript": false,
+      "whisperRatio": 0.3333333333333333,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "pink",
+        "jobId": "1f193e9768604bcf8a87cf03a74ebb54",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:10:23.036295+00:00",
+        "completedAt": "2026-08-18T14:12:42.183471+00:00",
+        "bytes": 423774,
+        "sha256": "c0b19cb55def60dc6fa3886049cf5d66fffd1e1ed15b298579e03b74a3c17b48",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/pink.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/pink.spectrogram.png",
+      "audio": "assets/source/audio-h3/pink.candidate.mp3",
+      "qa": "assets/source/qa/pink.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/pink.mp3",
+        "reviewPageSrc": "../../../audio/monsters/pink.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.48898,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 18281
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/pink.mp3",
+          "bytes": 18281,
+          "sha256": "d4d121b8907bb29737a8238757556c088599bc5c51268b0cb274cc7686a543fe"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/pink.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/pink.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/pink.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "39927cb82153212c8650dfeac483d5089b418a4c22264b03582fe191023f8071"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/pink.wav",
+            "bytes": 141198,
+            "sha256": "694841f110073ae12df0938f070331db19b16fa2b2d58c1618af76afe4a53ce8"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/pink.waveform.png",
+            "bytes": 6389,
+            "sha256": "33bebaa2e667588624ddfc167454cb725dd1c6918e164aca696881da562cb4ab"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/pink.spectrogram.png",
+            "bytes": 513041,
+            "sha256": "f55c6d4640e23477ba52867d822fb796499a1918711e39a42f579b494b8d28cb"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "la",
+          "heard": "Love",
+          "emptyTranscript": false,
+          "ratio": 0.3333333333333333
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "purple",
+      "expected": "woh",
+      "heard": "Ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+      "emptyTranscript": false,
+      "whisperRatio": 0,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "purple",
+        "jobId": "6a5cf43495594a719f8682a7806e5134",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:21:27.650231+00:00",
+        "completedAt": "2026-08-18T14:23:53.506300+00:00",
+        "bytes": 457739,
+        "sha256": "a7bbe92f7d687304d9020425ed355e2d9caf2d78a676707a347746e737642175",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/purple.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/purple.spectrogram.png",
+      "audio": "assets/source/audio-h3/purple.candidate.mp3",
+      "qa": "assets/source/qa/purple.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/purple.mp3",
+        "reviewPageSrc": "../../../audio/monsters/purple.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.28,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 15773
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/purple.mp3",
+          "bytes": 15773,
+          "sha256": "78070cb463cdfb0b59057ecceda35826b2a4af4d28634d6fa797e71754b9cc40"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/purple.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/purple.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/purple.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "67f191b45cdb424adb647d57b2000274fbbe67848bedb8a2bf5ba3f7c703dd78"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/purple.wav",
+            "bytes": 141198,
+            "sha256": "9c1ca5a127f7fedfd0e58a16407fe9dee0f0d5fb29e9e91d950ebd9ca040dff9"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/purple.waveform.png",
+            "bytes": 8797,
+            "sha256": "21af11360fe1779e70641cc4ef73222281ede8bc9af5f8d4d4aae146a334b812"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/purple.spectrogram.png",
+            "bytes": 462553,
+            "sha256": "38e6574b453fc78fb3ef1e5a8966dc442fb27f1c2495d28320097830f276ea52"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "woh",
+          "heard": "Ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+          "emptyTranscript": false,
+          "ratio": 0
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "teal",
+      "expected": "mmm",
+      "heard": "Hmm.",
+      "emptyTranscript": false,
+      "whisperRatio": 0.6666666666666666,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "teal",
+        "jobId": "fbbd9f3ac774472d81aa9efc36a3bba8",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:31:23.910916+00:00",
+        "completedAt": "2026-08-18T14:33:47.296397+00:00",
+        "bytes": 296939,
+        "sha256": "a0fcb4b5e6bd374500a4007f0aee6ef752a75a797e73fac8b5c1555bcba189b1",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/teal.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/teal.spectrogram.png",
+      "audio": "assets/source/audio-h3/teal.candidate.mp3",
+      "qa": "assets/source/qa/teal.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/teal.mp3",
+        "reviewPageSrc": "../../../audio/monsters/teal.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.48898,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 18281
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/teal.mp3",
+          "bytes": 18281,
+          "sha256": "029c6a55e0c71e91db80bd9aa985f22c398efe31ff30aa883b2cbdc69e2d6e21"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/teal.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/teal.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/teal.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "00b855d6585fe946743ae7c0b87111df5fb846cddbbe15c33eeaadc18274d06e"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/teal.wav",
+            "bytes": 141198,
+            "sha256": "d52d3d40fa06ecc47730306bd326155a6d3643135aa30212855b38d4a0fc7373"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/teal.waveform.png",
+            "bytes": 8522,
+            "sha256": "de8d38ba313c2ba3650b1d84c23ad2cda486553ff547d7ab6c8b5f15ea43a806"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/teal.spectrogram.png",
+            "bytes": 273388,
+            "sha256": "224f4a4ab3cb1b5ea634e71919a555e2ae8665183107215011fd0f7b4b349165"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "mmm",
+          "heard": "Hmm.",
+          "emptyTranscript": false,
+          "ratio": 0.6666666666666666
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    },
+    {
+      "id": "yellow",
+      "expected": "li",
+      "heard": "",
+      "emptyTranscript": true,
+      "whisperRatio": 0,
+      "whisperStatus": "completed",
+      "technicalStatus": "passed",
+      "checks": {
+        "duration": true,
+        "mono": true,
+        "nonEmpty": true,
+        "notClipped": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "bytes": 20106,
+        "channelLayout": "mono",
+        "channels": 1,
+        "codec": "mp3",
+        "durationSeconds": 1.6457,
+        "sampleRate": 44100
+      },
+      "generation": {
+        "id": "yellow",
+        "jobId": "1890c47427fe4b24ad7be027a8704978",
+        "status": "completed",
+        "createdAt": "2026-08-18T14:28:51.921174+00:00",
+        "completedAt": "2026-08-18T14:31:21.777077+00:00",
+        "bytes": 444013,
+        "sha256": "4be8b61aaded909d8f8dd97348e49db1f59891601398eb98feb9f4977594f5d6",
+        "remoteResultHashMatch": true
+      },
+      "manualIsolationReview": "pending",
+      "productionAcceptance": "pending-human-review",
+      "waveform": "assets/source/qa/h3-audio/yellow.waveform.png",
+      "spectrogram": "assets/source/qa/h3-audio/yellow.spectrogram.png",
+      "audio": "assets/source/audio-h3/yellow.candidate.mp3",
+      "qa": "assets/source/qa/yellow.candidate.transcript.qa.json",
+      "currentRuntime": {
+        "label": "A — Current game",
+        "source": "provisional concept-video cut",
+        "asset": "assets/audio/monsters/yellow.mp3",
+        "reviewPageSrc": "../../../audio/monsters/yellow.mp3",
+        "qaStatus": "provisional",
+        "technicalStatus": "passed",
+        "checks": {
+          "mp3Decode": true,
+          "wavDecode": true,
+          "mono": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "durationSeconds": 1.227755,
+          "codec": "mp3",
+          "sampleRate": 44100,
+          "channels": 1,
+          "channelLayout": "mono",
+          "bytes": 15146
+        },
+        "integrity": {
+          "asset": "assets/audio/monsters/yellow.mp3",
+          "bytes": 15146,
+          "sha256": "dd9a893b8ff36e47f2177f16474b3f7fb98e32744f90596ccad755847788492c"
+        }
+      },
+      "h3Candidate": {
+        "label": "B — H3 candidate",
+        "source": "clean-source candidate",
+        "asset": "assets/source/audio-h3/yellow.candidate.mp3",
+        "reviewPageSrc": "../../audio-h3/yellow.candidate.mp3",
+        "technicalStatus": "passed",
+        "checks": {
+          "duration": true,
+          "mono": true,
+          "nonEmpty": true,
+          "notClipped": true,
+          "sampleRate": true
+        },
+        "mp3": {
+          "bytes": 20106,
+          "channelLayout": "mono",
+          "channels": 1,
+          "codec": "mp3",
+          "durationSeconds": 1.6457,
+          "sampleRate": 44100
+        },
+        "integrity": {
+          "candidateMp3": {
+            "asset": "assets/source/audio-h3/yellow.candidate.mp3",
+            "bytes": 20106,
+            "sha256": "0ef919e7730eaf17999f6734af1c70a4bc19e6cee2668a14105132b831896eb3"
+          },
+          "wav": {
+            "asset": "assets/source/audio-h3/yellow.wav",
+            "bytes": 141198,
+            "sha256": "c9067bee62eee8331c144ef322ad11b2eeca73150ebe4d0f08bc05432dadc859"
+          },
+          "waveform": {
+            "asset": "assets/source/qa/h3-audio/yellow.waveform.png",
+            "bytes": 4386,
+            "sha256": "59625301b7e6011b40580021ac0c2300eaaba28d0b8aaa4819b115b924ae2025"
+          },
+          "spectrogram": {
+            "asset": "assets/source/qa/h3-audio/yellow.spectrogram.png",
+            "bytes": 606210,
+            "sha256": "01710d5a9bab4c20164d31091404e6d7d52cc1e2d9e797def458305997f06f47"
+          }
+        },
+        "whisper": {
+          "status": "completed",
+          "expected": "li",
+          "heard": "",
+          "emptyTranscript": true,
+          "ratio": 0
+        },
+        "manualIsolationReview": "pending",
+        "productionAcceptance": "pending-human-review"
+      }
+    }
+  ]
+}

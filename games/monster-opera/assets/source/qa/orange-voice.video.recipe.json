@@ -1,0 +1,64 @@
+{
+  "asset": "orange-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-orange-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/orange.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "f4bfc7f7c13cba68ad757e83ba97d9acc1619e9e69a5ef5f14fc3766b09a05af"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/orange.wav",
+        "bytes": 141198,
+        "sha256": "7b0fd937a99d36cdeb75da3cb74ad605f37e68f91ef023fd320623c668c5e43e"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/orange.waveform.png",
+        "bytes": 5924,
+        "sha256": "04171f70fedd7e0f903784e04a6c98897b8b49a1219910ad00bc5038750458dc"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/orange.spectrogram.png",
+        "bytes": 452546,
+        "sha256": "5dbde2acbec9767e527758e11a53e0adbb29dcb7bc6b4016b5eae31860e4bc9c"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/orange.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/orange-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the orange fuzzy bear-ear monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one very deep but gentle unaccompanied bass vocal: a single steady sustained syllable 'bummmmm' on one stable low musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'bum', no tune, harmony, backing singer, music, instruments, drum, beat, ambience, crowd, applause, reverb, UI sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/orange.png"
+      },
+      "result": {
+        "jobId": "2b770bbce6884b45a9f072760d42d51d",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/orange-voice-raw.mp4",
+        "bytes": 316495,
+        "sha256": "6a1bca72c5ebdd5a21421031c824d95a5253a870217e7d296ffb6225e782093f",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:26:28.476852+00:00",
+        "completedAt": "2026-08-18T14:28:51.652665+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

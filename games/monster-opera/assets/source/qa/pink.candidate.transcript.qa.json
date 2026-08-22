@@ -1,0 +1,18 @@
+{
+  "expected": "la",
+  "result": {
+    "accepted": false,
+    "bytes": 210,
+    "heard": "Love",
+    "jobId": "2016b0567039481eb3a198652b75bc83",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.3333333333333333,
+    "rawSaved": "games/monster-opera/assets/source/qa/pink.candidate.transcript.whisper.json",
+    "saved": "games/monster-opera/assets/source/qa/pink.candidate.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/monster-opera/assets/source/audio-h3/pink.candidate.mp3",
+  "workflow": "whisper-stt"
+}

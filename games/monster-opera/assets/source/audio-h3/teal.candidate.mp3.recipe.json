@@ -1,0 +1,83 @@
+{
+  "asset": "teal.candidate.mp3",
+  "created": "2026-08-18",
+  "derivedFrom": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-h3-teal",
+  "kind": "voice",
+  "qa": {
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "technicalGate": "passed",
+    "whisper": {
+      "status": "completed",
+      "expected": "mmm",
+      "heard": "Hmm.",
+      "emptyTranscript": false,
+      "ratio": 0.6666666666666666
+    },
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/teal.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "00b855d6585fe946743ae7c0b87111df5fb846cddbbe15c33eeaadc18274d06e"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/teal.wav",
+        "bytes": 141198,
+        "sha256": "d52d3d40fa06ecc47730306bd326155a6d3643135aa30212855b38d4a0fc7373"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/teal.waveform.png",
+        "bytes": 8522,
+        "sha256": "de8d38ba313c2ba3650b1d84c23ad2cda486553ff547d7ab6c8b5f15ea43a806"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/teal.spectrogram.png",
+        "bytes": 273388,
+        "sha256": "224f4a4ab3cb1b5ea634e71919a555e2ae8665183107215011fd0f7b4b349165"
+      }
+    }
+  },
+  "refs": {
+    "expectedSyllable": "mmm",
+    "promptManifest": "games/monster-opera/tools/video-jobs.jsonl",
+    "qa": "games/monster-opera/assets/source/qa/h3-audio/teal.audio.qa.json",
+    "referenceImage": "games/monster-opera/assets/source/video-keys/teal.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the teal fuzzy round-ear monster card. Static camera, one continuous shot. The same friendly monster closes its lips gently and performs one warm unaccompanied humming-pad vocal: a single steady sustained 'mmmmmm' on one stable medium-low musical pitch for about three seconds, then stops and smiles. Audio must be a dry isolated solo monster hum, centered and clean, with silence before and after. No words, no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "referenceImage": "games/monster-opera/assets/source/video-keys/teal.png",
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    },
+    {
+      "filters": [
+        "silenceremove -45 dB",
+        "highpass 90 Hz",
+        "lowpass 8.5 kHz",
+        "loudnorm -20 LUFS / -2 dBTP"
+      ],
+      "mono": true,
+      "op": "extract-normalize",
+      "output": "games/monster-opera/assets/source/audio-h3/teal.wav",
+      "sampleRate": 44100,
+      "source": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+      "tool": "tools/process-h3-audio.py",
+      "trimmedMaximumSeconds": 1.6
+    },
+    {
+      "bitrate": "96k",
+      "codec": "libmp3lame",
+      "op": "encode",
+      "output": "games/monster-opera/assets/source/audio-h3/teal.candidate.mp3",
+      "source": "games/monster-opera/assets/source/audio-h3/teal.wav"
+    }
+  ]
+}

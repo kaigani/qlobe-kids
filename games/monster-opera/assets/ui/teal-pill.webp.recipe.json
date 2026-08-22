@@ -1,0 +1,46 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-ui-teal-pill-webp",
+  "kind": "image",
+  "asset": "teal-pill.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/chroma-ui-sheet.png"
+      ]
+    },
+    {
+      "op": "isolate-crop-resize-encode",
+      "sources": [
+        "source/gpt-image-2/chroma-ui-sheet.png"
+      ],
+      "output": "ui/teal-pill.webp",
+      "script": "tools/finalize-cards.sh",
+      "dimensions": {
+        "width": 334,
+        "height": 150
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/chroma-ui-sheet.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 334,
+    "height": 150,
+    "codec": "webp",
+    "pixelFormat": "yuva420p",
+    "bytes": 5558
+  },
+  "created": "2026-08-18"
+}

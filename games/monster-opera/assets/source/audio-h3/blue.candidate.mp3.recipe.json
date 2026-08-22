@@ -1,0 +1,83 @@
+{
+  "asset": "blue.candidate.mp3",
+  "created": "2026-08-18",
+  "derivedFrom": "games/monster-opera/assets/source/video-raw/blue-voice-raw.mp4",
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-h3-blue",
+  "kind": "voice",
+  "qa": {
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "technicalGate": "passed",
+    "whisper": {
+      "status": "completed",
+      "expected": "doo",
+      "heard": "Dooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+      "emptyTranscript": false,
+      "ratio": 0.006718924972004479
+    },
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/blue.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "05134eae5d4f471652d34eb9325722e5469e6656592b1be01cd6533ca62fed15"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/blue.wav",
+        "bytes": 141198,
+        "sha256": "4c07d49cbabba8f9bb1d0c1fbc6e7099664bd753486c522b5299067f1c45014e"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/blue.waveform.png",
+        "bytes": 4837,
+        "sha256": "0e222bb79b338e9b28491937423320c4731443ca51245aca8a333833bc39f068"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/blue.spectrogram.png",
+        "bytes": 439497,
+        "sha256": "dcba7d3c83ae653a90e05cd2eb5dde1eadd06cd33de7937e670f9f8df762d6d6"
+      }
+    }
+  },
+  "refs": {
+    "expectedSyllable": "doo",
+    "promptManifest": "games/monster-opera/tools/video-jobs.jsonl",
+    "qa": "games/monster-opera/assets/source/qa/h3-audio/blue.audio.qa.json",
+    "referenceImage": "games/monster-opera/assets/source/video-keys/blue.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/blue-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the sky-blue fuzzy round-ear monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one round playful unaccompanied tenor vocal: a single steady sustained syllable 'dooooo' on one stable medium-high musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'doo', no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, bubble sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "referenceImage": "games/monster-opera/assets/source/video-keys/blue.png",
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    },
+    {
+      "filters": [
+        "silenceremove -45 dB",
+        "highpass 90 Hz",
+        "lowpass 8.5 kHz",
+        "loudnorm -20 LUFS / -2 dBTP"
+      ],
+      "mono": true,
+      "op": "extract-normalize",
+      "output": "games/monster-opera/assets/source/audio-h3/blue.wav",
+      "sampleRate": 44100,
+      "source": "games/monster-opera/assets/source/video-raw/blue-voice-raw.mp4",
+      "tool": "tools/process-h3-audio.py",
+      "trimmedMaximumSeconds": 1.6
+    },
+    {
+      "bitrate": "96k",
+      "codec": "libmp3lame",
+      "op": "encode",
+      "output": "games/monster-opera/assets/source/audio-h3/blue.candidate.mp3",
+      "source": "games/monster-opera/assets/source/audio-h3/blue.wav"
+    }
+  ]
+}

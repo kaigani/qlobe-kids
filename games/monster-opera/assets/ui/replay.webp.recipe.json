@@ -1,0 +1,46 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-ui-replay-webp",
+  "kind": "image",
+  "asset": "replay.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/chroma-ui-sheet.png"
+      ]
+    },
+    {
+      "op": "isolate-crop-resize-encode",
+      "sources": [
+        "source/gpt-image-2/chroma-ui-sheet.png"
+      ],
+      "output": "ui/replay.webp",
+      "script": "tools/finalize-cards.sh",
+      "dimensions": {
+        "width": 258,
+        "height": 258
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/chroma-ui-sheet.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 258,
+    "height": 258,
+    "codec": "webp",
+    "pixelFormat": "yuva420p",
+    "bytes": 9446
+  },
+  "created": "2026-08-18"
+}

@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/blue.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/blue.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/blue.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "doo",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "blue",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/blue-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -17,
+      "meanVolumeDb": -22.6
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "doo",
+    "heard": "Dooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+    "emptyTranscript": false,
+    "ratio": 0.006718924972004479
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/blue.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "05134eae5d4f471652d34eb9325722e5469e6656592b1be01cd6533ca62fed15"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/blue.wav",
+      "bytes": 141198,
+      "sha256": "4c07d49cbabba8f9bb1d0c1fbc6e7099664bd753486c522b5299067f1c45014e"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/blue.waveform.png",
+      "bytes": 4837,
+      "sha256": "0e222bb79b338e9b28491937423320c4731443ca51245aca8a333833bc39f068"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/blue.spectrogram.png",
+      "bytes": 439497,
+      "sha256": "dcba7d3c83ae653a90e05cd2eb5dde1eadd06cd33de7937e670f9f8df762d6d6"
+    }
+  }
+}

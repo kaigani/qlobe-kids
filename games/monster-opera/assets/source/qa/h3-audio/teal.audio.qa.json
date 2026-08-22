@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/teal.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/teal.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/teal.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "mmm",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "teal",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -14.2,
+      "meanVolumeDb": -22.2
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "mmm",
+    "heard": "Hmm.",
+    "emptyTranscript": false,
+    "ratio": 0.6666666666666666
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/teal.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "00b855d6585fe946743ae7c0b87111df5fb846cddbbe15c33eeaadc18274d06e"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/teal.wav",
+      "bytes": 141198,
+      "sha256": "d52d3d40fa06ecc47730306bd326155a6d3643135aa30212855b38d4a0fc7373"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/teal.waveform.png",
+      "bytes": 8522,
+      "sha256": "de8d38ba313c2ba3650b1d84c23ad2cda486553ff547d7ab6c8b5f15ea43a806"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/teal.spectrogram.png",
+      "bytes": 273388,
+      "sha256": "224f4a4ab3cb1b5ea634e71919a555e2ae8665183107215011fd0f7b4b349165"
+    }
+  }
+}

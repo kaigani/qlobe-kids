@@ -1,0 +1,64 @@
+{
+  "asset": "teal-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-teal-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/teal.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "00b855d6585fe946743ae7c0b87111df5fb846cddbbe15c33eeaadc18274d06e"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/teal.wav",
+        "bytes": 141198,
+        "sha256": "d52d3d40fa06ecc47730306bd326155a6d3643135aa30212855b38d4a0fc7373"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/teal.waveform.png",
+        "bytes": 8522,
+        "sha256": "de8d38ba313c2ba3650b1d84c23ad2cda486553ff547d7ab6c8b5f15ea43a806"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/teal.spectrogram.png",
+        "bytes": 273388,
+        "sha256": "224f4a4ab3cb1b5ea634e71919a555e2ae8665183107215011fd0f7b4b349165"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/teal.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the teal fuzzy round-ear monster card. Static camera, one continuous shot. The same friendly monster closes its lips gently and performs one warm unaccompanied humming-pad vocal: a single steady sustained 'mmmmmm' on one stable medium-low musical pitch for about three seconds, then stops and smiles. Audio must be a dry isolated solo monster hum, centered and clean, with silence before and after. No words, no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/teal.png"
+      },
+      "result": {
+        "jobId": "fbbd9f3ac774472d81aa9efc36a3bba8",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/teal-voice-raw.mp4",
+        "bytes": 296939,
+        "sha256": "a0fcb4b5e6bd374500a4007f0aee6ef752a75a797e73fac8b5c1555bcba189b1",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:31:23.910916+00:00",
+        "completedAt": "2026-08-18T14:33:47.296397+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

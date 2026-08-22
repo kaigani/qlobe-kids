@@ -5,7 +5,7 @@ import { onTap } from '../../../shared/js/tap.js';
 import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
 import * as voice from '../../../shared/js/voice-clips.js';
 import * as sfx from '../../../shared/js/sfx.js';
-import * as music from '../../../shared/js/music.js';
+import * as bgm from '../../../shared/js/bgm.js';
 import { createDragToSlotDom } from '../../../shared/js/stage/drag-to-slot-dom.js';
 import { burstConfetti, tada } from '../../../shared/js/celebrate.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
@@ -43,7 +43,6 @@ let nudger = null;
 let roundDisposers = [];
 let currentCue = 'welcome';
 let speakToken = 0;
-let musicHandle = null;
 let musicWanted = false;
 let endConfetti = null;
 let playGeneration = 0;
@@ -60,6 +59,7 @@ function allArtUrls() {
     config.assets.banner,
     config.assets.pip,
     config.assets.maya,
+    ...(config.guests || []).map((guest) => guest.portrait),
   ];
   for (const meal of config.modes) {
     top.push(meal.art);
@@ -69,9 +69,10 @@ function allArtUrls() {
   return top;
 }
 
+bgm.preload(config.music.track);
+
 const ready = Promise.all([
   voice.init('./assets/audio/manifest.json', './data/lines.json', config.voice),
-  music.init('../../../shared/assets/instruments/manifest.json'),
   preloadImages(allArtUrls()),
 ]).then(() => {
   state.ready = true;
@@ -82,23 +83,22 @@ const ready = Promise.all([
 
 function startMusic() {
   musicWanted = true;
-  if (musicHandle || !music.ready.loaded) return;
-  musicHandle = music.playSong(config.music.song, config.music.band);
-  music.duck(0.34, 0);
+  bgm.play(config.music.track, { key: 'table-setting' });
+  bgm.duck(0.34, 0);
 }
 
 function stopSpeaking() {
   speakToken += 1;
   voice.stop();
-  music.duck(1, 180);
+  bgm.duck(1, 180);
 }
 
 async function sayKey(key, token) {
   if (!key || token !== speakToken) return false;
   currentCue = key;
-  await music.duckDuring(voice.say(key, config.voice[key]), { down: 0.18, downMs: 100, upMs: 320 });
+  await bgm.duckDuring(voice.say(key, config.voice[key]), { down: 0.18, downMs: 100, upMs: 320 });
   const stillCurrent = token === speakToken;
-  if (stillCurrent) music.duck(0.34, 320);
+  if (stillCurrent) bgm.duck(0.34, 320);
   return stillCurrent;
 }
 
@@ -121,12 +121,12 @@ function setMuted(on = true) {
   state.muted = Boolean(on);
   voice.setMuted(state.muted);
   sfx.setMuted(state.muted);
-  music.setMuted(state.muted);
+  bgm.setMuted(state.muted);
   return state.muted;
 }
 
 const disposeUnlock = installUnlockOnGesture({
-  extra: [music.unlock],
+  extra: [bgm.unlock],
   onFirst: () => {
     startMusic();
     if (screens.is('splash')) speak('welcome');
@@ -293,6 +293,11 @@ function settingMarkup({ guide = false, final = false } = {}) {
   return `<img class="placemat-art" src="${config.assets.placemat}" alt="" draggable="false">${slots}`;
 }
 
+function guestForSeat(index) {
+  const guests = config.guests;
+  return guests?.length ? guests[index % guests.length] : null;
+}
+
 function renderGuide() {
   return `
     <aside class="guide-wrap" aria-label="Picture guide for ${mode.title}">
@@ -300,6 +305,12 @@ function renderGuide() {
       <div class="guide-setting">${settingMarkup({ guide: true })}</div>
       <img class="guide-pip" src="${config.assets.pip}" alt="Pip points to the guide" draggable="false">
     </aside>`;
+}
+
+function renderRoundGuest() {
+  const guest = guestForSeat(state.seatIndex);
+  if (!guest) return '';
+  return `<img class="round-guest" src="${guest.portrait}" alt="This place is for ${guest.name}" draggable="false">`;
 }
 
 function renderProgress() {
@@ -348,6 +359,7 @@ function renderPlay() {
       </div>
       ${renderProgress()}
       ${renderGuide()}
+      ${renderRoundGuest()}
       <div class="setting-zone" aria-label="Place ${state.seatIndex + 1} of ${mode.seats}">
         <div class="placemat-wrap">${settingMarkup()}</div>
       </div>
@@ -589,8 +601,7 @@ async function attemptPlace(itemId, slotId, { sourceEl = null, from = null, drag
   state.phase = 'seat-complete';
   renderPlay();
   burstConfetti({ host: playEl.querySelector('.setting-zone'), count: 16, duration: 950, rng });
-  speak('place-ready');
-  await timers.wait(900);
+  await Promise.all([speak('place-ready'), timers.wait(900)]);
   if (!screens.is('play') || state.phase !== 'seat-complete') return { ok: false, reason: 'cancelled' };
   await completeSeat();
   return { ok: true, item: itemId, slot: wanted, complete: true };
@@ -611,12 +622,13 @@ async function completeSeat() {
   speak(state.seatIndex === mode.seats - 1 ? 'last-place' : 'next-place');
 }
 
-function finalSettingMarkup() {
+function finalSettingMarkup(guest) {
   const items = mode.slots.map((slot) => {
     const item = requiredForSlot(slot.id);
     return `<img class="final-item" src="${item.art}" alt="" draggable="false" style="${slotStyle(slot, 0.9)}">`;
   }).join('');
-  return `<div class="final-setting"><img src="${config.assets.placemat}" class="final-placemat" alt="" draggable="false">${items}</div>`;
+  const badge = guest ? `<img class="final-guest" src="${guest.portrait}" alt="${guest.name}'s place" draggable="false">` : '';
+  return `<div class="final-setting"><img src="${config.assets.placemat}" class="final-placemat" alt="" draggable="false">${items}${badge}</div>`;
 }
 
 function showEnd() {
@@ -633,7 +645,7 @@ function showEnd() {
         <h1>Table ready!</h1>
       </div>
       <div class="four-place-table" aria-label="Four complete place settings">
-        ${finalSettingMarkup()}${finalSettingMarkup()}${finalSettingMarkup()}${finalSettingMarkup()}
+        ${Array.from({ length: mode.seats }, (_, index) => finalSettingMarkup(guestForSeat(index))).join('')}
       </div>
       <img class="end-maya" src="${config.assets.maya}" alt="Maya gives a thumbs-up" draggable="false">
       <img class="end-pip" src="${config.assets.pip}" alt="Pip celebrates" draggable="false">
@@ -762,7 +774,7 @@ installDebug({
   finishAll,
   getLayout,
   getAudioLog: () => voice.getAudioLog(),
-  getMusicStats: () => music.stats(),
+  getMusicStats: () => bgm.stats(),
 });
 
 window.addEventListener('pagehide', () => {
@@ -770,8 +782,7 @@ window.addEventListener('pagehide', () => {
   disposeKiosk();
   cleanPlay();
   cleanEnd();
-  musicHandle?.stop();
-  musicHandle = null;
+  bgm.stop({ fadeOutMs: 0 });
 }, { once: true });
 
 renderSplash();

@@ -19,9 +19,10 @@ All briefs preserve the kawaii food-toy/cardboard look: chunky friendly forms, w
 |---|---|---|
 | Fredoka SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | Fontsource `@fontsource/fredoka@5.0.13`, Google Fonts | SIL OFL 1.1; reused unmodified |
 | HUD buttons (`shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png`) | Shared QLOBE Kids library | Reused shared raster UI |
-| Instrument samples | Shared QLOBE library (`shared/assets/instruments/`) | Piano, vibraphone, and flute samples arranged at runtime by `shared/js/music.js` |
+| Background music (`shared/assets/music/mug-and-sunbeam.mp3`) | Shared QLOBE Kids music library | Recorded (non-seamless) track; looped at runtime with a fade via `shared/js/bgm.js` |
 | Sound effects | Shared QLOBE runtime (`shared/js/sfx.js`) | Synthesized at runtime; no sourced SFX clips |
 | Link preview (`assets/og-image.jpg`) | Screenshot captured by `tools/pipeline/capture_og_images.mjs` | 1200×630; regenerate with the tool |
+| Round-guest portraits (`shared/characters/{leo,nia,sam,ravi}/portrait.png`) | Shared QLOBE Kids character roster | Referenced directly, not copied; one guest cycles in beside Pip each of the 4 rounds and tags its final place setting |
 
 ## Audio provenance
 

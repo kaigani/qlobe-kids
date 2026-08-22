@@ -1209,21 +1209,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#f59f36",
       "modes": [
         {
-          "id": "stack",
-          "title": "Stack It Tall",
-          "skill": "size ordering and counting tower height"
+          "id": "build",
+          "title": "Build It Tall",
+          "skill": "measure height by counting equal-size units"
         },
         {
           "id": "compare",
-          "title": "Two Towers",
-          "skill": "height comparison between two towers"
+          "title": "Tower Detective",
+          "skill": "compare taller, shorter, and equal heights"
+        },
+        {
+          "id": "robot",
+          "title": "Robot Workshop",
+          "skill": "explore one-unit height changes"
         }
       ],
-      "summary": "Compare heights by stacking cubes."
+      "summary": "Build equal paper blocks, compare taller, shorter, and same-height towers, then wake a friendly robot."
     },
     {
       "id": "pouring-station",
@@ -1261,7 +1266,7 @@
         "min": 2,
         "max": 5
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#f4a83d",
       "modes": [
         {
@@ -1762,7 +1767,7 @@
         "min": 3,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#789a43",
       "modes": [
         {
@@ -2679,30 +2684,35 @@
       "summary": "Turn circles into animals or objects."
     },
     {
-      "id": "song-story-remix",
-      "title": "Song Story Remix",
+      "id": "monster-opera",
+      "title": "Monster Opera",
       "category": "art-music",
-      "path": "games/song-story-remix/",
-      "icon": "assets/hub/tiles/song-story-remix.jpg",
+      "path": "games/monster-opera/",
+      "icon": "assets/hub/tiles/monster-opera.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 3,
+        "max": 5
       },
-      "status": "in-design",
-      "accent": "#ffad7a",
+      "status": "beta",
+      "accent": "#f26f82",
       "modes": [
         {
-          "id": "farm",
-          "title": "Remix the Farm",
-          "skill": "song verse and animal sound play"
+          "id": "solo",
+          "title": "Sing with Me",
+          "skill": "compare low, middle, and high pitch in one timbre"
         },
         {
-          "id": "bus",
-          "title": "Remix the Bus",
-          "skill": "song verse and rider sound play"
+          "id": "chorus",
+          "title": "Make a Chorus",
+          "skill": "hear how distinct musical roles layer"
+        },
+        {
+          "id": "stage-show",
+          "title": "Pick a Stage",
+          "skill": "arrange a short call-and-response performance"
         }
       ],
-      "summary": "Change the lyrics to a familiar tune."
+      "summary": "Layer fuzzy monster voices into a tiny replayable opera."
     },
     {
       "id": "balance-beam-trail",

@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/coral.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/coral.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/coral.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "bop bop bop",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "coral",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/coral-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -9.1,
+      "meanVolumeDb": -24.4
+    },
+    "mp3": {
+      "bytes": 25121,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 2.0637,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 179428,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 2.0334,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "bop bop bop",
+    "heard": "Oh",
+    "emptyTranscript": false,
+    "ratio": 0.15384615384615385
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/coral.candidate.mp3",
+      "bytes": 25121,
+      "sha256": "34a2cca0903b74bcbf409dd230728bbaccece47bfb945868214f516d07fa46fa"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/coral.wav",
+      "bytes": 179428,
+      "sha256": "4f18a3e7f0617f8ca70a0777e73d6a8e093a540335955d30b6142871b80e300e"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/coral.waveform.png",
+      "bytes": 5288,
+      "sha256": "66cf98b13a5521bb6ee4b8f200f50177f173eb4de112ed3e023b12ba7c3a22fc"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/coral.spectrogram.png",
+      "bytes": 362850,
+      "sha256": "a230ca75866242c208749443b83fd1bbbcd59a62faf3b61da6801ca562e9d2e2"
+    }
+  }
+}

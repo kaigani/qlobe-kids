@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-20T16:25:47.506Z",
+  "generated": "2026-08-21T20:40:48.078Z",
   "engines": {
     "coach-timer": {
       "count": 14,
@@ -31,7 +31,7 @@
       ]
     },
     "choose-one": {
-      "count": 11,
+      "count": 10,
       "games": [
         "board-game-reset",
         "calm-corner-cards",
@@ -41,16 +41,14 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "song-story-remix",
         "sound-hopscotch",
         "story-repair-shop"
       ]
     },
     "build-assemble": {
-      "count": 7,
+      "count": 6,
       "games": [
         "blend-train",
-        "block-tower-measure",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
@@ -103,10 +101,9 @@
       ]
     },
     "sort-into-bins": {
-      "count": 3,
+      "count": 2,
       "games": [
         "magnet-explorer",
-        "table-setting-mission",
         "tweezer-rescue"
       ]
     },
@@ -205,7 +202,7 @@
     },
     "bean-sprout-watch": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
@@ -282,23 +279,34 @@
       "packs": []
     },
     "block-tower-measure": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/mode-select.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/ui"
+        "games/block-tower-measure/assets/art",
+        "games/block-tower-measure/assets/audio"
       ],
       "packs": []
     },
@@ -1307,6 +1315,34 @@
       "assets": [],
       "packs": []
     },
+    "monster-opera": {
+      "engine": null,
+      "status": "beta",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/constrained-gesture-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [],
+      "packs": []
+    },
     "mountain-seasons-wheel": {
       "engine": null,
       "status": "live",
@@ -1844,14 +1880,14 @@
     },
     "puzzle-map-match": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
         "shared/js/debug-harness.js",
-        "shared/js/music.js",
         "shared/js/preload.js",
         "shared/js/puzzle-cutter.js",
         "shared/js/sfx.js",
@@ -2297,25 +2333,6 @@
       ],
       "packs": []
     },
-    "song-story-remix": {
-      "engine": "choose-one",
-      "status": "in-design",
-      "category": "art-music",
-      "characters": [],
-      "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
-        "shared/js/sfx.js",
-        "shared/js/speech.js"
-      ],
-      "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
-      ],
-      "assets": [],
-      "packs": []
-    },
     "sound-basket": {
       "engine": null,
       "status": "beta",
@@ -2592,19 +2609,33 @@
       "packs": []
     },
     "table-setting-mission": {
-      "engine": "sort-into-bins",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "practical-life",
-      "characters": [],
+      "characters": [
+        "Maya",
+        "Pip"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sort-into-bins.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/music.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [],
@@ -2984,6 +3015,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -3022,7 +3054,6 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
-        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -3051,6 +3082,7 @@
         "bead-path-builder",
         "bean-sprout-watch",
         "big-paper-murals",
+        "block-tower-measure",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3072,6 +3104,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
@@ -3089,12 +3122,16 @@
         "sound-cylinder-match",
         "sound-painting",
         "story-stones",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
         "weather-scientist",
         "world-music-dance"
+      ],
+      "shared/js/bgm.js": [
+        "puzzle-map-match"
       ],
       "shared/js/camera-motion.js": [
         "freeze-focus-dance"
@@ -3105,6 +3142,7 @@
       "shared/js/celebrate.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3127,6 +3165,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
         "weather-scientist"
@@ -3157,6 +3196,7 @@
         "bead-path-builder",
         "bean-sprout-watch",
         "big-paper-murals",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3177,6 +3217,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
@@ -3194,6 +3235,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "story-stones",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -3202,6 +3244,7 @@
         "world-music-dance"
       ],
       "shared/js/dom.js": [
+        "monster-opera",
         "puppet-retell",
         "tangram-tales",
         "teen-bead-builder",
@@ -3209,7 +3252,6 @@
       ],
       "shared/js/engines/build-assemble.js": [
         "blend-train",
-        "block-tower-measure",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
@@ -3225,7 +3267,6 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "song-story-remix",
         "sound-hopscotch",
         "story-repair-shop"
       ],
@@ -3273,7 +3314,6 @@
       ],
       "shared/js/engines/sort-into-bins.js": [
         "magnet-explorer",
-        "table-setting-mission",
         "tweezer-rescue"
       ],
       "shared/js/engines/story-stones.js": [
@@ -3304,6 +3344,7 @@
       "shared/js/hud.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-gradient-cards",
@@ -3321,10 +3362,12 @@
         "name-puzzle",
         "obstacle-course-builder",
         "red-green-light",
+        "table-setting-mission",
         "tiny-reader-theater"
       ],
       "shared/js/idle-nudge.js": [
         "bean-sprout-watch",
+        "block-tower-measure",
         "button-zipper-lab",
         "color-gradient-cards",
         "color-mixing-lab",
@@ -3334,9 +3377,11 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "sink-or-float",
+        "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
         "weather-scientist",
@@ -3349,6 +3394,7 @@
         "bug-hotel-observer"
       ],
       "shared/js/mode-select.js": [
+        "block-tower-measure",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3376,7 +3422,7 @@
         "bean-sprout-watch",
         "freeze-focus-dance",
         "my-puppet-band",
-        "puzzle-map-match",
+        "table-setting-mission",
         "world-music-dance"
       ],
       "shared/js/musical-canvas.js": [
@@ -3395,6 +3441,7 @@
         "land-water-tray",
         "laundry-sorter",
         "loose-parts-collage",
+        "monster-opera",
         "obstacle-course-builder",
         "sand-tray-letters",
         "sink-or-float",
@@ -3404,6 +3451,7 @@
       ],
       "shared/js/preload.js": [
         "bead-path-builder",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3418,9 +3466,11 @@
         "laundry-sorter",
         "letter-treasure-hunt",
         "loose-parts-collage",
+        "monster-opera",
         "mountain-seasons-wheel",
         "obstacle-course-builder",
         "puzzle-map-match",
+        "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden"
       ],
@@ -3429,6 +3479,7 @@
       ],
       "shared/js/rng.js": [
         "big-paper-murals",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3457,6 +3508,7 @@
         "sink-or-float",
         "sound-basket",
         "sound-cylinder-match",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -3465,6 +3517,7 @@
       ],
       "shared/js/screens.js": [
         "bean-sprout-watch",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-gradient-cards",
@@ -3475,10 +3528,12 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
         "snack-chef",
+        "table-setting-mission",
         "throwing-target-garden",
         "tiny-reader-theater"
       ],
@@ -3525,6 +3580,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -3563,7 +3619,6 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
-        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -3595,7 +3650,6 @@
         "bead-path-builder",
         "big-paper-murals",
         "blend-train",
-        "block-tower-measure",
         "board-game-reset",
         "bug-hotel-observer",
         "calm-corner-cards",
@@ -3655,7 +3709,6 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
-        "song-story-remix",
         "sound-basket",
         "sound-hopscotch",
         "sound-painting",
@@ -3665,7 +3718,6 @@
         "story-sequence",
         "subtraction-picnic",
         "sweep-the-trail",
-        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
@@ -3684,7 +3736,8 @@
         "blend-train"
       ],
       "shared/js/stage/constrained-gesture-dom.js": [
-        "button-zipper-lab"
+        "button-zipper-lab",
+        "monster-opera"
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "bead-path-builder",
@@ -3701,6 +3754,7 @@
         "snack-chef",
         "sound-basket",
         "story-stones",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder"
       ],
@@ -3768,6 +3822,7 @@
         "bead-path-builder",
         "bean-sprout-watch",
         "big-paper-murals",
+        "block-tower-measure",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3787,6 +3842,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
@@ -3804,6 +3860,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sound-sprouts",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -3814,6 +3871,7 @@
       "shared/js/timers.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "block-tower-measure",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3828,6 +3886,7 @@
         "land-water-tray",
         "letter-treasure-hunt",
         "lunchbox-pack",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
@@ -3838,6 +3897,7 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sound-cylinder-match",
+        "table-setting-mission",
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
@@ -3848,6 +3908,7 @@
         "bead-path-builder",
         "bean-sprout-watch",
         "blend-train",
+        "block-tower-measure",
         "bug-hotel-observer",
         "button-zipper-lab",
         "chocolate-chip-count",
@@ -3869,6 +3930,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "name-puzzle",
@@ -3889,6 +3951,7 @@
         "sound-painting",
         "sound-sprouts",
         "story-stones",
+        "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -3950,6 +4013,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -3988,7 +4052,6 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
-        "song-story-remix",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
@@ -4016,7 +4079,6 @@
         "animal-walk-cards",
         "balance-beam-trail",
         "blend-train",
-        "block-tower-measure",
         "board-game-reset",
         "calm-corner-cards",
         "chalkboard-big-strokes",
@@ -4056,7 +4118,6 @@
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
-        "song-story-remix",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4064,7 +4125,6 @@
         "story-stones",
         "subtraction-picnic",
         "sweep-the-trail",
-        "table-setting-mission",
         "texture-trail",
         "then-now-sort",
         "trail-counting-walk",
@@ -4076,6 +4136,7 @@
         "bead-path-builder",
         "bean-sprout-watch",
         "big-paper-murals",
+        "block-tower-measure",
         "button-zipper-lab",
         "chocolate-chip-count",
         "color-gradient-cards",
@@ -4089,6 +4150,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
@@ -4096,6 +4158,7 @@
         "rhythm-copycat",
         "sound-cylinder-match",
         "sound-painting",
+        "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
         "tiny-reader-theater",
@@ -4139,6 +4202,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -4173,7 +4237,6 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
-        "song-story-remix",
         "sound-basket",
         "sound-hopscotch",
         "sound-painting",
@@ -4285,7 +4348,8 @@
         "turn-taking-tower"
       ],
       "Maya": [
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "table-setting-mission"
       ],
       "nia": [
         "board-game-reset",
@@ -4316,6 +4380,9 @@
       ],
       "pip": [
         "red-green-light"
+      ],
+      "Pip": [
+        "table-setting-mission"
       ],
       "princess-lily": [
         "my-puppet-band",
@@ -4386,6 +4453,12 @@
       ]
     },
     "assets": {
+      "games/block-tower-measure/assets/art": [
+        "block-tower-measure"
+      ],
+      "games/block-tower-measure/assets/audio": [
+        "block-tower-measure"
+      ],
       "games/button-zipper-lab/assets/boards/zipper.webp": [
         "button-zipper-lab"
       ],
@@ -4973,7 +5046,6 @@
       "shared/assets/ui": [
         "bead-path-builder",
         "blend-train",
-        "block-tower-measure",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-gradient-cards",
@@ -5062,7 +5134,8 @@
         "turn-taking-tower"
       ],
       "shared/characters/Maya": [
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "table-setting-mission"
       ],
       "shared/characters/maya/portrait.png": [
         "snack-chef"

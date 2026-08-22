@@ -1,0 +1,19 @@
+{
+  "expected": "bum",
+  "result": {
+    "accepted": false,
+    "bytes": 216,
+    "emptyTranscript": false,
+    "heard": "BOOOOO",
+    "jobId": "d631d42ef6f7433a95376453682b999c",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.2222222222222222,
+    "rawSaved": "games/monster-opera/assets/source/qa/orange.candidate.transcript.whisper.json",
+    "saved": "games/monster-opera/assets/source/qa/orange.candidate.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/monster-opera/assets/source/audio-h3/orange.candidate.mp3",
+  "workflow": "whisper-stt"
+}

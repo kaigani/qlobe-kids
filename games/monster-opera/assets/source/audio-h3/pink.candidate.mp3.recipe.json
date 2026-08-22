@@ -1,0 +1,83 @@
+{
+  "asset": "pink.candidate.mp3",
+  "created": "2026-08-18",
+  "derivedFrom": "games/monster-opera/assets/source/video-raw/pink-voice-raw.mp4",
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-h3-pink",
+  "kind": "voice",
+  "qa": {
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "technicalGate": "passed",
+    "whisper": {
+      "status": "completed",
+      "expected": "la",
+      "heard": "Love",
+      "emptyTranscript": false,
+      "ratio": 0.3333333333333333
+    },
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/pink.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "39927cb82153212c8650dfeac483d5089b418a4c22264b03582fe191023f8071"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/pink.wav",
+        "bytes": 141198,
+        "sha256": "694841f110073ae12df0938f070331db19b16fa2b2d58c1618af76afe4a53ce8"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/pink.waveform.png",
+        "bytes": 6389,
+        "sha256": "33bebaa2e667588624ddfc167454cb725dd1c6918e164aca696881da562cb4ab"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/pink.spectrogram.png",
+        "bytes": 513041,
+        "sha256": "f55c6d4640e23477ba52867d822fb796499a1918711e39a42f579b494b8d28cb"
+      }
+    }
+  },
+  "refs": {
+    "expectedSyllable": "la",
+    "promptManifest": "games/monster-opera/tools/video-jobs.jsonl",
+    "qa": "games/monster-opera/assets/source/qa/h3-audio/pink.audio.qa.json",
+    "referenceImage": "games/monster-opera/assets/source/video-keys/pink.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/pink-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the pink fuzzy bow monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one bright sweet unaccompanied soprano vocal: a single steady sustained syllable 'laaaaa' on one stable high musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'la', no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, sparkle chime, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "referenceImage": "games/monster-opera/assets/source/video-keys/pink.png",
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    },
+    {
+      "filters": [
+        "silenceremove -45 dB",
+        "highpass 90 Hz",
+        "lowpass 8.5 kHz",
+        "loudnorm -20 LUFS / -2 dBTP"
+      ],
+      "mono": true,
+      "op": "extract-normalize",
+      "output": "games/monster-opera/assets/source/audio-h3/pink.wav",
+      "sampleRate": 44100,
+      "source": "games/monster-opera/assets/source/video-raw/pink-voice-raw.mp4",
+      "tool": "tools/process-h3-audio.py",
+      "trimmedMaximumSeconds": 1.6
+    },
+    {
+      "bitrate": "96k",
+      "codec": "libmp3lame",
+      "op": "encode",
+      "output": "games/monster-opera/assets/source/audio-h3/pink.candidate.mp3",
+      "source": "games/monster-opera/assets/source/audio-h3/pink.wav"
+    }
+  ]
+}

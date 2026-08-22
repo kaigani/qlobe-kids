@@ -1,0 +1,45 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-bg-splash-portrait-webp",
+  "kind": "image",
+  "asset": "splash-portrait.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/splash-portrait.png"
+      ]
+    },
+    {
+      "op": "resize-encode",
+      "sources": [
+        "source/gpt-image-2/splash-portrait.png"
+      ],
+      "output": "bg/splash-portrait.webp",
+      "dimensions": {
+        "width": 900,
+        "height": 1600
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/splash-portrait.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 900,
+    "height": 1600,
+    "codec": "webp",
+    "pixelFormat": "yuv420p",
+    "bytes": 48746
+  },
+  "created": "2026-08-18"
+}

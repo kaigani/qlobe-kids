@@ -1,0 +1,117 @@
+{
+  "format": "monster-opera-h3-generation-report",
+  "formatVersion": 1,
+  "created": "2026-08-18",
+  "workflow": "minimax-h3-r2v",
+  "endpoint": "configured-lan-redacted",
+  "authorization": {
+    "status": "explicit-user-authorized",
+    "date": "2026-08-18",
+    "scope": [
+      "eight committed Monster Opera video-key PNG uploads to LAN MiniMax H3",
+      "eight extracted H3 candidate uploads to LAN Whisper"
+    ]
+  },
+  "counts": {
+    "requested": 8,
+    "completed": 8,
+    "failedAttempts": 2,
+    "remoteResultHashVerified": 8
+  },
+  "failedAttempts": [
+    {
+      "id": "purple",
+      "jobId": "b1748094fcd843e6b3da530f286e7af4",
+      "status": "failed",
+      "errorClass": "no-output"
+    },
+    {
+      "id": "orange",
+      "jobId": "99c3d1cde0504db3b9db3fa808de7d92",
+      "status": "failed",
+      "errorClass": "no-output"
+    }
+  ],
+  "results": [
+    {
+      "id": "mint",
+      "jobId": "fe8a35e1b05243498bbb26fabe2c88d9",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:13:58.202403+00:00",
+      "completedAt": "2026-08-18T14:16:22.761421+00:00",
+      "bytes": 342359,
+      "sha256": "f265cf20ef06453866d92c1be5c0c59feb4f4f309c66d677179264acf675b84f",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "pink",
+      "jobId": "1f193e9768604bcf8a87cf03a74ebb54",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:10:23.036295+00:00",
+      "completedAt": "2026-08-18T14:12:42.183471+00:00",
+      "bytes": 423774,
+      "sha256": "c0b19cb55def60dc6fa3886049cf5d66fffd1e1ed15b298579e03b74a3c17b48",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "blue",
+      "jobId": "0b93c72f3e1045769b5c3ea45efbd876",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:16:23.701794+00:00",
+      "completedAt": "2026-08-18T14:18:53.472550+00:00",
+      "bytes": 324928,
+      "sha256": "bb42dedaea7dec5f7b54ceffd211347cfd1a0881612a80e518f61d359c1c1505",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "purple",
+      "jobId": "6a5cf43495594a719f8682a7806e5134",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:21:27.650231+00:00",
+      "completedAt": "2026-08-18T14:23:53.506300+00:00",
+      "bytes": 457739,
+      "sha256": "a7bbe92f7d687304d9020425ed355e2d9caf2d78a676707a347746e737642175",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "orange",
+      "jobId": "2b770bbce6884b45a9f072760d42d51d",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:26:28.476852+00:00",
+      "completedAt": "2026-08-18T14:28:51.652665+00:00",
+      "bytes": 316495,
+      "sha256": "6a1bca72c5ebdd5a21421031c824d95a5253a870217e7d296ffb6225e782093f",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "yellow",
+      "jobId": "1890c47427fe4b24ad7be027a8704978",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:28:51.921174+00:00",
+      "completedAt": "2026-08-18T14:31:21.777077+00:00",
+      "bytes": 444013,
+      "sha256": "4be8b61aaded909d8f8dd97348e49db1f59891601398eb98feb9f4977594f5d6",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "teal",
+      "jobId": "fbbd9f3ac774472d81aa9efc36a3bba8",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:31:23.910916+00:00",
+      "completedAt": "2026-08-18T14:33:47.296397+00:00",
+      "bytes": 296939,
+      "sha256": "a0fcb4b5e6bd374500a4007f0aee6ef752a75a797e73fac8b5c1555bcba189b1",
+      "remoteResultHashMatch": true
+    },
+    {
+      "id": "coral",
+      "jobId": "0055fea20d0547c796cd0742c5e684da",
+      "status": "completed",
+      "createdAt": "2026-08-18T14:33:47.464867+00:00",
+      "completedAt": "2026-08-18T14:36:08.803137+00:00",
+      "bytes": 402833,
+      "sha256": "922b4d8daac3dfc92a3ea5fb491deabf7894b6cd69e2406fb408d7dfcbfaf638",
+      "remoteResultHashMatch": true
+    }
+  ]
+}

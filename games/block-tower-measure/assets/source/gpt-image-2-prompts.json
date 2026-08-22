@@ -1,0 +1,39 @@
+{
+  "format": "qlobe-game-art-prompts",
+  "formatVersion": 1,
+  "model": "gpt-image-2",
+  "workflow": "Codex built-in image generation with the approved mockup overview as a style reference",
+  "reference": "../../../../../01-game-concepts/block-tower-measure/output/ui-mockups/00-overview.png",
+  "assets": {
+    "workshop-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "prompt": "Empty 4:3 Block Tower Measure paper-engineering workshop. Sky-blue cardstock wall, warm cream tabletop, edge-only shelves, pencils, rulers, folded geometric models, bunting, and layered blue paper skyline. Broad uncluttered center and safe HUD/prompt space. Handcrafted construction paper with fibers, cut edges, folds, stitches and soft paper shadows. No characters, robot, blocks, ruler in the center, UI, text, letters, numbers, logo, watermark, photography, hands, or glossy 3D toys."
+    },
+    "block-atlas-chroma-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "prompt": "Exactly five separate identical equal-unit cardstock blocks in one row on a flat #ff00ff chroma background: coral, mustard, teal-blue, lime, violet. Matching silhouette, dimensions, angle and height; paper fibers and folded side face; no shadows, text, faces, props or scenery."
+    },
+    "robot-chroma-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "prompt": "One full-body friendly segmented construction-paper robot on a flat #ff00ff chroma background. Teal square head, cream-and-ink eyes, happy mouth, mustard antenna, stacked coral/mustard/teal/lime unit body, accordion arms raised, folded feet. Crisp isolated silhouette; no shadow, text, tower, ruler, stars, UI or scenery."
+    },
+    "title-chroma-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "prompt": "Exact two-line papercraft title ‘Block Tower Measure’ on an irregular cream stitched paper plaque over flat #ff00ff chroma. Block in ink blue, Tower in coral, Measure in teal. Render each word once, spell exactly, no other text or objects."
+    },
+    "ui-atlas-chroma-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "prompt": "Exactly six separate blank papercraft props in a 3×2 atlas on flat #ff00ff chroma: mustard ruler without numerals, cream stitched prompt plaque, blue stitched floor mat, folded mustard star, coral stitched button plaque, teal scalloped mode card. No text, icons, blocks, robot or scenery."
+    },
+    "hub-tile-papercraft-gpt-image-2.png": {
+      "useCase": "stylized-concept",
+      "references": [
+        "workshop-gpt-image-2.png",
+        "robot-alpha-v3.png",
+        "block-atlas-alpha-v3.png"
+      ],
+      "prompt": "Premium 6:5 QLOBE papercraft hub tile. One friendly cut-paper robot holds a plain yellow paper ruler between a left tower of exactly two equal square paper blocks and a right tower of exactly four equal square paper blocks, all fully visible on the same cream tabletop baseline. Match the workshop, robot, and block references: tactile fibers, scissor-cut edges, folded cardstock faces, stitched detail, layered paper shadows, sky-blue paper wall. No glossy plastic, LEGO studs, text, numerals, logos, extra or hidden blocks, loose blocks, UI, child, hands, or watermark."
+    }
+  },
+  "postProcessing": "Chroma sources were extracted with the installed imagegen remove_chroma_key.py helper using explicit #ff00ff, a 60/120 soft matte, and a one-pixel edge contract. Version 3 passed hostile-green alpha QC. tools/finalize-art.py performs deterministic slicing, alpha trimming, normalization, WebP encoding, and QC contact-sheet output."
+}

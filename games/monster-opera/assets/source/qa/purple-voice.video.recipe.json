@@ -1,0 +1,64 @@
+{
+  "asset": "purple-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-purple-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/purple.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "67f191b45cdb424adb647d57b2000274fbbe67848bedb8a2bf5ba3f7c703dd78"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/purple.wav",
+        "bytes": 141198,
+        "sha256": "9c1ca5a127f7fedfd0e58a16407fe9dee0f0d5fb29e9e91d950ebd9ca040dff9"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/purple.waveform.png",
+        "bytes": 8797,
+        "sha256": "21af11360fe1779e70641cc4ef73222281ede8bc9af5f8d4d4aae146a334b812"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/purple.spectrogram.png",
+        "bytes": 462553,
+        "sha256": "38e6574b453fc78fb3ef1e5a8966dc442fb27f1c2495d28320097830f276ea52"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/purple.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/purple-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the purple fuzzy spiral-horn monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one mellow unaccompanied baritone vocal: a single steady sustained syllable 'wooooo' on one stable medium-low musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'woh', no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/purple.png"
+      },
+      "result": {
+        "jobId": "6a5cf43495594a719f8682a7806e5134",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/purple-voice-raw.mp4",
+        "bytes": 457739,
+        "sha256": "a7bbe92f7d687304d9020425ed355e2d9caf2d78a676707a347746e737642175",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:21:27.650231+00:00",
+        "completedAt": "2026-08-18T14:23:53.506300+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

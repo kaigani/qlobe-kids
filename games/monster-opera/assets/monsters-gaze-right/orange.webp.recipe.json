@@ -1,0 +1,49 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-monsters-gaze-right-orange-webp",
+  "kind": "image",
+  "asset": "orange.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "monsters/orange.webp",
+        "source/gpt-image-2/gaze-right-source.png"
+      ]
+    },
+    {
+      "op": "registered-raster-eye-patch-composite",
+      "sources": [
+        "monsters/orange.webp",
+        "source/gpt-image-2/gaze-right-source.png"
+      ],
+      "output": "monsters-gaze-right/orange.webp",
+      "script": "tools/finalize-facial-poses.sh",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "monsters/orange.webp",
+      "source/gpt-image-2/gaze-right-source.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 512,
+    "height": 512,
+    "codec": "webp",
+    "pixelFormat": "yuva420p",
+    "bytes": 26880
+  },
+  "created": "2026-08-18"
+}

@@ -1,0 +1,19 @@
+{
+  "expected": "bop bop bop",
+  "result": {
+    "accepted": false,
+    "bytes": 204,
+    "emptyTranscript": false,
+    "heard": "Oh",
+    "jobId": "4ddb0d330baf412b9010caa9d6a5da1b",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.15384615384615385,
+    "rawSaved": "games/monster-opera/assets/source/qa/coral.candidate.transcript.whisper.json",
+    "saved": "games/monster-opera/assets/source/qa/coral.candidate.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/monster-opera/assets/source/audio-h3/coral.candidate.mp3",
+  "workflow": "whisper-stt"
+}

@@ -1,0 +1,254 @@
+{
+  "format": "qlobe-audio-qa",
+  "formatVersion": 1,
+  "created": "2026-08-18",
+  "overallStatus": "provisional-runtime",
+  "replacementTarget": "MiniMax H3 candidate after Whisper and manual isolation review",
+  "counts": {
+    "tracks": 8,
+    "technicalPass": 8,
+    "technicalFail": 0
+  },
+  "tracks": [
+    {
+      "id": "blue",
+      "asset": "audio/monsters/blue.mp3",
+      "recipe": "assets/audio/monsters/blue.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/blue.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 0.966531,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 12011
+      },
+      "wavMetadata": {
+        "durationSeconds": 0.92,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 81268
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "coral",
+      "asset": "audio/monsters/coral.mp3",
+      "recipe": "assets/audio/monsters/coral.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/coral.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.149388,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 14206
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.1,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 97144
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "mint",
+      "asset": "audio/monsters/mint.mp3",
+      "recipe": "assets/audio/monsters/mint.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/mint.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.28,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 15773
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.25,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 110374
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "orange",
+      "asset": "audio/monsters/orange.mp3",
+      "recipe": "assets/audio/monsters/orange.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/orange.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.201633,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 14833
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.16,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 102436
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "pink",
+      "asset": "audio/monsters/pink.mp3",
+      "recipe": "assets/audio/monsters/pink.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/pink.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.48898,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 18281
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.45,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 128014
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "purple",
+      "asset": "audio/monsters/purple.mp3",
+      "recipe": "assets/audio/monsters/purple.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/purple.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.28,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 15773
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.25,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 110374
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "teal",
+      "asset": "audio/monsters/teal.mp3",
+      "recipe": "assets/audio/monsters/teal.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/teal.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.48898,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 18281
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.45,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 128014
+      },
+      "qa": "provisional"
+    },
+    {
+      "id": "yellow",
+      "asset": "audio/monsters/yellow.mp3",
+      "recipe": "assets/audio/monsters/yellow.mp3.recipe.json",
+      "wav": "assets/source/concept-audio/yellow.wav",
+      "technicalPass": true,
+      "checks": {
+        "mp3Decode": true,
+        "wavDecode": true,
+        "mono": true,
+        "sampleRate": true
+      },
+      "mp3": {
+        "durationSeconds": 1.227755,
+        "codec": "mp3",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "mono",
+        "bytes": 15146
+      },
+      "wavMetadata": {
+        "durationSeconds": 1.2,
+        "codec": "pcm_s16le",
+        "sampleRate": 44100,
+        "channels": 1,
+        "channelLayout": "unknown",
+        "bytes": 105964
+      },
+      "qa": "provisional"
+    }
+  ]
+}

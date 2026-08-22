@@ -1,0 +1,52 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-monsters-coral-webp",
+  "kind": "image",
+  "asset": "coral.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/monster-lineup-black.png",
+        "source/gpt-image-2/monster-lineup-alpha.png"
+      ]
+    },
+    {
+      "op": "repair-interior-alpha-split-resize-encode",
+      "sources": [
+        "source/gpt-image-2/monster-lineup-black.png",
+        "source/gpt-image-2/monster-lineup-alpha.png"
+      ],
+      "output": "monsters/coral.webp",
+      "script": "tools/finalize-cast.sh",
+      "supportingScripts": [
+        "tools/repair-alpha.py"
+      ],
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/monster-lineup-black.png",
+      "source/gpt-image-2/monster-lineup-alpha.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 512,
+    "height": 512,
+    "codec": "webp",
+    "pixelFormat": "yuva420p",
+    "bytes": 23830
+  },
+  "created": "2026-08-18"
+}

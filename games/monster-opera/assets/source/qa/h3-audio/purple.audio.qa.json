@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/purple.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/purple.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/purple.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "woh",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "purple",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/purple-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -10.2,
+      "meanVolumeDb": -22.8
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "woh",
+    "heard": "Ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+    "emptyTranscript": false,
+    "ratio": 0
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/purple.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "67f191b45cdb424adb647d57b2000274fbbe67848bedb8a2bf5ba3f7c703dd78"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/purple.wav",
+      "bytes": 141198,
+      "sha256": "9c1ca5a127f7fedfd0e58a16407fe9dee0f0d5fb29e9e91d950ebd9ca040dff9"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/purple.waveform.png",
+      "bytes": 8797,
+      "sha256": "21af11360fe1779e70641cc4ef73222281ede8bc9af5f8d4d4aae146a334b812"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/purple.spectrogram.png",
+      "bytes": 462553,
+      "sha256": "38e6574b453fc78fb3ef1e5a8966dc442fb27f1c2495d28320097830f276ea52"
+    }
+  }
+}

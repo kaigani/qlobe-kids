@@ -1,0 +1,61 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-audio-purple",
+  "kind": "voice",
+  "asset": "purple.mp3",
+  "steps": [
+    {
+      "workflow": "project-owned-concept-video-extract",
+      "sourceRef": "source/concept-audio/README.md",
+      "output": "source/concept-audio/purple.wav",
+      "script": "tools/extract-concept-samples.sh",
+      "processing": "mono, 90 Hz high-pass, 8.5 kHz low-pass, fades, -20 LUFS / -2 dBTP"
+    },
+    {
+      "op": "encode",
+      "source": "source/concept-audio/purple.wav",
+      "output": "audio/monsters/purple.mp3",
+      "script": "tools/extract-concept-samples.sh",
+      "codec": "libmp3lame",
+      "bitrate": "96k",
+      "sampleRate": 44100,
+      "channels": 1
+    }
+  ],
+  "refs": {
+    "wav": "source/concept-audio/purple.wav",
+    "readme": "source/concept-audio/README.md",
+    "script": "tools/extract-concept-samples.sh"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "provisional",
+    "technicalStatus": "passed",
+    "checks": {
+      "mp3Decode": true,
+      "wavDecode": true,
+      "mono": true,
+      "sampleRate": true
+    },
+    "decode": true,
+    "mp3": {
+      "durationSeconds": 1.28,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "channelLayout": "mono",
+      "bytes": 15773
+    },
+    "wav": {
+      "durationSeconds": 1.25,
+      "codec": "pcm_s16le",
+      "sampleRate": 44100,
+      "channels": 1,
+      "channelLayout": "unknown",
+      "bytes": 110374
+    },
+    "replacementTarget": "MiniMax H3 candidate after Whisper and manual isolation review"
+  },
+  "created": "2026-08-18"
+}

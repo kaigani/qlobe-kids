@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/orange.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/orange.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/orange.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "bum",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "orange",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/orange-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -14.9,
+      "meanVolumeDb": -22.9
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "bum",
+    "heard": "BOOOOO",
+    "emptyTranscript": false,
+    "ratio": 0.2222222222222222
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/orange.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "f4bfc7f7c13cba68ad757e83ba97d9acc1619e9e69a5ef5f14fc3766b09a05af"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/orange.wav",
+      "bytes": 141198,
+      "sha256": "7b0fd937a99d36cdeb75da3cb74ad605f37e68f91ef023fd320623c668c5e43e"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/orange.waveform.png",
+      "bytes": 5924,
+      "sha256": "04171f70fedd7e0f903784e04a6c98897b8b49a1219910ad00bc5038750458dc"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/orange.spectrogram.png",
+      "bytes": 452546,
+      "sha256": "5dbde2acbec9767e527758e11a53e0adbb29dcb7bc6b4016b5eae31860e4bc9c"
+    }
+  }
+}

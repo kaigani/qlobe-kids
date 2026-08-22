@@ -1,0 +1,64 @@
+{
+  "asset": "coral-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-coral-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/coral.candidate.mp3",
+        "bytes": 25121,
+        "sha256": "34a2cca0903b74bcbf409dd230728bbaccece47bfb945868214f516d07fa46fa"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/coral.wav",
+        "bytes": 179428,
+        "sha256": "4f18a3e7f0617f8ca70a0777e73d6a8e093a540335955d30b6142871b80e300e"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/coral.waveform.png",
+        "bytes": 5288,
+        "sha256": "66cf98b13a5521bb6ee4b8f200f50177f173eb4de112ed3e023b12ba7c3a22fc"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/coral.spectrogram.png",
+        "bytes": 362850,
+        "sha256": "a230ca75866242c208749443b83fd1bbbcd59a62faf3b61da6801ca562e9d2e2"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/coral.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/coral-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the coral-pink fuzzy little-horn monster card. Static camera, one continuous shot. The same friendly monster makes exactly three separate comic unaccompanied vocal pops: 'bop' ... 'bop' ... 'bop', evenly spaced, each short, round, and gentle, then smiles. Audio must be a dry isolated solo monster voice, centered and clean, with clear silence between pops. No other words, no tune, harmony, backing singer, music, instruments, drum, beat track, ambience, crowd, applause, reverb, UI sound, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/coral.png"
+      },
+      "result": {
+        "jobId": "0055fea20d0547c796cd0742c5e684da",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/coral-voice-raw.mp4",
+        "bytes": 402833,
+        "sha256": "922b4d8daac3dfc92a3ea5fb491deabf7894b6cd69e2406fb408d7dfcbfaf638",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:33:47.464867+00:00",
+        "completedAt": "2026-08-18T14:36:08.803137+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

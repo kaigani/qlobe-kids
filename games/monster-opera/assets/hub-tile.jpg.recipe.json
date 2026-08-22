@@ -1,0 +1,45 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-hub-tile-jpg",
+  "kind": "image",
+  "asset": "hub-tile.jpg",
+  "steps": [
+    {
+      "workflow": "project-concept-art",
+      "promptRef": "source/ui-mockups/PROMPTS.md",
+      "sources": [
+        "source/ui-mockups/splash.png"
+      ]
+    },
+    {
+      "op": "crop-resize-encode",
+      "sources": [
+        "source/ui-mockups/splash.png"
+      ],
+      "output": "hub-tile.jpg",
+      "dimensions": {
+        "width": 640,
+        "height": 533
+      },
+      "encoding": "mjpeg"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/ui-mockups/PROMPTS.md",
+    "sources": [
+      "source/ui-mockups/splash.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 640,
+    "height": 533,
+    "codec": "mjpeg",
+    "pixelFormat": "yuvj420p",
+    "bytes": 75559
+  },
+  "created": "2026-08-18"
+}

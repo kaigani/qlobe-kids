@@ -1,0 +1,45 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-bg-garden-webp",
+  "kind": "image",
+  "asset": "garden.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/garden-stage-clean.png"
+      ]
+    },
+    {
+      "op": "resize-encode",
+      "sources": [
+        "source/gpt-image-2/garden-stage-clean.png"
+      ],
+      "output": "bg/garden.webp",
+      "dimensions": {
+        "width": 1600,
+        "height": 1200
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/garden-stage-clean.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 1600,
+    "height": 1200,
+    "codec": "webp",
+    "pixelFormat": "yuv420p",
+    "bytes": 154722
+  },
+  "created": "2026-08-18"
+}

@@ -1,0 +1,49 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-monsters-singing-mint-webp",
+  "kind": "image",
+  "asset": "mint.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "monsters/mint.webp",
+        "source/gpt-image-2/singing-mouth-source.png"
+      ]
+    },
+    {
+      "op": "registered-raster-patch-composite",
+      "sources": [
+        "monsters/mint.webp",
+        "source/gpt-image-2/singing-mouth-source.png"
+      ],
+      "output": "monsters-singing/mint.webp",
+      "script": "tools/finalize-facial-poses.sh",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "monsters/mint.webp",
+      "source/gpt-image-2/singing-mouth-source.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 512,
+    "height": 512,
+    "codec": "webp",
+    "pixelFormat": "yuva420p",
+    "bytes": 25984
+  },
+  "created": "2026-08-18"
+}

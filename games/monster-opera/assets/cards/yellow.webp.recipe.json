@@ -1,0 +1,49 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-cards-yellow-webp",
+  "kind": "image",
+  "asset": "yellow.webp",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "promptRef": "source/gpt-image-2/PROMPTS.md",
+      "sources": [
+        "source/gpt-image-2/blank-card-source.png",
+        "monsters/yellow.webp"
+      ]
+    },
+    {
+      "op": "plate-sprite-composite",
+      "sources": [
+        "source/gpt-image-2/blank-card-source.png",
+        "monsters/yellow.webp"
+      ],
+      "output": "cards/yellow.webp",
+      "script": "tools/finalize-cards.sh",
+      "dimensions": {
+        "width": 374,
+        "height": 420
+      },
+      "encoding": "webp"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/gpt-image-2/PROMPTS.md",
+    "sources": [
+      "source/gpt-image-2/blank-card-source.png",
+      "monsters/yellow.webp"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 374,
+    "height": 420,
+    "codec": "webp",
+    "pixelFormat": "yuv420p",
+    "bytes": 11788
+  },
+  "created": "2026-08-18"
+}

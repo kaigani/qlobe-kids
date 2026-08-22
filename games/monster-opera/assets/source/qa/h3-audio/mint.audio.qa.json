@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/mint.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/mint.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/mint.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "loo",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "mint",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/mint-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -14.2,
+      "meanVolumeDb": -22.5
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "loo",
+    "heard": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+    "emptyTranscript": false,
+    "ratio": 0.006726457399103139
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/mint.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "ffc0739ddf4ae3d9e5a0274b3f358e302e39c20aec442f306b5f2a36592d24d5"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/mint.wav",
+      "bytes": 141198,
+      "sha256": "0f0b6955818c7de8b37c329450411474dee7cd915f9b61735bd7ce79881d30e9"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/mint.waveform.png",
+      "bytes": 6048,
+      "sha256": "8ea02ffc5b5f1f7e400c9f11ab46ba80d0dfad248279b1d35a98606a5da06461"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/mint.spectrogram.png",
+      "bytes": 461561,
+      "sha256": "158ac9c135d0fe70957c6e316ba2a4dc2c94dfea124f1c1fe6581fe44c577fbf"
+    }
+  }
+}

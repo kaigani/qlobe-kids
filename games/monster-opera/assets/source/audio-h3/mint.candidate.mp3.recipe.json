@@ -1,0 +1,83 @@
+{
+  "asset": "mint.candidate.mp3",
+  "created": "2026-08-18",
+  "derivedFrom": "games/monster-opera/assets/source/video-raw/mint-voice-raw.mp4",
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-h3-mint",
+  "kind": "voice",
+  "qa": {
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "technicalGate": "passed",
+    "whisper": {
+      "status": "completed",
+      "expected": "loo",
+      "heard": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+      "emptyTranscript": false,
+      "ratio": 0.006726457399103139
+    },
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/mint.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "ffc0739ddf4ae3d9e5a0274b3f358e302e39c20aec442f306b5f2a36592d24d5"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/mint.wav",
+        "bytes": 141198,
+        "sha256": "0f0b6955818c7de8b37c329450411474dee7cd915f9b61735bd7ce79881d30e9"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/mint.waveform.png",
+        "bytes": 6048,
+        "sha256": "8ea02ffc5b5f1f7e400c9f11ab46ba80d0dfad248279b1d35a98606a5da06461"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/mint.spectrogram.png",
+        "bytes": 461561,
+        "sha256": "158ac9c135d0fe70957c6e316ba2a4dc2c94dfea124f1c1fe6581fe44c577fbf"
+      }
+    }
+  },
+  "refs": {
+    "expectedSyllable": "loo",
+    "promptManifest": "games/monster-opera/tools/video-jobs.jsonl",
+    "qa": "games/monster-opera/assets/source/qa/h3-audio/mint.audio.qa.json",
+    "referenceImage": "games/monster-opera/assets/source/video-keys/mint.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/mint-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the mint-green fuzzy monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one warm unaccompanied alto vocal: a single steady sustained syllable 'looooo' on one stable medium musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'loo', no melody, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, chime, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "referenceImage": "games/monster-opera/assets/source/video-keys/mint.png",
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    },
+    {
+      "filters": [
+        "silenceremove -45 dB",
+        "highpass 90 Hz",
+        "lowpass 8.5 kHz",
+        "loudnorm -20 LUFS / -2 dBTP"
+      ],
+      "mono": true,
+      "op": "extract-normalize",
+      "output": "games/monster-opera/assets/source/audio-h3/mint.wav",
+      "sampleRate": 44100,
+      "source": "games/monster-opera/assets/source/video-raw/mint-voice-raw.mp4",
+      "tool": "tools/process-h3-audio.py",
+      "trimmedMaximumSeconds": 1.6
+    },
+    {
+      "bitrate": "96k",
+      "codec": "libmp3lame",
+      "op": "encode",
+      "output": "games/monster-opera/assets/source/audio-h3/mint.candidate.mp3",
+      "source": "games/monster-opera/assets/source/audio-h3/mint.wav"
+    }
+  ]
+}

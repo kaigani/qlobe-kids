@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Monster Opera Audio A/B Review</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-rounded, system-ui, sans-serif; color: #27173a; background: #f6f1fa; }
+    * { box-sizing: border-box; }
+    body { max-width: 1180px; margin: 0 auto; padding: 2rem 1rem 5rem; }
+    h1 { margin-bottom: 0.35rem; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1; }
+    h2, h3, p { margin-top: 0; }
+    button, input, textarea { font: inherit; }
+    .intro { max-width: 58rem; color: #574568; font-size: 1.05rem; line-height: 1.55; }
+    .review-panel { background: #29133f; color: white; padding: 1.25rem; margin: 1.5rem 0 2rem; border-radius: 1.25rem; box-shadow: 0 12px 32px #29133f26; }
+    .review-panel h2 { margin-bottom: 0.5rem; }
+    .review-panel ol { margin: 0.5rem 0 1rem; padding-left: 1.4rem; line-height: 1.55; }
+    .review-panel .fine-print { color: #d9cde4; margin-bottom: 0; font-size: 0.9rem; }
+    .review-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+    .review-actions button { border: 0; border-radius: 999px; padding: 0.7rem 1rem; font-weight: 750; cursor: pointer; }
+    #copy-choices { background: #f5cf4f; color: #27173a; }
+    #clear-choices { background: #563a6c; color: white; }
+    #copy-status { min-height: 1.5em; color: #f5cf4f; }
+    #choice-summary { width: 100%; min-height: 12rem; margin-top: 1rem; border: 1px solid #745d87; border-radius: 0.75rem; padding: 0.75rem; resize: vertical; background: #1f0d31; color: white; }
+    article { background: white; padding: clamp(1rem, 3vw, 1.5rem); margin: 1.25rem 0; border: 1px solid #ded3e7; border-radius: 1.25rem; box-shadow: 0 5px 16px #3115420b; }
+    .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .card-heading h2 { margin-bottom: 0; font-size: 1.75rem; }
+    .decision-state { border-radius: 999px; padding: 0.35rem 0.65rem; background: #eee8f2; color: #665571; font-size: 0.85rem; font-weight: 750; }
+    .decision-state.chosen { background: #d9f3df; color: #135d2e; }
+    .comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .version { min-width: 0; padding: 1rem; border: 2px solid; border-radius: 1rem; }
+    .version-current { border-color: #9b8ba8; background: #faf8fc; }
+    .version-candidate { border-color: #8151b5; background: #f7f0ff; }
+    .eyebrow { margin-bottom: 0.35rem; font-size: 0.78rem; letter-spacing: 0.08em; font-weight: 850; color: #6b4d81; }
+    .version h3 { margin-bottom: 0.2rem; }
+    .source-note { min-height: 2.4em; margin-bottom: 0.7rem; color: #665571; font-size: 0.92rem; }
+    audio { width: 100%; }
+    .media-meta { margin: 0.55rem 0 0; color: #665571; font-size: 0.82rem; }
+    .gate { margin: 0.35rem 0 0; font-size: 0.88rem; font-weight: 750; }
+    .listening-note { margin: 1rem 0; padding: 0.85rem 1rem; border-radius: 0.85rem; background: #f4f0f7; }
+    .listening-note p { margin-bottom: 0.35rem; }
+    .listening-note p:last-child { margin-bottom: 0; color: #665571; font-size: 0.9rem; }
+    .heard { overflow-wrap: anywhere; word-break: break-word; }
+    .decision { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0; padding: 0; border: 0; }
+    .decision legend { width: 100%; margin-bottom: 0.5rem; font-weight: 800; }
+    .decision label { flex: 1 1 12rem; display: flex; align-items: center; gap: 0.5rem; min-height: 3rem; padding: 0.65rem 0.8rem; border: 1px solid #cfc2d8; border-radius: 0.75rem; cursor: pointer; }
+    .decision label:has(input:checked) { border-color: #6c309c; outline: 2px solid #6c309c; background: #f2e7fa; }
+    .decision input { width: 1.15rem; height: 1.15rem; accent-color: #6c309c; }
+    .evidence { margin-top: 1rem; border-top: 1px solid #e3dae9; padding-top: 0.8rem; }
+    .evidence summary { cursor: pointer; color: #583473; font-weight: 750; }
+    .images { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .images figure { flex: 1 1 28rem; margin: 0; }
+    .images img { width: 100%; height: auto; }
+    figcaption { color: #665571; font-size: 0.85rem; }
+    .check { margin-right: 0.6rem; }
+    .ok { color: #176b36; }
+    .bad { color: #a51d2d; }
+    @media (max-width: 720px) {
+      body { padding-top: 1.25rem; }
+      .comparison { grid-template-columns: 1fr; }
+      .source-note { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Monster Opera Audio A/B Review</h1>
+  <p class="intro">Compare the sound currently in the game with the new H3 candidate for each monster. Only one clip can play at a time, so switching between A and B stays clear.</p>
+
+  <section class="review-panel" aria-labelledby="review-heading">
+    <h2 id="review-heading">Make your choices</h2>
+    <ol>
+      <li>Listen to A (current game), then B (H3 candidate).</li>
+      <li>Choose which version to keep, or request another take.</li>
+      <li>Copy the summary and paste it back into the chat.</li>
+    </ol>
+    <div class="review-actions">
+      <strong id="decision-count">0 of 8 chosen</strong>
+      <button id="copy-choices" type="button">Copy choices</button>
+      <button id="clear-choices" type="button">Clear choices</button>
+      <span id="copy-status" role="status" aria-live="polite"></span>
+    </div>
+    <textarea id="choice-summary" readonly aria-label="Choice summary"></textarea>
+    <p class="fine-print">Selections are stored only in this browser. This review page does not change the game or accept any candidate automatically. H3 status: review · human isolation review: pending.</p>
+  </section>
+
+  <article id="monster-blue" data-monster="blue">
+    <header class="card-heading">
+      <h2>Blue</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Blue audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/blue.mp3"
+          aria-label="Blue current game sound"></audio>
+        <p class="media-meta">0.97 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/blue.candidate.mp3"
+          aria-label="Blue H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> doo &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Doooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo…</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Blue</legend>
+      <label><input type="radio" name="choice-blue" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-blue" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-blue" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="blue.waveform.png" alt="blue H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="blue.spectrogram.png" alt="blue H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-coral" data-monster="coral">
+    <header class="card-heading">
+      <h2>Coral</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Coral audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/coral.mp3"
+          aria-label="Coral current game sound"></audio>
+        <p class="media-meta">1.15 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/coral.candidate.mp3"
+          aria-label="Coral H3 candidate sound"></audio>
+        <p class="media-meta">2.06 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> bop bop bop &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Oh</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Coral</legend>
+      <label><input type="radio" name="choice-coral" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-coral" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-coral" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="coral.waveform.png" alt="coral H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="coral.spectrogram.png" alt="coral H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-mint" data-monster="mint">
+    <header class="card-heading">
+      <h2>Mint</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Mint audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/mint.mp3"
+          aria-label="Mint current game sound"></audio>
+        <p class="media-meta">1.28 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/mint.candidate.mp3"
+          aria-label="Mint H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> loo &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo…</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Mint</legend>
+      <label><input type="radio" name="choice-mint" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-mint" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-mint" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="mint.waveform.png" alt="mint H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="mint.spectrogram.png" alt="mint H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-orange" data-monster="orange">
+    <header class="card-heading">
+      <h2>Orange</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Orange audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/orange.mp3"
+          aria-label="Orange current game sound"></audio>
+        <p class="media-meta">1.20 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/orange.candidate.mp3"
+          aria-label="Orange H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> bum &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">BOOOOO</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Orange</legend>
+      <label><input type="radio" name="choice-orange" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-orange" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-orange" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="orange.waveform.png" alt="orange H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="orange.spectrogram.png" alt="orange H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-pink" data-monster="pink">
+    <header class="card-heading">
+      <h2>Pink</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Pink audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/pink.mp3"
+          aria-label="Pink current game sound"></audio>
+        <p class="media-meta">1.49 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/pink.candidate.mp3"
+          aria-label="Pink H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> la &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Love</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Pink</legend>
+      <label><input type="radio" name="choice-pink" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-pink" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-pink" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="pink.waveform.png" alt="pink H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="pink.spectrogram.png" alt="pink H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-purple" data-monster="purple">
+    <header class="card-heading">
+      <h2>Purple</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Purple audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/purple.mp3"
+          aria-label="Purple current game sound"></audio>
+        <p class="media-meta">1.28 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/purple.candidate.mp3"
+          aria-label="Purple H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> woh &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo…</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Purple</legend>
+      <label><input type="radio" name="choice-purple" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-purple" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-purple" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="purple.waveform.png" alt="purple H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="purple.spectrogram.png" alt="purple H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-teal" data-monster="teal">
+    <header class="card-heading">
+      <h2>Teal</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Teal audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/teal.mp3"
+          aria-label="Teal current game sound"></audio>
+        <p class="media-meta">1.49 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/teal.candidate.mp3"
+          aria-label="Teal H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> mmm &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard">Hmm.</span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Teal</legend>
+      <label><input type="radio" name="choice-teal" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-teal" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-teal" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="teal.waveform.png" alt="teal H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="teal.spectrogram.png" alt="teal H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <article id="monster-yellow" data-monster="yellow">
+    <header class="card-heading">
+      <h2>Yellow</h2>
+      <span class="decision-state" data-decision-state>Decision needed</span>
+    </header>
+
+    <div class="comparison" aria-label="Yellow audio comparison">
+      <section class="version version-current">
+        <p class="eyebrow">A · CURRENT RUNTIME</p>
+        <h3>Current game sound</h3>
+        <p class="source-note">Concept-video cut · playing in the game now</p>
+        <audio controls preload="none" src="../../../audio/monsters/yellow.mp3"
+          aria-label="Yellow current game sound"></audio>
+        <p class="media-meta">1.23 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+
+      <section class="version version-candidate">
+        <p class="eyebrow">B · H3 CANDIDATE</p>
+        <h3>New clean-source sound</h3>
+        <p class="source-note">H3 vocal candidate · not yet used by the game</p>
+        <audio controls preload="none" src="../../audio-h3/yellow.candidate.mp3"
+          aria-label="Yellow H3 candidate sound"></audio>
+        <p class="media-meta">1.65 s · MP3 · mono · 44.1 kHz</p>
+        <p class="gate ok">Technical gate: passed</p>
+      </section>
+    </div>
+
+    <div class="listening-note">
+      <p><b>Target syllable:</b> li &nbsp; <b>Whisper heard from B:</b>
+        <span class="heard"><i>empty transcript</i></span></p>
+      <p>Whisper: completed · human dry-vocal/isolation review: pending</p>
+    </div>
+
+    <fieldset class="decision">
+      <legend>Choose Yellow</legend>
+      <label><input type="radio" name="choice-yellow" value="current"> Keep A — current</label>
+      <label><input type="radio" name="choice-yellow" value="h3"> Use B — H3</label>
+      <label><input type="radio" name="choice-yellow" value="regenerate"> Request another take</label>
+    </fieldset>
+
+    <details class="evidence">
+      <summary>Show H3 waveform and automated evidence</summary>
+      <p><span class="check ok">duration: pass</span> <span class="check ok">mono: pass</span> <span class="check ok">nonEmpty: pass</span> <span class="check ok">notClipped: pass</span> <span class="check ok">sampleRate: pass</span></p>
+      <div class="images">
+        <figure><img src="yellow.waveform.png" alt="yellow H3 waveform"><figcaption>H3 waveform</figcaption></figure>
+        <figure><img src="yellow.spectrogram.png" alt="yellow H3 spectrogram"><figcaption>H3 spectrogram</figcaption></figure>
+      </div>
+    </details>
+  </article>
+  <script>
+    (() => {
+      const storageKey = 'monster-opera-h3-audio-choices-v1';
+      const labels = {
+        current: 'keep current (A)',
+        h3: 'use H3 candidate (B)',
+        regenerate: 'request another take',
+      };
+      const cards = Array.from(document.querySelectorAll('[data-monster]'));
+      const inputs = Array.from(document.querySelectorAll('.decision input[type="radio"]'));
+      const count = document.querySelector('#decision-count');
+      const summary = document.querySelector('#choice-summary');
+      const status = document.querySelector('#copy-status');
+
+      function choices() {
+        const result = {};
+        cards.forEach((card) => {
+          const selected = card.querySelector('.decision input:checked');
+          if (selected) result[card.dataset.monster] = selected.value;
+        });
+        return result;
+      }
+
+      function update() {
+        const selected = choices();
+        const total = Object.keys(selected).length;
+        count.textContent = total + ' of 8 chosen';
+        cards.forEach((card) => {
+          const value = selected[card.dataset.monster];
+          const badge = card.querySelector('[data-decision-state]');
+          badge.textContent = value ? labels[value] : 'Decision needed';
+          badge.classList.toggle('chosen', Boolean(value));
+        });
+        summary.value = ['Monster Opera audio choices', '']
+          .concat(cards.map((card) => {
+            const value = selected[card.dataset.monster];
+            return card.dataset.monster + ': ' + (value ? labels[value] : 'not chosen');
+          }))
+          .join('\n');
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(selected));
+        } catch {}
+      }
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        Object.entries(saved).forEach(([id, value]) => {
+          const input = document.querySelector('input[name="choice-' + id + '"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
+      } catch {}
+
+      inputs.forEach((input) => input.addEventListener('change', () => {
+        status.textContent = '';
+        update();
+      }));
+
+      const players = Array.from(document.querySelectorAll('audio'));
+      players.forEach((player) => player.addEventListener('play', () => {
+        players.forEach((other) => {
+          if (other !== player) other.pause();
+        });
+      }));
+
+      document.querySelector('#copy-choices').addEventListener('click', async () => {
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(summary.value);
+          copied = true;
+        } catch {}
+        if (!copied) {
+          summary.focus();
+          summary.select();
+          try { copied = document.execCommand('copy'); } catch {}
+        }
+        status.textContent = copied ? 'Copied.' : 'Select the summary and copy it manually.';
+      });
+
+      document.querySelector('#clear-choices').addEventListener('click', () => {
+        inputs.forEach((input) => { input.checked = false; });
+        try { localStorage.removeItem(storageKey); } catch {}
+        status.textContent = 'Choices cleared.';
+        update();
+      });
+
+      update();
+    })();
+  </script>
+</body>
+</html>

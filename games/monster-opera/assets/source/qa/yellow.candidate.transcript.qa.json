@@ -1,0 +1,19 @@
+{
+  "expected": "li",
+  "result": {
+    "accepted": false,
+    "bytes": 115,
+    "emptyTranscript": true,
+    "heard": "",
+    "jobId": "238987a5ed8f4ab496176088671bedbc",
+    "outputs": [
+      "json"
+    ],
+    "ratio": 0.0,
+    "rawSaved": "games/monster-opera/assets/source/qa/yellow.candidate.transcript.whisper.json",
+    "saved": "games/monster-opera/assets/source/qa/yellow.candidate.transcript.txt",
+    "status": "completed"
+  },
+  "source": "games/monster-opera/assets/source/audio-h3/yellow.candidate.mp3",
+  "workflow": "whisper-stt"
+}

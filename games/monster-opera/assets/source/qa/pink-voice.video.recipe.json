@@ -1,0 +1,64 @@
+{
+  "asset": "pink-voice-raw.mp4",
+  "created": "2026-08-18",
+  "derivedFrom": null,
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-pink-voice",
+  "kind": "voice",
+  "qa": {
+    "audioExtraction": "passed",
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "whisper": "completed",
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/pink.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "39927cb82153212c8650dfeac483d5089b418a4c22264b03582fe191023f8071"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/pink.wav",
+        "bytes": 141198,
+        "sha256": "694841f110073ae12df0938f070331db19b16fa2b2d58c1618af76afe4a53ce8"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/pink.waveform.png",
+        "bytes": 6389,
+        "sha256": "33bebaa2e667588624ddfc167454cb725dd1c6918e164aca696881da562cb4ab"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/pink.spectrogram.png",
+        "bytes": 513041,
+        "sha256": "f55c6d4640e23477ba52867d822fb796499a1918711e39a42f579b494b8d28cb"
+      }
+    }
+  },
+  "refs": {
+    "reference_image_1": "games/monster-opera/assets/source/video-keys/pink.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/pink-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the pink fuzzy bow monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one bright sweet unaccompanied soprano vocal: a single steady sustained syllable 'laaaaa' on one stable high musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'la', no tune, harmony, backing singer, music, instruments, beat, ambience, crowd, applause, reverb, UI sound, sparkle chime, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "references": {
+        "reference_image_1": "games/monster-opera/assets/source/video-keys/pink.png"
+      },
+      "result": {
+        "jobId": "1f193e9768604bcf8a87cf03a74ebb54",
+        "status": "completed",
+        "saved": "games/monster-opera/assets/source/video-raw/pink-voice-raw.mp4",
+        "bytes": 423774,
+        "sha256": "c0b19cb55def60dc6fa3886049cf5d66fffd1e1ed15b298579e03b74a3c17b48",
+        "remoteResultHashMatch": true,
+        "createdAt": "2026-08-18T14:10:23.036295+00:00",
+        "completedAt": "2026-08-18T14:12:42.183471+00:00"
+      },
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    }
+  ]
+}

@@ -140,6 +140,12 @@ for it first.
     `pick`. One seeded source, so `QLOBE_DEBUG.seed(42)` reproduces.
   - **`dom.js`** — `escapeHtml` (null → `''`, never the word "null") and `el()`.
   - **`preload.js`** — `preloadImages(urls, { idle })`; never rejects.
+  - **`puzzle-cutter.js`** — cut any image into interlocking jigsaw pieces:
+    `cutImage(img, { rows, cols, seed })` → one transparent canvas per piece
+    with `x, y` placement for seamless reassembly, tab/blank/flat edge labels,
+    optional outline + bevel. Seeded via `rng.js`; pure-geometry
+    `generatePuzzle()` also runs in Node. Pre-cut to PNG assets with
+    `node tools/cut-puzzle.mjs <image> --grid 3x2` (writes pieces + manifest).
   - **`content.js`** — the accessor for shared learning content: letters, their
     sounds, and picture-word objects. `await content.ready()`, then
     `content.objectsStartingWith('b')` / `content.letterSound('b')` — returns

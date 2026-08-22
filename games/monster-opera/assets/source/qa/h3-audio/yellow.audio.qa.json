@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "spectrogram": "games/monster-opera/assets/source/qa/h3-audio/yellow.spectrogram.png",
+    "waveform": "games/monster-opera/assets/source/qa/h3-audio/yellow.waveform.png"
+  },
+  "candidate": "games/monster-opera/assets/source/audio-h3/yellow.candidate.mp3",
+  "created": "2026-08-18",
+  "expectedSyllable": "li",
+  "format": "monster-opera-audio-qa",
+  "formatVersion": 1,
+  "id": "yellow",
+  "manualIsolationReview": "pending",
+  "productionAcceptance": "pending-human-review",
+  "source": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+  "technicalGate": {
+    "checks": {
+      "duration": true,
+      "mono": true,
+      "nonEmpty": true,
+      "notClipped": true,
+      "sampleRate": true
+    },
+    "levels": {
+      "maxVolumeDb": -14.2,
+      "meanVolumeDb": -26
+    },
+    "mp3": {
+      "bytes": 20106,
+      "channelLayout": "mono",
+      "channels": 1,
+      "codec": "mp3",
+      "durationSeconds": 1.6457,
+      "sampleRate": 44100
+    },
+    "status": "passed",
+    "wav": {
+      "bytes": 141198,
+      "channelLayout": null,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "durationSeconds": 1.6,
+      "sampleRate": 44100
+    }
+  },
+  "whisper": {
+    "status": "completed",
+    "expected": "li",
+    "heard": "",
+    "emptyTranscript": true,
+    "ratio": 0
+  },
+  "artifactIntegrity": {
+    "candidateMp3": {
+      "asset": "assets/source/audio-h3/yellow.candidate.mp3",
+      "bytes": 20106,
+      "sha256": "0ef919e7730eaf17999f6734af1c70a4bc19e6cee2668a14105132b831896eb3"
+    },
+    "wav": {
+      "asset": "assets/source/audio-h3/yellow.wav",
+      "bytes": 141198,
+      "sha256": "c9067bee62eee8331c144ef322ad11b2eeca73150ebe4d0f08bc05432dadc859"
+    },
+    "waveform": {
+      "asset": "assets/source/qa/h3-audio/yellow.waveform.png",
+      "bytes": 4386,
+      "sha256": "59625301b7e6011b40580021ac0c2300eaaba28d0b8aaa4819b115b924ae2025"
+    },
+    "spectrogram": {
+      "asset": "assets/source/qa/h3-audio/yellow.spectrogram.png",
+      "bytes": 606210,
+      "sha256": "01710d5a9bab4c20164d31091404e6d7d52cc1e2d9e797def458305997f06f47"
+    }
+  }
+}

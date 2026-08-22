@@ -12,7 +12,7 @@ const FEATURED_IDS = [
   'letter-treasure-hunt',
   'flashlight-cave',
   'sound-sprouts',
-  'sound-basket',
+  'chocolate-chip-count',
   'tangram-tales',
   'counting-treasure-cups',
   'sand-tray-letters',

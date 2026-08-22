@@ -1,0 +1,83 @@
+{
+  "asset": "yellow.candidate.mp3",
+  "created": "2026-08-18",
+  "derivedFrom": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-h3-yellow",
+  "kind": "voice",
+  "qa": {
+    "manualIsolationReview": "pending",
+    "status": "review",
+    "technicalGate": "passed",
+    "whisper": {
+      "status": "completed",
+      "expected": "li",
+      "heard": "",
+      "emptyTranscript": true,
+      "ratio": 0
+    },
+    "artifactIntegrity": {
+      "candidateMp3": {
+        "asset": "assets/source/audio-h3/yellow.candidate.mp3",
+        "bytes": 20106,
+        "sha256": "0ef919e7730eaf17999f6734af1c70a4bc19e6cee2668a14105132b831896eb3"
+      },
+      "wav": {
+        "asset": "assets/source/audio-h3/yellow.wav",
+        "bytes": 141198,
+        "sha256": "c9067bee62eee8331c144ef322ad11b2eeca73150ebe4d0f08bc05432dadc859"
+      },
+      "waveform": {
+        "asset": "assets/source/qa/h3-audio/yellow.waveform.png",
+        "bytes": 4386,
+        "sha256": "59625301b7e6011b40580021ac0c2300eaaba28d0b8aaa4819b115b924ae2025"
+      },
+      "spectrogram": {
+        "asset": "assets/source/qa/h3-audio/yellow.spectrogram.png",
+        "bytes": 606210,
+        "sha256": "01710d5a9bab4c20164d31091404e6d7d52cc1e2d9e797def458305997f06f47"
+      }
+    }
+  },
+  "refs": {
+    "expectedSyllable": "li",
+    "promptManifest": "games/monster-opera/tools/video-jobs.jsonl",
+    "qa": "games/monster-opera/assets/source/qa/h3-audio/yellow.audio.qa.json",
+    "referenceImage": "games/monster-opera/assets/source/video-keys/yellow.png"
+  },
+  "steps": [
+    {
+      "duration": 5,
+      "height": 480,
+      "output": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+      "prompt": "Use <Picture 1> as the exact first frame and exact identity of the sunny-yellow fuzzy antenna monster card. Static camera, one continuous shot. The same friendly monster opens its mouth naturally and performs one tiny bell-bright unaccompanied soprano vocal: a single steady sustained syllable 'liiiii' on one stable very high but soft musical pitch for about three seconds, then closes its mouth and smiles. Audio must be a dry isolated solo monster voice, centered and clean, with silence before and after. No words beyond 'lee', no tune, harmony, backing singer, music, instruments, bell, beat, ambience, crowd, applause, reverb, UI sound, sparkle chime, narration, caption, text change, camera move, cut, morph, extra character, or new object.",
+      "referenceImage": "games/monster-opera/assets/source/video-keys/yellow.png",
+      "seed": 42,
+      "width": 832,
+      "workflow": "minimax-h3-r2v"
+    },
+    {
+      "filters": [
+        "silenceremove -45 dB",
+        "highpass 90 Hz",
+        "lowpass 8.5 kHz",
+        "loudnorm -20 LUFS / -2 dBTP"
+      ],
+      "mono": true,
+      "op": "extract-normalize",
+      "output": "games/monster-opera/assets/source/audio-h3/yellow.wav",
+      "sampleRate": 44100,
+      "source": "games/monster-opera/assets/source/video-raw/yellow-voice-raw.mp4",
+      "tool": "tools/process-h3-audio.py",
+      "trimmedMaximumSeconds": 1.6
+    },
+    {
+      "bitrate": "96k",
+      "codec": "libmp3lame",
+      "op": "encode",
+      "output": "games/monster-opera/assets/source/audio-h3/yellow.candidate.mp3",
+      "source": "games/monster-opera/assets/source/audio-h3/yellow.wav"
+    }
+  ]
+}

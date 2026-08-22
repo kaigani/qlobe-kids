@@ -1,0 +1,56 @@
+{
+  "id": "block-tower-measure",
+  "engine": "custom-block-tower-measure",
+  "title": "Block Tower Measure",
+  "status": "beta",
+  "age": { "min": 5, "max": 6 },
+  "theme": {
+    "world": "paper-garden",
+    "canonicalArtDirection": "Papercraft",
+    "accent": "#e86f61",
+    "background": "./assets/art/workshop.webp"
+  },
+  "lines": "data/lines.json",
+  "assets": {
+    "background": "./assets/art/workshop.webp",
+    "title": "./assets/art/title.webp",
+    "robot": "./assets/art/robot-cheer.webp",
+    "ruler": "./assets/art/ruler.webp",
+    "promptPanel": "./assets/art/panel-cream.webp",
+    "towerMat": "./assets/art/mat-blue.webp",
+    "star": "./assets/art/star.webp",
+    "button": "./assets/art/button-coral.webp",
+    "modeCard": "./assets/art/card-teal.webp",
+    "blocks": [
+      "./assets/art/block-coral.webp",
+      "./assets/art/block-mustard.webp",
+      "./assets/art/block-teal.webp",
+      "./assets/art/block-lime.webp",
+      "./assets/art/block-violet.webp"
+    ]
+  },
+  "modes": [
+    {
+      "id": "build",
+      "title": "Build It Tall",
+      "rounds": 4,
+      "skill": "Measure height by counting equal-size units",
+      "heights": [2, 3, 4, 5, 6]
+    },
+    {
+      "id": "compare",
+      "title": "Tower Detective",
+      "rounds": 5,
+      "skill": "Compare taller, shorter, and equal heights",
+      "cases": [
+        { "left": 2, "right": 4, "relation": "taller" },
+        { "left": 5, "right": 3, "relation": "shorter" },
+        { "left": 3, "right": 3, "relation": "same" },
+        { "left": 4, "right": 2, "relation": "taller" },
+        { "left": 2, "right": 5, "relation": "shorter" }
+      ]
+    },
+    { "id": "robot", "title": "Robot Workshop", "rounds": 1, "skill": "Explore how adding or removing one unit changes height", "free": true }
+  ],
+  "sharedModules": ["screens.js", "mode-select.js", "tap.js", "hud.js", "audio-unlock.js", "voice-clips.js", "sfx.js", "timers.js", "idle-nudge.js", "rng.js", "celebrate.js", "preload.js", "debug-harness.js"]
+}

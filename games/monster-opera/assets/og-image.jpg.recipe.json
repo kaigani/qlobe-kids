@@ -1,0 +1,45 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "monster-opera-og-image-jpg",
+  "kind": "image",
+  "asset": "og-image.jpg",
+  "steps": [
+    {
+      "workflow": "project-concept-art",
+      "promptRef": "source/ui-mockups/PROMPTS.md",
+      "sources": [
+        "source/ui-mockups/splash.png"
+      ]
+    },
+    {
+      "op": "crop-resize-encode",
+      "sources": [
+        "source/ui-mockups/splash.png"
+      ],
+      "output": "og-image.jpg",
+      "dimensions": {
+        "width": 1200,
+        "height": 630
+      },
+      "encoding": "mjpeg"
+    }
+  ],
+  "refs": {
+    "promptDocument": "source/ui-mockups/PROMPTS.md",
+    "sources": [
+      "source/ui-mockups/splash.png"
+    ]
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "decode": true,
+    "width": 1200,
+    "height": 630,
+    "codec": "mjpeg",
+    "pixelFormat": "yuvj420p",
+    "bytes": 139718
+  },
+  "created": "2026-08-18"
+}
