@@ -1,0 +1,24 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "menu-cleanup-timer-quest-badge-fix",
+  "kind": "image",
+  "asset": "menu-cleanup-timer-quest-badge-fix.png",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Keep this exact polished toy-table hub image unchanged except for one precise correction: on the front badge of the RIGHT-hand basket only, replace the teddy bear picture with three chunky colorful wooden building blocks, one red cube, one yellow cube, and one blue arch. Keep the left teddy badge, teddy toy, baskets, loose blocks, rainbow bead timer, composition, lighting, materials, background, and every other pixel as close to the reference as possible. No text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {
+    "style": "media:menu-cleanup-timer-quest"
+  },
+  "derivedFrom": "menu-cleanup-timer-quest",
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-21"
+}

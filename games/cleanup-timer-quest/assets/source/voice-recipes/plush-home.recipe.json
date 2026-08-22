@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ctuq-voice-plush-home",
+  "kind": "voice",
+  "asset": "ctuq-voice-plush-home.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Cuddly friends go in the teddy basket.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Cuddly friends go in the teddy basket."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Cuddly friends go in the teddy basket.",
+      "heard": "Cudley, friends go in the teddy basket.",
+      "ratio": 0.973,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

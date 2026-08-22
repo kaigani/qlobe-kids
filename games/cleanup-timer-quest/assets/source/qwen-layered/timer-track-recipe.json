@@ -1,0 +1,47 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ctuq-timer-track",
+  "kind": "image",
+  "asset": "ctuq-timer-track.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Toy-world honey-beech music rail with exactly eight colored bead sockets and a wind-up key on flat magenta",
+      "source": "games/cleanup-timer-quest/assets/source/timer-track-gpt-image-2.png",
+      "output": "ctuq-timer-track.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat magenta background layer. Top layer: every foreground toy object exactly as shown in the input, unchanged and fully opaque. Preserve all object edges, interiors, colors, spacing, and grid positions.",
+      "output": "layer_2",
+      "from": "ctuq-timer-track.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 2048,
+      "encode": "png",
+      "from": "ctuq-timer-track.layer2.png",
+      "output": "ctuq-timer-track.png"
+    }
+  ],
+  "refs": {
+    "style": "01-game-concepts/clean-up-timer-quest/output/ui-mockups/02-sort-the-toys.png"
+  },
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 31.407,
+      "opaquePct": 25.036,
+      "partialPct": 43.557
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-21"
+}

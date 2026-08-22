@@ -1571,7 +1571,7 @@
     },
     {
       "id": "cleanup-timer-quest",
-      "title": "Cleanup Timer Quest",
+      "title": "Clean-Up Timer Quest",
       "category": "practical-life",
       "path": "games/cleanup-timer-quest/",
       "icon": "assets/hub/tiles/cleanup-timer-quest.jpg",
@@ -1579,21 +1579,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f28c45",
+      "status": "beta",
+      "accent": "#d58b48",
       "modes": [
         {
-          "id": "room",
-          "title": "Room Rescue",
-          "skill": "sort first, then store one category at a time"
+          "id": "playroom",
+          "title": "Playroom Rescue",
+          "skill": "sort plush friends and wooden blocks by picture"
         },
         {
-          "id": "speed",
-          "title": "Five-Minute Wonder",
-          "skill": "time awareness during one bounded cleanup"
+          "id": "bedroom",
+          "title": "Bedroom Rescue",
+          "skill": "sort clothes and books by picture"
+        },
+        {
+          "id": "living-room",
+          "title": "Living Room Rescue",
+          "skill": "sort wheeled toys and music toys by picture"
         }
       ],
-      "summary": "Restore a space before the song ends."
+      "summary": "Rescue a toy-filled room by matching every object to its picture-marked home."
     },
     {
       "id": "sink-or-float",

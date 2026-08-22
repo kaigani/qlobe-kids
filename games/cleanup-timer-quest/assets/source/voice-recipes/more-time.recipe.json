@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ctuq-voice-more-time",
+  "kind": "voice",
+  "asset": "ctuq-voice-more-time.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The music keeps playing. Take your time.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "The music keeps playing. Take your time."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "The music keeps playing. Take your time.",
+      "heard": "The music keeps playing. Take your time.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

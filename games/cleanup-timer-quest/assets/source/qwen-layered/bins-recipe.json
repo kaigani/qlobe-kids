@@ -1,0 +1,47 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ctuq-bins",
+  "kind": "image",
+  "asset": "ctuq-bins.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "prompt": "Six-cell Toy-world contact sheet: empty picture-marked teddy, blocks, shirt, books, wheel, and drum storage homes on flat magenta",
+      "source": "games/cleanup-timer-quest/assets/source/bins-gpt-image-2.png",
+      "output": "ctuq-bins.raw.png",
+      "ground": null
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat magenta background layer. Top layer: every foreground toy object exactly as shown in the input, unchanged and fully opaque. Preserve all object edges, interiors, colors, spacing, and grid positions.",
+      "output": "layer_2",
+      "from": "ctuq-bins.raw.png",
+      "seed": 42
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+0",
+      "maxSize": 2048,
+      "encode": "png",
+      "from": "ctuq-bins.layer2.png",
+      "output": "ctuq-bins.png"
+    }
+  ],
+  "refs": {
+    "style": "01-game-concepts/clean-up-timer-quest/output/ui-mockups/02-sort-the-toys.png"
+  },
+  "qa": {
+    "status": "review",
+    "alpha": {
+      "transparentPct": 30.207,
+      "opaquePct": 37.507,
+      "partialPct": 32.286
+    },
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "extractSeed": 42
+  },
+  "created": "2026-08-21"
+}

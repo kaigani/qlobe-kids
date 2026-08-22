@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ctuq-voice-clothes-home-clear",
+  "kind": "voice",
+  "asset": "ctuq-voice-clothes-home-clear.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Shirts, socks, and pajamas go in the shirt hamper.",
+      "seed": 9
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Shirts, socks, and pajamas go in the shirt hamper."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Shirts, socks, and pajamas go in the shirt hamper.",
+      "heard": "Shirts, socks, and pajamas go in the shirt hamper.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-21"
+}

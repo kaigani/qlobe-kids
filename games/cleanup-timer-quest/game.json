@@ -1,34 +1,25 @@
 {
   "id": "cleanup-timer-quest",
-  "title": "Cleanup Timer Quest",
+  "title": "Clean-Up Timer Quest",
   "category": "practical-life",
   "path": "games/cleanup-timer-quest/",
-  "icon": "⏱️",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f28c45",
-  "shareTitle": "Cleanup Timer Quest ⏱️ — Tidy-Up Made Playful",
-  "description": "Sort a mess into toys, clothes, and books, tap done after each real step, and let a friendly timer coach the cleanup without ever rushing you. A short, finishable routine for ages 5–6.",
-  "learningGoals": [
-    "Sort a mixed mess into toys, clothes, and books",
-    "Store one category at a time after sorting",
-    "Develop a gentle sense of elapsed time",
-    "Experience cleanup as a short, finishable routine"
-  ],
-  "interactionModel": "tap the large done row after each real-world cleanup step; friendly timers coach sorting and storing without threatening or rushing",
-  "feedbackModel": "gentle game-show voice with sparkle, tick, and tada SFX; timer completion is always encouraging and the clean room is the prize",
-  "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
-  ],
+  "status": "beta",
+  "accent": "#d58b48",
+  "shareTitle": "Clean-Up Timer Quest",
+  "description": "Rescue a toy-filled room by matching every object to its picture-marked home.",
+  "learningGoals": ["Sort objects by a concrete category", "Practice tidy-up routines", "Build confidence through gentle feedback"],
+  "interactionModel": "drag an object to its matching picture-marked home, or tap the object and then its home",
+  "feedbackModel": "spoken prompts, tactile placement feedback, a musical pacing timer, and a sparkling room transformation",
+  "uses": ["shared/js/audio-unlock.js", "shared/js/celebrate.js", "shared/js/debug-harness.js", "shared/js/hud.js", "shared/js/idle-nudge.js", "shared/js/music.js", "shared/js/narrator.js", "shared/js/voice-clips.js", "shared/js/preload.js", "shared/js/rng.js", "shared/js/screens.js", "shared/js/tap.js", "shared/js/timers.js", "shared/js/stage/drag-to-slot-dom.js", "shared/css/hud.css", "shared/assets/instruments/", "games/cleanup-timer-quest/assets/"],
   "modes": [
-    { "id": "room", "title": "Room Rescue", "skill": "sort first, then store one category at a time" },
-    { "id": "speed", "title": "Five-Minute Wonder", "skill": "time awareness during one bounded cleanup" }
+    { "id": "playroom", "title": "Playroom Rescue", "skill": "sort plush friends and wooden blocks by picture" },
+    { "id": "bedroom", "title": "Bedroom Rescue", "skill": "sort clothes and books by picture" },
+    { "id": "living-room", "title": "Living Room Rescue", "skill": "sort wheeled toys and music toys by picture" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }
