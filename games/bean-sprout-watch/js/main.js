@@ -192,6 +192,7 @@ function bindCareDrag(card, kind, section) {
   let start = null;
   let dragging = false;
   let ghost = null;
+  let suppressClickUntil = 0;
   const dropZone = () => section.querySelector('[data-plant-stage]');
   const pointIn = (element, x, y) => {
     const rect = element?.getBoundingClientRect();
@@ -202,25 +203,43 @@ function bindCareDrag(card, kind, section) {
     ghost.style.left = `${x}px`;
     ghost.style.top = `${y}px`;
   };
+  const removeWindowListeners = () => {
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointercancel', onCancel);
+    window.removeEventListener('blur', onBlur);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+  };
   const clear = () => {
     const zone = dropZone();
+    const capturedPointerId = pointerId;
     zone?.classList.remove('is-drop-target');
-    if (pointerId !== null) {
+    // Reset the active state before releasing capture. Some tablet browsers
+    // dispatch lostpointercapture after the current event; a late notification
+    // must not be able to clear the next drag.
+    pointerId = null;
+    start = null;
+    dragging = false;
+    removeWindowListeners();
+    if (capturedPointerId !== null) {
       try {
-        if (card.hasPointerCapture?.(pointerId)) card.releasePointerCapture(pointerId);
+        if (card.hasPointerCapture?.(capturedPointerId)) card.releasePointerCapture(capturedPointerId);
       } catch { /* pointer may already have been released */ }
     }
     card.classList.remove('is-dragging');
     ghost?.remove();
     ghost = null;
-    pointerId = null;
-    start = null;
-    dragging = false;
   };
   const onDown = (event) => {
     if (event.isPrimary === false || pointerId !== null || state.phase !== 'care') return;
+    try { sfx.tick(); } catch { /* optional */ }
     pointerId = event.pointerId;
     start = { x: event.clientX, y: event.clientY };
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onUp, { passive: false });
+    window.addEventListener('pointercancel', onCancel, { passive: false });
+    window.addEventListener('blur', onBlur);
+    document.addEventListener('visibilitychange', onVisibilityChange);
     try { card.setPointerCapture(event.pointerId); } catch { /* optional */ }
   };
   const onMove = (event) => {
@@ -239,33 +258,52 @@ function bindCareDrag(card, kind, section) {
       document.body.append(ghost);
       card.classList.add('is-dragging');
     }
-    event.preventDefault();
+    if (event.cancelable) event.preventDefault();
     moveGhost(event.clientX, event.clientY);
-    dropZone()?.classList.toggle('is-drop-target', pointIn(dropZone(), event.clientX, event.clientY));
+    const zone = dropZone();
+    zone?.classList.toggle('is-drop-target', pointIn(zone, event.clientX, event.clientY));
   };
   const onUp = (event) => {
     if (event.pointerId !== pointerId) return;
-    const accepted = dragging && pointIn(dropZone(), event.clientX, event.clientY);
+    const wasDragging = dragging;
+    const accepted = wasDragging && pointIn(dropZone(), event.clientX, event.clientY);
+    if (wasDragging && event.cancelable) event.preventDefault();
+    suppressClickUntil = performance.now() + 700;
     clear();
-    if (accepted) useCare(kind);
+    if (accepted || !wasDragging) useCare(kind);
   };
   const onCancel = (event) => {
-    if (event.pointerId === pointerId) clear();
+    if (event.pointerId !== pointerId) return;
+    suppressClickUntil = performance.now() + 700;
+    clear();
   };
-  const onLostCapture = () => {
+  const onBlur = () => {
     if (pointerId !== null) clear();
   };
+  const onVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') onBlur();
+  };
+  const onClick = (event) => {
+    if (event.detail > 0) {
+      // A pointerup already handled this press. The fallback below covers a
+      // browser that emits click without delivering pointerup to our window
+      // listener, but never turns a real drag into an accidental tap.
+      if (performance.now() < suppressClickUntil) return;
+      if (pointerId !== null) {
+        const wasDragging = dragging;
+        clear();
+        if (wasDragging || state.phase !== 'care') return;
+      } else {
+        return;
+      }
+    }
+    if (state.phase === 'care') useCare(kind);
+  };
   card.addEventListener('pointerdown', onDown);
-  card.addEventListener('pointermove', onMove);
-  card.addEventListener('pointerup', onUp);
-  card.addEventListener('pointercancel', onCancel);
-  card.addEventListener('lostpointercapture', onLostCapture);
+  card.addEventListener('click', onClick);
   screens.hold(() => {
     card.removeEventListener('pointerdown', onDown);
-    card.removeEventListener('pointermove', onMove);
-    card.removeEventListener('pointerup', onUp);
-    card.removeEventListener('pointercancel', onCancel);
-    card.removeEventListener('lostpointercapture', onLostCapture);
+    card.removeEventListener('click', onClick);
     clear();
   });
 }
@@ -308,11 +346,15 @@ function renderJournal() {
         <div class="journal-grid">${[1, 2, 3, 4, 5].map((day) => cardMarkup(day)).join('')}</div>
       </div>
       <p class="splash-helper">${allDone ? 'Tap any day to visit it again.' : `Day ${nextDay()} is ready for a little care.`}</p>
+      ${allDone ? `<button class="art-button reset-button journal-reset-button" type="button" data-target="grow-again" aria-label="Grow a new bean">
+        <img src="${config.assets.resetSeed}" alt="" draggable="false" /><span>Grow again</span>
+      </button>` : ''}
     </div>`;
   appendHud(section, { splash: true });
   for (const button of section.querySelectorAll('[data-day]')) {
     bindTap(button, () => chooseDay(Number(button.dataset.day)));
   }
+  if (allDone) bindTap(section.querySelector('[data-target="grow-again"]'), () => resetProgress());
   currentPromptKey = allDone ? 'all-grown' : 'welcome';
   state.phase = 'journal';
   state.animationPhase = 'idle';
@@ -396,8 +438,6 @@ function renderPlay() {
       </div>
     </div>`;
   appendHud(section, { onBack: () => showJournal() });
-  bindTap(section.querySelector('[data-care="water"]'), () => useCare('water'));
-  bindTap(section.querySelector('[data-care="sun"]'), () => useCare('sun'));
   bindCareDrag(section.querySelector('[data-care="water"]'), 'water', section);
   bindCareDrag(section.querySelector('[data-care="sun"]'), 'sun', section);
 
@@ -610,6 +650,18 @@ async function runTimeLapse() {
 }
 
 function resetProgress() {
+  if (screens.current === 'splash' && saved.completedDays.length === 5) {
+    try { localStorage.removeItem(config.storageKey); } catch { /* private mode */ }
+    saved = sanitizeSaved(null);
+    state.selectedDay = 1;
+    state.watered = false;
+    state.sunned = false;
+    state.traceProgress = null;
+    state.resetArmed = false;
+    showJournal();
+    speak('reset-done');
+    return { accepted: true, reset: true };
+  }
   if (!state.resetArmed) {
     state.resetArmed = true;
     const button = sections.complete.querySelector('[data-target="grow-again"]');
