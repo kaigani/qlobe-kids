@@ -109,15 +109,15 @@
       "introKey": "intro-bees",
       "feedback": "count",
       "props": [
-        { "sprite": "./assets/sprites/honeycomb.png", "x": 50, "y": 30, "w": 900 }
+        { "sprite": "./assets/sprites/honeycomb.png", "x": 50, "y": 43, "w": 900, "tableau": true }
       ],
       "targets": [
-        { "id": "cell-1", "x": 35, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
-        { "id": "cell-2", "x": 50, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
-        { "id": "cell-3", "x": 65, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
-        { "id": "cell-4", "x": 35, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 },
-        { "id": "cell-5", "x": 50, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 },
-        { "id": "cell-6", "x": 65, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 }
+        { "id": "cell-1", "x": 35, "y": 34, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-2", "x": 50, "y": 34, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-3", "x": 65, "y": 34, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-4", "x": 35, "y": 52, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-5", "x": 50, "y": 52, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-6", "x": 65, "y": 52, "pad": 120, "accepts": ["bee"], "capacity": 1 }
       ],
       "critters": [
         { "id": "bee-1", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 26, "y": 62, "w": 170 },
@@ -138,9 +138,9 @@
       "feedback": "praise",
       "props": [],
       "targets": [
-        { "id": "pool-big", "sprite": "./assets/sprites/pool-big.png", "x": 30, "y": 72, "w": 420, "accepts": ["big"], "capacity": 2 },
-        { "id": "pool-medium", "sprite": "./assets/sprites/pool-medium.png", "x": 55, "y": 73, "w": 330, "accepts": ["medium"], "capacity": 2 },
-        { "id": "pool-little", "sprite": "./assets/sprites/pool-little.png", "x": 74, "y": 71, "w": 250, "accepts": ["little"], "capacity": 2 }
+        { "id": "pool-big", "sprite": "./assets/sprites/pool-big.png", "x": 30, "y": 61, "w": 420, "accepts": ["big"], "capacity": 2 },
+        { "id": "pool-medium", "sprite": "./assets/sprites/pool-medium.png", "x": 55, "y": 62, "w": 330, "accepts": ["medium"], "capacity": 2 },
+        { "id": "pool-little", "sprite": "./assets/sprites/pool-little.png", "x": 74, "y": 60, "w": 250, "accepts": ["little"], "capacity": 2 }
       ],
       "critters": [
         { "id": "fish-1", "kind": "big", "sprite": "./assets/sprites/goldfish.png", "x": 28, "y": 38, "w": 260, "promptKey": "prompt-big" },

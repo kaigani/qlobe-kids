@@ -149,6 +149,7 @@ const tweezers = createTweezers({
 function layoutAll() {
   scene.layout();
   tweezers.layout();
+  if (screens.is('celebration')) positionBadge();
 }
 window.addEventListener('resize', layoutAll);
 layoutAll();
@@ -269,6 +270,37 @@ async function startMode(id) {
   nudger.arm();
 }
 
+// The tableau sits near the TOP of the scene in some modes (ladybugs, bees,
+// pom-poms) and near the BOTTOM in others (fish pools) — a fixed CSS band for
+// the badge collides with one or the other. Instead, measure the real
+// on-screen tableau and park the badge in whichever open band (above or
+// below it, between the banner and NEXT) has the most room, centered there.
+// The banner stays pinned near the top; it never overlaps the tableau in any
+// mode with the current scale/target layout.
+function positionBadge() {
+  const rect = scene.tableauRect();
+  if (!rect) { els.badge.style.top = ''; return; }
+  const vh = window.innerHeight;
+  const gap = Math.max(14, vh * 0.02);
+  const bannerRect = els.banner.getBoundingClientRect();
+  const nextRect = els.btnNext.getBoundingClientRect();
+  const badgeH = els.badge.getBoundingClientRect().height || 150;
+
+  const topBandStart = bannerRect.bottom + gap;
+  const topBandEnd = rect.top - gap;
+  const bottomBandStart = rect.bottom + gap;
+  const bottomBandEnd = nextRect.top - gap;
+  const topBandSize = topBandEnd - topBandStart;
+  const bottomBandSize = bottomBandEnd - bottomBandStart;
+
+  let bandStart; let bandSize;
+  if (bottomBandSize >= topBandSize) { bandStart = bottomBandStart; bandSize = bottomBandSize; }
+  else { bandStart = topBandStart; bandSize = topBandSize; }
+
+  const top = bandStart + Math.max(0, (bandSize - badgeH) / 2);
+  els.badge.style.top = `${Math.round(top)}px`;
+}
+
 function celebrate() {
   state.transitioning = false;
   screens.show('celebration');
@@ -285,6 +317,9 @@ function celebrate() {
   state.celebrations += 1;
   const line = state.celebrations % 2 === 1 ? 'celebrate' : 'celebrate-2';
   saySeq([line, { key: 'next-prompt', gap: 700 }]);
+  // one rAF so the just-unhidden banner/badge/NEXT have real layout boxes
+  // before we measure them.
+  requestAnimationFrame(positionBadge);
 }
 
 function goSplash() {
@@ -366,6 +401,20 @@ const ready = (async () => {
     ...MODES.map((m) => m.card),
     config.tweezers.top,
     config.tweezers.bottom,
+    // Celebration chrome: banner/badge are plain <img src> set eagerly above
+    // so they're already fetching, but #btn-next's CSS background-image sits
+    // on an element that starts `[hidden]` — Chrome defers a background-image
+    // fetch/decode until its box actually renders, which is exactly why NEXT
+    // could still be mid-decode the instant the celebration screen shows.
+    // Forcing it (and the other art-btn chrome) through an off-DOM Image()
+    // here means it's already decoded and cached well before any child
+    // finishes a rescue.
+    config.assets.btnNext,
+    config.assets.chip,
+    config.assets.btnBack,
+    config.assets.btnHome,
+    config.assets.btnSoundOn,
+    config.assets.btnSoundOff,
   ]);
   preloadImages(MODES.flatMap((m) => [
     m.backdrop,
