@@ -788,21 +788,48 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "colors",
-          "title": "Color Nests",
-          "skill": "pincer-grip drag control and color matching"
+          "id": "ladybugs",
+          "title": "Ladybug Garden",
+          "skill": "pincer carry and color-word listening"
         },
         {
-          "id": "sizes",
-          "title": "Big and Small",
-          "skill": "pincer-grip drag control and size vocabulary"
+          "id": "bees",
+          "title": "Busy Bees",
+          "skill": "pincer precision and counting to 6"
+        },
+        {
+          "id": "fish",
+          "title": "Goldfish Pond",
+          "skill": "pincer carry and size vocabulary"
+        },
+        {
+          "id": "pompoms",
+          "title": "Pom-Pom Nests",
+          "skill": "pincer carry and color sorting"
         }
       ],
-      "summary": "Move pom-poms by color or sound using tweezers."
+      "summary": "Pinch clay tweezers to carry ladybugs, bees, goldfish, and pom-poms home.",
+      "uses": [
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/assets/music/gentle-country-morning.mp3"
+      ]
     },
     {
       "id": "sticker-line-challenge",

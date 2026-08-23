@@ -1,0 +1,438 @@
+/* css/style.css — Tweezer Rescue: layout, positioning and transforms only.
+ *
+ * Material-fidelity rule (game-design.md): every child-facing object is an
+ * authored clay sprite. This file supplies no gradients/borders/box-shadow
+ * *illustrations* on primary objects — only placement, sizing, hit areas and
+ * the transforms js/tweezers.js and js/critters.js already compute. The two
+ * decorative exceptions are the sparkle particle burst and the carried-
+ * critter drop shadow (both fx, neither a primary object), which match the
+ * platform's existing confetti/spark convention.
+ *
+ * Structure (see index.html): #scene (+ fly/tweezer/fx layers) is a fixed,
+ * full-viewport play field that persists BEHIND the screens; splash is opaque
+ * over it, play/celebration are transparent overlays so the celebration
+ * chrome opens over the already-rescued scene per the GDD.
+ */
+
+:root {
+  --qk-bg: #bfe6c9;
+  --tw-gap: max(16px, 2vw);
+}
+
+body {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+}
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#game {
+  position: relative;
+  overflow: hidden;
+}
+
+#game img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* ---------------------------------------------------------------- scene -- */
+/* Sized/positioned every frame by critters.js#layout() as a 1600x1200
+   cover-fit plate; children are placed in scene-percent coordinates. */
+
+#scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#scene-backdrop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+#scene-props,
+#scene-targets,
+#scene-critters {
+  position: absolute;
+  inset: 0;
+}
+
+.tw-prop,
+.tw-target,
+.tw-critter {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: block;
+  transition: opacity 260ms ease;
+}
+
+.tw-prop { z-index: 1; }
+.tw-target { z-index: 2; }
+.tw-critter { z-index: 3; will-change: transform, left, top, width; }
+
+.tw-critter.is-fading { opacity: 0; }
+
+/* Grab squeeze squash — animates the independent `scale` property so it
+   composes with whatever `transform` js/tweezers.js is writing inline every
+   frame for the carried critter, instead of fighting it. */
+.tw-critter.is-squished { animation: tw-squish 220ms ease-out; }
+@keyframes tw-squish {
+  0% { scale: 1 1; }
+  35% { scale: 1.16 0.8; }
+  65% { scale: 0.94 1.06; }
+  100% { scale: 1 1; }
+}
+
+/* Landing settle bounce — safe to touch `scale` here too; JS has already
+   cleared the inline transform by the time this class is applied. */
+.tw-critter.is-landed { animation: tw-land-bounce 420ms ease-out; }
+@keyframes tw-land-bounce {
+  0% { scale: 1.22 0.82; }
+  45% { scale: 0.92 1.1; }
+  75% { scale: 1.05 0.96; }
+  100% { scale: 1 1; }
+}
+
+/* ----------------------------------------------------- fly / fx / tweezer -- */
+/* Fixed, full-viewport, client-coordinate layers. Direct children are
+   positioned absolute at (0,0) so the `translate(Xpx, Ypx)` values main.js /
+   critters.js / tweezers.js write inline land at real client coordinates. */
+
+#fly-layer,
+#fx-layer,
+#tweezer-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#fly-layer { z-index: 5; }
+#tweezer-layer { z-index: 10; }
+#fx-layer { z-index: 20; }
+
+#fly-layer > *,
+#fx-layer > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.tw-critter.is-carried {
+  will-change: transform;
+}
+
+/* Carry shadow (M3 legibility cue) — a plain soft ellipse under the carried
+ * critter, positioned/sized every frame by js/tweezers.js from the same
+ * tip-anchored math as the critter itself. fx, not an illustrated object
+ * (see file header); identical in the normal and reduced-motion paths since
+ * it has no wobble/arc dependency. */
+.tw-carry-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: rgba(20, 30, 15, 0.3);
+  filter: blur(3px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Zero-size anchor planted at the authored tip pixel of each arm image —
+ * see js/tweezers.js "Carried-critter anchor". Never painted. */
+.tw-tip-marker {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tw-ghost {
+  opacity: 0.6;
+  filter: saturate(0.7) brightness(1.08);
+  pointer-events: none;
+}
+.tw-ghost.is-on { opacity: 0.78; }
+
+/* -------------------------------------------------------------- sparkle -- */
+
+.tw-burst {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tw-spark {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff2b0;
+  box-shadow: 0 0 8px 2px rgba(255, 224, 130, 0.85);
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.tw-burst.is-live .tw-spark {
+  animation: tw-spark-fly 700ms ease-out forwards;
+}
+
+@keyframes tw-spark-fly {
+  to {
+    transform: translate(var(--tw-dx), var(--tw-dy)) scale(0.25);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------- tweezers -- */
+/* .tw-tool's own (0,0), pre-transform, IS the tips' meeting point: it has no
+   box of its own (width/height 0, overflow visible) and js/tweezers.js sets
+   `transform: translate(px, py) rotate(angleDeg)` directly on it, so the
+   rotation happens exactly at the tips rather than the element's midpoint. */
+
+.tw-tool {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  transform-origin: 0 0;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.tw-tool.is-visible { opacity: 1; }
+
+.tw-arm {
+  position: absolute;
+  pointer-events: none;
+  display: block;
+  will-change: transform;
+}
+
+/* The arm is a positioned <div> (not the <img> itself, which is a replaced
+   element and can't lay out a marker child — see js/tweezers.js "DOM"). Its
+   sprite fills the div exactly, at the same box the img used to occupy. */
+.tw-arm img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tw-arm-bottom { z-index: 1; }
+.tw-arm-top { z-index: 2; }
+
+/* ------------------------------------------------------------- screens -- */
+
+#screen-splash,
+#screen-play,
+#screen-celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Splash is opaque and catches every tap on it; play/celebration are
+   transparent overlays over the persistent scene, so only their own
+   controls (re-enabled below) are interactive. */
+#screen-splash { pointer-events: auto; }
+
+.art-btn,
+#chip {
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------- splash -- */
+
+#splash-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+#splash-title {
+  position: absolute;
+  top: max(3vh, calc(var(--qk-safe-top) + 14px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(280px, 42vw, 620px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 20px rgba(30, 60, 20, 0.25));
+}
+
+#card-row {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: var(--tw-gap);
+  padding: clamp(140px, 24vh, 220px) max(20px, var(--qk-safe-right))
+    max(20px, var(--qk-safe-bottom)) max(20px, var(--qk-safe-left));
+}
+
+.mode-card {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  width: clamp(128px, 19vw, 232px);
+  min-width: 96px;
+  min-height: 96px;
+  transition: transform 120ms ease;
+}
+
+.mode-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 16px rgba(20, 45, 15, 0.22));
+}
+
+.mode-card:active { transform: translateY(4px) scale(0.97); }
+
+/* ------------------------------------------------------------------ HUD -- */
+
+.art-btn {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  width: clamp(96px, 9vw, 132px);
+  height: clamp(96px, 9vw, 132px);
+  min-width: 96px;
+  min-height: 96px;
+  transition: transform 120ms ease;
+}
+
+.art-btn:active { transform: scale(0.92); }
+
+.corner-top-left {
+  position: absolute;
+  top: max(16px, var(--qk-safe-top));
+  left: max(16px, var(--qk-safe-left));
+}
+
+.corner-bottom-left {
+  position: absolute;
+  bottom: max(16px, var(--qk-safe-bottom));
+  left: max(16px, var(--qk-safe-left));
+}
+
+#btn-home { background-image: url("../assets/ui/btn-home.png"); }
+#btn-back,
+#btn-cele-back { background-image: url("../assets/ui/btn-back.png"); }
+
+.sound-btn { background-image: url("../assets/ui/btn-sound-on.png"); }
+.sound-btn.is-off { background-image: url("../assets/ui/btn-sound-off.png"); }
+
+/* --------------------------------------------------------------- chip -- */
+
+#chip {
+  position: absolute;
+  top: max(16px, var(--qk-safe-top));
+  right: max(16px, var(--qk-safe-right));
+  width: clamp(120px, 14vw, 190px);
+  aspect-ratio: 360 / 200;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#chip-count {
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 46px);
+  color: #4a3418;
+  line-height: 1;
+  padding-bottom: 8%;
+}
+
+/* --------------------------------------------------------- celebration -- */
+
+#banner {
+  position: absolute;
+  top: max(6vh, calc(var(--qk-safe-top) + 20px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(320px, 44vw, 640px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 18px rgba(20, 45, 15, 0.22));
+}
+
+#badge {
+  position: absolute;
+  top: calc(6vh + clamp(150px, 20vw, 260px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(140px, 18vw, 260px);
+  height: auto;
+  pointer-events: none;
+}
+
+#btn-next {
+  background-image: url("../assets/ui/btn-next.png");
+  position: absolute;
+  left: 50%;
+  bottom: max(28px, calc(var(--qk-safe-bottom) + 20px));
+  transform: translateX(-50%);
+  width: clamp(220px, 30vw, 340px);
+  height: clamp(96px, 13vw, 150px);
+}
+
+/* --------------------------------------------------------- small screens -- */
+
+@media (max-width: 700px) {
+  #card-row { gap: 12px; padding-top: clamp(120px, 22vh, 190px); }
+  .mode-card { width: clamp(112px, 40vw, 190px); }
+}
+
+/* ------------------------------------------------------- reduced motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-critter.is-squished,
+  .tw-critter.is-landed { animation: none; }
+  .mode-card,
+  .art-btn { transition: none; }
+  .mode-card:active,
+  .art-btn:active { transform: none; }
+}

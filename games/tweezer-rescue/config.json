@@ -1,0 +1,181 @@
+{
+  "id": "tweezer-rescue",
+  "title": "Tweezer Rescue",
+  "artDirection": "claymation",
+  "scene": { "w": 1600, "h": 1200 },
+  "assets": {
+    "splashBackdrop": "./assets/backdrops/splash.jpg",
+    "title": "./assets/ui/title.png",
+    "banner": "./assets/ui/banner-hooray.png",
+    "badge": "./assets/ui/badge.png",
+    "chip": "./assets/ui/chip.png",
+    "btnBack": "./assets/ui/btn-back.png",
+    "btnHome": "./assets/ui/btn-home.png",
+    "btnSoundOn": "./assets/ui/btn-sound-on.png",
+    "btnSoundOff": "./assets/ui/btn-sound-off.png",
+    "btnNext": "./assets/ui/btn-next.png"
+  },
+  "bgm": {
+    "track": "../../shared/assets/music/gentle-country-morning.mp3",
+    "volume": 0.3
+  },
+  "voice": {
+    "manifest": "./assets/audio/voice/manifest.json",
+    "lines": "./assets/audio/voice/lines.json"
+  },
+  "tweezers": {
+    "top": "./assets/sprites/tweezer-arm-top.png",
+    "bottom": "./assets/sprites/tweezer-arm-bottom.png",
+    "meta": "./assets/sprites/tweezers.json",
+    "lengthScene": 620,
+    "angleDeg": -35,
+    "openDeg": 13,
+    "closedDeg": 1.5
+  },
+  "lines": {
+    "welcome": "Welcome to Tweezer Rescue! Pinch, lift, and carry your little friends home.",
+    "pick": "Pick a rescue!",
+    "how": "Press and hold to squeeze. Carry them home, and let go!",
+    "intro-ladybugs": "Oh no! The ladybugs slipped off their flowers. Let's carry them home with your tweezers!",
+    "prompt-pink": "This ladybug wants the pink flower.",
+    "prompt-white": "This one loves the white flower.",
+    "prompt-purple": "Carry this ladybug to the purple flower.",
+    "intro-bees": "The sleepy bees tumbled out of their honeycomb! Let's tuck them back in, one by one.",
+    "count-1": "One bee home!",
+    "count-2": "Two bees!",
+    "count-3": "Three bees!",
+    "count-4": "Four bees!",
+    "count-5": "Five bees!",
+    "count-6": "Six bees! The honeycomb is full!",
+    "intro-fish": "Splash! The goldfish jumped out of the pond. Match each fish to its pool!",
+    "prompt-big": "This is a big fish. Find the big pool!",
+    "prompt-medium": "A medium fish, right in the middle.",
+    "prompt-little": "A tiny little fish! Where's the little pool?",
+    "intro-pompoms": "Pom-pom time! Sort the fuzzy pom-poms into their matching nests.",
+    "match-red": "Red! Perfect match.",
+    "match-yellow": "Yellow! Lovely.",
+    "match-blue": "Blue! Well done.",
+    "match-green": "Green! Great sorting.",
+    "praise-1": "You did it!",
+    "praise-2": "What a gentle rescue!",
+    "praise-3": "Great pinching!",
+    "praise-4": "Home safe!",
+    "praise-5": "Wonderful!",
+    "one-more": "Just one more!",
+    "nudge-miss": "Almost! Carry it a little further.",
+    "nudge-wrong": "Oops! Gently now. Let's try another spot.",
+    "nudge-idle": "Touch a little friend to pick them up.",
+    "celebrate": "Rescue complete! You saved them all!",
+    "celebrate-2": "Hooray! Every friend is home.",
+    "next-prompt": "Ready for the next rescue?"
+  },
+  "modes": [
+    {
+      "id": "ladybugs",
+      "title": "Ladybug Garden",
+      "skill": "pincer carry and color-word listening",
+      "backdrop": "./assets/backdrops/ladybugs.jpg",
+      "card": "./assets/ui/card-ladybugs.png",
+      "introKey": "intro-ladybugs",
+      "feedback": "praise",
+      "props": [
+        { "sprite": "./assets/sprites/leaf.png", "x": 27, "y": 64, "w": 300 },
+        { "sprite": "./assets/sprites/leaf.png", "x": 45, "y": 69, "w": 300 },
+        { "sprite": "./assets/sprites/leaf.png", "x": 63, "y": 64, "w": 300 },
+        { "sprite": "./assets/sprites/leaf.png", "x": 34, "y": 81, "w": 300 },
+        { "sprite": "./assets/sprites/leaf.png", "x": 54, "y": 83, "w": 300 },
+        { "sprite": "./assets/sprites/leaf.png", "x": 72, "y": 80, "w": 300 }
+      ],
+      "targets": [
+        { "id": "flower-pink", "sprite": "./assets/sprites/flower-pink.png", "x": 30, "y": 26, "w": 260, "accepts": ["pink"], "capacity": 2 },
+        { "id": "flower-white", "sprite": "./assets/sprites/flower-white.png", "x": 50, "y": 23, "w": 260, "accepts": ["white"], "capacity": 2 },
+        { "id": "flower-purple", "sprite": "./assets/sprites/flower-purple.png", "x": 70, "y": 26, "w": 260, "accepts": ["purple"], "capacity": 2 }
+      ],
+      "critters": [
+        { "id": "lady-1", "kind": "pink", "sprite": "./assets/sprites/ladybug.png", "x": 27, "y": 61, "w": 170, "promptKey": "prompt-pink" },
+        { "id": "lady-2", "kind": "white", "sprite": "./assets/sprites/ladybug.png", "x": 45, "y": 66, "w": 170, "promptKey": "prompt-white" },
+        { "id": "lady-3", "kind": "purple", "sprite": "./assets/sprites/ladybug.png", "x": 63, "y": 61, "w": 170, "promptKey": "prompt-purple" },
+        { "id": "lady-4", "kind": "pink", "sprite": "./assets/sprites/ladybug.png", "x": 34, "y": 78, "w": 170, "promptKey": "prompt-pink" },
+        { "id": "lady-5", "kind": "white", "sprite": "./assets/sprites/ladybug.png", "x": 54, "y": 80, "w": 170, "promptKey": "prompt-white" },
+        { "id": "lady-6", "kind": "purple", "sprite": "./assets/sprites/ladybug.png", "x": 72, "y": 77, "w": 170, "promptKey": "prompt-purple" }
+      ]
+    },
+    {
+      "id": "bees",
+      "title": "Busy Bees",
+      "skill": "pincer precision and counting to 6",
+      "backdrop": "./assets/backdrops/bees.jpg",
+      "card": "./assets/ui/card-bees.png",
+      "introKey": "intro-bees",
+      "feedback": "count",
+      "props": [
+        { "sprite": "./assets/sprites/honeycomb.png", "x": 50, "y": 30, "w": 900 }
+      ],
+      "targets": [
+        { "id": "cell-1", "x": 35, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-2", "x": 50, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-3", "x": 65, "y": 21, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-4", "x": 35, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-5", "x": 50, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 },
+        { "id": "cell-6", "x": 65, "y": 39, "pad": 120, "accepts": ["bee"], "capacity": 1 }
+      ],
+      "critters": [
+        { "id": "bee-1", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 26, "y": 62, "w": 170 },
+        { "id": "bee-2", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 41, "y": 58, "w": 170 },
+        { "id": "bee-3", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 56, "y": 62, "w": 170 },
+        { "id": "bee-4", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 31, "y": 76, "w": 170 },
+        { "id": "bee-5", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 49, "y": 79, "w": 170 },
+        { "id": "bee-6", "kind": "bee", "sprite": "./assets/sprites/bee.png", "x": 67, "y": 74, "w": 170 }
+      ]
+    },
+    {
+      "id": "fish",
+      "title": "Goldfish Pond",
+      "skill": "pincer carry and size vocabulary",
+      "backdrop": "./assets/backdrops/fish.jpg",
+      "card": "./assets/ui/card-fish.png",
+      "introKey": "intro-fish",
+      "feedback": "praise",
+      "props": [],
+      "targets": [
+        { "id": "pool-big", "sprite": "./assets/sprites/pool-big.png", "x": 30, "y": 72, "w": 420, "accepts": ["big"], "capacity": 2 },
+        { "id": "pool-medium", "sprite": "./assets/sprites/pool-medium.png", "x": 55, "y": 73, "w": 330, "accepts": ["medium"], "capacity": 2 },
+        { "id": "pool-little", "sprite": "./assets/sprites/pool-little.png", "x": 74, "y": 71, "w": 250, "accepts": ["little"], "capacity": 2 }
+      ],
+      "critters": [
+        { "id": "fish-1", "kind": "big", "sprite": "./assets/sprites/goldfish.png", "x": 28, "y": 38, "w": 260, "promptKey": "prompt-big" },
+        { "id": "fish-2", "kind": "medium", "sprite": "./assets/sprites/goldfish.png", "x": 44, "y": 33, "w": 195, "promptKey": "prompt-medium" },
+        { "id": "fish-3", "kind": "little", "sprite": "./assets/sprites/goldfish.png", "x": 36, "y": 20, "w": 143, "promptKey": "prompt-little" },
+        { "id": "fish-4", "kind": "big", "sprite": "./assets/sprites/goldfish.png", "x": 61, "y": 29, "w": 260, "promptKey": "prompt-big" },
+        { "id": "fish-5", "kind": "medium", "sprite": "./assets/sprites/goldfish.png", "x": 72, "y": 41, "w": 195, "promptKey": "prompt-medium" },
+        { "id": "fish-6", "kind": "little", "sprite": "./assets/sprites/goldfish.png", "x": 56, "y": 47, "w": 143, "promptKey": "prompt-little" }
+      ]
+    },
+    {
+      "id": "pompoms",
+      "title": "Pom-Pom Nests",
+      "skill": "pincer carry and color sorting",
+      "backdrop": "./assets/backdrops/pompoms.jpg",
+      "card": "./assets/ui/card-pompoms.png",
+      "introKey": "intro-pompoms",
+      "feedback": "match",
+      "props": [],
+      "targets": [
+        { "id": "nest-red", "sprite": "./assets/sprites/nest-red.png", "x": 29, "y": 26, "w": 210, "accepts": ["red"], "capacity": 2 },
+        { "id": "nest-yellow", "sprite": "./assets/sprites/nest-yellow.png", "x": 43, "y": 24, "w": 210, "accepts": ["yellow"], "capacity": 2 },
+        { "id": "nest-blue", "sprite": "./assets/sprites/nest-blue.png", "x": 57, "y": 24, "w": 210, "accepts": ["blue"], "capacity": 2 },
+        { "id": "nest-green", "sprite": "./assets/sprites/nest-green.png", "x": 71, "y": 26, "w": 210, "accepts": ["green"], "capacity": 2 }
+      ],
+      "critters": [
+        { "id": "pom-1", "kind": "red", "sprite": "./assets/sprites/pompom-red.png", "x": 30, "y": 62, "w": 120 },
+        { "id": "pom-2", "kind": "yellow", "sprite": "./assets/sprites/pompom-yellow.png", "x": 44, "y": 62, "w": 120 },
+        { "id": "pom-3", "kind": "blue", "sprite": "./assets/sprites/pompom-blue.png", "x": 58, "y": 62, "w": 120 },
+        { "id": "pom-4", "kind": "green", "sprite": "./assets/sprites/pompom-green.png", "x": 72, "y": 62, "w": 120 },
+        { "id": "pom-5", "kind": "blue", "sprite": "./assets/sprites/pompom-blue.png", "x": 33, "y": 76, "w": 120 },
+        { "id": "pom-6", "kind": "green", "sprite": "./assets/sprites/pompom-green.png", "x": 47, "y": 78, "w": 120 },
+        { "id": "pom-7", "kind": "red", "sprite": "./assets/sprites/pompom-red.png", "x": 61, "y": 78, "w": 120 },
+        { "id": "pom-8", "kind": "yellow", "sprite": "./assets/sprites/pompom-yellow.png", "x": 75, "y": 76, "w": 120 }
+      ]
+    }
+  ]
+}
