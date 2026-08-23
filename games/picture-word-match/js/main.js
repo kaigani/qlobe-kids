@@ -160,6 +160,14 @@ const criticalArt = [
   './assets/ui/home.webp',
   './assets/ui/back.webp',
   './assets/ui/sound.webp',
+  './assets/ui/letter-slot.webp',
+  './assets/ui/trail.webp',
+  './assets/ui/action-teal.webp',
+  './assets/ui/action-blue.webp',
+  ...Array.from({ length: 4 }, (_, index) => ASSET.pictureFrame(index)),
+  ...Array.from({ length: 4 }, (_, index) => ASSET.wordRibbon(index)),
+  ...Array.from({ length: 5 }, (_, index) => ASSET.letterSeed(index)),
+  ...Array.from({ length: 3 }, (_, index) => ASSET.reward(index)),
   ...config.chapters.map((chapter) => chapter.art),
   ...config.modes.map((mode) => mode.art),
 ];
@@ -325,6 +333,11 @@ async function startSession(modeId, { quiet = false } = {}) {
   const selectedMode = config.modes.find((item) => item.id === modeId);
   const selectedChapter = chapter();
   if (!selectedMode || !selectedChapter) return false;
+  await preloadImages(
+    selectedChapter.words
+      .map((id) => config.words.find((word) => word.id === id)?.art)
+      .filter(Boolean),
+  );
 
   teardownRound();
   roundSerial += 1;
