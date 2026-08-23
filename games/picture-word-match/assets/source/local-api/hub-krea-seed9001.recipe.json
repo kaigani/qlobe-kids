@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "reading-buddies-hub",
+  "kind": "image",
+  "asset": "reading-buddies-hub.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a cozy wooden tabletop close-up of one friendly hand-painted gray cat picture card tucked into a small open illustrated picture book, with three blank painted paper ribbons in sky blue, warm orange, and leaf green, every ribbon completely unmarked, arranged as a playful reading match in warm window light Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 9001,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "a cozy wooden tabletop close-up of one friendly hand-painted gray cat picture card tucked into a small open illustrated picture book, with three blank painted paper ribbons in sky blue, warm orange, and leaf green, every ribbon completely unmarked, arranged as a playful reading match in warm window light"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-22"
+}

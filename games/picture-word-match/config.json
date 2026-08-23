@@ -1,0 +1,86 @@
+{
+  "format": "qlobe-game-config",
+  "formatVersion": 1,
+  "id": "picture-word-match",
+  "title": "Reading Buddies",
+  "artDirection": "Watercolor / Storybook",
+  "roundsPerSession": 3,
+  "music": {
+    "track": "../../shared/assets/music/gentle-country-morning.mp3",
+    "volume": 0.2
+  },
+  "timing": {
+    "revealAutoMs": 3200,
+    "firstNudgeMs": 10000,
+    "repeatNudgeMs": 10000,
+    "wiggleMs": 520
+  },
+  "modes": [
+    {
+      "id": "picture",
+      "title": "Picture Pairs",
+      "skill": "Match a picture and word",
+      "art": "./assets/modes/picture.webp",
+      "introKey": "mode-picture"
+    },
+    {
+      "id": "listen",
+      "title": "Buddy Says",
+      "skill": "Listen and find its picture",
+      "art": "./assets/modes/listen.webp",
+      "introKey": "mode-listen"
+    },
+    {
+      "id": "build",
+      "title": "Word Garden",
+      "skill": "Build a word with letters",
+      "art": "./assets/modes/build.webp",
+      "introKey": "mode-build"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "animals",
+      "title": "Animals",
+      "art": "./assets/categories/animals.webp",
+      "voiceKey": "chapter-animals",
+      "words": ["cat", "dog", "pig", "hen", "fox", "bug"]
+    },
+    {
+      "id": "food",
+      "title": "Food",
+      "art": "./assets/categories/food.webp",
+      "voiceKey": "chapter-food",
+      "words": ["bun", "jam", "ham", "fig", "yam", "nut"]
+    },
+    {
+      "id": "things",
+      "title": "Things",
+      "art": "./assets/categories/things.webp",
+      "voiceKey": "chapter-things",
+      "words": ["bus", "hat", "box", "cup", "jet", "van"]
+    }
+  ],
+  "words": [
+    {"id": "cat", "label": "CAT", "letters": ["C", "A", "T"], "art": "./assets/words/cat.webp", "alt": "a friendly gray cat"},
+    {"id": "dog", "label": "DOG", "letters": ["D", "O", "G"], "art": "./assets/words/dog.webp", "alt": "a friendly spotted dog"},
+    {"id": "pig", "label": "PIG", "letters": ["P", "I", "G"], "art": "./assets/words/pig.webp", "alt": "a friendly pink pig"},
+    {"id": "hen", "label": "HEN", "letters": ["H", "E", "N"], "art": "./assets/words/hen.webp", "alt": "a friendly brown hen"},
+    {"id": "fox", "label": "FOX", "letters": ["F", "O", "X"], "art": "./assets/words/fox.webp", "alt": "a friendly orange fox"},
+    {"id": "bug", "label": "BUG", "letters": ["B", "U", "G"], "art": "./assets/words/bug.webp", "alt": "a friendly red ladybug"},
+    {"id": "bun", "label": "BUN", "letters": ["B", "U", "N"], "art": "./assets/words/bun.webp", "alt": "a round golden bread bun"},
+    {"id": "jam", "label": "JAM", "letters": ["J", "A", "M"], "art": "./assets/words/jam.webp", "alt": "a jar of strawberry jam"},
+    {"id": "ham", "label": "HAM", "letters": ["H", "A", "M"], "art": "./assets/words/ham.webp", "alt": "a slice of pink ham"},
+    {"id": "fig", "label": "FIG", "letters": ["F", "I", "G"], "art": "./assets/words/fig.webp", "alt": "a ripe purple fig"},
+    {"id": "yam", "label": "YAM", "letters": ["Y", "A", "M"], "art": "./assets/words/yam.webp", "alt": "an orange yam"},
+    {"id": "nut", "label": "NUT", "letters": ["N", "U", "T"], "art": "./assets/words/nut.webp", "alt": "a brown acorn nut"},
+    {"id": "bus", "label": "BUS", "letters": ["B", "U", "S"], "art": "./assets/words/bus.webp", "alt": "a yellow school bus"},
+    {"id": "hat", "label": "HAT", "letters": ["H", "A", "T"], "art": "./assets/words/hat.webp", "alt": "a blue sun hat"},
+    {"id": "box", "label": "BOX", "letters": ["B", "O", "X"], "art": "./assets/words/box.webp", "alt": "an open cardboard box"},
+    {"id": "cup", "label": "CUP", "letters": ["C", "U", "P"], "art": "./assets/words/cup.webp", "alt": "a bright yellow cup"},
+    {"id": "jet", "label": "JET", "letters": ["J", "E", "T"], "art": "./assets/words/jet.webp", "alt": "a small blue and white jet"},
+    {"id": "van", "label": "VAN", "letters": ["V", "A", "N"], "art": "./assets/words/van.webp", "alt": "a cheerful teal van"}
+  ],
+  "builderDistractors": ["B", "C", "D", "F", "G", "H", "J", "M", "N", "P", "S", "T", "V", "Y"],
+  "cheers": ["great-match-1", "great-match-2", "great-match-3", "great-match-4"]
+}

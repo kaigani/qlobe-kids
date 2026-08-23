@@ -614,29 +614,34 @@
     },
     {
       "id": "picture-word-match",
-      "title": "Picture Word Match",
+      "title": "Reading Buddies",
       "category": "reading-phonics",
       "path": "games/picture-word-match/",
       "icon": "assets/hub/tiles/picture-word-match.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#398bb7",
       "modes": [
         {
-          "id": "easy",
-          "title": "Match the Word",
-          "skill": "picture-to-print matching with familiar CVC words"
+          "id": "picture",
+          "title": "Picture Pairs",
+          "skill": "Match a picture and word"
         },
         {
-          "id": "more",
-          "title": "More Words",
-          "skill": "picture-to-print matching with additional CVC words"
+          "id": "listen",
+          "title": "Buddy Says",
+          "skill": "Listen and find its picture"
+        },
+        {
+          "id": "build",
+          "title": "Word Garden",
+          "skill": "Build a word with letters"
         }
       ],
-      "summary": "Match picture cards to the words they spell."
+      "summary": "Open a watercolor storybook to match pictures and words, listen for familiar words, and build three-letter words."
     },
     {
       "id": "sound-hopscotch",

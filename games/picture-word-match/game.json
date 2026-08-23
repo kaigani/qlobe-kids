@@ -1,34 +1,46 @@
 {
   "id": "picture-word-match",
-  "title": "Picture Word Match",
+  "title": "Reading Buddies",
   "category": "reading-phonics",
   "path": "games/picture-word-match/",
-  "icon": "🃏",
+  "icon": "📖",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Picture Word Match 🖼️ — Pictures Meet Printed Words",
-  "description": "Match real picture cards to their written CVC words, with spoken support the whole way. An early word-recognition game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#398bb7",
+  "shareTitle": "Reading Buddies — A Picture-Word Storybook",
+  "description": "Fill a watercolor picture book by matching pictures and words, listening closely, and building friendly three-letter words.",
   "learningGoals": [
-    "Connect spoken words, pictures, and printed CVC words",
-    "Practice early word recognition",
-    "Use audio support so reading is invited but not required"
+    "Connect spoken words, familiar pictures, and printed CVC words",
+    "Listen for a whole word and identify its pictured meaning",
+    "Sequence three letter sounds to build a short word"
   ],
-  "interactionModel": "match-pairs tap a picture card and its written word card",
-  "feedbackModel": "Correct picture-word pairs sparkle and speak the matched word; a miss gets a gentle wiggle, spoken nudge, and retry.",
+  "interactionModel": "custom DOM storybook with three-word sessions across picture-word tap/drag matching, spoken-word picture choice, and ordered letter building",
+  "feedbackModel": "Gentle spoken retries preserve progress; idle help repeats and then highlights; every word earns a full-page Great Match reveal and every session fills a stamped picture book.",
   "uses": [
-    "shared/js/engines/match-pairs.js",
-    "shared/js/speech.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/content.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/preload.js",
+    "shared/js/screens.js",
     "shared/js/sfx.js",
-    "shared/assets/objects/"
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/audio/",
+    "shared/assets/music/gentle-country-morning.mp3"
   ],
   "modes": [
-    { "id": "easy", "title": "Match the Word", "skill": "picture-to-print matching with familiar CVC words" },
-    { "id": "more", "title": "More Words", "skill": "picture-to-print matching with additional CVC words" }
+    { "id": "picture", "title": "Picture Pairs", "skill": "Match a picture and word" },
+    { "id": "listen", "title": "Buddy Says", "skill": "Listen and find its picture" },
+    { "id": "build", "title": "Word Garden", "skill": "Build a word with letters" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; shared QLOBE Kids object-card art. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; watercolor storybook production art developed with GPT Image 2-class generation and approved Qwen/Krea local workflows; teacher narration created with Qwen voice clone and Whisper QA. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

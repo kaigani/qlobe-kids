@@ -5,43 +5,150 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Picture Word Match 🖼️ — Pictures Meet Printed Words</title>
-  <meta name="description" content="Match real picture cards to their written CVC words, with spoken support the whole way. An early word-recognition game for ages 5–6." />
+  <meta name="theme-color" content="#9ed8ef" />
+  <title>Reading Buddies — A Picture-Word Storybook</title>
+  <meta name="description" content="Fill a watercolor picture book by matching pictures and words, listening closely, and building friendly three-letter words. A gentle reading game for ages 3–6." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Picture Word Match" />
-  <meta property="og:title" content="Picture Word Match 🖼️ — Pictures Meet Printed Words" />
-  <meta property="og:description" content="Match real picture cards to their written CVC words, with spoken support the whole way. An early word-recognition game for ages 5–6." />
+  <meta property="og:site_name" content="Reading Buddies" />
+  <meta property="og:title" content="Reading Buddies — A Picture-Word Storybook" />
+  <meta property="og:description" content="Match, listen, and build three-letter words in a hand-painted reading garden." />
   <meta property="og:url" content="https://qlo.be/games/picture-word-match/" />
   <meta property="og:image" content="https://qlo.be/games/picture-word-match/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Picture Word Match title screen with Match the Word and More Words modes and a joker playing card icon." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A watercolor Reading Buddies storybook filled with friendly picture and word cards." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Picture Word Match 🖼️ — Pictures Meet Printed Words" />
-  <meta name="twitter:description" content="Match real picture cards to their written CVC words, with spoken support the whole way. An early word-recognition game for ages 5–6." />
+  <meta name="twitter:title" content="Reading Buddies — A Picture-Word Storybook" />
+  <meta name="twitter:description" content="Match, listen, and build three-letter words in a hand-painted reading garden." />
   <meta name="twitter:image" content="https://qlo.be/games/picture-word-match/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/match-pairs.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="rb-game" aria-live="off">
+    <img class="rb-garden" src="./assets/art/reading-garden.webp" alt="" aria-hidden="true" />
+
+    <section id="screen-library" class="qk-screen rb-screen rb-library" data-qk-screen="library">
+      <button class="rb-hud-button rb-home" type="button" data-target="home" data-role="navigation" aria-label="Back to QLOBE Kids">
+        <img src="./assets/ui/home.webp" alt="" aria-hidden="true" />
+      </button>
+
+      <header class="rb-library-header">
+        <img class="rb-title" src="./assets/ui/reading-buddies-title.webp" alt="Reading Buddies" />
+        <div class="rb-paper-line rb-library-prompt">
+          <img src="./assets/ui/word-ribbon-blue.webp" alt="" aria-hidden="true" />
+          <p>Choose a picture book</p>
+        </div>
+      </header>
+
+      <div class="rb-book-stage rb-library-book">
+        <img class="rb-book-art" src="./assets/ui/open-book.webp" alt="" aria-hidden="true" />
+        <div id="chapter-grid" class="rb-chapter-grid" role="group" aria-label="Picture books"></div>
+      </div>
+
+      <p class="rb-gentle-tip">Three tiny words make one finished book.</p>
+    </section>
+
+    <section id="screen-activities" class="qk-screen rb-screen rb-activities" data-qk-screen="activities" hidden>
+      <button class="rb-hud-button rb-back" type="button" data-target="back" data-role="navigation" aria-label="Choose another picture book">
+        <img src="./assets/ui/back.webp" alt="" aria-hidden="true" />
+      </button>
+      <button class="rb-hud-button rb-sound" type="button" data-target="sound-activities" data-role="audio" aria-label="Hear the directions">
+        <img src="./assets/ui/sound.webp" alt="" aria-hidden="true" />
+      </button>
+
+      <header class="rb-activities-header">
+        <img id="activity-chapter-art" class="rb-chapter-hero" src="./assets/categories/animals.webp" alt="" />
+        <div>
+          <h1 id="activity-chapter-title">Animal Friends</h1>
+          <p>Choose a reading game</p>
+        </div>
+      </header>
+
+      <div class="rb-book-stage rb-activity-book">
+        <img class="rb-book-art" src="./assets/ui/open-book.webp" alt="" aria-hidden="true" />
+        <div id="mode-grid" class="rb-mode-grid" role="group" aria-label="Reading games"></div>
+      </div>
+    </section>
+
+    <section id="screen-play" class="qk-screen rb-screen rb-play" data-qk-screen="play" hidden>
+      <button class="rb-hud-button rb-back" type="button" data-target="back-play" data-role="navigation" aria-label="Choose another reading game">
+        <img src="./assets/ui/back.webp" alt="" aria-hidden="true" />
+      </button>
+      <button class="rb-hud-button rb-sound" type="button" data-target="sound" data-role="audio" aria-label="Hear the prompt again">
+        <img src="./assets/ui/sound.webp" alt="" aria-hidden="true" />
+      </button>
+
+      <div class="rb-play-topline">
+        <div class="rb-paper-line rb-play-prompt">
+          <img src="./assets/ui/word-ribbon-blue.webp" alt="" aria-hidden="true" />
+          <h1 id="play-prompt">Match the picture and word</h1>
+        </div>
+        <div id="progress" class="rb-progress" aria-label="Book progress"></div>
+      </div>
+
+      <div id="play-board" class="rb-play-board" aria-live="polite"></div>
+      <p id="play-tip" class="rb-gentle-tip rb-play-tip">Tap a piece, or drag it to its spot.</p>
+      <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="screen-great" class="qk-screen rb-screen rb-great" data-qk-screen="great" hidden>
+      <div class="rb-paper-line rb-great-banner">
+        <img src="./assets/ui/celebration-ribbon.webp" alt="" aria-hidden="true" />
+        <h1 id="great-line">Great match!</h1>
+      </div>
+
+      <div class="rb-book-stage rb-great-book">
+        <img class="rb-book-art" src="./assets/ui/open-book.webp" alt="" aria-hidden="true" />
+        <img id="great-picture" class="rb-great-picture" src="./assets/words/cat.webp" alt="" />
+        <div class="rb-great-word-side">
+          <p id="great-word" class="rb-great-word">CAT</p>
+          <div id="great-letters" class="rb-great-letters" aria-label="Word sounds"></div>
+        </div>
+      </div>
+
+      <button id="great-next" class="rb-painted-action rb-action-teal" type="button" data-target="next" data-role="continue">
+        <img src="./assets/ui/action-teal.webp" alt="" aria-hidden="true" />
+        <span>Next word</span>
+      </button>
+      <p id="great-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="screen-complete" class="qk-screen rb-screen rb-complete" data-qk-screen="complete" hidden>
+      <div class="rb-paper-line rb-complete-banner">
+        <img src="./assets/ui/celebration-ribbon.webp" alt="" aria-hidden="true" />
+        <h1>Book complete!</h1>
+      </div>
+
+      <div class="rb-complete-book">
+        <img class="rb-collection-book" src="./assets/ui/collection-book.webp" alt="A completed Reading Buddies picture book" />
+        <div id="book-stamps" class="rb-book-stamps" aria-hidden="true"></div>
+      </div>
+
+      <p id="complete-copy" class="rb-complete-copy">Your picture book is full of words.</p>
+      <div class="rb-complete-actions">
+        <button id="play-again" class="rb-painted-action rb-action-teal" type="button" data-target="again" data-role="replay">
+          <img src="./assets/ui/action-teal.webp" alt="" aria-hidden="true" />
+          <span>Fill it again</span>
+        </button>
+        <button id="choose-book" class="rb-painted-action rb-action-blue" type="button" data-target="choose-book" data-role="navigation">
+          <img src="./assets/ui/action-blue.webp" alt="" aria-hidden="true" />
+          <span>Choose a book</span>
+        </button>
+      </div>
+      <p id="complete-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <div id="drag-layer" class="rb-drag-layer" aria-hidden="true"></div>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

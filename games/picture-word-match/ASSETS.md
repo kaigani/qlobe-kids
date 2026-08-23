@@ -1,48 +1,101 @@
-# Picture Word Match Assets
+# Reading Buddies asset provenance
 
-All current picture art reuses existing shared QLOBE Kids CVC object cards. Word cards are rendered by the engine with `text:<word>` refs in Fredoka. No image files, generated art, downloaded art, recorded clips, or network assets are added by this game.
+Reading Buddies is an authored watercolor/storybook game. Its visible surfaces,
+cards, books, controls, rewards, and subjects are raster artwork; CSS is limited
+to layout, state, focus, and motion, while child-facing words and letters remain
+real HTML text for legibility and accessibility.
 
-## Shared runtime assets
+The complete production prompt set is
+[`assets/source/PROMPTS.md`](assets/source/PROMPTS.md). Runtime dimensions and
+SHA-256 checksums are recorded in
+[`assets/source/asset-manifest.json`](assets/source/asset-manifest.json).
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified for UI and word cards |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/match-pairs.js` |
-| Object cards (`shared/assets/objects/*.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared:objects/<word>.png` refs |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+## Production artwork
 
-## Assets needed
+| Runtime family | Retained source | Authoring workflow | Finalization and QA |
+|---|---|---|---|
+| `assets/art/reading-garden.webp` | `assets/source/gpt-image-2/reading-garden-master.png` | Built-in GPT Image 2-class generation, directed from the supplied Reading Buddies concept mockups | Opaque 4:3 master fitted to 1600×1200 WebP; calm center/top bands preserved for gameplay |
+| `assets/ui/reading-buddies-title.webp` | `assets/source/gpt-image-2/title-master.png` → `assets/source/layered/title.png` | Built-in GPT Image 2-class exact-title generation → local Qwen Image Layered | Accepted `layer_2`, alpha-reviewed, trimmed and fitted to 1120×360 |
+| `assets/words/{cat,dog,pig,hen,fox,bug}.webp` | `assets/source/gpt-image-2/words-animals-master.png` → `assets/source/layered/words-animals.png` | Built-in GPT Image 2-class 3×2 subject sheet → local Qwen Image Layered | Accepted `layer_2`; six single-subject alpha islands, alpha QA, 360×300 transparent WebP |
+| `assets/words/{bun,jam,ham,fig,yam,nut}.webp` | `assets/source/local-api/words-food-qwen-edit.png` → `assets/source/layered/words-food.png` | Local Qwen Image Edit from the accepted animal style sheet → local Qwen Image Layered | Same six-cell review/finalization contract |
+| `assets/words/{bus,hat,box,cup,jet,van}.webp` | `assets/source/local-api/words-things-qwen-edit.png` → `assets/source/layered/words-things.png` | Local Qwen Image Edit from the accepted animal style sheet → local Qwen Image Layered | Same six-cell review/finalization contract |
+| `assets/categories/*.webp`, `assets/modes/*.webp` | `assets/source/gpt-image-2/emblems-master.png` → `assets/source/layered/emblems.png` | Built-in GPT Image 2-class 3×2 emblem family → local Qwen Image Layered | Six wordless emblems, alpha-reviewed and fitted to 320×260 |
+| Painted frames, ribbons, letter seeds, and check in `assets/ui/` | `assets/source/gpt-image-2/carriers-master.png` → `assets/source/layered/carriers.png` | Built-in GPT Image 2-class UI carrier sheet → local Qwen Image Layered | Authored crop bands isolate each blank carrier; transparent runtime WebP |
+| Books, trail, celebration ribbon, and reward stamps in `assets/ui/` | `assets/source/gpt-image-2/book-rewards-master.png` → `assets/source/layered/book-rewards.png` | Built-in GPT Image 2-class storybook UI sheet → local Qwen Image Layered | Transparent alpha-reviewed crops; single-piece stamps use largest-island cleanup |
+| Home/back/sound controls, action carriers, and letter slot in `assets/ui/` | `assets/source/gpt-image-2/controls-master.png` → `assets/source/layered/controls.png` | Built-in GPT Image 2-class control sheet → local Qwen Image Layered | Transparent alpha-reviewed crops; labels are HTML rather than baked text |
 
-Voice lines:
+All eight Qwen Image Layered passes used seed 42 and explicitly fetched
+`output=layer_2`. Qwen returned a faint 1–4/255 full-sheet alpha film, so the
+deterministic finalizer uses an evidence-based alpha floor of 8 before bounding.
+It does not infer a matte from local color. Single-piece word subjects,
+carriers, and stamps keep only their largest connected alpha island so a
+neighboring extraction sliver cannot ship. Fully transparent pixels have their
+unused RGB cleared for compatibility with imperfect thumbnailers. Contact
+sheets over saturated magenta are retained in `assets/source/qa/` for edge, spill, and crop
+review. Rebuild and check with:
 
-- Tap a picture and tap the word that says the same thing.
-- Hmm, listen again and find the word that sounds the same.
-- You matched pictures and words!
-- Picture and word match!
-- You found the word!
-- Great looking and listening!
-- Match each picture to its word.
-- Match more pictures to words.
-- Cat matches cat.
-- Dog matches dog.
-- Sun matches sun.
-- Bus matches bus.
-- Hat matches hat.
-- Box matches box.
-- Pig matches pig.
-- Cup matches cup.
-- Fox matches fox.
-- Jet matches jet.
-- Mop matches mop.
-- Hen matches hen.
-- Bug matches bug.
-- Van matches van.
-- Log matches log.
-- Net matches net.
+```sh
+python3 tools/finalize-assets.py
+```
 
-## Link preview (og:image)
+`tools/finalize-assets.py` uses explicit authored crop bands rather than assuming
+that a generative contact sheet landed on mathematically equal rows. It performs
+contain-fit (up or down), emits runtime WebP files, writes hashes/dimensions, and
+fails on missing or invalid alpha sources.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+These generated QLOBE Kids project assets are licensed CC BY 4.0; no child-facing
+attribution is required.
+
+## Hub tile
+
+| Asset | Source and recipe | Workflow | Curation |
+|---|---|---|---|
+| `../../assets/hub/tiles/picture-word-match.jpg` | `assets/source/local-api/hub-krea-seed9001.png` and adjacent `.recipe.json` | QLOBE Studio `menu-game-tile` / `toy-table`, local Krea 2 Turbo text-to-image, 768×640, seed 9001 | Seed 42 was rejected for unwanted literal letters; seed 1337 was rejected as sterile; seed 9001 was accepted for its cozy cat-card/open-book reading moment and blank painted ribbons, then fitted to 640×533 JPEG |
+
+The hub tile is intentionally a distinct toy-table object scene, not a crop of
+the in-game splash and not a title-bearing app screenshot.
+
+## Recorded teacher voice
+
+`assets/audio/lines.json` contains the exact 39 authored lines. The reproducible
+pipeline is `tools/generate-voice.py`:
+
+- local `qwen3-tts-voiceclone` with seed 7;
+- the rights-cleared, synthetic platform teacher reference at
+  `shared/assets/refs/voice-teacher.wav` (authoring input only, not duplicated);
+- AAC/M4A delivery with `+faststart`;
+- local Whisper comparison plus duration, volume, text-hash, checksum, and
+  reference-hash evidence in `assets/audio/qa.json`;
+- runtime lookup in `assets/audio/manifest.json`, with the exact text retained as
+  the device-speech recovery fallback.
+
+All 39 clips passed at seed 7 with normalized Whisper ratio 1.000. Durations are
+0.878–5.900 s; mean volume is −20.3 to −18.3 dB. The platform teacher reference
+and generated game dialogue are QLOBE Kids project assets, CC BY 4.0.
+
+Regenerate or audit with:
+
+```sh
+python3 tools/generate-voice.py --workers 2 \
+  --voice-ref ../../shared/assets/refs/voice-teacher.wav
+python3 tools/generate-voice.py --check
+```
+
+No model or network endpoint is used at runtime.
+
+## Shared runtime resources
+
+| Resource | Source / license | Use |
+|---|---|---|
+| Fredoka SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | Fredoka by Milena Brandão and Hafontia, via Fontsource 5.0.13; SIL OFL 1.1 | Functional HTML words, letters, prompts, and labels; reused unmodified |
+| `shared/assets/music/gentle-country-morning.mp3` | Shared QLOBE Kids recorded music asset | Gesture-started garden music, looped and ducked under narration through `shared/js/bgm.js` |
+| Shared word/letter audio through `shared/js/content.js` | Shared QLOBE Kids audio library | Whole-word replay and letter-sound reinforcement where available |
+| `shared/js/sfx.js` and `shared/js/celebrate.js` | QLOBE Kids platform code | WebAudio interaction feedback and DOM celebration; no downloaded sound effects |
+
+## Link preview (`og:image`)
+
+`assets/og-image.jpg` is a 1200×630 screenshot of the finished chapter-library
+screen, captured at JPEG quality 82 by
+`tools/pipeline/capture_og_images.mjs --only picture-word-match --force`. It was
+not generated from the retired prototype and should be regenerated with that
+tool rather than hand-edited.
