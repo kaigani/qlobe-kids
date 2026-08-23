@@ -1,0 +1,20 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "status": "accepted",
+  "workflow": "deterministic-charcoal-matte",
+  "reason": "Qwen UI extraction unreliable; neutral charcoal ground removed with soft alpha distance ramp",
+  "source": "games/shadow-chase/assets/source/layered/ui-inputs/button-green.png",
+  "output": "games/shadow-chase/assets/source/layered/ui-button-green.png",
+  "bbox": [
+    28,
+    154,
+    455,
+    392
+  ],
+  "matte": [
+    32,
+    33,
+    35
+  ]
+}

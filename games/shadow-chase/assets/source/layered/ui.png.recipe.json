@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "layers": 2,
+  "selectedOutput": "layer_2",
+  "source": "games/shadow-chase/assets/source/gpt-image-2/ui-contact-sheet.png",
+  "output": "games/shadow-chase/assets/source/layered/ui.png",
+  "prompt": "Background layer: only the perfectly flat uniform dark charcoal background.\nTop layer: all six carved wooden interface objects in their exact 3 by 2 positions, preserving the sun, star, plaque, green button, pedestal, and round button, isolated together on a genuinely transparent background.\nKeep the foreground identical to the input. Do not redraw, restyle, crop, rearrange, add, remove, or relight anything.",
+  "qa": {
+    "status": "needs-human-review",
+    "width": 1024,
+    "height": 768,
+    "transparentPct": 77.106,
+    "opaquePct": 21.674
+  }
+}

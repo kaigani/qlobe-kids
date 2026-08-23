@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "show-noon",
+  "text": "At noon, the sun is high. The shadow tucks in close.",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "At noon, the sun is high, the shadow tucks in close.",
+    "similarity": 1.0,
+    "tokenSimilarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

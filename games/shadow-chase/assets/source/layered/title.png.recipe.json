@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "layers": 2,
+  "selectedOutput": "layer_2",
+  "source": "games/shadow-chase/assets/source/gpt-image-2/title-source.png",
+  "output": "games/shadow-chase/assets/source/layered/title.png",
+  "prompt": "Background layer: only the perfectly flat uniform dark charcoal background.\nTop layer: the complete correctly spelled SHADOW CHASE carved wooden title and its small flanking ray marks, preserving every letter exactly, isolated together on a genuinely transparent background.\nKeep the foreground identical to the input. Do not redraw, restyle, crop, rearrange, add, remove, or relight anything.",
+  "qa": {
+    "status": "needs-human-review",
+    "width": 1024,
+    "height": 520,
+    "transparentPct": 77.032,
+    "opaquePct": 21.865
+  }
+}

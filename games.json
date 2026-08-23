@@ -2928,28 +2928,33 @@
     {
       "id": "shadow-chase",
       "title": "Shadow Chase",
-      "category": "movement-outdoor",
+      "category": "sensorial-science",
       "path": "games/shadow-chase/",
       "icon": "assets/hub/tiles/shadow-chase.jpg",
       "age": {
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f4b942",
+      "status": "beta",
+      "accent": "#d17735",
       "modes": [
         {
-          "id": "morning",
-          "title": "Morning Shadows",
-          "skill": "observe and move with body and object shadows"
+          "id": "match",
+          "title": "Find a Shadow",
+          "skill": "visual silhouette discrimination"
         },
         {
-          "id": "day",
-          "title": "All-Day Watch",
-          "skill": "compare one shadow across morning, noon, and evening"
+          "id": "sun",
+          "title": "Chase the Sun",
+          "skill": "light and shadow cause and effect"
+        },
+        {
+          "id": "show",
+          "title": "Shadow Show",
+          "skill": "compare morning, noon, and evening shadows"
         }
       ],
-      "summary": "Watch shadows move and shift through the day."
+      "summary": "Match carved toys to shadows, move the sun, and play through a whole day of light."
     },
     {
       "id": "garden-delivery-game",

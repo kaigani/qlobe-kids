@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "choose-show",
+  "text": "Make a shadow show! Move the sun, or press play to watch a whole day.",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Make a shadow show. Move the sun or press play to watch a whole day.",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

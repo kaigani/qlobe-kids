@@ -1,0 +1,54 @@
+{
+  "id": "shadow-chase",
+  "engine": "custom",
+  "title": "Shadow Chase",
+  "artWorld": "toy",
+  "theme": { "world": "toy-table", "background": "./assets/stage.webp" },
+  "rounds": 4,
+  "assets": {
+    "stage": "./assets/stage.webp",
+    "stageMorning": "./assets/stage-morning.webp",
+    "stageNoon": "./assets/stage-noon.webp",
+    "stageEvening": "./assets/stage-evening.webp",
+    "title": "./assets/title.webp",
+    "sun": "./assets/ui/sun.webp",
+    "sunTrack": "./assets/ui/sun-track.webp",
+    "star": "./assets/ui/star.webp",
+    "plaque": "./assets/ui/choice-plaque.webp",
+    "button": "./assets/ui/button-green.webp",
+    "pedestal": "./assets/ui/pedestal.webp",
+    "roundButton": "./assets/ui/button-round.webp",
+    "pause": "./assets/ui/pause.webp",
+    "bgm": "../../shared/assets/music/whimsical-toy-workshop.mp3"
+  },
+  "toys": [
+    { "id": "rabbit", "label": "rabbit", "promptKey": "match-rabbit", "hint": "Look for two tall ears." },
+    { "id": "squirrel", "label": "squirrel", "promptKey": "match-squirrel", "hint": "Look for one big curled tail." },
+    { "id": "turtle", "label": "turtle", "promptKey": "match-turtle", "hint": "Look for the round shell." },
+    { "id": "fox", "label": "fox", "promptKey": "match-fox", "hint": "Look for pointy ears and a bushy tail." },
+    { "id": "duck", "label": "duck", "promptKey": "match-duck", "hint": "Look for the beak and webbed feet." },
+    { "id": "bear", "label": "bear", "promptKey": "match-bear", "hint": "Look for two round ears." }
+  ],
+  "sunTargets": [
+    { "id": "long-right", "sunT": 0.08, "label": "long shadow to the right", "voiceKey": "sun-long" },
+    { "id": "medium-right", "sunT": 0.28, "label": "medium shadow to the right", "voiceKey": "sun-opposite" },
+    { "id": "short-noon", "sunT": 0.5, "label": "short noon shadow", "voiceKey": "sun-short" },
+    { "id": "medium-left", "sunT": 0.72, "label": "medium shadow to the left", "voiceKey": "sun-opposite" },
+    { "id": "long-left", "sunT": 0.92, "label": "long shadow to the left", "voiceKey": "sun-long" }
+  ],
+  "voice": {
+    "welcome": "Ready to chase some shadows? Pick a shadow game!",
+    "choose-match": "Find a shadow! Look closely, then tap the matching shape.",
+    "choose-sun": "Chase the sun! Slide the sun until your shadow matches the picture.",
+    "choose-show": "Make a shadow show! Move the sun, or press play to watch a whole day.",
+    "match-rabbit": "Which shadow belongs to the rabbit?", "match-squirrel": "Which shadow belongs to the squirrel?", "match-turtle": "Which shadow belongs to the turtle?", "match-fox": "Which shadow belongs to the fox?", "match-duck": "Which shadow belongs to the duck?", "match-bear": "Which shadow belongs to the bear?",
+    "try-again": "Good looking. Try another shadow.", "look-closer": "Look at the outside shape. You can find it!", "found": "You found it! That shadow fits perfectly.",
+    "sun-intro": "Move the sun. Watch the shadow stretch, shrink, and switch sides!", "sun-nudge": "Try sliding the big sun along its wooden track.", "sun-long": "The sun is low, so the shadow stretches long!", "sun-short": "The sun is high, so the shadow tucks in close!", "sun-opposite": "You did it! The shadow points away from the sun.",
+    "show-intro": "Choose a toy for your shadow show.", "show-morning": "Morning sun is low. The shadow stretches away.", "show-noon": "At noon, the sun is high. The shadow tucks in close.", "show-evening": "Evening sun is low on the other side. The shadow stretches back.", "show-complete": "You made a whole day of shadows!", "all-done": "Shadow star! You chased every shadow.", "idle": "The shadows are waiting. Tap a toy or move the sun."
+  },
+  "modes": [
+    { "id": "match", "title": "Find a Shadow", "skill": "visual discrimination", "rounds": 4 },
+    { "id": "sun", "title": "Chase the Sun", "skill": "light and shadow cause and effect", "rounds": 4 },
+    { "id": "show", "title": "Shadow Show", "skill": "compare morning, noon, and evening", "rounds": 1 }
+  ]
+}
