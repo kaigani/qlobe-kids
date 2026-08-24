@@ -122,16 +122,15 @@ gains the shared one — `class="qk-choose-splash qk-eng-page"`.
 > **The per-engine `qk-<engine>-*` prefixes are DEPRECATED BUT STABLE.**
 > They are not going away in this wave and nothing may rename or relocate one.
 
-Three shipped games reach into engine internals through those prefixes and skin
+Two shipped games reach into engine internals through those prefixes and skin
 them, and they are the acceptance test for any change here:
 
 | game | hooks |
 |---|---|
 | `games/letter-road-driving` | `#game .qk-trace*` — including a redefinition of the engine's own `--navy` / `--blue` / `--green` / `--yellow` / `--shadow` |
-| `games/number-rod-race` | `#game .qk-seq-item .qk-art-emoji` and friends |
 | `games/blend-train` | `css/style.css`, ~25 rules under `#game .qk-build*` |
 
-All three scope under `#game`, so they carry an ID and outrank every selector in
+Both scope under `#game`, so they carry an ID and outrank every selector in
 engine-base.css regardless of order. Two rules keep that true:
 
 - **Never raise a selector in engine-base.css above one class**, and never use

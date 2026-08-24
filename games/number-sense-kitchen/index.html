@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#ffd890" />
+  <title>Number Sense Kitchen — Count, Fill, and Mix with Chef Ravi</title>
+  <meta name="description" content="Join Chef Ravi in a handcrafted Toy kitchen: spot cookie groups at a glance, fill five- and ten-frames one ingredient at a time, and combine two fruit groups into a delicious total." />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Number Sense Kitchen" />
+  <meta property="og:title" content="Number Sense Kitchen — Count, Fill, and Mix with Chef Ravi" />
+  <meta property="og:description" content="Join Chef Ravi in a handcrafted Toy kitchen: spot cookie groups at a glance, fill five- and ten-frames one ingredient at a time, and combine two fruit groups into a delicious total." />
+  <meta property="og:url" content="https://qlo.be/games/number-sense-kitchen/" />
+  <meta property="og:image" content="https://qlo.be/games/number-sense-kitchen/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Chef Ravi welcomes children to a mint and peach Toy kitchen beneath the colorful Number Sense Kitchen title." />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Number Sense Kitchen — Count, Fill, and Mix with Chef Ravi" />
+  <meta name="twitter:description" content="Join Chef Ravi in a handcrafted Toy kitchen: spot cookie groups at a glance, fill five- and ten-frames one ingredient at a time, and combine two fruit groups into a delicious total." />
+  <meta name="twitter:image" content="https://qlo.be/games/number-sense-kitchen/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <main id="game">
+    <section class="qk-screen kitchen-screen splash" data-qk-screen="splash">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../index.html" aria-label="Home"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="replay" aria-label="Hear welcome again"></button>
+      <img class="title-art" src="./assets/ui/title.webp" alt="Number Sense Kitchen">
+      <div class="splash-hero"><img class="ravi" src="./assets/characters/ravi-chef.webp" alt="Chef Ravi"><p>Let’s make numbers!</p></div>
+      <button class="art-button start-button" data-action="start" data-target="start"><img src="./assets/ui/action-orange.webp" alt=""><span>Start Kitchen</span></button>
+    </section>
+
+    <section class="qk-screen kitchen-screen menu" data-qk-screen="menu" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="back" aria-label="Back to kitchen"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="replay" aria-label="Hear instructions again"></button>
+      <img class="title-art title-art--small" src="./assets/ui/title.webp" alt="Choose a recipe">
+      <div class="mode-cards" data-mode-cards aria-label="Choose a recipe"></div>
+      <p class="menu-help">Tap a recipe picture</p>
+    </section>
+
+    <section class="qk-screen kitchen-screen play" data-qk-screen="play" hidden>
+      <div class="topbar"><button class="qk-hud-btn qk-hud-back" data-action="back" data-target="back" aria-label="Back to recipes"></button><div class="badges" data-badges aria-label="Recipe badges"></div><button class="qk-hud-btn qk-hud-sound" data-action="replay" data-target="replay" aria-label="Hear the prompt again"></button></div>
+      <p class="prompt" data-prompt aria-live="polite"></p><div class="round-pips" data-pips aria-label="Round progress"></div>
+      <div class="playfield" data-board></div><div class="tray" data-tray></div>
+    </section>
+
+    <section class="qk-screen kitchen-screen complete" data-qk-screen="complete" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="back" aria-label="Back to recipes"></button>
+      <div class="complete-stage">
+        <div class="chef-celebration"><img class="star-art" src="./assets/ui/star.webp" alt="Recipe complete"><img class="ravi ravi--complete" src="./assets/characters/ravi-chef.webp" alt="Chef Ravi celebrates"></div>
+        <div class="reward-panel"><p class="reward-praise" data-reward-praise></p><p class="reward-detail" data-reward-detail></p><div class="reward-tableau" data-reward-tableau></div></div>
+        <div class="earned" data-earned></div><div class="celebration-stars" data-celebration-stars aria-hidden="true"></div>
+      </div>
+      <div class="complete-actions"><button class="art-button" data-action="menu" data-target="recipe-menu"><img src="./assets/ui/action-orange.webp" alt=""><span>Recipe Menu</span></button><button class="art-button" data-action="next" data-target="next-recipe"><img src="./assets/ui/action-orange.webp" alt=""><span data-next-label>Next Recipe</span></button></div>
+    </section>
+
+    <section class="qk-screen kitchen-screen finale" data-qk-screen="finale" hidden>
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="back" aria-label="Back to recipes"></button>
+      <img class="title-art title-art--small" src="./assets/ui/title.webp" alt="Number Sense Kitchen">
+      <div class="finale-stage"><img class="ravi ravi--finale" src="./assets/characters/ravi-chef.webp" alt="Chef Ravi celebrates"><div class="finale-payoff"><p class="finale-copy">Three number recipes complete!</p><div class="finale-recipes" data-finale-badges aria-label="All completed recipes"></div></div></div>
+      <button class="art-button" data-action="again" data-target="cook-again"><img src="./assets/ui/action-orange.webp" alt=""><span>Cook Again</span></button>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

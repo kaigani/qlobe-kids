@@ -1,0 +1,29 @@
+{
+  "id": "number-sense-kitchen",
+  "title": "Number Sense Kitchen",
+  "artDirection": "Toy",
+  "music": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+  "voice": {
+    "welcome": "Welcome to Number Sense Kitchen! I’m Chef Ravi. Let’s make numbers with yummy food!", "start": "Tap a recipe to begin.",
+    "menu-cookie": "Cookie Jar! Look fast and choose how many.", "menu-frame": "Frame Bakery! Fill the little spaces.", "menu-bowl": "Fruit Bowl! Put two groups together.", "idle": "Chef Ravi is ready when you are.", "wrong": "Let’s look together. Try again.",
+    "mode-cookie-complete": "Cookie counting chef! You spotted every group!", "mode-frame-complete": "Frame filling chef! You made every space count!", "mode-bowl-complete": "Fruit mixing chef! You put groups together!", "finale": "You finished every Number Sense Kitchen recipe. Fantastic cooking!",
+    "cookie-r1-prompt": "Look at the cookies. Which number says one?", "cookie-r1-success": "One cookie! You saw it right away!", "cookie-r1-retry": "There is one cookie. Find the number one.",
+    "cookie-r2-prompt": "Look at the cookie pair. Which number says two?", "cookie-r2-success": "Two cookies! Pop-pop!", "cookie-r2-retry": "Two cookies together. Find the number two.",
+    "cookie-r3-prompt": "Look at this cookie group. Which number says four?", "cookie-r3-success": "Four cookies! You used your quick-look eyes!", "cookie-r3-retry": "Let’s see: one, two, three, four. Find four.",
+    "frame-r1-prompt": "Put three strawberries in the little baking frame.", "frame-r1-success": "Three spaces are full!",
+    "frame-r2-prompt": "Fill all five spaces. Two apples and three strawberries make five.", "frame-r2-success": "Five! The whole frame is full.",
+    "frame-r3-prompt": "Fill eight spaces in the big frame. Five oranges and three apples make eight.", "frame-r3-success": "Eight! You built a big number.",
+    "bowl-r1-prompt": "Put one berry and two berries in the bowl. Together they make three.", "bowl-r1-success": "One and two make three!",
+    "bowl-r2-prompt": "Put two apples and three oranges together. How many are in the bowl?", "bowl-r2-success": "Two and three make five!",
+    "bowl-r3-prompt": "Put five strawberries and three apples together. Let’s make eight.", "bowl-r3-success": "Five and three make eight! Delicious number work!"
+  },
+  "modes": [
+    { "id": "cookie", "name": "Cookie Jar", "asset": "./assets/ui/recipe-cookie.webp" }, { "id": "frame", "name": "Frame Bakery", "asset": "./assets/ui/recipe-frame.webp" }, { "id": "bowl", "name": "Fruit Bowl", "asset": "./assets/ui/recipe-bowl.webp" }
+  ],
+  "assets": {
+    "background": "./assets/bg/kitchen.webp", "title": "./assets/ui/title.webp", "ravi": "./assets/characters/ravi-chef.webp", "jar": "./assets/world/cookie-jar.webp", "bowl": "./assets/world/bowl.webp", "frame5": "./assets/world/frame-5.webp", "frame10": "./assets/world/frame-10.webp",
+    "strawberry": "./assets/world/strawberry.webp", "apple": "./assets/world/apple.webp", "orange": "./assets/world/orange.webp", "plaque": "./assets/ui/number-plaque.webp", "action": "./assets/ui/action-orange.webp", "star": "./assets/ui/star.webp",
+    "badgeCookie": "./assets/ui/badge-cookie.webp", "badgeFrame": "./assets/ui/badge-frame.webp", "badgeBowl": "./assets/ui/badge-bowl.webp", "cookie1": "./assets/world/cookie-cluster-1.webp", "cookie2": "./assets/world/cookie-cluster-2.webp", "cookie4": "./assets/world/cookie-cluster-4.webp",
+    "groupStrawberry1": "./assets/world/group-strawberry-1.webp", "groupStrawberry2": "./assets/world/group-strawberry-2.webp", "groupStrawberry5": "./assets/world/group-strawberry-5.webp", "groupApple2": "./assets/world/group-apple-2.webp", "groupApple3": "./assets/world/group-apple-3.webp", "groupOrange3": "./assets/world/group-orange-3.webp"
+  }
+}

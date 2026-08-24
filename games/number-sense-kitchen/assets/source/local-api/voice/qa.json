@@ -1,0 +1,21 @@
+{
+  "bowl-r1-prompt": {
+    "valid": false,
+    "workflow": "qwen3-tts-voiceclone→whisper-stt",
+    "intended": "Put one berry cup and two berry cup in the bowl. Together they make three.",
+    "attempts": [
+      {
+        "seed": 7,
+        "error": "qwen3-tts-voiceclone dfa74e563f3f49399e3995370bc672f7"
+      },
+      {
+        "seed": 8,
+        "error": "qwen3-tts-voiceclone 213e9cb8385d410ab0b448979d7832bf"
+      },
+      {
+        "seed": 9,
+        "error": "qwen3-tts-voiceclone 3c0d0dc937094e089051dc1002191145"
+      }
+    ]
+  }
+}

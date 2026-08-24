@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "gameId": "number-sense-kitchen",
+  "artDirection": "Toy",
+  "visuals": {
+    "gptImage2": {
+      "workflow": "built-in GPT Image 2 generation",
+      "promptSet": "assets/source/gpt-image-2-prompts.json",
+      "immutableMasters": [
+        "assets/source/gpt-image-2/kitchen-source.png",
+        "assets/source/gpt-image-2/toy-contact-sheet.png",
+        "assets/source/gpt-image-2/title-source.png"
+      ],
+      "acceptedUse": "cohesive kitchen backdrop, Toy object source sheet, and exact title lettering"
+    },
+    "objectExtraction": {
+      "plannedWorkflow": "Qwen Image Layered full contact sheet, layer_2",
+      "result": "authoring job stalled before a usable layer set",
+      "acceptedFallback": "deterministic contiguous-ground keying of individually inspected contact-sheet cells",
+      "sourceCells": "assets/source/local-api/slices/",
+      "fallbackCells": "assets/source/local-api/fallback/",
+      "runtimeFamilies": [
+        "assets/world/",
+        "assets/ui/"
+      ]
+    },
+    "ravi": {
+      "rejectedCandidate": {
+        "workflow": "Qwen Image Edit",
+        "seed": 42,
+        "source": "assets/source/local-api/edit/ravi-chef.png",
+        "reason": "adversarial art review rejected identity drift"
+      },
+      "acceptedSource": "games/chocolate-chip-count/assets/ravi-chef-tray.webp",
+      "acceptedUse": "canonical QLOBE Ravi, alpha-trimmed and resized to assets/characters/ravi-chef.webp"
+    },
+    "hubTile": {
+      "workflow": "Krea 2 text-to-image",
+      "template": "menu-game-tile",
+      "style": "toy-table",
+      "seed": 42,
+      "recipe": "assets/source/local-api/hub/recipe.json",
+      "source": "assets/source/local-api/hub/number-sense-kitchen-krea2.png",
+      "runtime": "../../assets/hub/tiles/number-sense-kitchen.jpg",
+      "dimensions": [
+        640,
+        533
+      ]
+    },
+    "derivedComposites": {
+      "method": "deterministic compositions of accepted cookie and fruit sprites",
+      "families": [
+        "cookie clusters 1, 2, and 4",
+        "fruit groups 1+2, 2+3, and 5+3",
+        "three semantic recipe badges"
+      ]
+    },
+    "alphaQa": {
+      "method": "full-size saturated-magenta composite inspection",
+      "evidence": "assets/source/qa/",
+      "result": "accepted"
+    },
+    "ogImage": {
+      "workflow": "platform 1200x630 production-splash capture",
+      "runtime": "assets/og-image.jpg"
+    }
+  },
+  "voice": {
+    "preferredWorkflow": "Qwen3 TTS voice clone using the approved teacher reference, then Whisper exact-line QA",
+    "acceptanceThreshold": 0.92,
+    "allOrNone": true,
+    "accepted": 0,
+    "total": 32,
+    "stalls": 3,
+    "attemptedSeeds": [
+      7,
+      8,
+      9
+    ],
+    "runtimeManifest": "assets/audio/manifest.json",
+    "runtimeDelivery": "no recorded clips; exact assets/audio/lines.json text uses device Web Speech",
+    "sourceOnlyUnverified": "assets/source/local-api/voice/unverified/",
+    "qa": "assets/audio/qa.json"
+  },
+  "music": {
+    "runtime": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "behavior": "starts only after Start Kitchen, ducks under narration, and stops on return to splash"
+  },
+  "runtimePolicy": {
+    "authoringServicesAtRuntime": false,
+    "childAuthoredDataCollected": false,
+    "analytics": "standard platform page-view tag only; no game-specific events",
+    "primaryArtworkFormats": [
+      "webp",
+      "jpg"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "number-sense-kitchen",
+  "title": "Number Sense Kitchen",
+  "icon": "🍓",
+  "category": "math-number-sense",
+  "path": "games/number-sense-kitchen/",
+  "entry": "index.html",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#f28b52",
+  "shareTitle": "Number Sense Kitchen — Count, Fill, and Mix with Chef Ravi",
+  "description": "Join Chef Ravi in a handcrafted Toy kitchen: spot cookie groups at a glance, fill five- and ten-frames one ingredient at a time, and combine two fruit groups into a delicious total.",
+  "learningGoals": [
+    "Subitize stable groups of 1, 2, and 4 without counting every object",
+    "Build quantities 3, 5, and 8 with one-to-one correspondence in five- and ten-frames",
+    "Compose totals 3, 5, and 8 by combining two visible fruit groups"
+  ],
+  "interactionModel": "Choose one of three picture recipes. Tap the matching Toy number plaque in Cookie Jar; drag an ingredient to the frame or use tap-tap placement in Frame Bakery; drag or tap-place both countable groups into the bowl in Fruit Bowl. Keyboard Enter and Space follow the same paths.",
+  "feedbackModel": "Every correct action physically changes the Toy kitchen: cookies travel into the jar, fruit snaps into the next frame well, and group pieces resolve into individually countable fruit in the bowl. Warm spoken modeling supports retries; each completed recipe earns a distinct medal badge with no timer, score loss, or failure state.",
+  "uses": [
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
+    "shared/js/speech.js",
+    "shared/js/bgm.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "cookie", "title": "Cookie Jar", "skill": "subitizing quantities 1, 2, and 4" },
+    { "id": "frame", "title": "Frame Bakery", "skill": "one-to-one correspondence in five- and ten-frames" },
+    { "id": "bowl", "title": "Fruit Bowl", "skill": "composing totals from two visible groups" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original Toy kitchen, food, prop, badge, and UI art produced with built-in GPT Image 2 and QLOBE Studio local image workflows. Ravi is the recurring QLOBE Kids cast member. See ASSETS.md for model, seed, processing, and dialogue provenance.",
+  "characters": ["ravi"],
+  "conceptVideo": "01-game-concepts/number-sense-kitchen/"
+}

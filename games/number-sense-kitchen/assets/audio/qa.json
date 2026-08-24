@@ -1,0 +1,248 @@
+{
+  "summary": {
+    "valid": false,
+    "accepted": 0,
+    "total": 32,
+    "runtimeDelivery": "omitted-all-or-none",
+    "stalls": 3
+  },
+  "lines": {
+    "bowl-r1-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Put one berry and two berries in the bowl. Together they make three.",
+      "attemptedText": "Put one berry cup and two berry cup in the bowl. Together they make three.",
+      "attempts": [
+        {
+          "seed": 7,
+          "error": "qwen3-tts-voiceclone dfa74e563f3f49399e3995370bc672f7"
+        },
+        {
+          "seed": 8,
+          "error": "qwen3-tts-voiceclone 213e9cb8385d410ab0b448979d7832bf"
+        },
+        {
+          "seed": 9,
+          "error": "qwen3-tts-voiceclone 3c0d0dc937094e089051dc1002191145"
+        }
+      ]
+    },
+    "welcome": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Welcome to Number Sense Kitchen! I’m Chef Ravi. Let’s make numbers with yummy food!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "start": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Tap a recipe to begin.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "menu-cookie": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Cookie Jar! Look fast and choose how many.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "menu-frame": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Frame Bakery! Fill the little spaces.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "menu-bowl": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Fruit Bowl! Put two groups together.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "idle": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Chef Ravi is ready when you are.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "wrong": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Let’s look together. Try again.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "mode-cookie-complete": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Cookie counting chef! You spotted every group!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "mode-frame-complete": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Frame filling chef! You made every space count!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "mode-bowl-complete": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Fruit mixing chef! You put groups together!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "finale": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "You finished every Number Sense Kitchen recipe. Fantastic cooking!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r1-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Look at the cookies. Which number says one?",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r1-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "One cookie! You saw it right away!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r1-retry": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "There is one cookie. Find the number one.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r2-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Look at the cookie pair. Which number says two?",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r2-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Two cookies! Pop-pop!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r2-retry": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Two cookies together. Find the number two.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r3-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Look at this cookie group. Which number says four?",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r3-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Four cookies! You used your quick-look eyes!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "cookie-r3-retry": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Let’s see: one, two, three, four. Find four.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r1-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Put three strawberries in the little baking frame.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r1-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Three spaces are full!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r2-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Fill all five spaces. Two apples and three strawberries make five.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r2-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Five! The whole frame is full.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r3-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Fill eight spaces in the big frame. Five oranges and three apples make eight.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "frame-r3-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Eight! You built a big number.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "bowl-r1-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "One and two make three!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "bowl-r2-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Put two apples and three oranges together. How many are in the bowl?",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "bowl-r2-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Two and three make five!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "bowl-r3-prompt": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Put five strawberries and three apples together. Let’s make eight.",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    },
+    "bowl-r3-success": {
+      "valid": false,
+      "workflow": "qwen3-tts-voiceclone→whisper-stt",
+      "intended": "Five and three make eight! Delicious number work!",
+      "attempts": [],
+      "reason": "not attempted or no accepted source-stage clip"
+    }
+  }
+}

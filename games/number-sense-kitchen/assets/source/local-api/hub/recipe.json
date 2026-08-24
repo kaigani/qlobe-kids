@@ -1,0 +1,33 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "number-sense-kitchen-hub",
+  "kind": "image",
+  "asset": "number-sense-kitchen.jpg",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A cheerful preschool Number Sense Kitchen game moment staged as a tabletop toy diorama: a clear teal-lidded cookie jar, exactly five chunky chocolate-chip cookies, a small cream bowl holding exactly three oranges and two red apples, and a pale wooden five-frame tray. Cozy mint-tile kitchen background, painted wood, molded toy forms, soft studio light, saturated teal, mint, coral and sunny yellow palette, one instantly readable central composition with generous safe margins. Premium preschool learning app asset. No people, no title, no letters, no numbers, no words, no UI, no icons, no borders, no watermark.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "Number Sense Kitchen toy counting moment"
+    }
+  },
+  "qa": {
+    "status": "approved",
+    "finalSize": [
+      640,
+      533
+    ]
+  },
+  "created": "2026-08-23"
+}

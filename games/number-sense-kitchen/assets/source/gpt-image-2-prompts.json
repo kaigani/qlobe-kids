@@ -1,0 +1,38 @@
+{
+  "format": "qlobe-gpt-image-source-prompts",
+  "formatVersion": 1,
+  "generator": "Codex imagegen built-in GPT Image 2 workflow",
+  "generatedAt": "2026-08-23",
+  "assets": [
+    {
+      "id": "kitchen-source",
+      "useCase": "stylized-concept",
+      "output": "gpt-image-2/kitchen-source.png",
+      "references": [
+        "../../../../../01-game-concepts/number-sense-kitchen/output/ui-mockups/01-recipe-menu.png",
+        "../../../../../01-game-concepts/number-sense-kitchen/output/ui-mockups/03-five-frame.png"
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: full-bleed game environment background plate for a premium tablet preschool game\nPrimary request: Create one clean 4:3 landscape Toy kitchen background only, inspired by the supplied Number Sense Kitchen mockups but without copying any UI or text.\nInput images: Image 1 is the visual-system and palette reference; Image 2 is the material, counter-height, and kitchen framing reference.\nScene/backdrop: Front-on cozy toy kitchen with mint ceramic tile backsplash, honey-colored wooden worktop occupying the lower quarter, peach/coral painted-wood lower cabinetry, a bright window at the far left, and a small shelf with plates and one plant near the far right. Keep the entire center broad, calm, empty, and low-detail for interactive counting objects. Keep top-left, top-right, and bottom-left HUD-safe zones visually quiet.\nStyle/medium: premium tactile 3D Toy art world; chunky rounded preschool-safe geometry; visibly different painted wood, matte ceramic, soft silicone, and glossy toy accents; restrained contact shadows; crisp production game art, not concept art.\nComposition/framing: perfectly straight-on orthographic-feeling 4:3 landscape plate, no perspective tilt, no device frame, no hands.\nLighting/mood: warm even morning studio light, cheerful and welcoming, one consistent light direction.\nColor palette: mint, teal, cream, peach, orange, berry red accents, honey wood, tiny navy accents.\nConstraints: background environment only; no characters, no food, no cookies, no jar, no fruit bowl, no trays, no cards, no buttons, no interface, no text, no letters, no numbers, no logos, no watermark. Preserve a large uncluttered central interaction zone. Render as a complete standalone image."
+    },
+    {
+      "id": "toy-contact-sheet",
+      "useCase": "stylized-concept",
+      "output": "gpt-image-2/toy-contact-sheet.png",
+      "references": [
+        "../../../../../01-game-concepts/number-sense-kitchen/output/ui-mockups/01-recipe-menu.png",
+        "gpt-image-2/kitchen-source.png"
+      ],
+      "prompt": "Use case: stylized-concept\nAsset type: production source contact sheet for a premium preschool counting game\nPrimary request: Create a perfectly organized 4 by 4 contact sheet of sixteen isolated tactile Toy kitchen game assets, one object centered in each equal square cell.\nInput images: Image 1 defines the Number Sense Kitchen object family; Image 2 defines the accepted Toy material, palette, lighting, and rendering anchor. Match them closely.\nScene/backdrop: Every cell has the same perfectly flat dark charcoal #26242A background with no floor, horizon, shadow outside the object, label, divider, or decoration.\nStyle/medium: premium tactile 3D Toy art; chunky rounded preschool-safe geometry; painted honey wood, matte cream ceramic, teal molded silicone, and glossy food/toy accents; consistent front-facing three-quarter view and upper-left studio light; crisp clean silhouettes.\nGrid contents, left-to-right and top-to-bottom, exactly one isolated object per cell: (1) clear chunky toy cookie jar with teal lid, empty; (2) one round chocolate-chip cookie; (3) one strawberry; (4) one orange; (5) one red apple; (6) empty cream ceramic fruit bowl with teal scalloped stripe; (7) teal molded five-frame tray with exactly five empty cream wells in one row; (8) teal molded ten-frame tray with exactly ten empty cream wells in two rows of five; (9) honey-wood ingredient cutting board; (10) mint-and-cream blank recipe card carrying only a small cookie-jar picture, no text; (11) mint-and-cream blank recipe card carrying only a five-frame picture, no text; (12) mint-and-cream blank recipe card carrying only a fruit-bowl picture, no text; (13) glossy golden toy numeral 5; (14) puffy golden star badge; (15) empty teal stitched silicone prompt plaque with no text; (16) empty chunky orange action-button slab with no text.\nComposition/framing: exactly 4 columns by 4 rows, equal square cells, generous padding, each object fully visible and not touching its cell edges. No overlaps between cells. Keep object scale consistent by family.\nConstraints: exactly the listed sixteen objects; no characters, no hands, no words, no letters, no extra numerals except the single requested numeral 5, no watermark, no logo, no scene, no baked UI chrome, no cast shadows crossing cell boundaries. This sheet will be deterministically sliced, so keep the grid exact and the backgrounds perfectly uniform."
+    },
+    {
+      "id": "title-source",
+      "useCase": "logo-brand",
+      "output": "gpt-image-2/title-source.png",
+      "references": [
+        "../../../../../01-game-concepts/number-sense-kitchen/output/ui-mockups/01-recipe-menu.png",
+        "gpt-image-2/toy-contact-sheet.png"
+      ],
+      "prompt": "Use case: logo-brand\nAsset type: transparent splash-screen title lockup for a premium preschool counting game\nPrimary request: Create one wide decorative title lockup reading exactly NUMBER SENSE KITCHEN.\nInput images: Image 1 is a layout and lettering mood reference only; Image 2 is the accepted Toy material and palette anchor.\nSubject: the exact three words NUMBER SENSE KITCHEN, each word present exactly once and spelled perfectly. Arrange in two friendly centered lines: NUMBER SENSE above KITCHEN. Add only tiny tasteful kitchen ornaments integrated around the outside: one mini cookie, one strawberry, one teal spoon, and two golden stars.\nStyle/medium: chunky rounded hand-sculpted 3D toy lettering with painted wood and soft silicone material, warm cream edge highlights, subtle contact depth, premium preschool game title art.\nComposition/framing: very wide approximately 3:1 horizontal lockup, centered, generous transparent margin, fully isolated.\nColor palette: alternating warm orange, teal, berry red, and honey yellow letters, coherent with the accepted contact sheet; dark navy micro-shadow for readability.\nText (verbatim): NUMBER SENSE KITCHEN\nConstraints: genuinely transparent background with clean alpha; spell every letter correctly; no duplicate words; no subtitle; no characters; no banner; no extra text; no watermark; no logo; no white or colored rectangle behind the title. Keep all letters fully visible and readable at tablet size."
+    }
+  ]
+}

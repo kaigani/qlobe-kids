@@ -1024,30 +1024,56 @@
       "summary": "Copy one short word or phrase."
     },
     {
-      "id": "number-rod-race",
-      "title": "Number Rod Race",
+      "id": "number-sense-kitchen",
+      "title": "Number Sense Kitchen",
       "category": "math-number-sense",
-      "path": "games/number-rod-race/",
-      "icon": "assets/hub/tiles/number-rod-race.jpg",
+      "path": "games/number-sense-kitchen/",
+      "icon": "assets/hub/tiles/number-sense-kitchen.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#58a945",
+      "status": "beta",
+      "accent": "#f28b52",
       "modes": [
         {
-          "id": "short",
-          "title": "Short to Long",
-          "skill": "length comparison and ascending order"
+          "id": "cookie",
+          "title": "Cookie Jar",
+          "skill": "subitizing quantities 1, 2, and 4"
         },
         {
-          "id": "long",
-          "title": "Long to Short",
-          "skill": "length comparison and descending order"
+          "id": "frame",
+          "title": "Frame Bakery",
+          "skill": "one-to-one correspondence in five- and ten-frames"
+        },
+        {
+          "id": "bowl",
+          "title": "Fruit Bowl",
+          "skill": "composing totals from two visible groups"
         }
       ],
-      "summary": "Order rods from shortest to longest."
+      "uses": [
+        "shared/js/screens.js",
+        "shared/js/tap.js",
+        "shared/js/voice-clips.js",
+        "shared/js/speech.js",
+        "shared/js/bgm.js",
+        "shared/js/sfx.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/timers.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
+        "shared/js/preload.js",
+        "shared/css/base.css",
+        "shared/css/screens.css",
+        "shared/css/hud.css",
+        "shared/assets/music/whimsical-toy-workshop.mp3",
+        "shared/assets/ui/",
+        "shared/fonts/fredoka-latin-600-normal.woff2"
+      ],
+      "summary": "Spot cookie groups, fill counting frames, and combine fruit with Chef Ravi in a playful Toy kitchen."
     },
     {
       "id": "counting-treasure-cups",

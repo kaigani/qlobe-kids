@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-23T22:26:19.818Z",
+  "generated": "2026-08-24T06:25:03.599Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -54,15 +54,6 @@
         "turn-taking-tower"
       ]
     },
-    "trace-path": {
-      "count": 4,
-      "games": [
-        "chalkboard-big-strokes",
-        "letter-road-driving",
-        "scissor-trail-safari",
-        "sticker-line-challenge"
-      ]
-    },
     "tap-count": {
       "count": 4,
       "games": [
@@ -72,12 +63,12 @@
         "subtraction-picnic"
       ]
     },
-    "sequence-order": {
+    "trace-path": {
       "count": 3,
       "games": [
-        "family-timeline",
-        "number-rod-race",
-        "story-sequence"
+        "chalkboard-big-strokes",
+        "letter-road-driving",
+        "scissor-trail-safari"
       ]
     },
     "match-pairs": {
@@ -94,6 +85,13 @@
         "family-story-interview",
         "picture-narration",
         "smell-jars"
+      ]
+    },
+    "sequence-order": {
+      "count": 2,
+      "games": [
+        "family-timeline",
+        "story-sequence"
       ]
     },
     "pattern-continue": {
@@ -1565,23 +1563,42 @@
       "assets": [],
       "packs": []
     },
-    "number-rod-race": {
-      "engine": "sequence-order",
-      "status": "in-design",
+    "number-sense-kitchen": {
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
-      "characters": [],
+      "characters": [
+        "ravi"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sequence-order.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/number-sense-kitchen/assets/characters/ravi-chef.webp",
+        "games/number-sense-kitchen/assets/ui/action-orange.webp",
+        "games/number-sense-kitchen/assets/ui/star.webp",
+        "games/number-sense-kitchen/assets/ui/title.webp",
+        "shared/assets/music/whimsical-toy-workshop.mp3",
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "obstacle-course-builder": {
@@ -2530,22 +2547,39 @@
       "packs": []
     },
     "sticker-line-challenge": {
-      "engine": "trace-path",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "writing-fine-motor",
       "characters": [],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/trace-path.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/sticker-line-challenge/assets/bg-end.jpg",
+        "games/sticker-line-challenge/assets/bg-play.jpg",
+        "games/sticker-line-challenge/assets/bg-splash.jpg",
+        "games/sticker-line-challenge/assets/title.webp",
+        "games/sticker-line-challenge/assets/ui/banner-green.webp",
+        "games/sticker-line-challenge/assets/ui/banner-pink.webp",
+        "shared/assets/ui"
+      ],
       "packs": []
     },
     "story-repair-shop": {
@@ -3092,7 +3126,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
@@ -3128,7 +3162,6 @@
         "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
-        "sticker-line-challenge",
         "story-repair-shop",
         "story-sequence",
         "story-stones",
@@ -3178,6 +3211,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -3194,6 +3228,7 @@
         "sound-basket",
         "sound-cylinder-match",
         "sound-painting",
+        "sticker-line-challenge",
         "story-stones",
         "table-setting-mission",
         "tangram-tales",
@@ -3209,9 +3244,11 @@
         "board-game-reset",
         "cleanup-timer-quest",
         "mountain-seasons-wheel",
+        "number-sense-kitchen",
         "picture-word-match",
         "puzzle-map-match",
         "shadow-chase",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tweezer-rescue"
       ],
@@ -3250,6 +3287,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "snack-chef",
+        "sticker-line-challenge",
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
@@ -3309,6 +3347,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -3325,6 +3364,7 @@
         "sound-basket",
         "sound-cylinder-match",
         "sound-painting",
+        "sticker-line-challenge",
         "story-stones",
         "table-setting-mission",
         "tangram-tales",
@@ -3399,7 +3439,6 @@
       ],
       "shared/js/engines/sequence-order.js": [
         "family-timeline",
-        "number-rod-race",
         "story-sequence"
       ],
       "shared/js/engines/sort-into-bins.js": [
@@ -3417,8 +3456,7 @@
       "shared/js/engines/trace-path.js": [
         "chalkboard-big-strokes",
         "letter-road-driving",
-        "scissor-trail-safari",
-        "sticker-line-challenge"
+        "scissor-trail-safari"
       ],
       "shared/js/freeform-board.js": [
         "clay-creature-studio",
@@ -3453,6 +3491,7 @@
         "name-puzzle",
         "obstacle-course-builder",
         "red-green-light",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tiny-reader-theater"
       ],
@@ -3473,9 +3512,11 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "picture-word-match",
         "shadow-chase",
         "sink-or-float",
+        "sticker-line-challenge",
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
@@ -3567,9 +3608,11 @@
         "loose-parts-collage",
         "monster-opera",
         "mountain-seasons-wheel",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "picture-word-match",
         "puzzle-map-match",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -3602,6 +3645,7 @@
         "lunchbox-pack",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -3613,6 +3657,7 @@
         "sink-or-float",
         "sound-basket",
         "sound-cylinder-match",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3639,10 +3684,12 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "picture-word-match",
         "shadow-chase",
         "snack-chef",
+        "sticker-line-challenge",
         "table-setting-mission",
         "throwing-target-garden",
         "tiny-reader-theater",
@@ -3699,7 +3746,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
@@ -3789,7 +3836,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
@@ -3820,7 +3867,6 @@
         "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
-        "sticker-line-challenge",
         "story-repair-shop",
         "story-sequence",
         "subtraction-picnic",
@@ -3856,6 +3902,7 @@
         "laundry-sorter",
         "lunchbox-pack",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -3956,6 +4003,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -3973,6 +4021,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sound-sprouts",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4005,6 +4054,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -4015,6 +4065,7 @@
         "rhythm-copycat",
         "shadow-chase",
         "sound-cylinder-match",
+        "sticker-line-challenge",
         "table-setting-mission",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -4055,6 +4106,7 @@
         "mountain-seasons-wheel",
         "my-puppet-band",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -4073,6 +4125,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sound-sprouts",
+        "sticker-line-challenge",
         "story-stones",
         "table-setting-mission",
         "tangram-tales",
@@ -4145,7 +4198,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
@@ -4220,7 +4273,6 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
         "pattern-train",
         "picture-narration",
         "plan-do-review",
@@ -4239,7 +4291,6 @@
         "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
-        "sticker-line-challenge",
         "story-repair-shop",
         "story-sequence",
         "story-stones",
@@ -4274,12 +4325,14 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "red-green-light",
         "rhythm-copycat",
         "shadow-chase",
         "sound-cylinder-match",
         "sound-painting",
+        "sticker-line-challenge",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -4332,7 +4385,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "number-rod-race",
+        "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
@@ -4528,6 +4581,7 @@
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
+        "number-sense-kitchen",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
@@ -4889,6 +4943,18 @@
       "games/name-puzzle/assets/ui/title.webp": [
         "name-puzzle"
       ],
+      "games/number-sense-kitchen/assets/characters/ravi-chef.webp": [
+        "number-sense-kitchen"
+      ],
+      "games/number-sense-kitchen/assets/ui/action-orange.webp": [
+        "number-sense-kitchen"
+      ],
+      "games/number-sense-kitchen/assets/ui/star.webp": [
+        "number-sense-kitchen"
+      ],
+      "games/number-sense-kitchen/assets/ui/title.webp": [
+        "number-sense-kitchen"
+      ],
       "games/obstacle-course-builder/assets/ui/course-board.webp": [
         "obstacle-course-builder"
       ],
@@ -5084,6 +5150,24 @@
       "games/sound-sprouts/assets/gen/ui/splash/title.png": [
         "sound-sprouts"
       ],
+      "games/sticker-line-challenge/assets/bg-end.jpg": [
+        "sticker-line-challenge"
+      ],
+      "games/sticker-line-challenge/assets/bg-play.jpg": [
+        "sticker-line-challenge"
+      ],
+      "games/sticker-line-challenge/assets/bg-splash.jpg": [
+        "sticker-line-challenge"
+      ],
+      "games/sticker-line-challenge/assets/title.webp": [
+        "sticker-line-challenge"
+      ],
+      "games/sticker-line-challenge/assets/ui/banner-green.webp": [
+        "sticker-line-challenge"
+      ],
+      "games/sticker-line-challenge/assets/ui/banner-pink.webp": [
+        "sticker-line-challenge"
+      ],
       "games/teen-bead-builder/assets/manipulatives/bead-blue.webp": [
         "teen-bead-builder"
       ],
@@ -5196,6 +5280,9 @@
         "picture-word-match",
         "tweezer-rescue"
       ],
+      "shared/assets/music/whimsical-toy-workshop.mp3": [
+        "number-sense-kitchen"
+      ],
       "shared/assets/objects": [
         "flashlight-cave",
         "playdough-letter-factory",
@@ -5225,6 +5312,7 @@
         "flashlight-cave",
         "land-water-tray",
         "lunchbox-pack",
+        "number-sense-kitchen",
         "playdough-letter-factory",
         "rhyming-detective",
         "secret-message-copy",
@@ -5237,6 +5325,7 @@
         "sound-basket",
         "sound-painting",
         "sound-sprouts",
+        "sticker-line-challenge",
         "tangram-tales",
         "teen-bead-builder",
         "turn-taking-tower",
@@ -5344,6 +5433,7 @@
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
+        "number-sense-kitchen",
         "problem-solving-puppets",
         "turn-taking-tower"
       ],
