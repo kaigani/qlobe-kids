@@ -496,7 +496,34 @@ FINAL_SPECS = [
          dst=SPRITES / "flower-purple.png", w=420, h=420, budget_kb=90),
     dict(id="leaf", kind="canvas", src=CUT / "leaf.png",
          dst=SPRITES / "leaf.png", w=460, h=340, budget_kb=90),
+    # NOTE: production defect (found 2026-08-23, confirmed live in a
+    # bees-mode screenshot) — two fully opaque dark diamond patches shipped
+    # between the hex cells (e.g. raw px ~(500,335)/(635,318) sampled
+    # (60,3,0,255)/(51,1,0,255)). Root cause: the model rendered those two
+    # inter-cell notches as a dark reddish-brown crevice-shadow color, not
+    # the flat charcoal ground — Euclidean distance from the sampled corner
+    # background (~27,28,28) is ~83-120, over key_charcoal's tol of 42, so
+    # the border flood-fill never reaches them (they never touch the image
+    # edge) AND a `close_holes` pass (single fixed-tolerance color match
+    # against that same corner sample) was verified NOT to close them either
+    # (tested directly: pixels stayed opaque at ~(139,57,1) after
+    # close_holes=True) — close_holes alone is the wrong tool here, unlike
+    # title/hooray where the enclosed gap really is the same flat charcoal.
+    # Real qwen-image-layered extraction is not viable for this geometric
+    # subject either: the whole reason honeycomb is a `key` (not `src=CUT/`)
+    # asset is that a generative redraw could move/reshape the exact cell
+    # geometry gameplay code relies on, same rationale as the tweezer split.
+    # Fixed with close_dark_pockets_ (see its docstring): a local
+    # chained-neighbor color flood seeded at the pocket's near-black pixels,
+    # capped by a small bbox and drift distance from the seed, so it cleanly
+    # captures just the two ~60x60px diamonds (verified: closed regions of
+    # 2374px and 2448px, bbox ~618-679x291-353 and ~480-540x292-354 — exactly
+    # matching the two visible notches) without touching the six much larger
+    # legitimate hex-cell shadow interiors (candidate seeds there were
+    # correctly rejected for exceeding max_bbox=140). Re-verified via a fresh
+    # magenta composite and direct alpha sampling at both gap coordinates.
     dict(id="honeycomb", kind="canvas", key=RAW / "sp-honeycomb.png",
+         close_dark_pockets=True,
          dst=SPRITES / "honeycomb.png", w=900, h=520, budget_kb=150),
     dict(id="pool-big", kind="canvas", key=RAW / "sp-pool.png",
          dst=SPRITES / "pool-big.png", w=560, h=420, budget_kb=110),
@@ -813,7 +840,95 @@ def erase_color_blobs(im, rules, min_area=150, dilate=2):
     return im
 
 
-def key_charcoal(src, close_holes: bool = False, patch=None, erase=None):
+def close_dark_pockets(px, w, h, mask, max_bbox=140, step_tol=36, seed_max=65,
+                        seed_dist2=200 ** 2):
+    """Close small interior background pockets that neither the border
+    flood-fill nor `close_holes` (a single global color match against the
+    sampled corner background) can catch, because the pocket was rendered in
+    a shadow tone that diverges from the flat corner background by more than
+    either tolerance -- e.g. honeycomb.png's defect: two diamond notches
+    between adjoining hex cells, fully enclosed by opaque clay, rendered as
+    a dark reddish-brown crevice shadow (~(60,3,0)) rather than the flat
+    charcoal ground (~(27,28,28)); Euclidean distance ~83-120, versus
+    key_charcoal's tol of 42.
+
+    Unlike `close_holes` (single fixed reference color) or `erase_color_blobs`
+    (fixed global predicate), this grows each candidate region by chained
+    neighbor-to-neighbor color flood fill (a "magic wand"): a step is allowed
+    when it is both close to its immediate neighbor (step_tol, lets the
+    pocket's own black-to-blended-edge gradient chain together) AND still
+    within seed_dist2 of the original seed pixel (hard drift cap, prevents
+    the chain from walking pixel-by-pixel all the way into unrelated
+    material via a slow gradient). A region is only closed (written into
+    `mask` in place) if it stays within a max_bbox square footprint and never
+    touches the image border -- i.e. it is provably a small, fully-enclosed
+    pocket, not a legitimate large dark object region (a cell's own shadowed
+    interior is much wider than max_bbox and gets safely rejected).
+
+    Only apply to a "key" asset that is verified, by direct pixel sampling,
+    to have no legitimate near-black enclosed region at this scale (see the
+    honeycomb FINAL_SPECS note). Do not enable for organic key'd sprites
+    (ladybug, bee) whose genuinely dark enclosed detail must stay opaque.
+    """
+    from collections import deque  # noqa: PLC0415
+    visited = bytearray(w * h)
+    step_tol2 = step_tol ** 2
+    closed_regions = []
+    for y0 in range(h):
+        for x0 in range(w):
+            i0 = y0 * w + x0
+            if mask[i0] or visited[i0]:
+                continue
+            sr, sg, sb = px[x0, y0]
+            if max(sr, sg, sb) > seed_max:
+                continue
+            comp = []
+            aborted = False
+            touches_border = False
+            minx = maxx = x0
+            miny = maxy = y0
+            dq = deque([(x0, y0)])
+            visited[i0] = 1
+            while dq:
+                cx, cy = dq.popleft()
+                comp.append((cx, cy))
+                if cx < minx: minx = cx
+                if cx > maxx: maxx = cx
+                if cy < miny: miny = cy
+                if cy > maxy: maxy = cy
+                if maxx - minx > max_bbox or maxy - miny > max_bbox:
+                    aborted = True
+                if cx in (0, w - 1) or cy in (0, h - 1):
+                    touches_border = True
+                cr, cg, cb = px[cx, cy]
+                for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                    nx, ny = cx + dx, cy + dy
+                    if 0 <= nx < w and 0 <= ny < h:
+                        ni = ny * w + nx
+                        if mask[ni] or visited[ni]:
+                            continue
+                        nr, ng, nb = px[nx, ny]
+                        if (nr - cr) ** 2 + (ng - cg) ** 2 + (nb - cb) ** 2 <= step_tol2 and \
+                           (nr - sr) ** 2 + (ng - sg) ** 2 + (nb - sb) ** 2 <= seed_dist2:
+                            visited[ni] = 1
+                            dq.append((nx, ny))
+                if aborted:
+                    break
+            if not aborted and not touches_border:
+                for cx, cy in comp:
+                    mask[cy * w + cx] = 1
+                closed_regions.append(dict(seed=(x0, y0), area=len(comp),
+                                            bbox=(minx, miny, maxx, maxy)))
+    if closed_regions:
+        big = [r for r in closed_regions if r["area"] > 50]
+        print(f"[pockets] closed {len(closed_regions)} region(s), "
+              f"{sum(r['area'] for r in closed_regions)}px total; "
+              f"largest: {sorted(big, key=lambda r: -r['area'])[:4]}")
+    return closed_regions
+
+
+def key_charcoal(src, close_holes: bool = False, patch=None, erase=None,
+                  close_dark_pockets_: bool = False):
     """Border flood-fill key of a flat dark-charcoal candidate -> RGBA.
 
     src may be a Path (opened and converted to RGB) or an already-loaded RGB
@@ -832,6 +947,12 @@ def key_charcoal(src, close_holes: bool = False, patch=None, erase=None):
 
     erase, if given, is a (rules, min_area) pair passed to erase_color_blobs
     to deterministically drop decorative ornaments before keying.
+
+    close_dark_pockets_=True additionally runs close_dark_pockets() (see its
+    docstring) — for a "key" asset with a small enclosed shadow-crevice
+    pocket rendered too far in color from the sampled corner background for
+    either the border flood or close_holes to catch (verified case:
+    honeycomb.png's two inter-cell diamond notches).
     """
     Image, ImageFilter = _pil()
     im = Image.open(src).convert("RGB") if isinstance(src, Path) else src.convert("RGB")
@@ -872,6 +993,8 @@ def key_charcoal(src, close_holes: bool = False, patch=None, erase=None):
         if x < w - 1: dq.append((x + 1, y))
         if y > 0: dq.append((x, y - 1))
         if y < h - 1: dq.append((x, y + 1))
+    if close_dark_pockets_:
+        close_dark_pockets(px, w, h, mask)
     if close_holes:
         for i in range(w * h):
             if mask[i]:
@@ -1024,7 +1147,8 @@ def finalize_one(spec, force: bool) -> str:
         return f"ok jpg q{q} {len(buf.getvalue())//1024}KB"
     # alpha paths
     im = key_charcoal(Path(src), close_holes=spec.get("close_holes", False),
-                       patch=spec.get("patch"), erase=spec.get("erase")) \
+                       patch=spec.get("patch"), erase=spec.get("erase"),
+                       close_dark_pockets_=spec.get("close_dark_pockets", False)) \
         if "key" in spec else Image.open(src).convert("RGBA")
     if spec.get("clean_components"):
         im = keep_largest_component(im)

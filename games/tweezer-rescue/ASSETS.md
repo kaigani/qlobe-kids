@@ -103,6 +103,28 @@ the summary.
    All three fixes are deterministic, live in `tools/produce-art.py`, and re-verified via fresh
    magenta QA composites (`assets/source/qa/{title,banner-hooray,card-fish}.magenta.png`).
 
+7. **`honeycomb.png` un-keyed inter-cell pockets — shipped-and-caught-in-production.** Two of the
+   six hex cells' shared diamond notches rendered as a dark reddish-brown crevice-shadow color
+   (~(60,3,0)) rather than the flat charcoal ground the rest of the background used — far enough
+   from the sampled corner background (Euclidean distance ~83–120 vs. `key_charcoal`'s tol of 42)
+   that the border flood-fill never reached them (they're fully enclosed, never touching the image
+   edge). The existing `close_holes` pass (a single fixed-tolerance color match) was tested and
+   confirmed *not* to close them either — wrong tool for a pocket whose color diverges this far
+   from the reference. Visibly shipped as two floating black diamonds in the live bees-mode scene
+   (`qa-shots/tweezer-rescue/prod2/01-bees-play.png`) until caught. Root cause of the whole defect
+   class: `qwen-image-layered` (the platform's specified ML segmentation) was never attempted for
+   honeycomb (or most other UI/prop assets) — it went straight to the deterministic `key` path,
+   unlike `ladybug`/`bee` above, which only fall back to `key` after real, evidence-backed
+   `qwen-image-layered` failures (defect #4). Regenerating this asset via `qwen-image-layered` is
+   still not the right fix even now: honeycomb's exact cell geometry (used directly by gameplay
+   anchors) must stay deterministic, same rationale as the tweezer split. Fixed with
+   `close_dark_pockets()` — a bounded neighbor-chained color-flood ("magic wand") seeded at
+   near-black pixels, capped by a small bounding-box footprint and hard drift distance from the
+   seed, so it closes only small fully-enclosed pockets (verified: two regions, 2374px/2448px,
+   bbox ~618–679×291–353 and ~480–540×292–354, exactly matching the two notches) without touching
+   the six much larger legitimate hex-cell shadow interiors. Re-verified by direct alpha sampling
+   at both former gap coordinates (now `(0,0,0,0)`) and a fresh magenta composite.
+
 All fixes are in `tools/produce-art.py` (not hand-patched image files), so a future `--force`
 rerun reproduces the same accepted result.
 
@@ -130,7 +152,7 @@ rerun reproduces the same accepted result.
 | Flower — white | `assets/sprites/flower-white.png` | 42 · lift → layered | 29 KB | |
 | Flower — purple | `assets/sprites/flower-purple.png` | 1337 (reroll — seed 42 was a near-blank wash) · lift → layered | 25 KB | |
 | Leaf perch | `assets/sprites/leaf.png` | 42 · lift → layered | 27 KB | |
-| Honeycomb board | `assets/sprites/honeycomb.png` | 42 · krea2-turbo-t2i, key | 48 KB | 6 open cells, 2 rows of 3 |
+| Honeycomb board | `assets/sprites/honeycomb.png` | 42 · krea2-turbo-t2i, key + `close_dark_pockets` | 48 KB | 6 open cells, 2 rows of 3; see defect #7 |
 | Pool — big | `assets/sprites/pool-big.png` | 42 · krea2-turbo-t2i, key | 27 KB | Shares one `sp-pool.png` source, 3 sizes |
 | Pool — medium | `assets/sprites/pool-medium.png` | 42 · krea2-turbo-t2i, key | 19 KB | |
 | Pool — little | `assets/sprites/pool-little.png` | 42 · krea2-turbo-t2i, key | 13 KB | |
