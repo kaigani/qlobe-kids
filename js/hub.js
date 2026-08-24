@@ -33,8 +33,8 @@ const CATEGORY_LABELS = {
   'social-emotional': 'Social & Emotional',
 };
 
-const FEATURED_SUMMARY = 'Build words and take the train to new places!';
-const FEATURED_HERO_ART = 'games/blend-train/assets/art/splash.webp';
+const FEATURED_ID = 'letter-treasure-hunt';
+const FEATURED_HERO_ART = 'assets/hub/heroes/letter-treasure-hunt.webp';
 const CATEGORY_ORDER = [
   'reading-phonics',
   'math-number-sense',
@@ -253,18 +253,20 @@ function selectCategory(categoryId) {
 }
 
 function setupFeatured() {
-  const game = registry.games.find((item) => item.id === 'blend-train') || featuredGames()[0];
+  const game = registry.games.find((item) => item.id === FEATURED_ID) || {
+    id: FEATURED_ID,
+    title: 'Letter Treasure Hunt',
+    path: 'games/letter-treasure-hunt/',
+    icon: FEATURED_HERO_ART,
+  };
   if (!game) return;
 
   const image = document.getElementById('featured-art');
-  image.src = assetUrl(game.id === 'blend-train' ? FEATURED_HERO_ART : game.icon);
+  image.src = assetUrl(game.id === FEATURED_ID ? FEATURED_HERO_ART : game.icon);
   image.alt = `${game.title} game artwork`;
 
   const title = document.getElementById('featured-title');
   title.textContent = game.title;
-  document.getElementById('featured-summary').textContent = game.id === 'blend-train'
-    ? FEATURED_SUMMARY
-    : (game.summary || 'A little game to play, learn, and grow!');
 
   const play = document.getElementById('featured-play');
   play.href = assetUrl(game.path);
