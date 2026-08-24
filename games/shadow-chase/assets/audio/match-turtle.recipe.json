@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "match-turtle",
+  "text": "Which shadow belongs to the turtle?",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Which shadow belongs to the turtle?",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

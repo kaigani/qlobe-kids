@@ -1,0 +1,355 @@
+{
+  "celebrate": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.476,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Rescue complete! You saved them all!",
+    "want": "Rescue complete! You saved them all!"
+  },
+  "celebrate-2": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.795,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Hooray! Every friend is home!",
+    "want": "Hooray! Every friend is home."
+  },
+  "count-1": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.038,
+    "prompt": "biased",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "One bee home.",
+    "want": "One bee home!"
+  },
+  "count-2": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.958,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Two bees!",
+    "want": "Two bees!"
+  },
+  "count-3": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.958,
+    "prompt": "biased",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Three bees.",
+    "want": "Three bees!"
+  },
+  "count-4": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.958,
+    "note": "base model heard degenerate \"4Bs\" on this ~1s clip (known short-utterance whisper gotcha); small model, biased initial_prompt, transcribes correctly.",
+    "prompt": "small+biased",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Four bees.",
+    "want": "Four bees!"
+  },
+  "count-5": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.038,
+    "prompt": "biased",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Five bees.",
+    "want": "Five bees!"
+  },
+  "count-6": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.715,
+    "prompt": "biased",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Six bees. The honeycomb is full.",
+    "want": "Six bees! The honeycomb is full!"
+  },
+  "how": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 3.6,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Press and hold to squeeze. Carry them home and let go.",
+    "want": "Press and hold to squeeze. Carry them home, and let go!"
+  },
+  "intro-bees": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 5.1,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "the sleepy bees tumbled out of their honeycomb. Let's tuck them back in, one by one.",
+    "want": "The sleepy bees tumbled out of their honeycomb! Let's tuck them back in, one by one."
+  },
+  "intro-fish": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 5.2,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Splash! The goldfish jumped out of the pond. Match each fish to its pool.",
+    "want": "Splash! The goldfish jumped out of the pond. Match each fish to its pool!"
+  },
+  "intro-ladybugs": {
+    "accepted": true,
+    "coverage": 0.938,
+    "duration": 5.6,
+    "prompt": "default",
+    "score": 0.994,
+    "seed": 7,
+    "transcript": "Oh no! The ladybug slipped off their flowers! Let's carry them home with your tweezers!",
+    "want": "Oh no! The ladybugs slipped off their flowers. Let's carry them home with your tweezers!"
+  },
+  "intro-pompoms": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 4.5,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "POM POM TIME! Sort the fuzzy pom-poms into their matching nests!",
+    "want": "Pom-pom time! Sort the fuzzy pom-poms into their matching nests."
+  },
+  "match-blue": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.837,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Blue! Well done!",
+    "want": "Blue! Well done."
+  },
+  "match-green": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.757,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Green! Great sorting!",
+    "want": "Green! Great sorting."
+  },
+  "match-red": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.837,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Red, perfect match!",
+    "want": "Red! Perfect match."
+  },
+  "match-yellow": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.917,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Yellow lovely",
+    "want": "Yellow! Lovely."
+  },
+  "next-prompt": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.437,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Ready for the next rescue?",
+    "want": "Ready for the next rescue?"
+  },
+  "nudge-idle": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.677,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Touch a little friend to pick them up.",
+    "want": "Touch a little friend to pick them up."
+  },
+  "nudge-miss": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.715,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Almost carry it a little further.",
+    "want": "Almost! Carry it a little further."
+  },
+  "nudge-wrong": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 3.6,
+    "note": "base model mis-heard \"Gently\" as \"Jettley\"; small model transcribes it correctly matching the intended line exactly.",
+    "prompt": "small",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Oops. Gently now. Let's try another spot.",
+    "want": "Oops! Gently now. Let's try another spot."
+  },
+  "one-more": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.357,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Just one more!",
+    "want": "Just one more!"
+  },
+  "pick": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.357,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Pick a rescue!",
+    "want": "Pick a rescue!"
+  },
+  "praise-1": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.798,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "You did it!",
+    "want": "You did it!"
+  },
+  "praise-2": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.517,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "What a gentle rescue!",
+    "want": "What a gentle rescue!"
+  },
+  "praise-3": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 1.118,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Great Pinching!",
+    "want": "Great pinching!"
+  },
+  "praise-4": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.958,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Home safe!",
+    "want": "Home safe!"
+  },
+  "praise-5": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 0.958,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Wonderful!",
+    "want": "Wonderful!"
+  },
+  "prompt-big": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.795,
+    "note": "base model mis-heard \"Find the big pool\" as \"Find a big pool\"; small model transcribes it correctly matching the intended line exactly.",
+    "prompt": "small",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "This is a big fish. Find the big pool.",
+    "want": "This is a big fish. Find the big pool!"
+  },
+  "prompt-little": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.795,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "A tiny little fish. Where's the little pool?",
+    "want": "A tiny little fish! Where's the little pool?"
+  },
+  "prompt-medium": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.076,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "a medium fish right in the middle.",
+    "want": "A medium fish, right in the middle."
+  },
+  "prompt-pink": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.236,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "This ladybug wants the pink flower.",
+    "want": "This ladybug wants the pink flower."
+  },
+  "prompt-purple": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.316,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "Carry this ladybug to the purple flower.",
+    "want": "Carry this ladybug to the purple flower."
+  },
+  "prompt-white": {
+    "accepted": true,
+    "coverage": 1.0,
+    "duration": 2.076,
+    "prompt": "default",
+    "score": 1.0,
+    "seed": 7,
+    "transcript": "This one loves the white flower.",
+    "want": "This one loves the white flower."
+  },
+  "welcome": {
+    "accepted": true,
+    "coverage": 0.917,
+    "duration": 4.8,
+    "prompt": "default",
+    "score": 0.993,
+    "seed": 7,
+    "transcript": "Welcome to Tweezer Rescue. Pinch, lift and carry your little friend's home.",
+    "want": "Welcome to Tweezer Rescue! Pinch, lift, and carry your little friends home."
+  }
+}

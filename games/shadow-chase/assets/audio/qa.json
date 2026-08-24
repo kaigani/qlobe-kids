@@ -1,0 +1,554 @@
+{
+  "welcome": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Ready to chase some shadows? Pick a shadow game!",
+    "textHash": "a4d73fc1ecdb57da",
+    "transcript": "Ready to chase some shadows? Pick a shadow game!",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.2,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Ready to chase some shadows? Pick a shadow game!",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "choose-match": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Find a shadow! Look closely, then tap the matching shape.",
+    "textHash": "de71f688f3371ea9",
+    "transcript": "Find a shadow. Look closely. Then tap the matching shape.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 4.3,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Find a shadow. Look closely. Then tap the matching shape.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "choose-sun": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Chase the sun! Slide the sun until your shadow matches the picture.",
+    "textHash": "f104be97dde87f74",
+    "transcript": "Chase the Sun. Slide the Sun until your shadow matches the picture.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 4.2,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Chase the Sun. Slide the Sun until your shadow matches the picture.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "choose-show": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Make a shadow show! Move the sun, or press play to watch a whole day.",
+    "textHash": "0c69bf28071493f4",
+    "transcript": "Make a shadow show. Move the sun or press play to watch a whole day.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 4.7,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Make a shadow show. Move the sun or press play to watch a whole day.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-rabbit": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the rabbit?",
+    "textHash": "a99c1c34b8f498d1",
+    "transcript": "which shadow belongs to the rabbit.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.757,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "which shadow belongs to the rabbit.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-squirrel": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the squirrel?",
+    "textHash": "1f44afd0f2e97134",
+    "transcript": "Which shadow belongs to the squirrel?",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.157,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Which shadow belongs to the squirrel?",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-turtle": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the turtle?",
+    "textHash": "748d4e10e2b2137b",
+    "transcript": "Which shadow belongs to the turtle?",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.837,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Which shadow belongs to the turtle?",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-fox": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the fox?",
+    "textHash": "fb8d392bd2b68fb5",
+    "transcript": "Which shadow belongs to the fox?",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.757,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Which shadow belongs to the fox?",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-duck": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the duck?",
+    "textHash": "8d70dfd20dd3ef6d",
+    "transcript": "Which shadow belongs to the duck?",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.837,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Which shadow belongs to the duck?",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "match-bear": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Which shadow belongs to the bear?",
+    "textHash": "89bf22abaa9710f8",
+    "transcript": "Which shadow belongs to the bear?",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.837,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Which shadow belongs to the bear?",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "try-again": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Good looking. Try another shadow.",
+    "textHash": "8ffc9f4f8c0bff00",
+    "transcript": "Good looking, try another shadow.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.157,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Good looking, try another shadow.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "look-closer": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Look at the outside shape. You can find it!",
+    "textHash": "aad96373a537d543",
+    "transcript": "Look at the outside shape, you can find it!",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.316,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Look at the outside shape, you can find it!",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "found": {
+    "status": "ok",
+    "accepted": true,
+    "text": "You found it! That shadow fits perfectly.",
+    "textHash": "f653b90485551817",
+    "transcript": "You found it! That shadow fits perfectly!",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.1,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "You found it! That shadow fits perfectly!",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "sun-intro": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Move the sun. Watch the shadow stretch, shrink, and switch sides!",
+    "textHash": "4b1dec9c2a486a19",
+    "transcript": "Move the sun. Watch the shadow stretch, shrink and switch sides.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 4.6,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Move the sun. Watch the shadow stretch, shrink and switch sides.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "sun-nudge": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Try sliding the big sun along its wooden track.",
+    "textHash": "d13ab55f5f1c365f",
+    "transcript": "Try sliding the big sun along its wooden track.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.556,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Try sliding the big sun along its wooden track.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "sun-long": {
+    "status": "ok",
+    "accepted": true,
+    "text": "The sun is low, so the shadow stretches long!",
+    "textHash": "f6b3c4b8e839a325",
+    "transcript": "The sun is low so the shadow stretches long.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.636,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "The sun is low so the shadow stretches long.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "sun-short": {
+    "status": "ok",
+    "accepted": true,
+    "text": "The sun is high, so the shadow tucks in close!",
+    "textHash": "f3c28979cb34ff8a",
+    "transcript": "The sun is high so the shadow tucks in close.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 2.876,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "The sun is high so the shadow tucks in close.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "sun-opposite": {
+    "status": "ok",
+    "accepted": true,
+    "text": "You did it! The shadow points away from the sun.",
+    "textHash": "c5fc703f3dd3fac7",
+    "transcript": "You did it! The shadow points away from the sun.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.2,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "You did it! The shadow points away from the sun.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "show-intro": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Choose a toy for your shadow show.",
+    "textHash": "9adf0bb58df9677f",
+    "transcript": "Choose a toy for your shadow show.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.997,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Choose a toy for your shadow show.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "show-morning": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Morning sun is low. The shadow stretches away.",
+    "textHash": "5685d1621ef5811d",
+    "transcript": "Morning sun is low, the shadow stretches away.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.5,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Morning sun is low, the shadow stretches away.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "show-noon": {
+    "status": "ok",
+    "accepted": true,
+    "text": "At noon, the sun is high. The shadow tucks in close.",
+    "textHash": "cc03bd28ec6a1f1d",
+    "transcript": "At noon, the sun is high, the shadow tucks in close.",
+    "similarity": 1.0,
+    "tokenSimilarity": 1.0,
+    "seed": 7,
+    "duration": 3.6,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "At noon, the sun is high, the shadow tucks in close.",
+        "similarity": 1.0,
+        "tokenSimilarity": 1.0
+      }
+    ]
+  },
+  "show-evening": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Evening sun is low on the other side. The shadow stretches back.",
+    "textHash": "be67a952324679d0",
+    "transcript": "Evening sun is low on the other side. The shadow stretches back.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.7,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Evening sun is low on the other side. The shadow stretches back.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "show-complete": {
+    "status": "ok",
+    "accepted": true,
+    "text": "You made a whole day of shadows!",
+    "textHash": "b591d3f83f61e5df",
+    "transcript": "You made a whole day of shadows.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 1.677,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "You made a whole day of shadows.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "all-done": {
+    "status": "ok",
+    "accepted": true,
+    "text": "Shadow star! You chased every shadow.",
+    "textHash": "63e13c5899b8a66f",
+    "transcript": "Shadow Star, you chased every shadow.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.2,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "Shadow Star, you chased every shadow.",
+        "similarity": 1.0
+      }
+    ]
+  },
+  "idle": {
+    "status": "ok",
+    "accepted": true,
+    "text": "The shadows are waiting. Tap a toy or move the sun.",
+    "textHash": "13524813a5ccb1a8",
+    "transcript": "The shadows are waiting. Tap a toy or move the sun.",
+    "similarity": 1.0,
+    "seed": 7,
+    "duration": 3.3,
+    "model": "qwen3-tts-voiceclone",
+    "whisper": "base/en",
+    "threshold": 0.82,
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "reason": "transcribed",
+        "transcript": "The shadows are waiting. Tap a toy or move the sun.",
+        "similarity": 1.0
+      }
+    ]
+  }
+}

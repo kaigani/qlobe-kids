@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "choose-sun",
+  "text": "Chase the sun! Slide the sun until your shadow matches the picture.",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Chase the Sun. Slide the Sun until your shadow matches the picture.",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

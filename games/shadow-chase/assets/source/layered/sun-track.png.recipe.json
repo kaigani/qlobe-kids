@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "layers": 2,
+  "selectedOutput": "layer_2",
+  "source": "games/shadow-chase/assets/source/gpt-image-2/sun-track-source.png",
+  "output": "games/shadow-chase/assets/source/layered/sun-track.png",
+  "prompt": "Background layer: only the perfectly flat uniform dark charcoal background.\nTop layer: the complete single arched wooden sun rail with all five round stop inlays, preserving its exact geometry and wood texture, isolated together on a genuinely transparent background.\nKeep the foreground identical to the input. Do not redraw, restyle, crop, rearrange, add, remove, or relight anything.",
+  "qa": {
+    "status": "needs-human-review",
+    "width": 1024,
+    "height": 512,
+    "transparentPct": 80.744,
+    "opaquePct": 18.498
+  }
+}

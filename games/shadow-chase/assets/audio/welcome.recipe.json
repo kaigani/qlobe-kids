@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "welcome",
+  "text": "Ready to chase some shadows? Pick a shadow game!",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Ready to chase some shadows? Pick a shadow game!",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

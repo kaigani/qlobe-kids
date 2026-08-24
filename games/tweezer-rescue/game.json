@@ -5,29 +5,65 @@
   "path": "games/tweezer-rescue/",
   "icon": "🫳",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "age": {
+    "min": 5,
+    "max": 6
+  },
+  "status": "beta",
   "accent": "#58a945",
-  "shareTitle": "Tweezer Rescue 🫳 — Pincer Grip Sorting Play",
-  "description": "Pinch and drag pom-poms into nests sorted by color and size, practicing a careful pincer grip. A gentle fine-motor game for ages 5–6.",
+  "shareTitle": "Tweezer Rescue 🫳 — Pincer Grip Rescue Play",
+  "description": "Pick up little clay friends with big clay tweezers and carry them home: ladybugs to flowers, bees to the honeycomb, goldfish to pools, pom-poms to nests. A gentle fine-motor game for ages 5–6.",
   "learningGoals": [
-    "Practice pincer-grip control through short drag motions",
-    "Match pom-poms by color and spoken size",
-    "Build gentle precision with retry-friendly placement"
+    "Practice a controlled pincer grip through press-and-hold squeeze, carry, and release",
+    "Listen for and match spoken color, size, and counting vocabulary",
+    "Build steady hand-eye coordination with forgiving, retry-friendly drops"
   ],
-  "interactionModel": "sort-into-bins drag or tap-tap pom-poms into nests",
-  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "custom two-arm pivoting tweezer tool: pointerdown squeezes and grabs a nearby critter, drag carries it with a velocity-driven pendulum wobble, release drops it on a target; two-finger pinch maps to arm opening as an enhancement",
+  "feedbackModel": "A correct drop arcs in, bounces, pops and sparkles with spoken color/size/count praise; a miss or wrong target floats the critter gently back with a soft boing and a warm nudge — never a failure sound, retry is free.",
   "uses": [
-    "shared/js/engines/sort-into-bins.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/dom.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/music/gentle-country-morning.mp3"
   ],
   "modes": [
-    { "id": "colors", "title": "Color Nests", "skill": "pincer-grip drag control and color matching" },
-    { "id": "sizes", "title": "Big and Small", "skill": "pincer-grip drag control and size vocabulary" }
+    {
+      "id": "ladybugs",
+      "title": "Ladybug Garden",
+      "skill": "pincer carry and color-word listening"
+    },
+    {
+      "id": "bees",
+      "title": "Busy Bees",
+      "skill": "pincer precision and counting to 6"
+    },
+    {
+      "id": "fish",
+      "title": "Goldfish Pond",
+      "skill": "pincer carry and size vocabulary"
+    },
+    {
+      "id": "pompoms",
+      "title": "Pom-Pom Nests",
+      "skill": "pincer carry and color sorting"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji and swatch placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Kaigani; claymation production art and teacher-voice narration produced with local Qwen/Krea GenAI workflows and Whisper QA (see ASSETS.md). Built with Claude Code for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

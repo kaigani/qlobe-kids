@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "sun-nudge",
+  "text": "Try sliding the big sun along its wooden track.",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Try sliding the big sun along its wooden track.",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

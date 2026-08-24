@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "match-rabbit",
+  "text": "Which shadow belongs to the rabbit?",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "which shadow belongs to the rabbit.",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-voice-recipe-v1",
+  "key": "all-done",
+  "text": "Shadow star! You chased every shadow.",
+  "workflow": "qwen3-tts-voiceclone",
+  "seed": 7,
+  "encode": "AAC 96k, loudnorm -18 LUFS, +faststart",
+  "qa": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "transcript": "Shadow Star, you chased every shadow.",
+    "similarity": 1.0,
+    "threshold": 0.82,
+    "accepted": true
+  }
+}

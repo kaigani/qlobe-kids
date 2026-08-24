@@ -6,42 +6,81 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
-  <title>Tweezer Rescue 🫳 — Pincer Grip Sorting Play</title>
-  <meta name="description" content="Pinch and drag pom-poms into nests sorted by color and size, practicing a careful pincer grip. A gentle fine-motor game for ages 5–6." />
+  <title>Tweezer Rescue 🫳 — Pincer Grip Rescue Play</title>
+  <meta name="description" content="Pick up little clay friends with big clay tweezers and carry them home: ladybugs to flowers, bees to the honeycomb, goldfish to pools, pom-poms to nests. A gentle fine-motor game for ages 5–6." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Tweezer Rescue" />
-  <meta property="og:title" content="Tweezer Rescue 🫳 — Pincer Grip Sorting Play" />
-  <meta property="og:description" content="Pinch and drag pom-poms into nests sorted by color and size, practicing a careful pincer grip. A gentle fine-motor game for ages 5–6." />
+  <meta property="og:title" content="Tweezer Rescue 🫳 — Pincer Grip Rescue Play" />
+  <meta property="og:description" content="Pick up little clay friends with big clay tweezers and carry them home: ladybugs to flowers, bees to the honeycomb, goldfish to pools, pom-poms to nests. A gentle fine-motor game for ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/tweezer-rescue/" />
   <meta property="og:image" content="https://qlo.be/games/tweezer-rescue/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Tweezer Rescue title screen with Color Nests and Big and Small modes and a pinching hand icon." />
+  <meta property="og:image:alt" content="Tweezer Rescue title screen with four clay rescue cards and a pair of clay tweezers." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tweezer Rescue 🫳 — Pincer Grip Sorting Play" />
-  <meta name="twitter:description" content="Pinch and drag pom-poms into nests sorted by color and size, practicing a careful pincer grip. A gentle fine-motor game for ages 5–6." />
+  <meta name="twitter:title" content="Tweezer Rescue 🫳 — Pincer Grip Rescue Play" />
+  <meta name="twitter:description" content="Pick up little clay friends with big clay tweezers and carry them home: ladybugs to flowers, bees to the honeycomb, goldfish to pools, pom-poms to nests. A gentle fine-motor game for ages 5–6." />
   <meta name="twitter:image" content="https://qlo.be/games/tweezer-rescue/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="preload" as="font" type="font/woff2" href="../../shared/fonts/fredoka-latin-600-normal.woff2" crossorigin />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sort-into-bins.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <!-- game-design.md screen map. No text a child must read: every label here is
+       an aria-label for screen readers and QA drivers; all guidance is spoken. -->
+  <div id="game">
+
+    <!-- The play field lives OUTSIDE the screen sections so the celebration
+         chrome can open over the finished scene (all critters home). The
+         splash covers it fully with its own backdrop. -->
+    <div id="scene" aria-hidden="true">
+      <img id="scene-backdrop" alt="" draggable="false" />
+      <div id="scene-props"></div>
+      <div id="scene-targets"></div>
+      <div id="scene-critters"></div>
+    </div>
+    <!-- Carried critter rides here in client coordinates during a drag. -->
+    <div id="fly-layer" aria-hidden="true"></div>
+    <!-- Sparkle / confetti bursts. -->
+    <div id="fx-layer" aria-hidden="true"></div>
+    <!-- The clay tweezers (two pivoting arm sprites) follow the finger here. -->
+    <div id="tweezer-layer" aria-hidden="true"></div>
+
+    <!-- SPLASH — "Pick a rescue". Home lives ONLY here. -->
+    <section data-qk-screen="splash" id="screen-splash" aria-label="Tweezer Rescue">
+      <img id="splash-backdrop" alt="" draggable="false" />
+      <img id="splash-title" alt="Tweezer Rescue" draggable="false" />
+      <div id="card-row"></div>
+      <button id="btn-home" class="art-btn corner-top-left" type="button" aria-label="All games" data-target="home"></button>
+      <button id="btn-sound-splash" class="art-btn corner-bottom-left sound-btn" type="button" aria-label="Sound on or off" data-target="sound"></button>
+    </section>
+
+    <!-- PLAY — HUD chrome only; the scene beneath is the playfield. -->
+    <section data-qk-screen="play" id="screen-play" hidden>
+      <button id="btn-back" class="art-btn corner-top-left" type="button" aria-label="Back" data-target="back"></button>
+      <button id="btn-sound-play" class="art-btn corner-bottom-left sound-btn" type="button" aria-label="Sound on or off" data-target="sound-play"></button>
+      <div id="chip" aria-hidden="true"><span id="chip-count"></span></div>
+    </section>
+
+    <!-- CELEBRATION — banner + badge over the finished scene. -->
+    <section data-qk-screen="celebration" id="screen-celebration" hidden>
+      <img id="banner" alt="Hooray!" draggable="false" />
+      <img id="badge" alt="" draggable="false" />
+      <button id="btn-next" class="art-btn" type="button" aria-label="Next rescue" data-target="next"></button>
+      <button id="btn-cele-back" class="art-btn corner-top-left" type="button" aria-label="Back" data-target="back-celebration"></button>
+    </section>
+
+  </div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

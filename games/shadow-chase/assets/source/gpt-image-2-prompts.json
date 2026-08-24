@@ -1,0 +1,52 @@
+{
+  "format": "qlobe-gpt-image-prompt-record-v1",
+  "generatedOn": "2026-08-23",
+  "requestedModel": "gpt-image-2",
+  "tool": "OpenAI built-in image generation",
+  "mode": "new generation; stage used concept mockups as visual references",
+  "sharedDirection": "A warm sunlit wooden toy theatre for a child age 5–6. Hand-carved walnut, maple, and painted forest-green pieces; softly rounded Montessori-like forms; visible wood grain; believable product-photography light; cocoa-brown outlines and shadows. Calm, premium, tactile, friendly. No vector art, no flat CSS-like shapes, no photoreal child, no logos, no watermark, and no functional UI text unless explicitly requested.",
+  "assets": [
+    {
+      "id": "stage",
+      "output": "games/shadow-chase/assets/source/gpt-image-2/stage-source.png",
+      "generatorOutputId": "exec-e66cce54-4cc4-4bb9-8b8e-352ed6ccc4cd.png",
+      "dimensions": [1448, 1086],
+      "references": [
+        "01-game-concepts/shadow-chase/output/ui-mockups/01-shadow-select.png"
+      ],
+      "prompt": "Create a production-ready empty 4:3 game environment plate based on the reference mockups: a sunlit tabletop wooden toy theatre viewed straight-on, with a wide creamy maple center stage, rich walnut frame and shelf, softly carved forest-green leafy wings at both sides, and warm afternoon light. Keep the center calm and spacious for gameplay. Preserve the reference's friendly premium preschool tone while making every visible surface tactile carved wood. Environment only: absolutely no animal, child, silhouette, sun control, button, plaque, letter, numeral, logo, watermark, or baked-in interface. Full-bleed landscape composition, no transparency."
+    },
+    {
+      "id": "toy-contact-sheet",
+      "output": "games/shadow-chase/assets/source/gpt-image-2/toy-contact-sheet.png",
+      "generatorOutputId": "exec-3d615cee-927b-4478-8b06-7f6f2789aff2.png",
+      "dimensions": [1448, 1086],
+      "references": [],
+      "prompt": "Create one production asset contact sheet in a strict 3-column by 2-row grid. Top row, left to right: rabbit, squirrel, turtle. Bottom row, left to right: fox, duck, bear. Each is a complete freestanding hand-carved wooden toy, centered in its own equal cell with generous separation and nothing crossing a cell boundary. Match the shared Toy art direction: maple and walnut bodies, small forest-green and muted orange painted accents, rounded safe edges, gentle child-friendly expressions, coherent scale and three-quarter front view, crisp readable outer silhouettes, realistic carved wood grain and soft studio lighting. Put all six on one perfectly flat uniform dark-charcoal production background. No cast shadow, pedestal, text, label, grid line, border, prop, extra object, logo, or watermark."
+    },
+    {
+      "id": "title-lockup",
+      "output": "games/shadow-chase/assets/source/gpt-image-2/title-source.png",
+      "generatorOutputId": "exec-e2d520cf-3d30-4836-8f98-9c1a3ff2b013.png",
+      "dimensions": [1752, 898],
+      "references": [],
+      "prompt": "Create a single tactile game-title asset reading exactly SHADOW CHASE in two centered lines. Large, chunky hand-carved toy letters made from alternating warm maple and cocoa walnut, slightly irregular but exceptionally legible, with subtle engraved edges and tiny carved golden sun-ray marks flanking the words. Premium preschool wooden-toy styling, straight-on, compact wide lockup, no other words. Isolate the complete title on one perfectly flat uniform dark-charcoal production background. No scene, plaque, border, animal, logo, watermark, misspelling, duplicated letter, or cropped letter."
+    },
+    {
+      "id": "ui-contact-sheet",
+      "output": "games/shadow-chase/assets/source/gpt-image-2/ui-contact-sheet.png",
+      "generatorOutputId": "exec-46efe815-320e-4c94-83c3-df43de8b2bc0.png",
+      "dimensions": [1448, 1086],
+      "references": [],
+      "prompt": "Create a strict 3-column by 2-row production contact sheet of six separate interface props. Top row: a smiling golden carved-wood sun token; a chunky five-point golden wooden reward star; a wide blank cream-maple choice plaque with walnut rim. Bottom row: a wide blank forest-green wooden action button; a low walnut-and-maple display pedestal; a chunky round maple control button with walnut rim. Every object must be complete, centered, large, and isolated inside its equal cell with generous gaps and no overlap. Match one coherent premium hand-carved Toy game set with rounded safe edges, visible grain, soft product lighting, and a readable silhouette. Perfectly flat uniform dark-charcoal background. No words, letters, numerals, icons inside buttons, grid lines, border around the sheet, cast scene, extra object, logo, or watermark."
+    },
+    {
+      "id": "sun-track",
+      "output": "games/shadow-chase/assets/source/gpt-image-2/sun-track-source.png",
+      "generatorOutputId": "exec-869a19f5-01c0-40e0-8934-21d822e93560.png",
+      "dimensions": [1774, 887],
+      "references": [],
+      "prompt": "Create one extra-wide tactile sun-control rail for a preschool shadow game: a graceful shallow arch carved from warm maple wood, thick and sturdy like a premium tabletop toy, with exactly five evenly spaced round walnut stop inlays following the arch. Straight-on camera, symmetrical horizontal composition, highly legible path, rounded safe edges, visible wood grain, soft product lighting, and no sun token attached. Isolate the entire uncropped rail on a perfectly flat uniform dark-charcoal production background. No text, numbers, arrows, plaque, scene, extra pieces, logo, or watermark."
+    }
+  ]
+}

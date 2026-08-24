@@ -1,33 +1,49 @@
 {
   "id": "shadow-chase",
   "title": "Shadow Chase",
-  "category": "movement-outdoor",
+  "category": "sensorial-science",
   "path": "games/shadow-chase/",
-  "icon": "🌤️",
+  "icon": "assets/hub/tiles/shadow-chase.jpg",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f4b942",
-  "shareTitle": "Shadow Chase 🌞 — Sunshine and Shadow Science",
-  "description": "Chase, shape, and revisit real shadows outside, then stamp each observation into a shadow diary. A sunny-day science walk for ages 5–6 that turns noticing into a keepsake.",
+  "status": "beta",
+  "accent": "#d17735",
+  "shareTitle": "Shadow Chase — A Toy Theatre of Light",
+  "description": "Match six carved animals to their silhouettes, slide a wooden sun to make long and short shadows, and play a whole day of light in a warm tabletop toy theatre.",
   "learningGoals": [
-    "Connect sunlight with the shadows made by bodies and objects",
-    "Notice how shadows change across the day",
-    "Practice outdoor observation through whole-body movement"
+    "Discriminate an object's silhouette from two nearby shape distractors",
+    "Discover that a low light makes a long shadow and a high light makes a short one",
+    "Observe that a cast shadow points away from its light source",
+    "Compare how one object's shadow changes from morning through noon to evening"
   ],
-  "interactionModel": "observe-journal prompts send the child outside to move and observe, then large tap targets stamp one open-ended shadow observation per page",
-  "feedbackModel": "Every observation is welcomed with pop, whoosh, and sparkle SFX plus a playful spoken movement nudge; the recap presents the completed shadow diary.",
+  "interactionModel": "Three voice-led, time-free play modes use large tactile controls: tap one of three shadow plaques, drag or tap a five-stop arched sun rail, and step or play through morning, noon, and evening. The same shadow transform responds continuously to pointer, touch, keyboard, and debug controls.",
+  "feedbackModel": "Wrong choices wobble gently and reveal a shape clue after two tries; a matching silhouette lights up and earns a carved star. Sun matches accept a forgiving hold near the target, while Shadow Show stamps each visited time of day. There is no score, timer, streak, or failure state.",
+  "engine": "custom-shadow-theatre",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "games/shadow-chase/js/main.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/css/base.css",
+    "shared/css/hud.css",
+    "shared/css/screens.css",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "morning", "title": "Morning Shadows", "skill": "observe and move with body and object shadows" },
-    { "id": "day", "title": "All-Day Watch", "skill": "compare one shadow across morning, noon, and evening" }
+    { "id": "match", "title": "Find a Shadow", "skill": "visual silhouette discrimination" },
+    { "id": "sun", "title": "Chase the Sun", "skill": "light and shadow cause and effect" },
+    { "id": "show", "title": "Shadow Show", "skill": "compare morning, noon, and evening shadows" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original Toy-world art generated with GPT Image 2 and finalized with Qwen Image Layered; approved Qwen teacher voice with Whisper QA. Built with Codex for QLOBE Kids.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/shadow-chase/"
 }

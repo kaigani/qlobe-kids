@@ -5,43 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Shadow Chase 🌞 — Sunshine and Shadow Science</title>
-  <meta name="description" content="Chase, shape, and revisit real shadows outside, then stamp each observation into a shadow diary. A sunny-day science walk for ages 5–6 that turns noticing into a keepsake." />
+  <meta name="theme-color" content="#6b3e27" />
+  <title>Shadow Chase — A Toy Theatre of Light</title>
+  <meta name="description" content="Match six carved animals to their silhouettes, slide a wooden sun to make long and short shadows, and play a whole day of light in a warm tabletop toy theatre." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Shadow Chase" />
-  <meta property="og:title" content="Shadow Chase 🌞 — Sunshine and Shadow Science" />
-  <meta property="og:description" content="Chase, shape, and revisit real shadows outside, then stamp each observation into a shadow diary. A sunny-day science walk for ages 5–6 that turns noticing into a keepsake." />
+  <meta property="og:title" content="Shadow Chase — A Toy Theatre of Light" />
+  <meta property="og:description" content="Match six carved animals to their silhouettes, slide a wooden sun to make long and short shadows, and play a whole day of light in a warm tabletop toy theatre." />
   <meta property="og:url" content="https://qlo.be/games/shadow-chase/" />
   <meta property="og:image" content="https://qlo.be/games/shadow-chase/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Shadow Chase title screen with Morning Shadows and All-Day Watch modes over a watercolor backyard scene with a fence and tree." />
+  <meta property="og:image:alt" content="Shadow Chase toy theatre with carved animals, wooden mode plaques, a golden sun, and warm cast shadows." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Shadow Chase 🌞 — Sunshine and Shadow Science" />
-  <meta name="twitter:description" content="Chase, shape, and revisit real shadows outside, then stamp each observation into a shadow diary. A sunny-day science walk for ages 5–6 that turns noticing into a keepsake." />
+  <meta name="twitter:title" content="Shadow Chase — A Toy Theatre of Light" />
+  <meta name="twitter:description" content="Match six carved animals to their silhouettes, slide a wooden sun to make long and short shadows, and play a whole day of light in a warm tabletop toy theatre." />
   <meta name="twitter:image" content="https://qlo.be/games/shadow-chase/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/observe-journal.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
