@@ -3,32 +3,58 @@
   "title": "Sticker Line Challenge",
   "category": "writing-fine-motor",
   "path": "games/sticker-line-challenge/",
-  "icon": "⭐",
+  "icon": "\u2b50",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "age": {
+    "min": 5,
+    "max": 6
+  },
+  "status": "beta",
   "accent": "#e873a4",
-  "shareTitle": "Sticker Line Challenge ⭐ — Playful Line Tracing",
-  "description": "Trace dotted waves, zigzags, and loops while a cheerful sticker follows every careful stroke. A pre-writing tracing game for ages 5–6.",
+  "shareTitle": "Sticker Line Challenge \u2b50 \u2014 Playful Line Tracing",
+  "description": "Pick a sticker buddy and trace dashed paper ribbons \u2014 waves, zigzags, and loops \u2014 leaving a trail of mini-stickers behind every careful stroke. A papercraft pre-writing tracing game for ages 5\u20136.",
   "learningGoals": [
     "Follow a line from left to right with controlled movement",
     "Practice curved, zigzag, circular, and loop pre-writing strokes",
     "Build finger control that supports later pencil use"
   ],
-  "interactionModel": "trace each dotted path continuously with one finger",
-  "feedbackModel": "Checkpoints sparkle as the child passes them; wandering gets a gentle spoken nudge, and every finished path earns warm praise and a short celebration.",
+  "interactionModel": "drag a sticker buddy along a dashed paper ribbon with one finger",
+  "feedbackModel": "Gold star checkpoints pop as the child passes them, the buddy stamps a mini-sticker trail, wandering earns a gentle spoken nudge, and every finished line earns warm praise and a rainbow celebration.",
   "uses": [
-    "shared/js/engines/trace-path.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/screens.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/bgm.js",
+    "shared/assets/ui/"
   ],
   "modes": [
-    { "id": "waves", "title": "Wavy Lines", "skill": "controlled left-to-right curved strokes" },
-    { "id": "zigzags", "title": "Zigzag Trails", "skill": "direction changes and corner control" },
-    { "id": "loops", "title": "Loop-the-Loops", "skill": "circular and loop pre-writing strokes" }
+    {
+      "id": "waves",
+      "title": "Wavy Lines",
+      "skill": "controlled left-to-right curved strokes"
+    },
+    {
+      "id": "zigzags",
+      "title": "Zigzag Trails",
+      "skill": "direction changes and corner control"
+    },
+    {
+      "id": "loops",
+      "title": "Loop-the-Loops",
+      "skill": "circular and loop pre-writing strokes"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "QLOBE Kids contributors; placeholder emoji art (see ASSETS.md).",
+  "artWorld": "papercraft",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "QLOBE Kids contributors; papercraft art generated locally (see ASSETS.md).",
   "characters": [],
   "conceptVideo": ""
 }

@@ -1,58 +1,55 @@
-# Sticker Line Challenge assets
+# ASSETS — Sticker Line Challenge
 
-Current art is Unicode emoji rendered by the shared engine on soft rounded
-cards. No image or recorded-audio files are included. The configured Paper
-Garden background at `./assets/bg.jpg` is a production placeholder supplied by
-the reviewer. Voice uses the local Web Speech wrapper in `shared/js/speech.js`.
+All art was generated locally for this game (ComfyUI wrapper on the LAN;
+workflows, prompts, and seeds are recorded in `tools/gen_images.sh` and the
+raw sources retained under `assets/source/`). No third-party or scraped
+material. Original assets are CC BY 4.0; code MIT.
 
-## Assets needed
+## Backdrops (opaque JPEG, 1600×1200, ≤300 KB)
 
-### Art
+| file | workflow | seed | source |
+| --- | --- | --- | --- |
+| `bg-splash.jpg` | `krea2-turbo-t2i` | 42 | `assets/source/bg-splash.png` |
+| `bg-play.jpg` | `krea2-turbo-t2i` | 42 | `assets/source/bg-play.png` |
+| `bg-end.jpg` | `krea2-turbo-t2i` | 42 | `assets/source/bg-end.png` |
 
-- Star sticker sheet — cheerful paper stars in several warm colors.
-- Heart sticker sheet — rounded paper hearts that match the star set.
-- Flower sticker sheet — simple layered paper flowers sized for checkpoints.
-- Craft-table props — child-safe paper, crayons, tape, and sticker backing around the play field.
-- Paper Garden background — tactile layered-paper craft-table scene for `./assets/bg.jpg`.
+Style: layered cut-paper papercraft collage (canonical art-world label
+**Papercraft**, legacy runtime slug `paper-garden`). Postprocess: resize to
+1600×1200 + progressive JPEG q82 (see `tools/postprocess.py`).
 
-### Voice
+## Transparent sprites (WebP/PNG with alpha)
 
-- “Pick a sticker path to decorate!”
-- “Find the dotted line and keep sticking stars.”
-- “Your whole sticker chain is wiggling with joy!”
-- “Beautiful sticker tracing!”
-- “Your careful finger followed every dot!”
-- “What a lovely sticker line!”
-- “Trace the wavy line. Stick a star on every dot!”
-- “Trace the gentle wavy line. Stick a star on every dot!”
-- “A neat little wave of stickers!”
-- “Trace the bouncy wavy line. Stick a star on every dot!”
-- “Beautiful bouncy waves!”
-- “Trace the big wavy line. Stick a star on every dot!”
-- “You followed every big curve!”
-- “Trace the zigzag trail from left to right.”
-- “Trace up, down, and up along the sticker dots.”
-- “What a pointy turn!”
-- “Follow the zigzag and make each pointy turn.”
-- “Those corners are crisp and pointy!”
-- “Steady finger. Trace all the pointy turns.”
-- “What a wonderful row of pointy turns!”
-- “Trace the loop all the way around.”
-- “Go round and round to make one big sticker loop.”
-- “A lovely round loop!”
-- “Trace the tall loop. Loops are how letters like l begin.”
-- “That tall loop could begin a letter l!”
-- “Curl around the sideways loop. Loops help letters like e begin.”
-- “That curly loop could begin a letter e!”
+Generated on flat charcoal via `krea2-turbo-t2i` (seed 42, seed 1337 for the
+page retry), separated with `qwen-image-layered` (async, layers=2, `layer_2`
+output), alpha-trimmed, resized, encoded by `tools/postprocess.py`. Alpha QA
+composites over magenta live in `qa-shots/sticker-line-challenge/`.
 
-## Licensing
+| runtime file | source | notes |
+| --- | --- | --- |
+| `page.webp` | `source/page-v2.png` → `source/layered/page-layer2.png` | landscape notebook sheet; seed 1337 (seed 42 drew a portrait sheet) |
+| `title.webp` | `source/title.png` (ideogram4-t2i, seed 42) → layered | lettering spell-checked letter-by-letter |
+| `cards/wave.webp` `zigzag.webp` `loop.webp` | `source/card-*.png` → layered | mode cards |
+| `buddies/star.webp` `rainbow.webp` `heart.webp` `flower.webp` | `source/buddy-*.png` → layered | buddy stickers, trail stamps, checkpoint stars |
+| `ui/banner-green.webp` `banner-pink.webp` | `source/banner-*.png` → layered | blank paper banners; HTML text on top |
+| `ui/dash.png` `ui/blob.png` | `source/dash.png` `source/blob.png` | small utility sprites; luminance-keyed from the charcoal background (feathered), QA composited |
 
-- Code: MIT.
-- Future original art and voice: CC BY 4.0; creator and modification details must be added when supplied.
-- Emoji glyph appearance depends on the local operating system; no emoji image files are redistributed.
+## Shared assets reused
 
-## Link preview (og:image)
+- `shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png` (HUD buttons)
+- `shared/assets/music/whimsical-toy-workshop.mp3` (BGM via `shared/js/bgm.js`)
+- `shared/css/base.css`, `hud.css`, `screens.css`; Fredoka display font
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+## Voice
+
+`assets/audio/*.m4a` — intended to be generated with `qwen3-tts-voiceclone`
+from the platform teacher reference (seed ladder 7→8→9), FLAC→AAC, then
+transcript-QA'd with `whisper-stt` by `tools/gen_audio.sh` (resumable).
+At the time of the build pass the local voiceclone workflow was returning
+connection resets; the game ships with the `voice-clips.js` Web Speech
+fallback until the batch can run. `manifest.json` / `lines.json` follow the
+platform voice-pack format.
+
+## Hub tile
+
+`assets/hub/tiles/sticker-line-challenge.jpg` (640×533) predates this pass,
+follows the hub's toy-object grammar, and is curated separately — unchanged.

@@ -1,0 +1,603 @@
+{
+  "id": "sticker-line-challenge",
+  "version": 2,
+  "music": {
+    "track": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "volume": 0.16
+  },
+  "lines": {
+    "welcome": "Hi! Pick a sticker friend!",
+    "picked": "Great choice!",
+    "pick_line": "Now, pick a line!",
+    "mode_waves": "Wavy lines! Follow the wave with your finger.",
+    "mode_zigzags": "Zigzag trail! In and out, here we go!",
+    "mode_loops": "Loop the loops! Round and round!",
+    "round_start": "Put your finger on the sticker and follow the line!",
+    "halfway": "Halfway! Keep going!",
+    "almost": "Almost there!",
+    "nudge": "Oops! Come back to the line!",
+    "cheer_1": "You did it! Amazing tracing!",
+    "cheer_2": "Wonderful! You followed the whole line!",
+    "cheer_3": "Hooray! What careful fingers!",
+    "line_done": "Line complete! You are a tracing superstar!",
+    "new_line": "Pick a new line!"
+  },
+  "buddies": [
+    {
+      "id": "star",
+      "img": "./assets/buddies/star.webp",
+      "say": "The star!"
+    },
+    {
+      "id": "rainbow",
+      "img": "./assets/buddies/rainbow.webp",
+      "say": "The rainbow!"
+    },
+    {
+      "id": "heart",
+      "img": "./assets/buddies/heart.webp",
+      "say": "The heart!"
+    },
+    {
+      "id": "flower",
+      "img": "./assets/buddies/flower.webp",
+      "say": "The flower!"
+    }
+  ],
+  "tuning": {
+    "tolerance": 80,
+    "grabRadius": 150,
+    "sampleStep": 10,
+    "stampGap": 110,
+    "dashGap": 34,
+    "nudgeDelayMs": 1500,
+    "completeFraction": 0.97
+  },
+  "modes": [
+    {
+      "id": "waves",
+      "title": "Wavy Lines",
+      "promptKey": "mode_waves",
+      "card": "./assets/cards/wave.webp",
+      "rounds": [
+        {
+          "id": "wave-1",
+          "points": [
+            [
+              110,
+              400
+            ],
+            [
+              230,
+              330
+            ],
+            [
+              370,
+              470
+            ],
+            [
+              510,
+              330
+            ],
+            [
+              650,
+              470
+            ],
+            [
+              790,
+              330
+            ],
+            [
+              930,
+              470
+            ],
+            [
+              1090,
+              400
+            ]
+          ]
+        },
+        {
+          "id": "wave-2",
+          "points": [
+            [
+              110,
+              400
+            ],
+            [
+              200,
+              270
+            ],
+            [
+              360,
+              530
+            ],
+            [
+              520,
+              270
+            ],
+            [
+              680,
+              530
+            ],
+            [
+              840,
+              270
+            ],
+            [
+              1000,
+              530
+            ],
+            [
+              1090,
+              400
+            ]
+          ]
+        },
+        {
+          "id": "wave-3",
+          "points": [
+            [
+              110,
+              400
+            ],
+            [
+              170,
+              320
+            ],
+            [
+              250,
+              480
+            ],
+            [
+              330,
+              320
+            ],
+            [
+              410,
+              480
+            ],
+            [
+              490,
+              320
+            ],
+            [
+              570,
+              480
+            ],
+            [
+              650,
+              320
+            ],
+            [
+              730,
+              480
+            ],
+            [
+              810,
+              320
+            ],
+            [
+              890,
+              480
+            ],
+            [
+              970,
+              320
+            ],
+            [
+              1050,
+              480
+            ],
+            [
+              1090,
+              400
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zigzags",
+      "title": "Zigzag Trails",
+      "promptKey": "mode_zigzags",
+      "card": "./assets/cards/zigzag.webp",
+      "rounds": [
+        {
+          "id": "zig-1",
+          "points": [
+            [
+              110,
+              480
+            ],
+            [
+              300,
+              320
+            ],
+            [
+              490,
+              480
+            ],
+            [
+              680,
+              320
+            ],
+            [
+              870,
+              480
+            ],
+            [
+              1090,
+              320
+            ]
+          ]
+        },
+        {
+          "id": "zig-2",
+          "points": [
+            [
+              110,
+              500
+            ],
+            [
+              210,
+              300
+            ],
+            [
+              330,
+              500
+            ],
+            [
+              450,
+              300
+            ],
+            [
+              570,
+              500
+            ],
+            [
+              690,
+              300
+            ],
+            [
+              810,
+              500
+            ],
+            [
+              930,
+              300
+            ],
+            [
+              1050,
+              500
+            ],
+            [
+              1090,
+              420
+            ]
+          ]
+        },
+        {
+          "id": "zig-3",
+          "points": [
+            [
+              110,
+              500
+            ],
+            [
+              200,
+              310
+            ],
+            [
+              310,
+              500
+            ],
+            [
+              420,
+              310
+            ],
+            [
+              530,
+              500
+            ],
+            [
+              640,
+              310
+            ],
+            [
+              750,
+              500
+            ],
+            [
+              860,
+              310
+            ],
+            [
+              970,
+              500
+            ],
+            [
+              1090,
+              340
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loops",
+      "title": "Loop-the-Loops",
+      "promptKey": "mode_loops",
+      "card": "./assets/cards/loop.webp",
+      "rounds": [
+        {
+          "id": "loop-1",
+          "points": [
+            [
+              130,
+              430
+            ],
+            [
+              250,
+              430
+            ],
+            [
+              320,
+              430
+            ],
+            [
+              390,
+              370
+            ],
+            [
+              390,
+              290
+            ],
+            [
+              310,
+              270
+            ],
+            [
+              250,
+              330
+            ],
+            [
+              310,
+              410
+            ],
+            [
+              420,
+              450
+            ],
+            [
+              520,
+              430
+            ],
+            [
+              590,
+              430
+            ],
+            [
+              660,
+              370
+            ],
+            [
+              660,
+              290
+            ],
+            [
+              580,
+              270
+            ],
+            [
+              520,
+              330
+            ],
+            [
+              580,
+              410
+            ],
+            [
+              690,
+              450
+            ],
+            [
+              790,
+              430
+            ],
+            [
+              950,
+              430
+            ],
+            [
+              1090,
+              430
+            ]
+          ]
+        },
+        {
+          "id": "loop-2",
+          "points": [
+            [
+              110,
+              440
+            ],
+            [
+              210,
+              440
+            ],
+            [
+              280,
+              440
+            ],
+            [
+              350,
+              380
+            ],
+            [
+              350,
+              300
+            ],
+            [
+              270,
+              280
+            ],
+            [
+              210,
+              340
+            ],
+            [
+              270,
+              420
+            ],
+            [
+              380,
+              460
+            ],
+            [
+              470,
+              440
+            ],
+            [
+              540,
+              440
+            ],
+            [
+              610,
+              380
+            ],
+            [
+              610,
+              300
+            ],
+            [
+              530,
+              280
+            ],
+            [
+              470,
+              340
+            ],
+            [
+              530,
+              420
+            ],
+            [
+              640,
+              460
+            ],
+            [
+              730,
+              440
+            ],
+            [
+              800,
+              440
+            ],
+            [
+              870,
+              380
+            ],
+            [
+              870,
+              300
+            ],
+            [
+              790,
+              280
+            ],
+            [
+              730,
+              340
+            ],
+            [
+              790,
+              420
+            ],
+            [
+              900,
+              460
+            ],
+            [
+              990,
+              440
+            ],
+            [
+              1090,
+              440
+            ]
+          ]
+        },
+        {
+          "id": "loop-3",
+          "points": [
+            [
+              320,
+              390
+            ],
+            [
+              360,
+              250
+            ],
+            [
+              480,
+              180
+            ],
+            [
+              620,
+              200
+            ],
+            [
+              710,
+              300
+            ],
+            [
+              700,
+              440
+            ],
+            [
+              600,
+              540
+            ],
+            [
+              460,
+              560
+            ],
+            [
+              350,
+              480
+            ],
+            [
+              330,
+              390
+            ],
+            [
+              420,
+              500
+            ],
+            [
+              560,
+              560
+            ],
+            [
+              720,
+              560
+            ],
+            [
+              850,
+              480
+            ],
+            [
+              960,
+              540
+            ],
+            [
+              1090,
+              470
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

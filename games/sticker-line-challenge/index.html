@@ -1,47 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
+  <meta name="theme-color" content="#7ec3ea" />
   <title>Sticker Line Challenge ⭐ — Playful Line Tracing</title>
-  <meta name="description" content="Trace dotted waves, zigzags, and loops while a cheerful sticker follows every careful stroke. A pre-writing tracing game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta name="description" content="Pick a sticker buddy and trace dashed paper ribbons — waves, zigzags, and loops. A papercraft pre-writing tracing game for ages 5–6." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Sticker Line Challenge" />
   <meta property="og:title" content="Sticker Line Challenge ⭐ — Playful Line Tracing" />
-  <meta property="og:description" content="Trace dotted waves, zigzags, and loops while a cheerful sticker follows every careful stroke. A pre-writing tracing game for ages 5–6." />
+  <meta property="og:description" content="Pick a sticker buddy and trace dashed paper ribbons — waves, zigzags, and loops. A papercraft pre-writing tracing game for ages 5–6." />
   <meta property="og:url" content="https://qlo.be/games/sticker-line-challenge/" />
   <meta property="og:image" content="https://qlo.be/games/sticker-line-challenge/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sticker Line Challenge title screen with Wavy Lines, Zigzag Trails, and Loop-the-Loops modes framed by colorful paper stickers and stars." />
-
-  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sticker Line Challenge ⭐ — Playful Line Tracing" />
-  <meta name="twitter:description" content="Trace dotted waves, zigzags, and loops while a cheerful sticker follows every careful stroke. A pre-writing tracing game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/sticker-line-challenge/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/trace-path.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game">
+    <section data-qk-screen="splash" hidden>
+      <img class="splash-bg" src="./assets/bg-splash.jpg" alt="" />
+      <div class="splash-stack">
+        <img class="splash-title" src="./assets/title.webp" alt="Sticker Line Challenge" />
+        <div class="buddy-tray" id="buddy-tray" aria-label="Pick a sticker friend"></div>
+        <div class="card-row" id="card-row" aria-label="Pick a line"></div>
+      </div>
+    </section>
+
+    <section data-qk-screen="play" hidden>
+      <img class="play-bg" src="./assets/bg-play.jpg" alt="" />
+      <div class="prompt-banner">
+        <img class="prompt-banner-art" src="./assets/ui/banner-pink.webp" alt="" />
+        <span class="prompt-text" id="prompt-text"></span>
+      </div>
+      <div class="counter" id="counter" aria-hidden="true"></div>
+      <div class="stage-wrap" id="stage-wrap">
+        <canvas id="stage"></canvas>
+      </div>
+    </section>
+
+    <section data-qk-screen="end" hidden>
+      <img class="end-bg" src="./assets/bg-end.jpg" alt="" />
+      <div class="end-stack">
+        <div class="prompt-banner end-banner">
+          <img class="prompt-banner-art" src="./assets/ui/banner-pink.webp" alt="" />
+          <span class="prompt-text">Line complete!</span>
+        </div>
+        <button class="banner-btn" id="btn-new-line" data-target>
+          <img src="./assets/ui/banner-green.webp" alt="" />
+          <span>New line</span>
+        </button>
+      </div>
+    </section>
+
+    <div id="game-status" class="visually-hidden" aria-live="polite"></div>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
