@@ -3477,6 +3477,22 @@
         }
       ],
       "summary": "Help Biscuit and Miso breathe, hug, tidy the board, and happily play again together."
+    },
+    {
+      "id": "garden-graphers",
+      "title": "Garden Graphers",
+      "category": "math-number-sense",
+      "path": "games/garden-graphers/",
+      "icon": "assets/hub/tiles/garden-graphers.jpg",
+      "age": { "min": 5, "max": 6 },
+      "status": "beta",
+      "accent": "#5f8737",
+      "modes": [
+        { "id": "sort", "title": "Sort & Stamp", "skill": "classification by observable garden visitor type" },
+        { "id": "count", "title": "Tap & Count", "skill": "one-to-one counting in a picture graph to 6" },
+        { "id": "compare", "title": "Garden Compare", "skill": "comparing picture-graph quantities as most, fewest, or the same" }
+      ],
+      "summary": "Sort garden visitors, count their picture-graph columns, and find which groups have the most, fewest, or the same."
     }
   ]
 }

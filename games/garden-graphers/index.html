@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#dce8b5" />
+  <title>Garden Graphers — Sort, Count, and Compare a Picture Graph</title>
+  <meta name="description" content="Join Ari in a watercolor garden: sort friendly visitors, count their picture-graph columns, and compare which groups have the most, fewest, or the same." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Garden Graphers" />
+  <meta property="og:title" content="Garden Graphers — Sort, Count, and Compare a Picture Graph" />
+  <meta property="og:description" content="Join Ari in a watercolor garden: sort friendly visitors, count their picture-graph columns, and compare which groups have the most, fewest, or the same." />
+  <meta property="og:url" content="https://qlo.be/games/garden-graphers/" />
+  <meta property="og:image" content="https://qlo.be/games/garden-graphers/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ari welcomes children to a watercolor garden with an open picture-graph journal." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Garden Graphers — Sort, Count, and Compare a Picture Graph" />
+  <meta name="twitter:description" content="Sort garden visitors, count picture graphs, and compare groups with Ari." />
+  <meta name="twitter:image" content="https://qlo.be/games/garden-graphers/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <main id="game" aria-label="Garden Graphers">
+    <section class="qk-screen garden-screen splash" data-qk-screen="splash">
+      <img class="world-bg" src="./assets/bg/garden.webp" alt="" />
+      <div data-splash-home></div>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="splash-replay" aria-label="Hear Ari again"></button>
+      <div class="splash-layout">
+        <img class="title-art" src="./assets/ui/title.webp" alt="Garden Graphers" />
+        <div class="splash-story">
+          <div class="ari-intro"><img src="./assets/characters/ari-notice.webp" alt="Ari the armadillo" /></div>
+        </div>
+        <button class="art-button start-button" data-action="start" data-target="start">
+          <img src="./assets/ui/action-button.webp" alt="" /><span>Open the Journal</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="qk-screen garden-screen menu" data-qk-screen="menu" hidden>
+      <img class="world-bg" src="./assets/bg/garden.webp" alt="" />
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="menu-back" aria-label="Back to the garden"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="menu-replay" aria-label="Hear the page choices"></button>
+      <div class="menu-heading">
+        <img src="./assets/ui/prompt-banner.webp" alt="" />
+        <h1>Choose a garden page</h1>
+      </div>
+      <div class="mode-cards" data-mode-cards aria-label="Garden activities"></div>
+      <p class="menu-help">Every page grows a new bloom</p>
+    </section>
+
+    <section class="qk-screen garden-screen play" data-qk-screen="play" hidden>
+      <img class="world-bg" src="./assets/bg/garden.webp" alt="" />
+      <div class="qk-hud-bar play-hud">
+        <button class="qk-hud-btn qk-hud-back" data-action="back" data-target="play-back" aria-label="Back to the journal menu"></button>
+        <div class="round-pips" data-pips aria-label="Round progress"></div>
+        <button class="qk-hud-btn qk-hud-sound" data-action="replay" data-target="play-replay" aria-label="Hear the instruction again"></button>
+      </div>
+      <div class="prompt-wrap">
+        <img src="./assets/ui/prompt-banner.webp" alt="" />
+        <p data-prompt aria-live="polite"></p>
+      </div>
+      <div class="play-layout" data-play-layout>
+        <aside class="specimen-meadow" data-tray aria-label="Garden visitors"></aside>
+        <div class="journal-host" data-board></div>
+      </div>
+    </section>
+
+    <section class="qk-screen garden-screen complete" data-qk-screen="complete" hidden>
+      <img class="world-bg" src="./assets/bg/garden.webp" alt="" />
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="complete-back" aria-label="Back to the journal menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="complete-replay" aria-label="Hear Ari celebrate"></button>
+      <div class="reward-stage" data-reward-stage></div>
+      <div class="complete-actions">
+        <button class="art-button" data-action="menu" data-target="journal-menu"><img src="./assets/ui/action-button.webp" alt="" /><span>Journal Menu</span></button>
+        <button class="art-button" data-action="next" data-target="next-page"><img src="./assets/ui/action-button.webp" alt="" /><span data-next-label>Next Page</span></button>
+      </div>
+    </section>
+
+    <section class="qk-screen garden-screen finale" data-qk-screen="finale" hidden>
+      <img class="world-bg" src="./assets/bg/garden.webp" alt="" />
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-action="back" data-target="finale-back" aria-label="Back to the journal menu"></button>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-action="replay" data-target="finale-replay" aria-label="Hear Ari celebrate"></button>
+      <div class="finale-stage" data-finale-stage></div>
+      <button class="art-button finale-again" data-action="again" data-target="grow-again"><img src="./assets/ui/action-button.webp" alt="" /><span>Grow Another Graph</span></button>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

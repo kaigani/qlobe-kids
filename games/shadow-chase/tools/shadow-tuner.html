@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadow Chase — Shadow Tuner</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.35 system-ui, sans-serif; --ink: #3b2418; --cream: #fff3cf; --wood: #d59a4a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; color: var(--ink); background: #f2d19b; }
+    main { display: grid; grid-template-columns: minmax(300px, 520px) minmax(300px, 1fr); gap: 24px; max-width: 1180px; margin: auto; padding: 24px; }
+    h1 { grid-column: 1 / -1; margin: 0; font-size: clamp(24px, 4vw, 40px); }
+    .preview { position: relative; min-height: 520px; overflow: hidden; border: 8px solid #875125; border-radius: 20px; background: linear-gradient(#f0c579 0 78%, #b76e31 78%); box-shadow: inset 0 0 0 3px #f8dda5; }
+    .preview::after { content: ''; position: absolute; right: -10%; bottom: 7%; left: -10%; height: 12%; border-radius: 50%; background: rgba(77, 40, 18, .2); }
+    .toy, .shadow { position: absolute; z-index: 2; width: 44%; height: 48%; object-fit: contain; pointer-events: none; }
+    .toy { left: 50%; bottom: 15%; transform: translateX(-50%); filter: drop-shadow(0 12px 5px rgba(55, 32, 18, .25)); }
+    .shadow { z-index: 1; transform-origin: 10% 82%; filter: saturate(.45) brightness(.52) contrast(1.38); opacity: .7; }
+    .controls { display: grid; align-content: start; gap: 16px; }
+    .toolbar, .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    label { display: grid; gap: 5px; font-weight: 700; }
+    select, input[type='number'], button { min-height: 42px; border: 2px solid #875125; border-radius: 10px; padding: 8px 12px; color: var(--ink); background: var(--cream); font: inherit; }
+    button { cursor: pointer; font-weight: 700; background: #fff8e3; }
+    button:hover { filter: brightness(1.04); }
+    .animal { min-width: 160px; }
+    .day { display: grid; gap: 6px; padding: 14px; border: 2px solid #a96e32; border-radius: 12px; background: rgba(255, 243, 207, .72); }
+    .day-line { display: flex; justify-content: space-between; font-weight: 700; }
+    input[type='range'] { width: 100%; accent-color: #7e4c24; }
+    .keyframe-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .keyframe-nav button { min-height: 48px; padding: 5px; font-size: 12px; line-height: 1.1; }
+    .keyframe-nav button.is-current { color: #fff8e3; background: #7e4c24; box-shadow: 0 0 0 3px #bd6d2e; }
+    .keyframe-nav button small { display: block; margin-top: 3px; opacity: .75; }
+    .step-nav { display: flex; gap: 8px; }
+    .step-nav button { flex: 1; }
+    .fields { display: grid; grid-template-columns: repeat(2, minmax(130px, 1fr)); gap: 12px; }
+    .fields input { width: 100%; }
+    .hint, .status { margin: 0; padding: 10px 12px; border-radius: 10px; background: rgba(255, 248, 227, .7); }
+    .status { min-height: 42px; }
+    .keyframe { outline: 3px solid #bd6d2e; }
+    @media (max-width: 760px) { main { grid-template-columns: 1fr; padding: 14px; } .preview { min-height: 420px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Shadow Chase — Shadow Tuner</h1>
+    <section class="preview" aria-label="Shadow preview">
+      <img class="shadow" alt="">
+      <img class="toy" alt="Toy preview">
+    </section>
+    <section class="controls">
+      <div class="toolbar">
+        <label>Animal
+          <select class="animal">
+            <option>rabbit</option><option>squirrel</option><option>turtle</option>
+            <option>fox</option><option>duck</option><option>bear</option>
+          </select>
+        </label>
+        <button type="button" data-reset>Reset animal</button>
+      </div>
+      <div class="day">
+        <div class="day-line"><span>Day position</span><output class="day-value">Noon</output></div>
+        <input class="day-slider" type="range" min="0" max="100" value="50" aria-label="Day position">
+        <div class="day-line"><span>Morning</span><span>Evening</span></div>
+        <div class="keyframe-nav" aria-label="Day keyframes">
+          <button type="button" data-keyframe="0">Morning<small>0%</small></button>
+          <button type="button" data-keyframe="1">Early<small>25%</small></button>
+          <button type="button" data-keyframe="2">Noon<small>50%</small></button>
+          <button type="button" data-keyframe="3">Late<small>75%</small></button>
+          <button type="button" data-keyframe="4">Evening<small>100%</small></button>
+        </div>
+        <div class="step-nav">
+          <button type="button" data-step="previous">← Previous keyframe</button>
+          <button type="button" data-step="next">Next keyframe →</button>
+        </div>
+      </div>
+      <p class="hint">Edit the shadow at the selected day position. Values between the five keyframes are interpolated automatically.</p>
+      <div class="fields">
+        <label>Move X (%) <input data-field="x" type="number" step="1"></label>
+        <label>Move Y (%) <input data-field="y" type="number" step="1"></label>
+        <label>Angle (deg) <input data-field="angle" type="number" step="1"></label>
+        <label>Width × <input data-field="width" type="number" min="0" step="0.01"></label>
+        <label>Stretch × <input data-field="stretch" type="number" min="0" step="0.01"></label>
+        <label>Opacity <input data-field="opacity" type="number" min="0" max="1" step="0.01"></label>
+      </div>
+      <div class="actions">
+        <button type="button" data-reset-keyframe>Reset keyframe</button>
+        <button type="button" data-download>Download tuning JSON</button>
+        <button type="button" data-copy>Copy JSON</button>
+      </div>
+      <p class="status" role="status">Ready.</p>
+    </section>
+  </main>
+  <script>
+    const ANIMALS = ['rabbit', 'squirrel', 'turtle', 'fox', 'duck', 'bear'];
+    const TIMES = [0, .25, .5, .75, 1];
+    const DEFAULT = { x: 0, y: 0, angle: 0, width: 1, stretch: 1, opacity: .7 };
+    const fields = [...document.querySelectorAll('[data-field]')];
+    const animalSelect = document.querySelector('.animal');
+    const slider = document.querySelector('.day-slider');
+    const dayValue = document.querySelector('.day-value');
+    const toy = document.querySelector('.toy');
+    const shadow = document.querySelector('.shadow');
+    const status = document.querySelector('.status');
+    const keyframeButtons = [...document.querySelectorAll('[data-keyframe]')];
+    let tuning = makeBlank();
+
+    function makeBlank() {
+      return { version: 1, keyframes: TIMES, animals: Object.fromEntries(ANIMALS.map((name) => [name, {}])) };
+    }
+    function normalize(data) {
+      const next = makeBlank();
+      for (const name of ANIMALS) {
+        const source = data?.animals?.[name] || {};
+        next.animals[name] = Object.fromEntries(TIMES.map((time) => [String(time), { ...DEFAULT, ...(source[String(time)] || {}) }]));
+      }
+      return next;
+    }
+    function keyframeIndex() { return Math.round(Number(slider.value) / 25); }
+    function currentTime() { return Number(slider.value) / 100; }
+    function selectedFrame() { return tuning.animals[animalSelect.value][String(TIMES[keyframeIndex()])]; }
+    function interpolate(name, time) {
+      const frames = tuning.animals[name];
+      if (time <= 0) return frames['0'];
+      if (time >= 1) return frames['1'];
+      const upper = TIMES.findIndex((value) => value >= time);
+      const loTime = TIMES[upper - 1], hiTime = TIMES[upper];
+      const amount = (time - loTime) / (hiTime - loTime);
+      const lo = frames[String(loTime)], hi = frames[String(hiTime)];
+      return Object.fromEntries(Object.keys(DEFAULT).map((key) => [key, Number(lo[key]) + (Number(hi[key]) - Number(lo[key])) * amount]));
+    }
+    function render() {
+      const name = animalSelect.value, time = currentTime(), values = interpolate(name, time);
+      const edge = Math.abs(time - .5) * 2;
+      const baseAngle = (.5 - time) * 132;
+      const baseStretch = .26 + edge * .92;
+      const baseWidth = .82 - edge * .12;
+      const baseOpacity = .52 + edge * .14;
+      toy.src = `../assets/toys/${name}.webp`;
+      shadow.src = `../assets/shadows/${name}.webp`;
+      shadow.style.left = `calc(50% + ${values.x}%)`;
+      shadow.style.bottom = `calc(15% + ${values.y}%)`;
+      shadow.style.transform = `rotate(${baseAngle + values.angle}deg) scaleX(${baseWidth * values.width}) scaleY(${baseStretch * values.stretch})`;
+      shadow.style.opacity = baseOpacity * values.opacity;
+      const labels = ['Morning', 'Early morning', 'Noon', 'Late afternoon', 'Evening'];
+      dayValue.value = labels[keyframeIndex()];
+      dayValue.textContent = `${labels[keyframeIndex()]} (${Math.round(time * 100)}%)`;
+      const frame = selectedFrame();
+      for (const field of fields) field.value = Number(frame[field.dataset.field]).toFixed(2);
+      slider.classList.toggle('keyframe', Number(slider.value) % 25 === 0);
+      keyframeButtons.forEach((button) => button.classList.toggle('is-current', Number(button.dataset.keyframe) === keyframeIndex()));
+    }
+    function goToKeyframe(index) { slider.value = String(Math.max(0, Math.min(TIMES.length - 1, index)) * 25); render(); }
+    function updateField(event) {
+      const field = event.target, value = Number(field.value);
+      if (!Number.isFinite(value)) return;
+      selectedFrame()[field.dataset.field] = value;
+      render();
+      status.textContent = 'Unsaved changes.';
+    }
+    function resetFrame() { tuning.animals[animalSelect.value][String(TIMES[keyframeIndex()])] = { ...DEFAULT }; render(); status.textContent = 'Keyframe reset.'; }
+    function resetAnimal() { tuning.animals[animalSelect.value] = Object.fromEntries(TIMES.map((time) => [String(time), { ...DEFAULT }])); render(); status.textContent = 'Animal reset.'; }
+    function exportText() { return JSON.stringify(tuning, null, 2) + '\n'; }
+    function download() {
+      const blob = new Blob([exportText()], { type: 'application/json' });
+      const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'shadow-tuning.json'; link.click(); URL.revokeObjectURL(link.href);
+      status.textContent = 'Downloaded shadow-tuning.json.';
+    }
+    async function copy() {
+      try { await navigator.clipboard.writeText(exportText()); status.textContent = 'Copied tuning JSON.'; }
+      catch { status.textContent = 'Copy unavailable; use Download instead.'; }
+    }
+    slider.addEventListener('input', render);
+    animalSelect.addEventListener('change', render);
+    fields.forEach((field) => field.addEventListener('change', updateField));
+    document.querySelector('[data-reset-keyframe]').addEventListener('click', resetFrame);
+    document.querySelector('[data-reset]').addEventListener('click', resetAnimal);
+    document.querySelector('[data-download]').addEventListener('click', download);
+    document.querySelector('[data-copy]').addEventListener('click', copy);
+    keyframeButtons.forEach((button) => button.addEventListener('click', () => goToKeyframe(Number(button.dataset.keyframe))));
+    document.querySelector('[data-step="previous"]').addEventListener('click', () => goToKeyframe(keyframeIndex() - 1));
+    document.querySelector('[data-step="next"]').addEventListener('click', () => goToKeyframe(keyframeIndex() + 1));
+    fetch('./shadow-tuning.json').then((response) => response.ok ? response.json() : null).then((data) => { tuning = normalize(data); render(); }).catch(() => { tuning = normalize(null); render(); });
+  </script>
+</body>
+</html>

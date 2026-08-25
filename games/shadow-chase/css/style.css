@@ -390,6 +390,23 @@ button,
   object-fit: contain;
   filter: drop-shadow(0 14px 6px rgba(55, 32, 18, .24));
   animation: toy-arrive 460ms cubic-bezier(.2, .9, .2, 1.25) both;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.active-toy.is-dragging {
+  opacity: .32;
+}
+
+.dragged-toy {
+  position: fixed;
+  z-index: 30;
+  pointer-events: none;
+  object-fit: contain;
+  transform: translate(-50%, -50%) scale(1.06);
+  filter: drop-shadow(0 14px 6px rgba(55, 32, 18, .28));
 }
 
 .shadow-choice-row {
@@ -417,15 +434,32 @@ button,
 }
 
 .choice-shadow {
+  --shadow-frame-width: 68;
+  --shadow-frame-height: 62;
+  --shadow-offset-x: 0%;
+  --shadow-offset-y: 0%;
   position: absolute;
   z-index: 1;
-  inset: 12% 11% 15%;
-  width: 78%;
-  height: 73%;
+  /* Keep the full silhouette inside the plaque's inset safe area. The
+     source shadows nearly fill their canvases, so the image box needs a
+     little more breathing room than the plaque frame itself. */
+  top: 18%;
+  left: 16%;
+  width: 68%;
+  height: 62%;
   object-fit: contain;
+  transform: translateY(20px);
   opacity: .72;
   filter: saturate(.6) brightness(.58) contrast(1.35);
   pointer-events: none;
+}
+
+/* The tall bear and rabbit silhouettes need a little extra vertical
+   breathing room; the other animal proportions already fit the plaque. */
+.shadow-choice[data-choice='bear'] .choice-shadow,
+.shadow-choice[data-choice='rabbit'] .choice-shadow {
+  top: 21%;
+  height: 56%;
 }
 
 .shadow-choice:active {
@@ -444,6 +478,11 @@ button,
 .shadow-choice.is-correct {
   filter: brightness(1.12) saturate(1.13);
   transform: scale(1.05);
+}
+
+.shadow-choice.is-drop-target {
+  filter: brightness(1.08) saturate(1.12) drop-shadow(0 0 8px rgba(246, 182, 46, .7));
+  transform: scale(1.04);
 }
 
 /* Sun playfield -------------------------------------------------------- */
@@ -488,21 +527,35 @@ button,
 }
 
 .target-shadow {
+  --shadow-frame-width: 58;
+  --shadow-frame-height: 42;
   --shadow-angle: 0deg;
   --shadow-length: .5;
   --shadow-width: .8;
   --shadow-opacity: .6;
+  --shadow-offset-x: 0%;
+  --shadow-offset-y: 0%;
+  --shadow-tune-angle: 0deg;
+  --shadow-tune-width: 1;
+  --shadow-tune-stretch: 1;
+  --shadow-tune-opacity: 1;
   position: absolute;
   z-index: 1;
-  right: 13%;
-  bottom: 18%;
-  left: 13%;
-  width: 74%;
-  height: 58%;
+  right: auto;
+  bottom: 32.5%;
+  left: 21%;
+  width: 58%;
+  height: 42%;
   object-fit: contain;
-  opacity: var(--shadow-opacity);
+  opacity: calc(var(--shadow-opacity) * var(--shadow-tune-opacity));
   filter: saturate(.5) brightness(.55) contrast(1.3);
-  transform: rotate(var(--shadow-angle)) scaleX(var(--shadow-width)) scaleY(var(--shadow-length));
+  /* This is a contained reference card, not the live cast. Keep its
+     placement inside the placard while retaining the tuned silhouette
+     shape, scale, and opacity. */
+  left: 13%;
+  bottom: 18%;
+  transform: rotate(calc(var(--shadow-angle) + var(--shadow-tune-angle))) scaleX(calc(var(--shadow-width) * var(--shadow-tune-width))) scaleY(calc(var(--shadow-length) * var(--shadow-tune-stretch)));
+  transform-origin: 50% 82%;
   pointer-events: none;
 }
 
@@ -522,40 +575,49 @@ button,
 .cast-group {
   position: absolute;
   bottom: 3%;
-  width: min(24vw, 310px);
-  height: 74%;
+  width: min(35vw, 310px);
+  height: min(54dvh, 401px);
 }
 
-.active-cast { left: 17%; }
+.active-cast { bottom: -15%; left: 17%; }
 .friend-cast { right: 8%; width: min(17vw, 220px); height: 58%; opacity: .88; }
 
 .sun-toy {
   position: absolute;
   z-index: 2;
-  right: 13%;
-  bottom: 0;
+  left: 50%;
+  bottom: 15%;
   width: 74%;
   height: 86%;
   object-fit: contain;
+  transform: translateX(-50%);
   filter: drop-shadow(0 12px 5px rgba(56, 34, 19, .25));
   pointer-events: none;
 }
 
 .cast-shadow {
+  --shadow-frame-width: 74;
+  --shadow-frame-height: 86;
   --shadow-angle: 0deg;
   --shadow-length: .5;
   --shadow-width: .8;
   --shadow-opacity: .6;
+  --shadow-offset-x: 0%;
+  --shadow-offset-y: 0%;
+  --shadow-tune-angle: 0deg;
+  --shadow-tune-width: 1;
+  --shadow-tune-stretch: 1;
+  --shadow-tune-opacity: 1;
   position: absolute;
   z-index: 1;
-  bottom: -2%;
-  left: 43%;
+  bottom: calc(15% + var(--shadow-offset-y));
+  left: calc(50% + var(--shadow-offset-x));
   width: 74%;
-  height: 83%;
+  height: 86%;
   object-fit: contain;
-  opacity: var(--shadow-opacity);
+  opacity: calc(var(--shadow-opacity) * var(--shadow-tune-opacity));
   filter: saturate(.45) brightness(.52) contrast(1.38) blur(.2px);
-  transform: rotate(var(--shadow-angle)) scaleX(var(--shadow-width)) scaleY(var(--shadow-length));
+  transform: rotate(calc(var(--shadow-angle) + var(--shadow-tune-angle))) scaleX(calc(var(--shadow-width) * var(--shadow-tune-width))) scaleY(calc(var(--shadow-length) * var(--shadow-tune-stretch)));
   transform-origin: 10% 82%;
   pointer-events: none;
   transition: opacity 80ms linear;
@@ -673,15 +735,30 @@ button,
 }
 
 .reveal-shadow {
+  --shadow-frame-width: 58;
+  --shadow-frame-height: 65;
+  --shadow-angle: 0deg;
+  --shadow-length: .5;
+  --shadow-width: .8;
+  --shadow-opacity: .6;
+  --shadow-offset-x: 0%;
+  --shadow-offset-y: 0%;
+  --shadow-tune-angle: 0deg;
+  --shadow-tune-width: 1;
+  --shadow-tune-stretch: 1;
+  --shadow-tune-opacity: 1;
   position: absolute;
   z-index: 1;
-  right: -5%;
-  bottom: 2%;
-  width: 57%;
-  height: 57%;
+  left: calc(50% + var(--shadow-offset-x));
+  bottom: calc(11% + var(--shadow-offset-y));
+  width: 58%;
+  height: 65%;
   object-fit: contain;
-  opacity: .54;
-  transform: rotate(-14deg) scaleY(.55);
+  opacity: calc(var(--shadow-opacity) * var(--shadow-tune-opacity));
+  filter: saturate(.45) brightness(.52) contrast(1.38) blur(.2px);
+  transform: rotate(calc(var(--shadow-angle) + var(--shadow-tune-angle))) scaleX(calc(var(--shadow-width) * var(--shadow-tune-width))) scaleY(calc(var(--shadow-length) * var(--shadow-tune-stretch)));
+  transform-origin: 10% 82%;
+  pointer-events: none;
 }
 
 .reveal-toy,
@@ -720,11 +797,14 @@ button,
 .action-button span {
   position: absolute;
   z-index: 1;
-  inset: 27% 12% auto;
+  top: 40%;
+  right: 12%;
+  left: 12%;
   color: #fff7d8;
   font-size: clamp(21px, 2.4vw, 34px);
   line-height: 1;
   text-align: center;
+  white-space: nowrap;
   text-shadow: 0 3px 0 rgba(36, 83, 41, .42);
   pointer-events: none;
 }
@@ -862,21 +942,29 @@ button,
 .time-sun-right { top: 18%; right: 14%; }
 
 .time-shadow {
+  --shadow-frame-width: 46;
+  --shadow-frame-height: 40;
   --shadow-angle: 0deg;
   --shadow-length: .5;
   --shadow-width: .8;
   --shadow-opacity: .6;
+  --shadow-offset-x: 0%;
+  --shadow-offset-y: 0%;
+  --shadow-tune-angle: 0deg;
+  --shadow-tune-width: 1;
+  --shadow-tune-stretch: 1;
+  --shadow-tune-opacity: 1;
   position: absolute;
   z-index: 1;
-  right: 26%;
-  bottom: 23%;
+  left: calc(28% + var(--shadow-offset-x));
+  bottom: calc(23% + var(--shadow-offset-y));
   width: 46%;
   height: 40%;
   object-fit: contain;
-  opacity: var(--shadow-opacity);
+  opacity: calc(var(--shadow-opacity) * var(--shadow-tune-opacity));
   filter: brightness(.55) contrast(1.3);
-  transform: rotate(var(--shadow-angle)) scaleX(var(--shadow-width)) scaleY(var(--shadow-length));
-  transform-origin: 50% 82%;
+  transform: rotate(calc(var(--shadow-angle) + var(--shadow-tune-angle))) scaleX(calc(var(--shadow-width) * var(--shadow-tune-width))) scaleY(calc(var(--shadow-length) * var(--shadow-tune-stretch)));
+  transform-origin: 10% 82%;
   pointer-events: none;
 }
 
@@ -1088,11 +1176,11 @@ button,
     grid-template-rows: minmax(135px, 21dvh) 1fr;
     width: min(94vw, 790px);
   }
+  .cast-group { width: min(35vw, 310px); height: min(58dvh, 520px); }
   .target-plaque { width: min(55vw, 420px); height: min(22dvh, 220px); min-height: 135px; justify-self: center; }
   .target-caption { top: 14%; }
-  .target-shadow { bottom: 13%; height: 56%; }
+  .target-shadow { --shadow-frame-height: 42; bottom: 32.5%; height: 42%; }
   .sun-scene { grid-template-rows: minmax(250px, 1fr) minmax(145px, 21dvh); }
-  .cast-group { width: min(35vw, 290px); }
   .active-cast { left: 18%; }
   .friend-cast { right: 8%; width: min(25vw, 190px); }
 
@@ -1127,7 +1215,9 @@ button,
   .play-prompt { font-size: clamp(21px, 4.7vw, 30px); }
   .shadow-choice-row { gap: 2px; }
   .shadow-choice { min-height: 230px; }
-  .choice-shadow { inset: 14% 10% 16%; width: 80%; height: 70%; }
+  .choice-shadow { top: 18%; left: 16%; width: 68%; height: 62%; }
+  .cast-group { width: min(56vw, 350px); height: min(54dvh, 226px); }
+  .friend-cast { right: 8%; width: min(25vw, 190px); height: 58%; }
   .sun-handle { width: 108px; height: 108px; }
   .target-caption { font-size: 15px; }
   .time-stop span { font-size: 14px; }

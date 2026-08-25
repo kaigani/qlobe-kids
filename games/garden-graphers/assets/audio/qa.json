@@ -1,0 +1,28 @@
+{
+  "workflow": "qwen3-tts-voiceclone with whisper-stt exact normalized comparison",
+  "status": "omitted-all-or-none",
+  "summary": {
+    "total": 32,
+    "accepted": 0,
+    "rejected": 0,
+    "notGenerated": 32,
+    "runtimeDelivery": "omitted-all-or-none"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "failed-closed",
+      "reason": "configured teacher voice reference was unavailable to the authoring process"
+    },
+    {
+      "attempt": 2,
+      "result": "failed-closed",
+      "reason": "configured teacher voice reference was unavailable to the authoring process"
+    }
+  ],
+  "whisper": {
+    "ran": false,
+    "reason": "No synthesized candidate clip existed to transcribe."
+  },
+  "runtime": "assets/audio/manifest.json is intentionally empty; voice-clips.js uses the exact lines.json device-speech fallback."
+}

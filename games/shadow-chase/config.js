@@ -4,6 +4,12 @@ export async function loadConfig() {
   if (!response.ok) throw new Error(`Shadow Chase config failed: ${response.status}`);
   const config = await response.json();
   if (config.id !== 'shadow-chase' || config.modes?.length !== 3 || config.toys?.length !== 6 || config.sunTargets?.length !== 5) throw new Error('Invalid Shadow Chase config');
+  try {
+    const tuningResponse = await fetch(new URL('./tools/shadow-tuning.json', CONFIG_URL));
+    config.shadowTuning = tuningResponse.ok ? await tuningResponse.json() : null;
+  } catch {
+    config.shadowTuning = null;
+  }
   return config;
 }
 export default loadConfig;

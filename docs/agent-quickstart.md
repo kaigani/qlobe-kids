@@ -520,9 +520,32 @@ Functional text a child or parent must actually parse — instructions, labels,
 buttons, anything where exact spelling matters at runtime — stays real HTML
 (and, for children, audio-first).
 
-Contact sheets are efficient for a coordinated icon family, but only when the
-cells have an explicit grid and the final crop is deterministic. Inspect the
-full sheet and every extracted asset.
+Contact sheets are efficient for a coordinated icon family, but never estimate
+cuts from equal horizontal/vertical slices. For separated objects on a flat
+dark ground (or an existing alpha sheet), use the shared bounding-box cutter:
+
+```sh
+python3 tools/cut-asset-sheet.py assets/source/toys.png \
+  assets/source/crops \
+  --names rabbit squirrel turtle fox duck bear \
+  --expected-count 6 --debug-mask assets/source/crops-mask.png
+```
+
+The Pillow-based tool samples the border background (or uses existing alpha),
+finds connected foreground components, adds 12 px safety padding by default,
+writes one verbatim crop per component, and records pixel, `xywh`, and normalized
+coordinates in `boxes.json`. Always pass `--expected-count`; a mismatch is a QA
+failure, not permission to fall back to grid slicing. Use `--dry-run` to inspect
+coordinates without writing and tune `--distance-threshold`,
+`--chroma-threshold`, or `--min-area` while reviewing `--debug-mask`. If nearby
+objects merge in the mask, retry with `--close-radius 0`. The cutter locates
+crops but does not create a matte: send opaque crops through Layered for true
+alpha, then use `tools/pipeline/cutout_finalize.py`.
+
+Explicit equal-grid crops remain acceptable only when the source cells are
+guaranteed and every object stays inside its cell. In either case, inspect the
+full sheet and every extracted asset, especially shadows, ears, tails, and other
+extrema.
 
 ### Hub tiles use their own grammar
 

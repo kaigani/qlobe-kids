@@ -21,6 +21,7 @@ const SHOW_STOPS = [
   { id: 'noon', t: 0.5, voiceKey: 'show-noon', label: 'Noon' },
   { id: 'evening', t: 0.92, voiceKey: 'show-evening', label: 'Evening' },
 ];
+const MATCH_DRAG_SLOP = 8;
 const SHARED_BUTTONS = {
   back: '../../shared/assets/ui/btn-back.png',
   play: '../../shared/assets/ui/btn-play.png',
@@ -447,7 +448,7 @@ function renderMatchRound() {
   host.innerHTML = `
     <div class="match-toy-zone">
       <img class="toy-pedestal" src="${config.assets.pedestal}" alt="" />
-      <img class="active-toy" src="${toySrc(plan.toy.id)}" alt="${escapeHtml(plan.toy.label)} toy" />
+      <img class="active-toy" data-drag-source draggable="false" src="${toySrc(plan.toy.id)}" alt="${escapeHtml(plan.toy.label)} toy" />
     </div>
     <div class="shadow-choice-row" aria-label="Choose the matching shadow">
       ${plan.choices.map((toy) => `
@@ -455,18 +456,121 @@ function renderMatchRound() {
           data-role="${toy.id === plan.toy.id ? 'correct' : 'wrong'}"
           aria-label="${escapeHtml(toy.label)} shadow">
           <img class="physical-base" src="${config.assets.plaque}" alt="" />
-          <img class="choice-shadow" src="${shadowSrc(toy.id)}" alt="" />
+          <img class="choice-shadow" data-shadow-toy="${toy.id}" src="${shadowSrc(toy.id)}" alt="" />
         </button>
       `).join('')}
     </div>
   `;
   updateProgress();
+  host.querySelectorAll('.choice-shadow').forEach((shadow) => applyShadowVars(shadow, 0.5, true));
   setPrompt(`Which shadow belongs to the ${plan.toy.label}?`, plan.toy.promptKey);
   host.querySelectorAll('.shadow-choice').forEach((button) => {
     registerTap(button, `choice-${button.dataset.choice}`, () => handleShadowChoice(button.dataset.choice));
   });
+  roundBag.add(setupMatchDrag(host));
   nudger.arm();
   speak(plan.toy.promptKey);
+}
+
+function setupMatchDrag(host) {
+  const source = host.querySelector('[data-drag-source]');
+  if (!source) return () => {};
+  let drag = null;
+
+  const choices = () => [...host.querySelectorAll('.shadow-choice')];
+  const clearDropTarget = () => choices().forEach((button) => button.classList.remove('is-drop-target'));
+  const dropTargetAt = (clientX, clientY) => choices().find((button) => {
+    const rect = button.getBoundingClientRect();
+    return clientX >= rect.left && clientX <= rect.right
+      && clientY >= rect.top && clientY <= rect.bottom;
+  }) || null;
+
+  const removePreview = () => {
+    drag?.preview?.remove();
+    if (drag) drag.preview = null;
+  };
+
+  const finish = () => {
+    removePreview();
+    clearDropTarget();
+    source.classList.remove('is-dragging');
+    window.removeEventListener('pointermove', onMove, { passive: false });
+    window.removeEventListener('pointerup', onUp, { passive: false });
+    window.removeEventListener('pointercancel', onCancel, { passive: false });
+    window.removeEventListener('blur', onBlur);
+    drag = null;
+  };
+
+  const positionPreview = (event) => {
+    if (!drag?.preview) return;
+    drag.preview.style.left = `${event.clientX}px`;
+    drag.preview.style.top = `${event.clientY}px`;
+  };
+
+  const startPreview = () => {
+    const rect = source.getBoundingClientRect();
+    const ratio = source.naturalWidth > 0 && source.naturalHeight > 0
+      ? source.naturalWidth / source.naturalHeight
+      : 1;
+    // The source image lives in a contain box. Use the rendered content size,
+    // not the wider CSS layout box, so the lifted toy cannot squash sideways.
+    const height = Math.min(rect.height, rect.width / ratio);
+    const width = height * ratio;
+    const preview = source.cloneNode(false);
+    preview.className = 'dragged-toy';
+    preview.setAttribute('aria-hidden', 'true');
+    preview.style.width = `${width}px`;
+    preview.style.height = `${height}px`;
+    document.body.append(preview);
+    drag.preview = preview;
+  };
+
+  const onMove = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId || !state.accepting) return;
+    event.preventDefault();
+    if (!drag.moved && Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) >= MATCH_DRAG_SLOP) {
+      drag.moved = true;
+      source.classList.add('is-dragging');
+      startPreview();
+    }
+    if (!drag.moved) return;
+    positionPreview(event);
+    clearDropTarget();
+    dropTargetAt(event.clientX, event.clientY)?.classList.add('is-drop-target');
+  };
+
+  const onUp = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    event.preventDefault();
+    const target = drag.moved ? dropTargetAt(event.clientX, event.clientY) : null;
+    const choiceId = target?.dataset.choice || null;
+    finish();
+    if (choiceId) handleShadowChoice(choiceId);
+  };
+
+  const onCancel = (event) => {
+    if (drag && event.pointerId === drag.pointerId) finish();
+  };
+
+  const onBlur = () => { if (drag) finish(); };
+
+  const onDown = (event) => {
+    if (drag || !state.accepting || event.isPrimary === false || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    event.preventDefault();
+    drag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, moved: false, preview: null };
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onUp, { passive: false });
+    window.addEventListener('pointercancel', onCancel, { passive: false });
+    window.addEventListener('blur', onBlur);
+  };
+
+  source.addEventListener('pointerdown', onDown);
+  return () => {
+    source.removeEventListener('pointerdown', onDown);
+    window.removeEventListener('blur', onBlur);
+    if (drag) finish();
+    else clearDropTarget();
+  };
 }
 
 function handleShadowChoice(toyId) {
@@ -517,12 +621,14 @@ function renderSunRound() {
     <div class="target-plaque" aria-label="Target: ${escapeHtml(plan.target.label)}">
       <img class="physical-base" src="${config.assets.plaque}" alt="" />
       <span class="target-caption">MAKE THIS</span>
-      <img class="target-shadow" src="${shadowSrc(plan.toy.id)}" alt="${escapeHtml(plan.target.label)}" />
+      <img class="target-shadow" data-shadow-toy="${plan.toy.id}" src="${shadowSrc(plan.toy.id)}" alt="${escapeHtml(plan.target.label)}" />
     </div>
     ${sunSceneMarkup(plan.toy.id, true)}
   `;
   updateProgress();
   setPrompt('Move the sun until the big shadow matches the little one.', state.currentVoiceKey);
+  // The target is a contained placard reference. Its day-dependent shape
+  // uses the tuner values, while its placement stays within the placard.
   applyShadowVars(host.querySelector('.target-shadow'), plan.target.sunT, true);
   setupSunInteraction(host, { withStops: true });
   setSun(state.sunT, { check: false });
@@ -536,11 +642,11 @@ function sunSceneMarkup(toyId, includeFriend = false) {
     <div class="sun-scene">
       <div class="sun-stage">
         <div class="cast-group active-cast">
-          <img class="cast-shadow" data-shadow-live src="${shadowSrc(toyId)}" alt="" />
+          <img class="cast-shadow" data-shadow-live data-shadow-toy="${toyId}" src="${shadowSrc(toyId)}" alt="" />
           <img class="sun-toy" src="${toySrc(toyId)}" alt="${escapeHtml(toyId)} toy" />
         </div>
         ${includeFriend ? `<div class="cast-group friend-cast" aria-hidden="true">
-          <img class="cast-shadow" data-shadow-live src="${shadowSrc(friendId)}" alt="" />
+          <img class="cast-shadow" data-shadow-live data-shadow-toy="${friendId}" src="${shadowSrc(friendId)}" alt="" />
           <img class="sun-toy" src="${toySrc(friendId)}" alt="" />
         </div>` : ''}
       </div>
@@ -677,10 +783,42 @@ function applyShadowVars(element, t, preview = false) {
   const length = 0.26 + edge * (preview ? 0.72 : 0.92);
   const width = 0.82 - edge * 0.12;
   const opacity = 0.52 + edge * 0.14;
+  const tuning = shadowTuningAt(element.dataset.shadowToy, t);
+  // The tuner stores x/y as percentages of its 44% x 48% shadow frame.
+  // Every game presentation declares its own frame in CSS, so the exact
+  // same values can be applied without introducing a second set of offsets.
+  const styles = getComputedStyle(element);
+  const frameWidth = Number.parseFloat(styles.getPropertyValue('--shadow-frame-width')) || 44;
+  const frameHeight = Number.parseFloat(styles.getPropertyValue('--shadow-frame-height')) || 48;
+  const offsetScale = { x: frameWidth / 44, y: frameHeight / 48 };
   element.style.setProperty('--shadow-angle', `${angle.toFixed(2)}deg`);
   element.style.setProperty('--shadow-length', length.toFixed(3));
   element.style.setProperty('--shadow-width', width.toFixed(3));
   element.style.setProperty('--shadow-opacity', opacity.toFixed(3));
+  element.style.setProperty('--shadow-offset-x', `${(tuning.x * offsetScale.x).toFixed(2)}%`);
+  element.style.setProperty('--shadow-offset-y', `${(tuning.y * offsetScale.y).toFixed(2)}%`);
+  element.style.setProperty('--shadow-tune-angle', `${tuning.angle.toFixed(2)}deg`);
+  element.style.setProperty('--shadow-tune-width', tuning.width.toFixed(3));
+  element.style.setProperty('--shadow-tune-stretch', tuning.stretch.toFixed(3));
+  element.style.setProperty('--shadow-tune-opacity', tuning.opacity.toFixed(3));
+}
+
+function shadowTuningAt(toyId, t) {
+  const fallback = { x: 0, y: 0, angle: 0, width: 1, stretch: 1, opacity: 1 };
+  const frames = config?.shadowTuning?.animals?.[toyId];
+  const keyframes = config?.shadowTuning?.keyframes;
+  if (!frames || !Array.isArray(keyframes) || keyframes.length < 2) return fallback;
+  const time = clamp(Number(t), 0, 1);
+  let upper = keyframes.findIndex((value) => Number(value) >= time);
+  if (upper < 0) upper = keyframes.length - 1;
+  if (upper === 0) return { ...fallback, ...(frames[String(keyframes[0])] || {}) };
+  const lower = upper - 1;
+  const loTime = Number(keyframes[lower]);
+  const hiTime = Number(keyframes[upper]);
+  const amount = hiTime === loTime ? 0 : (time - loTime) / (hiTime - loTime);
+  const lo = { ...fallback, ...(frames[String(keyframes[lower])] || {}) };
+  const hi = { ...fallback, ...(frames[String(keyframes[upper])] || {}) };
+  return Object.fromEntries(Object.keys(fallback).map((key) => [key, Number(lo[key]) + (Number(hi[key]) - Number(lo[key])) * amount]));
 }
 
 function sunPoint(t) {
@@ -725,12 +863,17 @@ function renderRoundReveal(heading, voiceKey) {
     <h1 class="reveal-heading">${escapeHtml(heading)}</h1>
     <div class="reveal-tableau">
       <img class="reveal-star" src="${config.assets.star}" alt="" />
-      <img class="reveal-shadow" src="${shadowSrc(state.toyId)}" alt="" />
+      <img class="reveal-shadow" data-shadow-toy="${state.toyId}" src="${shadowSrc(state.toyId)}" alt="" />
       <img class="reveal-toy" src="${toySrc(state.toyId)}" alt="${escapeHtml(state.toyId)} toy" />
     </div>
     ${actionButtonMarkup('next-round', state.round + 1 >= state.roundsTotal ? 'See my stars' : 'Next shadow')}
     <div class="raster-burst" aria-hidden="true"></div>
   `;
+  // Confirmation must be the same shadow, at the same day position, as the
+  // presentation the player just completed. Match mode is fixed at noon;
+  // sun/show modes retain the selected sun position in state.sunT.
+  const revealTime = state.mode === 'match' ? 0.5 : state.sunT;
+  applyShadowVars(host.querySelector('.reveal-shadow'), revealTime);
   updateProgress(state.round + 1);
   setPrompt('', voiceKey);
   registerTap(host.querySelector('[data-action="next-round"]'), 'next', advanceRound, 'sparkle');
@@ -819,7 +962,7 @@ function renderShowStage() {
   registerTap(host.querySelector('[data-control="playback"]'), 'playback', () => togglePlayback(), 'tick');
   registerTap(host.querySelector('[data-control="next"]'), 'next', () => stepSun(1), 'tick');
   host.querySelectorAll('.time-shadow').forEach((shadow, index) => {
-    applyShadowVars(shadow, SHOW_STOPS[index].t, true);
+    applyShadowVars(shadow, SHOW_STOPS[index].t);
   });
   updateShowVisuals();
   nudger.arm();
@@ -830,7 +973,7 @@ function timeStopMarkup(stop, index) {
   return `<button class="time-stop" type="button" data-stop="${stop.id}" aria-label="${stop.label}">
     <img class="physical-base" src="${config.assets.roundButton}" alt="" />
     <img class="time-sun ${sunClass}" src="${config.assets.sun}" alt="" />
-    <img class="time-shadow" data-mini-stop="${stop.id}" src="${shadowSrc(state.toyId)}" alt="" />
+    <img class="time-shadow" data-mini-stop="${stop.id}" data-shadow-toy="${state.toyId}" src="${shadowSrc(state.toyId)}" alt="" />
     <img class="time-star" src="${config.assets.star}" alt="" />
     <span>${stop.label}</span>
   </button>`;

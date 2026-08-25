@@ -1,0 +1,49 @@
+{
+  "id": "garden-graphers",
+  "title": "Garden Graphers",
+  "category": "math-number-sense",
+  "path": "games/garden-graphers/",
+  "entry": "index.html",
+  "icon": "assets/hub/tiles/garden-graphers.jpg",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#5f8737",
+  "shareTitle": "Garden Graphers — Sort, Count, and Compare with Ari",
+  "description": "Join Ari in a watercolor storybook garden: classify friendly visitors, grow their picture-graph columns, count each picture, and compare which groups have the most, fewest, or the same.",
+  "learningGoals": [
+    "Classify bees, butterflies, and ladybugs by observable type",
+    "Use one-to-one correspondence to count picture-graph quantities to 6",
+    "Compare picture-graph columns as most, fewest, or the same"
+  ],
+  "interactionModel": "Choose one of three illustrated journal pages. Drag a garden visitor to its matching graph column or use tap-tap placement; tap each picture once to count a column; then tap one column or a matching pair to answer comparison prompts. Keyboard Enter and Space follow the same paths.",
+  "feedbackModel": "Every correct action changes the field journal: visitors become aligned graph stamps, counted pictures receive a painted ring, and completed pages grow a distinct flower with Ari. Gentle wobble, spoken modeling, and visual hints support retries without scores, timers, or lost progress.",
+  "uses": [
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
+    "shared/js/bgm.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/music/gentle-country-morning.mp3",
+    "shared/assets/ui/",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
+  ],
+  "modes": [
+    { "id": "sort", "title": "Sort & Stamp", "skill": "classification by observable garden visitor type" },
+    { "id": "count", "title": "Tap & Count", "skill": "one-to-one counting in a picture graph to 6" },
+    { "id": "compare", "title": "Garden Compare", "skill": "comparing picture-graph quantities as most, fewest, or the same" }
+  ],
+  "summary": "Sort garden visitors, count their picture-graph columns, and find which groups have the most, fewest, or the same.",
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original watercolor garden, specimen, field-journal, badge, and UI art produced with built-in GPT Image 2 and QLOBE Studio local image workflows. Ari is the recurring QLOBE Kids guide. See ASSETS.md for model, processing, fallback, and dialogue provenance.",
+  "characters": ["ari"]
+}

@@ -1,0 +1,251 @@
+{
+  "workflow": "gpt-image-2 masters + qwen-image-layered output=layer_2; deterministic 3x2 slicing",
+  "assets": {
+    "bee": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "visitors/bee.webp",
+      "dimensions": [
+        421,
+        456
+      ],
+      "bytes": 41630,
+      "qa": "assets/source/qa/bee-magenta.png"
+    },
+    "butterfly": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "visitors/butterfly.webp",
+      "dimensions": [
+        475,
+        455
+      ],
+      "bytes": 56712,
+      "qa": "assets/source/qa/butterfly-magenta.png"
+    },
+    "ladybug": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "visitors/ladybug.webp",
+      "dimensions": [
+        428,
+        397
+      ],
+      "bytes": 29254,
+      "qa": "assets/source/qa/ladybug-magenta.png"
+    },
+    "daisies": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "flowers/daisies.webp",
+      "dimensions": [
+        416,
+        456
+      ],
+      "bytes": 55400,
+      "qa": "assets/source/qa/daisies-magenta.png"
+    },
+    "coneflowers": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "flowers/coneflowers.webp",
+      "dimensions": [
+        449,
+        455
+      ],
+      "bytes": 54278,
+      "qa": "assets/source/qa/coneflowers-magenta.png"
+    },
+    "sunflowers": {
+      "source": "assets/source/gpt-image-2/specimen-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/specimens-sheet.png",
+      "final": "flowers/sunflowers.webp",
+      "dimensions": [
+        440,
+        453
+      ],
+      "bytes": 59022,
+      "qa": "assets/source/qa/sunflowers-magenta.png"
+    },
+    "mode-card": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/mode-card.webp",
+      "dimensions": [
+        466,
+        490
+      ],
+      "bytes": 55306,
+      "qa": "assets/source/qa/mode-card-magenta.png"
+    },
+    "prompt-banner": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/prompt-banner.webp",
+      "dimensions": [
+        518,
+        301
+      ],
+      "bytes": 48810,
+      "qa": "assets/source/qa/prompt-banner-magenta.png"
+    },
+    "action-button": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/action-button.webp",
+      "dimensions": [
+        478,
+        247
+      ],
+      "bytes": 41120,
+      "qa": "assets/source/qa/action-button-magenta.png"
+    },
+    "badge-sort": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/badge-sort.webp",
+      "dimensions": [
+        422,
+        463
+      ],
+      "bytes": 53214,
+      "qa": "assets/source/qa/badge-sort-magenta.png"
+    },
+    "badge-count": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/badge-count.webp",
+      "dimensions": [
+        403,
+        415
+      ],
+      "bytes": 45908,
+      "qa": "assets/source/qa/badge-count-magenta.png"
+    },
+    "badge-compare": {
+      "source": "assets/source/gpt-image-2/ui-carriers-sheet-source.png",
+      "layer2": "assets/source/local-api/fallback/carriers-sheet.png",
+      "final": "ui/badge-compare.webp",
+      "dimensions": [
+        409,
+        419
+      ],
+      "bytes": 52194,
+      "qa": "assets/source/qa/badge-compare-magenta.png"
+    },
+    "journal": {
+      "source": "assets/source/gpt-image-2/journal-board-source.png",
+      "layer2": "assets/source/local-api/fallback/journal.png",
+      "final": "ui/journal.webp",
+      "dimensions": [
+        1100,
+        799
+      ],
+      "bytes": 124246,
+      "qa": "assets/source/qa/journal-magenta.png"
+    },
+    "title": {
+      "source": "assets/source/gpt-image-2/title-source.png",
+      "layer2": "assets/source/local-api/fallback/title.png",
+      "final": "ui/title.webp",
+      "dimensions": [
+        1000,
+        472
+      ],
+      "bytes": 148996,
+      "qa": "assets/source/qa/title-magenta.png"
+    },
+    "key-bee": {
+      "workflow": "deterministic PIL raster composition",
+      "sources": [
+        "assets/ui/action-button.webp",
+        "assets/visitors/bee.webp"
+      ],
+      "final": "assets/ui/key-bee.webp",
+      "dimensions": [
+        420,
+        150
+      ],
+      "bytes": 23204,
+      "qa": "assets/source/qa/key-bee-magenta.png"
+    },
+    "key-butterfly": {
+      "workflow": "deterministic PIL raster composition",
+      "sources": [
+        "assets/ui/action-button.webp",
+        "assets/visitors/butterfly.webp"
+      ],
+      "final": "assets/ui/key-butterfly.webp",
+      "dimensions": [
+        420,
+        150
+      ],
+      "bytes": 24712,
+      "qa": "assets/source/qa/key-butterfly-magenta.png"
+    },
+    "key-ladybug": {
+      "workflow": "deterministic PIL raster composition",
+      "sources": [
+        "assets/ui/action-button.webp",
+        "assets/visitors/ladybug.webp"
+      ],
+      "final": "assets/ui/key-ladybug.webp",
+      "dimensions": [
+        420,
+        150
+      ],
+      "bytes": 24476,
+      "qa": "assets/source/qa/key-ladybug-magenta.png"
+    },
+    "ari-notice-watercolor": {
+      "workflow": "gpt-image-2 built-in edit + deterministic contiguous checker-matte extraction",
+      "reference": "assets/source/canonical/ari-notice-canonical.webp",
+      "source": "assets/source/gpt-image-2/ari-notice-watercolor-source.png",
+      "final": "assets/characters/ari-notice.webp",
+      "dimensions": [
+        430,
+        640
+      ],
+      "bytes": 76322,
+      "qa": "assets/source/qa/ari-notice-watercolor-magenta.png"
+    },
+    "ari-celebrate-watercolor": {
+      "workflow": "gpt-image-2 built-in edit + deterministic contiguous checker-matte extraction",
+      "reference": "assets/source/canonical/ari-celebrate-canonical.webp",
+      "source": "assets/source/gpt-image-2/ari-celebrate-watercolor-source.png",
+      "final": "assets/characters/ari-celebrate.webp",
+      "dimensions": [
+        509,
+        640
+      ],
+      "bytes": 86246,
+      "qa": "assets/source/qa/ari-celebrate-watercolor-magenta.png"
+    }
+  },
+  "jobs": [
+    {
+      "name": "specimens",
+      "status": "fallback",
+      "error": "<urlopen error [Errno 60] Operation timed out>",
+      "workflow": "local contiguous corner-matte extraction"
+    },
+    {
+      "name": "carriers",
+      "status": "fallback",
+      "error": "<urlopen error [Errno 60] Operation timed out>",
+      "workflow": "local contiguous corner-matte extraction"
+    },
+    {
+      "name": "journal",
+      "status": "fallback",
+      "error": "<urlopen error [Errno 60] Operation timed out>",
+      "workflow": "local contiguous corner-matte extraction"
+    },
+    {
+      "name": "title",
+      "status": "fallback",
+      "error": "<urlopen error [Errno 60] Operation timed out>",
+      "workflow": "local contiguous corner-matte extraction"
+    }
+  ]
+}
