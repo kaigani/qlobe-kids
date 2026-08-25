@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#073f4c" />
+  <title>Tiny Sentence Workshop — Read It, Build It, See It</title>
+  <meta name="description" content="Press tiny clay word stamps into short decodable sentences, read them from left to right, and wake up the matching miniature scene." />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tiny Sentence Workshop" />
+  <meta property="og:title" content="Tiny Sentence Workshop — Read It, Build It, See It" />
+  <meta property="og:description" content="Press tiny clay word stamps into short decodable sentences, read them from left to right, and wake up the matching miniature scene." />
+  <meta property="og:url" content="https://qlo.be/games/tiny-sentence-workshop/" />
+  <meta property="og:image" content="https://qlo.be/games/tiny-sentence-workshop/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A handcrafted clay sentence workshop with three playful reading stations on a warm workbench." />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tiny Sentence Workshop — Read It, Build It, See It" />
+  <meta name="twitter:description" content="Press tiny clay word stamps into short decodable sentences, read them from left to right, and wake up the matching miniature scene." />
+  <meta name="twitter:image" content="https://qlo.be/games/tiny-sentence-workshop/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <main id="game" data-game-id="tiny-sentence-workshop">
+    <h1 class="visually-hidden">Tiny Sentence Workshop</h1>
+
+    <section id="splash" class="qk-screen" data-qk-screen="splash" aria-label="Choose a sentence workshop">
+      <img class="workshop-plate splash-ambient" src="./assets/backgrounds/workshop.webp" alt="">
+      <img class="workshop-plate splash-plate" src="./assets/backgrounds/splash.webp" alt="A handcrafted clay sentence workshop with three activity stations">
+      <a class="clay-link splash-home" href="../../index.html" data-target="hub" data-role="navigation" aria-label="Back to QLOBE Kids">
+        <img src="./assets/ui/label-plaque.webp" alt=""><span>QLOBE</span>
+      </a>
+      <div id="mode-list" class="mode-list" role="group" aria-label="Choose a workshop activity"></div>
+      <p class="splash-hint" aria-hidden="true">Pick a tool and make a tiny sentence!</p>
+    </section>
+
+    <section id="play" class="qk-screen" data-qk-screen="play" aria-label="Sentence workbench" hidden>
+      <img class="workshop-plate" src="./assets/backgrounds/workshop.webp" alt="">
+      <header id="play-hud" class="play-hud">
+        <button id="play-back" class="clay-button hud-button" type="button" data-target="back" data-role="navigation" aria-label="Back to the workshop menu">
+          <img src="./assets/ui/label-plaque.webp" alt=""><span>Workshop</span>
+        </button>
+        <div id="progress" class="clay-progress" role="img" aria-label="Round 1 of 3">
+          <img src="./assets/ui/progress-pebbles.webp" alt=""><span id="progress-stars" aria-hidden="true"></span>
+        </div>
+        <button id="play-sound" class="clay-button hud-button" type="button" data-target="sound" data-role="replay" aria-label="Hear the instruction again">
+          <img src="./assets/ui/action-slab.webp" alt=""><span>Hear it</span>
+        </button>
+      </header>
+
+      <div id="prompt-plaque" class="prompt-plaque" aria-hidden="true">
+        <img src="./assets/ui/label-plaque.webp" alt=""><span id="play-prompt"></span>
+      </div>
+      <div id="workshop" class="workshop" data-mode="read-strip">
+        <div id="scene-host" class="scene-host" aria-live="polite"></div>
+        <div id="sentence-strip" class="sentence-strip"></div>
+        <div id="parts-tray" class="parts-tray"></div>
+        <div id="scene-choices" class="scene-choices"></div>
+      </div>
+      <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+      <div id="drag-layer" class="drag-layer" aria-hidden="true"></div>
+    </section>
+
+    <section id="end" class="qk-screen" data-qk-screen="end" aria-label="Workshop shelf complete" hidden>
+      <img class="workshop-plate" src="./assets/backgrounds/workshop.webp" alt="">
+      <button id="end-back" class="clay-button end-back" type="button" data-target="end-back" data-role="navigation" aria-label="Back to the workshop menu">
+        <img src="./assets/ui/label-plaque.webp" alt=""><span>Workshop</span>
+      </button>
+      <div class="end-card">
+        <div class="end-heading">
+          <img src="./assets/ui/label-plaque.webp" alt=""><span>Three tiny sentences!</span>
+        </div>
+        <div id="reward" class="reward" aria-label="Three completed sentences"></div>
+        <button id="again" class="clay-button again-button" type="button" data-target="again" data-role="again">
+          <img src="./assets/ui/action-slab.webp" alt=""><span>Make more</span>
+        </button>
+      </div>
+      <p id="end-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

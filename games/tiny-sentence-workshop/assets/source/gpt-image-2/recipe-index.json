@@ -1,0 +1,59 @@
+{
+  "format": "qlobe-imagegen-recipe-set",
+  "formatVersion": 1,
+  "generator": "Codex built-in imagegen (GPT Image 2 workflow)",
+  "created": "2026-08-24",
+  "artDirection": "Claymation",
+  "license": "CC-BY-4.0",
+  "creator": "QLOBE Kids with OpenAI imagegen",
+  "recipes": [
+    {
+      "id": "visual-system-master",
+      "mode": "generate",
+      "useCase": "ui-mockup",
+      "output": "visual-system-master.png",
+      "prompt": "Use case: ui-mockup\nAsset type: production visual-system master for a 4:3 landscape tablet game menu\nPrimary request: Design a premium preschool tablet game screen for Tiny Sentence Workshop, inspired by the supplied QLOBE concept rhythm of three big choices leading to a sentence-making payoff, but fully reimagined as a handcrafted stop-motion clay workshop.\nScene/backdrop: a warm, magical miniature clay workshop viewed straight-on, with a deep teal clay wall, a honey-colored workbench, tiny shelves of clay tools and colorful word-stamp blanks, and calm open center space.\nSubject: three very large, instantly understandable tactile clay activity stations arranged across the workbench: a chunky magnifying glass hovering over three little word stamps for tap-and-read; a friendly squat clay printing press with shuffled word stamps for sentence building; and a clay picture-viewer with three miniature scene cards and a detective lens for comprehension. Each station is a complete sculpted object cluster with a clear silhouette and generous finger-sized spacing.\nStyle/medium: true handcrafted polymer-clay claymation photographed as a stop-motion set; visible fingerprints, sculpted seams, tiny hand-shaped irregularities, matte-to-satin plasticine, rounded safe forms, soft contact shadows, shallow miniature-set depth. Absolutely not felt, fabric, paper, vector, flat illustration, emoji, or generic glossy 3D.\nComposition/framing: full-bleed 4:3 tablet screen, no device frame; safe empty corners for platform HUD; title centered high; three stations dominate the lower two-thirds; uncluttered and readable within five seconds.\nLighting/mood: warm studio key light from upper left, soft amber practical glow, cheerful and inviting, high tactile contrast.\nColor palette: deep teal, warm cream, coral, mustard yellow, grape purple, and small aqua accents; coherent across every object.\nMaterials/textures: fingerprinted modeling clay, slightly uneven rolled edges, pressed letterless stamp faces, carved grooves, subtle dusting on the workbench.\nText (verbatim): Tiny Sentence Workshop\nConstraints: render the title exactly once, spelled exactly, as a chunky handcrafted clay graphic lockup; no other text, letters, numbers, logos, watermarks, stars-as-ratings, score counters, generic white rounded UI cards, or CSS-like gradient panels. No characters are required. Every visible primary control must read as authored clay artwork rather than a flat interface element.\nAvoid: felt stitching, cloth fibers, plastic toy sheen, metallic sci-fi machinery, tiny controls, clutter, ambiguous icons, baked functional labels, malformed title letters."
+    },
+    {
+      "id": "workshop-background-master",
+      "mode": "precise-object-edit",
+      "useCase": "stylized-concept",
+      "input": "visual-system-master.png",
+      "output": "workshop-background-master.png",
+      "prompt": "Keep the exact same miniature clay workshop identity, camera, 4:3 framing, palette, lighting direction, wall texture, window, lamp, shelves, plants, wooden-clay workbench, and handcrafted material language. Remove only the large Tiny Sentence Workshop title plaque and all three activity stations from the foreground. Reconstruct the covered areas as a calm uninterrupted deep-teal clay wall and one broad empty honey-colored workbench surface. Preserve the exact handcrafted polymer-clay look, upper-left studio light, safe HUD corners, straight-on view, and low-detail interaction zone. No new focal objects, title, machinery, magnifying glass, picture viewer, cards, word stamps, characters, text, letters, numbers, logos, watermark, UI, border, or device frame."
+    },
+    {
+      "id": "ui-kit-master",
+      "mode": "generate-with-reference",
+      "useCase": "stylized-concept",
+      "input": "workshop-background-master.png",
+      "output": "ui-kit-master.png",
+      "grid": { "columns": 4, "rows": 3 },
+      "prompt": "Create an exact 4-column by 3-row production contact sheet of twelve isolated clay game-interface objects on uniform dark charcoal #242127, matching the accepted workshop's polymer-clay texture, fingerprint scale, palette, and upper-left light. In reading order: coral-rim blank word stamp; teal-rim blank word stamp; mustard-rim blank word stamp; grape-rim blank word stamp; empty teal-and-cream recessed word socket; long blank cream sentence strip; blank grape-and-cream label plaque; blank coral-and-cream action slab; empty portrait grape-and-cream scene-card frame; teal reward shelf with three circular recesses; golden star sticker; three progress pebbles with two cream and one golden-star token. Exact equal grid, isolated complete objects, no text, letters, numbers, faces, characters, dividers, borders, extra objects, or watermark."
+    },
+    {
+      "id": "scenes-cat-dog-master",
+      "mode": "generate-with-reference",
+      "useCase": "illustration-story",
+      "output": "scenes-cat-dog-master.png",
+      "grid": { "columns": 2, "rows": 2 },
+      "prompt": "Exact 2 by 2 Claymation comprehension sheet, matching the accepted workshop and UI kit. Reading order: the same coral-orange cat asleep on a grape cushion; that cat clearly airborne hopping over one cream pebble; a teal-blue dog asleep on the same cushion; that dog clearly digging with both front paws in mustard clay soil. Deep-teal wall, honey work surface, wide charcoal gutters, identical paired identities, full readable poses, no text or extra props."
+    },
+    {
+      "id": "scenes-pig-hen-master",
+      "mode": "generate-with-reference",
+      "useCase": "illustration-story",
+      "output": "scenes-pig-hen-master.png",
+      "grid": { "columns": 2, "rows": 2 },
+      "prompt": "Exact 2 by 2 Claymation comprehension sheet matching the accepted scene family. Reading order: coral-pink pig clearly jogging; same pig calmly sitting; mustard-yellow hen sitting low on a grape nest cushion; same hen clearly running with separated feet. Deep-teal wall, honey work surface, wide charcoal gutters, identical paired identities, full readable poses, no text or extra props."
+    },
+    {
+      "id": "scenes-fox-bug-master",
+      "mode": "precise-object-edit",
+      "useCase": "illustration-story",
+      "output": "scenes-fox-bug-master.png",
+      "grid": { "columns": 2, "rows": 2 },
+      "prompt": "Corrected exact 2 by 2 Claymation comprehension sheet. Reading order: unmistakable orange-red fox with cream muzzle/chest and cream-tipped bushy tail clearly inside an open coral box; same fox clearly sitting on top of a cocoa log; friendly aqua bug clearly on a grape rug; same bug clearly inside a warm-cream handled mug. Preserve the accepted deep-teal wall, honey surface, wide charcoal gutters, paired identities, spatial clarity, and fingerprinted material. No text, extra props, or ambiguity. The first generation was rejected because its top-row animal read as a cat; this accepted edit changes only that identity to fox."
+    }
+  ]
+}

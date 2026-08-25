@@ -1,0 +1,548 @@
+{
+  "format": "qlobe-local-image-receipt-set",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "preferredOutput": "layer_2",
+  "fallbackOutput": "layer_1",
+  "layers": 2,
+  "seedLadder": [
+    42,
+    1337,
+    9001,
+    7
+  ],
+  "prompt": "Background layer: plain flat dark charcoal background. Top layer: the exact same clay interface object from the image, on a transparent background. Keep it identical to the input image.",
+  "createdAt": "2026-08-24T23:57:44.738756+00:00",
+  "items": [
+    {
+      "name": "word-tile-coral",
+      "source": "../../deterministic/ui-cells/word-tile-coral.png",
+      "layerOutput": "word-tile-coral-seed-42-layer-2.png",
+      "runtime": "../../../ui/word-tile-coral.webp",
+      "acceptedSeed": 42,
+      "sourceSha256": "c479f80e6db35368f540e08ca130b08694d0592a07564ecfcb6eb6b4522a6d5c",
+      "layerSha256": "66bb8201c087226ce4bf6c188e4ad3efab20d74fc4ba68619d4e1cfe0e6eef80",
+      "runtimeSha256": "466d103eff9a4e31b61a4692826e119aa331444bb432b9e4983d3fc71ee5d142",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.5526,
+        "visibleRatio": 0.4365,
+        "sourceBbox": [
+          250,
+          228,
+          940,
+          931
+        ]
+      },
+      "attempts": [],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "acceptedOutput": "layer_2"
+    },
+    {
+      "name": "word-tile-teal",
+      "source": "../../deterministic/ui-cells/word-tile-teal.png",
+      "layerOutput": "word-tile-teal-seed-42-layer-2.png",
+      "runtime": "../../../ui/word-tile-teal.webp",
+      "acceptedSeed": 42,
+      "sourceSha256": "fde1e5072194a0f27fbb1f38f54ce395ab671d8a0b6eb9f4544238e11f6e5eef",
+      "layerSha256": "f06f6cad719b8093414a4d871429510bd693cd42a2f313e445121bd339c07092",
+      "runtimeSha256": "3aa015034eaca0a1f400ecb7d3ebdd8600cd23748e0a13c1ee93e2483f63cc1d",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.5502,
+        "visibleRatio": 0.4389,
+        "sourceBbox": [
+          189,
+          228,
+          882,
+          930
+        ]
+      },
+      "attempts": [],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "acceptedOutput": "layer_2"
+    },
+    {
+      "name": "word-tile-mustard",
+      "source": "../../deterministic/ui-cells/word-tile-mustard.png",
+      "layerOutput": "word-tile-mustard-seed-42-layer-2.png",
+      "runtime": "../../../ui/word-tile-mustard.webp",
+      "acceptedSeed": 42,
+      "sourceSha256": "8ade426c8e9f6d460ef46c0180288022093e0df2a998899efcb3b307e0bc3f37",
+      "layerSha256": "1740a221bb3b09a4f45a34b868cc84c38d98e042ce34d2109eba5593c54966f7",
+      "runtimeSha256": "ff3243cc314b5a1a0d8f5c01eda363239b5a418266bb32e0cab6f69942e17b79",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.555,
+        "visibleRatio": 0.435,
+        "sourceBbox": [
+          144,
+          230,
+          835,
+          929
+        ]
+      },
+      "attempts": [],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "acceptedOutput": "layer_2"
+    },
+    {
+      "name": "word-tile-grape",
+      "source": "../../deterministic/ui-cells/word-tile-grape.png",
+      "layerOutput": "word-tile-grape-seed-42-layer-2.png",
+      "runtime": "../../../ui/word-tile-grape.webp",
+      "acceptedSeed": 42,
+      "sourceSha256": "f6f09c45480f9b9819b8ae24340687c0f153523a54a548ab2a1c70f321919dbd",
+      "layerSha256": "d14ad8f5db8884d3874a30984a8d7d063f0721ac1ca2d765c544571c5bbd0bfa",
+      "runtimeSha256": "929e9c15d0ba2019eabf68e4e50bf0f137a8ad278c7f1323ec5471a33bb425b9",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.5573,
+        "visibleRatio": 0.4277,
+        "sourceBbox": [
+          96,
+          236,
+          785,
+          932
+        ]
+      },
+      "attempts": [],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "acceptedOutput": "layer_2"
+    },
+    {
+      "name": "word-socket",
+      "source": "../../deterministic/ui-cells/word-socket.png",
+      "layerOutput": "word-socket-seed-42-layer-2.png",
+      "runtime": "../../../ui/word-socket.webp",
+      "acceptedSeed": 42,
+      "sourceSha256": "37941ab9bac265d37e4863824894903f4594ae17bcfba85b860de3aab9466068",
+      "layerSha256": "3cee638fac97233b5170ff4552e4e3fdde49ad9e8f23fb590765d7dfbd10ee92",
+      "runtimeSha256": "3137c617b250210bf3051386f48fab00335449f06f4d11ae5b5f115030f6436d",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.6707,
+        "visibleRatio": 0.3138,
+        "sourceBbox": [
+          226,
+          208,
+          820,
+          817
+        ]
+      },
+      "attempts": [],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "acceptedOutput": "layer_2"
+    },
+    {
+      "name": "sentence-strip",
+      "source": "../../deterministic/ui-cells/sentence-strip.png",
+      "layerOutput": "sentence-strip-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/sentence-strip.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "51cecac215fe6b527dfe669d1495eb2ffdbb2407bd18b48cf5e4fb8a38f8bc8e",
+      "layerSha256": "550bcc63b02371ea0f0a0ce837931054d71d35b9ec3f7a028fa8bafca5188877",
+      "runtimeSha256": "60b6da644d2bb2584d216f0f2ac57843fc95846cd7e7a2514091ebbe661adbc2",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.5101,
+        "visibleRatio": 0.4683,
+        "sourceBbox": [
+          35,
+          38,
+          409,
+          151
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          32,
+          38
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "reviewed deterministic fallback requested for remaining flat-ground UI"
+      },
+      "attempts": [],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "superseded": {
+        "reason": "source crop corrected after full-size alpha review",
+        "sourceSha256": "721f369e7739444c41dff34363754986692846ab12fa4496a4dd22f948255fe4",
+        "layerOutput": "sentence-strip-seed-42-layer-2.png",
+        "acceptedOutput": "layer_2",
+        "acceptedSeed": 42
+      }
+    },
+    {
+      "name": "label-plaque",
+      "source": "../../deterministic/ui-cells/label-plaque.png",
+      "layerOutput": "label-plaque-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/label-plaque.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "befc1e39c6369906ecb7a383c3f349a00b1908eb80fa3b2638e5ecfa92ce2eab",
+      "layerSha256": "12f41da3f3e62383aa260caf53e24da701d0619f3ea032a9729ab22b73faf729",
+      "runtimeSha256": "d88d19421cfc890df49a37915121f6b124ecee775fcc7e5a30dd5e4a202eeb22",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.6084,
+        "visibleRatio": 0.3777,
+        "sourceBbox": [
+          22,
+          95,
+          317,
+          258
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          37
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "both Layered roles rejected by meaningful-alpha gate"
+      },
+      "attempts": [
+        {
+          "seed": 1337,
+          "output": "layer_1",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-1337-layer-1.png"
+        },
+        {
+          "seed": 1337,
+          "output": "layer_2",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-1337-layer-2.png"
+        },
+        {
+          "seed": 42,
+          "output": "layer_1",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-42-layer-1.png"
+        },
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-42-layer-2.png"
+        },
+        {
+          "seed": 7,
+          "output": "layer_2",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-7-layer-2.png"
+        },
+        {
+          "seed": 9001,
+          "output": "layer_2",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "label-plaque-seed-9001-layer-2.png"
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      }
+    },
+    {
+      "name": "action-slab",
+      "source": "../../deterministic/ui-cells/action-slab.png",
+      "layerOutput": "action-slab-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/action-slab.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "5606324a50a564649313606953e8949ad27dc8344388d33403b10242a7853ecf",
+      "layerSha256": "c16524ec73494988411652ec4b7be244fb4f3a7195d93dccf5e2f5a582435d09",
+      "runtimeSha256": "200e3c340ac6fa49a8f229ca0da9cf80dfea8cba6fb379b717a3c41cadc1a513",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.6158,
+        "visibleRatio": 0.3706,
+        "sourceBbox": [
+          5,
+          97,
+          297,
+          260
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          38
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "both Layered roles rejected by meaningful-alpha gate"
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_1",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "action-slab-seed-42-layer-1.png"
+        },
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "accepted": false,
+          "reason": "preserved output rejected by meaningful-alpha gate",
+          "layerOutput": "action-slab-seed-42-layer-2.png"
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      }
+    },
+    {
+      "name": "scene-card-frame",
+      "source": "../../deterministic/ui-cells/scene-card-frame.png",
+      "layerOutput": "scene-card-frame-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/scene-card-frame.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "361c84c5c62695da47b6e7bd58fc8c941d4453a206cb53ce9a3fc6dc6eaa2863",
+      "layerSha256": "e1d62c31b46916cc8eb92e63e5b7e8cbb4ced8ce294219c944b0090255f987ee",
+      "runtimeSha256": "617c35c642d26b3d7c4a0bc94924b7448082c4604dab3fc33b4518ed0dac1331",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.4993,
+        "visibleRatio": 0.4812,
+        "sourceBbox": [
+          37,
+          37,
+          226,
+          267
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          38
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "reviewed deterministic fallback requested for remaining flat-ground UI"
+      },
+      "attempts": [],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "superseded": {
+        "reason": "source crop corrected after full-size alpha review",
+        "sourceSha256": "983e610b924ba7aefc60014b0cbe3b837e0a3d5398f486d8f4e8831268820d5d",
+        "layerOutput": "scene-card-frame-keyed-fallback.png",
+        "acceptedOutput": "deterministic-contiguous-ground-key",
+        "acceptedSeed": null
+      }
+    },
+    {
+      "name": "reward-shelf",
+      "source": "../../deterministic/ui-cells/reward-shelf.png",
+      "layerOutput": "reward-shelf-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/reward-shelf.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "d327345fed698e6888655dcbeb7380cec0c55b070728b5fa2ad7cfb7b051d8c4",
+      "layerSha256": "78b1c5361be86876cef77c858c17b69019014926aaaafacfd08033c734f23daf",
+      "runtimeSha256": "a1ec935d20e594f131621908da5105f963d4de582d2a12abb7e1b24b602cc46e",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.5324,
+        "visibleRatio": 0.4476,
+        "sourceBbox": [
+          38,
+          39,
+          370,
+          169
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          37
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "reviewed deterministic fallback requested for remaining flat-ground UI"
+      },
+      "attempts": [],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "superseded": {
+        "reason": "source crop corrected after full-size alpha review",
+        "sourceSha256": "70c337a4e8f8d682b68c0ec6ae6ee9f554776eaea10db0ad36a59804388ff5de",
+        "layerOutput": "reward-shelf-keyed-fallback.png",
+        "acceptedOutput": "deterministic-contiguous-ground-key",
+        "acceptedSeed": null
+      }
+    },
+    {
+      "name": "golden-star",
+      "source": "../../deterministic/ui-cells/golden-star.png",
+      "layerOutput": "golden-star-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/golden-star.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "e99686fb313725a5a5669c4de5f7ed602a2f5a566351491a87afb3709decee4f",
+      "layerSha256": "c2d483fa2df261440e5dfb8b94fea208a74fb8f84204048337ebc09461f548ae",
+      "runtimeSha256": "f488ed0c36ebfb03b17d82550f2333e1220636cd950ad3c08978d8232844d2cf",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.7028,
+        "visibleRatio": 0.2814,
+        "sourceBbox": [
+          43,
+          38,
+          223,
+          214
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          38
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "reviewed deterministic fallback requested for remaining flat-ground UI"
+      },
+      "attempts": [],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "superseded": {
+        "reason": "source crop corrected after full-size alpha review",
+        "sourceSha256": "a855332ee4f887d1b8d120f2854b35eefd45bf04c9396c1f032537a5fea14621",
+        "layerOutput": "golden-star-keyed-fallback.png",
+        "acceptedOutput": "deterministic-contiguous-ground-key",
+        "acceptedSeed": null
+      }
+    },
+    {
+      "name": "progress-pebbles",
+      "source": "../../deterministic/ui-cells/progress-pebbles.png",
+      "layerOutput": "progress-pebbles-keyed-fallback.png",
+      "acceptedOutput": "deterministic-contiguous-ground-key",
+      "workflowOverride": "deterministic fallback",
+      "runtime": "../../../ui/progress-pebbles.webp",
+      "acceptedSeed": null,
+      "sourceSha256": "3227b859f55d93ce5e24da1fd867f0d2fbb8feffdb27606c7e5f2d23d7ac00bb",
+      "layerSha256": "07ff9c2c6664712f9b865da0602f244da61c345f48e022eb33b5abde26dae632",
+      "runtimeSha256": "619cb54033d68f9fb1e51f4514b5acb710211b5d79ab46b60934c38869ade6bf",
+      "alpha": {
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "transparentRatio": 0.7012,
+        "visibleRatio": 0.2758,
+        "sourceBbox": [
+          40,
+          37,
+          352,
+          130
+        ]
+      },
+      "fallback": {
+        "sampledGround": [
+          34,
+          33,
+          38
+        ],
+        "distanceThreshold": 80,
+        "method": "edge-connected RGB-distance key",
+        "reason": "reviewed deterministic fallback requested for remaining flat-ground UI"
+      },
+      "attempts": [],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "superseded": {
+        "reason": "source crop corrected after full-size alpha review",
+        "sourceSha256": "3a7af61b39069699e8f4ce861ffc9587758adfb5d009ffde6ee4e2d5c3bbccad",
+        "layerOutput": "progress-pebbles-keyed-fallback.png",
+        "acceptedOutput": "deterministic-contiguous-ground-key",
+        "acceptedSeed": null
+      }
+    }
+  ]
+}

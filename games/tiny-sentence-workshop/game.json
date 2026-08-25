@@ -1,0 +1,45 @@
+{
+  "id": "tiny-sentence-workshop",
+  "title": "Tiny Sentence Workshop",
+  "category": "reading-phonics",
+  "path": "games/tiny-sentence-workshop/",
+  "icon": "assets/backgrounds/splash.webp",
+  "entry": "index.html",
+  "age": { "min": 4, "max": 6 },
+  "status": "beta",
+  "accent": "#0b6974",
+  "shareTitle": "Tiny Sentence Workshop — Read It, Build It, See It",
+  "description": "Press tiny clay word stamps into short decodable sentences, read them from left to right, and wake up the matching miniature scene.",
+  "learningGoals": [
+    "Track and decode controlled short-vowel sentences from left to right",
+    "Reconstruct a short sentence in meaningful word order",
+    "Match a printed sentence to its literal pictured meaning"
+  ],
+  "interactionModel": "custom DOM clay workshop with sequential word taps, tap-or-drag sentence assembly, and three-way authored scene choice across three-round sessions",
+  "feedbackModel": "Every accepted word speaks and presses into place; mistakes wobble gently and preserve progress; each complete strip reads aloud and wakes its clay scene; three strips fill a reward shelf.",
+  "uses": [
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3"
+  ],
+  "modes": [
+    { "id": "read-strip", "title": "Tap & Read", "skill": "left-to-right print tracking and decoding" },
+    { "id": "build-strip", "title": "Build the Strip", "skill": "sentence word order" },
+    { "id": "scene-check", "title": "Scene Detective", "skill": "literal sentence comprehension" }
+  ],
+  "privacy": { "recording": "none", "storage": "none", "uploads": false, "exports": false },
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; claymation production art made with GPT Image 2 and approved local Qwen workflows; platform teacher narration made with Qwen voice clone and Whisper QA. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": null
+}
