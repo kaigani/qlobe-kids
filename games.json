@@ -3042,7 +3042,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "live",
       "accent": "#d17735",
       "modes": [
         {
@@ -3484,13 +3484,28 @@
       "category": "math-number-sense",
       "path": "games/garden-graphers/",
       "icon": "assets/hub/tiles/garden-graphers.jpg",
-      "age": { "min": 5, "max": 6 },
+      "age": {
+        "min": 5,
+        "max": 6
+      },
       "status": "beta",
       "accent": "#5f8737",
       "modes": [
-        { "id": "sort", "title": "Sort & Stamp", "skill": "classification by observable garden visitor type" },
-        { "id": "count", "title": "Tap & Count", "skill": "one-to-one counting in a picture graph to 6" },
-        { "id": "compare", "title": "Garden Compare", "skill": "comparing picture-graph quantities as most, fewest, or the same" }
+        {
+          "id": "sort",
+          "title": "Sort & Stamp",
+          "skill": "classification by observable garden visitor type"
+        },
+        {
+          "id": "count",
+          "title": "Tap & Count",
+          "skill": "one-to-one counting in a picture graph to 6"
+        },
+        {
+          "id": "compare",
+          "title": "Garden Compare",
+          "skill": "comparing picture-graph quantities as most, fewest, or the same"
+        }
       ],
       "summary": "Sort garden visitors, count their picture-graph columns, and find which groups have the most, fewest, or the same."
     }
