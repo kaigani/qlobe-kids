@@ -1,0 +1,42 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 1337,
+  "selectedOutput": "layer_2",
+  "source": "games/post-office-letters/assets/source/gpt-image-2/stamp-rainbow.png",
+  "qa": {
+    "width": 1024,
+    "height": 1024,
+    "transparentPct": 77.585,
+    "opaquePct": 21.404
+  },
+  "prompt": "Bottom layer: only the perfectly flat dark charcoal background.\nTop layer: the complete single rainbow postage stamp prop, preserving its shape, colors, outline, and details exactly, isolated on genuine transparency. Keep foreground identical; do not redraw, crop, rearrange, add, remove, or relight.",
+  "finalize": {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 77.6,
+      "opaquePct": 20.672,
+      "partialPct": 1.728
+    },
+    "bbox": [
+      202,
+      276,
+      817,
+      767
+    ],
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "finalSize": [
+      647,
+      523
+    ],
+    "alphaFloor": 8
+  },
+  "output": "games/post-office-letters/assets/props/stamp-rainbow.webp",
+  "qaMagenta": "games/post-office-letters/assets/production/qa-magenta/stamp-rainbow-qa-magenta.png"
+}

@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/post-office-letters/assets/source/gpt-image-2/title.png",
+  "qa": {
+    "width": 1024,
+    "height": 680,
+    "transparentPct": 43.553,
+    "opaquePct": 55.729
+  },
+  "prompt": "Bottom layer: only the baked checkerboard/charcoal production background, with no foreground.\nTop layer: the complete post office letters title lettering and all painted title ornaments, preserving every letter exactly, isolated on genuine transparency. Keep foreground identical; do not redraw, crop, rearrange, add, remove, or relight.",
+  "finalize": {
+    "pass": true,
+    "reason": null,
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "alpha": {
+      "transparentPct": 43.561,
+      "opaquePct": 52.538,
+      "partialPct": 3.9
+    },
+    "bbox": [
+      20,
+      70,
+      984,
+      577
+    ],
+    "sourceSize": [
+      1024,
+      680
+    ],
+    "finalSize": [
+      996,
+      539
+    ],
+    "alphaFloor": 8
+  },
+  "output": "games/post-office-letters/assets/ui/title.webp",
+  "qaMagenta": "games/post-office-letters/assets/production/qa-magenta/title-qa-magenta.png"
+}

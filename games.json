@@ -1070,6 +1070,50 @@
       "summary": "Copy one short word or phrase."
     },
     {
+      "id": "post-office-letters",
+      "title": "Post Office Letters",
+      "category": "writing-fine-motor",
+      "path": "games/post-office-letters/",
+      "icon": "assets/hub/tiles/post-office-letters.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#e8545d",
+      "uses": [
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/characters/maya/portrait.png",
+        "shared/characters/leo/portrait.png",
+        "shared/characters/nia/portrait.png",
+        "shared/characters/sam/portrait.png",
+        "shared/characters/ravi/portrait.png",
+        "shared/assets/music/mug-and-sunbeam.mp3"
+      ],
+      "modes": [
+        {
+          "id": "mail-shift",
+          "title": "Mail Shift",
+          "skill": "use lowercase names to send and collect functional mail"
+        }
+      ],
+      "summary": "Write lowercase names on real letters, choose picture stamps, send the mail, and match each envelope to its pickup customer."
+    },
+    {
       "id": "number-sense-kitchen",
       "title": "Number Sense Kitchen",
       "category": "math-number-sense",

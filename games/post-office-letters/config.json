@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "id": "post-office-letters",
+  "title": "Post Office Letters",
+  "roundsPerShift": 3,
+  "theme": {
+    "canonicalWorld": "Kawaii",
+    "modifier": "storybook gouache and colored-pencil texture",
+    "accent": "#e8545d",
+    "ink": "#54332f",
+    "cream": "#fff3d6"
+  },
+  "assets": {
+    "background": "./assets/backgrounds/post-office.webp",
+    "title": "./assets/ui/title.webp",
+    "envelope": "./assets/props/envelope.webp",
+    "music": "../../shared/assets/music/mug-and-sunbeam.mp3",
+    "stamps": [
+      { "id": "heart", "label": "Smiling heart stamp", "src": "./assets/props/stamp-heart.webp" },
+      { "id": "moon", "label": "Smiling moon stamp", "src": "./assets/props/stamp-moon.webp" },
+      { "id": "rainbow", "label": "Smiling rainbow stamp", "src": "./assets/props/stamp-rainbow.webp" }
+    ]
+  },
+  "visitors": [
+    {
+      "id": "maya",
+      "name": "Maya",
+      "print": "maya",
+      "portrait": "../../shared/characters/maya/portrait.png",
+      "alt": "Maya, with warm brown skin, curly dark hair, and a red bow",
+      "accent": "#ee6376"
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "print": "leo",
+      "portrait": "../../shared/characters/leo/portrait.png",
+      "alt": "Leo, with light skin, ginger hair, freckles, and a green shirt",
+      "accent": "#55a76f"
+    },
+    {
+      "id": "nia",
+      "name": "Nia",
+      "print": "nia",
+      "portrait": "../../shared/characters/nia/portrait.png",
+      "alt": "Nia, with dark skin, braided hair, glasses, and purple overalls",
+      "accent": "#8f6dc6"
+    },
+    {
+      "id": "sam",
+      "name": "Sam",
+      "print": "sam",
+      "portrait": "../../shared/characters/sam/portrait.png",
+      "alt": "Sam, with tan skin, spiky black hair, and a blue hoodie",
+      "accent": "#55a6d7"
+    },
+    {
+      "id": "ravi",
+      "name": "Ravi",
+      "print": "ravi",
+      "portrait": "../../shared/characters/ravi/portrait.png",
+      "alt": "Ravi, with brown skin, short curly hair, and a mustard star shirt",
+      "accent": "#efa93e"
+    }
+  ],
+  "routes": [
+    { "id": "maya-leo", "sender": "maya", "recipient": "leo", "arrivalVoice": "arrival-maya-leo", "pickupVoice": "pickup-leo" },
+    { "id": "leo-nia", "sender": "leo", "recipient": "nia", "arrivalVoice": "arrival-leo-nia", "pickupVoice": "pickup-nia" },
+    { "id": "nia-sam", "sender": "nia", "recipient": "sam", "arrivalVoice": "arrival-nia-sam", "pickupVoice": "pickup-sam" },
+    { "id": "sam-ravi", "sender": "sam", "recipient": "ravi", "arrivalVoice": "arrival-sam-ravi", "pickupVoice": "pickup-ravi" },
+    { "id": "ravi-maya", "sender": "ravi", "recipient": "maya", "arrivalVoice": "arrival-ravi-maya", "pickupVoice": "pickup-maya" }
+  ],
+  "letters": {
+    "a": {
+      "voiceKey": "letter-a",
+      "strokes": [
+        [[0.65,0.37],[0.58,0.27],[0.43,0.23],[0.30,0.30],[0.23,0.45],[0.23,0.62],[0.30,0.77],[0.43,0.83],[0.58,0.79],[0.67,0.66],[0.67,0.42]],
+        [[0.68,0.34],[0.68,0.48],[0.68,0.64],[0.68,0.82]]
+      ]
+    },
+    "e": {
+      "voiceKey": "letter-e",
+      "strokes": [
+        [[0.72,0.51],[0.57,0.51],[0.41,0.51],[0.27,0.50],[0.30,0.38],[0.40,0.28],[0.54,0.24],[0.68,0.29],[0.76,0.40],[0.74,0.54],[0.65,0.65],[0.51,0.68],[0.36,0.64],[0.29,0.71],[0.37,0.80],[0.51,0.84],[0.66,0.81],[0.77,0.74]]
+      ]
+    },
+    "i": {
+      "voiceKey": "letter-i",
+      "strokes": [
+        [[0.50,0.35],[0.50,0.49],[0.50,0.66],[0.50,0.82]],
+        [[0.50,0.16],[0.50,0.20]]
+      ]
+    },
+    "l": {
+      "voiceKey": "letter-l",
+      "strokes": [
+        [[0.50,0.13],[0.50,0.28],[0.50,0.46],[0.50,0.64],[0.50,0.82]]
+      ]
+    },
+    "m": {
+      "voiceKey": "letter-m",
+      "strokes": [
+        [[0.18,0.34],[0.18,0.50],[0.18,0.66],[0.18,0.82]],
+        [[0.19,0.52],[0.27,0.38],[0.38,0.34],[0.48,0.41],[0.51,0.55],[0.51,0.70],[0.51,0.82]],
+        [[0.51,0.53],[0.59,0.39],[0.70,0.35],[0.79,0.43],[0.82,0.57],[0.82,0.70],[0.82,0.82]]
+      ]
+    },
+    "n": {
+      "voiceKey": "letter-n",
+      "strokes": [
+        [[0.25,0.34],[0.25,0.50],[0.25,0.66],[0.25,0.82]],
+        [[0.26,0.52],[0.34,0.39],[0.47,0.34],[0.61,0.39],[0.70,0.52],[0.70,0.67],[0.70,0.82]]
+      ]
+    },
+    "o": {
+      "voiceKey": "letter-o",
+      "strokes": [
+        [[0.70,0.34],[0.59,0.25],[0.44,0.23],[0.30,0.30],[0.23,0.44],[0.23,0.61],[0.31,0.76],[0.45,0.83],[0.60,0.79],[0.71,0.68],[0.77,0.52],[0.76,0.39],[0.70,0.34]]
+      ]
+    },
+    "r": {
+      "voiceKey": "letter-r",
+      "strokes": [
+        [[0.31,0.34],[0.31,0.50],[0.31,0.66],[0.31,0.82]],
+        [[0.32,0.53],[0.39,0.42],[0.49,0.36],[0.60,0.37],[0.69,0.44]]
+      ]
+    },
+    "s": {
+      "voiceKey": "letter-s",
+      "strokes": [
+        [[0.72,0.31],[0.61,0.25],[0.47,0.24],[0.34,0.30],[0.27,0.40],[0.31,0.50],[0.43,0.55],[0.58,0.58],[0.70,0.65],[0.73,0.75],[0.64,0.82],[0.49,0.85],[0.34,0.81],[0.26,0.74]]
+      ]
+    },
+    "v": {
+      "voiceKey": "letter-v",
+      "strokes": [
+        [[0.25,0.36],[0.31,0.53],[0.39,0.70],[0.49,0.83],[0.59,0.70],[0.68,0.53],[0.76,0.36]]
+      ]
+    },
+    "y": {
+      "voiceKey": "letter-y",
+      "strokes": [
+        [[0.24,0.36],[0.27,0.53],[0.34,0.68],[0.45,0.74],[0.56,0.65],[0.62,0.50],[0.65,0.36]],
+        [[0.65,0.36],[0.64,0.54],[0.61,0.72],[0.55,0.88],[0.45,0.97],[0.34,0.98]]
+      ]
+    }
+  }
+}

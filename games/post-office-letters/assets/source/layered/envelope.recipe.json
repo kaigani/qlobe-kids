@@ -1,0 +1,42 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/post-office-letters/assets/source/gpt-image-2/envelope.png",
+  "qa": {
+    "width": 1024,
+    "height": 1024,
+    "transparentPct": 32.913,
+    "opaquePct": 66.084
+  },
+  "prompt": "Bottom layer: only the perfectly flat dark charcoal background.\nTop layer: the complete single envelope prop, preserving its shape, colors, outline, and all details exactly, isolated on genuine transparency. Keep foreground identical; do not redraw, crop, rearrange, add, remove, or relight.",
+  "finalize": {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 32.945,
+      "opaquePct": 65.88,
+      "partialPct": 1.175
+    },
+    "bbox": [
+      49,
+      120,
+      975,
+      898
+    ],
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "finalSize": [
+      958,
+      810
+    ],
+    "alphaFloor": 8
+  },
+  "output": "games/post-office-letters/assets/props/envelope.webp",
+  "qaMagenta": "games/post-office-letters/assets/production/qa-magenta/envelope-qa-magenta.png"
+}

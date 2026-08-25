@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#f3b45f" />
+  <title>Post Office Letters — Write, Stamp, Send!</title>
+  <meta name="description" content="Help friendly customers send and pick up real mail by writing lowercase names, choosing picture stamps, and matching addressed envelopes." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Post Office Letters — Write, Stamp, Send!" />
+  <meta property="og:description" content="Write lowercase names on real letters, stamp them, send them, and match each envelope to its pickup customer." />
+  <meta property="og:url" content="https://qlo.be/games/post-office-letters/" />
+  <meta property="og:image" content="https://qlo.be/games/post-office-letters/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A warm Kawaii Storybook post office with a smiling mail chute, colorful cubbies, and an addressed letter." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Post Office Letters — Write, Stamp, Send!" />
+  <meta name="twitter:description" content="Write, stamp, send, and pick up real mail in a tiny neighborhood post office." />
+  <meta name="twitter:image" content="https://qlo.be/games/post-office-letters/assets/og-image.jpg" />
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../../shared/css/base.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <main id="game" class="post-office-app" aria-busy="true" data-phase="splash">
+    <div id="loading-curtain" class="loading-curtain" role="status" aria-live="polite">
+      <img class="loading-bg" src="./assets/backgrounds/post-office.webp" alt="" />
+      <img class="loading-title" src="./assets/ui/title.webp" alt="Post Office Letters" />
+      <span>Sorting the morning mail…</span>
+    </div>
+
+    <section id="screen-splash" class="game-screen" data-qk-screen="splash" aria-label="Post Office Letters">
+      <img class="ambient-bg" src="./assets/backgrounds/post-office.webp" alt="" aria-hidden="true" />
+      <div class="artboard splash-artboard">
+        <img class="scene-bg" src="./assets/backgrounds/post-office.webp" alt="A tiny sunny neighborhood post office" />
+        <img class="title-lockup" src="./assets/ui/title.webp" alt="Post Office Letters" />
+
+        <div id="waiting-queue" class="waiting-queue" aria-label="Friends waiting for mail"></div>
+
+        <button id="start-shift" class="start-mail" type="button" data-target="start-shift" data-role="start" aria-label="Open the post office">
+          <img class="start-envelope" src="./assets/props/envelope.webp" alt="" />
+          <img class="start-play" src="../../shared/assets/ui/btn-play.png" alt="" />
+          <span>Open the post office</span>
+        </button>
+      </div>
+      <div id="splash-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-play" class="game-screen" data-qk-screen="play" hidden aria-label="Mail shift">
+      <img class="ambient-bg" src="./assets/backgrounds/post-office.webp" alt="" aria-hidden="true" />
+      <div id="play-artboard" class="artboard play-artboard">
+        <img class="scene-bg" src="./assets/backgrounds/post-office.webp" alt="The post office counter, mail chute, and pickup cubbies" />
+
+        <div id="round-progress" class="round-progress" aria-hidden="true"></div>
+        <p id="phase-cue" class="phase-cue" aria-live="polite"></p>
+
+        <div id="customer-stage" class="customer-stage">
+          <img id="customer-portrait" class="customer-portrait" alt="" />
+          <span id="customer-name" class="customer-name"></span>
+          <button id="customer-drop" class="customer-drop" type="button" data-mail-slot="customer" data-target="customer-drop" aria-label="Give the matching letter to the customer"></button>
+        </div>
+
+        <div id="recipient-cubby" class="recipient-cubby" aria-hidden="true">
+          <img id="recipient-portrait" alt="" />
+          <span id="recipient-name"></span>
+        </div>
+
+        <button id="mail-piece" class="mail-piece" type="button" data-target="mail-piece" data-role="mail" aria-label="Write on the envelope">
+          <img id="envelope-art" class="envelope-art" src="./assets/props/envelope.webp" alt="" />
+          <div id="address-line" class="address-line" aria-label="Envelope address"></div>
+          <img id="chosen-stamp" class="chosen-stamp" alt="" hidden />
+          <span id="mail-action-hint" class="mail-action-hint"></span>
+        </button>
+
+        <div id="name-writer" class="name-writer" aria-label="Write the lowercase name"></div>
+        <div id="stamp-tray" class="stamp-tray" aria-label="Choose a picture stamp"></div>
+        <div id="pickup-tray" class="pickup-tray" aria-label="Letters waiting for pickup"></div>
+
+        <button id="send-slot" class="send-slot" type="button" data-mail-slot="send" data-target="send-slot" data-role="send" aria-label="Send the letter through the smiling mail chute">
+          <span class="visually-hidden">Send the letter</span>
+        </button>
+
+        <div id="delivery-sparkles" class="delivery-sparkles" aria-hidden="true"></div>
+      </div>
+      <div id="play-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-end" class="game-screen" data-qk-screen="end" hidden aria-label="Mail shift complete">
+      <img class="ambient-bg" src="./assets/backgrounds/post-office.webp" alt="" aria-hidden="true" />
+      <div class="artboard end-artboard">
+        <img class="scene-bg" src="./assets/backgrounds/post-office.webp" alt="The sparkling post office after a successful mail shift" />
+        <img class="end-title" src="./assets/ui/title.webp" alt="Post Office Letters" />
+        <div id="end-friends" class="end-friends" aria-label="Friends who received mail"></div>
+        <div id="delivered-mail" class="delivered-mail" aria-label="Letters delivered this shift"></div>
+        <button id="another-shift" class="another-shift" type="button" data-target="another-shift" data-role="start" aria-label="Start another mail shift">
+          <img src="./assets/props/envelope.webp" alt="" />
+          <img class="another-play" src="../../shared/assets/ui/btn-play.png" alt="" />
+          <span>Another mail shift</span>
+        </button>
+      </div>
+      <div id="end-hud" class="screen-hud"></div>
+    </section>
+  </main>
+
+  <script type="module">
+    import loadConfig from './config.js';
+    import { startPostOfficeLetters } from './js/main.js';
+
+    loadConfig()
+      .then((config) => startPostOfficeLetters(config, document.getElementById('game')))
+      .catch((error) => {
+        console.error(error);
+        const curtain = document.getElementById('loading-curtain');
+        if (curtain) curtain.querySelector('span').textContent = 'The mail room needs a moment. Please reload.';
+      });
+  </script>
+</body>
+</html>

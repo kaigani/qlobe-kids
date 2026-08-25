@@ -1,0 +1,42 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/post-office-letters/assets/source/gpt-image-2/stamp-moon.png",
+  "qa": {
+    "width": 1024,
+    "height": 1024,
+    "transparentPct": 65.565,
+    "opaquePct": 33.983
+  },
+  "prompt": "Bottom layer: only the perfectly flat dark charcoal background.\nTop layer: the complete single moon postage stamp prop, preserving its shape, colors, outline, and details exactly, isolated on genuine transparency. Keep foreground identical; do not redraw, crop, rearrange, add, remove, or relight.",
+  "finalize": {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 65.573,
+      "opaquePct": 33.656,
+      "partialPct": 0.771
+    },
+    "bbox": [
+      224,
+      190,
+      797,
+      826
+    ],
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "finalSize": [
+      605,
+      668
+    ],
+    "alphaFloor": 8
+  },
+  "output": "games/post-office-letters/assets/props/stamp-moon.webp",
+  "qaMagenta": "games/post-office-letters/assets/production/qa-magenta/stamp-moon-qa-magenta.png"
+}

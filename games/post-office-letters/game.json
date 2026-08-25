@@ -1,0 +1,50 @@
+{
+  "id": "post-office-letters",
+  "title": "Post Office Letters",
+  "category": "writing-fine-motor",
+  "path": "games/post-office-letters/",
+  "icon": "💌",
+  "entry": "index.html",
+  "age": { "min": 5, "max": 6 },
+  "status": "beta",
+  "accent": "#e8545d",
+  "shareTitle": "Post Office Letters — Write, Stamp, Send!",
+  "description": "Help friendly customers send and pick up real mail by forming lowercase names, choosing picture stamps, and matching each addressed envelope to its person.",
+  "learningGoals": [
+    "Practice ordered lowercase manuscript formation with broad, forgiving guide paths",
+    "Write familiar short names from left to right",
+    "Experience print as functional information that gets a real letter to the right person"
+  ],
+  "interactionModel": "a continuous three-customer mail shift: welcome a sender, trace every lowercase letter of a recipient name, choose a picture stamp, tap or slide the addressed envelope into the mail chute, then match and hand it to the recipient at pickup",
+  "feedbackModel": "earned strokes remain visible; gentle model-and-retry guidance replaces failure; the envelope preserves the exact lowercase HTML name; the smiling chute, customer reactions, postage art, recorded teacher voice, tactile sound effects, and a final sparkling post-office celebration reward every completed route",
+  "uses": [
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/characters/maya/portrait.png",
+    "shared/characters/leo/portrait.png",
+    "shared/characters/nia/portrait.png",
+    "shared/characters/sam/portrait.png",
+    "shared/characters/ravi/portrait.png",
+    "shared/assets/music/mug-and-sunbeam.mp3"
+  ],
+  "modes": [
+    { "id": "mail-shift", "title": "Mail Shift", "skill": "use lowercase names to send and collect functional mail" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Designed and built for QLOBE Kids with a GPT Image 2 Kawaii Storybook visual system, Qwen Image Layered cutouts, Krea 2 hub art, and Qwen teacher-voice narration with Whisper transcript QA.",
+  "characters": ["Maya", "Leo", "Nia", "Sam", "Ravi"],
+  "conceptVideo": null
+}

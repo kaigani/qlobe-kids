@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/post-office-letters/assets/source/gpt-image-2/stamp-heart.png",
+  "qa": {
+    "width": 1024,
+    "height": 1024,
+    "transparentPct": 78.016,
+    "opaquePct": 20.079
+  },
+  "prompt": "Bottom layer: only the perfectly flat dark charcoal background.\nTop layer: the complete single heart postage stamp prop, preserving its shape, colors, outline, and details exactly, isolated on genuine transparency. Keep foreground identical; do not redraw, crop, rearrange, add, remove, or relight.",
+  "finalize": {
+    "pass": true,
+    "reason": null,
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "alpha": {
+      "transparentPct": 78.05,
+      "opaquePct": 17.646,
+      "partialPct": 4.305
+    },
+    "bbox": [
+      245,
+      227,
+      796,
+      798
+    ],
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "finalSize": [
+      583,
+      603
+    ],
+    "alphaFloor": 8
+  },
+  "output": "games/post-office-letters/assets/props/stamp-heart.webp",
+  "qaMagenta": "games/post-office-letters/assets/production/qa-magenta/stamp-heart-qa-magenta.png"
+}
