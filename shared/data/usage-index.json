@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-24T06:25:03.599Z",
+  "generated": "2026-08-24T23:23:18.334Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -2917,6 +2917,40 @@
       ],
       "packs": []
     },
+    "tiny-sentence-workshop": {
+      "engine": null,
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "games/tiny-sentence-workshop/assets/backgrounds/splash.webp",
+        "games/tiny-sentence-workshop/assets/backgrounds/workshop.webp",
+        "games/tiny-sentence-workshop/assets/ui/action-slab.webp",
+        "games/tiny-sentence-workshop/assets/ui/label-plaque.webp",
+        "games/tiny-sentence-workshop/assets/ui/progress-pebbles.webp",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
+      "packs": []
+    },
     "trail-counting-walk": {
       "engine": "coach-timer",
       "status": "in-design",
@@ -3173,6 +3207,7 @@
         "texture-trail",
         "then-now-sort",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -3235,6 +3270,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -3250,6 +3286,7 @@
         "shadow-chase",
         "sticker-line-challenge",
         "table-setting-mission",
+        "tiny-sentence-workshop",
         "tweezer-rescue"
       ],
       "shared/js/camera-motion.js": [
@@ -3371,6 +3408,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -3520,6 +3558,7 @@
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -3616,6 +3655,7 @@
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
+        "tiny-sentence-workshop",
         "tweezer-rescue"
       ],
       "shared/js/puzzle-cutter.js": [
@@ -3663,6 +3703,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "world-music-dance"
       ],
@@ -3693,6 +3734,7 @@
         "table-setting-mission",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue"
       ],
       "shared/js/sfx.js": [
@@ -3795,6 +3837,7 @@
         "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -3912,7 +3955,8 @@
         "story-stones",
         "table-setting-mission",
         "tangram-tales",
-        "teen-bead-builder"
+        "teen-bead-builder",
+        "tiny-sentence-workshop"
       ],
       "shared/js/stage/drag-to-slot.js": [
         "blend-train",
@@ -4027,6 +4071,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4070,6 +4115,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4132,6 +4178,7 @@
         "teen-bead-builder",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4245,6 +4292,7 @@
         "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -4427,6 +4475,7 @@
         "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "tiny-sentence-workshop",
         "trail-counting-walk",
         "turn-taking-tower",
         "tweezer-rescue",
@@ -5204,6 +5253,21 @@
       "games/tiny-reader-theater/assets/ui/title-lockup.webp": [
         "tiny-reader-theater"
       ],
+      "games/tiny-sentence-workshop/assets/backgrounds/splash.webp": [
+        "tiny-sentence-workshop"
+      ],
+      "games/tiny-sentence-workshop/assets/backgrounds/workshop.webp": [
+        "tiny-sentence-workshop"
+      ],
+      "games/tiny-sentence-workshop/assets/ui/action-slab.webp": [
+        "tiny-sentence-workshop"
+      ],
+      "games/tiny-sentence-workshop/assets/ui/label-plaque.webp": [
+        "tiny-sentence-workshop"
+      ],
+      "games/tiny-sentence-workshop/assets/ui/progress-pebbles.webp": [
+        "tiny-sentence-workshop"
+      ],
       "shared/assets/audio": [
         "picture-word-match",
         "sound-basket",
@@ -5281,7 +5345,8 @@
         "tweezer-rescue"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
-        "number-sense-kitchen"
+        "number-sense-kitchen",
+        "tiny-sentence-workshop"
       ],
       "shared/assets/objects": [
         "flashlight-cave",

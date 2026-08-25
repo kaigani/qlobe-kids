@@ -1,0 +1,36 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "tiny-sentence-workshop-hub",
+  "kind": "image",
+  "asset": "assets/hub/tiles/tiny-sentence-workshop.jpg",
+  "artDirection": "Claymation",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "QLOBE Kids menu tile, miniature handcrafted stop-motion polymer clay sentence workshop on a warm wooden toy table, close-up of one completely blank smooth coral clay block being pressed into a blank cream sentence strip, both surfaces totally unmarked with no symbols, tiny teal scene viewer with a sleeping orange clay cat waking up, magnifying glass, mustard and grape tools, warm studio lighting, visible fingerprints and sculpted seams, rounded hand-shaped forms, matte plasticine, delightful preschool composition, strong central silhouette, toy-table menu tile framing, absolutely no writing, typography, glyphs, letters, numbers, logos, or symbols anywhere, no flat vector, no plastic 3D render, 6:5 composition.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "tiny-sentence-workshop-krea2-seed-42.png",
+  "sourceSha256": "5f4c1abf1846744e644edc3436580288f4d945b6606b4e4aa0271aabe798b9b8",
+  "finalSha256": "177845dfe571894c2d72b597aefe770a5553ee9cda492de21b03fecb5cdd029f",
+  "qa": {
+    "status": "approved",
+    "finalSize": [
+      640,
+      533
+    ],
+    "checks": [
+      "no text or lettering",
+      "clear clay sentence-workshop action",
+      "legible at 320px"
+    ],
+    "reviewNotes": "Approved at full 768x640 source size and final 640x533 crop. The clay viewer, hands, blank sentence sockets, and magnifier retain a clear central silhouette at 320px; no text, pseudo-lettering, logos, or unintended symbols are present."
+  },
+  "createdAt": "2026-08-25T00:06:40.691480+00:00"
+}

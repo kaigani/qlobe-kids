@@ -1,0 +1,36 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "tiny-sentence-workshop-hub",
+  "kind": "image",
+  "asset": "assets/hub/tiles/tiny-sentence-workshop.jpg",
+  "artDirection": "Claymation",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "QLOBE Kids menu tile, miniature handcrafted stop-motion polymer clay sentence workshop on a warm wooden toy table, close-up of one coral clay word stamp being pressed into a blank cream sentence strip, tiny teal scene viewer with a sleeping orange clay cat waking up, magnifying glass, mustard and grape tools, warm studio lighting, visible fingerprints and sculpted seams, rounded hand-shaped forms, matte plasticine, delightful preschool composition, strong central silhouette, toy-table menu tile framing, no text, no letters, no numbers, no logos, no flat vector, no plastic 3D render, 6:5 composition.",
+      "seed": 9001,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "tiny-sentence-workshop-krea2-seed-9001.png",
+  "sourceSha256": "bd121fc45dd651e78b2c843d9d1097b013dbaa7230fbefd6e21d6b3188e7fa1b",
+  "finalSha256": "1afb4f8ac4ff0484d054877db95f8420853dcf08b89bdbd4681e9d11909d3307",
+  "qa": {
+    "status": "rejected",
+    "finalSize": [
+      640,
+      533
+    ],
+    "checks": [
+      "no text or lettering",
+      "clear clay sentence-workshop action",
+      "legible at 320px"
+    ],
+    "reviewNotes": "Rejected in full-size human review: generated coral block contained pseudo-lettering despite the no-text constraint."
+  },
+  "createdAt": "2026-08-24T23:59:27.615444+00:00"
+}
