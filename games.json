@@ -236,6 +236,60 @@
       "summary": "Build three paper animals from seven shapes, then invent an original tangram tale."
     },
     {
+      "id": "shape-detective",
+      "title": "Shape Detective",
+      "category": "math-number-sense",
+      "path": "games/shape-detective/",
+      "icon": "assets/hub/tiles/shape-detective.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#f2b84b",
+      "uses": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hotspot-scene.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/magnifier-lens.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css",
+        "shared/fonts/fredoka-latin-600-normal.woff2",
+        "shared/assets/music/quirky-forest-adventure.mp3",
+        "shared/assets/ui/"
+      ],
+      "modes": [
+        {
+          "id": "properties",
+          "title": "Shape Clues",
+          "skill": "identify 2D shapes from sides, corners, and curves"
+        },
+        {
+          "id": "search",
+          "title": "Secret Spots",
+          "skill": "understand spatial language while searching a scene"
+        },
+        {
+          "id": "place",
+          "title": "Chalk Map",
+          "skill": "place one shape using a spoken spatial relation"
+        }
+      ],
+      "summary": "Solve chalkboard mysteries with shape clues and spatial words."
+    },
+    {
       "id": "story-sequence",
       "title": "First, Next, Last",
       "category": "oral-storytelling",

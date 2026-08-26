@@ -1,0 +1,82 @@
+{
+  "workflow": "qwen-image-layered layer_2 + alpha normalization + canonical cutout finalization + deterministic vertical composition",
+  "sources": [
+    {
+      "path": "games/shape-detective/assets/source/layer2/title/shape-seed42.png",
+      "sha256": "68ba49e30e686d9d0c0bc1ed3240ebecb824388be92a9709bab47c5762fd4aea"
+    },
+    {
+      "path": "games/shape-detective/assets/source/layer2/title/detective-seed42.png",
+      "sha256": "826baa08746dc96f6c91a41aaf6785aca20716067d2ae52cddaabdf5634b6543"
+    }
+  ],
+  "alphaNormalization": {
+    "floorAtOrBelow": 16,
+    "opaqueAtOrAbove": 244
+  },
+  "canonicalReports": {
+    "shape": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 79.75,
+        "opaquePct": 4.138,
+        "partialPct": 16.112
+      },
+      "bbox": [
+        89,
+        142,
+        999,
+        352
+      ],
+      "sourceSize": [
+        1024,
+        352
+      ],
+      "finalSize": [
+        938,
+        224
+      ],
+      "alphaFloor": 16
+    },
+    "detective": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 67.038,
+        "opaquePct": 17.79,
+        "partialPct": 15.172
+      },
+      "bbox": [
+        63,
+        32,
+        925,
+        185
+      ],
+      "sourceSize": [
+        1024,
+        264
+      ],
+      "finalSize": [
+        890,
+        181
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "composition": {
+    "width": 938,
+    "height": 407,
+    "gapPx": 2,
+    "alignment": "center"
+  },
+  "runtime": "games/shape-detective/assets/title.webp",
+  "runtimeSha256": "fa2d2624c0288699926142a32986e3bd7d1bcbfaca823204c6a05afc0e0ea399",
+  "magentaQa": "games/shape-detective/assets/source/qa/title/title-magenta.png"
+}

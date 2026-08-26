@@ -1,0 +1,42 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "shape-detective-hub-seed-42",
+  "kind": "image",
+  "asset": "shape-detective-hub",
+  "artDirection": "Toy \u2014 rough color-chalk classroom slate",
+  "status": "installed",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "QLOBE Kids menu game tile, Toy art world rendered as tactile rough colored classroom chalk on a real dark slate board with a warm oak edge. A large brass-and-wood magnifying glass reveals a turquoise circle while a yellow triangle, coral square, sky-blue rectangle, and green hexagon sit like chunky handmade chalk tokens around it; tiny chalk sparkles and one playful clue card, centered heroic object cluster, bright readable color, premium children\u2019s editorial object photography, warm upper-left light, generous crop-safe margin. No words, no letters, no numbers, no logo, no UI screenshot, no child, no character, no gradients, no vector style.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "games/shape-detective/assets/source/local-api/hub/shape-detective-krea2-seed-42.png",
+  "sourceSha256": "a62da239f12ca130a217cd5bfb27d91c94d451fb185aafc7b293b7f2b6097228",
+  "final": "assets/hub/tiles/shape-detective.jpg",
+  "finalSha256": "d51a85362cfd998556376b779b1592105507f4012f7f9fef53b0b69697442820",
+  "qa": {
+    "status": "accepted",
+    "candidateSha256": "a62da239f12ca130a217cd5bfb27d91c94d451fb185aafc7b293b7f2b6097228",
+    "finalSize": [
+      640,
+      533
+    ],
+    "checks": [
+      "composition",
+      "color-and-contrast",
+      "no-words-or-logos",
+      "crop-safe-margin"
+    ],
+    "acceptedAt": "2026-08-26T08:07:34.057490+00:00",
+    "reviewContext": "full-size and 320px visual inspection"
+  },
+  "createdAt": "2026-08-26T08:03:38.943669+00:00",
+  "installedAt": "2026-08-26T08:07:34.121240+00:00"
+}

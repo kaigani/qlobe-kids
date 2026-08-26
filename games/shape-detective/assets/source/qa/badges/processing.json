@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "base": "rosette-turquoise",
+    "output": "games/shape-detective/assets/rewards/badge-properties.webp",
+    "sha256": "c5a006f0649e653fbeb6658274b1c980036ed9271edab391a713879a346f0b6f",
+    "placements": [
+      [
+        "circle",
+        55,
+        80,
+        42
+      ],
+      [
+        "triangle",
+        112,
+        72,
+        42
+      ],
+      [
+        "square",
+        145,
+        120,
+        42
+      ]
+    ],
+    "size": [
+      226,
+      280
+    ],
+    "method": "Pillow alpha composite; WebP q90 method6"
+  },
+  "search": {
+    "base": "rosette-yellow",
+    "output": "games/shape-detective/assets/rewards/badge-search.webp",
+    "sha256": "3710a9c920fcaeaf0c28e77922d8ae6f1094f5e0a89e9664e6dbfda045f4c911",
+    "placements": [
+      [
+        "magnifier",
+        112,
+        112,
+        105
+      ]
+    ],
+    "size": [
+      225,
+      280
+    ],
+    "method": "Pillow alpha composite; WebP q90 method6"
+  },
+  "place": {
+    "base": "rosette-coral",
+    "output": "games/shape-detective/assets/rewards/badge-place.webp",
+    "sha256": "150945ccfe229d59af1f1cc55390ce9468dd031e829d251c6fa1e81d646afb20",
+    "placements": [
+      [
+        "triangle",
+        112,
+        70,
+        65
+      ],
+      [
+        "square",
+        112,
+        150,
+        55
+      ]
+    ],
+    "size": [
+      225,
+      280
+    ],
+    "method": "Pillow alpha composite; WebP q90 method6"
+  }
+}

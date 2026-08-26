@@ -1,0 +1,261 @@
+{
+  "id": "shape-detective",
+  "engine": "custom-shape-detective",
+  "title": "Shape Detective",
+  "artWorld": "Toy",
+  "theme": {
+    "world": "toy-table",
+    "variant": "rough-color-chalk-classroom-slate",
+    "background": "./assets/board.webp"
+  },
+  "rounds": 5,
+  "assets": {
+    "mapBoard": "./assets/map-board.webp",
+    "ghosts": {
+      "triangle": "./assets/ghosts/triangle.webp",
+      "circle": "./assets/ghosts/circle.webp",
+      "rectangle": "./assets/ghosts/rectangle.webp",
+      "square": "./assets/ghosts/square.webp"
+    },
+    "board": "./assets/board.webp",
+    "searchScene": "./assets/search-scene.webp",
+    "title": "./assets/title.webp",
+    "bgm": "../../shared/assets/music/quirky-forest-adventure.mp3",
+    "cards": {
+      "properties": "./assets/cards/shape-clues.webp",
+      "search": "./assets/cards/secret-spots.webp",
+      "place": "./assets/cards/chalk-map.webp"
+    },
+    "shapes": {
+      "circle": "./assets/shapes/circle.webp",
+      "triangle": "./assets/shapes/triangle.webp",
+      "square": "./assets/shapes/square.webp",
+      "rectangle": "./assets/shapes/rectangle.webp",
+      "oval": "./assets/shapes/oval.webp",
+      "pentagon": "./assets/shapes/pentagon.webp",
+      "hexagon": "./assets/shapes/hexagon.webp",
+      "star": "./assets/shapes/star.webp"
+    },
+    "ui": {
+      "cluePlaque": "./assets/ui/clue-plaque.webp",
+      "magnifier": "./assets/ui/magnifier.webp",
+      "actionSlab": "./assets/ui/action-slab.webp",
+      "caseClosed": "./assets/ui/case-closed.webp"
+    },
+    "rewards": {
+      "properties": "./assets/rewards/badge-properties.webp",
+      "search": "./assets/rewards/badge-search.webp",
+      "place": "./assets/rewards/badge-place.webp"
+    }
+  },
+  "modes": [
+    {
+      "id": "properties",
+      "title": "Shape Clues",
+      "skill": "identify 2D shapes from sides, corners, and curves",
+      "card": "properties",
+      "introKey": "intro-properties",
+      "completeKey": "complete-properties",
+      "rounds": [
+        {
+          "id": "property-1",
+          "target": "circle",
+          "choices": [
+            { "shape": "circle", "rotation": 0 },
+            { "shape": "triangle", "rotation": -8 },
+            { "shape": "square", "rotation": 7 }
+          ]
+        },
+        {
+          "id": "property-2",
+          "target": "triangle",
+          "choices": [
+            { "shape": "circle", "rotation": 0 },
+            { "shape": "triangle", "rotation": 10 },
+            { "shape": "rectangle", "rotation": -4 }
+          ]
+        },
+        {
+          "id": "property-3",
+          "target": "rectangle",
+          "choices": [
+            { "shape": "square", "rotation": 0 },
+            { "shape": "triangle", "rotation": -12 },
+            { "shape": "rectangle", "rotation": 6 },
+            { "shape": "oval", "rotation": -8 }
+          ]
+        },
+        {
+          "id": "property-4",
+          "target": "square",
+          "choices": [
+            { "shape": "square", "rotation": 45 },
+            { "shape": "rectangle", "rotation": -5 },
+            { "shape": "triangle", "rotation": 14 },
+            { "shape": "pentagon", "rotation": -7 }
+          ]
+        },
+        {
+          "id": "property-5",
+          "target": "hexagon",
+          "choices": [
+            { "shape": "hexagon", "rotation": 7 },
+            { "shape": "pentagon", "rotation": -4 },
+            { "shape": "triangle", "rotation": 8 },
+            { "shape": "square", "rotation": -10 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "title": "Secret Spots",
+      "skill": "understand spatial language while searching a scene",
+      "card": "search",
+      "introKey": "intro-search",
+      "completeKey": "complete-search",
+      "rounds": [
+        {
+          "id": "search-1",
+          "target": "window-circle",
+          "spots": [
+            { "id": "window-circle", "shape": "circle", "x": 445, "y": 610, "w": 132, "h": 132, "alt": "turquoise circle inside the window" },
+            { "id": "path-triangle", "shape": "triangle", "x": 690, "y": 850, "w": 145, "h": 145, "alt": "yellow triangle on the path" },
+            { "id": "telescope-hexagon", "shape": "hexagon", "x": 1330, "y": 720, "w": 140, "h": 140, "alt": "green hexagon below the telescope" }
+          ]
+        },
+        {
+          "id": "search-2",
+          "target": "house-triangle",
+          "spots": [
+            { "id": "house-triangle", "shape": "triangle", "x": 450, "y": 300, "w": 150, "h": 150, "alt": "yellow triangle above the house" },
+            { "id": "flowers-circle", "shape": "circle", "x": 910, "y": 790, "w": 128, "h": 128, "alt": "turquoise circle between the flowers" },
+            { "id": "cloud-square", "shape": "square", "x": 1280, "y": 270, "w": 136, "h": 136, "alt": "coral square below the cloud" }
+          ]
+        },
+        {
+          "id": "search-3",
+          "target": "flowers-square",
+          "spots": [
+            { "id": "flowers-square", "shape": "square", "x": 900, "y": 790, "w": 136, "h": 136, "alt": "coral square between the flowers" },
+            { "id": "window-oval", "shape": "oval", "x": 455, "y": 610, "w": 116, "h": 150, "alt": "lavender oval inside the window" },
+            { "id": "telescope-triangle", "shape": "triangle", "x": 1325, "y": 690, "w": 145, "h": 145, "alt": "yellow triangle beside the telescope" }
+          ]
+        },
+        {
+          "id": "search-4",
+          "target": "rainbow-rectangle",
+          "spots": [
+            { "id": "rainbow-rectangle", "shape": "rectangle", "x": 810, "y": 570, "w": 180, "h": 112, "alt": "sky-blue rectangle below the rainbow" },
+            { "id": "path-pentagon", "shape": "pentagon", "x": 350, "y": 860, "w": 145, "h": 145, "alt": "orange pentagon on the path" },
+            { "id": "telescope-circle", "shape": "circle", "x": 1335, "y": 700, "w": 128, "h": 128, "alt": "turquoise circle beside the telescope" }
+          ]
+        },
+        {
+          "id": "search-5",
+          "target": "telescope-hexagon",
+          "spots": [
+            { "id": "telescope-hexagon", "shape": "hexagon", "x": 1335, "y": 665, "w": 145, "h": 145, "alt": "green hexagon beside the telescope" },
+            { "id": "flowers-square", "shape": "square", "x": 900, "y": 790, "w": 136, "h": 136, "alt": "coral square between the flowers" },
+            { "id": "house-triangle", "shape": "triangle", "x": 450, "y": 300, "w": 145, "h": 145, "alt": "yellow triangle above the house" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "title": "Chalk Map",
+      "skill": "place one shape using a spoken spatial relation",
+      "card": "place",
+      "introKey": "intro-place",
+      "completeKey": "complete-place",
+      "rounds": [
+        {
+          "id": "place-1",
+          "moving": "triangle",
+          "relation": "above",
+          "target": { "x": 800, "y": 280, "radius": 175 },
+          "anchors": [{ "shape": "square", "x": 800, "y": 590, "size": 250 }]
+        },
+        {
+          "id": "place-2",
+          "moving": "circle",
+          "relation": "below",
+          "target": { "x": 800, "y": 650, "radius": 175 },
+          "anchors": [{ "shape": "triangle", "x": 800, "y": 325, "size": 250 }]
+        },
+        {
+          "id": "place-3",
+          "moving": "rectangle",
+          "relation": "beside",
+          "target": { "x": 1080, "y": 470, "radius": 190 },
+          "anchors": [{ "shape": "circle", "x": 680, "y": 470, "size": 245 }]
+        },
+        {
+          "id": "place-4",
+          "moving": "square",
+          "relation": "between",
+          "target": { "x": 800, "y": 470, "radius": 175 },
+          "anchors": [
+            { "shape": "star", "x": 500, "y": 470, "size": 220 },
+            { "shape": "star", "x": 1100, "y": 470, "size": 220 }
+          ]
+        },
+        {
+          "id": "place-5",
+          "moving": "circle",
+          "relation": "inside",
+          "target": { "x": 800, "y": 470, "radius": 155 },
+          "anchors": [{ "shape": "hexagon", "x": 800, "y": 470, "size": 370, "inside": true }]
+        }
+      ]
+    }
+  ],
+  "voice": {
+    "welcome": "Detective, we have shape mysteries to solve. Choose a case.",
+    "pick-case": "Pick any case to begin.",
+    "intro-properties": "Shape Clues! Listen for sides, corners, and curves.",
+    "intro-search": "Secret Spots! Move the magnifying glass and listen for where to look.",
+    "intro-place": "Chalk Map! Put each shape exactly where the clue says.",
+    "retry-property": "Look at the sides and corners. Try another shape.",
+    "retry-search": "Good searching. Listen to the place word and look again.",
+    "retry-place": "Almost. Listen for the place word and try again.",
+    "idle-property": "Use your detective eyes. Count the sides and corners.",
+    "idle-search": "Slide the magnifying glass across the chalk scene.",
+    "idle-place": "Move the loose shape where the clue says.",
+    "complete-properties": "Case closed! You solved every shape clue.",
+    "complete-search": "Case closed! You found every secret spot.",
+    "complete-place": "Case closed! You made a perfect chalk map.",
+    "finale": "Master Shape Detective! You used shape clues and spatial words to solve every case.",
+    "property-1-prompt": "Find the shape that is round all the way, with no corners.",
+    "property-1-success": "A circle! It is round all the way and has no corners.",
+    "property-2-prompt": "Find the shape with three straight sides and three corners.",
+    "property-2-success": "A triangle! Three sides and three corners.",
+    "property-3-prompt": "Find the shape with four sides. Two are long and two are short.",
+    "property-3-success": "A rectangle! Two long sides and two short sides.",
+    "property-4-prompt": "Find the shape with four equal sides, even when it turns.",
+    "property-4-success": "A square! Four equal sides, even when it turns.",
+    "property-5-prompt": "Find the shape with six straight sides and six corners.",
+    "property-5-success": "A hexagon! Six sides and six corners.",
+    "search-1-prompt": "Find the turquoise circle inside the window.",
+    "search-1-success": "Inside! The turquoise circle is inside the window.",
+    "search-2-prompt": "Find the yellow triangle above the house.",
+    "search-2-success": "Above! The yellow triangle is above the house.",
+    "search-3-prompt": "Find the coral square between the flowers.",
+    "search-3-success": "Between! The coral square is between the flowers.",
+    "search-4-prompt": "Find the sky-blue rectangle below the rainbow.",
+    "search-4-success": "Below! The sky-blue rectangle is below the rainbow.",
+    "search-5-prompt": "Find the green hexagon beside the telescope.",
+    "search-5-success": "Beside! The green hexagon is beside the telescope.",
+    "place-1-prompt": "Put the yellow triangle above the coral square.",
+    "place-1-success": "Above! The triangle is above the square.",
+    "place-2-prompt": "Put the turquoise circle below the yellow triangle.",
+    "place-2-success": "Below! The circle is below the triangle.",
+    "place-3-prompt": "Put the sky-blue rectangle beside the turquoise circle.",
+    "place-3-success": "Beside! The rectangle is beside the circle.",
+    "place-4-prompt": "Put the coral square between the two pink stars.",
+    "place-4-success": "Between! The square is between the stars.",
+    "place-5-prompt": "Put the turquoise circle inside the green hexagon.",
+    "place-5-success": "Inside! The circle is inside the hexagon."
+  }
+}

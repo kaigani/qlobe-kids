@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-24T23:23:18.334Z",
+  "generated": "2026-08-26T08:40:59.770Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -2209,6 +2209,39 @@
       ],
       "packs": []
     },
+    "shape-detective": {
+      "engine": null,
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hotspot-scene.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/magnifier-lens.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "shared/assets/music/quirky-forest-adventure.mp3",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
     "shape-to-picture": {
       "engine": "build-assemble",
       "status": "in-design",
@@ -3183,6 +3216,7 @@
         "scissor-trail-safari",
         "secret-message-copy",
         "shadow-chase",
+        "shape-detective",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -3258,6 +3292,7 @@
         "rhythm-copycat",
         "sand-tray-letters",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -3284,6 +3319,7 @@
         "picture-word-match",
         "puzzle-map-match",
         "shadow-chase",
+        "shape-detective",
         "sticker-line-challenge",
         "table-setting-mission",
         "tiny-sentence-workshop",
@@ -3396,6 +3432,7 @@
         "rhythm-copycat",
         "sand-tray-letters",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -3417,6 +3454,7 @@
         "monster-opera",
         "puppet-retell",
         "shadow-chase",
+        "shape-detective",
         "tangram-tales",
         "teen-bead-builder",
         "tweezer-rescue",
@@ -3504,7 +3542,8 @@
       ],
       "shared/js/hotspot-scene.js": [
         "bug-hotel-observer",
-        "rhyming-detective"
+        "rhyming-detective",
+        "shape-detective"
       ],
       "shared/js/hud.js": [
         "bead-path-builder",
@@ -3553,6 +3592,7 @@
         "number-sense-kitchen",
         "picture-word-match",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "sticker-line-challenge",
         "table-setting-mission",
@@ -3567,7 +3607,8 @@
         "bug-hotel-observer"
       ],
       "shared/js/magnifier-lens.js": [
-        "bug-hotel-observer"
+        "bug-hotel-observer",
+        "shape-detective"
       ],
       "shared/js/mode-select.js": [
         "block-tower-measure",
@@ -3651,6 +3692,7 @@
         "obstacle-course-builder",
         "picture-word-match",
         "puzzle-map-match",
+        "shape-detective",
         "sticker-line-challenge",
         "table-setting-mission",
         "tangram-tales",
@@ -3694,6 +3736,7 @@
         "rhythm-copycat",
         "sand-tray-letters",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "sound-basket",
         "sound-cylinder-match",
@@ -3729,6 +3772,7 @@
         "obstacle-course-builder",
         "picture-word-match",
         "shadow-chase",
+        "shape-detective",
         "snack-chef",
         "sticker-line-challenge",
         "table-setting-mission",
@@ -3811,6 +3855,7 @@
         "scissor-trail-safari",
         "secret-message-copy",
         "shadow-chase",
+        "shape-detective",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -4059,6 +4104,7 @@
         "rhythm-copycat",
         "sand-tray-letters",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -4109,6 +4155,7 @@
         "rhyming-detective",
         "rhythm-copycat",
         "shadow-chase",
+        "shape-detective",
         "sound-cylinder-match",
         "sticker-line-challenge",
         "table-setting-mission",
@@ -4165,6 +4212,7 @@
         "rhythm-copycat",
         "sand-tray-letters",
         "shadow-chase",
+        "shape-detective",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -4268,6 +4316,7 @@
         "scissor-trail-safari",
         "secret-message-copy",
         "shadow-chase",
+        "shape-detective",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -4378,6 +4427,7 @@
         "red-green-light",
         "rhythm-copycat",
         "shadow-chase",
+        "shape-detective",
         "sound-cylinder-match",
         "sound-painting",
         "sticker-line-challenge",
@@ -4452,6 +4502,7 @@
         "scissor-trail-safari",
         "secret-message-copy",
         "shadow-chase",
+        "shape-detective",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -5382,6 +5433,7 @@
         "rhyming-detective",
         "secret-message-copy",
         "shadow-chase",
+        "shape-detective",
         "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",

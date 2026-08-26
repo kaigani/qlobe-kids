@@ -1,0 +1,1337 @@
+{
+  "shapes/circle": {
+    "workflow": "qwen-image-layered layer_2",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/circle-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/circle.png",
+    "selectedSource": "games/shape-detective/assets/source/layer2/shapes/circle-seed42.png",
+    "fallbackProcessing": null,
+    "qwenRejection": null,
+    "runtime": "games/shape-detective/assets/shapes/circle.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/circle.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 33.0,
+        "opaquePct": 62.808,
+        "partialPct": 4.192
+      },
+      "bbox": [
+        34,
+        39,
+        978,
+        985
+      ],
+      "sourceSize": [
+        1016,
+        1024
+      ],
+      "finalSize": [
+        359,
+        360
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/triangle": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/triangle-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/triangle.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/triangle.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        14,
+        15,
+        17
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 48180,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        254,
+        254,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 43.615,
+          "partialPct": 56.385
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          928
+        ],
+        "sourceSize": [
+          1024,
+          928
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/triangle.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/triangle.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 51.71,
+        "opaquePct": 45.593,
+        "partialPct": 2.697
+      },
+      "bbox": [
+        12,
+        9,
+        307,
+        283
+      ],
+      "sourceSize": [
+        316,
+        287
+      ],
+      "finalSize": [
+        316,
+        287
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/square": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/square-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/square.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/square.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        14,
+        15,
+        17
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 15600,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        254,
+        254,
+        251
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 76.219,
+          "partialPct": 23.781
+        },
+        "bbox": [
+          0,
+          0,
+          992,
+          1024
+        ],
+        "sourceSize": [
+          992,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/square.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/square.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 19.773,
+        "opaquePct": 77.365,
+        "partialPct": 2.863
+      },
+      "bbox": [
+        12,
+        11,
+        259,
+        260
+      ],
+      "sourceSize": [
+        267,
+        275
+      ],
+      "finalSize": [
+        267,
+        275
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/rectangle": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/rectangle-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/rectangle.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/rectangle.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        14,
+        15,
+        16
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 13371,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        255,
+        253,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 78.013,
+          "partialPct": 21.987
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          616
+        ],
+        "sourceSize": [
+          1024,
+          616
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/rectangle.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/rectangle.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 17.642,
+        "opaquePct": 79.014,
+        "partialPct": 3.344
+      },
+      "bbox": [
+        11,
+        11,
+        327,
+        193
+      ],
+      "sourceSize": [
+        338,
+        205
+      ],
+      "finalSize": [
+        338,
+        205
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/oval": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/oval-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/oval.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/oval.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        15,
+        17,
+        18
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 24470,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        255,
+        253,
+        251
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 63.93,
+          "partialPct": 36.07
+        },
+        "bbox": [
+          0,
+          0,
+          752,
+          1024
+        ],
+        "sourceSize": [
+          752,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/oval.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/oval.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 33.3,
+        "opaquePct": 63.488,
+        "partialPct": 3.212
+      },
+      "bbox": [
+        11,
+        11,
+        221,
+        297
+      ],
+      "sourceSize": [
+        227,
+        308
+      ],
+      "finalSize": [
+        227,
+        308
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/pentagon": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/pentagon-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/pentagon.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/pentagon.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        15,
+        16,
+        18
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 37343,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        254,
+        253,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "near-blank extraction (opaque core 0.001% < 1.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 0.001,
+          "partialPct": 99.999
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          992
+        ],
+        "sourceSize": [
+          1024,
+          992
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/pentagon.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/pentagon.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 39.754,
+        "opaquePct": 57.677,
+        "partialPct": 2.569
+      },
+      "bbox": [
+        12,
+        11,
+        295,
+        285
+      ],
+      "sourceSize": [
+        306,
+        297
+      ],
+      "finalSize": [
+        306,
+        297
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/hexagon": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/hexagon-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/hexagon.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/hexagon.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        15,
+        17,
+        19
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 31670,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        254,
+        254,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 42.567,
+          "partialPct": 57.433
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          936
+        ],
+        "sourceSize": [
+          1024,
+          936
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/hexagon.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/hexagon.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 35.787,
+        "opaquePct": 61.061,
+        "partialPct": 3.152
+      },
+      "bbox": [
+        11,
+        6,
+        294,
+        268
+      ],
+      "sourceSize": [
+        303,
+        279
+      ],
+      "finalSize": [
+        303,
+        279
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "shapes/star": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/shapes/star-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/shapes/star.png",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/shapes/star.png",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        16,
+        17,
+        18
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 57304,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 255 > 16",
+      "cornerAlpha": [
+        255,
+        254,
+        254,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 39.858,
+          "partialPct": 60.142
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "runtime": "games/shape-detective/assets/shapes/star.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/shapes/star.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 56.674,
+        "opaquePct": 40.504,
+        "partialPct": 2.823
+      },
+      "bbox": [
+        12,
+        11,
+        303,
+        303
+      ],
+      "sourceSize": [
+        314,
+        314
+      ],
+      "finalSize": [
+        314,
+        314
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "cards/shape-clues": {
+    "workflow": "qwen-image-layered layer_2",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/cards/shape-clues-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/cards/shape-clues.png",
+    "selectedSource": "games/shape-detective/assets/source/layer2/cards/shape-clues-seed42.png",
+    "fallbackProcessing": null,
+    "qwenRejection": null,
+    "runtime": "games/shape-detective/assets/cards/shape-clues.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/cards/shape-clues.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 22.96,
+        "opaquePct": 9.58,
+        "partialPct": 67.46
+      },
+      "bbox": [
+        44,
+        61,
+        683,
+        957
+      ],
+      "sourceSize": [
+        720,
+        1024
+      ],
+      "finalSize": [
+        450,
+        620
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "cards/secret-spots": {
+    "workflow": "qwen-image-layered layer_2",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/cards/secret-spots-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/cards/secret-spots.png",
+    "selectedSource": "games/shape-detective/assets/source/layer2/cards/secret-spots-seed42.png",
+    "fallbackProcessing": null,
+    "qwenRejection": null,
+    "runtime": "games/shape-detective/assets/cards/secret-spots.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/cards/secret-spots.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 22.015,
+        "opaquePct": 10.682,
+        "partialPct": 67.303
+      },
+      "bbox": [
+        35,
+        61,
+        681,
+        960
+      ],
+      "sourceSize": [
+        720,
+        1024
+      ],
+      "finalSize": [
+        453,
+        620
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "cards/chalk-map": {
+    "workflow": "qwen-image-layered layer_2",
+    "rawLayer2": "games/shape-detective/assets/source/layer2/cards/chalk-map-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/cards/chalk-map.png",
+    "selectedSource": "games/shape-detective/assets/source/layer2/cards/chalk-map-seed42.png",
+    "fallbackProcessing": null,
+    "qwenRejection": null,
+    "runtime": "games/shape-detective/assets/cards/chalk-map.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/cards/chalk-map.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 22.972,
+        "opaquePct": 5.494,
+        "partialPct": 71.534
+      },
+      "bbox": [
+        33,
+        62,
+        673,
+        960
+      ],
+      "sourceSize": [
+        720,
+        1024
+      ],
+      "finalSize": [
+        449,
+        620
+      ],
+      "alphaFloor": 16
+    }
+  },
+  "ui/action-slab": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/action-slab.png",
+    "runtime": "games/shape-detective/assets/ui/action-slab.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/action-slab.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 55.239,
+        "opaquePct": 43.902,
+        "partialPct": 0.859
+      },
+      "bbox": [
+        25,
+        143,
+        463,
+        418
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        478,
+        315
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "3354535555a5450efc29704f85d33c04ec20cbf11bd9ed6bd603f8b3c073db8f",
+    "runtimeSha256": "1150b42040e29fbb68d3d03666b61bc343b83d2d76690da2382394ea952ee226",
+    "magentaSha256": "f906fad5c38a15f782b53273d90ad2bb815b03e5848a6daa2c88387bf331c722",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        238,
+        4,
+        135
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 136795,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": false,
+        "keyedPixels": 11203,
+        "despilledPixels": 146551,
+        "openCenterEllipse": null
+      }
+    },
+    "qwenRejection": {
+      "reason": "empty extraction (fully transparent layer_2)",
+      "cornerAlpha": [
+        3,
+        0,
+        3,
+        7
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "empty extraction (fully transparent layer_2)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 97.464,
+          "opaquePct": 0.0,
+          "partialPct": 2.536
+        },
+        "bbox": [
+          62,
+          299,
+          915,
+          816
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/action-slab-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/action-slab.png"
+  },
+  "ui/magnifier": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/magnifier.png",
+    "runtime": "games/shape-detective/assets/ui/magnifier.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/magnifier.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 85.813,
+        "opaquePct": 12.772,
+        "partialPct": 1.415
+      },
+      "bbox": [
+        54,
+        44,
+        467,
+        482
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        453,
+        478
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "c3794acfd0fccee326baa91dcd52825acf029be12131b7af53643890fa697bd6",
+    "runtimeSha256": "b4a7416f847d84fe0b4a44b7450c76a90b8a2e45fbf201591c4ed02bb5bbfa6f",
+    "magentaSha256": "bc20f644e0ec95820a62f186d033cae8e6be332a3653ce812a05daad227433ac",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        237,
+        4,
+        131
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 168187,
+      "centerHoleOpened": true,
+      "centerPixelsRemoved": 33500,
+      "centerThreshold": 58,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": false,
+        "keyedPixels": 27547,
+        "despilledPixels": 228041,
+        "openCenterEllipse": [
+          80,
+          74,
+          309,
+          301
+        ]
+      }
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 253 > 16",
+      "cornerAlpha": [
+        253,
+        249,
+        251,
+        253
+      ],
+      "canonicalReport": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.777,
+          "opaquePct": 79.656,
+          "partialPct": 7.566
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": [
+          760,
+          760
+        ],
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/magnifier-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/magnifier.png"
+  },
+  "ui/clue-plaque": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/clue-plaque.png",
+    "runtime": "games/shape-detective/assets/ui/clue-plaque.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/clue-plaque.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 57.394,
+        "opaquePct": 41.375,
+        "partialPct": 1.231
+      },
+      "bbox": [
+        12,
+        142,
+        483,
+        409
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        503,
+        307
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "d3fb0bd04fb42888e8c63eedfd328e0902e7b9b75a71a5d3cf2a891449932236",
+    "runtimeSha256": "e5ee123ddd5ba3d72ee4e196cb99d5ee5e004307a5096d96bcfe46313660397e",
+    "magentaSha256": "12c1522b4241120ba38ab85a8ea7706d5fefff6faa817f578b6aac22f30d1d98",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        241,
+        2,
+        135
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 142241,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": false,
+        "keyedPixels": 12471,
+        "despilledPixels": 152336,
+        "openCenterEllipse": null
+      }
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 254 > 16",
+      "cornerAlpha": [
+        254,
+        249,
+        252,
+        253
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 57.258,
+          "partialPct": 42.742
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/clue-plaque-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/clue-plaque.png"
+  },
+  "ui/rosette-coral": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/rosette-coral.png",
+    "runtime": "games/shape-detective/assets/rewards/rosette-coral.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/rosette-coral.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 58.0,
+        "opaquePct": 40.971,
+        "partialPct": 1.028
+      },
+      "bbox": [
+        57,
+        15,
+        403,
+        455
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        225,
+        280
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "c768cb0340f99c88aca40f2190f7decc59f5d1fab751faae24cf82b8f58e10e0",
+    "runtimeSha256": "7ff8a88051fb10fa6f1727667762920d2250d3b89e8f098fb534b89de8a593a4",
+    "magentaSha256": "58193c3300b71efc07f62900d834879dfb6745b8494302324ed1a6785c1ad991",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        238,
+        8,
+        132
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 144350,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": true,
+        "keyedPixels": 11580,
+        "despilledPixels": 153468,
+        "openCenterEllipse": null
+      }
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 254 > 16",
+      "cornerAlpha": [
+        254,
+        250,
+        252,
+        253
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 72.533,
+          "partialPct": 27.467
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/rosette-coral-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/rosette-coral.png"
+  },
+  "ui/rosette-turquoise": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/rosette-turquoise.png",
+    "runtime": "games/shape-detective/assets/rewards/rosette-turquoise.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/rosette-turquoise.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 57.521,
+        "opaquePct": 41.963,
+        "partialPct": 0.517
+      },
+      "bbox": [
+        99,
+        15,
+        448,
+        455
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        226,
+        280
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "5f8cd8007ccac4d4c3880d2137d0398247e07f6a670f68fc8875628561e499ea",
+    "runtimeSha256": "4e4cd6d77a2d250e3734a668dce519774a1dae1e90dc57c2685efef9cdb9403b",
+    "magentaSha256": "9c7861bb1da7f112f7aac50659496edae14d32d4b1710d60695e15f0660b456c",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        237,
+        10,
+        128
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 143694,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": true,
+        "keyedPixels": 9637,
+        "despilledPixels": 151280,
+        "openCenterEllipse": null
+      }
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 254 > 16",
+      "cornerAlpha": [
+        254,
+        250,
+        250,
+        252
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 71.618,
+          "partialPct": 28.382
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/rosette-turquoise-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/rosette-turquoise.png"
+  },
+  "ui/rosette-yellow": {
+    "workflow": "deterministic-contiguous-ground-key",
+    "selectedSource": "games/shape-detective/assets/source/fallback-alpha/ui/rosette-yellow.png",
+    "runtime": "games/shape-detective/assets/rewards/rosette-yellow.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/ui/rosette-yellow.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 57.74,
+        "opaquePct": 41.672,
+        "partialPct": 0.588
+      },
+      "bbox": [
+        79,
+        16,
+        427,
+        456
+      ],
+      "sourceSize": [
+        512,
+        512
+      ],
+      "finalSize": [
+        225,
+        280
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "bce3e3df1c8604be3c15b896e820ba2d1b9ae8cf50237a1aeec1b060a338454a",
+    "runtimeSha256": "c2582f53cc31614bded31915c15e78cd279b4c882e58b1e4c8ab2588ac569404",
+    "magentaSha256": "b0c9b9bf72955a60f3bdef57203c404acbc7827234ec96432c8fe5b3a1da164f",
+    "fallbackProcessing": {
+      "outerGroundRgb": [
+        241,
+        5,
+        132
+      ],
+      "outerThreshold": 46,
+      "outerPixelsRemoved": 144252,
+      "centerHoleOpened": false,
+      "centerPixelsRemoved": 0,
+      "centerThreshold": null,
+      "featherPx": 0.85,
+      "alphaFloor": 16,
+      "despill": {
+        "method": "magenta-chroma-shadow-despill",
+        "score": "green - 0.23 * min(red, blue)",
+        "softRange": [
+          -2,
+          14
+        ],
+        "preservePinkMaterial": true,
+        "keyedPixels": 9869,
+        "despilledPixels": 151955,
+        "openCenterEllipse": null
+      }
+    },
+    "qwenRejection": {
+      "reason": "opaque corner alpha 254 > 16",
+      "cornerAlpha": [
+        254,
+        249,
+        251,
+        253
+      ],
+      "canonicalReport": {
+        "pass": false,
+        "reason": "background not removed (transparent 0.0% < 5.0%)",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 0.0,
+          "opaquePct": 67.026,
+          "partialPct": 32.974
+        },
+        "bbox": [
+          0,
+          0,
+          1024,
+          1024
+        ],
+        "sourceSize": [
+          1024,
+          1024
+        ],
+        "finalSize": null,
+        "alphaFloor": 16
+      }
+    },
+    "rawLayer2": "games/shape-detective/assets/source/layer2/ui/rosette-yellow-seed42.png",
+    "sourceCrop": "games/shape-detective/assets/source/crops/ui/rosette-yellow.png"
+  },
+  "ui/case-closed": {
+    "workflow": "gpt-image-2 accepted master + deterministic alpha normalization + canonical cutout finalization",
+    "selectedSource": "games/shape-detective/assets/source/gpt-image-2/case-closed-alpha-normalized.png",
+    "runtime": "games/shape-detective/assets/ui/case-closed.webp",
+    "magentaQa": "games/shape-detective/assets/source/qa/final/case-closed-magenta.png",
+    "canonicalReport": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 37.919,
+        "opaquePct": 61.095,
+        "partialPct": 0.986
+      },
+      "bbox": [
+        50,
+        26,
+        1203,
+        1189
+      ],
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "finalSize": [
+        714,
+        720
+      ],
+      "alphaFloor": 16
+    },
+    "sourceSha256": "3258eb28be625b79f83216ca99a12c7a2d983fd7f375f1264e777a66244f0b33",
+    "runtimeSha256": "18323efb8503ca4caa97c62dacd77d8cf8533f54565faadfe1e84aa5e531b52c",
+    "magentaSha256": "ccd3453f88d1a7d4c07ba66a48982ae62a896fedb7aa443ecbc9e95c9991657b",
+    "source": "games/shape-detective/assets/source/gpt-image-2/case-closed-alpha-normalized.png"
+  }
+}

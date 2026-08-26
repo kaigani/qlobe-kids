@@ -1,0 +1,94 @@
+{
+  "generator": "OpenAI imagegen",
+  "model": "gpt-image-2",
+  "created": "2026-08-25",
+  "artDirection": "Toy — rough color-chalk classroom slate variant",
+  "assets": [
+    {
+      "id": "visual-direction",
+      "file": "visual-direction-master.png",
+      "mode": "reference generation",
+      "status": "accepted style master",
+      "references": [
+        "../../../../../../01-game-concepts/chalkboard-big-strokes/output/ui-mockups/01-stroke-select.png",
+        "../../../../../../01-game-concepts/shape-to-picture/output/ui-mockups/01-shape-select.png"
+      ],
+      "prompt": "Create one premium three-panel visual-direction board for a QLOBE Kids preschool game called Shape Detective. Show three coordinated 4:3 screen concepts: a case board for choosing one of three mysteries, a shape-property clue screen with large tactile chalk tokens, and a secret-spots search scene with a physical magnifying glass. Use a real charcoal-black classroom slate in a warm oak frame, chunky imperfect colored-chalk drawing, powdery broken edges, hand pressure, cheerful turquoise, sunflower yellow, coral, sky blue, leaf green, orange, lavender, and warm white. The world should feel hand-authored, calm, highly legible, and inviting to a five-year-old. Preserve generous interaction space and large objects. The only readable text may be the exact title SHAPE DETECTIVE. No people, no mascot, no emoji, no clean vector graphics, no gradients, no glossy app panels, no tiny controls."
+    },
+    {
+      "id": "caseboard",
+      "file": "caseboard-master.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "reference": "visual-direction-master.png",
+      "prompt": "Create a clean production background plate from the approved Shape Detective visual direction. A calm empty 4:3 charcoal-black classroom slate inside a warm substantial oak frame, straight-on view. Retain only sparse rough colored-chalk classroom doodles at the extreme edges, a tactile eraser resting at lower left, and four short colored chalk sticks at lower right. Keep the entire central 75 percent dark, quiet, and empty for interactive content. Premium real material texture, restrained warm upper-left light. No title, no words, no letters, no cards, no shapes in the play area, no magnifying glass, no UI, no characters, no gradients, no vector style."
+    },
+    {
+      "id": "search-scene",
+      "file": "search-scene-master.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "reference": "visual-direction-master.png",
+      "prompt": "Create one clean 4:3 production search-scene plate for Shape Detective in the approved rough colored classroom-chalk style: real dark slate in a warm oak frame, a small chalk house on the left with one clearly readable window, a rainbow high in the center, exactly two large flowers near lower center, a winding path along lower left, one telescope on the right, and two simple clouds high at the edges. Spacious composition with distinct landmarks and generous dark gaps where separate hidden shape sprites will later appear. Preserve hand pressure, dusty broken chalk edges, charming asymmetry, and premium tactile material. Do not draw any standalone circle, triangle, square, rectangle, pentagon, hexagon, hidden object, title, word, letter, number, prompt, button, character, or UI."
+    },
+    {
+      "id": "title",
+      "file": "title-master.png",
+      "mode": "reference generation",
+      "status": "accepted letterforms; background rejected for runtime",
+      "reference": "visual-direction-master.png",
+      "prompt": "Create one standalone wide title lockup reading exactly SHAPE DETECTIVE in two centered lines. SHAPE uses chunky turquoise, sunflower yellow, coral, sky-blue, and leaf-green classroom chalk letters; DETECTIVE uses warm white chalk. Replace the final O-like detective motif with a separate purple magnifying-glass flourish only if every required letter remains present and correctly ordered. Rough hand-drawn chalk texture, powder, broken edges, child-friendly legibility, generous clear margin, no crop. Transparent background if supported. No plaque, board, other objects, extra text, gradients, vector-clean edges, or misspelling."
+    },
+    {
+      "id": "shape-tokens",
+      "file": "shape-tokens-sheet.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "reference": "visual-direction-master.png",
+      "prompt": "A precise 4-column by 2-row contact sheet of exactly eight coordinated tactile classroom-chalk shape tokens, one complete object centered in each equal cell with generous separation. Top row left to right: turquoise circle, sunflower-yellow triangle, coral square, sky-blue horizontal rectangle. Bottom row left to right: lavender oval, orange pentagon, leaf-green hexagon, coral-pink five-point star. Each is a chunky filled handmade chalk piece with dusty broken edges, visible pressure and subtle material depth, consistent family scale, straight-on. One perfectly flat near-black #17191b background. No labels, letters, numbers, outlines without fill, extra objects, cell borders, hands, shadows crossing cells, crop, gradients, or vector-clean geometry."
+    },
+    {
+      "id": "mode-cards",
+      "file": "mode-cards-sheet.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "reference": "visual-direction-master.png",
+      "prompt": "A precise horizontal contact sheet of exactly three coordinated picture-only Shape Detective case cards, one complete tall rounded oak-framed slate card centered in each equal cell on one perfectly flat saturated magenta #ff00ff background. Left card: property clues, with a brass magnifier inspecting a turquoise chalk circle plus a yellow triangle and coral hexagon. Middle card: secret spots, with a chalk house, rainbow, two flowers, and a brass magnifier. Right card: chalk map, with a loose yellow triangle traveling along a dashed chalk path toward a turquoise square. Premium real chalk, slate, oak, and brass material, rough hand drawing, warm upper-left light, consistent camera and proportions. No words, letters, numbers, labels, characters, extra cards, cell borders, crop, gradients, or vector style."
+    },
+    {
+      "id": "ui-props",
+      "file": "ui-props-sheet.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "reference": "visual-direction-master.png",
+      "prompt": "A precise 3-column by 2-row contact sheet of exactly six coordinated Shape Detective UI props on one perfectly flat saturated magenta #ff00ff background, one complete object centered in each cell with generous separation. Top row: a large straight-on brass-ring magnifying glass with wooden handle and a genuinely clear open glass center; a wide blank clipped charcoal-slate clue plaque with small wood clips; a wide blank rounded oak action slab with dark slate inset. Bottom row: three identical scalloped chalk prize rosettes, respectively turquoise, sunflower yellow, and coral pink, each with a blank dark circular center. Premium tactile chalk, real slate, brass and warm oak, charming handmade imperfection, consistent lighting and scale family. No words, letters, numbers, labels, symbols, extra props, cell borders, crop, gradients, or vector-clean edges."
+    },
+    {
+      "id": "case-closed",
+      "file": "case-closed-master.png",
+      "mode": "reference generation",
+      "status": "accepted",
+      "references": [
+        "visual-direction-master.png",
+        "ui-props-sheet.png"
+      ],
+      "prompt": "Create one isolated decorative game UI stamp that belongs to the exact rough color-chalk-on-blackboard world shown in the references. Asset: a triumphant hand-drawn chalk seal reading exactly CASE CLOSED! in two centered lines, with CASE above CLOSED!, chunky uppercase classroom chalk lettering, highly legible for a five-year-old, cream white with small turquoise, yellow, and coral chalk accents. Surround the words with a loose imperfect circular detective seal, two tiny chalk sparkle marks, and one small magnifying-glass flourish. Tactile powder, broken chalk edges, visible hand pressure, charming asymmetry, premium children’s editorial illustration. This is a standalone cutout asset, centered with generous clear margin, no crop. Transparent background if supported; otherwise use one perfectly flat saturated magenta #FF00FF background for later deterministic isolation. No mockup, no board, no wood, no extra objects, no shadows outside the stamp, no gradients, no photography, no vector-clean edges, no other letters or words. Most important: spell the exact text CASE CLOSED! correctly and include every letter once."
+    },
+    {
+      "id": "title-alpha-edit",
+      "file": "title-alpha-edit-candidate.png",
+      "mode": "reference edit",
+      "status": "rejected — returned opaque checkerboard",
+      "reference": "title-master.png",
+      "prompt": "Edit the supplied Shape Detective title asset only. Preserve the exact approved title artwork, spelling, letter order, color assignments, line break, proportions, chunky hand-drawn classroom chalk texture, magnifying-glass flourish, and three small yellow rays. The title must remain exactly SHAPE on the first line and DETECTIVE on the second line. Remove the entire pale checkerboard/background and its gray cast-shadow residue, replacing it with genuine clean transparency all around and inside every open counter. Preserve soft dusty chalk edge flecks; do not crop any letter or the magnifying glass. Center the complete two-line lockup with generous transparent padding. Do not redraw, restyle, add, remove, rearrange, duplicate, or misspell any glyph. No board, no plaque, no background, no mockup, no extra text. Output one RGBA cutout."
+    },
+    {
+      "id": "chalk-map-board-master",
+      "file": "chalk-map-board-master.png",
+      "mode": "reference edit",
+      "status": "accepted",
+      "references": ["visual-direction-master.png", "caseboard-master.png", "games/shape-detective/assets/ui/action-slab.webp"],
+      "prompt": "Using the supplied Shape Detective visual-direction, empty caseboard, and oak action-slab references, create one clean production asset: a wide 16:9 empty CHALK MAP play board viewed perfectly straight-on. It must be a substantial warm hand-carved oak frame surrounding a quiet charcoal-black classroom slate, with a thin irregular warm-white chalk inset line just inside the wood and only a few tiny dusty colored-chalk tick marks confined to the extreme corners. Keep the central 85 percent completely empty, dark, calm, and high contrast for draggable shape tokens. Match the exact rough color-chalk, real slate, tactile oak, charming asymmetry, warm upper-left light, and premium preschool editorial material language of the references. The complete frame must be visible with generous margin and no crop. One single isolated board, no background scene, no cast shadow or colored halo outside the frame. No words, letters, numbers, symbols, standalone geometric shapes, arrows, targets, dashed paths, buttons, characters, gradients, glossy app surfaces, or vector-clean edges. Output an opaque raster plate; composition must be 16:9 landscape and safe to resize to 1600 by 900."
+    }
+  ]
+}

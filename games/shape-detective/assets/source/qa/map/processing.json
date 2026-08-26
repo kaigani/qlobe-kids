@@ -1,0 +1,114 @@
+{
+  "board": {
+    "source": "games/shape-detective/assets/source/gpt-image-2/chalk-map-board-master.png",
+    "output": "games/shape-detective/assets/map-board.webp",
+    "sourceSha256": "9972c33c76f1ea3a97832734c47904f900b1167ccc05266adf319d1fbeabc618",
+    "outputSha256": "dd03418138ca75abdb80ecf5169eb70af3f51c76f65ac784b2b02f3b01f1b1b6",
+    "size": [
+      1600,
+      900
+    ],
+    "method": "trim near-black outer ground + ImageOps.fit Lanczos; opaque WebP q92 method6",
+    "trim": {
+      "luminanceAbove": 12,
+      "bbox": [
+        17,
+        15,
+        1655,
+        926
+      ]
+    },
+    "qa": "games/shape-detective/assets/source/qa/map/board-at-640.png"
+  },
+  "ghosts": {
+    "triangle": {
+      "source": "games/shape-detective/assets/shapes/triangle.webp",
+      "output": "games/shape-detective/assets/ghosts/triangle.webp",
+      "sourceSha256": "d7f9e7a65cfb6c846be43e959d97cb8a2060822d465292e5a24a60c157205df5",
+      "outputSha256": "bc4e1a551f5501b1654a0ed2e46a3d6263bbd60d18a8c67d14f683b6d46c9cfb",
+      "size": [
+        311,
+        290
+      ],
+      "method": "colored-body mask + MinFilter(19) inner edge + source-luminance chalk texture",
+      "params": {
+        "alphaThreshold": 48,
+        "minimumRgb": 45,
+        "minimumChroma": 15,
+        "bodyClosePx": 9,
+        "erosionPx": 19,
+        "padPx": 8,
+        "webpQuality": 90,
+        "webpMethod": 6
+      }
+    },
+    "circle": {
+      "source": "games/shape-detective/assets/shapes/circle.webp",
+      "output": "games/shape-detective/assets/ghosts/circle.webp",
+      "sourceSha256": "4eede4d0704ae45b6ebc48f06076b9f1e175465c2675dbafbc521edfd233920d",
+      "outputSha256": "082700ce4d7ce1937aa65c253783fd9071752694a5e6a6fb938606c58e53a730",
+      "size": [
+        367,
+        368
+      ],
+      "method": "colored-body mask + MinFilter(19) inner edge + source-luminance chalk texture",
+      "params": {
+        "alphaThreshold": 48,
+        "minimumRgb": 45,
+        "minimumChroma": 15,
+        "bodyClosePx": 9,
+        "erosionPx": 19,
+        "padPx": 8,
+        "webpQuality": 90,
+        "webpMethod": 6
+      }
+    },
+    "rectangle": {
+      "source": "games/shape-detective/assets/shapes/rectangle.webp",
+      "output": "games/shape-detective/assets/ghosts/rectangle.webp",
+      "sourceSha256": "66c6cda18ba5f09fa3f4d79722c8113ef0e80c2231006751e956460e023d82ec",
+      "outputSha256": "69d0f44c901f6f159947c05e03a3f2e3b0c418e001f15e9237486ea6d55f55b6",
+      "size": [
+        332,
+        198
+      ],
+      "method": "colored-body mask + MinFilter(19) inner edge + source-luminance chalk texture",
+      "params": {
+        "alphaThreshold": 48,
+        "minimumRgb": 45,
+        "minimumChroma": 15,
+        "bodyClosePx": 9,
+        "erosionPx": 19,
+        "padPx": 8,
+        "webpQuality": 90,
+        "webpMethod": 6
+      }
+    },
+    "square": {
+      "source": "games/shape-detective/assets/shapes/square.webp",
+      "output": "games/shape-detective/assets/ghosts/square.webp",
+      "sourceSha256": "1c8b82f6e21fcd1f469f1b786ac79cedbdb72d774f33a46ed38eaff25a8c5fbb",
+      "outputSha256": "d8fdf3b03befc25fcb07c0a9f42f7744a5d3878ddedb9488608d2f68dfaf15c5",
+      "size": [
+        263,
+        265
+      ],
+      "method": "colored-body mask + MinFilter(19) inner edge + source-luminance chalk texture",
+      "params": {
+        "alphaThreshold": 48,
+        "minimumRgb": 45,
+        "minimumChroma": 15,
+        "bodyClosePx": 9,
+        "erosionPx": 19,
+        "padPx": 8,
+        "webpQuality": 90,
+        "webpMethod": 6
+      }
+    }
+  },
+  "qa": {
+    "magenta": "games/shape-detective/assets/source/qa/map/ghosts-magenta.png",
+    "black": "games/shape-detective/assets/source/qa/map/ghosts-black.png",
+    "white": "games/shape-detective/assets/source/qa/map/ghosts-white.png"
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "source": "games/shape-detective/assets/source/gpt-image-2/shape-tokens-sheet.png",
+  "sourceSha256": "fbb90679901402e03eecb5050d8937319da007058bc927d623d29052a5afce4d",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    23,
+    25,
+    27
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "circle",
+      "file": "circle.png",
+      "componentArea": 56422,
+      "foregroundBbox": [
+        105,
+        191,
+        373,
+        460
+      ],
+      "cropBbox": [
+        93,
+        179,
+        385,
+        472
+      ],
+      "cropXywh": [
+        93,
+        179,
+        292,
+        293
+      ],
+      "normalizedCropBbox": [
+        0.060547,
+        0.174805,
+        0.250651,
+        0.460938
+      ]
+    },
+    {
+      "index": 2,
+      "name": "triangle",
+      "file": "triangle.png",
+      "componentArea": 43027,
+      "foregroundBbox": [
+        445,
+        184,
+        737,
+        447
+      ],
+      "cropBbox": [
+        433,
+        172,
+        749,
+        459
+      ],
+      "cropXywh": [
+        433,
+        172,
+        316,
+        287
+      ],
+      "normalizedCropBbox": [
+        0.281901,
+        0.167969,
+        0.48763,
+        0.448242
+      ]
+    },
+    {
+      "index": 3,
+      "name": "square",
+      "file": "square.png",
+      "componentArea": 58269,
+      "foregroundBbox": [
+        798,
+        198,
+        1041,
+        449
+      ],
+      "cropBbox": [
+        786,
+        186,
+        1053,
+        461
+      ],
+      "cropXywh": [
+        786,
+        186,
+        267,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.511719,
+        0.181641,
+        0.685547,
+        0.450195
+      ]
+    },
+    {
+      "index": 4,
+      "name": "rectangle",
+      "file": "rectangle.png",
+      "componentArea": 56509,
+      "foregroundBbox": [
+        1112,
+        243,
+        1426,
+        424
+      ],
+      "cropBbox": [
+        1100,
+        231,
+        1438,
+        436
+      ],
+      "cropXywh": [
+        1100,
+        231,
+        338,
+        205
+      ],
+      "normalizedCropBbox": [
+        0.716146,
+        0.225586,
+        0.936198,
+        0.425781
+      ]
+    },
+    {
+      "index": 5,
+      "name": "oval",
+      "file": "oval.png",
+      "componentArea": 45420,
+      "foregroundBbox": [
+        143,
+        540,
+        346,
+        824
+      ],
+      "cropBbox": [
+        131,
+        528,
+        358,
+        836
+      ],
+      "cropXywh": [
+        131,
+        528,
+        227,
+        308
+      ],
+      "normalizedCropBbox": [
+        0.085286,
+        0.515625,
+        0.233073,
+        0.816406
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pentagon",
+      "file": "pentagon.png",
+      "componentArea": 53988,
+      "foregroundBbox": [
+        442,
+        541,
+        724,
+        814
+      ],
+      "cropBbox": [
+        430,
+        529,
+        736,
+        826
+      ],
+      "cropXywh": [
+        430,
+        529,
+        306,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.279948,
+        0.516602,
+        0.479167,
+        0.806641
+      ]
+    },
+    {
+      "index": 7,
+      "name": "hexagon",
+      "file": "hexagon.png",
+      "componentArea": 53826,
+      "foregroundBbox": [
+        786,
+        554,
+        1065,
+        809
+      ],
+      "cropBbox": [
+        774,
+        542,
+        1077,
+        821
+      ],
+      "cropXywh": [
+        774,
+        542,
+        303,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.503906,
+        0.529297,
+        0.701172,
+        0.801758
+      ]
+    },
+    {
+      "index": 8,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 41676,
+      "foregroundBbox": [
+        1124,
+        530,
+        1414,
+        820
+      ],
+      "cropBbox": [
+        1112,
+        518,
+        1426,
+        832
+      ],
+      "cropXywh": [
+        1112,
+        518,
+        314,
+        314
+      ],
+      "normalizedCropBbox": [
+        0.723958,
+        0.505859,
+        0.928385,
+        0.8125
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 34,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
