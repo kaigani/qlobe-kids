@@ -262,6 +262,43 @@ async function recordedAudio(browser) {
     JSON.stringify(audioLog));
   checkClean(session, 'audio session');
   await session.close();
+
+  // Regression: recorded Chalk Map success lines are longer than the old
+  // fixed 1.5s transition. Round 3's 3.1s line must finish before round 4
+  // replaces the play field and stops the channel.
+  const mapSession = await openSession(browser, {
+    url: `${BASE}/games/shape-detective/`, base: BASE,
+    viewport: { width: 1024, height: 768 }, seed: 42, mute: false,
+    allowAbortedMedia: true,
+    allowRemote: PLATFORM_ANALYTICS,
+  });
+  const { page: mapPage } = mapSession;
+  await mapPage.locator('.mode-card-place').click();
+  await mapPage.waitForFunction(() => window.QLOBE_DEBUG.getAudioLog().some((entry) => entry.key === 'intro-place'));
+  for (let completed = 0; completed < 2; completed += 1) {
+    const before = await debug.getState(mapPage);
+    check(`Chalk Map voice gate setup accepts round ${before.round + 1}`, await debug.winRound(mapPage) === true);
+    await mapPage.waitForFunction((round) => window.QLOBE_DEBUG.getState().round > round, before.round, { timeout: 8000 });
+  }
+  const third = await debug.getState(mapPage);
+  check('Chalk Map voice gate setup reaches round 3', third.round === 2);
+  check('Chalk Map round 3 completion starts its recorded line', await debug.winRound(mapPage) === true);
+  await mapPage.waitForFunction(
+    () => window.QLOBE_DEBUG.getAudioLog().some((entry) => entry.key === 'place-3-success'),
+    { timeout: 4000 },
+  );
+  await mapPage.waitForTimeout(1800);
+  const held = await debug.getState(mapPage);
+  check('Chalk Map holds the solved board until completion voice ends',
+    held.round === 2 && held.accepting === false && held.currentVoiceKey === 'place-3-success',
+    JSON.stringify(held));
+  await mapPage.waitForFunction(() => window.QLOBE_DEBUG.getState().round === 3, { timeout: 8000 });
+  const next = await debug.getState(mapPage);
+  check('Chalk Map starts the next clue after completion voice',
+    next.round === 3 && next.currentVoiceKey === 'place-4-prompt',
+    JSON.stringify(next));
+  checkClean(mapSession, 'Chalk Map voice-gate session');
+  await mapSession.close();
 }
 
 async function main() {

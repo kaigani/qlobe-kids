@@ -49,6 +49,7 @@ let scene = null;
 let lens = null;
 let drag = null;
 let musicStarted = false;
+let speechGeneration = 0;
 let readyResolve;
 const ready = new Promise((resolve) => { readyResolve = resolve; });
 
@@ -247,7 +248,30 @@ function setFastTimers(scale = 0.05) {
 
 function speak(key, fallback = config?.voice?.[key] || '') {
   if (!key || !config) return Promise.resolve();
+  speechGeneration += 1;
   return bgm.duckDuring(voice.say(key, fallback), { down: 0.2, downMs: 90, upMs: 320 });
+}
+
+// Hold the solved board long enough for a child to register the result, then
+// wait for the complete success line before replacing the play field. The
+// fixed timer previously cut off longer recorded clips (most visibly on Chalk
+// Map round 3) when resetPlayHost() stopped the old voice for the next round.
+// A generation guard also makes replaying a line or leaving the screen
+// invalidate this pending transition.
+function advanceAfterVoice(key, minimumMs = 1500) {
+  const modeAtStart = state.mode;
+  const roundAtStart = state.round;
+  const spoken = speak(key);
+  const generationAtStart = speechGeneration;
+  const minimumHold = timers.wait(minimumMs);
+  Promise.all([spoken, minimumHold]).then(() => {
+    if (state.screen !== 'play'
+        || state.mode !== modeAtStart
+        || state.round !== roundAtStart
+        || state.accepting
+        || speechGeneration !== generationAtStart) return;
+    advanceRound();
+  });
 }
 
 function repeatPrompt() {
@@ -288,7 +312,10 @@ function clearInteraction({ stopVoice = true } = {}) {
   activeTargets.clear();
   destroySearch();
   cancelDrag();
-  if (stopVoice) voice.stop();
+  if (stopVoice) {
+    speechGeneration += 1;
+    voice.stop();
+  }
 }
 
 function showSplash({ speakWelcome = false } = {}) {
@@ -449,8 +476,7 @@ function chooseProperty(shape, button = app.querySelector(`.shape-choice[data-sh
     makeChalkBurst(button);
     const key = `${currentRound().id}-success`;
     setPrompt(config.voice[key], key);
-    speak(key);
-    timers.after(1500, advanceRound);
+    advanceAfterVoice(key);
     return true;
   }
   state.wrongAttempts += 1;
@@ -572,8 +598,7 @@ function chooseSearchSpot(id, handle = scene?.get(id)) {
     sfx.tada();
     const key = `${currentRound().id}-success`;
     setPrompt(config.voice[key], key);
-    speak(key);
-    timers.after(1550, advanceRound);
+    advanceAfterVoice(key, 1550);
     return true;
   }
   state.wrongAttempts += 1;
@@ -753,8 +778,7 @@ function attemptPlacement(x, y, source = 'unknown') {
     makeChalkBurst(placed);
     const key = `${round.id}-success`;
     setPrompt(config.voice[key], key);
-    speak(key);
-    timers.after(1500, advanceRound);
+    advanceAfterVoice(key);
     return true;
   }
   state.wrongAttempts += 1;

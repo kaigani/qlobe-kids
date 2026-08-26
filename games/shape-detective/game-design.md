@@ -114,7 +114,8 @@ Home appears only on CASEBOARD. Replay voice appears on every play screen.
 - The active learning object owns the visual center. Decorative props stay at the
   edge and never compete with the answer.
 - A correct action lands the evidence stamp, recasts the learning fact aloud, and
-  advances after a short readable hold. Debug mode can skip the hold.
+  advances after a short readable hold only once that spoken completion line has
+  finished. Debug mode can skip the hold.
 - A wrong action never changes progress. It gives one small chalk puff/wobble and a
   precise modeling line, then leaves the same evidence available.
 
