@@ -281,6 +281,12 @@ For a serious replacement or live-quality game, `game-design.md` should answer:
 - `QLOBE_DEBUG` surface;
 - known risks and release gate.
 
+When a brief calls for a rough color-chalk sketch on a blackboard, record the
+canonical label as **Toy** and name the per-game treatment “rough color-chalk
+classroom slate.” Use the shared art-direction guidance for the charcoal slate,
+warm oak, dusty broken chalk, and raster-only primary-art rules; do not create a
+new canonical world or silently substitute the glossy `toy-table` look.
+
 Write spoken lines before voice generation. Write the art list before generating
 images. This avoids expensive production work for controls or content that later
 disappear.

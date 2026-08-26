@@ -41,6 +41,22 @@ existing `shared/assets/objects/` library is the canon for the Toy family.
 - **Home categories:** reading-phonics, math-number-sense, matching/memory,
   practical-life, and object-based sensorial games.
 
+#### Toy treatment: rough color-chalk classroom slate
+
+Toy may take a classroom-slate treatment when the physical board is part of the
+learning fantasy. This is the approved treatment used by **Shape Detective**:
+real charcoal-black slate, a substantial warm-oak frame, dusty colored-chalk
+marks with broken edges and visible hand pressure, and chunky tactile chalk
+tokens and classroom props. It remains a Toy treatment—not a seventh canonical
+art world—and must keep the Toy promise of clear, child-scale objects.
+
+For this treatment, primary visible objects are authored raster assets (or
+reviewed raster derivatives) that share the slate/chalk material language. CSS,
+SVG, canvas, and DOM geometry may provide layout, hit areas, focus states, and
+motion, but must not draw the board, tokens, props, rewards, or other primary
+art. The runtime/style slug may be game-specific; the Shape Detective config
+uses `rough-color-chalk-classroom-slate`.
+
 ### 3. Watercolor / Storybook
 Illustrated story worlds on warm paper: hand-painted gouache or watercolor,
 gentle ink or colored-pencil definition, visible paper grain, imperfect edges,

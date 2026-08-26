@@ -608,13 +608,27 @@ crossed with four styles is four looks, not four templates.
     ],
     "styles": ["storybook", "toy-table", "field-journal"],
     "defaultStyle": "storybook",
-    "variants": { "toy-table": { "prompt": "{setting}, open empty stage. {style.suffix}" } },
+    "variants": {
+      "toy-table": { "prompt": "{setting}, open empty stage. {style.suffix}" },
+      "rough-color-chalk-classroom-slate": {
+        "canonicalWorld": "Toy",
+        "status": "proven",
+        "prompt": "{setting}, real charcoal classroom slate in a warm oak frame, rough colored chalk with dusty broken edges and visible hand pressure; tactile authored raster objects, no vector-clean geometry"
+      }
+    },
     "examples": ["Amber Acorn Village, a tiny woodland village…"],
     "assignHint": "keep the accepted file under about 300 KB",
     "provenance": "the Story Stones backdrop slot template; the puppet-band stage background"
   }]
 }
 ```
+
+The `rough-color-chalk-classroom-slate` entry is a proven, game-specific Toy
+treatment established by Shape Detective's accepted GPT Image 2 and Krea 2
+asset pass. It is intentionally narrower than the glossy `toy-table` default:
+select it only when the brief calls for a physical blackboard/slate world and
+the asset plan includes authored raster foreground objects plus provenance and
+magenta/alpha QA.
 
 Rules:
 
