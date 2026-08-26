@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 // repository (which intentionally has no root package.json type declaration).
 const source = await readFile(new URL('../js/letter-writing.js', import.meta.url), 'utf8');
 const { createLetterWriter } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const config = JSON.parse(await readFile(new URL('../config.json', import.meta.url), 'utf8'));
 
 function canvas() {
   const ctx = { beginPath() {}, setLineDash() {}, moveTo() {}, lineTo() {}, stroke() {}, arc() {}, fill() {}, clearRect() {}, save() {}, restore() {}, scale() {} };
@@ -34,4 +35,12 @@ trace(writer, line({ x: .25, y: .2 }, { x: .25, y: .8 }));
 assert.equal(writer.debugTrace().completed, 1, 'debug trace follows actual progress');
 const sized = writer.resize(); assert.deepEqual(sized, { width: 400, height: 300, dpr: 1 });
 writer.destroy();
+
+// The manuscript e must teach a left-to-right crossbar before its loop/tail;
+// this guards against accidentally restoring the old reversed formation path.
+const eGuide = config.letters.e.strokes;
+assert.equal(eGuide.length, 1, 'lowercase e is one continuous formation');
+assert.ok(eGuide[0][0][0] < .3, 'lowercase e starts near the left midline');
+assert.ok(eGuide[0][3][0] > .65, 'lowercase e crosses left to right before looping');
+assert.ok(eGuide[0][4][1] < eGuide[0][3][1], 'lowercase e rises into its loop after the crossbar');
 console.log('letter-writing tests passed');

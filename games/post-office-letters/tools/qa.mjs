@@ -134,6 +134,13 @@ async function run() {
     check('physical pointer trace advances the current lowercase',
       writingAfter.letterIndex > writingBefore.letterIndex || writingAfter.phase === 'stamp',
       JSON.stringify({ before: writingBefore, after: writingAfter }));
+    const eModel = await debug.call(page, 'getTraceModel');
+    const eTurn = eModel?.path?.findIndex((point) => point.y < .5) ?? -1;
+    check('lowercase e guide forms left-to-right before its loop',
+      eModel?.id === 'e' && eModel.path?.[0]?.x < .3 && eTurn > 0
+        && eModel.path[eTurn - 1]?.x > .65,
+      JSON.stringify(eModel));
+    await visualShot(page, '03b-writing-e-desktop');
     if (writingAfter.phase === 'writing') {
       const keyboardBefore = await state(page);
       await page.locator('.name-cell.is-current canvas').focus();
