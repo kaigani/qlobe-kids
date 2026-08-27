@@ -1,0 +1,103 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ash-pose-actor",
+  "kind": "pose-actor",
+  "asset": "poses.json",
+  "preview": "contact.webp",
+  "actor": {
+    "id": "ash",
+    "label": "Ash",
+    "set": "ash-v1"
+  },
+  "steps": [
+    {
+      "op": "assemble-pose-actor",
+      "from": [
+        "ash-v1-neutral",
+        "ash-v1-enter",
+        "ash-v1-notice",
+        "ash-v1-interact",
+        "ash-v1-react",
+        "ash-v1-celebrate"
+      ],
+      "canvas": [
+        1024,
+        1024
+      ],
+      "maxArt": 900,
+      "baseline": 972,
+      "scale": 1.028571,
+      "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+      "encode": "webp q90 method6",
+      "output": "poses/<pose>.webp + poses.json"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": "ash-v1-neutral",
+  "derivedFromSet": [
+    "ash-v1-neutral",
+    "ash-v1-enter",
+    "ash-v1-notice",
+    "ash-v1-interact",
+    "ash-v1-react",
+    "ash-v1-celebrate"
+  ],
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "bytes": 88064,
+      "artSize": [
+        440,
+        895
+      ]
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "bytes": 107820,
+      "artSize": [
+        610,
+        878
+      ]
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "bytes": 96790,
+      "artSize": [
+        502,
+        879
+      ]
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "bytes": 84094,
+      "artSize": [
+        544,
+        894
+      ]
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "bytes": 102356,
+      "artSize": [
+        579,
+        881
+      ]
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "bytes": 104556,
+      "artSize": [
+        721,
+        900
+      ]
+    }
+  },
+  "qa": {
+    "status": "accepted",
+    "poses": 6,
+    "scale": 1.028571,
+    "bytes": 583680
+  },
+  "created": "2026-08-26"
+}

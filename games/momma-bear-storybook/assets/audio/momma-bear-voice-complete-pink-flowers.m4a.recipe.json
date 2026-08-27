@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-complete-pink-flowers",
+  "kind": "voice",
+  "asset": "momma-bear-voice-complete-pink-flowers.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Fia cared for a small thing, and it grew.",
+      "seed": 9
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Fia cared for a small thing, and it grew.",
+      "heard": "Fia cared for a small thing and it grew.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

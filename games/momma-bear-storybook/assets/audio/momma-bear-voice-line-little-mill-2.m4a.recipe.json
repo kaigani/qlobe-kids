@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-line-little-mill-2",
+  "kind": "voice",
+  "asset": "momma-bear-voice-line-little-mill-2.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Pip gives half to a kind man.",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Pip gives half to a kind man.",
+      "heard": "Pip gives half to a kind man.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

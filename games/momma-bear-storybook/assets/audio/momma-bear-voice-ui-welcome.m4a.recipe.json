@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-ui-welcome",
+  "kind": "voice",
+  "asset": "momma-bear-voice-ui-welcome.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Come close, little reader. Pick a story for us.",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Come close, little reader. Pick a story for us.",
+      "heard": "Come close, Little Reader. Pick a story for us.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

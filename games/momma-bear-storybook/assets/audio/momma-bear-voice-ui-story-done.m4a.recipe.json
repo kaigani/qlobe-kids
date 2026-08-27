@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-ui-story-done",
+  "kind": "voice",
+  "asset": "momma-bear-voice-ui-story-done.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "You read the whole story!",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "You read the whole story!",
+      "heard": "You read the whole story.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

@@ -1,0 +1,38 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-surface-kit-v1",
+  "kind": "image-contact-sheet",
+  "asset": "surface-kit-v1.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "execution": "exec-cb908aec-9b83-4194-992d-1268389bc3da",
+      "promptRef": "PROMPTS.md#surface-kit",
+      "refs": ["../ui-mockups/00-overview-v1.png", "ui-kit-v1.png"],
+      "output": "surface-kit-v1.png"
+    },
+    {
+      "op": "crop-and-defringe",
+      "key": "#f80488",
+      "similarity": 0.2,
+      "blend": 0.05,
+      "erodePasses": 3,
+      "preserveExistingAlpha": true
+    },
+    {
+      "op": "encode",
+      "format": "webp",
+      "quality": 92,
+      "method": 6,
+      "outputs": ["../../ui/reading-panel.webp", "../../ui/completion-panel.webp"]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "alphaReviewedOnDark": true,
+    "centersBlank": true
+  },
+  "created": "2026-08-27"
+}

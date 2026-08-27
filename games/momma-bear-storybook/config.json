@@ -1,0 +1,436 @@
+{
+  "format": "qlobe-storybook-reader",
+  "formatVersion": 1,
+  "id": "momma-bear-storybook",
+  "title": "Momma Bear's Storybook",
+  "home": "../../index.html",
+  "artDirection": {
+    "canonical": "Papercraft",
+    "styleId": "paper-garden",
+    "palette": {
+      "cream": "#f4dfb5",
+      "ink": "#173d57",
+      "cranberry": "#9f3140",
+      "teal": "#237b78",
+      "coral": "#dc6954",
+      "leaf": "#608650",
+      "gold": "#e3ad3b"
+    }
+  },
+  "stage": {
+    "actorPack": "./assets/actors/pack.json",
+    "propPack": "./assets/props/pack.json",
+    "floorY": 0.84,
+    "portraitFloorY": 0.65,
+    "landscapePropShiftY": 0.18,
+    "portraitPropShiftY": 0.18,
+    "worldScale": 1.42,
+    "poses": ["neutral", "enter", "notice", "interact", "react", "celebrate"]
+  },
+  "ui": {
+    "shelfBackdrop": "./assets/backdrops/storybook-nook.webp",
+    "title": "./assets/ui/title-lockup.webp",
+    "wordTile": "./assets/ui/word-tile.webp",
+    "wordTileDone": "./assets/ui/word-tile-done.webp",
+    "actTab": "./assets/ui/act-tab.webp",
+    "pageStitch": "./assets/ui/page-stitch.webp",
+    "pageTurn": "./assets/ui/page-turn.webp",
+    "readingPanel": "./assets/ui/reading-panel.webp",
+    "completionPanel": "./assets/ui/completion-panel.webp",
+    "againButton": "./assets/ui/button-again.webp",
+    "shelfButton": "./assets/ui/button-shelf.webp",
+    "homeButton": "./assets/ui/button-home.webp",
+    "soundButton": "./assets/ui/button-sound.webp",
+    "introPoster": null,
+    "introVideo": null
+  },
+  "audio": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json",
+    "bgm": "../../shared/assets/music/cozy-starlight-lullaby.mp3",
+    "ui": {
+      "ui:welcome": "Come close, little reader. Pick a story for us.",
+      "ui:how-to": "Tap each word to hear it. The glowing word can go first.",
+      "ui:next-word": "Find the glowing word.",
+      "ui:line-ready": "Now watch the words come alive.",
+      "ui:beginning-done": "That was the beginning. Turn the page for the middle.",
+      "ui:middle-done": "That was the middle. Turn the page for the ending.",
+      "ui:story-done": "You read the whole story!",
+      "ui:again": "Shall we read it again?",
+      "ui:new-story": "Pick another story from the shelf.",
+      "ui:audio-fallback": "I can still read with you."
+    }
+  },
+  "modes": [
+    {
+      "id": "little-mill",
+      "title": "The Little Mill and the Sea",
+      "skill": "one-to-one print tracking"
+    },
+    {
+      "id": "pink-flowers",
+      "title": "Fia and the Pink Flowers",
+      "skill": "one-to-one print tracking"
+    },
+    {
+      "id": "glass-hill",
+      "title": "The Glass Hill",
+      "skill": "one-to-one print tracking"
+    }
+  ],
+  "stories": [
+    {
+      "id": "little-mill",
+      "title": "The Little Mill and the Sea",
+      "shortTitle": "Little Mill & Sea",
+      "sourceTitle": "Why the Sea Is Salt",
+      "source": "The Blue Fairy Book, Andrew Lang, Project Gutenberg eBook 503",
+      "hero": "pip",
+      "card": "./assets/story-cards/little-mill.webp",
+      "charm": "./assets/props/charm-little-mill.webp",
+      "backdrop": "./assets/backdrops/little-mill-harbor.webp",
+      "accent": "#3f91a6",
+      "completionKey": "complete:little-mill",
+      "completion": "Pip shared, listened, and helped the sea.",
+      "pages": [
+        {
+          "id": "little-mill-1",
+          "act": "beginning",
+          "lineKey": "line:little-mill:1",
+          "line": "Pip has one warm bun.",
+          "stage": {
+            "heroX": 0.52,
+            "beforePose": "enter",
+            "storyPose": "notice",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "bun", "x": 0.64, "y": 0.77, "scale": 0.16, "phase": "before", "action": "pop"}
+            ],
+            "effect": "warm-glow"
+          }
+        },
+        {
+          "id": "little-mill-2",
+          "act": "beginning",
+          "lineKey": "line:little-mill:2",
+          "line": "Pip gives half to a kind man.",
+          "stage": {
+            "heroX": 0.37,
+            "beforePose": "neutral",
+            "storyPose": "interact",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "woodcarver", "x": 0.70, "y": 0.84, "scale": 0.42, "phase": "before", "action": "enter-right"},
+              {"id": "half-bun", "x": 0.54, "y": 0.69, "scale": 0.12, "phase": "story", "action": "float"}
+            ],
+            "effect": "sparkle"
+          }
+        },
+        {
+          "id": "little-mill-3",
+          "act": "middle",
+          "lineKey": "line:little-mill:3",
+          "line": "The man gives Pip a magic mill.",
+          "stage": {
+            "heroX": 0.42,
+            "beforePose": "notice",
+            "storyPose": "interact",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "woodcarver", "x": 0.72, "y": 0.84, "scale": 0.42, "phase": "before", "action": "still"},
+              {"id": "magic-mill", "x": 0.56, "y": 0.77, "scale": 0.21, "phase": "story", "action": "pop"}
+            ],
+            "effect": "sparkle"
+          }
+        },
+        {
+          "id": "little-mill-4",
+          "act": "middle",
+          "lineKey": "line:little-mill:4",
+          "line": "“Make salt!” says a ship captain.",
+          "stage": {
+            "heroX": 0.36,
+            "beforePose": "neutral",
+            "storyPose": "react",
+            "settlePose": "notice",
+            "props": [
+              {"id": "magic-mill", "x": 0.55, "y": 0.78, "scale": 0.21, "phase": "before", "action": "still"},
+              {"id": "captain-boat", "x": 0.76, "y": 0.75, "scale": 0.34, "phase": "story", "action": "bob"}
+            ],
+            "effect": "wave"
+          }
+        },
+        {
+          "id": "little-mill-5",
+          "act": "ending",
+          "lineKey": "line:little-mill:5",
+          "line": "Whirr, whirr! Salt spills in the sea.",
+          "stage": {
+            "heroX": 0.35,
+            "beforePose": "notice",
+            "storyPose": "react",
+            "settlePose": "react",
+            "props": [
+              {"id": "magic-mill", "x": 0.56, "y": 0.77, "scale": 0.22, "phase": "before", "action": "spin"},
+              {"id": "salt-ribbon", "x": 0.68, "y": 0.79, "scale": 0.35, "phase": "story", "action": "spill"},
+              {"id": "captain-boat", "x": 0.80, "y": 0.73, "scale": 0.31, "phase": "before", "action": "bob"}
+            ],
+            "effect": "wave"
+          }
+        },
+        {
+          "id": "little-mill-6",
+          "act": "ending",
+          "lineKey": "line:little-mill:6",
+          "line": "Pip says, “Rest!” and the sea sparkles.",
+          "stage": {
+            "heroX": 0.45,
+            "beforePose": "react",
+            "storyPose": "interact",
+            "settlePose": "celebrate",
+            "props": [
+              {"id": "magic-mill", "x": 0.61, "y": 0.78, "scale": 0.21, "phase": "before", "action": "settle"},
+              {"id": "sea-sparkles", "x": 0.67, "y": 0.68, "scale": 0.46, "phase": "story", "action": "glow"}
+            ],
+            "effect": "burst"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pink-flowers",
+      "title": "Fia and the Pink Flowers",
+      "shortTitle": "Fia's Pink Flowers",
+      "sourceTitle": "Felicia and the Pot of Pinks",
+      "source": "The Blue Fairy Book, Andrew Lang, Project Gutenberg eBook 503",
+      "hero": "fia",
+      "card": "./assets/story-cards/pink-flowers.webp",
+      "charm": "./assets/props/pinks-bloom.webp",
+      "backdrop": "./assets/backdrops/pink-flowers-garden.webp",
+      "accent": "#c85e72",
+      "completionKey": "complete:pink-flowers",
+      "completion": "Fia cared for a small thing, and it grew.",
+      "pages": [
+        {
+          "id": "pink-flowers-1",
+          "act": "beginning",
+          "lineKey": "line:pink-flowers:1",
+          "line": "Fia loves her pot of pinks.",
+          "stage": {
+            "heroX": 0.48,
+            "beforePose": "enter",
+            "storyPose": "notice",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "pinks-droop", "x": 0.65, "y": 0.78, "scale": 0.24, "phase": "before", "action": "sway"}
+            ],
+            "effect": "warm-glow"
+          }
+        },
+        {
+          "id": "pink-flowers-2",
+          "act": "beginning",
+          "lineKey": "line:pink-flowers:2",
+          "line": "She walks to get fresh water.",
+          "stage": {
+            "heroX": 0.43,
+            "beforePose": "enter",
+            "storyPose": "interact",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "plain-pitcher", "x": 0.59, "y": 0.75, "scale": 0.17, "phase": "before", "action": "bob"}
+            ],
+            "effect": "ripple"
+          }
+        },
+        {
+          "id": "pink-flowers-3",
+          "act": "middle",
+          "lineKey": "line:pink-flowers:3",
+          "line": "The Wood Queen gives her a gold cup.",
+          "stage": {
+            "heroX": 0.35,
+            "beforePose": "notice",
+            "storyPose": "interact",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "wood-queen", "x": 0.73, "y": 0.84, "scale": 0.44, "phase": "before", "action": "enter-right"},
+              {"id": "gold-cup", "x": 0.55, "y": 0.68, "scale": 0.16, "phase": "story", "action": "float"}
+            ],
+            "effect": "sparkle"
+          }
+        },
+        {
+          "id": "pink-flowers-4",
+          "act": "middle",
+          "lineKey": "line:pink-flowers:4",
+          "line": "A silly cabbage says, “Look by the bed!”",
+          "stage": {
+            "heroX": 0.38,
+            "beforePose": "notice",
+            "storyPose": "react",
+            "settlePose": "notice",
+            "props": [
+              {"id": "cabbage", "x": 0.66, "y": 0.79, "scale": 0.24, "phase": "story", "action": "bounce"},
+              {"id": "cottage-bed", "x": 0.80, "y": 0.75, "scale": 0.28, "phase": "before", "action": "still"}
+            ],
+            "effect": "silly"
+          }
+        },
+        {
+          "id": "pink-flowers-5",
+          "act": "ending",
+          "lineKey": "line:pink-flowers:5",
+          "line": "Fia finds the pinks and shares the water.",
+          "stage": {
+            "heroX": 0.39,
+            "beforePose": "notice",
+            "storyPose": "interact",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "pinks-droop", "x": 0.68, "y": 0.78, "scale": 0.24, "phase": "before", "action": "sway"},
+              {"id": "gold-cup", "x": 0.53, "y": 0.69, "scale": 0.16, "phase": "before", "action": "tilt"},
+              {"id": "water-ribbon", "x": 0.61, "y": 0.70, "scale": 0.25, "phase": "story", "action": "pour"}
+            ],
+            "effect": "ripple"
+          }
+        },
+        {
+          "id": "pink-flowers-6",
+          "act": "ending",
+          "lineKey": "line:pink-flowers:6",
+          "line": "Pop, pop, pop! The pinks wake and bloom.",
+          "stage": {
+            "heroX": 0.39,
+            "beforePose": "react",
+            "storyPose": "celebrate",
+            "settlePose": "celebrate",
+            "props": [
+              {"id": "pinks-bloom", "x": 0.67, "y": 0.76, "scale": 0.32, "phase": "story", "action": "unfold"},
+              {"id": "cabbage", "x": 0.82, "y": 0.81, "scale": 0.19, "phase": "before", "action": "bounce"}
+            ],
+            "effect": "burst"
+          }
+        }
+      ]
+    },
+    {
+      "id": "glass-hill",
+      "title": "The Glass Hill",
+      "shortTitle": "The Glass Hill",
+      "sourceTitle": "The Princess on the Glass Hill",
+      "source": "The Blue Fairy Book, Andrew Lang, Project Gutenberg eBook 503",
+      "hero": "ash",
+      "card": "./assets/story-cards/glass-hill.webp",
+      "charm": "./assets/props/charm-glass-hill.webp",
+      "backdrop": "./assets/backdrops/glass-hill-moonlight.webp",
+      "accent": "#6d73ad",
+      "completionKey": "complete:glass-hill",
+      "completion": "Ash stayed calm, climbed high, and shared.",
+      "pages": [
+        {
+          "id": "glass-hill-1",
+          "act": "beginning",
+          "lineKey": "line:glass-hill:1",
+          "line": "Ash keeps watch by the hay.",
+          "stage": {
+            "heroX": 0.45,
+            "beforePose": "enter",
+            "storyPose": "notice",
+            "settlePose": "neutral",
+            "props": [
+              {"id": "haystack", "x": 0.69, "y": 0.80, "scale": 0.31, "phase": "before", "action": "rustle"}
+            ],
+            "effect": "moon-glow"
+          }
+        },
+        {
+          "id": "glass-hill-2",
+          "act": "beginning",
+          "lineKey": "line:glass-hill:2",
+          "line": "Boom! A bright copper horse comes near.",
+          "stage": {
+            "heroX": 0.31,
+            "beforePose": "notice",
+            "storyPose": "react",
+            "settlePose": "notice",
+            "props": [
+              {"id": "copper-horse", "x": 0.68, "y": 0.84, "scale": 0.48, "phase": "story", "action": "enter-right"},
+              {"id": "haystack", "x": 0.84, "y": 0.81, "scale": 0.25, "phase": "before", "action": "rustle"}
+            ],
+            "effect": "soft-thunder"
+          }
+        },
+        {
+          "id": "glass-hill-3",
+          "act": "middle",
+          "lineKey": "line:glass-hill:3",
+          "line": "Then silver and gold horses come.",
+          "stage": {
+            "heroX": 0.24,
+            "beforePose": "notice",
+            "storyPose": "react",
+            "settlePose": "celebrate",
+            "props": [
+              {"id": "copper-horse", "x": 0.49, "y": 0.84, "scale": 0.34, "phase": "before", "action": "still"},
+              {"id": "silver-horse", "x": 0.67, "y": 0.84, "scale": 0.36, "phase": "story", "action": "fan"},
+              {"id": "gold-horse", "x": 0.83, "y": 0.84, "scale": 0.38, "phase": "story", "action": "fan"}
+            ],
+            "effect": "sparkle"
+          }
+        },
+        {
+          "id": "glass-hill-4",
+          "act": "middle",
+          "lineKey": "line:glass-hill:4",
+          "line": "Ash rides up the glass hill.",
+          "stage": {
+            "heroX": 0.44,
+            "beforePose": "interact",
+            "storyPose": "celebrate",
+            "settlePose": "notice",
+            "props": [
+              {"id": "gold-horse", "x": 0.57, "y": 0.84, "scale": 0.48, "phase": "before", "action": "climb"},
+              {"id": "vellum-trail", "x": 0.69, "y": 0.62, "scale": 0.58, "phase": "story", "action": "glow"}
+            ],
+            "effect": "wind"
+          }
+        },
+        {
+          "id": "glass-hill-5",
+          "act": "ending",
+          "lineKey": "line:glass-hill:5",
+          "line": "Three gold apples shine at the top.",
+          "stage": {
+            "heroX": 0.41,
+            "beforePose": "notice",
+            "storyPose": "react",
+            "settlePose": "interact",
+            "props": [
+              {"id": "gold-horse", "x": 0.57, "y": 0.84, "scale": 0.45, "phase": "before", "action": "still"},
+              {"id": "gold-apples", "x": 0.72, "y": 0.49, "scale": 0.27, "phase": "story", "action": "pop-three"}
+            ],
+            "effect": "sparkle"
+          }
+        },
+        {
+          "id": "glass-hill-6",
+          "act": "ending",
+          "lineKey": "line:glass-hill:6",
+          "line": "Ash brings them home to share.",
+          "stage": {
+            "heroX": 0.43,
+            "beforePose": "interact",
+            "storyPose": "celebrate",
+            "settlePose": "celebrate",
+            "props": [
+              {"id": "gold-apples", "x": 0.58, "y": 0.69, "scale": 0.23, "phase": "before", "action": "float"},
+              {"id": "village-friends", "x": 0.77, "y": 0.84, "scale": 0.44, "phase": "story", "action": "enter-right"}
+            ],
+            "effect": "burst"
+          }
+        }
+      ]
+    }
+  ]
+}

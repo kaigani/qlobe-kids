@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-ui-how-to",
+  "kind": "voice",
+  "asset": "momma-bear-voice-ui-how-to.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Tap each word to hear it. The glowing word can go first.",
+      "seed": 8
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Tap each word to hear it. The glowing word can go first.",
+      "heard": "Tap each word to hear it. The glowing word can go first.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

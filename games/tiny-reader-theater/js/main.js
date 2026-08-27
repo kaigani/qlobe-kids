@@ -37,7 +37,7 @@ import {
   getNode, getLines, getChoices, getChoice, nextNodeId,
   isEnding, getSummary, startNodeId, listEndingIds, validateTree,
 } from './story-tree.js';
-import { createWordLine } from './word-tap.js';
+import { createWordLine } from '../../../shared/js/word-tap.js';
 import { createTheaterScene } from './theater-scene.js';
 
 const GAME_ID = 'tiny-reader-theater';

@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-storybook-nook",
+  "kind": "image",
+  "asset": "momma-bear-storybook-nook.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A warm candlelit reading nook inside Momma Bear\u2019s cottage, an old wooden table holding a very large open handmade storybook, honey-gold lamp at the left, dark bookcases around the edges, deep ink-blue book cloth and cranberry ribbons, the central open pages broad and calm for three story cards, no characters and no text A full-bleed game splash background. No characters, no text and no UI baked in \u2014 the welcome card and the controls sit on top. premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-splash-background",
+    "style": "paper-garden",
+    "fields": {
+      "subject": "A warm candlelit reading nook inside Momma Bear\u2019s cottage, an old wooden table holding a very large open handmade storybook, honey-gold lamp at the left, dark bookcases around the edges, deep ink-blue book cloth and cranberry ribbons, the central open pages broad and calm for three story cards, no characters and no text"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-26"
+}

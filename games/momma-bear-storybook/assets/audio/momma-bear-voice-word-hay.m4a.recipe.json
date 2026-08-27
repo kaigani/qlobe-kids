@@ -1,0 +1,67 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-hay",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-hay.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ash keeps watch by the hay.",
+      "seed": 8
+    },
+    {
+      "op": "extract-word",
+      "source": "momma-bear-voice-line-glass-hill-1.m4a",
+      "sourceMediaId": "momma-bear-voice-line-glass-hill-1",
+      "word": "hay",
+      "wordStartSeconds": 1.74,
+      "wordEndSeconds": 1.96,
+      "clipStartSeconds": 1.72,
+      "clipEndSeconds": 2.12,
+      "leadingPadMs": 20,
+      "trailingPadMs": 160,
+      "encode": "aac 96k, mono, 24000Hz"
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": "momma-bear-voice-line-glass-hill-1",
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "hay",
+      "heard": "Hey.",
+      "ratio": 0.667,
+      "match": false,
+      "model": "whisper-base",
+      "method": "unprompted isolated decode"
+    },
+    "contextualTranscript": {
+      "intended": "hay",
+      "heard": "hay",
+      "ratio": 1,
+      "match": true,
+      "model": "whisper-base",
+      "decodeContext": "hotwords: hay grass",
+      "method": "context-aware decode of the timestamped word extracted from its accepted source line"
+    },
+    "sourceTranscript": {
+      "intended": "Ash keeps watch by the hay.",
+      "heard": "Ash keeps watched by the hay.",
+      "ratio": 0.963,
+      "match": true
+    },
+    "unpromptedHomophoneDiagnostic": {
+      "heard": "Hey.",
+      "match": false,
+      "engines": [
+        "local faster-whisper base",
+        "LAN whisper-stt base"
+      ],
+      "note": "Retained explicitly; this is not treated as a hay/hey equivalence override. Orthography is resolved from the accepted source-line context."
+    }
+  },
+  "created": "2026-08-26"
+}

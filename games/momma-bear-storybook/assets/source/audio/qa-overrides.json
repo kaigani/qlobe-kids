@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-08-27T06:41:58.910Z",
+  "policy": "Native means normalized exact transcript. Token-wise equivalences are limited to one/1, to/two/2, by/buy/bye, sea/see, whirr/whir/where, and article a/ay/hey; the same explicit token rule may occur inside a longer otherwise-exact line. Contextual verification is limited to timestamped hay from a source line whose transcript contains hay.",
+  "overrides": [
+    {
+      "key": "word:one",
+      "expected": "one",
+      "heard": "1",
+      "rule": "one/1"
+    },
+    {
+      "key": "word:to",
+      "expected": "to",
+      "heard": "Two!",
+      "rule": "to/two"
+    },
+    {
+      "key": "word:a",
+      "expected": "A",
+      "heard": "Hey!",
+      "rule": "a/hey"
+    },
+    {
+      "key": "word:whirr",
+      "expected": "whirr",
+      "heard": "Where?",
+      "rule": "whirr/where"
+    },
+    {
+      "key": "word:sea",
+      "expected": "sea",
+      "heard": "See?",
+      "rule": "sea/see"
+    },
+    {
+      "key": "line:little-mill:5",
+      "expected": "Whirr, whirr! Salt spills in the sea.",
+      "heard": "Where? Where? Salt spills in the sea.",
+      "rule": "whirr/where"
+    },
+    {
+      "key": "word:by",
+      "expected": "by",
+      "heard": "Bye!",
+      "rule": "by/bye"
+    }
+  ],
+  "contextual": [
+    {
+      "key": "word:hay",
+      "expected": "hay",
+      "rule": "timestamped-source-line/hay",
+      "sourceHeard": "Ash keeps watched by the hay."
+    }
+  ]
+}

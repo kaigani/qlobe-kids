@@ -1,0 +1,36 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-prop-sea-sparkles-corrected",
+  "kind": "image",
+  "asset": "../../props/sea-sparkles.webp",
+  "steps": [
+    {
+      "op": "crop",
+      "from": "sea-sparkles.raw.png",
+      "rect": [0, 0, 352, 512],
+      "reason": "remove the neighboring contact-sheet cell visible at the right edge",
+      "output": "sea-sparkles.corrected-raw.png"
+    },
+    {
+      "op": "chroma-cutout",
+      "tool": "tools/cutout-to-webp.mjs",
+      "key": "#ef0392",
+      "keyFilter": "chromakey",
+      "similarity": 0.16,
+      "blend": 0.03,
+      "alphaErodePx": 2,
+      "alphaCutoff": 32,
+      "despill": false,
+      "padding": 16,
+      "quality": 91,
+      "output": "assets/props/sea-sparkles.webp"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "backgrounds": ["#10101a", "#f3e4c5", "little-mill-harbor.webp"],
+    "notes": "No neighboring-cell sliver or saturated chroma halo remains."
+  },
+  "created": "2026-08-26"
+}

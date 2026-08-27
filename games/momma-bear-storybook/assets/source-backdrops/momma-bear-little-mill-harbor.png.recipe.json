@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-little-mill-harbor",
+  "kind": "image",
+  "asset": "momma-bear-little-mill-harbor.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Use case: illustration-story. Asset type: 16:9 game backdrop. Primary request: A cheerful seaside harbor from a northern fairy tale, layered paper waves, a small windmill on a rocky point, a tiny safe sailboat in the distance, wild paper flowers at the edges, no people, no salt pile, no text. Style/medium: premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words. Composition/framing: wide 4:3 view with a broad uncluttered lower-centre paper stage for a child pose actor, windmill at far left and boat at far right, no important detail under the upper word row. Lighting/mood: bright sea-blue morning with warm golden side light, gentle and magical. Constraints: environment only; preserve a clear open floor for separately composited sprites. Avoid: characters, creatures, people, food or loose hero objects in the performance area, text, letters, logo, watermark, UI, border, collage, photorealism, 3D.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "scene-backdrop",
+    "style": "paper-garden",
+    "fields": {
+      "setting": "A cheerful seaside harbor from a northern fairy tale, layered paper waves, a small windmill on a rocky point, a tiny safe sailboat in the distance, wild paper flowers at the edges, no people, no salt pile, no text",
+      "framing": "wide 4:3 view with a broad uncluttered lower-centre paper stage for a child pose actor, windmill at far left and boat at far right, no important detail under the upper word row",
+      "mood": "bright sea-blue morning with warm golden side light, gentle and magical"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-26"
+}

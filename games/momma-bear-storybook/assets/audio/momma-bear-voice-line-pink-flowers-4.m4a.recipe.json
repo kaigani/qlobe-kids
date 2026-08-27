@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-line-pink-flowers-4",
+  "kind": "voice",
+  "asset": "momma-bear-voice-line-pink-flowers-4.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "A silly cabbage says, \u201cLook by the bed!\u201d",
+      "seed": 13
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "A silly cabbage says, \u201cLook by the bed!\u201d",
+      "heard": "A silly cabbage says, look by the bed.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

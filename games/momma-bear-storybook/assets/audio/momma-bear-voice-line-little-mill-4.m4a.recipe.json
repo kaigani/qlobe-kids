@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-line-little-mill-4",
+  "kind": "voice",
+  "asset": "momma-bear-voice-line-little-mill-4.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "\u201cMake salt!\u201d says a ship captain.",
+      "seed": 19
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "\u201cMake salt!\u201d says a ship captain.",
+      "heard": "Make salt. Says a ship captain.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

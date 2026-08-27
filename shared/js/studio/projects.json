@@ -17,16 +17,22 @@
     { "type": "pose-actor", "id": "white-cat", "document": "games/story-stones/assets/pose-actors/white-cat/poses.json", "project": "story-stones", "assembleProfile": "pose-library" },
     { "type": "pose-actor", "id": "captain-goldie", "document": "games/counting-treasure-cups/assets/pose-actors/captain-goldie/poses.json", "project": "counting-treasure-cups", "assembleProfile": "pose-library" },
     { "type": "pose-actor", "id": "skipper", "document": "games/counting-treasure-cups/assets/pose-actors/skipper/poses.json", "project": "counting-treasure-cups", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "momma-bear", "document": "games/momma-bear-storybook/assets/pose-actors/momma-bear/poses.json", "project": "momma-bear-storybook", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "pip", "document": "games/momma-bear-storybook/assets/pose-actors/pip/poses.json", "project": "momma-bear-storybook", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "fia", "document": "games/momma-bear-storybook/assets/pose-actors/fia/poses.json", "project": "momma-bear-storybook", "assembleProfile": "pose-library" },
+    { "type": "pose-actor", "id": "ash", "document": "games/momma-bear-storybook/assets/pose-actors/ash/poses.json", "project": "momma-bear-storybook", "assembleProfile": "pose-library" },
     { "type": "prop-pack", "id": "story-stones-castle-meadow-props", "document": "games/story-stones/assets/props/pack.json", "project": "story-stones" },
     { "type": "prop-pack", "id": "puppet-problem-solvers-props", "document": "games/puppet-problem-solvers/assets/props/pack.json", "project": "puppet-problem-solvers" },
     { "type": "prop-pack", "id": "my-puppet-band-props", "document": "games/my-puppet-band/assets/props/pack.json", "project": "my-puppet-band" },
+    { "type": "prop-pack", "id": "momma-bear-storybook-props", "document": "games/momma-bear-storybook/assets/props/pack.json", "project": "momma-bear-storybook" },
     { "type": "scene-pack", "id": "puppet-problem-solvers-scenes", "document": "games/puppet-problem-solvers/scene-pack.json", "project": "puppet-problem-solvers" },
     { "type": "story-pack", "id": "story-stones-storybook-library", "document": "games/story-stones/story-pack.json", "project": "story-stones" },
     { "type": "music-sync", "id": "my-puppet-band-performance", "document": "games/my-puppet-band/music-sync.json", "project": "my-puppet-band" },
     { "type": "game", "id": "story-stones", "document": "games/story-stones/game.json" },
     { "type": "game", "id": "puppet-problem-solvers", "document": "games/puppet-problem-solvers/game.json" },
     { "type": "game", "id": "my-puppet-band", "document": "games/my-puppet-band/game.json" },
-    { "type": "game", "id": "counting-treasure-cups", "document": "games/counting-treasure-cups/game.json" }
+    { "type": "game", "id": "counting-treasure-cups", "document": "games/counting-treasure-cups/game.json" },
+    { "type": "game", "id": "momma-bear-storybook", "document": "games/momma-bear-storybook/game.json" }
   ],
   "projects": [
     {
@@ -65,6 +71,15 @@
       "gameBase": "../../../games/counting-treasure-cups/",
       "workspaces": {
         "assemble": { "profile": "pose-library", "label": "Poses", "backdrop": "assets/beach-poster.jpg" }
+      }
+    },
+    {
+      "id": "momma-bear-storybook",
+      "label": "Momma Bear's Storybook",
+      "gameBase": "../../../games/momma-bear-storybook/",
+      "workspaces": {
+        "assemble": { "profile": "pose-library", "label": "Story Poses", "actorPack": "assets/actors/pack.json", "backdrop": "assets/backdrops/little-mill-harbor.webp" },
+        "props": { "pack": "assets/props/pack.json", "document": "games/momma-bear-storybook/assets/props/pack.json", "backdrop": "assets/backdrops/little-mill-harbor.webp", "actorPack": "assets/actors/pack.json" }
       }
     }
   ]

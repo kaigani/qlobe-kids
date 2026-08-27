@@ -1,0 +1,52 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-finds",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-finds.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Fia finds the pinks and shares the water.",
+      "seed": 8
+    },
+    {
+      "op": "extract-word",
+      "source": "momma-bear-voice-line-pink-flowers-5.m4a",
+      "sourceMediaId": "momma-bear-voice-line-pink-flowers-5",
+      "word": "finds",
+      "wordStartSeconds": 1.06,
+      "wordEndSeconds": 1.48,
+      "clipStartSeconds": 1.04,
+      "clipEndSeconds": 1.6,
+      "leadingPadMs": 20,
+      "trailingPadMs": 120,
+      "encode": "aac 96k, mono, 24000Hz"
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": "momma-bear-voice-line-pink-flowers-5",
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "finds",
+      "heard": "Finds",
+      "ratio": 1,
+      "match": true,
+      "model": "whisper-base",
+      "checks": [
+        "local faster-whisper base",
+        "LAN whisper-stt base"
+      ]
+    },
+    "sourceTranscript": {
+      "intended": "Fia finds the pinks and shares the water.",
+      "heard": "Fia finds the pinks and shares the water.",
+      "ratio": 1,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

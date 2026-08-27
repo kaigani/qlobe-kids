@@ -1,0 +1,148 @@
+{
+  "ok": true,
+  "staged": 11,
+  "queued": 11,
+  "snapshotAtQueueTime": true,
+  "finalDisposition": {
+    "cancelledBeforeExecution": 11,
+    "acceptedDirectCutouts": 10,
+    "unused": ["button-lamp"],
+    "reason": "Direct chroma extraction preserved the accepted GPT pixels and exceeded Layered edge quality at runtime display sizes."
+  },
+  "jobs": [
+    {
+      "id": "word-tile",
+      "jobId": "23951d60809d",
+      "status": "queued"
+    },
+    {
+      "id": "word-tile-done",
+      "jobId": "809347fc8bb6",
+      "status": "queued"
+    },
+    {
+      "id": "button-again",
+      "jobId": "bdd5c60be982",
+      "status": "queued"
+    },
+    {
+      "id": "button-shelf",
+      "jobId": "49742be5778e",
+      "status": "queued"
+    },
+    {
+      "id": "act-tab",
+      "jobId": "d27f2b8d684e",
+      "status": "queued"
+    },
+    {
+      "id": "page-turn",
+      "jobId": "4f1dfc189c59",
+      "status": "queued"
+    },
+    {
+      "id": "page-stitch",
+      "jobId": "cfc4acf3b7a4",
+      "status": "queued"
+    },
+    {
+      "id": "button-lamp",
+      "jobId": "e04bf2aa4236",
+      "status": "queued"
+    },
+    {
+      "id": "title",
+      "jobId": "7b776d50c3f6",
+      "status": "queued"
+    },
+    {
+      "id": "button-home",
+      "jobId": "507271b931ef",
+      "status": "queued"
+    },
+    {
+      "id": "button-sound",
+      "jobId": "469628e4df24",
+      "status": "queued"
+    }
+  ],
+  "ui": [
+    {
+      "id": "word-tile",
+      "source": "word-tile.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "word-tile-done",
+      "source": "word-tile-done.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "button-again",
+      "source": "button-again.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "button-shelf",
+      "source": "button-shelf.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "act-tab",
+      "source": "act-tab.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "page-turn",
+      "source": "page-turn.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "page-stitch",
+      "source": "page-stitch.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "button-lamp",
+      "source": "button-lamp.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "title",
+      "source": "title-lockup-v1.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 1200
+    },
+    {
+      "id": "button-home",
+      "source": "button-home.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    },
+    {
+      "id": "button-sound",
+      "source": "button-sound.raw.png",
+      "existing": false,
+      "target": "object",
+      "maxSize": 640
+    }
+  ]
+}

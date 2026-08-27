@@ -1,0 +1,30 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "00-overview-v1.png",
+  "kind": "image",
+  "created": "2026-08-26",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#four-screen-papercraft-overview-v1",
+      "references": [
+        "concept:tiny-reader-theater/output/ui-mockups/00-overview.png",
+        "concept:story-stones/output/ui-mockups/00-overview.png"
+      ]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": [
+      "title spelling",
+      "word spelling and order",
+      "four-screen hierarchy",
+      "Papercraft material fidelity",
+      "large touch affordances",
+      "clear actor performance area",
+      "no vector-style primary art"
+    ]
+  }
+}

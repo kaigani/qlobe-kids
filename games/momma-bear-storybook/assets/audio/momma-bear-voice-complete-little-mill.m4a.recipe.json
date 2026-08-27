@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-complete-little-mill",
+  "kind": "voice",
+  "asset": "momma-bear-voice-complete-little-mill.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Pip shared, listened, and helped the sea.",
+      "seed": 9
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Pip shared, listened, and helped the sea.",
+      "heard": "PIP shared, listened and helped the sea.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

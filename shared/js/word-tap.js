@@ -17,8 +17,8 @@
 //   - Every chip is a real <button>, so keyboard/AT activation works and
 //     tap.js's pointerup path is the same press path the finger uses.
 
-import { onTap } from '../../../shared/js/tap.js';
-import * as sfx from '../../../shared/js/sfx.js';
+import { onTap } from './tap.js';
+import * as sfx from './sfx.js';
 
 /**
  * The manifest key form of a token: lowercased, stripped of everything that is
@@ -234,6 +234,8 @@ export function createWordLine({
     /** how many distinct words are still untapped */
     remaining: () => tapped.filter((done) => !done).length,
     isComplete: () => completed,
+    /** final word audio is still resolving before the line performance */
+    isCompletionPending: () => completionPending,
     isLocked: () => locked,
   };
 }

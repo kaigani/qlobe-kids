@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-26T08:40:59.770Z",
+  "generated": "2026-08-27T06:40:14.631Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -1332,6 +1332,41 @@
         "shared/css/screens.css"
       ],
       "assets": [],
+      "packs": []
+    },
+    "momma-bear-storybook": {
+      "engine": null,
+      "status": "beta",
+      "category": "reading-phonics",
+      "characters": [
+        "Ash",
+        "Fia",
+        "Momma Bear",
+        "Pip"
+      ],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/theater.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/js/word-tap.js",
+        "shared/vendor/pixi.min.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "shared/assets/music/cozy-starlight-lullaby.mp3"
+      ],
       "packs": []
     },
     "monster-opera": {
@@ -2927,7 +2962,8 @@
         "shared/js/stage/theater.js",
         "shared/js/tap.js",
         "shared/js/timers.js",
-        "shared/js/voice-clips.js"
+        "shared/js/voice-clips.js",
+        "shared/js/word-tap.js"
       ],
       "css": [
         "shared/css/base.css",
@@ -3185,6 +3221,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -3277,6 +3314,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -3314,6 +3352,7 @@
         "bean-sprout-watch",
         "board-game-reset",
         "cleanup-timer-quest",
+        "momma-bear-storybook",
         "mountain-seasons-wheel",
         "number-sense-kitchen",
         "picture-word-match",
@@ -3417,6 +3456,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -3586,6 +3626,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -3824,6 +3865,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -4044,12 +4086,14 @@
       ],
       "shared/js/stage/stage.js": [
         "flashlight-cave",
+        "momma-bear-storybook",
         "puppet-retell",
         "sink-or-float",
         "tiny-reader-theater",
         "world-music-dance"
       ],
       "shared/js/stage/theater.js": [
+        "momma-bear-storybook",
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
@@ -4089,6 +4133,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -4142,6 +4187,7 @@
         "land-water-tray",
         "letter-treasure-hunt",
         "lunchbox-pack",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -4195,6 +4241,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -4234,8 +4281,13 @@
       "shared/js/voice-meter.js": [
         "emotion-voice-game"
       ],
+      "shared/js/word-tap.js": [
+        "momma-bear-storybook",
+        "tiny-reader-theater"
+      ],
       "shared/vendor/pixi.min.js": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "momma-bear-storybook"
       ],
       "shared/vendor/three.module.min.js": [
         "globe-spin-stories",
@@ -4285,6 +4337,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -4419,6 +4472,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -4475,6 +4529,7 @@
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
+        "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -4537,6 +4592,9 @@
       "ari": [
         "flashlight-cave"
       ],
+      "Ash": [
+        "momma-bear-storybook"
+      ],
       "bear": [
         "my-puppet-band",
         "puppet-problem-solvers",
@@ -4570,6 +4628,9 @@
       ],
       "Felt Bear": [
         "button-zipper-lab"
+      ],
+      "Fia": [
+        "momma-bear-storybook"
       ],
       "fox": [
         "my-puppet-band",
@@ -4626,6 +4687,9 @@
         "snack-addition-stories",
         "table-setting-mission"
       ],
+      "Momma Bear": [
+        "momma-bear-storybook"
+      ],
       "nia": [
         "calm-corner-cards",
         "feelings-charades",
@@ -4656,6 +4720,7 @@
         "red-green-light"
       ],
       "Pip": [
+        "momma-bear-storybook",
         "table-setting-mission"
       ],
       "princess-lily": [
@@ -5390,6 +5455,9 @@
         "board-game-reset",
         "cleanup-timer-quest",
         "mountain-seasons-wheel"
+      ],
+      "shared/assets/music/cozy-starlight-lullaby.mp3": [
+        "momma-bear-storybook"
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
         "picture-word-match",

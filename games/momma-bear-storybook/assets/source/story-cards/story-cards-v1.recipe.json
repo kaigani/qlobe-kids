@@ -1,0 +1,54 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-story-cards-v1",
+  "kind": "image-contact-sheet",
+  "asset": "story-cards-v1.png",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "execution": "exec-92e1a63a-2b4b-4715-b27c-18391ca44e31",
+      "promptRef": "PROMPTS.md",
+      "refs": [
+        "../../source-backdrops/momma-bear-little-mill-harbor.png",
+        "../../source-backdrops/momma-bear-pink-flowers-garden.png",
+        "../../source-backdrops/momma-bear-glass-hill-moonlight.png",
+        "../ui-mockups/00-overview-v1.png"
+      ],
+      "output": "story-cards-v1.png"
+    },
+    {
+      "op": "crop-columns",
+      "grid": [3, 1],
+      "cell": [512, 1024],
+      "order": ["little-mill", "pink-flowers", "glass-hill"]
+    },
+    {
+      "op": "defringe-alpha",
+      "key": "#f80488",
+      "similarity": 0.12,
+      "blend": 0.04,
+      "erodePasses": 2,
+      "preserveExistingAlpha": true
+    },
+    {
+      "op": "encode",
+      "format": "webp",
+      "quality": 91,
+      "method": 6,
+      "outputs": [
+        "../../story-cards/little-mill.webp",
+        "../../story-cards/pink-flowers.webp",
+        "../../story-cards/glass-hill.webp"
+      ]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "exactCardCount": 3,
+    "blankLabelPanels": true,
+    "alphaReviewedOnDark": true
+  },
+  "created": "2026-08-27"
+}

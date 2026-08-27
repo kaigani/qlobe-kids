@@ -755,6 +755,56 @@
       "summary": "Tap every word of a branching puppet-theater story, then watch it come alive."
     },
     {
+      "id": "momma-bear-storybook",
+      "title": "Momma Bear's Storybook",
+      "category": "reading-phonics",
+      "path": "games/momma-bear-storybook/",
+      "icon": "assets/hub/tiles/momma-bear-storybook.jpg",
+      "age": {
+        "min": 4,
+        "max": 5
+      },
+      "status": "beta",
+      "accent": "#237b78",
+      "uses": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/stage.js",
+        "shared/js/stage/theater.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/js/word-tap.js",
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css",
+        "shared/vendor/pixi.min.js",
+        "shared/assets/music/cozy-starlight-lullaby.mp3"
+      ],
+      "modes": [
+        {
+          "id": "little-mill",
+          "title": "The Little Mill and the Sea",
+          "skill": "one-to-one print tracking"
+        },
+        {
+          "id": "pink-flowers",
+          "title": "Fia and the Pink Flowers",
+          "skill": "one-to-one print tracking"
+        },
+        {
+          "id": "glass-hill",
+          "title": "The Glass Hill",
+          "skill": "one-to-one print tracking"
+        }
+      ],
+      "summary": "Tap every word in three gentle papercraft fairy tales, then watch the pose actors perform each line."
+    },
+    {
       "id": "tiny-sentence-workshop",
       "title": "Tiny Sentence Workshop",
       "category": "reading-phonics",

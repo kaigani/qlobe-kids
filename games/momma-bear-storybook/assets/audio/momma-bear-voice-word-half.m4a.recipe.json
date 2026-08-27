@@ -1,0 +1,51 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-half",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-half.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Half. One half. Half of the bun.",
+      "seed": 13
+    },
+    {
+      "op": "extract-word",
+      "source": "../source/audio/context/momma-bear-voice-source-half-context.m4a",
+      "sourceMediaId": "momma-bear-voice-source-half-context",
+      "word": "half",
+      "wordStartSeconds": 0.0,
+      "wordEndSeconds": 0.44,
+      "clipStartSeconds": 0.0,
+      "clipEndSeconds": 0.58,
+      "trailingPadMs": 140,
+      "encode": "aac 96k, mono, 24000Hz"
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": "momma-bear-voice-source-half-context",
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Half",
+      "heard": "Half",
+      "ratio": 1,
+      "match": true,
+      "model": "whisper-base",
+      "checks": [
+        "local faster-whisper base",
+        "LAN whisper-stt base"
+      ]
+    },
+    "sourceTranscript": {
+      "intended": "Half. One half. Half of the bun.",
+      "heard": "Half, one half, half of the bun.",
+      "ratio": 1,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

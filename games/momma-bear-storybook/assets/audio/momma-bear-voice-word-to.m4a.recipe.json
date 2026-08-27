@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-to",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-to.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "to",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "to",
+      "heard": "Two!",
+      "ratio": 0.8,
+      "match": true
+    }
+  },
+  "created": "2026-08-26"
+}

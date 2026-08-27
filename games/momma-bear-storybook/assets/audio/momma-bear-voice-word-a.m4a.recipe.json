@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-a",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-a.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "A",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "A",
+      "heard": "Hey!",
+      "ratio": 0.0,
+      "match": false
+    }
+  },
+  "created": "2026-08-26"
+}

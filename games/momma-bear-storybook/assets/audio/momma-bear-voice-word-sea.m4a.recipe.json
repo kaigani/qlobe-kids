@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-voice-word-sea",
+  "kind": "voice",
+  "asset": "momma-bear-voice-word-sea.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "sea",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "sea",
+      "heard": "See?",
+      "ratio": 0.667,
+      "match": false
+    }
+  },
+  "created": "2026-08-26"
+}

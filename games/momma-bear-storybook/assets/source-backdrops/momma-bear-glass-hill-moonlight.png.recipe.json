@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-glass-hill-moonlight",
+  "kind": "image",
+  "asset": "momma-bear-glass-hill-moonlight.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Use case: illustration-story. Asset type: 16:9 game backdrop. Primary request: A moonlit hay meadow leading to a tall magical glass hill made of layered translucent vellum, a cozy paper barn at far left, winding shining path to the summit, distant friendly village silhouettes, no people, no horses, no apples, no text. Style/medium: premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words. Composition/framing: wide 4:3 view with a broad uncluttered lower-centre paper stage and the vellum hill rising along the right edge, keep the centre readable for a child and horse, no important detail under the upper word row. Lighting/mood: deep ink-blue night, copper moonlight and gentle golden points of light, adventurous but never scary. Constraints: environment only; preserve a clear open floor for separately composited sprites. Avoid: characters, creatures, people, food or loose hero objects in the performance area, text, letters, logo, watermark, UI, border, collage, photorealism, 3D.",
+      "seed": 42,
+      "width": 1344,
+      "height": 768
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "scene-backdrop",
+    "style": "paper-garden",
+    "fields": {
+      "setting": "A moonlit hay meadow leading to a tall magical glass hill made of layered translucent vellum, a cozy paper barn at far left, winding shining path to the summit, distant friendly village silhouettes, no people, no horses, no apples, no text",
+      "framing": "wide 4:3 view with a broad uncluttered lower-centre paper stage and the vellum hill rising along the right edge, keep the centre readable for a child and horse, no important detail under the upper word row",
+      "mood": "deep ink-blue night, copper moonlight and gentle golden points of light, adventurous but never scary"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-26"
+}

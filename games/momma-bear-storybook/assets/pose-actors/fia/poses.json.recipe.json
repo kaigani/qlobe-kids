@@ -1,0 +1,120 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "fia-pose-actor",
+  "kind": "pose-actor",
+  "asset": "poses.json",
+  "preview": "contact.webp",
+  "actor": {
+    "id": "fia",
+    "label": "Fia",
+    "set": "fia-v1"
+  },
+  "steps": [
+    {
+      "op": "direct-chroma-recut",
+      "from": "assets/source/pose-crops/fia/*.raw.png",
+      "tool": "tools/defringe-alpha.mjs",
+      "key": "#f10391",
+      "similarity": 0.2,
+      "blend": 0.04,
+      "alphaErodePx": 2,
+      "alphaCutoff": 32,
+      "despill": true,
+      "output": "shared/media/fia-v1-*/fia-v1-*.png",
+      "qa": [
+        "#10101a runtime-pack contact sheet",
+        "pink-flowers-garden.webp contact sheet",
+        "glass-hill-moonlight.webp contact sheet"
+      ]
+    },
+    {
+      "op": "assemble-pose-actor",
+      "from": [
+        "fia-v1-neutral",
+        "fia-v1-enter",
+        "fia-v1-notice",
+        "fia-v1-interact",
+        "fia-v1-react",
+        "fia-v1-celebrate"
+      ],
+      "canvas": [
+        1024,
+        1024
+      ],
+      "maxArt": 900,
+      "baseline": 972,
+      "scale": 0.955414,
+      "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+      "encode": "webp q90 method6",
+      "output": "poses/<pose>.webp + poses.json"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": "fia-v1-neutral",
+  "derivedFromSet": [
+    "fia-v1-neutral",
+    "fia-v1-enter",
+    "fia-v1-notice",
+    "fia-v1-interact",
+    "fia-v1-react",
+    "fia-v1-celebrate"
+  ],
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "bytes": 89330,
+      "artSize": [
+        534,
+        851
+      ]
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "bytes": 110152,
+      "artSize": [
+        589,
+        878
+      ]
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "bytes": 98720,
+      "artSize": [
+        520,
+        900
+      ]
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "bytes": 85888,
+      "artSize": [
+        523,
+        844
+      ]
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "bytes": 102166,
+      "artSize": [
+        560,
+        833
+      ]
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "bytes": 114480,
+      "artSize": [
+        644,
+        868
+      ]
+    }
+  },
+  "qa": {
+    "status": "accepted",
+    "poses": 6,
+    "scale": 0.955414,
+    "bytes": 600736
+  },
+  "created": "2026-08-26"
+}

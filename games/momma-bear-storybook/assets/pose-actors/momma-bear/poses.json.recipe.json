@@ -1,0 +1,112 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-pose-actor",
+  "kind": "pose-actor",
+  "asset": "poses.json",
+  "preview": "contact.webp",
+  "actor": {
+    "id": "momma-bear",
+    "label": "Momma Bear",
+    "set": "momma-bear-v1"
+  },
+  "steps": [
+    {
+      "op": "defringe-alpha-set",
+      "tool": "games/momma-bear-storybook/tools/defringe-alpha.mjs",
+      "key": "#ff00ff",
+      "similarity": 0.18,
+      "blend": 0.06,
+      "erodePasses": 2,
+      "preserveExistingAlpha": true
+    },
+    {
+      "op": "assemble-pose-actor",
+      "from": [
+        "momma-bear-v1-neutral",
+        "momma-bear-v1-enter",
+        "momma-bear-v1-notice",
+        "momma-bear-v1-interact",
+        "momma-bear-v1-react",
+        "momma-bear-v1-celebrate"
+      ],
+      "canvas": [
+        1024,
+        1024
+      ],
+      "maxArt": 900,
+      "baseline": 972,
+      "scale": 0.961538,
+      "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+      "encode": "webp q90 method6",
+      "output": "poses/<pose>.webp + poses.json"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": "momma-bear-v1-neutral",
+  "derivedFromSet": [
+    "momma-bear-v1-neutral",
+    "momma-bear-v1-enter",
+    "momma-bear-v1-notice",
+    "momma-bear-v1-interact",
+    "momma-bear-v1-react",
+    "momma-bear-v1-celebrate"
+  ],
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "bytes": 124460,
+      "artSize": [
+        625,
+        805
+      ]
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "bytes": 128858,
+      "artSize": [
+        707,
+        810
+      ]
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "bytes": 107024,
+      "artSize": [
+        532,
+        900
+      ]
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "bytes": 112100,
+      "artSize": [
+        530,
+        811
+      ]
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "bytes": 110796,
+      "artSize": [
+        514,
+        797
+      ]
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "bytes": 144282,
+      "artSize": [
+        785,
+        835
+      ]
+    }
+  },
+  "qa": {
+    "status": "accepted",
+    "poses": 6,
+    "scale": 0.961538,
+    "bytes": 727520
+  },
+  "created": "2026-08-26"
+}

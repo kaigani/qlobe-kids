@@ -1,0 +1,112 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "pip-pose-actor",
+  "kind": "pose-actor",
+  "asset": "poses.json",
+  "preview": "contact.webp",
+  "actor": {
+    "id": "pip",
+    "label": "Pip",
+    "set": "pip-v1"
+  },
+  "steps": [
+    {
+      "op": "defringe-alpha-set",
+      "tool": "games/momma-bear-storybook/tools/defringe-alpha.mjs",
+      "key": "#ff00ff",
+      "similarity": 0.18,
+      "blend": 0.06,
+      "erodePasses": 2,
+      "preserveExistingAlpha": true
+    },
+    {
+      "op": "assemble-pose-actor",
+      "from": [
+        "pip-v1-neutral",
+        "pip-v1-enter",
+        "pip-v1-notice",
+        "pip-v1-interact",
+        "pip-v1-react",
+        "pip-v1-celebrate"
+      ],
+      "canvas": [
+        1024,
+        1024
+      ],
+      "maxArt": 900,
+      "baseline": 972,
+      "scale": 0.983607,
+      "scaleRule": "shared: maxArt / the largest subject dimension in the set",
+      "encode": "webp q90 method6",
+      "output": "poses/<pose>.webp + poses.json"
+    }
+  ],
+  "refs": {},
+  "derivedFrom": "pip-v1-neutral",
+  "derivedFromSet": [
+    "pip-v1-neutral",
+    "pip-v1-enter",
+    "pip-v1-notice",
+    "pip-v1-interact",
+    "pip-v1-react",
+    "pip-v1-celebrate"
+  ],
+  "poses": {
+    "neutral": {
+      "art": "poses/neutral.webp",
+      "bytes": 95626,
+      "artSize": [
+        412,
+        840
+      ]
+    },
+    "enter": {
+      "art": "poses/enter.webp",
+      "bytes": 111204,
+      "artSize": [
+        631,
+        832
+      ]
+    },
+    "notice": {
+      "art": "poses/notice.webp",
+      "bytes": 104028,
+      "artSize": [
+        492,
+        900
+      ]
+    },
+    "interact": {
+      "art": "poses/interact.webp",
+      "bytes": 88402,
+      "artSize": [
+        522,
+        829
+      ]
+    },
+    "react": {
+      "art": "poses/react.webp",
+      "bytes": 106842,
+      "artSize": [
+        572,
+        837
+      ]
+    },
+    "celebrate": {
+      "art": "poses/celebrate.webp",
+      "bytes": 117796,
+      "artSize": [
+        670,
+        873
+      ]
+    }
+  },
+  "qa": {
+    "status": "accepted",
+    "poses": 6,
+    "scale": 0.983607,
+    "bytes": 623898
+  },
+  "created": "2026-08-26"
+}
