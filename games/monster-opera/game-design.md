@@ -50,7 +50,13 @@ Catalog ← Home — Splash
 
 - Three large authored music tracks repeat across three adjacent 16-second panels.
 - The panel strip scrolls past a fixed orange playhead and loops without a visible jump.
-- Every recorded event is a large monster placed at its lane and exact song time.
+- Every recorded event keeps its exact authored time for audio scheduling. Visually,
+  isolated events stay at that position, while nearby events are evenly distributed
+  around their shared authored moment so performers never sit on top of one another.
+  Circular grouping also treats the 16→0 seam as one continuous timeline.
+- Crowded local groups reflow into compact one-, two-, or three-row arrangements.
+  Their artwork scales down responsively, but every performer retains a separate
+  96px-or-larger tap target and all three repeating panels use identical placement.
 - Every idle concert monster uses its supplied `dance.mp4`. Listen decodes one
   shared source per unique monster (never more than twelve) and paints that
   frame into each Screen-blended timeline appearance, avoiding an iPad decoder
@@ -111,7 +117,12 @@ The recorded-background-music helper is intentionally not used: its fade-loop po
 
 - Primary target: tablet landscape, including short 1180×520 browser bands.
 - Portrait retains timeline above cast and a horizontal monster swipe rail.
-- Concert performers scale by viewport while staying above 96px.
+- Concert collision spacing is derived from the current viewport and performer
+  footprint, then recomputed on resize or orientation change without resetting the
+  song transport. Artwork may shrink for dense groups while tap targets stay at
+  least 96px.
+- Top-lane performers move down briefly when their artwork reaches the fixed Back
+  or sound controls, preserving both the endless-scroll illusion and control access.
 - Safe-area variables protect every corner control.
 - Page scroll and rubber-band interaction are disabled; the cast rail alone accepts horizontal pan.
 

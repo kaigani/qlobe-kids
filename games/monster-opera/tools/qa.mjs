@@ -256,6 +256,39 @@ try {
   check('every visible concert event idles on its dance loop', concertIdle.logicalDancing === concertIdle.logicalEvents, JSON.stringify(concertIdle));
   check('every concert visual layer uses direct Screen blending', concertIdle.screenLayers === concertIdle.layers, JSON.stringify(concertIdle));
   check('concert hardware-video fallback retains Screen blending', concertIdle.fallback === 'screen', JSON.stringify(concertIdle));
+  const concertSpacing = await page.evaluate(() => {
+    const variables = ['--event-x', '--lane-y', '--event-size-factor', '--event-art-scale', '--event-box-width', '--event-box-height'];
+    const repeated = [...new Set([...document.querySelectorAll('.concert-event')].map((button) => button.dataset.eventId))]
+      .every((eventId) => {
+        const copies = [...document.querySelectorAll(`.concert-event[data-event-id="${CSS.escape(eventId)}"]`)];
+        return new Set(copies.map((button) => JSON.stringify(variables.map((name) => button.style.getPropertyValue(name))))).size === 1;
+      });
+    const nearest = (eventId) => [...document.querySelectorAll(`.concert-event[data-event-id="${CSS.escape(eventId)}"]`)]
+      .map((button) => ({ button, rect: button.querySelector('.monster-dance').getBoundingClientRect() }))
+      .sort((a, b) => Math.abs(a.rect.left + a.rect.width / 2 - innerWidth / 2) - Math.abs(b.rect.left + b.rect.width / 2 - innerWidth / 2))[0];
+    const first = nearest('event-2');
+    const second = nearest('event-3');
+    const overlap = first && second ? {
+      width: Math.max(0, Math.min(first.rect.right, second.rect.right) - Math.max(first.rect.left, second.rect.left)),
+      height: Math.max(0, Math.min(first.rect.bottom, second.rect.bottom) - Math.max(first.rect.top, second.rect.top)),
+    } : { width: Infinity, height: Infinity };
+    const visibleButtons = [...document.querySelectorAll('.concert-event')].filter((button) => {
+      const rect = button.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      return center >= 0 && center <= innerWidth;
+    });
+    return {
+      repeated,
+      sameTimeOverlapArea: overlap.width * overlap.height,
+      undersized: visibleButtons.filter((button) => {
+        const rect = button.getBoundingClientRect();
+        return rect.width < 95.5 || rect.height < 95.5;
+      }).length,
+    };
+  });
+  check('same-time monsters are evenly separated in every repeated panel', (
+    concertSpacing.repeated && concertSpacing.sameTimeOverlapArea < 1 && concertSpacing.undersized === 0
+  ), JSON.stringify(concertSpacing));
   check('concert starts at zero', concertEntryPhase < 0.6, concertEntryPhase);
 
   const seamAudioBefore = await page.evaluate(() => (
@@ -302,7 +335,24 @@ try {
 
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(5.2));
   await settleImages(page, '.concert-track-art, .concert-event .monster-still');
+  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(shots, '03-concert-landscape.png') });
+  const controlSafety = await page.evaluate(() => {
+    const controls = ['#concert-back', '#concert-sound'].map((selector) => document.querySelector(selector).getBoundingClientRect());
+    const visuals = [...document.querySelectorAll('.concert-event[data-lane-id="white"]')]
+      .map((button) => button.querySelector('.monster-dance').getBoundingClientRect())
+      .filter((rect) => rect.right > 0 && rect.left < innerWidth);
+    let overlaps = 0;
+    for (const visual of visuals) {
+      for (const control of controls) {
+        const width = Math.max(0, Math.min(visual.right, control.right) - Math.max(visual.left, control.left));
+        const height = Math.max(0, Math.min(visual.bottom, control.bottom) - Math.max(visual.top, control.top));
+        if (width * height > 4) overlaps += 1;
+      }
+    }
+    return { overlaps, shifted: document.querySelectorAll('.concert-event[style*="--event-safe-y"]').length };
+  });
+  check('top-lane performers clear the corner controls', controlSafety.overlaps === 0, JSON.stringify(controlSafety));
 
   const soloPoint = await page.evaluate(() => {
     const candidates = [...document.querySelectorAll('.concert-event')]
@@ -374,6 +424,46 @@ try {
   check('New Song returns to white at zero', fresh.activeLaneId === 'white' && fresh.composerPhase < 0.5, JSON.stringify(fresh));
 
   await page.evaluate(() => {
+    for (const [time, monsterId] of [[15.8, 'monster-03'], [0.2, 'monster-01'], [2.7, 'monster-02']]) {
+      QLOBE_DEBUG.setComposerTime(time);
+      QLOBE_DEBUG.tap(monsterId);
+    }
+  });
+  await page.locator('#go-concert').click();
+  await page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'concert');
+  await page.waitForFunction(() => document.querySelectorAll('.concert-event.is-dance-ready').length >= 3, null, { timeout: 30000 });
+  const inspectNearSpacing = () => page.evaluate(() => {
+    const panel = document.querySelector('.song-panel[data-panel="1"]');
+    const visuals = [...panel.querySelectorAll('.concert-event')]
+      .map((button) => button.querySelector('.monster-dance').getBoundingClientRect());
+    let overlaps = 0;
+    for (let first = 0; first < visuals.length; first += 1) {
+      for (let second = first + 1; second < visuals.length; second += 1) {
+        const a = visuals[first];
+        const b = visuals[second];
+        const width = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+        const height = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+        if (width * height > 4) overlaps += 1;
+      }
+    }
+    return {
+      overlaps,
+      authoredTimes: QLOBE_DEBUG.getSong().events.map(({ at }) => at).sort((a, b) => a - b),
+    };
+  });
+  const nearLandscape = await inspectNearSpacing();
+  check('near-time and seam groups preserve authored times without overlap', (
+    nearLandscape.overlaps === 0 && nearLandscape.authoredTimes.join(',') === '0.2,2.7,15.8'
+  ), JSON.stringify(nearLandscape));
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const nearPortrait = await inspectNearSpacing();
+  check('geometry-derived spacing remains collision-free in portrait', nearPortrait.overlaps === 0, JSON.stringify(nearPortrait));
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.locator('#new-song').click();
+  await page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'composer');
+
+  await page.evaluate(() => {
     for (const time of [3, 8, 13]) {
       for (let index = 1; index <= 12; index += 1) {
         QLOBE_DEBUG.setComposerTime(time);
@@ -420,6 +510,97 @@ try {
       && denseMedia.paintResolution === 320
       && denseMedia.paintRate <= denseMedia.paintBudget + 0.5
   ), JSON.stringify(denseMedia));
+  const denseSpacing = await page.evaluate(() => {
+    const events = QLOBE_DEBUG.getSong().events;
+    const panel = document.querySelector('.song-panel[data-panel="1"]');
+    const buttons = [...panel.querySelectorAll('.concert-event')];
+    const visuals = buttons.map((button) => ({
+      eventId: button.dataset.eventId,
+      rect: button.querySelector('.monster-dance').getBoundingClientRect(),
+    }));
+    const overlaps = [];
+    for (let first = 0; first < visuals.length; first += 1) {
+      for (let second = first + 1; second < visuals.length; second += 1) {
+        const a = visuals[first];
+        const b = visuals[second];
+        const width = Math.max(0, Math.min(a.rect.right, b.rect.right) - Math.max(a.rect.left, b.rect.left));
+        const height = Math.max(0, Math.min(a.rect.bottom, b.rect.bottom) - Math.max(a.rect.top, b.rect.top));
+        if (width * height > 4) overlaps.push([a.eventId, b.eventId, Math.round(width * height)]);
+      }
+    }
+    const firstCluster = events.filter(({ at }) => at === 3).map(({ id }) => id);
+    const uniquePositions = new Set(firstCluster.map((eventId) => {
+      const button = panel.querySelector(`[data-event-id="${CSS.escape(eventId)}"]`);
+      return `${button.style.getPropertyValue('--event-x')}|${button.style.getPropertyValue('--lane-y')}`;
+    })).size;
+    const hitResults = visuals
+      .map(({ eventId, rect }) => ({
+        eventId,
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      }))
+      .filter(({ x, y }) => x >= 0 && x < innerWidth && y >= 0 && y < innerHeight)
+      .map(({ eventId, x, y }) => ({
+        eventId,
+        owner: document.elementFromPoint(x, y)?.closest('.concert-event')?.dataset.eventId,
+      }));
+    return {
+      overlaps: overlaps.slice(0, 8),
+      uniquePositions,
+      hitSamples: hitResults.length,
+      misownedCenters: hitResults.filter(({ eventId, owner }) => eventId !== owner),
+      undersized: buttons.filter((button) => {
+        const rect = button.getBoundingClientRect();
+        return rect.width < 95.5 || rect.height < 95.5;
+      }).length,
+    };
+  });
+  check('dense collision groups remain evenly spaced and individually targetable', (
+    denseSpacing.overlaps.length === 0
+      && denseSpacing.uniquePositions === 12
+      && denseSpacing.hitSamples > 0
+      && denseSpacing.misownedCenters.length === 0
+      && denseSpacing.undersized === 0
+  ), JSON.stringify(denseSpacing));
+  await page.screenshot({ path: path.join(shots, '03d-concert-dense-landscape.png') });
+  const resizeBefore = await page.evaluate(() => ({
+    elapsed: QLOBE_DEBUG.getTransportState().concertElapsed,
+    artScale: document.querySelector('.song-panel[data-panel="1"] .concert-event').style.getPropertyValue('--event-art-scale'),
+  }));
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const resizeAfter = await page.evaluate(() => {
+    const panel = document.querySelector('.song-panel[data-panel="1"]');
+    const buttons = [...panel.querySelectorAll('.concert-event')];
+    const visuals = buttons.map((button) => button.querySelector('.monster-dance').getBoundingClientRect());
+    let overlaps = 0;
+    for (let first = 0; first < visuals.length; first += 1) {
+      for (let second = first + 1; second < visuals.length; second += 1) {
+        const a = visuals[first];
+        const b = visuals[second];
+        const width = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+        const height = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+        if (width * height > 4) overlaps += 1;
+      }
+    }
+    return {
+      elapsed: QLOBE_DEBUG.getTransportState().concertElapsed,
+      artScale: buttons[0].style.getPropertyValue('--event-art-scale'),
+      overlaps,
+      undersized: buttons.filter((button) => {
+        const rect = button.getBoundingClientRect();
+        return rect.width < 95.5 || rect.height < 95.5;
+      }).length,
+    };
+  });
+  check('responsive spacing recomputes without resetting concert transport', (
+    resizeAfter.elapsed > resizeBefore.elapsed
+      && resizeAfter.artScale !== resizeBefore.artScale
+      && resizeAfter.overlaps === 0
+      && resizeAfter.undersized === 0
+  ), JSON.stringify({ before: resizeBefore, after: resizeAfter }));
+  await page.screenshot({ path: path.join(shots, '03e-concert-dense-portrait.png') });
+  await page.setViewportSize({ width: 1280, height: 800 });
   check('no runtime asset errors', denseMedia.assetErrors.length === 0, denseMedia.assetErrors.join(' | '));
   const unexpected = unexpectedDiagnostics(session);
   check('no console or local HTTP failures', unexpected.length === 0, unexpected.join(' | '));

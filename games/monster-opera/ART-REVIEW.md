@@ -29,7 +29,7 @@ catalog tile. The package passed its visual release gate with:
   concert, and social packaging; and
 - a catalog tile made from the actual title, cast, slate, and lane artwork.
 
-The final real-Chrome interaction run passed all 192 production checks. Its
+The final real-Chrome interaction run passed all 198 production checks. Its
 review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 
 ## Resolved during review
@@ -61,11 +61,15 @@ solo, and exact 16→0 seam frame after moving dense songs onto the twelve-sourc
 shared video pool. It returned **PASS**: no canvas matte, scaling degradation,
 stale idle frame, or Screen-blending mismatch was visible.
 
+The final spacing re-review added dense landscape and portrait compositions,
+near-time groups, loop-seam groups, control clearance, and direct center-point
+tap ownership. It returned **PASS**: local grids are evenly spaced, stay centered
+on their authored musical moments, remain visually continuous at the seam, and
+do not spill between lanes or behind fixed controls.
+
 ## Non-blocking polish
 
 For a song with only one or two events, the concert's large looping chalk arcs
 remain deliberately theatrical and can dominate the sparse cast. The supplied
 slate also has bright wear marks in its right third. Both are taste-level
 characteristics of the approved art world, not comprehension or release issues.
-On sparse songs, a wraparound concert performer can also pass close to the Back
-control; this is a non-blocking theatrical-layout polish opportunity.

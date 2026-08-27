@@ -49,6 +49,7 @@ let concertStartToken = 0;
 let lineupTapSuppressedUntil = 0;
 let concertDancePoolHost = null;
 let concertDancePaintAt = 0;
+let concertSafetyPaintAt = 0;
 
 const imageFor = (monsterId) => `./assets/monsters/${monsterId}/still.webp`;
 const mediaFor = (monsterId, laneId, extension) => {
@@ -700,6 +701,189 @@ function paintConcertDances(time) {
   }
 }
 
+function eventOrder(a, b) {
+  return a.at - b.at
+    || (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0)
+    || String(a.id).localeCompare(String(b.id));
+}
+
+function circularLaneGroups(events, collisionSeconds) {
+  const sorted = [...events].sort(eventOrder);
+  if (sorted.length < 2) return sorted.length ? [[{ event: sorted[0], time: sorted[0].at }]] : [];
+  const gaps = sorted.map((event, index) => {
+    const next = sorted[(index + 1) % sorted.length];
+    return (index === sorted.length - 1 ? next.at + loopSeconds : next.at) - event.at;
+  });
+  let breakAfter = 0;
+  for (let index = 1; index < gaps.length; index += 1) {
+    if (gaps[index] > gaps[breakAfter]) breakAfter = index;
+  }
+  const ordered = [];
+  let previous = -Infinity;
+  for (let step = 1; step <= sorted.length; step += 1) {
+    const event = sorted[(breakAfter + step) % sorted.length];
+    let time = event.at;
+    while (time < previous) time += loopSeconds;
+    ordered.push({ event, time });
+    previous = time;
+  }
+  const groups = [];
+  let current = [];
+  for (const item of ordered) {
+    const previousItem = current[current.length - 1];
+    if (current.length && (item.time - previousItem.time > collisionSeconds || current.length === 12)) {
+      groups.push(current);
+      current = [];
+    }
+    current.push(item);
+  }
+  if (current.length) groups.push(current);
+  return groups;
+}
+
+function concertGrid(count) {
+  if (count === 1) return { columns: 1, rows: 1, rowCounts: [1] };
+  if (count === 2) return { columns: 2, rows: 1, rowCounts: [2] };
+  if (count === 3) return { columns: 3, rows: 1, rowCounts: [3] };
+  if (count === 4) return { columns: 2, rows: 2, rowCounts: [2, 2] };
+  if (count <= 6) return { columns: 3, rows: 2, rowCounts: count === 5 ? [3, 2] : [3, 3] };
+  if (count <= 8) return { columns: 4, rows: 2, rowCounts: count === 7 ? [4, 3] : [4, 4] };
+  const rowCounts = count === 9 ? [3, 3, 3]
+    : count === 10 ? [3, 4, 3]
+      : count === 11 ? [4, 3, 4] : [4, 4, 4];
+  return { columns: 4, rows: 3, rowCounts };
+}
+
+function concertDensity(count) {
+  if (count === 1) return { size: 1, columnSeconds: 0, rowPercent: 0 };
+  if (count === 2) return { size: 0.82, columnSeconds: 2.5, rowPercent: 0 };
+  if (count === 3) return { size: 0.7, columnSeconds: 2.05, rowPercent: 0 };
+  if (count === 4) return { size: 0.68, columnSeconds: 2.15, rowPercent: 13 };
+  if (count <= 6) return { size: 0.62, columnSeconds: 1.9, rowPercent: 13 };
+  if (count <= 8) return { size: 0.54, columnSeconds: 1.55, rowPercent: 13 };
+  return { size: 0.46, columnSeconds: 1.1, rowPercent: 12 };
+}
+
+function clampValue(min, value, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function concertBaseSize() {
+  const sparse = state.song.events.length <= 4;
+  if (sparse) {
+    return { width: clampValue(132, innerWidth * 0.18, 260), height: clampValue(132, innerHeight * 0.31, 260) };
+  }
+  if (innerWidth > innerHeight && innerHeight <= 600) {
+    return { width: clampValue(104, innerWidth * 0.14, 176), height: clampValue(104, innerHeight * 0.28, 166) };
+  }
+  if (innerHeight > innerWidth) {
+    return { width: clampValue(122, innerWidth * 0.28, 220), height: clampValue(122, innerHeight * 0.23, 220) };
+  }
+  return { width: clampValue(112, innerWidth * 0.15, 230), height: clampValue(112, innerHeight * 0.28, 235) };
+}
+
+function createConcertLayout() {
+  const layout = new Map();
+  const base = concertBaseSize();
+  const collisionSeconds = Math.max(2.4, (base.width + 16) / innerWidth * loopSeconds);
+  for (let laneIndex = 0; laneIndex < config.lanes.length; laneIndex += 1) {
+    const lane = config.lanes[laneIndex];
+    const events = state.song.events.filter((event) => event.laneId === lane.id);
+    for (const group of circularLaneGroups(events, collisionSeconds)) {
+      const grid = concertGrid(group.length);
+      const density = concertDensity(group.length);
+      const center = group.reduce((total, item) => total + item.time, 0) / group.length;
+      const boxWidth = Math.max(96, base.width * density.size);
+      const boxHeight = Math.max(96, base.height * density.size);
+      const availableWidth = grid.columns > 1 ? innerWidth * density.columnSeconds / loopSeconds * 0.9 : boxWidth;
+      const availableHeight = grid.rows > 1 ? innerHeight * density.rowPercent / 100 * 0.9 : boxHeight;
+      const artScale = Math.min(1, availableWidth / boxWidth, availableHeight / boxHeight);
+      let itemIndex = 0;
+      for (let row = 0; row < grid.rows; row += 1) {
+        const rowCount = grid.rowCounts[row];
+        for (let column = 0; column < rowCount; column += 1) {
+          const item = group[itemIndex];
+          itemIndex += 1;
+          const columnOffset = column - (rowCount - 1) / 2;
+          const rowOffset = row - (grid.rows - 1) / 2;
+          layout.set(item.event.id, {
+            x: wrap(center + columnOffset * density.columnSeconds, loopSeconds) / loopSeconds * 100,
+            y: 17 + laneIndex * 33 + rowOffset * density.rowPercent,
+            size: density.size,
+            artScale,
+            boxWidth,
+            boxHeight,
+          });
+        }
+      }
+    }
+  }
+  return layout;
+}
+
+function updateConcertLayout() {
+  const layout = createConcertLayout();
+  for (const button of els.concert.querySelectorAll('.concert-event')) {
+    const position = layout.get(button.dataset.eventId);
+    if (!position) continue;
+    button.style.setProperty('--event-x', `${position.x}%`);
+    button.style.setProperty('--lane-y', `${position.y}%`);
+    button.style.setProperty('--event-size-factor', String(position.size));
+    button.style.setProperty('--event-art-scale', String(position.artScale));
+    button.style.setProperty('--event-box-width', `${position.boxWidth}px`);
+    button.style.setProperty('--event-box-height', `${position.boxHeight}px`);
+  }
+}
+
+function updateConcertControlSafety(time) {
+  if (time - concertSafetyPaintAt < 80) return;
+  concertSafetyPaintAt = time;
+  const controls = [els.concertBack, game.querySelector('#concert-sound')]
+    .filter(Boolean)
+    .map((control) => control.getBoundingClientRect());
+  const panelHeight = Math.max(1, els.concert.clientHeight);
+  const entries = [...els.concert.querySelectorAll('.concert-event.concert-lane-white')].map((button) => {
+    const current = Number.parseFloat(button.style.getPropertyValue('--event-safe-y')) || 0;
+    const art = button.querySelector('.monster-still')?.getBoundingClientRect();
+    return { button, current, art, target: 0 };
+  });
+  for (const control of controls) {
+    const candidates = entries.filter(({ button, art }) => (
+      button.classList.contains('is-near') && art
+      && art.left < control.right + 10 && art.right > control.left - 10
+    ));
+    let sharedTarget = 0;
+    for (const { current, art } of candidates) {
+      const unshiftedTop = art.top - current / 100 * panelHeight;
+      sharedTarget = Math.max(sharedTarget, (control.bottom + 10 - unshiftedTop) / panelHeight * 100);
+    }
+    sharedTarget = clampValue(0, sharedTarget, 14);
+    for (const entry of candidates) entry.target = Math.max(entry.target, sharedTarget);
+  }
+  for (const { button, target } of entries) {
+    button.style.setProperty('--event-safe-y', `${Math.round(target * 1000) / 1000}%`);
+  }
+}
+
+function installConcertLayoutResize() {
+  let frame = 0;
+  const queue = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      updateConcertLayout();
+      concertSafetyPaintAt = 0;
+    });
+  };
+  window.addEventListener('resize', queue);
+  window.addEventListener('orientationchange', queue);
+  concertDisposers.push(() => {
+    cancelAnimationFrame(frame);
+    window.removeEventListener('resize', queue);
+    window.removeEventListener('orientationchange', queue);
+  });
+}
+
 function installConcertMediaObserver() {
   const copies = [...els.concert.querySelectorAll('.concert-event')];
   const update = (button, near) => {
@@ -735,6 +919,7 @@ function installConcertMediaObserver() {
 
 function renderConcert() {
   for (const dispose of concertDisposers.splice(0)) dispose?.();
+  concertSafetyPaintAt = 0;
   els.concert.classList.toggle('is-sparse', state.song.events.length <= 4);
   els.world.replaceChildren();
   createConcertDancePool();
@@ -750,7 +935,6 @@ function renderConcert() {
     panel.append(plate);
     for (const event of state.song.events) {
       const monster = config.monsters.find((item) => item.id === event.monsterId);
-      const laneIndex = config.lanes.findIndex((item) => item.id === event.laneId);
       const button = document.createElement('button');
       button.type = 'button';
       button.className = `concert-event concert-lane-${event.laneId}`;
@@ -759,8 +943,6 @@ function renderConcert() {
       button.dataset.laneId = event.laneId;
       button.dataset.target = `concert-${event.id}-${panelIndex}`;
       button.setAttribute('aria-label', `Play ${monster.label} now`);
-      button.style.setProperty('--event-x', `${event.at / loopSeconds * 100}%`);
-      button.style.setProperty('--lane-y', `${17 + laneIndex * 33}%`);
       button.innerHTML = `
         <img class="monster-still" src="${imageFor(event.monsterId)}" alt="" draggable="false" />
         <canvas class="monster-dance" width="1" height="1" data-dance-monster="${event.monsterId}" aria-hidden="true"></canvas>
@@ -778,6 +960,8 @@ function renderConcert() {
     }
     els.world.append(panel);
   }
+  updateConcertLayout();
+  installConcertLayoutResize();
   installConcertMediaObserver();
 }
 
@@ -838,6 +1022,7 @@ function scheduleConcert() {
 
 function startConcertFrames() {
   cancelAnimationFrame(concertFrame);
+  concertSafetyPaintAt = 0;
   const paint = (time) => {
     if (!screens?.is('concert')) return;
     const elapsed = concertClock.elapsed();
@@ -846,6 +1031,7 @@ function startConcertFrames() {
     const x = reduceMotion.matches ? -100 : -50 - phase / loopSeconds * 100;
     els.world.style.transform = `translate3d(${x}vw, 0, 0)`;
     paintConcertDances(time);
+    updateConcertControlSafety(time);
     concertFrame = requestAnimationFrame(paint);
   };
   concertFrame = requestAnimationFrame(paint);
@@ -882,6 +1068,7 @@ function stopConcertTransport({ pause = true } = {}) {
   scheduler = 0;
   cancelAnimationFrame(concertFrame);
   concertFrame = 0;
+  concertSafetyPaintAt = 0;
   clearVisualTimers();
   scheduled.clear();
   if (pause) concertClock.pause();

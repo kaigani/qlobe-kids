@@ -369,6 +369,13 @@ a {
   pointer-events: none;
 }
 
+.concert-event .monster-still,
+.concert-event .monster-dance,
+.concert-event .monster-video {
+  transform: scale(var(--event-art-scale, 1));
+  transform-origin: center;
+}
+
 .monster-dance,
 .monster-video {
   opacity: 0;
@@ -505,20 +512,20 @@ a {
 .concert-event {
   position: absolute;
   z-index: 8;
-  top: var(--lane-y);
+  top: calc(var(--lane-y) + var(--event-safe-y, 0%));
   left: var(--event-x);
-  width: clamp(112px, 15vw, 230px);
-  height: clamp(112px, 28vh, 235px);
+  width: var(--event-box-width, clamp(112px, 15vw, 230px));
+  height: var(--event-box-height, clamp(112px, 28vh, 235px));
   min-width: 96px;
   min-height: 96px;
   transform: translate(-50%, -50%);
   transform-origin: center;
-  transition: transform 110ms ease, filter 140ms ease;
+  transition: transform 110ms ease, filter 140ms ease, top 90ms ease-out;
 }
 
 .concert-screen.is-sparse .concert-event {
-  width: clamp(132px, 18vw, 260px);
-  height: clamp(132px, 31vh, 260px);
+  width: var(--event-box-width, clamp(132px, 18vw, 260px));
+  height: var(--event-box-height, clamp(132px, 31vh, 260px));
 }
 
 .concert-event.is-pressed {
@@ -630,8 +637,8 @@ a {
   }
 
   .concert-event {
-    width: clamp(122px, 28vw, 220px);
-    height: clamp(122px, 23vh, 220px);
+    width: var(--event-box-width, clamp(122px, 28vw, 220px));
+    height: var(--event-box-height, clamp(122px, 23vh, 220px));
   }
 
   .concert-track-art {
@@ -696,8 +703,8 @@ a {
   }
 
   .concert-event {
-    width: clamp(104px, 14vw, 176px);
-    height: clamp(104px, 28vh, 166px);
+    width: var(--event-box-width, clamp(104px, 14vw, 176px));
+    height: var(--event-box-height, clamp(104px, 28vh, 166px));
   }
 }
 
