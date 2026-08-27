@@ -158,15 +158,20 @@ a {
   opacity: 0;
 }
 
+.splash-performer > img,
 .splash-performer > video,
 .video-overlay-layer,
+.monster-still,
+.monster-dance,
+.monster-video {
+  mix-blend-mode: screen;
+}
+
+.splash-performer > video,
+.monster-dance,
 .monster-video {
   background: #000;
   filter: contrast(1.58) saturate(1.06);
-}
-
-.monster-lineup {
-  mix-blend-mode: screen;
 }
 
 .splash-monster-01 {
@@ -321,10 +326,20 @@ a {
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   touch-action: pan-x;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+  mix-blend-mode: screen;
 }
 
 .monster-lineup::-webkit-scrollbar {
   display: none;
+}
+
+.monster-lineup.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
 }
 
 .composer-monster {
@@ -339,6 +354,7 @@ a {
 }
 
 .composer-monster .monster-still,
+.composer-monster .monster-dance,
 .composer-monster .monster-video,
 .concert-event .monster-still,
 .concert-event .monster-video {
@@ -350,12 +366,25 @@ a {
   pointer-events: none;
 }
 
+.monster-dance,
 .monster-video {
   opacity: 0;
 }
 
+.composer-monster.is-dance-ready .monster-still {
+  opacity: 0;
+}
+
+.composer-monster.is-dance-ready:not(.is-performing) .monster-dance {
+  opacity: 1;
+}
+
 .composer-monster.is-performing .monster-still,
 .concert-event.is-performing .monster-still {
+  opacity: 0;
+}
+
+.composer-monster.is-performing .monster-dance {
   opacity: 0;
 }
 
@@ -660,11 +689,14 @@ a {
   }
 
   .splash-performer > video,
+  .monster-dance,
   .monster-video {
     display: none;
   }
 
   .splash-performer > img,
+  .composer-monster .monster-still,
+  .composer-monster.is-dance-ready .monster-still,
   .composer-monster.is-performing .monster-still,
   .concert-event.is-performing .monster-still {
     opacity: 1;

@@ -74,6 +74,7 @@ check('16-second loop', config.timing.loopSeconds === 16 && config.timing.laneSe
 check('four-second monster blocks', config.timing.clipSeconds === 4);
 check('three ordered lanes', config.lanes.map(({ id }) => id).join(',') === 'white,yellow,teal');
 check('twelve monsters', config.monsters.length === 12);
+check('every monster declares its own dance loop', config.monsters.every(({ dance }) => typeof dance === 'string' && dance.endsWith('/dance.mp4')));
 for (const relativePath of [
   'ui/title.png', 'ui/back.png', 'ui/sound-on.png', 'ui/sound-off.png',
   'ui/drum-on.png', 'ui/drum-off.png', 'ui/go.png', 'ui/new-song.png',
@@ -83,6 +84,7 @@ for (const relativePath of [
 for (let monster = 1; monster <= 12; monster += 1) {
   const id = `monster-${String(monster).padStart(2, '0')}`;
   check(`asset ${id}/still.webp`, exists(`monsters/${id}/still.webp`));
+  check(`asset ${id}/dance.mp4`, exists(`monsters/${id}/dance.mp4`));
   for (const lane of ['01', '02', '03']) {
     check(`asset ${id}/noise-${lane}.mp4`, exists(`monsters/${id}/noise-${lane}.mp4`));
     check(`asset ${id}/noise-${lane}.m4a`, exists(`monsters/${id}/noise-${lane}.m4a`));
@@ -122,6 +124,25 @@ try {
   check('real Start gesture enters composer', true);
   check('beat starts enabled', await page.evaluate(() => QLOBE_DEBUG.getState().beatEnabled));
   check('twelve monster targets', await page.locator('[data-monster-id]').count() === 12);
+  await page.waitForFunction(() => {
+    const dances = [...document.querySelectorAll('.monster-dance')];
+    return dances.length === 12 && dances.every((video) => video.readyState >= 2 && !video.paused);
+  }, null, { timeout: 30000 });
+  const danceState = await page.evaluate(() => ({
+    playing: [...document.querySelectorAll('.monster-dance')].filter((video) => !video.paused).length,
+    looping: [...document.querySelectorAll('.monster-dance')].filter((video) => video.loop).length,
+    visible: [...document.querySelectorAll('.composer-monster')].filter((button) => (
+      Number(getComputedStyle(button.querySelector('.monster-dance')).opacity) > 0.9
+      && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) < 0.1
+    )).length,
+    directScreen: [...document.querySelectorAll('video')].filter((video) => getComputedStyle(video).mixBlendMode === 'screen').length,
+    videos: document.querySelectorAll('video').length,
+    screenGroups: ['.splash-stage', '.monster-lineup', '.concert-viewport']
+      .filter((selector) => getComputedStyle(document.querySelector(selector)).mixBlendMode === 'screen').length,
+  }));
+  check('all twelve composer monsters idle on their dance loops', danceState.playing === 12 && danceState.looping === 12 && danceState.visible === 12, JSON.stringify(danceState));
+  check('Screen blend mode is applied directly to every video', danceState.directScreen === danceState.videos, JSON.stringify(danceState));
+  check('hardware-video fallback groups also use Screen', danceState.screenGroups === 3, JSON.stringify(danceState));
   await assertLayout(page, 'landscape');
   await page.waitForFunction(() => {
     const { loaded, loading } = QLOBE_DEBUG.getState().audio;
@@ -130,6 +151,42 @@ try {
   const decodedAudio = await page.evaluate(() => QLOBE_DEBUG.getState().audio);
   check('beat and all 36 monster sounds decode', decodedAudio.loaded >= 37 && decodedAudio.errors.length === 0, JSON.stringify(decodedAudio));
   check('looping beat is running by default', decodedAudio.beatPlaying);
+
+  const wheelScroll = await page.evaluate(async () => {
+    const lineup = document.querySelector('.monster-lineup');
+    lineup.scrollLeft = 0;
+    const event = new WheelEvent('wheel', { deltaY: 280, bubbles: true, cancelable: true });
+    lineup.dispatchEvent(event);
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    return { scrollLeft: lineup.scrollLeft, prevented: event.defaultPrevented, events: QLOBE_DEBUG.getSong().events.length };
+  });
+  check('mouse wheel scrolls the monster lineup without recording', wheelScroll.scrollLeft > 100 && wheelScroll.prevented && wheelScroll.events === 0, JSON.stringify(wheelScroll));
+  const edgeWheel = await page.evaluate(() => {
+    const lineup = document.querySelector('.monster-lineup');
+    lineup.scrollLeft = lineup.scrollWidth;
+    const before = lineup.scrollLeft;
+    const event = new WheelEvent('wheel', { deltaY: 280, bubbles: true, cancelable: true });
+    lineup.dispatchEvent(event);
+    return { before, after: lineup.scrollLeft, prevented: event.defaultPrevented };
+  });
+  check('wheel is released at the end of the lineup', edgeWheel.after === edgeWheel.before && !edgeWheel.prevented, JSON.stringify(edgeWheel));
+
+  await page.evaluate(() => { document.querySelector('.monster-lineup').scrollLeft = 0; });
+  const lineupRect = await page.locator('.monster-lineup').boundingBox();
+  if (lineupRect) {
+    const startX = Math.min(lineupRect.x + lineupRect.width - 140, lineupRect.x + 900);
+    const y = lineupRect.y + lineupRect.height * 0.58;
+    await page.mouse.move(startX, y);
+    await page.mouse.down();
+    await page.mouse.move(startX - 260, y, { steps: 8 });
+    await page.mouse.up();
+  }
+  const dragScroll = await page.evaluate(() => ({
+    scrollLeft: document.querySelector('.monster-lineup').scrollLeft,
+    events: QLOBE_DEBUG.getSong().events.length,
+  }));
+  check('mouse drag scrolls the monster lineup without recording', Boolean(lineupRect) && dragScroll.scrollLeft > 100 && dragScroll.events === 0, JSON.stringify(dragScroll));
+  await page.evaluate(() => { document.querySelector('.monster-lineup').scrollLeft = 0; });
 
   await page.locator('#go-concert').click({ force: true });
   check('Go is gated until a monster is recorded', await page.evaluate(() => QLOBE_DEBUG.getState().screen === 'composer'));
@@ -147,6 +204,13 @@ try {
   const authored = await page.evaluate(() => QLOBE_DEBUG.getSong().events);
   check('authored song has four events', authored.length === 4, JSON.stringify(authored));
   check('yellow lane uses continuous local time', authored.some((event) => event.laneId === 'yellow' && event.at === 3));
+  await page.waitForFunction(() => document.querySelector('.composer-monster.is-performing'), null, { timeout: 3000 });
+  await page.waitForFunction(() => !document.querySelector('.composer-monster.is-performing'), null, { timeout: 6000 });
+  check('idle dance resumes after a noise performance', await page.evaluate(() => {
+    const button = document.querySelector('[data-monster-id="monster-01"]');
+    return !button.querySelector('.monster-dance').paused
+      && Number(getComputedStyle(button.querySelector('.monster-dance')).opacity) > 0.9;
+  }));
   await page.evaluate(() => QLOBE_DEBUG.setComposerTime(7.2));
   await page.waitForFunction(() => !document.querySelector('.flying-dot'));
   await page.evaluate(() => document.querySelector('.monster-lineup').scrollTo({ left: 0, behavior: 'instant' }));
@@ -158,6 +222,10 @@ try {
   check('Go enters concert', true);
   check('concert has three seamless panels', await page.locator('.song-panel').count() === 3);
   check('every event is copied into every panel', await page.locator('.concert-event').count() === authored.length * 3);
+  check('concert videos retain direct Screen blending', await page.evaluate(() => (
+    [...document.querySelectorAll('.concert-event .monster-video')]
+      .every((video) => getComputedStyle(video).mixBlendMode === 'screen')
+  )));
   check('concert starts at zero', await page.evaluate(() => QLOBE_DEBUG.getState().concertPhase < 0.6));
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(5.2));
   await settleImages(page, '.concert-track-art, .concert-event .monster-still');
@@ -173,6 +241,10 @@ try {
   });
   check('visible concert solo target found', Boolean(soloPoint), JSON.stringify(soloPoint));
   if (soloPoint) await page.mouse.click(soloPoint.x, soloPoint.y);
+  if (soloPoint) {
+    await page.waitForFunction(() => document.querySelector('.concert-event.is-performing'), null, { timeout: 3000 });
+    await page.screenshot({ path: path.join(shots, '03b-concert-solo-landscape.png') });
+  }
   check('real concert tap starts an independent manual solo', await page.evaluate(() => QLOBE_DEBUG.getAudioLog().some(({ kind }) => kind === 'manual')));
 
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(5));
@@ -243,6 +315,8 @@ try {
       QLOBE_DEBUG.setComposerTime(7);
     });
     await responsive.page.waitForFunction(() => !document.querySelector('.flying-dot'));
+    await responsive.page.waitForFunction(() => document.querySelector('.composer-monster.is-performing'), null, { timeout: 3000 });
+    await responsive.page.waitForFunction(() => !document.querySelector('.composer-monster.is-performing'), null, { timeout: 6000 });
     await settleImages(responsive.page, '.composer-monster .monster-still');
     await responsive.page.screenshot({ path: path.join(shots, spec.shot) });
     await assertLayout(responsive.page, spec.name);
@@ -299,6 +373,12 @@ try {
   await waitForGame(reduced.page);
   await reduced.page.locator('#start-song').click();
   await reduced.page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'composer');
+  check('reduced motion uses static composer fallbacks', await reduced.page.evaluate(() => (
+    [...document.querySelectorAll('.composer-monster')].every((button) => (
+      getComputedStyle(button.querySelector('.monster-dance')).display === 'none'
+      && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) > 0.9
+    ))
+  )));
   await reduced.page.evaluate(() => {
     QLOBE_DEBUG.setComposerTime(3);
     QLOBE_DEBUG.tap('monster-01');

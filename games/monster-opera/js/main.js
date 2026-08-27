@@ -45,6 +45,7 @@ let visualTimers = new Set();
 const performances = new Map();
 let concertStarting = false;
 let concertStartToken = 0;
+let lineupTapSuppressedUntil = 0;
 
 const imageFor = (monsterId) => `./assets/monsters/${monsterId}/still.webp`;
 const mediaFor = (monsterId, laneId, extension) => {
@@ -153,7 +154,7 @@ function renderShell() {
   const lineup = document.createElement('div');
   lineup.className = 'monster-lineup';
   lineup.setAttribute('role', 'list');
-  lineup.setAttribute('aria-label', 'Swipe and tap the chalk monsters');
+  lineup.setAttribute('aria-label', 'Swipe, drag, or scroll, then tap a chalk monster');
   for (const monster of config.monsters) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -164,6 +165,7 @@ function renderShell() {
     button.setAttribute('aria-label', `Play the ${monster.label}`);
     button.innerHTML = `
       <img class="monster-still" src="${imageFor(monster.id)}" alt="" draggable="false" />
+      <video class="monster-dance" src="${monster.dance}" poster="${imageFor(monster.id)}" muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <video class="monster-video" muted playsinline preload="metadata" aria-hidden="true"></video>
       <span class="monster-chalk-burst" aria-hidden="true"></span>
     `;
@@ -293,11 +295,28 @@ function playSplashVideos() {
   for (const video of els.splash.querySelectorAll('video')) video.play().catch(() => {});
 }
 
+function playComposerDance(button) {
+  const video = button?.querySelector('.monster-dance');
+  if (!video || reduceMotion.matches || document.hidden || !screens?.is('composer')) return;
+  video.play().then(
+    () => button.classList.add('is-dance-ready'),
+    () => button.classList.remove('is-dance-ready'),
+  );
+}
+
+function playComposerDances() {
+  for (const button of els.lineup.querySelectorAll('.composer-monster')) playComposerDance(button);
+}
+
 function pauseVideos(root = game) {
+  const buttons = new Set();
+  for (const video of root.querySelectorAll('video')) {
+    const button = video.closest('.composer-monster, .concert-event');
+    if (button) buttons.add(button);
+  }
+  for (const button of buttons) performances.get(button)?.();
   for (const video of root.querySelectorAll('video')) {
     try { video.pause(); } catch { /* media is optional */ }
-    const button = video.closest('.composer-monster, .concert-event');
-    performances.get(button)?.();
   }
 }
 
@@ -365,9 +384,11 @@ function pulseBlocked(monsterId, candidate) {
 
 function showMonsterVideo(button, laneId, kind = 'preview') {
   const monsterId = button.dataset.monsterId || button.dataset.eventMonster;
-  const video = button.querySelector('video');
+  const video = button.querySelector('.monster-video');
+  const dance = button.querySelector('.monster-dance');
   const source = mediaFor(monsterId, laneId, 'mp4');
   performances.get(button)?.();
+  dance?.pause();
   if (!video.src.endsWith(source.replace('./', '/'))) video.src = source;
   video.currentTime = 0;
   button.classList.remove('is-performing', 'is-solo');
@@ -386,12 +407,74 @@ function showMonsterVideo(button, laneId, kind = 'preview') {
     video.removeEventListener('playing', begin);
     video.removeEventListener('ended', finish);
     if (performances.get(button) === finish) performances.delete(button);
+    playComposerDance(button);
   };
   performances.set(button, finish);
   video.addEventListener('playing', begin, { once: true });
   video.addEventListener('ended', finish, { once: true });
   fallback = setTimeout(finish, (clipSeconds + 0.75) * 1000);
   video.play().then(begin, finish);
+}
+
+function installLineupScrolling(lineup) {
+  let drag = null;
+
+  const onWheel = (event) => {
+    const raw = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!raw) return;
+    const scale = event.deltaMode === WheelEvent.DOM_DELTA_LINE
+      ? 32
+      : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? lineup.clientWidth : 1;
+    const delta = raw * scale;
+    const max = Math.max(0, lineup.scrollWidth - lineup.clientWidth);
+    const next = Math.max(0, Math.min(max, lineup.scrollLeft + delta));
+    if (Math.abs(next - lineup.scrollLeft) < 0.5) return;
+    event.preventDefault();
+    lineup.scrollLeft = next;
+  };
+
+  const onPointerDown = (event) => {
+    if (event.pointerType !== 'mouse' || event.button !== 0 || event.isPrimary === false) return;
+    drag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startScrollLeft: lineup.scrollLeft,
+      moved: false,
+    };
+  };
+
+  const onPointerMove = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    const delta = event.clientX - drag.startX;
+    if (!drag.moved && Math.abs(delta) < 7) return;
+    drag.moved = true;
+    lineup.classList.add('is-dragging');
+    lineup.scrollLeft = drag.startScrollLeft - delta;
+    event.preventDefault();
+  };
+
+  const finishPointer = (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    if (drag.moved) {
+      lineupTapSuppressedUntil = performance.now() + 350;
+      event.preventDefault();
+    }
+    drag = null;
+    lineup.classList.remove('is-dragging');
+  };
+
+  lineup.addEventListener('wheel', onWheel, { passive: false });
+  lineup.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove, { passive: false });
+  window.addEventListener('pointerup', finishPointer, true);
+  window.addEventListener('pointercancel', finishPointer, true);
+  return () => {
+    lineup.removeEventListener('wheel', onWheel);
+    lineup.removeEventListener('pointerdown', onPointerDown);
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', finishPointer, true);
+    window.removeEventListener('pointercancel', finishPointer, true);
+  };
 }
 
 function flyDot(button, event) {
@@ -676,6 +759,7 @@ function enterScreen(name) {
     composerClock.resume();
     renderComposerEvents();
     startComposerFrames();
+    playComposerDances();
     nudger.arm();
   } else if (name === 'concert') {
     composerClock.pause();
@@ -708,6 +792,7 @@ screens = createScreens({
 });
 
 function bindControls() {
+  disposers.push(installLineupScrolling(els.lineup));
   disposers.push(onTap(els.play, async () => {
     await audio.unlock();
     audio.startBeat(config.assets.beat);
@@ -726,7 +811,11 @@ function bindControls() {
     disposers.push(onTap(button, toggleBeat, { feedback: () => { if (!state.muted) sfx.tick(); } }));
   }
   for (const button of els.lineup.querySelectorAll('.composer-monster')) {
-    disposers.push(onTap(button, () => recordMonster(button.dataset.monsterId, button), {
+    disposers.push(onTap(button, () => (
+      performance.now() < lineupTapSuppressedUntil
+        ? false
+        : recordMonster(button.dataset.monsterId, button)
+    ), {
       feedback: () => button.classList.add('is-pressed'),
     }));
     button.addEventListener('pointerup', () => button.classList.remove('is-pressed'));
@@ -842,6 +931,7 @@ function handleVisibility() {
   if (screens.is('composer')) {
     composerClock.resume();
     startComposerFrames();
+    playComposerDances();
   }
   if (screens.is('concert')) startConcertTransport();
   if (screens.is('splash')) playSplashVideos();

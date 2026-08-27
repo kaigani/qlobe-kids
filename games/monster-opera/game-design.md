@@ -12,7 +12,7 @@ The game is audio-first and fully playable without reading. There are no scores,
 - Per-game treatment: **rough color-chalk classroom slate**.
 - Material language: real charcoal-green blackboard texture; dusty, broken chalk edges; warm yellow, white, teal, coral, lavender, and pink marks; intentionally imperfect hand pressure.
 - Primary visible art is raster or supplied H.264 video. CSS and DOM provide only layout, hit areas, focus, clipping, compositing, and motion.
-- Black-backed stills and videos are grouped into authored overlay layers that use `mix-blend-mode: screen`, so the committed blackboard texture remains visible through the moving chalk.
+- Every black-backed still and video renderer explicitly uses `mix-blend-mode: screen`. The splash, cast rail, and concert viewport also provide screen-composited media groups for browsers that promote video into opaque hardware planes, so the committed blackboard texture remains visible through every moving chalk layer.
 - The decorative title is authored raster lettering. Functional labels stay accessible HTML/ARIA and are not required to play.
 
 ## Screen map
@@ -40,7 +40,7 @@ Catalog ← Home — Splash
 
 - Three authored raster lane strokes occupy the top band: white, yellow, teal.
 - One orange raster playhead sweeps the active lane. A full lane lasts 16 seconds; the listening lane advances white → yellow → teal and repeats.
-- Twelve large monsters form a horizontally swipeable stage. Four to six are visible in ordinary landscape; two are visible in portrait.
+- Twelve large monsters dance continuously on a horizontally swipeable stage. Four to six are visible in ordinary landscape; two are visible in portrait. Touch swipe, desktop drag, horizontal trackpad motion, and a conventional mouse wheel all move the same native rail.
 - Tapping a monster previews the lane-specific four-second sound/video and records a continuous time in the active lane.
 - A colored chalk token flies from performer to timeline and remains at that time.
 - Global sound, independent beat toggle, Back, and Go use authored raster faces with ≥96px hit areas.
@@ -114,6 +114,7 @@ None. The interaction is intentionally modeled through motion, immediate monster
 
 - 1 blackboard texture.
 - 12 black-backed neutral monster stills in high-quality WebP delivery, composed through the same overlay treatment as video.
+- 12 four-second looping dance videos for the Composer idle cast.
 - 36 four-second lane-specific video performances plus 36 separated AAC sounds.
 - 3 muted dance loops for the splash.
 - 1 looping beat.

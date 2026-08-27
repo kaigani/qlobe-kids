@@ -29,7 +29,7 @@ catalog tile. The package passed its visual release gate with:
   concert, and social packaging; and
 - a catalog tile made from the actual title, cast, slate, and lane artwork.
 
-The final real-Chrome interaction run passed all 163 production checks. Its
+The final real-Chrome interaction run passed all 185 production checks. Its
 review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 
 ## Resolved during review
@@ -42,6 +42,19 @@ review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 - Enlarged sparse concert performers, softened the concert plate, and added a
   gentle first-interaction invitation.
 - Added a portrait cast-rail discovery nudge without obscuring the timeline.
+- Replaced every composer's static idle pose with its four-second dance loop,
+  while preserving the still artwork as the reduced-motion fallback.
+- Applied Screen blending directly to every video and added a Screen-blended
+  media group fallback for browsers that promote video into hardware layers.
+- Added mouse-wheel and click-drag navigation to the cast rail while retaining
+  native touch swiping and preventing drags from accidentally recording notes.
+
+## Correction re-review
+
+Fresh production captures of the splash, dancing composer, active concert
+solo, portrait, and short-landscape layouts show no black rectangles, gray
+mats, compression-box outlines, or shadow halos. The independent adversarial
+review remains **PASS WITH POLISH**, with no release blockers.
 
 ## Non-blocking polish
 
@@ -49,3 +62,5 @@ For a song with only one or two events, the concert's large looping chalk arcs
 remain deliberately theatrical and can dominate the sparse cast. The supplied
 slate also has bright wear marks in its right third. Both are taste-level
 characteristics of the approved art world, not comprehension or release issues.
+On sparse songs, a wraparound concert performer can also pass close to the Back
+control; this is a non-blocking theatrical-layout polish opportunity.
