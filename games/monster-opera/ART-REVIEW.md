@@ -29,7 +29,7 @@ catalog tile. The package passed its visual release gate with:
   concert, and social packaging; and
 - a catalog tile made from the actual title, cast, slate, and lane artwork.
 
-The final real-Chrome interaction run passed all 185 production checks. Its
+The final real-Chrome interaction run passed all 192 production checks. Its
 review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 
 ## Resolved during review
@@ -55,6 +55,11 @@ Fresh production captures of the splash, dancing composer, active concert
 solo, portrait, and short-landscape layouts show no black rectangles, gray
 mats, compression-box outlines, or shadow halos. The independent adversarial
 review remains **PASS WITH POLISH**, with no release blockers.
+
+The final Listen-mode re-review also inspected the idle dance renderer, manual
+solo, and exact 16→0 seam frame after moving dense songs onto the twelve-source
+shared video pool. It returned **PASS**: no canvas matte, scaling degradation,
+stale idle frame, or Screen-blending mismatch was visible.
 
 ## Non-blocking polish
 

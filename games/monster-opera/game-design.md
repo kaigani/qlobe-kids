@@ -51,8 +51,17 @@ Catalog ← Home — Splash
 - Three large authored music tracks repeat across three adjacent 16-second panels.
 - The panel strip scrolls past a fixed orange playhead and loops without a visible jump.
 - Every recorded event is a large monster placed at its lane and exact song time.
+- Every idle concert monster uses its supplied `dance.mp4`. Listen decodes one
+  shared source per unique monster (never more than twelve) and paints that
+  frame into each Screen-blended timeline appearance, avoiding an iPad decoder
+  explosion on dense songs. The canvas renderer is also hard-limited to 320
+  paints per second and scales backing resolution only for unusually dense
+  compositions; ordinary songs remain 480px at 20fps.
 - All three lanes replay together every 16 seconds.
 - Tapping a visible event immediately plays its own lane sound for four seconds as an independent solo. It never changes or delays scheduled playback.
+- Performance MP4s load only near the viewport. A performance crossing the
+  16→0 seam is mirrored onto the incoming panel copy while its audio remains a
+  single scheduled or manual voice.
 - New Song wipes the data, stops event voices, returns to Composer, and resets to white at zero.
 
 ## Timing and data contract
@@ -114,7 +123,7 @@ None. The interaction is intentionally modeled through motion, immediate monster
 
 - 1 blackboard texture.
 - 12 black-backed neutral monster stills in high-quality WebP delivery, composed through the same overlay treatment as video.
-- 12 four-second looping dance videos for the Composer idle cast.
+- 12 four-second looping dance videos for Composer and pooled Concert idles.
 - 36 four-second lane-specific video performances plus 36 separated AAC sounds.
 - 3 muted dance loops for the splash.
 - 1 looping beat.

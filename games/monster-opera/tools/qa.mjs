@@ -219,14 +219,87 @@ try {
 
   await page.locator('#go-concert').click();
   await page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'concert');
+  const concertEntryPhase = await page.evaluate(() => QLOBE_DEBUG.getState().concertPhase);
   check('Go enters concert', true);
   check('concert has three seamless panels', await page.locator('.song-panel').count() === 3);
   check('every event is copied into every panel', await page.locator('.concert-event').count() === authored.length * 3);
-  check('concert videos retain direct Screen blending', await page.evaluate(() => (
-    [...document.querySelectorAll('.concert-event .monster-video')]
-      .every((video) => getComputedStyle(video).mixBlendMode === 'screen')
+  await page.waitForFunction((expected) => {
+    const buttons = [...document.querySelectorAll('.concert-event')];
+    const eventIds = [...new Set(buttons.map((button) => button.dataset.eventId))];
+    return buttons.length === expected && eventIds.every((eventId) => (
+      buttons.some((button) => button.dataset.eventId === eventId && button.classList.contains('is-dance-ready'))
+    ));
+  }, authored.length * 3, { timeout: 30000 });
+  const concertIdle = await page.evaluate(() => {
+    const events = [...document.querySelectorAll('.concert-event')];
+    const layers = [...document.querySelectorAll([
+      '.concert-track-art', '.concert-playhead', '.concert-event .monster-still',
+      '.concert-event .monster-dance', '.concert-event .monster-video', '.concert-dance-source',
+    ].join(','))];
+    return {
+      events: events.length,
+      logicalEvents: new Set(events.map((button) => button.dataset.eventId)).size,
+      logicalDancing: new Set(events.filter((button) => button.classList.contains('is-dance-ready'))
+        .map((button) => button.dataset.eventId)).size,
+      dancing: events.filter((button) => {
+        const dance = button.querySelector('.monster-dance');
+        const still = button.querySelector('.monster-still');
+        return button.classList.contains('is-dance-ready')
+          && Number(getComputedStyle(dance).opacity) > 0.9
+          && Number(getComputedStyle(still).opacity) < 0.1;
+      }).length,
+      screenLayers: layers.filter((node) => getComputedStyle(node).mixBlendMode === 'screen').length,
+      layers: layers.length,
+      fallback: getComputedStyle(document.querySelector('.concert-viewport')).mixBlendMode,
+    };
+  });
+  check('every visible concert event idles on its dance loop', concertIdle.logicalDancing === concertIdle.logicalEvents, JSON.stringify(concertIdle));
+  check('every concert visual layer uses direct Screen blending', concertIdle.screenLayers === concertIdle.layers, JSON.stringify(concertIdle));
+  check('concert hardware-video fallback retains Screen blending', concertIdle.fallback === 'screen', JSON.stringify(concertIdle));
+  check('concert starts at zero', concertEntryPhase < 0.6, concertEntryPhase);
+
+  const seamAudioBefore = await page.evaluate(() => (
+    QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId }) => kind === 'scheduled' && eventId === 'event-1').length
+  ));
+  await page.evaluate(() => QLOBE_DEBUG.setConcertTime(14.9));
+  await page.waitForFunction(() => (
+    document.querySelectorAll('.concert-event[data-event-id="event-1"].is-performing').length >= 2
+  ), null, { timeout: 3000 });
+  await page.waitForFunction(() => QLOBE_DEBUG.getState().concertPhase < 0.75, null, { timeout: 2500 });
+  const seamPerformance = await page.evaluate(() => {
+    const copies = [...document.querySelectorAll('.concert-event[data-event-id="event-1"]')];
+    const visible = copies.filter((button) => {
+      const rect = button.getBoundingClientRect();
+      return rect.right > 0 && rect.left < innerWidth && rect.bottom > 0 && rect.top < innerHeight;
+    });
+    return {
+      phase: QLOBE_DEBUG.getState().concertPhase,
+      performingCopies: copies.filter((button) => button.classList.contains('is-performing')).length,
+      visibleVideo: visible.some((button) => {
+        const video = button.querySelector('.monster-video');
+        return button.classList.contains('is-performing') && !video.paused
+          && Number(getComputedStyle(video).opacity) > 0.9;
+      }),
+      scheduledAudio: QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId }) => kind === 'scheduled' && eventId === 'event-1').length,
+    };
+  });
+  check('last loop event keeps visible video while audio crosses the seam', (
+    seamPerformance.phase < 0.75 && seamPerformance.performingCopies >= 2
+    && seamPerformance.visibleVideo && seamPerformance.scheduledAudio === seamAudioBefore + 1
+  ), JSON.stringify(seamPerformance));
+  await page.screenshot({ path: path.join(shots, '03c-concert-seam-landscape.png') });
+  await page.waitForFunction(() => !document.querySelector('.concert-event[data-event-id="event-1"].is-performing'), null, { timeout: 6000 });
+  await page.waitForFunction(() => (
+    [...document.querySelectorAll('.concert-event[data-event-id="event-1"]')]
+      .some((button) => button.classList.contains('is-dance-ready'))
+  ), null, { timeout: 1500 });
+  check('visible seam event returns to its idle dance', await page.evaluate(() => (
+    [...document.querySelectorAll('.concert-event[data-event-id="event-1"]')].some((button) => {
+      const dance = button.querySelector('.monster-dance');
+      return button.classList.contains('is-dance-ready') && Number(getComputedStyle(dance).opacity) > 0.9;
+    })
   )));
-  check('concert starts at zero', await page.evaluate(() => QLOBE_DEBUG.getState().concertPhase < 0.6));
+
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(5.2));
   await settleImages(page, '.concert-track-art, .concert-event .monster-still');
   await page.screenshot({ path: path.join(shots, '03-concert-landscape.png') });
@@ -237,15 +310,30 @@ try {
       .filter(({ rect }) => rect.right > 120 && rect.left < innerWidth - 120 && rect.bottom > 100 && rect.top < innerHeight - 100)
       .sort((a, b) => Math.abs(a.rect.left + a.rect.width / 2 - innerWidth / 2) - Math.abs(b.rect.left + b.rect.width / 2 - innerWidth / 2));
     const rect = candidates[0]?.rect;
-    return rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : null;
+    if (!rect) return null;
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const topEvent = document.elementFromPoint(x, y)?.closest('.concert-event');
+    return { x, y, eventId: topEvent?.dataset.eventId || candidates[0].node.dataset.eventId };
   });
   check('visible concert solo target found', Boolean(soloPoint), JSON.stringify(soloPoint));
+  const manualAudioBefore = soloPoint ? await page.evaluate((eventId) => (
+    QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId: loggedId }) => kind === 'manual' && loggedId === eventId).length
+  ), soloPoint.eventId) : 0;
   if (soloPoint) await page.mouse.click(soloPoint.x, soloPoint.y);
   if (soloPoint) {
     await page.waitForFunction(() => document.querySelector('.concert-event.is-performing'), null, { timeout: 3000 });
     await page.screenshot({ path: path.join(shots, '03b-concert-solo-landscape.png') });
   }
-  check('real concert tap starts an independent manual solo', await page.evaluate(() => QLOBE_DEBUG.getAudioLog().some(({ kind }) => kind === 'manual')));
+  const manualSolo = soloPoint ? await page.evaluate(({ eventId, before }) => ({
+    audioCount: QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId: loggedId }) => kind === 'manual' && loggedId === eventId).length,
+    visibleVideo: [...document.querySelectorAll(`.concert-event[data-event-id="${CSS.escape(eventId)}"]`)]
+      .some((button) => button.classList.contains('is-performing') && !button.querySelector('.monster-video').paused),
+    before,
+  }), { eventId: soloPoint.eventId, before: manualAudioBefore }) : null;
+  check('real concert tap starts exactly one audio solo with visible video', (
+    manualSolo?.audioCount === manualSolo.before + 1 && manualSolo.visibleVideo
+  ), JSON.stringify(manualSolo));
 
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(5));
   const scheduledBeforeHide = await page.evaluate(() => QLOBE_DEBUG.getAudioLog().filter(({ kind }) => kind === 'scheduled').length);
@@ -284,7 +372,55 @@ try {
   const fresh = await page.evaluate(() => QLOBE_DEBUG.getState());
   check('New Song clears every event', fresh.song.events.length === 0);
   check('New Song returns to white at zero', fresh.activeLaneId === 'white' && fresh.composerPhase < 0.5, JSON.stringify(fresh));
-  check('no runtime asset errors', fresh.assetErrors.length === 0, fresh.assetErrors.join(' | '));
+
+  await page.evaluate(() => {
+    for (const time of [3, 8, 13]) {
+      for (let index = 1; index <= 12; index += 1) {
+        QLOBE_DEBUG.setComposerTime(time);
+        QLOBE_DEBUG.tap(`monster-${String(index).padStart(2, '0')}`);
+      }
+    }
+  });
+  check('dense song fixture records thirty-six events', await page.evaluate(() => QLOBE_DEBUG.getSong().events.length === 36));
+  await page.locator('#go-concert').click();
+  await page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'concert');
+  await page.waitForFunction(() => {
+    const buttons = [...document.querySelectorAll('.concert-event')];
+    const animated = buttons.filter((button) => button.classList.contains('is-dance-ready'));
+    return new Set(animated.map((button) => button.dataset.eventId)).size === 36;
+  }, null, { timeout: 30000 });
+  const denseMedia = await page.evaluate(() => {
+    const buttons = [...document.querySelectorAll('.concert-event')];
+    const animated = buttons.filter((button) => button.classList.contains('is-dance-ready'));
+    const primed = buttons.filter((button) => button.querySelector('.monster-video').hasAttribute('src'));
+    const danceSources = [...document.querySelectorAll('.concert-dance-source')];
+    const playingPerformances = buttons.filter((button) => !button.querySelector('.monster-video').paused);
+    return {
+      copies: buttons.length,
+      animated: animated.length,
+      logicalAnimated: new Set(animated.map((button) => button.dataset.eventId)).size,
+      danceSources: danceSources.length,
+      playingDanceSources: danceSources.filter((video) => !video.paused).length,
+      primed: primed.length,
+      playingPerformances: playingPerformances.length,
+      paintBudget: Number(document.querySelector('.concert-world').dataset.danceBudget),
+      paintInterval: Number(document.querySelector('.concert-world').dataset.danceInterval),
+      paintResolution: Number(document.querySelector('.concert-world').dataset.danceResolution),
+      paintRate: 1000 / Number(document.querySelector('.concert-world').dataset.danceInterval) * animated.length,
+      assetErrors: QLOBE_DEBUG.getState().assetErrors,
+    };
+  });
+  check('dense Listen mode hard-caps idle decoders and canvas paint rate', (
+    denseMedia.logicalAnimated === 36
+      && denseMedia.danceSources === 12
+      && denseMedia.playingDanceSources === 12
+      && denseMedia.playingPerformances === 0
+      && denseMedia.primed < denseMedia.copies * 0.6
+      && denseMedia.paintBudget === 320
+      && denseMedia.paintResolution === 320
+      && denseMedia.paintRate <= denseMedia.paintBudget + 0.5
+  ), JSON.stringify(denseMedia));
+  check('no runtime asset errors', denseMedia.assetErrors.length === 0, denseMedia.assetErrors.join(' | '));
   const unexpected = unexpectedDiagnostics(session);
   check('no console or local HTTP failures', unexpected.length === 0, unexpected.join(' | '));
 
@@ -385,6 +521,12 @@ try {
   });
   await reduced.page.locator('#go-concert').click();
   await reduced.page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'concert');
+  check('reduced motion uses static concert fallbacks', await reduced.page.evaluate(() => (
+    [...document.querySelectorAll('.concert-event')].every((button) => (
+      getComputedStyle(button.querySelector('.monster-dance')).display === 'none'
+        && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) > 0.9
+    ))
+  )));
   await reduced.page.evaluate(() => QLOBE_DEBUG.setConcertTime(7));
   await settleImages(reduced.page, '.concert-track-art, .concert-event .monster-still');
   const reducedState = await reduced.page.evaluate(() => ({

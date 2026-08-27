@@ -163,7 +163,9 @@ a {
 .video-overlay-layer,
 .monster-still,
 .monster-dance,
-.monster-video {
+.monster-video,
+.concert-dance-source,
+.concert-playhead {
   mix-blend-mode: screen;
 }
 
@@ -357,6 +359,7 @@ a {
 .composer-monster .monster-dance,
 .composer-monster .monster-video,
 .concert-event .monster-still,
+.concert-event .monster-dance,
 .concert-event .monster-video {
   position: absolute;
   inset: 0;
@@ -371,11 +374,13 @@ a {
   opacity: 0;
 }
 
-.composer-monster.is-dance-ready .monster-still {
+.composer-monster.is-dance-ready .monster-still,
+.concert-event.is-dance-ready .monster-still {
   opacity: 0;
 }
 
-.composer-monster.is-dance-ready:not(.is-performing) .monster-dance {
+.composer-monster.is-dance-ready:not(.is-performing) .monster-dance,
+.concert-event.is-dance-ready:not(.is-performing) .monster-dance {
   opacity: 1;
 }
 
@@ -384,7 +389,8 @@ a {
   opacity: 0;
 }
 
-.composer-monster.is-performing .monster-dance {
+.composer-monster.is-performing .monster-dance,
+.concert-event.is-performing .monster-dance {
   opacity: 0;
 }
 
@@ -444,6 +450,23 @@ a {
   overflow: hidden;
   touch-action: manipulation;
   mix-blend-mode: screen;
+}
+
+/* Kept paintable (unlike display:none) so Safari continues decoding the pool. */
+.concert-dance-pool {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.concert-dance-source {
+  display: block;
+  width: 1px;
+  height: 1px;
 }
 
 .concert-world {
@@ -698,6 +721,7 @@ a {
   .composer-monster .monster-still,
   .composer-monster.is-dance-ready .monster-still,
   .composer-monster.is-performing .monster-still,
+  .concert-event.is-dance-ready .monster-still,
   .concert-event.is-performing .monster-still {
     opacity: 1;
   }
