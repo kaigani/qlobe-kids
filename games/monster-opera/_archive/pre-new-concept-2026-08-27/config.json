@@ -1,0 +1,129 @@
+{
+  "id": "monster-opera",
+  "title": "Monster Opera",
+  "maxSelected": 5,
+  "showDurationSeconds": 15,
+  "defaultSelected": ["mint", "pink", "blue", "yellow", "purple"],
+  "modes": [
+    { "id": "solo", "title": "Sing with Me" },
+    { "id": "chorus", "title": "Make a Chorus" },
+    { "id": "stage-show", "title": "Pick a Stage" }
+  ],
+  "cast": [
+    {
+      "id": "mint",
+      "name": "Minty Loo",
+      "role": "warm harmony",
+      "syllable": "loo",
+      "color": "#74d8ad",
+      "baseMidi": 64,
+      "gain": 0.82,
+      "asset": "./assets/monsters/mint.webp",
+      "card": "./assets/cards/mint.webp",
+      "audio": "./assets/audio/monsters/mint.mp3"
+    },
+    {
+      "id": "pink",
+      "name": "Lala",
+      "role": "soprano melody",
+      "syllable": "la",
+      "color": "#ff80aa",
+      "baseMidi": 72,
+      "gain": 0.68,
+      "asset": "./assets/monsters/pink.webp",
+      "card": "./assets/cards/pink.webp",
+      "audio": "./assets/audio/monsters/pink.mp3"
+    },
+    {
+      "id": "blue",
+      "name": "Doodle Doo",
+      "role": "round vowel pulse",
+      "syllable": "doo",
+      "color": "#58bfee",
+      "baseMidi": 67,
+      "gain": 0.78,
+      "asset": "./assets/monsters/blue.webp",
+      "card": "./assets/cards/blue.webp",
+      "audio": "./assets/audio/monsters/blue.mp3"
+    },
+    {
+      "id": "purple",
+      "name": "Woh-Woh",
+      "role": "mellow answer",
+      "syllable": "woh",
+      "color": "#9a6cdf",
+      "baseMidi": 60,
+      "gain": 0.8,
+      "asset": "./assets/monsters/purple.webp",
+      "card": "./assets/cards/purple.webp",
+      "audio": "./assets/audio/monsters/purple.mp3"
+    },
+    {
+      "id": "orange",
+      "name": "Big Bum",
+      "role": "bass rhythm",
+      "syllable": "bum",
+      "color": "#f5a236",
+      "baseMidi": 48,
+      "gain": 0.9,
+      "asset": "./assets/monsters/orange.webp",
+      "card": "./assets/cards/orange.webp",
+      "audio": "./assets/audio/monsters/orange.mp3"
+    },
+    {
+      "id": "yellow",
+      "name": "Little Li",
+      "role": "bell-bright accent",
+      "syllable": "li",
+      "color": "#ffd64d",
+      "baseMidi": 76,
+      "gain": 0.58,
+      "asset": "./assets/monsters/yellow.webp",
+      "card": "./assets/cards/yellow.webp",
+      "audio": "./assets/audio/monsters/yellow.mp3"
+    },
+    {
+      "id": "teal",
+      "name": "Hummy",
+      "role": "humming pad",
+      "syllable": "mmm",
+      "color": "#34cfc4",
+      "baseMidi": 60,
+      "gain": 0.72,
+      "asset": "./assets/monsters/teal.webp",
+      "card": "./assets/cards/teal.webp",
+      "audio": "./assets/audio/monsters/teal.mp3"
+    },
+    {
+      "id": "coral",
+      "name": "Bop-Bop",
+      "role": "comic rhythm pop",
+      "syllable": "bop",
+      "color": "#ff6f82",
+      "baseMidi": 55,
+      "gain": 0.8,
+      "asset": "./assets/monsters/coral.webp",
+      "card": "./assets/cards/coral.webp",
+      "audio": "./assets/audio/monsters/coral.mp3"
+    }
+  ],
+  "stages": [
+    { "id": "cloud", "title": "Cloud Concert", "asset": "./assets/bg/cloud.webp", "color": "#8fd8ff" },
+    { "id": "garden", "title": "Garden Stage", "asset": "./assets/bg/garden.webp", "color": "#83d46f" },
+    { "id": "moon", "title": "Moon Stage", "asset": "./assets/bg/moon.webp", "color": "#8068db" }
+  ],
+  "voice": {
+    "intro": "Monster Opera! Tap a monster and hear it sing.",
+    "choose-singer": "Pick a singer.",
+    "choose-chorus": "Tap some monsters to make a chorus.",
+    "choose-stage": "Where should the monsters sing?",
+    "ready-show": "Ready, monsters? Sing!",
+    "high": "High!",
+    "middle": "Middle!",
+    "low": "Low!",
+    "full-cast": "Five singers are ready. Tap one to swap.",
+    "replay": "Here comes your monster opera again!",
+    "lovely": "What a lovely monster song!",
+    "again": "Make another opera!"
+  }
+}

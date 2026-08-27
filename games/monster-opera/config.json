@@ -1,129 +1,94 @@
 {
   "id": "monster-opera",
+  "engine": "custom-monster-opera",
   "title": "Monster Opera",
-  "maxSelected": 5,
-  "showDurationSeconds": 15,
-  "defaultSelected": ["mint", "pink", "blue", "yellow", "purple"],
-  "modes": [
-    { "id": "solo", "title": "Sing with Me" },
-    { "id": "chorus", "title": "Make a Chorus" },
-    { "id": "stage-show", "title": "Pick a Stage" }
-  ],
-  "cast": [
+  "artWorld": "Toy",
+  "theme": {
+    "world": "toy-table",
+    "variant": "rough-color-chalk-classroom-slate",
+    "background": "./assets/concept/blackboard.jpg",
+    "videoComposition": "screen"
+  },
+  "timing": {
+    "loopSeconds": 16,
+    "laneSeconds": 16,
+    "clipSeconds": 4,
+    "lookaheadSeconds": 0.22,
+    "schedulerMilliseconds": 60
+  },
+  "assets": {
+    "blackboard": "./assets/concept/blackboard.jpg",
+    "beat": "./assets/ambience/sound-loop.m4a",
+    "title": "./assets/ui/title.png",
+    "composerRail": "./assets/ui/composer-rail.png",
+    "concertPlate": "./assets/ui/concert-plate.png",
+    "playhead": "./assets/ui/playhead.png",
+    "controls": {
+      "back": "./assets/ui/back.png",
+      "soundOn": "./assets/ui/sound-on.png",
+      "soundOff": "./assets/ui/sound-off.png",
+      "drumOn": "./assets/ui/drum-on.png",
+      "drumOff": "./assets/ui/drum-off.png",
+      "go": "./assets/ui/go.png",
+      "newSong": "./assets/ui/new-song.png",
+      "play": "./assets/ui/play.png"
+    }
+  },
+  "lanes": [
     {
-      "id": "mint",
-      "name": "Minty Loo",
-      "role": "warm harmony",
-      "syllable": "loo",
-      "color": "#74d8ad",
-      "baseMidi": 64,
-      "gain": 0.82,
-      "asset": "./assets/monsters/mint.webp",
-      "card": "./assets/cards/mint.webp",
-      "audio": "./assets/audio/monsters/mint.mp3"
-    },
-    {
-      "id": "pink",
-      "name": "Lala",
-      "role": "soprano melody",
-      "syllable": "la",
-      "color": "#ff80aa",
-      "baseMidi": 72,
-      "gain": 0.68,
-      "asset": "./assets/monsters/pink.webp",
-      "card": "./assets/cards/pink.webp",
-      "audio": "./assets/audio/monsters/pink.mp3"
-    },
-    {
-      "id": "blue",
-      "name": "Doodle Doo",
-      "role": "round vowel pulse",
-      "syllable": "doo",
-      "color": "#58bfee",
-      "baseMidi": 67,
-      "gain": 0.78,
-      "asset": "./assets/monsters/blue.webp",
-      "card": "./assets/cards/blue.webp",
-      "audio": "./assets/audio/monsters/blue.mp3"
-    },
-    {
-      "id": "purple",
-      "name": "Woh-Woh",
-      "role": "mellow answer",
-      "syllable": "woh",
-      "color": "#9a6cdf",
-      "baseMidi": 60,
-      "gain": 0.8,
-      "asset": "./assets/monsters/purple.webp",
-      "card": "./assets/cards/purple.webp",
-      "audio": "./assets/audio/monsters/purple.mp3"
-    },
-    {
-      "id": "orange",
-      "name": "Big Bum",
-      "role": "bass rhythm",
-      "syllable": "bum",
-      "color": "#f5a236",
-      "baseMidi": 48,
-      "gain": 0.9,
-      "asset": "./assets/monsters/orange.webp",
-      "card": "./assets/cards/orange.webp",
-      "audio": "./assets/audio/monsters/orange.mp3"
+      "id": "white",
+      "index": 0,
+      "noise": "noise-01",
+      "line": "./assets/ui/lane-white.png",
+      "dot": "./assets/ui/dot-white.png",
+      "label": "white song line"
     },
     {
       "id": "yellow",
-      "name": "Little Li",
-      "role": "bell-bright accent",
-      "syllable": "li",
-      "color": "#ffd64d",
-      "baseMidi": 76,
-      "gain": 0.58,
-      "asset": "./assets/monsters/yellow.webp",
-      "card": "./assets/cards/yellow.webp",
-      "audio": "./assets/audio/monsters/yellow.mp3"
+      "index": 1,
+      "noise": "noise-02",
+      "line": "./assets/ui/lane-yellow.png",
+      "dot": "./assets/ui/dot-yellow.png",
+      "label": "yellow song line"
     },
     {
       "id": "teal",
-      "name": "Hummy",
-      "role": "humming pad",
-      "syllable": "mmm",
-      "color": "#34cfc4",
-      "baseMidi": 60,
-      "gain": 0.72,
-      "asset": "./assets/monsters/teal.webp",
-      "card": "./assets/cards/teal.webp",
-      "audio": "./assets/audio/monsters/teal.mp3"
-    },
-    {
-      "id": "coral",
-      "name": "Bop-Bop",
-      "role": "comic rhythm pop",
-      "syllable": "bop",
-      "color": "#ff6f82",
-      "baseMidi": 55,
-      "gain": 0.8,
-      "asset": "./assets/monsters/coral.webp",
-      "card": "./assets/cards/coral.webp",
-      "audio": "./assets/audio/monsters/coral.mp3"
+      "index": 2,
+      "noise": "noise-03",
+      "line": "./assets/ui/lane-teal.png",
+      "dot": "./assets/ui/dot-teal.png",
+      "label": "teal song line"
     }
   ],
-  "stages": [
-    { "id": "cloud", "title": "Cloud Concert", "asset": "./assets/bg/cloud.webp", "color": "#8fd8ff" },
-    { "id": "garden", "title": "Garden Stage", "asset": "./assets/bg/garden.webp", "color": "#83d46f" },
-    { "id": "moon", "title": "Moon Stage", "asset": "./assets/bg/moon.webp", "color": "#8068db" }
+  "splashDancers": [
+    { "monsterId": "monster-01", "video": "./assets/ambience/dance-01.mp4" },
+    { "monsterId": "monster-06", "video": "./assets/ambience/dance-06.mp4" },
+    { "monsterId": "monster-10", "video": "./assets/ambience/dance-10.mp4" }
   ],
-  "voice": {
-    "intro": "Monster Opera! Tap a monster and hear it sing.",
-    "choose-singer": "Pick a singer.",
-    "choose-chorus": "Tap some monsters to make a chorus.",
-    "choose-stage": "Where should the monsters sing?",
-    "ready-show": "Ready, monsters? Sing!",
-    "high": "High!",
-    "middle": "Middle!",
-    "low": "Low!",
-    "full-cast": "Five singers are ready. Tap one to swap.",
-    "replay": "Here comes your monster opera again!",
-    "lovely": "What a lovely monster song!",
-    "again": "Make another opera!"
-  }
+  "monsters": [
+    { "id": "monster-01", "label": "pink pigtail monster" },
+    { "id": "monster-02", "label": "purple eye-stalk monster" },
+    { "id": "monster-03", "label": "orange one-eye monster" },
+    { "id": "monster-04", "label": "teal polka-dot monster" },
+    { "id": "monster-05", "label": "yellow feather monster" },
+    { "id": "monster-06", "label": "teal striped-tail monster" },
+    { "id": "monster-07", "label": "lavender bubble monster" },
+    { "id": "monster-08", "label": "purple square monster" },
+    { "id": "monster-09", "label": "yellow tall monster" },
+    { "id": "monster-10", "label": "red horn monster" },
+    { "id": "monster-11", "label": "pink orange monster" },
+    { "id": "monster-12", "label": "green striped monster" }
+  ],
+  "modes": [
+    {
+      "id": "composer",
+      "title": "Make a Song",
+      "skill": "explore timing, layering, and three contrasting sounds"
+    },
+    {
+      "id": "concert",
+      "title": "Play My Song",
+      "skill": "hear a self-authored pattern repeat and improvise over it"
+    }
+  ]
 }

@@ -1,140 +1,50 @@
-# Monster Opera — asset provenance
+# Monster Opera asset provenance
 
-Canonical art direction: **Kawaii**. The shipped game is static and fully
-offline after load. Project-generated art and audio derivatives are released
-under CC BY 4.0; code is MIT.
+All runtime model calls are authoring-time only. The shipped game is static and offline-capable. Original QLOBE project assets and generated derivatives are released under CC BY 4.0 unless a source row states otherwise.
 
-## Visual source authority
+## Authoritative concept media
 
-The five approved 1448×1086 concept mockups are committed at
-`assets/source/ui-mockups/` with their original `PROMPTS.md`. They came from the
-project's Monster Opera brief and are visual references, not runtime screens.
-Production art uses OpenAI GPT Image 2 through Codex's built-in image-generation
-tool plus deterministic FFmpeg crop/resize/encode scripts and a local Pillow
-alpha-repair pass. Full reproduction prompts live in
-`assets/source/gpt-image-2/PROMPTS.md`.
+| Runtime asset | Source | Production changes | Creator / license |
+| --- | --- | --- | --- |
+| `assets/concept/blackboard.jpg` | `01-game-concepts/_completed/monster-opera/new-monsters/blackboard.png` | High-quality opaque runtime transcode; lossless source retained at `assets/source/concept/blackboard.png` | User-supplied QLOBE project asset / CC BY 4.0 |
+| `assets/monsters/monster-01…12/still.webp` | `new-monsters/monster-NN/NN.png` | Black-backed resize from 1024² to 640² and high-quality WebP delivery; composed in the same screen-blended overlay layer as performance video | User-supplied QLOBE project assets / CC BY 4.0 |
+| `assets/monsters/monster-01…12/noise-01…03.mp4` | 36 matching `noise-*.mp4` files | Trimmed to 4.000s; 480² H.264 yuv420p, 20fps, faststart, video-only. Source exception `monster-05/noise-2.mp4` normalized to `noise-02.mp4`. | User-supplied QLOBE project assets / CC BY 4.0 |
+| Matching `noise-01…03.m4a` | Audio streams in the 36 concept videos | Extracted/finalized to 4.000s AAC for Web Audio scheduling; video delivery is muted to prevent doubled audio | User-supplied QLOBE project assets / CC BY 4.0 |
+| `assets/ambience/dance-01.mp4`, `dance-06.mp4`, `dance-10.mp4` | Matching concept dance videos | Trimmed to 4.000s, 480² H.264, video-only, used muted on splash | User-supplied QLOBE project assets / CC BY 4.0 |
+| `assets/ambience/sound-loop.m4a` | `new-monsters/sound-loop.m4a` | Copied as supplied; decoded and looped gaplessly at runtime | User-supplied QLOBE project asset / CC BY 4.0 |
+| Interaction references | `new-concept-01.png`, `new-concept-02.png`, `_all-monsters.png` | Style/layout references only; not shipped as gameplay screens | User-supplied QLOBE project assets / CC BY 4.0 |
 
-| runtime family | accepted sources | deterministic finalization |
+## GPT Image 2 production art
+
+Selected masters are retained in `assets/source/gpt-image-2/`; exact prompts and output IDs are in `PROMPTS.md`.
+
+| Runtime asset | Accepted source | Production changes |
 | --- | --- | --- |
-| `assets/bg/splash.webp` | `gpt-image-2/splash-clean.png` | 1600×1200 WebP |
-| `assets/bg/splash-portrait.webp` | `gpt-image-2/splash-portrait.png` | 900×1600 WebP |
-| `assets/bg/solo.webp` | `gpt-image-2/solo-stage-clean.png` | 1600×1200 WebP |
-| `assets/bg/{cloud,garden,moon}.webp` | matching `gpt-image-2/*-stage-clean.png` | 1600×1200 WebP |
-| `assets/monsters/*.webp` | `monster-lineup-black.png` → `monster-lineup-alpha.png` | interior matte repair by `tools/repair-alpha.py`, then fixed 4×2 split and 512×512 alpha WebP by `tools/finalize-cast.sh` |
-| `assets/monsters-singing/*.webp` | exact neutral sprite + `singing-mouth-source.png` | registered, feathered raster face patch by `tools/finalize-facial-poses.sh` |
-| `assets/monsters-blink/*.webp` | exact neutral sprite + `blink-face-source.png` | registered, feathered raster face patch by `tools/finalize-facial-poses.sh` |
-| `assets/monsters-gaze-{left,right}/*.webp` | exact neutral sprite + matching gaze source sheet | two registered, feathered raster eye patches by `tools/finalize-facial-poses.sh` |
-| `assets/cards/*.webp` | `gpt-image-2/blank-card-source.png` plus each exact runtime monster sprite | 374×420 plate/sprite composite by `tools/finalize-cards.sh` |
-| `assets/ui/{coral,teal,recording}-pill.webp`, pitch/show controls, badge, tray, and label | `gpt-image-2/chroma-ui-sheet.png` | FFmpeg chroma matte, explicit isolation crops, alpha WebP by `tools/finalize-cards.sh` |
-| `assets/ui/*-heading.webp` | `gpt-image-2/transparent-headings.png` | three spell-checked alpha-tight crops by `tools/finalize-cards.sh` |
-| `assets/og-image.jpg`, `assets/hub-tile.jpg` | accepted overview composition | 1200×630 and 640×533 JPEG |
+| `assets/ui/title.png` | `exec-1098a006-6240-490a-a7e6-43966671b7a8.png` | Direct RGBA title master; exact spelling visually verified |
+| `assets/ui/back.png`, `sound-on.png`, `sound-off.png`, `drum-on.png`, `drum-off.png`, `go.png`, `new-song.png`, `play.png` | Extracted-alpha control sheet `exec-35f43de1-5543-428a-a9c2-da3caba990bd.png` | Deterministic 4×2 grid slice; every control retains a ≥96px runtime hit substrate |
+| `assets/ui/composer-rail.png`, `lane-white.png`, `lane-yellow.png`, `lane-teal.png` | `exec-bf38d061-bde6-49a5-9f69-c2941684fde5.png` | Full RGBA source plus deterministic full-width vertical lane-band crops |
+| `assets/ui/concert-plate.png` | `exec-ea94464c-18fd-48c9-af96-c688053a73f9.png` | Black-backed selected plate; intentionally screen-blended over blackboard at runtime |
+| `assets/ui/playhead.png`, `dot-white.png`, `dot-yellow.png`, `dot-teal.png` | `exec-cfcc8b6a-d1ab-4469-88d2-8e765e1efd94.png` | Deterministic 4×1 grid extraction, then semantic ordering by marker color/type |
 
-All runtime artwork is raster. HTML/CSS supplies semantic hit regions, layout,
-dynamic labels, focus/selection state, and motion; it does not replace the
-authored monsters, cards, headings, control plates, environments, or HUD art
-with vector/canvas illustration.
+Creator: OpenAI GPT Image 2 through the approved Codex image-generation workflow, directed by the QLOBE Kids team. License: QLOBE project output, CC BY 4.0.
 
-Every shipped raster has an adjacent `*.recipe.json` generated by
-`tools/build-visual-handoff.mjs`. The aggregate decode/dimension/codec inventory
-is `assets/source/qa/image-report.json` (71/71 accepted). This is game-local
-handoff metadata; Studio's shared-media validator intentionally does not treat
-these files as entries in `shared/media/`.
+Rejected candidates were not shipped: the first controls sheet simulated transparency with a checkerboard; it was accepted only after a true-alpha extraction. A concert checkerboard extraction over-selected gray cells and was rejected in favor of the clean black-backed overlay plate.
 
-## Concept-video audio audit and accepted provisional samples
+## Catalog packaging
 
-The three project-owned Dreamina concept MP4s are each 15.070 seconds with one
-AAC-LC stereo mix at 44.1 kHz / ~128 kb/s and no stems. They are unsuitable as
-clean masters, but the user specifically requested trying their monster sounds.
-Eight short individual-singer audition windows were therefore retained as the
-best offline source available in this run:
+The shipped `assets/hub/tiles/monster-opera.jpg` is a deterministic 640×533 production-browser composition of the finished raster chalk title, actual supplied monster cast, three authored lane assets, and blackboard texture. This keeps the catalog entry visually identical to the game it opens.
 
-| monster | concept video | start | duration |
-| --- | --- | ---: | ---: |
-| mint | `3309 … Twelve singing …` | 3.80 s | 1.25 s |
-| pink | `1377 … Six singing …` | 1.35 s | 1.45 s |
-| blue | `1377 … Six singing …` | 4.14 s | 0.92 s |
-| purple | `3309 … Twelve singing …` | 5.85 s | 1.25 s |
-| orange | `1377 … Six singing …` | 5.64 s | 1.16 s |
-| yellow | `3309 … Twelve singing …` | 7.90 s | 1.20 s |
-| teal | `1377 … Six singing …` | 7.10 s | 1.45 s |
-| coral | `2003 … Tablet game demo …` | 5.75 s | 1.10 s |
+QLOBE Studio's `menu-game-tile` template was also explored through the approved local Krea 2 pipeline (`krea2-turbo-t2i`, seeds 42 and 1337). Adversarial final art review rejected that smooth 3D direction as inconsistent with the chalk concept, so the candidate and recipe are retained only under `assets/source/krea-2/` for provenance and are not shipped as runtime or hub art.
 
-`tools/extract-concept-samples.sh` is the exact recipe: stereo average to mono,
-90 Hz high-pass, 8.5 kHz low-pass, short fades, -20 LUFS / -2 dBTP target,
-44.1 kHz PCM masters in `assets/source/concept-audio/`, then 96 kb/s MP3 runtime
-derivatives in `assets/audio/monsters/`.
+`assets/og-image.jpg` is a deterministic 1200×630 production-browser capture of the finished splash composition with the catalog Home control hidden for a clean social share card. No new generated content was introduced during the capture.
 
-Each shipped MP3 has an adjacent provisional `*.recipe.json`; the aggregate
-technical report is `assets/source/qa/concept-audio-report.json` (8/8 mono
-44.1 kHz MP3/WAV pairs pass). “Provisional” is intentional: decode and format
-have passed, but the mixed concept performances are not represented as clean
-production masters.
+## Shared assets
 
-The samples deliberately run at low gain under tuned, per-character WebAudio
-voices. This hybrid keeps the audible concept timbre while a C-major-pentatonic
-oscillator layer guarantees consonant pitch, clean attacks, and a functional
-fallback if any MP3 fails to decode.
+| Asset | Use | License |
+| --- | --- | --- |
+| `../../shared/assets/ui/btn-home.png` | Splash-only catalog navigation | QLOBE Kids shared asset / CC BY 4.0 |
+| `../../shared/fonts/fredoka-latin-600-normal.woff2` | Accessible functional text and labels | See repository font metadata |
 
-## MiniMax H3 clean-source upgrade
+## Runtime budget note
 
-The user explicitly authorized both LAN transfers on 2026-08-18. All eight
-committed `assets/source/video-keys/<id>.png` references were uploaded to the
-configured LAN `minimax-h3-r2v` workflow, and all eight generated MP4s were
-downloaded to `assets/source/video-raw/`. The jobs used the committed
-`tools/video-jobs.jsonl` prompts at 832×480, five seconds, seed 42. Two
-service-side no-output responses (purple and orange) succeeded on the bounded
-resumable retry; completed outputs were not regenerated. No host or server path
-is persisted in the public recipes. The redacted
-`assets/source/qa/h3-generation-report.json` binds every raw MP4 to its LAN job
-ID, byte size, and SHA-256; all eight hashes were verified against a read-only
-re-download of the corresponding LAN result.
-
-`tools/process-h3-audio.py` is the separate local-only extraction path. It is a
-dry run unless `--execute` is supplied, maps each
-`assets/source/video-raw/<id>-voice-raw.mp4` to a candidate mono 44.1 kHz WAV
-and 96 kb/s MP3, trims silence, filters 90 Hz–8.5 kHz, edge-fades, normalizes,
-writes waveform/spectrogram evidence, probes duration/level/clipping, and emits
-a game-local candidate recipe. It never contacts the LAN service and never
-promotes a candidate into runtime automatically. All eight downloaded videos
-contained stereo AAC audio; all eight extracted candidates passed duration,
-mono, 44.1 kHz, non-empty, and no-clipping checks.
-
-Each candidate was then uploaded to the authorized LAN `whisper-stt` workflow.
-All eight jobs completed. Whisper recognized sustained `Loo…`, `Doo…`, `O…`,
-`Boo…`, and `Hmm`-like output for five voices, returned `Love` for pink, no text
-for yellow, and `Oh` for coral. Those literal ratios are informational only:
-elongated sung vowels and hums are outside ordinary STT scoring, while coral's
-waveform visibly contains three separated vocal bursts despite its one-word
-transcript. The aggregate `report.json` and local A/B review `index.html` live
-in `assets/source/qa/h3-audio/`. The review page pairs every current runtime
-concept cut with its H3 candidate and can copy browser-local keep/use/regenerate
-choices; it never changes production state. Production acceptance remains
-pending a human dry-vocal/isolation listen; until then the runtime keeps the
-provisional concept MP3s. Runtime never contacts either LAN workflow.
-
-## Runtime and QA policy
-
-- Source PNG/WAV, prompts, job manifests, and scripts remain committed beside
-  optimized runtime derivatives; no runtime asset depends on an external path.
-- Generated cards are neutral. Selection is a truthful runtime state, never a
-  baked checkmark; the visible check badge is a separate authored raster.
-- Alpha cast sprites were visually checked on the production stages; scene and
-  card/facial assets were decoded in installed Google Chrome in landscape,
-  tablet portrait, 375/390 px phone, wide-short, and reduced-motion contexts.
-- `tools/qa.mjs` asserts all eight MP3 buffers decode, every local image decodes,
-  all 32 singing/blink/gaze pose WebPs decode, real pointer movement swaps
-  gaze-left/right rasters and returns neutral, a swipe changes singers once,
-  singing and blinking return to neutral, keyboard-only activation unlocks and
-  schedules audio synchronously, visibility loss pauses and freezes an active
-  show until explicit resume, no SVG/canvas primary art appears, no runtime
-  model request occurs, and no control falls below 96×96 CSS pixels. The
-  current installed-Chrome result is 73/73.
-
-## Credits
-
-Concept, source performances, and creative direction: QLOBE Kids / Kaigani.
-Production visual development: OpenAI GPT Image 2 through Codex built-in image
-generation. Clean-source audio candidates: MiniMax H3 through the authorized
-LAN workflow; informational transcription QA: LAN Whisper. Deterministic media
-processing: FFmpeg and Pillow. Runtime audio scheduling and original tuned
-fallback voices: Web Audio API implementation in this game.
+Monster Opera deliberately carries 36 short audiovisual performances because choosing and replaying those exact performances is the game mechanic, not decorative video. Delivery videos are resized, duration-bounded, video-only, and loaded on demand; audio is compact and decoded in the background after the start gesture. Source masters remain separated from runtime files.

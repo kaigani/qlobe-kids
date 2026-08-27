@@ -1,37 +1,51 @@
 # Monster Opera — independent art review
 
-**Date:** 2026-08-18
+**Date:** 2026-08-27
 
-**Reviewer:** independent `terra_reviewer` adversarial pass
+**Reviewer:** independent adversarial `terra_reviewer` pass
 
-**Final verdict:** **CLEAR for beta**
+**Final verdict:** **PASS WITH POLISH — no release blockers**
+
+## Scorecard
+
+| Area | Score |
+| --- | ---: |
+| Mockup fidelity | 8/10 |
+| Hierarchy | 8/10 |
+| Child delight | 9/10 |
+| Tablet usability | 8/10 |
+| Finish | 8/10 |
 
 ## Coverage
 
-The reviewer inspected all 15 fresh installed-Google-Chrome captures in
-`/private/tmp/monster-opera-qa/`: catalog, splash, chorus, solo, stage picker,
-and live performance across landscape, tablet portrait, 390/375 px phone,
-wide-short, and reduced-motion contexts. The reviewer also inspected the eight
-card rasters directly and the full-resolution neutral, singing, blink,
-gaze-left, and gaze-right cast sheets.
+The reviewer inspected the production captures for splash, authored composer,
+concert, portrait, short-landscape, and reduced-motion layouts, plus the final
+catalog tile. The package passed its visual release gate with:
 
-The final pass found no beta-blocking composition, clipping, safe-area,
-target-legibility, alpha, pose-registration, character-consistency, or
-raster-compliance issue. Runtime smoke evidence is recorded in
-`assets/source/qa/runtime-smoke.json` (73/73 passed), and raster inventory
-evidence is recorded in `assets/source/qa/image-report.json` (71/71 accepted).
+- no black video/media rectangles or rectangular shadow halos;
+- no materially tiny targets or clipped controls;
+- a stable and legible reduced-motion concert;
+- one coherent chalk-blackboard world across catalog, splash, composer,
+  concert, and social packaging; and
+- a catalog tile made from the actual title, cast, slate, and lane artwork.
+
+The final real-Chrome interaction run passed all 163 production checks. Its
+review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 
 ## Resolved during review
 
-- Re-exported all eight selection cards from the repaired canonical monster
-  sprites, restoring the approved dark-plum eyes and facial contrast.
-- Moved the compact-phone chorus CTA label above the play button so it no
-  longer covers the central splash singer.
-- Increased portrait heading-to-grid separation and compact stage-label size.
-- Replaced stale screenshot evidence with a clean, deterministic QA capture
-  set before the final pass.
-- Corrected earlier mouth/blink/gaze artifacts and low-alpha interior facial
-  pixels while preserving the authored exterior feather.
+- Replaced the rejected glossy generated catalog candidate with a production
+  composition built from the game's final chalk artwork and supplied cast.
+- Removed opaque rectangular drop-shadow treatments around black-backed media.
+- Corrected the playhead and lane-marker slicing, enlarged authored dots, and
+  restored full-width composer lane strokes.
+- Enlarged sparse concert performers, softened the concert plate, and added a
+  gentle first-interaction invitation.
+- Added a portrait cast-rail discovery nudge without obscuring the timeline.
 
-**Nonblocking residue:** none material; no visual follow-up is required for
-beta.
+## Non-blocking polish
+
+For a song with only one or two events, the concert's large looping chalk arcs
+remain deliberately theatrical and can dominate the sparse cast. The supplied
+slate also has bright wear marks in its right third. Both are taste-level
+characteristics of the approved art world, not comprehension or release issues.

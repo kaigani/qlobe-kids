@@ -1,901 +1,875 @@
 import config from '../config.js';
-import * as voiceClips from '../../../shared/js/voice-clips.js';
-import * as sfx from '../../../shared/js/sfx.js';
-import { unlockAll, installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
-import { onTap } from '../../../shared/js/tap.js';
-import { createScreens } from '../../../shared/js/screens.js';
-import { createNarrator } from '../../../shared/js/narrator.js';
-import { createTimers } from '../../../shared/js/timers.js';
-import { installDebug, collectTargets } from '../../../shared/js/debug-harness.js';
+import { installUnlockOnGesture, installKioskGuards } from '../../../shared/js/audio-unlock.js';
+import { installDebug } from '../../../shared/js/debug-harness.js';
 import { createNudger } from '../../../shared/js/idle-nudge.js';
 import { preloadImages } from '../../../shared/js/preload.js';
-import { escapeHtml } from '../../../shared/js/dom.js';
-import { createConstrainedGestureDom } from '../../../shared/js/stage/constrained-gesture-dom.js';
-import { createMonsterAudio } from './monster-audio.js';
+import { createScreens } from '../../../shared/js/screens.js';
+import * as sfx from '../../../shared/js/sfx.js';
+import { onTap } from '../../../shared/js/tap.js';
 
-const root = document.getElementById('game');
-const timers = createTimers();
-const visualTimers = createTimers();
-const narrator = createNarrator({ announcerParent: root });
-const actions = new Map();
-const staticDisposers = [];
-let dynamicDisposers = [];
+import { MonsterAudioEngine } from './audio-engine.js';
+import {
+  composerPosition, createClock, occurrencesBetween, overlapsBlock, wrap,
+} from './transport.js';
 
-const UI_ASSETS = [
-  'coral-pill', 'teal-pill', 'recording-pill',
-  'pitch-high', 'pitch-middle', 'pitch-low',
-  'replay', 'pause', 'resume', 'selected-badge',
-  'cast-tray', 'purple-label',
-  'chorus-heading', 'solo-heading', 'stage-heading',
-].map((name) => `./assets/ui/${name}.webp`);
+const { loopSeconds, laneSeconds, clipSeconds, lookaheadSeconds, schedulerMilliseconds } = config.timing;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const game = document.querySelector('#game');
+const audio = new MonsterAudioEngine();
+const composerClock = createClock();
+const concertClock = createClock();
+const disposers = [];
+const concertDisposers = [];
 
 const state = {
-  mode: null,
-  selected: [...config.defaultSelected],
-  activeMonster: 'pink',
-  pitch: 'middle',
-  stage: 'garden',
+  screen: 'splash',
+  song: { events: [] },
+  eventSerial: 0,
   muted: false,
-  phraseCounter: 0,
-  showPhase: 'idle',
-  showElapsed: 0,
-  paused: false,
-  pausedByVisibility: false,
-  recordedEvents: [],
-  audioReady: false,
+  beatEnabled: true,
+  activeLaneId: 'white',
+  composerPhase: 0,
+  concertPhase: 0,
+  timeScale: 1,
+  assetErrors: [],
+  ready: false,
 };
 
-const byId = (id) => config.cast.find((monster) => monster.id === id);
-const stageById = (id) => config.stages.find((stage) => stage.id === id);
-const screen = (name) => root.querySelector(`[data-qk-screen="${name}"]`);
+let screens;
+let composerFrame = 0;
+let concertFrame = 0;
+let composerReducedPaintAt = 0;
+let scheduler = 0;
+let scheduled = new Set();
+let visualTimers = new Set();
+const performances = new Map();
+let concertStarting = false;
+let concertStartToken = 0;
 
-function poseAsset(id, pose = 'neutral') {
-  if (pose === 'singing') return `./assets/monsters-singing/${id}.webp`;
-  if (pose === 'blink') return `./assets/monsters-blink/${id}.webp`;
-  if (pose === 'gaze-left') return `./assets/monsters-gaze-left/${id}.webp`;
-  if (pose === 'gaze-right') return `./assets/monsters-gaze-right/${id}.webp`;
-  return byId(id)?.asset || config.cast[0].asset;
+const imageFor = (monsterId) => `./assets/monsters/${monsterId}/still.webp`;
+const mediaFor = (monsterId, laneId, extension) => {
+  const lane = config.lanes.find((item) => item.id === laneId);
+  return `./assets/monsters/${monsterId}/${lane.noise}.${extension}`;
+};
+
+function iconButton({ id, target = id, label, src, className = '', pressed = null }) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = `chalk-control ${className}`.trim();
+  button.id = id;
+  button.dataset.target = target;
+  button.setAttribute('aria-label', label);
+  if (pressed !== null) button.setAttribute('aria-pressed', String(pressed));
+  const image = document.createElement('img');
+  image.src = src;
+  image.alt = '';
+  image.draggable = false;
+  button.append(image);
+  return button;
 }
 
-function setVisualPose(node, pose, id = node?.dataset?.monsterVisual) {
-  if (!node || !byId(id)) return false;
-  node.dataset.monsterVisual = id;
-  node.dataset.monsterPose = pose;
-  const wanted = poseAsset(id, pose);
-  if (!node.getAttribute('src')?.endsWith(wanted.replace('./', ''))) node.src = wanted;
-  return true;
-}
+function renderShell() {
+  game.replaceChildren();
+  game.className = 'monster-opera';
 
-function card(monster, cls, prefix, { art = monster.card, selectable = true } = {}) {
-  return `
-    <button class="${cls}" type="button" data-${prefix}="${monster.id}"
-      aria-label="${escapeHtml(monster.name)}, ${escapeHtml(monster.role)}">
-      <img class="mo-card-art" src="${art}" alt="" draggable="false" />
-      ${selectable ? '<img class="mo-selected-badge" src="./assets/ui/selected-badge.webp" alt="" draggable="false" />' : ''}
-    </button>`;
-}
-
-root.innerHTML = `
-  <section class="mo-screen mo-splash" data-qk-screen="splash" aria-label="Monster Opera menu">
-    <img class="mo-bg mo-bg-splash-landscape" src="./assets/bg/splash.webp" alt="" draggable="false" />
-    <img class="mo-bg mo-bg-splash-portrait" src="./assets/bg/splash-portrait.webp" alt="" draggable="false" />
-    <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" data-target="catalog-home" aria-label="Home"></a>
-    <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-sound data-target="sound-splash" aria-label="Mute sound"></button>
-    <h1 class="visually-hidden">Monster Opera</h1>
-    <div class="mo-splash-cast" role="group" aria-label="Pick a monster to sing solo">
-      ${config.cast.map((monster) => card(monster, 'mo-splash-card', 'splash-monster', {
-        art: monster.asset,
-        selectable: false,
-      })).join('')}
+  const splash = document.createElement('section');
+  splash.id = 'splash-screen';
+  splash.className = 'screen board-screen splash-screen';
+  splash.dataset.qkScreen = 'splash';
+  splash.setAttribute('aria-label', 'Monster Opera start screen');
+  splash.innerHTML = `
+    <a class="platform-home" data-hud="home" data-target="home-catalog" href="../../" aria-label="Back to QLOBE Kids">
+      <img src="../../shared/assets/ui/btn-home.png" alt="" draggable="false" />
+    </a>
+    <img class="splash-title" src="${config.assets.title}" alt="Monster Opera" draggable="false" />
+    <div class="splash-stage" aria-hidden="true"></div>
+    <div class="splash-lanes" aria-hidden="true">
+      ${config.lanes.map((lane) => `<img src="${lane.line}" alt="" />`).join('')}
     </div>
-    <button class="mo-play-main" type="button" data-action="start-chorus" aria-label="Make a chorus">
-      <img src="../../shared/assets/ui/btn-play.png" alt="" draggable="false" />
-      <span class="mo-control-label">
-        <img src="./assets/ui/coral-pill.webp" alt="" draggable="false" />
-        <span>MAKE A CHORUS</span>
-      </span>
-    </button>
-  </section>
-
-  <section class="mo-screen mo-chorus" data-qk-screen="chorus" aria-label="Make a Chorus" hidden>
-    <img class="mo-bg" src="./assets/bg/solo.webp" alt="" draggable="false" />
-    <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-back data-target="back-chorus" aria-label="Back to menu"></button>
-    <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-sound data-target="sound-chorus" aria-label="Mute sound"></button>
-    <header class="mo-heading">
-      <img class="mo-heading-art" src="./assets/ui/chorus-heading.webp" alt="" draggable="false" />
-      <h2 class="visually-hidden">Make a chorus</h2>
-      <span class="mo-cast-count">
-        <img src="./assets/ui/purple-label.webp" alt="" draggable="false" />
-        <span aria-live="polite" data-cast-count></span>
-      </span>
-    </header>
-    <button class="mo-stage-shortcut" type="button" data-action="open-stages" aria-label="Pick a stage">
-      <img src="./assets/bg/garden.webp" alt="" draggable="false" data-stage-thumb />
-      <span class="mo-stage-shortcut-label">
-        <img src="./assets/ui/purple-label.webp" alt="" draggable="false" />
-        <span>STAGE</span>
-      </span>
-    </button>
-    <div class="mo-chorus-grid" role="group" aria-label="Monster singers">
-      ${config.cast.map((monster) => card(monster, 'mo-chorus-card', 'chorus-monster')).join('')}
-    </div>
-    <button class="mo-play-all" type="button" data-action="play-all" aria-label="Play all selected monsters">
-      <img src="../../shared/assets/ui/btn-play.png" alt="" draggable="false" />
-      <span class="mo-control-label">
-        <img src="./assets/ui/coral-pill.webp" alt="" draggable="false" />
-        <span>PLAY ALL</span>
-      </span>
-    </button>
-  </section>
-
-  <section class="mo-screen mo-solo" data-qk-screen="solo" aria-label="Sing with Me" hidden>
-    <img class="mo-bg" src="./assets/bg/solo.webp" alt="" draggable="false" />
-    <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-back data-target="back-solo" aria-label="Back to menu"></button>
-    <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-sound data-target="sound-solo" aria-label="Mute sound"></button>
-    <header class="mo-heading">
-      <img class="mo-heading-art" src="./assets/ui/solo-heading.webp" alt="" draggable="false" />
-      <h2 class="visually-hidden">Sing with me</h2>
-    </header>
-    <div class="mo-solo-rail" role="group" aria-label="Pick a singer">
-      ${config.cast.map((monster) => card(monster, 'mo-solo-card', 'solo-monster')).join('')}
-    </div>
-    <button class="mo-solo-star" type="button" data-action="solo-sing"
-      aria-label="Tap the monster to sing. Swipe left or right to choose another singer.">
-      <img data-solo-active data-monster-visual="pink" data-monster-pose="neutral"
-        data-pose-token="0" src="./assets/monsters/pink.webp" alt="Pink fuzzy monster" draggable="false" />
-    </button>
-    <button class="mo-sing-cta" type="button" data-action="solo-sing" aria-label="Tap to sing">
-      <img class="mo-button-plate" src="./assets/ui/coral-pill.webp" alt="" draggable="false" />
-      <span>TAP TO SING</span>
-    </button>
-    <div class="mo-pitches" role="group" aria-label="Choose pitch">
-      <button class="mo-pitch mo-pitch-high" type="button" data-pitch="high" aria-label="High pitch"><img src="./assets/ui/pitch-high.webp" alt="" draggable="false" /></button>
-      <button class="mo-pitch mo-pitch-middle" type="button" data-pitch="middle" aria-label="Middle pitch"><img src="./assets/ui/pitch-middle.webp" alt="" draggable="false" /></button>
-      <button class="mo-pitch mo-pitch-low" type="button" data-pitch="low" aria-label="Low pitch"><img src="./assets/ui/pitch-low.webp" alt="" draggable="false" /></button>
-    </div>
-  </section>
-
-  <section class="mo-screen mo-stages" data-qk-screen="stages" aria-label="Pick a Stage" hidden>
-    <img class="mo-bg" src="./assets/bg/solo.webp" alt="" draggable="false" />
-    <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-action="back-to-chorus" data-target="back-stages" aria-label="Back to chorus"></button>
-    <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-sound data-target="sound-stages" aria-label="Mute sound"></button>
-    <header class="mo-heading">
-      <img class="mo-heading-art" src="./assets/ui/stage-heading.webp" alt="" draggable="false" />
-      <h2 class="visually-hidden">Pick a stage</h2>
-    </header>
-    <div class="mo-stage-grid" role="group" aria-label="Stages">
-      ${config.stages.map((stage) => `
-        <button class="mo-stage-card" type="button" data-stage="${stage.id}" aria-label="${escapeHtml(stage.title)}">
-          <img src="${stage.asset}" alt="" draggable="false" />
-          <span class="mo-stage-label">
-            <img src="./assets/ui/purple-label.webp" alt="" draggable="false" />
-            <span>${escapeHtml(stage.title)}</span>
-          </span>
-        </button>`).join('')}
-    </div>
-    <div class="mo-cast-tray" aria-hidden="true">
-      <img class="mo-cast-tray-plate" src="./assets/ui/cast-tray.webp" alt="" draggable="false" />
-      <div class="mo-cast-tray-monsters" data-stage-cast></div>
-    </div>
-    <button class="mo-start-show" type="button" data-action="start-show" aria-label="Start the show">
-      <img class="mo-button-plate" src="./assets/ui/coral-pill.webp" alt="" draggable="false" />
-      <span>START THE SHOW</span>
-    </button>
-  </section>
-
-  <section class="mo-screen mo-show" data-qk-screen="show" aria-label="Monster Opera performance" hidden>
-    <img class="mo-bg" data-stage-bg src="./assets/bg/garden.webp" alt="" draggable="false" />
-    <button class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-back data-target="back-show" aria-label="Back to menu"></button>
-    <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-sound data-target="sound-show" aria-label="Mute sound"></button>
-    <div class="mo-recording" aria-live="polite">
-      <img data-recording-plate src="./assets/ui/recording-pill.webp" alt="" draggable="false" />
-      <span data-recording>RECORDING 00:00</span>
-    </div>
-    <div class="mo-performers" data-performers role="group" aria-label="Performing monsters"></div>
-    <div class="mo-show-controls">
-      <button class="mo-replay" type="button" data-action="replay-show" aria-label="Replay performance"><img src="./assets/ui/replay.webp" alt="" draggable="false" /></button>
-      <button class="mo-pause" type="button" data-action="pause-show" aria-label="Pause performance"><img data-pause-icon src="./assets/ui/pause.webp" alt="" draggable="false" /></button>
-      <button class="mo-done" type="button" data-action="done-show" aria-label="Done">
-        <img src="./assets/ui/teal-pill.webp" alt="" draggable="false" />
-        <span>DONE</span>
-      </button>
-    </div>
-  </section>`;
-
-const screens = createScreens({
-  root,
-  screens: {
-    splash: screen('splash'),
-    chorus: screen('chorus'),
-    solo: screen('solo'),
-    stages: screen('stages'),
-    show: screen('show'),
-  },
-  initial: 'splash',
-  voice: narrator,
-  onExit: () => {
-    timers.clearAll();
-    audio?.stop();
-  },
-});
-
-const audio = createMonsterAudio(config, { onNote: animateSinger });
-
-function clearDynamicBindings() {
-  dynamicDisposers.forEach((dispose) => { try { dispose(); } catch { /* no-op */ } });
-  dynamicDisposers = [];
-  for (const key of [...actions.keys()]) {
-    if (key.startsWith('performer-')) actions.delete(key);
+  `;
+  const stage = splash.querySelector('.splash-stage');
+  for (const dancer of config.splashDancers) {
+    const monster = config.monsters.find((item) => item.id === dancer.monsterId);
+    const performer = document.createElement('div');
+    performer.className = `splash-performer splash-${dancer.monsterId}`;
+    performer.innerHTML = `
+      <img src="${imageFor(dancer.monsterId)}" alt="" draggable="false" />
+      <video src="${dancer.video}" poster="${imageFor(dancer.monsterId)}" muted loop playsinline preload="metadata" aria-label="${monster.label} dancing"></video>
+    `;
+    stage.append(performer);
   }
-}
-
-function bind(el, id, fn, { dynamic = false, feedback = true } = {}) {
-  if (!el) return;
-  el.dataset.target = id;
-  actions.set(id, fn);
-  const dispose = onTap(el, (event) => {
-    // Pointer activation is covered by the shared first-gesture listener.
-    // Keyboard and assistive-tech activation arrives as a zero-detail click,
-    // so reopen every audio channel synchronously in that gesture task too.
-    if (event.type === 'click' && event.detail === 0) unlockAll([() => audio.unlock()]);
-    return fn(event);
-  }, {
-    feedback: feedback ? () => sfx.tick() : undefined,
+  const play = iconButton({
+    id: 'start-song', target: 'start', label: 'Start making a song', src: config.assets.controls.play,
+    className: 'splash-play primary-control',
   });
-  (dynamic ? dynamicDisposers : staticDisposers).push(dispose);
-}
+  splash.append(play);
 
-function speak(key) {
-  return narrator.say(key, config.voice[key]);
-}
-
-function updateSoundControls() {
-  root.querySelectorAll('[data-sound]').forEach((button) => {
-    button.classList.toggle('is-muted', state.muted);
-    button.setAttribute('aria-label', state.muted ? 'Turn sound on' : 'Mute sound');
-    button.setAttribute('aria-pressed', String(state.muted));
+  const composer = document.createElement('section');
+  composer.id = 'composer-screen';
+  composer.className = 'screen board-screen composer-screen';
+  composer.dataset.qkScreen = 'composer';
+  composer.hidden = true;
+  composer.setAttribute('aria-label', 'Compose a monster song');
+  const composerBack = iconButton({
+    id: 'composer-back', target: 'composer-back', label: 'Back to the Monster Opera start',
+    src: config.assets.controls.back, className: 'corner-control top-left',
   });
+  const composerSound = iconButton({
+    id: 'composer-sound', target: 'sound-composer', label: 'Turn all sound off',
+    src: config.assets.controls.soundOn, className: 'corner-control top-right sound-control', pressed: true,
+  });
+  const composerBeat = iconButton({
+    id: 'composer-beat', target: 'beat-composer', label: 'Turn the drum beat off',
+    src: config.assets.controls.drumOn, className: 'corner-control bottom-left beat-control', pressed: true,
+  });
+  const go = iconButton({
+    id: 'go-concert', target: 'go', label: 'Play my monster song', src: config.assets.controls.go,
+    className: 'go-control primary-control',
+  });
+  composer.append(composerBack, composerSound, composerBeat, go);
+
+  const timeline = document.createElement('div');
+  timeline.className = 'composer-timeline';
+  timeline.setAttribute('role', 'img');
+  timeline.setAttribute('aria-label', 'Three sixteen-second song lines. The white line is listening now.');
+  const laneStack = document.createElement('div');
+  laneStack.className = 'lane-stack';
+  for (const lane of config.lanes) {
+    const row = document.createElement('div');
+    row.className = `timeline-lane lane-${lane.id}`;
+    row.dataset.laneId = lane.id;
+    row.innerHTML = `<img class="lane-art" src="${lane.line}" alt="" draggable="false" /><div class="event-dots" aria-hidden="true"></div>`;
+    laneStack.append(row);
+  }
+  const playhead = document.createElement('img');
+  playhead.className = 'composer-playhead';
+  playhead.src = config.assets.playhead;
+  playhead.alt = '';
+  playhead.draggable = false;
+  laneStack.append(playhead);
+  timeline.append(laneStack);
+  composer.append(timeline);
+
+  const lineup = document.createElement('div');
+  lineup.className = 'monster-lineup';
+  lineup.setAttribute('role', 'list');
+  lineup.setAttribute('aria-label', 'Swipe and tap the chalk monsters');
+  for (const monster of config.monsters) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'composer-monster';
+    button.dataset.monsterId = monster.id;
+    button.dataset.target = monster.id;
+    button.setAttribute('role', 'listitem');
+    button.setAttribute('aria-label', `Play the ${monster.label}`);
+    button.innerHTML = `
+      <img class="monster-still" src="${imageFor(monster.id)}" alt="" draggable="false" />
+      <video class="monster-video" muted playsinline preload="metadata" aria-hidden="true"></video>
+      <span class="monster-chalk-burst" aria-hidden="true"></span>
+    `;
+    lineup.append(button);
+  }
+  composer.append(lineup);
+
+  const concert = document.createElement('section');
+  concert.id = 'concert-screen';
+  concert.className = 'screen board-screen concert-screen';
+  concert.dataset.qkScreen = 'concert';
+  concert.hidden = true;
+  concert.setAttribute('aria-label', 'Your infinitely looping monster concert');
+  const concertBack = iconButton({
+    id: 'concert-back', target: 'concert-back', label: 'Back to composing',
+    src: config.assets.controls.back, className: 'corner-control top-left',
+  });
+  const concertSound = iconButton({
+    id: 'concert-sound', target: 'sound-concert', label: 'Turn all sound off',
+    src: config.assets.controls.soundOn, className: 'corner-control top-right sound-control', pressed: true,
+  });
+  const concertBeat = iconButton({
+    id: 'concert-beat', target: 'beat-concert', label: 'Turn the drum beat off',
+    src: config.assets.controls.drumOn, className: 'corner-control bottom-left beat-control', pressed: true,
+  });
+  const newSong = iconButton({
+    id: 'new-song', target: 'new-song', label: 'Erase this song and make a new one',
+    src: config.assets.controls.newSong, className: 'corner-control bottom-right new-song-control',
+  });
+  concert.innerHTML = `
+    <div class="concert-viewport" aria-label="Your song scrolls past the orange play line">
+      <div class="concert-world"></div>
+      <img class="concert-playhead" src="${config.assets.playhead}" alt="" draggable="false" />
+    </div>
+  `;
+  concert.append(concertBack, concertSound, concertBeat, newSong);
+
+  const live = document.createElement('p');
+  live.className = 'visually-hidden';
+  live.id = 'monster-opera-status';
+  live.setAttribute('aria-live', 'polite');
+  game.append(splash, composer, concert, live);
 }
 
-function toggleSound() {
-  state.muted = !state.muted;
-  narrator.setMuted(state.muted);
-  voiceClips.setMuted(state.muted);
-  sfx.setMuted(state.muted);
+renderShell();
+
+const els = {
+  splash: game.querySelector('#splash-screen'),
+  composer: game.querySelector('#composer-screen'),
+  concert: game.querySelector('#concert-screen'),
+  status: game.querySelector('#monster-opera-status'),
+  play: game.querySelector('#start-song'),
+  composerBack: game.querySelector('#composer-back'),
+  concertBack: game.querySelector('#concert-back'),
+  go: game.querySelector('#go-concert'),
+  newSong: game.querySelector('#new-song'),
+  timeline: game.querySelector('.composer-timeline'),
+  playhead: game.querySelector('.composer-playhead'),
+  lineup: game.querySelector('.monster-lineup'),
+  world: game.querySelector('.concert-world'),
+};
+
+game.addEventListener('error', (event) => {
+  const node = event.target;
+  if (!(node instanceof HTMLImageElement || node instanceof HTMLVideoElement)) return;
+  const source = node.currentSrc || node.src || 'unknown-media';
+  if (!state.assetErrors.includes(source)) state.assetErrors.push(source);
+}, true);
+
+function announce(text) {
+  els.status.textContent = '';
+  requestAnimationFrame(() => { els.status.textContent = text; });
+}
+
+function activeComposerPosition() {
+  return composerPosition(composerClock.elapsed(), laneSeconds, config.lanes.length);
+}
+
+function updateControlArt() {
+  for (const button of game.querySelectorAll('.sound-control')) {
+    const image = button.querySelector('img');
+    image.src = state.muted ? config.assets.controls.soundOff : config.assets.controls.soundOn;
+    button.setAttribute('aria-pressed', String(!state.muted));
+    button.setAttribute('aria-label', state.muted ? 'Turn all sound on' : 'Turn all sound off');
+  }
+  for (const button of game.querySelectorAll('.beat-control')) {
+    const image = button.querySelector('img');
+    image.src = state.beatEnabled ? config.assets.controls.drumOn : config.assets.controls.drumOff;
+    button.setAttribute('aria-pressed', String(state.beatEnabled));
+    button.setAttribute('aria-label', state.beatEnabled ? 'Turn the drum beat off' : 'Turn the drum beat on');
+  }
+  els.go.classList.toggle('is-ready', state.song.events.length > 0);
+  els.go.classList.toggle('is-loading', concertStarting);
+  els.go.setAttribute('aria-disabled', String(state.song.events.length === 0 || concertStarting));
+}
+
+function setConcertStarting(on) {
+  concertStarting = Boolean(on);
+  els.go.disabled = concertStarting;
+  els.go.setAttribute('aria-busy', String(concertStarting));
+  updateControlArt();
+}
+
+function setMuted(on) {
+  state.muted = Boolean(on);
   audio.setMuted(state.muted);
-  updateSoundControls();
+  sfx.setMuted(state.muted);
+  updateControlArt();
+  announce(state.muted ? 'Sound off' : 'Sound on');
   return state.muted;
 }
 
-function goSplash() {
-  audio.stop();
-  state.mode = null;
-  state.showPhase = 'idle';
-  state.paused = false;
-  state.pausedByVisibility = false;
-  screens.show('splash');
-  armNudger();
-  return true;
+function toggleSound() {
+  setMuted(!state.muted);
+  if (!state.muted) audio.unlock();
 }
 
-function updateChorus() {
-  root.querySelectorAll('[data-chorus-monster]').forEach((button) => {
-    const selected = state.selected.includes(button.dataset.chorusMonster);
-    button.classList.toggle('is-selected', selected);
-    button.setAttribute('aria-pressed', String(selected));
-    button.dataset.role = selected ? 'selected' : 'neutral';
-  });
-  const count = root.querySelector('[data-cast-count]');
-  if (count) count.textContent = `${state.selected.length} of ${config.maxSelected} singers`;
-  const play = root.querySelector('[data-action="play-all"]');
-  const stage = root.querySelector('[data-action="open-stages"]');
-  const hasSinger = state.selected.length > 0;
-  if (play) {
-    play.disabled = !hasSinger;
-    play.classList.toggle('is-ready', hasSinger);
+function toggleBeat() {
+  state.beatEnabled = !state.beatEnabled;
+  audio.setBeatEnabled(state.beatEnabled);
+  updateControlArt();
+  announce(state.beatEnabled ? 'Drum beat on' : 'Drum beat off');
+}
+
+function playSplashVideos() {
+  if (reduceMotion.matches) return;
+  for (const video of els.splash.querySelectorAll('video')) video.play().catch(() => {});
+}
+
+function pauseVideos(root = game) {
+  for (const video of root.querySelectorAll('video')) {
+    try { video.pause(); } catch { /* media is optional */ }
+    const button = video.closest('.composer-monster, .concert-event');
+    performances.get(button)?.();
   }
-  if (stage) stage.disabled = !hasSinger;
 }
 
-function updateSolo() {
-  const monster = byId(state.activeMonster) || config.cast[0];
-  const active = root.querySelector('[data-solo-active]');
-  active.alt = `${monster.name}, fuzzy monster singer`;
-  active.dataset.poseToken = String(Number(active.dataset.poseToken || 0) + 1);
-  setVisualPose(active, 'neutral', monster.id);
-  root.querySelectorAll('[data-solo-monster]').forEach((button) => {
-    const selected = button.dataset.soloMonster === monster.id;
-    button.classList.toggle('is-selected', selected);
-    button.setAttribute('aria-pressed', String(selected));
-  });
-  root.querySelectorAll('[data-pitch]').forEach((button) => {
-    const selected = button.dataset.pitch === state.pitch;
-    button.classList.toggle('is-selected', selected);
-    button.setAttribute('aria-pressed', String(selected));
-  });
-}
-
-function updateStages() {
-  const stage = stageById(state.stage) || config.stages[0];
-  root.querySelectorAll('[data-stage]').forEach((button) => {
-    const selected = button.dataset.stage === stage.id;
-    button.classList.toggle('is-selected', selected);
-    button.setAttribute('aria-pressed', String(selected));
-  });
-  const thumb = root.querySelector('[data-stage-thumb]');
-  if (thumb) thumb.src = stage.asset;
-  const tray = root.querySelector('[data-stage-cast]');
-  tray.innerHTML = currentCast().map((id) => {
-    const monster = byId(id);
-    return `<img src="${monster.asset}" alt="" draggable="false" />`;
-  }).join('');
-}
-
-function currentCast() {
-  return state.selected.slice(0, config.maxSelected);
-}
-
-function chooseChorus(id) {
-  const at = state.selected.indexOf(id);
-  if (at >= 0) state.selected.splice(at, 1);
-  else {
-    if (state.selected.length >= config.maxSelected) state.selected.shift();
-    state.selected.push(id);
-  }
-  state.activeMonster = id;
-  updateChorus();
-  updateStages();
-  audio.playMonster(id, { pitch: 'middle', phraseIndex: state.phraseCounter++ });
-  animateSinger({ id });
-  return true;
-}
-
-function chooseSolo(id, { sing = true } = {}) {
-  if (!byId(id)) return false;
-  state.activeMonster = id;
-  updateSolo();
-  if (sing) singSolo();
-  return true;
-}
-
-function cycleSolo(direction = 1) {
-  const current = Math.max(0, config.cast.findIndex((monster) => monster.id === state.activeMonster));
-  const next = (current + Math.sign(direction || 1) + config.cast.length) % config.cast.length;
-  return chooseSolo(config.cast[next].id);
-}
-
-function setPitch(pitch) {
-  if (!(pitch in { low: 1, middle: 1, high: 1 })) return false;
-  state.pitch = pitch;
-  updateSolo();
-  speak(pitch);
-  singSolo();
-  return true;
-}
-
-function singSolo() {
-  const result = audio.playMonster(state.activeMonster, {
-    pitch: state.pitch,
-    phraseIndex: state.phraseCounter++,
-  });
-  animateSinger({ id: state.activeMonster });
-  return result.accepted;
-}
-
-async function startMode(id) {
-  const mode = config.modes.find((entry) => entry.id === id);
-  if (!mode) return false;
-  state.mode = id;
-  if (id === 'solo') {
-    screens.show('solo');
-    updateSolo();
-    speak('choose-singer');
-  } else if (id === 'stage-show') {
-    screens.show('stages');
-    updateStages();
-    speak('choose-stage');
-  } else {
-    if (!state.selected.length) state.selected = [...config.defaultSelected];
-    screens.show('chorus');
-    updateChorus();
-    speak('choose-chorus');
-  }
-  armNudger();
-  return true;
-}
-
-function openStages() {
-  state.mode = 'stage-show';
-  screens.show('stages');
-  updateStages();
-  speak('choose-stage');
-  armNudger();
-  return true;
-}
-
-function chooseStage(id) {
-  if (!stageById(id)) return false;
-  state.stage = id;
-  updateStages();
-  audio.stageSting(id);
-  return true;
-}
-
-function renderPerformers() {
-  clearDynamicBindings();
-  const cast = currentCast();
-  const host = root.querySelector('[data-performers]');
-  host.style.setProperty('--performer-count', cast.length);
-  host.innerHTML = cast.map((id, index) => {
-    const monster = byId(id);
-    return `
-      <button class="mo-performer" type="button" data-performer="${id}"
-        style="--slot:${index};--monster-color:${monster.color}"
-        aria-label="${escapeHtml(monster.name)} sing now">
-        <img src="${monster.asset}" alt="" draggable="false"
-          data-monster-visual="${id}" data-monster-pose="neutral" data-pose-token="0" />
-      </button>`;
-  }).join('');
-  host.querySelectorAll('[data-performer]').forEach((button) => {
-    const id = button.dataset.performer;
-    bind(button, `performer-${id}`, () => performLive(id), { dynamic: true, feedback: false });
-  });
-}
-
-function recordEvent(id, pitch, phraseIndex, automatic = false) {
-  const event = {
-    id,
-    pitch,
-    phraseIndex,
-    at: Math.round(state.showElapsed * 1000) / 1000,
-    automatic,
+function startComposerFrames() {
+  cancelAnimationFrame(composerFrame);
+  composerReducedPaintAt = 0;
+  const paint = (time) => {
+    if (!screens?.is('composer')) return;
+    const position = activeComposerPosition();
+    if (!reduceMotion.matches || time - composerReducedPaintAt > 350) {
+      composerReducedPaintAt = time;
+      const lane = config.lanes[position.laneIndex];
+      state.activeLaneId = lane.id;
+      state.composerPhase = position.phase;
+      for (const row of els.timeline.querySelectorAll('.timeline-lane')) {
+        row.classList.toggle('is-active', row.dataset.laneId === lane.id);
+      }
+      const percent = 2.5 + position.phase / loopSeconds * 95;
+      els.playhead.style.left = `${percent}%`;
+      els.timeline.setAttribute('aria-label', `Three sixteen-second song lines. The ${lane.id} line is listening now.`);
+    }
+    composerFrame = requestAnimationFrame(paint);
   };
-  state.recordedEvents.push(event);
-  return event;
+  composerFrame = requestAnimationFrame(paint);
 }
 
-function playEvent(event, when = null) {
-  return audio.playMonster(event.id, {
-    pitch: event.pitch,
-    phraseIndex: event.phraseIndex,
-    when,
-  });
+function stopComposerFrames() {
+  cancelAnimationFrame(composerFrame);
+  composerFrame = 0;
 }
 
-function performLive(id) {
-  if (state.showPhase !== 'performing' || state.paused) return false;
-  const index = currentCast().indexOf(id);
-  const pitch = index % 3 === 0 ? 'middle' : index % 3 === 1 ? 'low' : 'high';
-  const phraseIndex = state.phraseCounter++;
-  const event = recordEvent(id, pitch, phraseIndex, false);
-  playEvent(event);
-  return true;
-}
-
-function showTick() {
-  if (state.showPhase !== 'performing' || state.paused) return;
-  state.showElapsed = Math.min(config.showDurationSeconds, state.showElapsed + 0.25);
-  updateRecording();
-  const quarter = Math.round(state.showElapsed * 4);
-  if (quarter > 0 && quarter % 8 === 0) {
-    const cast = currentCast();
-    const id = cast[(quarter / 8) % cast.length];
-    const phraseIndex = state.phraseCounter++;
-    const event = recordEvent(id, quarter % 16 === 0 ? 'high' : 'middle', phraseIndex, true);
-    playEvent(event);
+function renderComposerEvents(newEventId = null) {
+  for (const lane of config.lanes) {
+    const host = els.timeline.querySelector(`[data-lane-id="${lane.id}"] .event-dots`);
+    host.replaceChildren();
+    for (const event of state.song.events.filter((item) => item.laneId === lane.id)) {
+      const dot = document.createElement('img');
+      dot.className = 'timeline-dot';
+      if (event.id === newEventId) dot.classList.add('is-new');
+      dot.src = lane.dot;
+      dot.alt = '';
+      dot.dataset.eventId = event.id;
+      dot.style.left = `${2.5 + event.at / loopSeconds * 95}%`;
+      host.append(dot);
+    }
   }
-  if (state.showElapsed >= config.showDurationSeconds) finishShow();
+  updateControlArt();
 }
 
-function updateRecording() {
-  const seconds = Math.floor(state.showElapsed);
-  const label = root.querySelector('[data-recording]');
-  label.textContent = `${state.showPhase === 'finished' ? 'RECORDED' : 'RECORDING'} 00:${String(seconds).padStart(2, '0')}`;
-  root.querySelector('.mo-recording')?.classList.toggle('is-finished', state.showPhase === 'finished');
-  const recordingPlate = root.querySelector('[data-recording-plate]');
-  if (recordingPlate) recordingPlate.src = state.showPhase === 'finished'
-    ? './assets/ui/teal-pill.webp'
-    : './assets/ui/recording-pill.webp';
-  const pauseIcon = root.querySelector('[data-pause-icon]');
-  if (pauseIcon) pauseIcon.src = state.paused ? './assets/ui/resume.webp' : './assets/ui/pause.webp';
+function pulseBlocked(monsterId, candidate) {
+  const button = els.lineup.querySelector(`[data-monster-id="${monsterId}"]`);
+  button.classList.remove('is-blocked');
+  requestAnimationFrame(() => button.classList.add('is-blocked'));
+  setTimeout(() => button.classList.remove('is-blocked'), 650);
+  const match = state.song.events.find((event) => (
+    event.laneId === candidate.laneId && event.monsterId === candidate.monsterId
+    && Math.min(Math.abs(event.at - candidate.at), loopSeconds - Math.abs(event.at - candidate.at)) < clipSeconds
+  ));
+  if (match) {
+    const dot = els.timeline.querySelector(`[data-event-id="${match.id}"]`);
+    dot?.classList.add('is-winking');
+    setTimeout(() => dot?.classList.remove('is-winking'), 650);
+  }
 }
 
-function startShow() {
-  if (!currentCast().length) {
-    screens.show('chorus');
-    state.mode = 'chorus';
-    updateChorus();
-    speak('choose-chorus');
-    armNudger();
+function showMonsterVideo(button, laneId, kind = 'preview') {
+  const monsterId = button.dataset.monsterId || button.dataset.eventMonster;
+  const video = button.querySelector('video');
+  const source = mediaFor(monsterId, laneId, 'mp4');
+  performances.get(button)?.();
+  if (!video.src.endsWith(source.replace('./', '/'))) video.src = source;
+  video.currentTime = 0;
+  button.classList.remove('is-performing', 'is-solo');
+  let settled = false;
+  let fallback = 0;
+  const begin = () => {
+    if (settled) return;
+    button.classList.add('is-performing');
+    if (kind === 'manual') button.classList.add('is-solo');
+  };
+  const finish = () => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(fallback);
+    button.classList.remove('is-performing', 'is-solo');
+    video.removeEventListener('playing', begin);
+    video.removeEventListener('ended', finish);
+    if (performances.get(button) === finish) performances.delete(button);
+  };
+  performances.set(button, finish);
+  video.addEventListener('playing', begin, { once: true });
+  video.addEventListener('ended', finish, { once: true });
+  fallback = setTimeout(finish, (clipSeconds + 0.75) * 1000);
+  video.play().then(begin, finish);
+}
+
+function flyDot(button, event) {
+  if (reduceMotion.matches) return;
+  const lane = config.lanes.find((item) => item.id === event.laneId);
+  const row = els.timeline.querySelector(`[data-lane-id="${event.laneId}"]`);
+  const from = button.getBoundingClientRect();
+  const to = row.getBoundingClientRect();
+  const flying = document.createElement('img');
+  flying.className = 'flying-dot';
+  flying.src = lane.dot;
+  flying.alt = '';
+  flying.style.left = `${from.left + from.width / 2}px`;
+  flying.style.top = `${from.top + from.height * 0.32}px`;
+  game.append(flying);
+  const dx = to.left + to.width * (0.025 + event.at / loopSeconds * 0.95) - (from.left + from.width / 2);
+  const dy = to.top + to.height / 2 - (from.top + from.height * 0.32);
+  const animation = flying.animate([
+    { transform: 'translate(-50%, -50%) scale(1.7)', opacity: 0.9 },
+    { transform: `translate(calc(-50% + ${dx * 0.52}px), calc(-50% + ${dy * 0.2 - 70}px)) scale(1.15)`, opacity: 1, offset: 0.55 },
+    { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.75)`, opacity: 0.25 },
+  ], { duration: 620, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  animation.finished.then(() => flying.remove(), () => flying.remove());
+}
+
+function recordMonster(monsterId, button = null) {
+  if (!screens.is('composer') || concertStarting) return false;
+  const position = activeComposerPosition();
+  const lane = config.lanes[position.laneIndex];
+  const candidate = {
+    id: `event-${state.eventSerial + 1}`,
+    monsterId,
+    laneId: lane.id,
+    at: Math.round(position.phase * 100) / 100,
+    createdAt: state.eventSerial + 1,
+  };
+  if (overlapsBlock(state.song.events, candidate, { loopSeconds, clipSeconds })) {
+    pulseBlocked(monsterId, candidate);
     return false;
   }
-  audio.stop();
-  state.mode = 'stage-show';
-  state.showPhase = 'performing';
-  state.showElapsed = 0;
-  state.paused = false;
-  state.pausedByVisibility = false;
-  state.recordedEvents = [];
-  const stage = stageById(state.stage) || config.stages[0];
-  root.querySelector('[data-stage-bg]').src = stage.asset;
-  renderPerformers();
-  screens.show('show');
-  armNudger();
-  updateRecording();
-  speak('ready-show');
-
-  const cast = currentCast();
-  const audioStart = audio.now() + 0.22;
-  cast.forEach((id, index) => {
-    const event = {
-      id,
-      pitch: index % 3 === 0 ? 'middle' : index % 3 === 1 ? 'low' : 'high',
-      phraseIndex: state.phraseCounter++,
-      at: index * 0.22,
-      automatic: true,
-    };
-    state.recordedEvents.push(event);
-    playEvent(event, audioStart + event.at);
+  state.eventSerial += 1;
+  candidate.id = `event-${state.eventSerial}`;
+  candidate.createdAt = state.eventSerial;
+  state.song.events.push(candidate);
+  const target = button || els.lineup.querySelector(`[data-monster-id="${monsterId}"]`);
+  showMonsterVideo(target, lane.id, 'preview');
+  audio.play(mediaFor(monsterId, lane.id, 'm4a'), {
+    kind: 'preview', monsterId, laneId: lane.id, eventId: candidate.id,
   });
-  timers.every(250, showTick);
+  if (!state.muted) sfx.pop();
+  renderComposerEvents(candidate.id);
+  flyDot(target, candidate);
+  announce(`${lane.id} line added the ${config.monsters.find((item) => item.id === monsterId).label}`);
   return true;
 }
 
-function pauseShow() {
-  if (state.showPhase !== 'performing') return false;
-  state.paused = !state.paused;
-  state.pausedByVisibility = false;
-  if (state.paused) audio.stop();
-  else {
-    const cast = currentCast();
-    if (cast.length) playEvent(recordEvent(cast[0], 'middle', state.phraseCounter++, true));
+function nudgeComposer() {
+  if (!screens?.is('composer')) return;
+  els.lineup.classList.add('is-nudged');
+  els.timeline.querySelector(`[data-lane-id="${state.activeLaneId}"]`)?.classList.add('is-nudged');
+  const origin = els.lineup.scrollLeft;
+  const peek = Math.min(148, els.lineup.clientWidth * 0.16);
+  if (!reduceMotion.matches && els.lineup.scrollWidth > els.lineup.clientWidth + peek) {
+    els.lineup.scrollTo({ left: origin + peek, behavior: 'smooth' });
+    setTimeout(() => {
+      if (Math.abs(els.lineup.scrollLeft - origin - peek) < 28) {
+        els.lineup.scrollTo({ left: origin, behavior: 'smooth' });
+      }
+    }, 820);
   }
-  updateRecording();
-  return true;
+  setTimeout(() => {
+    els.lineup.classList.remove('is-nudged');
+    for (const row of els.timeline.querySelectorAll('.timeline-lane')) row.classList.remove('is-nudged');
+  }, 1800);
 }
 
-function finishShow() {
-  if (state.showPhase === 'finished') return true;
-  state.showPhase = 'finished';
-  state.paused = false;
-  state.pausedByVisibility = false;
-  state.showElapsed = config.showDurationSeconds;
-  timers.clearAll();
-  audio.stop();
-  updateRecording();
-  speak('lovely');
-  sfx.tada();
-  return true;
-}
+const nudger = createNudger({ first: 8500, repeat: 11000, onNudge: nudgeComposer });
 
-function replayPerformance() {
-  if (!state.recordedEvents.length) return false;
-  timers.clearAll();
-  audio.stop();
-  state.showPhase = 'replay';
-  state.paused = false;
-  state.pausedByVisibility = false;
-  state.showElapsed = 0;
-  updateRecording();
-  speak('replay');
-  const start = audio.now() + 0.25;
-  for (const event of state.recordedEvents) playEvent(event, start + event.at);
-  const endAt = Math.min(config.showDurationSeconds, Math.max(...state.recordedEvents.map((event) => event.at), 0) + 1.4);
-  let elapsed = 0;
-  timers.every(250, () => {
-    elapsed += 0.25;
-    state.showElapsed = Math.min(endAt, elapsed);
-    updateRecording();
-    if (elapsed >= endAt) {
-      state.showPhase = 'finished';
-      updateRecording();
-      timers.clearAll();
+function renderConcert() {
+  for (const dispose of concertDisposers.splice(0)) dispose?.();
+  els.concert.classList.toggle('is-sparse', state.song.events.length <= 4);
+  els.world.replaceChildren();
+  for (let panelIndex = 0; panelIndex < 3; panelIndex += 1) {
+    const panel = document.createElement('div');
+    panel.className = 'song-panel';
+    panel.dataset.panel = String(panelIndex);
+    const plate = document.createElement('img');
+    plate.className = 'concert-track-art video-overlay-layer';
+    plate.src = config.assets.concertPlate;
+    plate.alt = '';
+    plate.draggable = false;
+    panel.append(plate);
+    for (const event of state.song.events) {
+      const monster = config.monsters.find((item) => item.id === event.monsterId);
+      const laneIndex = config.lanes.findIndex((item) => item.id === event.laneId);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `concert-event concert-lane-${event.laneId}`;
+      button.dataset.eventId = event.id;
+      button.dataset.eventMonster = event.monsterId;
+      button.dataset.laneId = event.laneId;
+      button.dataset.target = `concert-${event.id}-${panelIndex}`;
+      button.setAttribute('aria-label', `Play ${monster.label} now`);
+      button.style.setProperty('--event-x', `${event.at / loopSeconds * 100}%`);
+      button.style.setProperty('--lane-y', `${17 + laneIndex * 33}%`);
+      button.innerHTML = `
+        <img class="monster-still" src="${imageFor(event.monsterId)}" alt="" draggable="false" />
+        <video class="monster-video video-overlay-layer" muted playsinline preload="metadata" aria-hidden="true"></video>
+      `;
+      panel.append(button);
+      concertDisposers.push(onTap(button, () => playManual(event, button), { feedback: () => button.classList.add('is-pressed') }));
+      const release = () => button.classList.remove('is-pressed');
+      button.addEventListener('pointerup', release);
+      button.addEventListener('pointercancel', release);
+      concertDisposers.push(() => {
+        button.removeEventListener('pointerup', release);
+        button.removeEventListener('pointercancel', release);
+      });
     }
+    els.world.append(panel);
+  }
+}
+
+function playManual(event, button) {
+  if (!screens.is('concert')) return false;
+  showMonsterVideo(button, event.laneId, 'manual');
+  audio.play(mediaFor(event.monsterId, event.laneId, 'm4a'), {
+    kind: 'manual', monsterId: event.monsterId, laneId: event.laneId, eventId: event.id, gain: 0.72,
   });
+  announce(`${config.monsters.find((item) => item.id === event.monsterId).label} solo`);
   return true;
 }
 
-function doneShow() {
-  audio.stop();
-  state.showPhase = 'idle';
-  state.paused = false;
-  state.pausedByVisibility = false;
-  screens.show('chorus');
-  state.mode = 'chorus';
-  updateChorus();
-  speak('again');
-  armNudger();
-  return true;
+function nearestConcertButton(eventId) {
+  const center = innerWidth / 2;
+  return [...els.concert.querySelectorAll(`[data-event-id="${eventId}"]`)]
+    .map((node) => ({ node, distance: Math.abs(node.getBoundingClientRect().left + node.offsetWidth / 2 - center) }))
+    .sort((a, b) => a.distance - b.distance)[0]?.node || null;
 }
 
-function animateSinger({ id }) {
-  root.querySelectorAll(`[data-monster-visual="${CSS.escape(id)}"]`).forEach((node) => {
-    const token = Number(node.dataset.poseToken || 0) + 1;
-    node.dataset.poseToken = String(token);
-    node.classList.remove('is-singing');
-    void node.offsetWidth;
-    node.classList.add('is-singing');
+function animateScheduled(event) {
+  if (!screens.is('concert')) return;
+  const button = nearestConcertButton(event.id);
+  if (button) showMonsterVideo(button, event.laneId, 'scheduled');
+}
 
-    const poseAt = (delay, pose) => visualTimers.after(delay, () => {
-      if (Number(node.dataset.poseToken) !== token || node.dataset.monsterVisual !== id) return;
-      setVisualPose(node, pose, id);
-      if (pose === 'neutral') node.classList.remove('is-singing');
+function clearVisualTimers() {
+  for (const timer of visualTimers) clearTimeout(timer);
+  visualTimers.clear();
+}
+
+function scheduleConcert() {
+  if (!screens.is('concert') || !concertClock.running) return;
+  const now = concertClock.elapsed();
+  const realLookahead = lookaheadSeconds * concertClock.speed;
+  const occurrences = occurrencesBetween(state.song.events, now - 0.045 * concertClock.speed, now + realLookahead, loopSeconds);
+  for (const occurrence of occurrences) {
+    const key = `${occurrence.event.id}@${occurrence.loop}`;
+    if (scheduled.has(key)) continue;
+    scheduled.add(key);
+    const delay = Math.max(0, (occurrence.at - now) / concertClock.speed);
+    const when = (audio.context?.currentTime || 0) + delay;
+    audio.play(mediaFor(occurrence.event.monsterId, occurrence.event.laneId, 'm4a'), {
+      kind: 'scheduled', monsterId: occurrence.event.monsterId, laneId: occurrence.event.laneId,
+      eventId: occurrence.event.id, when, gain: 0.68,
     });
-    setVisualPose(node, 'singing', id);
-    poseAt(115, 'neutral');
-    poseAt(205, 'singing');
-    poseAt(320, 'neutral');
-    poseAt(405, 'singing');
-    poseAt(520, 'neutral');
-  });
+    const timer = setTimeout(() => {
+      visualTimers.delete(timer);
+      animateScheduled(occurrence.event);
+    }, delay * 1000);
+    visualTimers.add(timer);
+  }
+  const oldLoop = Math.floor(now / loopSeconds) - 2;
+  for (const key of [...scheduled]) {
+    if (Number(key.split('@')[1]) < oldLoop) scheduled.delete(key);
+  }
 }
 
-let blinkCursor = 0;
-function blinkOneVisibleMonster() {
-  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return false;
-  const visible = [...screen(screens.current)?.querySelectorAll('[data-monster-visual]') || []]
-    .filter((node) => node.dataset.monsterPose === 'neutral');
-  if (!visible.length) return false;
-  const node = visible[blinkCursor % visible.length];
-  blinkCursor += 1;
-  const id = node.dataset.monsterVisual;
-  const token = Number(node.dataset.poseToken || 0) + 1;
-  node.dataset.poseToken = String(token);
-  setVisualPose(node, 'blink', id);
-  visualTimers.after(155, () => {
-    if (Number(node.dataset.poseToken) === token && node.dataset.monsterVisual === id) {
-      setVisualPose(node, 'neutral', id);
-    }
-  });
+function startConcertFrames() {
+  cancelAnimationFrame(concertFrame);
+  const paint = () => {
+    if (!screens?.is('concert')) return;
+    const elapsed = concertClock.elapsed();
+    const phase = wrap(elapsed, loopSeconds);
+    state.concertPhase = phase;
+    const x = reduceMotion.matches ? -100 : -50 - phase / loopSeconds * 100;
+    els.world.style.transform = `translate3d(${x}vw, 0, 0)`;
+    concertFrame = requestAnimationFrame(paint);
+  };
+  concertFrame = requestAnimationFrame(paint);
+}
+
+function startConcertTransport() {
+  scheduled = new Set();
+  clearVisualTimers();
+  concertClock.resume();
+  scheduleConcert();
+  clearInterval(scheduler);
+  scheduler = setInterval(scheduleConcert, schedulerMilliseconds);
+  startConcertFrames();
+  if (!audio.getAudioLog().some(({ kind }) => kind === 'manual')) {
+    const invitation = setTimeout(() => {
+      visualTimers.delete(invitation);
+      if (!screens.is('concert') || !state.song.events.length) return;
+      const button = nearestConcertButton(state.song.events[0].id);
+      if (!button) return;
+      button.classList.add('is-inviting');
+      const finish = setTimeout(() => {
+        visualTimers.delete(finish);
+        button.classList.remove('is-inviting');
+      }, 1500);
+      visualTimers.add(finish);
+    }, 3600);
+    visualTimers.add(invitation);
+  }
+}
+
+function stopConcertTransport({ pause = true } = {}) {
+  clearInterval(scheduler);
+  scheduler = 0;
+  cancelAnimationFrame(concertFrame);
+  concertFrame = 0;
+  clearVisualTimers();
+  scheduled.clear();
+  if (pause) concertClock.pause();
+  audio.stopVoices();
+  pauseVideos(els.concert);
+}
+
+function resetSong() {
+  concertStartToken += 1;
+  setConcertStarting(false);
+  state.song.events = [];
+  state.eventSerial = 0;
+  composerClock.set(0);
+  concertClock.set(0);
+  state.activeLaneId = 'white';
+  state.composerPhase = 0;
+  state.concertPhase = 0;
+  audio.stopVoices();
+  renderComposerEvents();
+  announce('A fresh song is ready');
   return true;
 }
 
-function updateLook(event) {
-  if (!Number.isFinite(event.clientX) || !Number.isFinite(event.clientY)) return;
-  const activeScreen = screen(screens.current);
-  if (!activeScreen) return;
-  const rect = activeScreen.getBoundingClientRect();
-  const nx = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
-  const ny = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
-  const gazePose = nx < -0.22 ? 'gaze-left' : nx > 0.22 ? 'gaze-right' : 'neutral';
-  activeScreen.querySelectorAll('[data-monster-visual]').forEach((node) => {
-    if (['neutral', 'gaze-left', 'gaze-right'].includes(node.dataset.monsterPose)) {
-      setVisualPose(node, gazePose);
-    }
-    node.style.setProperty('--mo-look-x', `${(nx * 5).toFixed(2)}px`);
-    node.style.setProperty('--mo-look-y', `${(ny * 3).toFixed(2)}px`);
-    node.style.setProperty('--mo-look-turn', `${(nx * 1.2).toFixed(2)}deg`);
-  });
+function startComposer({ reset = false } = {}) {
+  if (reset) resetSong();
+  screens.show('composer', { force: screens.is('composer') });
+  return true;
 }
 
-function resetLook() {
-  root.querySelectorAll('[data-monster-visual]').forEach((node) => {
-    if (node.dataset.monsterPose === 'gaze-left' || node.dataset.monsterPose === 'gaze-right') {
-      setVisualPose(node, 'neutral');
-    }
-    node.style.removeProperty('--mo-look-x');
-    node.style.removeProperty('--mo-look-y');
-    node.style.removeProperty('--mo-look-turn');
-  });
+async function startConcert() {
+  if (state.song.events.length === 0) {
+    nudgeComposer();
+    announce('Tap a monster first');
+    return false;
+  }
+  if (concertStarting) return false;
+  const origin = screens.current;
+  const token = ++concertStartToken;
+  setConcertStarting(true);
+  const used = state.song.events.map((event) => mediaFor(event.monsterId, event.laneId, 'm4a'));
+  try {
+    await audio.preload(used);
+    if (token !== concertStartToken || screens.current !== origin || state.song.events.length === 0) return false;
+    concertClock.set(0);
+    renderConcert();
+    screens.show('concert', { force: screens.is('concert') });
+    if (!state.muted) sfx.sparkle();
+    return true;
+  } finally {
+    if (token === concertStartToken) setConcertStarting(false);
+  }
 }
 
-const nudger = createNudger({
-  first: 9000,
-  repeat: 11000,
-  onNudge: (index) => {
-    if (screens.is('splash')) {
-      if (index === 0) speak('intro');
-      else root.querySelector('[data-action="start-chorus"]')?.classList.add('is-nudged');
-    } else if (screens.is('chorus')) {
-      if (index === 0) speak('choose-chorus');
-      else chooseChorus(config.cast[0].id);
-    } else if (screens.is('solo')) {
-      if (index === 0) speak('choose-singer');
-      else singSolo();
-    } else if (screens.is('stages')) {
-      if (index === 0) speak('choose-stage');
-      else audio.stageSting(state.stage);
-    }
-  },
-});
-
-function armNudger() {
-  nudger.stop();
-  if (!screens.is('show')) nudger.arm();
+function enterScreen(name) {
+  state.screen = name;
+  if (name === 'splash') {
+    playSplashVideos();
+  } else if (name === 'composer') {
+    pauseVideos(els.splash);
+    composerClock.resume();
+    renderComposerEvents();
+    startComposerFrames();
+    nudger.arm();
+  } else if (name === 'concert') {
+    composerClock.pause();
+    nudger.stop();
+    startConcertTransport();
+  }
 }
 
-const soloStar = root.querySelector('.mo-solo-star[data-action="solo-sing"]');
-const soloStarImage = soloStar.querySelector('[data-solo-active]');
-const resetSoloSwipe = () => {
-  soloStar.classList.remove('is-swiping');
-  soloStarImage.style.removeProperty('--mo-swipe-x');
-};
-const soloGesture = createConstrainedGestureDom({
-  slop: 14,
-  getHandle: () => soloStar,
-  canStart: () => screens.is('solo'),
-  project: (point, active) => ({
-    progress: 0.5 + (point.x - active.startPoint.x) / 260,
-    point,
-  }),
-  onStart: () => soloStar.classList.add('is-swiping'),
-  onProgress: (active) => {
-    const dx = Math.max(-34, Math.min(34, active.lastPoint.x - active.startPoint.x));
-    soloStarImage.style.setProperty('--mo-swipe-x', `${dx.toFixed(1)}px`);
-  },
-  onRelease: (active) => {
-    const dx = active.lastPoint.x - active.startPoint.x;
-    resetSoloSwipe();
-    if (Math.abs(dx) < 36) return singSolo();
-    return cycleSolo(dx < 0 ? 1 : -1);
-  },
-  onTap: () => singSolo(),
-  onCancel: resetSoloSwipe,
+function exitScreen(name) {
+  if (name === 'splash') pauseVideos(els.splash);
+  if (name === 'composer') {
+    if (concertStarting) {
+      concertStartToken += 1;
+      setConcertStarting(false);
+    }
+    composerClock.pause();
+    stopComposerFrames();
+    nudger.stop();
+    audio.stopVoices('preview');
+    pauseVideos(els.composer);
+  }
+  if (name === 'concert') stopConcertTransport();
+}
+
+screens = createScreens({
+  screens: { splash: els.splash, composer: els.composer, concert: els.concert },
+  initial: 'splash',
+  onEnter: enterScreen,
+  onExit: exitScreen,
 });
 
-const beginSoloGesture = (event) => soloGesture.begin(event, 'solo-singer');
-const keyboardSoloSing = (event) => {
-  if (event.detail !== 0) return;
-  unlockAll([() => audio.unlock()]);
-  singSolo();
-};
-soloStar.dataset.target = 'solo-monster';
-actions.set('solo-monster', singSolo);
-soloStar.addEventListener('pointerdown', beginSoloGesture);
-soloStar.addEventListener('click', keyboardSoloSing);
-staticDisposers.push(() => {
-  soloStar.removeEventListener('pointerdown', beginSoloGesture);
-  soloStar.removeEventListener('click', keyboardSoloSing);
-  soloGesture.detach();
-});
+function bindControls() {
+  disposers.push(onTap(els.play, async () => {
+    await audio.unlock();
+    audio.startBeat(config.assets.beat);
+    const allSamples = config.monsters.flatMap((monster) => config.lanes.map((lane) => mediaFor(monster.id, lane.id, 'm4a')));
+    audio.preload(allSamples);
+    startComposer();
+  }, { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  disposers.push(onTap(els.composerBack, () => screens.show('splash'), { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  disposers.push(onTap(els.concertBack, () => screens.show('composer'), { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  disposers.push(onTap(els.go, startConcert, { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  disposers.push(onTap(els.newSong, () => startComposer({ reset: true }), { feedback: () => { if (!state.muted) sfx.unpop(); } }));
+  for (const button of game.querySelectorAll('.sound-control')) {
+    disposers.push(onTap(button, toggleSound, { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  }
+  for (const button of game.querySelectorAll('.beat-control')) {
+    disposers.push(onTap(button, toggleBeat, { feedback: () => { if (!state.muted) sfx.tick(); } }));
+  }
+  for (const button of els.lineup.querySelectorAll('.composer-monster')) {
+    disposers.push(onTap(button, () => recordMonster(button.dataset.monsterId, button), {
+      feedback: () => button.classList.add('is-pressed'),
+    }));
+    button.addEventListener('pointerup', () => button.classList.remove('is-pressed'));
+    button.addEventListener('pointercancel', () => button.classList.remove('is-pressed'));
+  }
+}
 
-// Static controls.
-root.querySelectorAll('[data-sound]').forEach((button) => bind(button, button.dataset.target, toggleSound));
-root.querySelectorAll('[data-back]').forEach((button) => bind(button, button.dataset.target, goSplash));
-bind(root.querySelector('[data-action="start-chorus"]'), 'start-chorus', () => startMode('chorus'));
-bind(root.querySelector('[data-action="open-stages"]'), 'open-stages', openStages);
-bind(root.querySelector('[data-action="play-all"]'), 'play-all', startShow);
-bind(root.querySelector('[data-action="back-to-chorus"]'), 'back-to-chorus', () => startMode('chorus'));
-bind(root.querySelector('[data-action="start-show"]'), 'start-show', startShow);
-bind(root.querySelector('.mo-sing-cta[data-action="solo-sing"]'), 'solo-sing', singSolo, { feedback: false });
-bind(root.querySelector('[data-action="pause-show"]'), 'pause-show', pauseShow);
-bind(root.querySelector('[data-action="replay-show"]'), 'replay-show', replayPerformance);
-bind(root.querySelector('[data-action="done-show"]'), 'done-show', doneShow);
+bindControls();
+updateControlArt();
+renderComposerEvents();
 
-root.querySelectorAll('[data-splash-monster]').forEach((button) => {
-  const id = button.dataset.splashMonster;
-  bind(button, `splash-${id}`, () => {
-    state.activeMonster = id;
-    return startMode('solo').then(() => singSolo());
-  }, { feedback: false });
-});
-root.querySelectorAll('[data-chorus-monster]').forEach((button) => {
-  const id = button.dataset.chorusMonster;
-  bind(button, `chorus-${id}`, () => chooseChorus(id), { feedback: false });
-});
-root.querySelectorAll('[data-solo-monster]').forEach((button) => {
-  const id = button.dataset.soloMonster;
-  bind(button, `solo-${id}`, () => chooseSolo(id), { feedback: false });
-});
-root.querySelectorAll('[data-pitch]').forEach((button) => {
-  const pitch = button.dataset.pitch;
-  bind(button, `pitch-${pitch}`, () => setPitch(pitch));
-});
-root.querySelectorAll('[data-stage]').forEach((button) => {
-  const id = button.dataset.stage;
-  bind(button, `stage-${id}`, () => chooseStage(id), { feedback: false });
-});
+const uninstallKiosk = installKioskGuards();
+const uninstallUnlock = installUnlockOnGesture({ extra: [() => audio.unlock()] });
+disposers.push(uninstallKiosk, uninstallUnlock);
 
-installUnlockOnGesture({
-  extra: [() => audio.unlock()],
-  onFirst: () => speak('intro'),
-});
-installKioskGuards();
-root.addEventListener('pointerdown', updateLook, { passive: true });
-root.addEventListener('pointermove', updateLook, { passive: true });
-root.addEventListener('pointerleave', resetLook);
-staticDisposers.push(() => {
-  root.removeEventListener('pointerdown', updateLook);
-  root.removeEventListener('pointermove', updateLook);
-  root.removeEventListener('pointerleave', resetLook);
-});
-visualTimers.every(3200, blinkOneVisibleMonster);
+function setTransportSpeed(input = 0.05) {
+  const n = Number(input);
+  const multiplier = Number.isFinite(n) && n > 0 ? Math.min(1, n > 1 ? 1 / n : n) : 0.05;
+  const speed = 1 / Math.max(0.01, multiplier);
+  state.timeScale = speed;
+  composerClock.setSpeed(speed);
+  concertClock.setSpeed(speed);
+  scheduled.clear();
+  return multiplier;
+}
 
-const imageUrls = [
-  './assets/bg/splash.webp', './assets/bg/splash-portrait.webp', './assets/bg/solo.webp',
-  ...UI_ASSETS,
-  ...config.stages.map((stage) => stage.asset),
-  ...config.cast.flatMap((monster) => [
-    monster.asset,
-    monster.card,
-    poseAsset(monster.id, 'singing'),
-    poseAsset(monster.id, 'blink'),
-    poseAsset(monster.id, 'gaze-left'),
-    poseAsset(monster.id, 'gaze-right'),
-  ]),
-];
-const ready = Promise.all([audio.init(), preloadImages(imageUrls)]).then(([status]) => {
-  state.audioReady = status.loaded > 0;
-  updateChorus();
-  updateSolo();
-  updateStages();
-  updateSoundControls();
-  armNudger();
-  root.dataset.ready = 'true';
-  return status;
-});
+function debugTap(targetId) {
+  if (targetId === 'go') return startConcert();
+  if (targetId === 'new-song') return startComposer({ reset: true });
+  const monster = config.monsters.find((item) => item.id === targetId);
+  if (monster && screens.is('composer')) return recordMonster(monster.id);
+  const concertMatch = String(targetId).match(/^concert-(event-\d+)(?:-\d+)?$/);
+  if (concertMatch && screens.is('concert')) {
+    const event = state.song.events.find((item) => item.id === concertMatch[1]);
+    const button = nearestConcertButton(event?.id);
+    return event && button ? playManual(event, button) : false;
+  }
+  const node = game.querySelector(`[data-target="${CSS.escape(String(targetId))}"]`);
+  if (!node) return false;
+  node.click();
+  return true;
+}
 
-installDebug({
+function setComposerTime(seconds) {
+  composerClock.set(Math.max(0, Number(seconds) || 0));
+  const position = activeComposerPosition();
+  state.activeLaneId = config.lanes[position.laneIndex].id;
+  state.composerPhase = position.phase;
+  return { laneId: state.activeLaneId, phase: state.composerPhase };
+}
+
+function setConcertTime(seconds) {
+  concertClock.set(Math.max(0, Number(seconds) || 0));
+  state.concertPhase = wrap(concertClock.elapsed(), loopSeconds);
+  audio.stopVoices();
+  scheduled.clear();
+  clearVisualTimers();
+  if (screens.is('concert')) scheduleConcert();
+  return state.concertPhase;
+}
+
+let resolveReady;
+const ready = new Promise((resolve) => { resolveReady = resolve; });
+
+const uninstallDebug = installDebug({
   gameId: config.id,
-  engine: 'custom-monster-opera',
+  engine: config.engine,
   ready,
   listModes: () => config.modes.map(({ id, title }) => ({ id, title })),
-  startMode,
+  startMode: (id) => (id === 'concert' ? startConcert() : startComposer()),
   getState: () => ({
     screen: screens.current,
-    mode: state.mode,
-    stage: state.stage,
-    selected: [...state.selected],
-    activeMonster: state.activeMonster,
-    pitch: state.pitch,
-    showPhase: state.showPhase,
-    showElapsed: state.showElapsed,
-    paused: state.paused,
-    pausedByVisibility: state.pausedByVisibility,
-    recordedEvents: state.recordedEvents.map((event) => ({ ...event })),
-    audioReady: state.audioReady,
     muted: state.muted,
-    activePose: root.querySelector('[data-solo-active]')?.dataset.monsterPose || 'neutral',
+    beatEnabled: state.beatEnabled,
+    activeLaneId: state.activeLaneId,
+    composerPhase: Math.round(state.composerPhase * 100) / 100,
+    concertPhase: Math.round(state.concertPhase * 100) / 100,
+    timeScale: state.timeScale,
+    song: { events: state.song.events.map((event) => ({ ...event })) },
+    concertStarting,
+    activeManualVoices: [...audio.voices].filter((voice) => voice.kind === 'manual').length,
+    audio: audio.stats(),
+    assetErrors: [...state.assetErrors],
   }),
-  getTargets: () => collectTargets(screen(screens.current)),
-  tap: async (id) => {
-    const action = actions.get(id);
-    if (!action) return { accepted: false };
-    const result = await action();
-    return { accepted: result !== false };
-  },
-  winRound: async () => {
-    if (!screens.is('show')) startShow();
-    return finishShow();
-  },
-  home: goSplash,
-  timers,
-  narrator,
-  voice: audio,
-  sfx,
-  mute: (on = true) => {
-    const wanted = Boolean(on);
-    if (state.muted !== wanted) toggleSound();
-    return state.muted;
-  },
-  onSeed: (_rng, seed) => { state.phraseCounter = seed % 5; },
-  getAudioLog: () => audio.getLog(),
-  clearAudioLog: () => audio.clearLog(),
-  getSampleStatus: () => audio.getStatus(),
-  playMonster: (id, pitch = 'middle') => audio.playMonster(id, { pitch, phraseIndex: state.phraseCounter++ }),
-  swipeSolo: (direction = 1) => cycleSolo(Number(direction) < 0 ? -1 : 1),
-  blinkMonster: blinkOneVisibleMonster,
-  selectStage: chooseStage,
-  finishShow,
-  replayPerformance,
+  tap: debugTap,
+  home: () => { screens.show('splash'); return true; },
+  mute: setMuted,
+  fastTimers: setTransportSpeed,
+  setComposerTime,
+  setConcertTime,
+  getSong: () => ({ events: state.song.events.map((event) => ({ ...event })) }),
+  newSong: () => startComposer({ reset: true }),
+  getAudioLog: () => audio.getAudioLog(),
+  getTransportState: () => ({
+    composerElapsed: composerClock.elapsed(), concertElapsed: concertClock.elapsed(),
+    composerRunning: composerClock.running, concertRunning: concertClock.running,
+    scheduled: scheduled.size,
+  }),
+});
+disposers.push(uninstallDebug);
+
+function handleVisibility() {
+  if (document.hidden) {
+    if (screens.is('composer')) {
+      composerClock.pause();
+      stopComposerFrames();
+    }
+    if (screens.is('concert')) stopConcertTransport();
+    audio.stopVoices();
+    pauseVideos();
+    return;
+  }
+  if (screens.is('composer')) {
+    composerClock.resume();
+    startComposerFrames();
+  }
+  if (screens.is('concert')) startConcertTransport();
+  if (screens.is('splash')) playSplashVideos();
+}
+document.addEventListener('visibilitychange', handleVisibility);
+disposers.push(() => document.removeEventListener('visibilitychange', handleVisibility));
+
+const criticalImages = [
+  config.assets.blackboard, config.assets.title, config.assets.playhead, config.assets.concertPlate,
+  ...Object.values(config.assets.controls), ...config.lanes.flatMap((lane) => [lane.line, lane.dot]),
+  ...config.monsters.map((monster) => imageFor(monster.id)),
+];
+
+preloadImages(criticalImages).then(() => {
+  state.ready = true;
+  game.classList.add('is-ready');
+  resolveReady(true);
+  playSplashVideos();
 });
 
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    if (state.showPhase === 'performing' && !state.paused) {
-      state.paused = true;
-      state.pausedByVisibility = true;
-      updateRecording();
-    }
-    audio.stop();
-    soloGesture.cancel('visibility');
-    resetLook();
-  }
-});
 window.addEventListener('pagehide', () => {
-  timers.clearAll();
-  visualTimers.clearAll();
+  for (const dispose of concertDisposers.splice(0)) {
+    try { dispose?.(); } catch { /* teardown always continues */ }
+  }
+  for (const dispose of disposers.splice(0)) {
+    try { dispose?.(); } catch { /* teardown always continues */ }
+  }
+  screens.destroy();
   nudger.stop();
-  soloGesture.detach();
-  audio.stop();
-});
+  audio.destroy();
+}, { once: true });

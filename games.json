@@ -2955,29 +2955,24 @@
       "path": "games/monster-opera/",
       "icon": "assets/hub/tiles/monster-opera.jpg",
       "age": {
-        "min": 3,
-        "max": 5
+        "min": 4,
+        "max": 6
       },
       "status": "beta",
-      "accent": "#f26f82",
+      "accent": "#f36b56",
       "modes": [
         {
-          "id": "solo",
-          "title": "Sing with Me",
-          "skill": "compare low, middle, and high pitch in one timbre"
+          "id": "composer",
+          "title": "Make a Song",
+          "skill": "explore timing, layering, and three contrasting sounds"
         },
         {
-          "id": "chorus",
-          "title": "Make a Chorus",
-          "skill": "hear how distinct musical roles layer"
-        },
-        {
-          "id": "stage-show",
-          "title": "Pick a Stage",
-          "skill": "arrange a short call-and-response performance"
+          "id": "concert",
+          "title": "Play My Song",
+          "skill": "hear a self-authored pattern repeat and improvise over it"
         }
       ],
-      "summary": "Layer fuzzy monster voices into a tiny replayable opera."
+      "summary": "Compose three looping chalk-monster tracks, then perform the song forever."
     },
     {
       "id": "balance-beam-trail",
