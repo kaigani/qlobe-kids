@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   baseUrl,
   createReporter,
@@ -14,7 +15,7 @@ import {
 const base = baseUrl('http://127.0.0.1:8127');
 const url = `${base}/games/monster-opera/`;
 const shots = resolveShots('qa-shots/monster-opera');
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const assets = path.join(root, 'assets');
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config.json'), 'utf8'));
 const { check, finish, head } = createReporter({ collapse: true, detailLimit: 260 });
