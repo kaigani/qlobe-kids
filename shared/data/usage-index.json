@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-27T06:40:14.631Z",
+  "generated": "2026-08-28T17:29:01.475Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -897,6 +897,44 @@
       "assets": [],
       "packs": []
     },
+    "garden-graphers": {
+      "engine": null,
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [
+        "ari"
+      ],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "games/garden-graphers/assets/bg/garden.webp",
+        "games/garden-graphers/assets/characters/ari-notice.webp",
+        "games/garden-graphers/assets/ui/action-button.webp",
+        "games/garden-graphers/assets/ui/prompt-banner.webp",
+        "games/garden-graphers/assets/ui/title.webp",
+        "shared/assets/music/gentle-country-morning.mp3",
+        "shared/assets/ui"
+      ],
+      "packs": []
+    },
     "globe-spin-stories": {
       "engine": null,
       "status": "live",
@@ -1371,30 +1409,26 @@
     },
     "monster-opera": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "art-music",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
         "shared/js/debug-harness.js",
-        "shared/js/dom.js",
         "shared/js/idle-nudge.js",
-        "shared/js/narrator.js",
         "shared/js/preload.js",
         "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/stage/constrained-gesture-dom.js",
-        "shared/js/tap.js",
-        "shared/js/timers.js",
-        "shared/js/voice-clips.js"
+        "shared/js/tap.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/ui/btn-home.png"
+      ],
       "packs": []
     },
     "mountain-seasons-wheel": {
@@ -1856,6 +1890,54 @@
       ],
       "packs": []
     },
+    "post-office-letters": {
+      "engine": null,
+      "status": "beta",
+      "category": "writing-fine-motor",
+      "characters": [
+        "Leo",
+        "Maya",
+        "Nia",
+        "Ravi",
+        "Sam"
+      ],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "games/post-office-letters/assets/backgrounds/post-office.webp",
+        "games/post-office-letters/assets/props/envelope.webp",
+        "games/post-office-letters/assets/ui/title.webp",
+        "shared/assets/music/mug-and-sunbeam.mp3",
+        "shared/assets/ui/btn-play.png",
+        "shared/characters/leo/portrait.png",
+        "shared/characters/maya/portrait.png",
+        "shared/characters/nia/portrait.png",
+        "shared/characters/ravi/portrait.png",
+        "shared/characters/sam/portrait.png"
+      ],
+      "packs": []
+    },
     "pouring-station": {
       "engine": "coach-timer",
       "status": "in-design",
@@ -2217,7 +2299,7 @@
     },
     "shadow-chase": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
@@ -3207,6 +3289,7 @@
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
         "instrument-detective",
@@ -3239,6 +3322,7 @@
         "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
+        "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
@@ -3306,6 +3390,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -3323,6 +3408,7 @@
         "pattern-bracelet-band",
         "picture-word-match",
         "playdough-letter-factory",
+        "post-office-letters",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -3352,10 +3438,12 @@
         "bean-sprout-watch",
         "board-game-reset",
         "cleanup-timer-quest",
+        "garden-graphers",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "number-sense-kitchen",
         "picture-word-match",
+        "post-office-letters",
         "puzzle-map-match",
         "shadow-chase",
         "shape-detective",
@@ -3394,6 +3482,7 @@
         "name-puzzle",
         "obstacle-course-builder",
         "picture-word-match",
+        "post-office-letters",
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -3448,6 +3537,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -3465,6 +3555,7 @@
         "pattern-bracelet-band",
         "picture-word-match",
         "playdough-letter-factory",
+        "post-office-letters",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -3491,7 +3582,6 @@
         "world-music-dance"
       ],
       "shared/js/dom.js": [
-        "monster-opera",
         "puppet-retell",
         "shadow-chase",
         "shape-detective",
@@ -3607,6 +3697,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
+        "post-office-letters",
         "red-green-light",
         "sticker-line-challenge",
         "table-setting-mission",
@@ -3622,6 +3713,7 @@
         "color-mixing-lab",
         "cooking-craze",
         "garden-delivery-game",
+        "garden-graphers",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -3632,6 +3724,7 @@
         "name-puzzle",
         "number-sense-kitchen",
         "picture-word-match",
+        "post-office-letters",
         "shadow-chase",
         "shape-detective",
         "sink-or-float",
@@ -3699,8 +3792,8 @@
         "land-water-tray",
         "laundry-sorter",
         "loose-parts-collage",
-        "monster-opera",
         "obstacle-course-builder",
+        "post-office-letters",
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
@@ -3721,6 +3814,7 @@
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -3732,6 +3826,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "picture-word-match",
+        "post-office-letters",
         "puzzle-map-match",
         "shape-detective",
         "sticker-line-challenge",
@@ -3759,6 +3854,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -3773,6 +3869,7 @@
         "pattern-bracelet-band",
         "picture-word-match",
         "playdough-letter-factory",
+        "post-office-letters",
         "red-green-light",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -3803,6 +3900,7 @@
         "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
+        "garden-graphers",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -3812,6 +3910,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "picture-word-match",
+        "post-office-letters",
         "shadow-chase",
         "shape-detective",
         "snack-chef",
@@ -3850,6 +3949,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
         "instrument-detective",
@@ -3883,6 +3983,7 @@
         "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
+        "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
@@ -4018,8 +4119,7 @@
         "blend-train"
       ],
       "shared/js/stage/constrained-gesture-dom.js": [
-        "button-zipper-lab",
-        "monster-opera"
+        "button-zipper-lab"
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
         "bead-path-builder",
@@ -4029,6 +4129,7 @@
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
+        "garden-graphers",
         "laundry-sorter",
         "lunchbox-pack",
         "name-puzzle",
@@ -4036,6 +4137,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
+        "post-office-letters",
         "puzzle-map-match",
         "snack-chef",
         "sound-basket",
@@ -4125,6 +4227,7 @@
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -4142,6 +4245,7 @@
         "pattern-bracelet-band",
         "picture-word-match",
         "playdough-letter-factory",
+        "post-office-letters",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -4181,6 +4285,7 @@
         "cooking-craze",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -4188,13 +4293,13 @@
         "letter-treasure-hunt",
         "lunchbox-pack",
         "momma-bear-storybook",
-        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
+        "post-office-letters",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -4232,6 +4337,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
@@ -4242,7 +4348,6 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "momma-bear-storybook",
-        "monster-opera",
         "mountain-seasons-wheel",
         "my-puppet-band",
         "name-puzzle",
@@ -4251,6 +4356,7 @@
         "pattern-bracelet-band",
         "picture-word-match",
         "playdough-letter-factory",
+        "post-office-letters",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -4322,6 +4428,7 @@
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
         "instrument-detective",
@@ -4355,6 +4462,7 @@
         "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
+        "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
@@ -4467,17 +4575,18 @@
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-delivery-game",
+        "garden-graphers",
         "globe-spin-stories",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
         "momma-bear-storybook",
-        "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "post-office-letters",
         "red-green-light",
         "rhythm-copycat",
         "shadow-chase",
@@ -4516,6 +4625,7 @@
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
+        "garden-graphers",
         "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
@@ -4546,6 +4656,7 @@
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
+        "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
@@ -4590,7 +4701,8 @@
     },
     "characters": {
       "ari": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "garden-graphers"
       ],
       "Ash": [
         "momma-bear-storybook"
@@ -4668,6 +4780,7 @@
         "turn-taking-tower"
       ],
       "Leo": [
+        "post-office-letters",
         "snack-addition-stories"
       ],
       "luna": [
@@ -4684,6 +4797,7 @@
         "turn-taking-tower"
       ],
       "Maya": [
+        "post-office-letters",
         "snack-addition-stories",
         "table-setting-mission"
       ],
@@ -4699,6 +4813,7 @@
         "turn-taking-tower"
       ],
       "Nia": [
+        "post-office-letters",
         "snack-addition-stories"
       ],
       "orange-cat": [
@@ -4751,6 +4866,7 @@
         "turn-taking-tower"
       ],
       "Ravi": [
+        "post-office-letters",
         "snack-addition-stories"
       ],
       "sam": [
@@ -4761,6 +4877,7 @@
         "turn-taking-tower"
       ],
       "Sam": [
+        "post-office-letters",
         "snack-addition-stories"
       ],
       "skipper": [
@@ -4864,6 +4981,21 @@
       ],
       "games/flashlight-cave/assets/pose-actors/ari": [
         "flashlight-cave"
+      ],
+      "games/garden-graphers/assets/bg/garden.webp": [
+        "garden-graphers"
+      ],
+      "games/garden-graphers/assets/characters/ari-notice.webp": [
+        "garden-graphers"
+      ],
+      "games/garden-graphers/assets/ui/action-button.webp": [
+        "garden-graphers"
+      ],
+      "games/garden-graphers/assets/ui/prompt-banner.webp": [
+        "garden-graphers"
+      ],
+      "games/garden-graphers/assets/ui/title.webp": [
+        "garden-graphers"
       ],
       "games/globe-spin-stories/assets/backgrounds/globe.webp": [
         "globe-spin-stories"
@@ -5201,6 +5333,15 @@
       "games/playdough-letter-factory/assets/ui/title.webp": [
         "playdough-letter-factory"
       ],
+      "games/post-office-letters/assets/backgrounds/post-office.webp": [
+        "post-office-letters"
+      ],
+      "games/post-office-letters/assets/props/envelope.webp": [
+        "post-office-letters"
+      ],
+      "games/post-office-letters/assets/ui/title.webp": [
+        "post-office-letters"
+      ],
       "games/red-green-light/assets/callers": [
         "red-green-light"
       ],
@@ -5460,8 +5601,15 @@
         "momma-bear-storybook"
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
+        "garden-graphers",
         "picture-word-match",
         "tweezer-rescue"
+      ],
+      "shared/assets/music/mug-and-sunbeam.mp3": [
+        "post-office-letters"
+      ],
+      "shared/assets/music/quirky-forest-adventure.mp3": [
+        "shape-detective"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
         "number-sense-kitchen",
@@ -5494,6 +5642,7 @@
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
+        "garden-graphers",
         "land-water-tray",
         "lunchbox-pack",
         "number-sense-kitchen",
@@ -5520,16 +5669,19 @@
         "bug-hotel-observer"
       ],
       "shared/assets/ui/btn-home.png": [
-        "bug-hotel-observer"
+        "bug-hotel-observer",
+        "monster-opera"
       ],
       "shared/assets/ui/btn-play.png": [
-        "bug-hotel-observer"
+        "bug-hotel-observer",
+        "post-office-letters"
       ],
       "shared/assets/ui/btn-sound.png": [
         "bug-hotel-observer"
       ],
       "shared/characters/ari": [
-        "flashlight-cave"
+        "flashlight-cave",
+        "garden-graphers"
       ],
       "shared/characters/bear": [
         "my-puppet-band",
@@ -5565,7 +5717,11 @@
         "turn-taking-tower"
       ],
       "shared/characters/Leo": [
+        "post-office-letters",
         "snack-addition-stories"
+      ],
+      "shared/characters/leo/portrait.png": [
+        "post-office-letters"
       ],
       "shared/characters/maya": [
         "calm-corner-cards",
@@ -5578,10 +5734,12 @@
         "turn-taking-tower"
       ],
       "shared/characters/Maya": [
+        "post-office-letters",
         "snack-addition-stories",
         "table-setting-mission"
       ],
       "shared/characters/maya/portrait.png": [
+        "post-office-letters",
         "snack-chef"
       ],
       "shared/characters/nia": [
@@ -5593,7 +5751,11 @@
         "turn-taking-tower"
       ],
       "shared/characters/Nia": [
+        "post-office-letters",
         "snack-addition-stories"
+      ],
+      "shared/characters/nia/portrait.png": [
+        "post-office-letters"
       ],
       "shared/characters/princess-lily": [
         "my-puppet-band",
@@ -5623,7 +5785,11 @@
         "turn-taking-tower"
       ],
       "shared/characters/Ravi": [
+        "post-office-letters",
         "snack-addition-stories"
+      ],
+      "shared/characters/ravi/portrait.png": [
+        "post-office-letters"
       ],
       "shared/characters/sam": [
         "feelings-charades",
@@ -5633,7 +5799,11 @@
         "turn-taking-tower"
       ],
       "shared/characters/Sam": [
+        "post-office-letters",
         "snack-addition-stories"
+      ],
+      "shared/characters/sam/portrait.png": [
+        "post-office-letters"
       ],
       "shared/characters/unicorn": [
         "my-puppet-band",
