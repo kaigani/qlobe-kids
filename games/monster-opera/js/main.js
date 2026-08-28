@@ -202,7 +202,7 @@ function renderShell() {
   concert.innerHTML = `
     <div class="concert-viewport" aria-label="Your song scrolls past the orange play line">
       <div class="concert-world"></div>
-      <img class="concert-playhead" src="${config.assets.playhead}" alt="" draggable="false" />
+      <img class="concert-playhead" src="${config.assets.playheadLong}" alt="" draggable="false" />
     </div>
   `;
   concert.append(concertBack, concertSound, concertBeat, newSong);
@@ -1312,7 +1312,7 @@ document.addEventListener('visibilitychange', handleVisibility);
 disposers.push(() => document.removeEventListener('visibilitychange', handleVisibility));
 
 const criticalImages = [
-  config.assets.blackboard, config.assets.title, config.assets.playhead, config.assets.concertPlate,
+  config.assets.blackboard, config.assets.title, config.assets.playhead, config.assets.playheadLong, config.assets.concertPlate,
   ...Object.values(config.assets.controls), ...config.lanes.flatMap((lane) => [lane.line, lane.dot]),
   ...config.monsters.map((monster) => imageFor(monster.id)),
 ];

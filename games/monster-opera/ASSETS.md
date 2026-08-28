@@ -24,8 +24,9 @@ Selected masters are retained in `assets/source/gpt-image-2/`; exact prompts and
 | `assets/ui/title.png` | `exec-1098a006-6240-490a-a7e6-43966671b7a8.png` | Direct RGBA title master; exact spelling visually verified |
 | `assets/ui/back.png`, `sound-on.png`, `sound-off.png`, `drum-on.png`, `drum-off.png`, `go.png`, `new-song.png`, `play.png` | Extracted-alpha control sheet `exec-35f43de1-5543-428a-a9c2-da3caba990bd.png` | Deterministic 4×2 grid slice; every control retains a ≥96px runtime hit substrate |
 | `assets/ui/composer-rail.png`, `lane-white.png`, `lane-yellow.png`, `lane-teal.png` | `exec-bf38d061-bde6-49a5-9f69-c2941684fde5.png` | Full RGBA source plus deterministic full-width vertical lane-band crops |
-| `assets/ui/concert-plate.png` | `exec-ea94464c-18fd-48c9-af96-c688053a73f9.png` | Black-backed selected plate; intentionally screen-blended over blackboard at runtime |
-| `assets/ui/playhead.png`, `dot-white.png`, `dot-yellow.png`, `dot-teal.png` | `exec-cfcc8b6a-d1ab-4469-88d2-8e765e1efd94.png` | Deterministic 4×1 grid extraction, then semantic ordering by marker color/type |
+| `assets/ui/concert-plate.png` | `exec-ea94464c-18fd-48c9-af96-c688053a73f9.png` | Black-backed selected plate; foreground Screen-blended over the blackboard and performer layers at runtime |
+| `assets/ui/playhead.png`, `dot-white.png`, `dot-yellow.png`, `dot-teal.png` | `exec-cfcc8b6a-d1ab-4469-88d2-8e765e1efd94.png` | Deterministic 4×1 grid extraction, then semantic ordering by marker color/type; `playhead.png` remains the composer marker |
+| `assets/ui/playhead-long.png` | User-supplied raster asset (140×880 RGBA) | Dedicated endless-scroll concert marker; preserves the long vertical artwork without stretching the composer marker |
 
 Creator: OpenAI GPT Image 2 through the approved Codex image-generation workflow, directed by the QLOBE Kids team. License: QLOBE project output, CC BY 4.0.
 

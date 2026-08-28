@@ -78,7 +78,7 @@ check('every monster declares its own dance loop', config.monsters.every(({ danc
 for (const relativePath of [
   'ui/title.png', 'ui/back.png', 'ui/sound-on.png', 'ui/sound-off.png',
   'ui/drum-on.png', 'ui/drum-off.png', 'ui/go.png', 'ui/new-song.png',
-  'ui/play.png', 'ui/playhead.png', 'ui/dot-white.png', 'ui/dot-yellow.png',
+  'ui/play.png', 'ui/playhead.png', 'ui/playhead-long.png', 'ui/dot-white.png', 'ui/dot-yellow.png',
   'ui/dot-teal.png', 'ambience/sound-loop.m4a', 'concept/blackboard.jpg',
 ]) check(`asset ${relativePath}`, exists(relativePath));
 for (let monster = 1; monster <= 12; monster += 1) {
@@ -251,10 +251,37 @@ try {
       screenLayers: layers.filter((node) => getComputedStyle(node).mixBlendMode === 'screen').length,
       layers: layers.length,
       fallback: getComputedStyle(document.querySelector('.concert-viewport')).mixBlendMode,
+      plateBlend: getComputedStyle(document.querySelector('.concert-track-art')).mixBlendMode,
+      platePointerEvents: getComputedStyle(document.querySelector('.concert-track-art')).pointerEvents,
+      plateAboveEvents: Number(getComputedStyle(document.querySelector('.concert-track-art')).zIndex)
+        > Number(getComputedStyle(document.querySelector('.concert-event')).zIndex),
+      playheadAboveWorld: Number(getComputedStyle(document.querySelector('.concert-playhead')).zIndex)
+        > Number(getComputedStyle(document.querySelector('.concert-world')).zIndex),
+      playhead: {
+        source: document.querySelector('.concert-playhead').getAttribute('src'),
+        naturalWidth: document.querySelector('.concert-playhead').naturalWidth,
+        naturalHeight: document.querySelector('.concert-playhead').naturalHeight,
+        renderedRatio: (() => {
+          const rect = document.querySelector('.concert-playhead').getBoundingClientRect();
+          return rect.width / rect.height;
+        })(),
+      },
     };
   });
   check('every visible concert event idles on its dance loop', concertIdle.logicalDancing === concertIdle.logicalEvents, JSON.stringify(concertIdle));
   check('every concert visual layer uses direct Screen blending', concertIdle.screenLayers === concertIdle.layers, JSON.stringify(concertIdle));
+  check('concert plate Screen-blends as a foreground layer', (
+    concertIdle.plateBlend === 'screen'
+      && concertIdle.platePointerEvents === 'none'
+      && concertIdle.plateAboveEvents
+      && concertIdle.playheadAboveWorld
+  ), JSON.stringify(concertIdle));
+  check('concert uses the unstretched long playhead asset', (
+    concertIdle.playhead.source.endsWith('/assets/ui/playhead-long.png')
+    && concertIdle.playhead.naturalWidth === 140
+    && concertIdle.playhead.naturalHeight === 880
+    && Math.abs(concertIdle.playhead.renderedRatio - (140 / 880)) < 0.01
+  ), JSON.stringify(concertIdle.playhead));
   check('concert hardware-video fallback retains Screen blending', concertIdle.fallback === 'screen', JSON.stringify(concertIdle));
   const concertSpacing = await page.evaluate(() => {
     const variables = ['--event-x', '--lane-y', '--event-size-factor', '--event-art-scale', '--event-box-width', '--event-box-height'];
@@ -479,6 +506,10 @@ try {
     const animated = buttons.filter((button) => button.classList.contains('is-dance-ready'));
     return new Set(animated.map((button) => button.dataset.eventId)).size === 36;
   }, null, { timeout: 30000 });
+  // Measure idle decoder pressure away from all three four-second performance
+  // windows (including the 13→0 seam), so this assertion is timing-stable.
+  await page.evaluate(() => QLOBE_DEBUG.setConcertTime(1.5));
+  await page.waitForTimeout(120);
   const denseMedia = await page.evaluate(() => {
     const buttons = [...document.querySelectorAll('.concert-event')];
     const animated = buttons.filter((button) => button.classList.contains('is-dance-ready'));
@@ -586,6 +617,10 @@ try {
     return {
       elapsed: QLOBE_DEBUG.getTransportState().concertElapsed,
       artScale: buttons[0].style.getPropertyValue('--event-art-scale'),
+      playheadRatio: (() => {
+        const rect = document.querySelector('.concert-playhead').getBoundingClientRect();
+        return rect.width / rect.height;
+      })(),
       overlaps,
       undersized: buttons.filter((button) => {
         const rect = button.getBoundingClientRect();
@@ -596,6 +631,7 @@ try {
   check('responsive spacing recomputes without resetting concert transport', (
     resizeAfter.elapsed > resizeBefore.elapsed
       && resizeAfter.artScale !== resizeBefore.artScale
+      && Math.abs(resizeAfter.playheadRatio - (140 / 880)) < 0.01
       && resizeAfter.overlaps === 0
       && resizeAfter.undersized === 0
   ), JSON.stringify({ before: resizeBefore, after: resizeAfter }));

@@ -29,7 +29,7 @@ catalog tile. The package passed its visual release gate with:
   concert, and social packaging; and
 - a catalog tile made from the actual title, cast, slate, and lane artwork.
 
-The final real-Chrome interaction run passed all 198 production checks. Its
+The final real-Chrome interaction run passed all 201 production checks. Its
 review captures are reproducible with `node games/monster-opera/tools/qa.mjs`.
 
 ## Resolved during review
@@ -66,6 +66,11 @@ near-time groups, loop-seam groups, control clearance, and direct center-point
 tap ownership. It returned **PASS**: local grids are evenly spaced, stay centered
 on their authored musical moments, remain visually continuous at the seam, and
 do not spill between lanes or behind fixed controls.
+
+The concert overlay re-review also returned **PASS**: the supplied long playhead
+keeps its 140×880 aspect ratio in landscape and portrait, while the plate now
+Screen-blends in the foreground above performer artwork without an opaque matte
+or blocked tap target.
 
 ## Non-blocking polish
 

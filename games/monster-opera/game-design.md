@@ -50,6 +50,11 @@ Catalog ← Home — Splash
 
 - Three large authored music tracks repeat across three adjacent 16-second panels.
 - The panel strip scrolls past a fixed orange playhead and loops without a visible jump.
+- The concert uses the dedicated long 140×880 playhead artwork at its authored
+  aspect ratio; the shorter composer marker is not stretched into the concert view.
+- The chalk concert plate is a foreground Screen-blended layer above performers
+  and below the playhead, so its black backing disappears while its marks can
+  cross over dancing monsters.
 - Every recorded event keeps its exact authored time for audio scheduling. Visually,
   isolated events stay at that position, while nearby events are evenly distributed
   around their shared authored moment so performers never sit on top of one another.
