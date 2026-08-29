@@ -7,18 +7,7 @@ import { loadRegistry } from './registry.js';
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const PLAYABLE_STATUSES = new Set(['live', 'beta']);
-const FEATURED_IDS = [
-  'blend-train',
-  'letter-treasure-hunt',
-  'flashlight-cave',
-  'sound-sprouts',
-  'chocolate-chip-count',
-  'tangram-tales',
-  'counting-treasure-cups',
-  'sand-tray-letters',
-  'name-puzzle',
-  'lunchbox-pack',
-];
+const FEATURED_COUNT = 10;
 
 const CATEGORY_LABELS = {
   'reading-phonics': 'Reading & Phonics',
@@ -102,16 +91,19 @@ function gameSort(a, b) {
   return (a.title || '').localeCompare(b.title || '');
 }
 
+// The newest `live` games, most-recently-promoted first, backfilled with the
+// rest of the playable catalog (gameSort) if fewer than FEATURED_COUNT games
+// carry a liveDate.
 function featuredGames() {
-  const byId = new Map(registry.games.map((game) => [game.id, game]));
-  const chosen = FEATURED_IDS
-    .map((id) => byId.get(id))
-    .filter((game) => game && isPlayable(game));
-  const chosenIds = new Set(chosen.map((game) => game.id));
-  const fill = registry.games
-    .filter((game) => isPlayable(game) && !chosenIds.has(game.id))
+  const playable = registry.games.filter(isPlayable);
+  const recent = playable
+    .filter((game) => game.status === 'live' && game.liveDate)
+    .sort((a, b) => b.liveDate.localeCompare(a.liveDate) || (a.title || '').localeCompare(b.title || ''));
+  const chosenIds = new Set(recent.map((game) => game.id));
+  const fill = playable
+    .filter((game) => !chosenIds.has(game.id))
     .sort(gameSort);
-  return [...chosen, ...fill].slice(0, Math.max(FEATURED_IDS.length, 10));
+  return [...recent, ...fill].slice(0, FEATURED_COUNT);
 }
 
 function tileArt(game, { eager = false } = {}) {

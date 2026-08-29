@@ -28,6 +28,7 @@ import threading
 import time
 import uuid
 import wave
+from datetime import date
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -637,6 +638,9 @@ def set_game_status(state: AuthoringState, game_id: str, status: str) -> dict:
     ensure_ascii=False) with no trailing newline, so a full round-trip is
     safe; game.json gets a targeted status-line replacement so its
     formatting is never disturbed.
+
+    A fresh transition into "live" also stamps liveDate (ISO date, today) in
+    both files, so the hub can feature the most-recently-launched games.
     """
     game_id = safe_id(game_id)
     if status not in GAME_STATUSES:
@@ -648,6 +652,10 @@ def set_game_status(state: AuthoringState, game_id: str, status: str) -> dict:
         raise ValueError(f"{game_id} is not registered in games.json")
     previous = entry.get("status")
     entry["status"] = status
+    newly_live = status == "live" and previous != "live"
+    live_date = date.today().isoformat() if newly_live else None
+    if live_date:
+        entry["liveDate"] = live_date
     manifest_path = state.root / "games" / game_id / "game.json"
     manifest_text = None
     if manifest_path.is_file():
@@ -656,10 +664,19 @@ def set_game_status(state: AuthoringState, game_id: str, status: str) -> dict:
             r'("status"\s*:\s*")[a-z-]+(")', rf"\g<1>{status}\g<2>", original, count=1)
         if count != 1:
             raise ValueError(f"could not locate a status field in games/{game_id}/game.json")
+        if live_date:
+            if re.search(r'"liveDate"\s*:\s*"[^"]*"', manifest_text):
+                manifest_text = re.sub(
+                    r'("liveDate"\s*:\s*")[^"]*(")', rf"\g<1>{live_date}\g<2>", manifest_text, count=1)
+            else:
+                manifest_text = re.sub(
+                    r'^(\s*)("status"\s*:\s*"[a-z-]+"\s*,?\s*)$',
+                    rf'\g<1>\g<2>\n\g<1>"liveDate": "{live_date}",',
+                    manifest_text, count=1, flags=re.MULTILINE)
     atomic_write(registry_path, json.dumps(registry, indent=2, ensure_ascii=False).encode("utf-8"))
     if manifest_text is not None:
         atomic_write(manifest_path, manifest_text.encode("utf-8"))
-    return {"id": game_id, "status": status, "previous": previous}
+    return {"id": game_id, "status": status, "previous": previous, "liveDate": live_date}
 
 
 def http_json(url: str, timeout=8):

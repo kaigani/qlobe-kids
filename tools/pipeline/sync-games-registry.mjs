@@ -9,8 +9,11 @@
 //
 // WHO OWNS WHAT
 //   games/<id>/game.json is CANONICAL for the mirrored descriptive fields —
-//   title, status, category, age, accent, modes. Those are authored next to the
-//   game, change when the game changes, and get projected into the registry.
+//   title, status, category, age, accent, modes, liveDate. Those are authored
+//   next to the game, change when the game changes, and get projected into the
+//   registry. liveDate is the ISO date (YYYY-MM-DD) a game was last promoted
+//   to status "live" — set by puppet-studio-server.py's set_game_status() on
+//   that transition, or by hand for a game launched straight into "live".
 //   games.json keeps SOLE ownership of everything else: path, icon (the curated
 //   hub tile), uses[], iconBg, iconFit, summary, entry ordering, categories[]
 //   and schemaVersion. This tool never touches those.
@@ -37,15 +40,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // The descriptive fields game.json owns and games.json mirrors.
-const MIRRORED = ['title', 'status', 'category', 'age', 'accent', 'modes'];
+const MIRRORED = ['title', 'status', 'category', 'age', 'accent', 'modes', 'liveDate'];
 // Mirrored fields a game may legitimately not have. The rest are required of a
 // manifest; their absence is a manifest bug we report rather than paper over.
-const OPTIONAL = new Set(['accent', 'modes']);
+const OPTIONAL = new Set(['accent', 'modes', 'liveDate']);
 // The subset of each mode object the registry carries.
 const MODE_KEYS = ['id', 'title', 'skill'];
 // Canonical registry key order — used only to place a key the entry lacks.
 const KEY_ORDER = ['id', 'title', 'category', 'path', 'icon', 'age', 'status',
-  'accent', 'uses', 'modes', 'iconBg', 'iconFit', 'summary'];
+  'liveDate', 'accent', 'uses', 'modes', 'iconBg', 'iconFit', 'summary'];
 
 // ---------------------------------------------------------------- arguments
 
