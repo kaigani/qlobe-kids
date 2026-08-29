@@ -718,18 +718,32 @@ button:focus-visible {
 }
 
 .rb-drag-ghost {
-  width: min(29vw, 260px) !important;
-  height: min(25vh, 220px) !important;
-  margin: 0;
+  --ghost-w: min(29vw, 260px);
+  --ghost-h: min(25vh, 220px);
+  position: fixed !important;
+  width: var(--ghost-w) !important;
+  height: var(--ghost-h) !important;
+  /* Centers the ghost on the pointer: moveGhost() sets left/top to the raw
+     pointer coordinate, so the box needs to be pulled back by half its own
+     size, not sat with its top-left corner under the finger. */
+  margin: calc(var(--ghost-h) / -2) 0 0 calc(var(--ghost-w) / -2) !important;
   padding: 0;
   opacity: 0.94;
   transform: rotate(3deg) scale(1.04);
   filter: drop-shadow(0 18px 10px rgba(33, 47, 48, 0.3));
 }
 
+/* A word piece is a wide, short ribbon (~4:1) — the generic ghost box above is
+   near-square, and forcing it there squished the ribbon art (object-fit:
+   fill) and its label horizontally. Keep the ghost close to its own shape. */
+.rb-drag-ghost.rb-word-piece {
+  --ghost-w: min(38vw, 460px);
+  --ghost-h: clamp(88px, 11vh, 112px);
+}
+
 .rb-drag-ghost.rb-letter-piece {
-  width: clamp(112px, 12vw, 154px) !important;
-  height: clamp(112px, 12vw, 154px) !important;
+  --ghost-w: clamp(112px, 12vw, 154px);
+  --ghost-h: clamp(112px, 12vw, 154px);
 }
 
 /* Great match ----------------------------------------------------------- */
