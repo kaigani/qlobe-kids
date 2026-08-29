@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "beat-the-bugs-hub",
+  "kind": "image",
+  "asset": "assets/source/local-api/hub/beat-the-bugs-krea-seed-1337.png",
+  "artDirection": "Kawaii",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a premium miniature handcrafted Kawaii hygiene superhero tableau on a warm toy table, composed as five bold connected subjects only: on the left a pair of brown child hands covered in pearly soap bubbles, in the center a friendly aqua soap shield, on the right a large joyful open smile with six clean white teeth actively brushed by one chunky turquoise toothbrush, plus exactly two tiny silly rounded bug villains retreating at the lower outer corners; equal visual weight for hand washing and tooth brushing, aqua coral lemon lilac candy palette, puffy soft-vinyl clay material, cream rims and cocoa contours, strong readable 6:5 menu-tile silhouette, warm studio lighting; absolutely no writing, letters, numbers, logos, UI, palettes, trays, cards, buttons, borders, extra props, scary faces, detached clutter, flat vector, or photorealism.",
+      "seed": 1337,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "beat-the-bugs-krea-seed-1337.png",
+  "sourceSha256": "f6a6dbaae551ba10144df02b914af094cd58d4f1186f215a89ace5780253158f",
+  "finalSha256": "f6a6dbaae551ba10144df02b914af094cd58d4f1186f215a89ace5780253158f",
+  "qa": {
+    "status": "rejected-art-director-review",
+    "notes": "Technically clean and both hygiene motifs read, but the independent art gate rejected its dark brown studio backdrop, generic clay treatment, and palette as disconnected from the shipped aqua/coral Hygiene Hero Lab.",
+    "finalSize": [
+      768,
+      640
+    ]
+  },
+  "createdAt": "2026-08-29T19:41:44.611586+00:00"
+}

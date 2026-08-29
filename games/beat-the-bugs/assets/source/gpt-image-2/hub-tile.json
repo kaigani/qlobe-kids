@@ -1,0 +1,23 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "beat-the-bugs-hub-production",
+  "kind": "image-edit",
+  "model": "gpt-image-2",
+  "asset": "assets/hub/tiles/beat-the-bugs.jpg",
+  "artDirection": "Kawaii",
+  "reference": "assets/source/gpt-image-2/mockups/01-splash.png",
+  "referenceSha256": "3476a15721c84205fae5d9ddf524c9386dcf82f867759f520a27017ee56f762d",
+  "prompt": "Recompose the accepted Beat the Bugs splash into a premium text-free 6:5 catalog hero tile in the exact same bright aqua/coral Kawaii Hygiene Hero Lab, with the same Maya centered behind equally prominent bubbly hands and actively brushed smiling teeth, plus exactly two cute retreating bugs; preserve glossy soft 3D clay-toy materials, cream rims, high-key light, and thumbnail clarity; no title, words, logos, UI, dark backdrop, style drift, duplicated tools, or extra limbs.",
+  "source": "hub-tile.png",
+  "sourceSize": [1373, 1146],
+  "sourceSha256": "e64ea8fb433665e690ffb319226d94d41f0f0154eeb7b8efe4e7f780f502f492",
+  "productionTransform": "sips resize to 640x533, JPEG quality 92",
+  "finalSha256": "df6ab73440c30b012e314925cc98e97c0b9cf3bbff9ca57706ced59bb53a03ad",
+  "qa": {
+    "status": "accepted-final-art-gate",
+    "notes": "Independent ART DIRECTOR final gate ACCEPT: excellent recognizable miniature of the game, matching the shipped lab, Maya identity, mission palette, both hygiene motifs, and playful retreating villains; exactly two bugs and no text/UI artifacts.",
+    "finalSize": [640, 533]
+  },
+  "createdAt": "2026-08-29T20:02:00-07:00"
+}

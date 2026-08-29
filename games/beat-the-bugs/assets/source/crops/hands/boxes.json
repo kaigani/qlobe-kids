@@ -1,0 +1,146 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/hand-actions.png",
+  "sourceSha256": "bf767afda0eb10dc5806a4924d7044a287cd1ed19fbf546355a1a9d16014cf9e",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    33,
+    33
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "palms",
+      "file": "palms.png",
+      "componentArea": 279197,
+      "foregroundBbox": [
+        46,
+        54,
+        601,
+        574
+      ],
+      "cropBbox": [
+        34,
+        42,
+        613,
+        586
+      ],
+      "cropXywh": [
+        34,
+        42,
+        579,
+        544
+      ],
+      "normalizedCropBbox": [
+        0.027113,
+        0.033493,
+        0.488836,
+        0.467305
+      ]
+    },
+    {
+      "index": 2,
+      "name": "backs",
+      "file": "backs.png",
+      "componentArea": 279186,
+      "foregroundBbox": [
+        653,
+        54,
+        1208,
+        574
+      ],
+      "cropBbox": [
+        641,
+        42,
+        1220,
+        586
+      ],
+      "cropXywh": [
+        641,
+        42,
+        579,
+        544
+      ],
+      "normalizedCropBbox": [
+        0.511164,
+        0.033493,
+        0.972887,
+        0.467305
+      ]
+    },
+    {
+      "index": 3,
+      "name": "between",
+      "file": "between.png",
+      "componentArea": 281066,
+      "foregroundBbox": [
+        45,
+        662,
+        601,
+        1185
+      ],
+      "cropBbox": [
+        33,
+        650,
+        613,
+        1197
+      ],
+      "cropXywh": [
+        33,
+        650,
+        580,
+        547
+      ],
+      "normalizedCropBbox": [
+        0.026316,
+        0.518341,
+        0.488836,
+        0.954545
+      ]
+    },
+    {
+      "index": 4,
+      "name": "nails",
+      "file": "nails.png",
+      "componentArea": 281029,
+      "foregroundBbox": [
+        653,
+        661,
+        1208,
+        1185
+      ],
+      "cropBbox": [
+        641,
+        649,
+        1220,
+        1197
+      ],
+      "cropXywh": [
+        641,
+        649,
+        579,
+        548
+      ],
+      "normalizedCropBbox": [
+        0.511164,
+        0.517544,
+        0.972887,
+        0.954545
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

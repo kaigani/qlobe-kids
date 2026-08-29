@@ -1655,6 +1655,38 @@
       "summary": "Pat dough, spread sauce, match cheerful toppings, and slide a Kawaii pizza into the oven."
     },
     {
+      "id": "beat-the-bugs",
+      "title": "Beat the Bugs",
+      "category": "practical-life",
+      "path": "games/beat-the-bugs/",
+      "icon": "assets/hub/tiles/beat-the-bugs.jpg",
+      "age": {
+        "min": 5,
+        "max": 6
+      },
+      "status": "beta",
+      "accent": "#54d5d0",
+      "uses": [
+        "shared/js/voice-clips.js",
+        "shared/js/bgm.js",
+        "shared/js/stage/constrained-gesture-dom.js",
+        "shared/assets/music/upbeat-playground-pop.mp3"
+      ],
+      "modes": [
+        {
+          "id": "suds",
+          "title": "Suds Shield",
+          "skill": "wash hands: wet, soap, scrub all surfaces, rinse"
+        },
+        {
+          "id": "smile",
+          "title": "Smile Shield",
+          "skill": "brush every tooth surface, floss with a grown-up"
+        }
+      ],
+      "summary": "Power up a soap shield, scrub for 20 active seconds, and brush every tooth surface to beat Kawaii germ and cavity bugs."
+    },
+    {
       "id": "laundry-sorter",
       "title": "Laundry Sorter",
       "category": "practical-life",

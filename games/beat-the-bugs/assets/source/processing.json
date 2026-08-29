@@ -1,0 +1,3549 @@
+{
+  "format": "beat-the-bugs-processing",
+  "objects": [
+    {
+      "name": "hand-palms",
+      "source": "assets/source/crops/hands/palms.png",
+      "layered": "assets/source/layered/hand-palms.accepted.png",
+      "final": "assets/boards/hands/palms.webp",
+      "seed": 42,
+      "acceptedOutput": "layer_2",
+      "method": "direct-alpha",
+      "key": null,
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 9.663,
+          "opaquePct": 84.991,
+          "partialPct": 5.346
+        },
+        "bbox": [
+          16,
+          16,
+          1007,
+          943
+        ],
+        "sourceSize": [
+          1024,
+          960
+        ],
+        "finalSize": [
+          760,
+          712
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 9.663,
+              "opaquePct": 84.991,
+              "partialPct": 5.346
+            },
+            "bbox": [
+              16,
+              16,
+              1007,
+              943
+            ],
+            "sourceSize": [
+              1024,
+              960
+            ],
+            "finalSize": [
+              760,
+              712
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-backs",
+      "source": "assets/source/crops/hands/backs.png",
+      "layered": "assets/source/layered/hand-backs.accepted.png",
+      "final": "assets/boards/hands/backs.webp",
+      "seed": 42,
+      "acceptedOutput": "layer_2",
+      "method": "direct-alpha",
+      "key": null,
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 9.653,
+          "opaquePct": 85.59,
+          "partialPct": 4.758
+        },
+        "bbox": [
+          17,
+          16,
+          1007,
+          944
+        ],
+        "sourceSize": [
+          1024,
+          960
+        ],
+        "finalSize": [
+          760,
+          714
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 9.653,
+              "opaquePct": 85.59,
+              "partialPct": 4.758
+            },
+            "bbox": [
+              17,
+              16,
+              1007,
+              944
+            ],
+            "sourceSize": [
+              1024,
+              960
+            ],
+            "finalSize": [
+              760,
+              714
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-between",
+      "source": "assets/source/crops/hands/between.png",
+      "layered": "assets/source/layered/hand-between.accepted.png",
+      "final": "assets/boards/hands/between.webp",
+      "seed": 42,
+      "acceptedOutput": "layer_2",
+      "method": "direct-alpha",
+      "key": null,
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 9.488,
+          "opaquePct": 86.032,
+          "partialPct": 4.48
+        },
+        "bbox": [
+          17,
+          15,
+          1007,
+          946
+        ],
+        "sourceSize": [
+          1024,
+          960
+        ],
+        "finalSize": [
+          760,
+          716
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 9.488,
+              "opaquePct": 86.032,
+              "partialPct": 4.48
+            },
+            "bbox": [
+              17,
+              15,
+              1007,
+              946
+            ],
+            "sourceSize": [
+              1024,
+              960
+            ],
+            "finalSize": [
+              760,
+              716
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-nails",
+      "source": "assets/source/crops/hands/nails.png",
+      "layered": "assets/source/layered/hand-nails.accepted.png",
+      "final": "assets/boards/hands/nails.webp",
+      "seed": 42,
+      "acceptedOutput": "layer_2",
+      "method": "direct-alpha",
+      "key": null,
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 9.905,
+          "opaquePct": 85.463,
+          "partialPct": 4.633
+        },
+        "bbox": [
+          17,
+          17,
+          1007,
+          952
+        ],
+        "sourceSize": [
+          1024,
+          968
+        ],
+        "finalSize": [
+          760,
+          719
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 9.905,
+              "opaquePct": 85.463,
+              "partialPct": 4.633
+            },
+            "bbox": [
+              17,
+              17,
+              1007,
+              952
+            ],
+            "sourceSize": [
+              1024,
+              968
+            ],
+            "finalSize": [
+              760,
+              719
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "status": "processed"
+    },
+    {
+      "name": "teeth-fronts",
+      "source": "assets/source/crops/teeth/fronts.png",
+      "layered": "assets/source/layered/teeth-fronts.accepted.png",
+      "final": "assets/boards/teeth/fronts.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          34,
+          36,
+          39
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 13.356,
+          "opaquePct": 84.797,
+          "partialPct": 1.848
+        },
+        "bbox": [
+          16,
+          14,
+          563,
+          539
+        ],
+        "sourceSize": [
+          580,
+          556
+        ],
+        "finalSize": [
+          571,
+          549
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 13.356,
+              "opaquePct": 84.797,
+              "partialPct": 1.848
+            },
+            "bbox": [
+              16,
+              14,
+              563,
+              539
+            ],
+            "sourceSize": [
+              580,
+              556
+            ],
+            "finalSize": [
+              571,
+              549
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "teeth-tops",
+      "source": "assets/source/crops/teeth/tops.png",
+      "layered": "assets/source/layered/teeth-tops.accepted.png",
+      "final": "assets/boards/teeth/tops.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          35,
+          36,
+          38
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 13.349,
+          "opaquePct": 84.798,
+          "partialPct": 1.853
+        },
+        "bbox": [
+          17,
+          12,
+          564,
+          539
+        ],
+        "sourceSize": [
+          580,
+          555
+        ],
+        "finalSize": [
+          571,
+          551
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 13.349,
+              "opaquePct": 84.798,
+              "partialPct": 1.853
+            },
+            "bbox": [
+              17,
+              12,
+              564,
+              539
+            ],
+            "sourceSize": [
+              580,
+              555
+            ],
+            "finalSize": [
+              571,
+              551
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "teeth-insides",
+      "source": "assets/source/crops/teeth/insides.png",
+      "layered": "assets/source/layered/teeth-insides.accepted.png",
+      "final": "assets/boards/teeth/insides.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          35,
+          36,
+          39
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 13.438,
+          "opaquePct": 84.712,
+          "partialPct": 1.851
+        },
+        "bbox": [
+          16,
+          15,
+          564,
+          540
+        ],
+        "sourceSize": [
+          581,
+          556
+        ],
+        "finalSize": [
+          572,
+          549
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 13.438,
+              "opaquePct": 84.712,
+              "partialPct": 1.851
+            },
+            "bbox": [
+              16,
+              15,
+              564,
+              540
+            ],
+            "sourceSize": [
+              581,
+              556
+            ],
+            "finalSize": [
+              572,
+              549
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "teeth-tongue",
+      "source": "assets/source/crops/teeth/tongue.png",
+      "layered": "assets/source/layered/teeth-tongue.accepted.png",
+      "final": "assets/boards/teeth/tongue.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          36,
+          36,
+          39
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 13.363,
+          "opaquePct": 84.788,
+          "partialPct": 1.849
+        },
+        "bbox": [
+          17,
+          15,
+          564,
+          540
+        ],
+        "sourceSize": [
+          580,
+          556
+        ],
+        "finalSize": [
+          571,
+          549
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 13.363,
+              "opaquePct": 84.788,
+              "partialPct": 1.849
+            },
+            "bbox": [
+              17,
+              15,
+              564,
+              540
+            ],
+            "sourceSize": [
+              580,
+              556
+            ],
+            "finalSize": [
+              571,
+              549
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-wet",
+      "source": "assets/source/crops/sequence-extras/hand-wet.png",
+      "layered": "assets/source/layered/hand-wet.accepted.png",
+      "final": "assets/boards/hands/wet.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          31,
+          34,
+          36
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.866,
+          "opaquePct": 84.968,
+          "partialPct": 2.166
+        },
+        "bbox": [
+          12,
+          13,
+          473,
+          471
+        ],
+        "sourceSize": [
+          486,
+          484
+        ],
+        "finalSize": [
+          485,
+          482
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 12.866,
+              "opaquePct": 84.968,
+              "partialPct": 2.166
+            },
+            "bbox": [
+              12,
+              13,
+              473,
+              471
+            ],
+            "sourceSize": [
+              486,
+              484
+            ],
+            "finalSize": [
+              485,
+              482
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-soap",
+      "source": "assets/source/crops/sequence-extras/hand-soap.png",
+      "layered": "assets/source/layered/hand-soap.accepted.png",
+      "final": "assets/boards/hands/soap.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          31,
+          33,
+          35
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.664,
+          "opaquePct": 85.161,
+          "partialPct": 2.175
+        },
+        "bbox": [
+          12,
+          12,
+          472,
+          470
+        ],
+        "sourceSize": [
+          484,
+          483
+        ],
+        "finalSize": [
+          484,
+          482
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 12.664,
+              "opaquePct": 85.161,
+              "partialPct": 2.175
+            },
+            "bbox": [
+              12,
+              12,
+              472,
+              470
+            ],
+            "sourceSize": [
+              484,
+              483
+            ],
+            "finalSize": [
+              484,
+              482
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "hand-clean",
+      "source": "assets/source/crops/sequence-extras/hand-clean.png",
+      "layered": "assets/source/layered/hand-clean.accepted.png",
+      "final": "assets/boards/hands/clean.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          31,
+          33,
+          35
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 13.012,
+          "opaquePct": 84.824,
+          "partialPct": 2.164
+        },
+        "bbox": [
+          13,
+          13,
+          472,
+          471
+        ],
+        "sourceSize": [
+          485,
+          484
+        ],
+        "finalSize": [
+          483,
+          482
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 13.012,
+              "opaquePct": 84.824,
+              "partialPct": 2.164
+            },
+            "bbox": [
+              13,
+              13,
+              472,
+              471
+            ],
+            "sourceSize": [
+              485,
+              484
+            ],
+            "finalSize": [
+              483,
+              482
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tooth-paste",
+      "source": "assets/source/crops/sequence-extras/tooth-paste.png",
+      "layered": "assets/source/layered/tooth-paste.accepted.png",
+      "final": "assets/boards/teeth/paste.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          31,
+          33,
+          36
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.797,
+          "opaquePct": 85.032,
+          "partialPct": 2.171
+        },
+        "bbox": [
+          12,
+          13,
+          473,
+          469
+        ],
+        "sourceSize": [
+          486,
+          482
+        ],
+        "finalSize": [
+          485,
+          480
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 12.797,
+              "opaquePct": 85.032,
+              "partialPct": 2.171
+            },
+            "bbox": [
+              12,
+              13,
+              473,
+              469
+            ],
+            "sourceSize": [
+              486,
+              482
+            ],
+            "finalSize": [
+              485,
+              480
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tooth-floss",
+      "source": "assets/source/crops/sequence-extras/tooth-floss.png",
+      "layered": "assets/source/layered/tooth-floss.accepted.png",
+      "final": "assets/boards/teeth/floss.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          32,
+          34,
+          36
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.994,
+          "opaquePct": 84.835,
+          "partialPct": 2.171
+        },
+        "bbox": [
+          13,
+          13,
+          472,
+          469
+        ],
+        "sourceSize": [
+          485,
+          482
+        ],
+        "finalSize": [
+          483,
+          480
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 12.994,
+              "opaquePct": 84.835,
+              "partialPct": 2.171
+            },
+            "bbox": [
+              13,
+              13,
+              472,
+              469
+            ],
+            "sourceSize": [
+              485,
+              482
+            ],
+            "finalSize": [
+              483,
+              480
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tooth-clean",
+      "source": "assets/source/crops/sequence-extras/tooth-clean.png",
+      "layered": "assets/source/layered/tooth-clean.accepted.png",
+      "final": "assets/boards/teeth/clean.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          31,
+          34,
+          35
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.982,
+          "opaquePct": 84.85,
+          "partialPct": 2.168
+        },
+        "bbox": [
+          13,
+          13,
+          473,
+          469
+        ],
+        "sourceSize": [
+          486,
+          482
+        ],
+        "finalSize": [
+          484,
+          480
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 12.982,
+              "opaquePct": 84.85,
+              "partialPct": 2.168
+            },
+            "bbox": [
+              13,
+              13,
+              473,
+              469
+            ],
+            "sourceSize": [
+              486,
+              482
+            ],
+            "finalSize": [
+              484,
+              480
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-water",
+      "source": "assets/source/crops/tools-clean/water.png",
+      "layered": "assets/source/layered/tool-water.accepted.png",
+      "final": "assets/tools/water.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          28,
+          30,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 30.913,
+          "opaquePct": 66.495,
+          "partialPct": 2.592
+        },
+        "bbox": [
+          2,
+          3,
+          315,
+          411
+        ],
+        "sourceSize": [
+          317,
+          413
+        ],
+        "finalSize": [
+          317,
+          413
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 30.913,
+              "opaquePct": 66.495,
+              "partialPct": 2.592
+            },
+            "bbox": [
+              2,
+              3,
+              315,
+              411
+            ],
+            "sourceSize": [
+              317,
+              413
+            ],
+            "finalSize": [
+              317,
+              413
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-soap-pump",
+      "source": "assets/source/crops/tools-clean/soap-pump.png",
+      "layered": "assets/source/layered/tool-soap-pump.accepted.png",
+      "final": "assets/tools/soap-pump.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          27,
+          29,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 22.866,
+          "opaquePct": 74.243,
+          "partialPct": 2.891
+        },
+        "bbox": [
+          2,
+          2,
+          309,
+          455
+        ],
+        "sourceSize": [
+          312,
+          457
+        ],
+        "finalSize": [
+          287,
+          420
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 22.866,
+              "opaquePct": 74.243,
+              "partialPct": 2.891
+            },
+            "bbox": [
+              2,
+              2,
+              309,
+              455
+            ],
+            "sourceSize": [
+              312,
+              457
+            ],
+            "finalSize": [
+              287,
+              420
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-soap-shield",
+      "source": "assets/source/crops/tools-clean/soap-shield.png",
+      "layered": "assets/source/layered/tool-soap-shield.accepted.png",
+      "final": "assets/tools/soap-shield.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          27,
+          29,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 24.703,
+          "opaquePct": 72.746,
+          "partialPct": 2.551
+        },
+        "bbox": [
+          2,
+          3,
+          350,
+          403
+        ],
+        "sourceSize": [
+          352,
+          406
+        ],
+        "finalSize": [
+          352,
+          406
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 24.703,
+              "opaquePct": 72.746,
+              "partialPct": 2.551
+            },
+            "bbox": [
+              2,
+              3,
+              350,
+              403
+            ],
+            "sourceSize": [
+              352,
+              406
+            ],
+            "finalSize": [
+              352,
+              406
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-faucet",
+      "source": "assets/source/crops/tools-clean/faucet.png",
+      "layered": "assets/source/layered/tool-faucet.accepted.png",
+      "final": "assets/tools/faucet.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          27,
+          28,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 23.007,
+          "opaquePct": 74.066,
+          "partialPct": 2.927
+        },
+        "bbox": [
+          2,
+          2,
+          310,
+          438
+        ],
+        "sourceSize": [
+          313,
+          441
+        ],
+        "finalSize": [
+          298,
+          420
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 23.007,
+              "opaquePct": 74.066,
+              "partialPct": 2.927
+            },
+            "bbox": [
+              2,
+              2,
+              310,
+              438
+            ],
+            "sourceSize": [
+              313,
+              441
+            ],
+            "finalSize": [
+              298,
+              420
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-paste",
+      "source": "assets/source/crops/tools-clean/paste.png",
+      "layered": "assets/source/layered/tool-paste.accepted.png",
+      "final": "assets/tools/paste.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          27,
+          30,
+          33
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 45.497,
+          "opaquePct": 52.104,
+          "partialPct": 2.399
+        },
+        "bbox": [
+          2,
+          3,
+          349,
+          427
+        ],
+        "sourceSize": [
+          351,
+          429
+        ],
+        "finalSize": [
+          344,
+          420
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 45.497,
+              "opaquePct": 52.104,
+              "partialPct": 2.399
+            },
+            "bbox": [
+              2,
+              3,
+              349,
+              427
+            ],
+            "sourceSize": [
+              351,
+              429
+            ],
+            "finalSize": [
+              344,
+              420
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-brush",
+      "source": "assets/source/crops/tools-clean/brush.png",
+      "layered": "assets/source/layered/tool-brush.accepted.png",
+      "final": "assets/tools/brush.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          27,
+          29,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 53.116,
+          "opaquePct": 44.522,
+          "partialPct": 2.362
+        },
+        "bbox": [
+          2,
+          2,
+          341,
+          441
+        ],
+        "sourceSize": [
+          344,
+          443
+        ],
+        "finalSize": [
+          326,
+          420
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 53.116,
+              "opaquePct": 44.522,
+              "partialPct": 2.362
+            },
+            "bbox": [
+              2,
+              2,
+              341,
+              441
+            ],
+            "sourceSize": [
+              344,
+              443
+            ],
+            "finalSize": [
+              326,
+              420
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "tool-floss",
+      "source": "assets/source/crops/tools-clean/floss.png",
+      "layered": "assets/source/layered/tool-floss.accepted.png",
+      "final": "assets/tools/floss.webp",
+      "seed": 42,
+      "acceptedOutput": "layer_1",
+      "method": "edge-connected-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          26,
+          25,
+          30
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 39.106,
+          "opaquePct": 59.679,
+          "partialPct": 1.215
+        },
+        "bbox": [
+          4,
+          6,
+          668,
+          1018
+        ],
+        "sourceSize": [
+          672,
+          1024
+        ],
+        "finalSize": [
+          276,
+          420
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": false,
+            "reason": "near-blank extraction (opaque core 0.045% < 1.0%)",
+            "flags": [],
+            "alpha": {
+              "transparentPct": 99.872,
+              "opaquePct": 0.045,
+              "partialPct": 0.083
+            },
+            "bbox": [
+              586,
+              0,
+              672,
+              16
+            ],
+            "sourceSize": [
+              672,
+              1024
+            ],
+            "finalSize": null,
+            "alphaFloor": 4
+          }
+        },
+        {
+          "seed": 42,
+          "output": "layer_2",
+          "method": "edge-connected-key",
+          "qa": {
+            "pass": false,
+            "reason": "near-blank extraction (opaque core 0.499% < 1.0%)",
+            "flags": [],
+            "alpha": {
+              "transparentPct": 98.168,
+              "opaquePct": 0.499,
+              "partialPct": 1.333
+            },
+            "bbox": [
+              32,
+              0,
+              672,
+              1020
+            ],
+            "sourceSize": [
+              672,
+              1024
+            ],
+            "finalSize": null,
+            "alphaFloor": 4
+          }
+        },
+        {
+          "seed": 42,
+          "output": "layer_1",
+          "method": "direct-alpha",
+          "qa": {
+            "pass": false,
+            "reason": "background not removed (transparent 0.0% < 5.0%)",
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 0.0,
+              "opaquePct": 58.672,
+              "partialPct": 41.328
+            },
+            "bbox": [
+              0,
+              0,
+              672,
+              1024
+            ],
+            "sourceSize": [
+              672,
+              1024
+            ],
+            "finalSize": null,
+            "alphaFloor": 4
+          }
+        },
+        {
+          "seed": 42,
+          "output": "layer_1",
+          "method": "edge-connected-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 39.106,
+              "opaquePct": 59.679,
+              "partialPct": 1.215
+            },
+            "bbox": [
+              4,
+              6,
+              668,
+              1018
+            ],
+            "sourceSize": [
+              672,
+              1024
+            ],
+            "finalSize": [
+              276,
+              420
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "completed",
+        "jobIdRedacted": true
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-bubble",
+      "source": "assets/source/crops/ui/bubble.png",
+      "layered": "assets/source/layered/ui-bubble.accepted.png",
+      "final": "assets/ui/bubble.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          25,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 33.76,
+          "opaquePct": 63.406,
+          "partialPct": 2.833
+        },
+        "bbox": [
+          13,
+          13,
+          294,
+          300
+        ],
+        "sourceSize": [
+          307,
+          312
+        ],
+        "finalSize": [
+          216,
+          220
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 33.76,
+              "opaquePct": 63.406,
+              "partialPct": 2.833
+            },
+            "bbox": [
+              13,
+              13,
+              294,
+              300
+            ],
+            "sourceSize": [
+              307,
+              312
+            ],
+            "finalSize": [
+              216,
+              220
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-star",
+      "source": "assets/source/crops/ui/star.png",
+      "layered": "assets/source/layered/ui-star.accepted.png",
+      "final": "assets/ui/star.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          26,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 42.481,
+          "opaquePct": 54.637,
+          "partialPct": 2.882
+        },
+        "bbox": [
+          13,
+          13,
+          313,
+          306
+        ],
+        "sourceSize": [
+          326,
+          318
+        ],
+        "finalSize": [
+          220,
+          215
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 42.481,
+              "opaquePct": 54.637,
+              "partialPct": 2.882
+            },
+            "bbox": [
+              13,
+              13,
+              313,
+              306
+            ],
+            "sourceSize": [
+              326,
+              318
+            ],
+            "finalSize": [
+              220,
+              215
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-foam",
+      "source": "assets/source/crops/ui/foam.png",
+      "layered": "assets/source/layered/ui-foam.accepted.png",
+      "final": "assets/ui/foam.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          26,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 36.485,
+          "opaquePct": 60.654,
+          "partialPct": 2.861
+        },
+        "bbox": [
+          12,
+          12,
+          310,
+          314
+        ],
+        "sourceSize": [
+          323,
+          327
+        ],
+        "finalSize": [
+          217,
+          220
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 36.485,
+              "opaquePct": 60.654,
+              "partialPct": 2.861
+            },
+            "bbox": [
+              12,
+              12,
+              310,
+              314
+            ],
+            "sourceSize": [
+              323,
+              327
+            ],
+            "finalSize": [
+              217,
+              220
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-sparkle",
+      "source": "assets/source/crops/ui/sparkle.png",
+      "layered": "assets/source/layered/ui-sparkle.accepted.png",
+      "final": "assets/ui/sparkle.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          25,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 41.854,
+          "opaquePct": 55.096,
+          "partialPct": 3.05
+        },
+        "bbox": [
+          13,
+          12,
+          341,
+          340
+        ],
+        "sourceSize": [
+          353,
+          353
+        ],
+        "finalSize": [
+          220,
+          220
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 41.854,
+              "opaquePct": 55.096,
+              "partialPct": 3.05
+            },
+            "bbox": [
+              13,
+              12,
+              341,
+              340
+            ],
+            "sourceSize": [
+              353,
+              353
+            ],
+            "finalSize": [
+              220,
+              220
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-zone-ring",
+      "source": "assets/source/crops/ui/zone-ring.png",
+      "layered": "assets/source/layered/ui-zone-ring.accepted.png",
+      "final": "assets/ui/zone-ring.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-global-ground-key",
+      "key": {
+        "method": "global RGB-distance key",
+        "sampledGround": [
+          22,
+          25,
+          27
+        ],
+        "innerDistance": 30,
+        "outerDistance": 70
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 51.466,
+          "opaquePct": 44.701,
+          "partialPct": 3.833
+        },
+        "bbox": [
+          11,
+          11,
+          355,
+          318
+        ],
+        "sourceSize": [
+          366,
+          329
+        ],
+        "finalSize": [
+          366,
+          329
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-global-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 51.466,
+              "opaquePct": 44.701,
+              "partialPct": 3.833
+            },
+            "bbox": [
+              11,
+              11,
+              355,
+              318
+            ],
+            "sourceSize": [
+              366,
+              329
+            ],
+            "finalSize": [
+              366,
+              329
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-badge-suds",
+      "source": "assets/source/crops/ui/badge-suds.png",
+      "layered": "assets/source/layered/ui-badge-suds.accepted.png",
+      "final": "assets/ui/badge-suds.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          26,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 31.986,
+          "opaquePct": 65.121,
+          "partialPct": 2.893
+        },
+        "bbox": [
+          12,
+          12,
+          282,
+          332
+        ],
+        "sourceSize": [
+          294,
+          344
+        ],
+        "finalSize": [
+          294,
+          344
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 31.986,
+              "opaquePct": 65.121,
+              "partialPct": 2.893
+            },
+            "bbox": [
+              12,
+              12,
+              282,
+              332
+            ],
+            "sourceSize": [
+              294,
+              344
+            ],
+            "finalSize": [
+              294,
+              344
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-badge-smile",
+      "source": "assets/source/crops/ui/badge-smile.png",
+      "layered": "assets/source/layered/ui-badge-smile.accepted.png",
+      "final": "assets/ui/badge-smile.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          26,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 32.472,
+          "opaquePct": 64.707,
+          "partialPct": 2.822
+        },
+        "bbox": [
+          12,
+          12,
+          297,
+          308
+        ],
+        "sourceSize": [
+          309,
+          320
+        ],
+        "finalSize": [
+          309,
+          320
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 32.472,
+              "opaquePct": 64.707,
+              "partialPct": 2.822
+            },
+            "bbox": [
+              12,
+              12,
+              297,
+              308
+            ],
+            "sourceSize": [
+              309,
+              320
+            ],
+            "finalSize": [
+              309,
+              320
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "ui-two-by-two",
+      "source": "assets/source/crops/ui/two-by-two.png",
+      "layered": "assets/source/layered/ui-two-by-two.accepted.png",
+      "final": "assets/ui/two-by-two.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          23,
+          25,
+          28
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 29.329,
+          "opaquePct": 67.828,
+          "partialPct": 2.843
+        },
+        "bbox": [
+          12,
+          12,
+          317,
+          302
+        ],
+        "sourceSize": [
+          330,
+          314
+        ],
+        "finalSize": [
+          329,
+          314
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 29.329,
+              "opaquePct": 67.828,
+              "partialPct": 2.843
+            },
+            "bbox": [
+              12,
+              12,
+              317,
+              302
+            ],
+            "sourceSize": [
+              330,
+              314
+            ],
+            "finalSize": [
+              329,
+              314
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "control-prompt-plate",
+      "source": "assets/source/crops/controls/prompt-plate.png",
+      "layered": "assets/source/layered/control-prompt-plate.accepted.png",
+      "final": "assets/ui/prompt-plate.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          25,
+          28,
+          31
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 17.108,
+          "opaquePct": 81.067,
+          "partialPct": 1.825
+        },
+        "bbox": [
+          13,
+          12,
+          1339,
+          358
+        ],
+        "sourceSize": [
+          1352,
+          370
+        ],
+        "finalSize": [
+          1200,
+          329
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 17.108,
+              "opaquePct": 81.067,
+              "partialPct": 1.825
+            },
+            "bbox": [
+              13,
+              12,
+              1339,
+              358
+            ],
+            "sourceSize": [
+              1352,
+              370
+            ],
+            "finalSize": [
+              1200,
+              329
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "control-button-plate",
+      "source": "assets/source/crops/controls/button-plate.png",
+      "layered": "assets/source/layered/control-button-plate.accepted.png",
+      "final": "assets/ui/button-plate.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          26,
+          28,
+          32
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 15.705,
+          "opaquePct": 82.123,
+          "partialPct": 2.172
+        },
+        "bbox": [
+          12,
+          12,
+          871,
+          317
+        ],
+        "sourceSize": [
+          883,
+          329
+        ],
+        "finalSize": [
+          720,
+          268
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 15.705,
+              "opaquePct": 82.123,
+              "partialPct": 2.172
+            },
+            "bbox": [
+              12,
+              12,
+              871,
+              317
+            ],
+            "sourceSize": [
+              883,
+              329
+            ],
+            "finalSize": [
+              720,
+              268
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-germ-purple",
+      "source": "assets/source/crops/bugs/germ-purple.png",
+      "layered": "assets/source/layered/bug-germ-purple.accepted.png",
+      "final": "assets/bugs/germ-purple.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.11,
+          "opaquePct": 58.534,
+          "partialPct": 3.356
+        },
+        "bbox": [
+          13,
+          13,
+          325,
+          299
+        ],
+        "sourceSize": [
+          339,
+          312
+        ],
+        "finalSize": [
+          300,
+          277
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 38.11,
+              "opaquePct": 58.534,
+              "partialPct": 3.356
+            },
+            "bbox": [
+              13,
+              13,
+              325,
+              299
+            ],
+            "sourceSize": [
+              339,
+              312
+            ],
+            "finalSize": [
+              300,
+              277
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-germ-lime",
+      "source": "assets/source/crops/bugs/germ-lime.png",
+      "layered": "assets/source/layered/bug-germ-lime.accepted.png",
+      "final": "assets/bugs/germ-lime.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          29,
+          30,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 39.056,
+          "opaquePct": 57.735,
+          "partialPct": 3.209
+        },
+        "bbox": [
+          13,
+          12,
+          313,
+          302
+        ],
+        "sourceSize": [
+          327,
+          316
+        ],
+        "finalSize": [
+          300,
+          291
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 39.056,
+              "opaquePct": 57.735,
+              "partialPct": 3.209
+            },
+            "bbox": [
+              13,
+              12,
+              313,
+              302
+            ],
+            "sourceSize": [
+              327,
+              316
+            ],
+            "finalSize": [
+              300,
+              291
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-germ-blue",
+      "source": "assets/source/crops/bugs/germ-blue.png",
+      "layered": "assets/source/layered/bug-germ-blue.accepted.png",
+      "final": "assets/bugs/germ-blue.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 39.491,
+          "opaquePct": 57.241,
+          "partialPct": 3.268
+        },
+        "bbox": [
+          13,
+          12,
+          311,
+          303
+        ],
+        "sourceSize": [
+          325,
+          316
+        ],
+        "finalSize": [
+          300,
+          293
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 39.491,
+              "opaquePct": 57.241,
+              "partialPct": 3.268
+            },
+            "bbox": [
+              13,
+              12,
+              311,
+              303
+            ],
+            "sourceSize": [
+              325,
+              316
+            ],
+            "finalSize": [
+              300,
+              293
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-germ-orange",
+      "source": "assets/source/crops/bugs/germ-orange.png",
+      "layered": "assets/source/layered/bug-germ-orange.accepted.png",
+      "final": "assets/bugs/germ-orange.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.765,
+          "opaquePct": 57.944,
+          "partialPct": 3.291
+        },
+        "bbox": [
+          14,
+          13,
+          314,
+          302
+        ],
+        "sourceSize": [
+          328,
+          315
+        ],
+        "finalSize": [
+          300,
+          290
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 38.765,
+              "opaquePct": 57.944,
+              "partialPct": 3.291
+            },
+            "bbox": [
+              14,
+              13,
+              314,
+              302
+            ],
+            "sourceSize": [
+              328,
+              315
+            ],
+            "finalSize": [
+              300,
+              290
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-sugar-purple",
+      "source": "assets/source/crops/bugs/sugar-purple.png",
+      "layered": "assets/source/layered/bug-sugar-purple.accepted.png",
+      "final": "assets/bugs/sugar-purple.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 37.113,
+          "opaquePct": 59.955,
+          "partialPct": 2.931
+        },
+        "bbox": [
+          13,
+          13,
+          324,
+          349
+        ],
+        "sourceSize": [
+          337,
+          362
+        ],
+        "finalSize": [
+          279,
+          300
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 37.113,
+              "opaquePct": 59.955,
+              "partialPct": 2.931
+            },
+            "bbox": [
+              13,
+              13,
+              324,
+              349
+            ],
+            "sourceSize": [
+              337,
+              362
+            ],
+            "finalSize": [
+              279,
+              300
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-sugar-lime",
+      "source": "assets/source/crops/bugs/sugar-lime.png",
+      "layered": "assets/source/layered/bug-sugar-lime.accepted.png",
+      "final": "assets/bugs/sugar-lime.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.234,
+          "opaquePct": 58.723,
+          "partialPct": 3.043
+        },
+        "bbox": [
+          13,
+          13,
+          316,
+          346
+        ],
+        "sourceSize": [
+          329,
+          359
+        ],
+        "finalSize": [
+          275,
+          300
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 38.234,
+              "opaquePct": 58.723,
+              "partialPct": 3.043
+            },
+            "bbox": [
+              13,
+              13,
+              316,
+              346
+            ],
+            "sourceSize": [
+              329,
+              359
+            ],
+            "finalSize": [
+              275,
+              300
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-sugar-teal",
+      "source": "assets/source/crops/bugs/sugar-teal.png",
+      "layered": "assets/source/layered/bug-sugar-teal.accepted.png",
+      "final": "assets/bugs/sugar-teal.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.08,
+          "opaquePct": 58.904,
+          "partialPct": 3.016
+        },
+        "bbox": [
+          13,
+          13,
+          314,
+          351
+        ],
+        "sourceSize": [
+          327,
+          364
+        ],
+        "finalSize": [
+          269,
+          300
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 38.08,
+              "opaquePct": 58.904,
+              "partialPct": 3.016
+            },
+            "bbox": [
+              13,
+              13,
+              314,
+              351
+            ],
+            "sourceSize": [
+              327,
+              364
+            ],
+            "finalSize": [
+              269,
+              300
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "bug-sugar-orange",
+      "source": "assets/source/crops/bugs/sugar-orange.png",
+      "layered": "assets/source/layered/bug-sugar-orange.accepted.png",
+      "final": "assets/bugs/sugar-orange.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          30,
+          31,
+          34
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 37.436,
+          "opaquePct": 59.692,
+          "partialPct": 2.872
+        },
+        "bbox": [
+          14,
+          13,
+          316,
+          336
+        ],
+        "sourceSize": [
+          329,
+          349
+        ],
+        "finalSize": [
+          282,
+          300
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "alpha": {
+              "transparentPct": 37.436,
+              "opaquePct": 59.692,
+              "partialPct": 2.872
+            },
+            "bbox": [
+              14,
+              13,
+              316,
+              336
+            ],
+            "sourceSize": [
+              329,
+              349
+            ],
+            "finalSize": [
+              282,
+              300
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "splash-title",
+      "source": "assets/source/crops/title-clean/title.png",
+      "layered": "assets/source/layered/splash-title.accepted.png",
+      "final": "assets/title.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          16,
+          16,
+          15
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 12.058,
+          "opaquePct": 86.301,
+          "partialPct": 1.641
+        },
+        "bbox": [
+          4,
+          4,
+          1699,
+          418
+        ],
+        "sourceSize": [
+          1704,
+          423
+        ],
+        "finalSize": [
+          1100,
+          273
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 12.058,
+              "opaquePct": 86.301,
+              "partialPct": 1.641
+            },
+            "bbox": [
+              4,
+              4,
+              1699,
+              418
+            ],
+            "sourceSize": [
+              1704,
+              423
+            ],
+            "finalSize": [
+              1100,
+              273
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "mission-suds",
+      "source": "assets/source/crops/missions-clean/mission-suds.png",
+      "layered": "assets/source/layered/mission-suds.accepted.png",
+      "final": "assets/ui/mission-suds.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          17,
+          17,
+          17
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 7.008,
+          "opaquePct": 91.426,
+          "partialPct": 1.566
+        },
+        "bbox": [
+          2,
+          2,
+          694,
+          675
+        ],
+        "sourceSize": [
+          696,
+          677
+        ],
+        "finalSize": [
+          640,
+          623
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 7.008,
+              "opaquePct": 91.426,
+              "partialPct": 1.566
+            },
+            "bbox": [
+              2,
+              2,
+              694,
+              675
+            ],
+            "sourceSize": [
+              696,
+              677
+            ],
+            "finalSize": [
+              640,
+              623
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    },
+    {
+      "name": "mission-smile",
+      "source": "assets/source/crops/missions-clean/mission-smile.png",
+      "layered": "assets/source/layered/mission-smile.accepted.png",
+      "final": "assets/ui/mission-smile.webp",
+      "seed": null,
+      "acceptedOutput": "source",
+      "method": "deterministic-contiguous-ground-key",
+      "key": {
+        "method": "edge-connected RGB-distance key",
+        "sampledGround": [
+          18,
+          17,
+          18
+        ],
+        "distanceThreshold": 80
+      },
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 7.018,
+          "opaquePct": 91.418,
+          "partialPct": 1.564
+        },
+        "bbox": [
+          2,
+          2,
+          695,
+          676
+        ],
+        "sourceSize": [
+          697,
+          678
+        ],
+        "finalSize": [
+          640,
+          623
+        ],
+        "alphaFloor": 4
+      },
+      "attempts": [
+        {
+          "seed": null,
+          "output": "source",
+          "method": "deterministic-contiguous-ground-key",
+          "qa": {
+            "pass": true,
+            "reason": null,
+            "flags": [],
+            "alpha": {
+              "transparentPct": 7.018,
+              "opaquePct": 91.418,
+              "partialPct": 1.564
+            },
+            "bbox": [
+              2,
+              2,
+              695,
+              676
+            ],
+            "sourceSize": [
+              697,
+              678
+            ],
+            "finalSize": [
+              640,
+              623
+            ],
+            "alphaFloor": 4
+          }
+        }
+      ],
+      "response": {
+        "status": "local-fallback",
+        "jobIdRedacted": false
+      },
+      "status": "processed"
+    }
+  ]
+}

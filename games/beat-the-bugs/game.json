@@ -1,0 +1,15 @@
+{
+  "id":"beat-the-bugs", "title":"Beat the Bugs", "category":"practical-life", "path":"games/beat-the-bugs/", "entry":"index.html", "icon":"🫧", "age":{"min":5,"max":6}, "status":"beta", "accent":"#54d5d0",
+  "shareTitle":"Beat the Bugs — Bubble Up, Brush Bright!",
+  "description":"Power up the soap shield, scrub for 20 active seconds, and brush every tooth surface to send Kawaii germs and cavity bugs packing.",
+  "learningGoals":["Practice the hand-washing sequence and a 20-second scrub","Practice gentle tooth-brushing coverage and grown-up-assisted flossing","Recall brushing two minutes, two times a day"],
+  "interactionModel":"Large picture-first mission cards, tap tools, forgiving continuous coverage gestures, and floss targets.",
+  "feedbackModel":"Authored raster board swaps, bubble/star progress, narrated encouragement, and two session badges.",
+  "uses":["shared/js/screens.js","shared/js/narrator.js","shared/js/voice-clips.js","shared/js/bgm.js","shared/js/preload.js","shared/js/audio-unlock.js","shared/js/idle-nudge.js","shared/js/celebrate.js","shared/js/timers.js","shared/js/debug-harness.js","shared/js/stage/constrained-gesture-dom.js","shared/assets/music/upbeat-playground-pop.mp3"],
+  "modes":[{"id":"suds","title":"Suds Shield","skill":"wash hands: wet, soap, scrub all surfaces, rinse"},{"id":"smile","title":"Smile Shield","skill":"brush every tooth surface, floss with a grown-up"}],
+  "privacy":{"recording":"none","storage":"none","uploads":false,"exports":false},
+  "license":{"code":"MIT","assets":"CC-BY-4.0"},
+  "credits":"Kaigani; Kawaii production art made with GPT Image 2 and approved local Qwen workflows; platform teacher narration made with Qwen voice clone and Whisper QA. Built with Codex for QLOBE Kids.",
+  "characters":["maya"],
+  "conceptVideo":null
+}

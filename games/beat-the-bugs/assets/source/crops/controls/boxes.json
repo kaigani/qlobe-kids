@@ -1,0 +1,86 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/control-plates.png",
+  "sourceSha256": "50f39718a54e139bb59e95938713edf6f1152f85adc1fc9f6bf05b6f6c8f6e4d",
+  "sourceSize": [
+    1402,
+    1122
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    26,
+    28,
+    32
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "prompt-plate",
+      "file": "prompt-plate.png",
+      "componentArea": 415368,
+      "foregroundBbox": [
+        37,
+        183,
+        1365,
+        529
+      ],
+      "cropBbox": [
+        25,
+        171,
+        1377,
+        541
+      ],
+      "cropXywh": [
+        25,
+        171,
+        1352,
+        370
+      ],
+      "normalizedCropBbox": [
+        0.017832,
+        0.152406,
+        0.982168,
+        0.482175
+      ]
+    },
+    {
+      "index": 2,
+      "name": "button-plate",
+      "file": "button-plate.png",
+      "componentArea": 245527,
+      "foregroundBbox": [
+        268,
+        638,
+        1127,
+        943
+      ],
+      "cropBbox": [
+        256,
+        626,
+        1139,
+        955
+      ],
+      "cropXywh": [
+        256,
+        626,
+        883,
+        329
+      ],
+      "normalizedCropBbox": [
+        0.182596,
+        0.557932,
+        0.812411,
+        0.851159
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

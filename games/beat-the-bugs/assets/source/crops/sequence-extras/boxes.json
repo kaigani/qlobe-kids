@@ -1,0 +1,206 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/sequence-extras.png",
+  "sourceSha256": "8f66b185222f389eeb73cbc139f57c7275d92ea8b6c031ddd11510d475906886",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    33,
+    35
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "hand-wet",
+      "file": "hand-wet.png",
+      "componentArea": 205551,
+      "foregroundBbox": [
+        48,
+        40,
+        510,
+        500
+      ],
+      "cropBbox": [
+        36,
+        28,
+        522,
+        512
+      ],
+      "cropXywh": [
+        36,
+        28,
+        486,
+        484
+      ],
+      "normalizedCropBbox": [
+        0.023438,
+        0.027344,
+        0.339844,
+        0.5
+      ]
+    },
+    {
+      "index": 2,
+      "name": "hand-soap",
+      "file": "hand-soap.png",
+      "componentArea": 205008,
+      "foregroundBbox": [
+        537,
+        41,
+        997,
+        500
+      ],
+      "cropBbox": [
+        525,
+        29,
+        1009,
+        512
+      ],
+      "cropXywh": [
+        525,
+        29,
+        484,
+        483
+      ],
+      "normalizedCropBbox": [
+        0.341797,
+        0.02832,
+        0.656901,
+        0.5
+      ]
+    },
+    {
+      "index": 3,
+      "name": "hand-clean",
+      "file": "hand-clean.png",
+      "componentArea": 205413,
+      "foregroundBbox": [
+        1026,
+        40,
+        1487,
+        500
+      ],
+      "cropBbox": [
+        1014,
+        28,
+        1499,
+        512
+      ],
+      "cropXywh": [
+        1014,
+        28,
+        485,
+        484
+      ],
+      "normalizedCropBbox": [
+        0.660156,
+        0.027344,
+        0.975911,
+        0.5
+      ]
+    },
+    {
+      "index": 4,
+      "name": "tooth-paste",
+      "file": "tooth-paste.png",
+      "componentArea": 205285,
+      "foregroundBbox": [
+        48,
+        524,
+        510,
+        982
+      ],
+      "cropBbox": [
+        36,
+        512,
+        522,
+        994
+      ],
+      "cropXywh": [
+        36,
+        512,
+        486,
+        482
+      ],
+      "normalizedCropBbox": [
+        0.023438,
+        0.5,
+        0.339844,
+        0.970703
+      ]
+    },
+    {
+      "index": 5,
+      "name": "tooth-floss",
+      "file": "tooth-floss.png",
+      "componentArea": 204564,
+      "foregroundBbox": [
+        536,
+        524,
+        997,
+        982
+      ],
+      "cropBbox": [
+        524,
+        512,
+        1009,
+        994
+      ],
+      "cropXywh": [
+        524,
+        512,
+        485,
+        482
+      ],
+      "normalizedCropBbox": [
+        0.341146,
+        0.5,
+        0.656901,
+        0.970703
+      ]
+    },
+    {
+      "index": 6,
+      "name": "tooth-clean",
+      "file": "tooth-clean.png",
+      "componentArea": 205091,
+      "foregroundBbox": [
+        1025,
+        524,
+        1487,
+        982
+      ],
+      "cropBbox": [
+        1013,
+        512,
+        1499,
+        994
+      ],
+      "cropXywh": [
+        1013,
+        512,
+        486,
+        482
+      ],
+      "normalizedCropBbox": [
+        0.659505,
+        0.5,
+        0.975911,
+        0.970703
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

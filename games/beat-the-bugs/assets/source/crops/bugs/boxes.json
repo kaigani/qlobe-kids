@@ -1,0 +1,266 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/bug-villains.png",
+  "sourceSha256": "3474fe53f68ed975041f6cebf628e7c56212921680328fee82f82a8e9d4b237c",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    29,
+    31,
+    34
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "germ-purple",
+      "file": "germ-purple.png",
+      "componentArea": 66652,
+      "foregroundBbox": [
+        51,
+        171,
+        366,
+        459
+      ],
+      "cropBbox": [
+        39,
+        159,
+        378,
+        471
+      ],
+      "cropXywh": [
+        39,
+        159,
+        339,
+        312
+      ],
+      "normalizedCropBbox": [
+        0.026934,
+        0.146409,
+        0.26105,
+        0.433702
+      ]
+    },
+    {
+      "index": 2,
+      "name": "germ-lime",
+      "file": "germ-lime.png",
+      "componentArea": 64262,
+      "foregroundBbox": [
+        401,
+        170,
+        704,
+        462
+      ],
+      "cropBbox": [
+        389,
+        158,
+        716,
+        474
+      ],
+      "cropXywh": [
+        389,
+        158,
+        327,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.268646,
+        0.145488,
+        0.494475,
+        0.436464
+      ]
+    },
+    {
+      "index": 3,
+      "name": "germ-blue",
+      "file": "germ-blue.png",
+      "componentArea": 62173,
+      "foregroundBbox": [
+        743,
+        170,
+        1044,
+        462
+      ],
+      "cropBbox": [
+        731,
+        158,
+        1056,
+        474
+      ],
+      "cropXywh": [
+        731,
+        158,
+        325,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.504834,
+        0.145488,
+        0.729282,
+        0.436464
+      ]
+    },
+    {
+      "index": 4,
+      "name": "germ-orange",
+      "file": "germ-orange.png",
+      "componentArea": 64631,
+      "foregroundBbox": [
+        1088,
+        172,
+        1392,
+        463
+      ],
+      "cropBbox": [
+        1076,
+        160,
+        1404,
+        475
+      ],
+      "cropXywh": [
+        1076,
+        160,
+        328,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.743094,
+        0.14733,
+        0.969613,
+        0.437385
+      ]
+    },
+    {
+      "index": 5,
+      "name": "sugar-purple",
+      "file": "sugar-purple.png",
+      "componentArea": 77923,
+      "foregroundBbox": [
+        45,
+        565,
+        358,
+        903
+      ],
+      "cropBbox": [
+        33,
+        553,
+        370,
+        915
+      ],
+      "cropXywh": [
+        33,
+        553,
+        337,
+        362
+      ],
+      "normalizedCropBbox": [
+        0.02279,
+        0.509208,
+        0.255525,
+        0.842541
+      ]
+    },
+    {
+      "index": 6,
+      "name": "sugar-lime",
+      "file": "sugar-lime.png",
+      "componentArea": 74291,
+      "foregroundBbox": [
+        400,
+        566,
+        705,
+        901
+      ],
+      "cropBbox": [
+        388,
+        554,
+        717,
+        913
+      ],
+      "cropXywh": [
+        388,
+        554,
+        329,
+        359
+      ],
+      "normalizedCropBbox": [
+        0.267956,
+        0.510129,
+        0.495166,
+        0.8407
+      ]
+    },
+    {
+      "index": 7,
+      "name": "sugar-teal",
+      "file": "sugar-teal.png",
+      "componentArea": 74168,
+      "foregroundBbox": [
+        742,
+        563,
+        1045,
+        903
+      ],
+      "cropBbox": [
+        730,
+        551,
+        1057,
+        915
+      ],
+      "cropXywh": [
+        730,
+        551,
+        327,
+        364
+      ],
+      "normalizedCropBbox": [
+        0.504144,
+        0.507366,
+        0.729972,
+        0.842541
+      ]
+    },
+    {
+      "index": 8,
+      "name": "sugar-orange",
+      "file": "sugar-orange.png",
+      "componentArea": 73078,
+      "foregroundBbox": [
+        1088,
+        580,
+        1393,
+        905
+      ],
+      "cropBbox": [
+        1076,
+        568,
+        1405,
+        917
+      ],
+      "cropXywh": [
+        1076,
+        568,
+        329,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.743094,
+        0.52302,
+        0.970304,
+        0.844383
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

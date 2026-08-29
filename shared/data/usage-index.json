@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-28T17:29:01.475Z",
+  "generated": "2026-08-29T20:04:51.573Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -219,6 +219,37 @@
         "shared/css/screens.css"
       ],
       "assets": [],
+      "packs": []
+    },
+    "beat-the-bugs": {
+      "engine": null,
+      "status": "beta",
+      "category": "practical-life",
+      "characters": [
+        "maya"
+      ],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
+        "shared/js/stage/constrained-gesture-dom.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "shared/assets/music/upbeat-playground-pop.mp3"
+      ],
       "packs": []
     },
     "big-paper-murals": {
@@ -1778,7 +1809,7 @@
     },
     "picture-word-match": {
       "engine": null,
-      "status": "beta",
+      "status": "live",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
@@ -3267,6 +3298,7 @@
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "blend-train",
         "block-tower-measure",
@@ -3373,6 +3405,7 @@
       "shared/js/audio-unlock.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "block-tower-measure",
         "board-game-reset",
@@ -3436,6 +3469,7 @@
       ],
       "shared/js/bgm.js": [
         "bean-sprout-watch",
+        "beat-the-bugs",
         "board-game-reset",
         "cleanup-timer-quest",
         "garden-graphers",
@@ -3461,6 +3495,7 @@
       "shared/js/celebrate.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
@@ -3521,6 +3556,7 @@
       "shared/js/debug-harness.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "block-tower-measure",
         "board-game-reset",
@@ -3705,6 +3741,7 @@
       ],
       "shared/js/idle-nudge.js": [
         "bean-sprout-watch",
+        "beat-the-bugs",
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
@@ -3781,6 +3818,7 @@
       ],
       "shared/js/narrator.js": [
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "board-game-reset",
         "cleanup-timer-quest",
@@ -3803,6 +3841,7 @@
       ],
       "shared/js/preload.js": [
         "bead-path-builder",
+        "beat-the-bugs",
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
@@ -3890,6 +3929,7 @@
       ],
       "shared/js/screens.js": [
         "bean-sprout-watch",
+        "beat-the-bugs",
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
@@ -4119,6 +4159,7 @@
         "blend-train"
       ],
       "shared/js/stage/constrained-gesture-dom.js": [
+        "beat-the-bugs",
         "button-zipper-lab"
       ],
       "shared/js/stage/drag-to-slot-dom.js": [
@@ -4274,6 +4315,7 @@
       "shared/js/timers.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "block-tower-measure",
         "board-game-reset",
         "bug-hotel-observer",
@@ -4321,6 +4363,7 @@
       "shared/js/voice-clips.js": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "blend-train",
         "block-tower-measure",
         "board-game-reset",
@@ -4406,6 +4449,7 @@
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "blend-train",
         "block-tower-measure",
@@ -4563,6 +4607,7 @@
       "shared/css/hud.css": [
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "big-paper-murals",
         "block-tower-measure",
         "board-game-reset",
@@ -4605,6 +4650,7 @@
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
+        "beat-the-bugs",
         "blend-train",
         "block-tower-measure",
         "board-game-reset",
@@ -4787,6 +4833,7 @@
         "red-green-light"
       ],
       "maya": [
+        "beat-the-bugs",
         "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",
@@ -5611,6 +5658,9 @@
       "shared/assets/music/quirky-forest-adventure.mp3": [
         "shape-detective"
       ],
+      "shared/assets/music/upbeat-playground-pop.mp3": [
+        "beat-the-bugs"
+      ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
         "number-sense-kitchen",
         "tiny-sentence-workshop"
@@ -5724,6 +5774,7 @@
         "post-office-letters"
       ],
       "shared/characters/maya": [
+        "beat-the-bugs",
         "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",

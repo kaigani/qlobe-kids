@@ -1,0 +1,86 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/mission-cards-clean.png",
+  "sourceSha256": "e256950df8f153133301d046f915d8fd14aeb35f83cae4e264b22a8ed1d8a5dc",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    17,
+    17,
+    17
+  ],
+  "padding": 2,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "mission-suds",
+      "file": "mission-suds.png",
+      "componentArea": 431891,
+      "foregroundBbox": [
+        73,
+        161,
+        765,
+        834
+      ],
+      "cropBbox": [
+        71,
+        159,
+        767,
+        836
+      ],
+      "cropXywh": [
+        71,
+        159,
+        696,
+        677
+      ],
+      "normalizedCropBbox": [
+        0.046224,
+        0.155273,
+        0.499349,
+        0.816406
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mission-smile",
+      "file": "mission-smile.png",
+      "componentArea": 433152,
+      "foregroundBbox": [
+        770,
+        160,
+        1463,
+        834
+      ],
+      "cropBbox": [
+        768,
+        158,
+        1465,
+        836
+      ],
+      "cropXywh": [
+        768,
+        158,
+        697,
+        678
+      ],
+      "normalizedCropBbox": [
+        0.5,
+        0.154297,
+        0.953776,
+        0.816406
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 45,
+    "chromaThreshold": 0,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#65dcd9">
+  <title>Beat the Bugs — Bubble Up, Brush Bright!</title>
+  <meta name="description" content="Power up the soap shield, scrub for 20 active seconds, and brush every tooth surface to send Kawaii germs and cavity bugs packing.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Beat the Bugs">
+  <meta property="og:title" content="Beat the Bugs — Bubble Up, Brush Bright!">
+  <meta property="og:description" content="Power up the soap shield, scrub for 20 active seconds, and brush every tooth surface to send Kawaii germs and cavity bugs packing.">
+  <meta property="og:url" content="https://qlo.be/games/beat-the-bugs/">
+  <meta property="og:image" content="https://qlo.be/games/beat-the-bugs/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Maya welcomes children to two Kawaii hygiene missions: bubbly hand washing and sparkling tooth brushing.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Beat the Bugs — Bubble Up, Brush Bright!">
+  <meta name="twitter:description" content="Power up the soap shield, scrub for 20 active seconds, and brush every tooth surface to send Kawaii germs and cavity bugs packing.">
+  <meta name="twitter:image" content="https://qlo.be/games/beat-the-bugs/assets/og-image.jpg">
+
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="../../shared/js/analytics.js"></script>
+</head>
+<body>
+  <main id="game" data-game-id="beat-the-bugs" aria-live="polite">
+    <h1 class="visually-hidden">Beat the Bugs</h1>
+
+    <section class="qk-screen bb-screen bb-splash" data-qk-screen="splash" aria-label="Beat the Bugs mission menu">
+      <img class="bb-bg" data-bg="splash" alt="">
+      <img class="bb-title" data-asset="title" alt="Beat the Bugs">
+      <img class="bb-maya" data-asset="maya" alt="Maya, the Hygiene Hero">
+      <div class="bb-missions">
+        <button class="bb-card" data-target="suds" data-mode="suds"><img data-asset="mission-suds" alt="Suds Shield hand washing mission"></button>
+        <button class="bb-card" data-target="smile" data-mode="smile"><img data-asset="mission-smile" alt="Smile Shield tooth brushing mission"></button>
+      </div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-target="home" href="../../index.html" aria-label="Home"></a>
+    </section>
+
+    <section class="qk-screen bb-screen bb-play" data-qk-screen="play" hidden aria-label="Hygiene mission">
+      <img class="bb-bg" data-bg="play" alt="">
+      <div class="bb-top">
+        <button class="qk-hud-btn qk-hud-back" data-target="back" aria-label="Back to missions"></button>
+        <div class="bb-step-strip" data-steps aria-hidden="true"></div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="sound" aria-label="Hear it again"></button>
+      </div>
+      <div class="bb-prompt" data-prompt></div>
+      <div class="bb-board-wrap">
+        <button class="bb-board" data-target="board" aria-label="Play area"><img data-board alt=""></button>
+        <div class="bb-bugs" data-bugs aria-hidden="true"></div>
+        <img class="bb-ring" data-ring alt="">
+        <img class="bb-feedback" data-feedback alt="">
+      </div>
+      <div class="bb-rail">
+        <div class="bb-tokens" data-tokens aria-hidden="true"></div>
+        <button class="bb-tool" data-target="tool" aria-label="Hero tool"><img data-tool alt=""></button>
+      </div>
+      <div class="bb-floss-row" data-floss hidden></div>
+    </section>
+
+    <section class="qk-screen bb-screen bb-reward" data-qk-screen="reward" hidden aria-label="Mission complete">
+      <img class="bb-bg" data-bg="reward" alt="">
+      <button class="qk-hud-btn qk-hud-back" data-target="back" aria-label="Back to missions"></button>
+      <div class="bb-screen-title" data-reward-title></div>
+      <img class="bb-reward-board" data-reward-board alt="">
+      <img class="bb-badge" data-badge alt="Mission badge">
+      <div class="bb-actions">
+        <button class="bb-action" data-target="again">Again</button>
+        <button class="bb-action" data-target="choose">Choose mission</button>
+      </div>
+    </section>
+
+    <section class="qk-screen bb-screen bb-finale" data-qk-screen="finale" hidden aria-label="Hero Headquarters">
+      <img class="bb-bg" data-bg="finale" alt="">
+      <button class="qk-hud-btn qk-hud-back" data-target="back" aria-label="Back to missions"></button>
+      <div class="bb-screen-title">Double Hero Power!</div>
+      <div class="bb-finale-aura" aria-hidden="true">
+        <img data-finale-accent="bubble" alt="">
+        <img data-finale-accent="star" alt="">
+        <img data-finale-accent="sparkle" alt="">
+        <img data-finale-accent="bubble" alt="">
+        <img data-finale-accent="star" alt="">
+        <img data-finale-accent="sparkle" alt="">
+        <img data-finale-accent="bubble" alt="">
+        <img data-finale-accent="star" alt="">
+      </div>
+      <img class="bb-maya bb-finale-maya" data-asset="maya" alt="Maya celebrates">
+      <div class="bb-badges">
+        <img data-final-badge="suds" alt="Bubble Bolt badge">
+        <img data-final-badge="smile" alt="Smile Star badge">
+      </div>
+      <button class="bb-action" data-target="choose">Play again</button>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "beat-the-bugs-hub",
+  "kind": "image",
+  "asset": "assets/hub/tiles/beat-the-bugs.jpg",
+  "artDirection": "Kawaii",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a premium miniature handcrafted Kawaii hygiene superhero lab on a warm toy table; central pair of bubbly brown child hands beneath a friendly aqua soap shield, a big sparkling smile with chunky aqua/coral toothbrush beside them, two tiny silly rounded bug villains retreating at outer edges, aqua/coral/lemon/lilac candy palette, puffy soft-vinyl/clay sticker material, cream rims/cocoa contour, strong central 6:5 menu-tile silhouette, warm studio lighting; absolutely no writing, letters, numbers, logos, UI, cards, borders, scary faces, detached clutter, flat vector, or photorealism.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "beat-the-bugs-krea-seed-42.png",
+  "sourceSha256": "639af8ed92ab9085f796ed427a20e5e9b1ed2c213e8aa6367f8a0265af8b0ede",
+  "finalSha256": "10593f9a1d2ba730a6d4b89d7a252b3ebb8287d767d652b5e2291675e8ff80cf",
+  "qa": {
+    "status": "rejected-human-review",
+    "notes": "Strong hand-washing read, but the required mouth/smile was omitted and toothbrushing was not immediately legible at catalog size.",
+    "finalSize": [
+      640,
+      533
+    ]
+  },
+  "createdAt": "2026-08-29T19:34:50.077499+00:00"
+}

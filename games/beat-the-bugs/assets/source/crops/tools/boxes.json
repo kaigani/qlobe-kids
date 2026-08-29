@@ -1,0 +1,236 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/hero-tools.png",
+  "sourceSha256": "ff9c548678b7e22c605ee29eb7e606081376047feef7da253e46ea50db8b455b",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    27,
+    29,
+    32
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "water",
+      "file": "water.png",
+      "componentArea": 90699,
+      "foregroundBbox": [
+        48,
+        126,
+        361,
+        535
+      ],
+      "cropBbox": [
+        36,
+        114,
+        373,
+        547
+      ],
+      "cropXywh": [
+        36,
+        114,
+        337,
+        433
+      ],
+      "normalizedCropBbox": [
+        0.024862,
+        0.104972,
+        0.257597,
+        0.503683
+      ]
+    },
+    {
+      "index": 2,
+      "name": "soap-pump",
+      "file": "soap-pump.png",
+      "componentArea": 110291,
+      "foregroundBbox": [
+        393,
+        90,
+        701,
+        543
+      ],
+      "cropBbox": [
+        381,
+        78,
+        713,
+        555
+      ],
+      "cropXywh": [
+        381,
+        78,
+        332,
+        477
+      ],
+      "normalizedCropBbox": [
+        0.263122,
+        0.071823,
+        0.492403,
+        0.51105
+      ]
+    },
+    {
+      "index": 3,
+      "name": "soap-shield",
+      "file": "soap-shield.png",
+      "componentArea": 107887,
+      "foregroundBbox": [
+        719,
+        140,
+        1067,
+        542
+      ],
+      "cropBbox": [
+        707,
+        128,
+        1079,
+        554
+      ],
+      "cropXywh": [
+        707,
+        128,
+        372,
+        426
+      ],
+      "normalizedCropBbox": [
+        0.48826,
+        0.117864,
+        0.745166,
+        0.510129
+      ]
+    },
+    {
+      "index": 4,
+      "name": "faucet",
+      "file": "faucet.png",
+      "componentArea": 106628,
+      "foregroundBbox": [
+        1091,
+        132,
+        1400,
+        569
+      ],
+      "cropBbox": [
+        1079,
+        120,
+        1412,
+        581
+      ],
+      "cropXywh": [
+        1079,
+        120,
+        333,
+        461
+      ],
+      "normalizedCropBbox": [
+        0.745166,
+        0.110497,
+        0.975138,
+        0.534991
+      ]
+    },
+    {
+      "index": 5,
+      "name": "paste",
+      "file": "paste.png",
+      "componentArea": 82354,
+      "foregroundBbox": [
+        147,
+        568,
+        494,
+        993
+      ],
+      "cropBbox": [
+        135,
+        556,
+        506,
+        1005
+      ],
+      "cropXywh": [
+        135,
+        556,
+        371,
+        449
+      ],
+      "normalizedCropBbox": [
+        0.093232,
+        0.511971,
+        0.349448,
+        0.925414
+      ]
+    },
+    {
+      "index": 6,
+      "name": "brush",
+      "file": "brush.png",
+      "componentArea": 71710,
+      "foregroundBbox": [
+        542,
+        554,
+        882,
+        993
+      ],
+      "cropBbox": [
+        530,
+        542,
+        894,
+        1005
+      ],
+      "cropXywh": [
+        530,
+        542,
+        364,
+        463
+      ],
+      "normalizedCropBbox": [
+        0.366022,
+        0.499079,
+        0.617403,
+        0.925414
+      ]
+    },
+    {
+      "index": 7,
+      "name": "floss",
+      "file": "floss.png",
+      "componentArea": 74156,
+      "foregroundBbox": [
+        937,
+        565,
+        1217,
+        991
+      ],
+      "cropBbox": [
+        925,
+        553,
+        1229,
+        1003
+      ],
+      "cropXywh": [
+        925,
+        553,
+        304,
+        450
+      ],
+      "normalizedCropBbox": [
+        0.638812,
+        0.509208,
+        0.848757,
+        0.923573
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

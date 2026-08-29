@@ -1,0 +1,266 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/sheets/ui-rewards-separated.png",
+  "sourceSha256": "774ee64eeb2d69f5f5eab3f7e4ba39b61d006e12d3c722678a68ea6bf1458533",
+  "sourceSize": [
+    1402,
+    1122
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    23,
+    25,
+    27
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bubble",
+      "file": "bubble.png",
+      "componentArea": 63778,
+      "foregroundBbox": [
+        59,
+        209,
+        342,
+        497
+      ],
+      "cropBbox": [
+        47,
+        197,
+        354,
+        509
+      ],
+      "cropXywh": [
+        47,
+        197,
+        307,
+        312
+      ],
+      "normalizedCropBbox": [
+        0.033524,
+        0.175579,
+        0.252496,
+        0.453654
+      ]
+    },
+    {
+      "index": 2,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 59939,
+      "foregroundBbox": [
+        383,
+        196,
+        685,
+        490
+      ],
+      "cropBbox": [
+        371,
+        184,
+        697,
+        502
+      ],
+      "cropXywh": [
+        371,
+        184,
+        326,
+        318
+      ],
+      "normalizedCropBbox": [
+        0.264622,
+        0.163993,
+        0.497147,
+        0.447415
+      ]
+    },
+    {
+      "index": 3,
+      "name": "foam",
+      "file": "foam.png",
+      "componentArea": 67388,
+      "foregroundBbox": [
+        703,
+        199,
+        1002,
+        502
+      ],
+      "cropBbox": [
+        691,
+        187,
+        1014,
+        514
+      ],
+      "cropXywh": [
+        691,
+        187,
+        323,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.492867,
+        0.166667,
+        0.723252,
+        0.458111
+      ]
+    },
+    {
+      "index": 4,
+      "name": "sparkle",
+      "file": "sparkle.png",
+      "componentArea": 72848,
+      "foregroundBbox": [
+        1030,
+        189,
+        1359,
+        518
+      ],
+      "cropBbox": [
+        1018,
+        177,
+        1371,
+        530
+      ],
+      "cropXywh": [
+        1018,
+        177,
+        353,
+        353
+      ],
+      "normalizedCropBbox": [
+        0.726106,
+        0.157754,
+        0.977889,
+        0.472371
+      ]
+    },
+    {
+      "index": 5,
+      "name": "zone-ring",
+      "file": "zone-ring.png",
+      "componentArea": 57166,
+      "foregroundBbox": [
+        31,
+        575,
+        373,
+        880
+      ],
+      "cropBbox": [
+        19,
+        563,
+        385,
+        892
+      ],
+      "cropXywh": [
+        19,
+        563,
+        366,
+        329
+      ],
+      "normalizedCropBbox": [
+        0.013552,
+        0.501783,
+        0.274608,
+        0.795009
+      ]
+    },
+    {
+      "index": 6,
+      "name": "badge-suds",
+      "file": "badge-suds.png",
+      "componentArea": 69119,
+      "foregroundBbox": [
+        407,
+        566,
+        677,
+        886
+      ],
+      "cropBbox": [
+        395,
+        554,
+        689,
+        898
+      ],
+      "cropXywh": [
+        395,
+        554,
+        294,
+        344
+      ],
+      "normalizedCropBbox": [
+        0.28174,
+        0.493761,
+        0.491441,
+        0.800357
+      ]
+    },
+    {
+      "index": 7,
+      "name": "badge-smile",
+      "file": "badge-smile.png",
+      "componentArea": 67073,
+      "foregroundBbox": [
+        702,
+        587,
+        987,
+        883
+      ],
+      "cropBbox": [
+        690,
+        575,
+        999,
+        895
+      ],
+      "cropXywh": [
+        690,
+        575,
+        309,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.492154,
+        0.512478,
+        0.712553,
+        0.797683
+      ]
+    },
+    {
+      "index": 8,
+      "name": "two-by-two",
+      "file": "two-by-two.png",
+      "componentArea": 73597,
+      "foregroundBbox": [
+        1074,
+        588,
+        1380,
+        878
+      ],
+      "cropBbox": [
+        1062,
+        576,
+        1392,
+        890
+      ],
+      "cropXywh": [
+        1062,
+        576,
+        330,
+        314
+      ],
+      "normalizedCropBbox": [
+        0.757489,
+        0.513369,
+        0.992867,
+        0.793226
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "source": "games/beat-the-bugs/assets/source/gpt-image-2/title-clean.png",
+  "sourceSha256": "bbba67b82a31d19ffa0eb1cca5bf9a503fb7d07d2fdfe4a03cd3671bef809ae5",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    15,
+    15,
+    15
+  ],
+  "padding": 4,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 624524,
+      "foregroundBbox": [
+        39,
+        231,
+        1735,
+        646
+      ],
+      "cropBbox": [
+        35,
+        227,
+        1739,
+        650
+      ],
+      "cropXywh": [
+        35,
+        227,
+        1704,
+        423
+      ],
+      "normalizedCropBbox": [
+        0.019729,
+        0.255919,
+        0.980271,
+        0.732807
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 45,
+    "chromaThreshold": 0,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}
