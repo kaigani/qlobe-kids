@@ -1,0 +1,176 @@
+{
+  "source": "games/subtraction-picnic/assets/source/gpt-image-2/foods-master.png",
+  "sourceSha256": "b880b9f692830b43727d24d7638f167967d001a3d6680302139aebb3c8e8aca7",
+  "sourceSize": [
+    1402,
+    1122
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    34,
+    41
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "apple",
+      "file": "apple.png",
+      "componentArea": 121354,
+      "foregroundBbox": [
+        94,
+        101,
+        483,
+        520
+      ],
+      "cropBbox": [
+        82,
+        89,
+        495,
+        532
+      ],
+      "cropXywh": [
+        82,
+        89,
+        413,
+        443
+      ],
+      "normalizedCropBbox": [
+        0.058488,
+        0.079323,
+        0.353067,
+        0.474153
+      ]
+    },
+    {
+      "index": 2,
+      "name": "strawberry",
+      "file": "strawberry.png",
+      "componentArea": 74347,
+      "foregroundBbox": [
+        566,
+        144,
+        859,
+        509
+      ],
+      "cropBbox": [
+        554,
+        132,
+        871,
+        521
+      ],
+      "cropXywh": [
+        554,
+        132,
+        317,
+        389
+      ],
+      "normalizedCropBbox": [
+        0.39515,
+        0.117647,
+        0.621255,
+        0.464349
+      ]
+    },
+    {
+      "index": 3,
+      "name": "cracker",
+      "file": "cracker.png",
+      "componentArea": 114745,
+      "foregroundBbox": [
+        914,
+        147,
+        1339,
+        544
+      ],
+      "cropBbox": [
+        902,
+        135,
+        1351,
+        556
+      ],
+      "cropXywh": [
+        902,
+        135,
+        449,
+        421
+      ],
+      "normalizedCropBbox": [
+        0.643367,
+        0.120321,
+        0.963623,
+        0.495544
+      ]
+    },
+    {
+      "index": 4,
+      "name": "grapes",
+      "file": "grapes.png",
+      "componentArea": 122940,
+      "foregroundBbox": [
+        201,
+        583,
+        674,
+        1004
+      ],
+      "cropBbox": [
+        189,
+        571,
+        686,
+        1016
+      ],
+      "cropXywh": [
+        189,
+        571,
+        497,
+        445
+      ],
+      "normalizedCropBbox": [
+        0.134807,
+        0.508913,
+        0.489301,
+        0.905526
+      ]
+    },
+    {
+      "index": 5,
+      "name": "sandwich",
+      "file": "sandwich.png",
+      "componentArea": 131776,
+      "foregroundBbox": [
+        737,
+        598,
+        1235,
+        1032
+      ],
+      "cropBbox": [
+        725,
+        586,
+        1247,
+        1044
+      ],
+      "cropXywh": [
+        725,
+        586,
+        522,
+        458
+      ],
+      "normalizedCropBbox": [
+        0.517118,
+        0.522282,
+        0.889444,
+        0.930481
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 2000,
+    "order": "reading"
+  }
+}

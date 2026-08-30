@@ -1,41 +1,118 @@
-# Asset Log - Subtraction Picnic
+# Subtraction Picnic asset provenance
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/tap-count.js` |
-| Food art (`shared/assets/foods/apple.png`, `strawberry.png`, `crackers.png`, `grapes.png`, `banana.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified via `shared:foods/*.png` refs |
-| Hungry guest placeholders (`emoji:🐿️`, `emoji:🐰`, `emoji:🐦`, `emoji:🐻`) | N/A - emoji refs rendered by the engine | N/A | N/A | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+Subtraction Picnic uses authored raster artwork only. CSS provides responsive
+layout, hit geometry, focus, and motion; it does not draw the game's characters,
+food, scenery, cards, title, or controls. Project code is MIT and game art
+follows the QLOBE Kids CC BY 4.0 convention.
 
-## Assets needed
+## Production art
 
-### Art
-- Hungry squirrel character art in QLOBE Kids cast style
-- Hungry bunny character art in QLOBE Kids cast style
-- Hungry bird character art in QLOBE Kids cast style
-- Hungry bear character art in QLOBE Kids cast style
+The seven accepted GPT Image 2 source masters live in
+`assets/source/gpt-image-2/`:
 
-### Voice
-- "The picnic guests are hungry. Feed them snacks, then count what is left."
-- "Now count how many are left."
-- "None left!"
-- "One!"
-- "Two!"
-- "Three!"
-- "Four!"
-- "Five!"
-- "Six!"
-- "The picnic guests are full!"
-- "There are three apples at the picnic. The squirrel eats one apple. Feed one to the squirrel."
-- "There are four strawberries at the picnic. The bunny eats two strawberries. Feed two to the bunny."
-- "There are five crackers at the picnic. The bird eats two crackers. Feed two to the bird."
-- "There are six grapes at the picnic. The bear eats three grapes. Feed three to the bear."
-- "There are six bananas at the picnic. The squirrel eats four bananas. Feed four to the squirrel."
+- `meadow-backdrop-master.png` — the open 4:3 forest meadow plate;
+- `characters-master.png` — squirrel, fox, and bear;
+- `foods-master.png` — apple, strawberry, cracker stack, grapes, and sandwich;
+- `scene-props-master.png` — three-panel storybook, picnic blanket, and basket;
+- `ui-surfaces-master.png` — prompt, equation, and three answer surfaces;
+- `hud-pips-master.png` — five watercolor controls and the simplified counting
+  leaf/seed pip;
+- `title-lockup-master.png` — the exact `SUBTRACTION PICNIC` painted title.
 
-## Link preview (og:image)
+The concept mockups under `01-game-concepts/subtraction-picnic/output/ui-mockups/`
+were local composition and style references. Full generation prompts and
+reference mapping are retained in `assets/source/PROMPTS.md`.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+The shipping opaque background is `assets/backdrop.webp` (quality 86, below the
+400 KB scene budget). Transparent runtime art is in `assets/characters/`,
+`assets/foods/`, `assets/props/`, `assets/ui/`, and `assets/title.webp`.
+
+## Cutter, Layered extraction, and alpha QA
+
+The repository's required `tools/cut-asset-sheet.py` was run with
+`--expected-count` against all five production sheets. Its exact source hashes,
+foreground bounds, padded crop bounds, and tuned parameters are in:
+
+| Sheet | Expected | Receipt |
+| --- | ---: | --- |
+| characters | 3 | `assets/source/crops/characters/boxes.json` |
+| foods | 5 | `assets/source/crops/foods/boxes.json` |
+| scene props | 3 | `assets/source/crops/props/boxes.json` |
+| UI surfaces | 5 | `assets/source/crops/ui/boxes.json` |
+| HUD and counting pips | 6 | `assets/source/crops/hud/boxes.json` |
+
+The food pass intentionally raised `min-area` to 2000 after the dry run exposed
+a detached 1,285-pixel artifact; accepting six cuts as five was not allowed.
+Binary detection masks are retained under `assets/source/qa/`.
+
+`tools/process-art.py` is the deterministic production driver. It runs the
+approved `qwen-image-layered` `layer_2` path, invokes
+`tools/pipeline/cutout_finalize.py`, preserves alpha receipts, and writes
+saturated-magenta composites for inspection. The fox Layered result passed both
+automated and visual QA. Squirrel and bear Layered attempts returned an opaque
+plate and near-blank alpha plane and were rejected; their raw outputs remain as
+`*.qwen-rejected.png`. The remaining assets use the Studio-approved
+border-connected, source-preserving matte fallback, which removes only plain
+background reachable from a crop border and never redraws the accepted GPT
+pixels. A nine-pixel neighboring basket intrusion in the rectangular blanket
+crop was removed by retaining only the blanket's largest connected component.
+
+`assets/source/art-manifest.json` records every final source hash, method,
+destination hash, alpha histogram, and Qwen failure reason. The per-asset
+magenta plates under `assets/source/qa/` are the human edge/halo review set.
+
+## Hub tile
+
+The hub uses the platform's separate Toy Table grammar rather than cropping the
+watercolor splash. Studio's `menu-game-tile` template ran
+`krea2-turbo-t2i` at 768×640, style `toy-table`, seed 42. Its accepted frame has
+exactly five wooden apples: two moving to Squirrel's basket and three remaining
+on the gingham blanket. The accepted source and Studio recipe are:
+
+- `assets/source/krea2/hub-tile-seed42.png`;
+- `assets/source/krea2/hub-tile-recipe.json`.
+
+The hand-curated 640×533 progressive JPEG is
+`../../assets/hub/tiles/subtraction-picnic.jpg`. It has no title, numeral, or UI
+baked in.
+
+## Teacher voice and audio
+
+The game ships 29/29 finalized AAC teacher clips in `assets/audio/`, generated
+with the approved local `qwen3-tts-voiceclone` workflow and rights-cleared local
+teacher reference. TTS was batched before transcription to avoid model churn.
+Every clip passed local Whisper `base/en` transcript QA; after normalizing
+spoken number words against Whisper's digits, the minimum match is 0.947 and
+equation clips are 1.000. No line relies on fallback-only audio.
+
+- `assets/audio/lines.json` — verbatim runtime/fallback script;
+- `assets/audio/manifest.json` — files, durations, and text hashes;
+- `assets/audio/qa.json` — intended text, transcript, similarity, workflow,
+  seed, and pass state;
+- `tools/generate-voice.py` — resumable TTS → AAC/loudness → Whisper driver.
+
+Web Speech remains the runtime fallback if a recorded file cannot play. The
+shared recorded `shared/assets/music/gentle-country-morning.mp3` starts only
+after a user gesture and ducks beneath narration. Shared WebAudio SFX come from
+`shared/js/sfx.js`.
+
+## Shared presentation assets
+
+| Asset | Source | License/use |
+| --- | --- | --- |
+| Fredoka SemiBold | `shared/fonts/fredoka-latin-600-normal.woff2` (Milena Brandao & Hafontia) | SIL OFL 1.1 |
+| Home/back/sound/next/refill buttons and counting pip | game-local GPT Image 2 watercolor sheet | QLOBE Kids CC BY 4.0 convention |
+| Background music | `shared/assets/music/gentle-country-morning.mp3` | QLOBE Kids recorded shared library |
+| Confetti palette and SFX | shared runtime modules | Programmatic feedback, not primary art |
+
+## Runtime and review plates
+
+Real-Chrome production captures for splash, Forest answer and solved reveal,
+Picnic Party at
+1024×768, 768×1024, 1180×520, and 844×390, plus the finale, are retained as
+`assets/source/qa/runtime-*.png`. `tools/qa.mjs` regenerates them while also
+checking the three modes, cloned-clip routing, invalid-drag return, five-round
+completion, the debug contract, and minimum 96×96 touch geometry.
+
+`assets/og-image.jpg` is the game's 1200×630 link preview and should be
+regenerated from the accepted splash rather than edited by hand.

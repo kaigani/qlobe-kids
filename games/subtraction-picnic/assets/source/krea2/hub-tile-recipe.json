@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "subtraction-picnic-hub-tile-v1",
+  "kind": "image",
+  "asset": "subtraction-picnic-hub-tile-v1.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Five chunky red wooden apples arranged on a coral gingham picnic blanket, with exactly two apples lifting in a playful arc toward a small woven picnic basket beside a friendly toy squirrel. The remaining three apples stay clearly grouped on the blanket. One instantly readable preschool subtraction-and-sharing moment, staged as a premium toy-table still life, no child, no hands, no title, no UI, no numerals. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "Five chunky red wooden apples arranged on a coral gingham picnic blanket, with exactly two apples lifting in a playful arc toward a small woven picnic basket beside a friendly toy squirrel. The remaining three apples stay clearly grouped on the blanket. One instantly readable preschool subtraction-and-sharing moment, staged as a premium toy-table still life, no child, no hands, no title, no UI, no numerals."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted"
+  },
+  "created": "2026-08-30"
+}

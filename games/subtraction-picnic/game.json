@@ -6,32 +6,47 @@
   "icon": "🐿️",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "status": "beta",
   "accent": "#58a945",
-  "shareTitle": "Subtraction Picnic 🐿️ — Counting What's Left",
-  "description": "Feed hungry picnic guests their snacks, then count how many remain after each helping. A gentle take-away game within six for ages 5–6.",
+  "shareTitle": "Subtraction Picnic 🐿️ — Share, Take Away, and Count",
+  "description": "Share watercolor picnic snacks with Squirrel, Fox, and Bear, watch a subtraction story happen, and count how many are left within six.",
   "learningGoals": [
-    "Model subtraction as taking away",
-    "Count remaining snacks after a change",
-    "Reason about how many are left within 6"
+    "Model subtraction as physically taking away from a visible group",
+    "Connect a take-away story to a completed subtraction equation",
+    "Count and reason about the quantity left within 6"
   ],
-  "interactionModel": "tap shared food cards to feed a hungry guest, then count the remaining cards",
-  "feedbackModel": "Each fed snack speaks the count; the tap-count engine asks how many are left and counts the remainder aloud.",
+  "interactionModel": "Choose one of three picture-book picnic modes. Tap a snack or drag it to a forest friend, then tap the numeral that matches what remains; Picnic Party lets children choose a friend and freely change the equation.",
+  "feedbackModel": "Every shared snack disappears from the blanket and updates the live equation. Recorded teacher narration, a gentle count-again retry, pulsing remaining food, a happy friend, and a large solved tableau model the result without scores, timers, or punishment.",
   "uses": [
-    "shared/js/engines/tap-count.js",
+    "shared/js/analytics.js",
+    "shared/js/screens.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
+    "shared/js/narrator.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/assets/foods/apple.png",
-    "shared/assets/foods/strawberry.png",
-    "shared/assets/foods/crackers.png",
-    "shared/assets/foods/grapes.png",
-    "shared/assets/foods/banana.png"
+    "shared/js/audio-unlock.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/music/gentle-country-morning.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "picnic", "title": "Hungry Guests", "skill": "informal subtraction stories within 6" }
+    { "id": "forest", "title": "Forest Friends", "skill": "informal take-away stories within 6" },
+    { "id": "practice", "title": "Apple Take-Away", "skill": "connecting take-away actions to subtraction equations" },
+    { "id": "party", "title": "Picnic Party", "skill": "free-play exploration of how subtraction changes the amount left" }
   ],
+  "summary": "Share snacks with watercolor forest friends, watch subtraction happen, and count what is left within 6.",
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Built with Codex for QLOBE Kids.",
-  "characters": ["squirrel", "bunny", "bird", "bear"],
-  "conceptVideo": ""
+  "credits": "Kaigani; original Storybook/Watercolor art produced with built-in GPT Image 2 and QLOBE Studio Krea 2 and Qwen Image Layered workflows. Recorded dialogue was produced with the approved local Qwen voice-clone workflow and verified with Whisper. See ASSETS.md for prompts, processing, QA, and provenance.",
+  "characters": [],
+  "conceptVideo": "01-game-concepts/subtraction-picnic/"
 }

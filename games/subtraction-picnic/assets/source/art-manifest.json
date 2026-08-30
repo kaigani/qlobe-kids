@@ -1,0 +1,926 @@
+{
+  "schema": "qlobe-subtraction-picnic-art-v1",
+  "generatedAt": "2026-08-30T20:14:31Z",
+  "assets": [
+    {
+      "name": "answer-blue",
+      "category": "ui",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/ui/answer-blue.png",
+      "sourceSha256": "90e6b4a0cb225bc9ad516a7096a5d292a3052fd4b555994585daa5315e0ca57a",
+      "layer2": "assets/source/layered/ui/answer-blue.cpu-layer2.png",
+      "destination": "assets/ui/answer-blue.webp",
+      "destinationSha256": "72094315c66f89eec39fc5aa2c2b7007abcf90be499cb6314f0023eb34caec05",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 15.688,
+          "opaquePct": 81.804,
+          "partialPct": 2.508
+        },
+        "bbox": [
+          10,
+          10,
+          417,
+          363
+        ],
+        "sourceSize": [
+          427,
+          373
+        ],
+        "finalSize": [
+          427,
+          373
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "answer-green",
+      "category": "ui",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/ui/answer-green.png",
+      "sourceSha256": "39e42692fc945b4fafb52df96c633661745f3fbef89404772576118f03763710",
+      "layer2": "assets/source/layered/ui/answer-green.cpu-layer2.png",
+      "destination": "assets/ui/answer-green.webp",
+      "destinationSha256": "45308c3d25fd173e7f502c2b28bdff7f4353225c8669961a4efccdf8259bca31",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 15.861,
+          "opaquePct": 81.641,
+          "partialPct": 2.499
+        },
+        "bbox": [
+          11,
+          10,
+          415,
+          363
+        ],
+        "sourceSize": [
+          425,
+          373
+        ],
+        "finalSize": [
+          425,
+          373
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "answer-yellow",
+      "category": "ui",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/ui/answer-yellow.png",
+      "sourceSha256": "51965069b4219108b4479157f34da69d1033ea4e48911f4343e2335c7d847e94",
+      "layer2": "assets/source/layered/ui/answer-yellow.cpu-layer2.png",
+      "destination": "assets/ui/answer-yellow.webp",
+      "destinationSha256": "2d3aac5c1c14c69631c2fbaa2cb5367913adb5002318794e98991baca02f4239",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 15.71,
+          "opaquePct": 81.789,
+          "partialPct": 2.501
+        },
+        "bbox": [
+          10,
+          10,
+          416,
+          363
+        ],
+        "sourceSize": [
+          426,
+          373
+        ],
+        "finalSize": [
+          426,
+          373
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "apple",
+      "category": "foods",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/foods/apple.png",
+      "sourceSha256": "f8595e2e0b575c78a2ef7ce744a84be790af4b4fa2f08c397bbf2940a32fde2d",
+      "layer2": "assets/source/layered/foods/apple.cpu-layer2.png",
+      "destination": "assets/foods/apple.webp",
+      "destinationSha256": "ff4d73275d01cb5461323a0d53edea1365bbdee7ce1d82a5c53a33df1dd941ea",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 32.429,
+          "opaquePct": 65.194,
+          "partialPct": 2.378
+        },
+        "bbox": [
+          10,
+          10,
+          403,
+          433
+        ],
+        "sourceSize": [
+          413,
+          443
+        ],
+        "finalSize": [
+          413,
+          443
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "back",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/back.png",
+      "sourceSha256": "27e8668fc6a3f134d774dfb4d046fbdcdfc5f9133b0293ce06d713276009e8a9",
+      "layer2": "assets/source/layered/hud/back.cpu-layer2.png",
+      "destination": "assets/ui/hud-back.webp",
+      "destinationSha256": "a2236794923daaef82d8e5fcd234ed3938d476e9732e73837c76575a356b8527",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 40.29,
+          "opaquePct": 57.781,
+          "partialPct": 1.929
+        },
+        "bbox": [
+          26,
+          26,
+          383,
+          388
+        ],
+        "sourceSize": [
+          409,
+          414
+        ],
+        "finalSize": [
+          389,
+          394
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "backdrop",
+      "status": "ok",
+      "workflow": "gpt-image-2",
+      "source": "assets/source/gpt-image-2/meadow-backdrop-master.png",
+      "sourceSha256": "a75859b1da12dbb374a1708eae1b6d291ba6420f29499b7f7840ce14f4fbf40c",
+      "destination": "assets/backdrop.webp",
+      "destinationSha256": "0b9815d9472fd397d44d8c115a34e40d2e43ad2f7181b2f776a8aa074be026b1"
+    },
+    {
+      "name": "banner",
+      "category": "ui",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/ui/banner.png",
+      "sourceSha256": "657c97c7fdf4ad4efb0da86f6bbd0401fd0f24538c747bc8d11b651a08950fd7",
+      "layer2": "assets/source/layered/ui/banner.cpu-layer2.png",
+      "destination": "assets/ui/banner.webp",
+      "destinationSha256": "69b13cb6f845fb88b16ac36a17da19e5483e0d37887267fc47e232b0875503fc",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 18.465,
+          "opaquePct": 78.773,
+          "partialPct": 2.762
+        },
+        "bbox": [
+          10,
+          11,
+          1212,
+          238
+        ],
+        "sourceSize": [
+          1222,
+          249
+        ],
+        "finalSize": [
+          900,
+          183
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "basket",
+      "category": "props",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/props/basket.png",
+      "sourceSha256": "9d1d1c937d0f847a7c8ee65498f3b87a4731519b1bf7681058e4e10cd55f8356",
+      "layer2": "assets/source/layered/props/basket.cpu-layer2.png",
+      "destination": "assets/props/basket.webp",
+      "destinationSha256": "1dcd0e9c8cc9e9ba7963013c09d92c7ef1df834f2e20c76e82326610f63efe53",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 34.457,
+          "opaquePct": 63.162,
+          "partialPct": 2.381
+        },
+        "bbox": [
+          0,
+          10,
+          406,
+          496
+        ],
+        "sourceSize": [
+          416,
+          506
+        ],
+        "finalSize": [
+          416,
+          506
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "bear",
+      "category": "characters",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [
+        "empty extraction (fully transparent layer_2)"
+      ],
+      "source": "assets/source/crops/characters/bear.png",
+      "sourceSha256": "fd07082f0c7471fe3587141564abc08cbb5f6188f47a80036e2c273490587727",
+      "layer2": "assets/source/layered/characters/bear.cpu-layer2.png",
+      "destination": "assets/characters/bear.webp",
+      "destinationSha256": "894ea42b80f8ceadf687e47fbc9324143366b425fd17f0118fd850ea07c35fae",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 31.77,
+          "opaquePct": 66.089,
+          "partialPct": 2.141
+        },
+        "bbox": [
+          10,
+          10,
+          447,
+          643
+        ],
+        "sourceSize": [
+          457,
+          653
+        ],
+        "finalSize": [
+          448,
+          640
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "blanket",
+      "category": "props",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/props/blanket.png",
+      "sourceSha256": "ecbcd6306af6a2069528ceed33b863f9fe7e26ba9746c140564575fae55bc6fa",
+      "layer2": "assets/source/layered/props/blanket.cpu-layer2.png",
+      "destination": "assets/props/blanket.webp",
+      "destinationSha256": "12ff58f7502364e3dbd6c80496e687f3ceb058550ff9c14361494a040e941caa",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 20.644,
+          "opaquePct": 75.953,
+          "partialPct": 3.403
+        },
+        "bbox": [
+          11,
+          11,
+          584,
+          398
+        ],
+        "sourceSize": [
+          594,
+          408
+        ],
+        "finalSize": [
+          594,
+          408
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "book-card",
+      "category": "props",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/props/book-card.png",
+      "sourceSha256": "77c3d92f950d2ab7efe7b7e477d5b6f7547ba75901716de2cc76d6c0442e66ac",
+      "layer2": "assets/source/layered/props/book-card.cpu-layer2.png",
+      "destination": "assets/ui/book-card.webp",
+      "destinationSha256": "2b8aebaaff1f2edd6ab8e21276a8852c41b8fda19de6139a7d21333d6d9f0ad0",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 15.038,
+          "opaquePct": 83.059,
+          "partialPct": 1.903
+        },
+        "bbox": [
+          10,
+          10,
+          795,
+          442
+        ],
+        "sourceSize": [
+          795,
+          452
+        ],
+        "finalSize": [
+          795,
+          452
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "cracker",
+      "category": "foods",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/foods/cracker.png",
+      "sourceSha256": "bb1e37596887dd1d1b19d19a47eddbe53d8dbeb5d15e98445a286d2b3bde1674",
+      "layer2": "assets/source/layered/foods/cracker.cpu-layer2.png",
+      "destination": "assets/foods/cracker.webp",
+      "destinationSha256": "2e1eb9aeb2ac25a8c6cfbbea267ef0eed82bdb18f0b3c70f72ef1bef161ebbf1",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.216,
+          "opaquePct": 59.706,
+          "partialPct": 2.079
+        },
+        "bbox": [
+          11,
+          10,
+          439,
+          410
+        ],
+        "sourceSize": [
+          449,
+          421
+        ],
+        "finalSize": [
+          449,
+          421
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "equation-card",
+      "category": "ui",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/ui/equation-card.png",
+      "sourceSha256": "44abd946037f845fc9c54ef496078f20fd42a3b83fdbadcd8cef788121d2d715",
+      "layer2": "assets/source/layered/ui/equation-card.cpu-layer2.png",
+      "destination": "assets/ui/equation-card.webp",
+      "destinationSha256": "80f16eec115f66e10e03a1c6758171467b8942d2a62adfcbf555556fe9740775",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 10.28,
+          "opaquePct": 87.545,
+          "partialPct": 2.175
+        },
+        "bbox": [
+          11,
+          10,
+          985,
+          330
+        ],
+        "sourceSize": [
+          995,
+          340
+        ],
+        "finalSize": [
+          900,
+          308
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "fox",
+      "category": "characters",
+      "status": "ok",
+      "workflow": "qwen-image-layered",
+      "output": "layer_2",
+      "prompt": "Background layer: the complete plain background only. Top layer: the exact same hand-painted watercolor fox from the input image, isolated on a truly transparent background. Preserve its silhouette, watercolor texture, proportions, colors, lettering if present, and every painted detail. Do not redesign, restyle, crop, add, remove, or duplicate anything.",
+      "source": "assets/source/crops/characters/fox.png",
+      "sourceSha256": "2a589bffa7746509a4276934ce572b3b496768a09198a4ddb104501ee6c69c5d",
+      "layer2": "assets/source/layered/characters/fox.layer2.png",
+      "destination": "assets/characters/fox.webp",
+      "destinationSha256": "90c08cdd4ea0ae2549e4e8f8d4e5edb1ebde40efe59edd4739f12310394f3994",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.367,
+          "opaquePct": 41.667,
+          "partialPct": 19.966
+        },
+        "bbox": [
+          0,
+          0,
+          728,
+          1024
+        ],
+        "sourceSize": [
+          728,
+          1024
+        ],
+        "finalSize": [
+          455,
+          640
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "grapes",
+      "category": "foods",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/foods/grapes.png",
+      "sourceSha256": "e88c957acdd75a007ce707a82b3113074b5b3b816c9b8ba56a8eb4e37363c449",
+      "layer2": "assets/source/layered/foods/grapes.cpu-layer2.png",
+      "destination": "assets/foods/grapes.webp",
+      "destinationSha256": "4fe25c7cf714e25e24426584d0c9e73a54ce7f65f3a6df5f275fce056f63c24c",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 45.134,
+          "opaquePct": 47.456,
+          "partialPct": 7.41
+        },
+        "bbox": [
+          10,
+          10,
+          487,
+          435
+        ],
+        "sourceSize": [
+          497,
+          445
+        ],
+        "finalSize": [
+          497,
+          445
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "home",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/home.png",
+      "sourceSha256": "daf56708bc20114ff2017bad2d8a138b6f1acad7ab119901542fcfe1f15329b2",
+      "layer2": "assets/source/layered/hud/home.cpu-layer2.png",
+      "destination": "assets/ui/hud-home.webp",
+      "destinationSha256": "422a5496df095b496b179761358c409c8e9d12576ce3a8498bdc3bc80bf22fad",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 39.973,
+          "opaquePct": 58.123,
+          "partialPct": 1.904
+        },
+        "bbox": [
+          26,
+          26,
+          392,
+          393
+        ],
+        "sourceSize": [
+          418,
+          419
+        ],
+        "finalSize": [
+          398,
+          399
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "next",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/next.png",
+      "sourceSha256": "86b92627c4d055457d91dc83c7e73553508fcf9c25427c60212c37c56fc7c496",
+      "layer2": "assets/source/layered/hud/next.cpu-layer2.png",
+      "destination": "assets/ui/hud-next.webp",
+      "destinationSha256": "12418997f9a6031b7ae6f47c7d734ce553c232e15a0355c391d0e781f41973a4",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 40.052,
+          "opaquePct": 58.052,
+          "partialPct": 1.896
+        },
+        "bbox": [
+          26,
+          26,
+          391,
+          396
+        ],
+        "sourceSize": [
+          417,
+          422
+        ],
+        "finalSize": [
+          397,
+          402
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "pip",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/pip.png",
+      "sourceSha256": "7d7349858e59115e45a846d0f5e8caf1c28caa683aabbd1b57b44d712f26c90d",
+      "layer2": "assets/source/layered/hud/pip.cpu-layer2.png",
+      "destination": "assets/ui/pip.webp",
+      "destinationSha256": "549e462e227110d6f95fd5d05b2ae842f6e5db5437e0fa5da7d4b742f682b04e",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 44.895,
+          "opaquePct": 53.0,
+          "partialPct": 2.105
+        },
+        "bbox": [
+          26,
+          26,
+          322,
+          371
+        ],
+        "sourceSize": [
+          348,
+          398
+        ],
+        "finalSize": [
+          328,
+          377
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "refill",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/refill.png",
+      "sourceSha256": "9513887e473bf8a461502130ec7972ebc21f7b77d92c88a1fef641a29118e2b4",
+      "layer2": "assets/source/layered/hud/refill.cpu-layer2.png",
+      "destination": "assets/ui/hud-refill.webp",
+      "destinationSha256": "19783e653b1f0d969c4842b15dff431af7a8bc2efdb9eacfd0ecf172e8adb707",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 40.173,
+          "opaquePct": 57.92,
+          "partialPct": 1.906
+        },
+        "bbox": [
+          26,
+          26,
+          389,
+          394
+        ],
+        "sourceSize": [
+          415,
+          420
+        ],
+        "finalSize": [
+          395,
+          400
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "sandwich",
+      "category": "foods",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/foods/sandwich.png",
+      "sourceSha256": "4e4a6d17c2b80ae417d0a87a26fccbe2a5e99c80654cfcaebed826764f68a67f",
+      "layer2": "assets/source/layered/foods/sandwich.cpu-layer2.png",
+      "destination": "assets/foods/sandwich.webp",
+      "destinationSha256": "ee0702106a14cdd88039226b5d7f5e36a731de868b6ac045648ec7c65bf58204",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 43.954,
+          "opaquePct": 54.249,
+          "partialPct": 1.797
+        },
+        "bbox": [
+          10,
+          10,
+          512,
+          448
+        ],
+        "sourceSize": [
+          522,
+          458
+        ],
+        "finalSize": [
+          522,
+          458
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "sound",
+      "category": "hud",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/hud/sound.png",
+      "sourceSha256": "194cde5d9b15bc2cedc92d9caa96653d3632205f3ff7d26d021e52519ffc60a4",
+      "layer2": "assets/source/layered/hud/sound.cpu-layer2.png",
+      "destination": "assets/ui/hud-sound.webp",
+      "destinationSha256": "3d33c02284803cf67ba46e2309f6c7e41be6ec0b1e6965e35ca3e49585f5aa33",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 40.197,
+          "opaquePct": 57.896,
+          "partialPct": 1.907
+        },
+        "bbox": [
+          26,
+          26,
+          388,
+          392
+        ],
+        "sourceSize": [
+          414,
+          418
+        ],
+        "finalSize": [
+          394,
+          398
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "squirrel",
+      "category": "characters",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [
+        "background not removed (transparent 0.0% < 5.0%)"
+      ],
+      "source": "assets/source/crops/characters/squirrel.png",
+      "sourceSha256": "418dee745421c9ed7c7b7861bdfc05e656838009d426a345ea5a5bf1e2aea825",
+      "layer2": "assets/source/layered/characters/squirrel.cpu-layer2.png",
+      "destination": "assets/characters/squirrel.webp",
+      "destinationSha256": "1d264b72a442a1a85b38db92d66afd499d940dabb6af4853408fc5a6f3a1db85",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 43.198,
+          "opaquePct": 54.342,
+          "partialPct": 2.46
+        },
+        "bbox": [
+          11,
+          11,
+          452,
+          585
+        ],
+        "sourceSize": [
+          462,
+          595
+        ],
+        "finalSize": [
+          462,
+          595
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "strawberry",
+      "category": "foods",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/crops/foods/strawberry.png",
+      "sourceSha256": "4503208bf0c5e0513df59ec358ee29158e5a2803dc13dc38f0067253840336c0",
+      "layer2": "assets/source/layered/foods/strawberry.cpu-layer2.png",
+      "destination": "assets/foods/strawberry.webp",
+      "destinationSha256": "b61b7ef704252e727e959732947ce02ad947837e676d7a2ccd0cff2c23aa7fff",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 38.266,
+          "opaquePct": 58.811,
+          "partialPct": 2.923
+        },
+        "bbox": [
+          10,
+          10,
+          306,
+          379
+        ],
+        "sourceSize": [
+          317,
+          389
+        ],
+        "finalSize": [
+          317,
+          389
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    },
+    {
+      "name": "title",
+      "category": "title",
+      "status": "ok-fallback",
+      "workflow": "deterministic-border-connected-matte",
+      "qwenAttempts": [],
+      "source": "assets/source/gpt-image-2/title-lockup-master.png",
+      "sourceSha256": "5b0518ec51ad1cdcedc30e79034c1776a10a278d6f6d31df7476e05929d4d2d9",
+      "layer2": "assets/source/layered/title/title.cpu-layer2.png",
+      "destination": "assets/title.webp",
+      "destinationSha256": "f22ac8d0ad195527b6fb3528bbabbe87110e2a8166c3d96954d3c3cef76ca076",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 70.643,
+          "opaquePct": 26.073,
+          "partialPct": 3.284
+        },
+        "bbox": [
+          75,
+          180,
+          1713,
+          769
+        ],
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "finalSize": [
+          900,
+          335
+        ],
+        "alphaFloor": 0,
+        "returnCode": 0
+      }
+    }
+  ]
+}

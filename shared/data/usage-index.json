@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-29T20:04:51.573Z",
+  "generated": "2026-08-30T20:24:23.578Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -54,21 +54,20 @@
         "turn-taking-tower"
       ]
     },
-    "tap-count": {
-      "count": 4,
-      "games": [
-        "number-line-jump",
-        "sandpaper-number-match",
-        "snack-addition-stories",
-        "subtraction-picnic"
-      ]
-    },
     "trace-path": {
       "count": 3,
       "games": [
         "chalkboard-big-strokes",
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "tap-count": {
+      "count": 3,
+      "games": [
+        "number-line-jump",
+        "sandpaper-number-match",
+        "snack-addition-stories"
       ]
     },
     "match-pairs": {
@@ -2832,32 +2831,34 @@
       "packs": []
     },
     "subtraction-picnic": {
-      "engine": "tap-count",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
-      "characters": [
-        "bear",
-        "bird",
-        "bunny",
-        "squirrel"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/tap-count.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/foods/apple.png",
-        "shared/assets/foods/banana.png",
-        "shared/assets/foods/crackers.png",
-        "shared/assets/foods/grapes.png",
-        "shared/assets/foods/strawberry.png"
+        "shared/assets/music/gentle-country-morning.mp3"
       ],
       "packs": []
     },
@@ -3457,6 +3458,7 @@
         "sound-painting",
         "sticker-line-challenge",
         "story-stones",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3482,6 +3484,7 @@
         "shadow-chase",
         "shape-detective",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "tiny-sentence-workshop",
         "tweezer-rescue"
@@ -3524,6 +3527,7 @@
         "sink-or-float",
         "snack-chef",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
@@ -3607,6 +3611,7 @@
         "sound-painting",
         "sticker-line-challenge",
         "story-stones",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3692,8 +3697,7 @@
       "shared/js/engines/tap-count.js": [
         "number-line-jump",
         "sandpaper-number-match",
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/js/engines/trace-path.js": [
         "chalkboard-big-strokes",
@@ -3766,6 +3770,7 @@
         "shape-detective",
         "sink-or-float",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
@@ -3835,6 +3840,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
+        "subtraction-picnic",
         "throwing-target-garden",
         "tweezer-rescue",
         "weather-scientist"
@@ -3869,6 +3875,7 @@
         "puzzle-map-match",
         "shape-detective",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -3918,6 +3925,7 @@
         "sound-basket",
         "sound-cylinder-match",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3955,6 +3963,7 @@
         "shape-detective",
         "snack-chef",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "throwing-target-garden",
         "tiny-reader-theater",
@@ -4183,6 +4192,7 @@
         "snack-chef",
         "sound-basket",
         "story-stones",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4351,6 +4361,7 @@
         "shape-detective",
         "sound-cylinder-match",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -4417,6 +4428,7 @@
         "sound-sprouts",
         "sticker-line-challenge",
         "story-stones",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4596,7 +4608,6 @@
         "story-repair-shop",
         "story-sequence",
         "story-stones",
-        "subtraction-picnic",
         "sweep-the-trail",
         "texture-trail",
         "then-now-sort",
@@ -4639,6 +4650,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sticker-line-challenge",
+        "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -4757,17 +4769,10 @@
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
-        "subtraction-picnic",
         "tiny-reader-theater"
-      ],
-      "bird": [
-        "subtraction-picnic"
       ],
       "bolt": [
         "red-green-light"
-      ],
-      "bunny": [
-        "subtraction-picnic"
       ],
       "captain-goldie": [
         "counting-treasure-cups"
@@ -4929,9 +4934,6 @@
       ],
       "skipper": [
         "counting-treasure-cups"
-      ],
-      "squirrel": [
-        "subtraction-picnic"
       ],
       "Sunny the sunflower": [
         "garden-delivery-game"
@@ -5610,24 +5612,19 @@
         "snack-chef"
       ],
       "shared/assets/foods/apple.png": [
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/assets/foods/banana.png": [
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/assets/foods/crackers.png": [
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/assets/foods/grapes.png": [
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/assets/foods/strawberry.png": [
-        "snack-addition-stories",
-        "subtraction-picnic"
+        "snack-addition-stories"
       ],
       "shared/assets/instruments": [
         "my-puppet-band",
@@ -5650,6 +5647,7 @@
       "shared/assets/music/gentle-country-morning.mp3": [
         "garden-graphers",
         "picture-word-match",
+        "subtraction-picnic",
         "tweezer-rescue"
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
@@ -5737,7 +5735,6 @@
         "my-puppet-band",
         "puppet-problem-solvers",
         "puppet-retell",
-        "subtraction-picnic",
         "tiny-reader-theater"
       ],
       "shared/characters/doggy": [

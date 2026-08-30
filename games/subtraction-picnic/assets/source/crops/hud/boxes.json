@@ -1,0 +1,206 @@
+{
+  "source": "games/subtraction-picnic/assets/source/gpt-image-2/hud-pips-master.png",
+  "sourceSha256": "3a0fa22f17a1e87231d99776b3996f97f0cfaaf304b4b61db3481cd99318bfd8",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    23,
+    28,
+    30
+  ],
+  "padding": 28,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home",
+      "file": "home.png",
+      "componentArea": 103191,
+      "foregroundBbox": [
+        140,
+        108,
+        502,
+        471
+      ],
+      "cropBbox": [
+        112,
+        80,
+        530,
+        499
+      ],
+      "cropXywh": [
+        112,
+        80,
+        418,
+        419
+      ],
+      "normalizedCropBbox": [
+        0.072917,
+        0.078125,
+        0.345052,
+        0.487305
+      ]
+    },
+    {
+      "index": 2,
+      "name": "back",
+      "file": "back.png",
+      "componentArea": 99206,
+      "foregroundBbox": [
+        594,
+        110,
+        947,
+        468
+      ],
+      "cropBbox": [
+        566,
+        82,
+        975,
+        496
+      ],
+      "cropXywh": [
+        566,
+        82,
+        409,
+        414
+      ],
+      "normalizedCropBbox": [
+        0.36849,
+        0.080078,
+        0.634766,
+        0.484375
+      ]
+    },
+    {
+      "index": 3,
+      "name": "sound",
+      "file": "sound.png",
+      "componentArea": 101574,
+      "foregroundBbox": [
+        1042,
+        109,
+        1400,
+        471
+      ],
+      "cropBbox": [
+        1014,
+        81,
+        1428,
+        499
+      ],
+      "cropXywh": [
+        1014,
+        81,
+        414,
+        418
+      ],
+      "normalizedCropBbox": [
+        0.660156,
+        0.079102,
+        0.929688,
+        0.487305
+      ]
+    },
+    {
+      "index": 4,
+      "name": "next",
+      "file": "next.png",
+      "componentArea": 103556,
+      "foregroundBbox": [
+        139,
+        552,
+        500,
+        918
+      ],
+      "cropBbox": [
+        111,
+        524,
+        528,
+        946
+      ],
+      "cropXywh": [
+        111,
+        524,
+        417,
+        422
+      ],
+      "normalizedCropBbox": [
+        0.072266,
+        0.511719,
+        0.34375,
+        0.923828
+      ]
+    },
+    {
+      "index": 5,
+      "name": "refill",
+      "file": "refill.png",
+      "componentArea": 102353,
+      "foregroundBbox": [
+        592,
+        555,
+        951,
+        919
+      ],
+      "cropBbox": [
+        564,
+        527,
+        979,
+        947
+      ],
+      "cropXywh": [
+        564,
+        527,
+        415,
+        420
+      ],
+      "normalizedCropBbox": [
+        0.367188,
+        0.514648,
+        0.63737,
+        0.924805
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pip",
+      "file": "pip.png",
+      "componentArea": 74782,
+      "foregroundBbox": [
+        1073,
+        568,
+        1365,
+        910
+      ],
+      "cropBbox": [
+        1045,
+        540,
+        1393,
+        938
+      ],
+      "cropXywh": [
+        1045,
+        540,
+        348,
+        398
+      ],
+      "normalizedCropBbox": [
+        0.680339,
+        0.527344,
+        0.906901,
+        0.916016
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 36,
+    "chromaThreshold": 20,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 5000,
+    "order": "reading"
+  }
+}

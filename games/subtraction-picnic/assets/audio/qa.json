@@ -1,0 +1,292 @@
+{
+  "intro": {
+    "intended": "Welcome to our subtraction picnic. Pick a picnic game.",
+    "transcript": "Welcome to our subtraction picnic, Pick a picnic game.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-intro": {
+    "intended": "Our forest friends are hungry. Give them a snack, then count what is left.",
+    "transcript": "Our forest friends are hungry. Give them a snack. Then count what is left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-intro": {
+    "intended": "Let’s take away apples. Give some to Squirrel, then count what is left.",
+    "transcript": "Let's take away apples. Give some to Squirrel. Then count what is left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "party-intro": {
+    "intended": "Picnic party! Give away as many snacks as you like. Watch the numbers change.",
+    "transcript": "picnic party. Give away as many snacks as you like. Watch the numbers change.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "how-many-left": {
+    "intended": "How many are left on the blanket?",
+    "transcript": "How many are left on the blanket?",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "count-hint": {
+    "intended": "Let’s count what is still on the blanket.",
+    "transcript": "Let's count what is still on the blanket.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "drag-hint": {
+    "intended": "Tap a snack, or slide it over to our friend.",
+    "transcript": "Tap a snack or slide it over to our friend.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "mode-complete": {
+    "intended": "What a lovely picnic! You showed how taking away changes the number left.",
+    "transcript": "What a lovely picnic! You showed how taking away changes the number left!",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "all-gone": {
+    "intended": "All shared! Zero snacks are left.",
+    "transcript": "All shared, zero snacks are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-5-2": {
+    "intended": "Five apples are on the picnic blanket. Squirrel would like two. Give Squirrel two apples.",
+    "transcript": "Five apples are on the picnic blanket. Squirrel would like two. Give Squirrel two apples.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-4-1": {
+    "intended": "Four strawberries are ready to share. Fox would like one. Give Fox one strawberry.",
+    "transcript": "Four strawberries are ready to share. Fox would like one. Give Fox one strawberry.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-5-3": {
+    "intended": "Five crunchy crackers are on the blanket. Bear would like three. Give Bear three crackers.",
+    "transcript": "Five crunchy crackers are on the blanket. Bear would like three. Give bear three crackers.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-6-2": {
+    "intended": "Six grape bunches are at the picnic. Fox would like two. Give Fox two grape bunches.",
+    "transcript": "Six great bunches are at the picnic. Fox would like two. Give Fox two great bunches.",
+    "similarity": 0.947,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "forest-6-4": {
+    "intended": "Six little sandwiches are ready. Bear would like four. Give Bear four sandwiches.",
+    "transcript": "6 little sandwiches are ready. Bear with like 4. Give bear 4 sandwiches.",
+    "similarity": 0.95,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-3-1": {
+    "intended": "Three apples. Take away one.",
+    "transcript": "Three apples. Take away one.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-4-2": {
+    "intended": "Four apples. Take away two.",
+    "transcript": "Four apples take away two.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-5-1": {
+    "intended": "Five apples. Take away one.",
+    "transcript": "Five apples, take away one.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-5-4": {
+    "intended": "Five apples. Take away four.",
+    "transcript": "Five apples, take away four.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "practice-6-3": {
+    "intended": "Six apples. Take away three.",
+    "transcript": "Six apples. Take away three.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-3-1-2": {
+    "intended": "Three take away one equals two. Two are left.",
+    "transcript": "3, take away 1 equals 2. 2 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-4-1-3": {
+    "intended": "Four take away one equals three. Three are left.",
+    "transcript": "4 take away 1 equals 3. 3 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-4-2-2": {
+    "intended": "Four take away two equals two. Two are left.",
+    "transcript": "4 take away 2 equals 2. 2 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-5-1-4": {
+    "intended": "Five take away one equals four. Four are left.",
+    "transcript": "5 take away 1 equals 4 4 are left",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-5-2-3": {
+    "intended": "Five take away two equals three. Three are left.",
+    "transcript": "5, take away 2 equals 3. 3 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-5-3-2": {
+    "intended": "Five take away three equals two. Two are left.",
+    "transcript": "5 take away 3 equals 2, 2 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-5-4-1": {
+    "intended": "Five take away four equals one. One is left.",
+    "transcript": "5 take away 4 equals 1. 1 is left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-6-2-4": {
+    "intended": "Six take away two equals four. Four are left.",
+    "transcript": "6 take away 2 equals 4, 4 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-6-3-3": {
+    "intended": "Six take away three equals three. Three are left.",
+    "transcript": "6 take away 3 equals 3. 3 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  },
+  "equation-6-4-2": {
+    "intended": "Six take away four equals two. Two are left.",
+    "transcript": "6 take away 4 equals 2. 2 are left.",
+    "similarity": 1.0,
+    "pass": true,
+    "ttsWorkflow": "qwen3-tts-voiceclone",
+    "qaWorkflow": "whisper-stt",
+    "seed": 7,
+    "voiceReference": "approved-local-teacher-reference"
+  }
+}

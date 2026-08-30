@@ -1,0 +1,116 @@
+{
+  "source": "games/subtraction-picnic/assets/source/gpt-image-2/characters-master.png",
+  "sourceSha256": "ee09710d333aa7341034246d720c80b50417fecbbc01939f3aa3d5797d1eb222",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    34,
+    37,
+    43
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "squirrel",
+      "file": "squirrel.png",
+      "componentArea": 152663,
+      "foregroundBbox": [
+        98,
+        255,
+        536,
+        826
+      ],
+      "cropBbox": [
+        86,
+        243,
+        548,
+        838
+      ],
+      "cropXywh": [
+        86,
+        243,
+        462,
+        595
+      ],
+      "normalizedCropBbox": [
+        0.05599,
+        0.237305,
+        0.356771,
+        0.818359
+      ]
+    },
+    {
+      "index": 2,
+      "name": "fox",
+      "file": "fox.png",
+      "componentArea": 165811,
+      "foregroundBbox": [
+        552,
+        197,
+        992,
+        823
+      ],
+      "cropBbox": [
+        540,
+        185,
+        1004,
+        835
+      ],
+      "cropXywh": [
+        540,
+        185,
+        464,
+        650
+      ],
+      "normalizedCropBbox": [
+        0.351562,
+        0.180664,
+        0.653646,
+        0.81543
+      ]
+    },
+    {
+      "index": 3,
+      "name": "bear",
+      "file": "bear.png",
+      "componentArea": 200307,
+      "foregroundBbox": [
+        1034,
+        204,
+        1467,
+        833
+      ],
+      "cropBbox": [
+        1022,
+        192,
+        1479,
+        845
+      ],
+      "cropXywh": [
+        1022,
+        192,
+        457,
+        653
+      ],
+      "normalizedCropBbox": [
+        0.665365,
+        0.1875,
+        0.962891,
+        0.825195
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

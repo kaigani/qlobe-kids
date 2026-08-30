@@ -1,0 +1,176 @@
+{
+  "source": "games/subtraction-picnic/assets/source/gpt-image-2/ui-surfaces-master.png",
+  "sourceSha256": "4e425efd0084a780e75cd6aaa7295b3eaaa513b2753e1b82e8661482b6773914",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    28,
+    31,
+    36
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "banner",
+      "file": "banner.png",
+      "componentArea": 243412,
+      "foregroundBbox": [
+        113,
+        60,
+        1311,
+        285
+      ],
+      "cropBbox": [
+        101,
+        48,
+        1323,
+        297
+      ],
+      "cropXywh": [
+        101,
+        48,
+        1222,
+        249
+      ],
+      "normalizedCropBbox": [
+        0.069751,
+        0.044199,
+        0.913674,
+        0.273481
+      ]
+    },
+    {
+      "index": 2,
+      "name": "equation-card",
+      "file": "equation-card.png",
+      "componentArea": 299308,
+      "foregroundBbox": [
+        239,
+        316,
+        1210,
+        632
+      ],
+      "cropBbox": [
+        227,
+        304,
+        1222,
+        644
+      ],
+      "cropXywh": [
+        227,
+        304,
+        995,
+        340
+      ],
+      "normalizedCropBbox": [
+        0.156768,
+        0.279926,
+        0.843923,
+        0.593002
+      ]
+    },
+    {
+      "index": 3,
+      "name": "answer-yellow",
+      "file": "answer-yellow.png",
+      "componentArea": 131673,
+      "foregroundBbox": [
+        83,
+        660,
+        485,
+        1009
+      ],
+      "cropBbox": [
+        71,
+        648,
+        497,
+        1021
+      ],
+      "cropXywh": [
+        71,
+        648,
+        426,
+        373
+      ],
+      "normalizedCropBbox": [
+        0.049033,
+        0.596685,
+        0.343232,
+        0.940147
+      ]
+    },
+    {
+      "index": 4,
+      "name": "answer-green",
+      "file": "answer-green.png",
+      "componentArea": 131068,
+      "foregroundBbox": [
+        523,
+        660,
+        924,
+        1009
+      ],
+      "cropBbox": [
+        511,
+        648,
+        936,
+        1021
+      ],
+      "cropXywh": [
+        511,
+        648,
+        425,
+        373
+      ],
+      "normalizedCropBbox": [
+        0.352901,
+        0.596685,
+        0.646409,
+        0.940147
+      ]
+    },
+    {
+      "index": 5,
+      "name": "answer-blue",
+      "file": "answer-blue.png",
+      "componentArea": 131975,
+      "foregroundBbox": [
+        963,
+        660,
+        1366,
+        1009
+      ],
+      "cropBbox": [
+        951,
+        648,
+        1378,
+        1021
+      ],
+      "cropXywh": [
+        951,
+        648,
+        427,
+        373
+      ],
+      "normalizedCropBbox": [
+        0.656768,
+        0.596685,
+        0.951657,
+        0.940147
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

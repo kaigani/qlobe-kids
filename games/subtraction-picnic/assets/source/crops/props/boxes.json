@@ -1,0 +1,116 @@
+{
+  "source": "games/subtraction-picnic/assets/source/gpt-image-2/scene-props-master.png",
+  "sourceSha256": "d4033d89df146abcae8bfb88077b689fef98059eb2a0def15832f63a6d6f0bcc",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    33,
+    34,
+    39
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "book-card",
+      "file": "book-card.png",
+      "componentArea": 301342,
+      "foregroundBbox": [
+        20,
+        220,
+        791,
+        648
+      ],
+      "cropBbox": [
+        8,
+        208,
+        803,
+        660
+      ],
+      "cropXywh": [
+        8,
+        208,
+        795,
+        452
+      ],
+      "normalizedCropBbox": [
+        0.00451,
+        0.234498,
+        0.452649,
+        0.744081
+      ]
+    },
+    {
+      "index": 2,
+      "name": "blanket",
+      "file": "blanket.png",
+      "componentArea": 188957,
+      "foregroundBbox": [
+        798,
+        267,
+        1368,
+        651
+      ],
+      "cropBbox": [
+        786,
+        255,
+        1380,
+        663
+      ],
+      "cropXywh": [
+        786,
+        255,
+        594,
+        408
+      ],
+      "normalizedCropBbox": [
+        0.443067,
+        0.287486,
+        0.777903,
+        0.747463
+      ]
+    },
+    {
+      "index": 3,
+      "name": "basket",
+      "file": "basket.png",
+      "componentArea": 133622,
+      "foregroundBbox": [
+        1359,
+        194,
+        1751,
+        676
+      ],
+      "cropBbox": [
+        1347,
+        182,
+        1763,
+        688
+      ],
+      "cropXywh": [
+        1347,
+        182,
+        416,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.759301,
+        0.205186,
+        0.993799,
+        0.775648
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

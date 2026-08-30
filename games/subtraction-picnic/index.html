@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -6,42 +6,37 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#bee3f5" />
-  <title>Subtraction Picnic 🐿️ — Counting What's Left</title>
-  <meta name="description" content="Feed hungry picnic guests their snacks, then count how many remain after each helping. A gentle take-away game within six for ages 5–6." />
+  <title>Subtraction Picnic 🐿️ — Share, Take Away, and Count</title>
+  <meta name="description" content="Share watercolor picnic snacks with Squirrel, Fox, and Bear, watch a subtraction story happen, and count how many are left within six." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Subtraction Picnic" />
-  <meta property="og:title" content="Subtraction Picnic 🐿️ — Counting What's Left" />
-  <meta property="og:description" content="Feed hungry picnic guests their snacks, then count how many remain after each helping. A gentle take-away game within six for ages 5–6." />
+  <meta property="og:title" content="Subtraction Picnic 🐿️ — Share, Take Away, and Count" />
+  <meta property="og:description" content="Share watercolor picnic snacks with Squirrel, Fox, and Bear, watch a subtraction story happen, and count how many are left within six." />
   <meta property="og:url" content="https://qlo.be/games/subtraction-picnic/" />
   <meta property="og:image" content="https://qlo.be/games/subtraction-picnic/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Subtraction Picnic title screen with a single Hungry Guests button and a chipmunk icon on a dotted blue background." />
+  <meta property="og:image:alt" content="Watercolor Subtraction Picnic title above an open storybook with Squirrel, an apple, and Bear inviting three ways to play." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Subtraction Picnic 🐿️ — Counting What's Left" />
-  <meta name="twitter:description" content="Feed hungry picnic guests their snacks, then count how many remain after each helping. A gentle take-away game within six for ages 5–6." />
+  <meta name="twitter:title" content="Subtraction Picnic 🐿️ — Share, Take Away, and Count" />
+  <meta name="twitter:description" content="Share watercolor picnic snacks with Squirrel, Fox, and Bear, watch a subtraction story happen, and count how many are left within six." />
   <meta name="twitter:image" content="https://qlo.be/games/subtraction-picnic/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/tap-count.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="is-loading"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
