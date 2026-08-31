@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "story-repair-shop",
+  "engine": "story-repair-dom-v1",
+  "title": "Story Repair Shop",
+  "artDirection": {
+    "canonical": "Watercolor / Storybook",
+    "pipelineStyle": "storybook",
+    "treatment": "A hand-painted bookbinder's repair atelier made from cotton paper, walnut wood, linen ribbon, and warm lamplight."
+  },
+  "music": {
+    "track": "../../shared/assets/music/quirky-forest-adventure.mp3",
+    "volume": 0.13
+  },
+  "ui": {
+    "backdrop": "./assets/ui/workshop-backdrop.webp",
+    "backdropPortrait": "./assets/ui/workshop-backdrop-portrait.webp",
+    "title": "./assets/ui/title-lockup.webp",
+    "promptBanner": "./assets/ui/prompt-banner.webp",
+    "nextButton": "./assets/ui/next-button.webp",
+    "repairMode": "./assets/ui/repair-mode.webp",
+    "sillyMode": "./assets/ui/wild-mode.webp",
+    "tornPatch": "./assets/ui/torn-patch.webp",
+    "sparkles": "./assets/ui/sparkles.webp"
+  },
+  "modes": [
+    {
+      "id": "repair",
+      "title": "Mend the Story",
+      "shortTitle": "Mend",
+      "skill": "Predict a logical result from cause and effect.",
+      "medallion": "./assets/ui/repair-mode.webp",
+      "cases": [
+        {
+          "id": "fox-bridge",
+          "scene": "./assets/scenes/fox-bridge.webp",
+          "setupLine": "fox-bridge-setup",
+          "successLine": "fox-bridge-success",
+          "missing": { "x": 0.39, "y": 0.40, "w": 0.43, "h": 0.49, "rotate": -2 },
+          "choices": [
+            { "id": "bridge", "image": "./assets/cards/bridge.webp", "alt": "A little stone bridge", "correct": true },
+            { "id": "striped-kite", "image": "./assets/cards/striped-kite.webp", "alt": "A striped kite", "correct": false },
+            { "id": "yellow-rain-boot", "image": "./assets/cards/yellow-rain-boot.webp", "alt": "A yellow rain boot", "correct": false }
+          ]
+        },
+        {
+          "id": "nia-sunflower",
+          "scene": "./assets/scenes/nia-sunflower.webp",
+          "setupLine": "nia-sunflower-setup",
+          "successLine": "nia-sunflower-success",
+          "missing": { "x": 0.48, "y": 0.06, "w": 0.31, "h": 0.76, "rotate": 1 },
+          "choices": [
+            { "id": "sunflower", "image": "./assets/cards/sunflower.webp", "alt": "A bright sunflower", "correct": true },
+            { "id": "blue-teapot", "image": "./assets/cards/blue-teapot.webp", "alt": "A blue teapot", "correct": false },
+            { "id": "red-toy-train", "image": "./assets/cards/red-toy-train.webp", "alt": "A red toy train", "correct": false }
+          ]
+        },
+        {
+          "id": "leo-umbrella",
+          "scene": "./assets/scenes/leo-umbrella.webp",
+          "setupLine": "leo-umbrella-setup",
+          "successLine": "leo-umbrella-success",
+          "missing": { "x": 0.43, "y": 0.25, "w": 0.40, "h": 0.61, "rotate": -1 },
+          "choices": [
+            { "id": "umbrella", "image": "./assets/cards/umbrella.webp", "alt": "A red umbrella", "correct": true },
+            { "id": "birthday-cake", "image": "./assets/cards/birthday-cake.webp", "alt": "A birthday cake", "correct": false },
+            { "id": "paper-crown", "image": "./assets/cards/paper-crown.webp", "alt": "A paper crown", "correct": false }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "silly",
+      "title": "Wild Endings",
+      "shortTitle": "Wild",
+      "skill": "Recognize an intentionally impossible story ending.",
+      "medallion": "./assets/ui/wild-mode.webp",
+      "cases": [
+        {
+          "id": "fish-bicycle",
+          "scene": "./assets/scenes/fish-bicycle.webp",
+          "setupLine": "fish-bicycle-setup",
+          "successLine": "fish-bicycle-success",
+          "missing": { "x": 0.40, "y": 0.11, "w": 0.51, "h": 0.76, "rotate": 1 },
+          "choices": [
+            { "id": "bicycle", "image": "./assets/cards/bicycle.webp", "alt": "A fish riding a tiny bicycle", "correct": true },
+            { "id": "bubbles", "image": "./assets/cards/bubbles.webp", "alt": "A trail of bubbles", "correct": false },
+            { "id": "water-plant", "image": "./assets/cards/water-plant.webp", "alt": "A green water plant", "correct": false }
+          ]
+        },
+        {
+          "id": "dragon-trumpet",
+          "scene": "./assets/scenes/dragon-trumpet.webp",
+          "setupLine": "dragon-trumpet-setup",
+          "successLine": "dragon-trumpet-success",
+          "missing": { "x": 0.12, "y": 0.25, "w": 0.55, "h": 0.70, "rotate": -2 },
+          "choices": [
+            { "id": "trumpet-skates", "image": "./assets/cards/trumpet-skates.webp", "alt": "A dragon playing a trumpet on roller skates", "correct": true },
+            { "id": "pillow", "image": "./assets/cards/pillow.webp", "alt": "A soft pillow", "correct": false },
+            { "id": "cocoa", "image": "./assets/cards/cocoa.webp", "alt": "A warm cup of cocoa", "correct": false }
+          ]
+        },
+        {
+          "id": "bear-moon-soup",
+          "scene": "./assets/scenes/bear-moon-soup.webp",
+          "setupLine": "bear-moon-soup-setup",
+          "successLine": "bear-moon-soup-success",
+          "missing": { "x": 0.58, "y": 0.08, "w": 0.37, "h": 0.72, "rotate": 2 },
+          "choices": [
+            { "id": "moon-soup", "image": "./assets/cards/moon-soup.webp", "alt": "The moon sharing soup with a bear", "correct": true },
+            { "id": "family-dinner", "image": "./assets/cards/family-dinner.webp", "alt": "A family eating dinner", "correct": false },
+            { "id": "soup-bowl", "image": "./assets/cards/soup-bowl.webp", "alt": "A warm bowl of soup", "correct": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

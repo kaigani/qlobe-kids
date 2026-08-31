@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-30T20:24:23.578Z",
+  "generated": "2026-08-31T01:05:45.660Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -30,7 +30,7 @@
       ]
     },
     "choose-one": {
-      "count": 9,
+      "count": 8,
       "games": [
         "calm-corner-cards",
         "grace-courtesy-theater",
@@ -39,8 +39,7 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "sound-hopscotch",
-        "story-repair-shop"
+        "sound-hopscotch"
       ]
     },
     "build-assemble": {
@@ -2763,22 +2762,47 @@
       "packs": []
     },
     "story-repair-shop": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "live",
       "category": "oral-storytelling",
-      "characters": [],
+      "characters": [
+        "Leo",
+        "Nia"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/story-repair-shop/assets/ui/next-button.webp",
+        "games/story-repair-shop/assets/ui/prompt-banner.webp",
+        "games/story-repair-shop/assets/ui/repair-mode.webp",
+        "games/story-repair-shop/assets/ui/sparkles.webp",
+        "games/story-repair-shop/assets/ui/title-lockup.webp",
+        "games/story-repair-shop/assets/ui/torn-patch.webp",
+        "games/story-repair-shop/assets/ui/wild-mode.webp",
+        "games/story-repair-shop/assets/ui/workshop-backdrop-portrait.webp",
+        "games/story-repair-shop/assets/ui/workshop-backdrop.webp",
+        "shared/assets/music/quirky-forest-adventure.mp3"
+      ],
       "packs": []
     },
     "story-sequence": {
@@ -3457,6 +3481,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sticker-line-challenge",
+        "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
         "table-setting-mission",
@@ -3484,6 +3509,7 @@
         "shadow-chase",
         "shape-detective",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "tiny-sentence-workshop",
@@ -3527,6 +3553,7 @@
         "sink-or-float",
         "snack-chef",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
@@ -3610,6 +3637,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sticker-line-challenge",
+        "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
         "table-setting-mission",
@@ -3647,8 +3675,7 @@
         "plan-do-review",
         "problem-solving-puppets",
         "question-ball",
-        "sound-hopscotch",
-        "story-repair-shop"
+        "sound-hopscotch"
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
@@ -3770,6 +3797,7 @@
         "shape-detective",
         "sink-or-float",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
@@ -3840,6 +3868,7 @@
         "sand-tray-letters",
         "sink-or-float",
         "sound-painting",
+        "story-repair-shop",
         "subtraction-picnic",
         "throwing-target-garden",
         "tweezer-rescue",
@@ -3875,6 +3904,7 @@
         "puzzle-map-match",
         "shape-detective",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
@@ -3925,6 +3955,7 @@
         "sound-basket",
         "sound-cylinder-match",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
@@ -3963,6 +3994,7 @@
         "shape-detective",
         "snack-chef",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "throwing-target-garden",
@@ -4147,7 +4179,6 @@
         "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
-        "story-repair-shop",
         "story-sequence",
         "subtraction-picnic",
         "sweep-the-trail",
@@ -4191,6 +4222,7 @@
         "puzzle-map-match",
         "snack-chef",
         "sound-basket",
+        "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
         "table-setting-mission",
@@ -4312,6 +4344,7 @@
         "sound-painting",
         "sound-sprouts",
         "sticker-line-challenge",
+        "story-repair-shop",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4361,6 +4394,7 @@
         "shape-detective",
         "sound-cylinder-match",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
@@ -4427,6 +4461,7 @@
         "sound-painting",
         "sound-sprouts",
         "sticker-line-challenge",
+        "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
         "table-setting-mission",
@@ -4605,7 +4640,6 @@
         "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
-        "story-repair-shop",
         "story-sequence",
         "story-stones",
         "sweep-the-trail",
@@ -4650,6 +4684,7 @@
         "sound-cylinder-match",
         "sound-painting",
         "sticker-line-challenge",
+        "story-repair-shop",
         "subtraction-picnic",
         "table-setting-mission",
         "tangram-tales",
@@ -4832,7 +4867,8 @@
       ],
       "Leo": [
         "post-office-letters",
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "story-repair-shop"
       ],
       "luna": [
         "red-green-light"
@@ -4866,7 +4902,8 @@
       ],
       "Nia": [
         "post-office-letters",
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "story-repair-shop"
       ],
       "orange-cat": [
         "story-stones"
@@ -5523,6 +5560,33 @@
       "games/sticker-line-challenge/assets/ui/banner-pink.webp": [
         "sticker-line-challenge"
       ],
+      "games/story-repair-shop/assets/ui/next-button.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/prompt-banner.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/repair-mode.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/sparkles.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/title-lockup.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/torn-patch.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/wild-mode.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/workshop-backdrop-portrait.webp": [
+        "story-repair-shop"
+      ],
+      "games/story-repair-shop/assets/ui/workshop-backdrop.webp": [
+        "story-repair-shop"
+      ],
       "games/teen-bead-builder/assets/manipulatives/bead-blue.webp": [
         "teen-bead-builder"
       ],
@@ -5654,7 +5718,8 @@
         "post-office-letters"
       ],
       "shared/assets/music/quirky-forest-adventure.mp3": [
-        "shape-detective"
+        "shape-detective",
+        "story-repair-shop"
       ],
       "shared/assets/music/upbeat-playground-pop.mp3": [
         "beat-the-bugs"
@@ -5765,7 +5830,8 @@
       ],
       "shared/characters/Leo": [
         "post-office-letters",
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "story-repair-shop"
       ],
       "shared/characters/leo/portrait.png": [
         "post-office-letters"
@@ -5800,7 +5866,8 @@
       ],
       "shared/characters/Nia": [
         "post-office-letters",
-        "snack-addition-stories"
+        "snack-addition-stories",
+        "story-repair-shop"
       ],
       "shared/characters/nia/portrait.png": [
         "post-office-letters"

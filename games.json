@@ -2431,21 +2431,22 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2e9f76",
+      "status": "live",
+      "accent": "#6f8f3d",
       "modes": [
         {
           "id": "repair",
-          "title": "Fix the Ending",
-          "skill": "story prediction and cause-and-effect reasoning"
+          "title": "Mend the Story",
+          "skill": "cause-and-effect story prediction"
         },
         {
           "id": "silly",
-          "title": "Silly or Real?",
-          "skill": "identifying intentionally silly story endings"
+          "title": "Wild Endings",
+          "skill": "recognizing an intentionally impossible ending"
         }
       ],
-      "summary": "Fix a story that is missing its ending."
+      "summary": "Listen for the clue, open the repair tray, and fit a painted ending into the storybook.",
+      "liveDate": "2026-08-30"
     },
     {
       "id": "puzzle-map-match",

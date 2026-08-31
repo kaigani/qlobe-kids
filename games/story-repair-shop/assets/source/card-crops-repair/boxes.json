@@ -1,0 +1,296 @@
+{
+  "source": "games/story-repair-shop/assets/source/gpt-image-2/cards-repair-sheet.png",
+  "sourceSha256": "1a8973cd06d3dd4f0798231cab650f30b226fa2c3185c4e8aa29516884f2c995",
+  "sourceSize": [
+    1024,
+    1536
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    34,
+    37
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bridge",
+      "file": "bridge.png",
+      "componentArea": 149525,
+      "foregroundBbox": [
+        21,
+        40,
+        339,
+        517
+      ],
+      "cropBbox": [
+        9,
+        28,
+        351,
+        529
+      ],
+      "cropXywh": [
+        9,
+        28,
+        342,
+        501
+      ],
+      "normalizedCropBbox": [
+        0.008789,
+        0.018229,
+        0.342773,
+        0.344401
+      ]
+    },
+    {
+      "index": 2,
+      "name": "striped-kite",
+      "file": "striped-kite.png",
+      "componentArea": 149674,
+      "foregroundBbox": [
+        353,
+        39,
+        673,
+        517
+      ],
+      "cropBbox": [
+        341,
+        27,
+        685,
+        529
+      ],
+      "cropXywh": [
+        341,
+        27,
+        344,
+        502
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.017578,
+        0.668945,
+        0.344401
+      ]
+    },
+    {
+      "index": 3,
+      "name": "yellow-rain-boot",
+      "file": "yellow-rain-boot.png",
+      "componentArea": 149602,
+      "foregroundBbox": [
+        685,
+        40,
+        1004,
+        517
+      ],
+      "cropBbox": [
+        673,
+        28,
+        1016,
+        529
+      ],
+      "cropXywh": [
+        673,
+        28,
+        343,
+        501
+      ],
+      "normalizedCropBbox": [
+        0.657227,
+        0.018229,
+        0.992188,
+        0.344401
+      ]
+    },
+    {
+      "index": 4,
+      "name": "sunflower",
+      "file": "sunflower.png",
+      "componentArea": 142178,
+      "foregroundBbox": [
+        21,
+        534,
+        340,
+        987
+      ],
+      "cropBbox": [
+        9,
+        522,
+        352,
+        999
+      ],
+      "cropXywh": [
+        9,
+        522,
+        343,
+        477
+      ],
+      "normalizedCropBbox": [
+        0.008789,
+        0.339844,
+        0.34375,
+        0.650391
+      ]
+    },
+    {
+      "index": 5,
+      "name": "blue-teapot",
+      "file": "blue-teapot.png",
+      "componentArea": 142119,
+      "foregroundBbox": [
+        353,
+        534,
+        672,
+        987
+      ],
+      "cropBbox": [
+        341,
+        522,
+        684,
+        999
+      ],
+      "cropXywh": [
+        341,
+        522,
+        343,
+        477
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.339844,
+        0.667969,
+        0.650391
+      ]
+    },
+    {
+      "index": 6,
+      "name": "red-toy-train",
+      "file": "red-toy-train.png",
+      "componentArea": 142421,
+      "foregroundBbox": [
+        685,
+        534,
+        1004,
+        987
+      ],
+      "cropBbox": [
+        673,
+        522,
+        1016,
+        999
+      ],
+      "cropXywh": [
+        673,
+        522,
+        343,
+        477
+      ],
+      "normalizedCropBbox": [
+        0.657227,
+        0.339844,
+        0.992188,
+        0.650391
+      ]
+    },
+    {
+      "index": 7,
+      "name": "umbrella",
+      "file": "umbrella.png",
+      "componentArea": 145977,
+      "foregroundBbox": [
+        21,
+        1005,
+        340,
+        1469
+      ],
+      "cropBbox": [
+        9,
+        993,
+        352,
+        1481
+      ],
+      "cropXywh": [
+        9,
+        993,
+        343,
+        488
+      ],
+      "normalizedCropBbox": [
+        0.008789,
+        0.646484,
+        0.34375,
+        0.964193
+      ]
+    },
+    {
+      "index": 8,
+      "name": "birthday-cake",
+      "file": "birthday-cake.png",
+      "componentArea": 146423,
+      "foregroundBbox": [
+        353,
+        1005,
+        672,
+        1470
+      ],
+      "cropBbox": [
+        341,
+        993,
+        684,
+        1482
+      ],
+      "cropXywh": [
+        341,
+        993,
+        343,
+        489
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.646484,
+        0.667969,
+        0.964844
+      ]
+    },
+    {
+      "index": 9,
+      "name": "paper-crown",
+      "file": "paper-crown.png",
+      "componentArea": 146523,
+      "foregroundBbox": [
+        685,
+        1005,
+        1004,
+        1471
+      ],
+      "cropBbox": [
+        673,
+        993,
+        1016,
+        1483
+      ],
+      "cropXywh": [
+        673,
+        993,
+        343,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.657227,
+        0.646484,
+        0.992188,
+        0.965495
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "source": "games/story-repair-shop/assets/source/gpt-image-2/cards-silly-sheet.png",
+  "sourceSha256": "ba1cdc4e0c83f9bedf3f7363dc3149d00f4e7513c55483bf376e5d69b87c4511",
+  "sourceSize": [
+    1024,
+    1536
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    27,
+    30,
+    37
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bicycle",
+      "file": "bicycle.png",
+      "componentArea": 156785,
+      "foregroundBbox": [
+        20,
+        24,
+        342,
+        518
+      ],
+      "cropBbox": [
+        8,
+        12,
+        354,
+        530
+      ],
+      "cropXywh": [
+        8,
+        12,
+        346,
+        518
+      ],
+      "normalizedCropBbox": [
+        0.007812,
+        0.007812,
+        0.345703,
+        0.345052
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bubbles",
+      "file": "bubbles.png",
+      "componentArea": 155234,
+      "foregroundBbox": [
+        353,
+        23,
+        672,
+        518
+      ],
+      "cropBbox": [
+        341,
+        11,
+        684,
+        530
+      ],
+      "cropXywh": [
+        341,
+        11,
+        343,
+        519
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.007161,
+        0.667969,
+        0.345052
+      ]
+    },
+    {
+      "index": 3,
+      "name": "water-plant",
+      "file": "water-plant.png",
+      "componentArea": 156273,
+      "foregroundBbox": [
+        682,
+        24,
+        1004,
+        518
+      ],
+      "cropBbox": [
+        670,
+        12,
+        1016,
+        530
+      ],
+      "cropXywh": [
+        670,
+        12,
+        346,
+        518
+      ],
+      "normalizedCropBbox": [
+        0.654297,
+        0.007812,
+        0.992188,
+        0.345052
+      ]
+    },
+    {
+      "index": 4,
+      "name": "trumpet-skates",
+      "file": "trumpet-skates.png",
+      "componentArea": 152127,
+      "foregroundBbox": [
+        20,
+        528,
+        342,
+        1007
+      ],
+      "cropBbox": [
+        8,
+        516,
+        354,
+        1019
+      ],
+      "cropXywh": [
+        8,
+        516,
+        346,
+        503
+      ],
+      "normalizedCropBbox": [
+        0.007812,
+        0.335938,
+        0.345703,
+        0.663411
+      ]
+    },
+    {
+      "index": 5,
+      "name": "pillow",
+      "file": "pillow.png",
+      "componentArea": 150513,
+      "foregroundBbox": [
+        353,
+        528,
+        672,
+        1007
+      ],
+      "cropBbox": [
+        341,
+        516,
+        684,
+        1019
+      ],
+      "cropXywh": [
+        341,
+        516,
+        343,
+        503
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.335938,
+        0.667969,
+        0.663411
+      ]
+    },
+    {
+      "index": 6,
+      "name": "cocoa",
+      "file": "cocoa.png",
+      "componentArea": 151691,
+      "foregroundBbox": [
+        682,
+        528,
+        1004,
+        1007
+      ],
+      "cropBbox": [
+        670,
+        516,
+        1016,
+        1019
+      ],
+      "cropXywh": [
+        670,
+        516,
+        346,
+        503
+      ],
+      "normalizedCropBbox": [
+        0.654297,
+        0.335938,
+        0.992188,
+        0.663411
+      ]
+    },
+    {
+      "index": 7,
+      "name": "moon-soup",
+      "file": "moon-soup.png",
+      "componentArea": 152823,
+      "foregroundBbox": [
+        20,
+        1017,
+        342,
+        1499
+      ],
+      "cropBbox": [
+        8,
+        1005,
+        354,
+        1511
+      ],
+      "cropXywh": [
+        8,
+        1005,
+        346,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.007812,
+        0.654297,
+        0.345703,
+        0.983724
+      ]
+    },
+    {
+      "index": 8,
+      "name": "family-dinner",
+      "file": "family-dinner.png",
+      "componentArea": 151340,
+      "foregroundBbox": [
+        353,
+        1017,
+        672,
+        1499
+      ],
+      "cropBbox": [
+        341,
+        1005,
+        684,
+        1511
+      ],
+      "cropXywh": [
+        341,
+        1005,
+        343,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.333008,
+        0.654297,
+        0.667969,
+        0.983724
+      ]
+    },
+    {
+      "index": 9,
+      "name": "soup-bowl",
+      "file": "soup-bowl.png",
+      "componentArea": 152392,
+      "foregroundBbox": [
+        682,
+        1017,
+        1003,
+        1499
+      ],
+      "cropBbox": [
+        670,
+        1005,
+        1015,
+        1511
+      ],
+      "cropXywh": [
+        670,
+        1005,
+        345,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.654297,
+        0.654297,
+        0.991211,
+        0.983724
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "format": "qlobe-gpt-image-production-prompts",
+  "formatVersion": 1,
+  "model": "gpt-image-2",
+  "operation": "generate",
+  "toolMode": "builtin-image-generation",
+  "worldAnchor": "Watercolor / Storybook: hand-painted watercolor and soft gouache on warm cotton paper, visible grain, gentle dark-brown pencil definition, imperfect deckled edges, indigo book cloth, olive linen thread, honey-walnut desk, muted botanical green, sky blue and warm gold; charming premium children's picture-book warmth; no vector art, no glossy interface language.",
+  "assets": [
+    {
+      "output": "workshop-backdrop-source.png",
+      "dimensions": [1448, 1086],
+      "prompt": "A near-top-down 4:3 view of a tiny storybook repair atelier. One very large open blank storybook dominates the frame on a honey-walnut table. Warm cream cotton pages with visible grain, deckled edges, a deep indigo cloth cover, stitched leather corners, loose olive and navy ribbon, wooden thread spools, a broad natural-bristle brush, pressed leaves and small fabric scraps at the outer margins. The two-page field is calm, pale and completely blank so live story art can be composited there; preserve a subtle center gutter. Cozy warm lamplight. Watercolor and gouache with colored-pencil detail. No people, characters, scene illustration, title, letters, words, icons, buttons, UI or border."
+    },
+    {
+      "output": "workshop-backdrop-portrait-source.png",
+      "dimensions": [1024, 1536],
+      "operation": "edit/recompose",
+      "reference": "workshop-backdrop-source.png",
+      "prompt": "Edit and recompose the supplied Story Repair Shop atelier into a polished portrait 2:3 production backdrop for a preschool tablet game. Preserve the same watercolor-and-soft-gouache hand, warm cotton-paper grain, honey-walnut desk, deep indigo cloth book, olive and navy linen thread, stitched leather corners, warm lamplight, and premium children's picture-book charm. The result must be a cohesive portrait composition, not a crop or framed copy. One very large open blank storybook fills most of the portrait canvas with broad cream pages, a subtle gutter, and room for a 3:2 illustration and three large repair cards. Keep the book fully readable with cover and bottom ribbon visible. Arrange wooden spools, brush, pressed leaves, fabric scraps, ribbon and a small dish in the remaining desk margins, with breathing room at the top for a parchment prompt and both upper corners for round HUD controls. Extend the walnut desk naturally above and below the book. Near-top-down orthographic camera. No title, letters, words, numerals, UI, buttons, people, characters, story scene, printed illustration, checkerboard, border, vignette, vector art, glossy 3D, or blank bands."
+    },
+    {
+      "output": "hub-tile-source.png",
+      "dimensions": [1373, 1146],
+      "operation": "edit/recompose",
+      "references": [
+        "workshop-backdrop-source.png",
+        "scene-fox-bridge-source.png"
+      ],
+      "prompt": "Create a polished 6:5 landscape catalog tile for the children's game Story Repair Shop, using the two supplied images as strict art-direction references. A warm near-top-down watercolor-and-colored-pencil bookbinder's atelier on honey walnut wood; an open indigo clothbound storybook fills most of the frame. On its cream deckled pages is a charming watercolor story scene: friendly orange fox on one side of a little stream, gray rabbit waving near a blue-roof cottage on the other side. The path is visibly interrupted by a single irregular blank torn-paper repair patch over the stream, with a small stitched indigo tab, inviting the child to mend the story. Beside the book, arrange three miniature painted paper repair cards—a stone bridge, a bright kite, and a yellow rain boot—like tangible choices. Add a few restrained connected golden star glints, spools and ribbon at the edges. Preserve the established soft cream, indigo, sage, olive and warm ochre palette, traditional transparent watercolor bloom, pencil edges, cotton-paper grain, gentle natural lamplight, premium storybook illustration, clear silhouette and center-weighted mobile readability. No glossy 3D, no plastic, no photorealism, no vector style, no interface controls, no logos, no letters, no words, no typography, no watermark. Keep the full book and all key objects safely inside a central 6:5 crop."
+    },
+    {
+      "output": "title-lockup-source.png",
+      "dimensions": [1402, 1122],
+      "prompt": "Exact title lettering only: STORY / REPAIR / SHOP on three centered lines. Large handmade paper-and-watercolor serif letters in alternating deep indigo, moss green and warm cream with subtle stitched/pencil details, a small paper repair patch, a curling indigo thread, one natural-bristle brush and a few connected golden story sparkles. Friendly, clear, correctly spelled, highly legible. Match the Watercolor / Storybook world anchor. Isolated with generous margin on transparency; no other text, tagline, frame, panel, scenery or extra objects."
+    },
+    {
+      "output": "ui-kit-sheet.png",
+      "dimensions": [1254, 1254],
+      "prompt": "One square production asset sheet on a perfectly flat dark charcoal background, exactly six separate Watercolor / Storybook interface objects in a clean 2 by 3 grid with wide gaps and no overlap: top left a wide blank cream deckled parchment prompt banner with small indigo stitched corner tabs; top right a wide blank moss-green rounded stitched Next button plate; middle left a circular indigo-edged medallion showing a tiny open book being mended with a paper patch and thread; middle right a circular moss-edged medallion showing a quill, open book and connected gold magic sparkles; bottom left one irregular blank cream torn-paper patch with a small indigo stitched tab; bottom right one connected cluster of five golden four-point sparkles joined by a loose indigo thread. Preserve full silhouettes, even scale, no shadows connecting objects. No letters, words, numerals, glyphs, extra objects, checkerboard or gradient background."
+    },
+    {
+      "output": "cards-repair-sheet.png",
+      "dimensions": [1024, 1536],
+      "prompt": "A portrait production asset sheet on perfectly flat dark charcoal, exactly nine separate portrait repair cards in a strict 3 by 3 reading-order grid, equal size and generous gaps. Each is a warm cream deckled cotton-paper card with a subtle indigo stitched edge and one centered watercolor object, no text. Row 1: a small stone-and-wood footbridge over a blue stream; a cheerful striped diamond kite with ribbon tails and two soft clouds; one yellow rain boot. Row 2: a tall bright sunflower; a round blue floral teapot; a red wooden toy train. Row 3: an open warm yellow umbrella; a small birthday cake with three candles; a golden folded paper crown. Watercolor/gouache and colored pencil, cohesive Story Repair Shop world, complete silhouettes, equally polished distractors. No people, labels, numerals, extra objects, touching cards, checkerboard or scenery."
+    },
+    {
+      "output": "cards-silly-sheet.png",
+      "dimensions": [1024, 1536],
+      "prompt": "A portrait production asset sheet on perfectly flat dark charcoal, exactly nine separate portrait repair cards in a strict 3 by 3 reading-order grid, equal size and generous gaps. Each is a warm cream deckled cotton-paper card with subtle indigo stitching and one centered watercolor vignette, no text. Row 1: a cheerful goldfish riding a tiny blue bicycle inside a floating water bubble; a curling trail of blue bubbles; a leafy green aquarium plant. Row 2: a pajama dragon playing a brass trumpet while wearing roller skates; a soft indigo pillow; a warm cup of cocoa. Row 3: a smiling crescent moon sharing soup with a friendly brown bear at a tiny table; a plausible family dinner; one warm bowl of soup. Watercolor/gouache and colored pencil, playful but clear, complete silhouettes. No labels, numerals, extra objects, touching cards, checkerboard or full scenery."
+    },
+    {
+      "output": "scene-fox-bridge-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A finished continuous children's storybook landscape: Fia, a small friendly orange fox, waits on the left bank of a sparkling stream; a smiling gray rabbit waves from a blue-roof cottage garden on the right. A complete charming stone-and-wood footbridge joins the path across the middle-right stream. Leafy green woodland, daisies and warm morning light. Keep the fox and setup readable on the left and the bridge as the isolated causal answer centered/right with breathing room for a torn-paper cover. Watercolor and soft gouache on warm cotton paper with gentle pencil contours; no page frame, text, UI or border."
+    },
+    {
+      "output": "scene-nia-sunflower-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A finished continuous children's storybook garden scene. Nia, a joyful young Black girl with two soft puff buns, kneels on the left beside a tiny watering can and a small planted garden bed. On the center-right, one magnificent tall golden sunflower has clearly grown from the tended soil, with broad green leaves, a bee and a few small flowers. Make the sunflower the isolated causal answer with open sky around it and keep Nia's setup clear on the left. Watercolor and soft gouache on warm cotton paper, visible paper grain, gentle dark-brown pencil definition, no page frame, text, UI or border."
+    },
+    {
+      "output": "scene-leo-umbrella-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A finished continuous children's storybook rainy-day scene. Leo, a cheerful East Asian boy in a moss raincoat and little boots, walks home along a puddled path on the left. A complete large warm yellow umbrella is open above him toward the center-right, clearly keeping him dry while soft blue raindrops fall around it. A cozy home and wet garden sit in the distance. Keep Leo and the rain setup readable on the left and the umbrella as the isolated causal answer with breathing room. Watercolor/gouache on cotton paper with pencil contours; no text, UI, page frame or border."
+    },
+    {
+      "output": "scene-fish-bicycle-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A wonderfully impossible finished storybook scene: Finn, a delighted golden fish, pedals a tiny blue bicycle inside a round floating bubble of water, zooming from a simple glass fishbowl at left into an airy room and garden beyond. The bicycle-and-fish bubble is the unmistakable silly answer centered/right; the ordinary bowl setup remains visible at left. Connected bubble trails and one tiny water plant support the motion without clutter. Warm whimsical watercolor and gouache on cotton paper, colored-pencil contours, no text, UI, page frame or border."
+    },
+    {
+      "output": "scene-dragon-trumpet-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A wonderfully impossible finished bedtime storybook scene. Dara, a friendly small moss-green dragon in indigo star pajamas, roller-skates toward bed while enthusiastically playing a bright brass trumpet. A cozy pillow, blanket and moonlit bedroom establish bedtime on the left; the full dragon, trumpet and roller skates form the unmistakable silly answer across the center/right with clear silhouette and energetic musical curls. Warm watercolor/gouache on cotton paper with gentle pencil contours, no musical-note text glyphs, words, UI, page frame or border."
+    },
+    {
+      "output": "scene-bear-moon-soup-source.png",
+      "dimensions": [1536, 1024],
+      "prompt": "A wonderfully impossible finished supper storybook scene. Milo, a kind round brown bear in a small indigo apron, sits at a cozy woodland table with bowls of soup. A friendly glowing crescent moon has come down from the night sky and sits opposite Milo, politely sharing soup with a tiny spoon. The normal table-setting setup reads on the left and the moon-at-supper answer is isolated center/right with a clear silhouette, gentle gold glow and stars. Watercolor and soft gouache on cotton paper with colored pencil; no text, UI, page frame or border."
+    }
+  ]
+}

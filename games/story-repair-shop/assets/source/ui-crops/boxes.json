@@ -1,0 +1,206 @@
+{
+  "source": "games/story-repair-shop/assets/source/gpt-image-2/ui-kit-sheet.png",
+  "sourceSha256": "e6b24052901897588cfc45fd5bd492da6b1206248fbe4a735047c65a1d78f74b",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    33,
+    39
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "prompt-banner",
+      "file": "prompt-banner.png",
+      "componentArea": 152660,
+      "foregroundBbox": [
+        44,
+        61,
+        638,
+        333
+      ],
+      "cropBbox": [
+        32,
+        49,
+        650,
+        345
+      ],
+      "cropXywh": [
+        32,
+        49,
+        618,
+        296
+      ],
+      "normalizedCropBbox": [
+        0.025518,
+        0.039075,
+        0.518341,
+        0.27512
+      ]
+    },
+    {
+      "index": 2,
+      "name": "next-button",
+      "file": "next-button.png",
+      "componentArea": 131059,
+      "foregroundBbox": [
+        693,
+        68,
+        1211,
+        332
+      ],
+      "cropBbox": [
+        681,
+        56,
+        1223,
+        344
+      ],
+      "cropXywh": [
+        681,
+        56,
+        542,
+        288
+      ],
+      "normalizedCropBbox": [
+        0.543062,
+        0.044657,
+        0.975279,
+        0.274322
+      ]
+    },
+    {
+      "index": 3,
+      "name": "repair-mode",
+      "file": "repair-mode.png",
+      "componentArea": 160285,
+      "foregroundBbox": [
+        117,
+        372,
+        565,
+        828
+      ],
+      "cropBbox": [
+        105,
+        360,
+        577,
+        840
+      ],
+      "cropXywh": [
+        105,
+        360,
+        472,
+        480
+      ],
+      "normalizedCropBbox": [
+        0.083732,
+        0.287081,
+        0.460128,
+        0.669856
+      ]
+    },
+    {
+      "index": 4,
+      "name": "wild-mode",
+      "file": "wild-mode.png",
+      "componentArea": 164325,
+      "foregroundBbox": [
+        685,
+        372,
+        1135,
+        835
+      ],
+      "cropBbox": [
+        673,
+        360,
+        1147,
+        847
+      ],
+      "cropXywh": [
+        673,
+        360,
+        474,
+        487
+      ],
+      "normalizedCropBbox": [
+        0.536683,
+        0.287081,
+        0.914673,
+        0.675439
+      ]
+    },
+    {
+      "index": 5,
+      "name": "torn-patch",
+      "file": "torn-patch.png",
+      "componentArea": 109637,
+      "foregroundBbox": [
+        159,
+        845,
+        510,
+        1201
+      ],
+      "cropBbox": [
+        147,
+        833,
+        522,
+        1213
+      ],
+      "cropXywh": [
+        147,
+        833,
+        375,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.117225,
+        0.664274,
+        0.416268,
+        0.967305
+      ]
+    },
+    {
+      "index": 6,
+      "name": "sparkles",
+      "file": "sparkles.png",
+      "componentArea": 28219,
+      "foregroundBbox": [
+        675,
+        868,
+        1119,
+        1163
+      ],
+      "cropBbox": [
+        663,
+        856,
+        1131,
+        1175
+      ],
+      "cropXywh": [
+        663,
+        856,
+        468,
+        319
+      ],
+      "normalizedCropBbox": [
+        0.528708,
+        0.682616,
+        0.901914,
+        0.937002
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

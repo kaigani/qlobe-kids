@@ -1,45 +1,64 @@
-# Asset Log - Story Repair Shop
+# Story Repair Shop — Asset Inventory and Provenance
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Story and ending placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All game-specific visual media is original project media. Runtime assets are committed; authoring masters, local-API receipts, cutter masks, and alpha QA plates live under `assets/source/`. Exact generation prompts, model/workflow identifiers, hashes, and transformations are recorded in `assets/source/media-provenance.json`.
 
-## Assets needed
+No emoji, SVG, or CSS-drawn primary artwork is used.
 
-### Art
-- Story-scene card: seed planting and watering
-- Story-scene card: rain without a coat
-- Story-scene card: block tower
-- Story-scene card: toaster breakfast
-- Story-scene card: puppy and ball under chair
-- Story-scene card: fishbowl
-- Story-scene card: sleepy baby
-- Story-scene card: umbrella in rain
-- Story-scene card: toothbrushing
+## Runtime visual assets
 
-### Voice
-- "Stories are in the repair shop. Listen, then tap the ending that fixes the story."
-- "Hmm, would that really happen? Listen again and try another ending."
-- "All fixed! The stories make sense again!"
-- "That ending fixes the story!"
-- "Good story thinking!"
-- "Yes, that makes sense!"
-- "Nia planted a seed. She watered it every day. What happened next?"
-- "Leo got caught in the rain. He had no coat. What happened next?"
-- "Maya built a tall block tower. The little cat bumped it. What happened next?"
-- "Sam put bread in the toaster. He waited for breakfast. What happened next?"
-- "A puppy chased the red ball. The ball rolled under the chair. What happened next?"
-- "Now pick the SILLY one. The fish swam in the bowl. Then it..."
-- "Now pick the SILLY one. The baby was sleepy. Then the baby..."
-- "Now pick the SILLY one. Dad opened an umbrella in the rain. Then he..."
-- "Now pick the SILLY one. The child brushed their teeth. Then the teeth..."
+| Runtime path | Role | Production chain | Alpha |
+|---|---|---|---|
+| `assets/ui/workshop-backdrop.webp` | 4:3 atelier and open-book world | GPT Image 2 source → LANCZOS/WebP | No |
+| `assets/ui/workshop-backdrop-portrait.webp` | full-height portrait atelier and open-book world | GPT Image 2 edit/recomposition of the 4:3 world → WebP | No |
+| `assets/ui/title-lockup.webp` | painted title lettering | GPT Image 2 source → local Qwen Image Layered `layer_2` → trim/WebP | Yes |
+| `assets/ui/prompt-banner.webp` | parchment prompt plate | GPT Image 2 six-object sheet → semantic asset cutter → enclosed-hole matte fill → 0.8 px inward feather → trim/WebP | Yes |
+| `assets/ui/next-button.webp` | stitched green action plate | same cutter/matte pipeline | Yes |
+| `assets/ui/repair-mode.webp` | Mend mode medallion | same cutter/matte pipeline | Yes |
+| `assets/ui/wild-mode.webp` | Wild mode medallion | same cutter/matte pipeline | Yes |
+| `assets/ui/torn-patch.webp` | tappable missing-story patch | same cutter/matte pipeline | Yes |
+| `assets/ui/sparkles.webp` | connected reveal sparkles | semantic asset cutter → silhouette matte → 0.8 px inward feather → trim/WebP | Yes |
+| `assets/scenes/*.webp` (6) | complete story illustrations | GPT Image 2 scene master → LANCZOS/WebP | No |
+| `assets/cards/*.webp` (18) | painted repair choices | two GPT Image 2 nine-card sheets → semantic asset cutter → enclosed-hole matte fill → 0.8 px inward feather → trim/WebP | Yes |
+| `assets/og-image.jpg` | social preview | production game capture | No |
+| `../../assets/hub/tiles/story-repair-shop.jpg` | platform catalog tile | GPT Image 2 edit/recomposition from accepted atelier + fox-story references → safe 6:5 crop/JPEG | No |
 
-## Link preview (og:image)
+The six scene IDs are `fox-bridge`, `nia-sunflower`, `leo-umbrella`, `fish-bicycle`, `dragon-trumpet`, and `bear-moon-soup`. The eighteen semantic card filenames match `config.json` exactly.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+## Audio
+
+| Path | Role | Provenance |
+|---|---|---|
+| `assets/audio/*.m4a` | keyed teacher-style narration | locally hosted Qwen3 TTS voice clone using the project-approved reference; each line locally transcribed by Whisper and accepted only above the configured normalized-similarity threshold |
+| `assets/audio/manifest.json` | recorded clip file/duration map | written by `tools/generate-voice.py` |
+| `assets/audio/lines.json` | runtime spoken-text mirror | copied from `data/lines.json` by the voice pipeline |
+| `../../shared/assets/music/quirky-forest-adventure.mp3` | low-volume background score | existing QLOBE Kids shared library |
+| shared SFX invoked from `shared/js/sfx.js` | tick, return, success and page-turn accents | existing QLOBE Kids shared library |
+
+Voice references and LAN endpoint configuration remain machine-local and are never copied into this game or provenance receipts.
+
+## Shared UI
+
+`shared/css/hud.css` supplies raster Home, Back, and Sound button skins from `shared/assets/ui/`. Their glyphs are visible shared PNG artwork; the HTML controls provide semantics and ≥96 px press targets.
+
+## Authoring masters and QA
+
+- `assets/source/gpt-image-2/` retains the GPT Image 2 masters: landscape and portrait atelier plates, catalog tile, title, UI kit sheet, two card sheets, and six scenes.
+- `assets/source/ui-crops/`, `card-crops-repair/`, and `card-crops-silly/` retain semantically named cutter outputs plus box manifests.
+- `assets/source/local-api/layered/` retains the accepted Qwen title separation and visually rejected Layered trials; the rejected attempts are explicitly excluded from runtime in `media-provenance.json`.
+- `assets/source/local-api/mattes/` retains deterministic alpha mattes made from the cutter silhouettes.
+- `assets/source/local-api/finals/` retains canonical transparent PNG masters before WebP delivery.
+- `assets/source/qa/` composites every alpha master on magenta so halos and missed backgrounds are visible.
+- `assets/source/krea2/` retains the polished but superseded Krea 2 catalog candidate and its Studio recipe. It was rejected for final assignment because its glossy 3D treatment conflicts with the canonical watercolor world. `assets/source/legacy-hub-tile.jpg` preserves the replaced prototype tile.
+- `assets/source/*-mask.png` files are diagnostic masks from `tools/cut-asset-sheet.py`.
+
+The asset cutter is a required, recorded part of the pipeline. Sheet regions were first verified with `--dry-run --expected-count`, then exported with semantic names. Runtime code never relies on anonymous crop numbers.
+
+## Models and licensing notes
+
+- GPT Image 2 was used through the Codex image-generation tool for new raster masters.
+- The approved local Qwen Image Layered workflow successfully isolated the title lockup. Whole-sheet and per-object trials that lost objects or retained opaque mattes were visually rejected; the semantic cutter/matte path supplies the remaining alpha assets without hiding that decision.
+- The approved local Qwen TTS/Whisper workflows were used only during authoring.
+- Krea 2 through QLOBE Studio supplied a catalog candidate and exercised the normal Studio recipe/review lifecycle. The final catalog assignment uses the GPT Image 2 watercolor variant; the superseded Krea source and honest rejection reason remain in provenance.
+- MiniMax video was evaluated but intentionally not added: the direct page repair/reveal is interactive, lighter, offline-safe, and closer to the concept than a passive cinematic interlude.
+
+Generated media is project-owned for this repository’s use. Shared library media retains its existing repository license. Do not claim generated files are hand-painted by a human or assign a third-party Creative Commons source.

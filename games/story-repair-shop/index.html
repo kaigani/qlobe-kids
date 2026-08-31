@@ -1,47 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Story Repair Shop 🔧 — Fix a Broken Ending</title>
-  <meta name="description" content="Hear a tiny broken story and tap the ending that fixes it, or choose the silly ending on purpose just for fun. A short oral-comprehension game for ages 5–6." />
+  <meta name="theme-color" content="#183a45" />
+  <title>Story Repair Shop — Mend a Missing Ending</title>
+  <meta name="description" content="Listen to a tiny story, open the paper repair tray, and fit the painted ending that makes sense—or makes the story wonderfully wild." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Story Repair Shop" />
-  <meta property="og:title" content="Story Repair Shop 🔧 — Fix a Broken Ending" />
-  <meta property="og:description" content="Hear a tiny broken story and tap the ending that fixes it, or choose the silly ending on purpose just for fun. A short oral-comprehension game for ages 5–6." />
+  <meta property="og:title" content="Story Repair Shop — Mend a Missing Ending" />
+  <meta property="og:description" content="Listen to a tiny story, open the paper repair tray, and fit the painted ending that makes sense—or makes the story wonderfully wild." />
   <meta property="og:url" content="https://qlo.be/games/story-repair-shop/" />
   <meta property="og:image" content="https://qlo.be/games/story-repair-shop/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Story Repair Shop title screen with Fix the Ending and Silly or Real? game modes and a wrench icon." />
+  <meta property="og:image:alt" content="An open watercolor storybook on a bookbinder's desk, ready for a child to repair its missing ending." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Story Repair Shop 🔧 — Fix a Broken Ending" />
-  <meta name="twitter:description" content="Hear a tiny broken story and tap the ending that fixes it, or choose the silly ending on purpose just for fun. A short oral-comprehension game for ages 5–6." />
+  <meta name="twitter:title" content="Story Repair Shop — Mend a Missing Ending" />
+  <meta name="twitter:description" content="Listen to a tiny story, open the paper repair tray, and fit the painted ending that makes sense—or makes the story wonderfully wild." />
   <meta name="twitter:image" content="https://qlo.be/games/story-repair-shop/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" data-game-id="story-repair-shop">
+    <h1 class="visually-hidden">Story Repair Shop</h1>
+
+    <section id="splash" class="qk-screen" data-qk-screen="splash" aria-label="Choose a storybook">
+      <div class="ambient-world" aria-hidden="true"></div>
+      <div class="art-stage splash-stage">
+        <img class="atelier-plate landscape-plate" src="./assets/ui/workshop-backdrop.webp" alt="An open watercolor storybook on a warm bookbinder's desk">
+        <img class="atelier-plate portrait-plate" src="./assets/ui/workshop-backdrop-portrait.webp" alt="An open watercolor storybook on a warm bookbinder's desk">
+        <img class="title-lockup" src="./assets/ui/title-lockup.webp" alt="Story Repair Shop">
+        <p class="splash-kicker">Choose a storybook to repair</p>
+        <div id="mode-list" class="mode-list" role="group" aria-label="Choose a storybook"></div>
+        <img class="splash-sparkles" src="./assets/ui/sparkles.webp" alt="">
+      </div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../index.html" data-target="hub" data-role="navigation" aria-label="Back to QLOBE Kids"></a>
+      <button id="splash-sound" class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-target="splash-sound" data-role="replay" aria-label="Hear the welcome again"></button>
+    </section>
+
+    <section id="play" class="qk-screen" data-qk-screen="play" aria-label="Repair the story" hidden>
+      <div class="ambient-world" aria-hidden="true"></div>
+      <div id="play-stage" class="art-stage play-stage" data-phase="problem">
+        <img class="atelier-plate landscape-plate" src="./assets/ui/workshop-backdrop.webp" alt="">
+        <img class="atelier-plate portrait-plate" src="./assets/ui/workshop-backdrop-portrait.webp" alt="">
+        <div id="scene-frame" class="scene-frame">
+          <img id="scene-image" class="scene-image" alt="">
+          <button id="repair-slot" class="repair-slot" type="button" data-slot="story" data-target="repair-slot" data-role="slot" aria-label="Open the Repair Shop">
+            <img id="torn-patch" src="./assets/ui/torn-patch.webp" alt="">
+          </button>
+          <img id="success-sparkles" class="success-sparkles" src="./assets/ui/sparkles.webp" alt="">
+        </div>
+
+        <div id="prompt" class="prompt-card" aria-live="polite">
+          <img src="./assets/ui/prompt-banner.webp" alt="">
+          <p id="prompt-text"></p>
+        </div>
+
+        <div id="repair-tray" class="repair-tray" aria-label="Painted repair pieces" hidden>
+          <p class="tray-whisper" aria-hidden="true">What belongs in the story?</p>
+          <div id="card-list" class="card-list"></div>
+        </div>
+
+        <button id="next-page" class="next-page" type="button" data-target="next" data-role="next" hidden>
+          <img src="./assets/ui/next-button.webp" alt="">
+          <span>Next page</span>
+        </button>
+
+        <div id="page-turn" class="page-turn" aria-hidden="true"></div>
+      </div>
+
+      <div class="qk-hud-bar play-hud">
+        <button id="play-back" class="qk-hud-btn qk-hud-back" type="button" data-target="back" data-role="navigation" aria-label="Back to the Story Repair Shop"></button>
+        <div id="progress" class="story-progress" role="img" aria-label="Story 1 of 3">
+          <span class="progress-label">Story</span>
+          <span id="progress-count">1 / 3</span>
+        </div>
+        <button id="play-sound" class="qk-hud-btn qk-hud-sound" type="button" data-target="sound" data-role="replay" aria-label="Hear the story again"></button>
+      </div>
+      <div id="drag-layer" class="drag-layer" aria-hidden="true"></div>
+      <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="end" class="qk-screen" data-qk-screen="end" aria-label="Storybook repaired" hidden>
+      <div class="ambient-world" aria-hidden="true"></div>
+      <div class="art-stage end-stage">
+        <img class="atelier-plate landscape-plate" src="./assets/ui/workshop-backdrop.webp" alt="">
+        <img class="atelier-plate portrait-plate" src="./assets/ui/workshop-backdrop-portrait.webp" alt="">
+        <img class="end-title" src="./assets/ui/title-lockup.webp" alt="Story Repair Shop">
+        <div class="end-message">
+          <img src="./assets/ui/prompt-banner.webp" alt="">
+          <p id="end-heading">Three stories repaired!</p>
+        </div>
+        <img class="end-sparkles" src="./assets/ui/sparkles.webp" alt="">
+        <div class="end-actions">
+          <button id="again" class="end-action" type="button" data-target="again" data-role="again">
+            <img id="again-art" src="./assets/ui/repair-mode.webp" alt="">
+            <span>Repair again</span>
+          </button>
+          <button id="other-mode" class="end-action" type="button" data-target="other-mode" data-role="mode">
+            <img id="other-mode-art" src="./assets/ui/wild-mode.webp" alt="">
+            <span id="other-mode-label">Try Wild Endings</span>
+          </button>
+        </div>
+      </div>
+      <button id="end-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-target="end-back" data-role="navigation" aria-label="Back to the Story Repair Shop"></button>
+      <p id="end-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

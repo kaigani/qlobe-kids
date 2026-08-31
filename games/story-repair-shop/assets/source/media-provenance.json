@@ -1,0 +1,609 @@
+{
+  "gptImage2": {
+    "format": "qlobe-gpt-image-production-prompts",
+    "formatVersion": 1,
+    "model": "gpt-image-2",
+    "operation": "generate",
+    "toolMode": "builtin-image-generation",
+    "worldAnchor": "Watercolor / Storybook: hand-painted watercolor and soft gouache on warm cotton paper, visible grain, gentle dark-brown pencil definition, imperfect deckled edges, indigo book cloth, olive linen thread, honey-walnut desk, muted botanical green, sky blue and warm gold; charming premium children's picture-book warmth; no vector art, no glossy interface language.",
+    "assets": [
+      {
+        "output": "workshop-backdrop-source.png",
+        "dimensions": [
+          1448,
+          1086
+        ],
+        "prompt": "A near-top-down 4:3 view of a tiny storybook repair atelier. One very large open blank storybook dominates the frame on a honey-walnut table. Warm cream cotton pages with visible grain, deckled edges, a deep indigo cloth cover, stitched leather corners, loose olive and navy ribbon, wooden thread spools, a broad natural-bristle brush, pressed leaves and small fabric scraps at the outer margins. The two-page field is calm, pale and completely blank so live story art can be composited there; preserve a subtle center gutter. Cozy warm lamplight. Watercolor and gouache with colored-pencil detail. No people, characters, scene illustration, title, letters, words, icons, buttons, UI or border."
+      },
+      {
+        "output": "workshop-backdrop-portrait-source.png",
+        "dimensions": [
+          1024,
+          1536
+        ],
+        "operation": "edit/recompose",
+        "reference": "workshop-backdrop-source.png",
+        "prompt": "Edit and recompose the supplied Story Repair Shop atelier into a polished portrait 2:3 production backdrop for a preschool tablet game. Preserve the same watercolor-and-soft-gouache hand, warm cotton-paper grain, honey-walnut desk, deep indigo cloth book, olive and navy linen thread, stitched leather corners, warm lamplight, and premium children's picture-book charm. The result must be a cohesive portrait composition, not a crop or framed copy. One very large open blank storybook fills most of the portrait canvas with broad cream pages, a subtle gutter, and room for a 3:2 illustration and three large repair cards. Keep the book fully readable with cover and bottom ribbon visible. Arrange wooden spools, brush, pressed leaves, fabric scraps, ribbon and a small dish in the remaining desk margins, with breathing room at the top for a parchment prompt and both upper corners for round HUD controls. Extend the walnut desk naturally above and below the book. Near-top-down orthographic camera. No title, letters, words, numerals, UI, buttons, people, characters, story scene, printed illustration, checkerboard, border, vignette, vector art, glossy 3D, or blank bands."
+      },
+      {
+        "output": "hub-tile-source.png",
+        "dimensions": [
+          1373,
+          1146
+        ],
+        "operation": "edit/recompose",
+        "references": [
+          "workshop-backdrop-source.png",
+          "scene-fox-bridge-source.png"
+        ],
+        "prompt": "Create a polished 6:5 landscape catalog tile for the children's game Story Repair Shop, using the two supplied images as strict art-direction references. A warm near-top-down watercolor-and-colored-pencil bookbinder's atelier on honey walnut wood; an open indigo clothbound storybook fills most of the frame. On its cream deckled pages is a charming watercolor story scene: friendly orange fox on one side of a little stream, gray rabbit waving near a blue-roof cottage on the other side. The path is visibly interrupted by a single irregular blank torn-paper repair patch over the stream, with a small stitched indigo tab, inviting the child to mend the story. Beside the book, arrange three miniature painted paper repair cards\u2014a stone bridge, a bright kite, and a yellow rain boot\u2014like tangible choices. Add a few restrained connected golden star glints, spools and ribbon at the edges. Preserve the established soft cream, indigo, sage, olive and warm ochre palette, traditional transparent watercolor bloom, pencil edges, cotton-paper grain, gentle natural lamplight, premium storybook illustration, clear silhouette and center-weighted mobile readability. No glossy 3D, no plastic, no photorealism, no vector style, no interface controls, no logos, no letters, no words, no typography, no watermark. Keep the full book and all key objects safely inside a central 6:5 crop."
+      },
+      {
+        "output": "title-lockup-source.png",
+        "dimensions": [
+          1402,
+          1122
+        ],
+        "prompt": "Exact title lettering only: STORY / REPAIR / SHOP on three centered lines. Large handmade paper-and-watercolor serif letters in alternating deep indigo, moss green and warm cream with subtle stitched/pencil details, a small paper repair patch, a curling indigo thread, one natural-bristle brush and a few connected golden story sparkles. Friendly, clear, correctly spelled, highly legible. Match the Watercolor / Storybook world anchor. Isolated with generous margin on transparency; no other text, tagline, frame, panel, scenery or extra objects."
+      },
+      {
+        "output": "ui-kit-sheet.png",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "prompt": "One square production asset sheet on a perfectly flat dark charcoal background, exactly six separate Watercolor / Storybook interface objects in a clean 2 by 3 grid with wide gaps and no overlap: top left a wide blank cream deckled parchment prompt banner with small indigo stitched corner tabs; top right a wide blank moss-green rounded stitched Next button plate; middle left a circular indigo-edged medallion showing a tiny open book being mended with a paper patch and thread; middle right a circular moss-edged medallion showing a quill, open book and connected gold magic sparkles; bottom left one irregular blank cream torn-paper patch with a small indigo stitched tab; bottom right one connected cluster of five golden four-point sparkles joined by a loose indigo thread. Preserve full silhouettes, even scale, no shadows connecting objects. No letters, words, numerals, glyphs, extra objects, checkerboard or gradient background."
+      },
+      {
+        "output": "cards-repair-sheet.png",
+        "dimensions": [
+          1024,
+          1536
+        ],
+        "prompt": "A portrait production asset sheet on perfectly flat dark charcoal, exactly nine separate portrait repair cards in a strict 3 by 3 reading-order grid, equal size and generous gaps. Each is a warm cream deckled cotton-paper card with a subtle indigo stitched edge and one centered watercolor object, no text. Row 1: a small stone-and-wood footbridge over a blue stream; a cheerful striped diamond kite with ribbon tails and two soft clouds; one yellow rain boot. Row 2: a tall bright sunflower; a round blue floral teapot; a red wooden toy train. Row 3: an open warm yellow umbrella; a small birthday cake with three candles; a golden folded paper crown. Watercolor/gouache and colored pencil, cohesive Story Repair Shop world, complete silhouettes, equally polished distractors. No people, labels, numerals, extra objects, touching cards, checkerboard or scenery."
+      },
+      {
+        "output": "cards-silly-sheet.png",
+        "dimensions": [
+          1024,
+          1536
+        ],
+        "prompt": "A portrait production asset sheet on perfectly flat dark charcoal, exactly nine separate portrait repair cards in a strict 3 by 3 reading-order grid, equal size and generous gaps. Each is a warm cream deckled cotton-paper card with subtle indigo stitching and one centered watercolor vignette, no text. Row 1: a cheerful goldfish riding a tiny blue bicycle inside a floating water bubble; a curling trail of blue bubbles; a leafy green aquarium plant. Row 2: a pajama dragon playing a brass trumpet while wearing roller skates; a soft indigo pillow; a warm cup of cocoa. Row 3: a smiling crescent moon sharing soup with a friendly brown bear at a tiny table; a plausible family dinner; one warm bowl of soup. Watercolor/gouache and colored pencil, playful but clear, complete silhouettes. No labels, numerals, extra objects, touching cards, checkerboard or full scenery."
+      },
+      {
+        "output": "scene-fox-bridge-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A finished continuous children's storybook landscape: Fia, a small friendly orange fox, waits on the left bank of a sparkling stream; a smiling gray rabbit waves from a blue-roof cottage garden on the right. A complete charming stone-and-wood footbridge joins the path across the middle-right stream. Leafy green woodland, daisies and warm morning light. Keep the fox and setup readable on the left and the bridge as the isolated causal answer centered/right with breathing room for a torn-paper cover. Watercolor and soft gouache on warm cotton paper with gentle pencil contours; no page frame, text, UI or border."
+      },
+      {
+        "output": "scene-nia-sunflower-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A finished continuous children's storybook garden scene. Nia, a joyful young Black girl with two soft puff buns, kneels on the left beside a tiny watering can and a small planted garden bed. On the center-right, one magnificent tall golden sunflower has clearly grown from the tended soil, with broad green leaves, a bee and a few small flowers. Make the sunflower the isolated causal answer with open sky around it and keep Nia's setup clear on the left. Watercolor and soft gouache on warm cotton paper, visible paper grain, gentle dark-brown pencil definition, no page frame, text, UI or border."
+      },
+      {
+        "output": "scene-leo-umbrella-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A finished continuous children's storybook rainy-day scene. Leo, a cheerful East Asian boy in a moss raincoat and little boots, walks home along a puddled path on the left. A complete large warm yellow umbrella is open above him toward the center-right, clearly keeping him dry while soft blue raindrops fall around it. A cozy home and wet garden sit in the distance. Keep Leo and the rain setup readable on the left and the umbrella as the isolated causal answer with breathing room. Watercolor/gouache on cotton paper with pencil contours; no text, UI, page frame or border."
+      },
+      {
+        "output": "scene-fish-bicycle-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A wonderfully impossible finished storybook scene: Finn, a delighted golden fish, pedals a tiny blue bicycle inside a round floating bubble of water, zooming from a simple glass fishbowl at left into an airy room and garden beyond. The bicycle-and-fish bubble is the unmistakable silly answer centered/right; the ordinary bowl setup remains visible at left. Connected bubble trails and one tiny water plant support the motion without clutter. Warm whimsical watercolor and gouache on cotton paper, colored-pencil contours, no text, UI, page frame or border."
+      },
+      {
+        "output": "scene-dragon-trumpet-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A wonderfully impossible finished bedtime storybook scene. Dara, a friendly small moss-green dragon in indigo star pajamas, roller-skates toward bed while enthusiastically playing a bright brass trumpet. A cozy pillow, blanket and moonlit bedroom establish bedtime on the left; the full dragon, trumpet and roller skates form the unmistakable silly answer across the center/right with clear silhouette and energetic musical curls. Warm watercolor/gouache on cotton paper with gentle pencil contours, no musical-note text glyphs, words, UI, page frame or border."
+      },
+      {
+        "output": "scene-bear-moon-soup-source.png",
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "prompt": "A wonderfully impossible finished supper storybook scene. Milo, a kind round brown bear in a small indigo apron, sits at a cozy woodland table with bowls of soup. A friendly glowing crescent moon has come down from the night sky and sits opposite Milo, politely sharing soup with a tiny spoon. The normal table-setting setup reads on the left and the moon-at-supper answer is isolated center/right with a clear silhouette, gentle gold glow and stars. Watercolor and soft gouache on cotton paper with colored pencil; no text, UI, page frame or border."
+      }
+    ]
+  },
+  "sources": {
+    "assets/source/gpt-image-2/prompt-specs.json": "d9f3243759511a8da4fd86ddce7b8b362ecf4b51a7522cfc44a0596b5da504d1",
+    "assets/source/gpt-image-2/title-lockup-source.png": "c6f6f13d47954f61460bd0c0175a1d0021aba0a5a4fb7d968e1b9e3e563d0166",
+    "assets/source/gpt-image-2/ui-kit-sheet.png": "e6b24052901897588cfc45fd5bd492da6b1206248fbe4a735047c65a1d78f74b",
+    "assets/source/gpt-image-2/cards-repair-sheet.png": "1a8973cd06d3dd4f0798231cab650f30b226fa2c3185c4e8aa29516884f2c995",
+    "assets/source/gpt-image-2/cards-silly-sheet.png": "ba1cdc4e0c83f9bedf3f7363dc3149d00f4e7513c55483bf376e5d69b87c4511",
+    "assets/source/gpt-image-2/workshop-backdrop-source.png": "c9c1a1b343531cb5894113c5e191cd3ff4ab74a41aa66901cf5596fd7df6444b",
+    "assets/source/gpt-image-2/workshop-backdrop-portrait-source.png": "45ae61d10d54dd86229112e5c3584af416a25f8afb9bde530582421d7773177c",
+    "assets/source/gpt-image-2/scene-nia-sunflower-source.png": "cc47b45bd2e0895b2c44e6763bb1880b50c00d8ee6b11adfb165e303661e58bf",
+    "assets/source/gpt-image-2/scene-dragon-trumpet-source.png": "4e86d90e02fefdb21ed62fa8c0c50fd7d71f2e40a9791a55e5b742dc4e0c9795",
+    "assets/source/gpt-image-2/scene-leo-umbrella-source.png": "d7945a588bed746bfb088b200d0061e19afc5e60feb56b419f5add21778941bc",
+    "assets/source/gpt-image-2/scene-bear-moon-soup-source.png": "c300e8592c624283f7d9435644cbebdd0dbf8b248d0180d06562472ba6f85ff2",
+    "assets/source/gpt-image-2/scene-fox-bridge-source.png": "f71155026e6f1de7d27f8b7e56a83baf2387f02438fe625987f5f87858b56be6",
+    "assets/source/gpt-image-2/scene-fish-bicycle-source.png": "3c2001829fd775d10232a7e3689b679a8b349f7a2bf31df52ccf7f40b6c5f44c",
+    "assets/source/gpt-image-2/hub-tile-source.png": "3fa926311a0ddc5fd79c37aaffd6e7579697d2523f3f864031d800c47a5f6cff"
+  },
+  "layered": [
+    {
+      "source": "assets/source/gpt-image-2/title-lockup-source.png",
+      "status": "cached",
+      "output": "layer_2",
+      "file": "assets/source/local-api/layered/title-lockup-layer_2.png",
+      "sha256": "8a182e4093d5abcf8a56a338a79845326b885a1a08b2943c74288c4a261bb1c0"
+    }
+  ],
+  "rejectedLayeredAttempts": [
+    {
+      "file": "assets/source/local-api/layered/cards-repair-sheet-layer_2.png",
+      "sha256": "9b8947abacb2fb0f7e891163c047082e8bd2405eb1dee7403834e6041ad54374",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    },
+    {
+      "file": "assets/source/local-api/layered/cards-silly-sheet-layer_2.png",
+      "sha256": "5a104f2f57dc95437a6c111901164bee5ac721d3730b8487b7edd88c0792fa6c",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    },
+    {
+      "file": "assets/source/local-api/layered/next-button-layer_2.png",
+      "sha256": "38a0dade13c999afd437f396c9fc3c3352599d00046cf875ff29bc38f644631d",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    },
+    {
+      "file": "assets/source/local-api/layered/prompt-banner-layer_2.png",
+      "sha256": "b4ab5577531aabb52db48db4ba5ab5f9a354336e311c195e459e4a8dbbe69464",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    },
+    {
+      "file": "assets/source/local-api/layered/repair-mode-layer_2.png",
+      "sha256": "c6d362b9a92239494819b95a2242051845c4544649653f16c6a4fdf69ef814e3",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    },
+    {
+      "file": "assets/source/local-api/layered/ui-kit-sheet-layer_2.png",
+      "sha256": "44ce372f1c6c5f54d445464039c1f51d2e132b9e509da559bcbd610cb062ce08",
+      "reason": "human visual rejection: incomplete foreground or opaque matte; excluded from runtime"
+    }
+  ],
+  "cutter": [
+    {
+      "sheet": "assets/source/gpt-image-2/ui-kit-sheet.png",
+      "expectedCount": 6,
+      "boxes": "assets/source/ui-crops/boxes.json",
+      "mask": "assets/source/ui-crops-mask.png",
+      "isolation": "semantic cutter geometry on untouched GPT Image 2 master"
+    },
+    {
+      "sheet": "assets/source/gpt-image-2/cards-repair-sheet.png",
+      "expectedCount": 9,
+      "boxes": "assets/source/card-crops-repair/boxes.json",
+      "mask": "assets/source/card-crops-repair-mask.png",
+      "isolation": "semantic cutter geometry on untouched GPT Image 2 master"
+    },
+    {
+      "sheet": "assets/source/gpt-image-2/cards-silly-sheet.png",
+      "expectedCount": 9,
+      "boxes": "assets/source/card-crops-silly/boxes.json",
+      "mask": "assets/source/card-crops-silly-mask.png",
+      "isolation": "semantic cutter geometry on untouched GPT Image 2 master"
+    }
+  ],
+  "mattes": [
+    {
+      "name": "prompt-banner",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/prompt-banner.png",
+      "sha256": "3917fb39482a1706a5ae5abf3eaa037aa0107e3814dde30e9d030cb4158f3cf7"
+    },
+    {
+      "name": "next-button",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/next-button.png",
+      "sha256": "6375b589acc4627f38ac61642f7e30d513d8d2c1321e93d7e636fafca4afe027"
+    },
+    {
+      "name": "repair-mode",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/repair-mode.png",
+      "sha256": "04579f0490758a9cc9dde23870b0f8a2e455b80b5a727a92ce949655b28a6f40"
+    },
+    {
+      "name": "wild-mode",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/wild-mode.png",
+      "sha256": "7402cde1a0c8d67309ac226e9c22742bbc4895fa25dc876efcc876c149ff6df2"
+    },
+    {
+      "name": "torn-patch",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/torn-patch.png",
+      "sha256": "d72a7a97c92fad3499318a3c2605ff4ed6869fe9e9d52f827b89e9de212812f5"
+    },
+    {
+      "name": "sparkles",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/ui-crops/sparkles.png",
+      "sha256": "68481ccf9bbc409a2a0fae919191fb666cc27dc6a9c048dd744a692554ed0ff9"
+    },
+    {
+      "name": "bridge",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/bridge.png",
+      "sha256": "cbeb9b42a64d276b5ae6e04eef2be7eccab44c5da097ffe56a79e4a7fdcac3ad"
+    },
+    {
+      "name": "striped-kite",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/striped-kite.png",
+      "sha256": "c58570bb2c66acbfb79684b8da00c319342562538cec3f822832db859afa0aaa"
+    },
+    {
+      "name": "yellow-rain-boot",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/yellow-rain-boot.png",
+      "sha256": "2a3cbcad7409eb4fa2d922433f2b60d9bcc7aff1d14e4ba737f68c251f09b776"
+    },
+    {
+      "name": "sunflower",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/sunflower.png",
+      "sha256": "eaf402e644ead9427f6e214834db38515c332adb2fcc57d671086baeeb677957"
+    },
+    {
+      "name": "blue-teapot",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/blue-teapot.png",
+      "sha256": "b38c68ddf17dd920ea81c7d6213dc152ae41ee6dc30b05cb588c270c058b0ecc"
+    },
+    {
+      "name": "red-toy-train",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/red-toy-train.png",
+      "sha256": "88dc43b43e2d212f8a95ba77edcc8e2483f9d05040df6f54b33c464d43e3c13a"
+    },
+    {
+      "name": "umbrella",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/umbrella.png",
+      "sha256": "8b0feca915d655a8568114c4cc323a09323e81e4fb9e0dd47c4df5489e1ef203"
+    },
+    {
+      "name": "birthday-cake",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/birthday-cake.png",
+      "sha256": "99424bcc85ba4a7ce4ecdcab48141b462efc361468c3bd5f80c23cbe0edfd521"
+    },
+    {
+      "name": "paper-crown",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-repair/paper-crown.png",
+      "sha256": "8c497579d58e122d944df73556db9755ed8e92de4c01fb58afc0546918849db9"
+    },
+    {
+      "name": "bicycle",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/bicycle.png",
+      "sha256": "bb2eec2c79310b4770bd73bb17e675dbbf56f054a879432fd4e8742b5461cf04"
+    },
+    {
+      "name": "bubbles",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/bubbles.png",
+      "sha256": "ada713ca33effeef6b19e628657c9450d928dc8440b8ffb07cc6ae5ed8f2158b"
+    },
+    {
+      "name": "water-plant",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/water-plant.png",
+      "sha256": "0f5898454dc51ba5dc74cd0618a1b0e8383dcfa5889277be00d9305dbdbb3d62"
+    },
+    {
+      "name": "trumpet-skates",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/trumpet-skates.png",
+      "sha256": "201986b40392a9ad3301d7d55cc227a83e9720cab01dc55a2a911a76bc2311ad"
+    },
+    {
+      "name": "pillow",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/pillow.png",
+      "sha256": "5105073f02d12c5b7c02ccf3c9c4eb093ad0f3e6643c1325fb3623e663b081aa"
+    },
+    {
+      "name": "cocoa",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/cocoa.png",
+      "sha256": "1203d4a79c9daf96e1382a5195063505cd60317283deb880b747be7e9a5be28f"
+    },
+    {
+      "name": "moon-soup",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/moon-soup.png",
+      "sha256": "7bdc51eb41fe8843f46cf0fc12f8c0602104aff94abea3f5c807759f5b60d16d"
+    },
+    {
+      "name": "family-dinner",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/family-dinner.png",
+      "sha256": "4d416a3a571a74037604c8286041db3928a3948b7d117bb96ccda9583691053e"
+    },
+    {
+      "name": "soup-bowl",
+      "method": "cached asset-cutter matte",
+      "source": "assets/source/card-crops-silly/soup-bowl.png",
+      "sha256": "e2269b1d00059fcce1dd06d0650e1ef9885184be37ff2930ff4df4586f8e14e1"
+    }
+  ],
+  "finalize": [],
+  "runtime": {
+    "assets/ui/prompt-banner.webp": {
+      "sha256": "3c7af61227304e48a9eb0b019ac6bf082a1aa4a73c125e23d24b7dccfee14e36",
+      "dimensions": [
+        618,
+        296
+      ]
+    },
+    "assets/ui/next-button.webp": {
+      "sha256": "30faed7ca438015cdfefc4178b9a228e49b898e9d3474075507b63081c590f16",
+      "dimensions": [
+        542,
+        288
+      ]
+    },
+    "assets/ui/repair-mode.webp": {
+      "sha256": "5cf33178deadd734e59b013a653dcbb84a5a4574eb49659af5ccb98506d0d4bf",
+      "dimensions": [
+        472,
+        480
+      ]
+    },
+    "assets/ui/wild-mode.webp": {
+      "sha256": "e379a3ca449f6e1a526eeb8a16914005f835150b39ada8ecc37205d1c96acbbf",
+      "dimensions": [
+        474,
+        487
+      ]
+    },
+    "assets/ui/torn-patch.webp": {
+      "sha256": "b1bffe30e753f53934667ea1e8ffed85afc635f11338db67bc88602cc3c55355",
+      "dimensions": [
+        375,
+        380
+      ]
+    },
+    "assets/ui/sparkles.webp": {
+      "sha256": "b654703e9bbdbd4344578b3a71667e04e4177689cee7c5044114bf1864860c60",
+      "dimensions": [
+        468,
+        319
+      ]
+    },
+    "assets/cards/bridge.webp": {
+      "sha256": "502a3c1f904f7c4ebb9e2098bfd196471716d1ebec52c3581d8277cf9c05ee71",
+      "dimensions": [
+        300,
+        440
+      ]
+    },
+    "assets/cards/striped-kite.webp": {
+      "sha256": "fd87aab83937dc4e33ec196fc81c987fa3aa1fa05878faebb80baef99faa2143",
+      "dimensions": [
+        302,
+        440
+      ]
+    },
+    "assets/cards/yellow-rain-boot.webp": {
+      "sha256": "4bea10b62e27a569a97360f2941eab1a6c1a5b278c8c55d4c77e659ac419a19d",
+      "dimensions": [
+        301,
+        440
+      ]
+    },
+    "assets/cards/sunflower.webp": {
+      "sha256": "534c95e89830b0928723368defca00678126919b2a9ef9b59f3fe6aeac5e52fb",
+      "dimensions": [
+        316,
+        440
+      ]
+    },
+    "assets/cards/blue-teapot.webp": {
+      "sha256": "24432dd799f3454354943113072b6ad713c128ebae2daf8c65be6d07433c13d6",
+      "dimensions": [
+        316,
+        440
+      ]
+    },
+    "assets/cards/red-toy-train.webp": {
+      "sha256": "4117277fe77634b78b3c70de316be11a379682d911661a00022e76b49ce2d6f5",
+      "dimensions": [
+        316,
+        440
+      ]
+    },
+    "assets/cards/umbrella.webp": {
+      "sha256": "5066eb9674c73d79ecfbd886d2fa30ee3de2f5e5a54f6bc68ace8b40a2e32bc9",
+      "dimensions": [
+        309,
+        440
+      ]
+    },
+    "assets/cards/birthday-cake.webp": {
+      "sha256": "203324055c9e9cdddc85849cc86d9f7e53496bf4bbaf98da53d607fdbef2bdbf",
+      "dimensions": [
+        309,
+        440
+      ]
+    },
+    "assets/cards/paper-crown.webp": {
+      "sha256": "d8069826639f29e5743377f79f854b1ff4d6580de4026f8e7dde87c52ea0e750",
+      "dimensions": [
+        308,
+        440
+      ]
+    },
+    "assets/cards/bicycle.webp": {
+      "sha256": "1e737688f9d80ea0ce32ec9553fe3cd931638cae9928a24ac8b4cd1528a82446",
+      "dimensions": [
+        294,
+        440
+      ]
+    },
+    "assets/cards/bubbles.webp": {
+      "sha256": "5fcf2d12d903d7bc45e2da8f886beb74527c71afb7ee5413306a104699280850",
+      "dimensions": [
+        291,
+        440
+      ]
+    },
+    "assets/cards/water-plant.webp": {
+      "sha256": "67c7a4eaa70316dde49933beb415e7be978961c55329093b0f2c549421adf9fd",
+      "dimensions": [
+        294,
+        440
+      ]
+    },
+    "assets/cards/trumpet-skates.webp": {
+      "sha256": "d9dbe67545575a962da3e24bd8ed283a93eebc6fd801882df9f66f42e641a7fc",
+      "dimensions": [
+        303,
+        440
+      ]
+    },
+    "assets/cards/pillow.webp": {
+      "sha256": "8e08213e6ee60789dc8d18e0e44af10b54f26a63cb2eb48b2c313a6aa85b0f37",
+      "dimensions": [
+        300,
+        440
+      ]
+    },
+    "assets/cards/cocoa.webp": {
+      "sha256": "20e884cc6d31cedffc9b09e99564a9cc5ff9ba3b4f70c0afd66d7285ba55b1a9",
+      "dimensions": [
+        303,
+        440
+      ]
+    },
+    "assets/cards/moon-soup.webp": {
+      "sha256": "9a70a0a3fee7aa285b8db177064d79206c677a1ea99e3c46522ab427535b48bc",
+      "dimensions": [
+        301,
+        440
+      ]
+    },
+    "assets/cards/family-dinner.webp": {
+      "sha256": "fd24a90285921edfbc2c033919fbb01590d388174ffd8f0a48efba0adfaf1194",
+      "dimensions": [
+        298,
+        440
+      ]
+    },
+    "assets/cards/soup-bowl.webp": {
+      "sha256": "6a106e1fa0e30864a7504229b1420424f02f0a64920de74318103c72f8321467",
+      "dimensions": [
+        300,
+        440
+      ]
+    },
+    "assets/ui/title-lockup.webp": {
+      "sha256": "fd5b007089af163e45d675956d189e24e3d4d5d348598697e6ffb6898c09350f",
+      "dimensions": [
+        900,
+        611
+      ],
+      "source": "assets/source/gpt-image-2/title-lockup-source.png"
+    },
+    "assets/ui/workshop-backdrop.webp": {
+      "sha256": "0e1aa49afe7bfb416114ae0a72ae04ff09a60d1ffaae1bfa9759c4eb8ef7351e",
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "source": "assets/source/gpt-image-2/workshop-backdrop-source.png"
+    },
+    "assets/ui/workshop-backdrop-portrait.webp": {
+      "sha256": "12844c6168d700277a612abd87dbcd05b43c819e4b8dc7b07f41cac02aaed55d",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "source": "assets/source/gpt-image-2/workshop-backdrop-portrait-source.png"
+    },
+    "assets/scenes/nia-sunflower.webp": {
+      "sha256": "267d04a5e565779017d29f2518232da34df0c52d84059ceaca2288a0c792de8f",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-nia-sunflower-source.png"
+    },
+    "assets/scenes/dragon-trumpet.webp": {
+      "sha256": "9ad19bdddcc4574416740b8f8cf37b106b4b21aef5f13f3b7af717e7c07e8720",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-dragon-trumpet-source.png"
+    },
+    "assets/scenes/leo-umbrella.webp": {
+      "sha256": "84cf57141d54b8ce78b9e524c14444af6f63ec1043a3dae589fd46bfc05255ad",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-leo-umbrella-source.png"
+    },
+    "assets/scenes/bear-moon-soup.webp": {
+      "sha256": "83c4fe15ed62c97caedfc38ba9c0cc2559e547d60ab68e1f9e759d8203d488ed",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-bear-moon-soup-source.png"
+    },
+    "assets/scenes/fox-bridge.webp": {
+      "sha256": "69f877fa26d721fe496568a8f5079ecc1d7bda61290268becb0c04275a8ec20c",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-fox-bridge-source.png"
+    },
+    "assets/scenes/fish-bicycle.webp": {
+      "sha256": "43c5b73b537f2d26046994e7966c95db5ca20a6387a79751c7dae723448392d1",
+      "dimensions": [
+        1280,
+        853
+      ],
+      "source": "assets/source/gpt-image-2/scene-fish-bicycle-source.png"
+    }
+  },
+  "catalogTile": {
+    "accepted": {
+      "file": "assets/hub/tiles/story-repair-shop.jpg",
+      "sha256": "b0744e98f966cbdcde2a4c08d1080373b2334ed6d56a54cd37e3143a18b747e5",
+      "dimensions": [
+        640,
+        533
+      ],
+      "source": "assets/source/gpt-image-2/hub-tile-source.png",
+      "reason": "matches the canonical watercolor atelier and gameplay repair ritual"
+    },
+    "superseded": {
+      "file": "assets/source/krea2/story-repair-shop-hub-v2.png",
+      "sha256": "f4e84303a2bf303a45224b1a5d9dc60126dda5a104ec4855ca159519f29ff819",
+      "reason": "visually polished but glossy 3D style conflicts with the canonical Watercolor / Storybook world"
+    }
+  }
+}
