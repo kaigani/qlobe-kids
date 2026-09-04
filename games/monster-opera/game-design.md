@@ -11,8 +11,8 @@ The game is audio-first and fully playable without reading. There are no scores,
 - Canonical art world: **Toy**.
 - Per-game treatment: **rough color-chalk classroom slate**.
 - Material language: real charcoal-green blackboard texture; dusty, broken chalk edges; warm yellow, white, teal, coral, lavender, and pink marks; intentionally imperfect hand pressure.
-- Primary visible art is raster or supplied H.264 video. CSS and DOM provide only layout, hit areas, focus, clipping, compositing, and motion.
-- Every black-backed still and video renderer explicitly uses `mix-blend-mode: screen`. The splash, cast rail, and concert viewport also provide screen-composited media groups for browsers that promote video into opaque hardware planes, so the committed blackboard texture remains visible through every moving chalk layer.
+- Primary visible art is raster: stills plus keyframe sprite strips converted from the supplied H.264 concept videos (every source frame, real alpha). CSS and DOM provide only layout, hit areas, focus, clipping, compositing, and motion.
+- Monsters draw onto plain canvases with straight alpha, so they composite directly over the blackboard texture; only the black-backed overlay plate and long playhead still use `mix-blend-mode: screen`. No `<video>` element exists at runtime.
 - The decorative title is authored raster lettering. Functional labels stay accessible HTML/ARIA and are not required to play.
 
 ## Screen map
@@ -41,7 +41,7 @@ Catalog ← Home — Splash
 - Three authored raster lane strokes occupy the top band: white, yellow, teal.
 - One orange raster playhead sweeps the active lane. A full lane lasts 16 seconds; the listening lane advances white → yellow → teal and repeats.
 - Twelve large monsters dance continuously on a horizontally swipeable stage. Four to six are visible in ordinary landscape; two are visible in portrait. Touch swipe, desktop drag, horizontal trackpad motion, and a conventional mouse wheel all move the same native rail.
-- Tapping a monster previews the lane-specific four-second sound/video and records a continuous time in the active lane.
+- Tapping a monster previews the lane-specific four-second sound and keyframe performance and records a continuous time in the active lane.
 - A colored chalk token flies from performer to timeline and remains at that time.
 - Global sound, independent beat toggle, Back, and Go use authored raster faces with ≥96px hit areas.
 - Go brightens after the first event. An empty Go press gently pulses the lane and cast rather than leaving the screen.
@@ -62,17 +62,18 @@ Catalog ← Home — Splash
 - Crowded local groups reflow into compact one-, two-, or three-row arrangements.
   Their artwork scales down responsively, but every performer retains a separate
   96px-or-larger tap target and all three repeating panels use identical placement.
-- Every idle concert monster uses its supplied `dance.mp4`. Listen decodes one
-  shared source per unique monster (never more than twelve) and paints that
-  frame into each Screen-blended timeline appearance, avoiding an iPad decoder
-  explosion on dense songs. The canvas renderer is also hard-limited to 320
-  paints per second and scales backing resolution only for unusually dense
-  compositions; ordinary songs remain 480px at 20fps.
+- Every idle concert monster loops its dance sprite clip (every frame of the
+  supplied `dance.mp4`, keyed to real alpha). All copies of one monster share a
+  single clock, so they show the same frame and share one decoded strip window
+  (never more than twelve loops in flight). Only copies near the viewport own a
+  live canvas; dense compositions scale the backing canvases to 320px/240px,
+  while ordinary songs remain 480px at the source frame rate.
 - All three lanes replay together every 16 seconds.
 - Tapping a visible event immediately plays its own lane sound for four seconds as an independent solo. It never changes or delays scheduled playback.
-- Performance MP4s load only near the viewport. A performance crossing the
-  16→0 seam is mirrored onto the incoming panel copy while its audio remains a
-  single scheduled or manual voice.
+- Performance sprite clips buffer only near the viewport and are warmed by the
+  scheduler just ahead of their hit. A performance crossing the 16→0 seam is
+  mirrored onto the incoming panel copy while its audio remains a single
+  scheduled or manual voice.
 - New Song wipes the data, stops event voices, returns to Composer, and resets to white at zero.
 
 ## Timing and data contract
@@ -100,7 +101,7 @@ SongEvent = {
 - The graph includes per-channel gains plus a compressor so overlapping child-authored sounds remain warm instead of clipping.
 - The supplied beat uses a gapless looping `AudioBufferSourceNode`; beat gain remains independent from global mute.
 - Monster audio is extracted from the audiovisual sources and scheduled through decoded buffers for precise timing.
-- Videos are muted visual layers; this prevents doubled audio and media-element scheduling drift.
+- Animations are silent keyframe sprites driven by the same clock as the audio; there is no media element to drift or double the sound.
 - Authoring taps are immediate previews. Composer does not automatically replay recorded dots.
 - Concert uses a 60ms scheduler with 220ms lookahead. Manual voices and scheduled voices may coexist.
 - Hiding the page pauses transport and stops event voices. Returning resumes from preserved phase and schedules only future events—never a catch-up burst.
@@ -115,7 +116,7 @@ The recorded-background-music helper is intentionally not used: its fade-loop po
 - Accepted composition tap: finger press → performer animation and sound → raster dot flight → persistent token.
 - Suppressed overlap: performer wiggle plus existing token wink; no second monster voice and no scolding sound.
 - Idle nudge: after 8.5 seconds without touch, the active lane and first visible performers breathe once; repeated nudges remain gentle.
-- Reduced motion: splash video stops, scrolling track becomes a stable center panel, continuous playhead paint is throttled, and scheduled performers still highlight. Audio/data behavior is unchanged.
+- Reduced motion: sprite loops stay on their stills, scrolling track becomes a stable center panel, continuous playhead paint is throttled, and scheduled performers still highlight. Audio/data behavior is unchanged.
 - Focus rings and ARIA labels remain available for assistive play.
 
 ## Responsive layout
@@ -138,10 +139,9 @@ None. The interaction is intentionally modeled through motion, immediate monster
 ## Asset list
 
 - 1 blackboard texture.
-- 12 black-backed neutral monster stills in high-quality WebP delivery, composed through the same overlay treatment as video.
-- 12 four-second looping dance videos for Composer and pooled Concert idles.
-- 36 four-second lane-specific video performances plus 36 separated AAC sounds.
-- 3 muted dance loops for the splash.
+- 12 real-alpha neutral monster stills (keyed from the supplied black-backed art).
+- 12 four-second looping dance sprite packages (every source frame, 20–24fps) for the splash, Composer, and Concert idles.
+- 36 four-second lane-specific sprite performances plus 36 separated AAC sounds.
 - 1 looping beat.
 - 1 generated title lockup.
 - 8 generated/sliced control faces.

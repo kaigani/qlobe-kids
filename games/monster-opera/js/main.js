@@ -8,6 +8,7 @@ import * as sfx from '../../../shared/js/sfx.js';
 import { onTap } from '../../../shared/js/tap.js';
 
 import { MonsterAudioEngine } from './audio-engine.js';
+import { createSpriteLibrary } from './sprite-clips.js';
 import {
   composerPosition, createClock, occurrencesBetween, overlapsBlock, wrap,
 } from './transport.js';
@@ -43,19 +44,41 @@ let scheduler = 0;
 let scheduled = new Set();
 let visualTimers = new Set();
 const performances = new Map();
-const concertDanceSources = new Map();
+const spritePlayers = new WeakMap();
 let concertStarting = false;
 let concertStartToken = 0;
 let lineupTapSuppressedUntil = 0;
-let concertDancePoolHost = null;
 let concertDancePaintAt = 0;
 let concertSafetyPaintAt = 0;
 
-const imageFor = (monsterId) => `./assets/monsters/${monsterId}/still.webp`;
-const mediaFor = (monsterId, laneId, extension) => {
-  const lane = config.lanes.find((item) => item.id === laneId);
-  return `./assets/monsters/${monsterId}/${lane.noise}.${extension}`;
-};
+// Every monster animation is a keyframe sprite clip (see js/sprite-clips.js):
+// real-alpha WebP strips drawn onto a canvas, so the chalk composites onto the
+// slate without blend modes, hardware video planes, or per-event decoders.
+const sprites = createSpriteLibrary({
+  onError: (error, source) => {
+    if (!state.assetErrors.includes(source)) state.assetErrors.push(source);
+  },
+});
+// All monster manifests share this frame box; concert canvases scale from it.
+const spriteFrameSize = 480;
+const monsterFor = (monsterId) => config.monsters.find((item) => item.id === monsterId);
+const manifestFor = (monsterId) => monsterFor(monsterId)?.sprites || `./assets/monsters/${monsterId}/sprites/manifest.json`;
+const imageFor = (monsterId) => manifestFor(monsterId).replace(/manifest\.json$/, 'still.webp');
+const clipFor = (monsterId, name) => sprites.clip(manifestFor(monsterId), name);
+const noiseFor = (laneId) => config.lanes.find((item) => item.id === laneId).noise;
+const mediaFor = (monsterId, laneId, extension) => `./assets/monsters/${monsterId}/${noiseFor(laneId)}.${extension}`;
+
+function attachSpritePlayer(host, monsterId) {
+  const canvas = host.querySelector('canvas.monster-sprite');
+  if (!canvas) return null;
+  const player = sprites.createPlayer(canvas);
+  player.onReady = () => host.classList.add('is-dance-ready');
+  host.dataset.spriteMonster = monsterId;
+  spritePlayers.set(host, player);
+  return player;
+}
+
+const playerFor = (host) => spritePlayers.get(host);
 
 function iconButton({ id, target = id, label, src, className = '', pressed = null }) {
   const button = document.createElement('button');
@@ -99,8 +122,9 @@ function renderShell() {
     performer.className = `splash-performer splash-${dancer.monsterId}`;
     performer.innerHTML = `
       <img src="${imageFor(dancer.monsterId)}" alt="" draggable="false" />
-      <video src="${dancer.video}" poster="${imageFor(dancer.monsterId)}" muted loop playsinline preload="metadata" aria-label="${monster.label} dancing"></video>
+      <canvas class="monster-sprite" width="1" height="1" aria-label="${monster.label} dancing"></canvas>
     `;
+    attachSpritePlayer(performer, dancer.monsterId);
     stage.append(performer);
   }
   const play = iconButton({
@@ -169,10 +193,10 @@ function renderShell() {
     button.setAttribute('aria-label', `Play the ${monster.label}`);
     button.innerHTML = `
       <img class="monster-still" src="${imageFor(monster.id)}" alt="" draggable="false" />
-      <video class="monster-dance" src="${monster.dance}" poster="${imageFor(monster.id)}" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-      <video class="monster-video" muted playsinline preload="metadata" aria-hidden="true"></video>
+      <canvas class="monster-sprite" width="1" height="1" aria-hidden="true"></canvas>
       <span class="monster-chalk-burst" aria-hidden="true"></span>
     `;
+    attachSpritePlayer(button, monster.id);
     lineup.append(button);
   }
   composer.append(lineup);
@@ -234,7 +258,7 @@ const els = {
 
 game.addEventListener('error', (event) => {
   const node = event.target;
-  if (!(node instanceof HTMLImageElement || node instanceof HTMLVideoElement)) return;
+  if (!(node instanceof HTMLImageElement)) return;
   const source = node.currentSrc || node.src || 'unknown-media';
   if (!state.assetErrors.includes(source)) state.assetErrors.push(source);
 }, true);
@@ -294,31 +318,44 @@ function toggleBeat() {
   announce(state.beatEnabled ? 'Drum beat on' : 'Drum beat off');
 }
 
-function playSplashVideos() {
-  if (reduceMotion.matches) return;
-  for (const video of els.splash.querySelectorAll('video')) video.play().catch(() => {});
+function spriteHostsIn(root) {
+  return [...root.querySelectorAll('.splash-performer, .composer-monster, .concert-event')]
+    .filter((host) => spritePlayers.has(host));
 }
 
-function playIdleDance(button) {
-  const dance = button?.querySelector('.monster-dance');
-  const screen = button?.closest('[data-qk-screen]')?.dataset.qkScreen;
+function canAnimate(host) {
+  const screen = host?.closest('[data-qk-screen]')?.dataset.qkScreen;
   // `createScreens` invokes onEnter before it commits `screens.current`; use
   // the entry state so concert dances can begin during that handoff.
-  if (!dance || reduceMotion.matches || document.hidden || state.screen !== screen) return;
-  if (button.classList.contains('concert-event') && !button.classList.contains('is-near')) return;
-  if (button.classList.contains('concert-event')) {
-    paintConcertDances(performance.now());
+  return Boolean(host) && !reduceMotion.matches && !document.hidden && state.screen === screen;
+}
+
+function isOffstage(host) {
+  if (host.classList.contains('concert-event')) return !host.classList.contains('is-near');
+  if (host.classList.contains('composer-monster')) return host.classList.contains('is-offstage');
+  return false;
+}
+
+async function playIdleDance(host) {
+  const player = playerFor(host);
+  if (!player || !canAnimate(host)) return;
+  const clip = await clipFor(host.dataset.spriteMonster, 'dance').catch(() => null);
+  if (!clip || !canAnimate(host) || playerFor(host) !== player) return;
+  if (isOffstage(host)) {
+    // Off-screen cast members only buffer their loop so they are ready to swipe in.
+    sprites.prefetch(clip, 0);
     return;
   }
-  if (!(dance instanceof HTMLVideoElement)) return;
-  dance.play().then(
-    () => button.classList.add('is-dance-ready'),
-    () => button.classList.remove('is-dance-ready'),
-  );
+  player.setVisible(true);
+  player.loop(clip);
 }
 
 function playIdleDances(root) {
-  for (const button of root.querySelectorAll('.composer-monster, .concert-event')) playIdleDance(button);
+  for (const host of spriteHostsIn(root)) playIdleDance(host);
+}
+
+function playSplashDances() {
+  playIdleDances(els.splash);
 }
 
 function playComposerDances() {
@@ -326,20 +363,15 @@ function playComposerDances() {
 }
 
 function playConcertDances() {
-  playConcertDanceSources();
   concertDancePaintAt = 0;
-  paintConcertDances(performance.now());
+  playIdleDances(els.concert);
 }
 
-function pauseVideos(root = game) {
-  const buttons = new Set();
-  for (const video of root.querySelectorAll('video')) {
-    const button = video.closest('.composer-monster, .concert-event');
-    if (button) buttons.add(button);
-  }
-  for (const button of buttons) performances.get(button)?.();
-  for (const video of root.querySelectorAll('video')) {
-    try { video.pause(); } catch { /* media is optional */ }
+function pauseSprites(root = game) {
+  for (const host of spriteHostsIn(root)) {
+    performances.get(host)?.();
+    playerFor(host)?.setVisible(false);
+    host.classList.remove('is-dance-ready');
   }
 }
 
@@ -416,35 +448,15 @@ function concertCopiesFor(button) {
   return wrapCopy && wrapCopy !== button ? [button, wrapCopy] : [button];
 }
 
-function primePerformanceVideo(video, source = video?.dataset.src) {
-  if (!video || !source) return;
-  if (video.getAttribute('src') === source) return;
-  video.src = source;
-  video.load();
-}
-
-function releasePerformanceVideo(button) {
-  const video = button?.querySelector('.monster-video');
-  if (!video || button.classList.contains('is-performing')) return;
-  try { video.pause(); } catch { /* media is optional */ }
-  video.removeAttribute('src');
-  video.load();
-}
-
-function showMonsterVideoOn(button, laneId, kind) {
-  const monsterId = button.dataset.monsterId || button.dataset.eventMonster;
-  const video = button.querySelector('.monster-video');
-  const dance = button.querySelector('.monster-dance');
-  const source = mediaFor(monsterId, laneId, 'mp4');
+function performOn(button, laneId, kind) {
+  const player = playerFor(button);
+  if (!player) return;
   performances.get(button)?.();
-  if (dance instanceof HTMLVideoElement) dance.pause();
-  primePerformanceVideo(video, source);
-  video.currentTime = 0;
   button.classList.remove('is-performing', 'is-solo');
   let settled = false;
+  let cancel = null;
   let fallback = 0;
   const begin = () => {
-    if (settled) return;
     button.classList.add('is-performing');
     if (kind === 'manual') button.classList.add('is-solo');
   };
@@ -452,27 +464,35 @@ function showMonsterVideoOn(button, laneId, kind) {
     if (settled) return;
     settled = true;
     clearTimeout(fallback);
+    cancel?.();
     button.classList.remove('is-performing', 'is-solo');
-    video.removeEventListener('playing', begin);
-    video.removeEventListener('ended', finish);
     if (performances.get(button) === finish) performances.delete(button);
-    if (button.classList.contains('concert-event') && !button.classList.contains('is-near')) {
-      releasePerformanceVideo(button);
-    } else {
-      playIdleDance(button);
+    if (isOffstage(button)) {
+      player.setVisible(false);
+      button.classList.remove('is-dance-ready');
     }
   };
   performances.set(button, finish);
-  video.addEventListener('playing', begin, { once: true });
-  video.addEventListener('ended', finish, { once: true });
+  if (reduceMotion.matches) {
+    // The still stays on screen; the performer only lifts for the clip length.
+    begin();
+    fallback = setTimeout(finish, clipSeconds * 1000);
+    return;
+  }
   fallback = setTimeout(finish, (clipSeconds + 0.75) * 1000);
-  video.play().then(begin, finish);
+  clipFor(button.dataset.spriteMonster, noiseFor(laneId)).then((clip) => {
+    if (settled) return;
+    player.setVisible(true);
+    // The clock starts now, in step with the audio; frames that arrive late
+    // are skipped rather than delaying the performance.
+    cancel = player.play(clip, { onStart: begin, onEnd: finish });
+  }, finish);
 }
 
-function showMonsterVideo(button, laneId, kind = 'preview') {
+function showMonsterPerformance(button, laneId, kind = 'preview') {
   // Only the visible event gets a performance except at the loop seam, where
   // the preceding panel is also animated for a continuous wrap.
-  for (const copy of concertCopiesFor(button)) showMonsterVideoOn(copy, laneId, kind);
+  for (const copy of concertCopiesFor(button)) performOn(copy, laneId, kind);
 }
 
 function installLineupScrolling(lineup) {
@@ -579,7 +599,7 @@ function recordMonster(monsterId, button = null) {
   candidate.createdAt = state.eventSerial;
   state.song.events.push(candidate);
   const target = button || els.lineup.querySelector(`[data-monster-id="${monsterId}"]`);
-  showMonsterVideo(target, lane.id, 'preview');
+  showMonsterPerformance(target, lane.id, 'preview');
   audio.play(mediaFor(monsterId, lane.id, 'm4a'), {
     kind: 'preview', monsterId, laneId: lane.id, eventId: candidate.id,
   });
@@ -612,71 +632,6 @@ function nudgeComposer() {
 
 const nudger = createNudger({ first: 8500, repeat: 11000, onNudge: nudgeComposer });
 
-function destroyConcertDancePool() {
-  for (const source of concertDanceSources.values()) {
-    try { source.pause(); } catch { /* media is optional */ }
-  }
-  concertDanceSources.clear();
-  concertDancePoolHost?.remove();
-  concertDancePoolHost = null;
-  concertDancePaintAt = 0;
-}
-
-function createConcertDancePool() {
-  destroyConcertDancePool();
-  const monsterIds = [...new Set(state.song.events.map(({ monsterId }) => monsterId))];
-  if (!monsterIds.length) return;
-  const host = document.createElement('div');
-  host.className = 'concert-dance-pool';
-  host.setAttribute('aria-hidden', 'true');
-  for (const monsterId of monsterIds) {
-    const monster = config.monsters.find((item) => item.id === monsterId);
-    if (!monster?.dance) continue;
-    const source = document.createElement('video');
-    source.className = 'concert-dance-source';
-    source.src = monster.dance;
-    source.muted = true;
-    source.loop = true;
-    source.playsInline = true;
-    source.preload = 'metadata';
-    host.append(source);
-    concertDanceSources.set(monsterId, source);
-  }
-  concertDancePoolHost = host;
-  els.concert.append(host);
-  concertDisposers.push(destroyConcertDancePool);
-}
-
-function playConcertDanceSources() {
-  if (reduceMotion.matches || document.hidden || state.screen !== 'concert') return;
-  for (const source of concertDanceSources.values()) source.play().catch(() => {});
-}
-
-function drawConcertDance(button) {
-  const canvas = button?.querySelector('canvas.monster-dance');
-  if (!canvas || !button.classList.contains('is-near') || button.classList.contains('is-performing')) return false;
-  const source = concertDanceSources.get(canvas.dataset.danceMonster);
-  if (!source || source.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
-    button.classList.remove('is-dance-ready');
-    return false;
-  }
-  const context = canvas.getContext('2d');
-  if (!context) return false;
-  try {
-    const resolution = concertDanceResolution();
-    if (canvas.width !== resolution || canvas.height !== resolution) {
-      canvas.width = resolution;
-      canvas.height = resolution;
-    }
-    context.drawImage(source, 0, 0, canvas.width, canvas.height);
-    button.classList.add('is-dance-ready');
-    return true;
-  } catch {
-    button.classList.remove('is-dance-ready');
-    return false;
-  }
-}
-
 function concertDanceResolution() {
   const eventCount = state.song.events.length;
   if (eventCount <= 24) return 480;
@@ -684,21 +639,21 @@ function concertDanceResolution() {
   return 240;
 }
 
+function concertDanceScale() {
+  return concertDanceResolution() / spriteFrameSize;
+}
+
 function paintConcertDances(time) {
-  if (reduceMotion.matches || state.screen !== 'concert') return;
-  const buttons = [...els.concert.querySelectorAll('.concert-event.is-near:not(.is-performing)')];
-  const nearCount = buttons.length;
-  const resolution = concertDanceResolution();
-  const interval = Math.max(50, nearCount / 320 * 1000);
-  els.world.dataset.danceNearCount = String(nearCount);
-  els.world.dataset.danceInterval = String(Math.round(interval * 100) / 100);
-  els.world.dataset.danceResolution = String(resolution);
-  els.world.dataset.danceBudget = '320';
-  if (time - concertDancePaintAt < interval) return;
+  // Sprite players paint themselves; this only publishes the idle-renderer
+  // budget for review tooling a few times a second.
+  if (state.screen !== 'concert' || time - concertDancePaintAt < 250) return;
   concertDancePaintAt = time;
-  for (const button of buttons) {
-    drawConcertDance(button);
-  }
+  const stats = sprites.stats();
+  els.world.dataset.danceNearCount = String(els.concert.querySelectorAll('.concert-event.is-near').length);
+  els.world.dataset.danceResolution = String(concertDanceResolution());
+  els.world.dataset.danceActivePlayers = String(stats.activePlayers);
+  els.world.dataset.danceDecodedStrips = String(stats.decodedStrips);
+  els.world.dataset.danceDecodedMib = String(stats.decodedMiB);
 }
 
 function eventOrder(a, b) {
@@ -889,17 +844,21 @@ function installConcertMediaObserver() {
   const update = (button, near) => {
     button.classList.toggle('is-near', near);
     if (near) {
-      primePerformanceVideo(button.querySelector('.monster-video'));
+      // Buffer this event's performance so a scheduled hit starts on its first frame.
+      clipFor(button.dataset.spriteMonster, noiseFor(button.dataset.laneId))
+        .then((clip) => sprites.prefetch(clip, 1)).catch(() => {});
       if (!button.classList.contains('is-performing')) playIdleDance(button);
       return;
     }
+    // A performance already in flight finishes off-screen and releases itself.
+    if (button.classList.contains('is-performing')) return;
     button.classList.remove('is-dance-ready');
-    const canvas = button.querySelector('canvas.monster-dance');
+    playerFor(button)?.setVisible(false);
+    const canvas = button.querySelector('canvas.monster-sprite');
     if (canvas && (canvas.width !== 1 || canvas.height !== 1)) {
       canvas.width = 1;
       canvas.height = 1;
     }
-    releasePerformanceVideo(button);
   };
   if (!('IntersectionObserver' in window)) {
     // Older embedded webviews retain the previous, fully eager behavior.
@@ -922,7 +881,6 @@ function renderConcert() {
   concertSafetyPaintAt = 0;
   els.concert.classList.toggle('is-sparse', state.song.events.length <= 4);
   els.world.replaceChildren();
-  createConcertDancePool();
   for (let panelIndex = 0; panelIndex < 3; panelIndex += 1) {
     const panel = document.createElement('div');
     panel.className = 'song-panel';
@@ -945,9 +903,12 @@ function renderConcert() {
       button.setAttribute('aria-label', `Play ${monster.label} now`);
       button.innerHTML = `
         <img class="monster-still" src="${imageFor(event.monsterId)}" alt="" draggable="false" />
-        <canvas class="monster-dance" width="1" height="1" data-dance-monster="${event.monsterId}" aria-hidden="true"></canvas>
-        <video class="monster-video video-overlay-layer" data-src="${mediaFor(event.monsterId, event.laneId, 'mp4')}" muted playsinline preload="none" aria-hidden="true"></video>
+        <canvas class="monster-sprite" width="1" height="1" aria-hidden="true"></canvas>
       `;
+      const player = attachSpritePlayer(button, event.monsterId);
+      player.setScale(concertDanceScale());
+      player.setVisible(false);
+      concertDisposers.push(() => player.destroy());
       panel.append(button);
       concertDisposers.push(onTap(button, () => playManual(event, button), { feedback: () => button.classList.add('is-pressed') }));
       const release = () => button.classList.remove('is-pressed');
@@ -967,7 +928,7 @@ function renderConcert() {
 
 function playManual(event, button) {
   if (!screens.is('concert')) return false;
-  showMonsterVideo(button, event.laneId, 'manual');
+  showMonsterPerformance(button, event.laneId, 'manual');
   audio.play(mediaFor(event.monsterId, event.laneId, 'm4a'), {
     kind: 'manual', monsterId: event.monsterId, laneId: event.laneId, eventId: event.id, gain: 0.72,
   });
@@ -985,7 +946,7 @@ function nearestConcertButton(eventId) {
 function animateScheduled(event) {
   if (!screens.is('concert')) return;
   const button = nearestConcertButton(event.id);
-  if (button) showMonsterVideo(button, event.laneId, 'scheduled');
+  if (button) showMonsterPerformance(button, event.laneId, 'scheduled');
 }
 
 function clearVisualTimers() {
@@ -1002,6 +963,8 @@ function scheduleConcert() {
     const key = `${occurrence.event.id}@${occurrence.loop}`;
     if (scheduled.has(key)) continue;
     scheduled.add(key);
+    clipFor(occurrence.event.monsterId, noiseFor(occurrence.event.laneId))
+      .then((clip) => sprites.warm(clip, 3)).catch(() => {});
     const delay = Math.max(0, (occurrence.at - now) / concertClock.speed);
     const when = (audio.context?.currentTime || 0) + delay;
     audio.play(mediaFor(occurrence.event.monsterId, occurrence.event.laneId, 'm4a'), {
@@ -1073,7 +1036,7 @@ function stopConcertTransport({ pause = true } = {}) {
   scheduled.clear();
   if (pause) concertClock.pause();
   audio.stopVoices();
-  pauseVideos(els.concert);
+  pauseSprites(els.concert);
 }
 
 function resetSong() {
@@ -1112,6 +1075,10 @@ async function startConcert() {
   try {
     await audio.preload(used);
     if (token !== concertStartToken || screens.current !== origin || state.song.events.length === 0) return false;
+    for (const key of new Set(state.song.events.map((event) => `${event.monsterId}:${event.laneId}`))) {
+      const [monsterId, laneId] = key.split(':');
+      clipFor(monsterId, noiseFor(laneId)).then((clip) => sprites.prefetch(clip, 1)).catch(() => {});
+    }
     concertClock.set(0);
     renderConcert();
     screens.show('concert', { force: screens.is('concert') });
@@ -1125,9 +1092,9 @@ async function startConcert() {
 function enterScreen(name) {
   state.screen = name;
   if (name === 'splash') {
-    playSplashVideos();
+    playSplashDances();
   } else if (name === 'composer') {
-    pauseVideos(els.splash);
+    pauseSprites(els.splash);
     composerClock.resume();
     renderComposerEvents();
     startComposerFrames();
@@ -1141,7 +1108,7 @@ function enterScreen(name) {
 }
 
 function exitScreen(name) {
-  if (name === 'splash') pauseVideos(els.splash);
+  if (name === 'splash') pauseSprites(els.splash);
   if (name === 'composer') {
     if (concertStarting) {
       concertStartToken += 1;
@@ -1151,7 +1118,7 @@ function exitScreen(name) {
     stopComposerFrames();
     nudger.stop();
     audio.stopVoices('preview');
-    pauseVideos(els.composer);
+    pauseSprites(els.composer);
   }
   if (name === 'concert') stopConcertTransport();
 }
@@ -1163,8 +1130,28 @@ screens = createScreens({
   onExit: exitScreen,
 });
 
+function installLineupVisibility() {
+  const buttons = [...els.lineup.querySelectorAll('.composer-monster')];
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const button = entry.target;
+      button.classList.toggle('is-offstage', !entry.isIntersecting);
+      if (entry.isIntersecting) {
+        if (state.screen === 'composer') playIdleDance(button);
+      } else if (!button.classList.contains('is-performing')) {
+        playerFor(button)?.setVisible(false);
+        button.classList.remove('is-dance-ready');
+      }
+    }
+  }, { root: els.lineup, rootMargin: '0px 30% 0px 30%', threshold: 0.01 });
+  for (const button of buttons) observer.observe(button);
+  disposers.push(() => observer.disconnect());
+}
+
 function bindControls() {
   disposers.push(installLineupScrolling(els.lineup));
+  installLineupVisibility();
   disposers.push(onTap(els.play, async () => {
     await audio.unlock();
     audio.startBeat(config.assets.beat);
@@ -1270,6 +1257,7 @@ const uninstallDebug = installDebug({
     concertStarting,
     activeManualVoices: [...audio.voices].filter((voice) => voice.kind === 'manual').length,
     audio: audio.stats(),
+    sprites: sprites.stats(),
     assetErrors: [...state.assetErrors],
   }),
   tap: debugTap,
@@ -1297,7 +1285,7 @@ function handleVisibility() {
     }
     if (screens.is('concert')) stopConcertTransport();
     audio.stopVoices();
-    pauseVideos();
+    pauseSprites();
     return;
   }
   if (screens.is('composer')) {
@@ -1306,7 +1294,7 @@ function handleVisibility() {
     playComposerDances();
   }
   if (screens.is('concert')) startConcertTransport();
-  if (screens.is('splash')) playSplashVideos();
+  if (screens.is('splash')) playSplashDances();
 }
 document.addEventListener('visibilitychange', handleVisibility);
 disposers.push(() => document.removeEventListener('visibilitychange', handleVisibility));
@@ -1317,11 +1305,13 @@ const criticalImages = [
   ...config.monsters.map((monster) => imageFor(monster.id)),
 ];
 
+for (const monster of config.monsters) sprites.loadManifest(manifestFor(monster.id)).catch(() => {});
+
 preloadImages(criticalImages).then(() => {
   state.ready = true;
   game.classList.add('is-ready');
   resolveReady(true);
-  playSplashVideos();
+  playSplashDances();
 });
 
 window.addEventListener('pagehide', () => {
@@ -1333,5 +1323,6 @@ window.addEventListener('pagehide', () => {
   }
   screens.destroy();
   nudger.stop();
+  sprites.destroy();
   audio.destroy();
 }, { once: true });

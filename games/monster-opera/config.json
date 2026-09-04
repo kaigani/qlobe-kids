@@ -7,7 +7,7 @@
     "world": "toy-table",
     "variant": "rough-color-chalk-classroom-slate",
     "background": "./assets/concept/blackboard.jpg",
-    "videoComposition": "screen"
+    "videoComposition": "alpha-sprites"
   },
   "timing": {
     "loopSeconds": 16,
@@ -62,23 +62,23 @@
     }
   ],
   "splashDancers": [
-    { "monsterId": "monster-01", "video": "./assets/ambience/dance-01.mp4" },
-    { "monsterId": "monster-06", "video": "./assets/ambience/dance-06.mp4" },
-    { "monsterId": "monster-10", "video": "./assets/ambience/dance-10.mp4" }
+    { "monsterId": "monster-01" },
+    { "monsterId": "monster-06" },
+    { "monsterId": "monster-10" }
   ],
   "monsters": [
-    { "id": "monster-01", "label": "pink pigtail monster", "dance": "./assets/monsters/monster-01/dance.mp4" },
-    { "id": "monster-02", "label": "purple eye-stalk monster", "dance": "./assets/monsters/monster-02/dance.mp4" },
-    { "id": "monster-03", "label": "orange one-eye monster", "dance": "./assets/monsters/monster-03/dance.mp4" },
-    { "id": "monster-04", "label": "teal polka-dot monster", "dance": "./assets/monsters/monster-04/dance.mp4" },
-    { "id": "monster-05", "label": "yellow feather monster", "dance": "./assets/monsters/monster-05/dance.mp4" },
-    { "id": "monster-06", "label": "teal striped-tail monster", "dance": "./assets/monsters/monster-06/dance.mp4" },
-    { "id": "monster-07", "label": "lavender bubble monster", "dance": "./assets/monsters/monster-07/dance.mp4" },
-    { "id": "monster-08", "label": "purple square monster", "dance": "./assets/monsters/monster-08/dance.mp4" },
-    { "id": "monster-09", "label": "yellow tall monster", "dance": "./assets/monsters/monster-09/dance.mp4" },
-    { "id": "monster-10", "label": "red horn monster", "dance": "./assets/monsters/monster-10/dance.mp4" },
-    { "id": "monster-11", "label": "pink orange monster", "dance": "./assets/monsters/monster-11/dance.mp4" },
-    { "id": "monster-12", "label": "green striped monster", "dance": "./assets/monsters/monster-12/dance.mp4" }
+    { "id": "monster-01", "label": "pink pigtail monster", "sprites": "./assets/monsters/monster-01/sprites/manifest.json" },
+    { "id": "monster-02", "label": "purple eye-stalk monster", "sprites": "./assets/monsters/monster-02/sprites/manifest.json" },
+    { "id": "monster-03", "label": "orange one-eye monster", "sprites": "./assets/monsters/monster-03/sprites/manifest.json" },
+    { "id": "monster-04", "label": "teal polka-dot monster", "sprites": "./assets/monsters/monster-04/sprites/manifest.json" },
+    { "id": "monster-05", "label": "yellow feather monster", "sprites": "./assets/monsters/monster-05/sprites/manifest.json" },
+    { "id": "monster-06", "label": "teal striped-tail monster", "sprites": "./assets/monsters/monster-06/sprites/manifest.json" },
+    { "id": "monster-07", "label": "lavender bubble monster", "sprites": "./assets/monsters/monster-07/sprites/manifest.json" },
+    { "id": "monster-08", "label": "purple square monster", "sprites": "./assets/monsters/monster-08/sprites/manifest.json" },
+    { "id": "monster-09", "label": "yellow tall monster", "sprites": "./assets/monsters/monster-09/sprites/manifest.json" },
+    { "id": "monster-10", "label": "red horn monster", "sprites": "./assets/monsters/monster-10/sprites/manifest.json" },
+    { "id": "monster-11", "label": "pink orange monster", "sprites": "./assets/monsters/monster-11/sprites/manifest.json" },
+    { "id": "monster-12", "label": "green striped monster", "sprites": "./assets/monsters/monster-12/sprites/manifest.json" }
   ],
   "modes": [
     {

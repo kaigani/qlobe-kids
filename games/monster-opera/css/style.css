@@ -117,7 +117,7 @@ a {
   filter: drop-shadow(0 6px 2px rgb(6 13 10 / .34));
 }
 
-/* Splash — all visible art is authored raster/video. */
+/* Splash — all visible art is authored raster or keyframe sprites. */
 .splash-title {
   position: absolute;
   z-index: 10;
@@ -135,7 +135,6 @@ a {
   position: absolute;
   z-index: 5;
   inset: 23% 7% 8%;
-  mix-blend-mode: screen;
 }
 
 .splash-performer {
@@ -146,7 +145,7 @@ a {
 }
 
 .splash-performer > img,
-.splash-performer > video {
+.splash-performer > canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -154,26 +153,21 @@ a {
   object-fit: contain;
 }
 
-.splash-performer > img {
+/* The still holds the pose until the sprite loop has buffered its first frame. */
+.splash-performer > canvas,
+.splash-performer.is-dance-ready > img {
   opacity: 0;
 }
 
-.splash-performer > img,
-.splash-performer > video,
-.video-overlay-layer,
-.monster-still,
-.monster-dance,
-.monster-video,
-.concert-dance-source,
-.concert-playhead {
-  mix-blend-mode: screen;
+.splash-performer.is-dance-ready > canvas {
+  opacity: 1;
 }
 
-.splash-performer > video,
-.monster-dance,
-.monster-video {
-  background: #000;
-  filter: contrast(1.58) saturate(1.06);
+/* Only the black-backed overlay plates still screen-blend onto the slate. The
+   monsters are real-alpha keyframe sprites and simply draw over it. */
+.video-overlay-layer,
+.concert-playhead {
+  mix-blend-mode: screen;
 }
 
 .splash-monster-01 {
@@ -332,7 +326,6 @@ a {
   -webkit-overflow-scrolling: touch;
   cursor: grab;
   user-select: none;
-  mix-blend-mode: screen;
 }
 
 .monster-lineup::-webkit-scrollbar {
@@ -356,11 +349,9 @@ a {
 }
 
 .composer-monster .monster-still,
-.composer-monster .monster-dance,
-.composer-monster .monster-video,
+.composer-monster .monster-sprite,
 .concert-event .monster-still,
-.concert-event .monster-dance,
-.concert-event .monster-video {
+.concert-event .monster-sprite {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -370,39 +361,28 @@ a {
 }
 
 .concert-event .monster-still,
-.concert-event .monster-dance,
-.concert-event .monster-video {
+.concert-event .monster-sprite {
   transform: scale(var(--event-art-scale, 1));
   transform-origin: center;
 }
 
-.monster-dance,
-.monster-video {
+/* One canvas carries both the idle loop and the performance; the still shows
+   only until the first keyframe has been painted. */
+.monster-sprite {
   opacity: 0;
 }
 
 .composer-monster.is-dance-ready .monster-still,
-.concert-event.is-dance-ready .monster-still {
-  opacity: 0;
-}
-
-.composer-monster.is-dance-ready:not(.is-performing) .monster-dance,
-.concert-event.is-dance-ready:not(.is-performing) .monster-dance {
-  opacity: 1;
-}
-
+.concert-event.is-dance-ready .monster-still,
 .composer-monster.is-performing .monster-still,
 .concert-event.is-performing .monster-still {
   opacity: 0;
 }
 
-.composer-monster.is-performing .monster-dance,
-.concert-event.is-performing .monster-dance {
-  opacity: 0;
-}
-
-.composer-monster.is-performing .monster-video,
-.concert-event.is-performing .monster-video {
+.composer-monster.is-dance-ready .monster-sprite,
+.concert-event.is-dance-ready .monster-sprite,
+.composer-monster.is-performing .monster-sprite,
+.concert-event.is-performing .monster-sprite {
   opacity: 1;
 }
 
@@ -456,24 +436,6 @@ a {
   inset: 0;
   overflow: hidden;
   touch-action: manipulation;
-  mix-blend-mode: screen;
-}
-
-/* Kept paintable (unlike display:none) so Safari continues decoding the pool. */
-.concert-dance-pool {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.concert-dance-source {
-  display: block;
-  width: 1px;
-  height: 1px;
 }
 
 .concert-world {
@@ -727,13 +689,13 @@ a {
     transition-duration: .001ms !important;
   }
 
-  .splash-performer > video,
-  .monster-dance,
-  .monster-video {
+  .splash-performer > canvas,
+  .monster-sprite {
     display: none;
   }
 
   .splash-performer > img,
+  .splash-performer.is-dance-ready > img,
   .composer-monster .monster-still,
   .composer-monster.is-dance-ready .monster-still,
   .composer-monster.is-performing .monster-still,

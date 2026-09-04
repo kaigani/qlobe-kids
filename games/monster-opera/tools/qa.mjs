@@ -74,26 +74,49 @@ check('16-second loop', config.timing.loopSeconds === 16 && config.timing.laneSe
 check('four-second monster blocks', config.timing.clipSeconds === 4);
 check('three ordered lanes', config.lanes.map(({ id }) => id).join(',') === 'white,yellow,teal');
 check('twelve monsters', config.monsters.length === 12);
-check('every monster declares its own dance loop', config.monsters.every(({ dance }) => typeof dance === 'string' && dance.endsWith('/dance.mp4')));
+check('every monster declares its sprite manifest', config.monsters.every(({ sprites }) => typeof sprites === 'string' && sprites.endsWith('/sprites/manifest.json')));
+check('splash dancers reference cast members', config.splashDancers.every(({ monsterId, video }) => !video && config.monsters.some(({ id }) => id === monsterId)));
 for (const relativePath of [
   'ui/title.png', 'ui/back.png', 'ui/sound-on.png', 'ui/sound-off.png',
   'ui/drum-on.png', 'ui/drum-off.png', 'ui/go.png', 'ui/new-song.png',
   'ui/play.png', 'ui/playhead.png', 'ui/playhead-long.png', 'ui/dot-white.png', 'ui/dot-yellow.png',
   'ui/dot-teal.png', 'ambience/sound-loop.m4a', 'concept/blackboard.jpg',
 ]) check(`asset ${relativePath}`, exists(relativePath));
+let spriteBytes = 0;
 for (let monster = 1; monster <= 12; monster += 1) {
   const id = `monster-${String(monster).padStart(2, '0')}`;
-  check(`asset ${id}/still.webp`, exists(`monsters/${id}/still.webp`));
-  check(`asset ${id}/dance.mp4`, exists(`monsters/${id}/dance.mp4`));
+  const manifestPath = path.join(assets, 'monsters', id, 'sprites', 'manifest.json');
+  check(`asset ${id}/sprites/manifest.json`, fs.existsSync(manifestPath));
+  check(`asset ${id}/sprites/still.webp`, exists(`monsters/${id}/sprites/still.webp`));
+  const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
+  check(`${id} manifest is a 480² qlobe-sprite-strips/1 package`, (
+    manifest?.format === 'qlobe-sprite-strips/1' && manifest.frameBox?.width === 480 && manifest.frameBox?.height === 480
+  ));
+  for (const name of ['dance', 'noise-01', 'noise-02', 'noise-03']) {
+    const clip = manifest?.clips?.[name];
+    const strips = clip?.strips || [];
+    const stripsExist = strips.every((file) => exists(`monsters/${id}/sprites/${file}`));
+    for (const file of strips) if (stripsExist) spriteBytes += fs.statSync(path.join(assets, 'monsters', id, 'sprites', file)).size;
+    const sequenceOk = !clip?.sequence || (clip.sequence.length === clip.frames && Math.max(...clip.sequence) === clip.stored - 1);
+    // Every source frame survives: ≥20fps for ≥4s, and a sequence table only
+    // shares storage for hold frames, never drops playback slots.
+    check(`${id}/${name} keeps every source keyframe`, (
+      clip && clip.fps >= 20 && clip.frames >= 80 && clip.duration >= 4 && clip.frames >= clip.stored
+        && clip.loop === (name === 'dance') && strips.length === Math.ceil(clip.stored / clip.framesPerStrip)
+        && stripsExist && sequenceOk
+    ), JSON.stringify(clip && { fps: clip.fps, frames: clip.frames, stored: clip.stored, strips: strips.length, stripsExist }));
+  }
   for (const lane of ['01', '02', '03']) {
-    check(`asset ${id}/noise-${lane}.mp4`, exists(`monsters/${id}/noise-${lane}.mp4`));
     check(`asset ${id}/noise-${lane}.m4a`, exists(`monsters/${id}/noise-${lane}.m4a`));
   }
 }
+check('sprite package is lazily fetched, not preloaded (48 clips)', spriteBytes > 0, `${Math.round(spriteBytes / 1048576)} MiB of strips`);
+check('no runtime video files remain in the monster folders', !fs.readdirSync(path.join(assets, 'monsters'), { recursive: true }).some((file) => String(file).endsWith('.mp4')));
 const activeSource = [
   'index.html', 'config.js', 'config.json', 'css/style.css',
-  'js/main.js', 'js/audio-engine.js', 'js/transport.js',
+  'js/main.js', 'js/audio-engine.js', 'js/transport.js', 'js/sprite-clips.js',
 ].map((file) => fs.readFileSync(path.join(root, file), 'utf8')).join('\n');
+check('active runtime never plays <video>', !/<video\s|createElement\(['"]video|HTMLVideoElement|\.mp4['"`]/.test(activeSource));
 check('active runtime never loads archive', !activeSource.includes('/_archive') && !activeSource.includes('../_archive'));
 check('no SVG artwork', !activeSource.includes('<svg') && !activeSource.includes('.svg'));
 check('no CSS gradient artwork', !/gradient\s*\(/i.test(activeSource));
@@ -125,24 +148,38 @@ try {
   check('beat starts enabled', await page.evaluate(() => QLOBE_DEBUG.getState().beatEnabled));
   check('twelve monster targets', await page.locator('[data-monster-id]').count() === 12);
   await page.waitForFunction(() => {
-    const dances = [...document.querySelectorAll('.monster-dance')];
-    return dances.length === 12 && dances.every((video) => video.readyState >= 2 && !video.paused);
+    const onStage = [...document.querySelectorAll('.composer-monster:not(.is-offstage)')];
+    return onStage.length >= 4 && onStage.every((button) => button.classList.contains('is-dance-ready'));
   }, null, { timeout: 30000 });
-  const danceState = await page.evaluate(() => ({
-    playing: [...document.querySelectorAll('.monster-dance')].filter((video) => !video.paused).length,
-    looping: [...document.querySelectorAll('.monster-dance')].filter((video) => video.loop).length,
-    visible: [...document.querySelectorAll('.composer-monster')].filter((button) => (
-      Number(getComputedStyle(button.querySelector('.monster-dance')).opacity) > 0.9
-      && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) < 0.1
-    )).length,
-    directScreen: [...document.querySelectorAll('video')].filter((video) => getComputedStyle(video).mixBlendMode === 'screen').length,
-    videos: document.querySelectorAll('video').length,
-    screenGroups: ['.splash-stage', '.monster-lineup', '.concert-viewport']
-      .filter((selector) => getComputedStyle(document.querySelector(selector)).mixBlendMode === 'screen').length,
-  }));
-  check('all twelve composer monsters idle on their dance loops', danceState.playing === 12 && danceState.looping === 12 && danceState.visible === 12, JSON.stringify(danceState));
-  check('Screen blend mode is applied directly to every video', danceState.directScreen === danceState.videos, JSON.stringify(danceState));
-  check('hardware-video fallback groups also use Screen', danceState.screenGroups === 3, JSON.stringify(danceState));
+  const danceState = await page.evaluate(() => {
+    const buttons = [...document.querySelectorAll('.composer-monster')];
+    const onStage = buttons.filter((button) => !button.classList.contains('is-offstage'));
+    const offStage = buttons.filter((button) => button.classList.contains('is-offstage'));
+    return {
+      onStage: onStage.length,
+      dancing: onStage.filter((button) => (
+        button.classList.contains('is-dance-ready')
+        && button.querySelector('.monster-sprite').width > 1
+        && Number(getComputedStyle(button.querySelector('.monster-sprite')).opacity) > 0.9
+        && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) < 0.1
+      )).length,
+      offStageIdle: offStage.filter((button) => !button.classList.contains('is-dance-ready')).length,
+      offStage: offStage.length,
+      videos: document.querySelectorAll('video').length,
+      screenMonsterLayers: [...document.querySelectorAll('.monster-sprite, .monster-still, .splash-performer > *')]
+        .filter((node) => getComputedStyle(node).mixBlendMode === 'screen').length,
+      screenGroups: ['.splash-stage', '.monster-lineup', '.concert-viewport']
+        .filter((selector) => getComputedStyle(document.querySelector(selector)).mixBlendMode === 'screen').length,
+      sprites: QLOBE_DEBUG.getState().sprites,
+    };
+  });
+  check('every on-stage composer monster idles on its keyframe dance loop', (
+    danceState.onStage >= 4 && danceState.dancing === danceState.onStage && danceState.sprites.activePlayers >= danceState.onStage
+  ), JSON.stringify(danceState));
+  check('off-stage cast members rest until swiped in', danceState.offStage > 0 && danceState.offStageIdle === danceState.offStage, JSON.stringify(danceState));
+  check('no <video> elements remain in the DOM', danceState.videos === 0, JSON.stringify(danceState));
+  check('monster art composites with real alpha instead of Screen blending', danceState.screenMonsterLayers === 0 && danceState.screenGroups === 0, JSON.stringify(danceState));
+  check('idle decoders stay within the strip window budget', danceState.sprites.decodedMiB < 160, JSON.stringify(danceState.sprites));
   await assertLayout(page, 'landscape');
   await page.waitForFunction(() => {
     const { loaded, loading } = QLOBE_DEBUG.getState().audio;
@@ -208,8 +245,8 @@ try {
   await page.waitForFunction(() => !document.querySelector('.composer-monster.is-performing'), null, { timeout: 6000 });
   check('idle dance resumes after a noise performance', await page.evaluate(() => {
     const button = document.querySelector('[data-monster-id="monster-01"]');
-    return !button.querySelector('.monster-dance').paused
-      && Number(getComputedStyle(button.querySelector('.monster-dance')).opacity) > 0.9;
+    return button.classList.contains('is-dance-ready')
+      && Number(getComputedStyle(button.querySelector('.monster-sprite')).opacity) > 0.9;
   }));
   await page.evaluate(() => QLOBE_DEBUG.setComposerTime(7.2));
   await page.waitForFunction(() => !document.querySelector('.flying-dot'));
@@ -232,17 +269,15 @@ try {
   }, authored.length * 3, { timeout: 30000 });
   const concertIdle = await page.evaluate(() => {
     const events = [...document.querySelectorAll('.concert-event')];
-    const layers = [...document.querySelectorAll([
-      '.concert-track-art', '.concert-playhead', '.concert-event .monster-still',
-      '.concert-event .monster-dance', '.concert-event .monster-video', '.concert-dance-source',
-    ].join(','))];
+    const overlays = [...document.querySelectorAll('.concert-track-art, .concert-playhead')];
+    const layers = [...document.querySelectorAll('.concert-event .monster-still, .concert-event .monster-sprite')];
     return {
       events: events.length,
       logicalEvents: new Set(events.map((button) => button.dataset.eventId)).size,
       logicalDancing: new Set(events.filter((button) => button.classList.contains('is-dance-ready'))
         .map((button) => button.dataset.eventId)).size,
       dancing: events.filter((button) => {
-        const dance = button.querySelector('.monster-dance');
+        const dance = button.querySelector('.monster-sprite');
         const still = button.querySelector('.monster-still');
         return button.classList.contains('is-dance-ready')
           && Number(getComputedStyle(dance).opacity) > 0.9
@@ -250,6 +285,8 @@ try {
       }).length,
       screenLayers: layers.filter((node) => getComputedStyle(node).mixBlendMode === 'screen').length,
       layers: layers.length,
+      screenOverlays: overlays.filter((node) => getComputedStyle(node).mixBlendMode === 'screen').length,
+      overlays: overlays.length,
       fallback: getComputedStyle(document.querySelector('.concert-viewport')).mixBlendMode,
       plateBlend: getComputedStyle(document.querySelector('.concert-track-art')).mixBlendMode,
       platePointerEvents: getComputedStyle(document.querySelector('.concert-track-art')).pointerEvents,
@@ -269,7 +306,9 @@ try {
     };
   });
   check('every visible concert event idles on its dance loop', concertIdle.logicalDancing === concertIdle.logicalEvents, JSON.stringify(concertIdle));
-  check('every concert visual layer uses direct Screen blending', concertIdle.screenLayers === concertIdle.layers, JSON.stringify(concertIdle));
+  check('concert monsters composite with real alpha; only overlay plates Screen-blend', (
+    concertIdle.screenLayers === 0 && concertIdle.layers > 0 && concertIdle.screenOverlays === concertIdle.overlays
+  ), JSON.stringify(concertIdle));
   check('concert plate Screen-blends as a foreground layer', (
     concertIdle.plateBlend === 'screen'
       && concertIdle.platePointerEvents === 'none'
@@ -282,7 +321,7 @@ try {
     && concertIdle.playhead.naturalHeight === 880
     && Math.abs(concertIdle.playhead.renderedRatio - (140 / 880)) < 0.01
   ), JSON.stringify(concertIdle.playhead));
-  check('concert hardware-video fallback retains Screen blending', concertIdle.fallback === 'screen', JSON.stringify(concertIdle));
+  check('concert viewport no longer needs a Screen fallback group', concertIdle.fallback === 'normal', JSON.stringify(concertIdle));
   const concertSpacing = await page.evaluate(() => {
     const variables = ['--event-x', '--lane-y', '--event-size-factor', '--event-art-scale', '--event-box-width', '--event-box-height'];
     const repeated = [...new Set([...document.querySelectorAll('.concert-event')].map((button) => button.dataset.eventId))]
@@ -291,7 +330,7 @@ try {
         return new Set(copies.map((button) => JSON.stringify(variables.map((name) => button.style.getPropertyValue(name))))).size === 1;
       });
     const nearest = (eventId) => [...document.querySelectorAll(`.concert-event[data-event-id="${CSS.escape(eventId)}"]`)]
-      .map((button) => ({ button, rect: button.querySelector('.monster-dance').getBoundingClientRect() }))
+      .map((button) => ({ button, rect: button.querySelector('.monster-sprite').getBoundingClientRect() }))
       .sort((a, b) => Math.abs(a.rect.left + a.rect.width / 2 - innerWidth / 2) - Math.abs(b.rect.left + b.rect.width / 2 - innerWidth / 2))[0];
     const first = nearest('event-2');
     const second = nearest('event-3');
@@ -336,14 +375,14 @@ try {
       phase: QLOBE_DEBUG.getState().concertPhase,
       performingCopies: copies.filter((button) => button.classList.contains('is-performing')).length,
       visibleVideo: visible.some((button) => {
-        const video = button.querySelector('.monster-video');
-        return button.classList.contains('is-performing') && !video.paused
-          && Number(getComputedStyle(video).opacity) > 0.9;
+        const sprite = button.querySelector('.monster-sprite');
+        return button.classList.contains('is-performing') && sprite.width > 1
+          && Number(getComputedStyle(sprite).opacity) > 0.9;
       }),
       scheduledAudio: QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId }) => kind === 'scheduled' && eventId === 'event-1').length,
     };
   });
-  check('last loop event keeps visible video while audio crosses the seam', (
+  check('last loop event keeps its visible performance while audio crosses the seam', (
     seamPerformance.phase < 0.75 && seamPerformance.performingCopies >= 2
     && seamPerformance.visibleVideo && seamPerformance.scheduledAudio === seamAudioBefore + 1
   ), JSON.stringify(seamPerformance));
@@ -355,7 +394,7 @@ try {
   ), null, { timeout: 1500 });
   check('visible seam event returns to its idle dance', await page.evaluate(() => (
     [...document.querySelectorAll('.concert-event[data-event-id="event-1"]')].some((button) => {
-      const dance = button.querySelector('.monster-dance');
+      const dance = button.querySelector('.monster-sprite');
       return button.classList.contains('is-dance-ready') && Number(getComputedStyle(dance).opacity) > 0.9;
     })
   )));
@@ -367,7 +406,7 @@ try {
   const controlSafety = await page.evaluate(() => {
     const controls = ['#concert-back', '#concert-sound'].map((selector) => document.querySelector(selector).getBoundingClientRect());
     const visuals = [...document.querySelectorAll('.concert-event[data-lane-id="white"]')]
-      .map((button) => button.querySelector('.monster-dance').getBoundingClientRect())
+      .map((button) => button.querySelector('.monster-sprite').getBoundingClientRect())
       .filter((rect) => rect.right > 0 && rect.left < innerWidth);
     let overlaps = 0;
     for (const visual of visuals) {
@@ -405,10 +444,10 @@ try {
   const manualSolo = soloPoint ? await page.evaluate(({ eventId, before }) => ({
     audioCount: QLOBE_DEBUG.getAudioLog().filter(({ kind, eventId: loggedId }) => kind === 'manual' && loggedId === eventId).length,
     visibleVideo: [...document.querySelectorAll(`.concert-event[data-event-id="${CSS.escape(eventId)}"]`)]
-      .some((button) => button.classList.contains('is-performing') && !button.querySelector('.monster-video').paused),
+      .some((button) => button.classList.contains('is-performing') && button.querySelector('.monster-sprite').width > 1),
     before,
   }), { eventId: soloPoint.eventId, before: manualAudioBefore }) : null;
-  check('real concert tap starts exactly one audio solo with visible video', (
+  check('real concert tap starts exactly one audio solo with a visible performance', (
     manualSolo?.audioCount === manualSolo.before + 1 && manualSolo.visibleVideo
   ), JSON.stringify(manualSolo));
 
@@ -462,7 +501,7 @@ try {
   const inspectNearSpacing = () => page.evaluate(() => {
     const panel = document.querySelector('.song-panel[data-panel="1"]');
     const visuals = [...panel.querySelectorAll('.concert-event')]
-      .map((button) => button.querySelector('.monster-dance').getBoundingClientRect());
+      .map((button) => button.querySelector('.monster-sprite').getBoundingClientRect());
     let overlaps = 0;
     for (let first = 0; first < visuals.length; first += 1) {
       for (let second = first + 1; second < visuals.length; second += 1) {
@@ -509,37 +548,44 @@ try {
   // Measure idle decoder pressure away from all three four-second performance
   // windows (including the 13→0 seam), so this assertion is timing-stable.
   await page.evaluate(() => QLOBE_DEBUG.setConcertTime(1.5));
-  await page.waitForTimeout(120);
+  // Let the strip sweeper release the performances that were just cut short.
+  await page.waitForTimeout(700);
   const denseMedia = await page.evaluate(() => {
     const buttons = [...document.querySelectorAll('.concert-event')];
     const animated = buttons.filter((button) => button.classList.contains('is-dance-ready'));
-    const primed = buttons.filter((button) => button.querySelector('.monster-video').hasAttribute('src'));
-    const danceSources = [...document.querySelectorAll('.concert-dance-source')];
-    const playingPerformances = buttons.filter((button) => !button.querySelector('.monster-video').paused);
+    const near = buttons.filter((button) => button.classList.contains('is-near'));
+    const live = buttons.filter((button) => button.querySelector('.monster-sprite').width > 1);
+    const playingPerformances = buttons.filter((button) => button.classList.contains('is-performing'));
+    const sprites = QLOBE_DEBUG.getState().sprites;
     return {
       copies: buttons.length,
       animated: animated.length,
       logicalAnimated: new Set(animated.map((button) => button.dataset.eventId)).size,
-      danceSources: danceSources.length,
-      playingDanceSources: danceSources.filter((video) => !video.paused).length,
-      primed: primed.length,
+      near: near.length,
+      live: live.length,
+      liveResolution: Math.max(...live.map((button) => button.querySelector('.monster-sprite').width)),
       playingPerformances: playingPerformances.length,
-      paintBudget: Number(document.querySelector('.concert-world').dataset.danceBudget),
-      paintInterval: Number(document.querySelector('.concert-world').dataset.danceInterval),
       paintResolution: Number(document.querySelector('.concert-world').dataset.danceResolution),
-      paintRate: 1000 / Number(document.querySelector('.concert-world').dataset.danceInterval) * animated.length,
+      activePlayers: sprites.activePlayers,
+      decodedStrips: sprites.decodedStrips,
+      decodedMiB: sprites.decodedMiB,
       assetErrors: QLOBE_DEBUG.getState().assetErrors,
     };
   });
-  check('dense Listen mode hard-caps idle decoders and canvas paint rate', (
+  // Every logical event animates as it scrolls past, but only near copies own a
+  // live canvas, the shared dance clips are decoded once per monster (two
+  // strips per clip in flight), and dense songs drop to the 320px canvas.
+  check('dense Listen mode caps live canvases and decoded keyframe memory', (
     denseMedia.logicalAnimated === 36
-      && denseMedia.danceSources === 12
-      && denseMedia.playingDanceSources === 12
       && denseMedia.playingPerformances === 0
-      && denseMedia.primed < denseMedia.copies * 0.6
-      && denseMedia.paintBudget === 320
+      && denseMedia.live <= denseMedia.near
+      && denseMedia.live < denseMedia.copies * 0.6
+      && denseMedia.activePlayers <= denseMedia.near
       && denseMedia.paintResolution === 320
-      && denseMedia.paintRate <= denseMedia.paintBudget + 0.5
+      && denseMedia.liveResolution === 320
+      && denseMedia.decodedStrips <= 12 * 3
+      && denseMedia.decodedMiB < 160
+      && denseMedia.assetErrors.length === 0
   ), JSON.stringify(denseMedia));
   const denseSpacing = await page.evaluate(() => {
     const events = QLOBE_DEBUG.getSong().events;
@@ -547,7 +593,7 @@ try {
     const buttons = [...panel.querySelectorAll('.concert-event')];
     const visuals = buttons.map((button) => ({
       eventId: button.dataset.eventId,
-      rect: button.querySelector('.monster-dance').getBoundingClientRect(),
+      rect: button.querySelector('.monster-sprite').getBoundingClientRect(),
     }));
     const overlaps = [];
     for (let first = 0; first < visuals.length; first += 1) {
@@ -603,7 +649,7 @@ try {
   const resizeAfter = await page.evaluate(() => {
     const panel = document.querySelector('.song-panel[data-panel="1"]');
     const buttons = [...panel.querySelectorAll('.concert-event')];
-    const visuals = buttons.map((button) => button.querySelector('.monster-dance').getBoundingClientRect());
+    const visuals = buttons.map((button) => button.querySelector('.monster-sprite').getBoundingClientRect());
     let overlaps = 0;
     for (let first = 0; first < visuals.length; first += 1) {
       for (let second = first + 1; second < visuals.length; second += 1) {
@@ -728,7 +774,7 @@ try {
   await reduced.page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'composer');
   check('reduced motion uses static composer fallbacks', await reduced.page.evaluate(() => (
     [...document.querySelectorAll('.composer-monster')].every((button) => (
-      getComputedStyle(button.querySelector('.monster-dance')).display === 'none'
+      getComputedStyle(button.querySelector('.monster-sprite')).display === 'none'
       && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) > 0.9
     ))
   )));
@@ -740,7 +786,7 @@ try {
   await reduced.page.waitForFunction(() => QLOBE_DEBUG.getState().screen === 'concert');
   check('reduced motion uses static concert fallbacks', await reduced.page.evaluate(() => (
     [...document.querySelectorAll('.concert-event')].every((button) => (
-      getComputedStyle(button.querySelector('.monster-dance')).display === 'none'
+      getComputedStyle(button.querySelector('.monster-sprite')).display === 'none'
         && Number(getComputedStyle(button.querySelector('.monster-still')).opacity) > 0.9
     ))
   )));
