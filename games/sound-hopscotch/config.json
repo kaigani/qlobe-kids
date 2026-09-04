@@ -1,0 +1,91 @@
+{
+  "id": "sound-hopscotch",
+  "title": "Sound Hopscotch",
+  "artDirection": "Kawaii",
+  "music": "../../shared/assets/music/upbeat-playground-pop.mp3",
+  "storageKey": "qk-sound-hopscotch-path-v1",
+  "assets": {
+    "background": "./assets/backgrounds/meadow.webp",
+    "title": "./assets/title.webp",
+    "bunny": {
+      "ready": "./assets/characters/bunny-ready.webp",
+      "hop": "./assets/characters/bunny-hop.webp",
+      "land": "./assets/characters/bunny-land.webp",
+      "cheer": "./assets/characters/bunny-cheer.webp"
+    },
+    "pads": {
+      "coral": "./assets/pads/pad-coral.webp",
+      "yellow": "./assets/pads/pad-yellow.webp",
+      "blue": "./assets/pads/pad-blue.webp",
+      "lime": "./assets/pads/pad-lime.webp",
+      "violet": "./assets/pads/pad-violet.webp"
+    },
+    "ui": {
+      "soundPlaque": "./assets/ui/sound-plaque.webp",
+      "play": "./assets/ui/play-button.webp",
+      "landing": "./assets/ui/landing-marker.webp",
+      "palette": "./assets/ui/theme-palette.webp"
+    },
+    "effects": {
+      "star": "./assets/effects/reward-star.webp",
+      "flower": "./assets/effects/progress-flower.webp"
+    }
+  },
+  "themes": [
+    { "id": "sunny", "title": "Sunny", "pads": ["coral", "yellow", "blue", "lime", "violet"], "glow": "#fff079" },
+    { "id": "berry", "title": "Berry", "pads": ["violet", "coral", "blue", "yellow", "lime"], "glow": "#ffc1ee" },
+    { "id": "ocean", "title": "Ocean", "pads": ["blue", "lime", "yellow", "violet", "coral"], "glow": "#a8f2ff" }
+  ],
+  "makerLetters": ["A", "M", "S", "T", "P"],
+  "voice": {
+    "welcome": "Pick a path, and let's hop with our ears!",
+    "meadowIntro": "Meadow Hop! Listen, then tap the letter that makes the sound.",
+    "matchIntro": "Quick ears! Find the sound and keep the bunny bouncing.",
+    "makerIntro": "Make a path! Tap some letter stones, drag them anywhere, then tap the bunny button.",
+    "find": "Listen for the sound.",
+    "nudge": "Almost! Listen one more time.",
+    "makerNudge": "Add at least two letter stones to make a hopping path.",
+    "makerFull": "Your path is full of bouncy sounds!",
+    "makerClear": "Fresh meadow! Choose some new letter stones.",
+    "praise1": "Beautiful listening hop!",
+    "praise2": "Your ears found it!",
+    "praise3": "Bouncy brilliant!",
+    "meadowCheer": "You hopped all the way across the meadow!",
+    "matchCheer": "What quick listening ears!",
+    "makerCheer": "Your very own sound path sings!",
+    "again": "Ready for another hop?"
+  },
+  "modes": [
+    {
+      "id": "meadow",
+      "title": "Meadow Hop",
+      "tagline": "Listen & leap",
+      "rounds": [
+        { "letter": "A", "choices": ["A", "M"] },
+        { "letter": "M", "choices": ["M", "S"] },
+        { "letter": "S", "choices": ["A", "S", "T"] },
+        { "letter": "T", "choices": ["M", "T", "P"] },
+        { "letter": "P", "choices": ["P", "B", "S", "T"] },
+        { "letter": "B", "choices": ["B", "D", "P", "M"] }
+      ]
+    },
+    {
+      "id": "match",
+      "title": "Sound Match",
+      "tagline": "Quick ears",
+      "rounds": [
+        { "letter": "B", "choices": ["B", "D", "P", "M"] },
+        { "letter": "D", "choices": ["D", "B", "G", "T"] },
+        { "letter": "M", "choices": ["M", "N", "S", "B"] },
+        { "letter": "N", "choices": ["N", "M", "D", "P"] },
+        { "letter": "F", "choices": ["F", "V", "S", "P"] }
+      ]
+    },
+    {
+      "id": "maker",
+      "title": "Make a Path",
+      "tagline": "Build & bounce",
+      "rounds": []
+    }
+  ]
+}

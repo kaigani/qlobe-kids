@@ -1,0 +1,146 @@
+{
+  "source": "games/sound-hopscotch/assets/source/gpt-image-2/bunny-poses-sheet.png",
+  "sourceSha256": "db723924426281c693388edb8032b55a26b3b315d2d0f7db7a7fa827f6c6100b",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    36,
+    32,
+    56
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bunny-ready",
+      "file": "bunny-ready.png",
+      "componentArea": 96443,
+      "foregroundBbox": [
+        309,
+        24,
+        560,
+        515
+      ],
+      "cropBbox": [
+        297,
+        12,
+        572,
+        527
+      ],
+      "cropXywh": [
+        297,
+        12,
+        275,
+        515
+      ],
+      "normalizedCropBbox": [
+        0.20511,
+        0.01105,
+        0.395028,
+        0.485267
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bunny-hop",
+      "file": "bunny-hop.png",
+      "componentArea": 96471,
+      "foregroundBbox": [
+        804,
+        55,
+        1170,
+        486
+      ],
+      "cropBbox": [
+        792,
+        43,
+        1182,
+        498
+      ],
+      "cropXywh": [
+        792,
+        43,
+        390,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.546961,
+        0.039595,
+        0.816298,
+        0.458564
+      ]
+    },
+    {
+      "index": 3,
+      "name": "bunny-land",
+      "file": "bunny-land.png",
+      "componentArea": 102419,
+      "foregroundBbox": [
+        271,
+        577,
+        620,
+        1036
+      ],
+      "cropBbox": [
+        259,
+        565,
+        632,
+        1048
+      ],
+      "cropXywh": [
+        259,
+        565,
+        373,
+        483
+      ],
+      "normalizedCropBbox": [
+        0.178867,
+        0.520258,
+        0.436464,
+        0.965009
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bunny-cheer",
+      "file": "bunny-cheer.png",
+      "componentArea": 105646,
+      "foregroundBbox": [
+        794,
+        543,
+        1156,
+        1036
+      ],
+      "cropBbox": [
+        782,
+        531,
+        1168,
+        1048
+      ],
+      "cropXywh": [
+        782,
+        531,
+        386,
+        517
+      ],
+      "normalizedCropBbox": [
+        0.540055,
+        0.48895,
+        0.80663,
+        0.965009
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

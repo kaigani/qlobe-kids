@@ -1,47 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sound Hopscotch 🦘 — Quick Letter Sound Hops</title>
-  <meta name="description" content="Hear a consonant sound and tap the matching letter stone, hopping quickly between tricky sound pairs. A fast-paced sound-letter game for ages 5–6." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#49cfe0">
+  <title>Sound Hopscotch — Listen, Build, Bounce!</title>
+  <meta name="description" content="Hop a Kawaii bunny across musical letter stones, match tricky sounds, and build your own rainbow sound path.">
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Sound Hopscotch" />
-  <meta property="og:title" content="Sound Hopscotch 🦘 — Quick Letter Sound Hops" />
-  <meta property="og:description" content="Hear a consonant sound and tap the matching letter stone, hopping quickly between tricky sound pairs. A fast-paced sound-letter game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/sound-hopscotch/" />
-  <meta property="og:image" content="https://qlo.be/games/sound-hopscotch/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sound Hopscotch title screen with Hop to the Sound and Quick Hops modes and a kangaroo icon." />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sound Hopscotch">
+  <meta property="og:title" content="Sound Hopscotch — Listen, Build, Bounce!">
+  <meta property="og:description" content="Hop a Kawaii bunny across musical letter stones, match tricky sounds, and build your own rainbow sound path.">
+  <meta property="og:url" content="https://qlo.be/games/sound-hopscotch/">
+  <meta property="og:image" content="https://qlo.be/games/sound-hopscotch/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A fluffy white bunny hops over colorful letter pads in a sunny Kawaii meadow.">
 
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sound Hopscotch 🦘 — Quick Letter Sound Hops" />
-  <meta name="twitter:description" content="Hear a consonant sound and tap the matching letter stone, hopping quickly between tricky sound pairs. A fast-paced sound-letter game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/sound-hopscotch/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sound Hopscotch — Listen, Build, Bounce!">
+  <meta name="twitter:description" content="Hop a bunny across musical letter stones and make your own sound path.">
+  <meta name="twitter:image" content="https://qlo.be/games/sound-hopscotch/assets/og-image.jpg">
 
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" data-game-id="sound-hopscotch">
+    <h1 class="visually-hidden">Sound Hopscotch</h1>
+
+    <section class="qk-screen sh-screen sh-splash" data-qk-screen="splash" aria-label="Choose a Sound Hopscotch path">
+      <img class="sh-bg" data-asset="background" alt="">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-target="home" href="../../index.html" aria-label="Home"></a>
+      <button class="sh-theme sh-theme-splash" data-target="theme" aria-label="Change pad colors">
+        <img data-theme-art alt="">
+        <span class="sh-theme-label"><small>COLORS</small><b data-theme-name>Sunny</b></span>
+      </button>
+      <img class="sh-title" data-asset="title" alt="Sound Hopscotch">
+      <img class="sh-splash-bunny" data-bunny="ready" alt="A fluffy white bunny ready to hop">
+      <div class="sh-mode-list" aria-label="Choose a way to play">
+        <button class="qk-mode-card sh-mode-card sh-mode-meadow" data-target="meadow" data-mode="meadow" aria-label="Meadow Hop, listen and leap">
+          <img class="sh-card-pad" data-card-pad="0" alt="">
+          <img class="sh-card-bunny" data-bunny="hop" alt="">
+          <span class="sh-card-kicker">LISTEN &amp; LEAP</span>
+          <span class="sh-card-title">Meadow Hop</span>
+          <span class="sh-card-letters" aria-hidden="true">A · M · S</span>
+        </button>
+        <button class="qk-mode-card sh-mode-card sh-mode-match" data-target="match" data-mode="match" aria-label="Sound Match, quick listening challenge">
+          <img class="sh-card-pad" data-card-pad="1" alt="">
+          <img class="sh-card-bunny" data-bunny="land" alt="">
+          <span class="sh-card-kicker">QUICK EARS</span>
+          <span class="sh-card-title">Sound Match</span>
+          <span class="sh-card-letters" aria-hidden="true">B · D · P</span>
+        </button>
+        <button class="qk-mode-card sh-mode-card sh-mode-maker" data-target="maker" data-mode="maker" aria-label="Make a Path, build your own hopscotch">
+          <img class="sh-card-pad" data-card-pad="2" alt="">
+          <img class="sh-card-bunny" data-bunny="cheer" alt="">
+          <span class="sh-card-kicker">BUILD &amp; BOUNCE</span>
+          <span class="sh-card-title">Make a Path</span>
+          <span class="sh-card-letters" aria-hidden="true">YOU CHOOSE!</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="qk-screen sh-screen sh-play" data-qk-screen="play" hidden aria-label="Sound Hopscotch listening meadow">
+      <img class="sh-bg" data-asset="background" alt="">
+      <div class="qk-hud-bar">
+        <button class="qk-hud-btn qk-hud-back" data-target="back" aria-label="Back to paths"></button>
+        <div class="sh-progress" data-progress aria-label="Round progress"></div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="sound" aria-label="Hear the sound again"></button>
+      </div>
+      <button class="sh-listen" data-target="listen" aria-label="Hear the letter sound again">
+        <img data-asset="soundPlaque" alt="">
+        <span class="sh-listen-label">Listen!</span>
+        <span class="sh-sound-ripples" aria-hidden="true">♪</span>
+      </button>
+      <div class="sh-round-kicker" data-round-kicker aria-live="polite">Listen for the sound</div>
+      <div class="sh-hop-field" data-hop-field aria-label="Letter stepping stones">
+        <div class="sh-hop-guide sh-play-guide" data-play-guide aria-hidden="true"></div>
+      </div>
+      <img class="sh-bunny sh-play-bunny" data-player-bunny alt="The bunny">
+      <button class="sh-theme sh-theme-play" data-target="theme" aria-label="Change pad colors">
+        <img data-theme-art alt="">
+        <span class="sh-theme-label"><small>COLORS</small><b data-theme-name>Sunny</b></span>
+      </button>
+      <div class="sh-feedback" data-feedback aria-live="polite"></div>
+      <div class="sh-spark-layer" data-spark-layer aria-hidden="true"></div>
+    </section>
+
+    <section class="qk-screen sh-screen sh-maker" data-qk-screen="maker" hidden aria-label="Make your own Sound Hopscotch path">
+      <img class="sh-bg" data-asset="background" alt="">
+      <div class="qk-hud-bar">
+        <button class="qk-hud-btn qk-hud-back" data-target="back" aria-label="Back to paths"></button>
+        <div class="sh-maker-heading">
+          <strong>Make a Path</strong>
+          <span>Tap stones, then drag them!</span>
+        </div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="maker-help" aria-label="Hear the instructions again"></button>
+      </div>
+      <div class="sh-maker-board" data-maker-board aria-label="Your draggable sound path">
+        <div class="sh-hop-guide sh-maker-guide" data-maker-guide aria-hidden="true"></div>
+      </div>
+      <img class="sh-bunny sh-maker-bunny" data-maker-bunny alt="The bunny waiting to hop">
+      <div class="sh-maker-tray" data-maker-tray aria-label="Letter stone choices"></div>
+      <div class="sh-maker-actions">
+        <button class="sh-maker-action sh-clear" data-target="clear" aria-label="Clear the path">
+          <img data-action-art="clear" alt="">
+          <span>Fresh path</span>
+        </button>
+        <button class="sh-maker-play" data-target="play-path" aria-label="Play my sound path">
+          <img data-asset="play" alt="">
+          <span class="visually-hidden">Play my sound path</span>
+        </button>
+        <button class="sh-theme sh-theme-maker" data-target="theme" aria-label="Change pad colors">
+          <img data-theme-art alt="">
+          <span class="sh-theme-label"><small>COLORS</small><b data-theme-name>Sunny</b></span>
+        </button>
+      </div>
+      <div class="sh-feedback sh-maker-feedback" data-maker-feedback aria-live="polite"></div>
+      <div class="sh-spark-layer" data-maker-sparks aria-hidden="true"></div>
+    </section>
+
+    <section class="qk-screen sh-screen sh-reward" data-qk-screen="reward" hidden aria-label="Sound Hopscotch celebration">
+      <img class="sh-bg" data-asset="background" alt="">
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-target="back" aria-label="Back to paths"></button>
+      <div class="sh-reward-copy">
+        <img class="sh-reward-star" data-asset="star" alt="Smiling gold star">
+        <p class="sh-reward-kicker">BUNNY BRILLIANT!</p>
+        <h2 data-reward-title>You hopped every sound!</h2>
+      </div>
+      <img class="sh-reward-bunny" data-bunny="cheer" alt="The bunny celebrates">
+      <div class="sh-reward-flowers" data-reward-flowers aria-hidden="true"></div>
+      <div class="qk-end-actions sh-reward-actions">
+        <button class="sh-action" data-target="retry">
+          <img data-action-art="retry" alt="">
+          <span>Again!</span>
+        </button>
+        <button class="sh-action" data-target="choose">
+          <img data-action-art="choose" alt="">
+          <span>Choose</span>
+        </button>
+      </div>
+      <div class="sh-spark-layer" data-reward-sparks aria-hidden="true"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "cd9dec0796eb4e208fe531357061b913",
+  "text": "Fresh meadow! Choose some new letter stones.",
+  "textHash": "67198f6c165c7a47",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "44168b22e3114a909528613faadec824",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Fresh Meadow! Choose some new letter stones."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "8da5452619aa44c08fa2a67bde73ffcb",
+  "text": "Pick a path, and let's hop with our ears!",
+  "textHash": "5329513852c23016",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "c78f22b8efcf453bbfe3e0964b94c46a",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Pick a path, and let's hop with our ears!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

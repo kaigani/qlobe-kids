@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "9e89910fe35e4f66b7ae2bfa48498f6d",
+  "text": "Your path is full of bouncy sounds!",
+  "textHash": "caddbd9e6d4e3233",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "a2e42c7daf004e5483f129b7f161b6ee",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Your path is full of bouncy sounds!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

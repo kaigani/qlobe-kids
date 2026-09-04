@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "dbca11af9f904c76a11445f02d31e8b2",
+  "text": "Make a path! Tap some letter stones, drag them anywhere, then tap the bunny button.",
+  "textHash": "8c868911017f65b1",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "089309adb5ce4d21b82637154e3179a0",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Make a path! Tap some letter stones, drag them anywhere, then tap the bunny button."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,56 +1,39 @@
-# Game Design Document - Sound Hopscotch
+# Sound Hopscotch
 
-## Game title
-Sound Hopscotch 🦘
+## Product brief
 
-## Category
-`reading-phonics`
+Sound Hopscotch is a Kawaii 3D meadow game for ages 5–6. A fluffy white bunny invites the child to listen, choose a letter stone, and hop along a rainbow path. It is beta software pending child playtesting. The game uses raster artwork for the world, bunny, stones, title, and rewards; live HTML letters remain crisp, readable, and accessible.
 
-## Age target
-5-6 (platform default).
+## Modes and content
 
-## Concept video
-_None yet._
+- **Meadow Hop (`meadow`)**: six progressive rounds. The path grows from two to four choices using A, M, S, T, P, and B. Each round plays the exact shared phonics recording for its target letter.
+- **Sound Match (`match`)**: five rounds with gentle contrasts including B/D, D/G/T, M/N, and F/V. There is no timer, speed requirement, game over, or punishment for exploring.
+- **Make a Path (`maker`)**: tap up to five A/M/S/T/P stones, drag them around the meadow using `freeform-board.js`, then press the bunny play control. The bunny visits the normalized left-to-right path and plays each letter sound. The path is saved locally and can be cleared.
 
-## Learning goals
-1. Connect a spoken consonant sound to the printed letter that represents it.
-2. Build quick, playful sound-letter recall.
-3. Practice similar-looking and similar-sounding contrasts without requiring word reading.
+## State and flow
 
-## Mini-games / modes
+The splash screen presents the three modes and a theme button. Starting a mode unlocks audio on the first gesture, loads the meadow, and begins its introduction. Play state tracks `screen`, `mode`, `round`, `roundsTotal`, `awaitingInput`, `hopping`, `targetLetter`, `theme`, and `customCount`. A correct tap animates the bunny through ready → hop → land, plays a sparkle, and advances after praise. An incorrect tap wiggles the stone, replays the clue, and offers a spoken nudge. Completion shows the bunny celebrating with a star/flower reward and Again/Choose actions. Home is only the splash; deeper screens expose Back and sound controls.
 
-### Mode 1 - Hop to the Sound
-- **Skill:** Sound-to-letter mapping for b, m, s, t, c, p, d, and g.
-- **Core loop (30-90s):** The voice calls a sound, the child sees two to four letter stones, and taps the stone that matches the sound.
-- **Rounds:** 6 with `difficultyRamp: true`.
+## Interaction and accessibility
 
-### Mode 2 - Quick Hops
-- **Skill:** Fast discrimination of trickier pairs such as b/d, m/n, and c/g.
-- **Core loop (30-90s):** Four stones appear each round. The child listens and hops quickly to the matching letter.
-- **Rounds:** 5.
+Letter stones are large touch targets (minimum 96 CSS pixels), with generous spacing and no precision timing. Every live letter has a spoken sound equivalent and a visible high-contrast label. Color themes (Sunny, Berry, Ocean) never carry meaning alone. The sound/replay control is always available inside each activity. Focus-visible states, keyboard activation, reduced-motion fallbacks, `aria-label`s, and portrait/landscape responsive layouts are supported. Motion is celebratory but optional; reduced motion removes travel and sparkle delays while preserving the spoken cue/praise pacing.
 
-## Shared assets used
-- `shared/js/engines/choose-one.js` - choose-one interaction loop, splash, HUD, retry, celebration, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, boing, tick, and tada effects.
-- `shared/assets/letter-tiles/` - letter tile PNGs for b, m, s, t, c, p, d, g, and n.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
+## Audio
 
-## New assets needed
-- Hopscotch court or stone path production art to replace `emoji:🦘` prompt art.
-- Recorded teacher-voice sound-call lines matching every line in `config.js`.
+Shared recorded phonics clips are loaded through `content.letterSoundUrl`; these are preferred over browser speech for the target sound. All 16 teacher-narration lines ship as approved Qwen3 voice-clone clips after exact-transcript Whisper acceptance, with a safe local fallback if a file cannot play. The shared `upbeat-playground-pop.mp3` is low-volume background music. Audio unlocks after a user gesture, narration ducks music, and mute state is retained for the session. Audio events are logged for debug and QA.
 
-## Interaction model
-Tap one letter-tile answer card after a spoken sound clue. The engine keeps answer cards large, includes a replay button, and never requires the child to read instructional text.
+## Persistence and debug
 
-## Feedback model
-- **Success:** pop/sparkle SFX, bounce, and spoken praise.
-- **Retry:** gentle wiggle, boing SFX, spoken nudge, and the same sound prompt again.
-- **Hint:** idle replay after a pause, plus the HUD sound button.
-- **Celebration:** end-of-mode tada, confetti-style burst, spoken cheer, and a real-body hopping prompt.
+The maker path is stored as normalized coordinates under `qk-sound-hopscotch-path-v1`, allowing it to survive a refresh without storing audio or personal data. `window.QLOBE_DEBUG` exposes `ready`, `listModes`, `startMode`, `getState`, `getTargets`, `tap`, `winRound`, `mute`, `seed`, `fastTimers`, `home`, `getAudioLog`, and `clearAudioLog`. The same action map drives real taps and automation, so smoke tests exercise production behavior.
 
-## Difficulty progression
-`Hop to the Sound` starts with two answer cards and ramps toward four. `Quick Hops` keeps four cards and uses tighter contrasts.
+## Visual direction and asset pipeline
 
-## Replay variation
-The engine shuffles round order and answer order on each play. Debug seeding remains available through `window.QLOBE_DEBUG.seed(n)` for review automation.
+The art world is a bright turquoise-sky and lime-meadow playground with peripheral trees, flowers, clouds, fence, and a curved rainbow trail. Materials are soft vinyl/playdough with puffy warm-cream sticker edging, coral, sunshine, lime, sky-blue, and violet accents, and a friendly cocoa outline. Raster bunny-paw landing markers turn the meadow into a readable route; Maker adds a START/FINISH runway and numbered flower badges, while a dedicated paint-palette sprite distinguishes theme changes from answer stones. Generated source sheets are retained under `assets/source/gpt-image-2/`; the asset cutter creates named crops and debug masks, followed by deterministic alpha cleanup and WebP finalization. Qwen Image Layered was evaluated as a foreground-separation aid; final selection remains with the cleanest cutter/alpha result after edge review, since generated layer separation can drift from the approved sprite silhouette. No vector or CSS artwork is used.
+
+## QA plan
+
+Run syntax checks for all game scripts, JSON parsing, the repository validator, and `tools/qa.mjs` against a local static server. Exercise every debug mode, correct and incorrect answers, replay/mute, maker add/drag/clear/save/play, reduced motion, and both orientations. Capture splash, play, feedback, and maker screens at production viewport sizes for visual QC: check alpha halos, legibility, target size, contrast, layering, crop boundaries, and responsive composition. Complete an adversarial art-direction pass before shipping, then repeat the smoke suite against the deployed production URL.
+
+## Credits and licensing
+
+Code is MIT; original game assets are CC-BY-4.0. Credits include GPT Image 2, approved local QLOBE API generation/editing resources, QLOBE asset-sheet processing tools, shared QLOBE Kids phonics recordings, and the QLOBE Kids platform team.

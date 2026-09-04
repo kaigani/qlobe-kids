@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "6733cb10a0e64b038b76ed32492915b5",
+  "text": "Ready for another hop?",
+  "textHash": "408da11b2f9ac6dd",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "a1119590f0b140efaf403b68fee9629c",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Ready for another hop?"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

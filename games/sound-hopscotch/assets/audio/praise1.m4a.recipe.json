@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "765d209c9acc4f94952324d438afaa08",
+  "text": "Beautiful listening hop!",
+  "textHash": "ea95e57e62f064bf",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "a8aa3816ae3a431d985a76fe54b63ea6",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Beautiful listening hop!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

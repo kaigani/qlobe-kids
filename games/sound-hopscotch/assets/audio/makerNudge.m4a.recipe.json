@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "74e1b97538fe444cb4a9ad7b6a0d529b",
+  "text": "Add at least two letter stones to make a hopping path.",
+  "textHash": "a0c8dad66a1ad1d1",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "537d55f4c5dd456c925fa2e417d613a8",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Add at least two letter stones to make a hopping path."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

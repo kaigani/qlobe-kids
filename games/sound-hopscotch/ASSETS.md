@@ -1,38 +1,91 @@
-# Asset Log - Sound Hopscotch
+# Sound Hopscotch asset record
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Letter tiles (`shared/assets/letter-tiles/b.png`, `m.png`, `s.png`, `t.png`, `c.png`, `p.png`, `d.png`, `g.png`, `n.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused unmodified through `shared:` refs |
-| Kangaroo placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:🦘` refs | N/A | Platform/browser emoji font license | N/A | Used as a temporary placeholder only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+All shipping game art is raster. Live HTML is used only for accessible copy,
+letters, numbers, layout, and interaction; no SVG or CSS-drawn artwork is used.
+Original generated project assets are released under CC BY 4.0. Game code is
+MIT.
 
-## Assets needed
+## Original GPT Image 2 art
 
-### Art
-- Hopscotch court or stone path production art to replace `emoji:🦘`.
+The definitive meadow, four bunny poses, five pad colors, listening plaque,
+play button, reward star, progress flower, title, paw landing marker, and color
+palette were generated with `gpt-image-2`. The first four sheets used new or
+referenced `stylized-concept` generation. The interaction-cue sheet used
+referenced generation from the approved meadow and prop sheets. Exact prompts,
+references, modes, decisions, and output paths are preserved in
+`assets/source/PROMPTS.md`.
 
-### Voice
-- "Hopscotch with your ears! Listen for the sound, then tap the matching letter stone."
-- "Hmm, listen for the sound and hop to another letter stone."
-- "You hopped to the sounds! Now HOP three times for real!"
-- "Hop! That letter makes the sound!"
-- "Great listening jump!"
-- "Yes! Your ears found the sound!"
-- "Hop to buh! Which letter stone says buh?"
-- "Hop to mmm! Which letter stone says mmm?"
-- "Hop to sss! Which letter stone says sss?"
-- "Hop to tuh! Which letter stone says tuh?"
-- "Hop to kuh! Which letter stone says kuh?"
-- "Hop to puh! Which letter stone says puh?"
-- "Hop to duh! Which letter stone says duh?"
-- "Hop to guh! Which letter stone says guh?"
-- "Hop to nnn! Which letter stone says nnn?"
+| Source | Shipping result |
+|---|---|
+| `assets/source/gpt-image-2/meadow-world-master.png` | `assets/backgrounds/meadow.webp` |
+| `assets/source/gpt-image-2/bunny-poses-sheet.png` | `assets/characters/bunny-{ready,hop,land,cheer}.webp` |
+| `assets/source/gpt-image-2/kawaii-kit-sheet.png` | `assets/pads/*.webp`, `assets/ui/{sound-plaque,play-button}.webp`, `assets/effects/*.webp` |
+| `assets/source/gpt-image-2/title-lockup-master.png` | `assets/title.webp` |
+| `assets/source/gpt-image-2/interaction-cues-sheet.png` | `assets/ui/{landing-marker,theme-palette}.webp` |
 
-## Link preview (og:image)
+## Required asset cutting and finalization
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+Every isolated source sheet was run through the repository asset cutter with
+an exact expected count. The commands were:
+
+```text
+python tools/cut-asset-sheet.py bunny-poses-sheet.png crops/bunny --names bunny-ready bunny-hop bunny-land bunny-cheer --expected-count 4
+python tools/cut-asset-sheet.py kawaii-kit-sheet.png crops/kawaii-kit --names pad-coral pad-yellow pad-blue pad-lime pad-violet sound-plaque play-button reward-star progress-flower --expected-count 9
+python tools/cut-asset-sheet.py title-lockup-master.png crops/title --names title-lockup --expected-count 1
+python tools/cut-asset-sheet.py interaction-cues-sheet.png crops/interaction-cues --names landing-marker theme-palette --expected-count 2 --distance-threshold 42 --chroma-threshold 20 --order x
+```
+
+The concrete commands used full repository-relative input/output paths plus
+`--debug-mask`; authoritative boxes and masks are retained in
+`assets/source/crops/`. `tools/process-assets.py` applies those exact masks,
+normalizes bunny canvases, resizes/encodes WebP, writes
+`assets/source/finalize-report.json`, and builds the magenta-background alpha
+QC sheet at `assets/source/qa/alpha-contact-sheet.png`.
+
+The hub tile (`../../assets/hub/tiles/sound-hopscotch.jpg`) and social card
+(`assets/og-image.jpg`) are deterministic Pillow composites of the approved
+runtime art. Rebuild them with `tools/build-social-assets.py`; the recipe is
+`assets/source/local-api/social-assets.recipe.json`.
+
+## Approved local API experiments
+
+- Krea 2 (`krea2-turbo-t2i`), seed 42, job
+  `7aa9aaee41744585927ced0331fec8ea`, produced
+  `assets/source/local-api/krea-hub-seed42.png`. It was retained as exploration
+  but not shipped because the bow moved from Bunny's neck to her head.
+- Qwen Image Layered processed all 14 original cut sprites at seed 42. The
+  batch was inconsistent: some objects had opaque cores, while representative
+  bunny, pad, and effect foreground layers were nearly empty (maximum alpha
+  3–17). The entire experimental batch was rejected in favor of the exact
+  cutter masks. All outputs, job IDs, and alpha findings are retained in
+  `assets/source/qwen-layered/REPORT.md`.
+- Qwen3 TTS Voice Clone uses the approved committed reference
+  `shared/assets/refs/voice-teacher.wav`. `tools/generate-voice.py` records
+  async job IDs, seed, text hash, AAC settings, and Whisper acceptance results.
+  All 16 shipping seed-7 lines passed Whisper with exact normalized transcripts
+  (score 1.0 and word coverage 1.0).
+  Runtime clips and per-line recipes live in `assets/audio/`; raw generations,
+  transcripts, and resumable LAN job state stay under
+  `assets/source/local-api/voice/`. `assets/audio/qa.json` is the acceptance
+  record and `assets/audio/manifest.json` is the runtime index.
+
+## Shared QLOBE Kids resources
+
+| Asset | Source / license | Use |
+|---|---|---|
+| `shared/assets/ui/btn-{home,back,sound}.png` | QLOBE Kids generated project art, CC BY 4.0 | Shared HUD controls through `shared/css/hud.css` |
+| `shared/assets/audio/fragments/*.m4a` | QLOBE Kids recorded phonics library | Exact target-letter sounds through `shared/js/content.js` |
+| `shared/assets/music/upbeat-playground-pop.mp3` | QLOBE Kids project music | Low-volume, ducked background music |
+| `shared/fonts/fredoka-latin-600-normal.woff2` | Fredoka by Milena Brandão and Hafontia, SIL OFL 1.1 | Accessible live UI type |
+
+## Reproduction and review
+
+```text
+python games/sound-hopscotch/tools/process-assets.py --check
+python games/sound-hopscotch/tools/build-social-assets.py
+python games/sound-hopscotch/tools/generate-voice.py
+```
+
+Do not silently replace a final with an experimental source. Regenerate from
+the prompt/job record, run the cutter with `--expected-count`, inspect the alpha
+contact sheet, and repeat visual QA in both orientations before shipping.

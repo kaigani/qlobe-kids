@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "52831d2e17c14aa79a037054a1856086",
+  "text": "You hopped all the way across the meadow!",
+  "textHash": "4580042d197bb58b",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "ae40eea5fe8f4c31982fe74a2e6ff7e9",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "You hopped all the way across the meadow!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

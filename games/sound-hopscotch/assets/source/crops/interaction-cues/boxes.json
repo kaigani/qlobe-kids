@@ -1,0 +1,86 @@
+{
+  "source": "games/sound-hopscotch/assets/source/gpt-image-2/interaction-cues-sheet.png",
+  "sourceSha256": "b1ed030e3eee51a888f9b64652a2523ba710356784625ed53ae415f7dd0637fe",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    29,
+    29,
+    39
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "landing-marker",
+      "file": "landing-marker.png",
+      "componentArea": 255316,
+      "foregroundBbox": [
+        107,
+        269,
+        763,
+        758
+      ],
+      "cropBbox": [
+        89,
+        251,
+        781,
+        776
+      ],
+      "cropXywh": [
+        89,
+        251,
+        692,
+        525
+      ],
+      "normalizedCropBbox": [
+        0.057943,
+        0.245117,
+        0.508464,
+        0.757812
+      ]
+    },
+    {
+      "index": 2,
+      "name": "theme-palette",
+      "file": "theme-palette.png",
+      "componentArea": 223569,
+      "foregroundBbox": [
+        835,
+        250,
+        1399,
+        791
+      ],
+      "cropBbox": [
+        817,
+        232,
+        1417,
+        809
+      ],
+      "cropXywh": [
+        817,
+        232,
+        600,
+        577
+      ],
+      "normalizedCropBbox": [
+        0.531901,
+        0.226562,
+        0.922526,
+        0.790039
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 42,
+    "chromaThreshold": 20,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "x"
+  }
+}

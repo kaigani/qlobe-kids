@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "4f32c7d3408d41009897e3757bc8d57c",
+  "text": "What quick listening ears!",
+  "textHash": "3ae2d7820ae1a8b6",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "061d003e4c1d4c639eea400af94ac20f",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "What quick listening ears!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

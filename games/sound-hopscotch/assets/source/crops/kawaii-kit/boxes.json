@@ -1,0 +1,296 @@
+{
+  "source": "games/sound-hopscotch/assets/source/gpt-image-2/kawaii-kit-sheet.png",
+  "sourceSha256": "0ec4b091ee427ffe073a4a943f2875a701c81807d55ce82bfef56f77646a4195",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    27,
+    54
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "pad-coral",
+      "file": "pad-coral.png",
+      "componentArea": 101033,
+      "foregroundBbox": [
+        113,
+        38,
+        453,
+        363
+      ],
+      "cropBbox": [
+        101,
+        26,
+        465,
+        375
+      ],
+      "cropXywh": [
+        101,
+        26,
+        364,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.069751,
+        0.023941,
+        0.321133,
+        0.345304
+      ]
+    },
+    {
+      "index": 2,
+      "name": "pad-yellow",
+      "file": "pad-yellow.png",
+      "componentArea": 100353,
+      "foregroundBbox": [
+        552,
+        39,
+        891,
+        364
+      ],
+      "cropBbox": [
+        540,
+        27,
+        903,
+        376
+      ],
+      "cropXywh": [
+        540,
+        27,
+        363,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.372928,
+        0.024862,
+        0.623619,
+        0.346225
+      ]
+    },
+    {
+      "index": 3,
+      "name": "pad-blue",
+      "file": "pad-blue.png",
+      "componentArea": 100228,
+      "foregroundBbox": [
+        993,
+        38,
+        1330,
+        365
+      ],
+      "cropBbox": [
+        981,
+        26,
+        1342,
+        377
+      ],
+      "cropXywh": [
+        981,
+        26,
+        361,
+        351
+      ],
+      "normalizedCropBbox": [
+        0.677486,
+        0.023941,
+        0.926796,
+        0.347145
+      ]
+    },
+    {
+      "index": 4,
+      "name": "pad-lime",
+      "file": "pad-lime.png",
+      "componentArea": 100817,
+      "foregroundBbox": [
+        111,
+        389,
+        449,
+        716
+      ],
+      "cropBbox": [
+        99,
+        377,
+        461,
+        728
+      ],
+      "cropXywh": [
+        99,
+        377,
+        362,
+        351
+      ],
+      "normalizedCropBbox": [
+        0.06837,
+        0.347145,
+        0.31837,
+        0.67035
+      ]
+    },
+    {
+      "index": 5,
+      "name": "pad-violet",
+      "file": "pad-violet.png",
+      "componentArea": 100118,
+      "foregroundBbox": [
+        553,
+        390,
+        891,
+        715
+      ],
+      "cropBbox": [
+        541,
+        378,
+        903,
+        727
+      ],
+      "cropXywh": [
+        541,
+        378,
+        362,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.373619,
+        0.348066,
+        0.623619,
+        0.669429
+      ]
+    },
+    {
+      "index": 6,
+      "name": "sound-plaque",
+      "file": "sound-plaque.png",
+      "componentArea": 91040,
+      "foregroundBbox": [
+        964,
+        398,
+        1368,
+        701
+      ],
+      "cropBbox": [
+        952,
+        386,
+        1380,
+        713
+      ],
+      "cropXywh": [
+        952,
+        386,
+        428,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.657459,
+        0.355433,
+        0.953039,
+        0.656538
+      ]
+    },
+    {
+      "index": 7,
+      "name": "play-button",
+      "file": "play-button.png",
+      "componentArea": 90828,
+      "foregroundBbox": [
+        92,
+        759,
+        490,
+        1025
+      ],
+      "cropBbox": [
+        80,
+        747,
+        502,
+        1037
+      ],
+      "cropXywh": [
+        80,
+        747,
+        422,
+        290
+      ],
+      "normalizedCropBbox": [
+        0.055249,
+        0.687845,
+        0.346685,
+        0.95488
+      ]
+    },
+    {
+      "index": 8,
+      "name": "reward-star",
+      "file": "reward-star.png",
+      "componentArea": 64972,
+      "foregroundBbox": [
+        569,
+        736,
+        880,
+        1034
+      ],
+      "cropBbox": [
+        557,
+        724,
+        892,
+        1046
+      ],
+      "cropXywh": [
+        557,
+        724,
+        335,
+        322
+      ],
+      "normalizedCropBbox": [
+        0.384669,
+        0.666667,
+        0.616022,
+        0.963168
+      ]
+    },
+    {
+      "index": 9,
+      "name": "progress-flower",
+      "file": "progress-flower.png",
+      "componentArea": 74767,
+      "foregroundBbox": [
+        998,
+        724,
+        1321,
+        1035
+      ],
+      "cropBbox": [
+        986,
+        712,
+        1333,
+        1047
+      ],
+      "cropXywh": [
+        986,
+        712,
+        347,
+        335
+      ],
+      "normalizedCropBbox": [
+        0.680939,
+        0.655617,
+        0.92058,
+        0.964088
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

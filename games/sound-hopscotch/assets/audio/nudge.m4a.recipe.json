@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "257427ba07c7410c9826074a74658dff",
+  "text": "Almost! Listen one more time.",
+  "textHash": "6ce856a25f82b4dc",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "673eec93294c40148af4d9b33525dec7",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Almost! Listen one more time."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

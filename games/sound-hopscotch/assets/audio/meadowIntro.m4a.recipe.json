@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "088d2559de4349ba9223d0403b5a4a47",
+  "text": "Meadow Hop! Listen, then tap the letter that makes the sound.",
+  "textHash": "81a4ca8bc7920fba",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "cca6058bbc6b401fb908c5576300d6cb",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Meadow Hop! Listen, then tap the letter that makes the sound."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

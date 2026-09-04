@@ -3,32 +3,43 @@
   "title": "Sound Hopscotch",
   "category": "reading-phonics",
   "path": "games/sound-hopscotch/",
-  "icon": "🦘",
+  "icon": "🐰",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2e9f76",
-  "shareTitle": "Sound Hopscotch 🦘 — Quick Letter Sound Hops",
-  "description": "Hear a consonant sound and tap the matching letter stone, hopping quickly between tricky sound pairs. A fast-paced sound-letter game for ages 5–6.",
+  "status": "beta",
+  "accent": "#ef665c",
+  "shareTitle": "Sound Hopscotch 🐰 — Listen, then hop!",
+  "description": "Listen for a letter sound and help a fluffy bunny hop to the matching stone. Explore Meadow Hop, Sound Match, and make-your-own hop paths.",
   "learningGoals": [
     "Map spoken consonant sounds to printed letters",
-    "Build quick sound-letter recall",
-    "Practice tricky contrasts such as b/d, m/n, and c/g"
+    "Build playful sound-letter recall through repeated listening",
+    "Practice contrasts such as b/d, m/n, and f/v without penalty"
   ],
-  "interactionModel": "choose-one tap a letter stone after a spoken sound prompt",
-  "feedbackModel": "Correct stones sparkle and speak praise; misses wiggle gently, get a spoken nudge, and replay the sound prompt.",
+  "interactionModel": "three-mode tap-and-drag phonics play: listen, tap the matching letter stone, or build and play a custom path",
+  "feedbackModel": "Correct stones sparkle and the bunny hops; misses gently wiggle, replay the sound, and offer a warm retry with no timer or game over.",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/screens.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/assets/letter-tiles/"
+    "shared/js/content.js",
+    "shared/js/preload.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/timers.js",
+    "shared/js/freeform-board.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/music/upbeat-playground-pop.mp3",
+    "shared/assets/audio/fragments/"
   ],
   "modes": [
-    { "id": "hop", "title": "Hop to the Sound", "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g" },
-    { "id": "fast", "title": "Quick Hops", "skill": "rapid discrimination of tricky letter-sound pairs" }
+    { "id": "meadow", "title": "Meadow Hop", "skill": "progressive sound-to-letter mapping across six rounds" },
+    { "id": "match", "title": "Sound Match", "skill": "gentle discrimination of tricky consonant contrasts across five rounds" },
+    { "id": "maker", "title": "Make a Path", "skill": "sequence and replay a self-made left-to-right letter-sound path" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Shared QLOBE Kids letter-tile art; emoji placeholder kangaroo art. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Original Kawaii raster artwork generated with GPT Image 2 and processed through the QLOBE asset pipeline; approved local QLOBE API sources and shared QLOBE Kids phonics recordings; implementation by Codex for QLOBE Kids.",
+  "characters": ["fluffy white bunny"],
   "conceptVideo": null
 }

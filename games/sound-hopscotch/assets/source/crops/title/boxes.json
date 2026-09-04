@@ -1,0 +1,56 @@
+{
+  "source": "games/sound-hopscotch/assets/source/gpt-image-2/title-lockup-master.png",
+  "sourceSha256": "dfad6020db08b3f994def64701f2976d9838eb4c758fc8768f9837275fbf3841",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    36,
+    29,
+    58
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title-lockup",
+      "file": "title-lockup.png",
+      "componentArea": 667976,
+      "foregroundBbox": [
+        25,
+        211,
+        1437,
+        835
+      ],
+      "cropBbox": [
+        13,
+        199,
+        1448,
+        847
+      ],
+      "cropXywh": [
+        13,
+        199,
+        1435,
+        648
+      ],
+      "normalizedCropBbox": [
+        0.008978,
+        0.183241,
+        1.0,
+        0.779926
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

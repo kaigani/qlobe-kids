@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "c4679d12bbf14343a5e4c4e315ab58e4",
+  "text": "Your very own sound path sings!",
+  "textHash": "1e7b912065bf0c79",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "7098f3983342431d94229fff5cce27a1",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Your very own sound path sings!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "6feacbefb8c645d0baf28aeefee52757",
+  "text": "Bouncy brilliant!",
+  "textHash": "6a4534d619e80579",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "e5e2b1aab52e43888731f4a9b062e769",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Bouncy brilliant!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

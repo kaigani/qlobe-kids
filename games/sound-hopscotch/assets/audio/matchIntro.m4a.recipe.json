@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "264b26c30adf4fc5ac208a006d5cfa4f",
+  "text": "Quick ears! Find the sound and keep the bunny bouncing.",
+  "textHash": "b0a76319b30875f5",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "bd1d9aec470e49da801c3a44ea634cf5",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Quick ears! Find the sound and keep the bunny bouncing."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

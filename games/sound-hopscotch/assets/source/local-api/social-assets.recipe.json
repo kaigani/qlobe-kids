@@ -1,0 +1,30 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "method": "deterministic Pillow composite of finalized GPT Image 2 assets",
+  "referenceOnly": {
+    "file": "games/sound-hopscotch/assets/source/local-api/krea-hub-seed42.png",
+    "workflow": "krea2-turbo-t2i",
+    "seed": 42,
+    "decision": "retained as exploration; not shipped because the bow moved from the character's neck to its head"
+  },
+  "sources": [
+    "games/sound-hopscotch/assets/backgrounds/meadow.webp",
+    "games/sound-hopscotch/assets/title.webp",
+    "games/sound-hopscotch/assets/characters/bunny-hop.webp",
+    "games/sound-hopscotch/assets/pads/pad-coral.webp",
+    "games/sound-hopscotch/assets/pads/pad-yellow.webp",
+    "games/sound-hopscotch/assets/pads/pad-blue.webp"
+  ],
+  "outputs": [
+    {
+      "file": "assets/hub/tiles/sound-hopscotch.jpg",
+      "bytes": 91258,
+      "sha256": "b21dbb07dde5687b4d921bcf8479a6db303dc5c517baabf122f595f0de2aab1e"
+    },
+    {
+      "file": "games/sound-hopscotch/assets/og-image.jpg",
+      "bytes": 194750,
+      "sha256": "765394146ab7e85cf145e2c468672ffd1af980babbb98863092f57d2efa4adfd"
+    }
+  ]
+}

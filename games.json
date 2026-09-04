@@ -713,21 +713,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2e9f76",
+      "status": "beta",
+      "accent": "#ef665c",
       "modes": [
         {
-          "id": "hop",
-          "title": "Hop to the Sound",
-          "skill": "sound-letter mapping for b, m, s, t, c, p, d, and g"
+          "id": "meadow",
+          "title": "Meadow Hop",
+          "skill": "progressive sound-to-letter mapping across six rounds"
         },
         {
-          "id": "fast",
-          "title": "Quick Hops",
-          "skill": "rapid discrimination of tricky letter-sound pairs"
+          "id": "match",
+          "title": "Sound Match",
+          "skill": "gentle discrimination of tricky consonant contrasts across five rounds"
+        },
+        {
+          "id": "maker",
+          "title": "Make a Path",
+          "skill": "sequence and replay a self-made left-to-right letter-sound path"
         }
       ],
-      "summary": "Jump onto letters as their sounds are spoken."
+      "summary": "Listen, help Bunny hop to letter sounds, or build your own rainbow sound path."
     },
     {
       "id": "tiny-reader-theater",
