@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/silly-swap-words/assets/source/gpt-image-2/words-a-master.png",
+  "output": "games/silly-swap-words/assets/source/layered/words-a.png",
+  "qa": {
+    "width": 1024,
+    "height": 768,
+    "transparentPct": 48.949,
+    "opaquePct": 44.986,
+    "partialPct": 6.065
+  },
+  "prompt": "Bottom layer: only the source background, dark glow, and stray edge-color residue, with no foreground subjects.\nTop layer: all twelve complete clay word-picture subjects, preserving their exact three-by-four positions and every sculpted detail, isolated together on genuine transparency. Keep the foreground identical. Do not redraw, crop, rearrange, add, remove, relight, or rewrite anything."
+}

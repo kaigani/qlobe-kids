@@ -5,32 +5,44 @@
   "path": "games/silly-swap-words/",
   "icon": "🔄",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f25f5c",
-  "shareTitle": "Silly Swap Words 🔄 — Playful Sound Swapping",
-  "description": "Swap one letter tile to change a word's sound, hearing how a single swap makes something new. A playful phoneme-substitution game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#f36f65",
+  "engine": "custom DOM runtime with shared QLOBE interaction, audio, screen, timer, celebration, and debug modules",
+  "shareTitle": "Silly Swap Words — Tap One Sound, Meet a New Word",
+  "description": "A handcrafted clay word workshop where children tap one letter to transform CAT into HAT, follow sound-changing word trails, and invent delightfully silly CVC words.",
   "learningGoals": [
-    "Hear that one changed sound can make a new word",
-    "Practice onset and rime substitution",
-    "Build short CVC words with shared letter tiles"
+    "Hear how changing one phoneme creates a different word",
+    "Blend and segment short consonant-vowel-consonant words",
+    "Explore real and invented words with curiosity and no penalty"
   ],
-  "interactionModel": "build-assemble drag or tap-tap letter tiles into two ghost slots",
-  "feedbackModel": "Correct tiles pop, sparkle, and speak their sound; misses wiggle gently with a spoken nudge and retry. Finished words speak the transformation line.",
+  "interactionModel": "tap one of three large clay letter wells, or use Magic Swap, to change exactly one sound and immediately reveal the new word picture",
+  "feedbackModel": "Every swap speaks the changed sound and resulting word; real words transform into clay objects, invented words meet a friendly lab creature, and misses receive a gentle spoken hint with no loss state.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/speech.js",
+    "shared/js/screens.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/assets/letter-tiles/",
-    "shared/assets/ui/",
-    "shared/fonts/fredoka-latin-600-normal.woff2"
+    "shared/js/content.js",
+    "shared/js/tap.js",
+    "shared/js/preload.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/timers.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "shared/assets/audio/fragments/",
+    "shared/assets/audio/words/"
   ],
   "modes": [
-    { "id": "swap", "title": "Swap a Sound", "skill": "phoneme substitution with one changed sound" },
-    { "id": "chain", "title": "Word Chains", "skill": "hearing a sequence of small word changes" }
+    { "id": "swap", "title": "Guided Swaps", "skill": "guided phoneme substitution with useful intermediate words" },
+    { "id": "trail", "title": "Word Trails", "skill": "sequential one-sound changes across a connected CVC chain" },
+    { "id": "lab", "title": "Silly Word Lab", "skill": "open CVC construction and playful real/nonsense-word exploration" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; shared QLOBE Kids letter-tile art and synthesized runtime SFX. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Original Claymation raster art generated with GPT Image 2 and processed with Qwen Image Layered plus the QLOBE cutter; Krea 2 hub art; Qwen3 cloned-teacher narration verified with Whisper; implementation by Codex for QLOBE Kids.",
+  "characters": ["orange clay kitten", "Silly Lab blob"],
   "conceptVideo": null
 }

@@ -668,24 +668,29 @@
       "path": "games/silly-swap-words/",
       "icon": "assets/hub/tiles/silly-swap-words.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#f36f65",
       "modes": [
         {
           "id": "swap",
-          "title": "Swap a Sound",
-          "skill": "phoneme substitution with one changed sound"
+          "title": "Guided Swaps",
+          "skill": "guided phoneme substitution with useful intermediate words"
         },
         {
-          "id": "chain",
-          "title": "Word Chains",
-          "skill": "hearing a sequence of small word changes"
+          "id": "trail",
+          "title": "Word Trails",
+          "skill": "sequential one-sound changes across a connected CVC chain"
+        },
+        {
+          "id": "lab",
+          "title": "Silly Word Lab",
+          "skill": "open CVC construction and playful real/nonsense-word exploration"
         }
       ],
-      "summary": "Change one sound at a time to turn cat into hat into hot."
+      "summary": "Tap one clay letter to make a new word, follow sound trails, or invent a wonderfully silly one."
     },
     {
       "id": "picture-word-match",

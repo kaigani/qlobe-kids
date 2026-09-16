@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-16T20:01:54.106Z",
+  "generated": "2026-09-16T22:40:00.477Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -42,13 +42,12 @@
       ]
     },
     "build-assemble": {
-      "count": 6,
+      "count": 5,
       "games": [
         "blend-train",
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
-        "silly-swap-words",
         "turn-taking-tower"
       ]
     },
@@ -2188,7 +2187,7 @@
     },
     "rhyming-detective": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "reading-phonics",
       "characters": [],
       "modules": [
@@ -2468,24 +2467,55 @@
       "packs": []
     },
     "silly-swap-words": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "reading-phonics",
-      "characters": [],
+      "characters": [
+        "Silly Lab blob",
+        "orange clay kitten"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/letter-tiles",
-        "shared/assets/ui"
+        "games/silly-swap-words/assets/backgrounds/clay-sky.webp",
+        "games/silly-swap-words/assets/characters/silly-blob.webp",
+        "games/silly-swap-words/assets/ui/action-pill-blue.webp",
+        "games/silly-swap-words/assets/ui/action-pill.webp",
+        "games/silly-swap-words/assets/ui/letter-well.webp",
+        "games/silly-swap-words/assets/ui/magic-swap.webp",
+        "games/silly-swap-words/assets/ui/mode-lab.webp",
+        "games/silly-swap-words/assets/ui/mode-swap.webp",
+        "games/silly-swap-words/assets/ui/mode-trail.webp",
+        "games/silly-swap-words/assets/ui/prompt-plaque.webp",
+        "games/silly-swap-words/assets/ui/success-ribbon.webp",
+        "games/silly-swap-words/assets/ui/title.webp",
+        "games/silly-swap-words/assets/words/bug.webp",
+        "games/silly-swap-words/assets/words/cat.webp",
+        "games/silly-swap-words/assets/words/hat.webp",
+        "games/silly-swap-words/assets/words/mug.webp",
+        "shared/assets/audio/fragments",
+        "shared/assets/audio/words",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "packs": []
     },
@@ -3506,6 +3536,7 @@
         "sand-tray-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -3541,6 +3572,7 @@
         "puzzle-map-match",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -3584,6 +3616,7 @@
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
+        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sticker-line-challenge",
@@ -3616,6 +3649,7 @@
         "picture-word-match",
         "playdough-letter-factory",
         "sand-tray-letters",
+        "silly-swap-words",
         "sound-basket",
         "sound-hopscotch"
       ],
@@ -3667,6 +3701,7 @@
         "sand-tray-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -3701,7 +3736,6 @@
         "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
-        "silly-swap-words",
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
@@ -3800,6 +3834,7 @@
         "obstacle-course-builder",
         "post-office-letters",
         "red-green-light",
+        "silly-swap-words",
         "sticker-line-challenge",
         "table-setting-mission",
         "tiny-reader-theater"
@@ -3830,6 +3865,7 @@
         "post-office-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sink-or-float",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -3903,6 +3939,7 @@
         "pattern-train",
         "post-office-letters",
         "sand-tray-letters",
+        "silly-swap-words",
         "sink-or-float",
         "sound-hopscotch",
         "sound-painting",
@@ -3942,6 +3979,7 @@
         "post-office-letters",
         "puzzle-map-match",
         "shape-detective",
+        "silly-swap-words",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4034,6 +4072,7 @@
         "post-office-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "snack-chef",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -4212,7 +4251,6 @@
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
-        "silly-swap-words",
         "sink-or-float",
         "smell-jars",
         "snack-addition-stories",
@@ -4379,6 +4417,7 @@
         "sand-tray-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -4435,6 +4474,7 @@
         "rhythm-copycat",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -4499,6 +4539,7 @@
         "sand-tray-letters",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -4681,7 +4722,6 @@
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
-        "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
         "story-sequence",
@@ -4726,6 +4766,7 @@
         "rhythm-copycat",
         "shadow-chase",
         "shape-detective",
+        "silly-swap-words",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
@@ -4954,6 +4995,9 @@
         "snack-addition-stories",
         "story-repair-shop"
       ],
+      "orange clay kitten": [
+        "silly-swap-words"
+      ],
       "orange-cat": [
         "story-stones"
       ],
@@ -5017,6 +5061,9 @@
       "Sam": [
         "post-office-letters",
         "snack-addition-stories"
+      ],
+      "Silly Lab blob": [
+        "silly-swap-words"
       ],
       "skipper": [
         "counting-treasure-cups"
@@ -5576,6 +5623,54 @@
       "games/sand-tray-letters/assets/materials/white-salt.png": [
         "sand-tray-letters"
       ],
+      "games/silly-swap-words/assets/backgrounds/clay-sky.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/characters/silly-blob.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/action-pill-blue.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/action-pill.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/letter-well.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/magic-swap.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/mode-lab.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/mode-swap.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/mode-trail.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/prompt-plaque.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/success-ribbon.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/ui/title.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/words/bug.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/words/cat.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/words/hat.webp": [
+        "silly-swap-words"
+      ],
+      "games/silly-swap-words/assets/words/mug.webp": [
+        "silly-swap-words"
+      ],
       "games/snack-chef/assets/title.webp": [
         "snack-chef"
       ],
@@ -5741,6 +5836,7 @@
         "blend-train",
         "flashlight-cave",
         "name-puzzle",
+        "silly-swap-words",
         "sound-hopscotch"
       ],
       "shared/assets/audio/isfor": [
@@ -5750,7 +5846,8 @@
         "flashlight-cave"
       ],
       "shared/assets/audio/words": [
-        "rhyming-detective"
+        "rhyming-detective",
+        "silly-swap-words"
       ],
       "shared/assets/backdrops/enchanted-castle.jpg": [
         "tiny-reader-theater"
@@ -5788,7 +5885,6 @@
       ],
       "shared/assets/letter-tiles": [
         "mystery-letter-bag",
-        "silly-swap-words",
         "sound-sprouts"
       ],
       "shared/assets/music": [
@@ -5819,6 +5915,7 @@
       "shared/assets/music/whimsical-toy-workshop.mp3": [
         "number-sense-kitchen",
         "pattern-train",
+        "silly-swap-words",
         "tiny-sentence-workshop"
       ],
       "shared/assets/objects": [
@@ -5859,7 +5956,6 @@
         "shape-detective",
         "shape-to-picture",
         "silly-sentence-builder",
-        "silly-swap-words",
         "sink-or-float",
         "snack-chef",
         "sound-basket",

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "14a1ca59c722400dbdf60ab86efb7356",
+  "text": "Listen for the sound that changes.",
+  "textHash": "8137f5a4a6c81c40",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "a6e300d102db45c29e05961a1bfc8bdd",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Listen for the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

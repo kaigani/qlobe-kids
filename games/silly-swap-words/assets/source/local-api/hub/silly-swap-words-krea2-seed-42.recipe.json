@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "silly-swap-words-hub-krea2",
+  "kind": "image",
+  "asset": "games/silly-swap-words/assets/source/local-api/hub/silly-swap-words-krea2-seed-42.jpg",
+  "artDirection": "Claymation",
+  "jobId": "52255c4456904617bca0716aeaf609a9",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a premium handcrafted claymation toy-world scene for a preschool game menu tile, one adorable orange clay kitten beside three chunky blank cream clay letter wells, a round happy blue clay magic-swap face with tiny yellow star sparkles, all arranged as one bold readable group on a lavender clay tabletop beneath a cheerful turquoise clay sky, visible fingerprints and hand-shaped seams, warm studio lighting, satin-matte plasticine, bright coral purple aqua yellow palette, spacious 6:5 composition; absolutely no writing, letters, numbers, logos, UI text, border, frame, flat vector, or photorealism",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "silly-swap-words-krea2-seed-42.png",
+  "sourceSha256": "563a665d0ff2ac0b274835a24de0249f795e22ed0837d793fbd33c94a09a6928",
+  "candidateSha256": "9556e27397f283b7907dc3a7b3c83bfb63da23e4c96bac4056165561fa92aa8a",
+  "qa": {
+    "status": "published-after-human-review",
+    "finalSize": [
+      640,
+      533
+    ]
+  },
+  "createdAt": "2026-09-16T21:41:19.828026+00:00"
+}

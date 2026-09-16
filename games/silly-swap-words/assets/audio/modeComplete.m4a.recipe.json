@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "faef078fd79443eab01e4d96c55dbb61",
+  "text": "Mode complete! What a word wizard!",
+  "textHash": "834ab312f7a1aae1",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "9db646737b96400eab1d36579e3f6137",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Mode complete! What a word wizard!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

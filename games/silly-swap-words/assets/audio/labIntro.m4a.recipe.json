@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "4a11d57f9c8d4572842a375e941e7708",
+  "text": "Mix the letters in the word lab and discover what they make.",
+  "textHash": "63a29aaadcf40e47",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "bc96885597ce4ec4b632ab8dad13de8b",
+    "score": 0.958,
+    "coverage": 0.917,
+    "transcript": "Make the letters in the word lab and discover what they make."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

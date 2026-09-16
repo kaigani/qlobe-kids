@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "fc68855fc3ed4551b0c5cdd4bc12a5a7",
+  "text": "Change bug to mug. Tap the sound that changes.",
+  "textHash": "486077eb20aa4cb3",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "f26a3cfc662643d7a4596db0975b7009",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change bug to mug. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

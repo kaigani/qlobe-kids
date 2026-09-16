@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "ab26057b6ac94261a991f3e4eea0f353",
+  "text": "Try another letter. Your idea might be wonderfully silly.",
+  "textHash": "d74082d5b85fb9d9",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "01e305f24a144fa7b711762fcd0148ba",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Try another letter. Your idea might be wonderfully silly."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

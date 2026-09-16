@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "b90a51a68343471abb4f29a2f4108b93",
+  "text": "You reached the end of the trail!",
+  "textHash": "fabb4ab6f9738089",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "5bd470467e6e40118c2cf8c28675cb83",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "You reached the end of the trail!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

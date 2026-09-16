@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "e66c65cfdb2b43878c3201bd3fb39820",
+  "text": "Swap the first sound in pig.",
+  "textHash": "ffe92a026b609bf9",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "2a0b8847288e4c3e92bb7f2301172355",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Swap the first sound in pig."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

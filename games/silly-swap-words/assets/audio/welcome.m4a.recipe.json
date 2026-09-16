@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "9a5419dd853047238d199c6481a16159",
+  "text": "Welcome to the silly word workshop!",
+  "textHash": "4218657ee6f78eef",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "253ff07a5e6345009ee36e317c3f8604",
+    "score": 0.544,
+    "coverage": 1.0,
+    "transcript": "Sound Hopscotch bunny Meadow Hop Sound Match Make a Path. Welcome to the silly word workshop!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

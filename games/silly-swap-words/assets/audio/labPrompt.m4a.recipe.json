@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "947eb68b842a4316b9ac514b2582fb69",
+  "text": "Tap any letter. What will your silly word become?",
+  "textHash": "49998aba44ba58af",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "960ec84fe2cc48d7a68487ba850e7d86",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Tap any letter. What will your silly word become?"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

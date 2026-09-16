@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 9001,
+  "selectedOutput": "layer_2",
+  "source": "games/silly-swap-words/assets/source/gpt-image-2/title-master.png",
+  "output": "games/silly-swap-words/assets/source/layered/title.png",
+  "qa": {
+    "width": 1024,
+    "height": 680,
+    "transparentPct": 54.329,
+    "opaquePct": 44.659,
+    "partialPct": 1.012
+  },
+  "prompt": "Bottom layer: only the source background, dark glow, and stray edge-color residue, with no foreground subjects.\nTop layer: the complete Silly Swap Words clay title plaque, preserving every correctly spelled letter, the tiny star, clay texture, and warm shadow exactly, isolated together on genuine transparency. Keep the foreground identical. Do not redraw, crop, rearrange, add, remove, relight, or rewrite anything."
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "48aded4c21a046a79d2a8b1f7d9cf74b",
+  "text": "Tap a letter slot to try a new sound.",
+  "textHash": "5af6ee9110a4d7fd",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "f7694728a48845bfa1ba9b81468e69cd",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Tap a letter slot to try a new sound."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

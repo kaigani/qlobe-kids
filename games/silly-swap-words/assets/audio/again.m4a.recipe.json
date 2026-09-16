@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "5c1b2fd8933d4a99be4841888da27e7f",
+  "text": "Let us try one more time!",
+  "textHash": "9a5a69d2991be9a4",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "68f388c3f169499baae006c3eebdd077",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Let us try one more time!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

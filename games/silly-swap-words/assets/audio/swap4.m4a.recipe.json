@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "fe38c6f08cd34f46ac99ea8636cb4860",
+  "text": "Swap the first sound in dog.",
+  "textHash": "47d655997cd3a378",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "1d38855b44944ceca5ad359de18109e8",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Swap the first sound in dog."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

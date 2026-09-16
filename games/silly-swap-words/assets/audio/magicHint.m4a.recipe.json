@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "f663bf933c39423499e4b91f9970c32f",
+  "text": "Need a little magic? Tap the magic swap.",
+  "textHash": "edf9598390ae93fc",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "2071fab5be914910b1b0c100db987b95",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Need a little magic? Tap the magic swap."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

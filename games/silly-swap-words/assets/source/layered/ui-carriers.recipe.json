@@ -1,0 +1,17 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/silly-swap-words/assets/source/gpt-image-2/ui-carriers-master.png",
+  "output": "games/silly-swap-words/assets/source/layered/ui-carriers.png",
+  "qa": {
+    "width": 1024,
+    "height": 512,
+    "transparentPct": 57.139,
+    "opaquePct": 40.383,
+    "partialPct": 2.478
+  },
+  "prompt": "Bottom layer: only the source background, dark glow, and stray edge-color residue, with no foreground subjects.\nTop layer: all eight complete clay UI objects, preserving their exact two-row positions, symbols, shapes, colors, textures, and blank text surfaces, isolated together on genuine transparency. Keep the foreground identical. Do not redraw, crop, rearrange, add, remove, relight, or rewrite anything."
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "8cd4d2f562b948eca7573d1bdd7e1cad",
+  "text": "Change hog to dog. Tap the sound that changes.",
+  "textHash": "9c745315ea1e1ddb",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "01fdee0769f1435aad3091bcdb5d0e65",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change hog to dog. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}
