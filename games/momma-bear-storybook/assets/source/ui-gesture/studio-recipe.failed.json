@@ -1,0 +1,55 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-gesture-finger",
+  "kind": "image",
+  "asset": null,
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a single friendly papercraft tap cue shaped like a simplified child's right hand, warm tan layered cardstock, one index finger clearly extended and pointing diagonally upward-left at about 35 degrees, other fingers gently curled, a short warm-cream felt cuff with deep ink-blue blanket stitching, bold uncluttered silhouette readable at 80 pixels, no arm beyond the cuff, no arrow, no sparkles, no text, isolated, centered. premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words.",
+      "ground": "dark-charcoal",
+      "seed": 9001,
+      "width": 1024,
+      "height": 1024,
+      "output": "momma-bear-gesture-finger.raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Solid flat green background layer. Top layer: the exact same a single friendly papercraft tap cue shaped like a simplified child's right hand, warm tan layered cardstock, one index finger clearly extended and pointing diagonally upward-left at about 35 degrees, other fingers gently curled, a short warm-cream felt cuff with deep ink-blue blanket stitching, bold uncluttered silhouette readable at 80 pixels, no arm beyond the cuff, no arrow, no sparkles, no text, isolated, centered. premium handmade cut-paper collage: layered construction paper, cardstock and felt with visible fibre texture, softly rounded die-cut and scissor-cut edges, slight handmade imperfections, occasional tiny stitched details, and soft tactile shadows between stacked layers; saturated kraft-paper brights on a warm cream field; child-safe toy proportions and handmade warmth. No text, no letters, no words. from the image. Keep it identical to the input image.",
+      "output": "layer_2",
+      "from": "momma-bear-gesture-finger.raw.png",
+      "seed": 9001
+    },
+    {
+      "op": "finalize",
+      "crop": "bbox+12",
+      "maxSize": 640,
+      "encode": "png",
+      "from": "momma-bear-gesture-finger.layer2.png",
+      "output": "momma-bear-gesture-finger.png"
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "prop-cutout",
+    "style": "paper-garden",
+    "fields": {
+      "prop": "a single friendly papercraft tap cue shaped like a simplified child's right hand, warm tan layered cardstock, one index finger clearly extended and pointing diagonally upward-left at about 35 degrees, other fingers gently curled, a short warm-cream felt cuff with deep ink-blue blanket stitching, bold uncluttered silhouette readable at 80 pixels, no arm beyond the cuff, no arrow, no sparkles, no text"
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "failed-qa",
+    "alpha": null,
+    "flags": [],
+    "seedLadder": [
+      42,
+      1337,
+      9001
+    ],
+    "usedSeed": 9001,
+    "reason": null
+  },
+  "created": "2026-09-16"
+}

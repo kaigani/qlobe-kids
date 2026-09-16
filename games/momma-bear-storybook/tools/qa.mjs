@@ -239,6 +239,9 @@ async function driveStory(page, storyId, index, { initialPartial = false } = {})
   await finishPage(page);
   state = await debug.getState(page);
   check(`${storyId}: Beginning ends with a page-turn gate`, state.screen === 'read' && state.pageIndex === 1, JSON.stringify(state));
+  const beginningCue = await page.locator('#mbs-reader-status').textContent();
+  check(`${storyId}: Beginning turn gives direct instruction`, beginningCue?.startsWith('Turn the page'), beginningCue);
+  check(`${storyId}: Beginning turn has gentle corner pulse`, await page.locator('.mbs-reader-page.is-page-corner-pulsing').count() === 1, 'pulse class');
   const firstTurnVisible = await page.locator('#mbs-page-turn').isVisible();
   check(`${storyId}: Beginning page-turn button is visible`, firstTurnVisible, String(firstTurnVisible));
   await auditPageTurnClearance(page, `${storyId} Beginning turn`);
@@ -265,6 +268,9 @@ async function driveStory(page, storyId, index, { initialPartial = false } = {})
   await finishPage(page);
   state = await debug.getState(page);
   check(`${storyId}: Middle ends with a page-turn gate`, state.screen === 'read' && state.pageIndex === 3, JSON.stringify(state));
+  const middleCue = await page.locator('#mbs-reader-status').textContent();
+  check(`${storyId}: Middle turn gives direct instruction`, middleCue?.startsWith('Turn the page'), middleCue);
+  check(`${storyId}: Middle turn has gentle corner pulse`, await page.locator('.mbs-reader-page.is-page-corner-pulsing').count() === 1, 'pulse class');
   await auditPageTurnClearance(page, `${storyId} Middle turn`);
   await shot(page, `${String(index + 1).padStart(2, '0')}-${storyId}-act-turn`);
   const secondTurn = await debug.call(page, 'nextPage');
@@ -315,6 +321,9 @@ async function drivePortraitStory(page, storyId) {
   await finishPage(page);
   state = await debug.getState(page);
   check(`${storyId} portrait: Beginning turn is visible`, state.pageIndex === 1 && state.screen === 'read', JSON.stringify(state));
+  const beginningCue = await page.locator('#mbs-reader-status').textContent();
+  check(`${storyId} portrait: Beginning turn gives direct instruction`, beginningCue?.startsWith('Turn the page'), beginningCue);
+  check(`${storyId} portrait: Beginning turn has gentle corner pulse`, await page.locator('.mbs-reader-page.is-page-corner-pulsing').count() === 1, 'pulse class');
   await auditTargets(page, `${storyId} portrait Beginning turn`);
   await shot(page, `${prefix}-beginning-act-turn`);
   check(`${storyId} portrait: crosses Beginning turn`, await debug.call(page, 'nextPage') === true, 'nextPage');
@@ -335,6 +344,9 @@ async function drivePortraitStory(page, storyId) {
   await finishPage(page);
   state = await debug.getState(page);
   check(`${storyId} portrait: Middle turn is visible`, state.pageIndex === 3 && state.screen === 'read', JSON.stringify(state));
+  const middleCue = await page.locator('#mbs-reader-status').textContent();
+  check(`${storyId} portrait: Middle turn gives direct instruction`, middleCue?.startsWith('Turn the page'), middleCue);
+  check(`${storyId} portrait: Middle turn has gentle corner pulse`, await page.locator('.mbs-reader-page.is-page-corner-pulsing').count() === 1, 'pulse class');
   await auditTargets(page, `${storyId} portrait Middle turn`);
   // The richer middle turn is the release evidence: it shows the authored
   // story prop after the two-row line has been completed.
@@ -398,6 +410,7 @@ async function run() {
   await debug.waitForAudio(page, 'word:pip', { timeout: 10000 }).catch(() => {});
   const earlyLog = await debug.getAudioLog(page);
   check('real unmuted gesture hears recorded welcome clip', audio.heardClip(earlyLog, 'ui:welcome'), audio.describe(earlyLog));
+  check('first shelf-sound gesture records exactly one welcome clip', audio.count(earlyLog, 'ui:welcome') === 1, audio.describe(earlyLog));
   check('real unmuted gesture hears a recorded word clip', audio.heardClip(earlyLog, 'word:pip'), audio.describe(earlyLog));
   check('narrated line exists as a recorded asset', Boolean(manifest.manifest?.['line:little-mill:1']), JSON.stringify(manifest.manifest?.['line:little-mill:1']));
 
@@ -426,6 +439,23 @@ async function run() {
   await debug.call(page, 'home');
   await debug.waitForScreen(page, 'shelf');
   await debug.call(page, 'resetProgress');
+
+  // Reset and reload to make first-time gesture-demo assertions deterministic.
+  await page.reload({ waitUntil: 'networkidle' });
+  await prime(page, { mute: true });
+  await debug.fastTimers(page, 1);
+  await debug.startMode(page, 'little-mill');
+  await waitForUsableRead(page);
+  check('first-page gesture demo is visible before first tap', await page.locator('.mbs-gesture-demo').count() === 1, 'demo count');
+  const wordFont = await page.locator('.trt-word').first().evaluate((el) => getComputedStyle(el).fontFamily);
+  check('functional word uses Fredoka/system font', wordFont.includes('Fredoka'), wordFont);
+  await shot(page, '00-untouched-gesture-demo');
+  await page.locator('[data-target="word-0"]').click();
+  check('first-page gesture demo disappears after physical tap', await page.locator('.mbs-gesture-demo').count() === 0, 'demo count');
+  check('gesture demo state is persisted', await page.evaluate(() => JSON.parse(localStorage.getItem('qk:momma-bear-storybook:v1') || '{}').gestureDemoSeen === true), 'localStorage flag');
+  await debug.fastTimers(page, FAST);
+  await debug.call(page, 'home');
+  await debug.waitForScreen(page, 'shelf');
 
   for (let index = 0; index < STORY_IDS.length; index += 1) {
     await driveStory(page, STORY_IDS[index], index);
@@ -485,6 +515,13 @@ async function run() {
   check('reduced-motion boot is exposed by debug state', reducedState.screen === 'shelf' && reducedState.reducedMotion === true, JSON.stringify(reducedState));
   await auditTargets(reduced.page, 'reduced-motion shelf');
   await shot(reduced.page, '12-reduced-motion-shelf');
+  await debug.fastTimers(reduced.page, 1);
+  await debug.startMode(reduced.page, 'little-mill');
+  await waitForUsableRead(reduced.page);
+  check('reduced-motion first-read cue remains visible', await reduced.page.locator('.mbs-gesture-demo').count() === 1, 'demo count');
+  const reducedCueAnimation = await reduced.page.locator('.mbs-gesture-demo').evaluate((el) => getComputedStyle(el).animationName);
+  check('reduced-motion first-read cue is static', reducedCueAnimation === 'none', reducedCueAnimation);
+  await shot(reduced.page, '12-reduced-motion-reading');
   checkClean(reduced, 'reduced-motion session');
   await reduced.close();
 }

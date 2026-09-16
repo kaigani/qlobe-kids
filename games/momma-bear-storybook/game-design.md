@@ -239,14 +239,20 @@ Complete Shelf → Story Shelf
 - The sentence lives on authored torn-paper word carriers as exact HTML text.
   The row is above the actor action band in landscape and wraps to two centered
   rows on portrait.
+- Functional interface text uses the shared Fredoka/system sans grammar for a
+  warm, highly legible read-aloud voice; generated title art remains illustrated.
+- Portrait staging keeps actors and props in the upper-middle safe zone
+  (portrait floor around 0.55, prop shift around 0.28) while landscape staging
+  retains its lower tableau.
 - Back is top-left. Sound is bottom-left and replays the current untapped word,
   or the whole current line after completion. Three authored act tabs sit at
   the top-right and six tiny page stitches show progress.
 - A first-time-only, 4-second gesture demo points a glowing paper fingertip at
-  the first word; it never blocks manual input and is skipped on replay.
+  the first untouched word; it never blocks manual input, dismisses on the first
+  tap, remains static under reduced motion, and is skipped on replay.
 - When all words are touched, the row shimmers, the full line is narrated, actors
   perform, and the page turns automatically. At an act boundary, the book holds
-  for a short spoken transition with a large page-tab affordance; tapping it
+  with a direct “Turn the page” cue and gentle page-corner pulse; tapping it
   advances immediately.
 
 ### 3. Story Complete

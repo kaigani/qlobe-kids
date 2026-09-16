@@ -27,6 +27,7 @@ let wordLine = null;
 let flowToken = 0;
 let fastScale = 1;
 let resumePerformance = false;
+let gestureDemoTimer = null;
 let readyResolve;
 const ready = new Promise((resolve) => { readyResolve = resolve; });
 
@@ -44,6 +45,7 @@ const state = {
   completedStories: new Set(),
   promptedStories: new Set(),
   muted: false,
+  gestureDemoSeen: false,
 };
 
 function loadProgress() {
@@ -53,6 +55,7 @@ function loadProgress() {
     if (Array.isArray(value.completedStories)) {
       state.completedStories = new Set(value.completedStories.filter((id) => valid.has(id)));
     }
+    state.gestureDemoSeen = value.gestureDemoSeen === true;
     return value;
   } catch {
     return {};
@@ -65,7 +68,7 @@ function saveProgress() {
       completedStories: [...state.completedStories],
       lastStory: state.storyId,
       lastPage: state.pageIndex,
-      gestureDemoSeen: true,
+      gestureDemoSeen: state.gestureDemoSeen,
     }));
   } catch { /* storage is never load-bearing */ }
 }
@@ -276,6 +279,45 @@ function destroyWordLine() {
   wordLine = null;
   state.tappedWords = [];
   state.lineComplete = false;
+  clearGestureDemo();
+}
+
+function clearGestureDemo({ markSeen = false } = {}) {
+  const demo = dom.readerPage?.querySelector('.mbs-gesture-demo');
+  demo?.remove();
+  if (gestureDemoTimer !== null) timers.clear(gestureDemoTimer);
+  gestureDemoTimer = null;
+  if (markSeen && !state.gestureDemoSeen) {
+    state.gestureDemoSeen = true;
+    saveProgress();
+  }
+}
+
+function showGestureDemo() {
+  if (state.gestureDemoSeen || state.screen !== 'read' || state.pageIndex !== 0) return;
+  const first = dom.wordHost.querySelector('.trt-word');
+  if (!first) return;
+  clearGestureDemo();
+  const demo = document.createElement('img');
+  demo.className = 'mbs-gesture-demo';
+  demo.src = config.ui.gestureFinger;
+  demo.alt = '';
+  demo.setAttribute('aria-hidden', 'true');
+  dom.readerPage.append(demo);
+  const pageRect = dom.readerPage.getBoundingClientRect();
+  const wordRect = first.getBoundingClientRect();
+  demo.style.left = `${wordRect.left - pageRect.left + wordRect.width * .58}px`;
+  demo.style.top = `${wordRect.bottom - pageRect.top - 18}px`;
+  gestureDemoTimer = timers.after(4000, () => {
+    gestureDemoTimer = null;
+    clearGestureDemo({ markSeen: true });
+  });
+}
+
+function actTurnInstruction() {
+  if (state.pageIndex === 1) return 'Turn the page for the middle.';
+  if (state.pageIndex === 3) return 'Turn the page for the ending.';
+  return null;
 }
 
 function updateGuidance() {
@@ -286,9 +328,10 @@ function updateGuidance() {
   if (next) next.classList.add('is-next');
   state.tappedWords = wordLine.tappedWords();
   const waiting = wordLine.remaining();
+  const turnInstruction = actTurnInstruction();
   dom.status.textContent = waiting
     ? `${waiting} ${waiting === 1 ? 'word is' : 'words are'} waiting.`
-    : 'Now watch the words come alive.';
+    : (!dom.pageTurn.hidden && turnInstruction ? turnInstruction : 'Now watch the words come alive.');
 }
 
 const nudger = createNudger({
@@ -366,6 +409,8 @@ async function renderPage({ speakPrompt = false } = {}) {
   destroyWordLine();
   state.busy = true;
   root.dataset.performing = 'false';
+  dom.readerPage.classList.remove('is-page-corner-pulsing');
+  clearGestureDemo();
   setPageTurnVisible(false);
   dom.status.textContent = 'The paper stage is getting ready…';
   renderProgress(page);
@@ -380,6 +425,7 @@ async function renderPage({ speakPrompt = false } = {}) {
     lineIndex: state.pageIndex,
     voice: readerVoice,
     onWordTap() {
+      clearGestureDemo({ markSeen: true });
       nudger.poke();
       scene?.reactToWord();
       requestAnimationFrame(updateGuidance);
@@ -388,6 +434,7 @@ async function renderPage({ speakPrompt = false } = {}) {
   });
   state.busy = false;
   updateGuidance();
+  showGestureDemo();
   nudger.arm();
   if (speakPrompt) {
     state.promptedStories.add(story.id);
@@ -418,6 +465,8 @@ async function performCurrentLine() {
     return true;
   }
   if (state.pageIndex === 1 || state.pageIndex === 3) {
+    dom.status.textContent = actTurnInstruction();
+    dom.readerPage.classList.add('is-page-corner-pulsing');
     setPageTurnVisible(true);
     const key = state.pageIndex === 1 ? 'ui:beginning-done' : 'ui:middle-done';
     speak(key, config.audio.ui[key]);
@@ -463,8 +512,12 @@ function showComplete(story, { speakLines = false } = {}) {
   showScreen('complete');
   feedback('tada');
   if (speakLines) {
+    const ownFlow = flowToken;
     speak('ui:story-done', config.audio.ui['ui:story-done'])
-      .then(() => speak(story.completionKey, story.completion));
+      .then(() => {
+        if (ownFlow !== flowToken || state.screen !== 'complete' || state.storyId !== story.id) return false;
+        return speak(story.completionKey, story.completion);
+      });
   }
   return true;
 }
@@ -516,6 +569,8 @@ function snapshot() {
     reducedMotion,
     muted: state.muted,
     stageMounted: Boolean(scene),
+    gestureDemoSeen: state.gestureDemoSeen,
+    gestureDemoVisible: Boolean(dom.readerPage?.querySelector('.mbs-gesture-demo')),
   };
 }
 
@@ -632,9 +687,9 @@ async function boot() {
   bgm.setVolume(0.13);
   installUnlockOnGesture({
     extra: [bgm.unlock],
-    onFirst: () => {
+    onFirst: (event) => {
       if (!state.muted) bgm.play(config.audio.bgm, { key: GAME_ID, fadeInMs: 1100, loopFadeOutMs: 2200 });
-      if (state.screen === 'shelf') speak('ui:welcome', config.audio.ui['ui:welcome']);
+      if (state.screen === 'shelf' && !event?.target?.closest?.('[data-role="sound"]')) speak('ui:welcome', config.audio.ui['ui:welcome']);
     },
   });
   document.addEventListener('visibilitychange', onVisibilityChange);
@@ -668,6 +723,8 @@ async function boot() {
     validateContent,
     resetProgress: () => {
       state.completedStories = new Set();
+      state.gestureDemoSeen = false;
+      clearGestureDemo();
       try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
       renderShelf();
       return [];

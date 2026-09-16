@@ -26,7 +26,7 @@ body,
 body {
   background: var(--mbs-ink);
   color: var(--mbs-ink);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: Fredoka, system-ui, sans-serif;
   overscroll-behavior: none;
   touch-action: manipulation;
   user-select: none;
@@ -397,7 +397,7 @@ a:focus-visible {
   border: 0;
   background: var(--mbs-word-tile) center / 100% 100% no-repeat;
   color: var(--mbs-ink);
-  font: 700 clamp(27px, 3.7vw, 52px)/1 Georgia, 'Times New Roman', serif;
+  font: 700 clamp(27px, 3.7vw, 52px)/1 Fredoka, system-ui, sans-serif;
   letter-spacing: .005em;
   transition: transform 140ms ease, filter 140ms ease, opacity 140ms ease;
 }
@@ -424,21 +424,38 @@ a:focus-visible {
 .mbs-page-progress {
   position: absolute;
   left: 50%;
-  bottom: max(8px, env(safe-area-inset-bottom));
-  height: 18px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  height: 22px;
   display: flex;
   gap: 2px;
   transform: translateX(-50%);
 }
 
-.mbs-page-progress img {
-  width: 38px;
-  height: 16px;
-  object-fit: fill;
-  opacity: .35;
+.mbs-gesture-demo {
+  position: absolute;
+  z-index: 25;
+  width: clamp(72px, 8vw, 112px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 3px rgba(45, 28, 16, .28));
+  animation: mbs-gesture-bob 900ms ease-in-out infinite;
 }
 
-.mbs-page-progress img[data-done='true'] { opacity: .72; }
+.mbs-reader-page.is-page-corner-pulsing .mbs-page-turn img { animation: mbs-corner-glow 1.8s ease-in-out infinite; }
+@keyframes mbs-gesture-bob { 50% { transform: translateY(8px) rotate(-4deg); } }
+@keyframes mbs-corner-glow { 50% { filter: brightness(1.12) drop-shadow(0 0 7px rgba(255, 211, 92, .75)); } }
+@media (prefers-reduced-motion: reduce) {
+  .mbs-gesture-demo, .mbs-reader-page.is-page-corner-pulsing .mbs-page-turn img { animation: none; }
+}
+
+.mbs-page-progress img {
+  width: 42px;
+  height: 20px;
+  object-fit: fill;
+  opacity: .46;
+}
+
+.mbs-page-progress img[data-done='true'] { opacity: .78; }
 .mbs-page-progress img[data-current='true'] { opacity: 1; transform: scaleY(1.35); }
 
 .mbs-page-turn {
