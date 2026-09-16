@@ -1,0 +1,262 @@
+{
+  "source": "games/pattern-train/assets/source/gpt-image-2/token-sheet.png",
+  "sourceSha256": "334db6746f9b7ae187cb3a40816103b8900024d549e6eb54f5671989ad197d94",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "red-triangle",
+      "file": "red-triangle.png",
+      "componentArea": 65644,
+      "foregroundBbox": [
+        35,
+        116,
+        380,
+        425
+      ],
+      "cropBbox": [
+        19,
+        100,
+        396,
+        441
+      ],
+      "cropXywh": [
+        19,
+        100,
+        377,
+        341
+      ],
+      "normalizedCropBbox": [
+        0.01237,
+        0.097656,
+        0.257812,
+        0.430664
+      ]
+    },
+    {
+      "index": 2,
+      "name": "blue-square",
+      "file": "blue-square.png",
+      "componentArea": 91427,
+      "foregroundBbox": [
+        429,
+        128,
+        738,
+        434
+      ],
+      "cropBbox": [
+        413,
+        112,
+        754,
+        450
+      ],
+      "cropXywh": [
+        413,
+        112,
+        341,
+        338
+      ],
+      "normalizedCropBbox": [
+        0.26888,
+        0.109375,
+        0.490885,
+        0.439453
+      ]
+    },
+    {
+      "index": 3,
+      "name": "yellow-circle",
+      "file": "yellow-circle.png",
+      "componentArea": 85321,
+      "foregroundBbox": [
+        785,
+        112,
+        1115,
+        443
+      ],
+      "cropBbox": [
+        769,
+        96,
+        1131,
+        459
+      ],
+      "cropXywh": [
+        769,
+        96,
+        362,
+        363
+      ],
+      "normalizedCropBbox": [
+        0.500651,
+        0.09375,
+        0.736328,
+        0.448242
+      ]
+    },
+    {
+      "index": 4,
+      "name": "green-star",
+      "file": "green-star.png",
+      "componentArea": 69701,
+      "foregroundBbox": [
+        1154,
+        98,
+        1507,
+        441
+      ],
+      "cropBbox": [
+        1138,
+        82,
+        1523,
+        457
+      ],
+      "cropXywh": [
+        1138,
+        82,
+        385,
+        375
+      ],
+      "normalizedCropBbox": [
+        0.740885,
+        0.080078,
+        0.991536,
+        0.446289
+      ]
+    },
+    {
+      "index": 5,
+      "name": "clap",
+      "file": "clap.png",
+      "componentArea": 99812,
+      "foregroundBbox": [
+        30,
+        521,
+        384,
+        879
+      ],
+      "cropBbox": [
+        14,
+        505,
+        400,
+        895
+      ],
+      "cropXywh": [
+        14,
+        505,
+        386,
+        390
+      ],
+      "normalizedCropBbox": [
+        0.009115,
+        0.493164,
+        0.260417,
+        0.874023
+      ]
+    },
+    {
+      "index": 6,
+      "name": "stomp",
+      "file": "stomp.png",
+      "componentArea": 99224,
+      "foregroundBbox": [
+        405,
+        521,
+        758,
+        879
+      ],
+      "cropBbox": [
+        389,
+        505,
+        774,
+        895
+      ],
+      "cropXywh": [
+        389,
+        505,
+        385,
+        390
+      ],
+      "normalizedCropBbox": [
+        0.253255,
+        0.493164,
+        0.503906,
+        0.874023
+      ]
+    },
+    {
+      "index": 7,
+      "name": "tap",
+      "file": "tap.png",
+      "componentArea": 99932,
+      "foregroundBbox": [
+        778,
+        520,
+        1132,
+        879
+      ],
+      "cropBbox": [
+        762,
+        504,
+        1148,
+        895
+      ],
+      "cropXywh": [
+        762,
+        504,
+        386,
+        391
+      ],
+      "normalizedCropBbox": [
+        0.496094,
+        0.492188,
+        0.747396,
+        0.874023
+      ]
+    },
+    {
+      "index": 8,
+      "name": "shake",
+      "file": "shake.png",
+      "componentArea": 101426,
+      "foregroundBbox": [
+        1153,
+        520,
+        1511,
+        880
+      ],
+      "cropBbox": [
+        1137,
+        504,
+        1527,
+        896
+      ],
+      "cropXywh": [
+        1137,
+        504,
+        390,
+        392
+      ],
+      "normalizedCropBbox": [
+        0.740234,
+        0.492188,
+        0.994141,
+        0.875
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 20,
+    "closeRadius": 4,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

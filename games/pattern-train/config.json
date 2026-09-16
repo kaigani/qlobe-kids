@@ -1,0 +1,108 @@
+{
+  "id": "pattern-train",
+  "title": "Pattern Train",
+  "artDirection": "Toy",
+  "music": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+  "storageKey": "qk-pattern-train-builder-v1",
+  "assets": {
+    "background": "./assets/art/railway-meadow.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "locomotive": "./assets/art/locomotive.webp",
+    "wagon": "./assets/art/wagon.webp",
+    "tray": "./assets/art/tray.webp",
+    "plaque": "./assets/art/plaque.webp",
+    "buttons": {
+      "play": "./assets/art/button-yellow.webp",
+      "action": "./assets/art/button-coral.webp"
+    },
+    "modes": {
+      "shapes": "./assets/art/mode-shapes.webp",
+      "actions": "./assets/art/mode-actions.webp",
+      "builder": "./assets/art/mode-builder.webp"
+    },
+    "effects": {
+      "star": "./assets/art/gold-star.webp",
+      "spark": "./assets/art/spark.webp",
+      "whistle": "./assets/art/whistle.webp"
+    },
+    "tokens": {
+      "red-triangle": "./assets/art/tokens/red-triangle.webp",
+      "blue-square": "./assets/art/tokens/blue-square.webp",
+      "yellow-circle": "./assets/art/tokens/yellow-circle.webp",
+      "green-star": "./assets/art/tokens/green-star.webp",
+      "clap": "./assets/art/tokens/clap.webp",
+      "stomp": "./assets/art/tokens/stomp.webp",
+      "tap": "./assets/art/tokens/tap.webp",
+      "shake": "./assets/art/tokens/shake.webp"
+    }
+  },
+  "voice": {
+    "welcome": "All aboard! Tap play to visit the pattern station.",
+    "depot": "Pick a pattern ride.",
+    "shapeIntro": "Shape cargo! Find what comes next.",
+    "actionIntro": "Move and sound! Find what comes next.",
+    "builderIntro": "Build your own pattern train. Tap blocks to fill the wagons, then blow the whistle!",
+    "prompt": "Look, listen. What comes next?",
+    "nudge": "Almost! Watch the pattern glow, then try again.",
+    "model": "Let's say the pattern together.",
+    "correct1": "That fits! The pattern keeps rolling.",
+    "correct2": "You found it! Chugga chugga!",
+    "correct3": "Beautiful pattern thinking!",
+    "roundComplete": "The pattern is rolling!",
+    "shapeComplete": "You powered the shape train!",
+    "actionComplete": "Your move-and-sound train is rolling!",
+    "builderNeeds": "Add at least two blocks to make a pattern.",
+    "builderPlay": "Here comes your pattern!",
+    "builderClear": "Fresh train! Choose some new cargo.",
+    "again": "Ready for another ride?",
+    "redTriangle": "Red triangle.",
+    "blueSquare": "Blue square.",
+    "yellowCircle": "Yellow circle.",
+    "greenStar": "Green star.",
+    "clap": "Clap!",
+    "stomp": "Stomp!",
+    "tap": "Tap!",
+    "shake": "Shake!"
+  },
+  "tokens": {
+    "red-triangle": { "label": "Red triangle", "voice": "redTriangle", "kind": "shape", "sound": "tick" },
+    "blue-square": { "label": "Blue square", "voice": "blueSquare", "kind": "shape", "sound": "pop" },
+    "yellow-circle": { "label": "Yellow circle", "voice": "yellowCircle", "kind": "shape", "sound": "boing" },
+    "green-star": { "label": "Green star", "voice": "greenStar", "kind": "shape", "sound": "sparkle" },
+    "clap": { "label": "Clap", "voice": "clap", "kind": "action", "sound": "pop" },
+    "stomp": { "label": "Stomp", "voice": "stomp", "kind": "action", "sound": "boing" },
+    "tap": { "label": "Tap", "voice": "tap", "kind": "action", "sound": "tick" },
+    "shake": { "label": "Shake", "voice": "shake", "kind": "action", "sound": "silly" }
+  },
+  "modes": [
+    {
+      "id": "shapes",
+      "title": "Shape Cargo",
+      "tagline": "Look and load",
+      "introVoice": "shapeIntro",
+      "rounds": [
+        { "pattern": ["red-triangle", "blue-square", "red-triangle", "blue-square"], "choices": ["blue-square", "yellow-circle", "green-star"] },
+        { "pattern": ["yellow-circle", "yellow-circle", "green-star", "yellow-circle", "yellow-circle"], "choices": ["yellow-circle", "blue-square", "red-triangle"] },
+        { "pattern": ["red-triangle", "blue-square", "yellow-circle", "red-triangle", "blue-square"], "choices": ["blue-square", "green-star", "yellow-circle"] }
+      ]
+    },
+    {
+      "id": "actions",
+      "title": "Move & Sound",
+      "tagline": "Listen and move",
+      "introVoice": "actionIntro",
+      "rounds": [
+        { "pattern": ["clap", "stomp", "clap", "stomp"], "choices": ["stomp", "shake", "tap"] },
+        { "pattern": ["tap", "tap", "shake", "tap", "tap"], "choices": ["tap", "clap", "stomp"] },
+        { "pattern": ["clap", "stomp", "shake", "clap", "stomp"], "choices": ["stomp", "tap", "clap"] }
+      ]
+    },
+    {
+      "id": "builder",
+      "title": "My Train",
+      "tagline": "Build and play",
+      "introVoice": "builderIntro",
+      "palette": ["red-triangle", "blue-square", "yellow-circle", "green-star", "clap", "stomp", "tap", "shake"]
+    }
+  ]
+}

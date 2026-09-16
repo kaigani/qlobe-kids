@@ -3,31 +3,45 @@
   "title": "Pattern Train",
   "category": "math-number-sense",
   "path": "games/pattern-train/",
-  "icon": "🚂",
+  "icon": "assets/hub/tiles/pattern-train.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2d7dd2",
-  "shareTitle": "Pattern Train 🌈 — Color and Shape Patterns",
-  "description": "Tap the next wagon to continue color and shape patterns, then hear the whole train play back in order. A gentle pattern-recognition ride for ages 5–6.",
+  "age": { "min": 2, "max": 6 },
+  "status": "beta",
+  "accent": "#ef6b56",
+  "shareTitle": "Pattern Train — Build the Pattern, Power the Train!",
+  "description": "Load painted wooden shape and action patterns, send the toy train rolling, and build a five-wagon pattern of your own.",
   "learningGoals": [
-    "Recognize AB, ABC, and AAB repeating patterns",
-    "Extend a visual pattern by one or two train cars",
-    "Name colors and simple shapes through spoken playback"
+    "Recognize and extend AB, AAB, ABB, and ABC repeating patterns",
+    "Connect visual sequences with spoken words, sounds, and body actions",
+    "Plan, replay, and revise a self-chosen five-part pattern"
   ],
-  "interactionModel": "pattern-continue tap the next wagon to fill the train",
-  "feedbackModel": "Correct choices fly into the train and play back the full pattern; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "tap or drag one of three large wooden tokens into the glowing final wagon; in free play, fill or replace any of five wagons and blow the whistle to replay the pattern",
+  "feedbackModel": "correct cargo seats with a clack, sparkles, plays the full sequence left to right, and powers a readable train roll; misses wobble gently and model the pattern again without a fail state",
   "uses": [
-    "shared/js/engines/pattern-continue.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/sfx.js",
+    "shared/js/bgm.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "games/pattern-train/assets/art",
+    "games/pattern-train/assets/audio"
   ],
   "modes": [
-    { "id": "colors", "title": "Color Cars", "skill": "AB, ABC, and AAB color-pattern extension" },
-    { "id": "shapes", "title": "Shape Cars", "skill": "simple shape-pattern extension" }
+    { "id": "shapes", "title": "Shape Cargo", "skill": "extend color-plus-shape AB, AAB, ABB, and ABC patterns" },
+    { "id": "actions", "title": "Move & Sound", "skill": "extend and physically act out clap, stomp, tap, and shake patterns" },
+    { "id": "builder", "title": "My Train", "skill": "author, revise, save, and replay a self-chosen five-wagon sequence" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Original Toy artwork produced with OpenAI GPT Image 2; hub art produced with Krea 2 and corrected with Qwen Image Edit; platform teacher narration produced with Qwen3 TTS Voice Clone and verified with Whisper. Built with Codex for QLOBE Kids. See ASSETS.md.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/pattern-train/"
 }

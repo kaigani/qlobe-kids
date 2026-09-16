@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-08-31T01:05:45.660Z",
+  "generated": "2026-09-16T20:01:54.106Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -30,7 +30,7 @@
       ]
     },
     "choose-one": {
-      "count": 8,
+      "count": 7,
       "games": [
         "calm-corner-cards",
         "grace-courtesy-theater",
@@ -38,8 +38,7 @@
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
-        "question-ball",
-        "sound-hopscotch"
+        "question-ball"
       ]
     },
     "build-assemble": {
@@ -90,12 +89,6 @@
       "games": [
         "family-timeline",
         "story-sequence"
-      ]
-    },
-    "pattern-continue": {
-      "count": 1,
-      "games": [
-        "pattern-train"
       ]
     },
     "sort-into-bins": {
@@ -1768,22 +1761,47 @@
       "packs": []
     },
     "pattern-train": {
-      "engine": "pattern-continue",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/pattern-continue.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/pattern-train/assets/art",
+        "games/pattern-train/assets/art/button-coral.webp",
+        "games/pattern-train/assets/art/button-yellow.webp",
+        "games/pattern-train/assets/art/gold-star.webp",
+        "games/pattern-train/assets/art/locomotive.webp",
+        "games/pattern-train/assets/art/mode-actions.webp",
+        "games/pattern-train/assets/art/mode-builder.webp",
+        "games/pattern-train/assets/art/mode-shapes.webp",
+        "games/pattern-train/assets/art/plaque.webp",
+        "games/pattern-train/assets/art/railway-meadow.webp",
+        "games/pattern-train/assets/art/title-lockup.webp",
+        "games/pattern-train/assets/art/tray.webp",
+        "games/pattern-train/assets/art/whistle.webp",
+        "games/pattern-train/assets/audio",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
       "packs": []
     },
     "picture-narration": {
@@ -2650,23 +2668,35 @@
       "packs": []
     },
     "sound-hopscotch": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "reading-phonics",
-      "characters": [],
+      "characters": [
+        "fluffy white bunny"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/content.js",
+        "shared/js/debug-harness.js",
+        "shared/js/freeform-board.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/letter-tiles"
+        "shared/assets/audio/fragments",
+        "shared/assets/music/upbeat-playground-pop.mp3"
       ],
       "packs": []
     },
@@ -3464,6 +3494,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
@@ -3479,6 +3510,7 @@
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
+        "sound-hopscotch",
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -3503,11 +3535,13 @@
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "number-sense-kitchen",
+        "pattern-train",
         "picture-word-match",
         "post-office-letters",
         "puzzle-map-match",
         "shadow-chase",
         "shape-detective",
+        "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -3582,7 +3616,8 @@
         "picture-word-match",
         "playdough-letter-factory",
         "sand-tray-letters",
-        "sound-basket"
+        "sound-basket",
+        "sound-hopscotch"
       ],
       "shared/js/debug-harness.js": [
         "bead-path-builder",
@@ -3620,6 +3655,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
@@ -3635,6 +3671,7 @@
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
+        "sound-hopscotch",
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -3674,8 +3711,7 @@
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets",
-        "question-ball",
-        "sound-hopscotch"
+        "question-ball"
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
@@ -3701,9 +3737,6 @@
         "family-story-interview",
         "picture-narration",
         "smell-jars"
-      ],
-      "shared/js/engines/pattern-continue.js": [
-        "pattern-train"
       ],
       "shared/js/engines/puppet-band.js": [
         "my-puppet-band"
@@ -3735,6 +3768,7 @@
         "clay-creature-studio",
         "kindness-delivery",
         "loose-parts-collage",
+        "sound-hopscotch",
         "tangram-tales"
       ],
       "shared/js/hotspot-scene.js": [
@@ -3791,11 +3825,13 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
+        "pattern-train",
         "picture-word-match",
         "post-office-letters",
         "shadow-chase",
         "shape-detective",
         "sink-or-float",
+        "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -3864,9 +3900,11 @@
         "laundry-sorter",
         "loose-parts-collage",
         "obstacle-course-builder",
+        "pattern-train",
         "post-office-letters",
         "sand-tray-letters",
         "sink-or-float",
+        "sound-hopscotch",
         "sound-painting",
         "story-repair-shop",
         "subtraction-picnic",
@@ -3899,10 +3937,12 @@
         "mountain-seasons-wheel",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-train",
         "picture-word-match",
         "post-office-letters",
         "puzzle-map-match",
         "shape-detective",
+        "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -3943,6 +3983,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
@@ -3988,11 +4029,13 @@
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-train",
         "picture-word-match",
         "post-office-letters",
         "shadow-chase",
         "shape-detective",
         "snack-chef",
+        "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -4151,7 +4194,6 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
-        "pattern-train",
         "picture-narration",
         "plan-do-review",
         "plant-care-captain",
@@ -4176,7 +4218,6 @@
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
-        "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
         "story-sequence",
@@ -4326,6 +4367,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
@@ -4383,6 +4425,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "post-office-letters",
         "puppet-retell",
@@ -4393,6 +4436,7 @@
         "shadow-chase",
         "shape-detective",
         "sound-cylinder-match",
+        "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -4442,6 +4486,7 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
+        "pattern-train",
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
@@ -4458,6 +4503,7 @@
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
+        "sound-hopscotch",
         "sound-painting",
         "sound-sprouts",
         "sticker-line-challenge",
@@ -4622,7 +4668,6 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
-        "pattern-train",
         "picture-narration",
         "plan-do-review",
         "plant-care-captain",
@@ -4639,7 +4684,6 @@
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
-        "sound-hopscotch",
         "story-sequence",
         "story-stones",
         "sweep-the-trail",
@@ -4676,12 +4720,14 @@
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-train",
         "post-office-letters",
         "red-green-light",
         "rhythm-copycat",
         "shadow-chase",
         "shape-detective",
         "sound-cylinder-match",
+        "sound-hopscotch",
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4829,6 +4875,9 @@
       ],
       "Fia": [
         "momma-bear-storybook"
+      ],
+      "fluffy white bunny": [
+        "sound-hopscotch"
       ],
       "fox": [
         "my-puppet-band",
@@ -5374,6 +5423,48 @@
       "games/pattern-bracelet-band/assets/ui/star-gold.webp": [
         "pattern-bracelet-band"
       ],
+      "games/pattern-train/assets/art": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/button-coral.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/button-yellow.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/gold-star.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/locomotive.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/mode-actions.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/mode-builder.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/mode-shapes.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/plaque.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/railway-meadow.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/title-lockup.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/tray.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/art/whistle.webp": [
+        "pattern-train"
+      ],
+      "games/pattern-train/assets/audio": [
+        "pattern-train"
+      ],
       "games/picture-word-match/assets/art/reading-garden.webp": [
         "picture-word-match"
       ],
@@ -5649,7 +5740,8 @@
       "shared/assets/audio/fragments": [
         "blend-train",
         "flashlight-cave",
-        "name-puzzle"
+        "name-puzzle",
+        "sound-hopscotch"
       ],
       "shared/assets/audio/isfor": [
         "flashlight-cave"
@@ -5697,7 +5789,6 @@
       "shared/assets/letter-tiles": [
         "mystery-letter-bag",
         "silly-swap-words",
-        "sound-hopscotch",
         "sound-sprouts"
       ],
       "shared/assets/music": [
@@ -5722,10 +5813,12 @@
         "story-repair-shop"
       ],
       "shared/assets/music/upbeat-playground-pop.mp3": [
-        "beat-the-bugs"
+        "beat-the-bugs",
+        "sound-hopscotch"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
         "number-sense-kitchen",
+        "pattern-train",
         "tiny-sentence-workshop"
       ],
       "shared/assets/objects": [
@@ -5933,6 +6026,7 @@
   },
   "zeroConsumers": {
     "modules": [
+      "shared/js/engines/pattern-continue.js",
       "shared/js/stage/puppet-builder.js",
       "shared/js/studio/studio.js",
       "shared/js/studio/workspaces/animate.js",

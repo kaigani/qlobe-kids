@@ -169,28 +169,44 @@
       "path": "games/pattern-train/",
       "icon": "assets/hub/tiles/pattern-train.jpg",
       "age": {
-        "min": 5,
+        "min": 2,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#ef6b56",
       "uses": [
+        "shared/js/screens.js",
+        "shared/js/tap.js",
         "shared/js/voice-clips.js",
-        "shared/js/sfx.js"
+        "shared/js/narrator.js",
+        "shared/js/sfx.js",
+        "shared/js/bgm.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/timers.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/debug-harness.js",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "modes": [
         {
-          "id": "colors",
-          "title": "Color Cars",
-          "skill": "AB, ABC, and AAB color-pattern extension"
+          "id": "shapes",
+          "title": "Shape Cargo",
+          "skill": "extend color-plus-shape AB, AAB, ABB, and ABC patterns"
         },
         {
-          "id": "shapes",
-          "title": "Shape Cars",
-          "skill": "simple shape-pattern extension"
+          "id": "actions",
+          "title": "Move & Sound",
+          "skill": "extend and physically act out clap, stomp, tap, and shake patterns"
+        },
+        {
+          "id": "builder",
+          "title": "My Train",
+          "skill": "author, revise, save, and replay a self-chosen five-wagon sequence"
         }
       ],
-      "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
+      "summary": "Load wooden shape and action patterns, power a toy train, and build a five-wagon pattern of your own."
     },
     {
       "id": "tangram-tales",
