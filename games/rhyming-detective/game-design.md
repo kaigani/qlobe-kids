@@ -1,7 +1,7 @@
 # Rhyming Detective — game design
 
 **Category:** reading-phonics · **Ages:** 3–6 · **Status:** beta (stays beta until a real-iPad child playtest)
-**Art world:** Storybook Rooms (`docs/art-direction.md` §2) — full-bleed rooms, cut-out sprites
+**Art world:** Toy (`docs/art-direction.md` §2) — tactile painted-wood rooms, chunky cut-out props
 **Cast:** two game-local mascots — **Detective Cat** (orange tabby in a deerstalker) and **Bat**. Neither is promoted to `shared/characters/` in v1.
 **Engine:** custom, game-local (`js/game.js`) on the new shared module `shared/js/hotspot-scene.js`
 **Concept:** `01-game-concepts/rhyming-detective/` (brief.md + 4 UI mockups)
@@ -1375,20 +1375,15 @@ mounted).
 
 ## 8. Art direction & asset list
 
-### 8.1 Storybook Rooms, applied
+### 8.1 Toy, applied
 
-`docs/art-direction.md` §2 gives reading-phonics the **Toy Table** default; this game overrides to
-**Storybook Rooms**, and the same document permits that ("the category default applies unless the
-game's design doc argues otherwise"). The argument:
-
-1. **The mechanic is "search a room".** Toy Table's canon is cut-out objects on an airy sky-blue
-   field — there is no room to search.
-2. **All four mockups are already Storybook Rooms.** Mockup 02 is a red-brick study with rounded
-   geometry, crisp navy outlines and glossy depth — the Laundry Sorter look, unmodified.
-3. **The shared object library composites legally.** `shared/assets/objects/<w>.webp` are Toy Table
-   cut-outs and are the per-sprite fallback (§8.5). `art-direction.md` already specifies Storybook
-   Rooms as *cut-out sprites over a full-bleed room*, and Flashlight Cave GDD §5.4 is the standing
-   precedent for exactly this mix.
+The concept brief is authoritative: Rhyming Detective uses the **Toy** art world. The former
+"Storybook Rooms" label was a production shorthand for the scene composition, not a seventh art
+world. The full-bleed study, kitchen and bedroom remain miniature search sets, while every visible
+surface follows Toy material language: painted wood or molded enamel, chunky safe geometry,
+deep-navy contours and restrained studio highlights. The result should feel like a child can pick
+up every clue. It is not Watercolor/Storybook: there are no washes, paper fibres or loose ink, and
+it does not mix in a sticker or emoji visual language.
 
 **The world rules every generated asset must hold to:**
 
@@ -1397,8 +1392,8 @@ game's design doc argues otherwise"). The argument:
 - **Navy outlines everywhere**, `#123a6b`, consistent weight (≈ 6 px at plate scale, ≈ 4 px on a
   200 px sprite).
 - **Rounded geometry.** No sharp corners on any object, prop or panel. Radius 24–44 on UI.
-- **Glossy depth.** One soft highlight per form, one soft contact shadow. No texture noise, no
-  gradient meshes, no photographic detail.
+- **Tactile Toy materials.** Painted wood grain or molded enamel, one restrained highlight per
+  form and one soft contact shadow. No texture noise, gradient meshes or photographic detail.
 - **Quiet hotspot zones.** The eight zone rects (§4.3) must land on **calm, low-detail surfaces** —
   flat wall, plain shelf board, clear floor. This is a hard art brief: an object glowing against
   busy wallpaper is unreadable, and a bubble over it is worse. WP1d's prompts name the zones.
@@ -1445,14 +1440,15 @@ renders in the fallback face.
 | `assets/title.webp` | The "Rhyming Detective" lockup extracted from mockup 01 — orange/yellow glossy "Rhyming" over pink/white "Detective" on the navy plaque, with the paw-print ornaments. Alpha-trimmed. **Spell-check at full size.** | ~1400 × 640 | **≤ 150 KB** |
 | `assets/splash-bg.jpg` | Mockup 01's sky-blue field with pale triangle confetti — wordmark, button, cream band and both mascots removed. | 1600 × 1200 | **≤ 300 KB** |
 | `assets/bg-study.jpg` | Mockup 02's room: red brick wall, green-framed window centre with a bright outdoor view, wooden shelf right, dresser right, potted plant left, warm wood floor. Evenly lit. Zones 0–7 land on calm surfaces. **No objects, no text, no characters, no UI.** | 1600 × 1200 | **≤ 300 KB** |
-| `assets/bg-kitchen.jpg` | A cosy Storybook-Rooms kitchen: mint-green cabinets, wood counter, hood over a stove left, window over the sink centre, open upper shelves both sides, tiled floor. Same rules. | 1600 × 1200 | **≤ 300 KB** |
+| `assets/bg-kitchen.jpg` | A cosy miniature-toy kitchen: mint-green cabinets, wood counter, hood over a stove left, window over the sink centre, open upper shelves both sides, tiled floor. Same rules. | 1600 × 1200 | **≤ 300 KB** |
 | `assets/bg-bedroom.jpg` | A child's bedroom: soft lilac wall, bed right, nightstand, wall shelf left, window centre, toy shelf right, round rug centre-floor, toy box. Same rules. | 1600 × 1200 | **≤ 300 KB** |
-| `assets/sprites/<word>.webp` × **27** | Storybook-Rooms style pass over the shared `objects/<w>.webp` identity reference. Navy outline, one highlight, one contact shadow, alpha cut-out, **no ground plane baked in**. See §4.2 for the ten words that ship as pictures / toys / models rather than the literal thing. | longest edge 512 | **30–80 KB each** |
+| `assets/sprites/<word>.webp` × **27** | Toy style pass over the shared `objects/<w>.webp` identity reference. Navy outline, one highlight, one contact shadow, alpha cut-out, **no ground plane baked in**. See §4.2 for the ten words that ship as pictures / toys / models rather than the literal thing. | longest edge 512 | **30–80 KB each** |
 | `assets/mascots/cat-present.webp` | **Canonical Detective Cat: the ORANGE tabby of mockup 01** — deerstalker cap, brown trench coat, holding a magnifying glass, friendly three-quarter pose. | 1024 × 1024 | ≤ 90 KB |
 | `assets/mascots/cat-cheer.webp` | The same orange cat, both paws up, eyes closed, big open smile (mockup 03's *pose*, mockup 01's *character*). | 1024 × 1024 | ≤ 90 KB |
 | `assets/mascots/bat-fly.webp` | The friendly brown bat of mockup 01, wings spread, flying. | 1024 × 1024 | ≤ 90 KB |
 | `assets/mascots/bat-cheer.webp` | The same brown bat, wings up, cheering, small deerstalker. | 1024 × 1024 | ≤ 90 KB |
 | `assets/props/magnifier.webp` | The blue-rimmed magnifying glass with the wooden handle from mockup 02. Alpha cut-out. | ~700 × 780 | ≤ 70 KB |
+| `assets/props/listen.webp` | Blue painted-wood listening medallion with an embossed ear and sound grooves. GPT Image 2 contact sheet, cut with the asset-sheet tool, alpha-separated with Qwen Image Layered and finalized as a transparent raster. | 254 × 256 | ≤ 30 KB |
 | `assets/lockups/great-job.webp` | "Great Job!" from mockup 03 — white/gold glossy letters, purple outline. **Decorative title art, therefore baked.** Alpha-trimmed. Spell-check at full size. | ~1100 × 300 | ≤ 90 KB |
 | `assets/lockups/they-rhyme.webp` | The green "They rhyme!" ribbon of mockup 03 with its spark marks. Decorative, baked, alpha-trimmed. | ~760 × 200 | ≤ 60 KB |
 | `assets/audio/<24>.m4a` | The voice set of §3.2. AAC 64 kbps mono, `+faststart`, loudness-matched. | — | ~14 KB avg, **≤ 400 KB total** |
@@ -1489,7 +1485,7 @@ The splash plate is a different screen, not a fourth play field.
 
 ### 8.5 The per-sprite fallback
 
-If a word's Storybook-Rooms style pass fails QA after two re-rolls, that **single** sprite ships as
+If a word's Toy style pass fails QA after two re-rolls, that **single** sprite ships as
 the shared Toy Table cut-out (`../../shared/assets/objects/<w>.webp`) with a CSS
 `filter: saturate(1.06)` warm tint and the standard contact shadow, so it sits in the room rather
 than floating on it. Precedent: Flashlight Cave GDD §5.4. The fallback is per-sprite and per-word,
@@ -1508,7 +1504,8 @@ style batch fails.**
 - **No character sheets.** The cat and the bat are game-local decoration in v1: they appear on two
   screens, they never speak in character, and they hold no gameplay role. `game.json.characters`
   stays `[]`. Promotion to `shared/characters/` is a post-playtest question, not a v1 deliverable.
-- **No mode-tile art.** Composed from the shared magnifier prop, an inline SVG and CSS.
+- **No extra mode-tile scene art.** The tiles use the shared magnifier prop and the authored
+  `listen.webp` Toy medallion; both are raster assets, while CSS is limited to layout and states.
 
 ### 8.7 Departures from the mockups — every one, with a reason
 

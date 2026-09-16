@@ -109,24 +109,17 @@ const els = {
 
 const traySlots = [];
 
-// The three-arc sound glyph (§2.3, §10). Inline SVG, no asset.
+// The listening medallion used wherever Mode 2 needs a sound cue.
 function soundGlyph(size) {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 48 48');
-  svg.setAttribute('class', 'glyph');
-  svg.setAttribute('aria-hidden', 'true');
-  if (size) svg.setAttribute('width', String(size));
-  if (size) svg.setAttribute('height', String(size));
-  for (const r of [9, 17, 25]) {
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', `M 14 ${24 - r} A ${r} ${r} 0 0 1 14 ${24 + r}`);
-    path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', 'currentColor');
-    path.setAttribute('stroke-width', '5');
-    path.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(path);
-  }
-  return svg;
+  const img = document.createElement('img');
+  img.className = 'glyph';
+  img.alt = '';
+  img.setAttribute('aria-hidden', 'true');
+  img.decoding = 'async';
+  img.draggable = false;
+  if (size) { img.width = size; img.height = size; }
+  img.src = 'assets/props/listen.webp';
+  return img;
 }
 
 // §8.5 — try the game's own room-style sprite, fall back to the shared Toy

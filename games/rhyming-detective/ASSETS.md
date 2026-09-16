@@ -1,13 +1,39 @@
 # Rhyming Detective Assets
 
-Production art for this game is generated locally via the **local ComfyUI API** (a private
-LAN endpoint — never committed by name or IP to this repo) and post-processed in-repo. This
+Production art for this game is generated with **GPT Image 2** and the **local ComfyUI API** (a
+private LAN endpoint — never committed by name or IP to this repo), then post-processed in-repo. This
 file supersedes the earlier prototype-era ASSETS.md, which described a different, now-replaced
 build of this game (Web Speech only, shared object cards only, no baked art).
 
 All generated art is original output of local diffusion models run against this project's own
 prompts and reference images; it is treated as CC BY 4.0, matching the rest of the shared
 QLOBE Kids art library.
+
+## 2026-09-16 Toy reconciliation + listening medallion
+
+The concept brief names **Toy** as the canonical art world. Earlier production notes used
+"Storybook Rooms" as shorthand for the full-bleed room composition; those historical prompt names
+remain below for provenance, but the visible material language is Toy: rounded painted wood,
+molded enamel, deep-navy outlines and soft contact shadows.
+
+`assets/props/listen.webp` replaces the last primary inline-SVG sound cue with authored raster
+art. GPT Image 2 generated an exactly-two-object contact sheet on flat charcoal: a detective-blue
+medallion and a clue-gold variant, each as one connected object with an embossed listening ear and
+integrated sound-ripple grooves. The checked-in source prompt and recipe are in
+`assets/source/ui/listen-medallions-gpt-image-2.json`.
+
+The required cutter produced two named components:
+
+```text
+python tools/cut-asset-sheet.py <sheet> <listen-crops> --names listen-blue listen-gold --expected-count 2 --debug-mask <mask>
+```
+
+The blue candidate was selected for contrast and mode identity. Its GPT source contained broadly
+partial alpha, so Qwen Image Layered (seed 42, two layers) separated the single medallion from the
+background. `cutout_finalize.py` then alpha-trimmed, padded and resized it to 254×256; the final
+histogram is 27.156% transparent, 60.142% opaque and 12.702% antialiased edge pixels. The shipped
+WebP is 22,656 bytes. Magenta-composite and component-mask QC artifacts are retained beside the
+source. The gold candidate is retained as an unused alternative, not loaded by the game.
 
 ## Produced this pass (WP1d raw generation + WP1e cutout extraction/finalization)
 
