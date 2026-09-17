@@ -1,0 +1,501 @@
+{
+  "processor": "texture-trail/process-assets.py",
+  "sources": {
+    "assets\\source\\crops\\objects\\cloud-cushion.png": "7d27a188c321d5b5ce09acd1ecb340cbddec1a240d1c9daa5336f7e9fc7b0800",
+    "assets\\source\\crops\\objects\\corduroy-cushion.png": "064f259bfe347a6a208dd7cd6e296cb30b06880661c70fd7e999b183a72dc7d2",
+    "assets\\source\\crops\\objects\\egg.png": "2998877617656c883b981a914f79a7b7b9489effbf5eba6d79666bb0b9d21427",
+    "assets\\source\\crops\\objects\\feather.png": "f7075ffbe309720a15d2c8505343b3e9011b0ca91f8bde3904bca22ecacb2121",
+    "assets\\source\\crops\\objects\\gourd.png": "f929bebb9bbe3084569e65d1c7ab3a9d5838141512b62343226aa9078086d4be",
+    "assets\\source\\crops\\objects\\pinecone.png": "c719ff3f900e039d7eae47e35b0eb51356c5c440e88700825cfdf2b0256e7522",
+    "assets\\source\\crops\\objects\\pom-pom.png": "07de8bf46844f3c145b6bdc356fb2b67457aeae530e6ddaad28a9be0a7c14716",
+    "assets\\source\\crops\\objects\\raspberry.png": "721419f0dc7d72a9b42aa9df292ee72d36de7aa9885ee0e87bc6f9556b4cc629",
+    "assets\\source\\crops\\objects\\river-pebble.png": "14c54d99753b1aff251d913fdf193c8312c967c509a68cd822fbed83a703a6e4",
+    "assets\\source\\crops\\objects\\seashell.png": "66df3be55ca4fac486ea519c893371d6e732c55276f4697d2a643baa5db99a2a",
+    "assets\\source\\crops\\objects\\sensory-ball.png": "09ab1f56318931140f78c470c3952c44c7a22b5c5766d6db5869c83cb467b7ac",
+    "assets\\source\\crops\\objects\\star-pillow.png": "e8d09bf963b54d6ed98e064e15e8a928c645e5ab0d8015d2dbe77033566a8445",
+    "assets\\source\\crops\\objects-mask.png": "e01cec1df8d12125978a9dc92b5b10879d8821a7d173c7921eda1d1734ac20f0",
+    "assets\\source\\crops\\snails\\snail-cheer.png": "8a17f87ae6eec6259e2060946c9aa91b2d849d2158b795fba22ef691bd44e843",
+    "assets\\source\\crops\\snails\\snail-hint.png": "3809707d01fe2abf0a8f27515da2f5535d0f40ed5e0861cd286c66c7380d1930",
+    "assets\\source\\crops\\snails\\snail-point.png": "b894ee5c0dda020adf4f7c7ceb0562c538b92e8230121d339e66ea742b2103e2",
+    "assets\\source\\crops\\snails\\snail-wait.png": "81ca355d552b962bee4ec671ad32eb957d29ac02d857754fb50d97208167df7e",
+    "assets\\source\\crops\\snails-mask.png": "5d4632ceddbf669241188f76df1593e92787f01dfb5d6bc45313311b70d82aa3",
+    "assets\\source\\crops\\texture-kit\\card-bumpy.png": "80b29ee8e1dc3edd6237c539fd3c01d3b09cc9b97cb808e028dab837839f96fe",
+    "assets\\source\\crops\\texture-kit\\card-ridged.png": "ed69f8f4f22444e9cec972d07317a4274be917f13febfc0c4b9722ff4081f230",
+    "assets\\source\\crops\\texture-kit\\card-smooth.png": "72146dc000517e5c7cc9bf2dec820158579e726f249e4e3c06f8e536ae7c55db",
+    "assets\\source\\crops\\texture-kit\\card-soft.png": "0039be3b8336fec038477c5dc439b08b31b3d39cbe22230e0979446f302bb063",
+    "assets\\source\\crops\\texture-kit\\marker-bumpy.png": "fba595809f4c9ce8cf1c9d8b80021fd3941cea57e52e6fb4d9063706eccdfceb",
+    "assets\\source\\crops\\texture-kit\\marker-ridged.png": "ea125927a333794bdf1fef0015a8f23d8661e6dc01a3ba79a8bb60558f56bf2a",
+    "assets\\source\\crops\\texture-kit\\marker-smooth.png": "d8531f373db6f38b850d4b8f06d523790687a67d65b26debfc875760d7c58bd0",
+    "assets\\source\\crops\\texture-kit\\marker-soft.png": "982baaeeb55c6e54df24587e5f3093b88774fc81ae17969322fb044a57fd525d",
+    "assets\\source\\crops\\texture-kit\\medal-bumpy.png": "a520df2ffc57c847ddffa43a65bbfb1892cfa331aa5e1d8ad3c988241ee56a15",
+    "assets\\source\\crops\\texture-kit\\medal-star.png": "e1954b64c822f7bc65a53f417f3c434d4327fef3f1ef9379b081855708a84312",
+    "assets\\source\\crops\\texture-kit\\plaque-action.png": "a8a7df10fb5e29e6dcd85d7e861a6dc4a9311f083904ff3ea947d981c06c9eff",
+    "assets\\source\\crops\\texture-kit\\plaque-prompt.png": "b31360aa9ceff38a8f8531c34076a7b328f585b12b736f3138fee197ce99f587",
+    "assets\\source\\crops\\texture-kit-mask.png": "b169aa8d9f304d7182692e606c114052f4f10f90e86fccdd7e7d5395f66940f7",
+    "assets\\source\\gpt-image-2\\clay-garden-world.png": "2ef5056cf4bd9ce7cc6858a354b442dd0f43c2ba51b6d88388190912cd994d08",
+    "assets\\source\\gpt-image-2\\hub-tile-source.png": "9c9d4c9f1d34a03f22e1736553cf956cd5f6df8b4421b5ee7642936a13de672a",
+    "assets\\source\\gpt-image-2\\object-sheet.png": "2ab6a51cfa8b8bcb86abbdf8476eff3602d4a084e7a47ef44d6ce4a2cc91704a",
+    "assets\\source\\gpt-image-2\\snail-poses.png": "8226f6fe9b6b279ad6b4e56ae67dfef525ca2bdc20dcb63c3783cc2b383d4f58",
+    "assets\\source\\gpt-image-2\\texture-kit.png": "81037a90f70c7cadb2e71a182f92bbcfe8d9aefda532b86f4d25883f7ae3547b",
+    "assets\\source\\gpt-image-2\\title-lockup.png": "fa4b8bec0df161e6e705ab77a04a44d9608ff2654488d7364d5924e9e9bd14c9"
+  },
+  "outputs": {
+    "world": {
+      "source": "assets\\source\\gpt-image-2\\clay-garden-world.png",
+      "output": "assets\\world\\clay-garden-world.webp",
+      "dimensions": [
+        1200,
+        900
+      ],
+      "bytes": 145706,
+      "budgetBytes": 300000,
+      "budgetPass": true,
+      "alpha": null
+    },
+    "art/title-lockup.webp": {
+      "source": "assets\\source\\gpt-image-2\\title-lockup.png",
+      "output": "assets\\art\\title-lockup.webp",
+      "qa": "assets\\source\\qa\\title-lockup-magenta.png",
+      "dimensions": [
+        640,
+        402
+      ],
+      "bytes": 230148,
+      "alpha": {
+        "transparentPct": 39.654,
+        "opaquePct": 0.491,
+        "partialPct": 59.855
+      }
+    },
+    "characters/snail-cheer.webp": {
+      "source": "assets\\source\\crops\\snails\\snail-cheer.png",
+      "output": "assets\\characters\\snail-cheer.webp",
+      "qa": "assets\\source\\qa\\snail-cheer-magenta.png",
+      "dimensions": [
+        320,
+        314
+      ],
+      "bytes": 99618,
+      "alpha": {
+        "transparentPct": 38.114,
+        "opaquePct": 0.544,
+        "partialPct": 61.342
+      }
+    },
+    "characters/snail-hint.webp": {
+      "source": "assets\\source\\crops\\snails\\snail-hint.png",
+      "output": "assets\\characters\\snail-hint.webp",
+      "qa": "assets\\source\\qa\\snail-hint-magenta.png",
+      "dimensions": [
+        320,
+        202
+      ],
+      "bytes": 64018,
+      "alpha": {
+        "transparentPct": 40.569,
+        "opaquePct": 0.746,
+        "partialPct": 58.685
+      }
+    },
+    "characters/snail-point.webp": {
+      "source": "assets\\source\\crops\\snails\\snail-point.png",
+      "output": "assets\\characters\\snail-point.webp",
+      "qa": "assets\\source\\qa\\snail-point-magenta.png",
+      "dimensions": [
+        320,
+        236
+      ],
+      "bytes": 71780,
+      "alpha": {
+        "transparentPct": 43.039,
+        "opaquePct": 0.772,
+        "partialPct": 56.189
+      }
+    },
+    "characters/snail-wait.webp": {
+      "source": "assets\\source\\crops\\snails\\snail-wait.png",
+      "output": "assets\\characters\\snail-wait.webp",
+      "qa": "assets\\source\\qa\\snail-wait-magenta.png",
+      "dimensions": [
+        320,
+        277
+      ],
+      "bytes": 91564,
+      "alpha": {
+        "transparentPct": 35.804,
+        "opaquePct": 0.566,
+        "partialPct": 63.629
+      }
+    },
+    "art/card-bumpy.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\card-bumpy.png",
+      "output": "assets\\art\\card-bumpy.webp",
+      "qa": "assets\\source\\qa\\card-bumpy-magenta.png",
+      "dimensions": [
+        229,
+        320
+      ],
+      "bytes": 93822,
+      "alpha": {
+        "transparentPct": 11.714,
+        "opaquePct": 0.317,
+        "partialPct": 87.969
+      }
+    },
+    "art/card-ridged.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\card-ridged.png",
+      "output": "assets\\art\\card-ridged.webp",
+      "qa": "assets\\source\\qa\\card-ridged-magenta.png",
+      "dimensions": [
+        236,
+        320
+      ],
+      "bytes": 99808,
+      "alpha": {
+        "transparentPct": 10.534,
+        "opaquePct": 0.23,
+        "partialPct": 89.236
+      }
+    },
+    "art/card-smooth.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\card-smooth.png",
+      "output": "assets\\art\\card-smooth.webp",
+      "qa": "assets\\source\\qa\\card-smooth-magenta.png",
+      "dimensions": [
+        230,
+        320
+      ],
+      "bytes": 91352,
+      "alpha": {
+        "transparentPct": 10.438,
+        "opaquePct": 0.219,
+        "partialPct": 89.344
+      }
+    },
+    "art/card-soft.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\card-soft.png",
+      "output": "assets\\art\\card-soft.webp",
+      "qa": "assets\\source\\qa\\card-soft-magenta.png",
+      "dimensions": [
+        231,
+        320
+      ],
+      "bytes": 91672,
+      "alpha": {
+        "transparentPct": 10.91,
+        "opaquePct": 0.501,
+        "partialPct": 88.589
+      }
+    },
+    "art/marker-bumpy.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\marker-bumpy.png",
+      "output": "assets\\art\\marker-bumpy.webp",
+      "qa": "assets\\source\\qa\\marker-bumpy-magenta.png",
+      "dimensions": [
+        293,
+        302
+      ],
+      "bytes": 93694,
+      "alpha": {
+        "transparentPct": 27.746,
+        "opaquePct": 0.129,
+        "partialPct": 72.126
+      }
+    },
+    "art/marker-ridged.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\marker-ridged.png",
+      "output": "assets\\art\\marker-ridged.webp",
+      "qa": "assets\\source\\qa\\marker-ridged-magenta.png",
+      "dimensions": [
+        295,
+        301
+      ],
+      "bytes": 98688,
+      "alpha": {
+        "transparentPct": 25.202,
+        "opaquePct": 0.182,
+        "partialPct": 74.616
+      }
+    },
+    "art/marker-smooth.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\marker-smooth.png",
+      "output": "assets\\art\\marker-smooth.webp",
+      "qa": "assets\\source\\qa\\marker-smooth-magenta.png",
+      "dimensions": [
+        320,
+        253
+      ],
+      "bytes": 86140,
+      "alpha": {
+        "transparentPct": 25.539,
+        "opaquePct": 0.172,
+        "partialPct": 74.29
+      }
+    },
+    "art/marker-soft.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\marker-soft.png",
+      "output": "assets\\art\\marker-soft.webp",
+      "qa": "assets\\source\\qa\\marker-soft-magenta.png",
+      "dimensions": [
+        318,
+        298
+      ],
+      "bytes": 92168,
+      "alpha": {
+        "transparentPct": 30.836,
+        "opaquePct": 0.082,
+        "partialPct": 69.082
+      }
+    },
+    "art/medal-bumpy.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\medal-bumpy.png",
+      "output": "assets\\art\\medal-bumpy.webp",
+      "qa": "assets\\source\\qa\\medal-bumpy-magenta.png",
+      "dimensions": [
+        298,
+        308
+      ],
+      "bytes": 98396,
+      "alpha": {
+        "transparentPct": 24.698,
+        "opaquePct": 0.065,
+        "partialPct": 75.236
+      }
+    },
+    "art/medal-star.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\medal-star.png",
+      "output": "assets\\art\\medal-star.webp",
+      "qa": "assets\\source\\qa\\medal-star-magenta.png",
+      "dimensions": [
+        291,
+        301
+      ],
+      "bytes": 93228,
+      "alpha": {
+        "transparentPct": 25.342,
+        "opaquePct": 0.053,
+        "partialPct": 74.606
+      }
+    },
+    "art/plaque-action.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\plaque-action.png",
+      "output": "assets\\art\\plaque-action.webp",
+      "qa": "assets\\source\\qa\\plaque-action-magenta.png",
+      "dimensions": [
+        320,
+        177
+      ],
+      "bytes": 65086,
+      "alpha": {
+        "transparentPct": 16.921,
+        "opaquePct": 0.274,
+        "partialPct": 82.805
+      }
+    },
+    "art/plaque-prompt.webp": {
+      "source": "assets\\source\\crops\\texture-kit\\plaque-prompt.png",
+      "output": "assets\\art\\plaque-prompt.webp",
+      "qa": "assets\\source\\qa\\plaque-prompt-magenta.png",
+      "dimensions": [
+        320,
+        185
+      ],
+      "bytes": 66286,
+      "alpha": {
+        "transparentPct": 14.029,
+        "opaquePct": 0.264,
+        "partialPct": 85.708
+      }
+    },
+    "objects/cloud-cushion.webp": {
+      "source": "assets\\source\\crops\\objects\\cloud-cushion.png",
+      "output": "assets\\objects\\cloud-cushion.webp",
+      "qa": "assets\\source\\qa\\cloud-cushion-magenta.png",
+      "dimensions": [
+        320,
+        221
+      ],
+      "bytes": 68724,
+      "alpha": {
+        "transparentPct": 35.038,
+        "opaquePct": 0.509,
+        "partialPct": 64.453
+      }
+    },
+    "objects/corduroy-cushion.webp": {
+      "source": "assets\\source\\crops\\objects\\corduroy-cushion.png",
+      "output": "assets\\objects\\corduroy-cushion.webp",
+      "qa": "assets\\source\\qa\\corduroy-cushion-magenta.png",
+      "dimensions": [
+        320,
+        292
+      ],
+      "bytes": 115198,
+      "alpha": {
+        "transparentPct": 23.1,
+        "opaquePct": 0.269,
+        "partialPct": 76.631
+      }
+    },
+    "objects/egg.webp": {
+      "source": "assets\\source\\crops\\objects\\egg.png",
+      "output": "assets\\objects\\egg.webp",
+      "qa": "assets\\source\\qa\\egg-magenta.png",
+      "dimensions": [
+        266,
+        320
+      ],
+      "bytes": 73146,
+      "alpha": {
+        "transparentPct": 31.23,
+        "opaquePct": 0.411,
+        "partialPct": 68.359
+      }
+    },
+    "objects/feather.webp": {
+      "source": "assets\\source\\crops\\objects\\feather.png",
+      "output": "assets\\objects\\feather.webp",
+      "qa": "assets\\source\\qa\\feather-magenta.png",
+      "dimensions": [
+        301,
+        314
+      ],
+      "bytes": 76696,
+      "alpha": {
+        "transparentPct": 40.952,
+        "opaquePct": 0.122,
+        "partialPct": 58.927
+      }
+    },
+    "objects/gourd.webp": {
+      "source": "assets\\source\\crops\\objects\\gourd.png",
+      "output": "assets\\objects\\gourd.webp",
+      "qa": "assets\\source\\qa\\gourd-magenta.png",
+      "dimensions": [
+        242,
+        320
+      ],
+      "bytes": 77196,
+      "alpha": {
+        "transparentPct": 41.051,
+        "opaquePct": 0.373,
+        "partialPct": 58.576
+      }
+    },
+    "objects/pinecone.webp": {
+      "source": "assets\\source\\crops\\objects\\pinecone.png",
+      "output": "assets\\objects\\pinecone.webp",
+      "qa": "assets\\source\\qa\\pinecone-magenta.png",
+      "dimensions": [
+        262,
+        320
+      ],
+      "bytes": 93214,
+      "alpha": {
+        "transparentPct": 35.15,
+        "opaquePct": 0.408,
+        "partialPct": 64.442
+      }
+    },
+    "objects/pom-pom.webp": {
+      "source": "assets\\source\\crops\\objects\\pom-pom.png",
+      "output": "assets\\objects\\pom-pom.webp",
+      "qa": "assets\\source\\qa\\pom-pom-magenta.png",
+      "dimensions": [
+        314,
+        308
+      ],
+      "bytes": 109518,
+      "alpha": {
+        "transparentPct": 30.157,
+        "opaquePct": 0.0,
+        "partialPct": 69.843
+      }
+    },
+    "objects/raspberry.webp": {
+      "source": "assets\\source\\crops\\objects\\raspberry.png",
+      "output": "assets\\objects\\raspberry.webp",
+      "qa": "assets\\source\\qa\\raspberry-magenta.png",
+      "dimensions": [
+        272,
+        320
+      ],
+      "bytes": 90722,
+      "alpha": {
+        "transparentPct": 35.694,
+        "opaquePct": 0.441,
+        "partialPct": 63.865
+      }
+    },
+    "objects/river-pebble.webp": {
+      "source": "assets\\source\\crops\\objects\\river-pebble.png",
+      "output": "assets\\objects\\river-pebble.webp",
+      "qa": "assets\\source\\qa\\river-pebble-magenta.png",
+      "dimensions": [
+        320,
+        229
+      ],
+      "bytes": 74758,
+      "alpha": {
+        "transparentPct": 30.644,
+        "opaquePct": 0.258,
+        "partialPct": 69.098
+      }
+    },
+    "objects/seashell.webp": {
+      "source": "assets\\source\\crops\\objects\\seashell.png",
+      "output": "assets\\objects\\seashell.webp",
+      "qa": "assets\\source\\qa\\seashell-magenta.png",
+      "dimensions": [
+        320,
+        293
+      ],
+      "bytes": 97454,
+      "alpha": {
+        "transparentPct": 35.128,
+        "opaquePct": 0.334,
+        "partialPct": 64.538
+      }
+    },
+    "objects/sensory-ball.webp": {
+      "source": "assets\\source\\crops\\objects\\sensory-ball.png",
+      "output": "assets\\objects\\sensory-ball.webp",
+      "qa": "assets\\source\\qa\\sensory-ball-magenta.png",
+      "dimensions": [
+        316,
+        320
+      ],
+      "bytes": 95006,
+      "alpha": {
+        "transparentPct": 35.476,
+        "opaquePct": 0.403,
+        "partialPct": 64.121
+      }
+    },
+    "objects/star-pillow.webp": {
+      "source": "assets\\source\\crops\\objects\\star-pillow.png",
+      "output": "assets\\objects\\star-pillow.webp",
+      "qa": "assets\\source\\qa\\star-pillow-magenta.png",
+      "dimensions": [
+        320,
+        304
+      ],
+      "bytes": 82100,
+      "alpha": {
+        "transparentPct": 44.163,
+        "opaquePct": 0.359,
+        "partialPct": 55.478
+      }
+    },
+    "hub/tiles/texture-trail.jpg": {
+      "source": "assets\\source\\gpt-image-2\\hub-tile-source.png",
+      "output": "assets\\hub\\tiles\\texture-trail.jpg",
+      "dimensions": [
+        640,
+        533
+      ],
+      "bytes": 122294,
+      "alpha": null
+    }
+  }
+}
