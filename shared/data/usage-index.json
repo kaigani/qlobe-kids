@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-16T22:40:00.477Z",
+  "generated": "2026-09-17T00:55:38.121Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -51,14 +51,6 @@
         "turn-taking-tower"
       ]
     },
-    "trace-path": {
-      "count": 3,
-      "games": [
-        "chalkboard-big-strokes",
-        "letter-road-driving",
-        "scissor-trail-safari"
-      ]
-    },
     "tap-count": {
       "count": 3,
       "games": [
@@ -88,6 +80,13 @@
       "games": [
         "family-timeline",
         "story-sequence"
+      ]
+    },
+    "trace-path": {
+      "count": 2,
+      "games": [
+        "letter-road-driving",
+        "scissor-trail-safari"
       ]
     },
     "sort-into-bins": {
@@ -449,22 +448,31 @@
       "packs": []
     },
     "chalkboard-big-strokes": {
-      "engine": "trace-path",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "writing-fine-motor",
-      "characters": [],
+      "characters": [
+        "Chalk Buddy"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/trace-path.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/narrator.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/hud.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/chalkboard-big-strokes/assets/art",
+        "games/chalkboard-big-strokes/assets/audio",
+        "shared/assets/music/rainy-day-acoustic.mp3"
+      ],
       "packs": []
     },
     "chocolate-chip-count": {
@@ -3496,6 +3504,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
@@ -3561,6 +3570,7 @@
         "bean-sprout-watch",
         "beat-the-bugs",
         "board-game-reset",
+        "chalkboard-big-strokes",
         "cleanup-timer-quest",
         "garden-graphers",
         "momma-bear-storybook",
@@ -3661,6 +3671,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
@@ -3794,7 +3805,6 @@
         "snack-addition-stories"
       ],
       "shared/js/engines/trace-path.js": [
-        "chalkboard-big-strokes",
         "letter-road-driving",
         "scissor-trail-safari"
       ],
@@ -3926,6 +3936,7 @@
         "beat-the-bugs",
         "big-paper-murals",
         "board-game-reset",
+        "chalkboard-big-strokes",
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
@@ -4204,7 +4215,6 @@
         "blend-train",
         "bug-hotel-observer",
         "calm-corner-cards",
-        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
@@ -4444,6 +4454,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4498,6 +4509,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4693,7 +4705,6 @@
         "balance-beam-trail",
         "blend-train",
         "calm-corner-cards",
-        "chalkboard-big-strokes",
         "community-helper-cards",
         "family-story-interview",
         "family-timeline",
@@ -4741,6 +4752,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4791,7 +4803,6 @@
         "bug-hotel-observer",
         "button-zipper-lab",
         "calm-corner-cards",
-        "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4898,6 +4909,9 @@
       ],
       "captain-goldie": [
         "counting-treasure-cups"
+      ],
+      "Chalk Buddy": [
+        "chalkboard-big-strokes"
       ],
       "doggy": [
         "my-puppet-band",
@@ -5112,6 +5126,12 @@
       ],
       "games/button-zipper-lab/assets/ui/zipper-pull.webp": [
         "button-zipper-lab"
+      ],
+      "games/chalkboard-big-strokes/assets/art": [
+        "chalkboard-big-strokes"
+      ],
+      "games/chalkboard-big-strokes/assets/audio": [
+        "chalkboard-big-strokes"
       ],
       "games/chocolate-chip-count/assets/button.webp": [
         "chocolate-chip-count"
@@ -5907,6 +5927,9 @@
       "shared/assets/music/quirky-forest-adventure.mp3": [
         "shape-detective",
         "story-repair-shop"
+      ],
+      "shared/assets/music/rainy-day-acoustic.mp3": [
+        "chalkboard-big-strokes"
       ],
       "shared/assets/music/upbeat-playground-pop.mp3": [
         "beat-the-bugs",
