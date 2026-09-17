@@ -10,6 +10,16 @@ import { createTimers } from '../../../shared/js/timers.js';
 const mount = document.getElementById('game');
 const timers = createTimers();
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const playArtReady = Promise.all([
+  config.assets.back,
+  config.assets.button,
+  config.assets.sparkle,
+].map((source) => new Promise((resolve) => {
+  const image = new Image();
+  image.onload = resolve;
+  image.onerror = resolve;
+  image.src = source;
+})));
 
 const state = {
   screen: 'selection',
@@ -1004,7 +1014,10 @@ function debugTap(targetId) {
 
 showSelection();
 
-const ready = Promise.resolve(document.fonts?.ready).catch(() => undefined).then(() => true);
+const ready = Promise.all([
+  Promise.resolve(document.fonts?.ready).catch(() => undefined),
+  playArtReady,
+]).then(() => true);
 installDebug({
   gameId: config.id,
   engine: 'custom-chalk-trace',

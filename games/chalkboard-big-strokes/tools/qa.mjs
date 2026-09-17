@@ -256,6 +256,8 @@ async function drive(browser) {
   check('wrong-start real pointer input has no penalty and no lost progress',
     afterWrong.screen === 'trace' && afterWrong.progress === current.progress && afterWrong.wrongStarts === 1,
     JSON.stringify(afterWrong));
+  check('first trace frame has every raster play asset decoded',
+    await page.locator('img:visible').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0)));
   await checkTargets(page, 'landscape trace');
   await checkControlsInside(page, 'landscape trace');
   await shot(page, '02-wave-trace-landscape.png');
