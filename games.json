@@ -2349,24 +2349,34 @@
       "path": "games/question-ball/",
       "icon": "assets/hub/tiles/question-ball.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#ffad7a",
+      "status": "beta",
+      "accent": "#f39a52",
       "modes": [
         {
-          "id": "wh",
-          "title": "Catch the Question",
-          "skill": "who, what, and where question comprehension"
+          "id": "routines",
+          "title": "Daily Routines",
+          "skill": "describe familiar sequences and people"
         },
         {
-          "id": "why",
-          "title": "Why Questions",
-          "skill": "matching why questions to simple reasons"
+          "id": "animals",
+          "title": "Amazing Animals",
+          "skill": "use animal vocabulary to describe, explain, and imagine"
+        },
+        {
+          "id": "imagine",
+          "title": "Let’s Imagine",
+          "skill": "practice flexible thinking and invented explanations"
+        },
+        {
+          "id": "feelings",
+          "title": "Feelings and Friends",
+          "skill": "name feelings and supportive actions"
         }
       ],
-      "summary": "Toss a ball and answer who, what, why, or how."
+      "summary": "Toss the Question Ball and share a joyful idea about routines, animals, imagination, or feelings."
     },
     {
       "id": "silly-sentence-builder",

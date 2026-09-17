@@ -1,0 +1,142 @@
+{
+  "source": "games/question-ball/assets/source/gpt-image-2/characters-sheet.png",
+  "sourceSha256": "cbec33a90dc9475f8ab80c1906f910fa88fd7fca955e0672a96ffcbb947e955e",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 10,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "maya-listen",
+      "file": "maya-listen.png",
+      "componentArea": 189993,
+      "foregroundBbox": [
+        24,
+        85,
+        496,
+        658
+      ],
+      "cropBbox": [
+        14,
+        75,
+        506,
+        668
+      ],
+      "cropXywh": [
+        14,
+        75,
+        492,
+        593
+      ],
+      "normalizedCropBbox": [
+        0.006446,
+        0.103591,
+        0.232965,
+        0.922652
+      ]
+    },
+    {
+      "index": 2,
+      "name": "maya-celebrate",
+      "file": "maya-celebrate.png",
+      "componentArea": 189339,
+      "foregroundBbox": [
+        526,
+        86,
+        1070,
+        655
+      ],
+      "cropBbox": [
+        516,
+        76,
+        1080,
+        665
+      ],
+      "cropXywh": [
+        516,
+        76,
+        564,
+        589
+      ],
+      "normalizedCropBbox": [
+        0.237569,
+        0.104972,
+        0.497238,
+        0.918508
+      ]
+    },
+    {
+      "index": 3,
+      "name": "leo-catch",
+      "file": "leo-catch.png",
+      "componentArea": 154920,
+      "foregroundBbox": [
+        1119,
+        117,
+        1596,
+        658
+      ],
+      "cropBbox": [
+        1109,
+        107,
+        1606,
+        668
+      ],
+      "cropXywh": [
+        1109,
+        107,
+        497,
+        561
+      ],
+      "normalizedCropBbox": [
+        0.510589,
+        0.14779,
+        0.739411,
+        0.922652
+      ]
+    },
+    {
+      "index": 4,
+      "name": "leo-celebrate",
+      "file": "leo-celebrate.png",
+      "componentArea": 167426,
+      "foregroundBbox": [
+        1626,
+        123,
+        2155,
+        657
+      ],
+      "cropBbox": [
+        1616,
+        113,
+        2165,
+        667
+      ],
+      "cropXywh": [
+        1616,
+        113,
+        549,
+        554
+      ],
+      "normalizedCropBbox": [
+        0.744015,
+        0.156077,
+        0.996777,
+        0.921271
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

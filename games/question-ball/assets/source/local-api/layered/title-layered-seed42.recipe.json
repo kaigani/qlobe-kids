@@ -1,0 +1,29 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "question-ball-title-layered-seed42",
+  "kind": "image-edit",
+  "asset": "assets/source/local-api/layered/title-layer2.png",
+  "artDirection": "Puppet / Cozy felt fabric",
+  "reference": "assets/source/gpt-image-2/title-master.png",
+  "referenceSha256": "8b9b840dfbb6d51a14fbbad403a924baf04434149d0512f2397928f5d5691046",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Separate only the complete sewn felt object from the plain chroma-magenta background. Preserve every original object pixel, stitch, soft edge, and internal opening. Return the object alone on true alpha with no magenta fringe, no shadow plate, no redesign, no added element.",
+      "seed": 42,
+      "layers": 2,
+      "output": "layer_2"
+    }
+  ],
+  "sourceSize": [1774, 887],
+  "layerSize": [1024, 512],
+  "layerSha256": "4333bb7e31e6b413c5a580ccd087421b349cc6d6f71a5b5c6aaf69aecd7105fe",
+  "finalized": "assets/source/finalized/title.png",
+  "finalizedSha256": "11c097175f544efa4efe0599c65fd7405fc919b1d02053a9f8dbf70e19d55986",
+  "qa": {
+    "status": "accepted-independent-art-gate",
+    "notes": "Finalizer accepted the alpha extraction, hostile-magenta review found clean outer edges, and the independent ART DIRECTOR accepted the runtime title system."
+  },
+  "createdAt": "2026-09-17"
+}

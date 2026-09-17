@@ -5,43 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Question Ball 🏐 — Who What Where Why Play</title>
-  <meta name="description" content="Hear a spoken who, what, where, or why question and tap the picture that answers it, building comprehension one round at a time. A playful listening game for ages 5–6." />
+  <meta name="theme-color" content="#182f50" />
+  <title>Question Ball — Toss, Talk, and Share</title>
+  <meta name="description" content="Pick a familiar topic, toss a soft rainbow Question Ball, hear one open-ended question, and share your idea aloud." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Question Ball" />
-  <meta property="og:title" content="Question Ball 🏐 — Who What Where Why Play" />
-  <meta property="og:description" content="Hear a spoken who, what, where, or why question and tap the picture that answers it, building comprehension one round at a time. A playful listening game for ages 5–6." />
+  <meta property="og:title" content="Question Ball — Toss, Talk, and Share" />
+  <meta property="og:description" content="Pick a familiar topic, toss a soft rainbow Question Ball, hear one open-ended question, and share your idea aloud." />
   <meta property="og:url" content="https://qlo.be/games/question-ball/" />
   <meta property="og:image" content="https://qlo.be/games/question-ball/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Question Ball title screen with Catch the Question and Why Questions game modes and a volleyball icon." />
+  <meta property="og:image:alt" content="Maya and Leo playing with a rainbow felt Question Ball in a cozy puppet playroom." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Question Ball 🏐 — Who What Where Why Play" />
-  <meta name="twitter:description" content="Hear a spoken who, what, where, or why question and tap the picture that answers it, building comprehension one round at a time. A playful listening game for ages 5–6." />
+  <meta name="twitter:title" content="Question Ball — Toss, Talk, and Share" />
+  <meta name="twitter:description" content="Pick a familiar topic, toss a soft rainbow Question Ball, hear one open-ended question, and share your idea aloud." />
   <meta name="twitter:image" content="https://qlo.be/games/question-ball/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="qb-app" aria-label="Question Ball">
+    <img class="qb-world" src="./assets/art/playroom.webp" alt="" aria-hidden="true" />
+
+    <section class="qb-screen qb-splash" data-qk-screen="splash" aria-label="Question Ball home">
+      <div class="qb-hud" data-hud-slot="splash"></div>
+      <div class="qb-splash-stage">
+        <img class="qb-title" src="./assets/art/title.webp" alt="Question Ball" />
+        <img class="qb-character qb-splash-maya" src="./assets/art/maya-listen.webp" alt="Maya, a friendly felt puppet" />
+        <img class="qb-character qb-splash-leo" src="./assets/art/leo-catch.webp" alt="Leo, a friendly felt puppet" />
+
+        <button id="splash-ball" class="qb-object-button qb-splash-ball" type="button" data-target="start-ball" data-role="action" aria-label="Play Question Ball">
+          <img src="./assets/art/ball-idle.webp" alt="" aria-hidden="true" />
+        </button>
+
+        <button id="start-button" class="qb-art-button qb-start-button" type="button" data-target="start" data-role="action">
+          <img src="./assets/art/plaque-navy.webp" alt="" aria-hidden="true" />
+          <span>LET'S PLAY!</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="qb-screen qb-topics" data-qk-screen="topics" hidden aria-label="Choose a talking topic">
+      <div class="qb-hud" data-hud-slot="topics"></div>
+      <header class="qb-panel qb-topic-heading">
+        <img src="./assets/art/prompt-panel.webp" alt="" aria-hidden="true" />
+        <div>
+          <p>What should we talk about?</p>
+          <h1>Pick a Picture</h1>
+        </div>
+      </header>
+      <div id="topic-grid" class="qb-topic-grid" role="group" aria-label="Talking topics"></div>
+    </section>
+
+    <section class="qb-screen qb-toss" data-qk-screen="toss" hidden aria-label="Toss the Question Ball">
+      <div class="qb-hud" data-hud-slot="toss"></div>
+      <header class="qb-panel qb-toss-heading">
+        <img src="./assets/art/prompt-panel.webp" alt="" aria-hidden="true" />
+        <h1>Toss the Question Ball!</h1>
+      </header>
+
+      <div id="toss-arena" class="qb-toss-arena">
+        <img class="qb-character qb-toss-maya" src="./assets/art/maya-listen.webp" alt="Maya is ready to listen" />
+        <img class="qb-character qb-toss-leo" src="./assets/art/leo-catch.webp" alt="Leo is ready to catch" />
+        <img id="toss-gesture" class="qb-toss-gesture" src="./assets/art/gesture-toss.webp" alt="Swipe or tap the ball" />
+        <button id="toss-ball" class="qb-object-button qb-toss-ball" type="button" data-target="toss-ball" data-role="action" aria-label="Tap or swipe to toss the Question Ball">
+          <img src="./assets/art/ball-idle.webp" alt="" aria-hidden="true" draggable="false" />
+        </button>
+      </div>
+    </section>
+
+    <section class="qb-screen qb-question" data-qk-screen="question" hidden aria-label="Share your idea">
+      <div class="qb-hud" data-hud-slot="question"></div>
+      <img class="qb-character qb-question-maya" src="./assets/art/maya-listen.webp" alt="Maya is listening" />
+      <img class="qb-character qb-question-leo" src="./assets/art/leo-catch.webp" alt="Leo is listening" />
+
+      <article class="qb-question-card" aria-live="polite">
+        <img class="qb-question-panel" src="./assets/art/prompt-panel.webp" alt="" aria-hidden="true" />
+        <img class="qb-bubble" src="./assets/art/question-bubble.webp" alt="" aria-hidden="true" />
+        <img class="qb-open-ball" src="./assets/art/ball-open.webp" alt="The Question Ball opens" />
+        <div class="qb-question-copy">
+          <strong id="question-word">WHAT</strong>
+          <h1 id="question-text">What makes you smile?</h1>
+        </div>
+      </article>
+
+      <div class="qb-share-zone">
+        <button id="microphone-button" class="qb-share-button qb-microphone-button" type="button" data-target="microphone" data-role="record" aria-pressed="false">
+          <img class="qb-share-backing" src="./assets/art/plaque-navy.webp" alt="" aria-hidden="true" />
+          <img class="qb-share-icon" src="./assets/art/microphone.webp" alt="" aria-hidden="true" />
+          <span id="microphone-label">HOLD TO TALK</span>
+        </button>
+
+        <button id="replay-button" class="qb-share-button qb-replay-button" type="button" data-target="replay-answer" data-role="replay" hidden>
+          <img class="qb-share-backing" src="./assets/art/button-green.webp" alt="" aria-hidden="true" />
+          <img class="qb-replay-icon" src="./assets/art/microphone.webp" alt="" aria-hidden="true" />
+          <span>HEAR MY IDEA</span>
+        </button>
+
+        <button id="coplay-button" class="qb-share-button qb-coplay-button" type="button" data-target="coplay" data-role="action">
+          <img class="qb-share-backing" src="./assets/art/card-coral.webp" alt="" aria-hidden="true" />
+          <span class="qb-friends" aria-hidden="true">
+            <img src="./assets/art/maya-listen.webp" alt="" />
+            <img src="./assets/art/leo-catch.webp" alt="" />
+          </span>
+          <span id="coplay-label">TELL A FRIEND</span>
+        </button>
+      </div>
+
+      <div class="qb-panel qb-share-status">
+        <img src="./assets/art/prompt-panel.webp" alt="" aria-hidden="true" />
+        <p id="share-status" aria-live="polite">Hold the microphone while you talk, or tell someone beside you.</p>
+      </div>
+    </section>
+
+    <section class="qb-screen qb-reward" data-qk-screen="reward" hidden aria-label="Sharing Star reward">
+      <div class="qb-hud" data-hud-slot="reward"></div>
+      <div id="reward-stage" class="qb-reward-stage">
+        <img class="qb-character qb-reward-maya" src="./assets/art/maya-celebrate.webp" alt="Maya celebrates your idea" />
+        <img class="qb-character qb-reward-leo" src="./assets/art/leo-celebrate.webp" alt="Leo celebrates your idea" />
+        <img class="qb-reward-ball" src="./assets/art/ball-open.webp" alt="" aria-hidden="true" />
+        <img class="qb-reward-star" src="./assets/art/star.webp" alt="A Sharing Star" />
+        <div class="qb-panel qb-reward-copy">
+          <img src="./assets/art/prompt-panel.webp" alt="" aria-hidden="true" />
+          <div>
+            <p id="reward-kicker">You shared an idea!</p>
+            <h1 id="reward-title">Sharing Star!</h1>
+          </div>
+        </div>
+      </div>
+      <div class="qb-reward-actions">
+        <button id="next-button" class="qb-art-button" type="button" data-target="next-question" data-role="action">
+          <img src="./assets/art/button-green.webp" alt="" aria-hidden="true" />
+          <span>NEXT QUESTION</span>
+        </button>
+        <button id="topics-button" class="qb-art-button qb-topics-button" type="button" data-target="choose-topic" data-role="action">
+          <img src="./assets/art/plaque-navy.webp" alt="" aria-hidden="true" />
+          <span>CHOOSE A TOPIC</span>
+        </button>
+      </div>
+    </section>
+
+    <p id="game-status" class="visually-hidden" aria-live="polite"></p>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T18:26:00.281Z",
+  "generated": "2026-09-17T20:40:43.558Z",
   "engines": {
     "coach-timer": {
       "count": 10,
@@ -27,15 +27,14 @@
       ]
     },
     "choose-one": {
-      "count": 7,
+      "count": 6,
       "games": [
         "calm-corner-cards",
         "grace-courtesy-theater",
         "instrument-detective",
         "mystery-letter-bag",
         "plan-do-review",
-        "problem-solving-puppets",
-        "question-ball"
+        "problem-solving-puppets"
       ]
     },
     "build-assemble": {
@@ -2172,22 +2171,56 @@
       "packs": []
     },
     "question-ball": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "oral-storytelling",
-      "characters": [],
+      "characters": [
+        "leo",
+        "maya"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/question-ball/assets/art",
+        "games/question-ball/assets/art/ball-idle.webp",
+        "games/question-ball/assets/art/ball-open.webp",
+        "games/question-ball/assets/art/button-green.webp",
+        "games/question-ball/assets/art/card-coral.webp",
+        "games/question-ball/assets/art/gesture-toss.webp",
+        "games/question-ball/assets/art/leo-catch.webp",
+        "games/question-ball/assets/art/leo-celebrate.webp",
+        "games/question-ball/assets/art/maya-celebrate.webp",
+        "games/question-ball/assets/art/maya-listen.webp",
+        "games/question-ball/assets/art/microphone.webp",
+        "games/question-ball/assets/art/plaque-navy.webp",
+        "games/question-ball/assets/art/playroom.webp",
+        "games/question-ball/assets/art/prompt-panel.webp",
+        "games/question-ball/assets/art/question-bubble.webp",
+        "games/question-ball/assets/art/star.webp",
+        "games/question-ball/assets/art/title.webp",
+        "games/question-ball/assets/audio",
+        "shared/assets/music/upbeat-playground-pop.mp3"
+      ],
       "packs": []
     },
     "red-green-light": {
@@ -3683,6 +3716,7 @@
         "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
+        "question-ball",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3732,6 +3766,7 @@
         "post-office-letters",
         "pouring-station",
         "puzzle-map-match",
+        "question-ball",
         "sandpaper-number-match",
         "scissor-trail-safari",
         "secret-message-copy",
@@ -3784,6 +3819,7 @@
         "post-office-letters",
         "pouring-station",
         "puppet-retell",
+        "question-ball",
         "rhythm-copycat",
         "sand-tray-letters",
         "sandpaper-number-match",
@@ -3873,6 +3909,7 @@
         "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
+        "question-ball",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -3928,8 +3965,7 @@
         "instrument-detective",
         "mystery-letter-bag",
         "plan-do-review",
-        "problem-solving-puppets",
-        "question-ball"
+        "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
@@ -4009,6 +4045,7 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "question-ball",
         "red-green-light",
         "secret-message-copy",
         "silly-swap-words",
@@ -4045,6 +4082,7 @@
         "picture-word-match",
         "plant-care-captain",
         "post-office-letters",
+        "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shadow-chase",
@@ -4174,6 +4212,7 @@
         "post-office-letters",
         "pouring-station",
         "puzzle-map-match",
+        "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-detective",
@@ -4228,6 +4267,7 @@
         "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
+        "question-ball",
         "red-green-light",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -4281,6 +4321,7 @@
         "picture-word-match",
         "post-office-letters",
         "pouring-station",
+        "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shadow-chase",
@@ -4626,6 +4667,7 @@
         "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
+        "question-ball",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -4694,6 +4736,7 @@
         "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
+        "question-ball",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -4768,6 +4811,7 @@
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
+        "question-ball",
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
@@ -4953,7 +4997,6 @@
         "plan-do-review",
         "problem-solving-puppets",
         "puppet-problem-solvers",
-        "question-ball",
         "scissor-trail-safari",
         "shape-to-picture",
         "shelf-reset-game",
@@ -4998,6 +5041,7 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "question-ball",
         "red-green-light",
         "rhythm-copycat",
         "sandpaper-number-match",
@@ -5205,6 +5249,7 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
+        "question-ball",
         "turn-taking-tower"
       ],
       "Leo": [
@@ -5226,6 +5271,7 @@
         "plan-do-review",
         "pouring-station",
         "problem-solving-puppets",
+        "question-ball",
         "snack-chef",
         "turn-taking-tower"
       ],
@@ -5887,6 +5933,60 @@
       "games/pouring-station/assets/ui/token-water.webp": [
         "pouring-station"
       ],
+      "games/question-ball/assets/art": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/ball-idle.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/ball-open.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/button-green.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/card-coral.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/gesture-toss.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/leo-catch.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/leo-celebrate.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/maya-celebrate.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/maya-listen.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/microphone.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/plaque-navy.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/playroom.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/prompt-panel.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/question-bubble.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/star.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/art/title.webp": [
+        "question-ball"
+      ],
+      "games/question-ball/assets/audio": [
+        "question-ball"
+      ],
       "games/red-green-light/assets/callers": [
         "red-green-light"
       ],
@@ -6303,6 +6403,7 @@
       ],
       "shared/assets/music/upbeat-playground-pop.mp3": [
         "beat-the-bugs",
+        "question-ball",
         "sound-hopscotch"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
@@ -6414,6 +6515,7 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
+        "question-ball",
         "turn-taking-tower"
       ],
       "shared/characters/Leo": [
@@ -6432,6 +6534,7 @@
         "plan-do-review",
         "pouring-station",
         "problem-solving-puppets",
+        "question-ball",
         "snack-chef",
         "turn-taking-tower"
       ],

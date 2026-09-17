@@ -1,0 +1,322 @@
+{
+  "source": "games/question-ball/assets/source/gpt-image-2/props-sheet.png",
+  "sourceSha256": "016df38c5ae01af1ce4b825f979b3f2421ee08cd4ad17d41d9c87445e2fe8c29",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 8,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "ball-idle",
+      "file": "ball-idle.png",
+      "componentArea": 43335,
+      "foregroundBbox": [
+        14,
+        329,
+        243,
+        568
+      ],
+      "cropBbox": [
+        6,
+        321,
+        251,
+        576
+      ],
+      "cropXywh": [
+        6,
+        321,
+        245,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.004785,
+        0.255981,
+        0.200159,
+        0.45933
+      ]
+    },
+    {
+      "index": 2,
+      "name": "ball-open",
+      "file": "ball-open.png",
+      "componentArea": 52425,
+      "foregroundBbox": [
+        266,
+        276,
+        485,
+        576
+      ],
+      "cropBbox": [
+        258,
+        268,
+        493,
+        584
+      ],
+      "cropXywh": [
+        258,
+        268,
+        235,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.205742,
+        0.213716,
+        0.393142,
+        0.46571
+      ]
+    },
+    {
+      "index": 3,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 34404,
+      "foregroundBbox": [
+        502,
+        307,
+        747,
+        565
+      ],
+      "cropBbox": [
+        494,
+        299,
+        755,
+        573
+      ],
+      "cropXywh": [
+        494,
+        299,
+        261,
+        274
+      ],
+      "normalizedCropBbox": [
+        0.393939,
+        0.238437,
+        0.602073,
+        0.456938
+      ]
+    },
+    {
+      "index": 4,
+      "name": "microphone",
+      "file": "microphone.png",
+      "componentArea": 42355,
+      "foregroundBbox": [
+        762,
+        332,
+        992,
+        568
+      ],
+      "cropBbox": [
+        754,
+        324,
+        1000,
+        576
+      ],
+      "cropXywh": [
+        754,
+        324,
+        246,
+        252
+      ],
+      "normalizedCropBbox": [
+        0.601276,
+        0.258373,
+        0.797448,
+        0.45933
+      ]
+    },
+    {
+      "index": 5,
+      "name": "gesture-toss",
+      "file": "gesture-toss.png",
+      "componentArea": 41797,
+      "foregroundBbox": [
+        1016,
+        332,
+        1242,
+        569
+      ],
+      "cropBbox": [
+        1008,
+        324,
+        1250,
+        577
+      ],
+      "cropXywh": [
+        1008,
+        324,
+        242,
+        253
+      ],
+      "normalizedCropBbox": [
+        0.803828,
+        0.258373,
+        0.99681,
+        0.460128
+      ]
+    },
+    {
+      "index": 6,
+      "name": "topic-routines",
+      "file": "topic-routines.png",
+      "componentArea": 43825,
+      "foregroundBbox": [
+        16,
+        719,
+        243,
+        963
+      ],
+      "cropBbox": [
+        8,
+        711,
+        251,
+        971
+      ],
+      "cropXywh": [
+        8,
+        711,
+        243,
+        260
+      ],
+      "normalizedCropBbox": [
+        0.00638,
+        0.566986,
+        0.200159,
+        0.774322
+      ]
+    },
+    {
+      "index": 7,
+      "name": "topic-animals",
+      "file": "topic-animals.png",
+      "componentArea": 42811,
+      "foregroundBbox": [
+        258,
+        718,
+        492,
+        968
+      ],
+      "cropBbox": [
+        250,
+        710,
+        500,
+        976
+      ],
+      "cropXywh": [
+        250,
+        710,
+        250,
+        266
+      ],
+      "normalizedCropBbox": [
+        0.199362,
+        0.566188,
+        0.398724,
+        0.778309
+      ]
+    },
+    {
+      "index": 8,
+      "name": "topic-imagine",
+      "file": "topic-imagine.png",
+      "componentArea": 45374,
+      "foregroundBbox": [
+        509,
+        716,
+        744,
+        961
+      ],
+      "cropBbox": [
+        501,
+        708,
+        752,
+        969
+      ],
+      "cropXywh": [
+        501,
+        708,
+        251,
+        261
+      ],
+      "normalizedCropBbox": [
+        0.399522,
+        0.564593,
+        0.599681,
+        0.772727
+      ]
+    },
+    {
+      "index": 9,
+      "name": "topic-feelings",
+      "file": "topic-feelings.png",
+      "componentArea": 39577,
+      "foregroundBbox": [
+        756,
+        730,
+        997,
+        958
+      ],
+      "cropBbox": [
+        748,
+        722,
+        1005,
+        966
+      ],
+      "cropXywh": [
+        748,
+        722,
+        257,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.596491,
+        0.575758,
+        0.801435,
+        0.770335
+      ]
+    },
+    {
+      "index": 10,
+      "name": "question-bubble",
+      "file": "question-bubble.png",
+      "componentArea": 39450,
+      "foregroundBbox": [
+        1010,
+        726,
+        1236,
+        958
+      ],
+      "cropBbox": [
+        1002,
+        718,
+        1244,
+        966
+      ],
+      "cropXywh": [
+        1002,
+        718,
+        242,
+        248
+      ],
+      "normalizedCropBbox": [
+        0.799043,
+        0.572568,
+        0.992026,
+        0.770335
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

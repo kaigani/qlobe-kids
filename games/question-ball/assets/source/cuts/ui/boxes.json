@@ -1,0 +1,232 @@
+{
+  "source": "games/question-ball/assets/source/gpt-image-2/ui-sheet.png",
+  "sourceSha256": "dfe95e0e4ca7d23519fd0348b1b9dc150ec3f1c1557f04a81f6dc4c52d2232e9",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 8,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "plaque-navy",
+      "file": "plaque-navy.png",
+      "componentArea": 161829,
+      "foregroundBbox": [
+        289,
+        19,
+        1240,
+        247
+      ],
+      "cropBbox": [
+        281,
+        11,
+        1248,
+        255
+      ],
+      "cropXywh": [
+        281,
+        11,
+        967,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.182943,
+        0.010742,
+        0.8125,
+        0.249023
+      ]
+    },
+    {
+      "index": 2,
+      "name": "button-green",
+      "file": "button-green.png",
+      "componentArea": 159833,
+      "foregroundBbox": [
+        235,
+        263,
+        1290,
+        421
+      ],
+      "cropBbox": [
+        227,
+        255,
+        1298,
+        429
+      ],
+      "cropXywh": [
+        227,
+        255,
+        1071,
+        174
+      ],
+      "normalizedCropBbox": [
+        0.147786,
+        0.249023,
+        0.845052,
+        0.418945
+      ]
+    },
+    {
+      "index": 3,
+      "name": "prompt-panel",
+      "file": "prompt-panel.png",
+      "componentArea": 322343,
+      "foregroundBbox": [
+        55,
+        441,
+        1481,
+        672
+      ],
+      "cropBbox": [
+        47,
+        433,
+        1489,
+        680
+      ],
+      "cropXywh": [
+        47,
+        433,
+        1442,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.030599,
+        0.422852,
+        0.969401,
+        0.664062
+      ]
+    },
+    {
+      "index": 4,
+      "name": "card-gold",
+      "file": "card-gold.png",
+      "componentArea": 78578,
+      "foregroundBbox": [
+        76,
+        694,
+        365,
+        977
+      ],
+      "cropBbox": [
+        68,
+        686,
+        373,
+        985
+      ],
+      "cropXywh": [
+        68,
+        686,
+        305,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.044271,
+        0.669922,
+        0.242839,
+        0.961914
+      ]
+    },
+    {
+      "index": 5,
+      "name": "card-green",
+      "file": "card-green.png",
+      "componentArea": 77836,
+      "foregroundBbox": [
+        442,
+        695,
+        730,
+        976
+      ],
+      "cropBbox": [
+        434,
+        687,
+        738,
+        984
+      ],
+      "cropXywh": [
+        434,
+        687,
+        304,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.282552,
+        0.670898,
+        0.480469,
+        0.960938
+      ]
+    },
+    {
+      "index": 6,
+      "name": "card-lavender",
+      "file": "card-lavender.png",
+      "componentArea": 78235,
+      "foregroundBbox": [
+        806,
+        696,
+        1095,
+        976
+      ],
+      "cropBbox": [
+        798,
+        688,
+        1103,
+        984
+      ],
+      "cropXywh": [
+        798,
+        688,
+        305,
+        296
+      ],
+      "normalizedCropBbox": [
+        0.519531,
+        0.671875,
+        0.718099,
+        0.960938
+      ]
+    },
+    {
+      "index": 7,
+      "name": "card-coral",
+      "file": "card-coral.png",
+      "componentArea": 78679,
+      "foregroundBbox": [
+        1172,
+        694,
+        1461,
+        977
+      ],
+      "cropBbox": [
+        1164,
+        686,
+        1469,
+        985
+      ],
+      "cropXywh": [
+        1164,
+        686,
+        305,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.757812,
+        0.669922,
+        0.95638,
+        0.961914
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
