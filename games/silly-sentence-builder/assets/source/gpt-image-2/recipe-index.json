@@ -1,0 +1,77 @@
+{
+  "format": "qlobe-imagegen-recipe-set",
+  "formatVersion": 1,
+  "generator": "Codex built-in imagegen (GPT Image 2 workflow)",
+  "created": "2026-09-17",
+  "license": "CC-BY-4.0",
+  "creator": "QLOBE Kids with OpenAI imagegen",
+  "artDirection": "Premium handcrafted quiet-book puppet theater made from wool felt, fleece, padded applique, embroidery and blanket stitching; visible fibers and soft stuffing; warm upper-left theatrical light; midnight navy, dark plum, teal, warm cream, mustard, coral and lavender palette; friendly preschool proportions; no plastic, clay, paper, vector styling, watermark or functional generated text.",
+  "recipes": [
+    {
+      "id": "theater-background-master",
+      "mode": "generate",
+      "output": "theater-background-master.png",
+      "sha256": "09f3dd2109b7f55194ee13278e1d1333964789994c18ab99e713a342ebe5bf56",
+      "prompt": "A straight-on 4:3 empty handmade felt puppet theater stage for a premium preschool game. Deep midnight-navy felt back wall, rich plum padded curtains tied with mustard braided rope, teal scalloped footlights and tiny stitched star details around the edge. Keep the central 70 percent calm, open and dark enough for colorful puppet cards and a sentence strip. Tactile wool fibers, blanket stitching, softly stuffed applique, warm studio light from upper left, dimensional but not photorealistic. No characters, words, letters, cards, buttons, logo or watermark. Fill the canvas edge to edge; no outer frame or transparent margin.",
+      "accepted": "Clean stage plate with the intended quiet center, lighting and material system."
+    },
+    {
+      "id": "title-lockup-master",
+      "mode": "generate-then-precise-alpha-edit",
+      "output": "title-lockup-master.png",
+      "sha256": "64e4fc79e2da0fb41aa636ad3a904995a66cd94887a5e24702d0d059cf03ae67",
+      "prompt": "A single centered padded plum-felt title plaque for a premium handmade preschool puppet-theater game. Cream felt applique lettering must spell exactly, on three centered lines: SILLY / SENTENCE / BUILDER. Large playful rounded letters, each fully readable, with mustard blanket stitching, two tiny teal and coral felt stars, tactile wool fibers and warm upper-left light. Isolated object, straight-on, generous breathing room, no other words, no logo, no watermark. Then precisely remove only the outside background to true transparency while preserving the plaque, lettering, stitches, fibers, shadows and exact spelling.",
+      "accepted": "Exact spelling and real outside alpha verified at full size and on saturated magenta."
+    },
+    {
+      "id": "characters-master",
+      "mode": "generate",
+      "output": "characters-master.png",
+      "sha256": "3bee3da4ffdfe74550a73fabb6d5a7e37b565c9f4e040dd48954bd9490793206",
+      "prompt": "One coordinated 3 by 2 asset sheet of six separate full-body felt hand puppets on true transparent background, large even cells, wide gutters, nothing touching or cropped. Reading order: orange tabby cat with green scarf; friendly round purple dinosaur with teal spots; friendly teal fabric robot with cream face and coral antenna; sunny yellow duck with orange feet; coral-pink bunny with long ears and mustard overalls; cuddly sky-blue one-horned monster with lavender belly. All face slightly toward camera, joyful preschool expressions, consistent scale, visible blanket stitches and wool fibers, soft stuffing, warm upper-left light. No words, labels, scenery, borders, shadows connecting cells, logo or watermark.",
+      "accepted": "Six distinct readable silhouettes with consistent puppet construction and transparent separation."
+    },
+    {
+      "id": "actions-master",
+      "mode": "generate",
+      "output": "actions-master.png",
+      "sha256": "302e898010e84376d1ea53db39f0f3218c0b01e1c08febca8c10144ac43c4690",
+      "prompt": "One coordinated 3 by 2 sheet of six separate wordless handmade felt action props on true transparent background, even cells and wide gutters, nothing touching or cropped. Reading order: dancing feet with musical notes and motion marks; cheerful golden trumpet with tiny music notes; three pancakes tossed in a juggling arc; coral pogo stick with bounce marks; tiny teal-and-coral rocket with soft felt flame; paintbrush painting one curved rainbow swoosh. Bold instantly readable preschool silhouettes, consistent quiet-book applique, wool fibers, blanket stitching, warm upper-left light. No characters, words, labels, borders, logo or watermark.",
+      "accepted": "All six verbs remain recognizable at card scale and cut into independent alpha assets."
+    },
+    {
+      "id": "places-master",
+      "mode": "generate",
+      "output": "places-master.png",
+      "sha256": "f1992729e50a58685bc05c1cb744959a0f0e0df90cdc7fa74a7e402ddccf05cd",
+      "prompt": "One coordinated 3 by 2 sheet of six separate miniature felt puppet-stage settings on true transparent background, even cells and wide gutters, nothing touching or cropped. Reading order: smiling crescent moon with stars and a small landing cloud; bubbly clawfoot bathtub; rainbow castle with open doorway; cupcake picnic blanket with a clear center; bright flower garden with clear grass patch; purple pirate ship with clear deck. Each is a complete readable vignette with an obvious open landing area for a character puppet. Tactile wool, padded applique, embroidery and blanket stitching, warm upper-left light, consistent scale and perspective. No words, labels, borders, characters, logo or watermark.",
+      "accepted": "Six setting silhouettes passed composition and alpha inspection; each supports a layered puppet reveal."
+    },
+    {
+      "id": "manners-master",
+      "mode": "generate",
+      "output": "manners-master.png",
+      "sha256": "02019b8a34a8d70f00681dc2453ebf913937d51bca6b01b798b108b8454f4ba4",
+      "prompt": "One coordinated 3 by 2 sheet of six separate wordless felt picture symbols for how an action happens, on true transparent background with even cells and wide gutters. Reading order: smiling slow snail with a gentle dotted trail; footprints pointing backward; wobbly translucent-looking lavender jelly blob; two tiny hopping feet with small bounce arcs; large circular stitched motion loop; frilly coral-and-lavender tutu. Large simple preschool-readable forms, premium wool felt and embroidered details, blanket stitching, warm upper-left light. No letters, numbers, labels, borders, characters, logo or watermark.",
+      "accepted": "All six manner cues are distinct, tactile and readable without text."
+    },
+    {
+      "id": "ui-kit-master",
+      "mode": "generate",
+      "output": "ui-kit-master.png",
+      "sha256": "6fe6aa396a6e564a55dfa2fadd23aa3f0ebfffe743eec57f0322982f8683d951",
+      "prompt": "A precise 4 by 3 contact sheet of twelve separate blank felt UI objects for a preschool puppet-theater game, true transparent background, equal cells, wide gutters, nothing touching or cropped. Reading order: long cream stitched sentence strip; deep green story pocket; burnt-orange story pocket; royal-blue story pocket; lavender story pocket; cream card with green stitched edge; cream card with orange edge; cream card with blue edge; cream card with lavender edge; large padded plum action-button plaque; single golden stuffed progress star; small cream label plaque with plum edging. Every surface completely blank with no text, icons, letters or numbers. Premium wool felt, padded applique, visible blanket stitch, consistent straight-on light and scale, no logo or watermark.",
+      "accepted": "Twelve blank functional surfaces cut cleanly; all runtime labels stay live HTML."
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": [
+      "full-size human visual review",
+      "strict expected-count asset cutting",
+      "runtime WebP decode on saturated-magenta contact sheets",
+      "transparent and opaque pixel-ratio report",
+      "exact title spelling and no generated functional text"
+    ]
+  }
+}

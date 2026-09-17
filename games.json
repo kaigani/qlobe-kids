@@ -2385,11 +2385,11 @@
       "path": "games/silly-sentence-builder/",
       "icon": "assets/hub/tiles/silly-sentence-builder.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#7a235c",
       "modes": [
         {
           "id": "silly",
@@ -2399,7 +2399,7 @@
         {
           "id": "sillier",
           "title": "Even Sillier",
-          "skill": "subject-action-place-adverb sentence expansion"
+          "skill": "subject-action-place-manner sentence expansion"
         }
       ],
       "summary": "Combine noun, verb, and place cards into silly sentences."

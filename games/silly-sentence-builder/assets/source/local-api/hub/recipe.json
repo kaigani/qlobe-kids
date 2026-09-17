@@ -1,0 +1,37 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "silly-sentence-builder-hub",
+  "kind": "image",
+  "asset": "assets/hub/tiles/silly-sentence-builder.jpg",
+  "artDirection": "Toy hub grammar (game interior: Puppet / Cozy felt fabric)",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "QLOBE Kids menu tile, one delightful handmade felt puppet-theater toy tableau: an orange cat, purple dinosaur, and teal friendly fabric robot peek from three plump green, orange, and blue stitched story pockets around one completely blank cream felt sentence strip; bold centered silhouette on a clean airy toy-table field, warm studio light, tactile wool fibers, visible blanket stitching, cheerful preschool proportions, premium handcrafted learning-toy photography, 6:5 composition, no words, letters, numbers, symbols, title, UI chrome, logo, watermark, or cropped character.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "silly-sentence-builder-krea2-seed-42.png",
+  "sourceSha256": "e6476c36c373c7942ee9646158133a36744fbe3cbf608b4a060f30d0233306ac",
+  "finalSha256": "520ade5ba7ead9272f799199c464864991f9115a0852bfb213186b7c6939baa7",
+  "qa": {
+    "status": "accepted",
+    "finalSize": [
+      640,
+      533
+    ],
+    "checks": [
+      "no text or pseudo-lettering",
+      "recognizable story-pocket moment",
+      "legible at hub size",
+      "full-size and 320px human visual review passed"
+    ],
+    "reviewNote": "Accepted: three coherent felt characters, three distinct story pockets and the blank sentence strip read immediately; no pseudo-lettering, crop damage or style drift."
+  },
+  "createdAt": "2026-09-17T21:25:04.933211+00:00"
+}

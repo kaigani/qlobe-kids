@@ -1,0 +1,19 @@
+{
+  "engine": "qwen3-tts-voiceclone",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "referenceSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seedSchedule": [
+    7,
+    8,
+    9
+  ],
+  "acceptedSeedCounts": {
+    "7": 40,
+    "8": 0,
+    "9": 0
+  },
+  "runtimeFormat": "AAC-LC, mono, 48 kHz, 96 kbps, -18 LUFS target",
+  "transcriptionQa": "whisper-base, English, per-line similarity threshold",
+  "lineCount": 40,
+  "passed": 40
+}

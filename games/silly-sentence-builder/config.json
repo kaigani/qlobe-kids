@@ -1,0 +1,88 @@
+{
+  "format": "qlobe-game-config",
+  "formatVersion": 1,
+  "id": "silly-sentence-builder",
+  "title": "Silly Sentence Builder",
+  "category": "oral-storytelling",
+  "status": "beta",
+  "artWorld": "Puppet / Cozy felt fabric",
+  "roundsPerSession": 3,
+  "music": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+  "modes": [
+    {
+      "id": "silly",
+      "title": "Make a Silly Sentence",
+      "shortTitle": "Silly",
+      "skill": "subject-action-place sentence structure",
+      "parts": ["who", "action", "place"],
+      "introKey": "mode-silly"
+    },
+    {
+      "id": "sillier",
+      "title": "Even Sillier",
+      "shortTitle": "Sillier",
+      "skill": "subject-action-place-manner sentence expansion",
+      "parts": ["who", "action", "place", "manner"],
+      "introKey": "mode-sillier"
+    }
+  ],
+  "categories": {
+    "who": { "label": "WHO?", "spokenLabel": "who", "promptKey": "prompt-who", "prompt": "Who is in your silly sentence?", "tray": "./assets/ui/tray-who.webp", "card": "./assets/ui/card-who.webp", "color": "#4f7f29" },
+    "action": { "label": "DOES WHAT?", "spokenLabel": "does what", "promptKey": "prompt-action", "prompt": "What do they do?", "tray": "./assets/ui/tray-action.webp", "card": "./assets/ui/card-action.webp", "color": "#d95f16" },
+    "place": { "label": "WHERE?", "spokenLabel": "where", "promptKey": "prompt-place", "prompt": "Where does it happen?", "tray": "./assets/ui/tray-place.webp", "card": "./assets/ui/card-place.webp", "color": "#1765a8" },
+    "manner": { "label": "HOW?", "spokenLabel": "how", "promptKey": "prompt-manner", "prompt": "How do they do it?", "tray": "./assets/ui/tray-how.webp", "card": "./assets/ui/card-how.webp", "color": "#8b5ab9" }
+  },
+  "choices": {
+    "who": [
+      { "id": "cat", "label": "the orange cat", "say": "The orange cat", "voiceKey": "who-cat", "art": "./assets/characters/cat.webp" },
+      { "id": "dinosaur", "label": "the purple dinosaur", "say": "The purple dinosaur", "voiceKey": "who-dinosaur", "art": "./assets/characters/dinosaur.webp" },
+      { "id": "robot", "label": "the teal robot", "say": "The teal robot", "voiceKey": "who-robot", "art": "./assets/characters/robot.webp" },
+      { "id": "duck", "label": "the yellow duck", "say": "The yellow duck", "voiceKey": "who-duck", "art": "./assets/characters/duck.webp" },
+      { "id": "bunny", "label": "the pink bunny", "say": "The pink bunny", "voiceKey": "who-bunny", "art": "./assets/characters/bunny.webp" },
+      { "id": "monster", "label": "the blue monster", "say": "The blue monster", "voiceKey": "who-monster", "art": "./assets/characters/monster.webp" }
+    ],
+    "action": [
+      { "id": "dances", "label": "dances", "say": "dances", "voiceKey": "action-dances", "art": "./assets/actions/dances.webp", "motion": "dance" },
+      { "id": "trumpet", "label": "plays a trumpet", "say": "plays a trumpet", "voiceKey": "action-trumpet", "art": "./assets/actions/trumpet.webp", "motion": "trumpet" },
+      { "id": "pancakes", "label": "juggles pancakes", "say": "juggles pancakes", "voiceKey": "action-pancakes", "art": "./assets/actions/pancakes.webp", "motion": "juggle" },
+      { "id": "pogo", "label": "bounces on a pogo stick", "say": "bounces on a pogo stick", "voiceKey": "action-pogo", "art": "./assets/actions/pogo.webp", "motion": "pogo" },
+      { "id": "rocket", "label": "flies a tiny rocket", "say": "flies a tiny rocket", "voiceKey": "action-rocket", "art": "./assets/actions/rocket.webp", "motion": "rocket" },
+      { "id": "paints", "label": "paints a rainbow", "say": "paints a rainbow", "voiceKey": "action-paints", "art": "./assets/actions/paints.webp", "motion": "paint" }
+    ],
+    "place": [
+      { "id": "moon", "label": "on the moon", "say": "on the moon", "voiceKey": "place-moon", "art": "./assets/places/moon.webp" },
+      { "id": "bathtub", "label": "in a bubbly bathtub", "say": "in a bubbly bathtub", "voiceKey": "place-bathtub", "art": "./assets/places/bathtub.webp" },
+      { "id": "castle", "label": "inside a rainbow castle", "say": "inside a rainbow castle", "voiceKey": "place-castle", "art": "./assets/places/castle.webp" },
+      { "id": "picnic", "label": "at a cupcake picnic", "say": "at a cupcake picnic", "voiceKey": "place-picnic", "art": "./assets/places/picnic.webp" },
+      { "id": "garden", "label": "in a flower garden", "say": "in a flower garden", "voiceKey": "place-garden", "art": "./assets/places/garden.webp" },
+      { "id": "pirate-ship", "label": "on a pirate ship", "say": "on a pirate ship", "voiceKey": "place-pirate-ship", "art": "./assets/places/pirate-ship.webp" }
+    ],
+    "manner": [
+      { "id": "slowly", "label": "super slowly", "say": "super slowly", "voiceKey": "manner-slowly", "art": "./assets/manners/slowly.webp", "motion": "slow" },
+      { "id": "backwards", "label": "backwards", "say": "backwards", "voiceKey": "manner-backwards", "art": "./assets/manners/backwards.webp", "motion": "reverse" },
+      { "id": "jelly", "label": "like jelly", "say": "like jelly", "voiceKey": "manner-jelly", "art": "./assets/manners/jelly.webp", "motion": "jelly" },
+      { "id": "tiny-hops", "label": "with tiny hops", "say": "with tiny hops", "voiceKey": "manner-tiny-hops", "art": "./assets/manners/tiny-hops.webp", "motion": "hops" },
+      { "id": "circles", "label": "in giant circles", "say": "in giant circles", "voiceKey": "manner-circles", "art": "./assets/manners/circles.webp", "motion": "circles" },
+      { "id": "tutu", "label": "in a tutu", "say": "in a tutu", "voiceKey": "manner-tutu", "art": "./assets/manners/tutu.webp", "motion": "spin" }
+    ]
+  },
+  "voice": {
+    "welcome": "Ready for a silly show? Pick a friend, what they do, and where!",
+    "mode-silly": "Three story pieces. Who, does what, and where.",
+    "mode-sillier": "Let's make it even sillier. Add how it happens!",
+    "prompt-who": "Who is in your silly sentence?",
+    "prompt-action": "What do they do?",
+    "prompt-place": "Where does it happen?",
+    "prompt-manner": "How do they do it?",
+    "ready-show": "Your sentence is ready. Show it!",
+    "edit-hint": "Tap any story piece to change it.",
+    "drag-hint": "Tap a picture, or drag it to the glowing spot.",
+    "reveal-1": "What a wonderfully silly sentence!",
+    "reveal-2": "That story made the puppets giggle!",
+    "reveal-3": "You made that silly show!",
+    "make-another": "Make another silly sentence.",
+    "session-complete": "Three silly shows! Your story quilt is ready.",
+    "again": "Let's make three more."
+  }
+}
+

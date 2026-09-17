@@ -1,0 +1,202 @@
+{
+  "source": "games/silly-sentence-builder/assets/source/gpt-image-2/manners-master.png",
+  "sourceSha256": "02019b8a34a8d70f00681dc2453ebf913937d51bca6b01b798b108b8454f4ba4",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "slowly",
+      "file": "slowly.png",
+      "componentArea": 128490,
+      "foregroundBbox": [
+        47,
+        63,
+        488,
+        479
+      ],
+      "cropBbox": [
+        35,
+        51,
+        500,
+        491
+      ],
+      "cropXywh": [
+        35,
+        51,
+        465,
+        440
+      ],
+      "normalizedCropBbox": [
+        0.022786,
+        0.049805,
+        0.325521,
+        0.479492
+      ]
+    },
+    {
+      "index": 2,
+      "name": "backwards",
+      "file": "backwards.png",
+      "componentArea": 81009,
+      "foregroundBbox": [
+        561,
+        65,
+        951,
+        472
+      ],
+      "cropBbox": [
+        549,
+        53,
+        963,
+        484
+      ],
+      "cropXywh": [
+        549,
+        53,
+        414,
+        431
+      ],
+      "normalizedCropBbox": [
+        0.357422,
+        0.051758,
+        0.626953,
+        0.472656
+      ]
+    },
+    {
+      "index": 3,
+      "name": "jelly",
+      "file": "jelly.png",
+      "componentArea": 114109,
+      "foregroundBbox": [
+        1028,
+        108,
+        1469,
+        479
+      ],
+      "cropBbox": [
+        1016,
+        96,
+        1481,
+        491
+      ],
+      "cropXywh": [
+        1016,
+        96,
+        465,
+        395
+      ],
+      "normalizedCropBbox": [
+        0.661458,
+        0.09375,
+        0.964193,
+        0.479492
+      ]
+    },
+    {
+      "index": 4,
+      "name": "tiny-hops",
+      "file": "tiny-hops.png",
+      "componentArea": 34563,
+      "foregroundBbox": [
+        277,
+        623,
+        458,
+        965
+      ],
+      "cropBbox": [
+        265,
+        611,
+        470,
+        977
+      ],
+      "cropXywh": [
+        265,
+        611,
+        205,
+        366
+      ],
+      "normalizedCropBbox": [
+        0.172526,
+        0.59668,
+        0.30599,
+        0.954102
+      ]
+    },
+    {
+      "index": 5,
+      "name": "circles",
+      "file": "circles.png",
+      "componentArea": 116555,
+      "foregroundBbox": [
+        553,
+        529,
+        969,
+        965
+      ],
+      "cropBbox": [
+        541,
+        517,
+        981,
+        977
+      ],
+      "cropXywh": [
+        541,
+        517,
+        440,
+        460
+      ],
+      "normalizedCropBbox": [
+        0.352214,
+        0.504883,
+        0.638672,
+        0.954102
+      ]
+    },
+    {
+      "index": 6,
+      "name": "tutu",
+      "file": "tutu.png",
+      "componentArea": 113952,
+      "foregroundBbox": [
+        1011,
+        556,
+        1497,
+        943
+      ],
+      "cropBbox": [
+        999,
+        544,
+        1509,
+        955
+      ],
+      "cropXywh": [
+        999,
+        544,
+        510,
+        411
+      ],
+      "normalizedCropBbox": [
+        0.650391,
+        0.53125,
+        0.982422,
+        0.932617
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 7,
+    "minArea": 32000,
+    "order": "reading"
+  }
+}

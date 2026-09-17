@@ -1,0 +1,382 @@
+{
+  "source": "games/silly-sentence-builder/assets/source/gpt-image-2/ui-kit-master.png",
+  "sourceSha256": "6fe6aa396a6e564a55dfa2fadd23aa3f0ebfffe743eec57f0322982f8683d951",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "sentence-strip",
+      "file": "sentence-strip.png",
+      "componentArea": 54327,
+      "foregroundBbox": [
+        31,
+        121,
+        417,
+        270
+      ],
+      "cropBbox": [
+        19,
+        109,
+        429,
+        282
+      ],
+      "cropXywh": [
+        19,
+        109,
+        410,
+        173
+      ],
+      "normalizedCropBbox": [
+        0.01237,
+        0.106445,
+        0.279297,
+        0.275391
+      ]
+    },
+    {
+      "index": 2,
+      "name": "tray-who",
+      "file": "tray-who.png",
+      "componentArea": 70101,
+      "foregroundBbox": [
+        441,
+        81,
+        774,
+        305
+      ],
+      "cropBbox": [
+        429,
+        69,
+        786,
+        317
+      ],
+      "cropXywh": [
+        429,
+        69,
+        357,
+        248
+      ],
+      "normalizedCropBbox": [
+        0.279297,
+        0.067383,
+        0.511719,
+        0.30957
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tray-action",
+      "file": "tray-action.png",
+      "componentArea": 69768,
+      "foregroundBbox": [
+        812,
+        81,
+        1145,
+        305
+      ],
+      "cropBbox": [
+        800,
+        69,
+        1157,
+        317
+      ],
+      "cropXywh": [
+        800,
+        69,
+        357,
+        248
+      ],
+      "normalizedCropBbox": [
+        0.520833,
+        0.067383,
+        0.753255,
+        0.30957
+      ]
+    },
+    {
+      "index": 4,
+      "name": "tray-place",
+      "file": "tray-place.png",
+      "componentArea": 69684,
+      "foregroundBbox": [
+        1177,
+        82,
+        1509,
+        307
+      ],
+      "cropBbox": [
+        1165,
+        70,
+        1521,
+        319
+      ],
+      "cropXywh": [
+        1165,
+        70,
+        356,
+        249
+      ],
+      "normalizedCropBbox": [
+        0.758464,
+        0.068359,
+        0.990234,
+        0.311523
+      ]
+    },
+    {
+      "index": 5,
+      "name": "tray-how",
+      "file": "tray-how.png",
+      "componentArea": 78485,
+      "foregroundBbox": [
+        51,
+        371,
+        402,
+        610
+      ],
+      "cropBbox": [
+        39,
+        359,
+        414,
+        622
+      ],
+      "cropXywh": [
+        39,
+        359,
+        375,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.025391,
+        0.350586,
+        0.269531,
+        0.607422
+      ]
+    },
+    {
+      "index": 6,
+      "name": "card-who",
+      "file": "card-who.png",
+      "componentArea": 74788,
+      "foregroundBbox": [
+        471,
+        355,
+        753,
+        629
+      ],
+      "cropBbox": [
+        459,
+        343,
+        765,
+        641
+      ],
+      "cropXywh": [
+        459,
+        343,
+        306,
+        298
+      ],
+      "normalizedCropBbox": [
+        0.298828,
+        0.334961,
+        0.498047,
+        0.625977
+      ]
+    },
+    {
+      "index": 7,
+      "name": "card-action",
+      "file": "card-action.png",
+      "componentArea": 75169,
+      "foregroundBbox": [
+        831,
+        356,
+        1114,
+        629
+      ],
+      "cropBbox": [
+        819,
+        344,
+        1126,
+        641
+      ],
+      "cropXywh": [
+        819,
+        344,
+        307,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.533203,
+        0.335938,
+        0.733073,
+        0.625977
+      ]
+    },
+    {
+      "index": 8,
+      "name": "card-place",
+      "file": "card-place.png",
+      "componentArea": 75286,
+      "foregroundBbox": [
+        1196,
+        355,
+        1479,
+        629
+      ],
+      "cropBbox": [
+        1184,
+        343,
+        1491,
+        641
+      ],
+      "cropXywh": [
+        1184,
+        343,
+        307,
+        298
+      ],
+      "normalizedCropBbox": [
+        0.770833,
+        0.334961,
+        0.970703,
+        0.625977
+      ]
+    },
+    {
+      "index": 9,
+      "name": "card-how",
+      "file": "card-how.png",
+      "componentArea": 76827,
+      "foregroundBbox": [
+        62,
+        662,
+        356,
+        933
+      ],
+      "cropBbox": [
+        50,
+        650,
+        368,
+        945
+      ],
+      "cropXywh": [
+        50,
+        650,
+        318,
+        295
+      ],
+      "normalizedCropBbox": [
+        0.032552,
+        0.634766,
+        0.239583,
+        0.922852
+      ]
+    },
+    {
+      "index": 10,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 76986,
+      "foregroundBbox": [
+        391,
+        722,
+        855,
+        897
+      ],
+      "cropBbox": [
+        379,
+        710,
+        867,
+        909
+      ],
+      "cropXywh": [
+        379,
+        710,
+        488,
+        199
+      ],
+      "normalizedCropBbox": [
+        0.246745,
+        0.693359,
+        0.564453,
+        0.887695
+      ]
+    },
+    {
+      "index": 11,
+      "name": "progress-star",
+      "file": "progress-star.png",
+      "componentArea": 42364,
+      "foregroundBbox": [
+        869,
+        657,
+        1137,
+        920
+      ],
+      "cropBbox": [
+        857,
+        645,
+        1149,
+        932
+      ],
+      "cropXywh": [
+        857,
+        645,
+        292,
+        287
+      ],
+      "normalizedCropBbox": [
+        0.557943,
+        0.629883,
+        0.748047,
+        0.910156
+      ]
+    },
+    {
+      "index": 12,
+      "name": "label-plaque",
+      "file": "label-plaque.png",
+      "componentArea": 57019,
+      "foregroundBbox": [
+        1162,
+        719,
+        1500,
+        897
+      ],
+      "cropBbox": [
+        1150,
+        707,
+        1512,
+        909
+      ],
+      "cropXywh": [
+        1150,
+        707,
+        362,
+        202
+      ],
+      "normalizedCropBbox": [
+        0.748698,
+        0.69043,
+        0.984375,
+        0.887695
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
