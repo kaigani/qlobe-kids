@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build Texture Trail runtime assets and deterministic magenta QA previews."""
 from __future__ import annotations
-import hashlib, json
+import hashlib, json, subprocess, shutil
 from pathlib import Path
 from PIL import Image
 
@@ -31,7 +31,7 @@ def cutout(src, dst, qa, max_size=640, pad=12):
     return {"source": str(src.relative_to(ROOT)), "output": str(dst.relative_to(ROOT)), "qa": str(qa.relative_to(ROOT)), "dimensions": list(im.size), "bytes": dst.stat().st_size, "alpha": alpha_stats(im)}
 
 def main():
-    for d in (ASSET/"art", ASSET/"characters", ASSET/"objects", ASSET/"world", QA, ASSET/"hub"/"tiles"):
+    for d in (ASSET/"art", ASSET/"characters", ASSET/"objects", ASSET/"world", QA, ASSET/"source"/"voice", ASSET/"audio"):
         d.mkdir(parents=True, exist_ok=True)
     outputs = {}; sources = {}
     for p in sorted(SRC.rglob("*.png")):
@@ -46,11 +46,50 @@ def main():
       ("crops/snails/snail-cheer.png","characters/snail-cheer.webp",320),("crops/snails/snail-hint.png","characters/snail-hint.webp",320),("crops/snails/snail-point.png","characters/snail-point.webp",320),("crops/snails/snail-wait.png","characters/snail-wait.webp",320)]
     for p in sorted((SRC/"crops"/"texture-kit").glob("*.png")): mappings.append((str(p.relative_to(SRC)),"art/"+p.stem+".webp",320))
     for p in sorted((SRC/"crops"/"objects").glob("*.png")): mappings.append((str(p.relative_to(SRC)),"objects/"+p.stem+".webp",320))
+    # Adversarial art review replacement set: these intentionally overwrite the
+    # original soft card/marker and add real raster label/reward furniture.
+    for p in sorted((SRC/"crops"/"soft-revision").glob("*.png")): mappings.append((str(p.relative_to(SRC)),"art/"+p.stem+".webp",320))
+    for p in sorted((SRC/"crops"/"reward-medals").glob("*.png")): mappings.append((str(p.relative_to(SRC)),"art/"+p.stem+".webp",320))
     for rel,out,ms in mappings:
         s=SRC/rel; d=ASSET/out; q=QA/(Path(out).stem+"-magenta.png"); outputs[out]=cutout(s,d,q,ms)
     hubsrc=SRC/"gpt-image-2"/"hub-tile-source.png"; hi=Image.open(hubsrc).convert("RGB"); hi=hi.resize((640,533),Image.Resampling.LANCZOS)
-    hp=ASSET/"hub"/"tiles"/"texture-trail.jpg"; hi.save(hp,"JPEG",quality=90,optimize=True)
-    outputs["hub/tiles/texture-trail.jpg"]={"source":str(hubsrc.relative_to(ROOT)),"output":str(hp.relative_to(ROOT)),"dimensions":[640,533],"bytes":hp.stat().st_size,"alpha":None}
+    # Catalog artwork lives at repository root, while the game keeps its source.
+    repo = ROOT.parents[1]
+    hp=repo/"assets"/"hub"/"tiles"/"texture-trail.jpg"; hp.parent.mkdir(parents=True,exist_ok=True); hi.save(hp,"JPEG",quality=90,optimize=True)
+    outputs["hub/tiles/texture-trail.jpg"]={"source":str(hubsrc.relative_to(ROOT)),"output":str(hp.relative_to(repo)),"dimensions":[640,533],"bytes":hp.stat().st_size,"alpha":None}
+    # Build the shareable Open Graph composition from the same approved source.
+    og=Image.open(hubsrc).convert("RGB"); scale=max(1200/og.width,630/og.height); og=og.resize((round(og.width*scale),round(og.height*scale)),Image.Resampling.LANCZOS)
+    left=(og.width-1200)//2; top=(og.height-630)//2; og=og.crop((left,top,left+1200,top+630)); ogp=ASSET/"og-image.jpg"; og.save(ogp,"JPEG",quality=90,optimize=True)
+    voice_root=ROOT.parents[1]/"shared"/"media"; manifest={"_v": 1}
+    runtime_keys = {
+        "welcome": "welcome", "choose": "choose", "complete-choice": "completeChoice",
+        "bumpy-explore": "bumpyExplore", "bumpy-trail": "bumpyTrail", "bumpy-nudge": "bumpyNudge", "bumpy-success": "bumpySuccess",
+        "smooth-explore": "smoothExplore", "smooth-trail": "smoothTrail", "smooth-nudge": "smoothNudge", "smooth-success": "smoothSuccess",
+        "ridged-explore": "ridgedExplore", "ridged-trail": "ridgedTrail", "ridged-nudge": "ridgedNudge", "ridged-success": "ridgedSuccess",
+        "soft-explore": "softExplore", "soft-trail": "softTrail", "soft-nudge": "softNudge", "soft-success": "softSuccess",
+    }
+    voice_folders=sorted(voice_root.glob("texture-trail-voice-*"))
+    for folder in voice_folders:
+        qa_json=folder/"qa-transcript.json"
+        if not qa_json.exists() or not json.loads(qa_json.read_text(encoding="utf-8")).get("match"): continue
+        audio=next(folder.glob("*.m4a"),None)
+        if audio is None: continue
+        key=audio.stem.removeprefix("texture-trail-voice-"); dest=ASSET/"audio"/f"{key}.m4a"; shutil.copy2(audio,dest)
+        outdir=SRC/"voice"/key; outdir.mkdir(parents=True,exist_ok=True); shutil.copy2(qa_json,outdir/"qa-transcript.json"); shutil.copy2(folder/"recipe.json",outdir/"recipe.json")
+        probe=subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","default=noprint_wrappers=1:nokey=1",str(audio)],capture_output=True,text=True,check=True)
+        runtime_key=runtime_keys.get(key)
+        if runtime_key: manifest[runtime_key]={"file":f"{key}.m4a","dur":round(float(probe.stdout.strip()),3)}
+    manifest_path=ASSET/"audio"/"manifest.json"
+    if voice_folders:
+        missing=sorted(set(runtime_keys.values())-set(manifest))
+        if missing: raise SystemExit(f"missing accepted voice sources: {', '.join(missing)}")
+        manifest_path.write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+    else:
+        # Voice staging is intentionally not shipped. A clean checkout keeps the
+        # already accepted M4As and manifest instead of clobbering them.
+        existing=json.loads(manifest_path.read_text(encoding="utf-8"))
+        missing=sorted(set(runtime_keys.values())-set(existing))
+        if missing: raise SystemExit(f"runtime voice manifest is incomplete: {', '.join(missing)}")
     (SRC/"processing.json").write_text(json.dumps({"processor":"texture-trail/process-assets.py","sources":sources,"outputs":outputs},indent=2)+"\n",encoding="utf-8")
     if outputs["world"]["budgetPass"] is False: raise SystemExit("world exceeds 300KB")
     print(json.dumps({"outputs":len(outputs),"worldBytes":outputs["world"]["bytes"],"qa":len(list(QA.glob("*.png")))},indent=2))

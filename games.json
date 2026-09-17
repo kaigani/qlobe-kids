@@ -2095,19 +2095,34 @@
       "path": "games/texture-trail/",
       "icon": "assets/hub/tiles/texture-trail.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#8f6f4e",
+      "status": "beta",
+      "accent": "#7b51b4",
       "modes": [
         {
-          "id": "feel",
-          "title": "Feels the Same",
-          "skill": "texture vocabulary and comparison"
+          "id": "bumpy",
+          "title": "Bumpy",
+          "skill": "recognize and describe bumpy surfaces"
+        },
+        {
+          "id": "smooth",
+          "title": "Smooth",
+          "skill": "recognize and describe smooth surfaces"
+        },
+        {
+          "id": "ridged",
+          "title": "Ridged",
+          "skill": "recognize and describe ridged surfaces"
+        },
+        {
+          "id": "soft",
+          "title": "Soft",
+          "skill": "recognize and describe soft surfaces"
         }
       ],
-      "summary": "Match rough, smooth, soft, and bumpy surfaces."
+      "summary": "Explore four textures, then guide Pip along tactile clay trails."
     },
     {
       "id": "smell-jars",

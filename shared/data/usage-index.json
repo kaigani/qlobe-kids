@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T15:43:46.050Z",
+  "generated": "2026-09-17T17:10:23.307Z",
   "engines": {
     "coach-timer": {
       "count": 10,
@@ -47,14 +47,6 @@
         "turn-taking-tower"
       ]
     },
-    "match-pairs": {
-      "count": 3,
-      "games": [
-        "community-helper-cards",
-        "texture-trail",
-        "then-now-sort"
-      ]
-    },
     "observe-journal": {
       "count": 3,
       "games": [
@@ -75,6 +67,13 @@
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "match-pairs": {
+      "count": 2,
+      "games": [
+        "community-helper-cards",
+        "then-now-sort"
       ]
     },
     "tap-count": {
@@ -3194,22 +3193,33 @@
       "packs": []
     },
     "texture-trail": {
-      "engine": "match-pairs",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/match-pairs.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/quirky-forest-adventure.mp3"
+      ],
       "packs": []
     },
     "then-now-sort": {
@@ -3684,6 +3694,7 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -3720,6 +3731,7 @@
         "subtraction-picnic",
         "sweep-the-trail",
         "table-setting-mission",
+        "texture-trail",
         "tiny-sentence-workshop",
         "tweezer-rescue"
       ],
@@ -3869,6 +3881,7 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -3915,7 +3928,6 @@
       ],
       "shared/js/engines/match-pairs.js": [
         "community-helper-cards",
-        "texture-trail",
         "then-now-sort"
       ],
       "shared/js/engines/observe-journal.js": [
@@ -3987,6 +3999,7 @@
         "sticker-line-challenge",
         "sweep-the-trail",
         "table-setting-mission",
+        "texture-trail",
         "tiny-reader-theater"
       ],
       "shared/js/idle-nudge.js": [
@@ -4028,6 +4041,7 @@
         "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
+        "texture-trail",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "tweezer-rescue",
@@ -4105,6 +4119,7 @@
         "sound-painting",
         "story-repair-shop",
         "subtraction-picnic",
+        "texture-trail",
         "throwing-target-garden",
         "tweezer-rescue",
         "weather-scientist"
@@ -4211,6 +4226,7 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4257,6 +4273,7 @@
         "subtraction-picnic",
         "sweep-the-trail",
         "table-setting-mission",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4436,7 +4453,6 @@
         "sweep-the-trail",
         "tangram-tales",
         "teen-bead-builder",
-        "texture-trail",
         "then-now-sort",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -4610,6 +4626,7 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4671,6 +4688,7 @@
         "sweep-the-trail",
         "table-setting-mission",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4752,6 +4770,7 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4917,7 +4936,6 @@
         "smell-jars",
         "story-sequence",
         "story-stones",
-        "texture-trail",
         "then-now-sort",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -4973,6 +4991,7 @@
         "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
+        "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
         "weather-scientist"
@@ -6251,7 +6270,8 @@
         "secret-message-copy",
         "shape-detective",
         "story-repair-shop",
-        "sweep-the-trail"
+        "sweep-the-trail",
+        "texture-trail"
       ],
       "shared/assets/music/rainy-day-acoustic.mp3": [
         "chalkboard-big-strokes"

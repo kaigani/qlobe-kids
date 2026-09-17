@@ -1,0 +1,82 @@
+{
+  "source": "games/texture-trail/assets/source/gpt-image-2/reward-medals.png",
+  "sourceSha256": "51f809be61b651867f6f35949eaa3e633010cbdac2167aae0b9a3b555d3d703f",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "medal-smooth",
+      "file": "medal-smooth.png",
+      "componentArea": 409555,
+      "foregroundBbox": [
+        84,
+        76,
+        799,
+        782
+      ],
+      "cropBbox": [
+        72,
+        64,
+        811,
+        794
+      ],
+      "cropXywh": [
+        72,
+        64,
+        739,
+        730
+      ],
+      "normalizedCropBbox": [
+        0.040586,
+        0.072153,
+        0.457159,
+        0.895152
+      ]
+    },
+    {
+      "index": 2,
+      "name": "medal-ridged",
+      "file": "medal-ridged.png",
+      "componentArea": 408991,
+      "foregroundBbox": [
+        969,
+        76,
+        1687,
+        781
+      ],
+      "cropBbox": [
+        957,
+        64,
+        1699,
+        793
+      ],
+      "cropXywh": [
+        957,
+        64,
+        742,
+        729
+      ],
+      "normalizedCropBbox": [
+        0.539459,
+        0.072153,
+        0.957723,
+        0.894025
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

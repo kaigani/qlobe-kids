@@ -1,0 +1,382 @@
+{
+  "source": "games/texture-trail/assets/source/gpt-image-2/object-sheet.png",
+  "sourceSha256": "2ab6a51cfa8b8bcb86abbdf8476eff3602d4a084e7a47ef44d6ce4a2cc91704a",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "raspberry",
+      "file": "raspberry.png",
+      "componentArea": 74535,
+      "foregroundBbox": [
+        34,
+        56,
+        330,
+        408
+      ],
+      "cropBbox": [
+        22,
+        44,
+        342,
+        420
+      ],
+      "cropXywh": [
+        22,
+        44,
+        320,
+        376
+      ],
+      "normalizedCropBbox": [
+        0.015193,
+        0.040516,
+        0.236188,
+        0.38674
+      ]
+    },
+    {
+      "index": 2,
+      "name": "pinecone",
+      "file": "pinecone.png",
+      "componentArea": 74084,
+      "foregroundBbox": [
+        399,
+        55,
+        687,
+        412
+      ],
+      "cropBbox": [
+        387,
+        43,
+        699,
+        424
+      ],
+      "cropXywh": [
+        387,
+        43,
+        312,
+        381
+      ],
+      "normalizedCropBbox": [
+        0.267265,
+        0.039595,
+        0.482735,
+        0.390424
+      ]
+    },
+    {
+      "index": 3,
+      "name": "sensory-ball",
+      "file": "sensory-ball.png",
+      "componentArea": 72771,
+      "foregroundBbox": [
+        748,
+        92,
+        1064,
+        412
+      ],
+      "cropBbox": [
+        736,
+        80,
+        1076,
+        424
+      ],
+      "cropXywh": [
+        736,
+        80,
+        340,
+        344
+      ],
+      "normalizedCropBbox": [
+        0.508287,
+        0.073665,
+        0.743094,
+        0.390424
+      ]
+    },
+    {
+      "index": 4,
+      "name": "gourd",
+      "file": "gourd.png",
+      "componentArea": 67307,
+      "foregroundBbox": [
+        1138,
+        43,
+        1416,
+        418
+      ],
+      "cropBbox": [
+        1126,
+        31,
+        1428,
+        430
+      ],
+      "cropXywh": [
+        1126,
+        31,
+        302,
+        399
+      ],
+      "normalizedCropBbox": [
+        0.777624,
+        0.028545,
+        0.986188,
+        0.395948
+      ]
+    },
+    {
+      "index": 5,
+      "name": "egg",
+      "file": "egg.png",
+      "componentArea": 59910,
+      "foregroundBbox": [
+        57,
+        435,
+        307,
+        741
+      ],
+      "cropBbox": [
+        45,
+        423,
+        319,
+        753
+      ],
+      "cropXywh": [
+        45,
+        423,
+        274,
+        330
+      ],
+      "normalizedCropBbox": [
+        0.031077,
+        0.389503,
+        0.220304,
+        0.69337
+      ]
+    },
+    {
+      "index": 6,
+      "name": "river-pebble",
+      "file": "river-pebble.png",
+      "componentArea": 55324,
+      "foregroundBbox": [
+        391,
+        490,
+        708,
+        710
+      ],
+      "cropBbox": [
+        379,
+        478,
+        720,
+        722
+      ],
+      "cropXywh": [
+        379,
+        478,
+        341,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.26174,
+        0.440147,
+        0.497238,
+        0.664825
+      ]
+    },
+    {
+      "index": 7,
+      "name": "seashell",
+      "file": "seashell.png",
+      "componentArea": 67464,
+      "foregroundBbox": [
+        746,
+        436,
+        1066,
+        727
+      ],
+      "cropBbox": [
+        734,
+        424,
+        1078,
+        739
+      ],
+      "cropXywh": [
+        734,
+        424,
+        344,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.506906,
+        0.390424,
+        0.744475,
+        0.680479
+      ]
+    },
+    {
+      "index": 8,
+      "name": "corduroy-cushion",
+      "file": "corduroy-cushion.png",
+      "componentArea": 73335,
+      "foregroundBbox": [
+        1116,
+        449,
+        1425,
+        729
+      ],
+      "cropBbox": [
+        1104,
+        437,
+        1437,
+        741
+      ],
+      "cropXywh": [
+        1104,
+        437,
+        333,
+        304
+      ],
+      "normalizedCropBbox": [
+        0.762431,
+        0.402394,
+        0.992403,
+        0.68232
+      ]
+    },
+    {
+      "index": 9,
+      "name": "cloud-cushion",
+      "file": "cloud-cushion.png",
+      "componentArea": 75210,
+      "foregroundBbox": [
+        25,
+        763,
+        418,
+        1027
+      ],
+      "cropBbox": [
+        13,
+        751,
+        430,
+        1039
+      ],
+      "cropXywh": [
+        13,
+        751,
+        417,
+        288
+      ],
+      "normalizedCropBbox": [
+        0.008978,
+        0.691529,
+        0.296961,
+        0.956722
+      ]
+    },
+    {
+      "index": 10,
+      "name": "feather",
+      "file": "feather.png",
+      "componentArea": 52755,
+      "foregroundBbox": [
+        454,
+        744,
+        731,
+        1034
+      ],
+      "cropBbox": [
+        442,
+        732,
+        743,
+        1046
+      ],
+      "cropXywh": [
+        442,
+        732,
+        301,
+        314
+      ],
+      "normalizedCropBbox": [
+        0.305249,
+        0.674033,
+        0.513122,
+        0.963168
+      ]
+    },
+    {
+      "index": 11,
+      "name": "pom-pom",
+      "file": "pom-pom.png",
+      "componentArea": 64431,
+      "foregroundBbox": [
+        765,
+        759,
+        1055,
+        1043
+      ],
+      "cropBbox": [
+        753,
+        747,
+        1067,
+        1055
+      ],
+      "cropXywh": [
+        753,
+        747,
+        314,
+        308
+      ],
+      "normalizedCropBbox": [
+        0.520028,
+        0.687845,
+        0.736878,
+        0.971455
+      ]
+    },
+    {
+      "index": 12,
+      "name": "star-pillow",
+      "file": "star-pillow.png",
+      "componentArea": 56015,
+      "foregroundBbox": [
+        1110,
+        741,
+        1419,
+        1033
+      ],
+      "cropBbox": [
+        1098,
+        729,
+        1431,
+        1045
+      ],
+      "cropXywh": [
+        1098,
+        729,
+        333,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.758287,
+        0.671271,
+        0.98826,
+        0.962247
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

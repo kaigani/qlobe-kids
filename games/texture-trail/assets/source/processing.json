@@ -14,11 +14,19 @@
     "assets\\source\\crops\\objects\\sensory-ball.png": "09ab1f56318931140f78c470c3952c44c7a22b5c5766d6db5869c83cb467b7ac",
     "assets\\source\\crops\\objects\\star-pillow.png": "e8d09bf963b54d6ed98e064e15e8a928c645e5ab0d8015d2dbe77033566a8445",
     "assets\\source\\crops\\objects-mask.png": "e01cec1df8d12125978a9dc92b5b10879d8821a7d173c7921eda1d1734ac20f0",
+    "assets\\source\\crops\\reward-medals\\medal-ridged.png": "37ab2a2faa8990b37bc139ccb00dbfdae6ebf804a3d788f69f3941a0af0c732a",
+    "assets\\source\\crops\\reward-medals\\medal-smooth.png": "8879455f2a22cbaa825d7abca390a12b34d92dfa338792675f1f4ea3f3ce082a",
+    "assets\\source\\crops\\reward-medals-mask.png": "76d46d1a0274213b3e4b17c56bfb75244130024f323b07247520f32470e4cc7a",
     "assets\\source\\crops\\snails\\snail-cheer.png": "8a17f87ae6eec6259e2060946c9aa91b2d849d2158b795fba22ef691bd44e843",
     "assets\\source\\crops\\snails\\snail-hint.png": "3809707d01fe2abf0a8f27515da2f5535d0f40ed5e0861cd286c66c7380d1930",
     "assets\\source\\crops\\snails\\snail-point.png": "b894ee5c0dda020adf4f7c7ceb0562c538b92e8230121d339e66ea742b2103e2",
     "assets\\source\\crops\\snails\\snail-wait.png": "81ca355d552b962bee4ec671ad32eb957d29ac02d857754fb50d97208167df7e",
     "assets\\source\\crops\\snails-mask.png": "5d4632ceddbf669241188f76df1593e92787f01dfb5d6bc45313311b70d82aa3",
+    "assets\\source\\crops\\soft-revision\\card-soft.png": "8ccd712c6d8fe57ac6dc798bf8514ef6cb9b092c68020b057cdc7b6ddae8c9ea",
+    "assets\\source\\crops\\soft-revision\\marker-soft.png": "b0587642caf568ba0ebbf5b8b48e337097f0cc7739713c47670e095b4c6418b7",
+    "assets\\source\\crops\\soft-revision\\medal-soft.png": "fb842752c864c723774ab6f77dee7801974c29cc22225e06a9bfcc2ecba161b4",
+    "assets\\source\\crops\\soft-revision\\plaque-label.png": "130258c33956a08af81b06ca30ed60f6500a35abe0fcbcc4df1eee542672ffc3",
+    "assets\\source\\crops\\soft-revision-mask.png": "84db14144b53121879f05eec5cbc397d7dbc51ccac340bd8f6c39bbd624f6c0c",
     "assets\\source\\crops\\texture-kit\\card-bumpy.png": "80b29ee8e1dc3edd6237c539fd3c01d3b09cc9b97cb808e028dab837839f96fe",
     "assets\\source\\crops\\texture-kit\\card-ridged.png": "ed69f8f4f22444e9cec972d07317a4274be917f13febfc0c4b9722ff4081f230",
     "assets\\source\\crops\\texture-kit\\card-smooth.png": "72146dc000517e5c7cc9bf2dec820158579e726f249e4e3c06f8e536ae7c55db",
@@ -35,7 +43,9 @@
     "assets\\source\\gpt-image-2\\clay-garden-world.png": "2ef5056cf4bd9ce7cc6858a354b442dd0f43c2ba51b6d88388190912cd994d08",
     "assets\\source\\gpt-image-2\\hub-tile-source.png": "9c9d4c9f1d34a03f22e1736553cf956cd5f6df8b4421b5ee7642936a13de672a",
     "assets\\source\\gpt-image-2\\object-sheet.png": "2ab6a51cfa8b8bcb86abbdf8476eff3602d4a084e7a47ef44d6ce4a2cc91704a",
+    "assets\\source\\gpt-image-2\\reward-medals.png": "51f809be61b651867f6f35949eaa3e633010cbdac2167aae0b9a3b555d3d703f",
     "assets\\source\\gpt-image-2\\snail-poses.png": "8226f6fe9b6b279ad6b4e56ae67dfef525ca2bdc20dcb63c3783cc2b383d4f58",
+    "assets\\source\\gpt-image-2\\soft-revision.png": "ffe5fa5c5d5024f0638011d9c76650d21c83b89dbabec8e686249f90359e393f",
     "assets\\source\\gpt-image-2\\texture-kit.png": "81037a90f70c7cadb2e71a182f92bbcfe8d9aefda532b86f4d25883f7ae3547b",
     "assets\\source\\gpt-image-2\\title-lockup.png": "fa4b8bec0df161e6e705ab77a04a44d9608ff2654488d7364d5924e9e9bd14c9"
   },
@@ -173,18 +183,18 @@
       }
     },
     "art/card-soft.webp": {
-      "source": "assets\\source\\crops\\texture-kit\\card-soft.png",
+      "source": "assets\\source\\crops\\soft-revision\\card-soft.png",
       "output": "assets\\art\\card-soft.webp",
       "qa": "assets\\source\\qa\\card-soft-magenta.png",
       "dimensions": [
-        231,
+        245,
         320
       ],
-      "bytes": 91672,
+      "bytes": 98984,
       "alpha": {
-        "transparentPct": 10.91,
-        "opaquePct": 0.501,
-        "partialPct": 88.589
+        "transparentPct": 11.541,
+        "opaquePct": 0.79,
+        "partialPct": 87.67
       }
     },
     "art/marker-bumpy.webp": {
@@ -233,18 +243,18 @@
       }
     },
     "art/marker-soft.webp": {
-      "source": "assets\\source\\crops\\texture-kit\\marker-soft.png",
+      "source": "assets\\source\\crops\\soft-revision\\marker-soft.png",
       "output": "assets\\art\\marker-soft.webp",
       "qa": "assets\\source\\qa\\marker-soft-magenta.png",
       "dimensions": [
-        318,
-        298
+        320,
+        272
       ],
-      "bytes": 92168,
+      "bytes": 101986,
       "alpha": {
-        "transparentPct": 30.836,
-        "opaquePct": 0.082,
-        "partialPct": 69.082
+        "transparentPct": 26.009,
+        "opaquePct": 0.186,
+        "partialPct": 73.805
       }
     },
     "art/medal-bumpy.webp": {
@@ -485,6 +495,66 @@
         "transparentPct": 44.163,
         "opaquePct": 0.359,
         "partialPct": 55.478
+      }
+    },
+    "art/medal-soft.webp": {
+      "source": "assets\\source\\crops\\soft-revision\\medal-soft.png",
+      "output": "assets\\art\\medal-soft.webp",
+      "qa": "assets\\source\\qa\\medal-soft-magenta.png",
+      "dimensions": [
+        320,
+        319
+      ],
+      "bytes": 108264,
+      "alpha": {
+        "transparentPct": 27.318,
+        "opaquePct": 0.375,
+        "partialPct": 72.307
+      }
+    },
+    "art/plaque-label.webp": {
+      "source": "assets\\source\\crops\\soft-revision\\plaque-label.png",
+      "output": "assets\\art\\plaque-label.webp",
+      "qa": "assets\\source\\qa\\plaque-label-magenta.png",
+      "dimensions": [
+        320,
+        156
+      ],
+      "bytes": 50428,
+      "alpha": {
+        "transparentPct": 14.307,
+        "opaquePct": 0.931,
+        "partialPct": 84.762
+      }
+    },
+    "art/medal-ridged.webp": {
+      "source": "assets\\source\\crops\\reward-medals\\medal-ridged.png",
+      "output": "assets\\art\\medal-ridged.webp",
+      "qa": "assets\\source\\qa\\medal-ridged-magenta.png",
+      "dimensions": [
+        320,
+        314
+      ],
+      "bytes": 111744,
+      "alpha": {
+        "transparentPct": 23.058,
+        "opaquePct": 0.602,
+        "partialPct": 76.34
+      }
+    },
+    "art/medal-smooth.webp": {
+      "source": "assets\\source\\crops\\reward-medals\\medal-smooth.png",
+      "output": "assets\\art\\medal-smooth.webp",
+      "qa": "assets\\source\\qa\\medal-smooth-magenta.png",
+      "dimensions": [
+        320,
+        316
+      ],
+      "bytes": 108028,
+      "alpha": {
+        "transparentPct": 22.777,
+        "opaquePct": 0.592,
+        "partialPct": 76.631
       }
     },
     "hub/tiles/texture-trail.jpg": {
