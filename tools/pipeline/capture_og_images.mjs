@@ -20,6 +20,7 @@
 // Flags
 //   --playwright <dir>  node_modules dir holding playwright@1.52.0 (or set
 //                       PLAYWRIGHT_MODULE_PATH / NODE_PATH)
+//   --channel <name>     installed browser channel, e.g. chrome (default: bundled Chromium)
 //   --base <url>        base URL of the served repo   (default http://localhost:8000)
 //   --status a,b        registry statuses to capture  (default live,beta)
 //   --only a,b          capture just these game ids   (overrides --status)
@@ -70,6 +71,7 @@ const CONCURRENCY = Math.max(1, Number(flag('concurrency', '3')));
 const QUALITY = Number(flag('quality', '82'));
 const MAX_KB = Number(flag('max-kb', '200'));
 const JSON_OUT = flag('json');
+const CHANNEL = flag('channel');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -221,7 +223,7 @@ async function captureOne(context, scratchPage, game) {
 }
 
 // ---- run -------------------------------------------------------------------
-const browser = await chromium.launch();
+const browser = await chromium.launch(CHANNEL ? { channel: CHANNEL } : {});
 const context = await browser.newContext({
   viewport: { width: WIDTH * LAYOUT_SCALE, height: HEIGHT * LAYOUT_SCALE },
   deviceScaleFactor: 1 / LAYOUT_SCALE,

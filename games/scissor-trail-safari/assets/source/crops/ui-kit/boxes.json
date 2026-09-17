@@ -1,0 +1,206 @@
+{
+  "source": "games/scissor-trail-safari/assets/source/gpt-image-2/ui-kit.png",
+  "sourceSha256": "ae959f465c75231364cbee85944adae151903e0ac553911ff84219d42bd6e082",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    252,
+    2,
+    252
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-straight",
+      "file": "card-straight.png",
+      "componentArea": 268274,
+      "foregroundBbox": [
+        34,
+        65,
+        415,
+        790
+      ],
+      "cropBbox": [
+        22,
+        53,
+        427,
+        802
+      ],
+      "cropXywh": [
+        22,
+        53,
+        405,
+        749
+      ],
+      "normalizedCropBbox": [
+        0.017544,
+        0.042265,
+        0.34051,
+        0.639553
+      ]
+    },
+    {
+      "index": 2,
+      "name": "card-curvy",
+      "file": "card-curvy.png",
+      "componentArea": 266841,
+      "foregroundBbox": [
+        440,
+        65,
+        820,
+        789
+      ],
+      "cropBbox": [
+        428,
+        53,
+        832,
+        801
+      ],
+      "cropXywh": [
+        428,
+        53,
+        404,
+        748
+      ],
+      "normalizedCropBbox": [
+        0.341308,
+        0.042265,
+        0.663477,
+        0.638756
+      ]
+    },
+    {
+      "index": 3,
+      "name": "card-spiral",
+      "file": "card-spiral.png",
+      "componentArea": 269938,
+      "foregroundBbox": [
+        845,
+        65,
+        1230,
+        790
+      ],
+      "cropBbox": [
+        833,
+        53,
+        1242,
+        802
+      ],
+      "cropXywh": [
+        833,
+        53,
+        409,
+        749
+      ],
+      "normalizedCropBbox": [
+        0.664274,
+        0.042265,
+        0.990431,
+        0.639553
+      ]
+    },
+    {
+      "index": 4,
+      "name": "scissor-medallion",
+      "file": "scissor-medallion.png",
+      "componentArea": 108852,
+      "foregroundBbox": [
+        30,
+        813,
+        401,
+        1188
+      ],
+      "cropBbox": [
+        18,
+        801,
+        413,
+        1200
+      ],
+      "cropXywh": [
+        18,
+        801,
+        395,
+        399
+      ],
+      "normalizedCropBbox": [
+        0.014354,
+        0.638756,
+        0.329346,
+        0.956938
+      ]
+    },
+    {
+      "index": 5,
+      "name": "star-medallion",
+      "file": "star-medallion.png",
+      "componentArea": 102761,
+      "foregroundBbox": [
+        425,
+        814,
+        782,
+        1179
+      ],
+      "cropBbox": [
+        413,
+        802,
+        794,
+        1191
+      ],
+      "cropXywh": [
+        413,
+        802,
+        381,
+        389
+      ],
+      "normalizedCropBbox": [
+        0.329346,
+        0.639553,
+        0.633174,
+        0.949761
+      ]
+    },
+    {
+      "index": 6,
+      "name": "button-plaque",
+      "file": "button-plaque.png",
+      "componentArea": 102899,
+      "foregroundBbox": [
+        802,
+        880,
+        1234,
+        1136
+      ],
+      "cropBbox": [
+        790,
+        868,
+        1246,
+        1148
+      ],
+      "cropXywh": [
+        790,
+        868,
+        456,
+        280
+      ],
+      "normalizedCropBbox": [
+        0.629984,
+        0.692185,
+        0.99362,
+        0.91547
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

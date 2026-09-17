@@ -1,0 +1,564 @@
+{
+  "format": "qlobe-asset-processing-v1",
+  "game": "scissor-trail-safari",
+  "cutoutFinalizer": "tools/pipeline/cutout_finalize.py",
+  "assets": {
+    "animals/lion.webp": {
+      "source": "assets/source/crops/animals-a/lion.png",
+      "sourceSha256": "c8fcc167ed61cc467fcf804bddfb8ba5ba26457942d1e880b3af2d0a44b7418d",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 44.141,
+          "opaquePct": 52.989,
+          "partialPct": 2.869
+        },
+        "bbox": [
+          12,
+          12,
+          531,
+          572
+        ],
+        "sourceSize": [
+          545,
+          572
+        ],
+        "finalSize": [
+          543,
+          572
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 88392
+    },
+    "animals/zebra.webp": {
+      "source": "assets/source/crops/animals-a/zebra.png",
+      "sourceSha256": "1aaace53caf60ca686011712591bdb8594f12535424e977ebb67cda33f6b9a2a",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 57.49,
+          "opaquePct": 40.042,
+          "partialPct": 2.468
+        },
+        "bbox": [
+          12,
+          12,
+          469,
+          564
+        ],
+        "sourceSize": [
+          481,
+          576
+        ],
+        "finalSize": [
+          481,
+          576
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 65364
+    },
+    "animals/giraffe.webp": {
+      "source": "assets/source/crops/animals-a/giraffe.png",
+      "sourceSha256": "70c47090a36e4e5ca8269264b00d342a2ce7e03259975be351bd8f8b8a2dfc3d",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 67.686,
+          "opaquePct": 29.943,
+          "partialPct": 2.371
+        },
+        "bbox": [
+          12,
+          0,
+          448,
+          663
+        ],
+        "sourceSize": [
+          462,
+          675
+        ],
+        "finalSize": [
+          409,
+          600
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 53842
+    },
+    "animals/elephant.webp": {
+      "source": "assets/source/crops/animals-a/elephant.png",
+      "sourceSha256": "2b6037844f589a0864946d2857175877321e10b2bafdfc0c4292460663554419",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 42.856,
+          "opaquePct": 54.648,
+          "partialPct": 2.496
+        },
+        "bbox": [
+          12,
+          12,
+          594,
+          555
+        ],
+        "sourceSize": [
+          606,
+          567
+        ],
+        "finalSize": [
+          600,
+          561
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 74782
+    },
+    "animals/parrot.webp": {
+      "source": "assets/source/crops/animals-b/parrot.png",
+      "sourceSha256": "733324c21f80098fdf8a673e294510d9e249a81560ad7d381699f6c42dd6cd59",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 52.203,
+          "opaquePct": 44.199,
+          "partialPct": 3.598
+        },
+        "bbox": [
+          14,
+          12,
+          417,
+          582
+        ],
+        "sourceSize": [
+          429,
+          595
+        ],
+        "finalSize": [
+          427,
+          594
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 65076
+    },
+    "animals/snake.webp": {
+      "source": "assets/source/crops/animals-b/snake.png",
+      "sourceSha256": "03ecee1882903648fc34fa3530f2cd23d9b6225cb9f5cf3bda2bdd655df22fd5",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 50.362,
+          "opaquePct": 46.464,
+          "partialPct": 3.174
+        },
+        "bbox": [
+          12,
+          12,
+          396,
+          533
+        ],
+        "sourceSize": [
+          408,
+          547
+        ],
+        "finalSize": [
+          408,
+          545
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 61572
+    },
+    "animals/monkey.webp": {
+      "source": "assets/source/crops/animals-b/monkey.png",
+      "sourceSha256": "22422bb4f3a347308e7dd119c809d06f58f442ce6b37cc855c321803ef2103f0",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 48.22,
+          "opaquePct": 48.027,
+          "partialPct": 3.753
+        },
+        "bbox": [
+          13,
+          12,
+          497,
+          552
+        ],
+        "sourceSize": [
+          509,
+          565
+        ],
+        "finalSize": [
+          508,
+          564
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 85212
+    },
+    "animals/tiger.webp": {
+      "source": "assets/source/crops/animals-b/tiger.png",
+      "sourceSha256": "dc4599ea82b285886ae5608e834fe4435fb9e8d98413efd58f5e3f28bbb0da71",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 42.686,
+          "opaquePct": 53.761,
+          "partialPct": 3.553
+        },
+        "bbox": [
+          12,
+          12,
+          570,
+          561
+        ],
+        "sourceSize": [
+          584,
+          574
+        ],
+        "finalSize": [
+          582,
+          573
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 101262
+    },
+    "art/card-straight.webp": {
+      "source": "assets/source/crops/ui-kit/card-straight.png",
+      "sourceSha256": "e98909d743f5194a6979f1aedca845c8d3cc64aa4e92ce2b0950c477524ef558",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 11.243,
+          "opaquePct": 85.556,
+          "partialPct": 3.201
+        },
+        "bbox": [
+          11,
+          13,
+          394,
+          738
+        ],
+        "sourceSize": [
+          405,
+          749
+        ],
+        "finalSize": [
+          390,
+          720
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 60604
+    },
+    "art/card-curvy.webp": {
+      "source": "assets/source/crops/ui-kit/card-curvy.png",
+      "sourceSha256": "705028964c813acae66a6e90d8efb0246d763886da2e6006f73aa7cdac2c3909",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 11.345,
+          "opaquePct": 85.526,
+          "partialPct": 3.129
+        },
+        "bbox": [
+          11,
+          12,
+          393,
+          736
+        ],
+        "sourceSize": [
+          404,
+          748
+        ],
+        "finalSize": [
+          389,
+          720
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 68244
+    },
+    "art/card-spiral.webp": {
+      "source": "assets/source/crops/ui-kit/card-spiral.png",
+      "sourceSha256": "312c1ed202c5cd4248bc09e10d0d9c41d0f1a4745d4c5b77922e531aae0e3c0f",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 11.626,
+          "opaquePct": 85.205,
+          "partialPct": 3.169
+        },
+        "bbox": [
+          12,
+          13,
+          397,
+          738
+        ],
+        "sourceSize": [
+          409,
+          749
+        ],
+        "finalSize": [
+          394,
+          720
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 71576
+    },
+    "art/scissor-medallion.webp": {
+      "source": "assets/source/crops/ui-kit/scissor-medallion.png",
+      "sourceSha256": "18607c6ae7183c77caacb933556182afdb26e02d114be02c744ce75396d72dff",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 30.463,
+          "opaquePct": 65.636,
+          "partialPct": 3.902
+        },
+        "bbox": [
+          12,
+          12,
+          384,
+          388
+        ],
+        "sourceSize": [
+          395,
+          399
+        ],
+        "finalSize": [
+          395,
+          399
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 34728
+    },
+    "art/star-medallion.webp": {
+      "source": "assets/source/crops/ui-kit/star-medallion.png",
+      "sourceSha256": "9b01a96dbd3e4794f958be4a33da1ba7fbd0ea87194c6d75ecc0425494193196",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 30.161,
+          "opaquePct": 66.026,
+          "partialPct": 3.814
+        },
+        "bbox": [
+          12,
+          12,
+          370,
+          378
+        ],
+        "sourceSize": [
+          381,
+          389
+        ],
+        "finalSize": [
+          381,
+          389
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 38532
+    },
+    "art/button-plaque.webp": {
+      "source": "assets/source/crops/ui-kit/button-plaque.png",
+      "sourceSha256": "3520b9a7c6d0986dc51497f2ac1a901a3ebd657f3fc5e35985c747cf98af8231",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 18.775,
+          "opaquePct": 76.338,
+          "partialPct": 4.887
+        },
+        "bbox": [
+          12,
+          12,
+          445,
+          269
+        ],
+        "sourceSize": [
+          456,
+          280
+        ],
+        "finalSize": [
+          456,
+          280
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 35162
+    },
+    "art/title-lockup.webp": {
+      "source": "assets/source/gpt-image-2/title-lockup-source.png",
+      "sourceSha256": "f7ea85429d2dfea542bf63d0e00e81b774c5543350455c066640f3db2890cdba",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 43.096,
+          "opaquePct": 55.418,
+          "partialPct": 1.486
+        },
+        "bbox": [
+          67,
+          97,
+          1440,
+          905
+        ],
+        "sourceSize": [
+          1536,
+          1024
+        ],
+        "finalSize": [
+          980,
+          584
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 161278,
+      "processing": "OpenCV GrabCut with connected-component gate; shared cutout finalizer"
+    },
+    "art/success-tableau.webp": {
+      "source": "assets/source/gpt-image-2/success-tableau-source.png",
+      "sourceSha256": "f02c8c6d6212977854e986ebf9a00ac1799b3e989e8206b0667c47ca002237da",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 56.448,
+          "opaquePct": 42.661,
+          "partialPct": 0.891
+        },
+        "bbox": [
+          166,
+          96,
+          1322,
+          960
+        ],
+        "sourceSize": [
+          1448,
+          1086
+        ],
+        "finalSize": [
+          920,
+          692
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 208138
+    },
+    "art/playfield-frame.webp": {
+      "source": "assets/source/gpt-image-2/playfield-frame-source.png",
+      "sourceSha256": "5ea5713d3fd459763699811b72ec95e43480722c0cbe5c31329f4e93a7aae71f",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 16.051,
+          "opaquePct": 83.391,
+          "partialPct": 0.558
+        },
+        "bbox": [
+          22,
+          29,
+          1233,
+          1220
+        ],
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "finalSize": [
+          1000,
+          984
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 151260
+    },
+    "world/papercraft-jungle.webp": {
+      "source": "assets/source/gpt-image-2/jungle-background.png",
+      "sourceSha256": "ee0dd531356e8817bc6b3a44b71dc17775565703a8c72f132a697d4384bf740b",
+      "outputBytes": 190876,
+      "size": [
+        1344,
+        1008
+      ]
+    },
+    "../../../assets/hub/tiles/scissor-trail-safari.jpg": {
+      "source": "assets/source/gpt-image-2/hub-tile-source.png",
+      "sourceSha256": "ba10cdce7ae0fba5488021d1c728e2e19c1423f01d6f2e0f827002535d83b046",
+      "outputBytes": 106853,
+      "size": [
+        640,
+        533
+      ]
+    }
+  }
+}

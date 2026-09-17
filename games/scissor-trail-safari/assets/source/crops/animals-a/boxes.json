@@ -1,0 +1,142 @@
+{
+  "source": "games/scissor-trail-safari/assets/source/gpt-image-2/animals-a.png",
+  "sourceSha256": "2f8d545cd3dec95d7d88f09d377dece9bcf573a7221f8e88601c0d0ae63bf106",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "lion",
+      "file": "lion.png",
+      "componentArea": 176093,
+      "foregroundBbox": [
+        50,
+        19,
+        571,
+        567
+      ],
+      "cropBbox": [
+        38,
+        7,
+        583,
+        579
+      ],
+      "cropXywh": [
+        38,
+        7,
+        545,
+        572
+      ],
+      "normalizedCropBbox": [
+        0.030303,
+        0.005582,
+        0.464912,
+        0.461722
+      ]
+    },
+    {
+      "index": 2,
+      "name": "zebra",
+      "file": "zebra.png",
+      "componentArea": 120249,
+      "foregroundBbox": [
+        740,
+        25,
+        1197,
+        577
+      ],
+      "cropBbox": [
+        728,
+        13,
+        1209,
+        589
+      ],
+      "cropXywh": [
+        728,
+        13,
+        481,
+        576
+      ],
+      "normalizedCropBbox": [
+        0.580542,
+        0.010367,
+        0.964115,
+        0.469697
+      ]
+    },
+    {
+      "index": 3,
+      "name": "giraffe",
+      "file": "giraffe.png",
+      "componentArea": 102388,
+      "foregroundBbox": [
+        89,
+        576,
+        527,
+        1227
+      ],
+      "cropBbox": [
+        77,
+        564,
+        539,
+        1239
+      ],
+      "cropXywh": [
+        77,
+        564,
+        462,
+        675
+      ],
+      "normalizedCropBbox": [
+        0.061404,
+        0.449761,
+        0.429825,
+        0.988038
+      ]
+    },
+    {
+      "index": 4,
+      "name": "elephant",
+      "file": "elephant.png",
+      "componentArea": 198144,
+      "foregroundBbox": [
+        641,
+        666,
+        1223,
+        1209
+      ],
+      "cropBbox": [
+        629,
+        654,
+        1235,
+        1221
+      ],
+      "cropXywh": [
+        629,
+        654,
+        606,
+        567
+      ],
+      "normalizedCropBbox": [
+        0.501595,
+        0.521531,
+        0.984848,
+        0.973684
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,243 @@
+:root { --qk-bg: #173f2d; }
+
+html,
+body { overflow: hidden; }
+
+body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
+
+#game .qk-trace {
+  --navy: #174d43;
+  --blue: #1672b7;
+  --green: #64a548;
+  --yellow: #f5ce45;
+  --coral: #ed654c;
+  --shadow: 0 8px 0 rgba(83, 47, 24, .18), 0 18px 38px rgba(29, 57, 37, .24);
+  --qk-eng-bg-image: none;
+  background-color: #8bc66d;
+  background-position: center;
+}
+
+#game .qk-trace-splash,
+#game .qk-trace-end {
+  padding: max(12px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+}
+
+#game .qk-trace-splash-center {
+  width: min(1040px, 96vw);
+  gap: clamp(5px, 1.1vmin, 12px);
+  padding-top: 0;
+}
+
+#game .qk-trace-splash-art {
+  width: clamp(350px, 58vmin, 590px);
+  aspect-ratio: 980 / 584;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 12px 8px rgba(41, 37, 19, .25));
+}
+
+#game .qk-trace-splash-center > h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#game .qk-trace-mode-list {
+  width: min(920px, 94vw);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.7vmin, 18px);
+  margin-top: 0;
+}
+
+#game .qk-trace button.qk-trace-mode {
+  position: relative;
+  display: block;
+  overflow: visible;
+  min-width: 0;
+  min-height: clamp(190px, 31vmin, 286px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  box-shadow: none;
+  filter: drop-shadow(0 9px 5px rgba(50, 48, 25, .24));
+  color: #174d43;
+  transform-origin: center bottom;
+}
+
+#game .qk-trace button.qk-trace-mode:nth-child(1) { background-image: url('../assets/art/card-straight.webp'); }
+#game .qk-trace button.qk-trace-mode:nth-child(2) { background-image: url('../assets/art/card-curvy.webp'); }
+#game .qk-trace button.qk-trace-mode:nth-child(3) { background-image: url('../assets/art/card-spiral.webp'); }
+
+#game .qk-trace-mode .qk-mode-art {
+  position: absolute;
+  inset: 8% 13% 22%;
+  width: 74%;
+  height: 70%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 2px rgba(69, 50, 27, .22));
+  pointer-events: none;
+}
+
+#game .qk-trace-mode .qk-mode-title {
+  position: absolute;
+  right: 9%;
+  bottom: 8%;
+  left: 9%;
+  z-index: 1;
+  color: #174d43;
+  font-size: clamp(18px, 3.1vmin, 30px);
+  line-height: .95;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .86);
+}
+
+#game .qk-trace button.qk-trace-mode:nth-child(2) .qk-mode-title,
+#game .qk-trace button.qk-trace-mode:nth-child(3) .qk-mode-title {
+  color: #f9f1d2;
+  text-shadow: 0 3px 0 rgba(21, 70, 54, .42);
+}
+
+#game .qk-trace-mode:focus-visible { outline-color: #fff7c7; outline-offset: 1px; }
+#game .qk-trace-img-btn { filter: drop-shadow(0 5px 3px rgba(35, 48, 26, .28)); }
+
+#game .qk-trace-play {
+  grid-template-rows: 90px minmax(0, 1fr);
+  padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+    max(102px, calc(94px + env(safe-area-inset-bottom))) max(10px, env(safe-area-inset-left));
+}
+
+#game .qk-trace-hud { min-height: 88px; }
+
+#game .qk-trace-progress {
+  min-width: 154px;
+  min-height: 54px;
+  padding: 9px 24px;
+  background: rgba(255, 248, 216, .9);
+  border: 4px solid rgba(255, 255, 255, .92);
+  border-radius: 999px;
+  box-shadow: 0 5px 0 rgba(83, 47, 24, .14);
+}
+
+#game .qk-trace-dot {
+  width: 27px;
+  height: 27px;
+  border-width: 5px;
+  box-shadow: 0 3px 0 rgba(50, 74, 43, .14);
+}
+
+#game .qk-trace-stage { gap: 3px; }
+
+#game .qk-trace-prompt {
+  display: grid;
+  place-items: center;
+  width: min(760px, 86vw);
+  max-width: none;
+  min-height: clamp(62px, 9vmin, 84px);
+  padding: 0;
+  color: #174d43;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .82);
+}
+
+#game .qk-trace-mission {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: clamp(62px, 9vmin, 84px);
+  padding: 10px 13%;
+  background: transparent url('../assets/art/button-plaque.webp') center / 100% 100% no-repeat;
+  font-size: clamp(21px, 3.2vmin, 34px);
+  line-height: 1;
+}
+
+#game .qk-trace-canvas {
+  border-radius: clamp(24px, 4vmin, 42px);
+  filter: drop-shadow(0 14px 13px rgba(28, 53, 33, .22));
+}
+
+#game .qk-trace-end-center {
+  width: min(900px, 96vw);
+  gap: clamp(8px, 1.5vmin, 16px);
+  padding-top: 0;
+}
+
+#game .qk-trace-end-art {
+  width: clamp(360px, 72vmin, 720px);
+  aspect-ratio: 920 / 692;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 12px 8px rgba(41, 37, 19, .25));
+}
+
+#game .qk-trace-end h1 {
+  width: min(620px, 88vw);
+  max-width: none;
+  min-height: 82px;
+  display: grid;
+  place-items: center;
+  margin: -30px 0 -4px;
+  padding: 12px 13%;
+  background: transparent url('../assets/art/button-plaque.webp') center / 100% 100% no-repeat;
+  color: #174d43;
+  font-size: clamp(28px, 5vmin, 52px);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .85);
+}
+
+#game .qk-trace button.qk-trace-again {
+  min-width: min(440px, 84vw);
+  min-height: 112px;
+  padding: 14px 58px;
+  border: 0;
+  border-radius: 0;
+  background: transparent url('../assets/art/button-plaque.webp') center / 100% 100% no-repeat;
+  box-shadow: none;
+  color: #174d43;
+  font-size: clamp(24px, 4vmin, 38px);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, .82);
+  filter: drop-shadow(0 8px 4px rgba(44, 52, 28, .24));
+}
+
+@media (orientation: landscape) and (max-height: 700px) {
+  #game .qk-trace-splash-center {
+    width: min(1120px, 94vw);
+    grid-template-columns: minmax(280px, 43%) minmax(500px, 1fr);
+    grid-template-areas: "title modes";
+    gap: clamp(12px, 3vw, 42px);
+    align-items: center;
+  }
+  #game .qk-trace-splash-art { grid-area: title; width: 100%; }
+  #game .qk-trace-mode-list { grid-area: modes; width: 100%; }
+  #game .qk-trace button.qk-trace-mode { min-height: clamp(200px, 48vh, 330px); }
+  #game .qk-trace-end-center {
+    grid-template-columns: minmax(330px, 56%) minmax(300px, 1fr);
+    grid-template-areas: "art title" "art again";
+    column-gap: 14px;
+    align-items: center;
+  }
+  #game .qk-trace-end-art { grid-area: art; width: 100%; }
+  #game .qk-trace-end h1 { grid-area: title; margin: 0; width: 100%; }
+  #game .qk-trace-again { grid-area: again; width: 100%; }
+}
+
+@media (max-width: 620px) {
+  #game .qk-trace-splash-art { width: min(360px, 90vw); }
+  #game .qk-trace-mode-list { width: 96vw; gap: 3px; }
+  #game .qk-trace button.qk-trace-mode { min-height: clamp(176px, 53vw, 218px); }
+  #game .qk-trace-mode .qk-mode-title { font-size: clamp(15px, 5vw, 21px); }
+  #game .qk-trace-mission { padding-inline: 10%; font-size: clamp(18px, 5vw, 25px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #game .qk-trace-mode,
+  #game .qk-trace-img-btn { filter: none; }
+}

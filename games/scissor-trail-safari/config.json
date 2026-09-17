@@ -1,0 +1,147 @@
+{
+  "id": "scissor-trail-safari",
+  "engine": "trace-path",
+  "title": "Scissor Trail Safari",
+  "splashArt": "game:assets/art/title-lockup.webp",
+  "endArt": "game:assets/art/success-tableau.webp",
+  "traveler": "game:assets/art/scissor-medallion.webp",
+  "travelerSize": 116,
+  "travelerRotationOffset": 0.7853981633974483,
+  "orientTraveler": true,
+  "ghostTrace": true,
+  "destinationVisuals": true,
+  "destinationSize": 228,
+  "boardArt": "game:assets/art/playfield-frame.webp",
+  "boardArtSize": 1000,
+  "rewardVisuals": false,
+  "strokeColor": "#f4c84a",
+  "tolerance": 88,
+  "startMarker": "1",
+  "guideStyle": "cut",
+  "traceSfx": "snip",
+  "finishSfx": "boing",
+  "music": "../../shared/assets/music/quirky-forest-adventure.mp3",
+  "theme": {
+    "world": "paper-garden",
+    "background": "./assets/world/papercraft-jungle.webp",
+    "accent": "#126ab3"
+  },
+  "copy": {
+    "home": "All games",
+    "replay": "Hear the safari guide again",
+    "playAgain": "Snip another safari"
+  },
+  "voiceClips": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "voice": {
+    "intro": "Pick a trail, then snip to a safari friend!",
+    "introKey": "welcome",
+    "nudge": "Easy does it. Put your scissors back on the blue dots.",
+    "nudgeKey": "nudge",
+    "cheer": "Safari saved! Every paper friend is free!",
+    "cheerKey": "all-done",
+    "yums": ["Super snipping!", "What a smooth trail!", "You followed every dot!"],
+    "yumKeys": ["super-snipping", "smooth-trail", "every-dot"],
+    "nextStroke": ["Great cut! Find the next golden start."],
+    "nextStrokeKeys": ["next-start"]
+  },
+  "modes": [
+    {
+      "id": "straight",
+      "title": "Straight Trails",
+      "art": "./assets/animals/lion.webp",
+      "prompt": "Start with the straight paper trails.",
+      "promptKey": "straight-intro",
+      "rounds": 3,
+      "paths": [
+        {
+          "id": "lion", "name": "Lion trail",
+          "prompt": "Snip straight across to Leo Lion!", "promptKey": "prompt-lion",
+          "say": "Roar-some! Leo Lion is free!", "sayKey": "done-lion",
+          "destinationName": "Leo Lion", "destinationArt": "game:assets/animals/lion.webp",
+          "destinationPosition": [842, 500], "destinationSize": 260,
+          "points": [[130, 500], [330, 500], [530, 500], [730, 500], [900, 500]]
+        },
+        {
+          "id": "zebra", "name": "Zebra trail",
+          "prompt": "Follow the gentle hill to Zuri Zebra!", "promptKey": "prompt-zebra",
+          "say": "Zig-zag hooray! Zuri Zebra is free!", "sayKey": "done-zebra",
+          "destinationName": "Zuri Zebra", "destinationArt": "game:assets/animals/zebra.webp",
+          "destinationPosition": [845, 298], "destinationSize": 260,
+          "points": [[140, 700], [330, 610], [520, 520], [710, 430], [900, 340]]
+        },
+        {
+          "id": "giraffe", "name": "Giraffe trail",
+          "prompt": "Snip two gentle turns to Gigi Giraffe!", "promptKey": "prompt-giraffe",
+          "say": "Tall trail triumph! Gigi is free!", "sayKey": "done-giraffe",
+          "destinationName": "Gigi Giraffe", "destinationArt": "game:assets/animals/giraffe.webp",
+          "destinationPosition": [844, 600], "destinationSize": 270,
+          "points": [[120, 680], [350, 510], [570, 340], [760, 490], [910, 610]]
+        }
+      ]
+    },
+    {
+      "id": "curvy",
+      "title": "Curvy Trails",
+      "art": "./assets/animals/snake.webp",
+      "prompt": "Swoop along the curvy paper trails.",
+      "promptKey": "curvy-intro",
+      "rounds": 3,
+      "paths": [
+        {
+          "id": "parrot", "name": "Parrot trail",
+          "prompt": "Swoop around the S-curve to Pippa Parrot!", "promptKey": "prompt-parrot",
+          "say": "Pretty perfect! Pippa Parrot is free!", "sayKey": "done-parrot",
+          "destinationName": "Pippa Parrot", "destinationArt": "game:assets/animals/parrot.webp",
+          "destinationPosition": [838, 694], "destinationSize": 284,
+          "points": [[140, 320], [360, 200], [560, 350], [450, 560], [650, 740], [880, 650]]
+        },
+        {
+          "id": "snake", "name": "Snake trail",
+          "prompt": "Snip the wiggly trail to Silly Snake!", "promptKey": "prompt-snake",
+          "say": "Sss-smooth! Silly Snake can wiggle free!", "sayKey": "done-snake",
+          "destinationName": "Silly Snake", "destinationArt": "game:assets/animals/snake.webp",
+          "destinationPosition": [842, 306], "destinationSize": 272,
+          "points": [[120, 520], [270, 330], [420, 520], [570, 700], [720, 520], [880, 330]]
+        },
+        {
+          "id": "monkey", "name": "Monkey trail",
+          "prompt": "Follow the big paper arch to Momo Monkey!", "promptKey": "prompt-monkey",
+          "say": "Marvelous curve! Momo Monkey is free!", "sayKey": "done-monkey",
+          "destinationName": "Momo Monkey", "destinationArt": "game:assets/animals/monkey.webp",
+          "destinationPosition": [840, 714], "destinationSize": 272,
+          "points": [[120, 700], [250, 420], [500, 250], [750, 420], [890, 700]]
+        }
+      ]
+    },
+    {
+      "id": "spiral",
+      "title": "Spiral Trails",
+      "art": "./assets/animals/elephant.webp",
+      "prompt": "Spiral carefully toward the hidden friend.",
+      "promptKey": "spiral-intro",
+      "rounds": 2,
+      "tolerance": 92,
+      "paths": [
+        {
+          "id": "elephant", "name": "Elephant spiral",
+          "prompt": "Spiral inward to Ellie Elephant!", "promptKey": "prompt-elephant",
+          "say": "Excellent spiral! Ellie Elephant is free!", "sayKey": "done-elephant",
+          "destinationName": "Ellie Elephant", "destinationArt": "game:assets/animals/elephant.webp",
+          "destinationPosition": [554, 586], "destinationSize": 240,
+          "points": [[810, 260], [600, 130], [340, 180], [160, 390], [180, 660], [390, 830], [670, 790], [840, 580], [790, 350], [600, 250], [390, 320], [300, 510], [390, 680], [590, 700], [700, 550], [650, 420], [520, 380], [430, 470], [470, 570], [560, 580]]
+        },
+        {
+          "id": "tiger", "name": "Tiger spiral",
+          "prompt": "One brave spiral to Tavi Tiger!", "promptKey": "prompt-tiger",
+          "say": "Terrific! Tavi Tiger is free!", "sayKey": "done-tiger",
+          "destinationName": "Tavi Tiger", "destinationArt": "game:assets/animals/tiger.webp",
+          "destinationPosition": [506, 584], "destinationSize": 230,
+          "points": [[190, 270], [400, 130], [670, 180], [840, 410], [790, 690], [560, 830], [290, 750], [160, 520], [240, 300], [470, 220], [690, 330], [740, 540], [590, 700], [390, 650], [290, 490], [390, 360], [550, 350], [640, 460], [590, 560], [500, 570]]
+        }
+      ]
+    }
+  ]
+}

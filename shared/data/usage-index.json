@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T00:55:38.121Z",
+  "generated": "2026-09-17T03:36:53.028Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -470,6 +470,9 @@
       ],
       "assets": [
         "games/chalkboard-big-strokes/assets/art",
+        "games/chalkboard-big-strokes/assets/art/button-plaque.webp",
+        "games/chalkboard-big-strokes/assets/art/nav-back.webp",
+        "games/chalkboard-big-strokes/assets/art/sparkle.webp",
         "games/chalkboard-big-strokes/assets/audio",
         "shared/assets/music/rainy-day-acoustic.mp3"
       ],
@@ -2313,21 +2316,38 @@
     },
     "scissor-trail-safari": {
       "engine": "trace-path",
-      "status": "in-design",
+      "status": "live",
       "category": "writing-fine-motor",
-      "characters": [],
+      "characters": [
+        "Ellie Elephant",
+        "Gigi Giraffe",
+        "Leo Lion",
+        "Momo Monkey",
+        "Pippa Parrot",
+        "Silly Snake",
+        "Tavi Tiger",
+        "Zuri Zebra"
+      ],
       "modules": [
         "shared/js/analytics.js",
+        "shared/js/bgm.js",
         "shared/js/engines/trace-path.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
         "shared/css/engine-base.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/scissor-trail-safari/assets/animals",
+        "games/scissor-trail-safari/assets/art",
+        "games/scissor-trail-safari/assets/world",
+        "shared/assets/music/quirky-forest-adventure.mp3"
+      ],
       "packs": []
     },
     "secret-message-copy": {
@@ -3580,6 +3600,7 @@
         "picture-word-match",
         "post-office-letters",
         "puzzle-map-match",
+        "scissor-trail-safari",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4282,7 +4303,8 @@
         "world-music-dance"
       ],
       "shared/js/stage": [
-        "letter-road-driving"
+        "letter-road-driving",
+        "scissor-trail-safari"
       ],
       "shared/js/stage/art-pixi.js": [
         "blend-train"
@@ -4549,6 +4571,7 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sand-tray-letters",
+        "scissor-trail-safari",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4922,6 +4945,9 @@
       "dragon": [
         "story-stones"
       ],
+      "Ellie Elephant": [
+        "scissor-trail-safari"
+      ],
       "ember": [
         "red-green-light"
       ],
@@ -4949,6 +4975,9 @@
         "puppet-retell",
         "tiny-reader-theater"
       ],
+      "Gigi Giraffe": [
+        "scissor-trail-safari"
+      ],
       "gilly": [
         "red-green-light"
       ],
@@ -4974,6 +5003,9 @@
         "snack-addition-stories",
         "story-repair-shop"
       ],
+      "Leo Lion": [
+        "scissor-trail-safari"
+      ],
       "luna": [
         "red-green-light"
       ],
@@ -4995,6 +5027,9 @@
       ],
       "Momma Bear": [
         "momma-bear-storybook"
+      ],
+      "Momo Monkey": [
+        "scissor-trail-safari"
       ],
       "nia": [
         "calm-corner-cards",
@@ -5033,6 +5068,9 @@
       "Pip": [
         "momma-bear-storybook",
         "table-setting-mission"
+      ],
+      "Pippa Parrot": [
+        "scissor-trail-safari"
       ],
       "princess-lily": [
         "my-puppet-band",
@@ -5079,11 +5117,17 @@
       "Silly Lab blob": [
         "silly-swap-words"
       ],
+      "Silly Snake": [
+        "scissor-trail-safari"
+      ],
       "skipper": [
         "counting-treasure-cups"
       ],
       "Sunny the sunflower": [
         "garden-delivery-game"
+      ],
+      "Tavi Tiger": [
+        "scissor-trail-safari"
       ],
       "Teddy": [
         "emotion-voice-game",
@@ -5103,6 +5147,9 @@
       ],
       "zoom": [
         "red-green-light"
+      ],
+      "Zuri Zebra": [
+        "scissor-trail-safari"
       ]
     },
     "assets": {
@@ -5128,6 +5175,15 @@
         "button-zipper-lab"
       ],
       "games/chalkboard-big-strokes/assets/art": [
+        "chalkboard-big-strokes"
+      ],
+      "games/chalkboard-big-strokes/assets/art/button-plaque.webp": [
+        "chalkboard-big-strokes"
+      ],
+      "games/chalkboard-big-strokes/assets/art/nav-back.webp": [
+        "chalkboard-big-strokes"
+      ],
+      "games/chalkboard-big-strokes/assets/art/sparkle.webp": [
         "chalkboard-big-strokes"
       ],
       "games/chalkboard-big-strokes/assets/audio": [
@@ -5643,6 +5699,15 @@
       "games/sand-tray-letters/assets/materials/white-salt.png": [
         "sand-tray-letters"
       ],
+      "games/scissor-trail-safari/assets/animals": [
+        "scissor-trail-safari"
+      ],
+      "games/scissor-trail-safari/assets/art": [
+        "scissor-trail-safari"
+      ],
+      "games/scissor-trail-safari/assets/world": [
+        "scissor-trail-safari"
+      ],
       "games/silly-swap-words/assets/backgrounds/clay-sky.webp": [
         "silly-swap-words"
       ],
@@ -5925,6 +5990,7 @@
         "post-office-letters"
       ],
       "shared/assets/music/quirky-forest-adventure.mp3": [
+        "scissor-trail-safari",
         "shape-detective",
         "story-repair-shop"
       ],

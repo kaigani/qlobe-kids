@@ -215,6 +215,37 @@ export function tick() {
   note({ type: 'square', f0: 880, dur: 0.04, gain: 0.18 });
 }
 
+/** Soft paper-scissor snip: a bright click with a tiny, filtered paper hush. */
+export function snip() {
+  mark('snip');
+  if (!ensure()) return;
+  const start = now();
+  const blade = ctx.createOscillator();
+  const bladeGain = ctx.createGain();
+  const paper = ctx.createBufferSource();
+  const paperFilter = ctx.createBiquadFilter();
+  const paperGain = ctx.createGain();
+  blade.type = 'triangle';
+  blade.frequency.setValueAtTime(1320, start);
+  blade.frequency.exponentialRampToValueAtTime(660, start + 0.055);
+  bladeGain.gain.setValueAtTime(0.11, start);
+  bladeGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.07);
+  paper.buffer = noiseBuffer(0.08);
+  paperFilter.type = 'bandpass';
+  paperFilter.frequency.value = 2400;
+  paperFilter.Q.value = 1.8;
+  paperGain.gain.setValueAtTime(0.055, start);
+  paperGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.075);
+  blade.connect(bladeGain);
+  bladeGain.connect(master);
+  paper.connect(paperFilter);
+  paperFilter.connect(paperGain);
+  paperGain.connect(master);
+  blade.start(start);
+  blade.stop(start + 0.075);
+  paper.start(start);
+}
+
 /** Friendly toy-car rev: a short rising motor burble, never a harsh engine roar. */
 export function vroom() {
   mark('vroom');

@@ -3,32 +3,44 @@
   "title": "Scissor Trail Safari",
   "category": "writing-fine-motor",
   "path": "games/scissor-trail-safari/",
-  "icon": "✂️",
+  "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a96b",
-  "shareTitle": "Scissor Trail Safari ✂️ — Snipping Trails for Little Hands",
-  "description": "Trace dotted trails with a finger through straight lines, gentle curves, and spirals to free safari animals one by one. A calm scissor-readiness game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "live",
+  "liveDate": "2026-09-16",
+  "accent": "#64a548",
+  "engine": "shared trace-path engine with Pixi play field, recorded-music support, raster destinations, and strand-proof pointer tracing",
+  "shareTitle": "Scissor Trail Safari — A Papercraft Finger Adventure",
+  "description": "Guide friendly finger-scissors along straight, curvy, and spiral paper trails to rescue eight handcrafted safari friends.",
   "learningGoals": [
-    "Control movement along straight and gently angled cutting lines",
-    "Practice smooth continuous strokes on curves and spirals",
-    "Strengthen hand-eye steering for real-world scissor practice"
+    "Build pre-writing and scissor-readiness control on straight and angled paths",
+    "Practice smooth continuous movement through curves and changing directions",
+    "Sustain hand-eye steering around a complete inward spiral"
   ],
-  "interactionModel": "trace each dotted cutting trail continuously with one finger",
-  "feedbackModel": "The cutting trail sparkles as the child advances; wandering gets a gentle spoken reminder, and every completed path frees an animal with named praise.",
+  "interactionModel": "choose a large animal trail card, start at the golden marker, and guide the raster scissors medallion continuously along forgiving dotted paper paths",
+  "feedbackModel": "each checkpoint makes a gentle paper snip and turns the cut golden; off-path motion keeps earned progress, destinations bounce at rescue, and named spoken praise celebrates every animal",
   "uses": [
     "shared/js/engines/trace-path.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/bgm.js",
+    "shared/js/stage/",
+    "shared/assets/music/quirky-forest-adventure.mp3",
+    "games/scissor-trail-safari/assets/animals/",
+    "games/scissor-trail-safari/assets/art/",
+    "games/scissor-trail-safari/assets/world/"
   ],
   "modes": [
-    { "id": "straight", "title": "Straight Cuts", "skill": "straight and angled line control" },
-    { "id": "curvy", "title": "Curvy Cuts", "skill": "smooth continuous curved strokes" },
-    { "id": "spiral", "title": "Spiral Rescue", "skill": "sustained hand-eye steering on spirals" }
+    { "id": "straight", "title": "Straight Trails", "skill": "straight and gently angled directional control" },
+    { "id": "curvy", "title": "Curvy Trails", "skill": "smooth S-curves, waves, and broad arches" },
+    { "id": "spiral", "title": "Spiral Trails", "skill": "sustained circular steering toward a center target" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "QLOBE Kids contributors; placeholder emoji art (see ASSETS.md).",
-  "characters": [],
-  "conceptVideo": ""
+  "credits": "Original Papercraft raster art produced with OpenAI GPT Image 2, separated with the QLOBE exact-count cutter, and finalized through the shared cutout pipeline. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": [
+    "Leo Lion", "Zuri Zebra", "Gigi Giraffe", "Pippa Parrot",
+    "Silly Snake", "Momo Monkey", "Ellie Elephant", "Tavi Tiger"
+  ],
+  "conceptVideo": "01-game-concepts/scissor-trail-safari/"
 }

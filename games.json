@@ -1127,26 +1127,27 @@
       "path": "games/scissor-trail-safari/",
       "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#58a96b",
+      "status": "live",
+      "liveDate": "2026-09-16",
+      "accent": "#64a548",
       "modes": [
         {
           "id": "straight",
-          "title": "Straight Cuts",
-          "skill": "straight and angled line control"
+          "title": "Straight Trails",
+          "skill": "straight and gently angled directional control"
         },
         {
           "id": "curvy",
-          "title": "Curvy Cuts",
-          "skill": "smooth continuous curved strokes"
+          "title": "Curvy Trails",
+          "skill": "smooth S-curves, waves, and broad arches"
         },
         {
           "id": "spiral",
-          "title": "Spiral Rescue",
-          "skill": "sustained hand-eye steering on spirals"
+          "title": "Spiral Trails",
+          "skill": "sustained circular steering toward a center target"
         }
       ],
       "summary": "Cut along winding animal-path lines."
