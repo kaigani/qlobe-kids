@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T03:36:53.028Z",
+  "generated": "2026-09-17T06:28:05.994Z",
   "engines": {
     "coach-timer": {
       "count": 13,
@@ -42,21 +42,12 @@
       ]
     },
     "build-assemble": {
-      "count": 5,
+      "count": 4,
       "games": [
         "blend-train",
-        "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
         "turn-taking-tower"
-      ]
-    },
-    "tap-count": {
-      "count": 3,
-      "games": [
-        "number-line-jump",
-        "sandpaper-number-match",
-        "snack-addition-stories"
       ]
     },
     "match-pairs": {
@@ -87,6 +78,13 @@
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "tap-count": {
+      "count": 2,
+      "games": [
+        "number-line-jump",
+        "snack-addition-stories"
       ]
     },
     "sort-into-bins": {
@@ -2296,22 +2294,39 @@
       "packs": []
     },
     "sandpaper-number-match": {
-      "engine": "tap-count",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
-      "characters": [],
+      "characters": [
+        "Pencil Buddy"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/tap-count.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/sandpaper-number-match/assets/art",
+        "games/sandpaper-number-match/assets/audio",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
       "packs": []
     },
     "scissor-trail-safari": {
@@ -2351,23 +2366,47 @@
       "packs": []
     },
     "secret-message-copy": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "writing-fine-motor",
-      "characters": [],
+      "characters": [
+        "Pip the Owl Courier"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/ui"
+        "games/secret-message-copy/assets/art",
+        "games/secret-message-copy/assets/art/backdrop-delivery.webp",
+        "games/secret-message-copy/assets/art/backdrop-desk.webp",
+        "games/secret-message-copy/assets/art/button-next.webp",
+        "games/secret-message-copy/assets/art/envelope-moon.webp",
+        "games/secret-message-copy/assets/art/owl-carry.webp",
+        "games/secret-message-copy/assets/art/owl-neutral.webp",
+        "games/secret-message-copy/assets/art/paper-sheet.webp",
+        "games/secret-message-copy/assets/art/seal-burst.webp",
+        "games/secret-message-copy/assets/art/title-lockup.webp",
+        "games/secret-message-copy/assets/audio",
+        "shared/assets/music/quirky-forest-adventure.mp3"
       ],
       "packs": []
     },
@@ -3563,6 +3602,8 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -3600,7 +3641,9 @@
         "picture-word-match",
         "post-office-letters",
         "puzzle-map-match",
+        "sandpaper-number-match",
         "scissor-trail-safari",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -3647,6 +3690,8 @@
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
         "snack-chef",
@@ -3731,6 +3776,8 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -3756,6 +3803,7 @@
       ],
       "shared/js/dom.js": [
         "puppet-retell",
+        "sandpaper-number-match",
         "shadow-chase",
         "shape-detective",
         "tangram-tales",
@@ -3765,7 +3813,6 @@
       ],
       "shared/js/engines/build-assemble.js": [
         "blend-train",
-        "secret-message-copy",
         "shape-to-picture",
         "silly-sentence-builder",
         "turn-taking-tower"
@@ -3822,7 +3869,6 @@
       ],
       "shared/js/engines/tap-count.js": [
         "number-line-jump",
-        "sandpaper-number-match",
         "snack-addition-stories"
       ],
       "shared/js/engines/trace-path.js": [
@@ -3865,6 +3911,7 @@
         "obstacle-course-builder",
         "post-office-letters",
         "red-green-light",
+        "secret-message-copy",
         "silly-swap-words",
         "sticker-line-challenge",
         "table-setting-mission",
@@ -3894,6 +3941,8 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -3971,6 +4020,8 @@
         "pattern-train",
         "post-office-letters",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
         "sound-hopscotch",
@@ -4010,6 +4061,8 @@
         "picture-word-match",
         "post-office-letters",
         "puzzle-map-match",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shape-detective",
         "silly-swap-words",
         "sound-hopscotch",
@@ -4060,6 +4113,8 @@
         "red-green-light",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "sink-or-float",
@@ -4102,6 +4157,8 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4276,9 +4333,7 @@
         "red-green-light",
         "rhyming-detective",
         "sand-tray-letters",
-        "sandpaper-number-match",
         "scissor-trail-safari",
-        "secret-message-copy",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -4447,6 +4502,8 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4505,6 +4562,8 @@
         "red-green-light",
         "rhyming-detective",
         "rhythm-copycat",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4571,7 +4630,9 @@
         "rhyming-detective",
         "rhythm-copycat",
         "sand-tray-letters",
+        "sandpaper-number-match",
         "scissor-trail-safari",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -4750,9 +4811,7 @@
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "question-ball",
-        "sandpaper-number-match",
         "scissor-trail-safari",
-        "secret-message-copy",
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
@@ -4799,6 +4858,8 @@
         "post-office-letters",
         "red-green-light",
         "rhythm-copycat",
+        "sandpaper-number-match",
+        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
@@ -5062,12 +5123,18 @@
       "Paper Fox": [
         "kindness-delivery"
       ],
+      "Pencil Buddy": [
+        "sandpaper-number-match"
+      ],
       "pip": [
         "red-green-light"
       ],
       "Pip": [
         "momma-bear-storybook",
         "table-setting-mission"
+      ],
+      "Pip the Owl Courier": [
+        "secret-message-copy"
       ],
       "Pippa Parrot": [
         "scissor-trail-safari"
@@ -5699,6 +5766,12 @@
       "games/sand-tray-letters/assets/materials/white-salt.png": [
         "sand-tray-letters"
       ],
+      "games/sandpaper-number-match/assets/art": [
+        "sandpaper-number-match"
+      ],
+      "games/sandpaper-number-match/assets/audio": [
+        "sandpaper-number-match"
+      ],
       "games/scissor-trail-safari/assets/animals": [
         "scissor-trail-safari"
       ],
@@ -5707,6 +5780,39 @@
       ],
       "games/scissor-trail-safari/assets/world": [
         "scissor-trail-safari"
+      ],
+      "games/secret-message-copy/assets/art": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/backdrop-delivery.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/backdrop-desk.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/button-next.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/envelope-moon.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/owl-carry.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/owl-neutral.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/paper-sheet.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/seal-burst.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/art/title-lockup.webp": [
+        "secret-message-copy"
+      ],
+      "games/secret-message-copy/assets/audio": [
+        "secret-message-copy"
       ],
       "games/silly-swap-words/assets/backgrounds/clay-sky.webp": [
         "silly-swap-words"
@@ -5991,6 +6097,7 @@
       ],
       "shared/assets/music/quirky-forest-adventure.mp3": [
         "scissor-trail-safari",
+        "secret-message-copy",
         "shape-detective",
         "story-repair-shop"
       ],
@@ -6004,6 +6111,7 @@
       "shared/assets/music/whimsical-toy-workshop.mp3": [
         "number-sense-kitchen",
         "pattern-train",
+        "sandpaper-number-match",
         "silly-swap-words",
         "tiny-sentence-workshop"
       ],
@@ -6040,7 +6148,6 @@
         "number-sense-kitchen",
         "playdough-letter-factory",
         "rhyming-detective",
-        "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",

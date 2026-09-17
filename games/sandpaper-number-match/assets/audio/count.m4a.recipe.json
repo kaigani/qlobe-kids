@@ -1,0 +1,24 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "count.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Tap every sleepy star. Count with me!",
+  "textHash": "63e1539905862973",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Tap every sleepy star. Count with me!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

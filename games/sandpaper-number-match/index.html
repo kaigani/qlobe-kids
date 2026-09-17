@@ -1,47 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sandpaper Number Match 🔢 — Numerals Meet Quantities</title>
-  <meta name="description" content="Meet each numeral, then tap out the matching quantity to connect the symbol with the count. A numeral-recognition game for ages 5–6, from one and two up through nine." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Sandpaper Number Match" />
-  <meta property="og:title" content="Sandpaper Number Match 🔢 — Numerals Meet Quantities" />
-  <meta property="og:description" content="Meet each numeral, then tap out the matching quantity to connect the symbol with the count. A numeral-recognition game for ages 5–6, from one and two up through nine." />
-  <meta property="og:url" content="https://qlo.be/games/sandpaper-number-match/" />
-  <meta property="og:image" content="https://qlo.be/games/sandpaper-number-match/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sandpaper Number Match title screen with Meet the Numbers and Bigger Numbers buttons and a number tile icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sandpaper Number Match 🔢 — Numerals Meet Quantities" />
-  <meta name="twitter:description" content="Meet each numeral, then tap out the matching quantity to connect the symbol with the count. A numeral-recognition game for ages 5–6, from one and two up through nine." />
-  <meta name="twitter:image" content="https://qlo.be/games/sandpaper-number-match/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#f4e6c7">
+  <title>Sandpaper Number Match — Trace, Count & Match</title>
+  <meta name="description" content="Trace tactile sandpaper numbers, wake plush stars, and match numerals to quantities in a cozy felt quiet-book world.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Sandpaper Number Match — Trace, Count & Match">
+  <meta property="og:description" content="Trace tactile sandpaper numbers, wake plush stars, and match numerals to quantities in a cozy felt quiet-book world.">
+  <meta property="og:url" content="https://qlo.be/games/sandpaper-number-match/">
+  <meta property="og:image" content="https://qlo.be/games/sandpaper-number-match/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A stitched sandpaper number three and three cheerful felt stars in Sandpaper Number Match.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sandpaper Number Match — Trace, Count & Match">
+  <meta name="twitter:description" content="Trace tactile sandpaper numbers, wake plush stars, and match numerals to quantities.">
+  <meta name="twitter:image" content="https://qlo.be/games/sandpaper-number-match/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/tap-count.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="sandpaper-game" aria-label="Sandpaper Number Match">
+    <section class="screen selection-screen" data-screen="selection"></section>
+    <section class="screen play-screen" data-screen="play" hidden></section>
+    <section class="screen reward-screen" data-screen="reward" hidden></section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

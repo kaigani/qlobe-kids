@@ -1368,21 +1368,26 @@
       "path": "games/sandpaper-number-match/",
       "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#c94f46",
       "modes": [
         {
-          "id": "meet",
-          "title": "Meet the Numbers",
-          "skill": "numeral recognition for 1-5 tied to quantity"
+          "id": "journey",
+          "title": "Trace & Count",
+          "skill": "ordered numeral formation connected directly to quantity"
         },
         {
-          "id": "big",
-          "title": "Bigger Numbers",
-          "skill": "numeral recognition for 6-9 tied to quantity"
+          "id": "star-count",
+          "title": "Star Count",
+          "skill": "stable-order counting and one-to-one correspondence through 10"
+        },
+        {
+          "id": "match",
+          "title": "Find a Match",
+          "skill": "matching written numerals to close visual quantities"
         }
       ],
       "summary": "Trace a numeral, then count that many objects."

@@ -3,31 +3,48 @@
   "title": "Sandpaper Number Match",
   "category": "math-number-sense",
   "path": "games/sandpaper-number-match/",
-  "icon": "🔢",
+  "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Sandpaper Number Match 🔢 — Numerals Meet Quantities",
-  "description": "Meet each numeral, then tap out the matching quantity to connect the symbol with the count. A numeral-recognition game for ages 5–6, from one and two up through nine.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#c94f46",
+  "engine": "custom DOM and Canvas ordered-trace, count, and quantity-match runtime with shared QLOBE screen, input, audio, celebration, and debug modules",
+  "shareTitle": "Sandpaper Number Match — Trace, Count & Match",
+  "description": "Trace tactile sandpaper numerals, wake matching sets of sleepy plush stars, and connect written numbers to quantities in a cozy felt quiet-book world.",
   "learningGoals": [
-    "Recognize numerals 1-9",
-    "Connect numerals to spoken number words",
-    "Match each numeral with a counted quantity"
+    "Practice ordered numeral formation for 1–9 with forgiving finger tracing",
+    "Build stable-order and one-to-one counting for sets from 1–10",
+    "Connect written numerals with corresponding visual quantities"
   ],
-  "interactionModel": "tap-count collect rounds with the engine's large numeral card as the visual anchor",
-  "feedbackModel": "Each tap speaks the count with pop and whoosh SFX; completion gives sparkle feedback and a spoken quantity.",
+  "interactionModel": "choose one of three large stitched lesson cards, trace an ordered numeral path or tap tactile star sets, and match a numeral to one of three quantity cards",
+  "feedbackModel": "a glowing start point and sandy trail model formation, each sleeping star wakes and speaks the next count, gentle misses pulse or wiggle without penalty, and every round ends with a felt rosette, recorded praise, and confetti",
   "uses": [
-    "shared/js/engines/tap-count.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/screens.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/celebrate.js",
+    "shared/js/bgm.js",
+    "shared/js/sfx.js",
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/dom.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "games/sandpaper-number-match/assets/art/",
+    "games/sandpaper-number-match/assets/audio/"
   ],
   "modes": [
-    { "id": "meet", "title": "Meet the Numbers", "skill": "numeral recognition for 1-5 tied to quantity" },
-    { "id": "big", "title": "Bigger Numbers", "skill": "numeral recognition for 6-9 tied to quantity" }
+    { "id": "journey", "title": "Trace & Count", "skill": "ordered numeral formation connected directly to quantity" },
+    { "id": "star-count", "title": "Star Count", "skill": "stable-order counting and one-to-one correspondence through 10" },
+    { "id": "match", "title": "Find a Match", "skill": "matching written numerals to close visual quantities" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji and text placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+  "credits": "Kaigani; original Puppet / Cozy felt fabric production art created with OpenAI GPT Image 2, catalog art created with local Krea 2, assets cut with the QLOBE cutter, and teacher narration produced with local Qwen voice clone plus Whisper verification. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Pencil Buddy"],
+  "conceptVideo": "01-game-concepts/sandpaper-number-match/"
 }
