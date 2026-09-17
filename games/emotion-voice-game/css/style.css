@@ -69,6 +69,18 @@ button { font: inherit; }
   transform: translateX(-50%);
 }
 
+.costume-trunk {
+  position: absolute;
+  z-index: 4;
+  right: max(1.5vw, var(--qk-safe-right));
+  bottom: 1.5%;
+  width: clamp(120px, 13vw, 210px);
+  max-height: 25%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 5px rgba(0,0,0,.35));
+  opacity: .94;
+}
+
 .emotion-card {
   position: relative;
   min-height: clamp(152px, 25vh, 268px);
@@ -266,6 +278,41 @@ button { font: inherit; }
   cursor: pointer;
   filter: drop-shadow(0 9px 7px rgba(0,0,0,.38));
 }
+.turn-actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.2vw, 18px);
+}
+
+.turn-actions > [hidden] { display: none; }
+
+.replay-button {
+  position: relative;
+  z-index: 2;
+  width: clamp(96px, 12vmin, 142px);
+  height: clamp(96px, 12vmin, 142px);
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(0 7px 5px rgba(0,0,0,.35));
+  cursor: pointer;
+}
+
+.replay-button img { width: 100%; height: 100%; object-fit: contain; }
+
+.replay-button span {
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  color: #fff;
+  font-size: clamp(14px, 1.7vmin, 21px);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  text-shadow: 0 2px 2px #000;
+}
+
+.replay-button:disabled { opacity: .42; cursor: default; }
 
 .mic-button img, .fallback-button img { width: 100%; height: 100%; object-fit: contain; }
 
@@ -284,27 +331,60 @@ button { font: inherit; }
 }
 
 .mic-button:disabled { cursor: default; filter: saturate(.65) drop-shadow(0 7px 5px rgba(0,0,0,.28)); }
-.mic-button:focus-visible, .fallback-button:focus-visible, .next-button:focus-visible { outline: 6px solid #fff; outline-offset: 4px; }
+.mic-button:focus-visible,
+.fallback-button:focus-visible,
+.replay-button:focus-visible,
+.next-button:focus-visible { outline: 6px solid #fff; outline-offset: 4px; }
 
 .voice-lights {
   height: 56px;
-  margin-top: 18px;
+  margin-top: 10px;
   display: flex;
-  align-items: end;
+  align-items: center;
   gap: 11px;
 }
 
-.voice-lights i {
-  width: 28px;
-  height: 18px;
-  border: 4px solid #d8ffb0;
-  border-radius: 9px;
-  background: #77d849;
-  box-shadow: 0 0 14px rgba(120,255,75,.75);
-  transform-origin: bottom;
-  transform: scaleY(var(--level, .35));
+.voice-lights img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(120,255,75,.82));
+  transform: scale(var(--level, .35));
+  transform-origin: center;
   transition: transform .08s linear;
 }
+
+.reward-stage {
+  position: relative;
+  width: min(92%, 440px);
+  min-height: clamp(120px, 17vh, 154px);
+  margin: -.5vh 0 1vh;
+}
+
+.reward {
+  position: absolute;
+  width: clamp(58px, 9vmin, 112px);
+  max-height: 135px;
+  object-fit: contain;
+  animation: reward-in .65s cubic-bezier(.2,.8,.25,1.25) var(--reward-delay) both;
+}
+
+.reward-stage[data-emotion="happy"] .reward-1 { left: 0; top: 20%; }
+.reward-stage[data-emotion="happy"] .reward-2 { left: 16%; top: 0; }
+.reward-stage[data-emotion="happy"] .reward-3 { left: 36%; top: 17%; }
+.reward-stage[data-emotion="happy"] .reward-4 { right: 16%; top: 0; }
+.reward-stage[data-emotion="happy"] .reward-5 { right: 0; top: 20%; }
+
+.reward-stage:not([data-emotion="happy"]) .reward {
+  left: 50%;
+  top: 0;
+  width: clamp(90px, 13vmin, 160px);
+  transform: translateX(-50%);
+}
+
+.reward-stage[data-emotion="proud"] .reward { animation-name: reward-proud; }
+.reward-stage[data-emotion="calm"] .reward { animation-name: reward-calm; }
+.reward-stage[data-emotion="silly"] .reward { animation-name: reward-silly; }
 
 .listen-status {
   min-height: 1.3em;
@@ -391,6 +471,10 @@ button { font: inherit; }
 @keyframes listen-breathe { from { transform: scale(1); } to { transform: scale(1.025) translateY(-3px); } }
 @keyframes result-pop { from { opacity: 0; transform: translateY(40px) scale(.8); } to { opacity: 1; transform: none; } }
 @keyframes star-pop { from { opacity: 0; transform: scale(.2) rotate(-25deg); } to { opacity: 1; transform: none; } }
+@keyframes reward-in { from { opacity: 0; transform: translateY(20px) scale(.55) rotate(-8deg); } to { opacity: 1; transform: none; } }
+@keyframes reward-proud { from { opacity: 0; transform: translateX(-50%) translateY(16px) scale(.7); } 65% { transform: translateX(-50%) translateY(-5px) scale(1.04); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes reward-calm { from { opacity: 0; transform: translateX(-50%) rotate(-8deg); } to { opacity: 1; transform: translateX(-50%) rotate(0); } }
+@keyframes reward-silly { from { opacity: 0; transform: translateX(-50%) rotate(-18deg) scale(.8); } to { opacity: 1; transform: translateX(-50%) rotate(10deg) scale(1); } }
 
 @media (orientation: portrait) {
   .title-art { width: 72vw; max-height: 18vh; }
@@ -400,15 +484,16 @@ button { font: inherit; }
   .emotion-card { min-height: 18vh; }
   .emotion-card::before { height: 76%; top: 34%; }
   .first-tap-note { display: none; }
+  .costume-trunk { right: 2%; bottom: 40%; width: 20vw; opacity: .82; }
   .prompt-banner { top: 10%; width: 76vw; }
   .actor-puppet { left: 50%; bottom: 29%; height: 48%; max-width: 58vw; transform: translateX(-50%); }
   .actor-puppet.listening { animation: none; }
   .performance-panel { left: 5%; right: 5%; bottom: 2.5%; width: auto; }
   .mic-button, .fallback-button { width: 15vh; height: 15vh; }
-  .voice-lights { position: absolute; left: 65%; top: 16%; }
   .privacy-note { display: none; }
   .result { grid-template-columns: 1fr; grid-template-rows: 46% 54%; padding: 11vh 5vw 4vh; }
   .result-puppet { height: 42vh; }
+  .reward-stage { min-height: 112px; margin-top: -1vh; }
   .next-button { min-height: 96px; }
 }
 
@@ -416,6 +501,8 @@ button { font: inherit; }
   .title-art { max-height: 22vh; }
   .choose-heading { top: 22%; }
   .emotion-card { min-height: 42vh; }
+  .reward-stage { min-height: 66px; margin-bottom: 0; }
+  .reward { max-height: 86px; }
   .first-tap-note, .privacy-note { display: none; }
 }
 

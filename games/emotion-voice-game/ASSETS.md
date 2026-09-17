@@ -13,12 +13,24 @@ All original game-local art is self-generated for QLOBE Kids and licensed CC BY
 | `assets/characters/teddy/anim/mouth-*.png` | `assets/source/visemes/teddy-visemes-gpt-image-2.png` → `teddy-visemes-alpha.png` | OpenAI built-in identity-preserving viseme-sheet generation, GPT Image 2, 2026-08-03 | deterministic 3×3 slice, soft muzzle matte, canonical QLOBE viseme names plus rest alias | no |
 | `assets/ui/*.webp` | `assets/source/ui-kit-gpt-image-2.png` → `ui-kit-alpha.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | chroma-key removal, deterministic 6-cell split, connected-component cleanup, alpha WebP | no |
 | `assets/ui/prompt-banner.webp`, `assets/ui/next-button.webp` | `assets/source/ui-banners-gpt-image-2.png` → `ui-banners-alpha.png` | OpenAI built-in image generation, GPT Image 2, 2026-08-03 | chroma-key removal, deterministic 2-cell split, connected-component cleanup, alpha WebP | no |
+| `assets/ui/replay.webp`, `assets/ui/costume-trunk.webp` | `assets/source/gpt-image-2/theater-tools-sheet-master.png` | GPT Image 2 generation, then approved LAN Qwen Image Layered, 2026-09-17 | exact-count gate, repository asset cutter, alpha normalization/finalization, WebP | no |
+| `assets/rewards/*.webp` | `assets/source/gpt-image-2/reward-props-sheet-master.png` | GPT Image 2 generation, 2026-09-17 | Qwen layer rejected by exact-count gate; GPT master cut into eight sprites, alpha-normalized/finalized, WebP | no |
 
 The installed image-generation skill’s `remove_chroma_key.py` performed soft
 matte/despill extraction. `tools/process-art.py` owns the reproducible final
 crop, component cleanup, canvas normalization, and encoding. Alpha QA checks all
 four corners of every final sprite; production Chrome shots are under
 `qa-shots/emotion-voice-game/`.
+
+The theater-magic additions are reproducible through
+`tools/process-reward-art.py`. Its receipt at
+`assets/source/theater-magic-processing.json` records source hashes, cutter
+boxes, final dimensions, corner-alpha checks, and magenta-QA files. Qwen kept
+the replay button and costume trunk as exactly two independent foreground
+objects, so that layer was accepted. It merged the eight reward pieces into
+four groups, so the acceptance gate preserved the cleaner transparent GPT
+Image 2 master instead. The full generation prompts and persistent output paths
+are in `assets/source/gpt-image-2/THEATER-MAGIC-PROMPTS.md`.
 
 ## Final prompt set
 
@@ -77,6 +89,16 @@ and a deep royal-blue action button with a cream-and-gold padded stitched edge;
 same size, generous gutter, no text, icon, shadow, floor, extra object, or
 watermark.
 
+### Theater magic props
+
+Use case `illustration-story`; two transparent production sheets matching the
+existing premium felt stage and UI construction. Sheet one contains exactly
+eight disconnected reward pieces: five Happy stars/streamers, one Proud medal,
+one Calm moon-and-cloud mobile, and one Silly jester hat. Sheet two contains
+exactly two disconnected pieces: a navy stitched listen/replay ear button and
+an open navy-and-cranberry costume trunk filled with show props. No baked text,
+characters, stage, floor, shadow, crop, extra object, or watermark.
+
 ## Shared assets and runtime modules
 
 - `shared/css/base.css`, `hud.css`, `screens.css`, and the Fredoka font.
@@ -99,6 +121,6 @@ transcript and similarity score. No runtime service request is made.
 
 ## Link preview
 
-`assets/og-image.jpg` is the existing generated link-preview image. Regenerate
-it from the finished splash through `tools/pipeline/capture_og_images.mjs` after
-the hub registry is synchronized; do not hand-edit it.
+`assets/og-image.jpg` was regenerated from the finished splash on 2026-09-17
+through `tools/pipeline/capture_og_images.mjs` at 1200 × 630 (quality 82, 127
+KB). It is a production screenshot, not hand-edited art.

@@ -1,0 +1,921 @@
+{
+  "format": "qlobe-emotion-voice-art-receipt",
+  "formatVersion": 1,
+  "generatedAt": "2026-09-17T22:53:29Z",
+  "pipeline": [
+    "gpt-image-2 masters",
+    "qwen-image-layered layer_2 with exact-count acceptance gate",
+    "tools/cut-asset-sheet.py",
+    "tools/pipeline/cutout_finalize.py",
+    "deterministic WebP encode"
+  ],
+  "results": [
+    {
+      "acceptedSource": "assets/source/gpt-image-2/reward-props-sheet-master.png",
+      "acceptedSourceSha256": "45927da914f1f99e546cf3dc61068fd6bb4c2bd4b5e16376d8cd152199f52449",
+      "cutter": {
+        "assets": [
+          {
+            "componentArea": 6868,
+            "cropBbox": [
+              92,
+              240,
+              209,
+              357
+            ],
+            "cropXywh": [
+              92,
+              240,
+              117,
+              117
+            ],
+            "file": "happy-star-left.png",
+            "foregroundBbox": [
+              96,
+              244,
+              205,
+              353
+            ],
+            "index": 1,
+            "name": "happy-star-left",
+            "normalizedCropBbox": [
+              0.063536,
+              0.220994,
+              0.144337,
+              0.328729
+            ]
+          },
+          {
+            "componentArea": 26764,
+            "cropBbox": [
+              184,
+              124,
+              332,
+              491
+            ],
+            "cropXywh": [
+              184,
+              124,
+              148,
+              367
+            ],
+            "file": "happy-streamer-green-left.png",
+            "foregroundBbox": [
+              188,
+              128,
+              328,
+              487
+            ],
+            "index": 2,
+            "name": "happy-streamer-green-left",
+            "normalizedCropBbox": [
+              0.127072,
+              0.11418,
+              0.229282,
+              0.452118
+            ]
+          },
+          {
+            "componentArea": 39022,
+            "cropBbox": [
+              326,
+              41,
+              489,
+              517
+            ],
+            "cropXywh": [
+              326,
+              41,
+              163,
+              476
+            ],
+            "file": "happy-streamer-gold.png",
+            "foregroundBbox": [
+              330,
+              45,
+              485,
+              513
+            ],
+            "index": 3,
+            "name": "happy-streamer-gold",
+            "normalizedCropBbox": [
+              0.225138,
+              0.037753,
+              0.337707,
+              0.476059
+            ]
+          },
+          {
+            "componentArea": 18753,
+            "cropBbox": [
+              485,
+              146,
+              609,
+              480
+            ],
+            "cropXywh": [
+              485,
+              146,
+              124,
+              334
+            ],
+            "file": "happy-streamer-green-right.png",
+            "foregroundBbox": [
+              489,
+              150,
+              605,
+              476
+            ],
+            "index": 4,
+            "name": "happy-streamer-green-right",
+            "normalizedCropBbox": [
+              0.334945,
+              0.134438,
+              0.42058,
+              0.441989
+            ]
+          },
+          {
+            "componentArea": 6041,
+            "cropBbox": [
+              582,
+              228,
+              690,
+              341
+            ],
+            "cropXywh": [
+              582,
+              228,
+              108,
+              113
+            ],
+            "file": "happy-star-right.png",
+            "foregroundBbox": [
+              586,
+              232,
+              686,
+              337
+            ],
+            "index": 5,
+            "name": "happy-star-right",
+            "normalizedCropBbox": [
+              0.401934,
+              0.209945,
+              0.476519,
+              0.313996
+            ]
+          },
+          {
+            "componentArea": 86817,
+            "cropBbox": [
+              905,
+              40,
+              1237,
+              518
+            ],
+            "cropXywh": [
+              905,
+              40,
+              332,
+              478
+            ],
+            "file": "proud-medal.png",
+            "foregroundBbox": [
+              909,
+              44,
+              1233,
+              514
+            ],
+            "index": 6,
+            "name": "proud-medal",
+            "normalizedCropBbox": [
+              0.625,
+              0.036832,
+              0.854282,
+              0.47698
+            ]
+          },
+          {
+            "componentArea": 96370,
+            "cropBbox": [
+              134,
+              533,
+              649,
+              1023
+            ],
+            "cropXywh": [
+              134,
+              533,
+              515,
+              490
+            ],
+            "file": "calm-mobile.png",
+            "foregroundBbox": [
+              138,
+              537,
+              645,
+              1019
+            ],
+            "index": 7,
+            "name": "calm-mobile",
+            "normalizedCropBbox": [
+              0.092541,
+              0.490792,
+              0.448204,
+              0.941989
+            ]
+          },
+          {
+            "componentArea": 159839,
+            "cropBbox": [
+              775,
+              589,
+              1391,
+              1007
+            ],
+            "cropXywh": [
+              775,
+              589,
+              616,
+              418
+            ],
+            "file": "silly-hat.png",
+            "foregroundBbox": [
+              779,
+              593,
+              1387,
+              1003
+            ],
+            "index": 8,
+            "name": "silly-hat",
+            "normalizedCropBbox": [
+              0.535221,
+              0.542357,
+              0.960635,
+              0.927256
+            ]
+          }
+        ],
+        "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+        "detection": "alpha",
+        "padding": 4,
+        "parameters": {
+          "alphaThreshold": 8,
+          "chromaThreshold": 18,
+          "closeRadius": 2,
+          "distanceThreshold": 30,
+          "minArea": 786,
+          "order": "reading"
+        },
+        "sampledBackgroundRgb": null,
+        "source": "reward-props-sheet-master.png",
+        "sourceSha256": "45927da914f1f99e546cf3dc61068fd6bb4c2bd4b5e16376d8cd152199f52449",
+        "sourceSize": [
+          1448,
+          1086
+        ]
+      },
+      "finals": [
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/happy-star-left-alpha-normalized.png",
+          "bytes": 5652,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/happy-star-left.png",
+          "dimensions": [
+            117,
+            117
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 45.664,
+              "partialPct": 4.909,
+              "transparentPct": 49.427
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              3,
+              113,
+              113
+            ],
+            "finalSize": [
+              117,
+              117
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              117,
+              117
+            ]
+          },
+          "name": "happy-star-left",
+          "processed": "assets/source/processed-alpha/theater-magic/happy-star-left.png",
+          "qaMagenta": "assets/source/qa/theater-magic/happy-star-left-magenta.png",
+          "runtime": "assets/rewards/happy-star-left.webp",
+          "sha256": "2a55ca6439b804c89a2f13465531e8423a813d06284488f6cb75896f52155ad5"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/happy-streamer-green-left-alpha-normalized.png",
+          "bytes": 18698,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/happy-streamer-green-left.png",
+          "dimensions": [
+            148,
+            367
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 45.843,
+              "partialPct": 3.909,
+              "transparentPct": 50.249
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              145,
+              363
+            ],
+            "finalSize": [
+              148,
+              367
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              148,
+              367
+            ]
+          },
+          "name": "happy-streamer-green-left",
+          "processed": "assets/source/processed-alpha/theater-magic/happy-streamer-green-left.png",
+          "qaMagenta": "assets/source/qa/theater-magic/happy-streamer-green-left-magenta.png",
+          "runtime": "assets/rewards/happy-streamer-green-left.webp",
+          "sha256": "56e80d335c867c82dfd56d7cfd52c7495796efd2c52e3caea7be336f8de4bcaf"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/happy-streamer-gold-alpha-normalized.png",
+          "bytes": 23096,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/happy-streamer-gold.png",
+          "dimensions": [
+            163,
+            476
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 47.202,
+              "partialPct": 3.467,
+              "transparentPct": 49.331
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              158,
+              473
+            ],
+            "finalSize": [
+              163,
+              476
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              163,
+              476
+            ]
+          },
+          "name": "happy-streamer-gold",
+          "processed": "assets/source/processed-alpha/theater-magic/happy-streamer-gold.png",
+          "qaMagenta": "assets/source/qa/theater-magic/happy-streamer-gold-magenta.png",
+          "runtime": "assets/rewards/happy-streamer-gold.webp",
+          "sha256": "8a8c551a344df599d7990a5450a8a14e9dc3fd1602bfdb5840188bdc137f87b2"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/happy-streamer-green-right-alpha-normalized.png",
+          "bytes": 13542,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/happy-streamer-green-right.png",
+          "dimensions": [
+            124,
+            334
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 41.612,
+              "partialPct": 3.926,
+              "transparentPct": 54.462
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              120,
+              331
+            ],
+            "finalSize": [
+              124,
+              334
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              124,
+              334
+            ]
+          },
+          "name": "happy-streamer-green-right",
+          "processed": "assets/source/processed-alpha/theater-magic/happy-streamer-green-right.png",
+          "qaMagenta": "assets/source/qa/theater-magic/happy-streamer-green-right-magenta.png",
+          "runtime": "assets/rewards/happy-streamer-green-right.webp",
+          "sha256": "effa93d489d0b375b84e03571011e5ed13d1d40d74e9add09aaf77da6f1eeb7d"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/happy-star-right-alpha-normalized.png",
+          "bytes": 4800,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/happy-star-right.png",
+          "dimensions": [
+            108,
+            113
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 44.371,
+              "partialPct": 5.424,
+              "transparentPct": 50.205
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              3,
+              105,
+              109
+            ],
+            "finalSize": [
+              108,
+              113
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              108,
+              113
+            ]
+          },
+          "name": "happy-star-right",
+          "processed": "assets/source/processed-alpha/theater-magic/happy-star-right.png",
+          "qaMagenta": "assets/source/qa/theater-magic/happy-star-right-magenta.png",
+          "runtime": "assets/rewards/happy-star-right.webp",
+          "sha256": "3087c90f73d234621992e081bd863bf44298693285520bd1d18ea8dcc55d11e7"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/proud-medal-alpha-normalized.png",
+          "bytes": 40480,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/proud-medal.png",
+          "dimensions": [
+            332,
+            478
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 52.624,
+              "partialPct": 2.232,
+              "transparentPct": 45.144
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              329,
+              474
+            ],
+            "finalSize": [
+              332,
+              478
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              332,
+              478
+            ]
+          },
+          "name": "proud-medal",
+          "processed": "assets/source/processed-alpha/theater-magic/proud-medal.png",
+          "qaMagenta": "assets/source/qa/theater-magic/proud-medal-magenta.png",
+          "runtime": "assets/rewards/proud-medal.webp",
+          "sha256": "6aab702eb465e8a01d4f3e30ce7c3fca7f8ead8be8df276ab948e575b7bfe8e3"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/calm-mobile-alpha-normalized.png",
+          "bytes": 53516,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/calm-mobile.png",
+          "dimensions": [
+            515,
+            490
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 35.217,
+              "partialPct": 3.199,
+              "transparentPct": 61.584
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              511,
+              486
+            ],
+            "finalSize": [
+              515,
+              490
+            ],
+            "flags": [
+              "alpha-partial-band>2%"
+            ],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              515,
+              490
+            ]
+          },
+          "name": "calm-mobile",
+          "processed": "assets/source/processed-alpha/theater-magic/calm-mobile.png",
+          "qaMagenta": "assets/source/qa/theater-magic/calm-mobile-magenta.png",
+          "runtime": "assets/rewards/calm-mobile.webp",
+          "sha256": "8261768e8111a2a2e2420e9b423f898354ae58eafde6e2e6b84dfd0b002f6cbc"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/silly-hat-alpha-normalized.png",
+          "bytes": 59920,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/reward-props/silly-hat.png",
+          "dimensions": [
+            520,
+            353
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 60.449,
+              "partialPct": 1.755,
+              "transparentPct": 37.796
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              4,
+              4,
+              612,
+              414
+            ],
+            "finalSize": [
+              520,
+              353
+            ],
+            "flags": [],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              616,
+              418
+            ]
+          },
+          "name": "silly-hat",
+          "processed": "assets/source/processed-alpha/theater-magic/silly-hat.png",
+          "qaMagenta": "assets/source/qa/theater-magic/silly-hat-magenta.png",
+          "runtime": "assets/rewards/silly-hat.webp",
+          "sha256": "288df45745dac4527d34f1a7dbf24c6de9b22e0e6371e42d7490150e9c3ca12d"
+        }
+      ],
+      "layeredDecision": "rejected-exact-count-gate",
+      "layeredError": "error: found 4 assets, expected 8; inspect --debug-mask and tune thresholds/min-area rather than accepting a bad cut",
+      "sheet": "reward-props"
+    },
+    {
+      "acceptedSource": "assets/source/local-api/qwen-layered/theater-tools-layer2.png",
+      "acceptedSourceSha256": "b683cbb76775e71419c520bd6be882bfb02475812ea13bad8536a44d4c4c1c7d",
+      "cutter": {
+        "assets": [
+          {
+            "componentArea": 99374,
+            "cropBbox": [
+              48,
+              55,
+              442,
+              445
+            ],
+            "cropXywh": [
+              48,
+              55,
+              394,
+              390
+            ],
+            "file": "replay.png",
+            "foregroundBbox": [
+              66,
+              73,
+              424,
+              427
+            ],
+            "index": 1,
+            "name": "replay",
+            "normalizedCropBbox": [
+              0.046875,
+              0.107422,
+              0.431641,
+              0.869141
+            ]
+          },
+          {
+            "componentArea": 135475,
+            "cropBbox": [
+              548,
+              45,
+              992,
+              451
+            ],
+            "cropXywh": [
+              548,
+              45,
+              444,
+              406
+            ],
+            "file": "costume-trunk.png",
+            "foregroundBbox": [
+              566,
+              63,
+              974,
+              433
+            ],
+            "index": 2,
+            "name": "costume-trunk",
+            "normalizedCropBbox": [
+              0.535156,
+              0.087891,
+              0.96875,
+              0.880859
+            ]
+          }
+        ],
+        "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+        "detection": "alpha",
+        "padding": 18,
+        "parameters": {
+          "alphaThreshold": 8,
+          "chromaThreshold": 18,
+          "closeRadius": 2,
+          "distanceThreshold": 30,
+          "minArea": 262,
+          "order": "reading"
+        },
+        "sampledBackgroundRgb": null,
+        "source": "theater-tools-layer2.png",
+        "sourceSha256": "b683cbb76775e71419c520bd6be882bfb02475812ea13bad8536a44d4c4c1c7d",
+        "sourceSize": [
+          1024,
+          512
+        ]
+      },
+      "finals": [
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/replay-alpha-normalized.png",
+          "bytes": 39018,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/theater-tools/replay.png",
+          "dimensions": [
+            382,
+            378
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 63.318,
+              "partialPct": 1.455,
+              "transparentPct": 35.228
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              18,
+              18,
+              376,
+              372
+            ],
+            "finalSize": [
+              382,
+              378
+            ],
+            "flags": [],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              394,
+              390
+            ]
+          },
+          "name": "replay",
+          "processed": "assets/source/processed-alpha/theater-magic/replay.png",
+          "qaMagenta": "assets/source/qa/theater-magic/replay-magenta.png",
+          "runtime": "assets/ui/replay.webp",
+          "sha256": "5dec73745183dc42e4fe801c10a8ac89a363424b208c442a688cf0a65ce9b548"
+        },
+        {
+          "alphaNormalized": "assets/source/processed-alpha/theater-magic/costume-trunk-alpha-normalized.png",
+          "bytes": 52294,
+          "cornerAlpha": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "crop": "assets/source/cuts/theater-tools/costume-trunk.png",
+          "dimensions": [
+            432,
+            394
+          ],
+          "finalizer": {
+            "alpha": {
+              "opaquePct": 73.638,
+              "partialPct": 1.564,
+              "transparentPct": 24.799
+            },
+            "alphaFloor": 4,
+            "bbox": [
+              18,
+              18,
+              426,
+              388
+            ],
+            "finalSize": [
+              432,
+              394
+            ],
+            "flags": [],
+            "pass": true,
+            "reason": null,
+            "sourceSize": [
+              444,
+              406
+            ]
+          },
+          "name": "costume-trunk",
+          "processed": "assets/source/processed-alpha/theater-magic/costume-trunk.png",
+          "qaMagenta": "assets/source/qa/theater-magic/costume-trunk-magenta.png",
+          "runtime": "assets/ui/costume-trunk.webp",
+          "sha256": "08303af52c963e8386d3c4dd497f1e212ac5b1d0b6ea266481146074d84191e4"
+        }
+      ],
+      "layeredDecision": "accepted",
+      "probe": {
+        "assets": [
+          {
+            "componentArea": 99374,
+            "cropBbox": [
+              48,
+              55,
+              442,
+              445
+            ],
+            "cropXywh": [
+              48,
+              55,
+              394,
+              390
+            ],
+            "file": "replay.png",
+            "foregroundBbox": [
+              66,
+              73,
+              424,
+              427
+            ],
+            "index": 1,
+            "name": "replay",
+            "normalizedCropBbox": [
+              0.046875,
+              0.107422,
+              0.431641,
+              0.869141
+            ]
+          },
+          {
+            "componentArea": 135475,
+            "cropBbox": [
+              548,
+              45,
+              992,
+              451
+            ],
+            "cropXywh": [
+              548,
+              45,
+              444,
+              406
+            ],
+            "file": "costume-trunk.png",
+            "foregroundBbox": [
+              566,
+              63,
+              974,
+              433
+            ],
+            "index": 2,
+            "name": "costume-trunk",
+            "normalizedCropBbox": [
+              0.535156,
+              0.087891,
+              0.96875,
+              0.880859
+            ]
+          }
+        ],
+        "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+        "detection": "alpha",
+        "padding": 18,
+        "parameters": {
+          "alphaThreshold": 8,
+          "chromaThreshold": 18,
+          "closeRadius": 2,
+          "distanceThreshold": 30,
+          "minArea": 262,
+          "order": "reading"
+        },
+        "sampledBackgroundRgb": null,
+        "source": "theater-tools-layer2.png",
+        "sourceSha256": "b683cbb76775e71419c520bd6be882bfb02475812ea13bad8536a44d4c4c1c7d",
+        "sourceSize": [
+          1024,
+          512
+        ]
+      },
+      "sheet": "theater-tools"
+    }
+  ]
+}

@@ -72,39 +72,77 @@ export function createVoiceMeter({ fftSize = 2048 } = {}) {
   let analyser = null;
   let source = null;
   let permission = 'unknown';
+  let epoch = 0;
+  let cancelActiveListen = null;
+
+  function dispose(resources = {}) {
+    try { resources.source?.disconnect(); } catch { /* already disconnected */ }
+    for (const track of resources.stream?.getTracks?.() || []) track.stop();
+    try {
+      const closing = resources.context?.close();
+      closing?.catch?.(() => {});
+    } catch { /* already closed */ }
+  }
 
   async function request() {
     if (analyser && stream?.active) return true;
+    const requestEpoch = epoch;
     if (!navigator.mediaDevices?.getUserMedia) {
       permission = 'unavailable';
       return false;
     }
+    let nextContext = null;
+    let nextStream = null;
+    let nextAnalyser = null;
+    let nextSource = null;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
+      nextStream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false },
         video: false,
       });
+      if (requestEpoch !== epoch) {
+        dispose({ stream: nextStream });
+        return false;
+      }
       const AudioCtor = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtor) throw new Error('AudioContext unavailable');
-      context = new AudioCtor();
-      await context.resume();
-      analyser = context.createAnalyser();
-      analyser.fftSize = fftSize;
-      analyser.smoothingTimeConstant = 0.18;
-      source = context.createMediaStreamSource(stream);
-      source.connect(analyser);
+      nextContext = new AudioCtor();
+      await nextContext.resume();
+      if (requestEpoch !== epoch) {
+        dispose({ stream: nextStream, context: nextContext });
+        return false;
+      }
+      nextAnalyser = nextContext.createAnalyser();
+      nextAnalyser.fftSize = fftSize;
+      nextAnalyser.smoothingTimeConstant = 0.18;
+      nextSource = nextContext.createMediaStreamSource(nextStream);
+      nextSource.connect(nextAnalyser);
+      context = nextContext;
+      stream = nextStream;
+      analyser = nextAnalyser;
+      source = nextSource;
       permission = 'granted';
       return true;
     } catch (error) {
-      permission = error?.name === 'NotAllowedError' ? 'denied' : 'unavailable';
-      close();
+      dispose({ source: nextSource, stream: nextStream, context: nextContext });
+      if (requestEpoch === epoch) {
+        permission = error?.name === 'NotAllowedError' ? 'denied' : 'unavailable';
+      }
       return false;
     }
   }
 
   async function listen({ durationMs = 2300, threshold = DEFAULT_THRESHOLD, onFrame } = {}) {
-    if (!(await request())) return { ...summarizeVoiceFrames([]), permission };
-    const data = new Float32Array(analyser.fftSize);
+    const listenEpoch = epoch;
+    if (!(await request()) || listenEpoch !== epoch) {
+      return { ...summarizeVoiceFrames([]), permission, cancelled: listenEpoch !== epoch };
+    }
+    const liveAnalyser = analyser;
+    const liveContext = context;
+    if (!liveAnalyser || !liveContext) {
+      return { ...summarizeVoiceFrames([]), permission, cancelled: true };
+    }
+    const data = new Float32Array(liveAnalyser.fftSize);
     const frames = [];
     const started = performance.now();
     let previous = started;
@@ -112,13 +150,27 @@ export function createVoiceMeter({ fftSize = 2048 } = {}) {
     let raf = 0;
 
     const result = await new Promise((resolve) => {
+      let settled = false;
+      let cancel = null;
+      const finish = (wasCancelled = false) => {
+        if (settled) return;
+        settled = true;
+        cancelled ||= wasCancelled;
+        if (raf) cancelAnimationFrame(raf);
+        if (cancelActiveListen === cancel) cancelActiveListen = null;
+        resolve(summarizeVoiceFrames(frames, { threshold }));
+      };
+      cancel = () => finish(true);
+      cancelActiveListen = cancel;
       function tick(now) {
-        if (cancelled || now - started >= durationMs) {
-          resolve(summarizeVoiceFrames(frames, { threshold }));
-          return;
+        if (listenEpoch !== epoch) return finish(true);
+        if (now - started >= durationMs) return finish();
+        try {
+          liveAnalyser.getFloatTimeDomainData(data);
+        } catch {
+          return finish(true);
         }
-        analyser.getFloatTimeDomainData(data);
-        const frame = analyzeVoiceFrame(data, context.sampleRate);
+        const frame = analyzeVoiceFrame(data, liveContext.sampleRate);
         frame.dt = Math.min(80, Math.max(0, now - previous));
         previous = now;
         frames.push(frame);
@@ -131,17 +183,15 @@ export function createVoiceMeter({ fftSize = 2048 } = {}) {
     return {
       ...result,
       permission,
-      cancel() {
-        cancelled = true;
-        if (raf) cancelAnimationFrame(raf);
-      },
+      cancelled,
     };
   }
 
   function close() {
-    try { source?.disconnect(); } catch { /* already disconnected */ }
-    for (const track of stream?.getTracks?.() || []) track.stop();
-    try { context?.close(); } catch { /* already closed */ }
+    epoch += 1;
+    cancelActiveListen?.();
+    cancelActiveListen = null;
+    dispose({ source, stream, context });
     source = null;
     analyser = null;
     stream = null;

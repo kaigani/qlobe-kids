@@ -16,10 +16,12 @@ energy, pacing, and steadiness become the play material.
 1. **Feeling chooser / splash** — authored title, Teddy, and four large felt
    cards. Home is available only here and returns to the catalog.
 2. **Performance stage** — selected Teddy pose, spoken model, exact line,
-   microphone button, live three-light voice meter, and four progress dots.
+   microphone button, a replayable “Hear Teddy” ear control, live three-star
+   voice meter, and four progress dots.
    Back returns to the in-page chooser.
 3. **Celebration** — matching Teddy pose, one to three voice sparks, spoken
-   specific praise, confetti, and Next Feeling. Back returns to the chooser.
+   specific praise, an emotion-specific felt stage prop, confetti, and Next
+   Feeling. Back returns to the chooser.
 4. After all four feelings, Next becomes Encore and resets the set.
 
 ## Core loop
@@ -75,11 +77,20 @@ object (stage, character, emotion card, mic, and reward star) is raster art.
 | four `assets/ui/card-*.webp` | alpha WebP | authored felt choice carriers |
 | `assets/ui/mic.webp` | alpha WebP | microphone action control |
 | `assets/ui/star.webp` | alpha WebP | fallback action and voice sparks |
+| `assets/ui/replay.webp` | 382 × 378 alpha WebP | replay Teddy's current model line |
+| `assets/ui/costume-trunk.webp` | 432 × 394 alpha WebP | splash-world storytelling prop |
+| eight `assets/rewards/*.webp` | alpha WebP | Happy streamers/stars and Proud, Calm, Silly payoff props |
 | `assets/ui/prompt-banner.webp`, `next-button.webp` | alpha WebP | authored instruction and action carriers |
 
 Generated sources are retained under `assets/source/`. Chroma extraction,
 largest-component cleanup, normalization, sizing, and encoding are reproducible
 through `tools/process-art.py`.
+
+The additional theater props use `tools/process-reward-art.py`: GPT Image 2
+masters, optional approved-LAN Qwen foreground separation behind an exact-count
+acceptance gate, the repository asset cutter, alpha finalization, and magenta
+QA. This keeps the physical art authored raster while all functional labels
+remain accessible HTML text.
 
 ## Interaction and feedback rules
 
@@ -87,6 +98,10 @@ through `tools/process-art.py`.
 - First-gesture audio unlock uses the shared platform fan-out.
 - A newer screen stops the previous spoken line.
 - Live meter lights respond to energy but never expose numbers to the child.
+- Hear Teddy always replays the selected model line and locks the microphone
+  only while Teddy is speaking.
+- Each completed feeling reveals a distinct physical show reward: Happy
+  streamers, Proud medal, Calm mobile, or Silly jester hat.
 - Quiet input gets one gentle spoken nudge and another try.
 - Clear speech always completes; spark count is variation, not a grade.
 - The mic is stopped whenever play is exited, and on `pagehide`.
@@ -104,8 +119,10 @@ does not record, persist, upload, or label a child’s emotion.
 ## Privacy, permission, and fallback
 
 - Audio samples remain inside the live `AudioContext` graph and are discarded.
-- No `MediaRecorder`, Blob, IndexedDB, localStorage, network request, account,
-  analytics, or tracking is used.
+- No `MediaRecorder`, Blob, IndexedDB, localStorage, game account, or
+  game-owned audio/network analytics is used. Microphone frames never leave the
+  live audio graph. The page retains QLOBE's platform-wide GA4 pageview script,
+  which receives no microphone samples or derived voice features.
 - Permission is requested only after the child taps the microphone.
 - Denial, unsupported APIs, or unavailable `AudioContext` all route to the
   same image-led tap-and-say fallback.
@@ -131,9 +148,11 @@ target collection, fake-mic deterministic play, tap, win, mute, and home.
 
 Production QA (`node games/emotion-voice-game/tools/qa.mjs`) covers landscape,
 1024×768 mic denial, 820×1180 touch portrait, compact reduced motion, viseme
-registration, the full
+registration, authored trunk/replay/raster-meter/reward assets, the full
 choose → perform → celebrate loop, ≥96 px targets, progress, no-mic completion,
-zero page errors, zero failed requests, and zero remote runtime calls.
+mic teardown during navigation, zero page errors, zero unexpected failed
+requests, and zero unexpected remote calls. The platform-wide GA4 endpoints are
+the sole explicit network allowlist.
 
 Status remains **beta** until a real child playtest confirms microphone distance,
 spoken-prompt pacing, and whether four rounds feels right.
