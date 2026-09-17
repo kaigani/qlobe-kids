@@ -1,0 +1,26 @@
+{
+  "key": "welcome",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "Welcome! Plant care captain! Choose a plant friend!",
+    "srt": "1\n00:00:00,000 --> 00:00:04,000\nWelcome! Plant care captain! Choose a plant friend!\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 4,
+          "text": "Welcome! Plant care captain! Choose a plant friend!"
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "Welcome, Plant Care Captain! Choose a plant friend.",
+  "transcript": "Welcome! Plant care captain! Choose a plant friend!",
+  "pass": true
+}

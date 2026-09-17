@@ -1,0 +1,52 @@
+{
+  "source": "games/plant-care-captain/assets/source/gpt-image-2/title-lockup-master.png",
+  "sourceSha256": "51111341262a6358734783f225241977b2dd1af75b58a292f7770e090c6e54f5",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title-lockup",
+      "file": "title-lockup.png",
+      "componentArea": 611453,
+      "foregroundBbox": [
+        46,
+        262,
+        1414,
+        812
+      ],
+      "cropBbox": [
+        34,
+        250,
+        1426,
+        824
+      ],
+      "cropXywh": [
+        34,
+        250,
+        1392,
+        574
+      ],
+      "normalizedCropBbox": [
+        0.023481,
+        0.230203,
+        0.984807,
+        0.758748
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

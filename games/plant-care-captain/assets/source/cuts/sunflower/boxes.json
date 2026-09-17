@@ -1,0 +1,142 @@
+{
+  "source": "games/plant-care-captain/assets/source/gpt-image-2/sunflower-states-sheet.png",
+  "sourceSha256": "554df0ceefea27eec8acf4e505a6105f433d359ad6978350340bbdbae3bf84b6",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "dry",
+      "file": "dry.png",
+      "componentArea": 53002,
+      "foregroundBbox": [
+        272,
+        151,
+        503,
+        504
+      ],
+      "cropBbox": [
+        260,
+        139,
+        515,
+        516
+      ],
+      "cropXywh": [
+        260,
+        139,
+        255,
+        377
+      ],
+      "normalizedCropBbox": [
+        0.179558,
+        0.127993,
+        0.355663,
+        0.475138
+      ]
+    },
+    {
+      "index": 2,
+      "name": "watered",
+      "file": "watered.png",
+      "componentArea": 60529,
+      "foregroundBbox": [
+        895,
+        91,
+        1148,
+        504
+      ],
+      "cropBbox": [
+        883,
+        79,
+        1160,
+        516
+      ],
+      "cropXywh": [
+        883,
+        79,
+        277,
+        437
+      ],
+      "normalizedCropBbox": [
+        0.609807,
+        0.072744,
+        0.801105,
+        0.475138
+      ]
+    },
+    {
+      "index": 3,
+      "name": "misted",
+      "file": "misted.png",
+      "componentArea": 61445,
+      "foregroundBbox": [
+        266,
+        589,
+        535,
+        996
+      ],
+      "cropBbox": [
+        254,
+        577,
+        547,
+        1008
+      ],
+      "cropXywh": [
+        254,
+        577,
+        293,
+        431
+      ],
+      "normalizedCropBbox": [
+        0.175414,
+        0.531308,
+        0.377762,
+        0.928177
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bloom",
+      "file": "bloom.png",
+      "componentArea": 85777,
+      "foregroundBbox": [
+        878,
+        550,
+        1173,
+        995
+      ],
+      "cropBbox": [
+        866,
+        538,
+        1185,
+        1007
+      ],
+      "cropXywh": [
+        866,
+        538,
+        319,
+        469
+      ],
+      "normalizedCropBbox": [
+        0.598066,
+        0.495396,
+        0.81837,
+        0.927256
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

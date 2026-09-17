@@ -1,0 +1,33 @@
+{
+  "key": "water-intro",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "ttsSeed": 8,
+  "result": {
+    "text": "The soil looks dry. Bring the watering can to the pot.",
+    "srt": "1\n00:00:00,000 --> 00:00:04,000\nThe soil looks dry. Bring the watering can to the pot.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0.0,
+          "end": 4.0,
+          "text": "The soil looks dry. Bring the watering can to the pot."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "The soil looks dry. Bring the watering can to the pot.",
+  "transcript": "The soil looks dry. Bring the watering can to the pot.",
+  "pass": true,
+  "rejectedAttempt": {
+    "seed": 7,
+    "ttsJob": "93e268004fe94db9bfd071147429266b",
+    "receipt": "whisper-seed7-rejected.json",
+    "reason": "Whisper heard an extra leading word"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "key": "water-intro",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "that the soil looks dry, bring the watering can to the pot.",
+    "srt": "1\n00:00:00,000 --> 00:00:03,500\nthat the soil looks dry, bring the watering can to the pot.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 3.5,
+          "text": "that the soil looks dry, bring the watering can to the pot."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "The soil looks dry. Bring the watering can to the pot.",
+  "transcript": "that the soil looks dry, bring the watering can to the pot.",
+  "pass": false
+}

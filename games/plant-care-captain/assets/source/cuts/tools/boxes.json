@@ -1,0 +1,322 @@
+{
+  "source": "games/plant-care-captain/assets/source/gpt-image-2/tools-effects-sheet.png",
+  "sourceSha256": "6c9b619e6dd2e5fcd4357a299885a82fd5d23a50ccc367dcbf978a0e911ac41d",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "watering-can",
+      "file": "watering-can.png",
+      "componentArea": 61888,
+      "foregroundBbox": [
+        51,
+        228,
+        423,
+        486
+      ],
+      "cropBbox": [
+        39,
+        216,
+        435,
+        498
+      ],
+      "cropXywh": [
+        39,
+        216,
+        396,
+        282
+      ],
+      "normalizedCropBbox": [
+        0.026934,
+        0.198895,
+        0.300414,
+        0.458564
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mister",
+      "file": "mister.png",
+      "componentArea": 53007,
+      "foregroundBbox": [
+        458,
+        156,
+        695,
+        490
+      ],
+      "cropBbox": [
+        446,
+        144,
+        707,
+        502
+      ],
+      "cropXywh": [
+        446,
+        144,
+        261,
+        358
+      ],
+      "normalizedCropBbox": [
+        0.308011,
+        0.132597,
+        0.48826,
+        0.462247
+      ]
+    },
+    {
+      "index": 3,
+      "name": "shears",
+      "file": "shears.png",
+      "componentArea": 40414,
+      "foregroundBbox": [
+        761,
+        174,
+        1060,
+        496
+      ],
+      "cropBbox": [
+        749,
+        162,
+        1072,
+        508
+      ],
+      "cropXywh": [
+        749,
+        162,
+        323,
+        346
+      ],
+      "normalizedCropBbox": [
+        0.517265,
+        0.149171,
+        0.740331,
+        0.467772
+      ]
+    },
+    {
+      "index": 4,
+      "name": "dry-leaf",
+      "file": "dry-leaf.png",
+      "componentArea": 29018,
+      "foregroundBbox": [
+        1129,
+        255,
+        1388,
+        480
+      ],
+      "cropBbox": [
+        1117,
+        243,
+        1400,
+        492
+      ],
+      "cropXywh": [
+        1117,
+        243,
+        283,
+        249
+      ],
+      "normalizedCropBbox": [
+        0.771409,
+        0.223757,
+        0.966851,
+        0.453039
+      ]
+    },
+    {
+      "index": 5,
+      "name": "water-drop-1",
+      "file": "water-drop-1.png",
+      "componentArea": 9010,
+      "foregroundBbox": [
+        71,
+        773,
+        208,
+        898
+      ],
+      "cropBbox": [
+        59,
+        761,
+        220,
+        910
+      ],
+      "cropXywh": [
+        59,
+        761,
+        161,
+        149
+      ],
+      "normalizedCropBbox": [
+        0.040746,
+        0.700737,
+        0.151934,
+        0.837937
+      ]
+    },
+    {
+      "index": 6,
+      "name": "water-drop-2",
+      "file": "water-drop-2.png",
+      "componentArea": 15377,
+      "foregroundBbox": [
+        179,
+        641,
+        302,
+        842
+      ],
+      "cropBbox": [
+        167,
+        629,
+        314,
+        854
+      ],
+      "cropXywh": [
+        167,
+        629,
+        147,
+        225
+      ],
+      "normalizedCropBbox": [
+        0.115331,
+        0.57919,
+        0.216851,
+        0.786372
+      ]
+    },
+    {
+      "index": 7,
+      "name": "water-drop-3",
+      "file": "water-drop-3.png",
+      "componentArea": 8870,
+      "foregroundBbox": [
+        232,
+        772,
+        363,
+        903
+      ],
+      "cropBbox": [
+        220,
+        760,
+        375,
+        915
+      ],
+      "cropXywh": [
+        220,
+        760,
+        155,
+        155
+      ],
+      "normalizedCropBbox": [
+        0.151934,
+        0.699816,
+        0.258978,
+        0.842541
+      ]
+    },
+    {
+      "index": 8,
+      "name": "mist-cloud",
+      "file": "mist-cloud.png",
+      "componentArea": 43905,
+      "foregroundBbox": [
+        409,
+        670,
+        720,
+        915
+      ],
+      "cropBbox": [
+        397,
+        658,
+        732,
+        927
+      ],
+      "cropXywh": [
+        397,
+        658,
+        335,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.274171,
+        0.605893,
+        0.505525,
+        0.853591
+      ]
+    },
+    {
+      "index": 9,
+      "name": "glint",
+      "file": "glint.png",
+      "componentArea": 15435,
+      "foregroundBbox": [
+        817,
+        672,
+        1013,
+        886
+      ],
+      "cropBbox": [
+        805,
+        660,
+        1025,
+        898
+      ],
+      "cropXywh": [
+        805,
+        660,
+        220,
+        238
+      ],
+      "normalizedCropBbox": [
+        0.555939,
+        0.607735,
+        0.707873,
+        0.826888
+      ]
+    },
+    {
+      "index": 10,
+      "name": "rosette",
+      "file": "rosette.png",
+      "componentArea": 66914,
+      "foregroundBbox": [
+        1116,
+        582,
+        1386,
+        945
+      ],
+      "cropBbox": [
+        1104,
+        570,
+        1398,
+        957
+      ],
+      "cropXywh": [
+        1104,
+        570,
+        294,
+        387
+      ],
+      "normalizedCropBbox": [
+        0.762431,
+        0.524862,
+        0.96547,
+        0.881215
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

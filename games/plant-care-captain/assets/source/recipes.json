@@ -1,0 +1,88 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "privateHostRecorded": false,
+  "gptImage2": {
+    "model": "gpt-image-2",
+    "seed": null,
+    "sources": [
+      "gpt-image-2/greenhouse-workbench-master.png",
+      "gpt-image-2/sunflower-states-sheet.png",
+      "gpt-image-2/pea-states-sheet.png",
+      "gpt-image-2/basil-states-sheet.png",
+      "gpt-image-2/tools-effects-sheet.png",
+      "gpt-image-2/ui-carriers-sheet.png",
+      "gpt-image-2/title-lockup-master.png"
+    ],
+    "prompts": "PROMPTS.md"
+  },
+  "localApi": {
+    "hub": {
+      "workflow": "krea2-turbo-t2i",
+      "seed": 42,
+      "jobId": "c051649ce4714b9a94321154ec79a0eb",
+      "source": "local-api/krea/hub-seed42.png",
+      "status": "accepted"
+    },
+    "peaLayered": {
+      "workflow": "qwen-image-layered",
+      "seed": 42,
+      "output": "layer_2",
+      "jobId": "e79edb23d4ac4b71927266ec5922d168",
+      "source": "local-api/layered/pea-states-layer2.png",
+      "status": "accepted"
+    },
+    "uiGrouped": {
+      "workflow": "qwen-image-layered",
+      "seed": 42,
+      "output": "layer_2",
+      "jobId": "1c7730b71f6e400790f9728f88f069c3",
+      "source": "local-api/layered/ui-carriers-layer2.png",
+      "status": "rejected",
+      "reason": "Only three of six authored carriers survived."
+    },
+    "uiIndividual": {
+      "workflow": "qwen-image-layered",
+      "seed": 42,
+      "output": "layer_2",
+      "status": "rejected",
+      "reason": "Four outputs had nearly empty alpha; intro cloud lost its leaf ornament.",
+      "jobs": {
+        "choice-card": "9eca6739a9b44715ad6375d6a2ca401c",
+        "instruction-plaque": "6b231065a67143738be2c0d48a52b035",
+        "action-button": "b3faa22e9bef428d9e5f5618b118b2e0",
+        "progress-tray": "b1d42e7ee3d54965ac0d80ea25615dfd",
+        "intro-cloud": "b3f3f72b97c0454cac3776a06a54efe7",
+        "moisture-gauge": "e1d9d6bfd5b14445b2b51f5c88a16df5"
+      }
+    },
+    "thrivingEdit": {
+      "workflow": "qwen-image-edit",
+      "attempts": [
+        {
+          "seed": 42,
+          "jobId": "4829f3e3533b48388606a5ed8394f055",
+          "source": "local-api/qwen-edit/greenhouse-thriving-seed42.png",
+          "status": "rejected",
+          "reason": "Added a generic center plant that broke selected-plant identity."
+        },
+        {
+          "seed": 1337,
+          "jobId": null,
+          "mode": "sync",
+          "source": "local-api/qwen-edit/greenhouse-thriving-empty-seed1337.png",
+          "status": "accepted"
+        }
+      ]
+    },
+    "voice": {
+      "workflow": "qwen3-tts-voiceclone",
+      "whisperWorkflow": "whisper-stt",
+      "whisperModel": "small",
+      "language": "en",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav",
+      "qa": "../audio/qa.json",
+      "manifest": "../audio/manifest.json",
+      "status": "14/14 accepted"
+    }
+  }
+}

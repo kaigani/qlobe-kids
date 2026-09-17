@@ -1,0 +1,112 @@
+{
+  "id": "plant-care-captain",
+  "title": "Plant Care Captain",
+  "engine": "plant-care",
+  "status": "beta",
+  "age": { "min": 5, "max": 6 },
+  "modeOrder": ["sunflower", "pea", "basil"],
+  "modes": {
+    "sunflower": {
+      "title": "Sunny",
+      "kind": "sunflower",
+      "states": {
+        "dry": "./assets/plants/sunflower-dry.webp",
+        "watered": "./assets/plants/sunflower-watered.webp",
+        "misted": "./assets/plants/sunflower-misted.webp",
+        "bloom": "./assets/plants/sunflower-bloom.webp"
+      }
+    },
+    "pea": {
+      "title": "Pip",
+      "kind": "pea plant",
+      "states": {
+        "dry": "./assets/plants/pea-dry.webp",
+        "watered": "./assets/plants/pea-watered.webp",
+        "misted": "./assets/plants/pea-misted.webp",
+        "bloom": "./assets/plants/pea-bloom.webp"
+      }
+    },
+    "basil": {
+      "title": "Basil",
+      "kind": "basil plant",
+      "states": {
+        "dry": "./assets/plants/basil-dry.webp",
+        "watered": "./assets/plants/basil-watered.webp",
+        "misted": "./assets/plants/basil-misted.webp",
+        "bloom": "./assets/plants/basil-bloom.webp"
+      }
+    }
+  },
+  "assets": {
+    "background": "./assets/backgrounds/greenhouse.webp",
+    "backgroundThriving": "./assets/backgrounds/greenhouse-thriving.webp",
+    "title": "./assets/ui/title-lockup.webp",
+    "choiceCard": "./assets/ui/choice-card.webp",
+    "instructionPlaque": "./assets/ui/instruction-plaque.webp",
+    "actionButton": "./assets/ui/action-button.webp",
+    "progressTray": "./assets/ui/progress-tray.webp",
+    "introCloud": "./assets/ui/intro-cloud.webp",
+    "moistureGauge": "./assets/ui/moisture-gauge.webp",
+    "wateringCan": "./assets/tools/watering-can.webp",
+    "mister": "./assets/tools/mister.webp",
+    "shears": "./assets/tools/shears.webp",
+    "dryLeaf": "./assets/tools/dry-leaf.webp",
+    "waterDrops": [
+      "./assets/effects/water-drop-1.webp",
+      "./assets/effects/water-drop-2.webp",
+      "./assets/effects/water-drop-3.webp"
+    ],
+    "mistCloud": "./assets/effects/mist-cloud.webp",
+    "glint": "./assets/effects/glint.webp",
+    "rosette": "./assets/effects/rosette.webp"
+  },
+  "toolOrder": ["water", "mist", "prune"],
+  "tools": {
+    "water": {
+      "title": "Water time!",
+      "short": "Water",
+      "instruction": "Bring the watering can to the pot.",
+      "asset": "wateringCan",
+      "voice": "water-intro",
+      "nudge": "water-nudge",
+      "done": "water-done",
+      "threshold": 3
+    },
+    "mist": {
+      "title": "Misty leaves!",
+      "short": "Mist",
+      "instruction": "Bring the mister to the leaves.",
+      "asset": "mister",
+      "voice": "mist-intro",
+      "nudge": "mist-nudge",
+      "done": "mist-done",
+      "threshold": 3
+    },
+    "prune": {
+      "title": "Snip gently!",
+      "short": "Prune",
+      "instruction": "Tap a brown leaf, or bring over the shears.",
+      "asset": "shears",
+      "voice": "prune-intro",
+      "nudge": "prune-nudge",
+      "done": "prune-done",
+      "threshold": 3
+    }
+  },
+  "voice": {
+    "welcome": "Welcome, Plant Care Captain! Choose a plant friend.",
+    "chosen": "Hello, little sprout! Let's help you grow.",
+    "water-intro": "The soil looks dry. Bring the watering can to the pot.",
+    "water-nudge": "The thirsty soil is waiting for a little drink.",
+    "water-done": "Just right! Look how tall your plant grew.",
+    "mist-intro": "Tap the mister over the leaves. Soft little clouds!",
+    "mist-nudge": "The leaves are ready for a gentle mist.",
+    "mist-done": "Fresh and shiny! Your plant feels bright.",
+    "prune-intro": "The dry leaves are ready to come off. Give each one a gentle snip.",
+    "prune-nudge": "Find a curly brown leaf for the shears.",
+    "prune-done": "Snip, snip, hooray! A new bud is peeking out.",
+    "thriving": "Look how happy your plant is! Your caring hands helped it bloom.",
+    "replay": "Ready for another growing day?",
+    "enough": "That's enough for now. Gentle care is just right."
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "source": "games/plant-care-captain/assets/source/local-api/layered/pea-states-layer2.png",
+  "sourceSha256": "964e858e05317bab38fac16743c2058325f7ff0e1bc2d753c8ee394506ca6a39",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "dry",
+      "file": "dry.png",
+      "componentArea": 26834,
+      "foregroundBbox": [
+        207,
+        98,
+        375,
+        350
+      ],
+      "cropBbox": [
+        195,
+        86,
+        387,
+        362
+      ],
+      "cropXywh": [
+        195,
+        86,
+        192,
+        276
+      ],
+      "normalizedCropBbox": [
+        0.19043,
+        0.111979,
+        0.37793,
+        0.471354
+      ]
+    },
+    {
+      "index": 2,
+      "name": "watered",
+      "file": "watered.png",
+      "componentArea": 32155,
+      "foregroundBbox": [
+        621,
+        37,
+        802,
+        350
+      ],
+      "cropBbox": [
+        609,
+        25,
+        814,
+        362
+      ],
+      "cropXywh": [
+        609,
+        25,
+        205,
+        337
+      ],
+      "normalizedCropBbox": [
+        0.594727,
+        0.032552,
+        0.794922,
+        0.471354
+      ]
+    },
+    {
+      "index": 3,
+      "name": "misted",
+      "file": "misted.png",
+      "componentArea": 33289,
+      "foregroundBbox": [
+        200,
+        394,
+        379,
+        720
+      ],
+      "cropBbox": [
+        188,
+        382,
+        391,
+        732
+      ],
+      "cropXywh": [
+        188,
+        382,
+        203,
+        350
+      ],
+      "normalizedCropBbox": [
+        0.183594,
+        0.497396,
+        0.381836,
+        0.953125
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bloom",
+      "file": "bloom.png",
+      "componentArea": 44489,
+      "foregroundBbox": [
+        627,
+        371,
+        822,
+        722
+      ],
+      "cropBbox": [
+        615,
+        359,
+        834,
+        734
+      ],
+      "cropXywh": [
+        615,
+        359,
+        219,
+        375
+      ],
+      "normalizedCropBbox": [
+        0.600586,
+        0.467448,
+        0.814453,
+        0.955729
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 393,
+    "order": "reading"
+  }
+}

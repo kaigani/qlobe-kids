@@ -1,0 +1,26 @@
+{
+  "key": "water-nudge",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "The thirsty soil is waiting for a little drink.",
+    "srt": "1\n00:00:00,000 --> 00:00:02,840\nThe thirsty soil is waiting for a little drink.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 2.84,
+          "text": "The thirsty soil is waiting for a little drink."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "The thirsty soil is waiting for a little drink.",
+  "transcript": "The thirsty soil is waiting for a little drink.",
+  "pass": true
+}

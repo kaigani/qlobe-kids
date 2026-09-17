@@ -1874,18 +1874,23 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "care",
-          "title": "Care Round",
-          "skill": "daily observation, soil checking, and careful watering"
+          "id": "sunflower",
+          "title": "Sunny",
+          "skill": "Care for a tall sunflower through three visible growth stages."
         },
         {
-          "id": "spa",
-          "title": "Plant Spa Day",
-          "skill": "gentle leaf cleaning and occasional plant care"
+          "id": "pea",
+          "title": "Pip",
+          "skill": "Care for a curling pea plant and reveal its blossoms and pods."
+        },
+        {
+          "id": "basil",
+          "title": "Basil",
+          "skill": "Care for a leafy herb and reveal a fresh flowering crown."
         }
       ],
       "summary": "Water, mist, prune, and observe a plant."
