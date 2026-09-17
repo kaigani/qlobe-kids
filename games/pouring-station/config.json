@@ -1,0 +1,67 @@
+{
+  "id": "pouring-station",
+  "title": "Pouring Station",
+  "engine": "custom-pour-play",
+  "theme": {
+    "world": "toy",
+    "accent": "#087f87",
+    "background": "./assets/scenes/kitchen-tray.webp",
+    "music": "../../shared/assets/music/mug-and-sunbeam.mp3"
+  },
+  "roundsPerMode": 3,
+  "targetLevels": [0.58, 0.58, 0.58],
+  "voice": {
+    "welcome": "Welcome to Pouring Station! Pick what you would like to pour.",
+    "water-intro": "Water swishes smoothly. Lift the pitcher and pour to the glowing line.",
+    "beans-intro": "Beans go clink, clink! Tilt slowly and listen.",
+    "rice-intro": "Rice whispers softly. Pour a little at a time.",
+    "first-pour": "Hold the pitcher. Move it toward the cup, then tip it.",
+    "little-more": "Almost there. A little more.",
+    "steady": "Slow and steady. Your hands are in charge.",
+    "line-one": "You found the line!",
+    "line-two": "Beautiful stop. Ready for one more cup?",
+    "water-cheer": "Wonderful water pouring! Your hands were calm and steady.",
+    "beans-cheer": "Lovely bean pouring! You listened and stopped with care.",
+    "rice-cheer": "Wonderful rice pouring! Tiny grains, careful hands.",
+    "tidy": "A tiny drip! Maya has the cloth. All tidy.",
+    "again": "What shall we pour next?"
+  },
+  "modes": [
+    {
+      "id": "water",
+      "title": "Water",
+      "skill": "smooth sustained tilt and stopping at a visual line",
+      "token": "./assets/ui/token-water.webp",
+      "fill": "./assets/items/fill-water.webp",
+      "stream": "./assets/items/stream-water.webp",
+      "accent": "#198fd2",
+      "rate": 0.24,
+      "intro": "water-intro",
+      "cheer": "water-cheer"
+    },
+    {
+      "id": "beans",
+      "title": "Beans",
+      "skill": "controlled dry pouring with auditory feedback",
+      "token": "./assets/ui/token-beans.webp",
+      "fill": "./assets/items/fill-beans.webp",
+      "stream": "./assets/items/stream-beans.webp",
+      "accent": "#e56f57",
+      "rate": 0.18,
+      "intro": "beans-intro",
+      "cheer": "beans-cheer"
+    },
+    {
+      "id": "rice",
+      "title": "Rice",
+      "skill": "fine stop-and-start control with small grains",
+      "token": "./assets/ui/token-rice.webp",
+      "fill": "./assets/items/fill-rice.webp",
+      "stream": "./assets/items/stream-rice.webp",
+      "accent": "#e7ad38",
+      "rate": 0.15,
+      "intro": "rice-intro",
+      "cheer": "rice-cheer"
+    }
+  ]
+}

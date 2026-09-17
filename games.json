@@ -1577,24 +1577,29 @@
       "path": "games/pouring-station/",
       "icon": "assets/hub/tiles/pouring-station.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#087f87",
       "modes": [
         {
           "id": "water",
-          "title": "Water Pouring",
-          "skill": "careful water pouring and cleanup"
+          "title": "Water",
+          "skill": "smooth sustained tilt and stopping at a visual line"
         },
         {
           "id": "beans",
-          "title": "Bean Pouring",
-          "skill": "careful dry pouring and listening"
+          "title": "Beans",
+          "skill": "controlled dry pouring with auditory feedback"
+        },
+        {
+          "id": "rice",
+          "title": "Rice",
+          "skill": "fine stop-and-start control with small grains"
         }
       ],
-      "summary": "Pour water, beans, or rice between pitchers."
+      "summary": "Tilt a toy pitcher and pour water, beans, or rice to a glowing line with Maya."
     },
     {
       "id": "table-setting-mission",

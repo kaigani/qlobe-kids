@@ -1,47 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Pouring Station 💧 — Practicing Careful Pouring</title>
-  <meta name="description" content="Gather cups, pour slowly and steadily, and clean up any spills as part of the work, one calm step at a time. A real-world pouring coach for ages 5–6." />
+  <meta name="theme-color" content="#dfe5c6" />
+  <title>Pouring Station — Little Helper Pouring Game</title>
+  <meta name="description" content="Pour water, beans, and rice to glowing lines in a calm tactile kitchen made for careful little hands." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Pouring Station" />
-  <meta property="og:title" content="Pouring Station 💧 — Practicing Careful Pouring" />
-  <meta property="og:description" content="Gather cups, pour slowly and steadily, and clean up any spills as part of the work, one calm step at a time. A real-world pouring coach for ages 5–6." />
+  <meta property="og:title" content="Pouring Station — Little Helper Pouring Game" />
+  <meta property="og:description" content="Pour water, beans, and rice to glowing lines in a calm tactile kitchen made for careful little hands." />
   <meta property="og:url" content="https://qlo.be/games/pouring-station/" />
   <meta property="og:image" content="https://qlo.be/games/pouring-station/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Pouring Station title screen with Water Pouring and Bean Pouring buttons and an amphora icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A warm wooden Montessori pouring tray with water, bean, and rice tokens in a sunny toy kitchen." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pouring Station 💧 — Practicing Careful Pouring" />
-  <meta name="twitter:description" content="Gather cups, pour slowly and steadily, and clean up any spills as part of the work, one calm step at a time. A real-world pouring coach for ages 5–6." />
+  <meta name="twitter:title" content="Pouring Station — Little Helper Pouring Game" />
+  <meta name="twitter:description" content="Pour water, beans, and rice to glowing lines in a calm tactile kitchen." />
   <meta name="twitter:image" content="https://qlo.be/games/pouring-station/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off">
+    <section id="splash" class="game-screen splash-screen" data-qk-screen="splash">
+      <div id="splash-hud" class="screen-hud"></div>
+      <div class="splash-stage">
+        <div class="title-lockup" aria-label="Pouring Station">
+          <img class="title-plaque" src="./assets/ui/title-plaque.webp" alt="" draggable="false" />
+          <h1 class="visually-hidden">Pouring Station</h1>
+        </div>
+        <img class="maya maya-splash" src="./assets/characters/maya-helper.webp" alt="Maya, the pouring helper" draggable="false" />
+        <div class="material-chooser" aria-label="Choose what to pour">
+          <p class="chooser-prompt">Choose what to pour</p>
+          <div id="mode-cards" class="mode-cards"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="play" class="game-screen play-screen" data-qk-screen="play" hidden>
+      <div id="play-hud" class="screen-hud"></div>
+      <div class="play-stage">
+        <div class="helper-corner" aria-hidden="true">
+          <img class="maya maya-play" src="./assets/characters/maya-helper.webp" alt="" draggable="false" />
+          <div id="prompt-card" class="prompt-card">
+            <img id="prompt-token" src="./assets/ui/token-water.webp" alt="" draggable="false" />
+            <span id="prompt-text">Pour to the line</span>
+          </div>
+        </div>
+
+        <div id="progress" class="round-progress" aria-hidden="true"></div>
+
+        <div id="work-area" class="work-area" data-material="water">
+          <div id="cup-zone" class="cup-zone" aria-hidden="true">
+            <div id="cup-fill" class="cup-fill"></div>
+            <div id="target-glow" class="target-glow"></div>
+            <img id="cup-art" class="cup-art" src="./assets/items/cup.webp" alt="" draggable="false" />
+          </div>
+
+          <div id="stream" class="pour-stream" aria-hidden="true"></div>
+
+          <img class="pitcher-ghost" src="./assets/items/pitcher.webp" alt="" draggable="false" aria-hidden="true" />
+
+          <button id="pitcher" class="pitcher-control" type="button" data-target="pitcher" data-role="correct" aria-label="Hold and tilt the pitcher. Keyboard players can hold Space or Enter to pour.">
+            <div id="source-fill" class="source-fill" aria-hidden="true"></div>
+            <img class="pitcher-art" src="./assets/items/pitcher.webp" alt="" draggable="false" />
+          </button>
+
+          <img id="guide-hand" class="guide-hand" src="./assets/ui/guide-hand.webp" alt="" draggable="false" aria-hidden="true" />
+          <div id="landing-spark" class="landing-spark" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reveal" class="game-screen reveal-screen" data-qk-screen="reveal" hidden>
+      <div id="reveal-hud" class="screen-hud"></div>
+      <div class="reveal-stage">
+        <img class="maya maya-reveal" src="./assets/characters/maya-helper.webp" alt="Maya cheering" draggable="false" />
+        <div class="reward-stack">
+          <img class="reward-star" src="./assets/ui/reward-star.webp" alt="A star for careful pouring" draggable="false" />
+          <h2 id="reveal-title">Beautiful pouring!</h2>
+          <p id="reveal-copy">Slow and steady hands.</p>
+        </div>
+        <button id="again" class="again-button" type="button" data-target="again" data-role="neutral" aria-label="Choose something else to pour">
+          <img src="./assets/ui/token-water.webp" alt="" draggable="false" />
+          <img src="./assets/ui/token-beans.webp" alt="" draggable="false" />
+          <img src="./assets/ui/token-rice.webp" alt="" draggable="false" />
+          <span>Pour again</span>
+        </button>
+        <div id="tidy-note" class="tidy-note" aria-hidden="true">
+          <img src="./assets/ui/cleanup-cloth.webp" alt="" draggable="false" />
+          <span>All tidy!</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="../../shared/js/analytics.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
