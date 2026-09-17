@@ -1,0 +1,14 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "delivery-backdrop-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{
+    "workflow": "gpt-image-2",
+    "mode": "built-in-imagegen",
+    "promptRef": "PROMPTS.md#delivery-backdrop--delivery-backdrop-masterpng",
+    "references": ["concept:secret-message-copy/ui-mockups/03-message-delivered.png"]
+  }],
+  "qa": {"status": "accepted", "checks": ["4:3 full bleed", "clear owl stage", "clear next-button zone", "no character, text or UI"]}
+}

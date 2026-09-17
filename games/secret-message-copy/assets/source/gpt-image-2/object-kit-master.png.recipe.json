@@ -1,0 +1,9 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "object-kit-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{"workflow": "gpt-image-2", "mode": "built-in-imagegen", "promptRef": "PROMPTS.md#object-kit--object-kit-masterpng", "references": ["desk-backdrop-master.png"]}],
+  "qa": {"status": "accepted", "checks": ["nine ordered objects", "flat magenta key", "exact-count cutter passed 9", "no text"]}
+}

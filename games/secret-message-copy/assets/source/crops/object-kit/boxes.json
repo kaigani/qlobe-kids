@@ -1,0 +1,296 @@
+{
+  "source": "games/secret-message-copy/assets/source/gpt-image-2/object-kit-master.png",
+  "sourceSha256": "e4f7ff7d1ed8953c63002febf0f5991ba530f136157dea5eec4bbd7800b02a8a",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    255,
+    0,
+    255
+  ],
+  "padding": 14,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "envelope-star",
+      "file": "envelope-star.png",
+      "componentArea": 91296,
+      "foregroundBbox": [
+        46,
+        34,
+        424,
+        281
+      ],
+      "cropBbox": [
+        32,
+        20,
+        438,
+        295
+      ],
+      "cropXywh": [
+        32,
+        20,
+        406,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.022099,
+        0.018416,
+        0.302486,
+        0.271639
+      ]
+    },
+    {
+      "index": 2,
+      "name": "envelope-moon",
+      "file": "envelope-moon.png",
+      "componentArea": 92024,
+      "foregroundBbox": [
+        530,
+        34,
+        910,
+        281
+      ],
+      "cropBbox": [
+        516,
+        20,
+        924,
+        295
+      ],
+      "cropXywh": [
+        516,
+        20,
+        408,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.356354,
+        0.018416,
+        0.638122,
+        0.271639
+      ]
+    },
+    {
+      "index": 3,
+      "name": "envelope-heart",
+      "file": "envelope-heart.png",
+      "componentArea": 92125,
+      "foregroundBbox": [
+        1014,
+        34,
+        1394,
+        281
+      ],
+      "cropBbox": [
+        1000,
+        20,
+        1408,
+        295
+      ],
+      "cropXywh": [
+        1000,
+        20,
+        408,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.690608,
+        0.018416,
+        0.972376,
+        0.271639
+      ]
+    },
+    {
+      "index": 4,
+      "name": "stamp-star",
+      "file": "stamp-star.png",
+      "componentArea": 54953,
+      "foregroundBbox": [
+        102,
+        316,
+        366,
+        582
+      ],
+      "cropBbox": [
+        88,
+        302,
+        380,
+        596
+      ],
+      "cropXywh": [
+        88,
+        302,
+        292,
+        294
+      ],
+      "normalizedCropBbox": [
+        0.060773,
+        0.278085,
+        0.262431,
+        0.548803
+      ]
+    },
+    {
+      "index": 5,
+      "name": "stamp-moon",
+      "file": "stamp-moon.png",
+      "componentArea": 56317,
+      "foregroundBbox": [
+        589,
+        317,
+        855,
+        588
+      ],
+      "cropBbox": [
+        575,
+        303,
+        869,
+        602
+      ],
+      "cropXywh": [
+        575,
+        303,
+        294,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.397099,
+        0.279006,
+        0.600138,
+        0.554328
+      ]
+    },
+    {
+      "index": 6,
+      "name": "stamp-heart",
+      "file": "stamp-heart.png",
+      "componentArea": 56212,
+      "foregroundBbox": [
+        1070,
+        317,
+        1336,
+        588
+      ],
+      "cropBbox": [
+        1056,
+        303,
+        1350,
+        602
+      ],
+      "cropXywh": [
+        1056,
+        303,
+        294,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.729282,
+        0.279006,
+        0.93232,
+        0.554328
+      ]
+    },
+    {
+      "index": 7,
+      "name": "paper-sheet",
+      "file": "paper-sheet.png",
+      "componentArea": 166568,
+      "foregroundBbox": [
+        47,
+        584,
+        429,
+        1053
+      ],
+      "cropBbox": [
+        33,
+        570,
+        443,
+        1067
+      ],
+      "cropXywh": [
+        33,
+        570,
+        410,
+        497
+      ],
+      "normalizedCropBbox": [
+        0.02279,
+        0.524862,
+        0.305939,
+        0.982505
+      ]
+    },
+    {
+      "index": 8,
+      "name": "seal-burst",
+      "file": "seal-burst.png",
+      "componentArea": 89680,
+      "foregroundBbox": [
+        539,
+        612,
+        845,
+        1042
+      ],
+      "cropBbox": [
+        525,
+        598,
+        859,
+        1056
+      ],
+      "cropXywh": [
+        525,
+        598,
+        334,
+        458
+      ],
+      "normalizedCropBbox": [
+        0.362569,
+        0.550645,
+        0.593232,
+        0.972376
+      ]
+    },
+    {
+      "index": 9,
+      "name": "button-next-blank",
+      "file": "button-next-blank.png",
+      "componentArea": 131192,
+      "foregroundBbox": [
+        900,
+        681,
+        1436,
+        949
+      ],
+      "cropBbox": [
+        886,
+        667,
+        1448,
+        963
+      ],
+      "cropXywh": [
+        886,
+        667,
+        562,
+        296
+      ],
+      "normalizedCropBbox": [
+        0.611878,
+        0.61418,
+        1.0,
+        0.88674
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 28,
+    "chromaThreshold": 0,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

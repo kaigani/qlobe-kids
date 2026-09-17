@@ -1201,24 +1201,29 @@
       "path": "games/secret-message-copy/",
       "icon": "assets/hub/tiles/secret-message-copy.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 3,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#e8b83e",
       "modes": [
         {
-          "id": "secret",
-          "title": "Copy the Code",
-          "skill": "letter-by-letter copying of three-letter words"
+          "id": "picture-code",
+          "title": "Picture Code",
+          "skill": "left-to-right copying of three- to five-symbol visible sequences"
         },
         {
-          "id": "long",
-          "title": "Longer Codes",
-          "skill": "letter-by-letter copying of four-letter words"
+          "id": "secret-words",
+          "title": "Secret Words",
+          "skill": "guided uppercase formation for SUN, CAT, MAP, and OWL"
+        },
+        {
+          "id": "moon-memory",
+          "title": "Moon Memory",
+          "skill": "recall and reproduction of hidden three- and four-symbol sequences"
         }
       ],
-      "summary": "Copy one short word or phrase."
+      "summary": "Copy picture codes, trace secret words, and remember moon messages."
     },
     {
       "id": "post-office-letters",

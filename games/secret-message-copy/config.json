@@ -1,0 +1,103 @@
+{
+  "id": "secret-message-copy",
+  "engine": "secret-message-copy-custom",
+  "title": "Secret Message Copy",
+  "music": "../../shared/assets/music/quirky-forest-adventure.mp3",
+  "art": {
+    "desk": "./assets/art/backdrop-desk.webp",
+    "delivery": "./assets/art/backdrop-delivery.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "owlNeutral": "./assets/art/owl-neutral.webp",
+    "owlCheer": "./assets/art/owl-cheer.webp",
+    "owlCarry": "./assets/art/owl-carry.webp",
+    "paper": "./assets/art/paper-sheet.webp",
+    "sealBurst": "./assets/art/seal-burst.webp",
+    "next": "./assets/art/button-next.webp",
+    "replay": "./assets/art/button-replay.webp",
+    "home": "./assets/art/nav-home.webp",
+    "back": "./assets/art/nav-back.webp",
+    "sound": "./assets/art/nav-sound.webp",
+    "muted": "./assets/art/nav-muted.webp"
+  },
+  "voiceClips": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "voice": {
+    "welcome": "A secret message is waiting. Choose an envelope!",
+    "picture-intro": "Start on the left side. Copy each picture to the right.",
+    "word-intro": "Trace each letter to copy the secret word.",
+    "memory-intro": "Watch the moon code. When it hides, copy it from memory.",
+    "nudge": "Almost! Follow the glowing clue.",
+    "trace-nudge": "Start at the golden dot and follow the dotted letter.",
+    "correct": "Perfect copy!",
+    "delivered": "Message delivered!",
+    "cheer": "You delivered every secret message!",
+    "word-sun": "The letters are S, U, N. They spell sun, like sunshine.",
+    "word-cat": "C. A. T. The word is cat, like a kitty cat.",
+    "word-map": "The letters are M, A, P. They spell map, like treasure map.",
+    "word-owl": "The letters are O, W, L. A night bird is an owl. Owl."
+  },
+  "symbols": [
+    {
+      "id": "star",
+      "label": "gold star",
+      "stamp": "./assets/art/stamp-star.webp",
+      "envelope": "./assets/art/envelope-star.webp"
+    },
+    {
+      "id": "moon",
+      "label": "blue moon",
+      "stamp": "./assets/art/stamp-moon.webp",
+      "envelope": "./assets/art/envelope-moon.webp"
+    },
+    {
+      "id": "heart",
+      "label": "red heart",
+      "stamp": "./assets/art/stamp-heart.webp",
+      "envelope": "./assets/art/envelope-heart.webp"
+    }
+  ],
+  "modes": [
+    {
+      "id": "picture-code",
+      "title": "Picture Code",
+      "skill": "left-to-right visual copying",
+      "envelope": "./assets/art/envelope-star.webp",
+      "introKey": "picture-intro",
+      "rounds": [
+        { "id": "picture-1", "sequence": ["star", "moon", "heart"] },
+        { "id": "picture-2", "sequence": ["moon", "star", "heart", "moon"] },
+        { "id": "picture-3", "sequence": ["heart", "moon", "star", "heart"] },
+        { "id": "picture-4", "sequence": ["star", "heart", "moon", "star", "heart"] }
+      ]
+    },
+    {
+      "id": "secret-words",
+      "title": "Secret Words",
+      "skill": "uppercase letter formation",
+      "envelope": "./assets/art/envelope-heart.webp",
+      "introKey": "word-intro",
+      "rounds": [
+        { "id": "word-sun", "word": "SUN", "voiceKey": "word-sun" },
+        { "id": "word-cat", "word": "CAT", "voiceKey": "word-cat" },
+        { "id": "word-map", "word": "MAP", "voiceKey": "word-map" },
+        { "id": "word-owl", "word": "OWL", "voiceKey": "word-owl" }
+      ]
+    },
+    {
+      "id": "moon-memory",
+      "title": "Moon Memory",
+      "skill": "short visual working memory",
+      "envelope": "./assets/art/envelope-moon.webp",
+      "introKey": "memory-intro",
+      "revealMs": 2200,
+      "rounds": [
+        { "id": "memory-1", "sequence": ["moon", "star", "heart"] },
+        { "id": "memory-2", "sequence": ["heart", "moon", "star"] },
+        { "id": "memory-3", "sequence": ["star", "heart", "moon", "star"] },
+        { "id": "memory-4", "sequence": ["moon", "heart", "star", "moon"] }
+      ]
+    }
+  ]
+}

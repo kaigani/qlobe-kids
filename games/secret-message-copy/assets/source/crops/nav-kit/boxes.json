@@ -1,0 +1,202 @@
+{
+  "source": "games/secret-message-copy/assets/source/gpt-image-2/nav-kit-master.png",
+  "sourceSha256": "638b850ef0c9323cd773c28498945113d4038c9a55e5b5e9f3973d15cba72030",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 14,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "nav-home",
+      "file": "nav-home.png",
+      "componentArea": 117773,
+      "foregroundBbox": [
+        61,
+        80,
+        451,
+        464
+      ],
+      "cropBbox": [
+        47,
+        66,
+        465,
+        478
+      ],
+      "cropXywh": [
+        47,
+        66,
+        418,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.030599,
+        0.064453,
+        0.302734,
+        0.466797
+      ]
+    },
+    {
+      "index": 2,
+      "name": "nav-back",
+      "file": "nav-back.png",
+      "componentArea": 117626,
+      "foregroundBbox": [
+        570,
+        80,
+        960,
+        464
+      ],
+      "cropBbox": [
+        556,
+        66,
+        974,
+        478
+      ],
+      "cropXywh": [
+        556,
+        66,
+        418,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.361979,
+        0.064453,
+        0.634115,
+        0.466797
+      ]
+    },
+    {
+      "index": 3,
+      "name": "nav-sound",
+      "file": "nav-sound.png",
+      "componentArea": 117485,
+      "foregroundBbox": [
+        1081,
+        80,
+        1470,
+        464
+      ],
+      "cropBbox": [
+        1067,
+        66,
+        1484,
+        478
+      ],
+      "cropXywh": [
+        1067,
+        66,
+        417,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.694661,
+        0.064453,
+        0.966146,
+        0.466797
+      ]
+    },
+    {
+      "index": 4,
+      "name": "nav-muted",
+      "file": "nav-muted.png",
+      "componentArea": 116428,
+      "foregroundBbox": [
+        57,
+        551,
+        447,
+        932
+      ],
+      "cropBbox": [
+        43,
+        537,
+        461,
+        946
+      ],
+      "cropXywh": [
+        43,
+        537,
+        418,
+        409
+      ],
+      "normalizedCropBbox": [
+        0.027995,
+        0.524414,
+        0.30013,
+        0.923828
+      ]
+    },
+    {
+      "index": 5,
+      "name": "button-next",
+      "file": "button-next.png",
+      "componentArea": 139932,
+      "foregroundBbox": [
+        490,
+        599,
+        986,
+        895
+      ],
+      "cropBbox": [
+        476,
+        585,
+        1000,
+        909
+      ],
+      "cropXywh": [
+        476,
+        585,
+        524,
+        324
+      ],
+      "normalizedCropBbox": [
+        0.309896,
+        0.571289,
+        0.651042,
+        0.887695
+      ]
+    },
+    {
+      "index": 6,
+      "name": "button-replay",
+      "file": "button-replay.png",
+      "componentArea": 139510,
+      "foregroundBbox": [
+        1019,
+        599,
+        1513,
+        894
+      ],
+      "cropBbox": [
+        1005,
+        585,
+        1527,
+        908
+      ],
+      "cropXywh": [
+        1005,
+        585,
+        522,
+        323
+      ],
+      "normalizedCropBbox": [
+        0.654297,
+        0.571289,
+        0.994141,
+        0.886719
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
