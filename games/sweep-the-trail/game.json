@@ -3,32 +3,48 @@
   "title": "Sweep the Trail",
   "category": "practical-life",
   "path": "games/sweep-the-trail/",
-  "icon": "🧹",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Sweep the Trail 🧹 — Sweeping Crumbs and Leaves",
-  "description": "Guide crumbs or leaves into a marked landing zone with steady sweeping strokes, then finish the job with the dustpan. A cheerful whole-arm coaching game for ages 5–6.",
+  "age": { "min": 2, "max": 5 },
+  "status": "beta",
+  "accent": "#d99032",
+  "shareTitle": "Sweep the Trail — A Cozy Forest Sweeping Game",
+  "description": "Sweep soft leaves, rolling acorns, and tiny crumbs into their tidy homes in a handcrafted felt forest.",
+  "summary": "Guide a broad felt broom through three no-fail trails and help a squirrel care for each cozy place.",
   "learningGoals": [
-    "Practice whole-arm coordination through sweeping",
-    "Use large strokes and small corner strokes deliberately",
-    "Build thorough rather than hurried work habits",
-    "Care for indoor and outdoor shared spaces"
+    "Coordinate broad directional drag gestures",
+    "Approach a target from behind and push objects toward it",
+    "Adjust stroke length for light, heavy, and tiny debris",
+    "Build practical-life confidence through gentle place care"
   ],
-  "interactionModel": "tap the large done row after each real-world sweeping step; timed steps support steady edge and corner work",
-  "feedbackModel": "cheerful trail-ranger voice with sparkle, tick, and tada SFX; crumbs and leaves become treasure instead of a chore",
+  "interactionModel": "choose a trail, drag a large raster broom through loose pieces, and sweep each piece into a visible basket or dustpan with forgiving target assist",
+  "feedbackModel": "responsive piece movement, tactile capture animation and sound, visual progress, recorded squirrel-guide coaching, idle nudges, and a no-fail felt-puppet celebration",
+  "engine": "sweep-board",
+  "config": "config.json",
   "uses": [
-    "shared/js/engines/coach-timer.js",
+    "shared/js/analytics.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/bgm.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/music/quirky-forest-adventure.mp3",
+    "shared/assets/refs/voice-teacher.wav"
   ],
   "modes": [
-    { "id": "indoor", "title": "Crumb Patrol", "skill": "thorough indoor sweeping and dustpan use" },
-    { "id": "outdoor", "title": "Leaf Trail", "skill": "whole-arm outdoor sweeping and path care" }
+    { "id": "leaf-lane", "title": "Leaf Lane", "skill": "broad gentle sweeps with light leaves" },
+    { "id": "acorn-bend", "title": "Acorn Bend", "skill": "repeat nudges for heavier rolling acorns" },
+    { "id": "porch-path", "title": "Porch Path", "skill": "short controlled strokes with tiny crumbs" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+  "credits": "Kaigani; original cozy felt production art authored with built-in GPT Image 2 and local Krea 2, Qwen Image Edit, Qwen Image Layered, the asset-sheet cutter, and deterministic finalization tools. Recorded dialogue uses the approved Qwen voice-clone workflow and Whisper QA. See ASSETS.md.",
+  "conceptFolder": "01-game-concepts/sweep-the-trail/"
 }

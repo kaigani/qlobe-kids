@@ -1,0 +1,116 @@
+{
+  "source": "games/sweep-the-trail/assets/source/gpt-image-2/mode-cards-master.png",
+  "sourceSha256": "ee01530888fba1ea7e9bc70e3c145e4f09eaedd9bf102406bdc3f2c60a3d7fcf",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    46,
+    46,
+    46
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "leaf-lane",
+      "file": "leaf-lane.png",
+      "componentArea": 379725,
+      "foregroundBbox": [
+        40,
+        73,
+        588,
+        793
+      ],
+      "cropBbox": [
+        22,
+        55,
+        606,
+        811
+      ],
+      "cropXywh": [
+        22,
+        55,
+        584,
+        756
+      ],
+      "normalizedCropBbox": [
+        0.012401,
+        0.062007,
+        0.341601,
+        0.914318
+      ]
+    },
+    {
+      "index": 2,
+      "name": "acorn-bend",
+      "file": "acorn-bend.png",
+      "componentArea": 369177,
+      "foregroundBbox": [
+        620,
+        71,
+        1153,
+        792
+      ],
+      "cropBbox": [
+        602,
+        53,
+        1171,
+        810
+      ],
+      "cropXywh": [
+        602,
+        53,
+        569,
+        757
+      ],
+      "normalizedCropBbox": [
+        0.339346,
+        0.059752,
+        0.66009,
+        0.913191
+      ]
+    },
+    {
+      "index": 3,
+      "name": "porch-path",
+      "file": "porch-path.png",
+      "componentArea": 380443,
+      "foregroundBbox": [
+        1184,
+        72,
+        1734,
+        793
+      ],
+      "cropBbox": [
+        1166,
+        54,
+        1752,
+        811
+      ],
+      "cropXywh": [
+        1166,
+        54,
+        586,
+        757
+      ],
+      "normalizedCropBbox": [
+        0.657272,
+        0.060879,
+        0.987599,
+        0.914318
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

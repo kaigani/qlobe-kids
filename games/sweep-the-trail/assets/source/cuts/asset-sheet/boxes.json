@@ -1,0 +1,386 @@
+{
+  "source": "games/sweep-the-trail/assets/source/local-api/asset-sheet-qwen-squirrels.png",
+  "sourceSha256": "9a1283141d77200f691e8b030dfb7d2d6af5aa8253b12c08a8a8b7cb947933c2",
+  "sourceSize": [
+    1184,
+    880
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    255,
+    255,
+    255
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "squirrel-idle",
+      "file": "squirrel-idle.png",
+      "componentArea": 48115,
+      "foregroundBbox": [
+        19,
+        22,
+        259,
+        313
+      ],
+      "cropBbox": [
+        1,
+        4,
+        277,
+        331
+      ],
+      "cropXywh": [
+        1,
+        4,
+        276,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.000845,
+        0.004545,
+        0.233953,
+        0.376136
+      ]
+    },
+    {
+      "index": 2,
+      "name": "squirrel-cheer",
+      "file": "squirrel-cheer.png",
+      "componentArea": 50723,
+      "foregroundBbox": [
+        311,
+        23,
+        587,
+        315
+      ],
+      "cropBbox": [
+        293,
+        5,
+        605,
+        333
+      ],
+      "cropXywh": [
+        293,
+        5,
+        312,
+        328
+      ],
+      "normalizedCropBbox": [
+        0.247466,
+        0.005682,
+        0.51098,
+        0.378409
+      ]
+    },
+    {
+      "index": 3,
+      "name": "broom",
+      "file": "broom.png",
+      "componentArea": 31844,
+      "foregroundBbox": [
+        603,
+        15,
+        846,
+        340
+      ],
+      "cropBbox": [
+        585,
+        0,
+        864,
+        358
+      ],
+      "cropXywh": [
+        585,
+        0,
+        279,
+        358
+      ],
+      "normalizedCropBbox": [
+        0.494088,
+        0.0,
+        0.72973,
+        0.406818
+      ]
+    },
+    {
+      "index": 4,
+      "name": "basket",
+      "file": "basket.png",
+      "componentArea": 45306,
+      "foregroundBbox": [
+        907,
+        92,
+        1162,
+        303
+      ],
+      "cropBbox": [
+        889,
+        74,
+        1180,
+        321
+      ],
+      "cropXywh": [
+        889,
+        74,
+        291,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.750845,
+        0.084091,
+        0.996622,
+        0.364773
+      ]
+    },
+    {
+      "index": 5,
+      "name": "dustpan",
+      "file": "dustpan.png",
+      "componentArea": 35536,
+      "foregroundBbox": [
+        39,
+        340,
+        280,
+        592
+      ],
+      "cropBbox": [
+        21,
+        322,
+        298,
+        610
+      ],
+      "cropXywh": [
+        21,
+        322,
+        277,
+        288
+      ],
+      "normalizedCropBbox": [
+        0.017736,
+        0.365909,
+        0.251689,
+        0.693182
+      ]
+    },
+    {
+      "index": 6,
+      "name": "leaf-orange",
+      "file": "leaf-orange.png",
+      "componentArea": 25794,
+      "foregroundBbox": [
+        348,
+        382,
+        556,
+        557
+      ],
+      "cropBbox": [
+        330,
+        364,
+        574,
+        575
+      ],
+      "cropXywh": [
+        330,
+        364,
+        244,
+        211
+      ],
+      "normalizedCropBbox": [
+        0.278716,
+        0.413636,
+        0.484797,
+        0.653409
+      ]
+    },
+    {
+      "index": 7,
+      "name": "leaf-mustard",
+      "file": "leaf-mustard.png",
+      "componentArea": 25395,
+      "foregroundBbox": [
+        639,
+        384,
+        848,
+        559
+      ],
+      "cropBbox": [
+        621,
+        366,
+        866,
+        577
+      ],
+      "cropXywh": [
+        621,
+        366,
+        245,
+        211
+      ],
+      "normalizedCropBbox": [
+        0.524493,
+        0.415909,
+        0.731419,
+        0.655682
+      ]
+    },
+    {
+      "index": 8,
+      "name": "leaf-green",
+      "file": "leaf-green.png",
+      "componentArea": 25160,
+      "foregroundBbox": [
+        938,
+        384,
+        1141,
+        563
+      ],
+      "cropBbox": [
+        920,
+        366,
+        1159,
+        581
+      ],
+      "cropXywh": [
+        920,
+        366,
+        239,
+        215
+      ],
+      "normalizedCropBbox": [
+        0.777027,
+        0.415909,
+        0.978885,
+        0.660227
+      ]
+    },
+    {
+      "index": 9,
+      "name": "acorn",
+      "file": "acorn.png",
+      "componentArea": 25199,
+      "foregroundBbox": [
+        66,
+        617,
+        235,
+        832
+      ],
+      "cropBbox": [
+        48,
+        599,
+        253,
+        850
+      ],
+      "cropXywh": [
+        48,
+        599,
+        205,
+        251
+      ],
+      "normalizedCropBbox": [
+        0.040541,
+        0.680682,
+        0.213682,
+        0.965909
+      ]
+    },
+    {
+      "index": 10,
+      "name": "crumb",
+      "file": "crumb.png",
+      "componentArea": 15070,
+      "foregroundBbox": [
+        329,
+        672,
+        517,
+        790
+      ],
+      "cropBbox": [
+        311,
+        654,
+        535,
+        808
+      ],
+      "cropXywh": [
+        311,
+        654,
+        224,
+        154
+      ],
+      "normalizedCropBbox": [
+        0.262669,
+        0.743182,
+        0.451858,
+        0.918182
+      ]
+    },
+    {
+      "index": 11,
+      "name": "progress-plaque",
+      "file": "progress-plaque.png",
+      "componentArea": 39759,
+      "foregroundBbox": [
+        563,
+        660,
+        896,
+        789
+      ],
+      "cropBbox": [
+        545,
+        642,
+        914,
+        807
+      ],
+      "cropXywh": [
+        545,
+        642,
+        369,
+        165
+      ],
+      "normalizedCropBbox": [
+        0.460304,
+        0.729545,
+        0.771959,
+        0.917045
+      ]
+    },
+    {
+      "index": 12,
+      "name": "star-cluster",
+      "file": "star-cluster.png",
+      "componentArea": 28964,
+      "foregroundBbox": [
+        919,
+        615,
+        1149,
+        826
+      ],
+      "cropBbox": [
+        901,
+        597,
+        1167,
+        844
+      ],
+      "cropXywh": [
+        901,
+        597,
+        266,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.76098,
+        0.678409,
+        0.985642,
+        0.959091
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 521,
+    "order": "reading"
+  }
+}

@@ -9,10 +9,10 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T06:28:05.994Z",
+  "generated": "2026-09-17T11:40:43.088Z",
   "engines": {
     "coach-timer": {
-      "count": 13,
+      "count": 11,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
@@ -22,9 +22,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "plant-care-captain",
-        "pouring-station",
         "shelf-reset-game",
-        "sweep-the-trail",
         "trail-counting-walk",
         "waiting-muscle-game"
       ]
@@ -81,10 +79,9 @@
       ]
     },
     "tap-count": {
-      "count": 2,
+      "count": 1,
       "games": [
-        "number-line-jump",
-        "snack-addition-stories"
+        "number-line-jump"
       ]
     },
     "sort-into-bins": {
@@ -1994,22 +1991,46 @@
       "packs": []
     },
     "pouring-station": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "practical-life",
-      "characters": [],
+      "characters": [
+        "maya"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/pouring-station/assets/characters/maya-helper.webp",
+        "games/pouring-station/assets/items/cup.webp",
+        "games/pouring-station/assets/items/pitcher.webp",
+        "games/pouring-station/assets/ui/cleanup-cloth.webp",
+        "games/pouring-station/assets/ui/guide-hand.webp",
+        "games/pouring-station/assets/ui/reward-star.webp",
+        "games/pouring-station/assets/ui/title-plaque.webp",
+        "games/pouring-station/assets/ui/token-beans.webp",
+        "games/pouring-station/assets/ui/token-rice.webp",
+        "games/pouring-station/assets/ui/token-water.webp",
+        "shared/assets/music/mug-and-sunbeam.mp3",
+        "shared/characters/maya/portrait.png"
+      ],
       "packs": []
     },
     "problem-solving-puppets": {
@@ -2637,33 +2658,37 @@
       "packs": []
     },
     "snack-addition-stories": {
-      "engine": "tap-count",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "math-number-sense",
-      "characters": [
-        "Leo",
-        "Maya",
-        "Nia",
-        "Ravi",
-        "Sam"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/tap-count.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/foods/apple.png",
-        "shared/assets/foods/banana.png",
-        "shared/assets/foods/crackers.png",
-        "shared/assets/foods/grapes.png",
-        "shared/assets/foods/strawberry.png"
+        "games/snack-addition-stories/assets/backdrop.webp",
+        "games/snack-addition-stories/assets/title.webp",
+        "games/snack-addition-stories/assets/ui/prompt-plaque.webp",
+        "shared/assets/music/mug-and-sunbeam.mp3"
       ],
       "packs": []
     },
@@ -3014,22 +3039,42 @@
       "packs": []
     },
     "sweep-the-trail": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "practical-life",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/sweep-the-trail/assets/art/backgrounds/leaf-lane.webp",
+        "games/sweep-the-trail/assets/art/backgrounds/select.webp",
+        "games/sweep-the-trail/assets/art/sprites/basket.webp",
+        "games/sweep-the-trail/assets/art/sprites/squirrel-cheer.webp",
+        "games/sweep-the-trail/assets/art/sprites/squirrel-idle.webp",
+        "games/sweep-the-trail/assets/art/ui/progress-plaque.webp",
+        "games/sweep-the-trail/assets/art/ui/title.webp",
+        "shared/assets/music/quirky-forest-adventure.mp3",
+        "shared/assets/refs/voice-teacher.wav",
+        "shared/assets/ui/btn-play.png"
+      ],
       "packs": []
     },
     "table-setting-mission": {
@@ -3596,6 +3641,7 @@
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
+        "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -3608,6 +3654,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
@@ -3617,6 +3664,7 @@
         "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3640,6 +3688,7 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "pouring-station",
         "puzzle-map-match",
         "sandpaper-number-match",
         "scissor-trail-safari",
@@ -3647,10 +3696,12 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tiny-sentence-workshop",
         "tweezer-rescue"
@@ -3687,6 +3738,7 @@
         "obstacle-course-builder",
         "picture-word-match",
         "post-office-letters",
+        "pouring-station",
         "puppet-retell",
         "rhythm-copycat",
         "sand-tray-letters",
@@ -3694,6 +3746,7 @@
         "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "snack-chef",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -3770,6 +3823,7 @@
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
+        "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -3782,6 +3836,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
@@ -3791,6 +3846,7 @@
         "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -3835,9 +3891,7 @@
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "plant-care-captain",
-        "pouring-station",
         "shelf-reset-game",
-        "sweep-the-trail",
         "trail-counting-walk",
         "waiting-muscle-game"
       ],
@@ -3868,8 +3922,7 @@
         "story-stones"
       ],
       "shared/js/engines/tap-count.js": [
-        "number-line-jump",
-        "snack-addition-stories"
+        "number-line-jump"
       ],
       "shared/js/engines/trace-path.js": [
         "letter-road-driving",
@@ -3910,10 +3963,12 @@
         "name-puzzle",
         "obstacle-course-builder",
         "post-office-letters",
+        "pouring-station",
         "red-green-light",
         "secret-message-copy",
         "silly-swap-words",
         "sticker-line-challenge",
+        "sweep-the-trail",
         "table-setting-mission",
         "tiny-reader-theater"
       ],
@@ -3947,6 +4002,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4024,6 +4080,7 @@
         "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "sound-hopscotch",
         "sound-painting",
         "story-repair-shop",
@@ -4060,15 +4117,18 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "pouring-station",
         "puzzle-map-match",
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-detective",
         "silly-swap-words",
+        "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -4118,11 +4178,13 @@
         "shadow-chase",
         "shape-detective",
         "sink-or-float",
+        "snack-addition-stories",
         "sound-basket",
         "sound-cylinder-match",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4157,16 +4219,19 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "pouring-station",
         "sandpaper-number-match",
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "snack-addition-stories",
         "snack-chef",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "throwing-target-garden",
         "tiny-reader-theater",
@@ -4496,6 +4561,7 @@
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
+        "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -4508,6 +4574,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
@@ -4515,6 +4582,7 @@
         "sound-sprouts",
         "sticker-line-challenge",
         "story-repair-shop",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4557,6 +4625,7 @@
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
+        "pouring-station",
         "puppet-retell",
         "puzzle-map-match",
         "red-green-light",
@@ -4567,11 +4636,13 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "snack-addition-stories",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "teen-bead-builder",
         "throwing-target-garden",
@@ -4623,6 +4694,7 @@
         "picture-word-match",
         "playdough-letter-factory",
         "post-office-letters",
+        "pouring-station",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -4637,6 +4709,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "snack-addition-stories",
         "snack-chef",
         "sound-basket",
         "sound-cylinder-match",
@@ -4647,6 +4720,7 @@
         "story-repair-shop",
         "story-stones",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
@@ -4807,7 +4881,6 @@
         "picture-narration",
         "plan-do-review",
         "plant-care-captain",
-        "pouring-station",
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "question-ball",
@@ -4816,10 +4889,8 @@
         "shelf-reset-game",
         "silly-sentence-builder",
         "smell-jars",
-        "snack-addition-stories",
         "story-sequence",
         "story-stones",
-        "sweep-the-trail",
         "texture-trail",
         "then-now-sort",
         "trail-counting-walk",
@@ -4856,6 +4927,7 @@
         "obstacle-course-builder",
         "pattern-train",
         "post-office-letters",
+        "pouring-station",
         "red-green-light",
         "rhythm-copycat",
         "sandpaper-number-match",
@@ -4863,12 +4935,14 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "snack-addition-stories",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
+        "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
         "throwing-target-garden",
@@ -5061,7 +5135,6 @@
       ],
       "Leo": [
         "post-office-letters",
-        "snack-addition-stories",
         "story-repair-shop"
       ],
       "Leo Lion": [
@@ -5077,13 +5150,13 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "plan-do-review",
+        "pouring-station",
         "problem-solving-puppets",
         "snack-chef",
         "turn-taking-tower"
       ],
       "Maya": [
         "post-office-letters",
-        "snack-addition-stories",
         "table-setting-mission"
       ],
       "Momma Bear": [
@@ -5102,7 +5175,6 @@
       ],
       "Nia": [
         "post-office-letters",
-        "snack-addition-stories",
         "story-repair-shop"
       ],
       "orange clay kitten": [
@@ -5167,8 +5239,7 @@
         "turn-taking-tower"
       ],
       "Ravi": [
-        "post-office-letters",
-        "snack-addition-stories"
+        "post-office-letters"
       ],
       "sam": [
         "feelings-charades",
@@ -5178,8 +5249,7 @@
         "turn-taking-tower"
       ],
       "Sam": [
-        "post-office-letters",
-        "snack-addition-stories"
+        "post-office-letters"
       ],
       "Silly Lab blob": [
         "silly-swap-words"
@@ -5709,6 +5779,36 @@
       "games/post-office-letters/assets/ui/title.webp": [
         "post-office-letters"
       ],
+      "games/pouring-station/assets/characters/maya-helper.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/items/cup.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/items/pitcher.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/cleanup-cloth.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/guide-hand.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/reward-star.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/title-plaque.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/token-beans.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/token-rice.webp": [
+        "pouring-station"
+      ],
+      "games/pouring-station/assets/ui/token-water.webp": [
+        "pouring-station"
+      ],
       "games/red-green-light/assets/callers": [
         "red-green-light"
       ],
@@ -5862,6 +5962,15 @@
       "games/silly-swap-words/assets/words/mug.webp": [
         "silly-swap-words"
       ],
+      "games/snack-addition-stories/assets/backdrop.webp": [
+        "snack-addition-stories"
+      ],
+      "games/snack-addition-stories/assets/title.webp": [
+        "snack-addition-stories"
+      ],
+      "games/snack-addition-stories/assets/ui/prompt-plaque.webp": [
+        "snack-addition-stories"
+      ],
       "games/snack-chef/assets/title.webp": [
         "snack-chef"
       ],
@@ -5964,6 +6073,27 @@
       "games/story-repair-shop/assets/ui/workshop-backdrop.webp": [
         "story-repair-shop"
       ],
+      "games/sweep-the-trail/assets/art/backgrounds/leaf-lane.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/backgrounds/select.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/sprites/basket.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/sprites/squirrel-cheer.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/sprites/squirrel-idle.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/ui/progress-plaque.webp": [
+        "sweep-the-trail"
+      ],
+      "games/sweep-the-trail/assets/art/ui/title.webp": [
+        "sweep-the-trail"
+      ],
       "games/teen-bead-builder/assets/manipulatives/bead-blue.webp": [
         "teen-bead-builder"
       ],
@@ -6055,21 +6185,6 @@
       "shared/assets/foods-storybook": [
         "snack-chef"
       ],
-      "shared/assets/foods/apple.png": [
-        "snack-addition-stories"
-      ],
-      "shared/assets/foods/banana.png": [
-        "snack-addition-stories"
-      ],
-      "shared/assets/foods/crackers.png": [
-        "snack-addition-stories"
-      ],
-      "shared/assets/foods/grapes.png": [
-        "snack-addition-stories"
-      ],
-      "shared/assets/foods/strawberry.png": [
-        "snack-addition-stories"
-      ],
       "shared/assets/instruments": [
         "my-puppet-band",
         "world-music-dance"
@@ -6093,13 +6208,16 @@
         "tweezer-rescue"
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
-        "post-office-letters"
+        "post-office-letters",
+        "pouring-station",
+        "snack-addition-stories"
       ],
       "shared/assets/music/quirky-forest-adventure.mp3": [
         "scissor-trail-safari",
         "secret-message-copy",
         "shape-detective",
-        "story-repair-shop"
+        "story-repair-shop",
+        "sweep-the-trail"
       ],
       "shared/assets/music/rainy-day-acoustic.mp3": [
         "chalkboard-big-strokes"
@@ -6127,6 +6245,9 @@
       ],
       "shared/assets/objects/sun.webp": [
         "sound-basket"
+      ],
+      "shared/assets/refs/voice-teacher.wav": [
+        "sweep-the-trail"
       ],
       "shared/assets/storybook": [
         "laundry-sorter"
@@ -6172,7 +6293,8 @@
       ],
       "shared/assets/ui/btn-play.png": [
         "bug-hotel-observer",
-        "post-office-letters"
+        "post-office-letters",
+        "sweep-the-trail"
       ],
       "shared/assets/ui/btn-sound.png": [
         "bug-hotel-observer"
@@ -6215,7 +6337,6 @@
       ],
       "shared/characters/Leo": [
         "post-office-letters",
-        "snack-addition-stories",
         "story-repair-shop"
       ],
       "shared/characters/leo/portrait.png": [
@@ -6228,17 +6349,18 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "plan-do-review",
+        "pouring-station",
         "problem-solving-puppets",
         "snack-chef",
         "turn-taking-tower"
       ],
       "shared/characters/Maya": [
         "post-office-letters",
-        "snack-addition-stories",
         "table-setting-mission"
       ],
       "shared/characters/maya/portrait.png": [
         "post-office-letters",
+        "pouring-station",
         "snack-chef"
       ],
       "shared/characters/nia": [
@@ -6251,7 +6373,6 @@
       ],
       "shared/characters/Nia": [
         "post-office-letters",
-        "snack-addition-stories",
         "story-repair-shop"
       ],
       "shared/characters/nia/portrait.png": [
@@ -6285,8 +6406,7 @@
         "turn-taking-tower"
       ],
       "shared/characters/Ravi": [
-        "post-office-letters",
-        "snack-addition-stories"
+        "post-office-letters"
       ],
       "shared/characters/ravi/portrait.png": [
         "post-office-letters"
@@ -6299,8 +6419,7 @@
         "turn-taking-tower"
       ],
       "shared/characters/Sam": [
-        "post-office-letters",
-        "snack-addition-stories"
+        "post-office-letters"
       ],
       "shared/characters/sam/portrait.png": [
         "post-office-letters"
