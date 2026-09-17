@@ -1,0 +1,262 @@
+{
+  "source": "games/snack-addition-stories/assets/source/gpt-image-2/snack-cast-sheet.png",
+  "sourceSha256": "611e58bf6924c597b289407b75fd8ecc379739a669205bef2a4290c3add45195",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "blackberry",
+      "file": "blackberry.png",
+      "componentArea": 107718,
+      "foregroundBbox": [
+        29,
+        102,
+        388,
+        515
+      ],
+      "cropBbox": [
+        11,
+        84,
+        406,
+        533
+      ],
+      "cropXywh": [
+        11,
+        84,
+        395,
+        449
+      ],
+      "normalizedCropBbox": [
+        0.007161,
+        0.082031,
+        0.264323,
+        0.520508
+      ]
+    },
+    {
+      "index": 2,
+      "name": "raspberry",
+      "file": "raspberry.png",
+      "componentArea": 104430,
+      "foregroundBbox": [
+        418,
+        108,
+        766,
+        513
+      ],
+      "cropBbox": [
+        400,
+        90,
+        784,
+        531
+      ],
+      "cropXywh": [
+        400,
+        90,
+        384,
+        441
+      ],
+      "normalizedCropBbox": [
+        0.260417,
+        0.087891,
+        0.510417,
+        0.518555
+      ]
+    },
+    {
+      "index": 3,
+      "name": "strawberry",
+      "file": "strawberry.png",
+      "componentArea": 102596,
+      "foregroundBbox": [
+        801,
+        91,
+        1143,
+        516
+      ],
+      "cropBbox": [
+        783,
+        73,
+        1161,
+        534
+      ],
+      "cropXywh": [
+        783,
+        73,
+        378,
+        461
+      ],
+      "normalizedCropBbox": [
+        0.509766,
+        0.071289,
+        0.755859,
+        0.521484
+      ]
+    },
+    {
+      "index": 4,
+      "name": "blueberry",
+      "file": "blueberry.png",
+      "componentArea": 78966,
+      "foregroundBbox": [
+        1182,
+        179,
+        1497,
+        513
+      ],
+      "cropBbox": [
+        1164,
+        161,
+        1515,
+        531
+      ],
+      "cropXywh": [
+        1164,
+        161,
+        351,
+        370
+      ],
+      "normalizedCropBbox": [
+        0.757812,
+        0.157227,
+        0.986328,
+        0.518555
+      ]
+    },
+    {
+      "index": 5,
+      "name": "orange",
+      "file": "orange.png",
+      "componentArea": 111043,
+      "foregroundBbox": [
+        18,
+        533,
+        391,
+        926
+      ],
+      "cropBbox": [
+        0,
+        515,
+        409,
+        944
+      ],
+      "cropXywh": [
+        0,
+        515,
+        409,
+        429
+      ],
+      "normalizedCropBbox": [
+        0.0,
+        0.50293,
+        0.266276,
+        0.921875
+      ]
+    },
+    {
+      "index": 6,
+      "name": "watermelon",
+      "file": "watermelon.png",
+      "componentArea": 86757,
+      "foregroundBbox": [
+        403,
+        551,
+        773,
+        930
+      ],
+      "cropBbox": [
+        385,
+        533,
+        791,
+        948
+      ],
+      "cropXywh": [
+        385,
+        533,
+        406,
+        415
+      ],
+      "normalizedCropBbox": [
+        0.250651,
+        0.520508,
+        0.514974,
+        0.925781
+      ]
+    },
+    {
+      "index": 7,
+      "name": "cracker",
+      "file": "cracker.png",
+      "componentArea": 101370,
+      "foregroundBbox": [
+        789,
+        583,
+        1121,
+        917
+      ],
+      "cropBbox": [
+        771,
+        565,
+        1139,
+        935
+      ],
+      "cropXywh": [
+        771,
+        565,
+        368,
+        370
+      ],
+      "normalizedCropBbox": [
+        0.501953,
+        0.551758,
+        0.741536,
+        0.913086
+      ]
+    },
+    {
+      "index": 8,
+      "name": "sandwich-cracker",
+      "file": "sandwich-cracker.png",
+      "componentArea": 110026,
+      "foregroundBbox": [
+        1146,
+        585,
+        1521,
+        932
+      ],
+      "cropBbox": [
+        1128,
+        567,
+        1536,
+        950
+      ],
+      "cropXywh": [
+        1128,
+        567,
+        408,
+        383
+      ],
+      "normalizedCropBbox": [
+        0.734375,
+        0.553711,
+        1.0,
+        0.927734
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

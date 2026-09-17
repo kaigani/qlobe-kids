@@ -1426,19 +1426,29 @@
       "path": "games/snack-addition-stories/",
       "icon": "assets/hub/tiles/snack-addition-stories.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#e85d75",
+      "status": "beta",
+      "accent": "#e94f79",
       "modes": [
         {
-          "id": "stories",
-          "title": "Snack Stories",
-          "skill": "informal addition stories to 6"
+          "id": "guided",
+          "title": "Berry Stories",
+          "skill": "narrated add-together stories within 6"
+        },
+        {
+          "id": "counter",
+          "title": "Snack Counter",
+          "skill": "one-to-one addition and total counting within 6"
+        },
+        {
+          "id": "picnic",
+          "title": "My Picnic",
+          "skill": "free-play composition of two addends within 6"
         }
       ],
-      "summary": "Tell add-together stories, like three berries plus two berries."
+      "summary": "Bring two snack groups together, count the total within 6, and make your own addition picnic."
     },
     {
       "id": "subtraction-picnic",

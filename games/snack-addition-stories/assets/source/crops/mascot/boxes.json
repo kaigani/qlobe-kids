@@ -1,0 +1,82 @@
+{
+  "source": "games/snack-addition-stories/assets/source/gpt-image-2/sun-poses-sheet.png",
+  "sourceSha256": "de403a806d594a19ca9f9c49090e61cc7b0af9e153bc9a88252b46f198fac7e7",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "sun-idle",
+      "file": "sun-idle.png",
+      "componentArea": 367736,
+      "foregroundBbox": [
+        65,
+        66,
+        841,
+        772
+      ],
+      "cropBbox": [
+        47,
+        48,
+        859,
+        790
+      ],
+      "cropXywh": [
+        47,
+        48,
+        812,
+        742
+      ],
+      "normalizedCropBbox": [
+        0.026494,
+        0.054115,
+        0.484216,
+        0.890643
+      ]
+    },
+    {
+      "index": 2,
+      "name": "sun-cheer",
+      "file": "sun-cheer.png",
+      "componentArea": 355822,
+      "foregroundBbox": [
+        940,
+        70,
+        1707,
+        764
+      ],
+      "cropBbox": [
+        922,
+        52,
+        1725,
+        782
+      ],
+      "cropXywh": [
+        922,
+        52,
+        803,
+        730
+      ],
+      "normalizedCropBbox": [
+        0.519729,
+        0.058625,
+        0.972379,
+        0.881623
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 50000,
+    "order": "reading"
+  }
+}

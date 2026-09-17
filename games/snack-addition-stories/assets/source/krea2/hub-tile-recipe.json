@@ -1,0 +1,32 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "snack-addition-stories-hub-tile-v1",
+  "kind": "image",
+  "asset": "hub-tile-seed42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "Exactly three chunky kawaii wooden snack toys on a pink gingham toy-table picnic scene: two purple blackberry toys grouped on the left and one bright red raspberry toy bouncing toward them from the right, all with tiny friendly cocoa-brown faces, beside a small mint-green serving tray and a cheerful yellow sun toy peeking from the far background. One instantly readable preschool addition moment, shallow three-quarter view, premium tactile toy still life, bright soft studio daylight, rounded simplified forms, saturated strawberry pink lavender mint butter-yellow and cream palette, smooth shading, soft highlights, clean silhouettes. No child, no hands, no title, no UI, no numerals, no symbols, no equations, no letters, no words, no extra berries, no logos, no watermark.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "refs": {},
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "Two purple blackberry toys plus one red raspberry toy joining them on a mint picnic tray."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "notes": "Exactly two purple berries and one red berry; no baked text or UI."
+  },
+  "created": "2026-09-17"
+}
