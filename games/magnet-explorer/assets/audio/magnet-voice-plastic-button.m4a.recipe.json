@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-plastic-button",
+  "kind": "voice",
+  "asset": "magnet-voice-plastic-button.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The plastic button does not stick to the magnet.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The plastic button does not stick to the magnet.",
+      "heard": "The plastic button does not stick to the magnet.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

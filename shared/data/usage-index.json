@@ -9,10 +9,10 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T11:40:43.088Z",
+  "generated": "2026-09-17T15:43:46.050Z",
   "engines": {
     "coach-timer": {
-      "count": 11,
+      "count": 10,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
@@ -21,7 +21,6 @@
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
-        "plant-care-captain",
         "shelf-reset-game",
         "trail-counting-walk",
         "waiting-muscle-game"
@@ -82,12 +81,6 @@
       "count": 1,
       "games": [
         "number-line-jump"
-      ]
-    },
-    "sort-into-bins": {
-      "count": 1,
-      "games": [
-        "magnet-explorer"
       ]
     },
     "story-stones": {
@@ -1362,22 +1355,33 @@
       "packs": []
     },
     "magnet-explorer": {
-      "engine": "sort-into-bins",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sort-into-bins.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
       "packs": []
     },
     "melting-race": {
@@ -1895,20 +1899,30 @@
       "packs": []
     },
     "plant-care-captain": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "practical-life",
-      "characters": [],
+      "characters": [
+        "Basil the herb",
+        "Pip the pea plant",
+        "Sunny the sunflower"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/hud.css"
       ],
       "assets": [],
       "packs": []
@@ -3630,6 +3644,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "magnet-explorer",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -3639,6 +3654,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
@@ -3682,6 +3698,7 @@
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
         "garden-graphers",
+        "magnet-explorer",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "number-sense-kitchen",
@@ -3812,6 +3829,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "magnet-explorer",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -3821,6 +3839,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
@@ -3890,7 +3909,6 @@
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
-        "plant-care-captain",
         "shelf-reset-game",
         "trail-counting-walk",
         "waiting-muscle-game"
@@ -3914,9 +3932,6 @@
       "shared/js/engines/sequence-order.js": [
         "family-timeline",
         "story-sequence"
-      ],
-      "shared/js/engines/sort-into-bins.js": [
-        "magnet-explorer"
       ],
       "shared/js/engines/story-stones.js": [
         "story-stones"
@@ -3959,9 +3974,11 @@
         "kindness-delivery",
         "land-water-tray",
         "lunchbox-pack",
+        "magnet-explorer",
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
+        "plant-care-captain",
         "post-office-letters",
         "pouring-station",
         "red-green-light",
@@ -3988,6 +4005,7 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "magnet-explorer",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -3995,6 +4013,7 @@
         "number-sense-kitchen",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "post-office-letters",
         "sandpaper-number-match",
         "secret-message-copy",
@@ -4072,6 +4091,7 @@
         "land-water-tray",
         "laundry-sorter",
         "loose-parts-collage",
+        "magnet-explorer",
         "obstacle-course-builder",
         "pattern-train",
         "post-office-letters",
@@ -4116,6 +4136,7 @@
         "obstacle-course-builder",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "post-office-letters",
         "pouring-station",
         "puzzle-map-match",
@@ -4161,6 +4182,7 @@
         "laundry-sorter",
         "loose-parts-collage",
         "lunchbox-pack",
+        "magnet-explorer",
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
@@ -4168,6 +4190,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
         "red-green-light",
@@ -4211,6 +4234,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "magnet-explorer",
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -4376,7 +4400,6 @@
         "line-walking-challenge",
         "local-nature-guide",
         "lunchbox-pack",
-        "magnet-explorer",
         "melting-race",
         "mystery-letter-bag",
         "name-puzzle",
@@ -4388,7 +4411,6 @@
         "pattern-bracelet-band",
         "picture-narration",
         "plan-do-review",
-        "plant-care-captain",
         "playdough-letter-factory",
         "pouring-station",
         "problem-solving-puppets",
@@ -4449,6 +4471,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
+        "plant-care-captain",
         "post-office-letters",
         "puzzle-map-match",
         "snack-chef",
@@ -4550,6 +4573,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "magnet-explorer",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -4616,6 +4640,7 @@
         "land-water-tray",
         "letter-treasure-hunt",
         "lunchbox-pack",
+        "magnet-explorer",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "name-puzzle",
@@ -4624,6 +4649,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "post-office-letters",
         "pouring-station",
         "puppet-retell",
@@ -4683,6 +4709,7 @@
         "letter-treasure-hunt",
         "loose-parts-collage",
         "lunchbox-pack",
+        "magnet-explorer",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "my-puppet-band",
@@ -4692,6 +4719,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
@@ -4871,7 +4899,6 @@
         "letter-road-driving",
         "line-walking-challenge",
         "local-nature-guide",
-        "magnet-explorer",
         "melting-race",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -4880,7 +4907,6 @@
         "number-line-jump",
         "picture-narration",
         "plan-do-review",
-        "plant-care-captain",
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "question-ball",
@@ -4920,12 +4946,14 @@
         "kindness-delivery",
         "land-water-tray",
         "loose-parts-collage",
+        "magnet-explorer",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-train",
+        "plant-care-captain",
         "post-office-letters",
         "pouring-station",
         "red-green-light",
@@ -5004,7 +5032,6 @@
         "picture-narration",
         "picture-word-match",
         "plan-do-review",
-        "plant-care-captain",
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
@@ -5055,6 +5082,9 @@
       ],
       "Ash": [
         "momma-bear-storybook"
+      ],
+      "Basil the herb": [
+        "plant-care-captain"
       ],
       "bear": [
         "my-puppet-band",
@@ -5208,6 +5238,9 @@
       "Pip the Owl Courier": [
         "secret-message-copy"
       ],
+      "Pip the pea plant": [
+        "plant-care-captain"
+      ],
       "Pippa Parrot": [
         "scissor-trail-safari"
       ],
@@ -5261,7 +5294,8 @@
         "counting-treasure-cups"
       ],
       "Sunny the sunflower": [
-        "garden-delivery-game"
+        "garden-delivery-game",
+        "plant-care-captain"
       ],
       "Tavi Tiger": [
         "scissor-trail-safari"
@@ -6227,6 +6261,7 @@
         "sound-hopscotch"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
+        "magnet-explorer",
         "number-sense-kitchen",
         "pattern-train",
         "sandpaper-number-match",
@@ -6438,6 +6473,7 @@
   "zeroConsumers": {
     "modules": [
       "shared/js/engines/pattern-continue.js",
+      "shared/js/engines/sort-into-bins.js",
       "shared/js/stage/puppet-builder.js",
       "shared/js/studio/studio.js",
       "shared/js/studio/workspaces/animate.js",

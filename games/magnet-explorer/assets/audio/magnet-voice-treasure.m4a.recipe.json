@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-treasure",
+  "kind": "voice",
+  "asset": "magnet-voice-treasure.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "You found a magnetic treasure!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "You found a magnetic treasure!",
+      "heard": "You found a magnetic treasure.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

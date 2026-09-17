@@ -1,0 +1,292 @@
+{
+  "source": "games/magnet-explorer/assets/source/magnet-ui-sheet-alpha.png",
+  "sourceSha256": "8ee5763a631ecb5f9d6dbcabffa85d82d9268759e5c2fe01123042e4559c2bf5",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 10,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 106981,
+      "foregroundBbox": [
+        24,
+        57,
+        493,
+        343
+      ],
+      "cropBbox": [
+        14,
+        47,
+        503,
+        353
+      ],
+      "cropXywh": [
+        14,
+        47,
+        489,
+        306
+      ],
+      "normalizedCropBbox": [
+        0.009669,
+        0.043278,
+        0.347376,
+        0.325046
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mode-test",
+      "file": "mode-test.png",
+      "componentArea": 91259,
+      "foregroundBbox": [
+        552,
+        33,
+        891,
+        370
+      ],
+      "cropBbox": [
+        542,
+        23,
+        901,
+        380
+      ],
+      "cropXywh": [
+        542,
+        23,
+        359,
+        357
+      ],
+      "normalizedCropBbox": [
+        0.374309,
+        0.021179,
+        0.622238,
+        0.349908
+      ]
+    },
+    {
+      "index": 3,
+      "name": "mode-sweep",
+      "file": "mode-sweep.png",
+      "componentArea": 92647,
+      "foregroundBbox": [
+        1017,
+        31,
+        1359,
+        370
+      ],
+      "cropBbox": [
+        1007,
+        21,
+        1369,
+        380
+      ],
+      "cropXywh": [
+        1007,
+        21,
+        362,
+        359
+      ],
+      "normalizedCropBbox": [
+        0.695442,
+        0.019337,
+        0.945442,
+        0.349908
+      ]
+    },
+    {
+      "index": 4,
+      "name": "mode-maze",
+      "file": "mode-maze.png",
+      "componentArea": 93495,
+      "foregroundBbox": [
+        63,
+        373,
+        411,
+        706
+      ],
+      "cropBbox": [
+        53,
+        363,
+        421,
+        716
+      ],
+      "cropXywh": [
+        53,
+        363,
+        368,
+        353
+      ],
+      "normalizedCropBbox": [
+        0.036602,
+        0.334254,
+        0.290746,
+        0.6593
+      ]
+    },
+    {
+      "index": 5,
+      "name": "test-pedestal",
+      "file": "test-pedestal.png",
+      "componentArea": 91369,
+      "foregroundBbox": [
+        507,
+        423,
+        931,
+        682
+      ],
+      "cropBbox": [
+        497,
+        413,
+        941,
+        692
+      ],
+      "cropXywh": [
+        497,
+        413,
+        444,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.343232,
+        0.380295,
+        0.649862,
+        0.637201
+      ]
+    },
+    {
+      "index": 6,
+      "name": "tray-magnetic",
+      "file": "tray-magnetic.png",
+      "componentArea": 108513,
+      "foregroundBbox": [
+        972,
+        408,
+        1412,
+        680
+      ],
+      "cropBbox": [
+        962,
+        398,
+        1422,
+        690
+      ],
+      "cropXywh": [
+        962,
+        398,
+        460,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.664365,
+        0.366483,
+        0.982044,
+        0.635359
+      ]
+    },
+    {
+      "index": 7,
+      "name": "tray-nonmagnetic",
+      "file": "tray-nonmagnetic.png",
+      "componentArea": 110375,
+      "foregroundBbox": [
+        32,
+        733,
+        473,
+        1010
+      ],
+      "cropBbox": [
+        22,
+        723,
+        483,
+        1020
+      ],
+      "cropXywh": [
+        22,
+        723,
+        461,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.015193,
+        0.665746,
+        0.333564,
+        0.939227
+      ]
+    },
+    {
+      "index": 8,
+      "name": "badge",
+      "file": "badge.png",
+      "componentArea": 86757,
+      "foregroundBbox": [
+        524,
+        703,
+        915,
+        1032
+      ],
+      "cropBbox": [
+        514,
+        693,
+        925,
+        1042
+      ],
+      "cropXywh": [
+        514,
+        693,
+        411,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.354972,
+        0.638122,
+        0.638812,
+        0.959484
+      ]
+    },
+    {
+      "index": 9,
+      "name": "sparkles",
+      "file": "sparkles.png",
+      "componentArea": 88210,
+      "foregroundBbox": [
+        995,
+        723,
+        1386,
+        1020
+      ],
+      "cropBbox": [
+        985,
+        713,
+        1396,
+        1030
+      ],
+      "cropXywh": [
+        985,
+        713,
+        411,
+        317
+      ],
+      "normalizedCropBbox": [
+        0.680249,
+        0.656538,
+        0.964088,
+        0.948435
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

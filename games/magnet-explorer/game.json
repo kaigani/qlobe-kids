@@ -6,27 +6,25 @@
   "icon": "🧲",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "status": "beta",
   "accent": "#58a945",
-  "shareTitle": "Magnet Explorer 🧲 — Sticks or Not Sorting",
-  "description": "Test object cards against a magnet and sort each one into sticks or does-not-stick, building early materials-science instincts along the way. A tactile discovery game for ages 5–6.",
+  "shareTitle": "Magnet Explorer — A Hands-On Magnetic Science Game",
+  "description": "Drag a friendly magnet, test real materials, sweep up steel treasures, and guide a shiny ball through a wooden maze.",
   "learningGoals": [
-    "Sort objects by magnetic and non-magnetic behavior",
-    "Connect sticking to metal objects in everyday examples",
-    "Practice observation language for early materials science"
+    "Observe magnetic and non-magnetic behavior through direct testing",
+    "Recognize several familiar steel objects without claiming every metal is magnetic",
+    "Explore how magnetic attraction changes with distance"
   ],
-  "interactionModel": "sort-into-bins drag or tap-tap object cards into sticks and does-not-stick bins",
-  "feedbackModel": "Correct sorts get pop and sparkle SFX plus spoken praise; misses wiggle gently with a spoken nudge and retry.",
-  "uses": [
-    "shared/js/engines/sort-into-bins.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
-  ],
+  "interactionModel": "Direct magnet interaction: bring a magnet near objects, sweep for magnetic treasures, and guide a steel ball through a maze.",
+  "feedbackModel": "Near-field steel objects snap to the magnet with a clink, glow, and haptic pulse; other materials bounce gently with supportive recorded narration.",
+  "uses": ["shared/js/voice-clips.js", "shared/js/narrator.js", "shared/js/audio-unlock.js", "shared/js/sfx.js", "shared/js/bgm.js", "shared/js/hud.js", "shared/js/screens.js", "shared/js/timers.js", "shared/js/rng.js", "shared/js/tap.js", "shared/js/debug-harness.js", "shared/js/idle-nudge.js", "shared/assets/music/whimsical-toy-workshop.mp3", "games/magnet-explorer/assets/"],
   "modes": [
-    { "id": "explore", "title": "Sticks or Not?", "skill": "magnetic versus non-magnetic sorting" }
+    { "id": "test-lab", "title": "Test Lab", "skill": "direct proximity testing" },
+    { "id": "treasure-sweep", "title": "Treasure Sweep", "skill": "find magnetic objects" },
+    { "id": "magnet-maze", "title": "Magnet Maze", "skill": "guide a steel ball" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; GPT Image 2 object system; local Krea 2 environments; Qwen voice-clone narration. Full provenance in ASSETS.md. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

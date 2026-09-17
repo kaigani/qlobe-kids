@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-mode-sweep",
+  "kind": "voice",
+  "asset": "magnet-voice-mode-sweep.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Treasure sweep! Move the magnet around and find five magnetic treasures.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Treasure sweep! Move the magnet around and find five magnetic treasures.",
+      "heard": "Tresor sweep, move the magnet around and find five magnetic treasures.",
+      "ratio": 0.971,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

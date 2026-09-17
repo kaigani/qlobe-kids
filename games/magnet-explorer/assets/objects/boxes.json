@@ -1,0 +1,502 @@
+{
+  "source": "games/magnet-explorer/assets/source/magnet-object-sheet-alpha.png",
+  "sourceSha256": "e4c3dfc1ef8d5f416f651b6e7bd46f9b6b69acf7cc2f3bfbea0899d9c058bf2f",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 10,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "magnet",
+      "file": "magnet.png",
+      "componentArea": 39028,
+      "foregroundBbox": [
+        57,
+        41,
+        279,
+        295
+      ],
+      "cropBbox": [
+        47,
+        31,
+        289,
+        305
+      ],
+      "cropXywh": [
+        47,
+        31,
+        242,
+        274
+      ],
+      "normalizedCropBbox": [
+        0.03748,
+        0.024721,
+        0.230463,
+        0.243222
+      ]
+    },
+    {
+      "index": 2,
+      "name": "steel-ball",
+      "file": "steel-ball.png",
+      "componentArea": 23668,
+      "foregroundBbox": [
+        395,
+        104,
+        566,
+        281
+      ],
+      "cropBbox": [
+        385,
+        94,
+        576,
+        291
+      ],
+      "cropXywh": [
+        385,
+        94,
+        191,
+        197
+      ],
+      "normalizedCropBbox": [
+        0.307018,
+        0.07496,
+        0.45933,
+        0.232057
+      ]
+    },
+    {
+      "index": 3,
+      "name": "paperclip",
+      "file": "paperclip.png",
+      "componentArea": 19952,
+      "foregroundBbox": [
+        675,
+        57,
+        902,
+        289
+      ],
+      "cropBbox": [
+        665,
+        47,
+        912,
+        299
+      ],
+      "cropXywh": [
+        665,
+        47,
+        247,
+        252
+      ],
+      "normalizedCropBbox": [
+        0.530303,
+        0.03748,
+        0.727273,
+        0.238437
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bolt",
+      "file": "bolt.png",
+      "componentArea": 29039,
+      "foregroundBbox": [
+        977,
+        55,
+        1204,
+        287
+      ],
+      "cropBbox": [
+        967,
+        45,
+        1214,
+        297
+      ],
+      "cropXywh": [
+        967,
+        45,
+        247,
+        252
+      ],
+      "normalizedCropBbox": [
+        0.771132,
+        0.035885,
+        0.968102,
+        0.236842
+      ]
+    },
+    {
+      "index": 5,
+      "name": "washer",
+      "file": "washer.png",
+      "componentArea": 34107,
+      "foregroundBbox": [
+        61,
+        361,
+        286,
+        574
+      ],
+      "cropBbox": [
+        51,
+        351,
+        296,
+        584
+      ],
+      "cropXywh": [
+        51,
+        351,
+        245,
+        233
+      ],
+      "normalizedCropBbox": [
+        0.04067,
+        0.279904,
+        0.236045,
+        0.46571
+      ]
+    },
+    {
+      "index": 6,
+      "name": "nail",
+      "file": "nail.png",
+      "componentArea": 14194,
+      "foregroundBbox": [
+        377,
+        353,
+        566,
+        574
+      ],
+      "cropBbox": [
+        367,
+        343,
+        576,
+        584
+      ],
+      "cropXywh": [
+        367,
+        343,
+        209,
+        241
+      ],
+      "normalizedCropBbox": [
+        0.292663,
+        0.273525,
+        0.45933,
+        0.46571
+      ]
+    },
+    {
+      "index": 7,
+      "name": "steel-can",
+      "file": "steel-can.png",
+      "componentArea": 44790,
+      "foregroundBbox": [
+        682,
+        336,
+        880,
+        589
+      ],
+      "cropBbox": [
+        672,
+        326,
+        890,
+        599
+      ],
+      "cropXywh": [
+        672,
+        326,
+        218,
+        273
+      ],
+      "normalizedCropBbox": [
+        0.535885,
+        0.259968,
+        0.709729,
+        0.477671
+      ]
+    },
+    {
+      "index": 8,
+      "name": "safety-pin",
+      "file": "safety-pin.png",
+      "componentArea": 15686,
+      "foregroundBbox": [
+        975,
+        360,
+        1211,
+        560
+      ],
+      "cropBbox": [
+        965,
+        350,
+        1221,
+        570
+      ],
+      "cropXywh": [
+        965,
+        350,
+        256,
+        220
+      ],
+      "normalizedCropBbox": [
+        0.769537,
+        0.279107,
+        0.973684,
+        0.454545
+      ]
+    },
+    {
+      "index": 9,
+      "name": "wood-block",
+      "file": "wood-block.png",
+      "componentArea": 45774,
+      "foregroundBbox": [
+        50,
+        642,
+        282,
+        879
+      ],
+      "cropBbox": [
+        40,
+        632,
+        292,
+        889
+      ],
+      "cropXywh": [
+        40,
+        632,
+        252,
+        257
+      ],
+      "normalizedCropBbox": [
+        0.031898,
+        0.503987,
+        0.232855,
+        0.708931
+      ]
+    },
+    {
+      "index": 10,
+      "name": "rubber-duck",
+      "file": "rubber-duck.png",
+      "componentArea": 45445,
+      "foregroundBbox": [
+        354,
+        623,
+        589,
+        882
+      ],
+      "cropBbox": [
+        344,
+        613,
+        599,
+        892
+      ],
+      "cropXywh": [
+        344,
+        613,
+        255,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.274322,
+        0.488836,
+        0.477671,
+        0.711324
+      ]
+    },
+    {
+      "index": 11,
+      "name": "plastic-button",
+      "file": "plastic-button.png",
+      "componentArea": 42343,
+      "foregroundBbox": [
+        664,
+        643,
+        898,
+        876
+      ],
+      "cropBbox": [
+        654,
+        633,
+        908,
+        886
+      ],
+      "cropXywh": [
+        654,
+        633,
+        254,
+        253
+      ],
+      "normalizedCropBbox": [
+        0.521531,
+        0.504785,
+        0.724083,
+        0.706539
+      ]
+    },
+    {
+      "index": 12,
+      "name": "pom-pom",
+      "file": "pom-pom.png",
+      "componentArea": 45658,
+      "foregroundBbox": [
+        960,
+        639,
+        1215,
+        880
+      ],
+      "cropBbox": [
+        950,
+        629,
+        1225,
+        890
+      ],
+      "cropXywh": [
+        950,
+        629,
+        275,
+        261
+      ],
+      "normalizedCropBbox": [
+        0.757576,
+        0.501595,
+        0.976874,
+        0.709729
+      ]
+    },
+    {
+      "index": 13,
+      "name": "cork",
+      "file": "cork.png",
+      "componentArea": 33593,
+      "foregroundBbox": [
+        78,
+        934,
+        250,
+        1170
+      ],
+      "cropBbox": [
+        68,
+        924,
+        260,
+        1180
+      ],
+      "cropXywh": [
+        68,
+        924,
+        192,
+        256
+      ],
+      "normalizedCropBbox": [
+        0.054226,
+        0.736842,
+        0.207337,
+        0.940989
+      ]
+    },
+    {
+      "index": 14,
+      "name": "leaf",
+      "file": "leaf.png",
+      "componentArea": 36460,
+      "foregroundBbox": [
+        364,
+        937,
+        569,
+        1178
+      ],
+      "cropBbox": [
+        354,
+        927,
+        579,
+        1188
+      ],
+      "cropXywh": [
+        354,
+        927,
+        225,
+        261
+      ],
+      "normalizedCropBbox": [
+        0.282297,
+        0.739234,
+        0.461722,
+        0.947368
+      ]
+    },
+    {
+      "index": 15,
+      "name": "toy-car",
+      "file": "toy-car.png",
+      "componentArea": 48710,
+      "foregroundBbox": [
+        637,
+        939,
+        936,
+        1168
+      ],
+      "cropBbox": [
+        627,
+        929,
+        946,
+        1178
+      ],
+      "cropXywh": [
+        627,
+        929,
+        319,
+        249
+      ],
+      "normalizedCropBbox": [
+        0.5,
+        0.740829,
+        0.754386,
+        0.939394
+      ]
+    },
+    {
+      "index": 16,
+      "name": "star-token",
+      "file": "star-token.png",
+      "componentArea": 29145,
+      "foregroundBbox": [
+        989,
+        939,
+        1206,
+        1159
+      ],
+      "cropBbox": [
+        979,
+        929,
+        1216,
+        1169
+      ],
+      "cropXywh": [
+        979,
+        929,
+        237,
+        240
+      ],
+      "normalizedCropBbox": [
+        0.780702,
+        0.740829,
+        0.969697,
+        0.932217
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

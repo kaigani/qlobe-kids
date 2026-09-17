@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-steel-can",
+  "kind": "voice",
+  "asset": "magnet-voice-steel-can.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The steel can sticks to the magnet.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The steel can sticks to the magnet.",
+      "heard": "that the steel can stick to the magnet.",
+      "ratio": 0.917,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

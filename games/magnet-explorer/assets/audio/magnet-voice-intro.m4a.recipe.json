@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-intro",
+  "kind": "voice",
+  "asset": "magnet-voice-intro.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Welcome, magnet explorer! Drag the red magnet close and discover what sticks.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Welcome, magnet explorer! Drag the red magnet close and discover what sticks.",
+      "heard": "Welcome, Magnet Explorer! Drag the red magnet close and discover what sticks!",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

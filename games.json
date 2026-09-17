@@ -2045,16 +2045,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "explore",
-          "title": "Sticks or Not?",
-          "skill": "magnetic versus non-magnetic sorting"
+          "id": "test-lab",
+          "title": "Test Lab",
+          "skill": "direct proximity testing"
+        },
+        {
+          "id": "treasure-sweep",
+          "title": "Treasure Sweep",
+          "skill": "find magnetic objects"
+        },
+        {
+          "id": "magnet-maze",
+          "title": "Magnet Maze",
+          "skill": "guide a steel ball"
         }
       ],
-      "summary": "Find which objects are magnetic and which are not."
+      "summary": "Test real materials, sweep up steel treasures, and guide a magnetic ball through a wooden maze."
     },
     {
       "id": "sound-cylinder-match",
