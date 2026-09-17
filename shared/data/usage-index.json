@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T17:10:23.307Z",
+  "generated": "2026-09-17T18:26:00.281Z",
   "engines": {
     "coach-timer": {
       "count": 10,
@@ -47,14 +47,6 @@
         "turn-taking-tower"
       ]
     },
-    "observe-journal": {
-      "count": 3,
-      "games": [
-        "family-story-interview",
-        "picture-narration",
-        "smell-jars"
-      ]
-    },
     "sequence-order": {
       "count": 2,
       "games": [
@@ -67,6 +59,13 @@
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "observe-journal": {
+      "count": 2,
+      "games": [
+        "family-story-interview",
+        "picture-narration"
       ]
     },
     "match-pairs": {
@@ -2652,22 +2651,36 @@
       "packs": []
     },
     "smell-jars": {
-      "engine": "observe-journal",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "sensorial-science",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
       "packs": []
     },
     "snack-addition-stories": {
@@ -3680,6 +3693,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
@@ -3724,6 +3738,7 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -3775,6 +3790,7 @@
         "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sticker-line-challenge",
@@ -3867,6 +3883,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
@@ -3932,8 +3949,7 @@
       ],
       "shared/js/engines/observe-journal.js": [
         "family-story-interview",
-        "picture-narration",
-        "smell-jars"
+        "picture-narration"
       ],
       "shared/js/engines/puppet-band.js": [
         "my-puppet-band"
@@ -3996,6 +4012,7 @@
         "red-green-light",
         "secret-message-copy",
         "silly-swap-words",
+        "smell-jars",
         "sticker-line-challenge",
         "sweep-the-trail",
         "table-setting-mission",
@@ -4034,6 +4051,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -4114,6 +4132,7 @@
         "secret-message-copy",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
         "sound-painting",
@@ -4159,6 +4178,7 @@
         "secret-message-copy",
         "shape-detective",
         "silly-swap-words",
+        "smell-jars",
         "snack-addition-stories",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -4216,6 +4236,7 @@
         "shadow-chase",
         "shape-detective",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "sound-basket",
         "sound-cylinder-match",
@@ -4265,6 +4286,7 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-hopscotch",
@@ -4442,7 +4464,6 @@
         "shelf-reset-game",
         "silly-sentence-builder",
         "sink-or-float",
-        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
@@ -4490,6 +4511,7 @@
         "plant-care-captain",
         "post-office-letters",
         "puzzle-map-match",
+        "smell-jars",
         "snack-chef",
         "sound-basket",
         "story-repair-shop",
@@ -4614,6 +4636,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
@@ -4679,6 +4702,7 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "smell-jars",
         "snack-addition-stories",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -4755,6 +4779,7 @@
         "shape-detective",
         "silly-swap-words",
         "sink-or-float",
+        "smell-jars",
         "snack-addition-stories",
         "snack-chef",
         "sound-basket",
@@ -4933,7 +4958,6 @@
         "shape-to-picture",
         "shelf-reset-game",
         "silly-sentence-builder",
-        "smell-jars",
         "story-sequence",
         "story-stones",
         "then-now-sort",
@@ -4981,6 +5005,7 @@
         "shadow-chase",
         "shape-detective",
         "silly-swap-words",
+        "smell-jars",
         "snack-addition-stories",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -6286,6 +6311,7 @@
         "pattern-train",
         "sandpaper-number-match",
         "silly-swap-words",
+        "smell-jars",
         "tiny-sentence-workshop"
       ],
       "shared/assets/objects": [

@@ -1,0 +1,82 @@
+{
+  "source": "games/smell-jars/assets/source/gpt-image-2/modes-sheet-source.png",
+  "sourceSha256": "52de9e242f2ea6523ca3a928a49d430f696d4637adc6d21fe1cf2d5a8e4c7141",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "mode-match",
+      "file": "mode-match.png",
+      "componentArea": 422094,
+      "foregroundBbox": [
+        90,
+        89,
+        730,
+        918
+      ],
+      "cropBbox": [
+        78,
+        77,
+        742,
+        930
+      ],
+      "cropXywh": [
+        78,
+        77,
+        664,
+        853
+      ],
+      "normalizedCropBbox": [
+        0.050781,
+        0.075195,
+        0.483073,
+        0.908203
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mode-memory",
+      "file": "mode-memory.png",
+      "componentArea": 427245,
+      "foregroundBbox": [
+        811,
+        86,
+        1456,
+        920
+      ],
+      "cropBbox": [
+        799,
+        74,
+        1468,
+        932
+      ],
+      "cropXywh": [
+        799,
+        74,
+        669,
+        858
+      ],
+      "normalizedCropBbox": [
+        0.520182,
+        0.072266,
+        0.955729,
+        0.910156
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

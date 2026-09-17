@@ -1,0 +1,438 @@
+{
+  "format": "qlobe-smell-jars-processing",
+  "formatVersion": 1,
+  "generator": "GPT Image 2 source art; required shared asset cutter; Qwen Image Layered title and sparkle alpha; deterministic Pillow WebP finalization",
+  "records": [
+    {
+      "source": "assets\\source\\gpt-image-2\\environment-wide-source.png",
+      "sourceSha256": "31a2a52f00f1d55a966e63952160e0db74923c78965bc336d11f9c29e2d980bd",
+      "asset": "assets\\art\\environment-wide.webp",
+      "finalSize": [
+        1920,
+        1080
+      ],
+      "assetSha256": "70c88591cf4e9348b127cbbb20af2e39f5c4c77766be9e284b7f122f83255349"
+    },
+    {
+      "source": "assets\\source\\gpt-image-2\\environment-portrait-source.png",
+      "sourceSha256": "4b541c10047c3f6231822e371aa0a5c7c2de25aa093d76272c675b050248c97c",
+      "asset": "assets\\art\\environment-portrait.webp",
+      "finalSize": [
+        1080,
+        1440
+      ],
+      "assetSha256": "d592ffcbe0a1c7b4de3129c5ba62a6c36f4413635af48d3a8b7235f4cb0a8608"
+    },
+    {
+      "source": "assets\\source\\local-api\\title\\title-clean.final.png",
+      "sourceSha256": "768eb9b6e2481526a79e55670167f0ab3ab72cfdaf32b008f50b1a89fec20f7c",
+      "asset": "assets\\art\\title.webp",
+      "finalSize": [
+        851,
+        428
+      ],
+      "alpha": {
+        "transparentPct": 36.354,
+        "opaquePct": 61.879,
+        "partialPct": 1.766
+      },
+      "assetSha256": "258c1481cb80ce173feb959aefcc5c914d2a65117a890ecfe841825b53054260"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\jar-open.png",
+      "sourceSha256": "3ed99bc31c48bb01b73d2ad43c4de56be1e3069006fb2659112a954d088a4635",
+      "asset": "assets\\art\\jar-open.webp",
+      "finalSize": [
+        257,
+        269
+      ],
+      "alpha": {
+        "transparentPct": 17.251,
+        "opaquePct": 66.971,
+        "partialPct": 15.778
+      },
+      "assetSha256": "3dfe2bdec36ed5a9899be9250520dde37bcb72ffa76a260bca30658b6d67372d"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\tray.png",
+      "sourceSha256": "e92d384e49c9543cbc4b30e18fb94a22599c0a6e2b48e374579130d47e1ed9fa",
+      "asset": "assets\\art\\tray.webp",
+      "finalSize": [
+        411,
+        160
+      ],
+      "alpha": {
+        "transparentPct": 10.23,
+        "opaquePct": 70.418,
+        "partialPct": 19.352
+      },
+      "assetSha256": "60302ca7ba8d3abdca68c78c011833f712f468e4345beba12024b8c2f444cde3"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\button-plaque.png",
+      "sourceSha256": "e791048000a16866b1904cfa164e18c41b8f4fe96e32ac89533c514c84022775",
+      "asset": "assets\\art\\button-plaque.webp",
+      "finalSize": [
+        358,
+        189
+      ],
+      "alpha": {
+        "transparentPct": 13.822,
+        "opaquePct": 70.461,
+        "partialPct": 15.718
+      },
+      "assetSha256": "9b3dff0c14157e1f482ffc070796d8275cf7b5e5ee420bb6e4b0e7111b76f7c9"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\check.png",
+      "sourceSha256": "24e3f85ba631968c71e137aed2d4bb94790edcac995570676e47fd4c3a28e59b",
+      "asset": "assets\\art\\check.webp",
+      "finalSize": [
+        232,
+        240
+      ],
+      "alpha": {
+        "transparentPct": 20.273,
+        "opaquePct": 65.059,
+        "partialPct": 14.668
+      },
+      "assetSha256": "20abbf372875c707ed11d8430dd7b59b713b590776084ce0b404a5ddb9a85048"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-yellow.png",
+      "sourceSha256": "555862a5c561ef5d7a4c93405e08bdedffde5639ce6a655e0d030000c5eee133",
+      "asset": "assets\\art\\lid-yellow.webp",
+      "finalSize": [
+        294,
+        202
+      ],
+      "alpha": {
+        "transparentPct": 17.724,
+        "opaquePct": 62.43,
+        "partialPct": 19.846
+      },
+      "assetSha256": "f1c93e1fa610f7dde0e7245dfd9708dad9ae895d82f66e5015d86d46d95cabdf"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-green.png",
+      "sourceSha256": "fbf6ffe97f3be6f2d2c73dab5746397f8d96ae39ac0aadfba7b62122a29f9caa",
+      "asset": "assets\\art\\lid-green.webp",
+      "finalSize": [
+        295,
+        203
+      ],
+      "alpha": {
+        "transparentPct": 18.554,
+        "opaquePct": 61.286,
+        "partialPct": 20.16
+      },
+      "assetSha256": "f2dd28ffbc39bc113cc9deb9d1baed95436017df47f632f36c6039841f92cbef"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-russet.png",
+      "sourceSha256": "4b233487f64c2ee00151efa263cf24418924bdaf9e9a7b9043bb7741f259cf33",
+      "asset": "assets\\art\\lid-russet.webp",
+      "finalSize": [
+        301,
+        204
+      ],
+      "alpha": {
+        "transparentPct": 18.759,
+        "opaquePct": 60.906,
+        "partialPct": 20.334
+      },
+      "assetSha256": "6398e857559a4f760208267f7699446799e835d823665039aedb9561f73238fb"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-purple.png",
+      "sourceSha256": "9f17d1d532353520884d904d4bbd4ad131288df99f20137848c11419041c613c",
+      "asset": "assets\\art\\lid-purple.webp",
+      "finalSize": [
+        300,
+        207
+      ],
+      "alpha": {
+        "transparentPct": 19.341,
+        "opaquePct": 60.32,
+        "partialPct": 20.338
+      },
+      "assetSha256": "41585bb9d27c4a9a7ad1f9efe2b6f42287b959a37baaaa41d523a512793d8903"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-cocoa.png",
+      "sourceSha256": "60c17ed2b4de1529af89283aa97d28e7b55dec73aa6a3c29f561c21ca3ab13b0",
+      "asset": "assets\\art\\lid-cocoa.webp",
+      "finalSize": [
+        297,
+        208
+      ],
+      "alpha": {
+        "transparentPct": 17.654,
+        "opaquePct": 61.354,
+        "partialPct": 20.992
+      },
+      "assetSha256": "c402ff9b82b3a20074b5e351e4fee3055c6a7de4b8fa783c3f3591bfa5c439df"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\lid-pine.png",
+      "sourceSha256": "6aaa63e4f55006a37f028257c4fe665871d8f009ef0d1792c1e96e5467e96a32",
+      "asset": "assets\\art\\lid-pine.webp",
+      "finalSize": [
+        294,
+        208
+      ],
+      "alpha": {
+        "transparentPct": 17.004,
+        "opaquePct": 62.196,
+        "partialPct": 20.801
+      },
+      "assetSha256": "0137e9652f58ab9e0d2b767dfeb88cff4a5dd6e78cb2f0a5fbef52954ec08bd2"
+    },
+    {
+      "source": "assets\\source\\cuts\\props\\sun.png",
+      "sourceSha256": "4131b07ddb3a4b2399ba0337372057dceca45c8879deb49d3c9660f05ee089ef",
+      "asset": "assets\\art\\sun.webp",
+      "finalSize": [
+        298,
+        293
+      ],
+      "alpha": {
+        "transparentPct": 29.054,
+        "opaquePct": 54.217,
+        "partialPct": 16.729
+      },
+      "assetSha256": "af3aa86d6d32bb780597dbfd64333fb088d35d9f5ab0eb5b16496a0c338114ed"
+    },
+    {
+      "source": "assets\\source\\layered\\spark.final.png",
+      "sourceSha256": "a9ffa111929083699125ee0abd4731bacf02410c49535b756464c1d3a9354d6e",
+      "asset": "assets\\art\\spark.webp",
+      "finalSize": [
+        193,
+        221
+      ],
+      "alpha": {
+        "transparentPct": 51.145,
+        "opaquePct": 36.244,
+        "partialPct": 12.611
+      },
+      "assetSha256": "7325ecf9d73a9de3d20227e9bfad30e0e462fef830cb9c7ceb390c4e6d0a614e"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-lemon.png",
+      "sourceSha256": "66a5405b63e01447b77babbf633c661d905ef94ae781c7b2e2866db00eb89cf9",
+      "asset": "assets\\art\\token-lemon.webp",
+      "finalSize": [
+        440,
+        389
+      ],
+      "alpha": {
+        "transparentPct": 27.03,
+        "opaquePct": 57.053,
+        "partialPct": 15.917
+      },
+      "assetSha256": "0e3be591f57c5278732083c608297f64989890bfa45fa3700c2dd540ed85a99c"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-lemon.png",
+      "sourceSha256": "c9e811725bccc5ad13d8fa0147df6faf98f58406020a3c9e9009b8b2a2afa196",
+      "asset": "assets\\art\\plume-lemon.webp",
+      "finalSize": [
+        282,
+        493
+      ],
+      "alpha": {
+        "transparentPct": 38.071,
+        "opaquePct": 34.263,
+        "partialPct": 27.667
+      },
+      "assetSha256": "5ae3ae0991d268195e6d8d96c121618ffeebf4f5864e31f90048f68d50f174f7"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-mint.png",
+      "sourceSha256": "9d9611110d090650a101ed2a7f7cae364ad6544fbb154834cacffe9abc03f2ba",
+      "asset": "assets\\art\\token-mint.webp",
+      "finalSize": [
+        440,
+        391
+      ],
+      "alpha": {
+        "transparentPct": 27.509,
+        "opaquePct": 57.362,
+        "partialPct": 15.129
+      },
+      "assetSha256": "99d7f1387cf302cc876611d3f998ac47d7654b7293f0f50eb0236d14c2fbf1f9"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-mint.png",
+      "sourceSha256": "1ca1fa738566c8f6b9e04d2b751961113ad4b9be9a6f04e94c0440171745e19d",
+      "asset": "assets\\art\\plume-mint.webp",
+      "finalSize": [
+        268,
+        499
+      ],
+      "alpha": {
+        "transparentPct": 34.217,
+        "opaquePct": 41.018,
+        "partialPct": 24.765
+      },
+      "assetSha256": "5182553e4cff5a160d2cb5fa14b7bdf17ab31f759e14853fce7526ad5c70a846"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-cinnamon.png",
+      "sourceSha256": "f8f7c472284979cad03184c9efa246f900c7282a734c002cdd4d7a903a8ae088",
+      "asset": "assets\\art\\token-cinnamon.webp",
+      "finalSize": [
+        434,
+        393
+      ],
+      "alpha": {
+        "transparentPct": 26.805,
+        "opaquePct": 58.24,
+        "partialPct": 14.955
+      },
+      "assetSha256": "b053a7a53f18c9d52a55705e8037de384b175d2789776758c468c0ebcc280d01"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-cinnamon.png",
+      "sourceSha256": "31aeee51d34fdd63610becffe65e882524cec5a8c1f189c6fa76045f8781a1a7",
+      "asset": "assets\\art\\plume-cinnamon.webp",
+      "finalSize": [
+        280,
+        498
+      ],
+      "alpha": {
+        "transparentPct": 34.931,
+        "opaquePct": 36.581,
+        "partialPct": 28.488
+      },
+      "assetSha256": "b47b0c744b24b9c17692f8cbdea8309ef0744515c2e5afa1d16cedb58f497e1a"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-lavender.png",
+      "sourceSha256": "b2fbf7f0934fb659b345ab62966a804cdeb1c084a6b993eab718494e16137c88",
+      "asset": "assets\\art\\token-lavender.webp",
+      "finalSize": [
+        440,
+        392
+      ],
+      "alpha": {
+        "transparentPct": 27.896,
+        "opaquePct": 57.034,
+        "partialPct": 15.07
+      },
+      "assetSha256": "16e782a8b74b27d09ccf96c07d9f40124151feb39d342654a768ebabaccd907a"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-lavender.png",
+      "sourceSha256": "70f396e25619ded21cdfb15de037c2bdf115ee0609abd08d95fe7a46e0195fbc",
+      "asset": "assets\\art\\plume-lavender.webp",
+      "finalSize": [
+        272,
+        497
+      ],
+      "alpha": {
+        "transparentPct": 35.721,
+        "opaquePct": 36.504,
+        "partialPct": 27.775
+      },
+      "assetSha256": "fe858079754ac303a528fd7b96a960486fd3836603d25062ae95bb59d7699abf"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-cocoa.png",
+      "sourceSha256": "404b27c72fbc48f0b012a410154c762669ef839a341fbaf0c00d79e336a2765c",
+      "asset": "assets\\art\\token-cocoa.webp",
+      "finalSize": [
+        440,
+        392
+      ],
+      "alpha": {
+        "transparentPct": 28.241,
+        "opaquePct": 55.987,
+        "partialPct": 15.772
+      },
+      "assetSha256": "ee14ad2b676ec775fc0282840d0da13da315e0926a7523977027eb41aff8a0ad"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-cocoa.png",
+      "sourceSha256": "f89424e61c857798b9ab5168fd8f5b126892cb9632c161dbd48b3d7119dbec12",
+      "asset": "assets\\art\\plume-cocoa.webp",
+      "finalSize": [
+        278,
+        493
+      ],
+      "alpha": {
+        "transparentPct": 35.482,
+        "opaquePct": 37.744,
+        "partialPct": 26.775
+      },
+      "assetSha256": "3c56e4ac277310c1de61bc515cad70cea957c32ef7d1f883a6f52a28ef6d8023"
+    },
+    {
+      "source": "assets\\source\\cuts\\tokens\\token-pine.png",
+      "sourceSha256": "63c4dc654241dc6f10dee8d149ca08474c3b400bb67de094bbfba522516814cb",
+      "asset": "assets\\art\\token-pine.webp",
+      "finalSize": [
+        435,
+        393
+      ],
+      "alpha": {
+        "transparentPct": 27.193,
+        "opaquePct": 57.643,
+        "partialPct": 15.164
+      },
+      "assetSha256": "300c5657e3da04443b00e874e0afcaecdf5ddcdd67d71466693c929887be0387"
+    },
+    {
+      "source": "assets\\source\\cuts\\plumes\\plume-pine.png",
+      "sourceSha256": "42f107a8b6ce01f559f163b6944e3659208cb192d84467b23a161e7bb0bde292",
+      "asset": "assets\\art\\plume-pine.webp",
+      "finalSize": [
+        291,
+        497
+      ],
+      "alpha": {
+        "transparentPct": 38.358,
+        "opaquePct": 31.535,
+        "partialPct": 30.107
+      },
+      "assetSha256": "e357e729499efc45ba940ec09dd39a423616333ef9a422d642ce8dda8fd0c5b6"
+    },
+    {
+      "source": "assets\\source\\cuts\\modes\\mode-match.png",
+      "sourceSha256": "ed6bdde998b64cfcb0836d9b0dd6867f1dd0493a13a4224bf0935121d33ee5f1",
+      "asset": "assets\\art\\mode-match.webp",
+      "finalSize": [
+        527,
+        680
+      ],
+      "alpha": {
+        "transparentPct": 20.588,
+        "opaquePct": 70.029,
+        "partialPct": 9.382
+      },
+      "assetSha256": "56660d7c4ebb47dbea5e6de28f971a6905b3e115896493ba3948175055daab75"
+    },
+    {
+      "source": "assets\\source\\cuts\\modes\\mode-memory.png",
+      "sourceSha256": "af31be96b20dc987ed0d6e874283e36d5f0e11699a59b54aeea25b82e2955813",
+      "asset": "assets\\art\\mode-memory.webp",
+      "finalSize": [
+        527,
+        680
+      ],
+      "alpha": {
+        "transparentPct": 20.64,
+        "opaquePct": 70.085,
+        "partialPct": 9.274
+      },
+      "assetSha256": "337e72ae7e871b99f213a92c368eca39d0b8dccd471b9a1d0f85edf41320fec4"
+    }
+  ],
+  "qa": {
+    "magentaContactSheet": "assets\\source\\final-alpha-qc-magenta.jpg",
+    "status": "accepted",
+    "review": "All 29 runtime assets inspected at full contact-sheet resolution on hostile magenta; silhouettes are clean, all six scent pairs are distinct, and the edited title is free of generated color spill.",
+    "reviewedAt": "2026-09-17T19:10:00-07:00"
+  }
+}

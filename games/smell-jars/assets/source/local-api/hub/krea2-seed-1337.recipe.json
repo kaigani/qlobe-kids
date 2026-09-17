@@ -1,0 +1,33 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "smell-jars-hub-krea2-seed-1337",
+  "kind": "image",
+  "asset": "assets\\source\\local-api\\hub\\krea2-seed-1337-candidate.jpg",
+  "artDirection": "Toy",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A premium preschool Toy-world miniature scent-apothecary tableau on a warm honey-maple table: one large pale-maple open smell jar releasing three broad soft handcrafted scent curls in sunny yellow, mint green, and muted violet; beside it exactly three chunky round wooden ingredient medallions showing a lemon, mint leaves, and two cinnamon sticks; a low recessed wooden tray and tiny friendly carved sun mascot complete the composition. Bright soft 3D toy illustration, rounded safe forms, fine wood grain, matte painted relief, cream and sage room hints, warm upper-left studio light, strong readable 6:5 menu silhouette. No title, no writing, no letters, no numbers, no labels, no UI, no border, no people, no glass potion bottles, no dark magic, no photorealism, no flat vector art, no watermark.",
+      "seed": 1337,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "assets\\source\\local-api\\hub\\krea2-seed-1337.png",
+  "sourceSha256": "39f2c771e5dc312a5aeae255037e3537fbc4178bab1f0702d31181a49887a45e",
+  "candidateSha256": "68e972e3e442043b4606057b1b820ce6633bd318e5970765425460ba2f571692",
+  "qa": {
+    "status": "accepted",
+    "reviewedAt": "2026-09-17T18:02:00-07:00",
+    "review": "Chosen for the production hub: one clear hero jar, three readable ingredient medallions, three scent curls, one friendly sun mascot, strong 6:5 silhouette, and no text artifacts.",
+    "finalSize": [
+      640,
+      533
+    ],
+    "productionOverwrite": true
+  },
+  "createdAt": "2026-09-17T17:51:04.064121+00:00"
+}

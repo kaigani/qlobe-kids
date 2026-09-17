@@ -1,0 +1,442 @@
+{
+  "source": "games/smell-jars/assets/source/gpt-image-2/props-sheet-source.png",
+  "sourceSha256": "f93a5ddc51b90f9e5010a40b4e13e9f47b7125b40d4de64d1a1a7b2545aafc0e",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "jar-open",
+      "file": "jar-open.png",
+      "componentArea": 51072,
+      "foregroundBbox": [
+        70,
+        86,
+        310,
+        341
+      ],
+      "cropBbox": [
+        58,
+        74,
+        322,
+        353
+      ],
+      "cropXywh": [
+        58,
+        74,
+        264,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.040055,
+        0.06814,
+        0.222376,
+        0.325046
+      ]
+    },
+    {
+      "index": 2,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 51033,
+      "foregroundBbox": [
+        353,
+        170,
+        740,
+        314
+      ],
+      "cropBbox": [
+        341,
+        158,
+        752,
+        326
+      ],
+      "cropXywh": [
+        341,
+        158,
+        411,
+        168
+      ],
+      "normalizedCropBbox": [
+        0.235497,
+        0.145488,
+        0.519337,
+        0.300184
+      ]
+    },
+    {
+      "index": 3,
+      "name": "button-plaque",
+      "file": "button-plaque.png",
+      "componentArea": 52134,
+      "foregroundBbox": [
+        770,
+        137,
+        1104,
+        310
+      ],
+      "cropBbox": [
+        758,
+        125,
+        1116,
+        322
+      ],
+      "cropXywh": [
+        758,
+        125,
+        358,
+        197
+      ],
+      "normalizedCropBbox": [
+        0.523481,
+        0.115101,
+        0.770718,
+        0.296501
+      ]
+    },
+    {
+      "index": 4,
+      "name": "check",
+      "file": "check.png",
+      "componentArea": 39672,
+      "foregroundBbox": [
+        1170,
+        110,
+        1387,
+        337
+      ],
+      "cropBbox": [
+        1158,
+        98,
+        1399,
+        349
+      ],
+      "cropXywh": [
+        1158,
+        98,
+        241,
+        251
+      ],
+      "normalizedCropBbox": [
+        0.799724,
+        0.090239,
+        0.96616,
+        0.321363
+      ]
+    },
+    {
+      "index": 5,
+      "name": "lid-yellow",
+      "file": "lid-yellow.png",
+      "componentArea": 42226,
+      "foregroundBbox": [
+        58,
+        440,
+        337,
+        631
+      ],
+      "cropBbox": [
+        46,
+        428,
+        349,
+        643
+      ],
+      "cropXywh": [
+        46,
+        428,
+        303,
+        215
+      ],
+      "normalizedCropBbox": [
+        0.031768,
+        0.394107,
+        0.241022,
+        0.592081
+      ]
+    },
+    {
+      "index": 6,
+      "name": "lid-green",
+      "file": "lid-green.png",
+      "componentArea": 42025,
+      "foregroundBbox": [
+        422,
+        440,
+        702,
+        630
+      ],
+      "cropBbox": [
+        410,
+        428,
+        714,
+        642
+      ],
+      "cropXywh": [
+        410,
+        428,
+        304,
+        214
+      ],
+      "normalizedCropBbox": [
+        0.283149,
+        0.394107,
+        0.493094,
+        0.59116
+      ]
+    },
+    {
+      "index": 7,
+      "name": "lid-russet",
+      "file": "lid-russet.png",
+      "componentArea": 42974,
+      "foregroundBbox": [
+        777,
+        439,
+        1062,
+        631
+      ],
+      "cropBbox": [
+        765,
+        427,
+        1074,
+        643
+      ],
+      "cropXywh": [
+        765,
+        427,
+        309,
+        216
+      ],
+      "normalizedCropBbox": [
+        0.528315,
+        0.393186,
+        0.741713,
+        0.592081
+      ]
+    },
+    {
+      "index": 8,
+      "name": "lid-purple",
+      "file": "lid-purple.png",
+      "componentArea": 42861,
+      "foregroundBbox": [
+        1139,
+        439,
+        1420,
+        631
+      ],
+      "cropBbox": [
+        1127,
+        427,
+        1432,
+        643
+      ],
+      "cropXywh": [
+        1127,
+        427,
+        305,
+        216
+      ],
+      "normalizedCropBbox": [
+        0.778315,
+        0.393186,
+        0.98895,
+        0.592081
+      ]
+    },
+    {
+      "index": 9,
+      "name": "lid-cocoa",
+      "file": "lid-cocoa.png",
+      "componentArea": 43454,
+      "foregroundBbox": [
+        59,
+        750,
+        340,
+        943
+      ],
+      "cropBbox": [
+        47,
+        738,
+        352,
+        955
+      ],
+      "cropXywh": [
+        47,
+        738,
+        305,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.032459,
+        0.679558,
+        0.243094,
+        0.879374
+      ]
+    },
+    {
+      "index": 10,
+      "name": "lid-pine",
+      "file": "lid-pine.png",
+      "componentArea": 43635,
+      "foregroundBbox": [
+        420,
+        750,
+        700,
+        943
+      ],
+      "cropBbox": [
+        408,
+        738,
+        712,
+        955
+      ],
+      "cropXywh": [
+        408,
+        738,
+        304,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.281768,
+        0.679558,
+        0.491713,
+        0.879374
+      ]
+    },
+    {
+      "index": 11,
+      "name": "sun",
+      "file": "sun.png",
+      "componentArea": 54642,
+      "foregroundBbox": [
+        763,
+        692,
+        1047,
+        973
+      ],
+      "cropBbox": [
+        751,
+        680,
+        1059,
+        985
+      ],
+      "cropXywh": [
+        751,
+        680,
+        308,
+        305
+      ],
+      "normalizedCropBbox": [
+        0.518646,
+        0.626151,
+        0.731354,
+        0.906998
+      ]
+    },
+    {
+      "index": 12,
+      "name": "spark-a",
+      "file": "spark-a.png",
+      "componentArea": 13061,
+      "foregroundBbox": [
+        1139,
+        757,
+        1293,
+        943
+      ],
+      "cropBbox": [
+        1127,
+        745,
+        1305,
+        955
+      ],
+      "cropXywh": [
+        1127,
+        745,
+        178,
+        210
+      ],
+      "normalizedCropBbox": [
+        0.778315,
+        0.686004,
+        0.901243,
+        0.879374
+      ]
+    },
+    {
+      "index": 13,
+      "name": "spark-b",
+      "file": "spark-b.png",
+      "componentArea": 6900,
+      "foregroundBbox": [
+        1267,
+        704,
+        1381,
+        835
+      ],
+      "cropBbox": [
+        1255,
+        692,
+        1393,
+        847
+      ],
+      "cropXywh": [
+        1255,
+        692,
+        138,
+        155
+      ],
+      "normalizedCropBbox": [
+        0.866713,
+        0.637201,
+        0.962017,
+        0.779926
+      ]
+    },
+    {
+      "index": 14,
+      "name": "spark-c",
+      "file": "spark-c.png",
+      "componentArea": 5368,
+      "foregroundBbox": [
+        1296,
+        844,
+        1392,
+        959
+      ],
+      "cropBbox": [
+        1284,
+        832,
+        1404,
+        971
+      ],
+      "cropXywh": [
+        1284,
+        832,
+        120,
+        139
+      ],
+      "normalizedCropBbox": [
+        0.88674,
+        0.766114,
+        0.969613,
+        0.894107
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 48,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

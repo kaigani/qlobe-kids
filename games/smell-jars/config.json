@@ -1,0 +1,71 @@
+{
+  "id": "smell-jars",
+  "title": "Smell Jars",
+  "rounds": 4,
+  "assets": {
+    "environmentWide": "./assets/art/environment-wide.webp",
+    "environmentPortrait": "./assets/art/environment-portrait.webp",
+    "title": "./assets/art/title.webp",
+    "tray": "./assets/art/tray.webp",
+    "jar": "./assets/art/jar-open.webp",
+    "check": "./assets/art/check.webp",
+    "buttonPlaque": "./assets/art/button-plaque.webp",
+    "spark": "./assets/art/spark.webp",
+    "sun": "./assets/art/sun.webp",
+    "home": "../../shared/assets/ui/btn-home.png",
+    "back": "../../shared/assets/ui/btn-back.png",
+    "sound": "../../shared/assets/ui/btn-sound.png",
+    "play": "../../shared/assets/ui/btn-play.png"
+  },
+  "music": {
+    "track": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "volume": 0.105
+  },
+  "modes": [
+    {
+      "id": "smell-match",
+      "title": "Smell & Match",
+      "description": "Open a jar and find its picture",
+      "choices": 3,
+      "memory": false,
+      "art": "./assets/art/mode-match.webp",
+      "voice": "mode-smell-match"
+    },
+    {
+      "id": "nose-memory",
+      "title": "Nose Memory",
+      "description": "Watch the scent, then remember it",
+      "choices": 4,
+      "memory": true,
+      "art": "./assets/art/mode-memory.webp",
+      "voice": "mode-nose-memory"
+    }
+  ],
+  "scents": [
+    {"id":"lemon","title":"Lemon","descriptor":"fresh, bright, and zesty","lid":"./assets/art/lid-yellow.webp","token":"./assets/art/token-lemon.webp","plume":"./assets/art/plume-lemon.webp","accent":"#f4c438","successVoice":"success-lemon"},
+    {"id":"mint","title":"Mint","descriptor":"cool, leafy, and crisp","lid":"./assets/art/lid-green.webp","token":"./assets/art/token-mint.webp","plume":"./assets/art/plume-mint.webp","accent":"#78aa63","successVoice":"success-mint"},
+    {"id":"cinnamon","title":"Cinnamon","descriptor":"warm, sweet, and spicy","lid":"./assets/art/lid-russet.webp","token":"./assets/art/token-cinnamon.webp","plume":"./assets/art/plume-cinnamon.webp","accent":"#cf704f","successVoice":"success-cinnamon"},
+    {"id":"lavender","title":"Lavender","descriptor":"soft, flowery, and calm","lid":"./assets/art/lid-purple.webp","token":"./assets/art/token-lavender.webp","plume":"./assets/art/plume-lavender.webp","accent":"#a786c8","successVoice":"success-lavender"},
+    {"id":"cocoa","title":"Cocoa","descriptor":"rich, roasty, and cozy","lid":"./assets/art/lid-cocoa.webp","token":"./assets/art/token-cocoa.webp","plume":"./assets/art/plume-cocoa.webp","accent":"#9d684d","successVoice":"success-cocoa"},
+    {"id":"pine","title":"Pine","descriptor":"green, woody, and fresh","lid":"./assets/art/lid-pine.webp","token":"./assets/art/token-pine.webp","plume":"./assets/art/plume-pine.webp","accent":"#477b62","successVoice":"success-pine"}
+  ],
+  "voice": {
+    "welcome": "Welcome to Smell Jars. Pick a nose game!",
+    "mode-smell-match": "Open a jar, then match its smell picture.",
+    "mode-nose-memory": "Watch the scent, remember it, then find its picture.",
+    "select": "Pick a mystery jar.",
+    "open": "Tap the lid. Let's see the smell!",
+    "choose": "Which picture matches this smell?",
+    "memory-choose": "The scent floated away. Which picture was it?",
+    "retry-one": "Good sniffing. Try another picture.",
+    "retry-two": "Let's look at the scent clue again.",
+    "success-lemon": "Lemon! Fresh, bright, and zesty.",
+    "success-mint": "Mint! Cool, leafy, and crisp.",
+    "success-cinnamon": "Cinnamon! Warm, sweet, and spicy.",
+    "success-lavender": "Lavender! Soft, flowery, and calm.",
+    "success-cocoa": "Cocoa! Rich, roasty, and cozy.",
+    "success-pine": "Pine! Green, woody, and fresh.",
+    "next": "Wonderful nose work! Pick another jar.",
+    "end": "You matched every smell. Your nose memory is amazing!"
+  }
+}

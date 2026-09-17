@@ -1,0 +1,202 @@
+{
+  "source": "games/smell-jars/assets/source/gpt-image-2/tokens-sheet-source.png",
+  "sourceSha256": "9d6e6549c0fcd72ede0d6103c9620ad7490c619856ec02490ca6cd1d97b03f6c",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "token-lemon",
+      "file": "token-lemon.png",
+      "componentArea": 121409,
+      "foregroundBbox": [
+        103,
+        91,
+        532,
+        474
+      ],
+      "cropBbox": [
+        91,
+        79,
+        544,
+        486
+      ],
+      "cropXywh": [
+        91,
+        79,
+        453,
+        407
+      ],
+      "normalizedCropBbox": [
+        0.059245,
+        0.077148,
+        0.354167,
+        0.474609
+      ]
+    },
+    {
+      "index": 2,
+      "name": "token-mint",
+      "file": "token-mint.png",
+      "componentArea": 121051,
+      "foregroundBbox": [
+        586,
+        91,
+        1014,
+        476
+      ],
+      "cropBbox": [
+        574,
+        79,
+        1026,
+        488
+      ],
+      "cropXywh": [
+        574,
+        79,
+        452,
+        409
+      ],
+      "normalizedCropBbox": [
+        0.373698,
+        0.077148,
+        0.667969,
+        0.476562
+      ]
+    },
+    {
+      "index": 3,
+      "name": "token-cinnamon",
+      "file": "token-cinnamon.png",
+      "componentArea": 121609,
+      "foregroundBbox": [
+        1068,
+        88,
+        1492,
+        476
+      ],
+      "cropBbox": [
+        1056,
+        76,
+        1504,
+        488
+      ],
+      "cropXywh": [
+        1056,
+        76,
+        448,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.6875,
+        0.074219,
+        0.979167,
+        0.476562
+      ]
+    },
+    {
+      "index": 4,
+      "name": "token-lavender",
+      "file": "token-lavender.png",
+      "componentArea": 120652,
+      "foregroundBbox": [
+        99,
+        549,
+        528,
+        935
+      ],
+      "cropBbox": [
+        87,
+        537,
+        540,
+        947
+      ],
+      "cropXywh": [
+        87,
+        537,
+        453,
+        410
+      ],
+      "normalizedCropBbox": [
+        0.056641,
+        0.524414,
+        0.351562,
+        0.924805
+      ]
+    },
+    {
+      "index": 5,
+      "name": "token-cocoa",
+      "file": "token-cocoa.png",
+      "componentArea": 121094,
+      "foregroundBbox": [
+        582,
+        548,
+        1011,
+        936
+      ],
+      "cropBbox": [
+        570,
+        536,
+        1023,
+        948
+      ],
+      "cropXywh": [
+        570,
+        536,
+        453,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.371094,
+        0.523438,
+        0.666016,
+        0.925781
+      ]
+    },
+    {
+      "index": 6,
+      "name": "token-pine",
+      "file": "token-pine.png",
+      "componentArea": 121230,
+      "foregroundBbox": [
+        1068,
+        549,
+        1494,
+        936
+      ],
+      "cropBbox": [
+        1056,
+        537,
+        1506,
+        948
+      ],
+      "cropXywh": [
+        1056,
+        537,
+        450,
+        411
+      ],
+      "normalizedCropBbox": [
+        0.6875,
+        0.524414,
+        0.980469,
+        0.925781
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

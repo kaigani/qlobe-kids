@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "model": "gpt-image-2",
+  "tool": "Codex built-in image generation",
+  "artDirection": "Toy",
+  "referenceConcept": "../../../../../../01-game-concepts/smell-jars/output/ui-mockups/",
+  "assets": {
+    "environment-wide-source.png": {
+      "useCase": "stylized-concept",
+      "prompt": "Create the clean empty landscape environment for Smell Jars, a premium preschool game: a warm honey-maple tabletop, softly lit cream plaster wall, low wooden cubby at the far right edge, one trailing green plant at an upper corner, and a muted sage linen runner. Canonical QLOBE Toy art world; tactile 3D toy illustration, hand-finished maple, warm upper-left light, fine grain. 16:9 with a broad empty crop-safe center. Environment only: no jars, lids, tokens, signs, title, text, UI, people, smoke, logo, or watermark. Avoid potion labs, neon, flat vector art, and busy shelves."
+    },
+    "environment-portrait-source.png": {
+      "useCase": "precise-object-edit",
+      "references": ["environment-wide-source.png"],
+      "prompt": "Recompose and outpaint the accepted landscape room as the same exact 3:4 portrait tablet environment. Preserve room identity, honey-maple table, cream plaster, sage runner, plants, edge cubby, camera, materials, palette, and warm light. Keep a large quiet interaction-safe center; do not simply crop. No gameplay objects, text, UI, logo, or watermark."
+    },
+    "title-source.png": {
+      "useCase": "stylized-concept",
+      "references": ["environment-wide-source.png"],
+      "prompt": "One isolated hanging honey-maple title plaque with two jute cords and rounded carved edges. Render the exact title Smell Jars once, perfectly spelled and capitalized, in large chunky cream painted toy lettering. Match the accepted room's material and light. Uniform dark charcoal ground, generous margin. No subtitle, extra words, jars, ingredients, UI, logo, or watermark."
+    },
+    "props-sheet-source.png": {
+      "useCase": "stylized-concept",
+      "references": ["environment-wide-source.png"],
+      "prompt": "Exactly twelve separate tactile Toy-world assets in a strict 4x3 contact sheet on flat dark charcoal, wide empty gutters, no dividers. Reading order: open empty pale-maple scent jar with blank label recess; three-jar recessed maple tray; blank wide green wooden button plaque; maple check medallion; yellow lid; green lid; russet lid; purple lid; cocoa lid; pine lid; friendly carved wooden sun; three chunky golden sparkles. Consistent camera, maple grain, matte paint, upper-left light. No text, overlap, cropping, extras, logo, or watermark."
+    },
+    "tokens-sheet-source.png": {
+      "useCase": "stylized-concept",
+      "references": ["environment-wide-source.png", "props-sheet-source.png"],
+      "prompt": "Exactly six equal chunky round pale-maple matching tokens in a strict 3x2 sheet on flat dark charcoal. Reading order: yellow lemon with one leaf; three mint leaves; two cinnamon sticks; lavender sprig; cocoa pod plus three beans; pine sprig plus one pinecone. Same size, angle, rim, wood grain and light; dimensional hand-painted bas-relief; wide gutters. No words, labels, plates, overlap, cropping, extras, logo, or watermark."
+    },
+    "plumes-sheet-source.png": {
+      "useCase": "stylized-concept",
+      "references": ["environment-wide-source.png", "tokens-sheet-source.png"],
+      "prompt": "Exactly six friendly scent-plume sprites in a strict 3x2 sheet on flat dark charcoal. Reading order: sunny lemon curls with zest dots; aqua-green mint curls with leaf motifs; amber-russet cinnamon curls with spice flecks; violet lavender curls with petals; brown-cream cocoa curls with beans; deep-green teal pine curls with needle sprigs. Each starts narrow at the bottom and rises in broad soft handcrafted satin/felt-toy ribbons. Same scale and baseline, wide gutters. No jars, text, faces, fire, realistic smoke, logo, or watermark."
+    },
+    "modes-sheet-source.png": {
+      "useCase": "stylized-concept",
+      "references": ["props-sheet-source.png", "plumes-sheet-source.png", "tokens-sheet-source.png"],
+      "prompt": "Exactly two picture-only oval pale-maple mode medallions side by side on flat dark charcoal. Left: tiny open jar with yellow-and-mint scent curl and three ingredient tokens. Right: tiny open jar whose violet scent curl dissolves into wooden sparkles, with one token and carved circular memory arrows. Preserve the accepted tactile Toy material, camera, and lighting. No words, letters, numbers, people, noses, extra UI, logo, or watermark."
+    }
+  }
+}
