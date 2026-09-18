@@ -1,0 +1,206 @@
+{
+  "source": "games/shape-to-picture/assets/source/gpt-image-2/reveal-sheet.png",
+  "sourceSha256": "737e7a1702903f9a26540d4c89075f5684e9a0eb601cc9369c8fe4f6e47d065b",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    37,
+    43
+  ],
+  "padding": 20,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "kitten",
+      "file": "kitten.png",
+      "componentArea": 108110,
+      "foregroundBbox": [
+        91,
+        62,
+        493,
+        467
+      ],
+      "cropBbox": [
+        71,
+        42,
+        513,
+        487
+      ],
+      "cropXywh": [
+        71,
+        42,
+        442,
+        445
+      ],
+      "normalizedCropBbox": [
+        0.046224,
+        0.041016,
+        0.333984,
+        0.475586
+      ]
+    },
+    {
+      "index": 2,
+      "name": "house",
+      "file": "house.png",
+      "componentArea": 103738,
+      "foregroundBbox": [
+        589,
+        67,
+        948,
+        454
+      ],
+      "cropBbox": [
+        569,
+        47,
+        968,
+        474
+      ],
+      "cropXywh": [
+        569,
+        47,
+        399,
+        427
+      ],
+      "normalizedCropBbox": [
+        0.370443,
+        0.045898,
+        0.630208,
+        0.462891
+      ]
+    },
+    {
+      "index": 3,
+      "name": "rocket",
+      "file": "rocket.png",
+      "componentArea": 66156,
+      "foregroundBbox": [
+        1120,
+        48,
+        1392,
+        484
+      ],
+      "cropBbox": [
+        1100,
+        28,
+        1412,
+        504
+      ],
+      "cropXywh": [
+        1100,
+        28,
+        312,
+        476
+      ],
+      "normalizedCropBbox": [
+        0.716146,
+        0.027344,
+        0.919271,
+        0.492188
+      ]
+    },
+    {
+      "index": 4,
+      "name": "sun",
+      "file": "sun.png",
+      "componentArea": 107032,
+      "foregroundBbox": [
+        92,
+        522,
+        491,
+        919
+      ],
+      "cropBbox": [
+        72,
+        502,
+        511,
+        939
+      ],
+      "cropXywh": [
+        72,
+        502,
+        439,
+        437
+      ],
+      "normalizedCropBbox": [
+        0.046875,
+        0.490234,
+        0.332682,
+        0.916992
+      ]
+    },
+    {
+      "index": 5,
+      "name": "balloon",
+      "file": "balloon.png",
+      "componentArea": 81119,
+      "foregroundBbox": [
+        623,
+        512,
+        918,
+        946
+      ],
+      "cropBbox": [
+        603,
+        492,
+        938,
+        966
+      ],
+      "cropXywh": [
+        603,
+        492,
+        335,
+        474
+      ],
+      "normalizedCropBbox": [
+        0.392578,
+        0.480469,
+        0.610677,
+        0.943359
+      ]
+    },
+    {
+      "index": 6,
+      "name": "tree",
+      "file": "tree.png",
+      "componentArea": 102038,
+      "foregroundBbox": [
+        1084,
+        518,
+        1432,
+        945
+      ],
+      "cropBbox": [
+        1064,
+        498,
+        1452,
+        965
+      ],
+      "cropXywh": [
+        1064,
+        498,
+        388,
+        467
+      ],
+      "normalizedCropBbox": [
+        0.692708,
+        0.486328,
+        0.945312,
+        0.942383
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 42,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 22000,
+    "order": "reading"
+  }
+}

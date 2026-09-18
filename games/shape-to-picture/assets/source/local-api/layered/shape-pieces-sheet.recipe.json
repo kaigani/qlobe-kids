@@ -1,0 +1,26 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "shape-pieces-sheet",
+  "kind": "image",
+  "asset": "shape-pieces-sheet-layer2.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: only the flat dark charcoal background. Top layer: all fifteen complete papercraft shape tokens together on true transparency, preserving their exact positions, scale, colors, paper texture, edges, compact shadows, and 5 by 3 spacing. Do not crop, redraw, move, merge, add, remove, relight, or restyle anything.",
+      "seed": 42,
+      "layers": 2,
+      "output": "layer_2"
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\shape-pieces-sheet.png",
+  "sourceSha256": "4b64f6937207725fc64fcdd5259facdffe75e16eeba72157abd1f43f4dd3db9f",
+  "outputSha256": "4ca91f78f6331ddb64ad6f21c3fccedec3fc41fdb90a8f70efd33c0a8f34c722",
+  "qa": {
+    "status": "rejected",
+    "reviewedAt": "2026-09-18",
+    "reason": "Opaque composite; deterministic cutter/chroma extraction was cleaner."
+  },
+  "createdAt": "2026-09-18T12:04:31.758312+00:00"
+}

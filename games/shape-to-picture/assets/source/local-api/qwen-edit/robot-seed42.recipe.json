@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "reveal-robot",
+  "kind": "image",
+  "asset": "robot-seed42.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit this exact 4:3 papercraft garden backdrop into a joyful finished-picture scene. Preserve the camera, sky-blue paper, paper fibers, side foliage, flower palette, upper-left light, and down-right shadows. Center one friendly silly robot face built visibly from a large leaf-green square head, two sky-blue circle eyes, a coral-red horizontal rectangle smile, and two tiny cream square ear tabs. Add a small paper antenna and a few attached paper gear flowers at the base. Friendly, not metallic or scary. No words, UI, people, logos, or extra robots.",
+      "seed": 42
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\world-backdrop-master.png",
+  "sourceSha256": "6fede10392e9f0780ad008ab05918e93f007a0ee489b4f26558cf4a12298ca6c",
+  "sourceSize": [
+    1184,
+    880
+  ],
+  "outputSha256": "50d465efb94336806809b4af00be8ba74da01e06165190113ba467f36919faef",
+  "qa": {
+    "status": "accepted",
+    "reviewedAt": "2026-09-18",
+    "review": "Papercraft style, shape readability, composition, and runtime crop approved."
+  },
+  "createdAt": "2026-09-18T12:16:48.798405+00:00"
+}

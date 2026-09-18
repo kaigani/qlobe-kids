@@ -1,0 +1,476 @@
+{
+  "source": "games/shape-to-picture/assets/source/gpt-image-2/shape-pieces-sheet.png",
+  "sourceSha256": "4b64f6937207725fc64fcdd5259facdffe75e16eeba72157abd1f43f4dd3db9f",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    37,
+    43
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "circle-blue",
+      "file": "circle-blue.png",
+      "componentArea": 39261,
+      "foregroundBbox": [
+        63,
+        81,
+        284,
+        309
+      ],
+      "cropBbox": [
+        45,
+        63,
+        302,
+        327
+      ],
+      "cropXywh": [
+        45,
+        63,
+        257,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.029297,
+        0.061523,
+        0.196615,
+        0.319336
+      ]
+    },
+    {
+      "index": 2,
+      "name": "triangle-yellow",
+      "file": "triangle-yellow.png",
+      "componentArea": 25616,
+      "foregroundBbox": [
+        350,
+        88,
+        585,
+        297
+      ],
+      "cropBbox": [
+        332,
+        70,
+        603,
+        315
+      ],
+      "cropXywh": [
+        332,
+        70,
+        271,
+        245
+      ],
+      "normalizedCropBbox": [
+        0.216146,
+        0.068359,
+        0.392578,
+        0.307617
+      ]
+    },
+    {
+      "index": 3,
+      "name": "square-green",
+      "file": "square-green.png",
+      "componentArea": 41856,
+      "foregroundBbox": [
+        669,
+        89,
+        871,
+        300
+      ],
+      "cropBbox": [
+        651,
+        71,
+        889,
+        318
+      ],
+      "cropXywh": [
+        651,
+        71,
+        238,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.423828,
+        0.069336,
+        0.578776,
+        0.310547
+      ]
+    },
+    {
+      "index": 4,
+      "name": "rectangle-coral",
+      "file": "rectangle-coral.png",
+      "componentArea": 35977,
+      "foregroundBbox": [
+        1009,
+        58,
+        1145,
+        325
+      ],
+      "cropBbox": [
+        991,
+        40,
+        1163,
+        343
+      ],
+      "cropXywh": [
+        991,
+        40,
+        172,
+        303
+      ],
+      "normalizedCropBbox": [
+        0.645182,
+        0.039062,
+        0.757161,
+        0.334961
+      ]
+    },
+    {
+      "index": 5,
+      "name": "oval-mint",
+      "file": "oval-mint.png",
+      "componentArea": 30711,
+      "foregroundBbox": [
+        1293,
+        72,
+        1449,
+        323
+      ],
+      "cropBbox": [
+        1275,
+        54,
+        1467,
+        341
+      ],
+      "cropXywh": [
+        1275,
+        54,
+        192,
+        287
+      ],
+      "normalizedCropBbox": [
+        0.830078,
+        0.052734,
+        0.955078,
+        0.333008
+      ]
+    },
+    {
+      "index": 6,
+      "name": "scallop-gold",
+      "file": "scallop-gold.png",
+      "componentArea": 42666,
+      "foregroundBbox": [
+        53,
+        378,
+        294,
+        621
+      ],
+      "cropBbox": [
+        35,
+        360,
+        312,
+        639
+      ],
+      "cropXywh": [
+        35,
+        360,
+        277,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.022786,
+        0.351562,
+        0.203125,
+        0.624023
+      ]
+    },
+    {
+      "index": 7,
+      "name": "triangle-yellow-right",
+      "file": "triangle-yellow-right.png",
+      "componentArea": 22904,
+      "foregroundBbox": [
+        344,
+        388,
+        555,
+        595
+      ],
+      "cropBbox": [
+        326,
+        370,
+        573,
+        613
+      ],
+      "cropXywh": [
+        326,
+        370,
+        247,
+        243
+      ],
+      "normalizedCropBbox": [
+        0.21224,
+        0.361328,
+        0.373047,
+        0.598633
+      ]
+    },
+    {
+      "index": 8,
+      "name": "triangle-coral-right",
+      "file": "triangle-coral-right.png",
+      "componentArea": 22132,
+      "foregroundBbox": [
+        683,
+        389,
+        884,
+        599
+      ],
+      "cropBbox": [
+        665,
+        371,
+        902,
+        617
+      ],
+      "cropXywh": [
+        665,
+        371,
+        237,
+        246
+      ],
+      "normalizedCropBbox": [
+        0.432943,
+        0.362305,
+        0.58724,
+        0.602539
+      ]
+    },
+    {
+      "index": 9,
+      "name": "trapezoid-blue",
+      "file": "trapezoid-blue.png",
+      "componentArea": 38071,
+      "foregroundBbox": [
+        934,
+        414,
+        1216,
+        595
+      ],
+      "cropBbox": [
+        916,
+        396,
+        1234,
+        613
+      ],
+      "cropXywh": [
+        916,
+        396,
+        318,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.596354,
+        0.386719,
+        0.803385,
+        0.598633
+      ]
+    },
+    {
+      "index": 10,
+      "name": "circle-cream",
+      "file": "circle-cream.png",
+      "componentArea": 34095,
+      "foregroundBbox": [
+        1274,
+        399,
+        1480,
+        611
+      ],
+      "cropBbox": [
+        1256,
+        381,
+        1498,
+        629
+      ],
+      "cropXywh": [
+        1256,
+        381,
+        242,
+        248
+      ],
+      "normalizedCropBbox": [
+        0.817708,
+        0.37207,
+        0.97526,
+        0.614258
+      ]
+    },
+    {
+      "index": 11,
+      "name": "triangle-cone",
+      "file": "triangle-cone.png",
+      "componentArea": 29433,
+      "foregroundBbox": [
+        57,
+        668,
+        276,
+        931
+      ],
+      "cropBbox": [
+        39,
+        650,
+        294,
+        949
+      ],
+      "cropXywh": [
+        39,
+        650,
+        255,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.025391,
+        0.634766,
+        0.191406,
+        0.926758
+      ]
+    },
+    {
+      "index": 12,
+      "name": "circle-pink",
+      "file": "circle-pink.png",
+      "componentArea": 38952,
+      "foregroundBbox": [
+        353,
+        690,
+        574,
+        916
+      ],
+      "cropBbox": [
+        335,
+        672,
+        592,
+        934
+      ],
+      "cropXywh": [
+        335,
+        672,
+        257,
+        262
+      ],
+      "normalizedCropBbox": [
+        0.218099,
+        0.65625,
+        0.385417,
+        0.912109
+      ]
+    },
+    {
+      "index": 13,
+      "name": "square-orange",
+      "file": "square-orange.png",
+      "componentArea": 43511,
+      "foregroundBbox": [
+        667,
+        696,
+        874,
+        910
+      ],
+      "cropBbox": [
+        649,
+        678,
+        892,
+        928
+      ],
+      "cropXywh": [
+        649,
+        678,
+        243,
+        250
+      ],
+      "normalizedCropBbox": [
+        0.422526,
+        0.662109,
+        0.580729,
+        0.90625
+      ]
+    },
+    {
+      "index": 14,
+      "name": "rectangle-blue",
+      "file": "rectangle-blue.png",
+      "componentArea": 39865,
+      "foregroundBbox": [
+        1000,
+        670,
+        1153,
+        939
+      ],
+      "cropBbox": [
+        982,
+        652,
+        1171,
+        957
+      ],
+      "cropXywh": [
+        982,
+        652,
+        189,
+        305
+      ],
+      "normalizedCropBbox": [
+        0.639323,
+        0.636719,
+        0.76237,
+        0.93457
+      ]
+    },
+    {
+      "index": 15,
+      "name": "square-cream",
+      "file": "square-cream.png",
+      "componentArea": 23969,
+      "foregroundBbox": [
+        1296,
+        731,
+        1451,
+        888
+      ],
+      "cropBbox": [
+        1278,
+        713,
+        1469,
+        906
+      ],
+      "cropXywh": [
+        1278,
+        713,
+        191,
+        193
+      ],
+      "normalizedCropBbox": [
+        0.832031,
+        0.696289,
+        0.95638,
+        0.884766
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 42,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 7000,
+    "order": "reading"
+  }
+}

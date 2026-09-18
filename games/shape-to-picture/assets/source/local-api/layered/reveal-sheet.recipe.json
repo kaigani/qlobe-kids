@@ -1,0 +1,26 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "reveal-sheet",
+  "kind": "image",
+  "asset": "reveal-sheet-layer2.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: only the flat dark charcoal background. Top layer: all six complete papercraft reveal characters together on true transparency, preserving the kitten wreath, house, rocket, sun, balloon, and tree exactly as shown, including all details, positions, scale, paper texture, edges, and compact shadows. Do not crop, redraw, rearrange, add, remove, relight, or restyle anything.",
+      "seed": 42,
+      "layers": 2,
+      "output": "layer_2"
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\reveal-sheet.png",
+  "sourceSha256": "737e7a1702903f9a26540d4c89075f5684e9a0eb601cc9369c8fe4f6e47d065b",
+  "outputSha256": "95ece08501300e9543698f163210c2b540d674610c50dc0ff258c495113de449",
+  "qa": {
+    "status": "rejected",
+    "reviewedAt": "2026-09-18",
+    "reason": "Opaque composite with no usable separated subjects."
+  },
+  "createdAt": "2026-09-18T12:11:15.373391+00:00"
+}

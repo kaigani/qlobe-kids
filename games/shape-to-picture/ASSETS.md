@@ -1,27 +1,78 @@
-# Shape-to-Picture Challenge Assets
+# Shape Surprise Studio assets
 
-Shape-to-Picture Challenge adds no image files, recorded clips, downloaded
-assets, generated art, or network assets. The current beta uses emoji shape
-placeholders and Web Speech lines rendered by the build-assemble engine.
+All primary child-facing art is committed Papercraft raster art. Runtime calls
+no generation service. Source images, recipes, extraction QA, and voice QA live
+under `assets/source/`; no LAN host, credentials, or personal reference path is
+committed. Creator: QLOBE Kids; generated assets are CC BY 4.0.
 
-## Shared runtime assets
+## Runtime inventory
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandao & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified for UI |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/build-assemble.js` |
-| Emoji shape placeholders | Local system emoji rendered by the browser | N/A | N/A | N/A | Used as temporary `emoji:` art refs |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+| Runtime asset(s) | Source / processing | Notes |
+|---|---|---|
+| `assets/backgrounds/paper-garden.webp` | `source/gpt-image-2/world-backdrop-master.png` → deterministic WebP | 1600×1200, 259,118 B, q86 |
+| `assets/backgrounds/reveal-{boat,icecream,home,robot}.webp` | `source/local-api/qwen-edit/*-seed42.png` → WebP | Four Builder completion plates, 1600×1200, 196–223 KB |
+| `assets/sprites/*.webp` | GPT Image 2 shape sheet → cutter → chroma/finalize → WebP | Fifteen visible paper manipulatives |
+| `assets/reveals/{kitten,house,rocket,sun,balloon,tree}.webp` | GPT Image 2 reveal sheet → cutter → chroma/finalize → WebP | Tap/Stretch characters |
+| `assets/ui/{title,banner,tray,build-mat}.webp` | GPT Image 2 title/UI sheet → cutter/chroma/finalize → WebP | Authored paper carriers; functional copy stays HTML |
+| `assets/audio/*.m4a` | approved teacher reference → Qwen clone → AAC | 30 clips, 64 kbps AAC + faststart; manifest has measured durations/hashes |
+| `../../assets/hub/tiles/shape-to-picture.jpg` | `source/local-api/hub/hub-seed42.png` | Krea 2 `menu-game-tile`, seed 42, 768×640 → curated 640×533 JPEG |
+| `assets/og-image.jpg` | game screenshot | 1200×630 social image; regenerate with `tools/pipeline/capture_og_images.mjs` |
 
-## Assets needed
+Fredoka (SIL OFL 1.1), shared HUD assets, and synthesized interaction SFX are
+reused from the platform. Device Web Speech is an error fallback, not primary
+voice playback.
 
-- glossy shape pieces
-- reveal art per picture
-- recorded voice lines
+## Image provenance and QA
 
-## Link preview (og:image)
+GPT Image 2 masters/prompts are retained at `source/gpt-image-2/`:
+`PROMPTS.md` records the Papercraft direction and `recipe-index.json` records
+the asset-by-asset production prompts, acceptance state, dimensions, and source
+hashes. The accepted master set includes the 4:3 garden, title, shape contact
+sheet, reveal contact sheet, and UI sheet.
+The required crop tool is `tools/cut-asset-sheet.py`; component coordinates and
+debug masks are retained in `source/cuts/`, `source/local-api/cuts/`, and
+`source/qa/`.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+```text
+GPT Image 2 master sheet
+→ cut-asset-sheet.py (expected count + debug mask)
+→ chroma-key alpha staging
+→ tools/pipeline/cutout_finalize.py (alpha floor 4, trim/pad)
+→ saturated-magenta review composite
+→ optimized alpha WebP runtime sprite
+```
+
+`source/qa/art-finalize.json` records alpha histograms, crop boxes, sizes, and
+budget checks. Partial-alpha paper-edge warnings were retained and reviewed,
+not flattened. Full backgrounds are under the 300 KB default; ordinary sprite
+derivatives are kept compact.
+
+Qwen Image Edit created the four Builder plate variants from the accepted garden
+at seed 42; receipts are `source/local-api/qwen-edit/*-seed42.recipe.json`.
+Qwen Image Layered was attempted for the sheets, but its `layer_2` results were
+rejected as opaque composites/no usable subjects. Those attempts and recipes
+remain at `source/local-api/layered/`, and the rejection is recorded in
+`source/qa/art-finalize.json`; they are not runtime inputs.
+
+The catalog tile is a separate local Krea 2 seed-42 composition, recorded at
+`source/local-api/hub/hub-seed42.recipe.json`. It uses the hub Toy menu grammar
+while depicting Papercraft objects, never a splash crop.
+
+## Recorded voice provenance
+
+`tools/generate-voice.py` is resumable and contains the exact script. It reads
+ignored local configuration only at authoring time, tries Qwen
+`qwen3-tts-voiceclone` seeds 7/8/9, encodes FLAC to 64 kbps AAC/M4A with
+`+faststart`, and Whisper-checks the result with `language=en`.
+
+`assets/audio/lines.json` is runtime copy and `assets/audio/manifest.json`
+contains stable file names, duration, SHA-256, and text hash. Each line has
+`source/local-api/voice/<key>/recipe.json` plus `qa-transcript.json`; all 30
+current clips have accepted English transcripts. Receipts retain only a voice
+reference checksum, never its local path.
+
+```powershell
+python games/shape-to-picture/tools/generate-voice.py --check
+python tools/cut-asset-sheet.py --help
+python tools/pipeline/cutout_finalize.py --help
+```

@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "reveal-boat",
+  "kind": "image",
+  "asset": "boat-seed42.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit this exact 4:3 papercraft garden backdrop into a joyful finished-picture scene. Preserve the camera, sky-blue paper, paper fibers, side foliage, flower palette, upper-left light, and down-right shadows. Add layered cobalt and sky-blue cut-paper waves across the lower third. Center one large sailboat made unmistakably from a cobalt trapezoid hull, one yellow right triangle sail, one coral right triangle sail, a thin kraft-paper mast, and a tiny coral flag. Add one warm yellow paper sun and two small cream clouds. No words, UI, people, logos, or extra boats.",
+      "seed": 42
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\world-backdrop-master.png",
+  "sourceSha256": "6fede10392e9f0780ad008ab05918e93f007a0ee489b4f26558cf4a12298ca6c",
+  "sourceSize": [
+    1184,
+    880
+  ],
+  "outputSha256": "cdbf23d782eec2e0c254e2d98299647f295696df573543ecddafa38f3cdf80a2",
+  "qa": {
+    "status": "accepted",
+    "reviewedAt": "2026-09-18",
+    "review": "Papercraft style, shape readability, composition, and runtime crop approved."
+  },
+  "createdAt": "2026-09-18T12:15:48.751868+00:00"
+}

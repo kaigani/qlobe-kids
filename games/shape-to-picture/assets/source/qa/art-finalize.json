@@ -1,0 +1,864 @@
+{
+  "cutouts": {
+    "shape:circle-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 39.344,
+        "opaquePct": 56.417,
+        "partialPct": 4.239
+      },
+      "bbox": [
+        18,
+        18,
+        244,
+        253
+      ],
+      "sourceSize": [
+        257,
+        264
+      ],
+      "finalSize": [
+        250,
+        258
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\circle-blue.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\circle-blue.webp",
+      "runtimeBytes": 14012,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 6
+    },
+    "shape:triangle-yellow": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 59.107,
+        "opaquePct": 37.221,
+        "partialPct": 3.672
+      },
+      "bbox": [
+        18,
+        18,
+        256,
+        234
+      ],
+      "sourceSize": [
+        271,
+        245
+      ],
+      "finalSize": [
+        262,
+        239
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\triangle-yellow.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\triangle-yellow.webp",
+      "runtimeBytes": 8084,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:square-green": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 25.589,
+        "opaquePct": 69.476,
+        "partialPct": 4.935
+      },
+      "bbox": [
+        18,
+        17,
+        226,
+        234
+      ],
+      "sourceSize": [
+        238,
+        247
+      ],
+      "finalSize": [
+        232,
+        241
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\square-green.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\square-green.webp",
+      "runtimeBytes": 11952,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:rectangle-coral": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 28.557,
+        "opaquePct": 67.336,
+        "partialPct": 4.106
+      },
+      "bbox": [
+        18,
+        19,
+        157,
+        291
+      ],
+      "sourceSize": [
+        172,
+        303
+      ],
+      "finalSize": [
+        163,
+        296
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\rectangle-coral.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\rectangle-coral.webp",
+      "runtimeBytes": 10810,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:oval-mint": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 41.712,
+        "opaquePct": 54.735,
+        "partialPct": 3.553
+      },
+      "bbox": [
+        18,
+        17,
+        179,
+        274
+      ],
+      "sourceSize": [
+        192,
+        287
+      ],
+      "finalSize": [
+        185,
+        281
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\oval-mint.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\oval-mint.webp",
+      "runtimeBytes": 10206,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:scallop-gold": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 42.453,
+        "opaquePct": 54.132,
+        "partialPct": 3.415
+      },
+      "bbox": [
+        17,
+        18,
+        263,
+        267
+      ],
+      "sourceSize": [
+        277,
+        279
+      ],
+      "finalSize": [
+        270,
+        273
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\scallop-gold.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\scallop-gold.webp",
+      "runtimeBytes": 12564,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 3
+    },
+    "shape:triangle-yellow-right": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 59.053,
+        "opaquePct": 36.674,
+        "partialPct": 4.274
+      },
+      "bbox": [
+        18,
+        18,
+        232,
+        230
+      ],
+      "sourceSize": [
+        247,
+        243
+      ],
+      "finalSize": [
+        238,
+        236
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\triangle-yellow-right.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\triangle-yellow-right.webp",
+      "runtimeBytes": 7036,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 18
+    },
+    "shape:triangle-coral-right": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 60.513,
+        "opaquePct": 37.314,
+        "partialPct": 2.173
+      },
+      "bbox": [
+        17,
+        18,
+        221,
+        234
+      ],
+      "sourceSize": [
+        237,
+        246
+      ],
+      "finalSize": [
+        228,
+        240
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\triangle-coral-right.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\triangle-coral-right.webp",
+      "runtimeBytes": 7754,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 5
+    },
+    "shape:trapezoid-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 43.137,
+        "opaquePct": 53.649,
+        "partialPct": 3.214
+      },
+      "bbox": [
+        17,
+        18,
+        303,
+        204
+      ],
+      "sourceSize": [
+        318,
+        217
+      ],
+      "finalSize": [
+        310,
+        210
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\trapezoid-blue.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\trapezoid-blue.webp",
+      "runtimeBytes": 12858,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:circle-cream": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 39.919,
+        "opaquePct": 56.352,
+        "partialPct": 3.729
+      },
+      "bbox": [
+        18,
+        17,
+        227,
+        238
+      ],
+      "sourceSize": [
+        242,
+        248
+      ],
+      "finalSize": [
+        233,
+        243
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\circle-cream.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\circle-cream.webp",
+      "runtimeBytes": 9192,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 113
+    },
+    "shape:triangle-cone": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 59.86,
+        "opaquePct": 37.726,
+        "partialPct": 2.415
+      },
+      "bbox": [
+        18,
+        18,
+        239,
+        286
+      ],
+      "sourceSize": [
+        255,
+        299
+      ],
+      "finalSize": [
+        245,
+        292
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\triangle-cone.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\triangle-cone.webp",
+      "runtimeBytes": 11702,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:circle-pink": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 39.273,
+        "opaquePct": 57.296,
+        "partialPct": 3.431
+      },
+      "bbox": [
+        18,
+        18,
+        244,
+        251
+      ],
+      "sourceSize": [
+        257,
+        262
+      ],
+      "finalSize": [
+        250,
+        256
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\circle-pink.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\circle-pink.webp",
+      "runtimeBytes": 14434,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 455
+    },
+    "shape:square-orange": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 26.357,
+        "opaquePct": 70.253,
+        "partialPct": 3.389
+      },
+      "bbox": [
+        17,
+        18,
+        228,
+        236
+      ],
+      "sourceSize": [
+        243,
+        250
+      ],
+      "finalSize": [
+        235,
+        242
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\square-orange.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\square-orange.webp",
+      "runtimeBytes": 11704,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 5
+    },
+    "shape:rectangle-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 28.275,
+        "opaquePct": 67.662,
+        "partialPct": 4.063
+      },
+      "bbox": [
+        19,
+        17,
+        176,
+        293
+      ],
+      "sourceSize": [
+        189,
+        305
+      ],
+      "finalSize": [
+        181,
+        300
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\rectangle-blue.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\rectangle-blue.webp",
+      "runtimeBytes": 12516,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "shape:square-cream": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 32.211,
+        "opaquePct": 64.216,
+        "partialPct": 3.573
+      },
+      "bbox": [
+        18,
+        17,
+        176,
+        181
+      ],
+      "sourceSize": [
+        191,
+        193
+      ],
+      "finalSize": [
+        182,
+        188
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\shapes\\square-cream.png",
+      "runtime": "games\\shape-to-picture\\assets\\sprites\\square-cream.webp",
+      "runtimeBytes": 5720,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "reveal:kitten": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 43.798,
+        "opaquePct": 54.762,
+        "partialPct": 1.44
+      },
+      "bbox": [
+        18,
+        18,
+        420,
+        424
+      ],
+      "sourceSize": [
+        438,
+        441
+      ],
+      "finalSize": [
+        426,
+        430
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\kitten.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\kitten.webp",
+      "runtimeBytes": 31400,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 2072
+    },
+    "reveal:house": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 37.438,
+        "opaquePct": 61.448,
+        "partialPct": 1.113
+      },
+      "bbox": [
+        18,
+        18,
+        376,
+        409
+      ],
+      "sourceSize": [
+        395,
+        423
+      ],
+      "finalSize": [
+        382,
+        415
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\house.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\house.webp",
+      "runtimeBytes": 24236,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 469
+    },
+    "reveal:rocket": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 53.995,
+        "opaquePct": 44.929,
+        "partialPct": 1.076
+      },
+      "bbox": [
+        18,
+        18,
+        291,
+        454
+      ],
+      "sourceSize": [
+        308,
+        472
+      ],
+      "finalSize": [
+        297,
+        460
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\rocket.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\rocket.webp",
+      "runtimeBytes": 18406,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 794
+    },
+    "reveal:sun": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 42.832,
+        "opaquePct": 56.296,
+        "partialPct": 0.872
+      },
+      "bbox": [
+        18,
+        18,
+        417,
+        416
+      ],
+      "sourceSize": [
+        435,
+        433
+      ],
+      "finalSize": [
+        423,
+        422
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\sun.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\sun.webp",
+      "runtimeBytes": 26040,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 1865
+    },
+    "reveal:balloon": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 47.772,
+        "opaquePct": 51.45,
+        "partialPct": 0.778
+      },
+      "bbox": [
+        18,
+        18,
+        314,
+        453
+      ],
+      "sourceSize": [
+        331,
+        470
+      ],
+      "finalSize": [
+        320,
+        459
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\balloon.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\balloon.webp",
+      "runtimeBytes": 21818,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 462
+    },
+    "reveal:tree": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 42.426,
+        "opaquePct": 55.64,
+        "partialPct": 1.934
+      },
+      "bbox": [
+        17,
+        18,
+        367,
+        446
+      ],
+      "sourceSize": [
+        384,
+        463
+      ],
+      "finalSize": [
+        374,
+        452
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\reveals\\tree.png",
+      "runtime": "games\\shape-to-picture\\assets\\reveals\\tree.webp",
+      "runtimeBytes": 32310,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 5179
+    },
+    "ui:banner": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 25.713,
+        "opaquePct": 72.787,
+        "partialPct": 1.5
+      },
+      "bbox": [
+        18,
+        18,
+        662,
+        230
+      ],
+      "sourceSize": [
+        676,
+        245
+      ],
+      "finalSize": [
+        668,
+        236
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\ui\\banner.png",
+      "runtime": "games\\shape-to-picture\\assets\\ui\\banner.webp",
+      "runtimeBytes": 27504,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "ui:build-mat": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 13.849,
+        "opaquePct": 81.141,
+        "partialPct": 5.01
+      },
+      "bbox": [
+        18,
+        18,
+        578,
+        572
+      ],
+      "sourceSize": [
+        589,
+        584
+      ],
+      "finalSize": [
+        583,
+        578
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\ui\\build-mat.png",
+      "runtime": "games\\shape-to-picture\\assets\\ui\\build-mat.webp",
+      "runtimeBytes": 68088,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 2253
+    },
+    "ui:tray": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 14.98,
+        "opaquePct": 84.088,
+        "partialPct": 0.932
+      },
+      "bbox": [
+        17,
+        17,
+        400,
+        658
+      ],
+      "sourceSize": [
+        413,
+        669
+      ],
+      "finalSize": [
+        407,
+        664
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\ui\\tray.png",
+      "runtime": "games\\shape-to-picture\\assets\\ui\\tray.webp",
+      "runtimeBytes": 38706,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    },
+    "ui:title": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 67.227,
+        "opaquePct": 26.508,
+        "partialPct": 6.264
+      },
+      "bbox": [
+        16,
+        165,
+        1014,
+        504
+      ],
+      "sourceSize": [
+        1024,
+        680
+      ],
+      "finalSize": [
+        1020,
+        363
+      ],
+      "alphaFloor": 4,
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\keyed\\ui\\title.png",
+      "runtime": "games\\shape-to-picture\\assets\\ui\\title.webp",
+      "runtimeBytes": 102084,
+      "method": "imagegen-remove-chroma-key",
+      "smallHolePixelsRestored": 0
+    }
+  },
+  "plates": {
+    "boat": {
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\qwen-edit\\boat-seed42.png",
+      "runtime": "games\\shape-to-picture\\assets\\backgrounds\\reveal-boat.webp",
+      "size": [
+        1600,
+        1200
+      ],
+      "quality": 90,
+      "bytes": 196682,
+      "budget": 300000,
+      "pass": true
+    },
+    "icecream": {
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\qwen-edit\\icecream-seed42.png",
+      "runtime": "games\\shape-to-picture\\assets\\backgrounds\\reveal-icecream.webp",
+      "size": [
+        1600,
+        1200
+      ],
+      "quality": 90,
+      "bytes": 214072,
+      "budget": 300000,
+      "pass": true
+    },
+    "home": {
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\qwen-edit\\home-seed42.png",
+      "runtime": "games\\shape-to-picture\\assets\\backgrounds\\reveal-home.webp",
+      "size": [
+        1600,
+        1200
+      ],
+      "quality": 90,
+      "bytes": 214720,
+      "budget": 300000,
+      "pass": true
+    },
+    "robot": {
+      "source": "games\\shape-to-picture\\assets\\source\\local-api\\qwen-edit\\robot-seed42.png",
+      "runtime": "games\\shape-to-picture\\assets\\backgrounds\\reveal-robot.webp",
+      "size": [
+        1600,
+        1200
+      ],
+      "quality": 90,
+      "bytes": 223168,
+      "budget": 300000,
+      "pass": true
+    }
+  },
+  "layeredAttempts": {
+    "status": "rejected",
+    "reason": "layer_2 outputs were opaque composites; reveal layer contained no subjects",
+    "retainedAt": "games\\shape-to-picture\\assets\\source\\local-api\\layered"
+  },
+  "background": {
+    "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\world-backdrop-master.png",
+    "runtime": "games\\shape-to-picture\\assets\\backgrounds\\paper-garden.webp",
+    "size": [
+      1600,
+      1200
+    ],
+    "quality": 86,
+    "bytes": 259118,
+    "budget": 300000,
+    "pass": true
+  },
+  "hub": {
+    "source": "games\\shape-to-picture\\assets\\source\\local-api\\hub\\hub-seed42.png",
+    "runtime": "assets\\hub\\tiles\\shape-to-picture.jpg",
+    "bytes": 58706,
+    "size": [
+      640,
+      533
+    ]
+  }
+}

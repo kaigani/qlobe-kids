@@ -1,0 +1,38 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "shape-to-picture-hub-42",
+  "kind": "image",
+  "asset": "shape-to-picture.jpg",
+  "artDirection": "Toy menu grammar",
+  "template": {
+    "id": "menu-game-tile",
+    "style": "toy-table",
+    "fields": {
+      "subject": "papercraft shapes becoming a sailboat"
+    }
+  },
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A miniature preschool papercraft play moment: separate colorful paper circle, triangle, square, rectangle, and trapezoid pieces visibly snapping together into one cheerful sailboat on a warm cream paper assembly mat, with a tiny finished paper kitten badge and smiling paper sun nearby. Distinct construction-paper fibers and scissor-cut edges, tactile stacked layers, bright blue and green airy setting, generous crop-safe margin, instantly reads as shapes becoming pictures. Bright soft 3D cartoon staging with rounded cheerful proportions, smooth readable lighting, premium preschool learning app catalog object composition. No title, no text, no letters, no numbers, no UI, no hands, no screen, no logo, no watermark.",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\local-api\\hub\\hub-seed42.png",
+  "sourceSha256": "616cb3a21106aef6cd797f3f42e30a5957d1529cde0b798bd19bdbfdee6dbaeb",
+  "qa": {
+    "status": "accepted",
+    "reviewedAt": "2026-09-18",
+    "review": "Toy-menu grammar, papercraft continuity, crop safety, and small-scale readability approved.",
+    "finalSize": [
+      640,
+      533
+    ]
+  },
+  "createdAt": "2026-09-18T12:17:19.887395+00:00"
+}

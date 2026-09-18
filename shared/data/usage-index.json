@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T11:20:24.990Z",
+  "generated": "2026-09-18T12:53:09.124Z",
   "engines": {
     "coach-timer": {
       "count": 9,
@@ -36,10 +36,9 @@
       ]
     },
     "build-assemble": {
-      "count": 3,
+      "count": 2,
       "games": [
         "blend-train",
-        "shape-to-picture",
         "turn-taking-tower"
       ]
     },
@@ -2611,23 +2610,35 @@
       "packs": []
     },
     "shape-to-picture": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "art-music",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/ui"
+        "games/shape-to-picture/assets/ui/banner.webp",
+        "games/shape-to-picture/assets/ui/title.webp"
       ],
       "packs": []
     },
@@ -3820,6 +3831,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -3930,6 +3942,7 @@
         "sand-tray-letters",
         "sandpaper-number-match",
         "secret-message-copy",
+        "shape-to-picture",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4029,6 +4042,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4069,7 +4083,6 @@
       ],
       "shared/js/engines/build-assemble.js": [
         "blend-train",
-        "shape-to-picture",
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
@@ -4161,6 +4174,7 @@
         "question-ball",
         "red-green-light",
         "secret-message-copy",
+        "shape-to-picture",
         "silly-swap-words",
         "smell-jars",
         "sticker-line-challenge",
@@ -4203,6 +4217,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4288,6 +4303,7 @@
         "sand-tray-letters",
         "sandpaper-number-match",
         "secret-message-copy",
+        "shape-to-picture",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4341,6 +4357,7 @@
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4404,6 +4421,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "sink-or-float",
         "smell-jars",
@@ -4459,6 +4477,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4630,7 +4649,6 @@
         "rhyming-detective",
         "sand-tray-letters",
         "scissor-trail-safari",
-        "shape-to-picture",
         "shelf-reset-game",
         "sink-or-float",
         "snack-addition-stories",
@@ -4681,6 +4699,7 @@
         "plant-care-captain",
         "post-office-letters",
         "puzzle-map-match",
+        "shape-to-picture",
         "silly-sentence-builder",
         "smell-jars",
         "snack-chef",
@@ -4811,6 +4830,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4885,6 +4905,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4968,6 +4989,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -5142,7 +5164,6 @@
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "scissor-trail-safari",
-        "shape-to-picture",
         "shelf-reset-game",
         "story-sequence",
         "story-stones",
@@ -5196,6 +5217,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shape-to-picture",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -6298,6 +6320,12 @@
       "games/secret-message-copy/assets/audio": [
         "secret-message-copy"
       ],
+      "games/shape-to-picture/assets/ui/banner.webp": [
+        "shape-to-picture"
+      ],
+      "games/shape-to-picture/assets/ui/title.webp": [
+        "shape-to-picture"
+      ],
       "games/silly-sentence-builder/assets/backgrounds/theater.webp": [
         "silly-sentence-builder"
       ],
@@ -6700,7 +6728,6 @@
         "rhyming-detective",
         "shadow-chase",
         "shape-detective",
-        "shape-to-picture",
         "sink-or-float",
         "snack-chef",
         "sound-basket",

@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "reveal-icecream",
+  "kind": "image",
+  "asset": "icecream-seed42.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "prompt": "Edit this exact 4:3 papercraft garden backdrop into a joyful finished-picture scene. Preserve the camera, sky-blue paper, paper fibers, side foliage, flower palette, upper-left light, and down-right shadows. Center one very large ice-cream picture built visibly from a tall tan paper triangle cone with subtle waffle crosshatch plus three overlapping circular paper scoops in pink-coral, mint, and sky blue. Add a tiny paper picnic cloth and a few attached paper sprinkles around the cone, leaving the corners calm. No words, UI, people, logos, or extra ice creams.",
+      "seed": 42
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\world-backdrop-master.png",
+  "sourceSha256": "6fede10392e9f0780ad008ab05918e93f007a0ee489b4f26558cf4a12298ca6c",
+  "sourceSize": [
+    1184,
+    880
+  ],
+  "outputSha256": "77033adc8d2362cc7682c33b5b4784052606a09a46f65e6b1deb6f379f021f71",
+  "qa": {
+    "status": "accepted",
+    "reviewedAt": "2026-09-18",
+    "review": "Papercraft style, shape readability, composition, and runtime crop approved."
+  },
+  "createdAt": "2026-09-18T12:16:09.314914+00:00"
+}

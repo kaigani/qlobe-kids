@@ -1,0 +1,116 @@
+{
+  "source": "ui-furniture-sheet.png",
+  "sourceSha256": "b04f03b6f173e1c6dcc816aaa03ef5645a60135803ccce274516e8f3cb356487",
+  "sourceSize": [
+    1916,
+    821
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    37,
+    43
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "banner",
+      "file": "banner.png",
+      "componentArea": 121362,
+      "foregroundBbox": [
+        57,
+        287,
+        697,
+        496
+      ],
+      "cropBbox": [
+        39,
+        269,
+        715,
+        514
+      ],
+      "cropXywh": [
+        39,
+        269,
+        676,
+        245
+      ],
+      "normalizedCropBbox": [
+        0.020355,
+        0.327649,
+        0.373173,
+        0.626066
+      ]
+    },
+    {
+      "index": 2,
+      "name": "build-mat",
+      "file": "build-mat.png",
+      "componentArea": 296433,
+      "foregroundBbox": [
+        784,
+        114,
+        1337,
+        662
+      ],
+      "cropBbox": [
+        766,
+        96,
+        1355,
+        680
+      ],
+      "cropXywh": [
+        766,
+        96,
+        589,
+        584
+      ],
+      "normalizedCropBbox": [
+        0.399791,
+        0.116931,
+        0.707203,
+        0.828258
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 233179,
+      "foregroundBbox": [
+        1458,
+        71,
+        1835,
+        704
+      ],
+      "cropBbox": [
+        1440,
+        53,
+        1853,
+        722
+      ],
+      "cropXywh": [
+        1440,
+        53,
+        413,
+        669
+      ],
+      "normalizedCropBbox": [
+        0.751566,
+        0.064555,
+        0.967119,
+        0.879415
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 42,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 25000,
+    "order": "reading"
+  }
+}

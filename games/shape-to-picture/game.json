@@ -1,35 +1,45 @@
 {
   "id": "shape-to-picture",
-  "title": "Shape-to-Picture Challenge",
+  "title": "Shape Surprise Studio",
   "category": "art-music",
   "path": "games/shape-to-picture/",
-  "icon": "🖼️",
+  "icon": "🧩",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Shape-to-Picture Challenge 🖼️ — Shapes Becoming Pictures",
-  "description": "Place simple shapes onto ghost outlines to reveal a surprise picture or face, hearing each shape named along the way. A part-whole art game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#2d94c4",
+  "shareTitle": "Shape Surprise Studio — Paper Shapes Become Pictures",
+  "description": "Tap, stretch, and fit colorful paper shapes to reveal kittens, rockets, sunny faces, sailboats, and more in a tactile papercraft garden.",
   "learningGoals": [
-    "Compose pictures from simple shapes",
-    "Practice visual imagination",
-    "Explore part-whole relationships in art"
+    "Recognize circles, squares, rectangles, ovals, and triangles",
+    "Imagine a whole picture growing from one simple shape",
+    "Compose familiar pictures from shape parts using direct touch"
   ],
-  "interactionModel": "build-assemble drag or tap-tap shape pieces onto ghost positions",
-  "feedbackModel": "Correct shapes pop, sparkle, and speak the shape name; misses wiggle gently with a spoken nudge and retry. Finished builds speak the surprise picture.",
+  "interactionModel": "three image-led modes: tap or trace a shape, pinch or slide to grow it, and drag or tap-tap paper pieces into matching ghosts",
+  "feedbackModel": "Paper shapes lift, wiggle, snap, and transform into authored surprise art with synthesized sparkle sounds, gentle retries, idle hints, and recorded teacher narration.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/speech.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
     "shared/js/sfx.js",
-    "shared/assets/ui/",
-    "shared/fonts/fredoka-latin-600-normal.woff2"
+    "shared/js/tap.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/screens.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/hud.js",
+    "shared/js/celebrate.js",
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js"
   ],
   "modes": [
-    { "id": "pictures", "title": "Shape Pictures", "skill": "shape recombination into pictures" },
-    { "id": "faces", "title": "Shape Faces", "skill": "shape recombination into faces" }
+    { "id": "tap-magic", "title": "Tap Magic", "skill": "notice a simple shape becoming a complete picture" },
+    { "id": "stretch-magic", "title": "Stretch Magic", "skill": "connect shape growth with a new visual idea" },
+    { "id": "picture-builder", "title": "Picture Builder", "skill": "compose a whole picture from geometric parts" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder shape art only. Built with Codex for QLOBE Kids.",
+  "credits": "Papercraft masters generated with GPT Image 2; Krea/Qwen local authoring workflows produced the catalog tile, reveal plates, layered experiments, and recorded teacher voice with Whisper QA. Built for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

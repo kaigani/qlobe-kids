@@ -1,0 +1,69 @@
+{
+  "format": "qlobe-shape-surprise-config",
+  "formatVersion": 1,
+  "id": "shape-to-picture",
+  "title": "Shape Surprise Studio",
+  "artDirection": "Papercraft",
+  "theme": {
+    "world": "paper-garden",
+    "background": "./assets/backgrounds/paper-garden.webp",
+    "title": "./assets/ui/title.webp",
+    "banner": "./assets/ui/banner.webp",
+    "tray": "./assets/ui/tray.webp",
+    "buildMat": "./assets/ui/build-mat.webp"
+  },
+  "audio": { "manifest": "./assets/audio/manifest.json", "lines": "./assets/audio/lines.json", "fallback": "speech" },
+  "debug": { "formatVersion": 1, "seed": 42, "fastTimerScale": 0.05, "deterministicModeOrder": true },
+  "modes": [
+    {
+      "id": "tap-magic", "title": "Tap Magic", "skill": "notice one simple shape becoming a picture",
+      "introKey": "tap-intro", "nudgeKey": "nudge-tap", "interaction": "tap",
+      "rounds": [
+        { "id": "tap-circle-kitten", "shape": "circle", "shapeKey": "tap-circle", "piece": "./assets/sprites/circle-blue.webp", "reveal": "./assets/reveals/kitten.webp", "revealKey": "reveal-kitten", "alt": "a blue paper circle becoming a fluffy paper kitten" },
+        { "id": "tap-square-house", "shape": "square", "shapeKey": "tap-square", "piece": "./assets/sprites/square-green.webp", "reveal": "./assets/reveals/house.webp", "revealKey": "reveal-house", "alt": "a green paper square becoming a cozy paper house" },
+        { "id": "tap-rectangle-rocket", "shape": "rectangle", "shapeKey": "shape-rectangle", "piece": "./assets/sprites/rectangle-coral.webp", "reveal": "./assets/reveals/rocket.webp", "revealKey": "reveal-rocket", "alt": "a coral paper rectangle becoming a paper rocket" }
+      ]
+    },
+    {
+      "id": "stretch-magic", "title": "Stretch Magic", "skill": "relate a changing outline to a new picture",
+      "introKey": "stretch-intro", "nudgeKey": "nudge-stretch", "interaction": "pinch-or-slider",
+      "rounds": [
+        { "id": "stretch-scallop-sun", "shape": "scallop", "shapeKey": "stretch-circle", "piece": "./assets/sprites/scallop-gold.webp", "reveal": "./assets/reveals/sun.webp", "revealKey": "reveal-sun", "alt": "a golden scalloped paper circle growing into a sunny smile" },
+        { "id": "stretch-oval-balloon", "shape": "oval", "shapeKey": "stretch-oval", "piece": "./assets/sprites/oval-mint.webp", "reveal": "./assets/reveals/balloon.webp", "revealKey": "reveal-balloon", "alt": "a mint paper oval growing into a bright balloon" },
+        { "id": "stretch-rectangle-tree", "shape": "rectangle", "shapeKey": "stretch-rectangle", "piece": "./assets/sprites/rectangle-coral.webp", "reveal": "./assets/reveals/tree.webp", "revealKey": "reveal-tree", "alt": "a coral paper rectangle growing into a leafy tree" }
+      ]
+    },
+    {
+      "id": "picture-builder", "title": "Picture Builder", "skill": "compose a whole picture from shape parts",
+      "introKey": "build-intro", "nudgeKey": "nudge-build", "retryKey": "gentle-retry", "interaction": "drag-or-tap-tap",
+      "rounds": [
+        { "id": "build-boat", "name": "sailboat", "plate": "./assets/backgrounds/reveal-boat.webp", "revealKey": "reveal-boat", "pieces": [
+          { "id": "left-sail", "shape": "triangle", "shapeKey": "shape-triangle", "asset": "./assets/sprites/triangle-yellow-right.webp", "x": 40, "y": 45, "size": 23, "rotation": 0 },
+          { "id": "right-sail", "shape": "triangle", "shapeKey": "shape-triangle", "asset": "./assets/sprites/triangle-coral-right.webp", "x": 59, "y": 47, "size": 22, "rotation": 0, "flip": -1 },
+          { "id": "hull", "shape": "trapezoid", "shapeKey": "shape-rectangle", "asset": "./assets/sprites/trapezoid-blue.webp", "x": 50, "y": 67, "size": 28, "rotation": 0 }
+        ] },
+        { "id": "build-icecream", "name": "ice cream", "plate": "./assets/backgrounds/reveal-icecream.webp", "revealKey": "reveal-icecream", "pieces": [
+          { "id": "cone", "shape": "triangle", "shapeKey": "shape-triangle", "asset": "./assets/sprites/triangle-cone.webp", "x": 50, "y": 65, "size": 28, "rotation": 0 },
+          { "id": "scoop-pink", "shape": "circle", "shapeKey": "shape-circle", "asset": "./assets/sprites/circle-pink.webp", "x": 40, "y": 42, "size": 19, "rotation": 0 },
+          { "id": "scoop-cream", "shape": "circle", "shapeKey": "shape-circle", "asset": "./assets/sprites/circle-cream.webp", "x": 50, "y": 39, "size": 19, "rotation": 0 },
+          { "id": "scoop-blue", "shape": "circle", "shapeKey": "shape-circle", "asset": "./assets/sprites/circle-blue.webp", "x": 60, "y": 42, "size": 19, "rotation": 0 }
+        ] },
+        { "id": "build-home", "name": "little home", "plate": "./assets/backgrounds/reveal-home.webp", "revealKey": "reveal-home", "pieces": [
+          { "id": "roof-left", "shape": "triangle", "shapeKey": "shape-triangle", "asset": "./assets/sprites/triangle-coral-right.webp", "x": 44, "y": 39, "size": 24, "rotation": 0 },
+          { "id": "roof-right", "shape": "triangle", "shapeKey": "shape-triangle", "asset": "./assets/sprites/triangle-coral-right.webp", "x": 56, "y": 39, "size": 24, "rotation": 0, "flip": -1 },
+          { "id": "house", "shape": "square", "shapeKey": "shape-square", "asset": "./assets/sprites/square-orange.webp", "x": 50, "y": 61, "size": 31, "rotation": 0 },
+          { "id": "door", "shape": "rectangle", "shapeKey": "shape-rectangle", "asset": "./assets/sprites/rectangle-blue.webp", "x": 47, "y": 69, "size": 14, "rotation": 0 },
+          { "id": "window", "shape": "square", "shapeKey": "shape-square", "asset": "./assets/sprites/square-cream.webp", "x": 59, "y": 59, "size": 11, "rotation": 0 }
+        ] },
+        { "id": "build-robot", "name": "robot friend", "plate": "./assets/backgrounds/reveal-robot.webp", "revealKey": "reveal-robot", "pieces": [
+          { "id": "head", "shape": "square", "shapeKey": "shape-square", "asset": "./assets/sprites/square-green.webp", "x": 50, "y": 50, "size": 34, "rotation": 0 },
+          { "id": "left-eye", "shape": "circle", "shapeKey": "shape-circle", "asset": "./assets/sprites/circle-blue.webp", "x": 44, "y": 46, "size": 10, "rotation": 0 },
+          { "id": "right-eye", "shape": "circle", "shapeKey": "shape-circle", "asset": "./assets/sprites/circle-blue.webp", "x": 56, "y": 46, "size": 10, "rotation": 0 },
+          { "id": "smile", "shape": "rectangle", "shapeKey": "shape-rectangle", "asset": "./assets/sprites/rectangle-coral.webp", "x": 50, "y": 58, "size": 16, "rotation": 90 },
+          { "id": "left-ear", "shape": "square", "shapeKey": "shape-square", "asset": "./assets/sprites/square-cream.webp", "x": 31, "y": 50, "size": 10, "rotation": 0 },
+          { "id": "right-ear", "shape": "square", "shapeKey": "shape-square", "asset": "./assets/sprites/square-cream.webp", "x": 69, "y": 50, "size": 10, "rotation": 0 }
+        ] }
+      ]
+    }
+  ]
+}

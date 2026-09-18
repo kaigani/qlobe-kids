@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-18",
+  "tool": "OpenAI image generation",
+  "model": "gpt-image-2",
+  "artDirection": "Papercraft",
+  "commonDirection": "Premium children's cut-paper world photographed from directly above: real construction-paper fibers, hand-cut edges, cheerful saturated color, upper-left studio light, soft shadows falling down-right, tactile layered depth, clean preschool silhouettes, no vector or CSS artwork, no watermark.",
+  "assets": [
+    {
+      "asset": "world-backdrop-master.png",
+      "status": "accepted",
+      "dimensions": [1448, 1086],
+      "sha256": "6fede10392e9f0780ad008ab05918e93f007a0ee489b4f26558cf4a12298ca6c",
+      "prompt": "Create a wide 4:3 papercraft garden stage for a preschool shape game. Bright blue textured paper sky fills most of the frame, with three soft white cut-paper clouds, layered rolling green hills, deep-green bushes and large leaves framing only the lower edges, and a handful of pink, yellow, purple, and orange paper flowers along the bottom corners. Keep the central 60 percent spacious and uncluttered for gameplay. Straight-on overhead presentation, physical paper fibers, visible scissor-cut edges, upper-left light and soft down-right shadows. No characters, lettering, interface, border, gradients, or watermark."
+    },
+    {
+      "asset": "shape-pieces-sheet.png",
+      "status": "accepted",
+      "dimensions": [1536, 1024],
+      "sha256": "4b64f6937207725fc64fcdd5259facdffe75e16eeba72157abd1f43f4dd3db9f",
+      "prompt": "Asset contact sheet on a perfectly uniform near-black charcoal background. Arrange exactly fifteen separate handmade construction-paper pieces in a clean 3-by-5 grid with wide gutters and nothing touching: blue circle, yellow triangle, green square, coral rectangle, mint oval; golden scalloped sunburst, yellow right triangle, coral right triangle, blue trapezoid, cream circle; waffle-textured tan cone triangle, pink circle, orange square, blue rounded rectangle, cream square. Every piece must be front-facing, fully visible, centered in its cell, free of text, and have believable paper fibers plus a restrained soft down-right shadow. No labels, props, glow, border, or watermark."
+    },
+    {
+      "asset": "reveal-sheet-v1-rejected-glow.png",
+      "status": "rejected",
+      "rejectionReason": "The first pass used atmospheric glow that broke the tactile paper-world lighting and complicated clean extraction.",
+      "dimensions": [1536, 1024],
+      "sha256": "2a9fa19408f563b1da6760db3800eb5a31336de9a666e7d7aa3bea466069bc2d",
+      "prompt": "Create a 2-by-3 contact sheet of six joyful finished papercraft reveal objects for a preschool shape-transformation game: kitten portrait, little house, rocket, smiling sun, hot-air balloon, leafy tree. Put each complete isolated object in its own generous cell on a dark background, with rich layered construction paper, simple friendly faces where appropriate, magical celebratory rim light, no text or watermark."
+    },
+    {
+      "asset": "reveal-sheet.png",
+      "status": "accepted",
+      "dimensions": [1536, 1024],
+      "sha256": "737e7a1702903f9a26540d4c89075f5684e9a0eb601cc9369c8fe4f6e47d065b",
+      "prompt": "Asset contact sheet on a perfectly uniform near-black charcoal background. Arrange exactly six separate, complete children's construction-paper reveal objects in a clean 2-by-3 grid with wide gutters: a sweet white kitten inside a blue floral circle, a yellow house with red roof and blue door, a red-white-mint rocket with orange flame, a smiling golden sun, a coral-cream-mint hot-air balloon, and a lush green tree with brown trunk. Each object is front-facing, fully visible, centered, strongly silhouetted, and made only of layered tactile paper with visible fibers and soft down-right shadows. Consistent scale and lighting. No text, labels, aura, glow, scenery, border, or watermark."
+    },
+    {
+      "asset": "ui-furniture-sheet.png",
+      "status": "accepted",
+      "dimensions": [1916, 821],
+      "sha256": "b04f03b6f173e1c6dcc816aaa03ef5645a60135803ccce274516e8f3cb356487",
+      "prompt": "Wide asset contact sheet on a uniform near-black charcoal background with exactly three separate blank papercraft interface objects and generous gutters: left, a horizontal torn cream-paper banner; center, a large square cream construction mat stacked over a navy paper backing; right, a tall rounded cream paper parts tray with three recessed horizontal pockets. Front-facing overhead view, real fibers, hand-torn or hand-cut edges, dimensional layered-paper shadows. Keep every writing surface empty. No text, icons, labels, extra objects, scenery, glow, border, or watermark."
+    },
+    {
+      "asset": "title-lockup.png",
+      "status": "accepted",
+      "dimensions": [1536, 1024],
+      "sha256": "0555f95bd267adb6a4f6431e5e80ac43b3f4588fa61fe9c42d6e1fda00c98de8",
+      "prompt": "Create one exuberant handcrafted construction-paper title lockup reading exactly ‘SHAPE SURPRISE’ on the first line and ‘STUDIO’ on the second. Use chunky uppercase cut-paper letters in sky blue, yellow, coral, green, orange, and purple, mounted on a scalloped cream-paper plaque with a dark navy backing and tiny geometric paper accents. Strong preschool readability, centered, straight-on, tactile fibers, clean cut edges, restrained soft down-right shadow. Uniform near-black charcoal background for extraction. No other words, characters, scenery, glow, or watermark."
+    }
+  ]
+}

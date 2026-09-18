@@ -1,0 +1,26 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "title-lockup",
+  "kind": "image",
+  "asset": "title-lockup-layer2.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: only the dark charcoal background and ambient halo. Top layer: the exact complete two-line papercraft title lockup reading SHAPE SURPRISE STUDIO, including the cream backing, navy edge, star and two tiny geometric ornaments, on true transparency. Preserve every letter exactly and keep the entire lockup together. Do not crop, redraw, respell, rearrange, add, remove, relight, or restyle anything.",
+      "seed": 42,
+      "layers": 2,
+      "output": "layer_2"
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\title-lockup.png",
+  "sourceSha256": "0555f95bd267adb6a4f6431e5e80ac43b3f4588fa61fe9c42d6e1fda00c98de8",
+  "outputSha256": "208c1c76bf5a2cad2b27f189fd35bb460e3f9018d75a096bb740261ed8e506a9",
+  "qa": {
+    "status": "rejected",
+    "reviewedAt": "2026-09-18",
+    "reason": "Layer output was not a true transparent separation; retained only as provenance."
+  },
+  "createdAt": "2026-09-18T12:15:03.955133+00:00"
+}

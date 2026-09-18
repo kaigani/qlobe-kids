@@ -3146,29 +3146,34 @@
     },
     {
       "id": "shape-to-picture",
-      "title": "Shape-to-Picture Challenge",
+      "title": "Shape Surprise Studio",
       "category": "art-music",
       "path": "games/shape-to-picture/",
       "icon": "assets/hub/tiles/shape-to-picture.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#58a945",
+      "status": "beta",
+      "accent": "#2d94c4",
       "modes": [
         {
-          "id": "pictures",
-          "title": "Shape Pictures",
-          "skill": "shape recombination into pictures"
+          "id": "tap-magic",
+          "title": "Tap Magic",
+          "skill": "notice a simple shape becoming a complete picture"
         },
         {
-          "id": "faces",
-          "title": "Shape Faces",
-          "skill": "shape recombination into faces"
+          "id": "stretch-magic",
+          "title": "Stretch Magic",
+          "skill": "connect shape growth with a new visual idea"
+        },
+        {
+          "id": "picture-builder",
+          "title": "Picture Builder",
+          "skill": "compose a whole picture from geometric parts"
         }
       ],
-      "summary": "Turn circles into animals or objects."
+      "summary": "Tap, stretch, and fit colorful paper shapes to reveal playful pictures."
     },
     {
       "id": "monster-opera",

@@ -1,0 +1,26 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "ui-furniture-sheet",
+  "kind": "image",
+  "asset": "ui-furniture-sheet-layer2.png",
+  "artDirection": "Papercraft",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: only the flat dark charcoal background. Top layer: the complete blank torn paper banner, blank square assembly mat, and blank three-pocket vertical tray together on true transparency. Preserve their exact positions, size, cream paper fibers, deckled edges, navy backing, recessed pockets, and compact shadows. Keep every surface blank. Do not crop, redraw, move, add symbols, add text, or restyle anything.",
+      "seed": 42,
+      "layers": 2,
+      "output": "layer_2"
+    }
+  ],
+  "source": "games\\shape-to-picture\\assets\\source\\gpt-image-2\\ui-furniture-sheet.png",
+  "sourceSha256": "b04f03b6f173e1c6dcc816aaa03ef5645a60135803ccce274516e8f3cb356487",
+  "outputSha256": "b006dcf03fa0aa978599f915fcd607e35ed4750f06ba30e839c3fe1f4507944b",
+  "qa": {
+    "status": "rejected",
+    "reviewedAt": "2026-09-18",
+    "reason": "Opaque composite; required furniture was finalized from deterministic crops instead."
+  },
+  "createdAt": "2026-09-18T12:12:55.641073+00:00"
+}
