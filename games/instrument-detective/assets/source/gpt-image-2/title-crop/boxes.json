@@ -1,0 +1,56 @@
+{
+  "source": "games/instrument-detective/assets/source/gpt-image-2/title-source.png",
+  "sourceSha256": "1b8ca1ae236dbbb501b49493ff503665ee7475b80279efb813b7dd1a4adeb05b",
+  "sourceSize": [
+    1619,
+    971
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    21,
+    22,
+    24
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 999474,
+      "foregroundBbox": [
+        25,
+        35,
+        1593,
+        891
+      ],
+      "cropBbox": [
+        13,
+        23,
+        1605,
+        903
+      ],
+      "cropXywh": [
+        13,
+        23,
+        1592,
+        880
+      ],
+      "normalizedCropBbox": [
+        0.00803,
+        0.023687,
+        0.991353,
+        0.929969
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

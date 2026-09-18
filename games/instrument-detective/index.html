@@ -1,47 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Instrument Detective 🕵️ — Solving Instrument Sound Clues</title>
-  <meta name="description" content="Listen to playful instrument clues and tap the matching instrument, noticing loud, soft, jingly, and low qualities. A listening game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Instrument Detective" />
-  <meta property="og:title" content="Instrument Detective 🕵️ — Solving Instrument Sound Clues" />
-  <meta property="og:description" content="Listen to playful instrument clues and tap the matching instrument, noticing loud, soft, jingly, and low qualities. A listening game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/instrument-detective/" />
-  <meta property="og:image" content="https://qlo.be/games/instrument-detective/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Instrument Detective title screen with Sound Detective and Loud or Soft? buttons below a detective emoji icon." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Instrument Detective 🕵️ — Solving Instrument Sound Clues" />
-  <meta name="twitter:description" content="Listen to playful instrument clues and tap the matching instrument, noticing loud, soft, jingly, and low qualities. A listening game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/instrument-detective/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#f7dfc1">
+  <title>Instrument Detective — QLOBE Kids</title>
+  <meta name="description" content="Listen for a mystery instrument, then tap the matching picture and build a tiny concert band.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Instrument Detective">
+  <meta property="og:description" content="Listen for a mystery instrument, then tap the matching picture and build a tiny concert band.">
+  <meta property="og:url" content="https://qlo.be/games/instrument-detective/">
+  <meta property="og:image" content="https://qlo.be/games/instrument-detective/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A friendly owl detective discovering colorful musical instruments.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Instrument Detective">
+  <meta name="twitter:description" content="Listen for a mystery instrument, then tap the matching picture and build a tiny concert band.">
+  <meta name="twitter:image" content="https://qlo.be/games/instrument-detective/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Instrument Detective"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

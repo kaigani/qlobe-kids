@@ -1,0 +1,202 @@
+{
+  "source": "games/instrument-detective/assets/source/gpt-image-2/ui-sheet.png",
+  "sourceSha256": "46f5212317fba8075110ec96debd3c19006718858755c2db9c85b2c64f25b25a",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-green",
+      "file": "card-green.png",
+      "componentArea": 194512,
+      "foregroundBbox": [
+        24,
+        97,
+        477,
+        542
+      ],
+      "cropBbox": [
+        12,
+        85,
+        489,
+        554
+      ],
+      "cropXywh": [
+        12,
+        85,
+        477,
+        469
+      ],
+      "normalizedCropBbox": [
+        0.008287,
+        0.078269,
+        0.337707,
+        0.510129
+      ]
+    },
+    {
+      "index": 2,
+      "name": "card-purple",
+      "file": "card-purple.png",
+      "componentArea": 195073,
+      "foregroundBbox": [
+        497,
+        97,
+        951,
+        542
+      ],
+      "cropBbox": [
+        485,
+        85,
+        963,
+        554
+      ],
+      "cropXywh": [
+        485,
+        85,
+        478,
+        469
+      ],
+      "normalizedCropBbox": [
+        0.334945,
+        0.078269,
+        0.665055,
+        0.510129
+      ]
+    },
+    {
+      "index": 3,
+      "name": "card-blue",
+      "file": "card-blue.png",
+      "componentArea": 195132,
+      "foregroundBbox": [
+        972,
+        97,
+        1426,
+        542
+      ],
+      "cropBbox": [
+        960,
+        85,
+        1438,
+        554
+      ],
+      "cropXywh": [
+        960,
+        85,
+        478,
+        469
+      ],
+      "normalizedCropBbox": [
+        0.662983,
+        0.078269,
+        0.993094,
+        0.510129
+      ]
+    },
+    {
+      "index": 4,
+      "name": "listen-button",
+      "file": "listen-button.png",
+      "componentArea": 108856,
+      "foregroundBbox": [
+        39,
+        590,
+        412,
+        961
+      ],
+      "cropBbox": [
+        27,
+        578,
+        424,
+        973
+      ],
+      "cropXywh": [
+        27,
+        578,
+        397,
+        395
+      ],
+      "normalizedCropBbox": [
+        0.018646,
+        0.532228,
+        0.292818,
+        0.895948
+      ]
+    },
+    {
+      "index": 5,
+      "name": "primary-button",
+      "file": "primary-button.png",
+      "componentArea": 116551,
+      "foregroundBbox": [
+        424,
+        670,
+        999,
+        891
+      ],
+      "cropBbox": [
+        412,
+        658,
+        1011,
+        903
+      ],
+      "cropXywh": [
+        412,
+        658,
+        599,
+        245
+      ],
+      "normalizedCropBbox": [
+        0.28453,
+        0.605893,
+        0.698204,
+        0.831492
+      ]
+    },
+    {
+      "index": 6,
+      "name": "progress-plaque",
+      "file": "progress-plaque.png",
+      "componentArea": 59931,
+      "foregroundBbox": [
+        1007,
+        704,
+        1421,
+        863
+      ],
+      "cropBbox": [
+        995,
+        692,
+        1433,
+        875
+      ],
+      "cropXywh": [
+        995,
+        692,
+        438,
+        183
+      ],
+      "normalizedCropBbox": [
+        0.687155,
+        0.637201,
+        0.989641,
+        0.805709
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

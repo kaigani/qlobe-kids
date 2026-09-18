@@ -1,55 +1,49 @@
-# Asset Log - Instrument Detective
+# Instrument Detective — asset production record
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/choose-one.js` |
-| Instrument and detective placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+This game uses raster artwork throughout; no CSS, SVG, emoji, or canvas illustration is primary art.
 
-## Assets needed
+## Shipped files
 
-### Art
-- Drum, toy-3D style
-- Bell, toy-3D style
-- Shaker, toy-3D style
-- Trumpet, toy-3D style
-- Piano, toy-3D style
-- Guitar, toy-3D style
-- Violin, toy-3D style
-- Flute, toy-3D style
+| Role | Final path |
+|---|---|
+| Scenes | `assets/backgrounds/theater.webp`, `assets/backgrounds/finale.webp` |
+| Owl poses | `assets/characters/owl-listening.webp`, `owl-presenting.webp`, `owl-celebrating.webp`, `owl-conducting.webp` |
+| Instruments | `assets/instruments/maracas.webp`, `drum.webp`, `bell.webp`, `piano.webp`, `guitar.webp`, `flute.webp` |
+| UI | `assets/ui/title.webp`, `card-green.webp`, `card-purple.webp`, `card-blue.webp`, `listen-button.webp`, `primary-button.webp`, `progress-plaque.webp` |
+| Preview | `assets/og-image.jpg` |
 
-### Audio
-- Real drum sound clip for future `shared/assets/sounds/instruments/`
-- Real bell sound clip for future `shared/assets/sounds/instruments/`
-- Real shaker sound clip for future `shared/assets/sounds/instruments/`
-- Real trumpet sound clip for future `shared/assets/sounds/instruments/`
-- Real piano sound clip for future `shared/assets/sounds/instruments/`
-- Real guitar sound clip for future `shared/assets/sounds/instruments/`
-- Real violin sound clip for future `shared/assets/sounds/instruments/`
-- Real flute sound clip for future `shared/assets/sounds/instruments/`
+Masters are under `assets/source/gpt-image-2/`; magenta composites, mattes, and crops are under `assets/source/qa/`. `assets/source/finalize-report.json` records source hashes, alpha QA, dimensions, and final sizes. The hub source is `assets/source/krea2/hub-tile-source.png`; the final 640×533 tile is `../../assets/hub/tiles/instrument-detective.jpg`.
 
-### Voice
-- "Detective ears ready! Listen for the sound, then tap the instrument."
-- "Hmm, listen closely and try another instrument."
-- "Case closed! You found the instruments!"
-- "Aha! That is the one!"
-- "Great detective ears!"
-- "You found the sound!"
-- "Boom! Boom! Boom! Which one is the drum?"
-- "Ding-a-ling-a-ling! Which one is the bell?"
-- "Shicka-shicka-shicka! Which one is the shaker?"
-- "Toot toot toooot! Which one is the trumpet?"
-- "Plink plink plonk! Which one is the piano?"
-- "Strum strum strum! Which one is the guitar?"
-- "Which one is LOUD like thunder?"
-- "Which one is soft and gentle?"
-- "Which one jingles?"
-- "Which one hums low like a bear?"
+## Generation and prompts
 
-## Link preview (og:image)
+GPT Image 2 generated the instrument, owl, theater, finale, UI, and title masters. The exact production prompt set is preserved in [`assets/source/PROMPTS.md`](assets/source/PROMPTS.md). The direction is a cozy painted-paper children’s theater: plum curtains, teal stage light, cream sticker edges, jewel-tone toy instruments, and a friendly owl detective.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+The hub tile used Krea 2 text-to-image with seed `42`; its prompt is also in `PROMPTS.md`.
+
+## Cutting and finalization
+
+From the repository root, the canonical sheet cutter is run with exact-count gates:
+
+```powershell
+python tools/cut-asset-sheet.py games/instrument-detective/assets/source/gpt-image-2/instrument-sheet.png games/instrument-detective/assets/source/gpt-image-2/instrument-crops --names maracas drum bell piano guitar flute --expected-count 6 --debug-mask games/instrument-detective/assets/source/gpt-image-2/instrument-crops-mask.png --force
+python tools/cut-asset-sheet.py games/instrument-detective/assets/source/gpt-image-2/owl-pose-sheet.png games/instrument-detective/assets/source/gpt-image-2/owl-pose-crops --names listening presenting celebrating conducting --expected-count 4 --debug-mask games/instrument-detective/assets/source/gpt-image-2/owl-pose-crops-mask.png --force
+python tools/cut-asset-sheet.py games/instrument-detective/assets/source/gpt-image-2/ui-sheet.png games/instrument-detective/assets/source/gpt-image-2/ui-crops --names card-green card-purple card-blue listen-button primary-button progress-plaque --expected-count 6 --debug-mask games/instrument-detective/assets/source/gpt-image-2/ui-crops-mask.png --force
+python tools/cut-asset-sheet.py games/instrument-detective/assets/source/gpt-image-2/title-source.png games/instrument-detective/assets/source/gpt-image-2/title-crop --names title --expected-count 1 --debug-mask games/instrument-detective/assets/source/gpt-image-2/title-mask.png --force
+python games/instrument-detective/tools/finalize-assets.py
+```
+
+`finalize-assets.py` creates deterministic contiguous mattes from the flat charcoal source, invokes the canonical `tools/pipeline/cutout_finalize.py`, writes runtime WebP files and magenta QA composites, and emits `finalize-report.json`. Source-alpha UI plates use their opaque plateau with near-opaque normalization.
+
+Qwen Image Layered was attempted on the instrument, owl, and title sheets through the approved local resource. The outputs are retained under `assets/source/local-api/layered/` for audit but rejected: the instrument pass retained only the drum, while owl and title passes were empty. The deterministic matte is the selected fallback.
+
+## Audio and voice
+
+The six mystery samples are shared platform recordings referenced in `config.json`: maracas, drum, agogo-b, piano, guitar, and flute. `agogo-b.m4a` is intentionally the closest available preschool hand-bell proxy; the game still presents the bell visual and language. Listening rounds have no background music so the timbre is clear.
+
+Spoken lines are keyed by `data/lines.json`. `tools/produce-voice.py` uses Qwen 3 TTS voice clone with the rights-cleared shared reference `shared/assets/refs/voice-teacher.wav`, then verifies every final AAC candidate with Whisper. Accepted clips ship under `assets/audio/`; candidate takes and the transcript report are retained under `assets/source/local-api/voice/`. Runtime delivery is all-or-none, with normalized transcript similarity ≥ 0.92 and word coverage ≥ 0.95 for every line. The shared voice-clips module remains a device-speech safety fallback. No private voice path or LAN address is committed.
+
+Shared platform SFX provide tap, retry, sparkle, and celebration feedback. Fredoka 600 is `shared/fonts/fredoka-latin-600-normal.woff2` under SIL OFL 1.1.
+
+## Provenance
+
+GPT Image 2, Krea 2, and approved local image outputs are project-generated assets treated as CC BY 4.0 for this project; no third-party attribution is required for those generated files. Shared QLOBE Kids assets retain their platform licenses. `og-image.jpg` is a generated capture of the splash screen and should be regenerated with `tools/pipeline/capture_og_images.mjs` after major visual changes.

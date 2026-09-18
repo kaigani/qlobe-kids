@@ -1,0 +1,691 @@
+{
+  "format": "instrument-detective-finalize-report",
+  "version": 1,
+  "layeredReview": {
+    "workflow": "qwen-image-layered",
+    "seed": 42,
+    "selectedOutput": "layer_2",
+    "status": "rejected",
+    "reason": "instrument sheet retained only drum; owl sheet and title were empty",
+    "retainedAt": "assets/source/local-api/layered/"
+  },
+  "assets": {
+    "instrument/maracas": {
+      "source": "assets/source/gpt-image-2/instrument-crops/maracas.png",
+      "sourceSha256": "056966a88b85c8dc35093bdb8ed1b3f5341493cd25251284bd841e6169f44c72",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "e2afa19b4d0b5bbb812050eacf82d63aa04a989b964914484ed2e16779b93324",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 44.307,
+          "opaquePct": 54.799,
+          "partialPct": 0.894
+        },
+        "bbox": [
+          11,
+          11,
+          391,
+          404
+        ],
+        "sourceSize": [
+          402,
+          415
+        ],
+        "finalSize": [
+          402,
+          415
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-maracas.png",
+      "final": "assets/instruments/maracas.webp",
+      "bytes": 36622
+    },
+    "instrument/drum": {
+      "source": "assets/source/gpt-image-2/instrument-crops/drum.png",
+      "sourceSha256": "2ca5d54d96cab604744eaf06c1ac578db5f8d14c82354fa88356962509e54075",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "6e9b27ebb5803aa605532621668395ab445b7014996d1a9bde1756d52bf66f9c",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 33.387,
+          "opaquePct": 65.687,
+          "partialPct": 0.926
+        },
+        "bbox": [
+          11,
+          11,
+          406,
+          394
+        ],
+        "sourceSize": [
+          417,
+          404
+        ],
+        "finalSize": [
+          417,
+          404
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-drum.png",
+      "final": "assets/instruments/drum.webp",
+      "bytes": 39518
+    },
+    "instrument/bell": {
+      "source": "assets/source/gpt-image-2/instrument-crops/bell.png",
+      "sourceSha256": "51a2aa12400ddcb188eab39c772366a34ffe465bcdfeb31cc6d11e44d60ce49e",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "1886351c224d58429710487f39c7b4563b149bdc416842413cd8c11239294f6e",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 47.878,
+          "opaquePct": 51.256,
+          "partialPct": 0.865
+        },
+        "bbox": [
+          10,
+          11,
+          306,
+          521
+        ],
+        "sourceSize": [
+          316,
+          531
+        ],
+        "finalSize": [
+          316,
+          531
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-bell.png",
+      "final": "assets/instruments/bell.webp",
+      "bytes": 33348
+    },
+    "instrument/piano": {
+      "source": "assets/source/gpt-image-2/instrument-crops/piano.png",
+      "sourceSha256": "942742f65411840d092dd6cde03a8dbc4c04b375649e386ec526c2d574246d1e",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "eec89d7de638cc53370ccdbf10bb5cdeb9d1c52e895af64a18caf8240b97b457",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 22.5,
+          "opaquePct": 76.684,
+          "partialPct": 0.816
+        },
+        "bbox": [
+          10,
+          10,
+          417,
+          460
+        ],
+        "sourceSize": [
+          427,
+          470
+        ],
+        "finalSize": [
+          427,
+          470
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-piano.png",
+      "final": "assets/instruments/piano.webp",
+      "bytes": 45616
+    },
+    "instrument/guitar": {
+      "source": "assets/source/gpt-image-2/instrument-crops/guitar.png",
+      "sourceSha256": "23b0d407ae693b211ec67675557776235023d0ddbab28d7cdb974be87fbca268",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "f5602d084ba27d56b8efdcc9726c53cde194ac39406f9dab90b89b35ce4165a3",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 45.461,
+          "opaquePct": 53.782,
+          "partialPct": 0.757
+        },
+        "bbox": [
+          10,
+          11,
+          332,
+          602
+        ],
+        "sourceSize": [
+          342,
+          613
+        ],
+        "finalSize": [
+          335,
+          600
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-guitar.png",
+      "final": "assets/instruments/guitar.webp",
+      "bytes": 50640
+    },
+    "instrument/flute": {
+      "source": "assets/source/gpt-image-2/instrument-crops/flute.png",
+      "sourceSha256": "82b4726e82ba7e20acba38d11c922cb89b1cdd5c7b2c5d8441ab4444dee90ad7",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        32,
+        32,
+        32
+      ],
+      "matteSha256": "90dbe16111133711f0f0baa29fabb8219c70712ed57ecb5b4b6b6471c9106ae9",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 74.799,
+          "opaquePct": 24.481,
+          "partialPct": 0.72
+        },
+        "bbox": [
+          10,
+          10,
+          297,
+          582
+        ],
+        "sourceSize": [
+          307,
+          592
+        ],
+        "finalSize": [
+          307,
+          592
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/instrument-flute.png",
+      "final": "assets/instruments/flute.webp",
+      "bytes": 23360
+    },
+    "character/owl-listening": {
+      "source": "assets/source/gpt-image-2/owl-pose-crops/listening.png",
+      "sourceSha256": "da37d7ea3b3445f5d7d7dc1412be3b3a25e865257529d50731ad9d531ce5b593",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        29,
+        29,
+        29
+      ],
+      "matteSha256": "b1a9d5332a3e679f3ceee918e53b6d38522fa4accb8f0f666f631ee4b075426d",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 32.896,
+          "opaquePct": 66.37,
+          "partialPct": 0.734
+        },
+        "bbox": [
+          10,
+          10,
+          472,
+          567
+        ],
+        "sourceSize": [
+          482,
+          576
+        ],
+        "finalSize": [
+          482,
+          576
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/owl-listening.png",
+      "final": "assets/characters/owl-listening.webp",
+      "bytes": 70436
+    },
+    "character/owl-presenting": {
+      "source": "assets/source/gpt-image-2/owl-pose-crops/presenting.png",
+      "sourceSha256": "bca8a6fc71e5d0a2711da546ce68d19244c732e416051a56ff8a6d4202e5a8df",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        29,
+        29,
+        29
+      ],
+      "matteSha256": "562c4c9252fa94334b635f59f3d7eb47db6e0f979028f415ee392b27ca056520",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 39.652,
+          "opaquePct": 59.659,
+          "partialPct": 0.689
+        },
+        "bbox": [
+          9,
+          10,
+          533,
+          565
+        ],
+        "sourceSize": [
+          543,
+          575
+        ],
+        "finalSize": [
+          543,
+          575
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/owl-presenting.png",
+      "final": "assets/characters/owl-presenting.webp",
+      "bytes": 71282
+    },
+    "character/owl-celebrating": {
+      "source": "assets/source/gpt-image-2/owl-pose-crops/celebrating.png",
+      "sourceSha256": "817c2dce2669294ef9a253bf3d770ce5265476ac08ffdc34a537518dfd44d424",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        29,
+        29,
+        29
+      ],
+      "matteSha256": "a22402b516f6c18e69a97bed581483a3b7a1a02659b26f04a7ae396d6661755a",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 37.216,
+          "opaquePct": 62.119,
+          "partialPct": 0.664
+        },
+        "bbox": [
+          10,
+          10,
+          568,
+          586
+        ],
+        "sourceSize": [
+          577,
+          596
+        ],
+        "finalSize": [
+          577,
+          596
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/owl-celebrating.png",
+      "final": "assets/characters/owl-celebrating.webp",
+      "bytes": 79882
+    },
+    "character/owl-conducting": {
+      "source": "assets/source/gpt-image-2/owl-pose-crops/conducting.png",
+      "sourceSha256": "824da943f47d88f267fdfd4bd5a8a69c031289b479b6f2d3ad7cdb29d80e3cb4",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        29,
+        29,
+        29
+      ],
+      "matteSha256": "e12d24b6cce52eba939faa6a5565ed328410f7656b0e5d7d2004a98e9c789ac1",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 40.436,
+          "opaquePct": 58.792,
+          "partialPct": 0.772
+        },
+        "bbox": [
+          9,
+          10,
+          559,
+          562
+        ],
+        "sourceSize": [
+          569,
+          572
+        ],
+        "finalSize": [
+          569,
+          572
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/owl-conducting.png",
+      "final": "assets/characters/owl-conducting.webp",
+      "bytes": 73194
+    },
+    "ui/title": {
+      "source": "assets/source/gpt-image-2/title-crop/title.png",
+      "sourceSha256": "b8c3a2049054d3a6f434a235dfce05929af24a7d0beb690ee5ef2ce152a93042",
+      "alphaMethod": "exact-source-largest-component-contiguous-ground-matte",
+      "sampledBackgroundRgb": [
+        21,
+        22,
+        24
+      ],
+      "matteSha256": "56f0485418a40cb342303a8ed137f15a5f64e63f82492a69a7c07dbb4782f145",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 26.433,
+          "opaquePct": 73.245,
+          "partialPct": 0.323
+        },
+        "bbox": [
+          10,
+          9,
+          1582,
+          870
+        ],
+        "sourceSize": [
+          1592,
+          880
+        ],
+        "finalSize": [
+          1100,
+          608
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/title.png",
+      "final": "assets/ui/title.webp",
+      "bytes": 186636
+    },
+    "ui/card-green": {
+      "source": "assets/source/gpt-image-2/ui-crops/card-green.png",
+      "sourceSha256": "4463e25bd87c6bfc50f2621bf600956924694e9bba30b859bd33caf5e702d561",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "fdf4262e1f29c42e181cf4632a0ad7b0f9f90adf886caa3656df4249d11258c2",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 11.853,
+          "opaquePct": 81.187,
+          "partialPct": 6.96
+        },
+        "bbox": [
+          10,
+          12,
+          467,
+          460
+        ],
+        "sourceSize": [
+          477,
+          469
+        ],
+        "finalSize": [
+          477,
+          469
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-card-green.png",
+      "final": "assets/ui/card-green.webp",
+      "bytes": 68772
+    },
+    "ui/card-purple": {
+      "source": "assets/source/gpt-image-2/ui-crops/card-purple.png",
+      "sourceSha256": "6c4178202da769d536f3cd81f033ff0efcb0c1f225c23b424ae6806b285bc4f0",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "080c4b99c572e77fa44353264a877a40e0264e61e3f0e047ed2200fb82f52bb5",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 12.059,
+          "opaquePct": 80.96,
+          "partialPct": 6.981
+        },
+        "bbox": [
+          10,
+          11,
+          468,
+          458
+        ],
+        "sourceSize": [
+          478,
+          469
+        ],
+        "finalSize": [
+          478,
+          469
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-card-purple.png",
+      "final": "assets/ui/card-purple.webp",
+      "bytes": 64584
+    },
+    "ui/card-blue": {
+      "source": "assets/source/gpt-image-2/ui-crops/card-blue.png",
+      "sourceSha256": "67ace83617d5183f4c1c159b6964b90e68177938360f9cdbc6656de747301b2f",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "a89a1c3009e2f5ddcb02279b76c4a54ca1f97f433a9d36b5dcb534d627fe03b6",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 11.833,
+          "opaquePct": 81.424,
+          "partialPct": 6.743
+        },
+        "bbox": [
+          10,
+          11,
+          467,
+          460
+        ],
+        "sourceSize": [
+          478,
+          469
+        ],
+        "finalSize": [
+          478,
+          469
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-card-blue.png",
+      "final": "assets/ui/card-blue.webp",
+      "bytes": 63742
+    },
+    "ui/listen-button": {
+      "source": "assets/source/gpt-image-2/ui-crops/listen-button.png",
+      "sourceSha256": "4684b2cc699dca208ca7a4d54d00514483ba78fba6186bc9ec27bb6cc1145e88",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "64acea3cf1fd9386626a712d15135859a2a010688ae4cc05c71a2e44ad869c81",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 29.352,
+          "opaquePct": 63.54,
+          "partialPct": 7.108
+        },
+        "bbox": [
+          10,
+          11,
+          397,
+          386
+        ],
+        "sourceSize": [
+          397,
+          395
+        ],
+        "finalSize": [
+          397,
+          395
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-listen-button.png",
+      "final": "assets/ui/listen-button.webp",
+      "bytes": 43288
+    },
+    "ui/primary-button": {
+      "source": "assets/source/gpt-image-2/ui-crops/primary-button.png",
+      "sourceSha256": "9817953b39f265a448b32ce8c93a4abfb2d7bd94816b5d805ba1cdd42275884a",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "d070558d9167f1443e324a19cbf99971dc399dbe60d6fd170d105a7b3abf52b1",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 19.178,
+          "opaquePct": 71.174,
+          "partialPct": 9.649
+        },
+        "bbox": [
+          0,
+          10,
+          599,
+          234
+        ],
+        "sourceSize": [
+          599,
+          245
+        ],
+        "finalSize": [
+          599,
+          245
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-primary-button.png",
+      "final": "assets/ui/primary-button.webp",
+      "bytes": 46230
+    },
+    "ui/progress-plaque": {
+      "source": "assets/source/gpt-image-2/ui-crops/progress-plaque.png",
+      "sourceSha256": "bcc2c3bec170608d34482226cbeb203bacfb298c0fcee9d4260d8a761d571785",
+      "alphaMethod": "source-alpha-opaque-plateau-normalized",
+      "matteSha256": "52124eae61fd6e19619663178fa841163f6dbcb58d2e76a85994205aec31e6e0",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 23.375,
+          "opaquePct": 65.201,
+          "partialPct": 11.424
+        },
+        "bbox": [
+          0,
+          11,
+          428,
+          173
+        ],
+        "sourceSize": [
+          438,
+          183
+        ],
+        "finalSize": [
+          438,
+          183
+        ],
+        "alphaFloor": 4
+      },
+      "magenta": "assets/source/qa/magenta/ui-progress-plaque.png",
+      "final": "assets/ui/progress-plaque.webp",
+      "bytes": 23686
+    },
+    "background/theater": {
+      "source": "assets/source/gpt-image-2/theater-background.png",
+      "sourceSha256": "8c1b25a0784a14eb7f34cb00f79e79fa14e69504f4edbd5ad393dc67a6308817",
+      "final": "assets/backgrounds/theater.webp",
+      "size": [
+        1456,
+        1092
+      ],
+      "bytes": 301202
+    },
+    "background/finale": {
+      "source": "assets/source/gpt-image-2/finale-background.png",
+      "sourceSha256": "759ac30319f0706b67b939da35adf6230dae3b65e9c4bd85f47f59e63816013a",
+      "final": "assets/backgrounds/finale.webp",
+      "size": [
+        1456,
+        1092
+      ],
+      "bytes": 315926
+    }
+  },
+  "hub": {
+    "workflow": "krea2-turbo-t2i",
+    "seed": 42,
+    "source": "assets/source/krea2/hub-tile-source.png",
+    "sourceSha256": "50789bc21469206441139204f22a9142ac23de8bdbe1254d2db5c2db001cacc8",
+    "final": "assets/hub/tiles/instrument-detective.jpg",
+    "size": [
+      640,
+      533
+    ],
+    "bytes": 54066
+  }
+}

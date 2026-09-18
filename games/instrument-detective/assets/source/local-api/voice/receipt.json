@@ -1,0 +1,16 @@
+{
+  "workflow": "qwen3-tts-voiceclone → whisper-stt",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "seeds": [
+    7,
+    8,
+    9
+  ],
+  "gate": {
+    "normalizedSimilarity": 0.92,
+    "wordCoverage": 0.95
+  },
+  "accepted": 18,
+  "total": 18,
+  "runtimeDelivery": "complete"
+}

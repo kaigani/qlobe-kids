@@ -1,56 +1,38 @@
-# Game Design Document - Instrument Detective
+# Instrument Detective — game design
 
-## Game title
-Instrument Detective 🕵️
+## Product intent
 
-## Category
-`art-music`
+Instrument Detective is a six-case listening mystery for ages 2–6. A friendly owl presents a sound, the child taps the matching instrument, and every solved case joins a tiny concert band. Spoken instructions, large targets, immediate retry feedback, and no required reading keep the game preschool-friendly.
 
-## Age target
-5-6 (platform default).
+## Screen map
 
-## Concept video
-_None yet._
+1. **Splash:** title, owl, instrument peeks, PLAY, and (after completion) MY BAND. Home exists only here.
+2. **Listen case:** progress plaque, spoken clue, raster LISTEN button, three instrument cards, and a casebook row. HUD provides mute and back.
+3. **Case reveal:** the correct card celebrates with an instrument-specific motion and spoken praise, then advances.
+4. **Concert:** all six instruments are unlocked. Tapping a card plays its sample; PLAY WHOLE BAND performs the set. HUD returns to splash.
 
-## Learning goals
-1. Practice listening discrimination by matching a sound clue to an instrument.
-2. Build familiarity with instrument names and simple instrument icons.
-3. Hear and use sound vocabulary: boom, ding, shicka, toot, plink, strum, loud, soft, jingle, low.
+## Core loop
 
-## Mini-games / modes
+Six shuffled rounds cover maracas, drum, bell, piano, guitar, and flute. Each round plays one real sample and asks the child to find its matching instrument among three choices. Wrong taps wiggle gently, preserve progress, and invite another try. Correct taps add the instrument to the casebook, play sparkle feedback, speak a short fact, and advance. Completing all six stores local progress and unlocks the concert.
 
-### Mode 1 - Sound Detective
-- **Skill:** Listening discrimination and instrument names.
-- **Core loop (30-90s):** The child hears a playful detective-style sound clue, sees two or three instrument cards, and taps the matching instrument. Correct picks get sparkle SFX and praise; misses wiggle gently and replay the clue.
-- **Rounds:** 6 with `difficultyRamp: true`.
+The bell case uses `agogo-b.m4a`, the closest available preschool hand-bell proxy, while retaining bell art and language. This compromise is recorded in `ASSETS.md`.
 
-### Mode 2 - Loud or Soft?
-- **Skill:** Sound vocabulary and instrument qualities.
-- **Core loop (30-90s):** The child hears a sound-quality prompt such as loud, soft, jingly, or low, then chooses the instrument that best matches that quality. Each short round advances after one correct tap.
-- **Rounds:** 4.
+## Interaction and accessibility
 
-## Shared assets used
-- `shared/js/engines/choose-one.js` - choose-one interaction loop, splash, HUD, retry, celebration, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, boing, tick, and tada effects.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
+- Every primary control is a real labelled button with a touch target of at least 96 CSS pixels.
+- Spoken instructions and clues mean reading is optional.
+- Shape, illustration, and name reinforce color differences.
+- Mute is session-persistent; the game remains playable if audio is blocked.
+- Reduced motion receives static reveal states.
+- Progress is local-only and optional; replay does not remove unlocks.
+- `window.QLOBE_DEBUG` supports deterministic seeds, target inspection, fast timers, mute, and state snapshots.
 
-## New assets needed
-- Toy-3D instrument art for drum, bell, shaker, trumpet, piano, guitar, violin, and flute.
-- Real instrument sound clips for drum, bell, shaker, trumpet, piano, guitar, violin, and flute under the future shared asset type `shared/assets/sounds/instruments/`.
-- Recorded teacher-voice lines matching every line in `config.js`.
+## Audio direction
 
-## Interaction model
-Tap one answer card after a spoken clue. The engine keeps answer cards at large touch sizes, uses a sound replay button, and avoids any required reading.
+Listening rounds omit background music so the instrument timbre is clear. Shared platform samples provide the six sounds; shared SFX provide tap, retry, sparkle, and finale feedback. Lines live in `data/lines.json` and use shared voice-clips fallback or approved voice-clone clips. TTS acceptance is transcript matching (normalized similarity ≥ 0.92 per line), not merely successful file generation.
 
-## Feedback model
-- **Success:** pop/sparkle SFX, a brief bounce, and spoken detective praise.
-- **Retry:** gentle wiggle, boing SFX, spoken nudge, and the same prompt again.
-- **Hint:** idle replay after a pause, plus the HUD sound button.
-- **Celebration:** end-of-mode tada, confetti-style burst, and spoken cheer.
+## Art direction and status
 
-## Difficulty progression
-`Sound Detective` starts with two choices and ramps toward three choices as the mode advances. `Loud or Soft?` keeps three choices for stable sound-quality practice.
+The world is a cozy after-dark children’s theater: plum curtains, teal and golden light, painted-paper texture, cream sticker outlines, jewel-tone toy instruments, and an expressive owl detective. All game-specific art is raster; prompts, paths, and processing decisions are in `assets/source/PROMPTS.md` and `ASSETS.md`.
 
-## Replay variation
-The engine shuffles round order and answer order on each play. Debug seeding remains available through `window.QLOBE_DEBUG.seed(n)` for review automation.
+The shipped modes are `listen` and `concert`. The earlier prototype’s separate “Loud or Soft?” mode was folded into the stronger six-case loop so the child learns instrument identity before free play. The game remains beta until a real child/iPad playtest checks sample volume, card spacing, and voice pacing.

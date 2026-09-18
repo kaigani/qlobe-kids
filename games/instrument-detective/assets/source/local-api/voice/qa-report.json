@@ -1,0 +1,344 @@
+{
+  "intro": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "4ef2d8d4a68a1960",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Detective ears ready! Tap the big sound button, listen, then find the instrument.",
+        "transcript": "Detective ears ready! Tap the big sound button, listen, then find the instrument.",
+        "duration": 6.0,
+        "meanVolumeDb": -19.3
+      }
+    ]
+  },
+  "round-maracas": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "2b67bb38a63fe415",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this shaking sound?",
+        "transcript": "Which instrument makes this shaking sound?",
+        "duration": 2.396,
+        "meanVolumeDb": -20.1
+      }
+    ]
+  },
+  "round-drum": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "f0e8cf1b816cd063",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this booming sound?",
+        "transcript": "Which instrument makes this booming sound?",
+        "duration": 2.256,
+        "meanVolumeDb": -18.5
+      }
+    ]
+  },
+  "round-bell": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "c6f5c6250bfb1372",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this ringing sound?",
+        "transcript": "Which instrument makes this ringing sound?",
+        "duration": 2.347,
+        "meanVolumeDb": -18.9
+      }
+    ]
+  },
+  "round-piano": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "c689f7f0ebb0cfaf",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this plinking sound?",
+        "transcript": "Which instrument makes this plinking sound?",
+        "duration": 2.375,
+        "meanVolumeDb": -18.5
+      }
+    ]
+  },
+  "round-guitar": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "7f56e7dc95437c7c",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this strumming sound?",
+        "transcript": "Which instrument makes this strumming sound?",
+        "duration": 2.311,
+        "meanVolumeDb": -18.6
+      }
+    ]
+  },
+  "round-flute": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "4917c3f90cf9adca",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Which instrument makes this airy sound?",
+        "transcript": "Which instrument makes this airy sound?",
+        "duration": 2.389,
+        "meanVolumeDb": -19.4
+      }
+    ]
+  },
+  "replay": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "068b733e8d8484a1",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Listen one more time.",
+        "transcript": "Listen one more time.",
+        "duration": 1.482,
+        "meanVolumeDb": -19.8
+      }
+    ]
+  },
+  "nudge": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "3d0c461b9b891905",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Good listening. Try another instrument.",
+        "transcript": "Good listening. Try another instrument.",
+        "duration": 2.581,
+        "meanVolumeDb": -19.4
+      }
+    ]
+  },
+  "correct-maracas": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "ce3217222f88f1fa",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! Maracas shake!",
+        "transcript": "Aha! Maracas shake!",
+        "duration": 1.985,
+        "meanVolumeDb": -19.3
+      }
+    ]
+  },
+  "correct-drum": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "3e9db0973397ecc5",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! The drum booms!",
+        "transcript": "Aha! The drum booms!",
+        "duration": 2.716,
+        "meanVolumeDb": -19.8
+      }
+    ]
+  },
+  "correct-bell": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "100abaf61bb0a687",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! The bell rings!",
+        "transcript": "Aha! The bell rings!",
+        "duration": 1.837,
+        "meanVolumeDb": -19.6
+      }
+    ]
+  },
+  "correct-piano": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "81c0d91f8ce28593",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! The piano plinks!",
+        "transcript": "Aha! The piano plinks!",
+        "duration": 2.716,
+        "meanVolumeDb": -19.4
+      }
+    ]
+  },
+  "correct-guitar": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "554570d230aeb951",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! The guitar strums!",
+        "transcript": "Aha! The guitar strums!",
+        "duration": 1.917,
+        "meanVolumeDb": -19.2
+      }
+    ]
+  },
+  "correct-flute": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "57c90377a92fb3ee",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Aha! The flute sings!",
+        "transcript": "Aha! The flute sings!",
+        "duration": 2.077,
+        "meanVolumeDb": -19.2
+      }
+    ]
+  },
+  "halfway": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "571d361ec662bb1b",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Three sounds solved. Your band is growing!",
+        "transcript": "Three sounds solved. Your band is growing!",
+        "duration": 2.793,
+        "meanVolumeDb": -19.6
+      }
+    ]
+  },
+  "finale": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "2f9e87ef87836c81",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Case closed! Your whole detective band is ready.",
+        "transcript": "Case closed! Your whole detective band is ready.",
+        "duration": 2.948,
+        "meanVolumeDb": -18.8
+      }
+    ]
+  },
+  "concert": {
+    "accepted": true,
+    "acceptedSeed": 7,
+    "textHash": "c2359d4990a0edbf",
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt/base/en",
+    "attempts": [
+      {
+        "seed": 7,
+        "accepted": true,
+        "score": 1.0,
+        "coverage": 1.0,
+        "wanted": "Tap any instrument to make the band play!",
+        "transcript": "Tap any instrument to make the band play!",
+        "duration": 2.494,
+        "meanVolumeDb": -19.3
+      }
+    ]
+  }
+}

@@ -3058,24 +3058,24 @@
       "path": "games/instrument-detective/",
       "icon": "assets/hub/tiles/instrument-detective.jpg",
       "age": {
-        "min": 5,
+        "min": 2,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#e88952",
       "modes": [
         {
           "id": "listen",
           "title": "Sound Detective",
-          "skill": "listening discrimination and instrument names"
+          "skill": "auditory discrimination"
         },
         {
-          "id": "families",
-          "title": "Loud or Soft?",
-          "skill": "sound vocabulary and instrument qualities"
+          "id": "concert",
+          "title": "Tiny Concert",
+          "skill": "musical cause and effect"
         }
       ],
-      "summary": "Guess the shaker, drum, bell, and chime by sound."
+      "summary": "Listen for six mystery instruments, solve each sound case, and unlock a tiny free-play concert."
     },
     {
       "id": "big-paper-murals",

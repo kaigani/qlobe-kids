@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T07:40:04.086Z",
+  "generated": "2026-09-18T09:18:27.414Z",
   "engines": {
     "coach-timer": {
       "count": 9,
@@ -26,11 +26,10 @@
       ]
     },
     "choose-one": {
-      "count": 6,
+      "count": 5,
       "games": [
         "calm-corner-cards",
         "grace-courtesy-theater",
-        "instrument-detective",
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets"
@@ -1046,22 +1045,32 @@
       "packs": []
     },
     "instrument-detective": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "art-music",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/instruments"
+      ],
       "packs": []
     },
     "joke-workshop": {
@@ -3758,6 +3767,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -3882,6 +3892,7 @@
         "family-timeline",
         "feelings-charades",
         "garden-delivery-game",
+        "instrument-detective",
         "joke-workshop",
         "land-water-tray",
         "loose-parts-collage",
@@ -3963,6 +3974,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4042,7 +4054,6 @@
       "shared/js/engines/choose-one.js": [
         "calm-corner-cards",
         "grace-courtesy-theater",
-        "instrument-detective",
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets"
@@ -4112,6 +4123,7 @@
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4284,6 +4296,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "laundry-sorter",
@@ -4340,6 +4353,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4401,6 +4415,7 @@
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-graphers",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4564,7 +4579,6 @@
         "flashlight-cave",
         "globe-spin-stories",
         "grace-courtesy-theater",
-        "instrument-detective",
         "joke-workshop",
         "laundry-sorter",
         "letter-road-driving",
@@ -4739,6 +4753,7 @@
         "freeze-focus-dance",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4816,6 +4831,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4890,6 +4906,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -5087,7 +5104,6 @@
         "blend-train",
         "calm-corner-cards",
         "grace-courtesy-theater",
-        "instrument-detective",
         "letter-road-driving",
         "line-walking-challenge",
         "melting-race",
@@ -5131,6 +5147,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -6527,6 +6544,7 @@
         "snack-chef"
       ],
       "shared/assets/instruments": [
+        "instrument-detective",
         "my-puppet-band",
         "world-music-dance"
       ],
