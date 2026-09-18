@@ -3,6 +3,10 @@
 
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
+// Static import is free of network cost: voice-clips fetches nothing until
+// init(), which only ever runs for a config that declares `voice.clips`.
+import * as clips from '../voice-clips.js';
+import * as content from '../content.js';
 import { onTap } from '../tap.js';
 import { mulberry32 } from '../rng.js';
 import { escapeHtml, escapeAttr } from '../dom.js';
@@ -16,10 +20,13 @@ import { burst, sparkle } from '../stage/particles.js';
 import { artObj, artUrlRef, card as cardBacking } from '../stage/art-pixi.js';
 import { emojiFromRef } from '../art-ref.js';
 
+const SHARED_ASSETS = new URL('../../assets/', import.meta.url); // -> shared/assets/
+const AUDIO_LOG_MAX = 80;
 const WAIT_FOR_INPUT = 80;
 const IDLE_MS = 10000;
 const REPLAY_DEBOUNCE_MS = 600;
 const WIN_RETRY_MS = 120;
+const VIDEO_READY_TIMEOUT = 2600; // never-blocks video race (red-green-light's number)
 const WIN_BAIL_MS = 15000;
 const DIAL_TRACK_STROKE = { width: 22, color: 0xffffff, alpha: 0.68 };
 const DIAL_ARC_STROKE = { width: 22, color: 0x58a945, cap: 'round' };
@@ -71,6 +78,17 @@ class CoachTimerGame {
     this.activeTimerFx = Promise.resolve();
     this.currentPop = null;
     this.targetMap = new Map();
+    // Recorded-voice channel (opt-in via config.voice.clips). The generation is
+    // the narrator-style monotonic token: an interrupted line never wakes up
+    // over a newer one.
+    this.voiceGeneration = 0;
+    this.clipsLoading = null;
+    this.clipsReady = false;
+    this.audioLog = [];
+    // Persona + presenter slot (plan §2.3–2.4, ported from red-green-light).
+    this.persona = null;
+    this.videoEl = null;
+    this.posterEl = null;
 
     this.pointerUnlock = () => this.unlockAudio();
     this.preventGesture = (e) => e.preventDefault();
@@ -81,7 +99,8 @@ class CoachTimerGame {
     document.addEventListener('visibilitychange', this.onVisibility);
 
     this.buildShell();
-    this.renderSplash();
+    if (this.personaRoster().length) this.renderPersonaSelect();
+    else this.renderSplash();
     this.ready = Promise.resolve();
     this.installDebug();
   }
@@ -98,22 +117,83 @@ class CoachTimerGame {
    * baked into a freshly-built element.
    */
   buildShell() {
+    const hasPersonas = this.personaRoster().length > 0;
     this.mountEl.classList.add('qk-coach-root', 'qk-eng-root');
     this.mountEl.innerHTML = `
-      <section class="qk-coach qk-coach-splash qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title || '')}"></section>
+      <section class="qk-coach qk-coach-persona qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.selectPrompt || 'Pick your coach')}"${hasPersonas ? '' : ' hidden'}></section>
+      <section class="qk-coach qk-coach-splash qk-eng-surface qk-eng-page" aria-label="${escapeAttr(this.config.title || '')}"${hasPersonas ? ' hidden' : ''}></section>
       <section class="qk-coach qk-coach-play qk-eng-surface" hidden></section>
       <section class="qk-coach qk-coach-end qk-eng-surface qk-eng-page" hidden></section>
     `;
     this.screens = createScreens({
       root: this.mountEl,
       screens: {
+        persona: this.mountEl.querySelector('.qk-coach-persona'),
         splash: this.mountEl.querySelector('.qk-coach-splash'),
         play: this.mountEl.querySelector('.qk-coach-play'),
         end: this.mountEl.querySelector('.qk-coach-end'),
       },
-      initial: 'splash',
-      voice: { stop: () => speech.stop() },
+      initial: hasPersonas ? 'persona' : 'splash',
+      voice: { stop: () => this.stopVoice() },
     });
+  }
+
+  /** Personas ready to show — `ready: false` keeps unbuilt ones out of the grid. */
+  personaRoster() {
+    return (this.config.personas || []).filter((p) => p && p.id && p.ready !== false);
+  }
+
+  // "Pick your coach" (plan §2.4, generalized from red-green-light's caller
+  // select). Only rendered when the config declares ready personas; a game
+  // with none keeps the splash as its first screen, byte-identically.
+  renderPersonaSelect() {
+    this.clearTimers();
+    this.disposeStage();
+    this.stopVoice();
+    this.mode = null;
+    this.persona = null;
+    this.awaitingInput = false;
+    this.inputLocked = false;
+    this.targetMap.clear();
+    const section = this.screens.el('persona');
+    this.screens.release('persona');
+    this.screens.show('persona');
+    const tiles = this.personaRoster().map((p) => `
+      <button class="qk-coach-persona-tile" type="button" data-persona="${escapeAttr(p.id)}" aria-label="${escapeAttr(p.name || p.id)}">
+        <span class="qk-coach-persona-art qk-eng-card">${p.poster
+          ? `<img src="${escapeAttr(p.poster)}" alt="" draggable="false" />`
+          : escapeHtml(emojiFromRef(p.art || 'emoji:🎪'))}</span>
+        <span class="qk-coach-persona-name">${escapeHtml(p.name || p.id)}</span>
+      </button>`).join('');
+    section.innerHTML = `
+      <a class="qk-coach-home qk-coach-img-btn qk-eng-ico-home" href="../../" aria-label="Home"></a>
+      <div class="qk-coach-splash-center qk-eng-center">
+        <h1>${escapeHtml(this.config.selectPrompt || 'Pick your coach!')}</h1>
+        <div class="qk-coach-persona-grid">${tiles}</div>
+      </div>`;
+    // §8: the catalog link exists only while the FIRST screen is live.
+    const homeLink = section.querySelector('a.qk-coach-home');
+    if (homeLink) this.screens.hold(() => homeLink.remove());
+    section.querySelectorAll('.qk-coach-persona-tile').forEach((tile) => {
+      const img = tile.querySelector('img');
+      if (img) img.addEventListener('error', () => img.replaceWith(document.createTextNode('🎪')), { once: true });
+      this.screens.hold(onTap(tile, () => this.selectPersona(tile.dataset.persona), {
+        feedback: (e) => { e.preventDefault(); this.unlockAudio(); this.playSfx('tick'); },
+      }));
+    });
+  }
+
+  selectPersona(id) {
+    const persona = this.personaRoster().find((p) => p.id === id);
+    if (!persona || this.destroyed) return { accepted: false };
+    this.persona = persona;
+    this.playSfx('pop');
+    this.renderSplash();
+    if (persona.audio && persona.audio.greet) {
+      this.logAudio('clip', persona.audio.greet, persona.greetText || '');
+      clips.sayFile(persona.audio.greet, persona.greetText || 'Hi there! Come play with me!');
+    }
+    return { accepted: true };
   }
 
   destroy() {
@@ -121,7 +201,11 @@ class CoachTimerGame {
     this.destroyed = true;
     this.clearTimers();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
+    if (this.videoEl) {
+      try { this.videoEl.pause(); this.videoEl.removeAttribute('src'); this.videoEl.load(); } catch { /* ignore */ }
+      this.videoEl = null;
+    }
     window.removeEventListener('pointerdown', this.pointerUnlock);
     window.removeEventListener('gesturestart', this.preventGesture);
     window.removeEventListener('contextmenu', this.preventGesture);
@@ -139,6 +223,8 @@ class CoachTimerGame {
     // these calls are cheap and idempotent
     sfx.unlock();
     speech.unlock();
+    clips.unlock();
+    if (this.videoEl) blessMedia(this.videoEl);
   }
 
   installDebug() {
@@ -155,6 +241,12 @@ class CoachTimerGame {
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
       fastTimers: (scale) => this.fastTimers(scale),
+      // Coach extra (additive, version stays 1): the ordered record of what the
+      // game asked to say — kind 'clip' vs 'speech' is QA's proof the recorded
+      // voice actually played.
+      getAudioLog: () => this.audioLog.map((entry) => ({ ...entry })),
+      listPersonas: () => this.personaRoster().map((p) => ({ id: p.id, name: p.name || p.id })),
+      selectPersona: (id) => this.selectPersona(id),
     });
   }
 
@@ -165,7 +257,7 @@ class CoachTimerGame {
   renderSplash() {
     this.clearTimers();
     this.disposeStage();
-    speech.stop();
+    this.stopVoice();
     this.mode = null;
     this.awaitingInput = false;
     this.inputLocked = false;
@@ -176,8 +268,14 @@ class CoachTimerGame {
     // not run its bag — release it by hand before the markup underneath changes.
     this.screens.release('splash');
     this.screens.show('splash');
+    // With a persona roster the splash is the SECOND screen: it gets a back
+    // button to the persona grid instead of the catalog link (§8: home only on
+    // the first screen).
+    const hasPersonas = this.personaRoster().length > 0;
     splash.innerHTML = `
-      <a class="qk-coach-home qk-coach-img-btn qk-eng-ico-home" href="../../" aria-label="Home"></a>
+      ${hasPersonas
+        ? '<button class="qk-coach-back qk-coach-img-btn qk-eng-ico-back" type="button" aria-label="Back to coaches"></button>'
+        : '<a class="qk-coach-home qk-coach-img-btn qk-eng-ico-home" href="../../" aria-label="Home"></a>'}
       <div class="qk-coach-splash-center qk-eng-center">
         <div class="qk-coach-splash-art qk-eng-card" aria-hidden="true">${escapeHtml(emojiFromRef(this.config.splashEmoji || 'emoji:\u2b50'))}</div>
         <h1>${escapeHtml(this.config.title || '')}</h1>
@@ -208,6 +306,8 @@ class CoachTimerGame {
     // on the play screen" is a check the QA drivers actually make.
     const homeLink = splash.querySelector('a.qk-coach-home');
     if (homeLink) this.screens.hold(() => homeLink.remove());
+    const backBtn = splash.querySelector('button.qk-coach-back');
+    if (backBtn) this.screens.hold(onTap(backBtn, () => this.renderPersonaSelect()));
     this.screens.hold(picker.dispose);
   }
 
@@ -223,8 +323,9 @@ class CoachTimerGame {
   async runMode(mode) {
     this.clearTimers();
     this.disposeStage();
-    speech.stop();
-    this.mode = mode;
+    this.stopVoice();
+    this.mode = normalizeMode(mode);
+    mode = this.mode;
     this.stepIndex = 0;
     this.cycleIndex = 0;
     this.signalStateIndex = 0;
@@ -249,7 +350,7 @@ class CoachTimerGame {
     const rows = (this.mode.steps || []).map((step, index) => `
       <li class="qk-coach-row" data-step="${index}">
         <span class="qk-coach-check" aria-hidden="true"></span>
-        <span class="qk-coach-row-text">${escapeHtml(step.say || '')}</span>
+        <span class="qk-coach-row-text">${escapeHtml(lineText(step.say))}</span>
       </li>`).join('');
     const play = this.openPlayScreen('qk-coach-steps');
     play.innerHTML = `
@@ -279,6 +380,7 @@ class CoachTimerGame {
     this.screens.release('play');
     play.classList.toggle('qk-coach-steps', flavour === 'qk-coach-steps');
     play.classList.toggle('qk-coach-signal', flavour === 'qk-coach-signal');
+    play.classList.remove('qk-coach-hold');
     play.setAttribute('aria-label', (this.mode && this.mode.title) || '');
     if (flavour === 'qk-coach-signal') play.dataset.targetId = 'signal-area';
     else delete play.dataset.targetId;
@@ -297,13 +399,19 @@ class CoachTimerGame {
     this.idlePrompted = false;
     this.targetMap.clear();
     this.updateChecklist();
+    // A `hold` beat drives the room-readable state frame (border + glow in the
+    // beat's color) and auto-advances on its clock; setup/do beats clear it.
+    const kind = step.kind || 'do';
+    const playEl = this.screens.el('play');
+    playEl.classList.toggle('qk-coach-hold', kind === 'hold');
+    if (kind === 'hold') playEl.style.setProperty('--qk-signal-color', step.color || '#58a945');
     const row = this.screens.el('play').querySelector(`[data-step="${this.stepIndex}"]`);
     if (row) {
       row.classList.add('is-now');
       row.dataset.targetId = 'done';
       row.setAttribute('role', 'button');
       row.setAttribute('tabindex', '0');
-      row.setAttribute('aria-label', `${step.say || ''}. ${this.mode.doneLabel || 'Done'}`);
+      row.setAttribute('aria-label', `${lineText(step.say)}. ${this.mode.doneLabel || 'Done'}`);
       const rowIndex = this.stepIndex;
       const action = () => rowIndex === this.stepIndex ? this.completeStep() : { accepted: false };
       const down = (e) => {
@@ -320,10 +428,11 @@ class CoachTimerGame {
       row.scrollIntoView({ block: 'nearest', behavior: this.reducedMotion() ? 'auto' : 'smooth' });
     }
     const generation = ++this.viewGeneration;
-    await this.buildCoachView(step.art || this.config.splashEmoji || 'emoji:⭐', step.say || '', generation, Boolean(step.timerSec));
+    await this.buildCoachView(step.art || this.config.splashEmoji || 'emoji:⭐', lineText(step.say), generation, Boolean(step.timerSec) || kind === 'hold');
     if (!this.viewIsCurrent(generation)) return;
     this.awaitingInput = true;
     this.inputLocked = false;
+    if (kind === 'hold') this.playSfx(step.sfx || 'pop');
     this.speak(step.say);
     this.startStepTimer(step);
     this.scheduleIdlePrompt();
@@ -345,6 +454,21 @@ class CoachTimerGame {
   }
 
   startStepTimer(step) {
+    // A `hold` beat always runs a clock: durSec [min,max] (seeded → min) with
+    // timerSec as the fallback spelling. Do/setup beats keep today's exact path.
+    if ((step.kind || 'do') === 'hold') {
+      const durSec = step.durSec != null ? step.durSec : (step.timerSec || 4);
+      this.clockTotalMs = this.signalDurationMs({ durSec }) * this.timeScale;
+      this.clockDeadline = Date.now() + this.clockTotalMs;
+      this.clockDone = false;
+      this.lastTickSecond = 0; // no countdown ticks: a hold is a body beat, not a deadline
+      this.clockKind = 'step';
+      this.clockStep = step;
+      this.startClockTicker();
+      this.scheduleClockWake(this.clockTotalMs);
+      this.syncClock();
+      return;
+    }
     const seconds = Number(step.timerSec || 0);
     if (!(seconds > 0)) { this.setDialProgress(1, false); return; }
     const duration = this.seeded ? 0.2 : seconds;
@@ -381,8 +505,26 @@ class CoachTimerGame {
     return { accepted: true };
   }
 
+  /** The mode's presenter slot (plan §2.3): 'dial' (default Pixi ring),
+   *  'image' (full-bleed picture card) or 'video' (per-persona clip per beat,
+   *  red-green-light's caller pattern). image/video run on the signal
+   *  machinery; steps modes keep the checklist + dial layout. */
+  modePresenter() {
+    const presenter = this.mode && this.mode.presenter;
+    return presenter === 'video' || presenter === 'image' ? presenter : 'dial';
+  }
+
   async renderSignalShell() {
     const play = this.openPlayScreen('qk-coach-signal');
+    const presenter = this.modePresenter();
+    const surface = presenter === 'dial'
+      ? '<div class="qk-coach-canvas" aria-label="Current movement signal"></div>'
+      : `<div class="qk-coach-frame" aria-label="Current movement signal">
+          <span class="qk-coach-frame-art hidden" aria-hidden="true"></span>
+          <img class="qk-coach-poster hidden" alt="" draggable="false" />
+          <video class="qk-coach-video hidden" playsinline preload="auto"></video>
+        </div>
+        <div class="qk-coach-timebar" aria-hidden="true"><span class="qk-coach-timebar-fill"></span></div>`;
     play.innerHTML = `
       <header class="qk-coach-hud">
         <button class="qk-coach-back qk-coach-img-btn qk-eng-ico-back" type="button" aria-label="Back to the game menu"></button>
@@ -390,7 +532,7 @@ class CoachTimerGame {
         <button class="qk-coach-pause" type="button" data-target-id="pause" aria-label="Pause">Ⅱ</button>
       </header>
       <main class="qk-coach-signal-field">
-        <div class="qk-coach-canvas" aria-label="Current movement signal"></div>
+        ${surface}
         <div class="qk-coach-signal-cue" aria-live="polite"></div>
       </main>
       <button class="qk-coach-sound qk-coach-img-btn qk-eng-ico-sound" type="button" aria-label="Hear it again"></button>`;
@@ -414,7 +556,12 @@ class CoachTimerGame {
       this.tapTarget('signal-area');
     });
     this.targetMap.set('signal-area', { id: 'signal-area', role: 'neutral', element: area, action: areaAction });
-    await this.createPlayStage();
+    this.videoEl = play.querySelector('.qk-coach-video');
+    this.posterEl = play.querySelector('.qk-coach-poster');
+    // The fresh <video> must be blessed inside a gesture before timers may
+    // play() it unmuted on iOS — same rule as red-green-light.
+    if (this.videoEl) blessMedia(this.videoEl);
+    if (presenter === 'dial') await this.createPlayStage();
   }
 
   async startSignalState(index, startsAt = Date.now()) {
@@ -431,24 +578,124 @@ class CoachTimerGame {
     const section = this.screens.el('play');
     if (section) section.style.setProperty('--qk-signal-color', state.color || '#58a945');
     const cue = section && section.querySelector('.qk-coach-signal-cue');
-    if (cue) cue.textContent = state.say || '';
+    if (cue) cue.textContent = lineText(state.say);
     this.updateSignalDots();
+    const presenter = this.modePresenter();
     const generation = ++this.viewGeneration;
-    await this.buildCoachView(state.art || 'emoji:⭐', state.say || '', generation, true);
-    if (!this.viewIsCurrent(generation)) return;
+    let videoSpeaks = false;
+    if (presenter === 'dial') {
+      await this.buildCoachView(state.art || 'emoji:⭐', lineText(state.say), generation, true);
+      if (!this.viewIsCurrent(generation)) return;
+    } else {
+      videoSpeaks = await this.showPresenterCue(state);
+      if (this.destroyed || this.screen !== 'play' || generation !== this.viewGeneration) return;
+    }
     this.awaitingInput = true;
     this.inputLocked = false;
     this.playSfx(state.sfx || 'pop');
-    this.speak(state.say);
+    // A playing persona clip carries the spoken cue itself; TTS/recorded voice
+    // only when the presenter has no voice of its own (poster/image fallback).
+    if (!videoSpeaks) this.speak(state.say);
     this.scheduleIdlePrompt();
     if (this.paused) return;
     this.clockTotalMs = this.signalDurationMs(state) * this.timeScale;
     this.clockDeadline = startsAt + this.clockTotalMs;
     this.clockDone = false;
     this.clockKind = 'signal';
-    this.startClockTicker();
+    if (presenter === 'dial') this.startClockTicker();
+    else this.runTimeBar(this.clockTotalMs);
     this.scheduleClockWake(Math.max(0, this.clockDeadline - Date.now()));
     this.syncClock();
+  }
+
+  /**
+   * Fill the presenter frame for a signal state. Returns true when a persona
+   * cue clip is actually playing (it carries the voice); false means the
+   * caller should speak the line. Never blocks the beat: the video ready race
+   * is capped (red-green-light's never-blocks loader) and any failure leaves
+   * the poster/art card showing.
+   */
+  async showPresenterCue(state) {
+    const presenter = this.modePresenter();
+    const artSpan = this.screens.el('play').querySelector('.qk-coach-frame-art');
+    const showArt = (ref) => {
+      const url = artImageUrl(ref, this.config.assetBase);
+      if (url && this.posterEl) {
+        this.posterEl.src = url;
+        this.posterEl.classList.remove('hidden');
+        if (artSpan) artSpan.classList.add('hidden');
+      } else if (artSpan) {
+        artSpan.textContent = emojiFromRef(ref || 'emoji:⭐');
+        artSpan.classList.remove('hidden');
+        if (this.posterEl) this.posterEl.classList.add('hidden');
+      }
+    };
+    if (this.videoEl) this.videoEl.classList.add('hidden');
+    const persona = this.persona;
+    const src = presenter === 'video' && persona && persona.video && state.videoKey
+      ? persona.video[state.videoKey] : null;
+    if (!src || !this.videoEl || this.reducedMotion()) {
+      showArt((persona && persona.posterRef) || state.art || (persona && persona.poster) || 'emoji:⭐');
+      if (presenter === 'video' && persona && persona.poster && this.posterEl) {
+        this.posterEl.src = persona.poster;
+        this.posterEl.classList.remove('hidden');
+        if (artSpan) artSpan.classList.add('hidden');
+      }
+      return false;
+    }
+    // Poster underneath while the clip races its ready deadline.
+    if (persona.poster && this.posterEl) {
+      this.posterEl.src = persona.poster;
+      this.posterEl.classList.remove('hidden');
+      if (artSpan) artSpan.classList.add('hidden');
+    }
+    const ok = await this.loadPresenterVideo(src);
+    if (this.destroyed || this.screen !== 'play') return false;
+    if (!ok) { this.videoEl.classList.add('hidden'); return false; }
+    const video = this.videoEl;
+    video.loop = state.motion === 'loop';
+    video.muted = this.muted;
+    try { video.currentTime = 0; } catch { /* not seekable yet */ }
+    video.classList.remove('hidden');
+    const played = video.play();
+    if (played && played.catch) {
+      let spoke = true;
+      played.catch(() => { video.classList.add('hidden'); spoke = false; this.speak(state.say); });
+      return spoke;
+    }
+    return true;
+  }
+
+  /** Never-blocks loader: resolves true only when the clip is ready to play,
+   *  false after the capped race (poster + spoken line take over). */
+  loadPresenterVideo(src) {
+    const video = this.videoEl;
+    return new Promise((resolve) => {
+      const ok = () => { cleanup(); resolve(true); };
+      const err = () => { cleanup(); resolve(false); };
+      const cleanup = () => {
+        video.removeEventListener('canplay', ok);
+        video.removeEventListener('error', err);
+      };
+      video.addEventListener('canplay', ok, { once: true });
+      video.addEventListener('error', err, { once: true });
+      video.src = src;
+      video.load();
+      this.schedule(() => { cleanup(); resolve(video.readyState >= 3); }, VIDEO_READY_TIMEOUT);
+    });
+  }
+
+  /** CSS time bar for image/video presenters (the Pixi dial's cheap sibling). */
+  runTimeBar(ms) {
+    const fill = this.screens.el('play').querySelector('.qk-coach-timebar-fill');
+    if (!fill) return;
+    fill.style.transition = 'none';
+    fill.style.transform = 'scaleX(1)';
+    if (this.reducedMotion()) return;
+    requestAnimationFrame(() => {
+      fill.style.transition = `transform ${Math.max(0, ms)}ms linear`;
+      fill.style.transform = 'scaleX(0)';
+    });
   }
 
   updateSignalDots() {
@@ -490,6 +737,7 @@ class CoachTimerGame {
     const pause = section.querySelector('.qk-coach-pause');
     if (pause) { pause.textContent = this.paused ? '▶' : 'Ⅱ'; pause.setAttribute('aria-label', this.paused ? 'Play' : 'Pause'); }
     if (section) section.classList.toggle('is-paused', this.paused);
+    if (this.paused && this.videoEl) { try { this.videoEl.pause(); } catch { /* ignore */ } }
     // Original semantics restart the current signal (including voice and a newly
     // sampled duration) instead of preserving a partial interval.
     if (!this.paused) this.startSignalState(this.signalStateIndex);
@@ -619,7 +867,14 @@ class CoachTimerGame {
     if (Date.now() < this.clockDeadline) return;
     const endedAt = this.clockDeadline;
     this.clockDone = true;
-    if (this.clockKind === 'step') {
+    if (this.clockKind === 'step' && this.clockStep && this.clockStep.kind === 'hold') {
+      // A hold beat's clock IS its completion: advance through the same warm
+      // path a done-tap takes (sparkle + praise + flying check).
+      this.clearClock(false);
+      this.awaitingInput = true;
+      this.inputLocked = false;
+      this.completeStep();
+    } else if (this.clockKind === 'step') {
       this.clearClock(false);
       this.setDialProgress(0, 1);
       this.playSfx('sparkle');
@@ -701,7 +956,7 @@ class CoachTimerGame {
   wireBack(section) {
     const back = section.querySelector('.qk-coach-back');
     if (!back) return;
-    this.screens.hold(onTap(back, () => { speech.stop(); this.renderSplash(); }));
+    this.screens.hold(onTap(back, () => { this.stopVoice(); this.renderSplash(); }));
   }
 
   replayPrompt() {
@@ -720,15 +975,32 @@ class CoachTimerGame {
     return ((this.mode.states || [])[this.signalStateIndex] || {}).say || '';
   }
 
+  /** The current beat's kind — 'do' for legacy steps, 'hold' for signal states. */
+  currentBeatKind() {
+    if (!this.mode) return null;
+    if (this.mode.type === 'steps') {
+      const step = (this.mode.steps || [])[this.stepIndex];
+      return step ? (step.kind || 'do') : null;
+    }
+    return 'hold';
+  }
+
   scheduleIdlePrompt() {
     this.clearIdleTimer();
     if (this.idlePrompted || !this.awaitingInput || this.screen !== 'play') return;
+    // Per-beat-kind nudge policy (plan §2.1.2): a checklist `hold` beat gets no
+    // nudge at all (the child is SUPPOSED to be away moving); a `setup` beat is
+    // adult-paced, so its nudge comes much later. `do` keeps today's timing,
+    // and the legacy signal path is untouched.
+    const kind = this.currentBeatKind();
+    if (kind === 'hold' && this.mode.type === 'steps') return;
+    const idleMs = kind === 'setup' ? IDLE_MS * 3 : IDLE_MS;
     this.idleTimer = this.schedule(() => {
       this.idleTimer = 0;
       if (this.destroyed || this.idlePrompted || !this.awaitingInput || this.screen !== 'play') return;
       this.idlePrompted = true;
       this.speak(this.currentLine());
-    }, IDLE_MS * this.timeScale);
+    }, idleMs * this.timeScale);
   }
 
   clearIdleTimer() {
@@ -754,7 +1026,15 @@ class CoachTimerGame {
     this.inputLocked = false;
     this.targetMap.clear();
     this.playSfx('tada');
-    this.speak(this.mode && (this.mode.cheer || (this.config.voice && this.config.voice.cheer)));
+    const cheerLine = this.mode && (this.mode.cheer || (this.config.voice && this.config.voice.cheer));
+    if (this.persona && this.persona.audio && this.persona.audio.cheer && !this.muted) {
+      // The chosen coach celebrates in their own recorded voice (RGL pattern);
+      // the authored cheer text remains the fallback if the file is missing.
+      this.logAudio('clip', this.persona.audio.cheer, lineText(cheerLine));
+      clips.sayFile(this.persona.audio.cheer, lineText(cheerLine));
+    } else {
+      this.speak(cheerLine);
+    }
     const mode = this.mode;
     const end = this.screens.el('end');
     end.setAttribute('aria-label', (mode && mode.endTitle) || this.config.title || '');
@@ -777,7 +1057,7 @@ class CoachTimerGame {
       // Back has always been a silent return here; the default feedback would
       // add a preventDefault + tick this screen never made.
       feedback: null,
-      onSplash: () => { speech.stop(); this.renderSplash(); },
+      onSplash: () => { this.stopVoice(); this.renderSplash(); },
       onAgain: () => { if (mode) this.startMode(mode.id); },
     });
     // "again" keeps its own richer press feedback (unlock + tick).
@@ -792,7 +1072,17 @@ class CoachTimerGame {
       ? this.mode.type === 'steps' ? (this.mode.steps || []).length : Number(this.mode.rounds || 1)
       : 0;
     const round = this.mode && this.mode.type === 'signal' ? this.cycleIndex : this.stepIndex;
-    return { screen: this.screen, mode: this.mode ? this.mode.id : null, round, roundsTotal, awaitingInput: this.awaitingInput, paused: this.paused };
+    return {
+      screen: this.screen,
+      mode: this.mode ? this.mode.id : null,
+      round,
+      roundsTotal,
+      awaitingInput: this.awaitingInput,
+      paused: this.paused,
+      beatKind: this.screen === 'play' ? this.currentBeatKind() : null,
+      presenter: this.mode ? this.modePresenter() : null,
+      persona: this.persona ? this.persona.id : null,
+    };
   }
 
   getTargets() {
@@ -870,7 +1160,13 @@ class CoachTimerGame {
     }
   }
 
-  mute() { this.muted = true; speech.stop(); }
+  mute() {
+    this.muted = true;
+    this.stopVoice();
+    clips.setMuted(true);
+    // Silence stray media too: a persona cue clip carries its own audio track.
+    this.mountEl.querySelectorAll('video').forEach((v) => { v.muted = true; });
+  }
 
   seed(n) {
     this.seeded = true;
@@ -895,9 +1191,124 @@ class CoachTimerGame {
     return this.timeScale;
   }
 
-  speak(text) {
-    if (this.muted || !text) return Promise.resolve();
-    return speech.speak(text);
+  /**
+   * Speak one authored line. A plain STRING in a config with no `voice.clips`
+   * follows exactly the pre-recorded-voice path (speech.js, no logging beyond
+   * the audio log entry, no network) — that keeps the 13 legacy configs
+   * byte-identical in behaviour. A LINE OBJECT per the platform grammar
+   * (`{ clip: 'clip:key' | 'letter:m' | …, text }` or `{ seq: [...], gap, text }`)
+   * routes through the recorded-voice channel with `text` as the Web Speech
+   * fallback, so a game is never silent while assets are pending.
+   */
+  speak(line) {
+    if (this.muted || !line) return Promise.resolve();
+    if (typeof line === 'string' && !this.usesClips()) {
+      this.logAudio('speech', line, line);
+      return speech.speak(line);
+    }
+    return this.speakRich(typeof line === 'string' ? { text: line } : line);
+  }
+
+  usesClips() {
+    return Boolean(this.config.voice && this.config.voice.clips && this.config.voice.clips.manifest);
+  }
+
+  /** Cancel everything audible: recorded clip channel AND synthesized speech. */
+  stopVoice() {
+    this.voiceGeneration += 1;
+    if (this.clipsReady) clips.stop(); // pauses the clip channel and stops speech
+    speech.stop();
+  }
+
+  /** Load the game-local clip manifest, once, lazily. A config with no
+   *  voice.clips block never fetches anything — the lazy-network contract. */
+  ensureVoiceClips() {
+    const spec = this.config.voice && this.config.voice.clips;
+    if (!spec || !spec.manifest) return Promise.resolve();
+    if (!this.clipsLoading) {
+      const base = this.config.assetBase || document.baseURI;
+      const manifestUrl = new URL(spec.manifest, base).href;
+      // clips.init() defaults linesUrl to './data/lines.json'; hand it an inline
+      // empty object instead of provoking a 404 when the game has no lines file.
+      const linesUrl = spec.lines ? new URL(spec.lines, base).href : 'data:application/json,%7B%7D';
+      this.clipsLoading = clips.init(manifestUrl, linesUrl, spec.defaults || {})
+        .then(() => { this.clipsReady = true; })
+        .catch(() => { this.clipsReady = true; });
+    }
+    return this.clipsLoading;
+  }
+
+  async speakRich(line) {
+    const generation = ++this.voiceGeneration;
+    await this.ensureVoiceClips();
+    if (this.destroyed || this.muted || generation !== this.voiceGeneration) return;
+    const text = typeof line.text === 'string' ? line.text : '';
+    const seq = Array.isArray(line.seq) ? line.seq.filter(Boolean) : (line.clip ? [line.clip] : []);
+    if (!seq.length) {
+      if (!text) return;
+      // Clips may be mid-line: a plain-text line in a clips game must still
+      // interrupt the channel or it talks over the recording.
+      if (this.clipsReady) clips.stop();
+      this.logAudio('speech', text, text);
+      await speech.speak(text);
+      return;
+    }
+    const gap = Number.isFinite(line.gap) ? Math.max(0, line.gap) : 0;
+    const single = seq.length === 1;
+    let spoke = false;
+    for (let index = 0; index < seq.length; index++) {
+      if (this.destroyed || this.muted || generation !== this.voiceGeneration) return;
+      const fallback = single ? (text || clipFallbackText(seq[index])) : clipFallbackText(seq[index]);
+      if (await this.speakOne(seq[index], fallback)) spoke = true;
+      if (this.destroyed || this.muted || generation !== this.voiceGeneration) return;
+      if (gap && index < seq.length - 1) await wait(gap);
+    }
+    // Level-2 fallback: nothing in the sequence was resolvable or speakable.
+    if (!spoke && text) {
+      this.logAudio('speech', text, text);
+      await speech.speak(text);
+    }
+  }
+
+  /**
+   * Play one clip ref. Returns true when something was actually voiced.
+   * `clip:<key>` goes through the game-local manifest; every other scheme
+   * resolves to a URL and goes through clips.sayFile() (the SHARED manifest is
+   * nested by category, so clips.init() on it would silently no-op).
+   */
+  async speakOne(ref, fallbackText) {
+    if (typeof ref !== 'string' || !ref) {
+      if (!fallbackText) return false;
+      this.logAudio('speech', String(ref || ''), fallbackText);
+      await speech.speak(fallbackText);
+      return true;
+    }
+    if (ref.startsWith('clip:')) {
+      const key = ref.slice(5);
+      this.logAudio('clip', ref, fallbackText);
+      await clips.say(key, fallbackText);
+      return true;
+    }
+    const url = clipUrlFor(ref, this.config.assetBase);
+    if (!url) {
+      if (!fallbackText) return false;
+      this.logAudio('speech', ref, fallbackText);
+      await speech.speak(fallbackText);
+      return true;
+    }
+    this.logAudio('clip', ref, fallbackText);
+    await clips.sayFile(url, fallbackText);
+    return true;
+  }
+
+  logAudio(kind, key, text) {
+    this.audioLog.push({
+      key: key || '',
+      text: text || '',
+      kind: kind || 'speech',
+      at: Math.round(typeof performance !== 'undefined' ? performance.now() : Date.now()),
+    });
+    if (this.audioLog.length > AUDIO_LOG_MAX) this.audioLog.splice(0, this.audioLog.length - AUDIO_LOG_MAX);
   }
 
   playSfx(name) {
@@ -1013,6 +1424,22 @@ function installStyle() {
     .qk-coach-dot { flex:0 0 auto; }
     .qk-coach-dot.is-done { background:#58a945; } .qk-coach-dot.is-now { background:#ffd166; }
     .qk-coach-signal { --qk-signal-color:#58a945; background-color:var(--qk-signal-color); transition:background-color .24s ease; }
+    /* Room-readable state frame for a checklist \`hold\` beat: the beat color as
+       a bold border + inward glow, legible from across the room (RGL pattern). */
+    .qk-coach-play.qk-coach-hold::before { content:''; position:absolute; inset:0; z-index:6; pointer-events:none; border:12px solid var(--qk-signal-color,#58a945); box-shadow:inset 0 0 34px var(--qk-signal-color,#58a945); }
+    /* Persona select ("pick your coach") */
+    .qk-coach-persona-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,42vw),1fr)); gap:18px; width:min(860px,94vw); }
+    .qk-coach button.qk-coach-persona-tile { display:grid; gap:10px; justify-items:center; min-height:96px; padding:14px; border:6px solid #fff; border-radius:28px; color:var(--navy); background:linear-gradient(rgba(255,255,255,.58),rgba(255,255,255,0) 52%),#ffd166; box-shadow:0 7px 0 rgba(23,81,126,.18),0 16px 28px rgba(23,81,126,.16); font:inherit; font-size:clamp(22px,3.4vmin,34px); cursor:pointer; touch-action:manipulation; }
+    .qk-coach-persona-tile:active { transform:scale(.95); }
+    .qk-coach-persona-art { width:min(26vmin,180px); height:min(26vmin,180px); display:grid; place-items:center; overflow:hidden; font-size:min(16vmin,120px); }
+    .qk-coach-persona-art img { width:100%; height:100%; object-fit:cover; display:block; }
+    .qk-coach-persona-name { font-weight:600; }
+    /* image/video presenter frame + CSS time bar (dial's cheap siblings) */
+    .qk-coach-frame { position:relative; width:min(76vmin,620px); max-height:100%; aspect-ratio:1/1; border:6px solid #fff; border-radius:32px; overflow:hidden; background:linear-gradient(#fffef8,#f7ecd5); box-shadow:var(--qk-shadow); display:grid; place-items:center; }
+    .qk-coach-frame img,.qk-coach-frame video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .qk-coach-frame-art { font-size:min(34vmin,260px); line-height:1; }
+    .qk-coach-timebar { width:min(76vmin,620px); height:18px; margin-top:12px; border:4px solid #fff; border-radius:12px; background:rgba(255,255,255,.45); overflow:hidden; }
+    .qk-coach-timebar-fill { display:block; height:100%; background:var(--qk-signal-color,#58a945); transform-origin:left center; transform:scaleX(1); }
     .qk-coach-signal::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(rgba(255,255,255,.19),transparent 42%); }
     .qk-coach-signal.is-paused { filter:saturate(.76); }
     .qk-coach button.qk-coach-pause { width:96px; min-height:96px; border-radius:50%; background-color:#fffef8; font-size:48px; line-height:1; }
@@ -1026,6 +1453,83 @@ function installStyle() {
     @media (orientation:landscape) and (max-height:600px) { .qk-coach-workspace { inset-top:104px; padding-bottom:4px; } .qk-coach-checklist { max-height:calc(100dvh - 120px); } .qk-coach-row { min-height:96px; font-size:20px; } .qk-coach-signal-field { inset-top:96px; } }
     @media (prefers-reduced-motion:reduce) { .qk-coach-root *, .qk-coach-root *::before, .qk-coach-root *::after { animation-duration:.001ms!important; transition-duration:.001ms!important; scroll-behavior:auto!important; } }
   `);
+}
+
+/**
+ * The beat model (docs/coach-mode-plan.md §2.2), as a load-time normalizer so
+ * the two legacy mode types keep running byte-identically:
+ *   - `beats: [...]` with per-beat `kind: 'setup' | 'do' | 'hold'` is the v2
+ *     authoring surface. All-`hold` beats collapse onto the signal machinery
+ *     (cyclic, `rounds`); any mix runs on the checklist machinery, where a
+ *     `hold` beat auto-advances when its clock elapses (durSec [min,max],
+ *     seeded → min) and suppresses the idle nudge, and a `setup` beat is the
+ *     adult-addressed untimed variant with a much later nudge.
+ *   - Legacy `type: 'steps'` / `type: 'signal'` configs pass through untouched
+ *     (steps are `do` beats by omission — `kind` defaults at every use site).
+ */
+function normalizeMode(mode) {
+  if (!mode || !Array.isArray(mode.beats) || !mode.beats.length) return mode;
+  const beats = mode.beats.map((beat) => ({ ...beat, kind: beat.kind || 'do' }));
+  if (beats.every((beat) => beat.kind === 'hold')) {
+    return { ...mode, type: 'signal', states: beats, rounds: mode.rounds || 1 };
+  }
+  return { ...mode, type: 'steps', steps: beats };
+}
+
+/** Prime a media element inside a user gesture so later programmatic play()
+ *  (from timers) is allowed and unmuted audio isn't throttled on iOS. */
+function blessMedia(el) {
+  const wasMuted = el.muted;
+  try {
+    el.muted = true;
+    const p = el.play();
+    if (p && p.then) p.then(() => { el.pause(); el.muted = wasMuted; }).catch(() => { el.muted = wasMuted; });
+    else { el.pause(); el.muted = wasMuted; }
+  } catch { el.muted = wasMuted; }
+}
+
+/** Image URL for an art ref, or null when it only renders as an emoji glyph. */
+function artImageUrl(ref, base) {
+  if (typeof ref !== 'string' || !ref || ref.startsWith('emoji:')) return null;
+  if (ref.startsWith('shared:') || ref.startsWith('char:')) return artUrlRef(ref);
+  if (ref.startsWith('game:')) return new URL(ref.slice(5), base || document.baseURI).href;
+  if (/^(?:https?:|\.{0,2}\/)/.test(ref)) return ref;
+  return null;
+}
+
+/** Display text for a `say` value that may be a string or a { text } line object. */
+function lineText(value) {
+  if (typeof value === 'string') return value;
+  if (value && typeof value === 'object' && typeof value.text === 'string') return value.text;
+  return '';
+}
+
+/**
+ * Clip-ref grammar, mirroring build-assemble's implementation of the platform
+ * grammar (shared/js/engines/README.md § Recorded-voice lines):
+ *   letter:<x>   word:<w>   cheer:<w>   isfor:<w>   shared:audio/…   game:…
+ * `clip:<key>` is deliberately NOT here — it goes through the game-local
+ * manifest via clips.say(). Everything resolved here plays via clips.sayFile().
+ */
+function clipUrlFor(ref, base) {
+  if (typeof ref !== 'string' || !ref) return null;
+  if (ref.startsWith('letter:')) return content.letterSoundUrl(ref.slice(7));
+  if (ref.startsWith('word:')) return content.wordAudio(ref.slice(5));
+  if (ref.startsWith('cheer:')) return content.wordCelebrate(ref.slice(6));
+  if (ref.startsWith('isfor:')) return content.isforAudio(ref.slice(6));
+  if (ref.startsWith('shared:')) return new URL(ref.slice(7), SHARED_ASSETS).href;
+  if (ref.startsWith('game:')) return new URL(ref.slice(5), base || document.baseURI).href;
+  return null;
+}
+
+/** Spoken fallback for a clip ref when the recording is missing. */
+function clipFallbackText(ref) {
+  if (typeof ref !== 'string') return '';
+  if (ref.startsWith('letter:')) return ref.slice(7);
+  if (ref.startsWith('word:')) return ref.slice(5);
+  if (ref.startsWith('cheer:')) return ref.slice(6);
+  if (ref.startsWith('isfor:')) return ref.slice(6);
+  return '';
 }
 
 function wait(ms) { return new Promise((resolve) => window.setTimeout(resolve, ms)); }

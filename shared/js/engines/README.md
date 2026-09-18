@@ -393,6 +393,68 @@ Clip refs share the art-ref grammar's shape:
 A game with no `voice.clips` block never calls `voice-clips.init()` and stays
 network-silent, same as today.
 
+Engines implementing this: `build-assemble.js`, `coach-timer.js`.
+
+## Coach beats (coach-timer)
+
+`coach-timer` modes may replace the legacy `type: 'steps' | 'signal'` dichotomy
+with a per-beat `kind` (see `docs/coach-mode-plan.md` §2.2 for the design):
+
+```js
+{
+  id: 'tape-square', title: 'Tape Square',
+  beats: [
+    { kind: 'setup', say: 'Ask a grown-up to tape a square.', art: 'emoji:📦' },
+    { kind: 'do',    say: 'Sweep the edges!', timerSec: 60, art: 'emoji:🧹' },
+    { kind: 'hold',  say: 'Freeze and admire!', durSec: [4, 6],
+      color: '#58a945', sfx: 'tada' },
+  ],
+}
+```
+
+| kind | advances by | timer | idle nudge |
+|---|---|---|---|
+| `setup` | done tap | none | late (3× the usual delay) — it's addressed to the adult |
+| `do` | done tap | optional soft `timerSec` | standard, once |
+| `hold` | auto after `durSec: [min,max]` (seeded → min) | always | suppressed — the child is supposed to be moving |
+
+A `hold` beat also drives a room-readable state frame (its `color` as a bold
+border + glow) and an entry `sfx`. A mode whose beats are ALL `hold` collapses
+onto the cyclic signal machinery (`rounds` supported); legacy `steps`/`signal`
+configs are untouched by any of this. `getState()` gains `beatKind`, and the
+hook exposes `getAudioLog()` (entries `{ key, text, kind: 'clip'|'speech', at }`)
+so a QA driver can prove the recorded voice played.
+
+### Presenter slot (signal modes)
+
+A signal-machinery mode may set `presenter: 'dial' | 'image' | 'video'`
+(default `dial`, today's Pixi ring — steps modes always keep the checklist +
+dial layout):
+
+- **`image`** — a full-bleed picture card per state (`art` refs, image or
+  emoji) with a CSS time bar. The cheap middle tier between emoji and video.
+- **`video`** — red-green-light's caller pattern: the selected persona's clip
+  per state (`videoKey` into `persona.video`, `motion: 'loop' | 'hold'`),
+  poster underneath, capped never-blocks ready race (2.6 s) with poster +
+  spoken-line fallback, `blessMedia()` inside the first gesture. A playing
+  clip carries the cue voice itself; `say` is only spoken on fallback.
+
+### Personas ("pick your coach")
+
+```js
+personas: [{ id, name, ready, poster, video: { <videoKey>: url, … },
+             audio: { greet, cheer } }]
+```
+
+Declaring ready personas inserts a persona-select screen BEFORE mode select
+(home lives there; the splash gets a back button — §8's "home only on the
+first screen"). `ready: false` hides a persona; a config with no `personas`
+skips the screen entirely and renders byte-identically to before. Greet plays
+on pick and the persona's `cheer` clip replaces the end-card cheer line (text
+stays the fallback). Debug extras: `listPersonas()`, `selectPersona(id)`;
+`getState()` gains `presenter` and `persona`. See
+`coach-timer.test.html` for a working fixture of all of the above.
+
 ## Required debug hook (review automation depends on this)
 
 ```js

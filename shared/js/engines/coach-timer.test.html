@@ -46,6 +46,79 @@
       ]
     };
 
+    // Recorded-voice line objects (README § Recorded-voice lines): a `say` may
+    // be { clip, text } or { seq, gap, text }. These refs resolve to the shared
+    // audio library; `text` is the Web Speech fallback, so the fixture also
+    // exercises the never-silent path in a browser without an AAC decoder.
+    const voiceMode = {
+      id: 'voice',
+      title: 'Recorded voice',
+      type: 'steps',
+      praise: { clip: 'cheer:ball', text: 'Nice work.' },
+      cheer: 'You did all the steps!',
+      steps: [
+        { art: 'emoji:🍎', say: { clip: 'word:apple', text: 'Apple!' }, timerSec: 0 },
+        { art: 'emoji:🔤', say: { seq: ['letter:m', 'letter:a', 'letter:t', 'word:mat'], gap: 200, text: 'mmm-aaa-t… mat!' }, timerSec: 0 },
+        { art: 'emoji:💬', say: { text: 'A plain text line object.' }, timerSec: 1 }
+      ]
+    };
+
+    // The v2 beat model (docs/coach-mode-plan.md §2.2): per-beat kinds in one
+    // mode. `setup` is adult-addressed and untimed, `do` is a self-paced done
+    // tap, `hold` auto-advances on its own clock with the room-readable color
+    // frame and no idle nudge.
+    const hybridMode = {
+      id: 'hybrid',
+      title: 'Hybrid beats',
+      praise: 'Beat done!',
+      cheer: 'Setup, do, and hold — all in one mode!',
+      beats: [
+        { kind: 'setup', say: 'Ask a grown-up to tape a square on the floor.', art: 'emoji:📦' },
+        { kind: 'do', say: 'Sweep the edges toward the middle!', timerSec: 2, art: 'emoji:🧹' },
+        { kind: 'hold', say: 'Freeze and admire your clean floor!', durSec: [1, 2], color: '#c9503a', sfx: 'boing', art: 'emoji:🧊' }
+      ]
+    };
+
+    // Presenter slot + persona select (plan §2.3–2.4). This TEST-ONLY fixture
+    // borrows two of red-green-light's caller asset sets so the video presenter
+    // can be exercised without generating anything; production games declare
+    // their own personas. `videoKey`/`motion` follow the RGL config shape.
+    const RGL = (id) => `../../../games/red-green-light/assets/callers/${id}`;
+    const personas = ['growlie', 'twinkle'].map((id) => ({
+      id,
+      name: id[0].toUpperCase() + id.slice(1),
+      ready: true,
+      poster: `${RGL(id)}/poster.jpg`,
+      video: { green: `${RGL(id)}/green.mp4`, red: `${RGL(id)}/red.mp4`, yellow: `${RGL(id)}/yellow.mp4`, idle: `${RGL(id)}/idle.mp4` },
+      audio: { greet: `${RGL(id)}/greet.m4a`, cheer: `${RGL(id)}/cheer.m4a` }
+    }));
+
+    const videoMode = {
+      id: 'video-coach',
+      title: 'Video coach',
+      type: 'signal',
+      presenter: 'video',
+      rounds: 2,
+      cheer: 'Great listening!',
+      states: [
+        { id: 'go', videoKey: 'green', motion: 'loop', color: '#58a945', sfx: 'pop', say: 'Green light! Go go go!', durSec: [1, 2] },
+        { id: 'stop', videoKey: 'red', motion: 'hold', color: '#c9503a', sfx: 'boing', say: 'Red light! Freeze!', durSec: [1, 2] }
+      ]
+    };
+
+    const imageMode = {
+      id: 'image-coach',
+      title: 'Picture coach',
+      type: 'signal',
+      presenter: 'image',
+      rounds: 2,
+      cheer: 'Wonderful moving!',
+      states: [
+        { id: 'march', art: 'shared:objects/bear.webp', color: '#3a9bd6', sfx: 'pop', say: 'Stomp like a big bear!', durSec: [1, 2] },
+        { id: 'rest', art: 'emoji:😴', color: '#8b5cf6', sfx: 'tick', say: 'Rest like a sleepy cat.', durSec: [1, 2] }
+      ]
+    };
+
     createGame({
       id: 'coach-timer-test',
       title: 'Coach Timer',
@@ -55,7 +128,9 @@
         praise: 'Nice work.',
         cheer: 'You did it!'
       },
-      modes: [stepsMode, signalMode]
+      selectPrompt: 'Pick your coach!',
+      personas,
+      modes: [stepsMode, signalMode, voiceMode, hybridMode, videoMode, imageMode]
     }, document.getElementById('app'));
   </script>
 </body>

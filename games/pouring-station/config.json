@@ -1,0 +1,153 @@
+{
+  "id": "pouring-station",
+  "engine": "coach-timer",
+  "title": "Pouring Station",
+  "splashEmoji": "emoji:🏺",
+  "voice": {
+    "intro": {
+      "clip": "clip:intro",
+      "text": "Let's practice slow, careful pouring."
+    },
+    "praise": {
+      "clip": "clip:praise",
+      "text": "Careful hands. Nice work."
+    },
+    "cheer": {
+      "clip": "clip:cheer",
+      "text": "You practiced every pouring step!"
+    },
+    "clips": {
+      "manifest": "./assets/audio/manifest.json"
+    }
+  },
+  "modes": [
+    {
+      "id": "water",
+      "title": "Water Pouring",
+      "type": "steps",
+      "praise": {
+        "clip": "clip:praise",
+        "text": "Careful hands. Nice work."
+      },
+      "cheer": {
+        "clip": "clip:water-cheer",
+        "text": "You practiced water pouring from start to finish!"
+      },
+      "endTitle": "Water Pouring",
+      "endArt": "emoji:💧",
+      "againLabel": "AGAIN",
+      "doneLabel": "DONE",
+      "steps": [
+        {
+          "art": "emoji:🥤",
+          "say": {
+            "clip": "clip:water-s1",
+            "text": "Gather a pitcher and two cups."
+          }
+        },
+        {
+          "art": "emoji:🚰",
+          "say": {
+            "clip": "clip:water-s2",
+            "text": "Fill the pitcher just a little."
+          }
+        },
+        {
+          "art": "emoji:🥛",
+          "say": {
+            "clip": "clip:water-s3",
+            "text": "Pour slooowly into cup one."
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:water-s3-after",
+            "text": "That was slow, careful pouring."
+          }
+        },
+        {
+          "art": "emoji:🏺",
+          "say": {
+            "clip": "clip:water-s4",
+            "text": "Pour back the other way."
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:water-s4-after",
+            "text": "You kept your hands steady."
+          }
+        },
+        {
+          "art": "emoji:🧻",
+          "say": {
+            "clip": "clip:water-s5",
+            "text": "Wipe any drips. Wiping makes you a pouring pro."
+          }
+        }
+      ]
+    },
+    {
+      "id": "beans",
+      "title": "Bean Pouring",
+      "type": "steps",
+      "praise": {
+        "clip": "clip:praise",
+        "text": "Careful hands. Nice work."
+      },
+      "cheer": {
+        "clip": "clip:beans-cheer",
+        "text": "You practiced bean pouring from start to finish!"
+      },
+      "endTitle": "Bean Pouring",
+      "endArt": "emoji:🫘",
+      "againLabel": "AGAIN",
+      "doneLabel": "DONE",
+      "steps": [
+        {
+          "art": "emoji:🥤",
+          "say": {
+            "clip": "clip:beans-s1",
+            "text": "Gather a pitcher and two cups for bean pouring."
+          }
+        },
+        {
+          "art": "emoji:🫘",
+          "say": {
+            "clip": "clip:beans-s2",
+            "text": "Fill one cup with a few dry beans."
+          }
+        },
+        {
+          "art": "emoji:🫘",
+          "say": {
+            "clip": "clip:beans-s3",
+            "text": "Beans are great for first-time pourers. Pour slowly and listen to the sound they make."
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:beans-s3-after",
+            "text": "Nice slow bean pouring."
+          }
+        },
+        {
+          "art": "emoji:🏺",
+          "say": {
+            "clip": "clip:beans-s4",
+            "text": "Pour the beans back the other way."
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:beans-s4-after",
+            "text": "You listened and poured with care."
+          }
+        },
+        {
+          "art": "emoji:🧻",
+          "say": {
+            "clip": "clip:beans-s5",
+            "text": "Scoop up any beans that spilled. Cleanup is part of the work."
+          }
+        }
+      ]
+    }
+  ]
+}

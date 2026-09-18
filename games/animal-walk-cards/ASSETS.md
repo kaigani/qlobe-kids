@@ -43,3 +43,13 @@ Voice lines:
 | Asset | Source | Creator | License | Attribution required | Modifications |
 |---|---|---|---|---|---|
 | `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+
+
+## Recorded voice clips (assets/audio/)
+
+Recorded teacher-voice clips for every spoken line, in the platform's shared
+warm-teacher voice (locally generated voice clone of the platform voice
+reference; no cloud services). Each clip was QA'd by speech-to-text transcript
+comparison against the authored line; `manifest.json` maps line keys to files
+with measured durations, `lines.json` holds the transcript per key. Original
+assets, CC BY 4.0. The engine falls back to Web Speech for any missing clip.

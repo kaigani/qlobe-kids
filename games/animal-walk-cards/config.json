@@ -1,0 +1,172 @@
+{
+  "id": "animal-walk-cards",
+  "engine": "coach-timer",
+  "title": "Animal Walk Cards",
+  "splashEmoji": "emoji:🐻",
+  "theme": {
+    "world": "field-journal",
+    "background": "./assets/bg.jpg"
+  },
+  "voice": {
+    "intro": {
+      "clip": "clip:intro",
+      "text": "Welcome to animal school! Show me how each animal moves and sounds!"
+    },
+    "praise": {
+      "clip": "clip:praise",
+      "text": "Wild moves! You made that animal proud!"
+    },
+    "cheer": {
+      "clip": "clip:cheer",
+      "text": "The animal parade was wild and wonderful!"
+    },
+    "clips": {
+      "manifest": "./assets/audio/manifest.json"
+    }
+  },
+  "modes": [
+    {
+      "id": "learn",
+      "title": "Animal School",
+      "type": "steps",
+      "praise": {
+        "clip": "clip:praise",
+        "text": "Wild moves! You made that animal proud!"
+      },
+      "cheer": {
+        "clip": "clip:learn-cheer",
+        "text": "Animal school complete! Every creature taught your body a new move!"
+      },
+      "endTitle": "Animal School",
+      "endArt": "emoji:🐾",
+      "againLabel": "AGAIN",
+      "doneLabel": "DONE",
+      "steps": [
+        {
+          "art": "emoji:🐻",
+          "say": {
+            "clip": "clip:learn-s1",
+            "text": "Bear crawl! Hands and feet down, bottom up. Roar like a bear!"
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:learn-s1-after",
+            "text": "Big bear roar! Strong crawling!"
+          }
+        },
+        {
+          "art": "emoji:🐸",
+          "say": {
+            "clip": "clip:learn-s2",
+            "text": "Frog jump! Crouch low, then leap. Ribbit!"
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:learn-s2-after",
+            "text": "Ribbit! What a frog leap!"
+          }
+        },
+        {
+          "art": "emoji:🦀",
+          "say": {
+            "clip": "clip:learn-s3",
+            "text": "Crab walk! Belly to the sky. Click-click your crab claws!"
+          },
+          "timerSec": 30,
+          "after": {
+            "clip": "clip:learn-s3-after",
+            "text": "Click-click! That crab was strong!"
+          }
+        },
+        {
+          "art": "emoji:🦩",
+          "say": {
+            "clip": "clip:learn-s4",
+            "text": "Flamingo stand! Lift one leg and count five slow flamingo breaths. Hmmmm."
+          }
+        },
+        {
+          "art": "emoji:🐢",
+          "say": {
+            "clip": "clip:learn-s5",
+            "text": "Cool down with a slow turtle stretch. Tuck in, then stretch long."
+          }
+        }
+      ]
+    },
+    {
+      "id": "parade",
+      "title": "Animal Parade",
+      "type": "steps",
+      "praise": {
+        "clip": "clip:parade-praise",
+        "text": "Keep the parade moving!"
+      },
+      "cheer": {
+        "clip": "clip:parade-cheer",
+        "text": "The whole animal parade made it to the finish!"
+      },
+      "endTitle": "Animal Parade",
+      "endArt": "emoji:🎪",
+      "againLabel": "AGAIN",
+      "doneLabel": "DONE",
+      "steps": [
+        {
+          "art": "emoji:🐻",
+          "say": {
+            "clip": "clip:parade-s1",
+            "text": "Parade bear! Crawl on hands and feet. ROAR!"
+          },
+          "timerSec": 20,
+          "after": {
+            "clip": "clip:parade-s1-after",
+            "text": "Roar! Bear joins the parade!"
+          }
+        },
+        {
+          "art": "emoji:🐸",
+          "say": {
+            "clip": "clip:parade-s2",
+            "text": "Parade frog! Crouch and leap. Ribbit!"
+          },
+          "timerSec": 20,
+          "after": {
+            "clip": "clip:parade-s2-after",
+            "text": "Ribbit! Frog joins the parade!"
+          }
+        },
+        {
+          "art": "emoji:🦀",
+          "say": {
+            "clip": "clip:parade-s3",
+            "text": "Parade crab! Belly up and walk. Click-click!"
+          },
+          "timerSec": 20,
+          "after": {
+            "clip": "clip:parade-s3-after",
+            "text": "Click-click! Crab joins the parade!"
+          }
+        },
+        {
+          "art": "emoji:🦩",
+          "say": {
+            "clip": "clip:parade-s4",
+            "text": "Parade flamingo! One leg and a flamingo hum. Hmmmm!"
+          },
+          "timerSec": 20,
+          "after": {
+            "clip": "clip:parade-s4-after",
+            "text": "Hmmmm! Flamingo joins the parade!"
+          }
+        },
+        {
+          "art": "emoji:🎪",
+          "say": {
+            "clip": "clip:parade-s5",
+            "text": "Invite your family to join the animal parade line!"
+          }
+        }
+      ]
+    }
+  ]
+}
