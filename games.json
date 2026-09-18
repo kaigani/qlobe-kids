@@ -3395,28 +3395,33 @@
     {
       "id": "trail-counting-walk",
       "title": "Trail Counting Walk",
-      "category": "movement-outdoor",
+      "category": "math-number-sense",
       "path": "games/trail-counting-walk/",
       "icon": "assets/hub/tiles/trail-counting-walk.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#e9853d",
+      "status": "beta",
+      "accent": "#ef7f35",
       "modes": [
         {
-          "id": "walk",
-          "title": "Counting Walk",
-          "skill": "counting, remembering, and comparing outdoor totals"
+          "id": "count-5",
+          "title": "Mossy Meadow",
+          "skill": "one-to-one counting from 1 to 5"
         },
         {
-          "id": "race",
-          "title": "Number Race",
-          "skill": "counting observed categories to target numbers"
+          "id": "count-10",
+          "title": "Blue Creek",
+          "skill": "stable counting from 1 to 10"
+        },
+        {
+          "id": "count-20",
+          "title": "Firefly Ridge",
+          "skill": "sustained counting from 1 to 20"
         }
       ],
-      "summary": "Count stairs, birds, pinecones, and signs on a walk."
+      "summary": "Help Pip hop across three papercraft trails while counting every stepping stone to 5, 10, or 20."
     },
     {
       "id": "shadow-chase",

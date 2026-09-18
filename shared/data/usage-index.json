@@ -9,20 +9,8 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T16:39:21.035Z",
+  "generated": "2026-09-18T20:05:44.727Z",
   "engines": {
-    "coach-timer": {
-      "count": 7,
-      "games": [
-        "animal-walk-cards",
-        "line-walking-challenge",
-        "melting-race",
-        "neighborhood-map-walk",
-        "shelf-reset-game",
-        "trail-counting-walk",
-        "waiting-muscle-game"
-      ]
-    },
     "choose-one": {
       "count": 5,
       "games": [
@@ -31,6 +19,16 @@
         "mystery-letter-bag",
         "plan-do-review",
         "problem-solving-puppets"
+      ]
+    },
+    "coach-timer": {
+      "count": 5,
+      "games": [
+        "animal-walk-cards",
+        "melting-race",
+        "neighborhood-map-walk",
+        "shelf-reset-game",
+        "waiting-muscle-game"
       ]
     },
     "build-assemble": {
@@ -1313,22 +1311,48 @@
       "packs": []
     },
     "line-walking-challenge": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "movement-outdoor",
-      "characters": [],
+      "characters": [
+        "Fia the fox"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/line-walking-challenge/assets/art/action-button.webp",
+        "games/line-walking-challenge/assets/art/badge.webp",
+        "games/line-walking-challenge/assets/art/complete-stage.webp",
+        "games/line-walking-challenge/assets/art/finish-flag.webp",
+        "games/line-walking-challenge/assets/art/flower-bud.webp",
+        "games/line-walking-challenge/assets/art/forest-stage.webp",
+        "games/line-walking-challenge/assets/art/fox-celebrate.webp",
+        "games/line-walking-challenge/assets/art/fox-ready.webp",
+        "games/line-walking-challenge/assets/art/rainbow-stage.webp",
+        "games/line-walking-challenge/assets/art/river-stage.webp",
+        "games/line-walking-challenge/assets/art/select-backdrop.webp",
+        "games/line-walking-challenge/assets/art/title-lockup.webp"
+      ],
       "packs": []
     },
     "local-nature-guide": {
@@ -3546,22 +3570,42 @@
       "packs": []
     },
     "trail-counting-walk": {
-      "engine": "coach-timer",
-      "status": "in-design",
-      "category": "movement-outdoor",
-      "characters": [],
+      "engine": null,
+      "status": "beta",
+      "category": "math-number-sense",
+      "characters": [
+        "Pip the paper fox"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/trail-counting-walk/assets/art/button-orange.webp",
+        "games/trail-counting-walk/assets/art/finish-flag.webp",
+        "games/trail-counting-walk/assets/art/fox-celebrate.webp",
+        "games/trail-counting-walk/assets/art/title.webp",
+        "games/trail-counting-walk/assets/art/world-meadow.webp",
+        "games/trail-counting-walk/assets/art/world-select.webp"
+      ],
       "packs": []
     },
     "turn-taking-tower": {
@@ -3846,6 +3890,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -3898,6 +3943,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -3912,6 +3958,7 @@
         "family-story-interview",
         "family-timeline",
         "garden-graphers",
+        "line-walking-challenge",
         "magnet-explorer",
         "momma-bear-storybook",
         "mountain-seasons-wheel",
@@ -3940,6 +3987,7 @@
         "table-setting-mission",
         "texture-trail",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue"
       ],
       "shared/js/camera-motion.js": [
@@ -3972,6 +4020,7 @@
         "instrument-detective",
         "joke-workshop",
         "land-water-tray",
+        "line-walking-challenge",
         "loose-parts-collage",
         "lunchbox-pack",
         "mountain-seasons-wheel",
@@ -4000,6 +4049,7 @@
         "table-setting-mission",
         "teen-bead-builder",
         "tiny-reader-theater",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist"
       ],
@@ -4061,6 +4111,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -4113,6 +4164,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4142,11 +4194,9 @@
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
-        "line-walking-challenge",
         "melting-race",
         "neighborhood-map-walk",
         "shelf-reset-game",
-        "trail-counting-walk",
         "waiting-muscle-game"
       ],
       "shared/js/engines/match-pairs.js": [
@@ -4207,6 +4257,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "line-walking-challenge",
         "local-nature-guide",
         "lunchbox-pack",
         "magnet-explorer",
@@ -4228,7 +4279,8 @@
         "sweep-the-trail",
         "table-setting-mission",
         "texture-trail",
-        "tiny-reader-theater"
+        "tiny-reader-theater",
+        "trail-counting-walk"
       ],
       "shared/js/idle-nudge.js": [
         "balance-beam-trail",
@@ -4248,6 +4300,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "line-walking-challenge",
         "loose-parts-collage",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -4281,6 +4334,7 @@
         "texture-trail",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4344,6 +4398,7 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "line-walking-challenge",
         "loose-parts-collage",
         "magnet-explorer",
         "nature-scavenger-hunt",
@@ -4364,6 +4419,7 @@
         "subtraction-picnic",
         "texture-trail",
         "throwing-target-garden",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist"
       ],
@@ -4391,6 +4447,7 @@
         "kindness-delivery",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "monster-opera",
@@ -4423,6 +4480,7 @@
         "tangram-tales",
         "throwing-target-garden",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue"
       ],
       "shared/js/puzzle-cutter.js": [
@@ -4452,6 +4510,7 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -4493,6 +4552,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "world-music-dance"
       ],
@@ -4515,6 +4575,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "line-walking-challenge",
         "magnet-explorer",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -4548,6 +4609,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue"
       ],
       "shared/js/sfx.js": [
@@ -4680,7 +4742,6 @@
         "joke-workshop",
         "laundry-sorter",
         "letter-road-driving",
-        "line-walking-challenge",
         "lunchbox-pack",
         "melting-race",
         "mystery-letter-bag",
@@ -4715,7 +4776,6 @@
         "tangram-tales",
         "teen-bead-builder",
         "then-now-sort",
-        "trail-counting-walk",
         "turn-taking-tower",
         "waiting-muscle-game",
         "weather-scientist",
@@ -4856,6 +4916,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -4905,6 +4966,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4936,6 +4998,7 @@
         "kindness-delivery",
         "land-water-tray",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "lunchbox-pack",
         "magnet-explorer",
@@ -4978,6 +5041,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -5016,6 +5080,7 @@
         "laundry-sorter",
         "letter-road-driving",
         "letter-treasure-hunt",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
@@ -5071,6 +5136,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
+        "trail-counting-walk",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -5209,7 +5275,6 @@
         "calm-corner-cards",
         "grace-courtesy-theater",
         "letter-road-driving",
-        "line-walking-challenge",
         "melting-race",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -5224,7 +5289,6 @@
         "story-sequence",
         "story-stones",
         "then-now-sort",
-        "trail-counting-walk",
         "turn-taking-tower",
         "waiting-muscle-game"
       ],
@@ -5254,6 +5318,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "line-walking-challenge",
         "local-nature-guide",
         "loose-parts-collage",
         "magnet-explorer",
@@ -5291,6 +5356,7 @@
         "texture-trail",
         "throwing-target-garden",
         "tiny-reader-theater",
+        "trail-counting-walk",
         "weather-scientist"
       ],
       "shared/css/screens.css": [
@@ -5441,6 +5507,9 @@
       "Fia": [
         "momma-bear-storybook"
       ],
+      "Fia the fox": [
+        "line-walking-challenge"
+      ],
       "fluffy white bunny": [
         "sound-hopscotch"
       ],
@@ -5559,6 +5628,9 @@
       ],
       "Pip the Owl Courier": [
         "secret-message-copy"
+      ],
+      "Pip the paper fox": [
+        "trail-counting-walk"
       ],
       "Pip the pea plant": [
         "plant-care-captain"
@@ -5975,6 +6047,42 @@
       ],
       "games/letter-treasure-hunt/assets/ui-raster/tokens/empty.webp": [
         "letter-treasure-hunt"
+      ],
+      "games/line-walking-challenge/assets/art/action-button.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/badge.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/complete-stage.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/finish-flag.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/flower-bud.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/forest-stage.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/fox-celebrate.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/fox-ready.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/rainbow-stage.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/river-stage.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/select-backdrop.webp": [
+        "line-walking-challenge"
+      ],
+      "games/line-walking-challenge/assets/art/title-lockup.webp": [
+        "line-walking-challenge"
       ],
       "games/lunchbox-pack/assets/lunchbox-closed.png": [
         "lunchbox-pack"
@@ -6722,6 +6830,24 @@
       ],
       "games/tiny-sentence-workshop/assets/ui/progress-pebbles.webp": [
         "tiny-sentence-workshop"
+      ],
+      "games/trail-counting-walk/assets/art/button-orange.webp": [
+        "trail-counting-walk"
+      ],
+      "games/trail-counting-walk/assets/art/finish-flag.webp": [
+        "trail-counting-walk"
+      ],
+      "games/trail-counting-walk/assets/art/fox-celebrate.webp": [
+        "trail-counting-walk"
+      ],
+      "games/trail-counting-walk/assets/art/title.webp": [
+        "trail-counting-walk"
+      ],
+      "games/trail-counting-walk/assets/art/world-meadow.webp": [
+        "trail-counting-walk"
+      ],
+      "games/trail-counting-walk/assets/art/world-select.webp": [
+        "trail-counting-walk"
       ],
       "shared/assets/audio": [
         "picture-word-match",

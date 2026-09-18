@@ -1,0 +1,660 @@
+[
+  {
+    "name": "world-select",
+    "source": "assets/source/gpt-image-2/world-select-master.png",
+    "output": "assets/art/world-select.webp",
+    "size": [
+      1440,
+      1080
+    ],
+    "bytes": 218384,
+    "workflow": "gpt-image-2"
+  },
+  {
+    "name": "world-meadow",
+    "source": "assets/source/gpt-image-2/world-meadow-master.png",
+    "output": "assets/art/world-meadow.webp",
+    "size": [
+      1440,
+      1080
+    ],
+    "bytes": 187630,
+    "workflow": "gpt-image-2"
+  },
+  {
+    "name": "world-creek",
+    "source": "assets/source/gpt-image-2/world-creek-master.png",
+    "output": "assets/art/world-creek.webp",
+    "size": [
+      1440,
+      1080
+    ],
+    "bytes": 194270,
+    "workflow": "gpt-image-2"
+  },
+  {
+    "name": "world-ridge",
+    "source": "assets/source/gpt-image-2/world-ridge-master.png",
+    "output": "assets/art/world-ridge.webp",
+    "size": [
+      1440,
+      1080
+    ],
+    "bytes": 226320,
+    "workflow": "gpt-image-2"
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 16.874,
+      "opaquePct": 81.779,
+      "partialPct": 1.347
+    },
+    "bbox": [
+      9,
+      10,
+      221,
+      320
+    ],
+    "sourceSize": [
+      231,
+      330
+    ],
+    "finalSize": [
+      231,
+      330
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/route-5.png",
+    "output": "assets/source/final-png/route-5.png",
+    "magenta": "assets/source/qa/finals/route-5-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/route-5-seed42.png",
+      "transparentPct": 79.544,
+      "opaquePct": 0.0,
+      "maxAlpha": 4
+    },
+    "fallbackSource": "assets/source/crops/route-5.png",
+    "sampledBackgroundRgb": [
+      19,
+      20,
+      25
+    ],
+    "filledInteriorHoles": true,
+    "name": "route-5",
+    "runtime": "assets/art/route-5.webp",
+    "bytes": 25760
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 16.051,
+      "opaquePct": 82.547,
+      "partialPct": 1.402
+    },
+    "bbox": [
+      9,
+      10,
+      218,
+      318
+    ],
+    "sourceSize": [
+      227,
+      328
+    ],
+    "finalSize": [
+      227,
+      328
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/route-10.png",
+    "output": "assets/source/final-png/route-10.png",
+    "magenta": "assets/source/qa/finals/route-10-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/route-10-seed42.png",
+      "transparentPct": 75.994,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/route-10.png",
+    "sampledBackgroundRgb": [
+      19,
+      20,
+      25
+    ],
+    "filledInteriorHoles": true,
+    "name": "route-10",
+    "runtime": "assets/art/route-10.webp",
+    "bytes": 27582
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 15.86,
+      "opaquePct": 82.643,
+      "partialPct": 1.498
+    },
+    "bbox": [
+      9,
+      9,
+      215,
+      318
+    ],
+    "sourceSize": [
+      224,
+      327
+    ],
+    "finalSize": [
+      224,
+      327
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/route-20.png",
+    "output": "assets/source/final-png/route-20.png",
+    "magenta": "assets/source/qa/finals/route-20-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/route-20-seed42.png",
+      "transparentPct": 72.641,
+      "opaquePct": 0.0,
+      "maxAlpha": 5
+    },
+    "fallbackSource": "assets/source/crops/route-20.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": true,
+    "name": "route-20",
+    "runtime": "assets/art/route-20.webp",
+    "bytes": 25944
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 34.558,
+      "opaquePct": 64.388,
+      "partialPct": 1.053
+    },
+    "bbox": [
+      10,
+      10,
+      321,
+      262
+    ],
+    "sourceSize": [
+      331,
+      271
+    ],
+    "finalSize": [
+      331,
+      271
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/stone.png",
+    "output": "assets/source/final-png/stone.png",
+    "magenta": "assets/source/qa/finals/stone-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/stone-seed42.png",
+      "transparentPct": 98.506,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/stone.png",
+    "sampledBackgroundRgb": [
+      19,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "stone",
+    "runtime": "assets/art/stone.webp",
+    "bytes": 22984
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 53.57,
+      "opaquePct": 44.859,
+      "partialPct": 1.571
+    },
+    "bbox": [
+      10,
+      10,
+      293,
+      306
+    ],
+    "sourceSize": [
+      303,
+      316
+    ],
+    "finalSize": [
+      303,
+      316
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/fox-idle.png",
+    "output": "assets/source/final-png/fox-idle.png",
+    "magenta": "assets/source/qa/finals/fox-idle-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/fox-idle-seed42.png",
+      "transparentPct": 81.6,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/fox-idle.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "fox-idle",
+    "runtime": "assets/art/fox-idle.webp",
+    "bytes": 20730
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 53.15,
+      "opaquePct": 45.112,
+      "partialPct": 1.738
+    },
+    "bbox": [
+      10,
+      10,
+      312,
+      282
+    ],
+    "sourceSize": [
+      323,
+      292
+    ],
+    "finalSize": [
+      323,
+      292
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/fox-hop.png",
+    "output": "assets/source/final-png/fox-hop.png",
+    "magenta": "assets/source/qa/finals/fox-hop-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/fox-hop-seed42.png",
+      "transparentPct": 67.526,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/fox-hop.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "fox-hop",
+    "runtime": "assets/art/fox-hop.webp",
+    "bytes": 20978
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 49.46,
+      "opaquePct": 48.82,
+      "partialPct": 1.72
+    },
+    "bbox": [
+      9,
+      11,
+      270,
+      316
+    ],
+    "sourceSize": [
+      280,
+      326
+    ],
+    "finalSize": [
+      280,
+      326
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/fox-celebrate.png",
+    "output": "assets/source/final-png/fox-celebrate.png",
+    "magenta": "assets/source/qa/finals/fox-celebrate-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/fox-celebrate-seed42.png",
+      "transparentPct": 86.35,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/fox-celebrate.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "fox-celebrate",
+    "runtime": "assets/art/fox-celebrate.webp",
+    "bytes": 21848
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 42.425,
+      "opaquePct": 56.159,
+      "partialPct": 1.416
+    },
+    "bbox": [
+      10,
+      10,
+      289,
+      302
+    ],
+    "sourceSize": [
+      299,
+      312
+    ],
+    "finalSize": [
+      299,
+      312
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/pennant.png",
+    "output": "assets/source/final-png/pennant.png",
+    "magenta": "assets/source/qa/finals/pennant-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/pennant-seed42.png",
+      "transparentPct": 80.538,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/pennant.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "pennant",
+    "runtime": "assets/art/pennant.webp",
+    "bytes": 21468
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "alpha": {
+      "transparentPct": 77.361,
+      "opaquePct": 18.935,
+      "partialPct": 3.704
+    },
+    "bbox": [
+      140,
+      145,
+      898,
+      757
+    ],
+    "sourceSize": [
+      1024,
+      1008
+    ],
+    "finalSize": [
+      260,
+      211
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/layer2/star-seed42.png",
+    "output": "assets/source/final-png/star.png",
+    "magenta": "assets/source/qa/finals/star-magenta.png",
+    "workflow": "qwen-image-layered",
+    "layer": "layer_2",
+    "layeredReview": {
+      "status": "accepted",
+      "transparentPct": 67.804,
+      "opaquePct": 18.935,
+      "maxAlpha": 255
+    },
+    "name": "star",
+    "runtime": "assets/art/star.webp",
+    "bytes": 13956
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 55.089,
+      "opaquePct": 43.573,
+      "partialPct": 1.338
+    },
+    "bbox": [
+      10,
+      10,
+      260,
+      298
+    ],
+    "sourceSize": [
+      270,
+      308
+    ],
+    "finalSize": [
+      270,
+      308
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/finish-flag.png",
+    "output": "assets/source/final-png/finish-flag.png",
+    "magenta": "assets/source/qa/finals/finish-flag-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/finish-flag-seed42.png",
+      "transparentPct": 60.994,
+      "opaquePct": 0.0,
+      "maxAlpha": 4
+    },
+    "fallbackSource": "assets/source/crops/finish-flag.png",
+    "sampledBackgroundRgb": [
+      20,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "finish-flag",
+    "runtime": "assets/art/finish-flag.webp",
+    "bytes": 16074
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [],
+    "alpha": {
+      "transparentPct": 22.85,
+      "opaquePct": 75.637,
+      "partialPct": 1.513
+    },
+    "bbox": [
+      10,
+      9,
+      344,
+      180
+    ],
+    "sourceSize": [
+      354,
+      189
+    ],
+    "finalSize": [
+      354,
+      189
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/mattes/button-orange.png",
+    "output": "assets/source/final-png/button-orange.png",
+    "magenta": "assets/source/qa/finals/button-orange-magenta.png",
+    "workflow": "exact-source-contiguous-ground-matte",
+    "layer": null,
+    "layeredReview": {
+      "status": "rejected",
+      "reason": "layer_2 had no opaque subject core",
+      "source": "assets/source/layer2/button-orange-seed42.png",
+      "transparentPct": 79.212,
+      "opaquePct": 0.0,
+      "maxAlpha": 3
+    },
+    "fallbackSource": "assets/source/crops/button-orange.png",
+    "sampledBackgroundRgb": [
+      19,
+      20,
+      25
+    ],
+    "filledInteriorHoles": false,
+    "name": "button-orange",
+    "runtime": "assets/art/button-orange.webp",
+    "bytes": 19922
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "alpha": {
+      "transparentPct": 37.565,
+      "opaquePct": 42.298,
+      "partialPct": 20.137
+    },
+    "bbox": [
+      33,
+      33,
+      992,
+      602
+    ],
+    "sourceSize": [
+      1024,
+      632
+    ],
+    "finalSize": [
+      430,
+      259
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/layer2/active-mat-seed42.png",
+    "output": "assets/source/final-png/active-mat.png",
+    "magenta": "assets/source/qa/finals/active-mat-magenta.png",
+    "workflow": "qwen-image-layered",
+    "layer": "layer_2",
+    "layeredReview": {
+      "status": "accepted",
+      "transparentPct": 32.015,
+      "opaquePct": 42.298,
+      "maxAlpha": 255
+    },
+    "name": "active-mat",
+    "runtime": "assets/art/active-mat.webp",
+    "bytes": 31826
+  },
+  {
+    "pass": true,
+    "reason": null,
+    "flags": [
+      "alpha-partial-band>2%"
+    ],
+    "alpha": {
+      "transparentPct": 52.187,
+      "opaquePct": 33.222,
+      "partialPct": 14.591
+    },
+    "bbox": [
+      17,
+      67,
+      1007,
+      300
+    ],
+    "sourceSize": [
+      1024,
+      384
+    ],
+    "finalSize": [
+      1014,
+      257
+    ],
+    "alphaFloor": 4,
+    "source": "assets/source/layer2/title-seed42.png",
+    "output": "assets/source/final-png/title.png",
+    "magenta": "assets/source/qa/finals/title-magenta.png",
+    "workflow": "qwen-image-layered",
+    "layer": "layer_2",
+    "layeredReview": {
+      "status": "accepted",
+      "transparentPct": 33.911,
+      "opaquePct": 33.222,
+      "maxAlpha": 255
+    },
+    "name": "title",
+    "runtime": "assets/art/title.webp",
+    "bytes": 86174
+  },
+  {
+    "name": "hub-tile",
+    "source": "assets/source/local-api/hub-tile-master.png",
+    "output": "assets/hub/tiles/trail-counting-walk.jpg",
+    "size": [
+      640,
+      533
+    ],
+    "bytes": 55155,
+    "workflow": "krea2-turbo-t2i"
+  }
+]

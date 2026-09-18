@@ -1,34 +1,47 @@
 {
   "id": "trail-counting-walk",
   "title": "Trail Counting Walk",
-  "category": "movement-outdoor",
+  "category": "math-number-sense",
   "path": "games/trail-counting-walk/",
   "icon": "🔢",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#e9853d",
-  "shareTitle": "Trail Counting Walk 🔢 — Outdoor Counting Adventure",
-  "description": "Count steps, birds, doors, and other outdoor sights on a walk, then report each total like breaking news at every check-in. A number-noticing walk for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#ef7f35",
+  "shareTitle": "Trail Counting Walk — A Papercraft Number Adventure",
+  "description": "Help Pip the paper fox hop across three handmade woodland trails while counting every step to 5, 10, or 20.",
   "learningGoals": [
-    "Practice counting real objects and events in the wild",
-    "Remember and report numbers at spoken check-ins",
-    "Compare collected numbers to identify more and fewer",
-    "Build observation stamina during an outdoor walk"
+    "Build stable one-to-one correspondence between a touch, an object, and a spoken number",
+    "Practice the forward number sequence from 1 to 20",
+    "Recognize written numerals while hearing their number names",
+    "Sustain attention through short groups of five without pressure or time limits"
   ],
-  "interactionModel": "follow each spoken outdoor counting mission, remember and say the total at check-in, then tap the large current-step card",
-  "feedbackModel": "excited spoken number-news reports with tick, sparkle, and tada SFX; every reported total becomes a headline",
+  "interactionModel": "choose a five-, ten-, or twenty-step trail, then tap the glowing next numbered paper stone to help Pip hop forward",
+  "feedbackModel": "each accepted touch speaks the number, moves Pip in a readable hop, earns a paper star, and advances the pennant; future stones give a gentle next-number cue without losing progress",
+  "runtime": "Papercraft custom DOM counting runtime",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "walk", "title": "Counting Walk", "skill": "counting, remembering, and comparing outdoor totals" },
-    { "id": "race", "title": "Number Race", "skill": "counting observed categories to target numbers" }
+    { "id": "count-5", "title": "Mossy Meadow", "skill": "one-to-one counting from 1 to 5" },
+    { "id": "count-10", "title": "Blue Creek", "skill": "stable counting from 1 to 10" },
+    { "id": "count-20", "title": "Firefly Ridge", "skill": "sustained counting from 1 to 20" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "QLOBE Kids and OpenAI GPT Image 2, with Krea 2, Qwen Image Layered, Qwen3 TTS voice clone, and Whisper authoring support. Full provenance is in ASSETS.md.",
+  "characters": ["Pip the paper fox"],
   "conceptVideo": null
 }

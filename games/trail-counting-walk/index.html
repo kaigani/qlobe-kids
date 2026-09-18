@@ -1,47 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Trail Counting Walk 🔢 — Outdoor Counting Adventure</title>
-  <meta name="description" content="Count steps, birds, doors, and other outdoor sights on a walk, then report each total like breaking news at every check-in. A number-noticing walk for ages 5–6." />
+  <meta name="theme-color" content="#55bcd1" />
+  <title>Trail Counting Walk — A Papercraft Number Adventure</title>
+  <meta name="description" content="Help a friendly papercraft fox hop along numbered stepping stones while counting to 5, 10, or 20." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trail Counting Walk" />
-  <meta property="og:title" content="Trail Counting Walk 🔢 — Outdoor Counting Adventure" />
-  <meta property="og:description" content="Count steps, birds, doors, and other outdoor sights on a walk, then report each total like breaking news at every check-in. A number-noticing walk for ages 5–6." />
+  <meta property="og:title" content="Trail Counting Walk — A Papercraft Number Adventure" />
+  <meta property="og:description" content="Count every stepping stone and guide a little fox through three handmade nature trails." />
   <meta property="og:url" content="https://qlo.be/games/trail-counting-walk/" />
   <meta property="og:image" content="https://qlo.be/games/trail-counting-walk/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Trail Counting Walk title screen with Counting Walk and Number Race modes and a numbered tile icon on a pale blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A cheerful orange papercraft fox beside numbered stones on a colorful forest trail." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Trail Counting Walk 🔢 — Outdoor Counting Adventure" />
-  <meta name="twitter:description" content="Count steps, birds, doors, and other outdoor sights on a walk, then report each total like breaking news at every check-in. A number-noticing walk for ages 5–6." />
+  <meta name="twitter:title" content="Trail Counting Walk — A Papercraft Number Adventure" />
+  <meta name="twitter:description" content="Hop, count, and earn a star on every step." />
   <meta name="twitter:image" content="https://qlo.be/games/trail-counting-walk/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off">
+    <section id="splash" class="game-screen splash-screen" data-qk-screen="splash">
+      <img id="splash-background" class="screen-background" src="./assets/art/world-select.webp" alt="" draggable="false" />
+      <div id="splash-hud" class="screen-hud"></div>
+      <div class="splash-content">
+        <div class="title-lockup" aria-hidden="true">
+          <img id="title-art" src="./assets/art/title.webp" alt="" draggable="false" />
+        </div>
+        <h1 class="visually-hidden">Trail Counting Walk</h1>
+        <p id="picker-prompt" class="picker-prompt">Pick a counting trail</p>
+        <div id="route-grid" class="route-grid" role="group" aria-label="Choose a counting trail"></div>
+      </div>
+    </section>
+
+    <section id="play" class="game-screen play-screen" data-qk-screen="play" hidden>
+      <img id="play-background" class="screen-background" src="./assets/art/world-meadow.webp" alt="" draggable="false" />
+      <div id="trail-stage" class="trail-stage">
+        <p id="play-heading" class="play-heading">Count each step</p>
+        <div id="trail-board" class="trail-board-host" role="group" aria-label="Numbered trail stepping stones"></div>
+        <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+      </div>
+      <div id="play-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="end" class="game-screen end-screen" data-qk-screen="end" hidden>
+      <img id="end-background" class="screen-background" src="./assets/art/world-meadow.webp" alt="" draggable="false" />
+      <div id="end-hud" class="screen-hud"></div>
+      <div class="end-stage">
+        <img id="end-flag" class="end-flag" src="./assets/art/finish-flag.webp" alt="" draggable="false" />
+        <img id="end-fox" class="end-fox" src="./assets/art/fox-celebrate.webp" alt="A happy fox celebrating at the finish" draggable="false" />
+        <div class="end-copy">
+          <h2 id="end-title">You counted the whole trail!</h2>
+          <p id="end-message">Every step earned a trail star.</p>
+        </div>
+        <div id="earned-stars" class="earned-stars" role="group" aria-label="Trail stars earned"></div>
+        <div class="end-actions qk-end-actions">
+          <button id="again" class="paper-action" type="button" data-target="again" data-role="neutral" aria-label="Walk this trail again">
+            <img src="./assets/art/button-orange.webp" alt="" draggable="false" />
+            <span id="again-label">Walk again</span>
+          </button>
+          <button id="choose" class="paper-action" type="button" data-target="choose" data-role="navigation" aria-label="Choose another counting trail">
+            <img src="./assets/art/button-orange.webp" alt="" draggable="false" />
+            <span id="choose-label">Choose trail</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../shared/js/analytics.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
