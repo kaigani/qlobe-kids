@@ -1,0 +1,40 @@
+{
+  "generator": "gpt-image-2 via Codex imagegen",
+  "artDirection": "Papercraft",
+  "assets": [
+    {
+      "file": "album-environment-master.png",
+      "status": "accepted",
+      "prompt": "Create a premium 4:3 landscape preschool game environment in tactile handmade papercraft: an empty open family scrapbook on a warm kraft-paper tabletop, cream album page with a sky-blue paper inset, visible left ring binding and colorful page tabs, stitched rainbow, layered green hills, paper flowers, clouds and a friendly sun around the edges. Preserve broad quiet negative space through the center for runtime game UI. Cut cardstock, deckled edges, paper fibers and soft physical shadows. No text, letters, people, portraits, cards, globe, buttons, watermark, glossy plastic, vector look, or CSS-like flat shapes."
+    },
+    {
+      "file": "nia-memory-cards-sheet.png",
+      "status": "accepted after cutter and Qwen layered extraction",
+      "references": [
+        "shared/characters/nia/portrait.png",
+        "01-game-concepts/family-timeline/output/ui-mockups/02-baby-to-now.png"
+      ],
+      "prompt": "Using the supplied Nia portrait as the identity anchor and the mockup only for papercraft language, create one horizontal asset sheet containing exactly three separate rounded memory cards of the same child Nia at three ages: Baby seated on a picnic blanket, Toddler taking a first step, and Now standing proudly with a small backpack. Keep warm brown skin, dark curly hair, round dark glasses, purple accents and facial identity coherent across all three ages. Each card has a cream stitched paper border, blue paper scene, blank cream label pocket, generous spacing and a uniform dark charcoal background outside the cards for cutting. No words, letters, numbers, logos, watermark, extra cards, overlapping objects, or cropped edges."
+    },
+    {
+      "file": "timeline-ui-sheet.png",
+      "status": "accepted",
+      "prompt": "Create a transparent-background papercraft asset sheet with exactly eight isolated objects in a clean two-row grid with generous separation: three tall stitched memory pockets in coral, mustard and lavender; one wide torn cream candidate tray; one stitched five-color rainbow road; one wide sky-blue start button plate with no text; one round paper globe button plate with no text; and one small open family book icon. Handmade cut cardstock, visible fibers, sewn seams, deckled edges and soft object-local shadows. No text, letters, numbers, people, watermark, touching objects or extra decorations."
+    },
+    {
+      "file": "family-story-ui-sheet.png",
+      "status": "partially accepted; only the first three story cards are used",
+      "prompt": "Create a transparent-background papercraft asset sheet with exactly ten isolated objects: three large vertical family-story choice cards showing food shared together, a remembered place, and a family celebration; then matching food, place and celebration stamps; one golden family-story star; one paper spin control plate; one paper camera control plate; and one confetti cluster. Clean grid, broad transparent gaps, no text, letters, numbers, logos, watermark, people, touching objects or cropped edges. Handmade paper fibers, stitched borders and warm tactile shadows."
+    },
+    {
+      "file": "title-lockup-charcoal.png",
+      "status": "accepted",
+      "prompt": "Create one isolated decorative title lockup that reads exactly FAMILY TIMELINE, with Family above Timeline, made from cheerful layered cut-paper letters on a cream stitched backing, small paper heart and star accents, rich sky-blue, coral, mustard, green and lavender palette, tactile fibers and soft physical shadow. Transparent background, centered horizontal composition, no other words, no characters, no watermark, no frame touching the edges."
+    },
+    {
+      "file": "story-controls-sheet.png",
+      "status": "accepted",
+      "prompt": "Create a transparent-background papercraft asset sheet with exactly seven isolated objects and broad clear gaps: a food-sharing stamp, a remembered-place stamp, a celebration stamp, a large golden five-point family-story star, a wide blue spin button plate with a simple paper globe motif but no text, a wide coral camera button plate with no text, and one compact multicolor paper-confetti cluster. Arrange in a clean two-row grid. Handmade cut cardstock, visible fibers, stitched or deckled edges and soft object-local shadows. No words, letters, numbers, people, watermark, touching objects or cropped edges."
+    }
+  ]
+}

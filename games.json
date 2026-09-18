@@ -2678,24 +2678,41 @@
       "path": "games/family-timeline/",
       "icon": "assets/hub/tiles/family-timeline.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#6f55ad",
+      "uses": [
+        "shared/js/tap.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/voice-clips.js",
+        "shared/js/narrator.js",
+        "shared/js/sfx.js",
+        "shared/js/bgm.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/timers.js",
+        "shared/js/rng.js",
+        "shared/js/preload.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/vendor/three.module.min.js",
+        "shared/assets/music/gentle-country-morning.mp3"
+      ],
       "modes": [
         {
           "id": "growing",
-          "title": "Growing Up",
-          "skill": "ordering life stages from younger to older"
+          "title": "My Story Path",
+          "skill": "order baby, toddler, and now from earlier to later"
         },
         {
-          "id": "then-now",
-          "title": "Long Ago to Today",
-          "skill": "ordering simple historical change over time"
+          "id": "family-map",
+          "title": "Family Map",
+          "skill": "connect family story prompts with places on a world map"
         }
       ],
-      "summary": "Order baby, toddler, now, and future self."
+      "summary": "Order growing-up memories, follow family stars around a paper globe, and fill a private storybook."
     },
     {
       "id": "community-helper-cards",

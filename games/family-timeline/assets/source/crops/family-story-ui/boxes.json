@@ -1,0 +1,322 @@
+{
+  "source": "games/family-timeline/assets/source/gpt-image-2/family-story-ui-sheet.png",
+  "sourceSha256": "58e2bb928492a7ed27466f609b109d0c81018e50b68cc68f11bff55b613f90d1",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "food-card",
+      "file": "food-card.png",
+      "componentArea": 139560,
+      "foregroundBbox": [
+        46,
+        64,
+        348,
+        545
+      ],
+      "cropBbox": [
+        34,
+        52,
+        360,
+        557
+      ],
+      "cropXywh": [
+        34,
+        52,
+        326,
+        505
+      ],
+      "normalizedCropBbox": [
+        0.019166,
+        0.058625,
+        0.202931,
+        0.627959
+      ]
+    },
+    {
+      "index": 2,
+      "name": "place-card",
+      "file": "place-card.png",
+      "componentArea": 139873,
+      "foregroundBbox": [
+        386,
+        61,
+        687,
+        545
+      ],
+      "cropBbox": [
+        374,
+        49,
+        699,
+        557
+      ],
+      "cropXywh": [
+        374,
+        49,
+        325,
+        508
+      ],
+      "normalizedCropBbox": [
+        0.210823,
+        0.055242,
+        0.394025,
+        0.627959
+      ]
+    },
+    {
+      "index": 3,
+      "name": "celebration-card",
+      "file": "celebration-card.png",
+      "componentArea": 135310,
+      "foregroundBbox": [
+        728,
+        64,
+        1018,
+        546
+      ],
+      "cropBbox": [
+        716,
+        52,
+        1030,
+        558
+      ],
+      "cropXywh": [
+        716,
+        52,
+        314,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.403608,
+        0.058625,
+        0.580609,
+        0.629087
+      ]
+    },
+    {
+      "index": 4,
+      "name": "food-stamp",
+      "file": "food-stamp.png",
+      "componentArea": 42114,
+      "foregroundBbox": [
+        1046,
+        291,
+        1274,
+        527
+      ],
+      "cropBbox": [
+        1034,
+        279,
+        1286,
+        539
+      ],
+      "cropXywh": [
+        1034,
+        279,
+        252,
+        260
+      ],
+      "normalizedCropBbox": [
+        0.582864,
+        0.314543,
+        0.724915,
+        0.607666
+      ]
+    },
+    {
+      "index": 5,
+      "name": "place-stamp",
+      "file": "place-stamp.png",
+      "componentArea": 86346,
+      "foregroundBbox": [
+        1281,
+        287,
+        1746,
+        528
+      ],
+      "cropBbox": [
+        1269,
+        275,
+        1758,
+        540
+      ],
+      "cropXywh": [
+        1269,
+        275,
+        489,
+        265
+      ],
+      "normalizedCropBbox": [
+        0.715333,
+        0.310034,
+        0.990981,
+        0.608794
+      ]
+    },
+    {
+      "index": 6,
+      "name": "celebration-stamp",
+      "file": "celebration-stamp.png",
+      "componentArea": 43719,
+      "foregroundBbox": [
+        53,
+        560,
+        335,
+        828
+      ],
+      "cropBbox": [
+        41,
+        548,
+        347,
+        840
+      ],
+      "cropXywh": [
+        41,
+        548,
+        306,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.023112,
+        0.617813,
+        0.195603,
+        0.947012
+      ]
+    },
+    {
+      "index": 7,
+      "name": "story-star",
+      "file": "story-star.png",
+      "componentArea": 97785,
+      "foregroundBbox": [
+        369,
+        611,
+        851,
+        822
+      ],
+      "cropBbox": [
+        357,
+        599,
+        863,
+        834
+      ],
+      "cropXywh": [
+        357,
+        599,
+        506,
+        235
+      ],
+      "normalizedCropBbox": [
+        0.20124,
+        0.67531,
+        0.486471,
+        0.940248
+      ]
+    },
+    {
+      "index": 8,
+      "name": "spin-plate",
+      "file": "spin-plate.png",
+      "componentArea": 93345,
+      "foregroundBbox": [
+        879,
+        611,
+        1341,
+        821
+      ],
+      "cropBbox": [
+        867,
+        599,
+        1353,
+        833
+      ],
+      "cropXywh": [
+        867,
+        599,
+        486,
+        234
+      ],
+      "normalizedCropBbox": [
+        0.488726,
+        0.67531,
+        0.762683,
+        0.939121
+      ]
+    },
+    {
+      "index": 9,
+      "name": "camera-plate",
+      "file": "camera-plate.png",
+      "componentArea": 936,
+      "foregroundBbox": [
+        1363,
+        736,
+        1401,
+        780
+      ],
+      "cropBbox": [
+        1351,
+        724,
+        1413,
+        792
+      ],
+      "cropXywh": [
+        1351,
+        724,
+        62,
+        68
+      ],
+      "normalizedCropBbox": [
+        0.761556,
+        0.816234,
+        0.796505,
+        0.892897
+      ]
+    },
+    {
+      "index": 10,
+      "name": "confetti-cluster",
+      "file": "confetti-cluster.png",
+      "componentArea": 60452,
+      "foregroundBbox": [
+        1372,
+        586,
+        1742,
+        823
+      ],
+      "cropBbox": [
+        1360,
+        574,
+        1754,
+        835
+      ],
+      "cropXywh": [
+        1360,
+        574,
+        394,
+        261
+      ],
+      "normalizedCropBbox": [
+        0.766629,
+        0.647125,
+        0.988726,
+        0.941375
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 32,
+    "closeRadius": 1,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "id": "family-timeline",
+  "title": "Family Timeline",
+  "artDirection": "Papercraft",
+  "music": "../../shared/assets/music/gentle-country-morning.mp3",
+  "audio": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json"
+  },
+  "art": {
+    "background": "./assets/art/backgrounds/album-environment.webp",
+    "title": "./assets/art/title/title-lockup.webp",
+    "mapTexture": "./assets/art/map/world-paper-map.webp",
+    "memories": {
+      "baby": "./assets/art/memories/baby.webp",
+      "toddler": "./assets/art/memories/toddler.webp",
+      "now": "./assets/art/memories/now.webp"
+    },
+    "pockets": {
+      "baby": "./assets/art/ui/pocket-baby.webp",
+      "toddler": "./assets/art/ui/pocket-toddler.webp",
+      "now": "./assets/art/ui/pocket-now.webp"
+    },
+    "ui": {
+      "candidateTray": "./assets/art/ui/candidate-tray.webp",
+      "rainbowRoad": "./assets/art/ui/rainbow-road.webp",
+      "startPlate": "./assets/art/ui/start-plate.webp",
+      "globePlate": "./assets/art/ui/globe-plate.webp",
+      "bookIcon": "./assets/art/ui/book-icon.webp",
+      "spinPlate": "./assets/art/ui/spin-plate.webp",
+      "cameraPlate": "./assets/art/ui/camera-plate.webp",
+      "storyStar": "./assets/art/ui/story-star.webp",
+      "confetti": "./assets/art/ui/confetti-cluster.webp"
+    },
+    "storyCards": {
+      "food": "./assets/art/story-cards/food.webp",
+      "place": "./assets/art/story-cards/place.webp",
+      "celebration": "./assets/art/story-cards/celebration.webp"
+    },
+    "stamps": {
+      "food": "./assets/art/stamps/food.webp",
+      "place": "./assets/art/stamps/place.webp",
+      "celebration": "./assets/art/stamps/celebration.webp"
+    }
+  },
+  "modes": [
+    {
+      "id": "growing",
+      "title": "My Story Path",
+      "skill": "order baby, toddler, and now from earlier to later"
+    },
+    {
+      "id": "family-map",
+      "title": "Family Map",
+      "skill": "connect family story prompts with places on a world map"
+    }
+  ],
+  "memoryCards": [
+    { "id": "baby", "label": "Baby", "voiceKey": "baby-placed" },
+    { "id": "toddler", "label": "Toddler", "voiceKey": "toddler-placed" },
+    { "id": "now", "label": "Now", "voiceKey": "now-placed" }
+  ],
+  "destinations": [
+    { "id": "sun-star", "name": "Sun story star", "shortName": "★", "lat": 30, "lon": -104, "color": "#f3a33c" },
+    { "id": "heart-star", "name": "Heart story star", "shortName": "★", "lat": -12, "lon": -58, "color": "#ef6c72" },
+    { "id": "leaf-star", "name": "Leaf story star", "shortName": "★", "lat": 7, "lon": 21, "color": "#72a953" },
+    { "id": "moon-star", "name": "Moon story star", "shortName": "★", "lat": 30, "lon": 88, "color": "#7c66b7" },
+    { "id": "wave-star", "name": "Wave story star", "shortName": "★", "lat": -24, "lon": 136, "color": "#3b92c9" }
+  ],
+  "discoveryTypes": [
+    { "id": "food", "label": "Food we share", "voiceKey": "food-prompt" },
+    { "id": "place", "label": "A place we remember", "voiceKey": "place-prompt" },
+    { "id": "celebration", "label": "How we celebrate", "voiceKey": "celebration-prompt" }
+  ],
+  "voice": {
+    "welcome": "Welcome to your family storybook. Make your growing story, then follow family stars around the world.",
+    "choose": "Choose a story page.",
+    "timeline-intro": "The memories got mixed up. Put baby, toddler, and now in order.",
+    "timeline-help": "Pick up a memory, then find where it belongs.",
+    "try-again": "That memory belongs in a different time. Try another pocket.",
+    "baby-placed": "Baby comes first.",
+    "toddler-placed": "Toddler comes after baby.",
+    "now-placed": "Now comes last. Look how you've grown!",
+    "timeline-complete": "You made your growing story!",
+    "map-intro": "Spin the paper globe to the glowing family star.",
+    "spin-help": "Swipe the globe, or tap the big spin button.",
+    "landed": "You found a family story place!",
+    "choose-stamp": "Choose a family story to tuck into your book.",
+    "food-prompt": "What food does your family love to share?",
+    "place-prompt": "What place does your family remember?",
+    "celebration-prompt": "How does your family celebrate together?",
+    "stamp-earned": "That story belongs in your family book.",
+    "map-complete": "Three family stars! Your story reaches around the world.",
+    "book-intro": "Here is your family storybook. Every family story is special.",
+    "photo-privacy": "A grown-up can choose a photo. It stays only on this device.",
+    "photo-added": "Your photo is tucked safely into the book.",
+    "photo-failed": "That photo did not fit. Your illustrated memory is still here.",
+    "remove-photo": "Remove this photo from this device?",
+    "photo-removed": "The photo is gone from this device.",
+    "timeline-nudge": "Try baby first, then toddler, then now.",
+    "map-nudge": "Turn the globe toward the glowing star.",
+    "replay": "Let's tell your story again."
+  }
+}

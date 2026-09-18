@@ -1,0 +1,262 @@
+{
+  "source": "games/family-timeline/assets/source/gpt-image-2/timeline-ui-sheet.png",
+  "sourceSha256": "559598d218490d12c5330ce3d1fd39ecca13ffa1e84e883b8d5cebd1ef3ed865",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "pocket-baby",
+      "file": "pocket-baby.png",
+      "componentArea": 111755,
+      "foregroundBbox": [
+        64,
+        87,
+        370,
+        489
+      ],
+      "cropBbox": [
+        52,
+        75,
+        382,
+        501
+      ],
+      "cropXywh": [
+        52,
+        75,
+        330,
+        426
+      ],
+      "normalizedCropBbox": [
+        0.029312,
+        0.084555,
+        0.215333,
+        0.564825
+      ]
+    },
+    {
+      "index": 2,
+      "name": "pocket-toddler",
+      "file": "pocket-toddler.png",
+      "componentArea": 109895,
+      "foregroundBbox": [
+        435,
+        84,
+        735,
+        488
+      ],
+      "cropBbox": [
+        423,
+        72,
+        747,
+        500
+      ],
+      "cropXywh": [
+        423,
+        72,
+        324,
+        428
+      ],
+      "normalizedCropBbox": [
+        0.238444,
+        0.081172,
+        0.421082,
+        0.563698
+      ]
+    },
+    {
+      "index": 3,
+      "name": "pocket-now",
+      "file": "pocket-now.png",
+      "componentArea": 110903,
+      "foregroundBbox": [
+        792,
+        84,
+        1095,
+        489
+      ],
+      "cropBbox": [
+        780,
+        72,
+        1107,
+        501
+      ],
+      "cropXywh": [
+        780,
+        72,
+        327,
+        429
+      ],
+      "normalizedCropBbox": [
+        0.439684,
+        0.081172,
+        0.624014,
+        0.564825
+      ]
+    },
+    {
+      "index": 4,
+      "name": "candidate-tray",
+      "file": "candidate-tray.png",
+      "componentArea": 149722,
+      "foregroundBbox": [
+        1135,
+        143,
+        1725,
+        418
+      ],
+      "cropBbox": [
+        1123,
+        131,
+        1737,
+        430
+      ],
+      "cropXywh": [
+        1123,
+        131,
+        614,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.633033,
+        0.147689,
+        0.979143,
+        0.48478
+      ]
+    },
+    {
+      "index": 5,
+      "name": "rainbow-road",
+      "file": "rainbow-road.png",
+      "componentArea": 82280,
+      "foregroundBbox": [
+        40,
+        557,
+        651,
+        762
+      ],
+      "cropBbox": [
+        28,
+        545,
+        663,
+        774
+      ],
+      "cropXywh": [
+        28,
+        545,
+        635,
+        229
+      ],
+      "normalizedCropBbox": [
+        0.015784,
+        0.614431,
+        0.373732,
+        0.872604
+      ]
+    },
+    {
+      "index": 6,
+      "name": "start-plate",
+      "file": "start-plate.png",
+      "componentArea": 78943,
+      "foregroundBbox": [
+        668,
+        565,
+        1088,
+        758
+      ],
+      "cropBbox": [
+        656,
+        553,
+        1100,
+        770
+      ],
+      "cropXywh": [
+        656,
+        553,
+        444,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.369786,
+        0.62345,
+        0.620068,
+        0.868095
+      ]
+    },
+    {
+      "index": 7,
+      "name": "globe-plate",
+      "file": "globe-plate.png",
+      "componentArea": 67187,
+      "foregroundBbox": [
+        1112,
+        501,
+        1401,
+        796
+      ],
+      "cropBbox": [
+        1100,
+        489,
+        1413,
+        808
+      ],
+      "cropXywh": [
+        1100,
+        489,
+        313,
+        319
+      ],
+      "normalizedCropBbox": [
+        0.620068,
+        0.551297,
+        0.796505,
+        0.910936
+      ]
+    },
+    {
+      "index": 8,
+      "name": "book-icon",
+      "file": "book-icon.png",
+      "componentArea": 94743,
+      "foregroundBbox": [
+        1405,
+        493,
+        1737,
+        808
+      ],
+      "cropBbox": [
+        1393,
+        481,
+        1749,
+        820
+      ],
+      "cropXywh": [
+        1393,
+        481,
+        356,
+        339
+      ],
+      "normalizedCropBbox": [
+        0.785231,
+        0.542277,
+        0.985908,
+        0.924464
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

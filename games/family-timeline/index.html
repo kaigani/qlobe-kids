@@ -5,44 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Family Timeline 👶 — Ordering Time and Growth</title>
-  <meta name="description" content="Line up pictures in order, from little to grown and long ago to today, then hear the finished timeline spoken back. A simple sequencing game for ages 5–6." />
+  <meta name="theme-color" content="#8ed6ef" />
+  <title>Family Timeline — A Growing Story Around the World</title>
+  <meta name="description" content="Put Baby, Toddler, and Now in order, follow family-story stars around a tactile paper globe, and build a private keepsake book with an optional on-device photo." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Family Timeline" />
-  <meta property="og:title" content="Family Timeline 👶 — Ordering Time and Growth" />
-  <meta property="og:description" content="Line up pictures in order, from little to grown and long ago to today, then hear the finished timeline spoken back. A simple sequencing game for ages 5–6." />
+  <meta property="og:title" content="Family Timeline — A Growing Story Around the World" />
+  <meta property="og:description" content="Put Baby, Toddler, and Now in order, follow family-story stars around a tactile paper globe, and build a private keepsake book with an optional on-device photo." />
   <meta property="og:url" content="https://qlo.be/games/family-timeline/" />
   <meta property="og:image" content="https://qlo.be/games/family-timeline/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Family Timeline title screen with Growing Up and Long Ago to Today buttons below a baby face icon." />
+  <meta property="og:image:alt" content="A handmade paper family album with a rainbow timeline, three growing-up memories, and a colorful globe." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Family Timeline 👶 — Ordering Time and Growth" />
-  <meta name="twitter:description" content="Line up pictures in order, from little to grown and long ago to today, then hear the finished timeline spoken back. A simple sequencing game for ages 5–6." />
+  <meta name="twitter:title" content="Family Timeline — A Growing Story Around the World" />
+  <meta name="twitter:description" content="Put Baby, Toddler, and Now in order, follow family-story stars around a tactile paper globe, and build a private keepsake book with an optional on-device photo." />
   <meta name="twitter:image" content="https://qlo.be/games/family-timeline/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/sequence-order.js';
-
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="app" aria-live="polite"></main>
+  <div id="confetti" aria-hidden="true"></div>
+  <input id="photo-input" class="visually-hidden" type="file" accept="image/*" tabindex="-1" />
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,52 @@
+{
+  "source": "games/family-timeline/assets/source/gpt-image-2/title-lockup-charcoal.png",
+  "sourceSha256": "1de6c635bb57c59a3e862180463754e94fbf24ad921c63f41cdae12a0d5adfbc",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title-lockup",
+      "file": "title-lockup.png",
+      "componentArea": 652960,
+      "foregroundBbox": [
+        254,
+        83,
+        1553,
+        774
+      ],
+      "cropBbox": [
+        242,
+        71,
+        1565,
+        786
+      ],
+      "cropXywh": [
+        242,
+        71,
+        1323,
+        715
+      ],
+      "normalizedCropBbox": [
+        0.136415,
+        0.080045,
+        0.882187,
+        0.886133
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 8,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

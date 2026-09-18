@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-17T20:40:43.558Z",
+  "generated": "2026-09-18T02:44:03.048Z",
   "engines": {
     "coach-timer": {
       "count": 10,
@@ -38,19 +38,11 @@
       ]
     },
     "build-assemble": {
-      "count": 4,
+      "count": 3,
       "games": [
         "blend-train",
         "shape-to-picture",
-        "silly-sentence-builder",
         "turn-taking-tower"
-      ]
-    },
-    "sequence-order": {
-      "count": 2,
-      "games": [
-        "family-timeline",
-        "story-sequence"
       ]
     },
     "trace-path": {
@@ -60,18 +52,17 @@
         "scissor-trail-safari"
       ]
     },
-    "observe-journal": {
-      "count": 2,
-      "games": [
-        "family-story-interview",
-        "picture-narration"
-      ]
-    },
     "match-pairs": {
       "count": 2,
       "games": [
         "community-helper-cards",
         "then-now-sort"
+      ]
+    },
+    "sequence-order": {
+      "count": 1,
+      "games": [
+        "story-sequence"
       ]
     },
     "tap-count": {
@@ -84,6 +75,12 @@
       "count": 1,
       "games": [
         "story-stones"
+      ]
+    },
+    "observe-journal": {
+      "count": 1,
+      "games": [
+        "picture-narration"
       ]
     },
     "puppet-theater": {
@@ -102,7 +99,7 @@
   "forward": {
     "animal-walk-cards": {
       "engine": "coach-timer",
-      "status": "in-design",
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
@@ -747,41 +744,69 @@
       "packs": []
     },
     "family-story-interview": {
-      "engine": "observe-journal",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "oral-storytelling",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/family-story-interview/assets/art",
+        "games/family-story-interview/assets/audio",
+        "shared/assets/music/mug-and-sunbeam.mp3"
+      ],
       "packs": []
     },
     "family-timeline": {
-      "engine": "sequence-order",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "culture-geography",
-      "characters": [],
+      "characters": [
+        "nia"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sequence-order.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/vendor/three.module.min.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/gentle-country-morning.mp3"
+      ],
       "packs": []
     },
     "feelings-charades": {
@@ -1605,7 +1630,7 @@
     },
     "nature-scavenger-hunt": {
       "engine": "coach-timer",
-      "status": "in-design",
+      "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
@@ -2579,23 +2604,43 @@
       "packs": []
     },
     "silly-sentence-builder": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "oral-storytelling",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/ui"
+        "games/silly-sentence-builder/assets/backgrounds/theater.webp",
+        "games/silly-sentence-builder/assets/characters/bunny.webp",
+        "games/silly-sentence-builder/assets/characters/cat.webp",
+        "games/silly-sentence-builder/assets/characters/dinosaur.webp",
+        "games/silly-sentence-builder/assets/characters/duck.webp",
+        "games/silly-sentence-builder/assets/characters/monster.webp",
+        "games/silly-sentence-builder/assets/characters/robot.webp",
+        "games/silly-sentence-builder/assets/ui/action-button.webp",
+        "games/silly-sentence-builder/assets/ui/label-plaque.webp",
+        "games/silly-sentence-builder/assets/ui/sentence-strip.webp",
+        "games/silly-sentence-builder/assets/ui/title.webp",
+        "games/silly-sentence-builder/assets/ui/tray-who.webp",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "packs": []
     },
@@ -3479,7 +3524,7 @@
     },
     "waiting-muscle-game": {
       "engine": "coach-timer",
-      "status": "in-design",
+      "status": "beta",
       "category": "social-emotional",
       "characters": [],
       "modules": [
@@ -3687,6 +3732,8 @@
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
@@ -3725,6 +3772,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -3756,6 +3804,8 @@
         "board-game-reset",
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
+        "family-story-interview",
+        "family-timeline",
         "garden-graphers",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -3772,6 +3822,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -3806,6 +3857,8 @@
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "feelings-charades",
         "garden-delivery-game",
         "joke-workshop",
@@ -3880,6 +3933,8 @@
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
@@ -3918,6 +3973,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -3944,6 +4000,8 @@
         "world-music-dance"
       ],
       "shared/js/dom.js": [
+        "family-story-interview",
+        "family-timeline",
         "puppet-retell",
         "sandpaper-number-match",
         "shadow-chase",
@@ -3956,7 +4014,6 @@
       "shared/js/engines/build-assemble.js": [
         "blend-train",
         "shape-to-picture",
-        "silly-sentence-builder",
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
@@ -3984,7 +4041,6 @@
         "then-now-sort"
       ],
       "shared/js/engines/observe-journal.js": [
-        "family-story-interview",
         "picture-narration"
       ],
       "shared/js/engines/puppet-band.js": [
@@ -3994,7 +4050,6 @@
         "puppet-problem-solvers"
       ],
       "shared/js/engines/sequence-order.js": [
-        "family-timeline",
         "story-sequence"
       ],
       "shared/js/engines/story-stones.js": [
@@ -4031,6 +4086,7 @@
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
+        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
@@ -4066,6 +4122,8 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
+        "family-story-interview",
+        "family-timeline",
         "garden-delivery-game",
         "garden-graphers",
         "joke-workshop",
@@ -4087,6 +4145,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4156,6 +4215,8 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
+        "family-story-interview",
+        "family-timeline",
         "freeze-focus-dance",
         "kindness-delivery",
         "land-water-tray",
@@ -4193,6 +4254,8 @@
         "color-gradient-cards",
         "cooking-craze",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "freeze-focus-dance",
         "garden-delivery-game",
         "garden-graphers",
@@ -4216,6 +4279,7 @@
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -4245,6 +4309,7 @@
         "color-mixing-lab",
         "cooking-craze",
         "counting-treasure-cups",
+        "family-timeline",
         "flashlight-cave",
         "freeze-focus-dance",
         "garden-delivery-game",
@@ -4275,6 +4340,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "sink-or-float",
         "smell-jars",
         "snack-addition-stories",
@@ -4326,6 +4392,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -4467,8 +4534,6 @@
         "color-mixing-lab",
         "community-helper-cards",
         "counting-treasure-cups",
-        "family-story-interview",
-        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
@@ -4503,7 +4568,6 @@
         "scissor-trail-safari",
         "shape-to-picture",
         "shelf-reset-game",
-        "silly-sentence-builder",
         "sink-or-float",
         "snack-addition-stories",
         "snack-chef",
@@ -4552,6 +4616,7 @@
         "plant-care-captain",
         "post-office-letters",
         "puzzle-map-match",
+        "silly-sentence-builder",
         "smell-jars",
         "snack-chef",
         "sound-basket",
@@ -4640,6 +4705,8 @@
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
@@ -4676,6 +4743,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4713,6 +4781,8 @@
         "color-gradient-cards",
         "color-mixing-lab",
         "cooking-craze",
+        "family-story-interview",
+        "family-timeline",
         "freeze-focus-dance",
         "garden-delivery-game",
         "garden-graphers",
@@ -4744,6 +4814,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -4780,6 +4851,8 @@
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
+        "family-story-interview",
+        "family-timeline",
         "feelings-charades",
         "flashlight-cave",
         "freeze-focus-dance",
@@ -4821,6 +4894,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4859,6 +4933,7 @@
         "momma-bear-storybook"
       ],
       "shared/vendor/three.module.min.js": [
+        "family-timeline",
         "globe-spin-stories",
         "sound-sprouts"
       ]
@@ -4980,8 +5055,6 @@
         "blend-train",
         "calm-corner-cards",
         "community-helper-cards",
-        "family-story-interview",
-        "family-timeline",
         "grace-courtesy-theater",
         "instrument-detective",
         "letter-road-driving",
@@ -5000,7 +5073,6 @@
         "scissor-trail-safari",
         "shape-to-picture",
         "shelf-reset-game",
-        "silly-sentence-builder",
         "story-sequence",
         "story-stones",
         "then-now-sort",
@@ -5023,6 +5095,7 @@
         "color-mixing-lab",
         "cooking-craze",
         "emotion-voice-game",
+        "family-timeline",
         "freeze-focus-dance",
         "garden-delivery-game",
         "garden-graphers",
@@ -5287,6 +5360,7 @@
       ],
       "nia": [
         "calm-corner-cards",
+        "family-timeline",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
@@ -5488,6 +5562,12 @@
       ],
       "games/counting-treasure-cups/assets/video": [
         "counting-treasure-cups"
+      ],
+      "games/family-story-interview/assets/art": [
+        "family-story-interview"
+      ],
+      "games/family-story-interview/assets/audio": [
+        "family-story-interview"
       ],
       "games/feelings-charades/assets/badge-sun.png": [
         "feelings-charades"
@@ -6092,6 +6172,42 @@
       "games/secret-message-copy/assets/audio": [
         "secret-message-copy"
       ],
+      "games/silly-sentence-builder/assets/backgrounds/theater.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/bunny.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/cat.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/dinosaur.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/duck.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/monster.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/characters/robot.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/ui/action-button.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/ui/label-plaque.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/ui/sentence-strip.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/ui/title.webp": [
+        "silly-sentence-builder"
+      ],
+      "games/silly-sentence-builder/assets/ui/tray-who.webp": [
+        "silly-sentence-builder"
+      ],
       "games/silly-swap-words/assets/backgrounds/clay-sky.webp": [
         "silly-swap-words"
       ],
@@ -6380,12 +6496,14 @@
         "momma-bear-storybook"
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
+        "family-timeline",
         "garden-graphers",
         "picture-word-match",
         "subtraction-picnic",
         "tweezer-rescue"
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
+        "family-story-interview",
         "post-office-letters",
         "pouring-station",
         "snack-addition-stories"
@@ -6411,6 +6529,7 @@
         "number-sense-kitchen",
         "pattern-train",
         "sandpaper-number-match",
+        "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
         "tiny-sentence-workshop"
@@ -6454,7 +6573,6 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
-        "silly-sentence-builder",
         "sink-or-float",
         "snack-chef",
         "sound-basket",
@@ -6549,6 +6667,7 @@
       ],
       "shared/characters/nia": [
         "calm-corner-cards",
+        "family-timeline",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",

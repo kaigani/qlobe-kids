@@ -1,0 +1,232 @@
+{
+  "source": "games/family-timeline/assets/source/gpt-image-2/story-controls-sheet.png",
+  "sourceSha256": "a66cb930287d8e3fabf25c971f2c2db76e72afd8f2c707b67d37bdaeabfa4f28",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "food-stamp",
+      "file": "food-stamp.png",
+      "componentArea": 92432,
+      "foregroundBbox": [
+        85,
+        130,
+        428,
+        474
+      ],
+      "cropBbox": [
+        73,
+        118,
+        440,
+        486
+      ],
+      "cropXywh": [
+        73,
+        118,
+        367,
+        368
+      ],
+      "normalizedCropBbox": [
+        0.04115,
+        0.133033,
+        0.248027,
+        0.547914
+      ]
+    },
+    {
+      "index": 2,
+      "name": "place-stamp",
+      "file": "place-stamp.png",
+      "componentArea": 94500,
+      "foregroundBbox": [
+        475,
+        127,
+        819,
+        476
+      ],
+      "cropBbox": [
+        463,
+        115,
+        831,
+        488
+      ],
+      "cropXywh": [
+        463,
+        115,
+        368,
+        373
+      ],
+      "normalizedCropBbox": [
+        0.260992,
+        0.129651,
+        0.468433,
+        0.550169
+      ]
+    },
+    {
+      "index": 3,
+      "name": "celebration-stamp",
+      "file": "celebration-stamp.png",
+      "componentArea": 94350,
+      "foregroundBbox": [
+        879,
+        127,
+        1224,
+        475
+      ],
+      "cropBbox": [
+        867,
+        115,
+        1236,
+        487
+      ],
+      "cropXywh": [
+        867,
+        115,
+        369,
+        372
+      ],
+      "normalizedCropBbox": [
+        0.488726,
+        0.129651,
+        0.696731,
+        0.549042
+      ]
+    },
+    {
+      "index": 4,
+      "name": "story-star",
+      "file": "story-star.png",
+      "componentArea": 98998,
+      "foregroundBbox": [
+        1294,
+        78,
+        1709,
+        474
+      ],
+      "cropBbox": [
+        1282,
+        66,
+        1721,
+        486
+      ],
+      "cropXywh": [
+        1282,
+        66,
+        439,
+        420
+      ],
+      "normalizedCropBbox": [
+        0.722661,
+        0.074408,
+        0.970124,
+        0.547914
+      ]
+    },
+    {
+      "index": 5,
+      "name": "spin-plate",
+      "file": "spin-plate.png",
+      "componentArea": 136690,
+      "foregroundBbox": [
+        57,
+        559,
+        625,
+        808
+      ],
+      "cropBbox": [
+        45,
+        547,
+        637,
+        820
+      ],
+      "cropXywh": [
+        45,
+        547,
+        592,
+        273
+      ],
+      "normalizedCropBbox": [
+        0.025366,
+        0.616685,
+        0.359076,
+        0.924464
+      ]
+    },
+    {
+      "index": 6,
+      "name": "camera-plate",
+      "file": "camera-plate.png",
+      "componentArea": 134413,
+      "foregroundBbox": [
+        652,
+        557,
+        1209,
+        808
+      ],
+      "cropBbox": [
+        640,
+        545,
+        1221,
+        820
+      ],
+      "cropXywh": [
+        640,
+        545,
+        581,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.360767,
+        0.614431,
+        0.688275,
+        0.924464
+      ]
+    },
+    {
+      "index": 7,
+      "name": "confetti-cluster",
+      "file": "confetti-cluster.png",
+      "componentArea": 97342,
+      "foregroundBbox": [
+        1240,
+        532,
+        1714,
+        822
+      ],
+      "cropBbox": [
+        1228,
+        520,
+        1726,
+        834
+      ],
+      "cropXywh": [
+        1228,
+        520,
+        498,
+        314
+      ],
+      "normalizedCropBbox": [
+        0.692221,
+        0.586246,
+        0.972943,
+        0.940248
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

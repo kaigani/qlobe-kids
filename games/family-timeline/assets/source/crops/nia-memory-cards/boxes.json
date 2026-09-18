@@ -1,0 +1,116 @@
+{
+  "source": "games/family-timeline/assets/source/gpt-image-2/nia-memory-cards-sheet.png",
+  "sourceSha256": "6af2be788a03e8f053f1cbe8bbf3e2a4d2506836f471093a0dd5212790615052",
+  "sourceSize": [
+    1881,
+    836
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    23,
+    23,
+    31
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "baby",
+      "file": "baby.png",
+      "componentArea": 346437,
+      "foregroundBbox": [
+        113,
+        82,
+        633,
+        754
+      ],
+      "cropBbox": [
+        101,
+        70,
+        645,
+        766
+      ],
+      "cropXywh": [
+        101,
+        70,
+        544,
+        696
+      ],
+      "normalizedCropBbox": [
+        0.053695,
+        0.083732,
+        0.342903,
+        0.916268
+      ]
+    },
+    {
+      "index": 2,
+      "name": "toddler",
+      "file": "toddler.png",
+      "componentArea": 348973,
+      "foregroundBbox": [
+        679,
+        82,
+        1203,
+        755
+      ],
+      "cropBbox": [
+        667,
+        70,
+        1215,
+        767
+      ],
+      "cropXywh": [
+        667,
+        70,
+        548,
+        697
+      ],
+      "normalizedCropBbox": [
+        0.354599,
+        0.083732,
+        0.645933,
+        0.917464
+      ]
+    },
+    {
+      "index": 3,
+      "name": "now",
+      "file": "now.png",
+      "componentArea": 346229,
+      "foregroundBbox": [
+        1248,
+        82,
+        1768,
+        754
+      ],
+      "cropBbox": [
+        1236,
+        70,
+        1780,
+        766
+      ],
+      "cropXywh": [
+        1236,
+        70,
+        544,
+        696
+      ],
+      "normalizedCropBbox": [
+        0.657097,
+        0.083732,
+        0.946305,
+        0.916268
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 8,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "baby": {
+    "status": "fallback-accepted",
+    "acceptedSeed": null,
+    "output": "games\\family-timeline\\assets\\art\\memories\\baby.webp",
+    "attempts": [
+      {
+        "pass": false,
+        "reason": "whole-card geometry gate failed",
+        "flags": [],
+        "alpha": {
+          "transparentPct": 97.406,
+          "opaquePct": 1.98,
+          "partialPct": 0.615
+        },
+        "bbox": [
+          527,
+          91,
+          717,
+          283
+        ],
+        "sourceSize": [
+          800,
+          1024
+        ],
+        "finalSize": [
+          214,
+          216
+        ],
+        "alphaFloor": 4,
+        "source": "games\\family-timeline\\assets\\source\\local-api\\layered\\baby-seed42-layer-2.png",
+        "output": "games\\family-timeline\\assets\\source\\local-api\\layered\\baby-seed42.png",
+        "visualGate": {
+          "pass": false,
+          "widthCoverage": 0.237,
+          "heightCoverage": 0.188,
+          "aspect": 0.991
+        },
+        "seed": 42
+      },
+      {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 8.744,
+          "opaquePct": 89.44,
+          "partialPct": 1.816
+        },
+        "bbox": [
+          13,
+          12,
+          532,
+          684
+        ],
+        "sourceSize": [
+          544,
+          696
+        ],
+        "finalSize": [
+          543,
+          696
+        ],
+        "alphaFloor": 4,
+        "source": "games\\family-timeline\\assets\\source\\processed\\memories\\baby-connected-cutout.png",
+        "output": "games\\family-timeline\\assets\\art\\memories\\baby.webp",
+        "finalizedPng": "games\\family-timeline\\assets\\source\\processed\\finalized\\memories\\baby.png",
+        "method": "connected-dark-background-removal"
+      }
+    ],
+    "method": "connected-dark-background-removal"
+  },
+  "toddler": {
+    "status": "accepted",
+    "acceptedSeed": 42,
+    "output": "games\\family-timeline\\assets\\art\\memories\\toddler.webp",
+    "attempts": [
+      {
+        "pass": true,
+        "reason": null,
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 6.423,
+          "opaquePct": 83.754,
+          "partialPct": 9.823
+        },
+        "bbox": [
+          10,
+          13,
+          791,
+          1011
+        ],
+        "sourceSize": [
+          800,
+          1024
+        ],
+        "finalSize": [
+          800,
+          1022
+        ],
+        "alphaFloor": 4,
+        "source": "games\\family-timeline\\assets\\source\\local-api\\layered\\toddler-seed42-layer-2.png",
+        "output": "games\\family-timeline\\assets\\source\\local-api\\layered\\toddler-seed42.png",
+        "visualGate": {
+          "pass": true,
+          "widthCoverage": 0.976,
+          "heightCoverage": 0.975,
+          "aspect": 0.783
+        },
+        "seed": 42
+      }
+    ]
+  },
+  "now": {
+    "status": "fallback-accepted",
+    "acceptedSeed": null,
+    "output": "games\\family-timeline\\assets\\art\\memories\\now.webp",
+    "attempts": [
+      {
+        "pass": false,
+        "reason": "whole-card geometry gate failed",
+        "flags": [
+          "alpha-partial-band>2%"
+        ],
+        "alpha": {
+          "transparentPct": 66.057,
+          "opaquePct": 22.624,
+          "partialPct": 11.318
+        },
+        "bbox": [
+          169,
+          104,
+          718,
+          819
+        ],
+        "sourceSize": [
+          800,
+          1024
+        ],
+        "finalSize": [
+          573,
+          739
+        ],
+        "alphaFloor": 4,
+        "source": "games\\family-timeline\\assets\\source\\local-api\\layered\\now-seed42-layer-2.png",
+        "output": "games\\family-timeline\\assets\\source\\local-api\\layered\\now-seed42.png",
+        "visualGate": {
+          "pass": false,
+          "widthCoverage": 0.686,
+          "heightCoverage": 0.698,
+          "aspect": 0.775
+        },
+        "seed": 42
+      },
+      {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 8.799,
+          "opaquePct": 89.391,
+          "partialPct": 1.81
+        },
+        "bbox": [
+          12,
+          12,
+          531,
+          684
+        ],
+        "sourceSize": [
+          544,
+          696
+        ],
+        "finalSize": [
+          543,
+          696
+        ],
+        "alphaFloor": 4,
+        "source": "games\\family-timeline\\assets\\source\\processed\\memories\\now-connected-cutout.png",
+        "output": "games\\family-timeline\\assets\\art\\memories\\now.webp",
+        "finalizedPng": "games\\family-timeline\\assets\\source\\processed\\finalized\\memories\\now.png",
+        "method": "connected-dark-background-removal"
+      }
+    ],
+    "method": "connected-dark-background-removal"
+  }
+}
