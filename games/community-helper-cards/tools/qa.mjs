@@ -420,9 +420,20 @@ async function hubGate() {
       'a.game-card[href$="games/community-helper-cards/"]',
     );
     await card.waitFor({ state: "visible" });
-    const tileReady = await card
-      .locator("img")
-      .evaluate((image) => image.complete && image.naturalWidth > 0);
+    const tileReady = await card.locator("img").evaluate(async (image) => {
+      if (!image.complete) {
+        await new Promise((resolve) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", resolve, { once: true });
+        });
+      }
+      try {
+        await image.decode();
+      } catch {
+        /* naturalWidth reports a failed decode below */
+      }
+      return image.complete && image.naturalWidth > 0;
+    });
     report.check(
       "hub exposes the beta game with a loaded curated tile",
       tileReady,
