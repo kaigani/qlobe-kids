@@ -30,7 +30,8 @@ each under its one consuming game.
 ## Engine module contract
 
 - Pure ES module. Imports allowed:
-  - **input + feedback** — `../tap.js`, `../sfx.js`, `../speech.js`
+  - **input + feedback** — `../tap.js`, `../sfx.js`, `../speech.js`, and
+    `../bgm.js` when a config opts into one recorded background track
   - **structure** — `../screens.js` (the splash → play → end router and
     `wireEndScreen`), `../mode-select.js` (`renderModeCards`), `../hud.js`
     (`hudButton` / `soundDebounce` / `progressDots`), `./engine-styles.js`
@@ -67,7 +68,8 @@ export function createGame(config, mountEl) → { destroy() }
   wires input, and installs `window.QLOBE_DEBUG` (below). `destroy()` removes
   listeners/timers and clears the mount.
 - The engine implements the platform patterns (`docs/interaction-patterns.md`):
-  audio unlock on first gesture (`sfx.unlock()` + `speech.unlock()`), tap-tap AND
+  audio unlock on first gesture (`sfx.unlock()` + `speech.unlock()` plus an
+  opted-in `bgm.unlock()`), tap-tap AND
   strand-proof drag where dragging exists (pattern #11 — window-level listeners,
   single-drag lock, blur = cancel, stray-clone sweep), gentle retry (wiggle + spoken
   nudge, never punitive), celebration loop (sfx.tada + confetti-ish burst + spoken
@@ -250,6 +252,19 @@ export default {
   }]
 }
 ```
+
+`trace-path` additionally accepts `music` (a recorded track URL), `boardArt` /
+`boardArtSize` (a raster work surface beneath the route), `traceSfx`
+(the exported `sfx.js` function played at newly passed checkpoints), and
+`destinationVisuals` / `destinationSize`. With `destinationVisuals: true`, a
+path may provide `destinationArt`, `destinationName`, `destinationPosition:
+[x,y]` in the engine's 1000×1000 board coordinates, and an optional
+`destinationSize`. This generic raster destination is separate from the
+Letter Road-only `mapSprites` town system; it stays visible during tracing,
+bounces on completion, and exposes `destinationVisible` / `destinationBounds`
+through `getState()` for visual QA. Recorded background music is started only
+after a mode-card gesture, ducks beneath either a recorded voice clip or Web
+Speech, and fades when the game returns to its splash.
 
 ## Placeholder art refs
 

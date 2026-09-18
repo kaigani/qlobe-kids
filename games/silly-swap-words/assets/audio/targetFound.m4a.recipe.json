@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "c98c2ba1e1904fbf99eee74959ad704b",
+  "text": "You found the word!",
+  "textHash": "2ba27909f62d2beb",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "3101f8fe439044eab50b8f21b1c149ac",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "You found the word!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

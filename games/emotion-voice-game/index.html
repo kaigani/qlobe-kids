@@ -35,6 +35,7 @@
       <img class="title-art" src="assets/title.webp" alt="Emotion Voice Game" />
       <p class="choose-heading">Choose a feeling</p>
       <div class="emotion-cards" id="emotion-cards" aria-label="Choose a feeling"></div>
+      <img class="costume-trunk" src="assets/ui/costume-trunk.webp" alt="" aria-hidden="true" />
       <div class="splash-bear-wrap teddy-puppet" data-pose="neutral">
         <img class="splash-bear" src="assets/characters/bear-neutral.webp" alt="Teddy, the feelings theater bear" />
         <img class="teddy-mouth" id="splash-mouth" src="assets/characters/teddy/anim/mouth-rest.png" alt="" />
@@ -54,16 +55,22 @@
         <img class="teddy-mouth" id="actor-mouth" src="assets/characters/teddy/anim/mouth-rest.png" alt="" />
       </div>
       <div class="performance-panel">
-        <button class="mic-button" id="mic-button" data-target="mic" aria-label="Start listening">
-          <img src="assets/ui/mic.webp" alt="" />
-          <span id="mic-label">My turn!</span>
-        </button>
-        <button class="fallback-button" id="fallback-button" data-target="fallback" aria-label="Perform without the microphone" hidden>
-          <img src="assets/ui/star.webp" alt="" />
-          <span>Say it!</span>
-        </button>
+        <div class="turn-actions">
+          <button class="mic-button" id="mic-button" data-target="mic" aria-label="Start listening">
+            <img src="assets/ui/mic.webp" alt="" />
+            <span id="mic-label">My turn!</span>
+          </button>
+          <button class="fallback-button" id="fallback-button" data-target="fallback" aria-label="Perform without the microphone" hidden>
+            <img src="assets/ui/star.webp" alt="" />
+            <span>Say it!</span>
+          </button>
+          <button class="replay-button" id="replay-button" data-target="replay" aria-label="Hear Teddy again">
+            <img src="assets/ui/replay.webp" alt="" />
+            <span>Hear Teddy</span>
+          </button>
+        </div>
         <div class="voice-lights" id="voice-lights" aria-hidden="true">
-          <i></i><i></i><i></i>
+          <img src="assets/ui/star.webp" alt="" /><img src="assets/ui/star.webp" alt="" /><img src="assets/ui/star.webp" alt="" />
         </div>
         <p class="listen-status" id="listen-status">Listen, then take your turn</p>
         <p class="privacy-note">Your mic stays on this device. Nothing is saved.</p>
@@ -80,6 +87,7 @@
         <p class="result-kicker" id="result-kicker">That sounded</p>
         <h1 id="result-title">happy!</h1>
         <div class="spark-row" id="spark-row" aria-label="Voice sparks earned"></div>
+        <div class="reward-stage" id="reward-stage" aria-label="Teddy's reward"></div>
         <p id="result-hint">Bright and bouncy</p>
         <button class="next-button" id="next-button" data-target="next">Next feeling</button>
       </div>

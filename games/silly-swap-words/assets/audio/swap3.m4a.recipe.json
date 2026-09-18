@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "ae12d0a885184616aa268c351722b743",
+  "text": "Try a new ending sound for hot.",
+  "textHash": "a69f50a37c7fd493",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "f927f63f2d084a6fb778e94a2c0cf57f",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Try a new ending sound for hot."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

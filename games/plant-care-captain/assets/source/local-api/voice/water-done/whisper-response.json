@@ -1,0 +1,26 @@
+{
+  "key": "water-done",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "Just right! Look how tall your plant grew!",
+    "srt": "1\n00:00:00,000 --> 00:00:03,000\nJust right! Look how tall your plant grew!\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 3,
+          "text": "Just right! Look how tall your plant grew!"
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "Just right! Look how tall your plant grew.",
+  "transcript": "Just right! Look how tall your plant grew!",
+  "pass": true
+}

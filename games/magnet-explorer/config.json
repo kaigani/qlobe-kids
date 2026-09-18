@@ -1,0 +1,146 @@
+{
+  "id": "magnet-explorer",
+  "title": "Magnet Explorer",
+  "artWorld": {
+    "name": "Toy",
+    "treatment": "Premium Montessori science table",
+    "description": "Chunky painted maple toys, brushed steel discoveries, rope-wrapped trays, and a turquoise workshop alcove.",
+    "palette": ["#f6c94d", "#ec4e35", "#137bb8", "#79b83d", "#f8e7bf"]
+  },
+  "music": {
+    "track": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "volume": 0.18
+  },
+  "voice": {
+    "intro": {
+      "key": "intro",
+      "text": "Welcome, magnet explorer! Drag the red magnet close and discover what sticks."
+    },
+    "nudge": {
+      "key": "nudge",
+      "text": "Try bringing the red ends of the magnet closer."
+    },
+    "complete": {
+      "key": "complete",
+      "text": "Amazing exploring! You tested, searched, and guided with magnet power."
+    }
+  },
+  "objects": [
+    {
+      "id": "paperclip",
+      "asset": "assets/objects/paperclip.png",
+      "alt": "shiny steel paperclip",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "paperclip-magnetic", "text": "The steel paperclip jumps to the magnet." }
+    },
+    {
+      "id": "bolt",
+      "asset": "assets/objects/bolt.png",
+      "alt": "chunky steel bolt",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "bolt-magnetic", "text": "The steel bolt sticks to the magnet." }
+    },
+    {
+      "id": "washer",
+      "asset": "assets/objects/washer.png",
+      "alt": "round steel washer",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "washer-magnetic", "text": "The steel washer sticks to the magnet." }
+    },
+    {
+      "id": "nail",
+      "asset": "assets/objects/nail.png",
+      "alt": "short steel nail with a rounded toy tip",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "nail-magnetic", "text": "The steel nail sticks to the magnet." }
+    },
+    {
+      "id": "steel-can",
+      "asset": "assets/objects/steel-can.png",
+      "alt": "small silver steel can",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "steel-can-magnetic", "text": "The steel can sticks to the magnet." }
+    },
+    {
+      "id": "safety-pin",
+      "asset": "assets/objects/safety-pin.png",
+      "alt": "closed steel safety pin",
+      "material": "steel",
+      "outcome": "magnetic",
+      "result": { "key": "safety-pin-magnetic", "text": "The steel safety pin sticks to the magnet." }
+    },
+    {
+      "id": "wood-block",
+      "asset": "assets/objects/wood-block.png",
+      "alt": "maple wooden block",
+      "material": "wood",
+      "outcome": "not-magnetic",
+      "result": { "key": "wood-block-not-magnetic", "text": "The wooden block does not stick to the magnet." }
+    },
+    {
+      "id": "rubber-duck",
+      "asset": "assets/objects/rubber-duck.png",
+      "alt": "yellow rubber duck",
+      "material": "rubber",
+      "outcome": "not-magnetic",
+      "result": { "key": "rubber-duck-not-magnetic", "text": "The rubber duck does not stick to the magnet." }
+    },
+    {
+      "id": "plastic-button",
+      "asset": "assets/objects/plastic-button.png",
+      "alt": "red plastic button",
+      "material": "plastic",
+      "outcome": "not-magnetic",
+      "result": { "key": "plastic-button-not-magnetic", "text": "The plastic button does not stick to the magnet." }
+    },
+    {
+      "id": "pom-pom",
+      "asset": "assets/objects/pom-pom.png",
+      "alt": "soft blue wool pom pom",
+      "material": "wool",
+      "outcome": "not-magnetic",
+      "result": { "key": "pom-pom-not-magnetic", "text": "The soft pom pom does not stick to the magnet." }
+    },
+    {
+      "id": "cork",
+      "asset": "assets/objects/cork.png",
+      "alt": "tan cork stopper",
+      "material": "cork",
+      "outcome": "not-magnetic",
+      "result": { "key": "cork-not-magnetic", "text": "The cork does not stick to the magnet." }
+    },
+    {
+      "id": "leaf",
+      "asset": "assets/objects/leaf.png",
+      "alt": "fresh green leaf",
+      "material": "plant",
+      "outcome": "not-magnetic",
+      "result": { "key": "leaf-not-magnetic", "text": "The leaf does not stick to the magnet." }
+    }
+  ],
+  "modes": [
+    {
+      "id": "test-lab",
+      "title": "Test Lab",
+      "description": "Bring the magnet close and observe six materials.",
+      "trials": 6
+    },
+    {
+      "id": "treasure-sweep",
+      "title": "Treasure Sweep",
+      "description": "Explore a busy table and collect five magnetic treasures.",
+      "magneticTreasures": 5
+    },
+    {
+      "id": "magnet-maze",
+      "title": "Magnet Maze",
+      "description": "Keep the magnet close enough to guide a steel ball to the star.",
+      "goal": "steel-ball"
+    }
+  ]
+}

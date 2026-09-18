@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "d14bef1bc73c41628a37a4ac8b06b67a",
+  "text": "Change rag to rat. Tap the sound that changes.",
+  "textHash": "dbda924393f25cf0",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "f40d80c1dde748c2bad0aab3aaf5d821",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change rag to rat. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

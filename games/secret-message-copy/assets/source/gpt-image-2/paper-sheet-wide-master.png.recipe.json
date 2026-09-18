@@ -1,0 +1,9 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "paper-sheet-wide-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{"workflow": "gpt-image-2", "mode": "built-in-imagegen", "promptRef": "PROMPTS.md#wide-copy-sheet--paper-sheet-wide-masterpng", "references": ["desk-backdrop-master.png"]}],
+  "qa": {"status": "accepted", "checks": ["wide primary-writing band", "quiet blank trace field", "genuine alpha", "no letters or UI"]}
+}

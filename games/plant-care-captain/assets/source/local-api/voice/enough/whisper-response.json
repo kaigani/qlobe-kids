@@ -1,0 +1,32 @@
+{
+  "key": "enough",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "That's enough for now. Gentle care is just right.",
+    "srt": "1\n00:00:00,000 --> 00:00:01,480\nThat's enough for now.\n\n2\n00:00:01,480 --> 00:00:02,920\nGentle care is just right.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 1.48,
+          "text": "That's enough for now."
+        },
+        {
+          "id": 1,
+          "start": 1.48,
+          "end": 2.92,
+          "text": "Gentle care is just right."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "That's enough for now. Gentle care is just right.",
+  "transcript": "That's enough for now. Gentle care is just right.",
+  "pass": true
+}

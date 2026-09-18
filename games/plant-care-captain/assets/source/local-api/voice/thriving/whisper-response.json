@@ -1,0 +1,26 @@
+{
+  "key": "thriving",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "Look how happy your plant is! Your caring hands helped it bloom!",
+    "srt": "1\n00:00:00,000 --> 00:00:04,000\nLook how happy your plant is! Your caring hands helped it bloom!\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 4,
+          "text": "Look how happy your plant is! Your caring hands helped it bloom!"
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "Look how happy your plant is! Your caring hands helped it bloom.",
+  "transcript": "Look how happy your plant is! Your caring hands helped it bloom!",
+  "pass": true
+}

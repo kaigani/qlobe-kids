@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-paperclip",
+  "kind": "voice",
+  "asset": "magnet-voice-paperclip.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The steel paperclip jumps to the magnet.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The steel paperclip jumps to the magnet.",
+      "heard": "that the steel paperclip jumps to the magnet.",
+      "ratio": 0.94,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

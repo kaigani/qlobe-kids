@@ -1,47 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Pattern Train 🌈 — Color and Shape Patterns</title>
-  <meta name="description" content="Tap the next wagon to continue color and shape patterns, then hear the whole train play back in order. A gentle pattern-recognition ride for ages 5–6." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#6dcaf0">
+  <title>Pattern Train — Build the Pattern, Power the Train!</title>
+  <meta name="description" content="Load painted wooden shape and action patterns, send the toy train rolling, and build your own repeating train.">
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Pattern Train" />
-  <meta property="og:title" content="Pattern Train 🌈 — Color and Shape Patterns" />
-  <meta property="og:description" content="Tap the next wagon to continue color and shape patterns, then hear the whole train play back in order. A gentle pattern-recognition ride for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/pattern-train/" />
-  <meta property="og:image" content="https://qlo.be/games/pattern-train/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Pattern Train title screen with Color Cars and Shape Cars modes and a toy steam train icon." />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pattern Train">
+  <meta property="og:title" content="Pattern Train — Build the Pattern, Power the Train!">
+  <meta property="og:description" content="Find what comes next, move to rhythm patterns, and build your own wooden pattern train.">
+  <meta property="og:url" content="https://qlo.be/games/pattern-train/">
+  <meta property="og:image" content="https://qlo.be/games/pattern-train/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A cheerful painted wooden train carrying a red-triangle and blue-square pattern.">
 
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pattern Train 🌈 — Color and Shape Patterns" />
-  <meta name="twitter:description" content="Tap the next wagon to continue color and shape patterns, then hear the whole train play back in order. A gentle pattern-recognition ride for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/pattern-train/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pattern Train — Build the Pattern, Power the Train!">
+  <meta name="twitter:description" content="Find what comes next and send a wooden pattern train rolling.">
+  <meta name="twitter:image" content="https://qlo.be/games/pattern-train/assets/og-image.jpg">
 
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/pattern-continue.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="pt-game" data-game-id="pattern-train">
+    <h1 class="visually-hidden">Pattern Train</h1>
+
+    <section class="qk-screen pt-screen pt-splash" data-qk-screen="splash" aria-label="Pattern Train title screen">
+      <img class="pt-background" src="./assets/art/railway-meadow.webp" alt="">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" data-target="home" href="../../index.html" aria-label="Home"></a>
+      <button class="qk-hud-btn qk-hud-sound qk-hud-top-right" data-target="splash-sound" aria-label="Hear the welcome again"></button>
+      <img class="pt-title" src="./assets/art/title-lockup.webp" alt="Pattern Train">
+      <div class="pt-splash-train" data-splash-train aria-hidden="true"></div>
+      <button class="pt-image-button pt-play-button" data-target="play" aria-label="Play Pattern Train">
+        <img src="./assets/art/button-yellow.webp" alt="">
+        <span>PLAY</span>
+      </button>
+    </section>
+
+    <section class="qk-screen pt-screen pt-depot" data-qk-screen="depot" hidden aria-label="Choose a Pattern Train ride">
+      <img class="pt-background" src="./assets/art/railway-meadow.webp" alt="">
+      <div class="qk-hud-bar">
+        <button class="qk-hud-btn qk-hud-back" data-target="depot-back" aria-label="Back to the title"></button>
+        <div class="pt-plaque pt-depot-heading">
+          <img src="./assets/art/plaque.webp" alt="">
+          <span>Pick a pattern ride</span>
+        </div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="depot-sound" aria-label="Hear the choices again"></button>
+      </div>
+      <div class="pt-mode-list" aria-label="Pattern Train games">
+        <button class="qk-mode-card pt-mode-card" data-target="mode-shapes" data-mode="shapes" aria-label="Shape Cargo, look and load">
+          <img src="./assets/art/mode-shapes.webp" alt="A wagon carrying a red triangle and blue square">
+          <span class="pt-mode-title">Shape Cargo</span>
+          <span class="pt-mode-tag">LOOK &amp; LOAD</span>
+        </button>
+        <button class="qk-mode-card pt-mode-card" data-target="mode-actions" data-mode="actions" aria-label="Move and Sound, listen and move">
+          <img src="./assets/art/mode-actions.webp" alt="Clapping hands and a stomping boot with a wagon">
+          <span class="pt-mode-title">Move &amp; Sound</span>
+          <span class="pt-mode-tag">LISTEN &amp; MOVE</span>
+        </button>
+        <button class="qk-mode-card pt-mode-card" data-target="mode-builder" data-mode="builder" aria-label="My Train, build and play">
+          <img src="./assets/art/mode-builder.webp" alt="Empty wagons waiting for colorful cargo">
+          <span class="pt-mode-title">My Train</span>
+          <span class="pt-mode-tag">BUILD &amp; PLAY</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="qk-screen pt-screen pt-play" data-qk-screen="play" hidden aria-label="Complete the train pattern">
+      <img class="pt-background" src="./assets/art/railway-meadow.webp" alt="">
+      <div class="qk-hud-bar">
+        <button class="qk-hud-btn qk-hud-back" data-target="play-back" aria-label="Back to the depot"></button>
+        <div class="pt-progress" data-progress aria-label="Round progress"></div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="play-sound" aria-label="Hear the pattern again"></button>
+      </div>
+      <div class="pt-plaque pt-prompt">
+        <img src="./assets/art/plaque.webp" alt="">
+        <span data-prompt>What comes next?</span>
+      </div>
+      <div class="pt-train-stage" data-train-stage aria-label="The pattern train"></div>
+      <div class="pt-feedback" data-feedback aria-live="polite"></div>
+      <div class="pt-choice-dock" aria-label="Choose the missing cargo">
+        <img class="pt-tray-art" src="./assets/art/tray.webp" alt="">
+        <div class="pt-choices" data-choices></div>
+      </div>
+      <div class="pt-spark-layer" data-sparks aria-hidden="true"></div>
+    </section>
+
+    <section class="qk-screen pt-screen pt-builder" data-qk-screen="builder" hidden aria-label="Build your own Pattern Train">
+      <img class="pt-background" src="./assets/art/railway-meadow.webp" alt="">
+      <div class="qk-hud-bar">
+        <button class="qk-hud-btn qk-hud-back" data-target="builder-back" aria-label="Back to the depot"></button>
+        <div class="pt-plaque pt-builder-heading">
+          <img src="./assets/art/plaque.webp" alt="">
+          <span>Build your train</span>
+        </div>
+        <button class="qk-hud-btn qk-hud-sound" data-target="builder-sound" aria-label="Hear the builder instructions again"></button>
+      </div>
+      <div class="pt-train-stage pt-builder-stage" data-builder-train aria-label="Your five train wagons"></div>
+      <div class="pt-feedback pt-builder-feedback" data-builder-feedback aria-live="polite"></div>
+      <div class="pt-builder-dock">
+        <img class="pt-tray-art" src="./assets/art/tray.webp" alt="">
+        <div class="pt-builder-palette" data-builder-palette aria-label="Cargo choices"></div>
+      </div>
+      <div class="pt-builder-actions">
+        <button class="pt-image-button pt-clear-button" data-target="builder-clear" aria-label="Clear the train">
+          <img src="./assets/art/button-coral.webp" alt="">
+          <span>CLEAR</span>
+        </button>
+        <button class="pt-whistle-button" data-target="builder-play" aria-label="Blow the whistle and play my pattern">
+          <img src="./assets/art/whistle.webp" alt="Wooden train whistle">
+          <span class="visually-hidden">Play my pattern</span>
+        </button>
+      </div>
+      <div class="pt-spark-layer" data-builder-sparks aria-hidden="true"></div>
+    </section>
+
+    <section class="qk-screen pt-screen pt-reward" data-qk-screen="reward" hidden aria-label="Pattern Train celebration">
+      <img class="pt-background" src="./assets/art/railway-meadow.webp" alt="">
+      <button class="qk-hud-btn qk-hud-back qk-hud-top-left" data-target="reward-back" aria-label="Back to the depot"></button>
+      <div class="pt-reward-copy">
+        <div class="pt-plaque pt-reward-plaque">
+          <img src="./assets/art/plaque.webp" alt="">
+          <span>PATTERN COMPLETE!</span>
+        </div>
+        <div class="pt-reward-stars" aria-label="Three stars">
+          <img src="./assets/art/gold-star.webp" alt="">
+          <img src="./assets/art/gold-star.webp" alt="">
+          <img src="./assets/art/gold-star.webp" alt="">
+        </div>
+      </div>
+      <div class="pt-train-stage pt-reward-train" data-reward-train aria-label="The completed Pattern Train"></div>
+      <div class="pt-reward-actions">
+        <button class="pt-image-button" data-target="reward-again" aria-label="Play this ride again">
+          <img src="./assets/art/button-yellow.webp" alt="">
+          <span>AGAIN</span>
+        </button>
+        <button class="pt-image-button" data-target="reward-choose" aria-label="Choose another ride">
+          <img src="./assets/art/button-coral.webp" alt="">
+          <span class="pt-button-label-with-icon">
+            <img src="./assets/art/locomotive.webp" alt="">
+            <strong>PICK A RIDE</strong>
+          </span>
+        </button>
+      </div>
+      <div class="pt-spark-layer" data-reward-sparks aria-hidden="true"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

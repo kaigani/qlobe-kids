@@ -1,0 +1,266 @@
+{
+  "pipeline": "GPT Image 2 masters -> repository cutter -> accepted Qwen Layered or deterministic matte extraction -> shared cutout finalizer -> WebP",
+  "assets": {
+    "assets/plants/sunflower-dry.webp": {
+      "source": "assets/source/cuts/sunflower/dry.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/sunflower-dry.png",
+      "finalized": "assets/source/finalized/plants/sunflower-dry.png",
+      "alphaQa": "assets/source/qa/magenta/plants/sunflower-dry.png",
+      "sha256": "177208f116e7710716cf6d1963066613cacf41310d7de8800a72009d8cf0a159",
+      "bytes": 32482
+    },
+    "assets/plants/sunflower-watered.webp": {
+      "source": "assets/source/cuts/sunflower/watered.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/sunflower-watered.png",
+      "finalized": "assets/source/finalized/plants/sunflower-watered.png",
+      "alphaQa": "assets/source/qa/magenta/plants/sunflower-watered.png",
+      "sha256": "10de04765852b64f654ffb1634dd6022c9e2995e722991ea624c32443c58d5d1",
+      "bytes": 34614
+    },
+    "assets/plants/sunflower-misted.webp": {
+      "source": "assets/source/cuts/sunflower/misted.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/sunflower-misted.png",
+      "finalized": "assets/source/finalized/plants/sunflower-misted.png",
+      "alphaQa": "assets/source/qa/magenta/plants/sunflower-misted.png",
+      "sha256": "723b508c90d917f6546ac39d1a1e8d109672293712f840709c2d6d5ea1b12e9f",
+      "bytes": 35042
+    },
+    "assets/plants/sunflower-bloom.webp": {
+      "source": "assets/source/cuts/sunflower/bloom.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/sunflower-bloom.png",
+      "finalized": "assets/source/finalized/plants/sunflower-bloom.png",
+      "alphaQa": "assets/source/qa/magenta/plants/sunflower-bloom.png",
+      "sha256": "701ee21848429ae3101e6da47f8d221b7dab82518ebb4fd4e611832aede7e640",
+      "bytes": 42642
+    },
+    "assets/plants/pea-dry.webp": {
+      "source": "assets/source/cuts/pea/dry.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/pea-dry.png",
+      "finalized": "assets/source/finalized/plants/pea-dry.png",
+      "alphaQa": "assets/source/qa/magenta/plants/pea-dry.png",
+      "sha256": "1ba41bc3e81be19f478d11eb9ce6419575d398344040ca1908a9d1a9ea05a66c",
+      "bytes": 12698
+    },
+    "assets/plants/pea-watered.webp": {
+      "source": "assets/source/cuts/pea/watered.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/pea-watered.png",
+      "finalized": "assets/source/finalized/plants/pea-watered.png",
+      "alphaQa": "assets/source/qa/magenta/plants/pea-watered.png",
+      "sha256": "44f8dce5809a98e6eb99acce495708a181ce6003a99df401309a202585178fe2",
+      "bytes": 14878
+    },
+    "assets/plants/pea-misted.webp": {
+      "source": "assets/source/cuts/pea/misted.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/pea-misted.png",
+      "finalized": "assets/source/finalized/plants/pea-misted.png",
+      "alphaQa": "assets/source/qa/magenta/plants/pea-misted.png",
+      "sha256": "095b5776dbae3dd375735acfdf7ef17bf3afea2033dc970d264b4cc1d40e9b34",
+      "bytes": 15726
+    },
+    "assets/plants/pea-bloom.webp": {
+      "source": "assets/source/cuts/pea/bloom.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/pea-bloom.png",
+      "finalized": "assets/source/finalized/plants/pea-bloom.png",
+      "alphaQa": "assets/source/qa/magenta/plants/pea-bloom.png",
+      "sha256": "1c04256ac919bb899c898a48723f938e430d421354a9cc49efcdfaf0f113e332",
+      "bytes": 20830
+    },
+    "assets/plants/basil-dry.webp": {
+      "source": "assets/source/cuts/basil/dry.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/basil-dry.png",
+      "finalized": "assets/source/finalized/plants/basil-dry.png",
+      "alphaQa": "assets/source/qa/magenta/plants/basil-dry.png",
+      "sha256": "d467c004c2ea6bfa6fe1ee50510c1a1b56bb34b7137859f59343abe68c2efca2",
+      "bytes": 33498
+    },
+    "assets/plants/basil-watered.webp": {
+      "source": "assets/source/cuts/basil/watered.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/basil-watered.png",
+      "finalized": "assets/source/finalized/plants/basil-watered.png",
+      "alphaQa": "assets/source/qa/magenta/plants/basil-watered.png",
+      "sha256": "eb3c0f6af279e777386ea1c8b36e67470511c63355040617a4e766a7c4297494",
+      "bytes": 42818
+    },
+    "assets/plants/basil-misted.webp": {
+      "source": "assets/source/cuts/basil/misted.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/basil-misted.png",
+      "finalized": "assets/source/finalized/plants/basil-misted.png",
+      "alphaQa": "assets/source/qa/magenta/plants/basil-misted.png",
+      "sha256": "c2c271ef0e6638ef959ae8318c12d2d1843d79313411dc296de39d7f9875045f",
+      "bytes": 45074
+    },
+    "assets/plants/basil-bloom.webp": {
+      "source": "assets/source/cuts/basil/bloom.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/plants/basil-bloom.png",
+      "finalized": "assets/source/finalized/plants/basil-bloom.png",
+      "alphaQa": "assets/source/qa/magenta/plants/basil-bloom.png",
+      "sha256": "9f46af56992a2457f212c818496d32c97c60e27c30aa834b33cd94735a4ecee1",
+      "bytes": 50696
+    },
+    "assets/tools/watering-can.webp": {
+      "source": "assets/source/cuts/tools/watering-can.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/tools/watering-can.png",
+      "finalized": "assets/source/finalized/tools/watering-can.png",
+      "alphaQa": "assets/source/qa/magenta/tools/watering-can.png",
+      "sha256": "8177aeb0338444151ca367a2ce0367b2339519b5bacf81a666f65ef21df657fb",
+      "bytes": 26682
+    },
+    "assets/tools/mister.webp": {
+      "source": "assets/source/cuts/tools/mister.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/tools/mister.png",
+      "finalized": "assets/source/finalized/tools/mister.png",
+      "alphaQa": "assets/source/qa/magenta/tools/mister.png",
+      "sha256": "a99ff80e17edc917d1fe6e5d096511481446f14f9e58263077390417ce4056fb",
+      "bytes": 22674
+    },
+    "assets/tools/shears.webp": {
+      "source": "assets/source/cuts/tools/shears.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/tools/shears.png",
+      "finalized": "assets/source/finalized/tools/shears.png",
+      "alphaQa": "assets/source/qa/magenta/tools/shears.png",
+      "sha256": "1cf23b987705bd60ca26c8841ed19022ac40473d00f3a1abc14ca12c79ddb898",
+      "bytes": 22968
+    },
+    "assets/tools/dry-leaf.webp": {
+      "source": "assets/source/cuts/tools/dry-leaf.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/tools/dry-leaf.png",
+      "finalized": "assets/source/finalized/tools/dry-leaf.png",
+      "alphaQa": "assets/source/qa/magenta/tools/dry-leaf.png",
+      "sha256": "d348aaf541f0b5001895157af02d50671f658f66354d983a0570c6ee86be3a24",
+      "bytes": 16216
+    },
+    "assets/effects/water-drop-1.webp": {
+      "source": "assets/source/cuts/tools/water-drop-1.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/water-drop-1.png",
+      "finalized": "assets/source/finalized/effects/water-drop-1.png",
+      "alphaQa": "assets/source/qa/magenta/effects/water-drop-1.png",
+      "sha256": "4c0b75e854a3ac025542494f50d50b13d0fdb124472d6731661881c090e09e3d",
+      "bytes": 6704
+    },
+    "assets/effects/water-drop-2.webp": {
+      "source": "assets/source/cuts/tools/water-drop-2.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/water-drop-2.png",
+      "finalized": "assets/source/finalized/effects/water-drop-2.png",
+      "alphaQa": "assets/source/qa/magenta/effects/water-drop-2.png",
+      "sha256": "69d9c9a3235b23cb94a3c6f49277b25d69b7da1059dc748f5d64a7f8d7f7b3da",
+      "bytes": 10570
+    },
+    "assets/effects/water-drop-3.webp": {
+      "source": "assets/source/cuts/tools/water-drop-3.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/water-drop-3.png",
+      "finalized": "assets/source/finalized/effects/water-drop-3.png",
+      "alphaQa": "assets/source/qa/magenta/effects/water-drop-3.png",
+      "sha256": "acafd5c6511db1a64e60154b199b921b9021f6dc4c78d1162ce9b3c34f7e47a4",
+      "bytes": 6984
+    },
+    "assets/effects/mist-cloud.webp": {
+      "source": "assets/source/cuts/tools/mist-cloud.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/mist-cloud.png",
+      "finalized": "assets/source/finalized/effects/mist-cloud.png",
+      "alphaQa": "assets/source/qa/magenta/effects/mist-cloud.png",
+      "sha256": "88cda80aec6bd1654fcadd3c2564c97b63efd7fda15c9b63846b80b437b6575a",
+      "bytes": 15442
+    },
+    "assets/effects/glint.webp": {
+      "source": "assets/source/cuts/tools/glint.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/glint.png",
+      "finalized": "assets/source/finalized/effects/glint.png",
+      "alphaQa": "assets/source/qa/magenta/effects/glint.png",
+      "sha256": "9d25b579583a0dbacaf6cf60261a25af071e7972f72ac63b77bc8971d09b736e",
+      "bytes": 8946
+    },
+    "assets/effects/rosette.webp": {
+      "source": "assets/source/cuts/tools/rosette.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/effects/rosette.png",
+      "finalized": "assets/source/finalized/effects/rosette.png",
+      "alphaQa": "assets/source/qa/magenta/effects/rosette.png",
+      "sha256": "617506ce27d1e1659b13f6451989bd1d8504b1f8caba9d9d9acf06afae6e21b0",
+      "bytes": 28450
+    },
+    "assets/ui/choice-card.webp": {
+      "source": "assets/source/cuts/ui-opaque/choice-card.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/choice-card.png",
+      "alphaQa": "assets/source/qa/magenta/ui/choice-card.png",
+      "sha256": "c17f508e81e297b79f3fdb6b69add9afd795a8d2d04aa06c2dfc565567a7be47",
+      "bytes": 22114
+    },
+    "assets/ui/instruction-plaque.webp": {
+      "source": "assets/source/cuts/ui-opaque/instruction-plaque.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/instruction-plaque.png",
+      "alphaQa": "assets/source/qa/magenta/ui/instruction-plaque.png",
+      "sha256": "6e960836cd8cee4649f7f5abb3742c515c9ee25df890d6e9341b666fd0490d2b",
+      "bytes": 22832
+    },
+    "assets/ui/action-button.webp": {
+      "source": "assets/source/cuts/ui-opaque/action-button.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/action-button.png",
+      "alphaQa": "assets/source/qa/magenta/ui/action-button.png",
+      "sha256": "6a51654ca90b3b24b75580ffd1040179d2efd901435270c786345fb7e723b159",
+      "bytes": 18136
+    },
+    "assets/ui/progress-tray.webp": {
+      "source": "assets/source/cuts/ui-opaque/progress-tray.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/progress-tray.png",
+      "alphaQa": "assets/source/qa/magenta/ui/progress-tray.png",
+      "sha256": "5f434b48e95f1425fdb0a81d1f653c4f8b9a4df4ba82968aab83cbfa7a440ff7",
+      "bytes": 29970
+    },
+    "assets/ui/intro-cloud.webp": {
+      "source": "assets/source/cuts/ui-opaque/intro-cloud.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/intro-cloud.png",
+      "alphaQa": "assets/source/qa/magenta/ui/intro-cloud.png",
+      "sha256": "a54fab1b9bfdce2d64e1488ea35beba7c0b87def7daca0d750ca97c0eb266056",
+      "bytes": 22874
+    },
+    "assets/ui/moisture-gauge.webp": {
+      "source": "assets/source/cuts/ui-opaque/moisture-gauge.png",
+      "extraction": "sampled neutral-matte alpha; Qwen individual candidates rejected",
+      "finalized": "assets/source/finalized/ui/moisture-gauge.png",
+      "alphaQa": "assets/source/qa/magenta/ui/moisture-gauge.png",
+      "sha256": "8239e2d71c3a689ccb53432f28b7c6b11a3a58570e58cb5edd11a7fa01153613",
+      "bytes": 14532
+    },
+    "assets/ui/title-lockup.webp": {
+      "source": "assets/source/cuts/title/title-lockup.png",
+      "normalizedAlpha": "assets/source/normalized-alpha/ui/title-lockup.png",
+      "finalized": "assets/source/finalized/ui/title-lockup.png",
+      "alphaQa": "assets/source/qa/magenta/ui/title-lockup.png",
+      "sha256": "64e818a3a7525ee9ee70949230c249fea5dd106fbb386a51ad6ea94e0f4d5e6e",
+      "bytes": 155178
+    },
+    "assets/backgrounds/greenhouse.webp": {
+      "source": "assets/source/gpt-image-2/greenhouse-workbench-master.png",
+      "sha256": "50d3e720bc588165b1782ac3cf7a78bb1f10fda26a136459f620ab8777147072",
+      "bytes": 148256,
+      "dimensions": [
+        1440,
+        1080
+      ]
+    },
+    "assets/backgrounds/greenhouse-thriving.webp": {
+      "source": "assets/source/local-api/qwen-edit/greenhouse-thriving-empty-seed1337.png",
+      "sha256": "84c442da79307a728186bf038c9446a2afb1316ffacf47484d61cf7be67df2d7",
+      "bytes": 77208,
+      "dimensions": [
+        1152,
+        864
+      ]
+    }
+  },
+  "hub": {
+    "source": "assets/source/local-api/krea/hub-seed42.png",
+    "output": "assets/hub/tiles/plant-care-captain.jpg",
+    "sha256": "0b3413de3336fc6be7d29c093868342f278be795ef9b0018c8ffb112bdaed258",
+    "bytes": 33770
+  },
+  "rejectedCandidates": {
+    "uiGrouped": "local-api/layered/ui-carriers-layer2.png dropped three of six carriers",
+    "uiIndividual": "individual Qwen outputs retained under local-api/layered/ui-individual; four had near-empty alpha and the intro cloud lost its leaf ornament",
+    "thrivingSeed42": "qwen-edit/greenhouse-thriving-seed42.png added an identity-breaking generic center plant"
+  }
+}

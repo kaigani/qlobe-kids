@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "6dcdd40458cd4a85a7a392921f1fcfff",
+  "text": "That is a real word!",
+  "textHash": "ac383d5d0399febf",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "1c08b29fd01e4f39a0ca47b72ba8bfd9",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "That is a real word!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

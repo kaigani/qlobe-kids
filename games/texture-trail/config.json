@@ -1,0 +1,123 @@
+{
+  "format": "qlobe-game-config",
+  "formatVersion": 1,
+  "id": "texture-trail",
+  "title": "Texture Trail",
+  "engine": "custom-texture-trail",
+  "artDirection": "Claymation",
+  "music": "../../shared/assets/music/quirky-forest-adventure.mp3",
+  "assets": {
+    "world": "./assets/world/clay-garden-world.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "promptPlaque": "./assets/art/plaque-prompt.webp",
+    "actionPlaque": "./assets/art/plaque-action.webp",
+    "labelPlaque": "./assets/art/plaque-label.webp",
+    "starMedal": "./assets/art/medal-star.webp",
+    "bumpyMedal": "./assets/art/medal-bumpy.webp",
+    "snails": {
+      "wait": "./assets/characters/snail-wait.webp",
+      "point": "./assets/characters/snail-point.webp",
+      "cheer": "./assets/characters/snail-cheer.webp",
+      "hint": "./assets/characters/snail-hint.webp"
+    }
+  },
+  "voice": {
+    "welcome": "Welcome to Texture Trail! Choose a texture to explore.",
+    "choose": "Pick a texture. Bumpy, smooth, ridged, or soft.",
+    "bumpyExplore": "Bumpy has little hills you can feel. The raspberry and pinecone are bumpy.",
+    "bumpyTrail": "Start at the glowing purple bump. Follow every bumpy step.",
+    "bumpyNudge": "Find the glowing bumpy step. Tap it, or slide your finger.",
+    "bumpySuccess": "Bump, bump, hooray! You finished the bumpy trail. Can you find something bumpy nearby?",
+    "smoothExplore": "Smooth feels even, with no bumps. The egg and river pebble are smooth.",
+    "smoothTrail": "Start at the glowing green pebble. Glide along the smooth trail.",
+    "smoothNudge": "Find the glowing smooth pebble. Tap it, or glide your finger.",
+    "smoothSuccess": "Swoosh! You finished the smooth trail. Can you find something smooth nearby?",
+    "ridgedExplore": "Ridged has raised lines. The shell and ribbed cushion have ridges.",
+    "ridgedTrail": "Start at the glowing orange ridge. Zigzag along the ridged trail.",
+    "ridgedNudge": "Find the glowing ridged step. Tap it, or slide your finger.",
+    "ridgedSuccess": "Zip, zag, hooray! You finished the ridged trail. Can you find something ridged nearby?",
+    "softExplore": "Soft feels gentle and squishy. The cloud cushion and feather are soft.",
+    "softTrail": "Start at the glowing blue puff. Follow the soft, curvy trail.",
+    "softNudge": "Find the glowing soft puff. Tap it, or slide your finger.",
+    "softSuccess": "So soft! You finished the soft trail. Can you find something soft nearby?",
+    "completeChoice": "Trace it again, or choose a new texture."
+  },
+  "modes": [
+    {
+      "id": "bumpy",
+      "title": "Bumpy",
+      "skill": "recognize and describe bumpy surfaces",
+      "color": "#7950b8",
+      "card": "./assets/art/card-bumpy.webp",
+      "marker": "./assets/art/marker-bumpy.webp",
+      "medal": "./assets/art/medal-bumpy.webp",
+      "examples": [
+        { "name": "raspberry", "art": "./assets/objects/raspberry.webp" },
+        { "name": "pinecone", "art": "./assets/objects/pinecone.webp" }
+      ],
+      "routes": [
+        [[0.12,0.72],[0.20,0.64],[0.29,0.55],[0.39,0.44],[0.50,0.38],[0.60,0.42],[0.68,0.51],[0.66,0.62],[0.57,0.70],[0.68,0.77],[0.81,0.67]],
+        [[0.13,0.62],[0.23,0.51],[0.34,0.43],[0.46,0.48],[0.54,0.59],[0.62,0.69],[0.72,0.65],[0.80,0.54],[0.75,0.41],[0.64,0.34],[0.52,0.29]]
+      ],
+      "compactRoute": [[0.08,0.73],[0.22,0.57],[0.36,0.40],[0.50,0.34],[0.64,0.43],[0.78,0.63],[0.92,0.54]],
+      "voice": { "explore": "bumpyExplore", "trail": "bumpyTrail", "nudge": "bumpyNudge", "success": "bumpySuccess" }
+    },
+    {
+      "id": "smooth",
+      "title": "Smooth",
+      "skill": "recognize and describe smooth surfaces",
+      "color": "#4e9b42",
+      "card": "./assets/art/card-smooth.webp",
+      "marker": "./assets/art/marker-smooth.webp",
+      "medal": "./assets/art/medal-smooth.webp",
+      "examples": [
+        { "name": "egg", "art": "./assets/objects/egg.webp" },
+        { "name": "river pebble", "art": "./assets/objects/river-pebble.webp" }
+      ],
+      "routes": [
+        [[0.12,0.66],[0.21,0.58],[0.31,0.52],[0.41,0.48],[0.51,0.47],[0.61,0.49],[0.71,0.54],[0.80,0.61],[0.74,0.70],[0.63,0.74],[0.51,0.73]],
+        [[0.13,0.72],[0.23,0.70],[0.33,0.64],[0.42,0.55],[0.51,0.45],[0.61,0.37],[0.72,0.34],[0.81,0.39],[0.78,0.49],[0.69,0.57],[0.59,0.62]]
+      ],
+      "compactRoute": [[0.08,0.68],[0.22,0.57],[0.36,0.49],[0.50,0.45],[0.64,0.48],[0.78,0.57],[0.92,0.69]],
+      "voice": { "explore": "smoothExplore", "trail": "smoothTrail", "nudge": "smoothNudge", "success": "smoothSuccess" }
+    },
+    {
+      "id": "ridged",
+      "title": "Ridged",
+      "skill": "recognize and describe ridged surfaces",
+      "color": "#dd7428",
+      "card": "./assets/art/card-ridged.webp",
+      "marker": "./assets/art/marker-ridged.webp",
+      "medal": "./assets/art/medal-ridged.webp",
+      "examples": [
+        { "name": "seashell", "art": "./assets/objects/seashell.webp" },
+        { "name": "ribbed cushion", "art": "./assets/objects/corduroy-cushion.webp" }
+      ],
+      "routes": [
+        [[0.12,0.72],[0.22,0.58],[0.31,0.70],[0.40,0.50],[0.49,0.65],[0.58,0.42],[0.67,0.59],[0.76,0.35],[0.83,0.50],[0.74,0.69],[0.62,0.75]],
+        [[0.12,0.57],[0.22,0.42],[0.31,0.58],[0.40,0.39],[0.49,0.56],[0.58,0.36],[0.67,0.53],[0.76,0.34],[0.83,0.49],[0.76,0.66],[0.65,0.73]]
+      ],
+      "compactRoute": [[0.08,0.70],[0.22,0.35],[0.36,0.69],[0.50,0.34],[0.64,0.67],[0.78,0.33],[0.92,0.63]],
+      "voice": { "explore": "ridgedExplore", "trail": "ridgedTrail", "nudge": "ridgedNudge", "success": "ridgedSuccess" }
+    },
+    {
+      "id": "soft",
+      "title": "Soft",
+      "skill": "recognize and describe soft surfaces",
+      "color": "#54a9d3",
+      "card": "./assets/art/card-soft.webp",
+      "marker": "./assets/art/marker-soft.webp",
+      "medal": "./assets/art/medal-soft.webp",
+      "examples": [
+        { "name": "cloud cushion", "art": "./assets/objects/cloud-cushion.webp" },
+        { "name": "feather", "art": "./assets/objects/feather.webp" }
+      ],
+      "routes": [
+        [[0.15,0.70],[0.24,0.61],[0.35,0.56],[0.46,0.57],[0.55,0.65],[0.65,0.69],[0.75,0.63],[0.80,0.51],[0.74,0.40],[0.64,0.35],[0.54,0.40]],
+        [[0.16,0.67],[0.25,0.54],[0.36,0.45],[0.48,0.41],[0.60,0.45],[0.70,0.54],[0.75,0.65],[0.67,0.73],[0.56,0.70],[0.50,0.60],[0.57,0.52]]
+      ],
+      "compactRoute": [[0.08,0.67],[0.22,0.49],[0.36,0.37],[0.50,0.35],[0.64,0.44],[0.78,0.62],[0.92,0.50]],
+      "voice": { "explore": "softExplore", "trail": "softTrail", "nudge": "softNudge", "success": "softSuccess" }
+    }
+  ]
+}

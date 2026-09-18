@@ -5,29 +5,55 @@
   "path": "games/question-ball/",
   "icon": "🏐",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#ffad7a",
-  "shareTitle": "Question Ball 🏐 — Who What Where Why Play",
-  "description": "Hear a spoken who, what, where, or why question and tap the picture that answers it, building comprehension one round at a time. A playful listening game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#f39a52",
+  "shareTitle": "Question Ball — Toss, Talk, and Share",
+  "description": "Pick a familiar topic, toss a soft rainbow Question Ball, hear one open-ended question, and share your idea aloud.",
   "learningGoals": [
-    "Understand common wh-question words",
-    "Match oral questions to picture answers",
-    "Hear full-sentence models for why questions"
+    "Build expressive language through open-ended Who, What, Why, and How questions",
+    "Practice describing, explaining, imagining, and naming feelings",
+    "Practice conversational turn-taking with a nearby co-player"
   ],
-  "interactionModel": "choose-one tap the picture answer after a spoken wh-question",
-  "feedbackModel": "Correct answers sparkle and speak praise; misses wiggle with a playful boing, get a spoken nudge, and replay the question.",
+  "interactionModel": "Choose one of four picture topics, tap or physically swipe a bounded felt ball, then hold to record locally or share aloud with someone nearby.",
+  "feedbackModel": "Every shared idea earns a warm puppet celebration and one Sharing Star; answers are never transcribed, judged, or scored.",
   "uses": [
-    "shared/js/engines/choose-one.js",
+    "games/question-ball/assets/art/",
+    "games/question-ball/assets/audio/",
+    "shared/assets/music/upbeat-playground-pop.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "wh", "title": "Catch the Question", "skill": "who, what, and where question comprehension" },
-    { "id": "why", "title": "Why Questions", "skill": "matching why questions to simple reasons" }
+    { "id": "routines", "title": "Daily Routines", "skill": "describe familiar sequences and people" },
+    { "id": "animals", "title": "Amazing Animals", "skill": "use animal vocabulary to describe, explain, and imagine" },
+    { "id": "imagine", "title": "Let’s Imagine", "skill": "practice flexible thinking and invented explanations" },
+    { "id": "feelings", "title": "Feelings and Friends", "skill": "name feelings and supportive actions" }
   ],
+  "persistence": "Only Sharing Star count, completed count per topic, and last selected topic are stored in localStorage under qlobe-question-ball-v1. Child recordings remain memory-only for the current question.",
+  "assets": {
+    "source": "generated/local",
+    "runtimeNetwork": false,
+    "runtimeNetworkScope": "No game asset, model, transcription, or child-recording requests; inherited platform analytics is outside this flag.",
+    "art": "GPT Image 2 and local-model cozy felt puppet assets",
+    "voice": "Qwen voice-cloned teacher narration with Web Speech fallback",
+    "music": "shared recorded upbeat playground pop"
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder scene and answer art. Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Cozy felt production art made with GPT Image 2, local Krea 2, and Qwen Image Layered; teacher narration made with local Qwen voice clone and verified with Whisper. Child recordings never leave the device. Built with Codex for QLOBE Kids.",
+  "characters": ["maya", "leo"],
   "conceptVideo": null
 }

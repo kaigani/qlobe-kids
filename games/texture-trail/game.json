@@ -5,28 +5,42 @@
   "path": "games/texture-trail/",
   "icon": "🪨",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#8f6f4e",
-  "shareTitle": "Texture Trail 🪨 — Feel-the-Same Matching",
-  "description": "Tap cards that share a texture, pairing soft, hard, bumpy, smooth, fluffy, and prickly things while building touch vocabulary. A sensory matching game for ages 5–6.",
+  "age": { "min": 4, "max": 6 },
+  "status": "beta",
+  "accent": "#7b51b4",
+  "shareTitle": "Texture Trail - A Clay Garden Sensory Adventure",
+  "description": "Explore bumpy, smooth, ridged, and soft surfaces, then guide Pip the clay snail along four touch-friendly texture trails.",
   "learningGoals": [
-    "Build texture vocabulary through paired examples",
-    "Connect touch words with familiar objects",
-    "Extend the game into a real-room texture hunt"
+    "Recognize and name four surface textures",
+    "Connect tactile words with familiar real-world objects",
+    "Practice controlled tracing and extend learning into a real-room texture hunt"
   ],
-  "interactionModel": "match-pairs tap cards that share a texture",
-  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken texture line; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "Choose a texture, explore two concrete examples, then tap or drag through eleven ordered clay stepping stones (seven on short landscape screens).",
+  "feedbackModel": "Each correct contact earns a clay star, advances Pip, plays a soft pop, and adds optional haptics; a raster guide and gentle recorded hints identify the next step.",
   "uses": [
-    "shared/js/engines/match-pairs.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/sfx.js",
+    "shared/js/bgm.js",
+    "shared/js/hud.js",
+    "shared/js/screens.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/tap.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/assets/music/quirky-forest-adventure.mp3",
+    "games/texture-trail/assets/"
   ],
   "modes": [
-    { "id": "feel", "title": "Feels the Same", "skill": "texture vocabulary and comparison" }
+    { "id": "bumpy", "title": "Bumpy", "skill": "recognize and describe bumpy surfaces" },
+    { "id": "smooth", "title": "Smooth", "skill": "recognize and describe smooth surfaces" },
+    { "id": "ridged", "title": "Ridged", "skill": "recognize and describe ridged surfaces" },
+    { "id": "soft", "title": "Soft", "skill": "recognize and describe soft surfaces" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; GPT Image 2 clay art system; local Krea 2 concept trial; Qwen voice-clone narration with Whisper QA. Full provenance in ASSETS.md. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

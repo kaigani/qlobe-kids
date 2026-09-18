@@ -1,0 +1,292 @@
+{
+  "source": "games/snack-addition-stories/assets/source/gpt-image-2/ui-kit-sheet.png",
+  "sourceSha256": "7dd565f6e381a5d81591dfa289a7cd770f539502dc506c3f0296b7365f68839e",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 14,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 99357,
+      "foregroundBbox": [
+        19,
+        57,
+        517,
+        290
+      ],
+      "cropBbox": [
+        5,
+        43,
+        531,
+        304
+      ],
+      "cropXywh": [
+        5,
+        43,
+        526,
+        261
+      ],
+      "normalizedCropBbox": [
+        0.003453,
+        0.039595,
+        0.366713,
+        0.279926
+      ]
+    },
+    {
+      "index": 2,
+      "name": "prompt-plaque",
+      "file": "prompt-plaque.png",
+      "componentArea": 89792,
+      "foregroundBbox": [
+        524,
+        78,
+        988,
+        292
+      ],
+      "cropBbox": [
+        510,
+        64,
+        1002,
+        306
+      ],
+      "cropXywh": [
+        510,
+        64,
+        492,
+        242
+      ],
+      "normalizedCropBbox": [
+        0.35221,
+        0.058932,
+        0.691989,
+        0.281768
+      ]
+    },
+    {
+      "index": 3,
+      "name": "equation-plaque",
+      "file": "equation-plaque.png",
+      "componentArea": 55918,
+      "foregroundBbox": [
+        1005,
+        99,
+        1414,
+        255
+      ],
+      "cropBbox": [
+        991,
+        85,
+        1428,
+        269
+      ],
+      "cropXywh": [
+        991,
+        85,
+        437,
+        184
+      ],
+      "normalizedCropBbox": [
+        0.684392,
+        0.078269,
+        0.986188,
+        0.247698
+      ]
+    },
+    {
+      "index": 4,
+      "name": "story-card",
+      "file": "story-card.png",
+      "componentArea": 136970,
+      "foregroundBbox": [
+        69,
+        312,
+        433,
+        711
+      ],
+      "cropBbox": [
+        55,
+        298,
+        447,
+        725
+      ],
+      "cropXywh": [
+        55,
+        298,
+        392,
+        427
+      ],
+      "normalizedCropBbox": [
+        0.037983,
+        0.274401,
+        0.308702,
+        0.667587
+      ]
+    },
+    {
+      "index": 5,
+      "name": "answer-pink",
+      "file": "answer-pink.png",
+      "componentArea": 155259,
+      "foregroundBbox": [
+        507,
+        335,
+        945,
+        719
+      ],
+      "cropBbox": [
+        493,
+        321,
+        959,
+        733
+      ],
+      "cropXywh": [
+        493,
+        321,
+        466,
+        412
+      ],
+      "normalizedCropBbox": [
+        0.34047,
+        0.29558,
+        0.662293,
+        0.674954
+      ]
+    },
+    {
+      "index": 6,
+      "name": "answer-lavender",
+      "file": "answer-lavender.png",
+      "componentArea": 150310,
+      "foregroundBbox": [
+        981,
+        331,
+        1401,
+        722
+      ],
+      "cropBbox": [
+        967,
+        317,
+        1415,
+        736
+      ],
+      "cropXywh": [
+        967,
+        317,
+        448,
+        419
+      ],
+      "normalizedCropBbox": [
+        0.667818,
+        0.291897,
+        0.97721,
+        0.677716
+      ]
+    },
+    {
+      "index": 7,
+      "name": "answer-mint",
+      "file": "answer-mint.png",
+      "componentArea": 125178,
+      "foregroundBbox": [
+        46,
+        722,
+        451,
+        1056
+      ],
+      "cropBbox": [
+        32,
+        708,
+        465,
+        1070
+      ],
+      "cropXywh": [
+        32,
+        708,
+        433,
+        362
+      ],
+      "normalizedCropBbox": [
+        0.022099,
+        0.651934,
+        0.321133,
+        0.985267
+      ]
+    },
+    {
+      "index": 8,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 75676,
+      "foregroundBbox": [
+        491,
+        806,
+        940,
+        992
+      ],
+      "cropBbox": [
+        477,
+        792,
+        954,
+        1006
+      ],
+      "cropXywh": [
+        477,
+        792,
+        477,
+        214
+      ],
+      "normalizedCropBbox": [
+        0.32942,
+        0.729282,
+        0.65884,
+        0.926335
+      ]
+    },
+    {
+      "index": 9,
+      "name": "celebration-banner",
+      "file": "celebration-banner.png",
+      "componentArea": 58722,
+      "foregroundBbox": [
+        952,
+        800,
+        1432,
+        998
+      ],
+      "cropBbox": [
+        938,
+        786,
+        1446,
+        1012
+      ],
+      "cropXywh": [
+        938,
+        786,
+        508,
+        226
+      ],
+      "normalizedCropBbox": [
+        0.64779,
+        0.723757,
+        0.998619,
+        0.93186
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

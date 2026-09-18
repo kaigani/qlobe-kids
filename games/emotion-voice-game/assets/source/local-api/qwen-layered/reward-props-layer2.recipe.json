@@ -1,0 +1,16 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "emotion-voice-reward-props-layered",
+  "output": "assets/source/local-api/qwen-layered/reward-props-layer2.png",
+  "outputSha256": "452af6882e8faa2e70bcac9b6459d1750f1ac6725a9353f8253e2024a05fdaac",
+  "prompt": "Background layer: transparent empty background. Top layer: preserve every complete handcrafted felt celebration prop exactly as supplied, including all fibers, stitches, spacing, colors, and silhouettes. Do not redraw, merge, move, crop, recolor, relight, add, or remove any prop.",
+  "result": {
+    "jobIdRecorded": true,
+    "status": "completed"
+  },
+  "seed": 42,
+  "source": "assets/source/gpt-image-2/reward-props-sheet-master.png",
+  "sourceSha256": "45927da914f1f99e546cf3dc61068fd6bb4c2bd4b5e16376d8cd152199f52449",
+  "workflow": "qwen-image-layered"
+}

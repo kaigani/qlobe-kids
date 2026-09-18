@@ -1,0 +1,62 @@
+{
+  "format": "qlobe-source-manifest",
+  "formatVersion": 1,
+  "id": "question-ball-gpt-image-2-masters",
+  "kind": "image-set",
+  "model": "gpt-image-2",
+  "interface": "Codex built-in image generation",
+  "artDirection": "Puppet / Cozy felt fabric",
+  "promptDocument": "../../../PROMPTS.md",
+  "assets": [
+    {
+      "id": "playroom-master",
+      "file": "playroom-master.png",
+      "promptHeading": "GPT image — playroom master",
+      "useCase": "stylized-concept",
+      "size": [1448, 1086],
+      "sha256": "99a30f7c47d477df4e703fd8c7180d0584b7aa139f943bf62a20caeabc980fa5"
+    },
+    {
+      "id": "title-master",
+      "file": "title-master.png",
+      "promptHeading": "GPT image — title lockup",
+      "useCase": "stylized-concept",
+      "size": [1774, 887],
+      "sha256": "8b9b840dfbb6d51a14fbbad403a924baf04434149d0512f2397928f5d5691046"
+    },
+    {
+      "id": "props-sheet",
+      "file": "props-sheet.png",
+      "promptHeading": "GPT image — prop contact sheet",
+      "useCase": "stylized-concept",
+      "size": [1254, 1254],
+      "sha256": "016df38c5ae01af1ce4b825f979b3f2421ee08cd4ad17d41d9c87445e2fe8c29"
+    },
+    {
+      "id": "characters-sheet",
+      "file": "characters-sheet.png",
+      "promptHeading": "GPT image edit — Maya and Leo felt-puppet poses",
+      "useCase": "style-transfer",
+      "references": [
+        "../../../../../shared/characters/maya/portrait.png",
+        "../../../../../shared/characters/leo/portrait.png"
+      ],
+      "size": [2172, 724],
+      "sha256": "cbec33a90dc9475f8ab80c1906f910fa88fd7fca955e0672a96ffcbb947e955e"
+    },
+    {
+      "id": "ui-sheet",
+      "file": "ui-sheet.png",
+      "promptHeading": "GPT image — UI furniture contact sheet",
+      "useCase": "stylized-concept",
+      "size": [1536, 1024],
+      "sha256": "dfe95e0e4ca7d23519fd0348b1b9dc150ec3f1c1557f04a81f6dc4c52d2232e9"
+    }
+  ],
+  "qa": {
+    "status": "accepted-independent-art-gate",
+    "reviewedAt": "2026-09-17",
+    "notes": "All promoted masters and derived runtime assets were accepted after visual, responsive, spelling, identity, and hostile-background review."
+  },
+  "createdAt": "2026-09-17"
+}

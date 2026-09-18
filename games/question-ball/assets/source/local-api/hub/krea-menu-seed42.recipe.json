@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "question-ball-hub-krea-seed42",
+  "kind": "image",
+  "asset": "assets/source/local-api/hub/krea-menu-seed42.png",
+  "artDirection": "Puppet / Cozy felt fabric",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A single handcrafted rainbow patchwork felt Question Ball resting on a small warm cream play mat, with a tiny smiling stuffed gold star beside it and two soft felt speech bubbles floating behind. Bright premium preschool toy-object catalog art, rounded simplified forms, visible stitching and fleece texture, cheerful proportions, clean centered 6:5 composition, soft warm studio light, light airy background, no people, no title, no text, no letters, no UI, no logos, no watermark.",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "source": "krea-menu-seed42.png",
+  "sourceSha256": "e7a9b22d1a2275285ea582c9334063ae424575fbea2ab199bdcb369c99130bdc",
+  "productionTransform": "center crop/resize to 640x533, JPEG quality 91",
+  "final": "assets/hub/tiles/question-ball.jpg",
+  "finalSha256": "873f91e5611695f4a0b7ec18461b063b96da7e92fba36ecb334eb4c11f7b1f41",
+  "qa": {
+    "status": "accepted-independent-art-gate",
+    "notes": "Text-free, centered 6:5 felt composition accepted by the independent ART DIRECTOR as polished, coherent, and immediately recognizable.",
+    "finalSize": [640, 533]
+  },
+  "createdAt": "2026-09-17"
+}

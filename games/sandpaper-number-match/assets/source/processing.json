@@ -1,0 +1,265 @@
+{
+  "tool": "build-assets.py",
+  "assets": [
+    {
+      "source": "games/sandpaper-number-match/assets/source/gpt-image-2/world-backdrop-master.png",
+      "final": "games/sandpaper-number-match/assets/art/world-backdrop.webp",
+      "sha256": "faaf86b32f719f5fb37ef368c0c8719627fcb43b9096d4b24d7b0379d95eb277",
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "method": "RGB resize 1448x1086, quality 86 WebP"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-0.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-0.webp",
+      "sha256": "c699d8d6a637ad8d5d6085d96a7de5f883a35d9b6b0b5383bd405aedb610d622",
+      "dimensions": [
+        357,
+        430
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-1.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-1.webp",
+      "sha256": "eca8e36c0140bcb4d1c0d1f7f17b9d97f5f50fce437eabdeb16ead8ea2fd4643",
+      "dimensions": [
+        299,
+        428
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-2.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-2.webp",
+      "sha256": "96d1be9b44fe5a3a7a4967d58ccde99464c694541e206e4958eb51355b496f15",
+      "dimensions": [
+        337,
+        423
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-3.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-3.webp",
+      "sha256": "33ea1e498bffcda21cbafd8f87156a7994efac3aecb290fc9163bba7817ed85e",
+      "dimensions": [
+        330,
+        430
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-4.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-4.webp",
+      "sha256": "b9887d395476b4b81b3ca9a715ffaaed41b11ef2e2749772b436acef5de671cc",
+      "dimensions": [
+        356,
+        421
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-5.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-5.webp",
+      "sha256": "7209163e89490c74f55a77dc7944fab79a7a44750b414eaeba473dae3d087a43",
+      "dimensions": [
+        333,
+        428
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-6.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-6.webp",
+      "sha256": "7accb4fc70bc3335236b040472d5b551a264eb018e57f49a1d5a5cd3102ba7dc",
+      "dimensions": [
+        343,
+        433
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-7.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-7.webp",
+      "sha256": "36b1e8f0b24f0ef2481d13977391c40adade05a89f36dd0423b71d938509f1ba",
+      "dimensions": [
+        337,
+        420
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-8.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-8.webp",
+      "sha256": "e84226fe630a4d462b5a7ea095d320ba1a90514d522dd21095faf013158a3e00",
+      "dimensions": [
+        344,
+        435
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/numerals/numeral-9.png",
+      "final": "games/sandpaper-number-match/assets/art/numeral-9.webp",
+      "sha256": "c29e30dc66b67c04a4fee7587799c1569ec8649d11e6d27ff059d4c5230ff569",
+      "dimensions": [
+        345,
+        432
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/button-plaque.png",
+      "final": "games/sandpaper-number-match/assets/art/button-plaque.webp",
+      "sha256": "784e50129bebd4dc58f1c5cf5367daa82a372ca5f47c8a8139a9806e363c73f3",
+      "dimensions": [
+        498,
+        225
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/mode-card-coral.png",
+      "final": "games/sandpaper-number-match/assets/art/mode-card-coral.webp",
+      "sha256": "f61fe9942099f4f9e2a0e9cde6685b2e7187267ebf3801d55c176c1daed22925",
+      "dimensions": [
+        317,
+        387
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/mode-card-gold.png",
+      "final": "games/sandpaper-number-match/assets/art/mode-card-gold.webp",
+      "sha256": "f10e224379ad02677bfa00d7a3b8a3b287969fb58186d44a9bd7f85a9ff09fb2",
+      "dimensions": [
+        319,
+        390
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/mode-card-teal.png",
+      "final": "games/sandpaper-number-match/assets/art/mode-card-teal.webp",
+      "sha256": "309ac91374df454ecdc8231ee34b82c1c8ce01074a10fbc5ff01166deed309c7",
+      "dimensions": [
+        303,
+        388
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/nav-back.png",
+      "final": "games/sandpaper-number-match/assets/art/nav-back.webp",
+      "sha256": "71e9a975eea795202fd001b5cf07a2f4d711006fe5f1360976948356b91e6032",
+      "dimensions": [
+        297,
+        298
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/nav-home.png",
+      "final": "games/sandpaper-number-match/assets/art/nav-home.webp",
+      "sha256": "e49a6b4f55631b297129c9b01bea944bdec569ac748c2fa7e709e422947575d5",
+      "dimensions": [
+        295,
+        297
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/nav-sound.png",
+      "final": "games/sandpaper-number-match/assets/art/nav-sound.webp",
+      "sha256": "709c9e59bc778abb234e9bc5184ef1c61899736f2c602d49080e5b7251d75391",
+      "dimensions": [
+        306,
+        303
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/pencil-buddy.png",
+      "final": "games/sandpaper-number-match/assets/art/pencil-buddy.webp",
+      "sha256": "85adbcf28b731583c65a45794b2bc4970ab280c2de9fff1e946b7a7852003db5",
+      "dimensions": [
+        222,
+        422
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/rosette.png",
+      "final": "games/sandpaper-number-match/assets/art/rosette.webp",
+      "sha256": "d055e46fa06446cfc0e4c3a581b17609ffae522b3fa1ff535d411e155979e007",
+      "dimensions": [
+        317,
+        389
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/star-awake.png",
+      "final": "games/sandpaper-number-match/assets/art/star-awake.webp",
+      "sha256": "a183f631ae30891473fd9f76d7ecb009c292ddc2e3be8b641ec1f4b8e99a67a3",
+      "dimensions": [
+        330,
+        326
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/star-sleepy.png",
+      "final": "games/sandpaper-number-match/assets/art/star-sleepy.webp",
+      "sha256": "b84e2d5038c23093d5b61e95089232ae42fb27066ad8fdaa2996ea9a5c6fad63",
+      "dimensions": [
+        341,
+        330
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/crops/ui-props/title-plaque.png",
+      "final": "games/sandpaper-number-match/assets/art/title-plaque.webp",
+      "sha256": "4a912d245ef149aa5738384419fb29dab8993885e1f1f2a4718940da77856250",
+      "dimensions": [
+        508,
+        291
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/gpt-image-2/nav-replay-master.png",
+      "final": "games/sandpaper-number-match/assets/art/nav-replay.webp",
+      "sha256": "19b95ad5ace01ea2a1d40559b8499e57f94a497be659e9aededb3876c18488e1",
+      "dimensions": [
+        469,
+        480
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/gpt-image-2/title-lockup-master.png",
+      "final": "games/sandpaper-number-match/assets/art/title-lockup.webp",
+      "sha256": "982c5d3a621068e979d3d324dc74df0c36bf9e00b0a1c3b81d1bab9d7e99ddab",
+      "dimensions": [
+        800,
+        452
+      ],
+      "method": "alpha-trim 4% pad, Lanczos fit, alpha WebP quality 92"
+    },
+    {
+      "source": "games/sandpaper-number-match/assets/source/local-api/hub-krea-seed42.png",
+      "final": "assets/hub/tiles/sandpaper-number-match.jpg",
+      "sha256": "7ed2223a5fa9682781d069ae0f9cc139750720f0358cbb6ac02cc1d3e302788f",
+      "dimensions": [
+        640,
+        533
+      ],
+      "method": "center crop 640x533, JPEG quality 90"
+    }
+  ]
+}

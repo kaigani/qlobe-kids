@@ -1,0 +1,202 @@
+{
+  "source": "games/silly-sentence-builder/assets/source/gpt-image-2/places-master.png",
+  "sourceSha256": "f1992729e50a58685bc05c1cb744959a0f0e0df90cdc7fa74a7e402ddccf05cd",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "moon",
+      "file": "moon.png",
+      "componentArea": 198391,
+      "foregroundBbox": [
+        16,
+        12,
+        500,
+        494
+      ],
+      "cropBbox": [
+        4,
+        0,
+        512,
+        506
+      ],
+      "cropXywh": [
+        4,
+        0,
+        508,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.002604,
+        0.0,
+        0.333333,
+        0.494141
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bathtub",
+      "file": "bathtub.png",
+      "componentArea": 205055,
+      "foregroundBbox": [
+        520,
+        26,
+        1005,
+        493
+      ],
+      "cropBbox": [
+        508,
+        14,
+        1017,
+        505
+      ],
+      "cropXywh": [
+        508,
+        14,
+        509,
+        491
+      ],
+      "normalizedCropBbox": [
+        0.330729,
+        0.013672,
+        0.662109,
+        0.493164
+      ]
+    },
+    {
+      "index": 3,
+      "name": "castle",
+      "file": "castle.png",
+      "componentArea": 188370,
+      "foregroundBbox": [
+        1030,
+        11,
+        1516,
+        494
+      ],
+      "cropBbox": [
+        1018,
+        0,
+        1528,
+        506
+      ],
+      "cropXywh": [
+        1018,
+        0,
+        510,
+        506
+      ],
+      "normalizedCropBbox": [
+        0.66276,
+        0.0,
+        0.994792,
+        0.494141
+      ]
+    },
+    {
+      "index": 4,
+      "name": "picnic",
+      "file": "picnic.png",
+      "componentArea": 206648,
+      "foregroundBbox": [
+        11,
+        520,
+        496,
+        1005
+      ],
+      "cropBbox": [
+        0,
+        508,
+        508,
+        1017
+      ],
+      "cropXywh": [
+        0,
+        508,
+        508,
+        509
+      ],
+      "normalizedCropBbox": [
+        0.0,
+        0.496094,
+        0.330729,
+        0.993164
+      ]
+    },
+    {
+      "index": 5,
+      "name": "garden",
+      "file": "garden.png",
+      "componentArea": 223605,
+      "foregroundBbox": [
+        511,
+        509,
+        1019,
+        1008
+      ],
+      "cropBbox": [
+        499,
+        497,
+        1031,
+        1020
+      ],
+      "cropXywh": [
+        499,
+        497,
+        532,
+        523
+      ],
+      "normalizedCropBbox": [
+        0.32487,
+        0.485352,
+        0.671224,
+        0.996094
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pirate-ship",
+      "file": "pirate-ship.png",
+      "componentArea": 195311,
+      "foregroundBbox": [
+        1034,
+        506,
+        1522,
+        1010
+      ],
+      "cropBbox": [
+        1022,
+        494,
+        1534,
+        1022
+      ],
+      "cropXywh": [
+        1022,
+        494,
+        512,
+        528
+      ],
+      "normalizedCropBbox": [
+        0.665365,
+        0.482422,
+        0.998698,
+        0.998047
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

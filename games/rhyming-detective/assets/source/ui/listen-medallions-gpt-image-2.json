@@ -1,0 +1,40 @@
+{
+  "schema": "qlobe-recipe/v1",
+  "asset": "assets/props/listen.webp",
+  "created": "2026-09-16",
+  "generator": {
+    "model": "gpt-image-2",
+    "interface": "Codex image generation tool",
+    "source": "assets/source/ui/listen-medallions-gpt-image-2.png",
+    "prompt": "Use case: stylized-concept. Asset type: two-variant game UI prop contact sheet for a preschool phonics game. Create exactly TWO separate tactile toy listening medallions, arranged left and right with very generous empty space between them. Each medallion is a single connected circular or softly rounded physical badge containing a deeply embossed, instantly recognizable listening-ear symbol with three curved sound-ripple grooves integrated into the badge surface. Variant A is detective blue with cream inlay; Variant B is warm clue-gold with deep navy inlay. Perfectly flat, solid, uniform dark charcoal (#202124) backdrop, no gradient or texture. Premium molded wooden-and-enamel toy render, rounded safe edges, subtle hand-painted grain, deep navy edge line, one soft studio highlight, coherent with a polished tactile toy-room preschool game. Square contact sheet, two equal-size medallions side by side, each centered in its own half, at least 15% clear margin around every medallion, no overlap, connecting shadow or divider. Warm friendly studio light. Exactly two medallions; each medallion including its embossed symbol must read as ONE connected object for automatic component cutting; no detached sound-wave pieces; no cast shadow outside the silhouette; no text, letters, numbers, logos, watermark, labels, UI screenshots, hands, characters, extra props, border or divider."
+  },
+  "cut": {
+    "tool": "tools/cut-asset-sheet.py",
+    "expected_count": 2,
+    "names": ["listen-blue", "listen-gold"],
+    "selected": "listen-blue"
+  },
+  "alpha_separation": {
+    "workflow": "qwen-image-layered",
+    "seed": 42,
+    "layers": 2,
+    "source": "assets/source/ui/listen-crops/listen-blue.png",
+    "output": "assets/source/ui/listen-blue-layer2-42.png",
+    "prompt": "Background layer: transparent empty background. Top layer: the single blue circular tactile wooden listening-ear medallion, fully opaque throughout the medallion with the original colors, texture, lighting, and silhouette preserved, on a transparent background. No extra objects."
+  },
+  "finalize": {
+    "tool": "tools/pipeline/cutout_finalize.py",
+    "max_size": 256,
+    "padding": 6,
+    "alpha_floor": 4,
+    "dimensions": [254, 256],
+    "alpha_percent": {
+      "transparent": 27.156,
+      "opaque": 60.142,
+      "partial": 12.702
+    },
+    "encoding": "WebP with alpha",
+    "bytes": 22656
+  },
+  "license": "CC BY 4.0"
+}

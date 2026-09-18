@@ -1,0 +1,206 @@
+{
+  "source": "games/plant-care-captain/assets/source/gpt-image-2/ui-carriers-sheet.png",
+  "sourceSha256": "4939c49ede139fa08694a2a13b3aa25f11ccf7c854dcf46d0b3078a3a8e43172",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    21,
+    21,
+    21
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "choice-card",
+      "file": "choice-card.png",
+      "componentArea": 115753,
+      "foregroundBbox": [
+        84,
+        60,
+        373,
+        501
+      ],
+      "cropBbox": [
+        72,
+        48,
+        385,
+        513
+      ],
+      "cropXywh": [
+        72,
+        48,
+        313,
+        465
+      ],
+      "normalizedCropBbox": [
+        0.046875,
+        0.046875,
+        0.250651,
+        0.500977
+      ]
+    },
+    {
+      "index": 2,
+      "name": "instruction-plaque",
+      "file": "instruction-plaque.png",
+      "componentArea": 122410,
+      "foregroundBbox": [
+        497,
+        155,
+        1006,
+        445
+      ],
+      "cropBbox": [
+        485,
+        143,
+        1018,
+        457
+      ],
+      "cropXywh": [
+        485,
+        143,
+        533,
+        314
+      ],
+      "normalizedCropBbox": [
+        0.315755,
+        0.139648,
+        0.66276,
+        0.446289
+      ]
+    },
+    {
+      "index": 3,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 74882,
+      "foregroundBbox": [
+        1048,
+        223,
+        1499,
+        404
+      ],
+      "cropBbox": [
+        1036,
+        211,
+        1511,
+        416
+      ],
+      "cropXywh": [
+        1036,
+        211,
+        475,
+        205
+      ],
+      "normalizedCropBbox": [
+        0.674479,
+        0.206055,
+        0.983724,
+        0.40625
+      ]
+    },
+    {
+      "index": 4,
+      "name": "progress-tray",
+      "file": "progress-tray.png",
+      "componentArea": 102499,
+      "foregroundBbox": [
+        46,
+        639,
+        594,
+        850
+      ],
+      "cropBbox": [
+        34,
+        627,
+        606,
+        862
+      ],
+      "cropXywh": [
+        34,
+        627,
+        572,
+        235
+      ],
+      "normalizedCropBbox": [
+        0.022135,
+        0.612305,
+        0.394531,
+        0.841797
+      ]
+    },
+    {
+      "index": 5,
+      "name": "intro-cloud",
+      "file": "intro-cloud.png",
+      "componentArea": 103250,
+      "foregroundBbox": [
+        639,
+        571,
+        1067,
+        896
+      ],
+      "cropBbox": [
+        627,
+        559,
+        1079,
+        908
+      ],
+      "cropXywh": [
+        627,
+        559,
+        452,
+        349
+      ],
+      "normalizedCropBbox": [
+        0.408203,
+        0.545898,
+        0.702474,
+        0.886719
+      ]
+    },
+    {
+      "index": 6,
+      "name": "moisture-gauge",
+      "file": "moisture-gauge.png",
+      "componentArea": 68210,
+      "foregroundBbox": [
+        1196,
+        503,
+        1377,
+        923
+      ],
+      "cropBbox": [
+        1184,
+        491,
+        1389,
+        935
+      ],
+      "cropXywh": [
+        1184,
+        491,
+        205,
+        444
+      ],
+      "normalizedCropBbox": [
+        0.770833,
+        0.479492,
+        0.904297,
+        0.913086
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

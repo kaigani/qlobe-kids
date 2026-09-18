@@ -5,44 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Secret Message Copy 🔍 — Spy Letters and Words</title>
-  <meta name="description" content="Rebuild short spy words letter by letter, moving letter cards into place from left to right, then hear the finished word spelled and read aloud. A playful copying game for ages 5–6." />
+  <meta name="theme-color" content="#123f50" />
+  <title>Secret Message Copy — Trace, Copy, Deliver!</title>
+  <meta name="description" content="Copy picture codes, trace short secret words, and remember moon messages for a friendly owl courier." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Secret Message Copy" />
-  <meta property="og:title" content="Secret Message Copy 🔍 — Spy Letters and Words" />
-  <meta property="og:description" content="Rebuild short spy words letter by letter, moving letter cards into place from left to right, then hear the finished word spelled and read aloud. A playful copying game for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Secret Message Copy — Trace, Copy, Deliver!" />
+  <meta property="og:description" content="Copy picture codes, trace short secret words, and remember moon messages for a friendly owl courier." />
   <meta property="og:url" content="https://qlo.be/games/secret-message-copy/" />
   <meta property="og:image" content="https://qlo.be/games/secret-message-copy/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Secret Message Copy title screen with Copy the Code and Longer Codes buttons and a detective icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A watercolor owl post office with three secret-message envelopes sealed by a star, moon, and heart." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Secret Message Copy 🔍 — Spy Letters and Words" />
-  <meta name="twitter:description" content="Rebuild short spy words letter by letter, moving letter cards into place from left to right, then hear the finished word spelled and read aloud. A playful copying game for ages 5–6." />
+  <meta name="twitter:title" content="Secret Message Copy — Trace, Copy, Deliver!" />
+  <meta name="twitter:description" content="Copy, trace, remember, and deliver secret messages with a friendly owl courier." />
   <meta name="twitter:image" content="https://qlo.be/games/secret-message-copy/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-    #game { height: auto; min-height: 100dvh; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
+  <main id="game" class="secret-app" aria-busy="true" data-phase="splash">
+    <section id="screen-splash" class="game-screen splash-screen" data-qk-screen="splash" aria-label="Secret Message Copy">
+      <img class="scene-backdrop" src="./assets/art/backdrop-desk.webp" data-fallback="./assets/og-image.jpg" alt="A cozy watercolor owl courier desk" />
+      <img class="title-lockup" src="./assets/art/title-lockup.webp" data-fallback="./assets/og-image.jpg" alt="Secret Message Copy" />
+      <img class="splash-owl" src="./assets/art/owl-neutral.webp" data-fallback="../../shared/assets/objects/owl.webp" alt="A friendly owl courier" />
+      <div id="mode-envelopes" class="mode-envelopes" aria-label="Choose a secret message"></div>
+      <div id="splash-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-play" class="game-screen play-screen" data-qk-screen="play" hidden aria-label="Copy the secret message">
+      <img class="scene-backdrop" src="./assets/art/backdrop-desk.webp" data-fallback="./assets/og-image.jpg" alt="" aria-hidden="true" />
+      <div id="play-stage" class="play-stage">
+        <img class="paper-sheet" src="./assets/art/paper-sheet.webp" data-fallback="./assets/og-image.jpg" alt="A ruled secret-message sheet" />
+        <div id="round-progress" class="round-progress" aria-label="Message progress"></div>
+        <div id="picture-board" class="picture-board" hidden>
+          <div id="target-sequence" class="target-sequence" aria-label="Message to copy"></div>
+          <div id="copy-sequence" class="copy-sequence" aria-label="Your copied message"></div>
+        </div>
+        <div id="memory-board" class="memory-board" hidden>
+          <div id="memory-sequence" class="memory-sequence" aria-label="Moon code to remember"></div>
+          <div id="memory-cover" class="memory-cover" aria-hidden="true">
+            <img src="./assets/art/envelope-moon.webp" data-fallback="../../shared/assets/objects/moon.webp" alt="" />
+          </div>
+          <div id="memory-copy" class="copy-sequence" aria-label="Your remembered code"></div>
+        </div>
+        <div id="word-board" class="word-board" hidden>
+          <div id="word-progress" class="word-progress" aria-label="Secret word"></div>
+          <canvas id="trace-canvas" class="trace-canvas" role="button" tabindex="0" data-target="trace-letter" data-role="trace"></canvas>
+        </div>
+        <div id="stamp-dock" class="stamp-dock" aria-label="Picture stamps"></div>
+        <img id="play-owl" class="play-owl" src="./assets/art/owl-neutral.webp" data-fallback="../../shared/assets/objects/owl.webp" alt="The owl waits for the copied message" />
+      </div>
+      <div id="play-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-reward" class="game-screen reward-screen" data-qk-screen="reward" hidden aria-label="Message delivered">
+      <img class="scene-backdrop" src="./assets/art/backdrop-delivery.webp" data-fallback="./assets/og-image.jpg" alt="The moonlit owl post office delivery door" />
+      <img id="reward-owl" class="reward-owl" src="./assets/art/owl-carry.webp" data-fallback="../../shared/assets/objects/owl.webp" alt="The owl courier carries the delivered secret message" />
+      <img class="seal-burst" src="./assets/art/seal-burst.webp" data-fallback="../../shared/assets/objects/star.webp" alt="" aria-hidden="true" />
+      <p id="reward-title" class="reward-title">Message delivered!</p>
+      <button id="reward-next" class="reward-next" type="button" data-target="reward-next" data-role="next" aria-label="Next secret message">
+        <img src="./assets/art/button-next.webp" data-fallback="../../shared/assets/ui/btn-play.png" alt="" />
+      </button>
+      <div id="reward-hud" class="screen-hud"></div>
+    </section>
+  </main>
+
   <script type="module">
     import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
+    import { startSecretMessageCopy } from './js/main.js';
+
+    startSecretMessageCopy(config, document.getElementById('game'));
   </script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 import * as sfx from '../sfx.js';
 import * as speech from '../speech.js';
 import * as voiceClips from '../voice-clips.js';
+import * as bgm from '../bgm.js';
 import { onTap } from '../tap.js';
 import { mulberry32, hashString, shuffle } from '../rng.js';
 import { createTimers } from '../timers.js';
@@ -104,6 +105,7 @@ class TracePathGame {
     this.ghostTraveler = null;
     this.rewardVisual = null;
     this.rewardRevealed = false;
+    this.boardArtView = null;
     this.destinationView = null;
     this.decorLayer = null;
     this.demoDot = null;
@@ -150,6 +152,7 @@ class TracePathGame {
     window.addEventListener('blur', this.onWindowBlur);
 
     this.buildShell();
+    if (this.config.music) bgm.preload(this.config.music);
     this.renderSplash();
     this.ready = this.config.voiceClips
       ? voiceClips.init(
@@ -199,6 +202,7 @@ class TracePathGame {
     this.removeTraceListeners();
     this.disposeStage();
     this.stopVoice();
+    if (this.config.music) bgm.stop({ fadeOutMs: 120 });
     window.removeEventListener('pointerdown', this.onFirstPointer);
     window.removeEventListener('contextmenu', this.onContextMenu);
     window.removeEventListener('gesturestart', this.onGestureStart);
@@ -215,6 +219,7 @@ class TracePathGame {
     sfx.unlock();
     speech.unlock();
     if (this.config.voiceClips) voiceClips.unlock();
+    if (this.config.music) bgm.unlock();
   }
 
   installDebugHook() {
@@ -230,6 +235,9 @@ class TracePathGame {
       winRound: () => this.winRound(),
       tracePoints: () => this.tracePoints(),
       traceStrokes: () => this.traceStrokes(),
+      getAudioLog: () => voiceClips.getAudioLog(),
+      clearAudioLog: () => voiceClips.clearAudioLog(),
+      getSfxStats: () => sfx.stats(),
       mute: () => this.mute(),
       seed: (n) => this.seed(n),
       timers: this.timers,
@@ -237,6 +245,7 @@ class TracePathGame {
   }
 
   renderSplash() {
+    const wasInMode = Boolean(this.mode);
     this.clearIdleTimer();
     this.clearWanderTimer();
     this.cancelDemo();
@@ -246,6 +255,7 @@ class TracePathGame {
     this.awaitingInput = false;
     this.inputLocked = false;
     this.stopVoice();
+    if (wasInMode && this.config.music) bgm.stop({ fadeOutMs: 350 });
 
     const splash = this.screens.el('splash');
     // show() is IDEMPOTENT: re-entering the splash we are already on would not
@@ -309,6 +319,14 @@ class TracePathGame {
     this.disposeStage();
     this.stopVoice();
     this.mode = mode;
+    if (this.config.music && !this.muted) {
+      bgm.play(this.config.music, {
+        key: this.config.id,
+        fadeInMs: 700,
+        fadeOutMs: 300,
+        loopFadeOutMs: 2200,
+      });
+    }
     this.roundIndex = 0;
     const paths = mode.shuffle ? shuffle(mode.paths.slice(), this.rng) : mode.paths.slice();
     const maxRounds = Math.min(mode.rounds || paths.length, paths.length);
@@ -405,6 +423,7 @@ class TracePathGame {
     this.ghostTraveler = null;
     this.rewardVisual = null;
     this.rewardRevealed = false;
+    this.boardArtView = null;
     this.destinationView = null;
     this.decorLayer = null;
     this.demoDot = null;
@@ -459,6 +478,7 @@ class TracePathGame {
     const { PIXI } = this.stage;
     const scene = new PIXI.Container();
     const field = new PIXI.Container();
+    const boardArt = new PIXI.Container();
     const decor = new PIXI.Container();
     const destination = new PIXI.Container();
     const guide = new PIXI.Container();
@@ -472,7 +492,7 @@ class TracePathGame {
     panel.roundRect(0, 0, BOARD_SIZE, BOARD_SIZE, 42)
       .fill({ color: panelTheme.fill ?? 0xfffbef, alpha: hasPanelTheme ? 0.9 : 0 })
       .stroke({ width: hasPanelTheme ? 9 : 0, color: panelTheme.stroke ?? 0xffffff, alpha: 0.96 });
-    field.addChild(panel, decor, guide, checkpoints, ink, destination, fx, demo);
+    field.addChild(panel, boardArt, decor, guide, checkpoints, ink, destination, fx, demo);
     scene.addChild(field);
     this.scene = scene;
     this.fieldLayer = field;
@@ -484,7 +504,10 @@ class TracePathGame {
     this.demoLayer = demo;
     this.guideGraphics = [];
     this.inkGraphics = [];
-    await this.buildTownDecorations(decor, destination, generation);
+    await Promise.all([
+      this.buildBoardArt(boardArt, generation),
+      this.buildTownDecorations(decor, destination, generation),
+    ]);
     if (!this.roundIsCurrent(generation)) return;
 
     for (let i = 0; i < this.currentStrokes.length; i++) {
@@ -569,12 +592,55 @@ class TracePathGame {
     this.stage.setScene(scene);
   }
 
+  async buildBoardArt(container, generation) {
+    if (!container || !this.stage || !this.config.boardArt) return;
+    const board = await artObj(
+      this.stage.PIXI,
+      this.config.boardArt,
+      this.config.boardArtSize,
+      'Paper safari cutting mat',
+    );
+    if (!this.roundIsCurrent(generation)) {
+      board.destroy({ children: true });
+      return;
+    }
+    board.position.set(BOARD_SIZE / 2, BOARD_SIZE / 2);
+    container.addChild(board);
+    this.boardArtView = board;
+  }
+
   async buildTownDecorations(container, destinationContainer, generation) {
     if (!container || !this.stage || !this.currentPath) return;
     // Generated map sprites are an opt-in theme capability. Other trace-path
     // games keep their original undecorated boards and never request
     // Letter Road-specific assets.
-    if (!this.config.mapSprites) return;
+    if (!this.config.mapSprites) {
+      if (!this.config.destinationVisuals || !this.currentPath.destinationArt) return;
+      const { PIXI } = this.stage;
+      const destination = Array.isArray(this.currentPath.destinationPosition)
+        ? {
+          x: clamp(Number(this.currentPath.destinationPosition[0]) || 820, 90, 910),
+          y: clamp(Number(this.currentPath.destinationPosition[1]) || 760, 100, 900),
+        }
+        : { x: 820, y: 760 };
+      const destinationArt = await artObj(
+        PIXI,
+        this.currentPath.destinationArt,
+        this.currentPath.destinationSize || this.config.destinationSize,
+        this.currentPath.destinationName || 'Trail friend',
+      );
+      if (!this.roundIsCurrent(generation)) {
+        destinationArt.destroy({ children: true });
+        return;
+      }
+      const destinationView = new PIXI.Container();
+      destinationView.addChild(destinationArt);
+      destinationView.position.set(destination.x, destination.y);
+      destinationView.alpha = 0.98;
+      (destinationContainer || container).addChild(destinationView);
+      this.destinationView = destinationView;
+      return;
+    }
     const { PIXI } = this.stage;
     const destination = Array.isArray(this.currentPath.destinationPosition)
       ? {
@@ -691,8 +757,9 @@ class TracePathGame {
         dot.addChild(arrow);
         this.startMarkers.push({ strokeIndex, view: dot });
       } else {
-        dot.circle(0, 0, 11).fill({ color: 0xffffff, alpha: 0.9 })
-          .stroke({ width: 4, color: 0x2d7dd2, alpha: 0.38 });
+        const isCutGuide = (this.mode.guideStyle || this.config.guideStyle) === 'cut';
+        dot.circle(0, 0, isCutGuide ? 7 : 11).fill({ color: 0xffffff, alpha: 0.9 })
+          .stroke({ width: isCutGuide ? 3 : 4, color: 0x2d7dd2, alpha: isCutGuide ? 0.55 : 0.38 });
       }
       dot.position.set(point.x, point.y);
       dot.alpha = isStart ? 0.72 : 0.82;
@@ -758,6 +825,16 @@ class TracePathGame {
         for (let i = 0; i < local.length; i += dashStride) {
           const point = local[i];
           if (point) graphic.circle(point.x, point.y, 7).fill({ color: 0xffffff, alpha: 0.94 });
+        }
+        continue;
+      }
+      if ((this.mode.guideStyle || this.config.guideStyle) === 'cut') {
+        for (let i = 0; i < local.length - 1; i += 3) {
+          const from = local[i];
+          const toPoint = local[Math.min(local.length - 1, i + 1)];
+          if (!from || !toPoint) continue;
+          graphic.moveTo(from.x, from.y).lineTo(toPoint.x, toPoint.y);
+          graphic.stroke({ width: 17, color: accent, alpha: 0.78, cap: 'round' });
         }
         continue;
       }
@@ -1060,7 +1137,7 @@ class TracePathGame {
       checkpoint.lit = true;
       checkpoint.view.alpha = 1;
       checkpoint.view.tint = 0xffef9a;
-      this.playSfx('sparkle');
+      this.playSfx(this.mode.traceSfx || this.config.traceSfx || 'sparkle');
       if (this.stage && this.fxLayer) sparkle(this.stage.PIXI, this.fxLayer, checkpoint.view.x, checkpoint.view.y);
     }
   }
@@ -1079,7 +1156,7 @@ class TracePathGame {
           : (checkpoint.lit ? 1 : 0.82);
         checkpoint.view.tint = checkpoint.lit ? 0xffef9a : 0xffffff;
         if (playFx && checkpoint.lit && !wasLit) {
-          this.playSfx('sparkle');
+          this.playSfx(this.mode.traceSfx || this.config.traceSfx || 'sparkle');
           sparkle(this.stage.PIXI, this.fxLayer, checkpoint.view.x, checkpoint.view.y);
         }
       }
@@ -1140,7 +1217,8 @@ class TracePathGame {
       ? burst(this.stage.PIXI, this.scene, center.stageX, center.stageY, { count: 36, power: 7, life: 780 })
       : Promise.resolve();
     const reward = this.revealRewardVisual();
-    await Promise.all([shimmer, confetti, reward]);
+    const destination = this.celebrateDestinationVisual();
+    await Promise.all([shimmer, confetti, reward, destination]);
     const yumIndex = this.roundIndex % this.config.voice.yums.length;
     await this.speakLine(
       (this.currentPath && this.currentPath.say) || this.config.voice.yums[yumIndex],
@@ -1172,6 +1250,19 @@ class TracePathGame {
     this.completionShimmer = null;
     if (this.demoDot) this.demoDot.visible = false;
     if (this.demoTrail) this.demoTrail.clear();
+  }
+
+  async celebrateDestinationVisual() {
+    const destination = this.destinationView;
+    if (!destination || !this.config.destinationVisuals || this.reducedMotion()) return;
+    await this.runTween(to(destination.scale, { x: 1.14, y: 1.14 }, {
+      ms: 180,
+      easing: ease.outCubic,
+    }));
+    await this.runTween(to(destination.scale, { x: 1, y: 1 }, {
+      ms: 280,
+      easing: ease.outCubic,
+    }));
   }
 
   async finishGame() {
@@ -1576,6 +1667,9 @@ class TracePathGame {
     const travelerScreen = this.traveler && this.stage
       ? this.screenPointFor(this.traveler, 0, 0)
       : null;
+    const destinationBounds = this.destinationView && this.destinationView.visible
+      ? this.destinationView.getBounds()
+      : null;
     return {
       screen: this.screen,
       mode: this.mode ? this.mode.id : null,
@@ -1616,6 +1710,19 @@ class TracePathGame {
           text: this.destinationView.destinationLabel.text,
           w: this.destinationView.destinationLabel.width,
           h: this.destinationView.destinationLabel.height,
+        }
+        : null,
+      destinationVisible: Boolean(
+        this.destinationView
+          && this.destinationView.visible
+          && this.destinationView.alpha > 0.9,
+      ),
+      destinationBounds: destinationBounds
+        ? {
+          x: destinationBounds.x,
+          y: destinationBounds.y,
+          w: destinationBounds.width,
+          h: destinationBounds.height,
         }
         : null,
       boardBounds: {
@@ -1751,6 +1858,7 @@ class TracePathGame {
   mute() {
     this.muted = true;
     this.stopVoice();
+    if (this.config.music) bgm.setMuted(true);
   }
 
   seed(n) {
@@ -1761,11 +1869,14 @@ class TracePathGame {
 
   async speakLine(line, key, cancel = false) {
     if (this.muted || !line) return;
+    let spoken;
     if (this.config.voiceClips && key) {
-      await voiceClips.say(key, line);
-      return;
+      spoken = voiceClips.say(key, line);
+    } else {
+      spoken = speech.speak(line, { rate: 0.8, pitch: 1.05, cancel });
     }
-    await speech.speak(line, { rate: 0.8, pitch: 1.05, cancel });
+    if (this.config.music) return bgm.duckDuring(spoken, { down: 0.18, downMs: 100, upMs: 320 });
+    return spoken;
   }
 
   stopVoice() {
@@ -1851,7 +1962,13 @@ function normalizeConfig(config = {}) {
     travelerRotationOffset: Number(config.travelerRotationOffset || 0),
     guideStyle: config.guideStyle || 'dots',
     driveSfx: config.driveSfx || null,
+    traceSfx: config.traceSfx || null,
     finishSfx: config.finishSfx || null,
+    music: config.music || null,
+    boardArt: config.boardArt ? normalizeArtRef(config.boardArt) : null,
+    boardArtSize: Math.max(400, Number(config.boardArtSize || 1000)),
+    destinationVisuals: Boolean(config.destinationVisuals),
+    destinationSize: Math.max(96, Number(config.destinationSize || 240)),
     voiceClips: config.voiceClips && config.voiceClips.manifest
       ? {
         manifest: config.voiceClips.manifest,
@@ -1905,6 +2022,7 @@ function normalizeMode(mode = {}, config = {}) {
     travelerRotationOffset: Number(mode.travelerRotationOffset ?? config.travelerRotationOffset ?? 0),
     guideStyle: mode.guideStyle || config.guideStyle || 'dots',
     driveSfx: mode.driveSfx || config.driveSfx || null,
+    traceSfx: mode.traceSfx || config.traceSfx || null,
     finishSfx: mode.finishSfx || config.finishSfx || null,
     numberedStarts: Boolean(mode.numberedStarts),
     strokeColor: mode.strokeColor || config.strokeColor || '#e8734a',

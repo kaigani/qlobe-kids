@@ -1,0 +1,26 @@
+{
+  "key": "mist-intro",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "Tap the mister over the leaves. Soft little clouds.",
+    "srt": "1\n00:00:00,000 --> 00:00:03,280\nTap the mister over the leaves. Soft little clouds.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 3.2800000000000002,
+          "text": "Tap the mister over the leaves. Soft little clouds."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "Tap the mister over the leaves. Soft little clouds!",
+  "transcript": "Tap the mister over the leaves. Soft little clouds.",
+  "pass": true
+}

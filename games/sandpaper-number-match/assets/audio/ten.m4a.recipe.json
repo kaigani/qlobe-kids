@@ -1,0 +1,24 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "file": "ten.m4a",
+  "workflow": "qwen3-tts-voiceclone",
+  "text": "Ten!",
+  "textHash": "9eee715bdf2194ad",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "workflow": "whisper-stt",
+    "model": "base",
+    "language": "en",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Ten!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

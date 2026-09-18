@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "00dcb4bd388a430ba44db4a7aa19a3fc",
+  "text": "Change the middle sound in log.",
+  "textHash": "a5fd5e20998eca18",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "b6e50334561b48ad9d5e2b06181a7255",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change the middle sound in log."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

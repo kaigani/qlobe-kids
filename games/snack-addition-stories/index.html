@@ -1,47 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Snack Addition Stories 🍓 — Adding Up Snack Totals</title>
-  <meta name="description" content="Tap snack cards to collect the total in a basket, working through simple addition stories within six. A warm counting game for ages 5–6." />
+  <meta name="theme-color" content="#f8a9ba" />
+  <title>Snack Addition Stories — Add, Count, and Picnic</title>
+  <meta name="description" content="Bring two snack groups together on a kawaii picnic tray, count the total within six, and invent your own addition stories." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Snack Addition Stories" />
-  <meta property="og:title" content="Snack Addition Stories 🍓 — Adding Up Snack Totals" />
-  <meta property="og:description" content="Tap snack cards to collect the total in a basket, working through simple addition stories within six. A warm counting game for ages 5–6." />
+  <meta property="og:title" content="Snack Addition Stories — Add, Count, and Picnic" />
+  <meta property="og:description" content="Bring two snack groups together on a kawaii picnic tray, count the total within six, and invent your own addition stories." />
   <meta property="og:url" content="https://qlo.be/games/snack-addition-stories/" />
   <meta property="og:image" content="https://qlo.be/games/snack-addition-stories/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Snack Addition Stories title screen with a single Snack Stories button and a strawberry icon on a dotted blue background." />
+  <meta property="og:image:alt" content="Kawaii picnic snacks gathered around a serving tray beneath the Snack Addition Stories title." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Snack Addition Stories 🍓 — Adding Up Snack Totals" />
-  <meta name="twitter:description" content="Tap snack cards to collect the total in a basket, working through simple addition stories within six. A warm counting game for ages 5–6." />
+  <meta name="twitter:title" content="Snack Addition Stories — Add, Count, and Picnic" />
+  <meta name="twitter:description" content="Bring two snack groups together on a kawaii picnic tray, count the total within six, and invent your own addition stories." />
   <meta name="twitter:image" content="https://qlo.be/games/snack-addition-stories/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/tap-count.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="snack-game is-loading" data-game-id="snack-addition-stories">
+    <h1 class="visually-hidden">Snack Addition Stories</h1>
+
+    <section id="splash" class="qk-screen snack-screen" data-qk-screen="splash" aria-label="Choose a picnic game">
+      <img class="world-art" src="./assets/backdrop.webp" alt="A sunny kawaii picnic with a gingham tablecloth and flower garden" />
+      <div class="splash-stage">
+        <img class="title-art" src="./assets/title.webp" alt="Snack Addition Stories" />
+        <p id="splash-prompt" class="screen-whisper">Choose a picnic game</p>
+        <div id="mode-list" class="mode-deck" role="group" aria-label="Choose a picnic game"></div>
+      </div>
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../index.html" data-target="hub" data-role="navigation" aria-label="Back to QLOBE Kids"></a>
+      <button id="splash-sound" class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-target="splash-sound" data-role="replay" aria-label="Hear the welcome again"></button>
+    </section>
+
+    <section id="story-select" class="qk-screen snack-screen" data-qk-screen="story-select" aria-label="Choose an addition story" hidden>
+      <img class="world-art" src="./assets/backdrop.webp" alt="" />
+      <div class="select-stage">
+        <div class="plaque select-heading" aria-live="polite">
+          <img src="./assets/ui/prompt-plaque.webp" alt="" />
+          <p id="story-select-heading">Choose a snack story</p>
+        </div>
+        <div id="story-list" class="story-deck" role="group" aria-label="Choose a snack story"></div>
+      </div>
+      <button id="story-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-target="story-back" data-role="navigation" aria-label="Back to the picnic games"></button>
+      <button id="story-sound" class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-target="story-sound" data-role="replay" aria-label="Hear the story choices again"></button>
+    </section>
+
+    <section id="play" class="qk-screen snack-screen" data-qk-screen="play" aria-label="Add the picnic snacks" hidden>
+      <img class="world-art" src="./assets/backdrop.webp" alt="" />
+      <div class="play-stage">
+        <div id="prompt-plaque" class="plaque prompt-plaque" aria-live="polite">
+          <img src="./assets/ui/prompt-plaque.webp" alt="" />
+          <p id="prompt-text"></p>
+        </div>
+        <p id="round-progress" class="round-progress" aria-label="Round 1 of 5">1 / 5</p>
+        <div id="round-stage" class="round-stage"></div>
+      </div>
+      <div class="qk-hud-bar play-hud">
+        <button id="play-back" class="qk-hud-btn qk-hud-back" type="button" data-target="play-back" data-role="navigation" aria-label="Back"></button>
+        <span aria-hidden="true"></span>
+        <button id="play-sound" class="qk-hud-btn qk-hud-sound" type="button" data-target="play-sound" data-role="replay" aria-label="Hear that again"></button>
+      </div>
+      <p id="play-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="finale" class="qk-screen snack-screen" data-qk-screen="finale" aria-label="Picnic complete" hidden>
+      <img class="world-art" src="./assets/backdrop.webp" alt="" />
+      <div id="finale-stage" class="finale-stage"></div>
+      <button id="finale-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-target="finale-back" data-role="navigation" aria-label="Back to the picnic games"></button>
+      <button id="finale-sound" class="qk-hud-btn qk-hud-sound qk-hud-top-right" type="button" data-target="finale-sound" data-role="replay" aria-label="Hear the celebration again"></button>
+      <p id="finale-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

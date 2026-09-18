@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "255730def68d4f8a83f041a35d27a254",
+  "text": "Change one sound and watch a new word pop out.",
+  "textHash": "092fa56294cd114a",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "6418d4c1bb2342958183ef328cf91390",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change one sound and watch a new word pop out."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

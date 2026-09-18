@@ -1,0 +1,82 @@
+{
+  "source": "theater-tools-layer2.png",
+  "sourceSha256": "b683cbb76775e71419c520bd6be882bfb02475812ea13bad8536a44d4c4c1c7d",
+  "sourceSize": [
+    1024,
+    512
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "replay",
+      "file": "replay.png",
+      "componentArea": 99374,
+      "foregroundBbox": [
+        66,
+        73,
+        424,
+        427
+      ],
+      "cropBbox": [
+        48,
+        55,
+        442,
+        445
+      ],
+      "cropXywh": [
+        48,
+        55,
+        394,
+        390
+      ],
+      "normalizedCropBbox": [
+        0.046875,
+        0.107422,
+        0.431641,
+        0.869141
+      ]
+    },
+    {
+      "index": 2,
+      "name": "costume-trunk",
+      "file": "costume-trunk.png",
+      "componentArea": 135475,
+      "foregroundBbox": [
+        566,
+        63,
+        974,
+        433
+      ],
+      "cropBbox": [
+        548,
+        45,
+        992,
+        451
+      ],
+      "cropXywh": [
+        548,
+        45,
+        444,
+        406
+      ],
+      "normalizedCropBbox": [
+        0.535156,
+        0.087891,
+        0.96875,
+        0.880859
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 262,
+    "order": "reading"
+  }
+}

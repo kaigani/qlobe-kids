@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "5f50f6acd90b4ea29a84711d5699381c",
+  "text": "Change cat to hat. Tap the sound that changes.",
+  "textHash": "29b1df6a6985f298",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "de139255593b4dcc94d4ff8c21199fdb",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change cat to hat. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

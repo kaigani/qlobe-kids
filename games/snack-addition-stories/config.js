@@ -1,58 +1,33 @@
-export default {
+// Studio-editable content lives in config.json. This fetch shim keeps the game
+// compatible with older tablets that do not support JSON import attributes.
+const fallback = Object.freeze({
   id: 'snack-addition-stories',
-  engine: 'tap-count',
+  engine: 'custom',
   title: 'Snack Addition Stories',
-  splashEmoji: '🍓',
-  basketArt: 'emoji:🧺',
-  copy: {
-    basket: 'snack basket',
-    items: 'snacks',
+  music: { track: '../../shared/assets/music/mug-and-sunbeam.mp3', volume: 0.14 },
+  assets: {
+    backdrop: './assets/backdrop.webp',
+    title: './assets/title.webp',
+    foods: {},
+    ui: {},
+    characters: {},
   },
-  voice: {
-    intro: 'Snack stories are ready. Listen, tap, and count the answer.',
-    cheer: 'You solved the snack stories!',
-    counts: ['One!', 'Two!', 'Three!', 'Four!', 'Five!', 'Six!'],
-  },
-  modes: [
-    {
-      id: 'stories',
-      title: 'Snack Stories',
-      type: 'collect',
-      rounds: 5,
-      difficultyRamp: true,
-      basketArt: 'emoji:🧺',
-      rounds_spec: [
-        {
-          count: 2,
-          itemArt: 'shared:foods/grapes.png',
-          itemAlt: 'grape',
-          say: 'Maya has one grape, and one more grape. One and one more makes two. How many grapes?',
-        },
-        {
-          count: 3,
-          itemArt: 'shared:foods/strawberry.png',
-          itemAlt: 'strawberry',
-          say: 'Leo has two strawberries, and one more strawberry. Two and one more makes three. How many strawberries?',
-        },
-        {
-          count: 4,
-          itemArt: 'shared:foods/crackers.png',
-          itemAlt: 'cracker',
-          say: 'Nia has two crackers, and two more crackers. Two and two more makes four. How many crackers?',
-        },
-        {
-          count: 4,
-          itemArt: 'shared:foods/apple.png',
-          itemAlt: 'apple',
-          say: 'Sam has three apples, and one more apple. Three and one more makes four. How many apples?',
-        },
-        {
-          count: 6,
-          itemArt: 'shared:foods/banana.png',
-          itemAlt: 'banana',
-          say: 'Ravi has three bananas, and three more bananas. Three and three more makes six. How many bananas?',
-        },
-      ],
-    },
-  ],
-};
+  voice: {},
+  copy: {},
+  modes: [],
+  themes: [],
+  counterRounds: [],
+  picnic: { foods: [], limit: 6 },
+});
+
+const config = await fetch(new URL('./config.json', import.meta.url))
+  .then((response) => {
+    if (!response.ok) throw new Error(`Snack Addition Stories config failed: ${response.status}`);
+    return response.json();
+  })
+  .catch((error) => {
+    console.error(error);
+    return fallback;
+  });
+
+export default config;

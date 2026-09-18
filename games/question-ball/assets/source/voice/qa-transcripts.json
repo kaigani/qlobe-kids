@@ -1,0 +1,412 @@
+{
+  "welcome": {
+    "expected": "Ready to play and share? Tap the Question Ball!",
+    "heard": "Ready to play and share? Tap the question ball.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "welcome-s7.flac"
+  },
+  "choose-topic": {
+    "expected": "Pick a picture. What should we talk about?",
+    "heard": "Pick a picture. What should we talk about?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "choose-topic-s7.flac"
+  },
+  "topic-routines": {
+    "expected": "Daily routines!",
+    "heard": "Daily routines!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "topic-routines-s7.flac"
+  },
+  "topic-animals": {
+    "expected": "Amazing animals!",
+    "heard": "Amazing animals!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "topic-animals-s7.flac"
+  },
+  "topic-imagine": {
+    "expected": "Let's imagine!",
+    "heard": "Let's imagine!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "topic-imagine-s7.flac"
+  },
+  "topic-feelings": {
+    "expected": "Feelings and friends!",
+    "heard": "Feelings and friends!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "topic-feelings-s7.flac"
+  },
+  "toss": {
+    "expected": "Toss the Question Ball!",
+    "heard": "toss the question ball.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "toss-s7.flac"
+  },
+  "toss-nudge": {
+    "expected": "Give the soft ball a tap or a swipe.",
+    "heard": "Give the soft ball a tap or a swipe!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "toss-nudge-s7.flac"
+  },
+  "share": {
+    "expected": "Your turn to share. Hold the microphone while you talk, or tell someone beside you.",
+    "heard": "Your turn to share. Hold the microphone while you talk or tell someone beside you.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "share-s7.flac"
+  },
+  "recording": {
+    "expected": "I'm listening.",
+    "heard": "I'm listening.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "recording-s7.flac"
+  },
+  "recorded": {
+    "expected": "I heard your idea! Tap the ear to hear it, or share it now.",
+    "heard": "I heard your idea! Tap the ear to hear it, or share it now!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "recorded-s7.flac"
+  },
+  "mic-fallback": {
+    "expected": "That's okay. Tell someone beside you, then tap the two friends.",
+    "heard": "That's okay. Tell someone beside you then tap the two friends.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "mic-fallback-s7.flac"
+  },
+  "great-sharing-1": {
+    "expected": "Great sharing!",
+    "heard": "Great sharing!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "great-sharing-1-s7.flac"
+  },
+  "great-sharing-2": {
+    "expected": "What a wonderful idea!",
+    "heard": "What a wonderful idea!",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "great-sharing-2-s7.flac"
+  },
+  "great-sharing-3": {
+    "expected": "You made that question sparkle!",
+    "heard": "You made that question sparkle.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "great-sharing-3-s7.flac"
+  },
+  "next-question": {
+    "expected": "Ready for another question?",
+    "heard": "Ready for another question?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "next-question-s7.flac"
+  },
+  "session-cheer": {
+    "expected": "Three sharing stars! You are a wonderful conversation friend.",
+    "heard": "Three sharing stars! You are a wonderful conversation friend.",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "session-cheer-s7.flac"
+  },
+  "prompt-routines-1": {
+    "expected": "What do you like to do when you wake up?",
+    "heard": "What do you like to do when you wake up?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-1-s7.flac"
+  },
+  "prompt-routines-2": {
+    "expected": "Who helps you get ready for the day?",
+    "heard": "Who helps you get ready for the day?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-2-s7.flac"
+  },
+  "prompt-routines-3": {
+    "expected": "Why do we wash our hands before eating?",
+    "heard": "Why do we wash our hands before eating?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-3-s7.flac"
+  },
+  "prompt-routines-4": {
+    "expected": "How do you get cozy for bedtime?",
+    "heard": "How do you get cozy for bedtime?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-4-s7.flac"
+  },
+  "prompt-routines-5": {
+    "expected": "What snack would you make for someone you love?",
+    "heard": "What snack would you make for someone you love?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-5-s7.flac"
+  },
+  "prompt-routines-6": {
+    "expected": "Who would you invite to help with a little cleanup?",
+    "heard": "Who would you invite to help with a little cleanup?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-routines-6-s7.flac"
+  },
+  "prompt-animals-1": {
+    "expected": "What animal would make a funny friend?",
+    "heard": "What animal would make a funny friend?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-1-s7.flac"
+  },
+  "prompt-animals-2": {
+    "expected": "Who takes care of animals when they need help?",
+    "heard": "Who takes care of animals when they need help?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-2-s7.flac"
+  },
+  "prompt-animals-3": {
+    "expected": "Why do you think birds build nests?",
+    "heard": "Why do you think birds build nests?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-3-s7.flac"
+  },
+  "prompt-animals-4": {
+    "expected": "How would a penguin dance at a party?",
+    "heard": "How would a penguin dance at a party?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-4-s7.flac"
+  },
+  "prompt-animals-5": {
+    "expected": "What sound would a tiny lion make?",
+    "heard": "What sound would a tiny lion make?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-5-s7.flac"
+  },
+  "prompt-animals-6": {
+    "expected": "Who would you explore the jungle with?",
+    "heard": "Who would you explore the jungle with?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-animals-6-s7.flac"
+  },
+  "prompt-imagine-1": {
+    "expected": "What would you put in a magic backpack?",
+    "heard": "What would you put in a Magic Backpack?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-1-s7.flac"
+  },
+  "prompt-imagine-2": {
+    "expected": "Who lives inside a rainbow castle?",
+    "heard": "Who lives inside a rainbow castle?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-2-s7.flac"
+  },
+  "prompt-imagine-3": {
+    "expected": "Why would a cloud need a pair of shoes?",
+    "heard": "Why would a cloud need a pair of shoes?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-3-s7.flac"
+  },
+  "prompt-imagine-4": {
+    "expected": "How would you travel all the way to the moon?",
+    "heard": "How would you travel all the way to the moon?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-4-s7.flac"
+  },
+  "prompt-imagine-5": {
+    "expected": "What would your friendly robot cook for dinner?",
+    "heard": "What would your friendly robot cook for dinner?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-5-s7.flac"
+  },
+  "prompt-imagine-6": {
+    "expected": "Who would you invite to a dragon picnic?",
+    "heard": "Who would you invite to a dragon picnic?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-imagine-6-s7.flac"
+  },
+  "prompt-feelings-1": {
+    "expected": "What makes you smile?",
+    "heard": "What makes you smile?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-1-s7.flac"
+  },
+  "prompt-feelings-2": {
+    "expected": "Who helps you feel safe?",
+    "heard": "Who helps you feel safe?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-2-s7.flac"
+  },
+  "prompt-feelings-3": {
+    "expected": "Why might someone need a hug?",
+    "heard": "Why might someone need a hug?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-3-s7.flac"
+  },
+  "prompt-feelings-4": {
+    "expected": "How can you help a friend who feels sad?",
+    "heard": "How can you help a friend who feels sad?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-4-s7.flac"
+  },
+  "prompt-feelings-5": {
+    "expected": "What can you do when you feel frustrated?",
+    "heard": "What can you do when you feel frustrated?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-5-s7.flac"
+  },
+  "prompt-feelings-6": {
+    "expected": "Who do you like to celebrate with?",
+    "heard": "Who do you like to celebrate with?",
+    "ratio": 1.0,
+    "seed": 7,
+    "pass": true,
+    "engine": "qwen3-tts-voiceclone",
+    "whisper": "whisper-stt/base/en",
+    "raw": "prompt-feelings-6-s7.flac"
+  }
+}

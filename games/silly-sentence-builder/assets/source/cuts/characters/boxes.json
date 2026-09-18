@@ -1,0 +1,202 @@
+{
+  "source": "games/silly-sentence-builder/assets/source/gpt-image-2/characters-master.png",
+  "sourceSha256": "3bee3da4ffdfe74550a73fabb6d5a7e37b565c9f4e040dd48954bd9490793206",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "cat",
+      "file": "cat.png",
+      "componentArea": 123711,
+      "foregroundBbox": [
+        75,
+        17,
+        436,
+        509
+      ],
+      "cropBbox": [
+        63,
+        5,
+        448,
+        521
+      ],
+      "cropXywh": [
+        63,
+        5,
+        385,
+        516
+      ],
+      "normalizedCropBbox": [
+        0.041016,
+        0.004883,
+        0.291667,
+        0.508789
+      ]
+    },
+    {
+      "index": 2,
+      "name": "dinosaur",
+      "file": "dinosaur.png",
+      "componentArea": 110093,
+      "foregroundBbox": [
+        604,
+        13,
+        987,
+        505
+      ],
+      "cropBbox": [
+        592,
+        1,
+        999,
+        517
+      ],
+      "cropXywh": [
+        592,
+        1,
+        407,
+        516
+      ],
+      "normalizedCropBbox": [
+        0.385417,
+        0.000977,
+        0.650391,
+        0.504883
+      ]
+    },
+    {
+      "index": 3,
+      "name": "robot",
+      "file": "robot.png",
+      "componentArea": 107003,
+      "foregroundBbox": [
+        1085,
+        9,
+        1444,
+        510
+      ],
+      "cropBbox": [
+        1073,
+        0,
+        1456,
+        522
+      ],
+      "cropXywh": [
+        1073,
+        0,
+        383,
+        522
+      ],
+      "normalizedCropBbox": [
+        0.698568,
+        0.0,
+        0.947917,
+        0.509766
+      ]
+    },
+    {
+      "index": 4,
+      "name": "duck",
+      "file": "duck.png",
+      "componentArea": 103433,
+      "foregroundBbox": [
+        71,
+        513,
+        448,
+        1004
+      ],
+      "cropBbox": [
+        59,
+        501,
+        460,
+        1016
+      ],
+      "cropXywh": [
+        59,
+        501,
+        401,
+        515
+      ],
+      "normalizedCropBbox": [
+        0.038411,
+        0.489258,
+        0.299479,
+        0.992188
+      ]
+    },
+    {
+      "index": 5,
+      "name": "bunny",
+      "file": "bunny.png",
+      "componentArea": 131779,
+      "foregroundBbox": [
+        548,
+        523,
+        984,
+        995
+      ],
+      "cropBbox": [
+        536,
+        511,
+        996,
+        1007
+      ],
+      "cropXywh": [
+        536,
+        511,
+        460,
+        496
+      ],
+      "normalizedCropBbox": [
+        0.348958,
+        0.499023,
+        0.648438,
+        0.983398
+      ]
+    },
+    {
+      "index": 6,
+      "name": "monster",
+      "file": "monster.png",
+      "componentArea": 128153,
+      "foregroundBbox": [
+        1047,
+        519,
+        1502,
+        993
+      ],
+      "cropBbox": [
+        1035,
+        507,
+        1514,
+        1005
+      ],
+      "cropXywh": [
+        1035,
+        507,
+        479,
+        498
+      ],
+      "normalizedCropBbox": [
+        0.673828,
+        0.495117,
+        0.985677,
+        0.981445
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

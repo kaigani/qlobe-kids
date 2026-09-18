@@ -1,0 +1,625 @@
+{
+  "format": "qlobe-asset-processing-v1",
+  "game": "secret-message-copy",
+  "cutoutFinalizer": "tools/pipeline/cutout_finalize.py",
+  "assetCutter": "tools/cut-asset-sheet.py",
+  "assets": {
+    "art/envelope-star.webp": {
+      "source": "assets/source/crops/object-kit/envelope-star.png",
+      "sourceSha256": "897a90c6127e47dd9f847c1c8ffa843c0bafe791661e8542687b3c04cb0c34bb",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 18.623,
+          "opaquePct": 80.566,
+          "partialPct": 0.811
+        },
+        "bbox": [
+          15,
+          15,
+          392,
+          261
+        ],
+        "sourceSize": [
+          406,
+          275
+        ],
+        "finalSize": [
+          397,
+          266
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 36168
+    },
+    "art/envelope-moon.webp": {
+      "source": "assets/source/crops/object-kit/envelope-moon.png",
+      "sourceSha256": "0e3de8d4d9444237af9b811d071f2eebf4251d4e72a584f95ff1511c432b66d7",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 18.397,
+          "opaquePct": 80.843,
+          "partialPct": 0.76
+        },
+        "bbox": [
+          15,
+          14,
+          394,
+          260
+        ],
+        "sourceSize": [
+          408,
+          275
+        ],
+        "finalSize": [
+          399,
+          266
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 35526
+    },
+    "art/envelope-heart.webp": {
+      "source": "assets/source/crops/object-kit/envelope-heart.png",
+      "sourceSha256": "8f799fc0af790a2a8279de47d3ea165a97ba8c141c4d3539bafb5395a988d91e",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 18.355,
+          "opaquePct": 80.934,
+          "partialPct": 0.711
+        },
+        "bbox": [
+          15,
+          14,
+          394,
+          260
+        ],
+        "sourceSize": [
+          408,
+          275
+        ],
+        "finalSize": [
+          399,
+          266
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 35246
+    },
+    "art/stamp-star.webp": {
+      "source": "assets/source/crops/object-kit/stamp-star.png",
+      "sourceSha256": "93260dfc176852e4d7c0b66689b6cd9bef2cf89554109f07188c500ca48b3bda",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 36.249,
+          "opaquePct": 63.242,
+          "partialPct": 0.509
+        },
+        "bbox": [
+          14,
+          14,
+          277,
+          280
+        ],
+        "sourceSize": [
+          292,
+          294
+        ],
+        "finalSize": [
+          283,
+          286
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 26324
+    },
+    "art/stamp-moon.webp": {
+      "source": "assets/source/crops/object-kit/stamp-moon.png",
+      "sourceSha256": "0ab7a268e76f11de991944a383c3043be0b498e5a7923f86e5061769b06b7500",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 36.178,
+          "opaquePct": 63.355,
+          "partialPct": 0.466
+        },
+        "bbox": [
+          15,
+          14,
+          280,
+          285
+        ],
+        "sourceSize": [
+          294,
+          299
+        ],
+        "finalSize": [
+          285,
+          291
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 26058
+    },
+    "art/stamp-heart.webp": {
+      "source": "assets/source/crops/object-kit/stamp-heart.png",
+      "sourceSha256": "79c23ac0320261c3a46d47a830c9ee7f63c2e69750a3f7daaca65c5d538a70d7",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 36.37,
+          "opaquePct": 63.172,
+          "partialPct": 0.458
+        },
+        "bbox": [
+          15,
+          14,
+          279,
+          285
+        ],
+        "sourceSize": [
+          294,
+          299
+        ],
+        "finalSize": [
+          284,
+          291
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 25776
+    },
+    "art/seal-burst.webp": {
+      "source": "assets/source/crops/object-kit/seal-burst.png",
+      "sourceSha256": "a505480f7fcd7c5738111d4105fd4b9e752723b772b4c5940a8d01c50bc56e80",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 41.687,
+          "opaquePct": 57.847,
+          "partialPct": 0.467
+        },
+        "bbox": [
+          15,
+          15,
+          320,
+          443
+        ],
+        "sourceSize": [
+          334,
+          458
+        ],
+        "finalSize": [
+          325,
+          448
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 45752
+    },
+    "art/owl-neutral.webp": {
+      "source": "assets/source/crops/owl-poses/owl-neutral.png",
+      "sourceSha256": "8348b9184a23a988bf3e490fb75a3edb1b6ca12e946cf2c7790943ff2abcba82",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 37.876,
+          "opaquePct": 61.65,
+          "partialPct": 0.474
+        },
+        "bbox": [
+          14,
+          15,
+          385,
+          519
+        ],
+        "sourceSize": [
+          399,
+          533
+        ],
+        "finalSize": [
+          391,
+          524
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 53520
+    },
+    "art/owl-guide.webp": {
+      "source": "assets/source/crops/owl-poses/owl-guide.png",
+      "sourceSha256": "a93c503a60df72763acb304a7301574b1fabf98524c710cae2be694431f720c8",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 48.953,
+          "opaquePct": 50.601,
+          "partialPct": 0.446
+        },
+        "bbox": [
+          14,
+          15,
+          546,
+          517
+        ],
+        "sourceSize": [
+          560,
+          531
+        ],
+        "finalSize": [
+          552,
+          522
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 62888
+    },
+    "art/owl-carry.webp": {
+      "source": "assets/source/crops/owl-poses/owl-carry.png",
+      "sourceSha256": "ba0c2ad7974cf8128d1ad502e6385fa94386ccd98202e784ee080eb5936cafab",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 36.689,
+          "opaquePct": 62.825,
+          "partialPct": 0.486
+        },
+        "bbox": [
+          14,
+          14,
+          368,
+          523
+        ],
+        "sourceSize": [
+          383,
+          537
+        ],
+        "finalSize": [
+          374,
+          529
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 52270
+    },
+    "art/owl-cheer.webp": {
+      "source": "assets/source/crops/owl-poses/owl-cheer.png",
+      "sourceSha256": "448756ed8c14393b677cfde0dadd20c6653003fe964476c2649b0cacbd43189a",
+      "matte": "chroma",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 45.769,
+          "opaquePct": 53.716,
+          "partialPct": 0.515
+        },
+        "bbox": [
+          14,
+          15,
+          557,
+          503
+        ],
+        "sourceSize": [
+          571,
+          517
+        ],
+        "finalSize": [
+          563,
+          508
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 63370
+    },
+    "art/nav-home.webp": {
+      "source": "assets/source/crops/nav-kit/nav-home.png",
+      "sourceSha256": "8863c63539b8fe784aa710d40edeb72fd9363fd73cd06dc1d672fc073cb0cf25",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 31.614,
+          "opaquePct": 67.494,
+          "partialPct": 0.892
+        },
+        "bbox": [
+          14,
+          14,
+          404,
+          398
+        ],
+        "sourceSize": [
+          418,
+          412
+        ],
+        "finalSize": [
+          256,
+          252
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 26070
+    },
+    "art/nav-back.webp": {
+      "source": "assets/source/crops/nav-kit/nav-back.png",
+      "sourceSha256": "94812a3544d1a82f354950c8fc35058904a83c65fe466fa57ebd638de18d87e2",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 31.699,
+          "opaquePct": 67.403,
+          "partialPct": 0.898
+        },
+        "bbox": [
+          14,
+          14,
+          404,
+          398
+        ],
+        "sourceSize": [
+          418,
+          412
+        ],
+        "finalSize": [
+          256,
+          252
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 25862
+    },
+    "art/nav-sound.webp": {
+      "source": "assets/source/crops/nav-kit/nav-sound.png",
+      "sourceSha256": "c3b90ed22b23438acc8deca0b47b72f6b7ca6e60cd525bee8ae8b7015d031ee8",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 31.617,
+          "opaquePct": 67.499,
+          "partialPct": 0.884
+        },
+        "bbox": [
+          14,
+          14,
+          403,
+          398
+        ],
+        "sourceSize": [
+          417,
+          412
+        ],
+        "finalSize": [
+          256,
+          253
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 25764
+    },
+    "art/nav-muted.webp": {
+      "source": "assets/source/crops/nav-kit/nav-muted.png",
+      "sourceSha256": "ab74746e3286c79ec535e86cd17715f9ee8a40ee15bf11b29ab319f35c4e899b",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 31.898,
+          "opaquePct": 67.204,
+          "partialPct": 0.898
+        },
+        "bbox": [
+          14,
+          14,
+          404,
+          395
+        ],
+        "sourceSize": [
+          418,
+          409
+        ],
+        "finalSize": [
+          256,
+          250
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 26112
+    },
+    "art/button-next.webp": {
+      "source": "assets/source/crops/nav-kit/button-next.png",
+      "sourceSha256": "27eb5170325b806b15e01c7ab1d18cae5c7a1144585817701503418ce597b810",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 17.584,
+          "opaquePct": 81.18,
+          "partialPct": 1.236
+        },
+        "bbox": [
+          14,
+          14,
+          510,
+          310
+        ],
+        "sourceSize": [
+          524,
+          324
+        ],
+        "finalSize": [
+          516,
+          316
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 57844
+    },
+    "art/button-replay.webp": {
+      "source": "assets/source/crops/nav-kit/button-replay.png",
+      "sourceSha256": "fff6d7e776be32780cd7b13a42d34156156988864b2de63364773f0f8b230faf",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 17.263,
+          "opaquePct": 81.403,
+          "partialPct": 1.334
+        },
+        "bbox": [
+          14,
+          14,
+          508,
+          309
+        ],
+        "sourceSize": [
+          522,
+          323
+        ],
+        "finalSize": [
+          514,
+          315
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 57326
+    },
+    "art/title-lockup.webp": {
+      "source": "assets/source/gpt-image-2/title-lockup-master.png",
+      "sourceSha256": "c90389089c654f3831c2896b5ac1fbac85a839e50221d2da3433e00ee1f1495f",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 47.219,
+          "opaquePct": 52.103,
+          "partialPct": 0.679
+        },
+        "bbox": [
+          36,
+          100,
+          1907,
+          742
+        ],
+        "sourceSize": [
+          1942,
+          809
+        ],
+        "finalSize": [
+          1100,
+          385
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 128870
+    },
+    "art/paper-sheet.webp": {
+      "source": "assets/source/gpt-image-2/paper-sheet-wide-master.png",
+      "sourceSha256": "587fea2afaa1918ab23f3875a21f290366d47c04a5c670b772cd6d6eee1c3145",
+      "matte": "alpha",
+      "qa": {
+        "pass": true,
+        "reason": null,
+        "flags": [],
+        "alpha": {
+          "transparentPct": 25.857,
+          "opaquePct": 73.54,
+          "partialPct": 0.603
+        },
+        "bbox": [
+          24,
+          79,
+          1961,
+          723
+        ],
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "finalSize": [
+          1400,
+          475
+        ],
+        "alphaFloor": 4
+      },
+      "outputBytes": 144568
+    },
+    "art/backdrop-desk.webp": {
+      "source": "assets/source/gpt-image-2/desk-backdrop-master.png",
+      "sourceSha256": "931e63c895d66a47aeae649061fd48b71189efdd303c6f65c47c898488905921",
+      "size": [
+        1600,
+        1200
+      ],
+      "outputBytes": 325876
+    },
+    "art/backdrop-delivery.webp": {
+      "source": "assets/source/gpt-image-2/delivery-backdrop-master.png",
+      "sourceSha256": "6b0bcec87385cb509bdf1307780705fb5bf6ad7bf92a7454af729713abadd9a0",
+      "size": [
+        1600,
+        1200
+      ],
+      "outputBytes": 426838
+    },
+    "../../../assets/hub/tiles/secret-message-copy.jpg": {
+      "source": "assets/source/gpt-image-2/hub-tile-fallback-master.png",
+      "sourceSha256": "21d547c0aa9aa644b0bae2c11bec4694ee78dcf9abf7ca5ca7f39625e0750549",
+      "workflow": "built-in-gpt-image-2 fallback after Krea worker failure",
+      "size": [
+        640,
+        533
+      ],
+      "outputBytes": 58894
+    }
+  }
+}

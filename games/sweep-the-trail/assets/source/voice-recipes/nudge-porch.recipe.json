@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "sweep-trail-nudge-porch",
+  "kind": "voice",
+  "asset": "sweep-trail-nudge-porch.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Move the broom behind a crumb, then push toward the dustpan.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Move the broom behind a crumb, then push toward the dustpan."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Move the broom behind a crumb, then push toward the dustpan.",
+      "heard": "Move the broom behind a crumb, then push toward the dust pan.",
+      "ratio": 0.991,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

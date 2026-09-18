@@ -1,0 +1,382 @@
+{
+  "source": "games/silly-swap-words/assets/source/layered/words-a.png",
+  "sourceSha256": "bcf25c66c1605f1e8f4a7e2e84fa6667cb514ea504dff392572b70874f1704fc",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "cat",
+      "file": "cat.png",
+      "componentArea": 36203,
+      "foregroundBbox": [
+        26,
+        32,
+        241,
+        265
+      ],
+      "cropBbox": [
+        8,
+        14,
+        259,
+        283
+      ],
+      "cropXywh": [
+        8,
+        14,
+        251,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.007812,
+        0.018229,
+        0.25293,
+        0.36849
+      ]
+    },
+    {
+      "index": 2,
+      "name": "hat",
+      "file": "hat.png",
+      "componentArea": 26456,
+      "foregroundBbox": [
+        255,
+        67,
+        512,
+        223
+      ],
+      "cropBbox": [
+        237,
+        49,
+        530,
+        241
+      ],
+      "cropXywh": [
+        237,
+        49,
+        293,
+        192
+      ],
+      "normalizedCropBbox": [
+        0.231445,
+        0.063802,
+        0.517578,
+        0.313802
+      ]
+    },
+    {
+      "index": 3,
+      "name": "hot",
+      "file": "hot.png",
+      "componentArea": 29854,
+      "foregroundBbox": [
+        542,
+        6,
+        764,
+        246
+      ],
+      "cropBbox": [
+        524,
+        0,
+        782,
+        264
+      ],
+      "cropXywh": [
+        524,
+        0,
+        258,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.511719,
+        0.0,
+        0.763672,
+        0.34375
+      ]
+    },
+    {
+      "index": 4,
+      "name": "hop",
+      "file": "hop.png",
+      "componentArea": 29921,
+      "foregroundBbox": [
+        795,
+        5,
+        997,
+        248
+      ],
+      "cropBbox": [
+        777,
+        0,
+        1015,
+        266
+      ],
+      "cropXywh": [
+        777,
+        0,
+        238,
+        266
+      ],
+      "normalizedCropBbox": [
+        0.758789,
+        0.0,
+        0.991211,
+        0.346354
+      ]
+    },
+    {
+      "index": 5,
+      "name": "hog",
+      "file": "hog.png",
+      "componentArea": 34867,
+      "foregroundBbox": [
+        22,
+        283,
+        255,
+        497
+      ],
+      "cropBbox": [
+        4,
+        265,
+        273,
+        515
+      ],
+      "cropXywh": [
+        4,
+        265,
+        269,
+        250
+      ],
+      "normalizedCropBbox": [
+        0.003906,
+        0.345052,
+        0.266602,
+        0.670573
+      ]
+    },
+    {
+      "index": 6,
+      "name": "dog",
+      "file": "dog.png",
+      "componentArea": 37782,
+      "foregroundBbox": [
+        281,
+        273,
+        505,
+        512
+      ],
+      "cropBbox": [
+        263,
+        255,
+        523,
+        530
+      ],
+      "cropXywh": [
+        263,
+        255,
+        260,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.256836,
+        0.332031,
+        0.510742,
+        0.690104
+      ]
+    },
+    {
+      "index": 7,
+      "name": "fog",
+      "file": "fog.png",
+      "componentArea": 36438,
+      "foregroundBbox": [
+        522,
+        259,
+        764,
+        494
+      ],
+      "cropBbox": [
+        504,
+        241,
+        782,
+        512
+      ],
+      "cropXywh": [
+        504,
+        241,
+        278,
+        271
+      ],
+      "normalizedCropBbox": [
+        0.492188,
+        0.313802,
+        0.763672,
+        0.666667
+      ]
+    },
+    {
+      "index": 8,
+      "name": "log",
+      "file": "log.png",
+      "componentArea": 30000,
+      "foregroundBbox": [
+        757,
+        299,
+        1002,
+        476
+      ],
+      "cropBbox": [
+        739,
+        281,
+        1020,
+        494
+      ],
+      "cropXywh": [
+        739,
+        281,
+        281,
+        213
+      ],
+      "normalizedCropBbox": [
+        0.72168,
+        0.365885,
+        0.996094,
+        0.643229
+      ]
+    },
+    {
+      "index": 9,
+      "name": "leg",
+      "file": "leg.png",
+      "componentArea": 22190,
+      "foregroundBbox": [
+        56,
+        499,
+        235,
+        732
+      ],
+      "cropBbox": [
+        38,
+        481,
+        253,
+        750
+      ],
+      "cropXywh": [
+        38,
+        481,
+        215,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.037109,
+        0.626302,
+        0.24707,
+        0.976562
+      ]
+    },
+    {
+      "index": 10,
+      "name": "pig",
+      "file": "pig.png",
+      "componentArea": 34891,
+      "foregroundBbox": [
+        283,
+        506,
+        502,
+        733
+      ],
+      "cropBbox": [
+        265,
+        488,
+        520,
+        751
+      ],
+      "cropXywh": [
+        265,
+        488,
+        255,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.258789,
+        0.635417,
+        0.507812,
+        0.977865
+      ]
+    },
+    {
+      "index": 11,
+      "name": "dig",
+      "file": "dig.png",
+      "componentArea": 23500,
+      "foregroundBbox": [
+        520,
+        504,
+        737,
+        740
+      ],
+      "cropBbox": [
+        502,
+        486,
+        755,
+        758
+      ],
+      "cropXywh": [
+        502,
+        486,
+        253,
+        272
+      ],
+      "normalizedCropBbox": [
+        0.490234,
+        0.632812,
+        0.737305,
+        0.986979
+      ]
+    },
+    {
+      "index": 12,
+      "name": "wig",
+      "file": "wig.png",
+      "componentArea": 34056,
+      "foregroundBbox": [
+        775,
+        514,
+        1003,
+        725
+      ],
+      "cropBbox": [
+        757,
+        496,
+        1021,
+        743
+      ],
+      "cropXywh": [
+        757,
+        496,
+        264,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.739258,
+        0.645833,
+        0.99707,
+        0.967448
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 128,
+    "closeRadius": 1,
+    "minArea": 500,
+    "order": "reading"
+  }
+}

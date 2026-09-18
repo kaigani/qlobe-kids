@@ -1,0 +1,9 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "nav-kit-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{"workflow": "gpt-image-2", "mode": "built-in-imagegen", "promptRef": "PROMPTS.md#navigation-kit--nav-kit-masterpng", "references": ["desk-backdrop-master.png"]}],
+  "qa": {"status": "accepted", "checks": ["six ordered controls", "genuine alpha", "exact-count cutter passed 6", "picture-only controls"]}
+}

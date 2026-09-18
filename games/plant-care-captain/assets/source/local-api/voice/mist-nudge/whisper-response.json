@@ -1,0 +1,26 @@
+{
+  "key": "mist-nudge",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "The leaves are ready for a gentle mist.",
+    "srt": "1\n00:00:00,000 --> 00:00:02,000\nThe leaves are ready for a gentle mist.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 2,
+          "text": "The leaves are ready for a gentle mist."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "The leaves are ready for a gentle mist.",
+  "transcript": "The leaves are ready for a gentle mist.",
+  "pass": true
+}

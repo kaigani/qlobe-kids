@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "hub-tile-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#hub-tile",
+      "references": ["concept:chalkboard-big-strokes/ui-mockups/03-great-strokes.png"]
+    }
+  ],
+  "qa": {
+    "status": "accepted-fallback-after-local-krea-unavailable",
+    "checks": ["6:5 menu grammar", "single readable game moment", "no title or UI", "curated 640x533 JPEG"]
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "source": "games/chalkboard-big-strokes/assets/source/gpt-image-2/chalk-ui-sheet-master.png",
+  "sourceSha256": "70642592af6e3e552d81bb9ad4eef534a4066e686a026ab648bf602782dffd65",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    2,
+    250,
+    112
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "mode-card-cyan",
+      "file": "mode-card-cyan.png",
+      "componentArea": 69468,
+      "foregroundBbox": [
+        68,
+        44,
+        303,
+        347
+      ],
+      "cropBbox": [
+        56,
+        32,
+        315,
+        359
+      ],
+      "cropXywh": [
+        56,
+        32,
+        259,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.038674,
+        0.029466,
+        0.217541,
+        0.330571
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mode-card-yellow",
+      "file": "mode-card-yellow.png",
+      "componentArea": 69406,
+      "foregroundBbox": [
+        426,
+        44,
+        662,
+        348
+      ],
+      "cropBbox": [
+        414,
+        32,
+        674,
+        360
+      ],
+      "cropXywh": [
+        414,
+        32,
+        260,
+        328
+      ],
+      "normalizedCropBbox": [
+        0.285912,
+        0.029466,
+        0.46547,
+        0.331492
+      ]
+    },
+    {
+      "index": 3,
+      "name": "mode-card-pink",
+      "file": "mode-card-pink.png",
+      "componentArea": 69300,
+      "foregroundBbox": [
+        787,
+        44,
+        1022,
+        348
+      ],
+      "cropBbox": [
+        775,
+        32,
+        1034,
+        360
+      ],
+      "cropXywh": [
+        775,
+        32,
+        259,
+        328
+      ],
+      "normalizedCropBbox": [
+        0.535221,
+        0.029466,
+        0.714088,
+        0.331492
+      ]
+    },
+    {
+      "index": 4,
+      "name": "mode-card-white",
+      "file": "mode-card-white.png",
+      "componentArea": 69515,
+      "foregroundBbox": [
+        1145,
+        44,
+        1381,
+        347
+      ],
+      "cropBbox": [
+        1133,
+        32,
+        1393,
+        359
+      ],
+      "cropXywh": [
+        1133,
+        32,
+        260,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.782459,
+        0.029466,
+        0.962017,
+        0.330571
+      ]
+    },
+    {
+      "index": 5,
+      "name": "button-plaque",
+      "file": "button-plaque.png",
+      "componentArea": 48662,
+      "foregroundBbox": [
+        19,
+        456,
+        352,
+        623
+      ],
+      "cropBbox": [
+        7,
+        444,
+        364,
+        635
+      ],
+      "cropXywh": [
+        7,
+        444,
+        357,
+        191
+      ],
+      "normalizedCropBbox": [
+        0.004834,
+        0.40884,
+        0.251381,
+        0.584715
+      ]
+    },
+    {
+      "index": 6,
+      "name": "felt-eraser",
+      "file": "felt-eraser.png",
+      "componentArea": 53448,
+      "foregroundBbox": [
+        393,
+        426,
+        700,
+        657
+      ],
+      "cropBbox": [
+        381,
+        414,
+        712,
+        669
+      ],
+      "cropXywh": [
+        381,
+        414,
+        331,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.263122,
+        0.381215,
+        0.491713,
+        0.616022
+      ]
+    },
+    {
+      "index": 7,
+      "name": "chalk-pieces",
+      "file": "chalk-pieces.png",
+      "componentArea": 39354,
+      "foregroundBbox": [
+        751,
+        466,
+        1065,
+        653
+      ],
+      "cropBbox": [
+        739,
+        454,
+        1077,
+        665
+      ],
+      "cropXywh": [
+        739,
+        454,
+        338,
+        211
+      ],
+      "normalizedCropBbox": [
+        0.510359,
+        0.418048,
+        0.743785,
+        0.612339
+      ]
+    },
+    {
+      "index": 8,
+      "name": "chalk-buddy",
+      "file": "chalk-buddy.png",
+      "componentArea": 47457,
+      "foregroundBbox": [
+        1126,
+        411,
+        1415,
+        661
+      ],
+      "cropBbox": [
+        1114,
+        399,
+        1427,
+        673
+      ],
+      "cropXywh": [
+        1114,
+        399,
+        313,
+        274
+      ],
+      "normalizedCropBbox": [
+        0.769337,
+        0.367403,
+        0.985497,
+        0.619705
+      ]
+    },
+    {
+      "index": 9,
+      "name": "nav-home",
+      "file": "nav-home.png",
+      "componentArea": 68053,
+      "foregroundBbox": [
+        39,
+        725,
+        332,
+        1021
+      ],
+      "cropBbox": [
+        27,
+        713,
+        344,
+        1033
+      ],
+      "cropXywh": [
+        27,
+        713,
+        317,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.018646,
+        0.656538,
+        0.237569,
+        0.951197
+      ]
+    },
+    {
+      "index": 10,
+      "name": "nav-sound",
+      "file": "nav-sound.png",
+      "componentArea": 68474,
+      "foregroundBbox": [
+        397,
+        725,
+        692,
+        1021
+      ],
+      "cropBbox": [
+        385,
+        713,
+        704,
+        1033
+      ],
+      "cropXywh": [
+        385,
+        713,
+        319,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.265884,
+        0.656538,
+        0.486188,
+        0.951197
+      ]
+    },
+    {
+      "index": 11,
+      "name": "sparkle",
+      "file": "sparkle.png",
+      "componentArea": 53880,
+      "foregroundBbox": [
+        748,
+        728,
+        1049,
+        1015
+      ],
+      "cropBbox": [
+        736,
+        716,
+        1061,
+        1027
+      ],
+      "cropXywh": [
+        736,
+        716,
+        325,
+        311
+      ],
+      "normalizedCropBbox": [
+        0.508287,
+        0.6593,
+        0.732735,
+        0.945672
+      ]
+    },
+    {
+      "index": 12,
+      "name": "nav-replay",
+      "file": "nav-replay.png",
+      "componentArea": 68385,
+      "foregroundBbox": [
+        1116,
+        725,
+        1411,
+        1021
+      ],
+      "cropBbox": [
+        1104,
+        713,
+        1423,
+        1033
+      ],
+      "cropXywh": [
+        1104,
+        713,
+        319,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.762431,
+        0.656538,
+        0.982735,
+        0.951197
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 8,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "source": "games/secret-message-copy/assets/source/gpt-image-2/owl-poses-master.png",
+  "sourceSha256": "e0e624c914e7f4363c149b6d83033cc79c6f2aff54d6f3888d078c7f371c0608",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    255,
+    0,
+    255
+  ],
+  "padding": 14,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "owl-neutral",
+      "file": "owl-neutral.png",
+      "componentArea": 132852,
+      "foregroundBbox": [
+        159,
+        16,
+        530,
+        521
+      ],
+      "cropBbox": [
+        145,
+        2,
+        544,
+        535
+      ],
+      "cropXywh": [
+        145,
+        2,
+        399,
+        533
+      ],
+      "normalizedCropBbox": [
+        0.100138,
+        0.001842,
+        0.375691,
+        0.492634
+      ]
+    },
+    {
+      "index": 2,
+      "name": "owl-guide",
+      "file": "owl-guide.png",
+      "componentArea": 152750,
+      "foregroundBbox": [
+        820,
+        17,
+        1352,
+        520
+      ],
+      "cropBbox": [
+        806,
+        3,
+        1366,
+        534
+      ],
+      "cropXywh": [
+        806,
+        3,
+        560,
+        531
+      ],
+      "normalizedCropBbox": [
+        0.55663,
+        0.002762,
+        0.94337,
+        0.491713
+      ]
+    },
+    {
+      "index": 3,
+      "name": "owl-carry",
+      "file": "owl-carry.png",
+      "componentArea": 130920,
+      "foregroundBbox": [
+        177,
+        550,
+        532,
+        1059
+      ],
+      "cropBbox": [
+        163,
+        536,
+        546,
+        1073
+      ],
+      "cropXywh": [
+        163,
+        536,
+        383,
+        537
+      ],
+      "normalizedCropBbox": [
+        0.112569,
+        0.493554,
+        0.377072,
+        0.988029
+      ]
+    },
+    {
+      "index": 4,
+      "name": "owl-cheer",
+      "file": "owl-cheer.png",
+      "componentArea": 161116,
+      "foregroundBbox": [
+        790,
+        542,
+        1333,
+        1031
+      ],
+      "cropBbox": [
+        776,
+        528,
+        1347,
+        1045
+      ],
+      "cropXywh": [
+        776,
+        528,
+        571,
+        517
+      ],
+      "normalizedCropBbox": [
+        0.535912,
+        0.486188,
+        0.930249,
+        0.962247
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 28,
+    "chromaThreshold": 0,
+    "alphaThreshold": 8,
+    "closeRadius": 1,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

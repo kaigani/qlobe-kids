@@ -1,47 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Plant Care Captain 🪴 — Tending a Real Plant</title>
-  <meta name="description" content="Water, turn, dust, and mist a real plant while observing its leaves and soil closely each day. A gentle daily care routine for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Plant Care Captain" />
-  <meta property="og:title" content="Plant Care Captain 🪴 — Tending a Real Plant" />
-  <meta property="og:description" content="Water, turn, dust, and mist a real plant while observing its leaves and soil closely each day. A gentle daily care routine for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/plant-care-captain/" />
-  <meta property="og:image" content="https://qlo.be/games/plant-care-captain/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Plant Care Captain title screen with Care Round and Plant Spa Day buttons and a potted plant icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Plant Care Captain 🪴 — Tending a Real Plant" />
-  <meta name="twitter:description" content="Water, turn, dust, and mist a real plant while observing its leaves and soil closely each day. A gentle daily care routine for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/plant-care-captain/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#d8a36b">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Plant Care Captain — Grow a Happy Plant Friend</title>
+  <meta name="description" content="Help Sunny, Pip, and Basil grow with gentle watering, misting, and pruning.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Plant Care Captain — Grow a Happy Plant Friend">
+  <meta property="og:description" content="Choose a tiny clay plant and help it thrive with three gentle care tools.">
+  <meta property="og:url" content="https://qlo.be/games/plant-care-captain/">
+  <meta property="og:image" content="https://qlo.be/games/plant-care-captain/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Three cheerful clay plants waiting for gentle care in a sunny greenhouse.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Plant Care Captain — Grow a Happy Plant Friend">
+  <meta name="twitter:description" content="Water, mist, and prune a tiny clay plant until it blooms.">
+  <meta name="twitter:image" content="https://qlo.be/games/plant-care-captain/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-label="Plant Care Captain"></main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

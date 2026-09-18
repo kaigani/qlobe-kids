@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-nonmagnetic",
+  "kind": "voice",
+  "asset": "magnet-voice-nonmagnetic.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Boing! It does not stick. Great testing.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Boing! It does not stick. Great testing.",
+      "heard": "Buying! It does not stick! Great testing!",
+      "ratio": 0.96,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

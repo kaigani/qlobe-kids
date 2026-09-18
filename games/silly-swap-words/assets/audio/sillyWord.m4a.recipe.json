@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "b1d1f474f8564253a5b66d0c5657deb4",
+  "text": "A silly word! I love it!",
+  "textHash": "94ebe386398ce86b",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "0a875a4391604deda31939ea54a43152",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "A silly word! I love it!"
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

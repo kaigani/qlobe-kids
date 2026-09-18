@@ -3,33 +3,47 @@
   "title": "Secret Message Copy",
   "category": "writing-fine-motor",
   "path": "games/secret-message-copy/",
-  "icon": "🕵️‍♀️",
+  "icon": "assets/hub/tiles/secret-message-copy.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Secret Message Copy 🔍 — Spy Letters and Words",
-  "description": "Rebuild short spy words letter by letter, moving letter cards into place from left to right, then hear the finished word spelled and read aloud. A playful copying game for ages 5–6.",
+  "age": { "min": 3, "max": 7 },
+  "status": "beta",
+  "accent": "#e8b83e",
+  "engine": "custom DOM and Canvas copying runtime with shared QLOBE screens, audio, narration, timing, celebration, and debug modules",
+  "shareTitle": "Secret Message Copy - Trace, Remember, Deliver!",
+  "description": "Help a watercolor owl courier copy picture codes, trace short secret words, and remember moon messages before delivering each envelope.",
   "learningGoals": [
-    "Practice left-to-right sequencing",
-    "Copy short letter strings one part at a time",
-    "Hear each copied word spelled and read aloud"
+    "Practice left-to-right visual copying with short picture sequences",
+    "Build uppercase letter formation and fine-motor control through guided tracing",
+    "Exercise visual working memory with three- and four-symbol codes"
   ],
-  "interactionModel": "build-assemble drag or tap-tap text letter cards into ghost slots",
-  "feedbackModel": "Correct letters pop, sparkle, and speak their name; misses wiggle gently with a spoken nudge and retry. Finished messages are spelled and read aloud.",
+  "interactionModel": "choose one of three large illustrated envelopes, tap matching raster stamps from left to right or trace uppercase letters from a golden start dot, then send the finished message",
+  "feedbackModel": "the next slot and guide glow, earned progress is never removed, misses reveal a gentle clue without penalty, and each completed copy reaches an authored owl-courier delivery tableau with recorded praise",
   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/speech.js",
+    "shared/js/screens.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/tap.js",
+    "shared/js/hud.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/celebrate.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/assets/ui/",
-    "shared/fonts/fredoka-latin-600-normal.woff2"
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/assets/music/quirky-forest-adventure.mp3",
+    "games/secret-message-copy/assets/art/",
+    "games/secret-message-copy/assets/audio/"
   ],
   "modes": [
-    { "id": "secret", "title": "Copy the Code", "skill": "letter-by-letter copying of three-letter words" },
-    { "id": "long", "title": "Longer Codes", "skill": "letter-by-letter copying of four-letter words" }
+    { "id": "picture-code", "title": "Picture Code", "skill": "left-to-right copying of three- to five-symbol visible sequences" },
+    { "id": "secret-words", "title": "Secret Words", "skill": "guided uppercase formation for SUN, CAT, MAP, and OWL" },
+    { "id": "moon-memory", "title": "Moon Memory", "skill": "recall and reproduction of hidden three- and four-symbol sequences" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; text cards rendered by the shared build-assemble engine. Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+  "credits": "Original Watercolor / Storybook raster artwork produced with OpenAI GPT Image 2 and prepared with the QLOBE asset cutting pipeline; narration produced through the approved local voice workflow with verified neural fallback after the Qwen service failed. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Pip the Owl Courier"],
+  "conceptVideo": "01-game-concepts/secret-message-copy/"
 }

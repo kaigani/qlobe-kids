@@ -40,6 +40,11 @@ let unlockPending = false;
 // Monotonic token: a new say()/stop() supersedes any in-flight clip so its
 // pending fallback can't fire late and double up.
 let playToken = 0;
+// The resolver for the clip currently holding the shared channel. Pausing an
+// HTMLAudioElement does not emit `ended`, so stop()/mute/new narration must
+// explicitly settle the promise returned by say(). Otherwise callers that
+// advance only after a line finishes can remain locked until the safety timer.
+let activeClipFinish = null;
 
 function getChannel() {
   if (!channel) {
@@ -245,6 +250,7 @@ function playClip(src, text, token, key, dur) {
     // no way forward. Audio must never be able to strand a game.
     let settled = false;
     let handled = false;
+    let safetyTimer = 0;
     const cleanup = () => {
       el.removeEventListener('ended', onEnded);
       el.removeEventListener('error', onError);
@@ -254,6 +260,8 @@ function playClip(src, text, token, key, dur) {
       settled = true;
       handled = true;   // a late 'error' after we finished must not fire a stray fallback
       cleanup();
+      if (safetyTimer) clearTimeout(safetyTimer);
+      if (activeClipFinish === finish) activeClipFinish = null;
       resolve();
     };
     const onEnded = () => finish();
@@ -267,6 +275,7 @@ function playClip(src, text, token, key, dur) {
     };
     el.addEventListener('ended', onEnded);
     el.addEventListener('error', onError);
+    activeClipFinish = finish;
     el.muted = false;
     el.src = src;
     try { el.currentTime = 0; } catch { /* not always seekable pre-play */ }
@@ -274,7 +283,7 @@ function playClip(src, text, token, key, dur) {
     const p = el.play();
     if (p && typeof p.catch === 'function') p.catch(() => onError());
     // safety guard: never hang if the element drops its events
-    setTimeout(finish, (dur ? dur * 1000 : 4000) + 2000);
+    safetyTimer = setTimeout(finish, (dur ? dur * 1000 : 4000) + 2000);
   });
 }
 
@@ -326,6 +335,10 @@ const SILENT_WAV =
   'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
 
 function pauseChannel() {
+  // pause() has no completion event. Settle first so any narrator/round gate
+  // awaiting this clip can react immediately to interruption or mute.
+  const finish = activeClipFinish;
+  if (finish) finish();
   if (channel) {
     try { channel.pause(); } catch { /* ignore */ }
   }

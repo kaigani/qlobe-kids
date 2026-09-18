@@ -1,0 +1,82 @@
+{
+  "source": "games/rhyming-detective/assets/source/ui/listen-medallions-gpt-image-2.png",
+  "sourceSha256": "b430073c8f77c02e952116fe1789a26ff7167c780143d348c5d788ccdd304938",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "listen-blue",
+      "file": "listen-blue.png",
+      "componentArea": 209665,
+      "foregroundBbox": [
+        53,
+        363,
+        568,
+        879
+      ],
+      "cropBbox": [
+        41,
+        351,
+        580,
+        891
+      ],
+      "cropXywh": [
+        41,
+        351,
+        539,
+        540
+      ],
+      "normalizedCropBbox": [
+        0.032695,
+        0.279904,
+        0.46252,
+        0.710526
+      ]
+    },
+    {
+      "index": 2,
+      "name": "listen-gold",
+      "file": "listen-gold.png",
+      "componentArea": 209590,
+      "foregroundBbox": [
+        680,
+        363,
+        1193,
+        879
+      ],
+      "cropBbox": [
+        668,
+        351,
+        1205,
+        891
+      ],
+      "cropXywh": [
+        668,
+        351,
+        537,
+        540
+      ],
+      "normalizedCropBbox": [
+        0.532695,
+        0.279904,
+        0.960925,
+        0.710526
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

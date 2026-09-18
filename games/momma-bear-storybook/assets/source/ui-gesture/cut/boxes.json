@@ -1,0 +1,52 @@
+{
+  "source": "games/momma-bear-storybook/assets/source/ui-gesture/gesture-finger.qwen-layer2.png",
+  "sourceSha256": "1943d5c63461c5af8e58ae6ab6c7000fd8cd013203ccb5fea4ddfa74008c09e1",
+  "sourceSize": [
+    1024,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "gesture-finger",
+      "file": "gesture-finger.png",
+      "componentArea": 190972,
+      "foregroundBbox": [
+        235,
+        181,
+        803,
+        844
+      ],
+      "cropBbox": [
+        219,
+        165,
+        819,
+        860
+      ],
+      "cropXywh": [
+        219,
+        165,
+        600,
+        695
+      ],
+      "normalizedCropBbox": [
+        0.213867,
+        0.161133,
+        0.799805,
+        0.839844
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 4,
+    "closeRadius": 2,
+    "minArea": 524,
+    "order": "reading"
+  }
+}

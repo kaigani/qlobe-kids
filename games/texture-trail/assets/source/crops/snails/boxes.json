@@ -1,0 +1,142 @@
+{
+  "source": "games/texture-trail/assets/source/gpt-image-2/snail-poses.png",
+  "sourceSha256": "8226f6fe9b6b279ad6b4e56ae67dfef525ca2bdc20dcb63c3783cc2b383d4f58",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "snail-wait",
+      "file": "snail-wait.png",
+      "componentArea": 124960,
+      "foregroundBbox": [
+        110,
+        76,
+        583,
+        482
+      ],
+      "cropBbox": [
+        98,
+        64,
+        595,
+        494
+      ],
+      "cropXywh": [
+        98,
+        64,
+        497,
+        430
+      ],
+      "normalizedCropBbox": [
+        0.06768,
+        0.058932,
+        0.410912,
+        0.45488
+      ]
+    },
+    {
+      "index": 2,
+      "name": "snail-point",
+      "file": "snail-point.png",
+      "componentArea": 128784,
+      "foregroundBbox": [
+        784,
+        79,
+        1341,
+        484
+      ],
+      "cropBbox": [
+        772,
+        67,
+        1353,
+        496
+      ],
+      "cropXywh": [
+        772,
+        67,
+        581,
+        429
+      ],
+      "normalizedCropBbox": [
+        0.533149,
+        0.061694,
+        0.934392,
+        0.456722
+      ]
+    },
+    {
+      "index": 3,
+      "name": "snail-cheer",
+      "file": "snail-cheer.png",
+      "componentArea": 131984,
+      "foregroundBbox": [
+        99,
+        536,
+        565,
+        993
+      ],
+      "cropBbox": [
+        87,
+        524,
+        577,
+        1005
+      ],
+      "cropXywh": [
+        87,
+        524,
+        490,
+        481
+      ],
+      "normalizedCropBbox": [
+        0.060083,
+        0.482505,
+        0.398481,
+        0.925414
+      ]
+    },
+    {
+      "index": 4,
+      "name": "snail-hint",
+      "file": "snail-hint.png",
+      "componentArea": 126826,
+      "foregroundBbox": [
+        763,
+        623,
+        1353,
+        987
+      ],
+      "cropBbox": [
+        751,
+        611,
+        1365,
+        999
+      ],
+      "cropXywh": [
+        751,
+        611,
+        614,
+        388
+      ],
+      "normalizedCropBbox": [
+        0.518646,
+        0.562615,
+        0.94268,
+        0.91989
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

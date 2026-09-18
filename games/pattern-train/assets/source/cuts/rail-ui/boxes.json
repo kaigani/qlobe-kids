@@ -1,0 +1,202 @@
+{
+  "source": "games/pattern-train/assets/source/gpt-image-2/rail-ui-sheet.png",
+  "sourceSha256": "403bcafaa1cc77509b756bd382113718b92b7019b768cf340ad9208f35b78390",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "locomotive",
+      "file": "locomotive.png",
+      "componentArea": 113475,
+      "foregroundBbox": [
+        48,
+        130,
+        476,
+        501
+      ],
+      "cropBbox": [
+        30,
+        112,
+        494,
+        519
+      ],
+      "cropXywh": [
+        30,
+        112,
+        464,
+        407
+      ],
+      "normalizedCropBbox": [
+        0.019531,
+        0.109375,
+        0.321615,
+        0.506836
+      ]
+    },
+    {
+      "index": 2,
+      "name": "wagon",
+      "file": "wagon.png",
+      "componentArea": 86226,
+      "foregroundBbox": [
+        545,
+        219,
+        985,
+        478
+      ],
+      "cropBbox": [
+        527,
+        201,
+        1003,
+        496
+      ],
+      "cropXywh": [
+        527,
+        201,
+        476,
+        295
+      ],
+      "normalizedCropBbox": [
+        0.343099,
+        0.196289,
+        0.652995,
+        0.484375
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 94496,
+      "foregroundBbox": [
+        1024,
+        251,
+        1499,
+        465
+      ],
+      "cropBbox": [
+        1006,
+        233,
+        1517,
+        483
+      ],
+      "cropXywh": [
+        1006,
+        233,
+        511,
+        250
+      ],
+      "normalizedCropBbox": [
+        0.654948,
+        0.227539,
+        0.98763,
+        0.47168
+      ]
+    },
+    {
+      "index": 4,
+      "name": "plaque",
+      "file": "plaque.png",
+      "componentArea": 107607,
+      "foregroundBbox": [
+        35,
+        627,
+        506,
+        860
+      ],
+      "cropBbox": [
+        17,
+        609,
+        524,
+        878
+      ],
+      "cropXywh": [
+        17,
+        609,
+        507,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.011068,
+        0.594727,
+        0.341146,
+        0.857422
+      ]
+    },
+    {
+      "index": 5,
+      "name": "button-yellow",
+      "file": "button-yellow.png",
+      "componentArea": 85586,
+      "foregroundBbox": [
+        542,
+        644,
+        993,
+        854
+      ],
+      "cropBbox": [
+        524,
+        626,
+        1011,
+        872
+      ],
+      "cropXywh": [
+        524,
+        626,
+        487,
+        246
+      ],
+      "normalizedCropBbox": [
+        0.341146,
+        0.611328,
+        0.658203,
+        0.851562
+      ]
+    },
+    {
+      "index": 6,
+      "name": "button-coral",
+      "file": "button-coral.png",
+      "componentArea": 89617,
+      "foregroundBbox": [
+        1032,
+        643,
+        1499,
+        855
+      ],
+      "cropBbox": [
+        1014,
+        625,
+        1517,
+        873
+      ],
+      "cropXywh": [
+        1014,
+        625,
+        503,
+        248
+      ],
+      "normalizedCropBbox": [
+        0.660156,
+        0.610352,
+        0.98763,
+        0.852539
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 20,
+    "closeRadius": 4,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

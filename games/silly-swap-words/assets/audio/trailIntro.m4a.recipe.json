@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "ad6e4b056772402ea04865a0f2d11f5e",
+  "text": "Follow the word trail, one tiny change at a time.",
+  "textHash": "1ca03d3068449577",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "1672c4fa06634b6a8c460108454981e1",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Follow the word trail, one tiny change at a time."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

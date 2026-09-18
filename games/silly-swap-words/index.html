@@ -1,48 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Silly Swap Words 🔄 — Playful Sound Swapping</title>
-  <meta name="description" content="Swap one letter tile to change a word's sound, hearing how a single swap makes something new. A playful phoneme-substitution game for ages 5–6." />
-
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Silly Swap Words" />
-  <meta property="og:title" content="Silly Swap Words 🔄 — Playful Sound Swapping" />
-  <meta property="og:description" content="Swap one letter tile to change a word's sound, hearing how a single swap makes something new. A playful phoneme-substitution game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/silly-swap-words/" />
-  <meta property="og:image" content="https://qlo.be/games/silly-swap-words/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Silly Swap Words title screen with Swap a Sound and Word Chains modes and a circular arrows icon." />
-
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Silly Swap Words 🔄 — Playful Sound Swapping" />
-  <meta name="twitter:description" content="Swap one letter tile to change a word's sound, hearing how a single swap makes something new. A playful phoneme-substitution game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/silly-swap-words/assets/og-image.jpg" />
-
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-    #game { height: auto; min-height: 100dvh; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#3bb8df">
+  <title>Silly Swap Words — A Clay Word Workshop</title>
+  <meta name="description" content="Tap one clay letter and watch a whole new word pop to life in a playful sound-swapping workshop for ages 3–6.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Silly Swap Words — A Clay Word Workshop">
+  <meta property="og:description" content="Swap a sound, follow a word trail, or invent a wonderfully silly word.">
+  <meta property="og:url" content="https://qlo.be/games/silly-swap-words/">
+  <meta property="og:image" content="https://qlo.be/games/silly-swap-words/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A colorful clay word workshop with three letter tiles, an orange cat, and a smiling magic swap button.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Silly Swap Words — A Clay Word Workshop">
+  <meta name="twitter:description" content="Tap one letter. Meet a whole new word.">
+  <meta name="twitter:image" content="https://qlo.be/games/silly-swap-words/assets/og-image.jpg">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/game.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="game-shell" aria-label="Silly Swap Words">
+    <img class="world-backdrop" src="./assets/backgrounds/clay-sky.webp" alt="" aria-hidden="true">
+    <div class="studio-vignette" aria-hidden="true"></div>
+
+    <section id="splash" class="qk-screen splash-screen" data-qk-screen="splash">
+      <div id="splash-hud" class="hud-layer" aria-label="Game controls"></div>
+      <div class="splash-floaters" aria-hidden="true">
+        <img class="floater floater-cat" src="./assets/words/cat.webp" alt="">
+        <img class="floater floater-hat" src="./assets/words/hat.webp" alt="">
+        <img class="floater floater-mug" src="./assets/words/mug.webp" alt="">
+        <img class="floater floater-bug" src="./assets/words/bug.webp" alt="">
+      </div>
+      <div class="splash-content">
+        <img class="title-lockup" src="./assets/ui/title.webp" alt="Silly Swap Words">
+        <div class="splash-prompt carrier-copy" aria-label="Pick a way to play">
+          <img src="./assets/ui/prompt-plaque.webp" alt="" aria-hidden="true">
+          <p>Pick a way to play!</p>
+        </div>
+        <div id="mode-grid" class="mode-grid" role="group" aria-label="Ways to play">
+          <button class="mode-card swap-card" type="button" data-mode="swap" data-target="mode-swap" data-role="choice" aria-label="Guided Swaps">
+            <img src="./assets/ui/mode-swap.webp" alt="" aria-hidden="true">
+            <span>Guided<br>Swaps</span><small>Find the new word</small>
+          </button>
+          <button class="mode-card trail-card" type="button" data-mode="trail" data-target="mode-trail" data-role="choice" aria-label="Word Trails">
+            <img src="./assets/ui/mode-trail.webp" alt="" aria-hidden="true">
+            <span>Word<br>Trails</span><small>Step from word to word</small>
+          </button>
+          <button class="mode-card lab-card" type="button" data-mode="lab" data-target="mode-lab" data-role="choice" aria-label="Silly Word Lab">
+            <img src="./assets/ui/mode-lab.webp" alt="" aria-hidden="true">
+            <span>Silly Word<br>Lab</span><small>Mix anything!</small>
+          </button>
+        </div>
+      </div>
+      <p class="grownup-note">Tap one letter • Hear every sound • No wrong ideas</p>
+    </section>
+
+    <section id="play" class="qk-screen play-screen" data-qk-screen="play" hidden>
+      <div id="play-hud" class="hud-layer" aria-label="Game controls"></div>
+      <div class="play-layout">
+        <header class="play-top">
+          <div id="prompt-card" class="prompt-card carrier-copy">
+            <img src="./assets/ui/prompt-plaque.webp" alt="" aria-hidden="true">
+            <p id="prompt-text">Tap the sound that changes.</p>
+          </div>
+          <div id="progress" class="progress" aria-hidden="true"></div>
+        </header>
+        <div id="word-stage" class="word-stage">
+          <div id="target-peek" class="target-peek" aria-live="polite"></div>
+          <div id="object-wrap" class="object-wrap" aria-hidden="true">
+            <span class="object-shadow"></span>
+            <img id="word-object" class="word-object" src="./assets/words/cat.webp" alt="">
+            <span id="clay-sparkles" class="clay-sparkles"></span>
+          </div>
+          <div id="silly-card" class="silly-card" hidden aria-hidden="true">
+            <img src="./assets/characters/silly-blob.webp" alt=""><span>What could it be?</span>
+          </div>
+        </div>
+        <div class="workbench" aria-label="Word workbench">
+          <div id="letter-row" class="letter-row" role="group" aria-label="Tap a letter to swap its sound">
+            <button class="letter-slot" type="button" data-slot="0" data-target="letter-0" data-role="answer" aria-label="First letter">
+              <img src="./assets/ui/letter-well.webp" alt="" aria-hidden="true"><span>c</span>
+            </button>
+            <button class="letter-slot" type="button" data-slot="1" data-target="letter-1" data-role="answer" aria-label="Middle letter">
+              <img src="./assets/ui/letter-well.webp" alt="" aria-hidden="true"><span>a</span>
+            </button>
+            <button class="letter-slot" type="button" data-slot="2" data-target="letter-2" data-role="answer" aria-label="Last letter">
+              <img src="./assets/ui/letter-well.webp" alt="" aria-hidden="true"><span>t</span>
+            </button>
+          </div>
+          <button id="magic-swap" class="magic-swap" type="button" data-target="magic-swap" data-role="helper" aria-label="Magic swap a letter">
+            <img src="./assets/ui/magic-swap.webp" alt="" aria-hidden="true"><span>MAGIC<br>SWAP</span>
+          </button>
+        </div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="reward" class="qk-screen reward-screen" data-qk-screen="reward" hidden>
+      <div id="reward-hud" class="hud-layer" aria-label="Game controls"></div>
+      <div id="confetti-host" class="confetti-host" aria-hidden="true"></div>
+      <div class="reward-content">
+        <div class="reward-ribbon carrier-copy">
+          <img src="./assets/ui/success-ribbon.webp" alt="" aria-hidden="true"><p id="reward-kicker">WORD WIZARD!</p>
+        </div>
+        <img id="reward-object" class="reward-object" src="./assets/words/hat.webp" alt="">
+        <p id="reward-word" class="reward-word">HAT</p>
+        <p id="reward-copy" class="reward-copy">One tiny sound made a whole new word!</p>
+        <div class="reward-actions">
+          <button id="play-again" class="clay-action coral" type="button" data-target="play-again" data-role="action">
+            <img src="./assets/ui/action-pill.webp" alt="" aria-hidden="true"><span>PLAY AGAIN</span>
+          </button>
+          <button id="choose-mode" class="clay-action purple" type="button" data-target="choose-mode" data-role="navigation">
+            <img src="./assets/ui/action-pill-blue.webp" alt="" aria-hidden="true"><span>CHOOSE MODE</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div id="loading" class="loading-card" role="status" aria-live="polite">
+      <img src="./assets/ui/magic-swap.webp" alt="" aria-hidden="true"><span>Warming up the clay…</span>
+    </div>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,47 +1,190 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Silly Sentence Builder 🤪 — Build Wacky Sentences Aloud</title>
-  <meta name="description" content="Drag who, action, place, and how picture cards into place and hear your silly sentence read aloud in full. A playful oral-grammar game for ages 5–6." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#10284c">
+  <title>Silly Sentence Builder — Make a Felt-Puppet Story</title>
+  <meta name="description" content="Choose a felt friend, a funny action, and a magical place, then watch your silly sentence perform on stage.">
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Silly Sentence Builder" />
-  <meta property="og:title" content="Silly Sentence Builder 🤪 — Build Wacky Sentences Aloud" />
-  <meta property="og:description" content="Drag who, action, place, and how picture cards into place and hear your silly sentence read aloud in full. A playful oral-grammar game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/silly-sentence-builder/" />
-  <meta property="og:image" content="https://qlo.be/games/silly-sentence-builder/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Silly Sentence Builder title screen with Make a Silly Sentence and Even Sillier game modes and a tongue-out face icon." />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silly Sentence Builder">
+  <meta property="og:title" content="Silly Sentence Builder — Make a Felt-Puppet Story">
+  <meta property="og:description" content="Build a silly sentence from picture cards and watch it become a tiny felt-puppet show.">
+  <meta property="og:url" content="https://qlo.be/games/silly-sentence-builder/">
+  <meta property="og:image" content="https://qlo.be/games/silly-sentence-builder/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A cozy felt puppet theater filled with friendly story characters and picture cards.">
 
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Silly Sentence Builder 🤪 — Build Wacky Sentences Aloud" />
-  <meta name="twitter:description" content="Drag who, action, place, and how picture cards into place and hear your silly sentence read aloud in full. A playful oral-grammar game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/silly-sentence-builder/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Silly Sentence Builder — Make a Felt-Puppet Story">
+  <meta name="twitter:description" content="Build a silly sentence from picture cards and watch it perform on a felt stage.">
+  <meta name="twitter:image" content="https://qlo.be/games/silly-sentence-builder/assets/og-image.jpg">
 
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/build-assemble.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" data-game-id="silly-sentence-builder">
+    <h1 class="visually-hidden">Silly Sentence Builder</h1>
+
+    <section id="splash" class="qk-screen" data-qk-screen="splash" aria-label="Silly Sentence Builder playhouse">
+      <img class="theater-plate" src="./assets/backgrounds/theater.webp" alt="">
+
+      <a class="felt-control splash-home" href="../../index.html" data-target="hub" data-role="navigation" aria-label="Back to QLOBE Kids">
+        <img src="./assets/ui/label-plaque.webp" alt="">
+        <span>QLOBE</span>
+      </a>
+
+      <img class="title-lockup" src="./assets/ui/title.webp" alt="Silly Sentence Builder">
+
+      <div class="splash-cast" aria-hidden="true">
+        <img class="peek-puppet peek-cat" src="./assets/characters/cat.webp" alt="">
+        <img class="peek-puppet peek-dinosaur" src="./assets/characters/dinosaur.webp" alt="">
+        <img class="peek-puppet peek-monster" src="./assets/characters/monster.webp" alt="">
+      </div>
+
+      <div id="mode-list" class="mode-list" role="group" aria-label="Choose how many story pieces to use"></div>
+
+      <div class="splash-hint" aria-hidden="true">
+        <img src="./assets/ui/sentence-strip.webp" alt="">
+        <span>Pick pictures. Make a story. See it perform!</span>
+      </div>
+    </section>
+
+    <section id="build" class="qk-screen" data-qk-screen="build" aria-label="Build a silly sentence" hidden>
+      <img class="theater-plate" src="./assets/backgrounds/theater.webp" alt="">
+
+      <header class="game-hud build-hud">
+        <button id="build-back" class="felt-control hud-control" type="button" data-target="back" data-role="navigation" aria-label="Back to the playhouse">
+          <img src="./assets/ui/label-plaque.webp" alt="">
+          <span>Back</span>
+        </button>
+
+        <div id="build-progress" class="progress-plaque" role="img" aria-label="Show 1 of 3">
+          <img class="progress-base" src="./assets/ui/label-plaque.webp" alt="">
+          <span id="build-progress-stars" class="progress-stars" aria-hidden="true"></span>
+        </div>
+
+        <button id="build-sound" class="felt-control hud-control" type="button" data-target="sound" data-role="replay" aria-label="Hear the instruction again">
+          <img src="./assets/ui/action-button.webp" alt="">
+          <span>Hear it</span>
+        </button>
+      </header>
+
+      <div class="build-workspace">
+        <div id="sentence-board" class="sentence-board" aria-label="Your sentence pieces">
+          <img class="sentence-board-art" src="./assets/ui/sentence-strip.webp" alt="">
+          <div id="sentence-slots" class="sentence-slots"></div>
+        </div>
+
+        <div id="selection-zone" class="selection-zone">
+          <div id="category-prompt" class="category-prompt" aria-hidden="true">
+            <img src="./assets/ui/label-plaque.webp" alt="">
+            <span id="category-prompt-text"></span>
+          </div>
+          <div id="choice-pocket" class="choice-pocket">
+            <img id="pocket-art" class="pocket-art" src="./assets/ui/tray-who.webp" alt="">
+            <div id="choice-grid" class="choice-grid"></div>
+          </div>
+        </div>
+
+        <div id="ready-zone" class="ready-zone" hidden>
+          <div class="ready-cast" aria-hidden="true">
+            <img src="./assets/characters/duck.webp" alt="">
+            <img src="./assets/characters/robot.webp" alt="">
+            <img src="./assets/characters/bunny.webp" alt="">
+          </div>
+          <button id="show-button" class="felt-control show-button" type="button" data-target="show" data-role="show" aria-label="Show my silly sentence">
+            <img src="./assets/ui/action-button.webp" alt="">
+            <span>SHOW IT!</span>
+          </button>
+          <p>Tap a story piece above to change it.</p>
+        </div>
+      </div>
+
+      <p id="build-status" class="visually-hidden" aria-live="polite"></p>
+      <div id="drag-layer" class="drag-layer" aria-hidden="true"></div>
+    </section>
+
+    <section id="reveal" class="qk-screen" data-qk-screen="reveal" aria-label="Your silly sentence show" hidden>
+      <img class="theater-plate" src="./assets/backgrounds/theater.webp" alt="">
+
+      <header class="game-hud reveal-hud">
+        <button id="reveal-back" class="felt-control hud-control" type="button" data-target="reveal-back" data-role="navigation" aria-label="Back to the playhouse">
+          <img src="./assets/ui/label-plaque.webp" alt="">
+          <span>Back</span>
+        </button>
+        <div id="reveal-progress" class="progress-plaque" role="img" aria-label="Show 1 of 3">
+          <img class="progress-base" src="./assets/ui/label-plaque.webp" alt="">
+          <span id="reveal-progress-stars" class="progress-stars" aria-hidden="true"></span>
+        </div>
+      </header>
+
+      <div id="reveal-stage" class="reveal-stage" aria-live="polite">
+        <img id="reveal-place" class="reveal-place" src="" alt="">
+        <div id="motion-rig" class="motion-rig">
+          <div id="actor-rig" class="actor-rig">
+            <img id="reveal-action" class="reveal-action" src="" alt="">
+            <img id="reveal-character" class="reveal-character" src="" alt="">
+            <img id="reveal-manner" class="reveal-manner" src="" alt="">
+          </div>
+        </div>
+        <div id="celebration-layer" class="celebration-layer" aria-hidden="true"></div>
+      </div>
+
+      <div id="reveal-sentence" class="reveal-sentence">
+        <img src="./assets/ui/sentence-strip.webp" alt="">
+        <p id="reveal-sentence-text"></p>
+      </div>
+
+      <div class="reveal-actions" role="group" aria-label="What next">
+        <button id="replay-button" class="felt-control reveal-control" type="button" data-target="replay" data-role="replay" aria-label="Hear and see the sentence again">
+          <img src="./assets/ui/label-plaque.webp" alt="">
+          <span>Replay</span>
+        </button>
+        <button id="edit-button" class="felt-control reveal-control" type="button" data-target="edit" data-role="edit" aria-label="Change this sentence">
+          <img src="./assets/ui/label-plaque.webp" alt="">
+          <span>Change it</span>
+        </button>
+        <button id="another-button" class="felt-control reveal-control another-control" type="button" data-target="another" data-role="continue" aria-label="Make another silly sentence">
+          <img src="./assets/ui/action-button.webp" alt="">
+          <span>Make another</span>
+        </button>
+      </div>
+      <p id="reveal-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="end" class="qk-screen" data-qk-screen="end" aria-label="Your silly story quilt" hidden>
+      <img class="theater-plate" src="./assets/backgrounds/theater.webp" alt="">
+
+      <button id="end-back" class="felt-control hud-control end-back" type="button" data-target="end-back" data-role="navigation" aria-label="Back to the playhouse">
+        <img src="./assets/ui/label-plaque.webp" alt="">
+        <span>Back</span>
+      </button>
+
+      <div class="end-heading" aria-hidden="true">
+        <img src="./assets/ui/action-button.webp" alt="">
+        <span>YOUR SILLY STORY QUILT!</span>
+      </div>
+
+      <div id="story-quilt" class="story-quilt" aria-label="Three completed silly shows"></div>
+
+      <button id="again-button" class="felt-control again-button" type="button" data-target="again" data-role="again" aria-label="Make three more silly sentences">
+        <img src="./assets/ui/action-button.webp" alt="">
+        <span>Three more!</span>
+      </button>
+      <p id="end-status" class="visually-hidden" aria-live="polite"></p>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

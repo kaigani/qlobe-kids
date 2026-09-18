@@ -1,0 +1,37 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "smell-jars-title-layered-alpha",
+  "kind": "image",
+  "asset": "assets/source/layered/title.final.png",
+  "artDirection": "Toy",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: empty transparent or flat ground. Top layer: the complete wooden Smell Jars hanging title plaque with both cords, exact lettering, and all edge detail; preserve the source exactly; no redesign, no added elements.",
+      "seed": 42,
+      "layers": 2,
+      "selectedOutput": "layer_2"
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "maxSize": 1120,
+      "pad": 12,
+      "alphaFloor": 4
+    }
+  ],
+  "source": "assets/source/gpt-image-2/title-source.png",
+  "sourceSha256": "7e955043f263837194d0030ed373de543a73dc53bf3fb3751e7dc1eafdec0124",
+  "layer2Sha256": "3dc4ddec9b5f60d052d507a2011206b360cff2655d8b979f2a49d489f7a605e5",
+  "finalSha256": "d342cb9fbe8908d8b08bc8604b66f1d9c4013d9ed999e6f353de814621a20726",
+  "qa": {
+    "status": "rejected",
+    "transparentPct": 59.654,
+    "opaquePct": 35.464,
+    "partialPct": 4.882,
+    "partialBandFlagReviewed": true,
+    "exactTextReviewed": "Smell Jars",
+    "magenta": "assets/source/layered/title.qa-magenta.png",
+    "reason": "Exact lettering passed, but adversarial splash review found thin red/yellow generator spill at the rope and plaque silhouette. Superseded by assets/source/local-api/title/title-clean.recipe.json."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "format": "qlobe-local-api-qa",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "input": "../crops/foods/blackberry.png",
+  "inputSha256": "cc73b7513087f4072ec813502a85e4c7cd9fd53ea6cd983cd99dc0ffb05701f9",
+  "requiredOutput": "foods/blackberry.qwen-layer2.png",
+  "outputSha256": "08d7914a08d98dd9ba52a1bd75b9de6c1d7972cd4c8766f3e984d1516bf08598",
+  "prompt": "Background layer: the complete transparent or plain background only. Top layer: the exact same purple blackberry character from the input, isolated on a truly transparent background. Preserve its silhouette, face, leaf crown, color, texture, proportions, lighting and every detail. Do not redesign, restyle, crop, add, remove or duplicate anything.",
+  "qa": {
+    "status": "rejected",
+    "reason": "The required layer_2 alpha maximum was 3/255 and contained no usable subject; the accepted cutter mask preserved the source character more faithfully."
+  },
+  "created": "2026-09-17"
+}

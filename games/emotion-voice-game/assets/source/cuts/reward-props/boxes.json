@@ -1,0 +1,262 @@
+{
+  "source": "reward-props-sheet-master.png",
+  "sourceSha256": "45927da914f1f99e546cf3dc61068fd6bb4c2bd4b5e16376d8cd152199f52449",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 4,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "happy-star-left",
+      "file": "happy-star-left.png",
+      "componentArea": 6868,
+      "foregroundBbox": [
+        96,
+        244,
+        205,
+        353
+      ],
+      "cropBbox": [
+        92,
+        240,
+        209,
+        357
+      ],
+      "cropXywh": [
+        92,
+        240,
+        117,
+        117
+      ],
+      "normalizedCropBbox": [
+        0.063536,
+        0.220994,
+        0.144337,
+        0.328729
+      ]
+    },
+    {
+      "index": 2,
+      "name": "happy-streamer-green-left",
+      "file": "happy-streamer-green-left.png",
+      "componentArea": 26764,
+      "foregroundBbox": [
+        188,
+        128,
+        328,
+        487
+      ],
+      "cropBbox": [
+        184,
+        124,
+        332,
+        491
+      ],
+      "cropXywh": [
+        184,
+        124,
+        148,
+        367
+      ],
+      "normalizedCropBbox": [
+        0.127072,
+        0.11418,
+        0.229282,
+        0.452118
+      ]
+    },
+    {
+      "index": 3,
+      "name": "happy-streamer-gold",
+      "file": "happy-streamer-gold.png",
+      "componentArea": 39022,
+      "foregroundBbox": [
+        330,
+        45,
+        485,
+        513
+      ],
+      "cropBbox": [
+        326,
+        41,
+        489,
+        517
+      ],
+      "cropXywh": [
+        326,
+        41,
+        163,
+        476
+      ],
+      "normalizedCropBbox": [
+        0.225138,
+        0.037753,
+        0.337707,
+        0.476059
+      ]
+    },
+    {
+      "index": 4,
+      "name": "happy-streamer-green-right",
+      "file": "happy-streamer-green-right.png",
+      "componentArea": 18753,
+      "foregroundBbox": [
+        489,
+        150,
+        605,
+        476
+      ],
+      "cropBbox": [
+        485,
+        146,
+        609,
+        480
+      ],
+      "cropXywh": [
+        485,
+        146,
+        124,
+        334
+      ],
+      "normalizedCropBbox": [
+        0.334945,
+        0.134438,
+        0.42058,
+        0.441989
+      ]
+    },
+    {
+      "index": 5,
+      "name": "happy-star-right",
+      "file": "happy-star-right.png",
+      "componentArea": 6041,
+      "foregroundBbox": [
+        586,
+        232,
+        686,
+        337
+      ],
+      "cropBbox": [
+        582,
+        228,
+        690,
+        341
+      ],
+      "cropXywh": [
+        582,
+        228,
+        108,
+        113
+      ],
+      "normalizedCropBbox": [
+        0.401934,
+        0.209945,
+        0.476519,
+        0.313996
+      ]
+    },
+    {
+      "index": 6,
+      "name": "proud-medal",
+      "file": "proud-medal.png",
+      "componentArea": 86817,
+      "foregroundBbox": [
+        909,
+        44,
+        1233,
+        514
+      ],
+      "cropBbox": [
+        905,
+        40,
+        1237,
+        518
+      ],
+      "cropXywh": [
+        905,
+        40,
+        332,
+        478
+      ],
+      "normalizedCropBbox": [
+        0.625,
+        0.036832,
+        0.854282,
+        0.47698
+      ]
+    },
+    {
+      "index": 7,
+      "name": "calm-mobile",
+      "file": "calm-mobile.png",
+      "componentArea": 96370,
+      "foregroundBbox": [
+        138,
+        537,
+        645,
+        1019
+      ],
+      "cropBbox": [
+        134,
+        533,
+        649,
+        1023
+      ],
+      "cropXywh": [
+        134,
+        533,
+        515,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.092541,
+        0.490792,
+        0.448204,
+        0.941989
+      ]
+    },
+    {
+      "index": 8,
+      "name": "silly-hat",
+      "file": "silly-hat.png",
+      "componentArea": 159839,
+      "foregroundBbox": [
+        779,
+        593,
+        1387,
+        1003
+      ],
+      "cropBbox": [
+        775,
+        589,
+        1391,
+        1007
+      ],
+      "cropXywh": [
+        775,
+        589,
+        616,
+        418
+      ],
+      "normalizedCropBbox": [
+        0.535221,
+        0.542357,
+        0.960635,
+        0.927256
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

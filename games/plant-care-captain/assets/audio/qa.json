@@ -1,0 +1,254 @@
+{
+  "welcome": {
+    "expected": "Welcome, Plant Care Captain! Choose a plant friend.",
+    "transcript": "Welcome! Plant care captain! Choose a plant friend!",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "3f44c951ebe542889a9e08e8ead98537",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/welcome/whisper-response.json"
+    }
+  },
+  "chosen": {
+    "expected": "Hello, little sprout! Let's help you grow.",
+    "transcript": "Hello, little sprout. Let's help you grow.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "021da441ea1e437881302ec904615ce5",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/chosen/whisper-response.json"
+    }
+  },
+  "water-intro": {
+    "expected": "The soil looks dry. Bring the watering can to the pot.",
+    "transcript": "The soil looks dry. Bring the watering can to the pot.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 8,
+      "job": null,
+      "mode": "synchronous retry",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/water-intro/whisper-response.json"
+    }
+  },
+  "water-nudge": {
+    "expected": "The thirsty soil is waiting for a little drink.",
+    "transcript": "The thirsty soil is waiting for a little drink.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "c1f0bdb45e74429f9aa5aedf46872b38",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/water-nudge/whisper-response.json"
+    }
+  },
+  "water-done": {
+    "expected": "Just right! Look how tall your plant grew.",
+    "transcript": "Just right! Look how tall your plant grew!",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "e9678dcb09724b67bd89d48cd811aa76",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/water-done/whisper-response.json"
+    }
+  },
+  "mist-intro": {
+    "expected": "Tap the mister over the leaves. Soft little clouds!",
+    "transcript": "Tap the mister over the leaves. Soft little clouds.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "3c6d94792a194bfcb8bcb14a8745f0e5",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/mist-intro/whisper-response.json"
+    }
+  },
+  "mist-nudge": {
+    "expected": "The leaves are ready for a gentle mist.",
+    "transcript": "The leaves are ready for a gentle mist.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "5ccb13e7fef44503bb028e5d5db9cda4",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/mist-nudge/whisper-response.json"
+    }
+  },
+  "mist-done": {
+    "expected": "Fresh and shiny! Your plant feels bright.",
+    "transcript": "Fresh and shiny, your plant feels bright!",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "a4656c2d529346188141d7a893508928",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/mist-done/whisper-response.json"
+    }
+  },
+  "prune-intro": {
+    "expected": "The dry leaves are ready to come off. Give each one a gentle snip.",
+    "transcript": "The dry leaves are ready to come off. Give each one a gentle snip.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "dba3776fc0244360b9e8608747ad7958",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/prune-intro/whisper-response.json"
+    }
+  },
+  "prune-nudge": {
+    "expected": "Find a curly brown leaf for the shears.",
+    "transcript": "Find a curly brown leaf for the shears.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "6d762205515146a4b5dec53cfe530202",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/prune-nudge/whisper-response.json"
+    }
+  },
+  "prune-done": {
+    "expected": "Snip, snip, hooray! A new bud is peeking out.",
+    "transcript": "Snip, snip, hooray! A new bud is peeking out!",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "740d40d295aa4dba8e7e1cd4bd10a1a6",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/prune-done/whisper-response.json"
+    }
+  },
+  "thriving": {
+    "expected": "Look how happy your plant is! Your caring hands helped it bloom.",
+    "transcript": "Look how happy your plant is! Your caring hands helped it bloom!",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "a63d23c4e87a48558bc87faa15c93656",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/thriving/whisper-response.json"
+    }
+  },
+  "replay": {
+    "expected": "Ready for another growing day?",
+    "transcript": "Ready for another growing day?",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "c19cb8d867de401cbea856cba2a12440",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/replay/whisper-response.json"
+    }
+  },
+  "enough": {
+    "expected": "That's enough for now. Gentle care is just right.",
+    "transcript": "That's enough for now. Gentle care is just right.",
+    "pass": true,
+    "tts": {
+      "workflow": "qwen3-tts-voiceclone",
+      "seed": 7,
+      "job": "59e606ff247b4ea7b9cd859b3dd6ae9c",
+      "mode": "asynchronous batch",
+      "teacherReference": "shared/assets/refs/voice-teacher.wav"
+    },
+    "whisper": {
+      "workflow": "whisper-stt",
+      "modelSize": "small",
+      "language": "en",
+      "receipt": "../source/local-api/voice/enough/whisper-response.json"
+    }
+  }
+}

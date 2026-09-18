@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "hub-tile-fallback-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{
+    "workflow": "gpt-image-2",
+    "mode": "built-in-imagegen",
+    "promptRef": "PROMPTS.md#hub-tile-fallback--hub-tile-fallback-masterpng",
+    "references": ["assets/hub/tiles/secret-message-copy.jpg (pre-production material reference)"]
+  }],
+  "fallback": {
+    "from": "krea2-turbo-t2i",
+    "reason": "Configured LAN worker failed before inference because its upstream /free endpoint returned 404. No Krea candidate was produced."
+  },
+  "qa": {"status": "accepted", "checks": ["Toy hub grammar", "owl plus sealed envelope unmistakable", "three distinct stamp tokens", "no text or UI", "safe 640x533 crop"]}
+}

@@ -1,0 +1,127 @@
+{
+  "id": "question-ball",
+  "title": "Question Ball",
+  "status": "beta",
+  "age": { "min": 3, "max": 6 },
+  "category": "oral-storytelling",
+  "tagline": "Toss, talk, and share!",
+  "assets": {
+    "playroom": "assets/art/playroom.webp",
+    "title": "assets/art/title.webp",
+    "ballIdle": "assets/art/ball-idle.webp",
+    "ballOpen": "assets/art/ball-open.webp",
+    "star": "assets/art/star.webp",
+    "microphone": "assets/art/microphone.webp",
+    "gestureToss": "assets/art/gesture-toss.webp",
+    "questionBubble": "assets/art/question-bubble.webp",
+    "mayaListen": "assets/art/maya-listen.webp",
+    "mayaCelebrate": "assets/art/maya-celebrate.webp",
+    "leoCatch": "assets/art/leo-catch.webp",
+    "leoCelebrate": "assets/art/leo-celebrate.webp",
+    "plaqueNavy": "assets/art/plaque-navy.webp",
+    "buttonGreen": "assets/art/button-green.webp",
+    "promptPanel": "assets/art/prompt-panel.webp",
+    "cardGold": "assets/art/card-gold.webp",
+    "cardGreen": "assets/art/card-green.webp",
+    "cardLavender": "assets/art/card-lavender.webp",
+    "cardCoral": "assets/art/card-coral.webp"
+  },
+  "voice": {
+    "manifest": "assets/audio/manifest.json",
+    "lines": "assets/audio/lines.json"
+  },
+  "music": {
+    "src": "../../shared/assets/music/upbeat-playground-pop.mp3",
+    "key": "question-ball-playroom",
+    "volume": 0.14
+  },
+  "lines": {
+    "welcome": "Ready to play and share? Tap the Question Ball!",
+    "choose-topic": "Pick a picture. What should we talk about?",
+    "topic-routines": "Daily routines!",
+    "topic-animals": "Amazing animals!",
+    "topic-imagine": "Let’s imagine!",
+    "topic-feelings": "Feelings and friends!",
+    "toss": "Toss the Question Ball!",
+    "toss-nudge": "Give the soft ball a tap or a swipe.",
+    "share": "Your turn to share. Hold the microphone while you talk, or tell someone beside you.",
+    "recording": "I’m listening.",
+    "recorded": "I heard your idea! Tap the ear to hear it, or share it now.",
+    "mic-fallback": "That’s okay. Tell someone beside you, then tap the two friends.",
+    "great-sharing-1": "Great sharing!",
+    "great-sharing-2": "What a wonderful idea!",
+    "great-sharing-3": "You made that question sparkle!",
+    "next-question": "Ready for another question?",
+    "session-cheer": "Three sharing stars! You are a wonderful conversation friend."
+  },
+  "packs": [
+    {
+      "id": "routines",
+      "title": "Daily Routines",
+      "shortTitle": "My Day",
+      "voiceKey": "topic-routines",
+      "art": "assets/art/topic-routines.webp",
+      "card": "assets/art/card-gold.webp",
+      "skill": "describe familiar sequences and people",
+      "prompts": [
+        { "id": "routines-1", "voiceKey": "prompt-routines-1", "text": "What do you like to do when you wake up?" },
+        { "id": "routines-2", "voiceKey": "prompt-routines-2", "text": "Who helps you get ready for the day?" },
+        { "id": "routines-3", "voiceKey": "prompt-routines-3", "text": "Why do we wash our hands before eating?" },
+        { "id": "routines-4", "voiceKey": "prompt-routines-4", "text": "How do you get cozy for bedtime?" },
+        { "id": "routines-5", "voiceKey": "prompt-routines-5", "text": "What snack would you make for someone you love?" },
+        { "id": "routines-6", "voiceKey": "prompt-routines-6", "text": "Who would you invite to help with a little cleanup?" }
+      ]
+    },
+    {
+      "id": "animals",
+      "title": "Amazing Animals",
+      "shortTitle": "Animals",
+      "voiceKey": "topic-animals",
+      "art": "assets/art/topic-animals.webp",
+      "card": "assets/art/card-green.webp",
+      "skill": "describe, explain, and imagine with animal vocabulary",
+      "prompts": [
+        { "id": "animals-1", "voiceKey": "prompt-animals-1", "text": "What animal would make a funny friend?" },
+        { "id": "animals-2", "voiceKey": "prompt-animals-2", "text": "Who takes care of animals when they need help?" },
+        { "id": "animals-3", "voiceKey": "prompt-animals-3", "text": "Why do you think birds build nests?" },
+        { "id": "animals-4", "voiceKey": "prompt-animals-4", "text": "How would a penguin dance at a party?" },
+        { "id": "animals-5", "voiceKey": "prompt-animals-5", "text": "What sound would a tiny lion make?" },
+        { "id": "animals-6", "voiceKey": "prompt-animals-6", "text": "Who would you explore the jungle with?" }
+      ]
+    },
+    {
+      "id": "imagine",
+      "title": "Let’s Imagine",
+      "shortTitle": "Imagine",
+      "voiceKey": "topic-imagine",
+      "art": "assets/art/topic-imagine.webp",
+      "card": "assets/art/card-lavender.webp",
+      "skill": "practice flexible thinking and invented explanations",
+      "prompts": [
+        { "id": "imagine-1", "voiceKey": "prompt-imagine-1", "text": "What would you put in a magic backpack?" },
+        { "id": "imagine-2", "voiceKey": "prompt-imagine-2", "text": "Who lives inside a rainbow castle?" },
+        { "id": "imagine-3", "voiceKey": "prompt-imagine-3", "text": "Why would a cloud need a pair of shoes?" },
+        { "id": "imagine-4", "voiceKey": "prompt-imagine-4", "text": "How would you travel all the way to the moon?" },
+        { "id": "imagine-5", "voiceKey": "prompt-imagine-5", "text": "What would your friendly robot cook for dinner?" },
+        { "id": "imagine-6", "voiceKey": "prompt-imagine-6", "text": "Who would you invite to a dragon picnic?" }
+      ]
+    },
+    {
+      "id": "feelings",
+      "title": "Feelings and Friends",
+      "shortTitle": "Feelings",
+      "voiceKey": "topic-feelings",
+      "art": "assets/art/topic-feelings.webp",
+      "card": "assets/art/card-coral.webp",
+      "skill": "name feelings and describe supportive actions",
+      "prompts": [
+        { "id": "feelings-1", "voiceKey": "prompt-feelings-1", "text": "What makes you smile?" },
+        { "id": "feelings-2", "voiceKey": "prompt-feelings-2", "text": "Who helps you feel safe?" },
+        { "id": "feelings-3", "voiceKey": "prompt-feelings-3", "text": "Why might someone need a hug?" },
+        { "id": "feelings-4", "voiceKey": "prompt-feelings-4", "text": "How can you help a friend who feels sad?" },
+        { "id": "feelings-5", "voiceKey": "prompt-feelings-5", "text": "What can you do when you feel frustrated?" },
+        { "id": "feelings-6", "voiceKey": "prompt-feelings-6", "text": "Who do you like to celebrate with?" }
+      ]
+    }
+  ]
+}

@@ -9,7 +9,14 @@
       "modelLine": "happy-model",
       "successLine": "happy-success",
       "pose": "bear-happy.webp",
-      "card": "card-happy.webp"
+      "card": "card-happy.webp",
+      "rewards": [
+        "happy-star-left.webp",
+        "happy-streamer-green-left.webp",
+        "happy-streamer-gold.webp",
+        "happy-streamer-green-right.webp",
+        "happy-star-right.webp"
+      ]
     },
     {
       "id": "proud",
@@ -18,7 +25,8 @@
       "modelLine": "proud-model",
       "successLine": "proud-success",
       "pose": "bear-proud.webp",
-      "card": "card-proud.webp"
+      "card": "card-proud.webp",
+      "rewards": ["proud-medal.webp"]
     },
     {
       "id": "calm",
@@ -27,7 +35,8 @@
       "modelLine": "calm-model",
       "successLine": "calm-success",
       "pose": "bear-calm.webp",
-      "card": "card-calm.webp"
+      "card": "card-calm.webp",
+      "rewards": ["calm-mobile.webp"]
     },
     {
       "id": "silly",
@@ -36,7 +45,8 @@
       "modelLine": "silly-model",
       "successLine": "silly-success",
       "pose": "bear-silly.webp",
-      "card": "card-silly.webp"
+      "card": "card-silly.webp",
+      "rewards": ["silly-hat.webp"]
     }
   ]
 }

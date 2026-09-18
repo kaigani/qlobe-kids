@@ -3,33 +3,42 @@
   "title": "Silly Sentence Builder",
   "category": "oral-storytelling",
   "path": "games/silly-sentence-builder/",
-  "icon": "🤪",
+  "icon": "assets/characters/cat.webp",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f25f5c",
-  "shareTitle": "Silly Sentence Builder 🤪 — Build Wacky Sentences Aloud",
-  "description": "Drag who, action, place, and how picture cards into place and hear your silly sentence read aloud in full. A playful oral-grammar game for ages 5–6.",
+  "age": { "min": 4, "max": 7 },
+  "status": "beta",
+  "accent": "#7a235c",
+  "shareTitle": "Silly Sentence Builder — Make a Felt-Puppet Story",
+  "description": "Choose a felt friend, a funny action, and a magical place, then hear the complete sentence and watch the exact pieces perform together on a cozy puppet stage.",
   "learningGoals": [
-    "Practice oral sentence structure",
-    "Hear subject, action, and setting in order",
-    "Rehearse playful complete sentences"
+    "Build and rehearse complete subject-action-place sentences",
+    "Hear sentence parts combined in left-to-right order",
+    "Expand an oral sentence with a descriptive manner phrase"
   ],
-  "interactionModel": "build-assemble drag or tap-tap picture cards onto ghost positions",
-  "feedbackModel": "Correct cards pop, sparkle, and speak their sentence part; misses wiggle gently with a spoken nudge and retry. Finished builds are read aloud as silly full sentences.",
+  "interactionModel": "custom DOM felt-theater builder with guided category choices, tap-or-drag assembly, reversible slots, compositional puppet reveals, and three-round story quilts",
+  "feedbackModel": "Every accepted picture speaks and settles into its matching stitched slot; completed sentences unlock an explicit show button, recorded read-aloud, semantic layered animation, celebration, replay/edit controls, and a three-show quilt payoff.",
   "uses": [
-    "shared/js/engines/build-assemble.js",
-    "shared/js/speech.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
     "shared/js/sfx.js",
-    "shared/assets/ui/",
-    "shared/fonts/fredoka-latin-600-normal.woff2"
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3"
   ],
   "modes": [
     { "id": "silly", "title": "Make a Silly Sentence", "skill": "subject-action-place sentence structure" },
-    { "id": "sillier", "title": "Even Sillier", "skill": "subject-action-place-adverb sentence expansion" }
+    { "id": "sillier", "title": "Even Sillier", "skill": "subject-action-place-manner sentence expansion" }
   ],
+  "privacy": { "recording": "none", "storage": "none", "uploads": false, "exports": false },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder card art only. Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original felt production art made with GPT Image 2 and approved local Krea 2; platform teacher narration made with Qwen voice clone and Whisper QA. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

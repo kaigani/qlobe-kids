@@ -18,8 +18,9 @@ const emotionLabel = $('#emotion-label');
 const micButton = $('#mic-button');
 const micLabel = $('#mic-label');
 const fallbackButton = $('#fallback-button');
+const replayButton = $('#replay-button');
 const listenStatus = $('#listen-status');
-const lights = [...document.querySelectorAll('.voice-lights i')];
+const lights = [...document.querySelectorAll('.voice-lights img')];
 const progress = $('#progress');
 const announcer = $('#announcer');
 const resultBear = $('#result-bear');
@@ -29,6 +30,7 @@ const resultHint = $('#result-hint');
 const resultKicker = $('#result-kicker');
 const sparkRow = $('#spark-row');
 const nextButton = $('#next-button');
+const rewardStage = $('#reward-stage');
 const mouthEls = {
   splash: $('#splash-mouth'),
   play: $('#actor-mouth'),
@@ -79,6 +81,8 @@ const ready = Promise.all([
     ...config.emotions.map((item) => `./assets/characters/${item.pose}`),
     ...config.emotions.map((item) => `./assets/ui/${item.card}`),
     './assets/ui/mic.webp', './assets/ui/star.webp',
+    './assets/ui/replay.webp', './assets/ui/costume-trunk.webp',
+    ...config.emotions.flatMap((item) => (item.rewards || []).map((asset) => `./assets/rewards/${asset}`)),
     ...mouthShapes.map((shape) => `${mouthBase}mouth-${shape}.png`),
   ]),
 ]);
@@ -188,8 +192,10 @@ async function startEmotion(id) {
   actor.alt = `Teddy showing a ${emotion.label.toLowerCase()} feeling`;
   actorPuppet.classList.remove('listening');
   fallbackButton.hidden = true;
+  fallbackButton.disabled = false;
   micButton.hidden = false;
   micButton.disabled = true;
+  replayButton.disabled = true;
   micLabel.textContent = 'Listen first';
   listenStatus.textContent = emotion.hint;
   setLights(0);
@@ -197,6 +203,7 @@ async function startEmotion(id) {
   await voice.say(emotion.modelLine, defaultLines[emotion.modelLine]);
   if (state.screen !== 'play' || state.emotion !== emotion) return;
   micButton.disabled = false;
+  replayButton.disabled = false;
   micLabel.textContent = 'My turn!';
   listenStatus.textContent = 'Tap the microphone';
   announcer.textContent = `Your turn. Say I can do it in a ${emotion.label} voice.`;
@@ -204,30 +211,35 @@ async function startEmotion(id) {
 
 async function perform() {
   if (state.listening || !state.emotion) return;
+  const emotion = state.emotion;
   state.listening = true;
   micButton.disabled = true;
+  replayButton.disabled = true;
   micLabel.textContent = 'Get ready';
   listenStatus.textContent = 'Get ready…';
 
   if (state.micMode === 'fake') {
     await voice.say('ready', defaultLines.ready);
     await delay(120);
-    finishPerformance(fakeSummary(state.emotion.id));
+    if (isActiveTurn(emotion)) finishPerformance(fakeSummary(emotion.id));
     return;
   }
 
   const allowed = await meter.request();
+  if (!isActiveTurn(emotion)) return;
   if (!allowed) {
     state.listening = false;
     micButton.hidden = true;
     fallbackButton.hidden = false;
     listenStatus.textContent = 'No microphone? You can still play!';
     await voice.say('mic-fallback', defaultLines['mic-fallback']);
+    if (isActiveTurn(emotion)) replayButton.disabled = false;
     return;
   }
 
   await voice.say('ready', defaultLines.ready);
   await delay(360);
+  if (!isActiveTurn(emotion)) return;
   micLabel.textContent = 'Listening';
   listenStatus.textContent = 'Say: I can do it!';
   actorPuppet.classList.add('listening');
@@ -236,15 +248,19 @@ async function perform() {
     onFrame(frame) { setLights(frame.level); },
   });
   actorPuppet.classList.remove('listening');
-  if (state.screen !== 'play') return;
+  if (!isActiveTurn(emotion)) return;
   if (!summary.heard) {
     state.listening = false;
-    micButton.disabled = false;
+    micButton.disabled = true;
     micLabel.textContent = 'Try again';
     listenStatus.textContent = 'Bring your voice a little closer';
     setLights(0);
     sfx.boing();
     await voice.say('quiet-nudge', defaultLines['quiet-nudge']);
+    if (isActiveTurn(emotion)) {
+      micButton.disabled = false;
+      replayButton.disabled = false;
+    }
     return;
   }
   finishPerformance(summary);
@@ -252,13 +268,15 @@ async function perform() {
 
 async function fallbackPerform() {
   if (state.listening || !state.emotion) return;
+  const emotion = state.emotion;
   state.listening = true;
   fallbackButton.disabled = true;
   listenStatus.textContent = 'Say: I can do it!';
   setLights(.75);
   await delay(1700);
+  if (!isActiveTurn(emotion)) return;
   fallbackButton.disabled = false;
-  finishPerformance(fakeSummary(state.emotion.id));
+  finishPerformance(fakeSummary(emotion.id));
 }
 
 async function finishPerformance(summary) {
@@ -275,6 +293,7 @@ async function finishPerformance(summary) {
   resultTitle.textContent = `${emotion.label.toLowerCase()}!`;
   resultHint.textContent = emotion.hint;
   renderSparks(sparks);
+  renderRewards(emotion);
   const complete = state.completed.size === config.emotions.length;
   nextButton.textContent = complete ? 'Encore!' : 'Next feeling';
   screens.show('result');
@@ -308,10 +327,24 @@ function renderSparks(count) {
   }
 }
 
+function renderRewards(emotion) {
+  rewardStage.replaceChildren();
+  rewardStage.dataset.emotion = emotion.id;
+  rewardStage.setAttribute('aria-label', `${emotion.label} theater reward`);
+  (emotion.rewards || []).forEach((asset, index) => {
+    const image = document.createElement('img');
+    image.src = `./assets/rewards/${asset}`;
+    image.alt = '';
+    image.className = `reward reward-${index + 1}`;
+    image.style.setProperty('--reward-delay', `${index * 90}ms`);
+    rewardStage.append(image);
+  });
+}
+
 function setLights(level) {
   const value = Math.max(0, Math.min(1, Number(level) || 0));
   lights.forEach((light, index) => {
-    const scale = Math.max(.28, Math.min(1.35, value * (1.65 - index * .18)));
+    const scale = Math.max(.6, Math.min(1.35, value * (1.65 - index * .18)));
     light.style.setProperty('--level', scale.toFixed(2));
     light.style.opacity = value > index * .22 ? '1' : '.42';
   });
@@ -322,6 +355,26 @@ function stopListening() {
   actorPuppet.classList.remove('listening');
   meter.close();
   setLights(0);
+}
+
+async function replayModel() {
+  if (state.listening || !state.emotion) return;
+  const emotion = state.emotion;
+  replayButton.disabled = true;
+  micButton.disabled = true;
+  fallbackButton.disabled = true;
+  listenStatus.textContent = 'Teddy is showing you…';
+  await voice.say(emotion.modelLine, defaultLines[emotion.modelLine]);
+  if (isActiveTurn(emotion)) {
+    replayButton.disabled = false;
+    micButton.disabled = false;
+    fallbackButton.disabled = false;
+    listenStatus.textContent = 'Tap the microphone';
+  }
+}
+
+function isActiveTurn(emotion) {
+  return state.screen === 'play' && state.emotion === emotion;
 }
 
 function fakeSummary(profile) {
@@ -340,6 +393,7 @@ function fakeSummary(profile) {
 function delay(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 onTap(micButton, perform);
+onTap(replayButton, replayModel);
 onTap(fallbackButton, fallbackPerform);
 onTap(nextButton, next);
 for (const button of document.querySelectorAll('.play-back, .result-back')) onTap(button, backToSplash);

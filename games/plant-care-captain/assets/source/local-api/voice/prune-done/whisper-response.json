@@ -1,0 +1,26 @@
+{
+  "key": "prune-done",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "Snip, snip, hooray! A new bud is peeking out!",
+    "srt": "1\n00:00:00,000 --> 00:00:04,500\nSnip, snip, hooray! A new bud is peeking out!\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 4.5,
+          "text": "Snip, snip, hooray! A new bud is peeking out!"
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "Snip, snip, hooray! A new bud is peeking out.",
+  "transcript": "Snip, snip, hooray! A new bud is peeking out!",
+  "pass": true
+}

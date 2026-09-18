@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-complete",
+  "kind": "voice",
+  "asset": "magnet-voice-complete.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Amazing exploring! You tested, searched, and guided with magnet power.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "Amazing exploring! You tested, searched, and guided with magnet power.",
+      "heard": "amazing exploring! You tested, searched and guided with magnet power.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

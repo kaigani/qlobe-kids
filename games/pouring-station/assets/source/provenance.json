@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-17",
+  "artWorld": "Toy",
+  "gptImage2": {
+    "mode": "built-in imagegen with concept mockup reference",
+    "selected": [
+      {
+        "id": "01a0aea5-e0af-7e01-b521-f022577d6c73/exec-e4117cf3-41a8-4718-945a-2828b69a6753.png",
+        "runtimeRole": "kitchen-tray scene",
+        "path": "gpt-image-2/kitchen-tray.png"
+      },
+      {
+        "id": "01a0aea5-e0af-7e01-b521-f022577d6c73/exec-3baae69c-5df5-4bf0-ad66-6450ec5cbb39.png",
+        "runtimeRole": "six-object cutout sheet",
+        "path": "gpt-image-2/token-sheet-magenta.png"
+      }
+    ],
+    "rejected": [
+      "token-sheet-initial.png: styled dark background prevented deterministic cutting",
+      "exec-2600db26-0fa7-49f7-b463-bfc315afbf08.png: alpha edit changed the accepted composition and restored a dark background"
+    ]
+  },
+  "cutter": {
+    "tool": "tools/cut-asset-sheet.py",
+    "source": "gpt-image-2/token-sheet-magenta.png",
+    "names": ["water", "beans", "rice", "star", "cloth", "hand"],
+    "expectedCount": 6,
+    "backgroundColor": "ff00ff",
+    "distanceThreshold": 26,
+    "closeRadius": 3,
+    "padding": 18,
+    "boxes": "crops/boxes.json",
+    "mask": "gpt-image-2/token-sheet-mask.png"
+  },
+  "qwenImageEdit": {
+    "seed": 42,
+    "jobs": {
+      "pitcher": "d1c21bfc27914938ac0f5ead945f3432",
+      "cup": "381c36778ad24eb5b56f07e4f9275180",
+      "maya-helper": "a83825ecde06482d800e79e27d46e130",
+      "title-plaque": "ab5a5a95b6a04685a0bdcaa4a91dd01f",
+      "prompt-plaque": "3f7fbae2117f40a0b062405c2b605db2",
+      "stream-water": "c206a90496124cc99316c7632c0ff771",
+      "stream-beans": "61ef9d8ac12b4fdcaa2c40f989f94a99",
+      "stream-rice": "dc4cca3099b1461c941ccb1be71dbfd6"
+    },
+    "sources": "qwen-edit"
+  },
+  "qwenImageLayered": {
+    "layers": 2,
+    "seed": 42,
+    "selectedOutput": "layer_2",
+    "jobs": {
+      "pitcher": "506fdd3446e74a73ae85fe91f61d9557",
+      "cup": "e534dc1ff9064f46be8a7264a8aa15cf",
+      "maya-helper": "a62873cd1acb4d179426fc28698cef1d",
+      "title-plaque": "0914287d8c6d4da8b46b3d626bab9bc1",
+      "prompt-plaque": "d312896cec304f31bfc4bc3b35a38762",
+      "stream-water": "d4d29b36780b47f89e99860ea2d2710d",
+      "stream-beans": "110bd1a06af9419c87dc590ebafce2a7",
+      "stream-rice": "102f6716644142798b5da218a0315e5c",
+      "complete-token-sheet-attempt": "3f339cb48c9c4030b07a2fb62de3f9ed: cancelled while pending after deterministic whole-object keying passed visual QA"
+    },
+    "acceptedEarlier": {
+      "water-token": "da2539c61d9a4794a519767053ba2853",
+      "guide-hand": "43f70d1277084852a751469a89028994"
+    },
+    "rejectedEarlier": {
+      "beans-token": "6942b98a682a4bc2a298ef902a4c1d3b: extracted background instead of whole token",
+      "rice-token": "b2e669379e0d4208a4b7b3241fbcf894: extracted background instead of whole token",
+      "star-token": "dcce8e12fc7d4bac81cf6eada2a82d2b: separated teal star from wooden medallion",
+      "cleanup-cloth": "3e9052222c5e4f1ca93bec1375e550b6: separated coral tie from cloth"
+    }
+  },
+  "krea2": {
+    "job": "dbc5ea9a630b4a178282578949c54835",
+    "seed": 42,
+    "size": [768, 640],
+    "role": "shared hub tile",
+    "prompt": "Premium tactile 3D toy illustration for a preschool game tile, a translucent aqua toy pitcher pouring a sparkling stream into a clear cup with a glowing target line, arranged on a honey maple Montessori tray in a calm pale sage kitchen, three small wooden tokens showing a blue water drop red bean and golden rice nearby, warm sunny light, rounded child-safe shapes, rich handcrafted detail, delightful and inviting, centered readable composition, no people, no letters, no words, no logos, no frame"
+  },
+  "voice": {
+    "workflow": "qwen3-tts-voiceclone plus whisper-stt",
+    "reference": "../../../../shared/assets/refs/voice-teacher.wav",
+    "defaultSeed": 7,
+    "script": "../../tools/gen-voice.py",
+    "qa": "../audio/qa.json"
+  }
+}

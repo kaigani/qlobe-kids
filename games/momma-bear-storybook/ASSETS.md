@@ -27,7 +27,7 @@ courage, and sharing. The exact child-facing script and adaptation policy are in
 | `assets/pose-actors/{momma-bear,pip,fia,ash}/` (24 poses) | GPT Image 2 pose-sheet masters in `assets/source/pose-sheets/`; Qwen Image Layered jobs recorded in `qwen-layer-jobs.json` | Six whole-image poses per actor, assembled on a shared 1024px canvas and accepted against dark and live backdrops. Fia received a second direct chroma recut with despill; exact settings are in her pose recipe. |
 | `assets/props/*.webp` (22) | GPT Image 2 prop-sheet masters and retained raw crops in `assets/source/prop-sheets/` and `assets/source/prop-crops/` | Direct chroma extraction preserved the approved masters better than redundant Layered jobs, which were cancelled before execution. The sea-sparkles correction and edge recipe are retained beside its corrected raw crop. |
 | `assets/story-cards/*.webp` (3) | GPT Image 2 contact sheet, prompt, recipe, raw crops, and cutouts in `assets/source/story-cards/` | Accepted for exact story identity, blank label panels, and clean alpha on dark. |
-| `assets/ui/*.webp` (12) | GPT Image 2 title, HUD, and paper-surface masters in `assets/source/ui-masters/`; runtime crops in `assets/source/ui-crops/` | All child-facing carriers and controls are raster papercraft. Direct cutouts outperformed the cancelled redundant Layered UI jobs. |
+| `assets/ui/*.webp` (13) | GPT Image 2 title, HUD, and paper-surface masters in `assets/source/ui-masters/`; runtime crops in `assets/source/ui-crops/`; Krea 2 + Qwen Image Layered gesture master and recipe in `assets/source/ui-gesture/` | All child-facing carriers and controls are raster papercraft. The first-read hand cue was alpha-detected with `tools/cut-asset-sheet.py`, finalized against magenta, and accepted at 331×384 / 23.4 KB. |
 | `../../assets/hub/tiles/momma-bear-storybook.jpg` | QLOBE Studio, Krea 2 Turbo; source PNG and recipe in `assets/source/hub/` | Accepted at 640×533 after catalog-center-crop review. |
 | `assets/og-image.jpg` | Real Chromium capture of the finished game | Accepted at the required 1200×630 share-card size. |
 
@@ -35,7 +35,7 @@ The four-screen production target is
 `assets/source/ui-mockups/00-overview-v1.png`, generated with GPT Image 2 from the
 approved Tiny Reader Theater and Story Stones references. It is retained as the visual
 contract, not loaded at runtime. Prompts and settings for the mockup, pose sheets, prop
-sheets, story cards, and UI masters remain beside their source files.
+sheets, story cards, UI masters, and gesture cue remain beside their source files.
 
 No SVG, CSS illustration, emoji, or generated vector substitute is used for primary
 child-facing artwork. CSS supplies layout, focus, motion, and hit-area behavior only.

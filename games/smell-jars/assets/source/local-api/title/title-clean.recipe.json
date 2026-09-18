@@ -1,0 +1,45 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "smell-jars-title-clean-edit-layered",
+  "kind": "image",
+  "asset": "assets/source/local-api/title/title-clean.final.png",
+  "artDirection": "Toy",
+  "source": "assets/source/gpt-image-2/title-source.png",
+  "sourceSha256": "7e955043f263837194d0030ed373de543a73dc53bf3fb3751e7dc1eafdec0124",
+  "steps": [
+    {
+      "workflow": "qwen-image-edit",
+      "seed": 42,
+      "prompt": "Preserve this exact wooden hanging title plaque, exact words Smell Jars, exact rounded white lettering, exact wood grain, exact two tan ropes, proportions, lighting, and camera. Remove ONLY every thin red, yellow, magenta, or colored fringe, halo, speck, and stray mark around the outer silhouette. Give the plaque and ropes clean natural-color edges. No redesign, no added objects, no missing letters, no changed text. Place it centered on a perfectly uniform neutral charcoal gray background for clean extraction.",
+      "output": "assets/source/local-api/title/title-clean-qwen-edit-seed42.png",
+      "outputSha256": "d48f8daab7547ce6e6079c36d00bb36d291a6283285513d8b880a2858196416b"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "seed": 42,
+      "layers": 2,
+      "selectedOutput": "layer_2",
+      "prompt": "Background layer: the entire uniform charcoal gray background only. Top layer: the complete wooden hanging Smell Jars plaque with both full ropes, exact lettering and clean natural edges. Preserve the edited source exactly, no redesign, no added or removed details; transparent outside the plaque and ropes.",
+      "output": "assets/source/local-api/title/title-clean-qwen-layer2-seed42.png",
+      "outputSha256": "ca4cd77752c17ddd5593290f496aced60758093fa0dc27f262ee36d83889491e"
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "maxSize": 1120,
+      "pad": 12,
+      "alphaFloor": 4,
+      "outputSha256": "768eb9b6e2481526a79e55670167f0ab3ab72cfdaf32b008f50b1a89fec20f7c"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "transparentPct": 58.914,
+    "opaquePct": 36.482,
+    "partialPct": 4.604,
+    "partialBandFlagReviewed": true,
+    "exactTextReviewed": "Smell Jars",
+    "magenta": "assets/source/local-api/title/title-clean.qa-magenta.png",
+    "review": "Exact title text and toy-wood design retained; all red/yellow generator spill and stray marks are absent on hostile magenta."
+  }
+}

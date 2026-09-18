@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "chalk-ui-sheet-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen",
+      "promptRef": "PROMPTS.md#chalk-ui-sheet",
+      "references": ["concept:chalkboard-big-strokes/ui-mockups/00-overview.png"]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["exactly twelve ordered assets", "flat chroma ground", "blank functional plaques", "no words or numbers", "cutter expected-count 12 passed"]
+  }
+}

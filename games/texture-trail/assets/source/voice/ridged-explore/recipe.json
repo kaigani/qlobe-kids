@@ -1,0 +1,34 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "texture-trail-voice-ridged-explore",
+  "kind": "voice",
+  "asset": "texture-trail-voice-ridged-explore.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "Ridged has raised lines. The shell and ribbed cushion have ridges.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "template": {
+    "id": "character-voice-line",
+    "fields": {
+      "text": "Ridged has raised lines. The shell and ribbed cushion have ridges."
+    }
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "accepted",
+    "transcript": {
+      "intended": "Ridged has raised lines. The shell and ribbed cushion have ridges.",
+      "heard": "Ridge has raised lines, the shell and ribbed cushion have ridges.",
+      "ratio": 0.992,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

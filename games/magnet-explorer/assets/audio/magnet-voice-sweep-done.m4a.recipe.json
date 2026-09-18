@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-sweep-done",
+  "kind": "voice",
+  "asset": "magnet-voice-sweep-done.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "You found all five! The magnetic treasures came along for the ride.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "You found all five! The magnetic treasures came along for the ride.",
+      "heard": "You found all five! The magnetic treasures came along for the ride.",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

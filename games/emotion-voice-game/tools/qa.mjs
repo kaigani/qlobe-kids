@@ -11,10 +11,15 @@ const url = `${base}/games/emotion-voice-game/`;
 const shots = resolveShots('games/emotion-voice-game/qa-shots/emotion-voice-game');
 const reporter = createReporter();
 const { check, finish } = reporter;
+const APPROVED_ANALYTICS = [
+  'https://www.googletagmanager.com/',
+  'https://www.google-analytics.com/',
+];
 
 async function openGame(browser, viewport, reducedMotion = 'no-preference', context = {}, mute = true) {
   const session = await openSession(browser, {
     url, base, viewport, reducedMotion, context,
+    allowRemote: APPROVED_ANALYTICS,
     readyWhen: () => document.documentElement.dataset.ready === 'true',
     after: (page) => page.evaluate(() => {
       window.QLOBE_DEBUG.setMicMode('fake');
@@ -22,6 +27,13 @@ async function openGame(browser, viewport, reducedMotion = 'no-preference', cont
   });
   if (mute) await session.page.evaluate(() => window.QLOBE_DEBUG.mute(true));
   return session;
+}
+
+function removeApprovedAnalyticsFailures(session) {
+  const unexpected = session.failed.filter((entry) => (
+    !APPROVED_ANALYTICS.some((prefix) => entry.startsWith(prefix))
+  ));
+  session.failed.splice(0, session.failed.length, ...unexpected);
 }
 
 async function targetAudit(page, label) {
@@ -41,6 +53,14 @@ async function drive(browser) {
     (await page.locator('.emotion-card').count()) === 4
       && (await page.evaluate(() => window.QLOBE_DEBUG.getState().screen)) === 'splash');
   check('title is authored raster art', await page.locator('.title-art').getAttribute('src') === 'assets/title.webp');
+  const trunk = await page.locator('.costume-trunk').evaluate((image) => ({
+    visible: image.getBoundingClientRect().width >= 96,
+    loaded: image.complete && image.naturalWidth > 0,
+    source: image.getAttribute('src'),
+  }));
+  check('splash includes the authored felt costume trunk',
+    trunk.visible && trunk.loaded && trunk.source === 'assets/ui/costume-trunk.webp',
+    JSON.stringify(trunk));
   await targetAudit(page, 'landscape splash');
   await page.screenshot({ path: path.join(shots, '01-splash-landscape.png') });
 
@@ -68,6 +88,21 @@ async function drive(browser) {
   await page.waitForFunction(() => !document.getElementById('mic-button').disabled);
   check('proud choice opens the performance stage',
     (await page.evaluate(() => window.QLOBE_DEBUG.getState().emotion)) === 'proud');
+  const meterArt = await page.locator('.voice-lights img').evaluateAll((images) => images.map((image) => ({
+    source: image.getAttribute('src'), loaded: image.complete && image.naturalWidth > 0,
+  })));
+  check('voice meter uses three loaded raster felt stars',
+    meterArt.length === 3 && meterArt.every((item) => item.loaded && item.source === 'assets/ui/star.webp'),
+    JSON.stringify(meterArt));
+  const audioLogLength = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog().length);
+  await page.locator('[data-target="replay"]').click();
+  await page.waitForFunction(() => !document.getElementById('replay-button').disabled);
+  const replayLog = await page.evaluate(() => window.QLOBE_DEBUG.getAudioLog());
+  check('Hear Teddy replays the selected recorded model line',
+    replayLog.length > audioLogLength
+      && replayLog.at(-1)?.key === 'proud-model'
+      && replayLog.at(-1)?.kind === 'clip',
+    JSON.stringify(replayLog.at(-1)));
   await targetAudit(page, 'performance');
   await page.screenshot({ path: path.join(shots, '02-proud-ready.png') });
 
@@ -76,6 +111,20 @@ async function drive(browser) {
   await page.waitForTimeout(750);
   check('local voice pass reaches a proud celebration',
     (await page.locator('#result-title').textContent()) === 'proud!');
+  const proudReward = await page.evaluate(() => {
+    const stage = document.getElementById('reward-stage');
+    const image = stage.querySelector('img');
+    return {
+      emotion: stage.dataset.emotion,
+      count: stage.querySelectorAll('img').length,
+      source: image?.getAttribute('src'),
+      loaded: Boolean(image?.complete && image?.naturalWidth),
+    };
+  });
+  check('proud celebration reveals its authored felt medal',
+    proudReward.emotion === 'proud' && proudReward.count === 1
+      && proudReward.source?.endsWith('/proud-medal.webp') && proudReward.loaded,
+    JSON.stringify(proudReward));
   check('debug state exposes analyzed voice features',
     Boolean((await page.evaluate(() => window.QLOBE_DEBUG.getState().lastSummary))?.heard));
   await targetAudit(page, 'result');
@@ -91,6 +140,22 @@ async function drive(browser) {
     await page.waitForFunction(() => !document.getElementById('mic-button').disabled);
     await page.locator('[data-target="mic"]').click();
     await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'result');
+    await page.waitForTimeout(750);
+    const rewardState = await page.evaluate(() => {
+      const stage = document.getElementById('reward-stage');
+      return {
+        emotion: stage.dataset.emotion,
+        count: stage.querySelectorAll('img').length,
+        loaded: [...stage.querySelectorAll('img')]
+          .every((image) => image.complete && image.naturalWidth > 0),
+      };
+    });
+    check(`${id} celebration reveals the configured felt reward`,
+      rewardState.emotion === id
+        && rewardState.count === (id === 'happy' ? 5 : 1)
+        && rewardState.loaded,
+      JSON.stringify(rewardState));
+    await page.screenshot({ path: path.join(shots, `09-${id}-result.png`) });
     if (id === 'silly') {
       const mouthRect = await page.evaluate(() => {
         const mouth = document.getElementById('result-mouth');
@@ -127,9 +192,59 @@ async function drive(browser) {
   await denied.page.locator('[data-target="mic"]').click();
   await denied.page.waitForFunction(() => !document.getElementById('fallback-button').hidden);
   check('microphone denial reveals the no-mic performance fallback', await denied.page.locator('[data-target="fallback"]').isVisible());
+  await targetAudit(denied.page, 'no-mic fallback');
+  await denied.page.waitForFunction(() => !document.getElementById('replay-button').disabled);
+  await denied.page.evaluate(() => window.QLOBE_DEBUG.mute(false));
+  await denied.page.locator('[data-target="replay"]').click();
+  await denied.page.waitForFunction(() => document.getElementById('fallback-button').disabled);
+  check('no-mic fallback is interlocked while Teddy replays the model',
+    await denied.page.locator('[data-target="fallback"]').isDisabled());
+  await denied.page.evaluate(() => window.QLOBE_DEBUG.mute(true));
+  await denied.page.waitForFunction(() => !document.getElementById('fallback-button').disabled);
   await denied.page.locator('[data-target="fallback"]').click();
   await denied.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'result');
   check('no-mic fallback still completes the emotional performance', true);
+
+  const pendingMic = await openGame(browser, { width: 1024, height: 768 }, 'no-preference', { permissions: [] });
+  await pendingMic.page.evaluate(() => {
+    const trackState = { stopped: false };
+    const stream = {
+      active: true,
+      getTracks: () => [{
+        stop() {
+          trackState.stopped = true;
+          stream.active = false;
+        },
+      }],
+    };
+    window.__pendingMicTrack = trackState;
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: () => new Promise((resolve) => {
+          window.__releasePendingMic = () => resolve(stream);
+        }),
+      },
+    });
+  });
+  await pendingMic.page.locator('[data-target="emotion-happy"]').click();
+  await pendingMic.page.waitForFunction(() => !document.getElementById('mic-button').disabled);
+  await pendingMic.page.evaluate(() => window.QLOBE_DEBUG.setMicMode('real'));
+  await pendingMic.page.locator('[data-target="mic"]').click();
+  await pendingMic.page.waitForFunction(() => typeof window.__releasePendingMic === 'function');
+  await pendingMic.page.locator('.play-back').click();
+  await pendingMic.page.evaluate(() => window.__releasePendingMic());
+  await pendingMic.page.waitForFunction(() => window.__pendingMicTrack.stopped);
+  const pendingMicState = await pendingMic.page.evaluate(() => ({
+    screen: window.QLOBE_DEBUG.getState().screen,
+    listening: window.QLOBE_DEBUG.getState().listening,
+    trackStopped: window.__pendingMicTrack.stopped,
+  }));
+  check('Back cancels pending microphone permission and stops a late stream',
+    pendingMicState.screen === 'splash'
+      && !pendingMicState.listening
+      && pendingMicState.trackStopped,
+    JSON.stringify(pendingMicState));
 
   const portrait = await openGame(browser, { width: 820, height: 1180 }, 'no-preference', {
     deviceScaleFactor: 2, hasTouch: true, isMobile: true,
@@ -141,6 +256,10 @@ async function drive(browser) {
   await portrait.page.locator('[data-target="emotion-calm"]').click();
   await portrait.page.waitForFunction(() => !document.getElementById('mic-button').disabled);
   await portrait.page.screenshot({ path: path.join(shots, '05-calm-portrait.png') });
+  await portrait.page.locator('[data-target="mic"]').click();
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'result');
+  await portrait.page.waitForTimeout(750);
+  await portrait.page.screenshot({ path: path.join(shots, '10-calm-result-portrait.png') });
 
   const reduced = await openGame(browser, { width: 1180, height: 620 }, 'reduce');
   await reduced.page.locator('[data-target="emotion-silly"]').click();
@@ -168,7 +287,8 @@ async function drive(browser) {
   check('Teddy returns to the baked expression after narration ends',
     !(await voiced.page.locator('#actor-mouth').getAttribute('class')).includes('talking'));
 
-  for (const [label, session] of [['landscape', landscape], ['wide', wide], ['mic-denied', denied], ['portrait', portrait], ['reduced', reduced], ['recorded-voice', voiced]]) {
+  for (const [label, session] of [['landscape', landscape], ['wide', wide], ['mic-denied', denied], ['pending-mic-back', pendingMic], ['portrait', portrait], ['reduced', reduced], ['recorded-voice', voiced]]) {
+    removeApprovedAnalyticsFailures(session);
     checkSessionClean(reporter, session, label);
     await session.close();
   }

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "dbeaab394f1d45ceb8263abb0251e2a2",
+  "text": "Change hat to hot. Tap the sound that changes.",
+  "textHash": "f446e0de0e2bc274",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "51972584c4074430910c27a057063e1b",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change hat to hot. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

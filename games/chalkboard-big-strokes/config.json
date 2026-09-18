@@ -1,0 +1,160 @@
+{
+  "id": "chalkboard-big-strokes",
+  "title": "Chalkboard Big Strokes",
+  "music": "../../shared/assets/music/rainy-day-acoustic.mp3",
+  "assets": {
+    "board": "./assets/art/board-backdrop.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "button": "./assets/art/button-plaque.webp",
+    "back": "./assets/art/nav-back.webp",
+    "eraser": "./assets/art/felt-eraser.webp",
+    "buddy": "./assets/art/chalk-buddy.webp",
+    "chalk": "./assets/art/chalk-pieces.webp",
+    "sparkle": "./assets/art/sparkle.webp"
+  },
+  "audio": {
+    "welcome": "./assets/audio/welcome.m4a",
+    "wave": "./assets/audio/wave.m4a",
+    "loop": "./assets/audio/loop.m4a",
+    "star": "./assets/audio/star.m4a",
+    "letterS": "./assets/audio/letterS.m4a",
+    "nudge": "./assets/audio/nudge.m4a",
+    "great1": "./assets/audio/great1.m4a",
+    "great2": "./assets/audio/great2.m4a",
+    "erase": "./assets/audio/erase.m4a",
+    "again": "./assets/audio/again.m4a"
+  },
+  "voice": {
+    "welcome": "Pick a big stroke, then move your finger nice and wide.",
+    "wave": "Ride the wave. Start at the glowing dot.",
+    "loop": "Loop around and cross the middle.",
+    "star": "Make a big star, corner to corner.",
+    "letterS": "Start at the top and sweep a giant S.",
+    "nudge": "Find the glowing dot, then follow the chalk.",
+    "great1": "Big, easy strokes!",
+    "great2": "You filled the board with chalk magic!",
+    "erase": "Now grab the eraser and wipe it clean.",
+    "again": "Fresh board! Choose another big stroke."
+  },
+  "trace": {
+    "tolerance": 0.105,
+    "startTolerance": 0.145,
+    "eraseRadius": 0.125,
+    "eraseComplete": 0.7,
+    "inset": 0.075
+  },
+  "modes": [
+    {
+      "id": "wave",
+      "title": "Wave",
+      "spokenKey": "wave",
+      "prompt": "Make a giant wave",
+      "color": "#6fe2e6",
+      "card": "./assets/art/mode-card-cyan.webp",
+      "variants": [
+        {
+          "id": "two-big-waves",
+          "name": "two big waves",
+          "curve": true,
+          "points": [[0.06,0.55],[0.14,0.3],[0.26,0.24],[0.38,0.51],[0.5,0.75],[0.62,0.48],[0.74,0.22],[0.86,0.3],[0.94,0.54]]
+        },
+        {
+          "id": "three-soft-waves",
+          "name": "three soft waves",
+          "curve": true,
+          "points": [[0.04,0.58],[0.12,0.34],[0.22,0.58],[0.32,0.76],[0.43,0.51],[0.54,0.27],[0.65,0.5],[0.76,0.72],[0.87,0.48],[0.96,0.3]]
+        },
+        {
+          "id": "rolling-wave",
+          "name": "rolling wave",
+          "curve": true,
+          "points": [[0.05,0.68],[0.16,0.64],[0.27,0.34],[0.39,0.22],[0.5,0.5],[0.6,0.76],[0.71,0.65],[0.82,0.36],[0.95,0.31]]
+        }
+      ]
+    },
+    {
+      "id": "loop",
+      "title": "Loop",
+      "spokenKey": "loop",
+      "prompt": "Sweep a giant loop",
+      "color": "#ffd85f",
+      "card": "./assets/art/mode-card-yellow.webp",
+      "variants": [
+        {
+          "id": "round-loop",
+          "name": "round loop",
+          "curve": true,
+          "points": [[0.5,0.12],[0.72,0.16],[0.88,0.36],[0.9,0.58],[0.76,0.8],[0.51,0.88],[0.27,0.8],[0.1,0.59],[0.12,0.34],[0.29,0.16],[0.5,0.12]]
+        },
+        {
+          "id": "tall-loop",
+          "name": "tall loop",
+          "curve": true,
+          "points": [[0.48,0.08],[0.68,0.12],[0.8,0.31],[0.78,0.56],[0.62,0.8],[0.4,0.91],[0.22,0.75],[0.18,0.49],[0.28,0.24],[0.48,0.08]]
+        },
+        {
+          "id": "sideways-loop",
+          "name": "sideways loop",
+          "curve": true,
+          "points": [[0.08,0.52],[0.23,0.27],[0.45,0.22],[0.61,0.42],[0.51,0.64],[0.3,0.75],[0.16,0.6],[0.32,0.45],[0.57,0.28],[0.81,0.34],[0.94,0.56],[0.82,0.76],[0.61,0.72]]
+        }
+      ]
+    },
+    {
+      "id": "star",
+      "title": "Star",
+      "spokenKey": "star",
+      "prompt": "Trace every star point",
+      "color": "#ff95b8",
+      "card": "./assets/art/mode-card-pink.webp",
+      "variants": [
+        {
+          "id": "upright-star",
+          "name": "upright star",
+          "curve": false,
+          "points": [[0.5,0.08],[0.61,0.38],[0.92,0.38],[0.67,0.57],[0.77,0.88],[0.5,0.69],[0.23,0.88],[0.33,0.57],[0.08,0.38],[0.39,0.38],[0.5,0.08]]
+        },
+        {
+          "id": "wide-star",
+          "name": "wide star",
+          "curve": false,
+          "points": [[0.5,0.14],[0.62,0.4],[0.94,0.42],[0.7,0.59],[0.79,0.85],[0.5,0.69],[0.21,0.85],[0.3,0.59],[0.06,0.42],[0.38,0.4],[0.5,0.14]]
+        },
+        {
+          "id": "dancing-star",
+          "name": "dancing star",
+          "curve": false,
+          "points": [[0.42,0.08],[0.57,0.36],[0.9,0.3],[0.69,0.55],[0.86,0.82],[0.53,0.7],[0.3,0.92],[0.31,0.61],[0.04,0.47],[0.37,0.4],[0.42,0.08]]
+        }
+      ]
+    },
+    {
+      "id": "letter-s",
+      "title": "Letter S",
+      "spokenKey": "letterS",
+      "prompt": "Make a giant S",
+      "color": "#f8f3df",
+      "card": "./assets/art/mode-card-white.webp",
+      "variants": [
+        {
+          "id": "big-s",
+          "name": "big S",
+          "curve": true,
+          "points": [[0.78,0.16],[0.62,0.08],[0.4,0.11],[0.22,0.26],[0.27,0.42],[0.48,0.49],[0.69,0.55],[0.78,0.7],[0.65,0.86],[0.42,0.91],[0.21,0.82]]
+        },
+        {
+          "id": "tall-s",
+          "name": "tall S",
+          "curve": true,
+          "points": [[0.74,0.1],[0.56,0.06],[0.35,0.13],[0.22,0.29],[0.31,0.43],[0.52,0.5],[0.71,0.6],[0.76,0.75],[0.58,0.9],[0.35,0.9],[0.22,0.82]]
+        },
+        {
+          "id": "wide-s",
+          "name": "wide S",
+          "curve": true,
+          "points": [[0.84,0.2],[0.65,0.09],[0.39,0.12],[0.15,0.28],[0.25,0.44],[0.51,0.5],[0.76,0.58],[0.84,0.73],[0.63,0.87],[0.36,0.88],[0.14,0.79]]
+        }
+      ]
+    }
+  ]
+}

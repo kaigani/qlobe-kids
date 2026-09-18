@@ -1,0 +1,142 @@
+{
+  "source": "games/plant-care-captain/assets/source/gpt-image-2/basil-states-sheet.png",
+  "sourceSha256": "2a1c58a30801b9e39e04f8f9aeebf5215a22638fad5b7bb12b7447497f3464d0",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "dry",
+      "file": "dry.png",
+      "componentArea": 61479,
+      "foregroundBbox": [
+        271,
+        159,
+        528,
+        511
+      ],
+      "cropBbox": [
+        259,
+        147,
+        540,
+        523
+      ],
+      "cropXywh": [
+        259,
+        147,
+        281,
+        376
+      ],
+      "normalizedCropBbox": [
+        0.178867,
+        0.135359,
+        0.372928,
+        0.481584
+      ]
+    },
+    {
+      "index": 2,
+      "name": "watered",
+      "file": "watered.png",
+      "componentArea": 71837,
+      "foregroundBbox": [
+        874,
+        114,
+        1172,
+        512
+      ],
+      "cropBbox": [
+        862,
+        102,
+        1184,
+        524
+      ],
+      "cropXywh": [
+        862,
+        102,
+        322,
+        422
+      ],
+      "normalizedCropBbox": [
+        0.595304,
+        0.093923,
+        0.81768,
+        0.482505
+      ]
+    },
+    {
+      "index": 3,
+      "name": "misted",
+      "file": "misted.png",
+      "componentArea": 74473,
+      "foregroundBbox": [
+        248,
+        570,
+        549,
+        974
+      ],
+      "cropBbox": [
+        236,
+        558,
+        561,
+        986
+      ],
+      "cropXywh": [
+        236,
+        558,
+        325,
+        428
+      ],
+      "normalizedCropBbox": [
+        0.162983,
+        0.513812,
+        0.387431,
+        0.907919
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bloom",
+      "file": "bloom.png",
+      "componentArea": 90821,
+      "foregroundBbox": [
+        853,
+        544,
+        1197,
+        975
+      ],
+      "cropBbox": [
+        841,
+        532,
+        1209,
+        987
+      ],
+      "cropXywh": [
+        841,
+        532,
+        368,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.580801,
+        0.489871,
+        0.834945,
+        0.90884
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

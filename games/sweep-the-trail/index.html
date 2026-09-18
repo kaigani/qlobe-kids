@@ -1,47 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Sweep the Trail 🧹 — Sweeping Crumbs and Leaves</title>
-  <meta name="description" content="Guide crumbs or leaves into a marked landing zone with steady sweeping strokes, then finish the job with the dustpan. A cheerful whole-arm coaching game for ages 5–6." />
+  <meta name="theme-color" content="#173f35" />
+  <title>Sweep the Trail — A Cozy Forest Sweeping Game</title>
+  <meta name="description" content="Sweep soft leaves, acorns, and tiny crumbs into their tidy homes in a handcrafted felt forest." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Sweep the Trail" />
-  <meta property="og:title" content="Sweep the Trail 🧹 — Sweeping Crumbs and Leaves" />
-  <meta property="og:description" content="Guide crumbs or leaves into a marked landing zone with steady sweeping strokes, then finish the job with the dustpan. A cheerful whole-arm coaching game for ages 5–6." />
+  <meta property="og:title" content="Sweep the Trail — A Cozy Forest Sweeping Game" />
+  <meta property="og:description" content="Big, gentle broom strokes make three cozy felt trails sparkle." />
   <meta property="og:url" content="https://qlo.be/games/sweep-the-trail/" />
   <meta property="og:image" content="https://qlo.be/games/sweep-the-trail/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sweep the Trail title screen with Crumb Patrol and Leaf Trail buttons and a broom icon on a dotted blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="A red felt squirrel beside a toy broom, colorful leaves, and a basket on a cozy forest trail." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sweep the Trail 🧹 — Sweeping Crumbs and Leaves" />
-  <meta name="twitter:description" content="Guide crumbs or leaves into a marked landing zone with steady sweeping strokes, then finish the job with the dustpan. A cheerful whole-arm coaching game for ages 5–6." />
+  <meta name="twitter:title" content="Sweep the Trail — A Cozy Forest Sweeping Game" />
+  <meta name="twitter:description" content="Sweep leaves, acorns, and crumbs in a handcrafted felt world." />
   <meta name="twitter:image" content="https://qlo.be/games/sweep-the-trail/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" aria-live="off">
+    <section id="splash" class="game-screen splash-screen" data-qk-screen="splash">
+      <img id="splash-background" class="screen-background" src="./assets/art/backgrounds/select.webp" alt="" draggable="false" />
+      <div id="splash-hud" class="screen-hud"></div>
+      <div class="splash-stage">
+        <img id="title-lockup" class="title-lockup" src="./assets/art/ui/title.webp" alt="" draggable="false" />
+        <h1 class="visually-hidden">Sweep the Trail</h1>
+        <img class="squirrel squirrel-splash" src="./assets/art/sprites/squirrel-idle.webp" alt="A friendly red squirrel trail helper" draggable="false" />
+        <div class="mode-picker">
+          <p class="picker-prompt">Which trail shall we tidy?</p>
+          <div id="mode-cards" class="mode-cards" aria-label="Choose a trail"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="play" class="game-screen play-screen" data-qk-screen="play" hidden>
+      <div class="play-matte" aria-hidden="true"></div>
+      <div id="play-tableau" class="play-tableau">
+        <div id="sweep-host" class="sweep-host" aria-label="Sweep the pieces toward their tidy home"></div>
+        <div id="progress-card" class="progress-card" aria-live="polite">
+          <img src="./assets/art/ui/progress-plaque.webp" alt="" draggable="false" />
+          <div class="progress-copy">
+            <span id="progress-label">Trail pieces</span>
+            <strong id="progress-count">0 left</strong>
+          </div>
+          <div id="progress-pips" class="progress-pips" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div id="play-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="end" class="game-screen end-screen" data-qk-screen="end" hidden>
+      <img id="end-background" class="screen-background" src="./assets/art/backgrounds/leaf-lane.webp" alt="" draggable="false" />
+      <div class="end-wash" aria-hidden="true"></div>
+      <div id="end-hud" class="screen-hud"></div>
+      <div class="end-stage">
+        <div id="star-burst" class="star-burst" aria-hidden="true"></div>
+        <img id="end-squirrel" class="squirrel squirrel-end" src="./assets/art/sprites/squirrel-cheer.webp" alt="The squirrel cheering" draggable="false" />
+        <img id="end-target" class="end-target" src="./assets/art/sprites/basket.webp" alt="A tidy basket" draggable="false" />
+        <div class="end-copy">
+          <h2 id="end-title">Trail clean!</h2>
+          <p id="end-message">Every piece is tucked away.</p>
+        </div>
+        <button id="again" class="again-button" type="button" data-target="again" data-role="neutral" aria-label="Sweep this trail again">
+          <img src="../../shared/assets/ui/btn-play.png" alt="" draggable="false" />
+          <span>Sweep again</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../shared/js/analytics.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

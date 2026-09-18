@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "jobId": "903b572a2e9342e5b700a76d415c989d",
+  "text": "Change rug to rag. Tap the sound that changes.",
+  "textHash": "028d85c91463adda",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "jobId": "5d69c8d373224380ba880aa80ccdb840",
+    "score": 1.0,
+    "coverage": 1.0,
+    "transcript": "Change rug to rag. Tap the sound that changes."
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -3,31 +3,42 @@
   "title": "Chalkboard Big Strokes",
   "category": "writing-fine-motor",
   "path": "games/chalkboard-big-strokes/",
-  "icon": "🖍️",
+  "icon": "assets/hub/tiles/chalkboard-big-strokes.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#4d8068",
-  "shareTitle": "Chalkboard Big Strokes 🖍️ — Big Pre-Writing Strokes",
-  "description": "Trace big loops, lines, waves, zigzags, and crosses across a chalkboard, building the arm control writing needs. A large-motor tracing game for ages 5–6.",
+  "age": { "min": 2, "max": 5 },
+  "status": "beta",
+  "accent": "#ffd85f",
+  "engine": "custom DOM and Canvas tracing runtime with shared QLOBE audio, narration, timer, and debug modules",
+  "shareTitle": "Chalkboard Big Strokes — Sweep, Sparkle, Erase!",
+  "description": "Choose a wave, loop, star, or giant S; sweep it across a tactile toy chalkboard; then grab the felt eraser and wipe the slate clean.",
   "learningGoals": [
-    "Practice large-arm pre-writing strokes",
-    "Build control across loops, waves, lines, and zigzags",
-    "Introduce two-part stroke sequencing with cross, T, and X paths"
+    "Build shoulder and arm control through oversized pre-writing gestures",
+    "Practice continuous curves, crossing loops, corners, and letter-S formation",
+    "Develop confidence by erasing and replaying without penalties"
   ],
-  "interactionModel": "trace-path finger tracing of single-stroke and multi-stroke chalkboard paths",
-  "feedbackModel": "Completed strokes get sparkle/pop SFX and spoken cheers; wandering off the line triggers a gentle nudge and retry.",
+  "interactionModel": "choose one of four large raster mode plaques, trace a forgiving ordered path with one pointer, then drag a broad felt eraser across the completed chalk mark",
+  "feedbackModel": "the start point glows, the finger lays down a dusty colored chalk trail, gentle misses simply invite another try, completion adds chalk sparkles and spoken praise, and erasing visibly clears the board",
   "uses": [
-    "shared/js/engines/trace-path.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/sfx.js",
+    "shared/js/voice-clips.js",
+    "shared/js/bgm.js",
+    "shared/js/narrator.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/assets/music/rainy-day-acoustic.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "games/chalkboard-big-strokes/assets/art",
+    "games/chalkboard-big-strokes/assets/audio"
   ],
   "modes": [
-    { "id": "strokes", "title": "Big Strokes", "skill": "large pre-writing stroke control" },
-    { "id": "double", "title": "Two-Part Strokes", "skill": "multi-stroke sequencing for crosses and slants" }
+    { "id": "wave", "title": "Wave", "skill": "smooth left-to-right rises and dips" },
+    { "id": "loop", "title": "Loop", "skill": "continuous circular motion and midline crossing" },
+    { "id": "star", "title": "Star", "skill": "controlled corners and direction changes" },
+    { "id": "letter-s", "title": "Letter S", "skill": "giant top-to-bottom S formation" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+  "credits": "Original Toy raster artwork produced with OpenAI GPT Image 2, cut with the QLOBE asset-sheet tool, and finalized through the QLOBE asset pipeline; teacher narration produced with the documented Edge neural fallback and independently verified with faster-whisper after the approved Qwen LAN path was unavailable. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Chalk Buddy"],
+  "conceptVideo": "01-game-concepts/chalkboard-big-strokes/"
 }

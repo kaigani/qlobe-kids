@@ -1,0 +1,32 @@
+{
+  "key": "prune-intro",
+  "workflow": "whisper-stt",
+  "model_size": "small",
+  "language": "en",
+  "result": {
+    "text": "The dry leaves are ready to come off. Give each one a gentle snip.",
+    "srt": "1\n00:00:00,000 --> 00:00:02,280\nThe dry leaves are ready to come off.\n\n2\n00:00:02,280 --> 00:00:04,080\nGive each one a gentle snip.\n",
+    "json": {
+      "language": "en",
+      "language_probability": null,
+      "segments": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 2.2800000000000002,
+          "text": "The dry leaves are ready to come off."
+        },
+        {
+          "id": 1,
+          "start": 2.2800000000000002,
+          "end": 4.08,
+          "text": "Give each one a gentle snip."
+        }
+      ]
+    },
+    "language": "en"
+  },
+  "expected": "The dry leaves are ready to come off. Give each one a gentle snip.",
+  "transcript": "The dry leaves are ready to come off. Give each one a gentle snip.",
+  "pass": true
+}

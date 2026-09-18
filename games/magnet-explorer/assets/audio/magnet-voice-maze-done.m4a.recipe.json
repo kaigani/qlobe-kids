@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-maze-done",
+  "kind": "voice",
+  "asset": "magnet-voice-maze-done.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "You guided the ball all the way to the star!",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "You guided the ball all the way to the star!",
+      "heard": "You guided the ball all the way to the star!",
+      "ratio": 1.0,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

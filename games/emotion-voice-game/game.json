@@ -15,8 +15,8 @@
     "Connect facial, body, and vocal cues with happy, proud, calm, and silly expression",
     "Build confidence performing one short spoken line"
   ],
-  "interactionModel": "tap a feeling card, listen to Teddy model the line, tap the microphone, and perform the same words with expressive prosody",
-  "feedbackModel": "any clearly heard performance succeeds; local acoustic features vary one to three voice sparks and the matching Teddy pose, with a tap-to-perform fallback when microphone access is unavailable",
+  "interactionModel": "tap a feeling card, listen or replay Teddy's model line, tap the microphone, and perform the same words with expressive prosody",
+  "feedbackModel": "any clearly heard performance succeeds; local acoustic features vary one to three voice sparks, while the matching Teddy pose and a distinct felt theater prop celebrate every attempt; a tap-to-perform fallback appears when microphone access is unavailable",
   "uses": [
     "shared/js/voice-meter.js",
     "shared/js/voice-clips.js",

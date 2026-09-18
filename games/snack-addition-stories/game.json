@@ -5,33 +5,47 @@
   "path": "games/snack-addition-stories/",
   "icon": "🍓",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#e85d75",
-  "shareTitle": "Snack Addition Stories 🍓 — Adding Up Snack Totals",
-  "description": "Tap snack cards to collect the total in a basket, working through simple addition stories within six. A warm counting game for ages 5–6.",
+  "age": { "min": 4, "max": 6 },
+  "status": "beta",
+  "accent": "#e94f79",
+  "shareTitle": "Snack Addition Stories — Add, Count, and Picnic",
+  "description": "Bring two snack groups together on a kawaii picnic tray, count the total within six, and invent your own addition stories.",
   "learningGoals": [
-    "Model addition as putting together",
-    "Count totals to answer number stories",
-    "Build one-to-one counting confidence within 6"
+    "Model addition as joining two visible groups",
+    "Connect a spoken add-together story to a complete addition equation",
+    "Count and compose totals within 6"
   ],
-  "interactionModel": "tap shared food cards to collect the story total in a basket",
-  "feedbackModel": "Each tap speaks the count; completed totals get sparkle SFX and warm spoken celebration from the tap-count engine.",
+  "interactionModel": "Choose a narrated story, tap a whole arriving snack group or add its snacks one at a time, then choose the matching total from three large answer cookies; My Picnic supports open-ended adding and removing on either side of the tray.",
+  "feedbackModel": "Every added snack visibly joins the same tray. A gentle count-together retry pulses each snack without penalty; correct totals resolve the live equation, bring in the sun guide, play recorded praise, and celebrate on the unchanged tableau.",
   "uses": [
-    "shared/js/engines/tap-count.js",
+    "shared/js/analytics.js",
+    "shared/js/screens.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
+    "shared/js/narrator.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/assets/foods/grapes.png",
-    "shared/assets/foods/strawberry.png",
-    "shared/assets/foods/crackers.png",
-    "shared/assets/foods/apple.png",
-    "shared/assets/foods/banana.png"
+    "shared/js/audio-unlock.js",
+    "shared/js/timers.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/tap.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/assets/music/mug-and-sunbeam.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "stories", "title": "Snack Stories", "skill": "informal addition stories to 6" }
+    { "id": "guided", "title": "Berry Stories", "skill": "narrated add-together stories within 6" },
+    { "id": "counter", "title": "Snack Counter", "skill": "one-to-one addition and total counting within 6" },
+    { "id": "picnic", "title": "My Picnic", "skill": "free-play composition of two addends within 6" }
   ],
+  "summary": "Bring two snack groups together, count the total within 6, and make your own addition picnic.",
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Built with Codex for QLOBE Kids.",
-  "characters": ["Maya", "Leo", "Nia", "Sam", "Ravi"],
-  "conceptVideo": ""
+  "credits": "Kaigani; original Kawaii production art authored with built-in gpt-image-2 and local Krea 2, cutter, and Qwen Layered review workflows. Recorded dialogue was produced with the approved Qwen voice-clone workflow and verified with Whisper. See ASSETS.md.",
+  "characters": [],
+  "conceptVideo": "01-game-concepts/snack-addition-stories/"
 }

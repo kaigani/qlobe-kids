@@ -1,0 +1,16 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "emotion-voice-theater-tools-layered",
+  "output": "assets/source/local-api/qwen-layered/theater-tools-layer2.png",
+  "outputSha256": "b683cbb76775e71419c520bd6be882bfb02475812ea13bad8536a44d4c4c1c7d",
+  "prompt": "Background layer: transparent empty background. Top layer: preserve the complete round felt ear button and the complete open felt costume trunk exactly as supplied, including fibers, stitching, contents, colors, spacing, and silhouettes. Do not redraw, merge, move, crop, recolor, add, or remove.",
+  "result": {
+    "jobIdRecorded": true,
+    "status": "completed"
+  },
+  "seed": 42,
+  "source": "assets/source/gpt-image-2/theater-tools-sheet-master.png",
+  "sourceSha256": "e1bcef9ffb56e6b5e15b8ba47d8b31e59dc15fb4be28fa3c30580b8099adb25f",
+  "workflow": "qwen-image-layered"
+}

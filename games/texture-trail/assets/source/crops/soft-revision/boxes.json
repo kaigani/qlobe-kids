@@ -1,0 +1,142 @@
+{
+  "source": "games/texture-trail/assets/source/gpt-image-2/soft-revision.png",
+  "sourceSha256": "ffe5fa5c5d5024f0638011d9c76650d21c83b89dbabec8e686249f90359e393f",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-soft",
+      "file": "card-soft.png",
+      "componentArea": 236677,
+      "foregroundBbox": [
+        213,
+        38,
+        649,
+        615
+      ],
+      "cropBbox": [
+        201,
+        26,
+        661,
+        627
+      ],
+      "cropXywh": [
+        201,
+        26,
+        460,
+        601
+      ],
+      "normalizedCropBbox": [
+        0.138812,
+        0.023941,
+        0.456492,
+        0.577348
+      ]
+    },
+    {
+      "index": 2,
+      "name": "marker-soft",
+      "file": "marker-soft.png",
+      "componentArea": 157919,
+      "foregroundBbox": [
+        764,
+        188,
+        1249,
+        597
+      ],
+      "cropBbox": [
+        752,
+        176,
+        1261,
+        609
+      ],
+      "cropXywh": [
+        752,
+        176,
+        509,
+        433
+      ],
+      "normalizedCropBbox": [
+        0.519337,
+        0.162063,
+        0.870856,
+        0.560773
+      ]
+    },
+    {
+      "index": 3,
+      "name": "medal-soft",
+      "file": "medal-soft.png",
+      "componentArea": 132232,
+      "foregroundBbox": [
+        226,
+        634,
+        635,
+        1042
+      ],
+      "cropBbox": [
+        214,
+        622,
+        647,
+        1054
+      ],
+      "cropXywh": [
+        214,
+        622,
+        433,
+        432
+      ],
+      "normalizedCropBbox": [
+        0.14779,
+        0.572744,
+        0.446823,
+        0.970534
+      ]
+    },
+    {
+      "index": 4,
+      "name": "plaque-label",
+      "file": "plaque-label.png",
+      "componentArea": 123640,
+      "foregroundBbox": [
+        721,
+        748,
+        1252,
+        995
+      ],
+      "cropBbox": [
+        709,
+        736,
+        1264,
+        1007
+      ],
+      "cropXywh": [
+        709,
+        736,
+        555,
+        271
+      ],
+      "normalizedCropBbox": [
+        0.489641,
+        0.677716,
+        0.872928,
+        0.927256
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

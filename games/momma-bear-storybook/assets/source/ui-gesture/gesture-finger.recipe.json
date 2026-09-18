@@ -1,0 +1,57 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "momma-bear-gesture-finger",
+  "kind": "image-cutout",
+  "asset": "../../ui/gesture-finger.webp",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "seed": 9001,
+      "prompt": "a single friendly papercraft tap cue shaped like a simplified child's right hand, warm tan layered cardstock, one index finger clearly extended and pointing diagonally upward-left at about 35 degrees, other fingers gently curled, a short warm-cream felt cuff with deep ink-blue blanket stitching, bold uncluttered silhouette readable at 80 pixels, no arm beyond the cuff, no arrow, no sparkles, no text",
+      "style": "paper-garden",
+      "output": "gesture-finger.krea-raw.png"
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "output": "gesture-finger.qwen-layer2.png",
+      "from": "gesture-finger.krea-raw.png"
+    },
+    {
+      "op": "cut-asset-sheet",
+      "from": "gesture-finger.qwen-layer2.png",
+      "output": "cut/gesture-finger.png",
+      "expectedCount": 1,
+      "padding": 16,
+      "alphaThreshold": 4,
+      "manifest": "cut/boxes.json"
+    },
+    {
+      "op": "finalize-cutout",
+      "from": "cut/gesture-finger.png",
+      "output": "gesture-finger.final.png",
+      "magentaReview": "gesture-finger.magenta.png",
+      "maxSize": 384,
+      "padding": 12,
+      "alphaFloor": 4
+    },
+    {
+      "op": "encode",
+      "format": "webp",
+      "quality": 92,
+      "pixelFormat": "yuva420p",
+      "output": "../../ui/gesture-finger.webp"
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "alphaReviewedOnMagenta": true,
+    "transparentPct": 54.213,
+    "opaquePct": 43.784,
+    "partialPct": 2.003,
+    "finalSize": [331, 384],
+    "runtimeBytes": 23914,
+    "note": "Studio's automatic seed-ladder wrapper reported a null QA reason. The retained layer_2 has true alpha and passed the repository finalizer when routed through the asset cutter; both the original failed wrapper recipe and accepted manual QA evidence are retained."
+  },
+  "created": "2026-09-16"
+}

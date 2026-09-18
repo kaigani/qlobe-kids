@@ -1,0 +1,206 @@
+{
+  "source": "games/pouring-station/assets/source/gpt-image-2/token-sheet-magenta.png",
+  "sourceSha256": "54a5db11394df0f1b6b82564efda68085ba04367a271354ae592d9251c7a131d",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    255,
+    0,
+    255
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "water",
+      "file": "water.png",
+      "componentArea": 104226,
+      "foregroundBbox": [
+        79,
+        68,
+        441,
+        435
+      ],
+      "cropBbox": [
+        61,
+        50,
+        459,
+        453
+      ],
+      "cropXywh": [
+        61,
+        50,
+        398,
+        403
+      ],
+      "normalizedCropBbox": [
+        0.039714,
+        0.048828,
+        0.298828,
+        0.442383
+      ]
+    },
+    {
+      "index": 2,
+      "name": "beans",
+      "file": "beans.png",
+      "componentArea": 102819,
+      "foregroundBbox": [
+        588,
+        71,
+        949,
+        433
+      ],
+      "cropBbox": [
+        570,
+        53,
+        967,
+        451
+      ],
+      "cropXywh": [
+        570,
+        53,
+        397,
+        398
+      ],
+      "normalizedCropBbox": [
+        0.371094,
+        0.051758,
+        0.629557,
+        0.44043
+      ]
+    },
+    {
+      "index": 3,
+      "name": "rice",
+      "file": "rice.png",
+      "componentArea": 104332,
+      "foregroundBbox": [
+        1094,
+        69,
+        1455,
+        435
+      ],
+      "cropBbox": [
+        1076,
+        51,
+        1473,
+        453
+      ],
+      "cropXywh": [
+        1076,
+        51,
+        397,
+        402
+      ],
+      "normalizedCropBbox": [
+        0.700521,
+        0.049805,
+        0.958984,
+        0.442383
+      ]
+    },
+    {
+      "index": 4,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 104629,
+      "foregroundBbox": [
+        79,
+        544,
+        441,
+        912
+      ],
+      "cropBbox": [
+        61,
+        526,
+        459,
+        930
+      ],
+      "cropXywh": [
+        61,
+        526,
+        398,
+        404
+      ],
+      "normalizedCropBbox": [
+        0.039714,
+        0.513672,
+        0.298828,
+        0.908203
+      ]
+    },
+    {
+      "index": 5,
+      "name": "cloth",
+      "file": "cloth.png",
+      "componentArea": 98708,
+      "foregroundBbox": [
+        590,
+        561,
+        961,
+        894
+      ],
+      "cropBbox": [
+        572,
+        543,
+        979,
+        912
+      ],
+      "cropXywh": [
+        572,
+        543,
+        407,
+        369
+      ],
+      "normalizedCropBbox": [
+        0.372396,
+        0.530273,
+        0.63737,
+        0.890625
+      ]
+    },
+    {
+      "index": 6,
+      "name": "hand",
+      "file": "hand.png",
+      "componentArea": 67155,
+      "foregroundBbox": [
+        1110,
+        544,
+        1462,
+        909
+      ],
+      "cropBbox": [
+        1092,
+        526,
+        1480,
+        927
+      ],
+      "cropXywh": [
+        1092,
+        526,
+        388,
+        401
+      ],
+      "normalizedCropBbox": [
+        0.710938,
+        0.513672,
+        0.963542,
+        0.905273
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 26,
+    "chromaThreshold": 0,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "source": "games/silly-sentence-builder/assets/source/gpt-image-2/actions-master.png",
+  "sourceSha256": "302e898010e84376d1ea53db39f0f3218c0b01e1c08febca8c10144ac43c4690",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "dances",
+      "file": "dances.png",
+      "componentArea": 87936,
+      "foregroundBbox": [
+        48,
+        54,
+        469,
+        458
+      ],
+      "cropBbox": [
+        36,
+        42,
+        481,
+        470
+      ],
+      "cropXywh": [
+        36,
+        42,
+        445,
+        428
+      ],
+      "normalizedCropBbox": [
+        0.023438,
+        0.041016,
+        0.313151,
+        0.458984
+      ]
+    },
+    {
+      "index": 2,
+      "name": "trumpet",
+      "file": "trumpet.png",
+      "componentArea": 74687,
+      "foregroundBbox": [
+        511,
+        116,
+        1024,
+        410
+      ],
+      "cropBbox": [
+        499,
+        104,
+        1036,
+        422
+      ],
+      "cropXywh": [
+        499,
+        104,
+        537,
+        318
+      ],
+      "normalizedCropBbox": [
+        0.32487,
+        0.101562,
+        0.674479,
+        0.412109
+      ]
+    },
+    {
+      "index": 3,
+      "name": "pancakes",
+      "file": "pancakes.png",
+      "componentArea": 81872,
+      "foregroundBbox": [
+        1062,
+        62,
+        1490,
+        416
+      ],
+      "cropBbox": [
+        1050,
+        50,
+        1502,
+        428
+      ],
+      "cropXywh": [
+        1050,
+        50,
+        452,
+        378
+      ],
+      "normalizedCropBbox": [
+        0.683594,
+        0.048828,
+        0.977865,
+        0.417969
+      ]
+    },
+    {
+      "index": 4,
+      "name": "pogo",
+      "file": "pogo.png",
+      "componentArea": 53844,
+      "foregroundBbox": [
+        115,
+        530,
+        404,
+        974
+      ],
+      "cropBbox": [
+        103,
+        518,
+        416,
+        986
+      ],
+      "cropXywh": [
+        103,
+        518,
+        313,
+        468
+      ],
+      "normalizedCropBbox": [
+        0.067057,
+        0.505859,
+        0.270833,
+        0.962891
+      ]
+    },
+    {
+      "index": 5,
+      "name": "rocket",
+      "file": "rocket.png",
+      "componentArea": 81503,
+      "foregroundBbox": [
+        554,
+        527,
+        946,
+        974
+      ],
+      "cropBbox": [
+        542,
+        515,
+        958,
+        986
+      ],
+      "cropXywh": [
+        542,
+        515,
+        416,
+        471
+      ],
+      "normalizedCropBbox": [
+        0.352865,
+        0.50293,
+        0.623698,
+        0.962891
+      ]
+    },
+    {
+      "index": 6,
+      "name": "paints",
+      "file": "paints.png",
+      "componentArea": 75452,
+      "foregroundBbox": [
+        1053,
+        530,
+        1499,
+        945
+      ],
+      "cropBbox": [
+        1041,
+        518,
+        1511,
+        957
+      ],
+      "cropXywh": [
+        1041,
+        518,
+        470,
+        439
+      ],
+      "normalizedCropBbox": [
+        0.677734,
+        0.505859,
+        0.983724,
+        0.93457
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 6,
+    "minArea": 5000,
+    "order": "reading"
+  }
+}

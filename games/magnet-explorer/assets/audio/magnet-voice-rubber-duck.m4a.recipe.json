@@ -1,0 +1,28 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "magnet-voice-rubber-duck",
+  "kind": "voice",
+  "asset": "magnet-voice-rubber-duck.m4a",
+  "steps": [
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "text": "The rubber duck does not stick to the magnet.",
+      "seed": 7
+    }
+  ],
+  "refs": {
+    "voice": "teacher"
+  },
+  "derivedFrom": null,
+  "qa": {
+    "status": "review",
+    "transcript": {
+      "intended": "The rubber duck does not stick to the magnet.",
+      "heard": "The rubber duct does not stick to the magnet.",
+      "ratio": 0.977,
+      "match": true
+    }
+  },
+  "created": "2026-09-17"
+}

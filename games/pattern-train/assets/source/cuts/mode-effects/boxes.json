@@ -1,0 +1,202 @@
+{
+  "source": "games/pattern-train/assets/source/gpt-image-2/mode-effects-sheet.png",
+  "sourceSha256": "224a9ee62add9d3d86e53bc76ec9a345ecebd900a7f8e06e667fba0b8bcd5e3b",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "mode-shapes",
+      "file": "mode-shapes.png",
+      "componentArea": 166814,
+      "foregroundBbox": [
+        18,
+        133,
+        506,
+        488
+      ],
+      "cropBbox": [
+        2,
+        117,
+        522,
+        504
+      ],
+      "cropXywh": [
+        2,
+        117,
+        520,
+        387
+      ],
+      "normalizedCropBbox": [
+        0.001302,
+        0.114258,
+        0.339844,
+        0.492188
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mode-actions",
+      "file": "mode-actions.png",
+      "componentArea": 167152,
+      "foregroundBbox": [
+        524,
+        133,
+        1012,
+        488
+      ],
+      "cropBbox": [
+        508,
+        117,
+        1028,
+        504
+      ],
+      "cropXywh": [
+        508,
+        117,
+        520,
+        387
+      ],
+      "normalizedCropBbox": [
+        0.330729,
+        0.114258,
+        0.669271,
+        0.492188
+      ]
+    },
+    {
+      "index": 3,
+      "name": "mode-builder",
+      "file": "mode-builder.png",
+      "componentArea": 166489,
+      "foregroundBbox": [
+        1031,
+        134,
+        1518,
+        488
+      ],
+      "cropBbox": [
+        1015,
+        118,
+        1534,
+        504
+      ],
+      "cropXywh": [
+        1015,
+        118,
+        519,
+        386
+      ],
+      "normalizedCropBbox": [
+        0.660807,
+        0.115234,
+        0.998698,
+        0.492188
+      ]
+    },
+    {
+      "index": 4,
+      "name": "gold-star",
+      "file": "gold-star.png",
+      "componentArea": 81934,
+      "foregroundBbox": [
+        83,
+        557,
+        452,
+        913
+      ],
+      "cropBbox": [
+        67,
+        541,
+        468,
+        929
+      ],
+      "cropXywh": [
+        67,
+        541,
+        401,
+        388
+      ],
+      "normalizedCropBbox": [
+        0.04362,
+        0.52832,
+        0.304688,
+        0.907227
+      ]
+    },
+    {
+      "index": 5,
+      "name": "spark",
+      "file": "spark.png",
+      "componentArea": 58272,
+      "foregroundBbox": [
+        623,
+        547,
+        912,
+        895
+      ],
+      "cropBbox": [
+        607,
+        531,
+        928,
+        911
+      ],
+      "cropXywh": [
+        607,
+        531,
+        321,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.395182,
+        0.518555,
+        0.604167,
+        0.889648
+      ]
+    },
+    {
+      "index": 6,
+      "name": "whistle",
+      "file": "whistle.png",
+      "componentArea": 82552,
+      "foregroundBbox": [
+        1050,
+        608,
+        1464,
+        898
+      ],
+      "cropBbox": [
+        1034,
+        592,
+        1480,
+        914
+      ],
+      "cropXywh": [
+        1034,
+        592,
+        446,
+        322
+      ],
+      "normalizedCropBbox": [
+        0.673177,
+        0.578125,
+        0.963542,
+        0.892578
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 20,
+    "closeRadius": 4,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -3,32 +3,48 @@
   "title": "Pouring Station",
   "category": "practical-life",
   "path": "games/pouring-station/",
-  "icon": "ðŸº",
+  "icon": "🏺",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 4, "max": 6 },
   "status": "beta",
-  "accent": "#2d7dd2",
-  "shareTitle": "Pouring Station ðŸ’§ â€” Practicing Careful Pouring",
-  "description": "Gather cups, pour slowly and steadily, and clean up any spills as part of the work, one calm step at a time. A real-world pouring coach for ages 5â€“6.",
+  "accent": "#087f87",
+  "shareTitle": "Pouring Station — Little Helper Pouring Game",
+  "description": "Pour water, beans, and rice to glowing lines in a calm tactile kitchen made for careful little hands.",
   "learningGoals": [
-    "Practice careful hand control while pouring",
-    "Follow a short spoken sequence of practical-life steps",
-    "Build independence with setup and cleanup",
-    "Treat spills gently as part of the work"
+    "Coordinate a sustained drag-and-tilt gesture",
+    "Adjust pouring speed and stop at a visible target",
+    "Compare the movement and sound of water, beans, and rice",
+    "Build confidence through gentle practical-life repetition"
   ],
-  "interactionModel": "tap the large done button after each real-world pouring step; timed steps coach slow, careful movement",
-  "feedbackModel": "spoken coaching with sparkle/tick/tada SFX; praise focuses on care and cleanup, not perfect results",
+  "interactionModel": "choose a material, grab an authored pitcher, move it toward the cup, and tilt to pour; a forgiving target band slows and catches the final amount",
+  "feedbackModel": "recorded spoken modeling, material-specific responsive sound, visible source and target fill, Maya's encouragement, three star beats, and a no-fail celebration",
   "uses": [
-    "shared/js/engines/coach-timer.js",
+    "shared/js/analytics.js",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/tap.js",
+    "shared/js/voice-clips.js",
     "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/bgm.js",
+    "shared/js/sfx.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css",
+    "shared/assets/music/mug-and-sunbeam.mp3",
+    "shared/characters/maya/portrait.png"
   ],
   "modes": [
-    { "id": "water", "title": "Water Pouring", "skill": "careful water pouring and cleanup" },
-    { "id": "beans", "title": "Bean Pouring", "skill": "careful dry pouring and listening" }
+    { "id": "water", "title": "Water", "skill": "smooth sustained tilt and stopping at a visual line" },
+    { "id": "beans", "title": "Beans", "skill": "controlled dry pouring with auditory feedback" },
+    { "id": "rice", "title": "Rice", "skill": "fine stop-and-start control with small grains" }
   ],
+  "summary": "Tilt a toy pitcher and pour water, beans, or rice to three glowing lines with Maya.",
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
-  "conceptVideo": null
+  "credits": "Kaigani; original Toy-world production art authored with built-in GPT Image 2 and local Krea 2, Qwen Image Edit, Qwen Image Layered, and deterministic cutting/finalization tools. Recorded dialogue uses the approved Qwen voice-clone workflow and Whisper QA. See ASSETS.md.",
+  "characters": ["maya"],
+  "conceptVideo": "01-game-concepts/pouring-station/"
 }

@@ -1,0 +1,382 @@
+{
+  "source": "games/texture-trail/assets/source/gpt-image-2/texture-kit.png",
+  "sourceSha256": "81037a90f70c7cadb2e71a182f92bbcfe8d9aefda532b86f4d25883f7ae3547b",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-bumpy",
+      "file": "card-bumpy.png",
+      "componentArea": 125732,
+      "foregroundBbox": [
+        35,
+        33,
+        341,
+        471
+      ],
+      "cropBbox": [
+        23,
+        21,
+        353,
+        483
+      ],
+      "cropXywh": [
+        23,
+        21,
+        330,
+        462
+      ],
+      "normalizedCropBbox": [
+        0.015884,
+        0.019337,
+        0.243785,
+        0.444751
+      ]
+    },
+    {
+      "index": 2,
+      "name": "card-smooth",
+      "file": "card-smooth.png",
+      "componentArea": 127099,
+      "foregroundBbox": [
+        389,
+        33,
+        698,
+        472
+      ],
+      "cropBbox": [
+        377,
+        21,
+        710,
+        484
+      ],
+      "cropXywh": [
+        377,
+        21,
+        333,
+        463
+      ],
+      "normalizedCropBbox": [
+        0.260359,
+        0.019337,
+        0.490331,
+        0.445672
+      ]
+    },
+    {
+      "index": 3,
+      "name": "card-ridged",
+      "file": "card-ridged.png",
+      "componentArea": 130785,
+      "foregroundBbox": [
+        742,
+        33,
+        1060,
+        472
+      ],
+      "cropBbox": [
+        730,
+        21,
+        1072,
+        484
+      ],
+      "cropXywh": [
+        730,
+        21,
+        342,
+        463
+      ],
+      "normalizedCropBbox": [
+        0.504144,
+        0.019337,
+        0.740331,
+        0.445672
+      ]
+    },
+    {
+      "index": 4,
+      "name": "card-soft",
+      "file": "card-soft.png",
+      "componentArea": 128283,
+      "foregroundBbox": [
+        1103,
+        33,
+        1414,
+        473
+      ],
+      "cropBbox": [
+        1091,
+        21,
+        1426,
+        485
+      ],
+      "cropXywh": [
+        1091,
+        21,
+        335,
+        464
+      ],
+      "normalizedCropBbox": [
+        0.753453,
+        0.019337,
+        0.984807,
+        0.446593
+      ]
+    },
+    {
+      "index": 5,
+      "name": "marker-bumpy",
+      "file": "marker-bumpy.png",
+      "componentArea": 58916,
+      "foregroundBbox": [
+        52,
+        494,
+        321,
+        772
+      ],
+      "cropBbox": [
+        40,
+        482,
+        333,
+        784
+      ],
+      "cropXywh": [
+        40,
+        482,
+        293,
+        302
+      ],
+      "normalizedCropBbox": [
+        0.027624,
+        0.443831,
+        0.229972,
+        0.721915
+      ]
+    },
+    {
+      "index": 6,
+      "name": "marker-smooth",
+      "file": "marker-smooth.png",
+      "componentArea": 59500,
+      "foregroundBbox": [
+        388,
+        517,
+        698,
+        757
+      ],
+      "cropBbox": [
+        376,
+        505,
+        710,
+        769
+      ],
+      "cropXywh": [
+        376,
+        505,
+        334,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.259669,
+        0.465009,
+        0.490331,
+        0.708103
+      ]
+    },
+    {
+      "index": 7,
+      "name": "marker-ridged",
+      "file": "marker-ridged.png",
+      "componentArea": 59740,
+      "foregroundBbox": [
+        765,
+        494,
+        1036,
+        771
+      ],
+      "cropBbox": [
+        753,
+        482,
+        1048,
+        783
+      ],
+      "cropXywh": [
+        753,
+        482,
+        295,
+        301
+      ],
+      "normalizedCropBbox": [
+        0.520028,
+        0.443831,
+        0.723757,
+        0.720994
+      ]
+    },
+    {
+      "index": 8,
+      "name": "marker-soft",
+      "file": "marker-soft.png",
+      "componentArea": 59176,
+      "foregroundBbox": [
+        1111,
+        494,
+        1405,
+        768
+      ],
+      "cropBbox": [
+        1099,
+        482,
+        1417,
+        780
+      ],
+      "cropXywh": [
+        1099,
+        482,
+        318,
+        298
+      ],
+      "normalizedCropBbox": [
+        0.758978,
+        0.443831,
+        0.978591,
+        0.718232
+      ]
+    },
+    {
+      "index": 9,
+      "name": "plaque-prompt",
+      "file": "plaque-prompt.png",
+      "componentArea": 90105,
+      "foregroundBbox": [
+        23,
+        804,
+        441,
+        1036
+      ],
+      "cropBbox": [
+        11,
+        792,
+        453,
+        1048
+      ],
+      "cropXywh": [
+        11,
+        792,
+        442,
+        256
+      ],
+      "normalizedCropBbox": [
+        0.007597,
+        0.729282,
+        0.312845,
+        0.965009
+      ]
+    },
+    {
+      "index": 10,
+      "name": "plaque-action",
+      "file": "plaque-action.png",
+      "componentArea": 71456,
+      "foregroundBbox": [
+        459,
+        823,
+        848,
+        1028
+      ],
+      "cropBbox": [
+        447,
+        811,
+        860,
+        1040
+      ],
+      "cropXywh": [
+        447,
+        811,
+        413,
+        229
+      ],
+      "normalizedCropBbox": [
+        0.308702,
+        0.746777,
+        0.593923,
+        0.957643
+      ]
+    },
+    {
+      "index": 11,
+      "name": "medal-bumpy",
+      "file": "medal-bumpy.png",
+      "componentArea": 62033,
+      "foregroundBbox": [
+        864,
+        775,
+        1138,
+        1059
+      ],
+      "cropBbox": [
+        852,
+        763,
+        1150,
+        1071
+      ],
+      "cropXywh": [
+        852,
+        763,
+        298,
+        308
+      ],
+      "normalizedCropBbox": [
+        0.588398,
+        0.702578,
+        0.794199,
+        0.986188
+      ]
+    },
+    {
+      "index": 12,
+      "name": "medal-star",
+      "file": "medal-star.png",
+      "componentArea": 58670,
+      "foregroundBbox": [
+        1157,
+        778,
+        1424,
+        1055
+      ],
+      "cropBbox": [
+        1145,
+        766,
+        1436,
+        1067
+      ],
+      "cropXywh": [
+        1145,
+        766,
+        291,
+        301
+      ],
+      "normalizedCropBbox": [
+        0.790746,
+        0.705341,
+        0.991713,
+        0.982505
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

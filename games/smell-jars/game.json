@@ -3,31 +3,58 @@
   "title": "Smell Jars",
   "category": "sensorial-science",
   "path": "games/smell-jars/",
-  "icon": "👃",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#ffd166",
-  "shareTitle": "Smell Jars 👃 — A Real Kitchen Smell Journal",
-  "description": "With a grown-up's help, sniff real kitchen smells, tap stickers to guess and record what you notice, and share your likes and dislikes. A gentle smell journal for ages 5–6.",
+  "age": {
+    "min": 5,
+    "max": 6
+  },
+  "status": "beta",
+  "accent": "#78aa63",
+  "shareTitle": "Smell Jars — A Tiny Scent Apothecary",
+  "description": "Lift tactile wooden lids, follow six colorful scent trails, and match each mystery jar to its picture token.",
   "learningGoals": [
-    "Build smell vocabulary through real sensory experiences",
-    "Practice sniffing gently and comparing sensory clues",
-    "Affirm that smell likes and dislikes are personal"
+    "Connect sensory vocabulary with familiar ingredients",
+    "Practice visual matching and working memory",
+    "Build confidence through gentle, consequence-free retries"
   ],
-  "interactionModel": "observe-journal tap stickers to record smell guesses, reveal reactions, and like-meter feelings",
-  "feedbackModel": "Every sticker is accepted with pop and sparkle SFX plus a spoken smell note; the recap reads the smell journal back.",
+  "interactionModel": "choose one of three mystery jars, tap its lid, then drag a picture token to the jar or tap the token and jar in sequence",
+  "feedbackModel": "recorded teacher narration, distinct scent plumes, physical lid motion, gentle retry clues, tactile sound effects, and a four-token shelf celebration",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "games/smell-jars/assets/"
   ],
   "modes": [
-    { "id": "sniff", "title": "Be the Nose", "skill": "connect real smells to vocabulary and preference" },
-    { "id": "guess", "title": "Sniff and Guess", "skill": "make and revise sensory guesses" }
+    {
+      "id": "smell-match",
+      "title": "Smell & Match",
+      "skill": "match a persistent scent clue to one of three picture tokens"
+    },
+    {
+      "id": "nose-memory",
+      "title": "Nose Memory",
+      "skill": "remember a fading scent clue and choose among four picture tokens"
+    }
   ],
-  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "license": {
+    "code": "MIT",
+    "assets": "CC-BY-4.0"
+  },
+  "credits": "Kaigani; production art generated with GPT Image 2 and Krea 2; title and sparkle refined with Qwen Image Edit/Layered; teacher narration generated with Qwen TTS from the approved synthetic platform reference and verified with Whisper. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

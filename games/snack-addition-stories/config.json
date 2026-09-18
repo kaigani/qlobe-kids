@@ -1,0 +1,201 @@
+{
+  "id": "snack-addition-stories",
+  "engine": "custom",
+  "title": "Snack Addition Stories",
+  "music": {
+    "track": "../../shared/assets/music/mug-and-sunbeam.mp3",
+    "volume": 0.14
+  },
+  "assets": {
+    "backdrop": "./assets/backdrop.webp",
+    "title": "./assets/title.webp",
+    "foods": {
+      "blackberry": "./assets/foods/blackberry.webp",
+      "raspberry": "./assets/foods/raspberry.webp",
+      "strawberry": "./assets/foods/strawberry.webp",
+      "blueberry": "./assets/foods/blueberry.webp",
+      "orange": "./assets/foods/orange.webp",
+      "watermelon": "./assets/foods/watermelon.webp",
+      "cracker": "./assets/foods/cracker.webp",
+      "sandwich-cracker": "./assets/foods/sandwich-cracker.webp"
+    },
+    "ui": {
+      "tray": "./assets/ui/tray.webp",
+      "promptPlaque": "./assets/ui/prompt-plaque.webp",
+      "equationPlaque": "./assets/ui/equation-plaque.webp",
+      "storyCard": "./assets/ui/story-card.webp",
+      "answerPink": "./assets/ui/answer-pink.webp",
+      "answerLavender": "./assets/ui/answer-lavender.webp",
+      "answerMint": "./assets/ui/answer-mint.webp",
+      "actionButton": "./assets/ui/action-button.webp",
+      "celebrationBanner": "./assets/ui/celebration-banner.webp"
+    },
+    "characters": {
+      "sunIdle": "./assets/characters/sun-idle.webp",
+      "sunCheer": "./assets/characters/sun-cheer.webp"
+    }
+  },
+  "copy": {
+    "splashPrompt": "Choose a picnic game",
+    "storySelectPrompt": "Choose a snack story",
+    "guidedPrompt": "Tap the new snacks to add them",
+    "counterPrompt": "Tap each new snack",
+    "answerPrompt": "How many altogether?",
+    "successPrompt": "Great addition!",
+    "countPrompt": "Let's count together",
+    "next": "Next",
+    "playAgain": "Play again",
+    "chooseAnother": "Choose another",
+    "celebrate": "Celebrate",
+    "picnicPrompt": "Pick a snack.\nTap left or right.",
+    "picnicEmpty": "Build your picnic",
+    "picnicFull": "The tray is full",
+    "guidedComplete": "Story picnic complete!",
+    "counterComplete": "Counting picnic complete!"
+  },
+  "foodNames": {
+    "blackberry": { "one": "blackberry", "many": "blackberries" },
+    "raspberry": { "one": "raspberry", "many": "raspberries" },
+    "strawberry": { "one": "strawberry", "many": "strawberries" },
+    "blueberry": { "one": "blueberry", "many": "blueberries" },
+    "orange": { "one": "orange", "many": "oranges" },
+    "watermelon": { "one": "watermelon slice", "many": "watermelon slices" },
+    "cracker": { "one": "cracker", "many": "crackers" },
+    "sandwich-cracker": { "one": "sandwich cracker", "many": "sandwich crackers" }
+  },
+  "numbers": ["zero", "one", "two", "three", "four", "five", "six"],
+  "voice": {
+    "welcome": "Welcome to Snack Math! These are adding stories, where we bring snacks together. Choose a picnic game.",
+    "story-select": "Choose a snack story.",
+    "guided-intro": "Listen to the story. Then tap the new snacks to add them to the tray.",
+    "counter-intro": "Tap each new snack to add it to the tray. Then choose how many there are altogether.",
+    "picnic-intro": "Make your own picnic. Choose a snack, then tap either side of the tray.",
+    "stage-hint": "Tap the new snacks to bring them to the tray.",
+    "counter-hint": "Tap each waiting snack, one at a time.",
+    "how-many": "How many snacks are there altogether?",
+    "count-together": "Let's count together.",
+    "count-1": "One.",
+    "count-2": "Two.",
+    "count-3": "Three.",
+    "count-4": "Four.",
+    "count-5": "Five.",
+    "count-6": "Six.",
+    "picnic-empty": "Choose a snack, then tap either side of the tray.",
+    "picnic-full": "Your tray is full. Tap a snack on the tray to make room.",
+    "picnic-celebrate": "What a delicious addition picnic!",
+    "complete-guided": "You solved every snack story. What a wonderful addition picnic!",
+    "complete-counter": "You counted every snack. Your addition picnic is complete!",
+    "berry-1-prompt": "Two blackberry friends are waiting on the tray. One raspberry rolls in to join them. How many berry friends are there altogether?",
+    "berry-1-success": "Two plus one equals three. Three berry friends!",
+    "berry-2-prompt": "One strawberry is ready for a picnic. Two blueberries bounce over to join it. How many berries are there altogether?",
+    "berry-2-success": "One plus two equals three. Three happy berries!",
+    "berry-3-prompt": "Two raspberries are on the tray. Two blueberries come to the picnic too. How many berries are there altogether?",
+    "berry-3-success": "Two plus two equals four. Four berry friends!",
+    "berry-4-prompt": "Three blackberries are sharing a snack. Two strawberries join the group. How many berries are there altogether?",
+    "berry-4-success": "Three plus two equals five. Five berry friends!",
+    "berry-5-prompt": "Three blueberries are waiting. Three raspberries bounce in beside them. How many berries are there altogether?",
+    "berry-5-success": "Three plus three equals six. Six berry friends!",
+    "fruit-1-prompt": "One orange is on the picnic tray. One watermelon slice comes to join it. How many fruits are there altogether?",
+    "fruit-1-success": "One plus one equals two. Two fruity friends!",
+    "fruit-2-prompt": "Two strawberries are ready to share. One orange rolls in beside them. How many fruits are there altogether?",
+    "fruit-2-success": "Two plus one equals three. Three picnic fruits!",
+    "fruit-3-prompt": "Two watermelon slices are on the tray. Two oranges come to the picnic. How many fruits are there altogether?",
+    "fruit-3-success": "Two plus two equals four. Four picnic fruits!",
+    "fruit-4-prompt": "Three oranges are waiting on the tray. Two strawberries arrive to join them. How many fruits are there altogether?",
+    "fruit-4-success": "Three plus two equals five. Five fruity friends!",
+    "fruit-5-prompt": "Three watermelon slices are ready. Three oranges roll in beside them. How many fruits are there altogether?",
+    "fruit-5-success": "Three plus three equals six. Six picnic fruits!",
+    "cracker-1-prompt": "One cracker is on the tray. One sandwich cracker comes to join it. How many crackers are there altogether?",
+    "cracker-1-success": "One plus one equals two. Two crunchy friends!",
+    "cracker-2-prompt": "Two crackers are ready for snack time. One sandwich cracker joins them. How many crackers are there altogether?",
+    "cracker-2-success": "Two plus one equals three. Three crunchy crackers!",
+    "cracker-3-prompt": "Two sandwich crackers are waiting. Two crackers slide in beside them. How many crackers are there altogether?",
+    "cracker-3-success": "Two plus two equals four. Four crunchy crackers!",
+    "cracker-4-prompt": "Three crackers are stacked on the tray. Two sandwich crackers join the stack. How many crackers are there altogether?",
+    "cracker-4-success": "Three plus two equals five. Five crunchy crackers!",
+    "cracker-5-prompt": "Three sandwich crackers are ready. Three crackers come to join them. How many crackers are there altogether?",
+    "cracker-5-success": "Three plus three equals six. Six crunchy crackers!",
+    "counter-1-prompt": "One blackberry is on the tray. Tap one raspberry to add it. Then find how many there are altogether.",
+    "counter-1-success": "One plus one equals two. Two snacks altogether!",
+    "counter-2-prompt": "One strawberry is on the tray. Tap two blueberries to add them. Then find how many there are altogether.",
+    "counter-2-success": "One plus two equals three. Three snacks altogether!",
+    "counter-3-prompt": "Two oranges are on the tray. Tap two watermelon slices to add them. Then find how many there are altogether.",
+    "counter-3-success": "Two plus two equals four. Four snacks altogether!",
+    "counter-4-prompt": "Two crackers are on the tray. Tap three sandwich crackers to add them. Then find how many there are altogether.",
+    "counter-4-success": "Two plus three equals five. Five snacks altogether!",
+    "counter-5-prompt": "Three blueberries are on the tray. Tap three raspberries to add them. Then find how many there are altogether.",
+    "counter-5-success": "Three plus three equals six. Six snacks altogether!"
+  },
+  "modes": [
+    {
+      "id": "guided",
+      "title": "Berry Stories",
+      "subtitle": "Listen, add, and solve",
+      "previewFoods": ["strawberry", "blackberry", "raspberry"]
+    },
+    {
+      "id": "counter",
+      "title": "Snack Counter",
+      "subtitle": "Tap each snack and count",
+      "previewFoods": ["orange", "blueberry", "cracker"]
+    },
+    {
+      "id": "picnic",
+      "title": "My Picnic",
+      "subtitle": "Make your own addition",
+      "previewFoods": ["watermelon", "sandwich-cracker", "strawberry"]
+    }
+  ],
+  "themes": [
+    {
+      "id": "berry",
+      "title": "Berry Friends",
+      "subtitle": "Bouncy berry stories",
+      "previewFoods": ["blackberry", "strawberry", "raspberry", "blueberry"],
+      "rounds": [
+        { "id": "berry-1", "first": { "food": "blackberry", "count": 2 }, "second": { "food": "raspberry", "count": 1 }, "total": 3, "promptKey": "berry-1-prompt", "successKey": "berry-1-success", "display": "2 blackberries + 1 raspberry" },
+        { "id": "berry-2", "first": { "food": "strawberry", "count": 1 }, "second": { "food": "blueberry", "count": 2 }, "total": 3, "promptKey": "berry-2-prompt", "successKey": "berry-2-success", "display": "1 strawberry + 2 blueberries" },
+        { "id": "berry-3", "first": { "food": "raspberry", "count": 2 }, "second": { "food": "blueberry", "count": 2 }, "total": 4, "promptKey": "berry-3-prompt", "successKey": "berry-3-success", "display": "2 raspberries + 2 blueberries" },
+        { "id": "berry-4", "first": { "food": "blackberry", "count": 3 }, "second": { "food": "strawberry", "count": 2 }, "total": 5, "promptKey": "berry-4-prompt", "successKey": "berry-4-success", "display": "3 blackberries + 2 strawberries" },
+        { "id": "berry-5", "first": { "food": "blueberry", "count": 3 }, "second": { "food": "raspberry", "count": 3 }, "total": 6, "promptKey": "berry-5-prompt", "successKey": "berry-5-success", "display": "3 blueberries + 3 raspberries" }
+      ]
+    },
+    {
+      "id": "fruit",
+      "title": "Fruit Picnic",
+      "subtitle": "Sunny fruit stories",
+      "previewFoods": ["orange", "watermelon", "strawberry"],
+      "rounds": [
+        { "id": "fruit-1", "first": { "food": "orange", "count": 1 }, "second": { "food": "watermelon", "count": 1 }, "total": 2, "promptKey": "fruit-1-prompt", "successKey": "fruit-1-success", "display": "1 orange + 1 watermelon slice" },
+        { "id": "fruit-2", "first": { "food": "strawberry", "count": 2 }, "second": { "food": "orange", "count": 1 }, "total": 3, "promptKey": "fruit-2-prompt", "successKey": "fruit-2-success", "display": "2 strawberries + 1 orange" },
+        { "id": "fruit-3", "first": { "food": "watermelon", "count": 2 }, "second": { "food": "orange", "count": 2 }, "total": 4, "promptKey": "fruit-3-prompt", "successKey": "fruit-3-success", "display": "2 watermelon slices + 2 oranges" },
+        { "id": "fruit-4", "first": { "food": "orange", "count": 3 }, "second": { "food": "strawberry", "count": 2 }, "total": 5, "promptKey": "fruit-4-prompt", "successKey": "fruit-4-success", "display": "3 oranges + 2 strawberries" },
+        { "id": "fruit-5", "first": { "food": "watermelon", "count": 3 }, "second": { "food": "orange", "count": 3 }, "total": 6, "promptKey": "fruit-5-prompt", "successKey": "fruit-5-success", "display": "3 watermelon slices + 3 oranges" }
+      ]
+    },
+    {
+      "id": "cracker",
+      "title": "Cracker Stack",
+      "subtitle": "Crunchy counting stories",
+      "previewFoods": ["cracker", "sandwich-cracker"],
+      "rounds": [
+        { "id": "cracker-1", "first": { "food": "cracker", "count": 1 }, "second": { "food": "sandwich-cracker", "count": 1 }, "total": 2, "promptKey": "cracker-1-prompt", "successKey": "cracker-1-success", "display": "1 cracker + 1 sandwich cracker" },
+        { "id": "cracker-2", "first": { "food": "cracker", "count": 2 }, "second": { "food": "sandwich-cracker", "count": 1 }, "total": 3, "promptKey": "cracker-2-prompt", "successKey": "cracker-2-success", "display": "2 crackers + 1 sandwich cracker" },
+        { "id": "cracker-3", "first": { "food": "sandwich-cracker", "count": 2 }, "second": { "food": "cracker", "count": 2 }, "total": 4, "promptKey": "cracker-3-prompt", "successKey": "cracker-3-success", "display": "2 sandwich crackers + 2 crackers" },
+        { "id": "cracker-4", "first": { "food": "cracker", "count": 3 }, "second": { "food": "sandwich-cracker", "count": 2 }, "total": 5, "promptKey": "cracker-4-prompt", "successKey": "cracker-4-success", "display": "3 crackers + 2 sandwich crackers" },
+        { "id": "cracker-5", "first": { "food": "sandwich-cracker", "count": 3 }, "second": { "food": "cracker", "count": 3 }, "total": 6, "promptKey": "cracker-5-prompt", "successKey": "cracker-5-success", "display": "3 sandwich crackers + 3 crackers" }
+      ]
+    }
+  ],
+  "counterRounds": [
+    { "id": "counter-1", "first": { "food": "blackberry", "count": 1 }, "second": { "food": "raspberry", "count": 1 }, "total": 2, "promptKey": "counter-1-prompt", "successKey": "counter-1-success", "display": "1 blackberry + 1 raspberry" },
+    { "id": "counter-2", "first": { "food": "strawberry", "count": 1 }, "second": { "food": "blueberry", "count": 2 }, "total": 3, "promptKey": "counter-2-prompt", "successKey": "counter-2-success", "display": "1 strawberry + 2 blueberries" },
+    { "id": "counter-3", "first": { "food": "orange", "count": 2 }, "second": { "food": "watermelon", "count": 2 }, "total": 4, "promptKey": "counter-3-prompt", "successKey": "counter-3-success", "display": "2 oranges + 2 watermelon slices" },
+    { "id": "counter-4", "first": { "food": "cracker", "count": 2 }, "second": { "food": "sandwich-cracker", "count": 3 }, "total": 5, "promptKey": "counter-4-prompt", "successKey": "counter-4-success", "display": "2 crackers + 3 sandwich crackers" },
+    { "id": "counter-5", "first": { "food": "blueberry", "count": 3 }, "second": { "food": "raspberry", "count": 3 }, "total": 6, "promptKey": "counter-5-prompt", "successKey": "counter-5-success", "display": "3 blueberries + 3 raspberries" }
+  ],
+  "picnic": {
+    "foods": ["strawberry", "blueberry", "orange", "watermelon", "cracker", "sandwich-cracker"],
+    "limit": 6
+  }
+}

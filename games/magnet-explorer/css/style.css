@@ -1,0 +1,680 @@
+:root {
+  --ink: #183f58;
+  --cream: #fff8df;
+  --blue: #1479b8;
+  --red: #ee4d35;
+  --yellow: #ffc945;
+  --green: #79b73c;
+}
+
+html,
+body,
+#game,
+.magnet-game {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #79c7df;
+}
+
+button {
+  font: inherit;
+}
+
+.magnet-game {
+  position: relative;
+  color: var(--cream);
+  isolation: isolate;
+}
+
+.game-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.splash-screen,
+.end-screen {
+  background-image: url('../assets/backgrounds/splash.webp');
+}
+
+.title-art {
+  position: absolute;
+  z-index: 2;
+  top: max(4.5%, calc(var(--qk-safe-top) + 14px));
+  left: 50%;
+  width: min(52vw, 650px);
+  max-height: 38dvh;
+  object-fit: contain;
+  transform: translateX(-50%) rotate(-1deg);
+  filter: drop-shadow(0 11px 8px rgb(28 63 73 / 28%));
+}
+
+.splash-prompt {
+  position: absolute;
+  z-index: 3;
+  top: 37%;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  color: #fff9de;
+  font-size: clamp(18px, 2.3vw, 32px);
+  letter-spacing: .015em;
+  text-shadow: 0 3px 0 #075e8c, 0 6px 12px rgb(0 46 77 / 35%);
+}
+
+.mode-grid {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: max(2.5%, calc(var(--qk-safe-bottom) + 8px));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  align-items: end;
+  gap: clamp(8px, 2.1vw, 30px);
+  width: min(82vw, 980px);
+  transform: translateX(-50%);
+}
+
+.mode-card,
+.again-button,
+.round-next {
+  border: 0;
+  background: transparent;
+  color: var(--cream);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mode-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 154px;
+  place-items: center;
+  padding: 0;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.mode-card img {
+  width: min(100%, 265px);
+  max-height: 28dvh;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 6px rgb(39 61 54 / 28%));
+}
+
+.mode-card span,
+.again-button span {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  min-width: 76%;
+  padding: 7px 14px;
+  transform: translate(-50%, 30%);
+  color: white;
+  font-size: clamp(16px, 2vw, 27px);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 3px 0 rgb(48 76 47 / 55%);
+  white-space: nowrap;
+}
+
+.mode-card:active,
+.mode-card:focus-visible,
+.again-button:active,
+.again-button:focus-visible {
+  transform: translateY(5px) scale(.96);
+  filter: brightness(1.1);
+  outline: 5px solid rgb(255 239 119 / 88%);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.play-screen {
+  background-image: url('../assets/backgrounds/workbench.webp');
+}
+
+.play-screen.mode-magnet-maze {
+  background-image: url('../assets/backgrounds/maze.webp');
+  background-color: #174d78;
+  background-size: contain;
+}
+
+.magnet-game .qk-hud-top-left {
+  left: max(20px, calc(var(--qk-safe-left) + 8px));
+}
+
+.magnet-game .qk-hud-top-right {
+  right: max(20px, calc(var(--qk-safe-right) + 8px));
+}
+
+.prompt-plaque {
+  position: absolute;
+  z-index: 12;
+  top: max(1.8%, calc(var(--qk-safe-top) + 8px));
+  left: 50%;
+  width: min(58vw, 650px);
+  min-height: 62px;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  color: #fdf5d4;
+  font-size: clamp(19px, 2.6vw, 35px);
+  text-align: center;
+  text-shadow: 0 3px 0 #075f96, 0 5px 10px rgb(0 44 77 / 42%);
+  pointer-events: none;
+}
+
+.progress-rail {
+  position: absolute;
+  z-index: 13;
+  top: max(10%, calc(var(--qk-safe-top) + 74px));
+  left: 50%;
+  display: flex;
+  gap: 4px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.progress-rail img {
+  width: clamp(24px, 3.1vw, 44px);
+  height: clamp(24px, 3.1vw, 44px);
+  object-fit: contain;
+  opacity: .28;
+  filter: grayscale(.65);
+  transition: transform 220ms ease, opacity 220ms ease, filter 220ms ease;
+}
+
+.progress-rail img.is-done {
+  opacity: 1;
+  filter: drop-shadow(0 3px 3px rgb(102 67 0 / 35%));
+}
+
+.progress-rail img.is-now {
+  opacity: .72;
+  filter: none;
+  transform: scale(1.12);
+}
+
+.playfield {
+  position: absolute;
+  z-index: 4;
+  inset: max(14%, calc(var(--qk-safe-top) + 94px)) 5% max(4%, var(--qk-safe-bottom));
+  touch-action: none;
+}
+
+.playfield img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.magnet-tool,
+.test-object,
+.maze-ball,
+.sweep-object,
+.snap-sparkles {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+
+.magnet-tool {
+  z-index: 9;
+  width: clamp(112px, 19vmin, 232px);
+  min-width: 112px;
+  min-height: 112px;
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 11px 8px rgb(52 44 26 / 34%));
+  transition: left 220ms ease, top 220ms ease, transform 170ms ease, filter 170ms ease;
+}
+
+.magnet-tool.is-held {
+  cursor: grabbing;
+  transform: translate(-50%, -54%) scale(1.08) rotate(-3deg);
+  transition: transform 110ms ease, filter 110ms ease;
+  filter: drop-shadow(0 18px 10px rgb(52 44 26 / 30%));
+}
+
+.magnet-tool.is-powered {
+  filter: drop-shadow(0 0 14px rgb(255 222 67 / 95%)) drop-shadow(0 12px 7px rgb(52 44 26 / 30%));
+}
+
+.magnet-tool.is-bounced {
+  animation: magnet-bounce 520ms ease;
+}
+
+.magnet-tool.is-nudging {
+  animation: magnet-nudge 900ms ease-in-out;
+}
+
+.magnet-tool:focus-visible,
+.test-object:focus-visible,
+.sweep-object:focus-visible {
+  outline: 5px solid #fff278;
+  outline-offset: 5px;
+  border-radius: 24%;
+}
+
+.test-pedestal {
+  position: absolute;
+  z-index: 2;
+  top: 40%;
+  left: 50%;
+  width: clamp(230px, 39vw, 540px);
+  max-height: 41%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: drop-shadow(0 11px 8px rgb(55 44 26 / 22%));
+}
+
+.test-object {
+  z-index: 5;
+  top: 40%;
+  left: 50%;
+  width: clamp(108px, 17vmin, 205px);
+  height: clamp(108px, 17vmin, 205px);
+  filter: drop-shadow(0 8px 5px rgb(43 34 22 / 26%));
+  cursor: pointer;
+  transition: left 420ms cubic-bezier(.2,.8,.2,1), top 420ms cubic-bezier(.2,.8,.2,1), transform 420ms ease;
+}
+
+.test-object.is-attracted {
+  z-index: 10;
+  transform: translate(-50%, -50%) scale(.68) rotate(14deg);
+}
+
+.test-object.is-sorted,
+.test-object.is-attracted.is-sorted {
+  z-index: 6;
+  transform: translate(-50%, -50%) scale(.48) rotate(0);
+}
+
+.is-repelled {
+  animation: gentle-repel 560ms ease;
+}
+
+.sorting-tray {
+  position: absolute;
+  z-index: 3;
+  bottom: -2%;
+  width: clamp(150px, 25vw, 350px);
+  max-height: 31%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 5px rgb(56 42 22 / 22%));
+}
+
+.tray-magnetic { left: 4%; }
+.tray-nonmagnetic { right: 4%; }
+
+.tray-label {
+  position: absolute;
+  z-index: 7;
+  bottom: 6%;
+  width: clamp(150px, 25vw, 350px);
+  color: #fffdf0;
+  font-size: clamp(13px, 1.6vw, 21px);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 0 #28552d, 0 4px 7px rgb(26 47 30 / 38%);
+  pointer-events: none;
+}
+
+.tray-label-magnetic { left: 4%; }
+.tray-label-nonmagnetic {
+  right: 4%;
+  text-shadow: 0 2px 0 #8b471c, 0 4px 7px rgb(67 36 18 / 38%);
+}
+
+.snap-sparkles {
+  z-index: 8;
+  width: clamp(170px, 27vmin, 330px);
+  pointer-events: none;
+  animation: sparkle-in 650ms ease both;
+}
+
+.mode-result {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(27 119 169 / 24%);
+  backdrop-filter: blur(2px);
+}
+
+.mode-result[hidden] { display: none; }
+
+.mode-result.is-test-feedback {
+  display: block;
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+
+.mode-result.is-test-feedback[hidden] {
+  display: none;
+}
+
+.mode-result.is-test-feedback .result-sparkles,
+.mode-result.is-test-feedback .result-badge {
+  display: none;
+}
+
+.mode-result.is-test-feedback p {
+  top: 45%;
+  left: 50%;
+  min-width: min(76vw, 430px);
+  padding: 13px 24px 15px;
+  border: 5px solid rgb(255 255 255 / 88%);
+  border-radius: 26px;
+  transform: translate(-50%, -50%);
+  background: #317eaa;
+  box-shadow: 0 7px 0 rgb(14 69 98 / 45%), 0 12px 20px rgb(25 50 40 / 22%);
+  font-size: clamp(24px, 3.5vw, 43px);
+}
+
+.mode-result.is-test-feedback.outcome-magnetic p {
+  background: #62a93a;
+  text-shadow: 0 4px 0 #326b24;
+}
+
+.mode-result.is-test-feedback.outcome-nonmagnetic p {
+  background: #e67933;
+  text-shadow: 0 4px 0 #9a431f;
+}
+
+.mode-result.is-test-feedback .round-next {
+  pointer-events: auto;
+}
+
+.result-sparkles {
+  position: absolute;
+  width: min(62vmin, 500px);
+  animation: sparkle-in 620ms ease both;
+}
+
+.result-badge {
+  position: absolute;
+  width: min(33vmin, 290px);
+  filter: drop-shadow(0 12px 8px rgb(64 41 7 / 28%));
+  animation: badge-pop 520ms cubic-bezier(.2,.9,.25,1.25) both;
+}
+
+.mode-result p {
+  position: absolute;
+  top: 65%;
+  margin: 0;
+  color: white;
+  font-size: clamp(23px, 3.4vw, 43px);
+  text-align: center;
+  text-shadow: 0 4px 0 #075b8b, 0 7px 14px rgb(0 35 60 / 40%);
+}
+
+.round-next {
+  position: absolute;
+  right: max(4%, var(--qk-safe-right));
+  bottom: max(4%, var(--qk-safe-bottom));
+  width: clamp(96px, 12vmin, 136px);
+  height: clamp(96px, 12vmin, 136px);
+  padding: 0;
+}
+
+.round-next img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 6px rgb(48 42 19 / 30%));
+}
+
+.round-next:active,
+.round-next:focus-visible {
+  transform: scale(.92);
+  outline: 5px solid var(--yellow);
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+.sweep-tray {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -3%;
+  width: clamp(230px, 32vw, 450px);
+  max-height: 28%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  opacity: .94;
+}
+
+.sweep-object {
+  z-index: 5;
+  width: clamp(82px, 12vmin, 145px);
+  height: clamp(82px, 12vmin, 145px);
+  cursor: pointer;
+  filter: drop-shadow(0 7px 5px rgb(51 39 22 / 27%));
+  transition: left 170ms ease-out, top 170ms ease-out, transform 220ms ease, opacity 220ms ease;
+}
+
+.sweep-object.is-collected {
+  z-index: 8;
+  width: clamp(52px, 7vmin, 84px);
+  height: clamp(52px, 7vmin, 84px);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgb(35 29 18 / 36%));
+}
+
+.mode-magnet-maze .playfield {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, 133.333vh);
+  height: min(100vh, 75vw);
+  transform: translate(-50%, -50%);
+}
+
+.maze-ball {
+  z-index: 10;
+  width: clamp(76px, 9vmin, 118px);
+  height: clamp(76px, 9vmin, 118px);
+  filter: drop-shadow(0 8px 5px rgb(20 30 42 / 34%));
+  transition: left 100ms linear, top 100ms linear, filter 180ms ease;
+}
+
+.mode-magnet-maze .magnet-tool {
+  width: clamp(100px, 15vmin, 180px);
+  min-width: 100px;
+  min-height: 100px;
+}
+
+.maze-ball.is-pulled {
+  filter: drop-shadow(0 0 11px rgb(255 220 87 / 90%)) drop-shadow(0 8px 5px rgb(20 30 42 / 28%));
+}
+
+.maze-ball.is-goal {
+  animation: ball-goal 650ms ease both;
+}
+
+.maze-goal {
+  position: absolute;
+  z-index: 3;
+  left: 85%;
+  top: 18.3%;
+  width: clamp(96px, 13vmin, 150px);
+  height: clamp(96px, 13vmin, 150px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.maze-start {
+  position: absolute;
+  z-index: 6;
+  left: 65%;
+  top: 92%;
+  transform: translate(-50%, -50%);
+  color: #fff5b6;
+  font-size: clamp(13px, 1.8vmin, 20px);
+  letter-spacing: .08em;
+  text-shadow: 0 2px 0 #224f79, 0 4px 8px rgb(5 30 52 / 55%);
+  pointer-events: none;
+}
+
+.end-screen {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.end-sparkles {
+  position: absolute;
+  z-index: 2;
+  width: min(73vmin, 580px);
+  animation: sparkle-in 750ms ease both;
+}
+
+.end-badge {
+  position: absolute;
+  z-index: 3;
+  top: 21%;
+  width: min(30vmin, 270px);
+  filter: drop-shadow(0 13px 8px rgb(56 39 11 / 28%));
+  animation: badge-pop 620ms cubic-bezier(.2,.9,.25,1.25) both;
+}
+
+.end-screen h1 {
+  position: absolute;
+  z-index: 4;
+  top: 53%;
+  margin: 0;
+  color: white;
+  font-size: clamp(33px, 5.2vw, 70px);
+  text-shadow: 0 5px 0 #075c8d, 0 9px 16px rgb(0 42 70 / 35%);
+}
+
+.end-screen > p {
+  position: absolute;
+  z-index: 4;
+  top: 64%;
+  margin: 0;
+  font-size: clamp(18px, 2.4vw, 31px);
+  text-shadow: 0 3px 0 #075c8d;
+}
+
+.again-button {
+  position: absolute;
+  z-index: 5;
+  bottom: max(2%, var(--qk-safe-bottom));
+  width: clamp(142px, 21vmin, 220px);
+  min-height: 112px;
+  padding: 0;
+}
+
+.again-button img {
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 9px 7px rgb(42 53 38 / 26%));
+}
+
+.again-button span {
+  bottom: 4%;
+  font-size: clamp(16px, 2vw, 24px);
+}
+
+@keyframes gentle-repel {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0); }
+  30% { transform: translate(-58%, -50%) rotate(-7deg); }
+  60% { transform: translate(-44%, -50%) rotate(5deg); }
+}
+
+@keyframes magnet-bounce {
+  0%, 100% { transform: translate(-50%, -50%); }
+  45% { transform: translate(-70%, -52%) rotate(-9deg); }
+}
+
+@keyframes magnet-nudge {
+  0%, 100% { transform: translate(-50%, -50%); }
+  40% { transform: translate(-50%, -58%) scale(1.08); filter: drop-shadow(0 0 16px rgb(255 218 65 / 90%)); }
+}
+
+@keyframes sparkle-in {
+  from { opacity: 0; transform: scale(.35) rotate(-12deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes badge-pop {
+  from { opacity: 0; transform: translateY(18px) scale(.35) rotate(-8deg); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+@keyframes ball-goal {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  55% { transform: translate(-50%, -50%) scale(1.28); filter: drop-shadow(0 0 20px #ffe24f); }
+  100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 13px #ffe24f); }
+}
+
+@media (orientation: portrait) {
+  .game-screen { background-size: auto 100%; }
+  .title-art { top: 12%; width: min(76vw, 620px); }
+  .splash-prompt { top: 41%; }
+  .mode-grid { bottom: 10%; width: min(94vw, 760px); gap: 2px; }
+  .mode-card { min-height: 150px; }
+  .mode-card img { width: min(100%, 220px); }
+  .playfield { inset: 18% 3% 13%; }
+  .sorting-tray { width: 34vw; }
+  .prompt-plaque { width: 67vw; }
+  .end-badge { top: 27%; }
+  .end-screen h1 { top: 52%; }
+  .end-screen > p { top: 59%; }
+  .again-button { bottom: 14%; }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .title-art { top: 2%; width: min(43vw, 470px); max-height: 36dvh; }
+  .splash-prompt { top: 31%; font-size: 17px; }
+  .mode-grid { bottom: 0; width: min(72vw, 760px); gap: 4px; }
+  .mode-card { min-height: 122px; }
+  .mode-card img { width: min(100%, 175px); max-height: 48dvh; }
+  .mode-card span { font-size: 14px; padding: 4px 8px; }
+  .prompt-plaque { top: 0; min-height: 48px; font-size: 18px; }
+  .progress-rail { top: 50px; }
+  .playfield { inset: 62px 5% 1%; }
+  .magnet-tool { width: 98px; min-width: 98px; min-height: 98px; }
+  .test-object { width: 92px; height: 92px; }
+  .sorting-tray { width: 20vw; max-height: 32%; }
+  .sweep-object { width: 78px; height: 78px; }
+  .sweep-object.is-collected { width: 47px; height: 47px; }
+  .maze-ball { width: 66px; height: 66px; }
+  .mode-result p { top: 62%; font-size: 22px; }
+  .result-badge { width: 30vmin; }
+  .round-next { width: 82px; height: 82px; }
+  .end-badge { top: 12%; width: 29vmin; }
+  .end-screen h1 { top: 48%; font-size: 34px; }
+  .end-screen > p { top: 61%; font-size: 18px; }
+  .again-button { width: 110px; min-height: 96px; bottom: 0; }
+}
+
+@media (max-width: 620px) {
+  .mode-grid { width: 88vw; }
+  .mode-card { min-height: 105px; }
+  .mode-card span { font-size: 14px; }
+  .prompt-plaque { width: 62vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

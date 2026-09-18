@@ -200,6 +200,7 @@ async function staticChecks() {
     ['assets/mascots/cat-present.webp', 90], ['assets/mascots/cat-cheer.webp', 90],
     ['assets/mascots/bat-fly.webp', 90], ['assets/mascots/bat-cheer.webp', 90],
     ['assets/props/magnifier.webp', 70],
+    ['assets/props/listen.webp', 30],
     ['assets/lockups/great-job.webp', 90], ['assets/lockups/they-rhyme.webp', 60],
     ['assets/og-image.jpg', 200],
   ];
@@ -286,7 +287,7 @@ async function staticChecks() {
     manifestJson.title === 'Rhyming Detective'
     && manifestJson.category === 'reading-phonics'
     && manifestJson.age.min === 3 && manifestJson.age.max === 6
-    && manifestJson.status === 'in-design' && manifestJson.accent === '#2f6fd0',
+    && manifestJson.status === 'beta' && manifestJson.accent === '#2f6fd0',
     JSON.stringify({ age: manifestJson.age, status: manifestJson.status, accent: manifestJson.accent }));
   check('game.json declares both modes with a one-skill description',
     manifestJson.modes.map((m) => m.id).join(',') === 'rhyme-hunt,sound-detective'
@@ -303,7 +304,7 @@ async function staticChecks() {
   const entry = registry.games.find((g) => g.id === 'rhyming-detective');
   check('games.json mirrors the manifest',
     entry && entry.title === manifestJson.title && entry.accent === manifestJson.accent
-    && entry.age.min === 3 && entry.status === 'in-design'
+    && entry.age.min === 3 && entry.status === 'beta'
     && entry.modes.map((m) => m.id).join(',') === 'rhyme-hunt,sound-detective');
   check('the curated hub tile is on disk and untouched by this build',
     await exists(path.join(ROOT, entry.icon)), entry && entry.icon);
@@ -356,6 +357,16 @@ async function serveRepo() {
 
 const sessions = [];
 let base = '';
+const PLATFORM_ANALYTICS = [
+  'https://www.googletagmanager.com/',
+  'https://www.google-analytics.com/',
+];
+
+async function stubPlatformAnalytics(session) {
+  await session.context.route(/https:\/\/(?:www\.googletagmanager\.com|www\.google-analytics\.com)\//, async (route) => {
+    await route.fulfill({ status: 204, body: '' });
+  });
+}
 
 // Every session is watched for the §11.2 item 22 trio: page/console errors,
 // failed or 4xx requests, and any request that leaves the base origin.
@@ -371,7 +382,13 @@ async function openGame(browser, viewport, reducedMotion = 'no-preference', labe
     viewport,
     reducedMotion,
     allowAbortedMedia: true,
+    goto: false,
+    ready: false,
+    allowRemote: PLATFORM_ANALYTICS,
   });
+  await stubPlatformAnalytics(session);
+  await session.page.goto(`${base}/games/rhyming-detective/`, { waitUntil: 'networkidle' });
+  await session.page.evaluate(() => window.QLOBE_DEBUG.ready);
   session.label = label || `${viewport.width}x${viewport.height}`;
   sessions.push(session);
   return session.page;
@@ -750,17 +767,25 @@ async function main() {
   const browser = await launchChrome();
 
   // -- the hub route -------------------------------------------------------
-  const hubContext = await browser.newContext({ viewport: { width: 1194, height: 834 } });
-  const hubPage = await hubContext.newPage();
+  const hubSession = await openSession(browser, {
+    url: `${base}/#reading-phonics`, base,
+    viewport: { width: 1194, height: 834 },
+    goto: false, ready: false, allowRemote: PLATFORM_ANALYTICS,
+  });
+  await stubPlatformAnalytics(hubSession);
+  const hubContext = hubSession.context;
+  const hubPage = hubSession.page;
+  sessions.push(hubSession);
   const hubFailed = [];
   hubPage.on('response', (r) => { if (r.status() >= 400) hubFailed.push(`${r.status()} ${r.url()}`); });
   await hubPage.goto(`${base}/#reading-phonics`, { waitUntil: 'networkidle' });
-  const tile = hubPage.locator('a.tile[aria-label^="Rhyming Detective"]');
+  await hubPage.evaluate(() => window.QLOBE_DEBUG?.ready);
+  const tile = hubPage.locator('a.game-card[data-game-id="rhyming-detective"]');
   check('the hub lists Rhyming Detective exactly once', (await tile.count()) === 1);
   check('the hub tile routes to the game folder',
-    (await tile.getAttribute('href')) === 'games/rhyming-detective/');
+    (await tile.getAttribute('href')) === './games/rhyming-detective/');
   check('the hub tile uses the curated production art',
-    (await tile.locator('img').getAttribute('src')) === 'assets/hub/tiles/rhyming-detective.jpg');
+    (await tile.locator('img').getAttribute('src')) === './assets/hub/tiles/rhyming-detective.jpg');
   await tile.click();
   await hubPage.waitForLoadState('networkidle');
   await hubPage.evaluate(() => window.QLOBE_DEBUG.ready);
@@ -1062,10 +1087,21 @@ async function main() {
   const soundBanner = await page.locator('#banner').textContent();
   check('Mode 2 prints no target word in the banner',
     soundBanner.trim() === 'Find a word that rhymes with'
-    && await page.locator('#banner .banner-glyph').count() === 1, soundBanner);
+    && await page.locator('#banner .banner-glyph').count() === 1
+    && await page.locator('#banner .banner-glyph').evaluate((el) => el.tagName === 'IMG' && el.complete && el.naturalWidth > 0
+      && el.getAttribute('src') === 'assets/props/listen.webp'), soundBanner);
   check('Mode 2 shows the magnifier glyph on the target card instead of the word',
     await page.locator('#word-card .card-word').count() === 0
     && await page.locator('#word-card .card-glyph-img, #word-card .card-glyph').count() === 1);
+  check('Sound Detective mode tile uses decoded raster art',
+    await page.evaluate(() => {
+      window.QLOBE_DEBUG.home();
+      document.getElementById('btn-play').click();
+      const img = document.querySelector('.mode-sound-detective .tile-face img');
+      return Boolean(img && img.complete && img.naturalWidth > 0 && img.src.endsWith('/assets/props/listen.webp'));
+    }));
+  await beginMode(page, 'sound-detective');
+  await awaitPlay(page);
   // 10.1 asks for an 88 px glyph. props/magnifier.webp is 780 x 582 of canvas
   // whose lens is ~57 % of the width — the rest is the prop's own cast shadow —
   // so an 88 px box drew a 50 px lens in a 430 px card. The box is sized for

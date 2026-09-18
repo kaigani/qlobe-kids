@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "nav-back-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "mode": "built-in-imagegen-edit",
+      "promptRef": "PROMPTS.md#nav-back-edit",
+      "references": ["runtime-source:assets/source/final/nav-replay.png"]
+    }
+  ],
+  "qa": {
+    "status": "accepted",
+    "checks": ["unambiguous left arrow", "matching wood/slate/chalk materials", "transparent surround", "no text"]
+  }
+}

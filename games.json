@@ -169,28 +169,44 @@
       "path": "games/pattern-train/",
       "icon": "assets/hub/tiles/pattern-train.jpg",
       "age": {
-        "min": 5,
+        "min": 2,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#ef6b56",
       "uses": [
+        "shared/js/screens.js",
+        "shared/js/tap.js",
         "shared/js/voice-clips.js",
-        "shared/js/sfx.js"
+        "shared/js/narrator.js",
+        "shared/js/sfx.js",
+        "shared/js/bgm.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/timers.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/debug-harness.js",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "modes": [
         {
-          "id": "colors",
-          "title": "Color Cars",
-          "skill": "AB, ABC, and AAB color-pattern extension"
+          "id": "shapes",
+          "title": "Shape Cargo",
+          "skill": "extend color-plus-shape AB, AAB, ABB, and ABC patterns"
         },
         {
-          "id": "shapes",
-          "title": "Shape Cars",
-          "skill": "simple shape-pattern extension"
+          "id": "actions",
+          "title": "Move & Sound",
+          "skill": "extend and physically act out clap, stomp, tap, and shake patterns"
+        },
+        {
+          "id": "builder",
+          "title": "My Train",
+          "skill": "author, revise, save, and replay a self-chosen five-wagon sequence"
         }
       ],
-      "summary": "Continue a red-blue-red-blue or clap-stomp pattern."
+      "summary": "Load wooden shape and action patterns, power a toy train, and build a five-wagon pattern of your own."
     },
     {
       "id": "tangram-tales",
@@ -426,7 +442,7 @@
         "min": 3,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#2f6fd0",
       "modes": [
         {
@@ -652,24 +668,29 @@
       "path": "games/silly-swap-words/",
       "icon": "assets/hub/tiles/silly-swap-words.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#f36f65",
       "modes": [
         {
           "id": "swap",
-          "title": "Swap a Sound",
-          "skill": "phoneme substitution with one changed sound"
+          "title": "Guided Swaps",
+          "skill": "guided phoneme substitution with useful intermediate words"
         },
         {
-          "id": "chain",
-          "title": "Word Chains",
-          "skill": "hearing a sequence of small word changes"
+          "id": "trail",
+          "title": "Word Trails",
+          "skill": "sequential one-sound changes across a connected CVC chain"
+        },
+        {
+          "id": "lab",
+          "title": "Silly Word Lab",
+          "skill": "open CVC construction and playful real/nonsense-word exploration"
         }
       ],
-      "summary": "Change one sound at a time to turn cat into hat into hot."
+      "summary": "Tap one clay letter to make a new word, follow sound trails, or invent a wonderfully silly one."
     },
     {
       "id": "picture-word-match",
@@ -890,24 +911,34 @@
       "path": "games/chalkboard-big-strokes/",
       "icon": "assets/hub/tiles/chalkboard-big-strokes.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
-      "status": "in-design",
-      "accent": "#4d8068",
+      "status": "beta",
+      "accent": "#ffd85f",
       "modes": [
         {
-          "id": "strokes",
-          "title": "Big Strokes",
-          "skill": "large pre-writing stroke control"
+          "id": "wave",
+          "title": "Wave",
+          "skill": "smooth left-to-right rises and dips"
         },
         {
-          "id": "double",
-          "title": "Two-Part Strokes",
-          "skill": "multi-stroke sequencing for crosses and slants"
+          "id": "loop",
+          "title": "Loop",
+          "skill": "continuous circular motion and midline crossing"
+        },
+        {
+          "id": "star",
+          "title": "Star",
+          "skill": "controlled corners and direction changes"
+        },
+        {
+          "id": "letter-s",
+          "title": "Letter S",
+          "skill": "giant top-to-bottom S formation"
         }
       ],
-      "summary": "Practice giant loops, lines, and curves on a chalkboard."
+      "summary": "Sweep a giant wave, loop, star, or S in dusty chalk, then wipe the slate clean."
     },
     {
       "id": "bead-path-builder",
@@ -1096,26 +1127,27 @@
       "path": "games/scissor-trail-safari/",
       "icon": "assets/hub/tiles/scissor-trail-safari.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#58a96b",
+      "status": "live",
+      "liveDate": "2026-09-16",
+      "accent": "#64a548",
       "modes": [
         {
           "id": "straight",
-          "title": "Straight Cuts",
-          "skill": "straight and angled line control"
+          "title": "Straight Trails",
+          "skill": "straight and gently angled directional control"
         },
         {
           "id": "curvy",
-          "title": "Curvy Cuts",
-          "skill": "smooth continuous curved strokes"
+          "title": "Curvy Trails",
+          "skill": "smooth S-curves, waves, and broad arches"
         },
         {
           "id": "spiral",
-          "title": "Spiral Rescue",
-          "skill": "sustained hand-eye steering on spirals"
+          "title": "Spiral Trails",
+          "skill": "sustained circular steering toward a center target"
         }
       ],
       "summary": "Cut along winding animal-path lines."
@@ -1169,24 +1201,29 @@
       "path": "games/secret-message-copy/",
       "icon": "assets/hub/tiles/secret-message-copy.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 3,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#e8b83e",
       "modes": [
         {
-          "id": "secret",
-          "title": "Copy the Code",
-          "skill": "letter-by-letter copying of three-letter words"
+          "id": "picture-code",
+          "title": "Picture Code",
+          "skill": "left-to-right copying of three- to five-symbol visible sequences"
         },
         {
-          "id": "long",
-          "title": "Longer Codes",
-          "skill": "letter-by-letter copying of four-letter words"
+          "id": "secret-words",
+          "title": "Secret Words",
+          "skill": "guided uppercase formation for SUN, CAT, MAP, and OWL"
+        },
+        {
+          "id": "moon-memory",
+          "title": "Moon Memory",
+          "skill": "recall and reproduction of hidden three- and four-symbol sequences"
         }
       ],
-      "summary": "Copy one short word or phrase."
+      "summary": "Copy picture codes, trace secret words, and remember moon messages."
     },
     {
       "id": "post-office-letters",
@@ -1331,21 +1368,26 @@
       "path": "games/sandpaper-number-match/",
       "icon": "assets/hub/tiles/sandpaper-number-match.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#c94f46",
       "modes": [
         {
-          "id": "meet",
-          "title": "Meet the Numbers",
-          "skill": "numeral recognition for 1-5 tied to quantity"
+          "id": "journey",
+          "title": "Trace & Count",
+          "skill": "ordered numeral formation connected directly to quantity"
         },
         {
-          "id": "big",
-          "title": "Bigger Numbers",
-          "skill": "numeral recognition for 6-9 tied to quantity"
+          "id": "star-count",
+          "title": "Star Count",
+          "skill": "stable-order counting and one-to-one correspondence through 10"
+        },
+        {
+          "id": "match",
+          "title": "Find a Match",
+          "skill": "matching written numerals to close visual quantities"
         }
       ],
       "summary": "Trace a numeral, then count that many objects."
@@ -1384,19 +1426,29 @@
       "path": "games/snack-addition-stories/",
       "icon": "assets/hub/tiles/snack-addition-stories.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#e85d75",
+      "status": "beta",
+      "accent": "#e94f79",
       "modes": [
         {
-          "id": "stories",
-          "title": "Snack Stories",
-          "skill": "informal addition stories to 6"
+          "id": "guided",
+          "title": "Berry Stories",
+          "skill": "narrated add-together stories within 6"
+        },
+        {
+          "id": "counter",
+          "title": "Snack Counter",
+          "skill": "one-to-one addition and total counting within 6"
+        },
+        {
+          "id": "picnic",
+          "title": "My Picnic",
+          "skill": "free-play composition of two addends within 6"
         }
       ],
-      "summary": "Tell add-together stories, like three berries plus two berries."
+      "summary": "Bring two snack groups together, count the total within 6, and make your own addition picnic."
     },
     {
       "id": "subtraction-picnic",
@@ -1525,24 +1577,29 @@
       "path": "games/pouring-station/",
       "icon": "assets/hub/tiles/pouring-station.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
       "status": "beta",
-      "accent": "#2d7dd2",
+      "accent": "#087f87",
       "modes": [
         {
           "id": "water",
-          "title": "Water Pouring",
-          "skill": "careful water pouring and cleanup"
+          "title": "Water",
+          "skill": "smooth sustained tilt and stopping at a visual line"
         },
         {
           "id": "beans",
-          "title": "Bean Pouring",
-          "skill": "careful dry pouring and listening"
+          "title": "Beans",
+          "skill": "controlled dry pouring with auditory feedback"
+        },
+        {
+          "id": "rice",
+          "title": "Rice",
+          "skill": "fine stop-and-start control with small grains"
         }
       ],
-      "summary": "Pour water, beans, or rice between pitchers."
+      "summary": "Tilt a toy pitcher and pour water, beans, or rice to a glowing line with Maya."
     },
     {
       "id": "table-setting-mission",
@@ -1747,24 +1804,29 @@
       "path": "games/sweep-the-trail/",
       "icon": "assets/hub/tiles/sweep-the-trail.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
       "status": "beta",
-      "accent": "#58a945",
+      "accent": "#d99032",
       "modes": [
         {
-          "id": "indoor",
-          "title": "Crumb Patrol",
-          "skill": "thorough indoor sweeping and dustpan use"
+          "id": "leaf-lane",
+          "title": "Leaf Lane",
+          "skill": "broad gentle sweeps with light leaves"
         },
         {
-          "id": "outdoor",
-          "title": "Leaf Trail",
-          "skill": "whole-arm outdoor sweeping and path care"
+          "id": "acorn-bend",
+          "title": "Acorn Bend",
+          "skill": "repeat nudges for heavier rolling acorns"
+        },
+        {
+          "id": "porch-path",
+          "title": "Porch Path",
+          "skill": "short controlled strokes with tiny crumbs"
         }
       ],
-      "summary": "Sweep crumbs or leaves into a target spot."
+      "summary": "Guide a broad felt broom through three no-fail trails and help a squirrel care for each cozy place."
     },
     {
       "id": "button-zipper-lab",
@@ -1812,18 +1874,23 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "care",
-          "title": "Care Round",
-          "skill": "daily observation, soil checking, and careful watering"
+          "id": "sunflower",
+          "title": "Sunny",
+          "skill": "Care for a tall sunflower through three visible growth stages."
         },
         {
-          "id": "spa",
-          "title": "Plant Spa Day",
-          "skill": "gentle leaf cleaning and occasional plant care"
+          "id": "pea",
+          "title": "Pip",
+          "skill": "Care for a curling pea plant and reveal its blossoms and pods."
+        },
+        {
+          "id": "basil",
+          "title": "Basil",
+          "skill": "Care for a leafy herb and reveal a fresh flowering crown."
         }
       ],
       "summary": "Water, mist, prune, and observe a plant."
@@ -1978,16 +2045,26 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
+      "status": "beta",
       "accent": "#58a945",
       "modes": [
         {
-          "id": "explore",
-          "title": "Sticks or Not?",
-          "skill": "magnetic versus non-magnetic sorting"
+          "id": "test-lab",
+          "title": "Test Lab",
+          "skill": "direct proximity testing"
+        },
+        {
+          "id": "treasure-sweep",
+          "title": "Treasure Sweep",
+          "skill": "find magnetic objects"
+        },
+        {
+          "id": "magnet-maze",
+          "title": "Magnet Maze",
+          "skill": "guide a steel ball"
         }
       ],
-      "summary": "Find which objects are magnetic and which are not."
+      "summary": "Test real materials, sweep up steel treasures, and guide a magnetic ball through a wooden maze."
     },
     {
       "id": "sound-cylinder-match",
@@ -2018,19 +2095,34 @@
       "path": "games/texture-trail/",
       "icon": "assets/hub/tiles/texture-trail.jpg",
       "age": {
-        "min": 5,
+        "min": 4,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#8f6f4e",
+      "status": "beta",
+      "accent": "#7b51b4",
       "modes": [
         {
-          "id": "feel",
-          "title": "Feels the Same",
-          "skill": "texture vocabulary and comparison"
+          "id": "bumpy",
+          "title": "Bumpy",
+          "skill": "recognize and describe bumpy surfaces"
+        },
+        {
+          "id": "smooth",
+          "title": "Smooth",
+          "skill": "recognize and describe smooth surfaces"
+        },
+        {
+          "id": "ridged",
+          "title": "Ridged",
+          "skill": "recognize and describe ridged surfaces"
+        },
+        {
+          "id": "soft",
+          "title": "Soft",
+          "skill": "recognize and describe soft surfaces"
         }
       ],
-      "summary": "Match rough, smooth, soft, and bumpy surfaces."
+      "summary": "Explore four textures, then guide Pip along tactile clay trails."
     },
     {
       "id": "smell-jars",
@@ -2042,21 +2134,21 @@
         "min": 5,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#ffd166",
+      "status": "beta",
+      "accent": "#78aa63",
       "modes": [
         {
-          "id": "sniff",
-          "title": "Be the Nose",
-          "skill": "connect real smells to vocabulary and preference"
+          "id": "smell-match",
+          "title": "Smell & Match",
+          "skill": "match a persistent scent clue to one of three picture tokens"
         },
         {
-          "id": "guess",
-          "title": "Sniff and Guess",
-          "skill": "make and revise sensory guesses"
+          "id": "nose-memory",
+          "title": "Nose Memory",
+          "skill": "remember a fading scent clue and choose among four picture tokens"
         }
       ],
-      "summary": "Identify lemon, mint, cinnamon, and pine by scent."
+      "summary": "Lift mystery jar lids, follow colorful scent trails, and match six familiar ingredients in two playful modes."
     },
     {
       "id": "color-gradient-cards",
@@ -2257,24 +2349,34 @@
       "path": "games/question-ball/",
       "icon": "assets/hub/tiles/question-ball.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#ffad7a",
+      "status": "beta",
+      "accent": "#f39a52",
       "modes": [
         {
-          "id": "wh",
-          "title": "Catch the Question",
-          "skill": "who, what, and where question comprehension"
+          "id": "routines",
+          "title": "Daily Routines",
+          "skill": "describe familiar sequences and people"
         },
         {
-          "id": "why",
-          "title": "Why Questions",
-          "skill": "matching why questions to simple reasons"
+          "id": "animals",
+          "title": "Amazing Animals",
+          "skill": "use animal vocabulary to describe, explain, and imagine"
+        },
+        {
+          "id": "imagine",
+          "title": "Let’s Imagine",
+          "skill": "practice flexible thinking and invented explanations"
+        },
+        {
+          "id": "feelings",
+          "title": "Feelings and Friends",
+          "skill": "name feelings and supportive actions"
         }
       ],
-      "summary": "Toss a ball and answer who, what, why, or how."
+      "summary": "Toss the Question Ball and share a joyful idea about routines, animals, imagination, or feelings."
     },
     {
       "id": "silly-sentence-builder",
@@ -2283,11 +2385,11 @@
       "path": "games/silly-sentence-builder/",
       "icon": "assets/hub/tiles/silly-sentence-builder.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#7a235c",
       "modes": [
         {
           "id": "silly",
@@ -2297,7 +2399,7 @@
         {
           "id": "sillier",
           "title": "Even Sillier",
-          "skill": "subject-action-place-adverb sentence expansion"
+          "skill": "subject-action-place-manner sentence expansion"
         }
       ],
       "summary": "Combine noun, verb, and place cards into silly sentences."

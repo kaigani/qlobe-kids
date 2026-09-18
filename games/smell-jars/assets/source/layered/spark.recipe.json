@@ -1,0 +1,51 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "smell-jars-spark-layered-alpha",
+  "kind": "image",
+  "asset": "assets\\source\\layered\\spark.final.png",
+  "artDirection": "Toy",
+  "steps": [
+    {
+      "tool": "deterministic Pillow matte preparation",
+      "background": "#484848",
+      "canvas": [
+        512,
+        512
+      ]
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "prompt": "Background layer: every partial neighboring object, all colored fringe, and all empty ground. Top layer: only the one complete central golden four-point wooden sparkle, preserving its exact shape, wood texture, lighting, and shadow; transparent background; no redesign and no extra pieces.",
+      "seed": 1337,
+      "layers": 2,
+      "selectedOutput": "layer_2"
+    },
+    {
+      "tool": "largest connected alpha component",
+      "threshold": 128,
+      "edgeRadius": 3,
+      "matteAlphaFloor": 24,
+      "purpose": "remove disconnected neighboring sheet fragments"
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "maxSize": 240,
+      "pad": 12,
+      "alphaFloor": 4
+    }
+  ],
+  "source": "assets\\source\\cuts\\props\\spark-b.png",
+  "sourceSha256": "db7fe2ba9272e86c53ed5ca42b7b7773ca0311e9ac4f77037bda1c071d85ef74",
+  "prepared": "assets\\source\\layered\\spark-layer-input.png",
+  "preparedSha256": "1f7701b8cf583cd4ffa6ebc5ceca6688194893c71d1133815042d3fbb2e2ab65",
+  "layer2Sha256": "d4ea2fe08822ea97d661480441b498d62bbe7f5dc592c002b715c71576745d01",
+  "finalSha256": "a9ffa111929083699125ee0abd4731bacf02410c49535b756464c1d3a9354d6e",
+  "qa": {
+    "status": "accepted",
+    "magenta": "assets\\source\\layered\\spark.qa-magenta.png",
+    "review": "Central sparkle is isolated with a clean alpha edge; neighboring sheet fragments are absent on the hostile-magenta matte.",
+    "reviewedAt": "2026-09-17T18:38:00-07:00"
+  },
+  "createdAt": "2026-09-17T18:33:45.854187+00:00"
+}

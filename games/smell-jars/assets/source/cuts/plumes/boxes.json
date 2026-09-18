@@ -1,0 +1,202 @@
+{
+  "source": "games/smell-jars/assets/source/gpt-image-2/plumes-sheet-source.png",
+  "sourceSha256": "54cae5f38ddeb8927ae1d6e3f2bb589fc7c37b35683b1ec5a738106ed693817a",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "plume-lemon",
+      "file": "plume-lemon.png",
+      "componentArea": 65269,
+      "foregroundBbox": [
+        160,
+        18,
+        419,
+        492
+      ],
+      "cropBbox": [
+        148,
+        6,
+        431,
+        504
+      ],
+      "cropXywh": [
+        148,
+        6,
+        283,
+        498
+      ],
+      "normalizedCropBbox": [
+        0.096354,
+        0.005859,
+        0.280599,
+        0.492188
+      ]
+    },
+    {
+      "index": 2,
+      "name": "plume-mint",
+      "file": "plume-mint.png",
+      "componentArea": 69600,
+      "foregroundBbox": [
+        635,
+        17,
+        881,
+        494
+      ],
+      "cropBbox": [
+        623,
+        5,
+        893,
+        506
+      ],
+      "cropXywh": [
+        623,
+        5,
+        270,
+        501
+      ],
+      "normalizedCropBbox": [
+        0.405599,
+        0.004883,
+        0.58138,
+        0.494141
+      ]
+    },
+    {
+      "index": 3,
+      "name": "plume-cinnamon",
+      "file": "plume-cinnamon.png",
+      "componentArea": 68735,
+      "foregroundBbox": [
+        1114,
+        17,
+        1373,
+        493
+      ],
+      "cropBbox": [
+        1102,
+        5,
+        1385,
+        505
+      ],
+      "cropXywh": [
+        1102,
+        5,
+        283,
+        500
+      ],
+      "normalizedCropBbox": [
+        0.717448,
+        0.004883,
+        0.901693,
+        0.493164
+      ]
+    },
+    {
+      "index": 4,
+      "name": "plume-lavender",
+      "file": "plume-lavender.png",
+      "componentArea": 66165,
+      "foregroundBbox": [
+        159,
+        509,
+        411,
+        983
+      ],
+      "cropBbox": [
+        147,
+        497,
+        423,
+        995
+      ],
+      "cropXywh": [
+        147,
+        497,
+        276,
+        498
+      ],
+      "normalizedCropBbox": [
+        0.095703,
+        0.485352,
+        0.275391,
+        0.97168
+      ]
+    },
+    {
+      "index": 5,
+      "name": "plume-cocoa",
+      "file": "plume-cocoa.png",
+      "componentArea": 69545,
+      "foregroundBbox": [
+        636,
+        511,
+        890,
+        982
+      ],
+      "cropBbox": [
+        624,
+        499,
+        902,
+        994
+      ],
+      "cropXywh": [
+        624,
+        499,
+        278,
+        495
+      ],
+      "normalizedCropBbox": [
+        0.40625,
+        0.487305,
+        0.58724,
+        0.970703
+      ]
+    },
+    {
+      "index": 6,
+      "name": "plume-pine",
+      "file": "plume-pine.png",
+      "componentArea": 68575,
+      "foregroundBbox": [
+        1114,
+        509,
+        1386,
+        982
+      ],
+      "cropBbox": [
+        1102,
+        497,
+        1398,
+        994
+      ],
+      "cropXywh": [
+        1102,
+        497,
+        296,
+        497
+      ],
+      "normalizedCropBbox": [
+        0.717448,
+        0.485352,
+        0.910156,
+        0.970703
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 24,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

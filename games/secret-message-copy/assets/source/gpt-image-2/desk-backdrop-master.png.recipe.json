@@ -1,0 +1,14 @@
+{
+  "format": "qlobe-game-asset-recipe",
+  "formatVersion": 1,
+  "asset": "desk-backdrop-master.png",
+  "kind": "image",
+  "created": "2026-09-16",
+  "steps": [{
+    "workflow": "gpt-image-2",
+    "mode": "built-in-imagegen",
+    "promptRef": "PROMPTS.md#desk-backdrop--desk-backdrop-masterpng",
+    "references": ["concept:secret-message-copy/ui-mockups/01-message-select.png"]
+  }],
+  "qa": {"status": "accepted", "checks": ["4:3 full bleed", "quiet playable center", "edge-only props", "no character, text or UI"]}
+}
