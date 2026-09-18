@@ -1,0 +1,25 @@
+{
+  "microphone": {
+    "pass": false,
+    "reason": "empty extraction (fully transparent layer_2)",
+    "flags": [],
+    "alpha": {
+      "transparentPct": 100.0,
+      "opaquePct": 0.0,
+      "partialPct": 0.0
+    },
+    "bbox": null,
+    "sourceSize": [
+      560,
+      1024
+    ],
+    "finalSize": null,
+    "alphaFloor": 4,
+    "workflow": "qwen-image-layered",
+    "source": "assets/source/crops/reporter-props/microphone.png",
+    "layered": "assets/source/layered/microphone-seed42.png",
+    "output": "assets/art/props/microphone.png",
+    "seed": 42,
+    "prompt": "Preserve the exact source subject and watercolor details; separate it from the flat charcoal ground as layer_2."
+  }
+}

@@ -1,0 +1,756 @@
+{
+  "welcome": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Welcome, family reporter! Pick a picture to find your first question.",
+    "textHash": "7b5befaffbf002d3",
+    "duration": 3.9,
+    "meanVolumeDb": -19.0,
+    "bytes": 50672,
+    "audioSha256": "04689990c8d5350dde5069cd00ffbdf6a2cab0d284aa6e10e12742e2c86b5507",
+    "transcript": "Welcome, family reporter! Pick a picture to find your first question.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Welcome, family reporter! Pick a picture to find your first question.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.9,
+        "meanVolumeDb": -19.0,
+        "error": null
+      }
+    ]
+  },
+  "choose": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Pick a question, or let the surprise button choose for you.",
+    "textHash": "002c5a2f0f39b8dc",
+    "duration": 2.986,
+    "meanVolumeDb": -19.5,
+    "bytes": 40414,
+    "audioSha256": "2e6129ea1f4d5b64e460eee07c10b0c94d7fab94f9c3fac36fba4ce5bb975f30",
+    "transcript": "Pick a question, or let the surprise button choose for you.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Pick a question, or let the surprise button choose for you.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.986,
+        "meanVolumeDb": -19.5,
+        "error": null
+      }
+    ]
+  },
+  "surprise": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Surprise question! Let's see which family memory we find.",
+    "textHash": "82cd1ce35dc48545",
+    "duration": 3.9,
+    "meanVolumeDb": -18.9,
+    "bytes": 49415,
+    "audioSha256": "a25c28e2d0fb8fbafc7489cfc221a01cc09226bd8512e5a31436b5ac0a7b5950",
+    "transcript": "Surprise question? Let's see which family memory we find.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Surprise question? Let's see which family memory we find.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.9,
+        "meanVolumeDb": -18.9,
+        "error": null
+      }
+    ]
+  },
+  "topic-childhood": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "When you were little. Ask about a long-ago childhood memory.",
+    "textHash": "45ab77c82f53e0c2",
+    "duration": 3.8,
+    "meanVolumeDb": -18.9,
+    "bytes": 47182,
+    "audioSha256": "18ab5d7d59bee106143edef9eb8501a3e2e40a6338ac7a7eee98cfdef38bd4cc",
+    "transcript": "When you were little, ask about a long-ago childhood memory.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "When you were little, ask about a long-ago childhood memory.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.8,
+        "meanVolumeDb": -18.9,
+        "error": null
+      }
+    ]
+  },
+  "topic-favorites": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Favorite things. Ask about something your grown-up really loved.",
+    "textHash": "c789cafecbfb8607",
+    "duration": 3.9,
+    "meanVolumeDb": -18.4,
+    "bytes": 49824,
+    "audioSha256": "5ab2f7d83149756a4ccdcd5f0bdc047e960a782b940c80b76e4dcd858938e985",
+    "transcript": "Favorite things. Ask about something your grown-up really loved.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Favorite things. Ask about something your grown-up really loved.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.9,
+        "meanVolumeDb": -18.4,
+        "error": null
+      }
+    ]
+  },
+  "topic-traditions": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Family traditions. Ask about something your family did together.",
+    "textHash": "42d91e4cc4b50cb1",
+    "duration": 3.6,
+    "meanVolumeDb": -19.0,
+    "bytes": 47434,
+    "audioSha256": "ea891848d13509cdcbdec8d52fdbe6af3fc6fca52c334eecc9be484a188475db",
+    "transcript": "Family traditions. Ask about something your family did together.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Family traditions. Ask about something your family did together.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.6,
+        "meanVolumeDb": -19.0,
+        "error": null
+      }
+    ]
+  },
+  "q-childhood-game": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What game did you love to play when you were little?",
+    "textHash": "9e06a829dc920409",
+    "duration": 2.346,
+    "meanVolumeDb": -18.3,
+    "bytes": 30940,
+    "audioSha256": "3b0a6a33bed1356dd9378ed54052154a860644435b183313b998caba49c44701",
+    "transcript": "What game did you love to play when you were little?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What game did you love to play when you were little?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.346,
+        "meanVolumeDb": -18.3,
+        "error": null
+      }
+    ]
+  },
+  "q-childhood-laugh": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What made you laugh when you were my age?",
+    "textHash": "a05108ac3760f430",
+    "duration": 2.012,
+    "meanVolumeDb": -18.7,
+    "bytes": 27548,
+    "audioSha256": "5492931d80040c43dff6d6304cc5279d11abe88a66ed1ce0a397dc92abc2c34f",
+    "transcript": "What made you laugh when you were my age?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What made you laugh when you were my age?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.012,
+        "meanVolumeDb": -18.7,
+        "error": null
+      }
+    ]
+  },
+  "q-childhood-school": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What was a school day like when you were little?",
+    "textHash": "d7c17108ef135cbf",
+    "duration": 1.998,
+    "meanVolumeDb": -17.6,
+    "bytes": 26709,
+    "audioSha256": "a8550076758ea58cdf2a57a066cb454dbb273f702a95cf8a1db53a281f115a75",
+    "transcript": "What was a school day like when you were little?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What was a school day like when you were little?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 1.998,
+        "meanVolumeDb": -17.6,
+        "error": null
+      }
+    ]
+  },
+  "q-favorite-toy": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What was your favorite toy as a child?",
+    "textHash": "8be93f719fab5fdd",
+    "duration": 2.129,
+    "meanVolumeDb": -18.5,
+    "bytes": 29789,
+    "audioSha256": "6d368f21d15ebef3886057d6d343a9661224ccec4c94f70a0f0ebd4e071f528e",
+    "transcript": "What was your favorite toy as a child?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What was your favorite toy as a child?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.129,
+        "meanVolumeDb": -18.5,
+        "error": null
+      }
+    ]
+  },
+  "q-favorite-food": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What food did you love when you were little?",
+    "textHash": "5251ed41df30a740",
+    "duration": 2.174,
+    "meanVolumeDb": -18.5,
+    "bytes": 29181,
+    "audioSha256": "e5a9f6ea9c02dd945402f75d3a386dc4866984459d9baa9497645dae7abdd5d5",
+    "transcript": "What food did you love when you were little?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What food did you love when you were little?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.174,
+        "meanVolumeDb": -18.5,
+        "error": null
+      }
+    ]
+  },
+  "q-favorite-story": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What song or story did you ask for again and again?",
+    "textHash": "d03b71bafc5e07a9",
+    "duration": 2.78,
+    "meanVolumeDb": -18.9,
+    "bytes": 37682,
+    "audioSha256": "1b1976f777cc9f430183c063fa4d816188993e1acb51f8428382474010c5b67a",
+    "transcript": "What song or story did you ask for again and again?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What song or story did you ask for again and again?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.78,
+        "meanVolumeDb": -18.9,
+        "error": null
+      }
+    ]
+  },
+  "q-tradition-happy": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What family tradition made you feel happy?",
+    "textHash": "aabd7302402e99e0",
+    "duration": 2.294,
+    "meanVolumeDb": -19.0,
+    "bytes": 31333,
+    "audioSha256": "6d78c72d43d6b9569e35697a6e8b3bf140e7cdeff6ed48589975759df0c3fd46",
+    "transcript": "What family tradition made you feel happy?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What family tradition made you feel happy?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.294,
+        "meanVolumeDb": -19.0,
+        "error": null
+      }
+    ]
+  },
+  "q-tradition-celebrate": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "How did your family celebrate a special day?",
+    "textHash": "ba7a6521835320c7",
+    "duration": 2.547,
+    "meanVolumeDb": -18.6,
+    "bytes": 33525,
+    "audioSha256": "583ea1046edcafa750b2f65fd5c3c9707c3225fef9f9de2ea1f6cbf1e492fa3d",
+    "transcript": "How did your family celebrate a special day?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "How did your family celebrate a special day?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.547,
+        "meanVolumeDb": -18.6,
+        "error": null
+      }
+    ]
+  },
+  "q-tradition-together": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "What did everyone do together when you were little?",
+    "textHash": "484b220f69ae1ee6",
+    "duration": 2.452,
+    "meanVolumeDb": -18.2,
+    "bytes": 31956,
+    "audioSha256": "eca260c5887d88d2da3b0c0185ccfd6244f12ca3cd06bf590333690d3ab0e4cf",
+    "transcript": "What did everyone do together when you were little?",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "What did everyone do together when you were little?",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.452,
+        "meanVolumeDb": -18.2,
+        "error": null
+      }
+    ]
+  },
+  "ready-record": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Ask your grown-up the question. Then tap the coral microphone when they are ready to share.",
+    "textHash": "02952fe9c203a2d2",
+    "duration": 5.1,
+    "meanVolumeDb": -18.9,
+    "bytes": 65971,
+    "audioSha256": "99a4eb73d6cdf4ad119ae1b0dff0f06af9b6fd6997f33e58f208a1e11b1b50d6",
+    "transcript": "Ask your grown-up the question. Then tap the coral microphone when they are ready to share.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Ask your grown-up the question. Then tap the coral microphone when they are ready to share.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 5.1,
+        "meanVolumeDb": -18.9,
+        "error": null
+      }
+    ]
+  },
+  "recording": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "I'm listening. Tap again when the story is finished.",
+    "textHash": "6011b9381e8c1dcb",
+    "duration": 3.6,
+    "meanVolumeDb": -19.0,
+    "bytes": 44746,
+    "audioSha256": "7eeba4594c6fae0673004cabaaa675e3f1af066beb313646e730bb90d8cccc25",
+    "transcript": "I'm listening. Tap again when the story is finished.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "I'm listening. Tap again when the story is finished.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.6,
+        "meanVolumeDb": -19.0,
+        "error": null
+      }
+    ]
+  },
+  "recorded": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Story captured! You can listen, or decorate your memory page.",
+    "textHash": "004c1551c9eefce6",
+    "duration": 3.8,
+    "meanVolumeDb": -19.1,
+    "bytes": 50200,
+    "audioSha256": "3726f10e926e0b26d953d206b6546a2054ed6e0c4d0b7150f2bb4e36c4dbfc61",
+    "transcript": "Story captured! You can listen, or decorate your memory page.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Story captured! You can listen, or decorate your memory page.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.8,
+        "meanVolumeDb": -19.1,
+        "error": null
+      }
+    ]
+  },
+  "mic-fallback": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "That's okay. Tell the story together, and we can still make a beautiful memory page.",
+    "textHash": "43b227d3378aa9dd",
+    "duration": 5.1,
+    "meanVolumeDb": -18.8,
+    "bytes": 66181,
+    "audioSha256": "08aa556695b984ebe43aada40c23fa0064c5e2355eaed5b4160ce496273f8bc0",
+    "transcript": "That's okay. Tell the story together, and we can still make a beautiful memory page.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "That's okay. Tell the story together, and we can still make a beautiful memory page.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 5.1,
+        "meanVolumeDb": -18.8,
+        "error": null
+      }
+    ]
+  },
+  "decorate": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Add a family photo if you want, then pick a sticker for your page.",
+    "textHash": "df1d8edc7f0ccd0d",
+    "duration": 3.7,
+    "meanVolumeDb": -19.1,
+    "bytes": 49104,
+    "audioSha256": "e37c3ce8de2e5f4c514507b9434c7707d8efd81b2c968a790e10db39d53b1e31",
+    "transcript": "Add a family photo if you want, then pick a sticker for your page.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Add a family photo if you want, then pick a sticker for your page.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.7,
+        "meanVolumeDb": -19.1,
+        "error": null
+      }
+    ]
+  },
+  "photo-added": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Photo added. Your memory page is coming together.",
+    "textHash": "9a7f7dfab40e501e",
+    "duration": 3.1,
+    "meanVolumeDb": -18.4,
+    "bytes": 40965,
+    "audioSha256": "3b980e36b9dbf5a3165305874d99a41a54961a2b520283ceac72d08446eb7da9",
+    "transcript": "Photo added. Your memory page is coming together.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Photo added. Your memory page is coming together.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.1,
+        "meanVolumeDb": -18.4,
+        "error": null
+      }
+    ]
+  },
+  "saved": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Story saved in your family memory book!",
+    "textHash": "a9900ce38ac0cc04",
+    "duration": 2.234,
+    "meanVolumeDb": -18.7,
+    "bytes": 29882,
+    "audioSha256": "cdca58adf494e0810ed52115a2a595b69523a991271ec637e33276328c6d5d65",
+    "transcript": "Story saved in your family memory book!",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Story saved in your family memory book!",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.234,
+        "meanVolumeDb": -18.7,
+        "error": null
+      }
+    ]
+  },
+  "book-empty": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Your memory book is ready for its first family story.",
+    "textHash": "7cecfd0ff544f405",
+    "duration": 2.802,
+    "meanVolumeDb": -18.6,
+    "bytes": 37607,
+    "audioSha256": "d435335bff47d09eb0b1fe5c29d83c053cb9e230e5d862558a8b7edfba5c0748",
+    "transcript": "Your memory book is ready for its first family story.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Your memory book is ready for its first family story.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 2.802,
+        "meanVolumeDb": -18.6,
+        "error": null
+      }
+    ]
+  },
+  "book-open": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Here are your family stories. Tap a page to hear one again.",
+    "textHash": "6adb3d279e600d8c",
+    "duration": 3.5,
+    "meanVolumeDb": -18.6,
+    "bytes": 46242,
+    "audioSha256": "93898f4aad66ccc50250bb52ade36081060eb7b1e5a325df882d63c5bc8710dc",
+    "transcript": "Here are your family stories. Tap a page to hear one again.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Here are your family stories. Tap a page to hear one again.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 3.5,
+        "meanVolumeDb": -18.6,
+        "error": null
+      }
+    ]
+  },
+  "storage-fallback": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Your page is safe for this play time. This device could not keep it after you leave.",
+    "textHash": "6aa246a89a83672b",
+    "duration": 5.1,
+    "meanVolumeDb": -17.9,
+    "bytes": 65958,
+    "audioSha256": "8e944b561601f04a6d0ed317db1921abe0413dd966252a06e38e8bc6162b5453",
+    "transcript": "Your page is safe for this play time. This device could not keep it after you leave.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Your page is safe for this play time. This device could not keep it after you leave.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 5.1,
+        "meanVolumeDb": -17.9,
+        "error": null
+      }
+    ]
+  },
+  "nudge": {
+    "engine": "qwen3-tts-voiceclone",
+    "verifier": "whisper-stt",
+    "voice": "approved-teacher-reference",
+    "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+    "seed": 7,
+    "sourceText": "Your grown-up can take all the time they need. Tap the microphone when you're ready.",
+    "textHash": "606435971a69fd6a",
+    "duration": 4.1,
+    "meanVolumeDb": -18.6,
+    "bytes": 52490,
+    "audioSha256": "802df047990982de8187c74d0fd43960b2f2713b34975222861f14aa48492122",
+    "transcript": "Your grown-up can take all the time they need. Tap the microphone when you're ready.",
+    "score": 1.0,
+    "coverage": 1.0,
+    "valid": true,
+    "attempts": [
+      {
+        "seed": 7,
+        "valid": true,
+        "transcript": "Your grown-up can take all the time they need. Tap the microphone when you're ready.",
+        "score": 1.0,
+        "coverage": 1.0,
+        "duration": 4.1,
+        "meanVolumeDb": -18.6,
+        "error": null
+      }
+    ]
+  }
+}

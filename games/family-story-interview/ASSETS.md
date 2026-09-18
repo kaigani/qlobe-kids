@@ -1,59 +1,95 @@
-# Asset Log - Family Story Interview
+# Family Story Interview — Asset and Provenance Log
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/observe-journal.js` |
-| Interview placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
-| Story-screen background (`assets/bg.jpg`) | Not supplied yet | Reviewer-supplied | To be documented when supplied | To be determined | Referenced by config; not included in this stub |
+The canonical art world is **Watercolor / Storybook**: warm rag paper,
+wet-on-wet pigment blooms, colored-pencil edges, stitched cloth, torn paper,
+tape, pressed flowers, and gentle wood. Functional copy remains live HTML; only
+the exact title is baked into generated art. Runtime media never calls a model
+or remote asset service.
 
-## Assets needed
+## Shipped assets
 
-### Art
+| Asset group | Authored source and workflow | Runtime treatment | Rights / license |
+|---|---|---|---|
+| Scrapbook background, three topic cards, child reporter, listening grown-up, title lockup, microphone, camera/notebook, question page, three fabric control plates, memory book, stickers, train, teddy | Five original raster masters generated for this game with **GPT Image 2** through the approved Codex image-generation workflow. Exact production prompts and source filenames are in `assets/source/gpt-image-2/prompts.json`. | Opaque background converted to quality-84 WebP. Foreground objects were cut from the dark production sheets, matted, alpha-QA'd, resized, and optimized into `assets/art/`. | QLOBE Kids project-generated originals; released with this game's assets under CC BY 4.0. |
+| Hub tile | **Krea 2** / `krea2-turbo-t2i`, seed 42, 768×640, eight steps, via the approved LAN API. Full prompt and settings are in `assets/source/krea/hub-recipe.json`; source candidate retained at `assets/source/krea/hub-seed42.png`. | Center-cover crop to 640×533, quality-88 progressive JPEG at `../../assets/hub/tiles/family-story-interview.jpg`. | QLOBE Kids project-generated original; CC BY 4.0. |
+| Teacher narration, 26 clips | Approved shared teacher reference `shared/assets/refs/voice-teacher.wav`; local **Qwen3 TTS Voice Clone**, deterministic seed ladder 7 → 8 → 9. Seed 7 passed for every shipped line. Exact copy is `assets/audio/lines.json`. | Silence-trimmed, -18 LUFS / -2 dBTP normalized, mono 24 kHz AAC at 96 kbps with fast-start M4A. Runtime manifest is `assets/audio/manifest.json`. | Approved synthetic QLOBE teacher reference; generated for this project; CC BY 4.0. The reference is reused, not copied into this game. |
+| Narration verification | Every generated take round-tripped through local **Whisper STT**, English/base, with the intended line as an initial prompt. | `assets/audio/qa.json` records transcript, similarity, coverage, duration, mean level, hashes, seed, and the reference checksum. Result: **26/26 accepted**, zero rejected runtime clips. | Local QA artifact; no personal speech or API address retained. |
+| Background music | `shared/assets/music/mug-and-sunbeam.mp3`, the existing recorded QLOBE Kids music library. | Played at 0.12 volume, ducked beneath narration, silenced during family recording/replay. | Existing QLOBE Kids project recording; reused unmodified under the repository asset license. |
+| Interface sounds | `shared/js/sfx.js`. | Synthesized locally with Web Audio for tap, save, sticker, and clear feedback. | Code-generated; no sourced recording. |
+| HUD art | `shared/assets/ui/btn-home.png`, `btn-back.png`, `btn-sound.png`. | Reused raster home/back/sound controls. | Existing QLOBE Kids project art; CC BY 4.0. |
+| Fredoka | `shared/fonts/fredoka-latin-600-normal.woff2`. | Live interface text. | Fredoka by Milena Brandão and Hafontia, SIL OFL 1.1. |
+| Family recordings and photos | Created by the player at runtime. | Bounded to 60 seconds / 15 MB source photo, resized locally, stored as Blobs in the game's IndexedDB store, capped at twelve pages. | Private user media. Never committed, uploaded, logged, placed in URLs, or exposed through `QLOBE_DEBUG`. |
 
-- Reporter microphone.
-- Reporter notebook.
-- Era props, including a rotary phone and cassette.
-- Story-screen background art for `assets/bg.jpg`.
+## GPT Image 2 production masters
 
-### Voice
+`assets/source/gpt-image-2/prompts.json` is the source of truth. Its five
+records preserve the exact model label, purpose, normalized prompt, and source
+file. The generated deliverables are:
 
-- "This just in! Your family interview is ready!"
-- "Excellent listening, reporter!"
-- "This just in! Sit with a grown-up. Listen to each question, ask it slowly, then listen to their whole answer."
-- "This just in! You asked, listened, and reported three stories from when your grown-up was five!"
-- "Reporter question. Ask slowly: What games did you play when you were five? Listen, then stamp what you learned."
-- "Same as me! You and your grown-up share something about games. Tell them what is the same."
-- "Different! games changed from then to now. Tell your grown-up what is different."
-- "This just in: a surprising story about games! Say the surprising part back."
-- "Breaking news: a funny story about games! Tell the funny part in your own words."
-- "Reporter question. Ask slowly: What food did you love when you were five? Listen, then stamp what you learned."
-- "Same as me! You and your grown-up share something about food. Tell them what is the same."
-- "Different! food changed from then to now. Tell your grown-up what is different."
-- "This just in: a surprising story about food! Say the surprising part back."
-- "Breaking news: a funny story about food! Tell the funny part in your own words."
-- "Reporter question. Ask slowly: What was school like when you were five? Listen, then stamp what you learned."
-- "Same as me! You and your grown-up share something about school. Tell them what is the same."
-- "Different! school changed from then to now. Tell your grown-up what is different."
-- "This just in: a surprising story about school! Say the surprising part back."
-- "Breaking news: a funny story about school! Tell the funny part in your own words."
-- "Newsroom update! Ask a grown-up about places from long ago. Repeat each question slowly, then listen closely."
-- "Breaking news! You reported a home story and a journey story from long ago!"
-- "Reporter question. Ask slowly: What was your home like when you were five? Listen, then stamp what you learned."
-- "Same as me! You and your grown-up share something about homes. Tell them what is the same."
-- "Different! homes changed from then to now. Tell your grown-up what is different."
-- "This just in: a surprising story about homes! Say the surprising part back."
-- "Breaking news: a funny story about homes! Tell the funny part in your own words."
-- "Reporter question. Ask slowly: Where did you journey when you were little, and how did you get there? Listen, then stamp what you learned."
-- "Same as me! You and your grown-up share something about journeys. Tell them what is the same."
-- "Different! journeys changed from then to now. Tell your grown-up what is different."
-- "This just in: a surprising story about journeys! Say the surprising part back."
-- "Breaking news: a funny story about journeys! Tell the funny part in your own words."
+- `scrapbook-workspace-master.png` — full-bleed open scrapbook on wood, blank
+  cream center, watercolor flora/tape/lace, no text.
+- `topic-cards-sheet.png` — three distinct portrait question cards plus one
+  inclusive child reporter, on a plain charcoal cutting ground.
+- `reporter-props-sheet.png` — twelve separated props/control carriers on a
+  plain charcoal cutting ground.
+- `title-lockup-charcoal.png` — exact, spell-checked title “Family Story
+  Interview” on a torn-paper banner.
+- `grownup-listener-charcoal.png` — one inclusive, age-ambiguous listening
+  grown-up in a tactile oval keepsake medallion, with no text.
 
-## Link preview (og:image)
+The prompts explicitly prohibit extra objects, cropped subjects, watermarks,
+and non-title text. They also define the shared cream/teal/coral/honey/leaf
+palette and tactile paper/cloth materials used throughout the game.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+## Cutter, matte, and alpha QA
+
+The mandatory sheet-cutter step used the repository's
+`tools/cut-asset-sheet.py` against all four foreground sources. Dry runs first
+confirmed the expected counts (12 props, 4 topic assets, 1 title, 1 grown-up);
+accepted bounding boxes and isolated crops are retained under
+`assets/source/crops/`.
+
+The production command family was:
+
+```text
+python tools/cut-asset-sheet.py --input <master> --output-dir <crop-dir> --expected-count <N> --mask-out <qa-mask>
+python games/family-story-interview/tools/produce-art.py matte
+python games/family-story-interview/tools/produce-art.py finalize-master
+```
+
+Qwen Image Layered was tested first as an approved LAN separation path. Its two
+microphone `layer_2` candidates at seeds 42 and 1337 changed the authored
+microphone and introduced color/shape damage, so both were rejected and kept
+under `assets/source/layered/` with `qa.json`. Shipping art instead preserves
+the exact GPT Image 2 pixels and uses the cutter silhouette, flood-fills only
+enclosed dark details, feathers alpha by 0.65 px, then runs
+`tools/pipeline/cutout_finalize.py`. This avoids a generative redraw.
+
+All eighteen runtime cutouts passed the finalizer. Native magenta-edge
+composites live in `assets/source/qa/alpha/`; the complete metrics ledger lives
+at `assets/source/matted/qa.json`. The four cutter masks are retained in
+`assets/source/qa/`.
+
+## Reproduction
+
+The LAN address and teacher-reference machine path are intentionally absent.
+Inject approved local values at run time:
+
+```text
+QLOBE_QWEN_URL=<approved LAN base> python games/family-story-interview/tools/produce-art.py hub
+QLOBE_QWEN_URL=<approved LAN base> QLOBE_TEACHER_VOICE=<approved reference> python games/family-story-interview/tools/produce-voice.py
+python games/family-story-interview/tools/produce-voice.py --check
+```
+
+Both scripts are resumable. Voice candidates and per-take recipes are retained
+under `assets/source/voice-clone/`; machine-local endpoint and reference paths
+are never written.
+
+## Link preview
+
+`assets/og-image.jpg` is a 1200×630 capture of the production question shelf,
+made with `tools/pipeline/capture_og_images.mjs`. Regenerate it from the running
+game rather than editing it by hand. It is project-generated and CC BY 4.0.
+
+The older tracked `assets/bg.jpg` is a dormant prototype artifact and is not
+referenced by the production game.

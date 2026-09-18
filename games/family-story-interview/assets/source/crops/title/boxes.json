@@ -1,0 +1,56 @@
+{
+  "source": "games/family-story-interview/assets/source/gpt-image-2/title-lockup-charcoal.png",
+  "sourceSha256": "78e0baaae7e9259337e8851b77e0c276f68330b1598ceda9cd29dc3ca63851a9",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    25,
+    24,
+    30
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title-lockup",
+      "file": "title-lockup.png",
+      "componentArea": 498765,
+      "foregroundBbox": [
+        133,
+        201,
+        1638,
+        618
+      ],
+      "cropBbox": [
+        121,
+        189,
+        1650,
+        630
+      ],
+      "cropXywh": [
+        121,
+        189,
+        1529,
+        441
+      ],
+      "normalizedCropBbox": [
+        0.068207,
+        0.213078,
+        0.930101,
+        0.710259
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

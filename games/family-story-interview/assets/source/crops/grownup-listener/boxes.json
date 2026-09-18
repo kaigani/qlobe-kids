@@ -1,0 +1,56 @@
+{
+  "source": "games/family-story-interview/assets/source/gpt-image-2/grownup-listener-charcoal.png",
+  "sourceSha256": "9db4624ae4f6e0dcb59cb931a824a3afc5c2d353c6857380d3cb3ff06a6432c3",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    36,
+    36,
+    36
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "grownup-listener",
+      "file": "grownup-listener.png",
+      "componentArea": 683099,
+      "foregroundBbox": [
+        200,
+        97,
+        1052,
+        1141
+      ],
+      "cropBbox": [
+        188,
+        85,
+        1064,
+        1153
+      ],
+      "cropXywh": [
+        188,
+        85,
+        876,
+        1068
+      ],
+      "normalizedCropBbox": [
+        0.14992,
+        0.067783,
+        0.848485,
+        0.919458
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

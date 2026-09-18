@@ -2509,24 +2509,29 @@
       "path": "games/family-story-interview/",
       "icon": "assets/hub/tiles/family-story-interview.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 3,
+        "max": 8
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#2e7f82",
       "modes": [
         {
           "id": "childhood",
-          "title": "When You Were Five",
-          "skill": "ask, listen, and compare childhood stories"
+          "title": "When You Were Little",
+          "skill": "ask and listen to a childhood detail"
         },
         {
-          "id": "places",
-          "title": "Where You Lived",
-          "skill": "retell stories about past homes and journeys"
+          "id": "favorites",
+          "title": "Favorite Things",
+          "skill": "invite descriptive language about a meaningful favorite"
+        },
+        {
+          "id": "traditions",
+          "title": "Family Traditions",
+          "skill": "listen for the people and order in a family ritual"
         }
       ],
-      "summary": "Ask a grown-up about the long-ago days."
+      "summary": "Interview a loved grown-up, record a story, and decorate a private family memory page."
     },
     {
       "id": "story-repair-shop",

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "family-story-interview",
+  "title": "Family Story Interview",
+  "artDirection": "Watercolor / Storybook",
+  "timeLimitSeconds": 60,
+  "maxMemories": 12,
+  "music": "../../shared/assets/music/mug-and-sunbeam.mp3",
+  "art": {
+    "background": "./assets/art/backgrounds/scrapbook-workspace.webp",
+    "title": "./assets/art/title/family-story-interview.png",
+    "reporter": "./assets/art/characters/reporter-guide.png",
+    "grownupListener": "./assets/art/characters/grownup-listener.png",
+    "cards": {
+      "childhood": "./assets/art/cards/when-little.png",
+      "favorites": "./assets/art/cards/favorite-things.png",
+      "traditions": "./assets/art/cards/family-traditions.png"
+    },
+    "controls": {
+      "record": "./assets/art/controls/record-plate.png",
+      "play": "./assets/art/controls/play-plate.png",
+      "photo": "./assets/art/controls/photo-plate.png"
+    },
+    "props": {
+      "microphone": "./assets/art/props/microphone.png",
+      "cameraNotebook": "./assets/art/props/camera-notebook.png",
+      "questionCard": "./assets/art/props/question-card.png",
+      "memoryBook": "./assets/art/props/memory-book.png",
+      "toyTrain": "./assets/art/props/toy-train.png",
+      "teddyBear": "./assets/art/props/teddy-bear.png"
+    },
+    "stickers": {
+      "heart": "./assets/art/stickers/heart.png",
+      "star": "./assets/art/stickers/star.png",
+      "flower": "./assets/art/stickers/flower.png"
+    }
+  },
+  "stickers": [
+    { "id": "heart", "label": "Love this memory", "art": "./assets/art/stickers/heart.png" },
+    { "id": "star", "label": "A shining memory", "art": "./assets/art/stickers/star.png" },
+    { "id": "flower", "label": "A growing memory", "art": "./assets/art/stickers/flower.png" }
+  ],
+  "voice": {
+    "welcome": "Welcome, family reporter! Pick a picture to find your first question.",
+    "choose": "Pick a question, or let the surprise button choose for you.",
+    "surprise": "Surprise question! Let's see which family memory we find.",
+    "topic-childhood": "When you were little. Ask about a long-ago childhood memory.",
+    "topic-favorites": "Favorite things. Ask about something your grown-up really loved.",
+    "topic-traditions": "Family traditions. Ask about something your family did together.",
+    "q-childhood-game": "What game did you love to play when you were little?",
+    "q-childhood-laugh": "What made you laugh when you were my age?",
+    "q-childhood-school": "What was a school day like when you were little?",
+    "q-favorite-toy": "What was your favorite toy as a child?",
+    "q-favorite-food": "What food did you love when you were little?",
+    "q-favorite-story": "What song or story did you ask for again and again?",
+    "q-tradition-happy": "What family tradition made you feel happy?",
+    "q-tradition-celebrate": "How did your family celebrate a special day?",
+    "q-tradition-together": "What did everyone do together when you were little?",
+    "ready-record": "Ask your grown-up the question. Then tap the coral microphone when they are ready to share.",
+    "recording": "I'm listening. Tap again when the story is finished.",
+    "recorded": "Story captured! You can listen, or decorate your memory page.",
+    "mic-fallback": "That's okay. Tell the story together, and we can still make a beautiful memory page.",
+    "decorate": "Add a family photo if you want, then pick a sticker for your page.",
+    "photo-added": "Photo added. Your memory page is coming together.",
+    "saved": "Story saved in your family memory book!",
+    "book-empty": "Your memory book is ready for its first family story.",
+    "book-open": "Here are your family stories. Tap a page to hear one again.",
+    "storage-fallback": "Your page is safe for this play time. This device could not keep it after you leave.",
+    "nudge": "Your grown-up can take all the time they need. Tap the microphone when you're ready."
+  },
+  "modes": [
+    {
+      "id": "childhood",
+      "title": "When You Were Little",
+      "skill": "ask and listen to a childhood detail",
+      "voiceKey": "topic-childhood",
+      "art": "./assets/art/cards/when-little.png",
+      "questions": [
+        { "id": "childhood-game", "voiceKey": "q-childhood-game", "text": "What game did you love to play when you were little?", "safeTitle": "Our game story" },
+        { "id": "childhood-laugh", "voiceKey": "q-childhood-laugh", "text": "What made you laugh when you were my age?", "safeTitle": "Our laugh story" },
+        { "id": "childhood-school", "voiceKey": "q-childhood-school", "text": "What was a school day like when you were little?", "safeTitle": "Our school story" }
+      ]
+    },
+    {
+      "id": "favorites",
+      "title": "Favorite Things",
+      "skill": "invite descriptive language about a meaningful favorite",
+      "voiceKey": "topic-favorites",
+      "art": "./assets/art/cards/favorite-things.png",
+      "questions": [
+        { "id": "favorite-toy", "voiceKey": "q-favorite-toy", "text": "What was your favorite toy as a child?", "safeTitle": "Our toy story" },
+        { "id": "favorite-food", "voiceKey": "q-favorite-food", "text": "What food did you love when you were little?", "safeTitle": "Our food story" },
+        { "id": "favorite-story", "voiceKey": "q-favorite-story", "text": "What song or story did you ask for again and again?", "safeTitle": "Our favorite story" }
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Family Traditions",
+      "skill": "listen for the people and order in a family ritual",
+      "voiceKey": "topic-traditions",
+      "art": "./assets/art/cards/family-traditions.png",
+      "questions": [
+        { "id": "tradition-happy", "voiceKey": "q-tradition-happy", "text": "What family tradition made you feel happy?", "safeTitle": "Our happy tradition" },
+        { "id": "tradition-celebrate", "voiceKey": "q-tradition-celebrate", "text": "How did your family celebrate a special day?", "safeTitle": "Our celebration story" },
+        { "id": "tradition-together", "voiceKey": "q-tradition-together", "text": "What did everyone do together when you were little?", "safeTitle": "Our together story" }
+      ]
+    }
+  ]
+}

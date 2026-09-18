@@ -1,0 +1,146 @@
+{
+  "source": "games/family-story-interview/assets/source/gpt-image-2/topic-cards-sheet.png",
+  "sourceSha256": "4ab306ff469f2e82fd262bb9adf4f3179853189468cc8b48e842a1734673d398",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    22,
+    21,
+    27
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "when-little-card",
+      "file": "when-little-card.png",
+      "componentArea": 179298,
+      "foregroundBbox": [
+        299,
+        11,
+        679,
+        521
+      ],
+      "cropBbox": [
+        287,
+        0,
+        691,
+        533
+      ],
+      "cropXywh": [
+        287,
+        0,
+        404,
+        533
+      ],
+      "normalizedCropBbox": [
+        0.198204,
+        0.0,
+        0.47721,
+        0.490792
+      ]
+    },
+    {
+      "index": 2,
+      "name": "favorite-toy-card",
+      "file": "favorite-toy-card.png",
+      "componentArea": 187118,
+      "foregroundBbox": [
+        754,
+        13,
+        1148,
+        526
+      ],
+      "cropBbox": [
+        742,
+        1,
+        1160,
+        538
+      ],
+      "cropXywh": [
+        742,
+        1,
+        418,
+        537
+      ],
+      "normalizedCropBbox": [
+        0.512431,
+        0.000921,
+        0.801105,
+        0.495396
+      ]
+    },
+    {
+      "index": 3,
+      "name": "family-tradition-card",
+      "file": "family-tradition-card.png",
+      "componentArea": 199248,
+      "foregroundBbox": [
+        295,
+        543,
+        711,
+        1056
+      ],
+      "cropBbox": [
+        283,
+        531,
+        723,
+        1068
+      ],
+      "cropXywh": [
+        283,
+        531,
+        440,
+        537
+      ],
+      "normalizedCropBbox": [
+        0.195442,
+        0.48895,
+        0.499309,
+        0.983425
+      ]
+    },
+    {
+      "index": 4,
+      "name": "reporter-guide",
+      "file": "reporter-guide.png",
+      "componentArea": 91446,
+      "foregroundBbox": [
+        774,
+        549,
+        1133,
+        1056
+      ],
+      "cropBbox": [
+        762,
+        537,
+        1145,
+        1068
+      ],
+      "cropXywh": [
+        762,
+        537,
+        383,
+        531
+      ],
+      "normalizedCropBbox": [
+        0.526243,
+        0.494475,
+        0.790746,
+        0.983425
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

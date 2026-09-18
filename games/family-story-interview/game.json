@@ -5,29 +5,59 @@
   "path": "games/family-story-interview/",
   "icon": "🎙️",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Family Story Interview 🎙️ — A Real Family Newsroom",
-  "description": "Repeat spoken questions to a grown-up, listen to long-ago stories, and stamp what stood out into a playful family news report. A real conversation starter for ages 5–6.",
+  "age": { "min": 3, "max": 8 },
+  "status": "beta",
+  "accent": "#2e7f82",
+  "artDirection": "Watercolor / Storybook",
+  "shareTitle": "Family Story Interview — Make a Memory Together",
+  "description": "Pick a picture question, interview a loved grown-up, record their answer, decorate a private keepsake page, and replay it from an on-device family memory book.",
   "learningGoals": [
-    "Practice asking clear spoken questions and listening through an answer",
-    "Retell a memorable detail from a family story",
-    "Compare life in the past with life now"
+    "Ask a clear open-ended question and listen through an answer",
+    "Notice and retell a meaningful detail from a family story",
+    "Build intergenerational connection through oral history"
   ],
-  "interactionModel": "observe-journal speaks each interview question aloud; after asking a grown-up and listening, the child taps a large sticker that captures what stood out",
-  "feedbackModel": "Every interpretation is accepted with newsroom-playful speech and pop, whoosh, and sparkle SFX; the recap replays the interview pages as a family news story.",
+  "interactionModel": "Choose one of three picture-led question families, hear a prompt, record a grown-up or continue without microphone access, add an optional local photo and watercolor sticker, save, replay, and browse up to twelve on-device memory pages.",
+  "feedbackModel": "Warm recorded narration, paper-lift motion, a live waveform, tactile record and save sounds, sticker placement, a page stamp, and gentle celebration accept every family answer without scoring.",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "games/family-story-interview/assets/art/",
+    "games/family-story-interview/assets/audio/",
+    "shared/assets/music/mug-and-sunbeam.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "childhood", "title": "When You Were Five", "skill": "ask, listen, and compare childhood stories" },
-    { "id": "places", "title": "Where You Lived", "skill": "retell stories about past homes and journeys" }
+    { "id": "childhood", "title": "When You Were Little", "skill": "ask and listen to a childhood detail" },
+    { "id": "favorites", "title": "Favorite Things", "skill": "invite descriptive language about a meaningful favorite" },
+    { "id": "traditions", "title": "Family Traditions", "skill": "listen for the people and order in a family ritual" }
   ],
+  "privacy": {
+    "recording": "optional microphone audio plus optional imported or captured photo",
+    "storage": "IndexedDB on the current device only, with session-memory fallback",
+    "uploads": false,
+    "transcription": false,
+    "exports": false,
+    "maximumSavedMemories": 12
+  },
+  "assets": {
+    "source": "generated/local",
+    "runtimeNetwork": false,
+    "runtimeNetworkScope": "No game asset, model, transcription, child-recording, or family-photo requests; inherited platform analytics is outside this flag.",
+    "art": "GPT Image 2 Watercolor / Storybook masters, deterministic cutter-mask mattes, and a Krea 2 hub tile",
+    "voice": "Qwen voice-cloned teacher narration with Whisper QA and Web Speech fallback",
+    "music": "shared recorded mug-and-sunbeam track"
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Watercolor production art made with GPT Image 2; hub art made with local Krea 2; Qwen Layered candidates were quality-gated and rejected where they redrew source art; teacher narration made with local Qwen voice clone and verified with Whisper. Family recordings and photos never leave the device. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

@@ -1,0 +1,386 @@
+{
+  "source": "games/family-story-interview/assets/source/gpt-image-2/reporter-props-sheet.png",
+  "sourceSha256": "0e38b156b4192dcbe0cb6cb6682b2eb552eb9ed3f4cd839ebc71bda9e71b3cc0",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    24,
+    24,
+    31
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "microphone",
+      "file": "microphone.png",
+      "componentArea": 27459,
+      "foregroundBbox": [
+        100,
+        52,
+        278,
+        395
+      ],
+      "cropBbox": [
+        88,
+        40,
+        290,
+        407
+      ],
+      "cropXywh": [
+        88,
+        40,
+        202,
+        367
+      ],
+      "normalizedCropBbox": [
+        0.060773,
+        0.036832,
+        0.200276,
+        0.37477
+      ]
+    },
+    {
+      "index": 2,
+      "name": "camera-notebook",
+      "file": "camera-notebook.png",
+      "componentArea": 64596,
+      "foregroundBbox": [
+        349,
+        88,
+        686,
+        379
+      ],
+      "cropBbox": [
+        337,
+        76,
+        698,
+        391
+      ],
+      "cropXywh": [
+        337,
+        76,
+        361,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.232735,
+        0.069982,
+        0.482044,
+        0.360037
+      ]
+    },
+    {
+      "index": 3,
+      "name": "question-card",
+      "file": "question-card.png",
+      "componentArea": 67261,
+      "foregroundBbox": [
+        716,
+        87,
+        1048,
+        347
+      ],
+      "cropBbox": [
+        704,
+        75,
+        1060,
+        359
+      ],
+      "cropXywh": [
+        704,
+        75,
+        356,
+        284
+      ],
+      "normalizedCropBbox": [
+        0.486188,
+        0.069061,
+        0.732044,
+        0.330571
+      ]
+    },
+    {
+      "index": 4,
+      "name": "record-plate",
+      "file": "record-plate.png",
+      "componentArea": 49270,
+      "foregroundBbox": [
+        1078,
+        141,
+        1416,
+        298
+      ],
+      "cropBbox": [
+        1066,
+        129,
+        1428,
+        310
+      ],
+      "cropXywh": [
+        1066,
+        129,
+        362,
+        181
+      ],
+      "normalizedCropBbox": [
+        0.736188,
+        0.118785,
+        0.986188,
+        0.285451
+      ]
+    },
+    {
+      "index": 5,
+      "name": "play-plate",
+      "file": "play-plate.png",
+      "componentArea": 48658,
+      "foregroundBbox": [
+        31,
+        469,
+        359,
+        628
+      ],
+      "cropBbox": [
+        19,
+        457,
+        371,
+        640
+      ],
+      "cropXywh": [
+        19,
+        457,
+        352,
+        183
+      ],
+      "normalizedCropBbox": [
+        0.013122,
+        0.42081,
+        0.256215,
+        0.589319
+      ]
+    },
+    {
+      "index": 6,
+      "name": "photo-plate",
+      "file": "photo-plate.png",
+      "componentArea": 49160,
+      "foregroundBbox": [
+        386,
+        466,
+        714,
+        627
+      ],
+      "cropBbox": [
+        374,
+        454,
+        726,
+        639
+      ],
+      "cropXywh": [
+        374,
+        454,
+        352,
+        185
+      ],
+      "normalizedCropBbox": [
+        0.258287,
+        0.418048,
+        0.501381,
+        0.588398
+      ]
+    },
+    {
+      "index": 7,
+      "name": "memory-book",
+      "file": "memory-book.png",
+      "componentArea": 87037,
+      "foregroundBbox": [
+        747,
+        390,
+        1071,
+        683
+      ],
+      "cropBbox": [
+        735,
+        378,
+        1083,
+        695
+      ],
+      "cropXywh": [
+        735,
+        378,
+        348,
+        317
+      ],
+      "normalizedCropBbox": [
+        0.507597,
+        0.348066,
+        0.747928,
+        0.639963
+      ]
+    },
+    {
+      "index": 8,
+      "name": "heart-sticker",
+      "file": "heart-sticker.png",
+      "componentArea": 34290,
+      "foregroundBbox": [
+        1155,
+        435,
+        1392,
+        658
+      ],
+      "cropBbox": [
+        1143,
+        423,
+        1404,
+        670
+      ],
+      "cropXywh": [
+        1143,
+        423,
+        261,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.789365,
+        0.389503,
+        0.969613,
+        0.616943
+      ]
+    },
+    {
+      "index": 9,
+      "name": "star-sticker",
+      "file": "star-sticker.png",
+      "componentArea": 39750,
+      "foregroundBbox": [
+        52,
+        728,
+        320,
+        982
+      ],
+      "cropBbox": [
+        40,
+        716,
+        332,
+        994
+      ],
+      "cropXywh": [
+        40,
+        716,
+        292,
+        278
+      ],
+      "normalizedCropBbox": [
+        0.027624,
+        0.6593,
+        0.229282,
+        0.915285
+      ]
+    },
+    {
+      "index": 10,
+      "name": "flower-sticker",
+      "file": "flower-sticker.png",
+      "componentArea": 49443,
+      "foregroundBbox": [
+        378,
+        723,
+        650,
+        999
+      ],
+      "cropBbox": [
+        366,
+        711,
+        662,
+        1011
+      ],
+      "cropXywh": [
+        366,
+        711,
+        296,
+        300
+      ],
+      "normalizedCropBbox": [
+        0.252762,
+        0.654696,
+        0.457182,
+        0.930939
+      ]
+    },
+    {
+      "index": 11,
+      "name": "toy-train",
+      "file": "toy-train.png",
+      "componentArea": 65561,
+      "foregroundBbox": [
+        700,
+        734,
+        1050,
+        997
+      ],
+      "cropBbox": [
+        688,
+        722,
+        1062,
+        1009
+      ],
+      "cropXywh": [
+        688,
+        722,
+        374,
+        287
+      ],
+      "normalizedCropBbox": [
+        0.475138,
+        0.664825,
+        0.733425,
+        0.929098
+      ]
+    },
+    {
+      "index": 12,
+      "name": "teddy-bear",
+      "file": "teddy-bear.png",
+      "componentArea": 67976,
+      "foregroundBbox": [
+        1103,
+        694,
+        1394,
+        1021
+      ],
+      "cropBbox": [
+        1091,
+        682,
+        1406,
+        1033
+      ],
+      "cropXywh": [
+        1091,
+        682,
+        315,
+        351
+      ],
+      "normalizedCropBbox": [
+        0.753453,
+        0.627993,
+        0.970994,
+        0.951197
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
