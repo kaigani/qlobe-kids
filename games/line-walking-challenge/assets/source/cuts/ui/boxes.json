@@ -1,0 +1,172 @@
+{
+  "source": "games/line-walking-challenge/assets/source/gpt-image-2/ui-sheet-master.png",
+  "sourceSha256": "8dda384c05a99d2665dfd7f496bf22f07410df4088c68ca3245cac7fbd3500f9",
+  "sourceSize": [
+    2152,
+    731
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 162794,
+      "foregroundBbox": [
+        41,
+        193,
+        698,
+        516
+      ],
+      "cropBbox": [
+        29,
+        181,
+        710,
+        528
+      ],
+      "cropXywh": [
+        29,
+        181,
+        681,
+        347
+      ],
+      "normalizedCropBbox": [
+        0.013476,
+        0.247606,
+        0.329926,
+        0.722298
+      ]
+    },
+    {
+      "index": 2,
+      "name": "flower-bud",
+      "file": "flower-bud.png",
+      "componentArea": 35297,
+      "foregroundBbox": [
+        743,
+        202,
+        974,
+        541
+      ],
+      "cropBbox": [
+        731,
+        190,
+        986,
+        553
+      ],
+      "cropXywh": [
+        731,
+        190,
+        255,
+        363
+      ],
+      "normalizedCropBbox": [
+        0.339684,
+        0.259918,
+        0.458178,
+        0.756498
+      ]
+    },
+    {
+      "index": 3,
+      "name": "flower-bloom",
+      "file": "flower-bloom.png",
+      "componentArea": 55220,
+      "foregroundBbox": [
+        1043,
+        195,
+        1315,
+        551
+      ],
+      "cropBbox": [
+        1031,
+        183,
+        1327,
+        563
+      ],
+      "cropXywh": [
+        1031,
+        183,
+        296,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.479089,
+        0.250342,
+        0.616636,
+        0.770178
+      ]
+    },
+    {
+      "index": 4,
+      "name": "finish-flag",
+      "file": "finish-flag.png",
+      "componentArea": 51135,
+      "foregroundBbox": [
+        1385,
+        174,
+        1727,
+        559
+      ],
+      "cropBbox": [
+        1373,
+        162,
+        1739,
+        571
+      ],
+      "cropXywh": [
+        1373,
+        162,
+        366,
+        409
+      ],
+      "normalizedCropBbox": [
+        0.638011,
+        0.221614,
+        0.808086,
+        0.781122
+      ]
+    },
+    {
+      "index": 5,
+      "name": "badge",
+      "file": "badge.png",
+      "componentArea": 85942,
+      "foregroundBbox": [
+        1768,
+        192,
+        2103,
+        546
+      ],
+      "cropBbox": [
+        1756,
+        180,
+        2115,
+        558
+      ],
+      "cropXywh": [
+        1756,
+        180,
+        359,
+        378
+      ],
+      "normalizedCropBbox": [
+        0.815985,
+        0.246238,
+        0.982807,
+        0.763338
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 160,
+    "closeRadius": 4,
+    "minArea": 4000,
+    "order": "reading"
+  }
+}

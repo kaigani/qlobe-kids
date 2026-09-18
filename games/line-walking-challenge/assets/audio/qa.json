@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-09-18",
+  "workflow": "qwen3-tts-voiceclone -> whisper-stt",
+  "status": "backend-unavailable",
+  "candidateSeeds": [7, 8, 9],
+  "acceptedClips": 0,
+  "fallback": "shared voice-clips.js device speech",
+  "note": "The Studio voice jobs returned HTTP 500 and direct retries produced no valid audio container. Whisper was not run against invalid or missing media. See assets/source/local-api/FAILED-JOBS.md."
+}

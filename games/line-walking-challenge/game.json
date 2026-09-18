@@ -3,32 +3,44 @@
   "title": "Line Walking Challenge",
   "category": "movement-outdoor",
   "path": "games/line-walking-challenge/",
-  "icon": "🧘",
+  "icon": "🦊",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Line Walking Challenge 👣 — Calm Balance Walking",
-  "description": "Walk a quiet heel-to-toe line, carry objects with steady hands, and settle into slow, controlled movement. A near-whisper balance coach for ages 5–6 that treats stillness as its own skill.",
+  "age": { "min": 4, "max": 7 },
+  "status": "beta",
+  "accent": "#5f9151",
+  "shareTitle": "Line Walking Challenge — Trace a Storybook Trail",
+  "description": "Guide Fia the fox along three glowing watercolor trails. Slow, careful tracing makes five meadow flowers bloom — with gentle recovery and no lost progress.",
   "learningGoals": [
-    "Build concentration through slow heel-to-toe walking",
-    "Practice balance while changing arm and carrying positions",
-    "Develop graceful, controlled movement",
-    "Use slow movement and breathing for self-calming"
+    "Build visual-motor control through slow continuous tracing",
+    "Practice sustained attention and careful pacing",
+    "Recover calmly after moving away from a path",
+    "Connect on-screen tracing with optional whole-body line walking"
   ],
-  "interactionModel": "follow each spoken real-world movement prompt, watch the calm timer, then tap the large current-step card when finished",
-  "feedbackModel": "serene spoken coaching with tick, sparkle, and tada SFX; praise celebrates slowness, control, and practice",
+  "interactionModel": "choose Forest, River, or Rainbow, then drag from the glowing paw along the authored trail to bloom five flowers",
+  "feedbackModel": "the route glows, Fia walks with the finger, flowers bloom at checkpoints, and leaving the path pauses without removing progress",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "line", "title": "The Quiet Line", "skill": "slow heel-to-toe walking and calm balance" },
-    { "id": "carry", "title": "Carry Challenge", "skill": "controlled walking while balancing and carrying" }
+    { "id": "forest", "title": "Forest Trail", "skill": "smooth curves and steady pacing" },
+    { "id": "river", "title": "River Trail", "skill": "careful changes in direction" },
+    { "id": "rainbow", "title": "Rainbow Trail", "skill": "long zigzags and focus" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; original game artwork generated with GPT Image 2 and processed locally for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Fia the fox"],
   "conceptVideo": null
 }

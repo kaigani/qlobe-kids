@@ -1,0 +1,101 @@
+{
+  "id": "line-walking-challenge",
+  "engine": "custom-line-walking-challenge",
+  "title": "Line Walking Challenge",
+  "status": "beta",
+  "artDirection": "Watercolor / Storybook",
+  "storageKey": "qlobe.line-walking-challenge.completed.v1",
+  "music": {
+    "track": "../../shared/assets/music/gentle-country-morning.mp3",
+    "volume": 0.16
+  },
+  "voice": {
+    "intro": "Tap a trail and help Fia follow the glowing line.",
+    "choose": "Which trail should we walk?",
+    "forest-name": "Forest Trail.",
+    "river-name": "River Trail.",
+    "rainbow-name": "Rainbow Trail.",
+    "start": "Put your finger on the glowing paw. Follow the line, slow and steady.",
+    "return": "Almost! Bring your finger back to Fia's glowing trail.",
+    "steady": "Beautiful focus. Keep going, heel to toe.",
+    "bloom": "Look! Your careful steps made a flower bloom.",
+    "complete": "You did it! Beautiful balance!",
+    "all-complete": "Every trail is blooming. I'm so proud of you!",
+    "walk-together": "Later, make a line with tape and walk it with a grown-up."
+  },
+  "assets": {
+    "selectBackdrop": "./assets/art/select-backdrop.webp",
+    "completeStage": "./assets/art/complete-stage.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "actionButton": "./assets/art/action-button.webp",
+    "flowerBud": "./assets/art/flower-bud.webp",
+    "flowerBloom": "./assets/art/flower-bloom.webp",
+    "finishFlag": "./assets/art/finish-flag.webp",
+    "badge": "./assets/art/badge.webp",
+    "fox": {
+      "ready": "./assets/art/fox-ready.webp",
+      "leftStep": "./assets/art/fox-left-step.webp",
+      "rightStep": "./assets/art/fox-right-step.webp",
+      "pause": "./assets/art/fox-pause.webp",
+      "bloom": "./assets/art/fox-bloom.webp",
+      "celebrate": "./assets/art/fox-celebrate.webp"
+    }
+  },
+  "modes": [
+    {
+      "id": "forest",
+      "title": "Forest Trail",
+      "shortTitle": "FOREST",
+      "accent": "#5f9151",
+      "stage": "./assets/art/forest-stage.webp",
+      "portraitStage": "./assets/art/forest-stage-portrait.webp",
+      "card": "./assets/art/forest-stage.webp",
+      "route": [[0.10, 0.92], [0.22, 0.84], [0.37, 0.76], [0.52, 0.69], [0.66, 0.59], [0.79, 0.52], [0.86, 0.41], [0.95, 0.34]],
+      "portraitRoute": [[0.48, 0.94], [0.46, 0.86], [0.44, 0.78], [0.48, 0.69], [0.53, 0.61], [0.59, 0.54], [0.67, 0.48], [0.76, 0.43], [0.84, 0.37], [0.91, 0.34]],
+      "tolerance": 0.095,
+      "checkpoints": [0.18, 0.36, 0.55, 0.75, 0.96]
+    },
+    {
+      "id": "river",
+      "title": "River Trail",
+      "shortTitle": "RIVER",
+      "accent": "#4d91a8",
+      "stage": "./assets/art/river-stage.webp",
+      "portraitStage": "./assets/art/river-stage-portrait.webp",
+      "card": "./assets/art/river-stage.webp",
+      "route": [[0.08, 0.92], [0.18, 0.82], [0.27, 0.73], [0.37, 0.66], [0.47, 0.58], [0.57, 0.52], [0.66, 0.44], [0.76, 0.39], [0.84, 0.32], [0.92, 0.27]],
+      "portraitRoute": [[0.05, 0.80], [0.16, 0.72], [0.27, 0.66], [0.37, 0.59], [0.48, 0.53], [0.58, 0.47], [0.68, 0.42], [0.78, 0.37], [0.87, 0.33], [0.95, 0.29]],
+      "tolerance": 0.090,
+      "checkpoints": [0.18, 0.36, 0.55, 0.75, 0.96]
+    },
+    {
+      "id": "rainbow",
+      "title": "Rainbow Trail",
+      "shortTitle": "RAINBOW",
+      "accent": "#bd739a",
+      "stage": "./assets/art/rainbow-stage.webp",
+      "portraitStage": "./assets/art/rainbow-stage-portrait.webp",
+      "card": "./assets/art/rainbow-stage.webp",
+      "route": [[0.16, 0.91], [0.24, 0.78], [0.27, 0.68], [0.19, 0.60], [0.29, 0.53], [0.41, 0.55], [0.50, 0.67], [0.58, 0.68], [0.64, 0.62], [0.60, 0.56], [0.65, 0.52], [0.76, 0.55], [0.84, 0.50], [0.88, 0.40], [0.91, 0.32], [0.92, 0.25]],
+      "portraitRoute": [[0.39, 0.94], [0.43, 0.84], [0.47, 0.74], [0.47, 0.66], [0.40, 0.60], [0.32, 0.56], [0.38, 0.52], [0.52, 0.51], [0.65, 0.50], [0.76, 0.45], [0.82, 0.38], [0.84, 0.31]],
+      "tolerance": 0.087,
+      "checkpoints": [0.18, 0.36, 0.55, 0.75, 0.96]
+    }
+  ],
+  "sharedModules": [
+    "audio-unlock.js",
+    "bgm.js",
+    "celebrate.js",
+    "debug-harness.js",
+    "hud.js",
+    "idle-nudge.js",
+    "narrator.js",
+    "preload.js",
+    "rng.js",
+    "screens.js",
+    "sfx.js",
+    "tap.js",
+    "timers.js",
+    "voice-clips.js"
+  ]
+}

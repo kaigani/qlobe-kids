@@ -1,47 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Line Walking Challenge 👣 — Calm Balance Walking</title>
-  <meta name="description" content="Walk a quiet heel-to-toe line, carry objects with steady hands, and settle into slow, controlled movement. A near-whisper balance coach for ages 5–6 that treats stillness as its own skill." />
+  <meta name="theme-color" content="#dcebcf" />
+  <title>Line Walking Challenge — Trace a Storybook Trail</title>
+  <meta name="description" content="Guide Fia the fox along three glowing watercolor trails. Slow, careful tracing makes five meadow flowers bloom — with gentle recovery and no lost progress." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Line Walking Challenge" />
-  <meta property="og:title" content="Line Walking Challenge 👣 — Calm Balance Walking" />
-  <meta property="og:description" content="Walk a quiet heel-to-toe line, carry objects with steady hands, and settle into slow, controlled movement. A near-whisper balance coach for ages 5–6 that treats stillness as its own skill." />
+  <meta property="og:title" content="Line Walking Challenge — Trace a Storybook Trail" />
+  <meta property="og:description" content="Guide Fia the fox along three glowing watercolor trails. Slow, careful tracing makes five meadow flowers bloom — with gentle recovery and no lost progress." />
   <meta property="og:url" content="https://qlo.be/games/line-walking-challenge/" />
   <meta property="og:image" content="https://qlo.be/games/line-walking-challenge/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Line Walking Challenge title screen with The Quiet Line and Carry Challenge modes and a meditating figure icon on a pale blue background." />
+  <meta property="og:image:alt" content="A watercolor meadow menu with Forest, River, and Rainbow trail cards beneath the Line Walking Challenge title." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Line Walking Challenge 👣 — Calm Balance Walking" />
-  <meta name="twitter:description" content="Walk a quiet heel-to-toe line, carry objects with steady hands, and settle into slow, controlled movement. A near-whisper balance coach for ages 5–6 that treats stillness as its own skill." />
+  <meta name="twitter:title" content="Line Walking Challenge — Trace a Storybook Trail" />
+  <meta name="twitter:description" content="Guide Fia the fox along three glowing watercolor trails. Slow, careful tracing makes five meadow flowers bloom — with gentle recovery and no lost progress." />
   <meta name="twitter:image" content="https://qlo.be/games/line-walking-challenge/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game">
+    <section id="select-screen" class="qk-screen select-screen" data-qk-screen="select">
+      <img class="scene-art select-art" src="./assets/art/select-backdrop.webp" alt="" draggable="false">
+      <div class="select-vignette" aria-hidden="true"></div>
+      <img class="title-lockup" src="./assets/art/title-lockup.webp" alt="Line Walking Challenge" draggable="false">
+
+      <div class="mode-cards" role="group" aria-label="Choose a trail">
+        <button class="mode-card is-selected" type="button" data-mode="forest" data-target="forest" aria-pressed="true">
+          <img src="./assets/art/forest-stage.webp" alt="" draggable="false">
+          <span>FOREST</span>
+          <img class="mode-badge" src="./assets/art/badge.webp" data-badge="completed" alt="Completed" hidden>
+        </button>
+        <button class="mode-card" type="button" data-mode="river" data-target="river" aria-pressed="false">
+          <img src="./assets/art/river-stage.webp" alt="" draggable="false">
+          <span>RIVER</span>
+          <img class="mode-badge" src="./assets/art/badge.webp" data-badge="completed" alt="Completed" hidden>
+        </button>
+        <button class="mode-card" type="button" data-mode="rainbow" data-target="rainbow" aria-pressed="false">
+          <img src="./assets/art/rainbow-stage.webp" alt="" draggable="false">
+          <span>RAINBOW</span>
+          <img class="mode-badge" src="./assets/art/badge.webp" data-badge="completed" alt="Completed" hidden>
+        </button>
+      </div>
+
+      <button id="start-button" class="painted-button start-button" type="button" data-target="start" aria-label="Start Forest Trail">
+        <img src="./assets/art/action-button.webp" alt="" draggable="false">
+        <span>START</span>
+      </button>
+    </section>
+
+    <section id="play-screen" class="qk-screen play-screen" data-qk-screen="play" hidden>
+      <img id="ambient-art" class="ambient-art" src="./assets/art/forest-stage.webp" alt="" draggable="false">
+      <div id="stage-shell" class="stage-shell">
+        <img id="stage-art" class="stage-art" src="./assets/art/forest-stage.webp" alt="" draggable="false">
+        <canvas id="trail-canvas" class="trail-canvas" data-target="trail" data-role="primary" role="button" tabindex="0" aria-keyshortcuts="ArrowRight Enter Space" aria-label="Forest Trail. Drag along the glowing trail, or press Right Arrow, Enter, or Space to take a careful step."></canvas>
+        <img id="finish-flag" class="finish-flag" src="./assets/art/finish-flag.webp" alt="Finish" draggable="false">
+        <img id="start-paw" class="start-paw" src="./assets/art/badge.webp" alt="Start here" draggable="false">
+        <img id="fia" class="fia" src="./assets/art/fox-ready.webp" alt="Fia the fox" draggable="false">
+        <div id="stage-sheen" class="stage-sheen" aria-hidden="true"></div>
+      </div>
+
+      <div class="play-header" aria-hidden="true">
+        <span id="play-title">FOREST TRAIL</span>
+      </div>
+      <div id="flower-row" class="flower-row" aria-label="0 of 5 flowers blooming">
+        <img src="./assets/art/flower-bud.webp" alt="" draggable="false">
+        <img src="./assets/art/flower-bud.webp" alt="" draggable="false">
+        <img src="./assets/art/flower-bud.webp" alt="" draggable="false">
+        <img src="./assets/art/flower-bud.webp" alt="" draggable="false">
+        <img src="./assets/art/flower-bud.webp" alt="" draggable="false">
+      </div>
+      <div id="trace-prompt" class="trace-prompt" aria-hidden="true">START AT THE PAW</div>
+    </section>
+
+    <section id="complete-screen" class="qk-screen complete-screen" data-qk-screen="complete" hidden>
+      <img class="scene-art complete-art" src="./assets/art/complete-stage.webp" alt="" draggable="false">
+      <div class="complete-vignette" aria-hidden="true"></div>
+      <img class="complete-flag" src="./assets/art/finish-flag.webp" alt="" draggable="false">
+      <img class="complete-fia" src="./assets/art/fox-celebrate.webp" alt="Fia celebrating" draggable="false">
+      <img class="complete-badge" src="./assets/art/badge.webp" alt="Trail badge" draggable="false">
+      <div class="complete-copy">
+        <p class="complete-kicker">TRAIL COMPLETE!</p>
+        <h1>Beautiful<br>balance!</h1>
+        <p id="complete-note">Five flowers are blooming.</p>
+      </div>
+      <button id="next-button" class="painted-button next-button" type="button" data-target="next" aria-label="Choose the next trail">
+        <img src="./assets/art/action-button.webp" alt="" draggable="false">
+        <span>NEXT TRAIL</span>
+      </button>
+    </section>
+
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+      <img src="./assets/art/fox-ready.webp" alt="" draggable="false">
+      <span>Gathering the trail…</span>
+    </div>
+    <p id="announcer" class="visually-hidden" aria-live="polite"></p>
+  </main>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,202 @@
+{
+  "source": "games/line-walking-challenge/assets/source/gpt-image-2/fox-poses-sheet-master.png",
+  "sourceSha256": "51d9a3f70a58399544453b392c47941cdf6c0ae2b0a73af5b12a93072d83af73",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "ready",
+      "file": "ready.png",
+      "componentArea": 92139,
+      "foregroundBbox": [
+        65,
+        47,
+        440,
+        494
+      ],
+      "cropBbox": [
+        53,
+        35,
+        452,
+        506
+      ],
+      "cropXywh": [
+        53,
+        35,
+        399,
+        471
+      ],
+      "normalizedCropBbox": [
+        0.036602,
+        0.032228,
+        0.312155,
+        0.46593
+      ]
+    },
+    {
+      "index": 2,
+      "name": "left-step",
+      "file": "left-step.png",
+      "componentArea": 90341,
+      "foregroundBbox": [
+        512,
+        40,
+        893,
+        490
+      ],
+      "cropBbox": [
+        500,
+        28,
+        905,
+        502
+      ],
+      "cropXywh": [
+        500,
+        28,
+        405,
+        474
+      ],
+      "normalizedCropBbox": [
+        0.345304,
+        0.025783,
+        0.625,
+        0.462247
+      ]
+    },
+    {
+      "index": 3,
+      "name": "right-step",
+      "file": "right-step.png",
+      "componentArea": 85991,
+      "foregroundBbox": [
+        975,
+        42,
+        1327,
+        489
+      ],
+      "cropBbox": [
+        963,
+        30,
+        1339,
+        501
+      ],
+      "cropXywh": [
+        963,
+        30,
+        376,
+        471
+      ],
+      "normalizedCropBbox": [
+        0.665055,
+        0.027624,
+        0.924724,
+        0.461326
+      ]
+    },
+    {
+      "index": 4,
+      "name": "pause",
+      "file": "pause.png",
+      "componentArea": 95502,
+      "foregroundBbox": [
+        57,
+        552,
+        465,
+        1007
+      ],
+      "cropBbox": [
+        45,
+        540,
+        477,
+        1019
+      ],
+      "cropXywh": [
+        45,
+        540,
+        432,
+        479
+      ],
+      "normalizedCropBbox": [
+        0.031077,
+        0.497238,
+        0.32942,
+        0.938306
+      ]
+    },
+    {
+      "index": 5,
+      "name": "bloom",
+      "file": "bloom.png",
+      "componentArea": 82906,
+      "foregroundBbox": [
+        537,
+        550,
+        921,
+        1006
+      ],
+      "cropBbox": [
+        525,
+        538,
+        933,
+        1018
+      ],
+      "cropXywh": [
+        525,
+        538,
+        408,
+        480
+      ],
+      "normalizedCropBbox": [
+        0.362569,
+        0.495396,
+        0.644337,
+        0.937385
+      ]
+    },
+    {
+      "index": 6,
+      "name": "celebrate",
+      "file": "celebrate.png",
+      "componentArea": 91184,
+      "foregroundBbox": [
+        992,
+        523,
+        1388,
+        994
+      ],
+      "cropBbox": [
+        980,
+        511,
+        1400,
+        1006
+      ],
+      "cropXywh": [
+        980,
+        511,
+        420,
+        495
+      ],
+      "normalizedCropBbox": [
+        0.676796,
+        0.470534,
+        0.966851,
+        0.926335
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 160,
+    "closeRadius": 4,
+    "minArea": 10000,
+    "order": "reading"
+  }
+}
