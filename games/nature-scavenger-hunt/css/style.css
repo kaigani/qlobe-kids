@@ -1,0 +1,938 @@
+:root {
+  --qk-bg: #6da04c;
+  --forest-ink: #2f3e25;
+  --moss: #315d2e;
+  --cream: #fff4d7;
+  --sun: #f4c53d;
+}
+
+html,
+body {
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  color: var(--forest-ink);
+  font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:focus-visible {
+  outline: 6px solid #fff;
+  outline-offset: 5px;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+#game {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.forest-plate {
+  position: absolute;
+  z-index: -2;
+  inset: -1.5%;
+  width: 103%;
+  height: 103%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.qk-screen {
+  z-index: 1;
+  min-width: 0;
+}
+
+.qk-hud-btn {
+  --qk-hud-size: 96px;
+  --qk-hud-gap: 16px;
+}
+
+.qk-hud-sound.is-muted {
+  opacity: .58;
+}
+
+.title-lockup {
+  position: absolute;
+  z-index: 4;
+  top: max(12px, var(--qk-safe-top));
+  left: 50%;
+  width: min(54vw, 590px);
+  max-height: 19dvh;
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 6px rgba(37, 41, 20, .25));
+  animation: title-breathe 3.6s ease-in-out infinite;
+}
+
+.clay-board {
+  position: absolute;
+  aspect-ratio: 404 / 512;
+}
+
+.board-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.board-kicker {
+  margin: 0;
+  color: var(--moss);
+  font-size: clamp(20px, 2.2vw, 31px);
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+
+.splash-board {
+  bottom: 1.2dvh;
+  left: 50%;
+  width: min(44vw, calc(88dvh * .789), 540px);
+  transform: translateX(-50%);
+}
+
+.splash-board-content {
+  position: absolute;
+  z-index: 2;
+  top: 25%;
+  right: 10.5%;
+  bottom: 9%;
+  left: 10.5%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(7px, 1.2dvh, 13px);
+}
+
+.splash-board .board-kicker {
+  /* The title and three illustrated choices make the instruction obvious;
+     keeping this off the clipboard's physical clip avoids visual collision. */
+  display: none;
+}
+
+.mode-stack {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(5px, 1dvh, 11px);
+  min-height: 0;
+}
+
+.mode-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 96px;
+  flex: 1 1 0;
+  overflow: visible;
+  transition: transform .16s ease, filter .16s ease;
+}
+
+.mode-card-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 4px rgba(70, 43, 20, .14));
+}
+
+.mode-card:active {
+  transform: translateY(4px) scale(.975);
+  filter: brightness(.98);
+}
+
+.mode-copy {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 8%;
+  display: flex;
+  width: 55%;
+  flex-direction: column;
+  align-items: flex-start;
+  transform: translateY(-50%);
+  text-align: left;
+}
+
+.mode-copy strong {
+  color: var(--moss);
+  font-size: clamp(18px, 2.25vw, 28px);
+  line-height: 1.05;
+}
+
+.mode-copy small {
+  margin-top: 3px;
+  color: #665039;
+  font-size: clamp(11px, 1.25vw, 16px);
+  line-height: 1.05;
+}
+
+.mode-preview {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: 5%;
+  display: flex;
+  width: 35%;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+}
+
+.mode-preview img {
+  width: 42%;
+  max-height: 76px;
+  margin-left: -10%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 3px rgba(54, 34, 18, .2));
+}
+
+.mode-preview img:first-child {
+  margin-left: 0;
+}
+
+.mode-complete {
+  position: absolute;
+  z-index: 5;
+  top: -7px;
+  right: -7px;
+  width: clamp(38px, 4.6vw, 56px);
+  height: auto;
+  filter: drop-shadow(0 4px 3px rgba(49, 67, 31, .25));
+}
+
+.brief-board {
+  bottom: -1.5dvh;
+  left: 50%;
+  width: min(48vw, calc(94dvh * .789), 575px);
+  transform: translateX(-50%);
+}
+
+.brief-board-content {
+  position: absolute;
+  z-index: 2;
+  top: 27%;
+  right: 11%;
+  bottom: 20%;
+  left: 11%;
+  display: flex;
+  flex-direction: column;
+}
+
+.brief-board-content h1,
+.complete-board-content h1 {
+  margin: .25em 0 0;
+  color: var(--moss);
+  font-size: clamp(24px, 3.2vw, 42px);
+  line-height: 1;
+  text-align: center;
+}
+
+.brief-subtitle {
+  margin: .25em 0 .35em;
+  color: #715a3d;
+  font-size: clamp(13px, 1.5vw, 19px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.brief-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(4px, .7dvh, 9px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brief-list li {
+  display: grid;
+  grid-template-columns: clamp(30px, 3.4vw, 42px) clamp(52px, 6vw, 78px) 1fr;
+  align-items: center;
+  min-height: clamp(62px, 8dvh, 90px);
+  color: #493c2d;
+  font-size: clamp(16px, 2vw, 24px);
+  line-height: 1.05;
+}
+
+.brief-list li > img {
+  width: 92%;
+  height: clamp(50px, 7.5dvh, 80px);
+  object-fit: contain;
+}
+
+.brief-number {
+  color: #72963c;
+  font-size: clamp(22px, 2.8vw, 34px);
+  text-align: center;
+}
+
+.clay-action {
+  position: absolute;
+  z-index: 12;
+  display: grid;
+  width: clamp(270px, 34vw, 430px);
+  min-width: 96px;
+  min-height: 104px;
+  place-items: center;
+  transition: transform .14s ease, filter .14s ease;
+}
+
+.clay-action > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 5px rgba(47, 52, 21, .22));
+}
+
+.clay-action > span {
+  position: relative;
+  z-index: 2;
+  padding: 0 9%;
+  color: #fff9de;
+  font-size: clamp(22px, 2.8vw, 34px);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 3px 0 rgba(39, 91, 35, .46);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.clay-action:active {
+  transform: translateY(5px) scale(.975);
+  filter: brightness(.96);
+}
+
+.clay-action:disabled {
+  pointer-events: none;
+}
+
+.brief-action,
+.replay-action {
+  bottom: 2.5%;
+  left: 50%;
+  width: 76%;
+  transform: translateX(-50%);
+}
+
+.brief-action:active,
+.replay-action:active {
+  transform: translate(-50%, 5px) scale(.975);
+}
+
+.mission-plaque {
+  position: absolute;
+  z-index: 4;
+  top: max(8px, var(--qk-safe-top));
+  left: 50%;
+  width: min(61vw, 650px);
+  aspect-ratio: 568 / 247;
+  transform: translateX(-50%);
+}
+
+.mission-plaque > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 5px rgba(47, 52, 21, .2));
+}
+
+.mission-copy {
+  position: absolute;
+  z-index: 2;
+  top: 22%;
+  right: 10%;
+  bottom: 20%;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.mission-copy p {
+  margin: 0 0 .2em;
+  color: #987128;
+  font-size: clamp(13px, 1.55vw, 19px);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.mission-copy h1 {
+  margin: 0;
+  color: var(--moss);
+  font-size: clamp(23px, 3.2vw, 42px);
+  line-height: 1.02;
+}
+
+.hunt-stage {
+  position: absolute;
+  z-index: 3;
+  top: 29%;
+  left: 50%;
+  width: min(42vw, 390px);
+  height: 39dvh;
+  transform: translateX(-50%);
+}
+
+.found-halo,
+.clue-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+}
+
+.found-halo {
+  width: min(38vw, 340px);
+  height: min(38vw, 340px);
+  opacity: .76;
+  animation: halo-breathe 2.4s ease-in-out infinite;
+}
+
+.clue-item {
+  width: min(29vw, 270px);
+  height: min(29vw, 270px);
+  filter: drop-shadow(0 13px 8px rgba(61, 42, 23, .25));
+}
+
+.hunt-stage.is-arriving .clue-item {
+  animation: treasure-arrive .48s cubic-bezier(.2, .9, .25, 1.2) both;
+}
+
+.hunt-stage.is-found .found-halo {
+  opacity: 1;
+  animation: halo-found .58s ease-out both;
+}
+
+.hunt-stage.is-found .clue-item {
+  animation: treasure-found .72s cubic-bezier(.2, .85, .25, 1.15) both;
+}
+
+.clue-hint,
+.praise-note {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  width: min(70vw, 720px);
+  margin: 0;
+  transform: translateX(-50%);
+  color: #fff7d8;
+  font-size: clamp(17px, 2.1vw, 25px);
+  line-height: 1.1;
+  text-align: center;
+  text-shadow: 0 3px 2px rgba(47, 63, 29, .8), 0 0 10px rgba(47, 63, 29, .72);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.clue-hint {
+  bottom: 18.5dvh;
+}
+
+.praise-note {
+  bottom: 18.5dvh;
+  color: #fff2a5;
+  font-size: clamp(21px, 2.7vw, 34px);
+}
+
+.hunt-stage.is-found ~ .clue-hint {
+  opacity: 0;
+}
+
+.praise-note:empty {
+  opacity: 0;
+}
+
+.praise-note:not(:empty) {
+  animation: praise-pop .42s cubic-bezier(.2, .8, .2, 1.2) both;
+}
+
+.found-action {
+  bottom: max(2.2dvh, var(--qk-safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.found-action:active {
+  transform: translate(-50%, 5px) scale(.975);
+}
+
+.completion-scene {
+  position: absolute;
+  inset: 2% 5% 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.complete-board {
+  position: relative;
+  z-index: 4;
+  width: min(43vw, calc(91dvh * .789), 520px);
+  flex: 0 0 auto;
+}
+
+.complete-board-content {
+  position: absolute;
+  z-index: 2;
+  top: 27%;
+  right: 11%;
+  bottom: 20%;
+  left: 11%;
+}
+
+.complete-list {
+  display: flex;
+  height: 66%;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2px, .65dvh, 8px);
+  margin-top: .35em;
+}
+
+.complete-row {
+  display: grid;
+  grid-template-columns: clamp(38px, 4vw, 56px) clamp(50px, 6vw, 74px) 1fr;
+  align-items: center;
+  min-height: clamp(57px, 8dvh, 82px);
+  color: #493c2d;
+  font-size: clamp(15px, 1.85vw, 23px);
+  line-height: 1.05;
+}
+
+.complete-check,
+.complete-item {
+  width: 90%;
+  height: clamp(46px, 7dvh, 72px);
+  object-fit: contain;
+}
+
+.hedgehog-guide {
+  position: relative;
+  z-index: 2;
+  width: min(37vw, 430px);
+  max-height: 76dvh;
+  margin-left: -3%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 10px rgba(44, 35, 20, .28));
+  animation: hedgehog-wave 2.8s ease-in-out infinite;
+}
+
+.clay-burst {
+  position: absolute;
+  z-index: 60;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.clay-burst img {
+  position: absolute;
+  top: -18%;
+  left: var(--x);
+  width: clamp(45px, 7vw, 84px);
+  height: clamp(45px, 7vw, 84px);
+  object-fit: contain;
+  animation: clay-fall 1.75s cubic-bezier(.12, .6, .34, 1) var(--delay) both;
+  filter: drop-shadow(0 4px 3px rgba(47, 48, 22, .24));
+}
+
+@keyframes title-breathe {
+  0%, 100% { transform: translateX(-50%) rotate(-.35deg) scale(1); }
+  50% { transform: translateX(-50%) rotate(.35deg) scale(1.018); }
+}
+
+@keyframes halo-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(.94) rotate(-2deg); opacity: .66; }
+  50% { transform: translate(-50%, -50%) scale(1.03) rotate(2deg); opacity: .88; }
+}
+
+@keyframes halo-found {
+  0% { transform: translate(-50%, -50%) scale(.84); }
+  58% { transform: translate(-50%, -50%) scale(1.16); }
+  100% { transform: translate(-50%, -50%) scale(1.04); }
+}
+
+@keyframes treasure-arrive {
+  from { transform: translate(-50%, -44%) scale(.72) rotate(-7deg); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes treasure-found {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+  42% { transform: translate(-50%, -68%) scale(1.18) rotate(-5deg); }
+  72% { transform: translate(-50%, -55%) scale(.94) rotate(3deg); }
+  100% { transform: translate(-50%, -58%) scale(1.04) rotate(0); }
+}
+
+@keyframes praise-pop {
+  from { transform: translateX(-50%) translateY(10px) scale(.82); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes hedgehog-wave {
+  0%, 100% { transform: rotate(-.5deg) translateY(0); }
+  50% { transform: rotate(.8deg) translateY(-5px); }
+}
+
+@keyframes clay-fall {
+  0% { transform: translate(-50%, -20px) scale(var(--scale)) rotate(0); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--drift)), 120dvh) scale(var(--scale)) rotate(var(--spin)); opacity: .35; }
+}
+
+@media (orientation: portrait) {
+  .title-lockup {
+    top: 3.5dvh;
+    width: min(76vw, 610px);
+  }
+
+  .splash-board {
+    top: 18dvh;
+    bottom: auto;
+    width: min(92vw, 590px);
+  }
+
+  .brief-board {
+    top: 12dvh;
+    bottom: auto;
+    width: min(92vw, 570px);
+  }
+
+  .mission-plaque {
+    top: max(92px, calc(var(--qk-safe-top) + 84px));
+    width: min(78vw, 620px);
+  }
+
+  .hunt-stage {
+    top: 31%;
+    width: min(70vw, 430px);
+    height: 35dvh;
+  }
+
+  .found-halo {
+    width: min(62vw, 390px);
+    height: min(62vw, 390px);
+  }
+
+  .clue-item {
+    width: min(48vw, 300px);
+    height: min(48vw, 300px);
+  }
+
+  .clue-hint,
+  .praise-note {
+    bottom: 18dvh;
+    width: min(82vw, 650px);
+  }
+
+  .completion-scene {
+    inset: 8% 1% 0;
+    justify-content: flex-start;
+  }
+
+  .complete-board {
+    width: min(72vw, calc(77dvh * .789), 550px);
+    margin-left: 4%;
+  }
+
+  .hedgehog-guide {
+    position: absolute;
+    right: -1%;
+    bottom: 1%;
+    width: min(38vw, 330px);
+    max-height: 52dvh;
+  }
+}
+
+@media (max-width: 620px) {
+  .qk-hud-btn {
+    --qk-hud-size: 96px;
+    --qk-hud-gap: 8px;
+    background-size: 86%;
+  }
+
+  .splash-board-content {
+    gap: 5px;
+  }
+
+  .board-kicker {
+    font-size: 19px;
+  }
+
+  .mode-stack {
+    gap: 4px;
+  }
+
+  .mode-copy strong {
+    font-size: 17px;
+  }
+
+  .mode-copy small {
+    display: none;
+  }
+
+  .mode-preview {
+    right: 4%;
+    width: 38%;
+  }
+
+  .brief-board-content h1,
+  .complete-board-content h1 {
+    font-size: 25px;
+  }
+
+  .brief-subtitle {
+    font-size: 13px;
+  }
+
+  .brief-list li {
+    grid-template-columns: 30px 55px 1fr;
+    min-height: 58px;
+    font-size: 16px;
+  }
+
+  .clay-action {
+    width: min(76vw, 330px);
+    min-height: 96px;
+  }
+
+  .clay-action > span {
+    font-size: 22px;
+  }
+
+  .mission-copy p {
+    font-size: 12px;
+  }
+
+  .mission-copy h1 {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .complete-board {
+    width: min(88vw, calc(68dvh * .789), 430px);
+    margin-left: 0;
+  }
+
+  .complete-row {
+    grid-template-columns: 42px 50px 1fr;
+    min-height: 54px;
+    font-size: 15px;
+  }
+
+  .hedgehog-guide {
+    right: -5%;
+    width: min(43vw, 210px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .qk-hud-btn {
+    --qk-hud-size: 96px;
+    --qk-hud-gap: 7px;
+    background-size: 80%;
+  }
+
+  .title-lockup {
+    top: 2px;
+    width: min(38vw, 380px);
+    max-height: 17dvh;
+  }
+
+  .splash-board {
+    bottom: -2.5dvh;
+    width: min(37vw, calc(94dvh * .789), 390px);
+  }
+
+  .splash-board-content {
+    top: 25%;
+    bottom: 8%;
+    gap: 3px;
+  }
+
+  .board-kicker {
+    font-size: clamp(17px, 2.2vw, 22px);
+  }
+
+  .mode-stack {
+    gap: 3px;
+  }
+
+  .mode-card {
+    min-height: 96px;
+  }
+
+  .mode-copy strong {
+    font-size: clamp(16px, 2vw, 21px);
+  }
+
+  .mode-copy small {
+    display: none;
+  }
+
+  .mode-preview img {
+    max-height: 55px;
+  }
+
+  .brief-board {
+    bottom: -3dvh;
+    width: min(38vw, calc(98dvh * .789), 400px);
+  }
+
+  .brief-board-content {
+    top: 27%;
+    bottom: 21%;
+  }
+
+  .brief-board-content h1,
+  .complete-board-content h1 {
+    font-size: 24px;
+  }
+
+  .brief-subtitle {
+    display: none;
+  }
+
+  .brief-list li {
+    grid-template-columns: 30px 52px 1fr;
+    min-height: 56px;
+    font-size: 15px;
+  }
+
+  .brief-list li > img {
+    height: 49px;
+  }
+
+  .clay-action {
+    width: 285px;
+    min-height: 96px;
+  }
+
+  .clay-action > span {
+    font-size: 23px;
+  }
+
+  .mission-plaque {
+    top: -7px;
+    width: min(43vw, 450px);
+  }
+
+  .mission-copy h1 {
+    font-size: clamp(22px, 3.1vw, 32px);
+  }
+
+  .hunt-stage {
+    top: 24%;
+    width: 270px;
+    height: 43dvh;
+  }
+
+  .found-halo {
+    width: 230px;
+    height: 230px;
+  }
+
+  .clue-item {
+    width: 175px;
+    height: 175px;
+  }
+
+  .clue-hint,
+  .praise-note {
+    bottom: 20.5dvh;
+    font-size: 17px;
+  }
+
+  .praise-note {
+    font-size: 23px;
+  }
+
+  .found-action {
+    bottom: 0;
+  }
+
+  .completion-scene {
+    inset: 1% 5% -1%;
+  }
+
+  .complete-board {
+    width: min(34vw, calc(94dvh * .789), 390px);
+  }
+
+  .complete-list {
+    gap: 1px;
+  }
+
+  .complete-row {
+    grid-template-columns: 36px 48px 1fr;
+    min-height: 50px;
+    font-size: 14px;
+  }
+
+  .complete-check,
+  .complete-item {
+    height: 44px;
+  }
+
+  .hedgehog-guide {
+    width: min(30vw, 300px);
+    max-height: 75dvh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-lockup,
+  .found-halo,
+  .hunt-stage.is-arriving .clue-item,
+  .hunt-stage.is-found .found-halo,
+  .hunt-stage.is-found .clue-item,
+  .praise-note:not(:empty),
+  .hedgehog-guide,
+  .clay-burst img {
+    animation: none;
+  }
+
+  .mode-card,
+  .clay-action,
+  .clue-hint,
+  .praise-note {
+    transition: none;
+  }
+}

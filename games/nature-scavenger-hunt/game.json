@@ -3,32 +3,52 @@
   "title": "Nature Scavenger Hunt",
   "category": "movement-outdoor",
   "path": "games/nature-scavenger-hunt/",
-  "icon": "ðŸ”Ž",
+  "icon": "assets/items/leaf.webp",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
+  "age": { "min": 3, "max": 6 },
   "status": "beta",
-  "accent": "#58a945",
-  "shareTitle": "Nature Scavenger Hunt ðŸƒ â€” Outdoor Treasure Hunting",
-  "description": "Head outside to find real treasures by texture, color, shape, size, and sound, then tap to explain why each one fits. A sensory noticing game for ages 5â€“6, more curious than correct.",
+  "accent": "#3e7351",
+  "engine": "custom DOM game with shared QLOBE screens, recorded voice, HUD, tap, timers, persistence, seeded RNG, and debug modules",
+  "shareTitle": "Nature Scavenger Hunt — Three Tiny Outdoor Trails",
+  "description": "Turn the tablet into a clay field guide, then look away from the screen to find three safe outdoor treasures by color, texture, sound, shape, or size. Every thoughtful find counts.",
   "learningGoals": [
-    "Use sensory vocabulary for texture, color, shape, and size",
-    "Pay close attention to details outdoors",
-    "Categorize real-world objects by observable qualities",
-    "Explain why a find belongs in a category"
+    "Name and compare observable colors, shapes, sizes, textures, and sounds",
+    "Transfer a visual and spoken descriptor from the screen to a real object",
+    "Explain why more than one outdoor find can fit the same category",
+    "Practice slow looking, gentle touch, and careful listening outdoors"
   ],
-  "interactionModel": "follow spoken find missions, explore the real world, then tap the large completed step and show why the treasure counts",
-  "feedbackModel": "hushed spoken encouragement with sparkle/tick/tada SFX; explanations and careful noticing are celebrated over correctness",
+  "interactionModel": "Choose Nature Mix, Texture Trail, or Color Quest; review three clues on a clay clipboard; explore the real world; and tap the oversized Found it plaque after each self-reported discovery.",
+  "feedbackModel": "Each find lifts inside a golden clay halo with a pop, raster treasure burst, and warm teacher praise; there is no timer, wrong answer, score, camera, microphone, or location check.",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/hud.js",
+    "shared/js/screens.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/debug-harness.js",
+    "shared/css/base.css",
+    "shared/css/screens.css",
+    "shared/css/hud.css"
   ],
   "modes": [
-    { "id": "classic", "title": "Five Finds", "skill": "categorizing nature finds by sensory quality" },
-    { "id": "texture", "title": "Feely Hunt", "skill": "texture vocabulary and tactile attention" }
+    { "id": "nature-mix", "title": "Nature Mix", "skill": "categorizing a find by one observable quality" },
+    { "id": "texture-trail", "title": "Texture Trail", "skill": "comparing tactile qualities safely and gently" },
+    { "id": "color-quest", "title": "Color Quest", "skill": "noticing colors in natural objects and tiny details" }
   ],
+  "assets": {
+    "art": "Claymation raster family generated with GPT Image 2, cut with tools/cut-asset-sheet.py, separated or matted at authoring time, and alpha-QA'd; Krea 2 supplies the separate Toy-grammar hub tile.",
+    "voice": "Qwen3 TTS voice-clone teacher narration, normalized to AAC and admitted only after per-line Whisper transcript QA; Web Speech is the offline-safe fallback.",
+    "provenance": "See ASSETS.md, assets/source/PROMPTS.md, assets/source/production-receipt.json, and assets/source/local-api/voice/receipt.json."
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; concept brief and mockups by Kaigani; visual development with GPT Image 2, Krea 2, and Qwen Image Layered; teacher narration with Qwen3 TTS and Whisper QA. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Waving hedgehog nature guide"],
   "conceptVideo": null
 }

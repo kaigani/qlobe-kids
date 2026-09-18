@@ -1,0 +1,325 @@
+{
+  "format": "qlobe-asset-production-receipt",
+  "formatVersion": 1,
+  "game": "nature-scavenger-hunt",
+  "artDirection": "Claymation",
+  "createdAt": "2026-09-18T16:24:10.318569+00:00",
+  "generation": {
+    "masterModel": "gpt-image-2 (Codex built-in image generation)",
+    "layerWorkflow": "local charcoal-key selected after qwen-image-layered candidate failed visual QA",
+    "layerSeed": 42,
+    "promptSource": "assets/source/PROMPTS.md"
+  },
+  "assets": [
+    {
+      "file": "assets/backgrounds/forest.webp",
+      "source": "assets/source/gpt-image-2/forest-background-master.png",
+      "size": [
+        1440,
+        1080
+      ],
+      "bytes": 128220,
+      "sha256": "19294f6c488bf3cd2dc42cfb2eb283284ddcdf25bae58ac2ea565014fff14e82"
+    },
+    {
+      "file": "assets/ui/clipboard.webp",
+      "source": "assets/source/keyed/clipboard.png",
+      "size": [
+        406,
+        529
+      ],
+      "bytes": 32802,
+      "sha256": "300730f713d0ce9078122c3b0b2cb49b50a0cbc4905c30f67a82fd095a394a0f",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/clipboard-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/mission-plaque.webp",
+      "source": "assets/source/keyed/mission-plaque.png",
+      "size": [
+        586,
+        283
+      ],
+      "bytes": 31206,
+      "sha256": "0fa1a2671b6c0ae27e8020ee2eb04067dc1b085b74cd3c6015628f7e8bd1b5be",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/mission-plaque-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/action-button.webp",
+      "source": "assets/source/keyed/action-button.png",
+      "size": [
+        491,
+        242
+      ],
+      "bytes": 25106,
+      "sha256": "ea4f6265adff042d784bc879a0cf8146a3a068594ff1601e4d941331fea1593a",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/action-button-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/quest-card.webp",
+      "source": "assets/source/keyed/quest-card.png",
+      "size": [
+        512,
+        359
+      ],
+      "bytes": 29484,
+      "sha256": "6586ae6f2184a2565b5ade598d9381c0cad9caff1061d3ee00346ec3c1020951",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/quest-card-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/check-badge.webp",
+      "source": "assets/source/keyed/check-badge.png",
+      "size": [
+        277,
+        280
+      ],
+      "bytes": 23136,
+      "sha256": "7963ef5e943b0a4ab29bc959dcb0d1d1ae2e27afe32a8fd26dbe84092f5d68d9",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/check-badge-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/found-halo.webp",
+      "source": "assets/source/keyed/found-halo.png",
+      "size": [
+        454,
+        450
+      ],
+      "bytes": 24478,
+      "sha256": "425348b598f28e3f49c6be285bc2540b76c0e900412cce73cb4bde60e240e631",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/found-halo-magenta.jpg"
+    },
+    {
+      "file": "assets/ui/title.webp",
+      "source": "assets/source/finalized/title-alpha-normalized.png",
+      "size": [
+        1000,
+        241
+      ],
+      "bytes": 58910,
+      "sha256": "9ae7d43eeaff0f1fe0dca1f8003175894bc127ab068747407983ba81445fd2ee",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/title-magenta.jpg"
+    },
+    {
+      "file": "assets/guide/hedgehog.webp",
+      "source": "assets/source/finalized/hedgehog-alpha-normalized.png",
+      "size": [
+        623,
+        760
+      ],
+      "bytes": 102514,
+      "sha256": "4e7b3d55337235cbfabd34c1c7bb337d0c42ff62e9a93dba8a5de197e70da4db",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/hedgehog-magenta.jpg"
+    },
+    {
+      "file": "assets/items/leaf.webp",
+      "source": "assets/source/finalized/leaf-alpha-normalized.png",
+      "size": [
+        303,
+        313
+      ],
+      "bytes": 17150,
+      "sha256": "7df42090b3279e6d3f9f8c04ea772ec8f50e64dae00328bf8d906198ea7dbf1f",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/leaf-magenta.jpg"
+    },
+    {
+      "file": "assets/items/stone.webp",
+      "source": "assets/source/finalized/stone-alpha-normalized.png",
+      "size": [
+        332,
+        262
+      ],
+      "bytes": 14792,
+      "sha256": "d183b684e4144b57c9089f382aee3eaa0ad3eba2db9322450432940e491cf4ab",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/stone-magenta.jpg"
+    },
+    {
+      "file": "assets/items/berries.webp",
+      "source": "assets/source/finalized/berries-alpha-normalized.png",
+      "size": [
+        316,
+        290
+      ],
+      "bytes": 17898,
+      "sha256": "238a78ad9a5cade002c7c7126e1ebe2369ef4a77a169d90d584afc9db46bc6a4",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/berries-magenta.jpg"
+    },
+    {
+      "file": "assets/items/dewdrop.webp",
+      "source": "assets/source/finalized/dewdrop-alpha-normalized.png",
+      "size": [
+        229,
+        287
+      ],
+      "bytes": 10716,
+      "sha256": "2b5147112559051f5c1984955078f55b4771504d1f465365f802d8864e4bd8cc",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/dewdrop-magenta.jpg"
+    },
+    {
+      "file": "assets/items/flower.webp",
+      "source": "assets/source/finalized/flower-alpha-normalized.png",
+      "size": [
+        312,
+        332
+      ],
+      "bytes": 17938,
+      "sha256": "7c8d8cce021ccc6a9972b5911a221042ec700b53cdb6a4801c950cf393a4d381",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/flower-magenta.jpg"
+    },
+    {
+      "file": "assets/items/pinecone.webp",
+      "source": "assets/source/finalized/pinecone-alpha-normalized.png",
+      "size": [
+        321,
+        346
+      ],
+      "bytes": 22066,
+      "sha256": "2efc1e7862e9c4ba2ce2a7ebfd2193fc17d66cebb8a53e81d5d213e273b2ccb5",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/pinecone-magenta.jpg"
+    },
+    {
+      "file": "assets/items/feather.webp",
+      "source": "assets/source/finalized/feather-alpha-normalized.png",
+      "size": [
+        296,
+        338
+      ],
+      "bytes": 16542,
+      "sha256": "88094ec9119e4745da357e61a1f75747789608ec04518918223a73a79757d536",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/feather-magenta.jpg"
+    },
+    {
+      "file": "assets/items/twig.webp",
+      "source": "assets/source/finalized/twig-alpha-normalized.png",
+      "size": [
+        323,
+        291
+      ],
+      "bytes": 14520,
+      "sha256": "e83e1467e065ad5249aa7c528251dc5c3c82b4f0168577dc720e1bcbfde8f0bd",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/twig-magenta.jpg"
+    },
+    {
+      "file": "assets/items/acorn.webp",
+      "source": "assets/source/finalized/acorn-alpha-normalized.png",
+      "size": [
+        283,
+        316
+      ],
+      "bytes": 16152,
+      "sha256": "437d0e2ad6d6c88a2987f2ab82fb9938f661680f270c52a37c296824991c919a",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/acorn-magenta.jpg"
+    },
+    {
+      "file": "assets/items/mushroom.webp",
+      "source": "assets/source/finalized/mushroom-alpha-normalized.png",
+      "size": [
+        291,
+        308
+      ],
+      "bytes": 15422,
+      "sha256": "b3466b495dc63eb1160aac49dddda9e1251d1281e9601eb4dda1c896a16ee9b8",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/mushroom-magenta.jpg"
+    },
+    {
+      "file": "assets/items/shell.webp",
+      "source": "assets/source/finalized/shell-alpha-normalized.png",
+      "size": [
+        325,
+        280
+      ],
+      "bytes": 14606,
+      "sha256": "36f02dc509dc40add316b2c354e47b1408390a9503e845b4f6a00572d568688b",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/shell-magenta.jpg"
+    },
+    {
+      "file": "assets/items/seed.webp",
+      "source": "assets/source/finalized/seed-alpha-normalized.png",
+      "size": [
+        265,
+        186
+      ],
+      "bytes": 8602,
+      "sha256": "acae8d819a8c0a285a9e1dbec6385196e1e953dcec0bca46b5a80d278c7cf718",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "magentaQa": "assets/source/qa/seed-magenta.jpg"
+    }
+  ]
+}

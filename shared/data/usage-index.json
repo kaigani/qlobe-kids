@@ -9,15 +9,14 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T14:44:35.963Z",
+  "generated": "2026-09-18T16:39:21.035Z",
   "engines": {
     "coach-timer": {
-      "count": 8,
+      "count": 7,
       "games": [
         "animal-walk-cards",
         "line-walking-challenge",
         "melting-race",
-        "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "shelf-reset-game",
         "trail-counting-walk",
@@ -1678,22 +1677,43 @@
       "packs": []
     },
     "nature-scavenger-hunt": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "movement-outdoor",
-      "characters": [],
+      "characters": [
+        "Waving hedgehog nature guide"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/nature-scavenger-hunt/assets/backgrounds/forest.webp",
+        "games/nature-scavenger-hunt/assets/guide/hedgehog.webp",
+        "games/nature-scavenger-hunt/assets/items/leaf.webp",
+        "games/nature-scavenger-hunt/assets/ui/action-button.webp",
+        "games/nature-scavenger-hunt/assets/ui/clipboard.webp",
+        "games/nature-scavenger-hunt/assets/ui/found-halo.webp",
+        "games/nature-scavenger-hunt/assets/ui/mission-plaque.webp",
+        "games/nature-scavenger-hunt/assets/ui/title.webp"
+      ],
       "packs": []
     },
     "neighborhood-map-walk": {
@@ -3834,6 +3854,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -3955,6 +3976,7 @@
         "lunchbox-pack",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -4047,6 +4069,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4121,7 +4144,6 @@
         "animal-walk-cards",
         "line-walking-challenge",
         "melting-race",
-        "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "shelf-reset-game",
         "trail-counting-walk",
@@ -4190,6 +4212,7 @@
         "magnet-explorer",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "plant-care-captain",
@@ -4231,6 +4254,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "pattern-bracelet-band",
         "pattern-train",
@@ -4322,6 +4346,7 @@
         "laundry-sorter",
         "loose-parts-collage",
         "magnet-explorer",
+        "nature-scavenger-hunt",
         "obstacle-course-builder",
         "pattern-train",
         "post-office-letters",
@@ -4370,6 +4395,7 @@
         "loose-parts-collage",
         "monster-opera",
         "mountain-seasons-wheel",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4432,6 +4458,7 @@
         "magnet-explorer",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4492,6 +4519,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4657,7 +4685,6 @@
         "melting-race",
         "mystery-letter-bag",
         "name-puzzle",
-        "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
         "number-sense-kitchen",
@@ -4837,6 +4864,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4914,6 +4942,7 @@
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4995,6 +5024,7 @@
         "mountain-seasons-wheel",
         "my-puppet-band",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -5183,7 +5213,6 @@
         "melting-race",
         "my-puppet-band",
         "mystery-letter-bag",
-        "nature-scavenger-hunt",
         "neighborhood-map-walk",
         "number-line-jump",
         "picture-narration",
@@ -5231,6 +5260,7 @@
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "name-puzzle",
+        "nature-scavenger-hunt",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -5607,6 +5637,9 @@
         "puppet-problem-solvers",
         "puppet-retell",
         "tiny-reader-theater"
+      ],
+      "Waving hedgehog nature guide": [
+        "nature-scavenger-hunt"
       ],
       "white-cat": [
         "story-stones"
@@ -6023,6 +6056,30 @@
       ],
       "games/name-puzzle/assets/ui/title.webp": [
         "name-puzzle"
+      ],
+      "games/nature-scavenger-hunt/assets/backgrounds/forest.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/guide/hedgehog.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/items/leaf.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/ui/action-button.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/ui/clipboard.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/ui/found-halo.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/ui/mission-plaque.webp": [
+        "nature-scavenger-hunt"
+      ],
+      "games/nature-scavenger-hunt/assets/ui/title.webp": [
+        "nature-scavenger-hunt"
       ],
       "games/number-sense-kitchen/assets/characters/ravi-chef.webp": [
         "number-sense-kitchen"

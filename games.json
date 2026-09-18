@@ -3266,24 +3266,29 @@
       "path": "games/nature-scavenger-hunt/",
       "icon": "assets/hub/tiles/nature-scavenger-hunt.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
       "status": "beta",
-      "accent": "#58a945",
+      "accent": "#3e7351",
       "modes": [
         {
-          "id": "classic",
-          "title": "Five Finds",
-          "skill": "categorizing nature finds by sensory quality"
+          "id": "nature-mix",
+          "title": "Nature Mix",
+          "skill": "categorizing a find by one observable quality"
         },
         {
-          "id": "texture",
-          "title": "Feely Hunt",
-          "skill": "texture vocabulary and tactile attention"
+          "id": "texture-trail",
+          "title": "Texture Trail",
+          "skill": "comparing tactile qualities safely and gently"
+        },
+        {
+          "id": "color-quest",
+          "title": "Color Quest",
+          "skill": "noticing colors in natural objects and tiny details"
         }
       ],
-      "summary": "Find something smooth, green, round, and tiny."
+      "summary": "Choose a clay nature trail and hunt for three real-world clues by color, texture, shape, or sound."
     },
     {
       "id": "throwing-target-garden",

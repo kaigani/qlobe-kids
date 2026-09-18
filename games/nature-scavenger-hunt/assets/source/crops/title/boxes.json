@@ -1,0 +1,52 @@
+{
+  "source": "games/nature-scavenger-hunt/assets/source/gpt-image-2/title-lockup-master.png",
+  "sourceSha256": "9f2c1361c47a1974321513a9931f3a6317356e0d9309dfee41af706aeb0b986b",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 24,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 838765,
+      "foregroundBbox": [
+        85,
+        134,
+        2079,
+        602
+      ],
+      "cropBbox": [
+        61,
+        110,
+        2103,
+        626
+      ],
+      "cropXywh": [
+        61,
+        110,
+        2042,
+        516
+      ],
+      "normalizedCropBbox": [
+        0.028085,
+        0.151934,
+        0.968232,
+        0.864641
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 5000,
+    "order": "reading"
+  }
+}

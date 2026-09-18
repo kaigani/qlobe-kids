@@ -1,47 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Nature Scavenger Hunt 🍃 — Outdoor Treasure Hunting</title>
-  <meta name="description" content="Head outside to find real treasures by texture, color, shape, size, and sound, then tap to explain why each one fits. A sensory noticing game for ages 5–6, more curious than correct." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#315d2e">
+  <title>Nature Scavenger Hunt — A Clay Forest Adventure</title>
+  <meta name="description" content="Choose a nature trail, discover three real-world treasures, and celebrate with a friendly clay hedgehog. A sensory outdoor game for ages 3–6.">
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Nature Scavenger Hunt" />
-  <meta property="og:title" content="Nature Scavenger Hunt 🍃 — Outdoor Treasure Hunting" />
-  <meta property="og:description" content="Head outside to find real treasures by texture, color, shape, size, and sound, then tap to explain why each one fits. A sensory noticing game for ages 5–6, more curious than correct." />
-  <meta property="og:url" content="https://qlo.be/games/nature-scavenger-hunt/" />
-  <meta property="og:image" content="https://qlo.be/games/nature-scavenger-hunt/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Nature Scavenger Hunt title screen with Five Finds and Feely Hunt modes and a magnifying glass icon on a pale blue background." />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Nature Scavenger Hunt — A Clay Forest Adventure">
+  <meta property="og:description" content="Choose a nature trail and discover three real-world treasures by color, texture, and careful noticing.">
+  <meta property="og:url" content="https://qlo.be/games/nature-scavenger-hunt/">
+  <meta property="og:image" content="https://qlo.be/games/nature-scavenger-hunt/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A handmade clay forest with a nature hunt clipboard and colorful nature treasures.">
 
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Nature Scavenger Hunt 🍃 — Outdoor Treasure Hunting" />
-  <meta name="twitter:description" content="Head outside to find real treasures by texture, color, shape, size, and sound, then tap to explain why each one fits. A sensory noticing game for ages 5–6, more curious than correct." />
-  <meta name="twitter:image" content="https://qlo.be/games/nature-scavenger-hunt/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nature Scavenger Hunt — A Clay Forest Adventure">
+  <meta name="twitter:description" content="Find three real-world treasures in a warm clay forest adventure.">
+  <meta name="twitter:image" content="https://qlo.be/games/nature-scavenger-hunt/assets/og-image.jpg">
 
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game">
+    <img class="forest-plate" src="./assets/backgrounds/forest.webp" alt="" draggable="false">
+
+    <section class="qk-screen splash-screen" data-qk-screen="splash" aria-label="Choose a nature trail">
+      <div data-hud-home></div>
+      <div data-hud-sound></div>
+      <img class="title-lockup" src="./assets/ui/title.webp" alt="Nature Hunt" draggable="false">
+      <div class="splash-board clay-board">
+        <img class="board-art" src="./assets/ui/clipboard.webp" alt="" draggable="false">
+        <div class="splash-board-content">
+          <p class="board-kicker">Choose a trail</p>
+          <div class="mode-stack" data-mode-stack></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="qk-screen briefing-screen" data-qk-screen="briefing" aria-label="Your three nature clues" hidden>
+      <div data-hud-back></div>
+      <div data-hud-sound></div>
+      <div class="brief-board clay-board">
+        <img class="board-art" src="./assets/ui/clipboard.webp" alt="" draggable="false">
+        <div class="brief-board-content">
+          <p class="board-kicker">Your tiny mission</p>
+          <h1 data-brief-title>Nature Mix</h1>
+          <p class="brief-subtitle" data-brief-subtitle></p>
+          <ol class="brief-list" data-brief-list></ol>
+        </div>
+        <button class="clay-action brief-action" type="button" data-action="begin" data-target="begin-hunt" aria-label="Start this nature hunt">
+          <img src="./assets/ui/action-button.webp" alt="" draggable="false">
+          <span>Let's explore!</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="qk-screen hunt-screen" data-qk-screen="hunt" aria-label="Find this nature clue" hidden>
+      <div data-hud-back></div>
+      <div data-hud-sound></div>
+      <div class="mission-plaque">
+        <img src="./assets/ui/mission-plaque.webp" alt="" draggable="false">
+        <div class="mission-copy">
+          <p data-step-label>Clue 1 of 3</p>
+          <h1 data-clue-title>Find something green</h1>
+        </div>
+      </div>
+      <div class="hunt-stage" data-hunt-stage>
+        <img class="found-halo" src="./assets/ui/found-halo.webp" alt="" draggable="false">
+        <img class="clue-item" data-clue-item src="./assets/items/leaf.webp" alt="A clay green leaf" draggable="false">
+      </div>
+      <p class="clue-hint" data-clue-hint>Look closely. The tiniest bit of green counts.</p>
+      <p class="praise-note" data-praise aria-hidden="true"></p>
+      <button class="clay-action found-action" type="button" data-action="found" data-target="found-it" aria-label="I found this nature clue">
+        <img src="./assets/ui/action-button.webp" alt="" draggable="false">
+        <span>Found it!</span>
+      </button>
+    </section>
+
+    <section class="qk-screen complete-screen" data-qk-screen="complete" aria-label="Nature trail complete" hidden>
+      <div data-hud-back></div>
+      <div data-hud-sound></div>
+      <div class="completion-scene">
+        <div class="complete-board clay-board">
+          <img class="board-art" src="./assets/ui/clipboard.webp" alt="" draggable="false">
+          <div class="complete-board-content">
+            <p class="board-kicker">Trail complete!</p>
+            <h1 data-complete-title>Nature Mix</h1>
+            <div class="complete-list" data-complete-list></div>
+          </div>
+          <button class="clay-action replay-action" type="button" data-action="replay" data-target="new-quest" aria-label="Start a new quest in this trail">
+            <img src="./assets/ui/action-button.webp" alt="" draggable="false">
+            <span>New quest</span>
+          </button>
+        </div>
+        <img class="hedgehog-guide" src="./assets/guide/hedgehog.webp" alt="A happy clay hedgehog waves" draggable="false">
+      </div>
+    </section>
+  </main>
+
+  <script async src="../../shared/js/analytics.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

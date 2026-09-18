@@ -1,135 +1,73 @@
 {
   "id": "nature-scavenger-hunt",
-  "engine": "coach-timer",
+  "engine": "custom",
   "title": "Nature Scavenger Hunt",
-  "splashEmoji": "emoji:🔎",
-  "theme": {
-    "world": "field-journal",
-    "background": "./assets/bg.jpg"
+  "artDirection": "Claymation",
+  "progressKey": "qlobe:nature-scavenger-hunt:journal:v1",
+  "assets": {
+    "forest": "./assets/backgrounds/forest.webp",
+    "title": "./assets/ui/title.webp",
+    "clipboard": "./assets/ui/clipboard.webp",
+    "missionPlaque": "./assets/ui/mission-plaque.webp",
+    "actionButton": "./assets/ui/action-button.webp",
+    "questCard": "./assets/ui/quest-card.webp",
+    "checkBadge": "./assets/ui/check-badge.webp",
+    "foundHalo": "./assets/ui/found-halo.webp",
+    "hedgehog": "./assets/guide/hedgehog.webp"
+  },
+  "audio": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./assets/audio/lines.json",
+    "fallback": "Web Speech"
   },
   "voice": {
-    "intro": {
-      "clip": "clip:intro",
-      "text": "Treasure hunters, look closely. We are hunting for nature clues!"
-    },
-    "praise": {
-      "clip": "clip:praise",
-      "text": "What a clever find! Tell me why it counts."
-    },
-    "cheer": {
-      "clip": "clip:cheer",
-      "text": "You found a whole collection of nature clues!"
-    },
-    "clips": {
-      "manifest": "./assets/audio/manifest.json"
-    }
+    "welcome": "Choose a trail, nature explorer!",
+    "brief-nature-mix": "Let's find three nature treasures. Look closely, listen carefully, and take your time.",
+    "brief-texture-trail": "Let's find three textures. Touch gently, and ask a grown-up before you pick anything up.",
+    "brief-color-quest": "Let's find three colors in nature. Even a tiny spot of color counts.",
+    "brief-ready": "Here are your three clues. Tap the big green button when you're ready.",
+    "clue-smooth": "Find something smooth. Gently feel its surface.",
+    "clue-green": "Find something green. Look closely. The tiniest bit of green counts.",
+    "clue-round": "Find something round. It can be a berry, a pebble, or your own idea.",
+    "clue-tiny": "Find something tiny. Use your sharp explorer eyes.",
+    "clue-sound": "Find something that makes a gentle sound when you move it. Listen carefully.",
+    "clue-long": "Find something long. Compare it with your hand.",
+    "clue-bumpy": "Find something bumpy. Feel each little bump.",
+    "clue-soft": "Find something soft. Touch it very gently.",
+    "clue-rough": "Find something rough. Rub one finger across it.",
+    "clue-bendy": "Find something bendy. Ask a grown-up before you bend it.",
+    "clue-tickly": "Find something tickly. Brush it softly on your hand.",
+    "clue-red": "Find something red. A little spot of red counts.",
+    "clue-orange": "Find something orange. Look near flowers, leaves, or your own idea.",
+    "clue-brown": "Find something brown. Look near the ground and on tree bark.",
+    "clue-blue": "Find something blue. Look up, look down, and look for a tiny patch.",
+    "clue-golden": "Find something golden yellow. A seed, a flower, or your own idea can count.",
+    "praise-1": "What a clever find!",
+    "praise-2": "Wonderful noticing!",
+    "praise-3": "You found a real nature clue!",
+    "complete-nature-mix": "Nature Mix complete! You used your eyes, ears, and hands.",
+    "complete-texture-trail": "Texture Trail complete! Your fingertips notice so much!",
+    "complete-color-quest": "Color Quest complete! You found a rainbow outside.",
+    "again": "Ready for three new clues?"
   },
   "modes": [
     {
-      "id": "classic",
-      "title": "Five Finds",
-      "type": "steps",
-      "praise": {
-        "clip": "clip:praise",
-        "text": "What a clever find! Tell me why it counts."
-      },
-      "cheer": {
-        "clip": "clip:classic-cheer",
-        "text": "Five fantastic finds! You noticed texture, color, shape, size, and sound."
-      },
-      "endTitle": "Five Finds",
-      "endArt": "emoji:🔎",
-      "againLabel": "HUNT AGAIN",
-      "doneLabel": "FOUND IT",
-      "steps": [
-        {
-          "art": "emoji:🪨",
-          "say": {
-            "clip": "clip:classic-s1",
-            "text": "Find something smooth. Hold it up and say why it counts."
-          },
-          "timerSec": 90,
-          "after": {
-            "clip": "clip:classic-s1-after",
-            "text": "Time to show your smooth treasure and say why it counts."
-          }
-        },
-        {
-          "art": "emoji:🍃",
-          "say": {
-            "clip": "clip:classic-s2",
-            "text": "Find something green. Hold it up and say why it counts."
-          }
-        },
-        {
-          "art": "emoji:⚪",
-          "say": {
-            "clip": "clip:classic-s3",
-            "text": "Find something round. Hold it up and say why it counts."
-          }
-        },
-        {
-          "art": "emoji:🐜",
-          "say": {
-            "clip": "clip:classic-s4",
-            "text": "Find something tiny. Hold it up and say why it counts."
-          }
-        },
-        {
-          "art": "emoji:🎶",
-          "say": {
-            "clip": "clip:classic-s5",
-            "text": "Find something that makes a sound when you shake it. Hold it up and say why it counts."
-          }
-        }
-      ]
+      "id": "nature-mix",
+      "title": "Nature Mix",
+      "subtitle": "Look, listen, and notice",
+      "clues": ["smooth", "green", "round", "tiny", "sound", "long"]
     },
     {
-      "id": "texture",
-      "title": "Feely Hunt",
-      "type": "steps",
-      "praise": {
-        "clip": "clip:texture-praise",
-        "text": "Ooh, what does your treasure feel like?"
-      },
-      "cheer": {
-        "clip": "clip:texture-cheer",
-        "text": "Feely hunt complete! Your fingertips discovered four textures."
-      },
-      "endTitle": "Feely Hunt",
-      "endArt": "emoji:🪶",
-      "againLabel": "FEEL AGAIN",
-      "doneLabel": "FOUND IT",
-      "steps": [
-        {
-          "art": "emoji:🌰",
-          "say": {
-            "clip": "clip:texture-s1",
-            "text": "Find something bumpy. Feel all the little bumps."
-          }
-        },
-        {
-          "art": "emoji:🪶",
-          "say": {
-            "clip": "clip:texture-s2",
-            "text": "Find something soft. Touch it gently."
-          }
-        },
-        {
-          "art": "emoji:🧊",
-          "say": {
-            "clip": "clip:texture-s3",
-            "text": "Find something cold. Touch it for just a moment."
-          }
-        },
-        {
-          "art": "emoji:🌾",
-          "say": {
-            "clip": "clip:texture-s4",
-            "text": "Find something tickly. Now close your eyes and feel-test all your treasures."
-          }
-        }
-      ]
+      "id": "texture-trail",
+      "title": "Texture Trail",
+      "subtitle": "Touch gently and compare",
+      "clues": ["bumpy", "soft", "rough", "smooth", "bendy", "tickly"]
+    },
+    {
+      "id": "color-quest",
+      "title": "Color Quest",
+      "subtitle": "Find a rainbow outdoors",
+      "clues": ["green", "red", "orange", "brown", "blue", "golden"]
     }
   ]
 }

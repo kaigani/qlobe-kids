@@ -1,0 +1,382 @@
+{
+  "source": "games/nature-scavenger-hunt/assets/source/gpt-image-2/clay-treasure-sheet.png",
+  "sourceSha256": "49f605f17eb24b8ce95d5f5efad8474d0a240f2ba6eff13656ce6a6f5d77b319",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "leaf",
+      "file": "leaf.png",
+      "componentArea": 55561,
+      "foregroundBbox": [
+        61,
+        64,
+        334,
+        343
+      ],
+      "cropBbox": [
+        43,
+        46,
+        352,
+        361
+      ],
+      "cropXywh": [
+        43,
+        46,
+        309,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.029696,
+        0.042357,
+        0.243094,
+        0.332413
+      ]
+    },
+    {
+      "index": 2,
+      "name": "stone",
+      "file": "stone.png",
+      "componentArea": 53268,
+      "foregroundBbox": [
+        388,
+        112,
+        692,
+        340
+      ],
+      "cropBbox": [
+        370,
+        94,
+        710,
+        358
+      ],
+      "cropXywh": [
+        370,
+        94,
+        340,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.255525,
+        0.086556,
+        0.490331,
+        0.32965
+      ]
+    },
+    {
+      "index": 3,
+      "name": "berries",
+      "file": "berries.png",
+      "componentArea": 50361,
+      "foregroundBbox": [
+        772,
+        86,
+        1059,
+        342
+      ],
+      "cropBbox": [
+        754,
+        68,
+        1077,
+        360
+      ],
+      "cropXywh": [
+        754,
+        68,
+        323,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.520718,
+        0.062615,
+        0.743785,
+        0.331492
+      ]
+    },
+    {
+      "index": 4,
+      "name": "dewdrop",
+      "file": "dewdrop.png",
+      "componentArea": 33069,
+      "foregroundBbox": [
+        1136,
+        87,
+        1345,
+        340
+      ],
+      "cropBbox": [
+        1118,
+        69,
+        1363,
+        358
+      ],
+      "cropXywh": [
+        1118,
+        69,
+        245,
+        289
+      ],
+      "normalizedCropBbox": [
+        0.772099,
+        0.063536,
+        0.941298,
+        0.32965
+      ]
+    },
+    {
+      "index": 5,
+      "name": "flower",
+      "file": "flower.png",
+      "componentArea": 59060,
+      "foregroundBbox": [
+        44,
+        388,
+        329,
+        687
+      ],
+      "cropBbox": [
+        26,
+        370,
+        347,
+        705
+      ],
+      "cropXywh": [
+        26,
+        370,
+        321,
+        335
+      ],
+      "normalizedCropBbox": [
+        0.017956,
+        0.3407,
+        0.239641,
+        0.649171
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pinecone",
+      "file": "pinecone.png",
+      "componentArea": 64778,
+      "foregroundBbox": [
+        392,
+        379,
+        685,
+        693
+      ],
+      "cropBbox": [
+        374,
+        361,
+        703,
+        711
+      ],
+      "cropXywh": [
+        374,
+        361,
+        329,
+        350
+      ],
+      "normalizedCropBbox": [
+        0.258287,
+        0.332413,
+        0.485497,
+        0.654696
+      ]
+    },
+    {
+      "index": 7,
+      "name": "feather",
+      "file": "feather.png",
+      "componentArea": 47617,
+      "foregroundBbox": [
+        753,
+        382,
+        1024,
+        688
+      ],
+      "cropBbox": [
+        735,
+        364,
+        1042,
+        706
+      ],
+      "cropXywh": [
+        735,
+        364,
+        307,
+        342
+      ],
+      "normalizedCropBbox": [
+        0.507597,
+        0.335175,
+        0.719613,
+        0.650092
+      ]
+    },
+    {
+      "index": 8,
+      "name": "twig",
+      "file": "twig.png",
+      "componentArea": 33430,
+      "foregroundBbox": [
+        1098,
+        429,
+        1391,
+        687
+      ],
+      "cropBbox": [
+        1080,
+        411,
+        1409,
+        705
+      ],
+      "cropXywh": [
+        1080,
+        411,
+        329,
+        294
+      ],
+      "normalizedCropBbox": [
+        0.745856,
+        0.378453,
+        0.973066,
+        0.649171
+      ]
+    },
+    {
+      "index": 9,
+      "name": "acorn",
+      "file": "acorn.png",
+      "componentArea": 47449,
+      "foregroundBbox": [
+        40,
+        718,
+        296,
+        1002
+      ],
+      "cropBbox": [
+        22,
+        700,
+        314,
+        1020
+      ],
+      "cropXywh": [
+        22,
+        700,
+        292,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.015193,
+        0.644567,
+        0.216851,
+        0.939227
+      ]
+    },
+    {
+      "index": 10,
+      "name": "mushroom",
+      "file": "mushroom.png",
+      "componentArea": 51970,
+      "foregroundBbox": [
+        402,
+        729,
+        670,
+        1004
+      ],
+      "cropBbox": [
+        384,
+        711,
+        688,
+        1022
+      ],
+      "cropXywh": [
+        384,
+        711,
+        304,
+        311
+      ],
+      "normalizedCropBbox": [
+        0.265193,
+        0.654696,
+        0.475138,
+        0.941068
+      ]
+    },
+    {
+      "index": 11,
+      "name": "shell",
+      "file": "shell.png",
+      "componentArea": 55480,
+      "foregroundBbox": [
+        746,
+        752,
+        1052,
+        999
+      ],
+      "cropBbox": [
+        728,
+        734,
+        1070,
+        1017
+      ],
+      "cropXywh": [
+        728,
+        734,
+        342,
+        283
+      ],
+      "normalizedCropBbox": [
+        0.502762,
+        0.675875,
+        0.73895,
+        0.936464
+      ]
+    },
+    {
+      "index": 12,
+      "name": "seed",
+      "file": "seed.png",
+      "componentArea": 24210,
+      "foregroundBbox": [
+        1127,
+        817,
+        1371,
+        971
+      ],
+      "cropBbox": [
+        1109,
+        799,
+        1389,
+        989
+      ],
+      "cropXywh": [
+        1109,
+        799,
+        280,
+        190
+      ],
+      "normalizedCropBbox": [
+        0.765884,
+        0.735727,
+        0.959254,
+        0.910681
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 1500,
+    "order": "reading"
+  }
+}

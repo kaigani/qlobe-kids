@@ -1,0 +1,182 @@
+{
+  "format": "qlobe-voice-production-receipt",
+  "formatVersion": 1,
+  "game": "nature-scavenger-hunt",
+  "createdAt": "2026-09-18T16:41:44.024552+00:00",
+  "workflow": "qwen3-tts-voiceclone -> AAC/M4A -> whisper-stt transcript QA",
+  "endpoint": "authorized local workflow API (address intentionally omitted)",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "generation": {
+    "again": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.634
+    },
+    "brief-color-quest": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.7
+    },
+    "brief-nature-mix": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 5.5
+    },
+    "brief-ready": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.3
+    },
+    "brief-texture-trail": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 5.4
+    },
+    "clue-bendy": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.9
+    },
+    "clue-blue": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.3
+    },
+    "clue-brown": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.7
+    },
+    "clue-bumpy": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.4
+    },
+    "clue-golden": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 5.4
+    },
+    "clue-green": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.8
+    },
+    "clue-long": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.936
+    },
+    "clue-orange": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.4
+    },
+    "clue-red": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.4
+    },
+    "clue-rough": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.696
+    },
+    "clue-round": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.8
+    },
+    "clue-smooth": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.4
+    },
+    "clue-soft": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.966
+    },
+    "clue-sound": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.3
+    },
+    "clue-tickly": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.4
+    },
+    "clue-tiny": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.5
+    },
+    "complete-color-quest": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.4
+    },
+    "complete-nature-mix": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.0
+    },
+    "complete-texture-trail": {
+      "seed": 8,
+      "status": "kept",
+      "duration": 4.0
+    },
+    "praise-1": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.284
+    },
+    "praise-2": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.518
+    },
+    "praise-3": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.793
+    },
+    "welcome": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.421
+    }
+  },
+  "accepted": [
+    "welcome",
+    "brief-nature-mix",
+    "brief-texture-trail",
+    "brief-color-quest",
+    "brief-ready",
+    "clue-smooth",
+    "clue-green",
+    "clue-round",
+    "clue-tiny",
+    "clue-sound",
+    "clue-long",
+    "clue-bumpy",
+    "clue-soft",
+    "clue-rough",
+    "clue-bendy",
+    "clue-tickly",
+    "clue-red",
+    "clue-orange",
+    "clue-brown",
+    "clue-blue",
+    "clue-golden",
+    "praise-1",
+    "praise-2",
+    "praise-3",
+    "complete-nature-mix",
+    "complete-texture-trail",
+    "complete-color-quest",
+    "again"
+  ],
+  "fallback": []
+}

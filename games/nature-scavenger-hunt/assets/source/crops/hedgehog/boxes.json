@@ -1,0 +1,52 @@
+{
+  "source": "games/nature-scavenger-hunt/assets/source/gpt-image-2/hedgehog-guide-master.png",
+  "sourceSha256": "cfb81296354291f0334f5ee043c33d8765f28683178c7f85d17e67bf8bfb0b0c",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 24,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "hedgehog",
+      "file": "hedgehog.png",
+      "componentArea": 517667,
+      "foregroundBbox": [
+        318,
+        56,
+        1090,
+        1011
+      ],
+      "cropBbox": [
+        294,
+        32,
+        1114,
+        1035
+      ],
+      "cropXywh": [
+        294,
+        32,
+        820,
+        1003
+      ],
+      "normalizedCropBbox": [
+        0.203039,
+        0.029466,
+        0.769337,
+        0.953039
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 5000,
+    "order": "reading"
+  }
+}

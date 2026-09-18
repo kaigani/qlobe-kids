@@ -1,0 +1,446 @@
+{
+  "source": "games/nature-scavenger-hunt/assets/source/gpt-image-2/clay-ui-sheet.png",
+  "sourceSha256": "270957a38117a53819b63604a3526efb0dffc61e8c49c30e76f36a53dabe18d5",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    37,
+    43
+  ],
+  "padding": 20,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "clipboard",
+      "file": "clipboard.png",
+      "componentArea": 161160,
+      "foregroundBbox": [
+        40,
+        26,
+        411,
+        517
+      ],
+      "cropBbox": [
+        20,
+        6,
+        431,
+        537
+      ],
+      "cropXywh": [
+        20,
+        6,
+        411,
+        531
+      ],
+      "normalizedCropBbox": [
+        0.013021,
+        0.005859,
+        0.280599,
+        0.524414
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mission-plaque",
+      "file": "mission-plaque.png",
+      "componentArea": 127771,
+      "foregroundBbox": [
+        462,
+        182,
+        1013,
+        427
+      ],
+      "cropBbox": [
+        442,
+        162,
+        1033,
+        447
+      ],
+      "cropXywh": [
+        442,
+        162,
+        591,
+        285
+      ],
+      "normalizedCropBbox": [
+        0.28776,
+        0.158203,
+        0.672526,
+        0.436523
+      ]
+    },
+    {
+      "index": 3,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 85935,
+      "foregroundBbox": [
+        1050,
+        201,
+        1506,
+        405
+      ],
+      "cropBbox": [
+        1030,
+        181,
+        1526,
+        425
+      ],
+      "cropXywh": [
+        1030,
+        181,
+        496,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.670573,
+        0.176758,
+        0.99349,
+        0.415039
+      ]
+    },
+    {
+      "index": 4,
+      "name": "halo-ray-top",
+      "file": "halo-ray-top.png",
+      "componentArea": 2829,
+      "foregroundBbox": [
+        1255,
+        532,
+        1301,
+        603
+      ],
+      "cropBbox": [
+        1235,
+        512,
+        1321,
+        623
+      ],
+      "cropXywh": [
+        1235,
+        512,
+        86,
+        111
+      ],
+      "normalizedCropBbox": [
+        0.804036,
+        0.5,
+        0.860026,
+        0.608398
+      ]
+    },
+    {
+      "index": 5,
+      "name": "halo-ray-upper-left",
+      "file": "halo-ray-upper-left.png",
+      "componentArea": 2971,
+      "foregroundBbox": [
+        1116,
+        590,
+        1182,
+        655
+      ],
+      "cropBbox": [
+        1096,
+        570,
+        1202,
+        675
+      ],
+      "cropXywh": [
+        1096,
+        570,
+        106,
+        105
+      ],
+      "normalizedCropBbox": [
+        0.713542,
+        0.556641,
+        0.782552,
+        0.65918
+      ]
+    },
+    {
+      "index": 6,
+      "name": "halo-ray-upper-right",
+      "file": "halo-ray-upper-right.png",
+      "componentArea": 2966,
+      "foregroundBbox": [
+        1374,
+        589,
+        1440,
+        655
+      ],
+      "cropBbox": [
+        1354,
+        569,
+        1460,
+        675
+      ],
+      "cropXywh": [
+        1354,
+        569,
+        106,
+        106
+      ],
+      "normalizedCropBbox": [
+        0.88151,
+        0.555664,
+        0.950521,
+        0.65918
+      ]
+    },
+    {
+      "index": 7,
+      "name": "quest-card",
+      "file": "quest-card.png",
+      "componentArea": 148842,
+      "foregroundBbox": [
+        39,
+        599,
+        516,
+        920
+      ],
+      "cropBbox": [
+        19,
+        579,
+        536,
+        940
+      ],
+      "cropXywh": [
+        19,
+        579,
+        517,
+        361
+      ],
+      "normalizedCropBbox": [
+        0.01237,
+        0.56543,
+        0.348958,
+        0.917969
+      ]
+    },
+    {
+      "index": 8,
+      "name": "check-badge",
+      "file": "check-badge.png",
+      "componentArea": 88327,
+      "foregroundBbox": [
+        617,
+        576,
+        950,
+        911
+      ],
+      "cropBbox": [
+        597,
+        556,
+        970,
+        931
+      ],
+      "cropXywh": [
+        597,
+        556,
+        373,
+        375
+      ],
+      "normalizedCropBbox": [
+        0.388672,
+        0.542969,
+        0.63151,
+        0.90918
+      ]
+    },
+    {
+      "index": 9,
+      "name": "halo-ray-left",
+      "file": "halo-ray-left.png",
+      "componentArea": 2989,
+      "foregroundBbox": [
+        1068,
+        713,
+        1140,
+        761
+      ],
+      "cropBbox": [
+        1048,
+        693,
+        1160,
+        781
+      ],
+      "cropXywh": [
+        1048,
+        693,
+        112,
+        88
+      ],
+      "normalizedCropBbox": [
+        0.682292,
+        0.676758,
+        0.755208,
+        0.762695
+      ]
+    },
+    {
+      "index": 10,
+      "name": "halo-ring",
+      "file": "halo-ring.png",
+      "componentArea": 31873,
+      "foregroundBbox": [
+        1145,
+        607,
+        1410,
+        871
+      ],
+      "cropBbox": [
+        1125,
+        587,
+        1430,
+        891
+      ],
+      "cropXywh": [
+        1125,
+        587,
+        305,
+        304
+      ],
+      "normalizedCropBbox": [
+        0.732422,
+        0.573242,
+        0.93099,
+        0.870117
+      ]
+    },
+    {
+      "index": 11,
+      "name": "halo-ray-right",
+      "file": "halo-ray-right.png",
+      "componentArea": 2929,
+      "foregroundBbox": [
+        1415,
+        716,
+        1486,
+        764
+      ],
+      "cropBbox": [
+        1395,
+        696,
+        1506,
+        784
+      ],
+      "cropXywh": [
+        1395,
+        696,
+        111,
+        88
+      ],
+      "normalizedCropBbox": [
+        0.908203,
+        0.679688,
+        0.980469,
+        0.765625
+      ]
+    },
+    {
+      "index": 12,
+      "name": "halo-ray-lower-left",
+      "file": "halo-ray-lower-left.png",
+      "componentArea": 2940,
+      "foregroundBbox": [
+        1114,
+        820,
+        1180,
+        886
+      ],
+      "cropBbox": [
+        1094,
+        800,
+        1200,
+        906
+      ],
+      "cropXywh": [
+        1094,
+        800,
+        106,
+        106
+      ],
+      "normalizedCropBbox": [
+        0.71224,
+        0.78125,
+        0.78125,
+        0.884766
+      ]
+    },
+    {
+      "index": 13,
+      "name": "halo-ray-lower-right",
+      "file": "halo-ray-lower-right.png",
+      "componentArea": 2955,
+      "foregroundBbox": [
+        1372,
+        821,
+        1437,
+        887
+      ],
+      "cropBbox": [
+        1352,
+        801,
+        1457,
+        907
+      ],
+      "cropXywh": [
+        1352,
+        801,
+        105,
+        106
+      ],
+      "normalizedCropBbox": [
+        0.880208,
+        0.782227,
+        0.948568,
+        0.885742
+      ]
+    },
+    {
+      "index": 14,
+      "name": "halo-ray-bottom",
+      "file": "halo-ray-bottom.png",
+      "componentArea": 2807,
+      "foregroundBbox": [
+        1254,
+        874,
+        1300,
+        945
+      ],
+      "cropBbox": [
+        1234,
+        854,
+        1320,
+        965
+      ],
+      "cropXywh": [
+        1234,
+        854,
+        86,
+        111
+      ],
+      "normalizedCropBbox": [
+        0.803385,
+        0.833984,
+        0.859375,
+        0.942383
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 48,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 2500,
+    "order": "reading"
+  }
+}
