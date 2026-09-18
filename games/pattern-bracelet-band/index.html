@@ -5,90 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#d9b68a" />
-  <title>Pattern Bracelet Studio — String, Play, Hear Your Pattern</title>
-  <meta name="description" content="String clay beads into AB and ABC patterns on a wooden bracelet, then press PLAY to hear your pattern as music. Invent your own bracelet song!" />
+  <meta name="theme-color" content="#f5dfbd" />
+  <title>Pattern Bracelet Band 📿 — String a Pattern, Play a Song</title>
+  <meta name="description" content="Complete AB, ABC, and ABB patterns with chunky wooden beads, hear every shape become an instrument, then compose and save your own eight-step bracelet song." />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Pattern Bracelet Studio" />
-  <meta property="og:title" content="Pattern Bracelet Studio — String, Play, Hear Your Pattern" />
-  <meta property="og:description" content="String clay beads into patterns and hear them as music. Every bead is a chime!" />
+  <meta property="og:site_name" content="Pattern Bracelet Band" />
+  <meta property="og:title" content="Pattern Bracelet Band 📿 — String a Pattern, Play a Song" />
+  <meta property="og:description" content="Complete AB, ABC, and ABB patterns with chunky wooden beads, hear every shape become an instrument, then compose and save your own eight-step bracelet song." />
   <meta property="og:url" content="https://qlo.be/games/pattern-bracelet-band/" />
   <meta property="og:image" content="https://qlo.be/games/pattern-bracelet-band/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Pattern Bracelet Studio splash with three clay bracelet cards on a warm wood table." />
+  <meta property="og:image:alt" content="A colorful wooden musical bead bracelet on a warm toy workshop table." />
+
+  <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pattern Bracelet Studio — String, Play, Hear Your Pattern" />
-  <meta name="twitter:description" content="String clay beads into patterns and hear them as music." />
+  <meta name="twitter:title" content="Pattern Bracelet Band 📿 — String a Pattern, Play a Song" />
+  <meta name="twitter:description" content="Complete AB, ABC, and ABB patterns with chunky wooden beads, hear every shape become an instrument, then compose and save your own eight-step bracelet song." />
   <meta name="twitter:image" content="https://qlo.be/games/pattern-bracelet-band/assets/og-image.jpg" />
+
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
   <link rel="stylesheet" href="../../shared/css/screens.css">
   <link rel="stylesheet" href="./css/style.css">
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <main id="app" aria-live="polite">
-    <section id="splash" class="screen" aria-label="Pattern Bracelet Studio">
-      <a class="hud hud-home" href="../../" aria-label="Back to all games"></a>
-      <div class="splash-inner">
-        <img class="title-art" src="./assets/title.webp" alt="Pattern Bracelet Studio" />
-        <p class="splash-tag">Every bead is a chime!</p>
+  <main id="game" aria-live="polite">
+    <section id="splash" class="game-screen workshop-screen" data-qk-screen="splash" aria-label="Pattern Bracelet Band">
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" aria-label="Home"></a>
+      <div class="splash-content">
+        <img class="title-art" src="./assets/title.webp" alt="Pattern Bracelet Band">
+        <button id="splash-sound" class="listen-plaque" type="button" aria-label="Hear the welcome again">
+          <img class="plaque-surface" src="./assets/ui/prompt-plaque.webp" alt="" aria-hidden="true">
+          <img class="plaque-icon" src="./assets/ui/star.webp" alt="" aria-hidden="true">
+          <span>Every bead is a sound!</span>
+        </button>
         <div id="mode-cards" class="mode-cards" aria-label="Choose a bracelet"></div>
       </div>
     </section>
 
-    <section id="play" class="screen" hidden>
-      <button id="back" class="hud hud-back" aria-label="Back to bracelets"></button>
-      <button id="sound" class="hud hud-sound" aria-label="Hear the instruction again"></button>
-      <div class="play-inner">
-        <div id="step-rail" class="step-rail" aria-hidden="true"></div>
-        <button id="prompt-card" class="prompt-card" aria-label="Hear the instruction again">
-          <span id="prompt-icon" class="prompt-icon" aria-hidden="true"></span>
-          <span id="prompt-text"></span>
+    <section id="play" class="game-screen workshop-screen" data-qk-screen="play" hidden aria-label="Bracelet workshop">
+      <div class="qk-hud-bar">
+        <button id="back" class="qk-hud-btn qk-hud-back" type="button" data-hud="back" aria-label="Back to bracelets"></button>
+        <div id="progress" class="play-progress" aria-hidden="true"></div>
+        <button id="sound" class="qk-hud-btn qk-hud-sound" type="button" data-hud="sound" aria-label="Hear it again"></button>
+      </div>
+
+      <div class="play-shell">
+        <button id="prompt" class="prompt-plaque" type="button" aria-label="Hear the instruction again">
+          <img class="plaque-surface" src="./assets/ui/prompt-plaque.webp" alt="" aria-hidden="true">
+          <img class="plaque-icon" src="./assets/ui/star.webp" alt="" aria-hidden="true">
+          <span id="prompt-text">Choose a bead.</span>
         </button>
-        <div id="board-wrap" class="board-wrap">
-          <div id="board" class="board" aria-label="Bracelet">
-            <div id="cord" class="cord" aria-hidden="true"></div>
-            <div id="slots" class="slots"></div>
-            <div id="slot-glow" class="slot-glow" aria-hidden="true"></div>
-          </div>
-        </div>
-        <div id="tray-wrap" class="tray-wrap">
-          <div id="tray" class="tray" aria-label="Choose a bead"></div>
-          <div class="play-controls">
-            <button id="play-btn" class="big-play" aria-label="Play your bracelet">▶ Play</button>
-            <div class="tempo" aria-label="Tempo">
-              <button id="slower" class="tempo-btn" aria-label="Slower">−</button>
-              <span id="tempo-label" class="tempo-label">Tempo</span>
-              <button id="faster" class="tempo-btn" aria-label="Faster">+</button>
+
+        <div class="play-layout">
+          <div id="board-wrap" class="board-wrap">
+            <div id="board" class="bracelet-board" aria-label="Eight-step bracelet">
+              <img class="board-art" src="./assets/ui/board.webp" alt="" aria-hidden="true">
+              <img class="cord-art" src="./assets/ui/cord.webp" alt="" aria-hidden="true">
+              <img id="board-star" class="board-star" src="./assets/ui/star.webp" alt="" aria-hidden="true" hidden>
+              <div id="slots" class="bracelet-slots"></div>
+              <div id="playhead" class="playhead" aria-hidden="true"></div>
             </div>
-            <button id="clear-btn" class="clear-btn" aria-label="Clear beads">Clear</button>
+          </div>
+
+          <div class="workbench">
+            <div class="tray-shell" aria-label="Bead tray">
+              <img class="tray-art" src="./assets/ui/tray.webp" alt="" aria-hidden="true">
+              <div id="tray" class="bead-tray"></div>
+            </div>
+
+            <div class="control-row" aria-label="Bracelet controls">
+              <button id="slower" class="art-control tempo-control" type="button" aria-label="Slower" hidden>
+                <img src="./assets/ui/slower.webp" alt="">
+              </button>
+              <button id="play-button" class="art-control primary-control" type="button" aria-label="Play bracelet">
+                <img src="./assets/ui/play.webp" alt="">
+              </button>
+              <button id="faster" class="art-control tempo-control" type="button" aria-label="Faster" hidden>
+                <img src="./assets/ui/faster.webp" alt="">
+              </button>
+              <button id="clear" class="art-control" type="button" aria-label="Clear bracelet" hidden>
+                <img src="./assets/ui/clear.webp" alt="">
+              </button>
+              <button id="save" class="art-control" type="button" aria-label="Save bracelet" hidden>
+                <img src="./assets/ui/save.webp" alt="">
+              </button>
+            </div>
+            <div id="tempo-readout" class="tempo-readout" aria-live="off" hidden>
+              <img src="./assets/ui/tempo-plaque.webp" alt="" aria-hidden="true">
+              <span id="tempo-value">108 BPM</span>
+            </div>
+
+            <section id="jewelry-box" class="jewelry-box" aria-label="Jewelry box" hidden>
+              <img class="jewelry-panel-art" src="./assets/ui/jewelry-panel.webp" alt="" aria-hidden="true">
+              <div id="save-slots" class="save-slots"></div>
+            </section>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="celebrate" class="screen" hidden>
-      <button id="celebrate-back" class="hud hud-back" aria-label="Back to bracelets"></button>
-      <div class="celebrate-inner">
-        <img id="ribbon" class="ribbon" src="./assets/ui/banner-ribbon.webp" alt="" aria-hidden="true">
-        <h2 class="celebrate-title">Bracelet Concert!</h2>
-        <div id="stars" class="stars" aria-hidden="true">
-          <img class="star" src="./assets/ui/star-gold.webp" alt="">
-          <img class="star star-mid" src="./assets/ui/star-gold.webp" alt="">
-          <img class="star" src="./assets/ui/star-gold.webp" alt="">
+    <section id="concert" class="game-screen concert-screen" data-qk-screen="concert" hidden aria-label="Bracelet concert">
+      <button id="concert-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" data-hud="back" aria-label="Back to bracelets"></button>
+      <div class="concert-content">
+        <div class="concert-heading" aria-label="Bracelet concert">
+          <img src="./assets/ui/mode-plaque.webp" alt="" aria-hidden="true">
+          <h2>Bracelet Concert!</h2>
         </div>
-        <div id="celebrate-board-wrap" class="board-wrap celebrate-board-wrap"></div>
-        <div id="recap" class="recap" aria-hidden="true"></div>
-        <div class="celebrate-actions">
-          <button id="again" class="big-button" aria-label="Make this bracelet again">Make again</button>
-          <button id="choose" class="big-button secondary" aria-label="Choose another bracelet">Choose bracelet</button>
+        <div id="concert-board" class="bracelet-board concert-board" aria-label="Your finished musical bracelet">
+          <img class="board-art" src="./assets/ui/board.webp" alt="" aria-hidden="true">
+          <img class="cord-art" src="./assets/ui/cord.webp" alt="" aria-hidden="true">
+          <img class="board-star concert-star" src="./assets/ui/star.webp" alt="A smiling gold star">
+          <div id="concert-slots" class="bracelet-slots"></div>
+          <div id="concert-playhead" class="playhead" aria-hidden="true"></div>
+        </div>
+        <div class="concert-actions">
+          <button id="replay" class="art-control concert-replay" type="button" aria-label="Play the bracelet again">
+            <img src="./assets/ui/replay.webp" alt="">
+          </button>
+          <button id="make-another" class="make-another" type="button" aria-label="Choose another bracelet">
+            <img src="./assets/ui/mode-plaque.webp" alt="" aria-hidden="true">
+            <span>Make another</span>
+          </button>
         </div>
       </div>
-      <div id="confetti" class="confetti" aria-hidden="true"></div>
     </section>
   </main>
   <script type="module" src="./js/main.js"></script>

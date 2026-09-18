@@ -1,0 +1,94 @@
+{
+  "format": "qk-authoring-provenance-v1",
+  "generatedAt": "2026-09-18",
+  "artWorld": "Toy",
+  "gptImage": {
+    "model": "gpt-image-2",
+    "initialMode": "text-to-image",
+    "initialReferenceImages": [],
+    "outputs": [
+      {
+        "file": "workshop-gpt-image-2.png",
+        "prompt": "Premium preschool musical-toy game background, straight overhead top-down view, landscape 4:3. A warm honey-maple toy workshop table with a broad woven cream play mat, colorful wooden xylophone and mallet at the upper-left edge, tambourine at the upper-right edge, bowls of chunky painted wooden beads and a few leaves or flowers around the outer edges. Warm sunny studio light, tactile wood grain and woven fibers, rounded premium toy photography, cohesive cheerful palette. Keep at least 65 percent of the center calm and open for gameplay. No people, characters, letters, words, labels, logos, interface, bracelet, or central objects."
+      },
+      {
+        "file": "bead-sheet-gpt-image-2.png",
+        "prompt": "Asset contact sheet containing exactly six separate chunky painted wooden bracelet beads in a clean 3 by 2 grid on a flat charcoal background, generous space between every object, full objects uncropped, consistent straight-on overhead lighting and satin toy finish. Objects in reading order: coral-red rounded-square bead engraved with three dots; sunny-yellow flower bead; sky-blue rounded-square bead engraved with a wave; lavender-purple hexagon bead engraved with a crescent moon; teal scalloped-circle bead engraved with a leaf; coral-pink heart bead engraved with a tiny star. Every bead has one clean central threading hole. Premium preschool wooden-toy style, subtle handcrafted grain, no shadows connecting objects, no text, numbers, hands, jewelry, or extra objects."
+      },
+      {
+        "file": "workshop-parts-sheet-gpt-image-2.png",
+        "prompt": "Transparent-background asset sheet containing exactly five separate premium wooden-toy game props, fully visible and widely separated: one round light-maple work board with routed rim; one empty cream braided cord loop with small wooden end knots; one long six-well maple bead tray; one blank rounded maple title plaque; one chunky smiling golden-yellow wooden star. Straight overhead orthographic view, consistent warm studio lighting and scale, satin handcrafted toy finish, clean alpha, no beads in the cord or tray, no words, letters, UI, hands, extra objects, or cropped edges."
+      },
+      {
+        "file": "title-gpt-image-2.png",
+        "prompt": "Single isolated premium wooden-toy title plaque on transparent background. The plaque must read exactly PATTERN BRACELET BAND in three centered lines, with chunky inset painted wooden letters in coral, blue, green, yellow, and lavender, tiny bead and musical-note decorations around the edge. Exact spelling, no other words or letters. Warm maple plaque, straight-on overhead view, friendly preschool proportions, polished handcrafted satin finish, clean alpha, no scene or shadow beyond a soft object shadow."
+      },
+      {
+        "file": "concert-gpt-image-2.png",
+        "prompt": "Premium preschool musical-toy concert background, straight overhead top-down view, landscape 4:3. A joyful warm wooden tabletop stage with a large cream circular woven concert mat in the center, colorful toy stage lights glowing softly around the rim, bunting, pom-pom trim, wooden xylophone at the left, tambourine and cymbal at the right, tiny music-note props and stars at the edges. Keep the central circular mat open for a hero bracelet. Cohesive with a honey-maple toy workshop, vivid but uncluttered, tactile wood and fabric, warm celebratory lighting. No people, characters, bracelet, text, logo, UI, or central object."
+      },
+      {
+        "file": "control-sheet-gpt-image-2.png",
+        "prompt": "Transparent-background asset contact sheet with exactly six separate round wooden toy control tokens in a single clean 3 by 2 grid, widely separated and fully visible. Reading order: green Play token with a cream triangle; blue Slower token with a cream turtle; yellow Faster token with a cream rabbit; coral Clear token with a cream hand brush; lavender Save token with a cream jewelry box and heart; teal Replay token with a cream circular arrow and music note. Thick painted maple tokens, consistent straight-on overhead view, premium preschool game style, tactile satin finish, clear simple embossed symbols, no words, letters, hands, extra controls, or cropped edges."
+      }
+    ],
+    "edits": [
+      {
+        "file": "ui-surfaces-sheet-gpt-image-2.png",
+        "mode": "image-edit-with-style-references",
+        "referenceImages": [
+          "workshop-parts-sheet-gpt-image-2.png",
+          "control-sheet-gpt-image-2.png"
+        ],
+        "prompt": "Using the exact warm maple, cream fabric, chunky rounded construction, straight-overhead view, and premium preschool wooden-toy finish of the reference sheets, create a transparent-background asset sheet containing exactly four separate interface objects, fully visible and widely separated: one circular empty bead-slot well made from cream braided cord set into a light-maple rim; one wide blank maple instruction plaque with a cream inset center; one smaller blank maple tempo plaque with a cream inset center; and one wide wooden jewelry organizer panel with exactly four round cream-fabric compartments. No text, letters, numbers, icons, beads, hands, extra objects, scene, or connected shadows. Clean alpha, consistent lighting, no cropped edges."
+      },
+      {
+        "file": "hub-tile-gpt-image-2-edit.png",
+        "mode": "image-edit-with-references",
+        "referenceImages": [
+          "hub-tile-krea2-seed42.png",
+          "bead-sheet-gpt-image-2.png"
+        ],
+        "prompt": "Edit the first image into a premium QLOBE Kids game hub cover while preserving its exact warm maple tabletop, cream circular mat, overhead camera, xylophone at upper left, tambourine at upper right, soft sunny studio light, composition, and inviting polished toy photography. Replace the six generic spherical bracelet beads with exactly six chunky shaped painted wooden beads matching the identities and colors of the second reference: coral-red rounded square engraved with three dots, sunny-yellow flower, sky-blue rounded square engraved with a wave, lavender-purple hexagon engraved with a crescent moon, teal scalloped circle engraved with a leaf, and coral-pink heart engraved with a tiny star. Each bead must have one clean central threading hole and all six must be threaded around the cream cord as one beautiful bracelet. Keep one small smiling gold wooden star charm at the center/front as in the first image. Make the six distinct shapes and engraved cues immediately readable at thumbnail size. No text, letters, logo, UI, hands, people, extra beads, duplicate bead identities, cropped bracelet, or altered camera angle."
+      }
+    ]
+  },
+  "localApi": {
+    "krea2": {
+      "workflow": "krea2-turbo-t2i",
+      "seed": 42,
+      "output": "hub-tile-krea2-seed42.png",
+      "prompt": "Premium preschool wooden-toy game cover, straight overhead: a cream braided bracelet loop with six chunky colorful shaped wooden beads arranged around a tiny smiling gold star on a warm maple table, toy xylophone and tambourine peeking from the edges, sunny inviting studio light, polished tactile toy photography, strong readable center composition, no text, letters, logos, UI, people, or hands."
+    },
+    "qwenImageLayered": [
+      {
+        "source": "bead-sheet-gpt-image-2.png",
+        "output": "bead-sheet-qwen-layer2.png",
+        "requestedOutput": "layer_2",
+        "status": "accepted",
+        "note": "All six bead identities and holes remained intact; alpha was suitable for deterministic component cutting."
+      },
+      {
+        "source": "workshop-parts-sheet-gpt-image-2.png",
+        "output": "workshop-parts-sheet-qwen-layer2.png",
+        "requestedOutput": "layer_2",
+        "status": "rejected",
+        "note": "Dropped required props; retained for provenance only."
+      },
+      {
+        "source": "workshop-parts-sheet-gpt-image-2.png",
+        "output": "workshop-parts-sheet-qwen-layer2-v2.png",
+        "requestedOutput": "layer_2",
+        "status": "rejected",
+        "note": "Second attempt still dropped required props; retained for provenance only."
+      },
+      {
+        "source": "ui-surfaces-sheet-gpt-image-2.png",
+        "output": "ui-surfaces-sheet-qwen-layer2.png",
+        "requestedOutput": "layer_2",
+        "status": "rejected",
+        "note": "Returned only a fragment of the four-compartment organizer; the original clean-alpha GPT Image 2 sheet was used for deterministic cutting instead."
+      }
+    ]
+  }
+}

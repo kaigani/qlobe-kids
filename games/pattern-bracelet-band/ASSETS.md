@@ -1,56 +1,33 @@
-# Pattern Bracelet Studio — assets
+# Pattern Bracelet Band — asset production record
 
-All shipped art is local and offline. Original game art is CC BY 4.0. Model calls are authoring-time only.
+All runtime art and audio is bundled locally for offline play. Generated assets are authoring outputs; no third-party stock art is shipped. The canonical art world is **Toy**: warm wood, cream fabric, chunky painted beads, and real tabletop objects. This record intentionally replaces the former Claymation/placeholder claims.
 
-## Production art (Claymation — stop-motion polymer clay)
+## Shipped raster art
 
-| Runtime asset | Source | Creator / workflow | Processing |
-|---|---|---|---|
-| `assets/workshop.webp` | `assets/source/workshop-placeholder.png` (PIL wood + linen) → later `shared/media/bracelet-workshop-bg/bracelet-workshop-bg.png` via Studio `scene-backdrop` (krea2-turbo-t2i, seed 42) | Local PIL placeholder then Krea2 `scene-backdrop` | resize to 1600×1200, WebP q82, ≤260KB |
-| `assets/title.webp` | `krea2-turbo-t2i`, seed 42, first take — clay title plaque prompt (see below) | Krea2, border-flood-fill alpha key (uniform cream backdrop, not generative — preserves letterforms exactly) | trim to bbox, 3% pad, WebP q90, ~96KB |
-| `assets/beads/bead-red.webp` etc (6) | `assets/source/bead-*.png` PIL torus → later Studio `prop-cutout` chain (`krea2-turbo-t2i` on dark charcoal → `qwen-image-layered` layer_2, seed 42) | PIL placeholder then Krea2 + Qwen layered | trim/pad to 512×512, WebP q88 ≈16KB each |
-| `assets/beads/bead-red.png` (source) | `shared/media/test-bead-red/test-bead-red.raw.png` (Krea2 dark ground) + `test-bead-red.layer2.png` (Qwen extraction) | Studio `prop-cutout` | — |
-| `assets/ui/star-gold.webp` | PIL star | PIL | WebP q90 |
-| `assets/ui/banner-ribbon.webp` | PIL felt ribbon | PIL | WebP q90 |
-| `assets/hub/tiles/pattern-bracelet-band.jpg` | PIL hub tile (bracelet on wood, 6 beads, 768×640) + later curated from `shared/media/bracelet-workshop-bg` if accepted | PIL placeholder / Krea2 | JPEG q88, 768×640 (presented 640×533) |
-| `assets/og-image.jpg` | Screenshot of splash via `tools/pipeline/capture_og_images.mjs` (or PIL fallback) | Capture tool | JPEG q82, 1200×630, ≤200KB |
+| Runtime | Production source and processing |
+|---|---|
+| `assets/workshop.webp`, `assets/concert.webp` | GPT Image 2 source masters `assets/source/workshop-gpt-image-2.png` and `concert-gpt-image-2.png`; trimmed/encoded by `tools/finalize-assets.py` to 1600×1200 WebP. |
+| `assets/title.webp` | GPT Image 2 source `assets/source/title-gpt-image-2.png`, with the exact “PATTERN BRACELET BAND” lockup; trimmed/encoded by `finalize-assets.py`. |
+| `assets/beads/bead-*.webp` (6) | GPT Image 2 source `assets/source/bead-sheet-gpt-image-2.png`; local Qwen Image Layered `layer_2` extraction `bead-sheet-qwen-layer2.png` was accepted for cutting. `tools/cut-asset-sheet.py` cut six named beads; `finalize-assets.py` trimmed, padded, and encoded WebP. |
+| `assets/ui/{board,cord,tray,mode-plaque,star,play,slower,faster,clear,save,replay}.webp` | GPT Image 2 sources `workshop-parts-sheet-gpt-image-2.png` and `control-sheet-gpt-image-2.png`; `cut-asset-sheet.py` cut 5 parts and 6 controls with debug masks, then `finalize-assets.py` produced runtime WebP. |
+| `assets/ui/{slot-well,prompt-plaque,tempo-plaque,jewelry-panel}.webp` | GPT Image 2 image-edit source `assets/source/ui-surfaces-sheet-gpt-image-2.png`, generated with the parts and control sheets as style references. `cut-asset-sheet.py` cut exactly 4 named surfaces with a debug mask; `finalize-assets.py` performed trim/padding, magenta-edge QA, and WebP encoding. These raster surfaces replace visible CSS-drawn wells and panels. |
+| `assets/hub/tiles/pattern-bracelet-band.jpg` | Local Krea 2 text-to-image, seed 42, established the cover composition in `assets/source/hub-tile-krea2-seed42.png`. GPT Image 2 then edited that image with the bead sheet as a second reference so the cover uses the six exact in-game shapes; accepted master `hub-tile-gpt-image-2-edit.png`, curated and encoded at 640×533. |
 
-`tools/gen_beads.py` generates deterministic placeholder beads (torus with hole, inner shadow, highlight, fingerprint dimples) as interim raster — ensures no vector/CSS beads per art-direction rule. Real Krea beads via Studio `prop-cutout` chain will replace these file-for-file (same 512×512, same filenames) when jobs complete in `shared/media/test-bead-*`. The processor prefers Qwen `layer_2` and retains chroma fallback.
+The two Qwen layered attempts on the parts sheet (`workshop-parts-sheet-qwen-layer2.png` and `workshop-parts-sheet-qwen-layer2-v2.png`) are retained as rejected provenance only: they dropped or merged required objects. The surface-sheet attempt (`ui-surfaces-sheet-qwen-layer2.png`) is also rejected because it returned only an organizer fragment. None of those rejected files is used at runtime. Magenta edge/QC outputs and crop artifacts are retained under `assets/source/qa/` and `assets/source/crops/`.
 
-## Voice
+`assets/source/runtime-manifest.json` records shipped filenames, dimensions, byte budgets, and SHA-256 values. Current backgrounds are approximately 329–336 KB (1600×1200), title 130 KB, beads 27–35 KB each, and the hub tile 53 KB; the manifest is authoritative if files change.
 
-| Asset | Source | Creator / workflow | Processing |
-|---|---|---|---|
-| `assets/audio/*.m4a` (14 lines: welcome, intro-pop, intro-star, intro-jam, prompt-choose, nudge, cheer-pop, cheer-star, cheer-jam, play, faster, slower, again, empty-slot + 6 color words) | `shared/assets/refs/voice-teacher.wav` reference | Studio `character-voice-line` → local Qwen3 TTS voice clone, seed 7 (retry 8,9) | Whisper transcript gate ≥0.72, AAC 96k + faststart; fallback to Web Speech (`shared/js/speech.js`) if clip missing — never a confidently wrong line |
+## Audio provenance
 
-The spoken script in `config.json` (`voice` object) is the source of truth. Runtime uses `shared/js/voice-clips.js` with Web Speech fallback, so a missing clip degrades gracefully.
+All 29 spoken clips in `assets/audio/` were generated from `shared/assets/refs/voice-teacher.wav` using the approved local Qwen TTS voice-clone service. Clips are AAC/M4A with fast-start metadata; every referenced recording passes the local Whisper transcript and duration gate recorded in `whisper-qa.json`. `assets/audio/manifest.json` and `lines.json` are the runtime indexes. The generator omits a failed clip from the manifest so the platform voice fallback remains safe, although this production set currently needs no fallback.
 
-## Final prompts (for Krea2 production)
+The game also uses the shared recorded BGM `shared/assets/music/whimsical-toy-workshop.mp3` at a low duckable volume. Bead pitches are synthesized by the game’s Web Audio mechanic rather than shipped as art assets.
 
-**Workshop:** `a warm stop-motion claymation workshop table seen straight from above, light oak wood grain with a broad cream linen runner down the middle, soft sunny window bokeh at the back edge, blurred clay jars and wooden tools along the far edge, calm empty center for a bracelet, warm golden studio light, stop-motion polymer clay + wood + fabric, premium preschool game backdrop, no characters, text, UI, or center clutter — wide 16:9, open center`
+## Authoring tools and provenance
 
-**Beads (each color):** `a chunky polymer clay torus bead in <COLOR>, thick handmade ring with fingerprint dimples, soft highlight, stop-motion clay texture, matte satin, isolated, centered. Bright, soft 3D cartoon style with rounded, simplified forms and cheerful proportions. Saturated colors, smooth shading, soft highlights, toy-like glossy finish. Premium preschool learning app asset, no text, no letters, no words.` on flat dark charcoal ground, then Qwen layered `layer_2` extraction.
+- GPT Image 2 generated the workshop, bead, parts, title, concert, and control source sheets in `text-to-image` mode, plus the UI surface sheet and final hub cover in image-edit modes with local references. Exact prompts, modes, references, local workflows, seed, and accepted/rejected outputs are recorded in `assets/source/generation-prompts.json`.
+- Local Krea 2 produced the hub tile's base composition (seed 42); GPT Image 2 supplied the accepted shaped-bead edit.
+- Local Qwen Image Layered was used for bead separation; the failed parts separations remain explicitly rejected above.
+- `tools/cut-asset-sheet.py` was run with expected component counts of 6 beads, 5 parts, 6 controls, and 4 UI surfaces, including debug masks. `tools/finalize-assets.py` performs magenta QA, trim/padding, and WebP encoding.
 
-**Title lockup:** `Handmade clay title plaque reading exactly "PATTERN BRACELET STUDIO" in three lines of rounded bubbly clay letters coral/teal/yellow/blue on an irregular sky-blue clay slab with tiny clay beads along the border, stop-motion polymer clay with fingerprints, flat solid #00ff00 chroma, premium preschool logo, no other text or shadow`
-
-## Budgets
-
-- Background: ≤300KB (1600×1200 WebP)
-- Beads: 6 × ~16KB WebP (512×512)
-- Title: ≤150KB WebP trimmed
-- UI: star ~3KB, banner ~10KB
-- Voice: ~14 × ~30KB m4a ≈420KB
-- Total page <1.2MB + hub tile separate
-
-## Link preview (og:image)
-
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630) via `tools/pipeline/capture_og_images.mjs --only pattern-bracelet-band` (fallback PIL) | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
-
-## Provenance notes
-
-- Studio `prop-cutout` chain is the canonical bead pipeline: Krea dark-ground render is step 1/9, Qwen `layer_2` is step 2/9, then deterministic trim/pad/encode. Reroll on changed face, missing hole, merged torus, or invented text — don't force a failed candidate through cleanup.
-- The 8-slot circular bracelet layout is DOM-absolute, not Pixi — keeps interaction strand-proof (window-level pointer, single drag, blur cancel) while the bead sprites themselves remain authored raster.
-- The hub tile is hand-curated: Studio stages to `shared/media/` via `menu-game-tile`, then curated copy to `assets/hub/tiles/` — never direct-assign.
-- `shared/media/bracelet-title-test/` is an earlier Studio `scene-backdrop` title attempt (same krea2-turbo-t2i, seed 42; `qa.status: "review"`) — never promoted because its prompt inherited generic "empty center stage" boilerplate that fights a text lockup. Preserved for provenance; the shipped `assets/title.webp` is a separate, direct krea2-turbo-t2i take with a border-flood-fill alpha key, not derived from this one.
+All art is original project-generated content and is shipped under the project’s normal QLOBE Kids asset terms; no external attribution is required. AI generation services are not runtime dependencies. No child playtest or live-release claim is made here.

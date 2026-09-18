@@ -1,0 +1,202 @@
+{
+  "source": "bead-sheet-qwen-layer2.png",
+  "sourceSha256": "cf439bba80886726f52b284f8b89d02cdd65d9685fb70b9ff3c237cd432e940f",
+  "sourceSize": [
+    1024,
+    680
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bead-red",
+      "file": "bead-red.png",
+      "componentArea": 42174,
+      "foregroundBbox": [
+        82,
+        68,
+        302,
+        289
+      ],
+      "cropBbox": [
+        64,
+        50,
+        320,
+        307
+      ],
+      "cropXywh": [
+        64,
+        50,
+        256,
+        257
+      ],
+      "normalizedCropBbox": [
+        0.0625,
+        0.073529,
+        0.3125,
+        0.451471
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bead-yellow",
+      "file": "bead-yellow.png",
+      "componentArea": 37841,
+      "foregroundBbox": [
+        404,
+        55,
+        620,
+        296
+      ],
+      "cropBbox": [
+        386,
+        37,
+        638,
+        314
+      ],
+      "cropXywh": [
+        386,
+        37,
+        252,
+        277
+      ],
+      "normalizedCropBbox": [
+        0.376953,
+        0.054412,
+        0.623047,
+        0.461765
+      ]
+    },
+    {
+      "index": 3,
+      "name": "bead-blue",
+      "file": "bead-blue.png",
+      "componentArea": 42658,
+      "foregroundBbox": [
+        720,
+        68,
+        933,
+        287
+      ],
+      "cropBbox": [
+        702,
+        50,
+        951,
+        305
+      ],
+      "cropXywh": [
+        702,
+        50,
+        249,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.685547,
+        0.073529,
+        0.928711,
+        0.448529
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bead-purple",
+      "file": "bead-purple.png",
+      "componentArea": 40474,
+      "foregroundBbox": [
+        68,
+        362,
+        306,
+        585
+      ],
+      "cropBbox": [
+        50,
+        344,
+        324,
+        603
+      ],
+      "cropXywh": [
+        50,
+        344,
+        274,
+        259
+      ],
+      "normalizedCropBbox": [
+        0.048828,
+        0.505882,
+        0.316406,
+        0.886765
+      ]
+    },
+    {
+      "index": 5,
+      "name": "bead-teal",
+      "file": "bead-teal.png",
+      "componentArea": 40235,
+      "foregroundBbox": [
+        394,
+        358,
+        625,
+        593
+      ],
+      "cropBbox": [
+        376,
+        340,
+        643,
+        611
+      ],
+      "cropXywh": [
+        376,
+        340,
+        267,
+        271
+      ],
+      "normalizedCropBbox": [
+        0.367188,
+        0.5,
+        0.62793,
+        0.898529
+      ]
+    },
+    {
+      "index": 6,
+      "name": "bead-coral",
+      "file": "bead-coral.png",
+      "componentArea": 39315,
+      "foregroundBbox": [
+        710,
+        370,
+        950,
+        592
+      ],
+      "cropBbox": [
+        692,
+        352,
+        968,
+        610
+      ],
+      "cropXywh": [
+        692,
+        352,
+        276,
+        258
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.517647,
+        0.945312,
+        0.897059
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 348,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "workflow": "qwen3-tts-voiceclone",
+  "whisper": "whisper-stt",
+  "threshold": 0.72,
+  "seedLadder": [
+    7,
+    8,
+    9
+  ],
+  "pass": true,
+  "allRecordingsPass": true,
+  "clips": [
+    {
+      "id": "welcome",
+      "intended": "Welcome to the Bracelet Studio! Pick a bracelet and let's string it!",
+      "transcript": "Welcome to the Bracelet Studio! Pick a bracelet and let's string it!",
+      "similarity": 1.0,
+      "duration": 4.634,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "intro-pop",
+      "intended": "Let's make a pop pattern! Red, yellow, red, yellow. What comes next?",
+      "transcript": "Let's make a pop pattern! Red, yellow, red, yellow, what comes next?",
+      "similarity": 1.0,
+      "duration": 5.033,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "intro-star",
+      "intended": "Let's make a star pattern. Watch closely. Red, yellow, blue.",
+      "transcript": "Let's make a star pattern. Watch closely. Red, yellow, blue.",
+      "similarity": 1.0,
+      "duration": 4.873,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "intro-jam",
+      "intended": "This bracelet is yours! Pick any beads, then press play to hear your song!",
+      "transcript": "This bracelet is yours! Pick any beads! Then press play to hear your song!",
+      "similarity": 1.0,
+      "duration": 5.273,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "prompt-choose",
+      "intended": "Which color comes next? Look at the pattern!",
+      "transcript": "Which color comes next? Look at the pattern!",
+      "similarity": 1.0,
+      "duration": 2.716,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "prompt-place",
+      "intended": "Choose a bead, then tap the glowing spot.",
+      "transcript": "Choose a bead, then tap the glowing spot.",
+      "similarity": 1.0,
+      "duration": 2.556,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "nudge",
+      "intended": "Hmm, look again. Which color follows the pattern?",
+      "transcript": "Hmm, look again. Which color follows the pattern?",
+      "similarity": 1.0,
+      "duration": 4.154,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "hint",
+      "intended": "Here comes the pattern again.",
+      "transcript": "Here comes the pattern again.",
+      "similarity": 1.0,
+      "duration": 1.518,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "ready-play",
+      "intended": "Beautiful pattern! Press play to hear it.",
+      "transcript": "Beautiful pattern. Press play to hear it.",
+      "similarity": 1.0,
+      "duration": 2.796,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "next-round",
+      "intended": "That sounded great. Let's make another!",
+      "transcript": "That sounded great! Let's make another...",
+      "similarity": 1.0,
+      "duration": 2.716,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "cheer-pop",
+      "intended": "You strung it! What a groovy pop pattern!",
+      "transcript": "You strung it! What a groovy pop pattern!",
+      "similarity": 1.0,
+      "duration": 2.876,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "cheer-star",
+      "intended": "Stunning! You finished the star pattern!",
+      "transcript": "stunning you finish the star pattern",
+      "similarity": 0.973,
+      "duration": 2.796,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "cheer-jam",
+      "intended": "What a hit! Your bracelet song is amazing!",
+      "transcript": "What a hit! Your bracelet song is amazing!",
+      "similarity": 1.0,
+      "duration": 3.355,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "play",
+      "intended": "Press play to hear your bracelet!",
+      "transcript": "Press play to hear your bracelet.",
+      "similarity": 1.0,
+      "duration": 1.757,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "faster",
+      "intended": "Faster!",
+      "transcript": "Faster!",
+      "similarity": 1.0,
+      "duration": 1.038,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "slower",
+      "intended": "Slower!",
+      "transcript": "slower",
+      "similarity": 1.0,
+      "duration": 1.358,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "again",
+      "intended": "Make another bracelet?",
+      "transcript": "Make another bracelet!",
+      "similarity": 1.0,
+      "duration": 1.358,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "empty-slot",
+      "intended": "Tap a glowing spot to add a bead.",
+      "transcript": "Tap a glowing dot to add a bead.",
+      "similarity": 0.952,
+      "duration": 1.997,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "clear",
+      "intended": "Clear the bracelet.",
+      "transcript": "Clear the bracelet.",
+      "similarity": 1.0,
+      "duration": 1.198,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "save",
+      "intended": "Save your bracelet!",
+      "transcript": "Save your bracelet.",
+      "similarity": 1.0,
+      "duration": 1.118,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "load",
+      "intended": "Here is your saved bracelet!",
+      "transcript": "Here is your saved bracelet.",
+      "similarity": 1.0,
+      "duration": 1.677,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "save-prompt",
+      "intended": "Pick a jewelry box spot to save your bracelet.",
+      "transcript": "Pick a jewelry box spot to save your bracelet.",
+      "similarity": 1.0,
+      "duration": 2.316,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "tempo",
+      "intended": "Choose a tempo!",
+      "transcript": "Choose a tempo!",
+      "similarity": 1.0,
+      "duration": 1.278,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-red",
+      "intended": "Red!",
+      "transcript": "Red!",
+      "similarity": 1.0,
+      "duration": 0.719,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-yellow",
+      "intended": "Yellow bead.",
+      "transcript": "Yellow bead.",
+      "similarity": 1.0,
+      "duration": 1.837,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-blue",
+      "intended": "Blue!",
+      "transcript": "Blue!",
+      "similarity": 1.0,
+      "duration": 0.639,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-purple",
+      "intended": "Purple!",
+      "transcript": "purple",
+      "similarity": 1.0,
+      "duration": 0.719,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-teal",
+      "intended": "This is the teal, blue-green bead.",
+      "transcript": "This is the teal blue green bead.",
+      "similarity": 1.0,
+      "duration": 2.077,
+      "pass": true,
+      "runtime": "recorded"
+    },
+    {
+      "id": "color-coral",
+      "intended": "Coral!",
+      "transcript": "Coral!",
+      "similarity": 1.0,
+      "duration": 1.518,
+      "pass": true,
+      "runtime": "recorded"
+    }
+  ]
+}

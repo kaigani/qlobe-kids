@@ -1,0 +1,172 @@
+{
+  "source": "workshop-parts-sheet-gpt-image-2.png",
+  "sourceSha256": "60a088fb4e7eb87a81f3300f1ca908bc0e5d893fe4be5479b952b31a55ecc099",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 24,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "board",
+      "file": "board.png",
+      "componentArea": 133868,
+      "foregroundBbox": [
+        57,
+        95,
+        466,
+        511
+      ],
+      "cropBbox": [
+        33,
+        71,
+        490,
+        535
+      ],
+      "cropXywh": [
+        33,
+        71,
+        457,
+        464
+      ],
+      "normalizedCropBbox": [
+        0.021484,
+        0.069336,
+        0.31901,
+        0.522461
+      ]
+    },
+    {
+      "index": 2,
+      "name": "cord",
+      "file": "cord.png",
+      "componentArea": 31753,
+      "foregroundBbox": [
+        539,
+        140,
+        852,
+        470
+      ],
+      "cropBbox": [
+        515,
+        116,
+        876,
+        494
+      ],
+      "cropXywh": [
+        515,
+        116,
+        361,
+        378
+      ],
+      "normalizedCropBbox": [
+        0.335286,
+        0.113281,
+        0.570312,
+        0.482422
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 81383,
+      "foregroundBbox": [
+        928,
+        233,
+        1485,
+        387
+      ],
+      "cropBbox": [
+        904,
+        209,
+        1509,
+        411
+      ],
+      "cropXywh": [
+        904,
+        209,
+        605,
+        202
+      ],
+      "normalizedCropBbox": [
+        0.588542,
+        0.204102,
+        0.982422,
+        0.401367
+      ]
+    },
+    {
+      "index": 4,
+      "name": "mode-plaque",
+      "file": "mode-plaque.png",
+      "componentArea": 139084,
+      "foregroundBbox": [
+        227,
+        620,
+        781,
+        880
+      ],
+      "cropBbox": [
+        203,
+        596,
+        805,
+        904
+      ],
+      "cropXywh": [
+        203,
+        596,
+        602,
+        308
+      ],
+      "normalizedCropBbox": [
+        0.132161,
+        0.582031,
+        0.524089,
+        0.882812
+      ]
+    },
+    {
+      "index": 5,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 52129,
+      "foregroundBbox": [
+        969,
+        585,
+        1264,
+        872
+      ],
+      "cropBbox": [
+        945,
+        561,
+        1288,
+        896
+      ],
+      "cropXywh": [
+        945,
+        561,
+        343,
+        335
+      ],
+      "normalizedCropBbox": [
+        0.615234,
+        0.547852,
+        0.838542,
+        0.875
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 128,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

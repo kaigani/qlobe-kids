@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T09:18:27.414Z",
+  "generated": "2026-09-18T11:20:24.990Z",
   "engines": {
     "coach-timer": {
       "count": 9,
@@ -1793,14 +1793,20 @@
     },
     "pattern-bracelet-band": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "art-music",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
         "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
         "shared/js/speech.js",
         "shared/js/stage/drag-to-slot-dom.js",
@@ -1810,12 +1816,25 @@
       ],
       "css": [
         "shared/css/base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
         "games/pattern-bracelet-band/assets/title.webp",
-        "games/pattern-bracelet-band/assets/ui/banner-ribbon.webp",
-        "games/pattern-bracelet-band/assets/ui/star-gold.webp"
+        "games/pattern-bracelet-band/assets/ui/board.webp",
+        "games/pattern-bracelet-band/assets/ui/clear.webp",
+        "games/pattern-bracelet-band/assets/ui/cord.webp",
+        "games/pattern-bracelet-band/assets/ui/faster.webp",
+        "games/pattern-bracelet-band/assets/ui/jewelry-panel.webp",
+        "games/pattern-bracelet-band/assets/ui/mode-plaque.webp",
+        "games/pattern-bracelet-band/assets/ui/play.webp",
+        "games/pattern-bracelet-band/assets/ui/prompt-plaque.webp",
+        "games/pattern-bracelet-band/assets/ui/replay.webp",
+        "games/pattern-bracelet-band/assets/ui/save.webp",
+        "games/pattern-bracelet-band/assets/ui/slower.webp",
+        "games/pattern-bracelet-band/assets/ui/star.webp",
+        "games/pattern-bracelet-band/assets/ui/tempo-plaque.webp",
+        "games/pattern-bracelet-band/assets/ui/tray.webp"
       ],
       "packs": []
     },
@@ -3841,6 +3860,7 @@
         "momma-bear-storybook",
         "mountain-seasons-wheel",
         "number-sense-kitchen",
+        "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
@@ -3900,6 +3920,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
+        "pattern-bracelet-band",
         "picture-word-match",
         "post-office-letters",
         "pouring-station",
@@ -4133,6 +4154,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "obstacle-course-builder",
+        "pattern-bracelet-band",
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
@@ -4171,6 +4193,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "number-sense-kitchen",
+        "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
         "plant-care-captain",
@@ -4307,6 +4330,7 @@
         "mountain-seasons-wheel",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
         "plant-care-captain",
@@ -4425,6 +4449,7 @@
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
         "post-office-letters",
@@ -5159,6 +5184,7 @@
         "name-puzzle",
         "number-sense-kitchen",
         "obstacle-course-builder",
+        "pattern-bracelet-band",
         "pattern-train",
         "plant-care-captain",
         "post-office-letters",
@@ -5945,10 +5971,46 @@
       "games/pattern-bracelet-band/assets/title.webp": [
         "pattern-bracelet-band"
       ],
-      "games/pattern-bracelet-band/assets/ui/banner-ribbon.webp": [
+      "games/pattern-bracelet-band/assets/ui/board.webp": [
         "pattern-bracelet-band"
       ],
-      "games/pattern-bracelet-band/assets/ui/star-gold.webp": [
+      "games/pattern-bracelet-band/assets/ui/clear.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/cord.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/faster.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/jewelry-panel.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/mode-plaque.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/play.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/prompt-plaque.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/replay.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/save.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/slower.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/star.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/tempo-plaque.webp": [
+        "pattern-bracelet-band"
+      ],
+      "games/pattern-bracelet-band/assets/ui/tray.webp": [
         "pattern-bracelet-band"
       ],
       "games/pattern-train/assets/art": [

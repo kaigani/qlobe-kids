@@ -1,29 +1,36 @@
 {
   "id": "pattern-bracelet-band",
-  "title": "Pattern Bracelet Studio",
+  "title": "Pattern Bracelet Band",
   "category": "art-music",
   "path": "games/pattern-bracelet-band/",
   "icon": "📿",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#d67a3a",
-  "shareTitle": "Pattern Bracelet Studio 📿 — String, Play, Hear Your Pattern",
-  "description": "String clay beads into AB and ABC patterns on a wooden bracelet, then press PLAY to hear your pattern as music — every color is a chime. Invent your own bracelet song in Free Jam!",
+  "status": "beta",
+  "accent": "#e95b4e",
+  "shareTitle": "Pattern Bracelet Band 📿 — String a Pattern, Play a Song",
+  "description": "Complete AB, ABC, and ABB patterns with chunky wooden beads, hear every shape become an instrument, then compose and save your own eight-step bracelet song.",
   "learningGoals": [
     "Recognize and extend AB repeating patterns by color",
     "Extend ABC and ABB patterns with two missing beads",
     "Hear visual patterns as musical sequences and invent original patterns",
     "Connect color order to sound and rhythm through playful composition"
   ],
-  "interactionModel": "tap or drag clay bead from tray onto glowing empty slot; PLAY runs circular sequencer",
-  "feedbackModel": "Correct bead pops with its chime and sparkle; wrong bead wiggles with warm spoken pattern nudge; finished bracelet sparkles, closes, and plays full musical loop",
+  "interactionModel": "tap a wooden bead or drag it from the tray to a glowing slot; Play performs the eight-step circular sequencer; Free Jam adds rests, tempo, clear, and four local saves",
+  "feedbackModel": "Correct beads snap in with their own instrument voice; wrong beads gently wiggle and trigger spoken/modelled hints; a finished bracelet earns a generated toy-stage concert",
   "uses": [
     "shared/js/sfx.js",
     "shared/js/speech.js",
     "shared/js/voice-clips.js",
     "shared/js/tap.js",
     "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/screens.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/hud.js",
+    "shared/js/celebrate.js",
+    "shared/js/preload.js",
     "shared/js/debug-harness.js",
     "shared/js/timers.js",
     "shared/js/rng.js"
@@ -31,10 +38,10 @@
   "modes": [
     { "id": "pop", "title": "Pop Pattern", "skill": "AB pattern extension with musical playback" },
     { "id": "star", "title": "Star Pattern", "skill": "ABC and ABB pattern extension" },
-    { "id": "jam", "title": "Free Jam Studio", "skill": "invent and hear your own bead pattern as music" }
+    { "id": "jam", "title": "Free Jam", "skill": "invent and hear your own bead pattern as music" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Claymation bead and workshop art generated for this game; voice via Qwen TTS voice clone. Built for QLOBE Kids.",
+  "credits": "Toy-world art generated with GPT Image 2 and local Krea/Qwen authoring workflows; teacher dialogue via local Qwen TTS voice clone with Whisper QA. Built for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

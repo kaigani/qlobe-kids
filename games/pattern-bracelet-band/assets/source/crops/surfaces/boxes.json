@@ -1,0 +1,142 @@
+{
+  "source": "ui-surfaces-sheet-gpt-image-2.png",
+  "sourceSha256": "fbb303e8c7b094ebfd196da7db9c5cee7ef593fe7d2582ce66ec3764f47b16db",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 20,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "slot-well",
+      "file": "slot-well.png",
+      "componentArea": 97707,
+      "foregroundBbox": [
+        83,
+        63,
+        524,
+        495
+      ],
+      "cropBbox": [
+        63,
+        43,
+        544,
+        515
+      ],
+      "cropXywh": [
+        63,
+        43,
+        481,
+        472
+      ],
+      "normalizedCropBbox": [
+        0.041016,
+        0.041992,
+        0.354167,
+        0.50293
+      ]
+    },
+    {
+      "index": 2,
+      "name": "prompt-plaque",
+      "file": "prompt-plaque.png",
+      "componentArea": 226755,
+      "foregroundBbox": [
+        619,
+        136,
+        1471,
+        421
+      ],
+      "cropBbox": [
+        599,
+        116,
+        1491,
+        441
+      ],
+      "cropXywh": [
+        599,
+        116,
+        892,
+        325
+      ],
+      "normalizedCropBbox": [
+        0.389974,
+        0.113281,
+        0.970703,
+        0.430664
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tempo-plaque",
+      "file": "tempo-plaque.png",
+      "componentArea": 97163,
+      "foregroundBbox": [
+        68,
+        612,
+        507,
+        864
+      ],
+      "cropBbox": [
+        48,
+        592,
+        527,
+        884
+      ],
+      "cropXywh": [
+        48,
+        592,
+        479,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.03125,
+        0.578125,
+        0.343099,
+        0.863281
+      ]
+    },
+    {
+      "index": 4,
+      "name": "jewelry-panel",
+      "file": "jewelry-panel.png",
+      "componentArea": 345351,
+      "foregroundBbox": [
+        565,
+        542,
+        1484,
+        924
+      ],
+      "cropBbox": [
+        545,
+        522,
+        1504,
+        944
+      ],
+      "cropXywh": [
+        545,
+        522,
+        959,
+        422
+      ],
+      "normalizedCropBbox": [
+        0.354818,
+        0.509766,
+        0.979167,
+        0.921875
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 128,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
