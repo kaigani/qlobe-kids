@@ -1,47 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Local Nature Guide 🌲 — Studying and Sharing Nature Finds</title>
-  <meta name="description" content="Study nature finds collected respectfully, practice describing them, then give a family museum tour of what you discovered. A confidence-building game for ages 5–6." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#315628">
+  <title>Local Nature Guide — A Woodland Discovery Game</title>
+  <meta name="description" content="Find forest treasures, listen for local birds, follow animal tracks, and fill a hand-painted nature journal. A woodland discovery game for ages 4–7.">
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Local Nature Guide" />
-  <meta property="og:title" content="Local Nature Guide 🌲 — Studying and Sharing Nature Finds" />
-  <meta property="og:description" content="Study nature finds collected respectfully, practice describing them, then give a family museum tour of what you discovered. A confidence-building game for ages 5–6." />
-  <meta property="og:url" content="https://qlo.be/games/local-nature-guide/" />
-  <meta property="og:image" content="https://qlo.be/games/local-nature-guide/assets/og-image.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Local Nature Guide title screen with yellow Guide Training and Give the Tour buttons below a pine tree icon." />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QLOBE Kids">
+  <meta property="og:title" content="Local Nature Guide — A Woodland Discovery Game">
+  <meta property="og:description" content="Find forest treasures, listen for local birds, follow animal tracks, and fill a hand-painted nature journal.">
+  <meta property="og:url" content="https://qlo.be/games/local-nature-guide/">
+  <meta property="og:image" content="https://qlo.be/games/local-nature-guide/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Suri the squirrel welcomes children to three watercolor woodland discovery trails.">
 
-  <!-- Twitter / X card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Local Nature Guide 🌲 — Studying and Sharing Nature Finds" />
-  <meta name="twitter:description" content="Study nature finds collected respectfully, practice describing them, then give a family museum tour of what you discovered. A confidence-building game for ages 5–6." />
-  <meta name="twitter:image" content="https://qlo.be/games/local-nature-guide/assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Local Nature Guide — A Woodland Discovery Game">
+  <meta name="twitter:description" content="Find forest treasures, listen for local birds, follow animal tracks, and fill a hand-painted nature journal.">
+  <meta name="twitter:image" content="https://qlo.be/games/local-nature-guide/assets/og-image.jpg">
 
-  <link rel="icon" type="image/png" href="../../assets/favicon.png" />
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
-  <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
-  <script src="../../shared/js/analytics.js"></script>
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/css/base.css">
+  <link rel="stylesheet" href="../../shared/css/screens.css">
+  <link rel="stylesheet" href="../../shared/css/hud.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

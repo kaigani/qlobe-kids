@@ -2847,28 +2847,33 @@
     {
       "id": "local-nature-guide",
       "title": "Local Nature Guide",
-      "category": "culture-geography",
+      "category": "sensorial-science",
       "path": "games/local-nature-guide/",
       "icon": "assets/hub/tiles/local-nature-guide.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#58a945",
+      "status": "beta",
+      "accent": "#6f8c43",
       "modes": [
         {
-          "id": "collect",
-          "title": "Guide Training",
-          "skill": "study and describe local nature finds"
+          "id": "forest",
+          "title": "Forest Finds",
+          "skill": "visual discrimination of familiar woodland specimens"
         },
         {
-          "id": "tour",
-          "title": "Give the Tour",
-          "skill": "teach back observations with confidence"
+          "id": "birds",
+          "title": "Bird Listening",
+          "skill": "auditory discrimination and bird-call matching"
+        },
+        {
+          "id": "tracks",
+          "title": "Track Finder",
+          "skill": "controlled tracing and animal-track recognition"
         }
       ],
-      "summary": "Identify pinecones, rocks, birds, and animal tracks."
+      "summary": "Look, listen, and trace through three woodland trails, then collect nine discoveries in Suri's Nature Journal."
     },
     {
       "id": "color-mixing-lab",

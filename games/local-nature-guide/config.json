@@ -1,0 +1,24 @@
+{
+  "id": "local-nature-guide",
+  "engine": "custom",
+  "title": "Local Nature Guide",
+  "artDirection": "Watercolor / Storybook",
+  "progressKey": "qlobe:local-nature-guide:journal:v1",
+  "modes": [
+    {
+      "id": "forest",
+      "title": "Forest Finds",
+      "targets": ["pinecone", "maple-leaf", "river-stone"]
+    },
+    {
+      "id": "birds",
+      "title": "Bird Listening",
+      "targets": ["chickadee", "robin", "woodpecker"]
+    },
+    {
+      "id": "tracks",
+      "title": "Track Finder",
+      "targets": ["rabbit", "deer", "raccoon"]
+    }
+  ]
+}

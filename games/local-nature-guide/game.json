@@ -1,34 +1,49 @@
 {
   "id": "local-nature-guide",
   "title": "Local Nature Guide",
-  "category": "culture-geography",
+  "category": "sensorial-science",
   "path": "games/local-nature-guide/",
-  "icon": "🌲",
+  "icon": "assets/ui/badge.webp",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Local Nature Guide 🌲 — Studying and Sharing Nature Finds",
-  "description": "Study nature finds collected respectfully, practice describing them, then give a family museum tour of what you discovered. A confidence-building game for ages 5–6.",
+  "age": { "min": 4, "max": 7 },
+  "status": "beta",
+  "accent": "#6f8c43",
+  "engine": "custom DOM/canvas game with shared QLOBE audio, HUD, tap, timer, preload, and debug modules",
+  "shareTitle": "Local Nature Guide — Three Woodland Discovery Trails",
+  "description": "Join Suri the squirrel in a sunlit watercolor woodland. Find familiar forest treasures, match three distinctive bird calls, trace animal tracks, and collect nine discoveries in a persistent nature journal.",
   "learningGoals": [
-    "Build knowledge of familiar local nature objects",
-    "Use sensory details in descriptive language",
-    "Grow confidence by teaching observations back",
-    "Practice respectful collecting and curiosity"
+    "Identify familiar forest objects by shape and visual detail",
+    "Discriminate between contrasting chickadee, robin, and woodpecker call patterns",
+    "Recognize rabbit, deer, and raccoon tracks",
+    "Practice controlled finger tracing from a clear starting point",
+    "Recall a short nature fact from a collected journal specimen"
   ],
-  "interactionModel": "tap the large done step after each real-world collecting, study, practice, or presentation activity; timers leave room for close observation",
-  "feedbackModel": "warm park-ranger speech with sparkle, tick, and tada SFX; every ordinary nature find is celebrated as museum-grade",
+  "interactionModel": "choose one of three art-led trails; tap a named forest specimen, listen and match a bird call, or trace a footprint ribbon before matching its animal; every correct discovery visibly flies into the Nature Journal",
+  "feedbackModel": "Suri gives warm recorded guidance, incorrect choices receive a gentle in-world nudge, correct finds bloom with an authored watercolor glow and transfer into the persistent journal, and completing all nine discoveries awards the guide badge",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "collect", "title": "Guide Training", "skill": "study and describe local nature finds" },
-    { "id": "tour", "title": "Give the Tour", "skill": "teach back observations with confidence" }
+    { "id": "forest", "title": "Forest Finds", "skill": "visual discrimination of familiar woodland specimens" },
+    { "id": "birds", "title": "Bird Listening", "skill": "auditory discrimination and bird-call matching" },
+    { "id": "tracks", "title": "Track Finder", "skill": "controlled tracing and animal-track recognition" }
   ],
+  "assets": {
+    "art": "Watercolor / Storybook raster family generated with GPT Image 2, adapted with Qwen Image Edit, separated with Qwen Image Layered, cut with tools/cut-asset-sheet.py, and deterministically alpha-QA'd; Krea 2 supplies the separate Toy-table hub tile.",
+    "voice": "Qwen3 TTS voice clone teacher narration, normalized to AAC and fail-closed after per-line Whisper transcript QA; Web Speech remains the offline-safe fallback.",
+    "birdCalls": "Three distinctive child-safe call patterns synthesized locally at runtime with WebAudio; no external runtime requests.",
+    "provenance": "See ASSETS.md and assets/source/recipe.json."
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "Kaigani; concept brief and mockups by Kaigani; visual development with GPT Image 2, Krea 2, and Qwen Image Edit/Layered; teacher narration with Qwen3 TTS. Built with Codex for QLOBE Kids. See ASSETS.md.",
+  "characters": ["Suri the squirrel nature guide"],
   "conceptVideo": null
 }

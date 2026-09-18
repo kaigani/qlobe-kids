@@ -1,0 +1,296 @@
+{
+  "source": "games/local-nature-guide/assets/source/gpt-image-2/ui-sheet.png",
+  "sourceSha256": "8fdc8bdc7e34b0bba097e622651297c61d72569368fd7333540f9b116384d8f9",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    35,
+    40
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "mode-forest",
+      "file": "mode-forest.png",
+      "componentArea": 129004,
+      "foregroundBbox": [
+        160,
+        22,
+        468,
+        453
+      ],
+      "cropBbox": [
+        148,
+        10,
+        480,
+        465
+      ],
+      "cropXywh": [
+        148,
+        10,
+        332,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.096354,
+        0.009766,
+        0.3125,
+        0.454102
+      ]
+    },
+    {
+      "index": 2,
+      "name": "mode-birds",
+      "file": "mode-birds.png",
+      "componentArea": 132660,
+      "foregroundBbox": [
+        610,
+        21,
+        925,
+        453
+      ],
+      "cropBbox": [
+        598,
+        9,
+        937,
+        465
+      ],
+      "cropXywh": [
+        598,
+        9,
+        339,
+        456
+      ],
+      "normalizedCropBbox": [
+        0.389323,
+        0.008789,
+        0.610026,
+        0.454102
+      ]
+    },
+    {
+      "index": 3,
+      "name": "mode-tracks",
+      "file": "mode-tracks.png",
+      "componentArea": 130257,
+      "foregroundBbox": [
+        1069,
+        21,
+        1376,
+        453
+      ],
+      "cropBbox": [
+        1057,
+        9,
+        1388,
+        465
+      ],
+      "cropXywh": [
+        1057,
+        9,
+        331,
+        456
+      ],
+      "normalizedCropBbox": [
+        0.688151,
+        0.008789,
+        0.903646,
+        0.454102
+      ]
+    },
+    {
+      "index": 4,
+      "name": "button-wide",
+      "file": "button-wide.png",
+      "componentArea": 70514,
+      "foregroundBbox": [
+        71,
+        508,
+        553,
+        664
+      ],
+      "cropBbox": [
+        59,
+        496,
+        565,
+        676
+      ],
+      "cropXywh": [
+        59,
+        496,
+        506,
+        180
+      ],
+      "normalizedCropBbox": [
+        0.038411,
+        0.484375,
+        0.367839,
+        0.660156
+      ]
+    },
+    {
+      "index": 5,
+      "name": "prompt-plate",
+      "file": "prompt-plate.png",
+      "componentArea": 91033,
+      "foregroundBbox": [
+        586,
+        497,
+        1134,
+        678
+      ],
+      "cropBbox": [
+        574,
+        485,
+        1146,
+        690
+      ],
+      "cropXywh": [
+        574,
+        485,
+        572,
+        205
+      ],
+      "normalizedCropBbox": [
+        0.373698,
+        0.473633,
+        0.746094,
+        0.673828
+      ]
+    },
+    {
+      "index": 6,
+      "name": "journal-tab",
+      "file": "journal-tab.png",
+      "componentArea": 49323,
+      "foregroundBbox": [
+        1209,
+        474,
+        1435,
+        712
+      ],
+      "cropBbox": [
+        1197,
+        462,
+        1447,
+        724
+      ],
+      "cropXywh": [
+        1197,
+        462,
+        250,
+        262
+      ],
+      "normalizedCropBbox": [
+        0.779297,
+        0.451172,
+        0.942057,
+        0.707031
+      ]
+    },
+    {
+      "index": 7,
+      "name": "trace-brush",
+      "file": "trace-brush.png",
+      "componentArea": 72889,
+      "foregroundBbox": [
+        133,
+        702,
+        451,
+        997
+      ],
+      "cropBbox": [
+        121,
+        690,
+        463,
+        1009
+      ],
+      "cropXywh": [
+        121,
+        690,
+        342,
+        319
+      ],
+      "normalizedCropBbox": [
+        0.078776,
+        0.673828,
+        0.301432,
+        0.985352
+      ]
+    },
+    {
+      "index": 8,
+      "name": "discovery-glow",
+      "file": "discovery-glow.png",
+      "componentArea": 24062,
+      "foregroundBbox": [
+        606,
+        704,
+        912,
+        983
+      ],
+      "cropBbox": [
+        594,
+        692,
+        924,
+        995
+      ],
+      "cropXywh": [
+        594,
+        692,
+        330,
+        303
+      ],
+      "normalizedCropBbox": [
+        0.386719,
+        0.675781,
+        0.601562,
+        0.97168
+      ]
+    },
+    {
+      "index": 9,
+      "name": "sticker-carrier",
+      "file": "sticker-carrier.png",
+      "componentArea": 85683,
+      "foregroundBbox": [
+        1040,
+        739,
+        1440,
+        989
+      ],
+      "cropBbox": [
+        1028,
+        727,
+        1452,
+        1001
+      ],
+      "cropXywh": [
+        1028,
+        727,
+        424,
+        274
+      ],
+      "normalizedCropBbox": [
+        0.669271,
+        0.709961,
+        0.945312,
+        0.977539
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

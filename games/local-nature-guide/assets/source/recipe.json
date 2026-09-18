@@ -1,0 +1,54 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "asset": "local-nature-guide-production-family",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "role": "style masters, title, journal, contact sheets",
+      "seed": null
+    },
+    {
+      "tool": "tools/cut-asset-sheet.py",
+      "expectedCounts": {
+        "suri": 6,
+        "specimens": 15,
+        "ui": 9,
+        "tracks": 3,
+        "title": 1
+      }
+    },
+    {
+      "workflow": "qwen-image-edit",
+      "role": "style-preserving background variants",
+      "seed": 42
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "role": "two-layer alpha candidates retained for audit; inconsistent layer semantics prevented direct shipping",
+      "seed": 42
+    },
+    {
+      "tool": "games/local-nature-guide/tools/produce-art.py",
+      "role": "exact-source largest-component mattes remove sheet neighbors without redraw"
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "role": "alpha QA, crop, pad, resize, and magenta composites"
+    },
+    {
+      "workflow": "krea2-turbo-t2i",
+      "role": "hub tile in menu toy-table grammar",
+      "seed": 42
+    }
+  ],
+  "qa": {
+    "status": "accepted-after-runtime-and-magenta-review",
+    "cutoutReport": "qa/cutout-report.json",
+    "viewports": [
+      "1180x820",
+      "820x1180",
+      "1180x520"
+    ]
+  }
+}

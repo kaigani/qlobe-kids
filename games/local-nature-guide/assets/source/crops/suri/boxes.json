@@ -1,0 +1,206 @@
+{
+  "source": "games/local-nature-guide/assets/source/gpt-image-2/suri-pose-sheet.png",
+  "sourceSha256": "af07e5cc5862161bbcbe8285734357f38b92950d5f25cc52766170944182529a",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    32,
+    35,
+    42
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "suri-welcome",
+      "file": "suri-welcome.png",
+      "componentArea": 105499,
+      "foregroundBbox": [
+        40,
+        44,
+        409,
+        474
+      ],
+      "cropBbox": [
+        28,
+        32,
+        421,
+        486
+      ],
+      "cropXywh": [
+        28,
+        32,
+        393,
+        454
+      ],
+      "normalizedCropBbox": [
+        0.018229,
+        0.03125,
+        0.274089,
+        0.474609
+      ]
+    },
+    {
+      "index": 2,
+      "name": "suri-point",
+      "file": "suri-point.png",
+      "componentArea": 103431,
+      "foregroundBbox": [
+        538,
+        42,
+        970,
+        474
+      ],
+      "cropBbox": [
+        526,
+        30,
+        982,
+        486
+      ],
+      "cropXywh": [
+        526,
+        30,
+        456,
+        456
+      ],
+      "normalizedCropBbox": [
+        0.342448,
+        0.029297,
+        0.639323,
+        0.474609
+      ]
+    },
+    {
+      "index": 3,
+      "name": "suri-listen",
+      "file": "suri-listen.png",
+      "componentArea": 102464,
+      "foregroundBbox": [
+        1072,
+        41,
+        1463,
+        470
+      ],
+      "cropBbox": [
+        1060,
+        29,
+        1475,
+        482
+      ],
+      "cropXywh": [
+        1060,
+        29,
+        415,
+        453
+      ],
+      "normalizedCropBbox": [
+        0.690104,
+        0.02832,
+        0.960286,
+        0.470703
+      ]
+    },
+    {
+      "index": 4,
+      "name": "suri-trace",
+      "file": "suri-trace.png",
+      "componentArea": 114344,
+      "foregroundBbox": [
+        42,
+        525,
+        493,
+        946
+      ],
+      "cropBbox": [
+        30,
+        513,
+        505,
+        958
+      ],
+      "cropXywh": [
+        30,
+        513,
+        475,
+        445
+      ],
+      "normalizedCropBbox": [
+        0.019531,
+        0.500977,
+        0.328776,
+        0.935547
+      ]
+    },
+    {
+      "index": 5,
+      "name": "suri-journal",
+      "file": "suri-journal.png",
+      "componentArea": 103460,
+      "foregroundBbox": [
+        550,
+        523,
+        939,
+        964
+      ],
+      "cropBbox": [
+        538,
+        511,
+        951,
+        976
+      ],
+      "cropXywh": [
+        538,
+        511,
+        413,
+        465
+      ],
+      "normalizedCropBbox": [
+        0.35026,
+        0.499023,
+        0.619141,
+        0.953125
+      ]
+    },
+    {
+      "index": 6,
+      "name": "suri-celebrate",
+      "file": "suri-celebrate.png",
+      "componentArea": 100329,
+      "foregroundBbox": [
+        1051,
+        527,
+        1477,
+        949
+      ],
+      "cropBbox": [
+        1039,
+        515,
+        1489,
+        961
+      ],
+      "cropXywh": [
+        1039,
+        515,
+        450,
+        446
+      ],
+      "normalizedCropBbox": [
+        0.676432,
+        0.50293,
+        0.969401,
+        0.938477
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

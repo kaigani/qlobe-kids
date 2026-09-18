@@ -9,15 +9,14 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T04:25:27.059Z",
+  "generated": "2026-09-18T07:40:04.086Z",
   "engines": {
     "coach-timer": {
-      "count": 10,
+      "count": 9,
       "games": [
         "animal-walk-cards",
         "balance-beam-trail",
         "line-walking-challenge",
-        "local-nature-guide",
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
@@ -1304,19 +1303,26 @@
       "packs": []
     },
     "local-nature-guide": {
-      "engine": "coach-timer",
-      "status": "in-design",
-      "category": "culture-geography",
-      "characters": [],
+      "engine": null,
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [
+        "Suri the squirrel nature guide"
+      ],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [],
@@ -3656,7 +3662,6 @@
         "letter-road-driving",
         "letter-treasure-hunt",
         "line-walking-challenge",
-        "local-nature-guide",
         "lunchbox-pack",
         "magnet-explorer",
         "melting-race",
@@ -3758,6 +3763,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
@@ -3962,6 +3968,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
@@ -4044,7 +4051,6 @@
         "animal-walk-cards",
         "balance-beam-trail",
         "line-walking-challenge",
-        "local-nature-guide",
         "melting-race",
         "nature-scavenger-hunt",
         "neighborhood-map-walk",
@@ -4109,6 +4115,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "local-nature-guide",
         "lunchbox-pack",
         "magnet-explorer",
         "mountain-seasons-wheel",
@@ -4281,6 +4288,7 @@
         "kindness-delivery",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "loose-parts-collage",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -4336,6 +4344,7 @@
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
+        "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
@@ -4560,7 +4569,6 @@
         "laundry-sorter",
         "letter-road-driving",
         "line-walking-challenge",
-        "local-nature-guide",
         "lunchbox-pack",
         "melting-race",
         "mystery-letter-bag",
@@ -4736,6 +4744,7 @@
         "land-water-tray",
         "laundry-sorter",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
@@ -4811,6 +4820,7 @@
         "kindness-delivery",
         "land-water-tray",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "lunchbox-pack",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -4886,6 +4896,7 @@
         "laundry-sorter",
         "letter-road-driving",
         "letter-treasure-hunt",
+        "local-nature-guide",
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
@@ -5079,7 +5090,6 @@
         "instrument-detective",
         "letter-road-driving",
         "line-walking-challenge",
-        "local-nature-guide",
         "melting-race",
         "my-puppet-band",
         "mystery-letter-bag",
@@ -5124,6 +5134,7 @@
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
+        "local-nature-guide",
         "loose-parts-collage",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -5481,6 +5492,9 @@
       "Sunny the sunflower": [
         "garden-delivery-game",
         "plant-care-captain"
+      ],
+      "Suri the squirrel nature guide": [
+        "local-nature-guide"
       ],
       "Tavi Tiger": [
         "scissor-trail-safari"

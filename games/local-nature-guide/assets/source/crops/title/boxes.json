@@ -1,0 +1,52 @@
+{
+  "source": "games/local-nature-guide/assets/source/gpt-image-2/title-lockup.png",
+  "sourceSha256": "75f4e67063df689a4ede39ca738a6b1291e0373ad38bb18f52812e3949f81d79",
+  "sourceSize": [
+    2048,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 581378,
+      "foregroundBbox": [
+        35,
+        182,
+        2014,
+        577
+      ],
+      "cropBbox": [
+        23,
+        170,
+        2026,
+        589
+      ],
+      "cropXywh": [
+        23,
+        170,
+        2003,
+        419
+      ],
+      "normalizedCropBbox": [
+        0.01123,
+        0.221354,
+        0.989258,
+        0.766927
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

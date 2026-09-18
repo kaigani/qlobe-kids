@@ -1,0 +1,477 @@
+{
+  "source": "games/local-nature-guide/assets/source/gpt-image-2/specimen-sheet.png",
+  "sourceSha256": "7b3091f8c8b0fcb5478529ef1900287ab379880e018da147be653313d64a0ba3",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    33,
+    37,
+    43
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "pinecone",
+      "file": "pinecone.png",
+      "componentArea": 42102,
+      "foregroundBbox": [
+        47,
+        53,
+        275,
+        325
+      ],
+      "cropBbox": [
+        35,
+        41,
+        287,
+        337
+      ],
+      "cropXywh": [
+        35,
+        41,
+        252,
+        296
+      ],
+      "normalizedCropBbox": [
+        0.022786,
+        0.040039,
+        0.186849,
+        0.329102
+      ]
+    },
+    {
+      "index": 2,
+      "name": "maple-leaf",
+      "file": "maple-leaf.png",
+      "componentArea": 38684,
+      "foregroundBbox": [
+        340,
+        39,
+        608,
+        344
+      ],
+      "cropBbox": [
+        328,
+        27,
+        620,
+        356
+      ],
+      "cropXywh": [
+        328,
+        27,
+        292,
+        329
+      ],
+      "normalizedCropBbox": [
+        0.213542,
+        0.026367,
+        0.403646,
+        0.347656
+      ]
+    },
+    {
+      "index": 3,
+      "name": "river-stone",
+      "file": "river-stone.png",
+      "componentArea": 37011,
+      "foregroundBbox": [
+        665,
+        108,
+        916,
+        300
+      ],
+      "cropBbox": [
+        653,
+        96,
+        928,
+        312
+      ],
+      "cropXywh": [
+        653,
+        96,
+        275,
+        216
+      ],
+      "normalizedCropBbox": [
+        0.42513,
+        0.09375,
+        0.604167,
+        0.304688
+      ]
+    },
+    {
+      "index": 4,
+      "name": "acorn",
+      "file": "acorn.png",
+      "componentArea": 26716,
+      "foregroundBbox": [
+        1008,
+        72,
+        1183,
+        305
+      ],
+      "cropBbox": [
+        996,
+        60,
+        1195,
+        317
+      ],
+      "cropXywh": [
+        996,
+        60,
+        199,
+        257
+      ],
+      "normalizedCropBbox": [
+        0.648438,
+        0.058594,
+        0.777995,
+        0.30957
+      ]
+    },
+    {
+      "index": 5,
+      "name": "fern",
+      "file": "fern.png",
+      "componentArea": 32798,
+      "foregroundBbox": [
+        1252,
+        32,
+        1496,
+        335
+      ],
+      "cropBbox": [
+        1240,
+        20,
+        1508,
+        347
+      ],
+      "cropXywh": [
+        1240,
+        20,
+        268,
+        327
+      ],
+      "normalizedCropBbox": [
+        0.807292,
+        0.019531,
+        0.981771,
+        0.338867
+      ]
+    },
+    {
+      "index": 6,
+      "name": "feather",
+      "file": "feather.png",
+      "componentArea": 28211,
+      "foregroundBbox": [
+        54,
+        369,
+        259,
+        639
+      ],
+      "cropBbox": [
+        42,
+        357,
+        271,
+        651
+      ],
+      "cropXywh": [
+        42,
+        357,
+        229,
+        294
+      ],
+      "normalizedCropBbox": [
+        0.027344,
+        0.348633,
+        0.176432,
+        0.635742
+      ]
+    },
+    {
+      "index": 7,
+      "name": "chickadee",
+      "file": "chickadee.png",
+      "componentArea": 22526,
+      "foregroundBbox": [
+        298,
+        427,
+        596,
+        633
+      ],
+      "cropBbox": [
+        274,
+        383,
+        620,
+        645
+      ],
+      "cropXywh": [
+        274,
+        383,
+        346,
+        262
+      ],
+      "normalizedCropBbox": [
+        0.178385,
+        0.374023,
+        0.403646,
+        0.629883
+      ],
+      "postCutExpansion": "extended 32px upward and 12px sideways to preserve the charcoal-on-charcoal cap edge; exact source pixels only"
+    },
+    {
+      "index": 8,
+      "name": "robin",
+      "file": "robin.png",
+      "componentArea": 29437,
+      "foregroundBbox": [
+        610,
+        372,
+        911,
+        638
+      ],
+      "cropBbox": [
+        598,
+        360,
+        923,
+        650
+      ],
+      "cropXywh": [
+        598,
+        360,
+        325,
+        290
+      ],
+      "normalizedCropBbox": [
+        0.389323,
+        0.351562,
+        0.600911,
+        0.634766
+      ]
+    },
+    {
+      "index": 9,
+      "name": "woodpecker",
+      "file": "woodpecker.png",
+      "componentArea": 19410,
+      "foregroundBbox": [
+        955,
+        376,
+        1209,
+        646
+      ],
+      "cropBbox": [
+        943,
+        364,
+        1221,
+        658
+      ],
+      "cropXywh": [
+        943,
+        364,
+        278,
+        294
+      ],
+      "normalizedCropBbox": [
+        0.613932,
+        0.355469,
+        0.794922,
+        0.642578
+      ]
+    },
+    {
+      "index": 10,
+      "name": "rabbit",
+      "file": "rabbit.png",
+      "componentArea": 39982,
+      "foregroundBbox": [
+        1248,
+        348,
+        1511,
+        645
+      ],
+      "cropBbox": [
+        1236,
+        336,
+        1523,
+        657
+      ],
+      "cropXywh": [
+        1236,
+        336,
+        287,
+        321
+      ],
+      "normalizedCropBbox": [
+        0.804688,
+        0.328125,
+        0.991536,
+        0.641602
+      ]
+    },
+    {
+      "index": 11,
+      "name": "deer",
+      "file": "deer.png",
+      "componentArea": 37322,
+      "foregroundBbox": [
+        35,
+        625,
+        307,
+        961
+      ],
+      "cropBbox": [
+        23,
+        613,
+        319,
+        973
+      ],
+      "cropXywh": [
+        23,
+        613,
+        296,
+        360
+      ],
+      "normalizedCropBbox": [
+        0.014974,
+        0.598633,
+        0.207682,
+        0.950195
+      ]
+    },
+    {
+      "index": 12,
+      "name": "raccoon",
+      "file": "raccoon.png",
+      "componentArea": 50835,
+      "foregroundBbox": [
+        315,
+        686,
+        654,
+        946
+      ],
+      "cropBbox": [
+        303,
+        674,
+        666,
+        958
+      ],
+      "cropXywh": [
+        303,
+        674,
+        363,
+        284
+      ],
+      "normalizedCropBbox": [
+        0.197266,
+        0.658203,
+        0.433594,
+        0.935547
+      ]
+    },
+    {
+      "index": 13,
+      "name": "binoculars",
+      "file": "binoculars.png",
+      "componentArea": 37345,
+      "foregroundBbox": [
+        671,
+        709,
+        974,
+        939
+      ],
+      "cropBbox": [
+        659,
+        697,
+        986,
+        951
+      ],
+      "cropXywh": [
+        659,
+        697,
+        327,
+        254
+      ],
+      "normalizedCropBbox": [
+        0.429036,
+        0.680664,
+        0.641927,
+        0.928711
+      ]
+    },
+    {
+      "index": 14,
+      "name": "magnifier",
+      "file": "magnifier.png",
+      "componentArea": 26008,
+      "foregroundBbox": [
+        1002,
+        674,
+        1238,
+        947
+      ],
+      "cropBbox": [
+        990,
+        662,
+        1250,
+        959
+      ],
+      "cropXywh": [
+        990,
+        662,
+        260,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.644531,
+        0.646484,
+        0.813802,
+        0.936523
+      ]
+    },
+    {
+      "index": 15,
+      "name": "badge",
+      "file": "badge.png",
+      "componentArea": 30999,
+      "foregroundBbox": [
+        1290,
+        719,
+        1485,
+        920
+      ],
+      "cropBbox": [
+        1278,
+        707,
+        1497,
+        932
+      ],
+      "cropXywh": [
+        1278,
+        707,
+        219,
+        225
+      ],
+      "normalizedCropBbox": [
+        0.832031,
+        0.69043,
+        0.974609,
+        0.910156
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
