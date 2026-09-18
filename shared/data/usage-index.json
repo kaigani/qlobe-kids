@@ -9,13 +9,12 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T12:53:09.124Z",
+  "generated": "2026-09-18T14:44:35.963Z",
   "engines": {
     "coach-timer": {
-      "count": 9,
+      "count": 8,
       "games": [
         "animal-walk-cards",
-        "balance-beam-trail",
         "line-walking-challenge",
         "melting-race",
         "nature-scavenger-hunt",
@@ -113,22 +112,45 @@
       "packs": []
     },
     "balance-beam-trail": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "movement-outdoor",
-      "characters": [],
+      "characters": [
+        "Fern the fox"
+      ],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/balance-beam-trail/assets/art/action-button.webp",
+        "games/balance-beam-trail/assets/art/balance-rail.webp",
+        "games/balance-beam-trail/assets/art/card-hop.webp",
+        "games/balance-beam-trail/assets/art/card-lava.webp",
+        "games/balance-beam-trail/assets/art/card-log.webp",
+        "games/balance-beam-trail/assets/art/complete-stage.webp",
+        "games/balance-beam-trail/assets/art/fern-celebrate.webp",
+        "games/balance-beam-trail/assets/art/fern-ready.webp",
+        "games/balance-beam-trail/assets/art/finish-flag.webp",
+        "games/balance-beam-trail/assets/art/log-stage.webp",
+        "games/balance-beam-trail/assets/art/select-backdrop.webp",
+        "games/balance-beam-trail/assets/art/sound.webp",
+        "games/balance-beam-trail/assets/art/star.webp",
+        "games/balance-beam-trail/assets/art/title-lockup.webp"
+      ],
       "packs": []
     },
     "bead-path-builder": {
@@ -3771,6 +3793,7 @@
         "world-music-dance"
       ],
       "shared/js/audio-unlock.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -3905,6 +3928,7 @@
         "throwing-target-garden"
       ],
       "shared/js/celebrate.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -3983,6 +4007,7 @@
         "sound-hopscotch"
       ],
       "shared/js/debug-harness.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -4094,7 +4119,6 @@
       ],
       "shared/js/engines/coach-timer.js": [
         "animal-walk-cards",
-        "balance-beam-trail",
         "line-walking-challenge",
         "melting-race",
         "nature-scavenger-hunt",
@@ -4184,6 +4208,7 @@
         "tiny-reader-theater"
       ],
       "shared/js/idle-nudge.js": [
+        "balance-beam-trail",
         "bean-sprout-watch",
         "beat-the-bugs",
         "block-tower-measure",
@@ -4318,6 +4343,7 @@
         "weather-scientist"
       ],
       "shared/js/preload.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "beat-the-bugs",
         "block-tower-measure",
@@ -4377,6 +4403,7 @@
         "puzzle-map-match"
       ],
       "shared/js/rng.js": [
+        "balance-beam-trail",
         "big-paper-murals",
         "block-tower-measure",
         "board-game-reset",
@@ -4609,7 +4636,6 @@
       ],
       "shared/js/speech.js": [
         "animal-walk-cards",
-        "balance-beam-trail",
         "bead-path-builder",
         "big-paper-murals",
         "blend-train",
@@ -4856,6 +4882,7 @@
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -4927,6 +4954,7 @@
         "world-music-dance"
       ],
       "shared/js/voice-clips.js": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -5147,7 +5175,6 @@
       ],
       "shared/css/engine-base.css": [
         "animal-walk-cards",
-        "balance-beam-trail",
         "blend-train",
         "calm-corner-cards",
         "grace-courtesy-theater",
@@ -5173,6 +5200,7 @@
         "waiting-muscle-game"
       ],
       "shared/css/hud.css": [
+        "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
         "beat-the-bugs",
@@ -5376,6 +5404,9 @@
       ],
       "Felt Bear": [
         "button-zipper-lab"
+      ],
+      "Fern the fox": [
+        "balance-beam-trail"
       ],
       "Fia": [
         "momma-bear-storybook"
@@ -5588,6 +5619,48 @@
       ]
     },
     "assets": {
+      "games/balance-beam-trail/assets/art/action-button.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/balance-rail.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/card-hop.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/card-lava.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/card-log.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/complete-stage.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/fern-celebrate.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/fern-ready.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/finish-flag.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/log-stage.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/select-backdrop.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/sound.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/star.webp": [
+        "balance-beam-trail"
+      ],
+      "games/balance-beam-trail/assets/art/title-lockup.webp": [
+        "balance-beam-trail"
+      ],
       "games/block-tower-measure/assets/art": [
         "block-tower-measure"
       ],

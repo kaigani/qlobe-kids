@@ -1,0 +1,80 @@
+{
+  "id": "balance-beam-trail",
+  "engine": "custom-balance-beam-trail",
+  "title": "Balance Beam Trail",
+  "status": "beta",
+  "age": { "min": 4, "max": 8 },
+  "theme": {
+    "world": "paper-garden",
+    "canonicalArtDirection": "Papercraft",
+    "accent": "#ef8f58",
+    "background": "./assets/art/select-backdrop.webp"
+  },
+  "lines": "./assets/audio/lines.json",
+  "assets": {
+    "selectBackdrop": "./assets/art/select-backdrop.webp",
+    "logStage": "./assets/art/log-stage.webp",
+    "lavaStage": "./assets/art/lava-stage.webp",
+    "hopStage": "./assets/art/hop-stage.webp",
+    "completeStage": "./assets/art/complete-stage.webp",
+    "title": "./assets/art/title-lockup.webp",
+    "fern": {
+      "ready": "./assets/art/fern-ready.webp",
+      "leftStep": "./assets/art/fern-left-step.webp",
+      "rightStep": "./assets/art/fern-right-step.webp",
+      "wobbleLeft": "./assets/art/fern-wobble-left.webp",
+      "wobbleRight": "./assets/art/fern-wobble-right.webp",
+      "celebrate": "./assets/art/fern-celebrate.webp"
+    },
+    "cards": {
+      "log": "./assets/art/card-log.webp",
+      "lava": "./assets/art/card-lava.webp",
+      "hop": "./assets/art/card-hop.webp"
+    },
+    "actionButton": "./assets/art/action-button.webp",
+    "balanceRail": "./assets/art/balance-rail.webp",
+    "star": "./assets/art/star.webp",
+    "finishFlag": "./assets/art/finish-flag.webp",
+    "sound": "./assets/art/sound.webp"
+  },
+  "voice": {
+    "welcome": "welcome",
+    "modeIntro": { "log": "log-intro", "lava": "lava-intro", "hop": "hop-intro" },
+    "praise": ["steady", "wobble", "jump", "hop"],
+    "finish": "trail-complete"
+  },
+  "modes": [
+    {
+      "id": "log",
+      "title": "Log Crossing",
+      "label": "Stay steady",
+      "instruction": "Keep your balance in the center for five checkpoints.",
+      "rounds": 5,
+      "input": "balance",
+      "stage": "./assets/art/log-stage.webp",
+      "checkpoints": [0, 0, 0, 0, 0]
+    },
+    {
+      "id": "lava",
+      "title": "Lava River",
+      "label": "Steer to stones",
+      "instruction": "Steer to each offset stepping stone. Five stones get you across.",
+      "rounds": 5,
+      "input": "balance",
+      "stage": "./assets/art/lava-stage.webp",
+      "checkpoints": [-0.45, 0.38, -0.28, 0.48, 0]
+    },
+    {
+      "id": "hop",
+      "title": "Hop Trail",
+      "label": "Tap the trail",
+      "instruction": "Tap the five highlighted pads in order.",
+      "rounds": 5,
+      "input": "tap-sequence",
+      "stage": "./assets/art/hop-stage.webp",
+      "checkpoints": [0, 1, 2, 3, 4]
+    }
+  ],
+  "sharedModules": ["audio-unlock.js", "voice-clips.js", "sfx.js", "celebrate.js", "idle-nudge.js", "debug-harness.js", "timers.js", "preload.js", "rng.js"],
+  "localModules": ["tilt-input.js"]
+}

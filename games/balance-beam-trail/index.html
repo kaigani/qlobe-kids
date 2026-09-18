@@ -1,47 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Balance Beam Trail 🪵 — Balance and Focus Practice</title>
-  <meta name="description" content="Walk heel-to-toe along taped floor trails or spotter-supported logs and curbs, tapping done after each slow, focused pass. A wobble-positive balance coach for ages 5–6 where recovery counts as much as staying up." />
+  <meta name="theme-color" content="#ed7959" />
+  <title>Balance Beam Trail - A Papercraft Balance Adventure</title>
+  <meta name="description" content="Help Fern cross three playful papercraft trails with steady tilts, careful drags, and joyful hops." />
 
   <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Balance Beam Trail" />
-  <meta property="og:title" content="Balance Beam Trail 🪵 — Balance and Focus Practice" />
-  <meta property="og:description" content="Walk heel-to-toe along taped floor trails or spotter-supported logs and curbs, tapping done after each slow, focused pass. A wobble-positive balance coach for ages 5–6 where recovery counts as much as staying up." />
+  <meta property="og:title" content="Balance Beam Trail - A Papercraft Balance Adventure" />
+  <meta property="og:description" content="Help Fern cross three playful papercraft trails with steady tilts, careful drags, and joyful hops." />
   <meta property="og:url" content="https://qlo.be/games/balance-beam-trail/" />
   <meta property="og:image" content="https://qlo.be/games/balance-beam-trail/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Balance Beam Trail title screen with Tape Trail and Log and Curb modes and a cartoon gymnast icon on a pale blue background." />
+  <meta property="og:image:alt" content="Fern the papercraft fox choosing among three colorful balance trails." />
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Balance Beam Trail 🪵 — Balance and Focus Practice" />
-  <meta name="twitter:description" content="Walk heel-to-toe along taped floor trails or spotter-supported logs and curbs, tapping done after each slow, focused pass. A wobble-positive balance coach for ages 5–6 where recovery counts as much as staying up." />
+  <meta name="twitter:title" content="Balance Beam Trail - A Papercraft Balance Adventure" />
+  <meta name="twitter:description" content="Help Fern cross three playful papercraft trails with steady tilts, careful drags, and joyful hops." />
   <meta name="twitter:image" content="https://qlo.be/games/balance-beam-trail/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="./css/style.css" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="game-shell" aria-label="Balance Beam Trail">
+    <section id="select-screen" class="qk-screen game-screen select-screen" data-screen="select" aria-labelledby="game-title">
+      <img class="scene-art" src="./assets/art/select-backdrop.webp" alt="" draggable="false" />
+
+      <a class="qk-hud-btn qk-hud-home qk-hud-top-left" href="../../" aria-label="Back to all games" data-target="home"></a>
+      <button class="sound-button qk-hud-top-right" type="button" aria-label="Hear the directions again. Hold to mute." data-sound-button data-target="sound-select">
+        <img src="./assets/art/sound.webp" alt="" draggable="false" />
+      </button>
+
+      <div class="select-content">
+        <h1 id="game-title" class="title-lockup">
+          <img src="./assets/art/title-lockup.webp" alt="Balance Beam Trail" draggable="false" />
+        </h1>
+        <p class="select-prompt">Pick a trail</p>
+
+        <div id="mode-cards" class="mode-cards" role="group" aria-label="Choose a trail">
+          <button class="mode-card is-selected" type="button" data-mode="log" data-target="mode-log" aria-pressed="true">
+            <img class="mode-card-art" src="./assets/art/card-log.webp" alt="A log bridge over a blue river" draggable="false" />
+            <span class="mode-card-label">Log Crossing</span>
+            <span class="selection-badge" aria-hidden="true">Ready!</span>
+            <span class="mode-card-stars" aria-hidden="true"></span>
+          </button>
+          <button class="mode-card" type="button" data-mode="lava" data-target="mode-lava" aria-pressed="false">
+            <img class="mode-card-art" src="./assets/art/card-lava.webp" alt="Stepping stones across a pretend lava river" draggable="false" />
+            <span class="mode-card-label">Lava River</span>
+            <span class="selection-badge" aria-hidden="true">Ready!</span>
+            <span class="mode-card-stars" aria-hidden="true"></span>
+          </button>
+          <button class="mode-card" type="button" data-mode="hop" data-target="mode-hop" aria-pressed="false">
+            <img class="mode-card-art" src="./assets/art/card-hop.webp" alt="Blue hopping pads through a garden" draggable="false" />
+            <span class="mode-card-label">Hop Trail</span>
+            <span class="selection-badge" aria-hidden="true">Ready!</span>
+            <span class="mode-card-stars" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <button id="start-button" class="paper-action select-action" type="button" data-target="start">
+          <img src="./assets/art/action-button.webp" alt="" draggable="false" />
+          <span>Play Log Crossing</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="play-screen" class="qk-screen game-screen play-screen" data-screen="play" aria-labelledby="play-title" hidden>
+      <img id="stage-art" class="scene-art" src="./assets/art/log-stage.webp" alt="" draggable="false" />
+
+      <button id="play-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" aria-label="Back to trail choices" data-target="back"></button>
+      <button class="sound-button qk-hud-top-right" type="button" aria-label="Hear the directions again. Hold to mute." data-sound-button data-target="sound-play">
+        <img src="./assets/art/sound.webp" alt="" draggable="false" />
+      </button>
+
+      <header class="play-header">
+        <p id="play-kicker" class="play-kicker">Log Crossing</p>
+        <h2 id="play-title" class="play-title">Find the glowing star</h2>
+        <div id="progress-stars" class="progress-stars" aria-label="Trail progress"></div>
+      </header>
+
+      <div id="scene-plane" class="scene-plane" aria-live="off">
+        <div id="fern" class="fern" aria-hidden="true">
+          <img id="fern-art" src="./assets/art/fern-ready.webp" alt="" draggable="false" />
+        </div>
+
+        <div id="hop-controls" class="hop-controls" aria-label="Hop pads" hidden>
+          <button class="hop-pad" type="button" data-hop="0" data-target="hop-0" aria-label="First hop pad"><img src="./assets/art/star.webp" alt="" /></button>
+          <button class="hop-pad" type="button" data-hop="1" data-target="hop-1" aria-label="Second hop pad"><img src="./assets/art/star.webp" alt="" /></button>
+          <button class="hop-pad" type="button" data-hop="2" data-target="hop-2" aria-label="Third hop pad"><img src="./assets/art/star.webp" alt="" /></button>
+          <button class="hop-pad" type="button" data-hop="3" data-target="hop-3" aria-label="Fourth hop pad"><img src="./assets/art/star.webp" alt="" /></button>
+          <button class="hop-pad" type="button" data-hop="4" data-target="hop-4" aria-label="Fifth hop pad"><img src="./assets/art/star.webp" alt="" /></button>
+        </div>
+      </div>
+
+      <div id="balance-panel" class="balance-panel" aria-label="Balance control">
+        <p id="input-hint" class="input-hint">Tilt or drag the star</p>
+        <div id="balance-control" class="balance-control" role="slider" tabindex="0" aria-label="Move the star to the glowing target" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0" data-target="balance">
+          <img class="balance-rail" src="./assets/art/balance-rail.webp" alt="" draggable="false" />
+          <span id="target-marker" class="rail-marker target-marker" aria-hidden="true"><img src="./assets/art/star.webp" alt="" /></span>
+          <span id="player-marker" class="rail-marker player-marker" aria-hidden="true"><img src="./assets/art/star.webp" alt="" /></span>
+        </div>
+        <div class="steady-meter" aria-hidden="true"><span id="steady-fill"></span></div>
+      </div>
+
+      <p id="play-caption" class="play-caption">Hold steady to take a step</p>
+      <div id="trail-flash" class="trail-flash" aria-hidden="true"></div>
+    </section>
+
+    <section id="complete-screen" class="qk-screen game-screen complete-screen" data-screen="complete" aria-labelledby="complete-title" hidden>
+      <img class="scene-art" src="./assets/art/complete-stage.webp" alt="" draggable="false" />
+      <button id="complete-back" class="qk-hud-btn qk-hud-back qk-hud-top-left" type="button" aria-label="Back to trail choices" data-target="complete-back"></button>
+      <button class="sound-button qk-hud-top-right" type="button" aria-label="Hear the celebration again. Hold to mute." data-sound-button data-target="sound-complete">
+        <img src="./assets/art/sound.webp" alt="" draggable="false" />
+      </button>
+
+      <div class="complete-copy">
+        <p id="complete-kicker" class="complete-kicker">Trail complete!</p>
+        <h2 id="complete-title" class="complete-title">Brave balancing!</h2>
+        <div class="reward-stars" aria-label="Three stars earned">
+          <img src="./assets/art/star.webp" alt="" />
+          <img src="./assets/art/star.webp" alt="" />
+          <img src="./assets/art/star.webp" alt="" />
+        </div>
+      </div>
+
+      <img id="complete-fern" class="complete-fern" src="./assets/art/fern-celebrate.webp" alt="Fern the fox cheering" draggable="false" />
+      <img class="finish-flag" src="./assets/art/finish-flag.webp" alt="" draggable="false" />
+
+      <button id="next-button" class="paper-action complete-action" type="button" data-target="next">
+        <img src="./assets/art/action-button.webp" alt="" draggable="false" />
+        <span>Next Trail</span>
+      </button>
+    </section>
+
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite">
+      <img src="./assets/art/title-lockup.webp" alt="Balance Beam Trail" />
+      <span>Opening the paper trail…</span>
+    </div>
+    <p id="announcer" class="visually-hidden" aria-live="polite"></p>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

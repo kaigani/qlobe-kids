@@ -3209,24 +3209,29 @@
       "path": "games/balance-beam-trail/",
       "icon": "assets/hub/tiles/balance-beam-trail.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 8
       },
-      "status": "in-design",
-      "accent": "#58a945",
+      "status": "beta",
+      "accent": "#ef765b",
       "modes": [
         {
-          "id": "floor",
-          "title": "Tape Trail",
-          "skill": "heel-to-toe balance and body control"
+          "id": "log",
+          "title": "Log Crossing",
+          "skill": "centered balance control"
         },
         {
-          "id": "outdoor",
-          "title": "Log and Curb",
-          "skill": "spotter-supported outdoor balance"
+          "id": "lava",
+          "title": "Lava River",
+          "skill": "steering toward offset targets"
+        },
+        {
+          "id": "hop",
+          "title": "Hop Trail",
+          "skill": "sequencing five taps"
         }
       ],
-      "summary": "Walk along lines, logs, and tape paths."
+      "summary": "Guide Fern across three papercraft balance trails with tilt, drag, and joyful taps."
     },
     {
       "id": "animal-walk-cards",

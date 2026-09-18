@@ -1,41 +1,55 @@
-# Balance Beam Trail Assets
+# Balance Beam Trail assets
 
-All current activity art is emoji placeholder art rendered by the `coach-timer` engine on soft rounded cards. The configured field-journal background path is a production placeholder; `assets/bg.jpg` will be supplied by the reviewer. No generated, downloaded, or recorded assets are included.
+All shipped child-facing artwork is raster. Original nondeterministic generations are retained under `assets/source/gpt-image-2/`; the deterministic runtime outputs are under `assets/art/`. Generated game art is licensed CC BY 4.0 and the processing code is MIT.
 
-## Assets needed
+## Runtime inventory
 
-Art:
+| Runtime asset | Source and treatment |
+|---|---|
+| `select-backdrop.webp` | GPT Image 2 selection-room master; opaque 1448x1086 WebP |
+| `log-stage.webp`, `lava-stage.webp`, `hop-stage.webp` | GPT Image 2 mode masters; opaque 1448x1086 WebP |
+| `complete-stage.webp` | GPT Image 2 dedicated finish-stage master; opaque 1448x1086 WebP |
+| `title-lockup.webp` | Exact-spelling GPT Image 2 transparent title; alpha-cleaned, trimmed, and visually spell-checked |
+| `fern-*.webp` | Six GPT Image 2 poses from one coordinated sheet, followed by a GPT Image 2 alpha edit, shared cutter extraction, alpha cleanup, and normalization to 520x640 |
+| `card-*.webp`, `action-button.webp`, `star.webp`, `finish-flag.webp`, `sound.webp` | Coordinated GPT Image 2 UI sheet, followed by a GPT Image 2 alpha edit and shared cutter extraction |
+| `balance-rail.webp` | Coordinated UI-sheet rail; the visually competing fixed blue pointer was removed in a targeted GPT Image 2 edit, then alpha-cleaned and optimized |
+| `assets/hub/tiles/balance-beam-trail.jpg` | Dedicated GPT Image 2 catalog composition, center-cropped to the platform's 640x533 6:5 tile grammar; it is not a splash crop |
+| `assets/og-image.jpg` | Generated from the final in-game selection screen for link previews |
 
-- Tape line: a clear floor trail suitable for heel-to-toe practice.
-- Log: a very low, broad log with a grown-up spotter nearby.
-- Airplane-arms figure: a child balancing with both arms stretched safely out.
+Prompts and edit instructions are recorded in `assets/source/gpt-image-2/PROMPTS.md`. Magenta alpha-check composites and cutter masks live in `assets/source/qa/`.
 
-Voice lines:
+## Required shared cutter commands
 
-- Find your focus and take it slowly. Wobbles mean your balance is learning!
-- Nice recovery. Calm and steady!
-- Superstar balance! Every wobble helped you learn!
-- Superstar balance! You finished the tape trail!
-- Make a tape or chalk line on the floor.
-- Walk heel to toe, slowly. Wobbles mean your balance is learning!
-- You found your balance one careful step at a time.
-- Airplane arms out wide. Make another slow pass.
-- Smooth airplane arms! Nice recovery from every wobble.
-- Turn around and walk backwards with tiny steps.
-- Tiny backwards steps. Calm, careful, and strong!
-- Finish with your biggest superstar pose!
-- Nice recovery. Your spotter is right there!
-- Ta-da! You and your grown-up finished the outdoor balance trail!
-- With a grown-up spotter, find a low log or curb.
-- Hold your spotter's hand and make one slow pass.
-- Hand in hand, you practiced safe balance.
-- Keep your spotter close. Try one slow pass on your own.
-- Slow and focused! Wobbles helped your balance learn.
-- Stop in the middle and balance for five slow breaths.
-- Hop off to a safe landing and say ta-da!
+These are the exact extraction commands used. `--expected-count` makes a merged or missing component a hard failure.
 
-## Link preview (og:image)
+```powershell
+python tools/cut-asset-sheet.py games/balance-beam-trail/assets/source/gpt-image-2/fern-poses-alpha-master.png games/balance-beam-trail/assets/source/cuts/fern --names ready left-step right-step wobble-left wobble-right celebrate --expected-count 6 --alpha-threshold 224 --close-radius 6 --min-area 12000 --order reading --debug-mask games/balance-beam-trail/assets/source/qa/fern-alpha-mask.png
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+python tools/cut-asset-sheet.py games/balance-beam-trail/assets/source/gpt-image-2/ui-sheet-alpha-master.png games/balance-beam-trail/assets/source/cuts/ui --names card-log card-lava card-hop action-button balance-rail star finish-flag sound --expected-count 8 --alpha-threshold 224 --close-radius 4 --min-area 5000 --order reading --debug-mask games/balance-beam-trail/assets/source/qa/ui-alpha-mask.png
+```
+
+The cutter locates authored components; it does not invent equal grid cells. Every cut was checked on saturated magenta for fringe, missing extremities, and transparent corners.
+
+## Deterministic finalization
+
+Run from the repository root:
+
+```powershell
+python games/balance-beam-trail/tools/build-assets.py
+```
+
+The script cleans partial alpha, trims and pads cutouts, gives every Fern pose the same 520x640 canvas, encodes opaque stages at 1448x1086, writes the hub JPEG at 640x533, generates alpha-QA composites, atomically replaces WebP outputs, and decodes every result as a final integrity check. The known detached divider in the source action-button cut is removed by an explicit 18 px source-strip correction before finalization.
+
+## Local authoring API and voice
+
+QLOBE Studio jobs were submitted for Krea 2 backdrops/tile, Qwen Image Layered extraction, and Qwen voice cloning with the repository's approved `shared/assets/refs/voice-teacher.wav` reference. The reachable LAN wrapper's downstream generation routes returned 404/500 errors. Exact job IDs and error stages are retained in `assets/source/local-api/FAILED-JOBS.md`; no failed or unverified output is shipped.
+
+`assets/audio/lines.json` is the dialogue source of truth. `assets/audio/manifest.json` is intentionally empty because the cloned clips did not pass through the failed service. The shared `voice-clips.js` player therefore uses its correct Web Speech fallback, and runtime production makes no model or LAN requests. When the authoring backend is repaired, regenerate seed 7 first, transcribe each encoded clip with Whisper, and add only transcript-approved M4A entries to the manifest.
+
+## Attribution
+
+- Art model: OpenAI GPT Image 2, generated for QLOBE Kids on 2026-09-18.
+- Creative direction and deterministic processing: QLOBE Kids with Codex.
+- Code: MIT.
+- Generated game artwork: CC BY 4.0.
+- No attribution-bearing third-party visual or audio asset is bundled.

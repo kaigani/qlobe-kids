@@ -3,32 +3,41 @@
   "title": "Balance Beam Trail",
   "category": "movement-outdoor",
   "path": "games/balance-beam-trail/",
-  "icon": "🤸",
+  "icon": "assets/hub/tiles/balance-beam-trail.jpg",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#58a945",
-  "shareTitle": "Balance Beam Trail 🪵 — Balance and Focus Practice",
-  "description": "Walk heel-to-toe along taped floor trails or spotter-supported logs and curbs, tapping done after each slow, focused pass. A wobble-positive balance coach for ages 5–6 where recovery counts as much as staying up.",
+  "age": { "min": 4, "max": 8 },
+  "status": "beta",
+  "accent": "#ef765b",
+  "shareTitle": "Balance Beam Trail - A Papercraft Balance Adventure",
+  "description": "Help Fern cross three playful papercraft trails with steady tilts, careful drags, and joyful hops.",
   "learningGoals": [
     "Build balance and whole-body control",
-    "Practice focus while moving slowly",
-    "Develop fall-safe confidence with a grown-up spotter",
-    "Treat wobbles and recovery as part of learning"
+    "Practice visual focus and movement sequencing",
+    "Develop wobble-positive confidence without time pressure",
+    "Coordinate directional control with a visible target"
   ],
-  "interactionModel": "tap the large done target after each real-world balance challenge; timed passes encourage slow, focused movement",
-  "feedbackModel": "calm spoken coaching with sparkle, tick, and tada SFX; wobble-positive praise celebrates recovery and safe practice",
+  "interactionModel": "Choose one of three trails, then use device tilt, pointer drag, arrow keys, or five ordered taps to guide Fern through five checkpoints.",
+  "feedbackModel": "Papercraft pose changes, a steady meter, stars, gentle coaching, soft sound effects, and a three-star celebration reward progress without failure states.",
+  "runtime": "Papercraft custom DOM runtime",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/debug-harness.js",
+    "shared/js/timers.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "games/balance-beam-trail/js/tilt-input.js"
   ],
   "modes": [
-    { "id": "floor", "title": "Tape Trail", "skill": "heel-to-toe balance and body control" },
-    { "id": "outdoor", "title": "Log and Curb", "skill": "spotter-supported outdoor balance" }
+    { "id": "log", "title": "Log Crossing", "skill": "centered balance control" },
+    { "id": "lava", "title": "Lava River", "skill": "steering toward offset targets" },
+    { "id": "hop", "title": "Hop Trail", "skill": "sequencing five taps" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
-  "characters": [],
+  "credits": "QLOBE Kids and OpenAI GPT Image 2. Generated raster sources and processing provenance are documented in ASSETS.md.",
+  "characters": ["Fern the fox"],
   "conceptVideo": null
 }

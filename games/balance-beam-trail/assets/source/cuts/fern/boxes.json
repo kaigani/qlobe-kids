@@ -1,0 +1,202 @@
+{
+  "source": "games/balance-beam-trail/assets/source/gpt-image-2/fern-poses-alpha-master.png",
+  "sourceSha256": "89375a3f051c94d3884bd7bd0853883d6213edab5429441bb877fb11f5c41e48",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "ready",
+      "file": "ready.png",
+      "componentArea": 99335,
+      "foregroundBbox": [
+        83,
+        19,
+        429,
+        489
+      ],
+      "cropBbox": [
+        71,
+        7,
+        441,
+        501
+      ],
+      "cropXywh": [
+        71,
+        7,
+        370,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.046224,
+        0.006836,
+        0.287109,
+        0.489258
+      ]
+    },
+    {
+      "index": 2,
+      "name": "left-step",
+      "file": "left-step.png",
+      "componentArea": 102728,
+      "foregroundBbox": [
+        560,
+        19,
+        947,
+        489
+      ],
+      "cropBbox": [
+        548,
+        7,
+        959,
+        501
+      ],
+      "cropXywh": [
+        548,
+        7,
+        411,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.356771,
+        0.006836,
+        0.624349,
+        0.489258
+      ]
+    },
+    {
+      "index": 3,
+      "name": "right-step",
+      "file": "right-step.png",
+      "componentArea": 101661,
+      "foregroundBbox": [
+        1062,
+        19,
+        1429,
+        489
+      ],
+      "cropBbox": [
+        1050,
+        7,
+        1441,
+        501
+      ],
+      "cropXywh": [
+        1050,
+        7,
+        391,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.683594,
+        0.006836,
+        0.938151,
+        0.489258
+      ]
+    },
+    {
+      "index": 4,
+      "name": "wobble-left",
+      "file": "wobble-left.png",
+      "componentArea": 97072,
+      "foregroundBbox": [
+        83,
+        509,
+        467,
+        977
+      ],
+      "cropBbox": [
+        71,
+        497,
+        479,
+        989
+      ],
+      "cropXywh": [
+        71,
+        497,
+        408,
+        492
+      ],
+      "normalizedCropBbox": [
+        0.046224,
+        0.485352,
+        0.311849,
+        0.96582
+      ]
+    },
+    {
+      "index": 5,
+      "name": "wobble-right",
+      "file": "wobble-right.png",
+      "componentArea": 94530,
+      "foregroundBbox": [
+        597,
+        508,
+        961,
+        977
+      ],
+      "cropBbox": [
+        585,
+        496,
+        973,
+        989
+      ],
+      "cropXywh": [
+        585,
+        496,
+        388,
+        493
+      ],
+      "normalizedCropBbox": [
+        0.380859,
+        0.484375,
+        0.633464,
+        0.96582
+      ]
+    },
+    {
+      "index": 6,
+      "name": "celebrate",
+      "file": "celebrate.png",
+      "componentArea": 99900,
+      "foregroundBbox": [
+        1058,
+        509,
+        1418,
+        977
+      ],
+      "cropBbox": [
+        1046,
+        497,
+        1430,
+        989
+      ],
+      "cropXywh": [
+        1046,
+        497,
+        384,
+        492
+      ],
+      "normalizedCropBbox": [
+        0.68099,
+        0.485352,
+        0.93099,
+        0.96582
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 224,
+    "closeRadius": 6,
+    "minArea": 12000,
+    "order": "reading"
+  }
+}
